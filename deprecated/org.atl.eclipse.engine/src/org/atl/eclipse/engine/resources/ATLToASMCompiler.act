@@ -3,8 +3,13 @@
 -->
 <act name="ATLToASMCompiler">
 
-	<!--plugin href="$(ACT_LOCATION)/antlr.jar"/-->
+<!--
+    * Old
 	<plugin href="$(ACT_LOCATION)/ATL-importer.jar"/>
+    * New
+	<plugin href="$(ACT_LOCATION)/../model/MOF-1.4/TCS/ATL-0.2/ATL-0.2-importer.jar"/>
+-->
+	<plugin href="$(ACT_LOCATION)/../model/MOF-1.4/TCS/ATL-0.2/ATL-0.2-importer.jar"/>
 		<plugin href="$(ACT_LOCATION)/../plugins/ebnfinjector/build/ebnfinjector.jar"/>
 			<plugin href="$(ACT_LOCATION)/../plugins/ebnfinjector/lib/antlr.jar"/>
 
@@ -12,15 +17,17 @@
 	<in-model name="ATL" meta-model="MOF"/>
 	<param name="WriteTo" type="String"/>
 
-	<!--out-model name="atl-model" meta-model="ATL"/-->
+<!-- Debug
+	<out-model name="atl-model" meta-model="ATL"/>
+-->
 
-	<import kind="ebnf" subKind="ATL" meta-model="ATL" href="$(atl-source)" store-to="atl-model"/>
+	<import kind="ebnf2" subKind="ATL" meta-model="ATL" href="$(atl-source)" store-to="atl-model"/>
 
 	<transform asm="$(ACT_LOCATION)/ATLSemanticAnalyzer.asm">
 		<inout-model name="IN" model="atl-model"/>
 		<with-param name="WriteTo" value="*nothing*"/>
 		<with-param name="debug" value="false"/>
-		<library name="TypesPropagation" href="$(ACT_LOCATION)/atltypespropagation.asm"/>
+<!--		<library name="TypesPropagation" href="$(ACT_LOCATION)/atltypespropagation.asm"/>	-->
 	</transform>
 
 	<transform asm="$(ACT_LOCATION)/ATLToASMCompiler.asm">
