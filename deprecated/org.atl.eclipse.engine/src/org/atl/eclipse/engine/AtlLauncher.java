@@ -41,16 +41,16 @@ public class AtlLauncher {
 		
 	}
 	
-	public void launch(URL asmurl, Map models, Map asmParams) {
-		launch(asmurl, Collections.EMPTY_MAP, models, asmParams);
+	public Object launch(URL asmurl, Map models, Map asmParams) {
+		return launch(asmurl, Collections.EMPTY_MAP, models, asmParams);
 	}
 	
-	public void launch(URL asmurl, Map libraries, Map models, Map asmParams) {
-		launch(asmurl, libraries, models, asmParams, false);
+	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams) {
+		return launch(asmurl, libraries, models, asmParams, false);
 	}
 	
-	public void launch(URL asmurl, Map libraries, Map models, Map asmParams, boolean step) {
-		launch(asmurl, libraries, models, asmParams, new SimpleDebugger(
+	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, boolean step) {
+		return launch(asmurl, libraries, models, asmParams, new SimpleDebugger(
 				/* step = */ step,
 				/* stepops = */ new ArrayList(),
 				/* deepstepops = */ new ArrayList(),
@@ -60,11 +60,12 @@ public class AtlLauncher {
 		));
 	}
 	
-	public void debug(URL asmurl, Map libraries, Map models, Map asmParams) {
-		launch(asmurl, libraries, models, asmParams, new NetworkDebugger(6060, true));
+	public Object debug(URL asmurl, Map libraries, Map models, Map asmParams) {
+		return launch(asmurl, libraries, models, asmParams, new NetworkDebugger(6060, true));
 	}
 	
-	public void launch(URL asmurl, Map libraries, Map models, Map asmParams, Debugger debugger) {
+	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, Debugger debugger) {
+		Object ret = null;
 		try {
 			ASM asm = new ASMXMLReader().read(new BufferedInputStream(asmurl.openStream()));
 			ASMModule asmModule = new ASMModule(asm);
@@ -86,10 +87,13 @@ public class AtlLauncher {
 			}
 
 			ASMInterpreter ai = new ASMInterpreter(asm, asmModule, env, asmParams);
+			ret = ai.getReturnValue();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return ret;
 	}
 }
