@@ -115,21 +115,6 @@ public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
 
 		state = stateDisconnected;
 		this.launch = launch;
-		
-		try {
-			String fileName = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.ATLFILENAME, AtlLauncherTools.NULLPARAMETER);
-
-			IWorkspace wks = ResourcesPlugin.getWorkspace();
-			IWorkspaceRoot wksroot = wks.getRoot();
-
-			IFile file = wksroot.getFile(new Path(fileName));
-			file.refreshLocal(IResource.DEPTH_ZERO, null);
-
-			structFile = new AtlNbCharFile(file.getContents());
-		}
-		catch (CoreException e1) {
-			e1.printStackTrace();
-		}
 	}
 
 	public void start() {
@@ -209,6 +194,21 @@ public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
 						int n = ((IntegerValue) stack.call("size", new ArrayList())).getValue(); //$NON-NLS-1$
 						AtlStackFrame frames[] = new AtlStackFrame[n];
 						for(int i = 1 ; i <= n ; i++) {
+							// TODO To get current file being debugged
+							try {
+								String fileName = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.ATLFILENAME, AtlLauncherTools.NULLPARAMETER);
+
+								IWorkspace wks = ResourcesPlugin.getWorkspace();
+								IWorkspaceRoot wksroot = wks.getRoot();
+
+								IFile file = wksroot.getFile(new Path(fileName));
+								file.refreshLocal(IResource.DEPTH_ZERO, null);
+								
+								structFile = new AtlNbCharFile(file.getContents());
+							} catch (CoreException e1) {
+								e1.printStackTrace();
+							}
+
 							frames[n - i] = cf = new AtlStackFrame(
 								threads[0],
 								(ObjectReference)stack.call("at", Arrays.asList(new Object[]{IntegerValue.valueOf(i)})), //$NON-NLS-1$
@@ -500,7 +500,7 @@ public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
 			return;
 		
 		setState(AtlDebugTarget.stateTerminated);
-		debugger.sendCommand(ADWP.CMD_CONTINUE, Arrays.asList(new Object[]{}));
+		debugger.sendCommand(ADWP.CMD_FINISH, Arrays.asList(new Object[]{}));
 		generateDebugEvent(TERMINATE, this);
 	}
 	
@@ -562,9 +562,9 @@ public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
 					event = new DebugEvent(getDebugTarget(),
 							DebugEvent.TERMINATE);
 					break;
-				case SUSPEND_STEP :
+				case SUSPEND_STEP :	// The VM signals it has stopped
 					event = new DebugEvent(getDebugTarget().getThreads()[0],
-							DebugEvent.SUSPEND, DebugEvent.STEP_END);
+							DebugEvent.SUSPEND, DebugEvent.BREAKPOINT);
 					break;
 				default : return;
 			}
