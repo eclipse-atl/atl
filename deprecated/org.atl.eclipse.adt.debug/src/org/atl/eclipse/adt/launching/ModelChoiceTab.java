@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-//import org.atl.eclipse.adt.amc.editor.form.dialog.DialogChooseArtifact;
 import org.atl.eclipse.adt.debug.Messages;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -75,10 +74,10 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 	final static String MODEL = "MODEL";
 	final static String METAMODEL = "METAMODEL";
 	final static String LIB = "LIB";
-	final static String MODEL_OUTPUT = "MODELOUTPUT";
-	final static String MODEL_INPUT = "MODELINPUT";
-	final static String METAMODEL_OUTPUT = "METAMODELOUTPUT";
-	final static String METAMODEL_INPUT = "METAMODELINPUT";
+	public final static String MODEL_OUTPUT = "MODELOUTPUT";
+	public final static String MODEL_INPUT = "MODELINPUT";
+	public final static String METAMODEL_OUTPUT = "METAMODELOUTPUT";
+	public final static String METAMODEL_INPUT = "METAMODELINPUT";
 
 	/*
 	 * These constants represent the index of the columns in different table
@@ -336,8 +335,6 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
-
-		
 		tableLayout = new TableLayout();
 		tablePath.setLayout(tableLayout);
 		tableLayout.addColumnData(new ColumnWeightData(50));
@@ -362,6 +359,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		tablePath.setLayoutData(AtlLauncherTools.createFormData(0, 70, 0, 100));
 		buttonSetPath.setLayoutData(buttonLData);
 		buttonSetExternalPath.setLayoutData(buttonRemoveLData);
+//		buttonRepository.setLayoutData(AtlLauncherTools.createFormData(80, 100, 50, 60));
 
 		/***********************************************************************
 		 * GroupLibs
@@ -661,7 +659,11 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 						if (type ==ModelChoiceTab.LIB)
 							ret = (((IFile)element).getFileExtension().toUpperCase()).equals("ASM");
 						else
-							ret = (((IFile)element).getFileExtension().toUpperCase()).equals("XMI");
+							ret = (
+									(((IFile)element).getFileExtension().toUpperCase()).equals("XMI")
+									||
+									(((IFile)element).getFileExtension().toUpperCase()).equals("ECORE")
+									);
 					}
 					return ret;
 				}
