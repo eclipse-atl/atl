@@ -41,7 +41,7 @@ public class AtlLauncherTools {
 	public static String HOST = "Host";
 	public static String PORT = "Port";
 	public static String LIBS = "Libs";
-	public static String MODELTYPE = "";
+	public static String MODELTYPE = "ModelType";
 	public static String INJECTOR = "Injector";
 	public static String EXTRACTOR = "Extractor";
 	public static String MODELHANDLER = "Model Handler";
