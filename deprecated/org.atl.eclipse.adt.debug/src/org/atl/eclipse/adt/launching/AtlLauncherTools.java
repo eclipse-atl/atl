@@ -104,16 +104,13 @@ public class AtlLauncherTools {
 
 		IProject myTab[] = wksroot.getProjects();
 		
-		if (myTab != null) {
+		if (myTab != null && myTab.length > 0) {
 			List projectNames = new ArrayList();
 			for (int i=0; i < myTab.length; i++)
 				if (myTab[i].isOpen())
 					projectNames.add(myTab[i].getName());
 
-			String arrayProjectNames[] = new String[projectNames.size()];
-			for (int k=0; k < arrayProjectNames.length; k++)
-				arrayProjectNames[k] = (String)projectNames.get(k);
-			return arrayProjectNames;
+			return (String[])projectNames.toArray(new String[] {});
 		}
 		return new String[]{};
 	}
@@ -128,7 +125,11 @@ public class AtlLauncherTools {
 		IWorkspaceRoot wksroot = wks.getRoot();
 		final Vector fileList = new Vector();
 
-		IProject currentProject = wksroot.getProject(projectName);
+		IProject currentProject;
+		if (projectName != null && !(projectName.equals("")))
+			currentProject = wksroot.getProject(projectName);
+		else
+			return new String[]{};
 		
 		if (currentProject == null)
 			return new String[]{};
