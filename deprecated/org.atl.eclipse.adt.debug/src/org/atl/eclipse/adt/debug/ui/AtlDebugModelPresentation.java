@@ -6,6 +6,7 @@ package org.atl.eclipse.adt.debug.ui;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.atl.eclipse.adt.debug.AtlDebugPlugin;
 import org.atl.eclipse.adt.debug.Messages;
@@ -37,8 +38,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IStorageEditorInput;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
@@ -57,6 +56,10 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 
 	static final URL BASE_URL = AtlDebugPlugin.getDefault().getBundle().getEntry("/");
 	static final String iconPath = "icons/";
+
+	// If you add a constant here, look in the class AtlVariable if the value is not already used
+	public final static int BREAKPOINT = 5;
+	private Map mapImage = null;
 	
 	private HashMap fAttributes= new HashMap(3);
 
@@ -102,6 +105,17 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		catch(MalformedURLException e) {}
 		return null;
 	}
+
+	private void initMapImage() {
+		mapImage = new HashMap();
+		mapImage.put(new Integer(AtlVariable.ATTRIBUTE), null);
+		mapImage.put(new Integer(AtlVariable.ELEMENT), null);
+		mapImage.put(new Integer(AtlVariable.LOCALVARIABLE), null);
+		mapImage.put(new Integer(AtlVariable.REFERENCE), null);
+		mapImage.put(new Integer(AtlVariable.SUPERTYPE), null);
+		mapImage.put(new Integer(BREAKPOINT), null);
+	}
+
 	
 	/**
 	 * This method returns the image associate to the type of the parameter
@@ -109,31 +123,42 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	 * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
 	 */
 	public Image getImage(Object item) {
-		String icon = null;
+		if (mapImage == null)
+			initMapImage();
+		
 		if (item instanceof AtlVariable) {
+			String imageName = null;
 			AtlVariable atlVar = (AtlVariable)item;
 			String typeVar = null;
 			try {
 				typeVar = atlVar.getReferenceTypeName();
 			} catch (DebugException e) {
 				e.printStackTrace();
-			}			
-			switch (atlVar.getDescription()) {
-				case AtlVariable.ATTRIBUTE : icon = "attribute.gif"; break;
-				case AtlVariable.ELEMENT : icon = "element.gif"; break;
-				case AtlVariable.LOCALVARIABLE : icon = "localVariable.gif"; break;
-				case AtlVariable.REFERENCE : icon = "reference.gif"; break;
-				case AtlVariable.SUPERTYPE : icon = "supertype.gif"; break;
-				default : return null;
 			}
+			switch (atlVar.getDescription()) {
+				case AtlVariable.ATTRIBUTE : imageName = "attribute.gif"; break;
+				case AtlVariable.ELEMENT : imageName = "element.gif"; break;
+				case AtlVariable.LOCALVARIABLE : imageName = "localVariable.gif"; break;
+				case AtlVariable.REFERENCE : imageName = "reference.gif"; break;
+				case AtlVariable.SUPERTYPE : imageName = "supertype.gif"; break;
+				default : return null;
+			}				
+			if (mapImage.get(new Integer(atlVar.getDescription())) == null) {
+				mapImage.put(new Integer(atlVar.getDescription()), createImage(iconPath + imageName));
+			}
+			return (Image)mapImage.get(new Integer(atlVar.getDescription()));
 		} else if (item instanceof AtlBreakpoint) {
-			icon = "breakpoint.gif";
+			if (mapImage.get(new Integer(BREAKPOINT)) == null) {
+				mapImage.put(new Integer(BREAKPOINT), createImage(iconPath + "breakpoint.gif"));
+			}
+			return (Image)mapImage.get(new Integer(BREAKPOINT));
 		} else if (item instanceof IMarker) {
-			icon = "breakpoint.gif";
+			if (mapImage.get(new Integer(BREAKPOINT)) == null) {
+				mapImage.put(new Integer(BREAKPOINT), createImage(iconPath + "breakpoint.gif"));
+			}
+			return (Image)mapImage.get(new Integer(BREAKPOINT));
 		}
-			
-		if (icon != null)
-			return createImage(iconPath + icon);
+
 		return null;
 	}
 
@@ -297,18 +322,6 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 
 		ret = new DisassemblyEditorInput(frame.getDisassembled());
 
-		if(dte == null) {
-			try {
-				IWorkbenchPage iwp[] = PlatformUI.getWorkbench().getWorkbenchWindows()[0].getPages();
-				dte = iwp[0].openEditor(ret, "org.eclipse.ui.DefaultTextEditor");
-			}
-			catch (PartInitException e) {
-				e.printStackTrace();
-			}
-		} else {
-			//dte.
-		}
-		
 		return ret;
 	}
 
@@ -327,6 +340,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 			if(((AtlDebugTarget)frame.getDebugTarget()).isDisassemblyMode()) return getDisassemblyEditorInput(frame);
 			ILaunchConfiguration configuration = frame.getDebugTarget().getLaunch().getLaunchConfiguration();
 			try {
+				// TODO Recuperer le nom du fichier sur la stackframe
 				fileName = configuration.getAttribute(AtlLauncherTools.ATLFILENAME, AtlLauncherTools.NULLPARAMETER);
 
 				IWorkspace wks = ResourcesPlugin.getWorkspace();
@@ -339,8 +353,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 				e.printStackTrace();
 			}
 		}
-		else if(element instanceof AtlBreakpoint)
-		{
+		else if(element instanceof AtlBreakpoint) {
 			IMarker marker = ((AtlBreakpoint)element).getMarker();
 			IFile ifile = (IFile)marker.getResource();
 			return new FileEditorInput(ifile);
