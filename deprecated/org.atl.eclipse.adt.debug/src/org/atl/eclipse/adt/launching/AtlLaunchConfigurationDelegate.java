@@ -10,22 +10,18 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-//import org.atl.eclipse.emf4amc.AmcModelHandler;
-//import org.atl.eclipse.adt.amc.model.AMCRepository;
-//import org.atl.eclipse.adt.amc.model.AMCRepositoryModel;
-//import org.atl.eclipse.adt.amc.model.IModel;
 import org.atl.eclipse.adt.debug.core.AtlDebugTarget;
 import org.atl.eclipse.adt.debug.core.AtlRunTarget;
 import org.atl.eclipse.adt.launching.sourcelookup.AtlSourceLocator;
 import org.atl.eclipse.engine.AtlLauncher;
 import org.atl.eclipse.engine.AtlModelHandler;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -46,6 +42,8 @@ import org.mda.asm.nativeimpl.ASMModel;
  *
  */
 public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
+	
+	private static AtlModelHandler amh;
 	
 	/**
 	 * Launches the given configuration in the specified mode, contributing
@@ -78,7 +76,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 			new Thread() {
 				public void run() {
-					startDebuggee(configuration, launch, currentMode);
+					runAtlLauncher(configuration, launch, currentMode);
 				}
 			}.start();
 			
@@ -90,17 +88,17 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			launchParam.setSourceLocator(new AtlSourceLocator());
 			AtlRunTarget mTarget = new AtlRunTarget(launchParam);
 			launchParam.addDebugTarget(mTarget);
-			startDebuggee(configurationParam, launchParam, currentMode);
+			runAtlLauncher(configurationParam, launchParam, currentMode);
 			mTarget.terminate();
 		}
 	}
-
+	
 	/**
 	 * Launcher of the debuggee with AtlLauncher
 	 * @param configuration
 	 * @param launch
 	 */
-	private void startDebuggee(ILaunchConfiguration configuration, ILaunch launch, String mode) {
+	private void runAtlLauncher(ILaunchConfiguration configuration, ILaunch launch, String mode) {
 		try {
 			String fileName = configuration.getAttribute(AtlLauncherTools.ATLFILENAME, AtlLauncherTools.NULLPARAMETER);
 			String projectName = configuration.getAttribute(AtlLauncherTools.PROJECTNAME, AtlLauncherTools.NULLPARAMETER);
@@ -110,12 +108,56 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			Map modelType = configuration.getAttribute(AtlLauncherTools.MODELTYPE, new HashMap());
 			Map libsFromConfig = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
 			String modelHandler = configuration.getAttribute(AtlLauncherTools.MODELHANDLER, "");
-			
+
+			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode);
+		} catch (CoreException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * @param filePath		: path of the ATL Transformation
+	 * @param libsFromConfig: Map {lib_name --> URI}
+	 * @param input			: Map {model_input --> metamodel_input}
+	 * @param output		: Map {model_output --> metamodel_output}
+	 * @param path			: Map {model_name --> URI}
+	 * @param modelType		: Map {model_name --> type if the model(mIn, mmIn, ...)}
+	 * @param modelHandler	: modelHandler (MDR or EMF)
+	 * @param mode			: mode (DEBUG or RUN)
+	 */
+	public static void runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, String modelHandler, String mode) {
+		runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, Collections.EMPTY_MAP);
+	}
+
+	/**
+	 * 
+	 * @param filePath		: path of the ATL Transformation
+	 * @param libsFromConfig: Map {lib_name --> URI}
+	 * @param input			: Map {model_input --> metamodel_input}
+	 * @param output		: Map {model_output --> metamodel_output}
+	 * @param path			: Map {model_name --> URI}
+	 * @param modelType		: Map {model_name --> type if the model(mIn, mmIn, ...)}
+	 * @param modelHandler	: modelHandler (MDR or EMF)
+	 * @param mode			: mode (DEBUG or RUN)
+	 * @param linkWithNextTransformation
+	 * @return
+	 */
+	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, String modelHandler, String mode, Map linkWithNextTransformation) {
+		return runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, linkWithNextTransformation, Collections.EMPTY_MAP);
+	}
+	
+	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, String modelHandler, String mode, Map linkWithNextTransformation, Map inModel) {
+		Map toReturn = new HashMap();
+		try {
 			//asmUrl
-			IFile asmFile = getASMFile(fileName);
+			IFile asmFile = getASMFile(filePath);
+			IProject projectOfModel = asmFile.getProject();
 			URL asmUrl;
 			asmUrl = asmFile.getLocation().toFile().toURL();
 
+			amh = AtlModelHandler.getDefault(modelHandler);
+			
 			//libs
 			Map libs = new HashMap();
 			for(Iterator i = libsFromConfig.keySet().iterator() ; i.hasNext() ; ) {
@@ -125,8 +167,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			}
 
 			//models
-			Map inModel = getModelInput(input, path, modelHandler);
-			Map outModel = getModelOutput(output, path, getProject(projectName), modelHandler, inModel);
+			if (inModel.isEmpty())
+				inModel = getModelInput(input, path, modelHandler);
+			Map outModel = getModelOutput(output, path, projectOfModel, modelHandler, inModel);
 
 			Map models = new HashMap();
 
@@ -140,27 +183,36 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				models.put(mName, outModel.get(mName));
 			}
 
+			models.put("ATL", amh.getAtl());
+			models.put("MOF", amh.getMof());
+			
 			//params
-			Map params = new HashMap();
+			Map params = Collections.EMPTY_MAP;
 
 			AtlLauncher myLauncher = AtlLauncher.getDefault();
 			if (mode.equals(ILaunchManager.DEBUG_MODE))
 				myLauncher.debug(asmUrl, libs, models, params);
 			else
 				myLauncher.launch(asmUrl, libs, models, params);
-
-			for(Iterator i = outModel.keySet().iterator() ; i.hasNext() ; ) {
+			
+			for(Iterator i = outModel.keySet().iterator(); i.hasNext() ; ) {
 				String mName = (String)i.next();
+				ASMModel currentOutModel = (ASMModel)outModel.get(mName);
+				if (linkWithNextTransformation.containsKey(mName))
+					toReturn.put(linkWithNextTransformation.get(mName), currentOutModel);
+
 				if ((modelType.get(mName) != null) && ((String)modelType.get(mName)).equals(ModelChoiceTab.MODEL_OUTPUT))
-					AtlModelHandler.getDefault(modelHandler).saveModel((ASMModel)outModel.get(mName), getProject(projectName));
+					// TODO mettre un boolean peut gérer la non sauvegarde
+					AtlModelHandler.getDefault(modelHandler).saveModel(currentOutModel, projectOfModel);
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (CoreException e1) {
 			e1.printStackTrace();
 		}
+		return toReturn;
 	}
-
+	
 	/**
 	 * @param param
 	 * @return Returns the property value of the project
@@ -176,7 +228,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @return
 	 * @throws CoreException
 	 */
-	private Map getModelInput(Map arg, Map path, String modelHandler) throws CoreException {
+	private static Map getModelInput(Map arg, Map path, String modelHandler) throws CoreException {
 		Map toReturn = new HashMap();
 		try {
 			for(Iterator i = arg.keySet().iterator() ; i.hasNext() ; ) {
@@ -213,7 +265,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @return
 	 * @throws CoreException
 	 */
-	private Map getModelOutput(Map arg, Map path, IProject project, String modelHandler, Map input) throws CoreException {
+	private static Map getModelOutput(Map arg, Map path, IProject project, String modelHandler, Map input) throws CoreException {
 		Map toReturn = new HashMap();
 		try {
 			for(Iterator i = arg.keySet().iterator() ; i.hasNext() ; ) {
@@ -251,83 +303,27 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @return the input stream corresponding to the file
 	 * @throws FileNotFoundException
 	 */
-	private InputStream fileNameToInputStream(String filePath) throws FileNotFoundException, CoreException {
+	private static InputStream fileNameToInputStream(String filePath) throws FileNotFoundException, CoreException {
 		if (filePath.startsWith("ext:")) {
 			File f = new File(filePath.substring(4));
 			return new FileInputStream(f);
 		}
-
 		else {
-			StringTokenizer st = new StringTokenizer(filePath, "/\\");
-			String projectName = "";
-			String fileName = "";
-			
-			while (projectName.equals("") && st.hasMoreTokens())
-				projectName = st.nextToken();
-
-			IWorkspace wks = ResourcesPlugin.getWorkspace();
-			IWorkspaceRoot wksroot = wks.getRoot();
-			IProject modelProject = wksroot.getProject(projectName);
-			IFolder folder = null;
-			
-			while (st.hasMoreTokens()) {
-				fileName = st.nextToken();
-				if ((st.hasMoreTokens()) && (folder == null))
-					folder = modelProject.getFolder(fileName);
-				else if (st.hasMoreTokens())
-					folder = folder.getFolder(fileName);
-			}
-			
-			IFile file;
-			if (folder == null)
-				file = modelProject.getFile(fileName);
-			else
-				file = folder.getFile(fileName);
-			return file.getContents();
+			IWorkspaceRoot iwr = ResourcesPlugin.getWorkspace().getRoot();
+			filePath = filePath.replace('#', '/');
+			return iwr.getFile(new Path(filePath)).getContents();
 		}
 	}
 	
-	private URL fileNameToURL(String filePath) throws MalformedURLException {
+	private static URL fileNameToURL(String filePath) throws MalformedURLException {
 		if (filePath.startsWith("ext:")) {
 			File f = new File(filePath.substring(4));
 			return f.toURL();
 		}
 		else {
-			StringTokenizer st = new StringTokenizer(filePath, "/\\");
-			String projectName = "";
-			String fileName = "";
-			
-			while (projectName.equals("") && st.hasMoreTokens())
-				projectName = st.nextToken();
-			
-			while (st.hasMoreTokens())
-				fileName = st.nextToken();
-			
-			IWorkspace wks = ResourcesPlugin.getWorkspace();
-			IWorkspaceRoot wksroot = wks.getRoot();
-			IProject modelProject = wksroot.getProject(projectName);
-
-			IFile file = modelProject.getFile(fileName);
+			IFile file = getASMFile(filePath);
 			return file.getLocation().toFile().toURL();
 		}
-	}
-	
-	private IProject getProject(String projectName) {
-		
-		IWorkspace wks = ResourcesPlugin.getWorkspace();
-		IWorkspaceRoot wksroot = wks.getRoot();
-
-		IProject project = wksroot.getProject(projectName);
-		return project;
-	}
-	
-	private IFile getFile(String atlFileName, String projectName) {
-		
-		IWorkspace wks = ResourcesPlugin.getWorkspace();
-		IWorkspaceRoot wksroot = wks.getRoot();
-
-		IFile file = wksroot.getProject(projectName).getFile(atlFileName);
-		return file;
 	}
 	
 	/**
@@ -336,7 +332,8 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @param atlFilePath name of the ATL File
 	 * @return ASM File corresponding to the ATL File
 	 */
-	private IFile getASMFile(String atlFilePath) {
+	private static IFile getASMFile(String atlFilePath) {
+		atlFilePath = atlFilePath.replace('#', '/');
 		
 		IWorkspace wks = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot wksroot = wks.getRoot();
