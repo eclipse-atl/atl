@@ -7,8 +7,10 @@ import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
@@ -43,8 +45,10 @@ public class AtlStackFrame implements IStackFrame {
 	private int location = -1;
 	private String opName;
 	private AtlNbCharFile atlnbcharfile;
+	private Map vars = new HashMap();
 
 	public AtlStackFrame(AtlThread thread, ObjectReference stackFrame, AtlNbCharFile atlnbcharfile) {
+		// TODO Add a parameter: File name of file being debugged
 		this.thread = thread;
 		this.stackFrame = stackFrame;
 		this.atlnbcharfile = atlnbcharfile;
@@ -88,13 +92,29 @@ public class AtlStackFrame implements IStackFrame {
          	Value value = lvs.call("get", Arrays.asList(new Object[] {name}));
          	AtlValue atlValue = new AtlValue(value, (AtlDebugTarget)thread.getDebugTarget());
          	
-         	Value val = stackFrame.call("resolveVariableName", Arrays.asList(new Object[] {IntegerValue.valueOf(Integer.parseInt(name.getValue()))}));
-         	if(val instanceof StringValue) {
-         		name = (StringValue)val;
-         		AtlVariable atlVariable = new AtlVariable( name.toString(), atlValue, (AtlDebugTarget)thread.getDebugTarget(), AtlVariable.LOCALVARIABLE);
-         		atlVars.add(atlVariable);
+         	if(name.getValue().matches("^[0-9]*$")) {
+         		Value val = stackFrame.call("resolveVariableName", Arrays.asList(new Object[] {IntegerValue.valueOf(Integer.parseInt(name.getValue()))}));
+         		if(val instanceof StringValue) {
+         			name = (StringValue)val;
+         		}
+         	} else if(!((AtlDebugTarget)thread.getDebugTarget()).isDisassemblyMode()) {
+         		continue;
          	}
-/*
+         	
+         	String sname = name.toString();
+         	AtlVariable atlVariable = (AtlVariable)vars.get(sname);
+         	if(atlVariable == null) {
+         		atlVariable = new AtlVariable(name.toString(), atlValue, (AtlDebugTarget)thread.getDebugTarget(), AtlVariable.LOCALVARIABLE);
+         		vars.put(sname, atlVariable);
+         	} else {
+         		atlVariable.setValue(atlValue);
+         	}
+ 			
+ 			
+ 			
+ 			atlVars.add(atlVariable);
+
+ /*
          	else {
          		System.out.println("ERROR: variable " + name + " is named " + val + " : " + val.getClass() + " which is not a StringValue => renamed as null-name");
          		AtlVariable atlVariable = new AtlVariable( "null-name", atlValue, (AtlDebugTarget)thread.getDebugTarget(), AtlVariable.LOCALVARIABLE);
@@ -132,7 +152,7 @@ public class AtlStackFrame implements IStackFrame {
 	 */
 	public int getCharStart() throws DebugException {
 		int ret = -1;
-		
+
 		if(!((AtlDebugTarget)thread.getDebugTarget()).isDisassemblyMode()) {
 			ret = charStart;
 		}
@@ -145,7 +165,7 @@ public class AtlStackFrame implements IStackFrame {
 	 */
 	public int getCharEnd() throws DebugException {
 		int ret = -1;
-		
+
 		if(!((AtlDebugTarget)thread.getDebugTarget()).isDisassemblyMode()) {
 			ret = charEnd;
 		}

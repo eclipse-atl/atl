@@ -1,10 +1,12 @@
 package org.atl.eclipse.adt.debug.ui;
 
 import org.atl.eclipse.adt.debug.core.AtlDebugTarget;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.model.IDebugTarget;
+import org.atl.eclipse.adt.debug.core.AtlStackFrame;
+import org.atl.eclipse.adt.debug.core.AtlThread;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
@@ -36,12 +38,20 @@ public class DisassemblyModeAction implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		IDebugTarget dt[] = DebugPlugin.getDefault().getLaunchManager().getDebugTargets();
-		for (int i=0; i < dt.length; i++) {
-			if (dt[i] instanceof AtlDebugTarget) {
-				AtlDebugTarget adt = (AtlDebugTarget)dt[i];
-				adt.setDisassemblyMode(!adt.isDisassemblyMode());
-			}
+		boolean checked = action.isChecked();
+		
+		Object elem = ((IStructuredSelection)selection).getFirstElement();
+		AtlDebugTarget adt = null;
+		if(elem instanceof AtlThread) {
+			adt = (AtlDebugTarget)((AtlThread)elem).getDebugTarget();
+		} else if(elem instanceof AtlStackFrame) {
+				adt = (AtlDebugTarget)((AtlStackFrame)elem).getDebugTarget();
+		} else if(elem instanceof AtlDebugTarget) {
+			adt = (AtlDebugTarget)elem;
+		}
+
+		if(adt != null) {
+			adt.setDisassemblyMode(checked);
 		}
 	}
 
@@ -49,6 +59,23 @@ public class DisassemblyModeAction implements IObjectActionDelegate {
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
+		this.selection = selection;
+
+		Object elem = ((IStructuredSelection)selection).getFirstElement();
+		AtlDebugTarget adt = null;
+		
+		if(elem instanceof AtlThread) {
+			adt = (AtlDebugTarget)((AtlThread)elem).getDebugTarget();
+		} else if(elem instanceof AtlStackFrame) {
+				adt = (AtlDebugTarget)((AtlStackFrame)elem).getDebugTarget();
+		} else if(elem instanceof AtlDebugTarget) {
+			adt = (AtlDebugTarget)elem;
+		}
+		
+		if(adt != null) {
+			action.setChecked(adt.isDisassemblyMode());
+		}
 	}
 
+	private ISelection selection;
 }
