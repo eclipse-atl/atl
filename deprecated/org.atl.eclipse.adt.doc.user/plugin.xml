@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.atl.eclipse.adt.doc.user"
+   name="ATL User Documentation"
+   version="1.0.9"
+   provider-name="ATLAS">
+
+
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="main.xml"
+            primary="true">
+      </toc>
+   </extension>
+
+</plugin>

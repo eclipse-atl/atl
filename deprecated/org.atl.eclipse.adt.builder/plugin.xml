@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.atl.eclipse.adt.builder"
+   name="ATL Builder"
+   version="1.0.5"
+   provider-name="ATLAS"
+   class="org.atl.eclipse.adt.builder.BuilderPlugin">
+
+   <runtime>
+      <library name="builder.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.atl.eclipse.engine"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.atl.eclipse.adt.editor"/>
+      <import plugin="org.eclipse.core.runtime"/>
+   </requires>
+
+
+   <extension
+         id="atlNature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.atl.eclipse.adt.builder.AtlNature">
+         </run>
+      </runtime>
+      <builder
+            id="org.atl.eclipse.adt.builder.atlBuilder">
+      </builder>
+   </extension>
+   <extension
+         id="atlBuilder"
+         name="ATL builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="org.atl.eclipse.adt.builder.AtlBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="icons/atl_logo_small.gif"
+            natureId="org.atl.eclipse.adt.builder.atlNature"
+            id="org.eclipse.ui.atlProjectNatureImage">
+      </image>
+   </extension>  
+</plugin>

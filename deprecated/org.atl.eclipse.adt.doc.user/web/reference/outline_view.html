@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
+transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css"/>
+	<title>About eclipse feature</title>
+</head>
+
+<body>
+<h1>
+ATL content outline
+</h1>
+<h2>
+What is a content outline?
+</h2>
+
+<p>
+Editors often have corresponding <b>content outliners</b> that provide a structured view of the editor contents and assist the user in navigating through the contents of the editor. 
+Thus, like Java editor, ATL editor is always accompanied by an outline that is <b>displayed in the eclipse standard outline view</b>. This implies that for the outline to be visible, 
+the eclipse outline view must be visible. To display the eclipse outline view select Window > Show view > Outline.
+</p>
+
+<p>
+The outline is coupled to the editor, opening an editor causes its associated outline to be displayed and closing the editor closes its outline. 
+To summarize, the outline displayed in the eclipse outline view corresponds to the current active editor.
+</p>
+
+<h2>
+How does it work?
+</h2>
+
+<p>
+Java content outline is automatically updated when the user types in code in the associated editor. 
+As for ATL, when the editor content changes the outline update has to be done manually by clicking on the refresh button. 
+</p>
+Another difference with the java outline is that while java outline only contains the class, its attributes, methods and subclasses ATL outline contains the whole Abstract Syntax Tree (AST). 
+It is then possible to navigate through basic element such as expressions, operators and so on. 
+</p>
+
+<p>
+This is due to that ATL outline was not only designed to support traditional outline facilities but also to <b>play an important role in the debugging job</b>. This needs some explanations.
+Breakpoints are very important in the debugging process, and in many languages as Java, breakpoints are placed on lines. 
+<b>In ATL, breakpoints may be placed on almost any element of the AST</b>. And in that respect, the ATL outline will play an essential role. 
+Indeed, adding a breakpoint can be done by right clicking on an element in the outline and selecting 'add breakpoint'.
+</p>
+
+<p>
+The ATL outline was also designed to support rename refactoring. The principle is the same as breakpoints, select an element in the AST, right click and select 'rename'.
+</p>
+<p>
+We can list the functionalities related to the outline: <br/>
+<ul>
+	<li>Selecting an element in the outline causes the area of this element in the editor to be highlighted and the editor vertical rule to be adjusted ;</li>
+	<li>When the editor cursor position changes, by scrolling up or down with the keyboard or by clicking with the mouse, the corresponding element in the outline is selected. 
+	The maximum level of depth can be modified so as to avoid going too deep into the AST. Users usually want the outline to select the corresponding 'Rule' or 'Helper' they then 
+	put the maximum level of depth to '1'. Note that '-1' means infinite. By default the level of depth is set to -1 if the perspective debug is the current perspective 1 otherwize.</li>
+</ul>
+<b>It should be pointed out that for the above two functionalities to operate correctly the content outline should reflect the editor content</b>. 
+If not, do not hesitate to click on the refresh button to synchronize.
+</p>
+
+<p>
+This brings us to talk about the functionalities provided by the outline and available through the eclipse outline view tool bar or menu: <br/>
+<ul>
+	<li>'Synchronize': to synchronize the content outline with the editor content ;</li>
+	<li>'Hide helpers': to hide helpers ;</li>
+	<li>'Hide Rules': to hide rules ;</li>
+	<li>'Alphabetical sort': to alphabetically sort the tree viewer. By default elements are sorted by their location in the editor.</li>
+</ul>
+</p>
+</body>
+</html>

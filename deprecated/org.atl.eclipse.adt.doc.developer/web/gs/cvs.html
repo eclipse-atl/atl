@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
+transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css"/>
+	<title>ATL Help</title>
+</head>
+
+<body>
+
+<h1>Team programming with CVS</h1>
+<p>
+When you have to work in a group of people, a good way to work with concurrent versions is to use CVS. Eclipse 
+allows this by providing a CVS sharing. Lots of informations in this page can be also found in the <a href="
+../../../org.eclipse.platform.doc.user/gettingStarted/qs-60_team.htm">Eclipse  CVS help page</a>.
+</p>
+
+<h2><a name="share"></a>Sharing a new project using CVS</h2>
+<p>
+To share a CVS repository, we recommend you to do this :
+</p>
+<ol>
+	<li>Go into the <em>CVS Repository Exploring</em> perspective, and create there a new repository location with
+	these values to save it :
+			<table class="center">
+  				<tr class="top"><td>Variable</td><td>Value</td></tr>
+  				<tr><td class="left">Host</td><td class="right">172.16.9.33</td></tr>
+				<tr><td class="left">Repository path</td><td class="right">/var/lib/cvs</td></tr>
+				<tr><td class="left">User</td><td class="right">&lt;your username&gt;</td></tr>
+				<tr><td class="left">Password</td><td class="right">&lt;your password&gt;</td></tr>
+			</table>
+	</li>
+	<li>Create a simple project using the usual Eclipse new project wizard ;</li>
+	<li>The next step is to share the project. To do so, right click on the project, and select <em>Team &gt; 
+	Share project</em> ;</li>
+	<li>You could now use the repository location created before to share your project ;</li>
+	<li>Now you need to specify which module name to use. Because if you tell to Eclipse to use the project name,
+it will create a bad directory on the CVS, and this is not a good idea ! Fill the gap using the path as on the CVS 
+(org.atl.eclipse/adt/editor) instead of the project ID or name (org.atl.eclipse.adt.editor). Go <a href="#viewcvs">
+here</a> to know how to access the CVS online ;</li>
+	<li>The next page shows you which tag you could synchronize. Nothing has to be done here, but clicking on the
+"Next" button will cause an error pop up. <em>You have to get this error</em>. Exit from the error, and cancel the 
+panel. The synchronization needs an other step ;</li>
+	<li>To import from the CVS, right click on the project, choose <em>Team &gt; Synchronize with Repository</em>. 
+	The box of your project should be checked, and only it. Now click on <em>Finish</em>. An information pops up 
+	and shows you some statistics. The first time you synchronize your project, you will probably have some 
+	conflicts. Go <a href="#conflicts">here</a> to understand what to do in this case. Once this step is done, you 
+	could update all incoming changes with the button on the top ;</li>
+	<li>At last, you may need to ignore some files or directories. You can view <a href="#ignore">here</a> how to 
+	do that.</li>
+</ol>
+<p>
+The information pop up are a good way to be sure you do not make any mistakes. Do not hide them.
+</p>
+
+<h2><a name="icons"></a>Meaning of CVS icons</h2>
+<p>
+When you use a CVS repository, icons in the package explorer will change of look ! To understand the meaning of
+each icons, you have to go to the <a href="../../../org.eclipse.platform.doc.user/reference/ref-cvs-decorations.
+htm">CVS Label Decorations</a> documentation page which will show that explicitly.
+</p>
+
+<h2><a name="conflicts"></a>Resolving conflicts</h2>
+<p>
+Lot of people is able to use a file at the same moment ! This will cause a conflict during the synchronization. 
+Three cases could be considered :
+</p>
+<ul>
+	<li>You do not mind of your version : thus you should update your date from the CVS ;</li>
+	<li>Your data are safe and you are sure you have to upgrade files on the CVS, then you commit your changes ;
+	</li>
+	<li>You do not know what to do, or you are not sure of you may intend on the CVS, so you have to speak with 
+	the team which will tell you what you may do !</li>
+</ul>
+<p>
+For example, the first time you catch a project on the CVS, the procedure we encourage you to follow creates a new 
+project with a simple file ".project" at the root. This file is an error for the CVS project, thus you need to 
+update (import) and not the commit (export) this file. You cannot just update a conflicting file, so you have to 
+override and update it. Do so by a right click on the file, and choose <em>Override and update</em>.</li>
+</p>
+
+<h2><a name="ignore"></a>Ignoring files</h2>
+<p>
+In the CVS update and commit procedures, you may ommit some files or directories. This is simply done in the <em>
+Team Synchronization</em> perspective with a right click on the file and choose "Add to .cvsignore". The default 
+option proposed is not so bad...
+</p>
+<p>
+For example, the first time to catch a CVS project, a "bin" directory is locally created, and should not be 
+exported to the CVS. Thus you can add it to the ".cvsignore" file. After this, the file ".cvsignore" will be 
+created, and you can also repeat the procedure with this file.
+</p>
+
+<h2><a name="viewcvs"></a>Accessing the CVS online</h2>
+<p>
+A CVS has the particularity to be a directory tree accessible online. In fact this is possible through Perl 
+scripts which one is linked <a href="http://www.sciences.univ-nantes.fr/lina/atl/private/viewcvs.cgi/">here</a>. 
+Our CVS is password-protected, so you need to enter the &lt;username&gt; and the &lt;password&gt; of the site.
+</p>
+
+</body>
+</html>

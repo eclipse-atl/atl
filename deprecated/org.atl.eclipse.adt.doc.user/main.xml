@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="ADT Plug-in User Guide">
+	<topic label="Getting started">
+		<topic label="Installation" href="web/gs/install.html"/>
+		<topic label="Basic tutorial">
+			<topic label="ATL transformation structure" href="web/gs/structure.html"/>
+			<topic label="ATL tutorial" href="web/gs/tutorial.html"/>
+			<topic label="Running your programs" href="web/gs/running_your_transformation.html"/>
+			<topic label="Debugging your programs" href="web/gs/debugging_your_transformation.html"/>
+		</topic>
+<!--		<topic label="Project configuration tutorial" href="web/todo.html"/>
+-->	</topic>
+	<topic label="Concepts">
+		<topic label="ATL editor" href="web/concepts/editor.html"/>
+	</topic>
+	<topic label="Tasks">
+		<topic label="Creating ATL elements">
+			<topic label="About ATL project" href="web/tasks/atl_project.html"/>
+		</topic>
+		<topic label="Using the ATL editor" href="web/tasks/editor.html"/>
+	</topic>
+	<topic label="Reference">
+		<topic label="Views and editors">
+			<topic label="ATL content outline" href="web/reference/outline_view.html"/>
+		</topic>
+		<topic label="Preferences">
+			<topic label="ATL">
+				<topic label="ATL Editor" href="web/reference/editor.html"/>
+			</topic>
+		</topic>
+<!--		<topic label="Frequently asked questions" href="web/todo.html"/>
+		<topic label="Icons" href="web/todo.html"/>
+		<topic label="Glossary" href="web/todo.html"/>
+-->	</topic>
+<!--	<topic label="Tips and tricks" href="web/todo.html"/>
+	<topic label="What's new ?" href="web/todo.html"/>
+--></toc>

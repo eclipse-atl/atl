@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
+transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css"/>
+	<title>About eclipse feature</title>
+</head>
+<body>
+<h1>
+About ATL project 
+</h1>
+<h2>
+Creating a new ATL project
+</h2>
+<p>
+ATL defines its own project kind.<br/>
+You can create a new ATL project by doing as follows :<br/>
+<ul>
+	<li>Select File > New > Project from the menu bar ;</li>
+	<li>Select ATL Project in the ATL folder ;</li>
+	<li>Fill in all the requested information.</li>
+</ul>
+Then a file with name made up of the transformation name and extension "atl" would have been created.
+The ATL icon should decorate the file name. Double clicking on the file name will open an editor and display
+its associated outline in the eclipse outline view.
+</p>
+<h2>
+Building an ATL project
+</h2>
+<p>
+When an ATL project is created it is automatically associated the ATL builder. Then building an ATL project becomes
+quite literal.<br/>
+Two possibilies are offered to carry out a build, either <b>automatically</b> or <b>manually</b> :
+
+<ul>
+	<li>
+	Automatically means typically when a resource of the project is saved. To do so, only select Window > Preferences from the menu bar 
+	and in the Workbench sub menu (on the left) tick the checkbox "Perform build automatically on resource modification" ;
+	</li>
+	<li>
+	Manually means that the build can be performed by selecting Project > Build Project.
+	</li>
+</ul>
+
+Note that the build will be carried out only if the project has changed since last build. A project is considered to have changed if one 
+of the resource its contains has changed and changes have been saved. Note also that the "Build project" item, located in the menu bar, will be activated
+only if the focus is put on the ATL project (in the navigator view).
+<br/>
+Another way to perform manual build, that would be preferred by users, is to right click on the project and select "Build Project". 
+<br/>
+It should pointed out that when building an ATL project, <b>only files that have been changed since last build will be compiled</b>.
+An ATL file is considered to have changed if it has been saved since its last compilation.
+</p>
+</body>
+</html>

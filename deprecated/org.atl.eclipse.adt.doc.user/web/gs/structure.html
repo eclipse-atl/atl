@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
+transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css"/>
+	<title>ATL Help</title>
+</head>
+
+<body>
+<h1>ATL transformation structure</h1>
+
+<p>
+An ATL file is structured in three parts, known as :
+</p>
+<ul>
+	<li>the <em>headers</em> declare the name of the module, which meta-model we will create from which one, and 
+	what other modules we need to import ;</li>
+	<li>the <em>helpers</em> define methods for a specific context and a node in the ingoing meta-model ;</li>
+	<li>the <em>rules</em> apply transformations from the ingoing meta-model to the outgoing one.</li>
+</ul>
+
+<h2><a name="headers"></a>Headers</h2>
+<p>The headers report global informations for the ATL file.</p>
+<pre class="code">
+module UML2JAVA;
+create OUT : JAVA from IN : UML;
+uses strings;
+</pre>
+<p>The <em>module</em> has to match the name of the file, as for Java. It thus specifies the name of the current 
+transformation.</p>
+<p>The <em>create</em> line defines two variables :</p>
+<ul>
+	<li>The first variable, here "OUT", sets the meta-model to produce ;</li>
+	<li>The second variable, here "IN", sets the meta-model to be parsed.</li>
+</ul>
+<p>The <em>uses</em> line tells which extern modules to use there. This corresponds to the <em>import</em> term in 
+Java. Here we specify to use the extern string module.</p>
+
+<h2><a name="rules"></a>Rules</h2>
+<p>Rules are methods allowing transformation from a model to another one. The name should be explicit because it's 
+not used by the ATL builder but gives a simple information on the rule.</p>
+<pre class="code">
+rule C2C {
+	from e : UML!Class
+	to out : JAVA!JavaClass (
+		name &lt;- e.name,
+		isAbstract &lt;- e.isAbstract,
+		isPublic &lt;- e.isPublic(),
+		package &lt;- e.namespace
+	)
+}
+</pre>
+<p>A rule takes one ingoing model, here <em>UML!Class</em>, and at least one outgoing model, here <em>JAVA!
+JavaClass</em>. So you understand we try to transform an UML class into a Java class.</p>
+<p>Properties (like attributes, references, ...) are filled with the assignement "&lt;-". The right members are ingoing 
+model properties, OCL expressions or <a href="#helpers">helpers</a>. In this example, we call the helper seen after.</p>
+
+<h2><a name="helpers"></a>Helpers</h2>
+<p>The helpers, like functions, make the development more easier for the developer by providing extended abilities 
+for most rules. This is also a way to factorize the code, that is more esthetic.</p>
+<pre class="code">
+helper context UML!ModelElement def: isPublic() : Boolean =
+	self.visibility = #vk_public;
+</pre>
+<p>Then for this helper, we specify the context <em>UML!ModelElement</em> for the helper <em>isPublic</em> that 
+returns a <em>Boolean</em>. We find in the context the ingoing meta-model UML specified in the <a href="#headers">
+headers</a> and a node in this model. The helper can take parameters. The body can contain OCL expressions above 
+ATL ones.</p>
+<p>We also see the variable <em>self</em> that identifies an object of type the one defines in the context.</p>
+
+</body>
+</html>

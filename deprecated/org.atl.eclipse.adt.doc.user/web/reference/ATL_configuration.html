@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
+transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css"/>
+	<title>ATL Help</title>
+</head>
+
+<body>
+<h1> ATL configuration</h1>
+
+<p>
+This time, the Launch Configurations dialog opens. A launch
+configuration allows you to configure how a program is launched,
+including its arguments, and other options. Select ATL Transformation
+and click on New in order to create an ATL launch configuration.<br>
+</p>
+
+<p>
+<img src="../img/atlLauncher.png" title="" alt=""
+ style="width: 1100px; height: 666px;">
+</p>
+
+<p>
+There are two tabs allowing to configure how to launch your
+transformation : ATL Configuration and Model Choice. The last tab "Common" is
+not specific at ATL.
+</p>
+
+<h2>ATL Configuration Tab</h2>
+<p>
+Select the ATL Configuration tab. You should give the name of the
+project where your transformation is located and the name of your
+transformation. Then, you should choose a model handler.
+</p>
+
+<h2>Model Choice Tab</h2>
+<p>
+Select the Model Choice Tab, you should record the input models and
+meta-models and the output models and meta-models used in the
+transformation. <span style="color: rgb(255, 0, 0);">Be careful, the
+name of your model in this tab should be the same that yours models in
+the ATL transformation.</span>
+</p>
+
+<p>
+<img src="../img/modechoicetab.png" title="" alt=""
+ style="width: 1082px; height: 605px;">
+</p>
+
+<p>
+For example : <i>create OUT : JAVA from IN : UML;</i> in your
+transformation implies in this tab : the couple IN (model) and UML
+(metamodel) in the IN part and the couple OUT (model) and JAVA
+(metamodel) in the OUT part like in the example screen.
+</p>
+
+<p>
+Then you should set the path of all the models added, excepted for the
+metamodel which are in the repository (for example MOF metamodel), in
+this case the metamodel will not appear in the path editor.<br/>
+There is another special case, for the output model, when you click on a button to set the path,
+you just have to give the name of the output file (without the
+extension) as in example screen.
+</p>
+
+<p>
+The last part of the tab allows to add the libs used in the ATL transformation.<br/>
+For example : if you used the lib <i>strings</i>, you should add this lib.
+</p>
+
+<h2>Set the path</h2>
+<p>
+For models, metamodels and libs added, you have to set the set for each.<br/>
+There is two possibities :
+<table class="center">
+<tr>
+	<td>Button "Set the path" </td><td> if the model is in the workspace </td>
+</tr>
+<tr>
+	<td>Button "Set external path"</td><td> if the model is not in the workspace</td>
+</tr>
+</table>
+</p>
+
+<p>
+If all the parameters are given (project, transformation, model
+handler, input and output model) , you can apply the configuration,
+else a message error at the top of the dialog display what is wrong in
+your configuration (for example, the path of your model is empty).
+</p>
+
+<p>
+Now, you're ready to Run/Debug your transformation.<br/>
+<br/>
+<a href="../gs/running_your_transformation.html">Running your transformation</a><br/>
+<a href="../gs/debugging_your_transformation.html">Debugging your transformation</a>
+</p>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!--
+	ATL Composite Transformation: ATLToASMCompiler
+-->
+<act name="ATLToASMCompiler">
+
+	<!--plugin href="$(ACT_LOCATION)/antlr.jar"/-->
+	<plugin href="$(ACT_LOCATION)/ATL-importer.jar"/>
+		<plugin href="$(ACT_LOCATION)/../plugins/ebnfinjector/build/ebnfinjector.jar"/>
+			<plugin href="$(ACT_LOCATION)/../plugins/ebnfinjector/lib/antlr.jar"/>
+
+	<in-file name="atl-source"/>
+	<in-model name="ATL" meta-model="MOF"/>
+	<param name="WriteTo" type="String"/>
+
+	<!--out-model name="atl-model" meta-model="ATL"/-->
+
+	<import kind="ebnf" subKind="ATL" meta-model="ATL" href="$(atl-source)" store-to="atl-model"/>
+
+	<transform asm="$(ACT_LOCATION)/ATLSemanticAnalyzer.asm">
+		<inout-model name="IN" model="atl-model"/>
+		<with-param name="WriteTo" value="*nothing*"/>
+		<with-param name="debug" value="false"/>
+		<library name="TypesPropagation" href="$(ACT_LOCATION)/atltypespropagation.asm"/>
+	</transform>
+
+	<transform asm="$(ACT_LOCATION)/ATLToASMCompiler.asm">
+		<in-model name="IN" model="atl-model"/>
+		<with-param name="WriteTo" value="$(WriteTo)"/>
+		<with-param name="debug" value="false"/>
+		<library name="typeencoding" href="$(ACT_LOCATION)/typeencoding.asm"/>
+		<library name="strings" href="$(ACT_LOCATION)/strings.asm"/>
+	</transform>
+
+</act>
+

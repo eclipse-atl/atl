@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.atl.eclipse.adt.perspective"
+   name="ATL Perspective"
+   version="1.0.1"
+   provider-name="ATLAS"
+   class="org.atl.ui.perspective.AtlPerspectivePlugin">
+
+   <runtime>
+      <library name="atlPerspective.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+   </requires>
+
+	<extension point="org.eclipse.ui.perspectives">
+   	<perspective
+          icon="icons/atl_logo.gif"
+          class="org.atl.ui.perspective.AtlPerspective"
+          name="ATL"
+          id="org.atl.eclipse.adt.atlPerspective">
+   	</perspective>
+	</extension>
+</plugin>

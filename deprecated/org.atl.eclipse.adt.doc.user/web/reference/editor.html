@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
+transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css"/>
+	<title>ATL Help</title>
+</head>
+
+<body>
+<h1>ATL editor</h1>
+
+<p>
+Here are all preferences that can be setting up by the user.
+</p>
+
+<h2>Appearance</h2>
+<p>The appearance preferences are global visual options of the editor.</p>
+<table class="center">
+	<tr class="top">
+		<td>Option</td>
+		<td>Description</td>
+		<td>Default</td>
+	</tr>
+	<tr>
+		<td class="left">Print margin column</td>
+		<td>Shows the print margin on the screen</td>
+		<td>80</td>
+	</tr>
+	<tr>
+		<td class="left">Displayed tab width</td>
+		<td>How many characters is a tabulation</td>
+		<td>4</td>
+	</tr>
+	<tr>
+		<td class="left">Highlight current line</td>
+		<td>Does what it tells</td>
+		<td>true</td>
+	</tr>
+	<tr>
+		<td class="left">Highlight matching brackets</td>
+		<td>Does what it tells</td>
+		<td>true</td>
+	</tr>
+	<tr>
+		<td class="left">Show line number</td>
+		<td>Adds in the left rule of the editor the number of each line</td>
+		<td>false</td>
+	</tr>
+	<tr>
+		<td class="left">Appearance colors</td>
+		<td>
+			<p>Here are the color's option for the precedent options</p>
+			<p>
+				<em>Current line highlight</em> : The color of the highlight for the current line<br/>
+				<em>Matching brackets highlight</em> : The highlight color of the matching brackets<br/>
+				<em>Line number</em> : The color of the line numbers in the left rule<br/>
+				<em>Print margin</em> : The color of the print margin column<br>
+				<em>Selection background color</em> : The backgrgound color of selections<br/>
+				<em>Selection foreground color</em> : The foreground color of selections<br/>
+			</p>
+		</td>
+		<td>Default colors</td>
+	</tr>
+</table>
+
+<h2>Code assistant</h2>
+<p>The code assistant helps the ATL developer by completing words or symboles in the source.</p>
+<table class="center">
+	<tr class="top">
+		<td>Option</td>
+		<td>Description</td>
+		<td>Default</td>
+	</tr>
+	<tr>
+		<td class="left">Enable auto activation</td>
+		<td>Tells to the editor that the completion list will pop up automatically</td>
+		<td>true</td>
+	</tr>
+	<tr>
+		<td class="left">Auto activation delay</td>
+		<td>Sets the delay in ms before the completion list will pop up</td>
+		<td>500</td>
+	</tr>
+	<tr>
+		<td class="left">Auto activation triggers</td>
+		<td>Sets chars after which the completion list pops up</td>
+		<td>. (</td>
+	</tr>
+	<tr>
+		<td class="left">Code assist color</td>
+		<td>
+			<p>These color options for the code assist should not yet work !</p>
+			<p>
+				<em>Method parameter</em> : <br/>
+				<em>Completion proposal</em> : <br/>
+				<em>Completion overwrite</em> : <br/>
+			</p>
+		</td>
+		<td>Default colors</td>
+	</tr>
+</table>
+
+<h2><a name="syntax"></a>Highlight syntaxing coloration</h2>
+<p>Syntax specifies how ATL source code is rendered.</p>
+<table class="center">
+	<tr class="top">
+		<td>Option</td>
+		<td>Description</td>
+		<td>Default</td>
+	</tr>
+	<tr>
+		<td class="left">Background color</td>
+		<td>
+			<p>
+				<em>System default</em> : The default background color given by the operating system<br/>
+				<em>Custom</em> : A user defined background color<br/>
+			</p>
+		</td>
+		<td>System default</td>
+	</tr>
+	<tr>
+		<td class="left">Foreground</td>
+		<td>
+			<p>The following ATL source fragments can be rendered with different color and styles (bold and italic) :
+			</p>
+			<p>
+				<em>Brackets</em> : ATL brackets, such as '('<br/>
+				<em>Constants</em> : Constant valuable keywords, such as 'true'<br/>
+				<em>Identifiers</em> : Names or simple names<br/>
+				<em>Keywords</em> : All ATL keywords<br/>
+				<em>Enum literals</em> : Enumeration literals starting with '#'<br/>
+				<em>Numbers</em> : Integers, floats, ...<br/>
+				<em>Operators</em> : Every operators<br/>
+				<em>Others</em> : Default ATL source code<br/>
+				<em>Single-line comment</em> : Comments starting with '--'<br/>
+				<em>Strings</em> : ATL strings and characters, surrounded by single quotes<br/>
+				<em>Symbols</em> : Symbols that partition the code, such as ';'<br/>
+				<em>Types</em> : Variables' types<br/>
+			</p>
+		</td>
+		<td>Default colors and styles</td>
+	</tr>
+</table>
+
+
+
+<h2>Typing aids</h2>
+<p>You may found helpfull some assist that can not be provided by the code assist processor.</p>
+<table class="center">
+	<tr class="top">
+		<td>Option</td>
+		<td>Description</td>
+		<td>Default</td>
+	</tr>
+	<tr>
+		<td class="left">Insert spaces for tab</td>
+		<td>Determines whether or not if tabulations sould be converted into spaces</td>
+		<td>false</td>
+	</tr>
+	<tr>
+		<td class="left">Close strings</td>
+		<td>Provides an end string character after the cursor when a string starts</td>
+		<td>true</td>
+	</tr>
+	<tr>
+		<td class="left">Close brackets and parenthesis</td>
+		<td>Provides an end bracket or parenthesis character after the cursor when a block starts</td>
+		<td>true</td>
+	</tr>
+	<tr>
+		<td class="left">Close braces</td>
+		<td>Provides an end brace character after the cursor when a brace starts</td>
+		<td>true</td>
+	</tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
+transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css"/>
+	<title>ATL Help</title>
+</head>
+
+<body>
+<h1>How to write an Eclipse documentation</h1>
+
+<h2><a name="javadoc"></a>Java Documentation</h2>
+<p>
+Like very good developers we are, we provide a Java-doc of our plug-in classes. You can found this ATL Java-doc 
+<a href="../javadoc/index.html">here</a>.
+</p>
+
+<h2><a name="create"></a>Creating a documentation plug-in</h2>
+<p>
+Eclipse provides an example source and a fully documentation <a href="../../../org.eclipse.platform.doc.isv/
+reference/extension-points/org_eclipse_help_toc.html">here</a>.
+</p>
+<p>
+Firstable you have to <a href="../../../org.eclipse.platform.doc.user/gettingStarted/qs-88_create_plugin.htm">
+create</a> a new simple plug-in project. The only thing you have to do is to add the "org.eclipse.help.toc"
+extension point. Then you can specify the primary table of contents file from which the help will beginning 
+the display. After that, if you know how to write HTML web pages, you just have to write them and make them
+refer inside an XML toc file.
+</p>
+
+<h2><a name="xml"></a>The XML files</h2>
+<p>
+It's suggested to split the XML table of contents file into one for each main topic. This is a more sophisticated
+way to update the documentation porject.
+</p>
+
+<h2><a name="docref"></a>Refering an other page</h2>
+<p>
+It's very easy to understand at the first time out to refer to an other Eclipse documentation page or a Java-doc
+page. This table shows you the tested value for this kind of references :
+</p>
+<table class="center">
+	<tr class="top">
+		<td>Name</td>
+		<td colspan="2">URL</td>
+	</tr>
+	<tr>
+		<td class="left"><a href="http://127.0.0.1:?/help/topic/org.eclipse.jdt.doc.isv/reference/api/org/eclipse/
+		jdt/ui/text/package-summary.html">Hard link</a></td>
+		<td class="right">http://127.0.0.1:?/help/topic/</td>
+		<td class="right">org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/ui/text/package-summary.html</td>
+	</tr>
+	<tr>
+		<td class="left"><a href="../../../org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/ui/text/package-
+		summary.html">Soft link</a></td>
+		<td class="right">../../../</td>
+		<td class="right">org.eclipse.jdt.doc.isv/reference/api/org/eclipse/jdt/ui/text/package-summary.html</td>
+	</tr>
+</table>
+
+<h2><a name="tag"></a>Tags from the CSS</h2>
+<p>
+As we want to create XHTML style web pages, we have redefined some tags through a <a href="#css">style sheet</a>.
+</p>
+<p>
+To match witch has already been done in other Eclipse documentations, we recommend you to use the tags with the
+only attribute "class". This will cause to every craetes similar pages. We propose you to put a main title
+with the "h1" tag, which has to be report in the Eclipse XML toc file as the label of a topic. Below, you can put
+sub-topic with the "h2" tag, and this has to be in a sub-topic in the XML file.
+</p>
+
+<h2><a name="css"></a>The style sheet</h2>
+<p>
+We present you here our style sheet for the Eclipse documentation. Note that default values are reported to 
+sub-classes.
+</p>
+<table class="center">
+	<tr class="top">
+		<td>Tag name</td>
+		<td>Tag class</td>
+		<td>Tag attributes</td>
+		<td>Example</td>
+	</tr>
+	<tr>
+		<td>body</td>
+		<td>default</td>
+		<td>
+			<p>
+			background: #FFFFFF; (White)<br/>
+			color: #000000; (Black)<br/>
+			font-family: Arial, Helvetica, sans-serif;<br/>
+			font-size: 10pt; (x-small)<br/>
+		</td>
+	</tr>
+	<tr>
+		<td>h1</td>
+		<td>default</td>
+		<td>
+			<p>
+				//font-size: large;
+				font-size: 18pt; (large)<br/>
+				margin-bottom: 1;<br/>
+				margin-top: 5;<br/>
+			</p>
+		</td>
+		<td><h1>default h1</h1></td>
+	</tr>
+	<tr>
+		<td>h2</td>
+		<td>default</td>
+		<td>
+			<p>
+				font-size: 14pt; (medium)<br/>
+				margin-bottom: 3;<br/>
+				margin-top: 25;<br/>
+			</p>
+		</td>
+		<td><h2>default h2</h2></td>
+	</tr>
+	<tr>
+		<td>li</td>
+		<td>default</td>
+		<td>
+			<p>
+				margin-bottom: 0;<br/>
+				margin-top: 0;<br/>
+				text-align: justify;<br/>
+			</p>
+		</td>
+		<td><ul><li>default li</li></ul></td>
+	</tr>
+	<tr>
+		<td>ol</td>
+		<td>default</td>
+		<td>
+			<p>
+				margin-bottom: 10;
+				margin-top: 0;
+			</p>
+		</td>
+		<td><ol><li>default ol</li></ol></td>
+	</tr>
+	<tr>
+		<td>p</td>
+		<td>default</td>
+		<td>
+			<p>
+				margin-bottom: 10px;<br/>
+				margin-top: 10px;<br/>
+				text-align: justify;<br/>
+			</p>
+		</td>
+		<td><p>default p</p></td>
+	</tr>
+	<tr>
+		<td>p</td>
+		<td>related</td>
+		<td>
+			<p>
+				color : #2F4F4F (DarkSlateGray)<br/>
+				font-size : small;<br/>
+				font-weight : bolder<br/>
+			</p>
+		</td>
+		<td><p class="related">related p</p></td>
+	</tr>
+	<tr>
+		<td>pre</td>
+		<td>default</td>
+		<td>
+			<p>
+				font-family: Courier, monospace;<br/>
+				font-size: 9pt;<br/>
+				margin-left: 6;<br/>
+			</p>
+		</td>
+		<td><pre>default pre</pre></td>
+	</tr>
+	<tr>
+		<td>pre</td>
+		<td>code</td>
+		<td>
+			<p>
+				background-color : #E3E3E3 (LiteGrey)<br/>
+				font-family : sans-serif<br/>
+				margin : 15x30x15x30<br/>
+				padding : 10x20x10x20<br/>
+			</p>
+		</td>
+		<td><pre class="code">code class for pre</pre></td>
+	</tr>
+	<tr>
+		<td>table</td>
+		<td>default</td>
+		<td>
+			<p>
+				border-width : thin<br/>
+				border-style : groove<br/>
+			</p>
+		</td>
+		<td><table><tr><td>default table</td></tr></table></td>
+	</tr>
+	<tr>
+		<td>table</td>
+		<td>center</td>
+		<td>
+			<p>
+				margin-left : auto<br/>
+				margin-right : auto<br/>
+			</p>
+		</td>
+		<td><table class="center"><tr><td>centered table</td></tr></table></td>
+	</tr>
+	<tr>
+		<td>td</td>
+		<td>default</td>
+		<td>
+			<p>
+				border-width : thin<br/>
+				border-style : groove<br/>
+			</p>
+		</td>
+		<td><table><tr><td>default td</td></tr></table></td>
+	</tr>
+	<tr>
+		<td>td</td>
+		<td>left</td>
+		<td>
+			<p>
+				font-weight : bold<br/>
+				text-align : center<br/>
+			</p>
+		</td>
+		<td><table><tr><td class="left">left td</td></tr></table></td>
+	</tr>
+	<tr>
+		<td>td</td>
+		<td>right</td>
+		<td>
+			<p>
+				text-align : left<br/>
+			</p>
+		</td>
+		<td><table><tr><td class="right">right td</td></tr></table></td>
+	</tr>
+	<tr>
+		<td>tr</td>
+		<td>default</td>
+		<td>
+			<p>
+				border-width : thin<br/>
+				border-style : groove<br/>
+			</p>
+		</td>
+		<td><table><tr><td>default tr</td></tr></table></td>
+	</tr>
+	<tr>
+		<td>tr</td>
+		<td>top</td>
+		<td>
+			<p>
+				font-weight : bold<br/>
+				text-align : center<br/>
+			</p>
+		</td>
+		<td><table><tr class="top"><td>top tr</td></tr></table></td>
+	</tr>
+	<tr>
+		<td>ul</td>
+		<td>default</td>
+		<td>
+			<p>
+				margin-bottom: 10;
+				margin-top: 0;
+			</p>
+		</td>
+		<td><ul><li>default ul</li></ul></td>
+	</tr>
+</table>
+
+</body>
+</html>
