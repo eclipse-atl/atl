@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.atl.eclipse.km3"
+   name="KM3 injector and extractor plug-in"
+   version="1.0.0"
+   provider-name="ATLAS"
+   class="org.atl.eclipse.km3.KM3Plugin">
+
+   <runtime>
+      <library name="km3.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/KM3-importer.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.atl.eclipse.adt.builder"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.atl.eclipse.engine"/>
+   </requires>
+
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            id="org.atl.eclipse.km3.menu.contribution">
+         <menu
+               label="KM3 Projectors"
+               path="additions"
+               id="org.atl.eclipse.km3.menu">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+      </objectContribution>
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.km3"
+            id="org.atl.eclipse.km3.injector.contribution">
+         <action
+               label="Inject KM3 to Ecore metamodel"
+               class="org.atl.eclipse.km3.actions.KM32Ecore"
+               menubarPath="org.atl.eclipse.km3.menu"
+               enablesFor="1"
+               id="org.atl.eclipse.km3.injector">
+         </action>
+      </objectContribution>
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.ecore"
+            id="org.atl.eclipse.km3.extractor.contribution">
+         <action
+               enablesFor="1"
+               label="Extract Ecore metamodel to KM3"
+               class="org.atl.eclipse.km3.actions.Ecore2KM3"
+               menubarPath="org.atl.eclipse.km3.menu"
+               id="org.atl.eclipse.km3.extractor"/>
+      </objectContribution>
+   </extension>
+
+</plugin>
