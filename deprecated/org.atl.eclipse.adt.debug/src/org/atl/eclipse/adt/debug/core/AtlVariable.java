@@ -15,6 +15,7 @@ import org.mda.asm.adwp.ObjectReference;
  */
 
 public class AtlVariable implements IVariable {
+	// If you add a constant here, look in the AtlDebugModelPresentation if the value is not already used
 	public final static int UNKNOWN = -1;
 	public final static int LOCALVARIABLE = 0;
 	public final static int REFERENCE = 1;
