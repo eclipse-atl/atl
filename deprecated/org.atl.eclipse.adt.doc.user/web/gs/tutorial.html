@@ -1,27 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <meta content="text/html; charset=ISO-8859-1"
- http-equiv="content-type">
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
   <title>ATL Tutorial</title>
 </head>
 <body>
-<h1><a class="mozTocH1" name="mozTocId993569"></a>ATL Tutorial</h1>
+<h1><a name="mozTocId993569"></a>ATL Tutorial</h1>
 <br>
-This tutorial explains ATL with the help of a simplified example which
-transforms a class model to a relational database schema. <br>
-It has been adapted from a <a
- href="http://www.softmetaware.com/oopsla2004/duddy.pdf">paper</a> [<a
- href="#1">1</a>] by the DSTC. <br>
-&nbsp;<br>
-Download the Class2Relational example <a
- href="file:///C:/Documents%20and%20Settings/rosenthal/Mes%20documents/courses/tutorial/Class2Relational.zip">here</a>.<br>
-<br>
-<h2><a class="mozTocH2" name="mozTocId448901"></a>Contents<span
- style="text-decoration: underline;"></span></h2>
+This tutorial explains ATL with the help of a simplified example which transforms a class model to a relational database schema. <br />It has been adapted from a 
+<a href="http://www.softmetaware.com/oopsla2004/duddy.pdf">paper</a> [<a href="#1">1</a>] by the DSTC. <br>&nbsp;<br>
+Download the Class2Relational example <a href="Class2Relational.zip">here</a>.<br>
+<br/>
+
+<h2><a name="mozTocId448901"></a>Contents<span style="text-decoration: underline;"></span></h2>
 <ul id="mozToc">
-<!--mozToc h1 1 h2 2 h3 3 h4 4 h5 5 h6 6--><li><a href="#mozTocId993569">ATL
-Tutorial</a>
+  <li><a href="#mozTocId993569">ATL Tutorial</a>
     <ul>
       <li><a href="#mozTocId448901">Contents</a></li>
       <li><a href="#mozTocId631521">Creating ATL Files and ATL Projects</a></li>
@@ -29,59 +22,38 @@ Tutorial</a>
       <li><a href="#mozTocId414349">Metamodels</a></li>
       <li><a href="#mozTocId315842">The Header and the Import Section</a></li>
       <li><a href="#mozTocId413381">The Helpers</a>
-        <ul>
-          <li><a href="#mozTocId755828">The Global Helper Variable
-objectIdType</a></li>
-        </ul>
-      </li>
-      <li><a href="#mozTocId646714">The Rules</a>
-        <ul>
-          <li><a href="#mozTocId266953">The DataType2Type Rule (a
-simple rule)</a></li>
-          <li><a href="#mozTocId45282">The Class2Table Rule (a rule
-with two target pattern elements)</a></li>
-          <li><a href="#mozTocId99172">The
-SingleValuedDataTypeAttribute2Column Rule (a rule with filter)</a></li>
-          <li><a href="#mozTocId669425">The
-MultiValuedDataTypeAttribute2Column Rule</a></li>
-          <li><a href="#mozTocId495512">The ClassAttribute2Column Rule</a></li>
-          <li><a href="#mozTocId401446">The
-MultiValuedClassAttribute2Column Rule</a></li>
-        </ul>
-      </li>
-      <li><a href="#mozTocId717206">The Complete Class2Relational Module</a></li>
-      <li><a href="#mozTocId481283">Typical Test Example</a></li>
-      <li><a href="#mozTocId474980">Execution</a></li>
-      <li><a href="#mozTocId567174">References</a></li>
+    <ul>
+      <li><a href="#mozTocId755828">The Global Helper Variable objectIdType</a></li>
     </ul>
   </li>
+  <li><a href="#mozTocId646714">The Rules</a>
+    <ul>
+      <li><a href="#mozTocId266953">The DataType2Type Rule (a simple rule)</a></li>
+      <li><a href="#mozTocId45282">The Class2Table Rule (a rule with two target pattern elements)</a></li>
+      <li><a href="#mozTocId99172">The SingleValuedDataTypeAttribute2Column Rule (a rule with filter)</a></li>
+      <li><a href="#mozTocId669425">The MultiValuedDataTypeAttribute2Column Rule</a></li>
+      <li><a href="#mozTocId495512">The ClassAttribute2Column Rule</a></li>
+      <li><a href="#mozTocId401446">The MultiValuedClassAttribute2Column Rule</a></li>
+    </ul>
+  </li>
+  <li><a href="#mozTocId717206">The Complete Class2Relational Module</a></li>
+  <li><a href="#mozTocId481283">Typical Test Example</a></li>
+  <li><a href="#mozTocId474980">Execution</a></li>
+  <li><a href="#mozTocId567174">References</a></li>
 </ul>
-<h2><a class="mozTocH2" name="mozTocId631521"></a>Creating ATL Files
-and ATL Projects</h2>
+
+<h2><a name="mozTocId631521"></a>Creating ATL Files and ATL Projects</h2>
 It is essential to know how to create an ATL Project and an ATL file.<br>
 <br>
-To create an ATL project select the &#8220;File&#8221; menu, choose &#8220;New&#8221;, then
-&#8220;Project&#8221; and finally &#8220;ATL / ATL Project&#8221;. Enter a project name and
-press the &#8220;Finish&#8221; button.<br>
+To create an ATL project select the &#8220;File&#8221; menu, choose &#8220;New&#8221;, then &#8220;Project&#8221; and finally &#8220;ATL / ATL Project&#8221;. Enter a project name and press the &#8220;Finish&#8221; button.<br>
 <br>
-An ATL file is created in the ATL project folder by selecting &#8220;New&#8221; in
-the menu &#8220;File&#8221;, then choosing &#8220;File&#8221;. Enter the file name and do not
-forget the extension &#8220;.atl&#8221;. Press &#8220;Finish&#8221;.<br>
+An ATL file is created in the ATL project folder by selecting &#8220;New&#8221; in the menu &#8220;File&#8221;, then choosing &#8220;File&#8221;. Enter the file name and do not forget the extension &#8220;.atl&#8221;. Press &#8220;Finish&#8221;.<br>
 <br>
-<h2><a class="mozTocH2" name="mozTocId133765"></a>From Classes to
-Relational Tables</h2>
-In the following, it will be explained how to implement the
-transformation from classes to relational tables step by step. <br>
+
+<h2><a name="mozTocId133765"></a>From Classes to Relational Tables</h2>
+In the following, it will be explained how to implement the transformation from classes to relational tables step by step. <br>
 <br>
-In general, classes are mapped to tables and class attributes to table
-attributes. However, if attributes are not single valued or not of a
-primitive type (Datatype), this is different. Attributes that are of
-the type Class must be transformed to foreign keys. For multivalued
-attributes a separate table (the values table) has to be created. This
-values table must have two columns, one containing the foreign key and
-another one containing the values. The idea is that if an attribute has
-five values, the values table contains five rows. The transformation
-does not concern the data that will be put in the tables.<br>
+In general, classes are mapped to tables and class attributes to table attributes. However, if attributes are not single valued or not of a primitive type (Datatype), this is different. Attributes that are of the type Class must be transformed to foreign keys. For multivalued attributes a separate table (the values table) has to be created. This values table must have two columns, one containing the foreign key and another one containing the values. The idea is that if an attribute has five values, the values table contains five rows. The transformation does not concern the data that will be put in the tables.<br>
 <br>
 Simplifications of this class to relational description:<br>
 <br>
@@ -96,77 +68,37 @@ must not contain attribute names such as objectId.<br>
 &nbsp;&nbsp;&nbsp; - In the class model there must be at least one
 attribute of type 'Integer'<br>
 <br>
+
 <h2><a class="mozTocH2" name="mozTocId414349"></a>Metamodels</h2>
-Before an ATL program can be written you must have the target and the
-source metamodels. In case of the class to relational transformation,
-the Class metamodel is the source metamodel and the Relational
-metamodel is the target metamodel.<br>
+Before an ATL program can be written you must have the target and the source metamodels. In case of the class to relational transformation, the Class metamodel is the source metamodel and the Relational metamodel is the target metamodel.<br>
 <br>
-The Class metamodel (see Figure 1 Class) consists of classes having a
-name which they inherit from the abstract class NamedElt. The principal
-class is the class Class, which contains a set of attributes of the
-type Attribute and has the super references pointing to superclasses
-for modelling inheritance trees. The class DataType models primitive
-data types. Class and DataType inherit from Classifier which serves to
-declare the type of Attributes. Attributes can be multivalued, which
-has an important impact on the transformation.<br>
+The Class metamodel (see Figure 1 Class) consists of classes having a name which they inherit from the abstract class NamedElt. The principal class is the class Class, which contains a set of attributes of the type Attribute and has the super references pointing to superclasses for modelling inheritance trees. The class DataType models primitive data types. Class and DataType inherit from Classifier which serves to declare the type of Attributes. Attributes can be multivalued, which has an important impact on the transformation.<br>
 <br>
-<div style="text-align: center;"><img
- style="width: 341px; height: 291px;" alt="Class Metamodel"
- src="file:///C:/Documents%20and%20Settings/rosenthal/Mes%20documents/courses/examples/visio/Class_Class2Relational%5B0.01%5D.png"><br>
+<div style="text-align: center;">
+	<img style="width: 341px; height: 291px;" alt="Class Metamodel" src="../img/Class.png"><br>
 </div>
-<div style="text-align: center;">Figure 1: Class Metamodel<br>
+<div style="text-align: center;">Figure 1: Class Metamodel<br></div>
+<br>
+The Relational metamodel (see Figure 2) consists of classes having a name which they inherit from the abstract class Named. The principal class Table contains a set of Columns and has a reference to its keys. The class Column has the references owner and keyOf pointing to the Table it belongs to and of which it is part of the key (in case it is a key). Furthermore, Column has a reference to Type.<br>
+<br>
+<div style="text-align: center;">
+	<img style="width: 438px; height: 247px;" alt="Figure Metamodel Relational" src="../img/Relational.png"><br>
 </div>
 <br>
-The Relational metamodel (see Figure 2) consists of classes having a
-name which they inherit from the abstract class Named. The principal
-class Table contains a set of Columns and has a reference to its keys.
-The class Column has the references owner and keyOf pointing to the
-Table it belongs to and of which it is part of the key (in case it is a
-key). Furthermore, Column has a reference to Type.<br>
+<div style="text-align: center;">Figure 2: Relational Metamodel<br></div>
+<h2><a class="mozTocH2" name="mozTocId315842"></a>The Header and the Import Section</h2>
+Each ATL module starts with the declaration of the module name and the source and target (meta-) models. In this case, the module Class2Relational has the source (meta-)model Class and the target (meta-)model Relations. The import section is optional. The Class2Relational module requires the library strings which is declared with the uses expression.<br>
 <br>
-<div style="text-align: center;"><img
- style="width: 438px; height: 247px;" alt="Figure Metamodel Relational"
- src="file:///C:/Documents%20and%20Settings/rosenthal/Mes%20documents/courses/examples/visio/Relational_Class2Relational%5B0.01%5D.png"><br>
-</div>
-<br>
-<div style="text-align: center;">Figure 2: Relational Metamodel<br>
-</div>
-<h2><a class="mozTocH2" name="mozTocId315842"></a>The Header and the
-Import Section</h2>
-Each ATL module starts with the declaration of the module name and the
-source and target (meta-) models. In this case, the module
-Class2Relational has
-the source (meta-)model Class and the target (meta-)model Relations.
-The import section is optional. The Class2Relational module requires
-the library strings which is declared with the uses expression.<br>
-<br>
-<table style="text-align: left; width: 100%;" border="1" cellspacing="2"
- cellpadding="2">
+<table style="text-align: left; width: 100%;" border="1" cellspacing="2" cellpadding="2">
   <tbody>
     <tr>
       <td style="vertical-align: top;">
       <p class="MsoNormal" style=""><b><span lang="EN-GB"
  style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: rgb(127, 0, 85);">module</span></b><span
- lang="EN-GB"
- style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">
-Class2Relational;</span><span lang="EN-GB"
- style="font-size: 10pt; font-family: &quot;Courier New&quot;;"></span></p>
-      <p class="MsoNormal" style=""><b><span lang="EN-GB"
- style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: rgb(127, 0, 85);">create</span></b><span
- lang="EN-GB"
- style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">
-OUT : Relational </span><b><span lang="EN-GB"
- style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: rgb(127, 0, 85);">from</span></b><span
- lang="EN-GB"
- style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">
-IN : Class;</span><span lang="EN-GB"
- style="font-size: 10pt; font-family: &quot;Courier New&quot;;"></span></p>
-      <p class="MsoNormal" style=""><b><span
- style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: rgb(127, 0, 85);">uses</span></b><span
- style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">
-strings;</span><span
- style="font-size: 10pt; font-family: &quot;Courier New&quot;;"></span></p>
+ lang="EN-GB" style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">
+Class2Relational;</span><span lang="EN-GB" style="font-size: 10pt; font-family: &quot;Courier New&quot;;"></span></p>
+      <p class="MsoNormal" style=""><b><span lang="EN-GB" style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: rgb(127, 0, 85);">create</span></b><span lang="EN-GB" style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">OUT : Relational </span><b><span lang="EN-GB" style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: rgb(127, 0, 85);">from</span></b><span lang="EN-GB" style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">IN : Class;</span><span lang="EN-GB" style="font-size: 10pt; font-family: &quot;Courier New&quot;;"></span></p>
+      <p class="MsoNormal" style=""><b><span style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: rgb(127, 0, 85);">uses</span></b><span style="background: white none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">strings;</span><span style="font-size: 10pt; font-family: &quot;Courier New&quot;;"></span></p>
       </td>
     </tr>
   </tbody>
@@ -457,7 +389,7 @@ adds all those columns that are created for single valued attributes of
 the matched class. The&nbsp; multi valued attributes are filtered bu
 the select operation. The key attribute is a sequence that consists of
 one element, namely the key created by the <a
- href="file:///C:/Documents%20and%20Settings/rosenthal/Mes%20documents/courses/tutorial/ATL%20TutorialEclipse%5Bv00.01%5D.html#key_:_RelationalColumn__">target
+ href="#key_:_RelationalColumn__">target
 pattern element with variable key.</a> For the creation of the key
 type, the helper function objectIdType is called and the name of the
 key column is set to "objectID". <br>
@@ -1654,17 +1586,10 @@ Please note:<br>
 For the Class2Relational execution the screenshots of a configuration
 have been prepared:<br>
 <br>
-<img
- src="file:///C:/Documents%20and%20Settings/rosenthal/Mes%20documents/courses/tutorial/configClass2Relational1.PNG"
- alt=""><br>
-<div style="text-align: center;"><br>
-</div>
-<div style="text-align: center;">Figure 3: Configuration Screenshot 1<br>
-<br>
-</div>
-<div style="text-align: center;"><img
- src="file:///C:/Documents%20and%20Settings/rosenthal/Mes%20documents/courses/tutorial/configClass2Relational_2.PNG"
- alt=""></div>
+<img src="../img/configClass2Relational1.png" alt=""><br>
+<div style="text-align: center;"><br></div>
+<div style="text-align: center;">Figure 3: Configuration Screenshot 1<br><br></div>
+<div style="text-align: center;"><img src="../img/configClass2Relational2.png" alt=""></div>
 <div style="text-align: center;">Figure 4: Configuration Screenshot 2<br>
 <br>
 <div style="text-align: left;">If there is a problem executing the
@@ -1678,17 +1603,6 @@ library to be imported in the library.<br>
 <a name="1"></a>[1] Lawley, M., Duddy, K., Gerber, A., Raymond, K. <a
  href="http://www.softmetaware.com/oopsla2004/duddy.pdf">Language
 Features for Re-Use and Maintainability of MDA Transformations</a>.
-OOPSLA &amp; GPCE Workshop, 2004<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+OOPSLA &amp; GPCE Workshop, 2004
 </body>
 </html>
