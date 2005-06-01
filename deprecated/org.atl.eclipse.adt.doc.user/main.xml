@@ -10,8 +10,8 @@
 			<topic label="Running your programs" href="web/gs/running_your_transformation.html"/>
 			<topic label="Debugging your programs" href="web/gs/debugging_your_transformation.html"/>
 		</topic>
-<!--		<topic label="Project configuration tutorial" href="web/todo.html"/>
--->	</topic>
+<!--	<topic label="Project configuration tutorial" href="web/todo.html"/>-->
+	</topic>
 	<topic label="Concepts">
 		<topic label="ATL editor" href="web/concepts/editor.html"/>
 	</topic>
@@ -30,10 +30,10 @@
 				<topic label="ATL Editor" href="web/reference/editor.html"/>
 			</topic>
 		</topic>
-<!--		<topic label="Frequently asked questions" href="web/todo.html"/>
+<!--	<topic label="Frequently asked questions" href="web/todo.html"/>
 		<topic label="Icons" href="web/todo.html"/>
-		<topic label="Glossary" href="web/todo.html"/>
--->	</topic>
-<!--	<topic label="Tips and tricks" href="web/todo.html"/>
-	<topic label="What's new ?" href="web/todo.html"/>
---></toc>
+		<topic label="Glossary" href="web/todo.html"/>-->
+	</topic>
+<!--<topic label="Tips and tricks" href="web/todo.html"/>
+	<topic label="What's new ?" href="web/todo.html"/>-->
+</toc>
