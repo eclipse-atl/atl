@@ -48,19 +48,50 @@
                class="org.atl.eclipse.km3.actions.KM32Ecore"
                menubarPath="org.atl.eclipse.km3.menu"
                enablesFor="1"
-               id="org.atl.eclipse.km3.injector">
+               id="org.atl.eclipse.km3.injector.ecore">
+         </action>
+         <action
+               label="Inject KM3 to MOF 1.4 metamodel"
+               class="org.atl.eclipse.km3.actions.KM32MOF14"
+               menubarPath="org.atl.eclipse.km3.menu"
+               enablesFor="1"
+               id="org.atl.eclipse.km3.injector.mof14">
+         </action>
+         <action
+               label="Inject KM3 file to KM3 model"
+               class="org.atl.eclipse.km3.actions.KM3Injector"
+               menubarPath="org.atl.eclipse.km3.menu"
+               enablesFor="1"
+               id="org.atl.eclipse.km3.injector.km3inj">
          </action>
       </objectContribution>
       <objectContribution
             objectClass="org.eclipse.core.resources.IFile"
             nameFilter="*.ecore"
-            id="org.atl.eclipse.km3.extractor.contribution">
+            id="org.atl.eclipse.km3.extractor.ecore.contribution">
          <action
                enablesFor="1"
                label="Extract Ecore metamodel to KM3"
                class="org.atl.eclipse.km3.actions.Ecore2KM3"
                menubarPath="org.atl.eclipse.km3.menu"
-               id="org.atl.eclipse.km3.extractor"/>
+               id="org.atl.eclipse.km3.extractor.ecore"/>
+         <action
+               enablesFor="1"
+               label="Extract KM3 model to KM3 file"
+               class="org.atl.eclipse.km3.actions.KM3Extractor"
+               menubarPath="org.atl.eclipse.km3.menu"
+               id="org.atl.eclipse.km3.extractor.km3ext"/>
+      </objectContribution>
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.xmi"
+            id="org.atl.eclipse.km3.extractor.mof14.contribution">
+         <action
+               enablesFor="1"
+               label="Extract MOF 1.4 metamodel to KM3"
+               class="org.atl.eclipse.km3.actions.MOF142KM3"
+               menubarPath="org.atl.eclipse.km3.menu"
+               id="org.atl.eclipse.km3.extractor.mof14"/>
       </objectContribution>
    </extension>
 

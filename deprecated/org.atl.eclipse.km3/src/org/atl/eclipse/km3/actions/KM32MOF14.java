@@ -14,9 +14,9 @@ import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-public class KM32Ecore implements IObjectActionDelegate {
+public class KM32MOF14 implements IObjectActionDelegate {
 
-	private AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
+	private AtlModelHandler amh = null;
 
 	private ISelection selection;
 
@@ -25,7 +25,7 @@ public class KM32Ecore implements IObjectActionDelegate {
 	/**
 	 * Constructor for Action1.
 	 */
-	public KM32Ecore() {
+	public KM32MOF14() {
 		super();		
 	}
 
@@ -39,15 +39,18 @@ public class KM32Ecore implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
+		if(amh == null) {
+			amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_MDR);
+		}
 		try {
 			File file = ((File)((IStructuredSelection)selection).getFirstElement());
 			
-			ASMModel emf = kp.getEcoreFromKM3File(file);
-			
-			if(emf != null) {
+			ASMModel mof = kp.getMOF14FromKM3File(file);
+
+			if(mof != null) {
 				String name = file.getFullPath().removeFirstSegments(1).toString();
-				name = name.substring(0, name.length() - file.getFileExtension().length()) + "ecore";
-				amh.saveModel(emf, name, file.getProject());
+				name = name.substring(0, name.length() - file.getFileExtension().length()) + "xmi";
+				amh.saveModel(mof, name, file.getProject());
 			}
 		} catch (CoreException e) {
 			e.printStackTrace();

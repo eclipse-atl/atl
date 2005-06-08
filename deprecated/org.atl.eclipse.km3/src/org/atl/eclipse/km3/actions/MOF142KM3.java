@@ -20,9 +20,9 @@ import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-public class Ecore2KM3 implements IObjectActionDelegate {
+public class MOF142KM3 implements IObjectActionDelegate {
 
-	private AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
+	private AtlModelHandler amh = null;
 
 	private ISelection selection;
 	
@@ -31,7 +31,7 @@ public class Ecore2KM3 implements IObjectActionDelegate {
 	/**
 	 * Constructor for Action1.
 	 */
-	public Ecore2KM3() {
+	public MOF142KM3() {
 		super();
 	}
 
@@ -45,13 +45,16 @@ public class Ecore2KM3 implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
+		if(amh == null) {
+			amh =  AtlModelHandler.getDefault(AtlModelHandler.AMH_MDR);
+		}
 		try {
 			File file = ((File)((IStructuredSelection)selection).getFirstElement());
 			InputStream in = file.getContents();
 			
 			ASMModel model = amh.loadModel(file.getName(), amh.getMof(), in);
 
-			String km3 = kp.getStringFromKM3(kp.getKM3FromEcore(model));
+			String km3 = kp.getStringFromKM3(kp.getKM3FromMOF14(model));
 			
 			String name = file.getName();
 			name = name.substring(0, name.length() - file.getFileExtension().length()) + "km3";

@@ -14,7 +14,7 @@ import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-public class KM32Ecore implements IObjectActionDelegate {
+public class KM3Injector implements IObjectActionDelegate {
 
 	private AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
 
@@ -25,7 +25,7 @@ public class KM32Ecore implements IObjectActionDelegate {
 	/**
 	 * Constructor for Action1.
 	 */
-	public KM32Ecore() {
+	public KM3Injector() {
 		super();		
 	}
 
@@ -42,11 +42,11 @@ public class KM32Ecore implements IObjectActionDelegate {
 		try {
 			File file = ((File)((IStructuredSelection)selection).getFirstElement());
 			
-			ASMModel emf = kp.getEcoreFromKM3File(file);
+			ASMModel emf = kp.getKM3FromFile(file);
 			
 			if(emf != null) {
 				String name = file.getFullPath().removeFirstSegments(1).toString();
-				name = name.substring(0, name.length() - file.getFileExtension().length()) + "ecore";
+				name = name.substring(0, name.length() - 4) + "-KM3.ecore";
 				amh.saveModel(emf, name, file.getProject());
 			}
 		} catch (CoreException e) {
