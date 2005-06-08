@@ -32,11 +32,24 @@
             name="ATL Project"
             icon="icons/atllogo_icon.gif"
             category="atlWizard"
-            class="org.atl.eclipse.adt.wizard.ui.AtlProjectCreator"
+            class="org.atl.eclipse.adt.wizard.atlproject.AtlProjectCreator"
             preferredPerspectives="org.atl.eclipse.adt.atlPerspective"
             finalPerspective="org.atl.eclipse.adt.atlPerspective"
             project="true"
-            id="atlProjectCreator">
+            id="atlProjectWizard">
+         <description>
+            Create an ATL tansformation project
+         </description>
+      </wizard>
+      <wizard
+            name="ATL File"
+            icon="icons/atllogo_icon.gif"
+            category="atlWizard"
+            class="org.atl.eclipse.adt.wizard.atlfile.AtlFileWizard"
+            preferredPerspectives="org.atl.eclipse.adt.atlPerspective"
+            finalPerspective="org.atl.eclipse.adt.atlPerspective"
+            project="true"
+            id="atlFileWizard">
          <description>
             Create an ATL tansformation project
          </description>
