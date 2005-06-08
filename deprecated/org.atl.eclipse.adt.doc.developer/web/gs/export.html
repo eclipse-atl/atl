@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
+transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css"/>
+	<title>About eclipse feature</title>
+</head>
+
+<body>
+<h1>
+How to export ADT plug-ins from source ?
+</h1>
+<p>
+There were some bugs with the Eclipse version before 3.0.1.
+</p>
+
+<h1>With Eclipse 3.0.1</h1>
+<p>
+Select all the plug-ins you want to extract. Then, you should make a right click and choose Export -> Deployable plug-ins and fragments.
+</p>
+
+<h1>With Eclipse 3.0.1</h1>
+<p>
+First you need to export the plug-in org.atl.eclipse.adt.engine because others ADT plug-ins depend on it.
+You should make a right click on its plug-in, choose Export -> Deployable plug-ins and fragments.
+In Export Options, select Deploy as "a directory structure" and called the directory "eclipse".
+If you want it is possible to include source code.<br /><br />
+<img src="../img/export.PNG" title="" alt="Export screen">
+<br /><br />
+Click on the button Finish.
+<br /><br />
+When export of the plug-in is finished, do the same with others ADT plug-ins.<br /><br />
+Plug-ins to select:
+<ul>
+<li>org.atl.eclipse.adt.builder</li>
+<li>org.atl.eclipse.adt.debug</li>
+<li>org.atl.eclipse.adt.doc.developer</li>
+<li>org.atl.eclipse.adt.doc.user</li>
+<li>org.atl.eclipse.adt.editor</li>
+<li>org.atl.eclipse.adt.perspective</li>
+<li>org.atl.eclipse.adt.wizard</li>
+<li>org.atl.eclipse.adt.km3importer_1.0.0</li>
+</ul>
+And also export in the directory "eclipse".
+<br /><br />
+Yours plug-ins are ready to use, you can zip the folder "eclipse" created.
+To install, you should extract the zip file at the same level than the "eclipse" folder where Eclipse is installed.
+</p>
+
+
+</body>
+</html>

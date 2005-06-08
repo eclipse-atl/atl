@@ -5,6 +5,7 @@
 	<topic label="Programmer's guide">
 	    <topic label="Team programming with CVS" href="web/gs/cvs.html"/>
 		<topic label="What is a feature ?" href="web/gs/feature.html"/>
+		<topic label="How to export ADT plug-in from source ?" href="web/gs/export.html"/>
 		<topic label="Debugging a program" href="web/gs/debug.html"/>
 		<topic label="Editor">
 			<topic label="Highlight syntaxing coloration" href="web/gs/syntax.html"/>
