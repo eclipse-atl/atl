@@ -12,10 +12,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.atl.engine.repositories.emf4atl.ASMEMFModelElement;
+import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
-import org.mda.asm.nativeimpl.ASMModel;
 
 /**
  * @author JOUAULT

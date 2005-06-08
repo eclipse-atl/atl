@@ -12,15 +12,15 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.mda.asm.ASM;
-import org.mda.asm.ASMExecEnv;
-import org.mda.asm.ASMInterpreter;
-import org.mda.asm.ASMXMLReader;
-import org.mda.asm.Debugger;
-import org.mda.asm.NetworkDebugger;
-import org.mda.asm.SimpleDebugger;
-import org.mda.asm.nativeimpl.ASMModel;
-import org.mda.asm.nativeimpl.ASMModule;
+import org.atl.engine.vm.ASM;
+import org.atl.engine.vm.ASMExecEnv;
+import org.atl.engine.vm.ASMInterpreter;
+import org.atl.engine.vm.ASMXMLReader;
+import org.atl.engine.vm.Debugger;
+import org.atl.engine.vm.NetworkDebugger;
+import org.atl.engine.vm.SimpleDebugger;
+import org.atl.engine.vm.nativelib.ASMModel;
+import org.atl.engine.vm.nativelib.ASMModule;
 
 /**
  * @author JOUAULT

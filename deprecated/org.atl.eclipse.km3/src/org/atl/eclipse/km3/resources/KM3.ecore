@@ -33,6 +33,8 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="StructuralFeature" eSuperTypes="/0/TypedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="owner" ordered="false" lowerBound="1" eType="/0/Class" eOpposite="/0/Class/structuralFeatures"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="subsetOf" ordered="false" upperBound="-1" eType="/0/StructuralFeature" eOpposite="/0/StructuralFeature/derivedFrom"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="derivedFrom" ordered="false" upperBound="-1" eType="/0/StructuralFeature" eOpposite="/0/StructuralFeature/subsetOf"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="/0/StructuralFeature"/>
     <eClassifiers xsi:type="ecore:EClass" name="Reference" eSuperTypes="/0/StructuralFeature">

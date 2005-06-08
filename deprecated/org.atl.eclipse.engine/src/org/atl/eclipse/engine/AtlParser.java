@@ -8,12 +8,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.atl.engine.injectors.ebnf.EBNFInjector2;
 import org.atl.engine.repositories.emf4atl.ASMEMFModel;
 import org.atl.engine.repositories.emf4atl.ASMEMFModelElement;
+import org.atl.engine.repositories.mdr4atl.ASMMDRModel;
+import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.emf.ecore.EObject;
-import org.mda.asm.nativeimpl.ASMMDRModel;
-import org.mda.asm.nativeimpl.ASMModel;
-import org.mda.injectors.EBNFInjector2;
 
 public class AtlParser {
 	
@@ -45,9 +45,9 @@ public class AtlParser {
 
 		try {
 			if(atlmm instanceof ASMEMFModel) {
-				ret[0] = ASMEMFModel.newASMEMFModel("temp", (ASMEMFModel)atlmm);
+				ret[0] = ASMEMFModel.newASMEMFModel("temp", (ASMEMFModel)atlmm, null);
 			} else {
-				ret[0] = ASMMDRModel.newASMMDRModel("temp", (ASMMDRModel)atlmm);
+				ret[0] = ASMMDRModel.newASMMDRModel("temp", (ASMMDRModel)atlmm, null);
 			}
 			ret[1] = amh.newModel("pb", pbmm);
 			

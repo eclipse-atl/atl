@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.atl.engine.repositories.emf4atl.ASMEMFModel;
+import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.mda.asm.nativeimpl.ASMModel;
 
 /**
  * @author JOUAULT
@@ -30,23 +30,31 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	}
 	
 	public void saveModel(final ASMModel model, String fileName, IProject project) {
-		Resource r = ((ASMEMFModel)model).getExtent();
 		String uri = project.getFullPath().toString() + "/" + fileName;
-		r.setURI(URI.createURI(uri));
+		saveModel(model, uri);
+	}
+
+	public void saveModel(final ASMModel model, String uri) {
+		saveModel(model, URI.createURI(uri));
+	}
+	
+	private void saveModel(final ASMModel model, URI uri) {
+		Resource r = ((ASMEMFModel)model).getExtent();
+		r.setURI(uri);
 		try {
 			r.save(Collections.EMPTY_MAP);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 	}
-
+	
 	protected AtlEMFModelHandler() {
 		URL atlurl = AtlEMFModelHandler.class.getResource("resources/ATL-0.2.ecore");
 		
-		mofmm = org.atl.engine.repositories.emf4atl.ASMEMFModel.createMOF();
+		mofmm = org.atl.engine.repositories.emf4atl.ASMEMFModel.createMOF(null);
 			
 		try {
-			atlmm = ASMEMFModel.loadASMEMFModel("ATL", mofmm, atlurl);
+			atlmm = ASMEMFModel.loadASMEMFModel("ATL", mofmm, atlurl, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,7 +72,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in);
+			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -76,7 +84,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel);
+			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

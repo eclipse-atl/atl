@@ -11,11 +11,13 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.URL;
 
+import org.atl.engine.repositories.mdr4atl.ASMMDRModel;
+import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.mda.asm.nativeimpl.ASMMDRModel;
-import org.mda.asm.nativeimpl.ASMModel;
+import org.eclipse.core.runtime.Path;
 
 /**
  * @author JOUAULT
@@ -24,13 +26,23 @@ import org.mda.asm.nativeimpl.ASMModel;
 public class AtlMDRModelHandler extends AtlModelHandler{
 	
 	private ASMMDRModel atlmm;
-	private ASMMDRModel mofmm;	
+	private ASMMDRModel mofmm;
+	
 	public void saveModel(final ASMModel model, IProject project) {
 		saveModel(model, model.getName() + ".xmi", project);
 	}
 	
 	public void saveModel(final ASMModel model, String fileName, IProject project) {
 		IFile file = project.getFile(fileName);
+		saveModel(model, file);
+	}
+
+	public void saveModel(final ASMModel model, String uri) {
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uri));
+		saveModel(model, file);
+	}
+	
+	private void saveModel(final ASMModel model, IFile file) {
 		try {
 			PipedInputStream in = new PipedInputStream();
 			final OutputStream out = new PipedOutputStream(in);
@@ -39,7 +51,6 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 					try {
 						((ASMMDRModel)model).save(out);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -52,9 +63,9 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 			e.printStackTrace();
 		} catch (CoreException e) {
 			e.printStackTrace();
-		}
+		}		
 	}
-
+	
 	public ASMModel getAtl() {
 		return atlmm;
 	}
@@ -67,7 +78,7 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMMDRModel.loadASMMDRModel(name, (ASMMDRModel)metamodel, in);
+			ret = ASMMDRModel.loadASMMDRModel(name, (ASMMDRModel)metamodel, in, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -78,7 +89,7 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMMDRModel.newASMMDRModel(name, (ASMMDRModel)metamodel);
+			ret = ASMMDRModel.newASMMDRModel(name, (ASMMDRModel)metamodel, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -88,10 +99,10 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 
 	protected AtlMDRModelHandler() {
 		URL atlurl = AtlMDRModelHandler.class.getResource("resources/ATL-0.2.xmi");
-		mofmm = ASMMDRModel.createMOF();
+		mofmm = ASMMDRModel.createMOF(null);
 		
 		try {
-			atlmm = ASMMDRModel.loadASMMDRModel("ATL", mofmm, atlurl);
+			atlmm = ASMMDRModel.loadASMMDRModel("ATL", mofmm, atlurl, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

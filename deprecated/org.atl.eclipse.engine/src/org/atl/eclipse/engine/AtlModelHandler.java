@@ -8,8 +8,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IProject;
-import org.mda.asm.nativeimpl.ASMModel;
 
 /**
  * @author JOUAULT
@@ -46,6 +46,8 @@ public abstract class AtlModelHandler {
 	public abstract void saveModel(final ASMModel model, IProject project);
 
 	public abstract void saveModel(final ASMModel model, String fileName, IProject project);
+	
+	public abstract void saveModel(final ASMModel model, String uri);
 
 	public abstract ASMModel getAtl();
 
