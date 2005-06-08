@@ -21,8 +21,8 @@ import org.atl.eclipse.adt.debug.core.AtlRunTarget;
 import org.atl.eclipse.adt.launching.sourcelookup.AtlSourceLocator;
 import org.atl.eclipse.engine.AtlLauncher;
 import org.atl.eclipse.engine.AtlModelHandler;
+import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -33,7 +33,6 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
-import org.mda.asm.nativeimpl.ASMModel;
 
 /**
  * The method "launch" is launched when you click on the button "Run" or "Debug"
@@ -43,7 +42,7 @@ import org.mda.asm.nativeimpl.ASMModel;
  */
 public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
 	
-	private static AtlModelHandler amh;
+//	private static AtlModelHandler amh;
 	
 	/**
 	 * Launches the given configuration in the specified mode, contributing
@@ -107,7 +106,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			Map path = configuration.getAttribute(AtlLauncherTools.PATH, new HashMap());
 			Map modelType = configuration.getAttribute(AtlLauncherTools.MODELTYPE, new HashMap());
 			Map libsFromConfig = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
-			String modelHandler = configuration.getAttribute(AtlLauncherTools.MODELHANDLER, "");
+			Map modelHandler = configuration.getAttribute(AtlLauncherTools.MODELHANDLER, new HashMap());
 
 			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode);
 		} catch (CoreException e1) {
@@ -126,7 +125,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @param modelHandler	: modelHandler (MDR or EMF)
 	 * @param mode			: mode (DEBUG or RUN)
 	 */
-	public static void runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, String modelHandler, String mode) {
+	public static void runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode) {
 		runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, Collections.EMPTY_MAP);
 	}
 
@@ -143,20 +142,25 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @param linkWithNextTransformation
 	 * @return
 	 */
-	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, String modelHandler, String mode, Map linkWithNextTransformation) {
+	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation) {
 		return runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, linkWithNextTransformation, Collections.EMPTY_MAP);
 	}
 	
-	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, String modelHandler, String mode, Map linkWithNextTransformation, Map inModel) {
+	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, Map inModel) {
 		Map toReturn = new HashMap();
 		try {
 			//asmUrl
 			IFile asmFile = getASMFile(filePath);
-			IProject projectOfModel = asmFile.getProject();
 			URL asmUrl;
 			asmUrl = asmFile.getLocation().toFile().toURL();
 
-			amh = AtlModelHandler.getDefault(modelHandler);
+			//model handler
+			Map atlModelHandler = new HashMap();
+			for (Iterator i = modelHandler.keySet().iterator(); i.hasNext();) {
+				String currentModelHandler = (String)modelHandler.get(i.next());
+				if (!atlModelHandler.containsKey(currentModelHandler) && !currentModelHandler.equals(""))
+					atlModelHandler.put(currentModelHandler, AtlModelHandler.getDefault(currentModelHandler));
+			}
 			
 			//libs
 			Map libs = new HashMap();
@@ -168,8 +172,8 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 			//models
 			if (inModel.isEmpty())
-				inModel = getModelInput(input, path, modelHandler);
-			Map outModel = getModelOutput(output, path, projectOfModel, modelHandler, inModel);
+				inModel = getSourceModels(input, path, modelHandler, atlModelHandler);
+			Map outModel = getTargetModels(output, path, modelHandler, atlModelHandler, inModel);
 
 			Map models = new HashMap();
 
@@ -183,8 +187,8 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				models.put(mName, outModel.get(mName));
 			}
 
-			models.put("ATL", amh.getAtl());
-			models.put("MOF", amh.getMof());
+//			models.put("ATL", amh.getAtl());
+//			models.put("MOF", amh.getMof());
 			
 			//params
 			Map params = Collections.EMPTY_MAP;
@@ -201,9 +205,11 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				if (linkWithNextTransformation.containsKey(mName))
 					toReturn.put(linkWithNextTransformation.get(mName), currentOutModel);
 
-				if ((modelType.get(mName) != null) && ((String)modelType.get(mName)).equals(ModelChoiceTab.MODEL_OUTPUT))
+				if ((modelType.get(mName) != null) && ((String)modelType.get(mName)).equals(ModelChoiceTab.MODEL_OUTPUT)) {
 					// TODO mettre un boolean peut gérer la non sauvegarde
-					AtlModelHandler.getDefault(modelHandler).saveModel(currentOutModel, projectOfModel);
+					String mmName = (String)output.get(mName);
+					((AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName))).saveModel(currentOutModel, (String)path.get(mName));
+				}
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -228,18 +234,20 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @return
 	 * @throws CoreException
 	 */
-	private static Map getModelInput(Map arg, Map path, String modelHandler) throws CoreException {
+	private static Map getSourceModels(Map arg, Map path, Map modelHandler, Map atlModelHandler) throws CoreException {
 		Map toReturn = new HashMap();
 		try {
 			for(Iterator i = arg.keySet().iterator() ; i.hasNext() ; ) {
 				String mName = (String)i.next();
 				String mmName = (String)arg.get(mName);
 
-				AtlModelHandler amh = AtlModelHandler.getDefault(modelHandler);
+//				AtlModelHandler amh = AtlModelHandler.getDefault(modelHandler);
+				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
 				ASMModel mofmm = amh.getMof();
+				mofmm.setIsTarget(false);
 				ASMModel inputModel;
-				if (mmName.equals("MOF")) {
-					toReturn.put("MOF", mofmm);
+				if (((String)path.get(mmName)).startsWith("#")) {
+					toReturn.put(mmName, mofmm);
 					inputModel = amh.loadModel(mName, mofmm, fileNameToInputStream((String)path.get(mName)));
 				}
 				else {
@@ -248,8 +256,10 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 						inputMetaModel = amh.loadModel(mmName, mofmm, fileNameToInputStream((String)path.get(mmName)));
 						toReturn.put(mmName, inputMetaModel);
 					}
+					inputMetaModel.setIsTarget(false);
 					inputModel = amh.loadModel(mName, inputMetaModel, fileNameToInputStream((String)path.get(mName)));
 				}
+				inputModel.setIsTarget(false);
 				toReturn.put(mName, inputModel);
 			}
 		}
@@ -265,29 +275,36 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @return
 	 * @throws CoreException
 	 */
-	private static Map getModelOutput(Map arg, Map path, IProject project, String modelHandler, Map input) throws CoreException {
+	private static Map getTargetModels(Map arg, Map path, Map modelHandler, Map atlModelHandler, Map input) throws CoreException {
 		Map toReturn = new HashMap();
 		try {
 			for(Iterator i = arg.keySet().iterator() ; i.hasNext() ; ) {
 				String mName = (String)i.next();
 				String mmName = (String)arg.get(mName);
 
-				AtlModelHandler amh = AtlModelHandler.getDefault(modelHandler);
+//				AtlModelHandler amh = AtlModelHandler.getDefault(modelHandler);
+				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
 				ASMModel mofmm = amh.getMof();
+				mofmm.setIsTarget(false);
 				ASMModel outputModel;
 				
-				if (mmName.equals("MOF")) {
+				if (((String)path.get(mmName)).startsWith("#")) {
 					if (input.get(mmName) == null)
-						toReturn.put("MOF", mofmm);
+						toReturn.put(mmName, mofmm);
 					outputModel = amh.newModel(mName, mofmm);
 				}
 				else {
-					ASMModel outputMetaModel = amh.loadModel(mmName, mofmm, fileNameToInputStream((String)path.get(mmName)));
-					if (input.get(mmName) == null)
+					ASMModel outputMetaModel = (ASMModel)input.get(mmName);
+					if (outputMetaModel == null)
+						outputMetaModel = (ASMModel)toReturn.get(mmName);
+					if(outputMetaModel == null) {
+						outputMetaModel = amh.loadModel(mmName, mofmm, fileNameToInputStream((String)path.get(mmName)));
 						toReturn.put(mmName, outputMetaModel);
-					String mNamePath = (String)path.get(mName);
-					outputModel = amh.newModel(mNamePath, outputMetaModel);
+					}
+					outputMetaModel.setIsTarget(false);
+					outputModel = amh.newModel(mName, outputMetaModel);
 				}
+				outputModel.setIsTarget(true);
 				toReturn.put(mName, outputModel);
 			}
 		}

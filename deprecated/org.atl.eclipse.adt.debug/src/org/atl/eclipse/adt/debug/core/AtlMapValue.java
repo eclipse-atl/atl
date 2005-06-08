@@ -6,12 +6,12 @@ package org.atl.eclipse.adt.debug.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.atl.engine.vm.adwp.Value;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
-import org.mda.asm.adwp.Value;
 
 /**
  * Map elements are special case of AtlValue

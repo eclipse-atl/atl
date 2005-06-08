@@ -9,17 +9,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.atl.engine.vm.adwp.BooleanValue;
+import org.atl.engine.vm.adwp.IntegerValue;
+import org.atl.engine.vm.adwp.NullValue;
+import org.atl.engine.vm.adwp.ObjectReference;
+import org.atl.engine.vm.adwp.RealValue;
+import org.atl.engine.vm.adwp.StringValue;
+import org.atl.engine.vm.adwp.Value;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
-import org.mda.asm.adwp.BooleanValue;
-import org.mda.asm.adwp.IntegerValue;
-import org.mda.asm.adwp.NullValue;
-import org.mda.asm.adwp.ObjectReference;
-import org.mda.asm.adwp.StringValue;
-import org.mda.asm.adwp.Value;
 
 /**
  * @author allilaire
@@ -58,9 +59,11 @@ public class AtlValue implements IValue {
 		String ret = null;
 		
 		if (value instanceof BooleanValue)
-			ret = "boolean";
+			ret = "Boolean";
 		if (value instanceof IntegerValue)
-			ret = "int";
+			ret = "Integer";
+		if (value instanceof RealValue)
+			ret = "Real";
 		if (value instanceof StringValue)
 			ret = "String";
 		if (value instanceof NullValue)

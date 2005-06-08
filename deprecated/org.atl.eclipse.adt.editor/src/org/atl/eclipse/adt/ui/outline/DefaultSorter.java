@@ -3,6 +3,7 @@
  */
 package org.atl.eclipse.adt.ui.outline;
 
+import org.atl.eclipse.engine.AtlNbCharFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ViewerSorter;
 

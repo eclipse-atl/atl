@@ -29,11 +29,11 @@ public class AtlPerspective implements IPerspectiveFactory {
         layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");
 
         // Add "show views".
-        layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
-        /* layout.addShowViewShortcut(IPageLayout.ID_BOOKMARKS);
-        layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
-        layout.addShowViewShortcut(IPageLayout.ID_PROP_SHEET);
-        layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);*/        
+//        layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
+//        layout.addShowViewShortcut(IPageLayout.ID_BOOKMARKS);
+//        layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
+//        layout.addShowViewShortcut(IPageLayout.ID_PROP_SHEET);
+//        layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
 	}
 	
 	public void defineLayout(IPageLayout layout) {
@@ -55,9 +55,8 @@ public class AtlPerspective implements IPerspectiveFactory {
         right.addView(IPageLayout.ID_OUTLINE);
         
         // add shortcuts
-        layout.addNewWizardShortcut("atlProjectCreator");
-        layout.addNewWizardShortcut("RepositoryWizard");
-        layout.addNewWizardShortcut("AMCWizard");
+        layout.addNewWizardShortcut("atlProjectWizard");
+        layout.addNewWizardShortcut("atlFileWizard");
         layout.addActionSet(IDebugUIConstants.LAUNCH_ACTION_SET);
 	}
 	

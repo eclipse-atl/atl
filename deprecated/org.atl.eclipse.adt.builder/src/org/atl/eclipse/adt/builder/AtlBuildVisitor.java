@@ -53,17 +53,17 @@ public class AtlBuildVisitor implements IResourceVisitor {
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
 	public boolean visit(IResource resource) throws CoreException {
-		String extension = resource.getFileExtension();		
-		if ( ("atl".equals(extension) && (resource instanceof IFile)) 
-			 && (!hasAsmFile(resource) || hasChanged(resource)) ) {  			
+		String extension = resource.getFileExtension();
+		if ( ("atl".equals(extension) && (resource instanceof IFile))
+			 && (!hasAsmFile(resource) || hasChanged(resource)) ) {
 			String inName = resource.getName();
 			String outName = inName.substring(0, inName.lastIndexOf('.')) + ".asm";
-			IFile out = resource.getParent().getFile(new Path(outName));		
+			IFile out = resource.getParent().getFile(new Path(outName));
 			InputStream is = ((IFile)resource).getContents();
 			EObject[] pbms = AtlCompiler.getDefault().compile(is, out);
 			try {
                 is.close();
-            } catch (IOException e) {            
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 			markerMaker.resetPbmMarkers(resource, pbms);

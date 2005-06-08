@@ -13,12 +13,15 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -27,7 +30,7 @@ import org.eclipse.swt.widgets.Label;
 /**
  * @author allilaire
  */
-public class MainAtlTab extends AbstractLaunchConfigurationTab implements ModifyListener {
+public class MainAtlTab extends AbstractLaunchConfigurationTab implements ModifyListener, SelectionListener {
 	
 	private Composite container;
 
@@ -37,9 +40,10 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 	private Combo listFile;
 	private Label labelFile;
 		
-	private Group groupModelHandler;
-	private Combo listModelHandler;
-	private Label labelModelHandler;
+	private Group groupOthersInformation;
+//	private Combo listModelHandler;
+//	private Label labelModelHandler;
+	private Button buttonModeDebug;
 	
 	public void createControl(Composite parent) {
 		Font font = parent.getFont();
@@ -58,16 +62,17 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		labelFile = new Label(groupGeneralInformation,SWT.NULL);
 		listFile = new Combo(groupGeneralInformation,SWT.NULL | SWT.READ_ONLY);
 
-		groupModelHandler = new Group(container,SWT.NULL);
-		labelModelHandler = new Label(groupModelHandler,SWT.NULL);
-		listModelHandler = new Combo(groupModelHandler, SWT.NULL | SWT.READ_ONLY);
+		groupOthersInformation = new Group(container,SWT.NULL);
+//		labelModelHandler = new Label(groupOthersInformation,SWT.NULL);
+//		listModelHandler = new Combo(groupOthersInformation, SWT.NULL | SWT.READ_ONLY);
+		buttonModeDebug = new Button(groupOthersInformation,SWT.CHECK);
 		
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		GridData gd2 = new GridData(GridData.FILL_HORIZONTAL);
 		GridData gd3 = new GridData(GridData.FILL_HORIZONTAL);
 		
 		groupGeneralInformation.setLayoutData(gd);
-		groupModelHandler.setLayoutData(gd3);
+		groupOthersInformation.setLayoutData(gd3);
 
 		/*********************************
 		 * Creation of FormData
@@ -104,7 +109,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		labelFile.setText(Messages.getString("MainAtlTab.ATLFILENAME")); //$NON-NLS-1$
 
 		listFile.setLayoutData(text2LData);
-//		listFile.setItems(AtlLauncherTools.fileNames());
 
 		listFile.addModifyListener(this);
 		
@@ -115,20 +119,24 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		 * Components of group3
 		 **********************/
 
-		groupModelHandler.setText(Messages.getString("MainAtlTab.OTHERSPARAMETERS")); //$NON-NLS-1$
+		groupOthersInformation.setText(Messages.getString("MainAtlTab.OTHERSPARAMETERS")); //$NON-NLS-1$
 
-		labelModelHandler.setLayoutData(labelLData);
-		labelModelHandler.setText(Messages.getString("MainAtlTab.MODELHANDLER")); //$NON-NLS-1$
+//		labelModelHandler.setLayoutData(labelLData);
+//		labelModelHandler.setText(Messages.getString("MainAtlTab.MODELHANDLER")); //$NON-NLS-1$
 
-		listModelHandler.setLayoutData(textLData);
-		listModelHandler.setItems(modelHandlerList());
-		listModelHandler.addModifyListener(this);
+//		listModelHandler.setLayoutData(textLData);
+//		listModelHandler.setItems(modelHandlerList());
+//		listModelHandler.addModifyListener(this);
+
+		buttonModeDebug.setLayoutData(label2LData);
+		buttonModeDebug.setText(Messages.getString("MainAtlTab.MODEDEBUG")); //$NON-NLS-1$
+		buttonModeDebug.addSelectionListener(this);
 		
-		groupModelHandler.setLayout(groupLayout);
-		groupModelHandler.layout();
+		groupOthersInformation.setLayout(groupLayout);
+		groupOthersInformation.layout();
 		
 		groupGeneralInformation.pack();
-		groupModelHandler.pack();
+		groupOthersInformation.pack();
 		
 		container.layout();
 		container.pack();
@@ -159,14 +167,16 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		try {
 			listProject.setText(configuration.getAttribute(AtlLauncherTools.PROJECTNAME, ""));
 			listFile.setText(configuration.getAttribute(AtlLauncherTools.ATLFILENAME, ""));
-			listModelHandler.setText(configuration.getAttribute(AtlLauncherTools.MODELHANDLER, ""));
+//			listModelHandler.setText(configuration.getAttribute(AtlLauncherTools.MODELHANDLER, ""));
+			buttonModeDebug.setSelection(configuration.getAttribute(AtlLauncherTools.MODEDEBUG, false));
 			canSave();
 			updateLaunchConfigurationDialog();
 		}
 		catch (CoreException e) {
 			listProject.setText("");
 			listFile.setText("");
-			listModelHandler.setText("");
+//			listModelHandler.setText("");
+			buttonModeDebug.setSelection(false);
 			e.printStackTrace();
 		}
 	}
@@ -181,7 +191,8 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(AtlLauncherTools.PROJECTNAME, listProject.getText());
 		configuration.setAttribute(AtlLauncherTools.ATLFILENAME, listFile.getText());
-		configuration.setAttribute(AtlLauncherTools.MODELHANDLER, listModelHandler.getText());
+//		configuration.setAttribute(AtlLauncherTools.MODELHANDLER, listModelHandler.getText());
+		configuration.setAttribute(AtlLauncherTools.MODEDEBUG, buttonModeDebug.getSelection());
 	}
 
 	/**
@@ -205,10 +216,10 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 			this.setErrorMessage(Messages.getString("MainAtlTab.GIVETRANSFORMATIONNAME")); //$NON-NLS-1$
 			return false;
 		}
-		if (listModelHandler.getText().equals("")) {
-			this.setErrorMessage(Messages.getString("MainAtlTab.GIVEMODELHANLER")); //$NON-NLS-1$
-			return false;
-		}
+//		if (listModelHandler.getText().equals("")) {
+//			this.setErrorMessage(Messages.getString("MainAtlTab.GIVEMODELHANLER")); //$NON-NLS-1$
+//			return false;
+//		}
 		this.setErrorMessage(null);
 		return true;
 	}
@@ -223,6 +234,21 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 	public void modifyText(ModifyEvent e) {
 		canSave();
 		updateLaunchConfigurationDialog();
+	}
+
+	/**
+	 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+	 */
+	public void widgetSelected(SelectionEvent e) {
+		canSave();
+		updateLaunchConfigurationDialog();
+	}
+
+	/**
+	 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+	 */
+	public void widgetDefaultSelected(SelectionEvent e) {
+		
 	}
 	
 }

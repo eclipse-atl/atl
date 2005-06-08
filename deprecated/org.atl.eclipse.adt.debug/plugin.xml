@@ -24,7 +24,6 @@
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.eclipse.jdt.launching"/>
       <import plugin="org.atl.eclipse.engine"/>
       <import plugin="org.eclipse.pde.core"/>
       <import plugin="org.eclipse.emf.ecore"/>
@@ -149,13 +148,21 @@
          </menu>
          <action
                label="Disassembly mode"
-               style="radio"
+               style="toggle"
                class="org.atl.eclipse.adt.debug.ui.DisassemblyModeAction"
                menubarPath="pop.menu1/group1"
                enablesFor="1"
                id="pop.newAction">
          </action>
       </objectContribution>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors.documentProviders">
+      <provider
+            class="org.atl.eclipse.adt.debug.core.DisassemblyDocumentProvider"
+            inputTypes="org.atl.eclipse.adt.debug.ui.AtlDebugModelPresentation$DisassemblyEditorInput"
+            id="org.atl.eclipse.adt.debug.provider1"/>
    </extension>
 
 </plugin>

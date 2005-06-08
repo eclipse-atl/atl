@@ -19,12 +19,14 @@
       <import plugin="org.eclipse.core.runtime"/>
    </requires>
 
+	<!-- extension point: perspective -->
 	<extension point="org.eclipse.ui.perspectives">
-   	<perspective
-          icon="icons/atl_logo.gif"
-          class="org.atl.ui.perspective.AtlPerspective"
-          name="ATL"
-          id="org.atl.eclipse.adt.atlPerspective">
-   	</perspective>
+		<perspective
+        	icon="icons/atl_logo.gif"
+	        class="org.atl.ui.perspective.AtlPerspective"
+	        name="ATL"
+	        id="org.atl.eclipse.adt.atlPerspective">
+   		</perspective>
 	</extension>
+	
 </plugin>

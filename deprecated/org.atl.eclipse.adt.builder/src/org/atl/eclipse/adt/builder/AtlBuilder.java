@@ -32,7 +32,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 		//if (kind == IncrementalProjectBuilder.FULL_BUILD)
 		IWorkspaceRunnable wr= new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {				
-				fullBuild();		
+				fullBuild();
 			}
 		};
 		run(wr, monitor);								

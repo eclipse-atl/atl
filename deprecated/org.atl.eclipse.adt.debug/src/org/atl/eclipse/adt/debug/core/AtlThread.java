@@ -6,6 +6,7 @@ package org.atl.eclipse.adt.debug.core;
 import java.util.Arrays;
 
 import org.atl.eclipse.adt.debug.AtlDebugPlugin;
+import org.atl.engine.vm.adwp.ADWP;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -13,7 +14,6 @@ import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
-import org.mda.asm.adwp.ADWP;
 
 
 /**

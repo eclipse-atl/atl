@@ -45,6 +45,7 @@ public class AtlLauncherTools {
 	public static String INJECTOR = "Injector";
 	public static String EXTRACTOR = "Extractor";
 	public static String MODELHANDLER = "Model Handler";
+	public static String MODEDEBUG = "Mode Debug";
 	public static String EXTENSION = "atl";
 	public static String MODELCHOICETABNAME = Messages.getString("AtlLauncherTools.MODELCHOICE"); //$NON-NLS-1$
 	public static String REMOTEATLNAME = Messages.getString("AtlLauncherTools.ATLCONFIGURATION"); //$NON-NLS-1$

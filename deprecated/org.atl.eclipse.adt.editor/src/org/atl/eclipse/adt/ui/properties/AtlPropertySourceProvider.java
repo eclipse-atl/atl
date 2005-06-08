@@ -14,8 +14,7 @@ import org.eclipse.ui.views.properties.IPropertySourceProvider;
 /**
  * @author idrissi
  */
-public class AtlPropertySourceProvider implements IPropertySourceProvider 
-{
+public class AtlPropertySourceProvider implements IPropertySourceProvider {
 	private Map readers = new HashMap();
 	
 	private abstract class Reader {	  	
@@ -28,8 +27,7 @@ public class AtlPropertySourceProvider implements IPropertySourceProvider
 		}
 	};
 	
-	private void initReaders()
-	{
+	private void initReaders() {
 		readers.put(AtlEMFConstants.clModule, new Reader() {
 			public IPropertySource getPropertySource(EObject rule) {
 				return null;
@@ -60,8 +58,7 @@ public class AtlPropertySourceProvider implements IPropertySourceProvider
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySourceProvider#getPropertySource(java.lang.Object)
 	 */
-	public IPropertySource getPropertySource(Object object)
-	{
+	public IPropertySource getPropertySource(Object object)	{
 		if (object instanceof EObject)
 		{
 			EObject eo = (EObject)object;

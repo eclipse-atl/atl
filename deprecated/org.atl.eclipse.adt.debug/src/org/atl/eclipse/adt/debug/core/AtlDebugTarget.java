@@ -14,6 +14,13 @@ import java.util.List;
 import org.atl.eclipse.adt.debug.AtlDebugPlugin;
 import org.atl.eclipse.adt.debug.Messages;
 import org.atl.eclipse.adt.launching.AtlLauncherTools;
+import org.atl.eclipse.engine.AtlNbCharFile;
+import org.atl.engine.vm.adwp.ADWP;
+import org.atl.engine.vm.adwp.ADWPCommand;
+import org.atl.engine.vm.adwp.ADWPDebugger;
+import org.atl.engine.vm.adwp.IntegerValue;
+import org.atl.engine.vm.adwp.ObjectReference;
+import org.atl.engine.vm.adwp.StringValue;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -34,12 +41,6 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
-import org.mda.asm.adwp.ADWP;
-import org.mda.asm.adwp.ADWPCommand;
-import org.mda.asm.adwp.ADWPDebugger;
-import org.mda.asm.adwp.IntegerValue;
-import org.mda.asm.adwp.ObjectReference;
-import org.mda.asm.adwp.StringValue;
 
 
 /**
@@ -113,6 +114,11 @@ public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
  		DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(this);
 		DebugPlugin.getDefault().addDebugEventListener(this);
 
+		try {
+			disassemblyMode = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.MODEDEBUG, false);
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 		state = stateDisconnected;
 		this.launch = launch;
 	}
@@ -544,7 +550,7 @@ public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
 					break;
 				case STEP_OVER :
 					event = new DebugEvent(getDebugTarget().getThreads()[0],
-							DebugEvent.RESUME, DebugEvent.STEP_INTO);
+							DebugEvent.RESUME, DebugEvent.STEP_OVER);
 					break;
 				case STEP_RETURN :
 					event = new DebugEvent(getDebugTarget().getThreads()[0],
@@ -552,7 +558,7 @@ public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
 					break;
 				case RESUME :
 					event = new DebugEvent(getDebugTarget().getThreads()[0],
-							DebugEvent.RESUME, DebugEvent.CLIENT_REQUEST);
+							DebugEvent.RESUME);
 					break;
 				case SUSPEND :
 					event = new DebugEvent(getDebugTarget().getThreads()[0],

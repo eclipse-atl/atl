@@ -21,32 +21,26 @@
       <import plugin="org.eclipse.core.runtime"/>
    </requires>
 
-
+   <!-- extension point: ATL Nature -->
    <extension
          id="atlNature"
          point="org.eclipse.core.resources.natures">
       <runtime>
-         <run
-               class="org.atl.eclipse.adt.builder.AtlNature">
-         </run>
+         <run class="org.atl.eclipse.adt.builder.AtlNature"></run>
       </runtime>
-      <builder
-            id="org.atl.eclipse.adt.builder.atlBuilder">
-      </builder>
+      <builder id="org.atl.eclipse.adt.builder.atlBuilder"></builder>
    </extension>
+   <!-- extension point: Builder -->
    <extension
          id="atlBuilder"
          name="ATL builder"
          point="org.eclipse.core.resources.builders">
-      <builder
-            hasNature="true">
-         <run
-               class="org.atl.eclipse.adt.builder.AtlBuilder">
-         </run>
+      <builder hasNature="true">
+         <run class="org.atl.eclipse.adt.builder.AtlBuilder"></run>
       </builder>
    </extension>
-   <extension
-         point="org.eclipse.ui.ide.projectNatureImages">
+   <!-- extension point: To associate an image with a project nature-->
+   <extension point="org.eclipse.ui.ide.projectNatureImages">
       <image
             icon="icons/atl_logo_small.gif"
             natureId="org.atl.eclipse.adt.builder.atlNature"

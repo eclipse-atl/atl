@@ -12,6 +12,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.atl.eclipse.engine.AtlNbCharFile;
+import org.atl.engine.vm.adwp.ADWPDebugger;
+import org.atl.engine.vm.adwp.IntegerValue;
+import org.atl.engine.vm.adwp.ObjectReference;
+import org.atl.engine.vm.adwp.StringValue;
+import org.atl.engine.vm.adwp.Value;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -22,11 +28,6 @@ import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
-import org.mda.asm.adwp.ADWPDebugger;
-import org.mda.asm.adwp.IntegerValue;
-import org.mda.asm.adwp.ObjectReference;
-import org.mda.asm.adwp.StringValue;
-import org.mda.asm.adwp.Value;
 
 /**
  * This class implements IStackFrame

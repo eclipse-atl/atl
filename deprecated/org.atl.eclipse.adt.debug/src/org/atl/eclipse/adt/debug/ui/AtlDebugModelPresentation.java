@@ -147,12 +147,14 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 				mapImage.put(new Integer(atlVar.getDescription()), createImage(iconPath + imageName));
 			}
 			return (Image)mapImage.get(new Integer(atlVar.getDescription()));
-		} else if (item instanceof AtlBreakpoint) {
+		}
+		else if (item instanceof AtlBreakpoint) {
 			if (mapImage.get(new Integer(BREAKPOINT)) == null) {
 				mapImage.put(new Integer(BREAKPOINT), createImage(iconPath + "breakpoint.gif"));
 			}
 			return (Image)mapImage.get(new Integer(BREAKPOINT));
-		} else if (item instanceof IMarker) {
+		}
+		else if (item instanceof IMarker) {
 			if (mapImage.get(new Integer(BREAKPOINT)) == null) {
 				mapImage.put(new Integer(BREAKPOINT), createImage(iconPath + "breakpoint.gif"));
 			}
@@ -211,14 +213,15 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 					typeVar = "";
 				
 				String rtn = atlVar.getValue().getReferenceTypeName();
-				if (rtn.equals("boolean") || 
-					atlVar.getValue().getReferenceTypeName().equals("int"))
+				if (rtn.equals("Boolean") || 
+					rtn.equals("Integer") ||
+					rtn.equals("Real"))
 					return typeVar + " " + atlVar.getName() + " = " + atlVar.getValue().getValueString();
 				else if (rtn.equals("String"))
 					return typeVar + " " + atlVar.getName() + " = '" + atlVar.getValue().getValueString() + "'";
 				else if (rtn.equals("EnumLiteral"))
 					return typeVar + " " + atlVar.getName() + " = #" + atlVar.getValue().getValueString();
-				else if (atlVar.getValue().getReferenceTypeName().equals("Map Element"))
+				else if (rtn.equals("Map Element"))
 					return atlVar.getName();
 				else
 					return typeVar + " " + atlVar.getName() + " = " + atlVar.getReferenceTypeName() + " (id = " + atlVar.getIdVariable() + ")";
@@ -226,8 +229,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 				e.printStackTrace();
 			}
 		}
-		else if (item instanceof AtlBreakpoint)
-		{
+		else if (item instanceof AtlBreakpoint)	{
 			IMarker marker = ((AtlBreakpoint)item).getMarker();
 			String location;
 			try {
@@ -241,6 +243,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 				e.printStackTrace();
 			}
 		}
+
 		return null;
 	}
 

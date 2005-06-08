@@ -151,7 +151,7 @@ public class IndentAction extends TextEditorAction {
 	 * @return <code>true</code> if <code>document</code> was modified, <code>false</code> otherwise
 	 * @throws BadLocationException if the document got changed concurrently 
 	 */
-private boolean indentLine(IDocument document, int line, int caret, AtlIndenter indenter, AtlHeuristicScanner scanner) throws BadLocationException {
+	private boolean indentLine(IDocument document, int line, int caret, AtlIndenter indenter, AtlHeuristicScanner scanner) throws BadLocationException {
 		IRegion currentLine= document.getLineInformation(line);
 		int offset= currentLine.getOffset();
 		int wsStart= offset; // where we start searching for non-WS; after the "//" in single line comments

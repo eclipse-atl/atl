@@ -12,7 +12,6 @@ import org.atl.eclipse.adt.ui.actions.IAtlActionConstants;
 import org.atl.eclipse.adt.ui.actions.IndentAction;
 import org.atl.eclipse.adt.ui.outline.AtlContentOutlinePage;
 import org.atl.eclipse.adt.ui.outline.AtlEMFConstants;
-import org.atl.eclipse.adt.ui.outline.AtlNbCharFile;
 import org.atl.eclipse.adt.ui.properties.AtlPropertySourceProvider;
 import org.atl.eclipse.adt.ui.text.AtlContentAssistPreference;
 import org.atl.eclipse.adt.ui.text.AtlPairMatcher;
@@ -20,6 +19,7 @@ import org.atl.eclipse.adt.ui.text.AtlSourceViewerConfiguration;
 import org.atl.eclipse.adt.ui.text.IAtlLexems;
 import org.atl.eclipse.adt.ui.text.IAtlPartitions;
 import org.atl.eclipse.adt.ui.viewsupport.AtlEditorTickErrorUpdater;
+import org.atl.eclipse.engine.AtlNbCharFile;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -1105,14 +1105,12 @@ public class AtlEditor extends TextEditor {
 			((AtlSourceViewerConfiguration) getSourceViewerConfiguration()).setNewPreferenceStore(store);
 	}
 	
-	private void setSelection(SelectionChangedEvent event)
-	{
+	private void setSelection(SelectionChangedEvent event) {
 		String newContent = getDocumentProviderContent();		
 		IStructuredSelection selection =(IStructuredSelection)event.getSelection();
 		if(selection.isEmpty())
 			resetHighlightRange();
-		else 
-		{
+		else {
 			EObject element =(EObject)selection.getFirstElement();			
 			String location =(String)element.eGet(AtlEMFConstants.sfLocation); 
 			if(location == null) // some OclModel(meta model) define no location

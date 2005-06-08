@@ -1,8 +1,5 @@
 /*
  * Created on 14 juin 2004
- *
- * To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
  */
 package org.atl.eclipse.adt.ui.properties;
 
@@ -18,15 +15,12 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 /**
  * @author idrissi
- *
- * To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
  */
-public class AtlElementProperties implements IPropertySource
-{
+public class AtlElementProperties implements IPropertySource {
+
 	private EObject eo;
 	
-	/** Used to build the list of property desciptors
+	/** Used to build the list of property descriptors
 	 *  property descriptor id => property display name
 	 */ 
 	private static Map properties = new HashMap();
@@ -39,36 +33,31 @@ public class AtlElementProperties implements IPropertySource
 	
 	private static final String PROPERTY_ID_NAME = "name";
 	
-	static 
-	{
+	static {
 		properties.put(PROPERTY_ID_LOCATION, "Location");
 		properties.put(PROPERTY_ID_TYPE, "Type");
 		properties.put(PROPERTY_ID_NAME, "Name");
 	}
 	
 	
-	public AtlElementProperties(EObject eo)
-	{
+	public AtlElementProperties(EObject eo)	{
 		this.eo = eo;
 	}
 	
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getEditableValue()
 	 */
-	public Object getEditableValue() 
-	{
+	public Object getEditableValue() {
 		return this;
 	}
 	
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyDescriptors()
 	 */
-	public IPropertyDescriptor[] getPropertyDescriptors() 
-	{	
+	public IPropertyDescriptor[] getPropertyDescriptors() {
 		IPropertyDescriptor[] pds = new IPropertyDescriptor[properties.size()];
 		int cpt = 0;
-		for (Iterator keys = properties.keySet().iterator(); keys.hasNext();)
-		{
+		for (Iterator keys = properties.keySet().iterator(); keys.hasNext();) {
 			String propertyId = (String)keys.next();
 			String propertyDisplayName = (String)properties.get(propertyId);
 			PropertyDescriptor pd = new PropertyDescriptor(propertyId, propertyDisplayName);

@@ -9,6 +9,7 @@ import java.io.InputStream;
 import org.atl.eclipse.adt.debug.core.AtlBreakpoint;
 import org.atl.eclipse.adt.ui.AtlUIPlugin;
 import org.atl.eclipse.adt.ui.editor.AtlEditor;
+import org.atl.eclipse.engine.AtlNbCharFile;
 import org.atl.eclipse.engine.AtlParser;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.debug.core.DebugException;
@@ -359,13 +360,18 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	private void doSetSelection(String cursorPosition) {
 		if (!(cursorPosition == null || treeViewer.getTree().isDisposed())) {
 			this.cursorPosition = cursorPosition;
-			EObject unit = ((Root)treeViewer.getInput()).getUnit();
-			int cursorIndexChar = help.getIndex(cursorPosition);
-			this.selectedEo = unit;
-			setSelection(unit, cursorIndexChar, 0);
-			treeViewer.collapseAll();
-			treeViewer.expandToLevel(2);		
-			showItem(selectedEo);
+			Root input = (Root)treeViewer.getInput();
+			if (input != null) {
+				EObject unit = input.getUnit();
+				int cursorIndexChar = help.getIndex(cursorPosition);
+				if (cursorIndexChar == -1)
+					return;
+				this.selectedEo = unit;
+				setSelection(unit, cursorIndexChar, 0);
+				treeViewer.collapseAll();
+				treeViewer.expandToLevel(2);		
+				showItem(selectedEo);
+			}
 		}
 	}
     
