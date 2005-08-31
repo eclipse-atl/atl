@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.atl.eclipse.mgm"
+   name="Mgm Plug-in"
+   version="1.0.0"
+   provider-name=""
+   class="org.atl.eclipse.mgm.MgmPlugin">
+
+   <runtime>
+      <library name="mgm.jar">
+         <export name="*"/>
+      </library>
+      <library name="ebnfextractor.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.common.ui"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.atl.eclipse.engine"/>
+      <import plugin="org.atl.eclipse.adt.debug"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.atl.eclipse.adt.builder"/>
+    </requires>
+	<!-- extension point: Resource Navigator Megamodel -->
+	<extension point="org.eclipse.ui.views">
+      <category
+            name="ATL"
+            id="ATL">
+      </category>
+      <view
+            icon="resources/mgmlogo.png"
+            class="org.atl.eclipse.mgm.view.ResourceNavigatorMgm"
+            category="ATL"
+            name="Megamodel Resource Navigator"
+            id="ResourceNavigatorMgm">
+      </view>
+   </extension>
+
+</plugin>

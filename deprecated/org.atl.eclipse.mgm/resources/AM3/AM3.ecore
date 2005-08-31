@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore">
+  <ecore:EPackage name="AM3">
+    <eClassifiers xsi:type="ecore:EClass" name="Megamodel">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="url" ordered="false" lowerBound="1" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="megamodelElements" ordered="false" upperBound="-1" eType="/0/MegamodelElement" containment="true" eOpposite="/0/MegamodelElement/megamodel"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MegamodelElement" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="uri" ordered="false" lowerBound="1" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" lowerBound="1" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="megamodel" ordered="false" lowerBound="1" eType="/0/Megamodel" eOpposite="/0/Megamodel/megamodelElements"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="children" ordered="false" upperBound="-1" eType="/0/MegamodelElement" containment="true" eOpposite="/0/MegamodelElement/parent"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="parent" ordered="false" lowerBound="1" eType="/0/MegamodelElement" eOpposite="/0/MegamodelElement/children"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Artifact" abstract="true" eSuperTypes="/0/MegamodelElement">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" ordered="false" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="domains" ordered="false" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="authors" ordered="false" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="date" ordered="false" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" ordered="false" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="see" ordered="false" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="relationEnds" ordered="false" upperBound="-1" eType="/0/RelationEnd" eOpposite="/0/RelationEnd/artifact"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="/0/Artifact"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Metamodel" eSuperTypes="/0/Model"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ATLTransformation" eSuperTypes="/0/Artifact"/>
+    <eClassifiers xsi:type="ecore:EClass" name="TCS" eSuperTypes="/0/Artifact"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Projector" abstract="true" eSuperTypes="/0/Artifact"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Injector" abstract="true" eSuperTypes="/0/Projector"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XMLInjector" eSuperTypes="/0/Injector"/>
+    <eClassifiers xsi:type="ecore:EClass" name="EBNFInjector" eSuperTypes="/0/Injector">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="extension" ordered="false" lowerBound="1" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="classNamePrefix" ordered="false" lowerBound="1" eType="/1/String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Extractor" abstract="true" eSuperTypes="/0/Projector">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="extension" ordered="false" lowerBound="1" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="paramMetamodel" ordered="false" lowerBound="1" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="paramModel" ordered="false" lowerBound="1" eType="/1/String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ATLExtractor" eSuperTypes="/0/Extractor"/>
+    <eClassifiers xsi:type="ecore:EClass" name="EBNFExtractor" eSuperTypes="/0/Extractor"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XMLExtractor" eSuperTypes="/0/Extractor"/>
+    <eClassifiers xsi:type="ecore:EClass" name="RelationEnd">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="artifact" ordered="false" lowerBound="1" eType="/0/Artifact" eOpposite="/0/Artifact/relationEnds"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="relation" ordered="false" lowerBound="1" eType="/0/Relation" eOpposite="/0/Relation/relationEnds"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Relation" abstract="true" eSuperTypes="/0/MegamodelElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="relationEnds" ordered="false" upperBound="-1" eType="/0/RelationEnd" containment="true" eOpposite="/0/RelationEnd/relation"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="InputMetamodelOfTransformation" eSuperTypes="/0/Relation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="OutputMetamodelOfTransformation" eSuperTypes="/0/Relation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="LibOfTransformation" eSuperTypes="/0/Relation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ConformedToMetamodel" eSuperTypes="/0/Relation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="DocumentationOf" eSuperTypes="/0/Relation"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="PrimitiveTypes">
+    <eClassifiers xsi:type="ecore:EDataType" name="Boolean"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="String"/>
+  </ecore:EPackage>
+</xmi:XMI>
