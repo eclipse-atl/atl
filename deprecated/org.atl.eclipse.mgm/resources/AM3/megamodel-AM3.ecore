@@ -3,7 +3,6 @@
   <megamodelElements xsi:type="XMLInjector" uri="NULL" name="XML" version="" domains="" authors="" date="" description="" see=""/>
   <megamodelElements xsi:type="EBNFInjector" uri="resources/ATL-0.2/ATL-0.2-importer.jar" name="ATL-0.2" version="" domains="" authors="" date="" description="" see="" extension="atl" classNamePrefix="ATL"/>
   <megamodelElements xsi:type="XMLExtractor" uri="NULL" name="XML" version="" domains="" authors="" date="" description="" see="" extension="xml" paramMetamodel="" paramModel=""/>
-  <megamodelElements xsi:type="EBNFExtractor" uri="NULL" name="ATL-0.2" version="" domains="" authors="" date="" description="" see="" extension="atl" paramMetamodel="" paramModel=""/>
   <megamodelElements xsi:type="Metamodel" uri="resources/XML/XML.ecore" name="XML" version="" domains="" authors="" date="" description="" see=""/>
   <megamodelElements xsi:type="Metamodel" uri="resources/TCS/TCS.ecore" name="TCS" version="" domains="" authors="" date="" description="" see=""/>
   <megamodelElements xsi:type="Metamodel" uri="resources/ATL-0.2/ATL-0.2.ecore" name="ATL-0.2" version="" domains="" authors="" date="" description="" see=""/>
