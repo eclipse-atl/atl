@@ -1,0 +1,23 @@
+<html>
+   <head>
+	  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	  <link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
+      <title>Megamodel plugin documentation</title>
+   </head>
+   <body>
+	   <h1>Using Megamodel Tool</h1>
+      <p>The plugin org.atl.eclipse.mgm manages projectors (injectors and extractors).</p>
+
+<p>In the first time, only XMLInjector, ATLInjector and XMLExtractor are available.</p>
+
+<p>To use these projectors (and after the installation of plugin org.atl.eclipse.mgm), you should open the view called Megamodel Resource Navigator (Window --> Show view --> Other --> ATL --> Megamodel Resource Navigator). This view is similar to Default Resource Navigator.</p>
+<ul>
+	<li>On XML file, in the context menu, you should launch action called: "Inject XML file to XML model"</li>
+	<li>On ATL file, in the context menu, you should launch action called: "Inject ATL-0.2 file to ATL-0.2 model"</li>
+	<li>On XML model (for the moment only on Ecore file), in the context menu, you should launch action called: "Extract XML model to XML file"</li>
+</ul>
+<img src="../img/screenMgmResourceNavigator.PNG" alt="MgmResourceNavigator"></img>
+
+<p><b>Be careful, for Extraction action the checking of conformance relation (Model conforms to a Metamodel) is not done. If you launch action "Extract XML model to XML file" on a Ecore file which is not a XML model, an empty file is generated.</b></p>
+   </body>
+</html>
