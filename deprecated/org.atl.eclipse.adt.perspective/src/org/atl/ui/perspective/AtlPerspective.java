@@ -25,15 +25,14 @@ public class AtlPerspective implements IPerspectiveFactory {
 	
 	public void defineActions(IPageLayout layout) {
         // Add "new wizards".
-        layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder");
-        layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");
+        layout.addNewWizardShortcut("atlProjectWizard");
+        layout.addNewWizardShortcut("atlFileWizard");
 
         // Add "show views".
-//        layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
-//        layout.addShowViewShortcut(IPageLayout.ID_BOOKMARKS);
-//        layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
-//        layout.addShowViewShortcut(IPageLayout.ID_PROP_SHEET);
-//        layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
+        layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
+        layout.addShowViewShortcut("ResourceNavigatorMgm");
+        
+        layout.addPerspectiveShortcut("org.atl.eclipse.adt.atlPerspective");
 	}
 	
 	public void defineLayout(IPageLayout layout) {
@@ -42,12 +41,13 @@ public class AtlPerspective implements IPerspectiveFactory {
      
         // place navigator to the left (of editor area)
         IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, (float) 0.25, editorArea);
-        left.addView(IPageLayout.ID_RES_NAV);
+        left.addView("ResourceNavigatorMgm");
         
         // problem view at the bottom (of editor area)
         IFolderLayout bottom = layout.createFolder("bottom", IPageLayout.BOTTOM, (float) 0.75, editorArea);
         bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
         bottom.addView(IPageLayout.ID_PROP_SHEET); 
+        bottom.addView("org.eclipse.pde.runtime.LogView");
         bottom.addView(IConsoleConstants.ID_CONSOLE_VIEW);
         
         // outline view to right (of editor area)
@@ -58,6 +58,11 @@ public class AtlPerspective implements IPerspectiveFactory {
         layout.addNewWizardShortcut("atlProjectWizard");
         layout.addNewWizardShortcut("atlFileWizard");
         layout.addActionSet(IDebugUIConstants.LAUNCH_ACTION_SET);
+
+        layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
+        layout.addShowViewShortcut("ResourceNavigatorMgm");
+        
+        layout.addPerspectiveShortcut("org.atl.eclipse.adt.atlPerspective");
 	}
 	
 }
