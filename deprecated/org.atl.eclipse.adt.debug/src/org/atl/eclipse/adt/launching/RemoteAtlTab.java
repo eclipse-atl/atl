@@ -4,7 +4,6 @@
 package org.atl.eclipse.adt.launching;
 
 import org.atl.eclipse.adt.debug.Messages;
-import org.atl.eclipse.engine.AtlModelHandler;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -13,7 +12,6 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -45,7 +43,6 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 	private Label labelPort;
 
 	public void createControl(Composite parent) {
-		Font font = parent.getFont();
 		
 		container = new Composite(parent, SWT.NULL);
 
@@ -107,7 +104,6 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 		labelFile.setText(Messages.getString("RemoteAtlTab.ATLFILENAME")); //$NON-NLS-1$
 
 		listFile.setLayoutData(text2LData);
-//		listFile.setItems(AtlLauncherTools.fileNames());
 
 		listFile.addModifyListener(this);
 		
@@ -142,14 +138,6 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 		container.pack();
 		setControl(container);
 		canSave();
-	}
-
-	/**
-	 * 
-	 * @return give all model handler available
-	 */
-	private String[] modelHandlerList() {
-		return AtlModelHandler.getModelHandlers();
 	}
 	
 	/**
