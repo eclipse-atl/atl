@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry sourcepath="/org.atl.engine.repositories.emf4atl" kind="lib" path="/org.atl.eclipse.engine/lib/emf4atl.jar"/>
 	<classpathentry sourcepath="/org.atl.engine.extractors.ebnf/src" kind="lib" path="ebnfextractor.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
