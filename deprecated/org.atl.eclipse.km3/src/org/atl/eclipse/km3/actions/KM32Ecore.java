@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.atl.eclipse.engine.AtlModelHandler;
 import org.atl.eclipse.km3.KM3Projector;
 import org.atl.engine.vm.nativelib.ASMModel;
-import org.eclipse.core.internal.resources.File;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -40,7 +40,7 @@ public class KM32Ecore implements IObjectActionDelegate {
 	 */
 	public void run(IAction action) {
 		try {
-			File file = ((File)((IStructuredSelection)selection).getFirstElement());
+			IFile file = ((IFile)((IStructuredSelection)selection).getFirstElement());
 			
 			ASMModel emf = kp.getEcoreFromKM3File(file);
 			

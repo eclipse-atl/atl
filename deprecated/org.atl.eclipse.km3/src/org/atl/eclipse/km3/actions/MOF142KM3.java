@@ -7,7 +7,6 @@ import java.io.InputStream;
 import org.atl.eclipse.engine.AtlModelHandler;
 import org.atl.eclipse.km3.KM3Projector;
 import org.atl.engine.vm.nativelib.ASMModel;
-import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -49,7 +48,7 @@ public class MOF142KM3 implements IObjectActionDelegate {
 			amh =  AtlModelHandler.getDefault(AtlModelHandler.AMH_MDR);
 		}
 		try {
-			File file = ((File)((IStructuredSelection)selection).getFirstElement());
+			IFile file = ((IFile)((IStructuredSelection)selection).getFirstElement());
 			InputStream in = file.getContents();
 			
 			ASMModel model = amh.loadModel(file.getName(), amh.getMof(), in);
