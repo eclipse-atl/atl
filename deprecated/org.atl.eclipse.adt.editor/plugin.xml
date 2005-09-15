@@ -80,4 +80,40 @@
           id="problemsLabelDecorator"> 
   	</decorator> 
   </extension>
+  <extension point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="Comment block"
+            visible="true"
+            id="action.actionSet2">
+         <menu
+               label="ATL Editor"
+               id="ATLEditorMenu">
+            <separator name="sampleGroup"></separator>
+         </menu>
+         <action
+               label="&amp;Comment block"
+               icon="icons/sample.gif"
+               class="org.atl.eclipse.adt.ui.actions.CommentBlock"
+               menubarPath="ATLEditorMenu/sampleGroup"
+               id="org.atl.eclipse.adt.ui.CommentBlock">
+         </action>
+      </actionSet>
+      <actionSet
+            label="Uncomment block"
+            visible="true"
+            id="action.actionSet3">
+         <menu
+               label="ATL Editor"
+               id="ATLEditorMenu">
+            <separator name="sampleGroup"></separator>
+         </menu>
+         <action
+               label="&amp;Uncomment block"
+               icon="icons/sample.gif"
+               class="org.atl.eclipse.adt.ui.actions.UncommentBlock"
+               menubarPath="ATLEditorMenu/sampleGroup"
+               id="org.atl.eclipse.adt.ui.UncommentBlock">
+         </action>
+      </actionSet>
+   </extension>
 </plugin>
