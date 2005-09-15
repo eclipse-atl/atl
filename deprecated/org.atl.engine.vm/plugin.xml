@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.atl.engine.vm"
+   name="ATL VM Plug-in"
+   version="1.0.0"
+   provider-name="ATLAS">
+
+   <runtime>
+      <library name="vm.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+</plugin>

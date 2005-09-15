@@ -1,0 +1,178 @@
+package org.atl.engine.vm.nativelib;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.atl.engine.vm.ASMExecEnv;
+import org.atl.engine.vm.NativeOperation;
+import org.atl.engine.vm.Operation;
+import org.atl.engine.vm.StackFrame;
+
+/**
+ * @author Frédéric Jouault
+ */
+public class ASMOclAny extends ASMNativeObject {
+
+	private static ASMOclType oclAnyType = null;
+	protected static ASMOclType getOclAnyType() {
+		if(oclAnyType == null)
+			oclAnyType = new ASMOclSimpleType("OclAny");
+		return oclAnyType;
+	}
+	public static ASMOclType myType = getOclAnyType();
+
+	static {
+		NativeOperation.registerOperations(getOclAnyType(), ASMOclAny.class);
+		ASMOclType.myType.addSupertype(getOclAnyType());
+	}
+
+	public ASMOclAny(ASMOclType type) {
+		this.type = type;
+	}
+
+	public void setType(ASMOclType type) {
+		this.type = type;
+	}
+
+	public ASMOclType getType() {
+		return type;
+	}
+
+	// The Operation to execute on this object is searched for in its type.
+	public ASMOclAny invoke(String name, List args) {
+		System.out.println("ERROR: OclAny.invoke not implemented yet...");
+		return null;
+	}
+
+	public ASMOclAny get(StackFrame frame, String name) {
+		if(isHelper(frame, name)) {
+			return getHelper(frame, name);
+		}
+		frame.printStackTrace("ERROR: get unsupported on OclAny.");
+		return null;
+	}
+
+	public void set(StackFrame frame, String name, ASMOclAny value) {
+		frame.printStackTrace("ERROR: set unsupported on OclAny");
+	}
+	
+	public ASMOclAny refImmediateComposite() {
+		return new ASMOclUndefined();
+	}
+	
+	public boolean isHelper(StackFrame frame, String name) {
+		//return type.getHelperAttributes().containsKey(name);
+		return ((ASMExecEnv)frame.getExecEnv()).getAttributeInitializer(type, name) != null;
+	}
+	
+	public ASMOclAny getHelper(StackFrame frame, String name) {
+		return ((ASMExecEnv)frame.getExecEnv()).getHelperValue(frame, this, name);
+	}
+
+	// Native Operations below
+
+	public static ASMBoolean oclIsUndefined(StackFrame frame, ASMOclAny self) {
+		return new ASMBoolean(false);
+	}
+
+	public static ASMString toString(StackFrame frame, ASMOclAny self) {
+		return new ASMString(self.toString());
+	}
+
+	public static ASMOclType oclType(StackFrame frame, ASMOclAny self) {
+		return self.type;
+	}
+
+	public static ASMBoolean oclIsKindOf(StackFrame frame, ASMOclAny self, ASMOclType otherType) {
+		return self.type.conformsTo(otherType);
+	}
+
+	public static ASMBoolean oclIsTypeOf(StackFrame frame, ASMOclAny self, ASMOclType otherType) {
+		return new ASMBoolean(self.type.equals(otherType));
+	}
+
+	public static ASMOclAny refSetValue(StackFrame frame, ASMOclAny self, ASMString name, ASMOclAny value) {
+		self.set(frame, name.getSymbol(), value);
+		return self;
+	}
+
+	public static ASMOclAny refGetValue(StackFrame frame, ASMOclAny self, ASMString name) {
+		return self.get(frame, name.getSymbol());
+	}
+
+	public static ASMOclAny refImmediateComposite(StackFrame frame, ASMOclAny self) {
+		return self.refImmediateComposite();
+	}
+
+	public static ASMOclAny refInvokeOperation(StackFrame frame, ASMOclAny self, ASMString opName_, ASMSequence arguments_) {
+		ASMOclAny ret = null;
+
+		String opName = opName_.getSymbol();
+		ArrayList arguments = new ArrayList();
+		arguments.add(self);
+		for(Iterator i = arguments_.iterator() ; i.hasNext() ; )
+			arguments.add(i.next());
+
+		Operation oper = ((ASMExecEnv)frame.getExecEnv()).getOperation(self.getType(), opName);
+
+		if(oper != null) {
+			ret = oper.exec(frame.enterFrame(oper, arguments));
+		} else {
+			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + self.getType() + " having supertypes: " + self.getType().getSupertypes());
+		}
+		
+		return ret;
+	}
+	
+	public static ASMOclAny operatorEQ(StackFrame frame, ASMOclAny self, ASMOclAny other) {
+		return new ASMBoolean(self.equals(other));
+	}
+
+	public static ASMOclAny operatorNE(StackFrame frame, ASMOclAny self, ASMOclAny other) {
+		return new ASMBoolean(!self.equals(other));
+	}
+
+	public static ASMSequence asSequence(StackFrame frame, ASMOclAny self) {
+		ASMSequence ret = new ASMSequence();
+
+		ret.add(self);
+
+		return ret;
+	}
+
+	public static ASMSet asSet(StackFrame frame, ASMOclAny self) {
+		ASMSet ret = new ASMSet();
+
+		ret.add(self);
+
+		return ret;
+	}
+
+	public static ASMBag asBag(StackFrame frame, ASMOclAny self) {
+		ASMBag ret = new ASMBag();
+
+		ret.add(self);
+
+		return ret;
+	}
+
+	public static void output(StackFrame frame, ASMOclAny self) {
+		System.out.println(self);
+	}
+
+	public static ASMOclAny debug(StackFrame frame, ASMOclAny self, ASMString msg) {
+		System.out.println(msg.getSymbol() + ": " + self.toString());
+		return self;
+	}
+
+	public static ASMOclAny check(StackFrame frame, ASMOclAny self, ASMString msg, ASMBoolean cond) {
+		if(!cond.getSymbol()) {
+			System.out.println(msg.getSymbol());
+		}
+		return self;
+	}
+
+	private ASMOclType type;
+}
+
