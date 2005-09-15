@@ -224,8 +224,6 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		FormData text2LData = AtlLauncherTools.createFormData(75, 100, 0, 10);
 		FormData buttonLData = AtlLauncherTools.createFormData(80, 100, 20, 30);
 		FormData buttonRemoveLData = AtlLauncherTools.createFormData(80, 100, 35, 45);
-		FormData buttonMH1LData = AtlLauncherTools.createFormData(80, 100, 50, 60);
-		FormData buttonMH2LData = AtlLauncherTools.createFormData(80, 100, 65, 75);
 		FormData tableLData = AtlLauncherTools.createFormData(0, 70, 20, 100);
 		
 		/***********************************************************************

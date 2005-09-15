@@ -104,7 +104,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	private void runAtlLauncher(ILaunchConfiguration configuration, ILaunch launch, String mode) {
 		try {
 			String fileName = configuration.getAttribute(AtlLauncherTools.ATLFILENAME, AtlLauncherTools.NULLPARAMETER);
-			String projectName = configuration.getAttribute(AtlLauncherTools.PROJECTNAME, AtlLauncherTools.NULLPARAMETER);
+//			String projectName = configuration.getAttribute(AtlLauncherTools.PROJECTNAME, AtlLauncherTools.NULLPARAMETER);
 			Map input = configuration.getAttribute(AtlLauncherTools.INPUT, new HashMap());
 			Map output = configuration.getAttribute(AtlLauncherTools.OUTPUT, new HashMap());
 			Map path = configuration.getAttribute(AtlLauncherTools.PATH, new HashMap());
@@ -227,10 +227,10 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @param param
 	 * @return Returns the property value of the project
 	 */
-	private String getAtlProjectProperties(String param) {
-		// TODO getAtlProjectProperties
-		return null;
-	}
+//	private String getAtlProjectProperties(String param) {
+//		// TODO getAtlProjectProperties
+//		return null;
+//	}
 	
 	/**
 	 * Returns the input stream from a path for metamodel
@@ -365,7 +365,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 //			return URI.createURI(ep.getNsURI());
 //			return null;
 		} else {
-			IWorkspaceRoot iwr = ResourcesPlugin.getWorkspace().getRoot();
+//			IWorkspaceRoot iwr = ResourcesPlugin.getWorkspace().getRoot();
 			filePath = filePath.replace('#', '/');
 			return URI.createPlatformResourceURI(filePath);
 		}

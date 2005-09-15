@@ -41,18 +41,18 @@ public class AtlStackFrame implements IStackFrame {
 	private ObjectReference stackFrame;
 	private AtlThread thread;
 	private int charStart = -1;
-	private int startLine = -1;
+//	private int startLine = -1;
 	private int charEnd = -1;
 	private int location = -1;
 	private String opName;
-	private AtlNbCharFile atlnbcharfile;
+//	private AtlNbCharFile atlnbcharfile;
 	private Map vars = new HashMap();
 
 	public AtlStackFrame(AtlThread thread, ObjectReference stackFrame, AtlNbCharFile atlnbcharfile) {
 		// TODO Add a parameter: File name of file being debugged
 		this.thread = thread;
 		this.stackFrame = stackFrame;
-		this.atlnbcharfile = atlnbcharfile;
+//		this.atlnbcharfile = atlnbcharfile;
 		Value slv = stackFrame.call("getSourceLocation", new ArrayList());
 		String sourceLocation = null;
 		if(slv instanceof StringValue) sourceLocation = ((StringValue)slv).getValue();
@@ -77,7 +77,7 @@ public class AtlStackFrame implements IStackFrame {
 	 * @see org.eclipse.debug.core.model.IStackFrame#getVariables()
 	 */
 	public IVariable[] getVariables() throws DebugException {
-		IVariable ret[] = null;
+//		IVariable ret[] = null;
 		// Map of local variables
 		ObjectReference lvs = (ObjectReference)stackFrame.call("getLocalVariables", new ArrayList());
 		// Set of local variable names

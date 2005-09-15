@@ -106,7 +106,7 @@ public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
 	 * The current AtlStackFrame which contains the current current stackframe
 	 * For the moment, only the current stackframe can be accessed
 	 */
-	private AtlStackFrame cf;
+//	private AtlStackFrame cf;
 
 	private AtlNbCharFile structFile;
 	
@@ -171,7 +171,7 @@ public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
 		
 		new Thread() {
 			public void run() {
-				final boolean debug = false;
+//				final boolean debug = false;
 				ADWPCommand msg;
 				prevLocation = null;
 
@@ -185,8 +185,8 @@ public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
 					messageFromDebuggee = ((StringValue) msg.getArgs().get(0)).getValue();
 					
 					ObjectReference currentFrame = (ObjectReference) msg.getArgs().get(1);
-					String opName = ((StringValue) msg.getArgs().get(2)).getValue();
-					int location = ((IntegerValue) msg.getArgs().get(3)).getValue();
+//					String opName = ((StringValue) msg.getArgs().get(2)).getValue();
+//					int location = ((IntegerValue) msg.getArgs().get(3)).getValue();
 					String sourceLocation = ((StringValue) msg.getArgs().get(4)).getValue();
 
 					if (sourceLocation.equals("<null>") && !disassemblyMode) {
@@ -215,7 +215,8 @@ public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
 								e1.printStackTrace();
 							}
 
-							frames[n - i] = cf = new AtlStackFrame(
+//							frames[n - i] = cf = new AtlStackFrame(
+							frames[n - i] = new AtlStackFrame(
 								threads[0],
 								(ObjectReference)stack.call("at", Arrays.asList(new Object[]{IntegerValue.valueOf(i)})), //$NON-NLS-1$
 								structFile);

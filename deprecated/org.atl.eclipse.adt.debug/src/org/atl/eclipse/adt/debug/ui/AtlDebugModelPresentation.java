@@ -34,7 +34,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IStorageEditorInput;
@@ -129,12 +128,12 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		if (item instanceof AtlVariable) {
 			String imageName = null;
 			AtlVariable atlVar = (AtlVariable)item;
-			String typeVar = null;
-			try {
-				typeVar = atlVar.getReferenceTypeName();
-			} catch (DebugException e) {
-				e.printStackTrace();
-			}
+//			String typeVar = null;
+//			try {
+//				typeVar = atlVar.getReferenceTypeName();
+//			} catch (DebugException e) {
+//				e.printStackTrace();
+//			}
 			switch (atlVar.getDescription()) {
 				case AtlVariable.ATTRIBUTE : imageName = "attribute.gif"; break;
 				case AtlVariable.ELEMENT : imageName = "element.gif"; break;
@@ -318,7 +317,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		}
 	}
 
-	private IEditorPart dte;
+//	private IEditorPart dte;
 	
 	public IEditorInput getDisassemblyEditorInput(AtlStackFrame frame) {
 		IEditorInput ret = null;
@@ -335,7 +334,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	public IEditorInput getEditorInput(Object element) {
 		IStorageEditorInput i;
 		AtlStackFrame frame;
-		String projectName;
+//		String projectName;
 		String fileName;
 		
 		if(element instanceof AtlStackFrame ) {

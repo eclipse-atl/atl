@@ -4,7 +4,6 @@
 package org.atl.eclipse.adt.launching;
 
 import org.atl.eclipse.adt.debug.Messages;
-import org.atl.eclipse.engine.AtlModelHandler;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -15,7 +14,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -46,8 +44,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 	private Button buttonModeDebug;
 	
 	public void createControl(Composite parent) {
-		Font font = parent.getFont();
-		
 		container = new Composite(parent, SWT.NULL);
 
 		GridLayout layout = new GridLayout();
@@ -68,7 +64,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		buttonModeDebug = new Button(groupOthersInformation,SWT.CHECK);
 		
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		GridData gd2 = new GridData(GridData.FILL_HORIZONTAL);
 		GridData gd3 = new GridData(GridData.FILL_HORIZONTAL);
 		
 		groupGeneralInformation.setLayoutData(gd);
@@ -142,14 +137,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		container.pack();
 		setControl(container);
 		canSave();
-	}
-
-	/**
-	 * 
-	 * @return give all model handler available
-	 */
-	private String[] modelHandlerList() {
-		return AtlModelHandler.getModelHandlers();
 	}
 	
 	/**
