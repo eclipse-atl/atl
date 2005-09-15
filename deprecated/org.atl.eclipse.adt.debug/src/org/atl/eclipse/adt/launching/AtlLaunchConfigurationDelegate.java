@@ -19,6 +19,7 @@ import java.util.StringTokenizer;
 import org.atl.eclipse.adt.debug.core.AtlDebugTarget;
 import org.atl.eclipse.adt.debug.core.AtlRunTarget;
 import org.atl.eclipse.adt.launching.sourcelookup.AtlSourceLocator;
+import org.atl.eclipse.engine.AtlEMFModelHandler;
 import org.atl.eclipse.engine.AtlLauncher;
 import org.atl.eclipse.engine.AtlModelHandler;
 import org.atl.engine.vm.nativelib.ASMModel;
@@ -33,6 +34,8 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * The method "launch" is launched when you click on the button "Run" or "Debug"
@@ -41,6 +44,7 @@ import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
  *
  */
 public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
+	private final static boolean useEMFURIs = true;
 	
 //	private static AtlModelHandler amh;
 	
@@ -248,16 +252,31 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				ASMModel inputModel;
 				if (((String)path.get(mmName)).startsWith("#")) {
 					toReturn.put(mmName, mofmm);
-					inputModel = amh.loadModel(mName, mofmm, fileNameToInputStream((String)path.get(mName)));
+					if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
+						inputModel = ((AtlEMFModelHandler)amh).loadModel(mName, mofmm, fileNameToURI((String)path.get(mName)));
+					}
+					else {
+						inputModel = amh.loadModel(mName, mofmm, fileNameToInputStream((String)path.get(mName)));
+					}
 				}
 				else {
 					ASMModel inputMetaModel = (ASMModel)toReturn.get(mmName);
 					if(inputMetaModel == null) {
-						inputMetaModel = amh.loadModel(mmName, mofmm, fileNameToInputStream((String)path.get(mmName)));
+						if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
+							inputMetaModel = ((AtlEMFModelHandler)amh).loadModel(mmName, mofmm, fileNameToURI((String)path.get(mmName)));
+						}
+						else {
+							inputMetaModel = amh.loadModel(mmName, mofmm, fileNameToInputStream((String)path.get(mmName)));							
+						}
 						toReturn.put(mmName, inputMetaModel);
 					}
 					inputMetaModel.setIsTarget(false);
-					inputModel = amh.loadModel(mName, inputMetaModel, fileNameToInputStream((String)path.get(mName)));
+					if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
+						inputModel = ((AtlEMFModelHandler)amh).loadModel(mName, inputMetaModel, fileNameToURI((String)path.get(mName)));
+					}
+					else {
+						inputModel = amh.loadModel(mName, inputMetaModel, fileNameToInputStream((String)path.get(mName)));						
+					}
 				}
 				inputModel.setIsTarget(false);
 				toReturn.put(mName, inputModel);
@@ -298,7 +317,11 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 					if (outputMetaModel == null)
 						outputMetaModel = (ASMModel)toReturn.get(mmName);
 					if(outputMetaModel == null) {
-						outputMetaModel = amh.loadModel(mmName, mofmm, fileNameToInputStream((String)path.get(mmName)));
+						if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
+							outputMetaModel = ((AtlEMFModelHandler)amh).loadModel(mmName, mofmm, fileNameToURI((String)path.get(mmName)));
+						} else {
+							outputMetaModel = amh.loadModel(mmName, mofmm, fileNameToInputStream((String)path.get(mmName)));							
+						}
 						toReturn.put(mmName, outputMetaModel);
 					}
 					outputMetaModel.setIsTarget(false);
@@ -329,6 +352,22 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			IWorkspaceRoot iwr = ResourcesPlugin.getWorkspace().getRoot();
 			filePath = filePath.replace('#', '/');
 			return iwr.getFile(new Path(filePath)).getContents();
+		}
+	}
+	
+	private static URI fileNameToURI(String filePath) throws FileNotFoundException, CoreException {
+		if (filePath.startsWith("ext:")) {
+			File f = new File(filePath.substring(4));
+			return URI.createFileURI(f.getPath());
+		} else if (filePath.startsWith("uri:")) {
+			EPackage ep = EPackage.Registry.INSTANCE.getEPackage(filePath.substring(4));
+			return ep.eResource().getURI();
+//			return URI.createURI(ep.getNsURI());
+//			return null;
+		} else {
+			IWorkspaceRoot iwr = ResourcesPlugin.getWorkspace().getRoot();
+			filePath = filePath.replace('#', '/');
+			return URI.createPlatformResourceURI(filePath);
 		}
 	}
 	

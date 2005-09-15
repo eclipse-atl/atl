@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.Viewer;
@@ -40,6 +41,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -128,6 +130,8 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 	private Button buttonIsEMF;
 	private List listModelHandlerAvailables;
 	private Button buttonSelectModelHandler;
+//	private Combo comboUriAvailable;
+	private Button buttonAffectUri;
 	
 	private Group groupLib;
 	private Table tableLib;
@@ -175,6 +179,8 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		buttonSetExternalPath = new Button(panelTablePath, SWT.CENTER);
 		buttonIsMDR = new Button(panelTablePath, SWT.CENTER);
 		buttonIsEMF = new Button(panelTablePath, SWT.CENTER);
+//		comboUriAvailable = new Combo(panelTablePath, SWT.CENTER);
+		buttonAffectUri = new Button(panelTablePath, SWT.CENTER);
 		
 		groupLib = new Group(container, SWT.NULL);
 		labelLib = new Label(groupLib, SWT.END);
@@ -386,6 +392,27 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
+//		for (Iterator it = ((Map)EPackage.Registry.INSTANCE).keySet().iterator(); it.hasNext();)
+//			comboUriAvailable.add((it.next()).toString());
+//
+//		if (comboUriAvailable.getItemCount() > 0)
+//			comboUriAvailable.select(0);
+//		else
+//			buttonAffectUri.setEnabled(false);
+		
+		buttonAffectUri.setText("Uri");
+		buttonAffectUri.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent evt) {
+				DialogUriSelection launcher = new DialogUriSelection(new Shell());
+				launcher.create();
+				if ((launcher.open() == Dialog.OK)) {
+					uriMetametamodel(launcher.getUriSelected());
+					canSave();
+					updateLaunchConfigurationDialog();
+				}
+			}
+		});
+		
 		tableLayout = new TableLayout();
 		tablePath.setLayout(tableLayout);
 		tableLayout.addColumnData(new ColumnWeightData(50));
@@ -421,6 +448,8 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		gData.heightHint = listModelHandlerAvailables.getItemHeight() * 2;
 		listModelHandlerAvailables.setLayoutData(gData);
 		buttonSelectModelHandler.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		comboUriAvailable.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		buttonAffectUri.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		/***********************************************************************
 		 * GroupLibs
@@ -634,6 +663,23 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		textLib.setText(""); //$NON-NLS-1$
 	}
 	
+	private void uriMetametamodel(String uri) {
+		int index = tablePath.getSelectionIndex();
+		
+		if (index == -1) {
+			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel");
+			return;
+		}
+		
+		if (MODEL_INPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE)) || MODEL_OUTPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE))) {
+			AtlLauncherTools.messageBox("This action is only available on metamodel");
+			return;
+		}
+		
+//		tablePath.getItem(index).setText(TABLEPATHPATH, "uri:" + comboUriAvailable.getText());
+		tablePath.getItem(index).setText(TABLEPATHPATH, "uri:" + uri);
+	}
+	
 	private void metamodelIsMetametamodel(String metamodel) {
 		int index = tablePath.getSelectionIndex();
 		
@@ -647,7 +693,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			return;
 		}
 		
-		tablePath.getItem(index).setText(TABLEPATHPATH, "#"+metamodel);
+		tablePath.getItem(index).setText(TABLEPATHPATH, "#" + metamodel);
 		tablePath.getItem(index).setText(TABLEPATHMODELHANDLER, metamodel);
 	}
 	
