@@ -16,7 +16,6 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -35,7 +34,7 @@ public class MarkerMaker {
 	private static EStructuralFeature sfSeverity = null;
 	private static EStructuralFeature sfLocation = null;
 	private static EStructuralFeature sfDescription = null;
-	private static EEnum enSeverity = null; 
+//	private static EEnum enSeverity = null; 
 
 	private static Map severities = new HashMap();
 	
@@ -51,7 +50,7 @@ public class MarkerMaker {
 		sfSeverity = clProblem.getEStructuralFeature("severity");
 		sfLocation = clProblem.getEStructuralFeature("location");
 		sfDescription = clProblem.getEStructuralFeature("description");
-		enSeverity = (EEnum)pkProblem.getEClassifier("Severity");
+//		enSeverity = (EEnum)pkProblem.getEClassifier("Severity");
 		initialized = true;
 	}
 	

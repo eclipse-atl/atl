@@ -249,7 +249,7 @@ public class IndentAction extends TextEditorAction {
 		
 		// only change the document if it is a real change
 		if (!indent.equals(currentIndent)) {
-			String deletedText= document.get(offset, length);
+//			String deletedText= document.get(offset, length);
 			document.replace(offset, length, indent);
 			
 			if (fIsTabAction && indent.length() > currentIndent.length() && AtlUIPlugin.getDefault().getPreferenceStore().getBoolean(AtlPreferenceConstants.EDITOR_SMART_BACKSPACE)) {

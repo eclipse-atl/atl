@@ -27,7 +27,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
  */
 public class UncommentBlock implements IWorkbenchWindowActionDelegate {
 
-	private IWorkbenchWindow window;
+//	private IWorkbenchWindow window;
 	
 	/**
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
@@ -40,7 +40,7 @@ public class UncommentBlock implements IWorkbenchWindowActionDelegate {
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
 	 */
 	public void init(IWorkbenchWindow window) {
-		this.window = window;
+//		this.window = window;
 	}
 
 	/**
