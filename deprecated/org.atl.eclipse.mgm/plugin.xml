@@ -4,7 +4,7 @@
    id="org.atl.eclipse.mgm"
    name="Mgm Plug-in"
    version="1.0.0"
-   provider-name=""
+   provider-name="ATLAS"
    class="org.atl.eclipse.mgm.MgmPlugin">
 
    <runtime>
