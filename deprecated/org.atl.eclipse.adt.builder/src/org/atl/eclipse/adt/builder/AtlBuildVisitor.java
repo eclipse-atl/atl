@@ -5,8 +5,6 @@ package org.atl.eclipse.adt.builder;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.atl.eclipse.engine.AtlCompiler;
 import org.eclipse.core.resources.IFile;
@@ -24,18 +22,9 @@ public class AtlBuildVisitor implements IResourceVisitor {
 	/** Contains routines to manage problem markers when compiling */
 	private MarkerMaker markerMaker = new MarkerMaker();
 	
-	/** Stores for each atl file the timestamp it had when it was built */
-	private Map fileTotimeStamps = new HashMap();
-	
 	/** Returns <code>true</code> if the file has chaned since its last build <code>false</code> otherwise*/
 	private boolean hasChanged(IResource resource) {
-		long modifTimeStamp = resource.getModificationStamp();
-		Long lastModifTimeStamp = ((Long)fileTotimeStamps.get(resource));
-		if (lastModifTimeStamp == null) {
-			return true;
-		}
-		
-		return (modifTimeStamp > lastModifTimeStamp.longValue());
+		return (resource.getModificationStamp() > getAsmFile(resource).getModificationStamp());
 	}
 	
 	/** 
@@ -43,12 +32,20 @@ public class AtlBuildVisitor implements IResourceVisitor {
 	 * @return <code>true</code> if the given resource has an associated asm file <code>false</code> otherwise
 	 */
 	private boolean hasAsmFile(IResource resource) {
+		return getAsmFile(resource).exists();
+	}		
+	
+	/** 
+	 * @param resource the resource for which to test whether it has an associated asm file
+	 * @return <code>true</code> if the given resource has an associated asm file <code>false</code> otherwise
+	 */
+	private IFile getAsmFile(IResource resource) {
 		String atlFileName = resource.getName();
 		String asmFileName = atlFileName.substring(0, atlFileName.lastIndexOf('.')) + ".asm";
 		IFile asm = resource.getParent().getFile(new Path(asmFileName));
-		return asm.exists();
+		return asm;
 	}		
-	
+
 	/**
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
@@ -67,7 +64,6 @@ public class AtlBuildVisitor implements IResourceVisitor {
                 e.printStackTrace();
             }
 			markerMaker.resetPbmMarkers(resource, pbms);
-			fileTotimeStamps.put(resource, new Long(resource.getModificationStamp()));
 			return false;
 		}
 		// return true to continue visiting children.
