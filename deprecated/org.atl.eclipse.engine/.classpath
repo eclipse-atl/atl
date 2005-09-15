@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/"/>
-	<classpathentry exported="true" sourcepath="/org.atl.engine.vm" kind="lib" path="lib/atl.jar"/>
-	<classpathentry sourcepath="/org.atl.engine.repositories.emf4atl" kind="lib" path="lib/emf4atl.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/ebnfinjector.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" sourcepath="/org.atl.engine.injectors.ebnf" kind="lib" path="lib/ebnfinjector.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/ATL-importer.jar"/>
-	<classpathentry sourcepath="/org.atl.engine.repositories.mdr4atl" kind="lib" path="lib/mdr4atl.jar"/>
-	<classpathentry kind="lib" path="lib/jmi.jar"/>
-	<classpathentry kind="lib" path="lib/jmiutils.jar"/>
-	<classpathentry kind="lib" path="lib/mdrapi.jar"/>
-	<classpathentry kind="lib" path="lib/mof.jar"/>
-	<classpathentry kind="lib" path="lib/nbmdr.jar"/>
-	<classpathentry kind="lib" path="lib/openide-util.jar"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
