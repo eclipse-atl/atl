@@ -7,7 +7,6 @@ package org.atl.eclipse.engine;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +15,7 @@ import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.xmi.XMIResource;
 
 /**
  * @author JOUAULT
@@ -41,8 +41,10 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	private void saveModel(final ASMModel model, URI uri) {
 		Resource r = ((ASMEMFModel)model).getExtent();
 		r.setURI(uri);
+		Map options = new HashMap();
+		options.put(XMIResource.OPTION_ENCODING, "ISO-8859-1");
 		try {
-			r.save(Collections.EMPTY_MAP);
+			r.save(options);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -73,6 +75,18 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		
 		try {
 			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ret;
+	}
+
+	public ASMModel loadModel(String name, ASMModel metamodel, URI uri) {
+		ASMModel ret = null;
+		
+		try {
+			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

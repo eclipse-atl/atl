@@ -2,11 +2,8 @@ package org.atl.eclipse.engine;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.atl.engine.injectors.ebnf.EBNFInjector2;
 import org.atl.engine.repositories.emf4atl.ASMEMFModel;
@@ -54,6 +51,7 @@ public class AtlParser {
 			EBNFInjector2 ebnfi = new EBNFInjector2();
 			ebnfi.performImportation(atlmm, ret[0], in, "ATL", ret[1]);
 			// Semantic Analysis
+/*
 			URL atlsaurl = AtlParser.class.getResource("resources/ATLSemanticAnalyzer.asm");
 
 			Map models = new HashMap();
@@ -65,6 +63,7 @@ public class AtlParser {
 			params.put("debug", "false");
 
 			AtlLauncher.getDefault().launch(atlsaurl, models, params);
+*/
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
