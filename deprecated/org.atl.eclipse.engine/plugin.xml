@@ -11,12 +11,6 @@
       <library name="org.atl.eclipse.engine.jar">
          <export name="*"/>
       </library>
-      <library name="lib/atl.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/emf4atl.jar">
-         <export name="*"/>
-      </library>
       <library name="lib/ebnfinjector.jar">
          <export name="*"/>
       </library>
@@ -24,13 +18,6 @@
          <export name="*"/>
       </library>
       <library name="lib/ATL-importer.jar"/>
-      <library name="lib/mdr4atl.jar"/>
-      <library name="lib/jmi.jar"/>
-      <library name="lib/jmiutils.jar"/>
-      <library name="lib/mdrapi.jar"/>
-      <library name="lib/mof.jar"/>
-      <library name="lib/nbmdr.jar"/>
-      <library name="lib/openide-util.jar"/>
    </runtime>
    <requires>
       <import plugin="org.eclipse.ui"/>
@@ -38,6 +25,9 @@
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.atl.engine.vm" export="true"/>
+      <import plugin="org.atl.engine.repositories.mdr4atl" export="true"/>
+      <import plugin="org.atl.engine.repositories.emf4atl" export="true"/>
    </requires>
 
 
