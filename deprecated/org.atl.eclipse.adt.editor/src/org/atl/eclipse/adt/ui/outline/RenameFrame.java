@@ -37,12 +37,12 @@ public class RenameFrame extends Composite
 	private Text tNewName;
 	private Label lNewName;
 	private Canvas canvas1;
-	private RenameAction renameAction;
+//	private RenameAction renameAction;
 	
 	public RenameFrame(RenameAction renameAction) 
 	{
 		super(new Shell(Display.getDefault()), SWT.NULL);
-		this.renameAction = renameAction;
+//		this.renameAction = renameAction;
 		getShell().setLayout(new org.eclipse.swt.layout.FillLayout());
 		Rectangle shellBounds = getShell().computeTrim(0,0,552,319);				
 		getShell().setSize(shellBounds.width, shellBounds.height);

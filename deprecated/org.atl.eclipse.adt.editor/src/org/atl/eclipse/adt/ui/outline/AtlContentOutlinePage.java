@@ -74,7 +74,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	public final static String ATL_OUTLINE_VIEW_CONTEXT_MENU_ID = "org.atl.eclipse.adt.outline.contextMenu";
 	
 	/** The wake up frequency of the background thread in charge of the refresh of the outline tree viewer */
-	private final static int REFRESH_PERIOD = 5000;
+//	private final static int REFRESH_PERIOD = 5000;
 	
 	/* Sorter enabling sorting the content of the tree viewer */
 	private ViewerSorter alphabeticalSorter, defaultSorter;
@@ -90,8 +90,8 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 */
 	private int depth = 1; 	
 	
-	/** The document provider of the textEditor */
-	private IDocumentProvider documentProvider;  
+//	/** The document provider of the textEditor */
+//	private IDocumentProvider documentProvider;  
 	
 	/** The editorInput of the textEditor */
 	private IEditorInput editorInput;
@@ -110,7 +110,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	private boolean inputSet = false;	
 	
 	/** Indicates whether the editor associated with this outline is opened */
-	private volatile boolean isTextEditorOpened = true;
+//	private volatile boolean isTextEditorOpened = true;
 	
 	/** The perspective listener for the current page */
 	private PerspectiveListener perspectiveListener;
@@ -119,18 +119,18 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	private Action refreshItemAction, filterHelperAction, filterRuleAction, sorterAction;
 	
 	/** The background thread in charge of the refreshment of the outline tree viewer */
-	private Thread refreshThread = new Thread() {
-		public void run() {
-			while (isTextEditorOpened) {
-				try {
-					Thread.sleep(REFRESH_PERIOD);										
-					setUnit(); 					
-				} catch(InterruptedException e) {
-					System.err.println(e);
-				}
-			}
-		}
-	};
+//	private Thread refreshThread = new Thread() {
+//		public void run() {
+//			while (isTextEditorOpened) {
+//				try {
+//					Thread.sleep(REFRESH_PERIOD);										
+//					setUnit(); 					
+//				} catch(InterruptedException e) {
+//					System.err.println(e);
+//				}
+//			}
+//		}
+//	};
 	
 	/* other actions */
 	private Action renameItemAction, addBreakPointAction, cutAction, copyAction, pasteAction;
@@ -153,7 +153,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		super();
 		this.textEditor = textEditor;
 		this.editorInput = editorInput;
-		this.documentProvider = documentProvider;		
+//		this.documentProvider = documentProvider;
 		// refreshThread.start();
 	}
     
@@ -479,7 +479,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	}
 		
 	public void setTextEditorOpened(boolean isTextEditorOpened) {
-		this.isTextEditorOpened = isTextEditorOpened;
+//		this.isTextEditorOpened = isTextEditorOpened;
 	}
 	
 	/**

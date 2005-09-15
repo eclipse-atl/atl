@@ -4,7 +4,6 @@
  */
 package org.atl.eclipse.adt.startup;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
@@ -26,7 +25,7 @@ public class ResourceChangeListener implements IResourceChangeListener {
 	 * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
 	 */
 	public void resourceChanged(IResourceChangeEvent event) {
-		IResource res = event.getResource();		
+//		IResource res = event.getResource();		
 		try {
 			event.getDelta().accept(visitor);
 		} catch (CoreException e) {		

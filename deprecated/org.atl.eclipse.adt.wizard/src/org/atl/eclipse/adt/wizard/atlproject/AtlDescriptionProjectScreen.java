@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Text;
 
 public class AtlDescriptionProjectScreen extends WizardPage {
 
-	private ISelection selection;
+//	private ISelection selection;
 	private Composite container;
 	private Text textProjectName;
 	private Group groupProject;
@@ -28,7 +28,7 @@ public class AtlDescriptionProjectScreen extends WizardPage {
 		super("wizardPage");
 		setTitle("ATL Project Creator");
 		setDescription("A name is required for your ATL Project");
-		this.selection = selection;
+//		this.selection = selection;
 		this.setPageComplete(false);
 	}
 

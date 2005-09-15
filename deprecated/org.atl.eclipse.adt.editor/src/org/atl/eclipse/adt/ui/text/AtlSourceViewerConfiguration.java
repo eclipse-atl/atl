@@ -9,7 +9,6 @@ import org.atl.eclipse.adt.ui.text.atl.AtlCodeScanner;
 import org.atl.eclipse.adt.ui.text.atl.AtlCompletionProcessor;
 import org.atl.eclipse.adt.ui.text.atl.AtlStringAutoIndentStrategy;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.IAutoIndentStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
@@ -21,7 +20,6 @@ import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
@@ -86,9 +84,9 @@ public class AtlSourceViewerConfiguration extends SourceViewerConfiguration {
 		}
 	}
 	
-	private Color getColor(IPreferenceStore store, String key, AtlColorManager manager) {
-		return manager.getColor(PreferenceConverter.getColor(store, key));
-	}
+//	private Color getColor(IPreferenceStore store, String key, AtlColorManager manager) {
+//		return manager.getColor(PreferenceConverter.getColor(store, key));
+//	}
 	
 	/**
 	 * Gets the color manager stored in the text tools.
@@ -104,7 +102,7 @@ public class AtlSourceViewerConfiguration extends SourceViewerConfiguration {
 	 */
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		IPreferenceStore store = AtlUIPlugin.getDefault().getPreferenceStore();
-		AtlColorManager manager = AtlUIPlugin.getDefault().getTextTools().getColorManager();					
+//		AtlColorManager manager = AtlUIPlugin.getDefault().getTextTools().getColorManager();
 		
 		ContentAssistant assistant= new ContentAssistant();
 		assistant.setContentAssistProcessor(fProcessor, IDocument.DEFAULT_CONTENT_TYPE);

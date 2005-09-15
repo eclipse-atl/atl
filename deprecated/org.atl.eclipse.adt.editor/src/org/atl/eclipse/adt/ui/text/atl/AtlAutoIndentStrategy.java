@@ -277,14 +277,14 @@ public class AtlAutoIndentStrategy extends DefaultAutoIndentStrategy {
 	 * @return the indent level of the line
 	 * @throws BadLocationException
 	 */
-	private int getIndentLevel(IDocument document, int line) throws BadLocationException {
-		if(-1 < line) {
-			int start = document.getLineOffset(line);
-			int end = start + document.getLineLength(line) - 1;
-			return findEndOfWhiteSpace(document, start, end) - start;
-		}
-		return 0;
-	}
+//	private int getIndentLevel(IDocument document, int line) throws BadLocationException {
+//		if(-1 < line) {
+//			int start = document.getLineOffset(line);
+//			int end = start + document.getLineLength(line) - 1;
+//			return findEndOfWhiteSpace(document, start, end) - start;
+//		}
+//		return 0;
+//	}
 	
 	/**
 	 * @param document the document being parsed
@@ -311,18 +311,18 @@ public class AtlAutoIndentStrategy extends DefaultAutoIndentStrategy {
 	 * @return the last character
 	 * @throws BadLocationException
 	 */
-	private char getLastChar(IDocument document, int start, int end) throws BadLocationException {
-		if(start < end) {
-			String range = document.get(start, end - start);
-			String[] split = range.split(" ");
-			int length = split.length - 1;
-			if(0 <= length) {
-				String res = split[length];
-				return res.charAt(res.length() - 1);
-			}
-		}
-		return 0;
-	}
+//	private char getLastChar(IDocument document, int start, int end) throws BadLocationException {
+//		if(start < end) {
+//			String range = document.get(start, end - start);
+//			String[] split = range.split(" ");
+//			int length = split.length - 1;
+//			if(0 <= length) {
+//				String res = split[length];
+//				return res.charAt(res.length() - 1);
+//			}
+//		}
+//		return 0;
+//	}
 	
 	private int getStringEnd(IDocument d, int offset, int endOffset, char ch) throws BadLocationException {
 		while (offset < endOffset) {
@@ -367,7 +367,7 @@ public class AtlAutoIndentStrategy extends DefaultAutoIndentStrategy {
 			int cursorAt = (command.offset == length ? command.offset - 1 : command.offset);
 			int line = document.getLineOfOffset(cursorAt);
 			int lineStartsAt = document.getLineOffset(line);
-			int lineLength = document.getLineLength(line);
+//			int lineLength = document.getLineLength(line);
 			int whiteEnd = findEndOfWhiteSpace(document, lineStartsAt, cursorAt);
 			
 			if(whiteEnd == cursorAt) {

@@ -82,13 +82,13 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 	}
 	
 	private AtlCompletionProposalComparator fComparator;
-	private IEditorPart fEditor;
-	private int fNumberOfComputedResults;
+//	private IEditorPart fEditor;
+//	private int fNumberOfComputedResults;
 	private char[] fProposalAutoActivationSet;
 	private AtlParameterListValidator fValidator;
 	
 	public AtlCompletionProcessor(IEditorPart editor) {
-		fEditor = editor;
+//		fEditor = editor;
 		fComparator = new AtlCompletionProposalComparator();
 	}
 	/**
@@ -216,7 +216,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 		
 		ICompletionProposal[] results = new ICompletionProposal[proposals.size()];
 		proposals.toArray(results);
-		fNumberOfComputedResults = (results == null ? 0 : results.length);
+//		fNumberOfComputedResults = (results == null ? 0 : results.length);
 		
 		/*
 		 * Order here and not in result collector to make sure that the order

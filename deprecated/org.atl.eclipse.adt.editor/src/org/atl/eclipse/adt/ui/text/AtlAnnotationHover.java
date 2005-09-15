@@ -12,11 +12,11 @@ public class AtlAnnotationHover implements IAnnotationHover {
 	public static final AnnotationHoverType VERTICAL_RULER_HOVER = new AnnotationHoverType();
 	public static final AnnotationHoverType TEXT_RULER_HOVER = new AnnotationHoverType();
 	public static final AnnotationHoverType OVERVIEW_RULER_HOVER = new AnnotationHoverType();
-	private AnnotationHoverType type;
+//	private AnnotationHoverType type;
 	
 	public AtlAnnotationHover(AnnotationHoverType type) {
 		Assert.isTrue(OVERVIEW_RULER_HOVER.equals(type) || TEXT_RULER_HOVER.equals(type) || VERTICAL_RULER_HOVER.equals(type));
-		this.type = type;
+//		this.type = type;
 	}
 	
 	/* (non-Javadoc)

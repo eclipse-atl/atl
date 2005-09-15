@@ -51,7 +51,7 @@ public class AtlFileScreen extends WizardPage {
 	final public static String QUERY = "query";
 	final public static String LIBRARY = "library";
 		
-	private ISelection selection;
+//	private ISelection selection;
 	private Group groupHead;
 	private Group groupIn;
 	private Group groupOut;
@@ -71,7 +71,7 @@ public class AtlFileScreen extends WizardPage {
 		super("ATL File Wizard");
 		setTitle("ATL File Wizard");
 		setDescription("");
-		this.selection = selection;
+//		this.selection = selection;
 		this.setPageComplete(false);
 	}
 

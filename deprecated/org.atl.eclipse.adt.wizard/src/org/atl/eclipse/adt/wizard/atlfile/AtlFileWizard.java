@@ -21,7 +21,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExtension {
 	
 	/** The id of the wizard extension defined in the plugin.xml file of this plugin*/
-	private static final String NEW_PROJECT_WIZARD_EXTENSION_ID = "org.atl.eclipse.adt.projectCreationWizard";
+//	private static final String NEW_PROJECT_WIZARD_EXTENSION_ID = "org.atl.eclipse.adt.projectCreationWizard";
 	
 	private IConfigurationElement configElement;
 	

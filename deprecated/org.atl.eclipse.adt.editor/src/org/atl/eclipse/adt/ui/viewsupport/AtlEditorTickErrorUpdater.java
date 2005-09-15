@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IFileEditorInput;
 
 /**
  * @author idrissi
@@ -43,7 +42,7 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 	 * @see IProblemChangedListener#problemsChanged(IResource[], boolean)
 	 */
 	public void problemsChanged(IResource[] changedResources, boolean isMarkerChange) {		
-		IFileEditorInput input= (IFileEditorInput) atlEditor.getEditorInput();
+//		IFileEditorInput input= (IFileEditorInput) atlEditor.getEditorInput();
 		IResource resource = atlEditor.getUnderlyingResource();
 		if (resource != null) { 			
 			for (int i = 0; i < changedResources.length; i++) {

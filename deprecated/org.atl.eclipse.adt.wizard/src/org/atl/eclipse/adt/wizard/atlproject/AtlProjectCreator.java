@@ -1,8 +1,5 @@
 package org.atl.eclipse.adt.wizard.atlproject;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
 import org.atl.eclipse.adt.builder.AtlNature;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -24,7 +21,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 public class AtlProjectCreator extends Wizard implements INewWizard, IExecutableExtension {
 	
 	/** The id of the wizard extension defined in the plugin.xml file of this plugin*/
-	private static final String NEW_PROJECT_WIZARD_EXTENSION_ID = "org.atl.eclipse.adt.projectCreationWizard";
+//	private static final String NEW_PROJECT_WIZARD_EXTENSION_ID = "org.atl.eclipse.adt.projectCreationWizard";
 	
 	private AtlDescriptionProjectScreen page;
 	
@@ -85,14 +82,14 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 		return true;
 	}
 	
-	/**
-	 * This method transforms string into inputstream
-	 * @param contents content of the file to cast in InputStream
-	 * @return the InputStream content
-	 */
-	private InputStream openContentStream(String contents) {
-		return new ByteArrayInputStream(contents.getBytes());
-	}
+//	/**
+//	 * This method transforms string into inputstream
+//	 * @param contents content of the file to cast in InputStream
+//	 * @return the InputStream content
+//	 */
+//	private InputStream openContentStream(String contents) {
+//		return new ByteArrayInputStream(contents.getBytes());
+//	}
 	
 	/**
 	 * We will accept the selection in the workbench to see if

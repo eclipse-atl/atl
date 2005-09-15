@@ -38,7 +38,7 @@ public class AtlParser {
 	public ASMModel[] parseToModelWithProblems(InputStream in) {
 		ASMModel ret[] = new ASMModel[2];
 		ASMModel atlmm = amh.getAtl();
-		ASMModel mofmm = amh.getMof();
+//		ASMModel mofmm = amh.getMof();
 
 		try {
 			if(atlmm instanceof ASMEMFModel) {

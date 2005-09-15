@@ -65,9 +65,9 @@ public class AtlParameterListValidator implements IContextInformationValidator, 
 		return charCount;
 	}
 	
-	private int getCommentEnd(IDocument d, int pos, int end) throws BadLocationException {
-		return Math.min(end, d.getLineOffset(d.getLineOfOffset(pos) + 1));
-	}
+//	private int getCommentEnd(IDocument d, int pos, int end) throws BadLocationException {
+//		return Math.min(end, d.getLineOffset(d.getLineOfOffset(pos) + 1));
+//	}
 	
 	private int getStringEnd(IDocument d, int pos, int end, char ch) throws BadLocationException {
 		while (pos < end) {
