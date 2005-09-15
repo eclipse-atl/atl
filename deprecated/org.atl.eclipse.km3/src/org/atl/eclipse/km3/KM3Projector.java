@@ -1,8 +1,5 @@
 /*
  * Created on 4 mars 2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 package org.atl.eclipse.km3;
 
@@ -25,15 +22,12 @@ import org.atl.engine.repositories.emf4atl.ASMEMFModelElement;
 import org.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.atl.engine.vm.nativelib.ASMModel;
 import org.atl.engine.vm.nativelib.ASMString;
-import org.eclipse.core.internal.resources.File;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
 
 /**
- * @author jouault
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author Frédéric Jouault
  */
 public class KM3Projector {
 
@@ -66,7 +60,6 @@ public class KM3Projector {
 			try {
 				emfmm = emfamh.loadModel(mmName, emfamh.getMof(), emfmmurl.openStream());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -83,7 +76,6 @@ public class KM3Projector {
 		try {
 			mdrmm = mdramh.loadModel(mmName, mdramh.getMof(), mdrmmurl.openStream());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		initEMF();
@@ -190,7 +182,7 @@ public class KM3Projector {
 	 * @return The number of errors (Problems with severity #error).
 	 * @throws CoreException
 	 */
-	private int applyMarkers(File file, ASMModel pbs) throws CoreException {
+	private int applyMarkers(IFile file, ASMModel pbs) throws CoreException {
 		int nbErrors = 0;
 		
 		Collection pbsc = pbs.getElementsByType("Problem");
@@ -216,7 +208,7 @@ public class KM3Projector {
 	 * @param file is the KM3 file.
 	 * @return the KM3 model created using AtlEMFModelHandler.
 	 */
-	public ASMModel getKM3FromFile(File file) throws CoreException, IOException {
+	public ASMModel getKM3FromFile(IFile file) throws CoreException, IOException {
 		initEMF();
 		ASMModel ret = emfamh.newModel("IN", emfmm);
 		
@@ -262,7 +254,7 @@ public class KM3Projector {
 	 * @param file is the KM3 file.
 	 * @return the Ecore metamodel. It is created using AtlEMFModelHandler.
 	 */
-	public ASMModel getEcoreFromKM3File(File file) throws CoreException, IOException {
+	public ASMModel getEcoreFromKM3File(IFile file) throws CoreException, IOException {
 		ASMModel ret = null;
 		
 		ASMModel model = getKM3FromFile(file);
@@ -308,7 +300,7 @@ public class KM3Projector {
 	 * @param file is the KM3 file.
 	 * @return the MOF-1.4 metamodel. It is created using AtlMDRModelHandler.
 	 */
-	public ASMModel getMOF14FromKM3File(File file) throws CoreException, IOException {
+	public ASMModel getMOF14FromKM3File(IFile file) throws CoreException, IOException {
 		ASMModel ret = null;
 		
 		ASMModel model = getKM3FromFile(file);
