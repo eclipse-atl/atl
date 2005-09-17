@@ -192,7 +192,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 					if(checkSameModel && (sv instanceof ASMModelElement) && (((ASMModelElement)sv).getModel() != getModel())) {					
 						continue;
 					}
-					Object val = asm2EMF(sv, name);
+					Object val = asm2EMF(frame, sv, name);
 					try {
 						if(val != null)
 							l.add(val);
@@ -201,13 +201,13 @@ public class ASMEMFModelElement extends ASMModelElement {
 					}
 				}
 			} else {
-				l.add(asm2EMF(value, name));
+				l.add(asm2EMF(frame, value, name));
 			}
 		} else {
 			if(checkSameModel && (value instanceof ASMModelElement) && (((ASMModelElement)value).getModel() != getModel())) {
 				// should not happen but the ATL compiler does not add checks for this in resolveTemp yet
 			} else {
-				Object val = asm2EMF(value, name);
+				Object val = asm2EMF(frame, value, name);
 				if(val != null) {
 					object.eSet(feature, val);
 				}
@@ -215,7 +215,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		}
 	}
 	
-	public Object asm2EMF(ASMOclAny value, String propName) {
+	public Object asm2EMF(StackFrame frame, ASMOclAny value, String propName) {
 		Object ret = null;
 		
 		if(value instanceof ASMString) {
@@ -237,12 +237,12 @@ public class ASMEMFModelElement extends ASMModelElement {
 		} else if(value instanceof ASMCollection) {
 			ret = new ArrayList();
 			for(Iterator i = ((ASMCollection)value).iterator() ; i.hasNext() ; ) {
-				Object v = asm2EMF((ASMOclAny)i.next(), propName);
+				Object v = asm2EMF(frame, (ASMOclAny)i.next(), propName);
 				if(v != null)
 					((List)ret).add(v);
 			}
 		} else {
-			new Exception("ERROR: cannot convert " + value + " : " + value.getClass() + " to EMF.").printStackTrace();
+			frame.printStackTrace("ERROR: cannot convert " + value + " : " + value.getClass() + " to EMF.");
 		}
 		
 		return ret;
@@ -300,6 +300,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		
 		ASMModel model = (ASMModel)frame.getModels().get(modelName.getSymbol());
 		if(model instanceof ASMEMFModel) {
+																				//TODO: use getEObject(id.getSymbol())
 			EObject eo = (EObject)((XMIResource)((ASMEMFModel)model).getExtent()).getIDToEObjectMap().get(id.getSymbol());
 			if(eo != null)
 				ret = getASMModelElement(model, eo);
