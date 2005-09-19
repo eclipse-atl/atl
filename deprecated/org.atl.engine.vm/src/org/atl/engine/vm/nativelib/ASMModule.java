@@ -18,7 +18,14 @@ public class ASMModule extends ASMOclAny {
 	}
 
 	public ASMOclAny get(StackFrame frame, String name) {
-		return (ASMOclAny)fields.get(name);
+		ASMOclAny ret = (ASMOclAny)fields.get(name);
+		
+		if(ret == null) {
+			frame.printStackTrace("transformation module \"" + asm.getName() +
+					"\" does not have an initialized field named \"" + name + "\"");
+		}
+		
+		return ret;
 	}
 
 	public void set(StackFrame frame, String name, ASMOclAny value) {
