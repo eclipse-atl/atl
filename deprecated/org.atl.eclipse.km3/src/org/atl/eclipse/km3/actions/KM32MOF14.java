@@ -7,6 +7,10 @@ import org.atl.eclipse.km3.KM3Projector;
 import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -15,6 +19,9 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 public class KM32MOF14 implements IObjectActionDelegate {
+
+	private final static String pluginid = "org.atl.eclipse.km3";
+	private final static String errorMsg = "An error was encountered while trying to get a MOF-1.4 metamodel from a KM3 file.";
 
 	private AtlModelHandler amh = null;
 
@@ -39,24 +46,47 @@ public class KM32MOF14 implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		if(amh == null) {
-			amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_MDR);
-		}
-		try {
-			IFile file = ((IFile)((IStructuredSelection)selection).getFirstElement());
-			
-			ASMModel mof = kp.getMOF14FromKM3File(file);
+		Job job = new Job("KM3 to MOF-1.4") {
+			protected IStatus run(IProgressMonitor mon) {
+				IStatus ret = null;
+				mon.beginTask("KM3 to MOF-1.4", IProgressMonitor.UNKNOWN);
+				
+				if(amh == null) {
+					mon.subTask("Initializing MDR");
+					amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_MDR);
+				}
+				try {
+					IFile file = ((IFile)((IStructuredSelection)selection).getFirstElement());
+					
+					mon.subTask("Parsing and checking KM3 file");
+					ASMModel km3model = kp.getKM3FromFile(file);
 
-			if(mof != null) {
-				String name = file.getFullPath().removeFirstSegments(1).toString();
-				name = name.substring(0, name.length() - file.getFileExtension().length()) + "xmi";
-				amh.saveModel(mof, name, file.getProject());
+					ASMModel mof = null;
+					if(km3model != null) {
+						mon.subTask("Transforming KM3 model into MOF-1.4 metamodel");
+						mof = kp.getMOF14FromKM3File(file);
+					}
+		
+					if(mof != null) {
+						mon.subTask("Serializing MOF-1.4 metamodel");
+						String name = file.getFullPath().removeFirstSegments(1).toString();
+						name = name.substring(0, name.length() - file.getFileExtension().length()) + "xmi";
+						amh.saveModel(mof, name, file.getProject());
+						ret = new Status(Status.OK, pluginid, Status.OK, file + " transformed into " + name, null);
+					} else {
+						ret = new Status(Status.ERROR, pluginid, Status.OK, errorMsg, null);													
+					}
+				} catch (CoreException e) {
+					ret = new Status(Status.ERROR, pluginid, Status.OK, errorMsg, e);
+				} catch(IOException ioe) {
+					ret = new Status(Status.ERROR, pluginid, Status.OK, errorMsg, ioe);
+				}
+				
+				return ret;
 			}
-		} catch (CoreException e) {
-			e.printStackTrace();
-		} catch(IOException ioe) {
-			ioe.printStackTrace();
-		}
+		};
+		job.setPriority(Job.BUILD);
+		job.schedule();		
 	}
 
 	/**
