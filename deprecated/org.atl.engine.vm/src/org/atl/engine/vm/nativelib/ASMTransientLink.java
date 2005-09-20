@@ -69,7 +69,6 @@ public class ASMTransientLink extends ASMOclAny {
 	}
 
 	// Native Operations Below
-
 	public static void setRule(StackFrame frame, ASMTransientLink self, ASMOclAny rule) {
 		self.rule = rule;
 	}
@@ -100,9 +99,19 @@ public class ASMTransientLink extends ASMOclAny {
 	}
 
 	public static ASMOclAny getTargetFromSource(StackFrame frame, ASMTransientLink self, ASMOclAny sourceElement) {
+		ASMOclAny ret = null;
 //TODO: use mapsTo
 //		return (ASMOclAny)self.targetElements.values().iterator().next();
-		return (ASMOclAny)self.targetElementsList.iterator().next();
+		
+		if(!self.targetElementsList.isEmpty()) {
+			ret = (ASMOclAny)self.targetElementsList.iterator().next();
+		}
+		
+		if(ret == null) {
+			ret = new ASMOclUndefined();
+		}
+	
+		return ret;
 	}
 
 	public static ASMOclAny getNamedTargetFromSource(StackFrame frame, ASMTransientLink self, ASMOclAny sourceElement, ASMString name) {
