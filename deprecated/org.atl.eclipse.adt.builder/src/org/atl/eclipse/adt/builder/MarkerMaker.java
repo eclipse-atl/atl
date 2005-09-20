@@ -87,7 +87,7 @@ public class MarkerMaker {
 			pbmMarker.setAttribute(IMarker.MESSAGE, description);
 			pbmMarker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
 			pbmMarker.setAttribute(IMarker.CHAR_START, charStart);
-			pbmMarker.setAttribute(IMarker.CHAR_END, charEnd);
+			pbmMarker.setAttribute(IMarker.CHAR_END, (charEnd > charStart) ? charEnd : charStart + 1);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
