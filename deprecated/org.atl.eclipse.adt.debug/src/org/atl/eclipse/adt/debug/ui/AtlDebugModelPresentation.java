@@ -298,7 +298,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		 * @see org.eclipse.ui.IEditorInput#getToolTipText()
 		 */
 		public String getToolTipText() {
-			return null;
+			return contents.getName();
 		}
 
 		/**
