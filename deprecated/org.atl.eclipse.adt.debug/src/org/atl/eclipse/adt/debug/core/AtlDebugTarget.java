@@ -41,6 +41,7 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
+import org.eclipse.debug.ui.DeferredDebugElementWorkbenchAdapter;
 
 
 /**
@@ -50,9 +51,9 @@ import org.eclipse.debug.core.model.IThread;
  * The AtlDebugTarget contains only one thread : the main thread.
  * The thread contains the current stackframe
  * 
- * @author allilaire
+ * @author Freddy Allilaire
  */
-public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
+public class AtlDebugTarget extends DeferredDebugElementWorkbenchAdapter implements IDebugTarget, IDebugEventSetListener {
 
 	/**
 	 * current state of the debugger
@@ -629,5 +630,19 @@ public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
 	 */
 	public String getMessageFromDebuggee() {
 		return messageFromDebuggee;
+	}
+
+	public Object[] getChildren(Object o) {
+		try {
+			if (hasThreads())
+				return getThreads();
+		} catch (DebugException e) {
+			e.printStackTrace();
+		}
+		return new Object[] {};
+	}
+
+	public Object getParent(Object o) {
+		return new Object();
 	}
 }

@@ -28,15 +28,16 @@ import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.debug.ui.DeferredDebugElementWorkbenchAdapter;
 
 /**
  * This class implements IStackFrame
  * It contains a stackframe
  * 
- * @author allilaire
+ * @author Freddy Allilaire
  */
 
-public class AtlStackFrame implements IStackFrame {
+public class AtlStackFrame extends DeferredDebugElementWorkbenchAdapter implements IStackFrame {
 
 	private ObjectReference stackFrame;
 	private AtlThread thread;
@@ -395,6 +396,20 @@ public class AtlStackFrame implements IStackFrame {
 		}
 		
 		return new DisassemblyStorage("ATL#" + opName, ret.toString());
+	}
+
+	public Object[] getChildren(Object o) {
+		try {
+			if (hasVariables())
+				return getVariables();
+		} catch (DebugException e) {
+			e.printStackTrace();
+		}
+		return new Object[] {};
+	}
+
+	public Object getParent(Object o) {
+		return getThread();
 	}
 	
 }

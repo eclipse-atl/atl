@@ -9,12 +9,14 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.debug.ui.DeferredDebugElementWorkbenchAdapter;
 
 /**
- * @author allilaire
+ * @author Freddy Allilaire
  */
 
-public class AtlVariable implements IVariable {
+public class AtlVariable extends DeferredDebugElementWorkbenchAdapter implements IVariable {
+
 	// If you add a constant here, look in the AtlDebugModelPresentation if the value is not already used
 	public final static int UNKNOWN = -1;
 	public final static int LOCALVARIABLE = 0;
@@ -159,5 +161,19 @@ public class AtlVariable implements IVariable {
 	 */
 	public int getIdVariable() {
 		return idVariable;
+	}
+
+	public Object[] getChildren(Object o) {
+		try {
+			if (getValue().hasVariables())
+				return getValue().getVariables();
+		} catch (DebugException e) {
+			e.printStackTrace();
+		}
+		return new Object[] {};
+	}
+
+	public Object getParent(Object o) {
+		return getDebugTarget();
 	}
 }

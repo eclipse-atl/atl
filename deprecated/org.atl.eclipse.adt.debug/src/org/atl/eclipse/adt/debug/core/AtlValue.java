@@ -21,11 +21,12 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.debug.ui.DeferredDebugElementWorkbenchAdapter;
 
 /**
- * @author allilaire
+ * @author Freddy Allilaire
  */
-public class AtlValue implements IValue {
+public class AtlValue extends DeferredDebugElementWorkbenchAdapter implements IValue {
 
 	String typeName;
 	String asString;
@@ -270,5 +271,22 @@ public class AtlValue implements IValue {
 	 */
 	public Value getValue() {
 		return value;
+	}
+
+	public boolean isContainer() {
+		try {
+			hasVariables();
+		} catch (DebugException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public Object[] getChildren(Object o) {
+		return new Object[] {};
+	}
+
+	public Object getParent(Object o) {
+		return getDebugTarget();
 	}
 }

@@ -14,12 +14,13 @@ import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
+import org.eclipse.debug.ui.DeferredDebugElementWorkbenchAdapter;
 
 
 /**
- * @author allilaire
+ * @author Freddy Allilaire
  */
-public class AtlThread implements IThread {
+public class AtlThread extends DeferredDebugElementWorkbenchAdapter implements IThread {
 
 	private String threadName;
 	private AtlDebugTarget atlDT;
@@ -233,5 +234,19 @@ public class AtlThread implements IThread {
 	 */
 	public void setStackFrames(AtlStackFrame[] frames) {
 		this.stackFrames = frames;
+	}
+
+	public Object[] getChildren(Object o) {
+		try {
+			if (hasStackFrames())
+				return getStackFrames();
+		} catch (DebugException e) {
+			e.printStackTrace();
+		}
+		return new Object[] {};
+	}
+
+	public Object getParent(Object o) {
+		return getDebugTarget();
 	}
 }
