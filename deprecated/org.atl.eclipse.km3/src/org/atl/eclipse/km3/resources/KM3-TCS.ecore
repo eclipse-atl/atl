@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="TCS">
+  <ConcreteSyntax location="1:1-296:2" name="KM3" k="4" lexer="&#xA;class KM3Lexer extends Lexer;&#xA;&#xA;options {&#xA;&#x9;k = 2;&#xA;&#x9;charVocabulary = '\0' .. '\u00FF';&#xA;&#x9;testLiterals = false;&#xA;}&#xA;&#xA;{&#xA;&#xA;&#x9;protected Token makeToken(int t) {&#xA;&#x9;&#x9;org.atl.engine.injectors.ebnf.LocationToken ret = null;&#xA;&#xA;&#x9;&#x9;tokenObjectClass = org.atl.engine.injectors.ebnf.LocationToken.class;&#xA;&#x9;&#x9;ret = (org.atl.engine.injectors.ebnf.LocationToken)super.makeToken(t);&#xA;&#x9;&#x9;ret.setEndLine(getLine());&#xA;&#x9;&#x9;ret.setEndColumn(getColumn());&#xA;&#xA;&#x9;&#x9;return ret;&#xA;&#x9;}&#xA;&#xA;}&#xA;&#xA;//protected&#xA;NL&#xA;&#x9;:&#x9;(&#x9;'\r' '\n'&#xA;&#x9;&#x9;|&#x9;'\n' '\r'&#x9;//Improbable&#xA;&#x9;&#x9;|&#x9;'\r'&#xA;&#x9;&#x9;|&#x9;'\n'&#xA;&#x9;&#x9;)&#xA;&#x9;{newline();}&#xA;&#x9;;&#xA;&#xA;WS&#xA;&#x9;:&#x9;(&#x9;' '&#xA;&#x9;&#x9;|&#x9;'\t'&#xA;//&#x9;&#x9;|&#x9;NL&#xA;&#x9;&#x9;)&#xA;//&#x9;{ $setType(Token.SKIP); }&#xA;&#x9;;&#xA;&#xA;COMMENT&#xA;&#x9;:&#x9;&quot;--&quot;&#xA;&#x9;&#x9;(~(&#x9;'\r'&#xA;&#x9;&#x9;|&#x9;'\n'&#xA;&#x9;&#x9;))*&#xA;//&#x9;&#x9;({LA(1) != EOF_CHAR}? NL)?&#xA;//&#x9;{ $setType(Token.SKIP); }&#xA;&#x9;;&#xA;&#xA;protected&#xA;DIGIT&#xA;&#x9;:&#x9;'0'..'9'&#xA;&#x9;;&#xA;&#xA;protected&#xA;ALPHA&#xA;&#x9;:&#x9;'a'..'z'&#xA;&#x9;|&#x9;'A'..'Z'&#xA;&#x9;|&#x9;'_'&#xA;&#x9;//For Unicode compatibility (from 0000 to 00ff)&#xA;&#x9;|&#x9;'\u00C0' .. '\u00D6'&#xA;&#x9;|&#x9;'\u00D8' .. '\u00F6'&#xA;&#x9;|&#x9;'\u00F8' .. '\u00FF'&#xA;&#x9;;&#xA;&#xA;protected&#xA;SNAME&#xA;options {&#xA;&#x9;testLiterals = true;&#xA;}&#xA;&#x9;:&#x9;(ALPHA) (ALPHA | DIGIT)*&#xA;;&#xA;&#xA;NAME&#xA;&#x9;:&#x9;(&#x9;s:SNAME {if(s.getType() != SNAME) $setType(s.getType());}&#xA;&#x9;&#x9;|&#x9;'&quot;'!&#xA;&#x9;&#x9;&#x9;(&#x9;ESC&#xA;&#x9;&#x9;&#x9;|&#x9;'\n' {newline();}&#xA;&#x9;&#x9;&#x9;|&#x9;~('\\'|'\&quot;'|'\n')&#xA;&#x9;&#x9;&#x9;)*&#xA;&#x9;&#x9;&#x9;'&quot;'!&#xA;&#x9;&#x9;)&#xA;&#x9;{&#xA;&#x9;if($getText.equals(&quot;true&quot;)) $setType(BOOLEAN);&#xA;&#x9;if($getText.equals(&quot;false&quot;)) $setType(BOOLEAN);&#xA;&#x9;}&#xA;&#x9;;&#xA;&#xA;INT&#xA;&#x9;:&#x9;(DIGIT)+&#xA;&#x9;&#x9;(('.' DIGIT)=> '.' (DIGIT)+ {$setType(FLOAT);})?&#xA;&#x9;;&#xA;&#xA;protected&#xA;ESC&#xA;&#x9;:&#x9;'\\'!&#xA;&#x9;&#x9;(&#x9;'n' {$setText(&quot;\n&quot;);}&#xA;&#x9;&#x9;|&#x9;'r' {$setText(&quot;\r&quot;);}&#xA;&#x9;&#x9;|&#x9;'t' {$setText(&quot;\t&quot;);}&#xA;&#x9;&#x9;|&#x9;'b' {$setText(&quot;\b&quot;);}&#xA;&#x9;&#x9;|&#x9;'f' {$setText(&quot;\f&quot;);}&#xA;&#x9;&#x9;|&#x9;'&quot;' {$setText(&quot;\&quot;&quot;);}&#xA;&#x9;&#x9;|&#x9;'\'' {$setText(&quot;\'&quot;);}&#xA;&#x9;&#x9;|&#x9;'\\' {$setText(&quot;\\&quot;);}&#xA;&#x9;&#x9;|&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;('0'..'3')&#xA;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;:&#x9;('0'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;:&#x9;'0'..'7'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;|&#x9;('4'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;:&#x9;('0'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;)&#xA;&#x9;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;String s = $getText;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;int i;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;int ret = 0;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;String ans;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;for (i=0; i&lt;s.length(); ++i)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ret = ret*8 + s.charAt(i) - '0';&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;ans = String.valueOf((char) ret);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;$setText(ans);&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;)&#xA;&#x9;;&#xA;&#xA;STRING&#xA;&#x9;:&#x9;'\''!&#xA;&#x9;&#x9;(&#x9;ESC&#xA;&#x9;&#x9;|&#x9;'\n' {newline();}&#xA;&#x9;&#x9;|&#x9;~('\\'|'\''|'\n')&#xA;&#x9;&#x9;)*&#xA;&#x9;&#x9;'\''!&#xA;&#x9;;&#xA;&#xA;&#x9;">
+    <templates xsi:type="PrimitiveTemplate" location="3:9-4:35" name="identifier" typeName="String" isDefault="true" tokenName="NAME" value="%token%"/>
+    <templates xsi:type="PrimitiveTemplate" location="6:9-8:64" name="stringSymbol" typeName="String" isDefault="false" tokenName="STRING" value="%token%" serializer="''' + %value%.toCString() + '''"/>
+    <templates xsi:type="PrimitiveTemplate" location="10:9-11:52" name="integerSymbol" typeName="Integer" isDefault="true" tokenName="INT" value="Integer.valueOf(%token%)"/>
+    <templates xsi:type="PrimitiveTemplate" location="13:9-14:51" name="floatSymbol" typeName="Double" isDefault="true" tokenName="FLOAT" value="Double.valueOf(%token%)"/>
+    <templates xsi:type="PrimitiveTemplate" location="16:9-17:52" name="booleanSymbol" typeName="Boolean" isDefault="true" tokenName="BOOLEAN" value="Boolean.valueOf(%token%)"/>
+    <templates xsi:type="ClassTemplate" location="19:9-21:18" name="Metamodel" isAbstract="false" isOperatored="false" isMain="true" isContext="true" isAddToContext="false" isNonPrimary="false">
+      <templateSequence location="20:25-20:81">
+        <elements xsi:type="Block" location="20:25-20:81">
+          <blockSequence location="20:27-20:35">
+            <elements xsi:type="Property" location="20:27-20:35" name="contents"/>
+          </blockSequence>
+          <blockArgs xsi:type="IndentIncrBArg" location="20:39-20:53" value="0"/>
+          <blockArgs xsi:type="NbNLBArg" location="20:55-20:63" value="2"/>
+          <blockArgs xsi:type="StartNLBArg" location="20:65-20:80" value="false"/>
+        </elements>
+      </templateSequence>
+    </templates>
+    <templates xsi:type="ClassTemplate" location="23:9-23:40" name="ModelElement" isAbstract="true" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false"/>
+    <templates xsi:type="ClassTemplate" location="25:9-25:51" name="Classifier" isAbstract="true" isOperatored="false" isMain="false" isContext="false" isAddToContext="true" isNonPrimary="false"/>
+    <templates xsi:type="ClassTemplate" location="27:9-31:18" name="Package" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+      <templateSequence location="28:25-30:41">
+        <elements xsi:type="LiteralRef" location="28:25-28:34" referredLiteral="/1"/>
+        <elements xsi:type="Property" location="28:35-28:39" name="name"/>
+        <elements xsi:type="CustomSeparator" location="28:40-28:62" name="before_block_bracket"/>
+        <elements xsi:type="LiteralRef" location="28:63-28:66" referredLiteral="/0/@symbols.6"/>
+        <elements xsi:type="Block" location="28:67-30:37">
+          <blockSequence location="29:33-29:41">
+            <elements xsi:type="Property" location="29:33-29:41" name="contents"/>
+          </blockSequence>
+          <blockArgs xsi:type="NbNLBArg" location="30:28-30:36" value="2"/>
+        </elements>
+        <elements xsi:type="LiteralRef" location="30:38-30:41" referredLiteral="/0/@symbols.7"/>
+      </templateSequence>
+    </templates>
+    <templates xsi:type="ClassTemplate" location="33:9-35:18" name="DataType" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+      <templateSequence location="34:25-34:44">
+        <elements xsi:type="LiteralRef" location="34:25-34:35" referredLiteral="/2"/>
+        <elements xsi:type="Property" location="34:36-34:40" name="name"/>
+        <elements xsi:type="LiteralRef" location="34:41-34:44" referredLiteral="/0/@symbols.8"/>
+      </templateSequence>
+    </templates>
+    <templates xsi:type="ClassTemplate" location="37:9-49:18" name="Class" isAbstract="false" isOperatored="false" isMain="false" isContext="true" isAddToContext="false" isNonPrimary="false">
+      <templateSequence location="38:25-48:30">
+        <elements xsi:type="ConditionalElement" location="38:25-38:50">
+          <condition xsi:type="AndExp" location="38:26-38:36">
+            <expressions xsi:type="BooleanPropertyExp" location="38:26-38:36" propertyName="isAbstract"/>
+          </condition>
+          <thenSequence location="38:39-38:49">
+            <elements xsi:type="LiteralRef" location="38:39-38:49" referredLiteral="/3"/>
+          </thenSequence>
+        </elements>
+        <elements xsi:type="LiteralRef" location="38:51-38:58" referredLiteral="/4"/>
+        <elements xsi:type="Property" location="38:59-38:63" name="name"/>
+        <elements xsi:type="ConditionalElement" location="39:25-39:165">
+          <condition xsi:type="AndExp" location="39:26-39:47">
+            <expressions xsi:type="IsDefinedExp" location="39:26-39:47" propertyName="supertypes"/>
+          </condition>
+          <thenSequence location="39:51-39:164">
+            <elements xsi:type="LiteralRef" location="39:51-39:60" referredLiteral="/5"/>
+            <elements xsi:type="Property" location="39:61-39:164" name="supertypes">
+              <propertyArgs xsi:type="RefersToPArg" location="39:72-39:87" propertyName="name"/>
+              <propertyArgs xsi:type="SeparatorPArg" location="39:89-39:128">
+                <separatorSequence location="39:101-39:128">
+                  <elements xsi:type="LiteralRef" location="39:101-39:104" referredLiteral="/0/@symbols.3"/>
+                  <elements xsi:type="CustomSeparator" location="39:105-39:128" name="after_supertypes_coma"/>
+                </separatorSequence>
+              </propertyArgs>
+              <propertyArgs xsi:type="AutoCreatePArg" location="39:130-39:148" value="never"/>
+              <propertyArgs xsi:type="ImportContextPArg" location="39:150-39:163"/>
+            </elements>
+          </thenSequence>
+        </elements>
+        <elements xsi:type="LiteralRef" location="45:25-45:28" referredLiteral="/0/@symbols.6"/>
+        <elements xsi:type="Block" location="45:29-48:26">
+          <blockSequence location="46:33-47:43">
+            <elements xsi:type="Property" location="46:33-46:51" name="structuralFeatures"/>
+            <elements xsi:type="Property" location="47:33-47:43" name="operations"/>
+          </blockSequence>
+        </elements>
+        <elements xsi:type="LiteralRef" location="48:27-48:30" referredLiteral="/0/@symbols.7"/>
+      </templateSequence>
+    </templates>
+    <templates xsi:type="ClassTemplate" location="51:9-51:45" name="StructuralFeature" isAbstract="true" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false"/>
+    <templates xsi:type="ClassTemplate" location="53:9-64:18" name="Reference" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="true" isNonPrimary="false">
+      <templateSequence location="54:25-63:28">
+        <elements xsi:type="LiteralRef" location="54:25-54:36" referredLiteral="/6"/>
+        <elements xsi:type="Property" location="54:37-54:41" name="name"/>
+        <elements xsi:type="FunctionCall" location="55:25-55:38" calledFunction="/0/@templates.18"/>
+        <elements xsi:type="ConditionalElement" location="56:25-56:52">
+          <condition xsi:type="AndExp" location="56:26-56:37">
+            <expressions xsi:type="BooleanPropertyExp" location="56:26-56:37" propertyName="isContainer"/>
+          </condition>
+          <thenSequence location="56:40-56:51">
+            <elements xsi:type="LiteralRef" location="56:40-56:51" referredLiteral="/7"/>
+          </thenSequence>
+        </elements>
+        <elements xsi:type="ConditionalElement" location="57:25-57:101">
+          <condition xsi:type="AndExp" location="57:26-57:45">
+            <expressions xsi:type="IsDefinedExp" location="57:26-57:45" propertyName="subsetOf"/>
+          </condition>
+          <thenSequence location="57:48-57:100">
+            <elements xsi:type="LiteralRef" location="57:48-57:57" referredLiteral="/8"/>
+            <elements xsi:type="Property" location="57:58-57:100" name="subsetOf">
+              <propertyArgs xsi:type="RefersToPArg" location="57:67-57:82" propertyName="name"/>
+              <propertyArgs xsi:type="SeparatorPArg" location="57:84-57:99">
+                <separatorSequence location="57:96-57:99">
+                  <elements xsi:type="LiteralRef" location="57:96-57:99" referredLiteral="/0/@symbols.3"/>
+                </separatorSequence>
+              </propertyArgs>
+            </elements>
+          </thenSequence>
+        </elements>
+        <elements xsi:type="LiteralRef" location="58:25-58:28" referredLiteral="/0/@symbols.9"/>
+        <elements xsi:type="Property" location="58:29-58:70" name="type">
+          <propertyArgs xsi:type="RefersToPArg" location="58:34-58:49" propertyName="name"/>
+          <propertyArgs xsi:type="AutoCreatePArg" location="58:51-58:69" value="never"/>
+        </elements>
+        <elements xsi:type="ConditionalElement" location="59:25-62:26">
+          <condition xsi:type="AndExp" location="59:26-59:45">
+            <expressions xsi:type="IsDefinedExp" location="59:26-59:45" propertyName="opposite"/>
+          </condition>
+          <thenSequence location="60:33-61:93">
+            <elements xsi:type="LiteralRef" location="60:33-60:45" referredLiteral="/9"/>
+            <elements xsi:type="Property" location="61:33-61:93" name="opposite">
+              <propertyArgs xsi:type="RefersToPArg" location="61:42-61:57" propertyName="name"/>
+              <propertyArgs xsi:type="LookInPArg" location="61:59-61:72">
+                <propertyName>type</propertyName>
+              </propertyArgs>
+              <propertyArgs xsi:type="AutoCreatePArg" location="61:74-61:92" value="never"/>
+            </elements>
+          </thenSequence>
+        </elements>
+        <elements xsi:type="LiteralRef" location="63:25-63:28" referredLiteral="/0/@symbols.8"/>
+      </templateSequence>
+    </templates>
+    <templates xsi:type="ClassTemplate" location="66:9-71:18" name="Attribute" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+      <templateSequence location="67:25-70:74">
+        <elements xsi:type="LiteralRef" location="67:25-67:36" referredLiteral="/10"/>
+        <elements xsi:type="Property" location="67:37-67:41" name="name"/>
+        <elements xsi:type="FunctionCall" location="68:25-68:38" calledFunction="/0/@templates.18"/>
+        <elements xsi:type="ConditionalElement" location="69:25-69:46">
+          <condition xsi:type="AndExp" location="69:26-69:34">
+            <expressions xsi:type="BooleanPropertyExp" location="69:26-69:34" propertyName="isUnique"/>
+          </condition>
+          <thenSequence location="69:37-69:45">
+            <elements xsi:type="LiteralRef" location="69:37-69:45" referredLiteral="/11"/>
+          </thenSequence>
+        </elements>
+        <elements xsi:type="LiteralRef" location="70:25-70:28" referredLiteral="/0/@symbols.9"/>
+        <elements xsi:type="Property" location="70:29-70:70" name="type">
+          <propertyArgs xsi:type="RefersToPArg" location="70:34-70:49" propertyName="name"/>
+          <propertyArgs xsi:type="AutoCreatePArg" location="70:51-70:69" value="never"/>
+        </elements>
+        <elements xsi:type="LiteralRef" location="70:71-70:74" referredLiteral="/0/@symbols.8"/>
+      </templateSequence>
+    </templates>
+    <templates xsi:type="ClassTemplate" location="73:9-78:18" name="Operation" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+      <templateSequence location="74:25-77:30">
+        <elements xsi:type="LiteralRef" location="74:25-74:36" referredLiteral="/12"/>
+        <elements xsi:type="Property" location="74:37-74:41" name="name"/>
+        <elements xsi:type="LiteralRef" location="74:42-74:45" referredLiteral="/0/@symbols.4"/>
+        <elements xsi:type="Property" location="74:46-74:73" name="parameters">
+          <propertyArgs xsi:type="SeparatorPArg" location="74:57-74:72">
+            <separatorSequence location="74:69-74:72">
+              <elements xsi:type="LiteralRef" location="74:69-74:72" referredLiteral="/0/@symbols.3"/>
+            </separatorSequence>
+          </propertyArgs>
+        </elements>
+        <elements xsi:type="LiteralRef" location="74:74-74:77" referredLiteral="/0/@symbols.5"/>
+        <elements xsi:type="ConditionalElement" location="75:25-77:26">
+          <condition xsi:type="AndExp" location="75:26-75:41">
+            <expressions xsi:type="IsDefinedExp" location="75:26-75:41" propertyName="type"/>
+          </condition>
+          <thenSequence location="76:33-76:78">
+            <elements xsi:type="LiteralRef" location="76:33-76:36" referredLiteral="/0/@symbols.9"/>
+            <elements xsi:type="Property" location="76:37-76:78" name="type">
+              <propertyArgs xsi:type="RefersToPArg" location="76:42-76:57" propertyName="name"/>
+              <propertyArgs xsi:type="AutoCreatePArg" location="76:59-76:77" value="never"/>
+            </elements>
+          </thenSequence>
+        </elements>
+        <elements xsi:type="LiteralRef" location="77:27-77:30" referredLiteral="/0/@symbols.8"/>
+      </templateSequence>
+    </templates>
+    <templates xsi:type="ClassTemplate" location="80:9-82:18" name="Parameter" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+      <templateSequence location="81:25-81:75">
+        <elements xsi:type="Property" location="81:25-81:29" name="name"/>
+        <elements xsi:type="LiteralRef" location="81:30-81:33" referredLiteral="/0/@symbols.9"/>
+        <elements xsi:type="Property" location="81:34-81:75" name="type">
+          <propertyArgs xsi:type="RefersToPArg" location="81:39-81:54" propertyName="name"/>
+          <propertyArgs xsi:type="AutoCreatePArg" location="81:56-81:74" value="never"/>
+        </elements>
+      </templateSequence>
+    </templates>
+    <templates xsi:type="ClassTemplate" location="84:9-88:18" name="Enumeration" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+      <templateSequence location="85:25-87:30">
+        <elements xsi:type="LiteralRef" location="85:25-85:38" referredLiteral="/13"/>
+        <elements xsi:type="Property" location="85:39-85:43" name="name"/>
+        <elements xsi:type="LiteralRef" location="85:44-85:47" referredLiteral="/0/@symbols.6"/>
+        <elements xsi:type="Block" location="85:48-87:26">
+          <blockSequence location="86:33-86:41">
+            <elements xsi:type="Property" location="86:33-86:41" name="literals"/>
+          </blockSequence>
+        </elements>
+        <elements xsi:type="LiteralRef" location="87:27-87:30" referredLiteral="/0/@symbols.7"/>
+      </templateSequence>
+    </templates>
+    <templates xsi:type="ClassTemplate" location="90:9-92:18" name="EnumLiteral" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+      <templateSequence location="91:25-91:43">
+        <elements xsi:type="LiteralRef" location="91:25-91:34" referredLiteral="/14"/>
+        <elements xsi:type="Property" location="91:35-91:39" name="name"/>
+        <elements xsi:type="LiteralRef" location="91:40-91:43" referredLiteral="/0/@symbols.8"/>
+      </templateSequence>
+    </templates>
+    <templates xsi:type="FunctionTemplate" location="94:9-110:18" name="multiplicity" className="StructuralFeature">
+      <functionSequence location="96:25-109:48">
+        <elements xsi:type="ConditionalElement" location="96:25-108:26">
+          <condition xsi:type="AndExp" location="96:26-96:49">
+            <expressions xsi:type="EqualsExp" location="96:26-96:35" propertyName="lower">
+              <value xsi:type="IntegerVal" location="96:34-96:35" symbol="1"/>
+            </expressions>
+            <expressions xsi:type="EqualsExp" location="96:40-96:49" propertyName="upper">
+              <value xsi:type="IntegerVal" location="96:48-96:49" symbol="1"/>
+            </expressions>
+          </condition>
+          <thenSequence location="98:33-96:51"/>
+          <elseSequence location="99:41-107:42">
+            <elements xsi:type="ConditionalElement" location="99:41-107:42">
+              <condition xsi:type="AndExp" location="99:42-99:66">
+                <expressions xsi:type="EqualsExp" location="99:42-99:51" propertyName="lower">
+                  <value xsi:type="IntegerVal" location="99:50-99:51" symbol="0"/>
+                </expressions>
+                <expressions xsi:type="EqualsExp" location="99:56-99:66" propertyName="upper">
+                  <value xsi:type="NegativeIntegerVal" location="99:64-99:66" symbol="1"/>
+                </expressions>
+              </condition>
+              <thenSequence location="100:57-100:68">
+                <elements xsi:type="LiteralRef" location="100:57-100:60" referredLiteral="/0/@symbols.0"/>
+                <elements xsi:type="LiteralRef" location="100:61-100:64" referredLiteral="/0/@symbols.17"/>
+                <elements xsi:type="LiteralRef" location="100:65-100:68" referredLiteral="/0/@symbols.1"/>
+              </thenSequence>
+              <elseSequence location="102:57-106:58">
+                <elements xsi:type="ConditionalElement" location="102:57-106:58">
+                  <condition xsi:type="AndExp" location="102:58-102:68">
+                    <expressions xsi:type="EqualsExp" location="102:58-102:68" propertyName="upper">
+                      <value xsi:type="NegativeIntegerVal" location="102:66-102:68" symbol="1"/>
+                    </expressions>
+                  </condition>
+                  <thenSequence location="103:73-103:94">
+                    <elements xsi:type="LiteralRef" location="103:73-103:76" referredLiteral="/0/@symbols.0"/>
+                    <elements xsi:type="Property" location="103:77-103:82" name="lower"/>
+                    <elements xsi:type="LiteralRef" location="103:83-103:86" referredLiteral="/0/@symbols.16"/>
+                    <elements xsi:type="LiteralRef" location="103:87-103:90" referredLiteral="/0/@symbols.17"/>
+                    <elements xsi:type="LiteralRef" location="103:91-103:94" referredLiteral="/0/@symbols.1"/>
+                  </thenSequence>
+                  <elseSequence location="105:73-105:96">
+                    <elements xsi:type="LiteralRef" location="105:73-105:76" referredLiteral="/0/@symbols.0"/>
+                    <elements xsi:type="Property" location="105:77-105:82" name="lower"/>
+                    <elements xsi:type="LiteralRef" location="105:83-105:86" referredLiteral="/0/@symbols.16"/>
+                    <elements xsi:type="Property" location="105:87-105:92" name="upper"/>
+                    <elements xsi:type="LiteralRef" location="105:93-105:96" referredLiteral="/0/@symbols.1"/>
+                  </elseSequence>
+                </elements>
+              </elseSequence>
+            </elements>
+          </elseSequence>
+        </elements>
+        <elements xsi:type="ConditionalElement" location="109:25-109:48">
+          <condition xsi:type="AndExp" location="109:26-109:35">
+            <expressions xsi:type="BooleanPropertyExp" location="109:26-109:35" propertyName="isOrdered"/>
+          </condition>
+          <thenSequence location="109:38-109:47">
+            <elements xsi:type="LiteralRef" location="109:38-109:47" referredLiteral="/15"/>
+          </thenSequence>
+        </elements>
+      </functionSequence>
+    </templates>
+    <symbols location="113:17-113:39" name="lsquare" value="["/>
+    <symbols location="114:17-114:54" name="rsquare" value="]">
+      <spaces>rightSpace</spaces>
+    </symbols>
+    <symbols location="115:17-115:39" name="excl" value="!"/>
+    <symbols location="116:17-116:39" name="coma" value=","/>
+    <symbols location="117:17-117:39" name="lparen" value="("/>
+    <symbols location="118:17-118:39" name="rparen" value=")"/>
+    <symbols location="119:17-119:53" name="lcurly" value="{">
+      <spaces>leftSpace</spaces>
+    </symbols>
+    <symbols location="120:17-120:39" name="rcurly" value="}"/>
+    <symbols location="121:17-121:39" name="semi" value=";"/>
+    <symbols location="122:17-122:65" name="colon" value=":">
+      <spaces>leftSpace</spaces>
+      <spaces>rightSpace</spaces>
+    </symbols>
+    <symbols location="123:17-123:40" name="colons" value="::"/>
+    <symbols location="124:17-124:39" name="pipe" value="|"/>
+    <symbols location="125:17-125:39" name="sharp" value="#"/>
+    <symbols location="126:17-126:39" name="qmark" value="?"/>
+    <symbols location="129:17-129:39" name="point" value="."/>
+    <symbols location="130:17-130:40" name="rarrow" value="->"/>
+    <symbols location="131:17-131:39" name="minus" value="-"/>
+    <symbols location="132:17-132:39" name="star" value="*"/>
+    <symbols location="133:17-133:39" name="slash" value="/"/>
+    <symbols location="134:17-134:39" name="plus" value="+"/>
+    <symbols location="135:17-135:39" name="eq" value="="/>
+    <symbols location="136:17-136:39" name="gt" value=">"/>
+    <symbols location="137:17-137:39" name="lt" value="&lt;"/>
+    <symbols location="138:17-138:40" name="ge" value=">="/>
+    <symbols location="139:17-139:40" name="le" value="&lt;="/>
+    <symbols location="140:17-140:40" name="ne" value="&lt;>"/>
+    <symbols location="141:17-141:40" name="larrow" value="&lt;-"/>
+  </ConcreteSyntax>
+  <Keyword value="package"/>
+  <Keyword value="datatype"/>
+  <Keyword value="abstract"/>
+  <Keyword value="class"/>
+  <Keyword value="extends"/>
+  <Keyword value="reference"/>
+  <Keyword value="container"/>
+  <Keyword value="subsets"/>
+  <Keyword value="oppositeOf"/>
+  <Keyword value="attribute"/>
+  <Keyword value="unique"/>
+  <Keyword value="operation"/>
+  <Keyword value="enumeration"/>
+  <Keyword value="literal"/>
+  <Keyword value="ordered"/>
+</xmi:XMI>
