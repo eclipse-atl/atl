@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/KM3-importer.jar"/>
+	<classpathentry kind="lib" path="/org.atl.eclipse.engine/lib/ebnfextractor.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
