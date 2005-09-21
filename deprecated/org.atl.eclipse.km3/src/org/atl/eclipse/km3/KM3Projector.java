@@ -3,6 +3,7 @@
  */
 package org.atl.eclipse.km3;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -15,13 +16,14 @@ import java.util.Map;
 import org.atl.eclipse.adt.builder.MarkerMaker;
 import org.atl.eclipse.engine.AtlLauncher;
 import org.atl.eclipse.engine.AtlModelHandler;
+import org.atl.engine.extractors.Extractor;
+import org.atl.engine.extractors.ebnf.EBNFExtractor;
 import org.atl.engine.injectors.ebnf.EBNFInjector2;
 import org.atl.engine.injectors.ebnf.KM3Lexer;
 import org.atl.engine.injectors.ebnf.KM3Parser;
 import org.atl.engine.repositories.emf4atl.ASMEMFModelElement;
 import org.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.atl.engine.vm.nativelib.ASMModel;
-import org.atl.engine.vm.nativelib.ASMString;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
@@ -34,7 +36,9 @@ public class KM3Projector {
 	private URL MOF2KM3url = KM3Projector.class.getResource("resources/MOF2KM3.asm");
 	private URL KM32MOFurl = KM3Projector.class.getResource("resources/KM32MOF.asm");
 	private URL EMF2KM3url = KM3Projector.class.getResource("resources/EMF2KM3.asm");
-	private URL KM3_serializerurl = KM3Projector.class.getResource("resources/KM3-serializer.asm");
+	//private URL KM3_serializerurl = KM3Projector.class.getResource("resources/KM3-serializer.asm");
+	private URL KM3_tcs = KM3Projector.class.getResource("resources/KM3-TCS.ecore");
+	private URL TCS = KM3Projector.class.getResource("resources/TCS.ecore");
 	private URL KM32EMFurl = KM3Projector.class.getResource("resources/KM32EMF.asm");
 	private URL KM3WFRurl = KM3Projector.class.getResource("resources/KM3-WFR.asm");
 	
@@ -45,6 +49,9 @@ public class KM3Projector {
 	private ASMModel mdrmm;
 
 	private ASMModel pbmm;
+	
+	private ASMModel tcs = null;
+	private ASMModel km3Tcs = null;
 	
 	private String mmName = "KM3";
 	
@@ -165,6 +172,8 @@ public class KM3Projector {
 	 * @return the serialized textual representation of the KM3 model.
 	 */
 	public String getStringFromKM3(ASMModel model) {
+		String ret = null;
+/*		
 		Map models = new HashMap();
 		models.put("KM3", emfmm);
 		models.put("IN", model);
@@ -173,6 +182,28 @@ public class KM3Projector {
 		ASMString s = (ASMString)AtlLauncher.getDefault().launch(KM3_serializerurl, libs, models, params);
 		
 		return (s == null) ? null : s.getSymbol();
+*/
+		try {
+			if(km3Tcs == null) {
+				tcs = emfamh.loadModel("TCS", emfamh.getMof(), TCS.openStream());
+				km3Tcs = emfamh.loadModel("KM3.tcs", tcs, KM3_tcs.openStream());
+			}
+			Extractor ext = new EBNFExtractor();
+			Map params = new HashMap();
+			params.put("format", km3Tcs);
+			params.put("indentString", "\t");
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			try {
+				ext.extract(model, out, params);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			ret = out.toString();
+		} catch(IOException ioe) {
+			ioe.printStackTrace();
+		}
+		
+		return ret;
 	}
 	
 	/**
