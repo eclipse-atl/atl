@@ -25,9 +25,6 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 	/** The Atl builder id */
 	public static final String ATL_BUILDER_ID = "org.atl.eclipse.adt.builder.atlBuilder";
 	
-	/**
-	 * @see org.eclipse.core.internal.events.InternalBuilder#build(int, java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
-	 */
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {		
 		//if (kind == IncrementalProjectBuilder.FULL_BUILD)
 		IWorkspaceRunnable wr= new IWorkspaceRunnable() {

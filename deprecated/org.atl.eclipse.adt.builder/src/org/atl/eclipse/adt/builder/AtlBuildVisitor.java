@@ -24,7 +24,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 	
 	/** Returns <code>true</code> if the file has chaned since its last build <code>false</code> otherwise*/
 	private boolean hasChanged(IResource resource) {
-		return (resource.getModificationStamp() > getAsmFile(resource).getModificationStamp());
+		return (resource.getLocalTimeStamp() > getAsmFile(resource).getLocalTimeStamp());
 	}
 	
 	/** 
