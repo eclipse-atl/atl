@@ -18,6 +18,9 @@
          <export name="*"/>
       </library>
       <library name="lib/ATL-importer.jar"/>
+      <library name="lib/ebnfextractor.jar">
+         <export name="*"/>
+      </library>
    </runtime>
    <requires>
       <import plugin="org.eclipse.ui"/>
