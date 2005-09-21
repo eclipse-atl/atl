@@ -67,7 +67,7 @@ public class ADWPDebugger extends ADWP {
 		return ret;
 	}
 
-	public ADWPCommand requestMessage(int cmd, List args) {
+	public synchronized ADWPCommand requestMessage(int cmd, List args) {
 		ADWPCommand ret = null;
 
 		realSendCommand(cmd, args);
@@ -76,7 +76,7 @@ public class ADWPDebugger extends ADWP {
 		return ret;
 	}
 
-	public Value request(int cmd, List args) {
+	public synchronized Value request(int cmd, List args) {
 		Value ret = null;
 
 		ADWPCommand acmd = requestMessage(cmd, args);
