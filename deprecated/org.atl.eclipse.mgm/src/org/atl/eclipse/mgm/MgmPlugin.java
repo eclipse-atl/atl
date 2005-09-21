@@ -3,7 +3,6 @@ package org.atl.eclipse.mgm;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.MissingResourceException;
@@ -49,22 +48,6 @@ public class MgmPlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-
-		Dictionary dico = MgmPlugin.getDefault().getBundle().getHeaders();
-		String requires = (String)dico.get(Constants.BUNDLE_CLASSPATH);
-		
-		String metaModel = MgmPlugin.getPluginRep() + "resources/AM3/AM3.ecore";
-		String model = MgmPlugin.getPluginRep() + "resources/AM3/megamodel-AM3.ecore";
-		handler = new MetaHandler(metaModel, model);
-
-		Set elements = handler.getElementsByType("EBNFInjector");
-
-		for (Iterator it = elements.iterator(); it.hasNext();) {
-			EObject eo = (EObject) it.next();
-			requires += ",\n " + handler.get(eo, "uri");
-		}
-		
-		dico.put(Constants.BUNDLE_CLASSPATH, requires);
 		createLoader();
 	}
 
@@ -121,9 +104,21 @@ public class MgmPlugin extends AbstractUIPlugin {
 			if (loader == null) {
 				URL url = MgmPlugin.getDefault().getBundle().getEntry("/");
 	 			String urlString = url.toString();
-
+	 			
 				LinkedList list = new LinkedList();
 				String requires = (String)MgmPlugin.getDefault().getBundle().getHeaders().get(Constants.BUNDLE_CLASSPATH);
+
+				String metaModel = MgmPlugin.getPluginRep() + "resources/AM3/AM3.ecore";
+	 			String model = MgmPlugin.getPluginRep() + "resources/AM3/megamodel-AM3.ecore";
+	 			handler = new MetaHandler(metaModel, model);
+	 	
+	 			Set injectorElements = handler.getElementsByType("EBNFInjector");
+	 	
+	 			for (Iterator it = injectorElements.iterator(); it.hasNext();) {
+	 				EObject eo = (EObject) it.next();
+	 				requires += "," + handler.get(eo, "uri");
+	 			}
+				
 				ManifestElement[] elements = ManifestElement.parseHeader(Constants.BUNDLE_CLASSPATH, requires);
 	 			for (int i = 0; i < elements.length; i++) {
 	 				ManifestElement element = elements[i];
