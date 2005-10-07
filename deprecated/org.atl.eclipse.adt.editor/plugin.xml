@@ -10,7 +10,6 @@
    <runtime>
       <library name="editor.jar">
          <export name="*"/>
-         <packages prefixes="org.atl.eclipse.adt.ui"/>
       </library>
    </runtime>
    <requires>
