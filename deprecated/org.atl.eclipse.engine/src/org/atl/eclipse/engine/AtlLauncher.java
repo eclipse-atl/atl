@@ -65,9 +65,18 @@ public class AtlLauncher {
 	}
 	
 	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, Debugger debugger) {
-		Object ret = null;
 		try {
 			ASM asm = new ASMXMLReader().read(new BufferedInputStream(asmurl.openStream()));
+			return launch(asm, libraries, models, asmParams, debugger);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Object launch(ASM asm, Map libraries, Map models, Map asmParams, Debugger debugger) {
+		Object ret = null;
+		try {
 			ASMModule asmModule = new ASMModule(asm);
 
 			ASMExecEnv env = new ASMExecEnv(asmModule, debugger);
