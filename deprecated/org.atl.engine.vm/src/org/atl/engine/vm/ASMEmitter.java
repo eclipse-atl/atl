@@ -41,7 +41,7 @@ public class ASMEmitter extends ASMOclAny {
 		asm.addField(new ASMField(name, type));
 	}
 
-	public void addOperation(String name) {
+	public void finishOperation() {
 		if(currentOperation != null) {
 			currentOperation.endLocalVariableEntry("self");
 			for(Iterator i = currentOperation.getParameters().iterator() ; i.hasNext() ; ) {
@@ -49,7 +49,12 @@ public class ASMEmitter extends ASMOclAny {
 				int slot = currentOperation.endLocalVariableEntry(p.getName());
 				p.setName("" + slot);
 			}
+			currentOperation = null;
 		}
+	}
+	
+	public void addOperation(String name) {
+		finishOperation();
 		currentOperation = new ASMOperation(asm, name);
 		asm.addOperation(currentOperation);
 		currentOperation.beginLocalVariableEntry("self", "self");
@@ -127,15 +132,7 @@ public class ASMEmitter extends ASMOclAny {
 	}
 
 	public void dumpASM(String fileName) {
-		if(currentOperation != null) {
-			currentOperation.endLocalVariableEntry("self");
-			for(Iterator i = currentOperation.getParameters().iterator() ; i.hasNext() ; ) {
-				ASMParameter p = (ASMParameter)i.next();
-				int slot = currentOperation.endLocalVariableEntry(p.getName());
-				p.setName("" + slot);
-			}
-			currentOperation = null;
-		}
+		finishOperation();
 		System.out.println("Dumping ASM to " + fileName);
 		try {
 			PrintWriter out = new PrintWriter(new FileWriter(fileName));
