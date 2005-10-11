@@ -56,6 +56,9 @@ public class MgmPlugin extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
+		
+		// The megamodel is saved when MgmPlugin stops
+		getHandler().saveModel();
 	}
 
 	/**
@@ -118,7 +121,7 @@ public class MgmPlugin extends AbstractUIPlugin {
 	 				EObject eo = (EObject) it.next();
 	 				requires += "," + handler.get(eo, "uri");
 	 			}
-				
+	 			
 				ManifestElement[] elements = ManifestElement.parseHeader(Constants.BUNDLE_CLASSPATH, requires);
 	 			for (int i = 0; i < elements.length; i++) {
 	 				ManifestElement element = elements[i];
