@@ -68,15 +68,15 @@ public class EMFModelLoader extends ModelLoader {
 
 	protected void setParameter(String name, Object value) {
 		if("useIDs".equals(name)) {
-			if("true".equals((String)value)) {
+			if("true".equals(value)) {
 				useIDs = true;
-			} else if("true".equals((String)value)) {
+			} else if("true".equals(value)) {
 				useIDs = false;				
 			}
 		} else if("removeIDs".equals(name)) {
-			if("true".equals((String)value)) {
+			if("true".equals(value)) {
 				removeIDs = true;
-			} else if("true".equals((String)value)) {
+			} else if("true".equals(value)) {
 				removeIDs = false;				
 			}
 		} else if("encoding".equals(name)) {

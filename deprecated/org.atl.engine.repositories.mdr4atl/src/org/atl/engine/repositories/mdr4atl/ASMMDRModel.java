@@ -187,7 +187,6 @@ if(debug)
 	}
 
 	public static ASMMDRModel newASMMDRModel(String name, ASMMDRModel metamodel, ModelLoader ml) throws Exception {
-		ASMMDRModel ret = null;
 		RefPackage mextent = null;
 		String modifiedName = name;
 		int id = 0;

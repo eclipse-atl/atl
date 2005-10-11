@@ -152,7 +152,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		} else if(value instanceof Short) {
 			ret = new ASMInteger(((Short)value).intValue());
 		} else if(value instanceof Character) {
-			ret = new ASMInteger((int)((Character)value).charValue());
+			ret = new ASMInteger(((Character)value).charValue());
 		} else if(value instanceof EEnumLiteral) {
 			ret = new ASMEnumLiteral(((EEnumLiteral)value).getName());
 		} else if(value instanceof EObject) {

@@ -551,7 +551,7 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 	}
 
 	public boolean isAcquaintanceFirst(String name) {
-		return ((Boolean)((Object[])getAcquaintanceStruct(name))[1]).booleanValue();
+		return ((Boolean)(getAcquaintanceStruct(name))[1]).booleanValue();
 	}
 
 	private Map acquaintances = new HashMap();
