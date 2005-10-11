@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<Megamodel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="AM3" name="MegamodelTest" url="http://www.sciences.univ-nantes.fr/lina/atl/private/viewcvs.cgi/playground/repository_gmt/">
-  <megamodelElements xsi:type="XMLInjector" uri="NULL" name="XML" version="" domains="" authors="" date="" description="" see=""/>
-  <megamodelElements xsi:type="EBNFInjector" uri="resources/ATL-0.2/ATL-0.2-importer.jar" name="ATL-0.2" version="" domains="" authors="" date="" description="" see="" extension="atl" classNamePrefix="ATL"/>
-  <megamodelElements xsi:type="XMLExtractor" uri="NULL" name="XML" version="" domains="" authors="" date="" description="" see="" extension="xml" paramMetamodel="" paramModel=""/>
-  <megamodelElements xsi:type="Metamodel" uri="resources/XML/XML.ecore" name="XML" version="" domains="" authors="" date="" description="" see=""/>
-  <megamodelElements xsi:type="Metamodel" uri="resources/TCS/TCS.ecore" name="TCS" version="" domains="" authors="" date="" description="" see=""/>
-  <megamodelElements xsi:type="Metamodel" uri="resources/ATL-0.2/ATL-0.2.ecore" name="ATL-0.2" version="" domains="" authors="" date="" description="" see=""/>
-  <megamodelElements xsi:type="Metamodel" uri="resources/AM3/AM3.ecore" name="AM3" version="" domains="" authors="" date="" description="" see=""/>
-  <megamodelElements xsi:type="TCS" uri="resources/ATL-0.2/ATL-0.2-TCS.ecore" name="ATL-0.2" version="" domains="" authors="" date="" description="" see=""/>
+<Megamodel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="AM3" name="MegamodelTest">
+  <megamodelElements xsi:type="XMLInjector" uri="XMLInjector" name="XML" version=""
+      domains="" authors="" date="" description="" see=""/>
+  <megamodelElements xsi:type="EBNFInjector" uri="resources/ATL-0.2/ATL-importer.jar"
+      name="ATL-0.2" version="" domains="" authors="" date="" description="" see=""
+      extension="atl" classNamePrefix="ATL"/>
+  <megamodelElements xsi:type="XMLExtractor" uri="XMLExtractor" name="XML" version=""
+      domains="" authors="" date="" description="" see="" extension="xml" paramMetamodel=""
+      paramModel=""/>
+  <megamodelElements xsi:type="TCS" uri="resources/ATL-0.2/ATL-0.2-TCS.ecore" name="ATL-0.2"
+      version="" domains="" authors="" date="" description="" see=""/>
+  <megamodelElements xsi:type="Metamodel" uri="resources/XML/XML.ecore" name="XML"
+      version="" domains="" authors="" date="" description="" see=""/>
+  <megamodelElements xsi:type="Metamodel" uri="resources/TCS/TCS.ecore" name="TCS"
+      version="" domains="" authors="" date="" description="" see=""/>
+  <megamodelElements xsi:type="Metamodel" uri="../org.atl.eclipse.engine/src/org/atl/eclipse/engine/resources/ATL-0.2.ecore"
+      name="ATL-0.2" version="" domains="" authors="" date="" description="" see=""/>
+  <megamodelElements xsi:type="Metamodel" uri="resources/AM3/AM3.ecore" name="AM3"
+      version="" domains="" authors="4554" date="" description="" see=""/>
 </Megamodel>
