@@ -92,11 +92,11 @@ public class AtlParser {
 		ASMModel atlmodel = parsed[0];
 		ASMModel problems = parsed[1];
 		if(atlmodel instanceof ASMEMFModel) {
-			Collection modules = (Collection)atlmodel.getElementsByType("Unit");
+			Collection modules = atlmodel.getElementsByType("Unit");
 			if(modules.size() > 0) {
 				retUnit = ((ASMEMFModelElement)modules.iterator().next()).getObject();
 			}
-			pbs = (Collection)problems.getElementsByType("Problem");
+			pbs = problems.getElementsByType("Problem");
 		} else {
 			Object o = atlmodel.getElementsByType("Unit");
 			System.out.println(o);

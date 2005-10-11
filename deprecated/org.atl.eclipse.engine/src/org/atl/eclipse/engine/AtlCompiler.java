@@ -46,7 +46,7 @@ public class AtlCompiler {
 	private Object[] getProblems(ASMModel problems, EObject prev[]) {
 		Object ret[] = new Object[2];
 		EObject pbsa[] = null;
-		Collection pbs = (Collection)problems.getElementsByType("Problem");
+		Collection pbs = problems.getElementsByType("Problem");
 		
 		int nbErrors = 0;
 		if(pbs != null) {
