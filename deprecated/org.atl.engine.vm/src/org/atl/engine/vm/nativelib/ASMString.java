@@ -61,11 +61,11 @@ public class ASMString extends ASMOclAny {
 				ret.append("\\f");
 			} else if((c < ' ') || ((c > '~') && (c < '¡'))) {
 				ret.append("\\");
-				if((int)c < 010)
+				if(c < 010)
 					ret.append("0");
-				if((int)c < 0100)
+				if(c < 0100)
 					ret.append("0");
-				ret.append(java.lang.Integer.toOctalString((int)c));
+				ret.append(java.lang.Integer.toOctalString(c));
 			} else if(c == '\'') {
 				ret.append("\\'");
 			} else if(c == '\"') {

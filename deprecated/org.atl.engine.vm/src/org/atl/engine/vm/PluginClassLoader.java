@@ -13,8 +13,6 @@ import java.util.List;
  */
 public class PluginClassLoader extends URLClassLoader {
 
-	private final static boolean debug = false;
-
 	private static URL[] toURLs(List locations) {
 		URL ret[] = new URL[locations.size()];
 		int k = 0;
@@ -30,7 +28,7 @@ public class PluginClassLoader extends URLClassLoader {
 		URL ret = null;
 
 		try {
-			ret = new URL("file:" + (String)location);
+			ret = new URL("file:" + location);
 		} catch(MalformedURLException mue) {
 			mue.printStackTrace(System.out);
 		}
