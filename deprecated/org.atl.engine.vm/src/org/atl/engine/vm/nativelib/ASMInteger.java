@@ -68,25 +68,22 @@ public class ASMInteger extends ASMNumber {
 	public static ASMNumber operatorMinus(StackFrame frame, ASMInteger self, ASMNumber o) {
 		if(o instanceof ASMInteger) {
 			return new ASMInteger(self.s - ((ASMInteger)o).s);
-		} else {
-			return new ASMReal(self.s - o.asDouble());
 		}
+	    return new ASMReal(self.s - o.asDouble());
 	}
 
 	public static ASMNumber operatorPlus(StackFrame frame, ASMInteger self, ASMNumber o) {
 		if(o instanceof ASMInteger) {
 			return new ASMInteger(self.s + ((ASMInteger)o).s);
-		} else {
-			return new ASMReal(self.s + o.asDouble());
 		}
+	    return new ASMReal(self.s + o.asDouble());
 	}
 
 	public static ASMNumber operatorMul(StackFrame frame, ASMInteger self, ASMNumber o) {
 		if(o instanceof ASMInteger) {
 			return new ASMInteger(self.s * ((ASMInteger)o).s);
-		} else {
-			return new ASMReal(self.s * o.asDouble());
 		}
+		return new ASMReal(self.s * o.asDouble());
 	}
 
 	public static ASMReal operatorDiv(StackFrame frame, ASMInteger self, ASMNumber o) {//Second parameter should be ASMReal
@@ -96,49 +93,43 @@ public class ASMInteger extends ASMNumber {
 	public static ASMBoolean operatorEQ(StackFrame frame, ASMInteger self, ASMNumber o) {
 		if(o instanceof ASMInteger) {
 			return new ASMBoolean(self.s == ((ASMInteger)o).s);
-		} else {
-			return new ASMBoolean(self.s == o.asDouble());			
 		}
+		return new ASMBoolean(self.s == o.asDouble());			
 	}
 
 	public static ASMBoolean operatorNE(StackFrame frame, ASMInteger self, ASMNumber o) {
 		if(o instanceof ASMInteger) {
 			return new ASMBoolean(self.s != ((ASMInteger)o).s);
-		} else {
-			return new ASMBoolean(self.s != o.asDouble());			
 		}
+		return new ASMBoolean(self.s != o.asDouble());			
 	}
 
 	public static ASMBoolean operatorLT(StackFrame frame, ASMInteger self, ASMNumber o) {
 		if(o instanceof ASMInteger) {
 			return new ASMBoolean(self.s < ((ASMInteger)o).s);
-		} else {
-			return new ASMBoolean(self.s < o.asDouble());			
 		}
+		return new ASMBoolean(self.s < o.asDouble());			
 	}
 
 	public static ASMBoolean operatorLE(StackFrame frame, ASMInteger self, ASMNumber o) {
 		if(o instanceof ASMInteger) {
 			return new ASMBoolean(self.s <= ((ASMInteger)o).s);
-		} else {
-			return new ASMBoolean(self.s <= o.asDouble());			
 		}
+		return new ASMBoolean(self.s <= o.asDouble());			
 	}
 
 	public static ASMBoolean operatorGT(StackFrame frame, ASMInteger self, ASMNumber o) {
 		if(o instanceof ASMInteger) {
 			return new ASMBoolean(self.s > ((ASMInteger)o).s);
-		} else {
-			return new ASMBoolean(self.s > o.asDouble());			
 		}
+		return new ASMBoolean(self.s > o.asDouble());			
 	}
 
 	public static ASMBoolean operatorGE(StackFrame frame, ASMInteger self, ASMNumber o) {
 		if(o instanceof ASMInteger) {
 			return new ASMBoolean(self.s >= ((ASMInteger)o).s);
-		} else {
-			return new ASMBoolean(self.s >= o.asDouble());			
 		}
+		return new ASMBoolean(self.s >= o.asDouble());			
 	}
 
 	public static ASMString toString(StackFrame frame, ASMInteger self) {

@@ -66,7 +66,7 @@ public class ASMHashModel extends ASMModel {
 
 	private void realGetElementsByType(ASMModelElement ame, Set ret) {
 		for(Iterator i = getContentsSetForType(ame).iterator() ; i.hasNext() ; ) {
-			ret.add((ASMModelElement)i.next());
+			ret.add(i.next());
 		}
 		for(Iterator i = ame.getSubtypes().iterator() ; i.hasNext() ; ) {
 			Object o = i.next();
