@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -17,26 +16,21 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
 /**
- * @author allilaire
+ * @author Freddy Allilaire
  *
  * This class allows to load a model and its metamodel
  * It contains also some basic fonctions to extract informations from model
  */
 public class MetaHandler {
     
-	// ResourceSet used to managed both the MetaModel and a Model
-    private ResourceSet resourceSet = new ResourceSetImpl();
-    
     // Resource linked to the MetaModel
-    private Resource mmExtent= resourceSet.createResource(URI.createURI("metamodel"));
+    private Resource mmExtent;
 
     // Resource linked to the Model
-    private Resource mExtent= resourceSet.createResource(URI.createURI("model"));
+    private Resource mExtent;
     
     /**
      * Constructor loading metamodel and model associated to URL in parameters
@@ -48,15 +42,16 @@ public class MetaHandler {
     	Resource.Factory myEcoreFactory = new EcoreResourceFactoryImpl();
         mmExtent = myEcoreFactory.createResource(URI.createURI(URLmetaModel));
         try {
-        	mmExtent.load(new FileInputStream(URLmetaModel),Collections.EMPTY_MAP);     	
-        } catch (IOException e) {			
+        	mmExtent.load(new FileInputStream(URLmetaModel),Collections.EMPTY_MAP);
+        } catch (IOException e) {
         	e.printStackTrace();
     	} catch (Exception ex) {
     		ex.printStackTrace();
     	}
         init();
         
-        mExtent = myEcoreFactory.createResource(URI.createURI(URLmodel));
+        URI uri = URI.createFileURI(URLmodel);
+        mExtent = myEcoreFactory.createResource(uri);
         try {
         	mExtent.load(new FileInputStream(URLmodel),Collections.EMPTY_MAP);
 
@@ -256,20 +251,15 @@ public class MetaHandler {
 	}
 	
 	/**
-	 * Saves the Model (mExtent) into a given file associated with a
-	 * given IProject.
+	 * Saves the Model (mExtent)
 	 * 
-	 * @param dest The destination project
-	 * @param fileName The name of the destination file
 	 */
-	public void saveModel(IProject dest, String fileName) {	    	    
-		String uri = dest.getFullPath().toString() + "/" + fileName + ".ecore";
-		mExtent.setURI(URI.createURI(uri));
+	public void saveModel() {
 		try {
 			mExtent.save(Collections.EMPTY_MAP);
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}	    
+		}
 	}
 	
 	/**
