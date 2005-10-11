@@ -202,7 +202,7 @@ public class ASMOperation implements Operation {
 				ArrayList arguments = new ArrayList();
 				for(int j = 0 ; j < nb ; j++)
 					arguments.add(0, frame.pop());
-				ASMOclAny o = (ASMOclAny)frame.pop();
+				ASMOclAny o = frame.pop();
 				arguments.add(0, o);	// self
 				ASMOclAny ret = null;
 
@@ -250,10 +250,10 @@ public class ASMOperation implements Operation {
 					frame.push(model.findModelElement(name));
 				}
 			} else if(mn.equals("get")) {
-				frame.push(((ASMOclAny)frame.pop()).get(frame, ops));
+				frame.push((frame.pop()).get(frame, ops));
 			} else if(mn.equals("set")) {
-				ASMOclAny value = (ASMOclAny)frame.pop();
-				ASMOclAny o = (ASMOclAny)frame.pop();
+				ASMOclAny value = frame.pop();
+				ASMOclAny o = frame.pop();
 				o.set(frame, ops, value);
 			} else if(mn.equals("pushi")) {
 				ASMInteger ai = new ASMInteger(Integer.parseInt(ops));
@@ -292,9 +292,8 @@ public class ASMOperation implements Operation {
 					if(mnc.equals("enditerate")) {
 						if(nested == 0) {
 							break;
-						} else {
-							nested--;
-						}
+						} 
+					    nested--;
 					} else if(mnc.equals("iterate")) {
 						nested++;
 					}
