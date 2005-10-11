@@ -108,8 +108,6 @@ import org.atl.engine.vm.nativelib.ASMString;
  */
 public class ASMInterpreter {
 
-	private ASM asm;
-
 	public static void realMain(String args[], PluginClassLoader pcl) throws Exception {
 		Map params = parseCommandLine(args);
 
@@ -181,7 +179,7 @@ public class ASMInterpreter {
 			System.out.println("ERROR: ATL meta-model location not given on command line.");
 			System.exit(1);
 		}
-		env.addModel(ml.loadModel("ATL", (ASMModel)env.getModel("MOF"), ATL));
+		env.addModel(ml.loadModel("ATL", env.getModel("MOF"), ATL));
 		try {
 			// TODO: use a plugin mechanism to properly register injectors and extractors
 			ml.addInjector("ebnf", pcl.loadClass("org.atl.engine.injectors.ebnf.EBNFInjector"));
@@ -355,15 +353,15 @@ System.out.println("\t=>" + pname);
 			if(mm == null) {
 				String url = (String)params.get(mAndMm[1]);
 				System.out.println("Loading meta-model " + mAndMm[1] + " from \"" + url + "\".");
-				env.addModel(ml.loadModel(mAndMm[1], (ASMModel)env.getModel("MOF"), url));
+				env.addModel(ml.loadModel(mAndMm[1], env.getModel("MOF"), url));
 			}
 			if(isTarget) {
 				System.out.println("Creating model " + mAndMm[0] + " : " + mAndMm[1]);
-				env.addModel(ml.newModel(mAndMm[0], (ASMModel)env.getModel(mAndMm[1])));
+				env.addModel(ml.newModel(mAndMm[0], env.getModel(mAndMm[1])));
 			} else {
 				String url = (String)params.get(mAndMm[0]);
 				System.out.println("Loading model " + mAndMm[0] + " : " + mAndMm[1] + " from \"" + url + "\".");
-				env.addModel(ml.loadModel(mAndMm[0], (ASMModel)env.getModel(mAndMm[1]), (String)params.get(mAndMm[0])));
+				env.addModel(ml.loadModel(mAndMm[0], env.getModel(mAndMm[1]), (String)params.get(mAndMm[0])));
 			}
 		}
 	}
@@ -374,7 +372,7 @@ System.out.println("\t=>" + pname);
 			for(Iterator i = Arrays.asList(models.split(",")).iterator() ; i.hasNext() ; ) {
 				String model = (String)i.next();
 				String mAndMm[] = model.split(":");
-				ASMModel m = (ASMModel)env.getModel(mAndMm[0]);
+				ASMModel m = env.getModel(mAndMm[0]);
 				String url = (String)params.get(mAndMm[0]);
 				System.err.println("Saving model " + mAndMm[0] + " : " + mAndMm[1] + " to \"" + url + "\".");
 				ml.save(m, (String)params.get(mAndMm[0]));
