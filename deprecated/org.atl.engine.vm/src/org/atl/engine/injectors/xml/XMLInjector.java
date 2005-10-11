@@ -156,7 +156,7 @@ public class XMLInjector extends DefaultHandler implements Injector {
 	}
 
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-		ASMOclAny parent = (ASMOclAny)current.get(null, "parent");
+		ASMOclAny parent = current.get(null, "parent");
 		if(locator != null) {
 			if(locator.getLineNumber() != -1) {
 				current.set(null, "endLine", new ASMInteger(locator.getLineNumber()));
