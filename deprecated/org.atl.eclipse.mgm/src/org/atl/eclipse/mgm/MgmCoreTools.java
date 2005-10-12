@@ -20,6 +20,10 @@ public class MgmCoreTools {
 		return handler;
 	}
 	
+	public static EObject getMegamodel() {
+		return (EObject)handler.getElementsByType("Megamodel").iterator().next();
+	}
+	
     public static EObject getArtifactByUri(String uri) {
         EObject []elts = (EObject[])handler.getElementsBySupertype("Artifact").toArray(new EObject[] {});
         for (int i = 0; i < elts.length; i++) {
