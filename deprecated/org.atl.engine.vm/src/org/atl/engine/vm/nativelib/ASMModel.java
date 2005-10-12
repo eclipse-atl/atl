@@ -65,7 +65,7 @@ public abstract class ASMModel extends ASMOclAny {
 	public ASMModelElement newModelElement(StackFrame frame, String typeName) {
 		ASMModelElement type = getMetamodel().findModelElement(typeName);
 		if(type == null)
-			frame.printStackTrace("no type " + typeName + " in metamodel " + metamodel.name);
+			frame.printStackTrace("no type named '" + typeName + "' in metamodel '" + metamodel.name + "'");
 		return newModelElement(type);
 	}
 
