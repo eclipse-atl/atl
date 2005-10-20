@@ -79,7 +79,7 @@ public class ASMXMLWriter extends ASMWriter {
 
 	private void printOperation(ASMOperation op) {
 		String name = op.getName();
-		String context = op.getContext();
+		String context = op.getContextSignature();
 		println("\t<operation name=\"" + getCPIndex(name) + "\">", "<!-- " + name + " -->");
 			println("\t\t<context type=\"" + getCPIndex(context) + "\"/>", "<!-- " + context + " -->");
 			println("\t\t<parameters>");

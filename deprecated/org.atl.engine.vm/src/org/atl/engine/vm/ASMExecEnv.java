@@ -56,7 +56,7 @@ public class ASMExecEnv extends ExecEnv {
 	public void registerOperations(ASM asm) {
 		for(Iterator i = asm.getOperations().iterator() ; i.hasNext() ; ) {
 			ASMOperation op = (ASMOperation)i.next();
-			String signature = op.getContext();
+			String signature = op.getContextSignature();
 			if(signature.matches("^(Q|G|C|E|O|N).*$")) {
 				// Sequence, Bag, Collection, Set, OrderedSet, Native type
 				System.out.println("Unsupported registration: " + signature);

@@ -14,19 +14,20 @@ import org.atl.engine.vm.nativelib.ASMOclType;
 public class ClassNativeOperation extends NativeOperation {
 
 	// The Method must be static and must have <type> self as a first parameter.
-	public ClassNativeOperation(Method method, List parameters, ASMOclType returnType) {
-		super(method, parameters, returnType);
+	public ClassNativeOperation(Method method, List parameters, ASMOclType returnType, ASMOclType contextType) {
+		super(method, parameters, returnType, contextType);
 	}
 
 	public ClassNativeOperation(Method method) {
-		super(method, getParameters(method), getReturnType(method));
+		super(method, getParameters(method), getReturnType(method), getContextType(method));
 	}
 	
 	private static List getParameters(Method method) {
 		List ret = new ArrayList();
 		
 		Class paramTypes[] = method.getParameterTypes();
-		for(int i = 1 ; i < paramTypes.length ; i++) {	// paramTypes[0] is a StackFrame
+		for(int i = 2 ; i < paramTypes.length ; i++) {	// paramTypes[0] is a StackFrame
+														// paramTypes[1] is self
 			ret.add(getASMType(paramTypes[i], false));
 		}
 		
@@ -37,6 +38,14 @@ public class ClassNativeOperation extends NativeOperation {
 		ASMOclType ret = null;
 		
 		ret = getASMType(method.getReturnType(), false);
+		
+		return ret;
+	}
+
+	private static ASMOclType getContextType(Method method) {
+		ASMOclType ret = null;
+		
+		ret = getASMType(method.getParameterTypes()[1], false);
 		
 		return ret;
 	}

@@ -28,7 +28,9 @@ public abstract class Operation extends ASMOclAny {
 
 	public abstract String getName();
 
-	public abstract String getContext();
+	public abstract String getContextSignature();
+
+	public abstract ASMOclType getContextType();
 
 	public abstract List getParameters();
 	
@@ -38,6 +40,10 @@ public abstract class Operation extends ASMOclAny {
 
 	public abstract ASMOclAny exec(StackFrame frame);
 	
+	/*
+	 * This method implements basic introspection of operations.
+	 * The property names are similar to those defined in ATL metamodel. 
+	 */
 	public ASMOclAny get(StackFrame frame, String name) {
 		ASMOclAny ret = null;
 		
@@ -59,7 +65,7 @@ public abstract class Operation extends ASMOclAny {
 					ASMTuple t = new ASMTuple();
 					t.set(frame, "varName", new ASMString(paramName));
 					t.set(frame, "operation", this);
-					t.set(frame, "type", type);	// TODO
+					t.set(frame, "type", type);
 					((ASMSequence)ret).add(t);
 				}
 			} else {
@@ -74,13 +80,20 @@ public abstract class Operation extends ASMOclAny {
 			}
 		} else if(name.equals("name")) {
 			ret = new ASMString(getName());
+		} else if(name.equals("context")) {
+			ASMOclType ct = getContextType();
+			if(ct == null) {
+				ret = new ASMOclUndefined();
+			} else {
+				ret = ct;
+			}
 		} else if(name.equals("definition")) {
 			ASMTuple t = new ASMTuple();
 			ASMTuple t2 = new ASMTuple();
 			t.set(frame, "feature", this);
 			t.set(frame, "context_", t2);
-			t2.set(frame, "context_", new ASMOclUndefined());	// TODO
-			t2.set(frame, "definition", t);	// TODO
+			t2.set(frame, "context_", getContextType());
+			//t2.set(frame, "definition", t); 	// builds a recursive set of Tuples
 			ret = t;
 		} else {
 			ret = super.get(frame, name);

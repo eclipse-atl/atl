@@ -26,8 +26,8 @@ import org.atl.engine.vm.nativelib.ASMString;
 public class InstanceNativeOperation extends NativeOperation {
 
 	// The Method must be non-static and defined in the context of the type it applies on
-	public InstanceNativeOperation(Method method, boolean translateTypes, boolean dontUseFrame, List parameters, ASMOclType returnType) {
-		super(method, parameters, returnType);
+	public InstanceNativeOperation(Method method, boolean translateTypes, boolean dontUseFrame, List parameters, ASMOclType returnType, ASMOclType contextType) {
+		super(method, parameters, returnType, contextType);
 		this.translateTypes = translateTypes;
 		this.dontUseFrame = dontUseFrame;
 	}

@@ -39,7 +39,7 @@ public class ASMOperation extends Operation {
 		this.context = context;
 	}
 
-	public String getContext() {
+	public String getContextSignature() {
 		return context;
 	}
 
@@ -496,6 +496,11 @@ public class ASMOperation extends Operation {
 	private ASM asm;
 	
 	public ASMOclType getReturnType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ASMOclType getContextType() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -47,10 +47,11 @@ public abstract class NativeOperation extends Operation {
 	}
 
 	// The Method must be static and must have <type> self as a first parameter.
-	public NativeOperation(Method method, List parameters, ASMOclType returnType) {
+	public NativeOperation(Method method, List parameters, ASMOclType returnType, ASMOclType contextType) {
 		this.method = method;
 		this.parameters = parameters;
 		this.returnType = returnType;
+		this.contextType = contextType;
 		name = method.getName();
 		if(getTrans().containsKey(name)) name = (String)getTrans().get(name);
 	}
@@ -115,9 +116,10 @@ if(debug) System.out.println("Incompatible return type");
 
 			if(!notGood) {
 				if((Modifier.STATIC & m.getModifiers()) != 0) {
-					t.registerVMOperation(new ClassNativeOperation(m, parameters, returnType));
+					parameters.remove(0);	// first is self
+					t.registerVMOperation(new ClassNativeOperation(m, parameters, returnType, getASMType(c, allowTypeTranslation)));
 				} else {
-					t.registerVMOperation(new InstanceNativeOperation(m, allowTypeTranslation, dontUseFrame, parameters, returnType));
+					t.registerVMOperation(new InstanceNativeOperation(m, allowTypeTranslation, dontUseFrame, parameters, returnType, getASMType(c, allowTypeTranslation)));
 				}
 			} else {
 if(debug) System.err.println("Strange !!! This method is not good: " + m);
@@ -169,7 +171,7 @@ if(debug) System.err.println("Strange !!! This method is not good: " + m);
 		return name;
 	}
 
-	public String getContext() {
+	public String getContextSignature() {
 		return null;
 	}
 
@@ -195,8 +197,13 @@ if(debug) System.err.println("Strange !!! This method is not good: " + m);
 		return returnType;
 	}
 
+	public ASMOclType getContextType() {
+		return contextType;
+	}
+
 	private List parameters;
 	private ASMOclType returnType;
+	private ASMOclType contextType;
 	private Method method;
 	private String name;	
 }

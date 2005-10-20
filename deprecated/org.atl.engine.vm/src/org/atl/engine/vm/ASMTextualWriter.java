@@ -43,7 +43,7 @@ public class ASMTextualWriter extends ASMWriter {
 
 	private void printOperation(ASMOperation op) {
 		String name = op.getName();
-		String context = op.getContext();
+		String context = op.getContextSignature();
 		out.print("\tcontext " + context + " def: " + name + "(");
 			for(Iterator i = op.getParameters().iterator() ; i.hasNext() ; ) {
 				printParameter(op, (ASMParameter)i.next());
