@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.atl.engine.vm.nativelib.ASMOclAny;
+import org.atl.engine.vm.nativelib.ASMOclType;
 
 /**
  * @author Frédéric Jouault
@@ -13,8 +14,31 @@ import org.atl.engine.vm.nativelib.ASMOclAny;
 public class ClassNativeOperation extends NativeOperation {
 
 	// The Method must be static and must have <type> self as a first parameter.
+	public ClassNativeOperation(Method method, List parameters, ASMOclType returnType) {
+		super(method, parameters, returnType);
+	}
+
 	public ClassNativeOperation(Method method) {
-		super(method);
+		super(method, getParameters(method), getReturnType(method));
+	}
+	
+	private static List getParameters(Method method) {
+		List ret = new ArrayList();
+		
+		Class paramTypes[] = method.getParameterTypes();
+		for(int i = 1 ; i < paramTypes.length ; i++) {	// paramTypes[0] is a StackFrame
+			ret.add(getASMType(paramTypes[i], false));
+		}
+		
+		return ret;
+	}
+
+	private static ASMOclType getReturnType(Method method) {
+		ASMOclType ret = null;
+		
+		ret = getASMType(method.getReturnType(), false);
+		
+		return ret;
 	}
 
 	public ASMOclAny exec(StackFrame frame) {

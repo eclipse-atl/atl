@@ -118,7 +118,7 @@ public class ASMXMLWriter extends ASMWriter {
 //			if(mn.equals("if") || mn.equals("goto")) {
 //				println("\t\t\t<" + instr.getMnemonic() + " arg=\"" + operand + "\"/>");
 //			} else {
-				println("\t\t\t<" + instr.getMnemonic() + " arg=\"" + getCPIndex(operand) + "\"/>", "<!-- " + operand + " -->");
+				println("\t\t\t<" + mn + " arg=\"" + getCPIndex(operand) + "\"/>", "<!-- " + operand + " -->");
 //			}
 		} else {
 			println("\t\t\t<" + instr.getMnemonic() + "/>");

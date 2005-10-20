@@ -1,12 +1,11 @@
 package org.atl.engine.vm.nativelib;
 
-import org.atl.engine.vm.NativeOperation;
-import org.atl.engine.vm.StackFrame;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.atl.engine.vm.StackFrame;
 
 /**
  * @author Frédéric Jouault
@@ -14,9 +13,6 @@ import java.util.Set;
 public class ASMSet extends ASMCollection {
 
 	public static ASMOclType myType = ASMOclParametrizedType.getASMOclParametrizedType("Set", getOclAnyType(), ASMCollection.myType);
-	static {
-		NativeOperation.registerOperations(myType, ASMSet.class);
-	}
 
 	public ASMSet() {
 		super(myType);

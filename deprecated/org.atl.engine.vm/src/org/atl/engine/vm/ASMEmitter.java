@@ -17,9 +17,6 @@ import java.util.Iterator;
 public class ASMEmitter extends ASMOclAny {
 
 	public static ASMOclType myType = new ASMOclSimpleType("ASMEmitter", getOclAnyType());
-	static {
-		NativeOperation.registerOperations(myType, ASMEmitter.class, false, true, true, true);
-	}
 
 	public ASMEmitter() {
 		super(myType);

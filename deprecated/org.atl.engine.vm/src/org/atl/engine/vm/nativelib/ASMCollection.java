@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.atl.engine.vm.ASMExecEnv;
-import org.atl.engine.vm.NativeOperation;
 import org.atl.engine.vm.Operation;
 import org.atl.engine.vm.StackFrame;
 
@@ -16,9 +15,6 @@ import org.atl.engine.vm.StackFrame;
 public abstract class ASMCollection extends ASMOclAny {
 
 	public static ASMOclType myType = ASMOclParametrizedType.getASMOclParametrizedType("Collection", getOclAnyType(), getOclAnyType());
-	static {
-		NativeOperation.registerOperations(myType, ASMCollection.class);
-	}
 
 	public ASMCollection(ASMOclType type) {
 		super(type);

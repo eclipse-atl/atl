@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.atl.engine.vm.NativeOperation;
 import org.atl.engine.vm.StackFrame;
 
 /**
@@ -13,10 +12,6 @@ import org.atl.engine.vm.StackFrame;
 public class ASMTupleType extends ASMOclType {
 
 	public static ASMOclType myType = new ASMOclSimpleType("TupleType", ASMOclType.myType);
-
-	static {
-		NativeOperation.registerOperations(myType, ASMTupleType.class);
-	}
 
 	public ASMTupleType() {
 		this(new HashMap());

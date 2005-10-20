@@ -1,6 +1,5 @@
 package org.atl.engine.vm.nativelib;
 
-import org.atl.engine.vm.NativeOperation;
 import org.atl.engine.vm.StackFrame;
 
 /**
@@ -10,9 +9,6 @@ import org.atl.engine.vm.StackFrame;
 public class ASMOclParametrizedType extends ASMOclType {
 
 	public static ASMOclType myType = new ASMOclSimpleType("OclParametrizedType", ASMOclType.myType);
-	static {
-		NativeOperation.registerOperations(myType, ASMOclParametrizedType.class);
-	}
 
 	public static ASMOclParametrizedType getASMOclParametrizedType(String name, ASMOclType elementType, ASMOclType supertype) {
 		return new ASMOclParametrizedType(name, elementType, supertype);

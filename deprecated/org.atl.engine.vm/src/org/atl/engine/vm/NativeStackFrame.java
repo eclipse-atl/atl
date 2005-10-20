@@ -12,9 +12,6 @@ import org.atl.engine.vm.nativelib.ASMOclType;
 public class NativeStackFrame extends StackFrame {
 
 	public static ASMOclType myType = new ASMOclSimpleType("NativeStackFrame", StackFrame.myType);
-	static {
-		NativeOperation.registerOperations(myType, NativeStackFrame.class, false, true, true, true);
-	}
 
 	public NativeStackFrame(ExecEnv execEnv, NativeOperation operation, List args) {
 		super(myType, execEnv, operation, args);

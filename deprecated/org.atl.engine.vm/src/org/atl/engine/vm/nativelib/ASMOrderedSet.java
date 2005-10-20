@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.atl.engine.vm.NativeOperation;
 import org.atl.engine.vm.StackFrame;
 
 /**
@@ -15,9 +14,6 @@ import org.atl.engine.vm.StackFrame;
 public class ASMOrderedSet extends ASMCollection {
 
 	public static ASMOclType myType = ASMOclParametrizedType.getASMOclParametrizedType("OrderedSet", getOclAnyType(), ASMSet.myType);
-	static {
-		NativeOperation.registerOperations(myType, ASMOrderedSet.class);
-	}
 
 	public ASMOrderedSet() {
 		super(myType);

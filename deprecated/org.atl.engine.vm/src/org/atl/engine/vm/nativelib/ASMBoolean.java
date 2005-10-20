@@ -1,6 +1,5 @@
 package org.atl.engine.vm.nativelib;
 
-import org.atl.engine.vm.NativeOperation;
 import org.atl.engine.vm.StackFrame;
 
 /**
@@ -9,9 +8,6 @@ import org.atl.engine.vm.StackFrame;
 public class ASMBoolean extends ASMOclAny {
 
 	public static ASMOclType myType = new ASMOclSimpleType("Boolean", getOclAnyType());
-	static {
-		NativeOperation.registerOperations(myType, ASMBoolean.class);
-	}
 
 	public ASMBoolean(boolean s) {
 		super(myType);

@@ -12,6 +12,7 @@ import org.atl.engine.vm.nativelib.ASMInteger;
 import org.atl.engine.vm.nativelib.ASMModel;
 import org.atl.engine.vm.nativelib.ASMNativeObject;
 import org.atl.engine.vm.nativelib.ASMOclAny;
+import org.atl.engine.vm.nativelib.ASMOclType;
 import org.atl.engine.vm.nativelib.ASMReal;
 import org.atl.engine.vm.nativelib.ASMString;
 
@@ -23,7 +24,7 @@ import org.atl.engine.vm.nativelib.ASMString;
  * have to find the first range matching the instruction.
  * @author Frédéric Jouault
  */
-public class ASMOperation implements Operation {
+public class ASMOperation extends Operation {
 
 	public ASMOperation(ASM asm, String name) {
 		this.name = name;
@@ -89,7 +90,7 @@ public class ASMOperation implements Operation {
 	public void addVariableInstruction(ASMInstructionWithOperand instruction, String varId) {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.get(varId);
 		if(lve == null) {
-			System.out.println("ERROR: no slot reserved for variable: " + varId + ".");
+			System.out.println("ERROR: no slot reserved for variable: " + varId + " used at " + lastLNE + ".");
 		}
 		instruction.setOperand("" + lve.slot);
 		instructions.add(instruction);
@@ -115,6 +116,10 @@ public class ASMOperation implements Operation {
 			for(Iterator i = instr.iterator() ; i.hasNext() ; ) {
 				((ASMInstructionWithOperand)i.next()).setOperand(id);
 			}
+		}
+		
+		public String getName() {
+			return name;
 		}
 
 		private String name;
@@ -344,7 +349,9 @@ public class ASMOperation implements Operation {
 	/** Temporary storage for lineNumberEntries began but not yet ended. */
 	private Map lineNumberEntries = new HashMap();
 
+	private String lastLNE = null;
 	public void beginLineNumberEntry(String id) {
+		lastLNE = id;
 		lineNumberEntries.put(id, new LineNumberEntry(id, instructions.size(), -1));
 	}
 
@@ -487,5 +494,10 @@ public class ASMOperation implements Operation {
 	private List lineNumberTable = new ArrayList();
 	private List localVariableTable = new ArrayList();
 	private ASM asm;
+	
+	public ASMOclType getReturnType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 

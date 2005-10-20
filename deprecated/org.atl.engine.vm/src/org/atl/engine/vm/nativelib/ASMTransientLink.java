@@ -1,14 +1,13 @@
 package org.atl.engine.vm.nativelib;
 
-import org.atl.engine.vm.NativeOperation;
-import org.atl.engine.vm.StackFrame;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.atl.engine.vm.StackFrame;
 
 /**
  * An ASMTransientLink represents an internal traceability link.
@@ -19,9 +18,6 @@ import java.util.Map;
 public class ASMTransientLink extends ASMOclAny {
 
 	public static ASMOclType myType = new ASMOclSimpleType("TransientLink", getOclAnyType());
-	static {
-		NativeOperation.registerOperations(myType, ASMTransientLink.class);
-	}
 
 	public ASMTransientLink() {
 		super(myType);

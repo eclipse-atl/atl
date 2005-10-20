@@ -1,6 +1,5 @@
 package org.atl.engine.vm.nativelib;
 
-import org.atl.engine.vm.NativeOperation;
 import org.atl.engine.vm.StackFrame;
 
 /**
@@ -9,9 +8,6 @@ import org.atl.engine.vm.StackFrame;
 public class ASMEnumLiteral extends ASMOclAny {
 
 	public static ASMOclType myType = new ASMOclSimpleType("EnumLiteral", getOclAnyType());	// TODO: type is Enumeration...
-	static {
-		NativeOperation.registerOperations(myType, ASMEnumLiteral.class);
-	}
 
 	public ASMEnumLiteral() {
 		super(myType);

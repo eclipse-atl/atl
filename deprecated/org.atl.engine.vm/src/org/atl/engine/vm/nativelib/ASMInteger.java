@@ -1,6 +1,5 @@
 package org.atl.engine.vm.nativelib;
 
-import org.atl.engine.vm.NativeOperation;
 import org.atl.engine.vm.StackFrame;
 
 /**
@@ -9,9 +8,6 @@ import org.atl.engine.vm.StackFrame;
 public class ASMInteger extends ASMNumber {
 
 	public static ASMOclType myType = new ASMOclSimpleType("Integer", ASMReal.myType);
-	static {
-		NativeOperation.registerOperations(myType, ASMInteger.class);
-	}
 
 	public ASMInteger(int s) {
 		super(myType);

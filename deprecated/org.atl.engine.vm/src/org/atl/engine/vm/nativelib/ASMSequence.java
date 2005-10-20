@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.atl.engine.vm.NativeOperation;
 import org.atl.engine.vm.StackFrame;
 
 /**
@@ -13,9 +12,6 @@ import org.atl.engine.vm.StackFrame;
 public class ASMSequence extends ASMCollection {
 
 	public static ASMOclType myType = ASMOclParametrizedType.getASMOclParametrizedType("Sequence", getOclAnyType(), ASMCollection.myType);
-	static {
-		NativeOperation.registerOperations(myType, ASMSequence.class);
-	}
 
 	public ASMSequence() {
 		super(myType);

@@ -15,6 +15,7 @@ import org.atl.engine.vm.nativelib.ASMBoolean;
 import org.atl.engine.vm.nativelib.ASMInteger;
 import org.atl.engine.vm.nativelib.ASMMap;
 import org.atl.engine.vm.nativelib.ASMOclAny;
+import org.atl.engine.vm.nativelib.ASMOclType;
 import org.atl.engine.vm.nativelib.ASMSequence;
 import org.atl.engine.vm.nativelib.ASMSet;
 import org.atl.engine.vm.nativelib.ASMString;
@@ -25,8 +26,8 @@ import org.atl.engine.vm.nativelib.ASMString;
 public class InstanceNativeOperation extends NativeOperation {
 
 	// The Method must be non-static and defined in the context of the type it applies on
-	public InstanceNativeOperation(Method method, boolean translateTypes, boolean dontUseFrame) {
-		super(method);
+	public InstanceNativeOperation(Method method, boolean translateTypes, boolean dontUseFrame, List parameters, ASMOclType returnType) {
+		super(method, parameters, returnType);
 		this.translateTypes = translateTypes;
 		this.dontUseFrame = dontUseFrame;
 	}
@@ -121,6 +122,12 @@ public class InstanceNativeOperation extends NativeOperation {
 
 		return ret;
 	}
+	
+	public List getParameters() {
+		return parameters;
+	}
+
+	private List parameters;
 	private boolean translateTypes;
 	private boolean dontUseFrame;
 }

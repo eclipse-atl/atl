@@ -1,17 +1,11 @@
 package org.atl.engine.vm.nativelib;
 
-import org.atl.engine.vm.NativeOperation;
 import org.atl.engine.vm.StackFrame;
 
 /**
  * @author Frédéric Jouault
  */
 public class ASMReal extends ASMNumber {
-
-	public static ASMOclType myType = new ASMOclSimpleType("Real", getOclAnyType());
-	static {
-		NativeOperation.registerOperations(myType, ASMReal.class);
-	}
 
 	public ASMReal(double s) {
 		super(myType);

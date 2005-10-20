@@ -1,11 +1,10 @@
 package org.atl.engine.vm.nativelib;
 
-import org.atl.engine.vm.NativeOperation;
-import org.atl.engine.vm.StackFrame;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.atl.engine.vm.StackFrame;
 
 /**
  * @author Frédéric Jouault
@@ -13,9 +12,6 @@ import java.util.Map;
 public class ASMTuple extends ASMOclAny {
 
 	public static ASMOclType myType = new ASMOclSimpleType("Tuple", getOclAnyType());	// TODO : type parametre
-	static {
-		NativeOperation.registerOperations(myType, ASMTuple.class);
-	}
 
 	public ASMTuple() {
 		super(myType);

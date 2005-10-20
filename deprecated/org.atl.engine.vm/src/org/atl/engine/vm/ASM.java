@@ -1,13 +1,13 @@
 package org.atl.engine.vm;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.atl.engine.vm.nativelib.ASMOclAny;
 import org.atl.engine.vm.nativelib.ASMOclSimpleType;
 import org.atl.engine.vm.nativelib.ASMOclType;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * This class represents a transformation module, which can have fields.
@@ -16,9 +16,6 @@ import java.util.HashMap;
 public class ASM extends ASMOclAny {
 
 	public static ASMOclType myType = new ASMOclSimpleType("ASM", getOclAnyType());
-	static {
-		NativeOperation.registerOperations(myType, ASMEmitter.class, false, true, true, true);
-	}
 
 	public ASM() {
 		super(myType);

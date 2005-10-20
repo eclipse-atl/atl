@@ -1,17 +1,16 @@
 package org.atl.engine.vm.nativelib;
 
-import org.atl.engine.vm.ModelLoader;
-import org.atl.engine.vm.NativeOperation;
-import org.atl.engine.vm.StackFrame;
-
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.StringReader;
 import java.io.Reader;
+import java.io.StringReader;
+
+import org.atl.engine.vm.ModelLoader;
+import org.atl.engine.vm.StackFrame;
 
 /**
  * @author Frédéric Jouault
@@ -19,9 +18,6 @@ import java.io.Reader;
 public class ASMString extends ASMOclAny {
 
 	public static ASMOclType myType = new ASMOclSimpleType("String", getOclAnyType());
-	static {
-		NativeOperation.registerOperations(myType, ASMString.class);
-	}
 
 	public ASMString(String s) {
 		super(myType);

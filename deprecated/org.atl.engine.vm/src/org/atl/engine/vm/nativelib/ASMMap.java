@@ -1,11 +1,10 @@
 package org.atl.engine.vm.nativelib;
 
-import org.atl.engine.vm.NativeOperation;
-import org.atl.engine.vm.StackFrame;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.atl.engine.vm.StackFrame;
 
 /**
  * A non-OCL type. Proves useful in some transformations to establish mappings.
@@ -14,9 +13,6 @@ import java.util.Map;
 public class ASMMap extends ASMOclAny {
 
 	public static ASMOclType myType = new ASMOclSimpleType("Map", getOclAnyType());	// TODO : type parametre
-	static {
-		NativeOperation.registerOperations(myType, ASMMap.class);
-	}
 
 	public ASMMap() {
 		super(myType);

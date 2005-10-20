@@ -3,6 +3,7 @@ package org.atl.engine.vm;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -110,14 +111,14 @@ public class ASMExecEnv extends ExecEnv {
 			case 'Q': case 'G': case 'C':	// Sequence, Bag, Collection,
 			case 'E': case 'O': case 'N':	// Set, OrderedSet, Native type
 				ci.next();
-				ASMOclType elementType = parseTypeInternal(ci);
+				//ASMOclType elementType = parseTypeInternal(ci);
 				read(ci, ';');
 				break;
 			case 'T':						// Tuple
 				ci.next();
 				Map attrs = new HashMap();
 				while(ci.current() != ';') {
-					ASMOclType attrType = parseTypeInternal(ci);
+					//ASMOclType attrType = parseTypeInternal(ci);
 					String attrName = readUntil(ci, ';');
 					//attrs.put(attrName, attrType);		// TODO: correct type
 					attrs.put(attrName, ASMOclAny.myType);
@@ -198,9 +199,14 @@ public class ASMExecEnv extends ExecEnv {
 	private Map getOperations(ASMOclType type, boolean createIfMissing) {
 		Map ret = (Map)typeOperations.get(type);
 
-		if(createIfMissing && (ret == null)) {
-			ret = new HashMap();
-			typeOperations.put(type, ret);
+		if(ret == null) {
+			Map vmops = getVMOperations(type);
+			if(createIfMissing || ((vmops != null) && !vmops.isEmpty())) {
+				ret = new HashMap();
+				typeOperations.put(type, ret);
+				if(vmops != null)
+					ret.putAll(vmops);
+			}
 		}
 
 		return ret;
@@ -210,19 +216,20 @@ public class ASMExecEnv extends ExecEnv {
 		return (Map)vmTypeOperations.get(type);
 	}
 
+	public Collection getOperations(ASMOclType type) {
+		Collection ret = null;
+		
+		ret = getOperations(type, true).values();
+		
+		return ret;
+	}
+	
 	public Operation getOperation(ASMOclType type, String name) {
 		final boolean debug = false;
 		Operation ret = null;
 		Map map = getOperations(type, false);
 		if(map != null)
 			ret = (Operation)map.get(name);
-
-		if(ret == null) {
-			Map vmops = getVMOperations(type);
-			if(vmops != null) {
-				ret = (Operation)vmops.get(name);
-			}
-		}
 
 		if(debug) System.out.println(this + "@" + this.hashCode() + ".getOperation(" + name + ")");
 		if(ret == null) {

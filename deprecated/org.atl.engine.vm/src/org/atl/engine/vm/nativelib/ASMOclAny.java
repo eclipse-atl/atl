@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.atl.engine.vm.ASMExecEnv;
-import org.atl.engine.vm.NativeOperation;
 import org.atl.engine.vm.Operation;
 import org.atl.engine.vm.StackFrame;
 
@@ -14,19 +13,18 @@ import org.atl.engine.vm.StackFrame;
  */
 public class ASMOclAny extends ASMNativeObject {
 
+	public static ASMOclType myType = getOclAnyType();
+
+	static {
+		ASMOclType.myType.addSupertype(getOclAnyType());
+	}
+
 	private static ASMOclType oclAnyType = null;
 	protected static ASMOclType getOclAnyType() {
 		if(oclAnyType == null)
 			oclAnyType = new ASMOclSimpleType("OclAny");
 		return oclAnyType;
 	}
-	public static ASMOclType myType = getOclAnyType();
-
-	static {
-		NativeOperation.registerOperations(getOclAnyType(), ASMOclAny.class);
-		ASMOclType.myType.addSupertype(getOclAnyType());
-	}
-
 	public ASMOclAny(ASMOclType type) {
 		this.type = type;
 	}

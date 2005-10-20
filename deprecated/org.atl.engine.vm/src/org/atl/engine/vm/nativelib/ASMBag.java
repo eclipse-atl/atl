@@ -1,12 +1,11 @@
 package org.atl.engine.vm.nativelib;
 
-import org.atl.engine.vm.NativeOperation;
-import org.atl.engine.vm.StackFrame;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import org.atl.engine.vm.StackFrame;
 
 /**
  * @author Frédéric Jouault
@@ -14,9 +13,6 @@ import java.util.List;
 public class ASMBag extends ASMCollection {
 
 	public static ASMOclType myType = ASMOclParametrizedType.getASMOclParametrizedType("Bag", getOclAnyType(), ASMCollection.myType);
-	static {
-		NativeOperation.registerOperations(myType, ASMBag.class);
-	}
 
 	public ASMBag() {
 		super(myType);
