@@ -4,16 +4,22 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.atl.engine.vm.nativelib.ASMBag;
 import org.atl.engine.vm.nativelib.ASMBoolean;
 import org.atl.engine.vm.nativelib.ASMInteger;
+import org.atl.engine.vm.nativelib.ASMMap;
 import org.atl.engine.vm.nativelib.ASMOclAny;
 import org.atl.engine.vm.nativelib.ASMOclType;
 import org.atl.engine.vm.nativelib.ASMReal;
+import org.atl.engine.vm.nativelib.ASMSequence;
+import org.atl.engine.vm.nativelib.ASMSet;
 import org.atl.engine.vm.nativelib.ASMString;
 
 /**
@@ -141,6 +147,14 @@ if(debug) System.err.println("Strange !!! This method is not good: " + m);
 				ret = ASMBoolean.myType;
 			} else if(pt.equals(String.class)) {
 				ret = ASMString.myType;
+			} else if(pt.equals(List.class)) {
+				ret = ASMSequence.myType;
+			} else if(pt.equals(Set.class)) {
+				ret = ASMSet.myType;
+			} else if(pt.equals(Collection.class)) {
+				ret = ASMBag.myType;
+			} else if(pt.equals(Map.class)) {
+				ret = ASMMap.myType;
 			} else {	// TODO: collections
 				ret = null;	// untranslatable type
 			}
