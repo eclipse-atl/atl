@@ -10,6 +10,9 @@
   <megamodelElements xsi:type="XMLExtractor" uri="XMLExtractor" name="XML" version=""
       domains="" authors="" date="" description="" see="" extension="xml" paramMetamodel=""
       paramModel=""/>
+  <megamodelElements xsi:type="EBNFExtractor" uri="ATL_EBNFExtractor" name="ATL-0.2"
+      version="" domains="" authors="" date="" description="" see="" extension="atl"
+      paramMetamodel="" paramModel=""/>
   <megamodelElements xsi:type="TCS" uri="resources/ATL-0.2/ATL-0.2-TCS.ecore" name="ATL-0.2"
       version="" domains="" authors="" date="" description="" see=""/>
   <megamodelElements xsi:type="Metamodel" uri="resources/XML/XML.ecore" name="XML"
@@ -20,4 +23,6 @@
       name="ATL-0.2" version="" domains="" authors="" date="" description="" see=""/>
   <megamodelElements xsi:type="Metamodel" uri="resources/AM3/AM3.ecore" name="AM3"
       version="" domains="" authors="4554" date="" description="" see=""/>
+  <megamodelElements xsi:type="Metamodel" uri="/test_km3/ModelBus.km3" name="ModelBus"
+      description="metamodel of Modelbus"/>
 </Megamodel>
