@@ -2,7 +2,7 @@ package org.atl.engine.injectors.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.SAXParser;
@@ -27,6 +27,8 @@ public class XMLInjector extends DefaultHandler implements Injector {
 
 	/** Set to true to enable debugging information printouts. */
 	private final static boolean debug = false;
+
+	private boolean keepWhitespace = true;
 
 
 	/** Target model. */
@@ -57,13 +59,18 @@ public class XMLInjector extends DefaultHandler implements Injector {
 	
 	/* New Injector interface. */
 	
-	private static Map parameterTypes = Collections.EMPTY_MAP;
+	private static Map parameterTypes = new HashMap();
+	
+	static {
+		parameterTypes.put("keepWhitespace", "String");		// optional, default = false		
+	}
 
 	public Map getParameterTypes() {
 		return parameterTypes;
 	}
 	
 	public ASMModelElement inject(ASMModel target, InputStream source, Map params) throws IOException {
+		keepWhitespace = !("false".equals(params.get("keepWhitespace")));
 		performImportation(null, target, source, null);
 		return root;
 	}
@@ -103,17 +110,23 @@ public class XMLInjector extends DefaultHandler implements Injector {
 		if(debug) {
 			System.out.println("text = " + value);
 		}
+		
+		if(!keepWhitespace) {
+			value = value.trim();
+		}
 
-		ASMModelElement attr = extent.newModelElement("Text");
-		attr.set(null, "name", new ASMString("#text"));	// as in DOM
-		attr.set(null, "value", new ASMString(value));
-		attr.set(null, "parent", current);
-		if(locator != null) {
-			if(locator.getLineNumber() != -1) {
-				attr.set(null, "startLine", new ASMInteger(locator.getLineNumber()));
-			}
-			if(locator.getColumnNumber() != -1) {
-				attr.set(null, "startColumn", new ASMInteger(locator.getColumnNumber()));
+		if(value.length() > 0) {
+			ASMModelElement attr = extent.newModelElement("Text");
+			attr.set(null, "name", new ASMString("#text"));	// as in DOM
+			attr.set(null, "value", new ASMString(value));
+			attr.set(null, "parent", current);
+			if(locator != null) {
+				if(locator.getLineNumber() != -1) {
+					attr.set(null, "startLine", new ASMInteger(locator.getLineNumber()));
+				}
+				if(locator.getColumnNumber() != -1) {
+					attr.set(null, "startColumn", new ASMInteger(locator.getColumnNumber()));
+				}
 			}
 		}
 	}
