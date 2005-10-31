@@ -51,7 +51,7 @@ public class ASMTuple extends ASMOclAny {
 	public ASMOclAny get(StackFrame frame, String name) {
 		ASMOclAny ret = null;
 
-		if(isHelper(frame, name)) {
+		if((frame != null) && isHelper(frame, name)) {
 			ret = getHelper(frame, name);
 		} else {
 			ret = (ASMOclAny)s.get(new ASMString(name));
