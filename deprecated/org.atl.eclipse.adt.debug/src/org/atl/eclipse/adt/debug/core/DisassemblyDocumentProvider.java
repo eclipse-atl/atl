@@ -14,15 +14,12 @@ import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 
 /**
- * @author jouault
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author Frederic Jouault
  */
 public class DisassemblyDocumentProvider extends TextFileDocumentProvider {
 
 	private Map ams = new HashMap();
-	/* (non-Javadoc)
+	/* 
 	 * @see org.eclipse.ui.texteditor.AbstractDocumentProvider#createAnnotationModel(java.lang.Object)
 	 * TODO: this is not a correct implementation. We keep references to every element, which means
 	 * they won't be garbage collected. However, it works.
