@@ -41,7 +41,7 @@ public class AtlPerspective implements IPerspectiveFactory {
      
         // place navigator to the left (of editor area)
         IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, (float) 0.25, editorArea);
-        left.addView("ResourceNavigatorMgm");
+        left.addView("ResourceNavigatorAM3");
         
         // problem view at the bottom (of editor area)
         IFolderLayout bottom = layout.createFolder("bottom", IPageLayout.BOTTOM, (float) 0.75, editorArea);
