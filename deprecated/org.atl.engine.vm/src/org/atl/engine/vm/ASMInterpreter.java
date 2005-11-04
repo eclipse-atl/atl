@@ -45,6 +45,8 @@ import org.atl.engine.vm.nativelib.ASMString;
  * 		This specification is performed by specifying an additional command-line argument.
  * 		The name of this argument is the name of the model or metamodel and its value
  * 		is a ModelLocation.
+ * * ModelPath
+ * 		<model-name>=<path-name>
  * 
  * 
  * Command-line parameters:
