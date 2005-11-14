@@ -94,6 +94,18 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		return ret;
 	}
 
+	public ASMModel loadModel(String name, ASMModel metamodel, String uri) {
+		ASMModel ret = null;
+		
+		try {
+			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ret;
+	}
+
 	public ASMModel newModel(String name, ASMModel metamodel) {
 		ASMModel ret = null;
 		
