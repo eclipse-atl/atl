@@ -20,6 +20,10 @@ public class ASMOclUndefined extends ASMOclAny {
 	public boolean equals(Object o) {
 		return o instanceof ASMOclUndefined;
 	}
+	
+	public int hashCode() {
+		return 0;
+	}
 
 	public ASMOclAny get(StackFrame frame, String name) {
 		frame.printStackTrace("ERROR: OclUndefined has no property");
