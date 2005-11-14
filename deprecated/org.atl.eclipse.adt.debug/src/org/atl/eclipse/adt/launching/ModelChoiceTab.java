@@ -398,7 +398,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 //		else
 //			buttonAffectUri.setEnabled(false);
 		
-		buttonAffectUri.setText("Uri");
+		buttonAffectUri.setText("Metamodel by URI");
 		buttonAffectUri.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				DialogUriSelection launcher = new DialogUriSelection(new Shell());
