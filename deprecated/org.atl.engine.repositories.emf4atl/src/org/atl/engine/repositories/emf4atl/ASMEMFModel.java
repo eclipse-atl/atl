@@ -106,7 +106,7 @@ public class ASMEMFModel extends ASMModel {
 	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, String url, ModelLoader ml) throws Exception {
 		ASMEMFModel ret = null;
 		
-		if(url.startsWith("uri")) {
+		if(url.startsWith("uri:")) {
 			String uri = url.substring(4);
 			EPackage pack = (EPackage)EPackage.Registry.INSTANCE.getEPackage(uri);
 			Resource extent = pack.eResource();
