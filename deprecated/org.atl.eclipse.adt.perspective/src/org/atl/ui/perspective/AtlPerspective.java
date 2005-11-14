@@ -30,7 +30,6 @@ public class AtlPerspective implements IPerspectiveFactory {
 
         // Add "show views".
         layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
-        layout.addShowViewShortcut("ResourceNavigatorMgm");
         
         layout.addPerspectiveShortcut("org.atl.eclipse.adt.atlPerspective");
 	}
@@ -41,7 +40,7 @@ public class AtlPerspective implements IPerspectiveFactory {
      
         // place navigator to the left (of editor area)
         IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, (float) 0.25, editorArea);
-        left.addView("ResourceNavigatorAM3");
+        left.addView(IPageLayout.ID_RES_NAV);
         
         // problem view at the bottom (of editor area)
         IFolderLayout bottom = layout.createFolder("bottom", IPageLayout.BOTTOM, (float) 0.75, editorArea);
@@ -60,7 +59,6 @@ public class AtlPerspective implements IPerspectiveFactory {
         layout.addActionSet(IDebugUIConstants.LAUNCH_ACTION_SET);
 
         layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
-        layout.addShowViewShortcut("ResourceNavigatorMgm");
         
         layout.addPerspectiveShortcut("org.atl.eclipse.adt.atlPerspective");
 	}
