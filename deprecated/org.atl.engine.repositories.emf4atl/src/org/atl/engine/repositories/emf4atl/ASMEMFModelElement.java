@@ -119,14 +119,19 @@ public class ASMEMFModelElement extends ASMModelElement {
 
 		if((frame != null) && isHelper(frame, name)) {
 			ret = getHelper(frame, name);
+		} else if("__xmiID__".equals(name)) {
+			String id = ((XMIResource)((ASMEMFModel)getModel()).getExtent()).getID(object);
+			ret = emf2ASM(frame, id);
 		} else {
 			EStructuralFeature sf = object.eClass().getEStructuralFeature(name);
 			if(sf == null) {
 				frame.printStackTrace("feature " + name + " does not exist on " + getType());
 			}
+/*
 			if(sf.isDerived()) {
 				frame.printStackTrace("feature " + name + " is derived");			
 			}
+*/
 			ret = emf2ASM(frame, object.eGet(sf));
 		}
 		return ret;
