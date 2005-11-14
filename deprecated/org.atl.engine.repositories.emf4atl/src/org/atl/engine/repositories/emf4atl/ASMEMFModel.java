@@ -104,7 +104,18 @@ public class ASMEMFModel extends ASMModel {
 	}
 	
 	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, String url, ModelLoader ml) throws Exception {
-		return loadASMEMFModel(name, metamodel, URI.createURI(url), ml);
+		ASMEMFModel ret = null;
+		
+		if(url.startsWith("uri")) {
+			String uri = url.substring(4);
+			EPackage pack = (EPackage)EPackage.Registry.INSTANCE.getEPackage(uri);
+			Resource extent = pack.eResource();
+			ret = new ASMEMFModel(name, extent, metamodel, false, ml);
+		} else {
+			ret = loadASMEMFModel(name, metamodel, URI.createURI(url), ml);
+		}
+		
+		return ret;
 	}
 	
 	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, URL url, ModelLoader ml) throws Exception {
@@ -213,6 +224,10 @@ public class ASMEMFModel extends ASMModel {
 //		System.out.println(Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap());
 		resourceSet = new ResourceSetImpl();
 		
+	}
+	
+	public boolean equals(Object o) {
+		return (o instanceof ASMEMFModel) && (((ASMEMFModel)o).extent == extent);
 	}
 	
 	private static ResourceSet resourceSet;
