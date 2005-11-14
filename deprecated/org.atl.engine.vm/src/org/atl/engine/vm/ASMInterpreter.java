@@ -148,7 +148,7 @@ public class ASMInterpreter {
 		List deepnostepops = parseOpList(params.get("deepnostepops"));
 
 		System.err.println("Loading the ATL State Machine...");
-		ASM asm = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream((String)params.get("ASM"))));
+		ASM asm = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(((String)params.get("ASM")).split(",")[0])));
 		ASMModule asmModule = new ASMModule(asm);
 
 // BEGIN TEST ASM RESERIALIZATION
@@ -235,12 +235,17 @@ public class ASMInterpreter {
 		
 		String reser = (String)params.get("reserialize");
 		if(reser != null) {
-			System.out.println("Reserializing...");
+			System.out.println("Reserializing:");
 			String resers[] = reser.split(",");
 			for(int i = 0 ; i < resers.length ; i++) {
 				String t[] = resers[i].split("=");
 				ASMModel m = env.getModel(t[0]);
-				ml.save(m, t[1]);
+				String path = t[1];
+				if(path.startsWith("as ")) {
+					path = (String)params.get(path.substring(3));
+				}
+				System.out.println("\t" + m + " to " + path);
+				ml.save(m, path);
 			}
 		}
 		
@@ -348,12 +353,22 @@ System.out.println("\t=>" + pname);
 		}
 	}
 */
+	
+	private static String getURL(Map params, String name) {
+		String ret = (String)params.get(name);
+		
+		String parts[] = ret.split(",");
+		ret = parts[parts.length - 1];
+		
+		return ret;
+	}
+	
 	private static void loadModel(ASMExecEnv env, String mAndMm[], Map params, boolean isTarget, ModelLoader ml) throws Exception {
 		ASMModel m = env.getModel(mAndMm[0]);
 		if(m == null) {
 			ASMModel mm = env.getModel(mAndMm[1]);
 			if(mm == null) {
-				String url = (String)params.get(mAndMm[1]);
+				String url = getURL(params, mAndMm[1]);
 				System.out.println("Loading meta-model " + mAndMm[1] + " from \"" + url + "\".");
 				env.addModel(ml.loadModel(mAndMm[1], env.getModel("MOF"), url));
 			}
@@ -361,7 +376,7 @@ System.out.println("\t=>" + pname);
 				System.out.println("Creating model " + mAndMm[0] + " : " + mAndMm[1]);
 				env.addModel(ml.newModel(mAndMm[0], env.getModel(mAndMm[1])));
 			} else {
-				String url = (String)params.get(mAndMm[0]);
+				String url = getURL(params, mAndMm[0]);
 				System.out.println("Loading model " + mAndMm[0] + " : " + mAndMm[1] + " from \"" + url + "\".");
 				env.addModel(ml.loadModel(mAndMm[0], env.getModel(mAndMm[1]), (String)params.get(mAndMm[0])));
 			}
@@ -375,7 +390,7 @@ System.out.println("\t=>" + pname);
 				String model = (String)i.next();
 				String mAndMm[] = model.split(":");
 				ASMModel m = env.getModel(mAndMm[0]);
-				String url = (String)params.get(mAndMm[0]);
+				String url = getURL(params, mAndMm[0]);
 				System.err.println("Saving model " + mAndMm[0] + " : " + mAndMm[1] + " to \"" + url + "\".");
 				ml.save(m, (String)params.get(mAndMm[0]));
 			}
