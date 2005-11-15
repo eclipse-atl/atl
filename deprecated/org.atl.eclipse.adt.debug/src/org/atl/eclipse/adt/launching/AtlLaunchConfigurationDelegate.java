@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import org.atl.eclipse.adt.debug.core.AtlDebugTarget;
 import org.atl.eclipse.adt.debug.core.AtlRunTarget;
@@ -40,7 +39,7 @@ import org.eclipse.emf.ecore.EPackage;
 /**
  * The method "launch" is launched when you click on the button "Run" or "Debug"
  * 
- * @author allilaire
+ * @author Freddy Allilaire
  *
  */
 public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
@@ -396,9 +395,14 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		// TODO Get properties of the project
 		// know where bin files are, then choose good ASM File for ATL File
 
-		StringTokenizer st = new StringTokenizer(atlFilePath, ".");
-		atlFilePath = st.nextToken() + ".asm";
-		return wksroot.getFile(new Path(atlFilePath));
+		IFile currentAtlFile = wksroot.getFile(new Path(atlFilePath));
+
+		if (currentAtlFile.getFileExtension().toLowerCase().equals("atl")) {
+			String currentAsmPath = currentAtlFile.getFullPath().toString().substring(0, currentAtlFile.getFullPath().toString().length() - 3) + "asm";
+			return wksroot.getFile(new Path(currentAsmPath)); 
+		}
+		else
+			return null;
 	}
 
 }
