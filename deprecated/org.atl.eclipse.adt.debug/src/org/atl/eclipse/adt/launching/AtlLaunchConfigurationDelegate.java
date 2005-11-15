@@ -232,6 +232,24 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 //		return null;
 //	}
 	
+	
+	private static ASMModel loadModel(AtlModelHandler amh, String mName, ASMModel metamodel, String path) throws CoreException, FileNotFoundException {
+		ASMModel ret = null;
+		
+		if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
+			if(path.startsWith("uri:")) {
+				ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, path);
+			} else {
+				ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, fileNameToURI(path));				
+			}
+		}
+		else {
+			ret = amh.loadModel(mName, metamodel, fileNameToInputStream(path));
+		}
+
+		return ret;
+	}
+	
 	/**
 	 * Returns the input stream from a path for metamodel
 	 * @param metamodelPath
@@ -252,31 +270,16 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				ASMModel inputModel;
 				if (((String)path.get(mmName)).startsWith("#")) {
 					toReturn.put(mmName, mofmm);
-					if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
-						inputModel = ((AtlEMFModelHandler)amh).loadModel(mName, mofmm, fileNameToURI((String)path.get(mName)));
-					}
-					else {
-						inputModel = amh.loadModel(mName, mofmm, fileNameToInputStream((String)path.get(mName)));
-					}
+					inputModel = loadModel(amh, mName, mofmm, (String)path.get(mName));
 				}
 				else {
 					ASMModel inputMetaModel = (ASMModel)toReturn.get(mmName);
 					if(inputMetaModel == null) {
-						if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
-							inputMetaModel = ((AtlEMFModelHandler)amh).loadModel(mmName, mofmm, fileNameToURI((String)path.get(mmName)));
-						}
-						else {
-							inputMetaModel = amh.loadModel(mmName, mofmm, fileNameToInputStream((String)path.get(mmName)));							
-						}
+						inputMetaModel = loadModel(amh, mmName, mofmm, (String)path.get(mmName));
 						toReturn.put(mmName, inputMetaModel);
 					}
 					inputMetaModel.setIsTarget(false);
-					if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
-						inputModel = ((AtlEMFModelHandler)amh).loadModel(mName, inputMetaModel, fileNameToURI((String)path.get(mName)));
-					}
-					else {
-						inputModel = amh.loadModel(mName, inputMetaModel, fileNameToInputStream((String)path.get(mName)));						
-					}
+					inputModel = loadModel(amh, mName, inputMetaModel, (String)path.get(mName));
 				}
 				inputModel.setIsTarget(false);
 				toReturn.put(mName, inputModel);
@@ -317,11 +320,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 					if (outputMetaModel == null)
 						outputMetaModel = (ASMModel)toReturn.get(mmName);
 					if(outputMetaModel == null) {
-						if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
-							outputMetaModel = ((AtlEMFModelHandler)amh).loadModel(mmName, mofmm, fileNameToURI((String)path.get(mmName)));
-						} else {
-							outputMetaModel = amh.loadModel(mmName, mofmm, fileNameToInputStream((String)path.get(mmName)));							
-						}
+						outputMetaModel = loadModel(amh, mmName, mofmm, (String)path.get(mmName));
 						toReturn.put(mmName, outputMetaModel);
 					}
 					outputMetaModel.setIsTarget(false);
