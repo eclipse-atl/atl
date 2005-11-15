@@ -11,7 +11,7 @@ import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
 
 /**
- * @author allilaire
+ * @author Freddy Allilaire
  */
 
 public class AtlVariable implements IVariable {

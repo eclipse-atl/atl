@@ -17,7 +17,7 @@ import org.eclipse.debug.core.model.IThread;
 
 
 /**
- * @author allilaire
+ * @author Freddy Allilaire
  */
 public class AtlThread implements IThread {
 

@@ -33,7 +33,7 @@ import org.eclipse.debug.core.model.IVariable;
  * This class implements IStackFrame
  * It contains a stackframe
  * 
- * @author allilaire
+ * @author Freddy Allilaire
  */
 
 public class AtlStackFrame implements IStackFrame {

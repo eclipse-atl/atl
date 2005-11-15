@@ -50,7 +50,7 @@ import org.eclipse.debug.core.model.IThread;
  * The AtlDebugTarget contains only one thread : the main thread.
  * The thread contains the current stackframe
  * 
- * @author allilaire
+ * @author Freddy Allilaire
  */
 public class AtlDebugTarget implements IDebugTarget, IDebugEventSetListener {
 
