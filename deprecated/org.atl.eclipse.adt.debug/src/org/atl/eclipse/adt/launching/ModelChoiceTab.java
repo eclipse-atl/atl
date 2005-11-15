@@ -398,7 +398,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 //		else
 //			buttonAffectUri.setEnabled(false);
 		
-		buttonAffectUri.setText("Uri");
+		buttonAffectUri.setText("Metamodel by URI");
 		buttonAffectUri.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				DialogUriSelection launcher = new DialogUriSelection(new Shell());
@@ -747,7 +747,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		else {
 			FileDialog fileDialog = new FileDialog(this.getShell());
 			fileDialog.setText(Messages.getString("ModelChoiceTab.CHOOSEMETAMODEL")); //$NON-NLS-1$
-			fileDialog.setFilterExtensions(new String[]{"*.xmi", "*.ecore"}); //$NON-NLS-1$
+			fileDialog.setFilterExtensions(new String[]{"*"}); //$NON-NLS-1$
 			String fileName = fileDialog.open();
 			if (fileName == null)
 				return;
@@ -809,11 +809,11 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 						if (type ==ModelChoiceTab.LIB)
 							ret = (currentFile.getFileExtension().toUpperCase()).equals("ASM");
 						else
-							ret = (
+							ret = true;/*(
 									(currentFile.getFileExtension().toUpperCase()).equals("XMI")
 									||
 									(currentFile.getFileExtension().toUpperCase()).equals("ECORE")
-									);
+									);*/
 					}
 					return ret;
 				}
