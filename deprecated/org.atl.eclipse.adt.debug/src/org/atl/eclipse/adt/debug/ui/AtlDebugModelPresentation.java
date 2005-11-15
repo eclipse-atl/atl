@@ -42,7 +42,7 @@ import org.eclipse.ui.part.FileEditorInput;
 
 
 /**
- * @author allilaire
+ * @author Freddy Allilaire
  * A debug model presentation is responsible for providing labels, images,
  * and editors associated with debug elements in a specific debug model.
  *
@@ -159,7 +159,6 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 			}
 			return (Image)mapImage.get(new Integer(BREAKPOINT));
 		}
-
 		return null;
 	}
 
@@ -299,7 +298,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		 * @see org.eclipse.ui.IEditorInput#getToolTipText()
 		 */
 		public String getToolTipText() {
-			return null;
+			return contents.getName();
 		}
 
 		/**
