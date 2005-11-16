@@ -34,7 +34,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage;
 
 /**
  * The method "launch" is launched when you click on the button "Run" or "Debug"
@@ -262,7 +261,6 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				String mName = (String)i.next();
 				String mmName = (String)arg.get(mName);
 
-//				AtlModelHandler amh = AtlModelHandler.getDefault(modelHandler);
 				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
 				ASMModel mofmm = amh.getMof();
 				mofmm.setIsTarget(false);
@@ -303,7 +301,6 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				String mName = (String)i.next();
 				String mmName = (String)arg.get(mName);
 
-//				AtlModelHandler amh = AtlModelHandler.getDefault(modelHandler);
 				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
 				ASMModel mofmm = amh.getMof();
 				mofmm.setIsTarget(false);
@@ -357,13 +354,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		if (filePath.startsWith("ext:")) {
 			File f = new File(filePath.substring(4));
 			return URI.createFileURI(f.getPath());
-		} else if (filePath.startsWith("uri:")) {
-			EPackage ep = EPackage.Registry.INSTANCE.getEPackage(filePath.substring(4));
-			return ep.eResource().getURI();
-//			return URI.createURI(ep.getNsURI());
-//			return null;
 		} else {
-//			IWorkspaceRoot iwr = ResourcesPlugin.getWorkspace().getRoot();
 			filePath = filePath.replace('#', '/');
 			return URI.createPlatformResourceURI(filePath);
 		}
