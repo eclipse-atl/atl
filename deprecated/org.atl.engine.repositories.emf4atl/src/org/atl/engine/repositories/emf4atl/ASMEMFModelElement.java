@@ -2,7 +2,6 @@ package org.atl.engine.repositories.emf4atl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -38,20 +37,6 @@ import org.eclipse.emf.ecore.xmi.XMIResource;
  */
 public class ASMEMFModelElement extends ASMModelElement {
 	
-	private static Map modelElements = new HashMap(); 
-	public static ASMModelElement getASMModelElement(ASMModel model, EObject object) {
-		ASMModelElement ret = null;
-		
-		synchronized(modelElements) {
-			ret = (ASMModelElement)modelElements.get(object);
-			if(ret == null) {
-				ret = new ASMEMFModelElement(model, object);
-			}
-		}
-		
-		return ret;
-	}
-
 	// only for metamodels...?
 	public ASMBoolean conformsTo(ASMOclType other) {
 		boolean ret = false;
@@ -92,7 +77,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 
 		if(t instanceof EClass) {
 			try {
-				ret = getASMModelElement(getModel(), ((EClass)t).getEStructuralFeature(name));
+				ret = ((ASMEMFModel)getModel()).getASMModelElement(((EClass)t).getEStructuralFeature(name));
 			} catch(Exception e) {
 				e.printStackTrace(System.out);
 			}
@@ -108,7 +93,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		if(ic == null) {
 			ret = super.refImmediateComposite();
 		} else {
-			ret = getASMModelElement(getModel(), ic);
+			ret = ((ASMEMFModel)getModel()).getASMModelElement(ic);
 		}
 		
 		return ret;
@@ -161,7 +146,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		} else if(value instanceof EEnumLiteral) {
 			ret = new ASMEnumLiteral(((EEnumLiteral)value).getName());
 		} else if(value instanceof EObject) {
-			ret = getASMModelElement(getModel(), (EObject)value);
+			ret = ((ASMEMFModel)getModel()).getASMModelElement((EObject)value);
 		} else if(value == null) {
 			ret = new ASMOclUndefined();
 		} else if(value instanceof EList) {
@@ -258,7 +243,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		
 		EObject metaobject = object.eClass();
 		if(metaobject != object) {
-			ret= getASMModelElement(model.getMetamodel(), metaobject);
+			ret= ((ASMEMFModel)model.getMetamodel()).getASMModelElement(metaobject);
 		}
 		
 		return ret;
@@ -308,7 +293,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 																				//TODO: use getEObject(id.getSymbol())
 			EObject eo = (EObject)((XMIResource)((ASMEMFModel)model).getExtent()).getIDToEObjectMap().get(id.getSymbol());
 			if(eo != null)
-				ret = getASMModelElement(model, eo);
+				ret = ((ASMEMFModel)model).getASMModelElement(eo);
 		}
 		
 		return (ret == null) ? new ASMOclUndefined() : ret;
@@ -364,11 +349,11 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 	 * @param model
 	 * @param metaobject
 	 */
-	private ASMEMFModelElement(ASMModel model, EObject object) {
+	protected ASMEMFModelElement(Map modelElements, ASMModel model, EObject object) {
 		super(model, getMetaobject(model, object));
 		this.object = object;
 		
-		// must be done here and not in getASMModelElement because EClass extends EClassifier whose type is EClass 
+		// must be done here and not in getASMModelElement because EClass extends EClassifier whose type is EClass
 		modelElements.put(object, this);
 		
 		try {
@@ -392,7 +377,7 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 			EClass cl = (EClass)object;
 			for(Iterator i = cl.getESuperTypes().iterator() ; i.hasNext() ; ) {
 				EClass s = (EClass)i.next();
-				addSupertype(getASMModelElement(model, s));
+				addSupertype(((ASMEMFModel)model).getASMModelElement(s));
 			}
 			addSupertype(ASMOclType.myType);
 		}

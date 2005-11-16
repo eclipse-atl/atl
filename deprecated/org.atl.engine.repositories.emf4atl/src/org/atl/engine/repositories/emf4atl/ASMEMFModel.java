@@ -3,6 +3,7 @@ package org.atl.engine.repositories.emf4atl;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -31,6 +32,21 @@ public class ASMEMFModel extends ASMModel {
 		return mofmm;
 	}
 	
+	private Map modelElements = new HashMap(); 
+
+	public ASMModelElement getASMModelElement(EObject object) {
+		ASMModelElement ret = null;
+		
+		synchronized(modelElements) {
+			ret = (ASMModelElement)modelElements.get(object);
+			if(ret == null) {
+				ret = new ASMEMFModelElement(modelElements, this, object);
+			}
+		}
+		
+		return ret;
+	}
+
 	public ASMModelElement findModelElement(String name) {
 		ASMModelElement ret = null;
 		
@@ -39,7 +55,7 @@ public class ASMEMFModel extends ASMModel {
 		eo = findModelElementIn(name, extent.getContents().iterator());
 		
 		if(eo != null)
-			ret = ASMEMFModelElement.getASMModelElement(this, eo);
+			ret = getASMModelElement(eo);
 		
 		return ret;
 	}
@@ -66,7 +82,7 @@ public class ASMEMFModel extends ASMModel {
 		for(Iterator i = extent.getAllContents() ; i.hasNext() ; ) {
 			EObject eo = (EObject)i.next();
 			if(t.isInstance(eo)) {
-				ret.add(ASMEMFModelElement.getASMModelElement(this, eo));
+				ret.add(getASMModelElement(eo));
 			}
 		}
 		
@@ -78,7 +94,7 @@ public class ASMEMFModel extends ASMModel {
 		
 		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
 		EObject eo = t.getEPackage().getEFactoryInstance().create(t);
-		ret = (ASMEMFModelElement)ASMEMFModelElement.getASMModelElement(this, eo);
+		ret = (ASMEMFModelElement)getASMModelElement(eo);
 		extent.getContents().add(eo);
 		
 		return ret;
