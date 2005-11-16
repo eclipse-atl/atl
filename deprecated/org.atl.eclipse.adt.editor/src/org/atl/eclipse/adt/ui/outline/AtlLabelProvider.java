@@ -148,11 +148,9 @@ public class AtlLabelProvider extends LabelProvider {
 		  		AtlEMFConstants.clOclFeature = (EClass)AtlEMFConstants.pkOcl.getEClassifier("OclFeature");
 		  		AtlEMFConstants.clOclModel = (EClass)AtlEMFConstants.pkOcl.getEClassifier("OclModel");
 		  		AtlEMFConstants.clParameter = (EClass)AtlEMFConstants.pkOcl.getEClassifier("Parameter");
-		  		AtlEMFConstants.pkExpressions = (EPackage)AtlEMFConstants.pkOcl.getESubpackages().get(0);
-		  			AtlEMFConstants.clVariableDeclaration = (EClass)AtlEMFConstants.pkExpressions.getEClassifier("VariableDeclaration");
+		  			AtlEMFConstants.clVariableDeclaration = (EClass)AtlEMFConstants.pkOcl.getEClassifier("VariableDeclaration");
 		  				AtlEMFConstants.sfVarName = AtlEMFConstants.clVariableDeclaration.getEStructuralFeature("varName");
-		  	AtlEMFConstants.pkCore = ((EClass)AtlEMFConstants.clUnit.getESuperTypes().get(0)).getEPackage();
-		  		AtlEMFConstants.clElement = (EClass)AtlEMFConstants.pkCore.getEClassifier("Element");
+		  		AtlEMFConstants.clElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Element");
 		  			AtlEMFConstants.sfLocation = AtlEMFConstants.clElement.getEStructuralFeature("location");
 		  	initReaders();
 	  		initialized = true;
