@@ -37,7 +37,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * @author allilaire
+ * @author Freddy Allilaire
  */
 public class AtlFileScreen extends WizardPage {
 
@@ -51,7 +51,6 @@ public class AtlFileScreen extends WizardPage {
 	final public static String QUERY = "query";
 	final public static String LIBRARY = "library";
 		
-//	private ISelection selection;
 	private Group groupHead;
 	private Group groupIn;
 	private Group groupOut;
@@ -71,7 +70,6 @@ public class AtlFileScreen extends WizardPage {
 		super("ATL File Wizard");
 		setTitle("ATL File Wizard");
 		setDescription("");
-//		this.selection = selection;
 		this.setPageComplete(false);
 	}
 
@@ -124,7 +122,6 @@ public class AtlFileScreen extends WizardPage {
 		IWorkbenchPage page = win.getActivePage();
 		
 		ISelection selection = page.getSelection();
-//		ISelection selection = page.getSelection(IPageLayout.ID_RES_NAV);
 		if (selection instanceof IStructuredSelection) {
 			IStructuredSelection ss = (IStructuredSelection)selection;
 			Object element = ss.getFirstElement();
@@ -163,11 +160,11 @@ public class AtlFileScreen extends WizardPage {
 		groupIn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		groupIn.setText("IN");
 		
-		new Label(groupIn, SWT.NULL).setText("IN M1");
+		new Label(groupIn, SWT.NULL).setText("Model");
 		final Text inM1 = new Text(groupIn, SWT.BORDER);
 		inM1.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		new Label(groupIn, SWT.NULL).setText("IN M2");
+		new Label(groupIn, SWT.NULL).setText("Metamodel");
 		final Text inM2 = new Text(groupIn, SWT.BORDER);
 		inM2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
@@ -183,11 +180,11 @@ public class AtlFileScreen extends WizardPage {
 		tableIn.setHeaderVisible(true);
 		
 		TableColumn tc = new TableColumn(tableIn, SWT.CENTER);
-		tc.setText("M1");
+		tc.setText("Model");
 		tc.setWidth(250);
 		tc.setAlignment(SWT.CENTER);
 		tc = new TableColumn(tableIn, SWT.CENTER);
-		tc.setText("M2");
+		tc.setText("Metamodel");
 		tc.setWidth(250);
 		tc.setAlignment(SWT.CENTER);
 		
@@ -206,11 +203,11 @@ public class AtlFileScreen extends WizardPage {
 		groupOut.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		groupOut.setText("OUT");
 		
-		new Label(groupOut, SWT.NULL).setText("OUT M1");
+		new Label(groupOut, SWT.NULL).setText("Model");
 		final Text outM1 = new Text(groupOut, SWT.BORDER);
 		outM1.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		new Label(groupOut, SWT.NULL).setText("OUT M2");
+		new Label(groupOut, SWT.NULL).setText("Metamodel");
 		final Text outM2 = new Text(groupOut, SWT.BORDER);
 		outM2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
@@ -226,11 +223,11 @@ public class AtlFileScreen extends WizardPage {
 		tableOut.setHeaderVisible(true);
 		
 		tc = new TableColumn(tableOut, SWT.CENTER);
-		tc.setText("M1");
+		tc.setText("Model");
 		tc.setWidth(250);
 		tc.setAlignment(SWT.CENTER);
 		tc= new TableColumn(tableOut, SWT.CENTER);
-		tc.setText("M2");
+		tc.setText("Metamodel");
 		tc.setWidth(250);
 		tc.setAlignment(SWT.CENTER);
 		
