@@ -4,6 +4,7 @@ import org.atl.engine.extractors.Extractor;
 import org.atl.engine.vm.nativelib.ASMCollection;
 import org.atl.engine.vm.nativelib.ASMModel;
 import org.atl.engine.vm.nativelib.ASMModelElement;
+import org.atl.engine.vm.nativelib.ASMOclAny;
 import org.atl.engine.vm.nativelib.ASMString;
 
 import java.io.BufferedOutputStream;
@@ -101,7 +102,12 @@ public class XMLExtractor implements Extractor {
 	}
 
 	private String getString(ASMModelElement ame, String name) {
-		return ((ASMString)ame.get(null, name)).getSymbol();
+		ASMOclAny ret = ame.get(null, name);
+		
+		if(!(ret instanceof ASMString))
+			throw new RuntimeException("could not read " + name + " of " + ame + " : " + ame.getType());
+		
+		return ((ASMString)ret).getSymbol();
 	}
 
 	private String convertText(String in, boolean inAttr) {
