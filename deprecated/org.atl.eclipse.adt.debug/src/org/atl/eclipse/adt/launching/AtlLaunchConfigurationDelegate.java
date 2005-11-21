@@ -366,8 +366,11 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			return f.toURL();
 		}
 		else {
-			IFile file = getASMFile(filePath);
-			return file.getLocation().toFile().toURL();
+			IWorkspace wks = ResourcesPlugin.getWorkspace();
+			IWorkspaceRoot wksroot = wks.getRoot();
+
+			IFile currentLib = wksroot.getFile(new Path(filePath));
+			return currentLib.getLocation().toFile().toURL();
 		}
 	}
 	
