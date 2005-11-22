@@ -192,7 +192,7 @@ public class XMLInjector extends DefaultHandler implements Injector {
 
     public void fatalError(SAXParseException e) {
 		System.out.println("Fatal error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
-		System.exit(1);
+//		System.exit(1);
 	}
 }
 
