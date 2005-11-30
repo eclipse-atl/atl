@@ -110,7 +110,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			Map modelType = configuration.getAttribute(AtlLauncherTools.MODELTYPE, new HashMap());
 			Map libsFromConfig = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
 			Map modelHandler = configuration.getAttribute(AtlLauncherTools.MODELHANDLER, new HashMap());
-			boolean checkSameModel = configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, true);
+			boolean checkSameModel = !configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false);
 
 			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode, checkSameModel);
 		} catch (CoreException e1) {
