@@ -21,6 +21,7 @@ import org.atl.eclipse.adt.launching.sourcelookup.AtlSourceLocator;
 import org.atl.eclipse.engine.AtlEMFModelHandler;
 import org.atl.eclipse.engine.AtlLauncher;
 import org.atl.eclipse.engine.AtlModelHandler;
+import org.atl.engine.repositories.emf4atl.ASMEMFModel;
 import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
@@ -109,8 +110,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			Map modelType = configuration.getAttribute(AtlLauncherTools.MODELTYPE, new HashMap());
 			Map libsFromConfig = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
 			Map modelHandler = configuration.getAttribute(AtlLauncherTools.MODELHANDLER, new HashMap());
+			boolean checkSameModel = configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, true);
 
-			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode);
+			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode, checkSameModel);
 		} catch (CoreException e1) {
 			e1.printStackTrace();
 		}
@@ -119,22 +121,22 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	/**
 	 * 
 	 * @param filePath		: path of the ATL Transformation
-	 * @param libsFromConfig: Map {lib_name --> URI}
 	 * @param input			: Map {model_input --> metamodel_input}
 	 * @param output		: Map {model_output --> metamodel_output}
 	 * @param path			: Map {model_name --> URI}
 	 * @param modelType		: Map {model_name --> type if the model(mIn, mmIn, ...)}
 	 * @param modelHandler	: modelHandler (MDR or EMF)
 	 * @param mode			: mode (DEBUG or RUN)
+	 * @param ckeckSameModel TODO
+	 * @param libsFromConfig: Map {lib_name --> URI}
 	 */
-	public static void runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode) {
-		runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, Collections.EMPTY_MAP);
+	public static void runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, boolean checkSameModel) {
+		runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, Collections.EMPTY_MAP, checkSameModel);
 	}
 
 	/**
 	 * 
 	 * @param filePath		: path of the ATL Transformation
-	 * @param libsFromConfig: Map {lib_name --> URI}
 	 * @param input			: Map {model_input --> metamodel_input}
 	 * @param output		: Map {model_output --> metamodel_output}
 	 * @param path			: Map {model_name --> URI}
@@ -142,13 +144,15 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @param modelHandler	: modelHandler (MDR or EMF)
 	 * @param mode			: mode (DEBUG or RUN)
 	 * @param linkWithNextTransformation
+	 * @param checkSameModel TODO
+	 * @param libsFromConfig: Map {lib_name --> URI}
 	 * @return
 	 */
-	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation) {
-		return runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, linkWithNextTransformation, Collections.EMPTY_MAP);
+	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, boolean checkSameModel) {
+		return runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, linkWithNextTransformation, Collections.EMPTY_MAP, checkSameModel);
 	}
 	
-	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, Map inModel) {
+	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, Map inModel, boolean checkSameModel) {
 		Map toReturn = new HashMap();
 		try {
 			//asmUrl
@@ -174,8 +178,8 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 			//models
 			if (inModel.isEmpty())
-				inModel = getSourceModels(input, path, modelHandler, atlModelHandler);
-			Map outModel = getTargetModels(output, path, modelHandler, atlModelHandler, inModel);
+				inModel = getSourceModels(input, path, modelHandler, atlModelHandler, checkSameModel);
+			Map outModel = getTargetModels(output, path, modelHandler, atlModelHandler, inModel, checkSameModel);
 
 			Map models = new HashMap();
 
@@ -254,7 +258,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @return
 	 * @throws CoreException
 	 */
-	private static Map getSourceModels(Map arg, Map path, Map modelHandler, Map atlModelHandler) throws CoreException {
+	private static Map getSourceModels(Map arg, Map path, Map modelHandler, Map atlModelHandler, boolean checkSameModel) throws CoreException {
 		Map toReturn = new HashMap();
 		try {
 			for(Iterator i = arg.keySet().iterator() ; i.hasNext() ; ) {
@@ -279,6 +283,8 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 					inputModel = loadModel(amh, mName, inputMetaModel, (String)path.get(mName));
 				}
 				inputModel.setIsTarget(false);
+				if (inputModel instanceof ASMEMFModel)
+					((ASMEMFModel)inputModel).setCheckSameModel(checkSameModel);
 				toReturn.put(mName, inputModel);
 			}
 		}
@@ -294,7 +300,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @return
 	 * @throws CoreException
 	 */
-	private static Map getTargetModels(Map arg, Map path, Map modelHandler, Map atlModelHandler, Map input) throws CoreException {
+	private static Map getTargetModels(Map arg, Map path, Map modelHandler, Map atlModelHandler, Map input, boolean checkSameModel) throws CoreException {
 		Map toReturn = new HashMap();
 		try {
 			for(Iterator i = arg.keySet().iterator() ; i.hasNext() ; ) {
@@ -323,6 +329,8 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 					outputModel = amh.newModel(mName, outputMetaModel);
 				}
 				outputModel.setIsTarget(true);
+				if (outputModel instanceof ASMEMFModel)
+					((ASMEMFModel)outputModel).setCheckSameModel(checkSameModel);
 				toReturn.put(mName, outputModel);
 			}
 		}
