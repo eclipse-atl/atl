@@ -120,7 +120,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 
 		buttonAllowInterModelReferences.setLayoutData(labelLData);
 		buttonAllowInterModelReferences.setText("Allow inter-model references");
-		buttonAllowInterModelReferences.setSelection(true);
+		buttonAllowInterModelReferences.setSelection(false);
 		buttonAllowInterModelReferences.addSelectionListener(this);
 
 		buttonModeDebug.setLayoutData(label2LData);
