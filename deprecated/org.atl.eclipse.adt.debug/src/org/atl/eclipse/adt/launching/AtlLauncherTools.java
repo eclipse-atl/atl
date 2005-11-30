@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 public class AtlLauncherTools {
 
 	public static String ATLFILENAME = "ATL File Name";
+	public static String AllowInterModelReferences = "AllowInterModelReferences";
 	public static String PROJECTNAME = "Project Name";
 	public static String OUTPUT = "Output";
 	public static String INPUT = "Input";
