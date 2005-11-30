@@ -28,6 +28,8 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
  */
 public class ASMEMFModel extends ASMModel {
 
+	private boolean checkSameModel = true;
+	
 	public static ASMModel getMOF() {
 		return mofmm;
 	}
@@ -250,4 +252,12 @@ public class ASMEMFModel extends ASMModel {
 
 	private static ASMEMFModel mofmm;
 	private Resource extent;
+	
+	public boolean isCheckSameModel() {
+		return checkSameModel;
+	}
+
+	public void setCheckSameModel(boolean checkSameModel) {
+		this.checkSameModel = checkSameModel;
+	}
 }
