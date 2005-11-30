@@ -164,7 +164,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 	}
 	public void set(StackFrame frame, String name, ASMOclAny value) {
 		final boolean debug = false;
-		final boolean checkSameModel = !true;
+//		final boolean checkSameModel = !true;
+		
 		if(debug) System.out.println("Setting: " + this + " : " + getType() + "." + name + " to " + value);
 		super.set(frame, name, value);
 		EStructuralFeature feature = object.eClass().getEStructuralFeature(name);
@@ -179,7 +180,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 			if(value instanceof ASMCollection) {
 				for(Iterator i = ((ASMCollection)value).iterator() ; i.hasNext() ; ) {
 					ASMOclAny sv = (ASMOclAny)i.next();
-					if(checkSameModel && (sv instanceof ASMModelElement) && (((ASMModelElement)sv).getModel() != getModel())) {					
+					if(((ASMEMFModel)getModel()).isCheckSameModel() && (sv instanceof ASMModelElement) && (((ASMModelElement)sv).getModel() != getModel())) {					
 						continue;
 					}
 					Object val = asm2EMF(frame, sv, name);
@@ -194,7 +195,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 				l.add(asm2EMF(frame, value, name));
 			}
 		} else {
-			if(checkSameModel && (value instanceof ASMModelElement) && (((ASMModelElement)value).getModel() != getModel())) {
+			if(((ASMEMFModel)getModel()).isCheckSameModel() && (value instanceof ASMModelElement) && (((ASMModelElement)value).getModel() != getModel())) {
 				// should not happen but the ATL compiler does not add checks for this in resolveTemp yet
 			} else {
 				Object val = asm2EMF(frame, value, name);
@@ -388,4 +389,5 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 	}
 	
 	private EObject object;
+
 }
