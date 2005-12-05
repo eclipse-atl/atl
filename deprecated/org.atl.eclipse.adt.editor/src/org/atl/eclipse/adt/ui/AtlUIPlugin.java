@@ -11,8 +11,18 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleConstants;
+import org.eclipse.ui.console.IConsoleManager;
+import org.eclipse.ui.console.IConsoleView;
+import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.texteditor.MarkerAnnotationPreferences;
 import org.osgi.framework.BundleContext;
@@ -26,7 +36,11 @@ import org.osgi.framework.BundleContext;
  * @author C. MONTI for ATL Team
  */
 public class AtlUIPlugin extends AbstractUIPlugin {
-	
+
+	private static MessageConsole console = null;
+	private static MessageConsoleStream consoleStream = null;
+    private static IConsoleManager consoleMgr = null; 
+	private static final String ATL_CONSOLE = "org.atl.eclipse.adt.editor.console";	
 	private static final String ID = "org.atl.eclipse.adt.editor";
 	
 	/**
@@ -122,7 +136,9 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 			resourceBundle = ResourceBundle.getBundle("org.atl.eclipse.adt.ui.AtlUIPluginResources");
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
-		}		
+		}	
+		
+		if (console == null) initConsole ();		
 	}
 	
 	public synchronized ProblemMarkerManager getProblemMarkerManager() {
@@ -193,5 +209,63 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 			super.stop(context);
 		}
 	}
+	
+	public void println (String toPrint) {
+		if (consoleStream != null)
+			consoleStream.println(toPrint);
+	}
+	
+	public void print (String toPrint) {
+		if (consoleStream != null)
+			consoleStream.print(toPrint);
+	}	
+	
+	private void initConsole () {
+		   console = findConsole(ATL_CONSOLE);
+		   Font f = null;
+		   try {
+		   	FontData data = new FontData ("Arial", 9, 9);
+		   	data.setStyle(SWT.NORMAL);
+		   	f = new Font (null, data);
+		   	
+		   	console.setFont(f);
+		   } catch (Exception ex) {	   	
+		   }
+		   // console.setFont(new Font());
+		   consoleStream = console.newMessageStream();
+		   activateConsole();
+		   // System.out = out;	   
+		   consoleStream.println("ATL Console initiated");
+		    OutputStreamRedirector redirStream = new OutputStreamRedirector (consoleStream);
+		    System.setOut(redirStream);
+		   // System.setErr(redirStream);	   
+		}
+
+	   private MessageConsole findConsole(String name) {
+		      ConsolePlugin plugin = ConsolePlugin.getDefault();
+		      consoleMgr = plugin.getConsoleManager();
+		      IConsole[] existing = consoleMgr.getConsoles();
+		      for (int i = 0; i < existing.length; i++)
+		         if (name.equals(existing[i].getName()))
+		            return (MessageConsole) existing[i];
+		      //no console found, so create a new one
+		      MessageConsole myConsole = new MessageConsole(name, null);
+		      consoleMgr.addConsoles(new IConsole[]{myConsole});
+		      return myConsole;
+		   }
+
+		private void activateConsole () {
+			   IWorkbenchPage page = AtlUIPlugin.getActivePage();
+			   String id = IConsoleConstants.ID_CONSOLE_VIEW;
+			   try {
+			   	if (page != null) {
+				   	IConsoleView view = (IConsoleView) page.showView(id);
+					view.display(console);	   	
+			   	}
+			   } catch (org.eclipse.ui.PartInitException pex) {
+			   	System.out.println ("AtlUiPlugin - " + pex);
+			   }
+			}	
+	   
 	
 }
