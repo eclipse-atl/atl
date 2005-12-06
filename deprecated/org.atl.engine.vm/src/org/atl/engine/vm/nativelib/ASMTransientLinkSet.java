@@ -36,6 +36,10 @@ public class ASMTransientLinkSet extends ASMOclAny {
 	// Native Operations below
 
 	public static void addLink(StackFrame frame, ASMTransientLinkSet self, ASMTransientLink link) {
+		addLink2(frame, self, link, new ASMBoolean(true));
+	}
+	
+	public static void addLink2(StackFrame frame, ASMTransientLinkSet self, ASMTransientLink link, ASMBoolean isDefault) {
 		ASMSequence s = (ASMSequence)self.linksByRule.get(ASMTransientLink.getRule(frame, link));
 
 		if(s == null) {
@@ -43,8 +47,14 @@ public class ASMTransientLinkSet extends ASMOclAny {
 			self.linksByRule.put(ASMTransientLink.getRule(frame, link), s);
 		}
 		s.add(link);
-		for(Iterator i = link.getSourceElements().iterator() ; i.hasNext() ; ) {
-			self.linksBySourceElement.put(i.next(), link);
+		if(isDefault.getSymbol()) {
+			for(Iterator i = link.getSourceElements().iterator() ; i.hasNext() ; ) {
+				Object e = i.next();
+				if(self.linksBySourceElement.containsKey(e)) {
+					frame.printStackTrace("trying to register several rules as default for element " + e);
+				}
+				self.linksBySourceElement.put(e, link);
+			}
 		}
 		for(Iterator i = link.getTargetElements().iterator() ; i.hasNext() ; ) {
 			Object o = i.next();
