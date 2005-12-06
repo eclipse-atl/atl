@@ -120,7 +120,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 
 		buttonAllowInterModelReferences.setLayoutData(labelLData);
 		buttonAllowInterModelReferences.setText("Allow inter-model references");
-		buttonAllowInterModelReferences.setSelection(false);
+//		buttonAllowInterModelReferences.setSelection(false);
 		buttonAllowInterModelReferences.addSelectionListener(this);
 
 		buttonModeDebug.setLayoutData(label2LData);
@@ -156,7 +156,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 			listFile.setText(configuration.getAttribute(AtlLauncherTools.ATLFILENAME, ""));
 //			listModelHandler.setText(configuration.getAttribute(AtlLauncherTools.MODELHANDLER, ""));
 			buttonModeDebug.setSelection(configuration.getAttribute(AtlLauncherTools.MODEDEBUG, false));
-			buttonAllowInterModelReferences.setSelection(configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, true));
+			buttonAllowInterModelReferences.setSelection(configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false));
 			canSave();
 			updateLaunchConfigurationDialog();
 		}
