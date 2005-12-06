@@ -461,6 +461,19 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 		return new ASMBoolean(ret);
 	}
 
+	public ASMOclAny refImmediateComposite() {
+		ASMOclAny ret = null;
+		
+		Object ic = object.refImmediateComposite();
+		if((ic == null) || !(ic instanceof RefObject)) {
+			ret = super.refImmediateComposite();
+		} else {
+			ret = getASMModelElement(getModel(), (RefObject)ic);
+		}
+		
+		return ret;
+	}
+
 	// only for metamodels...?
 	public ASMModelElement getPropertyType(String name) {
 		ASMModelElement ret = null;
