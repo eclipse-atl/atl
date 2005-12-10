@@ -105,7 +105,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		if((frame != null) && isHelper(frame, name)) {
 			ret = getHelper(frame, name);
 		} else if("__xmiID__".equals(name)) {
-			String id = ((XMIResource)((ASMEMFModel)getModel()).getExtent()).getID(object);
+			String id = ((XMIResource)((ASMEMFModel)getModel()).getExtent()).getURIFragment(object);
 			ret = emf2ASM(frame, id);
 		} else {
 			EStructuralFeature sf = object.eClass().getEStructuralFeature(name);
@@ -200,7 +200,11 @@ public class ASMEMFModelElement extends ASMModelElement {
 			} else {
 				Object val = asm2EMF(frame, value, name);
 				if(val != null) {
-					object.eSet(feature, val);
+					try {
+						object.eSet(feature, val);
+					} catch(Exception e) {
+						frame.printStackTrace("cannot set feature " + getType() + "." + name + " to value " + val, e);
+					}
 				}
 			}
 		}
@@ -291,8 +295,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 		
 		ASMModel model = (ASMModel)frame.getModels().get(modelName.getSymbol());
 		if(model instanceof ASMEMFModel) {
-																				//TODO: use getEObject(id.getSymbol())
-			EObject eo = (EObject)((XMIResource)((ASMEMFModel)model).getExtent()).getIDToEObjectMap().get(id.getSymbol());
+																				//TODO: test new version, was: getIDToEObjectMap().get(id.getSymbol());
+			EObject eo = (EObject)((XMIResource)((ASMEMFModel)model).getExtent()).getEObject(id.getSymbol());
 			if(eo != null)
 				ret = ((ASMEMFModel)model).getASMModelElement(eo);
 		}
