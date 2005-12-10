@@ -29,6 +29,9 @@ public abstract class ASMCollection extends ASMOclAny {
 		return null;
 	}
 
+	public int size() {
+		return collection().size();
+	}
 
 	// Native Operations below
 
