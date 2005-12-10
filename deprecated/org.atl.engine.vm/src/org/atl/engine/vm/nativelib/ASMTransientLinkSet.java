@@ -40,13 +40,27 @@ public class ASMTransientLinkSet extends ASMOclAny {
 	}
 	
 	public static void addLink2(StackFrame frame, ASMTransientLinkSet self, ASMTransientLink link, ASMBoolean isDefault) {
-		ASMSequence s = (ASMSequence)self.linksByRule.get(ASMTransientLink.getRule(frame, link));
+		ASMOclAny rule = ASMTransientLink.getRule(frame, link);
+		ASMSequence s = (ASMSequence)self.linksByRule.get(rule);
 
 		if(s == null) {
 			s = new ASMSequence();
-			self.linksByRule.put(ASMTransientLink.getRule(frame, link), s);
+			self.linksByRule.put(rule, s);
 		}
 		s.add(link);
+
+		
+		Map linksBySourceElements2 = (Map)self.linksBySourceElementByRule.get(rule);
+		if(linksBySourceElements2 == null) {
+			linksBySourceElements2 = new HashMap();
+			self.linksBySourceElementByRule.put(rule, linksBySourceElements2);
+		}
+		for(Iterator i = link.getSourceElements().iterator() ; i.hasNext() ; ) {
+			Object e = i.next();
+			linksBySourceElements2.put(e, link);
+		}
+		
+		
 		if(isDefault.getSymbol()) {
 			for(Iterator i = link.getSourceElements().iterator() ; i.hasNext() ; ) {
 				Object e = i.next();
@@ -88,6 +102,19 @@ public class ASMTransientLinkSet extends ASMOclAny {
 		return ret;
 	}
 
+	public static ASMOclAny getLinkByRuleAndSourceElement(StackFrame frame, ASMTransientLinkSet self, ASMOclAny rule, ASMOclAny sourceElement) {
+		Map map = ((Map)self.linksBySourceElementByRule.get(rule));
+		ASMOclAny ret = null;
+		
+		if(map != null) ret = (ASMOclAny)map.get(sourceElement);
+
+		if(ret == null) {
+			ret = new ASMOclUndefined();
+		}
+
+		return ret;
+	}
+
 	public static ASMOclAny getLinkByTargetElement(StackFrame frame, ASMTransientLinkSet self, ASMOclAny targetElement) {
 		ASMOclAny ret = (ASMOclAny)self.linksByTargetElement.get(targetElement);
 
@@ -99,6 +126,7 @@ public class ASMTransientLinkSet extends ASMOclAny {
 	}
 
 	private Map linksByRule = new HashMap();
+	private Map linksBySourceElementByRule = new HashMap();
 	private Map linksBySourceElement = new HashMap();
 	private Map linksByTargetElement = new HashMap();
 }
