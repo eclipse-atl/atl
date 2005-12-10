@@ -245,6 +245,9 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 
 		if((frame != null) && isHelper(frame, name)) {
 			ret = getHelper(frame, name);
+		} else if("__xmiID__".equals(name)) {
+			String id = ((ASMMDRModel)getModel()).xmiIdByElement(object);
+			ret = java2ASM(frame, getModel(), id);
 		} else {
 			try {
 				Object o = object.refGetValue(name);

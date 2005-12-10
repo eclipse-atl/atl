@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,8 +18,7 @@ import javax.jmi.reflect.RefAssociation;
 import javax.jmi.reflect.RefClass;
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
-import javax.jmi.xmi.XmiReader;
-import javax.jmi.xmi.XmiWriter;
+import javax.jmi.xmi.MalformedXMIException;
 
 import org.atl.engine.vm.ModelLoader;
 import org.atl.engine.vm.nativelib.ASMCollection;
@@ -27,7 +27,13 @@ import org.atl.engine.vm.nativelib.ASMModelElement;
 import org.atl.engine.vm.nativelib.ASMString;
 import org.netbeans.api.mdr.MDRManager;
 import org.netbeans.api.mdr.MDRepository;
-import org.openide.util.Lookup;
+import org.netbeans.api.xmi.XMIInputConfig;
+import org.netbeans.api.xmi.XMIReader;
+import org.netbeans.api.xmi.XMIReaderFactory;
+import org.netbeans.api.xmi.XMIReferenceResolver;
+import org.netbeans.api.xmi.XMIWriter;
+import org.netbeans.api.xmi.XMIWriterFactory;
+import org.netbeans.api.xmi.XMIReferenceResolver.Client;
 
 /**
  * @author Frédéric Jouault
@@ -38,8 +44,8 @@ public class ASMMDRModel extends ASMModel {
 	private static boolean persist = false;
 
 	private static MDRepository rep = null;
-	private static XmiReader reader;
-	private static XmiWriter writer;
+	private static XMIReader reader;
+	private static XMIWriter writer;
 
 	static {
 		System.out.println("Initializing MDR...");
@@ -226,7 +232,30 @@ if(debug)
 		ASMMDRModel ret = newASMMDRModel(name, metamodel, ml);
 
 		try {
+			XMIInputConfig inputConfig = reader.getConfiguration();
+			final XMIReferenceResolver originalReferenceResolver = inputConfig.getReferenceResolver();
+			final Map elementByXmiId = new HashMap();
+			final Map xmiIdByElement = new HashMap();
+			inputConfig.setReferenceResolver(new XMIReferenceResolver() {
+
+				public void register(String systemId, String xmiId, RefObject object) {
+					elementByXmiId.put(xmiId, object);
+					xmiIdByElement.put(object, xmiId);
+					if(originalReferenceResolver != null)
+						originalReferenceResolver.register(systemId, xmiId, object);
+				}
+
+				public void resolve(Client client, RefPackage extent, String systemId, XMIInputConfig configuration, Collection hrefs) throws MalformedXMIException, IOException {
+					if(originalReferenceResolver != null)	// anyway, if we do nothing the default resolver will be used
+						originalReferenceResolver.resolve(client, extent, systemId, configuration, hrefs);
+				}
+				
+			});
 			reader.read(in, null, ret.pack);
+			inputConfig.setReferenceResolver(originalReferenceResolver);
+			
+			ret.elementByXmiId = elementByXmiId;
+			ret.xmiIdByElement = xmiIdByElement;
 		} catch(Exception e) {
 			System.out.println("Error while reading " + name + ":");
 			//e.printStackTrace(System.out);
@@ -284,8 +313,10 @@ if(debug)
 
 		rep = MDRManager.getDefault().getDefaultRepository();
 
-		reader = (XmiReader)Lookup.getDefault().lookup(XmiReader.class);
-		writer = (XmiWriter)Lookup.getDefault().lookup(XmiWriter.class);
+		//reader = (XmiReader)Lookup.getDefault().lookup(XmiReader.class);
+		//writer = (XmiWriter)Lookup.getDefault().lookup(XmiWriter.class);
+		reader = XMIReaderFactory.getDefault().createXMIReader();
+		writer = XMIWriterFactory.getDefault().createXMIWriter();
 			rep.getExtent("MOF");
 	}
 
@@ -293,11 +324,23 @@ if(debug)
 		return pack;
 	}
 
+	public String xmiIdByElement(RefObject object) {
+		return (String)xmiIdByElement.get(object);
+	}
+	
+	public RefObject elementByXmiId(String xmiId) {
+		return (RefObject)elementByXmiId.get(xmiId);
+	}
+	
 	public static ASMModel getMOF() {
 		return mofmm;
 	}
 	
 	private RefPackage pack;
+	private Map elementByXmiId;
+	private Map xmiIdByElement;
+
+
 	private static ASMMDRModel mofmm;
 }
 
