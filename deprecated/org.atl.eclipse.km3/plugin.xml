@@ -94,5 +94,9 @@
                id="org.atl.eclipse.km3.extractor.mof14"/>
       </objectContribution>
    </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup class="org.atl.eclipse.km3.Startup"/>
+   </extension>
 
 </plugin>

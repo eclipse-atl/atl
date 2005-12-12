@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="TCS">
-  <ConcreteSyntax location="1:1-296:2" name="KM3" k="4" lexer="&#xA;class KM3Lexer extends Lexer;&#xA;&#xA;options {&#xA;&#x9;k = 2;&#xA;&#x9;charVocabulary = '\0' .. '\u00FF';&#xA;&#x9;testLiterals = false;&#xA;}&#xA;&#xA;{&#xA;&#xA;&#x9;protected Token makeToken(int t) {&#xA;&#x9;&#x9;org.atl.engine.injectors.ebnf.LocationToken ret = null;&#xA;&#xA;&#x9;&#x9;tokenObjectClass = org.atl.engine.injectors.ebnf.LocationToken.class;&#xA;&#x9;&#x9;ret = (org.atl.engine.injectors.ebnf.LocationToken)super.makeToken(t);&#xA;&#x9;&#x9;ret.setEndLine(getLine());&#xA;&#x9;&#x9;ret.setEndColumn(getColumn());&#xA;&#xA;&#x9;&#x9;return ret;&#xA;&#x9;}&#xA;&#xA;}&#xA;&#xA;//protected&#xA;NL&#xA;&#x9;:&#x9;(&#x9;'\r' '\n'&#xA;&#x9;&#x9;|&#x9;'\n' '\r'&#x9;//Improbable&#xA;&#x9;&#x9;|&#x9;'\r'&#xA;&#x9;&#x9;|&#x9;'\n'&#xA;&#x9;&#x9;)&#xA;&#x9;{newline();}&#xA;&#x9;;&#xA;&#xA;WS&#xA;&#x9;:&#x9;(&#x9;' '&#xA;&#x9;&#x9;|&#x9;'\t'&#xA;//&#x9;&#x9;|&#x9;NL&#xA;&#x9;&#x9;)&#xA;//&#x9;{ $setType(Token.SKIP); }&#xA;&#x9;;&#xA;&#xA;COMMENT&#xA;&#x9;:&#x9;&quot;--&quot;&#xA;&#x9;&#x9;(~(&#x9;'\r'&#xA;&#x9;&#x9;|&#x9;'\n'&#xA;&#x9;&#x9;))*&#xA;//&#x9;&#x9;({LA(1) != EOF_CHAR}? NL)?&#xA;//&#x9;{ $setType(Token.SKIP); }&#xA;&#x9;;&#xA;&#xA;protected&#xA;DIGIT&#xA;&#x9;:&#x9;'0'..'9'&#xA;&#x9;;&#xA;&#xA;protected&#xA;ALPHA&#xA;&#x9;:&#x9;'a'..'z'&#xA;&#x9;|&#x9;'A'..'Z'&#xA;&#x9;|&#x9;'_'&#xA;&#x9;//For Unicode compatibility (from 0000 to 00ff)&#xA;&#x9;|&#x9;'\u00C0' .. '\u00D6'&#xA;&#x9;|&#x9;'\u00D8' .. '\u00F6'&#xA;&#x9;|&#x9;'\u00F8' .. '\u00FF'&#xA;&#x9;;&#xA;&#xA;protected&#xA;SNAME&#xA;options {&#xA;&#x9;testLiterals = true;&#xA;}&#xA;&#x9;:&#x9;(ALPHA) (ALPHA | DIGIT)*&#xA;;&#xA;&#xA;NAME&#xA;&#x9;:&#x9;(&#x9;s:SNAME {if(s.getType() != SNAME) $setType(s.getType());}&#xA;&#x9;&#x9;|&#x9;'&quot;'!&#xA;&#x9;&#x9;&#x9;(&#x9;ESC&#xA;&#x9;&#x9;&#x9;|&#x9;'\n' {newline();}&#xA;&#x9;&#x9;&#x9;|&#x9;~('\\'|'\&quot;'|'\n')&#xA;&#x9;&#x9;&#x9;)*&#xA;&#x9;&#x9;&#x9;'&quot;'!&#xA;&#x9;&#x9;)&#xA;&#x9;{&#xA;&#x9;if($getText.equals(&quot;true&quot;)) $setType(BOOLEAN);&#xA;&#x9;if($getText.equals(&quot;false&quot;)) $setType(BOOLEAN);&#xA;&#x9;}&#xA;&#x9;;&#xA;&#xA;INT&#xA;&#x9;:&#x9;(DIGIT)+&#xA;&#x9;&#x9;(('.' DIGIT)=> '.' (DIGIT)+ {$setType(FLOAT);})?&#xA;&#x9;;&#xA;&#xA;protected&#xA;ESC&#xA;&#x9;:&#x9;'\\'!&#xA;&#x9;&#x9;(&#x9;'n' {$setText(&quot;\n&quot;);}&#xA;&#x9;&#x9;|&#x9;'r' {$setText(&quot;\r&quot;);}&#xA;&#x9;&#x9;|&#x9;'t' {$setText(&quot;\t&quot;);}&#xA;&#x9;&#x9;|&#x9;'b' {$setText(&quot;\b&quot;);}&#xA;&#x9;&#x9;|&#x9;'f' {$setText(&quot;\f&quot;);}&#xA;&#x9;&#x9;|&#x9;'&quot;' {$setText(&quot;\&quot;&quot;);}&#xA;&#x9;&#x9;|&#x9;'\'' {$setText(&quot;\'&quot;);}&#xA;&#x9;&#x9;|&#x9;'\\' {$setText(&quot;\\&quot;);}&#xA;&#x9;&#x9;|&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;('0'..'3')&#xA;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;:&#x9;('0'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;:&#x9;'0'..'7'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;|&#x9;('4'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;:&#x9;('0'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;)&#xA;&#x9;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;String s = $getText;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;int i;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;int ret = 0;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;String ans;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;for (i=0; i&lt;s.length(); ++i)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ret = ret*8 + s.charAt(i) - '0';&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;ans = String.valueOf((char) ret);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;$setText(ans);&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;)&#xA;&#x9;;&#xA;&#xA;STRING&#xA;&#x9;:&#x9;'\''!&#xA;&#x9;&#x9;(&#x9;ESC&#xA;&#x9;&#x9;|&#x9;'\n' {newline();}&#xA;&#x9;&#x9;|&#x9;~('\\'|'\''|'\n')&#xA;&#x9;&#x9;)*&#xA;&#x9;&#x9;'\''!&#xA;&#x9;;&#xA;&#xA;&#x9;">
-    <templates xsi:type="PrimitiveTemplate" location="3:9-4:35" name="identifier" typeName="String" isDefault="true" tokenName="NAME" value="%token%"/>
-    <templates xsi:type="PrimitiveTemplate" location="6:9-8:64" name="stringSymbol" typeName="String" isDefault="false" tokenName="STRING" value="%token%" serializer="''' + %value%.toCString() + '''"/>
-    <templates xsi:type="PrimitiveTemplate" location="10:9-11:52" name="integerSymbol" typeName="Integer" isDefault="true" tokenName="INT" value="Integer.valueOf(%token%)"/>
-    <templates xsi:type="PrimitiveTemplate" location="13:9-14:51" name="floatSymbol" typeName="Double" isDefault="true" tokenName="FLOAT" value="Double.valueOf(%token%)"/>
-    <templates xsi:type="PrimitiveTemplate" location="16:9-17:52" name="booleanSymbol" typeName="Boolean" isDefault="true" tokenName="BOOLEAN" value="Boolean.valueOf(%token%)"/>
-    <templates xsi:type="ClassTemplate" location="19:9-21:18" name="Metamodel" isAbstract="false" isOperatored="false" isMain="true" isContext="true" isAddToContext="false" isNonPrimary="false">
+  <ConcreteSyntax location="1:1-301:2" name="KM3" k="4" lexer="&#xA;class KM3Lexer extends Lexer;&#xA;&#xA;options {&#xA;&#x9;k = 2;&#xA;&#x9;charVocabulary = '\0' .. '\u00FF';&#xA;&#x9;testLiterals = false;&#xA;}&#xA;&#xA;{&#xA;&#xA;&#x9;protected Token makeToken(int t) {&#xA;&#x9;&#x9;org.atl.engine.injectors.ebnf.LocationToken ret = null;&#xA;&#xA;&#x9;&#x9;tokenObjectClass = org.atl.engine.injectors.ebnf.LocationToken.class;&#xA;&#x9;&#x9;ret = (org.atl.engine.injectors.ebnf.LocationToken)super.makeToken(t);&#xA;&#x9;&#x9;ret.setEndLine(getLine());&#xA;&#x9;&#x9;ret.setEndColumn(getColumn());&#xA;&#xA;&#x9;&#x9;return ret;&#xA;&#x9;}&#xA;&#xA;}&#xA;&#xA;//protected&#xA;NL&#xA;&#x9;:&#x9;(&#x9;'\r' '\n'&#xA;&#x9;&#x9;|&#x9;'\n' '\r'&#x9;//Improbable&#xA;&#x9;&#x9;|&#x9;'\r'&#xA;&#x9;&#x9;|&#x9;'\n'&#xA;&#x9;&#x9;)&#xA;&#x9;{newline();}&#xA;&#x9;;&#xA;&#xA;WS&#xA;&#x9;:&#x9;(&#x9;' '&#xA;&#x9;&#x9;|&#x9;'\t'&#xA;//&#x9;&#x9;|&#x9;NL&#xA;&#x9;&#x9;)&#xA;//&#x9;{ $setType(Token.SKIP); }&#xA;&#x9;;&#xA;&#xA;COMMENT&#xA;&#x9;:&#x9;&quot;--&quot;&#xA;&#x9;&#x9;(~(&#x9;'\r'&#xA;&#x9;&#x9;|&#x9;'\n'&#xA;&#x9;&#x9;))*&#xA;//&#x9;&#x9;({LA(1) != EOF_CHAR}? NL)?&#xA;//&#x9;{ $setType(Token.SKIP); }&#xA;&#x9;;&#xA;&#xA;protected&#xA;DIGIT&#xA;&#x9;:&#x9;'0'..'9'&#xA;&#x9;;&#xA;&#xA;protected&#xA;ALPHA&#xA;&#x9;:&#x9;'a'..'z'&#xA;&#x9;|&#x9;'A'..'Z'&#xA;&#x9;|&#x9;'_'&#xA;&#x9;//For Unicode compatibility (from 0000 to 00ff)&#xA;&#x9;|&#x9;'\u00C0' .. '\u00D6'&#xA;&#x9;|&#x9;'\u00D8' .. '\u00F6'&#xA;&#x9;|&#x9;'\u00F8' .. '\u00FF'&#xA;&#x9;;&#xA;&#xA;protected&#xA;SNAME&#xA;options {&#xA;&#x9;testLiterals = true;&#xA;}&#xA;&#x9;:&#x9;(ALPHA) (ALPHA | DIGIT)*&#xA;;&#xA;&#xA;NAME&#xA;&#x9;:&#x9;(&#x9;s:SNAME {if(s.getType() != SNAME) $setType(s.getType());}&#xA;&#x9;&#x9;|&#x9;'&quot;'!&#xA;&#x9;&#x9;&#x9;(&#x9;ESC&#xA;&#x9;&#x9;&#x9;|&#x9;'\n' {newline();}&#xA;&#x9;&#x9;&#x9;|&#x9;~('\\'|'\&quot;'|'\n')&#xA;&#x9;&#x9;&#x9;)*&#xA;&#x9;&#x9;&#x9;'&quot;'!&#xA;&#x9;&#x9;)&#xA;&#x9;{&#xA;&#x9;if($getText.equals(&quot;true&quot;)) $setType(BOOLEAN);&#xA;&#x9;if($getText.equals(&quot;false&quot;)) $setType(BOOLEAN);&#xA;&#x9;}&#xA;&#x9;;&#xA;&#xA;INT&#xA;&#x9;:&#x9;(DIGIT)+&#xA;&#x9;&#x9;(('.' DIGIT)=> '.' (DIGIT)+ {$setType(FLOAT);})?&#xA;&#x9;;&#xA;&#xA;protected&#xA;ESC&#xA;&#x9;:&#x9;'\\'!&#xA;&#x9;&#x9;(&#x9;'n' {$setText(&quot;\n&quot;);}&#xA;&#x9;&#x9;|&#x9;'r' {$setText(&quot;\r&quot;);}&#xA;&#x9;&#x9;|&#x9;'t' {$setText(&quot;\t&quot;);}&#xA;&#x9;&#x9;|&#x9;'b' {$setText(&quot;\b&quot;);}&#xA;&#x9;&#x9;|&#x9;'f' {$setText(&quot;\f&quot;);}&#xA;&#x9;&#x9;|&#x9;'&quot;' {$setText(&quot;\&quot;&quot;);}&#xA;&#x9;&#x9;|&#x9;'\'' {$setText(&quot;\'&quot;);}&#xA;&#x9;&#x9;|&#x9;'\\' {$setText(&quot;\\&quot;);}&#xA;&#x9;&#x9;|&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;('0'..'3')&#xA;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;:&#x9;('0'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;:&#x9;'0'..'7'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;|&#x9;('4'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;:&#x9;('0'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;)&#xA;&#x9;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;String s = $getText;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;int i;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;int ret = 0;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;String ans;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;for (i=0; i&lt;s.length(); ++i)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ret = ret*8 + s.charAt(i) - '0';&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;ans = String.valueOf((char) ret);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;$setText(ans);&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;)&#xA;&#x9;;&#xA;&#xA;STRING&#xA;&#x9;:&#x9;'\''!&#xA;&#x9;&#x9;(&#x9;ESC&#xA;&#x9;&#x9;|&#x9;'\n' {newline();}&#xA;&#x9;&#x9;|&#x9;~('\\'|'\''|'\n')&#xA;&#x9;&#x9;)*&#xA;&#x9;&#x9;'\''!&#xA;&#x9;;&#xA;&#xA;&#x9;">
+    <templates xsi:type="PrimitiveTemplate" location="3:9-4:35" name="identifier" typeName="String" isDefault="true" tokenName="NAME" value="%token%" orKeyword="false"/>
+    <templates xsi:type="PrimitiveTemplate" location="6:9-8:64" name="stringSymbol" typeName="String" isDefault="false" tokenName="STRING" value="%token%" serializer="''' + %value%.toCString() + '''" orKeyword="false"/>
+    <templates xsi:type="PrimitiveTemplate" location="10:9-11:52" name="integerSymbol" typeName="Integer" isDefault="true" tokenName="INT" value="Integer.valueOf(%token%)" orKeyword="false"/>
+    <templates xsi:type="PrimitiveTemplate" location="13:9-14:51" name="floatSymbol" typeName="Double" isDefault="true" tokenName="FLOAT" value="Double.valueOf(%token%)" orKeyword="false"/>
+    <templates xsi:type="PrimitiveTemplate" location="16:9-17:52" name="booleanSymbol" typeName="Boolean" isDefault="true" tokenName="BOOLEAN" value="Boolean.valueOf(%token%)" orKeyword="false"/>
+    <templates xsi:type="ClassTemplate" location="19:9-21:18" name="Metamodel" isAbstract="false" isOperatored="false" isMain="true" isMulti="false" isContext="true" isAddToContext="false" isNonPrimary="false">
       <templateSequence location="20:25-20:81">
         <elements xsi:type="Block" location="20:25-20:81">
           <blockSequence location="20:27-20:35">
@@ -18,9 +18,9 @@
         </elements>
       </templateSequence>
     </templates>
-    <templates xsi:type="ClassTemplate" location="23:9-23:40" name="ModelElement" isAbstract="true" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false"/>
-    <templates xsi:type="ClassTemplate" location="25:9-25:51" name="Classifier" isAbstract="true" isOperatored="false" isMain="false" isContext="false" isAddToContext="true" isNonPrimary="false"/>
-    <templates xsi:type="ClassTemplate" location="27:9-31:18" name="Package" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+    <templates xsi:type="ClassTemplate" location="23:9-23:40" name="ModelElement" isAbstract="true" isOperatored="false" isMain="false" isMulti="false" isContext="false" isAddToContext="false" isNonPrimary="false"/>
+    <templates xsi:type="ClassTemplate" location="25:9-25:51" name="Classifier" isAbstract="true" isOperatored="false" isMain="false" isMulti="false" isContext="false" isAddToContext="true" isNonPrimary="false"/>
+    <templates xsi:type="ClassTemplate" location="27:9-31:18" name="Package" isAbstract="false" isOperatored="false" isMain="false" isMulti="false" isContext="false" isAddToContext="false" isNonPrimary="false">
       <templateSequence location="28:25-30:41">
         <elements xsi:type="LiteralRef" location="28:25-28:34" referredLiteral="/1"/>
         <elements xsi:type="Property" location="28:35-28:39" name="name"/>
@@ -35,14 +35,14 @@
         <elements xsi:type="LiteralRef" location="30:38-30:41" referredLiteral="/0/@symbols.7"/>
       </templateSequence>
     </templates>
-    <templates xsi:type="ClassTemplate" location="33:9-35:18" name="DataType" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+    <templates xsi:type="ClassTemplate" location="33:9-35:18" name="DataType" isAbstract="false" isOperatored="false" isMain="false" isMulti="false" isContext="false" isAddToContext="false" isNonPrimary="false">
       <templateSequence location="34:25-34:44">
         <elements xsi:type="LiteralRef" location="34:25-34:35" referredLiteral="/2"/>
         <elements xsi:type="Property" location="34:36-34:40" name="name"/>
         <elements xsi:type="LiteralRef" location="34:41-34:44" referredLiteral="/0/@symbols.8"/>
       </templateSequence>
     </templates>
-    <templates xsi:type="ClassTemplate" location="37:9-49:18" name="Class" isAbstract="false" isOperatored="false" isMain="false" isContext="true" isAddToContext="false" isNonPrimary="false">
+    <templates xsi:type="ClassTemplate" location="37:9-49:18" name="Class" isAbstract="false" isOperatored="false" isMain="false" isMulti="false" isContext="true" isAddToContext="false" isNonPrimary="false">
       <templateSequence location="38:25-48:30">
         <elements xsi:type="ConditionalElement" location="38:25-38:50">
           <condition xsi:type="AndExp" location="38:26-38:36">
@@ -83,8 +83,8 @@
         <elements xsi:type="LiteralRef" location="48:27-48:30" referredLiteral="/0/@symbols.7"/>
       </templateSequence>
     </templates>
-    <templates xsi:type="ClassTemplate" location="51:9-51:45" name="StructuralFeature" isAbstract="true" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false"/>
-    <templates xsi:type="ClassTemplate" location="53:9-64:18" name="Reference" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="true" isNonPrimary="false">
+    <templates xsi:type="ClassTemplate" location="51:9-51:45" name="StructuralFeature" isAbstract="true" isOperatored="false" isMain="false" isMulti="false" isContext="false" isAddToContext="false" isNonPrimary="false"/>
+    <templates xsi:type="ClassTemplate" location="53:9-64:18" name="Reference" isAbstract="false" isOperatored="false" isMain="false" isMulti="false" isContext="false" isAddToContext="true" isNonPrimary="false">
       <templateSequence location="54:25-63:28">
         <elements xsi:type="LiteralRef" location="54:25-54:36" referredLiteral="/6"/>
         <elements xsi:type="Property" location="54:37-54:41" name="name"/>
@@ -136,7 +136,7 @@
         <elements xsi:type="LiteralRef" location="63:25-63:28" referredLiteral="/0/@symbols.8"/>
       </templateSequence>
     </templates>
-    <templates xsi:type="ClassTemplate" location="66:9-71:18" name="Attribute" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+    <templates xsi:type="ClassTemplate" location="66:9-71:18" name="Attribute" isAbstract="false" isOperatored="false" isMain="false" isMulti="false" isContext="false" isAddToContext="false" isNonPrimary="false">
       <templateSequence location="67:25-70:74">
         <elements xsi:type="LiteralRef" location="67:25-67:36" referredLiteral="/10"/>
         <elements xsi:type="Property" location="67:37-67:41" name="name"/>
@@ -157,7 +157,7 @@
         <elements xsi:type="LiteralRef" location="70:71-70:74" referredLiteral="/0/@symbols.8"/>
       </templateSequence>
     </templates>
-    <templates xsi:type="ClassTemplate" location="73:9-78:18" name="Operation" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+    <templates xsi:type="ClassTemplate" location="73:9-78:18" name="Operation" isAbstract="false" isOperatored="false" isMain="false" isMulti="false" isContext="false" isAddToContext="false" isNonPrimary="false">
       <templateSequence location="74:25-77:30">
         <elements xsi:type="LiteralRef" location="74:25-74:36" referredLiteral="/12"/>
         <elements xsi:type="Property" location="74:37-74:41" name="name"/>
@@ -185,7 +185,7 @@
         <elements xsi:type="LiteralRef" location="77:27-77:30" referredLiteral="/0/@symbols.8"/>
       </templateSequence>
     </templates>
-    <templates xsi:type="ClassTemplate" location="80:9-82:18" name="Parameter" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+    <templates xsi:type="ClassTemplate" location="80:9-82:18" name="Parameter" isAbstract="false" isOperatored="false" isMain="false" isMulti="false" isContext="false" isAddToContext="false" isNonPrimary="false">
       <templateSequence location="81:25-81:75">
         <elements xsi:type="Property" location="81:25-81:29" name="name"/>
         <elements xsi:type="LiteralRef" location="81:30-81:33" referredLiteral="/0/@symbols.9"/>
@@ -195,7 +195,7 @@
         </elements>
       </templateSequence>
     </templates>
-    <templates xsi:type="ClassTemplate" location="84:9-88:18" name="Enumeration" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+    <templates xsi:type="ClassTemplate" location="84:9-88:18" name="Enumeration" isAbstract="false" isOperatored="false" isMain="false" isMulti="false" isContext="false" isAddToContext="false" isNonPrimary="false">
       <templateSequence location="85:25-87:30">
         <elements xsi:type="LiteralRef" location="85:25-85:38" referredLiteral="/13"/>
         <elements xsi:type="Property" location="85:39-85:43" name="name"/>
@@ -208,7 +208,7 @@
         <elements xsi:type="LiteralRef" location="87:27-87:30" referredLiteral="/0/@symbols.7"/>
       </templateSequence>
     </templates>
-    <templates xsi:type="ClassTemplate" location="90:9-92:18" name="EnumLiteral" isAbstract="false" isOperatored="false" isMain="false" isContext="false" isAddToContext="false" isNonPrimary="false">
+    <templates xsi:type="ClassTemplate" location="90:9-92:18" name="EnumLiteral" isAbstract="false" isOperatored="false" isMain="false" isMulti="false" isContext="false" isAddToContext="false" isNonPrimary="false">
       <templateSequence location="91:25-91:43">
         <elements xsi:type="LiteralRef" location="91:25-91:34" referredLiteral="/14"/>
         <elements xsi:type="Property" location="91:35-91:39" name="name"/>

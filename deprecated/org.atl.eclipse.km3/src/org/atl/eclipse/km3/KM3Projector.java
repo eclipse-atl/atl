@@ -60,7 +60,7 @@ public class KM3Projector {
 	private KM3Projector() {
 	}
 	
-	private void initEMF() {
+	protected void initEMF() {
 		if(emfamh == null) {
 			emfamh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
 			URL emfmmurl = KM3Projector.class.getResource("resources/" + mmName + ".ecore");
@@ -75,7 +75,7 @@ public class KM3Projector {
 		markerMaker = new MarkerMaker();
 	}
 	
-	private void initMDR() {
+	protected void initMDR() {
 		if(mdramh == null) {
 			mdramh = AtlModelHandler.getDefault(AtlModelHandler.AMH_MDR);
 		}
