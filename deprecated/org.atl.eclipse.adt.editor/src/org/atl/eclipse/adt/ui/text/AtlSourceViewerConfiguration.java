@@ -11,15 +11,19 @@ import org.atl.eclipse.adt.ui.text.atl.AtlStringAutoIndentStrategy;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IAutoIndentStrategy;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
+import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.pde.internal.ui.editor.text.AnnotationHover;
+import org.eclipse.ui.internal.texteditor.AnnotationExpansionControl.AnnotationHoverInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
@@ -259,6 +263,14 @@ public class AtlSourceViewerConfiguration extends SourceViewerConfiguration {
 	public void setNewPreferenceStore(IPreferenceStore preferenceStore) {
 		getTextTools().setNewPreferenceStore(preferenceStore);
 		initializeScanners();
+	}
+
+	public IAnnotationHover getAnnotationHover(ISourceViewer sourceViewer) {
+		return new AnnotationHover();
+	}
+
+	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
+		return null;	//TODO
 	}
 	
 }
