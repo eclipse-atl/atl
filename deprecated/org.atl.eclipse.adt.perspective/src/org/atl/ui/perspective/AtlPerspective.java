@@ -56,6 +56,8 @@ public class AtlPerspective implements IPerspectiveFactory {
         // add shortcuts
         layout.addNewWizardShortcut("atlProjectWizard");
         layout.addNewWizardShortcut("atlFileWizard");
+        layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder");
+		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");
         layout.addActionSet(IDebugUIConstants.LAUNCH_ACTION_SET);
 
         layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
