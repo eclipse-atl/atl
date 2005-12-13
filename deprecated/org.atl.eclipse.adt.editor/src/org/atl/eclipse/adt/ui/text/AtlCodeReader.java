@@ -60,11 +60,11 @@ public class AtlCodeReader extends SingleCharReader {
     private void gotoEndOfString() throws BadLocationException {
         while(offset < end) {
             char current = document.getChar(offset++);
-            if(current == '\'') {
-                return;
-            } else if(current == '\\') {
+            if(current == '\\') {
                 // ignore escaped characters
                 ++offset;
+            } else if(current == '\'') {
+                return;
             }
         }
     }
