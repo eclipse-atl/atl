@@ -50,9 +50,12 @@ public abstract class ModelLoader {
 	public ASMModel loadModel(String name, ASMModel metamodel, String href) {
 		ASMModel ret = null;
 
+		href = href.replaceAll("\\\\:", "<colon>");
 		String ss[] = href.split(":");
+		for(int i = 0 ; i < ss.length ; i++)
+			ss[i] = ss[i].replaceAll("<colon>", ":");
 		if(ss.length == 1) {
-			ret = realLoadModel(name, metamodel, href);
+			ret = realLoadModel(name, metamodel, ss[0]);
 		} else if(ss[0].equals("xmi")) {
 			String url = ss[ss.length - 1];
 			ret = realLoadModel(name, metamodel, url);
