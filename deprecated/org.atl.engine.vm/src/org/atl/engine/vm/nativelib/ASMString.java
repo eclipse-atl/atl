@@ -99,12 +99,20 @@ public class ASMString extends ASMOclAny {
 		return new ASMReal(Double.parseDouble(self.s));
 	}
 
-	public static ASMBoolean operatorEQ(StackFrame frame, ASMString self, ASMString o) {
-		return new ASMBoolean(self.s.equals(o.s));
+	public static ASMBoolean operatorEQ(StackFrame frame, ASMString self, ASMOclAny o) {
+		if(o instanceof ASMString) {
+			return new ASMBoolean(self.s.equals(((ASMString)o).s));
+		} else {
+			return new ASMBoolean(false);
+		}
 	}
 
 	public static ASMBoolean operatorNE(StackFrame frame, ASMString self, ASMString o) {
-		return new ASMBoolean(!self.s.equals(o.s));
+		if(o instanceof ASMString) {
+			return new ASMBoolean(!self.s.equals(((ASMString)o).s));
+		} else {
+			return new ASMBoolean(true);
+		}
 	}
 
 

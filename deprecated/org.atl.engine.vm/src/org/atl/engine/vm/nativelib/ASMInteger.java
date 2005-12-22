@@ -86,18 +86,24 @@ public class ASMInteger extends ASMNumber {
 		return new ASMReal(self.s / o.asDouble());
 	}
 	
-	public static ASMBoolean operatorEQ(StackFrame frame, ASMInteger self, ASMNumber o) {
+	public static ASMBoolean operatorEQ(StackFrame frame, ASMInteger self, ASMOclAny o) {
 		if(o instanceof ASMInteger) {
 			return new ASMBoolean(self.s == ((ASMInteger)o).s);
+		} else if(o instanceof ASMNumber) {
+			return new ASMBoolean(self.s == ((ASMNumber)o).asDouble());
+		} else {
+			return new ASMBoolean(false);
 		}
-		return new ASMBoolean(self.s == o.asDouble());			
 	}
 
-	public static ASMBoolean operatorNE(StackFrame frame, ASMInteger self, ASMNumber o) {
+	public static ASMBoolean operatorNE(StackFrame frame, ASMInteger self, ASMOclAny o) {
 		if(o instanceof ASMInteger) {
 			return new ASMBoolean(self.s != ((ASMInteger)o).s);
+		} else if(o instanceof ASMNumber) {
+			return new ASMBoolean(self.s != ((ASMNumber)o).asDouble());
+		} else {
+			return new ASMBoolean(true);
 		}
-		return new ASMBoolean(self.s != o.asDouble());			
 	}
 
 	public static ASMBoolean operatorLT(StackFrame frame, ASMInteger self, ASMNumber o) {
