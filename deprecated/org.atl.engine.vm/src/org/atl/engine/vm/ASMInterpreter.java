@@ -266,9 +266,7 @@ public class ASMInterpreter {
 		for(Iterator i = op.getParameters().iterator() ; i.hasNext() ; ) {
 			ASMParameter p = (ASMParameter)i.next();
 			String pname = p.getName();
-System.out.println("Parameter: " + pname);
 			pname = op.resolveVariableName(Integer.parseInt(pname), 0);
-System.out.println("\t=>" + pname);
 			String svalue = (String)params.get(pname);
 			ASMOclAny value = new ASMOclUndefined();
 			if(svalue != null)
