@@ -183,7 +183,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 					if(((ASMEMFModel)getModel()).isCheckSameModel() && (sv instanceof ASMModelElement) && (((ASMModelElement)sv).getModel() != getModel())) {					
 						continue;
 					}
-					Object val = asm2EMF(frame, sv, name);
+					Object val = asm2EMF(frame, sv, name, feature);
 					try {
 						if(val != null)
 							l.add(val);
@@ -192,13 +192,13 @@ public class ASMEMFModelElement extends ASMModelElement {
 					}
 				}
 			} else {
-				l.add(asm2EMF(frame, value, name));
+				l.add(asm2EMF(frame, value, name, feature));
 			}
 		} else {
 			if(((ASMEMFModel)getModel()).isCheckSameModel() && (value instanceof ASMModelElement) && (((ASMModelElement)value).getModel() != getModel())) {
 				// should not happen but the ATL compiler does not add checks for this in resolveTemp yet
 			} else {
-				Object val = asm2EMF(frame, value, name);
+				Object val = asm2EMF(frame, value, name, feature);
 				if(val != null) {
 					try {
 						object.eSet(feature, val);
@@ -210,7 +210,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		}
 	}
 	
-	public Object asm2EMF(StackFrame frame, ASMOclAny value, String propName) {
+	public Object asm2EMF(StackFrame frame, ASMOclAny value, String propName, EStructuralFeature feature) {
 		Object ret = null;
 		
 		if(value instanceof ASMString) {
@@ -220,7 +220,13 @@ public class ASMEMFModelElement extends ASMModelElement {
 		} else if(value instanceof ASMReal) {
 			ret = new Double(((ASMReal)value).getSymbol());
 		} else if(value instanceof ASMInteger) {
-			ret = new Integer(((ASMInteger)value).getSymbol());
+			String targetType = feature.getEType().getInstanceClassName();
+			int val = ((ASMInteger)value).getSymbol();
+			if(targetType.equals("java.lang.Double") || targetType.equals("java.lang.Float")) {
+				ret = new Double(val);
+			} else {
+				ret = new Integer(val);
+			}
 		} else if(value instanceof ASMEMFModelElement) {
 			ret = ((ASMEMFModelElement)value).object;
 		} else if(value instanceof ASMOclUndefined) {
@@ -232,7 +238,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		} else if(value instanceof ASMCollection) {
 			ret = new ArrayList();
 			for(Iterator i = ((ASMCollection)value).iterator() ; i.hasNext() ; ) {
-				Object v = asm2EMF(frame, (ASMOclAny)i.next(), propName);
+				Object v = asm2EMF(frame, (ASMOclAny)i.next(), propName, feature);
 				if(v != null)
 					((List)ret).add(v);
 			}
