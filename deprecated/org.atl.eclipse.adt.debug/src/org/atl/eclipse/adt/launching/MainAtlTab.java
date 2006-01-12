@@ -39,8 +39,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 	private Label labelFile;
 		
 	private Group groupOthersInformation;
-//	private Combo listModelHandler;
-//	private Label labelModelHandler;
 	private Button buttonModeDebug;
 	private Button buttonAllowInterModelReferences;
 	
@@ -60,8 +58,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		listFile = new Combo(groupGeneralInformation,SWT.NULL | SWT.READ_ONLY);
 
 		groupOthersInformation = new Group(container,SWT.NULL);
-//		labelModelHandler = new Label(groupOthersInformation,SWT.NULL);
-//		listModelHandler = new Combo(groupOthersInformation, SWT.NULL | SWT.READ_ONLY);
 		buttonModeDebug = new Button(groupOthersInformation,SWT.CHECK);
 		buttonAllowInterModelReferences = new Button(groupOthersInformation, SWT.CHECK);
 		
@@ -120,7 +116,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 
 		buttonAllowInterModelReferences.setLayoutData(labelLData);
 		buttonAllowInterModelReferences.setText("Allow inter-model references");
-//		buttonAllowInterModelReferences.setSelection(false);
 		buttonAllowInterModelReferences.addSelectionListener(this);
 
 		buttonModeDebug.setLayoutData(label2LData);
@@ -154,7 +149,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		try {
 			listProject.setText(configuration.getAttribute(AtlLauncherTools.PROJECTNAME, ""));
 			listFile.setText(configuration.getAttribute(AtlLauncherTools.ATLFILENAME, ""));
-//			listModelHandler.setText(configuration.getAttribute(AtlLauncherTools.MODELHANDLER, ""));
 			buttonModeDebug.setSelection(configuration.getAttribute(AtlLauncherTools.MODEDEBUG, false));
 			buttonAllowInterModelReferences.setSelection(configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false));
 			canSave();
@@ -163,7 +157,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		catch (CoreException e) {
 			listProject.setText("");
 			listFile.setText("");
-//			listModelHandler.setText("");
 			buttonModeDebug.setSelection(false);
 			buttonAllowInterModelReferences.setSelection(true);
 			e.printStackTrace();
@@ -205,10 +198,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 			this.setErrorMessage(Messages.getString("MainAtlTab.GIVETRANSFORMATIONNAME")); //$NON-NLS-1$
 			return false;
 		}
-//		if (listModelHandler.getText().equals("")) {
-//			this.setErrorMessage(Messages.getString("MainAtlTab.GIVEMODELHANLER")); //$NON-NLS-1$
-//			return false;
-//		}
 		this.setErrorMessage(null);
 		return true;
 	}
