@@ -1,10 +1,12 @@
 /*
- * Created on 24 nov. 2004
+ * Created on 24 nov. 2005
  */
 package org.atl.eclipse.adt.launching;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.swt.SWT;
@@ -18,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
 
 /**
- * @author allilaire
+ * @author Freddy Allilaire
  */
 public class DialogUriSelection extends SelectionStatusDialog {
 
@@ -46,11 +48,12 @@ public class DialogUriSelection extends SelectionStatusDialog {
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */
 	protected Control createDialogArea(Composite parent) {
+		Set uris = new TreeSet();
+		
 		Composite container = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.marginHeight = layout.marginWidth = 8;
 		layout.numColumns = 1;
-
 		layout.makeColumnsEqualWidth = false;
 		container.setLayout(layout);
 		GridData gd = new GridData(GridData.FILL_BOTH);
@@ -60,9 +63,13 @@ public class DialogUriSelection extends SelectionStatusDialog {
 		listUri = new List(container, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
 		
 		for (Iterator it = ((Map)EPackage.Registry.INSTANCE).keySet().iterator(); it.hasNext();)
+			uris.add((it.next()).toString());
+		
+		for (Iterator it = uris.iterator(); it.hasNext();)
 			listUri.add((it.next()).toString());
+		
 		listUri.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-				
+
 		applyDialogFont(container);
 		return container;
 	}
