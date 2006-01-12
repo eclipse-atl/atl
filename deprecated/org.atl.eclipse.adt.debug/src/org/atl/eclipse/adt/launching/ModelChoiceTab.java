@@ -30,8 +30,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -57,7 +55,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  * This tab allows to set the model and metamodel input and output.
  * For each model
  * 
- * @author allilaire
+ * @author Freddy Allilaire
  */
 public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 
@@ -130,7 +128,6 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 	private Button buttonIsEMF;
 	private List listModelHandlerAvailables;
 	private Button buttonSelectModelHandler;
-//	private Combo comboUriAvailable;
 	private Button buttonAffectUri;
 	
 	private Group groupLib;
@@ -157,30 +154,28 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		textModelIn = new Text(groupIn, SWT.BORDER);
 		labelMetaModelIn = new Label(groupIn, SWT.END);
 		textMetaModelIn = new Text(groupIn, SWT.BORDER);
+		tableIn = new Table(groupIn, SWT.FULL_SELECTION | SWT.BORDER);
 		buttonIn = new Button(groupIn, SWT.NULL);
 		buttonRemoveIn = new Button(groupIn, SWT.NULL);
-		tableIn = new Table(groupIn, SWT.FULL_SELECTION | SWT.BORDER);
 		
 		groupOut = new Group(container, SWT.NULL);
 		labelModelOut = new Label(groupOut, SWT.END);
 		textModelOut = new Text(groupOut, SWT.BORDER);
 		labelMetaModelOut = new Label(groupOut, SWT.END);
 		textMetaModelOut = new Text(groupOut, SWT.BORDER);
+		tableOut = new Table(groupOut, SWT.FULL_SELECTION | SWT.BORDER);
 		buttonOut = new Button(groupOut, SWT.CENTER);
 		buttonRemoveOut = new Button(groupOut, SWT.NULL);
-		tableOut = new Table(groupOut, SWT.FULL_SELECTION | SWT.BORDER);
 		
 		groupPath = new Group(container, SWT.NULL);
 		tablePath = new Table(groupPath, SWT.FULL_SELECTION | SWT.BORDER);
-		Composite panelTablePath = new Composite(groupPath, SWT.NULL);
-		listModelHandlerAvailables = new List(panelTablePath, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
-		buttonSelectModelHandler = new Button(panelTablePath, SWT.CENTER);
-		buttonSetPath = new Button(panelTablePath, SWT.CENTER);
-		buttonSetExternalPath = new Button(panelTablePath, SWT.CENTER);
-		buttonIsMDR = new Button(panelTablePath, SWT.CENTER);
-		buttonIsEMF = new Button(panelTablePath, SWT.CENTER);
-//		comboUriAvailable = new Combo(panelTablePath, SWT.CENTER);
-		buttonAffectUri = new Button(panelTablePath, SWT.CENTER);
+		listModelHandlerAvailables = new List(groupPath, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
+		buttonSelectModelHandler = new Button(groupPath, SWT.CENTER);
+		buttonSetPath = new Button(groupPath, SWT.CENTER);
+		buttonSetExternalPath = new Button(groupPath, SWT.CENTER);
+		buttonIsMDR = new Button(groupPath, SWT.CENTER);
+		buttonIsEMF = new Button(groupPath, SWT.CENTER);
+		buttonAffectUri = new Button(groupPath, SWT.CENTER);
 		
 		groupLib = new Group(container, SWT.NULL);
 		labelLib = new Label(groupLib, SWT.END);
@@ -188,8 +183,8 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		buttonLib = new Button(groupLib, SWT.CENTER);
 		tableLib = new Table(groupLib, SWT.FULL_SELECTION | SWT.BORDER);
 		buttonPathLib = new Button(groupLib, SWT.CENTER);
-		buttonRemoveLib = new Button(groupLib, SWT.CENTER);
 		buttonExternalPathLib = new Button(groupLib, SWT.CENTER);
+		buttonRemoveLib = new Button(groupLib, SWT.CENTER);
 		
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
@@ -197,38 +192,19 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		
 		container.setLayout(layout);
 		
-		GridData gdIn = new GridData(GridData.FILL_BOTH);
-		GridData gdOut = new GridData(GridData.FILL_BOTH);
-		GridData gdPath = new GridData(GridData.FILL_BOTH);
-		GridData gdLib = new GridData(GridData.FILL_BOTH);
-
-		groupIn.setLayoutData(gdIn);
-		groupOut.setLayoutData(gdOut);
-		groupPath.setLayoutData(gdPath);
-		groupLib.setLayoutData(gdLib);
-		
-		/***********************************************************************
-		 * Form layout definition
-		 **********************************************************************/
-		
-		FormLayout groupLayout = new FormLayout();
-
-		groupIn.setLayout(groupLayout);
-		groupOut.setLayout(groupLayout);
-		groupPath.setLayout(groupLayout);
-		groupLib.setLayout(groupLayout);
-
-		FormData labelLData = AtlLauncherTools.createFormData(0, 25, 0, 10);
-		FormData textLData = AtlLauncherTools.createFormData(25, 50, 0, 10);
-		FormData label2LData = AtlLauncherTools.createFormData(50, 75, 0, 10);
-		FormData text2LData = AtlLauncherTools.createFormData(75, 100, 0, 10);
-		FormData buttonLData = AtlLauncherTools.createFormData(80, 100, 20, 30);
-		FormData buttonRemoveLData = AtlLauncherTools.createFormData(80, 100, 35, 45);
-		FormData tableLData = AtlLauncherTools.createFormData(0, 70, 20, 100);
+		groupIn.setLayoutData(new GridData(GridData.FILL_BOTH));
+		groupOut.setLayoutData(new GridData(GridData.FILL_BOTH));
+		groupPath.setLayoutData(new GridData(GridData.FILL_BOTH));
+		groupLib.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		/***********************************************************************
 		 * GroupIn
 		 **********************************************************************/
+		GridLayout groupLayout = new GridLayout();
+		groupLayout.numColumns = 4;
+		groupLayout.makeColumnsEqualWidth = true;
+
+		groupIn.setLayout(groupLayout);
 		
 		groupIn.setText(Messages.getString("ModelChoiceTab.IN")); //$NON-NLS-1$
 
@@ -269,20 +245,28 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		TableColumn mmodelNameIn = new TableColumn(tableIn, SWT.CENTER);
 		mmodelNameIn.setText(Messages.getString("ModelChoiceTab.META_MODEL")); //$NON-NLS-1$
 		
-		labelModelIn.setLayoutData(labelLData);
-		textMetaModelIn.setLayoutData(text2LData);
-		labelMetaModelIn.setLayoutData(label2LData);
-		textModelIn.setLayoutData(textLData);
+		labelModelIn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END));
+		textMetaModelIn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
+		labelMetaModelIn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END));
+		textModelIn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
 
-		tableIn.setLayoutData(tableLData);
+		GridData gd = new GridData(GridData.FILL_BOTH);
+		gd.horizontalSpan = 3;
+		gd.verticalSpan = 2;
+		tableIn.setLayoutData(gd);
 
-		buttonIn.setLayoutData(buttonLData);
-		buttonRemoveIn.setLayoutData(buttonRemoveLData);
+		buttonIn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		buttonRemoveIn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
 		
 		/***********************************************************************
 		 * GroupOut
 		 **********************************************************************/
+		groupLayout = new GridLayout();
+		groupLayout.numColumns = 4;
+		groupLayout.makeColumnsEqualWidth = true;
 
+		groupOut.setLayout(groupLayout);
+		
 		groupOut.setText(Messages.getString("ModelChoiceTab.OUT")); //$NON-NLS-1$
 
 		labelModelOut.setText(Messages.getString("ModelChoiceTab.MODELCOLON")); //$NON-NLS-1$
@@ -322,26 +306,25 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		TableColumn metaModelName = new TableColumn(tableOut, SWT.CENTER);
 		metaModelName.setText(Messages.getString("ModelChoiceTab.META_MODEL")); //$NON-NLS-1$
 
-		labelModelOut.setLayoutData(labelLData);
-		textModelOut.setLayoutData(textLData);
-		labelMetaModelOut.setLayoutData(label2LData);
-		textMetaModelOut.setLayoutData(text2LData);
+		labelModelOut.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END));
+		textModelOut.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
+		labelMetaModelOut.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END));
+		textMetaModelOut.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
 
-		tableOut.setLayoutData(tableLData);
+		tableOut.setLayoutData(gd);
 
-		buttonOut.setLayoutData(buttonLData);
-		buttonRemoveOut.setLayoutData(buttonRemoveLData);
+		buttonOut.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		buttonRemoveOut.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
 		/***********************************************************************
 		 * GroupPath
 		 **********************************************************************/
+		groupLayout = new GridLayout();
+		groupLayout.numColumns = 4;
+		groupLayout.makeColumnsEqualWidth = true;
+
+		groupPath.setLayout(groupLayout);
 		
 		groupPath.setText(Messages.getString("ModelChoiceTab.PATH_EDITOR")); //$NON-NLS-1$
-		
-		panelTablePath.setLayoutData(AtlLauncherTools.createFormData(70, 100, 0, 100));
-		
-		GridLayout gd = new GridLayout();
-		gd.numColumns = 1;
-		panelTablePath.setLayout(gd);
 		
 		buttonSetPath.setText(Messages.getString("ModelChoiceTab.SET_PATH")); //$NON-NLS-1$
 		buttonSetPath.addSelectionListener(new SelectionAdapter() {
@@ -390,17 +373,21 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
-//		for (Iterator it = ((Map)EPackage.Registry.INSTANCE).keySet().iterator(); it.hasNext();)
-//			comboUriAvailable.add((it.next()).toString());
-//
-//		if (comboUriAvailable.getItemCount() > 0)
-//			comboUriAvailable.select(0);
-//		else
-//			buttonAffectUri.setEnabled(false);
-		
 		buttonAffectUri.setText("Metamodel by URI");
 		buttonAffectUri.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
+				int index = tablePath.getSelectionIndex();
+				
+				if (index == -1) {
+					AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel");
+					return;
+				}
+				
+				if (MODEL_INPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE)) || MODEL_OUTPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE))) {
+					AtlLauncherTools.messageBox("This action is only available on metamodel");
+					return;
+				}
+				
 				DialogUriSelection launcher = new DialogUriSelection(new Shell());
 				launcher.create();
 				if ((launcher.open() == Dialog.OK)) {
@@ -413,9 +400,9 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		
 		tableLayout = new TableLayout();
 		tablePath.setLayout(tableLayout);
-		tableLayout.addColumnData(new ColumnWeightData(50));
+		tableLayout.addColumnData(new ColumnWeightData(20));
 		tableLayout.addColumnData(new ColumnWeightData(100));
-		tableLayout.addColumnData(new ColumnWeightData(50));
+		tableLayout.addColumnData(new ColumnWeightData(20));
 		tablePath.setLinesVisible(true);
 		tablePath.setHeaderVisible(true);
 		
@@ -437,22 +424,29 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		modelType.setWidth(0);
 		modelType.setResizable(false);
 		
-		tablePath.setLayoutData(AtlLauncherTools.createFormData(0, 70, 0, 100));
-		buttonSetPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		buttonSetExternalPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		buttonIsMDR.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		buttonIsEMF.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		GridData gData = new GridData(GridData.FILL_HORIZONTAL);
+		gd = new GridData(GridData.FILL_BOTH);
+		gd.horizontalSpan = 3;
+		gd.verticalSpan = 7;
+		tablePath.setLayoutData(gd);
+		buttonSetPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		buttonSetExternalPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		buttonIsMDR.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		buttonIsEMF.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		GridData gData = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
 		gData.heightHint = listModelHandlerAvailables.getItemHeight() * 2;
 		listModelHandlerAvailables.setLayoutData(gData);
-		buttonSelectModelHandler.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//		comboUriAvailable.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		buttonAffectUri.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		buttonSelectModelHandler.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		buttonAffectUri.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
 
 		/***********************************************************************
 		 * GroupLibs
 		 **********************************************************************/
+		groupLayout = new GridLayout();
+		groupLayout.numColumns = 4;
+		groupLayout.makeColumnsEqualWidth = true;
 
+		groupLib.setLayout(groupLayout);
+		
 		groupLib.setText(Messages.getString("ModelChoiceTab.LIBS")); //$NON-NLS-1$
 
 		labelLib.setText(Messages.getString("ModelChoiceTab.LIBCOLON")); //$NON-NLS-1$
@@ -508,30 +502,24 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		TableColumn pathLib = new TableColumn(tableLib, SWT.LEFT);
 		pathLib.setText(Messages.getString("ModelChoiceTab.PATH")); //$NON-NLS-1$
 
-		labelLib.setLayoutData(labelLData);
-		textLib.setLayoutData(textLData);
-		buttonLib.setLayoutData(label2LData);
+		gd = new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END);
+		gd.horizontalSpan = 2;
+		labelLib.setLayoutData(gd);
+		textLib.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
+		buttonLib.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		tableLib.setLayoutData(tableLData);
+		gd = new GridData(GridData.FILL_BOTH);
+		gd.horizontalSpan = 3;
+		gd.verticalSpan = 3;
+		tableLib.setLayoutData(gd);
 
-		buttonPathLib.setLayoutData(buttonLData);
-		buttonRemoveLib.setLayoutData(AtlLauncherTools.createFormData(80, 100, 50, 60));
-		buttonExternalPathLib.setLayoutData(buttonRemoveLData);
+		buttonPathLib.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		buttonRemoveLib.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		buttonExternalPathLib.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
 		
 		/** ***************************************** */
-		groupIn.layout();
-		groupPath.layout();
-		groupOut.layout();
-		groupLib.layout();
-		groupIn.pack();
-		groupPath.pack();
-		groupOut.pack();
-		groupLib.pack();
-		
-		container.layout();
 		setControl(container);
 
-		container.pack();
 		canSave();
 
 	}
@@ -966,10 +954,6 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		 * TODO isMetaModelOfRepository
 		 * For the moment only metamodels MOF and ATL are recognized
 		 */
-//		if (metaModel.equals("MOF"))
-//			return true;
-//		if (metaModel.equals("ATL"))
-//			return true;
 		return false;
 	}
 
