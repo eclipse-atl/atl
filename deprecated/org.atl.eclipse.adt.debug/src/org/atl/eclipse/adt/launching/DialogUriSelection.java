@@ -60,7 +60,7 @@ public class DialogUriSelection extends SelectionStatusDialog {
 		container.setLayoutData(gd);
 
 		new Label(container, SWT.NULL).setText("Model Handler: ");
-		listUri = new List(container, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
+		listUri = new List(container, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL);
 		
 		for (Iterator it = ((Map)EPackage.Registry.INSTANCE).keySet().iterator(); it.hasNext();)
 			uris.add((it.next()).toString());
@@ -68,7 +68,7 @@ public class DialogUriSelection extends SelectionStatusDialog {
 		for (Iterator it = uris.iterator(); it.hasNext();)
 			listUri.add((it.next()).toString());
 		
-		listUri.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		listUri.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		applyDialogFont(container);
 		return container;
