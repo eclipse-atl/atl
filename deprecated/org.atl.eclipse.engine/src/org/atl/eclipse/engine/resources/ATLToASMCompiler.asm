@@ -1162,18 +1162,18 @@
 		<constant value="apply_unique_{$self.isUnique}"/>
 		<constant value="applyLazyMatchedRule_apply_unique_true"/>
 		<constant value="eoo"/>
+		<constant value="NTransientLinkSet;.getLinkByRuleAndSourceElement(SJ):QNTransientLink;"/>
 		<constant value="l{eoo}"/>
-		<constant value="165"/>
-		<constant value="173"/>
 		<constant value="applyLazyMatchedRule_apply_unique_false"/>
 		<constant value="applyLazyMatchedRule_apply_unique_common"/>
 		<constant value="146"/>
-		<constant value="178"/>
-		<constant value="201"/>
+		<constant value="NTransientLinkSet;.addLink2(NTransientLink;B):V"/>
+		<constant value="199"/>
+		<constant value="207"/>
 		<constant value="{$self.outPattern.elements.id}"/>
-		<constant value="233"/>
-		<constant value="248"/>
-		<constant value="256"/>
+		<constant value="231"/>
+		<constant value="254"/>
+		<constant value="262"/>
 		<constant value="applyInPattern_applyLazy_addParams"/>
 		<constant value="applyInPatternElement_applyLazy_addParams"/>
 		<constant value="applySimpleInPatternElement_applyLazy_addParams"/>
@@ -19017,6 +19017,15 @@
 			<call arg="688"/>
 			<load arg="15"/>
 			<get arg="1"/>
+			<push arg="689"/>
+			<load arg="655"/>
+			<call arg="658"/>
+			<push arg="657"/>
+			<load arg="655"/>
+			<call arg="658"/>
+			<call arg="688"/>
+			<load arg="15"/>
+			<get arg="1"/>
 			<push arg="687"/>
 			<load arg="655"/>
 			<call arg="658"/>
@@ -19029,7 +19038,7 @@
 			<push arg="693"/>
 			<load arg="655"/>
 			<call arg="658"/>
-			<push arg="722"/>
+			<push arg="1161"/>
 			<load arg="655"/>
 			<call arg="658"/>
 			<call arg="688"/>
@@ -19080,7 +19089,7 @@
 			<push arg="726"/>
 			<load arg="655"/>
 			<call arg="658"/>
-			<push arg="1161"/>
+			<push arg="1162"/>
 			<load arg="655"/>
 			<call arg="658"/>
 			<call arg="688"/>
@@ -19100,14 +19109,14 @@
 			<load arg="15"/>
 			<get arg="10"/>
 			<call arg="664"/>
-			<if arg="1162"/>
+			<if arg="1107"/>
 			<load arg="15"/>
 			<swap/>
 			<push arg="581"/>
 			<load arg="655"/>
 			<call arg="658"/>
 			<call arg="60"/>
-			<goto arg="1163"/>
+			<goto arg="1108"/>
 			<iterate/>
 			<load arg="15"/>
 			<swap/>
@@ -19121,7 +19130,7 @@
 			<push arg="728"/>
 			<load arg="655"/>
 			<call arg="658"/>
-			<push arg="1161"/>
+			<push arg="1162"/>
 			<load arg="655"/>
 			<call arg="658"/>
 			<call arg="688"/>
@@ -19129,14 +19138,14 @@
 		<linenumbertable>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="4" name="674" begin="10" end="181"/>
-			<lve slot="2" name="675" begin="1" end="181"/>
-			<lve slot="3" name="66" begin="3" end="181"/>
-			<lve slot="0" name="33" begin="0" end="181"/>
-			<lve slot="1" name="65" begin="0" end="181"/>
+			<lve slot="4" name="674" begin="10" end="190"/>
+			<lve slot="2" name="675" begin="1" end="190"/>
+			<lve slot="3" name="66" begin="3" end="190"/>
+			<lve slot="0" name="33" begin="0" end="190"/>
+			<lve slot="1" name="65" begin="0" end="190"/>
 		</localvariabletable>
 	</operation>
-	<operation name="1164">
+	<operation name="1163">
 		<context type="12"/>
 		<parameters>
 			<parameter name="13" type="2"/>
@@ -19222,7 +19231,7 @@
 			<lve slot="1" name="65" begin="0" end="68"/>
 		</localvariabletable>
 	</operation>
-	<operation name="1165">
+	<operation name="1164">
 		<context type="12"/>
 		<parameters>
 			<parameter name="13" type="2"/>
@@ -19365,7 +19374,7 @@
 			<load arg="655"/>
 			<call arg="658"/>
 			<call arg="60"/>
-			<goto arg="1166"/>
+			<goto arg="1165"/>
 			<iterate/>
 			<load arg="15"/>
 			<swap/>
@@ -19376,10 +19385,16 @@
 			<enditerate/>
 			<load arg="15"/>
 			<get arg="1"/>
+			<push arg="1084"/>
+			<load arg="655"/>
+			<call arg="658"/>
+			<call arg="691"/>
+			<load arg="15"/>
+			<get arg="1"/>
 			<push arg="693"/>
 			<load arg="655"/>
 			<call arg="658"/>
-			<push arg="878"/>
+			<push arg="1166"/>
 			<load arg="655"/>
 			<call arg="658"/>
 			<call arg="688"/>
@@ -19390,14 +19405,14 @@
 			<load arg="15"/>
 			<get arg="10"/>
 			<call arg="664"/>
-			<if arg="768"/>
+			<if arg="1132"/>
 			<load arg="15"/>
 			<swap/>
 			<push arg="612"/>
 			<load arg="655"/>
 			<call arg="658"/>
 			<call arg="60"/>
-			<goto arg="1167"/>
+			<goto arg="1133"/>
 			<iterate/>
 			<load arg="15"/>
 			<swap/>
@@ -19413,7 +19428,7 @@
 			<load arg="15"/>
 			<get arg="10"/>
 			<call arg="664"/>
-			<if arg="770"/>
+			<if arg="1167"/>
 			<load arg="15"/>
 			<swap/>
 			<push arg="59"/>
@@ -19445,14 +19460,14 @@
 			<load arg="15"/>
 			<get arg="10"/>
 			<call arg="664"/>
-			<if arg="118"/>
+			<if arg="1170"/>
 			<load arg="15"/>
 			<swap/>
 			<push arg="604"/>
 			<load arg="655"/>
 			<call arg="658"/>
 			<call arg="60"/>
-			<goto arg="1170"/>
+			<goto arg="120"/>
 			<iterate/>
 			<load arg="15"/>
 			<swap/>
@@ -19488,11 +19503,11 @@
 		<linenumbertable>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="4" name="674" begin="10" end="255"/>
-			<lve slot="2" name="675" begin="1" end="255"/>
-			<lve slot="3" name="66" begin="3" end="255"/>
-			<lve slot="0" name="33" begin="0" end="255"/>
-			<lve slot="1" name="65" begin="0" end="255"/>
+			<lve slot="4" name="674" begin="10" end="261"/>
+			<lve slot="2" name="675" begin="1" end="261"/>
+			<lve slot="3" name="66" begin="3" end="261"/>
+			<lve slot="0" name="33" begin="0" end="261"/>
+			<lve slot="1" name="65" begin="0" end="261"/>
 		</localvariabletable>
 	</operation>
 	<operation name="1173">
@@ -21870,10 +21885,28 @@
 			<call arg="691"/>
 			<load arg="15"/>
 			<get arg="1"/>
+			<push arg="687"/>
+			<load arg="655"/>
+			<call arg="658"/>
+			<push arg="1217"/>
+			<load arg="655"/>
+			<call arg="658"/>
+			<call arg="688"/>
+			<load arg="15"/>
+			<get arg="1"/>
 			<push arg="693"/>
 			<load arg="655"/>
 			<call arg="658"/>
-			<push arg="878"/>
+			<push arg="25"/>
+			<load arg="655"/>
+			<call arg="658"/>
+			<call arg="688"/>
+			<load arg="15"/>
+			<get arg="1"/>
+			<push arg="693"/>
+			<load arg="655"/>
+			<call arg="658"/>
+			<push arg="1166"/>
 			<load arg="655"/>
 			<call arg="658"/>
 			<call arg="688"/>
@@ -22778,11 +22811,11 @@
 		<linenumbertable>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="4" name="674" begin="10" end="2012"/>
-			<lve slot="2" name="675" begin="1" end="2012"/>
-			<lve slot="3" name="66" begin="3" end="2012"/>
-			<lve slot="0" name="33" begin="0" end="2012"/>
-			<lve slot="1" name="65" begin="0" end="2012"/>
+			<lve slot="4" name="674" begin="10" end="2030"/>
+			<lve slot="2" name="675" begin="1" end="2030"/>
+			<lve slot="3" name="66" begin="3" end="2030"/>
+			<lve slot="0" name="33" begin="0" end="2030"/>
+			<lve slot="1" name="65" begin="0" end="2030"/>
 		</localvariabletable>
 	</operation>
 	<operation name="1276">

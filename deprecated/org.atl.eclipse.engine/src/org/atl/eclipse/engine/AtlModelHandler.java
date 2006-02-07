@@ -5,11 +5,19 @@
 package org.atl.eclipse.engine;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 
 /**
  * @author JOUAULT
@@ -17,22 +25,41 @@ import org.eclipse.core.resources.IProject;
  */
 public abstract class AtlModelHandler {
 	
-	public final static String AMH_MDR = "MDR";
+//	public final static String AMH_MDR = "MDR";
 	public final static String AMH_EMF = "EMF";
 
-	private static final String modelHandlers[] = new String[] {AMH_MDR, AMH_EMF};
+	private static String modelHandlers[] = null;	//new String[] {/*AMH_MDR, */AMH_EMF};
 	
 	private static Map defaultModelHandlers = new HashMap();
 		
 	public static AtlModelHandler getDefault(String repository) {
 		AtlModelHandler ret = (AtlModelHandler)defaultModelHandlers.get(repository);
 		if(ret == null) {
-			if(AMH_MDR.equals(repository)) {
-				ret = new AtlMDRModelHandler();
-				defaultModelHandlers.put(AMH_MDR, ret);
-			} else if(AMH_EMF.equals(repository)) {
+			if(AMH_EMF.equals(repository)) {
 				ret = new AtlEMFModelHandler();
 				defaultModelHandlers.put(AMH_EMF, ret);				
+			} else {
+				IExtensionRegistry registry = Platform.getExtensionRegistry();		
+				IExtensionPoint point = registry.getExtensionPoint("org.atl.eclipse.engine.modelhandler");
+
+				IExtension[] extensions = point.getExtensions();		
+				extensions: for(int i = 0 ; i < extensions.length ; i++){		
+					IConfigurationElement[] elements = extensions[i].getConfigurationElements();
+					for(int j = 0 ; j < elements.length ; j++){
+						try {					
+							if(elements[j].getAttribute("name").equals(repository)) {
+								ret = (AtlModelHandler)elements[j].createExecutableExtension("class");
+								break extensions;
+							}
+						} catch (CoreException e){
+							e.printStackTrace();
+						}				
+					}
+				 }
+			}
+
+			if(ret == null) {
+				throw new RuntimeException("Model handler for " + repository + " not found. You may need to install a model handler plugin.");
 			}
 		}
 		
@@ -40,6 +67,22 @@ public abstract class AtlModelHandler {
 	}
 	
 	public static String[] getModelHandlers() {
+		if(modelHandlers == null) {
+			List mhs = new ArrayList();
+			mhs.add(AMH_EMF);
+			
+			IExtensionRegistry registry = Platform.getExtensionRegistry();		
+			IExtensionPoint point = registry.getExtensionPoint("org.atl.eclipse.engine.modelhandler");
+	
+			IExtension[] extensions = point.getExtensions();		
+			for(int i = 0 ; i < extensions.length ; i++){		
+				IConfigurationElement[] elements = extensions[i].getConfigurationElements();
+				for(int j = 0 ; j < elements.length ; j++){
+					mhs.add(elements[j].getAttribute("name"));
+				}
+			}
+			modelHandlers = (String[])mhs.toArray(new String [] {});
+		}
 		return modelHandlers;
 	}
 	

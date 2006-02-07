@@ -2,7 +2,7 @@
  * Created on 1 juin 2004
  *
  */
-package org.atl.eclipse.engine;
+package org.atl.engine.repositories.mdr4atl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.URL;
 
-import org.atl.engine.repositories.mdr4atl.ASMMDRModel;
+import org.atl.eclipse.engine.AtlModelHandler;
 import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -97,7 +97,7 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 		return ret;
 	}
 
-	protected AtlMDRModelHandler() {
+	public AtlMDRModelHandler() {
 		URL atlurl = AtlMDRModelHandler.class.getResource("resources/ATL-0.2.xmi");
 		mofmm = ASMMDRModel.createMOF(null);
 		

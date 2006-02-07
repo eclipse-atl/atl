@@ -29,7 +29,15 @@
       </library>
    </runtime>
    <requires>
-      <import plugin="org.atl.engine.vm"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.atl.eclipse.engine"/>
    </requires>
+   <extension
+         point="org.atl.eclipse.engine.modelhandler">
+      <modelhandler
+            class="org.atl.engine.repositories.mdr4atl.AtlMDRModelHandler"
+            name="MDR"/>
+   </extension>
 
 </plugin>
