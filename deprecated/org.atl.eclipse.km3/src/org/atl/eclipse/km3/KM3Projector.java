@@ -32,6 +32,9 @@ import org.eclipse.emf.ecore.EObject;
  * @author Frédéric Jouault
  */
 public class KM3Projector {
+	
+	private final static boolean stopOnError = !false;
+	
 
 	private URL MOF2KM3url = KM3Projector.class.getResource("resources/MOF2KM3.asm");
 	private URL KM32MOFurl = KM3Projector.class.getResource("resources/KM32MOF.asm");
@@ -77,7 +80,7 @@ public class KM3Projector {
 	
 	protected void initMDR() {
 		if(mdramh == null) {
-			mdramh = AtlModelHandler.getDefault(AtlModelHandler.AMH_MDR);
+			mdramh = AtlModelHandler.getDefault("MDR");	// TODO: MDR projector
 		}
 		URL mdrmmurl = KM3Projector.class.getResource("resources/" + mmName + ".xmi");
 		try {
@@ -254,7 +257,7 @@ public class KM3Projector {
 
 		int nbPbs = applyMarkers(file, pbs);
 		
-		if(nbPbs == 0) {
+		if((!stopOnError) || (nbPbs == 0)) {
 			Map models = new HashMap();
 			models.put("MOF", emfamh.getMof());
 			models.put("KM3", emfmm);
@@ -271,7 +274,7 @@ public class KM3Projector {
 			nbPbs = applyMarkers(file, pbs);
 		}
 		
-		if(nbPbs != 0) {
+		if(stopOnError && (nbPbs != 0)) {
 			ret = null;
 		}
 		

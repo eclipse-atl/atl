@@ -58,7 +58,7 @@ public class MOF142KM3 implements IObjectActionDelegate {
 
 				if(amh == null) {
 					mon.subTask("Initializing MDR");
-					amh =  AtlModelHandler.getDefault(AtlModelHandler.AMH_MDR);
+					amh =  AtlModelHandler.getDefault("MDR");	// TODO: MDR string
 				}
 				try {
 					mon.subTask("Loading MOF-1.4 metamodel");

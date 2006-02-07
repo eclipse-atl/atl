@@ -53,7 +53,7 @@ public class KM32MOF14 implements IObjectActionDelegate {
 				
 				if(amh == null) {
 					mon.subTask("Initializing MDR");
-					amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_MDR);
+					amh = AtlModelHandler.getDefault("MDR");	// TODO: MDR string
 				}
 				try {
 					IFile file = ((IFile)((IStructuredSelection)selection).getFirstElement());
