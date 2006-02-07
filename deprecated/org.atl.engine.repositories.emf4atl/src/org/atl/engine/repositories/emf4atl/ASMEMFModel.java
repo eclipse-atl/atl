@@ -110,6 +110,18 @@ public class ASMEMFModel extends ASMModel {
 		super(name, metamodel, isTarget, ml);
 		this.extent = extent;
 	}
+
+	/**
+	 * Simple Resource wrapping factory. 
+	 * @param ml ModelLoader used to load the model if available, null otherwise.
+	 */
+	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, Resource extent, ModelLoader ml) throws Exception {
+		ASMEMFModel ret = null;
+		
+		ret = new ASMEMFModel(name, extent, metamodel, false, ml);
+		
+		return ret;
+	}
 	
 	public static ASMEMFModel newASMEMFModel(String name, ASMEMFModel metamodel, ModelLoader ml) throws Exception {
 		ASMEMFModel ret = null;
@@ -214,15 +226,15 @@ public class ASMEMFModel extends ASMModel {
 	}
 	
 	public static ASMEMFModel createMOF(ModelLoader ml) {
-		ASMEMFModel ret = null;
 		
-		Resource extent = resourceSet.createResource(URI.createURI("http://www.eclipse.org/emf/2002/Ecore"));
-//		System.out.println("Actual resource class: " + extent.getClass());
-		extent.getContents().add(EcorePackage.eINSTANCE);
-		ret = new ASMEMFModel("MOF", extent, null, false, ml);
-		mofmm = ret;
+		if(mofmm == null) {
+			Resource extent = resourceSet.createResource(URI.createURI("http://www.eclipse.org/emf/2002/Ecore"));
+//			System.out.println("Actual resource class: " + extent.getClass());
+			extent.getContents().add(EcorePackage.eINSTANCE);
+			mofmm = new ASMEMFModel("MOF", extent, null, false, ml);
+		}
 		
-		return ret;
+		return mofmm;
 	}
 	
 	public Resource getExtent() {
@@ -250,7 +262,7 @@ public class ASMEMFModel extends ASMModel {
 	
 	private static ResourceSet resourceSet;
 
-	private static ASMEMFModel mofmm;
+	private static ASMEMFModel mofmm = null;
 	private Resource extent;
 	
 	public boolean isCheckSameModel() {
