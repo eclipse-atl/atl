@@ -272,8 +272,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 
 	static {
 		try {
-			// Force creation of MOF!Class before any other (otherwise MOF!Classifier gets created twice)
-			ASMEMFModel.getMOF().findModelElement("Class");
+			// Force creation of MOF!EClass before any other (otherwise MOF!Classifier gets created twice)
+			ASMEMFModel.getMOF().findModelElement("EClass");
 
 			// Operations on MOF!Classifier
 			// TODO on EClassifier after having added supertypes
