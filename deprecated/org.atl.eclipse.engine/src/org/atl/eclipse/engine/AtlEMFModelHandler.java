@@ -43,6 +43,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		r.setURI(uri);
 		Map options = new HashMap();
 		options.put(XMIResource.OPTION_ENCODING, "ISO-8859-1");
+		options.put(XMIResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
 		try {
 			r.save(options);
 		} catch (IOException e1) {
