@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.atl.eclipse.adt.builder.MarkerMaker;
 import org.atl.eclipse.engine.AtlLauncher;
 import org.atl.eclipse.engine.AtlModelHandler;
+import org.atl.eclipse.engine.MarkerMaker;
 import org.atl.engine.extractors.Extractor;
 import org.atl.engine.extractors.ebnf.EBNFExtractor;
 import org.atl.engine.injectors.ebnf.EBNFInjector2;

@@ -2,12 +2,11 @@
  * Created on 21 juil. 2004
  * @author idrissi
  */
-package org.atl.eclipse.adt.builder;
+package org.atl.eclipse.engine;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.atl.eclipse.engine.AtlNbCharFile;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
