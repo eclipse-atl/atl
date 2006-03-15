@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="TCS">
-  <ConcreteSyntax location="1:1-301:2" name="KM3" k="4" lexer="&#xA;class KM3Lexer extends Lexer;&#xA;&#xA;options {&#xA;&#x9;k = 2;&#xA;&#x9;charVocabulary = '\0' .. '\u00FF';&#xA;&#x9;testLiterals = false;&#xA;}&#xA;&#xA;{&#xA;&#xA;&#x9;protected Token makeToken(int t) {&#xA;&#x9;&#x9;org.atl.engine.injectors.ebnf.LocationToken ret = null;&#xA;&#xA;&#x9;&#x9;tokenObjectClass = org.atl.engine.injectors.ebnf.LocationToken.class;&#xA;&#x9;&#x9;ret = (org.atl.engine.injectors.ebnf.LocationToken)super.makeToken(t);&#xA;&#x9;&#x9;ret.setEndLine(getLine());&#xA;&#x9;&#x9;ret.setEndColumn(getColumn());&#xA;&#xA;&#x9;&#x9;return ret;&#xA;&#x9;}&#xA;&#xA;}&#xA;&#xA;//protected&#xA;NL&#xA;&#x9;:&#x9;(&#x9;'\r' '\n'&#xA;&#x9;&#x9;|&#x9;'\n' '\r'&#x9;//Improbable&#xA;&#x9;&#x9;|&#x9;'\r'&#xA;&#x9;&#x9;|&#x9;'\n'&#xA;&#x9;&#x9;)&#xA;&#x9;{newline();}&#xA;&#x9;;&#xA;&#xA;WS&#xA;&#x9;:&#x9;(&#x9;' '&#xA;&#x9;&#x9;|&#x9;'\t'&#xA;//&#x9;&#x9;|&#x9;NL&#xA;&#x9;&#x9;)&#xA;//&#x9;{ $setType(Token.SKIP); }&#xA;&#x9;;&#xA;&#xA;COMMENT&#xA;&#x9;:&#x9;&quot;--&quot;&#xA;&#x9;&#x9;(~(&#x9;'\r'&#xA;&#x9;&#x9;|&#x9;'\n'&#xA;&#x9;&#x9;))*&#xA;//&#x9;&#x9;({LA(1) != EOF_CHAR}? NL)?&#xA;//&#x9;{ $setType(Token.SKIP); }&#xA;&#x9;;&#xA;&#xA;protected&#xA;DIGIT&#xA;&#x9;:&#x9;'0'..'9'&#xA;&#x9;;&#xA;&#xA;protected&#xA;ALPHA&#xA;&#x9;:&#x9;'a'..'z'&#xA;&#x9;|&#x9;'A'..'Z'&#xA;&#x9;|&#x9;'_'&#xA;&#x9;//For Unicode compatibility (from 0000 to 00ff)&#xA;&#x9;|&#x9;'\u00C0' .. '\u00D6'&#xA;&#x9;|&#x9;'\u00D8' .. '\u00F6'&#xA;&#x9;|&#x9;'\u00F8' .. '\u00FF'&#xA;&#x9;;&#xA;&#xA;protected&#xA;SNAME&#xA;options {&#xA;&#x9;testLiterals = true;&#xA;}&#xA;&#x9;:&#x9;(ALPHA) (ALPHA | DIGIT)*&#xA;;&#xA;&#xA;NAME&#xA;&#x9;:&#x9;(&#x9;s:SNAME {if(s.getType() != SNAME) $setType(s.getType());}&#xA;&#x9;&#x9;|&#x9;'&quot;'!&#xA;&#x9;&#x9;&#x9;(&#x9;ESC&#xA;&#x9;&#x9;&#x9;|&#x9;'\n' {newline();}&#xA;&#x9;&#x9;&#x9;|&#x9;~('\\'|'\&quot;'|'\n')&#xA;&#x9;&#x9;&#x9;)*&#xA;&#x9;&#x9;&#x9;'&quot;'!&#xA;&#x9;&#x9;)&#xA;&#x9;{&#xA;&#x9;if($getText.equals(&quot;true&quot;)) $setType(BOOLEAN);&#xA;&#x9;if($getText.equals(&quot;false&quot;)) $setType(BOOLEAN);&#xA;&#x9;}&#xA;&#x9;;&#xA;&#xA;INT&#xA;&#x9;:&#x9;(DIGIT)+&#xA;&#x9;&#x9;(('.' DIGIT)=> '.' (DIGIT)+ {$setType(FLOAT);})?&#xA;&#x9;;&#xA;&#xA;protected&#xA;ESC&#xA;&#x9;:&#x9;'\\'!&#xA;&#x9;&#x9;(&#x9;'n' {$setText(&quot;\n&quot;);}&#xA;&#x9;&#x9;|&#x9;'r' {$setText(&quot;\r&quot;);}&#xA;&#x9;&#x9;|&#x9;'t' {$setText(&quot;\t&quot;);}&#xA;&#x9;&#x9;|&#x9;'b' {$setText(&quot;\b&quot;);}&#xA;&#x9;&#x9;|&#x9;'f' {$setText(&quot;\f&quot;);}&#xA;&#x9;&#x9;|&#x9;'&quot;' {$setText(&quot;\&quot;&quot;);}&#xA;&#x9;&#x9;|&#x9;'\'' {$setText(&quot;\'&quot;);}&#xA;&#x9;&#x9;|&#x9;'\\' {$setText(&quot;\\&quot;);}&#xA;&#x9;&#x9;|&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;('0'..'3')&#xA;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;:&#x9;('0'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;:&#x9;'0'..'7'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;|&#x9;('4'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;:&#x9;('0'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;)&#xA;&#x9;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;String s = $getText;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;int i;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;int ret = 0;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;String ans;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;for (i=0; i&lt;s.length(); ++i)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ret = ret*8 + s.charAt(i) - '0';&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;ans = String.valueOf((char) ret);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;$setText(ans);&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;)&#xA;&#x9;;&#xA;&#xA;STRING&#xA;&#x9;:&#x9;'\''!&#xA;&#x9;&#x9;(&#x9;ESC&#xA;&#x9;&#x9;|&#x9;'\n' {newline();}&#xA;&#x9;&#x9;|&#x9;~('\\'|'\''|'\n')&#xA;&#x9;&#x9;)*&#xA;&#x9;&#x9;'\''!&#xA;&#x9;;&#xA;&#xA;&#x9;">
+  <ConcreteSyntax location="1:1-335:2" name="KM3" k="4" lexer="&#xA;class KM3Lexer extends Lexer;&#xA;&#xA;options {&#xA;&#x9;k = 2;&#xA;&#x9;charVocabulary = '\0' .. '\u00FF';&#xA;&#x9;testLiterals = false;&#xA;}&#xA;&#xA;{&#xA;&#xA;&#x9;protected Token makeToken(int t) {&#xA;&#x9;&#x9;org.atl.engine.injectors.ebnf.LocationToken ret = null;&#xA;&#xA;&#x9;&#x9;tokenObjectClass = org.atl.engine.injectors.ebnf.LocationToken.class;&#xA;&#x9;&#x9;ret = (org.atl.engine.injectors.ebnf.LocationToken)super.makeToken(t);&#xA;&#x9;&#x9;ret.setEndLine(getLine());&#xA;&#x9;&#x9;ret.setEndColumn(getColumn());&#xA;&#xA;&#x9;&#x9;return ret;&#xA;&#x9;}&#xA;&#xA;}&#xA;&#xA;//protected&#xA;NL&#xA;&#x9;:&#x9;(&#x9;'\r' '\n'&#xA;&#x9;&#x9;|&#x9;'\n' '\r'&#x9;//Improbable&#xA;&#x9;&#x9;|&#x9;'\r'&#xA;&#x9;&#x9;|&#x9;'\n'&#xA;&#x9;&#x9;)&#xA;&#x9;{newline();}&#xA;&#x9;;&#xA;&#xA;WS&#xA;&#x9;:&#x9;(&#x9;' '&#xA;&#x9;&#x9;|&#x9;'\t'&#xA;//&#x9;&#x9;|&#x9;NL&#xA;&#x9;&#x9;)&#xA;//&#x9;{ $setType(Token.SKIP); }&#xA;&#x9;;&#xA;&#xA;COMMENT&#xA;&#x9;:&#x9;&quot;--&quot;&#xA;&#x9;&#x9;(~(&#x9;'\r'&#xA;&#x9;&#x9;|&#x9;'\n'&#xA;&#x9;&#x9;))*&#xA;//&#x9;&#x9;({LA(1) != EOF_CHAR}? NL)?&#xA;//&#x9;{ $setType(Token.SKIP); }&#xA;&#x9;;&#xA;&#xA;protected&#xA;DIGIT&#xA;&#x9;:&#x9;'0'..'9'&#xA;&#x9;;&#xA;&#xA;protected&#xA;ALPHA&#xA;&#x9;:&#x9;'a'..'z'&#xA;&#x9;|&#x9;'A'..'Z'&#xA;&#x9;|&#x9;'_'&#xA;&#x9;//For Unicode compatibility (from 0000 to 00ff)&#xA;&#x9;|&#x9;'\u00C0' .. '\u00D6'&#xA;&#x9;|&#x9;'\u00D8' .. '\u00F6'&#xA;&#x9;|&#x9;'\u00F8' .. '\u00FF'&#xA;&#x9;;&#xA;&#xA;protected&#xA;SNAME&#xA;options {&#xA;&#x9;testLiterals = true;&#xA;}&#xA;&#x9;:&#x9;(ALPHA) (ALPHA | DIGIT)*&#xA;;&#xA;&#xA;NAME&#xA;&#x9;:&#x9;(&#x9;s:SNAME {if(s.getType() != SNAME) $setType(s.getType());}&#xA;&#x9;&#x9;|&#x9;'&quot;'!&#xA;&#x9;&#x9;&#x9;(&#x9;ESC&#xA;&#x9;&#x9;&#x9;|&#x9;'\n' {newline();}&#xA;&#x9;&#x9;&#x9;|&#x9;~('\\'|'\&quot;'|'\n')&#xA;&#x9;&#x9;&#x9;)*&#xA;&#x9;&#x9;&#x9;'&quot;'!&#xA;&#x9;&#x9;)&#xA;&#x9;{&#xA;&#x9;if($getText.equals(&quot;true&quot;)) $setType(BOOLEAN);&#xA;&#x9;if($getText.equals(&quot;false&quot;)) $setType(BOOLEAN);&#xA;&#x9;}&#xA;&#x9;;&#xA;&#xA;INT&#xA;&#x9;:&#x9;(DIGIT)+&#xA;&#x9;&#x9;(('.' DIGIT)=> '.' (DIGIT)+ {$setType(FLOAT);})?&#xA;&#x9;;&#xA;&#xA;protected&#xA;ESC&#xA;&#x9;:&#x9;'\\'!&#xA;&#x9;&#x9;(&#x9;'n' {$setText(&quot;\n&quot;);}&#xA;&#x9;&#x9;|&#x9;'r' {$setText(&quot;\r&quot;);}&#xA;&#x9;&#x9;|&#x9;'t' {$setText(&quot;\t&quot;);}&#xA;&#x9;&#x9;|&#x9;'b' {$setText(&quot;\b&quot;);}&#xA;&#x9;&#x9;|&#x9;'f' {$setText(&quot;\f&quot;);}&#xA;&#x9;&#x9;|&#x9;'&quot;' {$setText(&quot;\&quot;&quot;);}&#xA;&#x9;&#x9;|&#x9;'\'' {$setText(&quot;\'&quot;);}&#xA;&#x9;&#x9;|&#x9;'\\' {$setText(&quot;\\&quot;);}&#xA;&#x9;&#x9;|&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;('0'..'3')&#xA;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;:&#x9;('0'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;:&#x9;'0'..'7'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;|&#x9;('4'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;options {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;warnWhenFollowAmbig = false;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;:&#x9;('0'..'7')&#xA;&#x9;&#x9;&#x9;&#x9;)?&#xA;&#x9;&#x9;&#x9;)&#xA;&#x9;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;String s = $getText;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;int i;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;int ret = 0;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;String ans;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;for (i=0; i&lt;s.length(); ++i)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ret = ret*8 + s.charAt(i) - '0';&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;ans = String.valueOf((char) ret);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;$setText(ans);&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;)&#xA;&#x9;;&#xA;&#xA;STRING&#xA;&#x9;:&#x9;'\''!&#xA;&#x9;&#x9;(&#x9;ESC&#xA;&#x9;&#x9;|&#x9;'\n' {newline();}&#xA;&#x9;&#x9;|&#x9;~('\\'|'\''|'\n')&#xA;&#x9;&#x9;)*&#xA;&#x9;&#x9;'\''!&#xA;&#x9;;&#xA;&#xA;&#x9;">
     <templates xsi:type="PrimitiveTemplate" location="3:9-4:35" name="identifier" typeName="String" isDefault="true" tokenName="NAME" value="%token%" orKeyword="false"/>
     <templates xsi:type="PrimitiveTemplate" location="6:9-8:64" name="stringSymbol" typeName="String" isDefault="false" tokenName="STRING" value="%token%" serializer="''' + %value%.toCString() + '''" orKeyword="false"/>
     <templates xsi:type="PrimitiveTemplate" location="10:9-11:52" name="integerSymbol" typeName="Integer" isDefault="true" tokenName="INT" value="Integer.valueOf(%token%)" orKeyword="false"/>
@@ -278,20 +278,20 @@
         </elements>
       </functionSequence>
     </templates>
-    <symbols location="113:17-113:39" name="lsquare" value="["/>
-    <symbols location="114:17-114:54" name="rsquare" value="]">
+    <symbols location="113:17-113:39" name="lsquare" literalRefs="/0/@templates.18/@functionSequence/@elements.0/@elseSequence/@elements.0/@thenSequence/@elements.0 /0/@templates.18/@functionSequence/@elements.0/@elseSequence/@elements.0/@elseSequence/@elements.0/@thenSequence/@elements.0 /0/@templates.18/@functionSequence/@elements.0/@elseSequence/@elements.0/@elseSequence/@elements.0/@elseSequence/@elements.0" value="["/>
+    <symbols location="114:17-114:54" name="rsquare" literalRefs="/0/@templates.18/@functionSequence/@elements.0/@elseSequence/@elements.0/@thenSequence/@elements.2 /0/@templates.18/@functionSequence/@elements.0/@elseSequence/@elements.0/@elseSequence/@elements.0/@thenSequence/@elements.4 /0/@templates.18/@functionSequence/@elements.0/@elseSequence/@elements.0/@elseSequence/@elements.0/@elseSequence/@elements.4" value="]">
       <spaces>rightSpace</spaces>
     </symbols>
     <symbols location="115:17-115:39" name="excl" value="!"/>
-    <symbols location="116:17-116:39" name="coma" value=","/>
-    <symbols location="117:17-117:39" name="lparen" value="("/>
-    <symbols location="118:17-118:39" name="rparen" value=")"/>
-    <symbols location="119:17-119:53" name="lcurly" value="{">
+    <symbols location="116:17-116:39" name="coma" literalRefs="/0/@templates.10/@templateSequence/@elements.3/@thenSequence/@elements.1/@propertyArgs.1/@separatorSequence/@elements.0 /0/@templates.12/@templateSequence/@elements.4/@thenSequence/@elements.1/@propertyArgs.1/@separatorSequence/@elements.0 /0/@templates.14/@templateSequence/@elements.3/@propertyArgs.0/@separatorSequence/@elements.0" value=","/>
+    <symbols location="117:17-117:39" name="lparen" literalRefs="/0/@templates.14/@templateSequence/@elements.2" value="("/>
+    <symbols location="118:17-118:39" name="rparen" literalRefs="/0/@templates.14/@templateSequence/@elements.4" value=")"/>
+    <symbols location="119:17-119:53" name="lcurly" literalRefs="/0/@templates.8/@templateSequence/@elements.3 /0/@templates.10/@templateSequence/@elements.4 /0/@templates.16/@templateSequence/@elements.2" value="{">
       <spaces>leftSpace</spaces>
     </symbols>
-    <symbols location="120:17-120:39" name="rcurly" value="}"/>
-    <symbols location="121:17-121:39" name="semi" value=";"/>
-    <symbols location="122:17-122:65" name="colon" value=":">
+    <symbols location="120:17-120:39" name="rcurly" literalRefs="/0/@templates.8/@templateSequence/@elements.5 /0/@templates.10/@templateSequence/@elements.6 /0/@templates.16/@templateSequence/@elements.4" value="}"/>
+    <symbols location="121:17-121:39" name="semi" literalRefs="/0/@templates.9/@templateSequence/@elements.2 /0/@templates.12/@templateSequence/@elements.8 /0/@templates.13/@templateSequence/@elements.6 /0/@templates.14/@templateSequence/@elements.6 /0/@templates.17/@templateSequence/@elements.2" value=";"/>
+    <symbols location="122:17-122:65" name="colon" literalRefs="/0/@templates.12/@templateSequence/@elements.5 /0/@templates.13/@templateSequence/@elements.4 /0/@templates.14/@templateSequence/@elements.5/@thenSequence/@elements.0 /0/@templates.15/@templateSequence/@elements.1" value=":">
       <spaces>leftSpace</spaces>
       <spaces>rightSpace</spaces>
     </symbols>
@@ -301,8 +301,8 @@
     <symbols location="126:17-126:39" name="qmark" value="?"/>
     <symbols location="129:17-129:39" name="point" value="."/>
     <symbols location="130:17-130:40" name="rarrow" value="->"/>
-    <symbols location="131:17-131:39" name="minus" value="-"/>
-    <symbols location="132:17-132:39" name="star" value="*"/>
+    <symbols location="131:17-131:39" name="minus" literalRefs="/0/@templates.18/@functionSequence/@elements.0/@elseSequence/@elements.0/@elseSequence/@elements.0/@thenSequence/@elements.2 /0/@templates.18/@functionSequence/@elements.0/@elseSequence/@elements.0/@elseSequence/@elements.0/@elseSequence/@elements.2" value="-"/>
+    <symbols location="132:17-132:39" name="star" literalRefs="/0/@templates.18/@functionSequence/@elements.0/@elseSequence/@elements.0/@thenSequence/@elements.1 /0/@templates.18/@functionSequence/@elements.0/@elseSequence/@elements.0/@elseSequence/@elements.0/@thenSequence/@elements.3" value="*"/>
     <symbols location="133:17-133:39" name="slash" value="/"/>
     <symbols location="134:17-134:39" name="plus" value="+"/>
     <symbols location="135:17-135:39" name="eq" value="="/>
@@ -313,19 +313,19 @@
     <symbols location="140:17-140:40" name="ne" value="&lt;>"/>
     <symbols location="141:17-141:40" name="larrow" value="&lt;-"/>
   </ConcreteSyntax>
-  <Keyword value="package"/>
-  <Keyword value="datatype"/>
-  <Keyword value="abstract"/>
-  <Keyword value="class"/>
-  <Keyword value="extends"/>
-  <Keyword value="reference"/>
-  <Keyword value="container"/>
-  <Keyword value="subsets"/>
-  <Keyword value="oppositeOf"/>
-  <Keyword value="attribute"/>
-  <Keyword value="unique"/>
-  <Keyword value="operation"/>
-  <Keyword value="enumeration"/>
-  <Keyword value="literal"/>
-  <Keyword value="ordered"/>
+  <Keyword literalRefs="/0/@templates.8/@templateSequence/@elements.0" value="package"/>
+  <Keyword literalRefs="/0/@templates.9/@templateSequence/@elements.0" value="datatype"/>
+  <Keyword literalRefs="/0/@templates.10/@templateSequence/@elements.0/@thenSequence/@elements.0" value="abstract"/>
+  <Keyword literalRefs="/0/@templates.10/@templateSequence/@elements.1" value="class"/>
+  <Keyword literalRefs="/0/@templates.10/@templateSequence/@elements.3/@thenSequence/@elements.0" value="extends"/>
+  <Keyword literalRefs="/0/@templates.12/@templateSequence/@elements.0" value="reference"/>
+  <Keyword literalRefs="/0/@templates.12/@templateSequence/@elements.3/@thenSequence/@elements.0" value="container"/>
+  <Keyword literalRefs="/0/@templates.12/@templateSequence/@elements.4/@thenSequence/@elements.0" value="subsets"/>
+  <Keyword literalRefs="/0/@templates.12/@templateSequence/@elements.7/@thenSequence/@elements.0" value="oppositeOf"/>
+  <Keyword literalRefs="/0/@templates.13/@templateSequence/@elements.0" value="attribute"/>
+  <Keyword literalRefs="/0/@templates.13/@templateSequence/@elements.3/@thenSequence/@elements.0" value="unique"/>
+  <Keyword literalRefs="/0/@templates.14/@templateSequence/@elements.0" value="operation"/>
+  <Keyword literalRefs="/0/@templates.16/@templateSequence/@elements.0" value="enumeration"/>
+  <Keyword literalRefs="/0/@templates.17/@templateSequence/@elements.0" value="literal"/>
+  <Keyword literalRefs="/0/@templates.18/@functionSequence/@elements.1/@thenSequence/@elements.0" value="ordered"/>
 </xmi:XMI>
