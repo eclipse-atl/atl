@@ -133,10 +133,6 @@ public class ASMEMFModel extends ASMModel {
 		return ret;
 	}
 	
-	public static ASMEMFModel newASMEMFModel(String name, ASMEMFModel metamodel, Resource res, ModelLoader ml) throws Exception {
-	   return new ASMEMFModel(name, res, metamodel, true, ml);
-	}
-	
 	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, String url, ModelLoader ml) throws Exception {
 		ASMEMFModel ret = null;
 		
