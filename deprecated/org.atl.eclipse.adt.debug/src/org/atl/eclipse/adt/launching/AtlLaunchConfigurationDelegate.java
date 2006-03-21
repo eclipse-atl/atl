@@ -267,6 +267,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
 				ASMModel mofmm = amh.getMof();
+				toReturn.put("%" + modelHandler.get(mmName), mofmm);
 				mofmm.setIsTarget(false);
 				ASMModel inputModel;
 				if (((String)path.get(mmName)).startsWith("#")) {
