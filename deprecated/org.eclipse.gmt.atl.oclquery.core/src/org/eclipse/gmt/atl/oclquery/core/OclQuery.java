@@ -10,7 +10,10 @@ import org.atl.engine.repositories.emf4atl.ASMEMFModel;
 import org.atl.engine.vm.ASM;
 import org.atl.engine.vm.Debugger;
 import org.atl.engine.vm.SimpleDebugger;
+import org.atl.engine.vm.nativelib.ASMBoolean;
+import org.atl.engine.vm.nativelib.ASMInteger;
 import org.atl.engine.vm.nativelib.ASMOclAny;
+import org.atl.engine.vm.nativelib.ASMString;
 
 /**
  * 
@@ -43,6 +46,18 @@ public class OclQuery extends OclEvaluator {
 		Map models = new HashMap();
 		models.put("MOF", ASMEMFModel.getMOF());
 		return eval(models);
+	}
+	
+	public String evalString(Map models) throws Exception {
+		return ((ASMString)eval(models)).getSymbol();
+	}
+	
+	public int evalInteger(Map models) throws Exception {
+		return ((ASMInteger)eval(models)).getSymbol();
+	}
+	
+	public boolean evalBoolean(Map models) throws Exception {
+		return ((ASMBoolean)eval(models)).getSymbol();
 	}
 	
 	public ASMOclAny eval(Map models) throws Exception {
