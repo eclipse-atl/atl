@@ -112,7 +112,7 @@ public class AtlNbCharFile {
 	 * @param column
 	 * @return
 	 */
-	private int getIndexChar(int lineNumber, int column, int tabWidth) {
+	public int getIndexChar(int lineNumber, int column, int tabWidth) {
 		int ret = 0;
 		
 		if(!((lineNumber == 1) && (column == 1))) {
