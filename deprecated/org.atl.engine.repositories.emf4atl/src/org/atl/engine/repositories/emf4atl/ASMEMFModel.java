@@ -204,7 +204,7 @@ public class ASMEMFModel extends ASMModel {
 				String tname = ((ASMString)ame.get(null, "name")).getSymbol();
 				String icn = null;
 				if(tname.equals("Boolean")) {
-					icn = "java.lang.Boolean";
+					icn = "boolean";	//"java.lang.Boolean";
 				} else if(tname.equals("Double")) {
 					icn = "java.lang.Double";
 				} else if(tname.equals("Float")) {
