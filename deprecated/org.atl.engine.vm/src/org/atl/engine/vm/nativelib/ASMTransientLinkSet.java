@@ -62,13 +62,20 @@ public class ASMTransientLinkSet extends ASMOclAny {
 		
 		
 		if(isDefault.getSymbol()) {
-			for(Iterator i = link.getSourceElements().iterator() ; i.hasNext() ; ) {
-				Object e = i.next();
-				if(self.linksBySourceElement.containsKey(e)) {
-					frame.printStackTrace("trying to register several rules as default for element " + e);
+			Object se;
+			if(link.getSourceElements().size() == 1) {
+				se = link.getSourceElements().iterator().next();
+			} else {
+				se = new ASMTuple();
+				for(Iterator i = link.getSourceMap().keySet().iterator() ; i.hasNext() ; ) {
+					String k = (String)i.next();
+					((ASMTuple)se).set(frame, k, (ASMOclAny)link.getSourceMap().get(k));
 				}
-				self.linksBySourceElement.put(e, link);
 			}
+			if(self.linksBySourceElement.containsKey(se)) {
+				frame.printStackTrace("trying to register several rules as default for element " + se);
+			}
+			self.linksBySourceElement.put(se, link);
 		}
 		for(Iterator i = link.getTargetElements().iterator() ; i.hasNext() ; ) {
 			Object o = i.next();

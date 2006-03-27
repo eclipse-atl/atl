@@ -56,6 +56,10 @@ public class ASMTransientLink extends ASMOclAny {
 		}
 	}
 
+	public Map getSourceMap() {
+		return sourceElements;
+	}
+
 	public Collection getSourceElements() {
 		return sourceElements.values();
 	}
