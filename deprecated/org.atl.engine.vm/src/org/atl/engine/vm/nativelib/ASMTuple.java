@@ -18,6 +18,11 @@ public class ASMTuple extends ASMOclAny {
 		s = new HashMap();
 	}
 
+	public ASMTuple(Map init) {
+		super(myType);
+		s = new HashMap(init);
+	}
+
 	public ASMTuple(ASMTuple init) {
 		super(myType);
 		s = new HashMap(init.s);
