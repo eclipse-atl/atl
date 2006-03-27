@@ -112,8 +112,7 @@ public abstract class ModelLoader {
 							} else if(type.equals("RandomAccessFile") && (uri != null)) {
 								paramsMap.put(pname, new RandomAccessFile(uri, "r"));
 							} else {
-								System.err.println("ERROR: unknown parameter type \"" + type + "\" of \"" + pname + "\".");
-								System.exit(1);								
+								System.err.println("Warning: unknown parameter type \"" + type + "\" of \"" + pname + "\".");
 							}
 						}
 					}
@@ -211,8 +210,7 @@ public abstract class ModelLoader {
 							} else if(type.startsWith("Model:")) {
 								paramsMap.put(pname, loadedModels.get(args.get(pname)));
 							} else {
-								System.err.println("ERROR: unknown parameter type \"" + type + "\" of \"" + pname + "\".");
-								System.exit(1);								
+								System.err.println("Warning: unknown parameter type \"" + type + "\" of \"" + pname + "\".");
 							}
 						}
 					}
