@@ -400,8 +400,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 		IFile currentAtlFile = wksroot.getFile(new Path(atlFilePath));
 
-		if (currentAtlFile.getFileExtension().toLowerCase().equals("atl")) {
-			String currentAsmPath = currentAtlFile.getFullPath().toString().substring(0, currentAtlFile.getFullPath().toString().length() - 3) + "asm";
+		String extension = currentAtlFile.getFileExtension().toLowerCase();
+		if (AtlLauncherTools.EXTENSIONS.contains(extension)) {
+			String currentAsmPath = currentAtlFile.getFullPath().toString().substring(0, currentAtlFile.getFullPath().toString().length() - extension.length()) + "asm";
 			return wksroot.getFile(new Path(currentAsmPath)); 
 		}
 		else

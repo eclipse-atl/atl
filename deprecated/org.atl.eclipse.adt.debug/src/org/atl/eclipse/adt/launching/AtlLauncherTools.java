@@ -47,10 +47,14 @@ public class AtlLauncherTools {
 	public static String EXTRACTOR = "Extractor";
 	public static String MODELHANDLER = "Model Handler";
 	public static String MODEDEBUG = "Mode Debug";
-	public static String EXTENSION = "atl";
 	public static String MODELCHOICETABNAME = Messages.getString("AtlLauncherTools.MODELCHOICE"); //$NON-NLS-1$
 	public static String REMOTEATLNAME = Messages.getString("AtlLauncherTools.ATLCONFIGURATION"); //$NON-NLS-1$
 	public static String PATHICONATL = "icons/atllogo_icon.gif";
+	public static List EXTENSIONS = new ArrayList();
+	static {
+		EXTENSIONS.add("atl");
+		EXTENSIONS.add("acg");
+	}
 	
 	/**
 	 * 
@@ -164,7 +168,7 @@ public class AtlLauncherTools {
 	 * @return true if the extension is good
 	 */
 	public static boolean isGoodExtension(String extension) {
-		if (extension.toLowerCase().equals(EXTENSION.toLowerCase()))
+		if (EXTENSIONS.contains(extension.toLowerCase()))
 			return true;
 		return false;
 	}
