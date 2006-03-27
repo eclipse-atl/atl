@@ -371,10 +371,11 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 			return "org.eclipse.ui.DefaultTextEditor";
 		IEditorRegistry registry= PlatformUI.getWorkbench().getEditorRegistry();
 		IEditorDescriptor descriptor= registry.getDefaultEditor(input.getName());
-		if (descriptor != null)
+		if (descriptor != null) {
 			return descriptor.getId();
-		
-		return null;
+		} else {
+			return "org.eclipse.ui.DefaultTextEditor";
+		}
 	}
 
 }
