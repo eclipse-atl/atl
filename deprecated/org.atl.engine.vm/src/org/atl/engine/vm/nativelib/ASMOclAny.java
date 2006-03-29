@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.atl.engine.vm.ASMExecEnv;
+import org.atl.engine.vm.ASMOperation;
 import org.atl.engine.vm.Operation;
 import org.atl.engine.vm.StackFrame;
 
@@ -37,10 +38,24 @@ public class ASMOclAny extends ASMNativeObject {
 		return type;
 	}
 
+	public Operation findOperation(StackFrame frame, String opName, List arguments) {
+		return ((ASMExecEnv)frame.getExecEnv()).getOperation(getType(), opName);
+	}
+
 	// The Operation to execute on this object is searched for in its type.
-	public ASMOclAny invoke(String name, List args) {
-		System.out.println("ERROR: OclAny.invoke not implemented yet...");
-		return null;
+	public ASMOclAny invoke(StackFrame frame, String opName, List arguments) {
+		ASMOclAny ret = null;
+		
+		Operation oper = findOperation(frame, opName, arguments);
+
+		if(oper != null) {
+			arguments.add(0, this);	// self
+			ret = oper.exec(frame.enterFrame(oper, arguments));
+		} else {
+			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes());
+		}
+
+		return ret;
 	}
 
 	public ASMOclAny get(StackFrame frame, String name) {
@@ -108,17 +123,10 @@ public class ASMOclAny extends ASMNativeObject {
 
 		String opName = opName_.getSymbol();
 		ArrayList arguments = new ArrayList();
-		arguments.add(self);
 		for(Iterator i = arguments_.iterator() ; i.hasNext() ; )
 			arguments.add(i.next());
 
-		Operation oper = ((ASMExecEnv)frame.getExecEnv()).getOperation(self.getType(), opName);
-
-		if(oper != null) {
-			ret = oper.exec(frame.enterFrame(oper, arguments));
-		} else {
-			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + self.getType() + " having supertypes: " + self.getType().getSupertypes());
-		}
+		ret = self.invoke(frame, opName, arguments);
 		
 		return ret;
 	}

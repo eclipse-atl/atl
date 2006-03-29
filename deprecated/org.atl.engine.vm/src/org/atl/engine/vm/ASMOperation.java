@@ -207,17 +207,9 @@ public class ASMOperation extends Operation {
 				ArrayList arguments = new ArrayList();
 				for(int j = 0 ; j < nb ; j++)
 					arguments.add(0, frame.pop());
-				ASMOclAny o = frame.pop();
-				arguments.add(0, o);	// self
-				ASMOclAny ret = null;
+				ASMOclAny o = frame.pop();	// self
+				ASMOclAny ret = o.invoke(frame, opName, arguments); 
 
-				Operation oper = ((ASMExecEnv)frame.getExecEnv()).getOperation(o.getType(), opName);
-
-				if(oper != null) {
-					ret = oper.exec(frame.enterFrame(oper, arguments));
-				} else {
-					frame.printStackTrace("ERROR: could not find operation " + opName + " on " + o.getType() + " having supertypes: " + o.getType().getSupertypes());
-				}
 				if(ret != null) {
 					frame.push(ret);
 				}
