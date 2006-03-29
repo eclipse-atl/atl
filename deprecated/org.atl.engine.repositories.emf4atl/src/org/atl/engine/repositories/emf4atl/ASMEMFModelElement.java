@@ -1,5 +1,7 @@
 package org.atl.engine.repositories.emf4atl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -220,10 +222,14 @@ public class ASMEMFModelElement extends ASMModelElement {
 		} else if(value instanceof ASMReal) {
 			ret = new Double(((ASMReal)value).getSymbol());
 		} else if(value instanceof ASMInteger) {
-			String targetType = feature.getEType().getInstanceClassName();
 			int val = ((ASMInteger)value).getSymbol();
-			if(targetType.equals("java.lang.Double") || targetType.equals("java.lang.Float")) {
-				ret = new Double(val);
+			if(feature != null) {
+				String targetType = feature.getEType().getInstanceClassName();
+				if(targetType.equals("java.lang.Double") || targetType.equals("java.lang.Float")) {
+					ret = new Double(val);
+				} else {
+					ret = new Integer(val);
+				}
 			} else {
 				ret = new Integer(val);
 			}
@@ -394,6 +400,37 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 		}
 	}
 	
+	public ASMOclAny invoke(StackFrame frame, String opName, List arguments) {
+		ASMOclAny ret = null;
+
+		if(findOperation(frame, opName, arguments) != null) {
+			ret = super.invoke(frame, opName, arguments);
+		} else {
+			Object args[] = new Object[arguments.size()];
+			Class parameterTypes[] = new Class[arguments.size()];
+			int k = 0;
+			for(Iterator i = arguments.iterator() ; i.hasNext() ; ) {
+				// warning: ASMEnumLiterals will not be converted!
+				args[k] = asm2EMF(frame, (ASMOclAny)i.next(), null, null);
+				parameterTypes[k] = args[k].getClass();
+				k++;
+			}
+			
+			try {
+				Method method = object.getClass().getMethod(opName, parameterTypes);
+				ret = emf2ASM(frame, method.invoke(object, args));
+			} catch(IllegalAccessException e) {
+				frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes() + " (including Java operations)");				
+			} catch(InvocationTargetException e) {
+				frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes() + " (including Java operations)");				
+			} catch(NoSuchMethodException e) {
+				frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes() + " (including Java operations)");				
+			}
+		}
+		
+		return ret;
+	}
+
 	public EObject getObject() {
 		return object;
 	}
