@@ -4,9 +4,14 @@
  */
 package org.atl.eclipse.engine;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
+import org.atl.engine.repositories.emf4atl.ASMEMFModelElement;
+import org.atl.engine.vm.nativelib.ASMEnumLiteral;
+import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -116,4 +121,30 @@ public class MarkerMaker {
 		res.getWorkspace().run(r, null, IWorkspace.AVOID_UPDATE, null);
 	}
 	
+	/**
+	 * Transforms the Problem model given as argument into a set of markers.
+	 * @param file Resource on which markers are to be added.
+	 * @param pbs The Problem model containing the problems.
+	 * @return The number of errors (Problems with severity #error).
+	 * @throws CoreException
+	 */
+	public int applyMarkers(IFile file, ASMModel pbs) throws CoreException {
+		int nbErrors = 0;
+		
+		Collection pbsc = pbs.getElementsByType("Problem");
+		EObject pbsa[] = new EObject[pbsc.size()];
+		int k = 0;
+		for(Iterator i = pbsc.iterator() ; i.hasNext() ; ) {
+			ASMEMFModelElement ame = (ASMEMFModelElement)i.next();
+			pbsa[k] = ame.getObject();
+			if("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) {
+				nbErrors++;
+			}
+			k++;
+		}
+		resetPbmMarkers(file, pbsa);
+		
+		return nbErrors;
+	}	
+
 }

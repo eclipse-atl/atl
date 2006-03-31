@@ -210,32 +210,6 @@ public class KM3Projector {
 	}
 	
 	/**
-	 * Transforms the Problem model given as argument into a set of markers.
-	 * @param file Resource on which markers are to be added.
-	 * @param pbs The Problem model containing the problems.
-	 * @return The number of errors (Problems with severity #error).
-	 * @throws CoreException
-	 */
-	private int applyMarkers(IFile file, ASMModel pbs) throws CoreException {
-		int nbErrors = 0;
-		
-		Collection pbsc = pbs.getElementsByType("Problem");
-		EObject pbsa[] = new EObject[pbsc.size()];
-		int k = 0;
-		for(Iterator i = pbsc.iterator() ; i.hasNext() ; ) {
-			ASMEMFModelElement ame = (ASMEMFModelElement)i.next();
-			pbsa[k] = ame.getObject();
-			if("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) {
-				nbErrors++;
-			}
-			k++;
-		}
-		markerMaker.resetPbmMarkers(file, pbsa);
-		
-		return nbErrors;
-	}
-	
-	/**
 	 * Deserializes a KM3 model from a File.
 	 * @author jouault
 	 *
@@ -255,7 +229,7 @@ public class KM3Projector {
 		ebnfi.performImportation(emfmm, ret, in, mmName, lexer, parser, pbs);
 		in.close();
 
-		int nbPbs = applyMarkers(file, pbs);
+		int nbPbs = markerMaker.applyMarkers(file, pbs);
 		
 		if((!stopOnError) || (nbPbs == 0)) {
 			Map models = new HashMap();
@@ -271,7 +245,7 @@ public class KM3Projector {
 
 			AtlLauncher.getDefault().launch(KM3WFRurl, libs, models, params);			
 
-			nbPbs = applyMarkers(file, pbs);
+			nbPbs = markerMaker.applyMarkers(file, pbs);
 		}
 		
 		if(stopOnError && (nbPbs != 0)) {
