@@ -39,16 +39,19 @@ public class MDRModelLoader extends ModelLoader {
 	}
 
 	private String xmiVersion = null;
+	private String encoding = null;
 	
 	protected void setParameter(String name, Object value) {
 		if("xmiVersion".equals(name)) {
 			xmiVersion = (String)value;
+		} else if("encoding".equals(name)) {
+			encoding = (String)value;
 		}
 	}
 
 	protected void realSave(ASMModel model, String href) {
 		try {
-			((ASMMDRModel)model).save(href, xmiVersion);
+			((ASMMDRModel)model).save(href, xmiVersion, encoding);
 		} catch(Exception e) {
 			e.printStackTrace(System.out);
 		}

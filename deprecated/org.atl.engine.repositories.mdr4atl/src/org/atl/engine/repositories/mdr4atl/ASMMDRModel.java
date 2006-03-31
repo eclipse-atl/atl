@@ -33,7 +33,6 @@ import org.netbeans.api.xmi.XMIReaderFactory;
 import org.netbeans.api.xmi.XMIReferenceResolver;
 import org.netbeans.api.xmi.XMIWriter;
 import org.netbeans.api.xmi.XMIWriterFactory;
-import org.netbeans.api.xmi.XMIReferenceResolver.Client;
 
 /**
  * @author Frédéric Jouault
@@ -289,11 +288,22 @@ if(debug)
 	}
 
 	public void save(String url, String xmiVersion) throws IOException {
+		save(url, xmiVersion, null);
+	}
+	
+	public void save(String url, String xmiVersion, String encoding) throws IOException {
 		OutputStream out = new FileOutputStream(url);
-		save(out, xmiVersion);
+		save(out, xmiVersion, encoding);
 	}
 
 	public void save(OutputStream out, String xmiVersion) throws IOException {
+		save(out, xmiVersion, null);
+	}
+	
+	public void save(OutputStream out, String xmiVersion, String encoding) throws IOException {
+		if(encoding != null) {
+			writer.getConfiguration().setEncoding(encoding);
+		}
 		writer.write(out, pack, xmiVersion);
 	}
 
