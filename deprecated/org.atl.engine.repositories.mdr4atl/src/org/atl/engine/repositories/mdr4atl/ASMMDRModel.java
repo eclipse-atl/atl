@@ -56,6 +56,21 @@ public class ASMMDRModel extends ASMModel {
 		this.pack = pack;
 	}
 
+	private Map allModelElements = new HashMap(); 
+
+	public ASMModelElement getASMModelElement(RefObject object) {
+		ASMModelElement ret = null;
+		
+		synchronized(allModelElements) {
+			ret = (ASMModelElement)allModelElements.get(object);
+			if(ret == null) {
+				ret = new ASMMDRModelElement(allModelElements, this, object);
+			}
+		}
+		
+		return ret;
+	}
+
 	private Map modelElements = new HashMap();
 	// only for metamodels...
 	public ASMModelElement findModelElement(String name) {
@@ -78,7 +93,7 @@ public class ASMMDRModel extends ASMModel {
 			}
 
 			if(retro != null) {
-				ret = ASMMDRModelElement.getASMModelElement(this, retro);
+				ret = getASMModelElement(retro);
 				modelElements.put(name, ret);
 			}
 		}
@@ -92,7 +107,7 @@ public class ASMMDRModel extends ASMModel {
 
 //System.out.println(this + ".getElementsByType(" + o + ")");
 		for(Iterator i = findRefClass(pack, o).refAllOfType().iterator() ; i.hasNext() ; ) {
-			ret.add(ASMMDRModelElement.getASMModelElement(this, (RefObject)i.next()));
+			ret.add(getASMModelElement((RefObject)i.next()));
 		}
 
 		return ret;
@@ -101,7 +116,7 @@ public class ASMMDRModel extends ASMModel {
 	public ASMModelElement newModelElement(ASMModelElement type) {
 		ASMModelElement ret = null;
 
-		ret = ASMMDRModelElement.getASMModelElement(this, findRefClass(pack, ((ASMMDRModelElement)type).getObject()).refCreateInstance(null));
+		ret = getASMModelElement(findRefClass(pack, ((ASMMDRModelElement)type).getObject()).refCreateInstance(null));
 
 		return ret;
 	}

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jmi.model.Classifier;
 import javax.jmi.reflect.RefAssociation;
 import javax.jmi.reflect.RefEnum;
 import javax.jmi.reflect.RefException;
@@ -39,31 +40,18 @@ import org.atl.engine.vm.nativelib.ASMTuple;
  */
 public class ASMMDRModelElement extends ASMModelElement {
 
-	private static Map modelElements = new HashMap();
-	public static ASMModelElement getASMModelElement(ASMModel model, RefObject object) {
-		ASMModelElement ret = (ASMModelElement)modelElements.get(object);
-
-		if(ret == null) {
-			ret = new ASMMDRModelElement((ASMMDRModel)model, object);
-
-
-		}
-
-		return ret;
-	}
-
 	private static ASMModelElement getMetaobject(ASMMDRModel model, RefObject object) {
 		ASMModelElement ret = null;
 
 		RefObject mo = object.refMetaObject();
 		if(!mo.equals(object)) {
-			ret = getASMModelElement(model.getMetamodel(), object.refMetaObject());
+			ret = ((ASMMDRModel)model.getMetamodel()).getASMModelElement(object.refMetaObject());
 		}
 
 		return ret;
 	}
 
-	private ASMMDRModelElement(ASMMDRModel model, RefObject object) {
+	public ASMMDRModelElement(Map modelElements, ASMMDRModel model, RefObject object) {
 		super(model, getMetaobject(model, object));
 		modelElements.put(object, this);
 		this.object = object;
@@ -82,10 +70,11 @@ public class ASMMDRModelElement extends ASMModelElement {
 			setMetaobject(this);
 		}
 		setType(getMetaobject());
-		if((model.equals(ASMMDRModel.getMOF()) && (getName().equals("Class") || getName().equals("Classifier"))) || object.refIsInstanceOf(getClassifier(), true)) {
+//		if((model.equals(ASMMDRModel.getMOF()) && (getName().equals("Class") || getName().equals("Classifier"))) || object.refIsInstanceOf(getClassifier(), true)) {
+		if(object instanceof Classifier) {
 			for(Iterator i = ((Collection)object.refGetValue("supertypes")).iterator() ; i.hasNext() ; ) {
 				RefObject ro = (RefObject)i.next();
-				ASMModelElement ame = getASMModelElement(model, ro);
+				ASMModelElement ame = ((ASMMDRModel)model).getASMModelElement(ro);
 				addSupertype(ame);
 			}
 			addSupertype(ASMOclType.myType);
@@ -276,7 +265,7 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 		} else if(o instanceof Double) {
 			ret = new ASMReal(((Double)o).doubleValue());
 		} else if(o instanceof RefObject) {
-			ret = getASMModelElement(model, (RefObject)o);
+			ret = ((ASMMDRModel)model).getASMModelElement((RefObject)o);
 		} else if(o instanceof List) {
 			ret = new ASMSequence();
 			for(Iterator i = ((List)o).iterator() ; i.hasNext() ; ) {
@@ -471,7 +460,7 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 		if((ic == null) || !(ic instanceof RefObject)) {
 			ret = super.refImmediateComposite();
 		} else {
-			ret = getASMModelElement(getModel(), (RefObject)ic);
+			ret = ((ASMMDRModel)getModel()).getASMModelElement((RefObject)ic);
 		}
 		
 		return ret;
@@ -499,7 +488,7 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 			try {
 				List args = new ArrayList();
 				args.add(name);
-				ret = getASMModelElement(getModel(), (RefObject)t.refInvokeOperation("lookupElementExtended", args));
+				ret = ((ASMMDRModel)getModel()).getASMModelElement((RefObject)t.refInvokeOperation("lookupElementExtended", args));
 			} catch(Exception e) {
 				e.printStackTrace(System.out);
 			}
