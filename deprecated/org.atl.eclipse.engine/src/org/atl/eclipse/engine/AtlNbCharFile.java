@@ -168,12 +168,17 @@ public class AtlNbCharFile {
 		return ret;
 	}
 */
+	public int[] getIndexChar(String sourceLocation) {
+		return getIndexChar(sourceLocation, ANTLR_TAB_WIDTH);
+	}
 	/**
 	 * @return An array of int: first element is startChar, second element is endChar.
 	 * @param sourceLocation the string representing "startLine:startColumn-endLine:endColumn" the location given by antlr (tabs are 8 chars long)
 	 */
-	public int[] getIndexChar(String sourceLocation) {
+	public int[] getIndexChar(String sourceLocation, int tabWidth) {
 		int ret[] = new int[2];
+		
+		if(tabWidth < 0) tabWidth = ANTLR_TAB_WIDTH;
 
 		String ss[] = sourceLocation.split("-");
 		String starts[] = ss[0].split(":");
@@ -185,8 +190,8 @@ public class AtlNbCharFile {
 		
 //		ret[0] = getIndexChar(startLine, startColumn);
 //		ret[1] = getIndexChar(endLine, endColumn);
-		ret[0] = getIndexChar(startLine, startColumn, ANTLR_TAB_WIDTH);
-		ret[1] = getIndexChar(endLine, endColumn, ANTLR_TAB_WIDTH);
+		ret[0] = getIndexChar(startLine, startColumn, tabWidth);
+		ret[1] = getIndexChar(endLine, endColumn, tabWidth);
 
 		return ret;
 	}

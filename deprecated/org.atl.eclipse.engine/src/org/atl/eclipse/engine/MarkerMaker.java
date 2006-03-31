@@ -64,7 +64,7 @@ public class MarkerMaker {
 	 * @param res the resource associated to the created marker
 	 * @param eo the EObject representing a problem
 	 */
-	private void eObjectToPbmMarker(IResource res, EObject eo) {
+	private void eObjectToPbmMarker(IResource res, EObject eo, int tabWidth) {
 		String description = (String)eo.eGet(sfDescription);
 		
 		String location = (String)eo.eGet(sfLocation);
@@ -75,7 +75,7 @@ public class MarkerMaker {
 			if (location.indexOf('-') == -1) {
 				location +=  '-' + location;
 			}
-			int[] pos = help.getIndexChar(location);
+			int[] pos = help.getIndexChar(location, tabWidth);
 			charStart = pos[0];
 			charEnd = pos[1];
 		} catch (CoreException e1) {
@@ -97,16 +97,20 @@ public class MarkerMaker {
 		}
 	}
 	
-	private void createPbmMarkers(IResource res, EObject[] eos) {
+	private void createPbmMarkers(IResource res, EObject[] eos, int tabWidth) {
 		if (!initialized && eos.length > 0) {
 			initialize(eos[0]);
 		}
 		for (int i = 0; i  < eos.length; i++) {
-			eObjectToPbmMarker(res, eos[i]);
+			eObjectToPbmMarker(res, eos[i], tabWidth);
 		}
 	}
 	
-	public void resetPbmMarkers(final IResource res, final EObject[] eos) throws CoreException {
+	public void resetPbmMarkers(IResource res, EObject[] eos) throws CoreException {
+		resetPbmMarkers(res, eos, -1);
+	}
+	
+	public void resetPbmMarkers(final IResource res, final EObject[] eos, final int tabWidth) throws CoreException {
 		try {
 			res.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		} catch (CoreException e) {
@@ -114,13 +118,16 @@ public class MarkerMaker {
 		}
 		IWorkspaceRunnable r = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
-				createPbmMarkers(res, eos);
+				createPbmMarkers(res, eos, tabWidth);
 			}
 		};
 		
 		res.getWorkspace().run(r, null, IWorkspace.AVOID_UPDATE, null);
 	}
 	
+	public int applyMarkers(IFile file, ASMModel pbs) throws CoreException {
+		return applyMarkers(file, pbs, -1);
+	}
 	/**
 	 * Transforms the Problem model given as argument into a set of markers.
 	 * @param file Resource on which markers are to be added.
@@ -128,7 +135,7 @@ public class MarkerMaker {
 	 * @return The number of errors (Problems with severity #error).
 	 * @throws CoreException
 	 */
-	public int applyMarkers(IFile file, ASMModel pbs) throws CoreException {
+	public int applyMarkers(IFile file, ASMModel pbs, int tabWidth) throws CoreException {
 		int nbErrors = 0;
 		
 		Collection pbsc = pbs.getElementsByType("Problem");
@@ -142,7 +149,7 @@ public class MarkerMaker {
 			}
 			k++;
 		}
-		resetPbmMarkers(file, pbsa);
+		resetPbmMarkers(file, pbsa, tabWidth);
 		
 		return nbErrors;
 	}	
