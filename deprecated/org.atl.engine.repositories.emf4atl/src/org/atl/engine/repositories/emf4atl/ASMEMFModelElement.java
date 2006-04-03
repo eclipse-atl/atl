@@ -391,13 +391,41 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 		
 		// Supertypes
 		if(object instanceof EClass) {
+			addSupertype(ASMOclType.myType);
 			EClass cl = (EClass)object;
 			for(Iterator i = cl.getESuperTypes().iterator() ; i.hasNext() ; ) {
 				EClass s = (EClass)i.next();
 				addSupertype(((ASMEMFModel)model).getASMModelElement(s));
 			}
-			addSupertype(ASMOclType.myType);
 		}
+	}
+
+	private Method findMethod(Class cls, String name, Class argumentTypes[]) {
+		Method ret = null;
+
+		Method methods[] = cls.getDeclaredMethods(); 
+		for(int i = 0 ; i < (methods.length) && (ret == null) ; i++) {
+			Method method = methods[i];
+			if(method.getName().equals(name)) {
+				Class pts[] = method.getParameterTypes();
+				if(pts.length == argumentTypes.length) {
+					boolean ok = true;
+					for(int j = 0 ; (j < pts.length) && ok ; j++) {
+						if(!pts[j].isAssignableFrom(argumentTypes[j])) {
+							ok = false;
+						}
+					}
+					if(ok)
+						ret = method;
+				}
+			}
+		}
+		
+		if((ret == null) && (cls.getSuperclass() != null)) {
+			ret = findMethod(cls.getSuperclass(), name, argumentTypes);
+		}
+
+		return ret;
 	}
 	
 	public ASMOclAny invoke(StackFrame frame, String opName, List arguments) {
@@ -407,23 +435,25 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 			ret = super.invoke(frame, opName, arguments);
 		} else {
 			Object args[] = new Object[arguments.size()];
-			Class parameterTypes[] = new Class[arguments.size()];
+			Class argumentTypes[] = new Class[arguments.size()];
 			int k = 0;
 			for(Iterator i = arguments.iterator() ; i.hasNext() ; ) {
 				// warning: ASMEnumLiterals will not be converted!
 				args[k] = asm2EMF(frame, (ASMOclAny)i.next(), null, null);
-				parameterTypes[k] = args[k].getClass();
+				argumentTypes[k] = args[k].getClass();
 				k++;
 			}
 			
 			try {
-				Method method = object.getClass().getMethod(opName, parameterTypes);
-				ret = emf2ASM(frame, method.invoke(object, args));
+				Method method = findMethod(object.getClass(), opName, argumentTypes);
+				if(method != null) {
+					ret = emf2ASM(frame, method.invoke(object, args));
+				} else {
+					frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes() + " (including Java operations)");									
+				}
 			} catch(IllegalAccessException e) {
 				frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes() + " (including Java operations)");				
 			} catch(InvocationTargetException e) {
-				frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes() + " (including Java operations)");				
-			} catch(NoSuchMethodException e) {
 				frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes() + " (including Java operations)");				
 			}
 		}
