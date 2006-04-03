@@ -72,12 +72,12 @@ public class ASMMDRModelElement extends ASMModelElement {
 		setType(getMetaobject());
 //		if((model.equals(ASMMDRModel.getMOF()) && (getName().equals("Class") || getName().equals("Classifier"))) || object.refIsInstanceOf(getClassifier(), true)) {
 		if(object instanceof Classifier) {
+			addSupertype(ASMOclType.myType);
 			for(Iterator i = ((Collection)object.refGetValue("supertypes")).iterator() ; i.hasNext() ; ) {
 				RefObject ro = (RefObject)i.next();
 				ASMModelElement ame = ((ASMMDRModel)model).getASMModelElement(ro);
 				addSupertype(ame);
 			}
-			addSupertype(ASMOclType.myType);
 		}
 	}
 
