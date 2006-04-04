@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.atl.engine.injectors.ebnf.ATLLexer;
+import org.atl.engine.injectors.ebnf.ATLParser;
 import org.atl.engine.injectors.ebnf.EBNFInjector2;
 import org.atl.engine.repositories.emf4atl.ASMEMFModel;
 import org.atl.engine.repositories.emf4atl.ASMEMFModelElement;
@@ -44,7 +46,8 @@ public class AtlParser {
 			ret[1] = amh.newModel("pb", pbmm);
 			
 			EBNFInjector2 ebnfi = new EBNFInjector2();
-			ebnfi.performImportation(atlmm, ret[0], in, "ATL", ret[1]);
+			ebnfi.performImportation(atlmm, ret[0], in, "ATL", ATLLexer.class, ATLParser.class, ret[1]);
+
 			// Semantic Analysis
 /*
 			URL atlsaurl = AtlParser.class.getResource("resources/ATLSemanticAnalyzer.asm");
