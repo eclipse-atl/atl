@@ -7,6 +7,7 @@ package org.atl.eclipse.engine;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public abstract class AtlModelHandler {
 		if(ret == null) {
 			if(AMH_EMF.equals(repository)) {
 				ret = new AtlEMFModelHandler();
-				defaultModelHandlers.put(AMH_EMF, ret);				
+				defaultModelHandlers.put(repository, ret);				
 			} else {
 				IExtensionRegistry registry = Platform.getExtensionRegistry();		
 				IExtensionPoint point = registry.getExtensionPoint("org.atl.eclipse.engine.modelhandler");
@@ -49,6 +50,7 @@ public abstract class AtlModelHandler {
 						try {					
 							if(elements[j].getAttribute("name").equals(repository)) {
 								ret = (AtlModelHandler)elements[j].createExecutableExtension("class");
+								defaultModelHandlers.put(repository, ret);
 								break extensions;
 							}
 						} catch (CoreException e){
@@ -86,6 +88,19 @@ public abstract class AtlModelHandler {
 		return modelHandlers;
 	}
 	
+	public static String getHandler(ASMModel model) {
+		String ret = null;
+		
+		for(Iterator i = defaultModelHandlers.keySet().iterator() ; i.hasNext() && (ret == null) ; ) {
+			String amhName = (String)i.next();
+			AtlModelHandler amh = getDefault(amhName);
+			if(amh.isHandling(model)) {
+				ret = amhName;
+			}
+		}
+		return ret;
+	}
+	
 	public abstract void saveModel(final ASMModel model, IProject project);
 
 	public abstract void saveModel(final ASMModel model, String fileName, IProject project);
@@ -101,4 +116,6 @@ public abstract class AtlModelHandler {
 	public abstract ASMModel newModel(String name, ASMModel metamodel);
 	
 	public abstract ASMModel getBuiltInMetaModel(String name);
+	
+	public abstract boolean isHandling(ASMModel model);
 }

@@ -138,4 +138,8 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		return ret;
 	}
 
+	public boolean isHandling(ASMModel model) {
+		return model instanceof ASMEMFModel;
+	}
+
 }

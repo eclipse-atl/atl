@@ -113,4 +113,8 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 		
 		return ret;
 	}
+
+	public boolean isHandling(ASMModel model) {
+		return model instanceof ASMMDRModel;
+	}
 }
