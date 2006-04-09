@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 import org.atl.engine.vm.ClassNativeOperation;
 import org.atl.engine.vm.StackFrame;
+import org.atl.engine.vm.nativelib.ASMBag;
 import org.atl.engine.vm.nativelib.ASMBoolean;
 import org.atl.engine.vm.nativelib.ASMCollection;
 import org.atl.engine.vm.nativelib.ASMEnumLiteral;
@@ -26,10 +28,10 @@ import org.atl.engine.vm.nativelib.ASMSequence;
 import org.atl.engine.vm.nativelib.ASMSet;
 import org.atl.engine.vm.nativelib.ASMString;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.xmi.XMIResource;
@@ -145,19 +147,25 @@ public class ASMEMFModelElement extends ASMModelElement {
 			ret = new ASMInteger(((Short)value).intValue());
 		} else if(value instanceof Character) {
 			ret = new ASMInteger(((Character)value).charValue());
-		} else if(value instanceof EEnumLiteral) {
-			ret = new ASMEnumLiteral(((EEnumLiteral)value).getName());
+		} else if(value instanceof Enumerator) {
+			ret = new ASMEnumLiteral(((Enumerator)value).getName());
 		} else if(value instanceof EObject) {
 			ret = ((ASMEMFModel)getModel()).getASMModelElement((EObject)value);
 		} else if(value == null) {
 			ret = new ASMOclUndefined();
-		} else if(value instanceof EList) {
-			ASMSequence seq = new ASMSequence();
+		} else if(value instanceof Collection) {
+			ASMCollection col;
+			if(value instanceof List)
+				col = new ASMSequence();
+			else if(value instanceof Set)
+				col = new ASMSet();
+			else
+				col = new ASMBag();
 			
 			for(Iterator i = ((EList)value).iterator() ; i.hasNext() ; ) {
-				seq.add(emf2ASM(frame, i.next()));
+				col.add(emf2ASM(frame, i.next()));
 			}
-			ret = seq;
+			ret = col;
 		} else {
 			frame.printStackTrace("ERROR: cannot convert " + value + " : " + value.getClass() + " from EMF.");
 		}
@@ -240,7 +248,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		} else if (value instanceof ASMEnumLiteral) {
 			String name = ((ASMEnumLiteral)value).getName();
 			EClassifier type = ((EClass)((ASMEMFModelElement)getMetaobject()).object).getEStructuralFeature(propName).getEType();
-			ret = ((EEnum)type).getEEnumLiteral(name);
+			ret = ((EEnum)type).getEEnumLiteral(name).getInstance();
 		} else if(value instanceof ASMCollection) {
 			ret = new ArrayList();
 			for(Iterator i = ((ASMCollection)value).iterator() ; i.hasNext() ; ) {
