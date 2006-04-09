@@ -162,7 +162,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 			else
 				col = new ASMBag();
 			
-			for(Iterator i = ((EList)value).iterator() ; i.hasNext() ; ) {
+			for(Iterator i = ((Collection)value).iterator() ; i.hasNext() ; ) {
 				col.add(emf2ASM(frame, i.next()));
 			}
 			ret = col;
