@@ -33,6 +33,8 @@ public abstract class ASMCollection extends ASMOclAny {
 		return collection().size();
 	}
 
+	public abstract void add(ASMOclAny o);
+
 	// Native Operations below
 
 	public static ASMInteger size(StackFrame frame, ASMCollection self) {
