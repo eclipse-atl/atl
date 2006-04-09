@@ -20,6 +20,7 @@ import javax.jmi.reflect.RefStruct;
 
 import org.atl.engine.vm.ClassNativeOperation;
 import org.atl.engine.vm.StackFrame;
+import org.atl.engine.vm.nativelib.ASMBag;
 import org.atl.engine.vm.nativelib.ASMBoolean;
 import org.atl.engine.vm.nativelib.ASMCollection;
 import org.atl.engine.vm.nativelib.ASMEnumLiteral;
@@ -266,16 +267,20 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 			ret = new ASMReal(((Double)o).doubleValue());
 		} else if(o instanceof RefObject) {
 			ret = ((ASMMDRModel)model).getASMModelElement((RefObject)o);
-		} else if(o instanceof List) {
-			ret = new ASMSequence();
-			for(Iterator i = ((List)o).iterator() ; i.hasNext() ; ) {
-				((ASMSequence)ret).add(java2ASM(frame, model, i.next()));
-			}
 		} else if(o instanceof Collection) {
-			ret = new ASMSet();
+			ASMCollection col;
+			if(o instanceof List)
+				col = new ASMSequence();
+			else if(o instanceof Set)
+				col = new ASMSet();
+			else
+				col = new ASMBag();
+			
 			for(Iterator i = ((Collection)o).iterator() ; i.hasNext() ; ) {
-				((ASMSet)ret).add(java2ASM(frame, model, i.next()));
+				col.add(java2ASM(frame, model, i.next()));
 			}
+			
+			ret = col;
 		} else if(o instanceof RefStruct) {
 			ASMTuple t = new ASMTuple();
 			for(Iterator i = ((RefStruct)o).refFieldNames().iterator() ; i.hasNext() ; ) {
