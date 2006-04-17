@@ -88,13 +88,11 @@ public class XMLInjector extends DefaultHandler implements Injector {
 		try {
 			errors = 0;
 			SAXParser saxParser = factory.newSAXParser();
-			saxParser.parse(in, this);
+			saxParser.parse(in, new ProtectedHandler(this));
 		} catch (Throwable err) {
 			err.printStackTrace(System.out);
 		}
 	}
-
-	/* Content Handler below */
 	
 	public void setDocumentLocator(Locator locator) {
 		this.locator = locator;
