@@ -58,6 +58,8 @@ public class OclHelper extends OclEvaluator {
 	public ASMOclAny eval(List arguments) throws Exception {
 		ASMOclAny ret = null;
 		
+		arguments = new ArrayList(arguments);
+
 		if(compiledHelper == null) {
 			compile();
 		}
