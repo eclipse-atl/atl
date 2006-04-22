@@ -10,6 +10,7 @@ import org.atl.engine.vm.nativelib.ASMBoolean;
 import org.atl.engine.vm.nativelib.ASMCollection;
 import org.atl.engine.vm.nativelib.ASMInteger;
 import org.atl.engine.vm.nativelib.ASMModel;
+import org.atl.engine.vm.nativelib.ASMModelElement;
 import org.atl.engine.vm.nativelib.ASMNativeObject;
 import org.atl.engine.vm.nativelib.ASMOclAny;
 import org.atl.engine.vm.nativelib.ASMOclType;
@@ -244,7 +245,14 @@ public class ASMOperation extends Operation {
 					}
 				} else {
 					ASMModel model = frame.getModel(mname);
-					frame.push(model.findModelElement(name));
+					if(model == null) {
+						frame.printStackTrace("cannot find model " + mname);
+					}
+					ASMModelElement ame = model.findModelElement(name);
+					if(ame == null) {
+						frame.printStackTrace("cannot find metamodel element " + name + " in model " + mname);
+					}
+					frame.push(ame);
 				}
 			} else if(mn.equals("get")) {
 				frame.push((frame.pop()).get(frame, ops));
@@ -275,7 +283,11 @@ public class ASMOperation extends Operation {
 			} else if(mn.equals("getasm")) {
 				frame.push(((ASMExecEnv)frame.getExecEnv()).getASMModule());
 			} else if(mn.equals("iterate")) {
-				ASMCollection c = (ASMCollection)frame.pop();	// TODO: iterate <index> (jusqu'ou iterer...) plutot que enditerate
+				ASMOclAny v = frame.pop();
+				if(!(v instanceof ASMCollection)) {
+					frame.printStackTrace("cannot iterate on non-collection");
+				}
+				ASMCollection c = (ASMCollection)v;	// TODO: iterate <index> (jusqu'ou iterer...) plutot que enditerate
 				int oldLocation = frame.getLocation();
 				for(Iterator j = c.iterator() ; j.hasNext() ; ) {
 					frame.push((ASMOclAny)j.next());
