@@ -1,11 +1,11 @@
 package org.eclipse.gmt.atl.oclquery.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.atl.engine.repositories.emf4atl.ASMEMFModel;
 import org.atl.engine.vm.ASM;
 import org.atl.engine.vm.ASMExecEnv;
 import org.atl.engine.vm.ASMOperation;
@@ -13,6 +13,7 @@ import org.atl.engine.vm.ASMStackFrame;
 import org.atl.engine.vm.Debugger;
 import org.atl.engine.vm.SimpleDebugger;
 import org.atl.engine.vm.StackFrame;
+import org.atl.engine.vm.nativelib.ASMModel;
 import org.atl.engine.vm.nativelib.ASMModule;
 import org.atl.engine.vm.nativelib.ASMOclAny;
 
@@ -56,6 +57,10 @@ public class OclHelper extends OclEvaluator {
 	}
 	
 	public ASMOclAny eval(List arguments) throws Exception {
+		return eval(arguments, Collections.EMPTY_MAP);
+	}
+	
+	public ASMOclAny eval(List arguments, Map models) throws Exception {
 		ASMOclAny ret = null;
 		
 		arguments = new ArrayList(arguments);
@@ -76,7 +81,10 @@ public class OclHelper extends OclEvaluator {
 		ASMModule asmModule = new ASMModule(compiledHelper);
 		arguments.add(0, asmModule);
 		ASMExecEnv env = new ASMExecEnv(asmModule, debugger);
-		env.addModel("MOF", ASMEMFModel.getMOF());
+		for(Iterator i = models.keySet().iterator() ; i.hasNext() ; ) {
+			String mname = (String)i.next();
+			env.addModel(mname, (ASMModel)models.get(mname));
+		}
 		env.registerOperations(compiledHelper);
 		StackFrame frame = ASMStackFrame.rootFrame(env, op, arguments);
 		ret = op.exec(frame);
