@@ -91,4 +91,12 @@ public class AMN {
 		return ((ASMString)i.next()).getSymbol(); 
 	}
 
+	public static boolean isa(ASMModelElement element, String otherName) {
+		ASMModelElement type = element.getMetaobject();
+		return c2(type, otherName);		
+	}
+
+	public static boolean c2(ASMModelElement type, String otherName) {
+		return type.conformsTo(type.getModel().findModelElement(otherName)).getSymbol();		
+	}
 }
