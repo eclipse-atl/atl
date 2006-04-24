@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.atl.engine.vm.ASMExecEnv;
-import org.atl.engine.vm.ASMOperation;
 import org.atl.engine.vm.Operation;
 import org.atl.engine.vm.StackFrame;
 
@@ -39,14 +38,22 @@ public class ASMOclAny extends ASMNativeObject {
 	}
 
 	public Operation findOperation(StackFrame frame, String opName, List arguments) {
-		return ((ASMExecEnv)frame.getExecEnv()).getOperation(getType(), opName);
+		return findOperation(frame, opName, arguments, getType());
+	}
+
+	public Operation findOperation(StackFrame frame, String opName, List arguments, ASMOclType type) {
+		return ((ASMExecEnv)frame.getExecEnv()).getOperation(type, opName);
 	}
 
 	// The Operation to execute on this object is searched for in its type.
 	public ASMOclAny invoke(StackFrame frame, String opName, List arguments) {
+		return invoke(frame, opName, arguments, getType());
+	}
+	
+	public ASMOclAny invoke(StackFrame frame, String opName, List arguments, ASMOclType type) {
 		ASMOclAny ret = null;
 		
-		Operation oper = findOperation(frame, opName, arguments);
+		Operation oper = findOperation(frame, opName, arguments, type);
 
 		if(oper != null) {
 			arguments.add(0, this);	// self
