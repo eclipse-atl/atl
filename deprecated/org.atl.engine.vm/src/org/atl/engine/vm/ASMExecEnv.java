@@ -67,6 +67,7 @@ public class ASMExecEnv extends ExecEnv {
 					ASMOclType type = parseType(new StringCharacterIterator(signature));
 					//System.out.println("registering " + op + " on " + type);
 					registerOperation(type, op);
+					op.setContextType(type);
 				} catch(SignatureParsingException spe) {
 					spe.printStackTrace(System.out);
 				}
@@ -118,7 +119,7 @@ public class ASMExecEnv extends ExecEnv {
 				ci.next();
 				Map attrs = new HashMap();
 				while(ci.current() != ';') {
-					//ASMOclType attrType = parseTypeInternal(ci);
+					ASMOclType attrType = parseTypeInternal(ci);
 					String attrName = readUntil(ci, ';');
 					//attrs.put(attrName, attrType);		// TODO: correct type
 					attrs.put(attrName, ASMOclAny.myType);

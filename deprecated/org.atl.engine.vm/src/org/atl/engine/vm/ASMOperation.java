@@ -155,6 +155,8 @@ public class ASMOperation extends Operation {
 			realExec((ASMStackFrame)frame);
 		} catch(Exception e) {
 			frame.printStackTrace(e);
+		} catch(StackOverflowError soe) {
+			frame.printStackTrace("stack overflow");
 		}
 		ret = frame.leaveFrame();
 
@@ -210,6 +212,18 @@ public class ASMOperation extends Operation {
 					arguments.add(0, frame.pop());
 				ASMOclAny o = frame.pop();	// self
 				ASMOclAny ret = o.invoke(frame, opName, arguments); 
+
+				if(ret != null) {
+					frame.push(ret);
+				}
+			} else if(mn.equals("supercall")) {
+				int nb = getNbArgs(ops);
+				String opName = getOpName(ops);
+				ArrayList arguments = new ArrayList();
+				for(int j = 0 ; j < nb ; j++)
+					arguments.add(0, frame.pop());
+				ASMOclAny o = frame.pop();	// self
+				ASMOclAny ret = o.invoke(frame, opName, arguments, (ASMOclType)contextType.getSupertypes().iterator().next()); 
 
 				if(ret != null) {
 					frame.push(ret);
@@ -498,6 +512,12 @@ public class ASMOperation extends Operation {
 	private List lineNumberTable = new ArrayList();
 	private List localVariableTable = new ArrayList();
 	private ASM asm;
+
+	private ASMOclType contextType;
+	
+	public void setContextType(ASMOclType contextType) {
+		this.contextType = contextType;
+	}
 	
 	public ASMOclType getReturnType() {
 		// TODO Auto-generated method stub
@@ -505,8 +525,7 @@ public class ASMOperation extends Operation {
 	}
 
 	public ASMOclType getContextType() {
-		// TODO Auto-generated method stub
-		return null;
+		return contextType;
 	}
 }
 
