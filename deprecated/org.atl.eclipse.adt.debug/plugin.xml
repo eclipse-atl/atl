@@ -60,7 +60,7 @@
 	<extension point="org.eclipse.debug.core.watchExpressionDelegates">
 		<watchExpressionDelegate
 			debugModel="org.atl.eclipse.adt.debug"
-			delegateClass="org.atl.eclipse.adt.debug.AtlWatchExpressionDelegate"/>
+			delegateClass="org.atl.eclipse.adt.debug.core.AtlWatchExpressionDelegate"/>
 	</extension>
 <!-- extension point : launch method is contained in this class-->
    <extension
