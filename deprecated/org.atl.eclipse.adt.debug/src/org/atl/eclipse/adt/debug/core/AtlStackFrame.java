@@ -411,5 +411,9 @@ public class AtlStackFrame extends DeferredDebugElementWorkbenchAdapter implemen
 	public Object getParent(Object o) {
 		return getThread();
 	}
+
+	public ObjectReference getStackFrame() {
+		return stackFrame;
+	}
 	
 }

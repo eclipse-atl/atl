@@ -3,6 +3,12 @@
  */
 package org.atl.eclipse.adt.debug.core;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.atl.engine.vm.adwp.ADWPDebugger;
+import org.atl.engine.vm.adwp.StringValue;
+import org.atl.engine.vm.adwp.Value;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IStackFrame;
@@ -24,9 +30,6 @@ import org.eclipse.debug.core.model.IWatchExpressionResult;
  * @author allilaire
  */
 public class AtlWatchExpressionDelegate implements IWatchExpressionDelegate {
-
-	String expressionText;
-	IWatchExpressionListener listener;
 
 	/**
 	 * This inner class implements IWatchExpression
@@ -102,16 +105,16 @@ public class AtlWatchExpressionDelegate implements IWatchExpressionDelegate {
 	 */
 	public void evaluateExpression(String expression, IDebugElement context, IWatchExpressionListener listener) {
 
-		this.expressionText = expression;
-		this.listener = listener;
+//		this.expressionText = expression;
+//		this.listener = listener;
 
-		IStackFrame frame = null;
-		if (context instanceof IStackFrame) {
-			frame = (IStackFrame)context;
+		AtlStackFrame frame = null;
+		if (context instanceof AtlStackFrame) {
+			frame = (AtlStackFrame)context;
 		}
 		else if (context instanceof IThread) {
 			try {
-				frame = ((IThread)context).getTopStackFrame();
+				frame = (AtlStackFrame)((IThread)context).getTopStackFrame();
 			}
 			catch (DebugException e) {
 			}
@@ -120,7 +123,7 @@ public class AtlWatchExpressionDelegate implements IWatchExpressionDelegate {
 			listener.watchEvaluationFinished(null);
 		}
 		else {
-			AtlWatchExpressionResult atlwe = doEvaluation();
+			AtlWatchExpressionResult atlwe = doEvaluation(frame, expression);
 			listener.watchEvaluationFinished(atlwe);
 		}
 	}
@@ -130,13 +133,15 @@ public class AtlWatchExpressionDelegate implements IWatchExpressionDelegate {
 	 * to the ATL VM.
 	 * @return
 	 */
-	private AtlWatchExpressionResult doEvaluation() {
+	private AtlWatchExpressionResult doEvaluation(AtlStackFrame frame, String expression) {
 		
-		// TODO evaluate expression
-		
+		AtlDebugTarget debugTarget = (AtlDebugTarget)frame.getDebugTarget();
+		ADWPDebugger debugger = debugTarget.getDebugger();
+		Value val = debugger.request(ADWPDebugger.CMD_QUERY, Arrays.asList(new Object[] {frame.getStackFrame(), StringValue.valueOf(expression)}));
+	
 		DebugException de = null;
 		String errorMessages[] = null;
-		IValue value = null;
+		IValue value = new AtlValue(val, debugTarget);
 		return new AtlWatchExpressionResult(de, errorMessages, value);
 	}
 	

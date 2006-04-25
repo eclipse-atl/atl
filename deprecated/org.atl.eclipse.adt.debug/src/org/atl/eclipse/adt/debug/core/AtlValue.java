@@ -183,6 +183,9 @@ public class AtlValue extends DeferredDebugElementWorkbenchAdapter implements IV
 
 		}
 		
+		if(ret == null)
+			ret = new IVariable[] {};
+		
 		return ret;
 	}
 
