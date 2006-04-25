@@ -1,5 +1,6 @@
 package org.atl.engine.vm;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,9 +16,11 @@ import org.atl.engine.vm.adwp.ADWPCommand;
 import org.atl.engine.vm.adwp.ADWPDebuggee;
 import org.atl.engine.vm.adwp.IntegerValue;
 import org.atl.engine.vm.adwp.LocalObjectReference;
-import org.atl.engine.vm.adwp.NullValue;
 import org.atl.engine.vm.adwp.StringValue;
 import org.atl.engine.vm.adwp.Value;
+import org.atl.engine.vm.nativelib.ASMModel;
+import org.atl.engine.vm.nativelib.ASMModule;
+import org.atl.engine.vm.nativelib.ASMOclAny;
 
 /**
  * @author Frédéric Jouault
@@ -195,9 +198,52 @@ new Exception().printStackTrace();
 				StackFrame frame_ = (StackFrame)((LocalObjectReference)args.get(0)).getObject();
 				String query = ((StringValue)args.get(1)).getValue();
 
-System.out.println("Attempting to querry: " + query);
-
-				Value ret = new NullValue();
+				ASMOclAny asmRet = null;
+				try {
+					ASM asm = new ASMXMLReader().read(new ByteArrayInputStream(query.getBytes()));
+					Debugger debugger = new SimpleDebugger(
+							/* step = */ false,
+							/* stepops = */ new ArrayList(),
+							/* deepstepops = */ new ArrayList(),
+							/* nostepops = */ new ArrayList(),
+							/* deepnostepops = */ new ArrayList(),
+							/* showStackTrace = */ true
+					);
+					ASMOperation op = asm.getOperation("test");
+					ASMModule asmModule = new ASMModule(asm);
+					List arguments = new ArrayList();
+					arguments.add(0, asmModule);
+					ASMExecEnv env = new ASMExecEnv(asmModule, debugger);
+					Map models = execEnv.getModels();
+					for(Iterator i = models.keySet().iterator() ; i.hasNext() ; ) {
+						String mname = (String)i.next();
+						env.addModel(mname, (ASMModel)models.get(mname));
+					}
+					env.registerOperations(asm);
+					Map pvalues = new HashMap();
+					ASMStackFrame asmFrame = ((ASMStackFrame)frame);
+					for(Iterator i = asmFrame.getLocalVariables().keySet().iterator() ; i.hasNext() ; ) {
+						String slot = (String)i.next();
+						String pname;
+						if(slot.equals("_stack")) {
+							pname = slot;
+						} else {
+							pname = asmFrame.resolveVariableName(Integer.parseInt(slot));
+						}
+						pvalues.put(pname, asmFrame.getVariable(slot));						
+					}
+					for(Iterator i = op.getParameters().iterator() ; i.hasNext() ; ) {
+						ASMParameter p = (ASMParameter)i.next();
+						String pname = op.resolveVariableName(Integer.parseInt(p.getName()), 0);
+						ASMOclAny value = (ASMOclAny)pvalues.get(pname);
+						arguments.add(value);
+					}
+					StackFrame qframe = ASMStackFrame.rootFrame(env, op, arguments);
+					asmRet = op.exec(qframe);
+				} catch(Exception e) {
+					e.printStackTrace(System.out);
+				}
+				Value ret = LocalObjectReference.asm2value(asmRet, thisDebugger);
 
 				debuggee.sendMessage(ADWPDebuggee.MSG_ANS, cmd.getAck(), Arrays.asList(new Object[] {ret}));
 				return false;
@@ -331,5 +377,7 @@ System.out.println("Attempting to querry: " + query);
 	}
 	
 	private ASMExecEnv execEnv;
+	
+	private NetworkDebugger thisDebugger = this;
 }
 
