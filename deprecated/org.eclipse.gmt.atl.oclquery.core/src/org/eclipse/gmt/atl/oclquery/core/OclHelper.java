@@ -44,7 +44,7 @@ public class OclHelper extends OclEvaluator {
 		return oh.eval(args);
 	}
 	
-	public void compile() throws Exception {
+	public ASM compile() throws Exception {
 		String params = "";
 		for(Iterator i = parameters.iterator() ; i.hasNext() ; ) {
 			if(!params.equals("")) {
@@ -54,6 +54,7 @@ public class OclHelper extends OclEvaluator {
 		}
 		String query = "library test; helper def: test(" + params + ") : OclAny = " + helper + ";";
 		compiledHelper = compile(query);
+		return compiledHelper;
 	}
 	
 	public ASMOclAny eval(List arguments) throws Exception {
