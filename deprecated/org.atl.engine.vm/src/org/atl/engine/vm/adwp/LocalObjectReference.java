@@ -69,6 +69,10 @@ public class LocalObjectReference extends ObjectReference {
 	}
 
 	private Value asm2value(ASMOclAny o) {
+		return asm2value(o, debugger);
+	}
+	
+	public static Value asm2value(ASMOclAny o, NetworkDebugger debugger) {
 		Value ret = null;
 
 		if(o instanceof ASMString) {
