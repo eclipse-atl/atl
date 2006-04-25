@@ -3,20 +3,27 @@
  */
 package org.atl.eclipse.adt.debug.core;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.atl.engine.vm.ASM;
+import org.atl.engine.vm.ASMXMLWriter;
 import org.atl.engine.vm.adwp.ADWPDebugger;
 import org.atl.engine.vm.adwp.StringValue;
 import org.atl.engine.vm.adwp.Value;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugElement;
-import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IValue;
+import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.debug.core.model.IWatchExpressionDelegate;
 import org.eclipse.debug.core.model.IWatchExpressionListener;
 import org.eclipse.debug.core.model.IWatchExpressionResult;
+import org.eclipse.gmt.atl.oclquery.core.OclHelper;
 
 /**
  * A delegate which computes the value of a watch expression
@@ -134,14 +141,32 @@ public class AtlWatchExpressionDelegate implements IWatchExpressionDelegate {
 	 * @return
 	 */
 	private AtlWatchExpressionResult doEvaluation(AtlStackFrame frame, String expression) {
-		
-		AtlDebugTarget debugTarget = (AtlDebugTarget)frame.getDebugTarget();
-		ADWPDebugger debugger = debugTarget.getDebugger();
-		Value val = debugger.request(ADWPDebugger.CMD_QUERY, Arrays.asList(new Object[] {frame.getStackFrame(), StringValue.valueOf(expression)}));
-	
 		DebugException de = null;
 		String errorMessages[] = null;
-		IValue value = new AtlValue(val, debugTarget);
+		IValue value = null;
+		
+		try {
+			List parameters = new ArrayList();
+			IVariable variables[] = frame.getVariables();
+			for(int i = 0 ; i < variables.length ; i++) {
+				String pname = variables[i].getName();
+				if(!pname.equals("self"))
+					parameters.add(pname);
+			}
+			
+			ASM asm = new OclHelper(expression, parameters).compile();
+			StringWriter sw = new StringWriter();
+			new ASMXMLWriter(new PrintWriter(sw), false).print(asm);
+			AtlDebugTarget debugTarget = (AtlDebugTarget)frame.getDebugTarget();
+			ADWPDebugger debugger = debugTarget.getDebugger();
+			Value val = debugger.request(ADWPDebugger.CMD_QUERY, Arrays.asList(new Object[] {frame.getStackFrame(), StringValue.valueOf(sw.toString())}));
+		
+			value = new AtlValue(val, debugTarget);
+		} catch(DebugException e) {
+			de = e;
+		} catch(Exception e) {
+			de = new DebugException(new Status(Status.ERROR, "org.atl.eclipse.adt.debug", Status.OK, "error while evaluating expression", e));
+		}
 		return new AtlWatchExpressionResult(de, errorMessages, value);
 	}
 	
