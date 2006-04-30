@@ -123,6 +123,10 @@ public class ASMEMFModel extends ASMModel {
 		return ret;
 	}
 	
+	public void dispose() {
+		resourceSet.getResources().remove(this);
+	}
+	
 	public static ASMEMFModel newASMEMFModel(String name, ASMEMFModel metamodel, ModelLoader ml) throws Exception {
 		ASMEMFModel ret = null;
 		

@@ -142,4 +142,8 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		return model instanceof ASMEMFModel;
 	}
 
+	public void disposeOfModel(ASMModel model) {
+		((ASMEMFModel)model).dispose();
+	}
+
 }

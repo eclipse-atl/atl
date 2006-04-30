@@ -88,7 +88,7 @@ public abstract class AtlModelHandler {
 		return modelHandlers;
 	}
 	
-	public static String getHandler(ASMModel model) {
+	public static String getHandlerName(ASMModel model) {
 		String ret = null;
 		
 		for(Iterator i = defaultModelHandlers.keySet().iterator() ; i.hasNext() && (ret == null) ; ) {
@@ -99,6 +99,10 @@ public abstract class AtlModelHandler {
 			}
 		}
 		return ret;
+	}
+	
+	public static AtlModelHandler getHandler(ASMModel model) {
+		return (AtlModelHandler)defaultModelHandlers.get(getHandlerName(model));
 	}
 	
 	public abstract void saveModel(final ASMModel model, IProject project);
@@ -114,6 +118,15 @@ public abstract class AtlModelHandler {
 	public abstract ASMModel loadModel(String name, ASMModel metamodel, InputStream in);
 	
 	public abstract ASMModel newModel(String name, ASMModel metamodel);
+
+	/** 
+	 * Performs necessary clean-up such as freeing memory.
+	 * It should be redefined by any AtlModelHandler requiring specific clean-upon actions to be performed.
+	 * This method should be called once the ASMModel is not needed any more.
+	 */ 
+	public void disposeOfModel(ASMModel model) {
+		
+	}
 	
 	public abstract ASMModel getBuiltInMetaModel(String name);
 	
