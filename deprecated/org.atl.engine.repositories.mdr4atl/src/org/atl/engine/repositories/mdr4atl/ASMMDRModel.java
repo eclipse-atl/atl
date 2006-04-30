@@ -367,5 +367,14 @@ if(debug)
 
 
 	private static ASMMDRModel mofmm;
+
+	public void dispose() {
+		pack.refDelete();
+		pack = null;
+		modelElements = null;
+		allModelElements = null;
+		elementByXmiId = null;
+		xmiIdByElement = null;
+	}
 }
 

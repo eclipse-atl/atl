@@ -117,4 +117,8 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 	public boolean isHandling(ASMModel model) {
 		return model instanceof ASMMDRModel;
 	}
+
+	public void disposeOfModel(ASMModel model) {
+		((ASMMDRModel)model).dispose();
+	}
 }
