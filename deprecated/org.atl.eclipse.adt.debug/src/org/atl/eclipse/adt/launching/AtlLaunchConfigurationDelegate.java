@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -176,10 +178,11 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				libs.put(libName, stringsUrl);
 			}
 
+			Collection toDispose = new ArrayList();
 			//models
 			if (inModel.isEmpty())
-				inModel = getSourceModels(input, path, modelHandler, atlModelHandler, checkSameModel);
-			Map outModel = getTargetModels(output, path, modelHandler, atlModelHandler, inModel, checkSameModel);
+				inModel = getSourceModels(input, path, modelHandler, atlModelHandler, checkSameModel, toDispose);
+			Map outModel = getTargetModels(output, path, modelHandler, atlModelHandler, inModel, checkSameModel, toDispose);
 
 			Map models = new HashMap();
 
@@ -217,6 +220,11 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 					((AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName))).saveModel(currentOutModel, (String)path.get(mName));
 				}
 			}
+			
+			for(Iterator i = toDispose.iterator() ; i.hasNext() ; ) {
+				ASMModel model = (ASMModel)i.next();
+				AtlModelHandler.getHandler(model).disposeOfModel(model);
+			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (CoreException e1) {
@@ -235,7 +243,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 //	}
 	
 	
-	private static ASMModel loadModel(AtlModelHandler amh, String mName, ASMModel metamodel, String path) throws CoreException, FileNotFoundException {
+	private static ASMModel loadModel(AtlModelHandler amh, String mName, ASMModel metamodel, String path, Collection toDispose) throws CoreException, FileNotFoundException {
 		ASMModel ret = null;
 		
 		if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
@@ -248,6 +256,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		else {
 			ret = amh.loadModel(mName, metamodel, fileNameToInputStream(path));
 		}
+		toDispose.add(ret);
 
 		return ret;
 	}
@@ -258,7 +267,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @return
 	 * @throws CoreException
 	 */
-	private static Map getSourceModels(Map arg, Map path, Map modelHandler, Map atlModelHandler, boolean checkSameModel) throws CoreException {
+	private static Map getSourceModels(Map arg, Map path, Map modelHandler, Map atlModelHandler, boolean checkSameModel, Collection toDispose) throws CoreException {
 		Map toReturn = new HashMap();
 		try {
 			for(Iterator i = arg.keySet().iterator() ; i.hasNext() ; ) {
@@ -272,16 +281,16 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				ASMModel inputModel;
 				if (((String)path.get(mmName)).startsWith("#")) {
 					toReturn.put(mmName, mofmm);
-					inputModel = loadModel(amh, mName, mofmm, (String)path.get(mName));
+					inputModel = loadModel(amh, mName, mofmm, (String)path.get(mName), toDispose);
 				}
 				else {
 					ASMModel inputMetaModel = (ASMModel)toReturn.get(mmName);
 					if(inputMetaModel == null) {
-						inputMetaModel = loadModel(amh, mmName, mofmm, (String)path.get(mmName));
+						inputMetaModel = loadModel(amh, mmName, mofmm, (String)path.get(mmName), toDispose);
 						toReturn.put(mmName, inputMetaModel);
 					}
 					inputMetaModel.setIsTarget(false);
-					inputModel = loadModel(amh, mName, inputMetaModel, (String)path.get(mName));
+					inputModel = loadModel(amh, mName, inputMetaModel, (String)path.get(mName), toDispose);
 				}
 				inputModel.setIsTarget(false);
 				if (inputModel instanceof ASMEMFModel)
@@ -301,7 +310,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @return
 	 * @throws CoreException
 	 */
-	private static Map getTargetModels(Map arg, Map path, Map modelHandler, Map atlModelHandler, Map input, boolean checkSameModel) throws CoreException {
+	private static Map getTargetModels(Map arg, Map path, Map modelHandler, Map atlModelHandler, Map input, boolean checkSameModel, Collection toDispose) throws CoreException {
 		Map toReturn = new HashMap();
 		try {
 			for(Iterator i = arg.keySet().iterator() ; i.hasNext() ; ) {
@@ -317,17 +326,19 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 					if (input.get(mmName) == null)
 						toReturn.put(mmName, mofmm);
 					outputModel = amh.newModel(mName, mofmm);
+					toDispose.add(outputModel);
 				}
 				else {
 					ASMModel outputMetaModel = (ASMModel)input.get(mmName);
 					if (outputMetaModel == null)
 						outputMetaModel = (ASMModel)toReturn.get(mmName);
 					if(outputMetaModel == null) {
-						outputMetaModel = loadModel(amh, mmName, mofmm, (String)path.get(mmName));
+						outputMetaModel = loadModel(amh, mmName, mofmm, (String)path.get(mmName), toDispose);
 						toReturn.put(mmName, outputMetaModel);
 					}
 					outputMetaModel.setIsTarget(false);
 					outputModel = amh.newModel(mName, outputMetaModel);
+					toDispose.add(outputModel);
 				}
 				outputModel.setIsTarget(true);
 				if (outputModel instanceof ASMEMFModel)
