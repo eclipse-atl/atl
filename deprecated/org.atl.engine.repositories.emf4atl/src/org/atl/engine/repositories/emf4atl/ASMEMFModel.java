@@ -124,7 +124,9 @@ public class ASMEMFModel extends ASMModel {
 	}
 	
 	public void dispose() {
-		resourceSet.getResources().remove(this);
+		resourceSet.getResources().remove(extent);
+		extent = null;
+		modelElements = null;
 	}
 	
 	public static ASMEMFModel newASMEMFModel(String name, ASMEMFModel metamodel, ModelLoader ml) throws Exception {
