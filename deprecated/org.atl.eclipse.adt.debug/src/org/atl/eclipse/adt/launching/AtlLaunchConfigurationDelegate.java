@@ -10,10 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -178,7 +178,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				libs.put(libName, stringsUrl);
 			}
 
-			Collection toDispose = new ArrayList();
+			Collection toDispose = new HashSet();
 			//models
 			if (inModel.isEmpty())
 				inModel = getSourceModels(input, path, modelHandler, atlModelHandler, checkSameModel, toDispose);
@@ -249,14 +249,16 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
 			if(path.startsWith("uri:")) {
 				ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, path);
+				// this model should not be disposed of because we did not load it
 			} else {
 				ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, fileNameToURI(path));				
+				toDispose.add(ret);
 			}
 		}
 		else {
 			ret = amh.loadModel(mName, metamodel, fileNameToInputStream(path));
+			toDispose.add(ret);
 		}
-		toDispose.add(ret);
 
 		return ret;
 	}
