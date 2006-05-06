@@ -15,6 +15,7 @@ import org.atl.engine.vm.nativelib.ASMModelElement;
 import org.atl.engine.vm.nativelib.ASMString;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -48,7 +49,61 @@ public class ASMEMFModel extends ASMModel {
 		
 		return ret;
 	}
+	
+	private Map classifiers = null;
+	
+	private ASMModelElement getClassifier(String name) {
+		if(classifiers == null) {
+			classifiers = new HashMap();
+			initClassifiers(extent.getContents().iterator(), classifiers, null);
+		}
+		ASMModelElement ret = null;
+		
+		EObject eo = (EObject)classifiers.get(name);
+		if(eo != null) {
+			ret = getASMModelElement(eo);
+		}
+		
+		return ret;
+	}
+	
+	private void initClassifiers(Iterator i, Map classifiers, String base) {
+		for( ; i.hasNext() ; ) {
+			EObject eo = (EObject)i.next();
+			if(eo instanceof EPackage) {
+				String name = ((EPackage)eo).getName();
+				if(base != null) {
+					name = base + "::" + name;
+				}
+				initClassifiers(((EPackage)eo).eContents().iterator(), classifiers, name);
+			} else if(eo instanceof EClassifier) {
+				String name = ((EClassifier)eo).getName();
+				// register the classifier under its simple name
+				register(classifiers, name, eo);
+				if(base != null) {
+					name = base + "::" + name;
+					// register the classifier under its full name
+					register(classifiers, name, eo);
+				}
+			}
+		}
+	}
+	
+	private void register(Map classifiers, String name, EObject classifier) {
+		if(classifiers.containsKey(name)) {
+			System.out.println("Warning: metamodel contains several classifiers with same name: " + name);
+		}
+		classifiers.put(name, classifier);
+	}
 
+	public ASMModelElement findModelElement(String name) {
+		ASMModelElement ret = null;
+		
+		ret = getClassifier(name);
+			
+		return ret;
+	}
+/*
 	public ASMModelElement findModelElement(String name) {
 		ASMModelElement ret = null;
 		
@@ -77,7 +132,7 @@ public class ASMEMFModel extends ASMModel {
 		
 		return ret;
 	}
-	
+*/	
 	public Set getElementsByType(ASMModelElement type) {
 		Set ret = new HashSet();
 		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
