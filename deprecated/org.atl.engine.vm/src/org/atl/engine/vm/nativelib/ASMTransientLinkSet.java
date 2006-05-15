@@ -72,8 +72,9 @@ public class ASMTransientLinkSet extends ASMOclAny {
 					((ASMTuple)se).set(frame, k, (ASMOclAny)link.getSourceMap().get(k));
 				}
 			}
-			if(self.linksBySourceElement.containsKey(se)) {
-				frame.printStackTrace("trying to register several rules as default for element " + se);
+			ASMTransientLink other = (ASMTransientLink)self.linksBySourceElement.get(se);
+			if(other != null) {
+				frame.printStackTrace("trying to register several rules as default for element " + se + ": " + other.getRule(frame, other) + " and " + rule );
 			}
 			self.linksBySourceElement.put(se, link);
 		}
