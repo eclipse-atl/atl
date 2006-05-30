@@ -36,6 +36,7 @@ import org.netbeans.api.xmi.XMIWriterFactory;
 
 /**
  * @author Frédéric Jouault
+ * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
  */
 public class ASMMDRModel extends ASMModel {
 
@@ -71,7 +72,63 @@ public class ASMMDRModel extends ASMModel {
 		return ret;
 	}
 
-	private Map modelElements = new HashMap();
+//	private Map modelElements = new HashMap();
+    
+    private Map classifiers = null;
+    
+    private ASMModelElement getClassifier(String name) {
+        if(classifiers == null) {
+            classifiers = new HashMap();
+            RefClass cl = pack.refClass("Classifier");
+            initClassifiers(cl.refAllOfType().iterator(), classifiers);
+        }
+        ASMModelElement ret = null;
+        
+        RefObject ro = (RefObject)classifiers.get(name);
+        if(ro != null) {
+            ret = getASMModelElement(ro);
+        }
+        
+        return ret;
+    }
+
+    private static String baseName(RefObject o) {
+        RefObject parent = (RefObject) o.refGetValue("container");
+        if (parent != null) {
+            String name = (String) parent.refGetValue("name");
+            return baseName(parent) + name + "::";
+        }
+        return "";
+    }
+    
+    private static void initClassifiers(Iterator i, Map classifiers) {
+        while (i.hasNext()) {
+            RefObject ro = (RefObject)i.next();
+            String name = (String)ro.refGetValue("name");
+            register(classifiers, name, ro);
+            String base = baseName(ro);
+            if (base.length() > 0) {
+                register(classifiers, base + name, ro);
+            }
+        }
+    }
+    
+    private static void register(Map classifiers, String name, RefObject classifier) {
+        if(classifiers.containsKey(name)) {
+            System.out.println("Warning: metamodel contains several classifiers with same name: " + name);
+        }
+        classifiers.put(name, classifier);
+    }
+
+    public ASMModelElement findModelElement(String name) {
+        ASMModelElement ret = null;
+        
+        ret = getClassifier(name);
+            
+        return ret;
+    }
+
+/*
 	// only for metamodels...
 	public ASMModelElement findModelElement(String name) {
 //System.out.println(this + ".findModelElement(" + name + ")");
@@ -100,6 +157,7 @@ public class ASMMDRModel extends ASMModel {
 
 		return ret;
 	}
+*/
 
 	public Set getElementsByType(ASMModelElement ame) {
 		Set ret = new HashSet();
@@ -369,12 +427,19 @@ if(debug)
 	private static ASMMDRModel mofmm;
 
 	public void dispose() {
-		pack.refDelete();
-		pack = null;
-		modelElements = null;
-		allModelElements = null;
-		elementByXmiId = null;
-		xmiIdByElement = null;
+        if (pack != null) {
+            pack.refDelete();
+            pack = null;
+//            modelElements = null;
+            allModelElements = null;
+            elementByXmiId = null;
+            xmiIdByElement = null;
+            classifiers = null;
+        }
 	}
+    
+    public void finalize() {
+        dispose();
+    }
 }
 
