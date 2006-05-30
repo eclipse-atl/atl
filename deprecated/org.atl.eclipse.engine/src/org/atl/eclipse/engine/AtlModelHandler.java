@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.Platform;
 
 /**
  * @author JOUAULT
- *
+ * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
  */
 public abstract class AtlModelHandler {
 	
@@ -32,6 +32,15 @@ public abstract class AtlModelHandler {
 	private static String modelHandlers[] = null;	//new String[] {/*AMH_MDR, */AMH_EMF};
 	
 	private static Map defaultModelHandlers = new HashMap();
+    
+    /**
+     * Registers the given handler as the default model handler for the given repository.
+     * @param repository The repository ID (e.g. "EMF" or "MDR")
+     * @param handler The default AtlModelHandler object to use.
+     */
+    public static void registerDefaultHandler(String repository, AtlModelHandler handler) {
+        defaultModelHandlers.put(repository, handler);
+    }
 		
 	public static AtlModelHandler getDefault(String repository) {
 		AtlModelHandler ret = (AtlModelHandler)defaultModelHandlers.get(repository);
@@ -40,7 +49,11 @@ public abstract class AtlModelHandler {
 				ret = new AtlEMFModelHandler();
 				defaultModelHandlers.put(repository, ret);				
 			} else {
-				IExtensionRegistry registry = Platform.getExtensionRegistry();		
+				IExtensionRegistry registry = Platform.getExtensionRegistry();
+                if (registry == null) {
+                    throw new RuntimeException("Eclipse platform extension registry not found. Dynamic repository lookup does not work outside Eclipse.");
+                }
+                
 				IExtensionPoint point = registry.getExtensionPoint("org.atl.eclipse.engine.modelhandler");
 
 				IExtension[] extensions = point.getExtensions();		
