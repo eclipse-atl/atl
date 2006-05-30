@@ -23,7 +23,6 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.pde.internal.ui.editor.text.AnnotationHover;
-import org.eclipse.ui.internal.texteditor.AnnotationExpansionControl.AnnotationHoverInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
