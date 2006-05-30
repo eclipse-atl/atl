@@ -195,8 +195,26 @@ public class ASMEMFModelElement extends ASMModelElement {
 					}
 					Object val = asm2EMF(frame, sv, name, feature);
 					try {
-						if(val != null)
+						if(val != null) {
+							if (name.equals("eClassifiers") || name.equals("eSubpackages")) {
+								ASMEMFModel model = (ASMEMFModel)getModel();
+								/* TODO
+								 * add a plugin dependency to an assertion API 
+								 * (e.g., org.eclipse.jface.text.Assert in 3.1.2 or 
+								 * org.eclipse.core.runtime.Assert in 3.2)
+								 * Assert.isNotNull(model);
+								 */
+								EList toplevelElements = model.getExtent().getContents();
+								// Check if 'val' is a toplevel element 
+								// in the content list of the model resource extent.
+								if (toplevelElements.contains(val)) {
+									// 'val' is about to become a contained element.
+									// therefore, we need to remove it from the list of toplevel elements
+									toplevelElements.remove(val);
+								}
+							}
 							l.add(val);
+						}
 					} catch(Exception e) {
 						frame.printStackTrace("cannot set feature " + getType() + "." + name + " to value " + val);
 					}
