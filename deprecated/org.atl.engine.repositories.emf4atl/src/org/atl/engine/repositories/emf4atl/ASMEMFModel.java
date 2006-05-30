@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -55,7 +56,7 @@ public class ASMEMFModel extends ASMModel {
 	private ASMModelElement getClassifier(String name) {
 		if(classifiers == null) {
 			classifiers = new HashMap();
-			initClassifiers(extent.getContents().iterator(), classifiers, null);
+			initClassifiersInAllExtents(classifiers);
 		}
 		ASMModelElement ret = null;
 		
@@ -66,6 +67,24 @@ public class ASMEMFModel extends ASMModel {
 		
 		return ret;
 	}
+
+    /**
+     * Indexes all classifiers in main extent and
+     * referenced extents.
+     * @param classifiers The classifier map to build.
+     * @see #register(Map, String, EObject)
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     */
+    private void initClassifiersInAllExtents(Map classifiers) {
+        initClassifiers(extent.getContents().iterator(), classifiers, null);
+        Iterator refExtents = referencedExtents.iterator();
+        while (refExtents.hasNext()) {
+            initClassifiers(
+                    ((Resource)refExtents.next()).getContents().iterator(), 
+                    classifiers, 
+                    null);
+        }
+    }
 	
 	private void initClassifiers(Iterator i, Map classifiers, String base) {
 		for( ; i.hasNext() ; ) {
@@ -133,18 +152,38 @@ public class ASMEMFModel extends ASMModel {
 		return ret;
 	}
 */	
+
+    /**
+     * @param type The type of element to search for.
+     * @return The set of ASMModelElements that are instances of type.
+     * @see ASMModelElement
+     */
 	public Set getElementsByType(ASMModelElement type) {
 		Set ret = new HashSet();
 		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
-		for(Iterator i = extent.getAllContents() ; i.hasNext() ; ) {
-			EObject eo = (EObject)i.next();
-			if(t.isInstance(eo)) {
-				ret.add(getASMModelElement(eo));
-			}
+        addElementsOfType(ret, t, extent);
+		for (Iterator i = referencedExtents.iterator(); i.hasNext() ; ) {
+			Resource res = (Resource) i.next();
+            addElementsOfType(ret, t, res);
 		}
 		
 		return ret;
 	}
+    
+    /**
+     * Adds all elements of the given type to the set.
+     * @param elements The set to add to.
+     * @param type The type to test for.
+     * @param res The resource containing the elements.
+     */
+    private void addElementsOfType(Set elements, EClassifier type, Resource res) {
+        for(Iterator i = res.getAllContents() ; i.hasNext() ; ) {
+            EObject eo = (EObject)i.next();
+            if(type.isInstance(eo)) {
+                elements.add(getASMModelElement(eo));
+            }
+        }
+    }
 
 	public ASMModelElement newModelElement(ASMModelElement type) {
 		ASMModelElement ret = null;
@@ -179,10 +218,18 @@ public class ASMEMFModel extends ASMModel {
 	}
 	
 	public void dispose() {
-		resourceSet.getResources().remove(extent);
-		extent = null;
-		modelElements = null;
+        if (extent != null) {
+            referencedExtents.clear();
+            extent.unload();
+            resourceSet.getResources().remove(extent);
+            extent = null;
+            modelElements = null;
+        }
 	}
+    
+    public void finalize() {
+        dispose();
+    }
 	
 	public static ASMEMFModel newASMEMFModel(String name, ASMEMFModel metamodel, ModelLoader ml) throws Exception {
 		ASMEMFModel ret = null;
@@ -202,6 +249,7 @@ public class ASMEMFModel extends ASMModel {
 			EPackage pack = (EPackage)EPackage.Registry.INSTANCE.getEPackage(uri);
 			Resource extent = pack.eResource();
 			ret = new ASMEMFModel(name, extent, metamodel, false, ml);
+            ret.addAllReferencedExtents();
 		} else {
 			ret = loadASMEMFModel(name, metamodel, URI.createURI(url), ml);
 		}
@@ -223,7 +271,9 @@ public class ASMEMFModel extends ASMModel {
 		try {
 			Resource extent = resourceSet.createResource(uri);
 			extent.load(Collections.EMPTY_MAP);
+//            Resource extent = resourceSet.getResource(uri, true);
 			ret = new ASMEMFModel(name, extent, metamodel, true, ml);
+            ret.addAllReferencedExtents();
 			ret.setIsTarget(false);
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -238,6 +288,7 @@ public class ASMEMFModel extends ASMModel {
 
 		try {
 			ret.extent.load(in, Collections.EMPTY_MAP);
+            ret.addAllReferencedExtents();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -247,7 +298,7 @@ public class ASMEMFModel extends ASMModel {
 
 		return ret;
 	}
-	
+    
 	private static void adaptMetamodel(ASMEMFModel model, ASMEMFModel metamodel) {
 		if(metamodel == mofmm) {
 			for(Iterator i = model.getElementsByType("EPackage").iterator() ; i.hasNext() ; ) {
@@ -325,6 +376,7 @@ public class ASMEMFModel extends ASMModel {
 
 	private static ASMEMFModel mofmm = null;
 	private Resource extent;
+    private Set referencedExtents = new HashSet();
 	
 	public boolean isCheckSameModel() {
 		return checkSameModel;
@@ -333,4 +385,57 @@ public class ASMEMFModel extends ASMModel {
 	public void setCheckSameModel(boolean checkSameModel) {
 		this.checkSameModel = checkSameModel;
 	}
+    
+    /**
+     * Searches for and adds all Resource extents that are
+     * referenced from the main extent to referencedExtents.
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     */
+    private void addAllReferencedExtents() {
+        Iterator contents = extent.getAllContents();
+        while (contents.hasNext()) {
+            Object o = contents.next();
+            if (o instanceof EClass) {
+                addReferencedExtentsFor((EClass)o, new HashSet());
+            }
+        }
+        referencedExtents.remove(extent);
+    }
+    
+    /**
+     * Searches for and adds all Resource extents that are
+     * referenced from eClass to referencedExtents.
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     * @param eClass
+     * @param ignore Set of classes to ignore for searching.
+     */
+    private void addReferencedExtentsFor(EClass eClass, Set ignore) {
+        if (ignore.contains(eClass)) {
+            return;
+        }
+        ignore.add(eClass);
+        Iterator eRefs = eClass.getEReferences().iterator();
+        while (eRefs.hasNext()) {
+            EReference eRef = (EReference) eRefs.next();
+            if (eRef.isContainment()) {
+                EClassifier eType = eRef.getEType();
+                if (eType.eResource() != null) {
+                    referencedExtents.add(eType.eResource());
+                } else {
+                    System.err.println("WARNING: Resource for " + 
+                            eType.toString() + " is null; cannot be referenced");
+                }
+                if (eType instanceof EClass) {
+                    addReferencedExtentsFor((EClass) eType, ignore);
+                }
+            }
+        }
+    }
+    
+    /**
+     * @return The set of referenced Resources.
+     */
+    public Set getReferencedExtents() {
+        return referencedExtents;
+    }
 }
