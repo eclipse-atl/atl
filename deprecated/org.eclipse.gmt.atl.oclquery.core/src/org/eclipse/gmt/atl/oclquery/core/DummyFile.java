@@ -3,6 +3,7 @@ package org.eclipse.gmt.atl.oclquery.core;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
+import java.net.URI;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -10,6 +11,7 @@ import org.eclipse.core.resources.IFileState;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspace;
@@ -514,6 +516,31 @@ public class DummyFile implements IFile {
 	 */
 	public static void main(String[] args) {
 
+	}
+
+	public void createLink(URI location, int updateFlags, IProgressMonitor monitor) throws CoreException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public IResourceProxy createProxy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public URI getLocationURI() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public URI getRawLocationURI() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isLinked(int options) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
