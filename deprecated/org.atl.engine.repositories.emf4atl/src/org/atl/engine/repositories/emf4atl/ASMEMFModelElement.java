@@ -470,17 +470,19 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 				k++;
 			}
 			
+			Method method = findMethod(object.getClass(), opName, argumentTypes);
 			try {
-				Method method = findMethod(object.getClass(), opName, argumentTypes);
 				if(method != null) {
 					ret = emf2ASM(frame, method.invoke(object, args));
 				} else {
 					frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes() + " (including Java operations)");									
 				}
 			} catch(IllegalAccessException e) {
-				frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes() + " (including Java operations)");				
+				frame.printStackTrace("ERROR: could not invoke operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes() + " (including Java operations)");				
 			} catch(InvocationTargetException e) {
-				frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes() + " (including Java operations)");				
+				Throwable cause = e.getCause();
+				Exception toReport = (cause instanceof Exception) ? (Exception)cause : e;
+				frame.printStackTrace("ERROR: exception during invocation of operation " + opName + " on " + getType() + " (java method: " + method + ")", toReport);				
 			}
 		}
 		
