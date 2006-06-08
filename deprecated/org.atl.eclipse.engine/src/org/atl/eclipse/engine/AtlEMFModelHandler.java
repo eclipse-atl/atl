@@ -107,6 +107,9 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		return ret;
 	}
 
+    /**
+     * @see ASMEMFModel#newASMEMFModel(String, ASMEMFModel, ModelLoader)
+     */
 	public ASMModel newModel(String name, ASMModel metamodel) {
 		ASMModel ret = null;
 		
@@ -119,6 +122,22 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		return ret;
 	}
 	
+    /**
+     * @see ASMEMFModel#newASMEMFModel(String, String, ASMEMFModel, ModelLoader)
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     */
+    public ASMModel newModel(String name, String uri, ASMModel metamodel) {
+        ASMModel ret = null;
+        
+        try {
+            ret = ASMEMFModel.newASMEMFModel(name, uri, (ASMEMFModel)metamodel, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return ret;
+    }
+    
 	private Map bimm = new HashMap();
 	
 	public ASMModel getBuiltInMetaModel(String name) {

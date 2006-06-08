@@ -130,7 +130,21 @@ public abstract class AtlModelHandler {
 	
 	public abstract ASMModel loadModel(String name, ASMModel metamodel, InputStream in);
 	
+    /**
+     * Creates a new ASMModel. Only use this method if the model URI is not known.
+     * @param name The model name.
+     * @param metamodel
+     */
 	public abstract ASMModel newModel(String name, ASMModel metamodel);
+
+    /**
+     * Creates a new ASMModel. Use this method whenever the model URI is known.
+     * @param name The model name.
+     * @param uri The model uri.
+     * @param metamodel
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     */
+    public abstract ASMModel newModel(String name, String uri, ASMModel metamodel);
 
 	/** 
 	 * Performs necessary clean-up such as freeing memory.
