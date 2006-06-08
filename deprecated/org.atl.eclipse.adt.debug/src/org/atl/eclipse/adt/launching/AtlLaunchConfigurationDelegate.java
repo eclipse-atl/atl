@@ -262,6 +262,21 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 		return ret;
 	}
+    
+    /**
+     * @param amh
+     * @param mName
+     * @param metamodel
+     * @param path Project file path. Used to derive a platform:/... URI.
+     * @param toDispose
+     * @return A new ASMModel.
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     */
+    private static ASMModel newModel(AtlModelHandler amh, String mName, ASMModel metamodel, String path, Collection toDispose) {
+        ASMModel ret = amh.newModel(mName, fileNameToURI(path).toString(), metamodel);
+        toDispose.add(ret);
+        return ret;
+    }
 	
 	/**
 	 * Returns the input stream from a path for metamodel
@@ -327,8 +342,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				if (((String)path.get(mmName)).startsWith("#")) {
 					if (input.get(mmName) == null)
 						toReturn.put(mmName, mofmm);
-					outputModel = amh.newModel(mName, mofmm);
-					toDispose.add(outputModel);
+					outputModel = newModel(amh, mName, mofmm, (String)path.get(mName), toDispose);
 				}
 				else {
 					ASMModel outputMetaModel = (ASMModel)input.get(mmName);
@@ -339,8 +353,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 						toReturn.put(mmName, outputMetaModel);
 					}
 					outputMetaModel.setIsTarget(false);
-					outputModel = amh.newModel(mName, outputMetaModel);
-					toDispose.add(outputModel);
+					outputModel = newModel(amh, mName, outputMetaModel, (String)path.get(mName), toDispose);
 				}
 				outputModel.setIsTarget(true);
 				if (outputModel instanceof ASMEMFModel)
@@ -372,7 +385,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		}
 	}
 	
-	private static URI fileNameToURI(String filePath) throws FileNotFoundException, CoreException {
+	private static URI fileNameToURI(String filePath) throws IllegalArgumentException {
 		if (filePath.startsWith("ext:")) {
 			File f = new File(filePath.substring(4));
 			return URI.createFileURI(f.getPath());
