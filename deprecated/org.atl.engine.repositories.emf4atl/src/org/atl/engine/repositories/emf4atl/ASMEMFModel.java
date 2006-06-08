@@ -231,16 +231,39 @@ public class ASMEMFModel extends ASMModel {
         dispose();
     }
 	
+    /**
+     * Creates a new ASMEMFModel. Do not use this method for models that
+     * require a special registered factory (e.g. uml2).
+     * @param name The model name. Also used as EMF model URI.
+     * @param metamodel
+     * @param ml
+     * @return
+     * @throws Exception
+     */
 	public static ASMEMFModel newASMEMFModel(String name, ASMEMFModel metamodel, ModelLoader ml) throws Exception {
-		ASMEMFModel ret = null;
-		
-		Resource extent = resourceSet.createResource(URI.createURI(name));
-
-		ret = new ASMEMFModel(name, extent, metamodel, true, ml);
-
-		return ret;
+        return newASMEMFModel(name, name, metamodel, ml);
 	}
 	
+    /**
+     * Creates a new ASMEMFModel.
+     * @param name The model name. Not used by EMF.
+     * @param uri The model URI. EMF uses this to determine the correct factory.
+     * @param metamodel
+     * @param ml
+     * @return
+     * @throws Exception
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     */
+    public static ASMEMFModel newASMEMFModel(String name, String uri, ASMEMFModel metamodel, ModelLoader ml) throws Exception {
+        ASMEMFModel ret = null;
+        
+        Resource extent = resourceSet.createResource(URI.createURI(uri));
+
+        ret = new ASMEMFModel(name, extent, metamodel, true, ml);
+
+        return ret;
+    }
+    
 	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, String url, ModelLoader ml) throws Exception {
 		ASMEMFModel ret = null;
 		
@@ -428,6 +451,17 @@ public class ASMEMFModel extends ASMModel {
                 if (eType instanceof EClass) {
                     addReferencedExtentsFor((EClass) eType, ignore);
                 }
+            }
+        }
+        Iterator eSupers = eClass.getESuperTypes().iterator();
+        while (eSupers.hasNext()) {
+            EClass eSuper = (EClass) eSupers.next();
+            if (eSuper.eResource() != null) {
+                referencedExtents.add(eSuper.eResource());
+                addReferencedExtentsFor(eSuper, ignore);
+            } else {
+                System.err.println("WARNING: Resource for " + 
+                        eSuper.toString() + " is null; cannot be referenced");
             }
         }
     }
