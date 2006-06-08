@@ -85,7 +85,11 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 		
 		return ret;
 	}
-	public ASMModel newModel(String name, ASMModel metamodel) {
+
+    /**
+     * @see ASMMDRModel#newASMMDRModel(String, ASMMDRModel, ModelLoader)
+     */
+    public ASMModel newModel(String name, ASMModel metamodel) {
 		ASMModel ret = null;
 		
 		try {
@@ -96,6 +100,22 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 		
 		return ret;
 	}
+
+    /**
+     * @see ASMMDRModel#newASMMDRModel(String, String, ASMMDRModel, ModelLoader)
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     */
+    public ASMModel newModel(String name, String uri, ASMModel metamodel) {
+        ASMModel ret = null;
+        
+        try {
+            ret = ASMMDRModel.newASMMDRModel(name, uri, (ASMMDRModel)metamodel, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return ret;
+    }
 
 	public AtlMDRModelHandler() {
 		URL atlurl = AtlMDRModelHandler.class.getResource("resources/ATL-0.2.xmi");

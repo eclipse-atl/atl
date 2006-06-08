@@ -264,33 +264,55 @@ if(debug)
 		}
 	}
 
-	public static ASMMDRModel newASMMDRModel(String name, ASMMDRModel metamodel, ModelLoader ml) throws Exception {
-		RefPackage mextent = null;
-		String modifiedName = name;
-		int id = 0;
-		
-		
-		while(rep.getExtent(modifiedName) != null) {
-			modifiedName = name + "_" + id++;
-		}
-		
-		if(metamodel.getName().equals("MOF")) {
-			mextent = rep.createExtent(modifiedName);
-		} else {
-			RefPackage mmextent = metamodel.pack;
-			RefObject pack = null;
-			for(Iterator it = mmextent.refClass("Package").refAllOfClass().iterator() ; it.hasNext() ; ) {
-				pack = (RefObject)it.next();
-				if(pack.refGetValue("name").equals(metamodel.getName())) {
-					break;
-				}
-			}       // mp now contains a package with the same name as the extent
-			// or the last package
-			mextent = rep.createExtent(modifiedName, pack);
-		}
+    /**
+     * Creates a new ASMMDRModel.
+     * @param name The model name. Used as a basis for creating a new extent.
+     * @param metamodel
+     * @param ml
+     * @return
+     * @throws Exception
+     */
+    public static ASMMDRModel newASMMDRModel(String name, ASMMDRModel metamodel, ModelLoader ml) throws Exception {
+        return newASMMDRModel(name, name, metamodel, ml);
+    }
 
-		return new ASMMDRModel(name, mextent, metamodel, true, ml);
-	}
+    /**
+     * Creates a new ASMMDRModel.
+     * @param name The model name. Used as a basis for creating a new extent.
+     * @param uri The model URI. Not used by MDR.
+     * @param metamodel
+     * @param ml
+     * @return
+     * @throws Exception
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     */
+    public static ASMMDRModel newASMMDRModel(String name, String uri, ASMMDRModel metamodel, ModelLoader ml) throws Exception {
+        RefPackage mextent = null;
+        String modifiedName = name;
+        int id = 0;
+        
+        
+        while(rep.getExtent(modifiedName) != null) {
+            modifiedName = name + "_" + id++;
+        }
+        
+        if(metamodel.getName().equals("MOF")) {
+            mextent = rep.createExtent(modifiedName);
+        } else {
+            RefPackage mmextent = metamodel.pack;
+            RefObject pack = null;
+            for(Iterator it = mmextent.refClass("Package").refAllOfClass().iterator() ; it.hasNext() ; ) {
+                pack = (RefObject)it.next();
+                if(pack.refGetValue("name").equals(metamodel.getName())) {
+                    break;
+                }
+            }       // mp now contains a package with the same name as the extent
+            // or the last package
+            mextent = rep.createExtent(modifiedName, pack);
+        }
+
+        return new ASMMDRModel(name, mextent, metamodel, true, ml);
+    }
 
 	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, String url, ModelLoader ml) throws Exception {
 		return loadASMMDRModel(name, metamodel, new File(url).toURL(), ml);
