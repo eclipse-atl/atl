@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 
@@ -195,32 +196,16 @@ public class ASMEMFModelElement extends ASMModelElement {
 					}
 					Object val = asm2EMF(frame, sv, name, feature);
 					try {
-						if(val != null) {
-							if (name.equals("eClassifiers") || name.equals("eSubpackages")) {
-								ASMEMFModel model = (ASMEMFModel)getModel();
-								/* TODO
-								 * add a plugin dependency to an assertion API 
-								 * (e.g., org.eclipse.jface.text.Assert in 3.1.2 or 
-								 * org.eclipse.core.runtime.Assert in 3.2)
-								 * Assert.isNotNull(model);
-								 */
-								EList toplevelElements = model.getExtent().getContents();
-								// Check if 'val' is a toplevel element 
-								// in the content list of the model resource extent.
-								if (toplevelElements.contains(val)) {
-									// 'val' is about to become a contained element.
-									// therefore, we need to remove it from the list of toplevel elements
-									toplevelElements.remove(val);
-								}
-							}
-							l.add(val);
-						}
+						l.add(val);
+						checkContainment(feature, val);
 					} catch(Exception e) {
 						frame.printStackTrace("cannot set feature " + getType() + "." + name + " to value " + val);
 					}
 				}
 			} else {
-				l.add(asm2EMF(frame, value, name, feature));
+				Object val = asm2EMF(frame, value, name, feature);
+				l.add(val);
+				checkContainment(feature, val);
 			}
 		} else {
 			if(((ASMEMFModel)getModel()).isCheckSameModel() && (value instanceof ASMModelElement) && (((ASMModelElement)value).getModel() != getModel())) {
@@ -230,9 +215,49 @@ public class ASMEMFModelElement extends ASMModelElement {
 				if(val != null) {
 					try {
 						object.eSet(feature, val);
+						checkContainment(feature, val);						
 					} catch(Exception e) {
 						frame.printStackTrace("cannot set feature " + getType() + "." + name + " to value " + val, e);
 					}
+				}
+			}
+		}
+	}
+	
+	private void checkContainment(EStructuralFeature feature, Object val) {
+		if((val != null) && (feature instanceof EReference)) {
+			EReference ref = (EReference)feature;
+			if(ref.isContainment()) {
+				ASMEMFModel model = (ASMEMFModel)getModel();
+				/* TODO
+				 * add a plugin dependency to an assertion API 
+				 * (e.g., org.eclipse.jface.text.Assert in 3.1.2 or 
+				 * org.eclipse.core.runtime.Assert in 3.2)
+				 * Assert.isNotNull(model);
+				 */
+				EList toplevelElements = model.getExtent().getContents();
+				// Check if 'val' is a toplevel element 
+				// in the content list of the model resource extent.
+				if (toplevelElements.contains(val)) {
+					// 'val' is about to become a contained element.
+					// therefore, we need to remove it from the list of toplevel elements
+					toplevelElements.remove(val);
+				}
+			} else if(ref.isContainer()) {
+				ASMEMFModel model = (ASMEMFModel)getModel();
+				/* TODO
+				 * add a plugin dependency to an assertion API 
+				 * (e.g., org.eclipse.jface.text.Assert in 3.1.2 or 
+				 * org.eclipse.core.runtime.Assert in 3.2)
+				 * Assert.isNotNull(model);
+				 */
+				EList toplevelElements = model.getExtent().getContents();
+				// Check if 'val' is a toplevel element 
+				// in the content list of the model resource extent.
+				if (toplevelElements.contains(object)) {
+					// 'val' is about to become a contained element.
+					// therefore, we need to remove it from the list of toplevel elements
+					toplevelElements.remove(object);
 				}
 			}
 		}
