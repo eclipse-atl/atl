@@ -8,12 +8,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.atl.engine.repositories.emf4atl.ASMEMFModel;
 import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 
@@ -38,12 +42,29 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		saveModel(model, URI.createURI(uri));
 	}
 	
+	private boolean useIDs = false;
+	private boolean removeIDs = false;
+	private String encoding = "ISO-8859-1";
+
 	private void saveModel(final ASMModel model, URI uri) {
 		Resource r = ((ASMEMFModel)model).getExtent();
 		r.setURI(uri);
 		Map options = new HashMap();
-		options.put(XMIResource.OPTION_ENCODING, "ISO-8859-1");
+		options.put(XMIResource.OPTION_ENCODING, encoding);
 		options.put(XMIResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
+		
+		if((useIDs || removeIDs) && (r instanceof XMIResource)) {
+			XMIResource xr = ((XMIResource)r);
+			int id = 1;
+			Set alreadySet = new HashSet();
+			for(Iterator i = r.getAllContents() ; i.hasNext() ; ) {
+				EObject eo = (EObject)i.next();
+				if(alreadySet.contains(eo)) continue;	// because sometimes a single element gets processed twice
+				xr.setID(eo, removeIDs ? null : ("a" + (id++)));
+				alreadySet.add(eo);
+			}
+		}
+		
 		try {
 			r.save(options);
 		} catch (IOException e1) {
