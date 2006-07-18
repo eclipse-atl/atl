@@ -98,6 +98,17 @@ public class ASMString extends ASMOclAny {
 	public static ASMReal toReal(StackFrame frame, ASMString self) {
 		return new ASMReal(Double.parseDouble(self.s));
 	}
+	
+	public static ASMBoolean toBoolean(StackFrame frame, ASMString self) throws Exception {
+//		return new ASMBoolean(Boolean.parseBoolean(self.s.toLowerCase()));
+		String s = self.s.toLowerCase(); 
+		if (s.equals("true") || s.equals("yes"))
+			return new ASMBoolean(true);
+		else if (s.equals("false") || s.equals("no"))
+			return new ASMBoolean(false);
+		else
+			throw new Exception("Cannot convert to Boolean the String "+ self + ", the value is different from true/false or yes/no");
+	}
 
 	public static ASMBoolean operatorEQ(StackFrame frame, ASMString self, ASMOclAny o) {
 		if(o instanceof ASMString) {
