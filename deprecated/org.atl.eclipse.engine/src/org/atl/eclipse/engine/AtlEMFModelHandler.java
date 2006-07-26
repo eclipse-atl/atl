@@ -150,6 +150,9 @@ public class AtlEMFModelHandler extends AtlModelHandler {
     public ASMModel newModel(String name, String uri, ASMModel metamodel) {
         ASMModel ret = null;
         
+        if(uri == null)
+        	uri = name;
+        
         try {
             ret = ASMEMFModel.newASMEMFModel(name, uri, (ASMEMFModel)metamodel, null);
         } catch (Exception e) {
