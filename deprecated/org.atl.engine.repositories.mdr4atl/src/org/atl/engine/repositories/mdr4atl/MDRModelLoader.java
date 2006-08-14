@@ -58,11 +58,13 @@ public class MDRModelLoader extends ModelLoader {
 	}
 
 	public ASMModel getMOF() {
-		ASMModel ret = null;
-
-		ret = ASMMDRModel.createMOF(this);
-
-		return ret;
+		if(mofmm == null) {
+			mofmm = ASMMDRModel.createMOF(this);
+		}
+		
+		return mofmm;
 	}
+	
+	private ASMMDRModel mofmm = null;
 }
 
