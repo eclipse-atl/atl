@@ -8,10 +8,12 @@ import org.atl.engine.vm.nativelib.ASMModel;
 import org.atl.engine.vm.nativelib.ASMModelElement;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -73,7 +75,11 @@ public abstract class ModelLoader {
 			try {
 				Map paramsMap = new HashMap();
 				if(uri != null) {
-					in = new FileInputStream(uri);
+					try {
+						in = new FileInputStream(uri);
+					} catch(FileNotFoundException fnfe) {
+						in = new URL(uri).openStream();
+					}
 				}
 
 				Class injectorClass = (Class)injectors.get(kind);
