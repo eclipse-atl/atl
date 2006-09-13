@@ -298,7 +298,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				ASMModel inputModel;
 				if (((String)path.get(mmName)).startsWith("#")) {
 					toReturn.put(mmName, mofmm);
-					inputModel = loadModel(amh, mName, mofmm, (String)path.get(mName), toDispose);
+					inputModel = (ASMModel)toReturn.get(mName);
+					if(inputModel == null)
+						inputModel = loadModel(amh, mName, mofmm, (String)path.get(mName), toDispose);
 				}
 				else {
 					ASMModel inputMetaModel = (ASMModel)toReturn.get(mmName);
@@ -342,7 +344,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				if (((String)path.get(mmName)).startsWith("#")) {
 					if (input.get(mmName) == null)
 						toReturn.put(mmName, mofmm);
-					outputModel = newModel(amh, mName, mofmm, (String)path.get(mName), toDispose);
+					outputModel = (ASMModel)toReturn.get(mName);
+					if(outputModel == null)
+						outputModel = newModel(amh, mName, mofmm, (String)path.get(mName), toDispose);
 				}
 				else {
 					ASMModel outputMetaModel = (ASMModel)input.get(mmName);
