@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.atl.engine.vm.ModelLoader;
 import org.atl.engine.vm.StackFrame;
 
 /**
@@ -24,18 +23,11 @@ public abstract class ASMModel extends ASMOclAny {
 		return mof;
 	}
 
-	private ModelLoader ml;
-	
-	public ModelLoader getModelLoader() {
-		return ml;
-	}
-	
 	public static ASMOclType myType = new ASMOclSimpleType("Model", getOclAnyType());
-	public ASMModel(String name, ASMModel metamodel, boolean isTarget, ModelLoader ml) {
+	public ASMModel(String name, ASMModel metamodel, boolean isTarget) {
 		super(myType);
 		if(name.equals("MOF")) mof = this;
 		this.name = name;
-		this.ml = ml;
 		if(metamodel == null) {
 			this.metamodel = this;
 		} else {

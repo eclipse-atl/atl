@@ -18,7 +18,7 @@ public class MDRModelLoader extends ModelLoader {
 		ASMModel ret = null;
 
 		try {
-			ret = ASMMDRModel.loadASMMDRModel(name, (ASMMDRModel)metamodel, href, this);
+			ret = ASMMDRModel.loadASMMDRModel(name, (ASMMDRModel)metamodel, href);
 		} catch(Exception e) {
 			e.printStackTrace(System.out);
 		}
@@ -30,7 +30,7 @@ public class MDRModelLoader extends ModelLoader {
 		ASMModel ret = null;
 
 		try {
-			ret = ASMMDRModel.newASMMDRModel(name, (ASMMDRModel)metamodel, this);
+			ret = ASMMDRModel.newASMMDRModel(name, (ASMMDRModel)metamodel);
 		} catch(Exception e) {
 			e.printStackTrace(System.out);
 		}
@@ -59,7 +59,7 @@ public class MDRModelLoader extends ModelLoader {
 
 	public ASMModel getMOF() {
 		if(mofmm == null) {
-			mofmm = ASMMDRModel.createMOF(this);
+			mofmm = ASMMDRModel.createMOF();
 		}
 		
 		return mofmm;

@@ -78,7 +78,7 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMMDRModel.loadASMMDRModel(name, (ASMMDRModel)metamodel, in, null);
+			ret = ASMMDRModel.loadASMMDRModel(name, (ASMMDRModel)metamodel, in);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -93,7 +93,7 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMMDRModel.newASMMDRModel(name, (ASMMDRModel)metamodel, null);
+			ret = ASMMDRModel.newASMMDRModel(name, (ASMMDRModel)metamodel);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -109,7 +109,7 @@ public class AtlMDRModelHandler extends AtlModelHandler{
         ASMModel ret = null;
         
         try {
-            ret = ASMMDRModel.newASMMDRModel(name, uri, (ASMMDRModel)metamodel, null);
+            ret = ASMMDRModel.newASMMDRModel(name, uri, (ASMMDRModel)metamodel);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,10 +119,10 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 
 	public AtlMDRModelHandler() {
 		URL atlurl = AtlMDRModelHandler.class.getResource("resources/ATL-0.2.xmi");
-		mofmm = ASMMDRModel.createMOF(null);
+		mofmm = ASMMDRModel.createMOF();
 		
 		try {
-			atlmm = ASMMDRModel.loadASMMDRModel("ATL", mofmm, atlurl, null);
+			atlmm = ASMMDRModel.loadASMMDRModel("ATL", mofmm, atlurl);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -23,7 +23,7 @@ public class EMFModelLoader extends ModelLoader {
 	private ASMModel mofmm;
 	
 	public EMFModelLoader() {
-		mofmm = ASMEMFModel.createMOF(this);
+		mofmm = ASMEMFModel.createMOF();
 	}
 		
 	public ASMModel getMOF() {
@@ -34,7 +34,7 @@ public class EMFModelLoader extends ModelLoader {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in, this);
+			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -46,7 +46,7 @@ public class EMFModelLoader extends ModelLoader {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, href, this);
+			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, href);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -58,7 +58,7 @@ public class EMFModelLoader extends ModelLoader {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel, this);
+			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

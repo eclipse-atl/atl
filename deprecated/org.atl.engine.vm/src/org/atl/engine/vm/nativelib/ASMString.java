@@ -1,7 +1,6 @@
 package org.atl.engine.vm.nativelib;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,7 +8,6 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.io.StringReader;
 
-import org.atl.engine.vm.ModelLoader;
 import org.atl.engine.vm.StackFrame;
 
 /**
@@ -246,16 +244,6 @@ public class ASMString extends ASMOclAny {
 
 	public static ASMString toString(StackFrame frame, ASMString self) {
 		return self;
-	}
-
-	public static ASMModelElement inject(StackFrame frame, ASMString self, ASMString targetModelName, ASMString kind, ASMString params) {
-		ASMModelElement ret = null;
-		
-		ASMModel tgt = frame.getExecEnv().getModel(targetModelName.getSymbol());
-		ModelLoader ml = tgt.getModelLoader();
-		ret = ml.inject(tgt, kind.getSymbol(), params.getSymbol(), null, new ByteArrayInputStream(self.s.getBytes()));
-		
-		return ret;
 	}
 
 	// Below: ATL Compiler specific operations.

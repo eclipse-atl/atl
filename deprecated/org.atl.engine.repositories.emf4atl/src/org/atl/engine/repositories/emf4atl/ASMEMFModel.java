@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.atl.engine.vm.ModelLoader;
 import org.atl.engine.vm.nativelib.ASMModel;
 import org.atl.engine.vm.nativelib.ASMModelElement;
 import org.atl.engine.vm.nativelib.ASMString;
@@ -200,8 +199,8 @@ public class ASMEMFModel extends ASMModel {
 	 * @param metamodel
 	 * @param isTarget
 	 */
-	private ASMEMFModel(String name, Resource extent, ASMEMFModel metamodel, boolean isTarget, ModelLoader ml) {
-		super(name, metamodel, isTarget, ml);
+	private ASMEMFModel(String name, Resource extent, ASMEMFModel metamodel, boolean isTarget) {
+		super(name, metamodel, isTarget);
 		this.extent = extent;
 	}
 
@@ -209,10 +208,10 @@ public class ASMEMFModel extends ASMModel {
 	 * Simple Resource wrapping factory. 
 	 * @param ml ModelLoader used to load the model if available, null otherwise.
 	 */
-	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, Resource extent, ModelLoader ml) throws Exception {
+	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, Resource extent) throws Exception {
 		ASMEMFModel ret = null;
 		
-		ret = new ASMEMFModel(name, extent, metamodel, false, ml);
+		ret = new ASMEMFModel(name, extent, metamodel, false);
 		
 		return ret;
 	}
@@ -240,8 +239,8 @@ public class ASMEMFModel extends ASMModel {
      * @return
      * @throws Exception
      */
-	public static ASMEMFModel newASMEMFModel(String name, ASMEMFModel metamodel, ModelLoader ml) throws Exception {
-        return newASMEMFModel(name, name, metamodel, ml);
+	public static ASMEMFModel newASMEMFModel(String name, ASMEMFModel metamodel) throws Exception {
+        return newASMEMFModel(name, name, metamodel);
 	}
 	
     /**
@@ -254,48 +253,48 @@ public class ASMEMFModel extends ASMModel {
      * @throws Exception
      * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
      */
-    public static ASMEMFModel newASMEMFModel(String name, String uri, ASMEMFModel metamodel, ModelLoader ml) throws Exception {
+    public static ASMEMFModel newASMEMFModel(String name, String uri, ASMEMFModel metamodel) throws Exception {
         ASMEMFModel ret = null;
         
         Resource extent = resourceSet.createResource(URI.createURI(uri));
 
-        ret = new ASMEMFModel(name, extent, metamodel, true, ml);
+        ret = new ASMEMFModel(name, extent, metamodel, true);
 
         return ret;
     }
     
-	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, String url, ModelLoader ml) throws Exception {
+	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, String url) throws Exception {
 		ASMEMFModel ret = null;
 		
 		if(url.startsWith("uri:")) {
 			String uri = url.substring(4);
 			EPackage pack = (EPackage)EPackage.Registry.INSTANCE.getEPackage(uri);
 			Resource extent = pack.eResource();
-			ret = new ASMEMFModel(name, extent, metamodel, false, ml);
+			ret = new ASMEMFModel(name, extent, metamodel, false);
             ret.addAllReferencedExtents();
 		} else {
-			ret = loadASMEMFModel(name, metamodel, URI.createURI(url), ml);
+			ret = loadASMEMFModel(name, metamodel, URI.createURI(url));
 		}
 		
 		return ret;
 	}
 	
-	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, URL url, ModelLoader ml) throws Exception {
+	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, URL url) throws Exception {
 		ASMEMFModel ret = null;
 
-		ret = loadASMEMFModel(name, metamodel, url.openStream(), ml);
+		ret = loadASMEMFModel(name, metamodel, url.openStream());
 		
 		return ret;
 	}
 	
-	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, URI uri, ModelLoader ml) throws Exception {
+	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, URI uri) throws Exception {
 		ASMEMFModel ret = null;
 
 		try {
 			Resource extent = resourceSet.createResource(uri);
 			extent.load(Collections.EMPTY_MAP);
 //            Resource extent = resourceSet.getResource(uri, true);
-			ret = new ASMEMFModel(name, extent, metamodel, true, ml);
+			ret = new ASMEMFModel(name, extent, metamodel, true);
             ret.addAllReferencedExtents();
 			ret.setIsTarget(false);
 		} catch(Exception e) {
@@ -306,8 +305,8 @@ public class ASMEMFModel extends ASMModel {
 		return ret;
 	}
 	
-	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, InputStream in, ModelLoader ml) throws Exception {
-		ASMEMFModel ret = newASMEMFModel(name, metamodel, ml);
+	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, InputStream in) throws Exception {
+		ASMEMFModel ret = newASMEMFModel(name, metamodel);
 
 		try {
 			ret.extent.load(in, Collections.EMPTY_MAP);
@@ -360,13 +359,13 @@ public class ASMEMFModel extends ASMModel {
 */	
 	}
 	
-	public static ASMEMFModel createMOF(ModelLoader ml) {
+	public static ASMEMFModel createMOF() {
 		
 		if(mofmm == null) {
 			Resource extent = resourceSet.createResource(URI.createURI("http://www.eclipse.org/emf/2002/Ecore"));
 //			System.out.println("Actual resource class: " + extent.getClass());
 			extent.getContents().add(EcorePackage.eINSTANCE);
-			mofmm = new ASMEMFModel("MOF", extent, null, false, ml);
+			mofmm = new ASMEMFModel("MOF", extent, null, false);
 		}
 		
 		return mofmm;

@@ -20,7 +20,6 @@ import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.xmi.MalformedXMIException;
 
-import org.atl.engine.vm.ModelLoader;
 import org.atl.engine.vm.nativelib.ASMCollection;
 import org.atl.engine.vm.nativelib.ASMModel;
 import org.atl.engine.vm.nativelib.ASMModelElement;
@@ -52,8 +51,8 @@ public class ASMMDRModel extends ASMModel {
 		initMDR();
 	}
 
-	private ASMMDRModel(String name, RefPackage pack, ASMModel metamodel, boolean isTarget, ModelLoader ml) {
-		super(name, metamodel, isTarget, ml);
+	private ASMMDRModel(String name, RefPackage pack, ASMModel metamodel, boolean isTarget) {
+		super(name, metamodel, isTarget);
 		this.pack = pack;
 	}
 
@@ -272,8 +271,8 @@ if(debug)
      * @return
      * @throws Exception
      */
-    public static ASMMDRModel newASMMDRModel(String name, ASMMDRModel metamodel, ModelLoader ml) throws Exception {
-        return newASMMDRModel(name, name, metamodel, ml);
+    public static ASMMDRModel newASMMDRModel(String name, ASMMDRModel metamodel) throws Exception {
+        return newASMMDRModel(name, name, metamodel);
     }
 
     /**
@@ -286,7 +285,7 @@ if(debug)
      * @throws Exception
      * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
      */
-    public static ASMMDRModel newASMMDRModel(String name, String uri, ASMMDRModel metamodel, ModelLoader ml) throws Exception {
+    public static ASMMDRModel newASMMDRModel(String name, String uri, ASMMDRModel metamodel) throws Exception {
         RefPackage mextent = null;
         String modifiedName = name;
         int id = 0;
@@ -311,19 +310,19 @@ if(debug)
             mextent = rep.createExtent(modifiedName, pack);
         }
 
-        return new ASMMDRModel(name, mextent, metamodel, true, ml);
+        return new ASMMDRModel(name, mextent, metamodel, true);
     }
 
-	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, String url, ModelLoader ml) throws Exception {
-		return loadASMMDRModel(name, metamodel, new File(url).toURL(), ml);
+	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, String url) throws Exception {
+		return loadASMMDRModel(name, metamodel, new File(url).toURL());
 	}
 
-	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, URL url, ModelLoader ml) throws Exception {
-		return loadASMMDRModel(name, metamodel, url.openStream(), ml);
+	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, URL url) throws Exception {
+		return loadASMMDRModel(name, metamodel, url.openStream());
 	}
 	
-	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, InputStream in, ModelLoader ml) throws Exception {
-		ASMMDRModel ret = newASMMDRModel(name, metamodel, ml);
+	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, InputStream in) throws Exception {
+		ASMMDRModel ret = newASMMDRModel(name, metamodel);
 
 		try {
 			XMIInputConfig inputConfig = reader.getConfiguration();
@@ -360,11 +359,11 @@ if(debug)
 		return ret;
 	}
 
-	public static ASMMDRModel createMOF(ModelLoader ml) {
+	public static ASMMDRModel createMOF() {
 		ASMMDRModel ret = null;
 
 		try {
-			ret = new ASMMDRModel("MOF", rep.getExtent("MOF"), null, false, ml);
+			ret = new ASMMDRModel("MOF", rep.getExtent("MOF"), null, false);
 			mofmm = ret;
 		} catch(org.netbeans.mdr.util.DebugException de) {
 			de.printStackTrace(System.out);

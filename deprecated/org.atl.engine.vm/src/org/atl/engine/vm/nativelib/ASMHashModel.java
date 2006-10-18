@@ -36,7 +36,7 @@ public class ASMHashModel extends ASMModel {
 	}
 
 	private ASMHashModel(String name, ASMModel metamodel, boolean isTarget, ModelLoader ml) {
-		super(name, metamodel, isTarget, ml);
+		super(name, metamodel, isTarget);
 	}
 
 	public ASMModelElement findModelElement(String name) {
