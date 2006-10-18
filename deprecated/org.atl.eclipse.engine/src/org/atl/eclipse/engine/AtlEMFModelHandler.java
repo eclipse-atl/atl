@@ -42,7 +42,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		saveModel(model, URI.createURI(uri));
 	}
 	
-	private boolean useIDs = false;
+	private boolean useIDs = true;
 	private boolean removeIDs = false;
 	private String encoding = "ISO-8859-1";
 
@@ -75,10 +75,10 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	protected AtlEMFModelHandler() {
 		URL atlurl = AtlEMFModelHandler.class.getResource("resources/ATL-0.2.ecore");
 		
-		mofmm = org.atl.engine.repositories.emf4atl.ASMEMFModel.createMOF(null);
+		mofmm = org.atl.engine.repositories.emf4atl.ASMEMFModel.createMOF();
 			
 		try {
-			atlmm = ASMEMFModel.loadASMEMFModel("ATL", mofmm, atlurl, null);
+			atlmm = ASMEMFModel.loadASMEMFModel("ATL", mofmm, atlurl);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -96,7 +96,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in, null);
+			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -108,7 +108,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri, null);
+			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -120,7 +120,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri, null);
+			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -135,7 +135,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel, null);
+			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -154,7 +154,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
         	uri = name;
         
         try {
-            ret = ASMEMFModel.newASMEMFModel(name, uri, (ASMEMFModel)metamodel, null);
+            ret = ASMEMFModel.newASMEMFModel(name, uri, (ASMEMFModel)metamodel);
         } catch (Exception e) {
             e.printStackTrace();
         }
