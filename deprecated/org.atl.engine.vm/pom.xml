@@ -1,12 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.atl.engine.vm</groupId>
-  <artifactId>vm</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0.0-SNAPSHOT</version>
-  <name>VM plug-in</name>
-  <url>http://www.eclipse.org/gmt/atl</url>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.atl.engine.vm</groupId>
+	<artifactId>vm</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>ATL Virtual Machine plug-in</name>
+	<url>http://www.eclipse.org/gmt/atl</url>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -48,4 +49,11 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<repository>
+			<id>andromda-repository</id>
+			<name>AndroMDA Repository</name>
+			<url>scp://galaxy.andromda.org/var/www/andromda/maven2</url>
+		</repository>
+	</distributionManagement>
 </project>

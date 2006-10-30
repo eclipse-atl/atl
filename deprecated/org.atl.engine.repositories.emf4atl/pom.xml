@@ -48,5 +48,21 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src</directory>
+				<includes>
+					<include>**/resources/*</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
+	<distributionManagement>
+		<repository>
+			<id>andromda-repository</id>
+			<name>AndroMDA Repository</name>
+			<url>scp://galaxy.andromda.org/var/www/andromda/maven2</url>
+		</repository>
+	</distributionManagement>
 </project>
