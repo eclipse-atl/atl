@@ -7,11 +7,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.atl.eclipse.engine.AtlCompiler;
+import org.atl.eclipse.engine.CompilerNotFoundException;
 import org.atl.eclipse.engine.MarkerMaker;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
 
@@ -22,6 +25,11 @@ public class AtlBuildVisitor implements IResourceVisitor {
 	
 	/** Contains routines to manage problem markers when compiling */
 	private MarkerMaker markerMaker = new MarkerMaker();
+	private IProgressMonitor monitor;
+	
+	public AtlBuildVisitor(IProgressMonitor monitor) {
+		this.monitor = monitor;
+	}
 	
 	/** Returns <code>true</code> if the file has chaned since its last build <code>false</code> otherwise*/
 	private boolean hasChanged(IResource resource) {
@@ -55,16 +63,24 @@ public class AtlBuildVisitor implements IResourceVisitor {
 		if ( ("atl".equals(extension) && (resource instanceof IFile))
 			 && (!hasAsmFile(resource) || hasChanged(resource)) ) {
 			String inName = resource.getName();
+			monitor.subTask("Compiling " + inName);
 			String outName = inName.substring(0, inName.lastIndexOf('.')) + ".asm";
 			IFile out = resource.getParent().getFile(new Path(outName));
 			InputStream is = ((IFile)resource).getContents();
-			EObject[] pbms = AtlCompiler.getDefault().compile(is, out);
+			try {
+				EObject[] pbms = AtlCompiler.getDefault().compile(is, out);
+				markerMaker.resetPbmMarkers(resource, pbms);
+			} catch(CompilerNotFoundException cnfee) {
+				IMarker marker = resource.createMarker(IMarker.PROBLEM);
+				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+				marker.setAttribute(IMarker.MESSAGE, cnfee.getMessage());
+				marker.setAttribute(IMarker.LINE_NUMBER, 1);
+			}
 			try {
                 is.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-			markerMaker.resetPbmMarkers(resource, pbms);
 			return false;
 		}
 		// return true to continue visiting children.
