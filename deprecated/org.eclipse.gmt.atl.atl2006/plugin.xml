@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.atl.eclipse.engine.atlcompiler">
+      <atlcompiler
+            class="org.eclipse.gmt.atl.atl2006.Atl2006Compiler"
+            name="atl2006"/>
+   </extension>
+
+</plugin>

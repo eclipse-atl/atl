@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Atl2006 Plug-in
+Bundle-SymbolicName: org.eclipse.gmt.atl.atl2006; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.eclipse.gmt.atl.atl2006.Atl2006Plugin
+Bundle-Vendor: ATLAS
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.atl.eclipse.engine,
+ org.eclipse.core.resources,
+ org.eclipse.emf.ecore
+Eclipse-AutoStart: true
