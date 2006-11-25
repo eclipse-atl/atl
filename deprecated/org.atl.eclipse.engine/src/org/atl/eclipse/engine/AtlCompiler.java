@@ -4,19 +4,21 @@
  */
 package org.atl.eclipse.engine;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.util.Collection;
-import java.util.Collections;
+import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
-import org.atl.engine.repositories.emf4atl.ASMEMFModelElement;
-import org.atl.engine.vm.nativelib.ASMEnumLiteral;
-import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -34,40 +36,6 @@ public class AtlCompiler {
 		return defaultCompiler;
 	}
 
-	private URL ATLWFRurl = AtlCompiler.class.getResource("resources/ATL-WFR.asm");
-	private AtlModelHandler amh;
-	private ASMModel pbmm;
-
-	private AtlCompiler() {
-		amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);		
-		pbmm = amh.getBuiltInMetaModel("Problem");
-	}
-	
-	private Object[] getProblems(ASMModel problems, EObject prev[]) {
-		Object ret[] = new Object[2];
-		EObject pbsa[] = null;
-		Collection pbs = problems.getElementsByType("Problem");
-		
-		int nbErrors = 0;
-		if(pbs != null) {
-			pbsa = new EObject[pbs.size() + prev.length];
-			System.arraycopy(prev, 0, pbsa, 0, prev.length);
-			int k = prev.length;
-			for(Iterator i = pbs.iterator() ; i.hasNext() ; ) {
-				ASMEMFModelElement ame = ((ASMEMFModelElement)i.next());
-				pbsa[k++] = ame.getObject();
-				if("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) {
-					nbErrors++;
-				}
-			}
-		}
-		
-		ret[0] = new Integer(nbErrors);
-		ret[1] = pbsa;
-		
-		return ret;
-	}
-	
 	/**
 	 * 
 	 * @param in The InputStream to get atl source from.
@@ -76,58 +44,65 @@ public class AtlCompiler {
 	 */
 	public EObject[] compile(InputStream in, IFile out) {
 		EObject ret[] = null;
-		// Parsing + Semantic Analysis
-		ASMModel parsed[] = AtlParser.getDefault().parseToModelWithProblems(in);
-		ASMModel atlmodel = parsed[0];
-		ASMModel problems = parsed[1];
+		String atlcompiler = null;
 		
-		Object a[] = getProblems(problems, new EObject[0]);
-		int nbErrors = ((Integer)a[0]).intValue();
-		ret = (EObject[])a[1];
-	
-		if(nbErrors == 0) {
-			Map models = new HashMap();
-			models.put("MOF", amh.getMof());
-			models.put("ATL", atlmodel.getMetamodel());
-			models.put("IN", atlmodel);
-			models.put("Problem", pbmm);
-			models.put("OUT", problems);
-
-			Map params = Collections.EMPTY_MAP;
-			
-			Map libs = Collections.EMPTY_MAP;
-
-			AtlLauncher.getDefault().launch(ATLWFRurl, libs, models, params);			
-
-			a = getProblems(problems, ret);
-			nbErrors = ((Integer)a[0]).intValue();
-			ret = (EObject[])a[1];
+		in = new BufferedInputStream(in);
+		in.mark(1000);
+		BufferedReader brin = new BufferedReader(new InputStreamReader(in));
+		try {
+			String firstLine = brin.readLine();
+			atlcompiler = firstLine.replaceFirst("^\\p{Space}*--\\p{Space}*@atlcompiler\\p{Space}+([^\\p{Space}]*)\\p{Space}*$", "$1");
+			if(atlcompiler.equals(firstLine)) {
+				atlcompiler = "atl2004";
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		try {
+			in.reset();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ret = getCompiler(atlcompiler).compile(in, out);
+		
+		return ret;
+	}
+	
+	private static Map compilers = new HashMap();
 
-		if(nbErrors == 0) {
-			// Generating code
-			URL atlsaurl = AtlCompiler.class.getResource("resources/ATLToASMCompiler.asm");
-	
-			AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
-			Map models = new HashMap();
-			models.put("MOF", amh.getMof());
-			models.put("ATL", amh.getAtl());
-			models.put("IN", atlmodel);
-	
-			Map params = new HashMap();
-			params.put("debug", "false");
-			params.put("WriteTo", out.getLocation().toString());
-			
-			Map libs = new HashMap();
-			libs.put("typeencoding", AtlParser.class.getResource("resources/typeencoding.asm"));
-			libs.put("strings", AtlParser.class.getResource("resources/strings.asm"));
-	
-			AtlLauncher.getDefault().launch(atlsaurl, libs, models, params);
-			
-			try {
-				out.refreshLocal(0, null);
-			} catch (CoreException e) {
-				e.printStackTrace();
+	public static AtlCompiler getCompiler(String compilerName) {
+		AtlCompiler ret = (AtlCompiler)compilers.get(compilerName);
+		if(ret == null) {
+			if("atl2004".equals(compilerName)) {
+				ret = new Atl2004Compiler();
+				compilers.put(compilerName, ret);				
+			} else {
+				IExtensionRegistry registry = Platform.getExtensionRegistry();
+                if (registry == null) {
+                    throw new RuntimeException("Eclipse platform extension registry not found. Dynamic repository lookup does not work outside Eclipse.");
+                }
+                
+				IExtensionPoint point = registry.getExtensionPoint("org.atl.eclipse.engine.atlcompiler");
+
+				IExtension[] extensions = point.getExtensions();		
+				extensions: for(int i = 0 ; i < extensions.length ; i++){		
+					IConfigurationElement[] elements = extensions[i].getConfigurationElements();
+					for(int j = 0 ; j < elements.length ; j++){
+						try {					
+							if(elements[j].getAttribute("name").equals(compilerName)) {
+								ret = (AtlCompiler)elements[j].createExecutableExtension("class");
+								compilers.put(compilerName, ret);
+								break extensions;
+							}
+						} catch (CoreException e){
+							e.printStackTrace();
+						}				
+					}
+				 }
+			}
+
+			if(ret == null) {
+				throw new CompilerNotFoundException("ATL compiler " + compilerName + " not found. You may need to install an ATL compiler plugin.");
 			}
 		}
 		

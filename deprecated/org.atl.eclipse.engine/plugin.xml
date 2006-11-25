@@ -35,6 +35,7 @@
       <import plugin="org.atl.engine.repositories.emf4atl" export="true"/>
    </requires>
    <extension-point id="modelhandler" name="ModelHandler" schema="schema/modelhandler.exsd"/>
+   <extension-point id="atlcompiler" name="ATLCompiler" schema="schema/atlcompiler.exsd"/>
 
 
 </plugin>
