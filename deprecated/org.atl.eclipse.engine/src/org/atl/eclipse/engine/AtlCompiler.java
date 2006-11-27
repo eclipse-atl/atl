@@ -6,6 +6,7 @@ package org.atl.eclipse.engine;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,6 +37,7 @@ public class AtlCompiler {
 		return defaultCompiler;
 	}
 
+	private static final int MAX_LINE_LENGTH = 1000;
 	/**
 	 * 
 	 * @param in The InputStream to get atl source from.
@@ -46,12 +48,19 @@ public class AtlCompiler {
 		EObject ret[] = null;
 		String atlcompiler = null;
 		
-		in = new BufferedInputStream(in);
-		in.mark(1000);
-		BufferedReader brin = new BufferedReader(new InputStreamReader(in));
+		// The BufferedInputStream is required to reset the stream before actually compiling
+		in = new BufferedInputStream(in, MAX_LINE_LENGTH);
+		in.mark(MAX_LINE_LENGTH);
+		byte buffer[] = new byte[MAX_LINE_LENGTH];
 		try {
+			int length = in.read(buffer);
+			// The BufferedReader is used to read the first line
+			// (it cannot be used to reset the underlying InputStream required by the compiler below)
+			BufferedReader brin = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer, 0, length)));
+
 			String firstLine = brin.readLine();
 			atlcompiler = firstLine.replaceFirst("^\\p{Space}*--\\p{Space}*@atlcompiler\\p{Space}+([^\\p{Space}]*)\\p{Space}*$", "$1");
+			// if firstLine does not match the pattern then nothing was replaced and atlcompiler = firstLine
 			if(atlcompiler.equals(firstLine)) {
 				atlcompiler = "atl2004";
 			}
