@@ -37,7 +37,7 @@ public class AtlThread extends AtlDebugElement implements IThread {
 	 */
 	public IStackFrame[] getStackFrames() throws DebugException {
 		if(!isSuspended())
-			return null;
+			return new IStackFrame[0];
 		return stackFrames;
 	}
 	/**
