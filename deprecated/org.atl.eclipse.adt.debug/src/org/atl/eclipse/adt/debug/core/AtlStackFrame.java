@@ -28,7 +28,6 @@ import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.debug.ui.DeferredDebugElementWorkbenchAdapter;
 
 /**
  * This class implements IStackFrame
@@ -37,7 +36,7 @@ import org.eclipse.debug.ui.DeferredDebugElementWorkbenchAdapter;
  * @author Freddy Allilaire
  */
 
-public class AtlStackFrame extends DeferredDebugElementWorkbenchAdapter implements IStackFrame {
+public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 
 	private ObjectReference stackFrame;
 	private AtlThread thread;
@@ -50,6 +49,7 @@ public class AtlStackFrame extends DeferredDebugElementWorkbenchAdapter implemen
 	private Map vars = new HashMap();
 
 	public AtlStackFrame(AtlThread thread, ObjectReference stackFrame, AtlNbCharFile atlnbcharfile) {
+		super((AtlDebugTarget)thread.getDebugTarget());
 		// TODO Add a parameter: File name of file being debugged
 		this.thread = thread;
 		this.stackFrame = stackFrame;
@@ -332,13 +332,6 @@ public class AtlStackFrame extends DeferredDebugElementWorkbenchAdapter implemen
 		thread.terminate();
 	}
 	
-	/**
-	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-	 */
-	public Object getAdapter(Class adapter) {
-		return null;
-	}
-	
 	private class DisassemblyStorage implements IStorage {
 		
 		private String contents;
@@ -396,20 +389,6 @@ public class AtlStackFrame extends DeferredDebugElementWorkbenchAdapter implemen
 		}
 		
 		return new DisassemblyStorage("ATL#" + opName, ret.toString());
-	}
-
-	public Object[] getChildren(Object o) {
-		try {
-			if (hasVariables())
-				return getVariables();
-		} catch (DebugException e) {
-			e.printStackTrace();
-		}
-		return new Object[] {};
-	}
-
-	public Object getParent(Object o) {
-		return getThread();
 	}
 
 	public ObjectReference getStackFrame() {

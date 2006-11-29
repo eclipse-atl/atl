@@ -9,13 +9,12 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.debug.ui.DeferredDebugElementWorkbenchAdapter;
 
 /**
  * @author Freddy Allilaire
  */
 
-public class AtlVariable extends DeferredDebugElementWorkbenchAdapter implements IVariable {
+public class AtlVariable extends AtlDebugElement implements IVariable {
 
 	// If you add a constant here, look in the AtlDebugModelPresentation if the value is not already used
 	public final static int UNKNOWN = -1;
@@ -33,6 +32,7 @@ public class AtlVariable extends DeferredDebugElementWorkbenchAdapter implements
 	private int idVariable = -1;
 	
 	public AtlVariable(String name, IValue value, AtlDebugTarget atlDT, int description) {
+		super(atlDT);
 		try {
 			this.name = name;
 			this.typeName = value.getReferenceTypeName();
@@ -144,13 +144,6 @@ public class AtlVariable extends DeferredDebugElementWorkbenchAdapter implements
 	}
 	
 	/**
-	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-	 */
-	public Object getAdapter(Class adapter) 
-	{	
-		return null;
-	}
-	/**
 	 * @return Returns the superType.
 	 */
 	public int getDescription() {
@@ -163,17 +156,4 @@ public class AtlVariable extends DeferredDebugElementWorkbenchAdapter implements
 		return idVariable;
 	}
 
-	public Object[] getChildren(Object o) {
-		try {
-			if (getValue().hasVariables())
-				return getValue().getVariables();
-		} catch (DebugException e) {
-			e.printStackTrace();
-		}
-		return new Object[] {};
-	}
-
-	public Object getParent(Object o) {
-		return getDebugTarget();
-	}
 }

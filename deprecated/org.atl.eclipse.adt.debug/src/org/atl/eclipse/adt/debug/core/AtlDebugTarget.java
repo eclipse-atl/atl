@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugElement;
@@ -41,7 +40,6 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
-import org.eclipse.debug.ui.DeferredDebugElementWorkbenchAdapter;
 
 
 /**
@@ -53,7 +51,7 @@ import org.eclipse.debug.ui.DeferredDebugElementWorkbenchAdapter;
  * 
  * @author Freddy Allilaire
  */
-public class AtlDebugTarget extends DeferredDebugElementWorkbenchAdapter implements IDebugTarget, IDebugEventSetListener {
+public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 
 	/**
 	 * current state of the debugger
@@ -78,6 +76,7 @@ public class AtlDebugTarget extends DeferredDebugElementWorkbenchAdapter impleme
 	static final int STEP_INTO 		= 4;
 	static final int SUSPEND_STEP 	= 5;
 	static final int RESUME 		= 6;
+	static final int CREATE			= 7;
 	
 	private ADWPDebugger debugger;
 	private ILaunch launch;
@@ -112,8 +111,9 @@ public class AtlDebugTarget extends DeferredDebugElementWorkbenchAdapter impleme
 	private AtlNbCharFile structFile;
 	
 	public AtlDebugTarget(ILaunch launch) {
+		super(null);
  		DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(this);
-		DebugPlugin.getDefault().addDebugEventListener(this);
+//		DebugPlugin.getDefault().addDebugEventListener(this);
 
 		try {
 			disassemblyMode = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.MODEDEBUG, false);
@@ -176,6 +176,7 @@ public class AtlDebugTarget extends DeferredDebugElementWorkbenchAdapter impleme
 				ADWPCommand msg;
 				prevLocation = null;
 
+				generateDebugEvent(AtlDebugTarget.CREATE, AtlDebugTarget.this);
 				
 				while (true) {
 					msg = debugger.readMessage();
@@ -354,16 +355,7 @@ public class AtlDebugTarget extends DeferredDebugElementWorkbenchAdapter impleme
 	public void disconnect() throws DebugException {
 		setState(AtlDebugTarget.stateDisconnected);
 	}
-	
-	/**
-	 * Not use in ATL Debugger
-	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-	 */
-	public Object getAdapter(Class adapter) 
-	{
-		return null;
-	}
-	
+		
 	/**
 	 * Returns the debugTarget
 	 * @see org.eclipse.debug.core.model.IDebugElement#getDebugTarget()
@@ -546,6 +538,10 @@ public class AtlDebugTarget extends DeferredDebugElementWorkbenchAdapter impleme
 		DebugEvent event = null;
 		try {
 			switch (command) {
+				case CREATE :
+				event = new DebugEvent(getDebugTarget().getThreads()[0],
+						DebugEvent.CREATE);
+				break;
 				case STEP_INTO :
 					event = new DebugEvent(getDebugTarget().getThreads()[0],
 							DebugEvent.RESUME, DebugEvent.STEP_INTO);
@@ -632,17 +628,4 @@ public class AtlDebugTarget extends DeferredDebugElementWorkbenchAdapter impleme
 		return messageFromDebuggee;
 	}
 
-	public Object[] getChildren(Object o) {
-		try {
-			if (hasThreads())
-				return getThreads();
-		} catch (DebugException e) {
-			e.printStackTrace();
-		}
-		return new Object[] {};
-	}
-
-	public Object getParent(Object o) {
-		return new Object();
-	}
 }

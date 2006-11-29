@@ -21,12 +21,11 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.debug.ui.DeferredDebugElementWorkbenchAdapter;
 
 /**
  * @author Freddy Allilaire
  */
-public class AtlValue extends DeferredDebugElementWorkbenchAdapter implements IValue {
+public class AtlValue extends AtlDebugElement implements IValue {
 
 	String typeName;
 	String asString;
@@ -42,6 +41,7 @@ public class AtlValue extends DeferredDebugElementWorkbenchAdapter implements IV
 	}
 
 	public AtlValue(Value value, AtlDebugTarget atlDT) {
+		super(atlDT);
 		this.value = value;
 		this.atlDT = atlDT;
 		this.typeName = getTypeName(value);
@@ -264,12 +264,6 @@ public class AtlValue extends DeferredDebugElementWorkbenchAdapter implements IV
 	}
 	
 	/**
-	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-	 */
-	public Object getAdapter(Class adapter) {
-		return null;
-	}
-	/**
 	 * @return Returns the value.
 	 */
 	public Value getValue() {
@@ -285,11 +279,4 @@ public class AtlValue extends DeferredDebugElementWorkbenchAdapter implements IV
 		return false;
 	}
 	
-	public Object[] getChildren(Object o) {
-		return new Object[] {};
-	}
-
-	public Object getParent(Object o) {
-		return getDebugTarget();
-	}
 }

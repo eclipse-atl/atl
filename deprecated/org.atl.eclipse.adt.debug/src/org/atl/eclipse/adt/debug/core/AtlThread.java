@@ -14,19 +14,19 @@ import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
-import org.eclipse.debug.ui.DeferredDebugElementWorkbenchAdapter;
 
 
 /**
  * @author Freddy Allilaire
  */
-public class AtlThread extends DeferredDebugElementWorkbenchAdapter implements IThread {
+public class AtlThread extends AtlDebugElement implements IThread {
 
 	private String threadName;
 	private AtlDebugTarget atlDT;
 	private AtlStackFrame stackFrames[];
 
 	public AtlThread(String name, AtlDebugTarget atlDT) {
+		super(atlDT);
 		this.threadName = name;
 		this.atlDT = atlDT;
 		this.stackFrames = null;
@@ -222,13 +222,6 @@ public class AtlThread extends DeferredDebugElementWorkbenchAdapter implements I
 	}
 	
 	/**
-	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-	 */
-	public Object getAdapter(Class adapter) {
-		return null;
-	}
-	
-	/**
 	 * This method allow to update the array of stackFrames 
 	 * @param frames
 	 */
@@ -236,17 +229,4 @@ public class AtlThread extends DeferredDebugElementWorkbenchAdapter implements I
 		this.stackFrames = frames;
 	}
 
-	public Object[] getChildren(Object o) {
-		try {
-			if (hasStackFrames())
-				return getStackFrames();
-		} catch (DebugException e) {
-			e.printStackTrace();
-		}
-		return new Object[] {};
-	}
-
-	public Object getParent(Object o) {
-		return getDebugTarget();
-	}
 }
