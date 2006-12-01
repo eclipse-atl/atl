@@ -3,13 +3,10 @@
  */
 package org.atl.eclipse.adt.wizard.atlfile;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -31,10 +28,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 /**
  * @author Freddy Allilaire
@@ -43,7 +37,7 @@ public class AtlFileScreen extends WizardPage {
 
 	final public static String NAME = "NAME";
 	final public static String TYPE = "TYPE";
-	final public static String PROJECT = "PROJECT";
+	final public static String CONTAINER = "CONTAINER";
 	final public static String IN = "IN";
 	final public static String OUT = "OUT";
 	final public static String LIB = "LIB";
@@ -51,12 +45,14 @@ public class AtlFileScreen extends WizardPage {
 	final public static String QUERY = "query";
 	final public static String LIBRARY = "library";
 		
+	private ISelection selection;
+	
 	private Group groupHead;
 	private Group groupIn;
 	private Group groupOut;
 	private Group groupLib;
 	private Text textName;
-	private Combo comboProject;
+	private Text textProject;
 	private Combo comboType;
 	private Table tableIn;
 	private Table tableOut;
@@ -70,6 +66,8 @@ public class AtlFileScreen extends WizardPage {
 		super("ATL File Wizard");
 		setTitle("ATL File Wizard");
 		setDescription("");
+		this.selection = selection;
+		System.out.println("selection: " + this.selection);
 		this.setPageComplete(false);
 	}
 
@@ -94,61 +92,58 @@ public class AtlFileScreen extends WizardPage {
 		 * GroupHead
 		 **********************************************************************/
 		layout = new GridLayout();
-		layout.numColumns = 2;
+		layout.numColumns = 3;
 		
 		groupHead.setLayout(layout);
 		groupHead.setText("HEAD");
 		groupHead.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		new Label(groupHead, SWT.NULL).setText("Project Name");
-		comboProject = new Combo(groupHead, SWT.BORDER | SWT.READ_ONLY);
+		new Label(groupHead, SWT.NULL).setText("Container");
+		textProject = new Text(groupHead, SWT.BORDER);
+		
+		if (selection!=null && selection.isEmpty()==false && selection instanceof IStructuredSelection) {
+			IStructuredSelection ssel = (IStructuredSelection)selection;
+			if (ssel.size()>1) return;
+			Object obj = ssel.getFirstElement();
+			if (obj instanceof IResource) {
+				IContainer selectionContainer;
+				if (obj instanceof IContainer)
+					selectionContainer = (IContainer)obj;
+				else
+					selectionContainer = ((IResource)obj).getParent();
+				textProject.setText(selectionContainer.getFullPath().toOSString());
+			}
+		}
 
-		/**
-		 * Filled combo with project names available
-		 */
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		List arrayProjectName = new ArrayList();
-		for (int i=0; i < root.getProjects().length; i++) {
-			IProject currentProject = root.getProjects()[i];
-			arrayProjectName.add(currentProject.getName());
-		}
-		comboProject.setItems( (String[])arrayProjectName.toArray(new String[] {}));
+		textProject.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		/**
-		 * Selected current project is possible
-		 */
-		IWorkbench wb = PlatformUI.getWorkbench();
-		IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
-		IWorkbenchPage page = win.getActivePage();
+		Button buttonBrowse = new Button(groupHead, SWT.PUSH);
+		buttonBrowse.setText("Browse...");
+		buttonBrowse.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				handleProjectBrowse();
+			}
+		});
 		
-		ISelection selection = page.getSelection();
-		if (selection instanceof IStructuredSelection) {
-			IStructuredSelection ss = (IStructuredSelection)selection;
-			Object element = ss.getFirstElement();
-			if (element instanceof IResource)
-				comboProject.setText(((IResource)element).getProject().getName());
-		}
-		if (comboProject.getText().equals(""))
-			comboProject.setText(comboProject.getItem(0));
-		/**
-		 * 
-		 */
-		comboProject.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
-		new Label(groupHead, SWT.NULL).setText("ATL File Name");
+		new Label(groupHead, SWT.NULL).setText("ATL Module Name");
 		textName = new Text(groupHead, SWT.BORDER);
 		textName.addKeyListener( new KeyAdapter() {
 			public void keyReleased(KeyEvent evt) {
 				textNameKeyPressed(evt);
 			}
 		});
-		textName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		GridData gdFilename = new GridData(GridData.FILL_HORIZONTAL);
+		gdFilename.horizontalSpan = 2;
+		textName.setLayoutData(gdFilename);
 		
 		new Label(groupHead, SWT.NULL).setText("ATL File Type");
 		comboType = new Combo(groupHead, SWT.BORDER | SWT.READ_ONLY);
 		comboType.setItems(new String[] {MODULE, LIBRARY, QUERY});
 		comboType.setText(MODULE);
-		comboType.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		GridData gdATLType = new GridData(GridData.FILL_HORIZONTAL);
+		gdATLType.horizontalSpan = 2;
+		comboType.setLayoutData(gdATLType);
 		
 		/***********************************************************************
 		 * GroupIn
@@ -317,6 +312,24 @@ public class AtlFileScreen extends WizardPage {
 	}
 	
 	/**
+	 * Opens the browse container file
+	 */
+	private void handleProjectBrowse() {
+		ContainerSelectionDialog dialog =
+			new ContainerSelectionDialog(
+				getShell(),
+				ResourcesPlugin.getWorkspace().getRoot(),
+				false,
+				"Select a container");
+		if (dialog.open() == ContainerSelectionDialog.OK) {
+			Object[] result = dialog.getResult();
+			if (result.length == 1) {
+				textProject.setText(((Path)result[0]).toOSString());
+			}
+		}
+	}	
+	
+	/**
 	 * 
 	 * @param tableParam
 	 * @param itemAdded
@@ -342,8 +355,8 @@ public class AtlFileScreen extends WizardPage {
 			return textName.getText();
 		if (parameter.equals(TYPE))
 			return comboType.getText();
-		if (parameter.equals(PROJECT))
-			return comboProject.getText();
+		if (parameter.equals(CONTAINER))
+			return textProject.getText();
 		if (parameter.equals(IN)) {
 			String ret = "";
 			for (int i=0; i < tableIn.getItems().length; i++) {

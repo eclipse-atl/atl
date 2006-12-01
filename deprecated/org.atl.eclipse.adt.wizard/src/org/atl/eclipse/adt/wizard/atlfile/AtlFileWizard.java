@@ -4,12 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -29,7 +30,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	
 	private ISelection selection;
 	
-	private IProject modelProject;
+	private IContainer modelProject;
 
 	/**
 	 * Constructor
@@ -68,7 +69,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	public void newProjectBuilder() {
 		String fileName = page.getParameter(AtlFileScreen.NAME);
 		String fileType = page.getParameter(AtlFileScreen.TYPE);
-		modelProject = ResourcesPlugin.getWorkspace().getRoot().getProject(page.getParameter(AtlFileScreen.PROJECT));
+		modelProject = (IContainer)ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(page.getParameter(AtlFileScreen.CONTAINER)));
 		String contentFile = "";
 
 		if (fileType.equals(AtlFileScreen.MODULE)) {
@@ -101,7 +102,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	 * @param content content of the file to create
 	 */
 	private void createFile(String fileName, String content) {
-		IFile file = modelProject.getFile(fileName);
+		IFile file = modelProject.getFile(new Path(fileName));
 		try {
 			InputStream stream = openContentStream(content);
 			if (file.exists()) {
