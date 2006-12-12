@@ -10,11 +10,13 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.atl.eclipse.adt.debug.core.AtlDebugTarget;
@@ -113,8 +115,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			Map libsFromConfig = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
 			Map modelHandler = configuration.getAttribute(AtlLauncherTools.MODELHANDLER, new HashMap());
 			boolean checkSameModel = !configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false);
+            List superimpose = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
 
-			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode, checkSameModel);
+			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode, checkSameModel, superimpose);
 		} catch (CoreException e1) {
 			e1.printStackTrace();
 		}
@@ -131,9 +134,10 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @param mode			: mode (DEBUG or RUN)
 	 * @param ckeckSameModel TODO
 	 * @param libsFromConfig: Map {lib_name --> URI}
+     * @param superimpose   : list of module URIs to superimpose 
 	 */
-	public static void runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, boolean checkSameModel) {
-		runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, Collections.EMPTY_MAP, checkSameModel);
+	public static void runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, boolean checkSameModel, List superimpose) {
+		runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, Collections.EMPTY_MAP, checkSameModel, superimpose);
 	}
 
 	/**
@@ -148,13 +152,14 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @param linkWithNextTransformation
 	 * @param checkSameModel TODO
 	 * @param libsFromConfig: Map {lib_name --> URI}
+     * @param superimpose   : list of module URIs to superimpose 
 	 * @return
 	 */
-	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, boolean checkSameModel) {
-		return runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, linkWithNextTransformation, Collections.EMPTY_MAP, checkSameModel);
+	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, boolean checkSameModel, List superimpose) {
+		return runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, linkWithNextTransformation, Collections.EMPTY_MAP, checkSameModel, superimpose);
 	}
 	
-	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, Map inModel, boolean checkSameModel) {
+	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, Map inModel, boolean checkSameModel, List superimpose) {
 		Map toReturn = new HashMap();
 		try {
 			//asmUrl
@@ -177,6 +182,13 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				URL stringsUrl = fileNameToURL((String)libsFromConfig.get(libName));
 				libs.put(libName, stringsUrl);
 			}
+
+            //superimpose
+            List superimposeURLs = new ArrayList();
+            for(Iterator i = superimpose.iterator() ; i.hasNext() ; ) {
+                URL moduleUrl = fileNameToURL((String)i.next());
+                superimposeURLs.add(moduleUrl);
+            }
 
 			Collection toDispose = new HashSet();
 			//models
@@ -204,9 +216,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 			AtlLauncher myLauncher = AtlLauncher.getDefault();
 			if (mode.equals(ILaunchManager.DEBUG_MODE))
-				myLauncher.debug(asmUrl, libs, models, params);
+				myLauncher.debug(asmUrl, libs, models, params, superimposeURLs);
 			else
-				myLauncher.launch(asmUrl, libs, models, params);
+				myLauncher.launch(asmUrl, libs, models, params, superimposeURLs);
 			
 			for(Iterator i = outModel.keySet().iterator(); i.hasNext() ; ) {
 				String mName = (String)i.next();
@@ -395,7 +407,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			return URI.createFileURI(f.getPath());
 		} else {
 			filePath = filePath.replace('#', '/');
-			return URI.createPlatformResourceURI(filePath);
+			return URI.createPlatformResourceURI(filePath, true);
 		}
 	}
 	

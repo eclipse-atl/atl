@@ -94,7 +94,9 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		listProject.addModifyListener(this);
 		listProject.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
+                String text = listFile.getText();
 				listFile.setItems(AtlLauncherTools.fileNames(listProject.getText()));
+                listFile.setText(text);
 			}
 		});
 		
@@ -115,14 +117,14 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		groupOthersInformation.setText(Messages.getString("MainAtlTab.OTHERSPARAMETERS")); //$NON-NLS-1$
 
 		buttonAllowInterModelReferences.setLayoutData(labelLData);
-		buttonAllowInterModelReferences.setText("Allow inter-model references");
+		buttonAllowInterModelReferences.setText(Messages.getString("MainAtlTab.INTERMODELREFS")); //$NON-NLS-1$
 		buttonAllowInterModelReferences.addSelectionListener(this);
 
 		buttonModeDebug.setLayoutData(label2LData);
 		buttonModeDebug.setText(Messages.getString("MainAtlTab.MODEDEBUG")); //$NON-NLS-1$
 		buttonModeDebug.addSelectionListener(this);
 		
-		groupOthersInformation.setLayout(groupLayout);
+        groupOthersInformation.setLayout(groupLayout);
 		groupOthersInformation.layout();
 		
 		groupGeneralInformation.pack();
