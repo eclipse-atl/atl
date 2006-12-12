@@ -11,6 +11,8 @@ import java.io.StringReader;
 
 import org.atl.engine.vm.ModelLoader;
 import org.atl.engine.vm.StackFrame;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 
 /**
  * @author Frédéric Jouault
@@ -220,7 +222,7 @@ public class ASMString extends ASMOclAny {
 		ASMBoolean ret = new ASMBoolean(false);
 
 		try {
-			File file = new File(fileName.getSymbol());
+			File file = getFile(fileName.getSymbol());
 			if(file.getParentFile() != null)
 				file.getParentFile().mkdirs();
 			PrintStream out = null;
@@ -316,4 +318,27 @@ if(debug) System.out.println("result = \"" + ret + "\"");
           // End ATL Compiler specific Operations
 
 	private String s;
+    
+    
+    /**
+     * @param path The absolute or relative path to a file. 
+     * @return The file in the workspace, or the file in the filesystem if
+     * the workspace is not available.
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     */
+    public static File getFile(String path) {
+        try {
+            Class rp = Class.forName("org.eclipse.core.resources.ResourcesPlugin");
+            Object ws = rp.getMethod("getWorkspace", null).invoke(null, null);
+            Object root = ws.getClass().getMethod("getRoot", null).invoke(ws, null);
+            Path wspath = new Path(path);
+            Object wsfile = root.getClass().getMethod("getFile", 
+                    new Class[]{IPath.class}).invoke(root, new Object[]{wspath});
+            path = wsfile.getClass().getMethod("getLocation", null).invoke(
+                    wsfile, null).toString();
+        } catch (Throwable e) {
+            //fall back to native java.io.File path resolution
+        }
+        return new File(path);
+    }
 }
