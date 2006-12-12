@@ -5,6 +5,7 @@
 package org.atl.eclipse.engine;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -123,6 +124,8 @@ public abstract class AtlModelHandler {
 	public abstract void saveModel(final ASMModel model, String fileName, IProject project);
 	
 	public abstract void saveModel(final ASMModel model, String uri);
+    
+    public abstract void saveModel(final ASMModel model, OutputStream out);
 
 	public abstract ASMModel getAtl();
 

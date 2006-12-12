@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.atl.engine.vm.ASM;
@@ -41,15 +42,19 @@ public class AtlLauncher {
 		
 	}
 	
-	public Object launch(URL asmurl, Map models, Map asmParams) {
+    public Object launch(URL asmurl, Map models, Map asmParams) {
 		return launch(asmurl, Collections.EMPTY_MAP, models, asmParams);
 	}
 	
-	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams) {
-		return launch(asmurl, libraries, models, asmParams, false);
+    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams) {
+        return launch(asmurl, libraries, models, asmParams, Collections.EMPTY_LIST);
+    }
+
+    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose) {
+		return launch(asmurl, libraries, models, asmParams, false, superimpose);
 	}
 	
-	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, boolean step) {
+	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, boolean step, List superimpose) {
 		return launch(asmurl, libraries, models, asmParams, new SimpleDebugger(
 				/* step = */ step,
 				/* stepops = */ new ArrayList(),
@@ -57,24 +62,36 @@ public class AtlLauncher {
 				/* nostepops = */ new ArrayList(),
 				/* deepnostepops = */ new ArrayList(),
 				/* showStackTrace = */ true
-		));
+		), superimpose);
 	}
 	
 	public Object debug(URL asmurl, Map libraries, Map models, Map asmParams) {
 		return launch(asmurl, libraries, models, asmParams, new NetworkDebugger(6060, true));
 	}
 	
-	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, Debugger debugger) {
+    public Object debug(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose) {
+        return launch(asmurl, libraries, models, asmParams, new NetworkDebugger(6060, true), superimpose);
+    }
+    
+    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, Debugger debugger) {
+        return launch(asmurl, libraries, models, asmParams, debugger, Collections.EMPTY_LIST);
+    }
+
+    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, Debugger debugger, List superimpose) {
 		try {
 			ASM asm = new ASMXMLReader().read(new BufferedInputStream(asmurl.openStream()));
-			return launch(asm, libraries, models, asmParams, debugger);
+			return launch(asm, libraries, models, asmParams, debugger, superimpose);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	public Object launch(ASM asm, Map libraries, Map models, Map asmParams, Debugger debugger) {
+
+    public Object launch(ASM asm, Map libraries, Map models, Map asmParams, Debugger debugger) {
+        return launch(asm, libraries, models, asmParams, debugger, Collections.EMPTY_LIST);
+    }
+    
+	public Object launch(ASM asm, Map libraries, Map models, Map asmParams, Debugger debugger, List superimpose) {
 		Object ret = null;
 		try {
 			ASMModule asmModule = new ASMModule(asm);
@@ -92,8 +109,18 @@ public class AtlLauncher {
 				String lname = (String)i.next();
 				URL url = (URL)libraries.get(lname);
 				ASM lib = new ASMXMLReader().read(new BufferedInputStream(url.openStream()));
+                AtlModuleInheritance ami = new AtlModuleInheritance(env, lib);
+                ami.adaptModuleOperations();
 				env.registerOperations(lib);
 			}
+
+            for(Iterator i = superimpose.iterator() ; i.hasNext() ; ) {
+                URL url = (URL)i.next();
+                ASM module = new ASMXMLReader().read(new BufferedInputStream(url.openStream()));
+                AtlSuperimposeModule ami = new AtlSuperimposeModule(env, module);
+                ami.adaptModuleOperations();
+                env.registerOperations(module);
+            }
 
 			ASMInterpreter ai = new ASMInterpreter(asm, asmModule, env, asmParams);
 			ret = ai.getReturnValue();
