@@ -27,6 +27,7 @@ import org.atl.engine.vm.nativelib.ASMReal;
 import org.atl.engine.vm.nativelib.ASMSequence;
 import org.atl.engine.vm.nativelib.ASMSet;
 import org.atl.engine.vm.nativelib.ASMString;
+import org.atl.engine.vm.nativelib.ASMTuple;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
@@ -35,6 +36,8 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.FeatureMap;
+import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 
 /**
@@ -150,6 +153,12 @@ public class ASMEMFModelElement extends ASMModelElement {
 			ret = new ASMInteger(((Character)value).charValue());
 		} else if(value instanceof Enumerator) {
 			ret = new ASMEnumLiteral(((Enumerator)value).getName());
+        } else if(value instanceof FeatureMap.Entry) {
+            ret = new ASMTuple();
+            ret.set(frame, "eStructuralFeature", 
+                    emf2ASM(frame, ((FeatureMap.Entry)value).getEStructuralFeature()));
+            ret.set(frame, "value", 
+                    emf2ASM(frame, ((FeatureMap.Entry)value).getValue()));
 		} else if(value instanceof EObject) {
 			ret = ((ASMEMFModel)getModel()).getASMModelElement((EObject)value);
 		} else if(value == null) {
@@ -265,8 +274,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 	
 	public Object asm2EMF(StackFrame frame, ASMOclAny value, String propName, EStructuralFeature feature) {
 		Object ret = null;
-		
-		if(value instanceof ASMString) {
+        
+        if(value instanceof ASMString) {
 			ret = ((ASMString)value).getSymbol();
 		} else if(value instanceof ASMBoolean) {
 			ret = new Boolean(((ASMBoolean)value).getSymbol());
@@ -292,6 +301,18 @@ public class ASMEMFModelElement extends ASMModelElement {
 			String name = ((ASMEnumLiteral)value).getName();
 			EClassifier type = ((EClass)((ASMEMFModelElement)getMetaobject()).object).getEStructuralFeature(propName).getEType();
 			ret = ((EEnum)type).getEEnumLiteral(name).getInstance();
+        } else if (value instanceof ASMTuple) {
+            Object f = asm2EMF(frame, 
+                    ((ASMTuple)value).get(frame, "eStructuralFeature"),
+                    propName, feature);
+            if (f instanceof EStructuralFeature) {
+                Object v = asm2EMF(frame, 
+                        ((ASMTuple)value).get(frame, "value"),
+                        propName, feature);
+                ret = FeatureMapUtil.createEntry((EStructuralFeature)f, v);
+            } else {
+                frame.printStackTrace("ERROR: cannot convert " + value + " : " + value.getClass() + " to EMF.");
+            }
 		} else if(value instanceof ASMCollection) {
 			ret = new ArrayList();
 			for(Iterator i = ((ASMCollection)value).iterator() ; i.hasNext() ; ) {
@@ -463,7 +484,14 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 					boolean ok = true;
 					for(int j = 0 ; (j < pts.length) && ok ; j++) {
 						if(!pts[j].isAssignableFrom(argumentTypes[j])) {
-							ok = false;
+                            if (!(pts[j] == boolean.class && argumentTypes[j] == Boolean.class
+                            		|| pts[j] == int.class && argumentTypes[j] == Integer.class
+                            		|| pts[j] == char.class && argumentTypes[j] == Character.class
+                            		|| pts[j] == long.class && argumentTypes[j] == Long.class
+                            		|| pts[j] == float.class && argumentTypes[j] == Float.class
+                            		|| pts[j] == double.class && argumentTypes[j] == Double.class)) {
+                            	ok = false;
+                            }
 						}
 					}
 					if(ok)
@@ -519,5 +547,5 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 	}
 	
 	private EObject object;
-
+    
 }

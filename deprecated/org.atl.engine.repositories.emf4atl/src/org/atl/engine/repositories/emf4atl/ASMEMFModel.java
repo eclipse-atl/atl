@@ -14,6 +14,7 @@ import org.atl.engine.vm.nativelib.ASMModel;
 import org.atl.engine.vm.nativelib.ASMModelElement;
 import org.atl.engine.vm.nativelib.ASMString;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -27,9 +28,17 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 /**
  * @author Frédéric Jouault
+ * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
  */
 public class ASMEMFModel extends ASMModel {
 
+    // true if extent was explicitly loaded and requires explicit unloading
+	private boolean unload = false;
+	// nsURIs that were explicitly registered and need unregistering
+	private Set unregister = new HashSet();
+	// if not null, model could not yet be loaded from URI and needs to be loaded later from this URI
+	private String resolveURI = null;
+	
 	private boolean checkSameModel = true;
 	
 	public static ASMModel getMOF() {
@@ -76,7 +85,7 @@ public class ASMEMFModel extends ASMModel {
      * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
      */
     private void initClassifiersInAllExtents(Map classifiers) {
-        initClassifiers(extent.getContents().iterator(), classifiers, null);
+    	initClassifiers(getExtent().getContents().iterator(), classifiers, null);
         Iterator refExtents = referencedExtents.iterator();
         while (refExtents.hasNext()) {
             initClassifiers(
@@ -104,7 +113,13 @@ public class ASMEMFModel extends ASMModel {
 					// register the classifier under its full name
 					register(classifiers, name, eo);
 				}
-			}
+			} else {
+                // No meta-package or meta-class => just keep digging.
+                // N.B. This situation occurs in UML2 profiles, where
+                // EPackages containing EClasses are buried somewhere
+                // underneath other elements.
+                initClassifiers(eo.eContents().iterator(), classifiers, base);
+            }
 		}
 	}
 	
@@ -161,7 +176,7 @@ public class ASMEMFModel extends ASMModel {
 	public Set getElementsByType(ASMModelElement type) {
 		Set ret = new HashSet();
 		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
-        addElementsOfType(ret, t, extent);
+		addElementsOfType(ret, t, getExtent());
 		for (Iterator i = referencedExtents.iterator(); i.hasNext() ; ) {
 			Resource res = (Resource) i.next();
             addElementsOfType(ret, t, res);
@@ -191,7 +206,7 @@ public class ASMEMFModel extends ASMModel {
 		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
 		EObject eo = t.getEPackage().getEFactoryInstance().create(t);
 		ret = (ASMEMFModelElement)getASMModelElement(eo);
-		extent.getContents().add(eo);
+		getExtent().getContents().add(eo);
 		
 		return ret;
 	}
@@ -203,6 +218,7 @@ public class ASMEMFModel extends ASMModel {
 	private ASMEMFModel(String name, Resource extent, ASMEMFModel metamodel, boolean isTarget, ModelLoader ml) {
 		super(name, metamodel, isTarget, ml);
 		this.extent = extent;
+		addAllReferencedExtents();
 	}
 
 	/**
@@ -220,10 +236,16 @@ public class ASMEMFModel extends ASMModel {
 	public void dispose() {
         if (extent != null) {
             referencedExtents.clear();
-            extent.unload();
+            for (Iterator unrs = unregister.iterator(); unrs.hasNext();) {
+            	resourceSet.getPackageRegistry().remove(unrs.next());
+            }
             resourceSet.getResources().remove(extent);
+            if (unload) {
+            	extent.unload();
+            }
             extent = null;
             modelElements = null;
+            System.out.println("ASMEMFModel " + getName() + " disposed");
         }
 	}
     
@@ -260,6 +282,7 @@ public class ASMEMFModel extends ASMModel {
         Resource extent = resourceSet.createResource(URI.createURI(uri));
 
         ret = new ASMEMFModel(name, extent, metamodel, true, ml);
+        ret.unload = true;
 
         return ret;
     }
@@ -269,10 +292,15 @@ public class ASMEMFModel extends ASMModel {
 		
 		if(url.startsWith("uri:")) {
 			String uri = url.substring(4);
-			EPackage pack = (EPackage)EPackage.Registry.INSTANCE.getEPackage(uri);
-			Resource extent = pack.eResource();
-			ret = new ASMEMFModel(name, extent, metamodel, false, ml);
-            ret.addAllReferencedExtents();
+			EPackage pack = resourceSet.getPackageRegistry().getEPackage(uri);
+			if (pack == null) {
+				ret = new ASMEMFModel(name, null, metamodel, false, ml);
+				ret.resolveURI = uri;
+			} else {
+				Resource extent = pack.eResource();
+				ret = new ASMEMFModel(name, extent, metamodel, false, ml);
+				ret.addAllReferencedExtents();
+			}
 		} else {
 			ret = loadASMEMFModel(name, metamodel, URI.createURI(url), ml);
 		}
@@ -298,6 +326,7 @@ public class ASMEMFModel extends ASMModel {
 			ret = new ASMEMFModel(name, extent, metamodel, true, ml);
             ret.addAllReferencedExtents();
 			ret.setIsTarget(false);
+			ret.unload = true;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -310,8 +339,9 @@ public class ASMEMFModel extends ASMModel {
 		ASMEMFModel ret = newASMEMFModel(name, metamodel, ml);
 
 		try {
-			ret.extent.load(in, Collections.EMPTY_MAP);
+			ret.getExtent().load(in, Collections.EMPTY_MAP);
             ret.addAllReferencedExtents();
+            ret.unload = true;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -332,7 +362,14 @@ public class ASMEMFModel extends ASMModel {
 					nsURI = p.getName();
 					p.setNsURI(nsURI);
 				}
-				EPackage.Registry.INSTANCE.put(nsURI, p);
+				if (resourceSet.getPackageRegistry().containsKey(nsURI)) {
+					if (!p.equals(resourceSet.getPackageRegistry().getEPackage(nsURI))) {
+						System.out.println("WARNING: overwriting local EMF registry entry for " + nsURI);
+					}
+				} else {
+					model.unregister.add(nsURI);
+				}
+				resourceSet.getPackageRegistry().put(nsURI, p);
 			}
 			for(Iterator i = model.getElementsByType("EDataType").iterator() ; i.hasNext() ; ) {
 				ASMEMFModelElement ame = (ASMEMFModelElement)i.next();
@@ -363,16 +400,21 @@ public class ASMEMFModel extends ASMModel {
 	public static ASMEMFModel createMOF(ModelLoader ml) {
 		
 		if(mofmm == null) {
-			Resource extent = resourceSet.createResource(URI.createURI("http://www.eclipse.org/emf/2002/Ecore"));
+//			Resource extent = resourceSet.createResource(URI.createURI("http://www.eclipse.org/emf/2002/Ecore"));
 //			System.out.println("Actual resource class: " + extent.getClass());
-			extent.getContents().add(EcorePackage.eINSTANCE);
-			mofmm = new ASMEMFModel("MOF", extent, null, false, ml);
+//			extent.getContents().add(EcorePackage.eINSTANCE);
+			mofmm = new ASMEMFModel("MOF", EcorePackage.eINSTANCE.eResource(), null, false, ml);
 		}
 		
 		return mofmm;
 	}
 	
 	public Resource getExtent() {
+		if ((extent == null) && (resolveURI != null)) {
+			EPackage pack = resourceSet.getPackageRegistry().getEPackage(resolveURI);
+			extent = pack.eResource();
+			addAllReferencedExtents();
+		}
 		return extent; 
 	}
 	
@@ -381,14 +423,13 @@ public class ASMEMFModel extends ASMModel {
 	}
 	
 	private static void init() {
-		Map etfm = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap();
+		resourceSet = new ResourceSetImpl();
+		Map etfm = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();
 		if(!etfm.containsKey("*")) {
 			etfm.put("*", new XMIResourceFactoryImpl());
 		}
 //		System.out.println(Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap());
 //		System.out.println(Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap());
-		resourceSet = new ResourceSetImpl();
-		
 	}
 	
 	public boolean equals(Object o) {
@@ -415,14 +456,14 @@ public class ASMEMFModel extends ASMModel {
      * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
      */
     private void addAllReferencedExtents() {
-        Iterator contents = extent.getAllContents();
+        Iterator contents = getExtent().getAllContents();
         while (contents.hasNext()) {
             Object o = contents.next();
             if (o instanceof EClass) {
                 addReferencedExtentsFor((EClass)o, new HashSet());
             }
         }
-        referencedExtents.remove(extent);
+        referencedExtents.remove(getExtent());
     }
     
     /**
@@ -451,6 +492,17 @@ public class ASMEMFModel extends ASMModel {
                 if (eType instanceof EClass) {
                     addReferencedExtentsFor((EClass) eType, ignore);
                 }
+            }
+        }
+        Iterator eAtts = eClass.getEAttributes().iterator();
+        while (eAtts.hasNext()) {
+            EAttribute eAtt = (EAttribute) eAtts.next();
+            EClassifier eType = eAtt.getEType();
+            if (eType.eResource() != null) {
+                referencedExtents.add(eType.eResource());
+            } else {
+                System.err.println("WARNING: Resource for " + 
+                        eType.toString() + " is null; cannot be referenced");
             }
         }
         Iterator eSupers = eClass.getESuperTypes().iterator();
