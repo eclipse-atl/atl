@@ -218,7 +218,6 @@ public class ASMEMFModel extends ASMModel {
 	private ASMEMFModel(String name, Resource extent, ASMEMFModel metamodel, boolean isTarget, ModelLoader ml) {
 		super(name, metamodel, isTarget, ml);
 		this.extent = extent;
-		addAllReferencedExtents();
 	}
 
 	/**
@@ -423,13 +422,14 @@ public class ASMEMFModel extends ASMModel {
 	}
 	
 	private static void init() {
-		resourceSet = new ResourceSetImpl();
-		Map etfm = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();
+		Map etfm = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap();
 		if(!etfm.containsKey("*")) {
 			etfm.put("*", new XMIResourceFactoryImpl());
 		}
 //		System.out.println(Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap());
 //		System.out.println(Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap());
+		resourceSet = new ResourceSetImpl();
+		
 	}
 	
 	public boolean equals(Object o) {
