@@ -245,7 +245,7 @@ public class ASMEMFModel extends ASMModel {
             }
             extent = null;
             modelElements = null;
-            System.out.println("ASMEMFModel " + getName() + " disposed");
+            System.err.println("ASMEMFModel " + getName() + " disposed");
         }
 	}
     
@@ -364,7 +364,7 @@ public class ASMEMFModel extends ASMModel {
 				}
 				if (resourceSet.getPackageRegistry().containsKey(nsURI)) {
 					if (!p.equals(resourceSet.getPackageRegistry().getEPackage(nsURI))) {
-						System.out.println("WARNING: overwriting local EMF registry entry for " + nsURI);
+						System.err.println("WARNING: overwriting local EMF registry entry for " + nsURI);
 					}
 				} else {
 					model.unregister.add(nsURI);
