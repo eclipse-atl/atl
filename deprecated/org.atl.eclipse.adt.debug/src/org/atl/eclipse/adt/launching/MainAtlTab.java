@@ -3,6 +3,10 @@
  */
 package org.atl.eclipse.adt.launching;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.atl.eclipse.adt.debug.Messages;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -15,8 +19,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -41,6 +43,8 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 	private Group groupOthersInformation;
 	private Button buttonModeDebug;
 	private Button buttonAllowInterModelReferences;
+	
+	private Map buttonArray = new HashMap();
 	
 	public void createControl(Composite parent) {
 		container = new Composite(parent, SWT.NULL);
@@ -67,28 +71,16 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		groupGeneralInformation.setLayoutData(gd);
 		groupOthersInformation.setLayoutData(gd3);
 
-		/*********************************
-		 * Creation of FormData
-		 ******************************* */
-
-		
-		FormData labelLData = AtlLauncherTools.createFormData(15,35,10,40);
-		FormData textLData = AtlLauncherTools.createFormData(45,75,10,40); 
-		FormData label2LData = AtlLauncherTools.createFormData(15,35,60,90);
-		FormData text2LData = AtlLauncherTools.createFormData(45,75,60,90);
-		
-		FormLayout groupLayout = new FormLayout();
-
 		/**********************
 		 * Components of group1
 		 **********************/
 
 		groupGeneralInformation.setText(Messages.getString("MainAtlTab.PROJECT")); //$NON-NLS-1$
 
-		labelProject.setLayoutData(labelLData);
+		labelProject.setLayoutData(new GridData(GridData.FILL_BOTH));
 		labelProject.setText(Messages.getString("MainAtlTab.PROJECTNAME")); //$NON-NLS-1$
 
-		listProject.setLayoutData(textLData);
+		listProject.setLayoutData(new GridData(GridData.FILL_BOTH));
 		listProject.setItems(AtlLauncherTools.projectNames());
 		
 		listProject.addModifyListener(this);
@@ -100,15 +92,18 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 			}
 		});
 		
-		labelFile.setLayoutData(label2LData);
+		labelFile.setLayoutData(new GridData(GridData.FILL_BOTH));
 		labelFile.setText(Messages.getString("MainAtlTab.ATLFILENAME")); //$NON-NLS-1$
 
-		listFile.setLayoutData(text2LData);
+		listFile.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		listFile.addModifyListener(this);
 		
+		GridLayout groupLayout = new GridLayout();
+		groupLayout.numColumns = 2;
+		groupLayout.makeColumnsEqualWidth = true;
+
 		groupGeneralInformation.setLayout(groupLayout);
-		groupGeneralInformation.layout();
 		
 		/**********************
 		 * Components of group3
@@ -116,24 +111,34 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 
 		groupOthersInformation.setText(Messages.getString("MainAtlTab.OTHERSPARAMETERS")); //$NON-NLS-1$
 
-		buttonAllowInterModelReferences.setLayoutData(labelLData);
+		buttonAllowInterModelReferences.setLayoutData(new GridData(GridData.FILL_BOTH));
 		buttonAllowInterModelReferences.setText(Messages.getString("MainAtlTab.INTERMODELREFS")); //$NON-NLS-1$
 		buttonAllowInterModelReferences.addSelectionListener(this);
 
-		buttonModeDebug.setLayoutData(label2LData);
+		buttonModeDebug.setLayoutData(new GridData(GridData.FILL_BOTH));
 		buttonModeDebug.setText(Messages.getString("MainAtlTab.MODEDEBUG")); //$NON-NLS-1$
 		buttonModeDebug.addSelectionListener(this);
 		
-        groupOthersInformation.setLayout(groupLayout);
-		groupOthersInformation.layout();
+		checkButtonFactory();
 		
-		groupGeneralInformation.pack();
-		groupOthersInformation.pack();
+		groupLayout = new GridLayout();
+		groupLayout.numColumns = 1;
+		groupLayout.makeColumnsEqualWidth = true;
+
+		groupOthersInformation.setLayout(groupLayout);
 		
-		container.layout();
-		container.pack();
 		setControl(container);
 		canSave();
+	}
+	
+	private void checkButtonFactory() {
+		for (int i = 0; i < AtlLauncherTools.additionalParamsArray.length; i++) {
+			Button newCheckButton = new Button(groupOthersInformation, SWT.CHECK);
+			newCheckButton.setLayoutData(new GridData(GridData.FILL_BOTH));
+			newCheckButton.setText(AtlLauncherTools.additionalParamsArray[i]);
+			newCheckButton.addSelectionListener(this);
+			buttonArray.put(AtlLauncherTools.additionalParamsArray[i], newCheckButton);
+		}
 	}
 	
 	/**
@@ -153,6 +158,11 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 			listFile.setText(configuration.getAttribute(AtlLauncherTools.ATLFILENAME, ""));
 			buttonModeDebug.setSelection(configuration.getAttribute(AtlLauncherTools.MODEDEBUG, false));
 			buttonAllowInterModelReferences.setSelection(configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false));
+			for (Iterator it = buttonArray.keySet().iterator(); it.hasNext();) {
+				String currentButtonName = (String)it.next();
+				Button currentButton = (Button)buttonArray.get(currentButtonName);
+				currentButton.setSelection(configuration.getAttribute(currentButtonName, false));
+			}
 			canSave();
 			updateLaunchConfigurationDialog();
 		}
@@ -177,6 +187,11 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 		configuration.setAttribute(AtlLauncherTools.ATLFILENAME, listFile.getText());
 		configuration.setAttribute(AtlLauncherTools.AllowInterModelReferences, buttonAllowInterModelReferences.getSelection());
 		configuration.setAttribute(AtlLauncherTools.MODEDEBUG, buttonModeDebug.getSelection());
+		for (Iterator it = buttonArray.keySet().iterator(); it.hasNext();) {
+			String currentButtonName = (String)it.next();
+			Button currentButton = (Button)buttonArray.get(currentButtonName);
+			configuration.setAttribute(currentButtonName, currentButton.getSelection());
+		}
 	}
 
 	/**
