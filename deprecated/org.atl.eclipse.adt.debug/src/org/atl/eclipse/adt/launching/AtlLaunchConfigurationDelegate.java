@@ -117,6 +117,11 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			boolean checkSameModel = !configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false);
             List superimpose = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
 
+            Map additionalParams = new HashMap();
+    		for (int i = 0; i < AtlLauncherTools.additionalParamsArray.length; i++) {
+    			additionalParams.put(AtlLauncherTools.additionalParamsArray[i], new Boolean(configuration.getAttribute(AtlLauncherTools.additionalParamsArray[i], false)));
+    		}
+            
 			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode, checkSameModel, superimpose);
 		} catch (CoreException e1) {
 			e1.printStackTrace();

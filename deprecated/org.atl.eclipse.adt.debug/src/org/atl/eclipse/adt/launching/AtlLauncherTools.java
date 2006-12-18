@@ -58,6 +58,8 @@ public class AtlLauncherTools {
 		EXTENSIONS.add("acg");
 	}
 	
+	public static String[] additionalParamsArray = new String[] {};
+	
 	/**
 	 * 
 	 * @param left
