@@ -1,13 +1,12 @@
 package org.atl.engine.vm;
 
-import org.eclipse.ui.plugin.*;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class ATLVMPlugin extends AbstractUIPlugin {
+public class ATLVMPlugin extends Plugin {
 
 	//The shared instance.
 	private static ATLVMPlugin plugin;
@@ -39,16 +38,5 @@ public class ATLVMPlugin extends AbstractUIPlugin {
 	 */
 	public static ATLVMPlugin getDefault() {
 		return plugin;
-	}
-
-	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path.
-	 *
-	 * @param path the path
-	 * @return the image descriptor
-	 */
-	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.atl.engine.vm", path);
 	}
 }
