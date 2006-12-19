@@ -29,6 +29,12 @@ import org.atl.engine.vm.nativelib.ASMModule;
  */
 public class AtlLauncher {
 	
+	/* This is the default value in case no value is specified by caller.
+	 * AtlLaunchConfigurationDelegate always specifies a value and has its own default value (false).
+	 * Other callers (like ant tasks), which do not support setting continueAfterErrors, will use this default value.
+	 */
+	private final static boolean CONTINUE_AFTER_ERRORS_DEFAULT_VALUE = true;
+	
 	private static AtlLauncher defaultLauncher = null;
 	
 	public static AtlLauncher getDefault() {
@@ -51,17 +57,22 @@ public class AtlLauncher {
     }
 
     public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose) {
-		return launch(asmurl, libraries, models, asmParams, false, superimpose);
+		return launch(asmurl, libraries, models, asmParams, false, superimpose, CONTINUE_AFTER_ERRORS_DEFAULT_VALUE);
 	}
 	
-	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, boolean step, List superimpose) {
+    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose, boolean continueAfterErrors) {
+		return launch(asmurl, libraries, models, asmParams, false, superimpose, continueAfterErrors);
+	}
+	
+	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, boolean step, List superimpose, boolean continueAfterErrors) {
 		return launch(asmurl, libraries, models, asmParams, new SimpleDebugger(
 				/* step = */ step,
 				/* stepops = */ new ArrayList(),
 				/* deepstepops = */ new ArrayList(),
 				/* nostepops = */ new ArrayList(),
 				/* deepnostepops = */ new ArrayList(),
-				/* showStackTrace = */ true
+				/* showStackTrace = */ true,
+				continueAfterErrors
 		), superimpose);
 	}
 	
