@@ -172,7 +172,7 @@ public class ASMInterpreter {
 		if("true".equals(params.get("NetworkDebugger"))) {
 			debugger = new NetworkDebugger(6060, true);
 		} else {
-			debugger = new SimpleDebugger(step, stepops, deepstepops, nostepops, deepnostepops, showStackTrace, showSummary, profile);
+			debugger = new SimpleDebugger(step, stepops, deepstepops, nostepops, deepnostepops, showStackTrace, showSummary, profile, true);
 		}
 		ASMExecEnv env = new ASMExecEnv(asmModule, debugger, !"false".equals(params.get("cache")));
 		env.addModel(ml.getMOF());

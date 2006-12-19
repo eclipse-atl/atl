@@ -1,5 +1,6 @@
 package org.atl.engine.vm;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,10 +17,14 @@ import java.util.Stack;
 public class SimpleDebugger implements Debugger {
 
 	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops, boolean showStackTrace) {
-		this(step, stepops, deepstepops, nostepops, deepnostepops, showStackTrace, false, false);
+		this(step, stepops, deepstepops, nostepops, deepnostepops, showStackTrace, false, false, /*continueAfterError*/true);
+	}
+
+	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops, boolean showStackTrace, boolean continueAfterErrors) {
+		this(step, stepops, deepstepops, nostepops, deepnostepops, showStackTrace, false, false, continueAfterErrors);
 	}
 	
-	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops, boolean showStackTrace, boolean showSummary, boolean profile) {
+	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops, boolean showStackTrace, boolean showSummary, boolean profile, boolean continueAfterErrors) {
 		this.step = step;
 		this.stepops = stepops;
 		this.deepstepops = deepstepops;
@@ -28,6 +33,9 @@ public class SimpleDebugger implements Debugger {
 		this.showStackTrace = showStackTrace;
 		this.showSummary = showSummary;
 		this.profile = profile;
+		this.continueAfterErrors = continueAfterErrors;
+		
+		this.terminated = false;
 	}
 
 	public void enter(StackFrame frame) {
@@ -59,9 +67,9 @@ public class SimpleDebugger implements Debugger {
 
 		if(getShowEnter()) {
 			if(frame instanceof ASMStackFrame) {
-				System.out.println("********************* Entering " + op + " with " + ((ASMStackFrame)frame).getLocalVariables());
+				out.println("********************* Entering " + op + " with " + ((ASMStackFrame)frame).getLocalVariables());
 			} else {
-				System.out.println("********************* Entering " + op + " with " + frame.getArgs());
+				out.println("********************* Entering " + op + " with " + frame.getArgs());
 			}
 		}
 	}
@@ -79,7 +87,7 @@ public class SimpleDebugger implements Debugger {
 			} else {
 				ret = ((NativeStackFrame)frame).getRet();
 			}
-			System.out.println("********************* Leaving " + op + " with " + ret);
+			out.println("********************* Leaving " + op + " with " + ret);
 		}
 
 		if(stepops.contains(opName)) {
@@ -106,22 +114,22 @@ public class SimpleDebugger implements Debugger {
 
 	private void printStack(ASMStackFrame frame) {
 		if(!true) {
-			System.out.println(frame.getLocalStack());
+			out.println(frame.getLocalStack());
 		} else {
-			System.out.print("[");
+			out.print("[");
 			for(Iterator i = frame.getLocalStack().iterator() ; i.hasNext() ; ) {
 				Object o = i.next();
 				if(o == null) {
-					System.out.print("null");
+					out.print("null");
 				} else {
 					String s = o.toString();
 					if(s.length() > 30) s = s.substring(0, 10) + "..." + s.substring(s.length() - 10);
-					System.out.print(s);
+					out.print(s);
 				}
 				if(i.hasNext())
-					System.out.print(", ");
+					out.print(", ");
 			}
-			System.out.println("]");
+			out.println("]");
 		}
 
 	}
@@ -130,33 +138,43 @@ public class SimpleDebugger implements Debugger {
 		instr++;
 		if(step) {
 			printStack(frame);
-			System.out.println(conv(frame.getLocation()) + ": " + ((ASMOperation)frame.getOperation()).getInstructions().get(frame.getLocation()));
+			out.println(conv(frame.getLocation()) + ": " + ((ASMOperation)frame.getOperation()).getInstructions().get(frame.getLocation()));
 		}
 	}
 
 	public void error(StackFrame frame, String msg, Exception e) {
+		if(terminated) {
+			throw (RuntimeException)e;
+		}
 		if(getShowStackTrace()) {
-			System.out.println("****** BEGIN Stack Trace");
+			out.println("****** BEGIN Stack Trace");
 			if(msg != null)
-				System.out.println("\tmessage: " + msg);
+				out.println("\tmessage: " + msg);
 			if(e != null) {
-				System.out.println("\texception: ");
-				e.printStackTrace(System.out);
+				out.println("\texception: ");
+				e.printStackTrace(out);
 			}
 			frame.getExecEnv().printStackTrace();
-			System.out.println("****** END Stack Trace");
+			out.println("****** END Stack Trace");
+		}
+		if(!continueAfterErrors) {
+			out.println("Execution terminated due to error (see launch configuration to allow continuation after errors).");			
+			terminated = true;
+			throw new RuntimeException(msg, e);
+		} else {
+			out.println("Trying to continue execution despite the error.");
 		}
 	}
 
 	public void terminated() {
 		if(showSummary || profile) {
-			System.out.println("Number of instructions executed: " + instr);
+			out.println("Number of instructions executed: " + instr);
 			if(profile) {
-				System.out.println("Operation calls:");
+				out.println("Operation calls:");
 				List opCalls = new ArrayList(operationCalls.values());
 				Collections.sort(opCalls, Collections.reverseOrder());
 				for(Iterator i = opCalls.iterator() ; i.hasNext() ; ) {
-					System.out.println("\t" + i.next());
+					out.println("\t" + i.next());
 				}
 			}
 		}
@@ -180,6 +198,8 @@ public class SimpleDebugger implements Debugger {
 
 	private Stack stepStack = new Stack();
 
+	private PrintStream out = System.out;
+	
 	/** Show stack trace. */
 	private boolean showStackTrace;
 
@@ -206,6 +226,10 @@ public class SimpleDebugger implements Debugger {
 	
 	/** Run a simple profiler. */
 	private boolean profile;	
+	
+	private boolean continueAfterErrors;
+	
+	private boolean terminated;
 	
 	/** Profiling information about operation calls. */
 	private Map operationCalls = new HashMap();
