@@ -132,12 +132,12 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab implements Modify
 	}
 	
 	private void checkButtonFactory() {
-		for (int i = 0; i < AtlLauncherTools.additionalParamsArray.length; i++) {
+		for (int i = 0; i < AtlLauncherTools.additionalParamIds.length; i++) {
 			Button newCheckButton = new Button(groupOthersInformation, SWT.CHECK);
 			newCheckButton.setLayoutData(new GridData(GridData.FILL_BOTH));
-			newCheckButton.setText(AtlLauncherTools.additionalParamsArray[i]);
+			newCheckButton.setText(AtlLauncherTools.additionalParamLabels[i]);
 			newCheckButton.addSelectionListener(this);
-			buttonArray.put(AtlLauncherTools.additionalParamsArray[i], newCheckButton);
+			buttonArray.put(AtlLauncherTools.additionalParamIds[i], newCheckButton);
 		}
 	}
 	

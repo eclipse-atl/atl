@@ -117,12 +117,8 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			boolean checkSameModel = !configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false);
             List superimpose = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
 
-            Map additionalParams = new HashMap();
-    		for (int i = 0; i < AtlLauncherTools.additionalParamsArray.length; i++) {
-    			additionalParams.put(AtlLauncherTools.additionalParamsArray[i], new Boolean(configuration.getAttribute(AtlLauncherTools.additionalParamsArray[i], false)));
-    		}
-            
-			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode, checkSameModel, superimpose);
+			boolean continueAfterErrors = configuration.getAttribute(AtlLauncherTools.CONTINUE_AFTER_ERROR, false);
+			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode, checkSameModel, superimpose, continueAfterErrors);
 		} catch (CoreException e1) {
 			e1.printStackTrace();
 		}
@@ -145,6 +141,10 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, Collections.EMPTY_MAP, checkSameModel, superimpose);
 	}
 
+	public static void runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, boolean checkSameModel, List superimpose, boolean continueAfterErrors) {
+		runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, Collections.EMPTY_MAP, checkSameModel, superimpose, continueAfterErrors);
+	}
+
 	/**
 	 * 
 	 * @param filePath		: path of the ATL Transformation
@@ -161,10 +161,14 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @return
 	 */
 	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, boolean checkSameModel, List superimpose) {
-		return runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, linkWithNextTransformation, Collections.EMPTY_MAP, checkSameModel, superimpose);
+		return runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, linkWithNextTransformation, Collections.EMPTY_MAP, checkSameModel, superimpose, false);
 	}
 	
-	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, Map inModel, boolean checkSameModel, List superimpose) {
+	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, boolean checkSameModel, List superimpose, boolean continueAfterErrors) {
+		return runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, linkWithNextTransformation, Collections.EMPTY_MAP, checkSameModel, superimpose, continueAfterErrors);
+	}
+	
+	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, Map inModel, boolean checkSameModel, List superimpose, boolean continueAfterErrors) {
 		Map toReturn = new HashMap();
 		try {
 			//asmUrl
@@ -223,7 +227,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			if (mode.equals(ILaunchManager.DEBUG_MODE))
 				myLauncher.debug(asmUrl, libs, models, params, superimposeURLs);
 			else
-				myLauncher.launch(asmUrl, libs, models, params, superimposeURLs);
+				myLauncher.launch(asmUrl, libs, models, params, superimposeURLs, continueAfterErrors);
 			
 			for(Iterator i = outModel.keySet().iterator(); i.hasNext() ; ) {
 				String mName = (String)i.next();
