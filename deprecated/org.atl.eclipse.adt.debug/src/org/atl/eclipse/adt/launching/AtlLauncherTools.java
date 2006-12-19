@@ -58,7 +58,20 @@ public class AtlLauncherTools {
 		EXTENSIONS.add("acg");
 	}
 	
-	public static String[] additionalParamsArray = new String[] {};
+	public static String ALLOW_TARGET_NAVIGATION = "AllowTargetNavigation";
+	public static String ALLOW_SOURCE_MODIFICATION = "AllowSourceModification";
+	public static String CONTINUE_AFTER_ERROR = "ContinueAfterError";
+	public static String[] additionalParamIds = new String[] {
+		CONTINUE_AFTER_ERROR,
+//		ALLOW_TARGET_NAVIGATION,
+//		ALLOW_SOURCE_MODIFICATION,
+	};
+	
+	public static String[] additionalParamLabels = new String[] {
+		"Continue execution after errors in Run mode",
+//		"Allow navigation in target models",
+//		"Allow modification of source models",
+	};
 	
 	/**
 	 * 
