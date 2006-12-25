@@ -38,8 +38,16 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 	}
 
 	public void saveModel(final ASMModel model, String uri) {
-		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uri));
-		saveModel(model, file);
+        try {
+            IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uri));
+            saveModel(model, file);
+        } catch (Throwable e) {
+            try {
+                ((ASMMDRModel)model).save(uri);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
 	}
 	
 	private void saveModel(final ASMModel model, IFile file) {
@@ -48,11 +56,7 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 			final OutputStream out = new PipedOutputStream(in);
 			new Thread() {
 				public void run() {
-					try {
-						((ASMMDRModel)model).save(out);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+                    saveModel(model, out);
 				}
 			}.start();
 			if(file.exists())
@@ -66,6 +70,14 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 		}		
 	}
 	
+    public void saveModel(final ASMModel model, OutputStream out) {
+        try {
+            ((ASMMDRModel)model).save(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
 	public ASMModel getAtl() {
 		return atlmm;
 	}
