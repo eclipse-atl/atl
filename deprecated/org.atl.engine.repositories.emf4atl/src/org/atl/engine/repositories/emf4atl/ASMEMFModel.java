@@ -206,7 +206,6 @@ public class ASMEMFModel extends ASMModel {
 
 	/**
 	 * Simple Resource wrapping factory. 
-	 * @param ml ModelLoader used to load the model if available, null otherwise.
 	 */
 	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, Resource extent) throws Exception {
 		ASMEMFModel ret = null;
