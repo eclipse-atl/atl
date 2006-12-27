@@ -63,6 +63,7 @@
 			<id>andromda-repository</id>
 			<name>AndroMDA Repository</name>
 			<url>scp://galaxy.andromda.org/var/www/andromda/maven2</url>
+            <uniqueVersion>false</uniqueVersion>
 		</repository>
 	</distributionManagement>
 </project>
