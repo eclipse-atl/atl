@@ -415,7 +415,6 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			File f = new File(filePath.substring(4));
 			return URI.createFileURI(f.getPath());
 		} else {
-			filePath = filePath.replace('#', '/');
 			return URI.createPlatformResourceURI(filePath, true);
 		}
 	}
@@ -441,20 +440,16 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	 * @return ASM File corresponding to the ATL File
 	 */
 	private static IFile getASMFile(String atlFilePath) {
-		atlFilePath = atlFilePath.replace('#', '/');
-		
-		IWorkspace wks = ResourcesPlugin.getWorkspace();
-		IWorkspaceRoot wksroot = wks.getRoot();
-
+	
 		// TODO Get properties of the project
 		// know where bin files are, then choose good ASM File for ATL File
 
-		IFile currentAtlFile = wksroot.getFile(new Path(atlFilePath));
-
+		IFile currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(atlFilePath));
+		
 		String extension = currentAtlFile.getFileExtension().toLowerCase();
 		if (AtlLauncherTools.EXTENSIONS.contains(extension)) {
 			String currentAsmPath = currentAtlFile.getFullPath().toString().substring(0, currentAtlFile.getFullPath().toString().length() - extension.length()) + "asm";
-			return wksroot.getFile(new Path(currentAsmPath)); 
+			return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(currentAsmPath));
 		}
 		else
 			return null;
