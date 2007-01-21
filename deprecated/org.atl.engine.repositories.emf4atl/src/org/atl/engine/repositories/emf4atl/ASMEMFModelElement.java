@@ -208,9 +208,23 @@ public class ASMEMFModelElement extends ASMModelElement {
             }
         }
         frame.printStackTrace("ERROR: cannot find ASMEMFModel for " + value + " with extent " + valueExtent);
+        debugModels(frame);
         return null;
     }
     
+    private void debugModels(StackFrame frame)
+    {
+        Iterator models = frame.getModels().values().iterator();
+        while (models.hasNext()) {
+            Object m = models.next();
+            if (m instanceof ASMEMFModel)
+            {
+                ASMEMFModel model = (ASMEMFModel) m;
+                System.out.println("model in frame: " + model + "(" + model.getExtent());
+            }
+        }  
+    }
+
 	public void set(StackFrame frame, String name, ASMOclAny value) {
 		final boolean debug = false;
 //		final boolean checkSameModel = !true;
