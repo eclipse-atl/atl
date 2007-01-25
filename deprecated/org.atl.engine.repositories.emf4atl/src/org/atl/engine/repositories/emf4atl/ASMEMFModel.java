@@ -318,9 +318,7 @@ public class ASMEMFModel extends ASMModel {
 		ASMEMFModel ret = null;
 
 		try {
-			Resource extent = resourceSet.createResource(uri);
-			extent.load(Collections.EMPTY_MAP);
-//            Resource extent = resourceSet.getResource(uri, true);
+			Resource extent = resourceSet.getResource(uri, true);
 			ret = new ASMEMFModel(name, extent, metamodel, true);
             ret.addAllReferencedExtents();
 			ret.setIsTarget(false);
@@ -398,9 +396,6 @@ public class ASMEMFModel extends ASMModel {
 	public static ASMEMFModel createMOF() {
 		
 		if(mofmm == null) {
-//			Resource extent = resourceSet.createResource(URI.createURI("http://www.eclipse.org/emf/2002/Ecore"));
-//			System.out.println("Actual resource class: " + extent.getClass());
-//			extent.getContents().add(EcorePackage.eINSTANCE);
 			mofmm = new ASMEMFModel("MOF", EcorePackage.eINSTANCE.eResource(), null, false);
 		}
 		
