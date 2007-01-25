@@ -12,6 +12,7 @@ import org.atl.engine.repositories.emf4atl.ASMEMFModelElement;
 import org.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * The ATL compiler, refactored as a stand-alone class which does not depend on
@@ -19,7 +20,7 @@ import org.eclipse.emf.ecore.EObject;
  * 
  * @author JOUAULT (original version)
  * @author Matthias Bohlen (refactored to make it usable in Eclipse-less
- *         environments)
+ *         environments, added CompileTimeError in the interface)
  * 
  */
 public class AtlStandaloneCompiler {
@@ -71,7 +72,8 @@ public class AtlStandaloneCompiler {
 	}
 
 	/**
-	 * 
+	 * Compiles an ATL script.
+     * 
 	 * @param in
 	 *            The InputStream to get atl source from.
 	 * @param outputFileName
@@ -134,5 +136,41 @@ public class AtlStandaloneCompiler {
 
 		return ret;
 	}
+  
+    /**
+     * Compiles an ATL script and returns easily accessible error messages.
+     * @param in
+     *            The InputStream to get atl source from.
+     * @param outputFileName
+     *            Name of the file to which the ATL compiled program will be
+     *            saved.
+     * @return array of compiletime errors (0 length if no errors)
+     */
+    public CompileTimeError[] compileWithSimpleErrorResult(InputStream in, String outputFileName) {
+        EObject eObjects[] = compile (in, outputFileName);
+        
+        // convert the EObjects into an easily readable form (instances of CompileTimeError).
+        CompileTimeError[] result = new CompileTimeError[eObjects.length];
+        
+        for (int i = 0; i < eObjects.length; i++) {
+            EObject eObject = eObjects[i];
+            String location = getStringFeature(eObject, "location");
+            String description = getStringFeature(eObject, "description");
+            result[i] = new CompileTimeError(location, description);
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Gets the value of a feature (attribute) of a model object.
+     * @param eObject the model object
+     * @param featureName the name of the feature
+     * @return the value of the feature
+     */
+    private String getStringFeature (EObject eObject, String featureName) {
+        EStructuralFeature sfLocation = eObject.eClass().getEStructuralFeature(featureName);
+        return (String) eObject.eGet(sfLocation);
+    }
 
 }
