@@ -36,7 +36,7 @@ import org.eclipse.debug.core.model.IVariable;
  * @author Freddy Allilaire
  */
 
-public class AtlStackFrame implements IStackFrame {
+public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 
 	private ObjectReference stackFrame;
 	private AtlThread thread;
@@ -49,6 +49,7 @@ public class AtlStackFrame implements IStackFrame {
 	private Map vars = new HashMap();
 
 	public AtlStackFrame(AtlThread thread, ObjectReference stackFrame, AtlNbCharFile atlnbcharfile) {
+		super((AtlDebugTarget)thread.getDebugTarget());
 		// TODO Add a parameter: File name of file being debugged
 		this.thread = thread;
 		this.stackFrame = stackFrame;
@@ -331,13 +332,6 @@ public class AtlStackFrame implements IStackFrame {
 		thread.terminate();
 	}
 	
-	/**
-	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-	 */
-	public Object getAdapter(Class adapter) {
-		return null;
-	}
-	
 	private class DisassemblyStorage implements IStorage {
 		
 		private String contents;
@@ -395,6 +389,10 @@ public class AtlStackFrame implements IStackFrame {
 		}
 		
 		return new DisassemblyStorage("ATL#" + opName, ret.toString());
+	}
+
+	public ObjectReference getStackFrame() {
+		return stackFrame;
 	}
 	
 }

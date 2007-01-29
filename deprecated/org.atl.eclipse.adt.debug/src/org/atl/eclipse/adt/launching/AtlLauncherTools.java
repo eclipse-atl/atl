@@ -42,15 +42,36 @@ public class AtlLauncherTools {
 	public static String HOST = "Host";
 	public static String PORT = "Port";
 	public static String LIBS = "Libs";
+    public static String SUPERIMPOSE = "Superimpose";
 	public static String MODELTYPE = "ModelType";
 	public static String INJECTOR = "Injector";
 	public static String EXTRACTOR = "Extractor";
 	public static String MODELHANDLER = "Model Handler";
 	public static String MODEDEBUG = "Mode Debug";
-	public static String EXTENSION = "atl";
 	public static String MODELCHOICETABNAME = Messages.getString("AtlLauncherTools.MODELCHOICE"); //$NON-NLS-1$
+    public static String ADVANCEDTABNAME = Messages.getString("AtlLauncherTools.ADVANCED"); //$NON-NLS-1$
 	public static String REMOTEATLNAME = Messages.getString("AtlLauncherTools.ATLCONFIGURATION"); //$NON-NLS-1$
 	public static String PATHICONATL = "icons/atllogo_icon.gif";
+	public static List EXTENSIONS = new ArrayList();
+	static {
+		EXTENSIONS.add("atl");
+		EXTENSIONS.add("acg");
+	}
+	
+	public static String ALLOW_TARGET_NAVIGATION = "AllowTargetNavigation";
+	public static String ALLOW_SOURCE_MODIFICATION = "AllowSourceModification";
+	public static String CONTINUE_AFTER_ERROR = "ContinueAfterError";
+	public static String[] additionalParamIds = new String[] {
+		CONTINUE_AFTER_ERROR,
+//		ALLOW_TARGET_NAVIGATION,
+//		ALLOW_SOURCE_MODIFICATION,
+	};
+	
+	public static String[] additionalParamLabels = new String[] {
+		"Continue execution after errors in Run mode",
+//		"Allow navigation in target models",
+//		"Allow modification of source models",
+	};
 	
 	/**
 	 * 
@@ -164,7 +185,7 @@ public class AtlLauncherTools {
 	 * @return true if the extension is good
 	 */
 	public static boolean isGoodExtension(String extension) {
-		if (extension.toLowerCase().equals(EXTENSION.toLowerCase()))
+		if (EXTENSIONS.contains(extension.toLowerCase()))
 			return true;
 		return false;
 	}

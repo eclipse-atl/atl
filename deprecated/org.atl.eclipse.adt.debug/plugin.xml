@@ -27,6 +27,7 @@
       <import plugin="org.atl.eclipse.engine"/>
       <import plugin="org.eclipse.pde.core"/>
       <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.gmt.atl.oclquery.core"/>
    </requires>
 
 
@@ -60,7 +61,7 @@
 	<extension point="org.eclipse.debug.core.watchExpressionDelegates">
 		<watchExpressionDelegate
 			debugModel="org.atl.eclipse.adt.debug"
-			delegateClass="org.atl.eclipse.adt.debug.AtlWatchExpressionDelegate"/>
+			delegateClass="org.atl.eclipse.adt.debug.core.AtlWatchExpressionDelegate"/>
 	</extension>
 <!-- extension point : launch method is contained in this class-->
    <extension

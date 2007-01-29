@@ -14,7 +14,8 @@ import org.eclipse.debug.core.model.IVariable;
  * @author Freddy Allilaire
  */
 
-public class AtlVariable implements IVariable {
+public class AtlVariable extends AtlDebugElement implements IVariable {
+
 	// If you add a constant here, look in the AtlDebugModelPresentation if the value is not already used
 	public final static int UNKNOWN = -1;
 	public final static int LOCALVARIABLE = 0;
@@ -31,6 +32,7 @@ public class AtlVariable implements IVariable {
 	private int idVariable = -1;
 	
 	public AtlVariable(String name, IValue value, AtlDebugTarget atlDT, int description) {
+		super(atlDT);
 		try {
 			this.name = name;
 			this.typeName = value.getReferenceTypeName();
@@ -142,13 +144,6 @@ public class AtlVariable implements IVariable {
 	}
 	
 	/**
-	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-	 */
-	public Object getAdapter(Class adapter) 
-	{	
-		return null;
-	}
-	/**
 	 * @return Returns the superType.
 	 */
 	public int getDescription() {
@@ -160,4 +155,5 @@ public class AtlVariable implements IVariable {
 	public int getIdVariable() {
 		return idVariable;
 	}
+
 }

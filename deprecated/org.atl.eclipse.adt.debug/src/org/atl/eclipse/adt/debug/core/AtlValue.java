@@ -25,7 +25,7 @@ import org.eclipse.debug.core.model.IVariable;
 /**
  * @author Freddy Allilaire
  */
-public class AtlValue implements IValue {
+public class AtlValue extends AtlDebugElement implements IValue {
 
 	String typeName;
 	String asString;
@@ -41,6 +41,7 @@ public class AtlValue implements IValue {
 	}
 
 	public AtlValue(Value value, AtlDebugTarget atlDT) {
+		super(atlDT);
 		this.value = value;
 		this.atlDT = atlDT;
 		this.typeName = getTypeName(value);
@@ -182,6 +183,9 @@ public class AtlValue implements IValue {
 
 		}
 		
+		if(ret == null)
+			ret = new IVariable[] {};
+		
 		return ret;
 	}
 
@@ -260,15 +264,19 @@ public class AtlValue implements IValue {
 	}
 	
 	/**
-	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-	 */
-	public Object getAdapter(Class adapter) {
-		return null;
-	}
-	/**
 	 * @return Returns the value.
 	 */
 	public Value getValue() {
 		return value;
 	}
+
+	public boolean isContainer() {
+		try {
+			hasVariables();
+		} catch (DebugException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 }

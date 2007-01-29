@@ -19,13 +19,14 @@ import org.eclipse.debug.core.model.IThread;
 /**
  * @author Freddy Allilaire
  */
-public class AtlThread implements IThread {
+public class AtlThread extends AtlDebugElement implements IThread {
 
 	private String threadName;
 	private AtlDebugTarget atlDT;
 	private AtlStackFrame stackFrames[];
 
 	public AtlThread(String name, AtlDebugTarget atlDT) {
+		super(atlDT);
 		this.threadName = name;
 		this.atlDT = atlDT;
 		this.stackFrames = null;
@@ -36,7 +37,7 @@ public class AtlThread implements IThread {
 	 */
 	public IStackFrame[] getStackFrames() throws DebugException {
 		if(!isSuspended())
-			return null;
+			return new IStackFrame[0];
 		return stackFrames;
 	}
 	/**
@@ -221,17 +222,11 @@ public class AtlThread implements IThread {
 	}
 	
 	/**
-	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-	 */
-	public Object getAdapter(Class adapter) {
-		return null;
-	}
-	
-	/**
 	 * This method allow to update the array of stackFrames 
 	 * @param frames
 	 */
 	public void setStackFrames(AtlStackFrame[] frames) {
 		this.stackFrames = frames;
 	}
+
 }

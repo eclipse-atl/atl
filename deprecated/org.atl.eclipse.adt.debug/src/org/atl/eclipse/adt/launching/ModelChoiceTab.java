@@ -1094,7 +1094,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		
 		if (tableLib.getItemCount() != 0) {
 			for (int i=0; i < tableLib.getItemCount(); i++)
-				if (tablePath.getItem(i).getText(TABLELIBPATH).equals("")) { //$NON-NLS-1$
+				if (tableLib.getItem(i).getText(TABLELIBPATH).equals("")) { //$NON-NLS-1$
 					this.setErrorMessage(Messages.getString("ModelChoiceTab.GIVEPATHLIBS")); //$NON-NLS-1$
 					return false;
 				}
