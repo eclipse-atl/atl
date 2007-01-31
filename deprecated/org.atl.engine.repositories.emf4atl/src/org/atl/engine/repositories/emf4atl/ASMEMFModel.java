@@ -125,7 +125,7 @@ public class ASMEMFModel extends ASMModel {
 	
 	private void register(Map classifiers, String name, EObject classifier) {
 		if(classifiers.containsKey(name)) {
-			System.out.println("Warning: metamodel contains several classifiers with same name: " + name);
+			//System.out.println("Warning: metamodel contains several classifiers with same name: " + name);
 		}
 		classifiers.put(name, classifier);
 	}
@@ -244,7 +244,7 @@ public class ASMEMFModel extends ASMModel {
             }
             extent = null;
             modelElements = null;
-            System.err.println("ASMEMFModel " + getName() + " disposed");
+            //System.err.println("ASMEMFModel " + getName() + " disposed");
         }
 	}
     
@@ -363,7 +363,7 @@ public class ASMEMFModel extends ASMModel {
 				}
 				if (resourceSet.getPackageRegistry().containsKey(nsURI)) {
 					if (!p.equals(resourceSet.getPackageRegistry().getEPackage(nsURI))) {
-						System.err.println("WARNING: overwriting local EMF registry entry for " + nsURI);
+						//System.err.println("WARNING: overwriting local EMF registry entry for " + nsURI);
 					}
 				} else {
 					model.unregister.add(nsURI);
@@ -513,7 +513,7 @@ public class ASMEMFModel extends ASMModel {
                 addReferencedExtentsFor(eSuper, ignore);
             } else {
                 System.err.println("WARNING: Resource for " + 
-                        eSuper.toString() + " is null; cannot be referenced");
+                       eSuper.toString() + " is null; cannot be referenced");
             }
         }
     }
