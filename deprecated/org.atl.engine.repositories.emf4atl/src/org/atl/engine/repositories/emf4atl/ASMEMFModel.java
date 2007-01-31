@@ -125,7 +125,7 @@ public class ASMEMFModel extends ASMModel {
 	
 	private void register(Map classifiers, String name, EObject classifier) {
 		if(classifiers.containsKey(name)) {
-			//System.out.println("Warning: metamodel contains several classifiers with same name: " + name);
+			System.out.println("Warning: metamodel contains several classifiers with same name: " + name);
 		}
 		classifiers.put(name, classifier);
 	}
