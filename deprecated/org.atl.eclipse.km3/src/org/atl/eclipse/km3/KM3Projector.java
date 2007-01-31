@@ -256,8 +256,8 @@ public class KM3Projector {
 	}
 	
 	public ASMModel getMDRKM3FromFile(IFile file) throws CoreException, IOException {
-		initEMF();
-		ASMModel ret = mdramh.newModel("IN", this.getMDRKM3Metamodel());
+		initMDR();
+		ASMModel ret = mdramh.newModel("IN", mdrmm);
 		
 		EBNFInjector2 ebnfi = new EBNFInjector2();
 		InputStream in = file.getContents();
