@@ -267,7 +267,6 @@ public class KM3Projector {
 		Class parser = KM3Parser.class;
 		ebnfi.performImportation(mdrmm, ret, in, mmName, lexer, parser, pbs);
 		in.close();
-		System.err.println(ret);
 		
 		int nbPbs = 0;//markerMaker.applyMarkers(file, pbs);
 		
