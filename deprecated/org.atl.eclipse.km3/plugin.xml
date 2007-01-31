@@ -58,11 +58,18 @@
                id="org.atl.eclipse.km3.injector.mof14">
          </action>
          <action
-               label="Inject KM3 file to KM3 model"
-               class="org.atl.eclipse.km3.actions.KM3Injector"
+               label="Inject KM3 file to KM3 model (Ecore based)"
+               class="org.atl.eclipse.km3.actions.KM3EMFInjector"
                menubarPath="org.atl.eclipse.km3.menu"
                enablesFor="1"
-               id="org.atl.eclipse.km3.injector.km3inj">
+               id="org.atl.eclipse.km3.injector.km3injecore">
+         </action>
+         <action
+               label="Inject KM3 file to KM3 model (MDR based)"
+               class="org.atl.eclipse.km3.actions.KM3MDRInjector"
+               menubarPath="org.atl.eclipse.km3.menu"
+               enablesFor="1"
+               id="org.atl.eclipse.km3.injector.km3injmdr">
          </action>
       </objectContribution>
       <objectContribution

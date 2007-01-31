@@ -216,7 +216,7 @@ public class KM3Projector {
 	 * @param file is the KM3 file.
 	 * @return the KM3 model created using AtlEMFModelHandler.
 	 */
-	public ASMModel getKM3FromFile(IFile file) throws CoreException, IOException {
+	public ASMModel getEMFKM3FromFile(IFile file) throws CoreException, IOException {
 		initEMF();
 		ASMModel ret = emfamh.newModel("IN", emfmm);
 		
@@ -255,6 +255,46 @@ public class KM3Projector {
 		return ret;
 	}
 	
+	public ASMModel getMDRKM3FromFile(IFile file) throws CoreException, IOException {
+		initEMF();
+		ASMModel ret = mdramh.newModel("IN", this.getMDRKM3Metamodel());
+		
+		EBNFInjector2 ebnfi = new EBNFInjector2();
+		InputStream in = file.getContents();
+
+		ASMModel pbs = null;//mdramh.newModel("pbs", pbmm);
+		Class lexer = KM3Lexer.class;
+		Class parser = KM3Parser.class;
+		ebnfi.performImportation(mdrmm, ret, in, mmName, lexer, parser, pbs);
+		in.close();
+		System.err.println(ret);
+		
+		int nbPbs = 0;//markerMaker.applyMarkers(file, pbs);
+		
+//		if((!stopOnError) || (nbPbs == 0)) {
+//			Map models = new HashMap();
+//			models.put("MOF", mdramh.getMof());
+//			models.put("KM3", mdrmm);
+//			models.put("IN", ret);
+//			models.put("Problem", pbmm);
+//			models.put("OUT", pbs);
+//
+//			Map params = Collections.EMPTY_MAP;
+//			
+//			Map libs = Collections.EMPTY_MAP;
+//
+//			//AtlLauncher.getDefault().launch(KM3WFRurl, libs, models, params);			
+//
+//			//nbPbs = markerMaker.applyMarkers(file, pbs);
+//		}
+		
+		if(stopOnError && (nbPbs != 0)) {
+			ret = null;
+		}
+		
+		return ret;
+	}
+	
 	/**
 	 * Transforms a KM3 file to an Ecore metamodel.
 	 * @author jouault
@@ -265,7 +305,7 @@ public class KM3Projector {
 	public ASMModel getEcoreFromKM3File(IFile file) throws CoreException, IOException {
 		ASMModel ret = null;
 		
-		ASMModel model = getKM3FromFile(file);
+		ASMModel model = getEMFKM3FromFile(file);
 		
 		if(model != null)
 			ret = getEcoreFromKM3(model);
@@ -311,7 +351,7 @@ public class KM3Projector {
 	public ASMModel getMOF14FromKM3File(IFile file) throws CoreException, IOException {
 		ASMModel ret = null;
 		
-		ASMModel model = getKM3FromFile(file);
+		ASMModel model = getMDRKM3FromFile(file);
 
 		if(model != null)
 			ret = getMOF14FromKM3(model);

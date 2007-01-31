@@ -14,9 +14,9 @@ import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-public class KM3Injector implements IObjectActionDelegate {
+public class KM3MDRInjector implements IObjectActionDelegate {
 
-	private AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
+	private AtlModelHandler amh = AtlModelHandler.getDefault("MDR");
 
 	private ISelection selection;
 
@@ -25,7 +25,7 @@ public class KM3Injector implements IObjectActionDelegate {
 	/**
 	 * Constructor for Action1.
 	 */
-	public KM3Injector() {
+	public KM3MDRInjector() {
 		super();		
 	}
 
@@ -42,11 +42,11 @@ public class KM3Injector implements IObjectActionDelegate {
 		try {
 			IFile file = ((IFile)((IStructuredSelection)selection).getFirstElement());
 			
-			ASMModel emf = kp.getKM3FromFile(file);
+			ASMModel emf = kp.getMDRKM3FromFile(file);
 			
 			if(emf != null) {
 				String name = file.getFullPath().removeFirstSegments(1).toString();
-				name = name.substring(0, name.length() - 4) + "-KM3.ecore";
+				name = name.substring(0, name.length() - 4) + "-KM3.xmi";
 				amh.saveModel(emf, name, file.getProject());
 			}
 		} catch (CoreException e) {

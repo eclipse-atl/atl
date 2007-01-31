@@ -55,7 +55,7 @@ public class KM32Ecore implements IObjectActionDelegate {
 						IFile file = ((IFile)((IStructuredSelection)selection).getFirstElement());
 					
 						mon.subTask("Parsing and checking KM3 file");
-						ASMModel km3model = kp.getKM3FromFile(file);
+						ASMModel km3model = kp.getEMFKM3FromFile(file);
 
 						ASMModel emf = null;
 						if(km3model != null) {
