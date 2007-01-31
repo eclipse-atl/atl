@@ -31,15 +31,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  */
 public class MarkerMaker {	
 	
-	private static boolean initialized = false; 
-	
-	private static EPackage pkProblem = null;
-	private static EClass clProblem = null;
-	private static EStructuralFeature sfSeverity = null;
-	private static EStructuralFeature sfLocation = null;
-	private static EStructuralFeature sfDescription = null;
-//	private static EEnum enSeverity = null; 
-
 	private static Map severities = new HashMap();
 	
 	static {
@@ -48,26 +39,29 @@ public class MarkerMaker {
 		severities.put("critic", new Integer(IMarker.SEVERITY_INFO));		
 	}
 	
-	private void initialize(EObject problem) {
+	/**
+	 * creates a problem marker from an Eobject. This EObject contain the required information.
+	 * @see org.atl.eclipse.engine.resources#Problem.ecore
+	 * @param res the resource associated to the created marker
+	 * @param problem the EObject representing a problem
+	 */
+	private void eObjectToPbmMarker(IResource res, EObject problem, int tabWidth) {
+		EPackage pkProblem = null;
+		EClass clProblem = null;
+		EStructuralFeature sfSeverity = null;
+		EStructuralFeature sfLocation = null;
+		EStructuralFeature sfDescription = null;
+		
 		pkProblem = problem.eClass().getEPackage();
 		clProblem = (EClass)pkProblem.getEClassifier("Problem");
 		sfSeverity = clProblem.getEStructuralFeature("severity");
 		sfLocation = clProblem.getEStructuralFeature("location");
 		sfDescription = clProblem.getEStructuralFeature("description");
-//		enSeverity = (EEnum)pkProblem.getEClassifier("Severity");
-		initialized = true;
-	}
-	
-	/**
-	 * creates a problem marker from an Eobject. This EObject contain the required information.
-	 * @see org.atl.eclipse.engine.resources#Problem.ecore
-	 * @param res the resource associated to the created marker
-	 * @param eo the EObject representing a problem
-	 */
-	private void eObjectToPbmMarker(IResource res, EObject eo, int tabWidth) {
-		String description = (String)eo.eGet(sfDescription);
+
+
+		String description = (String)problem.eGet(sfDescription);
 		
-		String location = (String)eo.eGet(sfLocation);
+		String location = (String)problem.eGet(sfLocation);
 		int lineNumber = Integer.parseInt(location.split(":")[0]);
 		int charStart = 0, charEnd = 0;
 		try {
@@ -82,7 +76,7 @@ public class MarkerMaker {
 			e1.printStackTrace();
 		}
 		
-		String severity = ((EEnumLiteral)eo.eGet(sfSeverity)).getName();
+		String severity = ((EEnumLiteral)problem.eGet(sfSeverity)).getName();
 		int eclipseSeverity = ((Integer)severities.get(severity)).intValue();
 		
 		try {
@@ -98,9 +92,6 @@ public class MarkerMaker {
 	}
 	
 	private void createPbmMarkers(IResource res, EObject[] eos, int tabWidth) {
-		if (!initialized && eos.length > 0) {
-			initialize(eos[0]);
-		}
 		for (int i = 0; i  < eos.length; i++) {
 			eObjectToPbmMarker(res, eos[i], tabWidth);
 		}
