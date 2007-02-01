@@ -53,6 +53,14 @@ public class ASMMap extends ASMOclAny {
 		s.put(key, value);
 	}
 
+	public ASMOclAny get(ASMOclAny key) {
+		return (ASMOclAny)s.get(key);
+	}
+
+	public Iterator getKeys() {
+		return s.keySet().iterator();
+	}
+
 	// Native Operations below
 
 	public static ASMOclAny get(StackFrame frame, ASMMap self, ASMOclAny key) {
