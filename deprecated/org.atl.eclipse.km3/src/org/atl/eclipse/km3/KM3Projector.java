@@ -350,7 +350,7 @@ public class KM3Projector {
 	public ASMModel getMOF14FromKM3File(IFile file) throws CoreException, IOException {
 		ASMModel ret = null;
 		
-		ASMModel model = getMDRKM3FromFile(file);
+		ASMModel model = getEMFKM3FromFile(file);
 
 		if(model != null)
 			ret = getMOF14FromKM3(model);
