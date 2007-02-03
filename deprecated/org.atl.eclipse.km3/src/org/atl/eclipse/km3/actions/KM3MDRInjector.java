@@ -16,8 +16,6 @@ import org.eclipse.ui.IWorkbenchPart;
 
 public class KM3MDRInjector implements IObjectActionDelegate {
 
-	private AtlModelHandler amh;
-
 	private ISelection selection;
 
 	private KM3Projector kp = KM3Projector.getKM3Projector();
@@ -39,7 +37,7 @@ public class KM3MDRInjector implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		amh = AtlModelHandler.getDefault("MDR");
+		AtlModelHandler amh = AtlModelHandler.getDefault("MDR");
 		try {
 			IFile file = ((IFile)((IStructuredSelection)selection).getFirstElement());
 			
