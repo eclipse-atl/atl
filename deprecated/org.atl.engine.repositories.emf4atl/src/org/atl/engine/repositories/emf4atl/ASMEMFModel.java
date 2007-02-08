@@ -215,7 +215,7 @@ public class ASMEMFModel extends ASMModel {
 	 * @param metamodel
 	 * @param isTarget
 	 */
-	private ASMEMFModel(String name, Resource extent, ASMEMFModel metamodel, boolean isTarget, ModelLoader ml) {
+	protected ASMEMFModel(String name, Resource extent, ASMEMFModel metamodel, boolean isTarget, ModelLoader ml) {
 		super(name, metamodel, isTarget, ml);
 		this.extent = extent;
 	}
