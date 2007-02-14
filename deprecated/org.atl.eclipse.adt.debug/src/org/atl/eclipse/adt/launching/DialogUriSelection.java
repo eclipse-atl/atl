@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.atl.engine.repositories.emf4atl.ASMEMFModel;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -64,6 +65,11 @@ public class DialogUriSelection extends SelectionStatusDialog {
 		
 		for (Iterator it = ((Map)EPackage.Registry.INSTANCE).keySet().iterator(); it.hasNext();)
 			uris.add((it.next()).toString());
+		
+		
+		for (Iterator it = ASMEMFModel.getResourceSet().getPackageRegistry().keySet().iterator(); it.hasNext(); ) {
+			uris.add((it.next()).toString());
+		}
 		
 		for (Iterator it = uris.iterator(); it.hasNext();)
 			listUri.add((it.next()).toString());
