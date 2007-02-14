@@ -432,6 +432,10 @@ public class ASMEMFModel extends ASMModel {
 		
 	}
 	
+	public static ResourceSet getResourceSet() {
+		return resourceSet;
+	}
+	
 	public boolean equals(Object o) {
 		return (o instanceof ASMEMFModel) && (((ASMEMFModel)o).extent == extent);
 	}
