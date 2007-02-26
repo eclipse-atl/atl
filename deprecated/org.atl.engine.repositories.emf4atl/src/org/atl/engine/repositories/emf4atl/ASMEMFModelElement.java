@@ -36,6 +36,7 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
@@ -160,7 +161,7 @@ public class ASMEMFModelElement extends ASMModelElement {
             ret.set(frame, "value", 
                     emf2ASM(frame, ((FeatureMap.Entry)value).getValue()));
 		} else if(value instanceof EObject) {
-			ret = ((ASMEMFModel)getModel()).getASMModelElement((EObject)value);
+            ret = eObjectToASM(frame, (EObject)value);
 		} else if(value == null) {
 			ret = new ASMOclUndefined();
 		} else if(value instanceof Collection) {
@@ -182,6 +183,35 @@ public class ASMEMFModelElement extends ASMModelElement {
 		
 		return ret;
 	}
+    
+    /**
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     * @param frame The ATL VM stackframe
+     * @param value The EMF value to convert
+     * @return The corresponding ASMModelElement, taking into account
+     * the model in which the element should reside. Uses this model as a proxy
+     * if no other model contains the given value.
+     */
+    private ASMOclAny eObjectToASM(StackFrame frame, EObject value) {
+        ASMEMFModel model = (ASMEMFModel) getModel();
+        Resource valueExtent = value.eResource();
+        if (model.getExtent().equals(valueExtent)) {
+            return model.getASMModelElement(value);
+        } else {
+            Iterator models = frame.getModels().values().iterator();
+            while (models.hasNext()) {
+                Object m = models.next();
+                if ((m instanceof ASMEMFModel) && (!model.equals(m))) {
+                    if (((ASMEMFModel)m).getExtent().equals(valueExtent)) {
+                        return ((ASMEMFModel)m).getASMModelElement(value);
+                    }
+                }
+            }
+        }
+        //Use this model as proxy
+        return model.getASMModelElement(value);
+    }
+    
 	public void set(StackFrame frame, String name, ASMOclAny value) {
 		final boolean debug = false;
 //		final boolean checkSameModel = !true;
