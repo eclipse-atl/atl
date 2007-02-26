@@ -58,7 +58,7 @@ public class LocalObjectReference extends ObjectReference {
 
 		ASMOclAny o = null;
 		try {
-			o = object.get(null, propName);
+			o = object.get(debugger.getExecEnv().peek(), propName);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
