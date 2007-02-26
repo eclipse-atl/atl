@@ -229,12 +229,12 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
     	};    	    
     	pasteAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("paste.gif"));
     	
-    	renameItemAction = new Action("Rename") {
-        	public void run() {
-        		RenameAction ra = new RenameAction((IStructuredSelection)treeViewer.getSelection());
-        		ra.run();        		
-            }
-        };
+//    	renameItemAction = new Action("Rename") {
+//        	public void run() {
+//        		RenameAction ra = new RenameAction((IStructuredSelection)treeViewer.getSelection());
+//        		ra.run();        		
+//            }
+//        };
         
         addBreakPointAction = new Action("Add breakpoint") {
         	public void run() {
@@ -387,9 +387,9 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
     	mgr.add(new Separator());
     	mgr.add(addBreakPointAction);
     	mgr.add(new Separator());
-    	MenuManager refactor = new MenuManager("Refactor");
-    	refactor.add(renameItemAction);
-    	mgr.add(refactor);    	
+//    	MenuManager refactor = new MenuManager("Refactor");
+//    	refactor.add(renameItemAction);
+//    	mgr.add(refactor);
     }
     
     /**
