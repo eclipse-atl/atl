@@ -475,15 +475,15 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 		// must be done here and not in getASMModelElement because EClass extends EClassifier whose type is EClass
 		modelElements.put(object, this);
 		
-		try {
-			EStructuralFeature sfName = object.eClass().getEStructuralFeature("name");
+		EStructuralFeature sfName = object.eClass().getEStructuralFeature("name");
+		if (sfName != null) {
 			String name = (String)object.eGet(sfName);
 			if(name == null) {
 				name = "<notnamedyet>";
 			}
 			setName(name);
-		} catch(Exception e) {
-				setName("<unnamed>");
+		} else { 
+			setName("<unnamed>");
 		}
 
 		if(getMetaobject() == null) {

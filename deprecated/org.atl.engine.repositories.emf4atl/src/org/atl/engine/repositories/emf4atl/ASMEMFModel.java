@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.atl.engine.vm.ModelLoader;
@@ -55,6 +56,7 @@ public class ASMEMFModel extends ASMModel {
 			if(ret == null) {
 				ret = new ASMEMFModelElement(modelElements, this, object);
 			}
+			
 		}
 		
 		return ret;
@@ -231,20 +233,27 @@ public class ASMEMFModel extends ASMModel {
 		
 		return ret;
 	}
-	
+			
 	public void dispose() {
+		//System.err.println("INFO: Disposing ASMEMFModel " + getName());
+		
         if (extent != null) {
             referencedExtents.clear();
+            referencedExtents = null;
             for (Iterator unrs = unregister.iterator(); unrs.hasNext();) {
-            	resourceSet.getPackageRegistry().remove(unrs.next());
+            	String nsURI = (String)unrs.next();
+            	resourceSet.getPackageRegistry().remove(nsURI);
+            	//System.err.println("\tINFO: Unregistering " + nsURI + " from local EMF registry");
+            	
             }
             resourceSet.getResources().remove(extent);
             if (unload) {
             	extent.unload();
             }
             extent = null;
-            modelElements = null;
-            //System.err.println("ASMEMFModel " + getName() + " disposed");
+
+            modelElements.clear();
+            unregister.clear();
         }
 	}
     
@@ -358,7 +367,8 @@ public class ASMEMFModel extends ASMModel {
 				EPackage p = (EPackage)ame.getObject();
 				String nsURI = p.getNsURI();
 				if(nsURI == null) {
-					nsURI = p.getName();
+					//System.err.println("DEBUG: EPackage " + p.getName() + " in model " + model.getName() + " has no nsURI.");
+					nsURI = model.getName() ;//+ "_" + p.getName() ;//+ "_" + Double.toHexString((Math.random()));
 					p.setNsURI(nsURI);
 				}
 				if (resourceSet.getPackageRegistry().containsKey(nsURI)) {
@@ -369,6 +379,7 @@ public class ASMEMFModel extends ASMModel {
 					model.unregister.add(nsURI);
 				}
 				resourceSet.getPackageRegistry().put(nsURI, p);
+				//System.err.println("INFO: Registering " + nsURI + " in local EMF registry");
 			}
 			for(Iterator i = model.getElementsByType("EDataType").iterator() ; i.hasNext() ; ) {
 				ASMEMFModelElement ame = (ASMEMFModelElement)i.next();
