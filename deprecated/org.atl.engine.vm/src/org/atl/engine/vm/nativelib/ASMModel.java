@@ -1,6 +1,7 @@
 package org.atl.engine.vm.nativelib;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -41,7 +42,7 @@ public abstract class ASMModel extends ASMOclAny {
 		} else {
 			this.metamodel = metamodel;
 		}
-		this.metamodel.addSubModel(this);
+		//this.metamodel.addSubModel(this);
 		this.isTarget = isTarget;
 	}
 
@@ -84,14 +85,17 @@ public abstract class ASMModel extends ASMOclAny {
 		return metamodel;
 	}
 
+	// TODO remove this method
 	public void addSubModel(ASMModel subModel) {
-		subModels.put(subModel.name, subModel);
+		//subModels.put(subModel.name, subModel);
 	}
 
+	// TODO remove this method
 	public Map getSubModels() {
-		return subModels;
+		return Collections.EMPTY_MAP;
+		//return subModels;
 	}
-
+	
 	public boolean isTarget() {
 		return isTarget;
 	}
@@ -113,10 +117,9 @@ public abstract class ASMModel extends ASMOclAny {
 		System.out.println("ERROR: save not implemented !");
 	}
 
-
 	private String name;
 	private ASMModel metamodel;
-	private Map subModels = new HashMap();
+	//private Map subModels = new HashMap();
 	private boolean isTarget;
 
 }

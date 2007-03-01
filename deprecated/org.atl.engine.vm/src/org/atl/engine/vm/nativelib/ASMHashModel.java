@@ -68,12 +68,12 @@ public class ASMHashModel extends ASMModel {
 		for(Iterator i = getContentsSetForType(ame).iterator() ; i.hasNext() ; ) {
 			ret.add(i.next());
 		}
-		for(Iterator i = ame.getSubtypes().iterator() ; i.hasNext() ; ) {
-			Object o = i.next();
-			if(o instanceof ASMModelElement) {
-				realGetElementsByType((ASMModelElement)o, ret);
-			}
-		}
+//		for(Iterator i = ame.getSubtypes().iterator() ; i.hasNext() ; ) {
+//			Object o = i.next();
+//			if(o instanceof ASMModelElement) {
+//				realGetElementsByType((ASMModelElement)o, ret);
+//			}
+//		}
 	}
 
 	// TODO: move injection elsewhere

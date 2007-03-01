@@ -196,13 +196,27 @@ public class ASMOperation extends Operation {
 						frame.printStackTrace("ERROR: element " + me + " not found in native");
 					}
 				} else {
-					for(Iterator j = frame.getModel(mname).getSubModels().values().iterator() ; j.hasNext() ; ) {
+					for (Iterator j = frame.getExecEnv().getModels().values().iterator(); j.hasNext();) {
 						ASMModel model = (ASMModel)j.next();
-						if(frame.getModels().containsValue(model) && model.isTarget()) {
+						if (model.getMetamodel().equals(frame.getModel(mname)) && model.isTarget()) {
 							frame.push(model.newModelElement(frame, me));
 							break;
 						}
+						
+//						if(frame.getModels().containsValue(model) && model.isTarget()) {
+//							frame.push(model.newModelElement(frame, me));
+//							break;
+//						}
 					}
+					
+					
+//					for(Iterator j = frame.getModel(mname).getSubModels().values().iterator() ; j.hasNext() ; ) {
+//						ASMModel model = (ASMModel)j.next();
+//						if(frame.getModels().containsValue(model) && model.isTarget()) {
+//							frame.push(model.newModelElement(frame, me));
+//							break;
+//						}
+//					}
 				}
 			} else if(mn.equals("call")) {
 				int nb = getNbArgs(ops);

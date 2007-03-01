@@ -2,6 +2,7 @@ package org.atl.engine.vm.nativelib;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +62,6 @@ public abstract class ASMOclType extends ASMOclAny {
 	public ASMOclType(ASMOclType type) {
 		super(type);
 		supertypes = new ArrayList();
-		subtypes = new ArrayList();
 	}
 
 	private static Map getVMOperations(ASMOclType type) {
@@ -83,18 +83,13 @@ public abstract class ASMOclType extends ASMOclAny {
 	public void addSupertype(ASMOclType supertype) {
 		if(supertype != null) {
 			supertypes.add(0, supertype);
-			supertype.subtypes.add(this);
 		}
 	}
 
 	public List getSupertypes() {
 		return supertypes;
 	}
-
-	public List getSubtypes() {
-		return subtypes;
-	}
-
+	
 	public abstract ASMBoolean conformsTo(ASMOclType other);
 
 	public abstract String getName();
@@ -131,6 +126,5 @@ public abstract class ASMOclType extends ASMOclAny {
 	}
 
 	private List supertypes;
-	private List subtypes;
 }
 
