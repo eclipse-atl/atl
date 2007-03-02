@@ -368,7 +368,7 @@ public class ASMEMFModel extends ASMModel {
 				String nsURI = p.getNsURI();
 				if(nsURI == null) {
 					//System.err.println("DEBUG: EPackage " + p.getName() + " in model " + model.getName() + " has no nsURI.");
-					nsURI = model.getName() ;//+ "_" + p.getName() ;//+ "_" + Double.toHexString((Math.random()));
+					nsURI = p.getName() ;
 					p.setNsURI(nsURI);
 				}
 				if (resourceSet.getPackageRegistry().containsKey(nsURI)) {
