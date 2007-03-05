@@ -450,16 +450,25 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 	
 	public static ASMModelElement newInstance(StackFrame frame, ASMEMFModelElement self) {
 		ASMModelElement ret = null;
-
 		if(self.object.eClass().getName().equals("EClass")) {
-			for(Iterator i = self.getModel().getSubModels().values().iterator() ; i.hasNext() ; ) {
-				ASMModel am = (ASMModel)i.next();
-				if(am.isTarget()) {
-					ret = am.newModelElement(self);
+			for (Iterator j = frame.getExecEnv().getModels().values().iterator(); j.hasNext();) {
+				ASMModel model = (ASMModel)j.next();
+				if (model.getMetamodel().equals(self.getModel()) && model.isTarget()) {
+					ret = model.newModelElement(self);
 					break;
 				}
 			}
 		}
+		
+//		if(self.object.eClass().getName().equals("EClass")) {
+//			for(Iterator i = self.getModel().getSubModels().values().iterator() ; i.hasNext() ; ) {
+//				ASMModel am = (ASMModel)i.next();
+//				if(am.isTarget()) {
+//					ret = am.newModelElement(self);
+//					break;
+//				}
+//			}
+//		}
 
 		return ret;
 	}
