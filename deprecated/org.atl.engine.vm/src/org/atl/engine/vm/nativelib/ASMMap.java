@@ -31,9 +31,11 @@ public class ASMMap extends ASMOclAny {
 		for(Iterator i = s.keySet().iterator() ; i.hasNext() ; ) {
 			Object n = i.next();
 			Object o = s.get(n);
+			ret.append('(');
 			ret.append(n);
-			ret.append(" = ");
+			ret.append(" , ");
 			ret.append(o);
+			ret.append(')');
 			if(i.hasNext()) ret.append(", ");
 		}
 		ret.append("}");
