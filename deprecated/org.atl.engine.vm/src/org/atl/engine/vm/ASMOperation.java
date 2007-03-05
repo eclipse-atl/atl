@@ -202,11 +202,6 @@ public class ASMOperation extends Operation {
 							frame.push(model.newModelElement(frame, me));
 							break;
 						}
-						
-//						if(frame.getModels().containsValue(model) && model.isTarget()) {
-//							frame.push(model.newModelElement(frame, me));
-//							break;
-//						}
 					}
 					
 					
