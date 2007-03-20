@@ -83,6 +83,14 @@ public class ASMMap extends ASMOclAny {
 		return ret;
 	}
 
+	public static ASMBoolean containsKey(StackFrame frame, ASMMap self, ASMOclAny o) {
+		return new ASMBoolean(self.s.containsKey(o));
+	}
+	
+	public static ASMBoolean containsValue(StackFrame frame, ASMMap self, ASMOclAny o) {
+		return new ASMBoolean(self.s.containsValue(o));
+	}
+	
 	public static ASMMap union(StackFrame frame, ASMMap self, ASMMap other) {
 		ASMMap ret = new ASMMap(self.s);
 
