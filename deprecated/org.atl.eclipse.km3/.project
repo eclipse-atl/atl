@@ -3,7 +3,6 @@
 	<name>org.atl.eclipse.km3</name>
 	<comment></comment>
 	<projects>
-		<project>org.atl.eclipse.engine</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
