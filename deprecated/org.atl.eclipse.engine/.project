@@ -3,10 +3,6 @@
 	<name>org.atl.eclipse.engine</name>
 	<comment></comment>
 	<projects>
-		<project>org.atl.engine.injectors.ebnf</project>
-		<project>org.atl.engine.repositories.emf4atl</project>
-		<project>org.atl.engine.repositories.mdr4atl</project>
-		<project>org.atl.engine.vm</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
