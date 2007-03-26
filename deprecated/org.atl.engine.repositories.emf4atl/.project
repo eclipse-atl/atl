@@ -3,7 +3,6 @@
 	<name>org.atl.engine.repositories.emf4atl</name>
 	<comment></comment>
 	<projects>
-		<project>org.atl.engine.vm</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
