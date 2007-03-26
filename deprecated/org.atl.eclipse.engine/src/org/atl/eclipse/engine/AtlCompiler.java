@@ -23,7 +23,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EObject;
 
 /**
- * @author JOUAULT
+ * @author JOUAULT (original version)
+ * @author Matthias Bohlen (refactorings for ease of use and elimination of duplicate code)
  *
  */
 public class AtlCompiler {
@@ -42,10 +43,10 @@ public class AtlCompiler {
 	 * 
 	 * @param in The InputStream to get atl source from.
 	 * @param out The IFile to which the ATL compiled program will be saved.
-	 * @return A List of EObject instance of Problem. 
+	 * @return the problems which occured during compilation 
 	 */
 	public EObject[] compile(InputStream in, IFile out) {
-		EObject ret[] = null;
+        EObject ret[] = null;
 		String atlcompiler = null;
 		
 		// The BufferedInputStream is required to reset the stream before actually compiling
@@ -67,20 +68,35 @@ public class AtlCompiler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		try {
+		
+        try {
 			in.reset();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ret = getCompiler(atlcompiler).compile(in, out);
 		
-		return ret;
+        ret = getCompiler(atlcompiler).compileWithProblemModel(in, out.getLocation().toString());
+
+        try {
+            out.refreshLocal(0, null);
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
+		
+        return ret;
 	}
 	
 	private static Map compilers = new HashMap();
 
-	public static AtlCompiler getCompiler(String compilerName) {
-		AtlCompiler ret = (AtlCompiler)compilers.get(compilerName);
+	/**
+     * Searches for the correct implementation of {@link AtlStandaloneCompiler}
+     * which is independent of Eclipse platform stuff like IFile, IResource, etc.
+     * 
+	 * @param compilerName name of the compiler to search for
+	 * @return the compiler which was found
+	 */
+	private static AtlStandaloneCompiler getCompiler(String compilerName) {
+		AtlStandaloneCompiler ret = (AtlStandaloneCompiler)compilers.get(compilerName);
 		if(ret == null) {
 			if("atl2004".equals(compilerName)) {
 				ret = new Atl2004Compiler();
@@ -99,7 +115,7 @@ public class AtlCompiler {
 					for(int j = 0 ; j < elements.length ; j++){
 						try {					
 							if(elements[j].getAttribute("name").equals(compilerName)) {
-								ret = (AtlCompiler)elements[j].createExecutableExtension("class");
+								ret = (AtlStandaloneCompiler)elements[j].createExecutableExtension("class");
 								compilers.put(compilerName, ret);
 								break extensions;
 							}
