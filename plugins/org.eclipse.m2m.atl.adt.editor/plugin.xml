@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.eclipse.m2m.atl.adt.editor"
+   name="ATL Editor"
+   version="2.0.0"
+   provider-name="ATLAS"
+   class="org.eclipse.m2m.atl.adt.ui.AtlUIPlugin">
+
+   <runtime>
+      <library name="org.eclipse.m2m.atl.adt.editor.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.m2m.atl.engine"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.pde.ui"/>
+      <import plugin="org.eclipse.m2m.atl.adt.debug"/>
+   </requires>
+
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            icon="icons/atl_logo.gif"
+            class="org.eclipse.m2m.atl.adt.ui.editor.AtlEditor"
+            default="true"
+            name="ATL Editor"
+            contributorClass="org.eclipse.m2m.atl.adt.ui.editor.AtlEditorActionContributor"
+            id="org.eclipse.m2m.atl.adt.editor.AtlEditor"
+            extensions="atl">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="ATL"
+            class="org.eclipse.m2m.atl.adt.ui.preferences.AtlMainPreferencePage"
+            id="org.eclipse.m2m.atl.adt.editor.preferences.AtlMainPreferencePage"/>
+      <page
+            name="Editor"
+            category="org.eclipse.m2m.atl.adt.editor.preferences.AtlMainPreferencePage"
+            class="org.eclipse.m2m.atl.adt.ui.preferences.AtlEditorPreferencePage"
+            id="org.eclipse.m2m.atl.adt.editor.preferences.AtlEditorPreferencePage"/>
+      <page
+            name="Code assist"
+            category="org.eclipse.m2m.atl.adt.editor.preferences.AtlEditorPreferencePage"
+            class="org.eclipse.m2m.atl.adt.ui.preferences.AtlCodeAssistPreferencePage"
+            id="org.eclipse.m2m.atl.adt.editor.preferences.AtlCodeAssistPreferencePage"/>
+      <page
+            name="Syntax"
+            category="org.eclipse.m2m.atl.adt.editor.preferences.AtlEditorPreferencePage"
+            class="org.eclipse.m2m.atl.adt.ui.preferences.AtlSyntaxPreferencePage"
+            id="org.eclipse.m2m.atl.adt.editor.preferences.AtlSyntaxPreferencePage"/>
+      <page
+            name="Typing"
+            category="org.eclipse.m2m.atl.adt.editor.preferences.AtlEditorPreferencePage"
+            class="org.eclipse.m2m.atl.adt.ui.preferences.AtlTypingPreferencePage"
+            id="org.eclipse.m2m.atl.adt.editor.preferences.AtlTypingPreferencePage"/>
+   </extension>
+   <extension point="org.eclipse.ui.decorators">
+   	<decorator
+          lightweight="true"
+          objectClass="org.eclipse.core.resources.IResource"
+          label="Atl problems decorator"
+          class="org.eclipse.m2m.atl.adt.ui.viewsupport.ProblemsLabelDecorator"
+          state="true"
+          location="BOTTOM_LEFT"
+          id="problemsLabelDecorator"> 
+  	</decorator> 
+  </extension>
+  <extension point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="Comment block"
+            visible="true"
+            id="action.actionSet2">
+         <menu
+               label="ATL Editor"
+               id="ATLEditorMenu">
+            <separator name="sampleGroup"></separator>
+         </menu>
+         <action
+               label="&amp;Comment block"
+               icon="icons/atl_logo.gif"
+               class="org.eclipse.m2m.atl.adt.ui.actions.CommentBlock"
+               menubarPath="ATLEditorMenu/sampleGroup"
+               id="org.eclipse.m2m.atl.adt.editor.CommentBlock">
+         </action>
+      </actionSet>
+      <actionSet
+            label="Uncomment block"
+            visible="true"
+            id="action.actionSet3">
+         <menu
+               label="ATL Editor"
+               id="ATLEditorMenu">
+            <separator name="sampleGroup"></separator>
+         </menu>
+         <action
+               label="&amp;Uncomment block"
+               icon="icons/atl_logo.gif"
+               class="org.eclipse.m2m.atl.adt.ui.actions.UncommentBlock"
+               menubarPath="ATLEditorMenu/sampleGroup"
+               id="org.eclipse.m2m.atl.adt.editor.UncommentBlock">
+         </action>
+      </actionSet>
+   </extension>
+</plugin>
