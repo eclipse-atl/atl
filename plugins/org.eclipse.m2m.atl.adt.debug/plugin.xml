@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.eclipse.m2m.atl.adt.debug"
+   name="ATL Debugger"
+   version="2.0.0"
+   provider-name="ATLAS"
+   class="org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin">
+
+   <runtime>
+      <library name="org.eclipse.m2m.atl.adt.debug.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.boot"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.swt"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.pde.core"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.m2m.atl.engine"/>
+      <import plugin="org.eclipse.m2m.atl.ocl.core"/>
+   </requires>
+
+
+   <!--extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationImageProvider="org.atl.eclipse.adt.debug.ui.AtlBreakpointImageProvider"
+            icon="icons/breakpoint.gif"
+            annotationType="org.eclipse.debug.core.breakpoint">
+      </specification>
+   </extension-->
+   <extension
+         id="atlBreakpointMarker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.debug.core.breakpointMarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.breakpoints">
+      <breakpoint
+            markerType="org.eclipse.m2m.atl.adt.debug.atlBreakpointMarker"
+            class="org.eclipse.m2m.atl.adt.debug.core.AtlBreakpoint"
+            id="atlBreakpoint">
+      </breakpoint>
+   </extension>
+<!-- extension point : expression-->
+	<extension point="org.eclipse.debug.core.watchExpressionDelegates">
+		<watchExpressionDelegate
+			debugModel="org.eclipse.m2m.atl.adt.debug"
+			delegateClass="org.eclipse.m2m.atl.adt.debug.core.AtlWatchExpressionDelegate"/>
+	</extension>
+<!-- extension point : launch method is contained in this class-->
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            name="ATL Transformation"
+            delegate="org.eclipse.m2m.atl.adt.launching.AtlLaunchConfigurationDelegate"
+            modes="run, debug"
+            id="atllaunchconfiguration">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            name="Remote ATL Transformation"
+            delegate="org.eclipse.m2m.atl.adt.launching.RemoteAtlConfigurationDelegate"
+            modes="debug"
+            id="remoteatllaunchconfiguration">
+      </launchConfigurationType>
+   </extension>
+<!-- extension point : screen configuration for launching ATL transformation-->
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="atllaunchconfiguration"
+            class="org.eclipse.m2m.atl.adt.launching.AtlTabGroup"
+            id="org.eclipse.m2m.atl.adt.launching.AtlTabGroup">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="remoteatllaunchconfiguration"
+            class="org.eclipse.m2m.atl.adt.launching.RemoteAtlTabGroup"
+            id="RemoteAtlTabGroup">
+      </launchConfigurationTabGroup>
+   </extension>
+<!-- extension point : debug model presentation-->
+   <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="org.eclipse.m2m.atl.adt.debug.ui.AtlDebugModelPresentation"
+            id="org.eclipse.m2m.atl.adt.debug">
+      </debugModelPresentation>
+   </extension>
+<!-- extension point : source locator -->
+   <extension
+         point="org.eclipse.debug.core.sourceLocators">
+      <sourceLocator
+            name="ATL Source Locator"
+            class="org.eclipse.m2m.atl.adt.launching.sourcelookup.AtlSourceLocator"
+            id="AtlSourceLocator">
+      </sourceLocator>
+   </extension>
+<!-- extension point : images for Atl launch configuration -->
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            icon="icons/atllogo_icon.gif"
+            configTypeID="atllaunchconfiguration"
+            id="AtlApplication">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            icon="icons/atllogo_icon.gif"
+            configTypeID="remoteatllaunchconfiguration"
+            id="AtlRemoteApplication">
+      </launchConfigurationTypeImage>
+   </extension>
+<!-- extension point : new action in popup menu -->
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.debug.core.model.IDebugElement"
+            id="pop.contribution1">
+         <menu
+               label="Debug mode"
+               path="additions"
+               id="pop.menu1">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               label="Disassembly mode"
+               style="toggle"
+               class="org.eclipse.m2m.atl.adt.debug.ui.DisassemblyModeAction"
+               menubarPath="pop.menu1/group1"
+               enablesFor="1"
+               id="pop.newAction">
+         </action>
+      </objectContribution>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors.documentProviders">
+      <provider
+            class="org.eclipse.m2m.atl.adt.debug.core.DisassemblyDocumentProvider"
+            inputTypes="org.eclipse.m2m.atl.adt.debug.ui.AtlDebugModelPresentation$DisassemblyEditorInput"
+            id="org.eclipse.m2m.atl.adt.debug.provider1"/>
+   </extension>
+
+</plugin>
