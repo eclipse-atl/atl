@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.eclipse.m2m.atl.drivers.mdr4atl"
+   name="MDR4ATL Plug-in"
+   version="2.0.0"
+   provider-name="ATLAS">
+   <runtime>
+      <library name="org.eclipse.m2m.atl.drivers.mdr4atl.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/jmi.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/jmiutils.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/mdrapi.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/mof.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/nbmdr.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/openide-util.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.m2m.atl.engine"/>
+   </requires>
+   <extension
+         point="org.eclipse.m2m.atl.engine.modelhandler">
+      <modelhandler
+            class="org.eclipse.m2m.atl.drivers.mdr4atl.AtlMDRModelHandler"
+            name="MDR"/>
+   </extension>
+
+</plugin>
