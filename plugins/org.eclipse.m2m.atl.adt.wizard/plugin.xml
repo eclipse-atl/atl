@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.atl.eclipse.adt.wizard"
+   name="ATL Wizard"
+   version="1.0.7"
+   provider-name="ATLAS"
+   class="org.eclipse.m2m.atl.adt.wizard.AtlWizardPlugin">
+
+   <runtime>
+      <library name="wizard.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.atl.eclipse.adt.builder"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.core.runtime"/>
+   </requires>
+
+
+   <extension
+         id="org.atl.eclipse.adt.projectCreationWizard"
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="ATL"
+            id="atlWizard">
+      </category>
+      <wizard
+            name="ATL Project"
+            icon="icons/atllogo_icon.gif"
+            category="atlWizard"
+            class="org.eclipse.m2m.atl.adt.wizard.atlproject.AtlProjectCreator"
+            preferredPerspectives="org.atl.eclipse.adt.atlPerspective"
+            finalPerspective="org.atl.eclipse.adt.atlPerspective"
+            project="true"
+            id="atlProjectWizard">
+         <description>
+            Create an ATL tansformation project
+         </description>
+      </wizard>
+      <wizard
+            name="ATL File"
+            icon="icons/atllogo_icon.gif"
+            category="atlWizard"
+            class="org.eclipse.m2m.atl.adt.wizard.atlfile.AtlFileWizard"
+            preferredPerspectives="org.atl.eclipse.adt.atlPerspective"
+            finalPerspective="org.atl.eclipse.adt.atlPerspective"
+            project="true"
+            id="atlFileWizard">
+         <description>
+            Create an ATL tansformation project
+         </description>
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.eclipse.m2m.atl.adt.startup.Startup">
+      </startup>
+   </extension>
+
+</plugin>
