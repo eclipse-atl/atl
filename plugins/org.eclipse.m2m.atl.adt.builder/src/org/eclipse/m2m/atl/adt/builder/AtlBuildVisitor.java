@@ -60,7 +60,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 	 */
 	public boolean visit(IResource resource) throws CoreException {
 		String extension = resource.getFileExtension();
-		if ( ("atl".equals(extension) && (resource instanceof IFile))
+		if ( ("atl".equals(extension) && (resource instanceof IFile)) && ((IFile)resource).getLocation().toFile().length() > 0
 			 && (!hasAsmFile(resource) || hasChanged(resource)) ) {
 			String inName = resource.getName();
 			monitor.subTask("Compiling " + inName);
