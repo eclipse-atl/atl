@@ -511,7 +511,7 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 		}
 	}
 
-	private Method findMethod(Class cls, String name, Class argumentTypes[]) {
+	protected Method findMethod(Class cls, String name, Class argumentTypes[]) {
 		Method ret = null;
 
 		Method methods[] = cls.getDeclaredMethods(); 
