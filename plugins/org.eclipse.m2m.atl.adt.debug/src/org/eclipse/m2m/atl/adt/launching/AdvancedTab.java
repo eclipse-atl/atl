@@ -1,8 +1,10 @@
 package org.eclipse.m2m.atl.adt.launching;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -19,8 +21,11 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.m2m.atl.adt.debug.Messages;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -35,7 +40,7 @@ import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-public class AdvancedTab extends AbstractLaunchConfigurationTab {
+public class AdvancedTab extends AbstractLaunchConfigurationTab implements ModifyListener, SelectionListener {
 
     final static String SUPERIMPOSE = "SUPERIMPOSE";
 
@@ -47,7 +52,13 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
     private Table tableSuperimpose;
     private Button buttonSuperimpose;
     private Button buttonRemoveSuperimpose;
+    
+	private Group groupOthersInformation;
+	private Button buttonModeDebug;
+	private Button buttonAllowInterModelReferences;
 
+	private Map buttonArray = new HashMap();
+	
     public void createControl(Composite parent) {
 
         container = new Composite(parent, SWT.NULL);
@@ -57,9 +68,16 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
         tableSuperimpose = new Table(groupSuperimpose, SWT.FULL_SELECTION | SWT.BORDER);
         buttonRemoveSuperimpose = new Button(groupSuperimpose, SWT.CENTER);
 
+        groupOthersInformation = new Group(container,SWT.NULL);
+		buttonModeDebug = new Button(groupOthersInformation,SWT.CHECK);
+		buttonAllowInterModelReferences = new Button(groupOthersInformation, SWT.CHECK);
+        
         GridLayout layout = new GridLayout();
         layout.numColumns = 1;
         layout.makeColumnsEqualWidth = true;
+        
+        GridData gd3 = new GridData(GridData.FILL_HORIZONTAL);
+        groupOthersInformation.setLayoutData(gd3);
         
         container.setLayout(layout);
         
@@ -115,12 +133,45 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 
         /** ***************************************** */
         
+        /**********************
+		 * Components of group3
+		 **********************/
+
+		groupOthersInformation.setText(Messages.getString("MainAtlTab.OTHERSPARAMETERS")); //$NON-NLS-1$
+
+		buttonAllowInterModelReferences.setLayoutData(new GridData(GridData.FILL_BOTH));
+		buttonAllowInterModelReferences.setText(Messages.getString("MainAtlTab.INTERMODELREFS")); //$NON-NLS-1$
+		buttonAllowInterModelReferences.addSelectionListener(this);
+
+		buttonModeDebug.setLayoutData(new GridData(GridData.FILL_BOTH));
+		buttonModeDebug.setText(Messages.getString("MainAtlTab.MODEDEBUG")); //$NON-NLS-1$
+		buttonModeDebug.addSelectionListener(this);
+		
+		checkButtonFactory();
+		
+		groupLayout = new GridLayout();
+		groupLayout.numColumns = 1;
+		groupLayout.makeColumnsEqualWidth = true;
+
+		groupOthersInformation.setLayout(groupLayout);
+        
+        
         container.layout();
         container.pack();
         setControl(container);
         canSave();
 }
 
+	private void checkButtonFactory() {
+		for (int i = 0; i < AtlLauncherTools.additionalParamIds.length; i++) {
+			Button newCheckButton = new Button(groupOthersInformation, SWT.CHECK);
+			newCheckButton.setLayoutData(new GridData(GridData.FILL_BOTH));
+			newCheckButton.setText(AtlLauncherTools.additionalParamLabels[i]);
+			newCheckButton.addSelectionListener(this);
+			buttonArray.put(AtlLauncherTools.additionalParamIds[i], newCheckButton);
+		}
+	}
+    
     public String getName() {
         return AtlLauncherTools.ADVANCEDTABNAME;
     }
@@ -136,10 +187,21 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
                 item.setText(mName);
             }
             
+            buttonModeDebug.setSelection(configuration.getAttribute(AtlLauncherTools.MODEDEBUG, false));
+			buttonAllowInterModelReferences.setSelection(configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false));
+            
+			for (Iterator it = buttonArray.keySet().iterator(); it.hasNext();) {
+				String currentButtonName = (String)it.next();
+				Button currentButton = (Button)buttonArray.get(currentButtonName);
+				currentButton.setSelection(configuration.getAttribute(currentButtonName, false));
+			}
+			
             canSave();
             updateLaunchConfigurationDialog();
         } catch (CoreException e) {
             tableSuperimpose.removeAll();
+			buttonModeDebug.setSelection(false);
+			buttonAllowInterModelReferences.setSelection(true);
             e.printStackTrace();
         }
     }
@@ -153,6 +215,15 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
         }
         
         configuration.setAttribute(AtlLauncherTools.SUPERIMPOSE, superimpose);
+        
+		configuration.setAttribute(AtlLauncherTools.AllowInterModelReferences, buttonAllowInterModelReferences.getSelection());
+		configuration.setAttribute(AtlLauncherTools.MODEDEBUG, buttonModeDebug.getSelection());
+		
+		for (Iterator it = buttonArray.keySet().iterator(); it.hasNext();) {
+			String currentButtonName = (String)it.next();
+			Button currentButton = (Button)buttonArray.get(currentButtonName);
+			configuration.setAttribute(currentButtonName, currentButton.getSelection());
+		}
     }
 
     public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
@@ -246,5 +317,25 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
         }
         table.remove(index);
     }
+
+	public void modifyText(ModifyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+	 */
+	public void widgetSelected(SelectionEvent e) {
+		canSave();
+		updateLaunchConfigurationDialog();
+	}
+
+	/**
+	 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+	 */
+	public void widgetDefaultSelected(SelectionEvent e) {
+		
+	}
 
 }

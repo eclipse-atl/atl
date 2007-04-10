@@ -60,7 +60,7 @@ public class DialogUriSelection extends SelectionStatusDialog {
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		container.setLayoutData(gd);
 
-		new Label(container, SWT.NULL).setText("Model Handler: ");
+		new Label(container, SWT.NULL).setText("Registered EPackages: ");
 		listUri = new List(container, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL);
 		
 		for (Iterator it = ((Map)EPackage.Registry.INSTANCE).keySet().iterator(); it.hasNext();)

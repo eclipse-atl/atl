@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 import org.eclipse.m2m.atl.adt.debug.Messages;
+import org.eclipse.m2m.atl.engine.AtlModelHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
@@ -42,7 +43,13 @@ public class AtlLauncherTools {
 	public static String HOST = "Host";
 	public static String PORT = "Port";
 	public static String LIBS = "Libs";
-    public static String SUPERIMPOSE = "Superimpose";
+	
+	public static String MODEL_OUTPUT = "MODELOUTPUT";
+	public static String MODEL_INPUT = "MODELINPUT";
+	public static String METAMODEL_OUTPUT = "METAMODELOUTPUT";
+	public static String METAMODEL_INPUT = "METAMODELINPUT";
+    
+	public static String SUPERIMPOSE = "Superimpose";
 	public static String MODELTYPE = "ModelType";
 	public static String INJECTOR = "Injector";
 	public static String EXTRACTOR = "Extractor";
@@ -67,6 +74,28 @@ public class AtlLauncherTools {
 //		ALLOW_SOURCE_MODIFICATION,
 	};
 	
+	private static String[] modelHandlersNames;
+	private static int EMFKey = -1;
+	
+	public static String[] getModelHandlers() {
+		if (modelHandlersNames == null) {
+			modelHandlersNames = AtlModelHandler.getModelHandlers();
+			for (int i = 0; i < modelHandlersNames.length; i++) {
+				if (modelHandlersNames[i].equals(AtlModelHandler.AMH_EMF)) {
+					EMFKey = i;
+				} 
+			}
+		}
+		return modelHandlersNames;
+	}
+	
+	public static int getEMFKey() {
+		if (EMFKey == -1) {
+			getModelHandlers();
+		}
+		return EMFKey;
+	}
+
 	public static String[] additionalParamLabels = new String[] {
 		"Continue execution after errors in Run mode",
 //		"Allow navigation in target models",

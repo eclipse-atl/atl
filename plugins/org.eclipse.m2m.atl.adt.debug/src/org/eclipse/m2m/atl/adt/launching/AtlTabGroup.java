@@ -31,12 +31,12 @@ public class AtlTabGroup extends AbstractLaunchConfigurationTabGroup {
 	 */
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
         ILaunchConfigurationTab mainAtlTab = new MainAtlTab();
-        ILaunchConfigurationTab modelChoiceTab = new ModelChoiceTab();
+        //ILaunchConfigurationTab modelChoiceTab = new ModelChoiceTab();
         ILaunchConfigurationTab advancedTab = new AdvancedTab();
         ILaunchConfigurationTab commonTab = new CommonTab();
 		setTabs(new ILaunchConfigurationTab[] {
                 mainAtlTab,
-                modelChoiceTab,
+                //modelChoiceTab,
                 advancedTab,
                 commonTab
 		    });
