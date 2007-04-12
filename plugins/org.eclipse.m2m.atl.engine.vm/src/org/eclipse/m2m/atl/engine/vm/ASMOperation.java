@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBoolean;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMCollection;
@@ -338,10 +339,12 @@ public class ASMOperation extends Operation {
 	}
 
 // BEGIN SIGNATURE TOOLS
+	private static Pattern pattern1 = Pattern.compile("^.*\\(");
+	
 	private static int getNbArgs(String s) {
 		int ret = 0;
 
-		s = s.replaceFirst("^.*\\(", "");
+		s = pattern1.matcher(s).replaceFirst("");
 		while(!s.startsWith(")")) {
 			ret++;
 			 s = removeFirst(s);
@@ -350,19 +353,20 @@ public class ASMOperation extends Operation {
 		return ret;
 	}
 
-	private static String removeFirst(String s) {
-		String simple = "^J|I|B|S|D|A|(M|N)[^;]*;|L";
+	private static Pattern simple = Pattern.compile("^J|I|B|S|D|A|(M|N)[^;]*;|L");
+	private static Pattern pattern2 = Pattern.compile("^(Q|G|C|E|O).*");
 
+	private static String removeFirst(String s) {
 		if(s.startsWith("T")) {
 			s = s.substring(1);
 			while(!s.startsWith(";")) {
 				s = removeFirst(s);
 			}
 			s = s.substring(1);
-		} else if(s.matches("^(Q|G|C|E|O).*")) {
+		} else if(pattern2.matcher(s).matches()) {
 			s = removeFirst(s.substring(1));
 		} else {
-			s = s.replaceFirst(simple, "");
+			s = simple.matcher(s).replaceFirst("");
 		}
 
 		return s;
