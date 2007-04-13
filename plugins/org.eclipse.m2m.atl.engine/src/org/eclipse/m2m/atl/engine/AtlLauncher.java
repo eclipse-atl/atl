@@ -120,8 +120,6 @@ public class AtlLauncher {
 				String lname = (String)i.next();
 				URL url = (URL)libraries.get(lname);
 				ASM lib = new ASMXMLReader().read(new BufferedInputStream(url.openStream()));
-                AtlModuleInheritance ami = new AtlModuleInheritance(env, lib);
-                ami.adaptModuleOperations();
 				env.registerOperations(lib);
 			}
 
