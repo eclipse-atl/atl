@@ -5,8 +5,8 @@
 package org.eclipse.m2m.atl.adt.builder;
 
 import java.util.Map;
+
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
