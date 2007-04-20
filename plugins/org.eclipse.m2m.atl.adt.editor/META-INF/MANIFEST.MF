@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ATL Editor
+Bundle-SymbolicName: org.eclipse.m2m.atl.adt.editor; singleton:=true
+Bundle-Version: 2.0.0
+Bundle-ClassPath: org.eclipse.m2m.atl.adt.editor.jar
+Bundle-Activator: org.eclipse.m2m.atl.adt.ui.AtlUIPlugin
+Bundle-Vendor: ATLAS
+Bundle-Localization: plugin
+Export-Package: org.eclipse.m2m.atl.adt.ui,
+ org.eclipse.m2m.atl.adt.ui.actions,
+ org.eclipse.m2m.atl.adt.ui.corext.doc,
+ org.eclipse.m2m.atl.adt.ui.editor,
+ org.eclipse.m2m.atl.adt.ui.outline,
+ org.eclipse.m2m.atl.adt.ui.preferences,
+ org.eclipse.m2m.atl.adt.ui.properties,
+ org.eclipse.m2m.atl.adt.ui.text,
+ org.eclipse.m2m.atl.adt.ui.text.atl,
+ org.eclipse.m2m.atl.adt.ui.text.hover,
+ org.eclipse.m2m.atl.adt.ui.viewsupport
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.resources,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.views,
+ org.eclipse.emf.ecore,
+ org.eclipse.m2m.atl.engine,
+ org.eclipse.debug.core,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.debug.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.console,
+ org.eclipse.m2m.atl.adt.debug
+Eclipse-LazyStart: true
