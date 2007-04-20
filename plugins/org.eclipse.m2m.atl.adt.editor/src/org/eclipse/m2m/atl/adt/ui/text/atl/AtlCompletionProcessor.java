@@ -15,7 +15,6 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationExtension;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
-import org.eclipse.m2m.atl.adt.ui.AtlUIMessages;
 import org.eclipse.m2m.atl.adt.ui.text.AtlCodeReader;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlLexems;
 import org.eclipse.swt.graphics.Image;
@@ -160,7 +159,8 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getErrorMessage()
 	 */
 	public String getErrorMessage() {
-		return AtlUIMessages.getString("AtlEditor.codeassist.noCompletions");
+//		return AtlUIMessages.getString("AtlEditor.codeassist.noCompletions");
+		return "AtlEditor.codeassist.noCompletions";
 	}
 	
 	private int guessContextInformationPosition(ITextViewer viewer, int offset) {
