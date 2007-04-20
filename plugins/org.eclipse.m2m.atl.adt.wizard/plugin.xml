@@ -19,7 +19,7 @@
             project="true"
             id="atlProjectWizard">
          <description>
-            Create an ATL tansformation project
+            Create an ATL transformation project
          </description>
       </wizard>
       <wizard
@@ -32,7 +32,7 @@
             project="true"
             id="atlFileWizard">
          <description>
-            Create an ATL tansformation project
+            Create an ATL transformation file
          </description>
       </wizard>
    </extension>
