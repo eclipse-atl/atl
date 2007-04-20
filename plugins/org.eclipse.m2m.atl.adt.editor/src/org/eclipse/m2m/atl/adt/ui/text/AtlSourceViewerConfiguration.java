@@ -3,6 +3,7 @@ package org.eclipse.m2m.atl.adt.ui.text;
 import java.util.Vector;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IAutoIndentStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextHover;
@@ -22,7 +23,6 @@ import org.eclipse.m2m.atl.adt.ui.text.atl.AtlAutoIndentStrategy;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCodeScanner;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionProcessor;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlStringAutoIndentStrategy;
-import org.eclipse.pde.internal.ui.editor.text.AnnotationHover;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
@@ -265,7 +265,7 @@ public class AtlSourceViewerConfiguration extends SourceViewerConfiguration {
 	}
 
 	public IAnnotationHover getAnnotationHover(ISourceViewer sourceViewer) {
-		return new AnnotationHover();
+		return new AtlAnnotationHover();
 	}
 
 	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
