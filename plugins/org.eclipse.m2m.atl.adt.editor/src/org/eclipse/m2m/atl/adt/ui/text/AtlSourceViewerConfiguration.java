@@ -3,7 +3,6 @@ package org.eclipse.m2m.atl.adt.ui.text;
 import java.util.Vector;
 
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IAutoIndentStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextHover;
