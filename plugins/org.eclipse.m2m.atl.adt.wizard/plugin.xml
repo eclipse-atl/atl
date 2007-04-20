@@ -1,27 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin
-   id="org.eclipse.m2m.atl.adt.wizard"
-   name="ATL Wizard"
-   version="2.0.0"
-   provider-name="ATLAS"
-   class="org.eclipse.m2m.atl.adt.wizard.AtlWizardPlugin">
+<plugin>
 
-   <runtime>
-      <library name="wizard.jar">
-         <export name="*"/>
-      </library>
-   </runtime>
-   <requires>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.m2m.atl.adt.builder"/>
-   </requires>
-
-
-   <extension
+     <extension
          id="org.atl.eclipse.adt.projectCreationWizard"
          point="org.eclipse.ui.newWizards">
       <category
