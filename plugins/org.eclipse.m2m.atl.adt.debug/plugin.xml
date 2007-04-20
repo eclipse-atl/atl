@@ -1,37 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin
-   id="org.eclipse.m2m.atl.adt.debug"
-   name="ATL Debugger"
-   version="2.0.0"
-   provider-name="ATLAS"
-   class="org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin">
+<plugin>
 
-   <runtime>
-      <library name="org.eclipse.m2m.atl.adt.debug.jar">
-         <export name="*"/>
-      </library>
-   </runtime>
-   <requires>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.debug.core"/>
-      <import plugin="org.eclipse.debug.ui"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.core.boot"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.eclipse.swt"/>
-      <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.eclipse.pde.core"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.m2m.atl.engine"/>
-      <import plugin="org.eclipse.m2m.atl.ocl.core"/>
-   </requires>
-
-
-   <!--extension
+     <!--extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification
             annotationImageProvider="org.atl.eclipse.adt.debug.ui.AtlBreakpointImageProvider"
