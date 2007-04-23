@@ -44,40 +44,17 @@
    <extension point="org.eclipse.ui.decorators">
    	<decorator
           lightweight="true"
-          objectClass="org.eclipse.core.resources.IResource"
           label="Atl problems decorator"
           class="org.eclipse.m2m.atl.adt.ui.viewsupport.ProblemsLabelDecorator"
           state="true"
           location="BOTTOM_LEFT"
           id="problemsLabelDecorator"> 
+          <enablement>
+                <objectClass name="org.eclipse.core.resources.IResource"/> 
+          </enablement>
   	</decorator> 
   </extension>
-<!--
-  <extension point="org.eclipse.ui.actionSets">
-      <actionSet
-            label="Comment/Uncomment"
-            visible="true"
-            id="toggleComment">
-         <menu
-               label="ATL Editor"
-               id="ATLEditorMenu">
-            <separator name="sampleGroup"></separator>
-         </menu>
-         <action
-               class="org.eclipse.m2m.atl.adt.ui.actions.ToggleCommentBlock"
-               definitionId="org.atl.eclipse.adt.ui.commentBlock"
-               icon="icons/atl_logo.gif"
-               id="org.atl.eclipse.adt.ui.CommentBlock"
-               label="Comment/Uncomment"
-               menubarPath="ATLEditorMenu/sampleGroup">
-            <selection
-                  class="org.eclipse.core.resources.IFile"
-                  name="*.atl"/>
-         </action>
-      </actionSet>
-   </extension>
--->
-<extension point="org.eclipse.ui.editorActions"> 
+	<extension point="org.eclipse.ui.editorActions"> 
       <editorContribution 
          id="com.xyz.xyzContribution" 
          targetID="org.eclipse.m2m.atl.adt.editor.AtlEditor">
@@ -104,21 +81,19 @@
          </action> 
       </editorContribution> 
    </extension>
-<extension
-point="org.eclipse.ui.bindings">
-<key
-commandId="org.atl.eclipse.adt.ui.commentBlock"
-schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-sequence="Ctrl+Shift+C"/>
-</extension>
-<extension
-point="org.eclipse.ui.commands">
-<command
-categoryId="org.atl.eclipse.adt.editor.category1"
-id="org.atl.eclipse.adt.ui.commentBlock"
-name="org.atl.eclipse.adt.editor.command1"/>
-<category
-id="org.atl.eclipse.adt.editor.category1"
-name="org.atl.eclipse.adt.editor.category1"/>
-</extension>
+	<extension point="org.eclipse.ui.bindings">
+		<key
+			commandId="org.atl.eclipse.adt.ui.commentBlock"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			sequence="Ctrl+Shift+C"/>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+		<command
+			categoryId="org.atl.eclipse.adt.editor.category1"
+			id="org.atl.eclipse.adt.ui.commentBlock"
+			name="org.atl.eclipse.adt.editor.command1"/>
+		<category
+			id="org.atl.eclipse.adt.editor.category1"
+			name="org.atl.eclipse.adt.editor.category1"/>
+	</extension>
 </plugin>
