@@ -33,19 +33,19 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 public class ASMEMFModel extends ASMModel {
 
     // true if extent was explicitly loaded and requires explicit unloading
-	private boolean unload = false;
+	protected boolean unload = false;
 	// nsURIs that were explicitly registered and need unregistering
-	private Set unregister = new HashSet();
+	protected Set unregister = new HashSet();
 	// if not null, model could not yet be loaded from URI and needs to be loaded later from this URI
-	private String resolveURI = null;
+	protected String resolveURI = null;
 	
-	private boolean checkSameModel = true;
+	protected boolean checkSameModel = true;
 	
 	public static ASMModel getMOF() {
 		return mofmm;
 	}
 	
-	private Map modelElements = new HashMap(); 
+	protected Map modelElements = new HashMap();
 
 	public ASMModelElement getASMModelElement(EObject object) {
 		ASMModelElement ret = null;
@@ -359,7 +359,7 @@ public class ASMEMFModel extends ASMModel {
 		return ret;
 	}
     
-	private static void adaptMetamodel(ASMEMFModel model, ASMEMFModel metamodel) {
+	protected static void adaptMetamodel(ASMEMFModel model, ASMEMFModel metamodel) {
 		if(metamodel == mofmm) {
 			for(Iterator i = model.getElementsByType("EPackage").iterator() ; i.hasNext() ; ) {
 				ASMEMFModelElement ame = (ASMEMFModelElement)i.next();
@@ -450,9 +450,9 @@ public class ASMEMFModel extends ASMModel {
 		return (o instanceof ASMEMFModel) && (((ASMEMFModel)o).extent == extent);
 	}
 	
-	private static ResourceSet resourceSet;
+	protected static ResourceSet resourceSet;
 
-	private static ASMEMFModel mofmm = null;
+	protected static ASMEMFModel mofmm = null;
 	private Resource extent;
     private Set referencedExtents = new HashSet();
 	
@@ -469,7 +469,7 @@ public class ASMEMFModel extends ASMModel {
      * referenced from the main extent to referencedExtents.
      * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
      */
-    private void addAllReferencedExtents() {
+    protected void addAllReferencedExtents() {
         Iterator contents = getExtent().getAllContents();
         while (contents.hasNext()) {
             Object o = contents.next();

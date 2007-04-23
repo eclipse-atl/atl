@@ -368,7 +368,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		return ret;
 	}
 	
-	private static void registerMOFOperation(String modelelementName, String methodName, Class args[]) throws Exception {
+	protected static void registerMOFOperation(String modelelementName, String methodName, Class args[]) throws Exception {
 		List realArgs = new ArrayList(Arrays.asList(args));
 		realArgs.add(0, ASMEMFModelElement.class);
 		realArgs.add(0, StackFrame.class);
@@ -585,6 +585,6 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 		return object;
 	}
 	
-	private EObject object;
+	protected EObject object;
     
 }
