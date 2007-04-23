@@ -6,9 +6,13 @@ package org.eclipse.m2m.atl.adt.ui.actions;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.jface.text.Region;
+import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.ui.IEditorActionDelegate;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -22,7 +26,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 /**
  * @author allilaire
  */
-public class CommentBlock implements IWorkbenchWindowActionDelegate {
+public class ToggleCommentBlock implements IEditorActionDelegate {
 
 	/**
 	 * The constructor.
@@ -32,7 +36,7 @@ public class CommentBlock implements IWorkbenchWindowActionDelegate {
 	 * @param editor the text editor
 	 * @param isTabAction whether the action should insert tabs if over the indentation
 	 */
-	public CommentBlock() {
+	public ToggleCommentBlock() {
 	}
 	
 	/**
@@ -57,7 +61,66 @@ public class CommentBlock implements IWorkbenchWindowActionDelegate {
 		IDocumentProvider dp = editor.getDocumentProvider();
 		IDocument doc = dp.getDocument(editor.getEditorInput());		
 
-		shiftRight(text.getStartLine(), text.getEndLine(), "--", doc);		
+		if (text.getText().startsWith("--"))
+			// Uncomment
+			shiftLeft(text.getStartLine(), text.getEndLine(), new String[] {"--"} , false, doc);
+		else
+			// Comment
+			shiftRight(text.getStartLine(), text.getEndLine(), "--", doc);
+	}
+	
+	/**
+	 * Shifts the specified lines to the right or to the left. On shifting to the right
+	 * it insert <code>prefixes[0]</code> at the beginning of each line. On shifting to the
+	 * left it tests whether each of the specified lines starts with one of the specified 
+	 * prefixes and if so, removes the prefix.
+	 *
+	 * @param startLine the first line to shift
+	 * @param endLine the last line to shift
+	 * @param prefixes the prefixes to be used for shifting
+	 * @param ignoreWhitespace <code>true</code> if whitespace should be ignored, <code>false</code> otherwise
+	 * @since 2.0
+	 */
+	private void shiftLeft(int startLine, int endLine, String[] prefixes, boolean ignoreWhitespace, IDocument d) {
+		try {						
+			IRegion[] occurrences= new IRegion[endLine - startLine + 1];
+			// find all the first occurrences of prefix in the given lines
+			for (int i= 0; i < occurrences.length; i++) {				
+				IRegion line= d.getLineInformation(startLine + i);
+				String text= d.get(line.getOffset(), line.getLength());
+				int index= -1;
+				int[] found= TextUtilities.indexOf(prefixes, text, 0);
+				if (found[0] != -1) {
+					if (ignoreWhitespace) {
+						String s= d.get(line.getOffset(), found[0]);
+						s= s.trim();
+						if (s.length() == 0)
+							index= line.getOffset() + found[0];
+					} else if (found[0] == 0)
+						index= line.getOffset();
+				}
+				if (index > -1) {
+					// remember where prefix is in line, so that it can be removed
+					int length= prefixes[found[1]].length();
+					if (length == 0 && !ignoreWhitespace && line.getLength() > 0) {
+						// found a non-empty line which cannot be shifted
+						return;
+					} else 
+						occurrences[i]= new Region(index, length);
+				} else {
+					// found a line which cannot be shifted
+					return;
+				}
+			}
+			// OK - change the document
+			int decrement= 0;
+			for (int i= 0; i < occurrences.length; i++) {
+				IRegion r= occurrences[i];
+				d.replace(r.getOffset() - decrement, r.getLength(), "");
+				decrement += r.getLength();
+			}
+		}
+		catch (BadLocationException x) {}
 	}
 	
 	/**
@@ -102,5 +165,10 @@ public class CommentBlock implements IWorkbenchWindowActionDelegate {
 	 * @see IWorkbenchWindowActionDelegate#init
 	 */
 	public void init(IWorkbenchWindow window) {
+	}
+
+	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
+		// TODO Auto-generated method stub
+		
 	}
 }
