@@ -49,6 +49,10 @@ public class ProblemsLabelDecorator implements ILabelDecorator, ILightweightLabe
 	 */
 	public static class ProblemsLabelChangedEvent extends LabelProviderChangedEvent {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private boolean fMarkerChange;
 
 		public ProblemsLabelChangedEvent(IBaseLabelProvider source, IResource[] changedResource, boolean isMarkerChange) {
