@@ -28,8 +28,8 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  *
  */
 public class AtlEMFModelHandler extends AtlModelHandler {
-	private ASMEMFModel mofmm;
-	private ASMEMFModel atlmm;
+	protected ASMEMFModel mofmm;
+	protected ASMEMFModel atlmm;
 		
 	public void saveModel(final ASMModel model, IProject project) {
 		saveModel(model, model.getName() + ".ecore", project);
@@ -48,11 +48,11 @@ public class AtlEMFModelHandler extends AtlModelHandler {
         saveModel(model, null, out);
     }
     
-	private boolean useIDs = false;
-	private boolean removeIDs = false;
-	private String encoding = "ISO-8859-1";
+	protected boolean useIDs = false;
+	protected boolean removeIDs = false;
+	protected String encoding = "ISO-8859-1";
 
-    private void saveModel(final ASMModel model, URI uri, OutputStream out) {
+    protected void saveModel(final ASMModel model, URI uri, OutputStream out) {
         Resource r = ((ASMEMFModel)model).getExtent();
         if (uri != null) {
             r.setURI(uri);
