@@ -128,9 +128,9 @@ public class ASMInterpreter {
 			modelLoaderName = "MDR";
 		ModelLoader ml = null;
 		if(modelLoaderName.equals("MDR")) {
-			ml = (ModelLoader)pcl.loadClass("org.atl.engine.repositories.mdr4atl.MDRModelLoader").newInstance();
+			ml = (ModelLoader)pcl.loadClass("org.eclipse.m2m.atl.drivers.mdr4atl.MDRModelLoader").newInstance();
 		} else {
-			ml = (ModelLoader)pcl.loadClass("org.atl.engine.repositories.emf4atl.EMFModelLoader").newInstance();
+			ml = (ModelLoader)pcl.loadClass("org.eclipse.m2m.atl.drivers.emf4atl.EMFModelLoader").newInstance();
 		}
 			
 
