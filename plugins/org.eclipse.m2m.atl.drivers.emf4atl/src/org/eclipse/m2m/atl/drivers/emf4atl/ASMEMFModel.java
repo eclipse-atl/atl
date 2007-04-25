@@ -327,9 +327,7 @@ public class ASMEMFModel extends ASMModel {
 		ASMEMFModel ret = null;
 
 		try {
-			Resource extent = resourceSet.createResource(uri);
-			extent.load(Collections.EMPTY_MAP);
-//            Resource extent = resourceSet.getResource(uri, true);
+            Resource extent = resourceSet.getResource(uri, true);
 			ret = new ASMEMFModel(name, extent, metamodel, true, ml);
             ret.addAllReferencedExtents();
 			ret.setIsTarget(false);
