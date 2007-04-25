@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.eclipse.m2m.atl</groupId>
+    <artifactId>atl-plugins</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>ATLAS transformation language plugins</name>
+    <description>This is the stand-alone version of ATL which is used (e.g.) in AndroMDA.</description>
+    <developers>
+        <developer>
+            <name>Matthias Bohlen</name>
+            <organization>andromda.org</organization>
+            <email>matthias@andromda.org</email>
+        </developer>
+    </developers>
+    <build>
+        <defaultGoal>install</defaultGoal>
+    </build>
+    <modules>
+        <module>org.eclipse.m2m.atl.compilers.atl2006</module>
+        <module>org.eclipse.m2m.atl.drivers.emf4atl</module>
+        <module>org.eclipse.m2m.atl.drivers.mdr4atl</module>
+        <module>org.eclipse.m2m.atl.engine</module>
+        <module>org.eclipse.m2m.atl.engine.vm</module>
+    </modules>
+    <distributionManagement>
+        <repository>
+            <id>andromda-repository</id>
+            <name>AndroMDA Repository</name>
+            <url>scp://galaxy.andromda.org/var/www/andromda/maven2</url>
+            <uniqueVersion>false</uniqueVersion>
+        </repository>
+    </distributionManagement>
+</project>
