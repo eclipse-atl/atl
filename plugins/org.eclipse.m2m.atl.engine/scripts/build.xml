@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.eclipse.m2m.atl.engine/scripts" default="copyEcoreFiles">
+	<target name="copyEcoreFiles">
+		<copy todir="../bin/org/eclipse/m2m/atl/engine/resources">
+			<fileset dir="../src/org/eclipse/m2m/atl/engine/resources">
+				<include name="*.ecore"/>
+			</fileset>
+		</copy>
+	</target>
+</project>
