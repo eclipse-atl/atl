@@ -230,7 +230,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 			if(value instanceof ASMCollection) {
 				for(Iterator i = ((ASMCollection)value).iterator() ; i.hasNext() ; ) {
 					ASMOclAny sv = (ASMOclAny)i.next();
-					if(((ASMEMFModel)getModel()).isCheckSameModel() && (sv instanceof ASMModelElement) && (((ASMModelElement)sv).getModel() != getModel())) {					
+					if(isNotAssignable(feature, sv)) {					
 						continue;
 					}
 					Object val = asm2EMF(frame, sv, name, feature);
@@ -247,7 +247,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 				checkContainment(feature, val);
 			}
 		} else {
-			if(((ASMEMFModel)getModel()).isCheckSameModel() && (value instanceof ASMModelElement) && (((ASMModelElement)value).getModel() != getModel())) {
+			if(isNotAssignable(feature, value)) {
 				// should not happen but the ATL compiler does not add checks for this in resolveTemp yet
 			} else {
 				Object val = asm2EMF(frame, value, name, feature);
@@ -261,6 +261,28 @@ public class ASMEMFModelElement extends ASMModelElement {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @param feature The feature to assign to.
+	 * @param value The value to assign.
+	 * @return True if the value cannot be assigned to the feature.
+	 */
+	private boolean isNotAssignable(EStructuralFeature feature, ASMOclAny value) {
+		if ((value instanceof ASMModelElement) && 
+				(((ASMModelElement)value).getModel() != getModel())) {
+			// assigning a model element that resides in a different model isn't always allowed
+			if (((ASMEMFModel)getModel()).isCheckSameModel()) {
+				// cross-model references are explicitly disallowed
+				return true;
+			} else if (feature instanceof EReference) {
+				// containment references cannot span across models
+				EReference ref = (EReference)feature;
+				return (ref.isContainer() || ref.isContainment());
+			}
+		}
+		return false;
 	}
 	
 	private void checkContainment(EStructuralFeature feature, Object val) {
