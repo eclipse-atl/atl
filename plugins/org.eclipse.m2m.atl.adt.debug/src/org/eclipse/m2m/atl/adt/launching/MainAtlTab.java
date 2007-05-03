@@ -506,7 +506,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 						IFile currentFile = (IFile)element;
 						if (currentFile.getFileExtension() != null) {
 							if (type == IS_LIBRARY) {
-								ret = (currentFile.getFileExtension().toUpperCase()).equals("ATL") ||
+								ret = //(currentFile.getFileExtension().toUpperCase()).equals("ATL") ||
 									  (currentFile.getFileExtension().toUpperCase()).equals("ASM");
 							} else {
 								ret = true;
@@ -695,6 +695,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		try {
 			FileInputStream atlfile = new FileInputStream(new File(path));
 			ASMModel atlmodel = AtlParser.getDefault().parseToModel(atlfile);
+			atlfile.close();
 			
 			Set module = atlmodel.getElementsByType("Module");
 			Set query = atlmodel.getElementsByType("Query");
@@ -736,7 +737,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 					ASMModelElement current = (ASMModelElement)librariesIt.next();
 					librariesFromModule.add(((ASMString)current.get(null, "name")).getSymbol()); 
 				}					
-				atlfile.close();
 			} else if (query.size() > 0) {
 				ASMModelElement atlQuery = (ASMModelElement)query.toArray()[0];
 				Set models = atlQuery.getModel().getElementsByType("OclModel");
@@ -746,6 +746,12 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 					sourceModelsFromModule.add(temp[0]);
 					sourceMetamodelsFromModule.add(temp[1]);
 					sourceC2RelationshipFromModule.add(temp);
+				}
+
+				Iterator librariesIt = ((ASMCollection)atlQuery.get(null, "libraries")).iterator();
+				while (librariesIt.hasNext()) {
+					ASMModelElement current = (ASMModelElement)librariesIt.next();
+					librariesFromModule.add(((ASMString)current.get(null, "name")).getSymbol()); 
 				}
 			}
 		} catch (Exception e1) {}
