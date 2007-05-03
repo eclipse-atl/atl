@@ -178,10 +178,10 @@ public class ASMEMFModel extends ASMModel {
 		Set ret = new HashSet();
 		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
 		addElementsOfType(ret, t, getExtent());
-		for (Iterator i = referencedExtents.iterator(); i.hasNext() ; ) {
-			Resource res = (Resource) i.next();
-            addElementsOfType(ret, t, res);
-		}
+//		for (Iterator i = referencedExtents.iterator(); i.hasNext() ; ) {
+//			Resource res = (Resource) i.next();
+//            addElementsOfType(ret, t, res);
+//		}
 		
 		return ret;
 	}
