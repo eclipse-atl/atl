@@ -578,7 +578,9 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			public void modifyText(ModifyEvent e) {
 				if (metamodelLocation.getText().startsWith("uri:")) {
 					modelHandlers.select(AtlLauncherTools.getEMFKey());
-					modelHandlers.setEnabled(false);
+					// TODO Turn modelHandlers combo to enabled until UML2ATL Driver refactoring (getMof() method)
+					modelHandlers.setEnabled(true);
+//					modelHandlers.setEnabled(false);
 				} else {
 					modelHandlers.setEnabled(true);
 				}
