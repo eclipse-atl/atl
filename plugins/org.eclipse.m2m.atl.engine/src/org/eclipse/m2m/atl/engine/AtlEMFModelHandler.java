@@ -14,12 +14,15 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.atl.engine.injectors.ebnf.EBNFInjector2;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
+import org.eclipse.m2m.atl.drivers.emf4atl.EMFModelLoader;
+import org.eclipse.m2m.atl.engine.injectors.xml.XMLInjector;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
@@ -30,6 +33,9 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 public class AtlEMFModelHandler extends AtlModelHandler {
 	protected ASMEMFModel mofmm;
 	protected ASMEMFModel atlmm;
+	
+	// we only use a ModelLoader to make sure ASMString.inject(...) can work
+	protected EMFModelLoader ml;
 		
 	public void saveModel(final ASMModel model, IProject project) {
 		saveModel(model, model.getName() + ".ecore", project);
@@ -87,10 +93,14 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	protected AtlEMFModelHandler() {
 		URL atlurl = AtlEMFModelHandler.class.getResource("resources/ATL-0.2.ecore");
 		
-		mofmm = org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel.createMOF(null);
+		ml = new EMFModelLoader();
+		ml.addInjector("xml", XMLInjector.class);
+		ml.addInjector("ebnf2", EBNFInjector2.class);
+		mofmm = (ASMEMFModel)ml.getMOF();
+		//org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel.createMOF(ml);
 			
 		try {
-			atlmm = ASMEMFModel.loadASMEMFModel("ATL", mofmm, atlurl, null);
+			atlmm = ASMEMFModel.loadASMEMFModel("ATL", mofmm, atlurl, ml);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -108,7 +118,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in, null);
+			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in, ml);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -120,7 +130,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri, null);
+			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri, ml);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -132,7 +142,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri, null);
+			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri, ml);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -147,7 +157,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		ASMModel ret = null;
 		
 		try {
-			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel, null);
+			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel, ml);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -166,7 +176,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
         	uri = name;
         
         try {
-            ret = ASMEMFModel.newASMEMFModel(name, uri, (ASMEMFModel)metamodel, null);
+            ret = ASMEMFModel.newASMEMFModel(name, uri, (ASMEMFModel)metamodel, ml);
         } catch (Exception e) {
             e.printStackTrace();
         }
