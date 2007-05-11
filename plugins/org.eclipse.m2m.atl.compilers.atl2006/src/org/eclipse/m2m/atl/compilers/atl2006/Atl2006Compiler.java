@@ -11,13 +11,13 @@ import org.eclipse.m2m.atl.engine.AtlDefaultCompiler;
  */
 public class Atl2006Compiler extends AtlDefaultCompiler {
 
-    @Override
+    //@Override
     protected URL getSemanticAnalyzerURL()
     {
         return Atl2006Compiler.class.getResource("resources/ATL-WFR.asm");
     }
 
-    @Override
+    //@Override
     protected URL getCodegeneratorURL()
     {
         return Atl2006Compiler.class.getResource("resources/ATLToASMCompiler.asm");
