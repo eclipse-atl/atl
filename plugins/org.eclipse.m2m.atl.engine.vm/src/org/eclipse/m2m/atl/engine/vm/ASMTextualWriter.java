@@ -1,7 +1,6 @@
 package org.eclipse.m2m.atl.engine.vm;
 
 import java.io.PrintWriter;
-
 import java.util.Iterator;
 
 /**
@@ -52,9 +51,29 @@ public class ASMTextualWriter extends ASMWriter {
 			}
 			out.println(") {");
 			int k = 0;
+//			Map lneByBegin = new HashMap();
+//			Map lneByEnd = new HashMap();
+//			for(Iterator i = op.getLineNumberTable().iterator() ; i.hasNext() ; ) {
+//				LineNumberEntry lne = (LineNumberEntry)i.next();
+//				lneByBegin.put(new Integer(lne.begin), lne);
+//				lneByEnd.put(new Integer(lne.end), lne);
+//			}
 			for(Iterator i = op.getInstructions().iterator() ; i.hasNext() ; ) {
+//				LineNumberEntry lne = (LineNumberEntry)lneByBegin.get(new Integer(k));
+//				if(lne != null) {
+//					out.println("\t  location \"" + lne.id + "\" {");
+//				}
 				out.print("\t\t" + conv(k) + ": ");
 				printInstruction(op, (ASMInstruction)i.next(), k++);
+				String location = op.resolveLineNumber(k - 1);
+				if(location != null)
+					out.print("\t\t// " + location);
+				out.println();
+				
+//				lne = (LineNumberEntry)lneByBegin.get(new Integer(k - 1));
+//				if(lne != null) {
+//					out.print("\t    }");
+//				}
 			}
 		out.println("\t}");
 		out.println();
@@ -83,12 +102,12 @@ public class ASMTextualWriter extends ASMWriter {
 			String operand = ((ASMInstructionWithOperand)instr).getOperand();
 			if(mn.equals("load") || mn.equals("store")) {
 				operand = op.resolveVariableName(Integer.parseInt(operand), index);
-				out.println(mn + " " + operand + ";");
+				out.print(mn + " " + operand + ";");
 			} else {
-				out.println(mn + " '" + operand + "';");
+				out.print(mn + " '" + operand + "';");
 			}
 		} else {
-			out.println(mn + ";");
+			out.print(mn + ";");
 		}
 	}
 
