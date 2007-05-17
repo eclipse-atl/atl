@@ -30,8 +30,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -56,6 +58,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 	private Group groupOthersInformation;
 	private Button buttonModeDebug;
 	private Button buttonAllowInterModelReferences;
+	private Combo atlVMs;
 
 	private Map buttonArray = new HashMap();
 	
@@ -149,6 +152,19 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 		
 		checkButtonFactory();
 		
+        Composite groupATLVMs = new Composite(groupOthersInformation, SWT.SHADOW_NONE);
+		Label atlVMLabel = new Label(groupATLVMs, SWT.NULL);
+		atlVMLabel.setText("ATL Virtual Machine: ");
+		atlVMLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		
+		atlVMs = new Combo(groupATLVMs, SWT.NULL | SWT.READ_ONLY);
+		atlVMs.setItems(AtlVM.getVMs());
+		atlVMs.select(0);
+		atlVMs.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
+		atlVMs.addModifyListener(this);
+		
+		groupATLVMs.setLayout(new GridLayout(2, false));
+
 		groupLayout = new GridLayout();
 		groupLayout.numColumns = 1;
 		groupLayout.makeColumnsEqualWidth = true;
@@ -189,7 +205,13 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
             
             buttonModeDebug.setSelection(configuration.getAttribute(AtlLauncherTools.MODEDEBUG, false));
 			buttonAllowInterModelReferences.setSelection(configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false));
-            
+
+			for (int item = 0; item < atlVMs.getItems().length; item++) {
+				if (atlVMs.getItem(item).equals(configuration.getAttribute(AtlLauncherTools.ATLVM, ""))) {
+					atlVMs.select(item);
+				}
+			}
+
 			for (Iterator it = buttonArray.keySet().iterator(); it.hasNext();) {
 				String currentButtonName = (String)it.next();
 				Button currentButton = (Button)buttonArray.get(currentButtonName);
@@ -218,6 +240,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
         
 		configuration.setAttribute(AtlLauncherTools.AllowInterModelReferences, buttonAllowInterModelReferences.getSelection());
 		configuration.setAttribute(AtlLauncherTools.MODEDEBUG, buttonModeDebug.getSelection());
+		configuration.setAttribute(AtlLauncherTools.ATLVM, atlVMs.getItem(atlVMs.getSelectionIndex()));
 		
 		for (Iterator it = buttonArray.keySet().iterator(); it.hasNext();) {
 			String currentButtonName = (String)it.next();
@@ -319,8 +342,8 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
     }
 
 	public void modifyText(ModifyEvent e) {
-		// TODO Auto-generated method stub
-		
+		canSave();
+		updateLaunchConfigurationDialog();
 	}
 
 	/**

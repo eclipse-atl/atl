@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class AtlLauncherTools {
 
+	public static final String ATLVM = "ATL VM";
 	public static String ATLFILENAME = "ATL File Name";
 	public static String AllowInterModelReferences = "AllowInterModelReferences";
 	public static String PROJECTNAME = "Project Name";
@@ -68,10 +69,18 @@ public class AtlLauncherTools {
 	public static String ALLOW_TARGET_NAVIGATION = "AllowTargetNavigation";
 	public static String ALLOW_SOURCE_MODIFICATION = "AllowSourceModification";
 	public static String CONTINUE_AFTER_ERROR = "ContinueAfterError";
+	public static String PRINT_EXECUTION_TIME = "PrintExecutionTime";
 	public static String[] additionalParamIds = new String[] {
 		CONTINUE_AFTER_ERROR,
+		PRINT_EXECUTION_TIME,
 //		ALLOW_TARGET_NAVIGATION,
 //		ALLOW_SOURCE_MODIFICATION,
+	};
+	public static String[] additionalParamLabels = new String[] {
+		"Continue execution after errors in Run mode",
+		"Print total execution time (including model loading and saving) to console",
+//		"Allow navigation in target models",
+//		"Allow modification of source models",
 	};
 	
 	private static String[] modelHandlersNames;
@@ -96,12 +105,6 @@ public class AtlLauncherTools {
 		return EMFKey;
 	}
 
-	public static String[] additionalParamLabels = new String[] {
-		"Continue execution after errors in Run mode",
-//		"Allow navigation in target models",
-//		"Allow modification of source models",
-	};
-	
 	/**
 	 * 
 	 * @param left
