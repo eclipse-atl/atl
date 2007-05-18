@@ -8,7 +8,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +16,8 @@ import java.util.Map;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
 import org.eclipse.m2m.atl.engine.vm.ASMInterpreter;
+import org.eclipse.m2m.atl.engine.vm.ASMOperation;
+import org.eclipse.m2m.atl.engine.vm.ASMStackFrame;
 import org.eclipse.m2m.atl.engine.vm.ASMXMLReader;
 import org.eclipse.m2m.atl.engine.vm.Debugger;
 import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
@@ -29,12 +31,6 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
  */
 public class AtlLauncher {
 	
-	/* This is the default value in case no value is specified by caller.
-	 * AtlLaunchConfigurationDelegate always specifies a value and has its own default value (false).
-	 * Other callers (like ant tasks), which do not support setting continueAfterErrors, will use this default value.
-	 */
-	private final static boolean CONTINUE_AFTER_ERRORS_DEFAULT_VALUE = true;
-	
 	private static AtlLauncher defaultLauncher = null;
 	
 	public static AtlLauncher getDefault() {
@@ -47,62 +43,60 @@ public class AtlLauncher {
 	private AtlLauncher() {
 		
 	}
-	
-    public Object launch(URL asmurl, Map models, Map asmParams) {
-		return launch(asmurl, Collections.EMPTY_MAP, models, asmParams);
-	}
-	
-    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams) {
-        return launch(asmurl, libraries, models, asmParams, Collections.EMPTY_LIST);
-    }
 
-    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose) {
-		return launch(asmurl, libraries, models, asmParams, false, superimpose, CONTINUE_AFTER_ERRORS_DEFAULT_VALUE);
-	}
+//    public Object launch(URL asmurl, Map models, Map asmParams) {
+//		return launch(asmurl, Collections.EMPTY_MAP, models, asmParams);
+//	}
+//	
+//    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams) {
+//        return launch(asmurl, libraries, models, asmParams, Collections.EMPTY_LIST);
+//    }
+//
+//    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose) {
+//		return launch(asmurl, libraries, models, asmParams, false, superimpose, CONTINUE_AFTER_ERRORS_DEFAULT_VALUE, Collections.EMPTY_MAP);
+//	}
 	
-    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose, boolean continueAfterErrors) {
-		return launch(asmurl, libraries, models, asmParams, false, superimpose, continueAfterErrors);
-	}
+//    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose, boolean continueAfterErrors) {
+//		return launch(asmurl, libraries, models, asmParams, false, superimpose, continueAfterErrors, Collections.EMPTY_MAP);
+//	}
 	
-	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, boolean step, List superimpose, boolean continueAfterErrors) {
-		return launch(asmurl, libraries, models, asmParams, new SimpleDebugger(
-				/* step = */ step,
+	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose, Map options) {
+		return launch(asmurl, libraries, models, asmParams, superimpose, options, new SimpleDebugger(
+				/* step = */ "true".equals(options.get("step")),
 				/* stepops = */ new ArrayList(),
 				/* deepstepops = */ new ArrayList(),
 				/* nostepops = */ new ArrayList(),
 				/* deepnostepops = */ new ArrayList(),
 				/* showStackTrace = */ true,
-				continueAfterErrors
-		), superimpose);
+				"true".equals(options.get("showSummary")),
+				"true".equals(options.get("profile")),
+				"true".equals(options.get("continueAfterError"))
+		));
 	}
 	
-	public Object debug(URL asmurl, Map libraries, Map models, Map asmParams) {
-		return launch(asmurl, libraries, models, asmParams, new NetworkDebugger(6060, true));
-	}
+//	public Object debug(URL asmurl, Map libraries, Map models, Map asmParams) {
+//		return launch(asmurl, libraries, models, asmParams, new NetworkDebugger(6060, true));
+//	}
 	
-    public Object debug(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose) {
-        return launch(asmurl, libraries, models, asmParams, new NetworkDebugger(6060, true), superimpose);
+    public Object debug(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose, Map options) {
+        return launch(asmurl, libraries, models, asmParams, superimpose, options, new NetworkDebugger(6060, true));
     }
     
-    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, Debugger debugger) {
-        return launch(asmurl, libraries, models, asmParams, debugger, Collections.EMPTY_LIST);
-    }
-
-    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, Debugger debugger, List superimpose) {
+    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose, Map options, Debugger debugger) {
 		try {
 			ASM asm = new ASMXMLReader().read(new BufferedInputStream(asmurl.openStream()));
-			return launch(asm, libraries, models, asmParams, debugger, superimpose);
+			return launch(asm, libraries, models, asmParams, superimpose, options, debugger);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-    public Object launch(ASM asm, Map libraries, Map models, Map asmParams, Debugger debugger) {
-        return launch(asm, libraries, models, asmParams, debugger, Collections.EMPTY_LIST);
-    }
+//    public Object launch(ASM asm, Map libraries, Map models, Map asmParams, Debugger debugger) {
+//        return launch(asm, libraries, models, asmParams, debugger, Collections.EMPTY_LIST, Collections.EMPTY_MAP);
+//    }
     
-	public Object launch(ASM asm, Map libraries, Map models, Map asmParams, Debugger debugger, List superimpose) {
+	public Object launch(ASM asm, Map libraries, Map models, Map asmParams, List superimpose, Map options, Debugger debugger) {
 		Object ret = null;
 		try {
 			ASMModule asmModule = new ASMModule(asm);
@@ -121,6 +115,12 @@ public class AtlLauncher {
 				URL url = (URL)libraries.get(lname);
 				ASM lib = new ASMXMLReader().read(new BufferedInputStream(url.openStream()));
 				env.registerOperations(lib);
+				
+				// If there is a main operation, run it to register attribute helpers
+				ASMOperation op = lib.getOperation("main");
+				if(op != null)
+					op.exec(ASMStackFrame.rootFrame(env, op, Arrays.asList(new Object[] {asmModule})));
+
 			}
 
             for(Iterator i = superimpose.iterator() ; i.hasNext() ; ) {
@@ -131,7 +131,14 @@ public class AtlLauncher {
                 env.registerOperations(module);
             }
 
+    		boolean printExecutionTime = "true".equals(options.get("printExecutionTime"));
+
+    		long startTime = System.currentTimeMillis();
 			ASMInterpreter ai = new ASMInterpreter(asm, asmModule, env, asmParams);
+			long endTime = System.currentTimeMillis();
+			if(printExecutionTime && !(debugger instanceof NetworkDebugger))
+				System.out.println(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s.");
+
 			ret = ai.getReturnValue();
 		} catch (IOException e) {
 			e.printStackTrace();

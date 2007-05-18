@@ -124,7 +124,7 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler
             
             Map libs = Collections.EMPTY_MAP;
 
-            AtlLauncher.getDefault().launch(getSemanticAnalyzerURL(), libs, models, params);           
+            AtlLauncher.getDefault().launch(getSemanticAnalyzerURL(), libs, models, params, Collections.EMPTY_LIST, Collections.EMPTY_MAP);           
 
             a = getProblems(problems, ret);
             nbErrors = ((Integer)a[0]).intValue();
@@ -147,7 +147,7 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler
             libs.put("typeencoding", AtlParser.class.getResource("resources/typeencoding.asm"));
             libs.put("strings", AtlParser.class.getResource("resources/strings.asm"));
     
-            AtlLauncher.getDefault().launch(getCodegeneratorURL(), libs, models, params);
+            AtlLauncher.getDefault().launch(getCodegeneratorURL(), libs, models, params, Collections.EMPTY_LIST, Collections.EMPTY_MAP);
         }
         
         return ret;
