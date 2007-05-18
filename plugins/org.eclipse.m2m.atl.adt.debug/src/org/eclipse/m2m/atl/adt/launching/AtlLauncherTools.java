@@ -66,23 +66,33 @@ public class AtlLauncherTools {
 		EXTENSIONS.add("acg");
 	}
 	
-	public static String ALLOW_TARGET_NAVIGATION = "AllowTargetNavigation";
-	public static String ALLOW_SOURCE_MODIFICATION = "AllowSourceModification";
-	public static String CONTINUE_AFTER_ERROR = "ContinueAfterError";
-	public static String PRINT_EXECUTION_TIME = "PrintExecutionTime";
+	public static String OPTION_CONTINUE_AFTER_ERROR = "continueAfterError";
+	public static String OPTION_ALLOW_TARGET_NAVIGATION = "allowTargetNavigation";
+	public static String OPTION_ALLOW_SOURCE_MODIFICATION = "allowSourceModification";
+	public static String OPTION_ALLOW_CONTAINER_REASSIGNMENT = "allowContainerReassignment";
+	public static String OPTION_PRINT_EXECUTION_TIME = "printExecutionTime";
+	public static String OPTION_STEP = "step";
+	public static String OPTION_SHOW_SUMMARY = "showSummary";
+	public static String OPTION_PROFILE = "profile";
 	public static String[] additionalParamIds = new String[] {
-		CONTINUE_AFTER_ERROR,
-		PRINT_EXECUTION_TIME,
+		OPTION_CONTINUE_AFTER_ERROR,
+		OPTION_PRINT_EXECUTION_TIME,
+		OPTION_STEP,
+		OPTION_SHOW_SUMMARY,
+		OPTION_PROFILE,
 //		ALLOW_TARGET_NAVIGATION,
 //		ALLOW_SOURCE_MODIFICATION,
 //		ALLOW_CONTAINER_REASSIGNMENT,
 	};
 	public static String[] additionalParamLabels = new String[] {
 		"Continue execution after errors in Run mode",
-		"Print total execution time (including model loading and saving) to console (Run mode only)",
 //		"Allow navigation in target models",
 //		"Allow modification of source models",
 //		"Allow container reassignment",
+		"Run mode only: print execution times to console: 1) transformation only, and 2) total (including model loading and saving)",
+		"Run mode only: print execution information to console for each executed bytecode (very verbose!)",
+		"Run mode only: print an execution summary to console (i.e., number of executed bytecodes)",
+		"Run mode only: print information on the number of times operations are called with the same arguments to the console",
 	};
 	
 	private static String[] modelHandlersNames;

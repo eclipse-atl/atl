@@ -24,7 +24,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		String atlVMName = configuration.getAttribute(AtlLauncherTools.ATLVM, "");
 		AtlVM atlVM = AtlVM.getVM(atlVMName);
 		
-		boolean printExecutionTime = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.PRINT_EXECUTION_TIME, false);
+		boolean printExecutionTime = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.OPTION_PRINT_EXECUTION_TIME, false);
 
 		long startTime = System.currentTimeMillis();
 		atlVM.launch(configuration, mode, launch, monitor);
