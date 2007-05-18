@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 
 /**
@@ -28,7 +29,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		long startTime = System.currentTimeMillis();
 		atlVM.launch(configuration, mode, launch, monitor);
 		long endTime = System.currentTimeMillis();
-		if(printExecutionTime)
+		if(printExecutionTime && !mode.equals(ILaunchManager.DEBUG_MODE))
 			System.out.println(launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.ATLFILENAME, "Transformation") + " executed in " + ((endTime - startTime) / 1000.) + " s (including model loading and saving).");
 	}
 
