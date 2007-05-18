@@ -81,7 +81,7 @@ public class OclQuery extends OclEvaluator {
 				/* deepnostepops = */ new ArrayList(),
 				/* showStackTrace = */ true
 		);
-		ret = (ASMOclAny)al.launch(asm, libraries, models, asmParams, debugger);
+		ret = (ASMOclAny)al.launch(asm, libraries, models, asmParams, Collections.EMPTY_LIST, Collections.EMPTY_MAP, debugger);
 		
 		return ret;
 	}
