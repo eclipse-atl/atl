@@ -75,12 +75,14 @@ public class AtlLauncherTools {
 		PRINT_EXECUTION_TIME,
 //		ALLOW_TARGET_NAVIGATION,
 //		ALLOW_SOURCE_MODIFICATION,
+//		ALLOW_CONTAINER_REASSIGNMENT,
 	};
 	public static String[] additionalParamLabels = new String[] {
 		"Continue execution after errors in Run mode",
-		"Print total execution time (including model loading and saving) to console",
+		"Print total execution time (including model loading and saving) to console (Run mode only)",
 //		"Allow navigation in target models",
 //		"Allow modification of source models",
+//		"Allow container reassignment",
 	};
 	
 	private static String[] modelHandlersNames;
