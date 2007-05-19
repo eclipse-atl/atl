@@ -99,8 +99,8 @@ public class ACTInterpreter {
 			pcl.addLocation(expand(plugin.href, parameters));
 		}
 		try {
-			ml.addInjector("ebnf", pcl.loadClass("org.eclipse.m2m.atl.engine.injectors.ebnf.EBNFInjector"));
-			ml.addInjector("ebnf2", pcl.loadClass("org.eclipse.m2m.atl.engine.injectors.ebnf.EBNFInjector2"));
+			ml.addInjector("ebnf", pcl.loadClass("org.atl.engine.injectors.ebnf.EBNFInjector"));
+			ml.addInjector("ebnf2", pcl.loadClass("org.atl.engine.injectors.ebnf.EBNFInjector2"));
 		} catch(Exception e) {
 			e.printStackTrace(System.out);
 		}
