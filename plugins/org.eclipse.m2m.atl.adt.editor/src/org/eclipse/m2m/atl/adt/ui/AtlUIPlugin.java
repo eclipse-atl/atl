@@ -1,5 +1,6 @@
 package org.eclipse.m2m.atl.adt.ui;
 
+import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.MissingResourceException;
@@ -236,7 +237,7 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 		   activateConsole();
 		   // System.out = out;	   
 		   consoleStream.println("ATL Console initiated");
-		    OutputStreamRedirector redirStream = new OutputStreamRedirector (consoleStream);
+		    PrintStream redirStream = new PrintStream (consoleStream);
 		    System.setOut(redirStream);
 		   // System.setErr(redirStream);	   
 		}
