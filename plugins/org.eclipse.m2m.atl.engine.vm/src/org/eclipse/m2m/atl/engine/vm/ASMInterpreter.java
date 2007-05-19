@@ -205,7 +205,7 @@ public class ASMInterpreter {
 
 		env.registerOperations(asm);
 
-		loadLibraries(env, params);
+		loadLibraries(env, params, asmModule);
 
 		long startProgram = new Date().getTime();
 		ASMInterpreter asmi = new ASMInterpreter(asm, asmModule, env, params);
@@ -284,20 +284,24 @@ public class ASMInterpreter {
 	}
 
 // BEGIN LIBRARY TOOLS
-	private static void loadLibraries(ASMExecEnv env, Map params) throws Exception {
+	private static void loadLibraries(ASMExecEnv env, Map params, ASMModule asmModule) throws Exception {
 		String libs = (String)params.get("libs");
 		if(libs != null) {
 			String libsa[] = libs.split(",");
 			for(int i = 0 ; i < libsa.length ; i++) {
-				loadLibrary(env, libsa[i], (String)params.get(libsa[i]));
+				loadLibrary(env, libsa[i], (String)params.get(libsa[i]), asmModule);
 			}
 		}
 	}
 
-	private static void loadLibrary(ASMExecEnv env, String name, String fileName) throws Exception {
+	private static void loadLibrary(ASMExecEnv env, String name, String fileName, ASMModule asmModule) throws Exception {
 		System.out.println("Loading library " + name + " from " + fileName + ".");
 		ASM lib = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(fileName)));
 		env.registerOperations(lib);
+		// If there is a main operation, run it to register attribute helpers
+		ASMOperation op = lib.getOperation("main");
+		if(op != null)
+			op.exec(ASMStackFrame.rootFrame(env, op, Arrays.asList(new Object[] {asmModule})));
 	}
 // END LIBRARY TOOLS
 
