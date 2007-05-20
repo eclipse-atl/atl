@@ -118,7 +118,7 @@ public abstract class ModelLoader {
 							} else if(type.equals("RandomAccessFile") && (uri != null)) {
 								paramsMap.put(pname, new RandomAccessFile(uri, "r"));
 							} else {
-								System.err.println("Warning: unknown parameter type \"" + type + "\" of \"" + pname + "\".");
+								//System.err.println("Warning: unknown parameter type \"" + type + "\" of \"" + pname + "\".");
 							}
 						}
 					}
