@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +34,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclType;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclUndefined;
+import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOrderedSet;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMReal;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMSequence;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMSet;
@@ -440,13 +440,16 @@ public class ASMEMFModelElement extends ASMModelElement {
 		return (ret == null) ? new ASMOclUndefined() : ret;
 	}
 
-	public static ASMSet allInstances(StackFrame frame, ASMEMFModelElement self) {
+	public static ASMOrderedSet allInstances(StackFrame frame, ASMEMFModelElement self) {
 		return allInstancesFrom(frame, self, null);
 	}
 
-	public static ASMSet allInstancesFrom(StackFrame frame, ASMEMFModelElement self, ASMString sourceModelName) {
+	// return type could be a Set because there is no order, in theory
+	// However, keeping resource (i.e., XMI) order is sometimes less confusing
+	public static ASMOrderedSet allInstancesFrom(StackFrame frame, ASMEMFModelElement self, ASMString sourceModelName) {
 final boolean debug = false;
-		Set ret = new HashSet();
+		ASMOrderedSet aret = new ASMOrderedSet();
+		Collection ret = aret.collection();
 
 if(debug) System.out.println(self + ".allInstancesFrom(" + ((sourceModelName == null) ? "null" : "\"" + sourceModelName + "\"") + ")");
 		//if(self.object.eClass().equals()) {
@@ -467,7 +470,7 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 			}
 		//}
 			
-		return new ASMSet(ret);
+		return aret;
 	}
 	
 	public static ASMModelElement newInstance(StackFrame frame, ASMEMFModelElement self) {

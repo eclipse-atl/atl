@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -175,7 +176,7 @@ public class ASMEMFModel extends ASMModel {
      * @see ASMModelElement
      */
 	public Set getElementsByType(ASMModelElement type) {
-		Set ret = new HashSet();
+		Set ret = new LinkedHashSet();
 		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
 		addElementsOfType(ret, t, getExtent());
 //		for (Iterator i = referencedExtents.iterator(); i.hasNext() ; ) {
