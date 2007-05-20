@@ -16,6 +16,12 @@ import java.util.Set;
 
 import org.atl.engine.injectors.ebnf.EBNFInjector2;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -97,6 +103,26 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		ml = new EMFModelLoader();
 		ml.addInjector("xml", XMLInjector.class);
 		ml.addInjector("ebnf2", EBNFInjector2.class);
+		
+		
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+        if (registry != null) {
+			IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.injector");
+	
+			IExtension[] extensions = point.getExtensions();		
+			for(int i = 0 ; i < extensions.length ; i++){		
+				IConfigurationElement[] elements = extensions[i].getConfigurationElements();
+				for(int j = 0 ; j < elements.length ; j++){
+					try {
+						ml.addInjector(elements[j].getAttribute("name"), elements[j].createExecutableExtension("class").getClass());
+					} catch (CoreException e){
+						e.printStackTrace();
+					}				
+				}
+			 }
+        }
+		
+		
 		mofmm = (ASMEMFModel)ml.getMOF();
 		//org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel.createMOF(ml);
 			

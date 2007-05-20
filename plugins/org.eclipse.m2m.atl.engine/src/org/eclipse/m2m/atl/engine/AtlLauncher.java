@@ -120,7 +120,6 @@ public class AtlLauncher {
 				ASMOperation op = lib.getOperation("main");
 				if(op != null)
 					op.exec(ASMStackFrame.rootFrame(env, op, Arrays.asList(new Object[] {asmModule})));
-
 			}
 
             for(Iterator i = superimpose.iterator() ; i.hasNext() ; ) {
