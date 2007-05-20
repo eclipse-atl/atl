@@ -1,9 +1,11 @@
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
@@ -213,7 +215,30 @@ public class ASMString extends ASMOclAny {
 		return new ASMString(self.s.replace(a.s.charAt(0), b.s.charAt(0)));
 	}
 
-	      // File output
+    // File input
+	public static ASMOclAny readFrom(StackFrame frame, ASMString self) {
+		ASMOclAny ret;
+		
+		try {
+			StringBuffer sb = new StringBuffer();
+			BufferedReader in = new BufferedReader(new FileReader(self.s));
+			
+			String line;
+			while((line = in.readLine()) != null) {
+				sb.append(line);
+				sb.append("\n");
+			}
+			
+			ret = new ASMString(sb.toString());
+		} catch(IOException ioe) {
+			frame.printStackTrace("error: could not read from file " + self.s);
+			ret = new ASMOclUndefined();;
+		}
+		
+		return ret;
+	}
+	
+    // File output
 	public static ASMBoolean writeTo(StackFrame frame, ASMString self, ASMString fileName) {
 		return writeToWithCharset(frame, self, fileName, null);
 	}
@@ -250,12 +275,17 @@ public class ASMString extends ASMOclAny {
 		return self;
 	}
 
-	public static ASMModelElement inject(StackFrame frame, ASMString self, ASMString targetModelName, ASMString kind, ASMString params) {
-		ASMModelElement ret = null;
+	public static ASMOclAny inject(StackFrame frame, ASMString self, ASMString targetModelName, ASMString kind, ASMString params) {
+		ASMOclAny ret = null;
 		
 		ASMModel tgt = frame.getExecEnv().getModel(targetModelName.getSymbol());
+		if(tgt == null)
+			frame.printStackTrace("Error: could not find model " + targetModelName);
 		ModelLoader ml = tgt.getModelLoader();
 		ret = ml.inject(tgt, kind.getSymbol(), params.getSymbol(), null, new ByteArrayInputStream(self.s.getBytes()));
+		
+		if(ret == null)
+			ret = new ASMOclUndefined();
 		
 		return ret;
 	}
