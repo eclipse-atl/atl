@@ -61,16 +61,19 @@ public class OclQuery extends OclEvaluator {
 	}
 	
 	public ASMOclAny eval(Map models) throws Exception {
-		if(compiledQuery == null)
-			compile();
-		return interpretQuery(compiledQuery, models);
+		return eval(models, Collections.EMPTY_MAP);
 	}
 	
-	private ASMOclAny interpretQuery(ASM asm, Map models) throws Exception {
+	public ASMOclAny eval(Map models, Map libraries) throws Exception {
+		if(compiledQuery == null)
+			compile();
+		return interpretQuery(compiledQuery, models, libraries);
+	}
+	
+	private ASMOclAny interpretQuery(ASM asm, Map models, Map libraries) throws Exception {
 		ASMOclAny ret = null;
 		
 		AtlLauncher al = AtlLauncher.getDefault();
-		Map libraries = Collections.EMPTY_MAP;
 		Map asmParams = Collections.EMPTY_MAP;
 		
 		Debugger debugger = new SimpleDebugger(
