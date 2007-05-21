@@ -67,6 +67,7 @@ public class AtlLauncherTools {
 	}
 	
 	public static String OPTION_CONTINUE_AFTER_ERROR = "continueAfterError";
+	public static String OPTION_DISABLE_ATTRIBUTE_HELPER_CACHE = "disableAttributeHelperCache";
 	public static String OPTION_ALLOW_TARGET_NAVIGATION = "allowTargetNavigation";
 	public static String OPTION_ALLOW_SOURCE_MODIFICATION = "allowSourceModification";
 	public static String OPTION_ALLOW_CONTAINER_REASSIGNMENT = "allowContainerReassignment";
@@ -75,20 +76,22 @@ public class AtlLauncherTools {
 	public static String OPTION_SHOW_SUMMARY = "showSummary";
 	public static String OPTION_PROFILE = "profile";
 	public static String[] additionalParamIds = new String[] {
+//		ALLOW_TARGET_NAVIGATION,
+//		ALLOW_SOURCE_MODIFICATION,
+//		ALLOW_CONTAINER_REASSIGNMENT,
 		OPTION_CONTINUE_AFTER_ERROR,
+		OPTION_DISABLE_ATTRIBUTE_HELPER_CACHE,
 		OPTION_PRINT_EXECUTION_TIME,
 		OPTION_STEP,
 		OPTION_SHOW_SUMMARY,
 		OPTION_PROFILE,
-//		ALLOW_TARGET_NAVIGATION,
-//		ALLOW_SOURCE_MODIFICATION,
-//		ALLOW_CONTAINER_REASSIGNMENT,
 	};
 	public static String[] additionalParamLabels = new String[] {
-		"Continue execution after errors in Run mode",
 //		"Allow navigation in target models",
 //		"Allow modification of source models",
 //		"Allow container reassignment",
+		"Continue execution after errors in Run mode",
+		"Disable attribute helpers caching",
 		"Run mode only: print execution times to console: 1) transformation only, and 2) total (including model loading and saving)",
 		"Run mode only: print execution information to console for each executed bytecode (very verbose!)",
 		"Run mode only: print an execution summary to console (i.e., number of executed bytecodes)",
