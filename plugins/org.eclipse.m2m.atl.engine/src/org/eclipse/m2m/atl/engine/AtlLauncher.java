@@ -101,7 +101,7 @@ public class AtlLauncher {
 		try {
 			ASMModule asmModule = new ASMModule(asm);
 
-			ASMExecEnv env = new ASMExecEnv(asmModule, debugger);
+			ASMExecEnv env = new ASMExecEnv(asmModule, debugger, !"true".equals(options.get("disableAttributeHelperCache")));
 			
 			for(Iterator i = models.keySet().iterator() ; i.hasNext() ; ) {
 				String mname = (String)i.next();
