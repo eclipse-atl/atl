@@ -240,6 +240,11 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="query" ordered="false" eType="/1/Query" eOpposite="/1/Query/helpers"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="library" ordered="false" eType="/1/Library" eOpposite="/1/Library/helpers"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="definition" ordered="false" lowerBound="1" eType="/0/OclFeatureDefinition" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="preConditions" ordered="false" upperBound="-1" eType="/1/Condition" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="postConditions" ordered="false" upperBound="-1" eType="/1/Condition" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Condition" eSuperTypes="/1/Element">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="body" ordered="false" lowerBound="1" eType="/0/OclExpression" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Rule" abstract="true" eSuperTypes="/1/ModuleElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="outPattern" ordered="false" eType="/1/OutPattern" containment="true" eOpposite="/1/OutPattern/rule"/>
@@ -253,6 +258,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="superRule" ordered="false" eType="/1/MatchedRule" eOpposite="/1/MatchedRule/children"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAbstract" ordered="false" unique="false" lowerBound="1" eType="/2/Boolean"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="isRefining" ordered="false" unique="false" lowerBound="1" eType="/2/Boolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDefault" ordered="false" unique="false" lowerBound="1" eType="/2/Boolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="LazyMatchedRule" eSuperTypes="/1/MatchedRule">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnique" ordered="false" unique="false" lowerBound="1" eType="/2/Boolean"/>
