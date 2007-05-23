@@ -1,6 +1,7 @@
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -165,7 +166,7 @@ public class ASMSequence extends ASMCollection {
 	public static ASMSequence excluding(StackFrame frame, ASMSequence self, ASMOclAny o) {
 		ASMSequence ret = new ASMSequence(self);
 
-		ret.s.remove(o);
+		ret.s.removeAll(Arrays.asList(new ASMOclAny[] {o}));
 
 		return ret;
 	}
