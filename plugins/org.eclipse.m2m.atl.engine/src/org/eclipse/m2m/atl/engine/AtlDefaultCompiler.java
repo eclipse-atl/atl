@@ -138,6 +138,8 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler
             models.put("MOF", amh.getMof());
             models.put("ATL", amh.getAtl());
             models.put("IN", atlmodel);
+            models.put("Problem", pbmm);
+            models.put("OUT", problems);
     
             Map params = new HashMap();
             params.put("debug", "false");
@@ -148,6 +150,10 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler
             libs.put("strings", AtlParser.class.getResource("resources/strings.asm"));
     
             AtlLauncher.getDefault().launch(getCodegeneratorURL(), libs, models, params, Collections.EMPTY_LIST, Collections.EMPTY_MAP);
+
+            a = getProblems(problems, ret);
+            nbErrors = ((Integer)a[0]).intValue();
+            ret = (EObject[])a[1];
         }
         
         return ret;
