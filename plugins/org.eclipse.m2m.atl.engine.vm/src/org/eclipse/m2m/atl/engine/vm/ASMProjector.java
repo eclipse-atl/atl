@@ -46,18 +46,18 @@ public class ASMProjector {
 		}
 
 		try {
-			ml.addInjector("ebnf", pcl.loadClass("org.eclipse.m2m.atl.engine.injectors.ebnf.EBNFInjector"));
-			ml.addInjector("ebnf2", pcl.loadClass("org.eclipse.m2m.atl.engine.injectors.ebnf.EBNFInjector2"));
+			ml.addInjector("ebnf", pcl.loadClass("org.atl.engine.injectors.ebnf.EBNFInjector"));
+			ml.addInjector("ebnf2", pcl.loadClass("org.atl.engine.injectors.ebnf.EBNFInjector2"));
 		} catch(Exception e) {
 			//e.printStackTrace(System.out);
 		}
 		try {
-			ml.addExtractor("ebnf", pcl.loadClass("org.eclipse.m2m.atl.engine.extractors.ebnf.EBNFExtractor"));
+			ml.addExtractor("ebnf", pcl.loadClass("org.atl.engine.extractors.ebnf.EBNFExtractor"));
 		} catch(Exception e) {
 			//e.printStackTrace(System.out);
 		}
 		try {
-			ml.addInjector("bin", pcl.loadClass("org.eclipse.m2m.atl.engine.injectors.bin.BINInjector"));
+			ml.addInjector("bin", pcl.loadClass("org.atl.engine.injectors.bin.BINInjector"));
 		} catch(Exception e) {
 			//e.printStackTrace(System.out);
 		}
