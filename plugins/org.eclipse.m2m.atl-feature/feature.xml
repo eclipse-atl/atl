@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.m2m.atl_feature"
+      id="org.eclipse.m2m.atl.engine"
       label="ATL Feature"
       version="2.0.0"
-      provider-name="ATLAS">
+      provider-name="ATLAS"
+      plugin="org.eclipse.m2m.atl.engine">
 
-   <description url="http://www.eclipse.org/m2m/atl/">
+   <description>
       ATL Engine Feature
    </description>
 
-   <copyright url="http://www.example.com/copyright">
+   <copyright>
       [Enter Copyright Description here.]
    </copyright>
 
-   <license url="http://www.eclipse.org/legal/epl-v10.html">
+   <license>
       &lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot;&gt;
 &lt;html&gt;
 &lt;head&gt;
@@ -145,6 +146,15 @@ both.&lt;/small&gt;
 &lt;/body&gt;
 &lt;/html&gt;
    </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.ui.ide"/>
+   </requires>
 
    <plugin
          id="org.eclipse.m2m.atl.compilers.atl2006"
