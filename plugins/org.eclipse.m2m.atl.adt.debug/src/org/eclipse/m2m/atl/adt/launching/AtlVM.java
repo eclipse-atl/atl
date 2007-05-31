@@ -28,6 +28,11 @@ public abstract class AtlVM implements ILaunchConfigurationDelegate {
 	
 	public static AtlVM getVM(String vm) {
 		AtlVM ret = null;
+		
+		// TODO old ATL launch configuration does not have vm attribute, retro-compatibility may be dealed by ATL launch configuration 
+		if (vm == null || vm.equals(""))
+			vm = ATLVM_REGULAR;
+		
 		if(ATLVM_REGULAR.equals(vm)) {
 			ret = new AtlRegularVM();
 		} else {
