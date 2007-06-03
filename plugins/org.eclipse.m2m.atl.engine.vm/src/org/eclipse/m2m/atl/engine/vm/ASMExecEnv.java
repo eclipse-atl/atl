@@ -112,8 +112,8 @@ public class ASMExecEnv extends ExecEnv {
 			case 'Q': case 'G': case 'C':	// Sequence, Bag, Collection,
 			case 'E': case 'O': case 'N':	// Set, OrderedSet, Native type
 				ci.next();
-				//ASMOclType elementType = parseTypeInternal(ci);
-				read(ci, ';');
+				ASMOclType elementType = parseTypeInternal(ci);
+				//read(ci, ';');
 				break;
 			case 'T':						// Tuple
 				ci.next();
