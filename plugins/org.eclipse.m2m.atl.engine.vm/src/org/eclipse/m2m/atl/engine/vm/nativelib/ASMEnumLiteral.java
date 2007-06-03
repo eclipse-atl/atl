@@ -34,6 +34,10 @@ public class ASMEnumLiteral extends ASMOclAny {
 	public boolean equals(Object o) {
 		return (o instanceof ASMEnumLiteral) && (((ASMEnumLiteral)o).name.equals(name));
 	}
+	
+	public int hashCode() {
+		return name.hashCode(); 
+	}
 
 	public String toString() {
 		return "#" + ((name == null) ? "<unnamed_yet>" : name);
