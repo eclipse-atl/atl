@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.engine.vm.ClassNativeOperation;
+import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBag;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBoolean;
@@ -574,8 +575,9 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 	public ASMOclAny invoke(StackFrame frame, String opName, List arguments) {
 		ASMOclAny ret = null;
 
-		if(findOperation(frame, opName, arguments) != null) {
-			ret = super.invoke(frame, opName, arguments);
+		Operation oper = findOperation(frame, opName, arguments, getType());
+		if(oper != null) {
+			invoke(frame, oper, arguments);
 		} else {
 			Object args[] = new Object[arguments.size()];
 			Class argumentTypes[] = new Class[arguments.size()];
