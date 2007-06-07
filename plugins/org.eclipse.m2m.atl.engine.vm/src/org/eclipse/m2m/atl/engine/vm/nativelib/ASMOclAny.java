@@ -50,19 +50,39 @@ public class ASMOclAny extends ASMNativeObject {
 		return invoke(frame, opName, arguments, getType());
 	}
 	
+	/**
+	 * Searches for Operation opName and invokes it if found.
+	 * @param frame The current stack frame
+	 * @param opName The Operation's name
+	 * @param arguments The operation arguments, excluding self
+	 * @param type The operation context type
+	 * @return The Operation's result or null
+	 */
 	public ASMOclAny invoke(StackFrame frame, String opName, List arguments, ASMOclType type) {
 		ASMOclAny ret = null;
 		
 		Operation oper = findOperation(frame, opName, arguments, type);
 
 		if(oper != null) {
-			arguments.add(0, this);	// self
-			ret = oper.exec(frame.enterFrame(oper, arguments));
+			ret = invoke(frame, oper, arguments);
 		} else {
 			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes());
 		}
 
 		return ret;
+	}
+
+	/**
+	 * Invokes the given Operation.
+	 * @param frame The current stack frame
+	 * @param oper The Operation to invoke
+	 * @param arguments The operation arguments, excluding self
+	 * @return The Operation's result
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	public ASMOclAny invoke(StackFrame frame, Operation oper, List arguments) {
+		arguments.add(0, this);	// self
+		return oper.exec(frame.enterFrame(oper, arguments));
 	}
 
 	public ASMOclAny get(StackFrame frame, String name) {
