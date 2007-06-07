@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -51,15 +52,26 @@ public class AtlLauncher {
 //    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams) {
 //        return launch(asmurl, libraries, models, asmParams, Collections.EMPTY_LIST);
 //    }
-//
-//    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose) {
-//		return launch(asmurl, libraries, models, asmParams, false, superimpose, CONTINUE_AFTER_ERRORS_DEFAULT_VALUE, Collections.EMPTY_MAP);
-//	}
+
+	/**
+	 * Backward compatible launch method. Leaves upgrade window.
+	 * @param asmurl URL to the .asm transformation module
+	 * @param libraries Map of library names mapped to URLs of their .asm files
+	 * @param models Map of model names mapped to (input and output) ASMModels
+	 * @param asmParams Voodoo parameters - always use Collections.EMPTY_MAP
+	 * @param superimpose List of URLs to superimposed .asm transformation modules
+	 */
+    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose) {
+		return launch(asmurl, libraries, models, asmParams, superimpose, Collections.EMPTY_MAP);
+	}
 	
 //    public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose, boolean continueAfterErrors) {
 //		return launch(asmurl, libraries, models, asmParams, false, superimpose, continueAfterErrors, Collections.EMPTY_MAP);
 //	}
 	
+    /**
+     * New launch method. Not backward compatible with previous versions of ATL.
+     */
 	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose, Map options) {
 		return launch(asmurl, libraries, models, asmParams, superimpose, options, new SimpleDebugger(
 				/* step = */ "true".equals(options.get("step")),
