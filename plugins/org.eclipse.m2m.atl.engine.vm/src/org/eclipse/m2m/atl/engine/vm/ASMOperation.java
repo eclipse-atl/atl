@@ -197,9 +197,10 @@ public class ASMOperation extends Operation {
 						frame.printStackTrace("ERROR: element " + me + " not found in native");
 					}
 				} else {
+					ASMModel mm = frame.getModel(mname);
 					for (Iterator j = frame.getExecEnv().getModels().values().iterator(); j.hasNext();) {
 						ASMModel model = (ASMModel)j.next();
-						if (model.getMetamodel().equals(frame.getModel(mname)) && model.isTarget()) {
+						if (model.getMetamodel().equals(mm) && model.isTarget()) {
 							frame.push(model.newModelElement(frame, me));
 							break;
 						}
