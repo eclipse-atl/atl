@@ -448,26 +448,37 @@ public class ASMEMFModelElement extends ASMModelElement {
 	// return type could be a Set because there is no order, in theory
 	// However, keeping resource (i.e., XMI) order is sometimes less confusing
 	public static ASMOrderedSet allInstancesFrom(StackFrame frame, ASMEMFModelElement self, ASMString sourceModelName) {
+
 final boolean debug = false;
+
 		ASMOrderedSet aret = new ASMOrderedSet();
 		Collection ret = aret.collection();
 
 if(debug) System.out.println(self + ".allInstancesFrom(" + ((sourceModelName == null) ? "null" : "\"" + sourceModelName + "\"") + ")");
+		
 		//if(self.object.eClass().equals()) {
 			for(Iterator i = frame.getModels().keySet().iterator() ; i.hasNext() ; ) {
 				String mname = (String)i.next();
+
 if(debug) System.out.println("\ttrying: " + mname);
+
 				if((sourceModelName != null) && !mname.equals(sourceModelName.getSymbol())) continue;
 				ASMModel am = (ASMModel)frame.getModels().get(mname);
+
 if(debug) System.out.println("\t\tfound: " + am.getName());
 if(debug) System.out.println("\t\tam.getMetamodel() = " + am.getMetamodel().hashCode());
 if(debug) System.out.println("\t\tself.getModel() = " + self.getModel().hashCode());
 if(debug) System.out.println("\t\tam.getMetamodel().equals(self.getModel()) = " + am.getMetamodel().equals(self.getModel()));
+
 				if(!am.getMetamodel().equals(self.getModel())) continue;
+
 if(debug) System.out.println("\t\t\tsearching on: " + am.getName());
+
 				Set elems = am.getElementsByType(self);
 				ret.addAll(elems);
+
 if(debug) System.out.println("\t\t\t\tfound: " + elems);
+
 			}
 		//}
 			
@@ -577,7 +588,7 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 
 		Operation oper = findOperation(frame, opName, arguments, getType());
 		if(oper != null) {
-			invoke(frame, oper, arguments);
+			ret = invoke(frame, oper, arguments);
 		} else {
 			Object args[] = new Object[arguments.size()];
 			Class argumentTypes[] = new Class[arguments.size()];
