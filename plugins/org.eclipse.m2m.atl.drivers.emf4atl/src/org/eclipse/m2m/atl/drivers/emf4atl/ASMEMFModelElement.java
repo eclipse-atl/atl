@@ -523,9 +523,14 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 		
 		EStructuralFeature sfName = object.eClass().getEStructuralFeature("name");
 		if (sfName != null) {
-			String name = (String)object.eGet(sfName);
-			if(name == null) {
-				name = "<notnamedyet>";
+			String name = null;
+			try {
+				name = (String)object.eGet(sfName);
+				if(name == null) {
+					name = "<notnamedyet>";
+				}
+			} catch(Exception e) {
+				name = "<nonstringname>";
 			}
 			setName(name);
 		} else { 
