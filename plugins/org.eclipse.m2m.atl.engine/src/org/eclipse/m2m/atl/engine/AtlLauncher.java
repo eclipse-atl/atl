@@ -60,6 +60,7 @@ public class AtlLauncher {
 	 * @param models Map of model names mapped to (input and output) ASMModels
 	 * @param asmParams Voodoo parameters - always use Collections.EMPTY_MAP
 	 * @param superimpose List of URLs to superimposed .asm transformation modules
+	 * @deprecated
 	 */
     public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose) {
 		return launch(asmurl, libraries, models, asmParams, superimpose, Collections.EMPTY_MAP);
