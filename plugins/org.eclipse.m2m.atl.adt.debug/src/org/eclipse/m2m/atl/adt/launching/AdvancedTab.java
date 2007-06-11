@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
+import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.Viewer;
@@ -46,8 +47,6 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 
     final static String SUPERIMPOSE = "SUPERIMPOSE";
 
-    private List superimpose = new ArrayList();
-    
     private Composite container;
 
     private Group groupSuperimpose;
@@ -176,7 +175,19 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
         container.pack();
         setControl(container);
         canSave();
-}
+    }
+
+    protected void updateLaunchConfigurationDialog() {
+		if (getLaunchConfigurationDialog() != null) {
+			ILaunchConfigurationTab[] tabs = getLaunchConfigurationDialog().getTabs();
+			for (int i = 0; i < tabs.length; i++) {
+				if (tabs[i] instanceof MainAtlTab) {
+					((MainAtlTab) tabs[i]).superimposedChanged(createSuperimposedList());
+				}
+			}
+		}
+    	super.updateLaunchConfigurationDialog();
+    }
 
 	private void checkButtonFactory() {
 		for (int i = 0; i < AtlLauncherTools.additionalParamIds.length; i++) {
@@ -194,7 +205,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 
     public void initializeFrom(ILaunchConfiguration configuration) {
         try {
-            superimpose = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
+            List superimpose = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
 
             tableSuperimpose.removeAll();
             for (Iterator i = superimpose.iterator(); i.hasNext();) {
@@ -227,16 +238,18 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
             e.printStackTrace();
         }
     }
-
-    public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-        superimpose.clear();
-
+    
+    private List createSuperimposedList() {
+        List superimpose = new ArrayList();
         for (int i=0; i < tableSuperimpose.getItemCount(); i++) {
             TableItem ti = tableSuperimpose.getItem(i);
             superimpose.add(ti.getText());
         }
-        
-        configuration.setAttribute(AtlLauncherTools.SUPERIMPOSE, superimpose);
+        return superimpose;
+    }
+
+    public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+        configuration.setAttribute(AtlLauncherTools.SUPERIMPOSE, createSuperimposedList());
         
 		configuration.setAttribute(AtlLauncherTools.AllowInterModelReferences, buttonAllowInterModelReferences.getSelection());
 		configuration.setAttribute(AtlLauncherTools.MODEDEBUG, buttonModeDebug.getSelection());
@@ -359,6 +372,10 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 	 */
 	public void widgetDefaultSelected(SelectionEvent e) {
 		
+	}
+
+	public Table getTableSuperimpose() {
+		return tableSuperimpose;
 	}
 
 }
