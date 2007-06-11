@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -330,14 +331,15 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	
 	private void getModelsFromATLFiles() {
 		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
-		String wsRootPath = wsRoot.getRawLocation().toString();
 		String path = projectFilesList.getText();
-		getModelsFromATLFile(wsRootPath + path);
+		IResource res = wsRoot.findMember(path);
+		getModelsFromATLFile(res.getRawLocation().toString());
 		for (Iterator i = superimposedFromLaunchConfig.iterator(); i.hasNext();) {
 			path = (String) i.next();
 			path = asmToAtl.matcher(path).replaceFirst(".atl");
-			if (wsRoot.findMember(path) != null) {
-				getModelsFromATLFile(wsRootPath + path);
+			res = wsRoot.findMember(path);
+			if (res != null) {
+				getModelsFromATLFile(res.getRawLocation().toString());
 			} else {
 				System.out.println("File not found " + path);
 			}
