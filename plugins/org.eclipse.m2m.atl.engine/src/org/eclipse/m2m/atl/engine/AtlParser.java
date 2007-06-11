@@ -3,10 +3,10 @@ package org.eclipse.m2m.atl.engine;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
-import org.atl.engine.injectors.ebnf.ATLLexer;
-import org.atl.engine.injectors.ebnf.ATLParser;
 import org.atl.engine.injectors.ebnf.EBNFInjector2;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
@@ -46,7 +46,11 @@ public class AtlParser {
 			ret[1] = amh.newModel("pb", pbmm);
 			
 			EBNFInjector2 ebnfi = new EBNFInjector2();
-			ebnfi.performImportation(atlmm, ret[0], in, "ATL", ATLLexer.class, ATLParser.class, ret[1]);
+			Map params = new HashMap();
+			params.put("name", "ATL");
+			params.put("antlrVersion", "3");
+			ebnfi.inject(ret[0], in, params);
+			//ebnfi.performImportation(atlmm, ret[0], in, "ATL", ATLLexer.class, ATLParser.class, ret[1]);
 
 			// Semantic Analysis
 /*

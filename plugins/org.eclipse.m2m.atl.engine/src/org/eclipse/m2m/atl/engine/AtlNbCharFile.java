@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class AtlNbCharFile {
 	
-	private static final int ANTLR_TAB_WIDTH = 8;
+	private static final int ANTLR_TAB_WIDTH = 1;
 
 	/**
 	 * This class corresponding to the structure Line : 

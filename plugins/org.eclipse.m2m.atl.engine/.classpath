@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="lib/antlr-runtime-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ATL-parser.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ebnfinjector.jar" sourcepath="/org.atl.engine.injectors.ebnf"/>
 	<classpathentry exported="true" kind="lib" path="lib/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/ATL-importer.jar"/>
