@@ -299,16 +299,10 @@ public class ASMEMFModel extends ASMModel {
 		ASMEMFModel ret = null;
 		
 		if(url.startsWith("uri:")) {
+			//only initialise on demand (after loading instance of this metamodel)
 			String uri = url.substring(4);
-			EPackage pack = resourceSet.getPackageRegistry().getEPackage(uri);
-			if (pack == null) {
-				ret = new ASMEMFModel(name, null, metamodel, false, ml);
-				ret.resolveURI = uri;
-			} else {
-				Resource extent = pack.eResource();
-				ret = new ASMEMFModel(name, extent, metamodel, false, ml);
-				ret.addAllReferencedExtents();
-			}
+			ret = new ASMEMFModel(name, null, metamodel, false, ml);
+			ret.resolveURI = uri;
 		} else {
 			ret = loadASMEMFModel(name, metamodel, URI.createURI(url), ml);
 		}
