@@ -3,8 +3,7 @@
  */
 package org.eclipse.m2m.atl.adt.launching;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -101,14 +100,16 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	private Map targetModelsGroupWidgets = new HashMap();
 	private Map librariesGroupWidgets = new HashMap();
 	
-	private static int IS_METAMODEL = 1 << 1;
-	private static int IS_MODEL = 1 << 2;
-	private static int IS_SOURCE = 1 << 3;
-	private static int IS_TARGET = 1 << 4;
-	private static int IS_LIBRARY = 1 << 5;
+	private static final int IS_METAMODEL = 1 << 1;
+	private static final int IS_MODEL = 1 << 2;
+	private static final int IS_SOURCE = 1 << 3;
+	private static final int IS_TARGET = 1 << 4;
+	private static final int IS_LIBRARY = 1 << 5;
 	
 	private Pattern asmToAtl = Pattern.compile("\\.asm$");
 	private Pattern moduleName = Pattern.compile("^.*/(.*)\\.a(tl|sm)$");
+	
+	private Map asmFileCache = new HashMap();
 	
 	public void createControl(Composite parent) {
 		scrollContainer = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -333,13 +334,15 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
 		String path = projectFilesList.getText();
 		IResource res = wsRoot.findMember(path);
-		getModelsFromATLFile(res.getRawLocation().toString());
+		if (res instanceof IFile) {
+			getModelsFromATLFile((IFile) res);
+		}
 		for (Iterator i = superimposedFromLaunchConfig.iterator(); i.hasNext();) {
 			path = (String) i.next();
 			path = asmToAtl.matcher(path).replaceFirst(".atl");
 			res = wsRoot.findMember(path);
-			if (res != null) {
-				getModelsFromATLFile(res.getRawLocation().toString());
+			if (res instanceof IFile) {
+				getModelsFromATLFile((IFile) res);
 			} else {
 				System.out.println("File not found " + path);
 			}
@@ -1069,12 +1072,21 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		}
 	}
 	
-	private void getModelsFromATLFile(String path) {
+	private void getModelsFromATLFile(IFile file) {
+		final boolean debug = false;
 		try {
-			FileInputStream atlfile = new FileInputStream(new File(path));
-			ASMModel atlmodel = AtlParser.getDefault().parseToModel(atlfile);
-			atlfile.close();
-			
+			ASMModel atlmodel;
+			if (asmFileCache.containsKey(file)) {
+				atlmodel = (ASMModel) asmFileCache.get(file);
+				if (debug) System.out.println("Cached ASMModel found for " + file.toString());
+			} else {
+				InputStream input = file.getContents();
+				atlmodel = AtlParser.getDefault().parseToModel(input);
+				input.close();
+				asmFileCache.put(file, atlmodel);
+				if (debug) System.out.println("Loaded ASMModel from " + file.toString());
+			}
+						
 			Set module = atlmodel.getElementsByType("Module");
 			Set query = atlmodel.getElementsByType("Query");
 			
