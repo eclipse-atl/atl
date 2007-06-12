@@ -2,7 +2,6 @@ package org.eclipse.m2m.atl.drivers.emf4atl;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,7 +20,9 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
@@ -49,16 +50,16 @@ public class ASMEMFModel extends ASMModel {
 	protected Map modelElements = new HashMap();
 
 	public ASMModelElement getASMModelElement(EObject object) {
-		ASMModelElement ret = null;
-		
-		synchronized(modelElements) {
-			ret = (ASMModelElement)modelElements.get(object);
-			if(ret == null) {
-				ret = new ASMEMFModelElement(modelElements, this, object);
+		ASMModelElement ret = (ASMModelElement)modelElements.get(object);
+		if (ret == null) {
+			synchronized (modelElements) {
+				// check again, since another locking thread may have created a new element
+				ret = (ASMModelElement)modelElements.get(object);
+				if (ret == null) {
+					ret = new ASMEMFModelElement(modelElements, this, object);
+				}
 			}
-			
 		}
-		
 		return ret;
 	}
 	
@@ -66,27 +67,31 @@ public class ASMEMFModel extends ASMModel {
 	
 	private ASMModelElement getClassifier(String name) {
 		if(classifiers == null) {
-			classifiers = new HashMap();
-			initClassifiersInAllExtents(classifiers);
+			synchronized (this) {
+				if(classifiers == null) {
+					// check again, since another locking thread may have initialised 'classifiers'
+					classifiers = initClassifiersInAllExtents();
+				}
+			}
 		}
-		ASMModelElement ret = null;
-		
 		EObject eo = (EObject)classifiers.get(name);
+
+		ASMModelElement ret = null;
 		if(eo != null) {
 			ret = getASMModelElement(eo);
 		}
-		
 		return ret;
 	}
-
+	
     /**
      * Indexes all classifiers in main extent and
      * referenced extents.
-     * @param classifiers The classifier map to build.
+     * @return The classifier map to build.
      * @see #register(Map, String, EObject)
      * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
      */
-    private void initClassifiersInAllExtents(Map classifiers) {
+    private Map initClassifiersInAllExtents() {
+    	Map classifiers = new HashMap();
     	initClassifiers(getExtent().getContents().iterator(), classifiers, null);
         Iterator refExtents = referencedExtents.iterator();
         while (refExtents.hasNext()) {
@@ -95,6 +100,7 @@ public class ASMEMFModel extends ASMModel {
                     classifiers, 
                     null);
         }
+        return classifiers;
     }
 	
 	private void initClassifiers(Iterator i, Map classifiers, String base) {
@@ -139,36 +145,6 @@ public class ASMEMFModel extends ASMModel {
 			
 		return ret;
 	}
-/*
-	public ASMModelElement findModelElement(String name) {
-		ASMModelElement ret = null;
-		
-		EObject eo = null;
-		
-		eo = findModelElementIn(name, extent.getContents().iterator());
-		
-		if(eo != null)
-			ret = getASMModelElement(eo);
-		
-		return ret;
-	}
-
-	private EObject findModelElementIn(String name, Iterator i) {
-		EObject ret = null;
-
-		for( ; i.hasNext() && (ret == null); ) {
-			EObject t = (EObject)i.next();
-			if(t instanceof EPackage) {
-				ret = ((EPackage)t).getEClassifier(name);
-				if(ret == null) {
-					ret = findModelElementIn(name, ((EPackage)t).getESubpackages().iterator());
-				}
-			}
-		}
-		
-		return ret;
-	}
-*/	
 
     /**
      * @param type The type of element to search for.
@@ -179,11 +155,6 @@ public class ASMEMFModel extends ASMModel {
 		Set ret = new LinkedHashSet();
 		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
 		addElementsOfType(ret, t, getExtent());
-//		for (Iterator i = referencedExtents.iterator(); i.hasNext() ; ) {
-//			Resource res = (Resource) i.next();
-//            addElementsOfType(ret, t, res);
-//		}
-		
 		return ret;
 	}
     
@@ -242,11 +213,15 @@ public class ASMEMFModel extends ASMModel {
             referencedExtents = null;
             for (Iterator unrs = unregister.iterator(); unrs.hasNext();) {
             	String nsURI = (String)unrs.next();
-            	resourceSet.getPackageRegistry().remove(nsURI);
+            	synchronized (resourceSet) {
+                	resourceSet.getPackageRegistry().remove(nsURI);
+            	}
             	//System.err.println("\tINFO: Unregistering " + nsURI + " from local EMF registry");
             	
             }
-            resourceSet.getResources().remove(extent);
+            synchronized (resourceSet) {
+                resourceSet.getResources().remove(extent);
+            }
             if (unload) {
             	extent.unload();
             }
@@ -286,8 +261,11 @@ public class ASMEMFModel extends ASMModel {
      */
     public static ASMEMFModel newASMEMFModel(String name, String uri, ASMEMFModel metamodel, ModelLoader ml) throws Exception {
         ASMEMFModel ret = null;
+        Resource extent = null;
         
-        Resource extent = resourceSet.createResource(URI.createURI(uri));
+        synchronized (resourceSet) {
+            extent = resourceSet.createResource(URI.createURI(uri));
+        }
 
         ret = new ASMEMFModel(name, extent, metamodel, true, ml);
         ret.unload = true;
@@ -322,9 +300,12 @@ public class ASMEMFModel extends ASMModel {
 		ASMEMFModel ret = null;
 
 		try {
-            Resource extent = resourceSet.getResource(uri, true);
+			Resource extent = null;
+			synchronized (resourceSet) {
+	            extent = resourceSet.getResource(uri, true);
+			}
 			ret = new ASMEMFModel(name, extent, metamodel, true, ml);
-            ret.addAllReferencedExtents();
+            ret.addAllReferencedExtents(extent);
 			ret.setIsTarget(false);
 			ret.unload = true;
 		} catch(Exception e) {
@@ -339,8 +320,10 @@ public class ASMEMFModel extends ASMModel {
 		ASMEMFModel ret = newASMEMFModel(name, metamodel, ml);
 
 		try {
-			ret.getExtent().load(in, Collections.EMPTY_MAP);
-            ret.addAllReferencedExtents();
+			synchronized (resourceSet) {
+				ret.getExtent().load(in, resourceSet.getLoadOptions());
+			}
+            ret.addAllReferencedExtents(ret.getExtent());
             ret.unload = true;
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -370,7 +353,9 @@ public class ASMEMFModel extends ASMModel {
 				} else {
 					model.unregister.add(nsURI);
 				}
-				resourceSet.getPackageRegistry().put(nsURI, p);
+				synchronized (resourceSet) {
+					resourceSet.getPackageRegistry().put(nsURI, p);
+				}
 				//System.err.println("INFO: Registering " + nsURI + " in local EMF registry");
 			}
 			for(Iterator i = model.getElementsByType("EDataType").iterator() ; i.hasNext() ; ) {
@@ -392,30 +377,31 @@ public class ASMEMFModel extends ASMModel {
 					ame.set(null, "instanceClassName", new ASMString(icn));
 			}
 		}
-
-/*		
-		reader.read(url.openStream(), url.toString(), ret.pack);
-		ret.getAllAcquaintances();
-*/	
 	}
 	
 	public static ASMEMFModel createMOF(ModelLoader ml) {
 		
 		if(mofmm == null) {
-//			Resource extent = resourceSet.createResource(URI.createURI("http://www.eclipse.org/emf/2002/Ecore"));
-//			System.out.println("Actual resource class: " + extent.getClass());
-//			extent.getContents().add(EcorePackage.eINSTANCE);
 			mofmm = new ASMEMFModel("MOF", EcorePackage.eINSTANCE.eResource(), null, false, ml);
 		}
 		
 		return mofmm;
 	}
 	
+	/**
+	 * @return The EMF resource containing the model
+	 */
 	public Resource getExtent() {
 		if ((extent == null) && (resolveURI != null)) {
-			EPackage pack = resourceSet.getPackageRegistry().getEPackage(resolveURI);
-			extent = pack.eResource();
-			addAllReferencedExtents();
+			synchronized (resourceSet) {
+				if (extent == null) {
+					// check again, since another locking thread may have loaded the extent
+					EPackage pack = resourceSet.getPackageRegistry().getEPackage(resolveURI);
+					Resource r = pack.eResource();
+					addAllReferencedExtents(r);
+					extent = r;
+				}
+			}
 		}
 		return extent; 
 	}
@@ -429,10 +415,11 @@ public class ASMEMFModel extends ASMModel {
 		if(!etfm.containsKey("*")) {
 			etfm.put("*", new XMIResourceFactoryImpl());
 		}
-//		System.out.println(Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap());
-//		System.out.println(Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap());
 		resourceSet = new ResourceSetImpl();
-		
+		// see http://www.eclipse.org/modeling/emf/docs/performance/EMFPerformanceTips.html
+		Map loadOptions = resourceSet.getLoadOptions();
+		loadOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
+		loadOptions.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
 	}
 	
 	public static ResourceSet getResourceSet() {
@@ -460,17 +447,18 @@ public class ASMEMFModel extends ASMModel {
     /**
      * Searches for and adds all Resource extents that are
      * referenced from the main extent to referencedExtents.
+     * @param The main extent
      * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
      */
-    protected void addAllReferencedExtents() {
-        Iterator contents = getExtent().getAllContents();
+    protected void addAllReferencedExtents(Resource extent) {
+        Iterator contents = extent.getAllContents();
         while (contents.hasNext()) {
             Object o = contents.next();
             if (o instanceof EClass) {
                 addReferencedExtentsFor((EClass)o, new HashSet());
             }
         }
-        referencedExtents.remove(getExtent());
+        referencedExtents.remove(extent);
     }
     
     /**
