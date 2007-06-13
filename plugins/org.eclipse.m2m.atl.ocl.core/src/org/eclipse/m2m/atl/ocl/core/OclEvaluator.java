@@ -1,6 +1,6 @@
 package org.eclipse.m2m.atl.ocl.core;
 
-import java.io.StringBufferInputStream;
+import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +28,9 @@ public abstract class OclEvaluator {
 		AtlCompiler ac = AtlCompiler.getDefault();
 		
 		String key = "ID=" + id++;
-		EObject pbs[] = ac.compile(new StringBufferInputStream(atl), new DummyFile(key));
+		ByteArrayInputStream input = new ByteArrayInputStream(atl.getBytes());
+		EObject pbs[] = ac.compile(input, new DummyFile(key));
+		input.close();
 		for(int i = 0 ; i < pbs.length ; i++) {
 			String sev = get(pbs[i], "severity").toString();
 			System.out.println(sev + ":" + get(pbs[i], "location") + ":" + get(pbs[i], "description"));
