@@ -64,6 +64,7 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 				file.setContents(in, IFile.FORCE, null);
 			else
 				file.create(in, IFile.FORCE, null);
+			file.setDerived(true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (CoreException e) {
