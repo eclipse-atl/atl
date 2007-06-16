@@ -76,6 +76,10 @@ public class ASMTuple extends ASMOclAny {
 		setType(new ASMTupleType(attrs));
 	}
 
+	public Map getMap() {
+		return s;
+	}
+
 	// Native Operations below
 	
 	public static ASMMap asMap(StackFrame frame, ASMTuple self) {
