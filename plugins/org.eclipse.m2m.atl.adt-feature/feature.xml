@@ -189,27 +189,6 @@ both.&lt;/small&gt;
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.m2m.atl.service.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2m.atl.service.sample"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2m.atl.service.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.atl.eclipse.adt.builder"
          download-size="0"
          install-size="0"
