@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.eclipse.m2m.atl.drivers.uml24atl"
+   name="UML4ATL Plug-in"
+   version="2.0.0"
+   provider-name="CS-SI">
+
+   <runtime>
+      <library name="uml4atl.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.uml2.uml"/>
+      <import plugin="org.eclipse.m2m.atl.engine"/>
+   </requires>
+   <extension
+         point="org.eclipse.m2m.atl.engine.modelhandler">
+      <modelhandler
+            class="org.eclipse.m2m.atl.drivers.uml24atl.AtlUML2ModelHandler"
+            name="UML2"/>
+   </extension>
+
+</plugin>
