@@ -173,7 +173,8 @@ if(debug)
 						ret = col;
 					} else if(t.type == Token.INT) {
 						unread(t);
-//						int val = ((ASMInteger)exp(frame, args)).getSymbol();
+//						int val =
+						((ASMInteger)exp(frame, args)).getSymbol();
 						if(ASMSequence.size(frame, (ASMSequence)ret).getSymbol() > 0)
 							ret = (ASMOclAny)((ASMSequence)ret).iterator().next();	// TODO: index rather than first
 						else
