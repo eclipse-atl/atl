@@ -76,7 +76,8 @@ public class OclHelper extends OclEvaluator {
 				/* deepstepops = */ new ArrayList(),
 				/* nostepops = */ new ArrayList(),
 				/* deepnostepops = */ new ArrayList(),
-				/* showStackTrace = */ true
+				/* showStackTrace = */ true,
+				/* continueAfterErrors = */ false
 		);
 		ASMOperation op = compiledHelper.getOperation("test");
 		ASMModule asmModule = new ASMModule(compiledHelper);
