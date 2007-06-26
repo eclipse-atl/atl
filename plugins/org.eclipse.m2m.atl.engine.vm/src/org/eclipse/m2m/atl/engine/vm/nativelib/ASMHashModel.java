@@ -20,6 +20,7 @@ import org.eclipse.m2m.atl.engine.vm.ModelLoader;
  * It has not been updated for a long time and may not work without
  * some improvements.
  * @author Frédéric Jouault
+ * @deprecated
  */
 public class ASMHashModel extends ASMModel {
 
