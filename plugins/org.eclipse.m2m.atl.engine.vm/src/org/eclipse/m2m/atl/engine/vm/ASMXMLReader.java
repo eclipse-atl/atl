@@ -35,7 +35,7 @@ public class ASMXMLReader extends DefaultHandler {
 		} catch (Throwable err) {
 		       	err.printStackTrace(System.out);
 		}
-		if(errors > 0) System.exit(1);
+		if(errors > 0) throw new RuntimeException("error reading .asm file");
 		return asme.getASM();
 	}
 
@@ -110,8 +110,7 @@ public class ASMXMLReader extends DefaultHandler {
 	}
 
 	public void fatalError(SAXParseException e) {
-		System.out.println("Fatal error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
-		System.exit(1);
+		throw new RuntimeException("fatal error reading .asm file: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
 	}
 
 	private int errors;
