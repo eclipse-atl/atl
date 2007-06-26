@@ -466,12 +466,12 @@ if(debug) System.out.println("using class " + c);
 		public String href;
 	}
 
-	private class Param {
-		public Param() {}
-
-		public String name;
-		public String type;
-	}
+//	private class Param {
+//		public Param() {}
+//
+//		public String name;
+//		public String type;
+//	}
 
 	private abstract class File_ {
 		public File_() {}
@@ -483,9 +483,9 @@ if(debug) System.out.println("using class " + c);
 		public InFile() {}
 	}
 
-	private class OutFile extends File_ {
-		public OutFile() {}
-	}
+//	private class OutFile extends File_ {
+//		public OutFile() {}
+//	}
 
 	private class WithParam {
 		public WithParam() {}

@@ -13,10 +13,10 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  */
 public class ASMProjector {
 
-	private static void showUsage() {
-		System.out.println("Usage : org.eclipse.m2m.atl.engine.vm.ASMProjector copy=true source=IN:MM target= ...");
-		System.out.println();
-	}
+//	private static void showUsage() {
+//		System.out.println("Usage : org.eclipse.m2m.atl.engine.vm.ASMProjector copy=true source=IN:MM target= ...");
+//		System.out.println();
+//	}
 
 	public static void realMain(String args[], PluginClassLoader pcl) throws Exception {
 		System.out.println("ATL 0.2 Projector");

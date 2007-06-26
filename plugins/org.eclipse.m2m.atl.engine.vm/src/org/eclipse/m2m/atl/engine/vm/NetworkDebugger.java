@@ -28,8 +28,8 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 public class NetworkDebugger implements Debugger {
 
 	public NetworkDebugger(final int port, boolean suspend) {
-		this.port = port;
-		this.suspend = suspend;
+//		this.port = port;
+//		this.suspend = suspend;
 		if(suspend)
 			step = true;
 
@@ -195,7 +195,7 @@ new Exception().printStackTrace();
 		new Command(ADWPDebuggee.CMD_QUERY, "executes a query in the current context") {
 			public boolean doIt(ADWPCommand cmd, StackFrame frame) {
 				List args = cmd.getArgs();
-				StackFrame frame_ = (StackFrame)((LocalObjectReference)args.get(0)).getObject();
+//				StackFrame frame_ = (StackFrame)((LocalObjectReference)args.get(0)).getObject();
 				String query = ((StringValue)args.get(1)).getValue();
 
 				ASMOclAny asmRet = null;
@@ -334,7 +334,7 @@ new Exception().printStackTrace();
 	private abstract class Command {
 
 		public Command(int cmd, String description) {
-			this.cmd = cmd;
+//			this.cmd = cmd;
 			this.description = description;
 			commands.put(new Integer(cmd), this);
 		}
@@ -348,7 +348,7 @@ new Exception().printStackTrace();
 			return description;
 		}
 
-		private int cmd;
+//		private int cmd;
 		private String description;
 	}
 
@@ -362,9 +362,9 @@ new Exception().printStackTrace();
 
 	private int depth = 0;
 
-	private int port;
+//	private int port;
 
-	private boolean suspend;
+//	private boolean suspend;
 
 	private Socket socket;
 

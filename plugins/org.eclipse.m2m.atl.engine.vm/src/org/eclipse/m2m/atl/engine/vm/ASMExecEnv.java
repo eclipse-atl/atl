@@ -112,14 +112,16 @@ public class ASMExecEnv extends ExecEnv {
 			case 'Q': case 'G': case 'C':	// Sequence, Bag, Collection,
 			case 'E': case 'O': case 'N':	// Set, OrderedSet, Native type
 				ci.next();
-				ASMOclType elementType = parseTypeInternal(ci);
+				//ASMOclType elementType =
+				parseTypeInternal(ci);
 				//read(ci, ';');
 				break;
 			case 'T':						// Tuple
 				ci.next();
 				Map attrs = new HashMap();
 				while(ci.current() != ';') {
-					ASMOclType attrType = parseTypeInternal(ci);
+					//ASMOclType attrType =
+					parseTypeInternal(ci);
 					String attrName = readUntil(ci, ';');
 					//attrs.put(attrName, attrType);		// TODO: correct type
 					attrs.put(attrName, ASMOclAny.myType);
@@ -188,6 +190,11 @@ public class ASMExecEnv extends ExecEnv {
 	}
 	
 	private class SignatureParsingException extends Exception {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1184477079748763555L;
+
 		public SignatureParsingException(String msg) {
 			super(msg);
 		}
