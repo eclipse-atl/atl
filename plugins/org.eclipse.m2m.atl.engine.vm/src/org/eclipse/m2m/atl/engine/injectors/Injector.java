@@ -34,7 +34,19 @@ public interface Injector {
 	public ASMModelElement inject(ASMModel target, InputStream source, Map params) throws IOException;
 
 	/* Old Injector interface. */
+	/**
+	 * @deprecated This information should be in the megamodel.
+	 */
 	public String getPrefix();
 
+	/**
+	 * 
+	 * @param format
+	 * @param extent
+	 * @param in
+	 * @param other
+	 * @throws IOException
+	 * @deprecated The inject method should be used instead of this one.
+	 */
 	public void performImportation(ASMModel format, ASMModel extent, InputStream in, String other) throws IOException;
 }

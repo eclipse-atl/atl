@@ -33,8 +33,16 @@ public interface Extractor {
 	public void extract(ASMModel source, OutputStream target, Map params);
 
 	/* Old Extractor interface. */
-	
+	/**
+	 * @deprecated This information should be in a megamodel.
+	 */
 	public String getPrefix();
 
+	/**
+	 * @param format
+	 * @param extent
+	 * @param out
+	 * @deprecated The other extract method should be used instead.
+	 */
 	public void extract(ASMModel format, ASMModel extent, OutputStream out);
 }
