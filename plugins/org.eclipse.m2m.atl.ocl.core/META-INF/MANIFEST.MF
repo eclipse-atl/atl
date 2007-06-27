@@ -4,7 +4,7 @@ Bundle-Name: Ocl Core Plug-in
 Bundle-SymbolicName: org.eclipse.m2m.atl.ocl.core
 Bundle-Version: 2.0.0
 Bundle-Activator: org.eclipse.m2m.atl.ocl.core.OclCorePlugin
-Bundle-Vendor: ATLAS
+Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
