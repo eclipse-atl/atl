@@ -14,10 +14,6 @@
       <library name="lib/ebnfinjector.jar">
          <export name="*"/>
       </library>
-      <library name="lib/antlr.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/ATL-importer.jar"/>
       <library name="lib/ebnfextractor.jar">
          <export name="*"/>
       </library>

@@ -4,8 +4,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/antlr-runtime-3.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ATL-parser.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ebnfinjector.jar" sourcepath="/org.atl.engine.injectors.ebnf"/>
-	<classpathentry exported="true" kind="lib" path="lib/antlr.jar"/>
-	<classpathentry kind="lib" path="lib/ATL-importer.jar"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="lib/ebnfextractor.jar" sourcepath="/org.atl.engine.extractors.ebnf"/>
