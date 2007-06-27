@@ -4,7 +4,7 @@
    id="org.eclipse.m2m.atl.engine.vm"
    name="ATL VM Plug-in"
    version="2.0.0"
-   provider-name="ATLAS"
+   provider-name="Eclipse.org"
    class="org.eclipse.m2m.atl.engine.vm.ATLVMPlugin">
 
    <runtime>
