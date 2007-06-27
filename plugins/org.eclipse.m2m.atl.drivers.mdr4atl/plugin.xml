@@ -4,7 +4,7 @@
    id="org.eclipse.m2m.atl.drivers.mdr4atl"
    name="MDR4ATL Plug-in"
    version="2.0.0"
-   provider-name="ATLAS">
+   provider-name="Eclipse.org">
    <runtime>
       <library name="org.eclipse.m2m.atl.drivers.mdr4atl.jar">
          <export name="*"/>
