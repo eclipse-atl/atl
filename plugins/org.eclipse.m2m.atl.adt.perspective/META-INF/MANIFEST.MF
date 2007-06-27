@@ -4,7 +4,7 @@ Bundle-Name: ATL Perspective
 Bundle-SymbolicName: org.eclipse.m2m.atl.adt.perspective; singleton:=true
 Bundle-Version: 2.0.0
 Bundle-Activator: org.eclipse.m2m.atl.adt.perspective.AtlPerspectivePlugin
-Bundle-Vendor: ATLAS
+Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.adt.perspective
 Require-Bundle: org.eclipse.ui,
