@@ -225,16 +225,6 @@ litigation.
          version="0.0.0"
          optional="true"/>
 
-   <includes
-         id="org.eclipse.m2m.atl.drivers.mdr4atl_feature"
-         version="0.0.0"
-         optional="true"/>
-
-   <includes
-         id="org.eclipse.m2m.atl.drivers.uml4atl_feature"
-         version="0.0.0"
-         optional="true"/>
-
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
