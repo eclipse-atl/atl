@@ -60,8 +60,10 @@
          targetID="org.eclipse.m2m.atl.adt.editor.AtlEditor">
          <menu
             id="ATLEditorMenu"
-            label="ATL Editor"> 
-            <separator name="group1"/> 
+            label="ATL Editor">
+            <groupMarker
+                  name="ATLGroup">
+            </groupMarker> 
          </menu> 
 <!--
             style="toggle"
@@ -71,29 +73,28 @@
             helpContextId="com.xyz.run_action_context" 
 -->
          <action 
-            definitionId="org.atl.eclipse.adt.ui.commentBlock"
+            definitionId="atlCommands.commentBlock"
             icon="icons/atl_logo.gif"
             id="org.atl.eclipse.adt.ui.CommentBlock"
             label="Comment/Uncomment"
-            menubarPath="ATLEditorMenu/group1"
-            class="org.eclipse.m2m.atl.adt.ui.actions.ToggleCommentBlock"> 
-            <selection class="org.eclipse.core.resources.IFile" name="*.atl"/> 
+            menubarPath="ATLEditorMenu/ATLGroup"
+            class="org.eclipse.m2m.atl.adt.ui.actions.ToggleCommentBlock">
          </action> 
       </editorContribution> 
    </extension>
 	<extension point="org.eclipse.ui.bindings">
 		<key
-			commandId="org.atl.eclipse.adt.ui.commentBlock"
+			commandId="atlCommands.commentBlock"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+Shift+C"/>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command
-			categoryId="org.atl.eclipse.adt.editor.category1"
-			id="org.atl.eclipse.adt.ui.commentBlock"
-			name="org.atl.eclipse.adt.editor.command1"/>
+			categoryId="atlCategory"
+			id="atlCommands.commentBlock"
+			name="ATL Command Comment Block"/>
 		<category
-			id="org.atl.eclipse.adt.editor.category1"
-			name="org.atl.eclipse.adt.editor.category1"/>
+			id="atlCategory"
+			name="ATL Category"/>
 	</extension>
 </plugin>
