@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.engine.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
-import org.eclipse.uml2.uml.resource.XMI2UMLResource;
 /**
  * @author JOUAULT - Christophe Le Camus (C-S) - Sebastien Gabel (C-S) 
  *
@@ -56,11 +55,10 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler{
         r.setXMIVersion("2.1");
         
         Map options = new HashMap();
-        options.put(XMI2UMLResource.OPTION_ENCODING, encoding);
-        options.put(XMI2UMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
-        options.put(XMI2UMLResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
-        options.put(XMI2UMLResource.OPTION_SAVE_TYPE_INFORMATION,Boolean.TRUE);
-		
+        options.put(XMIResource.OPTION_ENCODING, encoding);
+        options.put(XMIResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
+        options.put(XMIResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
+        options.put(XMIResource.OPTION_SAVE_TYPE_INFORMATION,Boolean.TRUE);
         useIDs = true;
         if((useIDs || removeIDs) && (r instanceof XMIResource)) {
             XMIResource xr = ((XMIResource)r);
