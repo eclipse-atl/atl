@@ -48,7 +48,6 @@ public class AtlParser {
 			EBNFInjector2 ebnfi = new EBNFInjector2();
 			Map params = new HashMap();
 			params.put("name", "ATL");
-			params.put("antlrVersion", "3");
 			params.put("problems", ret[1]);
 			ebnfi.inject(ret[0], in, params);
 			//ebnfi.performImportation(atlmm, ret[0], in, "ATL", ATLLexer.class, ATLParser.class, ret[1]);
