@@ -6,15 +6,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.atl.engine.injectors.ebnf.EBNFInjector2;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 public class AtlParser {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 	private static AtlParser defaultParser = null;
 	
 	private AtlModelHandler amh;
@@ -42,8 +46,8 @@ public class AtlParser {
 //		ASMModel mofmm = amh.getMof();
 
 		try {
-			ret[0] = ASMEMFModel.newASMEMFModel("temp", (ASMEMFModel)atlmm, null);
-			ret[1] = amh.newModel("pb", pbmm);
+			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp", (ASMEMFModel)atlmm, null);
+			ret[1] = amh.newModel("pb", "pb", pbmm);
 			
 			EBNFInjector2 ebnfi = new EBNFInjector2();
 			Map params = new HashMap();
@@ -67,9 +71,11 @@ public class AtlParser {
 			AtlLauncher.getDefault().launch(atlsaurl, models, params);
 */
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		
 		return ret;
@@ -101,7 +107,8 @@ public class AtlParser {
 			pbs = problems.getElementsByType("Problem");
 		} else {
 			Object o = atlmodel.getElementsByType("Unit");
-			System.out.println(o);
+			logger.info(o.toString());
+//			System.out.println(o);
 		}
 		
 		if(pbs != null) {

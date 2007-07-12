@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
@@ -20,6 +22,7 @@ import org.eclipse.m2m.atl.engine.vm.ASMInterpreter;
 import org.eclipse.m2m.atl.engine.vm.ASMOperation;
 import org.eclipse.m2m.atl.engine.vm.ASMStackFrame;
 import org.eclipse.m2m.atl.engine.vm.ASMXMLReader;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.Debugger;
 import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
 import org.eclipse.m2m.atl.engine.vm.SimpleDebugger;
@@ -32,6 +35,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
  */
 public class AtlLauncher {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 	private static AtlLauncher defaultLauncher = null;
 	
 	public static AtlLauncher getDefault() {
@@ -100,7 +104,8 @@ public class AtlLauncher {
 			ASM asm = new ASMXMLReader().read(new BufferedInputStream(asmurl.openStream()));
 			return launch(asm, libraries, models, asmParams, superimpose, options, debugger);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		return null;
 	}
@@ -120,8 +125,6 @@ public class AtlLauncher {
 				String mname = (String)i.next();
 				env.addModel(mname, (ASMModel)models.get(mname));
 			}
-
-			env.registerOperations(asm);
 			
 			for(Iterator i = libraries.keySet().iterator() ; i.hasNext() ; ) {
 				String lname = (String)i.next();
@@ -134,6 +137,9 @@ public class AtlLauncher {
 				if(op != null)
 					op.exec(ASMStackFrame.rootFrame(env, op, Arrays.asList(new Object[] {asmModule})));
 			}
+
+			// Register module operations AFTER lib operations to avoid overwriting 'main'
+			env.registerOperations(asm);
 
             for(Iterator i = superimpose.iterator() ; i.hasNext() ; ) {
                 URL url = (URL)i.next();
@@ -148,14 +154,18 @@ public class AtlLauncher {
     		long startTime = System.currentTimeMillis();
 			ASMInterpreter ai = new ASMInterpreter(asm, asmModule, env, asmParams);
 			long endTime = System.currentTimeMillis();
-			if(printExecutionTime && !(debugger instanceof NetworkDebugger))
-				System.out.println(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s.");
+			if(printExecutionTime && !(debugger instanceof NetworkDebugger)) {
+				logger.info(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s.");
+//				System.out.println(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s.");
+			}
 
 			ret = ai.getReturnValue();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		
 		return ret;

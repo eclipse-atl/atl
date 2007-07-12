@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -21,6 +23,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * @author JOUAULT (original version)
@@ -29,6 +32,8 @@ import org.eclipse.emf.ecore.EObject;
  */
 public class AtlCompiler {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	private static AtlCompiler defaultCompiler = null;
 	
 	public static AtlCompiler getDefault() {
@@ -66,13 +71,15 @@ public class AtlCompiler {
 				atlcompiler = "atl2004";
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		
         try {
 			in.reset();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		
         ret = getCompiler(atlcompiler).compileWithProblemModel(in, out.getLocation().toString());
@@ -80,7 +87,8 @@ public class AtlCompiler {
         try {
             out.refreshLocal(0, null);
         } catch (CoreException e) {
-            e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//            e.printStackTrace();
         }
 		
         return ret;
@@ -120,7 +128,8 @@ public class AtlCompiler {
 								break extensions;
 							}
 						} catch (CoreException e){
-							e.printStackTrace();
+							logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//							e.printStackTrace();
 						}				
 					}
 				 }

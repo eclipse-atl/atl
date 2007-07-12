@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -22,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
@@ -31,6 +34,8 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  */
 public class MarkerMaker {	
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	private static Map severities = new HashMap();
 	
 	static {
@@ -73,7 +78,8 @@ public class MarkerMaker {
 			charStart = pos[0];
 			charEnd = pos[1];
 		} catch (CoreException e1) {
-			e1.printStackTrace();
+			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+//			e1.printStackTrace();
 		}
 		
 		String severity = ((EEnumLiteral)problem.eGet(sfSeverity)).getName();
@@ -87,7 +93,8 @@ public class MarkerMaker {
 			pbmMarker.setAttribute(IMarker.CHAR_START, charStart);
 			pbmMarker.setAttribute(IMarker.CHAR_END, (charEnd > charStart) ? charEnd : charStart + 1);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 	}
 	
@@ -105,7 +112,8 @@ public class MarkerMaker {
 		try {
 			res.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		IWorkspaceRunnable r = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {

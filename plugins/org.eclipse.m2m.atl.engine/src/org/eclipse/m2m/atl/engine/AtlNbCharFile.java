@@ -8,6 +8,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * @author allilaire
@@ -18,6 +22,8 @@ import java.util.List;
  */
 public class AtlNbCharFile {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	private static final int ANTLR_TAB_WIDTH = 1;
 
 	/**
@@ -97,7 +103,8 @@ public class AtlNbCharFile {
 			}
 			lines.add(new Line(currentLineCharIndex, indexTabs, tabsWidth));
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 	}
 
