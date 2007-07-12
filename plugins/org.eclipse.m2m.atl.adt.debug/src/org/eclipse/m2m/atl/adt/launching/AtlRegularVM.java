@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
@@ -143,7 +144,8 @@ public class AtlRegularVM extends AtlVM {
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		return toReturn;
 	}
@@ -191,7 +193,8 @@ public class AtlRegularVM extends AtlVM {
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		return toReturn;
 	}
@@ -365,9 +368,11 @@ public class AtlRegularVM extends AtlVM {
 					AtlModelHandler.getHandler(model).disposeOfModel(model);
 				}
 			} catch (MalformedURLException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//				e.printStackTrace();
 			} catch (CoreException e1) {
-				e1.printStackTrace();
+				logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+//				e1.printStackTrace();
 			}
 			return toReturn;
 		}
@@ -447,7 +452,8 @@ public class AtlRegularVM extends AtlVM {
 				
 				runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode, superimpose, options);
 			} catch (CoreException e1) {
-				e1.printStackTrace();
+				logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+//				e1.printStackTrace();
 			}
 		}
 

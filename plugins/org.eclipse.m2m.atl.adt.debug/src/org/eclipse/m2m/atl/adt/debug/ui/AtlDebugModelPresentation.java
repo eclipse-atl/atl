@@ -7,17 +7,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IStorage;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
@@ -30,7 +27,7 @@ import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlStackFrame;
 import org.eclipse.m2m.atl.adt.debug.core.AtlThread;
 import org.eclipse.m2m.atl.adt.debug.core.AtlVariable;
-import org.eclipse.m2m.atl.adt.launching.AtlLauncherTools;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
@@ -52,6 +49,8 @@ import org.eclipse.ui.part.FileEditorInput;
  */
 
 public class AtlDebugModelPresentation extends LabelProvider implements IDebugModelPresentation {
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	static final URL BASE_URL = AtlDebugPlugin.getDefault().getBundle().getEntry("/");
 	static final String iconPath = "icons/";
@@ -175,7 +174,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 				name = target.getName();
 			}
 			catch (DebugException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//				e.printStackTrace();
 			}
 			return name + Messages.getString("AtlDebugModelPresentation.CONNECTEDONHOST")+ target.getHost() + Messages.getString("AtlDebugModelPresentation.PORT") + target.getPort(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -224,7 +224,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 				else
 					return typeVar + " " + atlVar.getName() + " = " + atlVar.getReferenceTypeName() + " (id = " + atlVar.getIdVariable() + ")";
 			} catch (DebugException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//				e.printStackTrace();
 			}
 		}
 		else if (item instanceof AtlBreakpoint)	{
@@ -238,7 +239,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 				return location + " [line: " + lineNumber + ", charStart: " + charStart + ", charEnd: " + charEnd + "]";
 			}
 			catch (CoreException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//				e.printStackTrace();
 			}
 		}
 
@@ -254,7 +256,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 			listener.detailComputed(value,value.getValueString());
 		}
 		catch (DebugException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 	}
 	
@@ -331,28 +334,10 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	 * @see org.eclipse.debug.ui.ISourcePresentation#getEditorInput(java.lang.Object)
 	 */
 	public IEditorInput getEditorInput(Object element) {
-		IStorageEditorInput i;
-		AtlStackFrame frame;
-//		String projectName;
-		String fileName;
-		
 		if(element instanceof AtlStackFrame ) {
-			frame = (AtlStackFrame) element;
+			AtlStackFrame frame = (AtlStackFrame) element;
 			if(((AtlDebugTarget)frame.getDebugTarget()).isDisassemblyMode()) return getDisassemblyEditorInput(frame);
-			ILaunchConfiguration configuration = frame.getDebugTarget().getLaunch().getLaunchConfiguration();
-			try {
-				// TODO Recuperer le nom du fichier sur la stackframe
-				fileName = configuration.getAttribute(AtlLauncherTools.ATLFILENAME, AtlLauncherTools.NULLPARAMETER);
-
-				IWorkspace wks = ResourcesPlugin.getWorkspace();
-				IWorkspaceRoot wksroot = wks.getRoot();
-
-				i = new FileEditorInput(wksroot.getFile(new Path(fileName)));
-				return i;
-			}
-			catch (CoreException e) {
-				e.printStackTrace();
-			}
+			return new FileEditorInput(frame.getSourcefile());
 		}
 		else if(element instanceof AtlBreakpoint) {
 			IMarker marker = ((AtlBreakpoint)element).getMarker();

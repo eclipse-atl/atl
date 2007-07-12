@@ -8,6 +8,8 @@ package org.eclipse.m2m.atl.adt.launching;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -26,6 +28,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.m2m.atl.adt.debug.Messages;
 import org.eclipse.m2m.atl.engine.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -58,6 +61,8 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  * @author Freddy Allilaire
  */
 public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	/** Map input : Model --> MetaModel */
 	private Map input = new HashMap();
@@ -1019,7 +1024,8 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			tableOut.removeAll();
 			tablePath.removeAll();
 			tableLib.removeAll();
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 	}
 	

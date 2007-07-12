@@ -1,5 +1,7 @@
 package org.eclipse.m2m.atl.adt.debug.core;
 
+import java.util.logging.Logger;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.core.runtime.Status;
@@ -9,8 +11,11 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 public abstract class AtlDebugElement extends PlatformObject implements IDebugElement {
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	public String getModelIdentifier() {
 		return "org.eclipse.m2m.atl.adt.debug";

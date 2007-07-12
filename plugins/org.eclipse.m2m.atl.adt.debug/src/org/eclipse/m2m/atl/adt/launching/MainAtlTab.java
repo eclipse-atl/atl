@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +35,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.m2m.atl.adt.debug.Messages;
 import org.eclipse.m2m.atl.engine.AtlParser;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMCollection;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
@@ -68,6 +71,8 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  */
 public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	private ScrolledComposite scrollContainer;
 	private Composite rootContainer;
 	private Combo projectsList;
@@ -344,7 +349,8 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			if (res instanceof IFile) {
 				getModelsFromATLFile((IFile) res);
 			} else {
-				System.out.println("File not found " + path);
+				logger.severe("File not found " + path);
+//				System.out.println("File not found " + path);
 			}
 		}
 	}
@@ -560,7 +566,8 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			layout();
 		}
 		catch (CoreException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 	}
 	
@@ -1073,18 +1080,26 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	}
 	
 	private void getModelsFromATLFile(IFile file) {
-		final boolean debug = false;
+
+final boolean debug = false;
+
 		try {
 			ASMModel atlmodel;
 			if (asmFileCache.containsKey(file)) {
 				atlmodel = (ASMModel) asmFileCache.get(file);
-				if (debug) System.out.println("Cached ASMModel found for " + file.toString());
+
+if (debug) logger.info("Cached ASMModel found for " + file.toString());
+//if (debug) System.out.println("Cached ASMModel found for " + file.toString());
+
 			} else {
 				InputStream input = file.getContents();
 				atlmodel = AtlParser.getDefault().parseToModel(input);
 				input.close();
 				asmFileCache.put(file, atlmodel);
-				if (debug) System.out.println("Loaded ASMModel from " + file.toString());
+
+if (debug) logger.info("Loaded ASMModel from " + file.toString());
+//if (debug) System.out.println("Loaded ASMModel from " + file.toString());
+
 			}
 						
 			Set module = atlmodel.getElementsByType("Module");
@@ -1162,7 +1177,8 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+//			e1.printStackTrace();
 		}
 	}
 }

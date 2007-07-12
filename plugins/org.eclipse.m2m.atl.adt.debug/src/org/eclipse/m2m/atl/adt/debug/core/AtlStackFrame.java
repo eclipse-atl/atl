@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -47,13 +48,21 @@ public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 	private String opName;
 //	private AtlNbCharFile atlnbcharfile;
 	private Map vars = new HashMap();
+	private IFile sourcefile = null;
 
-	public AtlStackFrame(AtlThread thread, ObjectReference stackFrame, AtlNbCharFile atlnbcharfile) {
+	/**
+	 * Creates a new AtlStackFrame for Eclipse-based debugging
+	 * @param thread The ATL execution thread
+	 * @param stackFrame The ASMStackFrame to encapsulate
+	 * @param atlnbcharfile The source code lookup helper
+	 * @param sourcefile The file containing the source code
+	 */
+	public AtlStackFrame(AtlThread thread, ObjectReference stackFrame, AtlNbCharFile atlnbcharfile, IFile sourcefile) {
 		super((AtlDebugTarget)thread.getDebugTarget());
-		// TODO Add a parameter: File name of file being debugged
 		this.thread = thread;
 		this.stackFrame = stackFrame;
 //		this.atlnbcharfile = atlnbcharfile;
+		this.sourcefile = sourcefile;
 		Value slv = stackFrame.call("getSourceLocation", new ArrayList());
 		String sourceLocation = null;
 		if(slv instanceof StringValue) sourceLocation = ((StringValue)slv).getValue();
@@ -393,6 +402,13 @@ public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 
 	public ObjectReference getStackFrame() {
 		return stackFrame;
+	}
+
+	/**
+	 * @return The ATL source code file that is being executed in this stack frame
+	 */
+	public IFile getSourcefile() {
+		return sourcefile;
 	}
 	
 }

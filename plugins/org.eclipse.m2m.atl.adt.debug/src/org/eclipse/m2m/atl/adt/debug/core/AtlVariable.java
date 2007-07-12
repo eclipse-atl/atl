@@ -3,6 +3,8 @@
  */
 package org.eclipse.m2m.atl.adt.debug.core;
 
+import java.util.logging.Level;
+
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugTarget;
@@ -43,7 +45,8 @@ public class AtlVariable extends AtlDebugElement implements IVariable {
 					this.idVariable = ((ObjectReference)(((AtlValue)value).getValue())).getId();
 		}
 		catch (DebugException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		this.atlDT = atlDT;
 	}

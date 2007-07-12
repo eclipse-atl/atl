@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -21,6 +23,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 import org.eclipse.m2m.atl.adt.debug.Messages;
 import org.eclipse.m2m.atl.engine.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
@@ -34,48 +37,48 @@ import org.eclipse.swt.widgets.Shell;
 public class AtlLauncherTools {
 
 	public static final String ATLVM = "ATL VM";
-	public static String ATLFILENAME = "ATL File Name";
-	public static String AllowInterModelReferences = "AllowInterModelReferences";
-	public static String PROJECTNAME = "Project Name";
-	public static String OUTPUT = "Output";
-	public static String INPUT = "Input";
-	public static String NULLPARAMETER = "<null>";
-	public static String PATH = "Path";
-	public static String HOST = "Host";
-	public static String PORT = "Port";
-	public static String LIBS = "Libs";
+	public static final String ATLFILENAME = "ATL File Name";
+	public static final String AllowInterModelReferences = "AllowInterModelReferences";
+	public static final String PROJECTNAME = "Project Name";
+	public static final String OUTPUT = "Output";
+	public static final String INPUT = "Input";
+	public static final String NULLPARAMETER = "<null>";
+	public static final String PATH = "Path";
+	public static final String HOST = "Host";
+	public static final String PORT = "Port";
+	public static final String LIBS = "Libs";
 	
-	public static String MODEL_OUTPUT = "MODELOUTPUT";
-	public static String MODEL_INPUT = "MODELINPUT";
-	public static String METAMODEL_OUTPUT = "METAMODELOUTPUT";
-	public static String METAMODEL_INPUT = "METAMODELINPUT";
+	public static final String MODEL_OUTPUT = "MODELOUTPUT";
+	public static final String MODEL_INPUT = "MODELINPUT";
+	public static final String METAMODEL_OUTPUT = "METAMODELOUTPUT";
+	public static final String METAMODEL_INPUT = "METAMODELINPUT";
     
-	public static String SUPERIMPOSE = "Superimpose";
-	public static String MODELTYPE = "ModelType";
-	public static String INJECTOR = "Injector";
-	public static String EXTRACTOR = "Extractor";
-	public static String MODELHANDLER = "Model Handler";
-	public static String MODEDEBUG = "Mode Debug";
-	public static String MODELCHOICETABNAME = Messages.getString("AtlLauncherTools.MODELCHOICE"); //$NON-NLS-1$
-    public static String ADVANCEDTABNAME = Messages.getString("AtlLauncherTools.ADVANCED"); //$NON-NLS-1$
-	public static String REMOTEATLNAME = Messages.getString("AtlLauncherTools.ATLCONFIGURATION"); //$NON-NLS-1$
-	public static String PATHICONATL = "icons/atllogo_icon.gif";
+	public static final String SUPERIMPOSE = "Superimpose";
+	public static final String MODELTYPE = "ModelType";
+	public static final String INJECTOR = "Injector";
+	public static final String EXTRACTOR = "Extractor";
+	public static final String MODELHANDLER = "Model Handler";
+	public static final String MODEDEBUG = "Mode Debug";
+	public static final String MODELCHOICETABNAME = Messages.getString("AtlLauncherTools.MODELCHOICE"); //$NON-NLS-1$
+    public static final String ADVANCEDTABNAME = Messages.getString("AtlLauncherTools.ADVANCED"); //$NON-NLS-1$
+	public static final String REMOTEATLNAME = Messages.getString("AtlLauncherTools.ATLCONFIGURATION"); //$NON-NLS-1$
+	public static final String PATHICONATL = "icons/atllogo_icon.gif";
 	public static List EXTENSIONS = new ArrayList();
 	static {
 		EXTENSIONS.add("atl");
 		EXTENSIONS.add("acg");
 	}
 	
-	public static String OPTION_CONTINUE_AFTER_ERROR = "continueAfterError";
-	public static String OPTION_DISABLE_ATTRIBUTE_HELPER_CACHE = "disableAttributeHelperCache";
-	public static String OPTION_ALLOW_TARGET_NAVIGATION = "allowTargetNavigation";
-	public static String OPTION_ALLOW_SOURCE_MODIFICATION = "allowSourceModification";
-	public static String OPTION_ALLOW_CONTAINER_REASSIGNMENT = "allowContainerReassignment";
-	public static String OPTION_PRINT_EXECUTION_TIME = "printExecutionTime";
-	public static String OPTION_STEP = "step";
-	public static String OPTION_SHOW_SUMMARY = "showSummary";
-	public static String OPTION_PROFILE = "profile";
-	public static String[] additionalParamIds = new String[] {
+	public static final String OPTION_CONTINUE_AFTER_ERROR = "continueAfterError";
+	public static final String OPTION_DISABLE_ATTRIBUTE_HELPER_CACHE = "disableAttributeHelperCache";
+	public static final String OPTION_ALLOW_TARGET_NAVIGATION = "allowTargetNavigation";
+	public static final String OPTION_ALLOW_SOURCE_MODIFICATION = "allowSourceModification";
+	public static final String OPTION_ALLOW_CONTAINER_REASSIGNMENT = "allowContainerReassignment";
+	public static final String OPTION_PRINT_EXECUTION_TIME = "printExecutionTime";
+	public static final String OPTION_STEP = "step";
+	public static final String OPTION_SHOW_SUMMARY = "showSummary";
+	public static final String OPTION_PROFILE = "profile";
+	public static final String[] additionalParamIds = new String[] {
 //		ALLOW_TARGET_NAVIGATION,
 //		ALLOW_SOURCE_MODIFICATION,
 //		ALLOW_CONTAINER_REASSIGNMENT,
@@ -86,7 +89,7 @@ public class AtlLauncherTools {
 		OPTION_SHOW_SUMMARY,
 		OPTION_PROFILE,
 	};
-	public static String[] additionalParamLabels = new String[] {
+	public static final String[] additionalParamLabels = new String[] {
 //		"Allow navigation in target models",
 //		"Allow modification of source models",
 //		"Allow container reassignment",
@@ -98,6 +101,8 @@ public class AtlLauncherTools {
 		"Run mode only: print information on the number of times operations are called with the same arguments to the console",
 	};
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	private static String[] modelHandlersNames;
 	private static int EMFKey = -1;
 	
@@ -217,7 +222,8 @@ public class AtlLauncherTools {
 				}
 			});
 		} catch (CoreException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		
 		String fileNames[] = new String[fileList.size()];

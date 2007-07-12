@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -16,6 +18,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * @author JOUAULT
@@ -25,6 +28,8 @@ public abstract class AtlVM implements ILaunchConfigurationDelegate {
 	public final static String ATLVM_REGULAR = "Regular VM (with debugger)";
 
 	private static String atlVMs[] = null;
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 	
 	public static AtlVM getVM(String vm) {
 		AtlVM ret = null;
@@ -53,7 +58,8 @@ public abstract class AtlVM implements ILaunchConfigurationDelegate {
 							break extensions;
 						}
 					} catch (CoreException e){
-						e.printStackTrace();
+						logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//						e.printStackTrace();
 					}				
 				}
 			 }

@@ -3,6 +3,9 @@
  */
 package org.eclipse.m2m.atl.adt.debug.core;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -13,6 +16,7 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.LineBreakpoint;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * @author idrissi
@@ -22,6 +26,8 @@ public class AtlBreakpoint extends LineBreakpoint
 {
 	public static final String ATL_BREAKPOINT_MARKER = "org.eclipse.m2m.atl.adt.debug.atlBreakpointMarker";
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	public AtlBreakpoint() {}
 	
 	public AtlBreakpoint(final IResource resource, final String location, final int lineNumber, final int charStart, final int charEnd) throws DebugException {
@@ -63,7 +69,8 @@ public class AtlBreakpoint extends LineBreakpoint
 			marker.setAttribute(IMarker.CHAR_END, new Integer(charEnd));
 			marker.setAttribute(IBreakpoint.REGISTERED, false); // breakpoint has not been registered yet
 		} catch(CoreException e) {
-			System.err.println(e);
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			System.err.println(e);
 		}
 	}	
 	
