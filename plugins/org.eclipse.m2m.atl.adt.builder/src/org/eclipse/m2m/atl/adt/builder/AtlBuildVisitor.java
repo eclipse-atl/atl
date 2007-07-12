@@ -5,6 +5,8 @@ package org.eclipse.m2m.atl.adt.builder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -17,12 +19,15 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.AtlCompiler;
 import org.eclipse.m2m.atl.engine.CompilerNotFoundException;
 import org.eclipse.m2m.atl.engine.MarkerMaker;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * @author idrissi
  */
 public class AtlBuildVisitor implements IResourceVisitor {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	/** Contains routines to manage problem markers when compiling */
 	private MarkerMaker markerMaker = new MarkerMaker();
 	private IProgressMonitor monitor;
@@ -81,7 +86,8 @@ public class AtlBuildVisitor implements IResourceVisitor {
 			try {
                 is.close();
             } catch (IOException e) {
-                e.printStackTrace();
+    			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//                e.printStackTrace();
             }
 			return false;
 		}

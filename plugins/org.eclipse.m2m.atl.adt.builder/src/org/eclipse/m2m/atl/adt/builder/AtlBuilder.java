@@ -5,6 +5,8 @@
 package org.eclipse.m2m.atl.adt.builder;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -12,6 +14,7 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * @author idrissi
@@ -19,6 +22,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
  */
 public class AtlBuilder extends IncrementalProjectBuilder {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	/** The visitor used to visit an Atl project and builds all its file with "atl" extension */
 //	private IResourceVisitor buildVisitor = new AtlBuildVisitor();
 	
@@ -42,7 +47,8 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 			monitor.beginTask("Compiling ATL files of project " + p.getName(), IProgressMonitor.UNKNOWN);
 			p.accept(new AtlBuildVisitor(monitor));
 		} catch (CoreException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}		
 	}
 	
