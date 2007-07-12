@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import javax.jmi.model.Classifier;
 import javax.jmi.reflect.RefAssociation;
@@ -112,7 +113,8 @@ public class ASMMDRModelElement extends ASMModelElement {
 			// Operations on MOF!AssociationEnd
 			registerMOFOperation("AssociationEnd", "otherEnd", new Class[] {});
 		} catch(Exception e) {
-			e.printStackTrace(System.out);
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace(System.out);
 		}
 	}
 
@@ -122,7 +124,8 @@ public class ASMMDRModelElement extends ASMModelElement {
 		try {
 			ret = (RefObject)self.object.refInvokeOperation("otherEnd", new ArrayList());
 		} catch(RefException re) {
-			re.printStackTrace(System.out);
+			frame.printStackTrace(re);
+//			re.printStackTrace(System.out);
 		}
 
 		return (ASMModelElement)java2ASM(frame, self.getModel(), ret);
@@ -134,7 +137,8 @@ public class ASMMDRModelElement extends ASMModelElement {
 		try {
 			ret = (RefObject)self.object.refInvokeOperation("lookupElementExtended", Arrays.asList(new Object[] {name.getSymbol()}));
 		} catch(RefException re) {
-			re.printStackTrace(System.out);
+			frame.printStackTrace(re);
+//			re.printStackTrace(System.out);
 		}
 
 		return (ASMModelElement)java2ASM(frame, self.getModel(), ret);
@@ -146,7 +150,8 @@ public class ASMMDRModelElement extends ASMModelElement {
 		try {
 			ret = (List)self.object.refInvokeOperation("findElementsByTypeExtended", Arrays.asList(new Object[] {ofType.object, new Boolean(includeSubtypes.getSymbol())}));
 		} catch(RefException re) {
-			re.printStackTrace(System.out);
+			frame.printStackTrace(re);
+//			re.printStackTrace(System.out);
 		}
 
 		return (ASMSequence)java2ASM(frame, self.getModel(), ret);
@@ -216,16 +221,19 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 
 	public static ASMModelElement newInstance(StackFrame frame, ASMMDRModelElement self) {
 		ASMModelElement ret = null;
-
 		if(self.object.refMetaObject().refIsInstanceOf(getClassifier(), true)) {
-			for(Iterator i = self.getModel().getSubModels().values().iterator() ; i.hasNext() ; ) {
-				ASMModel am = (ASMModel)i.next();
-				if(am.isTarget()) {
-					ret = am.newModelElement(self);
-					break;
-				}
-			}
+			ret = createNewInstance(frame, self);
 		}
+
+//		if(self.object.refMetaObject().refIsInstanceOf(getClassifier(), true)) {
+//			for(Iterator i = self.getModel().getSubModels().values().iterator() ; i.hasNext() ; ) {
+//				ASMModel am = (ASMModel)i.next();
+//				if(am.isTarget()) {
+//					ret = am.newModelElement(self);
+//					break;
+//				}
+//			}
+//		}
 
 		return ret;
 	}
@@ -450,7 +458,8 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 				try {
 					ret = o.equals(t) || ((Collection)t.refInvokeOperation("allSupertypes", new ArrayList())).contains(o);
 				} catch(Exception e) {
-					e.printStackTrace(System.out);
+					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//					e.printStackTrace(System.out);
 				}
 			}
 		}
@@ -495,7 +504,8 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 				args.add(name);
 				ret = ((ASMMDRModel)getModel()).getASMModelElement((RefObject)t.refInvokeOperation("lookupElementExtended", args));
 			} catch(Exception e) {
-				e.printStackTrace(System.out);
+				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//				e.printStackTrace(System.out);
 			}
 		}
 

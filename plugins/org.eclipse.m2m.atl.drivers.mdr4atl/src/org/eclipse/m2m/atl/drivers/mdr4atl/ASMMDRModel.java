@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jmi.reflect.InvalidCallException;
 import javax.jmi.reflect.RefAssociation;
@@ -20,6 +22,7 @@ import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.xmi.MalformedXMIException;
 
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMCollection;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -40,6 +43,8 @@ import org.netbeans.api.xmi.XMIWriterFactory;
  */
 public class ASMMDRModel extends ASMModel {
 
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	private static int verboseLevel = 1;
 	private static boolean persist = false;
 
@@ -48,7 +53,8 @@ public class ASMMDRModel extends ASMModel {
 	private static XMIWriter writer;
 
 	static {
-		System.out.println("Initializing MDR...");
+		logger.info("Initializing MDR...");
+//		System.out.println("Initializing MDR...");
 		initMDR();
 	}
 
@@ -114,10 +120,11 @@ public class ASMMDRModel extends ASMModel {
     }
     
     private static void register(Map classifiers, String name, RefObject classifier) {
-        if(classifiers.containsKey(name)) {
-            System.out.println("Warning: metamodel contains several classifiers with same name: " + name);
-        }
-        classifiers.put(name, classifier);
+    	if(classifiers.containsKey(name)) {
+    		logger.warning("metamodel contains several classifiers with same name: " + name);
+//    		System.out.println("Warning: metamodel contains several classifiers with same name: " + name);
+    	}
+    	classifiers.put(name, classifier);
     }
 
     public ASMModelElement findModelElement(String name) {
@@ -220,13 +227,16 @@ public class ASMMDRModel extends ASMModel {
 	}
 
 	private void getAllAcquaintances() {
-boolean debug = false;
+
+final boolean debug = false;
+
 		if(getMetamodel().equals(getMOF())) {
 			ASMMDRModelElement assoType = ((ASMMDRModelElement)getMOF().findModelElement("Association"));
 			for(Iterator i = getElementsByType(assoType).iterator() ; i.hasNext() ; ) {
 				ASMMDRModelElement asso = (ASMMDRModelElement)i.next();
-if(debug)
-	System.out.println(asso);
+
+if(debug) logger.info(asso.toString());
+//if(debug) System.out.println(asso);
 
 				ASMMDRModelElement type1 = null;
 				String name1 = null;
@@ -251,13 +261,17 @@ if(debug)
 					}
 				}
 //				if(!((Boolean)ae1.refGetValue("isNavigable")).booleanValue()) {
-if(debug)
-	System.out.println("\tAdding acquaintance \"" + name1 + "\" to " + type2);
+
+if(debug) logger.info("\tAdding acquaintance \"" + name1 + "\" to " + type2);
+//if(debug) System.out.println("\tAdding acquaintance \"" + name1 + "\" to " + type2);
+
 					type2.addAcquaintance(name1, asso, ae1, true);
 //				}
 //				if(!((Boolean)ae2.refGetValue("isNavigable")).booleanValue()) {
-if(debug)
-	System.out.println("\tAdding acquaintance \"" + name2 + "\" to " + type1);
+
+if(debug) logger.info("\tAdding acquaintance \"" + name2 + "\" to " + type1);
+//if(debug) System.out.println("\tAdding acquaintance \"" + name2 + "\" to " + type1);
+
 					type1.addAcquaintance(name2, asso, ae2, false);
 //				}
 			}
@@ -351,7 +365,8 @@ if(debug)
 			ret.elementByXmiId = elementByXmiId;
 			ret.xmiIdByElement = xmiIdByElement;
 		} catch(Exception e) {
-			System.out.println("Error while reading " + name + ":");
+			throw new Exception("Error while reading " + name + ":" + e.getLocalizedMessage(), e);
+//			System.out.println("Error while reading " + name + ":");
 			//e.printStackTrace(System.out);
 		}
 		ret.setIsTarget(false);
@@ -367,7 +382,8 @@ if(debug)
 			ret = new ASMMDRModel("MOF", rep.getExtent("MOF"), null, false, ml);
 			mofmm = ret;
 		} catch(org.netbeans.mdr.util.DebugException de) {
-			de.printStackTrace(System.out);
+			logger.log(Level.SEVERE, de.getLocalizedMessage(), de);
+//			de.printStackTrace(System.out);
 		}
 
 		return ret;

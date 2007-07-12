@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.URL;
+import java.util.logging.Level;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -46,7 +47,8 @@ public class AtlMDRModelHandler extends AtlModelHandler{
             try {
                 ((ASMMDRModel)model).save(uri);
             } catch (IOException ioe) {
-                ioe.printStackTrace();
+    			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
+//                ioe.printStackTrace();
             }
         }
 	}
@@ -66,9 +68,11 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 				file.create(in, IFile.FORCE, null);
 			file.setDerived(true);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		} catch (CoreException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}		
 	}
 	
@@ -76,7 +80,8 @@ public class AtlMDRModelHandler extends AtlModelHandler{
         try {
             ((ASMMDRModel)model).save(out);
         } catch (IOException e) {
-            e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//            e.printStackTrace();
         }
     }
     
@@ -94,7 +99,8 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 		try {
 			ret = ASMMDRModel.loadASMMDRModel(name, (ASMMDRModel)metamodel, in, null);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		
 		return ret;
@@ -109,7 +115,8 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 		try {
 			ret = ASMMDRModel.newASMMDRModel(name, (ASMMDRModel)metamodel, null);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		
 		return ret;
@@ -125,7 +132,8 @@ public class AtlMDRModelHandler extends AtlModelHandler{
         try {
             ret = ASMMDRModel.newASMMDRModel(name, uri, (ASMMDRModel)metamodel, null);
         } catch (Exception e) {
-            e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//            e.printStackTrace();
         }
         
         return ret;
@@ -138,7 +146,8 @@ public class AtlMDRModelHandler extends AtlModelHandler{
 		try {
 			atlmm = ASMMDRModel.loadASMMDRModel("ATL", mofmm, atlurl, null);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 	}
 	
