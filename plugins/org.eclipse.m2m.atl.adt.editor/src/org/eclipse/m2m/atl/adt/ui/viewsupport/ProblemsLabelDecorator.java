@@ -7,12 +7,14 @@ package org.eclipse.m2m.atl.adt.ui.viewsupport;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.util.ListenerList;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelDecorator;
@@ -20,6 +22,7 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -27,6 +30,8 @@ import org.eclipse.swt.graphics.Image;
  *
  */
 public class ProblemsLabelDecorator implements ILabelDecorator, ILightweightLabelDecorator {
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private ListenerList labelProviderListeners = new ListenerList();
 	
@@ -77,7 +82,7 @@ public class ProblemsLabelDecorator implements ILabelDecorator, ILightweightLabe
 	 * @see org.eclipse.jface.viewers.ILabelDecorator#decorateImage(org.eclipse.swt.graphics.Image, java.lang.Object)
 	 */
 	public Image decorateImage(Image image, Object element) {		
-		System.out.println("in decorateImage");
+//		System.out.println("in decorateImage");
 		IResource res = (IResource)element;
 		if (!res.isAccessible())
 		    return null;
@@ -112,7 +117,8 @@ public class ProblemsLabelDecorator implements ILabelDecorator, ILightweightLabe
 		try {
 			pbmMarkers = res.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		int severity = -1; // none
 		if (pbmMarkers != null) {

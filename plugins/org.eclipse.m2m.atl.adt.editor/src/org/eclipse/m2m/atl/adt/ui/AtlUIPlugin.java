@@ -1,17 +1,21 @@
 package org.eclipse.m2m.atl.adt.ui;
 
-import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.m2m.atl.adt.ui.logging.ConsoleStreamHandler;
 import org.eclipse.m2m.atl.adt.ui.text.AtlTextTools;
 import org.eclipse.m2m.atl.adt.ui.viewsupport.ProblemMarkerManager;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -28,7 +32,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.texteditor.MarkerAnnotationPreferences;
 import org.osgi.framework.BundleContext;
 
-
 /**
  * The main plugin class to be used in the desktop.
  * This class is necessary for every plug-in because it used by Eclipse to dialog
@@ -38,6 +41,7 @@ import org.osgi.framework.BundleContext;
  */
 public class AtlUIPlugin extends AbstractUIPlugin {
 
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 	private static MessageConsole console = null;
 	private static MessageConsoleStream consoleStream = null;
     private static IConsoleManager consoleMgr = null; 
@@ -222,51 +226,53 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 	}	
 	
 	private void initConsole () {
-		   console = findConsole(ATL_CONSOLE);
-		   Font f = null;
-		   try {
-		   	FontData data = new FontData ("Arial", 9, 9);
-		   	data.setStyle(SWT.NORMAL);
-		   	f = new Font (null, data);
-		   	
-		   	console.setFont(f);
-		   } catch (Exception ex) {	   	
-		   }
-		   // console.setFont(new Font());
-		   consoleStream = console.newMessageStream();
-		   activateConsole();
-		   // System.out = out;	   
-		   consoleStream.println("ATL Console initiated");
-		    PrintStream redirStream = new PrintStream (consoleStream);
-		    System.setOut(redirStream);
-		   // System.setErr(redirStream);	   
+		console = findConsole(ATL_CONSOLE);
+		Font f = null;
+		try {
+			FontData data = new FontData ("Arial", 9, 9);
+			data.setStyle(SWT.NORMAL);
+			f = new Font (null, data);
+
+			console.setFont(f);
+		} catch (Exception ex) {	   	
 		}
+		// console.setFont(new Font());
+		consoleStream = console.newMessageStream();
+		activateConsole();
+		// System.out = out;	   
+		consoleStream.println("ATL Console initiated");
+//		PrintStream redirStream = new PrintStream (consoleStream);
+//		System.setOut(redirStream);
+		// System.setErr(redirStream);	   
+		Handler handler = new ConsoleStreamHandler(consoleStream);
+		Logger.getLogger(ATLVMPlugin.LOGGER).addHandler(handler);
+	}
 
-	   private MessageConsole findConsole(String name) {
-		      ConsolePlugin plugin = ConsolePlugin.getDefault();
-		      consoleMgr = plugin.getConsoleManager();
-		      IConsole[] existing = consoleMgr.getConsoles();
-		      for (int i = 0; i < existing.length; i++)
-		         if (name.equals(existing[i].getName()))
-		            return (MessageConsole) existing[i];
-		      //no console found, so create a new one
-		      MessageConsole myConsole = new MessageConsole(name, null);
-		      consoleMgr.addConsoles(new IConsole[]{myConsole});
-		      return myConsole;
-		   }
+	private MessageConsole findConsole(String name) {
+		ConsolePlugin plugin = ConsolePlugin.getDefault();
+		consoleMgr = plugin.getConsoleManager();
+		IConsole[] existing = consoleMgr.getConsoles();
+		for (int i = 0; i < existing.length; i++)
+			if (name.equals(existing[i].getName()))
+				return (MessageConsole) existing[i];
+		//no console found, so create a new one
+		MessageConsole myConsole = new MessageConsole(name, null);
+		consoleMgr.addConsoles(new IConsole[]{myConsole});
+		return myConsole;
+	}
 
-		private void activateConsole () {
-			   IWorkbenchPage page = AtlUIPlugin.getActivePage();
-			   String id = IConsoleConstants.ID_CONSOLE_VIEW;
-			   try {
-			   	if (page != null) {
-				   	IConsoleView view = (IConsoleView) page.showView(id);
-					view.display(console);	   	
-			   	}
-			   } catch (org.eclipse.ui.PartInitException pex) {
-			   	System.out.println ("AtlUiPlugin - " + pex);
-			   }
-			}	
-	   
-	
+	private void activateConsole () {
+		IWorkbenchPage page = AtlUIPlugin.getActivePage();
+		String id = IConsoleConstants.ID_CONSOLE_VIEW;
+		try {
+			if (page != null) {
+				IConsoleView view = (IConsoleView) page.showView(id);
+				view.display(console);	   	
+			}
+		} catch (org.eclipse.ui.PartInitException pex) {
+			logger.log(Level.SEVERE, "AtlUiPlugin - " + pex.getLocalizedMessage(), pex);
+//			System.out.println ("AtlUiPlugin - " + pex);
+		}
+	}
+
 }

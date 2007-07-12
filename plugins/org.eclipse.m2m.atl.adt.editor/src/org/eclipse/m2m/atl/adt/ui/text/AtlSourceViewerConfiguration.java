@@ -3,7 +3,7 @@ package org.eclipse.m2m.atl.adt.ui.text;
 import java.util.Vector;
 
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.IAutoIndentStrategy;
+import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
@@ -76,13 +76,15 @@ public class AtlSourceViewerConfiguration extends SourceViewerConfiguration {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getAutoIndentStrategy(org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
+	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getAutoEditStrategies(org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
 	 */
-	public IAutoIndentStrategy getAutoIndentStrategy(ISourceViewer sourceViewer, String contentType) {
+	public IAutoEditStrategy[] getAutoEditStrategies(ISourceViewer sourceViewer, String contentType) {
 		if(IAtlPartitions.STRING.equals(contentType)) {
-			return new AtlStringAutoIndentStrategy(getConfiguredDocumentPartitioning(sourceViewer));
+			return new IAutoEditStrategy[] {
+					new AtlStringAutoIndentStrategy(getConfiguredDocumentPartitioning(sourceViewer)) };
 		} else {
-			return new AtlAutoIndentStrategy(getConfiguredDocumentPartitioning(sourceViewer));
+			return new IAutoEditStrategy[] {
+					new AtlAutoIndentStrategy(getConfiguredDocumentPartitioning(sourceViewer)) };
 		}
 	}
 	

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ResourceBundle;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -60,6 +62,7 @@ import org.eclipse.m2m.atl.adt.ui.text.IAtlLexems;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlPartitions;
 import org.eclipse.m2m.atl.adt.ui.viewsupport.AtlEditorTickErrorUpdater;
 import org.eclipse.m2m.atl.engine.AtlNbCharFile;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.VerifyKeyListener;
@@ -91,7 +94,9 @@ import org.eclipse.ui.views.properties.PropertySheetPage;
  * @author C. MONTI for ATL Team
  */
 public class AtlEditor extends TextEditor {
-	
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	private class BracketInserter implements VerifyKeyListener, ILinkedModeListener {
 		private final String CATEGORY= toString();
 		private Stack fBracketLevelStack= new Stack();
@@ -306,9 +311,11 @@ public class AtlEditor extends TextEditor {
 					event.doit= false;
 					
 				} catch (BadLocationException e) {
-					System.out.println(e.toString());
+					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//					System.out.println(e.toString());
 				} catch (BadPositionCategoryException e) {
-					System.out.println(e.toString());
+					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//					System.out.println(e.toString());
 				}
 				break;	
 			}
@@ -886,12 +893,14 @@ public class AtlEditor extends TextEditor {
 			while((c = is.read()) != -1)
 				content.append((char)c);		 	
 		} catch(Exception e) {		
-			System.out.println(e);			
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			System.out.println(e);			
 		} finally {					
 		    try {
 		        is.close();
 		    } catch (IOException e1) {        
-		        e1.printStackTrace();
+				logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+//		        e1.printStackTrace();
 		    }
 		}
 		return content.toString();

@@ -4,9 +4,11 @@
 package org.eclipse.m2m.atl.adt.ui.text.atl;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.DefaultAutoIndentStrategy;
+import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;
 import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -14,13 +16,13 @@ import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
-import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
 import org.eclipse.m2m.atl.adt.ui.text.AtlHeuristicScanner;
 import org.eclipse.m2m.atl.adt.ui.text.AtlIndenter;
 import org.eclipse.m2m.atl.adt.ui.text.AtlPairMatcher;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlLexems;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlPartitions;
 import org.eclipse.m2m.atl.adt.ui.text.Symbols;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.texteditor.ITextEditorExtension3;
@@ -28,8 +30,10 @@ import org.eclipse.ui.texteditor.ITextEditorExtension3;
 /**
  * @author C. MONTI for ATL team
  */
-public class AtlAutoIndentStrategy extends DefaultAutoIndentStrategy {
+public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	/**
 	 * Computes an insert position for an opening brace if <code>offset</code> maps to a position in
 	 * <code>document</code> with a expression in parenthesis that will take a block after the closing parenthesis.
@@ -97,7 +101,8 @@ public class AtlAutoIndentStrategy extends DefaultAutoIndentStrategy {
 			if (document.getNumberOfLines() > 1)
 				return document.getLineDelimiter(0);
 		} catch (BadLocationException e) {
-			System.out.println(e.toString());
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			System.out.println(e.toString());
 		}
 		return System.getProperty("line.separator"); //$NON-NLS-1$
 	}
@@ -381,7 +386,8 @@ public class AtlAutoIndentStrategy extends DefaultAutoIndentStrategy {
 				command.text= replaceText.toString();
 			}
 		} catch (BadLocationException e) {
-			System.out.println(AtlEditorMessages.getString("smartIndentAfterClosingBracket.error.badLocation"));
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			System.out.println(AtlEditorMessages.getString("smartIndentAfterClosingBracket.error.badLocation"));
 		}
 	}
 	
@@ -449,7 +455,8 @@ public class AtlAutoIndentStrategy extends DefaultAutoIndentStrategy {
 			c.text= buf.toString();
 			
 		} catch (BadLocationException e) {
-			System.out.println(e.toString());
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			System.out.println(e.toString());
 		}
 	}
 	
@@ -483,7 +490,8 @@ public class AtlAutoIndentStrategy extends DefaultAutoIndentStrategy {
 				}
 			}
 		} catch (BadLocationException e) {
-			System.out.println(AtlEditorMessages.getString("smartIndentAfterOpeningBracket.error.badLocation"));
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			System.out.println(AtlEditorMessages.getString("smartIndentAfterOpeningBracket.error.badLocation"));
 		}
 	}
 	

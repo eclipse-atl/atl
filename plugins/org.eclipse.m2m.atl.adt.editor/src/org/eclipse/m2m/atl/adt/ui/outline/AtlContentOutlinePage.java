@@ -5,6 +5,8 @@ package org.eclipse.m2m.atl.adt.ui.outline;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.debug.core.DebugException;
@@ -27,6 +29,7 @@ import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.engine.AtlNbCharFile;
 import org.eclipse.m2m.atl.engine.AtlParser;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IEditorInput;
@@ -43,6 +46,8 @@ import org.eclipse.ui.texteditor.ITextEditor;
  */
 public class AtlContentOutlinePage extends AtlOutlinePage {	
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	/**
 	 * perspective listener
 	 */
@@ -181,7 +186,8 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 			new AtlBreakpoint(ifile, location, lineNumber, charStart, charEnd);
 //			AtlBreakpoint bkpt = new AtlBreakpoint(ifile, location, lineNumber, charStart, charEnd);		
 		} catch (DebugException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}			    		    	
     }
     

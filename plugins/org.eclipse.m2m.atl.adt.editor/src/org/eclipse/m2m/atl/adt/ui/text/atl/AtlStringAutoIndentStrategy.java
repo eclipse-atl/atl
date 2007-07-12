@@ -5,7 +5,7 @@ package org.eclipse.m2m.atl.adt.ui.text.atl;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.DefaultAutoIndentStrategy;
+import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;
 import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -22,7 +22,7 @@ import org.eclipse.ui.texteditor.ITextEditorExtension3;
  * 
  * @author C. MONTI for ATL team
  */
-public class AtlStringAutoIndentStrategy extends DefaultAutoIndentStrategy {
+public class AtlStringAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 	
 	private String fPartitioning;
 	

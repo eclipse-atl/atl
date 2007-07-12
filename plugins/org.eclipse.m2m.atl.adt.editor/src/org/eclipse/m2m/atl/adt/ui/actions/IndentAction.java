@@ -5,8 +5,6 @@ package org.eclipse.m2m.atl.adt.ui.actions;
 
 import java.util.ResourceBundle;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.Assert;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentCommand;
@@ -360,7 +358,8 @@ public class IndentAction extends TextEditorAction {
 				nLines= document.getLineOfOffset(offset + length - minusOne) - firstLine + 1;
 			} catch (BadLocationException e) {
 				// will only happen on concurrent modification
-				System.out.println(new Status(IStatus.ERROR, AtlUIPlugin.getPluginId(), IStatus.OK, "", e));
+				AtlUIPlugin.log(e);
+//				System.out.println(new Status(IStatus.ERROR, AtlUIPlugin.getPluginId(), IStatus.OK, "", e));
 				return;
 			}
 			
@@ -402,7 +401,8 @@ public class IndentAction extends TextEditorAction {
 						document.removePosition(end);
 					} catch (BadLocationException e) {
 						// will only happen on concurrent modification
-						System.out.println(new Status(IStatus.ERROR, AtlUIPlugin.getPluginId(), IStatus.OK, "ConcurrentModification in IndentAction", e));
+						AtlUIPlugin.log(e);
+//						System.out.println(new Status(IStatus.ERROR, AtlUIPlugin.getPluginId(), IStatus.OK, "ConcurrentModification in IndentAction", e));
 					} finally {
 						if (target != null) {
 							target.endCompoundChange();

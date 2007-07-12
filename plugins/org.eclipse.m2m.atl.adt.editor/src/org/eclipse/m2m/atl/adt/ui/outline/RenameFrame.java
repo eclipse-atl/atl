@@ -1,5 +1,9 @@
 package org.eclipse.m2m.atl.adt.ui.outline;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -32,6 +36,8 @@ import org.eclipse.swt.widgets.Text;
 */
 public class RenameFrame extends Composite 
 {
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	private Button ok;
 	private Button cancel;
 	private Text tNewName;
@@ -163,7 +169,8 @@ public class RenameFrame extends Composite
 		} 
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 	}
 

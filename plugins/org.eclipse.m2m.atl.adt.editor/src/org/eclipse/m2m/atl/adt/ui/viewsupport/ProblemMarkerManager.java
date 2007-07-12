@@ -5,6 +5,8 @@
 package org.eclipse.m2m.atl.adt.ui.viewsupport;
 
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -16,7 +18,8 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.util.ListenerList;
+import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * @author idrissi
@@ -26,6 +29,8 @@ import org.eclipse.jface.util.ListenerList;
  * this type.
  */
 public class ProblemMarkerManager implements IResourceChangeListener {
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	/**
 	 * Visitors used to look if the element change delta contains a marker change.
@@ -84,7 +89,7 @@ public class ProblemMarkerManager implements IResourceChangeListener {
 	
 	
 	public ProblemMarkerManager() {
-		fListeners = new ListenerList(10);
+		fListeners = new ListenerList();
 	}
 
 	/*
@@ -98,7 +103,8 @@ public class ProblemMarkerManager implements IResourceChangeListener {
 			if (delta != null)
 				delta.accept(new ProjectErrorVisitor(changedElements));
 		} catch (CoreException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 
 		if (!changedElements.isEmpty()) {

@@ -7,6 +7,8 @@ package org.eclipse.m2m.atl.adt.ui.viewsupport;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -14,6 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 
@@ -23,6 +26,8 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	private AtlEditor atlEditor;
 	
 	private static final String ATL_EDITOR_ERROR = "atl_logo_error.gif";
@@ -63,7 +68,8 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 		try {
 			pbmMarkers = res.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		int severity = -1; // none
 		if (pbmMarkers != null) {
