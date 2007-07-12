@@ -3,6 +3,10 @@
  */
 package org.eclipse.m2m.atl.engine.injectors.xml;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -11,6 +15,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class ProtectedHandler extends DefaultHandler {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	private DefaultHandler handler;
 	
 	public ProtectedHandler(DefaultHandler handler) {
@@ -21,7 +27,8 @@ public class ProtectedHandler extends DefaultHandler {
 		try {
 			handler.setDocumentLocator(locator);
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			logger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+//			ex.printStackTrace();
 		}
 	}
 
@@ -29,7 +36,8 @@ public class ProtectedHandler extends DefaultHandler {
 		try {
 			handler.characters(ch, start, length);
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			logger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+//			ex.printStackTrace();
 		}
 	}
 
@@ -37,7 +45,8 @@ public class ProtectedHandler extends DefaultHandler {
 		try {
 			handler.startElement(uri, localName, qName, attributes);
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			logger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+//			ex.printStackTrace();
 		}
 	}
 
@@ -45,7 +54,8 @@ public class ProtectedHandler extends DefaultHandler {
 		try {
 			handler.endElement(uri, localName, qName);
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			logger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+//			ex.printStackTrace();
 		}
 	}
 	
@@ -53,7 +63,8 @@ public class ProtectedHandler extends DefaultHandler {
 		try {
 			handler.error(e);
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			logger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+//			ex.printStackTrace();
 		}
 	}
 
@@ -61,7 +72,8 @@ public class ProtectedHandler extends DefaultHandler {
     	try {
     		handler.fatalError(e);
 		} catch(Exception ex) {
-			ex.printStackTrace();				
+			logger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+//			ex.printStackTrace();				
 		}
     }
 }

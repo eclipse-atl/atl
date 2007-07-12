@@ -1,11 +1,14 @@
 package org.eclipse.m2m.atl.engine.vm;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * ASM Engine.
@@ -18,6 +21,7 @@ import java.util.List;
 public class ASMEngine {
 
 	public static PluginClassLoader cl = null;
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	public static void main(String args[]) throws Exception {
 		List locations = new ArrayList();
@@ -28,8 +32,9 @@ public class ASMEngine {
 		Thread.currentThread().setContextClassLoader(cl);
 		try {
 			m.invoke(null, new Object[] {args, cl});
-		} catch(java.lang.reflect.InvocationTargetException ite) {
-			ite.getCause().printStackTrace(System.out);
+		} catch(InvocationTargetException ite) {
+			logger.log(Level.SEVERE, ite.getCause().getLocalizedMessage(), ite.getCause());
+//			ite.getCause().printStackTrace(System.out);
 		}
 	}
 

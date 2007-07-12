@@ -45,7 +45,7 @@ public class ASMOclSimpleType extends ASMOclType {
 		boolean ret = equals(other);
 		
 		if(!ret) {
-			for(Iterator i = getSupertypes().iterator() ; i.hasNext() ; ) {
+			for(Iterator i = getSupertypes().iterator() ; i.hasNext() && !ret; ) {
 				ASMOclType t = (ASMOclType)i.next();
 				ret = t.conformsTo(other).getSymbol();
 			}

@@ -17,6 +17,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Model loading and saving facillity. Must be extended by concrete implementations
@@ -25,6 +27,7 @@ import java.util.Map;
  */
 public abstract class ModelLoader {
 
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 	protected static Map loadedModels = new HashMap();
 	
 	private Map injectors = new HashMap();
@@ -62,7 +65,7 @@ public abstract class ModelLoader {
 			String url = ss[ss.length - 1];
 			ret = realLoadModel(name, metamodel, url);
 		} else {
-			ret = newModel(name, metamodel);
+			ret = newModel(name, ss[ss.length - 1], metamodel);
 			inject(ret, ss[0], (ss.length == 3) ? ss[1] : null, ss[ss.length - 1], null);
 		}
 		
@@ -110,7 +113,8 @@ public abstract class ModelLoader {
 								if(val != null) {
 									paramsMap.put(pname, val);
 								} else {
-									System.err.println("Warning: could not find value for parameter \"" + pname + "\" : " + type + ".");
+									logger.warning("could not find value for parameter \"" + pname + "\" : " + type + ".");
+//									System.err.println("Warning: could not find value for parameter \"" + pname + "\" : " + type + ".");
 									//System.exit(1);
 								}
 							} else if(type.startsWith("Model:")) {
@@ -118,6 +122,7 @@ public abstract class ModelLoader {
 							} else if(type.equals("RandomAccessFile") && (uri != null)) {
 								paramsMap.put(pname, new RandomAccessFile(uri, "r"));
 							} else {
+								logger.warning("unknown parameter type \"" + type + "\" of \"" + pname + "\".");
 								//System.err.println("Warning: unknown parameter type \"" + type + "\" of \"" + pname + "\".");
 							}
 						}
@@ -127,17 +132,31 @@ public abstract class ModelLoader {
 					ret.setIsTarget(false);
 					//getAllAcquaintances ?
 				} else {
-					System.out.println("ERROR: could not find injector for \"" + kind + "\"");
+					logger.severe("ERROR: could not find injector for \"" + kind + "\"");
+//					System.out.println("ERROR: could not find injector for \"" + kind + "\"");
 				} 
  			} catch(Exception e) {
-				e.printStackTrace();
+ 				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//				e.printStackTrace();
 			}
  			return root;
 	}
 
-
-
+	/**
+	 * @param name
+	 * @param metamodel
+	 * @return A new ASMModel
+	 * @deprecated Use {@link #newModel(String, String, ASMModel)} instead  
+	 */
 	public abstract ASMModel newModel(String name, ASMModel metamodel);
+
+	/**
+	 * @param name
+	 * @param uri
+	 * @param metamodel
+	 * @return A new ASMModel
+	 */
+	public abstract ASMModel newModel(String name, String uri, ASMModel metamodel);
 
 	protected abstract void setParameter(String name, Object value);
 
@@ -210,22 +229,26 @@ public abstract class ModelLoader {
 								if(val != null) {
 									paramsMap.put(pname, val);
 								} else {
-									System.err.println("Warning: could not find value for parameter \"" + pname + "\" : " + type + ".");
+									logger.warning("could not find value for parameter \"" + pname + "\" : " + type + ".");
+//									System.err.println("Warning: could not find value for parameter \"" + pname + "\" : " + type + ".");
 									//System.exit(1);
 								}
 							} else if(type.startsWith("Model:")) {
 								paramsMap.put(pname, loadedModels.get(args.get(pname)));
 							} else {
-								System.err.println("Warning: unknown parameter type \"" + type + "\" of \"" + pname + "\".");
+								logger.warning("unknown parameter type \"" + type + "\" of \"" + pname + "\".");
+//								System.err.println("Warning: unknown parameter type \"" + type + "\" of \"" + pname + "\".");
 							}
 						}
 					}
 					ext.extract(model, out, paramsMap);
 				} else {
-					System.out.println("ERROR: could not find extractor for \"" + kind + "\"");
+					logger.severe("ERROR: could not find extractor for \"" + kind + "\"");
+//					System.out.println("ERROR: could not find extractor for \"" + kind + "\"");
 				} 
  			} catch(Exception e) {
-				e.printStackTrace();
+ 				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//				e.printStackTrace();
 			}
 	}
 

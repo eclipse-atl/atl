@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ATL VM Plug-in
+Bundle-SymbolicName: org.eclipse.m2m.atl.engine.vm
+Bundle-Version: 2.0.0
+Bundle-Activator: org.eclipse.m2m.atl.engine.vm.ATLVMPlugin
+Bundle-Vendor: Eclipse.org
+Bundle-Localization: plugin
+Export-Package: org.eclipse.m2m.atl.engine.extractors,
+ org.eclipse.m2m.atl.engine.extractors.xml,
+ org.eclipse.m2m.atl.engine.injectors,
+ org.eclipse.m2m.atl.engine.injectors.xml,
+ org.eclipse.m2m.atl.engine.vm,
+ org.eclipse.m2m.atl.engine.vm.adwp,
+ org.eclipse.m2m.atl.engine.vm.nativelib,
+ org.eclipse.m2m.atl.logging
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources
+Eclipse-LazyStart: true

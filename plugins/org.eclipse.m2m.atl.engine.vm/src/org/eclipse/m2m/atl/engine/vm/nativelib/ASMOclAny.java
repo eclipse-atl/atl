@@ -3,8 +3,10 @@ package org.eclipse.m2m.atl.engine.vm.nativelib;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
@@ -14,6 +16,7 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
 public class ASMOclAny extends ASMNativeObject {
 
 	public static ASMOclType myType = getOclAnyType();
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	static {
 		ASMOclType.myType.addSupertype(getOclAnyType());
@@ -46,9 +49,9 @@ public class ASMOclAny extends ASMNativeObject {
 	}
 
 	// The Operation to execute on this object is searched for in its type.
-	public ASMOclAny invoke(StackFrame frame, String opName, List arguments) {
-		return invoke(frame, opName, arguments, getType());
-	}
+//	public ASMOclAny invoke(StackFrame frame, String opName, List arguments) {
+//		return invoke(frame, opName, arguments, getType());
+//	}
 	
 	/**
 	 * Searches for Operation opName and invokes it if found.
@@ -58,10 +61,55 @@ public class ASMOclAny extends ASMNativeObject {
 	 * @param type The operation context type
 	 * @return The Operation's result or null
 	 */
-	public ASMOclAny invoke(StackFrame frame, String opName, List arguments, ASMOclType type) {
+//	public ASMOclAny invoke(StackFrame frame, String opName, List arguments, ASMOclType type) {
+//		ASMOclAny ret = null;
+//				
+//		Operation oper = findOperation(frame, opName, arguments, type);
+//
+//		if(oper != null) {
+//			ret = invoke(frame, oper, arguments);
+//		} else {
+//			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes());
+//		}
+//
+//		return ret;
+//	}
+
+	/**
+	 * Searches for Operation opName in this context and invokes it if found.
+	 * @param frame The current stack frame
+	 * @param opName The Operation's name
+	 * @param arguments The operation arguments, excluding self
+	 * @return The Operation's result or null
+	 */
+	public ASMOclAny invoke(StackFrame frame, String opName, List arguments) {
+		ASMOclAny ret = null;
+
+		Operation oper = findOperation(frame, opName, arguments, getType());
+
+		if(oper != null) {
+			ret = invoke(frame, oper, arguments);
+		} else {
+			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes());
+		}
+
+		return ret;
+	}
+
+	/**
+	 * Searches for Operation opName in the superclass context and invokes it if found.
+	 * @param frame The current stack frame
+	 * @param opName The Operation's name
+	 * @param arguments The operation arguments, excluding self
+	 * @return The Operation's result or null
+	 */
+	public ASMOclAny invokeSuper(StackFrame frame, String opName, List arguments) {
 		ASMOclAny ret = null;
 		
-		Operation oper = findOperation(frame, opName, arguments, type);
+		Operation oper = null;
+		for (Iterator i = getType().getSupertypes().iterator(); i.hasNext() && oper == null;) {
+			oper = findOperation(frame, opName, arguments, (ASMOclType)i.next());
+		}
 
 		if(oper != null) {
 			ret = invoke(frame, oper, arguments);
@@ -191,17 +239,20 @@ public class ASMOclAny extends ASMNativeObject {
 	}
 
 	public static void output(StackFrame frame, ASMOclAny self) {
-		System.out.println(self);
+		logger.info(self.toString());
+//		System.out.println(self);
 	}
 
 	public static ASMOclAny debug(StackFrame frame, ASMOclAny self, ASMString msg) {
-		System.out.println(msg.getSymbol() + ": " + self.toString());
+		logger.info(msg.getSymbol() + ": " + self.toString());
+//		System.out.println(msg.getSymbol() + ": " + self.toString());
 		return self;
 	}
 
 	public static ASMOclAny check(StackFrame frame, ASMOclAny self, ASMString msg, ASMBoolean cond) {
 		if(!cond.getSymbol()) {
-			System.out.println(msg.getSymbol());
+			logger.info(msg.getSymbol());
+//			System.out.println(msg.getSymbol());
 		}
 		return self;
 	}

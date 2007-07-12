@@ -5,6 +5,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A basic plugin facillity used in command-line.
@@ -12,6 +14,8 @@ import java.util.List;
  * @author Frédéric Jouault
  */
 public class PluginClassLoader extends URLClassLoader {
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static URL[] toURLs(List locations) {
 		URL ret[] = new URL[locations.size()];
@@ -30,7 +34,8 @@ public class PluginClassLoader extends URLClassLoader {
 		try {
 			ret = new URL("file:" + location);
 		} catch(MalformedURLException mue) {
-			mue.printStackTrace(System.out);
+			logger.log(Level.SEVERE, mue.getLocalizedMessage(), mue);
+//			mue.printStackTrace(System.out);
 		}
 
 		return ret;

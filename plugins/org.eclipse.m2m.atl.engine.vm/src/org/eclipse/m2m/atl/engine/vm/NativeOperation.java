@@ -61,7 +61,9 @@ public abstract class NativeOperation extends Operation {
 	}
 
 	public static void registerOperations(ASMOclType t, Class c, boolean allowClassLevel, boolean allowInstanceLevel, boolean allowTypeTranslation, boolean allowDontUseFrame) {
-		final boolean debug = false;
+
+final boolean debug = false;
+
 		for(Iterator i = Arrays.asList(c.getDeclaredMethods()).iterator() ; i.hasNext() ; ) {
 			Method m = (Method)i.next();
 			boolean isStatic = ((Modifier.STATIC & m.getModifiers()) != 0);
@@ -81,7 +83,10 @@ public abstract class NativeOperation extends Operation {
 						dontUseFrame = true;
 					} else {
 						notGood = true;
-if(debug) System.out.println("No StackFrame as first parameter");
+
+if(debug) logger.info("No StackFrame as first parameter");
+//if(debug) System.out.println("No StackFrame as first parameter");
+
 					}
 					j = Arrays.asList(m.getParameterTypes()).iterator();
 				}
@@ -93,7 +98,10 @@ if(debug) System.out.println("No StackFrame as first parameter");
 					dontUseFrame = true;
 				} else {
 					notGood = true;
-if(debug) System.out.println("No StackFrame as first parameter");
+
+if(debug) logger.info("No StackFrame as first parameter");
+//if(debug) System.out.println("No StackFrame as first parameter");
+
 				}
 			}
 			for( ; j.hasNext() && !notGood ; ) {
@@ -101,7 +109,10 @@ if(debug) System.out.println("No StackFrame as first parameter");
 				ASMOclType paramType = getASMType(pt, allowTypeTranslation);
 				if(paramType == null) {
 					notGood = true;
-					if(debug) System.out.println("Incompatible type as parameter");
+
+if(debug) logger.info("Incompatible type as parameter");
+//if(debug) System.out.println("Incompatible type as parameter");
+
 				} else {
 					parameters.add(paramType);
 				}
@@ -111,7 +122,10 @@ if(debug) System.out.println("No StackFrame as first parameter");
 			ASMOclType returnType = getASMType(rt, allowTypeTranslation);
 			if((returnType == null) && (!(rt.isPrimitive() && rt.getName().equals("void")))) {
 				notGood = true;
-if(debug) System.out.println("Incompatible return type");
+
+if(debug) logger.info("Incompatible return type");
+//if(debug) System.out.println("Incompatible return type");
+
 			}
 
 			if(!notGood) {
@@ -122,7 +136,10 @@ if(debug) System.out.println("Incompatible return type");
 					t.registerVMOperation(new InstanceNativeOperation(m, allowTypeTranslation, dontUseFrame, parameters, returnType, getASMType(c, allowTypeTranslation)));
 				}
 			} else {
-if(debug) System.err.println("Strange !!! This method is not good: " + m);
+
+if(debug) logger.info("Strange !!! This method is not good: " + m);
+//if(debug) System.err.println("Strange !!! This method is not good: " + m);
+
 			}
 		}
 	}

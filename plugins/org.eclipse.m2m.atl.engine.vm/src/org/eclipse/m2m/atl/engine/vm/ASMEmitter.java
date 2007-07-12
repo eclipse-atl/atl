@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class is used by ATL compiler to create an ASM file.
@@ -17,6 +19,7 @@ import java.util.Iterator;
 public class ASMEmitter extends ASMOclAny {
 
 	public static ASMOclType myType = new ASMOclSimpleType("ASMEmitter", getOclAnyType());
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	public ASMEmitter() {
 		super(myType);
@@ -130,13 +133,15 @@ public class ASMEmitter extends ASMOclAny {
 
 	public void dumpASM(String fileName) {
 		finishOperation();
-		System.out.println("Dumping ASM to " + fileName);
+		logger.info("Dumping ASM to " + fileName);
+//		System.out.println("Dumping ASM to " + fileName);
 		try {
 			PrintWriter out = new PrintWriter(new FileWriter(fileName));
 			new ASMXMLWriter(out, false).print(asm);
 			out.close();
 		} catch(IOException ioe) {
-			ioe.printStackTrace(System.out);
+			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
+//			ioe.printStackTrace(System.out);
 		}
 	}
 

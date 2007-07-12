@@ -8,11 +8,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * @author Frédéric Jouault
  */
 public class ADWPDebuggee extends ADWP {
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	public ADWPDebuggee(InputStream in, OutputStream out) {
 		super(in, out);
@@ -28,7 +34,8 @@ public class ADWPDebuggee extends ADWP {
 			}
 			out.flush();
 		} catch(IOException ioe) {
-			ioe.printStackTrace(System.out);
+			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
+//			ioe.printStackTrace(System.out);
 		}
 	}
 
@@ -40,7 +47,8 @@ public class ADWPDebuggee extends ADWP {
 				try {
 					cmds.wait();
 				} catch(InterruptedException ie) {
-					ie.printStackTrace(System.out);
+					logger.log(Level.SEVERE, ie.getLocalizedMessage(), ie);
+//					ie.printStackTrace(System.out);
 				}
 			}
 		}
@@ -96,7 +104,8 @@ public class ADWPDebuggee extends ADWP {
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//						e.printStackTrace();
 					}
 				}
 				synchronized(cmds) {

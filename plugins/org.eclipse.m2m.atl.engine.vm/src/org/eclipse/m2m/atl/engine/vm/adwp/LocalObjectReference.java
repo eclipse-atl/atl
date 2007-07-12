@@ -5,7 +5,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
 import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBoolean;
@@ -19,6 +22,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
  */
 public class LocalObjectReference extends ObjectReference {
 
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 	private static Map values = new HashMap();
 	private static Map valuesById = new HashMap();
 
@@ -60,7 +64,8 @@ public class LocalObjectReference extends ObjectReference {
 		try {
 			o = object.get(debugger.getExecEnv().peek(), propName);
 		} catch(Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 
 		ret = asm2value(o);
@@ -120,25 +125,38 @@ public class LocalObjectReference extends ObjectReference {
 	}
 
 	public Value call(String opName, List args) {
-		final boolean debug = false;
+
+final boolean debug = false;
+
 		Value ret = null;
 
 		Operation op = debugger.getExecEnv().getOperation(object.getType(), opName);
 		if(op == null) {
-			System.out.println("ERROR: operation not found: " + opName + " on " + object + " : "+ object.getType());
+			logger.severe("ERROR: operation not found: " + opName + " on " + object + " : "+ object.getType());
+//			System.out.println("ERROR: operation not found: " + opName + " on " + object + " : "+ object.getType());
 		} else {
 			List realArgs = new ArrayList();
 			realArgs.add(value2asm(this));
-if(debug) System.out.print(object + " : " + object.getType() + "." + opName + "(");
+
+if(debug) logger.info(object + " : " + object.getType() + "." + opName + "(");
+//if(debug) System.out.print(object + " : " + object.getType() + "." + opName + "(");
+
 			for(Iterator i = args.iterator() ; i.hasNext() ; ) {
 				Value v = (Value)i.next();
-if(debug) System.out.print(v + ((i.hasNext()) ? ", " : ""));
+
+if(debug) logger.info(v + ((i.hasNext()) ? ", " : ""));
+//if(debug) System.out.print(v + ((i.hasNext()) ? ", " : ""));
+
 				realArgs.add(value2asm(v));
 			}
 			ASMOclAny o = op.exec(new ADWPStackFrame(op, args).enterFrame(op, realArgs));
 			ret = asm2value(o);
-if(debug) System.out.print(") = " + o);
-if(debug) System.out.println(" => " + ret);
+
+if(debug) logger.info(") = " + o);
+if(debug) logger.info(" => " + ret);
+//if(debug) System.out.print(") = " + o);
+//if(debug) System.out.println(" => " + ret);
+
 		}
 
 		return ret;

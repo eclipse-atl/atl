@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
@@ -28,6 +30,8 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
  * @author Frédéric Jouault
  */
 public class ACTInterpreter {
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static void showUsage() {
 		System.out.println("Usage : org.eclipse.m2m.atl.engine.vm.ACTInterpreter ACT=<act-file> XML=<xml-meta-model> ...");
@@ -46,7 +50,8 @@ public class ACTInterpreter {
 			String ss[] = plugins.split(",");
 			for(Iterator i = Arrays.asList(ss).iterator() ; i.hasNext() ; ) {
 				String plg = (String)i.next();
-				System.out.println("Loading plugin: " + plg);
+				logger.info("Loading plugin: " + plg);
+//				System.out.println("Loading plugin: " + plg);
 				pcl.addLocation(plg);
 			}
 		}
@@ -84,13 +89,15 @@ public class ACTInterpreter {
 		new ACTInterpreter(pcl, ml, ACTRoot, params, models);
 
 		long end = new Date().getTime();
-		System.out.println("Execution took " + ((end - start) / 1000.) + "s.");
+		logger.info("Execution took " + ((end - start) / 1000.) + "s.");
+//		System.out.println("Execution took " + ((end - start) / 1000.) + "s.");
 	}
-
+	
 	public ACTInterpreter(PluginClassLoader pcl, ModelLoader ml, ASMModelElement root, Map params, Map models) throws Exception {
 		ACT act = new ACT();
 		load(root, act);
-		System.out.println("Executing ATL Composite Transformation: " + act.name);
+		logger.info("Executing ATL Composite Transformation: " + act.name);
+//		System.out.println("Executing ATL Composite Transformation: " + act.name);
 
 		Map parameters = new HashMap();
 		parameters.put("ACT_LOCATION", params.get("ACT_LOCATION"));
@@ -102,19 +109,22 @@ public class ACTInterpreter {
 			ml.addInjector("ebnf", pcl.loadClass("org.atl.engine.injectors.ebnf.EBNFInjector"));
 			ml.addInjector("ebnf2", pcl.loadClass("org.atl.engine.injectors.ebnf.EBNFInjector2"));
 		} catch(Exception e) {
-			e.printStackTrace(System.out);
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace(System.out);
 		}
 
 		for(Iterator i = act.file_s.iterator() ; i.hasNext() ; ) {
 			File_ file = (File_)i.next();
 			String filehref = (String)params.get(file.name);
 			if(filehref == null) {
-				System.out.println("ERROR: Location of file " + file.name + " not specified on command line.");
-				System.exit(1);
+				throw new ACTInterpreterException("ERROR: Location of file " + file.name + " not specified on command line.");
+//				System.out.println("ERROR: Location of file " + file.name + " not specified on command line.");
+//				System.exit(1);
 			}
 			if((file instanceof InFile) && !new File(filehref).exists()) {
-				System.out.println("ERROR: Location of input file " + file.name + ": \"" + filehref + "\" does not denote a valid file.");
-				System.exit(1);
+				throw new ACTInterpreterException("ERROR: Location of input file " + file.name + ": \"" + filehref + "\" does not denote a valid file.");
+//				System.out.println("ERROR: Location of input file " + file.name + ": \"" + filehref + "\" does not denote a valid file.");
+//				System.exit(1);
 			}
 			parameters.put(file.name, filehref);
 		}
@@ -122,18 +132,21 @@ public class ACTInterpreter {
 		for(Iterator i = act.models.iterator() ; i.hasNext() ; ) {
 			Model model = (Model)i.next();
 			if(model instanceof InModel) {
-				System.out.println("Loading model " + model.name + "...");
+				logger.info("Loading model " + model.name + "...");
+//				System.out.println("Loading model " + model.name + "...");
 				ASMModel m = (ASMModel)models.get(model.name);
 				if(m == null) {
 					String mhref = (String)params.get(model.name);
 					if(mhref == null) {
-						System.out.println("ERROR: Location of input model " + model.name + " not specified on command line.");
-						System.exit(1);
+						throw new ACTInterpreterException("ERROR: Location of input model " + model.name + " not specified on command line.");
+//						System.out.println("ERROR: Location of input model " + model.name + " not specified on command line.");
+//						System.exit(1);
 					}
 					ASMModel mm = (ASMModel)models.get(model.metaModel);
 					if(mm == null) {
-						System.out.println("ERROR: Metamodel " + model.metaModel + " is not already loaded.");
-						System.exit(1);
+						throw new ACTInterpreterException("ERROR: Metamodel " + model.metaModel + " is not already loaded.");
+//						System.out.println("ERROR: Metamodel " + model.metaModel + " is not already loaded.");
+//						System.exit(1);
 					}
 					m = ml.loadModel(model.name, mm, mhref);
 					models.put(model.name, m);
@@ -148,14 +161,16 @@ public class ACTInterpreter {
 				Import im = (Import)op;
 				ASMModel mm = (ASMModel)models.get(im.metaModel);
 				if(mm == null) {
-					System.out.println("ERROR: Metamodel " + im.metaModel + " is not already loaded.");
-					System.exit(1);
+					throw new ACTInterpreterException("ERROR: Metamodel " + im.metaModel + " is not already loaded.");
+//					System.out.println("ERROR: Metamodel " + im.metaModel + " is not already loaded.");
+//					System.exit(1);
 				}
 				String href = expand(im.href, parameters);
 				ASMModel m = ml.loadModel(im.storeTo, mm, im.kind + ":" + im.subKind + ":" + href);
 				models.put(im.storeTo, m);
 			} else if(op instanceof Query) {
-				System.out.println("Querying...");
+				logger.info("Querying...");
+//				System.out.println("Querying...");
 				Query q = (Query)op;
 
 				ASM asm = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(q.asm, parameters))));
@@ -188,8 +203,9 @@ public class ACTInterpreter {
 					if((l instanceof InoutModel) || (l instanceof InModel)) {
 						ASMModel m = (ASMModel)models.get(l.model);
 						if(m == null) {
-							System.out.println("ERROR: model " + l.model + " not loaded yet.");
-							System.exit(1);
+							throw new ACTInterpreterException("ERROR: model " + l.model + " not loaded yet.");
+//							System.out.println("ERROR: model " + l.model + " not loaded yet.");
+//							System.exit(1);
 						}
 						env.addModel(l.name, m);
 					} else if(l instanceof OutModel) {
@@ -197,15 +213,17 @@ public class ACTInterpreter {
 						if(m == null) {
 							ASMModel mm = (ASMModel)models.get(l.metaModel);
 							if(mm == null) {
-								System.out.println("ERROR: model " + l.metaModel + " not loaded yet.");
-								System.exit(1);
+								throw new ACTInterpreterException("ERROR: model " + l.metaModel + " not loaded yet.");
+//								System.out.println("ERROR: model " + l.metaModel + " not loaded yet.");
+//								System.exit(1);
 							}
-							m = ml.newModel(l.model, mm);
+							m = ml.newModel(l.model, (String)params.get(l.name), mm);
 						}
 						env.addModel(l.name, m);
 						models.put(l.model, m);
 					} else {
-						System.out.println("Warning: " + l + " not dealt with yet.");
+						logger.warning(l + " not dealt with yet.");
+//						System.out.println("Warning: " + l + " not dealt with yet.");
 					}
 				}
 
@@ -213,7 +231,8 @@ public class ACTInterpreter {
 				for(Iterator j = q.librarys.iterator() ; j.hasNext() ; ) {
 					Library l = (Library)j.next();
 
-					System.out.println("Loading library " + l.name + " from " + l.href + ".");
+					logger.info("Loading library " + l.name + " from " + l.href + ".");
+//					System.out.println("Loading library " + l.name + " from " + l.href + ".");
 					ASM lib = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(l.href, parameters))));
 					env.registerOperations(lib);
 				}
@@ -243,7 +262,8 @@ public class ACTInterpreter {
 					System.out.println(value.toString());
 				}
 			} else if(op instanceof Transform) {
-				System.out.println("Transforming...");
+				logger.info("Transforming...");
+//				System.out.println("Transforming...");
 				Transform tr = (Transform)op;
 				ASM asm = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(tr.asm, parameters))));
 				ASMModule asmModule = new ASMModule(asm);
@@ -274,8 +294,9 @@ public class ACTInterpreter {
 					if((l instanceof InoutModel) || (l instanceof InModel)) {
 						ASMModel m = (ASMModel)models.get(l.model);
 						if(m == null) {
-							System.out.println("ERROR: model " + l.model + " not loaded yet.");
-							System.exit(1);
+							throw new ACTInterpreterException("ERROR: model " + l.model + " not loaded yet.");
+//							System.out.println("ERROR: model " + l.model + " not loaded yet.");
+//							System.exit(1);
 						}
 						env.addModel(l.name, m);
 					} else if(l instanceof OutModel) {
@@ -283,15 +304,17 @@ public class ACTInterpreter {
 						if(m == null) {
 							ASMModel mm = (ASMModel)models.get(l.metaModel);
 							if(mm == null) {
-								System.out.println("ERROR: model " + l.metaModel + " not loaded yet.");
-								System.exit(1);
+								throw new ACTInterpreterException("ERROR: model " + l.metaModel + " not loaded yet.");
+//								System.out.println("ERROR: model " + l.metaModel + " not loaded yet.");
+//								System.exit(1);
 							}
-							m = ml.newModel(l.model, mm);
+							m = ml.newModel(l.model, (String)params.get(l.name), mm);
 						}
 						env.addModel(l.name, m);
 						models.put(l.model, m);
 					} else {
-						System.out.println("Warning: " + l + " not dealt with yet.");
+						logger.warning(l + " not dealt with yet.");
+//						System.out.println("Warning: " + l + " not dealt with yet.");
 					}
 				}
 
@@ -299,7 +322,8 @@ public class ACTInterpreter {
 				for(Iterator j = tr.librarys.iterator() ; j.hasNext() ; ) {
 					Library l = (Library)j.next();
 
-					System.out.println("Loading library " + l.name + " from " + l.href + ".");
+					logger.info("Loading library " + l.name + " from " + l.href + ".");
+//					System.out.println("Loading library " + l.name + " from " + l.href + ".");
 					ASM lib = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(l.href, parameters))));
 					env.registerOperations(lib);
 				}
@@ -317,23 +341,26 @@ public class ACTInterpreter {
 		for(Iterator i = act.models.iterator() ; i.hasNext() ; ) {
 			Model model = (Model)i.next();
 			if(model instanceof OutModel) {
-				System.out.println("Saving model " + model.name + "...");
+				logger.info("Saving model " + model.name + "...");
+//				System.out.println("Saving model " + model.name + "...");
 				String mhref = (String)params.get(model.name);
 				if(mhref == null) {
-					System.out.println("ERROR: Location of output model " + model.name + " not specified on command line.");
-					System.exit(1);
+					throw new ACTInterpreterException("ERROR: Location of output model " + model.name + " not specified on command line.");
+//					System.out.println("ERROR: Location of output model " + model.name + " not specified on command line.");
+//					System.exit(1);
 				}
 				ASMModel m = (ASMModel)models.get(model.name);
 				if(m == null) {
-					System.out.println("ERROR: Model " + model.name + " is not already loaded.");
-					System.exit(1);
+					throw new ACTInterpreterException("ERROR: Model " + model.name + " is not already loaded.");
+//					System.out.println("ERROR: Model " + model.name + " is not already loaded.");
+//					System.exit(1);
 				}
 				ml.save(m, mhref);
 			}
 		}
 	}
 
-	private static String expand(String s, Map parameters) {
+	private static String expand(String s, Map parameters) throws ACTInterpreterException {
 		StringBuffer ret = new StringBuffer();
 		String varName = "";
 
@@ -359,8 +386,9 @@ public class ACTInterpreter {
 					if(c == ')') {
 						String value = (String)parameters.get(varName);
 						if(value == null) {
-							System.out.println("ERROR: Variable not initialized: " + varName);
-							System.exit(1);
+							throw new ACTInterpreterException("ERROR: Variable not initialized: " + varName);
+//							System.out.println("ERROR: Variable not initialized: " + varName);
+//							System.exit(1);
 						}
 						ret.append(value);
 						state = 0;
@@ -376,7 +404,9 @@ public class ACTInterpreter {
 
 	/** loads an XML model into an object */
 	private void load(ASMModelElement source, Object target) throws Exception {
+
 final boolean debug = false;
+
 		for(Iterator i = ((ASMSequence)source.get(null, "children")).iterator() ; i.hasNext() ; ) {
 			ASMModelElement ame = (ASMModelElement)i.next();
 			String typeName = ((ASMString)ame.getType().get(null, "name")).getSymbol();
@@ -387,11 +417,20 @@ final boolean debug = false;
 				Field f = target.getClass().getField(name);
 				f.set(target, value);
 			} else if(typeName.equals("Element")) {
-if(debug) System.out.print("For element " + name);
+
+if(debug) logger.info("For element " + name);
+//if(debug) System.out.print("For element " + name);
+
 				String cname = convName(name, true);
-if(debug) System.out.print(" converted into " + cname + " ");
+
+if(debug) logger.info(" converted into " + cname + " ");
+//if(debug) System.out.print(" converted into " + cname + " ");
+
 				Class c = Class.forName("org.eclipse.m2m.atl.engine.vm.ACTInterpreter$" + cname);
-if(debug) System.out.println("using class " + c);
+
+if(debug) logger.info("using class " + c);
+//if(debug) System.out.println("using class " + c);
+
 				Object value = c.getDeclaredConstructors()[0].newInstance(new Object[] {this});
 				load(ame, value);
 				setValue(target, value, value.getClass());
@@ -415,10 +454,12 @@ if(debug) System.out.println("using class " + c);
 				((List)f.get(target)).add(value);
 			} catch(NoSuchFieldException nsfe2) {
 				Class s = valueType.getSuperclass();
-				if(s == null)
-					System.out.println("Not found: " + name);
-				else
+				if(s == null) {
+					logger.warning("Not found: " + name);
+//					System.out.println("Not found: " + name);
+				} else {
 					setValue(target, value, s);
+				}
 			}
 		}
 	}

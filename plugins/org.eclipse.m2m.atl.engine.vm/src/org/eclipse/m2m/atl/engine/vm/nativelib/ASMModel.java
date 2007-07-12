@@ -66,10 +66,12 @@ public abstract class ASMModel extends ASMOclAny {
 		ASMModelElement type = getMetamodel().findModelElement(typeName);
 		if(type == null) {
 			String msg = "no type named '" + typeName + "' in metamodel '" + metamodel.name + "'";
-			if(frame == null)
-				System.out.println(msg);
-			else
+			if(frame == null) {
+				logger.severe(msg);
+//				System.out.println(msg);
+			} else {
 				frame.printStackTrace(msg);
+			}
 		}
 		return newModelElement(type);
 	}
@@ -85,11 +87,17 @@ public abstract class ASMModel extends ASMOclAny {
 	}
 
 	// TODO remove this method
+	/**
+	 * @deprecated
+	 */
 	public void addSubModel(ASMModel subModel) {
 		//subModels.put(subModel.name, subModel);
 	}
 
 	// TODO remove this method
+	/**
+	 * @deprecated
+	 */
 	public Map getSubModels() {
 		return Collections.EMPTY_MAP;
 		//return subModels;
@@ -104,16 +112,19 @@ public abstract class ASMModel extends ASMOclAny {
 	}
 
 	public ASMOclAny get(StackFrame frame, String name) {
-		System.out.println("ERROR !!!!!");
+		logger.severe("ERROR !!!!!");
+//		System.out.println("ERROR !!!!!");
 		return null;
 	}
 
 	public void set(StackFrame frame, String name, ASMOclAny value) {
-		System.out.println("ERROR !!!!!");
+		logger.severe("ERROR !!!!!");
+//		System.out.println("ERROR !!!!!");
 	}
 
 	public void save(String url) throws IOException {
-		System.out.println("ERROR: save not implemented !");
+		logger.severe("ERROR: save not implemented !");
+//		System.out.println("ERROR: save not implemented !");
 	}
 
 	private String name;

@@ -1,5 +1,7 @@
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
+import java.util.Iterator;
+
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
 /** An ASMModelElement represents a model element.
@@ -67,6 +69,22 @@ public abstract class ASMModelElement extends ASMOclType {
 		return null;
 	}
 
+	/**
+	 * @param frame
+	 * @param self The meta-class to instantiate
+	 * @return A new instance of self, if a suitable target model is found, null otherwise
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	protected static ASMModelElement createNewInstance(StackFrame frame, ASMModelElement self) {
+		ASMModel selfModel = self.getModel();
+		for (Iterator j = frame.getExecEnv().getModels().values().iterator(); j.hasNext();) {
+			ASMModel model = (ASMModel)j.next();
+			if (model.isTarget() && model.getMetamodel().equals(selfModel)) {
+				return model.newModelElement(self);
+			}
+		}
+		return null;
+	}
 
 	private ASMModel model;
 	private ASMModelElement metaobject;

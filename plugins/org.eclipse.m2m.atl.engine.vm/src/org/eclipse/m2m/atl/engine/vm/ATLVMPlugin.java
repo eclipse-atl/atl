@@ -1,6 +1,11 @@
 package org.eclipse.m2m.atl.engine.vm;
 
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
+
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.m2m.atl.logging.ATLLogFormatter;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -8,8 +13,18 @@ import org.osgi.framework.BundleContext;
  */
 public class ATLVMPlugin extends Plugin {
 
+	public static final String LOGGER = "org.eclipse.m2m.atl";
+
 	//The shared instance.
 	private static ATLVMPlugin plugin;
+	
+	static {
+		Logger logger = Logger.getLogger(LOGGER);
+		logger.setUseParentHandlers(false);
+		Handler handler = new ConsoleHandler();
+		handler.setFormatter(ATLLogFormatter.INSTANCE);
+		logger.addHandler(handler);
+	}
 	
 	/**
 	 * The constructor.

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMEmitter;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
+import org.eclipse.m2m.atl.engine.vm.ASMOperation;
 import org.eclipse.m2m.atl.engine.vm.ASMStackFrame;
 import org.eclipse.m2m.atl.engine.vm.NativeOperation;
 import org.eclipse.m2m.atl.engine.vm.NativeStackFrame;
@@ -50,10 +51,13 @@ public abstract class ASMOclType extends ASMOclAny {
 			NativeOperation.registerOperations(ASMOrderedSet.myType, ASMOrderedSet.class);
 			
 			NativeOperation.registerOperations(ASMEmitter.myType, ASMEmitter.class, false, true, true, true);
-			NativeOperation.registerOperations(ASM.myType, ASMEmitter.class, false, true, true, true);
+//TODO BUG?			NativeOperation.registerOperations(ASM.myType, ASMEmitter.class, false, true, true, true);
+			NativeOperation.registerOperations(ASM.myType, ASM.class, false, true, true, true);
 			NativeOperation.registerOperations(ASMStackFrame.myType, ASMStackFrame.class, false, true, true, true);
 			NativeOperation.registerOperations(NativeStackFrame.myType, NativeStackFrame.class, false, true, true, true);
 			NativeOperation.registerOperations(StackFrame.myType, StackFrame.class, false, true, true, true);
+			NativeOperation.registerOperations(Operation.myType, Operation.class, false, true, true, true);
+			NativeOperation.registerOperations(ASMOperation.myType, ASMOperation.class, false, true, true, true);
 		}
 		return typeOperations;
 	}

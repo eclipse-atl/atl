@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.m2m.atl.engine.vm.adwp.ADWPCommand;
 import org.eclipse.m2m.atl.engine.vm.adwp.ADWPDebuggee;
@@ -27,6 +29,8 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
  */
 public class NetworkDebugger implements Debugger {
 
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	public NetworkDebugger(final int port, boolean suspend) {
 //		this.port = port;
 //		this.suspend = suspend;
@@ -42,7 +46,8 @@ public class NetworkDebugger implements Debugger {
 					server.close();
 					debuggee = new ADWPDebuggee(socket.getInputStream(), socket.getOutputStream());
 				} catch(IOException ioe) {
-					ioe.printStackTrace();
+	 				logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
+//					ioe.printStackTrace();
 				}
 			}
 		};
@@ -97,7 +102,8 @@ public class NetworkDebugger implements Debugger {
 			debuggee.sendMessage(ADWPDebuggee.MSG_TERMINATED, 0, Collections.EMPTY_LIST);
 			socket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 	}
 
@@ -134,7 +140,8 @@ public class NetworkDebugger implements Debugger {
 
 			Command cmd = (Command)commands.get(new Integer(acmd.getCode()));
 			if(cmd == null) {
-				System.out.println("Warning, unsupported command: " + acmd.getCode());
+				logger.warning("unsupported command: " + acmd.getCode());
+//				System.out.println("Warning, unsupported command: " + acmd.getCode());
 			} else {
 				resume = cmd.doIt(acmd, frame);
 			}
@@ -143,15 +150,22 @@ public class NetworkDebugger implements Debugger {
 	}
 
 	public void error(StackFrame frame, String msg, Exception e) {
-		System.out.println("********************************* ERROR *********************************");
-new Exception().printStackTrace();
+		logger.severe("********************************* ERROR *********************************");
+//		System.out.println("********************************* ERROR *********************************");
+		logger.log(Level.SEVERE, "", new Exception());
+//		new Exception().printStackTrace();
 		dialog(frame, "ERROR: " + msg);
-		if(msg != null)
-			System.out.println("Message: " + msg);
-		if(e != null)
-			e.printStackTrace(System.out);
+		if(msg != null) {
+			logger.severe("Message: " + msg);
+//			System.out.println("Message: " + msg);
+		}
+		if(e != null) {
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace(System.out);
+		}
 		frame.getExecEnv().printStackTrace();
-		System.out.println("*************************************************************************");
+		logger.severe("*************************************************************************");
+//		System.out.println("*************************************************************************");
 	}
 
 	private Map commands = new HashMap();
@@ -241,7 +255,8 @@ new Exception().printStackTrace();
 					StackFrame qframe = ASMStackFrame.rootFrame(env, op, arguments);
 					asmRet = op.exec(qframe);
 				} catch(Exception e) {
-					e.printStackTrace(System.out);
+					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//					e.printStackTrace(System.out);
 				}
 				Value ret = LocalObjectReference.asm2value(asmRet, thisDebugger);
 

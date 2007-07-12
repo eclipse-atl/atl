@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBoolean;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
@@ -33,6 +35,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMTupleType;
  */
 public class ASMExecEnv extends ExecEnv {
 
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	public ASMExecEnv(ASMModule asm, Debugger debugger) {
 		this(asm, debugger, true);
@@ -59,7 +62,8 @@ public class ASMExecEnv extends ExecEnv {
 			String signature = op.getContextSignature();
 			if(signature.matches("^(Q|G|C|E|O|N).*$")) {
 				// Sequence, Bag, Collection, Set, OrderedSet, Native type
-				System.out.println("Unsupported registration: " + signature);
+				logger.warning("Unsupported registration: " + signature);
+//				System.out.println("Unsupported registration: " + signature);
 //			} else if(signature.startsWith("T")) {
 //				System.out.println("Unsupported registration: " + signature);
 			} else {
@@ -69,7 +73,8 @@ public class ASMExecEnv extends ExecEnv {
 					registerOperation(type, op);
 					op.setContextType(type);
 				} catch(SignatureParsingException spe) {
-					spe.printStackTrace(System.out);
+					logger.log(Level.SEVERE, spe.getLocalizedMessage(), spe);
+//					spe.printStackTrace(System.out);
 				}
 			}
 		}
@@ -139,7 +144,8 @@ public class ASMExecEnv extends ExecEnv {
 						throw new SignatureParsingException("ERROR: could not find model element " + name + " from " + mname);
 					ret = ame;
 				} else {
-					System.out.println("WARNING: could not find model " + mname + ".");
+					logger.warning("could not find model " + mname + ".");
+//					System.out.println("WARNING: could not find model " + mname + ".");
 				}
 				break;
 				
@@ -239,9 +245,11 @@ public class ASMExecEnv extends ExecEnv {
 		if(map != null)
 			ret = (Operation)map.get(name);
 
-		if(debug) System.out.println(this + "@" + this.hashCode() + ".getOperation(" + name + ")");
+		if(debug) logger.info(this + "@" + this.hashCode() + ".getOperation(" + name + ")");
+//		if(debug) System.out.println(this + "@" + this.hashCode() + ".getOperation(" + name + ")");
 		if(ret == null) {
-			if(debug) System.out.println("looking in super of this for operation " + name);
+			if(debug) logger.info("looking in super of this for operation " + name);
+//			if(debug) System.out.println("looking in super of this for operation " + name);
 			for(Iterator i = type.getSupertypes().iterator() ; i.hasNext() && (ret == null) ; ) {
 				ASMOclType st = (ASMOclType)i.next();
 				ret = getOperation(st, name);

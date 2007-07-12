@@ -6,7 +6,7 @@ package org.eclipse.m2m.atl.engine.vm;
 public class ASMInstruction {
 
 	public ASMInstruction(String mnemonic) {
-		this.mnemonic = mnemonic;
+		this.mnemonic = mnemonic.intern();
 	}
 
 	public String getMnemonic() {

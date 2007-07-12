@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -18,6 +20,8 @@ import javax.xml.parsers.SAXParser;
  * @author Frédéric Jouault
  */
 public class ASMXMLReader extends DefaultHandler {
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private Object asmNameIndex;
 	private ASMEmitter asme;
@@ -33,7 +37,8 @@ public class ASMXMLReader extends DefaultHandler {
 			SAXParser saxParser = factory.newSAXParser();
 			saxParser.parse(in, this);
 		} catch (Throwable err) {
-		       	err.printStackTrace(System.out);
+			logger.log(Level.SEVERE, err.getLocalizedMessage(), err);
+//	       	err.printStackTrace(System.out);
 		}
 		if(errors > 0) throw new RuntimeException("error reading .asm file");
 		return asme.getASM();
@@ -105,12 +110,17 @@ public class ASMXMLReader extends DefaultHandler {
 	}
 
 	public void error(SAXParseException e) {
-		System.out.println("Error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
-	       	errors++;
+		logger.severe("Error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
+//		System.out.println("Error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
+       	errors++;
 	}
 
-	public void fatalError(SAXParseException e) {
-		throw new RuntimeException("fatal error reading .asm file: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
+	public void fatalError(SAXParseException e) throws SAXParseException {
+		throw new ASMXMLReaderException(
+				"Fatal error reading .asm file: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getLocalizedMessage(),
+				e.getPublicId(), e.getSystemId(), e.getLineNumber(), e.getColumnNumber(), e);
+//		System.out.println("Fatal error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
+//		System.exit(1);
 	}
 
 	private int errors;

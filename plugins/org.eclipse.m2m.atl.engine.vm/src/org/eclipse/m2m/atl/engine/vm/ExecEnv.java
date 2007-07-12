@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
@@ -12,6 +14,8 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
  * @author Frédéric Jouault
  */
 public class ExecEnv {
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	public ExecEnv(Debugger debugger) {
 		this.debugger = debugger;
@@ -55,7 +59,11 @@ public class ExecEnv {
 
 	public void printStackTrace() {
 		for(Iterator i = frames.iterator() ; i.hasNext() ; ) {
-			System.out.println(i.next());
+			StringTokenizer lines = new StringTokenizer(i.next().toString(), "\n");
+			while (lines.hasMoreTokens()) {
+				logger.severe(lines.nextToken());
+			}
+//			System.out.println(i.next());
 		}
 	}
 

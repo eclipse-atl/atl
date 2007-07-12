@@ -5,8 +5,10 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
@@ -28,6 +30,8 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
  */
 public class SOTSExpression2 {
 
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	private static final boolean debug = false;
 
 	public SOTSExpression2(String exp) {
@@ -36,9 +40,15 @@ public class SOTSExpression2 {
 	}
 
 	public ASMOclAny exec(StackFrame frame, ASMTuple args) throws IOException {
-if(debug) System.out.println("Trying to execute " + exp);
+
+if(debug) logger.info("Trying to execute " + exp);
+//if(debug) System.out.println("Trying to execute " + exp);
+
 		ASMOclAny ret = exp(frame, args);
-if(debug) System.out.println("\treturn value = " + ret);
+
+if(debug) logger.info("\treturn value = " + ret);
+//if(debug) System.out.println("\treturn value = " + ret);
+
 		return ret;
 	}
 
@@ -71,7 +81,8 @@ if(debug) System.out.println("\treturn value = " + ret);
 					ret = ASMString.operatorPlus(frame, (ASMString)ret, new ASMString(right.toString()));
 				}
 			} else {
-				System.out.println("ERROR: could not add type " + ASMOclAny.oclType(frame, ret) + ".");
+				logger.severe("ERROR: could not add type " + ASMOclAny.oclType(frame, ret) + ".");
+//				System.out.println("ERROR: could not add type " + ASMOclAny.oclType(frame, ret) + ".");
 			}
 		} else {
 			unread(t);
@@ -89,8 +100,10 @@ if(debug) System.out.println("\treturn value = " + ret);
 
 		boolean done = false;
 		do {
-if(debug)
-	System.out.println("\tcontext = " + ret + ((ret != null) ? " : " + ASMOclAny.oclType(frame, ret) : ""));
+
+if(debug) logger.info("\tcontext = " + ret + ((ret != null) ? " : " + ASMOclAny.oclType(frame, ret) : ""));
+//if(debug) System.out.println("\tcontext = " + ret + ((ret != null) ? " : " + ASMOclAny.oclType(frame, ret) : ""));
+
 			t = next();
 			ASMModelElement ame = null;
 			ASMSequence col = null;
@@ -207,7 +220,9 @@ if(debug)
 			}
 		} while(!done);
 
-if(debug) System.out.println("\tpartial return value = " + ret);
+if(debug) logger.info("\tpartial return value = " + ret);
+//if(debug) System.out.println("\tpartial return value = " + ret);
+
 		return ret;
 	}
 
@@ -238,9 +253,10 @@ if(debug) System.out.println("\tpartial return value = " + ret);
 		return ret;
 	}
 
-	private void error(Token t) {
-		System.out.println("ERROR: unexpected " + t);
-new Exception().printStackTrace();
+	private void error(Token t) throws IOException {
+		throw new IOException("ERROR: unexpected " + t);
+//		System.out.println("ERROR: unexpected " + t);
+//		new Exception().printStackTrace();
 	}
 
 	private Token match(int type) throws IOException {
@@ -361,7 +377,8 @@ new Exception().printStackTrace();
 				ret = next();	// ignore '$'
 				break;
 			default:
-				System.out.println("ERROR: unexpected char \'" + (char)c + "\'.");
+				logger.severe("ERROR: unexpected char \'" + (char)c + "\'.");
+//				System.out.println("ERROR: unexpected char \'" + (char)c + "\'.");
 				ret = next();	// trying to recover
 				break;
 		}

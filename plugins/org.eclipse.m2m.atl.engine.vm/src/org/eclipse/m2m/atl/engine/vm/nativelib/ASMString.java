@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.logging.Level;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -267,7 +268,8 @@ public class ASMString extends ASMOclAny {
 	}
 
 	public static void println(StackFrame frame, ASMString self) {
-		System.out.println(self.s);
+		logger.info(self.s);
+//		System.out.println(self.s);
 	}
           // End File output
 
@@ -296,18 +298,23 @@ public class ASMString extends ASMOclAny {
 		try {
 			ret = new SOTSExpression2(self.s).exec(frame, args);
 		} catch(Exception e) {
-			e.printStackTrace(System.out);
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace(System.out);
 		}
 		return ret;
 	}
 
 	public static ASMOclAny evalSOTSBrackets(StackFrame frame, ASMString self, ASMTuple args) {	// TODO: en asm ou ocl
+
 boolean debug = false;
+
 		StringBuffer ret = new StringBuffer();
 		Reader in = new StringReader(self.s);
 		int c;
 
-if(debug) System.out.println("evalBrackets(\"" + self.s + "\")");
+if(debug) logger.info("evalBrackets(\"" + self.s + "\")");
+//if(debug) System.out.println("evalBrackets(\"" + self.s + "\")");
+
 		try {
 			boolean done = false;
 			do {
@@ -321,9 +328,15 @@ if(debug) System.out.println("evalBrackets(\"" + self.s + "\")");
 						while((c = in.read()) != '}') {
 							exp.append((char)c);
 						}
-if(debug) System.out.println("\tEvaluating : " + exp);
+
+if(debug) logger.info("\tEvaluating : " + exp);
+//if(debug) System.out.println("\tEvaluating : " + exp);
+
 						ASMOclAny result = new SOTSExpression2(exp.toString()).exec(frame, args);
-if(debug) System.out.println("\t\t=>" + result);
+
+if(debug) logger.info("\t\t=>" + result);
+//if(debug) System.out.println("\t\t=>" + result);
+
 						if(result instanceof ASMCollection) {
 							result = (ASMOclAny)((ASMCollection)result).iterator().next();
 						}
@@ -339,9 +352,12 @@ if(debug) System.out.println("\t\t=>" + result);
 				}
 			} while(!done);
 		} catch(Exception e) {
-			e.printStackTrace(System.out);
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace(System.out);
 		}
-if(debug) System.out.println("result = \"" + ret + "\"");
+
+if(debug) logger.info("result = \"" + ret + "\"");
+//if(debug) System.out.println("result = \"" + ret + "\"");
 
 		return new ASMString(ret.toString());
 	}

@@ -9,11 +9,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * @author Frédéric Jouault
  */
 public class ADWPDebugger extends ADWP {
+
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	public ADWPDebugger(InputStream in, OutputStream out) {
 		super(in, out);
@@ -32,10 +38,13 @@ public class ADWPDebugger extends ADWP {
 				writeValue((Value)i.next());
 			}
 			out.flush();
-			if((cmd == CMD_SET_BP) || (cmd == CMD_UNSET_BP))
-				System.out.println("sent : " + cmd + " - " + args);
+			if((cmd == CMD_SET_BP) || (cmd == CMD_UNSET_BP)) {
+				logger.info("sent : " + cmd + " - " + args);
+//				System.out.println("sent : " + cmd + " - " + args);
+			}
 		} catch(IOException ioe) {
-			ioe.printStackTrace(System.out);
+			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
+//			ioe.printStackTrace(System.out);
 		}
 	}
 
@@ -57,7 +66,8 @@ public class ADWPDebugger extends ADWP {
 						list.wait();
 					} while(list.size() == 0);
 				} catch(InterruptedException ie) {
-					ie.printStackTrace(System.out);
+					logger.log(Level.SEVERE, ie.getLocalizedMessage(), ie);
+//					ie.printStackTrace(System.out);
 				}
 			}
 		}
