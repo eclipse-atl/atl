@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
@@ -23,6 +25,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
@@ -34,7 +37,9 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
  */
 public class ASMEMFModel extends ASMModel {
 
-    // true if extent was explicitly loaded and requires explicit unloading
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
+	// true if extent was explicitly loaded and requires explicit unloading
 	protected boolean unload = false;
 	// nsURIs that were explicitly registered and need unregistering
 	protected Set unregister = new HashSet();
@@ -133,7 +138,8 @@ public class ASMEMFModel extends ASMModel {
 	
 	private void register(Map classifiers, String name, EObject classifier) {
 		if(classifiers.containsKey(name)) {
-			System.out.println("Warning: metamodel contains several classifiers with same name: " + name);
+			logger.warning("metamodel contains several classifiers with same name: " + name);
+//			System.out.println("Warning: metamodel contains several classifiers with same name: " + name);
 		}
 		classifiers.put(name, classifier);
 	}
@@ -244,6 +250,7 @@ public class ASMEMFModel extends ASMModel {
      * @param ml
      * @return
      * @throws Exception
+     * @deprecated
      */
 	public static ASMEMFModel newASMEMFModel(String name, ASMEMFModel metamodel, ModelLoader ml) throws Exception {
         return newASMEMFModel(name, name, metamodel, ml);
@@ -309,7 +316,8 @@ public class ASMEMFModel extends ASMModel {
 			ret.setIsTarget(false);
 			ret.unload = true;
 		} catch(Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		adaptMetamodel(ret, metamodel);
 
@@ -326,7 +334,8 @@ public class ASMEMFModel extends ASMModel {
             ret.addAllReferencedExtents(ret.getExtent());
             ret.unload = true;
 		} catch(Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		
 		adaptMetamodel(ret, metamodel);
@@ -469,53 +478,60 @@ public class ASMEMFModel extends ASMModel {
      * @param ignore Set of classes to ignore for searching.
      */
     private void addReferencedExtentsFor(EClass eClass, Set ignore) {
-        if (ignore.contains(eClass)) {
-            return;
-        }
-        ignore.add(eClass);
-        Iterator eRefs = eClass.getEReferences().iterator();
-        while (eRefs.hasNext()) {
-            EReference eRef = (EReference) eRefs.next();
-            if (eRef.isContainment()) {
-                EClassifier eType = eRef.getEType();
-                if (eType.eResource() != null) {
-                    referencedExtents.add(eType.eResource());
-                } else {
-                    System.err.println("WARNING: Resource for " + 
-                            eType.toString() + " is null; cannot be referenced");
-                }
-                if (eType instanceof EClass) {
-                    addReferencedExtentsFor((EClass) eType, ignore);
-                }
-            }
-        }
-        Iterator eAtts = eClass.getEAttributes().iterator();
-        while (eAtts.hasNext()) {
-            EAttribute eAtt = (EAttribute) eAtts.next();
-            EClassifier eType = eAtt.getEType();
-            if (eType.eResource() != null) {
-                referencedExtents.add(eType.eResource());
-            } else {
-                System.err.println("WARNING: Resource for " + 
-                        eType.toString() + " is null; cannot be referenced");
-            }
-        }
-        Iterator eSupers = eClass.getESuperTypes().iterator();
-        while (eSupers.hasNext()) {
-            EClass eSuper = (EClass) eSupers.next();
-            if (eSuper.eResource() != null) {
-                referencedExtents.add(eSuper.eResource());
-                addReferencedExtentsFor(eSuper, ignore);
-            } else {
-                System.err.println("WARNING: Resource for " + 
-                       eSuper.toString() + " is null; cannot be referenced");
-            }
-        }
-    }
+		if (ignore.contains(eClass)) {
+			return;
+		}
+		ignore.add(eClass);
+		Iterator eRefs = eClass.getEReferences().iterator();
+		while (eRefs.hasNext()) {
+			EReference eRef = (EReference) eRefs.next();
+			if (eRef.isContainment()) {
+				EClassifier eType = eRef.getEType();
+				if (eType.eResource() != null) {
+					referencedExtents.add(eType.eResource());
+				} else {
+					logger.warning("Resource for " + eType.toString()
+							+ " is null; cannot be referenced");
+//					System.err.println("WARNING: Resource for "
+//							+ eType.toString()
+//							+ " is null; cannot be referenced");
+				}
+				if (eType instanceof EClass) {
+					addReferencedExtentsFor((EClass) eType, ignore);
+				}
+			}
+		}
+		Iterator eAtts = eClass.getEAttributes().iterator();
+		while (eAtts.hasNext()) {
+			EAttribute eAtt = (EAttribute) eAtts.next();
+			EClassifier eType = eAtt.getEType();
+			if (eType.eResource() != null) {
+				referencedExtents.add(eType.eResource());
+			} else {
+				logger.warning("Resource for " + eType.toString()
+						+ " is null; cannot be referenced");
+//				System.err.println("WARNING: Resource for " + eType.toString()
+//						+ " is null; cannot be referenced");
+			}
+		}
+		Iterator eSupers = eClass.getESuperTypes().iterator();
+		while (eSupers.hasNext()) {
+			EClass eSuper = (EClass) eSupers.next();
+			if (eSuper.eResource() != null) {
+				referencedExtents.add(eSuper.eResource());
+				addReferencedExtentsFor(eSuper, ignore);
+			} else {
+				logger.warning("Resource for " + eSuper.toString()
+						+ " is null; cannot be referenced");
+//				System.err.println("WARNING: Resource for " + eSuper.toString()
+//						+ " is null; cannot be referenced");
+			}
+		}
+	}
     
     /**
-     * @return The set of referenced Resources.
-     */
+	 * @return The set of referenced Resources.
+	 */
     public Set getReferencedExtents() {
         return referencedExtents;
     }

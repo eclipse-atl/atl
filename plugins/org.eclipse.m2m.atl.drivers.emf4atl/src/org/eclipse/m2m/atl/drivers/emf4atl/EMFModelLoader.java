@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -36,7 +37,8 @@ public class EMFModelLoader extends ModelLoader {
 		try {
 			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in, this);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		
 		return ret;
@@ -48,19 +50,37 @@ public class EMFModelLoader extends ModelLoader {
 		try {
 			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, href, this);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		
 		return ret;
 	}
-	
+
+	/**
+	 * @deprecated
+	 */
 	public ASMModel newModel(String name, ASMModel metamodel) {
 		ASMModel ret = null;
 		
 		try {
 			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel, this);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+
+	public ASMModel newModel(String name, String uri, ASMModel metamodel) {
+		ASMModel ret = null;
+		
+		try {
+			ret = ASMEMFModel.newASMEMFModel(name, uri, (ASMEMFModel)metamodel, this);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		
 		return ret;
@@ -108,7 +128,8 @@ public class EMFModelLoader extends ModelLoader {
 			options.put(XMIResource.OPTION_ENCODING, encoding);
 			r.save(options);
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+//			e1.printStackTrace();
 		}
 	}
 }
