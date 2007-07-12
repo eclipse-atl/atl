@@ -4,18 +4,24 @@
  */
 package org.eclipse.m2m.atl.adt.startup;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * @author idrissi
  */
 public class ResourceDeltaVisitor implements IResourceDeltaVisitor {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	/**
 	 * <p>Finds the asm file associated to an atl file</p>
 	 * <p> A file is considered to be the asm file associated to an atl file if it has the same name but the extesnsion "asm"
@@ -46,7 +52,8 @@ public class ResourceDeltaVisitor implements IResourceDeltaVisitor {
 					try {
 						asm.delete(true, null);
 					} catch (CoreException e) {
-						e.printStackTrace();
+						logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//						e.printStackTrace();
 					}
 				}
 			}

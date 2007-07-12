@@ -67,7 +67,7 @@ public class AtlFileScreen extends WizardPage {
 		setTitle("ATL File Wizard");
 		setDescription("");
 		this.selection = selection;
-		System.out.println("selection: " + this.selection);
+//		System.out.println("selection: " + this.selection);
 		this.setPageComplete(false);
 	}
 

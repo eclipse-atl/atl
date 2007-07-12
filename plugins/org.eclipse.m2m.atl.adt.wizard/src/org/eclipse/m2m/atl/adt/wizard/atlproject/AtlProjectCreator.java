@@ -2,7 +2,6 @@ package org.eclipse.m2m.atl.adt.wizard.atlproject;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -70,7 +69,8 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 			if (!modelProject.isOpen())
 				modelProject.open(null);
 			
-			modelProject.setLocal(true, IResource.DEPTH_ZERO, null);
+			//What's this good for?!
+//			modelProject.setLocal(true, IResource.DEPTH_ZERO, null);
 
 			addNature(modelProject, AtlNature.ATL_NATURE_ID);
 			BasicNewProjectResourceWizard.updatePerspective(configElement);

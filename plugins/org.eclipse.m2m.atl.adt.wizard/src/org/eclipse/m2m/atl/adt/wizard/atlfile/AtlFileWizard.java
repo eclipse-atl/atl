@@ -3,6 +3,8 @@ package org.eclipse.m2m.atl.adt.wizard.atlfile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -14,6 +16,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
@@ -21,6 +24,8 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExtension {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	/** The id of the wizard extension defined in the plugin.xml file of this plugin*/
 //	private static final String NEW_PROJECT_WIZARD_EXTENSION_ID = "org.atl.eclipse.adt.projectCreationWizard";
 	
@@ -113,10 +118,12 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 			stream.close();	
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			e.printStackTrace();
 		}
 		catch (CoreException e1) {
-			e1.printStackTrace();
+			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+//			e1.printStackTrace();
 		}
 	}
 
