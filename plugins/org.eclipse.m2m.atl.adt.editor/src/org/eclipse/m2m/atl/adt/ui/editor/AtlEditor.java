@@ -38,8 +38,6 @@ import org.eclipse.jface.text.link.LinkedPosition;
 import org.eclipse.jface.text.link.LinkedPositionGroup;
 import org.eclipse.jface.text.link.LinkedModeUI.ExitFlags;
 import org.eclipse.jface.text.link.LinkedModeUI.IExitPolicy;
-import org.eclipse.jface.text.source.AnnotationRulerColumn;
-import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
@@ -78,6 +76,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.IEditorStatusLine;
 import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
@@ -653,7 +652,7 @@ public class AtlEditor extends TextEditor {
 	 */
 	public AtlEditor() {
 		super();
-		setPreferenceStore(AtlUIPlugin.getDefault().getPreferenceStore());
+//		setPreferenceStore(AtlUIPlugin.getDefault().getPreferenceStore());
 		tickErrorUpdater = new AtlEditorTickErrorUpdater(this);			
 	}
 	
@@ -720,13 +719,13 @@ public class AtlEditor extends TextEditor {
 	/*(non-Javadoc)
 	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createCompositeRuler()
 	 */
-	protected CompositeRuler createCompositeRuler() {
+	//protected CompositeRuler createCompositeRuler() {
 		/* TODO create this in editor>hover preference page
 		 if(! getPreferenceStore().getBoolean(AtlPreferenceConstants.EDITOR_ANNOTATION_ROLL_OVER))
 		 return super.createCompositeRuler();
 		 */
-		CompositeRuler ruler = new CompositeRuler();
-		AnnotationRulerColumn column = new AnnotationRulerColumn(VERTICAL_RULER_WIDTH, getAnnotationAccess());
+		//CompositeRuler ruler = new CompositeRuler();
+		//AnnotationRulerColumn column = new AnnotationRulerColumn(VERTICAL_RULER_WIDTH, getAnnotationAccess());
 		/* TODO create annotation ruler column
 		 column.setHover(new JavaExpandHover(ruler, getAnnotationAccess(), new IDoubleClickListener() {
 		 
@@ -751,15 +750,13 @@ public class AtlEditor extends TextEditor {
 		   
 		   }));
 		   */
-		ruler.addDecorator(0, column);
+		//ruler.addDecorator(0, column);
 		
-		if(isLineNumberRulerVisible())
-			ruler.addDecorator(1, createLineNumberRulerColumn());
-		else if(isPrefQuickDiffAlwaysOn())
-			ruler.addDecorator(1, createChangeRulerColumn());
+		//if(isLineNumberRulerVisible())
+		//	ruler.addDecorator(1, createLineNumberRulerColumn());
 		
-		return ruler;
-	}
+		//return ruler;
+	//}
 	
 	protected AtlContentOutlinePage createOutlinePage() {
 		AtlContentOutlinePage page= new AtlContentOutlinePage(this, getEditorInput(), getDocumentProvider());
