@@ -1,0 +1,275 @@
+-- @name		ACG
+-- @version		1.0
+-- @domains		MDE/Model Transformation, ATL VM
+-- @authors		Frédéric Jouault
+-- @date		2007/07/25
+-- @description	ACG (ATL Code Generator) is a code generator language that targets the ATL VM. The ATL 2006 compiler is written in ACG.
+package ACG {
+
+	abstract class LocatedElement {
+		attribute location : String;
+		attribute commentsBefore[*] ordered : String;
+		attribute commentsAfter[*] ordered : String;
+	}
+
+	class ACG extends LocatedElement {
+		attribute metamodel : String;
+		attribute startsWith : String;
+		reference elements[*] ordered container : ACGElement oppositeOf acg;
+	}
+
+	abstract class ACGElement extends LocatedElement {
+		reference acg : ACG oppositeOf elements;
+	}
+
+	class Function extends ACGElement {
+		attribute context : String;
+		attribute name : String;
+		reference parameters[*] ordered container : Parameter;
+		reference body container : Expression;
+	}
+
+	class Attribute extends ACGElement {
+		attribute context : String;
+		attribute name : String;
+		reference body container : Expression;
+	}
+
+	class Parameter extends VariableDecl {}
+
+-- @begin Nodes
+	abstract class Node extends ACGElement, StatementBlock {
+		attribute element : String;
+		attribute mode[0-1] : String;
+		reference guard[0-1] container : Expression;
+	}
+
+	class ASMNode extends Node {
+		reference name container : Expression;
+	}
+
+	class CodeNode extends Node {
+	}
+
+	class SimpleNode extends Node {}
+-- @end Nodes
+
+	abstract class StatementBlock extends LocatedElement {
+		reference statements[*] ordered container : Statement;
+	}
+
+-- @begin Statements
+	abstract class Statement extends LocatedElement {
+	}
+
+-- @begin CompoundStats
+	abstract class CompoundStat extends Statement, StatementBlock {}
+
+	class ForEachStat extends CompoundStat {
+		reference iterator container : VariableDecl;
+		reference collection container : Expression;
+	}
+
+	class OnceStat extends CompoundStat {}
+
+	class VariableStat extends CompoundStat {
+		reference definition container : Expression;
+		reference name container : Expression;
+	}
+
+	class OperationStat extends CompoundStat {
+		reference context container : Expression;
+		reference name container : Expression;
+	}
+
+	class ConditionalStat extends CompoundStat {
+		reference condition container : Expression;
+		reference elseStatements[*] ordered container : Statement;
+	}
+
+	class LetStat extends CompoundStat {
+		reference variable container : VariableDecl;
+		reference value container : Expression;
+	}
+
+	class AnalyzeStat extends CompoundStat {
+		reference target container : Expression;
+		attribute mode[0-1] : String;
+	}
+-- @end CompoundStats
+
+	class ReportStat extends Statement {
+		attribute severity : Severity;
+		reference message container : Expression;
+	}
+	
+	enumeration Severity {
+		literal critic;
+		literal error;
+		literal warning;
+	}
+
+	class FieldStat extends Statement {
+		reference name container : Expression;
+		reference type container : Expression;
+	}
+
+	class ParamStat extends Statement {
+		reference name container : Expression;
+		reference type container : Expression;
+	}
+
+-- @begin EmitStats
+	abstract class EmitStat extends Statement {}
+
+	class LabelStat extends EmitStat {
+		attribute name : String;
+		reference id[0-1] container : Expression;
+	}
+
+	class NewStat extends EmitStat {}
+
+	class DupStat extends EmitStat {}
+
+	class DupX1Stat extends EmitStat {}
+
+	class PopStat extends EmitStat {}
+
+	class SwapStat extends EmitStat {}
+
+	class IterateStat extends EmitStat {}
+
+	class EndIterateStat extends EmitStat {}
+
+	class GetAsmStat extends EmitStat {}
+
+	class FindMEStat extends EmitStat {}
+
+	class PushTStat extends EmitStat {}
+
+	class PushFStat extends EmitStat {}
+
+-- @begin EmitWithOperandStats
+	abstract class EmitWithOperandStat extends EmitStat {
+		reference operand container : Expression;
+	}
+
+	class PushStat extends EmitWithOperandStat {}
+
+	class PushIStat extends EmitWithOperandStat {}
+
+	class PushDStat extends EmitWithOperandStat {}
+
+	class LoadStat extends EmitWithOperandStat {}
+
+	class StoreStat extends EmitWithOperandStat {}
+
+	class CallStat extends EmitWithOperandStat {}
+
+	class SuperCallStat extends EmitWithOperandStat {}
+
+	class GetStat extends EmitWithOperandStat {}
+
+	class SetStat extends EmitWithOperandStat {}
+-- @end EmitWithOperandStats
+
+-- @begin EmitWithLabelRefStats
+	abstract class EmitWithLabelRefStat extends EmitStat {
+		reference label : LabelStat;
+	}
+
+	class IfStat extends EmitWithLabelRefStat {}
+
+	class GotoStat extends EmitWithLabelRefStat {}
+-- @end EmitWithLabelRefStats
+-- @end EmitStats
+-- @end Statements
+
+	class VariableDecl extends LocatedElement {
+		attribute name : String;
+	}
+
+-- @begin Expressions
+	abstract class Expression extends LocatedElement {
+	}
+
+	class VariableExp extends Expression {
+		reference variable : VariableDecl;
+	}
+
+	class SelfExp extends Expression {}
+
+	class LastExp extends Expression {}
+
+	class IfExp extends Expression {
+		reference condition container : Expression;
+		reference thenExp container : Expression;
+		reference elseExp container : Expression;
+	}
+
+	class IsAExp extends Expression {
+		reference source container : Expression;
+		attribute type : String;
+	}
+
+	class LetExp extends Expression {
+		reference variable container : VariableDecl;
+		reference value container : Expression;
+		reference in container : Expression;
+	}
+
+-- @begin PropertyCallExps
+	abstract class PropertyCallExp extends Expression {
+		reference source container : Expression;
+		attribute name : String;
+	}
+
+	class NavigationExp extends PropertyCallExp {}
+
+	class IteratorExp extends PropertyCallExp {
+		reference iterator container : VariableDecl;
+		reference body container : Expression;
+	}
+
+	class OperationCallExp extends PropertyCallExp {
+		reference arguments[*] ordered container : Expression;
+	}
+
+	class OperatorCallExp extends OperationCallExp {}
+-- @end PropertyCallExps
+
+-- @begin LiteralExps
+	abstract class LiteralExp extends Expression {}
+
+	class OclUndefinedExp extends LiteralExp {}
+
+-- @begin CollectionExps
+	abstract class CollectionExp extends LiteralExp {
+		reference elements[*] ordered container : Expression;
+	}
+
+	class SequenceExp extends CollectionExp {}
+-- @begin CollectionExps
+
+-- @begin Primitive LiteralExps
+	class BooleanExp extends LiteralExp {
+		attribute value : Boolean;
+	}
+
+	class IntegerExp extends LiteralExp {
+		attribute value : Integer;
+	}
+
+	class StringExp extends LiteralExp {
+		attribute value : String;
+	}
+-- @end Primitive LiteralExps
+-- @end LiteralExps
+-- @end Expressions
+}
+
+package PrimitiveTypes {
+	datatype Boolean;
+	datatype Integer;
+	datatype String;
+}
