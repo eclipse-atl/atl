@@ -1,6 +1,6 @@
 -- @authors		Frédéric Jouault
 -- @date		2007/07/25
--- @description	This ACG code generator generates .asm file that run on the ATL VM from ACG models.
+-- @description	This ACG code generator generates .asm files that run on the ATL VM from ACG models.
 acg ACG startsWith ACG {
 
 	function Node::suffix() =
