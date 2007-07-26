@@ -1,0 +1,648 @@
+-- @authors		Frédéric Jouault
+-- @date		2007/07/26
+-- @description	This TCS model defines the syntax of the ATL language.
+
+-- REMARKS:
+--	- there is a problem which requires to add the syntactic predicate:
+--		(NAME LPAREN)=>
+--	before:
+--		ret=operationCallExp
+--	when compiling with ANTLRv3
+--	- k = 0 means:
+--		backtrack = true;
+--	for ANTLRv3
+--	- disambiguation information is typically used with ANTLRv2
+syntax ATL(k = 0) {
+
+	primitiveTemplate identifier for String default using NAME:
+		value = "%token%";
+
+	primitiveTemplate identifierOrKeyword for String using NAME orKeyword:
+		value = "%token%";
+
+	primitiveTemplate stringSymbol for String using STRING:
+		value = "%token%",
+		serializer="'\'' + %value%.toCString() + '\''";
+
+	primitiveTemplate integerSymbol for Integer default using INT:
+		value = "Integer.valueOf(%token%)";
+
+	primitiveTemplate floatSymbol for Double default using FLOAT:
+		value = "Double.valueOf(%token%)";
+
+-- @begins Units
+	template Unit main abstract;
+
+	template Module context
+		:	"module" name ";" <newline>
+			"create" outModels{separator = ","} (isRefining ? "refining" : "from") inModels{separator = ","} ";"
+			[
+				libraries
+				elements
+			] {nbNL = 2, indentIncr = 0}
+		;
+
+	template Library context
+		:	"library" name ";"
+			[
+				libraries
+				helpers
+			] {nbNL = 2, indentIncr = 0}
+		;
+	
+	template Query context
+		:	"query" name "=" body ";"
+			[
+				libraries
+				helpers
+			] {nbNL = 2, indentIncr = 0}
+		;
+-- @end Units
+
+	template LibraryRef
+		:	"uses" name ";"
+		;
+
+	template ModuleElement abstract;
+
+-- @begin Helpers
+	template Helper
+		:	"helper" definition ";"
+		;
+
+	template OclFeatureDefinition
+		:	(isDefined(context_) ? context_) "def" <no_space> ":" feature
+		;
+
+	template OclContextDefinition
+		:	"context" context_
+		;
+
+	template OclFeature abstract;
+
+	template Operation context
+		:	name "(" parameters{separator = ","} ")" ":" returnType "="
+			[ body ] {endNL = false}
+		;
+
+	template Parameter addToContext
+		:	varName ":" type
+		;
+
+	template Attribute
+		:	name ":" type "="
+			[ initExpression ] {endNL = false}
+		;
+-- @end Helpers
+
+-- @begin Rules
+	template Rule abstract;
+
+	template MatchedRule abstract context addToContext
+		:	(isDefault ? : "nodefault") (isAbstract ? "abstract") (isRefining ? "refining") "rule" name (isDefined(superRule) ? "extends" superRule{refersTo = name, importContext}) "{" [
+				inPattern
+				(isDefined(variables) ?
+					"using" "{" [
+						variables
+					] "}"
+				)
+				(isDefined(outPattern) ? outPattern)
+				(isDefined(actionBlock) ? actionBlock)
+			] "}"
+		;
+
+	template LazyMatchedRule context addToContext
+		:	(isUnique ? "unique") "lazy" (isAbstract ? "abstract") (isRefining ? "refining") "rule" name (isDefined(superRule) ? "extends" superRule{refersTo = name, importContext}) "{" [
+				inPattern
+				(isDefined(variables) ?
+					"using" "{" [
+						variables
+					] "}"
+				)
+				(isDefined(outPattern) ? outPattern)
+				(isDefined(actionBlock) ? actionBlock)
+			] "}"
+		;
+
+	template RuleVariableDeclaration addToContext
+		:	varName ":" type "=" initExpression ";"
+		;
+
+	template CalledRule (disambiguate = "(\"entrypoint\" | \"endpoint\")? \"rule\" NAME LPAREN") context addToContext
+		:	(isEntrypoint ? "entrypoint")
+			(isEndpoint ? "endpoint")
+			"rule" name "(" parameters{separator = ","} ")" "{" [
+				(isDefined(variables) ?
+					"using" "{" [
+						variables
+					] "}"
+				)
+				(isDefined(outPattern) ? outPattern)
+				(isDefined(actionBlock) ? actionBlock)
+			] "}"
+		;
+-- @end Rules
+
+-- @begin InPattern
+	template InPattern
+		:	"from" [
+				elements{separator = ","}
+				(isDefined(filter) ? "(" [ filter ] ")")
+			]
+		;
+
+	template InPatternElement abstract addToContext;
+
+	template SimpleInPatternElement
+		:	varName ":" type
+			(isDefined(models) ? "in" models{separator = ",", refersTo = name, lookIn = #all})
+		;
+-- @end InPattern
+
+-- @begin OutPattern
+	template OutPattern
+		:	"to" [ elements{separator = ","} ] {endNL = false}
+		;
+
+	template OutPatternElement abstract addToContext;
+
+	template SimpleOutPatternElement
+		:	varName ":" type
+			(isDefined(model) ? "in" model{separator = ",", refersTo = name, lookIn = #all})
+			(isDefined(sourceElement) ? "mapsTo" sourceElement{refersTo = varName})
+			(isDefined(bindings) ?
+				<space> "(" [
+					bindings{separator = ","}
+				] ")"
+			)
+		;
+
+	template ForEachOutPatternElement context
+		:	varName ":" "distinct" type "foreach" "(" iterator "in" collection ")"
+			(isDefined(sourceElement) ? "mapsTo" sourceElement{refersTo = varName})
+			(isDefined(bindings) ?
+				<space> "(" [
+					bindings{separator = ","}
+				] ")"
+			)
+		;
+
+	template Binding
+		:	propertyName{as = identifierOrKeyword} "<-" 'value'
+		;
+-- @end OutPattern
+
+	template ActionBlock
+		:	"do" "{" [
+				statements
+			] "}"
+		;
+
+-- @begin Statements
+	template Statement abstract;
+
+	template BindingStat
+		:	'source' "<-" 'value' ";"
+		;
+
+	template ExpressionStat (disambiguate = "oclExpression SEMI")
+		:	expression ";"
+		;
+
+	template IfStat(disambiguate = "\"if\" LPAREN oclExpression RPAREN (LCURLY | statement)")
+		:	"if" "(" condition ")"
+			(one(thenStatements) ?
+					[ thenStatements ]
+				:
+					"{" [
+						thenStatements
+					] "}"
+			)
+			(isDefined(elseStatements) ?
+				"else"
+				(one(elseStatements) ?
+						[ elseStatements ]
+					:
+						"{" [
+							elseStatements
+						] "}"
+				)
+			)
+		;
+
+	template ForStat context
+		:	"for" "(" iterator "in" collection ")"  "{" [
+				statements
+			] "}"
+		;
+-- @end Statements
+
+-- @begin Models
+	template OclModel
+		:	name ":" metamodel{refersTo = name, lookIn = #all, autoCreate = ifmissing}
+		;
+
+	template OclModelElement
+		:	model{refersTo = name, lookIn = #all, autoCreate = ifmissing} "!" name
+		;
+-- @end Models
+
+
+-- @begin OCL
+	template OclExpression abstract operatored;
+
+-- @begin operatored
+	operatorTemplate IteratorExp(operators = opRarrow, source = 'source', disambiguate = "NAME LPAREN NAME (PIPE | ((COMA NAME)+ PIPE))") context
+		:	name "(" iterators{separator = ","} "|" [
+				body
+			] ")"
+		;
+
+	operatorTemplate IterateExp(operators = opRarrow, source = 'source') context
+		:	"iterate" "(" iterators{separator = ","} ";" result "|" [
+				body
+			] ")"
+		;
+
+	operatorTemplate CollectionOperationCallExp(operators = opRarrow, source = 'source')
+			-- operationName cannot be {as = identifierOrKeyword} because of ->iterate
+		:	operationName "(" arguments{separator = ","} ")"
+		;
+
+
+	operatorTemplate OperationCallExp(operators = opPoint, source = 'source', disambiguate = "NAME LPAREN", disambiguateV3 = "NAME LPAREN")
+		:	operationName{as = identifierOrKeyword} "(" arguments{separator = ","} ")"
+		;
+
+	operatorTemplate NavigationOrAttributeCallExp(operators = opPoint, source = 'source')
+		:	name{as = identifierOrKeyword}
+		;
+
+	operatorTemplate OperatorCallExp(operators =
+			opNot opMinus1
+			opStar opSlash opDiv opMod
+			opPlus opMinus2
+			opEq opGt opLt opGe opLe opNe
+			opAnd opOr opXor opImplies
+		, source = 'source', storeOpTo = operationName, storeRightTo = arguments);
+-- @end operatored
+
+	template Iterator addToContext
+		:	varName
+		;
+
+-- @begin values
+	template OclUndefinedExp
+		:	"OclUndefined"
+		;
+
+	template PrimitiveExp abstract;
+	
+	template NumericExp abstract;
+
+	template BooleanExp
+		:	(booleanSymbol ? "true" : "false")
+		;
+
+	template IntegerExp
+		:	integerSymbol
+		;
+
+	template RealExp
+		:	realSymbol
+		;
+
+	template StringExp
+		:	stringSymbol{as = stringSymbol}
+		;
+-- @end values
+
+	template IfExp
+		:	"if" condition "then" [
+				thenExpression
+			] "else" [
+				elseExpression
+			] "endif"
+		;
+
+	template VariableExp(disambiguate = "NAME ~(EXCL)")
+		:	referredVariable{refersTo = varName, autoCreate = ifmissing}
+		;
+
+	template SuperExp
+		:	"super"
+		;
+
+	template LetExp context nonPrimary
+		:	"let" variable "in"
+			[ in_ ] {indentIncr = 0, endNL = false}
+		;
+
+	template VariableDeclaration addToContext
+		:	varName ":" type "=" initExpression
+		;
+
+
+	template EnumLiteralExp
+		:	"#" name
+		;
+
+-- @begin CollectionExps
+	template CollectionExp abstract;
+
+	template BagExp
+		:	"Bag" "{" elements{separator = ","} "}"
+		;
+
+	template SetExp
+		:	"Set" "{" elements{separator = ","} "}"
+		;
+
+	template OrderedSetExp
+		:	"OrderedSet" "{" elements{separator = ","} "}"
+		;
+
+	template SequenceExp
+		:	"Sequence" "{" elements{separator = ","} "}"
+		;
+-- @end CollectionExps
+
+	template MapExp
+		:	"Map" "{" elements{separator = ","} "}"
+		;
+
+	template MapElement
+		:	"(" key "," 'value' ")"
+		;
+
+	template TupleExp
+		:	"Tuple" "{" tuplePart{separator= ","} "}"
+		;
+
+	template TuplePart
+		:	varName{as = identifierOrKeyword} (isDefined(type) ? ":" type) "=" initExpression
+		;
+
+
+-- @begin OclType
+	template OclType abstract
+		:	"OclType"
+		;
+
+	template OclAnyType abstract
+		:	"OclAny"
+		;
+
+	template TupleType
+		:	"TupleType" "(" attributes{separator = ","} ")"
+		;
+
+	template TupleTypeAttribute
+		:	name ":" type
+		;
+
+	template MapType
+		:	"Map" "(" keyType "," valueType ")"
+		;
+
+	template Primitive abstract;
+
+	template NumericType abstract;
+
+	template IntegerType
+		:	"Integer"
+		;
+
+	template RealType
+		:	"Real"
+		;
+
+	template BooleanType
+		:	"Boolean"
+		;
+
+	template StringType
+		:	"String"
+		;
+
+	template CollectionType abstract
+		:	"Collection" "(" elementType ")"
+		;
+
+	template BagType
+		:	"Bag" "(" elementType ")"
+		;
+
+	template SetType
+		:	"Set" "(" elementType ")"
+		;
+
+	template OrderedSetType
+		:	"OrderedSet" "(" elementType ")"
+		;
+
+	template SequenceType
+		:	"Sequence" "(" elementType ")"
+		;
+
+-- @end OclTypes
+
+-- @end OCL
+
+	symbols {
+		lsquare		= "[";
+		rsquare		= "]"	: rightSpace;
+		excl		= "!";
+		coma		= ","	: leftNone, rightSpace;
+		lparen		= "(";
+		rparen		= ")"	: leftNone, rightSpace;
+		lcurly		= "{"	: leftSpace;
+		rcurly		= "}"	: leftNone, rightSpace;
+		semi		= ";"	: leftNone, rightSpace;
+		colon		= ":"	: leftSpace, rightSpace;	-- except after def where it is leftNone, rightSpace
+		pipe		= "|"	: leftSpace, rightSpace;
+		sharp		= "#"	: leftSpace;
+		qmark		= "?";
+		arobas		= "@"	: rightNone;
+
+		-- operator symbols
+		point		= "."	: leftNone;
+		rarrow		= "->"	: leftNone;
+		minus		= "-"	: leftSpace, rightSpace;
+		star		= "*"	: leftSpace, rightSpace;
+		slash		= "/"	: leftSpace, rightSpace;
+		plus		= "+"	: leftSpace, rightSpace;
+		eq			= "="	: leftSpace, rightSpace;
+		gt			= ">"	: leftSpace, rightSpace;
+		lt			= "<"	: leftSpace, rightSpace;
+		ge			= ">="	: leftSpace, rightSpace;
+		le			= "<="	: leftSpace, rightSpace;
+		ne			= "<>"	: leftSpace, rightSpace;
+		larrow		= "<-"	: leftSpace, rightSpace;
+	}
+
+	operators {
+		priority 0 {	-- 0 is highest
+			opPoint = point, 2;
+			opRarrow = rarrow, 2;
+		}
+
+		priority 1 {
+			opNot = "not", 1;		-- no corresponding symbol => symbol is the keyword defined by the quoted string (which is also the name)
+			opMinus1 = minus, 1;
+		}
+
+		priority 2 {
+			opStar = star, 2;
+			opSlash = slash, 2;
+			opDiv = "div", 2;
+			opMod = "mod", 2;
+		}
+
+		priority 3 {
+			opPlus = plus, 2;
+			opMinus2 = minus, 2;
+		}
+
+		priority 4 {
+			opEq = eq, 2;
+			opGt = gt, 2;
+			opLt = lt, 2;
+			opGe = ge, 2;
+			opLe = le, 2;
+			opNe = ne, 2;
+		}
+
+		priority 5 {
+			opAnd = "and", 2;
+			opOr = "or", 2;
+			opXor = "xor", 2;
+			opImplies = "implies", 2;
+		}
+	}
+
+	token COMMENT	: endOfLine(start = "--");
+	
+	lexer = "
+%options testLiterals = false;
+NL
+	:	(	'\\r' '\\n'
+		|	'\\n' '\\r'	//Improbable
+		|	'\\r'
+		|	'\\n'
+		)
+	{newline();}
+	;
+
+WS
+	:	(	' '
+		|	'\\t'
+		)
+	;
+
+%protected
+DIGIT
+	:	'0'..'9'
+	;
+
+%protected
+ALPHA
+	:	'a'..'z'
+	|	'A'..'Z'
+	|	'_'
+	//For Unicode compatibility (from 0000 to 00ff)
+	|	'\\u00C0' .. '\\u00D6'
+	|	'\\u00D8' .. '\\u00F6'
+	|	'\\u00F8' .. '\\u00FF'
+	;
+
+%protected
+SNAME
+%v2	options {
+%v2		testLiterals = true;
+%v2	}
+%v2	:	(ALPHA) (ALPHA | DIGIT | {LA(2) == ':'}?':' ':')*
+//TODO:%v3	:	(ALPHA) (ALPHA | DIGIT | {input.LA(2) == ':'}?':' ':')*
+%v3	:	(ALPHA) (ALPHA | DIGIT)*
+;
+
+NAME
+	:	(
+%v3			SNAME
+%v2			s:SNAME {if(s.getType() != SNAME) $setType(s.getType());}
+		|	'\"'!
+			(	ESC
+			|	'\\n' {newline();}
+			|	~('\\\\'|'\\\"'|'\\n')
+			)*
+			'\"'!
+%v3			{setText(ei.unescapeString(getText(), 1));}
+		)
+	;
+
+INT
+	:	(DIGIT)+
+%v2		(('.' DIGIT)=> '.' (DIGIT)+ {$setType(FLOAT);})?
+	;
+
+%v3	FLOAT	:	DIGIT+ (('.' DIGIT)=>'.' DIGIT+)?	;	// cannot accept DIGIT '.' because it would conflict with Navigation
+
+%protected
+ESC
+	:	'\\\\'!
+		(	'n' %v2{%setText(\"\\n\");}
+		|	'r' %v2{%setText(\"\\r\");}
+		|	't' %v2{%setText(\"\\t\");}
+		|	'b' %v2{%setText(\"\\b\");}
+		|	'f' %v2{%setText(\"\\f\");}
+		|	'\"' %v2{%setText(\"\\\"\");}
+		|	'\\'' %v2{%setText(\"\\'\");}
+		|	'\\\\' %v2{%setText(\"\\\\\");}
+		|	(
+				('0'..'3')
+				(
+%v2					options {
+%v2						warnWhenFollowAmbig = false;
+%v2					}
+				:	('0'..'7')
+					(
+%v2						options {
+%v2							warnWhenFollowAmbig = false;
+%v2						}
+					:	'0'..'7'
+					)?
+				)?
+			|	('4'..'7')
+				(
+%v2					options {
+%v2						warnWhenFollowAmbig = false;
+%v2					}
+				:	('0'..'7')
+				)?
+			)
+				{
+%v2					String s = %getText;
+%v2					int i;
+%v2					int ret = 0;
+%v2					String ans;
+%v2					for (i=0; i<s.length(); ++i)
+%v2						ret = ret*8 + s.charAt(i) - '0';
+%v2					ans = String.valueOf((char) ret);
+%v2					%setText(ans);
+				}
+		)
+	;
+
+STRING
+	:	'\\''!
+		(	ESC
+		|	'\\n' {newline();}
+		|	~('\\\\'|'\\''|'\\n')
+		)*
+		'\\''!
+%v3		{setText(ei.unescapeString(getText(), 1));}
+	;
+	";
+
+}
+
