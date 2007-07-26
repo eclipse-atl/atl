@@ -61,12 +61,11 @@ public class AtlLabelProvider extends LabelProvider {
 	  	
 	  	readers.put(AtlEMFConstants.clHelper, new Reader() {
 	  		private EStructuralFeature sfFeature = AtlEMFConstants.clOclFeatureDefinition.getEStructuralFeature("feature");
-	  		private EStructuralFeature sfName = AtlEMFConstants.clOclFeature.getEStructuralFeature("name");
 	  		
 	  		public String getText(EObject helper) {
 	  			EObject featureDef = (EObject)helper.eGet(AtlEMFConstants.sfHelper_definition);
 	  			EObject feature = (EObject)featureDef.eGet(sfFeature);
-	  			return (String)feature.eGet(sfName);	  			
+  				return (String)feature.eGet(feature.eClass().getEStructuralFeature("name"));
 	  		}
 	  	});
 	  	
@@ -150,7 +149,7 @@ public class AtlLabelProvider extends LabelProvider {
 		  		AtlEMFConstants.clParameter = (EClass)AtlEMFConstants.pkOcl.getEClassifier("Parameter");
 		  			AtlEMFConstants.clVariableDeclaration = (EClass)AtlEMFConstants.pkOcl.getEClassifier("VariableDeclaration");
 		  				AtlEMFConstants.sfVarName = AtlEMFConstants.clVariableDeclaration.getEStructuralFeature("varName");
-		  		AtlEMFConstants.clElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Element");
+		  		AtlEMFConstants.clElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("LocatedElement");
 		  			AtlEMFConstants.sfLocation = AtlEMFConstants.clElement.getEStructuralFeature("location");
 		  	initReaders();
 	  		initialized = true;
