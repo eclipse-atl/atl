@@ -486,14 +486,14 @@ INT
 %protected
 ESC
 	:	'\\\\'!
-		(	'n' {%setText(\"\\n\");}
-		|	'r' {%setText(\"\\r\");}
-		|	't' {%setText(\"\\t\");}
-		|	'b' {%setText(\"\\b\");}
-		|	'f' {%setText(\"\\f\");}
-		|	'\"' {%setText(\"\\\"\");}
-		|	'\\'' {%setText(\"\\'\");}
-		|	'\\\\' {%setText(\"\\\\\");}
+		(	'n' %v2{%setText(\"\\n\");}
+		|	'r' %v2{%setText(\"\\r\");}
+		|	't' %v2{%setText(\"\\t\");}
+		|	'b' %v2{%setText(\"\\b\");}
+		|	'f' %v2{%setText(\"\\f\");}
+		|	'\"' %v2{%setText(\"\\\"\");}
+		|	'\\'' %v2{%setText(\"\\'\");}
+		|	'\\\\' %v2{%setText(\"\\\\\");}
 		|	(
 				('0'..'3')
 				(
@@ -517,14 +517,14 @@ ESC
 				)?
 			)
 				{
-					String s = %getText;
-					int i;
-					int ret = 0;
-					String ans;
-					for (i=0; i<s.length(); ++i)
-						ret = ret*8 + s.charAt(i) - '0';
-					ans = String.valueOf((char) ret);
-					%setText(ans);
+%v2					String s = %getText;
+%v2					int i;
+%v2					int ret = 0;
+%v2					String ans;
+%v2					for (i=0; i<s.length(); ++i)
+%v2						ret = ret*8 + s.charAt(i) - '0';
+%v2					ans = String.valueOf((char) ret);
+%v2					%setText(ans);
 				}
 		)
 	;
