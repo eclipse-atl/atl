@@ -69,6 +69,51 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	protected boolean removeIDs = false;
 	protected String encoding = "ISO-8859-1";
 
+	/**
+	 * Saves the provided model in/out of the Eclipse workspace using the given relative/absolute path.
+	 * @param model The model to save.
+	 * @param path The workspace relative path (e.g. "/ProjectXXX/fileName.ecore") if the outputFileIsInWorkspace boolean is set to true, or the absolute path if not (e.g. "C:/FolderXXX/fileName.ecore").
+	 * @param outputFileIsInWorkspace Indicates if the model output file is stored into the Eclipse workspace.
+	 * @author Hugo Bruneliere
+	 */
+	public void saveModel(final ASMModel model, String path, boolean outputFileIsInWorkspace) {
+		URI uri = null;
+		if( outputFileIsInWorkspace )
+			uri = URI.createURI(path);
+		else
+			uri = URI.createFileURI(path);
+		Resource r = ((ASMEMFModel)model).getExtent();
+        r.setURI(uri);
+
+        Map options = new HashMap();
+        options.put(XMIResource.OPTION_ENCODING, encoding);
+        options.put(XMIResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
+        
+        if((useIDs || removeIDs) && (r instanceof XMIResource)) {
+            XMIResource xr = ((XMIResource)r);
+            int id = 1;
+            Set alreadySet = new HashSet();
+            for(Iterator i = r.getAllContents() ; i.hasNext() ; ) {
+                EObject eo = (EObject)i.next();
+                if(alreadySet.contains(eo)) continue;   // because sometimes a single element gets processed twice
+                xr.setID(eo, removeIDs ? null : ("a" + (id++)));
+                alreadySet.add(eo);
+            }
+        }
+        
+        try {
+            r.save(options);
+            if( outputFileIsInWorkspace ) {
+            	IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uri.path()));
+            	file.setDerived(true);
+            }
+        } catch (IOException e) {
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+        } catch (CoreException e) {
+        	logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
+	}
+	
     protected void saveModel(final ASMModel model, URI uri, OutputStream out) {
         Resource r = ((ASMEMFModel)model).getExtent();
         if (uri != null) {
