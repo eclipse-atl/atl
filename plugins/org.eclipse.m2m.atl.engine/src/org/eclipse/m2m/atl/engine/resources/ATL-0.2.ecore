@@ -70,7 +70,7 @@
           unique="false" lowerBound="1" eType="#/2/Boolean"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="isRefining" ordered="false"
           unique="false" lowerBound="1" eType="#/2/Boolean"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDefault" ordered="false"
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isNoDefault" ordered="false"
           unique="false" lowerBound="1" eType="#/2/Boolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="LazyMatchedRule" eSuperTypes="#/0/MatchedRule">
