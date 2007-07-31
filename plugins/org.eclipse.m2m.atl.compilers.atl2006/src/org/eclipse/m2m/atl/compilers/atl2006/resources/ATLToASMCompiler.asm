@@ -1004,11 +1004,11 @@
 		<constant value="102"/>
 		<constant value="NTransientLink;.addVariable(SJ):V"/>
 		<constant value="J.process_match():V"/>
-		<constant value="isDefault"/>
+		<constant value="isNoDefault"/>
 		<constant value="154"/>
-		<constant value="pushf"/>
-		<constant value="158"/>
 		<constant value="pusht"/>
+		<constant value="158"/>
+		<constant value="pushf"/>
 		<constant value="NTransientLinkSet;.addLink2(NTransientLink;B):V"/>
 		<constant value="399:3-399:9"/>
 		<constant value="400:7-400:14"/>
@@ -1059,7 +1059,7 @@
 		<constant value="422:4-427:5"/>
 		<constant value="417:3-428:4"/>
 		<constant value="430:6-430:10"/>
-		<constant value="430:6-430:20"/>
+		<constant value="430:6-430:22"/>
 		<constant value="433:4-433:9"/>
 		<constant value="431:4-431:9"/>
 		<constant value="430:3-434:4"/>
@@ -8218,7 +8218,7 @@
 			<enditerate/>
 			<getasm/>
 			<get arg="1"/>
-			<push arg="1005"/>
+			<push arg="1007"/>
 			<call arg="153"/>
 			<getasm/>
 			<get arg="1"/>
@@ -8359,12 +8359,12 @@
 			<if arg="1635"/>
 			<getasm/>
 			<get arg="1"/>
-			<push arg="1007"/>
+			<push arg="1005"/>
 			<call arg="153"/>
 			<goto arg="539"/>
 			<getasm/>
 			<get arg="1"/>
-			<push arg="1005"/>
+			<push arg="1007"/>
 			<call arg="153"/>
 			<getasm/>
 			<get arg="1"/>
@@ -10975,7 +10975,7 @@
 			<if arg="1073"/>
 			<getasm/>
 			<get arg="1"/>
-			<push arg="1005"/>
+			<push arg="1007"/>
 			<call arg="153"/>
 			<load arg="26"/>
 			<get arg="1995"/>
@@ -11049,7 +11049,7 @@
 			<if arg="2193"/>
 			<getasm/>
 			<get arg="1"/>
-			<push arg="1005"/>
+			<push arg="1007"/>
 			<call arg="153"/>
 			<load arg="26"/>
 			<get arg="1995"/>
@@ -11162,7 +11162,7 @@
 			<if arg="2199"/>
 			<getasm/>
 			<get arg="1"/>
-			<push arg="1007"/>
+			<push arg="1005"/>
 			<call arg="153"/>
 			<load arg="26"/>
 			<get arg="1995"/>
@@ -11236,7 +11236,7 @@
 			<if arg="2204"/>
 			<getasm/>
 			<get arg="1"/>
-			<push arg="1007"/>
+			<push arg="1005"/>
 			<call arg="153"/>
 			<load arg="26"/>
 			<get arg="1995"/>
