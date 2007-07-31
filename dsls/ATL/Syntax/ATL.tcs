@@ -99,7 +99,7 @@ syntax ATL(k = 0) {
 	template Rule abstract;
 
 	template MatchedRule abstract context addToContext
-		:	(isDefault ? : "nodefault") (isAbstract ? "abstract") (isRefining ? "refining") "rule" name (isDefined(superRule) ? "extends" superRule{refersTo = name, importContext}) "{" [
+		:	(isNoDefault ? "nodefault") (isAbstract ? "abstract") (isRefining ? "refining") "rule" name (isDefined(superRule) ? "extends" superRule{refersTo = name, importContext}) "{" [
 				inPattern
 				(isDefined(variables) ?
 					"using" "{" [

@@ -427,10 +427,10 @@ acg ATL startsWith Unit {
 			}
 		}
 
-		if(self.isDefault) {
-			pusht
-		} else {
+		if(self.isNoDefault) {
 			pushf
+		} else {
+			pusht
 		}
 		call 'NTransientLinkSet;.addLink2(NTransientLink;B):V'
 	}

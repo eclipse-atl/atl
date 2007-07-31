@@ -62,7 +62,7 @@ package ATL {
 		reference superRule[0-1] : MatchedRule oppositeOf children;
 		attribute isAbstract : Boolean;
 		attribute isRefining : Boolean;
-		attribute isDefault : Boolean;
+		attribute isNoDefault : Boolean;
 	}
 
 	class LazyMatchedRule extends MatchedRule {
