@@ -128,8 +128,14 @@ public class AtlLauncher {
 			
 			for(Iterator i = libraries.keySet().iterator() ; i.hasNext() ; ) {
 				String lname = (String)i.next();
-				URL url = (URL)libraries.get(lname);
-				ASM lib = new ASMXMLReader().read(new BufferedInputStream(url.openStream()));
+				Object libASMOrURL = libraries.get(lname);
+				ASM lib;
+				if(libASMOrURL instanceof URL) {
+					URL url = (URL)libASMOrURL;
+					lib = new ASMXMLReader().read(new BufferedInputStream(url.openStream()));
+				} else {
+					lib = (ASM)libASMOrURL;
+				}
 				env.registerOperations(lib);
 				
 				// If there is a main operation, run it to register attribute helpers
