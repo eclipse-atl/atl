@@ -228,7 +228,12 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 		super.set(frame, name, value);
 		EStructuralFeature feature = object.eClass().getEStructuralFeature(name);
 		if(feature == null) {
-			frame.printStackTrace("feature " + name + " does not exist on " + getType());
+			String msg = "feature " + name + " does not exist on " + getType();
+			if(frame == null) {
+				throw new RuntimeException(msg);
+			} else {
+				frame.printStackTrace(msg);
+			}
 		}
 		if(!feature.isChangeable()) {
 			frame.printStackTrace("feature " + name + " is not changeable");			
@@ -242,11 +247,13 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 						continue;
 					}
 					Object val = asm2EMF(frame, sv, name, feature);
-					try {
-						l.add(val);
-						checkContainment(feature, val);
-					} catch(Exception e) {
-						frame.printStackTrace("cannot set feature " + getType() + "." + name + " to value " + val);
+					if(val != null) {
+						try {
+							l.add(val);
+							checkContainment(feature, val);
+						} catch(Exception e) {
+							frame.printStackTrace("cannot set feature " + getType() + "." + name + " to value " + val);
+						}
 					}
 				}
 			} else {
