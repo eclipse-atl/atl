@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.engine.AtlLauncher;
 import org.eclipse.m2m.atl.engine.vm.ASM;
@@ -38,8 +39,9 @@ public class OclQuery extends OclEvaluator {
 		return new OclQuery(query).eval(models);
 	}
 
-	public void compile() throws Exception {
-		compiledQuery = compile("query test = " + query + ";");
+	public EObject[] compile() throws Exception {
+		compiledQuery = compile("query test = \n" + query + "\n;");
+		return pbs;
 	}
 
 	public ASMOclAny eval() throws Exception {

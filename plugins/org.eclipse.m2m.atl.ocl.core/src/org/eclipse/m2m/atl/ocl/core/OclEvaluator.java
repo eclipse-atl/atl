@@ -21,6 +21,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 public abstract class OclEvaluator {
 	
 	private static long id = 0;
+	protected EObject pbs[];
 
 	protected ASM compile(String atl) throws Exception {
 		ASM ret = null;
@@ -29,13 +30,14 @@ public abstract class OclEvaluator {
 		
 		String key = "ID=" + id++;
 		ByteArrayInputStream input = new ByteArrayInputStream(atl.getBytes());
-		EObject pbs[] = ac.compile(input, new DummyFile(key));
+		pbs = ac.compile(input, new DummyFile(key));
 		input.close();
-		for(int i = 0 ; i < pbs.length ; i++) {
-			String sev = get(pbs[i], "severity").toString();
-			System.out.println(sev + ":" + get(pbs[i], "location") + ":" + get(pbs[i], "description"));
-		}
+//		for(int i = 0 ; i < pbs.length ; i++) {
+//			String sev = get(pbs[i], "severity").toString();
+//			System.out.println(sev + ":" + get(pbs[i], "location") + ":" + get(pbs[i], "description"));
+//		}
 		ret = (ASM)dumpedASMs.get(key);
+		dumpedASMs.remove(key);
 		return ret;
 	}
 	
