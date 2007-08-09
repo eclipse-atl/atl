@@ -61,6 +61,9 @@ public class XMLInjector extends DefaultHandler implements Injector {
 	 */
 	private int errors;
 
+	private int prevLineNumber = 1;
+	private int prevColumnNumber = 1;
+
 	
 	/* New Injector interface. */
 	
@@ -127,10 +130,24 @@ public class XMLInjector extends DefaultHandler implements Injector {
 			attr.set(null, "parent", current);
 			if(locator != null) {
 				if(locator.getLineNumber() != -1) {
-					attr.set(null, "startLine", new ASMInteger(locator.getLineNumber()));
+					int lineNumber = locator.getLineNumber();
+					attr.set(null, "startLine", new ASMInteger(prevLineNumber));
+					attr.set(null, "endLine", new ASMInteger(lineNumber));
+					prevLineNumber = lineNumber;
 				}
 				if(locator.getColumnNumber() != -1) {
-					attr.set(null, "startColumn", new ASMInteger(locator.getColumnNumber()));
+					int n = 0;
+// Seems necessary in Java 1.6 but not in Java 1.5
+//					String next = new String(ch, start + length, 2);
+//					if("</".equals(next)) {
+//						n = 2;
+//					} else if(next.startsWith("<")) {
+//						n = 1;
+//					}
+					int columnNumber = locator.getColumnNumber() - n;
+					attr.set(null, "startColumn", new ASMInteger(prevColumnNumber));
+					attr.set(null, "endColumn", new ASMInteger(columnNumber));
+					prevColumnNumber = columnNumber;
 				}
 			}
 		}
@@ -170,10 +187,12 @@ public class XMLInjector extends DefaultHandler implements Injector {
 		
 		if(locator != null) {
 			if(locator.getLineNumber() != -1) {
-				current.set(null, "startLine", new ASMInteger(locator.getLineNumber()));
+				current.set(null, "startLine", new ASMInteger(prevLineNumber));
+				prevLineNumber = locator.getLineNumber();
 			}
 			if(locator.getColumnNumber() != -1) {
-				current.set(null, "startColumn", new ASMInteger(locator.getColumnNumber()));
+				current.set(null, "startColumn", new ASMInteger(prevColumnNumber));
+				prevColumnNumber = locator.getColumnNumber();
 			}
 		}
 	}
@@ -182,10 +201,12 @@ public class XMLInjector extends DefaultHandler implements Injector {
 		ASMOclAny parent = current.get(null, "parent");
 		if(locator != null) {
 			if(locator.getLineNumber() != -1) {
-				current.set(null, "endLine", new ASMInteger(locator.getLineNumber()));
+				prevLineNumber = locator.getLineNumber();
+				current.set(null, "endLine", new ASMInteger(prevLineNumber));
 			}
 			if(locator.getColumnNumber() != -1) {
-				current.set(null, "endColumn", new ASMInteger(locator.getColumnNumber()));
+				prevColumnNumber = locator.getColumnNumber();
+				current.set(null, "endColumn", new ASMInteger(prevColumnNumber));
 			}
 		}
 		if(parent instanceof ASMModelElement) {
