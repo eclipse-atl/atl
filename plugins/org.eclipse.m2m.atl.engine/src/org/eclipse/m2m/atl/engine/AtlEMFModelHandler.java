@@ -142,9 +142,16 @@ public class AtlEMFModelHandler extends AtlModelHandler {
                 r.save(options);
             }
             
-            if(uri != null) {
-            	IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uri.path()));
-    			file.setDerived(true);
+            try {
+            	if (uri != null) {
+        			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uri.path()));
+        			if (file.exists()) {
+            			file.setDerived(true);
+        			}
+        		}
+            } catch (IllegalStateException e) {
+            	// workspace is closed
+    			logger.log(Level.FINE, e.getLocalizedMessage(), e);
             }
         } catch (IOException e1) {
 			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
