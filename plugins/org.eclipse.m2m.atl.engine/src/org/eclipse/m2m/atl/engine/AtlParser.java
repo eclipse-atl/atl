@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.atl.engine.injectors.ebnf.EBNFInjector2;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.gmt.tcs.injector.TCSInjector;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
@@ -49,7 +49,7 @@ public class AtlParser {
 			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp", (ASMEMFModel)atlmm, null);
 			ret[1] = amh.newModel("pb", "pb", pbmm);
 			
-			EBNFInjector2 ebnfi = new EBNFInjector2();
+			TCSInjector ebnfi = new TCSInjector();
 			Map params = new HashMap();
 			params.put("name", "ATL");
 			params.put("problems", ret[1]);

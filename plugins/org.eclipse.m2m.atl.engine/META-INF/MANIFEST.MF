@@ -4,8 +4,8 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.m2m.atl.engine; singleton:=true
 Bundle-Version: 2.0.0
 Bundle-ClassPath: org.eclipse.m2m.atl.engine.jar,
- lib/ebnfinjector.jar,
- lib/ebnfextractor.jar,
+ lib/org.eclipse.gmt.tcs.extractor_1.0.0.jar,
+ lib/org.eclipse.gmt.tcs.injector_1.0.0.jar,
  lib/ATL-parser.jar,
  lib/antlr-runtime-3.0.jar
 Bundle-Activator: org.eclipse.m2m.atl.engine.EnginePlugin
@@ -15,10 +15,10 @@ Export-Package: org.antlr.runtime,
  org.antlr.runtime.debug,
  org.antlr.runtime.misc,
  org.antlr.runtime.tree,
- org.atl.engine.extractors.ebnf,
- org.atl.engine.injectors.ebnf,
- org.eclipse.gmt.tcs.wrappers,
- org.eclipse.gmt.tcs.wrappers.antlr3,
+ org.eclipse.gmt.tcs.extractor,
+ org.eclipse.gmt.tcs.injector,
+ org.eclipse.gmt.tcs.injector.wrappers,
+ org.eclipse.gmt.tcs.injector.wrappers.antlr3,
  org.eclipse.m2m.atl.engine
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

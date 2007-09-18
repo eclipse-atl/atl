@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-import org.atl.engine.injectors.ebnf.EBNFInjector2;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -31,6 +30,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.gmt.tcs.injector.TCSInjector;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.EMFModelLoader;
 import org.eclipse.m2m.atl.engine.injectors.xml.XMLInjector;
@@ -167,7 +167,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		
 		ml = new EMFModelLoader();
 		ml.addInjector("xml", XMLInjector.class);
-		ml.addInjector("ebnf2", EBNFInjector2.class);
+		ml.addInjector("ebnf2", TCSInjector.class);
 		
 		if (Platform.isRunning()) {
 			//no IExtensionRegistry supported outside Eclipse
