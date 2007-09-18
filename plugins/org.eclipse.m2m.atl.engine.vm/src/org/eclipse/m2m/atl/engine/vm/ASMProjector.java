@@ -51,14 +51,14 @@ public class ASMProjector {
 		}
 
 		try {
-			ml.addInjector("ebnf", pcl.loadClass("org.atl.engine.injectors.ebnf.EBNFInjector"));
-			ml.addInjector("ebnf2", pcl.loadClass("org.atl.engine.injectors.ebnf.EBNFInjector2"));
+			ml.addInjector("ebnf", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSInjector"));
+			ml.addInjector("ebnf2", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSInjector"));
 		} catch(Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			//e.printStackTrace(System.out);
 		}
 		try {
-			ml.addExtractor("ebnf", pcl.loadClass("org.atl.engine.extractors.ebnf.EBNFExtractor"));
+			ml.addExtractor("ebnf", pcl.loadClass("org.eclipse.gmt.tcs.extractor.TCSExtractor"));
 		} catch(Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			//e.printStackTrace(System.out);

@@ -191,8 +191,8 @@ public class ASMInterpreter {
 		env.addModel(ml.loadModel("ATL", env.getModel("MOF"), ATL));
 		try {
 			// TODO: use a plugin mechanism to properly register injectors and extractors
-			ml.addInjector("ebnf", pcl.loadClass("org.atl.engine.injectors.ebnf.EBNFInjector"));
-			ml.addInjector("ebnf2", pcl.loadClass("org.atl.engine.injectors.ebnf.EBNFInjector2"));
+			ml.addInjector("ebnf", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSInjector"));
+			ml.addInjector("ebnf2", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSInjector"));
 		} catch(Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 //			e.printStackTrace(System.out);
@@ -206,7 +206,7 @@ public class ASMInterpreter {
 		}
 		try {
 			// TODO: use a plugin mechanism to properly register injectors and extractors
-			ml.addExtractor("ebnf", pcl.loadClass("org.atl.engine.extractors.ebnf.EBNFExtractor"));
+			ml.addExtractor("ebnf", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSExtractor"));
 		} catch(Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 //			e.printStackTrace(System.out);
