@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore">
+  <ecore:EPackage xmi:id="a1" name="TCS">
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a2" name="LocatedElement" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a3" name="location" ordered="false" unique="false" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a4" name="commentsBefore" unique="false" upperBound="-1" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a5" name="commentsAfter" unique="false" upperBound="-1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a6" name="NamedElement" abstract="true" eSuperTypes="a2">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a7" name="name" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a8" name="ConcreteSyntax" eSuperTypes="a6">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a9" name="k" ordered="false" unique="false" eType="a214"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a10" name="templates" upperBound="-1" eType="a16" containment="true" eOpposite="a17"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a11" name="keywords" upperBound="-1" eType="a74" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a12" name="symbols" upperBound="-1" eType="a67" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a13" name="operatorLists" upperBound="-1" eType="a75" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a14" name="tokens" upperBound="-1" eType="a189" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a15" name="lexer" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a16" name="Template" abstract="true" eSuperTypes="a6">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a17" name="concreteSyntax" ordered="false" lowerBound="1" eType="a8" eOpposite="a10"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a18" name="disambiguate" ordered="false" unique="false" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a19" name="disambiguateV3" ordered="false" unique="false" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a20" name="FunctionTemplate" eSuperTypes="a16">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a21" name="className" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a22" name="functionSequence" ordered="false" lowerBound="1" eType="a92" containment="true" eOpposite="a96"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a23" name="ClassTemplate" eSuperTypes="a16">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a24" name="templateSequence" ordered="false" lowerBound="1" eType="a92" containment="true" eOpposite="a94"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a25" name="modifiers" ordered="false" unique="false" upperBound="-1" eType="a37"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a26" name="isAbstract" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a27" name="isDeep" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a28" name="prefixSequence" ordered="false" lowerBound="1" eType="a92" containment="true" eOpposite="a95"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a29" name="isOperatored" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a30" name="operatorList" ordered="false" eType="a75"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a31" name="isMain" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a32" name="isMulti" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a33" name="isContext" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a34" name="isAddToContext" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a35" name="isNonPrimary" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a36" name="mode" ordered="false" unique="false" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" xmi:id="a37" name="TemplateModifiers">
+      <eLiterals xmi:id="a38" name="abstract" value="1"/>
+      <eLiterals xmi:id="a39" name="operatored" value="2"/>
+      <eLiterals xmi:id="a40" name="main" value="3"/>
+      <eLiterals xmi:id="a41" name="context" value="4"/>
+      <eLiterals xmi:id="a42" name="addToContext" value="5"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a43" name="PrimitiveTemplate" eSuperTypes="a16">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a44" name="typeName" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a45" name="isDefault" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a46" name="tokenName" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a47" name="value" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a48" name="serializer" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a49" name="orKeyword" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a50" name="OperatorTemplate" eSuperTypes="a16">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a51" name="operators" ordered="false" upperBound="-1" eType="a83" eOpposite="a88"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a52" name="source" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a53" name="storeOpTo" ordered="false" unique="false" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a54" name="storeRightTo" ordered="false" unique="false" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a55" name="otSequence" ordered="false" eType="a92" containment="true" eOpposite="a101"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a56" name="isContext" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a57" name="EnumerationTemplate" eSuperTypes="a16">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a58" name="automatic" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a59" name="mappings" upperBound="-1" eType="a60" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a60" name="EnumLiteralMapping" eSuperTypes="a2">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a61" name="literal" ordered="false" lowerBound="1" eType="a185" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a62" name="element" ordered="false" lowerBound="1" eType="a103" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a63" name="Literal" abstract="true" eSuperTypes="a6">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a64" name="operators" ordered="false" upperBound="-1" eType="a83" eOpposite="a86"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a65" name="literalRefs" ordered="false" upperBound="-1" eType="a105" eOpposite="a106"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a66" name="value" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a67" name="Symbol" eSuperTypes="a63">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a68" name="spaces" ordered="false" unique="false" upperBound="-1" eType="a69"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" xmi:id="a69" name="SpaceKind">
+      <eLiterals xmi:id="a70" name="leftSpace" value="1"/>
+      <eLiterals xmi:id="a71" name="leftNone" value="2"/>
+      <eLiterals xmi:id="a72" name="rightSpace" value="3"/>
+      <eLiterals xmi:id="a73" name="rightNone" value="4"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a74" name="Keyword" eSuperTypes="a63"/>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a75" name="OperatorList" eSuperTypes="a2">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a76" name="name" ordered="false" unique="false" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a77" name="priorities" upperBound="-1" eType="a78" containment="true" eOpposite="a79"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a78" name="Priority" eSuperTypes="a2">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a79" name="list" ordered="false" lowerBound="1" eType="a75" eOpposite="a77"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a80" name="value" ordered="false" unique="false" lowerBound="1" eType="a214"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a81" name="associativity" ordered="false" unique="false" lowerBound="1" eType="a89"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a82" name="operators" ordered="false" upperBound="-1" eType="a83" containment="true" eOpposite="a87"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a83" name="Operator" eSuperTypes="a6">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a84" name="isPostfix" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a85" name="arity" ordered="false" unique="false" lowerBound="1" eType="a214"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a86" name="literal" ordered="false" eType="a63" eOpposite="a64"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a87" name="priority" ordered="false" lowerBound="1" eType="a78" eOpposite="a82"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a88" name="templates" ordered="false" upperBound="-1" eType="a50" eOpposite="a51"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" xmi:id="a89" name="Associativity">
+      <eLiterals xmi:id="a90" name="left" value="1"/>
+      <eLiterals xmi:id="a91" name="right" value="2"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a92" name="Sequence" eSuperTypes="a2">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a93" name="elements" upperBound="-1" eType="a103" containment="true" eOpposite="a104"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a94" name="templateContainer" ordered="false" eType="a23" eOpposite="a24"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a95" name="prefixContainer" ordered="false" eType="a23" eOpposite="a28"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a96" name="functionContainer" ordered="false" eType="a20" eOpposite="a22"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a97" name="blockContainer" ordered="false" eType="a112" eOpposite="a113"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a98" name="thenContainer" ordered="false" eType="a115" eOpposite="a117"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a99" name="elseContainer" ordered="false" eType="a115" eOpposite="a118"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a100" name="separatorContainer" ordered="false" eType="a137" eOpposite="a138"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a101" name="otContainer" ordered="false" eType="a50" eOpposite="a55"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a102" name="alternativeContainer" ordered="false" eType="a122" eOpposite="a123"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a103" name="SequenceElement" abstract="true" eSuperTypes="a2">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a104" name="elementSequence" ordered="false" lowerBound="1" eType="a92" eOpposite="a93"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a105" name="LiteralRef" eSuperTypes="a103">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a106" name="referredLiteral" ordered="false" lowerBound="1" eType="a63" eOpposite="a65"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a107" name="Property" eSuperTypes="a103">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a108" name="name" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a109" name="propertyArgs" upperBound="-1" eType="a127" containment="true" eOpposite="a128"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a110" name="CustomSeparator" eSuperTypes="a103">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a111" name="name" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a112" name="Block" eSuperTypes="a103">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a113" name="blockSequence" ordered="false" lowerBound="1" eType="a92" containment="true" eOpposite="a97"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a114" name="blockArgs" upperBound="-1" eType="a154" containment="true" eOpposite="a155"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a115" name="ConditionalElement" eSuperTypes="a103">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a116" name="condition" ordered="false" lowerBound="1" eType="a166" containment="true" eOpposite="a167"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a117" name="thenSequence" ordered="false" lowerBound="1" eType="a92" containment="true" eOpposite="a98"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a118" name="elseSequence" ordered="false" lowerBound="1" eType="a92" containment="true" eOpposite="a99"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a119" name="PropertyInit" eSuperTypes="a103">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a120" name="name" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a121" name="value" ordered="false" lowerBound="1" eType="a178" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a122" name="Alternative" eSuperTypes="a103">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a123" name="sequences" lowerBound="2" upperBound="-1" eType="a92" containment="true" eOpposite="a102"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a124" name="isMulti" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a125" name="FunctionCall" eSuperTypes="a103">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a126" name="calledFunction" ordered="false" lowerBound="1" eType="a20"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a127" name="PropertyArg" abstract="true" eSuperTypes="a2">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a128" name="property" ordered="false" lowerBound="1" eType="a107" eOpposite="a109"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a129" name="RefersToPArg" eSuperTypes="a127">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a130" name="propertyName" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a131" name="LookInPArg" eSuperTypes="a127">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a132" name="propertyName" unique="false" lowerBound="1" upperBound="-1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a133" name="CreateInPArg" eSuperTypes="a127">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a134" name="propertyName" unique="false" lowerBound="1" upperBound="-1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a135" name="RefersToKeyPArg" eSuperTypes="a127">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a136" name="value" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a137" name="SeparatorPArg" eSuperTypes="a127">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a138" name="separatorSequence" ordered="false" lowerBound="1" eType="a92" containment="true" eOpposite="a100"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a139" name="AutoCreatePArg" eSuperTypes="a127">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a140" name="value" ordered="false" unique="false" lowerBound="1" eType="a144"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a141" name="ImportContextPArg" eSuperTypes="a127"/>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a142" name="ForcedLowerPArg" eSuperTypes="a127">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a143" name="value" ordered="false" unique="false" lowerBound="1" eType="a214"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" xmi:id="a144" name="AutoCreateKind">
+      <eLiterals xmi:id="a145" name="always" value="1"/>
+      <eLiterals xmi:id="a146" name="ifmissing" value="2"/>
+      <eLiterals xmi:id="a147" name="never" value="3"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a148" name="CreateAsPArg" eSuperTypes="a127">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a149" name="name" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a150" name="AsPArg" eSuperTypes="a127">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a151" name="value" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a152" name="ModePArg" eSuperTypes="a127">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a153" name="mode" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a154" name="BlockArg" abstract="true" eSuperTypes="a2">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a155" name="block" ordered="false" lowerBound="1" eType="a112" eOpposite="a114"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a156" name="NbNLBArg" eSuperTypes="a154">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a157" name="value" ordered="false" unique="false" lowerBound="1" eType="a214"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a158" name="IndentIncrBArg" eSuperTypes="a154">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a159" name="value" ordered="false" unique="false" lowerBound="1" eType="a214"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a160" name="StartNLBArg" eSuperTypes="a154">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a161" name="value" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a162" name="StartNbNLBArg" eSuperTypes="a154">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a163" name="value" ordered="false" unique="false" lowerBound="1" eType="a214"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a164" name="EndNLBArg" eSuperTypes="a154">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a165" name="value" ordered="false" unique="false" lowerBound="1" eType="a213"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a166" name="Expression" abstract="true" eSuperTypes="a2">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a167" name="conditionalElement" ordered="false" lowerBound="1" eType="a115" eOpposite="a116"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a168" name="AndExp" eSuperTypes="a166">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a169" name="expressions" upperBound="-1" eType="a170" containment="true" eOpposite="a171"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a170" name="AtomExp" abstract="true" eSuperTypes="a2">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a171" name="andExp" ordered="false" lowerBound="1" eType="a168" eOpposite="a169"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a172" name="propertyName" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a173" name="EqualsExp" eSuperTypes="a170">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a174" name="value" ordered="false" lowerBound="1" eType="a178" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a175" name="BooleanPropertyExp" eSuperTypes="a170"/>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a176" name="IsDefinedExp" eSuperTypes="a170"/>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a177" name="OneExp" eSuperTypes="a170"/>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a178" name="Value" abstract="true" eSuperTypes="a2"/>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a179" name="StringVal" eSuperTypes="a178">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a180" name="symbol" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a181" name="IntegerVal" eSuperTypes="a178">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a182" name="symbol" ordered="false" unique="false" lowerBound="1" eType="a214"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a183" name="NegativeIntegerVal" eSuperTypes="a178">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a184" name="symbol" ordered="false" unique="false" lowerBound="1" eType="a214"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a185" name="EnumLiteralVal" eSuperTypes="a178">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a186" name="name" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a187" name="PropertyVal" eSuperTypes="a178">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a188" name="propertyName" ordered="false" unique="false" lowerBound="1" upperBound="-1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a189" name="Token" eSuperTypes="a6">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a190" name="pattern" ordered="false" lowerBound="1" eType="a191" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a191" name="OrPattern" eSuperTypes="a2">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a192" name="simplePatterns" lowerBound="1" upperBound="-1" eType="a193" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a193" name="SimplePattern" abstract="true" eSuperTypes="a6"/>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a194" name="RulePattern" eSuperTypes="a193">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a195" name="rule" ordered="false" lowerBound="1" eType="a196" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a196" name="Rule" abstract="true" eSuperTypes="a2"/>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a197" name="WordRule" eSuperTypes="a196">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a198" name="start" ordered="false" lowerBound="1" eType="a191" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a199" name="part" ordered="false" lowerBound="1" eType="a191" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a200" name="end" ordered="false" eType="a191" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a201" name="words" ordered="false" upperBound="-1" eType="a202" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a202" name="Word" eSuperTypes="a6">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a203" name="token" ordered="false" unique="false" lowerBound="1" eType="a215"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a204" name="EndOfLineRule" eSuperTypes="a196">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a205" name="start" ordered="false" lowerBound="1" eType="a210" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a206" name="MultiLineRule" eSuperTypes="a196">
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a207" name="start" ordered="false" lowerBound="1" eType="a210" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a208" name="end" ordered="false" lowerBound="1" eType="a210" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="a209" name="esc" ordered="false" eType="a210" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a210" name="StringPattern" eSuperTypes="a193"/>
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a211" name="ClassPattern" eSuperTypes="a193"/>
+  </ecore:EPackage>
+  <ecore:EPackage xmi:id="a212" name="PrimitiveTypes">
+    <eClassifiers xsi:type="ecore:EDataType" xmi:id="a213" name="Boolean"/>
+    <eClassifiers xsi:type="ecore:EDataType" xmi:id="a214" name="Integer"/>
+    <eClassifiers xsi:type="ecore:EDataType" xmi:id="a215" name="String"/>
+  </ecore:EPackage>
+</xmi:XMI>
