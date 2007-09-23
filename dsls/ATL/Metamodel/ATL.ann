@@ -1,0 +1,26 @@
+annotate ATL {
+    annotate ATL with
+		nsURI='http://www.eclipse.org/gmt/2005/ATL',
+        nsPrefix='atl';
+    
+    annotate OCL with
+        nsURI='http://www.eclipse.org/gmt/2005/OCL',
+        nsPrefix='ocl';
+    
+    annotate PrimitiveTypes with
+        nsURI='http://www.eclipse.org/gmt/2005/ATL-PrimitiveTypes',
+        nsPrefix='ptypes';
+    
+    annotate "PrimitiveTypes::Boolean" with
+        instanceClassName='boolean';
+    
+    annotate "PrimitiveTypes::Double" with
+        instanceClassName='double';
+    
+    annotate "PrimitiveTypes::Integer" with
+        instanceClassName='int';
+    
+    annotate "PrimitiveTypes::String" with
+        instanceClassName='java.lang.String';
+    
+}
