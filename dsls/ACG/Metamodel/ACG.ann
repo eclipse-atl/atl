@@ -1,0 +1,28 @@
+annotate ACG {
+    annotate ACG with
+        nsURI='http://www.eclipse.org/m2m/atl/2007/ACG',
+        nsPrefix='acg';
+    
+    annotate "ACG::critic" with
+        literalValue='critic';
+    
+    annotate "ACG::error" with
+        literalValue='error';
+    
+    annotate "ACG::warning" with
+        literalValue='warning';
+    
+    annotate PrimitiveTypes with
+        nsURI='http://www.eclipse.org/m2m/atl/2007/ACG-PrimitiveTypes',
+        nsPrefix='pt';
+    
+    annotate "PrimitiveTypes::Boolean" with
+        instanceClassName='boolean';
+    
+    annotate "PrimitiveTypes::Integer" with
+        instanceClassName='int';
+    
+    annotate "PrimitiveTypes::String" with
+        instanceClassName='java.lang.String';
+    
+}
