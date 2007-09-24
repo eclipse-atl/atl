@@ -641,6 +641,10 @@ acg ACG startsWith ACG {
 		enditerate
 	}
 
+	code IteratorExp {
+		report error 'iterator \'' + self.name + '\' not supported'
+	}
+	
 	code OperationCallExp {
 		analyze self.source
 		analyze self.arguments
