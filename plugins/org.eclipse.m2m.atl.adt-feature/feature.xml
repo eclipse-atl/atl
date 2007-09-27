@@ -240,13 +240,15 @@ litigation.
          id="org.eclipse.m2m.atl.adt.debug"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.m2m.atl.adt.editor"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.m2m.atl.adt.perspective"
@@ -259,12 +261,14 @@ litigation.
          id="org.eclipse.m2m.atl.adt.wizard"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.atl.eclipse.adt.builder"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
