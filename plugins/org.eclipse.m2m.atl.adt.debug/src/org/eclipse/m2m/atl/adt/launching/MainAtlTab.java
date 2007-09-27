@@ -68,6 +68,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 /**
  * @author allilaire
  * @author Mikael Barbero
+ * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
  */
 public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	
@@ -115,6 +116,8 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	private Pattern moduleName = Pattern.compile("^.*/(.*)\\.a(tl|sm)$");
 	
 	private Map asmFileCache = new HashMap();
+	
+	private ILaunchConfiguration configuration = null;
 	
 	public void createControl(Composite parent) {
 		scrollContainer = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -289,9 +292,17 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	}
 	
 	private void rebuild() {
-		clear();
-		build();
-		layout();
+		try {
+			clear();
+			build();
+			initializeExtraWidgetsFrom(configuration);
+			build();
+			initializeWidgetValuesFrom(configuration);
+			layout();
+			logger.fine("MainAtlTab rebuild");
+		} catch (CoreException e) {
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
 	}
 	
 	private void clear() {
@@ -317,6 +328,108 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		disposeGroupChildren(sourceModelsGroup);
 		disposeGroupChildren(targetModelsGroup);
 		disposeGroupChildren(librariesGroup);
+	}
+	
+	private void initializeExtraWidgetsFrom(ILaunchConfiguration configuration)
+	throws CoreException {
+		if (configuration == null) return;
+		
+		Map savedLibraries = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
+		Map input = configuration.getAttribute(AtlLauncherTools.INPUT, new HashMap());
+		Map output = configuration.getAttribute(AtlLauncherTools.OUTPUT, new HashMap());
+
+		for (Iterator i = input.keySet().iterator(); i.hasNext();) {
+			String mName = (String) i.next();
+			String mmName = (String) input.get(mName);
+			if (!sourceMetamodelsFromModule.contains(mmName)) {
+				sourceMetamodelsFromModule.add(mmName);
+				if (!targetMetamodelsFromModule.contains(mmName)) {
+					removableMetamodels.add(mmName);
+				}
+			}
+			if (!sourceModelsFromModule.contains(mName)) {
+				sourceModelsFromModule.add(mName);
+				sourceC2RelationshipFromModule.put(mName, mmName);
+				removableSourceModels.add(mName);
+			}
+		}
+		
+		for (Iterator i = output.keySet().iterator(); i.hasNext();) {
+			String mName = (String) i.next();
+			String mmName = (String) output.get(mName);
+			if (!targetMetamodelsFromModule.contains(mmName)) {
+				targetMetamodelsFromModule.add(mmName);
+				if (!sourceMetamodelsFromModule.contains(mmName)) {
+					removableMetamodels.add(mmName);
+				}
+			}
+			if (!targetModelsFromModule.contains(mName)) {
+				targetModelsFromModule.add(mName);
+				targetC2RelationshipFromModule.put(mName, mmName);
+				removableTargetModels.add(mName);
+			}
+		}
+		
+		for (Iterator i = savedLibraries.keySet().iterator(); i.hasNext();) {
+			String libraryName = (String) i.next();
+			if (!librariesFromModule.contains(libraryName)) {
+				librariesFromModule.add(libraryName);
+				removableLibraries.add(libraryName);
+			}
+		}
+	}
+
+	private void initializeWidgetValuesFrom(ILaunchConfiguration configuration)
+	throws CoreException {
+		if (configuration == null) return;
+
+		Map savedPaths = configuration.getAttribute(AtlLauncherTools.PATH, new HashMap());
+		Map savedModelHandlers = configuration.getAttribute(AtlLauncherTools.MODELHANDLER, new HashMap());
+		Map savedLibraries = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
+
+		for (Iterator i = savedPaths.keySet().iterator(); i.hasNext();) {
+			String modelName = (String) i.next();
+			if (metamodelsGroupWidgets.get(modelName) != null) {
+				Map widgets = (Map)metamodelsGroupWidgets.get(modelName);
+				Text metamodelLocation = (Text)widgets.get("metamodelLocation");
+				Button isMetametamodel = (Button)widgets.get("isMetametamodel");
+				Combo modelHandlers = (Combo)widgets.get("modelHandlers");
+				
+				if (((String)savedPaths.get(modelName)).startsWith("#")) {
+					isMetametamodel.setSelection(true);
+					isMetametamodel.notifyListeners(SWT.Selection, null);
+				} else {
+					metamodelLocation.setText((String)savedPaths.get(modelName));
+				}
+				
+				for (int item = 0; item < modelHandlers.getItems().length; item++) {
+					if (modelHandlers.getItem(item).equals((String)savedModelHandlers.get(modelName))) {
+						modelHandlers.select(item);
+					}
+				}
+				
+			} else { 
+				Map widgets = null;
+				if (sourceModelsGroupWidgets.get(modelName) != null) {
+					widgets = (Map)sourceModelsGroupWidgets.get(modelName);
+				} else if (targetModelsGroupWidgets.get(modelName) != null) {
+					widgets = (Map)targetModelsGroupWidgets.get(modelName);
+				}
+				if (widgets != null) {
+					Text modelLocation = (Text)widgets.get("location");
+					modelLocation.setText((String)savedPaths.get(modelName));
+				}
+			} 	
+		}
+		
+		for (Iterator i = savedLibraries.keySet().iterator(); i.hasNext();) {
+			String libraryName = (String) i.next();
+			Map widgets = (Map)librariesGroupWidgets.get(libraryName);
+			if (widgets != null) {
+				Text libraryLocation = (Text)widgets.get("location");
+				libraryLocation.setText((String)savedLibraries.get(libraryName));
+			}
+		}
 	}
 
 	private void calcNonLibraries() {
@@ -387,11 +500,13 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		while (i.hasNext()) {
 			String modelName = (String)i.next();
 			if (!sourceModelsGroupWidgets.containsKey(modelName)) {
+				String mmName = (String) sourceC2RelationshipFromModule.get(modelName);
 				sourceModelsGroupWidgets.put(
 						modelName, 
 						buildModelsAndLibrariesControls(
 								sourceModelsGroup, 
 								modelName, 
+								mmName,
 								IS_SOURCE | IS_MODEL,
 								removableSourceModels.contains(modelName))
 				);
@@ -404,11 +519,13 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		while (i.hasNext()) {
 			String modelName = (String)i.next();
 			if (targetModelsGroupWidgets.get(modelName) == null) {
+				String mmName = (String) targetC2RelationshipFromModule.get(modelName);
 				targetModelsGroupWidgets.put(
 						modelName, 
 						buildModelsAndLibrariesControls(
 								targetModelsGroup, 
 								modelName, 
+								mmName,
 								IS_TARGET | IS_MODEL,
 								removableTargetModels.contains(modelName))
 				);
@@ -426,6 +543,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 						buildModelsAndLibrariesControls(
 								librariesGroup, 
 								libraryName, 
+								null,
 								IS_LIBRARY,
 								removableLibraries.contains(libraryName))
 				);
@@ -460,115 +578,18 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#initializeFrom(org.eclipse.debug.core.ILaunchConfiguration)
 	 */
 	public void initializeFrom(ILaunchConfiguration configuration) {
+		this.configuration = configuration;
 		try {
-			clear();
-			
             superimposedFromLaunchConfig = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
             
 			projectsList.setText(configuration.getAttribute(AtlLauncherTools.PROJECTNAME, ""));
+			projectFilesList.setItems(AtlLauncherTools.fileNames(projectsList.getText()));
 			projectFilesList.setText(configuration.getAttribute(AtlLauncherTools.ATLFILENAME, ""));
-			
-			build();
-			
-			Map savedPaths = configuration.getAttribute(AtlLauncherTools.PATH, new HashMap());
-			Map savedModelHandlers = configuration.getAttribute(AtlLauncherTools.MODELHANDLER, new HashMap());
-			Map savedLibraries = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
-			Map input = configuration.getAttribute(AtlLauncherTools.INPUT, new HashMap());
-			Map output = configuration.getAttribute(AtlLauncherTools.OUTPUT, new HashMap());
-
-			for (Iterator i = input.keySet().iterator(); i.hasNext();) {
-				String mName = (String) i.next();
-				String mmName = (String) input.get(mName);
-				if (!sourceMetamodelsFromModule.contains(mmName)) {
-					sourceMetamodelsFromModule.add(mmName);
-					if (!targetMetamodelsFromModule.contains(mmName)) {
-						removableMetamodels.add(mmName);
-					}
-				}
-				if (!sourceModelsFromModule.contains(mName)) {
-					sourceModelsFromModule.add(mName);
-					sourceC2RelationshipFromModule.put(mName, mmName);
-					removableSourceModels.add(mName);
-				}
-			}
-			
-			for (Iterator i = output.keySet().iterator(); i.hasNext();) {
-				String mName = (String) i.next();
-				String mmName = (String) output.get(mName);
-				if (!targetMetamodelsFromModule.contains(mmName)) {
-					targetMetamodelsFromModule.add(mmName);
-					if (!sourceMetamodelsFromModule.contains(mmName)) {
-						removableMetamodels.add(mmName);
-					}
-				}
-				if (!targetModelsFromModule.contains(mName)) {
-					targetModelsFromModule.add(mName);
-					targetC2RelationshipFromModule.put(mName, mmName);
-					removableTargetModels.add(mName);
-				}
-			}
-			
-			for (Iterator i = savedLibraries.keySet().iterator(); i.hasNext();) {
-				String libraryName = (String) i.next();
-				if (!librariesFromModule.contains(libraryName)) {
-					librariesFromModule.add(libraryName);
-					removableLibraries.add(libraryName);
-				}
-			}
-			
-			build();
-
-			for (Iterator i = savedPaths.keySet().iterator(); i.hasNext();) {
-				String modelName = (String) i.next();
-				if (metamodelsGroupWidgets.get(modelName) != null) {
-					Map widgets = (Map)metamodelsGroupWidgets.get(modelName);
-					Text metamodelLocation = (Text)widgets.get("metamodelLocation");
-					Button isMetametamodel = (Button)widgets.get("isMetametamodel");
-					Combo modelHandlers = (Combo)widgets.get("modelHandlers");
-					
-					if (((String)savedPaths.get(modelName)).startsWith("#")) {
-						isMetametamodel.setSelection(true);
-						isMetametamodel.notifyListeners(SWT.Selection, null);
-					} else {
-						metamodelLocation.setText((String)savedPaths.get(modelName));
-					}
-					
-					for (int item = 0; item < modelHandlers.getItems().length; item++) {
-						if (modelHandlers.getItem(item).equals((String)savedModelHandlers.get(modelName))) {
-							modelHandlers.select(item);
-						}
-					}
-					
-				} else { 
-					Map widgets = null;
-					if (sourceModelsGroupWidgets.get(modelName) != null) {
-						widgets = (Map)sourceModelsGroupWidgets.get(modelName);
-					} else if (targetModelsGroupWidgets.get(modelName) != null) {
-						widgets = (Map)targetModelsGroupWidgets.get(modelName);
-					}
-					if (widgets != null) {
-						Text modelLocation = (Text)widgets.get("location");
-						modelLocation.setText((String)savedPaths.get(modelName));
-					}
-				} 	
-			}
-			
-			for (Iterator i = savedLibraries.keySet().iterator(); i.hasNext();) {
-				String libraryName = (String) i.next();
-				Map widgets = (Map)librariesGroupWidgets.get(libraryName);
-				if (widgets != null) {
-					Text libraryLocation = (Text)widgets.get("location");
-					libraryLocation.setText((String)savedLibraries.get(libraryName));
-				}
-			}
-			
-			canSave();
-			layout();
 		}
 		catch (CoreException e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
 		}
+		rebuild();
 	}
 	
 	/**
@@ -948,11 +969,11 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		return thisGroupWidgets;
 	}
 	
-	private Map buildModelsAndLibrariesControls(Group parent, final String modelName, final int type, boolean removable) {
+	private Map buildModelsAndLibrariesControls(Group parent, final String modelName, final String metamodelName, final int type, boolean removable) {
 		Map thisGroupWidgets = new HashMap();
 		
-		final Label metamodelLabel = new Label(parent, SWT.NULL);
-		metamodelLabel.setText(modelName + ": ");
+		final Label modelLabel = new Label(parent, SWT.NULL);
+		modelLabel.setText(modelName + ": ");
 		
 		final Text location = new Text(parent, SWT.BORDER);
 		thisGroupWidgets.put("location", location);
@@ -966,9 +987,14 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			new Label(parent, SWT.NULL);
 		}
 
+		final Label metamodelLabel = new Label(parent, SWT.NULL);
+		if (metamodelName != null) {
+			metamodelLabel.setText(": " + metamodelName);
+		}
+
 		final Button browseWorkspace = new Button(parent, SWT.NULL);
 		browseWorkspace.setText("Workspace...");
-		browseWorkspace.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 2, 1));
+		browseWorkspace.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		
 		final Button browseFilesystem = new Button(parent, SWT.NULL);
 		browseFilesystem.setText("File system...");
@@ -1017,6 +1043,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 					librariesGroupWidgets.remove(modelName);
 					librariesFromModule.remove(modelName);
 				}
+				modelLabel.dispose();
 				metamodelLabel.dispose();
 				location.dispose();
 				browseWorkspace.dispose();
