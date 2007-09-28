@@ -90,13 +90,13 @@ public class EMFModelLoader extends ModelLoader {
 		if("useIDs".equals(name)) {
 			if("true".equals(value)) {
 				useIDs = true;
-			} else if("true".equals(value)) {
+			} else if("false".equals(value)) {
 				useIDs = false;				
 			}
 		} else if("removeIDs".equals(name)) {
 			if("true".equals(value)) {
 				removeIDs = true;
-			} else if("true".equals(value)) {
+			} else if("false".equals(value)) {
 				removeIDs = false;				
 			}
 		} else if("encoding".equals(name)) {
