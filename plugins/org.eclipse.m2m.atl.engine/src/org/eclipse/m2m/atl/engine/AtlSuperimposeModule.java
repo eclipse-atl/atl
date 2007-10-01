@@ -127,12 +127,6 @@ public class AtlSuperimposeModule {
             throw new AtlSuperimposeModuleException(
                     "Instruction \"set links\" not found in main");
         }
-//        String instr21 = main.getInstructions().get(20).toString();
-//        if (!instr21.equals("set links")) {
-//            throw new AtlSuperimposeModuleException(
-//                    "Unexpected instruction sequence in main (" +
-//                    instr21 + " @ 21)");
-//        }
         String instr1 = main.getInstructions().get(0).toString();
         if (instr1.equals("getasm")) {
             atl2006 = true;
@@ -204,28 +198,15 @@ public class AtlSuperimposeModule {
     }
     
     /**
-     * Copies the "from" helper init instructions that do not occur in "into" to "into".
+     * Copies the "from" helper init instructions to "into".
      * @param from The list of instructions to copy the helper init code from.
      * @param into The list of instructions to augment.
      */
     private void insertHelperInits(List from, List into) {
-        int endOfInitCode = indexOfInstruction(from, "set links", 16) - 4;
-        List initInstr = from.subList(16, endOfInitCode);
-        int pos = indexOfInstruction(into, "set links", 16) - 4;
-        String intoRun = serialise(into, 0, into.size());
-        int startIndex = 0;
-        int setIndex = indexOfInstruction(initInstr, "set", startIndex);
-        while (setIndex != -1) {
-            String initInstrRun = serialise(initInstr, startIndex, setIndex-startIndex+1);
-            if (intoRun.indexOf(initInstrRun) == -1) {
-                for (int i = startIndex; i <= setIndex; i++) {
-                    into.add(pos, initInstr.get(i));
-                    pos++;
-                }
-            }
-            startIndex = setIndex + 1;
-            setIndex = indexOfInstruction(initInstr, "set", startIndex);
-        }
+        final int endOfInitCode = indexOfInstruction(from, "set links", 16) - 4;
+        final List initInstr = from.subList(16, endOfInitCode);
+        final int pos = indexOfInstruction(into, "set links", 16) - 4;
+        into.addAll(pos, initInstr);
     }
 
     /**
