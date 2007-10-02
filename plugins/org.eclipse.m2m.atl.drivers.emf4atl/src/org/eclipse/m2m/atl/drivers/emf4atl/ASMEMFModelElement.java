@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.ClassNativeOperation;
 import org.eclipse.m2m.atl.engine.vm.Operation;
@@ -227,6 +228,13 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 
 		super.set(frame, name, value);
 		EStructuralFeature feature = object.eClass().getEStructuralFeature(name);
+		
+		if("__xmiID__".equals(name)) {
+			Resource r = ((ASMEMFModel)getModel()).getExtent();
+			logger.warning("\t\tManual setting of " + this + ":" + getType() + " XMI ID.");
+			((XMLResource)r).setID(object, value.toString());
+			return;
+		}
 		if(feature == null) {
 			String msg = "feature " + name + " does not exist on " + getType();
 			if(frame == null) {
