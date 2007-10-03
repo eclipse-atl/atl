@@ -52,6 +52,23 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 		}		
 	}
 	
+	@Override
+	protected void clean(IProgressMonitor monitor) throws CoreException {
+		super.clean(monitor);
+		IWorkspaceRunnable wr= new IWorkspaceRunnable() {
+			public void run(IProgressMonitor monitor) throws CoreException {				
+				try {
+					IProject p = getProject();
+					monitor.beginTask("Cleaning ATL files of project " + p.getName(), IProgressMonitor.UNKNOWN);
+					p.accept(new AtlCleanVisitor(monitor));
+				} catch (CoreException e) {
+					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				}		
+			}
+		};
+		run(wr, monitor);								
+	}
+	
 	/**
 	 * Execute the given workspace runnable
 	 */
