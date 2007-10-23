@@ -1,11 +1,13 @@
 package org.eclipse.m2m.atl.engine;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
 import org.eclipse.m2m.atl.engine.vm.ASMInstruction;
+import org.eclipse.m2m.atl.engine.vm.ASMInstructionWithOperand;
 import org.eclipse.m2m.atl.engine.vm.ASMOperation;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
 
@@ -206,9 +208,34 @@ public class AtlSuperimposeModule {
         final int endOfInitCode = indexOfInstruction(from, "set links", 16) - 4;
         final List initInstr = from.subList(16, endOfInitCode);
         final int pos = indexOfInstruction(into, "set links", 16) - 4;
+        transposeOffsets(into, initInstr.size(), pos);
+        transposeOffsets(initInstr, pos - 16, 0);
         into.addAll(pos, initInstr);
     }
 
+    /**
+     * Transposes the offset address of "if" and "goto" instructions.
+     * @param instructions The instructions to adapt.
+     * @param transpose The amount to transpose up/down.
+     * @param start The offset from which to start transposing.
+     */
+    private void transposeOffsets(List instructions, int transpose, int start) {
+    	for (Iterator i = instructions.iterator(); i.hasNext();) {
+    		Object instruction = i.next();
+    		if (instruction instanceof ASMInstructionWithOperand) {
+    			ASMInstructionWithOperand instr =  (ASMInstructionWithOperand) instruction;
+    			String mn = instr.getMnemonic();
+    			if ((mn == "if") || (mn == "goto")) {
+    				int offset = Integer.parseInt(instr.getOperand());
+    				if (offset >= start) {
+    					offset += transpose;
+    					instr.setOperand(String.valueOf(offset));
+    				}
+    			}
+    		}
+    	}
+    }
+    
     /**
      * Performs sanity check and cross-check on pattern repetition
      * and equality in op1 and op2.
