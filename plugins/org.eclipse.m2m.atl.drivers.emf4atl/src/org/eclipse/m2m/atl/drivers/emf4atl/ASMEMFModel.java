@@ -207,6 +207,9 @@ public class ASMEMFModel extends ASMModel {
 		ASMEMFModel ret = null;
 		
 		ret = new ASMEMFModel(name, extent, metamodel, false, ml);
+        ret.addAllReferencedExtents(extent);
+		ret.setIsTarget(false);
+		adaptMetamodel(ret, metamodel);
 		
 		return ret;
 	}
