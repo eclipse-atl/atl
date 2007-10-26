@@ -338,7 +338,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="elementType" ordered="false"
           lowerBound="1" eType="#/1/OclType" containment="true" eOpposite="#/1/OclType/collectionTypes"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="OclType" abstract="true" eSuperTypes="#/1/OclExpression">
+    <eClassifiers xsi:type="ecore:EClass" name="OclType" eSuperTypes="#/1/OclExpression">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
           unique="false" lowerBound="1" eType="#/2/String"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="definitions" ordered="false"
