@@ -339,7 +339,7 @@ package OCL {
 		reference elementType container : OclType oppositeOf collectionTypes;
 	}
 
-	abstract class OclType extends OclExpression {
+	class OclType extends OclExpression {
 		attribute name : String;
 		
 		-- Opposite references:
