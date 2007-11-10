@@ -52,7 +52,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 		}		
 	}
 	
-	@Override
+	//@Override
 	protected void clean(IProgressMonitor monitor) throws CoreException {
 		super.clean(monitor);
 		IWorkspaceRunnable wr= new IWorkspaceRunnable() {
