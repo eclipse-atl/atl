@@ -345,6 +345,19 @@ acg ATL startsWith Unit {
 			)
 		endif;
 
+	function MatchedRule::mostConcreteVariables() =
+		if self.superRule.oclIsUndefined() then
+			self.variables
+		else
+			let this = self.variables in
+			let thisNames = this->collect(e | e.varName) in
+			this.union(
+				self.superRule.mostConcreteVariables()->select(e |
+					not thisNames.includes(e.varName)
+				)
+			)
+		endif;
+
 	function MatchedRule::inPatternElements() =
 		self.rootRule().inPattern.elements;
 
@@ -414,7 +427,7 @@ acg ATL startsWith Unit {
 			call 'NTransientLink;.addSourceElement(SJ):V'
 		}
 
-		foreach(v in self.variables) {
+		foreach(v in self.mostConcreteVariables()) {
 			dup
 			push v.varName
 			analyze v.initExpression
@@ -456,7 +469,7 @@ acg ATL startsWith Unit {
 						call 'NTransientLink;.getTargetElement(S):J'
 						variable ope named ope.varName {
 						[
-							foreach(v in self.variables) {
+							foreach(v in self.mostConcreteVariables()) {
 								load 'link'
 								push v.varName
 								call 'NTransientLink;.getVariable(S):J'
@@ -677,7 +690,7 @@ acg ATL startsWith Unit {
 
 			-- we only select the first subRule that matches (there should be only one anyway)
 			if(subRule = self) {
-				foreach(v in self.variables) {
+				foreach(v in self.mostConcreteVariables()) {
 					analyze v.initExpression
 					variable v named v.varName {
 					[
@@ -695,7 +708,7 @@ acg ATL startsWith Unit {
 	}
 
 	LazyMatchedRule mode checkSubRules {
-		foreach(v in self.variables) {
+		foreach(v in self.mostConcreteVariables()) {
 			analyze v.initExpression
 			variable v named v.varName {
 			[
