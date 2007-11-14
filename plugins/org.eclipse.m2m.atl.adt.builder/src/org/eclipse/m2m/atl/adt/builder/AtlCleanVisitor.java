@@ -1,21 +1,14 @@
 package org.eclipse.m2m.atl.adt.builder;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.engine.AtlCompiler;
-import org.eclipse.m2m.atl.engine.CompilerNotFoundException;
-import org.eclipse.m2m.atl.engine.MarkerMaker;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 public class AtlCleanVisitor implements IResourceVisitor {
