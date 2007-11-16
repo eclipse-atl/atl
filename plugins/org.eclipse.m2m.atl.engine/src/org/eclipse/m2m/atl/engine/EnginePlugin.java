@@ -3,12 +3,12 @@ package org.eclipse.m2m.atl.engine;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.core.runtime.Plugin;
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class EnginePlugin extends AbstractUIPlugin {
+public class EnginePlugin extends Plugin {
 	//The shared instance.
 	private static EnginePlugin plugin;
 	//Resource bundle.
