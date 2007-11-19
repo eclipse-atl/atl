@@ -76,7 +76,9 @@ public class AtlBuildVisitor implements IResourceVisitor {
 				EObject[] pbms = AtlCompiler.getDefault().compile(is, out);
 				markerMaker.resetPbmMarkers(resource, pbms);
 				IFile asmFile = getAsmFile(resource);
-				asmFile.setDerived(true);
+				if (asmFile.exists()) {
+					asmFile.setDerived(true);					
+				}
 			} catch(CompilerNotFoundException cnfee) {
 				IMarker marker = resource.createMarker(IMarker.PROBLEM);
 				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
