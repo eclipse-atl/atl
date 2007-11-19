@@ -53,7 +53,7 @@ public class ASMInteger extends ASMNumber {
 	}
 
 	public static ASMInteger min(StackFrame frame, ASMInteger self, ASMInteger o) {
-		return new ASMInteger(Math.max(self.s, o.s));
+		return new ASMInteger(Math.min(self.s, o.s));
 	}
 	
 /* TODO: operation overloading is not supported yet.
