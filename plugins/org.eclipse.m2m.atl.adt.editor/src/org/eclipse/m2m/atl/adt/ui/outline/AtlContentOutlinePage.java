@@ -500,7 +500,9 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 */
 	private void showItem(EObject element) {
 		int[] pos = getPos(element);
-		textEditor.setHighlightRange(pos[0], pos[1] - pos[0], false);
+		if (pos != null) {
+			textEditor.setHighlightRange(pos[0], pos[1] - pos[0], false);			
+		}
 		treeViewer.setSelection(new StructuredSelection(element), true);		
 	}
 	
