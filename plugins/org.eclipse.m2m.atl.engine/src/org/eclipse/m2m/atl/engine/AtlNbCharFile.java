@@ -21,7 +21,7 @@ import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
  * for each line the position of its first char and the position of the tabs
  */
 public class AtlNbCharFile {
-	
+
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static final int ANTLR_TAB_WIDTH = 1;
@@ -34,16 +34,16 @@ public class AtlNbCharFile {
 	class Line {
 		/** Absolute offset of the first char of the line. */
 		int indexFirstChar;
-		
+
 		/** Relative offset of each tab in the current line. */
 		List indexTabs;
-		
+
 		/**
 		 * Actual width of each tab (using ANTLR_TAB_WIDTH as standard tab size).
 		 * Seems useless (to remove? if so, also remove computation in computePosition).
 		 * */
 		List tabsWidth;
-		
+
 		public Line(int indexFirstChar, List indexTabs, List tabsWidth) {
 			this.indexFirstChar = indexFirstChar;
 			this.indexTabs = indexTabs;
@@ -89,7 +89,7 @@ public class AtlNbCharFile {
 					tabsWidth = new ArrayList();
 					currentCharInLine = -1;		// first char of a line has index 0 (see currentCharInLine++ below)
 					nbCharsSinceLastTab = -1;
-					
+
 					if(currentChar == -1) break;
 				}
 				else if ((char) currentChar == '\t') {
@@ -121,7 +121,7 @@ public class AtlNbCharFile {
 	 */
 	public int getIndexChar(int lineNumber, int column, int tabWidth) {
 		int ret = 0;
-		
+
 		if(!((lineNumber == 1) && (column == 1))) {
 			int indexOffset = 0;
 			// When editor is dirty(changed and not saved), outline is not synchronised with editor
@@ -146,10 +146,10 @@ public class AtlNbCharFile {
 		}
 		return ret;
 	}
-/*	
+	/*	
 	private int getIndexChar(int lineNumber, int column) {
 		int ret = 0;
-		
+
 		if(!((lineNumber == 1) && (column == 1))) {
 			int indexOffset = 0;
 			// When editor is dirty(changed and not saved), outline is not synchronised with editor
@@ -174,7 +174,7 @@ public class AtlNbCharFile {
 		}
 		return ret;
 	}
-*/
+	 */
 	public int[] getIndexChar(String sourceLocation) {
 		return getIndexChar(sourceLocation, ANTLR_TAB_WIDTH);
 	}
@@ -184,9 +184,10 @@ public class AtlNbCharFile {
 	 */
 	public int[] getIndexChar(String sourceLocation, int tabWidth) {
 		int ret[] = new int[2];
-		
+
 		if(tabWidth < 0) tabWidth = ANTLR_TAB_WIDTH;
 
+		/*
 		String ss[] = sourceLocation.split("-");
 		String starts[] = ss[0].split(":");
 		int startLine = Integer.parseInt(starts[0]);
@@ -194,15 +195,28 @@ public class AtlNbCharFile {
 		String ends[] = ss[1].split(":");
 		int endLine = Integer.parseInt(ends[0]);
 		int endColumn = Integer.parseInt(ends[1]) - 1;
-		
-//		ret[0] = getIndexChar(startLine, startColumn);
-//		ret[1] = getIndexChar(endLine, endColumn);
+
 		ret[0] = getIndexChar(startLine, startColumn, tabWidth);
 		ret[1] = getIndexChar(endLine, endColumn, tabWidth);
-
+		 */
+		
+		String locRegex = "^(-?\\d{1,9}):(-?\\d{1,9})-(-?\\d{1,9}):(-?\\d{1,9})$";
+		if (sourceLocation.matches(locRegex)) {
+			ret[0] = getIndexChar(
+					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$1")),  
+					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$2")) - 1, 
+					tabWidth);
+			ret[1] = getIndexChar(
+					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$3")),
+					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$4")) - 1,
+					tabWidth);
+		} else {
+			ret[0] = 0;
+			ret[1] = -1;
+		}
 		return ret;
 	}
-	
+
 	/**
 	 * @return computes the char start position from the string "cursorLine:cursorColumn" given by Eclipse (tabs are 4 chars long by default, but it is user-configurable)
 	 * @param cursorPosition the string representing the cursor position
@@ -216,5 +230,5 @@ public class AtlNbCharFile {
 		ret = getIndexChar(startLine, startColumn, 4);
 		return ret;
 	}
-	
+
 }
