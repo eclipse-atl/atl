@@ -1,6 +1,7 @@
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -29,10 +30,18 @@ public class ASMBag extends ASMCollection {
 		s = new ArrayList(init);
 	}
 
-	public ASMBag including(ASMOclAny o) {
-		ASMBag ret = new ASMBag(this);
+	public static ASMBag including(StackFrame frame, ASMBag self, ASMOclAny o) {
+		ASMBag ret = new ASMBag(self);
 
 		ret.s.add(o);
+
+		return ret;
+	}
+	
+	public static ASMBag excluding(StackFrame frame, ASMBag self, ASMOclAny o) {
+		ASMBag ret = new ASMBag(self);
+
+		ret.s.removeAll(Arrays.asList(new ASMOclAny[] {o}));
 
 		return ret;
 	}
