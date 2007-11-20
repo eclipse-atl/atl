@@ -127,8 +127,36 @@ public class ASMSet extends ASMCollection {
 	
 	
 	// count already in ASMCollection
+		
+	public static ASMSet flatten(StackFrame frame, ASMSet self) {
+		Set base = null;
+		Set ret = new HashSet(self.collection());
+		boolean containsCollection;
+		do {
+			base = ret;
+			ret = new HashSet();
+			containsCollection = false;
+			Iterator iterator = base.iterator();
+			while (iterator.hasNext()) {
+				ASMOclAny object = (ASMOclAny) iterator.next();
+				if (object instanceof ASMCollection) {
+					ASMCollection subCollection = (ASMCollection) object;
+					ret.addAll(subCollection.collection());
+					Iterator subIterator = subCollection.iterator();
+					while (containsCollection == false && subIterator.hasNext()) {
+						ASMOclAny subCollectionObject = (ASMOclAny) subIterator.next();
+						if (subCollectionObject instanceof ASMCollection) {
+							containsCollection = true;
+						}
+					}
+				} else {
+					ret.add(object);
+				}
+			}
+		} while (containsCollection);
+		return new ASMSet(ret);
+	}
 	
-	// TODO: flatten() : Set(T2)
 
 	public static ASMSet asSet(StackFrame frame, ASMSet self) {
 		return self;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
@@ -86,24 +87,34 @@ public class ASMSequence extends ASMCollection {
 		return ret;
 	}
 
-	// TODO: recursive flatten + for Bag and Set
 	public static ASMSequence flatten(StackFrame frame, ASMSequence self) {
-		ASMSequence ret = new ASMSequence();
-
-		for(Iterator i = self.s.iterator() ; i.hasNext() ; ) {
-			Object o = i.next();
-			if(o instanceof ASMCollection) {
-				for(Iterator j = ((ASMCollection)o).iterator() ; j.hasNext() ; ) {
-					ret.s.add(j.next());
+		List base = null;
+		List ret = new ArrayList(self.collection());
+		boolean containsCollection;
+		do {
+			base = ret;
+			ret = new ArrayList();
+			containsCollection = false;
+			for (int i = 0; i < base.size(); i++) {
+				ASMOclAny object = (ASMOclAny) base.get(i);
+				if (object instanceof ASMCollection) {
+					ASMCollection subCollection = (ASMCollection) object;
+					ret.addAll(subCollection.collection());
+					Iterator iterator = subCollection.iterator();
+					while (containsCollection == false && iterator.hasNext()) {
+						ASMOclAny subCollectionObject = (ASMOclAny) iterator.next();
+						if (subCollectionObject instanceof ASMCollection) {
+							containsCollection = true;
+						}
+					}
+				} else {
+					ret.add(object);
 				}
-			} else {
-				ret.s.add(o);
-			}	
-		}
-
-		return ret;
+			}
+		} while (containsCollection);
+		return new ASMSequence(ret);
 	}
-
+	
 	public static ASMSequence append(StackFrame frame, ASMSequence self, ASMOclAny o) {
 		return including(frame, self, o);
 	}

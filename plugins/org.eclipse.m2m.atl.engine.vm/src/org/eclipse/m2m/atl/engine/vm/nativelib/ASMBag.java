@@ -76,6 +76,35 @@ public class ASMBag extends ASMCollection {
 		return self;
 	}
 	
+	public static ASMBag flatten(StackFrame frame, ASMBag self) {
+		List base = null;
+		List ret = new ArrayList(self.collection());
+		boolean containsCollection;
+		do {
+			containsCollection = false;
+			base = ret;
+			ret = new ArrayList();
+			Iterator iterator = base.iterator();
+			while (iterator.hasNext()) {
+				ASMOclAny object = (ASMOclAny) iterator.next();
+				if (object instanceof ASMCollection) {
+					ASMCollection subCollection = (ASMCollection) object;
+					ret.addAll(subCollection.collection());
+					Iterator subIterator = subCollection.iterator();
+					while (containsCollection == false && subIterator.hasNext()) {
+						ASMOclAny subCollectionObject = (ASMOclAny) subIterator.next();
+						if (subCollectionObject instanceof ASMCollection) {
+							containsCollection = true;
+						}
+					}
+				} else {
+					ret.add(object);
+				}
+			}
+		} while (containsCollection);
+		return new ASMBag(ret);
+	}
+	
 	private List s;
 }
 
