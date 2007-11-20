@@ -124,7 +124,7 @@ public class ASMOperation extends Operation {
 				((ASMInstructionWithOperand)i.next()).setOperand(id);
 			}
 		}
-		
+
 		public String getName() {
 			return name;
 		}
@@ -210,14 +210,14 @@ public class ASMOperation extends Operation {
 							break;
 						}
 					}
-					
-					
+
+
 //					for(Iterator j = frame.getModel(mname).getSubModels().values().iterator() ; j.hasNext() ; ) {
-//						ASMModel model = (ASMModel)j.next();
-//						if(frame.getModels().containsValue(model) && model.isTarget()) {
-//							frame.push(model.newModelElement(frame, me));
-//							break;
-//						}
+//					ASMModel model = (ASMModel)j.next();
+//					if(frame.getModels().containsValue(model) && model.isTarget()) {
+//					frame.push(model.newModelElement(frame, me));
+//					break;
+//					}
 //					}
 				}
 			} else if(mn == "call") {
@@ -332,7 +332,7 @@ public class ASMOperation extends Operation {
 						if(nested == 0) {
 							break;
 						} 
-					    nested--;
+						nested--;
 					} else if(mnc == "iterate") {
 						nested++;
 					}
@@ -344,16 +344,16 @@ public class ASMOperation extends Operation {
 		}
 	}
 
-// BEGIN SIGNATURE TOOLS
+//	BEGIN SIGNATURE TOOLS
 	private static Pattern pattern1 = Pattern.compile("^.*\\(");
-	
+
 	private static int getNbArgs(String s) {
 		int ret = 0;
 
 		s = pattern1.matcher(s).replaceFirst("");
-		while(!s.startsWith(")")) {
+		while(!s.startsWith(")") && s.length() > 0) {
 			ret++;
-			 s = removeFirst(s);
+			s = removeFirst(s);
 		}
 
 		return ret;
@@ -381,7 +381,7 @@ public class ASMOperation extends Operation {
 	private static String getOpName(String s) {
 		return s.substring(s.indexOf(".") + 1, s.indexOf("("));
 	}
-// END SIGNATURE TOOLS
+//	END SIGNATURE TOOLS
 
 	/** Temporary storage for lineNumberEntries began but not yet ended. */
 	private Map lineNumberEntries = new HashMap();
@@ -534,11 +534,11 @@ public class ASMOperation extends Operation {
 	private ASM asm;
 
 	private ASMOclType contextType;
-	
+
 	public void setContextType(ASMOclType contextType) {
 		this.contextType = contextType;
 	}
-	
+
 	public ASMOclType getReturnType() {
 		// TODO Auto-generated method stub
 		return null;
