@@ -80,6 +80,8 @@ public class MarkerMaker {
 		} catch (CoreException e1) {
 			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 //			e1.printStackTrace();
+		} catch(Exception e) {
+			description += " [location \"" + location + "\" incorrectly reported because of error]";
 		}
 		
 		String severity = ((EEnumLiteral)problem.eGet(sfSeverity)).getName();
