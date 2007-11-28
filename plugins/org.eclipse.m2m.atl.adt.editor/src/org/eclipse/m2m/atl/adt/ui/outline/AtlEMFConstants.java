@@ -20,6 +20,7 @@ public abstract class AtlEMFConstants {
 	public static EStructuralFeature sfModule_elements = null;
 	public static EClass clRule = null;
 	public static EClass clMatchedRule = null;
+	public static EClass clLazyMatchedRule = null;
 	public static EClass clCalledRule = null;
 	public static EClass clHelper = null;
 	public static EStructuralFeature sfHelper_definition = null;
