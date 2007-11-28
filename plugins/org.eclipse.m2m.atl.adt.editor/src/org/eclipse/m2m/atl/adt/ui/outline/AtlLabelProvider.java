@@ -57,6 +57,7 @@ public class AtlLabelProvider extends LabelProvider {
 	  		}
 	  	});
 	  	readers.put(AtlEMFConstants.clMatchedRule, readers.get(AtlEMFConstants.clRule));
+	  	readers.put(AtlEMFConstants.clLazyMatchedRule, readers.get(AtlEMFConstants.clRule));
 	  	readers.put(AtlEMFConstants.clCalledRule, readers.get(AtlEMFConstants.clRule));
 	  	
 	  	readers.put(AtlEMFConstants.clHelper, new Reader() {
@@ -129,6 +130,7 @@ public class AtlLabelProvider extends LabelProvider {
 		  			AtlEMFConstants.sfModule_elements = AtlEMFConstants.clModule.getEStructuralFeature("elements");
 		  		AtlEMFConstants.clRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Rule");
 		  		AtlEMFConstants.clMatchedRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("MatchedRule");
+		  		AtlEMFConstants.clLazyMatchedRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("LazyMatchedRule");
 		  		AtlEMFConstants.clCalledRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("CalledRule");
 		  		AtlEMFConstants.clHelper = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Helper");
 		  			AtlEMFConstants.sfHelper_definition = AtlEMFConstants.clHelper.getEStructuralFeature("definition");
@@ -164,6 +166,7 @@ public class AtlLabelProvider extends LabelProvider {
 	  	classToImages.put("LibraryRef", "libsreference.gif");
 	  	classToImages.put("Helper", "helper.gif");
 	  	classToImages.put("MatchedRule", "matchedRule.gif");
+	  	classToImages.put("LazyMatchedRule", "lazyRule.gif");
 	  	classToImages.put("Operation", "operation.gif");
 	  	classToImages.put("InPattern", "inPattern.gif");
 	  	classToImages.put("OutPattern", "outPattern.gif");	  	
