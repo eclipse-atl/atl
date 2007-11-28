@@ -775,13 +775,6 @@ if(debug)
 				return localVars[0];
 			}
 		});
-		operationsByName.put("asSet", new Operation(1) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				Set ret = new HashSet((Collection)localVars[0]);
-				return ret;
-			}
-		});
 		operationsByName.put("first", new Operation(1) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
@@ -1058,6 +1051,13 @@ if(debug)
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 				return new ArrayList((Collection)localVars[0]);
+			}
+		});
+		operationsByName.put("asSet", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				Set ret = new HashSet((Collection)localVars[0]);
+				return ret;
 			}
 		});
 
