@@ -58,6 +58,8 @@ import org.eclipse.m2m.atl.adt.ui.text.AtlPairMatcher;
 import org.eclipse.m2m.atl.adt.ui.text.AtlSourceViewerConfiguration;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlLexems;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlPartitions;
+import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionDataSource;
+import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionProcessor;
 import org.eclipse.m2m.atl.adt.ui.viewsupport.AtlEditorTickErrorUpdater;
 import org.eclipse.m2m.atl.engine.AtlNbCharFile;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
@@ -76,7 +78,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.TextEditor;
-import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.IEditorStatusLine;
 import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
@@ -652,7 +653,7 @@ public class AtlEditor extends TextEditor {
 	 */
 	public AtlEditor() {
 		super();
-//		setPreferenceStore(AtlUIPlugin.getDefault().getPreferenceStore());
+		setPreferenceStore(AtlUIPlugin.getDefault().getPreferenceStore());
 		tickErrorUpdater = new AtlEditorTickErrorUpdater(this);			
 	}
 	
@@ -818,6 +819,12 @@ public class AtlEditor extends TextEditor {
 		super.doSave(progressMonitor);
 		if (outlinePage != null)
 		    outlinePage.setUnit();
+		AtlSourceViewerConfiguration sourceViewerConfiguration = (AtlSourceViewerConfiguration) getSourceViewerConfiguration();
+		AtlCompletionProcessor processor = (AtlCompletionProcessor) sourceViewerConfiguration.getFProcessor();
+		AtlCompletionDataSource datasource = processor.getCompletionDatasource();
+		if (datasource != null) {
+			datasource.updateDataSource();
+		}	
 	}
 	
 	protected void doSelectionChanged(SelectionChangedEvent event) {
@@ -1198,4 +1205,7 @@ public class AtlEditor extends TextEditor {
 		setTitleImage(image);
 	}
 	
+	public AtlContentOutlinePage getOutlinePage() {
+		return outlinePage;
+	}	
 }

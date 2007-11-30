@@ -550,4 +550,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
     	}
     }
     
+	public EObject getModel() {
+		return root.getUnit();
+	}
 }

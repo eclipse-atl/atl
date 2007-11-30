@@ -82,7 +82,7 @@ public class AtlContentAssistPreference {
 	public static void configure(ContentAssistant assistant, IPreferenceStore store) {
 		AtlColorManager manager = AtlUIPlugin.getDefault().getTextTools().getColorManager();		
 		
-		assistant.enableAutoActivation(store.getBoolean(AtlPreferenceConstants.CODEASSIST_AUTOACTIVATION_ENABLE));
+		assistant.enableAutoActivation(store.getBoolean(AtlPreferenceConstants.CODEASSIST_AUTOACTIVATION_ENABLE));		
 		assistant.setAutoActivationDelay(store.getInt(AtlPreferenceConstants.CODEASSIST_AUTOACTIVATION_DELAY));
 		assistant.enableAutoInsert(store.getBoolean(AtlPreferenceConstants.CODEASSIST_AUTOINSERT));
 		assistant.setProposalSelectorBackground(getColor(store, AtlPreferenceConstants.CODEASSIST_PROPOSALS_BACKGROUND, manager));

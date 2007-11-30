@@ -1,273 +1,360 @@
-/*
- * Created on 22 juil. 2004
- */
+/*******************************************************************************
+ * Copyright (c) 2006, 2007 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - completion system
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text.atl;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jface.text.IDocument;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
-import org.eclipse.jface.text.contentassist.IContextInformationExtension;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
-import org.eclipse.m2m.atl.adt.ui.text.AtlCodeReader;
-import org.eclipse.m2m.atl.adt.ui.text.IAtlLexems;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.ui.IEditorPart;
 
-
 /**
- * This class represents the processor for completions and computes the content information.
- * 
- * @author C. MONTI for ATL Team
+ * The completion processor, provides content assist.
+ *
+ * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
  */
 public class AtlCompletionProcessor implements IContentAssistProcessor {
-	
-	private static class ContextInformationWrapper implements IContextInformation, IContextInformationExtension {
-		
-		private final IContextInformation fContextInformation;
-		private int fPosition;
-		
-		public ContextInformationWrapper(IContextInformation contextInformation) {
-			fContextInformation= contextInformation;
-		}
-		
-		/*
-		 * @see org.eclipse.jface.text.contentassist.IContextInformation#equals(java.lang.Object)
-		 */
-		public boolean equals(Object object) {
-			if (object instanceof ContextInformationWrapper)
-				return fContextInformation.equals(((ContextInformationWrapper) object).fContextInformation);
-			else
-				return fContextInformation.equals(object);
-		}
-		
-		/*
-		 * @see IContextInformation#getContextDisplayString()
-		 */
-		public String getContextDisplayString() {
-			return fContextInformation.getContextDisplayString();
-		}
-		
-		/*
-		 * @see IContextInformationExtension#getContextInformationPosition()
-		 */
-		public int getContextInformationPosition() {
-			return fPosition;
-		}
-		
-		/*
-		 * @see IContextInformation#getImage()
-		 */
-		public Image getImage() {
-			return fContextInformation.getImage();
-		}
-		
-		/*
-		 * @see IContextInformation#getInformationDisplayString()
-		 */
-		public String getInformationDisplayString() {
-			return fContextInformation.getInformationDisplayString();
-		}
-		
-		public void setContextInformationPosition(int position) {
-			fPosition= position;	
-		}
-	}
-	
+
+	/** the ATL code analyser */
+	private AtlCompletionHelper fHelper;
+
 	private AtlCompletionProposalComparator fComparator;
-//	private IEditorPart fEditor;
-//	private int fNumberOfComputedResults;
-	private char[] fProposalAutoActivationSet;
+
 	private AtlParameterListValidator fValidator;
-	
-	public AtlCompletionProcessor(IEditorPart editor) {
-//		fEditor = editor;
-		fComparator = new AtlCompletionProposalComparator();
-	}
+
+	/** the editor */
+	private AtlEditor fEditor;
+
+	/** the completion data source */
+	private AtlCompletionDataSource fDatasource;
+
+	private char[] fProposalAutoActivationSet = new char[]{' '};
+
 	/**
-	 * Adds a new proposal in the completion list.
-	 * 
-	 * @param proposal the string to add
-	 * @param proposals the completion list
-	 * @param documentOffset the offset in the document of the proposal
+	 * Constructor.
+	 * @param editor
 	 */
-	private void addCompletionProposal(String proposal, List proposals, int documentOffset) {
-		proposals.add(
-				new AtlCompletionProposal(proposal, documentOffset, proposal.length(), null, proposal + " ", documentOffset));
+	public AtlCompletionProcessor(IEditorPart editor) {
+		fEditor = (AtlEditor) editor;
+		fDatasource = new AtlCompletionDataSource(fEditor);
+		fComparator = new AtlCompletionProposalComparator();
+		fHelper = new AtlCompletionHelper();
 	}
-	
-	private List addContextInformations(ITextViewer viewer, int offset) {
-		ICompletionProposal[] proposals= internalComputeCompletionProposals(viewer, offset, -1);
-		
-		List result= new ArrayList();
-		for (int i= 0; i < proposals.length; i++) {
-			IContextInformation contextInformation= proposals[i].getContextInformation();
-			if (contextInformation != null) {
-				ContextInformationWrapper wrapper= new ContextInformationWrapper(contextInformation);
-				wrapper.setContextInformationPosition(offset);
-				result.add(wrapper);				
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeCompletionProposals(org.eclipse.jface.text.ITextViewer,
+	 *      int)
+	 */
+	public ICompletionProposal[] computeCompletionProposals(
+			ITextViewer refViewer, int documentOffset) {	
+		if (!fDatasource.initialized()) {
+			fDatasource.updateDataSource();
+		}
+		try {
+			List listProposals = new ArrayList();
+			fHelper.setDocument(refViewer.getDocument());
+
+			ITextSelection selection = (ITextSelection) refViewer.getSelectionProvider().getSelection();
+			int offset = selection.getOffset() + selection.getLength();
+			String prefix = fHelper.extractPrefix(offset);
+
+			AtlModelAnalyser analyser = fHelper.computeContext(offset, prefix);
+
+			listProposals.addAll(getProposalsFromAnalyser(analyser, prefix,
+					offset));
+
+			ICompletionProposal[] proposals = (ICompletionProposal[]) listProposals
+			.toArray(new ICompletionProposal[listProposals.size()]);
+			return proposals;
+
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Determine proposals from a given analyser.
+	 * 
+	 * @param analyser the ATL model analyser
+	 * @param prefix the completion prefix
+	 * @param offset the completion offset
+	 * @return the proposals
+	 * @throws BadLocationException
+	 */
+	private List getProposalsFromAnalyser(AtlModelAnalyser analyser,
+			String prefix, int offset) throws BadLocationException {
+		String line = fHelper.getCurrentLine(offset);
+		/*
+		 * URIs completion 
+		 */
+		if (analyser.getContext() == AtlModelAnalyser.NULL_CONTEXT) {
+			if (line.trim().startsWith("-- @"+AtlCompletionDataSource.URI_TAG)) {
+				if (prefix.contains("=")) {
+					if (prefix.split("=").length == 2) {
+						String uriPrefix = prefix.split("=")[1];
+						return fDatasource.getURIProposals(uriPrefix, offset);
+					} else if (prefix.endsWith("=")) {
+						return fDatasource.getURIProposals("", offset);
+					}
+				}
+			}
+		} else {
+			// no completion on comments
+			if (!line.contains("--")) {
+
+				EObject locatedElement = analyser.getLocatedElement(offset
+						- prefix.length());
+				if (locatedElement != null) {
+
+					switch (analyser.getContext()) {
+
+					/*
+					 * HELPER COMPLETION
+					 */
+					case AtlModelAnalyser.HELPER_CONTEXT :
+						if (oclIsKindOf(locatedElement, "OclModel") || oclIsKindOf(locatedElement, "OclType")){
+							return fDatasource.getHelperTypesProposals(prefix, offset);
+						}
+						break;
+
+						/*
+						 * INPUT PATTERN COMPLETION
+						 */
+					case AtlModelAnalyser.FROM_CONTEXT :
+						if (oclIsKindOf(locatedElement, "OclModel") || 
+								oclIsKindOf(locatedElement, "OclModelElement")) {
+							if (analyser.getLostType("InPattern") != null) {
+								return fDatasource.getMetaElementsProposals(prefix,offset,AtlCompletionDataSource.INPUT_METAMODELS);
+							}
+						}
+						break;
+
+						/*
+						 * OUTPUT PATTERN COMPLETION
+						 */
+					case AtlModelAnalyser.TO_CONTEXT:
+						if ((oclIsKindOf(locatedElement, "OclModel") || oclIsKindOf(locatedElement, "OclModelElement")) ||
+								(oclIsKindOf(locatedElement,"SimpleOutPatternElement"))) {
+							return fDatasource.getMetaElementsProposals(prefix,offset,AtlCompletionDataSource.OUTPUT_METAMODELS);
+						} 
+						else if (oclIsKindOf(locatedElement, "OutPattern")) {
+							if (analyser.getLostType("Binding") != null) {
+								EObject simpleOutPatternElement = analyser.getLostType("SimpleOutPatternElement");
+								EObject oclModelElement = (EObject) AtlCompletionDataSource.eGet(simpleOutPatternElement,"type");
+
+								List existingBindings = new ArrayList();
+								Collection bindings = (Collection) AtlCompletionDataSource.eGet(simpleOutPatternElement,"bindings");
+
+								for (Iterator iterator = bindings.iterator(); iterator.hasNext();) {
+									EObject binding = (EObject) iterator.next();
+									String ref = AtlCompletionDataSource.eGet(binding,"propertyName").toString();
+									existingBindings.add(ref);
+								}
+
+								if (oclModelElement != null) {
+									return fDatasource.getMetaFeaturesProposals(existingBindings,oclModelElement,prefix, offset);
+								}
+							}
+						}
+						break;
+					}
+				} else {
+					/*
+					 * CODE templates
+					 */
+
+					List res = new ArrayList();
+					String helperTemplate = "helper context CONTEXT_TYPE def : NAME : TYPE = ";
+					String ruleTemplate = "rule RULE_NAME {";
+					String fromTemplate = "from VAR_NAME : MM!TYPE ";
+					String toTemplate = "to VAR_NAME : MM!TYPE (";
+					String doTemplate = "do {";
+					String usingTemplate = "using {";
+
+					switch (analyser.getContext()) {
+					case AtlModelAnalyser.RULE_CONTEXT :
+						if (fromTemplate.startsWith(prefix)) {
+							AtlCompletionProposal fromProposal = new AtlCompletionProposal(
+									fromTemplate, offset - prefix.length(),
+									fromTemplate.length(), AtlCompletionDataSource.getImage("inPattern.gif"), "from", 0);
+							fromProposal.setCursorPosition(fromTemplate.length() - 19);
+							res.add(fromProposal);
+						}
+						break;
+
+					case AtlModelAnalyser.FROM_CONTEXT :
+						if (usingTemplate.startsWith(prefix))
+							res.add(new AtlCompletionProposal(
+									usingTemplate, offset - prefix.length(),
+									usingTemplate.length(),AtlCompletionDataSource.getImage("using.gif") , "using", 0));
+
+					case AtlModelAnalyser.USING_CONTEXT:	
+						if (toTemplate.startsWith(prefix)) {
+							AtlCompletionProposal toProposal = new AtlCompletionProposal(
+									toTemplate, offset - prefix.length(),
+									toTemplate.length(), AtlCompletionDataSource.getImage("outPattern.gif"), "to", 0);
+							toProposal.setCursorPosition(toTemplate.length() - 20);
+							res.add(toProposal);
+						}
+						break;
+
+					case AtlModelAnalyser.TO_CONTEXT:
+						if (doTemplate.startsWith(prefix))
+							res.add(new AtlCompletionProposal(
+									doTemplate, offset - prefix.length(),
+									doTemplate.length(),AtlCompletionDataSource.getImage("imperative.gif") , "do", 0));
+
+					case AtlModelAnalyser.DO_CONTEXT:
+					case AtlModelAnalyser.MODULE_CONTEXT:
+						if (ruleTemplate.startsWith(prefix)) {
+							AtlCompletionProposal ruleProposal = new AtlCompletionProposal(
+									ruleTemplate, offset - prefix.length(),
+									ruleTemplate.length(), AtlCompletionDataSource.getImage("matchedRule.gif"), "rule", 0);
+							ruleProposal.setCursorPosition(ruleTemplate.length() - 11);
+							res.add(ruleProposal);
+						}
+						if (helperTemplate.startsWith(prefix)) {
+							AtlCompletionProposal helperProposal = new AtlCompletionProposal(
+									helperTemplate, offset - prefix.length(),
+									helperTemplate.length(), AtlCompletionDataSource.getImage("helper.gif"), "helper", 0);
+							helperProposal.setCursorPosition(helperTemplate.length() - 33);
+							res.add(helperProposal);
+						}
+						break;
+
+					default:
+						break;
+					}
+					return res;
+				}
 			}
 		}
-		return result;
+		return new ArrayList();
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeCompletionProposals(org.eclipse.jface.text.ITextViewer, int)
+
+	/**
+	 * Equivalent of ASMOclAny oclIsKindOf method for EObjects.
+	 * @param element
+	 * @param testedElementName
+	 * @return <code>True</code> element has testedElementName in its superTypes, <code>False</code> else.
 	 */
-	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
-		return internalComputeCompletionProposals(viewer, offset, guessContextInformationPosition(viewer, offset));
+	private static boolean oclIsKindOf(EObject element,
+			String testedElementName) {
+		if (element.eClass().getName().equals(testedElementName)) {
+			return true;
+		} else {
+			List superTypList = element.eClass().getEAllSuperTypes();
+			for (Iterator iterator = superTypList.iterator(); iterator.hasNext();) {
+				EClassifier object = (EClassifier) iterator.next();
+				if (object.getName().equals(testedElementName)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeContextInformation(org.eclipse.jface.text.ITextViewer, int)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeContextInformation(org.eclipse.jface.text.ITextViewer,
+	 *      int)
 	 */
-	public IContextInformation[] computeContextInformation(ITextViewer viewer, int offset) {
-		List result= addContextInformations(viewer, guessContextInformationPosition(viewer, offset));
-		return (IContextInformation[]) result.toArray(new IContextInformation[result.size()]);
+	public IContextInformation[] computeContextInformation(ITextViewer viewer,
+			int offset) {
+		return null;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getCompletionProposalAutoActivationCharacters()
 	 */
 	public char[] getCompletionProposalAutoActivationCharacters() {
 		return fProposalAutoActivationSet;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getContextInformationAutoActivationCharacters()
 	 */
 	public char[] getContextInformationAutoActivationCharacters() {
 		return null;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getContextInformationValidator()
 	 */
 	public IContextInformationValidator getContextInformationValidator() {
 		if (fValidator == null)
-			fValidator= new AtlParameterListValidator();
+			fValidator = new AtlParameterListValidator();
 		return fValidator;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getErrorMessage()
 	 */
 	public String getErrorMessage() {
-//		return AtlUIMessages.getString("AtlEditor.codeassist.noCompletions");
 		return "AtlEditor.codeassist.noCompletions";
 	}
-	
-	private int guessContextInformationPosition(ITextViewer viewer, int offset) {
-		int contextPosition= offset;
-		
-		IDocument document= viewer.getDocument();
-		
-		try {
-			AtlCodeReader reader= new AtlCodeReader();
-			reader.configureBackwardReader(document, offset, true, true);
-			
-			int nestingLevel= 0;
-			
-			int curr= reader.read();		
-			while (curr != AtlCodeReader.EOF) {
-				
-				if (')' == (char) curr)
-					++ nestingLevel;
-				
-				else if ('(' == (char) curr) {
-					-- nestingLevel;
-					
-					if (nestingLevel < 0) {
-						int start= reader.getOffset();
-						if (looksLikeRule(reader))
-							return start + 1;
-					}	
-				}
-				
-				curr= reader.read();					
-			}
-		} catch (IOException e) {
-		}
-		
-		return contextPosition;
-	}
-	
-	private ICompletionProposal[] internalComputeCompletionProposals(ITextViewer viewer, int documentOffset, int contextOffset) {
-		List proposals = new ArrayList();
-		
-		for(int i = 0; i < IAtlLexems.CONSTANTS.length; ++i) {
-			addCompletionProposal(IAtlLexems.CONSTANTS[i], proposals, documentOffset);
-		}
-		for(int i = 0; i < IAtlLexems.KEYWORDS.length; ++i) {
-			addCompletionProposal(IAtlLexems.KEYWORDS[i], proposals, documentOffset);
-		}
-		for(int i = 0; i < IAtlLexems.OPERATORS.length; ++i) {
-			addCompletionProposal(IAtlLexems.OPERATORS[i], proposals, documentOffset);
-		}
-		for(int i = 0; i < IAtlLexems.TYPES.length; ++i) {
-			addCompletionProposal(IAtlLexems.TYPES[i], proposals, documentOffset);
-		}
-		
-		ICompletionProposal[] results = new ICompletionProposal[proposals.size()];
-		proposals.toArray(results);
-//		fNumberOfComputedResults = (results == null ? 0 : results.length);
-		
-		/*
-		 * Order here and not in result collector to make sure that the order
-		 * applies to all proposals and not just those of the compilation unit. 
-		 */
-		return order(results);
-	}
-	
-	private boolean looksLikeRule(AtlCodeReader reader) throws IOException {
-		int curr= reader.read();
-		while (curr != AtlCodeReader.EOF && Character.isWhitespace((char) curr))
-			curr= reader.read();
-		
-		if (curr == AtlCodeReader.EOF)
-			return false;
-		
-		return Character.isJavaIdentifierPart((char) curr) || Character.isJavaIdentifierStart((char) curr);
-	}
-	
-	/**
-	 * Order the given proposals.
-	 */
-	private ICompletionProposal[] order(ICompletionProposal[] proposals) {
-		Arrays.sort(proposals, fComparator);
-		return proposals;	
-	}
-	
+
 	public void orderProposalsAlphabetically(boolean order) {
 		fComparator.setOrderAlphabetically(order);
 	}
-	
+
 	/**
-	 * Tells this processor to restrict is proposals to those
-	 * starting with matching cases.
+	 * Tells this processor to restrict is proposals to those starting with
+	 * matching cases.
 	 * 
-	 * @param restrict <code>true</code> if proposals should be restricted
+	 * @param restrict
+	 *            <code>true</code> if proposals should be restricted
 	 */
 	public void restrictProposalsToMatchingCases(boolean restrict) {
 		// TODO not yet supported
 	}
-	
+
 	/**
-	 * Tells this processor to restrict its proposal to those element
-	 * visible in the actual invocation context.
+	 * Tells this processor to restrict its proposal to those element visible in
+	 * the actual invocation context.
 	 * 
-	 * @param restrict <code>true</code> if proposals should be restricted
+	 * @param restrict
+	 *            <code>true</code> if proposals should be restricted
 	 */
 	public void restrictProposalsToVisibility(boolean restrict) {
 		// TODO not yet supported
 	}
-	
+
+	public AtlCompletionDataSource getCompletionDatasource() {
+		return fDatasource;
+	}
+
 	/**
 	 * Sets this processor's set of characters triggering the activation of the
 	 * completion proposal computation.
@@ -277,5 +364,6 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 	public void setCompletionProposalAutoActivationCharacters(char[] activationSet) {
 		fProposalAutoActivationSet = activationSet;
 	}
-	
+
+
 }

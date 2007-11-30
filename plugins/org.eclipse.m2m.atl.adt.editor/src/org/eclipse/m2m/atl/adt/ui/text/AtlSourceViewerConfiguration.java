@@ -272,5 +272,9 @@ public class AtlSourceViewerConfiguration extends SourceViewerConfiguration {
 	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
 		return null;	//TODO
 	}
+
+	public IContentAssistProcessor getFProcessor() {
+		return fProcessor;
+	}
 	
 }
