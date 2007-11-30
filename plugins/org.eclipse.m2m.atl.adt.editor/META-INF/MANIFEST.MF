@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ATL Editor
-Bundle-SymbolicName: org.eclipse.m2m.atl.adt.editor; singleton:=true
+Bundle-SymbolicName: org.eclipse.m2m.atl.adt.editor;singleton:=true
 Bundle-Version: 2.0.0
 Bundle-Activator: org.eclipse.m2m.atl.adt.ui.AtlUIPlugin
 Bundle-Vendor: Eclipse.org
@@ -30,5 +30,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.debug.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.console,
- org.eclipse.m2m.atl.adt.debug
+ org.eclipse.m2m.atl.adt.debug,
+ org.eclipse.emf.ecore.xmi
 Eclipse-LazyStart: true
