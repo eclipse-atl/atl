@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Root xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="XML" name="project">
+  <children xsi:type="Attribute" name="id" value="gs-example"/>
+  <children xsi:type="Attribute" name="name" value="gs-example"/>
+  <children xsi:type="Element" name="build">
+    <children xsi:type="Element" name="defaultGoal">
+      <children xsi:type="Text" name="build" value="build"/>
+    </children>
+    <children xsi:type="Element" name="sourceDirectory">
+      <children xsi:type="Text" name="." value="."/>
+    </children>
+  </children>
+</Root>

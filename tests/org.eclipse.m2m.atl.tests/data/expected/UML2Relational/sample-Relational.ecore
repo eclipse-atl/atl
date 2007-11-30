@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<relational:Database xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:relational="http://www.obeo.fr/dsl/relational" name="sample_database">
+  <ownedSchemas name="sample_schema">
+    <ownedTables name="Table1">
+      <ownedColumns name="column1" type="VARCHAR" isPrimaryKey="true" isUnique="true"/>
+      <ownedColumns name="column2" isUnique="true"/>
+      <ownedForeignKeys name="column3" sourceTable="//@ownedSchemas.0/@ownedTables.1"/>
+    </ownedTables>
+    <ownedTables name="Table2">
+      <ownedColumns name="column1" type="VARCHAR" isPrimaryKey="true" isUnique="true"/>
+      <ownedColumns name="column2" isUnique="true"/>
+    </ownedTables>
+  </ownedSchemas>
+</relational:Database>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Project xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="MavenMaven" default="//@goals.5">
+  <xmlns name="ant" value="jelly:ant"/>
+  <path id="classpath" refid="">
+    <fileset dir="${jwsdp.home}/common/lib">
+      <include name="*.jar" ifCondition="" unless=""/>
+    </fileset>
+  </path>
+  <properties xsi:type="AntPropertyValue" name="example" value="GSApp"/>
+  <properties xsi:type="AntPropertyValue" name="path" value="/${example}"/>
+  <properties xsi:type="AntPropertyValue" name="build" value="${jwsdp.home}/docs/tutorial/examples/${example}/build"/>
+  <properties xsi:type="AntPropertyValue" name="url" value="http://localhost:8080/manager"/>
+  <properties xsi:type="AntPropertyFile" file="build.properties"/>
+  <properties xsi:type="AntPropertyFile" file="${user.home}/build.properties"/>
+  <taskdefs name="install" classname="org.apache.catalina.ant.InstallTask"/>
+  <taskdefs name="reload" classname="org.apache.catalina.ant.ReloadTask"/>
+  <taskdefs name="remove" classname="org.apache.catalina.ant.RemoveTask"/>
+  <goals name="init">
+    <contentsGoal xsi:type="Tstamp"/>
+  </goals>
+  <goals name="prepare">
+    <contentsGoal xsi:type="AttainGoal" attainGoal="//@goals.0"/>
+    <contentsGoal xsi:type="Mkdir" dir="${build}"/>
+    <contentsGoal xsi:type="Mkdir" dir="${build}/WEB-INF"/>
+    <contentsGoal xsi:type="Mkdir" dir="${build}/WEB-INF/classes"/>
+  </goals>
+  <goals name="install">
+    <contentsGoal xsi:type="AttainGoal" attainGoal="//@goals.5"/>
+    <contentsGoal xsi:type="NewTask" taskName="//@taskdefs.0">
+      <attributes name="url" value="${url}"/>
+      <attributes name="username" value="${username}"/>
+      <attributes name="password" value="${password}"/>
+      <attributes name="path" value="${path}"/>
+      <attributes name="war" value="file:${build}"/>
+    </contentsGoal>
+  </goals>
+  <goals name="reload">
+    <contentsGoal xsi:type="AttainGoal" attainGoal="//@goals.5"/>
+    <contentsGoal xsi:type="NewTask" taskName="//@taskdefs.1">
+      <attributes name="url" value="${url}"/>
+      <attributes name="username" value="${username}"/>
+      <attributes name="password" value="${password}"/>
+      <attributes name="path" value="${path}"/>
+    </contentsGoal>
+  </goals>
+  <goals name="remove">
+    <contentsGoal xsi:type="NewTask" taskName="//@taskdefs.2">
+      <attributes name="url" value="${url}"/>
+      <attributes name="username" value="${username}"/>
+      <attributes name="password" value="${password}"/>
+      <attributes name="path" value="${path}"/>
+    </contentsGoal>
+  </goals>
+  <goals name="build">
+    <contentsGoal xsi:type="AttainGoal" attainGoal="//@goals.1"/>
+    <contentsGoal xsi:type="Javac" srcdir="src" destdir="${build}/WEB-INF/classes">
+      <inExcludes xsi:type="Includes" name="**/*.java" ifCondition="" unless=""/>
+      <classPath refid="classpath"/>
+    </contentsGoal>
+    <contentsGoal xsi:type="Copy" todir="${build}/WEB-INF">
+      <fileset dir="web/WEB-INF">
+        <include name="web.xml" ifCondition="" unless=""/>
+      </fileset>
+    </contentsGoal>
+    <contentsGoal xsi:type="Copy" todir="${build}">
+      <fileset dir="web">
+        <include name="*.html" ifCondition="" unless=""/>
+        <include name="*.jsp" ifCondition="" unless=""/>
+        <include name="*.gif" ifCondition="" unless=""/>
+      </fileset>
+    </contentsGoal>
+  </goals>
+</Project>

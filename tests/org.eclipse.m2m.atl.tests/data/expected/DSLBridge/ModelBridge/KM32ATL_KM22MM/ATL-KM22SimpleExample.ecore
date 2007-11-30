@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="ATL" xmlns:_1="Types" xmlns:_2="Expressions" xmlns:_3="OCL">
+  <Module name="KM22SimpleExample">
+    <libraries name="KM2Tools"/>
+    <inModels metamodel="/1" name="IN"/>
+    <outModels metamodel="/2" name="OUT"/>
+    <elements xsi:type="MatchedRule" name="ConceptA">
+      <outPattern>
+        <elements xsi:type="SimpleOutPatternElement" varName="c">
+          <type xsi:type="_1:OclModelElement" name="ConceptA" model="/2"/>
+          <bindings propertyName="Bs">
+            <value xsi:type="_2:OperationCallExp" operationName="getSet">
+              <source xsi:type="_2:VariableExp" referredVariable="/0/@elements.0/@inPattern/@elements.0"
+                  name="me"/>
+              <arguments xsi:type="_2:StringExp" stringSymbol="Bs"/>
+            </value>
+          </bindings>
+          <bindings propertyName="Cs">
+            <value xsi:type="_2:OperationCallExp" operationName="getSet">
+              <source xsi:type="_2:VariableExp" referredVariable="/0/@elements.0/@inPattern/@elements.0"
+                  name="me"/>
+              <arguments xsi:type="_2:StringExp" stringSymbol="Cs"/>
+            </value>
+          </bindings>
+        </elements>
+      </outPattern>
+      <inPattern>
+        <elements xsi:type="SimpleInPatternElement" variableExp="/0/@elements.0/@inPattern/@filter/@source/@source /0/@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source /0/@elements.0/@outPattern/@elements.0/@bindings.1/@value/@source"
+            varName="me" id="me0">
+          <type xsi:type="_1:OclModelElement" name="ModelElement" model="/1"/>
+        </elements>
+        <filter xsi:type="_2:OperatorCallExp" operationName="=">
+          <source xsi:type="_2:NavigationOrAttributeCallExp" name="name">
+            <source xsi:type="_2:VariableExp" referredVariable="/0/@elements.0/@inPattern/@elements.0"
+                name="me"/>
+          </source>
+          <arguments xsi:type="_2:StringExp" stringSymbol="ConceptA"/>
+        </filter>
+      </inPattern>
+    </elements>
+    <elements xsi:type="MatchedRule" name="ConceptB">
+      <outPattern>
+        <elements xsi:type="SimpleOutPatternElement" varName="c">
+          <type xsi:type="_1:OclModelElement" name="ConceptB" model="/2"/>
+        </elements>
+      </outPattern>
+      <inPattern>
+        <elements xsi:type="SimpleInPatternElement" variableExp="/0/@elements.1/@inPattern/@filter/@source/@source"
+            varName="me" id="me0">
+          <type xsi:type="_1:OclModelElement" name="ModelElement" model="/1"/>
+        </elements>
+        <filter xsi:type="_2:OperatorCallExp" operationName="=">
+          <source xsi:type="_2:NavigationOrAttributeCallExp" name="name">
+            <source xsi:type="_2:VariableExp" referredVariable="/0/@elements.1/@inPattern/@elements.0"
+                name="me"/>
+          </source>
+          <arguments xsi:type="_2:StringExp" stringSymbol="ConceptB"/>
+        </filter>
+      </inPattern>
+    </elements>
+    <elements xsi:type="MatchedRule" name="ConceptC">
+      <outPattern>
+        <elements xsi:type="SimpleOutPatternElement" varName="c">
+          <type xsi:type="_1:OclModelElement" name="ConceptC" model="/2"/>
+          <bindings propertyName="ReferringBs">
+            <value xsi:type="_2:OperationCallExp" operationName="getRefSet">
+              <source xsi:type="_2:VariableExp" referredVariable="/0/@elements.2/@inPattern/@elements.0"
+                  name="me"/>
+              <arguments xsi:type="_2:StringExp" stringSymbol="ReferringBs"/>
+            </value>
+          </bindings>
+        </elements>
+      </outPattern>
+      <inPattern>
+        <elements xsi:type="SimpleInPatternElement" variableExp="/0/@elements.2/@inPattern/@filter/@source/@source /0/@elements.2/@outPattern/@elements.0/@bindings.0/@value/@source"
+            varName="me" id="me0">
+          <type xsi:type="_1:OclModelElement" name="ModelElement" model="/1"/>
+        </elements>
+        <filter xsi:type="_2:OperatorCallExp" operationName="=">
+          <source xsi:type="_2:NavigationOrAttributeCallExp" name="name">
+            <source xsi:type="_2:VariableExp" referredVariable="/0/@elements.2/@inPattern/@elements.0"
+                name="me"/>
+          </source>
+          <arguments xsi:type="_2:StringExp" stringSymbol="ConceptC"/>
+        </filter>
+      </inPattern>
+    </elements>
+    <elements xsi:type="MatchedRule" name="BReferencesC">
+      <outPattern>
+        <elements xsi:type="SimpleOutPatternElement" varName="c">
+          <type xsi:type="_1:OclModelElement" name="BReferencesC" model="/2"/>
+          <bindings propertyName="Property">
+            <value xsi:type="_2:OperationCallExp" operationName="getStringProperty">
+              <source xsi:type="_2:VariableExp" referredVariable="/0/@elements.3/@inPattern/@elements.0"
+                  name="me"/>
+              <arguments xsi:type="_2:StringExp" stringSymbol="Property"/>
+            </value>
+          </bindings>
+        </elements>
+      </outPattern>
+      <inPattern>
+        <elements xsi:type="SimpleInPatternElement" variableExp="/0/@elements.3/@inPattern/@filter/@source/@source /0/@elements.3/@outPattern/@elements.0/@bindings.0/@value/@source"
+            varName="me" id="me0">
+          <type xsi:type="_1:OclModelElement" name="ModelElement" model="/1"/>
+        </elements>
+        <filter xsi:type="_2:OperatorCallExp" operationName="=">
+          <source xsi:type="_2:NavigationOrAttributeCallExp" name="name">
+            <source xsi:type="_2:VariableExp" referredVariable="/0/@elements.3/@inPattern/@elements.0"
+                name="me"/>
+          </source>
+          <arguments xsi:type="_2:StringExp" stringSymbol="BReferencesC"/>
+        </filter>
+      </inPattern>
+    </elements>
+  </Module>
+  <_3:OclModel elements="/0/@elements.0/@inPattern/@elements.0/@type /0/@elements.1/@inPattern/@elements.0/@type /0/@elements.2/@inPattern/@elements.0/@type /0/@elements.3/@inPattern/@elements.0/@type"
+      model="/0/@inModels.0" name="KM2"/>
+  <_3:OclModel elements="/0/@elements.0/@outPattern/@elements.0/@type /0/@elements.1/@outPattern/@elements.0/@type /0/@elements.2/@outPattern/@elements.0/@type /0/@elements.3/@outPattern/@elements.0/@type"
+      model="/0/@outModels.0" name="SimpleExample"/>
+</xmi:XMI>

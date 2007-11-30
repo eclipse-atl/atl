@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.atl.eclipse.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/data/inputs/BibTeX2DocBook/BibTeX2DocBook.atl"/>
+<stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
+<booleanAttribute key="AllowInterModelReferences" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="IN" value="BibTeX"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<booleanAttribute key="Mode Debug" value="false"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="DocBook" value="EMF"/>
+<mapEntry key="BibTeX" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="IN" value="MODELINPUT"/>
+<mapEntry key="OUT" value="MODELOUTPUT"/>
+<mapEntry key="DocBook" value="METAMODELOUTPUT"/>
+<mapEntry key="BibTeX" value="METAMODELINPUT"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT" value="DocBook"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="IN" value="/data/inputs/BibTeX2DocBook/sample-BibTeX.ecore"/>
+<mapEntry key="OUT" value="/data/inputs/BibTeX2DocBook/sample-DocBook.ecore"/>
+<mapEntry key="DocBook" value="/data/inputs/BibTeX2DocBook/DocBook.ecore"/>
+<mapEntry key="BibTeX" value="/data/inputs/BibTeX2DocBook/BibTeX.ecore"/>
+</mapAttribute>
+<stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>
+<listAttribute key="Superimpose"/>
+<booleanAttribute key="continueAfterError" value="false"/>
+<booleanAttribute key="disableAttributeHelperCache" value="false"/>
+<booleanAttribute key="printExecutionTime" value="false"/>
+<booleanAttribute key="profile" value="false"/>
+<booleanAttribute key="showSummary" value="false"/>
+<booleanAttribute key="step" value="false"/>
+</launchConfiguration>

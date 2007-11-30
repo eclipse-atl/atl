@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Model xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="KM2" metamodel="SimpleExample">
+  <contents name="ConceptA" id="d86d3730-d7a0-481b-bdc2-dab72146d013">
+    <properties name="Bs">
+      <value xsi:type="SetVal">
+        <contents xsi:type="ModelElementVal">
+          <element name="ConceptB" id="30477d0b-eb6d-4f53-b4cd-ed58abf5dafb">
+            <properties name="ReferencedC">
+              <value xsi:type="ModelElementRefVal" element="//@contents.0/@properties.1/@value/@contents.0/@element"/>
+            </properties>
+          </element>
+        </contents>
+        <contents xsi:type="ModelElementVal">
+          <element name="ConceptB" id="5b91bf49-4f2e-44fb-acdf-76c393b91f3e">
+            <properties name="ReferencedC">
+              <value xsi:type="ModelElementRefVal" element="//@contents.0/@properties.1/@value/@contents.0/@element"/>
+            </properties>
+          </element>
+        </contents>
+      </value>
+    </properties>
+    <properties name="Cs">
+      <value xsi:type="SetVal">
+        <contents xsi:type="ModelElementVal">
+          <element name="ConceptC" id="1b07f1f7-fbc7-42e8-a827-f28a6d4e172c">
+            <properties name="ReferringBs">
+              <value xsi:type="SetVal">
+                <contents xsi:type="ModelElementRefVal" element="//@contents.0/@properties.0/@value/@contents.0/@element"/>
+                <contents xsi:type="ModelElementRefVal" element="//@contents.0/@properties.0/@value/@contents.1/@element"/>
+              </value>
+            </properties>
+          </element>
+        </contents>
+      </value>
+    </properties>
+  </contents>
+  <contents name="BReferencesC" id="fbc8511b-c72b-4554-8888-23ca67b58e33">
+    <properties name="Property">
+      <value xsi:type="StringVal" value=""/>
+    </properties>
+  </contents>
+  <contents name="BReferencesC" id="c36ad301-9625-45ab-bba7-93cbec173cd6">
+    <properties name="Property">
+      <value xsi:type="StringVal" value=""/>
+    </properties>
+  </contents>
+</Model>

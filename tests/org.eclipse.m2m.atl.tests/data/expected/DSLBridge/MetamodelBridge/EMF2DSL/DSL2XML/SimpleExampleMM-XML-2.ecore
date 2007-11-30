@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Root xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="XML" name="dmd"
+    value="">
+  <children xsi:type="Attribute" name="xmlns:xsi" value="http://www.w3.org/2001/XMLSchema-instance"/>
+  <children xsi:type="Attribute" name="xmlns:xsd" value="http://www.w3.org/2001/XMLSchema"/>
+  <children xsi:type="Attribute" name="xmlns" value="urn:schemas-microsoft-com:dmd"/>
+  <children xsi:type="Element" name="model" value="">
+    <children xsi:type="Attribute" name="name" value="SimpleExample"/>
+    <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000001"/>
+    <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000001"/>
+    <children xsi:type="Attribute" name="namespace" value="SimpleExample.DomainModel"/>
+    <children xsi:type="Attribute" name="isLoaded" value="true"/>
+    <children xsi:type="Element" name="mdfmetadata" value="">
+      <children xsi:type="Attribute" name="xsi:type" value="modelmdfmetadata"/>
+      <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+      <children xsi:type="Attribute" name="category" value=""/>
+      <children xsi:type="Attribute" name="description" value=""/>
+      <children xsi:type="Attribute" name="doccomment" value=""/>
+      <children xsi:type="Attribute" name="localize" value="false"/>
+      <children xsi:type="Attribute" name="majorversion" value="1"/>
+      <children xsi:type="Attribute" name="minorversion" value="0"/>
+      <children xsi:type="Attribute" name="alwaysgeneratecollection" value="false"/>
+      <children xsi:type="Element" name="copyright" value=""/>
+      <children xsi:type="Element" name="stringtable" value="">
+        <children xsi:type="Attribute" name="resxfile" value="SimpleExample.Resource.resx"/>
+        <children xsi:type="Attribute" name="resourcesfile" value="SimpleExample.DomainModel.SimpleExample.Resource"/>
+        <children xsi:type="Attribute" name="usefullyqualifiedname" value="false"/>
+      </children>
+      <children xsi:type="Element" name="copyclosure" value="">
+        <children xsi:type="Attribute" name="name" value="SimpleExampleCopyClosure"/>
+        <children xsi:type="Attribute" name="doccomment" value="Copy closure visitor filter"/>
+      </children>
+      <children xsi:type="Element" name="removeclosure" value="">
+        <children xsi:type="Attribute" name="name" value="SimpleExampleRemoveClosure"/>
+        <children xsi:type="Attribute" name="doccomment" value="Remove closure visitor filter"/>
+      </children>
+    </children>
+    <children xsi:type="Element" name="extended" value="">
+      <children xsi:type="Element" name="model" value="">
+        <children xsi:type="Text" name="#text" value="i2b131234z7959z458dz834fz2dc0769ce683"/>
+      </children>
+    </children>
+    <children xsi:type="Element" name="enumerations" value=""/>
+    <children xsi:type="Element" name="relationships" value="">
+      <children xsi:type="Element" name="relationship" value="">
+        <children xsi:type="Attribute" name="name" value="ConceptAhasConceptB"/>
+        <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000006"/>
+        <children xsi:type="Attribute" name="namespace" value="SimpleExample.DomainModel"/>
+        <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000006"/>
+        <children xsi:type="Attribute" name="isLoaded" value="true"/>
+        <children xsi:type="Attribute" name="isAbstract" value="false"/>
+        <children xsi:type="Element" name="mdfmetadata" value="">
+          <children xsi:type="Attribute" name="xsi:type" value="mdfclassmetadata"/>
+          <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+          <children xsi:type="Attribute" name="category" value=""/>
+          <children xsi:type="Attribute" name="description" value=""/>
+          <children xsi:type="Attribute" name="doccomment" value=""/>
+          <children xsi:type="Attribute" name="localize" value="false"/>
+        </children>
+        <children xsi:type="Element" name="roles" value="">
+          <children xsi:type="Element" name="role" value="">
+            <children xsi:type="Attribute" name="name" value="Bs"/>
+            <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000007"/>
+            <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000007"/>
+            <children xsi:type="Attribute" name="min" value="0"/>
+            <children xsi:type="Attribute" name="max" value="0"/>
+            <children xsi:type="Attribute" name="isUnbounded" value="true"/>
+            <children xsi:type="Attribute" name="accepts" value="all"/>
+            <children xsi:type="Element" name="mdfmetadata" value="">
+              <children xsi:type="Attribute" name="xsi:type" value="rolemdfmetadata"/>
+              <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+              <children xsi:type="Attribute" name="category" value=""/>
+              <children xsi:type="Attribute" name="description" value=""/>
+              <children xsi:type="Attribute" name="doccomment" value=""/>
+              <children xsi:type="Attribute" name="localize" value="false"/>
+              <children xsi:type="Attribute" name="isordered" value="true"/>
+              <children xsi:type="Attribute" name="isnavigablefrom" value="false"/>
+            </children>
+            <children xsi:type="Element" name="source" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000002"/>
+            </children>
+            <children xsi:type="Element" name="type" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000003"/>
+            </children>
+            <children xsi:type="Element" name="generatedProperty" value="">
+              <children xsi:type="Attribute" name="name" value="Bs"/>
+              <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000029"/>
+              <children xsi:type="Element" name="referenceType" value="">
+                <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000003"/>
+              </children>
+            </children>
+          </children>
+          <children xsi:type="Element" name="role" value="">
+            <children xsi:type="Attribute" name="name" value="ConceptA"/>
+            <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000008"/>
+            <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000008"/>
+            <children xsi:type="Attribute" name="min" value="1"/>
+            <children xsi:type="Attribute" name="max" value="1"/>
+            <children xsi:type="Attribute" name="isUnbounded" value="false"/>
+            <children xsi:type="Attribute" name="accepts" value="all"/>
+            <children xsi:type="Element" name="mdfmetadata" value="">
+              <children xsi:type="Attribute" name="xsi:type" value="rolemdfmetadata"/>
+              <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+              <children xsi:type="Attribute" name="category" value=""/>
+              <children xsi:type="Attribute" name="description" value=""/>
+              <children xsi:type="Attribute" name="doccomment" value=""/>
+              <children xsi:type="Attribute" name="localize" value="false"/>
+              <children xsi:type="Attribute" name="isordered" value="false"/>
+              <children xsi:type="Attribute" name="isnavigablefrom" value="false"/>
+            </children>
+            <children xsi:type="Element" name="source" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000003"/>
+            </children>
+            <children xsi:type="Element" name="type" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000002"/>
+            </children>
+            <children xsi:type="Element" name="generatedProperty" value="">
+              <children xsi:type="Attribute" name="name" value="ConceptA"/>
+              <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000030"/>
+              <children xsi:type="Element" name="referenceType" value="">
+                <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000002"/>
+              </children>
+            </children>
+          </children>
+        </children>
+        <children xsi:type="Element" name="valueProperties" value=""/>
+      </children>
+      <children xsi:type="Element" name="relationship" value="">
+        <children xsi:type="Attribute" name="name" value="ConceptAhasConceptC"/>
+        <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000009"/>
+        <children xsi:type="Attribute" name="namespace" value="SimpleExample.DomainModel"/>
+        <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000009"/>
+        <children xsi:type="Attribute" name="isLoaded" value="true"/>
+        <children xsi:type="Attribute" name="isAbstract" value="false"/>
+        <children xsi:type="Element" name="mdfmetadata" value="">
+          <children xsi:type="Attribute" name="xsi:type" value="mdfclassmetadata"/>
+          <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+          <children xsi:type="Attribute" name="category" value=""/>
+          <children xsi:type="Attribute" name="description" value=""/>
+          <children xsi:type="Attribute" name="doccomment" value=""/>
+          <children xsi:type="Attribute" name="localize" value="false"/>
+        </children>
+        <children xsi:type="Element" name="roles" value="">
+          <children xsi:type="Element" name="role" value="">
+            <children xsi:type="Attribute" name="name" value="Cs"/>
+            <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000010"/>
+            <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000010"/>
+            <children xsi:type="Attribute" name="min" value="0"/>
+            <children xsi:type="Attribute" name="max" value="0"/>
+            <children xsi:type="Attribute" name="isUnbounded" value="true"/>
+            <children xsi:type="Attribute" name="accepts" value="all"/>
+            <children xsi:type="Element" name="mdfmetadata" value="">
+              <children xsi:type="Attribute" name="xsi:type" value="rolemdfmetadata"/>
+              <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+              <children xsi:type="Attribute" name="category" value=""/>
+              <children xsi:type="Attribute" name="description" value=""/>
+              <children xsi:type="Attribute" name="doccomment" value=""/>
+              <children xsi:type="Attribute" name="localize" value="false"/>
+              <children xsi:type="Attribute" name="isordered" value="true"/>
+              <children xsi:type="Attribute" name="isnavigablefrom" value="false"/>
+            </children>
+            <children xsi:type="Element" name="source" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000002"/>
+            </children>
+            <children xsi:type="Element" name="type" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000004"/>
+            </children>
+            <children xsi:type="Element" name="generatedProperty" value="">
+              <children xsi:type="Attribute" name="name" value="Cs"/>
+              <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000031"/>
+              <children xsi:type="Element" name="referenceType" value="">
+                <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000004"/>
+              </children>
+            </children>
+          </children>
+          <children xsi:type="Element" name="role" value="">
+            <children xsi:type="Attribute" name="name" value="ConceptA"/>
+            <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000011"/>
+            <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000011"/>
+            <children xsi:type="Attribute" name="min" value="1"/>
+            <children xsi:type="Attribute" name="max" value="1"/>
+            <children xsi:type="Attribute" name="isUnbounded" value="false"/>
+            <children xsi:type="Attribute" name="accepts" value="all"/>
+            <children xsi:type="Element" name="mdfmetadata" value="">
+              <children xsi:type="Attribute" name="xsi:type" value="rolemdfmetadata"/>
+              <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+              <children xsi:type="Attribute" name="category" value=""/>
+              <children xsi:type="Attribute" name="description" value=""/>
+              <children xsi:type="Attribute" name="doccomment" value=""/>
+              <children xsi:type="Attribute" name="localize" value="false"/>
+              <children xsi:type="Attribute" name="isordered" value="false"/>
+              <children xsi:type="Attribute" name="isnavigablefrom" value="false"/>
+            </children>
+            <children xsi:type="Element" name="source" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000004"/>
+            </children>
+            <children xsi:type="Element" name="type" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000002"/>
+            </children>
+            <children xsi:type="Element" name="generatedProperty" value="">
+              <children xsi:type="Attribute" name="name" value="ConceptA"/>
+              <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000032"/>
+              <children xsi:type="Element" name="referenceType" value="">
+                <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000002"/>
+              </children>
+            </children>
+          </children>
+        </children>
+        <children xsi:type="Element" name="valueProperties" value=""/>
+      </children>
+      <children xsi:type="Element" name="relationship" value="">
+        <children xsi:type="Attribute" name="name" value="ConceptBtoBReferencesC"/>
+        <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000012"/>
+        <children xsi:type="Attribute" name="namespace" value="SimpleExample.DomainModel"/>
+        <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000012"/>
+        <children xsi:type="Attribute" name="isLoaded" value="true"/>
+        <children xsi:type="Attribute" name="isAbstract" value="false"/>
+        <children xsi:type="Element" name="mdfmetadata" value="">
+          <children xsi:type="Attribute" name="xsi:type" value="mdfclassmetadata"/>
+          <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+          <children xsi:type="Attribute" name="category" value=""/>
+          <children xsi:type="Attribute" name="description" value=""/>
+          <children xsi:type="Attribute" name="doccomment" value=""/>
+          <children xsi:type="Attribute" name="localize" value="false"/>
+        </children>
+        <children xsi:type="Element" name="roles" value="">
+          <children xsi:type="Element" name="role" value="">
+            <children xsi:type="Attribute" name="name" value="ReferencedC"/>
+            <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000013"/>
+            <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000013"/>
+            <children xsi:type="Attribute" name="min" value="0"/>
+            <children xsi:type="Attribute" name="max" value="1"/>
+            <children xsi:type="Attribute" name="isUnbounded" value="false"/>
+            <children xsi:type="Attribute" name="accepts" value="all"/>
+            <children xsi:type="Element" name="mdfmetadata" value="">
+              <children xsi:type="Attribute" name="xsi:type" value="rolemdfmetadata"/>
+              <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+              <children xsi:type="Attribute" name="category" value=""/>
+              <children xsi:type="Attribute" name="description" value=""/>
+              <children xsi:type="Attribute" name="doccomment" value=""/>
+              <children xsi:type="Attribute" name="localize" value="false"/>
+              <children xsi:type="Attribute" name="isordered" value="false"/>
+              <children xsi:type="Attribute" name="isnavigablefrom" value="false"/>
+            </children>
+            <children xsi:type="Element" name="source" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000003"/>
+            </children>
+            <children xsi:type="Element" name="type" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000005"/>
+            </children>
+            <children xsi:type="Element" name="generatedProperty" value="">
+              <children xsi:type="Attribute" name="name" value="ReferencedC"/>
+              <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000033"/>
+              <children xsi:type="Element" name="referenceType" value="">
+                <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000005"/>
+              </children>
+            </children>
+          </children>
+          <children xsi:type="Element" name="role" value="">
+            <children xsi:type="Attribute" name="name" value="ReferringBs"/>
+            <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000014"/>
+            <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000014"/>
+            <children xsi:type="Attribute" name="min" value="0"/>
+            <children xsi:type="Attribute" name="max" value="0"/>
+            <children xsi:type="Attribute" name="isUnbounded" value="true"/>
+            <children xsi:type="Attribute" name="accepts" value="all"/>
+            <children xsi:type="Element" name="mdfmetadata" value="">
+              <children xsi:type="Attribute" name="xsi:type" value="rolemdfmetadata"/>
+              <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+              <children xsi:type="Attribute" name="category" value=""/>
+              <children xsi:type="Attribute" name="description" value=""/>
+              <children xsi:type="Attribute" name="doccomment" value=""/>
+              <children xsi:type="Attribute" name="localize" value="false"/>
+              <children xsi:type="Attribute" name="isordered" value="false"/>
+              <children xsi:type="Attribute" name="isnavigablefrom" value="false"/>
+            </children>
+            <children xsi:type="Element" name="source" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000005"/>
+            </children>
+            <children xsi:type="Element" name="type" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000003"/>
+            </children>
+            <children xsi:type="Element" name="generatedProperty" value="">
+              <children xsi:type="Attribute" name="name" value="ReferringBs"/>
+              <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000034"/>
+              <children xsi:type="Element" name="referenceType" value="">
+                <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000003"/>
+              </children>
+            </children>
+          </children>
+        </children>
+        <children xsi:type="Element" name="valueProperties" value=""/>
+      </children>
+      <children xsi:type="Element" name="relationship" value="">
+        <children xsi:type="Attribute" name="name" value="ConceptCtoBReferencesC"/>
+        <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000015"/>
+        <children xsi:type="Attribute" name="namespace" value="SimpleExample.DomainModel"/>
+        <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000015"/>
+        <children xsi:type="Attribute" name="isLoaded" value="true"/>
+        <children xsi:type="Attribute" name="isAbstract" value="false"/>
+        <children xsi:type="Element" name="mdfmetadata" value="">
+          <children xsi:type="Attribute" name="xsi:type" value="mdfclassmetadata"/>
+          <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+          <children xsi:type="Attribute" name="category" value=""/>
+          <children xsi:type="Attribute" name="description" value=""/>
+          <children xsi:type="Attribute" name="doccomment" value=""/>
+          <children xsi:type="Attribute" name="localize" value="false"/>
+        </children>
+        <children xsi:type="Element" name="roles" value="">
+          <children xsi:type="Element" name="role" value="">
+            <children xsi:type="Attribute" name="name" value="ReferringBs"/>
+            <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000016"/>
+            <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000016"/>
+            <children xsi:type="Attribute" name="min" value="0"/>
+            <children xsi:type="Attribute" name="max" value="0"/>
+            <children xsi:type="Attribute" name="isUnbounded" value="true"/>
+            <children xsi:type="Attribute" name="accepts" value="all"/>
+            <children xsi:type="Element" name="mdfmetadata" value="">
+              <children xsi:type="Attribute" name="xsi:type" value="rolemdfmetadata"/>
+              <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+              <children xsi:type="Attribute" name="category" value=""/>
+              <children xsi:type="Attribute" name="description" value=""/>
+              <children xsi:type="Attribute" name="doccomment" value=""/>
+              <children xsi:type="Attribute" name="localize" value="false"/>
+              <children xsi:type="Attribute" name="isordered" value="true"/>
+              <children xsi:type="Attribute" name="isnavigablefrom" value="false"/>
+            </children>
+            <children xsi:type="Element" name="source" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000004"/>
+            </children>
+            <children xsi:type="Element" name="type" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000005"/>
+            </children>
+            <children xsi:type="Element" name="generatedProperty" value="">
+              <children xsi:type="Attribute" name="name" value="ReferringBs"/>
+              <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000035"/>
+              <children xsi:type="Element" name="referenceType" value="">
+                <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000005"/>
+              </children>
+            </children>
+          </children>
+          <children xsi:type="Element" name="role" value="">
+            <children xsi:type="Attribute" name="name" value="ReferencedC"/>
+            <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000017"/>
+            <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000017"/>
+            <children xsi:type="Attribute" name="min" value="0"/>
+            <children xsi:type="Attribute" name="max" value="1"/>
+            <children xsi:type="Attribute" name="isUnbounded" value="false"/>
+            <children xsi:type="Attribute" name="accepts" value="all"/>
+            <children xsi:type="Element" name="mdfmetadata" value="">
+              <children xsi:type="Attribute" name="xsi:type" value="rolemdfmetadata"/>
+              <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+              <children xsi:type="Attribute" name="category" value=""/>
+              <children xsi:type="Attribute" name="description" value=""/>
+              <children xsi:type="Attribute" name="doccomment" value=""/>
+              <children xsi:type="Attribute" name="localize" value="false"/>
+              <children xsi:type="Attribute" name="isordered" value="false"/>
+              <children xsi:type="Attribute" name="isnavigablefrom" value="false"/>
+            </children>
+            <children xsi:type="Element" name="source" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000005"/>
+            </children>
+            <children xsi:type="Element" name="type" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000004"/>
+            </children>
+            <children xsi:type="Element" name="generatedProperty" value="">
+              <children xsi:type="Attribute" name="name" value="ReferencedC"/>
+              <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000036"/>
+              <children xsi:type="Element" name="referenceType" value="">
+                <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000004"/>
+              </children>
+            </children>
+          </children>
+        </children>
+        <children xsi:type="Element" name="valueProperties" value=""/>
+      </children>
+    </children>
+    <children xsi:type="Element" name="trees" value="">
+      <children xsi:type="Element" name="treenavigator" value="">
+        <children xsi:type="Attribute" name="name" value="intrinsic"/>
+        <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000002"/>
+        <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000001"/>
+        <children xsi:type="Element" name="expressions" value="">
+          <children xsi:type="Element" name="treeExpression" value="">
+            <children xsi:type="Attribute" name="xsi:type" value="RoleExpression"/>
+            <children xsi:type="Attribute" name="name" value="RoleExpressionConceptAhasConceptB"/>
+            <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000013"/>
+            <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000014"/>
+            <children xsi:type="Attribute" name="definitionlevel" value="none"/>
+            <children xsi:type="Attribute" name="containmentstyle" value="embedding"/>
+            <children xsi:type="Element" name="source" value=""/>
+            <children xsi:type="Element" name="role" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000007"/>
+            </children>
+          </children>
+          <children xsi:type="Element" name="treeExpression" value="">
+            <children xsi:type="Attribute" name="xsi:type" value="RoleExpression"/>
+            <children xsi:type="Attribute" name="name" value="RoleExpressionConceptAhasConceptC"/>
+            <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000017"/>
+            <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000018"/>
+            <children xsi:type="Attribute" name="definitionlevel" value="none"/>
+            <children xsi:type="Attribute" name="containmentstyle" value="embedding"/>
+            <children xsi:type="Element" name="source" value=""/>
+            <children xsi:type="Element" name="role" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000010"/>
+            </children>
+          </children>
+          <children xsi:type="Element" name="treeExpression" value="">
+            <children xsi:type="Attribute" name="xsi:type" value="RoleExpression"/>
+            <children xsi:type="Attribute" name="name" value="RoleExpressionConceptBtoBReferencesC"/>
+            <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000021"/>
+            <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000022"/>
+            <children xsi:type="Attribute" name="definitionlevel" value="none"/>
+            <children xsi:type="Attribute" name="containmentstyle" value="reference"/>
+            <children xsi:type="Element" name="source" value=""/>
+            <children xsi:type="Element" name="role" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000013"/>
+            </children>
+          </children>
+          <children xsi:type="Element" name="treeExpression" value="">
+            <children xsi:type="Attribute" name="xsi:type" value="RoleExpression"/>
+            <children xsi:type="Attribute" name="name" value="RoleExpressionConceptCtoBReferencesC"/>
+            <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000025"/>
+            <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000026"/>
+            <children xsi:type="Attribute" name="definitionlevel" value="none"/>
+            <children xsi:type="Attribute" name="containmentstyle" value="reference"/>
+            <children xsi:type="Element" name="source" value=""/>
+            <children xsi:type="Element" name="role" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000016"/>
+            </children>
+          </children>
+        </children>
+        <children xsi:type="Element" name="roots" value=""/>
+      </children>
+      <children xsi:type="Element" name="treenavigator" value="">
+        <children xsi:type="Attribute" name="xsi:type" value="ShadowTreeNavigator"/>
+        <children xsi:type="Attribute" name="name" value="completeDiagram"/>
+        <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000004"/>
+        <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000003"/>
+        <children xsi:type="Element" name="expressions" value="">
+          <children xsi:type="Element" name="treeExpression" value="">
+            <children xsi:type="Attribute" name="xsi:type" value="RoleExpression"/>
+            <children xsi:type="Attribute" name="name" value="RoleExpressionConceptAhasConceptB"/>
+            <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000015"/>
+            <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000016"/>
+            <children xsi:type="Attribute" name="definitionlevel" value="definition"/>
+            <children xsi:type="Attribute" name="containmentstyle" value="fromsource"/>
+            <children xsi:type="Element" name="source" value="">
+              <children xsi:type="Text" name="#text" value="i00000000z0000z0000z0000z000000000014"/>
+            </children>
+            <children xsi:type="Element" name="role" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000007"/>
+            </children>
+          </children>
+          <children xsi:type="Element" name="treeExpression" value="">
+            <children xsi:type="Attribute" name="xsi:type" value="RoleExpression"/>
+            <children xsi:type="Attribute" name="name" value="RoleExpressionConceptAhasConceptC"/>
+            <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000019"/>
+            <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000020"/>
+            <children xsi:type="Attribute" name="definitionlevel" value="definition"/>
+            <children xsi:type="Attribute" name="containmentstyle" value="fromsource"/>
+            <children xsi:type="Element" name="source" value="">
+              <children xsi:type="Text" name="#text" value="i00000000z0000z0000z0000z000000000018"/>
+            </children>
+            <children xsi:type="Element" name="role" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000010"/>
+            </children>
+          </children>
+          <children xsi:type="Element" name="treeExpression" value="">
+            <children xsi:type="Attribute" name="xsi:type" value="RoleExpression"/>
+            <children xsi:type="Attribute" name="name" value="RoleExpressionConceptBtoBReferencesC"/>
+            <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000023"/>
+            <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000024"/>
+            <children xsi:type="Attribute" name="definitionlevel" value="definition"/>
+            <children xsi:type="Attribute" name="containmentstyle" value="fromsource"/>
+            <children xsi:type="Element" name="source" value="">
+              <children xsi:type="Text" name="#text" value="i00000000z0000z0000z0000z000000000022"/>
+            </children>
+            <children xsi:type="Element" name="role" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000013"/>
+            </children>
+          </children>
+          <children xsi:type="Element" name="treeExpression" value="">
+            <children xsi:type="Attribute" name="xsi:type" value="RoleExpression"/>
+            <children xsi:type="Attribute" name="name" value="RoleExpressionConceptCtoBReferencesC"/>
+            <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000027"/>
+            <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000028"/>
+            <children xsi:type="Attribute" name="definitionlevel" value="use"/>
+            <children xsi:type="Attribute" name="containmentstyle" value="fromsource"/>
+            <children xsi:type="Element" name="source" value="">
+              <children xsi:type="Text" name="#text" value="i00000000z0000z0000z0000z000000000026"/>
+            </children>
+            <children xsi:type="Element" name="role" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000016"/>
+            </children>
+          </children>
+          <children xsi:type="Element" name="treeExpression" value="">
+            <children xsi:type="Attribute" name="xsi:type" value="ValuePropertyExpression"/>
+            <children xsi:type="Attribute" name="name" value="Property"/>
+            <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000038"/>
+            <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000039"/>
+            <children xsi:type="Element" name="source" value=""/>
+            <children xsi:type="Element" name="property" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000018"/>
+            </children>
+          </children>
+        </children>
+        <children xsi:type="Element" name="roots" value="">
+          <children xsi:type="Element" name="root" value="">
+            <children xsi:type="Attribute" name="name" value="ConceptA"/>
+            <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000011"/>
+            <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000012"/>
+            <children xsi:type="Element" name="source" value=""/>
+            <children xsi:type="Element" name="referencetype" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000002"/>
+            </children>
+          </children>
+        </children>
+        <children xsi:type="Element" name="source" value="">
+          <children xsi:type="Text" name="#text" value="i00000000z0000z0000z0000z000000000001"/>
+        </children>
+      </children>
+      <children xsi:type="Element" name="treenavigator" value="">
+        <children xsi:type="Attribute" name="xsi:type" value="ShadowTreeNavigator"/>
+        <children xsi:type="Attribute" name="name" value="serialization"/>
+        <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000006"/>
+        <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000005"/>
+        <children xsi:type="Element" name="expressions" value=""/>
+        <children xsi:type="Element" name="roots" value="">
+          <children xsi:type="Element" name="root" value="">
+            <children xsi:type="Attribute" name="name" value="ConceptA"/>
+            <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000007"/>
+            <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z000000000008"/>
+            <children xsi:type="Element" name="source" value=""/>
+            <children xsi:type="Element" name="referencetype" value="">
+              <children xsi:type="Text" name="#text" value="i10000000z0000z0000z0000z000000000002"/>
+            </children>
+          </children>
+        </children>
+        <children xsi:type="Element" name="source" value="">
+          <children xsi:type="Text" name="#text" value="i00000000z0000z0000z0000z000000000001"/>
+        </children>
+      </children>
+      <children xsi:type="Element" name="treenavigator" value="">
+        <children xsi:type="Attribute" name="xsi:type" value="ShadowTreeNavigator"/>
+        <children xsi:type="Attribute" name="name" value="delete"/>
+        <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000010"/>
+        <children xsi:type="Attribute" name="id" value="i00000000z0000z0000z0000z00000000009"/>
+        <children xsi:type="Element" name="expressions" value=""/>
+        <children xsi:type="Element" name="roots" value=""/>
+        <children xsi:type="Element" name="source" value="">
+          <children xsi:type="Text" name="#text" value="i00000000z0000z0000z0000z000000000001"/>
+        </children>
+      </children>
+    </children>
+    <children xsi:type="Element" name="concepts" value="">
+      <children xsi:type="Element" name="concept" value="">
+        <children xsi:type="Attribute" name="name" value="ConceptA"/>
+        <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000002"/>
+        <children xsi:type="Attribute" name="namespace" value="SimpleExample.DomainModel"/>
+        <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000002"/>
+        <children xsi:type="Attribute" name="isLoaded" value="true"/>
+        <children xsi:type="Attribute" name="isAbstract" value="false"/>
+        <children xsi:type="Element" name="mdfmetadata" value="">
+          <children xsi:type="Attribute" name="xsi:type" value="conceptorshapemdfmetadata"/>
+          <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+          <children xsi:type="Attribute" name="category" value=""/>
+          <children xsi:type="Attribute" name="description" value=""/>
+          <children xsi:type="Attribute" name="doccomment" value=""/>
+          <children xsi:type="Attribute" name="localize" value="false"/>
+        </children>
+        <children xsi:type="Element" name="valueProperties" value=""/>
+      </children>
+      <children xsi:type="Element" name="concept" value="">
+        <children xsi:type="Attribute" name="name" value="ConceptB"/>
+        <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000003"/>
+        <children xsi:type="Attribute" name="namespace" value="SimpleExample.DomainModel"/>
+        <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000003"/>
+        <children xsi:type="Attribute" name="isLoaded" value="true"/>
+        <children xsi:type="Attribute" name="isAbstract" value="false"/>
+        <children xsi:type="Element" name="mdfmetadata" value="">
+          <children xsi:type="Attribute" name="xsi:type" value="conceptorshapemdfmetadata"/>
+          <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+          <children xsi:type="Attribute" name="category" value=""/>
+          <children xsi:type="Attribute" name="description" value=""/>
+          <children xsi:type="Attribute" name="doccomment" value=""/>
+          <children xsi:type="Attribute" name="localize" value="false"/>
+        </children>
+        <children xsi:type="Element" name="valueProperties" value=""/>
+      </children>
+      <children xsi:type="Element" name="concept" value="">
+        <children xsi:type="Attribute" name="name" value="ConceptC"/>
+        <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000004"/>
+        <children xsi:type="Attribute" name="namespace" value="SimpleExample.DomainModel"/>
+        <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000004"/>
+        <children xsi:type="Attribute" name="isLoaded" value="true"/>
+        <children xsi:type="Attribute" name="isAbstract" value="false"/>
+        <children xsi:type="Element" name="mdfmetadata" value="">
+          <children xsi:type="Attribute" name="xsi:type" value="conceptorshapemdfmetadata"/>
+          <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+          <children xsi:type="Attribute" name="category" value=""/>
+          <children xsi:type="Attribute" name="description" value=""/>
+          <children xsi:type="Attribute" name="doccomment" value=""/>
+          <children xsi:type="Attribute" name="localize" value="false"/>
+        </children>
+        <children xsi:type="Element" name="valueProperties" value=""/>
+      </children>
+      <children xsi:type="Element" name="concept" value="">
+        <children xsi:type="Attribute" name="name" value="BReferencesC"/>
+        <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000005"/>
+        <children xsi:type="Attribute" name="namespace" value="SimpleExample.DomainModel"/>
+        <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000005"/>
+        <children xsi:type="Attribute" name="isLoaded" value="true"/>
+        <children xsi:type="Attribute" name="isAbstract" value="false"/>
+        <children xsi:type="Element" name="mdfmetadata" value="">
+          <children xsi:type="Attribute" name="xsi:type" value="conceptorshapemdfmetadata"/>
+          <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+          <children xsi:type="Attribute" name="category" value=""/>
+          <children xsi:type="Attribute" name="description" value=""/>
+          <children xsi:type="Attribute" name="doccomment" value=""/>
+          <children xsi:type="Attribute" name="localize" value="false"/>
+        </children>
+        <children xsi:type="Element" name="valueProperties" value="">
+          <children xsi:type="Element" name="property" value="">
+            <children xsi:type="Attribute" name="name" value="Property"/>
+            <children xsi:type="Attribute" name="identity" value="10000000-0000-0000-0000-000000000018"/>
+            <children xsi:type="Attribute" name="id" value="i10000000z0000z0000z0000z000000000018"/>
+            <children xsi:type="Element" name="mdfmetadata" value="">
+              <children xsi:type="Attribute" name="xsi:type" value="propertymdfmetadata"/>
+              <children xsi:type="Attribute" name="accessmodifier" value="public"/>
+              <children xsi:type="Attribute" name="category" value=""/>
+              <children xsi:type="Attribute" name="description" value=""/>
+              <children xsi:type="Attribute" name="doccomment" value=""/>
+              <children xsi:type="Attribute" name="localize" value="false"/>
+              <children xsi:type="Attribute" name="xpathexpression" value=""/>
+              <children xsi:type="Attribute" name="reversexpathexpression" value=""/>
+              <children xsi:type="Attribute" name="realattributename" value=""/>
+              <children xsi:type="Attribute" name="proxyattributename" value=""/>
+              <children xsi:type="Attribute" name="customstorage" value="false"/>
+              <children xsi:type="Attribute" name="allownulls" value="false"/>
+              <children xsi:type="Attribute" name="readwritestate" value="readwrite"/>
+              <children xsi:type="Attribute" name="tag" value=""/>
+            </children>
+            <children xsi:type="Element" name="propertyInfo" value="">
+              <children xsi:type="Attribute" name="xsi:type" value="StringPropertyInfo"/>
+              <children xsi:type="Attribute" name="name" value=""/>
+              <children xsi:type="Attribute" name="identity" value="00000000-0000-0000-0000-000000000037"/>
+              <children xsi:type="Attribute" name="default" value=""/>
+              <children xsi:type="Attribute" name="max" value="2147483647"/>
+              <children xsi:type="Attribute" name="min" value="-2147483647"/>
+            </children>
+          </children>
+        </children>
+      </children>
+    </children>
+  </children>
+</Root>

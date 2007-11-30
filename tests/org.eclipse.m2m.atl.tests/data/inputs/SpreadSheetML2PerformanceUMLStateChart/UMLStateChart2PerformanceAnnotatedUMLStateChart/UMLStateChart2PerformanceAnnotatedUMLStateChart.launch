@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.atl.eclipse.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/UML2Copy.atl"/>
+<stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
+<booleanAttribute key="AllowInterModelReferences" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="ME" value="Metrics"/>
+<mapEntry key="IN" value="UML2"/>
+<mapEntry key="PRO" value="UML2"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<booleanAttribute key="Mode Debug" value="false"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="Metrics" value="EMF"/>
+<mapEntry key="UML2" value="UML2"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="ME" value="MODELINPUT"/>
+<mapEntry key="IN" value="MODELINPUT"/>
+<mapEntry key="Metrics" value="METAMODELINPUT"/>
+<mapEntry key="UML2" value="METAMODELOUTPUT"/>
+<mapEntry key="OUT" value="MODELOUTPUT"/>
+<mapEntry key="PRO" value="MODELINPUT"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT" value="UML2"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="ME" value="/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/TraceSamples-Metrics.ecore"/>
+<mapEntry key="IN" value="/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/Order.uml"/>
+<mapEntry key="Metrics" value="/data/inputs/SpreadSheetML2PerformanceUMLStateChart/Metrics.ecore"/>
+<mapEntry key="UML2" value="uri:http://www.eclipse.org/uml2/2.1.0/UML"/>
+<mapEntry key="OUT" value="/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/PerformanceAnnotatedStateChart-UML.uml"/>
+<mapEntry key="PRO" value="/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/Performance.profile.uml"/>
+</mapAttribute>
+<stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>
+<listAttribute key="Superimpose">
+<listEntry value="/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart.asm"/>
+</listAttribute>
+<booleanAttribute key="continueAfterError" value="false"/>
+<booleanAttribute key="disableAttributeHelperCache" value="false"/>
+<booleanAttribute key="printExecutionTime" value="false"/>
+<booleanAttribute key="profile" value="false"/>
+<booleanAttribute key="showSummary" value="false"/>
+<booleanAttribute key="step" value="false"/>
+</launchConfiguration>

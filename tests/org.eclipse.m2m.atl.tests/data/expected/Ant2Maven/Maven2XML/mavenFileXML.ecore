@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="XML" name="project">
+  <children xsi:type="Attribute" name="xmlns:ant" value="jelly:ant"/>
+  <children xsi:type="Attribute" name="default" value="build"/>
+  <children xsi:type="Element" name="ant:path">
+    <children xsi:type="Attribute" name="id" value="classpath"/>
+    <children xsi:type="Element" name="ant:fileset">
+      <children xsi:type="Attribute" name="dir" value="${jwsdp.home}/common/lib"/>
+      <children xsi:type="Element" name="ant:include">
+        <children xsi:type="Attribute" name="name" value="*.jar"/>
+      </children>
+    </children>
+  </children>
+  <children xsi:type="Element" name="ant:property">
+    <children xsi:type="Attribute" name="name" value="example"/>
+    <children xsi:type="Attribute" name="value" value="GSApp"/>
+  </children>
+  <children xsi:type="Element" name="ant:property">
+    <children xsi:type="Attribute" name="name" value="path"/>
+    <children xsi:type="Attribute" name="value" value="/${example}"/>
+  </children>
+  <children xsi:type="Element" name="ant:property">
+    <children xsi:type="Attribute" name="name" value="build"/>
+    <children xsi:type="Attribute" name="value" value="${jwsdp.home}/docs/tutorial/examples/${example}/build"/>
+  </children>
+  <children xsi:type="Element" name="ant:property">
+    <children xsi:type="Attribute" name="name" value="url"/>
+    <children xsi:type="Attribute" name="value" value="http://localhost:8080/manager"/>
+  </children>
+  <children xsi:type="Element" name="ant:property">
+    <children xsi:type="Attribute" name="file" value="build.properties"/>
+  </children>
+  <children xsi:type="Element" name="ant:property">
+    <children xsi:type="Attribute" name="file" value="${user.home}/build.properties"/>
+  </children>
+  <children xsi:type="Element" name="ant:taskdef">
+    <children xsi:type="Attribute" name="name" value="install"/>
+    <children xsi:type="Attribute" name="classname" value="org.apache.catalina.ant.InstallTask"/>
+  </children>
+  <children xsi:type="Element" name="ant:taskdef">
+    <children xsi:type="Attribute" name="name" value="reload"/>
+    <children xsi:type="Attribute" name="classname" value="org.apache.catalina.ant.ReloadTask"/>
+  </children>
+  <children xsi:type="Element" name="ant:taskdef">
+    <children xsi:type="Attribute" name="name" value="remove"/>
+    <children xsi:type="Attribute" name="classname" value="org.apache.catalina.ant.RemoveTask"/>
+  </children>
+  <children xsi:type="Element" name="goal">
+    <children xsi:type="Attribute" name="name" value="init"/>
+    <children xsi:type="Element" name="ant:tstamp"/>
+  </children>
+  <children xsi:type="Element" name="goal">
+    <children xsi:type="Attribute" name="name" value="prepare"/>
+    <children xsi:type="Element" name="attainGoal">
+      <children xsi:type="Attribute" name="name" value="init"/>
+    </children>
+    <children xsi:type="Element" name="ant:mkdir">
+      <children xsi:type="Attribute" name="ant:dir" value="${build}"/>
+    </children>
+    <children xsi:type="Element" name="ant:mkdir">
+      <children xsi:type="Attribute" name="ant:dir" value="${build}/WEB-INF"/>
+    </children>
+    <children xsi:type="Element" name="ant:mkdir">
+      <children xsi:type="Attribute" name="ant:dir" value="${build}/WEB-INF/classes"/>
+    </children>
+  </children>
+  <children xsi:type="Element" name="goal">
+    <children xsi:type="Attribute" name="name" value="install"/>
+    <children xsi:type="Element" name="attainGoal">
+      <children xsi:type="Attribute" name="name" value="build"/>
+    </children>
+    <children xsi:type="Element" name="install">
+      <children xsi:type="Attribute" name="url" value="${url}"/>
+      <children xsi:type="Attribute" name="username" value="${username}"/>
+      <children xsi:type="Attribute" name="password" value="${password}"/>
+      <children xsi:type="Attribute" name="path" value="${path}"/>
+      <children xsi:type="Attribute" name="war" value="file:${build}"/>
+    </children>
+  </children>
+  <children xsi:type="Element" name="goal">
+    <children xsi:type="Attribute" name="name" value="reload"/>
+    <children xsi:type="Element" name="attainGoal">
+      <children xsi:type="Attribute" name="name" value="build"/>
+    </children>
+    <children xsi:type="Element" name="reload">
+      <children xsi:type="Attribute" name="url" value="${url}"/>
+      <children xsi:type="Attribute" name="username" value="${username}"/>
+      <children xsi:type="Attribute" name="password" value="${password}"/>
+      <children xsi:type="Attribute" name="path" value="${path}"/>
+    </children>
+  </children>
+  <children xsi:type="Element" name="goal">
+    <children xsi:type="Attribute" name="name" value="remove"/>
+    <children xsi:type="Element" name="remove">
+      <children xsi:type="Attribute" name="url" value="${url}"/>
+      <children xsi:type="Attribute" name="username" value="${username}"/>
+      <children xsi:type="Attribute" name="password" value="${password}"/>
+      <children xsi:type="Attribute" name="path" value="${path}"/>
+    </children>
+  </children>
+  <children xsi:type="Element" name="goal">
+    <children xsi:type="Attribute" name="name" value="build"/>
+    <children xsi:type="Element" name="attainGoal">
+      <children xsi:type="Attribute" name="name" value="prepare"/>
+    </children>
+    <children xsi:type="Element" name="ant:javac">
+      <children xsi:type="Attribute" name="srcdir" value="src"/>
+      <children xsi:type="Attribute" name="destdir" value="${build}/WEB-INF/classes"/>
+      <children xsi:type="Element" name="ant:include">
+        <children xsi:type="Attribute" name="name" value="**/*.java"/>
+      </children>
+      <children xsi:type="Element" name="ant:classpath">
+        <children xsi:type="Attribute" name="refid" value="classpath"/>
+      </children>
+    </children>
+    <children xsi:type="Element" name="ant:copy">
+      <children xsi:type="Attribute" name="todir" value="${build}/WEB-INF"/>
+      <children xsi:type="Element" name="ant:fileset">
+        <children xsi:type="Attribute" name="dir" value="web/WEB-INF"/>
+        <children xsi:type="Element" name="ant:include">
+          <children xsi:type="Attribute" name="name" value="web.xml"/>
+        </children>
+      </children>
+    </children>
+    <children xsi:type="Element" name="ant:copy">
+      <children xsi:type="Attribute" name="todir" value="${build}"/>
+      <children xsi:type="Element" name="ant:fileset">
+        <children xsi:type="Attribute" name="dir" value="web"/>
+        <children xsi:type="Element" name="ant:include">
+          <children xsi:type="Attribute" name="name" value="*.html"/>
+        </children>
+        <children xsi:type="Element" name="ant:include">
+          <children xsi:type="Attribute" name="name" value="*.jsp"/>
+        </children>
+        <children xsi:type="Element" name="ant:include">
+          <children xsi:type="Attribute" name="name" value="*.gif"/>
+        </children>
+      </children>
+    </children>
+  </children>
+</Root>

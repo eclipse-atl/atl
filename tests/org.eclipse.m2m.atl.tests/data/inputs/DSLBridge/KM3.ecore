@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="KM3">
+  <eClassifiers xsi:type="ecore:EClass" name="LocatedElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" ordered="false" lowerBound="1" eType="//PrimitiveTypes/String"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ModelElement" abstract="true" eSuperTypes="//LocatedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" lowerBound="1" eType="//PrimitiveTypes/String"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="package" ordered="false" lowerBound="1" eType="//Package" eOpposite="//Package/contents"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Classifier" eSuperTypes="//ModelElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DataType" eSuperTypes="//Classifier"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Enumeration" eSuperTypes="//Classifier">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="literals" upperBound="-1" eType="//EnumLiteral" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EnumLiteral" eSuperTypes="//ModelElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Class" eSuperTypes="//Classifier">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAbstract" ordered="false" lowerBound="1" eType="//PrimitiveTypes/Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supertypes" ordered="false" upperBound="-1" eType="//Class"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="structuralFeatures" upperBound="-1" eType="//StructuralFeature" containment="true" eOpposite="//StructuralFeature/owner"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StructuralFeature" eSuperTypes="//ModelElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" ordered="false" lowerBound="1" eType="//PrimitiveTypes/Integer"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" ordered="false" lowerBound="1" eType="//PrimitiveTypes/Integer"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isOrdered" ordered="false" lowerBound="1" eType="//PrimitiveTypes/Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnique" ordered="false" lowerBound="1" eType="//PrimitiveTypes/Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="owner" ordered="false" lowerBound="1" eType="//Class" eOpposite="//Class/structuralFeatures"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false" lowerBound="1" eType="//Classifier"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="//StructuralFeature"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Reference" eSuperTypes="//StructuralFeature">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isContainer" ordered="false" lowerBound="1" eType="//PrimitiveTypes/Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="opposite" ordered="false" eType="//Reference"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Package" eSuperTypes="//ModelElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" upperBound="-1" eType="//ModelElement" containment="true" eOpposite="//ModelElement/package"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metamodel" ordered="false" lowerBound="1" eType="//Metamodel" eOpposite="//Metamodel/contents"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Metamodel" eSuperTypes="//LocatedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" upperBound="-1" eType="//Package" containment="true" eOpposite="//Package/metamodel"/>
+  </eClassifiers>
+  <eSubpackages name="PrimitiveTypes">
+    <eClassifiers xsi:type="ecore:EDataType" name="Boolean"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="Integer"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="String"/>
+  </eSubpackages>
+</ecore:EPackage>

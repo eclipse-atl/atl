@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.atl.eclipse.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/XML2DSL/XML2DSL.atl"/>
+<stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
+<booleanAttribute key="AllowInterModelReferences" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="IN" value="XML"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<booleanAttribute key="Mode Debug" value="false"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="DSL" value="EMF"/>
+<mapEntry key="XML" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="IN" value="MODELINPUT"/>
+<mapEntry key="DSL" value="METAMODELOUTPUT"/>
+<mapEntry key="OUT" value="MODELOUTPUT"/>
+<mapEntry key="XML" value="METAMODELINPUT"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT" value="DSL"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="IN" value="/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/XML2DSL/SimpleExampleMM-XML.ecore"/>
+<mapEntry key="DSL" value="/data/inputs/DSLBridge/DSL.ecore"/>
+<mapEntry key="OUT" value="/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/XML2DSL/SimpleExampleMM-DSL.ecore"/>
+<mapEntry key="XML" value="/data/inputs/DSLBridge/XML.ecore"/>
+</mapAttribute>
+<stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.vm.tests"/>
+<listAttribute key="Superimpose"/>
+<booleanAttribute key="continueAfterError" value="false"/>
+<booleanAttribute key="disableAttributeHelperCache" value="false"/>
+<booleanAttribute key="printExecutionTime" value="false"/>
+<booleanAttribute key="profile" value="false"/>
+<booleanAttribute key="showSummary" value="false"/>
+<booleanAttribute key="step" value="false"/>
+</launchConfiguration>

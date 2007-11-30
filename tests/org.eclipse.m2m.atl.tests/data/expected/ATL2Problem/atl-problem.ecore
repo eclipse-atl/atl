@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns="Diagnostic">
+  <Problem location="9:15-9:26" description="variable 'A' undefined"/>
+  <Problem location="9:28-9:37" description="variable 'B' undefined"/>
+  <Problem location="9:39-9:47" description="variable 'A' undefined"/>
+  <Problem location="26:1-30:17" description="helper 'pouet': current implementation does not support helpers with collection context"/>
+  <Problem location="56:30-56:34" description="rule 'self': use of the 'self' variable prohibited in rules"/>
+  <Problem location="67:25-67:59" description="rule 'R2': use of 'thisModule.resolveTemp()' function is prohibited in source patterns"/>
+  <Problem location="19:9-19:45" description="attribute 'baba': use of 'thisModule.resolveTemp()' function is prohibited in attributes"/>
+  <Problem location="15:9-15:56" description="iterator 'select' may have at most one iterator variable"/>
+  <Problem location="15:44-15:45" description="a variable named 'm' is already declared in this loop"/>
+  <Problem location="15:47-15:48" description="a variable named 'm' is already declared in this loop"/>
+  <Problem location="16:27-16:30" description="a variable named 'res' is already declared in this loop"/>
+  <Problem location="16:32-16:69" description="a variable named 'res' is already declared in this loop"/>
+  <Problem severity="warning" location="23:13-23:29" description="a variable named 'x' is already declared in this container"/>
+  <Problem severity="warning" location="60:34-60:49" description="a variable named 'a' is already declared in this container"/>
+  <Problem severity="warning" location="46:42-46:61" description="a variable named 'a' is already declared in this container"/>
+</xmi:XMI>

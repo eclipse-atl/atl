@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<BibTeXFile xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="BibTeX">
+  <entries xsi:type="PhDThesis" id="a" year="2004" title="Interrogation continue des Systèmes d'Information de Proximité" school="IFSIC">
+    <authors author="Touzet, D."/>
+  </entries>
+  <entries xsi:type="MasterThesis" id="b" year="2000" title="Etude des Design Patterns et de leur impact sur la réutilisabilité" school="ENSIAS">
+    <authors author="Belangour, A."/>
+  </entries>
+  <entries xsi:type="Article" id="c" year="2005" title="Platform independent Web Application Modeling and Development with Netsilon" journal="Journal on Software and Systems Modeling">
+    <authors author="Bézivin, J."/>
+    <authors author="Fondement, F."/>
+    <authors author="Muller, P."/>
+    <authors author="Studer, P."/>
+  </entries>
+  <entries xsi:type="TechReport" id="d" year="2004" title="An Eclipse-based IDE for the ATL model transformation language">
+    <authors author="Bézivin, J."/>
+    <authors author="Jouault, F."/>
+    <authors author="Valduriez, P."/>
+  </entries>
+  <entries xsi:type="Unpublished" id="e" title="Model Engineering: Principles and Definitions" note="Draft">
+    <authors author="Bézivin, J."/>
+    <authors author="Jouault, F."/>
+    <authors author="Touzet, D."/>
+  </entries>
+  <entries xsi:type="Manual" id="f" title="ATL User Manual"/>
+  <entries xsi:type="InProceedings" id="g" year="2004" title="On the Need for Megamodels" booktitle="Proceedings of OOPSLA and GPCE Workshop">
+    <authors author="Bézivin, J."/>
+    <authors author="Jouault, F."/>
+    <authors author="Valduriez, P."/>
+  </entries>
+  <entries xsi:type="InCollection" id="h" year="2003" title="Discriminative Model Selection for Density Models" publisher="The Society for Artificial Intelligence and Statistics" booktitle="Proceedings of Ninth International Workshop on Artificial Intelligence and Statistics">
+    <authors author="Meek, C."/>
+    <authors author="Thiesson, B."/>
+  </entries>
+  <entries xsi:type="Proceedings" id="i" year="2004" title="Proceedings of OOPSLA and GPCE Workshop"/>
+  <entries xsi:type="Booklet" id="j" year="1998"/>
+  <entries xsi:type="Book" id="k" year="2004" title="eclipse Modeling Framework" publisher="Addison-Wesley">
+    <authors author="Budinsky, F."/>
+    <authors author="Steinberg, D."/>
+    <authors author="Merks, E."/>
+    <authors author="Ellersick, R."/>
+    <authors author="Grose, T. J."/>
+  </entries>
+  <entries xsi:type="InBook" id="l" year="2004" title="Software Factories" publisher="Wiley" chapter="1">
+    <authors author="Greenfield, J."/>
+    <authors author="Short, K."/>
+  </entries>
+  <entries xsi:type="Misc" id="m"/>
+  <entries xsi:type="Article" id="n" year="2003" title="Graph Transformations on Domain-Specific Models" journal="Journal on Software and Systems Modeling">
+    <authors author="Agrawal, A."/>
+    <authors author="Karsai, G."/>
+    <authors author="Shi, F."/>
+  </entries>
+  <entries xsi:type="Article" id="o" year="2004" title="Sur les principes de base de l'ingénierie des modèles" journal="RSTI-L'Objet">
+    <authors author="Bézivin, J."/>
+  </entries>
+  <entries xsi:type="TechReport" id="p" year="2005" title="An Introduction to the ATLAS Model Management Architecture">
+    <authors author="Bézivin, J."/>
+    <authors author="Jouault, F."/>
+    <authors author="Touzet, D."/>
+  </entries>
+</BibTeXFile>

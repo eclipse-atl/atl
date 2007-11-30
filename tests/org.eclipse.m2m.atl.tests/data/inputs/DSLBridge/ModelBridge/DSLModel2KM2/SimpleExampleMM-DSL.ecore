@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<DomainModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="DSL" name="SimpleExample"
+    identity="14141e04-a097-496d-b2ab-d343fac336fa" namespace="Example.SimpleExample.DomainModel"
+    isLoaded="true">
+  <classifiers xsi:type="Class" name="ConceptA" identity="970b23f8-232f-4b27-a560-ee5289ba87aa"
+      namespace="Example.SimpleExample.DomainModel" isLoaded="true"/>
+  <classifiers xsi:type="Class" name="ConceptB" identity="1580bc4b-c7ed-4423-a8eb-306c01bf33ea"
+      namespace="Example.SimpleExample.DomainModel" isLoaded="true"/>
+  <classifiers xsi:type="Class" name="ConceptC" identity="0fe218f6-ea4f-4547-a390-e5e069524ae9"
+      namespace="Example.SimpleExample.DomainModel" isLoaded="true"/>
+  <classifiers xsi:type="Relationship" name="AHasBs" identity="d8f2f19e-0412-4223-b256-8b8fc893c8f1"
+      namespace="Example.SimpleExample.DomainModel" isLoaded="true" isEmbedding="true">
+    <roles name="Bs" identity="ebf7e8de-cb84-4252-8cff-7d10dc227b69" min="0" max="0"
+        isUnbounded="true" accepts="all" isOrdered="true" source="//@classifiers.0"
+        type="//@classifiers.1"/>
+    <roles name="ConceptA" identity="5d44ccd3-6872-4643-b57e-9105dde5e1e9" min="1"
+        max="1" accepts="none" isOrdered="true" source="//@classifiers.1" type="//@classifiers.0"/>
+  </classifiers>
+  <classifiers xsi:type="Relationship" name="AHasCs" identity="f9434de9-8d47-43a9-9fab-980bfb1e7ac1"
+      namespace="Example.SimpleExample.DomainModel" isLoaded="true" isEmbedding="true">
+    <roles name="Cs" identity="0cf0be27-7402-4fc9-9092-26f85b286450" min="0" max="0"
+        isUnbounded="true" accepts="all" isOrdered="true" source="//@classifiers.0"
+        type="//@classifiers.2"/>
+    <roles name="ConceptA" identity="80eac6fa-7c7e-4ce3-ad47-c61731fa1b11" min="1"
+        max="1" accepts="none" isOrdered="true" source="//@classifiers.2" type="//@classifiers.0"/>
+  </classifiers>
+  <classifiers xsi:type="Relationship" name="BReferencesC" identity="b15bde10-1034-46be-aa69-de99c2b260a0"
+      namespace="Example.SimpleExample.DomainModel" isLoaded="true">
+    <properties name="Property" identity="0a5a593f-f166-4da2-b85b-69549c8b24fb" type="//@types.0"/>
+    <roles name="ReferencedC" identity="b1d368ec-ab53-422a-b3aa-45fec6560a39" min="0"
+        max="1" accepts="none" isOrdered="true" source="//@classifiers.1" type="//@classifiers.2"/>
+    <roles name="ReferringBs" identity="ce58c89b-2db4-4e44-9f8e-4a58c02a8351" min="0"
+        max="0" isUnbounded="true" accepts="none" isOrdered="true" source="//@classifiers.2"
+        type="//@classifiers.1"/>
+  </classifiers>
+  <types xsi:type="SimpleType" name="String"/>
+  <types xsi:type="SimpleType" name="Integer"/>
+  <types xsi:type="SimpleType" name="Boolean"/>
+  <types xsi:type="SimpleType" name="Double"/>
+</DomainModel>

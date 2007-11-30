@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.atl.eclipse.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/data/inputs/Class2Relational/Ecore2Class/Ecore2Class.atl"/>
+<stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
+<booleanAttribute key="AllowInterModelReferences" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="IN" value="MOF"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<booleanAttribute key="Mode Debug" value="false"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="Class" value="EMF"/>
+<mapEntry key="MOF" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="IN" value="MODELINPUT"/>
+<mapEntry key="Class" value="METAMODELOUTPUT"/>
+<mapEntry key="OUT" value="MODELOUTPUT"/>
+<mapEntry key="MOF" value="METAMODELINPUT"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT" value="Class"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="IN" value="/data/inputs/Class2Relational/Ecore2Class/sample.ecore"/>
+<mapEntry key="Class" value="/data/inputs/Class2Relational/Class.ecore"/>
+<mapEntry key="OUT" value="/data/inputs/Class2Relational/Ecore2Class/outSample.ecore"/>
+<mapEntry key="MOF" value="#EMF"/>
+</mapAttribute>
+<stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>
+<listAttribute key="Superimpose"/>
+<booleanAttribute key="continueAfterError" value="false"/>
+<booleanAttribute key="disableAttributeHelperCache" value="false"/>
+<booleanAttribute key="printExecutionTime" value="false"/>
+<booleanAttribute key="profile" value="false"/>
+<booleanAttribute key="showSummary" value="false"/>
+<booleanAttribute key="step" value="false"/>
+</launchConfiguration>

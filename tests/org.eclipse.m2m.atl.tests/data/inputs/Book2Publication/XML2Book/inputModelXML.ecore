@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="XML" name="books">
+  <children xsi:type="Element" name="book">
+    <children xsi:type="Attribute" name="title" value="livre"/>
+    <children xsi:type="Element" name="chapter">
+      <children xsi:type="Attribute" name="title" value="chapter 1"/>
+      <children xsi:type="Attribute" name="nbPages" value="13"/>
+      <children xsi:type="Attribute" name="author" value="toto"/>
+    </children>
+    <children xsi:type="Element" name="chapter">
+      <children xsi:type="Attribute" name="title" value="chapter 2"/>
+      <children xsi:type="Attribute" name="nbPages" value="17"/>
+      <children xsi:type="Attribute" name="author" value="toto"/>
+    </children>
+    <children xsi:type="Element" name="chapter">
+      <children xsi:type="Attribute" name="title" value="chapter 3"/>
+      <children xsi:type="Attribute" name="nbPages" value="20"/>
+      <children xsi:type="Attribute" name="author" value="titi"/>
+    </children>
+  </children>
+  <children xsi:type="Element" name="book">
+    <children xsi:type="Attribute" name="title" value="article"/>
+    <children xsi:type="Element" name="chapter">
+      <children xsi:type="Attribute" name="title" value="chapter 1"/>
+      <children xsi:type="Attribute" name="nbPages" value="13"/>
+      <children xsi:type="Attribute" name="author" value="Michel"/>
+    </children>
+    <children xsi:type="Element" name="chapter">
+      <children xsi:type="Attribute" name="title" value="chapter 2"/>
+      <children xsi:type="Attribute" name="nbPages" value="1"/>
+      <children xsi:type="Attribute" name="author" value="David"/>
+    </children>
+  </children>
+</Root>

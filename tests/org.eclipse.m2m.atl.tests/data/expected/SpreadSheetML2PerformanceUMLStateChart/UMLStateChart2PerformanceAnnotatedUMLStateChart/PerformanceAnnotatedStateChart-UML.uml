@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Performance="http:///schemas/Performance/_-tsYoNktEdufA5mqkDxD4g/7" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xsi:schemaLocation="http:///schemas/Performance/_-tsYoNktEdufA5mqkDxD4g/7 Performance.profile.uml#_-tsYodktEdufA5mqkDxD4g">
+  <uml:Model xmi:id="a1" name="OrderModel">
+    <packagedElement xmi:type="uml:Package" xmi:id="a2" name="OrderPackage">
+      <packagedElement xmi:type="uml:Activity" xmi:id="a3" name="OrderActivity">
+        <ownedComment xmi:type="uml:Comment" xmi:id="a4">
+          <body>Sample Activity Diagram: Order Management&#xD;
+</body>
+        </ownedComment>
+        <node xmi:type="uml:InitialNode" xmi:id="a5" name="InitialNode1" visibility="public" outgoing="a17"/>
+        <node xmi:type="uml:ActivityFinalNode" xmi:id="a6" name="ActivityFinalNode1" visibility="public" incoming="a26 a29"/>
+        <node xmi:type="uml:CallOperationAction" xmi:id="a7" name="Create New Order" visibility="public" outgoing="a44" incoming="a20"/>
+        <node xmi:type="uml:DecisionNode" xmi:id="a8" name="DecisionNode1" visibility="public" outgoing="a20 a23" incoming="a17"/>
+        <node xmi:type="uml:DecisionNode" xmi:id="a9" name="DecisionNode2" visibility="public" outgoing="a35 a38" incoming="a32"/>
+        <node xmi:type="uml:CallOperationAction" xmi:id="a10" name="Select Order" visibility="public" outgoing="a32" incoming="a23"/>
+        <node xmi:type="uml:CallOperationAction" xmi:id="a11" name="Update Order" visibility="public" outgoing="a56" incoming="a35"/>
+        <node xmi:type="uml:CallOperationAction" xmi:id="a12" name="Delete Order" visibility="public" outgoing="a47" incoming="a38"/>
+        <node xmi:type="uml:CallOperationAction" xmi:id="a13" name="Validate" visibility="public" outgoing="a26" incoming="a50"/>
+        <node xmi:type="uml:CallOperationAction" xmi:id="a14" name="Cancel" visibility="public" outgoing="a29" incoming="a53"/>
+        <node xmi:type="uml:JoinNode" xmi:id="a15" name="JoinNode1" visibility="public" outgoing="a41" incoming="a44 a47 a56"/>
+        <node xmi:type="uml:DecisionNode" xmi:id="a16" name="DecisionNode3" visibility="public" outgoing="a50 a53" incoming="a41"/>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a17" name="" visibility="public" source="a5" target="a8">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a18" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a19" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a20" name="create" visibility="public" source="a8" target="a7">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a21" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a22" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a23" name="select" visibility="public" source="a8" target="a10">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a24" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a25" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a26" name="" visibility="public" source="a13" target="a6">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a27" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a28" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a29" name="" visibility="public" source="a14" target="a6">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a30" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a31" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a32" name="" visibility="public" source="a10" target="a9">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a33" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a34" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a35" name="update" visibility="public" source="a9" target="a11">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a36" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a37" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a38" name="delete" visibility="public" source="a9" target="a12">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a39" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a40" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a41" name="" visibility="public" source="a15" target="a16">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a42" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a43" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a44" name="" visibility="public" source="a7" target="a15">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a45" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a46" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a47" name="" visibility="public" source="a12" target="a15">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a48" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a49" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a50" name="" visibility="public" source="a16" target="a13">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a51" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a52" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a53" name="" visibility="public" source="a16" target="a14">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a54" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a55" value="1"/>
+        </edge>
+        <edge xmi:type="uml:ControlFlow" xmi:id="a56" name="" visibility="public" source="a11" target="a15">
+          <guard xmi:type="uml:LiteralBoolean" xmi:id="a57" value="true"/>
+          <weight xmi:type="uml:LiteralInteger" xmi:id="a58" value="1"/>
+        </edge>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="a59">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="a60" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="Performance.profile.uml#_-tsYodktEdufA5mqkDxD4g"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="Performance.profile.uml#_JLfecdfUEduB2uraX9-VYQ"/>
+    </profileApplication>
+  </uml:Model>
+  <Performance:ServicePerformance xmi:id="a61" base_Action="a14" CPUTime="469"/>
+  <Performance:ServicePerformance xmi:id="a62" base_Action="a10" DBAccess="3" DBRows="3761" CPUTime="11385"/>
+  <Performance:ServicePerformance xmi:id="a63" base_Action="a13" DBAccess="1" DBRows="1115" CPUTime="9719"/>
+  <Performance:ServicePerformance xmi:id="a64" base_Action="a11" CPUTime="11978"/>
+  <Performance:ServicePerformance xmi:id="a65" base_Action="a7" CPUTime="8184"/>
+  <Performance:ServicePerformance xmi:id="a66" base_Action="a12" CPUTime="4928"/>
+</xmi:XMI>

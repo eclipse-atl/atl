@@ -1,0 +1,1359 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="XML" startLine="2" endLine="261" name="om:MetaModel">
+  <children xsi:type="Attribute" name="MajorVersion" value="1"/>
+  <children xsi:type="Attribute" name="MinorVersion" value="1"/>
+  <children xsi:type="Attribute" name="xmlns:om" value="http://Microsoft.VisualStudio.Modeling"/>
+  <children xsi:type="Text" startLine="2" name="#text" value="&#xA;"/>
+  <children xsi:type="Text" startLine="3" name="#text" value="    "/>
+  <children xsi:type="Element" startLine="3" endLine="3" name="om:SubStore">
+    <children xsi:type="Attribute" name="SubstoreType" value="Microsoft.VisualStudio.Modeling.Core"/>
+  </children>
+  <children xsi:type="Text" startLine="3" name="#text" value="&#xA;"/>
+  <children xsi:type="Text" startLine="4" name="#text" value="    "/>
+  <children xsi:type="Element" startLine="4" endLine="4" name="om:SubStore">
+    <children xsi:type="Attribute" name="SubstoreType" value="Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurface"/>
+  </children>
+  <children xsi:type="Text" startLine="4" name="#text" value="&#xA;"/>
+  <children xsi:type="Text" startLine="5" name="#text" value="    "/>
+  <children xsi:type="Element" startLine="5" endLine="5" name="om:SubStore">
+    <children xsi:type="Attribute" name="SubstoreType" value="Microsoft.VisualStudio.Modeling.Utilities.UtilitiesModel"/>
+  </children>
+  <children xsi:type="Text" startLine="5" name="#text" value="&#xA;"/>
+  <children xsi:type="Text" startLine="6" name="#text" value="    "/>
+  <children xsi:type="Element" startLine="6" endLine="6" name="om:SubStore">
+    <children xsi:type="Attribute" name="SubstoreType" value="Example.SimpleExample.DomainModel.SimpleExample"/>
+  </children>
+  <children xsi:type="Text" startLine="6" name="#text" value="&#xA;"/>
+  <children xsi:type="Text" startLine="7" name="#text" value="    "/>
+  <children xsi:type="Element" startLine="7" endLine="7" name="om:SubStore">
+    <children xsi:type="Attribute" name="SubstoreType" value="Example.SimpleExample.Designer.SimpleExampleDesigner"/>
+  </children>
+  <children xsi:type="Text" startLine="7" name="#text" value="&#xA;"/>
+  <children xsi:type="Text" startLine="8" name="#text" value="    "/>
+  <children xsi:type="Element" startLine="8" endLine="51" name="om:ModelElement">
+    <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.DomainModel.ConceptA"/>
+    <children xsi:type="Attribute" name="Id" value="d86d3730-d7a0-481b-bdc2-dab72146d013"/>
+    <children xsi:type="Text" startLine="8" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="9" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="9" endLine="9" name="om:Property">
+      <children xsi:type="Attribute" name="Name" value="Name"/>
+      <children xsi:type="Attribute" name="Value" value=""/>
+    </children>
+    <children xsi:type="Text" startLine="9" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="10" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="10" endLine="13" name="om:ElementLink">
+      <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.SubjectHasPresentation"/>
+      <children xsi:type="Attribute" name="Id" value="7d9f3cc5-1ba7-4679-b493-8325f2098964"/>
+      <children xsi:type="Text" startLine="10" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="11" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="11" endLine="11" name="om:Role">
+        <children xsi:type="Attribute" name="Name" value="Subject"/>
+        <children xsi:type="Attribute" name="Id" value="d86d3730-d7a0-481b-bdc2-dab72146d013"/>
+      </children>
+      <children xsi:type="Text" startLine="11" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="12" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="12" endLine="12" name="om:Role">
+        <children xsi:type="Attribute" name="Name" value="Presentation"/>
+        <children xsi:type="Attribute" name="Id" value="86c724e8-24f9-4ad1-b1b3-068a52133cbf"/>
+      </children>
+      <children xsi:type="Text" startLine="12" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="13" name="#text" value="        "/>
+    </children>
+    <children xsi:type="Text" startLine="13" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="14" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="14" endLine="24" name="om:ModelElement">
+      <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.DomainModel.ConceptB"/>
+      <children xsi:type="Attribute" name="Id" value="30477d0b-eb6d-4f53-b4cd-ed58abf5dafb"/>
+      <children xsi:type="Attribute" name="ParentLink" value="Example.SimpleExample.DomainModel.AHasBs"/>
+      <children xsi:type="Text" startLine="14" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="15" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="15" endLine="15" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="Name"/>
+        <children xsi:type="Attribute" name="Value" value="B1"/>
+      </children>
+      <children xsi:type="Text" startLine="15" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="16" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="16" endLine="19" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.SubjectHasPresentation"/>
+        <children xsi:type="Attribute" name="Id" value="98048d4c-2556-42e0-94ed-0af27b02a3d8"/>
+        <children xsi:type="Text" startLine="16" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="17" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="17" endLine="17" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Subject"/>
+          <children xsi:type="Attribute" name="Id" value="30477d0b-eb6d-4f53-b4cd-ed58abf5dafb"/>
+        </children>
+        <children xsi:type="Text" startLine="17" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="18" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="18" endLine="18" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Presentation"/>
+          <children xsi:type="Attribute" name="Id" value="d025db17-644a-4942-96f7-b67fac18eb69"/>
+        </children>
+        <children xsi:type="Text" startLine="18" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="19" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="19" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="20" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="20" endLine="23" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.DomainModel.BReferencesC"/>
+        <children xsi:type="Attribute" name="Id" value="fbc8511b-c72b-4554-8888-23ca67b58e33"/>
+        <children xsi:type="Text" startLine="20" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="21" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="21" endLine="21" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="ReferringBs"/>
+          <children xsi:type="Attribute" name="Id" value="30477d0b-eb6d-4f53-b4cd-ed58abf5dafb"/>
+        </children>
+        <children xsi:type="Text" startLine="21" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="22" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="22" endLine="22" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="ReferencedC"/>
+          <children xsi:type="Attribute" name="Id" value="1b07f1f7-fbc7-42e8-a827-f28a6d4e172c"/>
+        </children>
+        <children xsi:type="Text" startLine="22" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="23" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="23" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="24" name="#text" value="        "/>
+    </children>
+    <children xsi:type="Text" startLine="24" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="25" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="25" endLine="35" name="om:ModelElement">
+      <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.DomainModel.ConceptB"/>
+      <children xsi:type="Attribute" name="Id" value="5b91bf49-4f2e-44fb-acdf-76c393b91f3e"/>
+      <children xsi:type="Attribute" name="ParentLink" value="Example.SimpleExample.DomainModel.AHasBs"/>
+      <children xsi:type="Text" startLine="25" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="26" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="26" endLine="26" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="Name"/>
+        <children xsi:type="Attribute" name="Value" value="B2"/>
+      </children>
+      <children xsi:type="Text" startLine="26" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="27" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="27" endLine="30" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.SubjectHasPresentation"/>
+        <children xsi:type="Attribute" name="Id" value="773cd0d6-db4e-4503-a5d4-d2c181d7931f"/>
+        <children xsi:type="Text" startLine="27" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="28" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="28" endLine="28" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Subject"/>
+          <children xsi:type="Attribute" name="Id" value="5b91bf49-4f2e-44fb-acdf-76c393b91f3e"/>
+        </children>
+        <children xsi:type="Text" startLine="28" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="29" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="29" endLine="29" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Presentation"/>
+          <children xsi:type="Attribute" name="Id" value="044fcf6e-272e-46f0-956e-44b21f3aea4c"/>
+        </children>
+        <children xsi:type="Text" startLine="29" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="30" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="30" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="31" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="31" endLine="34" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.DomainModel.BReferencesC"/>
+        <children xsi:type="Attribute" name="Id" value="c36ad301-9625-45ab-bba7-93cbec173cd6"/>
+        <children xsi:type="Text" startLine="31" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="32" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="32" endLine="32" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="ReferringBs"/>
+          <children xsi:type="Attribute" name="Id" value="5b91bf49-4f2e-44fb-acdf-76c393b91f3e"/>
+        </children>
+        <children xsi:type="Text" startLine="32" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="33" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="33" endLine="33" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="ReferencedC"/>
+          <children xsi:type="Attribute" name="Id" value="1b07f1f7-fbc7-42e8-a827-f28a6d4e172c"/>
+        </children>
+        <children xsi:type="Text" startLine="33" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="34" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="34" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="35" name="#text" value="        "/>
+    </children>
+    <children xsi:type="Text" startLine="35" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="36" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="36" endLine="50" name="om:ModelElement">
+      <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.DomainModel.ConceptC"/>
+      <children xsi:type="Attribute" name="Id" value="1b07f1f7-fbc7-42e8-a827-f28a6d4e172c"/>
+      <children xsi:type="Attribute" name="ParentLink" value="Example.SimpleExample.DomainModel.AHasCs"/>
+      <children xsi:type="Text" startLine="36" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="37" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="37" endLine="37" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="Name"/>
+        <children xsi:type="Attribute" name="Value" value="C1"/>
+      </children>
+      <children xsi:type="Text" startLine="37" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="38" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="38" endLine="41" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.SubjectHasPresentation"/>
+        <children xsi:type="Attribute" name="Id" value="a701a0ea-179b-4a51-bd23-17926dbb91dc"/>
+        <children xsi:type="Text" startLine="38" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="39" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="39" endLine="39" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Subject"/>
+          <children xsi:type="Attribute" name="Id" value="1b07f1f7-fbc7-42e8-a827-f28a6d4e172c"/>
+        </children>
+        <children xsi:type="Text" startLine="39" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="40" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="40" endLine="40" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Presentation"/>
+          <children xsi:type="Attribute" name="Id" value="16d82b85-45d4-4520-89b1-024b8f09f7c9"/>
+        </children>
+        <children xsi:type="Text" startLine="40" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="41" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="41" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="42" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="42" endLine="45" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.DomainModel.BReferencesC"/>
+        <children xsi:type="Attribute" name="Id" value="fbc8511b-c72b-4554-8888-23ca67b58e33"/>
+        <children xsi:type="Text" startLine="42" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="43" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="43" endLine="43" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="ReferencedC"/>
+          <children xsi:type="Attribute" name="Id" value="1b07f1f7-fbc7-42e8-a827-f28a6d4e172c"/>
+        </children>
+        <children xsi:type="Text" startLine="43" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="44" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="44" endLine="44" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="ReferringBs"/>
+          <children xsi:type="Attribute" name="Id" value="30477d0b-eb6d-4f53-b4cd-ed58abf5dafb"/>
+        </children>
+        <children xsi:type="Text" startLine="44" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="45" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="45" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="46" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="46" endLine="49" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.DomainModel.BReferencesC"/>
+        <children xsi:type="Attribute" name="Id" value="c36ad301-9625-45ab-bba7-93cbec173cd6"/>
+        <children xsi:type="Text" startLine="46" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="47" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="47" endLine="47" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="ReferencedC"/>
+          <children xsi:type="Attribute" name="Id" value="1b07f1f7-fbc7-42e8-a827-f28a6d4e172c"/>
+        </children>
+        <children xsi:type="Text" startLine="47" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="48" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="48" endLine="48" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="ReferringBs"/>
+          <children xsi:type="Attribute" name="Id" value="5b91bf49-4f2e-44fb-acdf-76c393b91f3e"/>
+        </children>
+        <children xsi:type="Text" startLine="48" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="49" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="49" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="50" name="#text" value="        "/>
+    </children>
+    <children xsi:type="Text" startLine="50" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="51" name="#text" value="    "/>
+  </children>
+  <children xsi:type="Text" startLine="51" name="#text" value="&#xA;"/>
+  <children xsi:type="Text" startLine="52" name="#text" value="    "/>
+  <children xsi:type="Element" startLine="52" endLine="58" name="om:ModelElement">
+    <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.DomainModel.BReferencesC"/>
+    <children xsi:type="Attribute" name="Id" value="fbc8511b-c72b-4554-8888-23ca67b58e33"/>
+    <children xsi:type="Text" startLine="52" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="53" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="53" endLine="53" name="om:Property">
+      <children xsi:type="Attribute" name="Name" value="Property"/>
+      <children xsi:type="Attribute" name="Value" value=""/>
+    </children>
+    <children xsi:type="Text" startLine="53" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="54" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="54" endLine="57" name="om:ElementLink">
+      <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.SubjectHasPresentation"/>
+      <children xsi:type="Attribute" name="Id" value="79fda795-9640-4504-bf7e-a597c2e1f92a"/>
+      <children xsi:type="Text" startLine="54" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="55" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="55" endLine="55" name="om:Role">
+        <children xsi:type="Attribute" name="Name" value="Subject"/>
+        <children xsi:type="Attribute" name="Id" value="fbc8511b-c72b-4554-8888-23ca67b58e33"/>
+      </children>
+      <children xsi:type="Text" startLine="55" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="56" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="56" endLine="56" name="om:Role">
+        <children xsi:type="Attribute" name="Name" value="Presentation"/>
+        <children xsi:type="Attribute" name="Id" value="a958be82-6413-4b2b-af17-8e15ff030272"/>
+      </children>
+      <children xsi:type="Text" startLine="56" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="57" name="#text" value="        "/>
+    </children>
+    <children xsi:type="Text" startLine="57" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="58" name="#text" value="    "/>
+  </children>
+  <children xsi:type="Text" startLine="58" name="#text" value="&#xA;"/>
+  <children xsi:type="Text" startLine="59" name="#text" value="    "/>
+  <children xsi:type="Element" startLine="59" endLine="65" name="om:ModelElement">
+    <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.DomainModel.BReferencesC"/>
+    <children xsi:type="Attribute" name="Id" value="c36ad301-9625-45ab-bba7-93cbec173cd6"/>
+    <children xsi:type="Text" startLine="59" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="60" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="60" endLine="60" name="om:Property">
+      <children xsi:type="Attribute" name="Name" value="Property"/>
+      <children xsi:type="Attribute" name="Value" value=""/>
+    </children>
+    <children xsi:type="Text" startLine="60" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="61" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="61" endLine="64" name="om:ElementLink">
+      <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.SubjectHasPresentation"/>
+      <children xsi:type="Attribute" name="Id" value="9da075cf-8f1f-46fe-bbc2-1ec918ab09c0"/>
+      <children xsi:type="Text" startLine="61" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="62" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="62" endLine="62" name="om:Role">
+        <children xsi:type="Attribute" name="Name" value="Subject"/>
+        <children xsi:type="Attribute" name="Id" value="c36ad301-9625-45ab-bba7-93cbec173cd6"/>
+      </children>
+      <children xsi:type="Text" startLine="62" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="63" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="63" endLine="63" name="om:Role">
+        <children xsi:type="Attribute" name="Name" value="Presentation"/>
+        <children xsi:type="Attribute" name="Id" value="96f9b8e3-b55f-4bdb-9ab3-faf94847c479"/>
+      </children>
+      <children xsi:type="Text" startLine="63" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="64" name="#text" value="        "/>
+    </children>
+    <children xsi:type="Text" startLine="64" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="65" name="#text" value="    "/>
+  </children>
+  <children xsi:type="Text" startLine="65" name="#text" value="&#xA;"/>
+  <children xsi:type="Text" startLine="66" name="#text" value="    "/>
+  <children xsi:type="Element" startLine="66" endLine="260" name="om:ModelElement">
+    <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.Designer.SimpleExampleDiagram"/>
+    <children xsi:type="Attribute" name="Id" value="86c724e8-24f9-4ad1-b1b3-068a52133cbf"/>
+    <children xsi:type="Text" startLine="66" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="67" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="67" endLine="67" name="om:Property">
+      <children xsi:type="Attribute" name="Name" value="IsCompleteView"/>
+      <children xsi:type="Attribute" name="Value" value="False"/>
+    </children>
+    <children xsi:type="Text" startLine="67" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="68" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="68" endLine="68" name="om:Property">
+      <children xsi:type="Attribute" name="Name" value="DiagramId"/>
+      <children xsi:type="Attribute" name="Value" value="2ffeaab8-b005-41ff-96e5-b1739247bbcc"/>
+    </children>
+    <children xsi:type="Text" startLine="68" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="69" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="69" endLine="69" name="om:Property">
+      <children xsi:type="Attribute" name="Name" value="Name"/>
+      <children xsi:type="Attribute" name="Value" value=""/>
+    </children>
+    <children xsi:type="Text" startLine="69" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="70" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="70" endLine="70" name="om:Property">
+      <children xsi:type="Attribute" name="Name" value="BaseFontName"/>
+      <children xsi:type="Attribute" name="Value" value="Tahoma"/>
+    </children>
+    <children xsi:type="Text" startLine="70" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="71" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="71" endLine="71" name="om:Property">
+      <children xsi:type="Attribute" name="Name" value="BaseFontSize"/>
+      <children xsi:type="Attribute" name="Value" value="0,11458333581686"/>
+    </children>
+    <children xsi:type="Text" startLine="71" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="72" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="72" endLine="72" name="om:Property">
+      <children xsi:type="Attribute" name="Name" value="IsExpanded"/>
+      <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAQs="/>
+    </children>
+    <children xsi:type="Text" startLine="72" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="73" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="73" endLine="73" name="om:Property">
+      <children xsi:type="Attribute" name="Name" value="AbsoluteBounds"/>
+      <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAGAs="/>
+    </children>
+    <children xsi:type="Text" startLine="73" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="74" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="74" endLine="77" name="om:ElementLink">
+      <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.SubjectHasPresentation"/>
+      <children xsi:type="Attribute" name="Id" value="7d9f3cc5-1ba7-4679-b493-8325f2098964"/>
+      <children xsi:type="Text" startLine="74" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="75" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="75" endLine="75" name="om:Role">
+        <children xsi:type="Attribute" name="Name" value="Presentation"/>
+        <children xsi:type="Attribute" name="Id" value="86c724e8-24f9-4ad1-b1b3-068a52133cbf"/>
+      </children>
+      <children xsi:type="Text" startLine="75" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="76" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="76" endLine="76" name="om:Role">
+        <children xsi:type="Attribute" name="Name" value="Subject"/>
+        <children xsi:type="Attribute" name="Id" value="d86d3730-d7a0-481b-bdc2-dab72146d013"/>
+      </children>
+      <children xsi:type="Text" startLine="76" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="77" name="#text" value="        "/>
+    </children>
+    <children xsi:type="Text" startLine="77" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="78" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="78" endLine="107" name="om:ModelElement">
+      <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.Designer.BShape"/>
+      <children xsi:type="Attribute" name="Id" value="d025db17-644a-4942-96f7-b67fac18eb69"/>
+      <children xsi:type="Attribute" name="ParentLink" value="Microsoft.VisualStudio.Modeling.Diagrams.ParentShapeContainsNestedChildShapes"/>
+      <children xsi:type="Text" startLine="78" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="79" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="79" endLine="79" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="FillColor"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAFFACw=="/>
+      </children>
+      <children xsi:type="Text" startLine="79" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="80" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="80" endLine="80" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="OutlineColor"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAACw=="/>
+      </children>
+      <children xsi:type="Text" startLine="80" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="81" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="81" endLine="81" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="IsExpanded"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAQs="/>
+      </children>
+      <children xsi:type="Text" startLine="81" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="82" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="82" endLine="82" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="AbsoluteBounds"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgws="/>
+      </children>
+      <children xsi:type="Text" startLine="82" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="83" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="83" endLine="86" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.SubjectHasPresentation"/>
+        <children xsi:type="Attribute" name="Id" value="98048d4c-2556-42e0-94ed-0af27b02a3d8"/>
+        <children xsi:type="Text" startLine="83" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="84" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="84" endLine="84" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Presentation"/>
+          <children xsi:type="Attribute" name="Id" value="d025db17-644a-4942-96f7-b67fac18eb69"/>
+        </children>
+        <children xsi:type="Text" startLine="84" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="85" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="85" endLine="85" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Subject"/>
+          <children xsi:type="Attribute" name="Id" value="30477d0b-eb6d-4f53-b4cd-ed58abf5dafb"/>
+        </children>
+        <children xsi:type="Text" startLine="85" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="86" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="86" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="87" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="87" endLine="90" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.ShapeHasDecorators"/>
+        <children xsi:type="Attribute" name="Id" value="47bfc098-44ad-488c-86ad-dc73f78b75e6"/>
+        <children xsi:type="Text" startLine="87" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="88" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="88" endLine="88" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Parent"/>
+          <children xsi:type="Attribute" name="Id" value="d025db17-644a-4942-96f7-b67fac18eb69"/>
+        </children>
+        <children xsi:type="Text" startLine="88" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="89" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="89" endLine="89" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Decorators"/>
+          <children xsi:type="Attribute" name="Id" value="5b265cc4-233b-4d97-9ff0-059b4ef04aaa"/>
+        </children>
+        <children xsi:type="Text" startLine="89" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="90" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="90" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="91" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="91" endLine="94" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode"/>
+        <children xsi:type="Attribute" name="Id" value="7c92ea26-9c59-4efa-857f-45acd039893b"/>
+        <children xsi:type="Text" startLine="91" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="92" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="92" endLine="92" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Nodes"/>
+          <children xsi:type="Attribute" name="Id" value="d025db17-644a-4942-96f7-b67fac18eb69"/>
+        </children>
+        <children xsi:type="Text" startLine="92" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="93" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="93" endLine="93" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Link"/>
+          <children xsi:type="Attribute" name="Id" value="a958be82-6413-4b2b-af17-8e15ff030272"/>
+        </children>
+        <children xsi:type="Text" startLine="93" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="94" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="94" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="95" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="95" endLine="106" name="om:ModelElement">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.TextShapeDecorator"/>
+        <children xsi:type="Attribute" name="Id" value="5b265cc4-233b-4d97-9ff0-059b4ef04aaa"/>
+        <children xsi:type="Attribute" name="ParentLink" value="Microsoft.VisualStudio.Modeling.Diagrams.ParentShapeHasRelativeChildShapes"/>
+        <children xsi:type="Text" startLine="95" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="96" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="96" endLine="96" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Content"/>
+          <children xsi:type="Attribute" name="Value" value="B1"/>
+        </children>
+        <children xsi:type="Text" startLine="96" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="97" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="97" endLine="97" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Position"/>
+          <children xsi:type="Attribute" name="Value" value="Center"/>
+        </children>
+        <children xsi:type="Text" startLine="97" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="98" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="98" endLine="98" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Name"/>
+          <children xsi:type="Attribute" name="Value" value="Name"/>
+        </children>
+        <children xsi:type="Text" startLine="98" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="99" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="99" endLine="99" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Visibility"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAAs="/>
+        </children>
+        <children xsi:type="Text" startLine="99" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="100" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="100" endLine="100" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="IsExpanded"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAQs="/>
+        </children>
+        <children xsi:type="Text" startLine="100" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="101" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="101" endLine="101" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="AbsoluteBounds"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAA="/>
+        </children>
+        <children xsi:type="Text" startLine="101" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="102" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="102" endLine="105" name="om:ElementLink">
+          <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.ShapeHasDecorators"/>
+          <children xsi:type="Attribute" name="Id" value="47bfc098-44ad-488c-86ad-dc73f78b75e6"/>
+          <children xsi:type="Text" startLine="102" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="103" name="#text" value="                    "/>
+          <children xsi:type="Element" startLine="103" endLine="103" name="om:Role">
+            <children xsi:type="Attribute" name="Name" value="Decorators"/>
+            <children xsi:type="Attribute" name="Id" value="5b265cc4-233b-4d97-9ff0-059b4ef04aaa"/>
+          </children>
+          <children xsi:type="Text" startLine="103" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="104" name="#text" value="                    "/>
+          <children xsi:type="Element" startLine="104" endLine="104" name="om:Role">
+            <children xsi:type="Attribute" name="Name" value="Parent"/>
+            <children xsi:type="Attribute" name="Id" value="d025db17-644a-4942-96f7-b67fac18eb69"/>
+          </children>
+          <children xsi:type="Text" startLine="104" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="105" name="#text" value="                "/>
+        </children>
+        <children xsi:type="Text" startLine="105" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="106" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="106" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="107" name="#text" value="        "/>
+    </children>
+    <children xsi:type="Text" startLine="107" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="108" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="108" endLine="141" name="om:ModelElement">
+      <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.Designer.CShape"/>
+      <children xsi:type="Attribute" name="Id" value="16d82b85-45d4-4520-89b1-024b8f09f7c9"/>
+      <children xsi:type="Attribute" name="ParentLink" value="Microsoft.VisualStudio.Modeling.Diagrams.ParentShapeContainsNestedChildShapes"/>
+      <children xsi:type="Text" startLine="108" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="109" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="109" endLine="109" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="FillColor"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAFF="/>
+      </children>
+      <children xsi:type="Text" startLine="109" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="110" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="110" endLine="110" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="OutlineColor"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAw=="/>
+      </children>
+      <children xsi:type="Text" startLine="110" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="111" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="111" endLine="111" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="IsExpanded"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAQs="/>
+      </children>
+      <children xsi:type="Text" startLine="111" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="112" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="112" endLine="112" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="AbsoluteBounds"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgs="/>
+      </children>
+      <children xsi:type="Text" startLine="112" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="113" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="113" endLine="116" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.SubjectHasPresentation"/>
+        <children xsi:type="Attribute" name="Id" value="a701a0ea-179b-4a51-bd23-17926dbb91dc"/>
+        <children xsi:type="Text" startLine="113" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="114" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="114" endLine="114" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Presentation"/>
+          <children xsi:type="Attribute" name="Id" value="16d82b85-45d4-4520-89b1-024b8f09f7c9"/>
+        </children>
+        <children xsi:type="Text" startLine="114" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="115" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="115" endLine="115" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Subject"/>
+          <children xsi:type="Attribute" name="Id" value="1b07f1f7-fbc7-42e8-a827-f28a6d4e172c"/>
+        </children>
+        <children xsi:type="Text" startLine="115" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="116" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="116" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="117" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="117" endLine="120" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.ShapeHasDecorators"/>
+        <children xsi:type="Attribute" name="Id" value="591154b6-3a73-4cc4-88e5-3ac9faa8ee7f"/>
+        <children xsi:type="Text" startLine="117" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="118" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="118" endLine="118" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Parent"/>
+          <children xsi:type="Attribute" name="Id" value="16d82b85-45d4-4520-89b1-024b8f09f7c9"/>
+        </children>
+        <children xsi:type="Text" startLine="118" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="119" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="119" endLine="119" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Decorators"/>
+          <children xsi:type="Attribute" name="Id" value="6449c912-607d-44d6-b3d9-328d27ddf6c6"/>
+        </children>
+        <children xsi:type="Text" startLine="119" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="120" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="120" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="121" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="121" endLine="124" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode"/>
+        <children xsi:type="Attribute" name="Id" value="0dacdc38-05fb-4802-86dc-a70869652afc"/>
+        <children xsi:type="Text" startLine="121" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="122" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="122" endLine="122" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Nodes"/>
+          <children xsi:type="Attribute" name="Id" value="16d82b85-45d4-4520-89b1-024b8f09f7c9"/>
+        </children>
+        <children xsi:type="Text" startLine="122" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="123" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="123" endLine="123" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Link"/>
+          <children xsi:type="Attribute" name="Id" value="a958be82-6413-4b2b-af17-8e15ff030272"/>
+        </children>
+        <children xsi:type="Text" startLine="123" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="124" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="124" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="125" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="125" endLine="128" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode"/>
+        <children xsi:type="Attribute" name="Id" value="64050f02-563b-4a8c-99d5-0c04d5b47463"/>
+        <children xsi:type="Text" startLine="125" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="126" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="126" endLine="126" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Nodes"/>
+          <children xsi:type="Attribute" name="Id" value="16d82b85-45d4-4520-89b1-024b8f09f7c9"/>
+        </children>
+        <children xsi:type="Text" startLine="126" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="127" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="127" endLine="127" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Link"/>
+          <children xsi:type="Attribute" name="Id" value="96f9b8e3-b55f-4bdb-9ab3-faf94847c479"/>
+        </children>
+        <children xsi:type="Text" startLine="127" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="128" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="128" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="129" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="129" endLine="140" name="om:ModelElement">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.TextShapeDecorator"/>
+        <children xsi:type="Attribute" name="Id" value="6449c912-607d-44d6-b3d9-328d27ddf6c6"/>
+        <children xsi:type="Attribute" name="ParentLink" value="Microsoft.VisualStudio.Modeling.Diagrams.ParentShapeHasRelativeChildShapes"/>
+        <children xsi:type="Text" startLine="129" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="130" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="130" endLine="130" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Content"/>
+          <children xsi:type="Attribute" name="Value" value="C1"/>
+        </children>
+        <children xsi:type="Text" startLine="130" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="131" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="131" endLine="131" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Position"/>
+          <children xsi:type="Attribute" name="Value" value="Center"/>
+        </children>
+        <children xsi:type="Text" startLine="131" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="132" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="132" endLine="132" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Name"/>
+          <children xsi:type="Attribute" name="Value" value="Name"/>
+        </children>
+        <children xsi:type="Text" startLine="132" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="133" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="133" endLine="133" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Visibility"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAAs="/>
+        </children>
+        <children xsi:type="Text" startLine="133" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="134" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="134" endLine="134" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="IsExpanded"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAQs="/>
+        </children>
+        <children xsi:type="Text" startLine="134" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="135" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="135" endLine="135" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="AbsoluteBounds"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAPws="/>
+        </children>
+        <children xsi:type="Text" startLine="135" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="136" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="136" endLine="139" name="om:ElementLink">
+          <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.ShapeHasDecorators"/>
+          <children xsi:type="Attribute" name="Id" value="591154b6-3a73-4cc4-88e5-3ac9faa8ee7f"/>
+          <children xsi:type="Text" startLine="136" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="137" name="#text" value="                    "/>
+          <children xsi:type="Element" startLine="137" endLine="137" name="om:Role">
+            <children xsi:type="Attribute" name="Name" value="Decorators"/>
+            <children xsi:type="Attribute" name="Id" value="6449c912-607d-44d6-b3d9-328d27ddf6c6"/>
+          </children>
+          <children xsi:type="Text" startLine="137" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="138" name="#text" value="                    "/>
+          <children xsi:type="Element" startLine="138" endLine="138" name="om:Role">
+            <children xsi:type="Attribute" name="Name" value="Parent"/>
+            <children xsi:type="Attribute" name="Id" value="16d82b85-45d4-4520-89b1-024b8f09f7c9"/>
+          </children>
+          <children xsi:type="Text" startLine="138" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="139" name="#text" value="                "/>
+        </children>
+        <children xsi:type="Text" startLine="139" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="140" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="140" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="141" name="#text" value="        "/>
+    </children>
+    <children xsi:type="Text" startLine="141" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="142" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="142" endLine="185" name="om:ModelElement">
+      <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.Designer.BCLink"/>
+      <children xsi:type="Attribute" name="Id" value="a958be82-6413-4b2b-af17-8e15ff030272"/>
+      <children xsi:type="Attribute" name="ParentLink" value="Microsoft.VisualStudio.Modeling.Diagrams.ParentShapeContainsNestedChildShapes"/>
+      <children xsi:type="Text" startLine="142" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="143" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="143" endLine="143" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="Color"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXNCw=="/>
+      </children>
+      <children xsi:type="Text" startLine="143" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="144" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="144" endLine="144" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="DashStyle"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAFFAAs="/>
+      </children>
+      <children xsi:type="Text" startLine="144" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="145" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="145" endLine="145" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="SourceArrowStyle"/>
+        <children xsi:type="Attribute" name="Value" value="EmptyArrow"/>
+      </children>
+      <children xsi:type="Text" startLine="145" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="146" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="146" endLine="146" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="TargetArrowStyle"/>
+        <children xsi:type="Attribute" name="Value" value="EmptyArrow"/>
+      </children>
+      <children xsi:type="Text" startLine="146" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="147" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="147" endLine="147" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="FixedFrom"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAHtAAs="/>
+      </children>
+      <children xsi:type="Text" startLine="147" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="148" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="148" endLine="148" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="FixedTo"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAHtNaAs="/>
+      </children>
+      <children xsi:type="Text" startLine="148" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="149" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="149" endLine="149" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="EdgePoints"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAGBUAL"/>
+      </children>
+      <children xsi:type="Text" startLine="149" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="150" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="150" endLine="150" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="ManuallyRouted"/>
+        <children xsi:type="Attribute" name="Value" value="False"/>
+      </children>
+      <children xsi:type="Text" startLine="150" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="151" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="151" endLine="154" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.SubjectHasPresentation"/>
+        <children xsi:type="Attribute" name="Id" value="79fda795-9640-4504-bf7e-a597c2e1f92a"/>
+        <children xsi:type="Text" startLine="151" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="152" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="152" endLine="152" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Presentation"/>
+          <children xsi:type="Attribute" name="Id" value="a958be82-6413-4b2b-af17-8e15ff030272"/>
+        </children>
+        <children xsi:type="Text" startLine="152" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="153" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="153" endLine="153" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Subject"/>
+          <children xsi:type="Attribute" name="Id" value="fbc8511b-c72b-4554-8888-23ca67b58e33"/>
+        </children>
+        <children xsi:type="Text" startLine="153" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="154" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="154" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="155" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="155" endLine="158" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.ConnectorHasDecorators"/>
+        <children xsi:type="Attribute" name="Id" value="b1f6471f-a52b-4a5a-9a4a-b9925181ebd1"/>
+        <children xsi:type="Text" startLine="155" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="156" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="156" endLine="156" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Parent"/>
+          <children xsi:type="Attribute" name="Id" value="a958be82-6413-4b2b-af17-8e15ff030272"/>
+        </children>
+        <children xsi:type="Text" startLine="156" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="157" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="157" endLine="157" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Decorators"/>
+          <children xsi:type="Attribute" name="Id" value="b7ad33c3-bfdd-43bc-9505-ed58194a602a"/>
+        </children>
+        <children xsi:type="Text" startLine="157" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="158" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="158" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="159" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="159" endLine="162" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode"/>
+        <children xsi:type="Attribute" name="Id" value="7c92ea26-9c59-4efa-857f-45acd039893b"/>
+        <children xsi:type="Text" startLine="159" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="160" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="160" endLine="160" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Link"/>
+          <children xsi:type="Attribute" name="Id" value="a958be82-6413-4b2b-af17-8e15ff030272"/>
+        </children>
+        <children xsi:type="Text" startLine="160" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="161" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="161" endLine="161" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Nodes"/>
+          <children xsi:type="Attribute" name="Id" value="d025db17-644a-4942-96f7-b67fac18eb69"/>
+        </children>
+        <children xsi:type="Text" startLine="161" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="162" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="162" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="163" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="163" endLine="166" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode"/>
+        <children xsi:type="Attribute" name="Id" value="0dacdc38-05fb-4802-86dc-a70869652afc"/>
+        <children xsi:type="Text" startLine="163" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="164" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="164" endLine="164" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Link"/>
+          <children xsi:type="Attribute" name="Id" value="a958be82-6413-4b2b-af17-8e15ff030272"/>
+        </children>
+        <children xsi:type="Text" startLine="164" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="165" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="165" endLine="165" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Nodes"/>
+          <children xsi:type="Attribute" name="Id" value="16d82b85-45d4-4520-89b1-024b8f09f7c9"/>
+        </children>
+        <children xsi:type="Text" startLine="165" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="166" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="166" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="167" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="167" endLine="184" name="om:ModelElement">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.TextConnectorDecorator"/>
+        <children xsi:type="Attribute" name="Id" value="b7ad33c3-bfdd-43bc-9505-ed58194a602a"/>
+        <children xsi:type="Attribute" name="ParentLink" value="Microsoft.VisualStudio.Modeling.Diagrams.ParentShapeHasRelativeChildShapes"/>
+        <children xsi:type="Text" startLine="167" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="168" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="168" endLine="168" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Content"/>
+          <children xsi:type="Attribute" name="Value" value=""/>
+        </children>
+        <children xsi:type="Text" startLine="168" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="169" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="169" endLine="169" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Position"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAACw=="/>
+        </children>
+        <children xsi:type="Text" startLine="169" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="170" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="170" endLine="170" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Name"/>
+          <children xsi:type="Attribute" name="Value" value="Label"/>
+        </children>
+        <children xsi:type="Text" startLine="170" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="171" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="171" endLine="171" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Visibility"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAAs="/>
+        </children>
+        <children xsi:type="Text" startLine="171" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="172" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="172" endLine="172" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Offset"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAG=="/>
+        </children>
+        <children xsi:type="Text" startLine="172" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="173" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="173" endLine="173" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Alignment"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAs="/>
+        </children>
+        <children xsi:type="Text" startLine="173" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="174" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="174" endLine="174" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Placement"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAs="/>
+        </children>
+        <children xsi:type="Text" startLine="174" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="175" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="175" endLine="175" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="ManuallySized"/>
+          <children xsi:type="Attribute" name="Value" value="False"/>
+        </children>
+        <children xsi:type="Text" startLine="175" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="176" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="176" endLine="176" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="ManuallyPlaced"/>
+          <children xsi:type="Attribute" name="Value" value="False"/>
+        </children>
+        <children xsi:type="Text" startLine="176" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="177" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="177" endLine="177" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Text"/>
+          <children xsi:type="Attribute" name="Value" value=""/>
+        </children>
+        <children xsi:type="Text" startLine="177" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="178" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="178" endLine="178" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="IsExpanded"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAQs="/>
+        </children>
+        <children xsi:type="Text" startLine="178" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="179" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="179" endLine="179" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="AbsoluteBounds"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAPws="/>
+        </children>
+        <children xsi:type="Text" startLine="179" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="180" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="180" endLine="183" name="om:ElementLink">
+          <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.ConnectorHasDecorators"/>
+          <children xsi:type="Attribute" name="Id" value="b1f6471f-a52b-4a5a-9a4a-b9925181ebd1"/>
+          <children xsi:type="Text" startLine="180" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="181" name="#text" value="                    "/>
+          <children xsi:type="Element" startLine="181" endLine="181" name="om:Role">
+            <children xsi:type="Attribute" name="Name" value="Decorators"/>
+            <children xsi:type="Attribute" name="Id" value="b7ad33c3-bfdd-43bc-9505-ed58194a602a"/>
+          </children>
+          <children xsi:type="Text" startLine="181" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="182" name="#text" value="                    "/>
+          <children xsi:type="Element" startLine="182" endLine="182" name="om:Role">
+            <children xsi:type="Attribute" name="Name" value="Parent"/>
+            <children xsi:type="Attribute" name="Id" value="a958be82-6413-4b2b-af17-8e15ff030272"/>
+          </children>
+          <children xsi:type="Text" startLine="182" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="183" name="#text" value="                "/>
+        </children>
+        <children xsi:type="Text" startLine="183" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="184" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="184" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="185" name="#text" value="        "/>
+    </children>
+    <children xsi:type="Text" startLine="185" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="186" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="186" endLine="215" name="om:ModelElement">
+      <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.Designer.BShape"/>
+      <children xsi:type="Attribute" name="Id" value="044fcf6e-272e-46f0-956e-44b21f3aea4c"/>
+      <children xsi:type="Attribute" name="ParentLink" value="Microsoft.VisualStudio.Modeling.Diagrams.ParentShapeContainsNestedChildShapes"/>
+      <children xsi:type="Text" startLine="186" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="187" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="187" endLine="187" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="FillColor"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAFF=="/>
+      </children>
+      <children xsi:type="Text" startLine="187" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="188" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="188" endLine="188" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="OutlineColor"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAw=="/>
+      </children>
+      <children xsi:type="Text" startLine="188" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="189" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="189" endLine="189" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="IsExpanded"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAQs="/>
+      </children>
+      <children xsi:type="Text" startLine="189" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="190" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="190" endLine="190" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="AbsoluteBounds"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgPws="/>
+      </children>
+      <children xsi:type="Text" startLine="190" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="191" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="191" endLine="194" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.SubjectHasPresentation"/>
+        <children xsi:type="Attribute" name="Id" value="773cd0d6-db4e-4503-a5d4-d2c181d7931f"/>
+        <children xsi:type="Text" startLine="191" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="192" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="192" endLine="192" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Presentation"/>
+          <children xsi:type="Attribute" name="Id" value="044fcf6e-272e-46f0-956e-44b21f3aea4c"/>
+        </children>
+        <children xsi:type="Text" startLine="192" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="193" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="193" endLine="193" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Subject"/>
+          <children xsi:type="Attribute" name="Id" value="5b91bf49-4f2e-44fb-acdf-76c393b91f3e"/>
+        </children>
+        <children xsi:type="Text" startLine="193" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="194" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="194" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="195" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="195" endLine="198" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.ShapeHasDecorators"/>
+        <children xsi:type="Attribute" name="Id" value="07ff925e-75ec-4e3c-841d-29cf76d47b15"/>
+        <children xsi:type="Text" startLine="195" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="196" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="196" endLine="196" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Parent"/>
+          <children xsi:type="Attribute" name="Id" value="044fcf6e-272e-46f0-956e-44b21f3aea4c"/>
+        </children>
+        <children xsi:type="Text" startLine="196" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="197" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="197" endLine="197" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Decorators"/>
+          <children xsi:type="Attribute" name="Id" value="2dc4ff80-d3e4-4cf3-aeae-9525b63a4431"/>
+        </children>
+        <children xsi:type="Text" startLine="197" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="198" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="198" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="199" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="199" endLine="202" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode"/>
+        <children xsi:type="Attribute" name="Id" value="0a99b15f-2a3a-446c-b485-0142da24d173"/>
+        <children xsi:type="Text" startLine="199" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="200" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="200" endLine="200" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Nodes"/>
+          <children xsi:type="Attribute" name="Id" value="044fcf6e-272e-46f0-956e-44b21f3aea4c"/>
+        </children>
+        <children xsi:type="Text" startLine="200" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="201" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="201" endLine="201" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Link"/>
+          <children xsi:type="Attribute" name="Id" value="96f9b8e3-b55f-4bdb-9ab3-faf94847c479"/>
+        </children>
+        <children xsi:type="Text" startLine="201" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="202" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="202" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="203" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="203" endLine="214" name="om:ModelElement">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.TextShapeDecorator"/>
+        <children xsi:type="Attribute" name="Id" value="2dc4ff80-d3e4-4cf3-aeae-9525b63a4431"/>
+        <children xsi:type="Attribute" name="ParentLink" value="Microsoft.VisualStudio.Modeling.Diagrams.ParentShapeHasRelativeChildShapes"/>
+        <children xsi:type="Text" startLine="203" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="204" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="204" endLine="204" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Content"/>
+          <children xsi:type="Attribute" name="Value" value="B2"/>
+        </children>
+        <children xsi:type="Text" startLine="204" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="205" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="205" endLine="205" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Position"/>
+          <children xsi:type="Attribute" name="Value" value="Center"/>
+        </children>
+        <children xsi:type="Text" startLine="205" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="206" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="206" endLine="206" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Name"/>
+          <children xsi:type="Attribute" name="Value" value="Name"/>
+        </children>
+        <children xsi:type="Text" startLine="206" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="207" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="207" endLine="207" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Visibility"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAAs="/>
+        </children>
+        <children xsi:type="Text" startLine="207" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="208" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="208" endLine="208" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="IsExpanded"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAQs="/>
+        </children>
+        <children xsi:type="Text" startLine="208" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="209" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="209" endLine="209" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="AbsoluteBounds"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAws="/>
+        </children>
+        <children xsi:type="Text" startLine="209" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="210" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="210" endLine="213" name="om:ElementLink">
+          <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.ShapeHasDecorators"/>
+          <children xsi:type="Attribute" name="Id" value="07ff925e-75ec-4e3c-841d-29cf76d47b15"/>
+          <children xsi:type="Text" startLine="210" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="211" name="#text" value="                    "/>
+          <children xsi:type="Element" startLine="211" endLine="211" name="om:Role">
+            <children xsi:type="Attribute" name="Name" value="Decorators"/>
+            <children xsi:type="Attribute" name="Id" value="2dc4ff80-d3e4-4cf3-aeae-9525b63a4431"/>
+          </children>
+          <children xsi:type="Text" startLine="211" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="212" name="#text" value="                    "/>
+          <children xsi:type="Element" startLine="212" endLine="212" name="om:Role">
+            <children xsi:type="Attribute" name="Name" value="Parent"/>
+            <children xsi:type="Attribute" name="Id" value="044fcf6e-272e-46f0-956e-44b21f3aea4c"/>
+          </children>
+          <children xsi:type="Text" startLine="212" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="213" name="#text" value="                "/>
+        </children>
+        <children xsi:type="Text" startLine="213" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="214" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="214" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="215" name="#text" value="        "/>
+    </children>
+    <children xsi:type="Text" startLine="215" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="216" name="#text" value="        "/>
+    <children xsi:type="Element" startLine="216" endLine="259" name="om:ModelElement">
+      <children xsi:type="Attribute" name="Type" value="Example.SimpleExample.Designer.BCLink"/>
+      <children xsi:type="Attribute" name="Id" value="96f9b8e3-b55f-4bdb-9ab3-faf94847c479"/>
+      <children xsi:type="Attribute" name="ParentLink" value="Microsoft.VisualStudio.Modeling.Diagrams.ParentShapeContainsNestedChildShapes"/>
+      <children xsi:type="Text" startLine="216" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="217" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="217" endLine="217" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="Color"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXNw=="/>
+      </children>
+      <children xsi:type="Text" startLine="217" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="218" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="218" endLine="218" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="DashStyle"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAFFAAs="/>
+      </children>
+      <children xsi:type="Text" startLine="218" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="219" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="219" endLine="219" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="SourceArrowStyle"/>
+        <children xsi:type="Attribute" name="Value" value="EmptyArrow"/>
+      </children>
+      <children xsi:type="Text" startLine="219" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="220" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="220" endLine="220" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="TargetArrowStyle"/>
+        <children xsi:type="Attribute" name="Value" value="EmptyArrow"/>
+      </children>
+      <children xsi:type="Text" startLine="220" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="221" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="221" endLine="221" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="FixedFrom"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAHtAs="/>
+      </children>
+      <children xsi:type="Text" startLine="221" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="222" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="222" endLine="222" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="FixedTo"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAHtNaAAs="/>
+      </children>
+      <children xsi:type="Text" startLine="222" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="223" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="223" endLine="223" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="EdgePoints"/>
+        <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAGw=="/>
+      </children>
+      <children xsi:type="Text" startLine="223" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="224" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="224" endLine="224" name="om:Property">
+        <children xsi:type="Attribute" name="Name" value="ManuallyRouted"/>
+        <children xsi:type="Attribute" name="Value" value="False"/>
+      </children>
+      <children xsi:type="Text" startLine="224" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="225" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="225" endLine="228" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.SubjectHasPresentation"/>
+        <children xsi:type="Attribute" name="Id" value="9da075cf-8f1f-46fe-bbc2-1ec918ab09c0"/>
+        <children xsi:type="Text" startLine="225" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="226" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="226" endLine="226" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Presentation"/>
+          <children xsi:type="Attribute" name="Id" value="96f9b8e3-b55f-4bdb-9ab3-faf94847c479"/>
+        </children>
+        <children xsi:type="Text" startLine="226" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="227" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="227" endLine="227" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Subject"/>
+          <children xsi:type="Attribute" name="Id" value="c36ad301-9625-45ab-bba7-93cbec173cd6"/>
+        </children>
+        <children xsi:type="Text" startLine="227" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="228" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="228" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="229" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="229" endLine="232" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.ConnectorHasDecorators"/>
+        <children xsi:type="Attribute" name="Id" value="e12e64d9-d1ad-4479-b388-31842e37d81a"/>
+        <children xsi:type="Text" startLine="229" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="230" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="230" endLine="230" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Parent"/>
+          <children xsi:type="Attribute" name="Id" value="96f9b8e3-b55f-4bdb-9ab3-faf94847c479"/>
+        </children>
+        <children xsi:type="Text" startLine="230" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="231" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="231" endLine="231" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Decorators"/>
+          <children xsi:type="Attribute" name="Id" value="9082f57a-3660-4702-bf0e-6ccef29cab19"/>
+        </children>
+        <children xsi:type="Text" startLine="231" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="232" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="232" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="233" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="233" endLine="236" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode"/>
+        <children xsi:type="Attribute" name="Id" value="0a99b15f-2a3a-446c-b485-0142da24d173"/>
+        <children xsi:type="Text" startLine="233" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="234" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="234" endLine="234" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Link"/>
+          <children xsi:type="Attribute" name="Id" value="96f9b8e3-b55f-4bdb-9ab3-faf94847c479"/>
+        </children>
+        <children xsi:type="Text" startLine="234" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="235" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="235" endLine="235" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Nodes"/>
+          <children xsi:type="Attribute" name="Id" value="044fcf6e-272e-46f0-956e-44b21f3aea4c"/>
+        </children>
+        <children xsi:type="Text" startLine="235" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="236" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="236" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="237" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="237" endLine="240" name="om:ElementLink">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode"/>
+        <children xsi:type="Attribute" name="Id" value="64050f02-563b-4a8c-99d5-0c04d5b47463"/>
+        <children xsi:type="Text" startLine="237" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="238" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="238" endLine="238" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Link"/>
+          <children xsi:type="Attribute" name="Id" value="96f9b8e3-b55f-4bdb-9ab3-faf94847c479"/>
+        </children>
+        <children xsi:type="Text" startLine="238" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="239" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="239" endLine="239" name="om:Role">
+          <children xsi:type="Attribute" name="Name" value="Nodes"/>
+          <children xsi:type="Attribute" name="Id" value="16d82b85-45d4-4520-89b1-024b8f09f7c9"/>
+        </children>
+        <children xsi:type="Text" startLine="239" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="240" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="240" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="241" name="#text" value="            "/>
+      <children xsi:type="Element" startLine="241" endLine="258" name="om:ModelElement">
+        <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.TextConnectorDecorator"/>
+        <children xsi:type="Attribute" name="Id" value="9082f57a-3660-4702-bf0e-6ccef29cab19"/>
+        <children xsi:type="Attribute" name="ParentLink" value="Microsoft.VisualStudio.Modeling.Diagrams.ParentShapeHasRelativeChildShapes"/>
+        <children xsi:type="Text" startLine="241" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="242" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="242" endLine="242" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Content"/>
+          <children xsi:type="Attribute" name="Value" value=""/>
+        </children>
+        <children xsi:type="Text" startLine="242" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="243" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="243" endLine="243" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Position"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAw=="/>
+        </children>
+        <children xsi:type="Text" startLine="243" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="244" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="244" endLine="244" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Name"/>
+          <children xsi:type="Attribute" name="Value" value="Label"/>
+        </children>
+        <children xsi:type="Text" startLine="244" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="245" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="245" endLine="245" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Visibility"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAAs="/>
+        </children>
+        <children xsi:type="Text" startLine="245" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="246" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="246" endLine="246" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Offset"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAAG=="/>
+        </children>
+        <children xsi:type="Text" startLine="246" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="247" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="247" endLine="247" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Alignment"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAs="/>
+        </children>
+        <children xsi:type="Text" startLine="247" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="248" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="248" endLine="248" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Placement"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAMAgAAs="/>
+        </children>
+        <children xsi:type="Text" startLine="248" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="249" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="249" endLine="249" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="ManuallySized"/>
+          <children xsi:type="Attribute" name="Value" value="False"/>
+        </children>
+        <children xsi:type="Text" startLine="249" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="250" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="250" endLine="250" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="ManuallyPlaced"/>
+          <children xsi:type="Attribute" name="Value" value="False"/>
+        </children>
+        <children xsi:type="Text" startLine="250" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="251" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="251" endLine="251" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="Text"/>
+          <children xsi:type="Attribute" name="Value" value=""/>
+        </children>
+        <children xsi:type="Text" startLine="251" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="252" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="252" endLine="252" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="IsExpanded"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAQs="/>
+        </children>
+        <children xsi:type="Text" startLine="252" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="253" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="253" endLine="253" name="om:Property">
+          <children xsi:type="Attribute" name="Name" value="AbsoluteBounds"/>
+          <children xsi:type="Attribute" name="Value" value="AAEAAAD/////AQAAAAAAAAs="/>
+        </children>
+        <children xsi:type="Text" startLine="253" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="254" name="#text" value="                "/>
+        <children xsi:type="Element" startLine="254" endLine="257" name="om:ElementLink">
+          <children xsi:type="Attribute" name="Type" value="Microsoft.VisualStudio.Modeling.Utilities.ConnectorHasDecorators"/>
+          <children xsi:type="Attribute" name="Id" value="e12e64d9-d1ad-4479-b388-31842e37d81a"/>
+          <children xsi:type="Text" startLine="254" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="255" name="#text" value="                    "/>
+          <children xsi:type="Element" startLine="255" endLine="255" name="om:Role">
+            <children xsi:type="Attribute" name="Name" value="Decorators"/>
+            <children xsi:type="Attribute" name="Id" value="9082f57a-3660-4702-bf0e-6ccef29cab19"/>
+          </children>
+          <children xsi:type="Text" startLine="255" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="256" name="#text" value="                    "/>
+          <children xsi:type="Element" startLine="256" endLine="256" name="om:Role">
+            <children xsi:type="Attribute" name="Name" value="Parent"/>
+            <children xsi:type="Attribute" name="Id" value="96f9b8e3-b55f-4bdb-9ab3-faf94847c479"/>
+          </children>
+          <children xsi:type="Text" startLine="256" name="#text" value="&#xA;"/>
+          <children xsi:type="Text" startLine="257" name="#text" value="                "/>
+        </children>
+        <children xsi:type="Text" startLine="257" name="#text" value="&#xA;"/>
+        <children xsi:type="Text" startLine="258" name="#text" value="            "/>
+      </children>
+      <children xsi:type="Text" startLine="258" name="#text" value="&#xA;"/>
+      <children xsi:type="Text" startLine="259" name="#text" value="        "/>
+    </children>
+    <children xsi:type="Text" startLine="259" name="#text" value="&#xA;"/>
+    <children xsi:type="Text" startLine="260" name="#text" value="    "/>
+  </children>
+  <children xsi:type="Text" startLine="260" name="#text" value="&#xA;"/>
+</Root>

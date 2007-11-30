@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Trace xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns="Trace" name="Order_PerformanceTrace">
+  <levels>
+    <calls methodName="Create New Order" DBAccessesNumber="0" DBRowsNumber="0" CPUTime="8725">
+      <indexes value="1"/>
+    </calls>
+    <calls methodName="Select Order" DBAccessesNumber="2" DBRowsNumber="2645" CPUTime="10122">
+      <indexes value="2"/>
+    </calls>
+    <calls methodName="Create New Order" DBAccessesNumber="0" DBRowsNumber="0" CPUTime="7463">
+      <indexes value="3"/>
+    </calls>
+    <calls methodName="Select Order" DBAccessesNumber="3" DBRowsNumber="4225" CPUTime="12473">
+      <indexes value="4"/>
+    </calls>
+    <calls methodName="Select Order" DBAccessesNumber="2" DBRowsNumber="2386" CPUTime="10242">
+      <indexes value="5"/>
+    </calls>
+    <calls methodName="Select Order" DBAccessesNumber="4" DBRowsNumber="5786" CPUTime="12703">
+      <indexes value="6"/>
+    </calls>
+    <calls methodName="Create New Order" DBAccessesNumber="0" DBRowsNumber="0" CPUTime="8364">
+      <indexes value="7"/>
+    </calls>
+  </levels>
+  <levels>
+    <calls methodName="Validate" DBAccessesNumber="1" DBRowsNumber="1114" CPUTime="9789">
+      <indexes value="1"/>
+      <indexes value="1"/>
+    </calls>
+    <calls methodName="Update Order" DBAccessesNumber="0" DBRowsNumber="0" CPUTime="12322">
+      <indexes value="2"/>
+      <indexes value="1"/>
+    </calls>
+    <calls methodName="Cancel" DBAccessesNumber="0" DBRowsNumber="0" CPUTime="486">
+      <indexes value="3"/>
+      <indexes value="1"/>
+    </calls>
+    <calls methodName="Delete Order" DBAccessesNumber="0" DBRowsNumber="0" CPUTime="4838">
+      <indexes value="4"/>
+      <indexes value="1"/>
+    </calls>
+    <calls methodName="Delete Order" DBAccessesNumber="0" DBRowsNumber="0" CPUTime="5017">
+      <indexes value="5"/>
+      <indexes value="1"/>
+    </calls>
+    <calls methodName="Update Order" DBAccessesNumber="0" DBRowsNumber="0" CPUTime="11634">
+      <indexes value="6"/>
+      <indexes value="1"/>
+    </calls>
+    <calls methodName="Validate" DBAccessesNumber="1" DBRowsNumber="1115" CPUTime="9662">
+      <indexes value="7"/>
+      <indexes value="1"/>
+    </calls>
+  </levels>
+  <levels>
+    <calls methodName="Validate" DBAccessesNumber="1" DBRowsNumber="1115" CPUTime="9964">
+      <indexes value="2"/>
+      <indexes value="1"/>
+      <indexes value="1"/>
+    </calls>
+    <calls methodName="Cancel" DBAccessesNumber="0" DBRowsNumber="0" CPUTime="451">
+      <indexes value="4"/>
+      <indexes value="1"/>
+      <indexes value="1"/>
+    </calls>
+    <calls methodName="Validate" DBAccessesNumber="1" DBRowsNumber="1115" CPUTime="9423">
+      <indexes value="5"/>
+      <indexes value="1"/>
+      <indexes value="1"/>
+    </calls>
+    <calls methodName="Validate" DBAccessesNumber="1" DBRowsNumber="1114" CPUTime="9756">
+      <indexes value="6"/>
+      <indexes value="1"/>
+      <indexes value="1"/>
+    </calls>
+  </levels>
+</Trace>

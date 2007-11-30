@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Metamodel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="KM3">
+  <contents name="SimpleExample">
+    <contents xsi:type="Class" name="ConceptA">
+      <structuralFeatures xsi:type="Reference" name="Bs" lower="0" upper="-1" isOrdered="true"
+          type="//@contents.0/@contents.1" isContainer="true" opposite="//@contents.0/@contents.1/@structuralFeatures.0"/>
+      <structuralFeatures xsi:type="Reference" name="Cs" lower="0" upper="-1" isOrdered="true"
+          type="//@contents.0/@contents.2" isContainer="true" opposite="//@contents.0/@contents.2/@structuralFeatures.0"/>
+    </contents>
+    <contents xsi:type="Class" name="ConceptB">
+      <structuralFeatures xsi:type="Reference" name="ConceptA" lower="1" upper="1"
+          isOrdered="true" type="//@contents.0/@contents.0" opposite="//@contents.0/@contents.0/@structuralFeatures.0"/>
+      <structuralFeatures xsi:type="Reference" name="ReferencedC" lower="0" upper="1"
+          isOrdered="true" type="//@contents.0/@contents.3" opposite="//@contents.0/@contents.3/@structuralFeatures.1"/>
+    </contents>
+    <contents xsi:type="Class" name="ConceptC">
+      <structuralFeatures xsi:type="Reference" name="ConceptA" lower="1" upper="1"
+          isOrdered="true" type="//@contents.0/@contents.0" opposite="//@contents.0/@contents.0/@structuralFeatures.1"/>
+      <structuralFeatures xsi:type="Reference" name="ReferringBs" lower="0" upper="-1"
+          isOrdered="true" type="//@contents.0/@contents.3" opposite="//@contents.0/@contents.3/@structuralFeatures.2"/>
+    </contents>
+    <contents xsi:type="Class" name="BReferencesC">
+      <structuralFeatures xsi:type="Attribute" name="Property" lower="1" upper="1"
+          type="//@contents.1/@contents.0"/>
+      <structuralFeatures xsi:type="Reference" name="ReferringBs" lower="0" upper="-1"
+          isOrdered="true" type="//@contents.0/@contents.1" opposite="//@contents.0/@contents.1/@structuralFeatures.1"/>
+      <structuralFeatures xsi:type="Reference" name="ReferencedC" lower="0" upper="1"
+          isOrdered="true" type="//@contents.0/@contents.2" opposite="//@contents.0/@contents.2/@structuralFeatures.1"/>
+    </contents>
+  </contents>
+  <contents name="PrimitiveTypes">
+    <contents xsi:type="DataType" name="String"/>
+    <contents xsi:type="DataType" name="Integer"/>
+    <contents xsi:type="DataType" name="Boolean"/>
+    <contents xsi:type="DataType" name="Double"/>
+  </contents>
+</Metamodel>

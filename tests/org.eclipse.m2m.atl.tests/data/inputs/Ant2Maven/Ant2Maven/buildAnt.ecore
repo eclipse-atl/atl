@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Project xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="Ant" name="gs-example" basedir="." description="" default="//@targets.5">
+  <path id="classpath" refid="">
+    <fileset dir="${jwsdp.home}/common/lib">
+      <include name="*.jar" ifCondition="" unless=""/>
+    </fileset>
+  </path>
+  <properties xsi:type="PropertyValue" name="example" value="GSApp"/>
+  <properties xsi:type="PropertyValue" name="path" value="/${example}"/>
+  <properties xsi:type="PropertyValue" name="build" value="${jwsdp.home}/docs/tutorial/examples/${example}/build"/>
+  <properties xsi:type="PropertyValue" name="url" value="http://localhost:8080/manager"/>
+  <properties xsi:type="PropertyFile" file="build.properties"/>
+  <properties xsi:type="PropertyFile" file="${user.home}/build.properties"/>
+  <taskdef name="install" classname="org.apache.catalina.ant.InstallTask"/>
+  <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask"/>
+  <taskdef name="remove" classname="org.apache.catalina.ant.RemoveTask"/>
+  <targets name="init" description="" unless="" ifCondition="">
+    <tasks xsi:type="Tstamp"/>
+  </targets>
+  <targets name="prepare" description="Create build directories." unless="" ifCondition="" depends="//@targets.0">
+    <tasks xsi:type="Mkdir" dir="${build}"/>
+    <tasks xsi:type="Mkdir" dir="${build}/WEB-INF"/>
+    <tasks xsi:type="Mkdir" dir="${build}/WEB-INF/classes"/>
+  </targets>
+  <targets name="install" description="Install Web application" unless="" ifCondition="" depends="//@targets.5">
+    <tasks xsi:type="NewTask" taskName="//@taskdef.0">
+      <attributes name="url" value="${url}"/>
+      <attributes name="username" value="${username}"/>
+      <attributes name="password" value="${password}"/>
+      <attributes name="path" value="${path}"/>
+      <attributes name="war" value="file:${build}"/>
+    </tasks>
+  </targets>
+  <targets name="reload" description="Reload Web application" unless="" ifCondition="" depends="//@targets.5">
+    <tasks xsi:type="NewTask" taskName="//@taskdef.1">
+      <attributes name="url" value="${url}"/>
+      <attributes name="username" value="${username}"/>
+      <attributes name="password" value="${password}"/>
+      <attributes name="path" value="${path}"/>
+    </tasks>
+  </targets>
+  <targets name="remove" description="Remove Web application" unless="" ifCondition="">
+    <tasks xsi:type="NewTask" taskName="//@taskdef.2">
+      <attributes name="url" value="${url}"/>
+      <attributes name="username" value="${username}"/>
+      <attributes name="password" value="${password}"/>
+      <attributes name="path" value="${path}"/>
+    </tasks>
+  </targets>
+  <targets name="build" description="Compile       app Java files and copy HTML and JSP pages" unless="" ifCondition="" depends="//@targets.1">
+    <tasks xsi:type="Javac" srcdir="src" destdir="${build}/WEB-INF/classes">
+      <inExcludes xsi:type="Includes" name="**/*.java" ifCondition="" unless=""/>
+      <classPath refid="classpath"/>
+    </tasks>
+    <tasks xsi:type="Copy" todir="${build}/WEB-INF">
+      <fileset dir="web/WEB-INF">
+        <include name="web.xml" ifCondition="" unless=""/>
+      </fileset>
+    </tasks>
+    <tasks xsi:type="Copy" todir="${build}">
+      <fileset dir="web">
+        <include name="*.html" ifCondition="" unless=""/>
+        <include name="*.jsp" ifCondition="" unless=""/>
+        <include name="*.gif" ifCondition="" unless=""/>
+      </fileset>
+    </tasks>
+  </targets>
+</Project>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.atl.eclipse.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/data/inputs/DSLBridge/ModelBridge/KM32ATL_KM22MM/KM32ATL_KM22MM.atl"/>
+<stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
+<booleanAttribute key="AllowInterModelReferences" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="IN" value="KM3"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<booleanAttribute key="Mode Debug" value="false"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="KM3" value="EMF"/>
+<mapEntry key="ATL" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="KM3" value="METAMODELINPUT"/>
+<mapEntry key="IN" value="MODELINPUT"/>
+<mapEntry key="OUT" value="MODELOUTPUT"/>
+<mapEntry key="ATL" value="METAMODELOUTPUT"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT" value="ATL"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="IN" value="/data/inputs/DSLBridge/ModelBridge/KM32ATL_KM22MM/SimpleExampleMM-KM3-2.ecore"/>
+<mapEntry key="KM3" value="/data/inputs/DSLBridge/KM3.ecore"/>
+<mapEntry key="OUT" value="/data/inputs/DSLBridge/ModelBridge/KM32ATL_KM22MM/ATL-KM22SimpleExample.ecore"/>
+<mapEntry key="ATL" value="/data/inputs/DSLBridge/ATL-0.2.ecore"/>
+</mapAttribute>
+<stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.vm.tests"/>
+<listAttribute key="Superimpose"/>
+<booleanAttribute key="continueAfterError" value="false"/>
+<booleanAttribute key="disableAttributeHelperCache" value="false"/>
+<booleanAttribute key="printExecutionTime" value="false"/>
+<booleanAttribute key="profile" value="false"/>
+<booleanAttribute key="showSummary" value="false"/>
+<booleanAttribute key="step" value="false"/>
+</launchConfiguration>

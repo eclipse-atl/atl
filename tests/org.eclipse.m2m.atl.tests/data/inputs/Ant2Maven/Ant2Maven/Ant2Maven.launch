@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.atl.eclipse.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/data/inputs/Ant2Maven/Ant2Maven/Ant2Maven.atl"/>
+<stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
+<booleanAttribute key="AllowInterModelReferences" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="IN" value="Ant"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<booleanAttribute key="Mode Debug" value="false"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="MavenMaven" value="EMF"/>
+<mapEntry key="Ant" value="EMF"/>
+<mapEntry key="MavenProject" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="MavenMaven" value="METAMODELOUTPUT"/>
+<mapEntry key="IN" value="MODELINPUT"/>
+<mapEntry key="OUTProject" value="MODELOUTPUT"/>
+<mapEntry key="OUTMaven" value="MODELOUTPUT"/>
+<mapEntry key="Ant" value="METAMODELINPUT"/>
+<mapEntry key="MavenProject" value="METAMODELOUTPUT"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUTProject" value="MavenProject"/>
+<mapEntry key="OUTMaven" value="MavenMaven"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="IN" value="/data/inputs/Ant2Maven/Ant2Maven/buildAnt.ecore"/>
+<mapEntry key="MavenMaven" value="/data/inputs/Ant2Maven/MavenMaven.ecore"/>
+<mapEntry key="OUTMaven" value="/data/inputs/Ant2Maven/Ant2Maven/mavenFile.ecore"/>
+<mapEntry key="OUTProject" value="/data/inputs/Ant2Maven/Ant2Maven/projectFile.ecore"/>
+<mapEntry key="Ant" value="/data/inputs/Ant2Maven/Ant.ecore"/>
+<mapEntry key="MavenProject" value="/data/inputs/Ant2Maven/MavenProject.ecore"/>
+</mapAttribute>
+<stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>
+<listAttribute key="Superimpose"/>
+<booleanAttribute key="continueAfterError" value="false"/>
+<booleanAttribute key="disableAttributeHelperCache" value="false"/>
+<booleanAttribute key="printExecutionTime" value="false"/>
+<booleanAttribute key="profile" value="false"/>
+<booleanAttribute key="showSummary" value="false"/>
+<booleanAttribute key="step" value="false"/>
+</launchConfiguration>

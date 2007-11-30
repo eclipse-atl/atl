@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.atl.eclipse.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/data/inputs/Ant2Maven/Maven2XML/Maven2XML.atl"/>
+<stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
+<booleanAttribute key="AllowInterModelReferences" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="InMaven" value="MavenMaven"/>
+<mapEntry key="InProject" value="MavenProject"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<booleanAttribute key="Mode Debug" value="false"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="XMLProject" value="EMF"/>
+<mapEntry key="MavenMaven" value="EMF"/>
+<mapEntry key="XMLMaven" value="EMF"/>
+<mapEntry key="MavenProject" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="XMLProject" value="METAMODELOUTPUT"/>
+<mapEntry key="XML2" value="MODELOUTPUT"/>
+<mapEntry key="XML1" value="MODELOUTPUT"/>
+<mapEntry key="MavenMaven" value="METAMODELINPUT"/>
+<mapEntry key="XMLMaven" value="METAMODELOUTPUT"/>
+<mapEntry key="InMaven" value="MODELINPUT"/>
+<mapEntry key="InProject" value="MODELINPUT"/>
+<mapEntry key="MavenProject" value="METAMODELINPUT"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="XML2" value="XMLProject"/>
+<mapEntry key="XML1" value="XMLMaven"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="XML2" value="/data/inputs/Ant2Maven/Maven2XML/projectFileXML.ecore"/>
+<mapEntry key="XMLProject" value="/data/inputs/Ant2Maven/XMLProject.ecore"/>
+<mapEntry key="XML1" value="/data/inputs/Ant2Maven/Maven2XML/mavenFileXML.ecore"/>
+<mapEntry key="MavenMaven" value="/data/inputs/Ant2Maven/MavenMaven.ecore"/>
+<mapEntry key="InMaven" value="/data/inputs/Ant2Maven/Maven2XML/mavenFile.ecore"/>
+<mapEntry key="XMLMaven" value="/data/inputs/Ant2Maven/XMLMaven.ecore"/>
+<mapEntry key="InProject" value="/data/inputs/Ant2Maven/Maven2XML/projectFile.ecore"/>
+<mapEntry key="MavenProject" value="/data/inputs/Ant2Maven/MavenProject.ecore"/>
+</mapAttribute>
+<stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>
+<listAttribute key="Superimpose"/>
+<booleanAttribute key="continueAfterError" value="false"/>
+<booleanAttribute key="disableAttributeHelperCache" value="false"/>
+<booleanAttribute key="printExecutionTime" value="false"/>
+<booleanAttribute key="profile" value="false"/>
+<booleanAttribute key="showSummary" value="false"/>
+<booleanAttribute key="step" value="false"/>
+</launchConfiguration>

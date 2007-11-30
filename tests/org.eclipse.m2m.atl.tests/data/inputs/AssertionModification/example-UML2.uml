@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xmi:id="_F8p7wCOqEdud4Nrdwv5LcQ" name="example">
+  <packagedElement xmi:type="uml:Class" xmi:id="_JQQagCOqEdud4Nrdwv5LcQ" name="A">
+    <nestedClassifier xmi:type="uml:DataType" xmi:id="_-GOVkCOqEdud4Nrdwv5LcQ" name="T"/>
+    <nestedClassifier xmi:type="uml:DataType" xmi:id="_mFyl8COrEdud4Nrdwv5LcQ" name="S"/>
+    <ownedOperation xmi:id="_m1mHsCOqEdud4Nrdwv5LcQ" name="op" precondition="_E0S6oCOsEdud4Nrdwv5LcQ" postcondition="_MzQVQCOsEdud4Nrdwv5LcQ">
+      <ownedRule xmi:id="_E0S6oCOsEdud4Nrdwv5LcQ" name="P2">
+        <specification xmi:type="uml:LiteralString" xmi:id="_PBa18COsEdud4Nrdwv5LcQ" value="pre ::= {P2 : x = -1}"/>
+      </ownedRule>
+      <ownedRule xmi:id="_MzQVQCOsEdud4Nrdwv5LcQ" name="Q2">
+        <specification xmi:type="uml:LiteralString" xmi:id="_Xac9cCOsEdud4Nrdwv5LcQ" value="post ::= {Q2 : S >6}"/>
+      </ownedRule>
+      <ownedParameter xmi:id="_o7JCcCOrEdud4Nrdwv5LcQ" name="x" type="_-GOVkCOqEdud4Nrdwv5LcQ"/>
+    </ownedOperation>
+  </packagedElement>
+</uml:Model>

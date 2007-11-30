@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<DocBook xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="DocBook">
+  <books>
+    <articles title="BibTeXML to DocBook">
+      <sections_1 title="References List">
+        <paras content="[a] PhDThesis Interrogation continue des Systèmes d'Information de Proximité Touzet, D. 2004 IFSIC"/>
+        <paras content="[b] MasterThesis Etude des Design Patterns et de leur impact sur la réutilisabilité Belangour, A. 2000 ENSIAS"/>
+        <paras content="[c] Article Platform independent Web Application Modeling and Development with Netsilon Bézivin, J. Fondement, F. Muller, P. Studer, P. 2005 Journal on Software and Systems Modeling"/>
+        <paras content="[d] TechReport An Eclipse-based IDE for the ATL model transformation language Bézivin, J. Jouault, F. Valduriez, P. 2004"/>
+        <paras content="[e] Unpublished Model Engineering: Principles and Definitions Bézivin, J. Jouault, F. Touzet, D. Draft"/>
+        <paras content="[f] Manual ATL User Manual"/>
+        <paras content="[g] InProceedings On the Need for Megamodels Bézivin, J. Jouault, F. Valduriez, P. 2004 Proceedings of OOPSLA and GPCE Workshop"/>
+        <paras content="[h] InCollection Discriminative Model Selection for Density Models Meek, C. Thiesson, B. 2003 Proceedings of Ninth International Workshop on Artificial Intelligence and Statistics The Society for Artificial Intelligence and Statistics"/>
+        <paras content="[i] Proceedings Proceedings of OOPSLA and GPCE Workshop 2004"/>
+        <paras content="[j] Booklet 1998"/>
+        <paras content="[k] Book eclipse Modeling Framework Budinsky, F. Steinberg, D. Merks, E. Ellersick, R. Grose, T. J. 2004 Addison-Wesley"/>
+        <paras content="[l] InBook Software Factories Greenfield, J. Short, K. 2004 Wiley 1"/>
+        <paras content="[m] Misc"/>
+        <paras content="[n] Article Graph Transformations on Domain-Specific Models Agrawal, A. Karsai, G. Shi, F. 2003 Journal on Software and Systems Modeling"/>
+        <paras content="[o] Article Sur les principes de base de l'ingénierie des modèles Bézivin, J. 2004 RSTI-L'Objet"/>
+        <paras content="[p] TechReport An Introduction to the ATLAS Model Management Architecture Bézivin, J. Jouault, F. Touzet, D. 2005"/>
+      </sections_1>
+      <sections_1 title="Authors list">
+        <paras content="Agrawal, A."/>
+        <paras content="Belangour, A."/>
+        <paras content="Budinsky, F."/>
+        <paras content="Bézivin, J."/>
+        <paras content="Ellersick, R."/>
+        <paras content="Fondement, F."/>
+        <paras content="Greenfield, J."/>
+        <paras content="Grose, T. J."/>
+        <paras content="Jouault, F."/>
+        <paras content="Karsai, G."/>
+        <paras content="Meek, C."/>
+        <paras content="Merks, E."/>
+        <paras content="Muller, P."/>
+        <paras content="Shi, F."/>
+        <paras content="Short, K."/>
+        <paras content="Steinberg, D."/>
+        <paras content="Studer, P."/>
+        <paras content="Thiesson, B."/>
+        <paras content="Touzet, D."/>
+        <paras content="Valduriez, P."/>
+      </sections_1>
+      <sections_1 title="Titles List">
+        <paras content="ATL User Manual"/>
+        <paras content="An Eclipse-based IDE for the ATL model transformation language"/>
+        <paras content="An Introduction to the ATLAS Model Management Architecture"/>
+        <paras content="Discriminative Model Selection for Density Models"/>
+        <paras content="Etude des Design Patterns et de leur impact sur la réutilisabilité"/>
+        <paras content="Graph Transformations on Domain-Specific Models"/>
+        <paras content="Interrogation continue des Systèmes d'Information de Proximité"/>
+        <paras content="Model Engineering: Principles and Definitions"/>
+        <paras content="On the Need for Megamodels"/>
+        <paras content="Platform independent Web Application Modeling and Development with Netsilon"/>
+        <paras content="Proceedings of OOPSLA and GPCE Workshop"/>
+        <paras content="Software Factories"/>
+        <paras content="Sur les principes de base de l'ingénierie des modèles"/>
+        <paras content="eclipse Modeling Framework"/>
+      </sections_1>
+      <sections_1 title="Journals List">
+        <paras content="Journal on Software and Systems Modeling"/>
+        <paras content="RSTI-L'Objet"/>
+      </sections_1>
+    </articles>
+  </books>
+</DocBook>

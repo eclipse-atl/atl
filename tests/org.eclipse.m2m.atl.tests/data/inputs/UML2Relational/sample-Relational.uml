@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:relational="http:///schemas/relational/_1xjRYFxxEdy9ZeGhUWzsNw/1" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xsi:schemaLocation="http:///schemas/relational/_1xjRYFxxEdy9ZeGhUWzsNw/1 relational.uml#_1xsbUFxxEdy9ZeGhUWzsNw">
+  <uml:Model xmi:id="_GvSYkJ_rEduSF4kFqdqOMg" name="sample_database">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_eM4EYJ_rEduSF4kFqdqOMg" name="Integer"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_fCrD8J_rEduSF4kFqdqOMg" name="String"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_Ji2FUJ_rEduSF4kFqdqOMg" name="sample_schema">
+      <packagedElement xmi:type="uml:Class" xmi:id="_KEOUEJ_rEduSF4kFqdqOMg" name="Table1">
+        <ownedAttribute xmi:id="_npkoUJ_rEduSF4kFqdqOMg" name="column1" type="_fCrD8J_rEduSF4kFqdqOMg"/>
+        <ownedAttribute xmi:id="_n9-yEJ_rEduSF4kFqdqOMg" name="column2" type="_eM4EYJ_rEduSF4kFqdqOMg"/>
+        <ownedAttribute xmi:id="_NBn5UJ_rEduSF4kFqdqOMg" name="column3" type="_KhuvcJ_rEduSF4kFqdqOMg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_KhuvcJ_rEduSF4kFqdqOMg" name="Table2">
+        <ownedAttribute xmi:id="_Nx5fsJ_rEduSF4kFqdqOMg" name="column1" type="_fCrD8J_rEduSF4kFqdqOMg"/>
+        <ownedAttribute xmi:id="_N7b2MJ_rEduSF4kFqdqOMg" name="column2" type="_eM4EYJ_rEduSF4kFqdqOMg"/>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_fIlrAFxyEdyJFZofpaWCkg">
+      <eAnnotations xmi:id="_fIlrAVxyEdyJFZofpaWCkg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="relational.uml#_1xsbUFxxEdy9ZeGhUWzsNw"/>
+      </eAnnotations>
+      <appliedProfile href="relational.uml#_nzsm8J_mEduSF4kFqdqOMg"/>
+    </profileApplication>
+  </uml:Model>
+  <relational:Database xmi:id="_gaszIFxyEdyJFZofpaWCkg" base_Model="_GvSYkJ_rEduSF4kFqdqOMg"/>
+  <relational:Column xmi:id="_hY1PUFxyEdyJFZofpaWCkg" base_Property="_npkoUJ_rEduSF4kFqdqOMg" isPrimaryKey="true"/>
+  <relational:Table xmi:id="_j3r3YFxyEdyJFZofpaWCkg" base_Class="_KEOUEJ_rEduSF4kFqdqOMg"/>
+  <relational:Column xmi:id="_lrKnMFxyEdyJFZofpaWCkg" base_Property="_n9-yEJ_rEduSF4kFqdqOMg"/>
+  <relational:Column xmi:id="_mG4S0FxyEdyJFZofpaWCkg" base_Property="_NBn5UJ_rEduSF4kFqdqOMg"/>
+  <relational:Table xmi:id="_nDrSQFxyEdyJFZofpaWCkg" base_Class="_KhuvcJ_rEduSF4kFqdqOMg"/>
+  <relational:Schema xmi:id="_nofPgFxyEdyJFZofpaWCkg" base_Package="_Ji2FUJ_rEduSF4kFqdqOMg"/>
+  <relational:Column xmi:id="_oGuqsFxyEdyJFZofpaWCkg" base_Property="_Nx5fsJ_rEduSF4kFqdqOMg" isPrimaryKey="true"/>
+  <relational:Column xmi:id="_ob5CYFxyEdyJFZofpaWCkg" base_Property="_N7b2MJ_rEduSF4kFqdqOMg"/>
+</xmi:XMI>

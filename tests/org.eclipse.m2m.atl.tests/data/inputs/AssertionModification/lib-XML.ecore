@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="XML" startLine="1" startColumn="7" endLine="1" endColumn="191" name="root">
+  <children xsi:type="Element" startLine="1" startColumn="57" endLine="1" endColumn="184" name="operation">
+    <children xsi:type="Attribute" name="package" value="example"/>
+    <children xsi:type="Attribute" name="name" value="op"/>
+    <children xsi:type="Attribute" name="class" value="A"/>
+    <children xsi:type="Element" startLine="1" startColumn="117" endLine="1" endColumn="117" name="precondition">
+      <children xsi:type="Attribute" name="name" value="P2"/>
+      <children xsi:type="Attribute" name="value" value="pre ::= {P2 : x &lt; 0 }"/>
+    </children>
+    <children xsi:type="Element" startLine="1" startColumn="172" endLine="1" endColumn="172" name="postcondition">
+      <children xsi:type="Attribute" name="name" value="Q2"/>
+      <children xsi:type="Attribute" name="value" value="post ::= {Q2 : S>5}"/>
+    </children>
+  </children>
+</Root>

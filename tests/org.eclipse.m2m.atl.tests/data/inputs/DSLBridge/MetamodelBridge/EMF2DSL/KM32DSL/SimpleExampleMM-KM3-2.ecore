@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Metamodel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="KM3" location="1:1-34:2">
+  <contents location="1:1-23:2" name="SimpleExample">
+    <contents xsi:type="Class" location="3:9-6:10" name="ConceptA" isAbstract="false">
+      <structuralFeatures xsi:type="Reference" location="4:17-4:82" name="Bs" lower="0" upper="-1" isOrdered="true" type="//@contents.0/@contents.1" isContainer="true" opposite="//@contents.0/@contents.1/@structuralFeatures.0"/>
+      <structuralFeatures xsi:type="Reference" location="5:17-5:82" name="Cs" lower="0" upper="-1" isOrdered="true" type="//@contents.0/@contents.2" isContainer="true" opposite="//@contents.0/@contents.2/@structuralFeatures.0"/>
+    </contents>
+    <contents xsi:type="Class" location="8:9-11:10" name="ConceptB" isAbstract="false">
+      <structuralFeatures xsi:type="Reference" location="9:17-9:61" name="ConceptA" lower="1" upper="1" isOrdered="false" type="//@contents.0/@contents.0" isContainer="false" opposite="//@contents.0/@contents.0/@structuralFeatures.0"/>
+      <structuralFeatures xsi:type="Reference" location="10:17-10:82" name="ReferencedC" lower="0" upper="1" isOrdered="false" type="//@contents.0/@contents.3" isContainer="false" opposite="//@contents.0/@contents.3/@structuralFeatures.1"/>
+    </contents>
+    <contents xsi:type="Class" location="13:9-16:10" name="ConceptC" isAbstract="false">
+      <structuralFeatures xsi:type="Reference" location="14:17-14:61" name="ConceptA" lower="1" upper="1" isOrdered="false" type="//@contents.0/@contents.0" isContainer="false" opposite="//@contents.0/@contents.0/@structuralFeatures.1"/>
+      <structuralFeatures xsi:type="Reference" location="15:17-15:88" name="ReferringBs" lower="0" upper="-1" isOrdered="true" type="//@contents.0/@contents.3" isContainer="false" opposite="//@contents.0/@contents.3/@structuralFeatures.2"/>
+    </contents>
+    <contents xsi:type="Class" location="18:9-22:10" name="BReferencesC" isAbstract="false">
+      <structuralFeatures xsi:type="Attribute" location="19:17-19:45" name="Property" lower="1" upper="1" isOrdered="false" isUnique="false" type="//@contents.1/@contents.0"/>
+      <structuralFeatures xsi:type="Reference" location="20:17-20:76" name="ReferringBs" lower="0" upper="-1" isOrdered="false" type="//@contents.0/@contents.1" isContainer="false" opposite="//@contents.0/@contents.1/@structuralFeatures.1"/>
+      <structuralFeatures xsi:type="Reference" location="21:17-21:78" name="ReferencedC" lower="0" upper="1" isOrdered="false" type="//@contents.0/@contents.2" isContainer="false" opposite="//@contents.0/@contents.2/@structuralFeatures.1"/>
+    </contents>
+  </contents>
+  <contents location="25:1-34:2" name="PrimitiveTypes">
+    <contents xsi:type="DataType" location="27:9-27:25" name="String"/>
+    <contents xsi:type="DataType" location="29:9-29:26" name="Integer"/>
+    <contents xsi:type="DataType" location="31:9-31:26" name="Boolean"/>
+    <contents xsi:type="DataType" location="33:9-33:25" name="Double"/>
+  </contents>
+</Metamodel>

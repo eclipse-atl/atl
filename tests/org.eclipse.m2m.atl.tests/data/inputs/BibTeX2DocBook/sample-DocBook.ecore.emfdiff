@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="Cp1252"?>
+<diff:ModelInputSnapshot xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:diff="http://www.eclipse.org/emf/compare/diff/1.1" xmlns:match="http://www.eclipse.org/emf/compare/match/1.1">
+  <diff left="/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore" right="/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore">
+    <ownedElements xsi:type="diff:DiffGroup">
+      <subDiffElements xsi:type="diff:DiffGroup">
+        <subDiffElements xsi:type="diff:DiffGroup">
+          <subDiffElements xsi:type="diff:DiffGroup">
+            <subDiffElements xsi:type="diff:DiffGroup">
+              <subDiffElements xsi:type="diff:DiffGroup">
+                <subDiffElements xsi:type="diff:UpdateAttribute">
+                  <attribute href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/DocBook.ecore#/0/Para/content"/>
+                  <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.0"/>
+                  <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.0"/>
+                </subDiffElements>
+                <leftParent href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.0"/>
+              </subDiffElements>
+              <leftParent href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0"/>
+            </subDiffElements>
+            <leftParent href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0"/>
+          </subDiffElements>
+          <leftParent href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0"/>
+        </subDiffElements>
+        <leftParent href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#/"/>
+      </subDiffElements>
+    </ownedElements>
+  </diff>
+  <match leftModel="/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore" rightModel="/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore">
+    <matchedElements xsi:type="match:Match2Elements" similarity="1.0">
+      <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+        <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+          <subMatchElements xsi:type="match:Match2Elements" similarity="0.999764256583135">
+            <subMatchElements xsi:type="match:Match2Elements" similarity="0.9922690374951681">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.0"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.0"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.1"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.1"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.2"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.2"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.3"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.3"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.4"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.4"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.5"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.5"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.6"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.6"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.7"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.7"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.8"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.8"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.9"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.9"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.10"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.10"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.11"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.11"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.12"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.12"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.13"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.13"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.14"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.14"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.15"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0/@paras.15"/>
+            </subMatchElements>
+            <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0"/>
+            <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.0"/>
+          </subMatchElements>
+          <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.0"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.0"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.1"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.1"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.2"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.2"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.3"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.3"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.4"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.4"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.5"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.5"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.6"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.6"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.7"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.7"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.8"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.8"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.9"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.9"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.10"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.10"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.11"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.11"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.12"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.12"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.13"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.13"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.14"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.14"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.15"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.15"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.16"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.16"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.17"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.17"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.18"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.18"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.19"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1/@paras.19"/>
+            </subMatchElements>
+            <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1"/>
+            <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.1"/>
+          </subMatchElements>
+          <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.0"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.0"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.1"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.1"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.2"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.2"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.3"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.3"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.4"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.4"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.5"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.5"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.6"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.6"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.7"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.7"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.8"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.8"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.9"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.9"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.10"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.10"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.11"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.11"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.12"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.12"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.13"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2/@paras.13"/>
+            </subMatchElements>
+            <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2"/>
+            <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.2"/>
+          </subMatchElements>
+          <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.3/@paras.0"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.3/@paras.0"/>
+            </subMatchElements>
+            <subMatchElements xsi:type="match:Match2Elements" similarity="1.0">
+              <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.3/@paras.1"/>
+              <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.3/@paras.1"/>
+            </subMatchElements>
+            <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.3"/>
+            <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0/@sections_1.3"/>
+          </subMatchElements>
+          <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0"/>
+          <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0/@articles.0"/>
+        </subMatchElements>
+        <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#//@books.0"/>
+        <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#//@books.0"/>
+      </subMatchElements>
+      <leftElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore#/"/>
+      <rightElement href="file:/D:/dev/workspaces/3.3.1/workspace_ATL/org.eclipse.m2m.atl.tests/data/expected/BibTeX2DocBook/sample-DocBook.ecore#/"/>
+    </matchedElements>
+  </match>
+</diff:ModelInputSnapshot>

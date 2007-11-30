@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xmi:id="_JLfecdfUEduB2uraX9-VYQ" name="Performance" metaclassReference="_8WlDMNkgEdufA5mqkDxD4g _PZRM0NkoEdufA5mqkDxD4g">
+  <eAnnotations xmi:id="_EEwk8dkjEdufA5mqkDxD4g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+    <contents xmi:type="ecore:EPackage" xmi:id="_-tsYodktEdufA5mqkDxD4g" name="Performance" nsURI="http:///schemas/Performance/_-tsYoNktEdufA5mqkDxD4g/7" nsPrefix="Performance">
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_-tsYotktEdufA5mqkDxD4g" name="ServicePerformance">
+        <eAnnotations xmi:id="_-tsYo9ktEdufA5mqkDxD4g" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_5EeZQNkgEdufA5mqkDxD4g"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_-tsYpNktEdufA5mqkDxD4g" name="base_Action" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/2.1.0/UML#//Action"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_-tsYpdktEdufA5mqkDxD4g" name="DBAccess" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_-tsYptktEdufA5mqkDxD4g" name="DBRows" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_-tsYp9ktEdufA5mqkDxD4g" name="Host" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/2.1.0/UML#//Node"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_-tsYqNktEdufA5mqkDxD4g" name="CPUTime" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+  </eAnnotations>
+  <elementImport xmi:id="_8WlDMNkgEdufA5mqkDxD4g">
+    <importedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Action"/>
+  </elementImport>
+  <elementImport xmi:id="_6A7doNkkEdufA5mqkDxD4g">
+    <importedElement xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+  </elementImport>
+  <elementImport xmi:id="_cOy_sNkmEdufA5mqkDxD4g">
+    <importedElement xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EInt"/>
+  </elementImport>
+  <elementImport xmi:id="_PZRM0NkoEdufA5mqkDxD4g">
+    <importedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Node"/>
+  </elementImport>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_5EeZQNkgEdufA5mqkDxD4g" name="ServicePerformance">
+    <ownedAttribute xmi:id="_3VeO4tkiEdufA5mqkDxD4g" name="base_Action" association="_3VeO4NkiEdufA5mqkDxD4g">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Action"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_SZcgoNklEdufA5mqkDxD4g" name="DBAccess">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_FgfbwNkmEdufA5mqkDxD4g" name="DBRows">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_BxERwNkoEdufA5mqkDxD4g" name="Host">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Node"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_spN8ANksEdufA5mqkDxD4g" name="CPUTime">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_3VeO4NkiEdufA5mqkDxD4g" name="Action_ServicePerformance" memberEnd="_3VeO4dkiEdufA5mqkDxD4g _3VeO4tkiEdufA5mqkDxD4g">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_3VeO4dkiEdufA5mqkDxD4g" name="extension_ServicePerformance" type="_5EeZQNkgEdufA5mqkDxD4g" aggregation="composite" association="_3VeO4NkiEdufA5mqkDxD4g"/>
+  </packagedElement>
+</uml:Profile>

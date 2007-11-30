@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<DomainModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="DSL" name="SimpleExample"
+    identity="10000000-0000-0000-0000-000000000001" namespace="SimpleExample.DomainModel"
+    isLoaded="true">
+  <classifiers xsi:type="Class" name="ConceptA" identity="10000000-0000-0000-0000-000000000002"
+      namespace="SimpleExample.DomainModel" isLoaded="true"/>
+  <classifiers xsi:type="Class" name="ConceptB" identity="10000000-0000-0000-0000-000000000003"
+      namespace="SimpleExample.DomainModel" isLoaded="true"/>
+  <classifiers xsi:type="Class" name="ConceptC" identity="10000000-0000-0000-0000-000000000004"
+      namespace="SimpleExample.DomainModel" isLoaded="true"/>
+  <classifiers xsi:type="Class" name="BReferencesC" identity="10000000-0000-0000-0000-000000000005"
+      namespace="SimpleExample.DomainModel" isLoaded="true">
+    <properties name="Property" identity="10000000-0000-0000-0000-000000000018" type="//@types.0"/>
+  </classifiers>
+  <classifiers xsi:type="Relationship" name="ConceptAhasConceptB" identity="10000000-0000-0000-0000-000000000006"
+      namespace="SimpleExample.DomainModel" isLoaded="true" isEmbedding="true">
+    <roles name="Bs" identity="10000000-0000-0000-0000-000000000007" min="0" max="0"
+        isUnbounded="true" accepts="all" isOrdered="true" source="//@classifiers.0"
+        type="//@classifiers.1"/>
+    <roles name="ConceptA" identity="10000000-0000-0000-0000-000000000008" min="1"
+        max="1" accepts="all" source="//@classifiers.1" type="//@classifiers.0"/>
+  </classifiers>
+  <classifiers xsi:type="Relationship" name="ConceptAhasConceptC" identity="10000000-0000-0000-0000-000000000009"
+      namespace="SimpleExample.DomainModel" isLoaded="true" isEmbedding="true">
+    <roles name="Cs" identity="10000000-0000-0000-0000-000000000010" min="0" max="0"
+        isUnbounded="true" accepts="all" isOrdered="true" source="//@classifiers.0"
+        type="//@classifiers.2"/>
+    <roles name="ConceptA" identity="10000000-0000-0000-0000-000000000011" min="1"
+        max="1" accepts="all" source="//@classifiers.2" type="//@classifiers.0"/>
+  </classifiers>
+  <classifiers xsi:type="Relationship" name="ConceptBtoBReferencesC" identity="10000000-0000-0000-0000-000000000012"
+      namespace="SimpleExample.DomainModel" isLoaded="true">
+    <roles name="ReferencedC" identity="10000000-0000-0000-0000-000000000013" min="0"
+        max="1" accepts="all" source="//@classifiers.1" type="//@classifiers.3"/>
+    <roles name="ReferringBs" identity="10000000-0000-0000-0000-000000000014" min="0"
+        max="0" isUnbounded="true" accepts="all" source="//@classifiers.3" type="//@classifiers.1"/>
+  </classifiers>
+  <classifiers xsi:type="Relationship" name="ConceptCtoBReferencesC" identity="10000000-0000-0000-0000-000000000015"
+      namespace="SimpleExample.DomainModel" isLoaded="true">
+    <roles name="ReferringBs" identity="10000000-0000-0000-0000-000000000016" min="0"
+        max="0" isUnbounded="true" accepts="all" isOrdered="true" source="//@classifiers.2"
+        type="//@classifiers.3"/>
+    <roles name="ReferencedC" identity="10000000-0000-0000-0000-000000000017" min="0"
+        max="1" accepts="all" source="//@classifiers.3" type="//@classifiers.2"/>
+  </classifiers>
+  <types xsi:type="SimpleType" name="String"/>
+  <types xsi:type="SimpleType" name="Integer"/>
+  <types xsi:type="SimpleType" name="Boolean"/>
+  <types xsi:type="SimpleType" name="Double"/>
+</DomainModel>
