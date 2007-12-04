@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
+import org.eclipse.m2m.atl.tests.suite.AllTests;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
 import org.eclipse.m2m.atl.tests.util.ModelUtils;
 import org.eclipse.m2m.atl.tests.util.TransfoLauncher;
@@ -37,7 +38,8 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		if (vmName == null) {
 			fail("VM name must be specified.");
 		}
-		System.out.print("Launching "+directory.getName()+"...");
+		System.out.print("Launching "+directory.getName()+"... ");
+		
 		final File expectedDir = new File(directory.getPath().replace(File.separator + "inputs", //$NON-NLS-1$
 				File.separator + "expected")); //$NON-NLS-1$ //$NON-NLS-2$
 		String[] expectedPaths = expectedDir.list();
@@ -105,10 +107,15 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
 		}
 
+		AllTests.addVMResult(this, directory, new Double(executionTime));
 	}
 
 	protected void setVmName(String vmName) {
 		this.vmName = vmName;
+	}
+
+	public String getVmName() {
+		return vmName;
 	}
 
 }
