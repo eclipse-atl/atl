@@ -3,7 +3,7 @@
 <plugin
    id="org.eclipse.m2m.atl.drivers.uml24atl"
    name="Driver UML4ATL Plug-in"
-   version="2.0.0"
+   version="2.0.0.qualifier"
    provider-name="Eclipse.org">
 
    <runtime>
