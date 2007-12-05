@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.m2m.atl.tests"
       label="ATL Tests"
-      version="2.0.0">
+      version="2.0.0.qualifier">
 
    <description>
       ATL Tests
