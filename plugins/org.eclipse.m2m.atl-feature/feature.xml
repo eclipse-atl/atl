@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.m2m.atl.engine"
+      id="org.eclipse.m2m.atl"
       label="ATL Feature"
       version="2.0.0.qualifier"
       provider-name="Eclipse.org"
@@ -225,7 +225,7 @@ litigation.
    </url>
 
    <includes
-         id="org.eclipse.m2m.atl.adt_feature"
+         id="org.eclipse.m2m.atl.adt"
          version="0.0.0"/>
 
    <requires>
