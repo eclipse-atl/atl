@@ -23,8 +23,8 @@ http://www.eclipse.org/legal/epl-v10.html
    </license>
 
    <url>
-      <update label="%UpdateSiteName" url="_UPDATESITEURL_"/>
-      <discovery label="%UpdateSiteName" url="_UPDATESITEURL_"/>
+      <update label="%updateSiteName" url="http://www.download.eclipse.org/modeling/m2m/atl/updates/"/>
+      <discovery label="%updateSiteName" url="http://www.download.eclipse.org/modeling/m2m/atl/updates/"/>
    </url>
 
    <plugin
@@ -32,7 +32,5 @@ http://www.eclipse.org/legal/epl-v10.html
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-
-	<!-- TODO: add other plugins that contribute doc, if any -->
 
 </feature>
