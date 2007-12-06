@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.m2m.atl.examples"
+      label="%featureName"
       version="2.0.0.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="%providerName">
 
    <description>
       ATL Examples
@@ -217,6 +218,11 @@ Agreement more than one year after the cause of action arose.
 Each party waives its rights to a jury trial in any resulting
 litigation.
    </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://www.download.eclipse.org/modeling/m2m/atl/updates/"/>
+      <discovery label="%updateSiteName" url="http://www.download.eclipse.org/modeling/m2m/atl/updates/"/>
+   </url>
 
    <plugin
          id="org.eclipse.m2m.atl.examples"
