@@ -6,12 +6,11 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     Obeo - initial API and implementation
+ *     Obeo - ATL tester
  *******************************************************************************/
 package org.eclipse.m2m.atl.tests.suite;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import junit.textui.TestRunner;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.m2m.atl.tests.unit.TestNonRegressionParser;
 import org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo;
 import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionEMFVM;
 import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionVM;
@@ -67,47 +67,53 @@ public class AllTests extends TestCase implements IApplication {
 	public static Test suite() {
 		final TestSuite suite = new TestSuite("ATL test suite") {
 			protected void finalize() throws Throwable {
-				outputsResults();
+				/*
+				File trace = new File(FileUtils.getTestCommonDirectory()+"\\trace.txt");
+				PrintWriter writer = new PrintWriter(new FileOutputStream(trace));
+				outputsResults(writer);
+				super.finalize();
+				*/
+				outputsResults(null);
 				super.finalize();
 			}
 		};
-		//suite.addTestSuite(TestNonRegressionParser.class);
 		suite.addTestSuite(TestNonRegressionEMFVM.class);
 		suite.addTestSuite(TestNonRegressionVM.class);
+		suite.addTestSuite(TestNonRegressionParser.class);
 		return suite;
 	}
 
-	private static void outputsResults() throws Exception {
-		String localPath = FileUtils.getTestCommonDirectory();
-		File trace = new File(localPath+"\\trace.txt");
+	private static void outputsResults(PrintWriter writer) throws Exception {
+		if (writer != null) {
 
-		PrintWriter writer = new PrintWriter(new FileOutputStream(trace));
-		
-		final String htmlPath = "http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests";	
-		
-		for (Iterator iterator = vmresults.keySet().iterator(); iterator.hasNext();) {
-			File directory = (File) iterator.next();
-			String path = directory.toString();
-			path = path.substring(localPath.length());
-			path = htmlPath+path.replaceAll("[/\\\\]+", "/")+"/?root=Modeling_Project";
+			String localPath = FileUtils.getTestCommonDirectory();
+			final String htmlPath = "http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests";	
 
-			writer.println("|-");
-			writer.println("! colspan=1 | ["+path+" "+directory.getName()+"]");
+			for (Iterator iterator = vmresults.keySet().iterator(); iterator.hasNext();) {
+				File directory = (File) iterator.next();
+				String path = directory.toString();
+				path = path.substring(localPath.length());
+				path = htmlPath+path.replaceAll("[/\\\\]+", "/")+"/?root=Modeling_Project";
 
-			if (emfvmresults.get(directory) != null) {
-				writer.println("! colspan=1 | <b style=\"color:green\">PASS</b>");
-				writer.println("! colspan=1 | "+emfvmresults.get(directory)+"s.");
-			} else {
+				writer.println("|-");
+				writer.println("! colspan=1 | ["+path+" "+directory.getName()+"]");
 
-				writer.println("! colspan=1 | <b style=\"color:red\">FAIL</b>");
+				if (emfvmresults.get(directory) != null) {
+					writer.println("! colspan=1 | <b style=\"color:green\">PASS</b>");
+					writer.println("! colspan=1 | "+emfvmresults.get(directory)+"s.");
+				} else {
+
+					writer.println("! colspan=1 | <b style=\"color:red\">FAIL</b>");
+					writer.println("! colspan=1 | ");
+				}
+				writer.println("! colspan=1 | "+vmresults.get(directory)+"s.");
 				writer.println("! colspan=1 | ");
+
 			}
-			writer.println("! colspan=1 | "+vmresults.get(directory)+"s.");
-			writer.println("! colspan=1 | ");
+
+			writer.close();
 
 		}
-
-		writer.close();
 	}
 
 	/**

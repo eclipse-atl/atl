@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Atl Tests
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.m2m.atl.tests;singleton:=true
 Bundle-Version: 2.0.0.qualifier
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: %providerName
 Export-Package: org.eclipse.m2m.atl.tests;
   uses:="org.eclipse.emf.ecore.resource,
    org.eclipse.core.runtime,
