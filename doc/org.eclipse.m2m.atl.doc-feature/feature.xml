@@ -27,6 +27,10 @@ http://www.eclipse.org/legal/epl-v10.html
       <discovery label="%updateSiteName" url="http://www.download.eclipse.org/modeling/m2m/atl/updates/"/>
    </url>
 
+   <requires>
+      <import plugin="org.eclipse.help"/>
+   </requires>
+
    <plugin
          id="org.eclipse.m2m.atl.doc"
          download-size="0"
