@@ -11,5 +11,43 @@
 	        id="org.atl.eclipse.adt.atlPerspective">
    		</perspective>
 	</extension>
+ <extension
+       point="org.eclipse.ui.actionSets">
+    <actionSet
+          id="org.eclipse.m2m.atl.adt.perspective.compatibility"
+          label="ATL Compatibility Actions"
+          visible="false">
+       <menu
+             id="ATLCompatibility"
+             label="ATL &amp;Compatibility">
+          <separator
+                name="compatibilityGroup">
+          </separator>
+       </menu>
+       <action
+             class="org.eclipse.m2m.atl.adt.perspective.compatibility.UpdateCompatibility"
+             id="org.eclipse.m2m.atl.adt.perspective.compatibility.UpdateCompatibility"
+             label="&amp;Update compatibility"
+             menubarPath="ATLCompatibility/compatibilityGroup"
+             tooltip="Updates the ATL builder and configuration to versions up to 2.0.0RC2">
+       </action>
+       <action
+             class="org.eclipse.m2m.atl.adt.perspective.compatibility.RevertCompatibility"
+             id="org.eclipse.m2m.atl.adt.perspective.compatibility.RevertCompatibility"
+             label="&amp;Revert compatibility"
+             menubarPath="ATLCompatibility/compatibilityGroup"
+             tooltip="Reverts the ATL builder and configuration to versions anterior to 2.0.0RC2">
+       </action>
+    </actionSet>
+ </extension>
+ <extension
+       point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+          targetID="org.atl.eclipse.adt.atlPerspective">
+       <actionSet
+             id="org.eclipse.m2m.atl.adt.perspective.compatibility">
+       </actionSet>
+    </perspectiveExtension>
+ </extension>
 	
 </plugin>
