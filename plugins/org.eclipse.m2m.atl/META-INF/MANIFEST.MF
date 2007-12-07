@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.m2m.atl
+Bundle-Version: 2.0.0.qualifier
+Bundle-Vendor: %providerName
