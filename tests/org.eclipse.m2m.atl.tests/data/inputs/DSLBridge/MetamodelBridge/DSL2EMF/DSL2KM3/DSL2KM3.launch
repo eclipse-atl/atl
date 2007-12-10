@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<launchConfiguration type="org.atl.eclipse.adt.launching.atlTransformation">
+<launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
 <stringAttribute key="ATL File Name" value="/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/DSL2KM3/DSL2KM3.atl"/>
 <stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
