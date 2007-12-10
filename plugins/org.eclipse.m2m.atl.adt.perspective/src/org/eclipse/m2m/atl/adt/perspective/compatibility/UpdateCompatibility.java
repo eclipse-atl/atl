@@ -20,24 +20,24 @@ public class UpdateCompatibility implements IWorkbenchWindowActionDelegate {
 
 	private Shell shell = null;
 	
-	@Override
+
 	public void dispose() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+
 	public void init(IWorkbenchWindow window) {
 		this.shell = window.getShell();
 	}
 
-	@Override
+
 	public void run(IAction action) {
 		CompatibilityDialog dialog = new CompatibilityDialog(shell, true);
 		dialog.open();
 	}
 
-	@Override
+
 	public void selectionChanged(IAction action, ISelection selection) {
 		// TODO Auto-generated method stub
 	}
