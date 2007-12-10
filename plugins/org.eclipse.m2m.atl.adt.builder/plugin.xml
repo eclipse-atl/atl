@@ -9,7 +9,7 @@
       <runtime>
          <run class="org.eclipse.m2m.atl.adt.builder.AtlNature"></run>
       </runtime>
-      <builder id="org.atl.eclipse.adt.builder.atlBuilder"></builder>
+      <builder id="org.eclipse.m2m.atl.adt.builder.atlBuilder"></builder>
    </extension>
    <extension
          id="atlBuilder"
@@ -22,7 +22,7 @@
    <extension point="org.eclipse.ui.ide.projectNatureImages">
       <image
             icon="icons/atl_logo_small.gif"
-            natureId="org.atl.eclipse.adt.builder.atlNature"
+            natureId="org.eclipse.m2m.atl.adt.builder.atlNature"
             id="org.eclipse.ui.atlProjectNatureImage">
       </image>
    </extension>  

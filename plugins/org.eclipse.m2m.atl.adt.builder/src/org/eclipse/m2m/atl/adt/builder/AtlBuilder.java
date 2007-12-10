@@ -28,7 +28,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 //	private IResourceVisitor buildVisitor = new AtlBuildVisitor();
 	
 	/** The Atl builder id */
-	public static final String ATL_BUILDER_ID = "org.atl.eclipse.adt.builder.atlBuilder";
+	public static final String ATL_BUILDER_ID = "org.eclipse.m2m.atl.adt.builder.atlBuilder";
 	
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {		
 		//if (kind == IncrementalProjectBuilder.FULL_BUILD)

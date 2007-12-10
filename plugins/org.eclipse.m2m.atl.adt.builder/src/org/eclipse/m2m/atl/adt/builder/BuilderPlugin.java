@@ -25,7 +25,7 @@ public class BuilderPlugin extends AbstractUIPlugin {
 		super();
 		plugin = this;
 		try {
-			resourceBundle   = ResourceBundle.getBundle("org.atl.eclipse.adt.builder.BuilderPluginResources");
+			resourceBundle   = ResourceBundle.getBundle("org.eclipse.m2m.atl.adt.builder.BuilderPluginResources");
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}	
