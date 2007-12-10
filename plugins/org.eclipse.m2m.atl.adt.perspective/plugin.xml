@@ -8,7 +8,7 @@
         	icon="icons/atl_logo.gif"
 	        class="org.eclipse.m2m.atl.adt.perspective.AtlPerspective"
 	        name="ATL"
-	        id="org.atl.eclipse.adt.atlPerspective">
+	        id="org.eclipse.m2m.atl.adt.atlPerspective">
    		</perspective>
 	</extension>
  <extension
@@ -36,7 +36,7 @@
  <extension
        point="org.eclipse.ui.perspectiveExtensions">
     <perspectiveExtension
-          targetID="org.atl.eclipse.adt.atlPerspective">
+          targetID="org.eclipse.m2m.atl.adt.atlPerspective">
        <actionSet
              id="org.eclipse.m2m.atl.adt.perspective.compatibility">
        </actionSet>

@@ -31,7 +31,7 @@ public class AtlPerspective implements IPerspectiveFactory {
         // Add "show views".
         layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
         
-        layout.addPerspectiveShortcut("org.atl.eclipse.adt.atlPerspective");
+        layout.addPerspectiveShortcut("org.eclipse.m2m.atl.adt.atlPerspective");
 	}
 	
 	public void defineLayout(IPageLayout layout) {
@@ -62,7 +62,7 @@ public class AtlPerspective implements IPerspectiveFactory {
 
         layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
         
-        layout.addPerspectiveShortcut("org.atl.eclipse.adt.atlPerspective");
+        layout.addPerspectiveShortcut("org.eclipse.m2m.atl.adt.atlPerspective");
 	}
 	
 }

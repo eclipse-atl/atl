@@ -131,7 +131,6 @@ public class CompatibilityUtils {
 
 			Element root = (Element) document.getFirstChild();
 			if (root.getAttribute("type").equals(oldConfigId)) {
-				System.out.println("config changed");
 				root.setAttribute("type", newConfigId);
 			}
 
