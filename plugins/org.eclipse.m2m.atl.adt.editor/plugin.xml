@@ -75,7 +75,7 @@
          <action 
             definitionId="atlCommands.commentBlock"
             icon="icons/atl_logo.gif"
-            id="org.atl.eclipse.adt.ui.CommentBlock"
+            id="org.eclipse.m2m.atl.adt.ui.CommentBlock"
             label="Comment/Uncomment"
             menubarPath="ATLEditorMenu/ATLGroup"
             class="org.eclipse.m2m.atl.adt.ui.actions.ToggleCommentBlock">

@@ -45,8 +45,8 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 	private static MessageConsole console = null;
 	private static MessageConsoleStream consoleStream = null;
     private static IConsoleManager consoleMgr = null; 
-	private static final String ATL_CONSOLE = "org.atl.eclipse.adt.editor.console";	
-	private static final String ID = "org.atl.eclipse.adt.editor";
+	private static final String ATL_CONSOLE = "org.eclipse.m2m.atl.adt.editor.console";	
+	private static final String ID = "org.eclipse.m2m.atl.adt.editor";
 	
 	/**
 	 * This class registers a shared (static) instance of the plug-in that can be

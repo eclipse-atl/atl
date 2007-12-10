@@ -76,7 +76,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	}
 	
 	/** The outline view context menu id. May be used for extensions by other plugins */
-	public final static String ATL_OUTLINE_VIEW_CONTEXT_MENU_ID = "org.atl.eclipse.adt.outline.contextMenu";
+	public final static String ATL_OUTLINE_VIEW_CONTEXT_MENU_ID = "org.eclipse.m2m.atl.adt.outline.contextMenu";
 	
 	/** The wake up frequency of the background thread in charge of the refresh of the outline tree viewer */
 //	private final static int REFRESH_PERIOD = 5000;
