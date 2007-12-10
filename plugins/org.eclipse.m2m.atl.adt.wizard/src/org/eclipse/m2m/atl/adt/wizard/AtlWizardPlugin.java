@@ -21,7 +21,7 @@ public class AtlWizardPlugin extends AbstractUIPlugin {
 		super();
 		plugin = this;
 		try {
-			resourceBundle = ResourceBundle.getBundle("org.atl.eclipse.adt.wizard.AtlWizardPluginResources");
+			resourceBundle = ResourceBundle.getBundle("org.eclipse.m2m.atl.adt.wizard.AtlWizardPluginResources");
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}

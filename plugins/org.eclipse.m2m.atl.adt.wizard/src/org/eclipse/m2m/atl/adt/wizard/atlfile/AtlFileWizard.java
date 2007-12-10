@@ -26,9 +26,6 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
-	/** The id of the wizard extension defined in the plugin.xml file of this plugin*/
-//	private static final String NEW_PROJECT_WIZARD_EXTENSION_ID = "org.atl.eclipse.adt.projectCreationWizard";
-	
 	private IConfigurationElement configElement;
 	
 	private AtlFileScreen page;

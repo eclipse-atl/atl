@@ -3,7 +3,7 @@
 <plugin>
 
      <extension
-         id="org.atl.eclipse.adt.projectCreationWizard"
+         id="org.eclipse.m2m.atl.adt.projectCreationWizard"
          point="org.eclipse.ui.newWizards">
       <category
             name="ATL"
@@ -14,8 +14,8 @@
             icon="icons/atllogo_icon.gif"
             category="atlWizard"
             class="org.eclipse.m2m.atl.adt.wizard.atlproject.AtlProjectCreator"
-            preferredPerspectives="org.atl.eclipse.adt.atlPerspective"
-            finalPerspective="org.atl.eclipse.adt.atlPerspective"
+            preferredPerspectives="org.eclipse.m2m.atl.adt.atlPerspective"
+            finalPerspective="org.eclipse.m2m.atl.adt.atlPerspective"
             project="true"
             id="atlProjectWizard">
          <description>
@@ -27,8 +27,8 @@
             icon="icons/atllogo_icon.gif"
             category="atlWizard"
             class="org.eclipse.m2m.atl.adt.wizard.atlfile.AtlFileWizard"
-            preferredPerspectives="org.atl.eclipse.adt.atlPerspective"
-            finalPerspective="org.atl.eclipse.adt.atlPerspective"
+            preferredPerspectives="org.eclipse.m2m.atl.adt.atlPerspective"
+            finalPerspective="org.eclipse.m2m.atl.adt.atlPerspective"
             project="true"
             id="atlFileWizard">
          <description>
