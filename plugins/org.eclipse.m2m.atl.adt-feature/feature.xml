@@ -269,7 +269,7 @@ litigation.
          unpack="false"/>
 
    <plugin
-         id="org.atl.eclipse.adt.builder"
+         id="org.eclipse.m2m.atl.adt.builder"
          download-size="0"
          install-size="0"
          version="0.0.0"
