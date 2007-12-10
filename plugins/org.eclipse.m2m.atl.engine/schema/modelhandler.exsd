@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.atl.eclipse.engine">
+<schema targetNamespace="org.eclipse.m2m.atl.engine">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.atl.eclipse.engine" id="modelhandler" name="ModelHandler"/>
+         <meta.schema plugin="org.eclipse.m2m.atl.engine" id="modelhandler" name="ModelHandler"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -57,7 +57,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.atl.eclipse.engine.AtlModelHandler"/>
+                  <meta.attribute kind="java" basedOn="org.eclipse.m2m.atl.engine.AtlModelHandler"/>
                </appInfo>
             </annotation>
          </attribute>

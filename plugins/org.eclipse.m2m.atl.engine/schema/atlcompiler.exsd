@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.atl.eclipse.engine">
+<schema targetNamespace="org.eclipse.m2m.atl.engine">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.atl.eclipse.engine" id="atlcompiler" name="ATLCompiler"/>
+         <meta.schema plugin="org.eclipse.m2m.atl.engine" id="atlcompiler" name="ATLCompiler"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
