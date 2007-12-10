@@ -16,6 +16,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
+/**
+ * An UI class for old ATL projects conversion.
+ * 
+ * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ */
 public class UpdateCompatibility implements IWorkbenchWindowActionDelegate {
 
 	private Shell shell = null;
@@ -33,7 +38,7 @@ public class UpdateCompatibility implements IWorkbenchWindowActionDelegate {
 
 
 	public void run(IAction action) {
-		CompatibilityDialog dialog = new CompatibilityDialog(shell, true);
+		CompatibilityDialog dialog = new CompatibilityDialog(shell);
 		dialog.open();
 	}
 
