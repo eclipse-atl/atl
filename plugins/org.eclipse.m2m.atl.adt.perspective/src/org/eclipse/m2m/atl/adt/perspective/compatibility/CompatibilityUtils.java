@@ -175,6 +175,7 @@ public class CompatibilityUtils {
 					// nothing, if not valid, the config is not converted
 				}
 			}		
+			//TODO refresh
 			monitor.done();
 		}
 	}
