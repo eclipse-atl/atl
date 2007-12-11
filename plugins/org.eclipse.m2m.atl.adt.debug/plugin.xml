@@ -31,10 +31,10 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            name="ATL Transformation"
             delegate="org.eclipse.m2m.atl.adt.launching.AtlLaunchConfigurationDelegate"
+            id="org.eclipse.m2m.atl.adt.launching.atlTransformation"
             modes="run, debug"
-            id="org.eclipse.m2m.atl.adt.launching.atlTransformation">
+            name="ATL Transformation">
       </launchConfigurationType>
    </extension>
    <extension
@@ -128,6 +128,19 @@
             class="org.eclipse.m2m.atl.adt.debug.core.DisassemblyDocumentProvider"
             inputTypes="org.eclipse.m2m.atl.adt.debug.ui.AtlDebugModelPresentation$DisassemblyEditorInput"
             id="org.eclipse.m2m.atl.adt.debug.provider1"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            id="org.atl.eclipse.adt.launching.remoteAtlTransformation"
+            modes="debug"
+            name="OLD Remote ATL Transformation">
+      </launchConfigurationType>
+      <launchConfigurationType
+            id="org.atl.eclipse.adt.launching.atlTransformation"
+            modes="run, debug"
+            name="OLD ATL Transformation">
+      </launchConfigurationType>
    </extension>
 
 </plugin>
