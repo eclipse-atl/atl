@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.perspective.compatibility;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -29,6 +33,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchWindow;
 
 /**
  * An UI class for old ATL projects conversion.
@@ -38,15 +43,17 @@ import org.eclipse.swt.widgets.Shell;
 public class CompatibilityDialog extends TitleAreaDialog {
 
 	private CheckboxTableViewer fProjectsTable = null;
+	private IWorkbenchWindow window;
 
 	/**
 	 * Create an instance of this Dialog.
 	 * 
 	 * @param shell the shell
 	 */
-	public CompatibilityDialog(Shell shell) {
+	public CompatibilityDialog(Shell shell, IWorkbenchWindow window) {
 		super(shell);
 		setShellStyle(SWT.MAX | SWT.RESIZE | getShellStyle());
+		this.window = window;
 	}
 
 	protected void configureShell(Shell shell) {
@@ -98,6 +105,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		try {
 			CompatibilityUtils.convertProjects(fProjectsTable.getCheckedElements());
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		super.okPressed();
