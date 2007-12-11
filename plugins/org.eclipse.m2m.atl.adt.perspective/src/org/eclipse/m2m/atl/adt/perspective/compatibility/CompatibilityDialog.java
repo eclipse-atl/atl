@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.adt.perspective.compatibility;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -29,6 +30,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IWorkbenchWindow;
 
 /**
@@ -39,6 +42,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 public class CompatibilityDialog extends TitleAreaDialog {
 
 	private CheckboxTableViewer fProjectsTable = null;
+	private CheckboxTableViewer fConfTable = null;
 	private IWorkbenchWindow window;
 
 	/**
@@ -61,14 +65,22 @@ public class CompatibilityDialog extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
 		setTitle("Update ATL projects and configurations");
-		setMessage("This page allows to update ATL projects created with ATL anterior to 2.0.0RC2 into new ones.\n Select projects and click OK.");
+		setMessage("This page allows to update ATL projects created with ATL anterior to 2.0.0RC2 into new ones.\n Select elements to convert and click OK.");
 
-		Composite composite = new Composite(area, SWT.NONE);
-		composite.setLayout(new GridLayout(2,false));
-		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		// tab folder
+		TabFolder tabFolder = new TabFolder(area, SWT.NONE);
+		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
+		// Projects tab
+		Composite projectsComposite = new Composite(tabFolder, SWT.NONE);
+		projectsComposite.setLayout(new GridLayout(2,false));
+		projectsComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		TabItem projectItem = new TabItem(tabFolder, SWT.NONE);
+		projectItem.setText("Projects");
+		projectItem.setControl(projectsComposite);
+		
 		//creates the projects table
-		fProjectsTable = CheckboxTableViewer.newCheckList(composite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		fProjectsTable = CheckboxTableViewer.newCheckList(projectsComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		fProjectsTable.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
 		ProjectContentProvider provider = new ProjectContentProvider();
 		fProjectsTable.setContentProvider(provider);
@@ -76,7 +88,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		fProjectsTable.setInput(provider);	
 
 		//create select/deselect commands
-		Composite buttonsGroup = new Composite(composite, SWT.MAX);
+		Composite buttonsGroup = new Composite(projectsComposite, SWT.MAX);
 		buttonsGroup.setLayout(new GridLayout());
 
 		Button selectAll = new Button(buttonsGroup, SWT.CENTER);
@@ -94,12 +106,50 @@ public class CompatibilityDialog extends TitleAreaDialog {
 				fProjectsTable.setAllChecked(false);
 			}
 		});
-		return composite;
+		
+		// Configuration tab
+		Composite confComposite = new Composite(tabFolder, SWT.NONE);
+		confComposite.setLayout(new GridLayout(2,false));
+		confComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		TabItem confItem = new TabItem(tabFolder, SWT.NONE);
+		confItem.setText("Configurations");
+		confItem.setControl(confComposite);
+		
+		//creates the conf table
+		fConfTable = CheckboxTableViewer.newCheckList(confComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		fConfTable.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
+		ConfContentProvider confProvider = new ConfContentProvider();
+		fConfTable.setContentProvider(confProvider);
+		fConfTable.setLabelProvider(new ConfLabelProvider());
+		fConfTable.setInput(confProvider);	
+
+		//create select/deselect commands
+		Composite confButtonsGroup = new Composite(confComposite, SWT.MAX);
+		confButtonsGroup.setLayout(new GridLayout());
+
+		Button confSelectAll = new Button(confButtonsGroup, SWT.CENTER);
+		confSelectAll.setText("Select All");
+		confSelectAll.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				fConfTable.setAllChecked(true);
+			}
+		});
+
+		Button confDeselectAll = new Button(confButtonsGroup, SWT.CENTER);
+		confDeselectAll.setText("Deselect All");
+		confDeselectAll.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				fConfTable.setAllChecked(false);
+			}
+		});
+		
+		return tabFolder;
 	}
 
 	protected void okPressed() {
 		try {
 			CompatibilityUtils.convertProjects(fProjectsTable.getCheckedElements());
+			CompatibilityUtils.convertConfigurations(fConfTable.getCheckedElements());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -137,6 +187,47 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		public Object[] getElements(Object inputElement) {
 			try {
 				return CompatibilityUtils.getProjects();					
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		public void dispose() {}
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
+
+	}
+	
+	/**
+	 * Provides the labels for the configuration table
+	 *
+	 */
+	class ConfLabelProvider implements ITableLabelProvider {
+
+		public Image getColumnImage(Object element, int columnIndex) {
+			return AtlPerspectivePlugin.getImage("atl_logo.gif");
+		}
+
+		public String getColumnText(Object element, int columnIndex) {
+			return ((ILaunchConfiguration) element).getName();
+		}
+
+		public void addListener(ILabelProviderListener listener) {}
+
+		public void dispose() {}
+
+		public boolean isLabelProperty(Object element, String property) {return false;}
+		public void removeListener(ILabelProviderListener listener) {}		
+	}
+
+	/**
+	 * Content provider for the conf table
+	 */
+	class ConfContentProvider implements IStructuredContentProvider {
+
+		public Object[] getElements(Object inputElement) {
+			try {
+				return CompatibilityUtils.getConfigurations();					
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}

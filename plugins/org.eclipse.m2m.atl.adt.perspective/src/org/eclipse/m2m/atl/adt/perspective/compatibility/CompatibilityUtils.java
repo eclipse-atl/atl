@@ -10,8 +10,17 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.perspective.compatibility;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
@@ -20,6 +29,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * An utility class for old ATL projects conversion.
@@ -65,13 +78,29 @@ public class CompatibilityUtils {
 	}
 	
 	/**
+	 * @return
+	 * @throws CoreException
+	 */
+	public static ILaunchConfiguration[] getConfigurations() throws CoreException {
+		List res = new ArrayList();
+		ILaunchConfiguration[] configs = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations();
+		for (int i = 0; i < configs.length; i++) {
+			ILaunchConfiguration config = configs[i];
+			if (config.getType().getIdentifier().equals(oldConfigId)) {
+				res.add(config);
+			}
+		}
+		return (ILaunchConfiguration[]) res.toArray(new ILaunchConfiguration[res.size()]);		
+	}
+	
+	/**
 	 * @param projects
 	 * @throws CoreException
 	 */
 	public static void convertProjects(Object[] projects) throws Exception {
 		//TODO The NullProgressMonitor does nothing, it could be interesting to catch a ProgressMonitor or to add one.
 		NullProgressMonitor monitor = new NullProgressMonitor();
-		monitor.beginTask("Starting update of old ATL projects and configurations", IProgressMonitor.UNKNOWN);
+		monitor.beginTask("Starting update of old ATL projects", IProgressMonitor.UNKNOWN);
 		for (int i = 0; i < projects.length; i++) {
 			IProject project = (IProject) projects[i];
 			monitor.subTask("Inspecting project " + project.getName());
@@ -103,12 +132,50 @@ public class CompatibilityUtils {
 			desc.setNatureIds(newNatures);
 			
 			project.setDescription(desc, IProject.AVOID_NATURE_CONFIG, null);
-
-			project.accept(new UpdateCompatibilityVisitor(monitor));
-
 			project.refreshLocal(IProject.DEPTH_INFINITE,null);
 			monitor.done();
 		}
 	}
 
+	/**
+	 * @param projects
+	 * @throws CoreException
+	 */
+	public static void convertConfigurations(Object[] configurations) throws Exception {
+		//TODO The NullProgressMonitor does nothing, it could be interesting to catch a ProgressMonitor or to add one.
+		NullProgressMonitor monitor = new NullProgressMonitor();
+		monitor.beginTask("Starting update of old ATL configurations", IProgressMonitor.UNKNOWN);
+		for (int i = 0; i < configurations.length; i++) {
+			ILaunchConfiguration conf = (ILaunchConfiguration) configurations[i];
+			monitor.subTask("Inspecting configuration " + conf.getName());
+			if (conf.getType().getIdentifier().equals(oldConfigId)) {
+				File file = conf.getLocation().toFile();
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder docBuilder;
+
+				try {
+					docBuilder = factory.newDocumentBuilder();
+					Document document = docBuilder.parse(file);
+
+					Element root = (Element) document.getFirstChild();
+					if (root.getAttribute("type").equals(CompatibilityUtils.oldConfigId)) {
+						root.setAttribute("type", CompatibilityUtils.newConfigId);
+						monitor.subTask("Updating ATL launch configuration ID of " + conf.getName());
+					}
+
+					Transformer transformer = TransformerFactory.newInstance().newTransformer();
+					StreamResult result = new StreamResult(file);
+					DOMSource source = new DOMSource(document);
+					transformer.transform(source, result);
+					
+				} catch (ParserConfigurationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (Throwable e) {
+					// nothing, if not valid, the config is not converted
+				}
+			}		
+			monitor.done();
+		}
+	}
 }
