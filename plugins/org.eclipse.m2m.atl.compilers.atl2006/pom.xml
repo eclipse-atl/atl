@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.eclipse.m2m.atl.compilers.atl2006</groupId>
     <artifactId>atl-2006</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <name>ATL 2006 compiler plug-in</name>
     <url>http://www.eclipse.org/gmt/atl</url>
     <build>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>org.eclipse.m2m.atl.engine</groupId>
             <artifactId>atl-engine</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>2.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <distributionManagement>

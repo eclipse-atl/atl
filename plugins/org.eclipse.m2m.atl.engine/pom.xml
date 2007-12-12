@@ -6,7 +6,7 @@
 	<groupId>org.eclipse.m2m.atl.engine</groupId>
 	<artifactId>atl-engine</artifactId>
 	<name>ATL engine plug-in</name>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>2.0.0-SNAPSHOT</version>
 	<url>http://www.eclipse.org/gmt/atl</url>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>org.eclipse.m2m.atl.engine.vm</groupId>
 			<artifactId>vm</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>2.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.equinox</groupId>
@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>org.eclipse.m2m.atl.drivers.emf4atl</groupId>
 			<artifactId>emf4atl</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>2.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
@@ -73,23 +73,23 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.m2m.atl.engine</groupId>
-			<artifactId>atl-importer</artifactId>
-			<version>1.2</version>
+			<artifactId>atl-parser</artifactId>
+			<version>1.6</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.m2m.atl.engine</groupId>
-			<artifactId>ebnfextractor</artifactId>
-			<version>1.1</version>
+			<groupId>org.eclipse.gmt.tcs</groupId>
+			<artifactId>tcs-extractor</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.m2m.atl.engine</groupId>
-			<artifactId>ebnfinjector</artifactId>
-			<version>1.1</version>
+			<groupId>org.eclipse.gmt.tcs</groupId>
+			<artifactId>tcs-injector</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>antlr</groupId>
-			<artifactId>antlr</artifactId>
-			<version>2.7.5</version>
+			<artifactId>antlr-runtime</artifactId>
+			<version>3.0</version>
 		</dependency>
 	</dependencies>
 	<distributionManagement>
