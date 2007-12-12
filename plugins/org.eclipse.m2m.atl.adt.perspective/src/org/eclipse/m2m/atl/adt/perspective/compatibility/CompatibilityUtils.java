@@ -142,10 +142,11 @@ public class CompatibilityUtils {
 	 * @param projects
 	 * @throws CoreException
 	 */
-	public static void convertConfigurations(Object[] configurations) throws Exception {
+	public static boolean convertConfigurations(Object[] configurations) throws Exception {
 		//TODO The NullProgressMonitor does nothing, it could be interesting to catch a ProgressMonitor or to add one.
 		NullProgressMonitor monitor = new NullProgressMonitor();
 		monitor.beginTask("Starting update of old ATL configurations", IProgressMonitor.UNKNOWN);
+		boolean needToRestart = false;
 		for (int i = 0; i < configurations.length; i++) {
 			ILaunchConfiguration conf = (ILaunchConfiguration) configurations[i];
 			monitor.subTask("Inspecting configuration " + conf.getName());
@@ -179,9 +180,12 @@ public class CompatibilityUtils {
 				
 				if (ifile != null) {
 					ifile.refreshLocal(IFile.DEPTH_INFINITE, monitor);					
+				} else {
+					needToRestart = true;
 				}
 			}	
 			monitor.done();
 		}
+		return needToRestart;
 	}
 }

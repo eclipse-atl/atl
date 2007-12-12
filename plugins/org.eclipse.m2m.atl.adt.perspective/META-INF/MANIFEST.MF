@@ -10,5 +10,6 @@ Export-Package: org.eclipse.m2m.atl.adt.perspective
 Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.console,
  org.eclipse.debug.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.update.ui
 Eclipse-LazyStart: true

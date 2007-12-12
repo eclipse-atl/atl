@@ -33,6 +33,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.update.internal.ui.RestartDialog;
 
 /**
  * An UI class for old ATL projects conversion.
@@ -147,7 +149,12 @@ public class CompatibilityDialog extends TitleAreaDialog {
 	protected void okPressed() {
 		try {
 			CompatibilityUtils.convertProjects(fProjectsTable.getCheckedElements());
-			CompatibilityUtils.convertConfigurations(fConfTable.getCheckedElements());
+			if (CompatibilityUtils.convertConfigurations(fConfTable.getCheckedElements())) {
+				//need to restart eclipse
+				boolean restart = RestartDialog.openQuestion(this.getShell(),true);
+				if (restart)
+					PlatformUI.getWorkbench().restart();
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
