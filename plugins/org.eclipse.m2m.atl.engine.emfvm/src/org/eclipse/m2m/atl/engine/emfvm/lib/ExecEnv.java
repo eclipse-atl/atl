@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Frédéric Jouault - initial API and implementation
+ *    Obeo - bag implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -31,6 +32,12 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EClassImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
+/**
+ * Execution environment.
+ *
+ * @author Frédéric Jouault <a href="mailto:frederic.jouault@univ-nantes.fr">frederic.jouault@univ-nantes.fr</a>
+ * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ */
 public class ExecEnv {
 
 	private Map operationsByType = new HashMap();
@@ -39,17 +46,17 @@ public class ExecEnv {
 	private boolean cacheAttributeHelperResults = true;
 	private Map helperValuesByElement = new HashMap();
 	private Map attributeInitializers = new HashMap();
-	
+
 	private Map modelsByName;
 	private Map nameByModel;
 	private Map modelsByResource;
-	
+
 	public boolean step = false;
 	// TODO: replace with a logger
 	public PrintStream out = System.out;
-	
+
 	public long nbExecutedBytecodes = 0;
-	
+
 	public ExecEnv(Map models) {
 		this.modelsByName = models;
 		modelsByResource = new HashMap();
@@ -61,10 +68,10 @@ public class ExecEnv {
 			nameByModel.put(model, name);
 		}
 	}
-	
+
 	public Model getModelOf(EObject element) {
 		Model ret = (Model)modelsByResource.get(element.eResource());
-		
+
 		if(ret == null) {	// element may be a target model element
 			// TODO: evaluate performance gain of changing to entrySet().iterator()
 			for(Iterator i = modelsByName.keySet().iterator() ; i.hasNext() && (ret == null); ) {
@@ -78,7 +85,7 @@ public class ExecEnv {
 
 		return ret;
 	}
-	
+
 	public String getModelNameOf(EObject element) {
 		return (String)nameByModel.get(getModelOf(element));
 	}
@@ -99,11 +106,11 @@ public class ExecEnv {
 		if(map != null)
 			ret = (Operation)map.get(name);
 
-if(debug)
-	System.out.println(this + "@" + this.hashCode() + ".getOperation(" + type + ", " + name + ")");
+		if(debug)
+			System.out.println(this + "@" + this.hashCode() + ".getOperation(" + type + ", " + name + ")");
 		if(ret == null) {
-if(debug)
-	System.out.println("looking in super of this for operation " + name);
+			if(debug)
+				System.out.println("looking in super of this for operation " + name);
 			for(Iterator i = getSupertypes(type).iterator() ; i.hasNext() && (ret == null) ; ) {
 				Object st = i.next();
 				ret = getOperation(st, name);
@@ -115,7 +122,7 @@ if(debug)
 
 		return ret;
 	}
-	
+
 	private Map supertypes = new HashMap();
 	{
 		// Integer extends Real
@@ -124,6 +131,8 @@ if(debug)
 		supertypes.put(Boolean.class, Arrays.asList(new Class[] {Object.class}));
 		// String extends OclAny
 		supertypes.put(String.class, Arrays.asList(new Class[] {Object.class}));
+		// Bag extends Collection
+		supertypes.put(Bag.class, Arrays.asList(new Class[] {Collection.class}));
 		// Sequence extends Collection
 		supertypes.put(ArrayList.class, Arrays.asList(new Class[] {Collection.class}));
 		// OrderedSet extends Collection
@@ -151,10 +160,10 @@ if(debug)
 		// Tuple extends OclAny
 		supertypes.put(Tuple.class, Arrays.asList(new Class[] {Object.class}));
 	}
-	
+
 	public List getSupertypes(Object type) {
 		List ret = null;
-		
+
 		if(type != null) {
 			if(type instanceof EClass) {
 				ret = ((EClass)type).getESuperTypes();
@@ -171,9 +180,9 @@ if(debug)
 				}
 			}
 		}
-	
+
 		if(ret == null) ret = Collections.EMPTY_LIST; 
-			
+
 		return ret;
 	}
 
@@ -215,22 +224,22 @@ if(debug)
 
 		return ret;
 	}
-	
+
 	private Map getHelperValues(Object element) {
 		Map ret = (Map)helperValuesByElement.get(element);
-		
+
 		if(ret == null) {
 			ret = new HashMap();
 			helperValuesByElement.put(element, ret);
 		}
-		
+
 		return ret;
 	}
 
 	public Object getHelperValue(StackFrame frame, Object type, Object element, String name) {
 		Map helperValues = getHelperValues(element);
 		Object ret = helperValues.get(name);
-		
+
 		if(ret == null) {
 			Operation o = getAttributeInitializer(type, name);
 
@@ -242,10 +251,10 @@ if(debug)
 			if(cacheAttributeHelperResults)
 				helperValues.put(name, ret);
 		}
-		
+
 		return ret;
 	}
-	
+
 	public void registerOperation(Object type, Operation oper, String name) {
 		getOperations(type, true).put(name, oper);
 	}
@@ -265,23 +274,23 @@ if(debug)
 
 		return ret;
 	}
-	
+
 	private Map getVMOperations(Object type) {
 		return (Map)vmTypeOperations.get(type);
 	}
-	
+
 	public String toPrettyPrintedString(Object value) {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		
+
 		prettyPrint(new PrintStream(out), value);
-		
+
 		return out.toString();
 	}
 
 	public void prettyPrint(Object value) {
 		prettyPrint(out, value);
 	}
-	
+
 	public void prettyPrint(PrintStream out, Object value) {
 		if(value == null) {
 			out.print("<null>");	// print(null) does not work
@@ -302,17 +311,23 @@ if(debug)
 			prettyPrint(out, eo.eClass());
 			out.print('@');
 			out.print(getModelNameOf(eo));
+		} else if(value instanceof LinkedHashSet) {
+			out.print("OrderedSet {");
+			prettyPrintCollection(out, (Collection)value);
 		} else if(value instanceof HashSet) {
 			out.print("Set {");
 			prettyPrintCollection(out, (Collection)value);
 		} else if(value instanceof ArrayList) {
 			out.print("Sequence {");
 			prettyPrintCollection(out, (Collection)value);
+		} else if(value instanceof Bag) {
+			out.print("Bag {");
+			prettyPrintCollection(out, (Collection)value);
 		} else {
 			out.print(value);
 		}
 	}
-	
+
 	private void prettyPrintCollection(PrintStream out, Collection col) {
 		boolean first = true;
 		for(Iterator i = col.iterator() ; i.hasNext() ; ) {
@@ -327,7 +342,7 @@ if(debug)
 
 	public static EClass findMetaElement(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame frame, Object mname, Object me) {
 		EClass ret = null;
-		
+
 		ReferenceModel referenceModel = (ReferenceModel)frame.execEnv.getModel(mname);
 		if(referenceModel != null) {
 			ret = referenceModel.getMetaElementByName((String)me);
@@ -337,7 +352,7 @@ if(debug)
 		} else {
 			throw new RuntimeException("cannot find reference model " + mname);						
 		}
-		
+
 		return ret;
 	}
 
@@ -367,7 +382,7 @@ if(debug)
 			throw new VMException(frame, "cannot create " + toPrettyPrintedString(ec));
 		return s;
 	}
-	
+
 	// TODO:
 	//	- make static to avoid recomputing the map of nativelib operations for each launch
 	//	However, it is much more convenient when not static for development:
@@ -376,7 +391,7 @@ if(debug)
 	private Map vmTypeOperations = new HashMap();
 	{
 		Map operationsByName;
-		
+
 		// Real
 		operationsByName = new HashMap();
 		vmTypeOperations.put(Double.class, operationsByName);
@@ -691,7 +706,7 @@ if(debug)
 		operationsByName.put("insertAt", new Operation(3) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				
+
 				int index = ((Integer)localVars[1]).intValue();
 				List ret = new ArrayList((Collection)localVars[0]);
 				ret.add(index - 1, localVars[2]);
@@ -702,7 +717,7 @@ if(debug)
 		operationsByName.put("at", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				
+
 				int index = ((Integer)localVars[1]).intValue();
 
 				return ((List)localVars[0]).get(index - 1);
@@ -711,7 +726,7 @@ if(debug)
 		operationsByName.put("subSequence", new Operation(3) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				
+
 				int start = ((Integer)localVars[1]).intValue();
 				int end = ((Integer)localVars[2]).intValue();
 				if(end >= start)
@@ -723,14 +738,14 @@ if(debug)
 		operationsByName.put("indexOf", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				
+
 				return new Integer(((List)localVars[0]).indexOf(localVars[1]));
 			}
 		});
 		operationsByName.put("prepend", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				
+
 				List ret = new ArrayList((Collection)localVars[0]);
 				ret.add(0, localVars[1]);
 
@@ -798,20 +813,86 @@ if(debug)
 		operationsByName.put("flatten", new Operation(1) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				List ret = new ArrayList();
-				
-				// TODO: make recursive
-				for(Iterator i = ((Collection)localVars[0]).iterator() ; i.hasNext() ; ) {
-					Object o = i.next();
-					if(o instanceof Collection) {
-						for(Iterator j = ((Collection)o).iterator() ; j.hasNext() ; ) {
-							ret.add(j.next());
+				List base = null;
+				List ret = new ArrayList((Collection)localVars[0]);
+				boolean containsCollection;
+				do {
+					base = ret;
+					ret = new ArrayList();
+					containsCollection = false;
+					for (Iterator iterator = base.iterator(); iterator.hasNext();) {
+						Object object = (Object) iterator.next();
+						if (object instanceof Collection) {
+							Collection subCollection = (Collection) object;
+							ret.addAll(subCollection);
+							Iterator iterator2 = subCollection.iterator();
+							while (containsCollection == false && iterator2.hasNext()) {
+								Object subCollectionObject = (Object) iterator2.next();
+								if (subCollectionObject instanceof Collection) {
+									containsCollection = true;
+								}
+							}
+						} else {
+							ret.add(object);
 						}
-					} else {
-						ret.add(o);
-					}	
-				}
+					}
+				} while (containsCollection);
+				return ret;
+			}
+		});
 
+		// Bag
+		operationsByName = new HashMap();
+		vmTypeOperations.put(Bag.class, operationsByName);
+		operationsByName.put("including", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				Bag ret = new Bag((Collection)localVars[0]);
+				ret.add(localVars[1]);
+				return ret;
+			}
+		});
+		operationsByName.put("excluding", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				Bag ret = new Bag((Collection)localVars[0]);
+				ret.removeAll(Arrays.asList(new Object[] {localVars[1]}));
+				return ret;
+			}
+		});
+		operationsByName.put("asBag", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return localVars[0];
+			}
+		});
+		operationsByName.put("flatten", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				Bag base = null;
+				Bag ret = new Bag((Collection)localVars[0]);
+				boolean containsCollection;
+				do {
+					base = ret;
+					ret = new Bag();
+					containsCollection = false;
+					for (Iterator iterator = base.iterator(); iterator.hasNext();) {
+						Object object = (Object) iterator.next();
+						if (object instanceof Collection) {
+							Collection subCollection = (Collection) object;
+							ret.addAll(subCollection);
+							Iterator iterator2 = subCollection.iterator();
+							while (containsCollection == false && iterator2.hasNext()) {
+								Object subCollectionObject = (Object) iterator2.next();
+								if (subCollectionObject instanceof Collection) {
+									containsCollection = true;
+								}
+							}
+						} else {
+							ret.add(object);
+						}
+					}
+				} while (containsCollection);
 				return ret;
 			}
 		});
@@ -822,7 +903,7 @@ if(debug)
 		operationsByName.put("insertAt", new Operation(3) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				
+
 				int idx = ((Integer)localVars[1]).intValue() - 1;
 				LinkedHashSet ret = new LinkedHashSet();
 				LinkedHashSet s = ((LinkedHashSet)localVars[0]);
@@ -839,7 +920,7 @@ if(debug)
 		operationsByName.put("prepend", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				
+
 				int idx = 0;
 				LinkedHashSet ret = new LinkedHashSet();
 				LinkedHashSet s = ((LinkedHashSet)localVars[0]);
@@ -897,7 +978,37 @@ if(debug)
 				return ret;
 			}
 		});
-		
+		operationsByName.put("flatten", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				Set base = null;
+				Set ret = new LinkedHashSet((Collection)localVars[0]);
+				boolean containsCollection;
+				do {
+					base = ret;
+					ret = new LinkedHashSet();
+					containsCollection = false;
+					for (Iterator iterator = base.iterator(); iterator.hasNext();) {
+						Object object = (Object) iterator.next();
+						if (object instanceof Collection) {
+							Collection subCollection = (Collection) object;
+							ret.addAll(subCollection);
+							Iterator iterator2 = subCollection.iterator();
+							while (containsCollection == false && iterator2.hasNext()) {
+								Object subCollectionObject = (Object) iterator2.next();
+								if (subCollectionObject instanceof Collection) {
+									containsCollection = true;
+								}
+							}
+						} else {
+							ret.add(object);
+						}
+					}
+				} while (containsCollection);
+				return ret;
+			}
+		});
+
 
 		// Set
 		operationsByName = new HashMap();
@@ -930,10 +1041,10 @@ if(debug)
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 				Set ret = new HashSet((Collection)localVars[0]);
-				
+
 				Set t = new HashSet((Collection)localVars[1]);
 				t.removeAll(ret);
-				
+
 				ret.removeAll((Collection)localVars[1]);
 				ret.addAll(t);
 
@@ -944,6 +1055,36 @@ if(debug)
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 				return localVars[0];
+			}
+		});
+		operationsByName.put("flatten", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				Set base = null;
+				Set ret = new HashSet((Collection)localVars[0]);
+				boolean containsCollection;
+				do {
+					base = ret;
+					ret = new HashSet();
+					containsCollection = false;
+					for (Iterator iterator = base.iterator(); iterator.hasNext();) {
+						Object object = (Object) iterator.next();
+						if (object instanceof Collection) {
+							Collection subCollection = (Collection) object;
+							ret.addAll(subCollection);
+							Iterator iterator2 = subCollection.iterator();
+							while (containsCollection == false && iterator2.hasNext()) {
+								Object subCollectionObject = (Object) iterator2.next();
+								if (subCollectionObject instanceof Collection) {
+									containsCollection = true;
+								}
+							}
+						} else {
+							ret.add(object);
+						}
+					}
+				} while (containsCollection);
+				return ret;
 			}
 		});
 		// optimized version
@@ -962,7 +1103,7 @@ if(debug)
 				return ret;
 			}
 		});
-		
+
 		// Collection
 		operationsByName = new HashMap();
 		vmTypeOperations.put(Collection.class, operationsByName);
@@ -1012,7 +1153,7 @@ if(debug)
 				for(Iterator i = ((Collection)localVars[0]).iterator() ; i.hasNext() ; ) {
 					if(i.next().equals(o)) ret++;
 				}
-				
+
 				return new Integer(ret);
 			}
 		});
@@ -1026,7 +1167,7 @@ if(debug)
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 				boolean ret = true;
-				
+
 				Collection s = (Collection)localVars[0];
 				for(Iterator i = ((Collection)localVars[1]).iterator() ; i.hasNext() ; ) {
 					ret = ret && !s.contains(i.next());
@@ -1261,11 +1402,11 @@ if(debug)
 				Object localVars[] = frame.localVars;
 				if(localVars[1] instanceof Class) {
 					return new Boolean(localVars[1].equals(localVars[0].getClass()));
-//				} else if(localVars[1] instanceof OclType) {		// TODO
+//					} else if(localVars[1] instanceof OclType) {		// TODO
 //					if(localVars[1] instanceof OclParametrizedType)
-//						return new Boolean(localVars[0] instanceof Collection);
+//					return new Boolean(localVars[0] instanceof Collection);
 //					else
-//						return Boolean.FALSE;	//TODO
+//					return Boolean.FALSE;	//TODO
 				} else if(localVars[1] instanceof EClass) {
 					if(localVars[0] instanceof EObject) {
 						return new Boolean(localVars[1].equals(((EObject)localVars[0]).eClass()));
@@ -1337,7 +1478,7 @@ if(debug)
 		operationsByName.put("allInstances", new Operation(1) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				
+
 				// could be a Set (actually was) instead of an OrderedSet
 				Set ret = new LinkedHashSet();
 				EClass ec = (EClass)localVars[0];
@@ -1547,7 +1688,7 @@ if(debug)
 			}
 		});
 	}
-	
+
 	private ArrayList emptySequence = new ArrayList();
 	private Operation noInitializer = new Operation(0) {
 		public Object exec(StackFrame frame) {

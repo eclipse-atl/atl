@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Frédéric Jouault - initial API and implementation
+ *    Obeo - bag implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -22,6 +23,7 @@ import java.util.Stack;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.engine.emfvm.lib.Bag;
 import org.eclipse.m2m.atl.engine.emfvm.lib.EMFUtils;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.HasFields;
@@ -34,6 +36,12 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.TransientLinkSet;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Tuple;
 import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 
+/**
+ * ASM commands sheduler.
+ *
+ * @author Frédéric Jouault <a href="mailto:frederic.jouault@univ-nantes.fr">frederic.jouault@univ-nantes.fr</a>
+ * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ */
 public class ASMOperation extends Operation {
 
 	public static final int MAX_STACK = 100;
@@ -43,18 +51,19 @@ public class ASMOperation extends Operation {
 	private Bytecode bytecodes[];
 	private int nbBytecodes;
 	private int nbNestedIterates = 0;
-	
+
 	private List lineNumberTable = new ArrayList();
 	private List localVariableTable = new ArrayList();
-	
+
 	public int getMaxLocals() {
 		return maxLocals;
 	}
-	
+
 	private static Map nativeClasses = new HashMap();
 	static {
 		nativeClasses.put("Sequence", ArrayList.class);
 		nativeClasses.put("Set", HashSet.class);
+		nativeClasses.put("Bag", Bag.class);
 		nativeClasses.put("OrderedSet", LinkedHashSet.class);
 		nativeClasses.put("Tuple", Tuple.class);
 		nativeClasses.put("OclSimpleType", OclSimpleType.class);
@@ -70,7 +79,7 @@ public class ASMOperation extends Operation {
 		nativeClasses.put("Boolean", Boolean.class);
 		nativeClasses.put("Real", Double.class);
 	}
-	
+
 	public ASMOperation(String name) {
 		super(1);	// maxLocals will be computed later in setBytecodes()
 		this.name = name;
@@ -79,7 +88,7 @@ public class ASMOperation extends Operation {
 	public void setContext(String context) {
 		this.context = context;
 	}
-	
+
 	public String getContext() {
 		return context;
 	}
@@ -158,11 +167,11 @@ public class ASMOperation extends Operation {
 		public int begin;
 		public int end;
 	}
-	
+
 	public void setBytecodes(Bytecode bytecodes[]) {
 		this.bytecodes = bytecodes;
 		this.nbBytecodes = bytecodes.length;
-		
+
 		// pre-computes:
 		//	- target and nesting levels for iterate and enditerate
 		//	- maxLocals
@@ -195,7 +204,7 @@ public class ASMOperation extends Operation {
 	public Object exec(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame frame) {
 		// Note: debug is not initialized from a constant, and therefore has a performance impact
 		// TODO: measure this impact, and possibly remove the debug code
-final boolean debug = frame.execEnv.step;
+		final boolean debug = frame.execEnv.step;
 		Object localVars[] = frame.localVars;
 		int pc = 0;
 		int fp = 0;
@@ -204,108 +213,108 @@ final boolean debug = frame.execEnv.step;
 		Iterator it;
 		Object s;
 		try {
-		while(pc < nbBytecodes) {
-			Bytecode bytecode = bytecodes[pc++];
-			frame.execEnv.nbExecutedBytecodes++;
-if(debug) {
-	frame.execEnv.out.println(name + ":" + (pc - 1) + "\t" + bytecode);
-//	frame.execEnv.out.println("" + frame.execEnv.nbExecutedBytecodes);
-}
-			switch(bytecode.opcode) {
-			case Bytecode.PUSHD:
-			case Bytecode.PUSHI:
-			case Bytecode.PUSH:
-				stack[fp++] = bytecode.operand;
-				break;
-			case Bytecode.PUSHT:
-				stack[fp++] = Boolean.TRUE;
-				break;
-			case Bytecode.PUSHF:
-				stack[fp++] = Boolean.FALSE;
-				break;
-			case Bytecode.CALL:
-				Object self = stack[fp - bytecode.value - 1];
-if(debug) {
-	frame.execEnv.out.print("\tCalling ");
-	frame.execEnv.prettyPrint(self);
-	frame.execEnv.out.print("." + bytecode.operand + "(");
-}
-				Object type = ExecEnv.getType(self);
-				Operation operation = frame.execEnv.getOperation(type, bytecode.operand);
-				if(operation == null)
-					throw new VMException(frame, "operation not found: " + frame.execEnv.toPrettyPrintedString(self) + "." + bytecode.operand);
-				StackFrame calleeFrame = (StackFrame)frame.newFrame(operation);
-				Object arguments[] = calleeFrame.localVars;
-				int nbCalleeArgs = bytecode.value;
-				
-				boolean first = true;
-				for(int i = nbCalleeArgs ; i >= 1 ; i--) {
-					arguments[i] = stack[--fp];
-if(debug) {
-	if(!first)
-		frame.execEnv.out.print(", ");
-	first = false;
-	frame.execEnv.prettyPrint(arguments[i]);
-}
+			while(pc < nbBytecodes) {
+				Bytecode bytecode = bytecodes[pc++];
+				frame.execEnv.nbExecutedBytecodes++;
+				if(debug) {
+					frame.execEnv.out.println(name + ":" + (pc - 1) + "\t" + bytecode);
+//					frame.execEnv.out.println("" + frame.execEnv.nbExecutedBytecodes);
 				}
-if(debug) {
-	frame.execEnv.out.println(")");
-}
-				--fp;	// pop self, that we already retrieved earlier to get the operation
-				arguments[0] = self;
+				switch(bytecode.opcode) {
+				case Bytecode.PUSHD:
+				case Bytecode.PUSHI:
+				case Bytecode.PUSH:
+					stack[fp++] = bytecode.operand;
+					break;
+				case Bytecode.PUSHT:
+					stack[fp++] = Boolean.TRUE;
+					break;
+				case Bytecode.PUSHF:
+					stack[fp++] = Boolean.FALSE;
+					break;
+				case Bytecode.CALL:
+					Object self = stack[fp - bytecode.value - 1];
+					if(debug) {
+						frame.execEnv.out.print("\tCalling ");
+						frame.execEnv.prettyPrint(self);
+						frame.execEnv.out.print("." + bytecode.operand + "(");
+					}
+					Object type = ExecEnv.getType(self);
+					Operation operation = frame.execEnv.getOperation(type, bytecode.operand);
+					if(operation == null)
+						throw new VMException(frame, "operation not found: " + frame.execEnv.toPrettyPrintedString(self) + "." + bytecode.operand);
+					StackFrame calleeFrame = (StackFrame)frame.newFrame(operation);
+					Object arguments[] = calleeFrame.localVars;
+					int nbCalleeArgs = bytecode.value;
 
-				s = operation.exec(calleeFrame);
-				if(s != null) stack[fp++] = s;
-				break;
-			case Bytecode.LOAD:
-				stack[fp++] = localVars[bytecode.value];
-				break;
-			case Bytecode.STORE:
-				localVars[bytecode.value] = stack[--fp];
-				break;
-			case Bytecode.SET:
-				Object value = stack[--fp];
-				s = stack[--fp];
-				if(s instanceof EObject) {
-					if(value instanceof OclUndefined)	// other values are *not* wrapped
-						value = null;
-					EMFUtils.set(frame, (EObject)s, (String)bytecode.operand, value);
-				} else {
-					((HasFields)s).set(frame, bytecode.operand, value);
-				}
-				break;
-			case Bytecode.GET:
-				s = stack[--fp];
-				type = ExecEnv.getType(s);
-				String propName = (String)bytecode.operand;
-				Operation ai = frame.execEnv.getAttributeInitializer(type, propName);
-				if(ai != null) {
-					stack[fp++] = frame.execEnv.getHelperValue(frame, type, s, propName);
-				} else if(s instanceof EObject) {
-					stack[fp++] = EMFUtils.get(frame, (EObject)s, propName);
-				} else {
-					stack[fp++] = ((HasFields)s).get(frame, propName);
-				}
-				break;
-			case Bytecode.DUP:
-				s = stack[fp - 1];
-				stack[fp++] = s;
-				break;
-			case Bytecode.DUP_X1:	// ..., value2, value1 => ..., value1, value2, value1
-				s = stack[fp - 1];
-				stack[fp++] = s;
-				stack[fp - 2] = stack[fp - 3];
-				stack[fp - 3] = stack[fp - 1];
-				break;
-			case Bytecode.GETASM:
-				stack[fp++] = frame.asmModule;
-				break;
-			case Bytecode.NEW:
-				Object mname = stack[--fp];
-				Object me = stack[--fp];
-				if(mname.equals("#native")){
-// TODO: makes sure the Map implementation is actually faster, then get rid of if-else-if implementation
-/*
+					boolean first = true;
+					for(int i = nbCalleeArgs ; i >= 1 ; i--) {
+						arguments[i] = stack[--fp];
+						if(debug) {
+							if(!first)
+								frame.execEnv.out.print(", ");
+							first = false;
+							frame.execEnv.prettyPrint(arguments[i]);
+						}
+					}
+					if(debug) {
+						frame.execEnv.out.println(")");
+					}
+					--fp;	// pop self, that we already retrieved earlier to get the operation
+					arguments[0] = self;
+
+					s = operation.exec(calleeFrame);
+					if(s != null) stack[fp++] = s;
+					break;
+				case Bytecode.LOAD:
+					stack[fp++] = localVars[bytecode.value];
+					break;
+				case Bytecode.STORE:
+					localVars[bytecode.value] = stack[--fp];
+					break;
+				case Bytecode.SET:
+					Object value = stack[--fp];
+					s = stack[--fp];
+					if(s instanceof EObject) {
+						if(value instanceof OclUndefined)	// other values are *not* wrapped
+							value = null;
+						EMFUtils.set(frame, (EObject)s, (String)bytecode.operand, value);
+					} else {
+						((HasFields)s).set(frame, bytecode.operand, value);
+					}
+					break;
+				case Bytecode.GET:
+					s = stack[--fp];
+					type = ExecEnv.getType(s);
+					String propName = (String)bytecode.operand;
+					Operation ai = frame.execEnv.getAttributeInitializer(type, propName);
+					if(ai != null) {
+						stack[fp++] = frame.execEnv.getHelperValue(frame, type, s, propName);
+					} else if(s instanceof EObject) {
+						stack[fp++] = EMFUtils.get(frame, (EObject)s, propName);
+					} else {
+						stack[fp++] = ((HasFields)s).get(frame, propName);
+					}
+					break;
+				case Bytecode.DUP:
+					s = stack[fp - 1];
+					stack[fp++] = s;
+					break;
+				case Bytecode.DUP_X1:	// ..., value2, value1 => ..., value1, value2, value1
+					s = stack[fp - 1];
+					stack[fp++] = s;
+					stack[fp - 2] = stack[fp - 3];
+					stack[fp - 3] = stack[fp - 1];
+					break;
+				case Bytecode.GETASM:
+					stack[fp++] = frame.asmModule;
+					break;
+				case Bytecode.NEW:
+					Object mname = stack[--fp];
+					Object me = stack[--fp];
+					if(mname.equals("#native")){
+//						TODO: makes sure the Map implementation is actually faster, then get rid of if-else-if implementation
+						/*
 					if(me.equals("Sequence")) {
 						stack[fp++] = new ArrayList();
 					} else if(me.equals("Set")) {
@@ -328,96 +337,96 @@ if(debug) {
 						throw new VMException(frame, "cannot create " + mname + "!" + me);
 					}
 /*/
-					Class c = (Class)nativeClasses.get(me);
-					if(c != null) {
-						stack[fp++] = c.newInstance();
+						Class c = (Class)nativeClasses.get(me);
+						if(c != null) {
+							stack[fp++] = c.newInstance();
+						} else {
+							throw new VMException(frame, "cannot create " + mname + "!" + me);
+						}
+						/**/
 					} else {
-						throw new VMException(frame, "cannot create " + mname + "!" + me);
+						EClass ec = ExecEnv.findMetaElement(frame, mname, me);
+						stack[fp++] = frame.execEnv.newElement(frame, ec);
 					}
-/**/
-				} else {
-					EClass ec = ExecEnv.findMetaElement(frame, mname, me);
-					stack[fp++] = frame.execEnv.newElement(frame, ec);
-				}
-				break;
-			case Bytecode.FINDME:
-				mname = stack[--fp];
-				me = stack[--fp];
-				if(mname.equals("#native")){					
-					Class c = (Class)nativeClasses.get(me);
-					if(c != null) {
-						stack[fp++] = c;
+					break;
+				case Bytecode.FINDME:
+					mname = stack[--fp];
+					me = stack[--fp];
+					if(mname.equals("#native")){					
+						Class c = (Class)nativeClasses.get(me);
+						if(c != null) {
+							stack[fp++] = c;
+						} else {
+							throw new VMException(frame, "cannot find " + mname + "!" + me);
+						}
 					} else {
-						throw new VMException(frame, "cannot find " + mname + "!" + me);
+						EClass ec = ExecEnv.findMetaElement(frame, mname, me);
+						stack[fp++] = ec;
 					}
-				} else {
-					EClass ec = ExecEnv.findMetaElement(frame, mname, me);
-					stack[fp++] = ec;
-				}
-				break;
-			case Bytecode.ITERATE:
-				Collection c = (Collection)stack[--fp];
-				it = c.iterator();
-				if(it.hasNext()) {
-					nestedIterate[bytecode.value2] = it;
-					stack[fp++] = it.next();
-				} else {
+					break;
+				case Bytecode.ITERATE:
+					Collection c = (Collection)stack[--fp];
+					it = c.iterator();
+					if(it.hasNext()) {
+						nestedIterate[bytecode.value2] = it;
+						stack[fp++] = it.next();
+					} else {
+						pc = bytecode.value;
+					}
+
+					break;
+				case Bytecode.ENDITERATE:
+					it = nestedIterate[bytecode.value2];
+					if(it.hasNext()) {
+						stack[fp++] = it.next();
+						pc = bytecode.value;
+					}
+					break;
+				case Bytecode.POP:
+					fp--;
+					break;
+				case Bytecode.SWAP:
+					s = stack[fp - 1];
+					stack[fp - 1] = stack[fp - 2];
+					stack[fp - 2] = s;
+					break;
+				case Bytecode.IF:
+					if(Boolean.TRUE.equals(stack[--fp])) {
+						pc = bytecode.value;
+					}
+					break;
+				case Bytecode.GOTO:
 					pc = bytecode.value;
+					break;
+				default:
+					throw new VMException(frame, "Unimplemented bytecode " + bytecode.opcode);
 				}
-				
-				break;
-			case Bytecode.ENDITERATE:
-				it = nestedIterate[bytecode.value2];
-				if(it.hasNext()) {
-					stack[fp++] = it.next();
-					pc = bytecode.value;
+
+				if(debug) {
+					frame.execEnv.out.print("\tstack: ");
+					for(int i = 0 ; i < fp ; i++) {
+						if(i > 0)
+							frame.execEnv.out.print(", ");
+						frame.execEnv.prettyPrint(stack[i]);
+					}
+					frame.execEnv.out.println();
+
+					frame.execEnv.out.print("\tlocals: ");
+					boolean first = true;
+					for(int i = 0 ; i < localVars.length ; i++) {
+						String name = resolveVariableName(i, pc);
+						if(name != null) {
+							if(!first) {
+								frame.execEnv.out.print(", ");
+							}
+							first = false;
+							frame.execEnv.out.print(name + "=");
+							frame.execEnv.prettyPrint(localVars[i]);
+						}
+					}
+					frame.execEnv.out.println();
 				}
-				break;
-			case Bytecode.POP:
-				fp--;
-				break;
-			case Bytecode.SWAP:
-				s = stack[fp - 1];
-				stack[fp - 1] = stack[fp - 2];
-				stack[fp - 2] = s;
-				break;
-			case Bytecode.IF:
-				if(Boolean.TRUE.equals(stack[--fp])) {
-					pc = bytecode.value;
-				}
-				break;
-			case Bytecode.GOTO:
-				pc = bytecode.value;
-				break;
-			default:
-				throw new VMException(frame, "Unimplemented bytecode " + bytecode.opcode);
 			}
-			
-if(debug) {
-	frame.execEnv.out.print("\tstack: ");
-	for(int i = 0 ; i < fp ; i++) {
-		if(i > 0)
-			frame.execEnv.out.print(", ");
-		frame.execEnv.prettyPrint(stack[i]);
-	}
-	frame.execEnv.out.println();
-	
-	frame.execEnv.out.print("\tlocals: ");
-	boolean first = true;
-	for(int i = 0 ; i < localVars.length ; i++) {
-		String name = resolveVariableName(i, pc);
-		if(name != null) {
-			if(!first) {
-				frame.execEnv.out.print(", ");
-			}
-			first = false;
-			frame.execEnv.out.print(name + "=");
-			frame.execEnv.prettyPrint(localVars[i]);
-		}
-	}
-	frame.execEnv.out.println();
-}
-		}
 		} catch(Exception e) {
 			((StackFrame)frame).pc = pc - 1;
 			if(e instanceof VMException)
@@ -425,7 +434,7 @@ if(debug) {
 			else
 				throw new VMException(frame, e);
 		}
-		
+
 		return (fp > 0 ? stack[--fp] : null);
 	}
 }
