@@ -43,7 +43,6 @@ public class CompatibilityDialog extends TitleAreaDialog {
 
 	private CheckboxTableViewer fProjectsTable = null;
 	private CheckboxTableViewer fConfTable = null;
-	private IWorkbenchWindow window;
 
 	/**
 	 * Create an instance of this Dialog.
@@ -53,7 +52,6 @@ public class CompatibilityDialog extends TitleAreaDialog {
 	public CompatibilityDialog(Shell shell, IWorkbenchWindow window) {
 		super(shell);
 		setShellStyle(SWT.MAX | SWT.RESIZE | getShellStyle());
-		this.window = window;
 	}
 
 	protected void configureShell(Shell shell) {

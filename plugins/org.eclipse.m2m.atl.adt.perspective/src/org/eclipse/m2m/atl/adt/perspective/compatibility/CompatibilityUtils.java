@@ -23,6 +23,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.resources.ICommand;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -149,6 +150,7 @@ public class CompatibilityUtils {
 			ILaunchConfiguration conf = (ILaunchConfiguration) configurations[i];
 			monitor.subTask("Inspecting configuration " + conf.getName());
 			if (conf.getType().getIdentifier().equals(oldConfigId)) {
+				IFile ifile = conf.getFile();
 				File file = conf.getLocation().toFile();
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder docBuilder;
@@ -174,8 +176,11 @@ public class CompatibilityUtils {
 				} catch (Throwable e) {
 					// nothing, if not valid, the config is not converted
 				}
-			}		
-			//TODO refresh
+				
+				if (ifile != null) {
+					ifile.refreshLocal(IFile.DEPTH_INFINITE, monitor);					
+				}
+			}	
 			monitor.done();
 		}
 	}
