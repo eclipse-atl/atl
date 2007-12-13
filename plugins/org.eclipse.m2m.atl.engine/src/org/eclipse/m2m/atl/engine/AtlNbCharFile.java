@@ -1,6 +1,14 @@
-/*
- * Created on 21 mai 2004
- */
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Freddy Allilaire (INRIA) - initial API and implementation
+ *     Frédéric Jouault (INRIA)
+ *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
 
 import java.io.IOException;
@@ -14,7 +22,7 @@ import java.util.logging.Logger;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
- * @author allilaire
+ * @author Freddy Allilaire
  * 
  * This class is used by a stackframe to compute char position in a file
  * With the file name and project name, this structure build a list

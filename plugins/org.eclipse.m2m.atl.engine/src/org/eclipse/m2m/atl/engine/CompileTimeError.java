@@ -1,7 +1,17 @@
+/*******************************************************************************
+ * Copyright (c) 2006 INRIA and other.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Matthias Bohlen - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
 
 /**
- * Decribes an error which has occured when compiling an ATL script.
+ * Describes an error which has occured when compiling an ATL script.
  * @author Matthias Bohlen
  */
 public class CompileTimeError {
