@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.AtlParser;
+import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
 import org.eclipse.m2m.atl.tests.util.ModelUtils;
 
@@ -30,6 +31,7 @@ public class TestNonRegressionParser extends TestNonRegression {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
+		ModelUtils.registerMetamodel(FileUtils.fileNameToURI("/models/ATL-0.2.ecore"), AtlTestPlugin.getResourceSet());		
 	}
 
 	/* (non-Javadoc)
@@ -54,6 +56,8 @@ public class TestNonRegressionParser extends TestNonRegression {
 
 		try {
 			FileUtils.compareFiles(new File(outputPath), new File(expectedPath), true);
+			//TODO : solve models problems
+			//ModelUtils.compareModels(new File(outputPath), new File(expectedPath), true, true);
 			
 			/* NOTE : 
 			 * ======

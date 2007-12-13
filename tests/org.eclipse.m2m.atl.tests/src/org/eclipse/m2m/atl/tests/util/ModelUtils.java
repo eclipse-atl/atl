@@ -244,6 +244,7 @@ public final class ModelUtils {
 			ModelUtils.save(snapshot, "file:/"+leftUri.toString()+".emfdiff");
 			throw new Exception("test failed : there are differences.");
 		}
+		
 		if (delete) {
 			leftUri.delete();
 		}
