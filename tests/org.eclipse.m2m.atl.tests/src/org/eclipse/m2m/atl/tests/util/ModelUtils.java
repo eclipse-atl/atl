@@ -37,6 +37,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
@@ -188,7 +189,8 @@ public final class ModelUtils {
 	 */
 	public static void save(EObject root, String path) throws IOException {
 		final URI modelURI = URI.createURI(path);
-		final ResourceSet resourceSet = AtlTestPlugin.getResourceSet();
+		//final ResourceSet resourceSet = AtlTestPlugin.getResourceSet();
+		final ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
 				Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		final Resource newModelResource = resourceSet.createResource(modelURI);

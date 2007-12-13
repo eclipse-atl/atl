@@ -27,7 +27,8 @@ public class AtlTestPlugin extends Plugin {
 	private static AtlTestPlugin plugin;
 
 	/** the main resourceSet */
-	private final static ResourceSet resourceSet = new ResourceSetImpl();
+	//private final static ResourceSet resourceSet = new ResourceSetImpl();
+	private static ResourceSet resourceSet = new ResourceSetImpl();
 
 	/**
 	 * Default constructor for the plugin.
@@ -54,5 +55,4 @@ public class AtlTestPlugin extends Plugin {
 	public static ResourceSet getResourceSet() {
 		return resourceSet;
 	}
-	
 }
