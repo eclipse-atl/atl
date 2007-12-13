@@ -27,7 +27,7 @@ import org.eclipse.m2m.atl.tests.util.TransfoLauncher;
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
  */
 public abstract class TestNonRegressionTransfo extends TestNonRegression {
-	
+
 	private String vmName = null;
 	private TransfoLauncher launcher = new TransfoLauncher();
 
@@ -39,12 +39,8 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			fail("VM name must be specified.");
 		}
 		System.out.print("Launching "+directory.getName()+"... ");
-		
-		final File expectedDir = new File(directory.getPath().replace(File.separator + "inputs", //$NON-NLS-1$
-				File.separator + "expected")); //$NON-NLS-1$ //$NON-NLS-2$
-		String[] expectedPaths = expectedDir.list();
 		final String buildURI = directory+ File.separator + directory.getName() + ".launch";	
-		
+
 		if (!new File(buildURI).exists()) fail("launch config not found");
 		if (launcher == null) fail("launcher not found");
 		
@@ -62,7 +58,6 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		double executionTime = 0;
 		try {
 			executionTime = launcher.run(vmName);
-			//executionTime = launcher.run("EMF-specific VM");
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("transformation failed");
@@ -73,14 +68,14 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		 * RESULTS COMPARISON 
 		 * 
 		 */
-		
+
 		Map output = launcher.getOutput();
 		//metamodels registration for emf comparison
 		for (Iterator iter = output.values().iterator(); iter.hasNext();) {
 			String metaid = (String) iter.next();
 			String metapath = (String) launcher.getPath().get(metaid);
 			try {
-				ModelUtils.registerMetamodel(FileUtils.fileNameToURI(metapath), AtlTestPlugin.getResourceSet());					
+				ModelUtils.registerMetamodel(FileUtils.fileNameToURI(metapath), AtlTestPlugin.getResourceSet());				
 			} catch (IOException e) {
 				e.printStackTrace();
 				fail("unable to register output metamodels");
@@ -90,13 +85,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		for (Iterator iter = output.keySet().iterator(); iter.hasNext();) {
 			String outputid = (String) iter.next();
 			String outputPath = (String) launcher.getPath().get(outputid);
-			String expectedPath = null;
-			for (int j = 0; j < expectedPaths.length; j++) {
-				if (outputPath.endsWith(expectedPaths[j])) {
-					expectedPath = expectedDir+"\\"+expectedPaths[j];
-				}					
-			}			
-			if (expectedPath == null) fail("expected path for "+outputPath+" not found");
+			String expectedPath = FileUtils.getTestCommonDirectory()+outputPath.replaceFirst("inputs","expected");
 			try {
 				outputPath = FileUtils.getTestCommonDirectory()+outputPath;
 				ModelUtils.compareModels(new File(outputPath), new File(expectedPath), true, true);
@@ -104,10 +93,9 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 				e.printStackTrace();
 				fail("unable to compare results");
 			}
-
 		}
-
 		AllTests.addVMResult(this, directory, new Double(executionTime));
+		AtlTestPlugin.getResourceSet().getResources().clear();
 	}
 
 	protected void setVmName(String vmName) {
