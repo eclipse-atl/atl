@@ -440,9 +440,9 @@
   </ecore:EPackage>
   <ecore:EPackage name="PrimitiveTypes" nsURI="http://www.eclipse.org/gmt/2005/PrimitiveTypes"
       nsPrefix="ptypes">
-    <eClassifiers xsi:type="ecore:EDataType" name="Boolean"/>
-    <eClassifiers xsi:type="ecore:EDataType" name="Double"/>
-    <eClassifiers xsi:type="ecore:EDataType" name="Integer"/>
-    <eClassifiers xsi:type="ecore:EDataType" name="String"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="Boolean" instanceClassName="java.lang.Boolean"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="Double" instanceClassName="java.lang.Double"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="Integer" instanceClassName="java.lang.Integer"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="String" instanceClassName="java.lang.String"/>
   </ecore:EPackage>
 </xmi:XMI>
