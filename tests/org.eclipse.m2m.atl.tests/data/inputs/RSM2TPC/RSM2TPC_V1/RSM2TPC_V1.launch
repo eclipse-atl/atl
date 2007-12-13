@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="org.m2m.eclipse.atl.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/data/inputs/RSM2TPC/RSM2TPC_V1/RSM2TPC_V1.atl"/>
+<stringAttribute key="ATL VM" value="EMF-specific VM"/>
+<booleanAttribute key="AllowInterModelReferences" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="IN" value="Emx"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<booleanAttribute key="Mode Debug" value="false"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="Di" value="EMF"/>
+<mapEntry key="Emx" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="OUT" value="MODELOUTPUT"/>
+<mapEntry key="Di" value="METAMODELOUTPUT"/>
+<mapEntry key="Emx" value="METAMODELINPUT"/>
+<mapEntry key="IN" value="MODELINPUT"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT" value="Di"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="OUT" value="/data/inputs/RSM2TPC/Topcased.umldi"/>
+<mapEntry key="Di" value="/data/inputs/RSM2TPC/Topcased.ecore"/>
+<mapEntry key="IN" value="/data/inputs/RSM2TPC/Topcased.rsm"/>
+<mapEntry key="Emx" value="/data/inputs/RSM2TPC/RSM.ecore"/>
+</mapAttribute>
+<stringAttribute key="Project Name" value="RSM2TPC_V1"/>
+<listAttribute key="Superimpose"/>
+<booleanAttribute key="continueAfterError" value="false"/>
+<booleanAttribute key="disableAttributeHelperCache" value="false"/>
+<booleanAttribute key="printExecutionTime" value="false"/>
+<booleanAttribute key="profile" value="false"/>
+<booleanAttribute key="showSummary" value="false"/>
+<booleanAttribute key="step" value="false"/>
+</launchConfiguration>
