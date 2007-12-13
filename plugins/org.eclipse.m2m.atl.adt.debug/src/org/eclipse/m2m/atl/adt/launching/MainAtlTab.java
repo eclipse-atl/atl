@@ -1,6 +1,15 @@
-/*
- * Created on 26 avr. 2004
- */
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA and Vrije Universiteit Brussel.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Mikael Barbero (INRIA) - initial API and implementation
+ *    Freddy Allilaire (INRIA)
+ *    Dennis Wagelaar (Vrije Universiteit Brussel)
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.launching;
 
 import java.io.InputStream;
@@ -66,7 +75,7 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 /**
- * @author allilaire
+ * @author Freddy Allilaire
  * @author Mikael Barbero
  * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
  */

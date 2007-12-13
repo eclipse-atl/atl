@@ -1,6 +1,13 @@
-/*
- * Created on 21 juin 2004
- */
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Freddy Allilaire (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.debug.core;
 
 import org.eclipse.core.resources.IMarkerDelta;
@@ -16,7 +23,7 @@ import org.eclipse.debug.core.model.IThread;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 
 /**
- * @author allilaire
+ * @author Freddy Allilaire
  */
 public class AtlRunTarget implements IDebugTarget {
 

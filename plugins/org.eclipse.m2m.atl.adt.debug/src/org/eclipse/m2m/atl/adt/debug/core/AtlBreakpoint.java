@@ -1,6 +1,13 @@
-/*
- * Created on 6 mai 2004 
- */
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Freddy Allilaire (INRIA) - initial API and implementation
+ *******************************************************************************/ 
 package org.eclipse.m2m.atl.adt.debug.core;
 
 import java.util.logging.Level;
@@ -18,10 +25,6 @@ import org.eclipse.debug.core.model.LineBreakpoint;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
-/**
- * @author idrissi
- *
- */
 public class AtlBreakpoint extends LineBreakpoint 
 {
 	public static final String ATL_BREAKPOINT_MARKER = "org.eclipse.m2m.atl.adt.debug.atlBreakpointMarker";
