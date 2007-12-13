@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="ASCII"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="Book">
-  <Book title="article">
-    <chapters title="chapter 1" nbPages="13" author="Michel"/>
-    <chapters title="chapter 2" nbPages="1" author="David"/>
-  </Book>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns="Book">
   <Book title="livre">
     <chapters title="chapter 1" nbPages="13" author="toto"/>
     <chapters title="chapter 2" nbPages="17" author="toto"/>
     <chapters title="chapter 3" nbPages="20" author="titi"/>
+  </Book>
+  <Book title="article">
+    <chapters title="chapter 1" nbPages="13" author="Michel"/>
+    <chapters title="chapter 2" nbPages="1" author="David"/>
   </Book>
 </xmi:XMI>
