@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    INRIA - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.outline;
 
 import java.util.logging.Level;
@@ -27,13 +37,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
-* This code was generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a
-* for-profit company or business) then you should purchase
-* a license - please visit www.cloudgarden.com for details.
-*/
 public class RenameFrame extends Composite 
 {
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);

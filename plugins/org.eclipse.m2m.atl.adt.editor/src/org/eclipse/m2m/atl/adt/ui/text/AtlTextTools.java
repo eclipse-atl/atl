@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    INRIA - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text;
 
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -6,8 +16,6 @@ import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCodeScanner;
 /**
  * A text tools allows to fPreferenceeStore one instance of all tools used in
  * the plug-in. Thus every classes should use the same tool.
- * 
- * @author C. MONTI for ATL Team
  */
 public class AtlTextTools {
 	

@@ -1,6 +1,13 @@
-/**
- * Created on 2 juil. 2004
- */
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    INRIA - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text;
 
 import java.io.IOException;
@@ -13,8 +20,6 @@ import org.eclipse.jface.text.source.ICharacterPairMatcher;
 
 /**
  * This class will help for matching pairs of characters.
- * 
- * @author C. MONTI for ATL team
  */
 public class AtlPairMatcher implements ICharacterPairMatcher {
     

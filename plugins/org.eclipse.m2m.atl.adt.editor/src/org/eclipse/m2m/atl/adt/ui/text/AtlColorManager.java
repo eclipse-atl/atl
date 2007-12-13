@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    INRIA - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text;
 
 import java.util.HashMap;
@@ -12,8 +22,6 @@ import org.eclipse.swt.widgets.Display;
 /**
  * This manager allows to share colors. A color is represented as a couple
  * of a string and an RGB value.
- * 
- * @author C. MONTI for ATL Team
  */
 public class AtlColorManager implements ISharedTextColors {
 	

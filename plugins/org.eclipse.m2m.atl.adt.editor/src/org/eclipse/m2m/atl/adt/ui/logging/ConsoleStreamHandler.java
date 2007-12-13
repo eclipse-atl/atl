@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Vrije Universiteit Brussel.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Dennis Wagelaar (Vrije Universiteit Brussel) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.logging;
 
 import java.io.OutputStream;
@@ -8,7 +18,6 @@ import org.eclipse.m2m.atl.logging.ATLLogFormatter;
 
 /**
  * Flushes after every log and doesn't close output stream.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
  */
 public class ConsoleStreamHandler extends StreamHandler {
 

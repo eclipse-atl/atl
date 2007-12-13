@@ -1,9 +1,13 @@
-/*
- * Created on 14 avr. 2004
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
- */
+ * Contributors:
+ *    Tarik Idrissi (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.outline;
 
 import org.eclipse.emf.common.util.EList;
@@ -12,12 +16,6 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
-/**
- * @author idrissi
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
- */
 public class AtlContentProvider implements ITreeContentProvider {
 	protected TreeViewer viewer;
 	private final static Object[] EMPY_ARRAY = new Object[0];

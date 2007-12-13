@@ -1,15 +1,19 @@
-/*
- * Created on 3 juin 2004
- */
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tarik Idrissi (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.outline;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.m2m.atl.engine.AtlNbCharFile;
 
-/**
- * @author idrissi
- */
 public class DefaultSorter extends ViewerSorter 
 {
 	/** Used to compute index of start character and end character from a location String

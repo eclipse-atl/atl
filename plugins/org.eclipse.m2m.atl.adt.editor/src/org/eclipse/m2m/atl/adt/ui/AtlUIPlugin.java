@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    INRIA - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui;
 
 import java.net.MalformedURLException;
@@ -36,8 +46,6 @@ import org.osgi.framework.BundleContext;
  * The main plugin class to be used in the desktop.
  * This class is necessary for every plug-in because it used by Eclipse to dialog
  * with it and its extensions.
- * 
- * @author C. MONTI for ATL Team
  */
 public class AtlUIPlugin extends AbstractUIPlugin {
 

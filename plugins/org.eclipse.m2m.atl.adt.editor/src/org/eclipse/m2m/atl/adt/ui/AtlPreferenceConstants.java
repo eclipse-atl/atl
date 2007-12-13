@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    INRIA - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui;
 
 import java.util.ArrayList;
@@ -15,8 +25,6 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
  * Each new key you want to add have to be inserted as a static final string, for which one you have to
  * initialize its type and its value, and thus permit to the new preference fPreferenceeStore to catch this value
  * from the <code>createStoreKeys()</code> method.
- * 
- * @author C. MONTI for ATL Team
  */
 public class AtlPreferenceConstants {
 	
