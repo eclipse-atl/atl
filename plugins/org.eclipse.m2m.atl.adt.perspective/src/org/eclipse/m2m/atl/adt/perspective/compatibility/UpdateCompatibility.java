@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.perspective.compatibility;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Shell;
@@ -40,6 +41,9 @@ public class UpdateCompatibility implements IWorkbenchWindowActionDelegate {
 
 
 	public void run(IAction action) {
+		
+		System.out.println(ResourcesPlugin.getWorkspace().getRoot());
+		
 		CompatibilityDialog dialog = new CompatibilityDialog(shell, window);
 		dialog.open();
 	}

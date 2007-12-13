@@ -1,6 +1,13 @@
-/*
- * Created on 21 avr. 2004
- */
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tarik Idrissi (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.perspective;
 
 import org.eclipse.debug.ui.IDebugUIConstants;
@@ -11,7 +18,7 @@ import org.eclipse.ui.console.IConsoleConstants;
 
 
 /**
- * @author idrissi
+ * @author Tarik Idrissi
  */
 public class AtlPerspective implements IPerspectiveFactory {
 	
