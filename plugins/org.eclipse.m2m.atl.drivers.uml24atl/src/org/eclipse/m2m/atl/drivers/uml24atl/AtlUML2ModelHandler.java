@@ -1,7 +1,16 @@
-/*
- * Created on 1 juin 2004
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA and C-S.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- */
+ * Contributors:
+ *    Frederic Jouault (INRIA) - initial API and implementation
+ *    Freddy Allilaire (INRIA) - initial API and implementation
+ *    Christophe Le Camus (C-S) - initial API and implementation
+ *    Sebastien Gabel (C-S) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.drivers.uml24atl;
 
 import java.io.IOException;
@@ -20,9 +29,12 @@ import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.engine.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
+
 /**
- * @author JOUAULT - Christophe Le Camus (C-S) - Sebastien Gabel (C-S) 
- *
+ * @author Frédéric Jouault (INRIA)
+ * @author Freddy Allilaire (INRIA)
+ * @author Christophe Le Camus (C-S)
+ * @author Sebastien Gabel (C-S) 
  */
 public class AtlUML2ModelHandler extends AtlEMFModelHandler{
 	
