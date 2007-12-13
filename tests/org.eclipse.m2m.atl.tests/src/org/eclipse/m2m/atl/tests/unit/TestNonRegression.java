@@ -43,8 +43,8 @@ public abstract class TestNonRegression extends TestCase {
 	}
 
 	/** The path for usecases */
-	private static final String DATA_PATH = "/data";
-	private String propertiesPath = null;//= DATA_PATH+"/inputs.properties";
+	protected static final String INPUT_PATH = "/data/inputs";
+	private String propertiesPath = null;
 
 	/**
 	 * Compare the expected models (in the expected directories) with the result
@@ -54,7 +54,7 @@ public abstract class TestNonRegression extends TestCase {
 	 * @throws InterruptedException If one of the threads is interrupted.
 	 */
 	public void testNonRegression() throws Exception {
-		File inputDir = new File(FileUtils.getTestCommonDirectory() + DATA_PATH + "/inputs");
+		File inputDir = new File(FileUtils.getTestCommonDirectory() + INPUT_PATH);
 		final File[] directories = listDirectories(inputDir);
 		final Date start = Calendar.getInstance().getTime();
 		if (directories != null) {
