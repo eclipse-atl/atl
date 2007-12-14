@@ -41,9 +41,6 @@ public class UpdateCompatibility implements IWorkbenchWindowActionDelegate {
 
 
 	public void run(IAction action) {
-		
-		System.out.println(ResourcesPlugin.getWorkspace().getRoot());
-		
 		CompatibilityDialog dialog = new CompatibilityDialog(shell, window);
 		dialog.open();
 	}
