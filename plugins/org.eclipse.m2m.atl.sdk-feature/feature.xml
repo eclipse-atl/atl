@@ -224,7 +224,7 @@ litigation.
       <discovery label="%updateSiteName" url="http://www.download.eclipse.org/modeling/m2m/atl/updates/"/>
    </url>
 
-   <includes
+   <!--  <includes
          id="org.eclipse.m2m.atl"
          version="0.0.0"/>
          
@@ -234,7 +234,8 @@ litigation.
 
    <includes
          id="org.eclipse.m2m.atl.source"
-         version="0.0.0"/>
+         version="0.0.0"/>-->
+         
 
    <!-- <includes
          id="org.eclipse.m2m.atl.examples"
