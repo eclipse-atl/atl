@@ -158,7 +158,7 @@ public class AtlCompletionDataSource {
 				String path = line.split("=")[1].trim();
 				if (path != null && path.length() > 0) {
 					path = path.trim();
-					EPackage regValue = (EPackage) load(URI.createFileURI(path), resourceSet);
+					EPackage regValue = (EPackage) load(URI.createPlatformResourceURI(path, true), resourceSet);
 					if (regValue != null) {
 						metamodels.put(name, regValue);
 					}
