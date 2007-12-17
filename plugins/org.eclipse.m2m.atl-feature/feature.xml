@@ -224,10 +224,6 @@ litigation.
       <update label="%updateSiteName" url="http://www.download.eclipse.org/modeling/m2m/atl/updates/"/>
    </url>
 
-   <includes
-         id="org.eclipse.m2m.atl.adt"
-         version="0.0.0"/>
-
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
