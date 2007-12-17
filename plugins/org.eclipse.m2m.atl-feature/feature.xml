@@ -7,7 +7,7 @@
       plugin="org.eclipse.m2m.atl">
 
    <description>
-      ATL Engine Feature
+      ATL Feature
    </description>
 
    <copyright url="http://www.eclipse.org/legal/epl-v10.html">
@@ -224,6 +224,14 @@ litigation.
       <update label="%updateSiteName" url="http://www.download.eclipse.org/modeling/m2m/atl/updates/"/>
    </url>
 
+   <includes
+         id="org.eclipse.m2m.atl.engine"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.m2m.atl.adt"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
@@ -232,47 +240,5 @@ litigation.
       <import plugin="org.eclipse.emf.ecore.xmi"/>
       <import plugin="org.eclipse.ui.ide"/>
    </requires>
-
-   <plugin
-         id="org.eclipse.m2m.atl.compilers.atl2006"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2m.atl.drivers.emf4atl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2m.atl.engine"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2m.atl.engine.vm"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2m.atl.ocl.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2m.atl.service.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
 </feature>
