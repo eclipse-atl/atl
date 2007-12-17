@@ -225,6 +225,10 @@ litigation.
    </url>
 
    <includes
+         id="org.eclipse.m2m.atl"
+         version="0.0.0"/>
+         
+   <includes
          id="org.eclipse.m2m.atl.doc"
          version="0.0.0"/>
 
@@ -232,12 +236,8 @@ litigation.
          id="org.eclipse.m2m.atl.source"
          version="0.0.0"/>
 
-   <includes
-         id="org.eclipse.m2m.atl.adt"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.m2m.atl"
-         version="0.0.0"/>
-
+   <!-- <includes
+         id="org.eclipse.m2m.atl.examples"
+         version="0.0.0"/> -->
+         
 </feature>
