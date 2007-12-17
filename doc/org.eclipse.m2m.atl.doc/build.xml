@@ -77,10 +77,8 @@
 		<antcall target="build.index"/>
 
 		<zip destfile="${build.result.folder}/doc.zip" compress="true">
-			<zipfileset dir="css" prefix="css"/>
-			<zipfileset dir="images" prefix="images"/>
+			<!-- Add new folders for documentation zip here. -->
 			<zipfileset dir="references" prefix="references"/>
-			<zipfileset dir="tutorials" prefix="tutorials"/>
 		</zip>
 	</target>
 
