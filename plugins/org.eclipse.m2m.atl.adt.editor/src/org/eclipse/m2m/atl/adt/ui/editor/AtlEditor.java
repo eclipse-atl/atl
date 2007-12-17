@@ -88,8 +88,10 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.texteditor.ContentAssistAction;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.IEditorStatusLine;
+import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
 import org.eclipse.ui.texteditor.link.EditorLinkedModeUI;
 import org.eclipse.ui.views.contentoutline.ContentOutline;
@@ -723,6 +725,8 @@ public class AtlEditor extends TextEditor {
 			//			removeActionActivationCode(ITextEditorActionConstants.SHIFT_RIGHT);
 			setActionActivationCode("IndentOnTab", '\t', -1, SWT.NONE);
 		}
+		
+		installContentAssistAction();
 	}
 	
 	/*(non-Javadoc)
@@ -767,7 +771,23 @@ public class AtlEditor extends TextEditor {
 		//return ruler;
 	//}
 	
-	protected AtlContentOutlinePage createOutlinePage() {
+	/**
+	 * Installs an action so that the user can invoke the content assist feature
+	 * by the well known combination of key strokes.
+	 * @author Matthias Bohlen
+	 * @see http://wiki.eclipse.org/FAQ_How_do_I_add_Content_Assist_to_my_editor%3F
+	 */
+	private void installContentAssistAction()
+    {
+	    ResourceBundle resourceBundle = AtlEditorMessages.getResourceBundle();
+	    Action action = new ContentAssistAction(resourceBundle, "ContentAssistProposal.", this); 
+	    String id = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
+	    action.setActionDefinitionId(id);
+	    setAction("ContentAssistProposal", action); 
+	    markAsStateDependentAction("ContentAssistProposal", true);
+    }
+
+    protected AtlContentOutlinePage createOutlinePage() {
 		AtlContentOutlinePage page= new AtlContentOutlinePage(this, getEditorInput(), getDocumentProvider());
 		selectionChangedListener= new SelectionChangedListener();
 		page.addPostSelectionChangedListener(selectionChangedListener);
