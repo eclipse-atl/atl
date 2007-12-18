@@ -384,14 +384,16 @@ if(debug) logger.info("result = \"" + ret + "\"");
      */
     public static File getFile(String path) {
         try {
+        	Class[] emptyClassArray = new Class[]{};
+        	Object[] emptyObjectArray = new Object[]{};
             Class rp = Class.forName("org.eclipse.core.resources.ResourcesPlugin");
-            Object ws = rp.getMethod("getWorkspace", null).invoke(null, null);
-            Object root = ws.getClass().getMethod("getRoot", null).invoke(ws, null);
+            Object ws = rp.getMethod("getWorkspace", emptyClassArray).invoke(null, emptyObjectArray);
+            Object root = ws.getClass().getMethod("getRoot", emptyClassArray).invoke(ws, emptyObjectArray);
             Path wspath = new Path(path);
             Object wsfile = root.getClass().getMethod("getFile", 
                     new Class[]{IPath.class}).invoke(root, new Object[]{wspath});
-            path = wsfile.getClass().getMethod("getLocation", null).invoke(
-                    wsfile, null).toString();
+            path = wsfile.getClass().getMethod("getLocation", emptyClassArray).invoke(
+                    wsfile, emptyObjectArray).toString();
         } catch (Throwable e) {
             //fall back to native java.io.File path resolution
         }
