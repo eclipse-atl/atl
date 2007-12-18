@@ -53,8 +53,8 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 	private static MessageConsole console = null;
 	private static MessageConsoleStream consoleStream = null;
     private static IConsoleManager consoleMgr = null; 
-	private static final String ATL_CONSOLE = "org.eclipse.m2m.atl.adt.editor.console";	
-	private static final String ID = "org.eclipse.m2m.atl.adt.editor";
+	private static final String ATL_CONSOLE = "org.eclipse.m2m.atl.adt.editor.console";	//$NON-NLS-1$
+	private static final String ID = "org.eclipse.m2m.atl.adt.editor";//$NON-NLS-1$
 	
 	/**
 	 * This class registers a shared (static) instance of the plug-in that can be
@@ -78,8 +78,8 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 	 */
 	static public ImageDescriptor getImageDescriptor(String name) {
 		AtlUIPlugin plugin = AtlUIPlugin.getDefault();
-		String pluginDir = plugin.getBundle().getEntry("/").toString();
-		String iconPath = "icons/";
+		String pluginDir = plugin.getBundle().getEntry("/").toString();//$NON-NLS-1$
+		String iconPath = "icons/";//$NON-NLS-1$
 		try {
 			return ImageDescriptor.createFromURL(
 					new URL(pluginDir + iconPath + name));
@@ -111,7 +111,7 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 	}
 	
 	public static void log(Throwable e) {
-		log(new Status(IStatus.ERROR, getPluginId(), IAtlStatusConstants.INTERNAL_ERROR, AtlUIMessages.getString("JavaPlugin.internal_error"), e));
+		log(new Status(IStatus.ERROR, getPluginId(), IAtlStatusConstants.INTERNAL_ERROR, Messages.getString("JavaPlugin.internal_error"), e));//$NON-NLS-1$
 	}
 	
 	/**
@@ -146,7 +146,7 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 		super();
 		plugin = this;
 		try {
-			resourceBundle = ResourceBundle.getBundle("org.eclipse.m2m.atl.adt.ui.AtlUIPluginResources");
+			resourceBundle = ResourceBundle.getBundle("org.eclipse.m2m.atl.adt.ui.AtlUIPluginResources");//$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}	
@@ -237,7 +237,7 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 		console = findConsole(ATL_CONSOLE);
 		Font f = null;
 		try {
-			FontData data = new FontData ("Arial", 9, 9);
+			FontData data = new FontData ("Arial", 9, 9);//$NON-NLS-1$
 			data.setStyle(SWT.NORMAL);
 			f = new Font (null, data);
 
@@ -248,7 +248,7 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 		consoleStream = console.newMessageStream();
 		activateConsole();
 		// System.out = out;	   
-		consoleStream.println("ATL Console initiated");
+		consoleStream.println(Messages.getString("AtlUIPlugin.INIT")); //$NON-NLS-1$
 //		PrintStream redirStream = new PrintStream (consoleStream);
 //		System.setOut(redirStream);
 		// System.setErr(redirStream);	   
@@ -278,7 +278,7 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 				view.display(console);	   	
 			}
 		} catch (org.eclipse.ui.PartInitException pex) {
-			logger.log(Level.SEVERE, "AtlUiPlugin - " + pex.getLocalizedMessage(), pex);
+			logger.log(Level.SEVERE, "AtlUiPlugin - " + pex.getLocalizedMessage(), pex);//$NON-NLS-1$
 //			System.out.println ("AtlUiPlugin - " + pex);
 		}
 	}

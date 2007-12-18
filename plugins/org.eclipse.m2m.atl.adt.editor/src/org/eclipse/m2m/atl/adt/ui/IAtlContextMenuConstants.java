@@ -19,7 +19,7 @@ public interface IAtlContextMenuConstants {
     /**
      * Pop-up menu: name of group for additional actions (value <code>"additions"</code>).
      */	
-    public static final String GROUP_ADDITIONS=	"additions";
+    public static final String GROUP_ADDITIONS=	"additions"; //$NON-NLS-1$
     
     /**
      * Pop-up menu: name of group for build actions (value <code>"group.build"</code>).
