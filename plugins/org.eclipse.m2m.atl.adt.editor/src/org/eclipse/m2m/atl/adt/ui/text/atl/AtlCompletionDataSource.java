@@ -58,9 +58,9 @@ public class AtlCompletionDataSource {
 	private final static ResourceSet resourceSet = new ResourceSetImpl();
 	
 	/** URI tag value. */
-	public final static String URI_TAG = "nsURI";
+	public final static String URI_TAG = "nsURI"; //$NON-NLS-1$
 	/** PATH tag value. */
-	public final static String PATH_TAG = "path";
+	public final static String PATH_TAG = "path"; //$NON-NLS-1$
 	
 	/** The main editor, containing the outline model. */
 	private AtlEditor fEditor;
@@ -135,9 +135,9 @@ public class AtlCompletionDataSource {
 		List uris = getTaggedInformations(brin, URI_TAG);
 		for (Iterator iterator = uris.iterator(); iterator.hasNext();) {
 			String line = (String) iterator.next();
-			if (line.split("=").length == 2) {
-				String name = line.split("=")[0].trim();
-				String uri = line.split("=")[1].trim();
+			if (line.split("=").length == 2) { //$NON-NLS-1$
+				String name = line.split("=")[0].trim(); //$NON-NLS-1$
+				String uri = line.split("=")[1].trim(); //$NON-NLS-1$
 				if (uri != null && uri.length() > 0) {
 					uri = uri.trim();
 
@@ -153,9 +153,9 @@ public class AtlCompletionDataSource {
 		List paths = getTaggedInformations(brin, PATH_TAG);
 		for (Iterator iterator = paths.iterator(); iterator.hasNext();) {
 			String line = (String) iterator.next();
-			if (line.split("=").length == 2) {
-				String name = line.split("=")[0].trim();
-				String path = line.split("=")[1].trim();
+			if (line.split("=").length == 2) { //$NON-NLS-1$
+				String name = line.split("=")[0].trim(); //$NON-NLS-1$
+				String path = line.split("=")[1].trim(); //$NON-NLS-1$
 				if (path != null && path.length() > 0) {
 					path = path.trim();
 					EPackage regValue = (EPackage) load(URI.createPlatformResourceURI(path, true), resourceSet);
@@ -176,19 +176,19 @@ public class AtlCompletionDataSource {
 		EObject model = fEditor.getOutlinePage().getModel();
 
 		//input models computation
-		EList inModels = (EList) eGet(model, "inModels");
+		EList inModels = (EList) eGet(model, "inModels"); //$NON-NLS-1$
 		for (Iterator iterator = inModels.iterator(); iterator.hasNext();) {
 			EObject me = (EObject) iterator.next();
-			EObject mm = (EObject) eGet(me,"metamodel");
-			inputMetamodelsIds.add(eGet(mm,"name").toString());
+			EObject mm = (EObject) eGet(me,"metamodel"); //$NON-NLS-1$
+			inputMetamodelsIds.add(eGet(mm,"name").toString()); //$NON-NLS-1$
 		}
 
 		//output models computation
-		EList outModels = (EList) eGet(model,"outModels");
+		EList outModels = (EList) eGet(model,"outModels"); //$NON-NLS-1$
 		for (Iterator iterator = outModels.iterator(); iterator.hasNext();) {
 			EObject me = (EObject) iterator.next();
-			EObject mm = (EObject) eGet(me,"metamodel");
-			outputMetamodelsIds.add(eGet(mm,"name").toString());
+			EObject mm = (EObject) eGet(me,"metamodel"); //$NON-NLS-1$
+			outputMetamodelsIds.add(eGet(mm,"name").toString()); //$NON-NLS-1$
 		}
 	}
 	
@@ -304,11 +304,11 @@ public class AtlCompletionDataSource {
 		// adds classifiers with a "normal" formalism : MM!ME
 		for (Iterator iterator = classifiers.iterator(); iterator.hasNext();) {
 			EClassifier classifier = (EClassifier) iterator.next();
-			String replacementString = metamodelName + "!"
+			String replacementString = metamodelName + "!" //$NON-NLS-1$
 			+ getEClassifierShortPath(classifier, false);
 			if (startsWithIgnoreCase(prefix, replacementString)
 					&& !prefix.equals(replacementString)) {
-				Image image = getImage("model_class.gif");
+				Image image = getImage("model_class.gif"); //$NON-NLS-1$
 				ICompletionProposal proposal = new AtlCompletionProposal(
 						replacementString, offset - prefix.length(),
 						replacementString.length(), image, replacementString, 0);
@@ -319,11 +319,11 @@ public class AtlCompletionDataSource {
 		// adds classifiers with a different formalism : MM!"pck::ME"
 		for (Iterator iterator = classifiers.iterator(); iterator.hasNext();) {
 			EClassifier classifier = (EClassifier) iterator.next();
-			String replacementString = metamodelName + "!"
+			String replacementString = metamodelName + "!" //$NON-NLS-1$
 			+ getEClassifierShortPath(classifier, true);
 			if (startsWithIgnoreCase(prefix, replacementString)
 					&& !prefix.equals(replacementString)) {
-				Image image = getImage("model_class.gif");
+				Image image = getImage("model_class.gif"); //$NON-NLS-1$
 				ICompletionProposal proposal = new AtlCompletionProposal(
 						replacementString, offset - prefix.length(),
 						replacementString.length(), image, replacementString, 0);
@@ -367,11 +367,11 @@ public class AtlCompletionDataSource {
 	 */
 	public List getMetaFeaturesProposals(List existing, EObject atlType,
 			String prefix, int offset) {
-		EObject model = (EObject) eGet(atlType,"model");
-		String metamodelId = eGet(model,"name").toString();
+		EObject model = (EObject) eGet(atlType,"model"); //$NON-NLS-1$
+		String metamodelId = eGet(model,"name").toString(); //$NON-NLS-1$
 		EPackage metamodel = getMetamodel(metamodelId);
 		if (metamodel != null) {
-			EClassifier res = metamodel.getEClassifier(eGet(atlType,"name").toString());
+			EClassifier res = metamodel.getEClassifier(eGet(atlType,"name").toString()); //$NON-NLS-1$
 			if (res instanceof EClass) {
 				return getMetaFeaturesProposals(existing, (EClass) res, prefix,
 						offset);
@@ -411,9 +411,9 @@ public class AtlCompletionDataSource {
 							&& !prefix.equals(replacementString)) {
 						Image image = null;
 						if (feature instanceof EAttribute)
-							image = getImage("model_attribute.gif");
+							image = getImage("model_attribute.gif"); //$NON-NLS-1$
 						else if (feature instanceof EReference)
-							image = getImage("model_reference.gif");
+							image = getImage("model_reference.gif"); //$NON-NLS-1$
 						ICompletionProposal proposal = new AtlCompletionProposal(
 								replacementString, offset - prefix.length(),
 								replacementString.length(), image,
@@ -437,8 +437,8 @@ public class AtlCompletionDataSource {
 		List res = new ArrayList();
 		res.addAll(getMetaElementsProposals(prefix, offset,
 				AtlCompletionDataSource.ALL_METAMODELS));
-		String[] types = { "Boolean", "String", "Integer", "Sequence", "Set",
-				"Bag", "OrderedSet", "Map" };
+		String[] types = { "Boolean", "String", "Integer", "Sequence", "Set", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				"Bag", "OrderedSet", "Map" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		for (int i = 0; i < types.length; i++) {
 			String replacementString = types[i];
 			if (startsWithIgnoreCase(prefix, replacementString)) {
@@ -463,15 +463,15 @@ public class AtlCompletionDataSource {
 		EList contents = model.eContents();
 		for (Iterator iterator = contents.iterator(); iterator.hasNext();) {
 			EObject object = (EObject) iterator.next();
-			if (object.eClass().getName().equals("MatchedRule")) {
-				if (ruleName.equals(eGet(object,"name"))) {
+			if (object.eClass().getName().equals("MatchedRule")) { //$NON-NLS-1$
+				if (ruleName.equals(eGet(object,"name"))) { //$NON-NLS-1$
 					TreeIterator ruleContentsIterator = object.eAllContents();
 					while (ruleContentsIterator.hasNext()) {
 						EObject content = (EObject) ruleContentsIterator.next();
 						if (content.eClass().getName().equals(
-						"SimpleInPatternElement")) {
-							if (variableName.equals(eGet(content,"varName"))) {
-								return (EObject) eGet(content,"type");
+						"SimpleInPatternElement")) { //$NON-NLS-1$
+							if (variableName.equals(eGet(content,"varName"))) { //$NON-NLS-1$
+								return (EObject) eGet(content,"type"); //$NON-NLS-1$
 							}
 						}
 					}
@@ -509,8 +509,8 @@ public class AtlCompletionDataSource {
 			boolean mode) {
 		String name = eClassifier.getName();
 		if (eClassifier.getEPackage() != null && mode)
-			name = "\"" + eClassifier.getEPackage().getName() + "::" + name
-			+ "\"";
+			name = "\"" + eClassifier.getEPackage().getName() + "::" + name //$NON-NLS-1$ //$NON-NLS-2$
+			+ "\""; //$NON-NLS-1$
 		return name;
 	}
 
@@ -548,14 +548,14 @@ public class AtlCompletionDataSource {
 		while (reader.ready()) {
 			String line = reader.readLine();
 			//code begins, uris checking stops.
-			if (line == null || line.startsWith("library")
-					|| line.startsWith("module") || line.startsWith("query")) {
+			if (line == null || line.startsWith("library") //$NON-NLS-1$
+					|| line.startsWith("module") || line.startsWith("query")) { //$NON-NLS-1$ //$NON-NLS-2$
 				break;
 			} else {
-				if (line.trim().startsWith("-- @" + tag)) {
-					line = line.replaceFirst("^\\p{Space}*--\\p{Space}*@"
+				if (line.trim().startsWith("-- @" + tag)) { //$NON-NLS-1$
+					line = line.replaceFirst("^\\p{Space}*--\\p{Space}*@" //$NON-NLS-1$
 							+ tag
-							+ "\\p{Space}+([^\\p{Space}]*)\\p{Space}*$", "$1");
+							+ "\\p{Space}+([^\\p{Space}]*)\\p{Space}*$", "$1"); //$NON-NLS-1$ //$NON-NLS-2$
 					res.add(line);
 				}
 			}
@@ -595,7 +595,7 @@ public class AtlCompletionDataSource {
 
 		final Resource modelResource = resourceSet.createResource(modelURI);
 		final Map options = new ConcurrentHashMap();
-		options.put(XMLResource.OPTION_ENCODING, System.getProperty("file.encoding"));
+		options.put(XMLResource.OPTION_ENCODING, System.getProperty("file.encoding")); //$NON-NLS-1$
 		modelResource.load(options);
 		if (modelResource.getContents().size() > 0)
 			result = (EObject)modelResource.getContents().get(0);

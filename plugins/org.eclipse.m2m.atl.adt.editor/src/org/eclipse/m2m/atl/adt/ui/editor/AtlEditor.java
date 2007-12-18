@@ -707,23 +707,23 @@ public class AtlEditor extends TextEditor {
 		action = new GotoMatchingBracketAction(this);
 		setAction(GotoMatchingBracketAction.ID, action);
 
-		action= new IndentAction(resourceBundle, "Indent.", this, false);
+		action= new IndentAction(resourceBundle, "Indent.", this, false); //$NON-NLS-1$
 		action.setActionDefinitionId(IAtlActionConstants.INDENT);		
-		setAction("Indent", action);
-		markAsStateDependentAction("Indent", true);
-		markAsSelectionDependentAction("Indent", true);
+		setAction("Indent", action); //$NON-NLS-1$
+		markAsStateDependentAction("Indent", true); //$NON-NLS-1$
+		markAsSelectionDependentAction("Indent", true); //$NON-NLS-1$
 		// TODO workbench help action
 //		WorkbenchHelp.setHelp(action, IJavaHelpContextIds.INDENT_ACTION);
 		
-		action= new IndentAction(AtlEditorMessages.getResourceBundle(), "Indent.", this, true);
-		setAction("IndentOnTab", action);
-		markAsStateDependentAction("IndentOnTab", true);
-		markAsSelectionDependentAction("IndentOnTab", true);
+		action= new IndentAction(AtlEditorMessages.getResourceBundle(), "Indent.", this, true); //$NON-NLS-1$
+		setAction("IndentOnTab", action); //$NON-NLS-1$
+		markAsStateDependentAction("IndentOnTab", true); //$NON-NLS-1$
+		markAsSelectionDependentAction("IndentOnTab", true); //$NON-NLS-1$
 		
 		if(getPreferenceStore().getBoolean(AtlPreferenceConstants.TYPING_SMART_TAB)) {
 			// don't replace Shift Right - have to make sure their enablement is mutually exclusive
 			//			removeActionActivationCode(ITextEditorActionConstants.SHIFT_RIGHT);
-			setActionActivationCode("IndentOnTab", '\t', -1, SWT.NONE);
+			setActionActivationCode("IndentOnTab", '\t', -1, SWT.NONE); //$NON-NLS-1$
 		}
 		
 		installContentAssistAction();
@@ -780,11 +780,11 @@ public class AtlEditor extends TextEditor {
 	private void installContentAssistAction()
     {
 	    ResourceBundle resourceBundle = AtlEditorMessages.getResourceBundle();
-	    Action action = new ContentAssistAction(resourceBundle, "ContentAssistProposal.", this); 
+	    Action action = new ContentAssistAction(resourceBundle, "ContentAssistProposal.", this);  //$NON-NLS-1$
 	    String id = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
 	    action.setActionDefinitionId(id);
-	    setAction("ContentAssistProposal", action); 
-	    markAsStateDependentAction("ContentAssistProposal", true);
+	    setAction("ContentAssistProposal", action);  //$NON-NLS-1$
+	    markAsStateDependentAction("ContentAssistProposal", true); //$NON-NLS-1$
     }
 
     protected AtlContentOutlinePage createOutlinePage() {
@@ -989,7 +989,7 @@ public class AtlEditor extends TextEditor {
 		
 		int selectionLength= Math.abs(selection.getLength());
 		if(selectionLength > 1) {
-			setStatusLineErrorMessage(AtlEditorMessages.getString("GotoMatchingBracket.error.invalidSelection"));		
+			setStatusLineErrorMessage(AtlEditorMessages.getString("GotoMatchingBracket.error.invalidSelection"));		 //$NON-NLS-1$
 			sourceViewer.getTextWidget().getDisplay().beep();
 			return;
 		}
@@ -1000,7 +1000,7 @@ public class AtlEditor extends TextEditor {
 		
 		IRegion region= bracketMatcher.match(document, sourceCaretOffset);
 		if(region == null) {
-			setStatusLineErrorMessage(AtlEditorMessages.getString("GotoMatchingBracket.error.noMatchingBracket"));		
+			setStatusLineErrorMessage(AtlEditorMessages.getString("GotoMatchingBracket.error.noMatchingBracket"));		 //$NON-NLS-1$
 			sourceViewer.getTextWidget().getDisplay().beep();
 			return;		
 		}
@@ -1026,7 +1026,7 @@ public class AtlEditor extends TextEditor {
 		}
 		
 		if(!visible) {
-			setStatusLineErrorMessage(AtlEditorMessages.getString("GotoMatchingBracket.error.bracketOutsideSelectedElement"));		
+			setStatusLineErrorMessage(AtlEditorMessages.getString("GotoMatchingBracket.error.bracketOutsideSelectedElement"));		 //$NON-NLS-1$
 			sourceViewer.getTextWidget().getDisplay().beep();
 			return;
 		}
@@ -1070,9 +1070,9 @@ public class AtlEditor extends TextEditor {
 				
 				if (AtlPreferenceConstants.TYPING_SMART_TAB.equals(property)) {
 					if (getPreferenceStore().getBoolean(AtlPreferenceConstants.TYPING_SMART_TAB)) {
-						setActionActivationCode("IndentOnTab", '\t', -1, SWT.NONE);
+						setActionActivationCode("IndentOnTab", '\t', -1, SWT.NONE); //$NON-NLS-1$
 					} else {
-						removeActionActivationCode("IndentOnTab");
+						removeActionActivationCode("IndentOnTab"); //$NON-NLS-1$
 					}
 				}
 				
