@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
 public class Messages {
 	
 	/** Full qualified path to the properties file in which to seek the keys. */
-	private static final String BUNDLE_NAME = "org.eclipse.m2m.atl.adt.builder.Messages";//$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.m2m.atl.adt.builder.messages";//$NON-NLS-1$
 	
 	/** Contains the locale specific {@link String}s needed by this plug-in. */
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
