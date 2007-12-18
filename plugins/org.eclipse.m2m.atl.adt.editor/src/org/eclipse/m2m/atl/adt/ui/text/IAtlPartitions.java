@@ -12,10 +12,10 @@ package org.eclipse.m2m.atl.adt.ui.text;
 
 public interface IAtlPartitions {
 	
-	public final static String CHARACTER = "character";
-	public final static String DOC = "documentation";
-	public final static String PARTITIONING= "partitioning";
-	public final static String SINGLE_LINE_COMMENT = "singleline_comment";
-	public final static String STRING = "string";
+	public final static String CHARACTER = "character";//$NON-NLS-1$
+	public final static String DOC = "documentation";//$NON-NLS-1$
+	public final static String PARTITIONING= "partitioning";//$NON-NLS-1$
+	public final static String SINGLE_LINE_COMMENT = "singleline_comment";//$NON-NLS-1$
+	public final static String STRING = "string";//$NON-NLS-1$
 
 }

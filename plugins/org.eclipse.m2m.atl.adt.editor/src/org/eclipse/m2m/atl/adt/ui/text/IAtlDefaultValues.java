@@ -35,7 +35,7 @@ public interface IAtlDefaultValues {
 	
 	public static final int CODEASSIST_AUTOACTIVATION_DELAY = 500;
 	public static final boolean CODEASSIST_AUTOACTIVATION_ENABLE = false;
-	public static final String CODEASSIST_AUTOACTIVATION_TRIGGERS = " ";
+	public static final String CODEASSIST_AUTOACTIVATION_TRIGGERS = " ";//$NON-NLS-1$
     public static final boolean CODEASSIST_AUTOINSERT = false;
     public static final boolean CODEASSIST_CASE_SENSITIVITY = false;
     public static final boolean CODEASSIST_ORDER_PROPOSALS = false;

@@ -1345,7 +1345,7 @@ public class AtlIndenter {
 	 */
 	private void unindent(StringBuffer indent) {
 		CharSequence oneIndent= createIndent();
-		int i= indent.lastIndexOf(oneIndent.toString()); //$NON-NLS-1$
+		int i= indent.lastIndexOf(oneIndent.toString());
 		if (i != -1) {
 			indent.delete(i, i + oneIndent.length());
 		}			

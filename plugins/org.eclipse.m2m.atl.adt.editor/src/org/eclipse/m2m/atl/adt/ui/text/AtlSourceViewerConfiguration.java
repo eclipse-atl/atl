@@ -171,7 +171,7 @@ public class AtlSourceViewerConfiguration extends SourceViewerConfiguration {
 			vector.add(prefix.toString());
 		}
 		
-		vector.add("");
+		vector.add("");//$NON-NLS-1$
 		return (String[]) vector.toArray(new String[vector.size()]);
 	}
 	
