@@ -39,20 +39,20 @@ public class TestNonRegressionParser extends TestNonRegression {
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#singleTest(java.io.File)
 	 */
 	protected void singleTest(File directory) {	
-		System.out.print(AtlTestsMessages.getString("TestNonRegressionParser.4")+directory.getName()+AtlTestsMessages.getString("TestNonRegressionParser.5")); //$NON-NLS-1$ //$NON-NLS-2$
+		System.out.print(AtlTestsMessages.getString("TestNonRegressionParser.SINGLETEST",new Object[]{directory.getName()})); //$NON-NLS-1$ 
 		final File expectedDir = new File(directory.getPath().replace(File.separator + "inputs", //$NON-NLS-1$
 				File.separator + "expected")); //$NON-NLS-1$
 		final String transfoPath = directory+ File.separator + directory.getName() + ".atl";	 //$NON-NLS-1$
 		final String outputPath = directory+ File.separator + directory.getName() + ".atl.ecore";	 //$NON-NLS-1$
 		final String expectedPath = expectedDir+ File.separator + directory.getName() + ".atl.ecore";	 //$NON-NLS-1$
-		if (!new File(transfoPath).exists()) fail(AtlTestsMessages.getString("TestNonRegressionParser.3")); //$NON-NLS-1$
+		if (!new File(transfoPath).exists()) fail(AtlTestsMessages.getString("TestNonRegressionParser.FILENOTFOUND")); //$NON-NLS-1$
 
 		try {
 			EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));
 			ModelUtils.save(result, "file:/"+transfoPath+".ecore");	 //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail(AtlTestsMessages.getString("TestNonRegressionParser.2")); //$NON-NLS-1$
+			fail(AtlTestsMessages.getString("TestNonRegressionParser.FAIL")); //$NON-NLS-1$
 		}		
 
 		try {
@@ -72,10 +72,10 @@ public class TestNonRegressionParser extends TestNonRegression {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail(AtlTestsMessages.getString("TestNonRegressionParser.1")); //$NON-NLS-1$
+			fail(AtlTestsMessages.getString("TestNonRegressionParser.COMPARISONFAIL")); //$NON-NLS-1$
 		}
 		
-		System.out.println(AtlTestsMessages.getString("TestNonRegressionParser.0")); //$NON-NLS-1$
+		System.out.println(AtlTestsMessages.getString("TestNonRegressionParser.OK")); //$NON-NLS-1$
 	}
 
 }

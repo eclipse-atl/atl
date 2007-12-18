@@ -72,7 +72,7 @@ public class FileUtils {
 				}
 			}
 		}
-		throw new RuntimeException(AtlTestsMessages.getString("FileUtils.0") + AtlTestPlugin.PLUGIN_ID + AtlTestsMessages.getString("FileUtils.1")); //$NON-NLS-1$ //$NON-NLS-2$
+		throw new RuntimeException(AtlTestsMessages.getString("FileUtils.DIRERROR",new Object[]{AtlTestPlugin.PLUGIN_ID})); //$NON-NLS-1$
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class FileUtils {
 	 */
 	public static void compareFiles(File left, File right, boolean delete) throws Exception {
 		if (left.length() != right.length())
-			throw new Exception(AtlTestsMessages.getString("FileUtils.2")); //$NON-NLS-1$
+			throw new Exception(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
 
 		FileInputStream lin = new FileInputStream(left);
 		FileInputStream rin = new FileInputStream(right);
@@ -144,7 +144,7 @@ public class FileUtils {
 				for (int byteIndex = 0; byteIndex < lcount; byteIndex++)
 				{
 					if (lbuffer[byteIndex] != rbuffer[byteIndex])
-						throw new Exception(AtlTestsMessages.getString("FileUtils.3")); //$NON-NLS-1$
+						throw new Exception(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
 				}
 			}
 		}

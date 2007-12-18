@@ -37,9 +37,9 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 */
 	protected void singleTest(File directory) {
 		if (vmName == null) {
-			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.0")); //$NON-NLS-1$
+			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.MISSINGVMNAME")); //$NON-NLS-1$
 		}
-		System.out.print(AtlTestsMessages.getString("TestNonRegressionTransfo.1")+directory.getName()+AtlTestsMessages.getString("TestNonRegressionTransfo.2")); //$NON-NLS-1$ //$NON-NLS-2$
+		System.out.print(AtlTestsMessages.getString("TestNonRegressionTransfo.SINGLETEST",new Object[]{directory.getName()})); //$NON-NLS-1$
 		final String buildURI = directory+ File.separator + directory.getName() + ".launch";	 //$NON-NLS-1$
 
 		if (!new File(buildURI).exists()) fail(AtlTestsMessages.getString("TestNonRegressionTransfo.3")); //$NON-NLS-1$

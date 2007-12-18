@@ -245,7 +245,7 @@ public final class ModelUtils {
 			snapshot.setDiff(inputDiff);
 			snapshot.setMatch(inputMatch);
 			ModelUtils.save(snapshot, "file:/"+leftUri.toString()+".emfdiff"); //$NON-NLS-1$ //$NON-NLS-2$
-			throw new Exception(AtlTestsMessages.getString("ModelUtils.0")); //$NON-NLS-1$
+			throw new Exception(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
 		}
 		
 		if (delete) {
