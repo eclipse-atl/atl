@@ -59,6 +59,6 @@ public class Atl2006Plugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.m2m.atl.atl2006", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.m2m.atl.atl2006", path);//$NON-NLS-1$
 	}
 }
