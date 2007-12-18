@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.CoreException;
 public class AtlNature implements IProjectNature {
 	
 	/** The Atl nature id. Each Atl project is added this nature */
-	public static final String ATL_NATURE_ID = "org.eclipse.m2m.atl.adt.builder.atlNature";
+	public static final String ATL_NATURE_ID = "org.eclipse.m2m.atl.adt.builder.atlNature";//$NON-NLS-1$
 	
 	private IProject project;
 

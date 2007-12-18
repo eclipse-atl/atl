@@ -59,7 +59,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 	 */
 	private IFile getAsmFile(IResource resource) {
 		String atlFileName = resource.getName();
-		String asmFileName = atlFileName.substring(0, atlFileName.lastIndexOf('.')) + ".asm";
+		String asmFileName = atlFileName.substring(0, atlFileName.lastIndexOf('.')) + ".asm";//$NON-NLS-1$
 		IFile asm = resource.getParent().getFile(new Path(asmFileName));
 		return asm;
 	}		
@@ -69,11 +69,11 @@ public class AtlBuildVisitor implements IResourceVisitor {
 	 */
 	public boolean visit(IResource resource) throws CoreException {
 		String extension = resource.getFileExtension();
-		if ( ("atl".equals(extension) && (resource instanceof IFile)) && ((IFile)resource).getLocation().toFile().length() > 0
+		if ( ("atl".equals(extension) && (resource instanceof IFile)) && ((IFile)resource).getLocation().toFile().length() > 0//$NON-NLS-1$
 			 && (!hasAsmFile(resource) || hasChanged(resource)) ) {
 			String inName = resource.getName();
-			monitor.subTask("Compiling " + inName);
-			String outName = inName.substring(0, inName.lastIndexOf('.')) + ".asm";
+			monitor.subTask(Messages.getString("AtlBuildVisitor.COMPILETASK",new Object[]{inName}));//$NON-NLS-1$
+			String outName = inName.substring(0, inName.lastIndexOf('.')) + ".asm";//$NON-NLS-1$
 			IFile out = resource.getParent().getFile(new Path(outName));
 			InputStream is = ((IFile)resource).getContents();
 			try {

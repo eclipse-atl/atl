@@ -35,7 +35,7 @@ public class BuilderPlugin extends AbstractUIPlugin {
 		super();
 		plugin = this;
 		try {
-			resourceBundle   = ResourceBundle.getBundle("org.eclipse.m2m.atl.adt.builder.BuilderPluginResources");
+			resourceBundle   = ResourceBundle.getBundle("org.eclipse.m2m.atl.adt.builder.BuilderPluginResources");//$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}	
@@ -46,8 +46,8 @@ public class BuilderPlugin extends AbstractUIPlugin {
      */
     static public ImageDescriptor getImageDescriptor(String name) {
         BuilderPlugin plugin = BuilderPlugin.getDefault();
-        String pluginDir = plugin.getBundle().getEntry("/").toString();
-        String iconPath = "icons/";
+        String pluginDir = plugin.getBundle().getEntry("/").toString();//$NON-NLS-1$
+        String iconPath = "icons/";//$NON-NLS-1$
         try {
             return ImageDescriptor.createFromURL(
                     new URL(pluginDir + iconPath + name));

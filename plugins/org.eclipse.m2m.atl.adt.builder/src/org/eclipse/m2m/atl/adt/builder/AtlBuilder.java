@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Tarik Idrissi (INRIA) - initial API and implementation
+ *    Obeo - messages externalization
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.builder;
 
@@ -22,18 +23,20 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
+/**
+ * The ATL project builder.
+ *
+ * @author Tarik Idrissi (INRIA)
+ * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ */
 public class AtlBuilder extends IncrementalProjectBuilder {
 	
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
-
-	/** The visitor used to visit an Atl project and builds all its file with "atl" extension */
-//	private IResourceVisitor buildVisitor = new AtlBuildVisitor();
 	
 	/** The Atl builder id */
-	public static final String ATL_BUILDER_ID = "org.eclipse.m2m.atl.adt.builder.atlBuilder";
+	public static final String ATL_BUILDER_ID = "org.eclipse.m2m.atl.adt.builder.atlBuilder";//$NON-NLS-1$
 	
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {		
-		//if (kind == IncrementalProjectBuilder.FULL_BUILD)
 		IWorkspaceRunnable wr= new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {				
 				fullBuild(monitor);
@@ -46,11 +49,10 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 	protected void fullBuild(IProgressMonitor monitor) {
 		try {
 			IProject p = getProject();
-			monitor.beginTask("Compiling ATL files of project " + p.getName(), IProgressMonitor.UNKNOWN);
+			monitor.beginTask(Messages.getString("AtlBuilder.COMPILETASK",new Object[]{p.getName()}), IProgressMonitor.UNKNOWN);//$NON-NLS-1$
 			p.accept(new AtlBuildVisitor(monitor));
 		} catch (CoreException e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
 		}		
 	}
 	
@@ -61,7 +63,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 			public void run(IProgressMonitor monitor) throws CoreException {				
 				try {
 					IProject p = getProject();
-					monitor.beginTask("Cleaning ATL files of project " + p.getName(), IProgressMonitor.UNKNOWN);
+					monitor.beginTask(Messages.getString("AtlBuilder.CLEANTASK",new Object[]{p.getName()}), IProgressMonitor.UNKNOWN);//$NON-NLS-1$
 					p.accept(new AtlCleanVisitor(monitor));
 				} catch (CoreException e) {
 					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);

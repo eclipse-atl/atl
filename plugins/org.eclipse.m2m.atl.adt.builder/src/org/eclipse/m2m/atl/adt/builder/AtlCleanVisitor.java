@@ -44,7 +44,7 @@ public class AtlCleanVisitor implements IResourceVisitor {
 	 */
 	private IFile getAsmFile(IResource resource) {
 		String atlFileName = resource.getName();
-		String asmFileName = atlFileName.substring(0, atlFileName.lastIndexOf('.')) + ".asm";
+		String asmFileName = atlFileName.substring(0, atlFileName.lastIndexOf('.')) + ".asm";//$NON-NLS-1$
 		IFile asm = resource.getParent().getFile(new Path(asmFileName));
 		return asm;
 	}		
@@ -54,12 +54,12 @@ public class AtlCleanVisitor implements IResourceVisitor {
 	 */
 	public boolean visit(IResource resource) throws CoreException {
 		String extension = resource.getFileExtension();
-		if (("atl".equals(extension) && 
+		if (("atl".equals(extension) && //$NON-NLS-1$
 			(resource instanceof IFile)) && 
 			((IFile)resource).getLocation().toFile().length() > 0 &&
 			hasAsmFile(resource) ) {
 			
-			monitor.subTask("Cleaning " + resource.getName());
+			monitor.subTask(Messages.getString("AtlCleanVisitor.CLEANTASK",new Object[]{resource.getName()}));//$NON-NLS-1$
 			IFile asmFile = getAsmFile(resource);
 			try {
 				asmFile.delete(true, monitor);
