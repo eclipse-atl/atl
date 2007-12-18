@@ -15,14 +15,14 @@ import java.util.ResourceBundle;
 
 public class AtlEditorMessages {
     
-	private static final String RESOURCE_BUNDLE = "org.eclipse.m2m.atl.adt.ui.editor.EditorMessages";
+	private static final String RESOURCE_BUNDLE = "org.eclipse.m2m.atl.adt.ui.editor.EditorMessages";//$NON-NLS-1$
 	private static ResourceBundle rb = ResourceBundle.getBundle(RESOURCE_BUNDLE);
 	
 	public static String getString(String key) {
 		try {
 			return getResourceBundle().getString(key);
 		} catch (MissingResourceException e) {
-			return "AtlEditorMessages says : !" + key + "!";
+			return "AtlEditorMessages says : !" + key + "!";//$NON-NLS-1$//$NON-NLS-2$
 		}
 	}
 	

@@ -35,7 +35,7 @@ public class AtlEditorActionContributor extends TextEditorActionContributor {
 //		bars.setGlobalActionHandler(JdtActionConstants.FORMAT_ELEMENT, getAction(textEditor, "QuickFormat"));
 //		bars.setGlobalActionHandler(JdtActionConstants.ADD_BLOCK_COMMENT, getAction(textEditor, "AddBlockComment"));
 //		bars.setGlobalActionHandler(JdtActionConstants.REMOVE_BLOCK_COMMENT, getAction(textEditor, "RemoveBlockComment"));
-		bars.setGlobalActionHandler(IAtlActionConstants.INDENT, getAction(textEditor, "org.eclipse.m2m.atl.adt.ui.actions.indentAction"));
+		bars.setGlobalActionHandler(IAtlActionConstants.INDENT, getAction(textEditor, "org.eclipse.m2m.atl.adt.ui.actions.indentAction"));//$NON-NLS-1$
     }
 
 }
