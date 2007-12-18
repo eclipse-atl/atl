@@ -37,7 +37,7 @@ public class ResourceDeltaVisitor implements IResourceDeltaVisitor {
 	 */
 	private IResource findAsmFile(IResource res) {
 		String atlFileName = res.getName();
-		String asmFileName = atlFileName.substring(0, atlFileName.lastIndexOf('.')) + ".asm";
+		String asmFileName = atlFileName.substring(0, atlFileName.lastIndexOf('.')) + ".asm";//$NON-NLS-1$
 		IFile asm = res.getParent().getFile(new Path(asmFileName));
 		if (asm.exists()) {
 			return asm;
@@ -74,7 +74,7 @@ public class ResourceDeltaVisitor implements IResourceDeltaVisitor {
 		IResource res = delta.getResource();
 		switch(delta.getKind()) {
 			case IResourceDelta.REMOVED : // when a file is removed or renamed.	
-				if ("atl".equals(res.getFileExtension())) {					
+				if ("atl".equals(res.getFileExtension())) {	//$NON-NLS-1$				
 					delAsmFile(res);
 				}
 				break;

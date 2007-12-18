@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.adt.wizard.atlproject;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.m2m.atl.adt.wizard.AtlWizardMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -35,9 +36,9 @@ public class AtlDescriptionProjectScreen extends WizardPage {
 	 * Constructor
 	 */
 	public AtlDescriptionProjectScreen(ISelection selection) {
-		super("wizardPage");
-		setTitle("ATL Project Creator");
-		setDescription("A name is required for your ATL Project");
+		super("wizardPage"); //$NON-NLS-1$
+		setTitle(AtlWizardMessages.getString("AtlDescriptionProjectScreen.1")); //$NON-NLS-1$
+		setDescription(AtlWizardMessages.getString("AtlDescriptionProjectScreen.2")); //$NON-NLS-1$
 //		this.selection = selection;
 		this.setPageComplete(false);
 	}
@@ -57,14 +58,14 @@ public class AtlDescriptionProjectScreen extends WizardPage {
 		/* Instanciation of all the components */
 
 		groupProject = new Group(container,SWT.CENTER);
-		groupProject.setText("ATL PROJECT");
+		groupProject.setText("ATL PROJECT");//$NON-NLS-1$
 		groupProject.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		layout = new GridLayout();
 		layout.numColumns = 2;
 		layout.verticalSpacing = 9;
 		groupProject.setLayout(layout);
 
-		new Label(groupProject,SWT.NULL).setText("Project name");
+		new Label(groupProject,SWT.NULL).setText(AtlWizardMessages.getString("AtlDescriptionProjectScreen.3")); //$NON-NLS-1$
 		textProjectName = new Text(groupProject,SWT.BORDER);
 		textProjectName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		textProjectName.addKeyListener( new KeyAdapter() {
@@ -87,7 +88,7 @@ public class AtlDescriptionProjectScreen extends WizardPage {
 	 * else the page is considered complete. That is to say the button next is available
 	 * */
 	protected void textProjectNameKeyPressed(KeyEvent evt) {
-		if (textProjectName.getText().equals(""))
+		if (textProjectName.getText().equals(""))//$NON-NLS-1$
 			this.setPageComplete(false);
 		else
 			this.setPageComplete(true);

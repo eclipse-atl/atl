@@ -82,23 +82,23 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 		String fileName = page.getParameter(AtlFileScreen.NAME);
 		String fileType = page.getParameter(AtlFileScreen.TYPE);
 		modelProject = (IContainer)ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(page.getParameter(AtlFileScreen.CONTAINER)));
-		String contentFile = "";
+		String contentFile = "";//$NON-NLS-1$
 
 		if (fileType.equals(AtlFileScreen.MODULE)) {
-			contentFile = AtlFileScreen.MODULE + " " + fileName + "; -- Module Template\n";
-			contentFile += "create " + page.getParameter(AtlFileScreen.OUT);
-			contentFile += " from " + page.getParameter(AtlFileScreen.IN) + ";\n";
+			contentFile = AtlFileScreen.MODULE + " " + fileName + "; -- Module Template\n"; //$NON-NLS-1$ //$NON-NLS-2$
+			contentFile += "create " + page.getParameter(AtlFileScreen.OUT); //$NON-NLS-1$
+			contentFile += " from " + page.getParameter(AtlFileScreen.IN) + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
 			contentFile += page.getParameter(AtlFileScreen.LIB);
 		}
 		else if (fileType.equals(AtlFileScreen.QUERY)) {
-			contentFile = AtlFileScreen.QUERY + " " + fileName + " = ; -- Query Template\n";
+			contentFile = AtlFileScreen.QUERY + " " + fileName + " = ; -- Query Template\n"; //$NON-NLS-1$ //$NON-NLS-2$
 			contentFile += page.getParameter(AtlFileScreen.LIB);
 		}
 		else if (fileType.equals(AtlFileScreen.LIBRARY)) {
-			contentFile = AtlFileScreen.LIBRARY + " " + fileName + "; -- Library Template\n";
+			contentFile = AtlFileScreen.LIBRARY + " " + fileName + "; -- Library Template\n"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
-		createFile(fileName + ".atl", contentFile);
+		createFile(fileName + ".atl", contentFile); //$NON-NLS-1$
 		
 	}
 	

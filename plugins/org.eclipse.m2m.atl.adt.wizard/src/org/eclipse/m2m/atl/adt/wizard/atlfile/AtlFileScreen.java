@@ -42,15 +42,15 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
  */
 public class AtlFileScreen extends WizardPage {
 
-	final public static String NAME = "NAME";
-	final public static String TYPE = "TYPE";
-	final public static String CONTAINER = "CONTAINER";
-	final public static String IN = "IN";
-	final public static String OUT = "OUT";
-	final public static String LIB = "LIB";
-	final public static String MODULE = "module";
-	final public static String QUERY = "query";
-	final public static String LIBRARY = "library";
+	final public static String NAME = "NAME";//$NON-NLS-1$
+	final public static String TYPE = "TYPE";//$NON-NLS-1$
+	final public static String CONTAINER = "CONTAINER";//$NON-NLS-1$
+	final public static String IN = "IN";//$NON-NLS-1$
+	final public static String OUT = "OUT";//$NON-NLS-1$
+	final public static String LIB = "LIB";//$NON-NLS-1$
+	final public static String MODULE = "module";//$NON-NLS-1$
+	final public static String QUERY = "query";//$NON-NLS-1$
+	final public static String LIBRARY = "library";//$NON-NLS-1$
 		
 	private ISelection selection;
 	
@@ -70,9 +70,9 @@ public class AtlFileScreen extends WizardPage {
 	 * @param selection
 	 */
 	public AtlFileScreen(ISelection selection) {
-		super("ATL File Wizard");
-		setTitle("ATL File Wizard");
-		setDescription("");
+		super("ATL File Wizard"); //$NON-NLS-1$
+		setTitle("ATL File Wizard"); //$NON-NLS-1$
+		setDescription(""); //$NON-NLS-1$
 		this.selection = selection;
 //		System.out.println("selection: " + this.selection);
 		this.setPageComplete(false);
@@ -102,10 +102,10 @@ public class AtlFileScreen extends WizardPage {
 		layout.numColumns = 3;
 		
 		groupHead.setLayout(layout);
-		groupHead.setText("HEAD");
+		groupHead.setText("HEAD"); //$NON-NLS-1$
 		groupHead.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		new Label(groupHead, SWT.NULL).setText("Container");
+		new Label(groupHead, SWT.NULL).setText("Container"); //$NON-NLS-1$
 		textProject = new Text(groupHead, SWT.BORDER);
 		
 		if (selection!=null && selection.isEmpty()==false && selection instanceof IStructuredSelection) {
@@ -125,14 +125,14 @@ public class AtlFileScreen extends WizardPage {
 		textProject.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		Button buttonBrowse = new Button(groupHead, SWT.PUSH);
-		buttonBrowse.setText("Browse...");
+		buttonBrowse.setText("Browse..."); //$NON-NLS-1$
 		buttonBrowse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handleProjectBrowse();
 			}
 		});
 		
-		new Label(groupHead, SWT.NULL).setText("ATL Module Name");
+		new Label(groupHead, SWT.NULL).setText("ATL Module Name"); //$NON-NLS-1$
 		textName = new Text(groupHead, SWT.BORDER);
 		textName.addKeyListener( new KeyAdapter() {
 			public void keyReleased(KeyEvent evt) {
@@ -144,7 +144,7 @@ public class AtlFileScreen extends WizardPage {
 		gdFilename.horizontalSpan = 2;
 		textName.setLayoutData(gdFilename);
 		
-		new Label(groupHead, SWT.NULL).setText("ATL File Type");
+		new Label(groupHead, SWT.NULL).setText("ATL File Type"); //$NON-NLS-1$
 		comboType = new Combo(groupHead, SWT.BORDER | SWT.READ_ONLY);
 		comboType.setItems(new String[] {MODULE, LIBRARY, QUERY});
 		comboType.setText(MODULE);
@@ -160,18 +160,18 @@ public class AtlFileScreen extends WizardPage {
 		
 		groupIn.setLayout(layout);
 		groupIn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		groupIn.setText("IN");
+		groupIn.setText("IN"); //$NON-NLS-1$
 		
-		new Label(groupIn, SWT.NULL).setText("Model");
+		new Label(groupIn, SWT.NULL).setText("Model"); //$NON-NLS-1$
 		final Text inM1 = new Text(groupIn, SWT.BORDER);
 		inM1.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		new Label(groupIn, SWT.NULL).setText("Metamodel");
+		new Label(groupIn, SWT.NULL).setText("Metamodel"); //$NON-NLS-1$
 		final Text inM2 = new Text(groupIn, SWT.BORDER);
 		inM2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		Button buttonIn = new Button(groupIn, SWT.PUSH);
-		buttonIn.setText("ADD");
+		buttonIn.setText("ADD"); //$NON-NLS-1$
 		buttonIn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		tableIn = new Table(groupIn, SWT.NULL);
@@ -182,11 +182,11 @@ public class AtlFileScreen extends WizardPage {
 		tableIn.setHeaderVisible(true);
 		
 		TableColumn tc = new TableColumn(tableIn, SWT.CENTER);
-		tc.setText("Model");
+		tc.setText("Model"); //$NON-NLS-1$
 		tc.setWidth(250);
 		tc.setAlignment(SWT.CENTER);
 		tc = new TableColumn(tableIn, SWT.CENTER);
-		tc.setText("Metamodel");
+		tc.setText("Metamodel"); //$NON-NLS-1$
 		tc.setWidth(250);
 		tc.setAlignment(SWT.CENTER);
 		
@@ -203,18 +203,18 @@ public class AtlFileScreen extends WizardPage {
 		
 		groupOut.setLayout(layout);
 		groupOut.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		groupOut.setText("OUT");
+		groupOut.setText("OUT"); //$NON-NLS-1$
 		
-		new Label(groupOut, SWT.NULL).setText("Model");
+		new Label(groupOut, SWT.NULL).setText("Model"); //$NON-NLS-1$
 		final Text outM1 = new Text(groupOut, SWT.BORDER);
 		outM1.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		new Label(groupOut, SWT.NULL).setText("Metamodel");
+		new Label(groupOut, SWT.NULL).setText("Metamodel"); //$NON-NLS-1$
 		final Text outM2 = new Text(groupOut, SWT.BORDER);
 		outM2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		Button buttonOut = new Button(groupOut, SWT.PUSH);
-		buttonOut.setText("ADD");
+		buttonOut.setText("ADD"); //$NON-NLS-1$
 		buttonOut.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		tableOut = new Table(groupOut, SWT.NULL);
@@ -225,11 +225,11 @@ public class AtlFileScreen extends WizardPage {
 		tableOut.setHeaderVisible(true);
 		
 		tc = new TableColumn(tableOut, SWT.CENTER);
-		tc.setText("Model");
+		tc.setText("Model"); //$NON-NLS-1$
 		tc.setWidth(250);
 		tc.setAlignment(SWT.CENTER);
 		tc= new TableColumn(tableOut, SWT.CENTER);
-		tc.setText("Metamodel");
+		tc.setText("Metamodel"); //$NON-NLS-1$
 		tc.setWidth(250);
 		tc.setAlignment(SWT.CENTER);
 		
@@ -246,14 +246,14 @@ public class AtlFileScreen extends WizardPage {
 		
 		groupLib.setLayout(layout);
 		groupLib.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		groupLib.setText("LIB");
+		groupLib.setText("LIB"); //$NON-NLS-1$
 		
-		new Label(groupLib, SWT.NULL).setText("LIB");
+		new Label(groupLib, SWT.NULL).setText("LIB"); //$NON-NLS-1$
 		final Text textLib = new Text(groupLib, SWT.BORDER);
 		textLib.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		Button buttonLib = new Button(groupLib, SWT.PUSH);
-		buttonLib.setText("ADD");
+		buttonLib.setText("ADD"); //$NON-NLS-1$
 		buttonLib.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		tableLib = new Table(groupLib, SWT.NULL);
@@ -264,7 +264,7 @@ public class AtlFileScreen extends WizardPage {
 		tableLib.setHeaderVisible(true);
 		
 		tc = new TableColumn(tableLib, SWT.CENTER);
-		tc.setText("LIB");
+		tc.setText("LIB"); //$NON-NLS-1$
 		tc.setWidth(500);
 		tc.setAlignment(SWT.CENTER);
 		
@@ -327,7 +327,7 @@ public class AtlFileScreen extends WizardPage {
 				getShell(),
 				ResourcesPlugin.getWorkspace().getRoot(),
 				false,
-				"Select a container");
+				"Select a container"); //$NON-NLS-1$
 		if (dialog.open() == ContainerSelectionDialog.OK) {
 			Object[] result = dialog.getResult();
 			if (result.length == 1) {
@@ -351,7 +351,7 @@ public class AtlFileScreen extends WizardPage {
 	 * @param evt
 	 */
 	protected void textNameKeyPressed(KeyEvent evt) {
-		if (textName.getText().equals(""))
+		if (textName.getText().equals("")) //$NON-NLS-1$
 			this.setPageComplete(false);
 		else
 			this.setPageComplete(true);
@@ -365,31 +365,31 @@ public class AtlFileScreen extends WizardPage {
 		if (parameter.equals(CONTAINER))
 			return textProject.getText();
 		if (parameter.equals(IN)) {
-			String ret = "";
+			String ret = ""; //$NON-NLS-1$
 			for (int i=0; i < tableIn.getItems().length; i++) {
 				if (i > 0)
-					ret += ", ";
+					ret += ", "; //$NON-NLS-1$
 				ret += tableIn.getItem(i).getText(0);
-				ret += " : ";
+				ret += " : "; //$NON-NLS-1$
 				ret += tableIn.getItem(i).getText(1);
 			}
 			return ret;
 		}
 		if (parameter.equals(OUT)) {
-			String ret = "";
+			String ret = ""; //$NON-NLS-1$
 			for (int i=0; i < tableOut.getItems().length; i++) {
 				if (i > 0)
-					ret += ", ";
+					ret += ", "; //$NON-NLS-1$
 				ret += tableOut.getItem(i).getText(0);
-				ret += " : ";
+				ret += " : "; //$NON-NLS-1$
 				ret += tableOut.getItem(i).getText(1);
 			}
 			return ret;
 		}
 		if (parameter.equals(LIB)) {
-			String ret = "";
+			String ret = ""; //$NON-NLS-1$
 			for (int i=0; i < tableLib.getItems().length; i++) {
-				ret += "uses " + tableLib.getItem(i).getText(0) + ";\n";
+				ret += "uses " + tableLib.getItem(i).getText(0) + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return ret;
 		}

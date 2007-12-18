@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.m2m.atl.adt.builder.AtlNature;
+import org.eclipse.m2m.atl.logging.ATLLogFormatter;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
@@ -83,7 +84,7 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 			BasicNewProjectResourceWizard.updatePerspective(configElement);
 		}
 		catch(CoreException ce){
-			System.out.println("core exception caught..." + ce.getMessage());
+			System.err.println(ce);
 		}
 
 		return true;
