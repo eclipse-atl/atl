@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.m2m.atl.engine.AtlCompiler;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMEmitter;
@@ -51,10 +50,12 @@ public abstract class OclEvaluator {
 		return ret;
 	}
 	
+	/*
 	private static Object get(EObject o, String f) {
 		EStructuralFeature sf = o.eClass().getEStructuralFeature(f);
 		return o.eGet(sf);
 	}
+	*/
 	
 	private static Map dumpedASMs = new HashMap();
 	
