@@ -18,7 +18,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
-import org.eclipse.m2m.atl.adt.debug.Messages;
+import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -98,10 +98,10 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 		 * Components of group1
 		 **********************/
 
-		group1.setText(Messages.getString("RemoteAtlTab.PROJECT")); //$NON-NLS-1$
+		group1.setText(AtlDebugMessages.getString("RemoteAtlTab.PROJECT")); //$NON-NLS-1$
 
 		labelProject.setLayoutData(labelLData);
-		labelProject.setText(Messages.getString("RemoteAtlTab.PROJECTNAME")); //$NON-NLS-1$
+		labelProject.setText(AtlDebugMessages.getString("RemoteAtlTab.PROJECTNAME")); //$NON-NLS-1$
 
 		listProject.setLayoutData(textLData);
 		listProject.setItems(AtlLauncherTools.projectNames());
@@ -114,7 +114,7 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 		});
 		
 		labelFile.setLayoutData(label2LData);
-		labelFile.setText(Messages.getString("RemoteAtlTab.ATLFILENAME")); //$NON-NLS-1$
+		labelFile.setText(AtlDebugMessages.getString("RemoteAtlTab.ATLFILENAME")); //$NON-NLS-1$
 
 		listFile.setLayoutData(text2LData);
 
@@ -127,16 +127,16 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 		 * Components of group2
 		 **********************/
 
-		group2.setText(Messages.getString("RemoteAtlTab.CONNECTIONPROPERTIES")); //$NON-NLS-1$
+		group2.setText(AtlDebugMessages.getString("RemoteAtlTab.CONNECTIONPROPERTIES")); //$NON-NLS-1$
 
 		labelHost.setLayoutData(labelLData);
-		labelHost.setText(Messages.getString("RemoteAtlTab.HOSTNAME")); //$NON-NLS-1$
+		labelHost.setText(AtlDebugMessages.getString("RemoteAtlTab.HOSTNAME")); //$NON-NLS-1$
 
 		textHost.setLayoutData(textLData);
 		textHost.addModifyListener(this);
 		
 		labelPort.setLayoutData(label2LData);
-		labelPort.setText(Messages.getString("RemoteAtlTab.PORT")); //$NON-NLS-1$
+		labelPort.setText(AtlDebugMessages.getString("RemoteAtlTab.PORT")); //$NON-NLS-1$
 
 		textPort.setLayoutData(text2LData);
 		textPort.addModifyListener(this);
@@ -211,11 +211,11 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 	 */
 	public boolean canSave() {
 		if (listProject.getText().equals("")) { //$NON-NLS-1$
-			this.setErrorMessage(Messages.getString("RemoteAtlTab.GIVEPROJECTNAME")); //$NON-NLS-1$
+			this.setErrorMessage(AtlDebugMessages.getString("RemoteAtlTab.GIVEPROJECTNAME")); //$NON-NLS-1$
 			return false;
 		}
 		if (listFile.getText().equals("")) { //$NON-NLS-1$
-			this.setErrorMessage(Messages.getString("RemoteAtlTab.GIVETRANSFORMATIONNAME")); //$NON-NLS-1$
+			this.setErrorMessage(AtlDebugMessages.getString("RemoteAtlTab.GIVETRANSFORMATIONNAME")); //$NON-NLS-1$
 			return false;
 		}
 		try {
@@ -223,7 +223,7 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 				Integer.parseInt(textPort.getText());
 		}
 		catch (NumberFormatException nfe) {
-			setErrorMessage(Messages.getString("RemoteAtlTab.PORTNOTINTEGER")); //$NON-NLS-1$
+			setErrorMessage(AtlDebugMessages.getString("RemoteAtlTab.PORTNOTINTEGER")); //$NON-NLS-1$
 			return false;
 		}
 		

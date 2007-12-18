@@ -32,7 +32,7 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.m2m.atl.adt.debug.Messages;
+import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -110,9 +110,9 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 
         groupSuperimpose.setLayout(groupLayout);
         
-        groupSuperimpose.setText(Messages.getString("AdvancedTab.SUPERIMPOSE")); //$NON-NLS-1$
+        groupSuperimpose.setText(AtlDebugMessages.getString("AdvancedTab.SUPERIMPOSE")); //$NON-NLS-1$
 
-        buttonSuperimpose.setText(Messages.getString("AdvancedTab.ADD")); //$NON-NLS-1$
+        buttonSuperimpose.setText(AtlDebugMessages.getString("AdvancedTab.ADD")); //$NON-NLS-1$
         buttonSuperimpose.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent evt) {
                 addPath(AdvancedTab.SUPERIMPOSE, tableSuperimpose);
@@ -121,7 +121,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
             }
         });
         
-        buttonRemoveSuperimpose.setText(Messages.getString("AdvancedTab.REMOVE")); //$NON-NLS-1$
+        buttonRemoveSuperimpose.setText(AtlDebugMessages.getString("AdvancedTab.REMOVE")); //$NON-NLS-1$
         buttonRemoveSuperimpose.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent evt) {
                 removePath(tableSuperimpose);
@@ -138,7 +138,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 
         //ModelChoiceTab.TABLELIBNAME
         TableColumn superimposeName = new TableColumn(tableSuperimpose, SWT.LEFT);
-        superimposeName.setText(Messages.getString("AdvancedTab.SUPERIMPOSE")); //$NON-NLS-1$
+        superimposeName.setText(AtlDebugMessages.getString("AdvancedTab.SUPERIMPOSE")); //$NON-NLS-1$
 
         buttonSuperimpose.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         buttonRemoveSuperimpose.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
@@ -154,14 +154,14 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 		 * Components of group3
 		 **********************/
 
-		groupOthersInformation.setText(Messages.getString("MainAtlTab.OTHERSPARAMETERS")); //$NON-NLS-1$
+		groupOthersInformation.setText(AtlDebugMessages.getString("MainAtlTab.OTHERSPARAMETERS")); //$NON-NLS-1$
 
 		buttonAllowInterModelReferences.setLayoutData(new GridData(GridData.FILL_BOTH));
-		buttonAllowInterModelReferences.setText(Messages.getString("MainAtlTab.INTERMODELREFS")); //$NON-NLS-1$
+		buttonAllowInterModelReferences.setText(AtlDebugMessages.getString("MainAtlTab.INTERMODELREFS")); //$NON-NLS-1$
 		buttonAllowInterModelReferences.addSelectionListener(this);
 
 		buttonModeDebug.setLayoutData(new GridData(GridData.FILL_BOTH));
-		buttonModeDebug.setText(Messages.getString("MainAtlTab.MODEDEBUG")); //$NON-NLS-1$
+		buttonModeDebug.setText(AtlDebugMessages.getString("MainAtlTab.MODEDEBUG")); //$NON-NLS-1$
 		buttonModeDebug.addSelectionListener(this);
 		
 		checkButtonFactory();
@@ -289,7 +289,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
         if (tableSuperimpose.getItemCount() != 0) {
             for (int i=0; i < tableSuperimpose.getItemCount(); i++)
                 if (tableSuperimpose.getItem(i).getText().equals("")) { //$NON-NLS-1$
-                    this.setErrorMessage(Messages.getString("AdvancedTab.GIVEPATHSUPERIMPOSE")); //$NON-NLS-1$
+                    this.setErrorMessage(AtlDebugMessages.getString("AdvancedTab.GIVEPATHSUPERIMPOSE")); //$NON-NLS-1$
                     return false;
                 }
         }
@@ -313,7 +313,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
     private void addPath(final String type, Table table) {
         ElementTreeSelectionDialog elementTreeSelectionDialog = new ElementTreeSelectionDialog( getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
         elementTreeSelectionDialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-        elementTreeSelectionDialog.setMessage(Messages.getString("AdvancedTab.CHOOSE") + type); //$NON-NLS-1$
+        elementTreeSelectionDialog.setMessage(AtlDebugMessages.getString("AdvancedTab.CHOOSE") + type); //$NON-NLS-1$
         elementTreeSelectionDialog.setAllowMultiple(false);
         elementTreeSelectionDialog.setDoubleClickSelects(true);
         elementTreeSelectionDialog.addFilter(new ViewerFilter() {
@@ -364,7 +364,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
     private void removePath(Table table) {
         int index = table.getSelectionIndex();
         if (index == -1) {
-            AtlLauncherTools.messageBox(Messages.getString("AdvancedTab.CHOOSEENTRY")); //$NON-NLS-1$
+            AtlLauncherTools.messageBox(AtlDebugMessages.getString("AdvancedTab.CHOOSEENTRY")); //$NON-NLS-1$
             return;
         }
         table.remove(index);

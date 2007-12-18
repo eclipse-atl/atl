@@ -47,7 +47,7 @@ import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
-import org.eclipse.m2m.atl.adt.debug.Messages;
+import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.adt.launching.AtlLauncherTools;
 import org.eclipse.m2m.atl.engine.AtlNbCharFile;
 import org.eclipse.m2m.atl.engine.vm.adwp.ADWP;
@@ -146,7 +146,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	public void start() {
 		
 		
-		logger.info(Messages.getString("AtlDebugTarget.CONNECTIONDEBUGEE"));//$NON-NLS-1$
+		logger.info(AtlDebugMessages.getString("AtlDebugTarget.CONNECTIONDEBUGEE"));//$NON-NLS-1$
 		try {
 			do {
 				try {
@@ -174,7 +174,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 			while(socket == null);
 			
 			debugger = new ADWPDebugger(socket.getInputStream(), socket.getOutputStream());
-			logger.info(Messages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
+			logger.info(AtlDebugMessages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
 			state = stateSuspended;
 
 			threads = new AtlThread[1];

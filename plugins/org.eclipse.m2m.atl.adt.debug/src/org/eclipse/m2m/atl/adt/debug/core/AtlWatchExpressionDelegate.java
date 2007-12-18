@@ -25,7 +25,7 @@ import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.debug.core.model.IWatchExpressionDelegate;
 import org.eclipse.debug.core.model.IWatchExpressionListener;
 import org.eclipse.debug.core.model.IWatchExpressionResult;
-import org.eclipse.m2m.atl.adt.debug.Messages;
+import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMXMLWriter;
 import org.eclipse.m2m.atl.engine.vm.adwp.ADWPDebugger;
@@ -173,7 +173,7 @@ public class AtlWatchExpressionDelegate implements IWatchExpressionDelegate {
 		} catch(DebugException e) {
 			de = e;
 		} catch(Exception e) {
-			de = new DebugException(new Status(Status.ERROR, "org.eclipse.m2m.atl.adt.debug", Status.OK, Messages.getString("AtlWatchExpressionDelegate.EXPRESSIONERROR"), e));//$NON-NLS-1$//$NON-NLS-2$
+			de = new DebugException(new Status(Status.ERROR, "org.eclipse.m2m.atl.adt.debug", Status.OK, AtlDebugMessages.getString("AtlWatchExpressionDelegate.EXPRESSIONERROR"), e));//$NON-NLS-1$//$NON-NLS-2$
 		}
 		return new AtlWatchExpressionResult(de, errorMessages, value);
 	}

@@ -28,7 +28,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
-import org.eclipse.m2m.atl.adt.debug.Messages;
+import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
@@ -66,9 +66,9 @@ public class AtlLauncherTools {
 	public static final String EXTRACTOR = "Extractor"; //$NON-NLS-1$
 	public static final String MODELHANDLER = "Model Handler"; //$NON-NLS-1$
 	public static final String MODEDEBUG = "Mode Debug"; //$NON-NLS-1$
-	public static final String MODELCHOICETABNAME = Messages.getString("AtlLauncherTools.MODELCHOICE"); //$NON-NLS-1$
-    public static final String ADVANCEDTABNAME = Messages.getString("AtlLauncherTools.ADVANCED"); //$NON-NLS-1$
-	public static final String REMOTEATLNAME = Messages.getString("AtlLauncherTools.ATLCONFIGURATION"); //$NON-NLS-1$
+	public static final String MODELCHOICETABNAME = AtlDebugMessages.getString("AtlLauncherTools.MODELCHOICE"); //$NON-NLS-1$
+    public static final String ADVANCEDTABNAME = AtlDebugMessages.getString("AtlLauncherTools.ADVANCED"); //$NON-NLS-1$
+	public static final String REMOTEATLNAME = AtlDebugMessages.getString("AtlLauncherTools.ATLCONFIGURATION"); //$NON-NLS-1$
 	public static final String PATHICONATL = "icons/atllogo_icon.gif"; //$NON-NLS-1$
 	public static List EXTENSIONS = new ArrayList();
 	static {
@@ -100,12 +100,12 @@ public class AtlLauncherTools {
 //		"Allow navigation in target models",
 //		"Allow modification of source models",
 //		"Allow container reassignment",
-		Messages.getString("AtlLauncherTools.0"), //$NON-NLS-1$
-		Messages.getString("AtlLauncherTools.1"), //$NON-NLS-1$
-		Messages.getString("AtlLauncherTools.2"), //$NON-NLS-1$
-		Messages.getString("AtlLauncherTools.3"), //$NON-NLS-1$
-		Messages.getString("AtlLauncherTools.4"), //$NON-NLS-1$
-		Messages.getString("AtlLauncherTools.5"), //$NON-NLS-1$
+		AtlDebugMessages.getString("AtlLauncherTools.0"), //$NON-NLS-1$
+		AtlDebugMessages.getString("AtlLauncherTools.1"), //$NON-NLS-1$
+		AtlDebugMessages.getString("AtlLauncherTools.2"), //$NON-NLS-1$
+		AtlDebugMessages.getString("AtlLauncherTools.3"), //$NON-NLS-1$
+		AtlDebugMessages.getString("AtlLauncherTools.4"), //$NON-NLS-1$
+		AtlDebugMessages.getString("AtlLauncherTools.5"), //$NON-NLS-1$
 	};
 	
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
@@ -156,7 +156,7 @@ public class AtlLauncherTools {
 	 */
 	public static void messageBox(String textToDisplay) {
 		MessageBox msgBox = new MessageBox(new Shell(),	SWT.APPLICATION_MODAL | SWT.OK);
-		msgBox.setText(Messages.getString("AtlLauncherTools.ERROR")); //$NON-NLS-1$
+		msgBox.setText(AtlDebugMessages.getString("AtlLauncherTools.ERROR")); //$NON-NLS-1$
 		msgBox.setMessage(textToDisplay);
 		msgBox.open();
 	}

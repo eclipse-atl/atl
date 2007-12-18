@@ -42,7 +42,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.m2m.atl.adt.debug.Messages;
+import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.AtlParser;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMCollection;
@@ -140,52 +140,52 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		projectInformationGroup = new Group(rootContainer, SWT.NULL);
 		projectInformationGroup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		projectInformationGroup.setLayout(new GridLayout(2, false));
-		projectInformationGroup.setText(Messages.getString("MainAtlTab.PROJECT")); //$NON-NLS-1$
+		projectInformationGroup.setText(AtlDebugMessages.getString("MainAtlTab.PROJECT")); //$NON-NLS-1$
 
 		Label projectNameLabel = new Label(projectInformationGroup, SWT.NULL);
-		projectNameLabel.setText(Messages.getString("MainAtlTab.PROJECTNAME")); //$NON-NLS-1$
+		projectNameLabel.setText(AtlDebugMessages.getString("MainAtlTab.PROJECTNAME")); //$NON-NLS-1$
 		
 		projectsList = new Combo(projectInformationGroup, SWT.NULL | SWT.READ_ONLY);
 		projectsList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		projectsList.setItems(AtlLauncherTools.projectNames());
 		
 		Label projectFileLabel = new Label(projectInformationGroup, SWT.NULL);
-		projectFileLabel.setText(Messages.getString("MainAtlTab.ATLFILENAME")); //$NON-NLS-1$
+		projectFileLabel.setText(AtlDebugMessages.getString("MainAtlTab.ATLFILENAME")); //$NON-NLS-1$
 		
 		projectFilesList = new Combo(projectInformationGroup, SWT.NULL | SWT.READ_ONLY);
 		projectFilesList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		metamodelsGroup = new Group(rootContainer, SWT.NULL);
-		metamodelsGroup.setText(Messages.getString("MainAtlTab.METAMODELS"));  //$NON-NLS-1$
+		metamodelsGroup.setText(AtlDebugMessages.getString("MainAtlTab.METAMODELS"));  //$NON-NLS-1$
 		metamodelsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		metamodelsGroup.setLayout(new GridLayout(8, false));
 		
 		sourceModelsGroup = new Group(rootContainer, SWT.NULL);
-		sourceModelsGroup.setText(Messages.getString("MainAtlTab.SOURCEMODELS")); //$NON-NLS-1$
+		sourceModelsGroup.setText(AtlDebugMessages.getString("MainAtlTab.SOURCEMODELS")); //$NON-NLS-1$
 		sourceModelsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		sourceModelsGroup.setLayout(new GridLayout(4, false));
 		
 		targetModelsGroup = new Group(rootContainer, SWT.NULL);
-		targetModelsGroup.setText(Messages.getString("MainAtlTab.TARGETMODELS")); //$NON-NLS-1$
+		targetModelsGroup.setText(AtlDebugMessages.getString("MainAtlTab.TARGETMODELS")); //$NON-NLS-1$
 		targetModelsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		targetModelsGroup.setLayout(new GridLayout(4, false));
 		
 		librariesGroup = new Group(rootContainer, SWT.NULL);
-		librariesGroup.setText(Messages.getString("MainAtlTab.LIBRARIES")); //$NON-NLS-1$
+		librariesGroup.setText(AtlDebugMessages.getString("MainAtlTab.LIBRARIES")); //$NON-NLS-1$
 		librariesGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		librariesGroup.setLayout(new GridLayout(4, false));	
 		
 		controlGroup = new Group(rootContainer, SWT.NULL);
-		controlGroup.setText(Messages.getString("MainAtlTab.MODIFY"));  //$NON-NLS-1$
+		controlGroup.setText(AtlDebugMessages.getString("MainAtlTab.MODIFY"));  //$NON-NLS-1$
 		controlGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		controlGroup.setLayout(new GridLayout(7, false));
 		
 		final Button addSourceModelBtn = new Button(controlGroup, SWT.NULL);
-		addSourceModelBtn.setText(Messages.getString("MainAtlTab.ADDSOURCE")); //$NON-NLS-1$
+		addSourceModelBtn.setText(AtlDebugMessages.getString("MainAtlTab.ADDSOURCE")); //$NON-NLS-1$
 		final Button addTargetModelBtn = new Button(controlGroup, SWT.NULL);
-		addTargetModelBtn.setText(Messages.getString("MainAtlTab.ADDTARGET")); //$NON-NLS-1$
+		addTargetModelBtn.setText(AtlDebugMessages.getString("MainAtlTab.ADDTARGET")); //$NON-NLS-1$
 		final Button addLibBtn = new Button(controlGroup, SWT.NULL);
-		addLibBtn.setText(Messages.getString("MainAtlTab.ADDLIB")); //$NON-NLS-1$
+		addLibBtn.setText(AtlDebugMessages.getString("MainAtlTab.ADDLIB")); //$NON-NLS-1$
 		
 		projectsList.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -204,16 +204,16 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent evt) {
 				InputDialog dlg = new InputDialog(
 						getShell(),
-						Messages.getString("MainAtlTab.ADDSOURCEMODEL"), //$NON-NLS-1$
-						Messages.getString("MainAtlTab.MMNAME"), //$NON-NLS-1$
+						AtlDebugMessages.getString("MainAtlTab.ADDSOURCEMODEL"), //$NON-NLS-1$
+						AtlDebugMessages.getString("MainAtlTab.MMNAME"), //$NON-NLS-1$
 						"MM", //$NON-NLS-1$
 						null);
 				if (dlg.open() == InputDialog.CANCEL) return;
 				String metamodelName = dlg.getValue();
 				dlg = new InputDialog(
 						getShell(),
-						Messages.getString("MainAtlTab.ADDSOURCEMODEL"), //$NON-NLS-1$
-						Messages.getString("MainAtlTab.MNAME"), //$NON-NLS-1$
+						AtlDebugMessages.getString("MainAtlTab.ADDSOURCEMODEL"), //$NON-NLS-1$
+						AtlDebugMessages.getString("MainAtlTab.MNAME"), //$NON-NLS-1$
 						"IN", //$NON-NLS-1$
 						null);
 				if (dlg.open() == InputDialog.CANCEL) return;
@@ -238,16 +238,16 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent evt) {
 				InputDialog dlg = new InputDialog(
 						getShell(),
-						Messages.getString("MainAtlTab.ADDTARGETMODEL"), //$NON-NLS-1$
-						Messages.getString("MainAtlTab.MMNAME"), //$NON-NLS-1$
+						AtlDebugMessages.getString("MainAtlTab.ADDTARGETMODEL"), //$NON-NLS-1$
+						AtlDebugMessages.getString("MainAtlTab.MMNAME"), //$NON-NLS-1$
 						"MM", //$NON-NLS-1$
 						null);
 				if (dlg.open() == InputDialog.CANCEL) return;
 				String metamodelName = dlg.getValue();
 				dlg = new InputDialog(
 						getShell(),
-						Messages.getString("MainAtlTab.ADDTARGETMODEL"), //$NON-NLS-1$
-						Messages.getString("MainAtlTab.MNAME"), //$NON-NLS-1$
+						AtlDebugMessages.getString("MainAtlTab.ADDTARGETMODEL"), //$NON-NLS-1$
+						AtlDebugMessages.getString("MainAtlTab.MNAME"), //$NON-NLS-1$
 						"OUT", //$NON-NLS-1$
 						null);
 				if (dlg.open() == InputDialog.CANCEL) return;
@@ -272,8 +272,8 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent evt) {
 				InputDialog dlg = new InputDialog(
 						getShell(),
-						Messages.getString("MainAtlTab.ADDLIBRARY"), //$NON-NLS-1$
-						Messages.getString("MainAtlTab.LIBRARYNAME"), //$NON-NLS-1$
+						AtlDebugMessages.getString("MainAtlTab.ADDLIBRARY"), //$NON-NLS-1$
+						AtlDebugMessages.getString("MainAtlTab.LIBRARYNAME"), //$NON-NLS-1$
 						"LIB", //$NON-NLS-1$
 						null);
 				if (dlg.open() == InputDialog.CANCEL) return;
@@ -471,7 +471,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			if (res instanceof IFile) {
 				getModelsFromATLFile((IFile) res);
 			} else {
-				logger.severe(Messages.getString("MainAtlTab.FILENOTFOUND") + path); //$NON-NLS-1$
+				logger.severe(AtlDebugMessages.getString("MainAtlTab.FILENOTFOUND") + path); //$NON-NLS-1$
 //				System.out.println("File not found " + path);
 			}
 		}
@@ -699,11 +699,11 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 */
 	public boolean canSave() {
 		if (projectsList.getText().equals("")) { //$NON-NLS-1$
-			this.setErrorMessage(Messages.getString("MainAtlTab.GIVEPROJECTNAME")); //$NON-NLS-1$
+			this.setErrorMessage(AtlDebugMessages.getString("MainAtlTab.GIVEPROJECTNAME")); //$NON-NLS-1$
 			return false;
 		}
 		if (projectFilesList.getText().equals("")) { //$NON-NLS-1$
-			this.setErrorMessage(Messages.getString("MainAtlTab.GIVETRANSFORMATIONNAME")); //$NON-NLS-1$
+			this.setErrorMessage(AtlDebugMessages.getString("MainAtlTab.GIVETRANSFORMATIONNAME")); //$NON-NLS-1$
 			return false;
 		}
 		for (Iterator i = metamodelsGroupWidgets.entrySet().iterator(); i.hasNext();) {
@@ -713,7 +713,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			Text metamodelLocation = (Text)widgets.get("metamodelLocation"); //$NON-NLS-1$
 			Button isMetametamodel = (Button)widgets.get("isMetametamodel"); //$NON-NLS-1$
 			if ((metamodelLocation.getText().length() == 0) && (!isMetametamodel.getSelection())) {
-				this.setErrorMessage(Messages.getString("MainAtlTab.GIVEPATHFOR") + mName); //$NON-NLS-1$
+				this.setErrorMessage(AtlDebugMessages.getString("MainAtlTab.GIVEPATHFOR") + mName); //$NON-NLS-1$
 				return false;
 			}
 		}
@@ -741,7 +741,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			Map widgets = (Map) entry.getValue();
 			Text location = (Text)widgets.get("location"); //$NON-NLS-1$
 			if (location.getText().length() == 0) {
-				this.setErrorMessage(Messages.getString("MainAtlTab.GIVEPATHFOR") + mName); //$NON-NLS-1$
+				this.setErrorMessage(AtlDebugMessages.getString("MainAtlTab.GIVEPATHFOR") + mName); //$NON-NLS-1$
 				return false;
 			}
 		}
@@ -795,7 +795,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		else {
 			ElementTreeSelectionDialog elementTreeSelectionDialog = new ElementTreeSelectionDialog(	getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 			elementTreeSelectionDialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-			elementTreeSelectionDialog.setMessage(Messages.getString("ModelChoiceTab.CHOOSEMODEL")); //$NON-NLS-1$
+			elementTreeSelectionDialog.setMessage(AtlDebugMessages.getString("ModelChoiceTab.CHOOSEMODEL")); //$NON-NLS-1$
 			elementTreeSelectionDialog.setAllowMultiple(false);
 			elementTreeSelectionDialog.setDoubleClickSelects(true);
 			elementTreeSelectionDialog.addFilter(new ViewerFilter() {
@@ -861,7 +861,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		thisGroupWidgets.put("isMetametamodel", isMetametamodel); //$NON-NLS-1$
 		isMetametamodel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 2, 1));
 		isMetametamodel.setText("Is metametamodel"); //$NON-NLS-1$
-		isMetametamodel.setToolTipText(Messages.getString("MainAtlTab.MODELHANDLERCHOICE")); //$NON-NLS-1$
+		isMetametamodel.setToolTipText(AtlDebugMessages.getString("MainAtlTab.MODELHANDLERCHOICE")); //$NON-NLS-1$
 			
 		final Label modelHandlerLabel = new Label(parent, SWT.NULL);
 		modelHandlerLabel.setText("Model handler: "); //$NON-NLS-1$

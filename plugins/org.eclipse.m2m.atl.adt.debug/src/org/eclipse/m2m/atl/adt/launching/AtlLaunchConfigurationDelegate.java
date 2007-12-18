@@ -19,7 +19,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
-import org.eclipse.m2m.atl.adt.debug.Messages;
+import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
@@ -42,7 +42,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		atlVM.launch(configuration, mode, launch, monitor);
 		long endTime = System.currentTimeMillis();
 		if(printExecutionTime && !mode.equals(ILaunchManager.DEBUG_MODE)) {
-			logger.info(launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.ATLFILENAME, Messages.getString("AtlLaunchConfigurationDelegate.RESULT", new Object[]{new Double(((endTime - startTime) / 1000.))} ))); //$NON-NLS-1$
+			logger.info(launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.ATLFILENAME, AtlDebugMessages.getString("AtlLaunchConfigurationDelegate.RESULT", new Object[]{new Double(((endTime - startTime) / 1000.))} ))); //$NON-NLS-1$
 		}
 	}
 

@@ -31,7 +31,7 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.m2m.atl.adt.debug.Messages;
+import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
@@ -216,13 +216,13 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 
 		groupIn.setLayout(groupLayout);
 		
-		groupIn.setText(Messages.getString("ModelChoiceTab.IN")); //$NON-NLS-1$
+		groupIn.setText(AtlDebugMessages.getString("ModelChoiceTab.IN")); //$NON-NLS-1$
 
-		labelModelIn.setText(Messages.getString("ModelChoiceTab.MODELCOLON")); //$NON-NLS-1$
+		labelModelIn.setText(AtlDebugMessages.getString("ModelChoiceTab.MODELCOLON")); //$NON-NLS-1$
 		
-		labelMetaModelIn.setText(Messages.getString("ModelChoiceTab.METAMODELCOLON")); //$NON-NLS-1$
+		labelMetaModelIn.setText(AtlDebugMessages.getString("ModelChoiceTab.METAMODELCOLON")); //$NON-NLS-1$
 		
-		buttonIn.setText(Messages.getString("ModelChoiceTab.ADD")); //$NON-NLS-1$
+		buttonIn.setText(AtlDebugMessages.getString("ModelChoiceTab.ADD")); //$NON-NLS-1$
 		buttonIn.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				addTextTable(evt, tableIn, textModelIn, textMetaModelIn, INPUT);
@@ -231,7 +231,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		buttonRemoveIn.setText(Messages.getString("ModelChoiceTab.REMOVE")); //$NON-NLS-1$
+		buttonRemoveIn.setText(AtlDebugMessages.getString("ModelChoiceTab.REMOVE")); //$NON-NLS-1$
 		buttonRemoveIn.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				removeTextTable(evt, tableIn);
@@ -249,11 +249,11 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		
 		//ModelChoiceTab.TABLEMODELNAME
 		TableColumn modelNameIn = new TableColumn(tableIn, SWT.CENTER);
-		modelNameIn.setText(Messages.getString("ModelChoiceTab.MODEL")); //$NON-NLS-1$
+		modelNameIn.setText(AtlDebugMessages.getString("ModelChoiceTab.MODEL")); //$NON-NLS-1$
 
 		//ModelChoiceTab.TABLEMETAMODELNAME
 		TableColumn mmodelNameIn = new TableColumn(tableIn, SWT.CENTER);
-		mmodelNameIn.setText(Messages.getString("ModelChoiceTab.META_MODEL")); //$NON-NLS-1$
+		mmodelNameIn.setText(AtlDebugMessages.getString("ModelChoiceTab.META_MODEL")); //$NON-NLS-1$
 		
 		labelModelIn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END));
 		textMetaModelIn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
@@ -277,13 +277,13 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 
 		groupOut.setLayout(groupLayout);
 		
-		groupOut.setText(Messages.getString("ModelChoiceTab.OUT")); //$NON-NLS-1$
+		groupOut.setText(AtlDebugMessages.getString("ModelChoiceTab.OUT")); //$NON-NLS-1$
 
-		labelModelOut.setText(Messages.getString("ModelChoiceTab.MODELCOLON")); //$NON-NLS-1$
+		labelModelOut.setText(AtlDebugMessages.getString("ModelChoiceTab.MODELCOLON")); //$NON-NLS-1$
 
-		labelMetaModelOut.setText(Messages.getString("ModelChoiceTab.METAMODELCOLON")); //$NON-NLS-1$
+		labelMetaModelOut.setText(AtlDebugMessages.getString("ModelChoiceTab.METAMODELCOLON")); //$NON-NLS-1$
 		
-		buttonOut.setText(Messages.getString("ModelChoiceTab.ADD")); //$NON-NLS-1$
+		buttonOut.setText(AtlDebugMessages.getString("ModelChoiceTab.ADD")); //$NON-NLS-1$
 		buttonOut.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				addTextTable(evt, tableOut, textModelOut, textMetaModelOut,	OUTPUT);
@@ -292,7 +292,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
-		buttonRemoveOut.setText(Messages.getString("ModelChoiceTab.REMOVE")); //$NON-NLS-1$
+		buttonRemoveOut.setText(AtlDebugMessages.getString("ModelChoiceTab.REMOVE")); //$NON-NLS-1$
 		buttonRemoveOut.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				removeTextTable(evt, tableOut);
@@ -310,11 +310,11 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 
 		//ModelChoiceTab.TABLEMODELNAME
 		TableColumn modelName = new TableColumn(tableOut, SWT.CENTER);
-		modelName.setText(Messages.getString("ModelChoiceTab.MODEL")); //$NON-NLS-1$
+		modelName.setText(AtlDebugMessages.getString("ModelChoiceTab.MODEL")); //$NON-NLS-1$
 		
 		//ModelChoiceTab.TABLEMETAMODELNAME
 		TableColumn metaModelName = new TableColumn(tableOut, SWT.CENTER);
-		metaModelName.setText(Messages.getString("ModelChoiceTab.META_MODEL")); //$NON-NLS-1$
+		metaModelName.setText(AtlDebugMessages.getString("ModelChoiceTab.META_MODEL")); //$NON-NLS-1$
 
 		labelModelOut.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END));
 		textModelOut.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
@@ -334,9 +334,9 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 
 		groupPath.setLayout(groupLayout);
 		
-		groupPath.setText(Messages.getString("ModelChoiceTab.PATH_EDITOR")); //$NON-NLS-1$
+		groupPath.setText(AtlDebugMessages.getString("ModelChoiceTab.PATH_EDITOR")); //$NON-NLS-1$
 		
-		buttonSetPath.setText(Messages.getString("ModelChoiceTab.SET_PATH")); //$NON-NLS-1$
+		buttonSetPath.setText(AtlDebugMessages.getString("ModelChoiceTab.SET_PATH")); //$NON-NLS-1$
 		buttonSetPath.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				editPath(ModelChoiceTab.MODEL, tablePath);
@@ -345,7 +345,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
-		buttonSetExternalPath.setText(Messages.getString("ModelChoiceTab.SET_EXTERNAL_PATH")); //$NON-NLS-1$
+		buttonSetExternalPath.setText(AtlDebugMessages.getString("ModelChoiceTab.SET_EXTERNAL_PATH")); //$NON-NLS-1$
 		buttonSetExternalPath.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				editExternalPath(ModelChoiceTab.MODEL, tablePath);
@@ -389,12 +389,12 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 				int index = tablePath.getSelectionIndex();
 				
 				if (index == -1) {
-					AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel"); //$NON-NLS-1$ //$NON-NLS-2$
+					AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.CHOOSE") + "Metamodel"); //$NON-NLS-1$ //$NON-NLS-2$
 					return;
 				}
 				
 				if (MODEL_INPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE)) || MODEL_OUTPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE))) {
-					AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.MMADVERTISMENT")); //$NON-NLS-1$
+					AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.MMADVERTISMENT")); //$NON-NLS-1$
 					return;
 				}
 				
@@ -418,11 +418,11 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		
 		//ModelChoiceTab.TABLEPATHNAME
 		TableColumn modelPathName = new TableColumn(tablePath, SWT.CENTER);
-		modelPathName.setText(Messages.getString("ModelChoiceTab.MODEL")); //$NON-NLS-1$
+		modelPathName.setText(AtlDebugMessages.getString("ModelChoiceTab.MODEL")); //$NON-NLS-1$
 		
 		//ModelChoiceTab.TABLEPATHPATH
 		TableColumn pathName = new TableColumn(tablePath, SWT.LEFT);
-		pathName.setText(Messages.getString("ModelChoiceTab.PATH")); //$NON-NLS-1$
+		pathName.setText(AtlDebugMessages.getString("ModelChoiceTab.PATH")); //$NON-NLS-1$
 		
 		//ModelChoiceTab.TABLEPATHMODELHANDLER
 		TableColumn modelHandler = new TableColumn(tablePath, SWT.CENTER);
@@ -457,11 +457,11 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 
 		groupLib.setLayout(groupLayout);
 		
-		groupLib.setText(Messages.getString("ModelChoiceTab.LIBS")); //$NON-NLS-1$
+		groupLib.setText(AtlDebugMessages.getString("ModelChoiceTab.LIBS")); //$NON-NLS-1$
 
-		labelLib.setText(Messages.getString("ModelChoiceTab.LIBCOLON")); //$NON-NLS-1$
+		labelLib.setText(AtlDebugMessages.getString("ModelChoiceTab.LIBCOLON")); //$NON-NLS-1$
 
-		buttonLib.setText(Messages.getString("ModelChoiceTab.ADD")); //$NON-NLS-1$
+		buttonLib.setText(AtlDebugMessages.getString("ModelChoiceTab.ADD")); //$NON-NLS-1$
 		buttonLib.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				addLib();
@@ -470,7 +470,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
-		buttonPathLib.setText(Messages.getString("ModelChoiceTab.SET_PATH")); //$NON-NLS-1$
+		buttonPathLib.setText(AtlDebugMessages.getString("ModelChoiceTab.SET_PATH")); //$NON-NLS-1$
 		buttonPathLib.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				editPath(ModelChoiceTab.LIB, tableLib);
@@ -479,7 +479,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
-		buttonExternalPathLib.setText(Messages.getString("ModelChoiceTab.SET_EXTERNAL_PATH")); //$NON-NLS-1$
+		buttonExternalPathLib.setText(AtlDebugMessages.getString("ModelChoiceTab.SET_EXTERNAL_PATH")); //$NON-NLS-1$
 		buttonExternalPathLib.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				editExternalPath(ModelChoiceTab.LIB, tableLib);
@@ -488,7 +488,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
-		buttonRemoveLib.setText(Messages.getString("ModelChoiceTab.REMOVE_LIB")); //$NON-NLS-1$
+		buttonRemoveLib.setText(AtlDebugMessages.getString("ModelChoiceTab.REMOVE_LIB")); //$NON-NLS-1$
 		buttonRemoveLib.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				removeLib();
@@ -506,11 +506,11 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 
 		//ModelChoiceTab.TABLELIBNAME
 		TableColumn libName = new TableColumn(tableLib, SWT.CENTER);
-		libName.setText(Messages.getString("ModelChoiceTab.LIBS")); //$NON-NLS-1$
+		libName.setText(AtlDebugMessages.getString("ModelChoiceTab.LIBS")); //$NON-NLS-1$
 
 		//ModelChoiceTab.TABLELIBPATH
 		TableColumn pathLib = new TableColumn(tableLib, SWT.LEFT);
-		pathLib.setText(Messages.getString("ModelChoiceTab.PATH")); //$NON-NLS-1$
+		pathLib.setText(AtlDebugMessages.getString("ModelChoiceTab.PATH")); //$NON-NLS-1$
 
 		gd = new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END);
 		gd.horizontalSpan = 2;
@@ -541,13 +541,13 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		int index = tableLib.getSelectionIndex();
 		
 		if (index == -1) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSEMODEL")); //$NON-NLS-1$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.CHOOSEMODEL")); //$NON-NLS-1$
 			return;
 		}
 
 		MessageBox msgBox = new MessageBox(this.getShell(),	SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
-		msgBox.setText(Messages.getString("ModelChoiceTab.ERROR")); //$NON-NLS-1$
-		msgBox.setMessage(Messages.getString("ModelChoiceTab.REMOVELIB")); //$NON-NLS-1$
+		msgBox.setText(AtlDebugMessages.getString("ModelChoiceTab.ERROR")); //$NON-NLS-1$
+		msgBox.setMessage(AtlDebugMessages.getString("ModelChoiceTab.REMOVELIB")); //$NON-NLS-1$
 		if (msgBox.open() != SWT.YES)
 			return;
 
@@ -563,13 +563,13 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		int index = table.getSelectionIndex();
 		
 		if (index == -1) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSEMODEL")); //$NON-NLS-1$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.CHOOSEMODEL")); //$NON-NLS-1$
 			return;
 		}
 
 		MessageBox msgBox = new MessageBox(this.getShell(),	SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
-		msgBox.setText(Messages.getString("ModelChoiceTab.ERROR")); //$NON-NLS-1$
-		msgBox.setMessage(Messages.getString("ModelChoiceTab.REMOVEMODEL")); //$NON-NLS-1$
+		msgBox.setText(AtlDebugMessages.getString("ModelChoiceTab.ERROR")); //$NON-NLS-1$
+		msgBox.setMessage(AtlDebugMessages.getString("ModelChoiceTab.REMOVEMODEL")); //$NON-NLS-1$
 		if (msgBox.open() != SWT.YES)
 			return;
 		
@@ -649,7 +649,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 	private void addLib() {
 		String lib = textLib.getText();
 		if (lib.equals("")) { //$NON-NLS-1$
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.GIVELIB")); //$NON-NLS-1$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.GIVELIB")); //$NON-NLS-1$
 			return;
 		}
 		
@@ -663,12 +663,12 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		int index = tablePath.getSelectionIndex();
 		
 		if (index == -1) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel"); //$NON-NLS-1$ //$NON-NLS-2$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.CHOOSE") + "Metamodel"); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		
 		if (MODEL_INPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE)) || MODEL_OUTPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE))) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.MMADVERTISMENT")); //$NON-NLS-1$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.MMADVERTISMENT")); //$NON-NLS-1$
 			return;
 		}
 		
@@ -680,12 +680,12 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		int index = tablePath.getSelectionIndex();
 		
 		if (index == -1) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel"); //$NON-NLS-1$ //$NON-NLS-2$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.CHOOSE") + "Metamodel"); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		
 		if (MODEL_INPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE)) || MODEL_OUTPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE))) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.MMADVERTISMENT")); //$NON-NLS-1$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.MMADVERTISMENT")); //$NON-NLS-1$
 			return;
 		}
 		
@@ -697,12 +697,12 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		int index = tablePath.getSelectionIndex();
 		
 		if (index == -1) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel"); //$NON-NLS-1$ //$NON-NLS-2$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.CHOOSE") + "Metamodel"); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		
 		if (MODEL_INPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE)) || MODEL_OUTPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE))) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.MMADVERTISMENT")); //$NON-NLS-1$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.MMADVERTISMENT")); //$NON-NLS-1$
 			return;
 		}
 		
@@ -713,7 +713,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 				tablePath.getItem(index).setText(TABLEPATHPATH, "#"+selection[0]); //$NON-NLS-1$
 		}
 		else {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.MHSELECTION")); //$NON-NLS-1$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.MHSELECTION")); //$NON-NLS-1$
 			return;
 		}
 	}
@@ -727,7 +727,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		int index = table.getSelectionIndex();
 		
 		if (index == -1) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + type); //$NON-NLS-1$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.CHOOSE") + type); //$NON-NLS-1$
 			return;
 		}
 
@@ -740,11 +740,11 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 				item.setText(new String[]{item.getText(ModelChoiceTab.TABLEPATHNAME), outputPath.toFile().getName(), item.getText(TABLEPATHMODELHANDLER), item.getText(ModelChoiceTab.TABLEPATHTYPE)});
 			}
 			else
-				AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + type); //$NON-NLS-1$
+				AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.CHOOSE") + type); //$NON-NLS-1$
 		}
 		else {
 			FileDialog fileDialog = new FileDialog(this.getShell());
-			fileDialog.setText(Messages.getString("ModelChoiceTab.CHOOSEMETAMODEL")); //$NON-NLS-1$
+			fileDialog.setText(AtlDebugMessages.getString("ModelChoiceTab.CHOOSEMETAMODEL")); //$NON-NLS-1$
 			fileDialog.setFilterExtensions(new String[]{"*"}); //$NON-NLS-1$
 			String fileName = fileDialog.open();
 			if (fileName == null)
@@ -760,7 +760,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 					item.setText(new String[]{item.getText(ModelChoiceTab.TABLELIBNAME), fileName});
 			}
 			else
-				AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + type); //$NON-NLS-1$
+				AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.CHOOSE") + type); //$NON-NLS-1$
 		}
 	}
 	
@@ -773,7 +773,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		int index = table.getSelectionIndex();
 		
 		if (index == -1) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + type); //$NON-NLS-1$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.CHOOSE") + type); //$NON-NLS-1$
 			return;
 		}
 
@@ -786,12 +786,12 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 				item.setText(new String[]{item.getText(ModelChoiceTab.TABLEPATHNAME), outputPath.toString(), item.getText(TABLEPATHMODELHANDLER), item.getText(ModelChoiceTab.TABLEPATHTYPE)});
 			}
 			else
-				AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + type); //$NON-NLS-1$
+				AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.CHOOSE") + type); //$NON-NLS-1$
 		}
 		else {
 			ElementTreeSelectionDialog elementTreeSelectionDialog = new ElementTreeSelectionDialog(	getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 			elementTreeSelectionDialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-			elementTreeSelectionDialog.setMessage(Messages.getString("ModelChoiceTab.CHOOSE") + type); //$NON-NLS-1$
+			elementTreeSelectionDialog.setMessage(AtlDebugMessages.getString("ModelChoiceTab.CHOOSE") + type); //$NON-NLS-1$
 			elementTreeSelectionDialog.setAllowMultiple(false);
 			elementTreeSelectionDialog.setDoubleClickSelects(true);
 			elementTreeSelectionDialog.addFilter(new ViewerFilter() {
@@ -907,12 +907,12 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 	private void addTextTable(SelectionEvent se, Table tableParam, Text model, Text metaModel, int type) {
 
 		if (model.getText().equals("")) { //$NON-NLS-1$
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.GIVEMODEL")); //$NON-NLS-1$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.GIVEMODEL")); //$NON-NLS-1$
 			return;
 		}
 		
 		if (metaModel.getText().equals("")) { //$NON-NLS-1$
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.GIVEMETAMODEL")); //$NON-NLS-1$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.GIVEMETAMODEL")); //$NON-NLS-1$
 			return;
 		}
 		
@@ -920,7 +920,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		String metaModelName = metaModel.getText();
 		
 		if (tupleAlreadyInTable(modelName, metaModelName, tableParam)) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.ALREADYINTABLE")); //$NON-NLS-1$
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.ALREADYINTABLE")); //$NON-NLS-1$
 			return;
 		}
 		
@@ -1094,10 +1094,10 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 	 */
 	public boolean canSave() {
 		if (tablePath.getItemCount() == 0) {
-			this.setMessage(Messages.getString("ModelChoiceTab.WARNING_GIVEMODELS")); //$NON-NLS-1$
+			this.setMessage(AtlDebugMessages.getString("ModelChoiceTab.WARNING_GIVEMODELS")); //$NON-NLS-1$
 		}
 		else {
-			this.setErrorMessage(Messages.getString("ModelChoiceTab.GIVEPATHMODELS")); //$NON-NLS-1$
+			this.setErrorMessage(AtlDebugMessages.getString("ModelChoiceTab.GIVEPATHMODELS")); //$NON-NLS-1$
 			for (int i=0; i < tablePath.getItemCount(); i++)
 				if (tablePath.getItem(i).getText(TABLEPATHPATH).equals("")) //$NON-NLS-1$
 					return false;
@@ -1106,7 +1106,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		if (tableLib.getItemCount() != 0) {
 			for (int i=0; i < tableLib.getItemCount(); i++)
 				if (tableLib.getItem(i).getText(TABLELIBPATH).equals("")) { //$NON-NLS-1$
-					this.setErrorMessage(Messages.getString("ModelChoiceTab.GIVEPATHLIBS")); //$NON-NLS-1$
+					this.setErrorMessage(AtlDebugMessages.getString("ModelChoiceTab.GIVEPATHLIBS")); //$NON-NLS-1$
 					return false;
 				}
 		}

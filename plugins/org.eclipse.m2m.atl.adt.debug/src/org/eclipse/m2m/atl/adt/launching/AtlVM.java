@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
-import org.eclipse.m2m.atl.adt.debug.Messages;
+import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
@@ -50,7 +50,7 @@ public abstract class AtlVM implements ILaunchConfigurationDelegate {
 		} else {
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
             if (registry == null) {
-                throw new RuntimeException(Messages.getString("AtlVM.EMFREGISTRYNOTFOUND")); //$NON-NLS-1$
+                throw new RuntimeException(AtlDebugMessages.getString("AtlVM.EMFREGISTRYNOTFOUND")); //$NON-NLS-1$
             }
             
 			IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.adt.debug.atlvm");//$NON-NLS-1$
@@ -73,7 +73,7 @@ public abstract class AtlVM implements ILaunchConfigurationDelegate {
 		}
 
 		if(ret == null) {
-			throw new RuntimeException(Messages.getString("AtlVM.VMNOTFOUND",new Object[]{vm})); //$NON-NLS-1$
+			throw new RuntimeException(AtlDebugMessages.getString("AtlVM.VMNOTFOUND",new Object[]{vm})); //$NON-NLS-1$
 		}
 		
 		return ret;
