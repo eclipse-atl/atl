@@ -361,7 +361,7 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
     protected Composite newCompositeTextFields(Composite parent) {
 		Composite control = newComposite(parent, 2);
 		for(int i = 0; i < textFieldModel.length; ++i) {
-			newLabelledTextField(control, textFieldModel[i][0], "", Integer.parseInt(textFieldModel[i][2]), textFieldModel[i][1]);
+			newLabelledTextField(control, textFieldModel[i][0], "", Integer.parseInt(textFieldModel[i][2]), textFieldModel[i][1]);//$NON-NLS-1$
 		}
 		return control;
     }

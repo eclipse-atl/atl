@@ -24,27 +24,27 @@ public class AtlEditorPreferencePage extends AbstractPreferencePage {
 	 * super class the title using the resource bundle.
 	 */
 	public AtlEditorPreferencePage() {
-		super(AtlPreferencesMessages.getString("AppearancePreferencePage.description"));
+		super(AtlPreferencesMessages.getString("AppearancePreferencePage.description")); //$NON-NLS-1$
 
 		checkBoxModel = new String[][] {
-				{ AtlPreferencesMessages.getString("AppearancePreferencePage.highlightCurrentLine"), AtlPreferenceConstants.APPEARANCE_HIGHLIGHT_CURRENT_LINE },
-				{ AtlPreferencesMessages.getString("AppearancePreferencePage.highlightMatchingBrackets"), AtlPreferenceConstants.APPEARANCE_HIGHLIGHT_MATCHING_BRACKETS },
-				{ AtlPreferencesMessages.getString("AppearancePreferencePage.lineNumberRuler"), AtlPreferenceConstants.APPEARANCE_LINE_NUMBER_RULER },
-				{ AtlPreferencesMessages.getString("AppearancePreferencePage.printMargin"), AtlPreferenceConstants.APPEARANCE_PRINT_MARGIN }
+				{ AtlPreferencesMessages.getString("AppearancePreferencePage.highlightCurrentLine"), AtlPreferenceConstants.APPEARANCE_HIGHLIGHT_CURRENT_LINE }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("AppearancePreferencePage.highlightMatchingBrackets"), AtlPreferenceConstants.APPEARANCE_HIGHLIGHT_MATCHING_BRACKETS }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("AppearancePreferencePage.lineNumberRuler"), AtlPreferenceConstants.APPEARANCE_LINE_NUMBER_RULER }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("AppearancePreferencePage.printMargin"), AtlPreferenceConstants.APPEARANCE_PRINT_MARGIN } //$NON-NLS-1$
 		};
 		
 		colorListModel = new String[][] {
-				{ AtlPreferencesMessages.getString("AppearancePreferencePage.highlightCurrentLineColor"), AtlPreferenceConstants.APPEARANCE_CURRENT_LINE_COLOR },
-				{ AtlPreferencesMessages.getString("AppearancePreferencePage.highlightMatchingBracketsColor"), AtlPreferenceConstants.APPEARANCE_HIGHLIGHT_MATCHING_BRACKETS_COLOR },
-				{ AtlPreferencesMessages.getString("AppearancePreferencePage.lineNumberColor"), AtlPreferenceConstants.APPEARANCE_LINE_NUMBER_COLOR },
-				{ AtlPreferencesMessages.getString("AppearancePreferencePage.printMarginColor"), AtlPreferenceConstants.APPEARANCE_PRINT_MARGIN_COLOR },
-				{ AtlPreferencesMessages.getString("AppearancePreferencePage.selectionBackgroundColor"), AtlPreferenceConstants.APPEARANCE_SELECTION_BACKGROUND_COLOR },
-				{ AtlPreferencesMessages.getString("AppearancePreferencePage.selectionForegroundColor"), AtlPreferenceConstants.APPEARANCE_SELECTION_FOREGROUND_COLOR }
+				{ AtlPreferencesMessages.getString("AppearancePreferencePage.highlightCurrentLineColor"), AtlPreferenceConstants.APPEARANCE_CURRENT_LINE_COLOR }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("AppearancePreferencePage.highlightMatchingBracketsColor"), AtlPreferenceConstants.APPEARANCE_HIGHLIGHT_MATCHING_BRACKETS_COLOR }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("AppearancePreferencePage.lineNumberColor"), AtlPreferenceConstants.APPEARANCE_LINE_NUMBER_COLOR }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("AppearancePreferencePage.printMarginColor"), AtlPreferenceConstants.APPEARANCE_PRINT_MARGIN_COLOR }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("AppearancePreferencePage.selectionBackgroundColor"), AtlPreferenceConstants.APPEARANCE_SELECTION_BACKGROUND_COLOR }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("AppearancePreferencePage.selectionForegroundColor"), AtlPreferenceConstants.APPEARANCE_SELECTION_FOREGROUND_COLOR } //$NON-NLS-1$
 		};
 		
 		textFieldModel = new String[][] {
-				{ AtlPreferencesMessages.getString("AppearancePreferencePage.printMarginColumn"), AtlPreferenceConstants.APPEARANCE_PRINT_MARGIN_COLUMN, "5" },
-				{ AtlPreferencesMessages.getString("AppearancePreferencePage.displayedTabWidth"), AtlPreferenceConstants.APPEARANCE_TAB_WIDTH, "5" }
+				{ AtlPreferencesMessages.getString("AppearancePreferencePage.printMarginColumn"), AtlPreferenceConstants.APPEARANCE_PRINT_MARGIN_COLUMN, "5" }, //$NON-NLS-1$ //$NON-NLS-2$
+				{ AtlPreferencesMessages.getString("AppearancePreferencePage.displayedTabWidth"), AtlPreferenceConstants.APPEARANCE_TAB_WIDTH, "5" } //$NON-NLS-1$ //$NON-NLS-2$
 		};
 	}
 
@@ -58,8 +58,8 @@ public class AtlEditorPreferencePage extends AbstractPreferencePage {
 		newCompositeCheckBoxes(control);
 		newCompositeColors(
 		        control,
-		        AtlPreferencesMessages.getString("AppearancePreferencePage.appearanceColor"),
-		        AtlPreferencesMessages.getString("AppearancePreferencePage.color"));
+		        AtlPreferencesMessages.getString("AppearancePreferencePage.appearanceColor"), //$NON-NLS-1$
+		        AtlPreferencesMessages.getString("AppearancePreferencePage.color")); //$NON-NLS-1$
 //		Composite compoTextFields = newCompositeTextFields(control);
 //		Composite compoCheckBoxes = newCompositeCheckBoxes(control);
 //		Composite compoColors = newCompositeColors(

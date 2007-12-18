@@ -38,21 +38,21 @@ public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
 	 * super class the title using the resource bundle.
 	 */
 	public AtlSyntaxPreferencePage() {
-		super(AtlPreferencesMessages.getString("SyntaxPreferencePage.description"));
+		super(AtlPreferencesMessages.getString("SyntaxPreferencePage.description")); //$NON-NLS-1$
 		
 		colorListModel = new String[][] {
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.brackets"), AtlPreferenceConstants.SYNTAX_BRACKET },
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.constants"), AtlPreferenceConstants.SYNTAX_CONSTANT },
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.identifiers"), AtlPreferenceConstants.SYNTAX_IDENTIFIER },
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.keywords"), AtlPreferenceConstants.SYNTAX_KEYWORD },
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.literals"), AtlPreferenceConstants.SYNTAX_LITERAL },
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.numbers"), AtlPreferenceConstants.SYNTAX_NUMBER },
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.operators"), AtlPreferenceConstants.SYNTAX_OPERATOR },
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.others"), AtlPreferenceConstants.SYNTAX_DEFAULT },
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.singleLineComments"), AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT },
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.strings"), AtlPreferenceConstants.SYNTAX_STRING },
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.symbols"), AtlPreferenceConstants.SYNTAX_SYMBOL },
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.types"), AtlPreferenceConstants.SYNTAX_TYPE }
+				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.brackets"), AtlPreferenceConstants.SYNTAX_BRACKET }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.constants"), AtlPreferenceConstants.SYNTAX_CONSTANT }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.identifiers"), AtlPreferenceConstants.SYNTAX_IDENTIFIER }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.keywords"), AtlPreferenceConstants.SYNTAX_KEYWORD }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.literals"), AtlPreferenceConstants.SYNTAX_LITERAL }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.numbers"), AtlPreferenceConstants.SYNTAX_NUMBER }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.operators"), AtlPreferenceConstants.SYNTAX_OPERATOR }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.others"), AtlPreferenceConstants.SYNTAX_DEFAULT }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.singleLineComments"), AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.strings"), AtlPreferenceConstants.SYNTAX_STRING }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.symbols"), AtlPreferenceConstants.SYNTAX_SYMBOL }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.types"), AtlPreferenceConstants.SYNTAX_TYPE } //$NON-NLS-1$
 				};
 	}
 	
@@ -61,7 +61,7 @@ public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
 	 */
 	protected Control createContents(Composite parent) {
 		Composite control = newComposite(parent, 1);
-		Group background = newGroup(control, AtlPreferencesMessages.getString("SyntaxPreferencePage.backgroundColor"));
+		Group background = newGroup(control, AtlPreferencesMessages.getString("SyntaxPreferencePage.backgroundColor")); //$NON-NLS-1$
 		
 		SelectionListener backgroundSelectionListener = new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
@@ -72,8 +72,8 @@ public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
 			}
 		};
 		
-		backgroundDefaultRadioButton = newRadioButton(background, AtlPreferencesMessages.getString("SyntaxPreferencePage.systemDefault"), backgroundSelectionListener);
-		backgroundCustomRadioButton = newRadioButton(background, AtlPreferencesMessages.getString("SyntaxPreferencePage.custom"), backgroundSelectionListener);
+		backgroundDefaultRadioButton = newRadioButton(background, AtlPreferencesMessages.getString("SyntaxPreferencePage.systemDefault"), backgroundSelectionListener); //$NON-NLS-1$
+		backgroundCustomRadioButton = newRadioButton(background, AtlPreferencesMessages.getString("SyntaxPreferencePage.custom"), backgroundSelectionListener); //$NON-NLS-1$
 		backgroundColorSelector = new ColorSelector(background);
 		backgroundColorButton = backgroundColorSelector.getButton();
 		backgroundColorButton.addSelectionListener(new SelectionListener() {
@@ -112,7 +112,7 @@ public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
 		
 		foregroundBoldCheckBox = newCheckBoxField(
 				foreground3,
-				AtlPreferencesMessages.getString("SyntaxPreferencePage.bold"));
+				AtlPreferencesMessages.getString("SyntaxPreferencePage.bold")); //$NON-NLS-1$
 		foregroundBoldCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {
@@ -124,7 +124,7 @@ public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
 
 		foregroundItalicCheckBox = newCheckBoxField(
 				foreground3,
-				AtlPreferencesMessages.getString("SyntaxPreferencePage.italic"));
+				AtlPreferencesMessages.getString("SyntaxPreferencePage.italic")); //$NON-NLS-1$
 		foregroundItalicCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {

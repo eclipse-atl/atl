@@ -304,7 +304,7 @@ public interface IAtlActionConstants {
 	 * Source menu: name of standard Indent global action
 	 * (value <code>"org.eclipse.m2m.atl.adt.ui.actions.Indent"</code>).
 	 */
-	public static final String INDENT= "org.eclipse.m2m.atl.adt.ui.actions.Indent";
+	public static final String INDENT= "org.eclipse.m2m.atl.adt.ui.actions.Indent";//$NON-NLS-1$
 
 	/**
 	 * Refactor menu: name of standard Inline global action 

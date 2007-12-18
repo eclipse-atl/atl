@@ -65,12 +65,12 @@ public class ToggleCommentBlock implements IEditorActionDelegate {
 		IDocumentProvider dp = editor.getDocumentProvider();
 		IDocument doc = dp.getDocument(editor.getEditorInput());		
 
-		if (text.getText().startsWith("--"))
+		if (text.getText().startsWith("--"))//$NON-NLS-1$
 			// Uncomment
-			shiftLeft(text.getStartLine(), text.getEndLine(), new String[] {"--"} , false, doc);
+			shiftLeft(text.getStartLine(), text.getEndLine(), new String[] {"--"} , false, doc);//$NON-NLS-1$
 		else
 			// Comment
-			shiftRight(text.getStartLine(), text.getEndLine(), "--", doc);
+			shiftRight(text.getStartLine(), text.getEndLine(), "--", doc);//$NON-NLS-1$
 	}
 	
 	/**
@@ -120,7 +120,7 @@ public class ToggleCommentBlock implements IEditorActionDelegate {
 			int decrement= 0;
 			for (int i= 0; i < occurrences.length; i++) {
 				IRegion r= occurrences[i];
-				d.replace(r.getOffset() - decrement, r.getLength(), "");
+				d.replace(r.getOffset() - decrement, r.getLength(), "");//$NON-NLS-1$
 				decrement += r.getLength();
 			}
 		}

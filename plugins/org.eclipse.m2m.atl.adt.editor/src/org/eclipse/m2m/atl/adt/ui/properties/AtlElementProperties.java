@@ -29,18 +29,18 @@ public class AtlElementProperties implements IPropertySource {
 	 */ 
 	private static Map properties = new HashMap();
 
-	private static final String INFO_CATEGORY = "Info";
+	private static final String INFO_CATEGORY = "Info"; //$NON-NLS-1$
 	
-	private static final String PROPERTY_ID_LOCATION = "location";
+	private static final String PROPERTY_ID_LOCATION = "location"; //$NON-NLS-1$
 	
-	private static final String PROPERTY_ID_TYPE = "type";
+	private static final String PROPERTY_ID_TYPE = "type"; //$NON-NLS-1$
 	
-	private static final String PROPERTY_ID_NAME = "name";
+	private static final String PROPERTY_ID_NAME = "name"; //$NON-NLS-1$
 	
 	static {
-		properties.put(PROPERTY_ID_LOCATION, "Location");
-		properties.put(PROPERTY_ID_TYPE, "Type");
-		properties.put(PROPERTY_ID_NAME, "Name");
+		properties.put(PROPERTY_ID_LOCATION, "Location"); //$NON-NLS-1$
+		properties.put(PROPERTY_ID_TYPE, "Type"); //$NON-NLS-1$
+		properties.put(PROPERTY_ID_NAME, "Name"); //$NON-NLS-1$
 	}
 	
 	
@@ -81,7 +81,7 @@ public class AtlElementProperties implements IPropertySource {
 		else if(id.equals(PROPERTY_ID_TYPE))
 			value = eo.eClass().getName();
 		else 
-			value = "";
+			value = ""; //$NON-NLS-1$
 		
 		return value;
 	}

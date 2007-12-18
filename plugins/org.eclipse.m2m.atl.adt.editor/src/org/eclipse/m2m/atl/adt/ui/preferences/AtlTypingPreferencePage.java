@@ -17,17 +17,17 @@ import org.eclipse.swt.widgets.Control;
 public class AtlTypingPreferencePage extends AbstractPreferencePage {
 	
 	public AtlTypingPreferencePage() {
-		super(AtlPreferencesMessages.getString("TypingPreferencePage.description"));
+		super(AtlPreferencesMessages.getString("TypingPreferencePage.description")); //$NON-NLS-1$
 		
 		checkBoxModel = new String[][] {
 //				{ AtlPreferencesMessages.getString("TypingPreferencePage.wrapStrings"), AtlPreferenceConstants.TYPING_WRAP_STRINGS },
 //				{ AtlPreferencesMessages.getString("TypingPreferencePage.escapeStrings"), AtlPreferenceConstants.TYPING_ESCAPE_STRINGS },
 //				{ AtlPreferencesMessages.getString("TypingPreferencePage.smartPaste"), AtlPreferenceConstants.TYPING_SMART_PASTE },
 //				{ AtlPreferencesMessages.getString("TypingPreferencePage.importsOnPaste"), AtlPreferenceConstants.TYPING_IMPORTS_ON_PASTE },
-				{ AtlPreferencesMessages.getString("TypingPreferencePage.insertSpaceForTabs"),  AtlPreferenceConstants.TYPING_SPACES_FOR_TABS },
-				{ AtlPreferencesMessages.getString("TypingPreferencePage.closeStrings"), AtlPreferenceConstants.TYPING_CLOSE_STRINGS },
-				{ AtlPreferencesMessages.getString("TypingPreferencePage.closeBrackets"),  AtlPreferenceConstants.TYPING_CLOSE_BRACKETS },
-				{ AtlPreferencesMessages.getString("TypingPreferencePage.closeBraces"),  AtlPreferenceConstants.TYPING_CLOSE_BRACES },
+				{ AtlPreferencesMessages.getString("TypingPreferencePage.insertSpaceForTabs"),  AtlPreferenceConstants.TYPING_SPACES_FOR_TABS }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("TypingPreferencePage.closeStrings"), AtlPreferenceConstants.TYPING_CLOSE_STRINGS }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("TypingPreferencePage.closeBrackets"),  AtlPreferenceConstants.TYPING_CLOSE_BRACKETS }, //$NON-NLS-1$
+				{ AtlPreferencesMessages.getString("TypingPreferencePage.closeBraces"),  AtlPreferenceConstants.TYPING_CLOSE_BRACES }, //$NON-NLS-1$
 //				{ AtlPreferencesMessages.getString("TypingPreferencePage.typing.smartSemicolon"),  AtlPreferenceConstants.TYPING_SMART_SEMICOLON },
 //				{ AtlPreferencesMessages.getString("TypingPreferencePage.typing.smartOpeningBrace"),  AtlPreferenceConstants.TYPING_SMART_OPENING_BRACE },
 //				{ AtlPreferencesMessages.getString("TypingPreferencePage.typing.smartTab"),  AtlPreferenceConstants.TYPING_SMART_TAB },

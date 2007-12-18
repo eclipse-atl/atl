@@ -18,11 +18,11 @@ import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
 
 public class GotoMatchingBracketAction extends Action {
 
-	public final static String ID = "org.eclipse.m2m.atl.adt.ui.actions.GotoMatchingBracket";
+	public final static String ID = "org.eclipse.m2m.atl.adt.ui.actions.GotoMatchingBracket";//$NON-NLS-1$
 	private final AtlEditor editor;
 	
 	public GotoMatchingBracketAction(AtlEditor editor) {
-		super(AtlEditorMessages.getString(ID + ".label"));
+		super(AtlEditorMessages.getString(ID + ".label"));//$NON-NLS-1$
 		Assert.isNotNull(editor);
 		this.editor = editor;
 		setEnabled(true);

@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Control;
 public class AtlMainPreferencePage extends AbstractPreferencePage {
 
     public AtlMainPreferencePage() {
-        super(AtlPreferencesMessages.getString("MainPreferencePage.description"));
+        super(AtlPreferencesMessages.getString("MainPreferencePage.description"));//$NON-NLS-1$
     }
 
     /* (non-Javadoc)

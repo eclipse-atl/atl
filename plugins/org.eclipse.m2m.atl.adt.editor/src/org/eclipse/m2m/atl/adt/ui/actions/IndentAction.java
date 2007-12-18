@@ -137,7 +137,7 @@ public class IndentAction extends TextEditorAction {
 				buf.append(' ');
 			tab= buf.toString();
 		} else
-			tab= "\t";
+			tab= "\t";//$NON-NLS-1$
 		
 		return tab;
 	}
@@ -178,7 +178,7 @@ public class IndentAction extends TextEditorAction {
 				}
 				
 				DocumentCommand command= new DocumentCommand() {};
-				command.text= "\n";
+				command.text= "\n";//$NON-NLS-1$
 				command.offset= start;
 				// TODO atl documentation auto indent strategy
 //				new AtlDocAutoIndentStrategy(IAtlPartitions.PARTITIONING).customizeDocumentCommand(document, command);
