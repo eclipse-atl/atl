@@ -111,7 +111,7 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 	}
 	
 	public static void log(Throwable e) {
-		log(new Status(IStatus.ERROR, getPluginId(), IAtlStatusConstants.INTERNAL_ERROR, Messages.getString("JavaPlugin.internal_error"), e));//$NON-NLS-1$
+		log(new Status(IStatus.ERROR, getPluginId(), IAtlStatusConstants.INTERNAL_ERROR, AtlUIMessages.getString("JavaPlugin.internal_error"), e));//$NON-NLS-1$
 	}
 	
 	/**
@@ -248,7 +248,7 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 		consoleStream = console.newMessageStream();
 		activateConsole();
 		// System.out = out;	   
-		consoleStream.println(Messages.getString("AtlUIPlugin.INIT")); //$NON-NLS-1$
+		consoleStream.println(AtlUIMessages.getString("AtlUIPlugin.INIT")); //$NON-NLS-1$
 //		PrintStream redirStream = new PrintStream (consoleStream);
 //		System.setOut(redirStream);
 		// System.setErr(redirStream);	   
