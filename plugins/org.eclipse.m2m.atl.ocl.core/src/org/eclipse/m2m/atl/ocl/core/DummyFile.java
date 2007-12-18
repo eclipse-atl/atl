@@ -559,4 +559,15 @@ public class DummyFile implements IFile {
 		return 0;
 	}
 
+	/** eclipse 3.4M4 compatibility **/
+	public boolean isHidden(){
+		return false;
+	}
+	
+	public void setHidden(boolean val){
+	}
+	
+	public boolean isDerived(int val){
+		return false;
+	}
 }
