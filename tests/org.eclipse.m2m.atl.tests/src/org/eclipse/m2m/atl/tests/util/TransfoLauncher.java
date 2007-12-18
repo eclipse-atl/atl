@@ -82,63 +82,63 @@ public class TransfoLauncher {
 			Node node = nodeList.item(i);
 			if (node instanceof Element) {
 				Element element = (Element) node;
-				String key = element.getAttribute("key");
-				if (key.equals("ATL File Name")) {
-					String asmFilePath = element.getAttribute("value");
+				String key = element.getAttribute("key"); //$NON-NLS-1$
+				if (key.equals("ATL File Name")) { //$NON-NLS-1$
+					String asmFilePath = element.getAttribute("value"); //$NON-NLS-1$
 					asmUrl = FileUtils.fileNameToURL(asmFilePath);
-				} else if (key.equals("Superimpose")) {
+				} else if (key.equals("Superimpose")) { //$NON-NLS-1$
 					NodeList entriesList = element.getChildNodes();
 					for (int j = 0; j < entriesList.getLength(); j++) {
 						Node nodeEntry = entriesList.item(j);
 						if (nodeEntry instanceof Element) {
 							Element entry = (Element) nodeEntry;
-							URL moduleUrl = FileUtils.fileNameToURL(entry.getAttribute("value"));
+							URL moduleUrl = FileUtils.fileNameToURL(entry.getAttribute("value")); //$NON-NLS-1$
 							superimpose.add(moduleUrl);
 						}
 					}				
-				} else if (key.equals("Libs")) {
+				} else if (key.equals("Libs")) { //$NON-NLS-1$
 					NodeList nodes = element.getChildNodes();
 					for (int j = 0; j < nodes.getLength(); j++) {
 						Node nodeEntry = nodes.item(j);
 						if (nodeEntry instanceof Element) {
 							Element entry = (Element) nodeEntry;
-							libsFromConfig.put(entry.getAttribute("key"),FileUtils.fileNameToURL(entry.getAttribute("value")));			
+							libsFromConfig.put(entry.getAttribute("key"),FileUtils.fileNameToURL(entry.getAttribute("value")));			 //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
-				else if (key.equals("Path")) {
+				else if (key.equals("Path")) { //$NON-NLS-1$
 					for (int j = 0; j < element.getChildNodes().getLength(); j++) {
 						Node nodeEntry = element.getChildNodes().item(j);
 						if (nodeEntry instanceof Element) {
 							Element entry = (Element) nodeEntry;
-							path.put(entry.getAttribute("key"),entry.getAttribute("value"));			
+							path.put(entry.getAttribute("key"),entry.getAttribute("value"));			 //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}			
-				else if (key.equals("Input")) {
+				else if (key.equals("Input")) { //$NON-NLS-1$
 					for (int j = 0; j < element.getChildNodes().getLength(); j++) {
 						Node nodeEntry = element.getChildNodes().item(j);
 						if (nodeEntry instanceof Element) {
 							Element entry = (Element) nodeEntry;
-							input.put(entry.getAttribute("key"),entry.getAttribute("value"));
+							input.put(entry.getAttribute("key"),entry.getAttribute("value")); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
-				else if (key.equals("Output")) {
+				else if (key.equals("Output")) { //$NON-NLS-1$
 					for (int j = 0; j < element.getChildNodes().getLength(); j++) {
 						Node nodeEntry = element.getChildNodes().item(j);
 						if (nodeEntry instanceof Element) {
 							Element entry = (Element) nodeEntry;
-							output.put(entry.getAttribute("key"),entry.getAttribute("value"));
+							output.put(entry.getAttribute("key"),entry.getAttribute("value")); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
-				else if (key.equals("Model Handler")) {
+				else if (key.equals("Model Handler")) { //$NON-NLS-1$
 					for (int j = 0; j < element.getChildNodes().getLength(); j++) {
 						Node nodeEntry = element.getChildNodes().item(j);
 						if (nodeEntry instanceof Element) {
 							Element entry = (Element) nodeEntry;
-							modelHandler.put(entry.getAttribute("key"),entry.getAttribute("value"));			
+							modelHandler.put(entry.getAttribute("key"),entry.getAttribute("value"));			 //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
@@ -160,7 +160,7 @@ public class TransfoLauncher {
 		Map atlModelHandler = new HashMap();
 		for (Iterator i = modelHandler.keySet().iterator(); i.hasNext();) {
 			String currentModelHandler = (String)modelHandler.get(i.next());
-			if (!atlModelHandler.containsKey(currentModelHandler) && !currentModelHandler.equals(""))
+			if (!atlModelHandler.containsKey(currentModelHandler) && !currentModelHandler.equals("")) //$NON-NLS-1$
 				atlModelHandler.put(currentModelHandler, AtlModelHandler.getDefault(currentModelHandler));
 		}
 
@@ -212,10 +212,10 @@ public class TransfoLauncher {
 
 				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
 				ASMModel mofmm = amh.getMof();
-				toReturn.put("%" + modelHandler.get(mmName), mofmm);
+				toReturn.put("%" + modelHandler.get(mmName), mofmm); //$NON-NLS-1$
 				mofmm.setIsTarget(false);
 				ASMModel inputModel;
-				if (((String)path.get(mmName)).startsWith("#")) {
+				if (((String)path.get(mmName)).startsWith("#")) { //$NON-NLS-1$
 					toReturn.put(mmName, mofmm);
 					inputModel = (ASMModel)toReturn.get(mName);
 					if(inputModel == null)
@@ -254,7 +254,7 @@ public class TransfoLauncher {
 				mofmm.setIsTarget(false);
 				ASMModel outputModel;
 
-				if (((String)path.get(mmName)).startsWith("#")) {
+				if (((String)path.get(mmName)).startsWith("#")) {//$NON-NLS-1$
 					if (input.get(mmName) == null)
 						toReturn.put(mmName, mofmm);
 					outputModel = (ASMModel)toReturn.get(mName);
@@ -288,7 +288,7 @@ public class TransfoLauncher {
 		ASMModel ret = null;
 
 		if(amh instanceof AtlEMFModelHandler) {
-			if(path.startsWith("uri:")) {
+			if(path.startsWith("uri:")) { //$NON-NLS-1$
 				ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, path);
 				// this model should not be disposed of because we did not load it
 			} else {

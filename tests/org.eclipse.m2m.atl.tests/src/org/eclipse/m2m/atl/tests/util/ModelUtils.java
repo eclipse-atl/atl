@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
+import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 
 /**
  * Utility class for models.
@@ -143,7 +144,7 @@ public final class ModelUtils {
 			ex.printStackTrace();
 		}
 
-		for(Iterator it = getElementsByType(mmExtent,"EPackage").iterator() ; it.hasNext() ; ) {
+		for(Iterator it = getElementsByType(mmExtent,"EPackage").iterator() ; it.hasNext() ; ) { //$NON-NLS-1$
 			EPackage p = (EPackage)it.next();
 			String nsURI = p.getNsURI();
 			if(nsURI == null) {
@@ -153,25 +154,25 @@ public final class ModelUtils {
 			EPackage.Registry.INSTANCE.put(nsURI, p);
 		}
 
-		for(Iterator it = getElementsByType(mmExtent,"EDataType").iterator(); it.hasNext(); ) {
+		for(Iterator it = getElementsByType(mmExtent,"EDataType").iterator(); it.hasNext(); ) { //$NON-NLS-1$
 			EObject eo = (EObject)it.next();
 			EStructuralFeature sf;
-			sf = eo.eClass().getEStructuralFeature("name");	 
+			sf = eo.eClass().getEStructuralFeature("name");	  //$NON-NLS-1$
 			String tname = (String)eo.eGet(sf);			 
 			String icn = null;
-			if(tname.equals("Boolean"))
-				icn = "java.lang.Boolean";
-			else if(tname.equals("Double"))
-				icn = "java.lang.Double";
-			else if(tname.equals("Float"))
-				icn = "java.lang.Float";
-			else if(tname.equals("Integer"))
-				icn = "java.lang.Integer";
-			else if(tname.equals("String"))
-				icn = "java.lang.String";
+			if(tname.equals("Boolean")) //$NON-NLS-1$
+				icn = "java.lang.Boolean"; //$NON-NLS-1$
+			else if(tname.equals("Double")) //$NON-NLS-1$
+				icn = "java.lang.Double"; //$NON-NLS-1$
+			else if(tname.equals("Float")) //$NON-NLS-1$
+				icn = "java.lang.Float"; //$NON-NLS-1$
+			else if(tname.equals("Integer")) //$NON-NLS-1$
+				icn = "java.lang.Integer"; //$NON-NLS-1$
+			else if(tname.equals("String")) //$NON-NLS-1$
+				icn = "java.lang.String"; //$NON-NLS-1$
 
 			if(icn != null) {
-				sf = eo.eClass().getEStructuralFeature("instanceClassName");
+				sf = eo.eClass().getEStructuralFeature("instanceClassName"); //$NON-NLS-1$
 				eo.eSet(sf, icn);                
 			}
 		}
@@ -243,8 +244,8 @@ public final class ModelUtils {
 			ModelInputSnapshot snapshot = DiffFactory.eINSTANCE.createModelInputSnapshot();
 			snapshot.setDiff(inputDiff);
 			snapshot.setMatch(inputMatch);
-			ModelUtils.save(snapshot, "file:/"+leftUri.toString()+".emfdiff");
-			throw new Exception("test failed : there are differences.");
+			ModelUtils.save(snapshot, "file:/"+leftUri.toString()+".emfdiff"); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new Exception(AtlTestsMessages.getString("ModelUtils.0")); //$NON-NLS-1$
 		}
 		
 		if (delete) {

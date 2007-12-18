@@ -37,13 +37,13 @@ public abstract class TestNonRegression extends TestCase {
 		String name = this.getClass().getName();
 		System.out.println(this.getClass().getName());
 		for (int i = 0; i < name.length(); i++) {
-			System.out.print("=");
+			System.out.print("=");//$NON-NLS-1$
 		}
 		System.out.println();
 	}
 
 	/** The path for usecases */
-	protected static final String INPUT_PATH = "/data/inputs";
+	protected static final String INPUT_PATH = "/data/inputs";//$NON-NLS-1$
 	private String propertiesPath = null;
 
 	/**

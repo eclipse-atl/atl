@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
+import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 import org.eclipse.m2m.atl.tests.suite.AllTests;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
 import org.eclipse.m2m.atl.tests.util.ModelUtils;
@@ -36,19 +37,19 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 */
 	protected void singleTest(File directory) {
 		if (vmName == null) {
-			fail("VM name must be specified.");
+			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.0")); //$NON-NLS-1$
 		}
-		System.out.print("Launching "+directory.getName()+"... ");
-		final String buildURI = directory+ File.separator + directory.getName() + ".launch";	
+		System.out.print(AtlTestsMessages.getString("TestNonRegressionTransfo.1")+directory.getName()+AtlTestsMessages.getString("TestNonRegressionTransfo.2")); //$NON-NLS-1$ //$NON-NLS-2$
+		final String buildURI = directory+ File.separator + directory.getName() + ".launch";	 //$NON-NLS-1$
 
-		if (!new File(buildURI).exists()) fail("launch config not found");
-		if (launcher == null) fail("launcher not found");
+		if (!new File(buildURI).exists()) fail(AtlTestsMessages.getString("TestNonRegressionTransfo.3")); //$NON-NLS-1$
+		if (launcher == null) fail(AtlTestsMessages.getString("TestNonRegressionTransfo.4")); //$NON-NLS-1$
 		
 		try {
 			launcher.parseConfiguration(buildURI);
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail("incorrect configuration");
+			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.5")); //$NON-NLS-1$
 		} 
 
 		/*
@@ -60,9 +61,9 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			executionTime = launcher.run(vmName);
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail("transformation failed");
+			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.6")); //$NON-NLS-1$
 		}
-		System.out.println(executionTime+"s.");
+		System.out.println(executionTime+"s."); //$NON-NLS-1$
 
 		/*
 		 * RESULTS COMPARISON 
@@ -78,20 +79,20 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 				ModelUtils.registerMetamodel(FileUtils.fileNameToURI(metapath), AtlTestPlugin.getResourceSet());				
 			} catch (IOException e) {
 				e.printStackTrace();
-				fail("unable to register output metamodels");
+				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.7")); //$NON-NLS-1$
 			}		
 		}
 		
 		for (Iterator iter = output.keySet().iterator(); iter.hasNext();) {
 			String outputid = (String) iter.next();
 			String outputPath = (String) launcher.getPath().get(outputid);
-			String expectedPath = FileUtils.getTestCommonDirectory()+outputPath.replaceFirst("inputs","expected");
+			String expectedPath = FileUtils.getTestCommonDirectory()+outputPath.replaceFirst("inputs","expected"); //$NON-NLS-1$ //$NON-NLS-2$
 			try {
 				outputPath = FileUtils.getTestCommonDirectory()+outputPath;
 				ModelUtils.compareModels(new File(outputPath), new File(expectedPath), true, true);
 			} catch (Exception e) {
 				e.printStackTrace();
-				fail("unable to compare results");
+				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.8")); //$NON-NLS-1$
 			}
 		}
 		AllTests.addVMResult(this, directory, new Double(executionTime));

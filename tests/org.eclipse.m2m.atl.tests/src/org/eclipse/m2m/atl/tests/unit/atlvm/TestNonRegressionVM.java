@@ -24,8 +24,8 @@ public class TestNonRegressionVM extends TestNonRegressionTransfo {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		setVmName("Regular VM (with debugger)");
-		setPropertiesPath("/data/vm.properties");
+		setVmName("Regular VM (with debugger)");//$NON-NLS-1$
+		setPropertiesPath("/data/vm.properties");//$NON-NLS-1$
 	}
 	
 }

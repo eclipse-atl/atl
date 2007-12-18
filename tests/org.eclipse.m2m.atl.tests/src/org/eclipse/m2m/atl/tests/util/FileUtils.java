@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
+import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 
 /**
  * Provide utilities to get file paths, or compare files.
@@ -30,12 +31,12 @@ import org.eclipse.m2m.atl.tests.AtlTestPlugin;
  */
 public class FileUtils {
 
-	private static final String CLASS_FILE = "org/eclipse/m2m/atl/tests/util/FileUtils.class";
+	private static final String CLASS_FILE = "org/eclipse/m2m/atl/tests/util/FileUtils.class"; //$NON-NLS-1$
 
 	public static String getTestCommonDirectory() {
 		try
 		{
-			return new File(FileLocator.toFileURL(AtlTestPlugin.getDefault().getBundle().getEntry("/")).getFile()).toString();
+			return new File(FileLocator.toFileURL(AtlTestPlugin.getDefault().getBundle().getEntry("/")).getFile()).toString(); //$NON-NLS-1$
 		}
 		catch (Throwable t)
 		{
@@ -63,7 +64,7 @@ public class FileUtils {
 				while (parentDir != null && parentDir.isDirectory())
 				{
 					String name = parentDir.getName();
-					if (name.equals(AtlTestPlugin.PLUGIN_ID) || name.startsWith(AtlTestPlugin.PLUGIN_ID + "_"))
+					if (name.equals(AtlTestPlugin.PLUGIN_ID) || name.startsWith(AtlTestPlugin.PLUGIN_ID + "_")) //$NON-NLS-1$
 					{
 						return parentDir.getAbsolutePath(); 
 					}
@@ -71,7 +72,7 @@ public class FileUtils {
 				}
 			}
 		}
-		throw new RuntimeException("Unable to compute the " + AtlTestPlugin.PLUGIN_ID + " directory");
+		throw new RuntimeException(AtlTestsMessages.getString("FileUtils.0") + AtlTestPlugin.PLUGIN_ID + AtlTestsMessages.getString("FileUtils.1")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -81,7 +82,7 @@ public class FileUtils {
 	 * @throws IllegalArgumentException
 	 */
 	public static URI fileNameToURI(String filePath) throws IOException, IllegalArgumentException {
-		if (filePath.startsWith("uri:")) {
+		if (filePath.startsWith("uri:")) { //$NON-NLS-1$
 			filePath = filePath.substring(4);
 			return URI.createURI(filePath, false);
 		} else {
@@ -97,9 +98,9 @@ public class FileUtils {
 	 * @throws MalformedURLException
 	 */
 	public static URL fileNameToURL(String filePath) throws IOException, MalformedURLException {
-		filePath="file:"+getTestCommonDirectory()+filePath;
-		if (filePath.endsWith(".atl")) {
-			filePath = filePath.substring(0,filePath.length() - 4)+".asm";
+		filePath="file:"+getTestCommonDirectory()+filePath; //$NON-NLS-1$
+		if (filePath.endsWith(".atl")) { //$NON-NLS-1$
+			filePath = filePath.substring(0,filePath.length() - 4)+".asm"; //$NON-NLS-1$
 		}
 		return new URL(filePath);
 	}
@@ -111,7 +112,7 @@ public class FileUtils {
 	 * @throws FileNotFoundException
 	 */
 	public static InputStream fileNameToInputStream(String filePath) throws FileNotFoundException, CoreException {
-		filePath="file:"+getTestCommonDirectory()+filePath;
+		filePath="file:"+getTestCommonDirectory()+filePath; //$NON-NLS-1$
 		File f = new File(filePath.substring(4));
 		return new FileInputStream(f);
 	}
@@ -125,7 +126,7 @@ public class FileUtils {
 	 */
 	public static void compareFiles(File left, File right, boolean delete) throws Exception {
 		if (left.length() != right.length())
-			throw new Exception("test failed : there are differences");
+			throw new Exception(AtlTestsMessages.getString("FileUtils.2")); //$NON-NLS-1$
 
 		FileInputStream lin = new FileInputStream(left);
 		FileInputStream rin = new FileInputStream(right);
@@ -143,7 +144,7 @@ public class FileUtils {
 				for (int byteIndex = 0; byteIndex < lcount; byteIndex++)
 				{
 					if (lbuffer[byteIndex] != rbuffer[byteIndex])
-						throw new Exception("test failed : there are differences");
+						throw new Exception(AtlTestsMessages.getString("FileUtils.3")); //$NON-NLS-1$
 				}
 			}
 		}

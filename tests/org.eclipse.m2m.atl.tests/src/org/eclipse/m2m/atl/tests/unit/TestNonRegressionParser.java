@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.AtlParser;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
+import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
 import org.eclipse.m2m.atl.tests.util.ModelUtils;
 
@@ -31,27 +32,27 @@ public class TestNonRegressionParser extends TestNonRegression {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		ModelUtils.registerMetamodel(FileUtils.fileNameToURI("/models/ATL-0.2.ecore"), AtlTestPlugin.getResourceSet());		
+		ModelUtils.registerMetamodel(FileUtils.fileNameToURI("/models/ATL-0.2.ecore"), AtlTestPlugin.getResourceSet());//$NON-NLS-1$		
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#singleTest(java.io.File)
 	 */
 	protected void singleTest(File directory) {	
-		System.out.print("Parsing "+directory.getName()+"...");
+		System.out.print(AtlTestsMessages.getString("TestNonRegressionParser.4")+directory.getName()+AtlTestsMessages.getString("TestNonRegressionParser.5")); //$NON-NLS-1$ //$NON-NLS-2$
 		final File expectedDir = new File(directory.getPath().replace(File.separator + "inputs", //$NON-NLS-1$
-				File.separator + "expected")); //$NON-NLS-1$ //$NON-NLS-2$
-		final String transfoPath = directory+ File.separator + directory.getName() + ".atl";	
-		final String outputPath = directory+ File.separator + directory.getName() + ".atl.ecore";	
-		final String expectedPath = expectedDir+ File.separator + directory.getName() + ".atl.ecore";	
-		if (!new File(transfoPath).exists()) fail("atl file not found");
+				File.separator + "expected")); //$NON-NLS-1$
+		final String transfoPath = directory+ File.separator + directory.getName() + ".atl";	 //$NON-NLS-1$
+		final String outputPath = directory+ File.separator + directory.getName() + ".atl.ecore";	 //$NON-NLS-1$
+		final String expectedPath = expectedDir+ File.separator + directory.getName() + ".atl.ecore";	 //$NON-NLS-1$
+		if (!new File(transfoPath).exists()) fail(AtlTestsMessages.getString("TestNonRegressionParser.3")); //$NON-NLS-1$
 
 		try {
 			EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));
-			ModelUtils.save(result, "file:/"+transfoPath+".ecore");	
+			ModelUtils.save(result, "file:/"+transfoPath+".ecore");	 //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail("parsing failed");
+			fail(AtlTestsMessages.getString("TestNonRegressionParser.2")); //$NON-NLS-1$
 		}		
 
 		try {
@@ -71,10 +72,10 @@ public class TestNonRegressionParser extends TestNonRegression {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail("unable to compare results");
+			fail(AtlTestsMessages.getString("TestNonRegressionParser.1")); //$NON-NLS-1$
 		}
 		
-		System.out.println("done.");
+		System.out.println(AtlTestsMessages.getString("TestNonRegressionParser.0")); //$NON-NLS-1$
 	}
 
 }

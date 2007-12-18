@@ -65,7 +65,7 @@ public class AllTests extends TestCase implements IApplication {
 	 * @return The testsuite containing all the tests
 	 */
 	public static Test suite() {
-		final TestSuite suite = new TestSuite("ATL test suite") {
+		final TestSuite suite = new TestSuite("ATL test suite") {//$NON-NLS-1$
 			protected void finalize() throws Throwable {
 				/*
 				File trace = new File(FileUtils.getTestCommonDirectory()+"\\trace.txt");
@@ -87,27 +87,27 @@ public class AllTests extends TestCase implements IApplication {
 		if (writer != null) {
 
 			String localPath = FileUtils.getTestCommonDirectory();
-			final String htmlPath = "http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests";	
+			final String htmlPath = "http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests";//$NON-NLS-1$	
 
 			for (Iterator iterator = vmresults.keySet().iterator(); iterator.hasNext();) {
 				File directory = (File) iterator.next();
 				String path = directory.toString();
 				path = path.substring(localPath.length());
-				path = htmlPath+path.replaceAll("[/\\\\]+", "/")+"/?root=Modeling_Project";
+				path = htmlPath+path.replaceAll("[/\\\\]+", "/")+"/?root=Modeling_Project";//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
-				writer.println("|-");
-				writer.println("! colspan=1 | ["+path+" "+directory.getName()+"]");
+				writer.println("|-");//$NON-NLS-1$
+				writer.println("! colspan=1 | ["+path+" "+directory.getName()+"]");//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 				if (emfvmresults.get(directory) != null) {
-					writer.println("! colspan=1 | <b style=\"color:green\">PASS</b>");
-					writer.println("! colspan=1 | "+emfvmresults.get(directory)+"s.");
+					writer.println("! colspan=1 | <b style=\"color:green\">PASS</b>");//$NON-NLS-1$
+					writer.println("! colspan=1 | "+emfvmresults.get(directory)+"s.");//$NON-NLS-1$//$NON-NLS-2$
 				} else {
 
-					writer.println("! colspan=1 | <b style=\"color:red\">FAIL</b>");
-					writer.println("! colspan=1 | ");
+					writer.println("! colspan=1 | <b style=\"color:red\">FAIL</b>");//$NON-NLS-1$
+					writer.println("! colspan=1 | ");//$NON-NLS-1$
 				}
-				writer.println("! colspan=1 | "+vmresults.get(directory)+"s.");
-				writer.println("! colspan=1 | ");
+				writer.println("! colspan=1 | "+vmresults.get(directory)+"s.");//$NON-NLS-1$//$NON-NLS-2$
+				writer.println("! colspan=1 | ");//$NON-NLS-1$
 
 			}
 

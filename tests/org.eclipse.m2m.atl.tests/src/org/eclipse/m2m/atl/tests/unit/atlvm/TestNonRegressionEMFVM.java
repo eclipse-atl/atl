@@ -24,8 +24,8 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		setVmName("EMF-specific VM");
-		setPropertiesPath("/data/emfvm.properties");
+		setVmName("EMF-specific VM");//$NON-NLS-1$
+		setPropertiesPath("/data/emfvm.properties");//$NON-NLS-1$
 	}
 	
 }
