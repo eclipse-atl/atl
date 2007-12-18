@@ -22,6 +22,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
+import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
 import org.eclipse.swt.graphics.Image;
 
 public class AtlLabelProvider extends LabelProvider {
@@ -35,7 +36,7 @@ public class AtlLabelProvider extends LabelProvider {
 	  
 	  private Reader defaultReader = new Reader() {
 	  	public String getText(EObject object) {
-	  		return "<default> : " + object.eClass().getName();
+	  		return "<default> : " + object.eClass().getName();//$NON-NLS-1$
 	  	}
 	  };
 	  
@@ -50,7 +51,7 @@ public class AtlLabelProvider extends LabelProvider {
 	  
 	  public void initReaders() {
 	  	readers.put(AtlEMFConstants.clRule, new Reader() {
-	  		private EStructuralFeature name = AtlEMFConstants.clRule.getEStructuralFeature("name");
+	  		private EStructuralFeature name = AtlEMFConstants.clRule.getEStructuralFeature("name"); //$NON-NLS-1$
 	  		
 	  		public String getText(EObject rule) {
 	  			return (String)rule.eGet(name);
@@ -61,17 +62,17 @@ public class AtlLabelProvider extends LabelProvider {
 	  	readers.put(AtlEMFConstants.clCalledRule, readers.get(AtlEMFConstants.clRule));
 	  	
 	  	readers.put(AtlEMFConstants.clHelper, new Reader() {
-	  		private EStructuralFeature sfFeature = AtlEMFConstants.clOclFeatureDefinition.getEStructuralFeature("feature");
+	  		private EStructuralFeature sfFeature = AtlEMFConstants.clOclFeatureDefinition.getEStructuralFeature("feature"); //$NON-NLS-1$
 	  		
 	  		public String getText(EObject helper) {
 	  			EObject featureDef = (EObject)helper.eGet(AtlEMFConstants.sfHelper_definition);
 	  			EObject feature = (EObject)featureDef.eGet(sfFeature);
-  				return (String)feature.eGet(feature.eClass().getEStructuralFeature("name"));
+  				return (String)feature.eGet(feature.eClass().getEStructuralFeature("name")); //$NON-NLS-1$
 	  		}
 	  	});
 	  	
 	  	readers.put(AtlEMFConstants.clLibraryRef, new Reader() {
-	  		private EStructuralFeature sfName = AtlEMFConstants.clLibraryRef.getEStructuralFeature("name");
+	  		private EStructuralFeature sfName = AtlEMFConstants.clLibraryRef.getEStructuralFeature("name"); //$NON-NLS-1$
 	  		
 	  		public String getText(EObject libraryRef) {
 	  			return (String)libraryRef.eGet(sfName);
@@ -79,7 +80,7 @@ public class AtlLabelProvider extends LabelProvider {
 	  	});
 	  	
 	  	readers.put(AtlEMFConstants.clOclModel, new Reader() {
-	  		private EStructuralFeature sfName = AtlEMFConstants.clOclModel.getEStructuralFeature("name");
+	  		private EStructuralFeature sfName = AtlEMFConstants.clOclModel.getEStructuralFeature("name"); //$NON-NLS-1$
 	  		
 	  		public String getText(EObject oclModel) {
 	  			return (String)oclModel.eGet(sfName);
@@ -87,7 +88,7 @@ public class AtlLabelProvider extends LabelProvider {
 	  	});
 	  	
 	  	readers.put(AtlEMFConstants.clVariableDeclaration, new Reader() {
-	  		private EStructuralFeature sfVarName = AtlEMFConstants.clVariableDeclaration.getEStructuralFeature("varName");
+	  		private EStructuralFeature sfVarName = AtlEMFConstants.clVariableDeclaration.getEStructuralFeature("varName"); //$NON-NLS-1$
 	  		
 			public String getText(EObject variableDeclaration) {
 				return (String)variableDeclaration.eGet(sfVarName);
@@ -95,7 +96,7 @@ public class AtlLabelProvider extends LabelProvider {
 	  	});
 	  	
 	  	readers.put(AtlEMFConstants.clUnit, new Reader() {
-	  		private EStructuralFeature sfName = AtlEMFConstants.clUnit.getEStructuralFeature("name");
+	  		private EStructuralFeature sfName = AtlEMFConstants.clUnit.getEStructuralFeature("name"); //$NON-NLS-1$
 	  		
 	  		public String getText(EObject unit) {
 	  			return (String)unit.eGet(sfName);
@@ -124,74 +125,74 @@ public class AtlLabelProvider extends LabelProvider {
 	  private void initForText(EObject unit) {	
 	  	if (!initialized) {	  		
 	  		AtlEMFConstants.pkAtl = (EPackage)unit.eClass().getEPackage();
-		  		AtlEMFConstants.clModule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Module") ;
-		  		AtlEMFConstants.clLibrary = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Library");
-		  		AtlEMFConstants.clQuery = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Query");
-		  			AtlEMFConstants.sfModule_elements = AtlEMFConstants.clModule.getEStructuralFeature("elements");
-		  		AtlEMFConstants.clRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Rule");
-		  		AtlEMFConstants.clMatchedRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("MatchedRule");
-		  		AtlEMFConstants.clLazyMatchedRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("LazyMatchedRule");
-		  		AtlEMFConstants.clCalledRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("CalledRule");
-		  		AtlEMFConstants.clHelper = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Helper");
-		  			AtlEMFConstants.sfHelper_definition = AtlEMFConstants.clHelper.getEStructuralFeature("definition");
-		  		AtlEMFConstants.clLibraryRef = (EClass)AtlEMFConstants.pkAtl.getEClassifier("LibraryRef");
-		  		AtlEMFConstants.clUnit = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Unit");
-		  		AtlEMFConstants.clPatternElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("PatternElement");
-		  		AtlEMFConstants.clRuleVariableDeclaration = (EClass)AtlEMFConstants.pkAtl.getEClassifier("RuleVariableDeclaration");
-		  		AtlEMFConstants.clInPatternElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("InPatternElement");
-		  		AtlEMFConstants.clOutPatternElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("OutPatternElement");
-		  		AtlEMFConstants.clSimpleInPatternElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("SimpleInPatternElement");
-		  		AtlEMFConstants.clSimpleOutPatternElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("SimpleOutPatternElement");
-		  		AtlEMFConstants.clInPattern = (EClass)AtlEMFConstants.pkAtl.getEClassifier("InPattern");
-		  		AtlEMFConstants.clOutPattern = (EClass)AtlEMFConstants.pkAtl.getEClassifier("OutPattern");
+		  		AtlEMFConstants.clModule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Module") ; //$NON-NLS-1$
+		  		AtlEMFConstants.clLibrary = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Library"); //$NON-NLS-1$
+		  		AtlEMFConstants.clQuery = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Query"); //$NON-NLS-1$
+		  			AtlEMFConstants.sfModule_elements = AtlEMFConstants.clModule.getEStructuralFeature("elements"); //$NON-NLS-1$
+		  		AtlEMFConstants.clRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Rule"); //$NON-NLS-1$
+		  		AtlEMFConstants.clMatchedRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("MatchedRule"); //$NON-NLS-1$
+		  		AtlEMFConstants.clLazyMatchedRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("LazyMatchedRule"); //$NON-NLS-1$
+		  		AtlEMFConstants.clCalledRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("CalledRule"); //$NON-NLS-1$
+		  		AtlEMFConstants.clHelper = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Helper"); //$NON-NLS-1$
+		  			AtlEMFConstants.sfHelper_definition = AtlEMFConstants.clHelper.getEStructuralFeature("definition"); //$NON-NLS-1$
+		  		AtlEMFConstants.clLibraryRef = (EClass)AtlEMFConstants.pkAtl.getEClassifier("LibraryRef"); //$NON-NLS-1$
+		  		AtlEMFConstants.clUnit = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Unit"); //$NON-NLS-1$
+		  		AtlEMFConstants.clPatternElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("PatternElement"); //$NON-NLS-1$
+		  		AtlEMFConstants.clRuleVariableDeclaration = (EClass)AtlEMFConstants.pkAtl.getEClassifier("RuleVariableDeclaration"); //$NON-NLS-1$
+		  		AtlEMFConstants.clInPatternElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("InPatternElement"); //$NON-NLS-1$
+		  		AtlEMFConstants.clOutPatternElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("OutPatternElement"); //$NON-NLS-1$
+		  		AtlEMFConstants.clSimpleInPatternElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("SimpleInPatternElement"); //$NON-NLS-1$
+		  		AtlEMFConstants.clSimpleOutPatternElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("SimpleOutPatternElement"); //$NON-NLS-1$
+		  		AtlEMFConstants.clInPattern = (EClass)AtlEMFConstants.pkAtl.getEClassifier("InPattern"); //$NON-NLS-1$
+		  		AtlEMFConstants.clOutPattern = (EClass)AtlEMFConstants.pkAtl.getEClassifier("OutPattern"); //$NON-NLS-1$
 		  	AtlEMFConstants.pkOcl = AtlEMFConstants.sfHelper_definition.getEType().getEPackage();
-		  		AtlEMFConstants.clOclFeatureDefinition = (EClass)AtlEMFConstants.pkOcl.getEClassifier("OclFeatureDefinition");
-		  		AtlEMFConstants.clOclFeature = (EClass)AtlEMFConstants.pkOcl.getEClassifier("OclFeature");
-		  		AtlEMFConstants.clOclModel = (EClass)AtlEMFConstants.pkOcl.getEClassifier("OclModel");
-		  		AtlEMFConstants.clParameter = (EClass)AtlEMFConstants.pkOcl.getEClassifier("Parameter");
-		  			AtlEMFConstants.clVariableDeclaration = (EClass)AtlEMFConstants.pkOcl.getEClassifier("VariableDeclaration");
-		  				AtlEMFConstants.sfVarName = AtlEMFConstants.clVariableDeclaration.getEStructuralFeature("varName");
-		  		AtlEMFConstants.clElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("LocatedElement");
-		  			AtlEMFConstants.sfLocation = AtlEMFConstants.clElement.getEStructuralFeature("location");
+		  		AtlEMFConstants.clOclFeatureDefinition = (EClass)AtlEMFConstants.pkOcl.getEClassifier("OclFeatureDefinition"); //$NON-NLS-1$
+		  		AtlEMFConstants.clOclFeature = (EClass)AtlEMFConstants.pkOcl.getEClassifier("OclFeature"); //$NON-NLS-1$
+		  		AtlEMFConstants.clOclModel = (EClass)AtlEMFConstants.pkOcl.getEClassifier("OclModel"); //$NON-NLS-1$
+		  		AtlEMFConstants.clParameter = (EClass)AtlEMFConstants.pkOcl.getEClassifier("Parameter"); //$NON-NLS-1$
+		  			AtlEMFConstants.clVariableDeclaration = (EClass)AtlEMFConstants.pkOcl.getEClassifier("VariableDeclaration"); //$NON-NLS-1$
+		  				AtlEMFConstants.sfVarName = AtlEMFConstants.clVariableDeclaration.getEStructuralFeature("varName"); //$NON-NLS-1$
+		  		AtlEMFConstants.clElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("LocatedElement"); //$NON-NLS-1$
+		  			AtlEMFConstants.sfLocation = AtlEMFConstants.clElement.getEStructuralFeature("location"); //$NON-NLS-1$
 		  	initReaders();
 	  		initialized = true;
 	  	}
 	  }
 	  
 	  private void initForImages() {
-	  	classToImages.put("Library", "libs.gif");
-	  	classToImages.put("Module", "module.gif");
-	  	classToImages.put("Query", "query.gif");
-	  	classToImages.put("OclModel", "oclModel.gif");
-	  	classToImages.put("LibraryRef", "libsreference.gif");
-	  	classToImages.put("Helper", "helper.gif");
-	  	classToImages.put("MatchedRule", "matchedRule.gif");
-	  	classToImages.put("LazyMatchedRule", "lazyRule.gif");
-	  	classToImages.put("Operation", "operation.gif");
-	  	classToImages.put("InPattern", "inPattern.gif");
-	  	classToImages.put("OutPattern", "outPattern.gif");	  	
-	  	classToImages.put("Binding", "binding.gif");
-	  	classToImages.put("Iterator", "iterator.gif");
+	  	classToImages.put("Library", "libs.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("Module", "module.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("Query", "query.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("OclModel", "oclModel.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("LibraryRef", "libsreference.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("Helper", "helper.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("MatchedRule", "matchedRule.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("LazyMatchedRule", "lazyRule.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("Operation", "operation.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("InPattern", "inPattern.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("OutPattern", "outPattern.gif");	  	 //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("Binding", "binding.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("Iterator", "iterator.gif"); //$NON-NLS-1$ //$NON-NLS-2$
 	  	
 	  	// classToImages.put("OclFeatureDefinition", ".gif");
 	  	// classToImages.put("OclContextDefinition", "helper.gif");	  	
-	  	classToImages.put("SimpleInPatternElement", "element.gif");
-	  	classToImages.put("SimpleOutPatternElement", "element.gif");
+	  	classToImages.put("SimpleInPatternElement", "element.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("SimpleOutPatternElement", "element.gif"); //$NON-NLS-1$ //$NON-NLS-2$
 	  		  	
-	  	classToImages.put("OperationCallExp", "expressionATL.gif");
-	  	classToImages.put("OperatorCallExp", "expressionATL.gif");
-	  	classToImages.put("NavigationOrAttributeCallExp", "expressionATL.gif");
-	  	classToImages.put("EnumLiteralExp", "expressionATL.gif");
-	  	classToImages.put("IteratorExp", "expressionATL.gif");
-	  	classToImages.put("CollectionOperationCallExp", "expressionATL.gif");
-	  	classToImages.put("IfExp", "expressionATL.gif");
-	  	classToImages.put("StringExp", "expressionATL.gif");
-	  	classToImages.put("VariableExp", "expressionATL.gif");
+	  	classToImages.put("OperationCallExp", "expressionATL.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("OperatorCallExp", "expressionATL.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("NavigationOrAttributeCallExp", "expressionATL.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("EnumLiteralExp", "expressionATL.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("IteratorExp", "expressionATL.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("CollectionOperationCallExp", "expressionATL.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("IfExp", "expressionATL.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("StringExp", "expressionATL.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("VariableExp", "expressionATL.gif"); //$NON-NLS-1$ //$NON-NLS-2$
 	  	
-	  	classToImages.put("BooleanType", "type.gif");
-	  	classToImages.put("OclModelElement", "type.gif");
-	  	classToImages.put("StringType", "type.gif");
-	  	classToImages.put("TupleType", "type.gif");
+	  	classToImages.put("BooleanType", "type.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("OclModelElement", "type.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("StringType", "type.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	  	classToImages.put("TupleType", "type.gif"); //$NON-NLS-1$ //$NON-NLS-2$
 	  }
 	  
 	  /**
@@ -205,7 +206,7 @@ public class AtlLabelProvider extends LabelProvider {
 	  		return AtlUIPlugin.getImageDescriptor(iconName);
 	  	}
 	  	
-  		return AtlUIPlugin.getImageDescriptor("test.gif");
+  		return AtlUIPlugin.getImageDescriptor("test.gif"); //$NON-NLS-1$
 	  }
 	  
 	  /**
@@ -242,12 +243,12 @@ public class AtlLabelProvider extends LabelProvider {
 	   * @see ILabelProvider#getText(Object)
 	   */
 	  public String getText(Object element) {	 
-	  	String ret = "default";
+	  	String ret = "default"; //$NON-NLS-1$
 	  	if (!(element instanceof Root)) {
 	  		EObject eo = (EObject)element;
 	  		initForText(eo);	  		
   			ret = getReader(eo).getText(eo);
-  			ret += " : " + eo.eClass().getName();
+  			ret += " : " + eo.eClass().getName(); //$NON-NLS-1$
 	  	}	  	
 	  	return ret;
 	  }
@@ -262,7 +263,7 @@ public class AtlLabelProvider extends LabelProvider {
 	  }
 	  
 	  protected RuntimeException unknownElement(Object element) {
-	  	return new RuntimeException("Unknown type of element in tree of type " + element.getClass().getName());
+	  	return new RuntimeException(AtlEditorMessages.getString("AtlLabelProvider.0") + element.getClass().getName()); //$NON-NLS-1$
 	  }
 
 }

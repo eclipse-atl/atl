@@ -55,9 +55,9 @@ public class AlphabeticalSorter extends ViewerSorter
 			}
 		}
 		if (name1 == null)
-			name1 = "";
+			name1 = "";//$NON-NLS-1$
 		if (name2 == null)
-			name2 = "";
+			name2 = "";//$NON-NLS-1$
 		return collator.compare(name1, name2);
 	}
 }

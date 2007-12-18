@@ -80,7 +80,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	}
 	
 	/** The outline view context menu id. May be used for extensions by other plugins */
-	public final static String ATL_OUTLINE_VIEW_CONTEXT_MENU_ID = "org.eclipse.m2m.atl.adt.outline.contextMenu";
+	public final static String ATL_OUTLINE_VIEW_CONTEXT_MENU_ID = "org.eclipse.m2m.atl.adt.outline.contextMenu"; //$NON-NLS-1$
 	
 	/** The wake up frequency of the background thread in charge of the refresh of the outline tree viewer */
 //	private final static int REFRESH_PERIOD = 5000;
@@ -185,7 +185,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
     
     	IFileEditorInput ifei = (IFileEditorInput)editorInput;
 		IResource ifile = ifei.getFile();
-		int lineNumber= Integer.parseInt(location.split("-")[0].split(":")[0]);
+		int lineNumber= Integer.parseInt(location.split("-")[0].split(":")[0]); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			new AtlBreakpoint(ifile, location, lineNumber, charStart, charEnd);
 //			AtlBreakpoint bkpt = new AtlBreakpoint(ifile, location, lineNumber, charStart, charEnd);		
@@ -223,26 +223,26 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
      * context menu of the tree viewer
      */
     public void createActions() {
-    	cutAction = new Action("Cut") {
+    	cutAction = new Action("Cut") { //$NON-NLS-1$
     		public void run() {
     			
     		}
     	};
-    	cutAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("cut.gif"));
+    	cutAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("cut.gif")); //$NON-NLS-1$
     	
-    	copyAction = new Action("Copy") {
+    	copyAction = new Action("Copy") { //$NON-NLS-1$
     		public void run() {
     			
     		}
     	};
-    	copyAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("copy.gif"));
+    	copyAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("copy.gif")); //$NON-NLS-1$
     	
-    	pasteAction = new Action("Paste") {
+    	pasteAction = new Action("Paste") { //$NON-NLS-1$
     		public void run() {
     			
     		}
     	};    	    
-    	pasteAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("paste.gif"));
+    	pasteAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("paste.gif")); //$NON-NLS-1$
     	
 //    	renameItemAction = new Action("Rename") {
 //        	public void run() {
@@ -251,43 +251,43 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 //            }
 //        };
         
-        addBreakPointAction = new Action("Add breakpoint") {
+        addBreakPointAction = new Action("Add breakpoint") { //$NON-NLS-1$
         	public void run() {
         		addBreakpoint();        		
         	}
         };
         
-        refreshItemAction = new Action("Refresh") {
+        refreshItemAction = new Action("Refresh") { //$NON-NLS-1$
         	public void run() {        	
         		setUnit();
         	}
         };
-        refreshItemAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("refresh.gif"));
-        refreshItemAction.setToolTipText("refresh outline");
+        refreshItemAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("refresh.gif")); //$NON-NLS-1$
+        refreshItemAction.setToolTipText("refresh outline"); //$NON-NLS-1$
         
-        filterHelperAction = new Action("Hide Helpers", Action.AS_CHECK_BOX) {
+        filterHelperAction = new Action("Hide Helpers", Action.AS_CHECK_BOX) { //$NON-NLS-1$
         	public void run() {
         		updateFilters(filterHelperAction);        		
         	}
         };
-        filterHelperAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("hideHelper.gif"));        
-        filterHelperAction.setToolTipText("Hide helpers");
+        filterHelperAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("hideHelper.gif"));         //$NON-NLS-1$
+        filterHelperAction.setToolTipText("Hide helpers"); //$NON-NLS-1$
         
-        filterRuleAction = new Action("Hide rules", Action.AS_CHECK_BOX) {
+        filterRuleAction = new Action("Hide rules", Action.AS_CHECK_BOX) { //$NON-NLS-1$
         	public void run() {
         		updateFilters(filterRuleAction);
         	}
         };        
-        filterRuleAction.setToolTipText("Hide the rules");
-        filterRuleAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("hideMatchedRule.gif"));
+        filterRuleAction.setToolTipText("Hide the rules"); //$NON-NLS-1$
+        filterRuleAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("hideMatchedRule.gif")); //$NON-NLS-1$
         
-        sorterAction = new Action("Alphabetical sort", Action.AS_CHECK_BOX) {
+        sorterAction = new Action("Alphabetical sort", Action.AS_CHECK_BOX) { //$NON-NLS-1$
         	public void run() {
         		updateSorter(sorterAction);
         	}
         };
-        sorterAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("alphab_sort.gif"));
-        sorterAction.setToolTipText("sort alphabetically");
+        sorterAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("alphab_sort.gif")); //$NON-NLS-1$
+        sorterAction.setToolTipText("sort alphabetically"); //$NON-NLS-1$
     }
 			
 	/**

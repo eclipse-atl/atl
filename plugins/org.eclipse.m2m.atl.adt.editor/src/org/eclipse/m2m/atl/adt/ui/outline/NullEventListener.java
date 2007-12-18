@@ -30,7 +30,7 @@ public class NullEventListener implements EventListener
 	 * @see EventListener#add(Event)
 	 */
 	public void update(Event event) {
-		logger.info("je suis la!!");
+		logger.info("update");//$NON-NLS-1$
 	}
 
 }

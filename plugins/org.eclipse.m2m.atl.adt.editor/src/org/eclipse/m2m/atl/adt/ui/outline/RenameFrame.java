@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.adt.ui.outline;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -103,7 +104,7 @@ public class RenameFrame extends Composite
 			okLData.top =  new FormAttachment(822, 1000, 0);
 			okLData.bottom =  new FormAttachment(924, 1000, 0);
 			ok.setLayoutData(okLData);
-			ok.setText("OK");
+			ok.setText("OK");//$NON-NLS-1$
 			ok.addSelectionListener( new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
 					okWidgetSelected(evt);
@@ -119,7 +120,7 @@ public class RenameFrame extends Composite
 			lNewNameLData.top =  new FormAttachment(423, 1000, 0);
 			lNewNameLData.bottom =  new FormAttachment(512, 1000, 0);
 			lNewName.setLayoutData(lNewNameLData);
-			lNewName.setText("New name");
+			lNewName.setText("New name"); //$NON-NLS-1$
 			lNewName.setSize(new org.eclipse.swt.graphics.Point(111,28));
 	
 			FormData tNewNameLData = new FormData();
@@ -140,7 +141,7 @@ public class RenameFrame extends Composite
 			button1LData.top =  new FormAttachment(822, 1000, 0);
 			button1LData.bottom =  new FormAttachment(924, 1000, 0);
 			cancel.setLayoutData(button1LData);
-			cancel.setText("Cancel");
+			cancel.setText("Cancel");//$NON-NLS-1$
 			cancel.addSelectionListener( new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
 					cancelWidgetSelected(evt);
@@ -198,10 +199,10 @@ public class RenameFrame extends Composite
 	 */
 	protected void confirmRename()
 	{
-		if (tNewName.getText().equals(""))
+		if (tNewName.getText().equals("")) //$NON-NLS-1$
 		{
 			MessageBox msg = new MessageBox(this.getShell(), SWT.ICON_ERROR);
-			msg.setMessage("name cannot be null!");
+			msg.setMessage(AtlEditorMessages.getString("RenameFrame.0")); //$NON-NLS-1$
 			msg.open();
 			return;
 		}			
