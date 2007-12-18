@@ -32,13 +32,13 @@ public class AtlPerspective implements IPerspectiveFactory {
 	
 	public void defineActions(IPageLayout layout) {
         // Add "new wizards".
-        layout.addNewWizardShortcut("atlProjectWizard");
-        layout.addNewWizardShortcut("atlFileWizard");
+        layout.addNewWizardShortcut("atlProjectWizard"); //$NON-NLS-1$
+        layout.addNewWizardShortcut("atlFileWizard"); //$NON-NLS-1$
 
         // Add "show views".
         layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
         
-        layout.addPerspectiveShortcut("org.eclipse.m2m.atl.adt.atlPerspective");
+        layout.addPerspectiveShortcut("org.eclipse.m2m.atl.adt.atlPerspective"); //$NON-NLS-1$
 	}
 	
 	public void defineLayout(IPageLayout layout) {
@@ -46,30 +46,30 @@ public class AtlPerspective implements IPerspectiveFactory {
         String editorArea = layout.getEditorArea();
      
         // place navigator to the left (of editor area)
-        IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, (float) 0.25, editorArea);
+        IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, (float) 0.25, editorArea); //$NON-NLS-1$
         left.addView(IPageLayout.ID_RES_NAV);
         
         // problem view at the bottom (of editor area)
-        IFolderLayout bottom = layout.createFolder("bottom", IPageLayout.BOTTOM, (float) 0.75, editorArea);
+        IFolderLayout bottom = layout.createFolder("bottom", IPageLayout.BOTTOM, (float) 0.75, editorArea); //$NON-NLS-1$
         bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
         bottom.addView(IPageLayout.ID_PROP_SHEET); 
-        bottom.addView("org.eclipse.pde.runtime.LogView");
+        bottom.addView("org.eclipse.pde.runtime.LogView"); //$NON-NLS-1$
         bottom.addView(IConsoleConstants.ID_CONSOLE_VIEW);
         
         // outline view to right (of editor area)
-        IFolderLayout right = layout.createFolder("right", IPageLayout.RIGHT, (float) 0.75, editorArea);
+        IFolderLayout right = layout.createFolder("right", IPageLayout.RIGHT, (float) 0.75, editorArea); //$NON-NLS-1$
         right.addView(IPageLayout.ID_OUTLINE);
         
         // add shortcuts
-        layout.addNewWizardShortcut("atlProjectWizard");
-        layout.addNewWizardShortcut("atlFileWizard");
-        layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder");
-		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");
+        layout.addNewWizardShortcut("atlProjectWizard"); //$NON-NLS-1$
+        layout.addNewWizardShortcut("atlFileWizard"); //$NON-NLS-1$
+        layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file"); //$NON-NLS-1$
         layout.addActionSet(IDebugUIConstants.LAUNCH_ACTION_SET);
 
         layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
         
-        layout.addPerspectiveShortcut("org.eclipse.m2m.atl.adt.atlPerspective");
+        layout.addPerspectiveShortcut("org.eclipse.m2m.atl.adt.atlPerspective"); //$NON-NLS-1$
 	}
 	
 }

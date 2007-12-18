@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.m2m.atl.adt.perspective.AtlPerspectivePlugin;
+import org.eclipse.m2m.atl.adt.perspective.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -34,7 +35,6 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.update.internal.ui.RestartDialog;
 
 /**
  * An UI class for old ATL projects conversion.
@@ -58,14 +58,14 @@ public class CompatibilityDialog extends TitleAreaDialog {
 
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		String title="ATL Compatibility"; 
+		String title=Messages.getString("CompatibilityDialog.0");  //$NON-NLS-1$
 		shell.setText(title);
 	}
 
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
-		setTitle("Update ATL projects and configurations");
-		setMessage("This page allows to update ATL projects created with ATL anterior to 2.0.0RC2 into new ones.\n Select elements to convert and click OK.");
+		setTitle(Messages.getString("CompatibilityDialog.1")); //$NON-NLS-1$
+		setMessage(Messages.getString("CompatibilityDialog.2")); //$NON-NLS-1$
 
 		// tab folder
 		TabFolder tabFolder = new TabFolder(area, SWT.NONE);
@@ -76,7 +76,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		projectsComposite.setLayout(new GridLayout(2,false));
 		projectsComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		TabItem projectItem = new TabItem(tabFolder, SWT.NONE);
-		projectItem.setText("Projects");
+		projectItem.setText(Messages.getString("CompatibilityDialog.3")); //$NON-NLS-1$
 		projectItem.setControl(projectsComposite);
 		
 		//creates the projects table
@@ -92,7 +92,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		buttonsGroup.setLayout(new GridLayout());
 
 		Button selectAll = new Button(buttonsGroup, SWT.CENTER);
-		selectAll.setText("Select All");
+		selectAll.setText(Messages.getString("CompatibilityDialog.4")); //$NON-NLS-1$
 		selectAll.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				fProjectsTable.setAllChecked(true);
@@ -100,7 +100,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		});
 
 		Button deselectAll = new Button(buttonsGroup, SWT.CENTER);
-		deselectAll.setText("Deselect All");
+		deselectAll.setText(Messages.getString("CompatibilityDialog.5")); //$NON-NLS-1$
 		deselectAll.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				fProjectsTable.setAllChecked(false);
@@ -112,7 +112,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		confComposite.setLayout(new GridLayout(2,false));
 		confComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		TabItem confItem = new TabItem(tabFolder, SWT.NONE);
-		confItem.setText("Configurations");
+		confItem.setText(Messages.getString("CompatibilityDialog.6")); //$NON-NLS-1$
 		confItem.setControl(confComposite);
 		
 		//creates the conf table
@@ -128,7 +128,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		confButtonsGroup.setLayout(new GridLayout());
 
 		Button confSelectAll = new Button(confButtonsGroup, SWT.CENTER);
-		confSelectAll.setText("Select All");
+		confSelectAll.setText(Messages.getString("CompatibilityDialog.7")); //$NON-NLS-1$
 		confSelectAll.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				fConfTable.setAllChecked(true);
@@ -136,7 +136,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		});
 
 		Button confDeselectAll = new Button(confButtonsGroup, SWT.CENTER);
-		confDeselectAll.setText("Deselect All");
+		confDeselectAll.setText(Messages.getString("CompatibilityDialog.8")); //$NON-NLS-1$
 		confDeselectAll.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				fConfTable.setAllChecked(false);
@@ -169,7 +169,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 	class ProjectLabelProvider implements ITableLabelProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
-			return AtlPerspectivePlugin.getImage("atl_project.png");
+			return AtlPerspectivePlugin.getImage("atl_project.png"); //$NON-NLS-1$
 		}
 
 		public String getColumnText(Object element, int columnIndex) {
@@ -210,7 +210,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 	class ConfLabelProvider implements ITableLabelProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
-			return AtlPerspectivePlugin.getImage("atl_logo.gif");
+			return AtlPerspectivePlugin.getImage("atl_logo.gif"); //$NON-NLS-1$
 		}
 
 		public String getColumnText(Object element, int columnIndex) {

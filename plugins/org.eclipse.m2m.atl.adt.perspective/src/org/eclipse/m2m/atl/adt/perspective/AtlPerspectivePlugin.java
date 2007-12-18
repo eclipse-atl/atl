@@ -42,7 +42,7 @@ public class AtlPerspectivePlugin extends AbstractUIPlugin {
 		super();
 		plugin = this;
 		try {
-			resourceBundle   = ResourceBundle.getBundle("atlPerspective.AtlPerspectivePluginResources");
+			resourceBundle   = ResourceBundle.getBundle("atlPerspective.AtlPerspectivePluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -102,8 +102,8 @@ public class AtlPerspectivePlugin extends AbstractUIPlugin {
 	 * Returns the image descriptor with the given relative path.
 	 */
 	static public ImageDescriptor getImageDescriptor(String name) {
-		String pluginDir = plugin.getBundle().getEntry("/").toString();
-		String iconPath = "icons/";
+		String pluginDir = plugin.getBundle().getEntry("/").toString(); //$NON-NLS-1$
+		String iconPath = "icons/"; //$NON-NLS-1$
 		try {
 			return ImageDescriptor.createFromURL(
 					new URL(pluginDir + iconPath + name));
