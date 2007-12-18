@@ -34,7 +34,7 @@ public class AtlDebugPlugin extends AbstractUIPlugin {
 		super();
 		plugin = this;
 		try {
-			resourceBundle = ResourceBundle.getBundle("org.eclipse.m2m.atl.adt.debug.AtlDebugPluginResources");
+			resourceBundle = ResourceBundle.getBundle("org.eclipse.m2m.atl.adt.debug.AtlDebugPluginResources");//$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}

@@ -85,13 +85,13 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 	final static int INPUT = 0;
 	final static int OUTPUT = 1;
 	
-	final static String MODEL = "MODEL";
-	final static String METAMODEL = "METAMODEL";
-	final static String LIB = "LIB";
-	public final static String MODEL_OUTPUT = "MODELOUTPUT";
-	public final static String MODEL_INPUT = "MODELINPUT";
-	public final static String METAMODEL_OUTPUT = "METAMODELOUTPUT";
-	public final static String METAMODEL_INPUT = "METAMODELINPUT";
+	final static String MODEL = "MODEL";//$NON-NLS-1$
+	final static String METAMODEL = "METAMODEL";//$NON-NLS-1$
+	final static String LIB = "LIB";//$NON-NLS-1$
+	public final static String MODEL_OUTPUT = "MODELOUTPUT";//$NON-NLS-1$
+	public final static String MODEL_INPUT = "MODELINPUT";//$NON-NLS-1$
+	public final static String METAMODEL_OUTPUT = "METAMODELOUTPUT";//$NON-NLS-1$
+	public final static String METAMODEL_INPUT = "METAMODELINPUT";//$NON-NLS-1$
 
 	/*
 	 * These constants represent the index of the columns in different table
@@ -354,19 +354,19 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
-		buttonIsMDR.setText("MM Is MOF-1.4");
+		buttonIsMDR.setText("MM Is MOF-1.4"); //$NON-NLS-1$
 		buttonIsMDR.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
-				metamodelIsMetametamodel("MDR");
+				metamodelIsMetametamodel("MDR"); //$NON-NLS-1$
 				canSave();
 				updateLaunchConfigurationDialog();
 			}
 		});
 		
-		buttonIsEMF.setText("MM is Ecore");
+		buttonIsEMF.setText("MM is Ecore"); //$NON-NLS-1$
 		buttonIsEMF.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
-				metamodelIsMetametamodel("EMF");
+				metamodelIsMetametamodel("EMF");//$NON-NLS-1$
 				canSave();
 				updateLaunchConfigurationDialog();
 			}
@@ -374,7 +374,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		
 		listModelHandlerAvailables.setItems(AtlModelHandler.getModelHandlers());
 		
-		buttonSelectModelHandler.setText("Select Model Handler");
+		buttonSelectModelHandler.setText("Select Model Handler"); //$NON-NLS-1$
 		buttonSelectModelHandler.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				selectModelHandler();
@@ -383,18 +383,18 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
-		buttonAffectUri.setText("Metamodel by URI");
+		buttonAffectUri.setText("Metamodel by URI"); //$NON-NLS-1$
 		buttonAffectUri.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent evt) {
 				int index = tablePath.getSelectionIndex();
 				
 				if (index == -1) {
-					AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel");
+					AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel"); //$NON-NLS-1$ //$NON-NLS-2$
 					return;
 				}
 				
 				if (MODEL_INPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE)) || MODEL_OUTPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE))) {
-					AtlLauncherTools.messageBox("This action is only available on metamodel");
+					AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.MMADVERTISMENT")); //$NON-NLS-1$
 					return;
 				}
 				
@@ -426,11 +426,11 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		
 		//ModelChoiceTab.TABLEPATHMODELHANDLER
 		TableColumn modelHandler = new TableColumn(tablePath, SWT.CENTER);
-		modelHandler.setText("Model Handler");
+		modelHandler.setText("Model Handler"); //$NON-NLS-1$
 		
 		//ModelChoiceTab.TABLEPATHTYPE
 		TableColumn modelType = new TableColumn(tablePath, SWT.NULL);
-		modelType.setText("Type");
+		modelType.setText("Type"); //$NON-NLS-1$
 		modelType.setWidth(0);
 		modelType.setResizable(false);
 		
@@ -663,33 +663,33 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		int index = tablePath.getSelectionIndex();
 		
 		if (index == -1) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel");
+			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel"); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		
 		if (MODEL_INPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE)) || MODEL_OUTPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE))) {
-			AtlLauncherTools.messageBox("This action is only available on metamodel");
+			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.MMADVERTISMENT")); //$NON-NLS-1$
 			return;
 		}
 		
 //		tablePath.getItem(index).setText(TABLEPATHPATH, "uri:" + comboUriAvailable.getText());
-		tablePath.getItem(index).setText(TABLEPATHPATH, "uri:" + uri);
+		tablePath.getItem(index).setText(TABLEPATHPATH, "uri:" + uri); //$NON-NLS-1$
 	}
 	
 	private void metamodelIsMetametamodel(String metamodel) {
 		int index = tablePath.getSelectionIndex();
 		
 		if (index == -1) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel");
+			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel"); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		
 		if (MODEL_INPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE)) || MODEL_OUTPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE))) {
-			AtlLauncherTools.messageBox("This action is only available on metamodel");
+			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.MMADVERTISMENT")); //$NON-NLS-1$
 			return;
 		}
 		
-		tablePath.getItem(index).setText(TABLEPATHPATH, "#" + metamodel);
+		tablePath.getItem(index).setText(TABLEPATHPATH, "#" + metamodel); //$NON-NLS-1$
 		tablePath.getItem(index).setText(TABLEPATHMODELHANDLER, metamodel);
 	}
 	
@@ -697,23 +697,23 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		int index = tablePath.getSelectionIndex();
 		
 		if (index == -1) {
-			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel");
+			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.CHOOSE") + "Metamodel"); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		
 		if (MODEL_INPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE)) || MODEL_OUTPUT.equals(tablePath.getItem(index).getText(TABLEPATHTYPE))) {
-			AtlLauncherTools.messageBox("This action is only available on metamodel");
+			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.MMADVERTISMENT")); //$NON-NLS-1$
 			return;
 		}
 		
 		String selection[] = listModelHandlerAvailables.getSelection();
 		if (selection.length == 1) {
 			tablePath.getItem(index).setText(TABLEPATHMODELHANDLER, selection[0]);
-			if (tablePath.getItem(index).getText(TABLEPATHPATH).startsWith("#"))
-				tablePath.getItem(index).setText(TABLEPATHPATH, "#"+selection[0]);
+			if (tablePath.getItem(index).getText(TABLEPATHPATH).startsWith("#")) //$NON-NLS-1$
+				tablePath.getItem(index).setText(TABLEPATHPATH, "#"+selection[0]); //$NON-NLS-1$
 		}
 		else {
-			AtlLauncherTools.messageBox("Please select a model handler");
+			AtlLauncherTools.messageBox(Messages.getString("ModelChoiceTab.MHSELECTION")); //$NON-NLS-1$
 			return;
 		}
 	}
@@ -805,7 +805,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 						if (currentFile.getFileExtension() == null)
 							return false;
 						if (type ==ModelChoiceTab.LIB)
-							ret = (currentFile.getFileExtension().toUpperCase()).equals("ASM");
+							ret = (currentFile.getFileExtension().toUpperCase()).equals("ASM"); //$NON-NLS-1$
 						else
 							ret = true;/*(
 									(currentFile.getFileExtension().toUpperCase()).equals("XMI")
@@ -932,8 +932,8 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		if (!isAlreadyInTransformation(modelName, ModelChoiceTab.MODEL_INPUT) && !isAlreadyInTransformation(modelName, ModelChoiceTab.MODEL_OUTPUT)) {
 			item = new TableItem(tablePath, SWT.NONE);
 			item.setText(TABLEPATHNAME, modelName);
-			item.setText(TABLEPATHPATH, "");
-			item.setText(TABLEPATHMODELHANDLER, "");
+			item.setText(TABLEPATHPATH, ""); //$NON-NLS-1$
+			item.setText(TABLEPATHMODELHANDLER, ""); //$NON-NLS-1$
 			item.setText(TABLEPATHTYPE, currentType);
 		}
 		
@@ -942,8 +942,8 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			if (!isMetaModelOfRepository(metaModelName)) {
 				TableItem itemPath = new TableItem(tablePath, SWT.NONE);
 				itemPath.setText(TABLEPATHNAME, metaModelName);
-				itemPath.setText(TABLEPATHPATH, "");
-				itemPath.setText(TABLEPATHMODELHANDLER, "EMF");
+				itemPath.setText(TABLEPATHPATH, ""); //$NON-NLS-1$
+				itemPath.setText(TABLEPATHMODELHANDLER, "EMF"); //$NON-NLS-1$
 				itemPath.setText(TABLEPATHTYPE, currentType);
 			}
 		}

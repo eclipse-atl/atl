@@ -59,8 +59,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
-	static final URL BASE_URL = AtlDebugPlugin.getDefault().getBundle().getEntry("/");
-	static final String iconPath = "icons/";
+	static final URL BASE_URL = AtlDebugPlugin.getDefault().getBundle().getEntry("/");//$NON-NLS-1$
+	static final String iconPath = "icons/";//$NON-NLS-1$
 
 	// If you add a constant here, look in the class AtlVariable if the value is not already used
 	public final static int BREAKPOINT = 5;
@@ -141,11 +141,11 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 //				e.printStackTrace();
 //			}
 			switch (atlVar.getDescription()) {
-				case AtlVariable.ATTRIBUTE : imageName = "attribute.gif"; break;
-				case AtlVariable.ELEMENT : imageName = "element.gif"; break;
-				case AtlVariable.LOCALVARIABLE : imageName = "localVariable.gif"; break;
-				case AtlVariable.REFERENCE : imageName = "reference.gif"; break;
-				case AtlVariable.SUPERTYPE : imageName = "supertype.gif"; break;
+				case AtlVariable.ATTRIBUTE : imageName = "attribute.gif"; break;//$NON-NLS-1$
+				case AtlVariable.ELEMENT : imageName = "element.gif"; break;//$NON-NLS-1$
+				case AtlVariable.LOCALVARIABLE : imageName = "localVariable.gif"; break;//$NON-NLS-1$
+				case AtlVariable.REFERENCE : imageName = "reference.gif"; break;//$NON-NLS-1$
+				case AtlVariable.SUPERTYPE : imageName = "supertype.gif"; break;//$NON-NLS-1$
 				default : return null;
 			}				
 			if (mapImage.get(new Integer(atlVar.getDescription())) == null) {
@@ -155,13 +155,13 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		}
 		else if (item instanceof AtlBreakpoint) {
 			if (mapImage.get(new Integer(BREAKPOINT)) == null) {
-				mapImage.put(new Integer(BREAKPOINT), createImage(iconPath + "breakpoint.gif"));
+				mapImage.put(new Integer(BREAKPOINT), createImage(iconPath + "breakpoint.gif"));//$NON-NLS-1$
 			}
 			return (Image)mapImage.get(new Integer(BREAKPOINT));
 		}
 		else if (item instanceof IMarker) {
 			if (mapImage.get(new Integer(BREAKPOINT)) == null) {
-				mapImage.put(new Integer(BREAKPOINT), createImage(iconPath + "breakpoint.gif"));
+				mapImage.put(new Integer(BREAKPOINT), createImage(iconPath + "breakpoint.gif"));//$NON-NLS-1$
 			}
 			return (Image)mapImage.get(new Integer(BREAKPOINT));
 		}
@@ -176,7 +176,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	public String getText(Object item) {
 		if (item instanceof AtlDebugTarget) {
 			AtlDebugTarget target = (AtlDebugTarget) item;
-			String name = "";
+			String name = "";//$NON-NLS-1$
 			try {
 				name = target.getName();
 			}
@@ -190,7 +190,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 			AtlThread thread = (AtlThread) item;
 			try {
 				String currentState;
-				String message = "";
+				String message = "";//$NON-NLS-1$
 				switch (((AtlDebugTarget)thread.getDebugTarget()).getState()) {
 					case AtlDebugTarget.stateDisconnected: 	currentState = Messages.getString("AtlDebugModelPresentation.DISCONNECTED"); 	break; //$NON-NLS-1$
 					case AtlDebugTarget.stateRunning: 		currentState = Messages.getString("AtlDebugModelPresentation.RUNNING"); 		break; //$NON-NLS-1$
@@ -200,7 +200,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 					case AtlDebugTarget.stateTerminated: 	currentState = Messages.getString("AtlDebugModelPresentation.TERMINATED"); 	break; //$NON-NLS-1$
 					default : currentState = Messages.getString("AtlDebugModelPresentation.UNKNOWN"); //$NON-NLS-1$
 				}
-				return thread.getName() + " (" + currentState + ")";
+				return thread.getName() + " (" + currentState + ")";//$NON-NLS-1$//$NON-NLS-2$
 			}
 			catch (DebugException e) {
 				return null;
@@ -215,21 +215,21 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 				if (isShowVariableTypeNames())
 					typeVar = atlVar.getReferenceTypeName();
 				else
-					typeVar = "";
+					typeVar = "";//$NON-NLS-1$
 				
 				String rtn = atlVar.getValue().getReferenceTypeName();
-				if (rtn.equals("Boolean") || 
-					rtn.equals("Integer") ||
-					rtn.equals("Real"))
-					return typeVar + " " + atlVar.getName() + " = " + atlVar.getValue().getValueString();
-				else if (rtn.equals("String"))
-					return typeVar + " " + atlVar.getName() + " = '" + atlVar.getValue().getValueString() + "'";
-				else if (rtn.equals("EnumLiteral"))
-					return typeVar + " " + atlVar.getName() + " = #" + atlVar.getValue().getValueString();
-				else if (rtn.equals("Map Element"))
+				if (rtn.equals("Boolean") || //$NON-NLS-1$
+					rtn.equals("Integer") ||//$NON-NLS-1$
+					rtn.equals("Real"))//$NON-NLS-1$
+					return typeVar + " " + atlVar.getName() + " = " + atlVar.getValue().getValueString();//$NON-NLS-1$//$NON-NLS-2$
+				else if (rtn.equals("String"))//$NON-NLS-1$
+					return typeVar + " " + atlVar.getName() + " = '" + atlVar.getValue().getValueString() + "'";//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+				else if (rtn.equals("EnumLiteral"))//$NON-NLS-1$
+					return typeVar + " " + atlVar.getName() + " = #" + atlVar.getValue().getValueString();//$NON-NLS-1$//$NON-NLS-2$
+				else if (rtn.equals("Map Element"))//$NON-NLS-1$
 					return atlVar.getName();
 				else
-					return typeVar + " " + atlVar.getName() + " = " + atlVar.getReferenceTypeName() + " (id = " + atlVar.getIdVariable() + ")";
+					return typeVar + " " + atlVar.getName() + " = " + atlVar.getReferenceTypeName() + " (id = " + atlVar.getIdVariable() + ")";//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 			} catch (DebugException e) {
 				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 //				e.printStackTrace();
@@ -243,7 +243,10 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 				Integer lineNumber = (Integer)marker.getAttribute(IMarker.LINE_NUMBER);
 				Integer charStart = (Integer)marker.getAttribute(IMarker.CHAR_START);
 				Integer charEnd = (Integer)marker.getAttribute(IMarker.CHAR_END);
-				return location + " [line: " + lineNumber + ", charStart: " + charStart + ", charEnd: " + charEnd + "]";
+				return location + " [line: " + lineNumber + //$NON-NLS-1$
+				", charStart: " + charStart + //$NON-NLS-1$
+				", charEnd: " + charEnd +//$NON-NLS-1$
+				"]";//$NON-NLS-1$
 			}
 			catch (CoreException e) {
 				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -360,13 +363,13 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	 */
 	public String getEditorId(IEditorInput input, Object element) {
 		if(input instanceof DisassemblyEditorInput)
-			return "org.eclipse.ui.DefaultTextEditor";
+			return "org.eclipse.ui.DefaultTextEditor";//$NON-NLS-1$
 		IEditorRegistry registry= PlatformUI.getWorkbench().getEditorRegistry();
 		IEditorDescriptor descriptor= registry.getDefaultEditor(input.getName());
 		if (descriptor != null) {
 			return descriptor.getId();
 		} else {
-			return "org.eclipse.ui.DefaultTextEditor";
+			return "org.eclipse.ui.DefaultTextEditor";//$NON-NLS-1$
 		}
 	}
 

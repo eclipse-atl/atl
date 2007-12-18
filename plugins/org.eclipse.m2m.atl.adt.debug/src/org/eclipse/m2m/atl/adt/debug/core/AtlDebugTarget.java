@@ -110,7 +110,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	
 	private Socket socket = null;
 	
-	private String messageFromDebuggee = "";
+	private String messageFromDebuggee = "";//$NON-NLS-1$
 
 	/**
 	 * The array of threads of the debug target
@@ -126,7 +126,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 
 	private AtlNbCharFile structFile;
 	
-	private Pattern moduleName = Pattern.compile("^.*/(.*)\\.a(tl|sm)$");
+	private Pattern moduleName = Pattern.compile("^.*/(.*)\\.a(tl|sm)$");//$NON-NLS-1$
 	
 	public AtlDebugTarget(ILaunch launch) {
 		super(null);
@@ -146,17 +146,16 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	public void start() {
 		
 		
-		logger.info(Messages.getString("AtlDebugTarget.CONNECTIONDEBUGEE"));
-//		System.out.println(Messages.getString("AtlDebugTarget.CONNECTIONDEBUGEE"));
+		logger.info(Messages.getString("AtlDebugTarget.CONNECTIONDEBUGEE"));//$NON-NLS-1$
 		try {
 			do {
 				try {
 					try {
 						port = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.PORT, AtlDebugModelConstants.PORT);
 						host = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.HOST, AtlDebugModelConstants.HOST);
-						if (port.equals(""))
+						if (port.equals(""))//$NON-NLS-1$
 							port = AtlDebugModelConstants.PORT;
-						if (host.equals(""))
+						if (host.equals(""))//$NON-NLS-1$
 							host = AtlDebugModelConstants.HOST;
 						socket = new Socket(host, Integer.parseInt(port));
 					} catch (CoreException e1) {
@@ -176,7 +175,6 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 			
 			debugger = new ADWPDebugger(socket.getInputStream(), socket.getOutputStream());
 			logger.info(Messages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
-//			System.out.println(Messages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
 			state = stateSuspended;
 
 			threads = new AtlThread[1];
@@ -216,7 +214,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 //					int location = ((IntegerValue) msg.getArgs().get(3)).getValue();
 					String sourceLocation = ((StringValue) msg.getArgs().get(4)).getValue();
 
-					if (sourceLocation.equals("<null>") && !disassemblyMode) {
+					if (sourceLocation.equals("<null>") && !disassemblyMode) {//$NON-NLS-1$
 						debugger.sendCommand(ADWP.CMD_STEP, Arrays.asList(new Object[]{}));
 					}
 					else if(sourceLocation.equals(prevLocation) && !disassemblyMode) {
@@ -277,11 +275,11 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	private String getPathFrom(ObjectReference stackFrame) throws CoreException {
 		String path = null;
 		
-		ObjectReference operation = (ObjectReference) stackFrame.call("getOperation", Collections.EMPTY_LIST);
+		ObjectReference operation = (ObjectReference) stackFrame.call("getOperation", Collections.EMPTY_LIST);//$NON-NLS-1$
 		Assert.isNotNull(operation);
-		ObjectReference asm = (ObjectReference) operation.call("getASM", Collections.EMPTY_LIST);
+		ObjectReference asm = (ObjectReference) operation.call("getASM", Collections.EMPTY_LIST);//$NON-NLS-1$
 		Assert.isNotNull(asm);
-		String asmName = ((StringValue) asm.call("getName", Collections.EMPTY_LIST)).getValue();
+		String asmName = ((StringValue) asm.call("getName", Collections.EMPTY_LIST)).getValue();//$NON-NLS-1$
 		Assert.isNotNull(asmName);
 		
 		ILaunchConfiguration configuration = launch.getLaunchConfiguration();
@@ -289,7 +287,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 		for (Iterator i = superimpose.iterator(); i.hasNext();) {
 			path = (String) i.next();
 			if (asmName.equals(getAsmNameFrom(path))) {
-				return path.substring(0, path.length() - 3) + "atl";
+				return path.substring(0, path.length() - 3) + "atl";//$NON-NLS-1$
 			}
 		}
 		Map libraries = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
@@ -297,7 +295,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 			String lib = (String) i.next();
 			path = (String) libraries.get(lib);
 			if (asmName.equals(lib) || asmName.equals(getAsmNameFrom(path))) {
-				return path.substring(0, path.length() - 3) + "atl";
+				return path.substring(0, path.length() - 3) + "atl";//$NON-NLS-1$
 			}
 		}
 		path = configuration.getAttribute(AtlLauncherTools.ATLFILENAME, AtlLauncherTools.NULLPARAMETER);
@@ -324,7 +322,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	 */
 	public void breakpointAdded(IBreakpoint breakpoint) {
 		AtlBreakpoint ab = (AtlBreakpoint) breakpoint;
-		String location = "";
+		String location = "";//$NON-NLS-1$
 		Boolean enabled = new Boolean(false);
 		try {
 			location = (String)ab.getMarker().getAttribute(IMarker.LOCATION);
@@ -348,7 +346,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	 */
 	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) {
 		AtlBreakpoint ab = (AtlBreakpoint) breakpoint;
-		String location = "";
+		String location = "";//$NON-NLS-1$
 		Boolean enabled = new Boolean(false);
 		try {
 			location = (String)ab.getMarker().getAttribute(IMarker.LOCATION);
@@ -377,7 +375,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	public void breakpointRemoved(IBreakpoint breakpoint, IMarkerDelta delta) {
 	
 		AtlBreakpoint ab = (AtlBreakpoint) breakpoint;
-		String location = "";
+		String location = "";//$NON-NLS-1$
 		try {
 			location = (String)ab.getMarker().getAttribute(IMarker.LOCATION);
 		}

@@ -121,8 +121,8 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	private static final int IS_TARGET = 1 << 4;
 	private static final int IS_LIBRARY = 1 << 5;
 	
-	private Pattern asmToAtl = Pattern.compile("\\.asm$");
-	private Pattern moduleName = Pattern.compile("^.*/(.*)\\.a(tl|sm)$");
+	private Pattern asmToAtl = Pattern.compile("\\.asm$"); //$NON-NLS-1$
+	private Pattern moduleName = Pattern.compile("^.*/(.*)\\.a(tl|sm)$"); //$NON-NLS-1$
 	
 	private Map asmFileCache = new HashMap();
 	
@@ -140,52 +140,52 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		projectInformationGroup = new Group(rootContainer, SWT.NULL);
 		projectInformationGroup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		projectInformationGroup.setLayout(new GridLayout(2, false));
-		projectInformationGroup.setText(Messages.getString("MainAtlTab.PROJECT"));
+		projectInformationGroup.setText(Messages.getString("MainAtlTab.PROJECT")); //$NON-NLS-1$
 
 		Label projectNameLabel = new Label(projectInformationGroup, SWT.NULL);
-		projectNameLabel.setText(Messages.getString("MainAtlTab.PROJECTNAME"));
+		projectNameLabel.setText(Messages.getString("MainAtlTab.PROJECTNAME")); //$NON-NLS-1$
 		
 		projectsList = new Combo(projectInformationGroup, SWT.NULL | SWT.READ_ONLY);
 		projectsList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		projectsList.setItems(AtlLauncherTools.projectNames());
 		
 		Label projectFileLabel = new Label(projectInformationGroup, SWT.NULL);
-		projectFileLabel.setText(Messages.getString("MainAtlTab.ATLFILENAME"));
+		projectFileLabel.setText(Messages.getString("MainAtlTab.ATLFILENAME")); //$NON-NLS-1$
 		
 		projectFilesList = new Combo(projectInformationGroup, SWT.NULL | SWT.READ_ONLY);
 		projectFilesList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		metamodelsGroup = new Group(rootContainer, SWT.NULL);
-		metamodelsGroup.setText("Metamodels"); 
+		metamodelsGroup.setText(Messages.getString("MainAtlTab.METAMODELS"));  //$NON-NLS-1$
 		metamodelsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		metamodelsGroup.setLayout(new GridLayout(8, false));
 		
 		sourceModelsGroup = new Group(rootContainer, SWT.NULL);
-		sourceModelsGroup.setText("Source Models");
+		sourceModelsGroup.setText(Messages.getString("MainAtlTab.SOURCEMODELS")); //$NON-NLS-1$
 		sourceModelsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		sourceModelsGroup.setLayout(new GridLayout(4, false));
 		
 		targetModelsGroup = new Group(rootContainer, SWT.NULL);
-		targetModelsGroup.setText("Target Models");
+		targetModelsGroup.setText(Messages.getString("MainAtlTab.TARGETMODELS")); //$NON-NLS-1$
 		targetModelsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		targetModelsGroup.setLayout(new GridLayout(4, false));
 		
 		librariesGroup = new Group(rootContainer, SWT.NULL);
-		librariesGroup.setText("Libraries");
+		librariesGroup.setText(Messages.getString("MainAtlTab.LIBRARIES")); //$NON-NLS-1$
 		librariesGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		librariesGroup.setLayout(new GridLayout(4, false));	
 		
 		controlGroup = new Group(rootContainer, SWT.NULL);
-		controlGroup.setText("Modify"); 
+		controlGroup.setText(Messages.getString("MainAtlTab.MODIFY"));  //$NON-NLS-1$
 		controlGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		controlGroup.setLayout(new GridLayout(7, false));
 		
 		final Button addSourceModelBtn = new Button(controlGroup, SWT.NULL);
-		addSourceModelBtn.setText("Add source model...");
+		addSourceModelBtn.setText(Messages.getString("MainAtlTab.ADDSOURCE")); //$NON-NLS-1$
 		final Button addTargetModelBtn = new Button(controlGroup, SWT.NULL);
-		addTargetModelBtn.setText("Add target model...");
+		addTargetModelBtn.setText(Messages.getString("MainAtlTab.ADDTARGET")); //$NON-NLS-1$
 		final Button addLibBtn = new Button(controlGroup, SWT.NULL);
-		addLibBtn.setText("Add library...");
+		addLibBtn.setText(Messages.getString("MainAtlTab.ADDLIB")); //$NON-NLS-1$
 		
 		projectsList.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -204,17 +204,17 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent evt) {
 				InputDialog dlg = new InputDialog(
 						getShell(),
-						"Add source model",
-						"Metamodel name",
-						"MM",
+						Messages.getString("MainAtlTab.ADDSOURCEMODEL"), //$NON-NLS-1$
+						Messages.getString("MainAtlTab.MMNAME"), //$NON-NLS-1$
+						"MM", //$NON-NLS-1$
 						null);
 				if (dlg.open() == InputDialog.CANCEL) return;
 				String metamodelName = dlg.getValue();
 				dlg = new InputDialog(
 						getShell(),
-						"Add source model",
-						"Model name",
-						"IN",
+						Messages.getString("MainAtlTab.ADDSOURCEMODEL"), //$NON-NLS-1$
+						Messages.getString("MainAtlTab.MNAME"), //$NON-NLS-1$
+						"IN", //$NON-NLS-1$
 						null);
 				if (dlg.open() == InputDialog.CANCEL) return;
 				String modelName = dlg.getValue();
@@ -238,17 +238,17 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent evt) {
 				InputDialog dlg = new InputDialog(
 						getShell(),
-						"Add target model",
-						"Metamodel name",
-						"MM",
+						Messages.getString("MainAtlTab.ADDTARGETMODEL"), //$NON-NLS-1$
+						Messages.getString("MainAtlTab.MMNAME"), //$NON-NLS-1$
+						"MM", //$NON-NLS-1$
 						null);
 				if (dlg.open() == InputDialog.CANCEL) return;
 				String metamodelName = dlg.getValue();
 				dlg = new InputDialog(
 						getShell(),
-						"Add target model",
-						"Model name",
-						"OUT",
+						Messages.getString("MainAtlTab.ADDTARGETMODEL"), //$NON-NLS-1$
+						Messages.getString("MainAtlTab.MNAME"), //$NON-NLS-1$
+						"OUT", //$NON-NLS-1$
 						null);
 				if (dlg.open() == InputDialog.CANCEL) return;
 				String modelName = dlg.getValue();
@@ -272,9 +272,9 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent evt) {
 				InputDialog dlg = new InputDialog(
 						getShell(),
-						"Add library",
-						"Library name",
-						"LIB",
+						Messages.getString("MainAtlTab.ADDLIBRARY"), //$NON-NLS-1$
+						Messages.getString("MainAtlTab.LIBRARYNAME"), //$NON-NLS-1$
+						"LIB", //$NON-NLS-1$
 						null);
 				if (dlg.open() == InputDialog.CANCEL) return;
 				String libName = dlg.getValue();
@@ -308,7 +308,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			build();
 			initializeWidgetValuesFrom(configuration);
 			layout();
-			logger.fine("MainAtlTab rebuild");
+			logger.fine("MainAtlTab rebuild"); //$NON-NLS-1$
 		} catch (CoreException e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
@@ -400,11 +400,11 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			String modelName = (String) i.next();
 			if (metamodelsGroupWidgets.get(modelName) != null) {
 				Map widgets = (Map)metamodelsGroupWidgets.get(modelName);
-				Text metamodelLocation = (Text)widgets.get("metamodelLocation");
-				Button isMetametamodel = (Button)widgets.get("isMetametamodel");
-				Combo modelHandlers = (Combo)widgets.get("modelHandlers");
+				Text metamodelLocation = (Text)widgets.get("metamodelLocation"); //$NON-NLS-1$
+				Button isMetametamodel = (Button)widgets.get("isMetametamodel"); //$NON-NLS-1$
+				Combo modelHandlers = (Combo)widgets.get("modelHandlers"); //$NON-NLS-1$
 				
-				if (((String)savedPaths.get(modelName)).startsWith("#")) {
+				if (((String)savedPaths.get(modelName)).startsWith("#")) { //$NON-NLS-1$
 					isMetametamodel.setSelection(true);
 					isMetametamodel.notifyListeners(SWT.Selection, null);
 				} else {
@@ -425,7 +425,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 					widgets = (Map)targetModelsGroupWidgets.get(modelName);
 				}
 				if (widgets != null) {
-					Text modelLocation = (Text)widgets.get("location");
+					Text modelLocation = (Text)widgets.get("location"); //$NON-NLS-1$
 					modelLocation.setText((String)savedPaths.get(modelName));
 				}
 			} 	
@@ -435,7 +435,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			String libraryName = (String) i.next();
 			Map widgets = (Map)librariesGroupWidgets.get(libraryName);
 			if (widgets != null) {
-				Text libraryLocation = (Text)widgets.get("location");
+				Text libraryLocation = (Text)widgets.get("location"); //$NON-NLS-1$
 				libraryLocation.setText((String)savedLibraries.get(libraryName));
 			}
 		}
@@ -466,12 +466,12 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		}
 		for (Iterator i = superimposedFromLaunchConfig.iterator(); i.hasNext();) {
 			path = (String) i.next();
-			path = asmToAtl.matcher(path).replaceFirst(".atl");
+			path = asmToAtl.matcher(path).replaceFirst(".atl"); //$NON-NLS-1$
 			res = wsRoot.findMember(path);
 			if (res instanceof IFile) {
 				getModelsFromATLFile((IFile) res);
 			} else {
-				logger.severe("File not found " + path);
+				logger.severe(Messages.getString("MainAtlTab.FILENOTFOUND") + path); //$NON-NLS-1$
 //				System.out.println("File not found " + path);
 			}
 		}
@@ -591,9 +591,9 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		try {
             superimposedFromLaunchConfig = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
             
-			projectsList.setText(configuration.getAttribute(AtlLauncherTools.PROJECTNAME, ""));
+			projectsList.setText(configuration.getAttribute(AtlLauncherTools.PROJECTNAME, "")); //$NON-NLS-1$
 			projectFilesList.setItems(AtlLauncherTools.fileNames(projectsList.getText()));
-			projectFilesList.setText(configuration.getAttribute(AtlLauncherTools.ATLFILENAME, ""));
+			projectFilesList.setText(configuration.getAttribute(AtlLauncherTools.ATLFILENAME, "")); //$NON-NLS-1$
 		}
 		catch (CoreException e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -618,11 +618,11 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		
 		for (Iterator it = sourceMetamodelsFromModule.iterator(); it.hasNext(); ) {
 			String modelName = (String)it.next();
-			String location = ((Text)((Map)metamodelsGroupWidgets.get(modelName)).get("metamodelLocation")).getText();
-			String modelHandler = ((Combo)((Map)metamodelsGroupWidgets.get(modelName)).get("modelHandlers")).getText();
-			boolean isMetametamodel = ((Button)((Map)metamodelsGroupWidgets.get(modelName)).get("isMetametamodel")).getSelection();
+			String location = ((Text)((Map)metamodelsGroupWidgets.get(modelName)).get("metamodelLocation")).getText(); //$NON-NLS-1$
+			String modelHandler = ((Combo)((Map)metamodelsGroupWidgets.get(modelName)).get("modelHandlers")).getText(); //$NON-NLS-1$
+			boolean isMetametamodel = ((Button)((Map)metamodelsGroupWidgets.get(modelName)).get("isMetametamodel")).getSelection(); //$NON-NLS-1$
 			if (isMetametamodel) {
-				savedPaths.put(modelName, "#" + modelHandler);
+				savedPaths.put(modelName, "#" + modelHandler); //$NON-NLS-1$
 			} else {
 				savedPaths.put(modelName, location);
 			}
@@ -631,11 +631,11 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		
 		for (Iterator it = targetMetamodelsFromModule.iterator(); it.hasNext(); ) {
 			String modelName = (String)it.next();
-			String location = ((Text)((Map)metamodelsGroupWidgets.get(modelName)).get("metamodelLocation")).getText();
-			String modelHandler = ((Combo)((Map)metamodelsGroupWidgets.get(modelName)).get("modelHandlers")).getText();
-			boolean isMetametamodel = ((Button)((Map)metamodelsGroupWidgets.get(modelName)).get("isMetametamodel")).getSelection();
+			String location = ((Text)((Map)metamodelsGroupWidgets.get(modelName)).get("metamodelLocation")).getText(); //$NON-NLS-1$
+			String modelHandler = ((Combo)((Map)metamodelsGroupWidgets.get(modelName)).get("modelHandlers")).getText(); //$NON-NLS-1$
+			boolean isMetametamodel = ((Button)((Map)metamodelsGroupWidgets.get(modelName)).get("isMetametamodel")).getSelection(); //$NON-NLS-1$
 			if (isMetametamodel) {
-				savedPaths.put(modelName, "#" + modelHandler);
+				savedPaths.put(modelName, "#" + modelHandler); //$NON-NLS-1$
 			} else {
 				savedPaths.put(modelName, location);
 			}
@@ -644,19 +644,19 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		
 		for (Iterator it = sourceModelsFromModule.iterator(); it.hasNext(); ) {
 			String modelName = (String)it.next();
-			String location = ((Text)((Map)sourceModelsGroupWidgets.get(modelName)).get("location")).getText();
+			String location = ((Text)((Map)sourceModelsGroupWidgets.get(modelName)).get("location")).getText(); //$NON-NLS-1$
 			savedPaths.put(modelName, location);
 		}
 		
 		for (Iterator it = targetModelsFromModule.iterator(); it.hasNext(); ) {
 			String modelName = (String)it.next();
-			String location = ((Text)((Map)targetModelsGroupWidgets.get(modelName)).get("location")).getText();
+			String location = ((Text)((Map)targetModelsGroupWidgets.get(modelName)).get("location")).getText(); //$NON-NLS-1$
 			savedPaths.put(modelName, location);
 		}
 		
 		for (Iterator it = librariesFromModule.iterator(); it.hasNext(); ) {
 			String modelName = (String)it.next();
-			String location = ((Text)((Map)librariesGroupWidgets.get(modelName)).get("location")).getText();
+			String location = ((Text)((Map)librariesGroupWidgets.get(modelName)).get("location")).getText(); //$NON-NLS-1$
 			savedLibraries.put(modelName, location);
 		}
 		
@@ -698,11 +698,11 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 * @see ILaunchConfigurationTab#canSave()
 	 */
 	public boolean canSave() {
-		if (projectsList.getText().equals("")) {
+		if (projectsList.getText().equals("")) { //$NON-NLS-1$
 			this.setErrorMessage(Messages.getString("MainAtlTab.GIVEPROJECTNAME")); //$NON-NLS-1$
 			return false;
 		}
-		if (projectFilesList.getText().equals("")) {
+		if (projectFilesList.getText().equals("")) { //$NON-NLS-1$
 			this.setErrorMessage(Messages.getString("MainAtlTab.GIVETRANSFORMATIONNAME")); //$NON-NLS-1$
 			return false;
 		}
@@ -710,8 +710,8 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			Map.Entry entry = (Map.Entry) i.next();
 			String mName = (String) entry.getKey();
 			Map widgets = (Map) entry.getValue();
-			Text metamodelLocation = (Text)widgets.get("metamodelLocation");
-			Button isMetametamodel = (Button)widgets.get("isMetametamodel");
+			Text metamodelLocation = (Text)widgets.get("metamodelLocation"); //$NON-NLS-1$
+			Button isMetametamodel = (Button)widgets.get("isMetametamodel"); //$NON-NLS-1$
 			if ((metamodelLocation.getText().length() == 0) && (!isMetametamodel.getSelection())) {
 				this.setErrorMessage(Messages.getString("MainAtlTab.GIVEPATHFOR") + mName); //$NON-NLS-1$
 				return false;
@@ -739,7 +739,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			Map.Entry entry = (Map.Entry) i.next();
 			String mName = (String) entry.getKey();
 			Map widgets = (Map) entry.getValue();
-			Text location = (Text)widgets.get("location");
+			Text location = (Text)widgets.get("location"); //$NON-NLS-1$
 			if (location.getText().length() == 0) {
 				this.setErrorMessage(Messages.getString("MainAtlTab.GIVEPATHFOR") + mName); //$NON-NLS-1$
 				return false;
@@ -758,7 +758,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 * @param table
 	 */
 	private String editExternalPath(final int type) {
-		String ret = "";
+		String ret = ""; //$NON-NLS-1$
 		FileDialog fileDialog;
 		
 		if (type == (IS_TARGET | IS_MODEL)) {
@@ -767,10 +767,10 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			fileDialog = new FileDialog(this.getShell(), SWT.OPEN);
 		}
 
-		fileDialog.setFilterExtensions(new String[]{"*"});
+		fileDialog.setFilterExtensions(new String[]{"*"}); //$NON-NLS-1$
 		String fileName = fileDialog.open();
 		if (fileName != null) {
-			ret = "ext:" + fileName;
+			ret = "ext:" + fileName; //$NON-NLS-1$
 		}
 
 		return ret;
@@ -782,7 +782,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 * @param table
 	 */
 	private String editPath(final int type) {
-		String ret = "";		
+		String ret = "";		 //$NON-NLS-1$
 		
 		if (type == (IS_TARGET | IS_MODEL)) {
 			SaveAsDialog sad = new SaveAsDialog(getShell());
@@ -795,7 +795,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		else {
 			ElementTreeSelectionDialog elementTreeSelectionDialog = new ElementTreeSelectionDialog(	getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 			elementTreeSelectionDialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-			elementTreeSelectionDialog.setMessage(Messages.getString("ModelChoiceTab.CHOOSEMODEL"));
+			elementTreeSelectionDialog.setMessage(Messages.getString("ModelChoiceTab.CHOOSEMODEL")); //$NON-NLS-1$
 			elementTreeSelectionDialog.setAllowMultiple(false);
 			elementTreeSelectionDialog.setDoubleClickSelects(true);
 			elementTreeSelectionDialog.addFilter(new ViewerFilter() {
@@ -808,7 +808,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 						if (currentFile.getFileExtension() != null) {
 							if (type == IS_LIBRARY) {
 								ret = //(currentFile.getFileExtension().toUpperCase()).equals("ATL") ||
-									  (currentFile.getFileExtension().toUpperCase()).equals("ASM");
+									  (currentFile.getFileExtension().toUpperCase()).equals("ASM"); //$NON-NLS-1$
 							} else {
 								ret = true;
 							}
@@ -844,50 +844,50 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		Map thisGroupWidgets = new HashMap();
 			
 		final Label metamodelLabel = new Label(parent, SWT.NULL);
-		metamodelLabel.setText(metamodelName + ": ");
+		metamodelLabel.setText(metamodelName + ": "); //$NON-NLS-1$
 		
 		final Text metamodelLocation = new Text(parent, SWT.BORDER);
-		thisGroupWidgets.put("metamodelLocation", metamodelLocation);
+		thisGroupWidgets.put("metamodelLocation", metamodelLocation); //$NON-NLS-1$
 		metamodelLocation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1));
 				
 		final Button remove = new Button(parent, SWT.NULL);
-		remove.setText("X");
+		remove.setText("X"); //$NON-NLS-1$
 		
 		if (!removable) {
 			new Label(parent, SWT.NULL);
 		}
 				
 		final Button isMetametamodel = new Button(parent, SWT.CHECK);
-		thisGroupWidgets.put("isMetametamodel", isMetametamodel);
+		thisGroupWidgets.put("isMetametamodel", isMetametamodel); //$NON-NLS-1$
 		isMetametamodel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 2, 1));
-		isMetametamodel.setText("Is metametamodel");
-		isMetametamodel.setToolTipText("Tells if this metamodel is the metametamodel of the selected model handler.");
+		isMetametamodel.setText("Is metametamodel"); //$NON-NLS-1$
+		isMetametamodel.setToolTipText(Messages.getString("MainAtlTab.MODELHANDLERCHOICE")); //$NON-NLS-1$
 			
 		final Label modelHandlerLabel = new Label(parent, SWT.NULL);
-		modelHandlerLabel.setText("Model handler: ");
+		modelHandlerLabel.setText("Model handler: "); //$NON-NLS-1$
 		modelHandlerLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 		
 		final Combo modelHandlers = new Combo(parent, SWT.NULL | SWT.READ_ONLY);
-		thisGroupWidgets.put("modelHandlers", modelHandlers);
+		thisGroupWidgets.put("modelHandlers", modelHandlers); //$NON-NLS-1$
 		modelHandlers.setItems(AtlLauncherTools.getModelHandlers());
 		modelHandlers.select(AtlLauncherTools.getEMFKey());
 		modelHandlers.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
 		
 		final Button browseWorkspace = new Button(parent, SWT.NULL);
-		browseWorkspace.setText("Workspace...");
+		browseWorkspace.setText("Workspace..."); //$NON-NLS-1$
 		
 		final Button browseFilesystem = new Button(parent, SWT.NULL);
-		browseFilesystem.setText("File system...");
+		browseFilesystem.setText("File system..."); //$NON-NLS-1$
 		
 		final Button browseEMFRegistry = new Button(parent, SWT.NULL);
-		browseEMFRegistry.setText("EMF Registry...");
+		browseEMFRegistry.setText("EMF Registry..."); //$NON-NLS-1$
 				
 		final Label filler = new Label(parent, SWT.NULL);
 		filler.setLayoutData(new GridData(SWT.NULL, SWT.NULL, false, false, 1, 1));
 
 		metamodelLocation.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (metamodelLocation.getText().startsWith("uri:")) {
+				if (metamodelLocation.getText().startsWith("uri:")) { //$NON-NLS-1$
 					modelHandlers.select(AtlLauncherTools.getEMFKey());
 					// TODO Turn modelHandlers combo to enabled until UML2ATL Driver refactoring (getMof() method)
 					modelHandlers.setEnabled(true);
@@ -944,7 +944,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 				DialogUriSelection launcher = new DialogUriSelection(new Shell());
 				launcher.create();
 				if ((launcher.open() == Dialog.OK)) {
-					metamodelLocation.setText("uri:" + launcher.getUriSelected());
+					metamodelLocation.setText("uri:" + launcher.getUriSelected()); //$NON-NLS-1$
 				}
 			}
 		});
@@ -969,7 +969,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			}
 		};
 		remove.addSelectionListener(removeAdapter);
-		thisGroupWidgets.put("removeAdapter", removeAdapter);
+		thisGroupWidgets.put("removeAdapter", removeAdapter); //$NON-NLS-1$
 		
 		if (!removable) {
 			remove.dispose();
@@ -982,15 +982,15 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		Map thisGroupWidgets = new HashMap();
 		
 		final Label modelLabel = new Label(parent, SWT.NULL);
-		modelLabel.setText(modelName + ": ");
+		modelLabel.setText(modelName + ": "); //$NON-NLS-1$
 		
 		final Text location = new Text(parent, SWT.BORDER);
-		thisGroupWidgets.put("location", location);
+		thisGroupWidgets.put("location", location); //$NON-NLS-1$
 		location.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 	
 		final Button remove = new Button(parent, SWT.NULL);
-		remove.setText("X");
-		thisGroupWidgets.put("remove", remove);
+		remove.setText("X"); //$NON-NLS-1$
+		thisGroupWidgets.put("remove", remove); //$NON-NLS-1$
 
 		if (!removable) {
 			new Label(parent, SWT.NULL);
@@ -998,15 +998,15 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 
 		final Label metamodelLabel = new Label(parent, SWT.NULL);
 		if (metamodelName != null) {
-			metamodelLabel.setText(": " + metamodelName);
+			metamodelLabel.setText(": " + metamodelName); //$NON-NLS-1$
 		}
 
 		final Button browseWorkspace = new Button(parent, SWT.NULL);
-		browseWorkspace.setText("Workspace...");
+		browseWorkspace.setText("Workspace..."); //$NON-NLS-1$
 		browseWorkspace.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		
 		final Button browseFilesystem = new Button(parent, SWT.NULL);
-		browseFilesystem.setText("File system...");
+		browseFilesystem.setText("File system..."); //$NON-NLS-1$
 		
 		final Label filler = new Label(parent, SWT.NULL);
 		filler.setLayoutData(new GridData(SWT.NULL, SWT.NULL, false, false, 1, 1));
@@ -1063,7 +1063,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			}
 		};
 		remove.addSelectionListener(removeAdapter);
-		thisGroupWidgets.put("removeAdapter", removeAdapter);
+		thisGroupWidgets.put("removeAdapter", removeAdapter); //$NON-NLS-1$
 		
 		if (!removable) {
 			remove.dispose();
@@ -1077,7 +1077,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			!targetC2RelationshipFromModule.values().contains(metamodelName)) {
 			Map widgets = (Map) metamodelsGroupWidgets.get(metamodelName);
 			if (widgets != null) {
-				SelectionAdapter removeAdapter = (SelectionAdapter) widgets.get("removeAdapter");
+				SelectionAdapter removeAdapter = (SelectionAdapter) widgets.get("removeAdapter"); //$NON-NLS-1$
 				removeAdapter.widgetSelected(null);
 			}
 		}
@@ -1090,7 +1090,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 				i.remove();
 				Map widgets = (Map) sourceModelsGroupWidgets.get(entry.getKey());
 				if (widgets != null) {
-					SelectionAdapter removeAdapter = (SelectionAdapter) widgets.get("removeAdapter");
+					SelectionAdapter removeAdapter = (SelectionAdapter) widgets.get("removeAdapter"); //$NON-NLS-1$
 					removeAdapter.widgetSelected(null);
 				}
 			}
@@ -1101,7 +1101,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 				i.remove();
 				Map widgets = (Map) targetModelsGroupWidgets.get(entry.getKey());
 				if (widgets != null) {
-					SelectionAdapter removeAdapter = (SelectionAdapter) widgets.get("removeAdapter");
+					SelectionAdapter removeAdapter = (SelectionAdapter) widgets.get("removeAdapter"); //$NON-NLS-1$
 					removeAdapter.widgetSelected(null);
 				}
 			}
@@ -1124,7 +1124,7 @@ final boolean debug = false;
 			if (asmFileCache.containsKey(file)) {
 				atlmodel = (ASMModel) asmFileCache.get(file);
 
-if (debug) logger.info("Cached ASMModel found for " + file.toString());
+if (debug) logger.info("Cached ASMModel found for " + file.toString()); //$NON-NLS-1$
 //if (debug) System.out.println("Cached ASMModel found for " + file.toString());
 
 			} else {
@@ -1133,26 +1133,26 @@ if (debug) logger.info("Cached ASMModel found for " + file.toString());
 				input.close();
 				asmFileCache.put(file, atlmodel);
 
-if (debug) logger.info("Loaded ASMModel from " + file.toString());
+if (debug) logger.info("Loaded ASMModel from " + file.toString()); //$NON-NLS-1$
 //if (debug) System.out.println("Loaded ASMModel from " + file.toString());
 
 			}
 						
-			Set module = atlmodel.getElementsByType("Module");
-			Set query = atlmodel.getElementsByType("Query");
+			Set module = atlmodel.getElementsByType("Module"); //$NON-NLS-1$
+			Set query = atlmodel.getElementsByType("Query"); //$NON-NLS-1$
 			
 			if (module.size() > 0) {
 				ASMModelElement atlModule = (ASMModelElement)module.toArray()[0];
 							
-				Iterator inModelsIt = ((ASMCollection)atlModule.get(null, "inModels")).iterator();
-				Iterator outModelsIt = ((ASMCollection)atlModule.get(null, "outModels")).iterator();
-				Iterator librariesIt = ((ASMCollection)atlModule.get(null, "libraries")).iterator();
+				Iterator inModelsIt = ((ASMCollection)atlModule.get(null, "inModels")).iterator(); //$NON-NLS-1$
+				Iterator outModelsIt = ((ASMCollection)atlModule.get(null, "outModels")).iterator(); //$NON-NLS-1$
+				Iterator librariesIt = ((ASMCollection)atlModule.get(null, "libraries")).iterator(); //$NON-NLS-1$
 				
 				while (inModelsIt.hasNext()) {
 					ASMModelElement current = (ASMModelElement)inModelsIt.next();
-					if (! (current.get(null, "metamodel") instanceof ASMOclUndefined)) {
-						String modelName = ((ASMString)current.get(null, "name")).getSymbol();
-						String metamodelName = ((ASMString)current.get(null, "metamodel").get(null, "name")).getSymbol();
+					if (! (current.get(null, "metamodel") instanceof ASMOclUndefined)) { //$NON-NLS-1$
+						String modelName = ((ASMString)current.get(null, "name")).getSymbol(); //$NON-NLS-1$
+						String metamodelName = ((ASMString)current.get(null, "metamodel").get(null, "name")).getSymbol(); //$NON-NLS-1$ //$NON-NLS-2$
 						if (!sourceMetamodelsFromModule.contains(metamodelName)) {
 							sourceMetamodelsFromModule.add(metamodelName);
 						}
@@ -1165,9 +1165,9 @@ if (debug) logger.info("Loaded ASMModel from " + file.toString());
 				
 				while (outModelsIt.hasNext()) {
 					ASMModelElement current = (ASMModelElement)outModelsIt.next();
-					if (! (current.get(null, "metamodel") instanceof ASMOclUndefined)) {
-						String modelName = ((ASMString)current.get(null, "name")).getSymbol();
-						String metamodelName = ((ASMString)current.get(null, "metamodel").get(null, "name")).getSymbol();
+					if (! (current.get(null, "metamodel") instanceof ASMOclUndefined)) { //$NON-NLS-1$
+						String modelName = ((ASMString)current.get(null, "name")).getSymbol(); //$NON-NLS-1$
+						String metamodelName = ((ASMString)current.get(null, "metamodel").get(null, "name")).getSymbol(); //$NON-NLS-1$ //$NON-NLS-2$
 						if (!targetMetamodelsFromModule.contains(metamodelName)) {
 							targetMetamodelsFromModule.add(metamodelName);
 						}
@@ -1180,7 +1180,7 @@ if (debug) logger.info("Loaded ASMModel from " + file.toString());
 				
 				while (librariesIt.hasNext()) {
 					ASMModelElement current = (ASMModelElement)librariesIt.next();
-					String library = ((ASMString)current.get(null, "name")).getSymbol();
+					String library = ((ASMString)current.get(null, "name")).getSymbol(); //$NON-NLS-1$
 					if (nonLibraries.contains(library)) continue;
 					if (!librariesFromModule.contains(library)) {
 						librariesFromModule.add(library); 
@@ -1188,11 +1188,11 @@ if (debug) logger.info("Loaded ASMModel from " + file.toString());
 				}					
 			} else if (query.size() > 0) {
 				ASMModelElement atlQuery = (ASMModelElement)query.toArray()[0];
-				Set models = atlQuery.getModel().getElementsByType("OclModel");
+				Set models = atlQuery.getModel().getElementsByType("OclModel"); //$NON-NLS-1$
 				for (Iterator it = models.iterator(); it.hasNext(); ) {
 					ASMModelElement model = (ASMModelElement)it.next();
-					String modelName = "IN";
-					String metamodelName = ((ASMString)model.get(null, "name")).getSymbol();
+					String modelName = "IN"; //$NON-NLS-1$
+					String metamodelName = ((ASMString)model.get(null, "name")).getSymbol(); //$NON-NLS-1$
 					if (!sourceMetamodelsFromModule.contains(metamodelName)) {
 						sourceMetamodelsFromModule.add(metamodelName);
 					}
@@ -1202,10 +1202,10 @@ if (debug) logger.info("Loaded ASMModel from " + file.toString());
 					}
 				}
 
-				Iterator librariesIt = ((ASMCollection)atlQuery.get(null, "libraries")).iterator();
+				Iterator librariesIt = ((ASMCollection)atlQuery.get(null, "libraries")).iterator(); //$NON-NLS-1$
 				while (librariesIt.hasNext()) {
 					ASMModelElement current = (ASMModelElement)librariesIt.next();
-					String library = ((ASMString)current.get(null, "name")).getSymbol(); 
+					String library = ((ASMString)current.get(null, "name")).getSymbol();  //$NON-NLS-1$
 					if (nonLibraries.contains(library)) continue;
 					if (!librariesFromModule.contains(library)) {
 						librariesFromModule.add(library); 

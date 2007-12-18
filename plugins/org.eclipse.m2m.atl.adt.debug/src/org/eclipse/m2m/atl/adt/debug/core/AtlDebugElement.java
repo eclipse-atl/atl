@@ -28,7 +28,7 @@ public abstract class AtlDebugElement extends PlatformObject implements IDebugEl
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	public String getModelIdentifier() {
-		return "org.eclipse.m2m.atl.adt.debug";
+		return "org.eclipse.m2m.atl.adt.debug";//$NON-NLS-1$
 	}
 
 	// containing target 

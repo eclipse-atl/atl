@@ -14,14 +14,14 @@ import org.eclipse.m2m.atl.adt.debug.Messages;
 
 public class AtlDebugModelConstants {
 
-	public final static String PORT = "6060";
-	public final static String HOST = "localhost";
+	public final static String PORT = "6060";//$NON-NLS-1$
+	public final static String HOST = "localhost";//$NON-NLS-1$
 	public final static String DEBUGTARGETNAME = Messages.getString("AtlDebugModelConstants.DEBUGTARGETNAME"); //$NON-NLS-1$
 	public final static String RUNTARGETNAME = Messages.getString("AtlDebugModelConstants.RUNTARGETNAME"); //$NON-NLS-1$
 	public final static String THREADNAME = Messages.getString("AtlDebugModelConstants.THREADNAME"); //$NON-NLS-1$
-	public final static String NULL = "<null>";
-	public final static String KEY = "key";
-	public final static String VALUE = "value";
+	public final static String NULL = "<null>";//$NON-NLS-1$
+	public final static String KEY = "key";//$NON-NLS-1$
+	public final static String VALUE = "value";//$NON-NLS-1$
 	public final static String MAPELEMENT = Messages.getString("AtlDebugModelConstants.MAPELEMENT"); //$NON-NLS-1$
 }
 

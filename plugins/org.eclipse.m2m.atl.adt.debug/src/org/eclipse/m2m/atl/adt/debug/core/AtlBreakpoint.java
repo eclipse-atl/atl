@@ -27,7 +27,7 @@ import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 public class AtlBreakpoint extends LineBreakpoint 
 {
-	public static final String ATL_BREAKPOINT_MARKER = "org.eclipse.m2m.atl.adt.debug.atlBreakpointMarker";
+	public static final String ATL_BREAKPOINT_MARKER = "org.eclipse.m2m.atl.adt.debug.atlBreakpointMarker";//$NON-NLS-1$
 	
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
@@ -83,7 +83,6 @@ public class AtlBreakpoint extends LineBreakpoint
 	 */
 	public String getModelIdentifier() 
 	{
-		// return "org.eclipse.m2m.atl.adt.debug";		
 		 return AtlDebugPlugin.getUniqueIdentifier();
 	}
 	

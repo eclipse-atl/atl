@@ -34,7 +34,7 @@ public class DialogUriSelection extends SelectionStatusDialog {
 
 	private List listUri;
 
-	private String uri = "";
+	private String uri = "";//$NON-NLS-1$
 
 	/**
 	 * @param parent
@@ -67,7 +67,7 @@ public class DialogUriSelection extends SelectionStatusDialog {
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		container.setLayoutData(gd);
 
-		new Label(container, SWT.NULL).setText("Registered EPackages: ");
+		new Label(container, SWT.NULL).setText("Registered EPackages: ");//$NON-NLS-1$
 		listUri = new List(container, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL);
 		
 		for (Iterator it = ((Map)EPackage.Registry.INSTANCE).keySet().iterator(); it.hasNext();)

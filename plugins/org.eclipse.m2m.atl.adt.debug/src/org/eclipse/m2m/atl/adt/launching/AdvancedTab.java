@@ -60,7 +60,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
-	final static String SUPERIMPOSE = "SUPERIMPOSE";
+	final static String SUPERIMPOSE = "SUPERIMPOSE";//$NON-NLS-1$
 
     private Composite container;
 
@@ -168,7 +168,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 		
         Composite groupATLVMs = new Composite(groupOthersInformation, SWT.SHADOW_NONE);
 		Label atlVMLabel = new Label(groupATLVMs, SWT.NULL);
-		atlVMLabel.setText("ATL Virtual Machine: ");
+		atlVMLabel.setText("ATL Virtual Machine: ");//$NON-NLS-1$
 		atlVMLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		
 		atlVMs = new Combo(groupATLVMs, SWT.NULL | SWT.READ_ONLY);
@@ -233,7 +233,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 			buttonAllowInterModelReferences.setSelection(configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false));
 
 			for (int item = 0; item < atlVMs.getItems().length; item++) {
-				if (atlVMs.getItem(item).equals(configuration.getAttribute(AtlLauncherTools.ATLVM, ""))) {
+				if (atlVMs.getItem(item).equals(configuration.getAttribute(AtlLauncherTools.ATLVM, ""))) {//$NON-NLS-1$
 					atlVMs.select(item);
 				}
 			}
@@ -327,7 +327,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
                     if (currentFile.getFileExtension() == null)
                         return false;
                     if (type == AdvancedTab.SUPERIMPOSE)
-                        ret = (currentFile.getFileExtension().toUpperCase()).equals("ASM");
+                        ret = (currentFile.getFileExtension().toUpperCase()).equals("ASM");//$NON-NLS-1$
                     else
                         ret = true;
                 }

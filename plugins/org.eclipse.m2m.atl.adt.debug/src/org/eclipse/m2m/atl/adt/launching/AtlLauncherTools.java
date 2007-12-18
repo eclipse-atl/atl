@@ -43,48 +43,48 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class AtlLauncherTools {
 
-	public static final String ATLVM = "ATL VM";
-	public static final String ATLFILENAME = "ATL File Name";
-	public static final String AllowInterModelReferences = "AllowInterModelReferences";
-	public static final String PROJECTNAME = "Project Name";
-	public static final String OUTPUT = "Output";
-	public static final String INPUT = "Input";
-	public static final String NULLPARAMETER = "<null>";
-	public static final String PATH = "Path";
-	public static final String HOST = "Host";
-	public static final String PORT = "Port";
-	public static final String LIBS = "Libs";
+	public static final String ATLVM = "ATL VM"; //$NON-NLS-1$
+	public static final String ATLFILENAME = "ATL File Name"; //$NON-NLS-1$
+	public static final String AllowInterModelReferences = "AllowInterModelReferences"; //$NON-NLS-1$
+	public static final String PROJECTNAME = "Project Name"; //$NON-NLS-1$
+	public static final String OUTPUT = "Output"; //$NON-NLS-1$
+	public static final String INPUT = "Input"; //$NON-NLS-1$
+	public static final String NULLPARAMETER = "<null>"; //$NON-NLS-1$
+	public static final String PATH = "Path"; //$NON-NLS-1$
+	public static final String HOST = "Host"; //$NON-NLS-1$
+	public static final String PORT = "Port"; //$NON-NLS-1$
+	public static final String LIBS = "Libs"; //$NON-NLS-1$
 	
-	public static final String MODEL_OUTPUT = "MODELOUTPUT";
-	public static final String MODEL_INPUT = "MODELINPUT";
-	public static final String METAMODEL_OUTPUT = "METAMODELOUTPUT";
-	public static final String METAMODEL_INPUT = "METAMODELINPUT";
+	public static final String MODEL_OUTPUT = "MODELOUTPUT"; //$NON-NLS-1$
+	public static final String MODEL_INPUT = "MODELINPUT"; //$NON-NLS-1$
+	public static final String METAMODEL_OUTPUT = "METAMODELOUTPUT"; //$NON-NLS-1$
+	public static final String METAMODEL_INPUT = "METAMODELINPUT"; //$NON-NLS-1$
     
-	public static final String SUPERIMPOSE = "Superimpose";
-	public static final String MODELTYPE = "ModelType";
-	public static final String INJECTOR = "Injector";
-	public static final String EXTRACTOR = "Extractor";
-	public static final String MODELHANDLER = "Model Handler";
-	public static final String MODEDEBUG = "Mode Debug";
+	public static final String SUPERIMPOSE = "Superimpose"; //$NON-NLS-1$
+	public static final String MODELTYPE = "ModelType"; //$NON-NLS-1$
+	public static final String INJECTOR = "Injector"; //$NON-NLS-1$
+	public static final String EXTRACTOR = "Extractor"; //$NON-NLS-1$
+	public static final String MODELHANDLER = "Model Handler"; //$NON-NLS-1$
+	public static final String MODEDEBUG = "Mode Debug"; //$NON-NLS-1$
 	public static final String MODELCHOICETABNAME = Messages.getString("AtlLauncherTools.MODELCHOICE"); //$NON-NLS-1$
     public static final String ADVANCEDTABNAME = Messages.getString("AtlLauncherTools.ADVANCED"); //$NON-NLS-1$
 	public static final String REMOTEATLNAME = Messages.getString("AtlLauncherTools.ATLCONFIGURATION"); //$NON-NLS-1$
-	public static final String PATHICONATL = "icons/atllogo_icon.gif";
+	public static final String PATHICONATL = "icons/atllogo_icon.gif"; //$NON-NLS-1$
 	public static List EXTENSIONS = new ArrayList();
 	static {
-		EXTENSIONS.add("atl");
-		EXTENSIONS.add("acg");
+		EXTENSIONS.add("atl"); //$NON-NLS-1$
+		EXTENSIONS.add("acg"); //$NON-NLS-1$
 	}
 	
-	public static final String OPTION_CONTINUE_AFTER_ERROR = "continueAfterError";
-	public static final String OPTION_DISABLE_ATTRIBUTE_HELPER_CACHE = "disableAttributeHelperCache";
-	public static final String OPTION_ALLOW_TARGET_NAVIGATION = "allowTargetNavigation";
-	public static final String OPTION_ALLOW_SOURCE_MODIFICATION = "allowSourceModification";
-	public static final String OPTION_ALLOW_CONTAINER_REASSIGNMENT = "allowContainerReassignment";
-	public static final String OPTION_PRINT_EXECUTION_TIME = "printExecutionTime";
-	public static final String OPTION_STEP = "step";
-	public static final String OPTION_SHOW_SUMMARY = "showSummary";
-	public static final String OPTION_PROFILE = "profile";
+	public static final String OPTION_CONTINUE_AFTER_ERROR = "continueAfterError"; //$NON-NLS-1$
+	public static final String OPTION_DISABLE_ATTRIBUTE_HELPER_CACHE = "disableAttributeHelperCache"; //$NON-NLS-1$
+	public static final String OPTION_ALLOW_TARGET_NAVIGATION = "allowTargetNavigation"; //$NON-NLS-1$
+	public static final String OPTION_ALLOW_SOURCE_MODIFICATION = "allowSourceModification"; //$NON-NLS-1$
+	public static final String OPTION_ALLOW_CONTAINER_REASSIGNMENT = "allowContainerReassignment"; //$NON-NLS-1$
+	public static final String OPTION_PRINT_EXECUTION_TIME = "printExecutionTime"; //$NON-NLS-1$
+	public static final String OPTION_STEP = "step"; //$NON-NLS-1$
+	public static final String OPTION_SHOW_SUMMARY = "showSummary"; //$NON-NLS-1$
+	public static final String OPTION_PROFILE = "profile"; //$NON-NLS-1$
 	public static final String[] additionalParamIds = new String[] {
 //		ALLOW_TARGET_NAVIGATION,
 //		ALLOW_SOURCE_MODIFICATION,
@@ -100,12 +100,12 @@ public class AtlLauncherTools {
 //		"Allow navigation in target models",
 //		"Allow modification of source models",
 //		"Allow container reassignment",
-		"Continue execution after errors in Run mode",
-		"Disable attribute helpers caching",
-		"Run mode only: print execution times to console: 1) transformation only, and 2) total (including model loading and saving)",
-		"Run mode only: print execution information to console for each executed bytecode (very verbose!)",
-		"Run mode only: print an execution summary to console (i.e., number of executed bytecodes)",
-		"Run mode only: print information on the number of times operations are called with the same arguments to the console",
+		Messages.getString("AtlLauncherTools.0"), //$NON-NLS-1$
+		Messages.getString("AtlLauncherTools.1"), //$NON-NLS-1$
+		Messages.getString("AtlLauncherTools.2"), //$NON-NLS-1$
+		Messages.getString("AtlLauncherTools.3"), //$NON-NLS-1$
+		Messages.getString("AtlLauncherTools.4"), //$NON-NLS-1$
+		Messages.getString("AtlLauncherTools.5"), //$NON-NLS-1$
 	};
 	
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
@@ -168,7 +168,7 @@ public class AtlLauncherTools {
 	 */
 	public static Image createImage(String path) {
 		try {
-			URL BASE_URL = AtlDebugPlugin.getDefault().getBundle().getEntry("/");
+			URL BASE_URL = AtlDebugPlugin.getDefault().getBundle().getEntry("/"); //$NON-NLS-1$
 			URL url = new URL(BASE_URL, path);
 			return ImageDescriptor.createFromURL(url).createImage();
 		}
@@ -208,7 +208,7 @@ public class AtlLauncherTools {
 		final Vector fileList = new Vector();
 
 		IProject currentProject;
-		if (projectName != null && !(projectName.equals("")))
+		if (projectName != null && !(projectName.equals(""))) //$NON-NLS-1$
 			currentProject = wksroot.getProject(projectName);
 		else
 			return new String[]{};

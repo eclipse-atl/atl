@@ -25,6 +25,7 @@ import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.debug.core.model.IWatchExpressionDelegate;
 import org.eclipse.debug.core.model.IWatchExpressionListener;
 import org.eclipse.debug.core.model.IWatchExpressionResult;
+import org.eclipse.m2m.atl.adt.debug.Messages;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMXMLWriter;
 import org.eclipse.m2m.atl.engine.vm.adwp.ADWPDebugger;
@@ -157,7 +158,7 @@ public class AtlWatchExpressionDelegate implements IWatchExpressionDelegate {
 			IVariable variables[] = frame.getVariables();
 			for(int i = 0 ; i < variables.length ; i++) {
 				String pname = variables[i].getName();
-				if(!pname.equals("self"))
+				if(!pname.equals("self"))//$NON-NLS-1$
 					parameters.add(pname);
 			}
 			
@@ -172,7 +173,7 @@ public class AtlWatchExpressionDelegate implements IWatchExpressionDelegate {
 		} catch(DebugException e) {
 			de = e;
 		} catch(Exception e) {
-			de = new DebugException(new Status(Status.ERROR, "org.eclipse.m2m.atl.adt.debug", Status.OK, "error while evaluating expression", e));
+			de = new DebugException(new Status(Status.ERROR, "org.eclipse.m2m.atl.adt.debug", Status.OK, Messages.getString("AtlWatchExpressionDelegate.EXPRESSIONERROR"), e));//$NON-NLS-1$//$NON-NLS-2$
 		}
 		return new AtlWatchExpressionResult(de, errorMessages, value);
 	}

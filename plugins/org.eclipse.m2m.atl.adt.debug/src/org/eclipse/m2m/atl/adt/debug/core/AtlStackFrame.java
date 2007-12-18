@@ -68,9 +68,8 @@ public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 		super((AtlDebugTarget)thread.getDebugTarget());
 		this.thread = thread;
 		this.stackFrame = stackFrame;
-//		this.atlnbcharfile = atlnbcharfile;
 		this.sourcefile = sourcefile;
-		Value slv = stackFrame.call("getSourceLocation", new ArrayList());
+		Value slv = stackFrame.call("getSourceLocation", new ArrayList());//$NON-NLS-1$
 		String sourceLocation = null;
 		if(slv instanceof StringValue) sourceLocation = ((StringValue)slv).getValue();
 		if(sourceLocation != null) {
@@ -78,8 +77,8 @@ public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 			charStart = sl[0];
 			charEnd = sl[1];
 		}
-		location = ((IntegerValue)stackFrame.call("getLocation", new ArrayList())).getValue();
-		this.opName = ((StringValue)stackFrame.call("getOpName", new ArrayList())).getValue();;
+		location = ((IntegerValue)stackFrame.call("getLocation", new ArrayList())).getValue();//$NON-NLS-1$
+		this.opName = ((StringValue)stackFrame.call("getOpName", new ArrayList())).getValue();//$NON-NLS-1$
 	}
 
 	/**
@@ -96,22 +95,22 @@ public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 	public IVariable[] getVariables() throws DebugException {
 //		IVariable ret[] = null;
 		// Map of local variables
-		ObjectReference lvs = (ObjectReference)stackFrame.call("getLocalVariables", new ArrayList());
+		ObjectReference lvs = (ObjectReference)stackFrame.call("getLocalVariables", new ArrayList());//$NON-NLS-1$
 		// Set of local variable names
-		ObjectReference lvns = (ObjectReference)lvs.call("getKeys", new ArrayList());
+		ObjectReference lvns = (ObjectReference)lvs.call("getKeys", new ArrayList());//$NON-NLS-1$
 		// Sequence of local variable names
-		lvns = (ObjectReference)lvns.call("asSequence", new ArrayList());
+		lvns = (ObjectReference)lvns.call("asSequence", new ArrayList());//$NON-NLS-1$
 		// number of localVariables
-		IntegerValue nblvs = (IntegerValue)lvns.call("size", new ArrayList());
+		IntegerValue nblvs = (IntegerValue)lvns.call("size", new ArrayList());//$NON-NLS-1$
 		List atlVars = new ArrayList();
 		for(int i = 1 ; i <= nblvs.getValue() ; i++) 
 		{
-			StringValue name = (StringValue)(lvns.call("at", Arrays.asList(new Object[] {IntegerValue.valueOf(i)})));
-         	Value value = lvs.call("get", Arrays.asList(new Object[] {name}));
+			StringValue name = (StringValue)(lvns.call("at", Arrays.asList(new Object[] {IntegerValue.valueOf(i)})));//$NON-NLS-1$
+         	Value value = lvs.call("get", Arrays.asList(new Object[] {name}));//$NON-NLS-1$
          	AtlValue atlValue = new AtlValue(value, (AtlDebugTarget)thread.getDebugTarget());
          	
-         	if(name.getValue().matches("^[0-9]*$")) {
-         		Value val = stackFrame.call("resolveVariableName", Arrays.asList(new Object[] {IntegerValue.valueOf(Integer.parseInt(name.getValue()))}));
+         	if(name.getValue().matches("^[0-9]*$")) {//$NON-NLS-1$
+         		Value val = stackFrame.call("resolveVariableName", Arrays.asList(new Object[] {IntegerValue.valueOf(Integer.parseInt(name.getValue()))}));//$NON-NLS-1$
          		if(val instanceof StringValue) {
          			name = (StringValue)val;
          		}
@@ -198,9 +197,9 @@ public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 		String ret = null;
 		
 		if((charStart == -1) || ((AtlDebugTarget)getDebugTarget()).isDisassemblyMode()) {
-			ret = opName +  "() location: " + location;	
+			ret = opName +  "() location: " + location;	//$NON-NLS-1$
 		} else {
-			ret = opName +  "() location: " + charStart + ":" + charEnd;
+			ret = opName +  "() location: " + charStart + ":" + charEnd;//$NON-NLS-1$//$NON-NLS-2$
 		}
 		
 		return ret;
@@ -400,11 +399,11 @@ public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 		ADWPDebugger debugger = ((AtlDebugTarget)thread.getDebugTarget()).getDebugger();
 		List l = debugger.requestMessage(ADWPDebugger.CMD_DISASSEMBLE, Arrays.asList(new Object[] {stackFrame})).getArgs();
 		for(Iterator i = l.iterator() ; i.hasNext() ; ) {
-			ret.append("<" + opName + "+" + k++ + ">\t" + i.next());
-			ret.append("\n");
+			ret.append("<" + opName + "+" + k++ + ">\t" + i.next());//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			ret.append("\n");//$NON-NLS-1$
 		}
 		
-		return new DisassemblyStorage("ATL#" + opName, ret.toString());
+		return new DisassemblyStorage("ATL#" + opName, ret.toString());//$NON-NLS-1$
 	}
 
 	public ObjectReference getStackFrame() {

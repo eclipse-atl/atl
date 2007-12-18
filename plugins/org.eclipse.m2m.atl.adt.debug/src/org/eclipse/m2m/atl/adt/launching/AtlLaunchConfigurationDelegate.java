@@ -19,6 +19,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.m2m.atl.adt.debug.Messages;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
@@ -32,7 +33,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		String atlVMName = configuration.getAttribute(AtlLauncherTools.ATLVM, "");
+		String atlVMName = configuration.getAttribute(AtlLauncherTools.ATLVM, "");//$NON-NLS-1$
 		AtlVM atlVM = AtlVM.getVM(atlVMName);
 		
 		boolean printExecutionTime = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.OPTION_PRINT_EXECUTION_TIME, false);
@@ -41,8 +42,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		atlVM.launch(configuration, mode, launch, monitor);
 		long endTime = System.currentTimeMillis();
 		if(printExecutionTime && !mode.equals(ILaunchManager.DEBUG_MODE)) {
-			logger.info(launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.ATLFILENAME, "Transformation") + " executed in " + ((endTime - startTime) / 1000.) + " s (including model loading and saving).");
-//			System.out.println(launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.ATLFILENAME, "Transformation") + " executed in " + ((endTime - startTime) / 1000.) + " s (including model loading and saving).");
+			logger.info(launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.ATLFILENAME, Messages.getString("AtlLaunchConfigurationDelegate.RESULT", new Object[]{new Double(((endTime - startTime) / 1000.))} ))); //$NON-NLS-1$
 		}
 	}
 
