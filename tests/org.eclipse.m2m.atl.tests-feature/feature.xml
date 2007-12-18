@@ -233,6 +233,7 @@ litigation.
       <import plugin="org.eclipse.emf.compare.diff"/>
       <import plugin="org.eclipse.m2m.atl.engine"/>
       <import plugin="org.eclipse.m2m.atl.adt.debug"/>
+      <import plugin="org.eclipse.m2m.atl.drivers.uml24atl"/>
    </requires>
 
    <plugin
