@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.m2m.atl.adt.perspective.Messages;
+import org.eclipse.m2m.atl.adt.perspective.AtlPerspectiveMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.update.operations.OperationsManager;
@@ -27,7 +27,7 @@ import org.eclipse.update.operations.OperationsManager;
 public class RestartDialog extends MessageDialog {
 	private static final int CONTINUE = 2;
 	private final static String[] yesNo = new String[] {IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL};
-	private final static String[] yesNoApply = new String[] {IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, Messages.getString("RestartDialog.0")};  //$NON-NLS-1$
+	private final static String[] yesNoApply = new String[] {IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, AtlPerspectiveMessages.getString("RestartDialog.0")};  //$NON-NLS-1$
 	
 	private int buttonId = 0;
 	
@@ -54,10 +54,10 @@ public class RestartDialog extends MessageDialog {
 	 *    <code>false</code> otherwise
 	 */
 	public static boolean openQuestion(Shell parent, boolean restartIsReallyNeeded) {
-		String title = Messages.getString("RestartDialog.1");  //$NON-NLS-1$
+		String title = AtlPerspectiveMessages.getString("RestartDialog.1");  //$NON-NLS-1$
 		IProduct product = Platform.getProduct();
 		String productName = product != null && product.getName() != null ? product.getName() : "application"; //$NON-NLS-1$
-		String message = NLS.bind(restartIsReallyNeeded ? Messages.getString("RestartDialog.3"): Messages.getString("RestartDialog.4"), productName); //$NON-NLS-1$ //$NON-NLS-2$
+		String message = NLS.bind(restartIsReallyNeeded ? AtlPerspectiveMessages.getString("RestartDialog.3"): AtlPerspectiveMessages.getString("RestartDialog.4"), productName); //$NON-NLS-1$ //$NON-NLS-2$
 		RestartDialog dialog = new RestartDialog(parent, title,	message, restartIsReallyNeeded);
 		int button= dialog.open();
 		if (button == 2)

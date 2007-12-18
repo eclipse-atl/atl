@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
  * 
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
  */
-public class Messages {
+public class AtlPerspectiveMessages {
 	
 	/** Full qualified path to the properties file in which to seek the keys. */
 	private static final String BUNDLE_NAME = "org.eclipse.m2m.atl.adt.perspective.messages";//$NON-NLS-1$
@@ -30,7 +30,7 @@ public class Messages {
 	/**
 	 * Utility classes don't need to (and shouldn't) be instantiated.
 	 */
-	private Messages() {
+	private AtlPerspectiveMessages() {
 	}
 
 	/**

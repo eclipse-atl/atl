@@ -32,7 +32,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.m2m.atl.adt.perspective.Messages;
+import org.eclipse.m2m.atl.adt.perspective.AtlPerspectiveMessages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -102,10 +102,10 @@ public class CompatibilityUtils {
 	public static void convertProjects(Object[] projects) throws Exception {
 		//TODO The NullProgressMonitor does nothing, it could be interesting to catch a ProgressMonitor or to add one.
 		NullProgressMonitor monitor = new NullProgressMonitor();
-		monitor.beginTask(Messages.getString("CompatibilityUtils.0"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+		monitor.beginTask(AtlPerspectiveMessages.getString("CompatibilityUtils.0"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 		for (int i = 0; i < projects.length; i++) {
 			IProject project = (IProject) projects[i];
-			monitor.subTask(Messages.getString("CompatibilityUtils.1") + project.getName()); //$NON-NLS-1$
+			monitor.subTask(AtlPerspectiveMessages.getString("CompatibilityUtils.1") + project.getName()); //$NON-NLS-1$
 			
 			IProjectDescription desc = project.getDescription();
 			ICommand[] commands = desc.getBuildSpec();
@@ -116,7 +116,7 @@ public class CompatibilityUtils {
 				ICommand command = commands[j];
 				if (command.getBuilderName().equals(oldBuilderId)) {
 					command.setBuilderName(newBuilderId);
-					monitor.subTask(Messages.getString("CompatibilityUtils.2")); //$NON-NLS-1$
+					monitor.subTask(AtlPerspectiveMessages.getString("CompatibilityUtils.2")); //$NON-NLS-1$
 				}
 				newCommands[j] = command;
 			}		
@@ -127,7 +127,7 @@ public class CompatibilityUtils {
 				String nature = natures[j];
 				if (nature.equals(oldNatureId)) {
 					nature = newNatureId;
-					monitor.subTask(Messages.getString("CompatibilityUtils.3")); //$NON-NLS-1$
+					monitor.subTask(AtlPerspectiveMessages.getString("CompatibilityUtils.3")); //$NON-NLS-1$
 				}
 				newNatures[j] = nature;
 			}
@@ -146,11 +146,11 @@ public class CompatibilityUtils {
 	public static boolean convertConfigurations(Object[] configurations) throws Exception {
 		//TODO The NullProgressMonitor does nothing, it could be interesting to catch a ProgressMonitor or to add one.
 		NullProgressMonitor monitor = new NullProgressMonitor();
-		monitor.beginTask(Messages.getString("CompatibilityUtils.4"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+		monitor.beginTask(AtlPerspectiveMessages.getString("CompatibilityUtils.4"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 		boolean needToRestart = false;
 		for (int i = 0; i < configurations.length; i++) {
 			ILaunchConfiguration conf = (ILaunchConfiguration) configurations[i];
-			monitor.subTask(Messages.getString("CompatibilityUtils.5") + conf.getName()); //$NON-NLS-1$
+			monitor.subTask(AtlPerspectiveMessages.getString("CompatibilityUtils.5") + conf.getName()); //$NON-NLS-1$
 			if (conf.getType().getIdentifier().equals(oldConfigId)) {
 				IFile ifile = conf.getFile();
 				File file = conf.getLocation().toFile();
@@ -164,7 +164,7 @@ public class CompatibilityUtils {
 					Element root = (Element) document.getFirstChild();
 					if (root.getAttribute("type").equals(CompatibilityUtils.oldConfigId)) { //$NON-NLS-1$
 						root.setAttribute("type", CompatibilityUtils.newConfigId); //$NON-NLS-1$
-						monitor.subTask(Messages.getString("CompatibilityUtils.8") + conf.getName()); //$NON-NLS-1$
+						monitor.subTask(AtlPerspectiveMessages.getString("CompatibilityUtils.8") + conf.getName()); //$NON-NLS-1$
 					}
 
 					Transformer transformer = TransformerFactory.newInstance().newTransformer();
