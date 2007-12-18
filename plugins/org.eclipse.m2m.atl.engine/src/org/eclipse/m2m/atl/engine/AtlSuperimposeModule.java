@@ -68,11 +68,11 @@ public class AtlSuperimposeModule {
      */
     public void adaptModuleOperations() throws AtlSuperimposeModuleException {
         adaptMain();
-        removeOperation("main");
-        adaptOperation("__matcher__", 2);
-        removeOperation("__matcher__");
-        adaptOperation("__exec__", 10);
-        removeOperation("__exec__");
+        removeOperation("main"); //$NON-NLS-1$
+        adaptOperation("__matcher__", 2); //$NON-NLS-1$
+        removeOperation("__matcher__"); //$NON-NLS-1$
+        adaptOperation("__exec__", 10); //$NON-NLS-1$
+        removeOperation("__exec__"); //$NON-NLS-1$
     }
     
     /**
@@ -81,15 +81,15 @@ public class AtlSuperimposeModule {
      * @throws AtlSuperimposeModuleException if sanity check fails
      */
     private void adaptMain() throws AtlSuperimposeModuleException {
-        ASMOperation origOp = (ASMOperation) env.getOperation(ASMModule.myType, "main");
-        ASMOperation newOp = asm.getOperation("main");
+        ASMOperation origOp = (ASMOperation) env.getOperation(ASMModule.myType, "main"); //$NON-NLS-1$
+        ASMOperation newOp = asm.getOperation("main"); //$NON-NLS-1$
         if ((origOp != null) && (newOp != null)) {
             mainSanityCrossCheck(origOp, newOp);
             if (atl2006) {
                 insertHelperInits(newOp.getInstructions(), origOp.getInstructions());
             } else {
-                List origInit = getInstructions(origOp.getInstructions(), "call A.__init", 20, 1);
-                List newInit = getInstructions(newOp.getInstructions(), "call A.__init", 20, 1);
+                List origInit = getInstructions(origOp.getInstructions(), "call A.__init", 20, 1); //$NON-NLS-1$
+                List newInit = getInstructions(newOp.getInstructions(), "call A.__init", 20, 1); //$NON-NLS-1$
                 origOp.getInstructions().addAll(origInit.size()+21, newInit);
             }
         }
@@ -111,8 +111,8 @@ public class AtlSuperimposeModule {
             String ins2 = main2.getInstructions().get(i).toString();
             if (!ins1.equals(ins2)) {
                 throw new AtlSuperimposeModuleException(
-                        "Pattern not equal for execution environment and module in main (" + 
-                        ins1 + " != " + ins2 + " @ " + String.valueOf(i) + ")");
+                        AtlEngineMessages.getString("AtlSuperimposeModule.0") +  //$NON-NLS-1$
+                        ins1 + " != " + ins2 + " @ " + String.valueOf(i) + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
         }
     }
@@ -125,22 +125,22 @@ public class AtlSuperimposeModule {
     private void mainSanityCheck(ASMOperation main) throws AtlSuperimposeModuleException {
         if (main.getInstructions().size() < 21) {
             throw new AtlSuperimposeModuleException(
-                    "Unexpected instruction count in main (count = " +
+                    AtlEngineMessages.getString("AtlSuperimposeModule.1") + //$NON-NLS-1$
                     String.valueOf(main.getInstructions().size()) + 
-                    ", expected > 20)");
+                    AtlEngineMessages.getString("AtlSuperimposeModule.2")); //$NON-NLS-1$
         }
         String instr16 = main.getInstructions().get(15).toString();
-        if (!instr16.equals("set col")) {
+        if (!instr16.equals("set col")) { //$NON-NLS-1$
             throw new AtlSuperimposeModuleException(
-                    "Unexpected instruction sequence in main (" +
-                    instr16 + " @ 16)");
+                    AtlEngineMessages.getString("AtlSuperimposeModule.3") + //$NON-NLS-1$
+                    instr16 + AtlEngineMessages.getString("AtlSuperimposeModule.4")); //$NON-NLS-1$
         }
-        if (indexOfInstruction(main.getInstructions(), "set links", 16) == -1) {
+        if (indexOfInstruction(main.getInstructions(), "set links", 16) == -1) { //$NON-NLS-1$
             throw new AtlSuperimposeModuleException(
-                    "Instruction \"set links\" not found in main");
+                    AtlEngineMessages.getString("AtlSuperimposeModule.5")); //$NON-NLS-1$
         }
         String instr1 = main.getInstructions().get(0).toString();
-        if (instr1.equals("getasm")) {
+        if (instr1.equals("getasm")) { //$NON-NLS-1$
             atl2006 = true;
         }
     }
@@ -215,9 +215,9 @@ public class AtlSuperimposeModule {
      * @param into The list of instructions to augment.
      */
     private void insertHelperInits(List from, List into) {
-        final int endOfInitCode = indexOfInstruction(from, "set links", 16) - 4;
+        final int endOfInitCode = indexOfInstruction(from, "set links", 16) - 4; //$NON-NLS-1$
         final List initInstr = from.subList(16, endOfInitCode);
-        final int pos = indexOfInstruction(into, "set links", 16) - 4;
+        final int pos = indexOfInstruction(into, "set links", 16) - 4; //$NON-NLS-1$
         transposeOffsets(into, initInstr.size(), pos);
         transposeOffsets(initInstr, pos - 16, 0);
         into.addAll(pos, initInstr);
@@ -235,7 +235,7 @@ public class AtlSuperimposeModule {
     		if (instruction instanceof ASMInstructionWithOperand) {
     			ASMInstructionWithOperand instr =  (ASMInstructionWithOperand) instruction;
     			String mn = instr.getMnemonic();
-    			if ((mn == "if") || (mn == "goto")) {
+    			if ((mn == "if") || (mn == "goto")) { //$NON-NLS-1$ //$NON-NLS-2$
     				int offset = Integer.parseInt(instr.getOperand());
     				if (offset >= start) {
     					offset += transpose;
@@ -266,8 +266,8 @@ public class AtlSuperimposeModule {
             String i2 = ((ASMInstruction)instr2.get(i)).getMnemonic();
             if (!i1.equals(i2)) {
                 throw new AtlSuperimposeModuleException(
-                        "Pattern not equal for execution environment and module in " + 
-                        op1.getName() + " (" + i1 + " != " + i2 + " @ " + String.valueOf(i) + ")");
+                        AtlEngineMessages.getString("AtlSuperimposeModule.6") +  //$NON-NLS-1$
+                        op1.getName() + " (" + i1 + " != " + i2 + " @ " + String.valueOf(i) + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             }
         }
     }
@@ -281,16 +281,16 @@ public class AtlSuperimposeModule {
     private void sanityCheck(ASMOperation op, int patternLength) throws AtlSuperimposeModuleException {
         List instr = op.getInstructions();
         if (instr.size() % patternLength > 0) {
-            throw new AtlSuperimposeModuleException("Instruction count is not a multiple of " + 
-                    String.valueOf(patternLength) + " for " + op.getName());
+            throw new AtlSuperimposeModuleException(AtlEngineMessages.getString("AtlSuperimposeModule.7") +  //$NON-NLS-1$
+                    String.valueOf(patternLength) + " for " + op.getName()); //$NON-NLS-1$
         }
         for (int i = 0; i < instr.size()-patternLength; i++) {
             String i1 = ((ASMInstruction)instr.get(i)).getMnemonic();
             String i2 = ((ASMInstruction)instr.get(i+patternLength)).getMnemonic();
             if (!i1.equals(i2)) {
-                throw new AtlSuperimposeModuleException("Pattern does not repeat itself after " +
-                        String.valueOf(patternLength) + " instructions in " + op.getName() +
-                        " (" + i1 + " != " + i2 + " @ " + String.valueOf(i) + ")");
+                throw new AtlSuperimposeModuleException(AtlEngineMessages.getString("AtlSuperimposeModule.8") + //$NON-NLS-1$
+                        String.valueOf(patternLength) + " instructions in " + op.getName() + //$NON-NLS-1$
+                        " (" + i1 + " != " + i2 + " @ " + String.valueOf(i) + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             }
         }
     }

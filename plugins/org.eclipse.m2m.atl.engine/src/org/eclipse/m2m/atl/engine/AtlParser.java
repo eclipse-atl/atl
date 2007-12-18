@@ -36,7 +36,7 @@ public class AtlParser {
 	
 	private AtlParser() {
 		amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
-		pbmm = amh.getBuiltInMetaModel("Problem");
+		pbmm = amh.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
 	}
 	
 	public static AtlParser getDefault() {
@@ -56,13 +56,13 @@ public class AtlParser {
 //		ASMModel mofmm = amh.getMof();
 
 		try {
-			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp", (ASMEMFModel)atlmm, null);
-			ret[1] = amh.newModel("pb", "pb", pbmm);
+			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp", (ASMEMFModel)atlmm, null); //$NON-NLS-1$ //$NON-NLS-2$
+			ret[1] = amh.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			TCSInjector ebnfi = new TCSInjector();
 			Map params = new HashMap();
-			params.put("name", "ATL");
-			params.put("problems", ret[1]);
+			params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
+			params.put("problems", ret[1]); //$NON-NLS-1$
 			ebnfi.inject(ret[0], in, params);
 			//ebnfi.performImportation(atlmm, ret[0], in, "ATL", ATLLexer.class, ATLParser.class, ret[1]);
 
@@ -110,13 +110,13 @@ public class AtlParser {
 		ASMModel atlmodel = parsed[0];
 		ASMModel problems = parsed[1];
 		if(atlmodel instanceof ASMEMFModel) {
-			Collection modules = atlmodel.getElementsByType("Unit");
+			Collection modules = atlmodel.getElementsByType("Unit"); //$NON-NLS-1$
 			if(modules.size() > 0) {
 				retUnit = ((ASMEMFModelElement)modules.iterator().next()).getObject();
 			}
-			pbs = problems.getElementsByType("Problem");
+			pbs = problems.getElementsByType("Problem"); //$NON-NLS-1$
 		} else {
-			Object o = atlmodel.getElementsByType("Unit");
+			Object o = atlmodel.getElementsByType("Unit"); //$NON-NLS-1$
 			logger.info(o.toString());
 //			System.out.println(o);
 		}

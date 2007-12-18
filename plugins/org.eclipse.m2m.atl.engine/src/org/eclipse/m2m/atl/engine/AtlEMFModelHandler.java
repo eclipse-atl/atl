@@ -55,11 +55,11 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	protected EMFModelLoader ml;
 		
 	public void saveModel(final ASMModel model, IProject project) {
-		saveModel(model, model.getName() + ".ecore", project);
+		saveModel(model, model.getName() + ".ecore", project);//$NON-NLS-1$
 	}
 	
 	public void saveModel(final ASMModel model, String fileName, IProject project) {
-		String uri = project.getFullPath().toString() + "/" + fileName;
+		String uri = project.getFullPath().toString() + "/" + fileName;//$NON-NLS-1$
 		saveModel(model, uri);
 	}
 
@@ -73,7 +73,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
     
 	protected boolean useIDs = false;
 	protected boolean removeIDs = false;
-	protected String encoding = "ISO-8859-1";
+	protected String encoding = "ISO-8859-1";//$NON-NLS-1$
 
 	/**
 	 * Saves the provided model in/out of the Eclipse workspace using the given relative/absolute path.
@@ -102,7 +102,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
             for(Iterator i = r.getAllContents() ; i.hasNext() ; ) {
                 EObject eo = (EObject)i.next();
                 if(alreadySet.contains(eo)) continue;   // because sometimes a single element gets processed twice
-                xr.setID(eo, removeIDs ? null : ("a" + (id++)));
+                xr.setID(eo, removeIDs ? null : ("a" + (id++)));//$NON-NLS-1$
                 alreadySet.add(eo);
             }
         }
@@ -136,7 +136,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
             for(Iterator i = r.getAllContents() ; i.hasNext() ; ) {
                 EObject eo = (EObject)i.next();
                 if(alreadySet.contains(eo)) continue;   // because sometimes a single element gets processed twice
-                xr.setID(eo, removeIDs ? null : ("a" + (id++)));
+                xr.setID(eo, removeIDs ? null : ("a" + (id++)));//$NON-NLS-1$
                 alreadySet.add(eo);
             }
         }
@@ -169,24 +169,24 @@ public class AtlEMFModelHandler extends AtlModelHandler {
     }
     
 	protected AtlEMFModelHandler() {
-		URL atlurl = AtlEMFModelHandler.class.getResource("resources/ATL-0.2.ecore");
+		URL atlurl = AtlEMFModelHandler.class.getResource("resources/ATL-0.2.ecore");//$NON-NLS-1$
 		
 		ml = new EMFModelLoader();
-		ml.addInjector("xml", XMLInjector.class);
-		ml.addInjector("ebnf2", TCSInjector.class);
+		ml.addInjector("xml", XMLInjector.class);//$NON-NLS-1$
+		ml.addInjector("ebnf2", TCSInjector.class);//$NON-NLS-1$
 		
 		if (Platform.isRunning()) {
 			//no IExtensionRegistry supported outside Eclipse
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 	        if (registry != null) {
-				IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.injector");
+				IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.injector");//$NON-NLS-1$
 		
 				IExtension[] extensions = point.getExtensions();		
 				for(int i = 0 ; i < extensions.length ; i++){		
 					IConfigurationElement[] elements = extensions[i].getConfigurationElements();
 					for(int j = 0 ; j < elements.length ; j++){
 						try {
-							ml.addInjector(elements[j].getAttribute("name"), elements[j].createExecutableExtension("class").getClass());
+							ml.addInjector(elements[j].getAttribute("name"), elements[j].createExecutableExtension("class").getClass());//$NON-NLS-1$//$NON-NLS-2$
 						} catch (CoreException e){
 							logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 //							e.printStackTrace();
@@ -200,7 +200,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		//org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel.createMOF(ml);
 			
 		try {
-			atlmm = ASMEMFModel.loadASMEMFModel("ATL", mofmm, atlurl, ml);
+			atlmm = ASMEMFModel.loadASMEMFModel("ATL", mofmm, atlurl, ml);//$NON-NLS-1$
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 //			e.printStackTrace();
@@ -297,7 +297,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		ASMModel ret = (ASMModel)bimm.get(name);
 
 		if(ret == null) {
-			URL mmurl = AtlParser.class.getResource("resources/" + name + ".ecore");
+			URL mmurl = AtlParser.class.getResource("resources/" + name + ".ecore");//$NON-NLS-1$//$NON-NLS-2$
 			
 			try {
 				ret = loadModel(name, mofmm, mmurl.openStream());

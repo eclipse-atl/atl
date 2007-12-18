@@ -208,15 +208,15 @@ public class AtlNbCharFile {
 		ret[1] = getIndexChar(endLine, endColumn, tabWidth);
 		 */
 		
-		String locRegex = "^(-?\\d{1,9}):(-?\\d{1,9})-(-?\\d{1,9}):(-?\\d{1,9})$";
+		String locRegex = "^(-?\\d{1,9}):(-?\\d{1,9})-(-?\\d{1,9}):(-?\\d{1,9})$"; //$NON-NLS-1$
 		if (sourceLocation.matches(locRegex)) {
 			ret[0] = getIndexChar(
-					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$1")),  
-					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$2")) - 1, 
+					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$1")),   //$NON-NLS-1$
+					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$2")) - 1,  //$NON-NLS-1$
 					tabWidth);
 			ret[1] = getIndexChar(
-					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$3")),
-					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$4")) - 1,
+					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$3")), //$NON-NLS-1$
+					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$4")) - 1, //$NON-NLS-1$
 					tabWidth);
 		} else {
 			ret[0] = 0;
@@ -231,7 +231,7 @@ public class AtlNbCharFile {
 	 */
 	public int getIndex(String cursorPosition) {
 		int ret = 0;
-		String starts[] = cursorPosition.split(":");
+		String starts[] = cursorPosition.split(":"); //$NON-NLS-1$
 		int startLine = Integer.parseInt(starts[0].trim());
 		int startColumn = Integer.parseInt(starts[1].trim()) - 1;	// Eclipse assigns index 1 to first char
 

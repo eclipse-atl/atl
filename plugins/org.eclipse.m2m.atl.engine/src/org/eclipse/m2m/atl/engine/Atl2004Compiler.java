@@ -21,12 +21,12 @@ public class Atl2004Compiler extends AtlDefaultCompiler {
     //@Override
     protected URL getSemanticAnalyzerURL()
     {
-        return Atl2004Compiler.class.getResource("resources/ATL-WFR.asm");
+        return Atl2004Compiler.class.getResource("resources/ATL-WFR.asm");//$NON-NLS-1$
     }
 
     //@Override
     protected URL getCodegeneratorURL()
     {
-        return Atl2004Compiler.class.getResource("resources/ATLToASMCompiler.asm");
+        return Atl2004Compiler.class.getResource("resources/ATLToASMCompiler.asm");//$NON-NLS-1$
     }
 }

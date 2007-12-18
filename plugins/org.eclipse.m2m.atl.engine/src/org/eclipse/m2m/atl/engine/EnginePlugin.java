@@ -31,7 +31,7 @@ public class EnginePlugin extends Plugin {
 		super();
 		plugin = this;
 		try {
-			resourceBundle   = ResourceBundle.getBundle("org.eclipse.m2m.atl.engine.EnginePluginResources");
+			resourceBundle   = ResourceBundle.getBundle("org.eclipse.m2m.atl.engine.EnginePluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}

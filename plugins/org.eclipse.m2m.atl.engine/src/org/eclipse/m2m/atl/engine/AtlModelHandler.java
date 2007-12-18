@@ -40,7 +40,7 @@ public abstract class AtlModelHandler {
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 //	public final static String AMH_MDR = "MDR";
-	public final static String AMH_EMF = "EMF";
+	public final static String AMH_EMF = "EMF"; //$NON-NLS-1$
 
 	private static String modelHandlers[] = null;	//new String[] {/*AMH_MDR, */AMH_EMF};
 	
@@ -64,18 +64,18 @@ public abstract class AtlModelHandler {
 			} else {
 				IExtensionRegistry registry = Platform.getExtensionRegistry();
                 if (registry == null) {
-                    throw new RuntimeException("Eclipse platform extension registry not found. Dynamic repository lookup does not work outside Eclipse.");
+                    throw new RuntimeException(AtlEngineMessages.getString("AtlCompiler.EMFREGISTRYNOTFOUND")); //$NON-NLS-1$
                 }
                 
-				IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.modelhandler");
+				IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.modelhandler"); //$NON-NLS-1$
 
 				IExtension[] extensions = point.getExtensions();		
 				extensions: for(int i = 0 ; i < extensions.length ; i++){		
 					IConfigurationElement[] elements = extensions[i].getConfigurationElements();
 					for(int j = 0 ; j < elements.length ; j++){
 						try {					
-							if(elements[j].getAttribute("name").equals(repository)) {
-								ret = (AtlModelHandler)elements[j].createExecutableExtension("class");
+							if(elements[j].getAttribute("name").equals(repository)) { //$NON-NLS-1$
+								ret = (AtlModelHandler)elements[j].createExecutableExtension("class"); //$NON-NLS-1$
 								defaultModelHandlers.put(repository, ret);
 								break extensions;
 							}
@@ -88,7 +88,7 @@ public abstract class AtlModelHandler {
 			}
 
 			if(ret == null) {
-				throw new RuntimeException("Model handler for " + repository + " not found. You may need to install a model handler plugin.");
+				throw new RuntimeException(AtlEngineMessages.getString("AtlModelHandler.MHNOTFOUND",new Object[]{repository})); //$NON-NLS-1$
 			}
 		}
 		
@@ -101,13 +101,13 @@ public abstract class AtlModelHandler {
 			mhs.add(AMH_EMF);
 			
 			IExtensionRegistry registry = Platform.getExtensionRegistry();		
-			IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.modelhandler");
+			IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.modelhandler"); //$NON-NLS-1$
 	
 			IExtension[] extensions = point.getExtensions();		
 			for(int i = 0 ; i < extensions.length ; i++){		
 				IConfigurationElement[] elements = extensions[i].getConfigurationElements();
 				for(int j = 0 ; j < elements.length ; j++){
-					mhs.add(elements[j].getAttribute("name"));
+					mhs.add(elements[j].getAttribute("name")); //$NON-NLS-1$
 				}
 			}
 			modelHandlers = (String[])mhs.toArray(new String [] {});

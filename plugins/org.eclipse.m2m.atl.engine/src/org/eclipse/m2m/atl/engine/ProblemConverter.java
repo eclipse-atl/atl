@@ -30,9 +30,9 @@ public class ProblemConverter
      * @return easily readable CompileTimeError object
      */
     public static CompileTimeError convertProblem(EObject problemObject) {
-        String severity = getStringFeature(problemObject, "severity");
-        String location = getStringFeature(problemObject, "location");
-        String description = getStringFeature(problemObject, "description");
+        String severity = getStringFeature(problemObject, "severity"); //$NON-NLS-1$
+        String location = getStringFeature(problemObject, "location"); //$NON-NLS-1$
+        String description = getStringFeature(problemObject, "description"); //$NON-NLS-1$
         return new CompileTimeError(severity, location, description);
     }
     

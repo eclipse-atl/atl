@@ -74,13 +74,13 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler
 
     public AtlDefaultCompiler() {
         amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);      
-        pbmm = amh.getBuiltInMetaModel("Problem");
+        pbmm = amh.getBuiltInMetaModel("Problem");//$NON-NLS-1$
     }
     
     private Object[] getProblems(ASMModel problems, EObject prev[]) {
         Object ret[] = new Object[2];
         EObject pbsa[] = null;
-        Collection pbs = problems.getElementsByType("Problem");
+        Collection pbs = problems.getElementsByType("Problem");//$NON-NLS-1$
         
         int nbErrors = 0;
         if(pbs != null) {
@@ -90,7 +90,7 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler
             for(Iterator i = pbs.iterator() ; i.hasNext() ; ) {
                 ASMEMFModelElement ame = ((ASMEMFModelElement)i.next());
                 pbsa[k++] = ame.getObject();
-                if("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) {
+                if("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) {//$NON-NLS-1$//$NON-NLS-2$
                     nbErrors++;
                 }
             }
@@ -121,11 +121,11 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler
     
         if(nbErrors == 0) {
             Map models = new HashMap();
-            models.put("MOF", amh.getMof());
-            models.put("ATL", atlmodel.getMetamodel());
-            models.put("IN", atlmodel);
-            models.put("Problem", pbmm);
-            models.put("OUT", problems);
+            models.put("MOF", amh.getMof());//$NON-NLS-1$
+            models.put("ATL", atlmodel.getMetamodel());//$NON-NLS-1$
+            models.put("IN", atlmodel);//$NON-NLS-1$
+            models.put("Problem", pbmm);//$NON-NLS-1$
+            models.put("OUT", problems);//$NON-NLS-1$
 
             Map params = Collections.EMPTY_MAP;
             
@@ -142,19 +142,19 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler
             // Generating code
             AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
             Map models = new HashMap();
-            models.put("MOF", amh.getMof());
-            models.put("ATL", amh.getAtl());
-            models.put("IN", atlmodel);
-            models.put("Problem", pbmm);
-            models.put("OUT", problems);
+            models.put("MOF", amh.getMof());//$NON-NLS-1$
+            models.put("ATL", amh.getAtl());//$NON-NLS-1$
+            models.put("IN", atlmodel);//$NON-NLS-1$
+            models.put("Problem", pbmm);//$NON-NLS-1$
+            models.put("OUT", problems);//$NON-NLS-1$
     
             Map params = new HashMap();
-            params.put("debug", "false");
-            params.put("WriteTo", outputFileName);
+            params.put("debug", "false");//$NON-NLS-1$//$NON-NLS-2$
+            params.put("WriteTo", outputFileName);//$NON-NLS-1$
             
             Map libs = new HashMap();
-            libs.put("typeencoding", AtlParser.class.getResource("resources/typeencoding.asm"));
-            libs.put("strings", AtlParser.class.getResource("resources/strings.asm"));
+            libs.put("typeencoding", AtlParser.class.getResource("resources/typeencoding.asm"));//$NON-NLS-1$//$NON-NLS-2$
+            libs.put("strings", AtlParser.class.getResource("resources/strings.asm"));//$NON-NLS-1$//$NON-NLS-2$
     
             AtlLauncher.getDefault().launch(getCodegeneratorURL(), libs, models, params, Collections.EMPTY_LIST, Collections.EMPTY_MAP);
 

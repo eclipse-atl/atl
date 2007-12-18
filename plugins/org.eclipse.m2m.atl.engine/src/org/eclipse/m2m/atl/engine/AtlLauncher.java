@@ -85,15 +85,15 @@ public class AtlLauncher {
      */
 	public Object launch(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose, Map options) {
 		return launch(asmurl, libraries, models, asmParams, superimpose, options, new SimpleDebugger(
-				/* step = */ "true".equals(options.get("step")),
+				/* step = */ "true".equals(options.get("step")), //$NON-NLS-1$ //$NON-NLS-2$
 				/* stepops = */ new ArrayList(),
 				/* deepstepops = */ new ArrayList(),
 				/* nostepops = */ new ArrayList(),
 				/* deepnostepops = */ new ArrayList(),
 				/* showStackTrace = */ true,
-				"true".equals(options.get("showSummary")),
-				"true".equals(options.get("profile")),
-				"true".equals(options.get("continueAfterError"))
+				"true".equals(options.get("showSummary")), //$NON-NLS-1$ //$NON-NLS-2$
+				"true".equals(options.get("profile")), //$NON-NLS-1$ //$NON-NLS-2$
+				"true".equals(options.get("continueAfterError")) //$NON-NLS-1$ //$NON-NLS-2$
 		));
 	}
 	
@@ -125,7 +125,7 @@ public class AtlLauncher {
 		try {
 			ASMModule asmModule = new ASMModule(asm);
 
-			ASMExecEnv env = new ASMExecEnv(asmModule, debugger, !"true".equals(options.get("disableAttributeHelperCache")));
+			ASMExecEnv env = new ASMExecEnv(asmModule, debugger, !"true".equals(options.get("disableAttributeHelperCache"))); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			for(Iterator i = models.keySet().iterator() ; i.hasNext() ; ) {
 				String mname = (String)i.next();
@@ -145,7 +145,7 @@ public class AtlLauncher {
 				env.registerOperations(lib);
 				
 				// If there is a main operation, run it to register attribute helpers
-				ASMOperation op = lib.getOperation("main");
+				ASMOperation op = lib.getOperation("main"); //$NON-NLS-1$
 				if(op != null)
 					op.exec(ASMStackFrame.rootFrame(env, op, Arrays.asList(new Object[] {asmModule})));
 			}
@@ -161,13 +161,13 @@ public class AtlLauncher {
                 env.registerOperations(module);
             }
 
-    		boolean printExecutionTime = "true".equals(options.get("printExecutionTime"));
+    		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
 
     		long startTime = System.currentTimeMillis();
 			ASMInterpreter ai = new ASMInterpreter(asm, asmModule, env, asmParams);
 			long endTime = System.currentTimeMillis();
 			if(printExecutionTime && !(debugger instanceof NetworkDebugger)) {
-				logger.info(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s.");
+				logger.info(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s."); //$NON-NLS-1$ //$NON-NLS-2$
 //				System.out.println(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s.");
 			}
 
