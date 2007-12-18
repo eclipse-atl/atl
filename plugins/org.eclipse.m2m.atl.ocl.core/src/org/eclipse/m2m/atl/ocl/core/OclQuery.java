@@ -50,13 +50,13 @@ public class OclQuery extends OclEvaluator {
 	}
 
 	public EObject[] compile() throws Exception {
-		compiledQuery = compile("query test = \n" + query + "\n;");
+		compiledQuery = compile("query test = \n" + query + "\n;");//$NON-NLS-1$//$NON-NLS-2$
 		return pbs;
 	}
 
 	public ASMOclAny eval() throws Exception {
 		Map models = new HashMap();
-		models.put("MOF", ASMEMFModel.getMOF());
+		models.put("MOF", ASMEMFModel.getMOF());//$NON-NLS-1$
 		return eval(models);
 	}
 	

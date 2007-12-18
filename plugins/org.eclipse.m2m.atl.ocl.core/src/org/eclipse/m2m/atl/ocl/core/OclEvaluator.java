@@ -38,7 +38,7 @@ public abstract class OclEvaluator {
 //		System.out.println(atl);
 		AtlCompiler ac = AtlCompiler.getDefault();
 		
-		String key = "ID=" + id++;
+		String key = "ID=" + id++;//$NON-NLS-1$
 		ByteArrayInputStream input = new ByteArrayInputStream(atl.getBytes());
 		pbs = ac.compile(input, new DummyFile(key));
 		input.close();
@@ -60,7 +60,7 @@ public abstract class OclEvaluator {
 	
 	static {
 		try {
-			ATLVMTools.addVMOperation(ASMEmitter.myType, ATLVMTools.toVMOperation(OclEvaluator.class, "dumpASM"));
+			ATLVMTools.addVMOperation(ASMEmitter.myType, ATLVMTools.toVMOperation(OclEvaluator.class, "dumpASM"));//$NON-NLS-1$
 		} catch(Exception e) {
 			
 		}
@@ -69,8 +69,8 @@ public abstract class OclEvaluator {
 	// New VM Operations
 	public static void dumpASM(StackFrame frame, ASMEmitter self, ASMString fileName) {
 		self.finishOperation();
-		String key = ((ASMString)((ASMExecEnv)frame.getExecEnv()).getASMModule().get(frame, "fileName")).getSymbol();
-		if(key.startsWith("ID=")) {
+		String key = ((ASMString)((ASMExecEnv)frame.getExecEnv()).getASMModule().get(frame, "fileName")).getSymbol();//$NON-NLS-1$
+		if(key.startsWith("ID=")) {//$NON-NLS-1$
 			dumpedASMs.put(key, self.getASM());
 		} else {
 			self.dumpASM(fileName.getSymbol());

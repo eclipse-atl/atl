@@ -55,14 +55,14 @@ public class OclHelper extends OclEvaluator {
 	}
 	
 	public ASM compile() throws Exception {
-		String params = "";
+		String params = "";//$NON-NLS-1$
 		for(Iterator i = parameters.iterator() ; i.hasNext() ; ) {
-			if(!params.equals("")) {
-				params += ", ";
+			if(!params.equals("")) {//$NON-NLS-1$
+				params += ", ";//$NON-NLS-1$
 			}
-			params += i.next() + " : OclAny";
+			params += i.next() + " : OclAny";//$NON-NLS-1$
 		}
-		String query = "library test; helper def: test(" + params + ") : OclAny = " + helper + ";";
+		String query = "library test; helper def: test(" + params + ") : OclAny = " + helper + ";";//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		compiledHelper = compile(query);
 		return compiledHelper;
 	}
@@ -89,7 +89,7 @@ public class OclHelper extends OclEvaluator {
 				/* showStackTrace = */ true,
 				/* continueAfterErrors = */ false
 		);
-		ASMOperation op = compiledHelper.getOperation("test");
+		ASMOperation op = compiledHelper.getOperation("test");//$NON-NLS-1$
 		ASMModule asmModule = new ASMModule(compiledHelper);
 		arguments.add(0, asmModule);
 		ASMExecEnv env = new ASMExecEnv(asmModule, debugger);

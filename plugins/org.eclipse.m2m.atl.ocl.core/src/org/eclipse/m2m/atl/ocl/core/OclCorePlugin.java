@@ -62,6 +62,6 @@ public class OclCorePlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.m2m.atl.ocl.core", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.m2m.atl.ocl.core", path);//$NON-NLS-1$
 	}
 }
