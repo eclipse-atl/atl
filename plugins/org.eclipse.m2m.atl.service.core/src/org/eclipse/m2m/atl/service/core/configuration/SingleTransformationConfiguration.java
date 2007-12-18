@@ -21,6 +21,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.m2m.atl.engine.AtlLauncher;
 import org.eclipse.m2m.atl.engine.AtlModelHandler;
+import org.eclipse.m2m.atl.service.core.ServiceMessages;
 import org.eclipse.m2m.atl.service.core.ServiceTransformationUtil;
 import org.eclipse.m2m.atl.service.core.exception.ServiceException;
 import org.eclipse.m2m.atl.service.core.nestedElements.Model;
@@ -48,11 +49,11 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 		// TODO
 		try {
 			if (inWorkspace) {
-				models.put(name, new Model(name, metamodel, "EMF"));
+				models.put(name, new Model(name, metamodel, "EMF"));//$NON-NLS-1$
 				transformation.addInNotPreloadedList(name);
 			}
 			else
-				models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), path, null, false, "EMF", pluginId));
+				models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), path, null, false, "EMF", pluginId));//$NON-NLS-1$
 			transformation.addInModel( name, name);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -62,7 +63,7 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 	
 	public void addOutModel(String name, String fileName, String metamodel) {
 		// TODO
-		models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), fileName, "EMF"));
+		models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), fileName, "EMF"));//$NON-NLS-1$
 		transformation.addOutModel(name, name, metamodel);
 	}
 
@@ -91,7 +92,7 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 		if (transformation.getModelsNotPreloaded().size() == 1)
 			((Model)models.get(transformation.getModelsNotPreloaded().get(0))).loadModel(pathInModel, ((Model)models.get(((Model)models.get(transformation.getModelsNotPreloaded().get(0))).getMetamodelName())).getAsmModel(), pluginId);
 		else
-			throw new ServiceException(IStatus.CANCEL, "Only one model could be loaded from UI");
+			throw new ServiceException(IStatus.CANCEL, ServiceMessages.getString("SingleTransformationConfiguration.0")); //$NON-NLS-1$
 		
 		// TODO nouvelle API
 		AtlLauncher.getDefault().launch(asmUrl, libs, getModelsForTransformation(transformation), params, superimps, Collections.EMPTY_MAP);
@@ -99,7 +100,7 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 		for (Iterator it = transformation.getOutModels().keySet().iterator(); it.hasNext();) {
 			String modelName = (String)it.next();
 			Model currentOutModel = (Model)models.get(modelName);
-			AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF).saveModel(currentOutModel.getAsmModel(), pathFolder + "/" + currentOutModel.getFileName());
+			AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF).saveModel(currentOutModel.getAsmModel(), pathFolder + "/" + currentOutModel.getFileName());//$NON-NLS-1$
 		}
 	}
 

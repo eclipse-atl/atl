@@ -50,53 +50,53 @@ public class ServiceExtensionManager {
     	
     	IExtensionRegistry registry = Platform.getExtensionRegistry();
     	if (registry == null) {
-    		throw new RuntimeException("Eclipse platform extension registry not found. Dynamic repository lookup does not work outside Eclipse.");
+    		throw new RuntimeException(ServiceMessages.getString("ServiceExtensionManager.0")); //$NON-NLS-1$
     	}
 
-    	IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.service.core.transformation");
+    	IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.service.core.transformation");//$NON-NLS-1$
 
     	IExtension[] extensions = point.getExtensions();	
     	for(int i = 0 ; i < extensions.length ; i++) {
     		IConfigurationElement[] elements = extensions[i].getConfigurationElements();
     		for(int j = 0 ; j < elements.length ; j++){
-    			SingleTransformationConfiguration tc = new SingleTransformationConfiguration(elements[j].getAttribute("path"), elements[j].getAttribute("name"), extensions[i].getNamespaceIdentifier());
+    			SingleTransformationConfiguration tc = new SingleTransformationConfiguration(elements[j].getAttribute("path"), elements[j].getAttribute("name"), extensions[i].getNamespaceIdentifier());//$NON-NLS-1$//$NON-NLS-2$
    				
-    			IConfigurationElement[] elementsFileExtension = elements[j].getChildren("fileExtension");
+    			IConfigurationElement[] elementsFileExtension = elements[j].getChildren("fileExtension");//$NON-NLS-1$
    				for (int k = 0; k < elementsFileExtension.length; k++) {
-   	    			tc.addFileExtension(elementsFileExtension[k].getAttribute("value"));
+   	    			tc.addFileExtension(elementsFileExtension[k].getAttribute("value")); //$NON-NLS-1$
    				}
    				
-   				IConfigurationElement[] elementsMetamodel = elements[j].getChildren("metamodel");
+   				IConfigurationElement[] elementsMetamodel = elements[j].getChildren("metamodel"); //$NON-NLS-1$
    				for (int k = 0; k < elementsMetamodel.length; k++) {
-   					String isM3Value = elementsMetamodel[k].getAttribute("isMetametamodel");
+   					String isM3Value = elementsMetamodel[k].getAttribute("isMetametamodel"); //$NON-NLS-1$
    					boolean isM3 = false;
    					if (isM3Value != null)
    						isM3 = new Boolean(isM3Value).booleanValue();
    					tc.addMetamodel(
-   							elementsMetamodel[k].getAttribute("name"), 
-   							elementsMetamodel[k].getAttribute("path"), 
-   							elementsMetamodel[k].getAttribute("nsUri"),
+   							elementsMetamodel[k].getAttribute("name"),  //$NON-NLS-1$
+   							elementsMetamodel[k].getAttribute("path"),  //$NON-NLS-1$
+   							elementsMetamodel[k].getAttribute("nsUri"), //$NON-NLS-1$
    							isM3,
-   							"EMF"
+   							"EMF" //$NON-NLS-1$
    					);
    				}
    				
-   				IConfigurationElement[] elementsInModel = elements[j].getChildren("inModel");
+   				IConfigurationElement[] elementsInModel = elements[j].getChildren("inModel"); //$NON-NLS-1$
    				for (int k = 0; k < elementsInModel.length; k++) {
    					tc.addInModel(
-   							elementsInModel[k].getAttribute("name"), 
-   							elementsInModel[k].getAttribute("path"), 
-   							elementsInModel[k].getAttribute("metamodel"),
-   							new Boolean(elementsInModel[k].getAttribute("inWorkspace")).booleanValue()
+   							elementsInModel[k].getAttribute("name"),  //$NON-NLS-1$
+   							elementsInModel[k].getAttribute("path"),  //$NON-NLS-1$
+   							elementsInModel[k].getAttribute("metamodel"), //$NON-NLS-1$
+   							new Boolean(elementsInModel[k].getAttribute("inWorkspace")).booleanValue() //$NON-NLS-1$
    					);
    				}
    				
-   				IConfigurationElement[] elementsOutModel = elements[j].getChildren("outModel");
+   				IConfigurationElement[] elementsOutModel = elements[j].getChildren("outModel"); //$NON-NLS-1$
    				for (int k = 0; k < elementsOutModel.length; k++) {
    					tc.addOutModel(
-   							elementsOutModel[k].getAttribute("name"), 
-   							elementsOutModel[k].getAttribute("fileName"), 
-   							elementsOutModel[k].getAttribute("metamodel") 
+   							elementsOutModel[k].getAttribute("name"),  //$NON-NLS-1$
+   							elementsOutModel[k].getAttribute("fileName"),  //$NON-NLS-1$
+   							elementsOutModel[k].getAttribute("metamodel")  //$NON-NLS-1$
    					);
    				}
    				
@@ -104,99 +104,99 @@ public class ServiceExtensionManager {
     		}
     	}
     	
-    	point = registry.getExtensionPoint("org.eclipse.m2m.atl.service.core.composedTransformations");
+    	point = registry.getExtensionPoint("org.eclipse.m2m.atl.service.core.composedTransformations"); //$NON-NLS-1$
 
     	extensions = point.getExtensions();	
     	for(int i = 0 ; i < extensions.length ; i++) {
     		IConfigurationElement[] elements = extensions[i].getConfigurationElements();
     		for(int j = 0 ; j < elements.length ; j++){
-    			ComposedTransformationConfiguration tc = new ComposedTransformationConfiguration(elements[j].getAttribute("name"), extensions[i].getNamespaceIdentifier());
+    			ComposedTransformationConfiguration tc = new ComposedTransformationConfiguration(elements[j].getAttribute("name"), extensions[i].getNamespaceIdentifier()); //$NON-NLS-1$
    				
-    			IConfigurationElement[] elementsFileExtension = elements[j].getChildren("fileExtension");
+    			IConfigurationElement[] elementsFileExtension = elements[j].getChildren("fileExtension"); //$NON-NLS-1$
    				for (int k = 0; k < elementsFileExtension.length; k++) {
-   	    			tc.addFileExtension(elementsFileExtension[k].getAttribute("value"));
+   	    			tc.addFileExtension(elementsFileExtension[k].getAttribute("value")); //$NON-NLS-1$
    				}
    				
-   				IConfigurationElement[] elementsMetamodel = elements[j].getChildren("load.metamodel");
+   				IConfigurationElement[] elementsMetamodel = elements[j].getChildren("load.metamodel"); //$NON-NLS-1$
    				for (int k = 0; k < elementsMetamodel.length; k++) {
-   					String isM3Value = elementsMetamodel[k].getAttribute("isMetametamodel");
+   					String isM3Value = elementsMetamodel[k].getAttribute("isMetametamodel"); //$NON-NLS-1$
    					boolean isM3 = false;
    					if (isM3Value != null)
    						isM3 = new Boolean(isM3Value).booleanValue();
    					tc.addMetamodel(
-   							elementsMetamodel[k].getAttribute("name"), 
-   							elementsMetamodel[k].getAttribute("path"), 
-   							elementsMetamodel[k].getAttribute("nsUri"),
+   							elementsMetamodel[k].getAttribute("name"),  //$NON-NLS-1$
+   							elementsMetamodel[k].getAttribute("path"),  //$NON-NLS-1$
+   							elementsMetamodel[k].getAttribute("nsUri"), //$NON-NLS-1$
    							isM3,
-   							"EMF"
+   							"EMF" //$NON-NLS-1$
    					);
    				}
    				
    				List notPreLoadedModels = new ArrayList();
    				
-   				IConfigurationElement[] elementsInModel = elements[j].getChildren("load.model");
+   				IConfigurationElement[] elementsInModel = elements[j].getChildren("load.model"); //$NON-NLS-1$
    				for (int k = 0; k < elementsInModel.length; k++) {
-   					boolean isInWorkspace = new Boolean(elementsInModel[k].getAttribute("inWorkspace")).booleanValue();
+   					boolean isInWorkspace = new Boolean(elementsInModel[k].getAttribute("inWorkspace")).booleanValue(); //$NON-NLS-1$
    					tc.addInModel(
-   							elementsInModel[k].getAttribute("name"), 
-   							elementsInModel[k].getAttribute("path"), 
-   							elementsInModel[k].getAttribute("metamodel"),
+   							elementsInModel[k].getAttribute("name"),  //$NON-NLS-1$
+   							elementsInModel[k].getAttribute("path"),  //$NON-NLS-1$
+   							elementsInModel[k].getAttribute("metamodel"), //$NON-NLS-1$
    							isInWorkspace
    					);
    					if (isInWorkspace)
-   						notPreLoadedModels.add(elementsInModel[k].getAttribute("name"));
+   						notPreLoadedModels.add(elementsInModel[k].getAttribute("name")); //$NON-NLS-1$
    				}
    				
-   				IConfigurationElement[] elementsTransformation = elements[j].getChildren("transformation");
+   				IConfigurationElement[] elementsTransformation = elements[j].getChildren("transformation"); //$NON-NLS-1$
    				for (int k = 0; k < elementsTransformation.length; k++) {
-   					Transformation t = new Transformation(elementsTransformation[k].getAttribute("path"));
+   					Transformation t = new Transformation(elementsTransformation[k].getAttribute("path")); //$NON-NLS-1$
    					
-   					IConfigurationElement[] subElementsTransformation = elementsTransformation[k].getChildren("inModel");
+   					IConfigurationElement[] subElementsTransformation = elementsTransformation[k].getChildren("inModel"); //$NON-NLS-1$
    	   				for (int l = 0; l < subElementsTransformation.length; l++) {
    	   					t.addInModel(
-   	   						subElementsTransformation[l].getAttribute("name"), 
-   	   						subElementsTransformation[l].getAttribute("model") 
+   	   						subElementsTransformation[l].getAttribute("name"),  //$NON-NLS-1$
+   	   						subElementsTransformation[l].getAttribute("model")  //$NON-NLS-1$
    	   					);
-   	   					if (notPreLoadedModels.contains(subElementsTransformation[l].getAttribute("model")))
-   	   						t.addInNotPreloadedList(subElementsTransformation[l].getAttribute("model"));
+   	   					if (notPreLoadedModels.contains(subElementsTransformation[l].getAttribute("model"))) //$NON-NLS-1$
+   	   						t.addInNotPreloadedList(subElementsTransformation[l].getAttribute("model")); //$NON-NLS-1$
    	   				}
    	   				
-   	   				subElementsTransformation = elementsTransformation[k].getChildren("outModel");
+   	   				subElementsTransformation = elementsTransformation[k].getChildren("outModel"); //$NON-NLS-1$
 	   				for (int l = 0; l < subElementsTransformation.length; l++) {
 	   					t.addOutModel(
-	   						subElementsTransformation[l].getAttribute("name"), 
-	   						subElementsTransformation[l].getAttribute("model"), 
-	   						subElementsTransformation[l].getAttribute("metamodel")
+	   						subElementsTransformation[l].getAttribute("name"),  //$NON-NLS-1$
+	   						subElementsTransformation[l].getAttribute("model"),  //$NON-NLS-1$
+	   						subElementsTransformation[l].getAttribute("metamodel") //$NON-NLS-1$
 	   					);
 	   				}
 	   				
    					tc.addTransformation(t);
    				}
    				
-   				IConfigurationElement[] elementsApplyMarker = elements[j].getChildren("applyMarker");
+   				IConfigurationElement[] elementsApplyMarker = elements[j].getChildren("applyMarker"); //$NON-NLS-1$
    				for (int k = 0; k < elementsApplyMarker.length; k++) {
-   					String globalModelName = elementsApplyMarker[k].getAttribute("model");
+   					String globalModelName = elementsApplyMarker[k].getAttribute("model"); //$NON-NLS-1$
    					tc.addApplyMarker(globalModelName);
    				}
    				
-   				IConfigurationElement[] elementsOutModel = elements[j].getChildren("save.model");
+   				IConfigurationElement[] elementsOutModel = elements[j].getChildren("save.model"); //$NON-NLS-1$
    				for (int k = 0; k < elementsOutModel.length; k++) {
-   					String globalModelName = elementsOutModel[k].getAttribute("model");
-   					String fileName = elementsOutModel[k].getAttribute("path");
+   					String globalModelName = elementsOutModel[k].getAttribute("model"); //$NON-NLS-1$
+   					String fileName = elementsOutModel[k].getAttribute("path"); //$NON-NLS-1$
    					
-   					IConfigurationElement[] elementsExtractor = elementsOutModel[k].getChildren("extractor");
+   					IConfigurationElement[] elementsExtractor = elementsOutModel[k].getChildren("extractor"); //$NON-NLS-1$
    					if (elementsExtractor.length == 0)
    						tc.addModelToSave( globalModelName, fileName);
    					else if (elementsExtractor.length == 1) {
    						// TODO
    						Map extractorParams = new HashMap();
-   						IConfigurationElement[] elementsParams = elementsExtractor[0].getChildren("param");
+   						IConfigurationElement[] elementsParams = elementsExtractor[0].getChildren("param"); //$NON-NLS-1$
    						for (int l = 0; l < elementsParams.length; l++)
-   							extractorParams.put(elementsParams[l].getAttribute("key"), elementsParams[l].getAttribute("value"));
-   						tc.addModelToSave(globalModelName, fileName, elementsExtractor[0].getAttribute("type"), extractorParams);
+   							extractorParams.put(elementsParams[l].getAttribute("key"), elementsParams[l].getAttribute("value")); //$NON-NLS-1$ //$NON-NLS-2$
+   						tc.addModelToSave(globalModelName, fileName, elementsExtractor[0].getAttribute("type"), extractorParams); //$NON-NLS-1$
    					}
    					else
-   						throw new RuntimeException("Only one extractor is possible for the same model.");
+   						throw new RuntimeException(ServiceMessages.getString("ServiceExtensionManager.1")); //$NON-NLS-1$
    					
    				}
    				
@@ -204,13 +204,13 @@ public class ServiceExtensionManager {
     		}
     	}
     	
-    	point = registry.getExtensionPoint("org.eclipse.m2m.atl.service.core.asl");
+    	point = registry.getExtensionPoint("org.eclipse.m2m.atl.service.core.asl"); //$NON-NLS-1$
 
     	extensions = point.getExtensions();	
     	for(int i = 0 ; i < extensions.length ; i++) {
     		IConfigurationElement[] elements = extensions[i].getConfigurationElements();
     		for(int j = 0 ; j < elements.length ; j++){
-    			transformationConfigurations.add(createComposedTransformationConfigurationFromASLExtensionPoint(elements[j].getAttribute("name"), elements[j].getAttribute("path"), extensions[i].getNamespaceIdentifier()));
+    			transformationConfigurations.add(createComposedTransformationConfigurationFromASLExtensionPoint(elements[j].getAttribute("name"), elements[j].getAttribute("path"), extensions[i].getNamespaceIdentifier())); //$NON-NLS-1$ //$NON-NLS-2$
     		}
     	}
     	
@@ -220,32 +220,32 @@ public class ServiceExtensionManager {
     	
     	AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
     	try {
-			ASMModel aslMM = ServiceTransformationUtil.loadModel(amh, "ASL", amh.getMof(), "resources/ASL/ASL.ecore", "", false, false, "org.eclipse.m2m.atl.service.core");
-			ASMModel sample = ServiceTransformationUtil.ebnfInjection("sample-ASL", aslPath, amh, aslMM, new HashMap(), "resources/ASL/ASL-importer.jar", "ASL", "org.eclipse.m2m.atl.service.core");
-			Set modelElements = sample.getElementsByType("ASL");
+			ASMModel aslMM = ServiceTransformationUtil.loadModel(amh, "ASL", amh.getMof(), "resources/ASL/ASL.ecore", "", false, false, "org.eclipse.m2m.atl.service.core"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			ASMModel sample = ServiceTransformationUtil.ebnfInjection("sample-ASL", aslPath, amh, aslMM, new HashMap(), "resources/ASL/ASL-importer.jar", "ASL", "org.eclipse.m2m.atl.service.core"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			Set modelElements = sample.getElementsByType("ASL"); //$NON-NLS-1$
 			for (Iterator it = modelElements.iterator(); it.hasNext();) {
 				ASMModelElement me = (ASMModelElement)it.next();
-				ASMSequence seq = (ASMSequence)me.get(null, "operations");
+				ASMSequence seq = (ASMSequence)me.get(null, "operations"); //$NON-NLS-1$
 				
-				ComposedTransformationConfiguration ctc = new ComposedTransformationConfiguration("configName", "pluginId");
+				ComposedTransformationConfiguration ctc = new ComposedTransformationConfiguration("configName", "pluginId"); //$NON-NLS-1$ //$NON-NLS-2$
 				
 				for (Iterator it2 = seq.iterator(); it2.hasNext();) {
 					ASMModelElement me2 = (ASMModelElement)it2.next();
 					String metaObjectName = me2.getMetaobject().getName();
 					
-					if (metaObjectName.equals("loadMetamodel")) {
+					if (metaObjectName.equals("loadMetamodel")) { //$NON-NLS-1$
 						
 					}
-					else if (metaObjectName.equals("loadModel")) {
+					else if (metaObjectName.equals("loadModel")) { //$NON-NLS-1$
 						
 					}
-					else if (metaObjectName.equals("atl")) {
+					else if (metaObjectName.equals("atl")) { //$NON-NLS-1$
 						
 					}
-					else if (metaObjectName.equals("applyMarker")) {
+					else if (metaObjectName.equals("applyMarker")) { //$NON-NLS-1$
 						
 					}
-					else if (metaObjectName.equals("saveModel")) {
+					else if (metaObjectName.equals("saveModel")) { //$NON-NLS-1$
 						
 					}
 					

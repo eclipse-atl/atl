@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.m2m.atl.engine.AtlLauncher;
 import org.eclipse.m2m.atl.engine.AtlModelHandler;
+import org.eclipse.m2m.atl.service.core.ServiceMessages;
 import org.eclipse.m2m.atl.service.core.ServiceTransformationUtil;
 import org.eclipse.m2m.atl.service.core.exception.ServiceException;
 import org.eclipse.m2m.atl.service.core.nestedElements.Model;
@@ -57,11 +58,11 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 	public void addInModel(String name, String path, String metamodel, boolean inWorkspace) {
 		// TODO
 		if (inWorkspace) {
-			models.put(name, new Model(name, metamodel, "EMF"));
+			models.put(name, new Model(name, metamodel, "EMF"));//$NON-NLS-1$
 		}
 		else
 			try {
-				models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), path, null, false, "EMF", pluginId));
+				models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), path, null, false, "EMF", pluginId));//$NON-NLS-1$
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -142,7 +143,7 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 		
 		for (Iterator it = transformation.getOutModelsForLoading().keySet().iterator(); it.hasNext();) {
 			String modelName = (String)it.next();
-			models.put(modelName, new Model(modelName, ((Model)models.get(transformation.getOutModelsForLoading().get(modelName))).getAsmModel(), modelName, "EMF"));
+			models.put(modelName, new Model(modelName, ((Model)models.get(transformation.getOutModelsForLoading().get(modelName))).getAsmModel(), modelName, "EMF"));//$NON-NLS-1$
 		}
 		
 		// TODO Nouvelle API
@@ -158,15 +159,15 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 		ModelToSave mts = (ModelToSave)modelsToSave.get(modelName);
 		Model currentOutModel = (Model)models.get(modelName);
 		if (mts.isExtractor() == false)
-			AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF).saveModel(currentOutModel.getAsmModel(), pathFolder + "/" + mts.getFileName());
+			AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF).saveModel(currentOutModel.getAsmModel(), pathFolder + "/" + mts.getFileName());//$NON-NLS-1$
 		else if (mts.getExtractorType().equals(ServiceTransformationUtil.XMLExtractor))
-			ServiceTransformationUtil.xmlExtraction(currentOutModel.getAsmModel(), pathFolder + "/" + mts.getFileName(), AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF));
+			ServiceTransformationUtil.xmlExtraction(currentOutModel.getAsmModel(), pathFolder + "/" + mts.getFileName(), AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF));//$NON-NLS-1$
 		else if (mts.getExtractorType().equals(ServiceTransformationUtil.EBNFExtractor)) {
 			Map params = mts.getExtractorParams();
-			ServiceTransformationUtil.ebnfExtraction(currentOutModel.getAsmModel(), pathFolder + "/" + mts.getFileName(), AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF), params);
+			ServiceTransformationUtil.ebnfExtraction(currentOutModel.getAsmModel(), pathFolder + "/" + mts.getFileName(), AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF), params);//$NON-NLS-1$
 		}
 		else
-			throw new ServiceException(IStatus.ERROR, "The extractor " + mts.getExtractorType() + " is not available.");
-			
+			throw new ServiceException(IStatus.ERROR,ServiceMessages.getString("ComposedTransformationConfiguration.0",new Object[]{mts.getExtractorType()}));//$NON-NLS-1$
+
 	}
 }

@@ -55,9 +55,9 @@ import org.osgi.framework.Constants;
  */
 public class ServiceTransformationUtil {
 
-	public static final String XMLExtractor = "XML";
-	public static final String XMIExtractor = "XMI";
-	public static final String EBNFExtractor = "EBNF";
+	public static final String XMLExtractor = "XML";//$NON-NLS-1$
+	public static final String XMIExtractor = "XMI";//$NON-NLS-1$
+	public static final String EBNFExtractor = "EBNF";//$NON-NLS-1$
 	
 	public static URL getURLFromASMFile(String filePath, String pluginId) throws ServiceException {
 		URL tPlatform = Platform.getBundle(pluginId).getEntry(filePath);
@@ -74,19 +74,19 @@ public class ServiceTransformationUtil {
 		if((amh instanceof AtlEMFModelHandler))
 			if (isM3)
 				ret = amh.getMof();
-			else if(nsUri != null && !nsUri.equals(""))
+			else if(nsUri != null && !nsUri.equals(""))//$NON-NLS-1$
 				// TODO delete pre-string 'uri:'
-				ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, "uri:" + nsUri);
+				ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, "uri:" + nsUri);//$NON-NLS-1$
 			else if (inWorkspace)
 				ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, URI.createPlatformResourceURI(path));
 			else {
 				try {
 					Bundle bundle = Platform.getBundle(pluginId);
 					if (bundle == null)
-						throw new ServiceException(IStatus.ERROR, "Plugin " + pluginId + " is not available.");
+						throw new ServiceException(IStatus.ERROR, ServiceMessages.getString("ServiceTransformationUtil.0",new Object[]{pluginId}));//$NON-NLS-1$
 					URL urlFile = bundle.getEntry(path);
 					if (urlFile == null)
-						throw new ServiceException(IStatus.ERROR, "File " + path + " not found in the plugin " + pluginId + ".");
+						throw new ServiceException(IStatus.ERROR, ServiceMessages.getString("ServiceTransformationUtil.1",new Object[]{path,pluginId}));//$NON-NLS-1$
 					InputStream in = urlFile.openStream();
 					ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, in);
 				} catch (IOException e) {
@@ -94,7 +94,7 @@ public class ServiceTransformationUtil {
 				}
 			}
 		else
-			throw new ServiceException(IStatus.CANCEL, "Other model handlers are not available for the moment.");
+			throw new ServiceException(IStatus.CANCEL, ServiceMessages.getString("ServiceTransformationUtil.2")); //$NON-NLS-1$
 
 		return ret;
 	}
@@ -144,16 +144,16 @@ public class ServiceTransformationUtil {
 			
 			final TCSExtractor ebnfe = new TCSExtractor();
 			
-			ASMModel TCS = loadModel(AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF), "TCS", AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF).getMof(), "resources/TCS.ecore", null, false, false, "org.eclipse.m2m.atl.service.core");
+			ASMModel TCS = loadModel(AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF), "TCS", AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF).getMof(), "resources/TCS.ecore", null, false, false, "org.eclipse.m2m.atl.service.core"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			
 			Map tempParam = new HashMap();
 
-			tempParam.put("format", loadModel(amh, "model.tcs", TCS, (String)params.get("path"), null, false, false, (String)params.get("pluginId")));
+			tempParam.put("format", loadModel(amh, "model.tcs", TCS, (String)params.get("path"), null, false, false, (String)params.get("pluginId"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			
 			for (Iterator it = params.keySet().iterator(); it.hasNext();) {
 				String paramName = (String)it.next();
 				String paramType = (String)ebnfe.getParameterTypes().get(paramName);
-				if (paramType != null && paramType.equals("String"))
+				if (paramType != null && paramType.equals("String")) //$NON-NLS-1$
 					tempParam.put(paramName, params.get(paramName));
 			}
 
@@ -198,8 +198,8 @@ public class ServiceTransformationUtil {
 			ClassLoader oldCl = Thread.currentThread().getContextClassLoader();
 			JarClassLoader loader = createLoader(pluginId, parserPath, oldCl);
 
-			Class lexer = loader.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Lexer", true);
-			Class parser = loader.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Parser", true);
+			Class lexer = loader.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Lexer", true); //$NON-NLS-1$ //$NON-NLS-2$
+			Class parser = loader.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Parser", true); //$NON-NLS-1$ //$NON-NLS-2$
 
 			ebnfi.performImportation(metamodel, model, in, metamodelName, lexer, parser);
 			
@@ -217,7 +217,7 @@ public class ServiceTransformationUtil {
 
 	private static JarClassLoader createLoader(String pluginId, String parserPath, ClassLoader parent) {
 		try {
-			URL url = Platform.getBundle(pluginId).getEntry("/");
+			URL url = Platform.getBundle(pluginId).getEntry("/"); //$NON-NLS-1$
 			String urlString = url.toString();
 
 			LinkedList list = new LinkedList();
@@ -226,7 +226,7 @@ public class ServiceTransformationUtil {
 			if (requires == null)
 				requires = parserPath;
 			else if	(requires.indexOf(parserPath) == -1)
-				requires += "," + parserPath;
+				requires += "," + parserPath; //$NON-NLS-1$
 
 			ManifestElement[] elements = ManifestElement.parseHeader(Constants.BUNDLE_CLASSPATH, requires);
 			for (int i = 0; i < elements.length; i++) {
@@ -253,13 +253,13 @@ public class ServiceTransformationUtil {
 
 		int nbErrors = 0;
 		
-		Collection pbsc = pbs.getElementsByType("Problem");
+		Collection pbsc = pbs.getElementsByType("Problem"); //$NON-NLS-1$
 		EObject pbsa[] = new EObject[pbsc.size()];
 		int k = 0;
 		for(Iterator i = pbsc.iterator() ; i.hasNext() ; ) {
 			ASMEMFModelElement ame = (ASMEMFModelElement)i.next();
 			pbsa[k] = ame.getObject();
-			if("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) {
+			if("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) { //$NON-NLS-1$ //$NON-NLS-2$
 				nbErrors++;
 			}
 			k++;
