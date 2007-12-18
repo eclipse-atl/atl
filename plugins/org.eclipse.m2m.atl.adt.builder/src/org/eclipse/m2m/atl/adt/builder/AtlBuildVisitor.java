@@ -72,7 +72,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 		if ( ("atl".equals(extension) && (resource instanceof IFile)) && ((IFile)resource).getLocation().toFile().length() > 0//$NON-NLS-1$
 			 && (!hasAsmFile(resource) || hasChanged(resource)) ) {
 			String inName = resource.getName();
-			monitor.subTask(Messages.getString("AtlBuildVisitor.COMPILETASK",new Object[]{inName}));//$NON-NLS-1$
+			monitor.subTask(AtlBuilderMessages.getString("AtlBuildVisitor.COMPILETASK",new Object[]{inName}));//$NON-NLS-1$
 			String outName = inName.substring(0, inName.lastIndexOf('.')) + ".asm";//$NON-NLS-1$
 			IFile out = resource.getParent().getFile(new Path(outName));
 			InputStream is = ((IFile)resource).getContents();

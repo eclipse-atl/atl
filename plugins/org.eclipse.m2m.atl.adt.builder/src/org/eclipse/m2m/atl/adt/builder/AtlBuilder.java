@@ -49,7 +49,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 	protected void fullBuild(IProgressMonitor monitor) {
 		try {
 			IProject p = getProject();
-			monitor.beginTask(Messages.getString("AtlBuilder.COMPILETASK",new Object[]{p.getName()}), IProgressMonitor.UNKNOWN);//$NON-NLS-1$
+			monitor.beginTask(AtlBuilderMessages.getString("AtlBuilder.COMPILETASK",new Object[]{p.getName()}), IProgressMonitor.UNKNOWN);//$NON-NLS-1$
 			p.accept(new AtlBuildVisitor(monitor));
 		} catch (CoreException e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -63,7 +63,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 			public void run(IProgressMonitor monitor) throws CoreException {				
 				try {
 					IProject p = getProject();
-					monitor.beginTask(Messages.getString("AtlBuilder.CLEANTASK",new Object[]{p.getName()}), IProgressMonitor.UNKNOWN);//$NON-NLS-1$
+					monitor.beginTask(AtlBuilderMessages.getString("AtlBuilder.CLEANTASK",new Object[]{p.getName()}), IProgressMonitor.UNKNOWN);//$NON-NLS-1$
 					p.accept(new AtlCleanVisitor(monitor));
 				} catch (CoreException e) {
 					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);

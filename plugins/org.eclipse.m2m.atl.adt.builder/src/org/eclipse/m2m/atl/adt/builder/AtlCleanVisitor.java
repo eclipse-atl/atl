@@ -59,7 +59,7 @@ public class AtlCleanVisitor implements IResourceVisitor {
 			((IFile)resource).getLocation().toFile().length() > 0 &&
 			hasAsmFile(resource) ) {
 			
-			monitor.subTask(Messages.getString("AtlCleanVisitor.CLEANTASK",new Object[]{resource.getName()}));//$NON-NLS-1$
+			monitor.subTask(AtlBuilderMessages.getString("AtlCleanVisitor.CLEANTASK",new Object[]{resource.getName()}));//$NON-NLS-1$
 			IFile asmFile = getAsmFile(resource);
 			try {
 				asmFile.delete(true, monitor);
