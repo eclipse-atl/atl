@@ -155,7 +155,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 		/* TODO completed the single indenter character with the user preferences
 		 * to return the correct indent.
 		 */
-		return "\t";
+		return "\t";//$NON-NLS-1$
 	}
 	
 	/**
@@ -307,7 +307,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 			int whiteEnd = findEndOfWhiteSpace(document, start, end);
 			return document.get(start, whiteEnd - start);
 		} else {
-			return "";
+			return "";//$NON-NLS-1$
 		}
 	}
 	

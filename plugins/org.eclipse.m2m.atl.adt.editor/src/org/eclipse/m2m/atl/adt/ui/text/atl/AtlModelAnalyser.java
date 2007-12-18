@@ -36,8 +36,8 @@ public class AtlModelAnalyser {
 	public final static int USING_CONTEXT = 7;
 
 	/** detached types considered as "normal" */
-	private final static String[] NORMAL_TYPES = { "OclModel", "Helper",
-			"Module", "MatchedRule", "CalledRule", "Rule", "LazyRule" };
+	private final static String[] NORMAL_TYPES = { "OclModel", "Helper", //$NON-NLS-1$ //$NON-NLS-2$
+			"Module", "MatchedRule", "CalledRule", "Rule", "LazyRule" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 	/** completion helper used to find located elements */
 	private AtlCompletionHelper fHelper;
@@ -126,44 +126,44 @@ public class AtlModelAnalyser {
 	private int getContext(String keyword, int offset) throws BadLocationException {
 		if (keyword == null)
 			return AtlModelAnalyser.NULL_CONTEXT;
-		if (keyword.equalsIgnoreCase("module"))
+		if (keyword.equalsIgnoreCase("module")) //$NON-NLS-1$
 			return AtlModelAnalyser.MODULE_CONTEXT;
-		if (keyword.equalsIgnoreCase("helper")) {
+		if (keyword.equalsIgnoreCase("helper")) { //$NON-NLS-1$
 			if (getLocatedElement(offset) == null)
 				return AtlModelAnalyser.MODULE_CONTEXT;
 			return AtlModelAnalyser.HELPER_CONTEXT;
 		}
-		if (keyword.equalsIgnoreCase("rule"))
+		if (keyword.equalsIgnoreCase("rule")) //$NON-NLS-1$
 			return AtlModelAnalyser.RULE_CONTEXT;
-		if (keyword.equalsIgnoreCase("from")) {
+		if (keyword.equalsIgnoreCase("from")) { //$NON-NLS-1$
 			if (emfRoot == null)
 				return AtlModelAnalyser.MODULE_CONTEXT;
 			return AtlModelAnalyser.FROM_CONTEXT;
 		}
-		if (keyword.equalsIgnoreCase("to")) {
+		if (keyword.equalsIgnoreCase("to")) { //$NON-NLS-1$
 			return AtlModelAnalyser.TO_CONTEXT;
 		}
-		if (keyword.equalsIgnoreCase("do")) {
+		if (keyword.equalsIgnoreCase("do")) { //$NON-NLS-1$
 			if (getLocatedElement(offset) == null)
 				return AtlModelAnalyser.MODULE_CONTEXT;
 			return AtlModelAnalyser.DO_CONTEXT;
 		}
-		if (keyword.equalsIgnoreCase("using"))
+		if (keyword.equalsIgnoreCase("using")) //$NON-NLS-1$
 			return AtlModelAnalyser.USING_CONTEXT;
 		return AtlModelAnalyser.NULL_CONTEXT;
 	}
 
 	public static String getContextName(int id) {
 		switch (id) {
-		case NULL_CONTEXT : return "NULL_CONTEXT";
-		case MODULE_CONTEXT : return "MODULE_CONTEXT";
-		case HELPER_CONTEXT : return "HELPER_CONTEXT";
-		case RULE_CONTEXT : return "RULE_CONTEXT";
-		case FROM_CONTEXT : return "FROM_CONTEXT";
-		case TO_CONTEXT : return "TO_CONTEXT";
-		case DO_CONTEXT : return "DO_CONTEXT";
-		case USING_CONTEXT : return "USING_CONTEXT";
+		case NULL_CONTEXT : return "NULL_CONTEXT"; //$NON-NLS-1$
+		case MODULE_CONTEXT : return "MODULE_CONTEXT"; //$NON-NLS-1$
+		case HELPER_CONTEXT : return "HELPER_CONTEXT"; //$NON-NLS-1$
+		case RULE_CONTEXT : return "RULE_CONTEXT"; //$NON-NLS-1$
+		case FROM_CONTEXT : return "FROM_CONTEXT"; //$NON-NLS-1$
+		case TO_CONTEXT : return "TO_CONTEXT"; //$NON-NLS-1$
+		case DO_CONTEXT : return "DO_CONTEXT"; //$NON-NLS-1$
+		case USING_CONTEXT : return "USING_CONTEXT"; //$NON-NLS-1$
 		}
-		return "NULL_CONTEXT";
+		return "NULL_CONTEXT"; //$NON-NLS-1$
 	}
 }

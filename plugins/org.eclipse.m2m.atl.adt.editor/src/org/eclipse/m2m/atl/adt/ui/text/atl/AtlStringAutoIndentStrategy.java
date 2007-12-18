@@ -56,11 +56,11 @@ public class AtlStringAutoIndentStrategy extends DefaultIndentLineAutoEditStrate
 		IRegion line= document.getLineInformationOfOffset(offset);
 		String string= document.get(line.getOffset(), offset - line.getOffset());
 		if (string.trim().length() != 0)
-			indentation += String.valueOf("\t\t");
+			indentation += String.valueOf("\t\t"); //$NON-NLS-1$
 		
 		IPreferenceStore preferenceStore= AtlUIPlugin.getDefault().getPreferenceStore();
 		if (isLineDelimiter(document, command.text))
-			command.text= "\' +" + command.text + indentation + "\'";
+			command.text= "\' +" + command.text + indentation + "\'"; //$NON-NLS-1$ //$NON-NLS-2$
 		else if (command.text.length() > 1 && preferenceStore.getBoolean(AtlPreferenceConstants.TYPING_ESCAPE_STRINGS))
 			command.text= getModifiedText(command.text, indentation, delimiter);		
 	}
@@ -93,33 +93,33 @@ public class AtlStringAutoIndentStrategy extends DefaultIndentLineAutoEditStrate
 		
 		int length = inputString.length();
 		StringBuffer buffer = new StringBuffer(length);
-		java.util.StringTokenizer tokenizer = new java.util.StringTokenizer(inputString, "\n\r", true);
+		java.util.StringTokenizer tokenizer = new java.util.StringTokenizer(inputString, "\n\r", true); //$NON-NLS-1$
 		while (tokenizer.hasMoreTokens()){
 			
 			String token = tokenizer.nextToken();
-			if (token.equals("\r")) {
-				buffer.append("\\r");
+			if (token.equals("\r")) { //$NON-NLS-1$
+				buffer.append("\\r"); //$NON-NLS-1$
 				if (tokenizer.hasMoreTokens()) {
 					token = tokenizer.nextToken();
-					if (token.equals("\n")) {
-						buffer.append("\\n");
-						buffer.append("\' + " + delimiter);
+					if (token.equals("\n")) { //$NON-NLS-1$
+						buffer.append("\\n"); //$NON-NLS-1$
+						buffer.append("\' + " + delimiter); //$NON-NLS-1$
 						buffer.append(indentation);
-						buffer.append("\'");
+						buffer.append("\'"); //$NON-NLS-1$
 						continue;
 					} else {
-						buffer.append("\' + " + delimiter);
+						buffer.append("\' + " + delimiter); //$NON-NLS-1$
 						buffer.append(indentation);
-						buffer.append("\'");
+						buffer.append("\'"); //$NON-NLS-1$
 					}
 				} else {
 					continue;
 				}
-			} else if (token.equals("\n")) {
-				buffer.append("\\n");
-				buffer.append("\' + " + delimiter);
+			} else if (token.equals("\n")) { //$NON-NLS-1$
+				buffer.append("\\n"); //$NON-NLS-1$
+				buffer.append("\' + " + delimiter); //$NON-NLS-1$
 				buffer.append(indentation);
-				buffer.append("\'");
+				buffer.append("\'"); //$NON-NLS-1$
 				continue;
 			}	
 			
@@ -128,29 +128,29 @@ public class AtlStringAutoIndentStrategy extends DefaultIndentLineAutoEditStrate
 				char c = token.charAt(i);
 				switch (c) {
 				case '\r' :
-					tokenBuffer.append("\\r");
+					tokenBuffer.append("\\r"); //$NON-NLS-1$
 					break;
 				case '\n' :
-					tokenBuffer.append("\\n");
+					tokenBuffer.append("\\n"); //$NON-NLS-1$
 					break;
 				case '\b' :
-					tokenBuffer.append("\\b");
+					tokenBuffer.append("\\b"); //$NON-NLS-1$
 					break;
 				case '\t' :
 					// keep tabs verbatim
-					tokenBuffer.append("\t");
+					tokenBuffer.append("\t"); //$NON-NLS-1$
 					break;
 				case '\f' :
-					tokenBuffer.append("\\f");
+					tokenBuffer.append("\\f"); //$NON-NLS-1$
 					break;
 				case '\"' :
-					tokenBuffer.append("\\\"");
+					tokenBuffer.append("\\\""); //$NON-NLS-1$
 					break;
 				case '\'' :
-					tokenBuffer.append("\\'");
+					tokenBuffer.append("\\'"); //$NON-NLS-1$
 					break;
 				case '\\' :
-					tokenBuffer.append("\\\\");
+					tokenBuffer.append("\\\\"); //$NON-NLS-1$
 					break;
 				default :
 					tokenBuffer.append(c);

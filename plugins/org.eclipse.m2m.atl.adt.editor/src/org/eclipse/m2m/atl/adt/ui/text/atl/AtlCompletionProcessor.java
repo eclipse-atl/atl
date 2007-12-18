@@ -110,19 +110,19 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 		 * URIs completion 
 		 */
 		if (analyser.getContext() == AtlModelAnalyser.NULL_CONTEXT) {
-			if (line.trim().startsWith("-- @"+AtlCompletionDataSource.URI_TAG)) {
-				if (prefix.contains("=")) {
-					if (prefix.split("=").length == 2) {
-						String uriPrefix = prefix.split("=")[1];
+			if (line.trim().startsWith("-- @"+AtlCompletionDataSource.URI_TAG)) { //$NON-NLS-1$
+				if (prefix.contains("=")) { //$NON-NLS-1$
+					if (prefix.split("=").length == 2) { //$NON-NLS-1$
+						String uriPrefix = prefix.split("=")[1]; //$NON-NLS-1$
 						return fDatasource.getURIProposals(uriPrefix, offset);
-					} else if (prefix.endsWith("=")) {
-						return fDatasource.getURIProposals("", offset);
+					} else if (prefix.endsWith("=")) { //$NON-NLS-1$
+						return fDatasource.getURIProposals("", offset); //$NON-NLS-1$
 					}
 				}
 			}
 		} else {
 			// no completion on comments
-			if (!line.contains("--")) {
+			if (!line.contains("--")) { //$NON-NLS-1$
 
 				EObject locatedElement = analyser.getLocatedElement(offset
 						- prefix.length());
@@ -134,7 +134,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 					 * HELPER COMPLETION
 					 */
 					case AtlModelAnalyser.HELPER_CONTEXT :
-						if (oclIsKindOf(locatedElement, "OclModel") || oclIsKindOf(locatedElement, "OclType")){
+						if (oclIsKindOf(locatedElement, "OclModel") || oclIsKindOf(locatedElement, "OclType")){ //$NON-NLS-1$ //$NON-NLS-2$
 							return fDatasource.getHelperTypesProposals(prefix, offset);
 						}
 						break;
@@ -143,9 +143,9 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 						 * INPUT PATTERN COMPLETION
 						 */
 					case AtlModelAnalyser.FROM_CONTEXT :
-						if (oclIsKindOf(locatedElement, "OclModel") || 
-								oclIsKindOf(locatedElement, "OclModelElement")) {
-							if (analyser.getLostType("InPattern") != null) {
+						if (oclIsKindOf(locatedElement, "OclModel") ||  //$NON-NLS-1$
+								oclIsKindOf(locatedElement, "OclModelElement")) { //$NON-NLS-1$
+							if (analyser.getLostType("InPattern") != null) { //$NON-NLS-1$
 								return fDatasource.getMetaElementsProposals(prefix,offset,AtlCompletionDataSource.INPUT_METAMODELS);
 							}
 						}
@@ -155,21 +155,21 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 						 * OUTPUT PATTERN COMPLETION
 						 */
 					case AtlModelAnalyser.TO_CONTEXT:
-						if ((oclIsKindOf(locatedElement, "OclModel") || oclIsKindOf(locatedElement, "OclModelElement")) ||
-								(oclIsKindOf(locatedElement,"SimpleOutPatternElement"))) {
+						if ((oclIsKindOf(locatedElement, "OclModel") || oclIsKindOf(locatedElement, "OclModelElement")) || //$NON-NLS-1$ //$NON-NLS-2$
+								(oclIsKindOf(locatedElement,"SimpleOutPatternElement"))) { //$NON-NLS-1$
 							return fDatasource.getMetaElementsProposals(prefix,offset,AtlCompletionDataSource.OUTPUT_METAMODELS);
 						} 
-						else if (oclIsKindOf(locatedElement, "OutPattern")) {
-							if (analyser.getLostType("Binding") != null) {
-								EObject simpleOutPatternElement = analyser.getLostType("SimpleOutPatternElement");
-								EObject oclModelElement = (EObject) AtlCompletionDataSource.eGet(simpleOutPatternElement,"type");
+						else if (oclIsKindOf(locatedElement, "OutPattern")) { //$NON-NLS-1$
+							if (analyser.getLostType("Binding") != null) { //$NON-NLS-1$
+								EObject simpleOutPatternElement = analyser.getLostType("SimpleOutPatternElement"); //$NON-NLS-1$
+								EObject oclModelElement = (EObject) AtlCompletionDataSource.eGet(simpleOutPatternElement,"type"); //$NON-NLS-1$
 
 								List existingBindings = new ArrayList();
-								Collection bindings = (Collection) AtlCompletionDataSource.eGet(simpleOutPatternElement,"bindings");
+								Collection bindings = (Collection) AtlCompletionDataSource.eGet(simpleOutPatternElement,"bindings"); //$NON-NLS-1$
 
 								for (Iterator iterator = bindings.iterator(); iterator.hasNext();) {
 									EObject binding = (EObject) iterator.next();
-									String ref = AtlCompletionDataSource.eGet(binding,"propertyName").toString();
+									String ref = AtlCompletionDataSource.eGet(binding,"propertyName").toString(); //$NON-NLS-1$
 									existingBindings.add(ref);
 								}
 
@@ -186,19 +186,19 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 					 */
 
 					List res = new ArrayList();
-					String helperTemplate = "helper context CONTEXT_TYPE def : NAME : TYPE = ";
-					String ruleTemplate = "rule RULE_NAME {";
-					String fromTemplate = "from VAR_NAME : MM!TYPE ";
-					String toTemplate = "to VAR_NAME : MM!TYPE (";
-					String doTemplate = "do {";
-					String usingTemplate = "using {";
+					String helperTemplate = "helper context CONTEXT_TYPE def : NAME : TYPE = "; //$NON-NLS-1$
+					String ruleTemplate = "rule RULE_NAME {"; //$NON-NLS-1$
+					String fromTemplate = "from VAR_NAME : MM!TYPE "; //$NON-NLS-1$
+					String toTemplate = "to VAR_NAME : MM!TYPE ("; //$NON-NLS-1$
+					String doTemplate = "do {"; //$NON-NLS-1$
+					String usingTemplate = "using {"; //$NON-NLS-1$
 
 					switch (analyser.getContext()) {
 					case AtlModelAnalyser.RULE_CONTEXT :
 						if (fromTemplate.startsWith(prefix)) {
 							AtlCompletionProposal fromProposal = new AtlCompletionProposal(
 									fromTemplate, offset - prefix.length(),
-									fromTemplate.length(), AtlCompletionDataSource.getImage("inPattern.gif"), "from", 0);
+									fromTemplate.length(), AtlCompletionDataSource.getImage("inPattern.gif"), "from", 0); //$NON-NLS-1$ //$NON-NLS-2$
 							fromProposal.setCursorPosition(fromTemplate.length() - 19);
 							res.add(fromProposal);
 						}
@@ -208,13 +208,13 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 						if (usingTemplate.startsWith(prefix))
 							res.add(new AtlCompletionProposal(
 									usingTemplate, offset - prefix.length(),
-									usingTemplate.length(),AtlCompletionDataSource.getImage("using.gif") , "using", 0));
+									usingTemplate.length(),AtlCompletionDataSource.getImage("using.gif") , "using", 0)); //$NON-NLS-1$ //$NON-NLS-2$
 
 					case AtlModelAnalyser.USING_CONTEXT:	
 						if (toTemplate.startsWith(prefix)) {
 							AtlCompletionProposal toProposal = new AtlCompletionProposal(
 									toTemplate, offset - prefix.length(),
-									toTemplate.length(), AtlCompletionDataSource.getImage("outPattern.gif"), "to", 0);
+									toTemplate.length(), AtlCompletionDataSource.getImage("outPattern.gif"), "to", 0); //$NON-NLS-1$ //$NON-NLS-2$
 							toProposal.setCursorPosition(toTemplate.length() - 20);
 							res.add(toProposal);
 						}
@@ -224,21 +224,21 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 						if (doTemplate.startsWith(prefix))
 							res.add(new AtlCompletionProposal(
 									doTemplate, offset - prefix.length(),
-									doTemplate.length(),AtlCompletionDataSource.getImage("imperative.gif") , "do", 0));
+									doTemplate.length(),AtlCompletionDataSource.getImage("imperative.gif") , "do", 0)); //$NON-NLS-1$ //$NON-NLS-2$
 
 					case AtlModelAnalyser.DO_CONTEXT:
 					case AtlModelAnalyser.MODULE_CONTEXT:
 						if (ruleTemplate.startsWith(prefix)) {
 							AtlCompletionProposal ruleProposal = new AtlCompletionProposal(
 									ruleTemplate, offset - prefix.length(),
-									ruleTemplate.length(), AtlCompletionDataSource.getImage("matchedRule.gif"), "rule", 0);
+									ruleTemplate.length(), AtlCompletionDataSource.getImage("matchedRule.gif"), "rule", 0); //$NON-NLS-1$ //$NON-NLS-2$
 							ruleProposal.setCursorPosition(ruleTemplate.length() - 11);
 							res.add(ruleProposal);
 						}
 						if (helperTemplate.startsWith(prefix)) {
 							AtlCompletionProposal helperProposal = new AtlCompletionProposal(
 									helperTemplate, offset - prefix.length(),
-									helperTemplate.length(), AtlCompletionDataSource.getImage("helper.gif"), "helper", 0);
+									helperTemplate.length(), AtlCompletionDataSource.getImage("helper.gif"), "helper", 0); //$NON-NLS-1$ //$NON-NLS-2$
 							helperProposal.setCursorPosition(helperTemplate.length() - 33);
 							res.add(helperProposal);
 						}
@@ -322,7 +322,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getErrorMessage()
 	 */
 	public String getErrorMessage() {
-		return "AtlEditor.codeassist.noCompletions";
+		return "AtlEditor.codeassist.noCompletions"; //$NON-NLS-1$
 	}
 
 	public void orderProposalsAlphabetically(boolean order) {

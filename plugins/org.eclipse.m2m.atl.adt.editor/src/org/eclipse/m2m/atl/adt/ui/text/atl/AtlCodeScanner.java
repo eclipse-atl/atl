@@ -204,9 +204,9 @@ public class AtlCodeScanner extends AbstractScanner {
 	protected List createRules() {
 		List rules = new ArrayList();
 		
-		rules.add(new EndOfLineRule("--", getToken(AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT_COLOR)));
+		rules.add(new EndOfLineRule("--", getToken(AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT_COLOR))); //$NON-NLS-1$
 		rules.add(new EnumLiteralRule(getToken(AtlPreferenceConstants.SYNTAX_LITERAL_COLOR)));
-		rules.add(new MultiLineRule("'", "'", getToken(AtlPreferenceConstants.SYNTAX_STRING_COLOR), '\\'));
+		rules.add(new MultiLineRule("'", "'", getToken(AtlPreferenceConstants.SYNTAX_STRING_COLOR), '\\')); //$NON-NLS-1$ //$NON-NLS-2$
 		rules.add(new NumberRule(getToken(AtlPreferenceConstants.SYNTAX_NUMBER_COLOR)));
 		rules.add(new SymbolRule(IAtlLexems.BRACKETS, getToken(AtlPreferenceConstants.SYNTAX_BRACKET_COLOR)));
 		rules.add(new SymbolRule(IAtlLexems.OPERATORS, getToken(AtlPreferenceConstants.SYNTAX_OPERATOR_COLOR)));
@@ -223,7 +223,7 @@ public class AtlCodeScanner extends AbstractScanner {
 		
 		// TODO identifiers rule not well done
 		//rules.add(new IdentifierRule(getToken(IAtlConstants.EDITOR_IDENTIFIER)));
-		rules.add(new WordPatternRule(new AtlWordDetector(), "\"", "\"", getToken(AtlPreferenceConstants.SYNTAX_IDENTIFIER_COLOR)));
+		rules.add(new WordPatternRule(new AtlWordDetector(), "\"", "\"", getToken(AtlPreferenceConstants.SYNTAX_IDENTIFIER_COLOR))); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return rules;
 	}

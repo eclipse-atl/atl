@@ -91,7 +91,7 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 	private static final class ReferenceTracker {
 		
 		/** The reference position category name. */
-		private static final String CATEGORY= "reference_position";
+		private static final String CATEGORY= "reference_position";//$NON-NLS-1$
 		/** The reference position. */
 		private final Position fPosition= new Position(0);
 		/** The position updater of the reference position. */
@@ -287,7 +287,7 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 			}
 			
 			if (fTextViewer != null && string != null) {
-				int index= string.indexOf("()");
+				int index= string.indexOf("()");//$NON-NLS-1$
 				if (index != -1 && index + 1 == fCursorPosition) {
 					IPreferenceStore preferenceStore= AtlUIPlugin.getDefault().getPreferenceStore();
 					if (preferenceStore.getBoolean(AtlPreferenceConstants.TYPING_CLOSE_BRACKETS)) {

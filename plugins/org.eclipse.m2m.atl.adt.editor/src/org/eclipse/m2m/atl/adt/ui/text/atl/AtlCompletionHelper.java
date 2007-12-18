@@ -31,11 +31,11 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 public class AtlCompletionHelper {
 
 	/** ATL parsing triggers */
-	private static final String[] PARSING_KEYWORDS = { "rule", "helper" };
+	private static final String[] PARSING_KEYWORDS = { "rule", "helper" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/** Context indicators */
-	private static final String[] HIGH_LEVEL_KEYWORDS = { "rule", "helper",
-		"from", "to", "do", "using", "module" };
+	private static final String[] HIGH_LEVEL_KEYWORDS = { "rule", "helper", //$NON-NLS-1$ //$NON-NLS-2$
+		"from", "to", "do", "using", "module" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 	/** Observed document */
 	private IDocument document;
@@ -73,10 +73,10 @@ public class AtlCompletionHelper {
 
 		// gets the zone and correct it
 		String text = document.get(begin, end - begin);
-		if (prefix.equals("")) {
-			text += "a";
-		} else if (prefix.startsWith("'")){
-			text += "'";
+		if (prefix.equals("")) { //$NON-NLS-1$
+			text += "a"; //$NON-NLS-1$
+		} else if (prefix.startsWith("'")){ //$NON-NLS-1$
+			text += "'"; //$NON-NLS-1$
 		}
 
 		// if no context available, don't process parsing
@@ -121,17 +121,17 @@ public class AtlCompletionHelper {
 	 */
 	public int[] getElementOffsets(EObject element, int baseOffset)
 	throws BadLocationException {
-		Object loc = AtlCompletionDataSource.eGet(element,"location");
+		Object loc = AtlCompletionDataSource.eGet(element,"location"); //$NON-NLS-1$
 		if (loc != null) {
 			String location = loc.toString();
-			location = location.replaceAll("'", "");
+			location = location.replaceAll("'", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			int linesToAdd = document.getLineOfOffset(baseOffset);
 			int columnsToAdd = baseOffset - document.getLineOffset(document
 					.getLineOfOffset(baseOffset));
-			int debLine = new Integer(location.split("-")[0].split(":")[0]).intValue() + linesToAdd;
-			int debColumn = new Integer(location.split("-")[0].split(":")[1]).intValue() + columnsToAdd;
-			int endLine = new Integer(location.split("-")[1].split(":")[0]).intValue() + linesToAdd;
-			int endColumn = new Integer(location.split("-")[1].split(":")[1]).intValue() + columnsToAdd;
+			int debLine = new Integer(location.split("-")[0].split(":")[0]).intValue() + linesToAdd; //$NON-NLS-1$ //$NON-NLS-2$
+			int debColumn = new Integer(location.split("-")[0].split(":")[1]).intValue() + columnsToAdd; //$NON-NLS-1$ //$NON-NLS-2$
+			int endLine = new Integer(location.split("-")[1].split(":")[0]).intValue() + linesToAdd; //$NON-NLS-1$ //$NON-NLS-2$
+			int endColumn = new Integer(location.split("-")[1].split(":")[1]).intValue() + columnsToAdd; //$NON-NLS-1$ //$NON-NLS-2$
 			int debOffset = document.getLineOffset(debLine - 1) + debColumn - 1;
 			int endOffset = document.getLineOffset(endLine - 1) + endColumn - 1;
 			return new int[] { debOffset, endOffset };
@@ -153,20 +153,20 @@ public class AtlCompletionHelper {
 		AtlModelHandler amh = AtlModelHandler
 		.getDefault(AtlModelHandler.AMH_EMF);
 		ASMModel atlmm = amh.getAtl();
-		ASMModel pbmm = amh.getBuiltInMetaModel("Problem");
+		ASMModel pbmm = amh.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
 
 		try {
-			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp",
+			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp", //$NON-NLS-1$ //$NON-NLS-2$
 					(ASMEMFModel) atlmm, null);
-			ret[1] = amh.newModel("pb", "pb", pbmm);
+			ret[1] = amh.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
 			TCSInjector ebnfi = new TCSInjector();
 			Map params = new HashMap();
 			if (expressionType == null) {
-				params.put("name", "ATL");
+				params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
-				params.put("name", "ATL-" + expressionType);
+				params.put("name", "ATL-" + expressionType); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			params.put("problems", ret[1]);
+			params.put("problems", ret[1]); //$NON-NLS-1$
 			ebnfi.inject(ret[0],
 					new ByteArrayInputStream(expression.getBytes()), params);
 		} catch (Throwable e) {
@@ -228,7 +228,7 @@ public class AtlCompletionHelper {
 
 	private int[] getLastKeyWordLocation(int offset, String[] keywords) throws BadLocationException {
 		int bestindex = 0;
-		String nearest_keyword = "";
+		String nearest_keyword = ""; //$NON-NLS-1$
 		for (int i = 0; i < keywords.length; i++) {
 			String keyword = keywords[i];
 			int lastindex = getLastKeyWordLocation(offset, keyword)[0];
@@ -244,8 +244,8 @@ public class AtlCompletionHelper {
 		int lastindex = document.get().lastIndexOf(keyword, offset-1);
 		String line = getCurrentLine(lastindex);
 		if (line != null) {
-			if (line.contains("--")) 	
-				return getLastKeyWordLocation(document.get().lastIndexOf("--", offset-1), keyword);
+			if (line.contains("--")) 	 //$NON-NLS-1$
+				return getLastKeyWordLocation(document.get().lastIndexOf("--", offset-1), keyword); //$NON-NLS-1$
 		} 
 		return new int[]{lastindex, keyword.length()};
 	}
