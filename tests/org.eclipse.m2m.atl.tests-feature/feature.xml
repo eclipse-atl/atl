@@ -234,25 +234,25 @@ litigation.
       <import plugin="org.eclipse.m2m.atl.engine"/>
       <import plugin="org.eclipse.m2m.atl.adt.debug"/>
    </requires>
-   
-   <plugin
-         id="org.eclipse.test"
-         download-size="0"
-         install-size="0"
-         version="3.1.0"/>
-         
+
    <plugin
          id="org.eclipse.m2m.atl.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-   
+
    <plugin
          id="org.eclipse.ant.optional.junit"
          download-size="0"
          install-size="0"
          version="0.0.0"
          fragment="true"/>
-         
+
+   <plugin
+         id="org.eclipse.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>
