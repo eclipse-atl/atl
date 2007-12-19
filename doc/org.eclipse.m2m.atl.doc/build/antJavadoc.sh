@@ -6,8 +6,8 @@
 pluginName="org.eclipse.m2m.atl"; 
 
 # string labels for javadoc content
-windowTitle="atl Javadoc";
-groupTitle="atl";
+windowTitle="ATL Javadoc";
+groupTitle="ATL";
 
 # files to exclude from javadoc process - use Ant syntax
 javadocExclusions="<exclude name=\"**/internal/**\"/> <exclude name=\"**/examples/**\"/> <exclude name=\"**/tests/**\"/>";
