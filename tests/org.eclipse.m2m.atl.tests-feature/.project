@@ -4,14 +4,13 @@
 	<comment></comment>
 	<projects>
 	</projects>
-	<buildSpec>
-		<buildCommand>
-			<name>org.eclipse.pde.FeatureBuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-	</buildSpec>
-	<natures>
-		<nature>org.eclipse.pde.FeatureNature</nature>
-	</natures>
+<buildSpec>
+  <buildCommand>
+    <name>org.eclipse.pde.FeatureBuilder</name>
+    <arguments/>
+  </buildCommand>
+</buildSpec>
+<natures>
+  <nature>org.eclipse.pde.FeatureNature</nature>
+</natures>
 </projectDescription>
