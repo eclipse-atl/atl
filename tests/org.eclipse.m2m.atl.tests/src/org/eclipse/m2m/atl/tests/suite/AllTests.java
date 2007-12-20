@@ -65,20 +65,22 @@ public class AllTests extends TestCase implements IApplication {
 	 * @return The testsuite containing all the tests
 	 */
 	public static Test suite() {
+		final TestSuite suite = new TestSuite("ATL test suite");
+		/*
+		 * AVOIDED, WAITING FOR RELENG INTEGRATION
 		final TestSuite suite = new TestSuite("ATL test suite") {//$NON-NLS-1$
 			protected void finalize() throws Throwable {
-				/*
 				File trace = new File(FileUtils.getTestCommonDirectory()+"\\trace.txt");
 				PrintWriter writer = new PrintWriter(new FileOutputStream(trace));
 				outputsResults(writer);
 				super.finalize();
-				*/
 				outputsResults(null);
 				super.finalize();
 			}
 		};
 		suite.addTestSuite(TestNonRegressionEMFVM.class);
 		suite.addTestSuite(TestNonRegressionVM.class);
+		*/
 		suite.addTestSuite(TestNonRegressionParser.class);
 		return suite;
 	}

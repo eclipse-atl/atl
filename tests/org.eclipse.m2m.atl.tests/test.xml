@@ -26,8 +26,7 @@
     <ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
       <property name="data-dir" value="${m2m-folder}"/>
       <property name="plugin-name" value="${plugin-name}"/>
-    	<!-- TODO replace by AllTests -->
-      <property name="classname" value="org.eclipse.m2m.atl.tests.unit.TestNonRegressionParser"/>
+      <property name="classname" value="org.eclipse.m2m.atl.tests.suite.AllTests"/>
     </ant>
   </target>
 

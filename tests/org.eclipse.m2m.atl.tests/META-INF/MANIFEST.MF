@@ -4,12 +4,9 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.m2m.atl.tests;singleton:=true
 Bundle-Version: 2.0.0.qualifier
 Bundle-Vendor: %providerName
-Export-Package: org.eclipse.m2m.atl.tests;
-  uses:="org.eclipse.emf.ecore.resource,
-   org.eclipse.core.runtime,
-   org.eclipse.ui.plugin,
-   org.osgi.framework",
- org.eclipse.m2m.atl.tests.unit;uses:="junit.framework,org.eclipse.m2m.atl.tests.launcher",
+Bundle-Localization: plugin
+Export-Package: org.eclipse.m2m.atl.tests;uses:="org.eclipse.emf.ecore.resource,org.eclipse.core.runtime",
+ org.eclipse.m2m.atl.tests.unit;uses:="junit.framework",
  org.eclipse.m2m.atl.tests.util;uses:="org.eclipse.emf.ecore.resource,org.eclipse.emf.ecore,org.eclipse.emf.common.util"
 Require-Bundle: org.junit,
  org.eclipse.core.runtime,
