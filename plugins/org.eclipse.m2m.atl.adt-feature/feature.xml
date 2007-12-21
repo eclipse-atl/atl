@@ -219,10 +219,6 @@ Each party waives its rights to a jury trial in any resulting
 litigation.
    </license>
 
-   <url>
-      <update label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
-   </url>
-
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.debug.core"/>
