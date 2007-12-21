@@ -221,7 +221,7 @@ litigation.
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://www.download.eclipse.org/modeling/m2m/atl/updates/"/>
+      <update label="%updateSiteName" url="http://www.download.eclipse.org/modeling/m2m/updates/"/>
    </url>
 
    <includes
