@@ -220,8 +220,8 @@ litigation.
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://www.download.eclipse.org/modeling/m2m/updates/"/>
-      <discovery label="%updateSiteName" url="http://www.download.eclipse.org/modeling/m2m/updates/"/>
+      <update label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
    </url>
 
    <requires>
