@@ -2,12 +2,12 @@
 <?eclipse version="3.0"?>
 <plugin
    id="org.eclipse.m2m.atl.drivers.uml24atl"
-   name="Driver UML4ATL Plug-in"
+   name="Driver UML24ATL Plug-in"
    version="2.0.0.qualifier"
    provider-name="Eclipse.org">
 
    <runtime>
-      <library name="uml4atl.jar">
+      <library name="uml24atl.jar">
          <export name="*"/>
       </library>
    </runtime>
