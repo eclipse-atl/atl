@@ -11,10 +11,8 @@
 package org.eclipse.m2m.atl.tests.suite;
 
 import java.io.File;
-import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import junit.framework.Test;
@@ -24,10 +22,10 @@ import junit.textui.TestRunner;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.m2m.atl.tests.unit.TestNonRegressionParser;
 import org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo;
 import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionEMFVM;
 import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionVM;
-import org.eclipse.m2m.atl.tests.util.FileUtils;
 
 /**
  * Launches all the JUnit tests for ATL.
@@ -79,11 +77,12 @@ public class AllTests extends TestCase implements IApplication {
 		};
 		suite.addTestSuite(TestNonRegressionEMFVM.class);
 		suite.addTestSuite(TestNonRegressionVM.class);
+		*/
 		suite.addTestSuite(TestNonRegressionParser.class);
-			*/
 		return suite;
 	}
 
+	/*
 	private static void outputsResults(PrintWriter writer) throws Exception {
 		if (writer != null) {
 
@@ -116,7 +115,8 @@ public class AllTests extends TestCase implements IApplication {
 
 		}
 	}
-
+	 */
+	
 	/**
 	 * {@inheritDoc}
 	 * 
