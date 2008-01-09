@@ -32,7 +32,7 @@ public class TestNonRegressionParser extends TestNonRegression {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		ModelUtils.registerMetamodel(FileUtils.fileNameToURI("/models/ATL-0.2.ecore"), AtlTestPlugin.getResourceSet());//$NON-NLS-1$		
+		//ModelUtils.registerMetamodel(FileUtils.fileNameToURI("/models/ATL-0.2.ecore"), AtlTestPlugin.getResourceSet());//$NON-NLS-1$		
 	}
 
 	/* (non-Javadoc)
@@ -72,7 +72,7 @@ public class TestNonRegressionParser extends TestNonRegression {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail(AtlTestsMessages.getString("TestNonRegressionParser.COMPARISONFAIL")); //$NON-NLS-1$
+			fail(AtlTestsMessages.getString("TestNonRegressionParser.COMPARISONFAIL",new Object[]{directory.getName()})); //$NON-NLS-1$
 		}
 		
 		System.out.println(AtlTestsMessages.getString("TestNonRegressionParser.OK")); //$NON-NLS-1$
