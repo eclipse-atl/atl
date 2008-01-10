@@ -3,7 +3,8 @@
 # BEGIN CUSTOMIZATIONS
 
 # The plugin name
-pluginName="org.eclipse.m2m.atl"; 
+#pluginName="org.eclipse.m2m.atl"; 
+pluginName="org.eclipse.m2m.atl.engine"; 
 
 # string labels for javadoc content
 windowTitle="ATL Javadoc";
