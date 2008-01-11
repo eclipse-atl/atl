@@ -56,12 +56,12 @@ import org.eclipse.swt.graphics.Image;
 public class AtlCompletionDataSource {
 
 	private final static ResourceSet resourceSet = new ResourceSetImpl();
-	
+
 	/** URI tag value. */
 	public final static String URI_TAG = "nsURI"; //$NON-NLS-1$
 	/** PATH tag value. */
 	public final static String PATH_TAG = "path"; //$NON-NLS-1$
-	
+
 	/** The main editor, containing the outline model. */
 	private AtlEditor fEditor;
 
@@ -131,7 +131,7 @@ public class AtlCompletionDataSource {
 		int length = buffer.length;
 		BufferedReader brin = new BufferedReader(new InputStreamReader(
 				new ByteArrayInputStream(buffer, 0, length)));
-		
+
 		List uris = getTaggedInformations(brin, URI_TAG);
 		for (Iterator iterator = uris.iterator(); iterator.hasNext();) {
 			String line = (String) iterator.next();
@@ -162,11 +162,11 @@ public class AtlCompletionDataSource {
 					if (regValue != null) {
 						metamodels.put(name, regValue);
 					}
-					
+
 				}
 			}
 		}
-		
+
 		if (fEditor.getOutlinePage() == null) {
 			inputMetamodelsIds = null;
 			outputMetamodelsIds = null;
@@ -177,21 +177,25 @@ public class AtlCompletionDataSource {
 
 		//input models computation
 		EList inModels = (EList) eGet(model, "inModels"); //$NON-NLS-1$
-		for (Iterator iterator = inModels.iterator(); iterator.hasNext();) {
-			EObject me = (EObject) iterator.next();
-			EObject mm = (EObject) eGet(me,"metamodel"); //$NON-NLS-1$
-			inputMetamodelsIds.add(eGet(mm,"name").toString()); //$NON-NLS-1$
+		if (inModels != null) {
+			for (Iterator iterator = inModels.iterator(); iterator.hasNext();) {
+				EObject me = (EObject) iterator.next();
+				EObject mm = (EObject) eGet(me,"metamodel"); //$NON-NLS-1$
+				inputMetamodelsIds.add(eGet(mm,"name").toString()); //$NON-NLS-1$
+			}			
 		}
 
 		//output models computation
 		EList outModels = (EList) eGet(model,"outModels"); //$NON-NLS-1$
-		for (Iterator iterator = outModels.iterator(); iterator.hasNext();) {
-			EObject me = (EObject) iterator.next();
-			EObject mm = (EObject) eGet(me,"metamodel"); //$NON-NLS-1$
-			outputMetamodelsIds.add(eGet(mm,"name").toString()); //$NON-NLS-1$
+		if (outModels != null) {
+			for (Iterator iterator = outModels.iterator(); iterator.hasNext();) {
+				EObject me = (EObject) iterator.next();
+				EObject mm = (EObject) eGet(me,"metamodel"); //$NON-NLS-1$
+				outputMetamodelsIds.add(eGet(mm,"name").toString()); //$NON-NLS-1$
+			}			
 		}
 	}
-	
+
 	/**
 	 * Computes proposals for EMF uris.
 	 * @param prefix
@@ -541,7 +545,7 @@ public class AtlCompletionDataSource {
 		}
 		return result;
 	}
-	
+
 	public static List getTaggedInformations(BufferedReader reader, String tag) throws IOException {
 		reader.mark(1000);
 		List res = new ArrayList();
@@ -563,7 +567,7 @@ public class AtlCompletionDataSource {
 		reader.reset();
 		return res;
 	}
-	
+
 	/**
 	 * Loads a model from an {@link org.eclipse.emf.common.util.URI URI} in a given {@link ResourceSet}.
 	 * 
@@ -601,7 +605,7 @@ public class AtlCompletionDataSource {
 			result = (EObject)modelResource.getContents().get(0);
 		return result;
 	}
-	
+
 	public static Object eGet(EObject self, String featureName) {
 		EStructuralFeature feature = self.eClass().getEStructuralFeature(featureName);
 		if (feature != null) {
