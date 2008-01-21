@@ -12,13 +12,14 @@
 
    <copyright url="http://www.eclipse.org/legal/epl-v10.html">
       /*  
- * Copyright (c) 2004, ATLAS Group (INRIA and LINA).
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- */
+* Copyright (c) 2004, INRIA.
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License
+v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+* 
+*/
    </copyright>
 
    <license url="http://www.eclipse.org/legal/epl-v10.html">
@@ -223,10 +224,6 @@ litigation.
    <url>
       <update label="ATL Updates" url="http://download.eclipse.org/modeling/m2m/updates/"/>
    </url>
-
-   <includes
-         id="org.eclipse.m2m.atl.engine"
-         version="0.0.0"/>
 
    <includes
          id="org.eclipse.m2m.atl.adt"
