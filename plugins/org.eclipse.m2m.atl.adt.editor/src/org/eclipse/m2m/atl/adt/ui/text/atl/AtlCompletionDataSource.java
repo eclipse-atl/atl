@@ -175,24 +175,26 @@ public class AtlCompletionDataSource {
 		//outline editor, updated on each save
 		EObject model = fEditor.getOutlinePage().getModel();
 
-		//input models computation
-		EList inModels = (EList) eGet(model, "inModels"); //$NON-NLS-1$
-		if (inModels != null) {
-			for (Iterator iterator = inModels.iterator(); iterator.hasNext();) {
-				EObject me = (EObject) iterator.next();
-				EObject mm = (EObject) eGet(me,"metamodel"); //$NON-NLS-1$
-				inputMetamodelsIds.add(eGet(mm,"name").toString()); //$NON-NLS-1$
-			}			
-		}
+		if (model.eClass().getName().equals("Module")) {
+			//input models computation
+			EList inModels = (EList) eGet(model, "inModels"); //$NON-NLS-1$
+			if (inModels != null) {
+				for (Iterator iterator = inModels.iterator(); iterator.hasNext();) {
+					EObject me = (EObject) iterator.next();
+					EObject mm = (EObject) eGet(me,"metamodel"); //$NON-NLS-1$
+					inputMetamodelsIds.add(eGet(mm,"name").toString()); //$NON-NLS-1$
+				}			
+			}
 
-		//output models computation
-		EList outModels = (EList) eGet(model,"outModels"); //$NON-NLS-1$
-		if (outModels != null) {
-			for (Iterator iterator = outModels.iterator(); iterator.hasNext();) {
-				EObject me = (EObject) iterator.next();
-				EObject mm = (EObject) eGet(me,"metamodel"); //$NON-NLS-1$
-				outputMetamodelsIds.add(eGet(mm,"name").toString()); //$NON-NLS-1$
-			}			
+			//output models computation
+			EList outModels = (EList) eGet(model,"outModels"); //$NON-NLS-1$
+			if (outModels != null) {
+				for (Iterator iterator = outModels.iterator(); iterator.hasNext();) {
+					EObject me = (EObject) iterator.next();
+					EObject mm = (EObject) eGet(me,"metamodel"); //$NON-NLS-1$
+					outputMetamodelsIds.add(eGet(mm,"name").toString()); //$NON-NLS-1$
+				}			
+			}
 		}
 	}
 
@@ -414,15 +416,17 @@ public class AtlCompletionDataSource {
 					if (startsWithIgnoreCase(prefix, replacementString)
 							&& !prefix.equals(replacementString)) {
 						Image image = null;
-						if (feature instanceof EAttribute)
-							image = getImage("model_attribute.gif"); //$NON-NLS-1$
-						else if (feature instanceof EReference)
-							image = getImage("model_reference.gif"); //$NON-NLS-1$
-						ICompletionProposal proposal = new AtlCompletionProposal(
-								replacementString, offset - prefix.length(),
-								replacementString.length(), image,
-								replacementString, 0);
-						res.add(proposal);
+						if (feature.isChangeable()) {
+							if (feature instanceof EAttribute)
+								image = getImage("model_attribute.gif"); //$NON-NLS-1$
+							else if (feature instanceof EReference)
+								image = getImage("model_reference.gif"); //$NON-NLS-1$
+							ICompletionProposal proposal = new AtlCompletionProposal(
+									replacementString, offset - prefix.length(),
+									replacementString.length(), image,
+									replacementString, 0);
+							res.add(proposal);
+						}
 					}
 				}
 			}
