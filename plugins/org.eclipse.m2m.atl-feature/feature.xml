@@ -229,6 +229,10 @@ litigation.
          id="org.eclipse.m2m.atl.adt"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.m2m.atl.engine"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
