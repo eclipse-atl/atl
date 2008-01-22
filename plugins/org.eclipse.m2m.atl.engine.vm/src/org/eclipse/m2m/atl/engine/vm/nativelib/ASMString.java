@@ -133,7 +133,7 @@ public class ASMString extends ASMOclAny {
 		}
 	}
 
-	public static ASMBoolean operatorNE(StackFrame frame, ASMString self, ASMString o) {
+	public static ASMBoolean operatorNE(StackFrame frame, ASMString self, ASMOclAny o) {
 		if(o instanceof ASMString) {
 			return new ASMBoolean(!self.s.equals(((ASMString)o).s));
 		} else {
