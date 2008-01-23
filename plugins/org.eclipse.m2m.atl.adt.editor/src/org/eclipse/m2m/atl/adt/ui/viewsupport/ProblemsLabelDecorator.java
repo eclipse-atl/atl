@@ -44,7 +44,7 @@ public class ProblemsLabelDecorator implements ILabelDecorator, ILightweightLabe
 	
 	private final static String ERROR_OV = "error_co.gif";//$NON-NLS-1$
 	
-	private final static String WARNING_OV = "warning_co_gif";//$NON-NLS-1$	
+	private final static String WARNING_OV = "warning_co.gif";//$NON-NLS-1$	
 	
 	/**
 	 * This is a special <code>LabelProviderChangedEvent</code> carrying additional 
