@@ -15,5 +15,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.core.runtime,
  org.eclipse.m2m.atl.adt.builder,
- org.eclipse.m2m.atl.engine.vm
+ org.eclipse.m2m.atl.engine
 Eclipse-LazyStart: true
