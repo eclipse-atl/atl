@@ -226,11 +226,11 @@ litigation.
    </url>
 
    <includes
-         id="org.eclipse.m2m.atl.adt"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.m2m.atl.engine"
+         version="0.0.0"/>
+         
+   <includes
+         id="org.eclipse.m2m.atl.adt"
          version="0.0.0"/>
 
 </feature>
