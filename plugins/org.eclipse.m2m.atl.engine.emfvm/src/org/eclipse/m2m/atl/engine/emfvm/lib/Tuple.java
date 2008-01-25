@@ -37,11 +37,15 @@ public class Tuple implements HasFields {
 	public String toString() {
 		return "Tuple " + values.toString();
 	}	
-	
+
 	public boolean equals(Object o) {
 		return (o instanceof Tuple) ? values.equals(((Tuple)o).values) : false;
 	}
-	
+
+	public Map getMap() {
+		return values;
+	}
+
 	public int hashCode() {
 		return values.hashCode();
 	}

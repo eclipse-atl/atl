@@ -159,6 +159,8 @@ public class ExecEnv {
 		supertypes.put(ASMModule.class, Arrays.asList(new Class[] {Object.class}));
 		// Tuple extends OclAny
 		supertypes.put(Tuple.class, Arrays.asList(new Class[] {Object.class}));
+		// EnumLiteral extends OclAny
+		supertypes.put(EnumLiteral.class, Arrays.asList(new Class[] {Object.class}));
 	}
 
 	public List getSupertypes(Object type) {
@@ -298,6 +300,9 @@ public class ExecEnv {
 			out.print('\'');
 			out.print(value);	// TODO: escape
 			out.print('\'');
+		} else if(value instanceof EnumLiteral) {
+			out.print('#');
+			out.print(value);	// TODO: escape
 		} else if(value instanceof EClass){
 			EClass c = (EClass)value;
 			out.print(getModelNameOf(c));
@@ -323,6 +328,22 @@ public class ExecEnv {
 		} else if(value instanceof Bag) {
 			out.print("Bag {");
 			prettyPrintCollection(out, (Collection)value);
+		} else if(value instanceof Tuple) {
+			out.print("Tuple {");
+			boolean first = true;
+			for(Iterator i = ((Tuple)value).getMap().entrySet().iterator() ; i.hasNext(); ) {
+				Map.Entry entry = (Map.Entry)i.next();
+				
+				if(first) {
+					first = false;
+				} else {
+					out.print(", ");
+				}
+				out.print(entry.getKey());
+				out.print(" = ");
+				prettyPrint(out, entry.getValue());
+			}
+			out.print('}');
 		} else {
 			out.print(value);
 		}

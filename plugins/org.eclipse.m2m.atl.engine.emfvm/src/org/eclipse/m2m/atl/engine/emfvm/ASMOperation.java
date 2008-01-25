@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Bag;
 import org.eclipse.m2m.atl.engine.emfvm.lib.EMFUtils;
+import org.eclipse.m2m.atl.engine.emfvm.lib.EnumLiteral;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.HasFields;
 import org.eclipse.m2m.atl.engine.emfvm.lib.OclParametrizedType;
@@ -66,6 +67,7 @@ public class ASMOperation extends Operation {
 		nativeClasses.put("Bag", Bag.class);
 		nativeClasses.put("OrderedSet", LinkedHashSet.class);
 		nativeClasses.put("Tuple", Tuple.class);
+		nativeClasses.put("EnumLiteral", EnumLiteral.class);
 		nativeClasses.put("OclSimpleType", OclSimpleType.class);
 		nativeClasses.put("OclParametrizedType", OclParametrizedType.class);
 		nativeClasses.put("TransientLinkSet", TransientLinkSet.class);
