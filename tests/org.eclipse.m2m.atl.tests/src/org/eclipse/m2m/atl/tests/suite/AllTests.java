@@ -49,7 +49,7 @@ public class AllTests extends TestCase implements IApplication {
 				emfvmresults.put(directory, time);			
 			}
 	}
-
+	
 	/**
 	 * Launches the test with the given arguments.
 	 * 

@@ -64,6 +64,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.6")); //$NON-NLS-1$
 		}
 		System.out.println(executionTime+"s."); //$NON-NLS-1$
+		AtlTestPlugin.getResourceSet().getResources().clear();
 
 		/*
 		 * RESULTS COMPARISON 

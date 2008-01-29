@@ -230,24 +230,25 @@ public final class ModelUtils {
 	 * @throws InterruptedException
 	 */
 	public static void compareModels(File leftUri, File rightUri, boolean ignoreIds, boolean delete) throws Exception {
-		EObject leftModel = ModelUtils.load(leftUri, AtlTestPlugin.getResourceSet());
-		EObject rightModel = ModelUtils.load(rightUri,AtlTestPlugin.getResourceSet());
+		if (leftUri.length() != rightUri.length()) {
+			EObject leftModel = ModelUtils.load(leftUri, AtlTestPlugin.getResourceSet());
+			EObject rightModel = ModelUtils.load(rightUri,AtlTestPlugin.getResourceSet());
 
-		Map options = new HashMap();
-		if (ignoreIds) {
-			options.put(MatchOptions.OPTION_IGNORE_XMI_ID, Boolean.TRUE);	
-		}
-		final MatchModel inputMatch = MatchService.doMatch(leftModel, rightModel, new NullProgressMonitor(), options);
-		final DiffModel inputDiff = new DiffMaker().doDiff(inputMatch);
+			Map options = new HashMap();
+			if (ignoreIds) {
+				options.put(MatchOptions.OPTION_IGNORE_XMI_ID, Boolean.TRUE);	
+			}
+			final MatchModel inputMatch = MatchService.doMatch(leftModel, rightModel, new NullProgressMonitor(), options);
+			final DiffModel inputDiff = new DiffMaker().doDiff(inputMatch);
 
-		if (((DiffGroup) inputDiff.getOwnedElements().get(0)).getSubchanges() != 0){
-			ModelInputSnapshot snapshot = DiffFactory.eINSTANCE.createModelInputSnapshot();
-			snapshot.setDiff(inputDiff);
-			snapshot.setMatch(inputMatch);
-			ModelUtils.save(snapshot, "file:/"+leftUri.toString()+".emfdiff"); //$NON-NLS-1$ //$NON-NLS-2$
-			throw new Exception(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
+			if (((DiffGroup) inputDiff.getOwnedElements().get(0)).getSubchanges() != 0){
+				ModelInputSnapshot snapshot = DiffFactory.eINSTANCE.createModelInputSnapshot();
+				snapshot.setDiff(inputDiff);
+				snapshot.setMatch(inputMatch);
+				ModelUtils.save(snapshot, "file:/"+leftUri.toString()+".emfdiff"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new Exception(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
+			}
 		}
-		
 		if (delete) {
 			leftUri.delete();
 		}
