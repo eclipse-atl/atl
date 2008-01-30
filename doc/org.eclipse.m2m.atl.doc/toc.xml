@@ -2,5 +2,5 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="ATL Table of Contents">
-	<topic label="Javadoc" href="references/javadoc/index.html"/>
+	<topic label="Javadoc"/>
 </toc>
