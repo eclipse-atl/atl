@@ -1,28 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin
-   id="org.eclipse.m2m.atl.drivers.uml24atl"
-   name="Driver UML24ATL Plug-in"
-   version="2.0.0.qualifier"
-   provider-name="Eclipse.org">
-
-   <runtime>
-      <library name="uml24atl.jar">
-         <export name="*"/>
-      </library>
-   </runtime>
-   
-   <requires>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.m2m.atl.engine"/>
-      <import plugin="org.eclipse.emf.ecore.xmi"/>
-   </requires>
-   <extension
-         point="org.eclipse.m2m.atl.engine.modelhandler">
-      <modelhandler
-            class="org.eclipse.m2m.atl.drivers.uml24atl.AtlUML2ModelHandler"
-            name="UML2"/>
-   </extension>
+<plugin>
 
 </plugin>
