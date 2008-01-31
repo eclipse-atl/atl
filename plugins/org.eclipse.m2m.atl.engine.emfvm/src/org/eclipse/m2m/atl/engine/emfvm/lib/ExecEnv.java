@@ -8,6 +8,7 @@
  * Contributors:
  *    Frédéric Jouault - initial API and implementation
  *    Obeo - bag implementation
+ *    Mikael Barbero
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -37,6 +38,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *
  * @author Frédéric Jouault <a href="mailto:frederic.jouault@univ-nantes.fr">frederic.jouault@univ-nantes.fr</a>
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author Mikael Barbero <a href="mailto:mikael.barbero@univ-nantes.fr">mikael.barbero@univ-nantes.fr</a>
  */
 public class ExecEnv {
 
@@ -1278,6 +1280,24 @@ public class ExecEnv {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 				return ((String)localVars[0]).substring(((Number)localVars[1]).intValue() - 1, ((Number)localVars[2]).intValue());					
+			}
+		});
+		operationsByName.put("indexOf", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return ((String)localVars[0]).indexOf((String)localVars[1]);					
+			}
+		});
+		operationsByName.put("lastIndexOf", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return ((String)localVars[0]).lastIndexOf((String)localVars[1]);					
+			}
+		});
+		operationsByName.put("endsWith", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return ((String)localVars[0]).endsWith((String)localVars[1]);					
 			}
 		});
 		operationsByName.put("+", new Operation(2) {
