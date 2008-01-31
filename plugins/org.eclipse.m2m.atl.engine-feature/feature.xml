@@ -235,7 +235,7 @@ litigation.
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-         
+
    <plugin
          id="org.eclipse.m2m.atl.compilers.atl2006"
          download-size="0"
@@ -273,6 +273,13 @@ litigation.
 
    <plugin
          id="org.eclipse.m2m.atl.drivers.uml24atl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.antlr.runtime"
          download-size="0"
          install-size="0"
          version="0.0.0"
