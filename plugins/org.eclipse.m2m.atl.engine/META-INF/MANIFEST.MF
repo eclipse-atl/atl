@@ -29,5 +29,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.m2m.atl.engine.vm;visibility:=reexport,
  org.eclipse.m2m.atl.drivers.emf4atl;visibility:=reexport,
- org.antlr.runtime;bundle-version="3.0.0"
+ org.antlr.runtime;bundle-version="3.0.0";visibility:=reexport
 Eclipse-LazyStart: true
