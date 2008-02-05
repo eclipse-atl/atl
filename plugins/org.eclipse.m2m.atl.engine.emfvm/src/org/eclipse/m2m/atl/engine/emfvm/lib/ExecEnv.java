@@ -1285,19 +1285,19 @@ public class ExecEnv {
 		operationsByName.put("indexOf", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				return ((String)localVars[0]).indexOf((String)localVars[1]);					
+				return new Integer(((String)localVars[0]).indexOf((String)localVars[1]));				
 			}
 		});
 		operationsByName.put("lastIndexOf", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				return ((String)localVars[0]).lastIndexOf((String)localVars[1]);					
+				return new Integer(((String)localVars[0]).lastIndexOf((String)localVars[1]));					
 			}
 		});
 		operationsByName.put("endsWith", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				return ((String)localVars[0]).endsWith((String)localVars[1]);					
+				return new Boolean(((String)localVars[0]).endsWith((String)localVars[1]));					
 			}
 		});
 		operationsByName.put("+", new Operation(2) {
