@@ -30,6 +30,7 @@ import org.eclipse.m2m.atl.engine.vm.ASMStackFrame;
 import org.eclipse.m2m.atl.engine.vm.ASMXMLReader;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.Debugger;
+import org.eclipse.m2m.atl.engine.vm.ExecEnv;
 import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
 import org.eclipse.m2m.atl.engine.vm.SimpleDebugger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -126,6 +127,8 @@ public class AtlLauncher {
 			ASMModule asmModule = new ASMModule(asm);
 
 			ASMExecEnv env = new ASMExecEnv(asmModule, debugger, !"true".equals(options.get("disableAttributeHelperCache"))); //$NON-NLS-1$ //$NON-NLS-2$
+			env.addPermission("file.read");
+			env.addPermission("file.write");
 			
 			for(Iterator i = models.keySet().iterator() ; i.hasNext() ; ) {
 				String mname = (String)i.next();
