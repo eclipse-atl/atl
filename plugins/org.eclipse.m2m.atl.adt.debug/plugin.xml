@@ -144,5 +144,21 @@
             name="OLD ATL Transformation">
       </launchConfigurationType>
    </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.atl.eclipse.adt.launching.atlTransformation"
+            class="org.eclipse.m2m.atl.adt.launching.AtlTabGroup"
+            id="org.eclipse.m2m.atl.adt.launching.AtlTabGroup">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.atl.eclipse.adt.launching.remoteAtlTransformation"
+            class="org.eclipse.m2m.atl.adt.launching.RemoteAtlTabGroup"
+            id="RemoteAtlTabGroup">
+      </launchConfigurationTabGroup>
+   </extension>
 
 </plugin>
