@@ -10,19 +10,11 @@ Bundle-ClassPath: org.eclipse.m2m.atl.engine.jar,
 Bundle-Activator: org.eclipse.m2m.atl.engine.EnginePlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Export-Package: org.eclipse.gmt.tcs.extractor;uses:="org.eclipse.m2m.atl.engine.extractors,org.eclipse.m2m.atl.engine.vm.nativelib",
+Export-Package: org.eclipse.gmt.tcs.extractor;
  org.eclipse.gmt.tcs.injector;
  org.eclipse.gmt.tcs.injector.wrappers;
  org.eclipse.gmt.tcs.injector.wrappers.antlr3;
- org.eclipse.m2m.atl.engine;
-  uses:="org.eclipse.emf.ecore.resource,
-   org.eclipse.core.runtime,
-   org.eclipse.emf.common.util,
-   org.eclipse.m2m.atl.engine.vm,
-   org.eclipse.m2m.atl.engine.vm.nativelib,
-   org.eclipse.m2m.atl.drivers.emf4atl,
-   org.eclipse.emf.ecore,
-   org.eclipse.core.resources"
+ org.eclipse.m2m.atl.engine
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore,
  org.eclipse.core.resources,
