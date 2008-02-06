@@ -5,16 +5,15 @@ Bundle-SymbolicName: org.eclipse.m2m.atl.tests;singleton:=true
 Bundle-Version: 2.0.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Export-Package: org.eclipse.m2m.atl.tests;uses:="org.eclipse.emf.ecore.resource,org.eclipse.core.runtime",
- org.eclipse.m2m.atl.tests.unit;uses:="junit.framework",
- org.eclipse.m2m.atl.tests.util;uses:="org.eclipse.emf.ecore.resource,org.eclipse.emf.ecore,org.eclipse.emf.common.util"
+Export-Package: org.eclipse.m2m.atl.tests;
+ org.eclipse.m2m.atl.tests.unit;
+ org.eclipse.m2m.atl.tests.util
 Require-Bundle: org.junit,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.emf.compare.match,
  org.eclipse.emf.compare.diff,
- org.eclipse.m2m.atl.engine,
  org.eclipse.m2m.atl.adt.debug
 Bundle-Activator: org.eclipse.m2m.atl.tests.AtlTestPlugin
 Eclipse-LazyStart: true
