@@ -8,9 +8,11 @@
  * Contributors:
  *    Frédéric Jouault - initial API and implementation
  *    Obeo - bag implementation
+ *    Obeo - metamodel method support
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,6 +22,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.WeakHashMap;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -243,8 +246,44 @@ public class ASMOperation extends Operation {
 					}
 					Object type = ExecEnv.getType(self);
 					Operation operation = frame.execEnv.getOperation(type, bytecode.operand);
-					if(operation == null)
-						throw new VMException(frame, "operation not found: " + frame.execEnv.toPrettyPrintedString(self) + "." + bytecode.operand);
+
+					/*
+					 * Metamodel methods support					 * 
+					 */
+					if(operation == null) {
+						int nbCalleeArgs = bytecode.value;
+						Object arguments[] = new Object[nbCalleeArgs];
+						Class argumentTypes[] = new Class[nbCalleeArgs];
+						boolean first = true;
+						for(int i = nbCalleeArgs ; i >= 1 ; i--) {
+							arguments[i-1] = stack[--fp];
+							argumentTypes[i-1] = arguments[i-1].getClass();	
+							if(debug) {
+								if(!first)
+									frame.execEnv.out.print(", ");
+								first = false;
+								frame.execEnv.prettyPrint(arguments[i-1]);
+							}
+						}
+
+						if(debug) {
+							frame.execEnv.out.println(")");
+						}
+						Method method = findMethod(self.getClass(), bytecode.operand.toString(), argumentTypes);
+						
+						if (method == null)
+							throw new VMException(frame, "operation not found: " + frame.execEnv.toPrettyPrintedString(self) + "." + bytecode.operand);
+
+						--fp;	// pop self, that we already retrieved earlier to get the operation
+
+						s = method.invoke(self, arguments);
+
+						if(s != null) stack[fp++] = s;
+
+						break;
+						
+					} 
+
 					StackFrame calleeFrame = (StackFrame)frame.newFrame(operation);
 					Object arguments[] = calleeFrame.localVars;
 					int nbCalleeArgs = bytecode.value;
@@ -438,5 +477,109 @@ public class ASMOperation extends Operation {
 		}
 
 		return (fp > 0 ? stack[--fp] : null);
+	}
+
+	/**
+	 * Looks for a method into cache and metamodel.
+	 * @param caller The class of the method
+	 * @param name The method name
+	 * @param argumentTypes The types of all arguments
+	 * @return the method
+	 * @throws NoSuchMethodException
+	 */
+	public Method findMethod(Class cls, String name, Class argumentTypes[]) throws NoSuchMethodException {
+		String sig = getMethodSignature(name, argumentTypes);
+		Method ret = findCachedMethod(cls,sig);
+		if (ret != null) {
+			return ret;
+		}
+		Method methods[] = cls.getDeclaredMethods(); 
+		for(int i = 0 ; i < (methods.length) && (ret == null) ; i++) {
+			Method method = methods[i];
+			if(method.getName().equals(name)) {
+				Class pts[] = method.getParameterTypes();
+				if(pts.length == argumentTypes.length) {
+					boolean ok = true;
+					for(int j = 0 ; (j < pts.length) && ok ; j++) {
+						if(!pts[j].isAssignableFrom(argumentTypes[j])) {
+							if (!(pts[j] == boolean.class && argumentTypes[j] == Boolean.class
+									|| pts[j] == int.class && argumentTypes[j] == Integer.class
+									|| pts[j] == char.class && argumentTypes[j] == Character.class
+									|| pts[j] == long.class && argumentTypes[j] == Long.class
+									|| pts[j] == float.class && argumentTypes[j] == Float.class
+									|| pts[j] == double.class && argumentTypes[j] == Double.class)) {
+								ok = false;
+							}
+						}
+					}
+					if(ok)
+						ret = method;
+				}
+			}
+		}
+		if((ret == null) && (cls.getSuperclass() != null)) {
+			ret = findMethod(cls.getSuperclass(), name, argumentTypes);
+		}
+
+		cacheMethod(cls,sig, ret);
+
+		return ret;
+	}
+
+	/**
+	 * Cache used to store methods
+	 */
+	private static WeakHashMap methodCache = new WeakHashMap();
+
+	/**
+	 * Find a method in the cache
+	 * @param caller The class of the method
+	 * @param signature The method signature
+	 * @return the method
+	 */
+	public Method findCachedMethod(Class caller, String signature) {
+		Method ret = null;
+		Map sigMap = (Map) methodCache.get(caller);
+		if (sigMap != null) {
+			ret = (Method) sigMap.get(signature);
+		}
+		return ret;
+	}
+
+	/**
+	 * Stores a method in a cache.
+	 * @param caller The class of the method
+	 * @param signature The method signature
+	 * @param method The method to store
+	 */
+	public void cacheMethod(Class caller, String signature, Method method) {
+		synchronized (methodCache) {
+			Map sigMap = (Map) methodCache.get(caller);
+			if (sigMap == null) {
+				sigMap = new HashMap();
+				methodCache.put(caller, sigMap);
+			}
+			sigMap.put(signature, method);
+		}
+	}
+
+	/**
+	 * Generates a String signature to store methods
+	 * @param name
+	 * @param argumentTypes
+	 * @return The method signature
+	 */
+	public static String getMethodSignature(String name, Class argumentTypes[]) {
+		StringBuffer sig = new StringBuffer();
+		sig.append(name);
+		sig.append('(');
+		for (int i = 0; i < argumentTypes.length; i++) {
+			if (i > 0) {
+				sig.append(',');
+			}
+			sig.append(argumentTypes[i].getName());
+		}
+		sig.append(')');
+		return sig.toString();
 	}
 }
