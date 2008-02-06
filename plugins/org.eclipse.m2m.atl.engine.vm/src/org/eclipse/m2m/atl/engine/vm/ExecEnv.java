@@ -11,8 +11,10 @@
 package org.eclipse.m2m.atl.engine.vm;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
@@ -88,7 +90,16 @@ public class ExecEnv {
 	public Stack getStack() {
 		return frames;
 	}
+	
+	public boolean checkPermission(String permission) {
+		return permissions.contains(permission);
+	}
+	
+	public void addPermission(String permission) {
+		permissions.add(permission);
+	}
 
+	private Set permissions = new HashSet();
 	private Stack frames = new Stack();
 	private Map models = new HashMap();
 	protected Map globalVariables = new HashMap();

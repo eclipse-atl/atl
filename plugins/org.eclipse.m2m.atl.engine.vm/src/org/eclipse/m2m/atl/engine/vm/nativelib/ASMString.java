@@ -230,20 +230,24 @@ public class ASMString extends ASMOclAny {
 	public static ASMOclAny readFrom(StackFrame frame, ASMString self) {
 		ASMOclAny ret;
 		
-		try {
-			StringBuffer sb = new StringBuffer();
-			BufferedReader in = new BufferedReader(new FileReader(self.s));
-			
-			String line;
-			while((line = in.readLine()) != null) {
-				sb.append(line);
-				sb.append("\n");
+		if(frame.getExecEnv().checkPermission("file.read")) {
+			try {
+				StringBuffer sb = new StringBuffer();
+				BufferedReader in = new BufferedReader(new FileReader(self.s));
+				
+				String line;
+				while((line = in.readLine()) != null) {
+					sb.append(line);
+					sb.append("\n");
+				}
+				
+				ret = new ASMString(sb.toString());
+			} catch(IOException ioe) {
+				frame.printStackTrace("error: could not read from file " + self.s);
+				ret = new ASMOclUndefined();;
 			}
-			
-			ret = new ASMString(sb.toString());
-		} catch(IOException ioe) {
-			frame.printStackTrace("error: could not read from file " + self.s);
-			ret = new ASMOclUndefined();;
+		} else {
+			ret = new ASMOclUndefined();
 		}
 		
 		return ret;
@@ -257,21 +261,23 @@ public class ASMString extends ASMOclAny {
 	public static ASMBoolean writeToWithCharset(StackFrame frame, ASMString self, ASMString fileName, ASMString charset) {
 		ASMBoolean ret = new ASMBoolean(false);
 
-		try {
-			File file = getFile(fileName.getSymbol());
-			if(file.getParentFile() != null)
-				file.getParentFile().mkdirs();
-			PrintStream out = null;
-			if(charset == null) {
-				out = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), true);
-			} else {
-				out = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), true, charset.getSymbol());
+		if(frame.getExecEnv().checkPermission("file.write")) {
+			try {
+				File file = getFile(fileName.getSymbol());
+				if(file.getParentFile() != null)
+					file.getParentFile().mkdirs();
+				PrintStream out = null;
+				if(charset == null) {
+					out = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), true);
+				} else {
+					out = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), true, charset.getSymbol());
+				}
+				out.print(self.s);
+				out.close();
+				ret = new ASMBoolean(true);
+			} catch(IOException ioe) {
+				frame.printStackTrace(ioe);
 			}
-			out.print(self.s);
-			out.close();
-			ret = new ASMBoolean(true);
-		} catch(IOException ioe) {
-			frame.printStackTrace(ioe);
 		}
 
 		return ret;
