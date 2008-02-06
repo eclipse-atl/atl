@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.tests.suite;
 
-import java.io.File;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -22,7 +19,6 @@ import junit.textui.TestRunner;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
-import org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo;
 import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionEMFVM;
 import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionVM;
 
@@ -32,18 +28,6 @@ import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionVM;
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
  */
 public class AllTests extends TestCase implements IApplication {
-
-	private static Map vmresults = new HashMap();
-	private static Map emfvmresults = new HashMap();
-
-	public static void addVMResult(TestNonRegressionTransfo test, File directory, Double time) {
-		if (test instanceof TestNonRegressionVM) {
-			vmresults.put(directory, time);			
-		} else
-			if (test instanceof TestNonRegressionEMFVM) {
-				emfvmresults.put(directory, time);			
-			}
-	}
 
 	/**
 	 * Launches the test with the given arguments.
