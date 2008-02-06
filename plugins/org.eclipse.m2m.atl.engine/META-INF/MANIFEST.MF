@@ -10,10 +10,10 @@ Bundle-ClassPath: org.eclipse.m2m.atl.engine.jar,
 Bundle-Activator: org.eclipse.m2m.atl.engine.EnginePlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Export-Package: org.eclipse.gmt.tcs.extractor;
- org.eclipse.gmt.tcs.injector;
- org.eclipse.gmt.tcs.injector.wrappers;
- org.eclipse.gmt.tcs.injector.wrappers.antlr3;
+Export-Package: org.eclipse.gmt.tcs.extractor,
+ org.eclipse.gmt.tcs.injector,
+ org.eclipse.gmt.tcs.injector.wrappers,
+ org.eclipse.gmt.tcs.injector.wrappers.antlr3,
  org.eclipse.m2m.atl.engine
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore,
