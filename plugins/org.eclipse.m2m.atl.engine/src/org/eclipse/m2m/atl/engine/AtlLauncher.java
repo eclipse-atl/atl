@@ -30,7 +30,6 @@ import org.eclipse.m2m.atl.engine.vm.ASMStackFrame;
 import org.eclipse.m2m.atl.engine.vm.ASMXMLReader;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.Debugger;
-import org.eclipse.m2m.atl.engine.vm.ExecEnv;
 import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
 import org.eclipse.m2m.atl.engine.vm.SimpleDebugger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
