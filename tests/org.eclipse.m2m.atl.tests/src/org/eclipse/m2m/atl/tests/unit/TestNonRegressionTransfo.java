@@ -17,7 +17,6 @@ import java.util.Map;
 
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 import org.eclipse.m2m.atl.tests.AtlTestsMessages;
-import org.eclipse.m2m.atl.tests.suite.AllTests;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
 import org.eclipse.m2m.atl.tests.util.ModelUtils;
 import org.eclipse.m2m.atl.tests.util.TransfoLauncher;
@@ -29,6 +28,7 @@ import org.eclipse.m2m.atl.tests.util.TransfoLauncher;
  */
 public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
+	private double totalTime = 0;
 	private String vmName = null;
 	private TransfoLauncher launcher = new TransfoLauncher();
 
@@ -96,7 +96,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.8")); //$NON-NLS-1$
 			}
 		}
-		AllTests.addVMResult(this, directory, new Double(executionTime));
+		totalTime+=executionTime;
 		AtlTestPlugin.getResourceSet().getResources().clear();
 	}
 
@@ -108,5 +108,9 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		return vmName;
 	}
 
+	protected void tearDown() throws Exception {
+		System.out.println("total time : "+ totalTime +"s.");
+		super.tearDown();
+	}
 }
 

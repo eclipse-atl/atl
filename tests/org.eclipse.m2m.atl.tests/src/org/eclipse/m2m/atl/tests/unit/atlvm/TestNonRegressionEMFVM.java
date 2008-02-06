@@ -27,6 +27,6 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 		setVmName("EMF-specific VM");//$NON-NLS-1$
 		setPropertiesPath("/data/emfvm.properties");//$NON-NLS-1$
 	}
-	
+		
 }
 

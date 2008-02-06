@@ -15,8 +15,6 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
@@ -56,16 +54,11 @@ public abstract class TestNonRegression extends TestCase {
 	public void testNonRegression() throws Exception {
 		File inputDir = new File(FileUtils.getTestCommonDirectory() + INPUT_PATH);
 		final File[] directories = listDirectories(inputDir);
-		final Date start = Calendar.getInstance().getTime();
 		if (directories != null) {
 			for (int i = 0; i < directories.length; i++) {
 				compareSnapshots(directories[i], true);
 			}
 		}
-		final Date end = Calendar.getInstance().getTime();
-		System.out.println("non-regression evaluated in " //$NON-NLS-1$
-				+ (end.getTime() - start.getTime()) / 1000 + "s"); //$NON-NLS-1$
-		System.out.println();
 	}
 
 	/**
@@ -81,10 +74,8 @@ public abstract class TestNonRegression extends TestCase {
 		if (tests_to_jump != null) {
 			for (int i = 0; i < tests_to_jump.length; i++) {
 				String test_to_jump = tests_to_jump[i];
-				if (test_to_jump.equals(directory.getName())) {
-					//System.out.println("(Avoiding "+directory.getName()+")");
+				if (test_to_jump.equals(directory.getName()))
 					return;
-				}			
 			}
 		}
 		if (listDirectories(directory).length != 0) {
