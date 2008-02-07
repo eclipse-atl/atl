@@ -36,14 +36,23 @@
             modes="run, debug"
             name="ATL Transformation">
       </launchConfigurationType>
-   </extension>
-   <extension
-         point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            name="Remote ATL Transformation"
             delegate="org.eclipse.m2m.atl.adt.launching.RemoteAtlConfigurationDelegate"
+            id="org.eclipse.m2m.atl.adt.launching.remoteAtlTransformation"
             modes="debug"
-            id="org.eclipse.m2m.atl.adt.launching.remoteAtlTransformation">
+            name="Remote ATL Transformation">
+      </launchConfigurationType>
+      <launchConfigurationType
+            delegate="org.eclipse.m2m.atl.adt.launching.RemoteAtlConfigurationDelegate"
+            id="org.atl.eclipse.adt.launching.remoteAtlTransformation"
+            modes="debug"
+            name="Remote ATL Transformation (OLD)">
+      </launchConfigurationType>
+      <launchConfigurationType
+            delegate="org.eclipse.m2m.atl.adt.launching.AtlLaunchConfigurationDelegate"
+            id="org.atl.eclipse.adt.launching.atlTransformation"
+            modes="run, debug"
+            name="ATL Transformation (OLD)">
       </launchConfigurationType>
    </extension>
 <!-- extension point : screen configuration for launching ATL transformation-->
@@ -52,15 +61,24 @@
       <launchConfigurationTabGroup
             type="org.eclipse.m2m.atl.adt.launching.atlTransformation"
             class="org.eclipse.m2m.atl.adt.launching.AtlTabGroup"
-            id="org.eclipse.m2m.atl.adt.launching.AtlTabGroup">
+            id="AtlTabGroup">
       </launchConfigurationTabGroup>
-   </extension>
-   <extension
-         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            type="org.eclipse.m2m.atl.adt.launching.remoteAtlTransformation"
             class="org.eclipse.m2m.atl.adt.launching.RemoteAtlTabGroup"
-            id="RemoteAtlTabGroup">
+            id="RemoteAtlTabGroup"
+            type="org.eclipse.m2m.atl.adt.launching.remoteAtlTransformation">
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="org.eclipse.m2m.atl.adt.launching.AtlTabGroup"
+            description="Present for OLD configurations"
+            id="AtlTabGroup"
+            type="org.atl.eclipse.adt.launching.atlTransformation">
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="org.eclipse.m2m.atl.adt.launching.RemoteAtlTabGroup"
+            description="Present for OLD configurations"
+            id="RemoteAtlTabGroup"
+            type="org.atl.eclipse.adt.launching.remoteAtlTransformation">
       </launchConfigurationTabGroup>
    </extension>
 <!-- extension point : debug model presentation-->
@@ -88,12 +106,19 @@
             configTypeID="org.eclipse.m2m.atl.adt.launching.atlTransformation"
             id="AtlApplication">
       </launchConfigurationTypeImage>
-   </extension>
-   <extension
-         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
-            icon="icons/atllogo_icon.gif"
             configTypeID="org.eclipse.m2m.atl.adt.launching.remoteAtlTransformation"
+            icon="icons/atllogo_icon.gif"
+            id="AtlRemoteApplication">
+      </launchConfigurationTypeImage>
+      <launchConfigurationTypeImage
+            configTypeID="org.atl.eclipse.adt.launching.atlTransformation"
+            icon="icons/atllogo_icon_old.gif"
+            id="AtlApplication">
+      </launchConfigurationTypeImage>
+      <launchConfigurationTypeImage
+            configTypeID="org.atl.eclipse.adt.launching.remoteAtlTransformation"
+            icon="icons/atllogo_icon_old.gif"
             id="AtlRemoteApplication">
       </launchConfigurationTypeImage>
    </extension>
@@ -128,37 +153,6 @@
             class="org.eclipse.m2m.atl.adt.debug.core.DisassemblyDocumentProvider"
             inputTypes="org.eclipse.m2m.atl.adt.debug.ui.AtlDebugModelPresentation$DisassemblyEditorInput"
             id="org.eclipse.m2m.atl.adt.debug.provider1"/>
-   </extension>
-   <extension
-         point="org.eclipse.debug.core.launchConfigurationTypes">
-      <launchConfigurationType
-            delegate="org.eclipse.m2m.atl.adt.launching.RemoteAtlConfigurationDelegate"
-            id="org.atl.eclipse.adt.launching.remoteAtlTransformation"
-            modes="debug"
-            name="OLD Remote ATL Transformation">
-      </launchConfigurationType>
-      <launchConfigurationType
-            delegate="org.eclipse.m2m.atl.adt.launching.AtlLaunchConfigurationDelegate"
-            id="org.atl.eclipse.adt.launching.atlTransformation"
-            modes="run, debug"
-            name="OLD ATL Transformation">
-      </launchConfigurationType>
-   </extension>
-   <extension
-         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-      <launchConfigurationTabGroup
-            type="org.atl.eclipse.adt.launching.atlTransformation"
-            class="org.eclipse.m2m.atl.adt.launching.AtlTabGroup"
-            id="org.eclipse.m2m.atl.adt.launching.AtlTabGroup">
-      </launchConfigurationTabGroup>
-   </extension>
-   <extension
-         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-      <launchConfigurationTabGroup
-            type="org.atl.eclipse.adt.launching.remoteAtlTransformation"
-            class="org.eclipse.m2m.atl.adt.launching.RemoteAtlTabGroup"
-            id="RemoteAtlTabGroup">
-      </launchConfigurationTabGroup>
    </extension>
 
 </plugin>
