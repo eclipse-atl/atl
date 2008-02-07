@@ -243,9 +243,13 @@ public class ASMEMFModel extends ASMModel {
             synchronized (resourceSet) {
                 resourceSet.getResources().remove(extent);
             }
+            // Unload only is necessary if we would like to re-use the resource later 
+            // (we do not need this behavior) 
+            /*
             if (unload) {
             	extent.unload();
             }
+            */
             extent = null;
 
             modelElements.clear();
