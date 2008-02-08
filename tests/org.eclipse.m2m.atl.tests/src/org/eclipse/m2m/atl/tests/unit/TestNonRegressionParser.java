@@ -55,7 +55,7 @@ public class TestNonRegressionParser extends TestNonRegression {
 		}		
 
 		try {
-			FileUtils.compareFiles(new File(outputPath), new File(expectedPath), true);
+			FileUtils.compareFiles(new File(outputPath), new File(expectedPath), false);
 			//TODO : solve models problems
 			//ModelUtils.compareModels(new File(outputPath), new File(expectedPath), true, true);
 			
@@ -76,6 +76,6 @@ public class TestNonRegressionParser extends TestNonRegression {
 		
 		System.out.println(AtlTestsMessages.getString("TestNonRegressionParser.OK")); //$NON-NLS-1$
 	}
-
+	
 }
 

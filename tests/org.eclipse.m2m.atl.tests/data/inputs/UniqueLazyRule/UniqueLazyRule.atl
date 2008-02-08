@@ -5,10 +5,10 @@ helper def : root : UniqueLazyRule!Liste = OclUndefined;
 
 unique lazy rule Object {	
 	from
-		in_object :   String
+		in_object : UniqueLazyRule!Object
 	to 
 		object :  UniqueLazyRule!Object (
-			  name <- in_object
+			  name <- in_object.name
 		)
 		
 }
@@ -18,7 +18,7 @@ rule Liste {
 		in_liste : UniqueLazyRule!Liste
 	to 
 		liste : UniqueLazyRule!Liste(
-			contents <- UniqueLazyRule!Object.allInstancesFrom('IN') -> collect(e|thisModule.Object(e.name)) 
+			contents <- UniqueLazyRule!Object.allInstancesFrom('IN') -> collect(e|thisModule.Object(e)) 
 	)
 	
 	

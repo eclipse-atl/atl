@@ -11,10 +11,8 @@
 package org.eclipse.m2m.atl.tests.unit;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
@@ -53,7 +51,7 @@ public abstract class TestNonRegression extends TestCase {
 	 */
 	public void testNonRegression() throws Exception {
 		File inputDir = new File(FileUtils.getTestCommonDirectory() + INPUT_PATH);
-		final File[] directories = listDirectories(inputDir);
+		final File[] directories = FileUtils.listDirectories(inputDir);
 		if (directories != null) {
 			for (int i = 0; i < directories.length; i++) {
 				compareSnapshots(directories[i], true);
@@ -78,38 +76,13 @@ public abstract class TestNonRegression extends TestCase {
 					return;
 			}
 		}
-		if (listDirectories(directory).length != 0) {
-			for (int i = 0; i < listDirectories(directory).length; i++) {
-				compareSnapshots(listDirectories(directory)[i], useEmfCompare);
+		if (FileUtils.listDirectories(directory).length != 0) {
+			for (int i = 0; i < FileUtils.listDirectories(directory).length; i++) {
+				compareSnapshots(FileUtils.listDirectories(directory)[i], useEmfCompare);
 			}
 		} else {
 			singleTest(directory);
 		}
-	}
-
-	/**
-	 * Lists all subdirectories contained within a given folder, with the exception
-	 * of directories starting with a "." or directories named "CVS".
-	 * 
-	 * @param aDirectory
-	 * 			Directory from which we need to list subfolders.
-	 * @return
-	 * 			Array composed by all <code>aDirectory</code> subfolders.
-	 */
-	private static File[] listDirectories(File aDirectory) {
-		File[] directories = null;
-
-		if (aDirectory.exists() && aDirectory.isDirectory()) {
-			directories = aDirectory.listFiles(new FileFilter() {
-				public boolean accept(File file) {
-					return file.isDirectory() 
-					&& !file.getName().startsWith(".") //$NON-NLS-1$
-					&& !file.getName().equals("CVS"); //$NON-NLS-1$
-				}
-			});
-		}
-		Arrays.sort(directories);
-		return directories;
 	}
 
 	/**
@@ -146,6 +119,5 @@ public abstract class TestNonRegression extends TestCase {
 	protected void setPropertiesPath(String propertiesPath) {
 		this.propertiesPath = propertiesPath;
 	}
-
 }
 

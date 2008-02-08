@@ -22,14 +22,18 @@
         <type xsi:type="ocl:OclModelElement" location="10:13-10:34" name="Object">
           <model href="temp#/0"/>
         </type>
-        <bindings location="11:6-11:23" propertyName="name">
-          <value xsi:type="ocl:VariableExp" location="11:14-11:23" referredVariable="//@elements.1/@inPattern/@elements.0"/>
+        <bindings location="11:6-11:28" propertyName="name">
+          <value xsi:type="ocl:NavigationOrAttributeCallExp" location="11:14-11:28" name="name">
+            <source xsi:type="ocl:VariableExp" location="11:14-11:23" referredVariable="//@elements.1/@inPattern/@elements.0"/>
+          </value>
         </bindings>
       </elements>
     </outPattern>
-    <inPattern location="7:2-8:23">
-      <elements xsi:type="atl:SimpleInPatternElement" location="8:3-8:23" varName="in_object" variableExp="//@elements.1/@outPattern/@elements.0/@bindings.0/@value">
-        <type xsi:type="ocl:StringType" location="8:17-8:23"/>
+    <inPattern location="7:2-8:36">
+      <elements xsi:type="atl:SimpleInPatternElement" location="8:3-8:36" varName="in_object" variableExp="//@elements.1/@outPattern/@elements.0/@bindings.0/@value/@source">
+        <type xsi:type="ocl:OclModelElement" location="8:15-8:36" name="Object">
+          <model href="temp#/0"/>
+        </type>
       </elements>
     </inPattern>
   </elements>
@@ -39,23 +43,21 @@
         <type xsi:type="ocl:OclModelElement" location="20:11-20:31" name="Liste">
           <model href="temp#/0"/>
         </type>
-        <bindings location="21:4-21:100" propertyName="contents">
-          <value xsi:type="ocl:IteratorExp" location="21:16-21:100" name="collect">
+        <bindings location="21:4-21:95" propertyName="contents">
+          <value xsi:type="ocl:IteratorExp" location="21:16-21:95" name="collect">
             <source xsi:type="ocl:OperationCallExp" location="21:16-21:60" operationName="allInstancesFrom">
               <source xsi:type="ocl:OclModelElement" location="21:16-21:37" name="Object">
                 <model href="temp#/0"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="21:55-21:59" stringSymbol="IN"/>
             </source>
-            <body xsi:type="ocl:OperationCallExp" location="21:74-21:99" operationName="Object">
+            <body xsi:type="ocl:OperationCallExp" location="21:74-21:94" operationName="Object">
               <source xsi:type="ocl:VariableExp" location="21:74-21:84">
                 <referredVariable href="temp#/1"/>
               </source>
-              <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="21:92-21:98" name="name">
-                <source xsi:type="ocl:VariableExp" location="21:92-21:93" referredVariable="//@elements.2/@outPattern/@elements.0/@bindings.0/@value/@iterators.0"/>
-              </arguments>
+              <arguments xsi:type="ocl:VariableExp" location="21:92-21:93" referredVariable="//@elements.2/@outPattern/@elements.0/@bindings.0/@value/@iterators.0"/>
             </body>
-            <iterators location="21:72-21:73" varName="e" variableExp="//@elements.2/@outPattern/@elements.0/@bindings.0/@value/@body/@arguments.0/@source"/>
+            <iterators location="21:72-21:73" varName="e" variableExp="//@elements.2/@outPattern/@elements.0/@bindings.0/@value/@body/@arguments.0"/>
           </value>
         </bindings>
       </elements>

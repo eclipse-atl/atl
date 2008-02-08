@@ -11,12 +11,14 @@
 package org.eclipse.m2m.atl.tests.util;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -158,4 +160,28 @@ public class FileUtils {
 		}
 	}
 
+	/**
+	 * Lists all subdirectories contained within a given folder, with the exception
+	 * of directories starting with a "." or directories named "CVS".
+	 * 
+	 * @param aDirectory
+	 * 			Directory from which we need to list subfolders.
+	 * @return
+	 * 			Array composed by all <code>aDirectory</code> subfolders.
+	 */
+	public static File[] listDirectories(File aDirectory) {
+		File[] directories = null;
+
+		if (aDirectory.exists() && aDirectory.isDirectory()) {
+			directories = aDirectory.listFiles(new FileFilter() {
+				public boolean accept(File file) {
+					return file.isDirectory() 
+					&& !file.getName().startsWith(".") //$NON-NLS-1$
+					&& !file.getName().equals("CVS"); //$NON-NLS-1$
+				}
+			});
+		}
+		Arrays.sort(directories);
+		return directories;
+	}
 }

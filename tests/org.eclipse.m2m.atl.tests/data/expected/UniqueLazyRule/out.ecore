@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<Liste xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns="UniqueLazyRule">
+<Liste xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="UniqueLazyRule">
+  <contents name="foo"/>
+  <contents name="foo"/>
   <contents name="foo"/>
   <contents name="bar"/>
+  <contents name="bar"/>
+  <contents name="bar"/>
+  <contents name="foo"/>
 </Liste>
