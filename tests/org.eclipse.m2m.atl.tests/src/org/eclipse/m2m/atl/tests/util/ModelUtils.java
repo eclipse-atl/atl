@@ -22,13 +22,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.compare.diff.generic.DiffMaker;
 import org.eclipse.emf.compare.diff.metamodel.DiffFactory;
 import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
 import org.eclipse.emf.compare.diff.metamodel.DiffModel;
 import org.eclipse.emf.compare.diff.metamodel.ModelInputSnapshot;
+import org.eclipse.emf.compare.diff.service.DiffService;
 import org.eclipse.emf.compare.match.api.MatchOptions;
 import org.eclipse.emf.compare.match.metamodel.MatchModel;
 import org.eclipse.emf.compare.match.service.MatchService;
@@ -64,21 +63,6 @@ public final class ModelUtils {
 	/**
 	 * Loads a model from a {@link java.io.File File} in a given {@link ResourceSet}.
 	 * 
-	 * @param file
-	 *            {@link java.io.File File} containing the model to be loaded.
-	 * @param resourceSet
-	 *            The {@link ResourceSet} to load the model in.
-	 * @return The model loaded from the file.
-	 * @throws IOException
-	 *             If the given file does not exist.
-	 */
-	public static EObject load(File file, ResourceSet resourceSet) throws IOException {
-		return load(URI.createFileURI(file.getPath()), resourceSet);
-	}
-
-	/**
-	 * Loads a model from an {@link org.eclipse.emf.common.util.URI URI} in a given {@link ResourceSet}.
-	 * 
 	 * @param modelURI
 	 *            {@link org.eclipse.emf.common.util.URI URI} where the model is stored.
 	 * @param resourceSet
@@ -87,9 +71,9 @@ public final class ModelUtils {
 	 * @throws IOException
 	 *             If the given file does not exist.
 	 */
-	public static EObject load(URI modelURI, ResourceSet resourceSet) throws IOException {
-		EObject result = null;
-
+	public static Resource load(File file, ResourceSet resourceSet) throws IOException {
+		URI modelURI = URI.createFileURI(file.getPath());
+		
 		String fileExtension = modelURI.fileExtension();
 		if (fileExtension == null || fileExtension.length() == 0) {
 			fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
@@ -105,12 +89,10 @@ public final class ModelUtils {
 					new XMIResourceFactoryImpl());
 		}
 
-		final Resource modelResource = resourceSet.createResource(modelURI);
+		final Resource result = resourceSet.createResource(modelURI);
 		final Map options = new ConcurrentHashMap();
 		options.put(XMLResource.OPTION_ENCODING, System.getProperty(ENCODING_PROPERTY));
-		modelResource.load(options);
-		if (modelResource.getContents().size() > 0)
-			result = (EObject)modelResource.getContents().get(0);
+		result.load(options);
 		return result;
 	}
 
@@ -231,15 +213,15 @@ public final class ModelUtils {
 	 */
 	public static void compareModels(File leftUri, File rightUri, boolean ignoreIds, boolean delete) throws Exception {
 		if (leftUri.length() != rightUri.length()) {
-			EObject leftModel = ModelUtils.load(leftUri, AtlTestPlugin.getResourceSet());
-			EObject rightModel = ModelUtils.load(rightUri,AtlTestPlugin.getResourceSet());
-
+			Resource leftModel = load(leftUri, AtlTestPlugin.getResourceSet());
+			Resource rightModel = load(rightUri,AtlTestPlugin.getResourceSet());
+			
 			Map options = new HashMap();
 			if (ignoreIds) {
 				options.put(MatchOptions.OPTION_IGNORE_XMI_ID, Boolean.TRUE);	
 			}
-			final MatchModel inputMatch = MatchService.doMatch(leftModel, rightModel, new NullProgressMonitor(), options);
-			final DiffModel inputDiff = new DiffMaker().doDiff(inputMatch);
+			final MatchModel inputMatch = MatchService.doResourceMatch(leftModel, rightModel, options);
+			final DiffModel inputDiff = DiffService.doDiff(inputMatch);
 
 			if (((DiffGroup) inputDiff.getOwnedElements().get(0)).getSubchanges() != 0){
 				ModelInputSnapshot snapshot = DiffFactory.eINSTANCE.createModelInputSnapshot();
