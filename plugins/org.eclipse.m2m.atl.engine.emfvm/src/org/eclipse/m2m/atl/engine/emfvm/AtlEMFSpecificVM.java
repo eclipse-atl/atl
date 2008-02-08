@@ -136,7 +136,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 					mm = loadReferenceModel(mmName, modelPaths);
 					models.put(mmName, mm);
 				}
-				Model m = new Model(mm, URI.createPlatformResourceURI((String)modelPaths.get(mName), true));			
+				Model m = new Model(mm, URI.createPlatformResourceURI((String)modelPaths.get(mName), true),false);			
 				models.put(mName, m);
 			}
 
@@ -149,7 +149,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 					mm = loadReferenceModel(mmName, modelPaths);
 					models.put(mmName, mm);
 				}
-				Model m = new Model(mm);			
+				Model m = new Model(mm, URI.createPlatformResourceURI((String)modelPaths.get(mName), true),true);		
 				models.put(mName, m);
 				m.isTarget = true;
 			}

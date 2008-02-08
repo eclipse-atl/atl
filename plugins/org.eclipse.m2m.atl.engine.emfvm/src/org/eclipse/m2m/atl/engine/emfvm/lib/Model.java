@@ -60,14 +60,16 @@ public class Model {
 	private Map elementsByType = new HashMap();
 	
 	public Model(ReferenceModel referenceModel, URL url) throws IOException {
-		this(referenceModel, URI.createURI(url.toString()));
+		this(referenceModel, URI.createURI(url.toString()), false);
 	}
 	
-	public Model(ReferenceModel referenceModel, URI uri) throws IOException {
+	public Model(ReferenceModel referenceModel, URI uri, boolean createNewModel) throws IOException {
 		this.referenceModel = referenceModel;
-		//resource = resourceSet.createResource(uri);
-		//resource.load(Collections.EMPTY_MAP);
-		resource = resourceSet.getResource(uri, true);
+		if (createNewModel) {			
+			resource = resourceSet.createResource(uri);
+		} else {
+			resource = resourceSet.getResource(uri, true);
+		}
 		canDisposeOfEMFResource = true;
 	}
 	
@@ -85,12 +87,14 @@ public class Model {
 		canDisposeOfEMFResource = false;
 	}
 
+	/*
 	// New model
 	public Model(ReferenceModel referenceModel) throws IOException {
 		this.referenceModel = referenceModel;
 		resource = resourceSet.createResource(URI.createURI("new-model"));
 		canDisposeOfEMFResource = true;
 	}
+	*/
 
 	// returned value could (actually was) a non-ordered set Set, because there is no order in theory
 	// BUT keeping the same order (i.e., resource/XMI order) typically makes things simpler

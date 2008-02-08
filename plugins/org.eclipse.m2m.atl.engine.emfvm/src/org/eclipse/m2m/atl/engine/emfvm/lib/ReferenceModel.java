@@ -41,7 +41,7 @@ public class ReferenceModel extends Model {
 	}
 
 	public ReferenceModel(ReferenceModel referenceModel, URI uri) throws IOException {
-		super(referenceModel, uri);
+		super(referenceModel, uri,false);
 		adapt();
 	}
 
