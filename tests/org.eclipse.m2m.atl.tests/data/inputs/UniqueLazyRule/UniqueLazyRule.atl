@@ -1,0 +1,25 @@
+module atl; 
+create OUT : UniqueLazyRule from IN : UniqueLazyRule;
+
+helper def : root : UniqueLazyRule!Liste = OclUndefined;
+
+unique lazy rule Object {	
+	from
+		in_object :   String
+	to 
+		object :  UniqueLazyRule!Object (
+			  name <- in_object
+		)
+		
+}
+
+rule Liste {
+	from
+		in_liste : UniqueLazyRule!Liste
+	to 
+		liste : UniqueLazyRule!Liste(
+			contents <- UniqueLazyRule!Object.allInstancesFrom('IN') -> collect(e|thisModule.Object(e.name)) 
+	)
+	
+	
+}
