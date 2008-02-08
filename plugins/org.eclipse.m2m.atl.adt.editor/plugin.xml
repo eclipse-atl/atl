@@ -41,7 +41,7 @@
             class="org.eclipse.m2m.atl.adt.ui.preferences.AtlTypingPreferencePage"
             id="org.eclipse.m2m.atl.adt.editor.preferences.AtlTypingPreferencePage"/>
    </extension>
-   <!--
+   <!-- TODO improve decorator -->
    <extension point="org.eclipse.ui.decorators">
    	<decorator
           lightweight="true"
@@ -55,7 +55,6 @@
           </enablement>
   	</decorator> 
   </extension>
-  -->
 	<extension point="org.eclipse.ui.editorActions"> 
       <editorContribution 
          id="atlEditorContribution" 
