@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
+   <extension
+         point="org.eclipse.m2m.atl.engine.modelhandler">
+      <modelhandler
+            class="org.eclipse.m2m.atl.drivers.uml24atl.AtlUML2ModelHandler"
+            name="UML2"/>
+   </extension>
 
 </plugin>
