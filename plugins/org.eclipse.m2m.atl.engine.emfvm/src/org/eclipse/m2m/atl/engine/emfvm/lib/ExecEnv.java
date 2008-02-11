@@ -762,7 +762,7 @@ public class ExecEnv {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 
-				return new Integer(((List)localVars[0]).indexOf(localVars[1]));
+				return new Integer(((List)localVars[0]).indexOf(localVars[1]) + 1);
 			}
 		});
 		operationsByName.put("prepend", new Operation(2) {
