@@ -26,8 +26,10 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.m2m.atl.adt.debug.core.AtlRunTarget;
 import org.eclipse.m2m.atl.adt.launching.AtlLauncherTools;
 import org.eclipse.m2m.atl.adt.launching.AtlVM;
+import org.eclipse.m2m.atl.adt.launching.sourcelookup.AtlSourceLocator;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Model;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
@@ -108,6 +110,14 @@ public class AtlEMFSpecificVM extends AtlVM {
 
 	// direct launch from debug plugin
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
+		launch.setSourceLocator(new AtlSourceLocator());
+		AtlRunTarget mTarget = new AtlRunTarget(launch);
+		launch.addDebugTarget(mTarget);
+		actualLaunch(configuration, mode, launch, monitor);
+		mTarget.terminate();
+	}
+
+	private void actualLaunch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		String fileName = configuration.getAttribute(AtlLauncherTools.ATLFILENAME, AtlLauncherTools.NULLPARAMETER);
 		IFile currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(fileName));
 		String extension = currentAtlFile.getFileExtension().toLowerCase();
