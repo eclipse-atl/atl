@@ -317,8 +317,13 @@ public class ASMOperation extends Operation {
 					Object value = stack[--fp];
 					s = stack[--fp];
 					if(s instanceof EObject) {
-						if(value instanceof OclUndefined)	// other values are *not* wrapped
+						if(value instanceof Collection) {
+							Collection c = (Collection)value;
+							//TODO collections of collections have to be managed
+							while(c.remove(OclUndefined.SINGLETON));
+						} else if(value instanceof OclUndefined) {	// other values are *not* wrapped
 							value = null;
+						}
 						EMFUtils.set(frame, (EObject)s, (String)bytecode.operand, value);
 					} else {
 						((HasFields)s).set(frame, bytecode.operand, value);
