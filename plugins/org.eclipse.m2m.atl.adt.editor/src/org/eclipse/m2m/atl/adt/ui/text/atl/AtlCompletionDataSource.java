@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -602,7 +601,7 @@ public class AtlCompletionDataSource {
 		}
 
 		final Resource modelResource = resourceSet.createResource(modelURI);
-		final Map options = new ConcurrentHashMap();
+		final Map options = new HashMap();
 		options.put(XMLResource.OPTION_ENCODING, System.getProperty("file.encoding")); //$NON-NLS-1$
 		modelResource.load(options);
 		if (modelResource.getContents().size() > 0)
