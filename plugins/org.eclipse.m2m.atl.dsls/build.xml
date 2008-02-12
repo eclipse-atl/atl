@@ -16,6 +16,10 @@
 			</filterchain>
 		</loadfile>
 						
+		<delete>
+			<fileset dir="${copy.to.absolute.path}" includes="${files}"/>
+		</delete>
+
 		<copy todir="${copy.to.absolute.path}">
 			<fileset dir="${ammacore.absolute.path}" includes="${files}"/>
 		</copy>
@@ -35,7 +39,9 @@
 	<target name="export.projector.to.jar">
 		<property name="jar.filename" value="org.eclipse.gmt.tcs.${type}.jar"/>
 		<eclipse.convertPath property="basedir" resourcepath="/org.eclipse.gmt.tcs.${type}/bin"/>
-
+		
+		<delete file="${export.to.absolute.path}/${jar.filename}"/>
+		
 		<jar destfile="${export.to.absolute.path}/${jar.filename}" basedir="${basedir}"/>
 	</target>
 
