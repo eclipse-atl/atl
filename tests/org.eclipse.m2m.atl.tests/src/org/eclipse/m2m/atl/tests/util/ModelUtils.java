@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.diff.metamodel.DiffFactory;
@@ -73,7 +72,7 @@ public final class ModelUtils {
 	 */
 	public static Resource load(File file, ResourceSet resourceSet) throws IOException {
 		URI modelURI = URI.createFileURI(file.getPath());
-		
+
 		String fileExtension = modelURI.fileExtension();
 		if (fileExtension == null || fileExtension.length() == 0) {
 			fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
@@ -90,7 +89,7 @@ public final class ModelUtils {
 		}
 
 		final Resource result = resourceSet.createResource(modelURI);
-		final Map options = new ConcurrentHashMap();
+		final Map options = new HashMap();
 		options.put(XMLResource.OPTION_ENCODING, System.getProperty(ENCODING_PROPERTY));
 		result.load(options);
 		return result;
@@ -178,7 +177,7 @@ public final class ModelUtils {
 				Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		final Resource newModelResource = resourceSet.createResource(modelURI);
 		newModelResource.getContents().add(root);
-		final Map options = new ConcurrentHashMap();
+		final Map options = new HashMap();
 		options.put(XMLResource.OPTION_ENCODING, System.getProperty(ENCODING_PROPERTY));
 		newModelResource.save(options);
 	}
@@ -215,7 +214,7 @@ public final class ModelUtils {
 		if (leftUri.length() != rightUri.length()) {
 			Resource leftModel = load(leftUri, AtlTestPlugin.getResourceSet());
 			Resource rightModel = load(rightUri,AtlTestPlugin.getResourceSet());
-			
+
 			Map options = new HashMap();
 			if (ignoreIds) {
 				options.put(MatchOptions.OPTION_IGNORE_XMI_ID, Boolean.TRUE);	
