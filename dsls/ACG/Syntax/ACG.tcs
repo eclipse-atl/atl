@@ -16,9 +16,6 @@ syntax ACG {
 	primitiveTemplate integerSymbol for Integer default using INT:
 		value = "Integer.valueOf(%token%)";
 
-	primitiveTemplate floatSymbol for Double default using FLOAT:
-		value = "Double.valueOf(%token%)";
-
 	template ACG main
 		:	"acg" metamodel "startsWith" startsWith "{" [
 				elements
