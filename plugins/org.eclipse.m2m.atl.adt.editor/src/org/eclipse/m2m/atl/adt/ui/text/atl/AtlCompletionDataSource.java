@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -216,6 +217,7 @@ public class AtlCompletionDataSource {
 				res.add(proposal);
 			}
 		}
+		Collections.sort(res);
 		return res;
 	}
 
@@ -321,6 +323,7 @@ public class AtlCompletionDataSource {
 			}
 		}
 
+		/*
 		// adds classifiers with a different formalism : MM!"pck::ME"
 		for (Iterator iterator = classifiers.iterator(); iterator.hasNext();) {
 			EClassifier classifier = (EClassifier) iterator.next();
@@ -335,6 +338,9 @@ public class AtlCompletionDataSource {
 				res.add(proposal);
 			}
 		}
+		*/
+
+		Collections.sort(res);
 		return res;
 	}
 
@@ -430,6 +436,7 @@ public class AtlCompletionDataSource {
 				}
 			}
 		}
+		Collections.sort(res);
 		return res;
 	}
 

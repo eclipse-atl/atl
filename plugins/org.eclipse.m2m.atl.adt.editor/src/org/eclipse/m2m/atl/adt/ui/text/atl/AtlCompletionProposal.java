@@ -52,8 +52,16 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.texteditor.link.EditorLinkedModeUI;
 
-public class AtlCompletionProposal implements ICompletionProposalExtension, ICompletionProposalExtension2, ICompletionProposalExtension3, ICompletionProposal {
+public class AtlCompletionProposal implements ICompletionProposalExtension, ICompletionProposalExtension2, ICompletionProposalExtension3, ICompletionProposal, Comparable {
 	
+	public int compareTo(Object arg0) {
+		if (arg0 instanceof AtlCompletionProposal) {
+			AtlCompletionProposal comp = (AtlCompletionProposal) arg0;
+			return fReplacementString.compareTo(comp.getReplacementString());
+		}
+		throw new ClassCastException();
+	}
+
 	protected static class ExitPolicy implements IExitPolicy {
 		
 		final char fExitCharacter;
