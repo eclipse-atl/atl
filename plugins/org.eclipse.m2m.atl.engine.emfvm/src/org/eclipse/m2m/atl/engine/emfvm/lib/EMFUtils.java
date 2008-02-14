@@ -71,7 +71,7 @@ public class EMFUtils {
 						EEnum eenum = (EEnum)type;
 						for(Iterator i = ((Collection)value).iterator() ; i.hasNext() ; ) {
 							Object v = i.next();
-							oldCol.add(eenum.getEEnumLiteral(v.toString()));							
+							oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());							
 						}
 					} else if(allowInterModelReferences) {
 						oldCol.addAll((Collection)value);
@@ -89,7 +89,7 @@ public class EMFUtils {
 				} else {
 					if(targetIsEnum) {
 						EEnum eenum = (EEnum)type;
-						oldCol.add(eenum.getEEnumLiteral(value.toString()));							
+						oldCol.add(eenum.getEEnumLiteral(value.toString()).getInstance());							
 					} else if(allowInterModelReferences || !(value instanceof EObject)) {
 						oldCol.add(value);
 					} else {	// (!allowIntermodelReferences) && (value intanceof EObject)
@@ -109,7 +109,7 @@ public class EMFUtils {
 				}
 				if(targetIsEnum) {
 					EEnum eenum = (EEnum)type;
-					eo.eSet(feature, eenum.getEEnumLiteral(value.toString()));							
+					eo.eSet(feature, eenum.getEEnumLiteral(value.toString()).getInstance());							
 				} else if(allowInterModelReferences || !(value instanceof EObject)) {
 					eo.eSet(feature, value);
 				} else {	// (!allowIntermodelReferences) && (value intanceof EObject)
