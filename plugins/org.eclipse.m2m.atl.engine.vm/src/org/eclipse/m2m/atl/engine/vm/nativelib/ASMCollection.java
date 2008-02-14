@@ -86,7 +86,8 @@ public abstract class ASMCollection extends ASMOclAny {
 		boolean ret = true;
 		
 		for(Iterator i = o.iterator() ; i.hasNext() ; ) {
-			ret = ret && !self.collection().contains(i.next());
+			Object object = i.next();
+			ret = ret && !self.collection().contains(object);
 		}
 		
 		return new ASMBoolean(ret);
