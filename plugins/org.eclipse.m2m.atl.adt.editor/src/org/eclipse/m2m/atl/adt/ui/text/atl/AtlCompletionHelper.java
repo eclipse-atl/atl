@@ -244,7 +244,7 @@ public class AtlCompletionHelper {
 		int lastindex = document.get().lastIndexOf(keyword, offset-1);
 		String line = getCurrentLine(lastindex);
 		if (line != null) {
-			if (line.contains("--")) 	 //$NON-NLS-1$
+			if (line.indexOf("--") > -1) 	 //$NON-NLS-1$
 				return getLastKeyWordLocation(document.get().lastIndexOf("--", offset-1), keyword); //$NON-NLS-1$
 		} 
 		return new int[]{lastindex, keyword.length()};

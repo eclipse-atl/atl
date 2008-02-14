@@ -111,7 +111,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 		 */
 		if (analyser.getContext() == AtlModelAnalyser.NULL_CONTEXT) {
 			if (line.trim().startsWith("-- @"+AtlCompletionDataSource.URI_TAG)) { //$NON-NLS-1$
-				if (prefix.contains("=")) { //$NON-NLS-1$
+				if (prefix.indexOf("=") > -1) { //$NON-NLS-1$
 					if (prefix.split("=").length == 2) { //$NON-NLS-1$
 						String uriPrefix = prefix.split("=")[1]; //$NON-NLS-1$
 						return fDatasource.getURIProposals(uriPrefix, offset);
@@ -122,7 +122,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 			}
 		} else {
 			// no completion on comments
-			if (!line.contains("--")) { //$NON-NLS-1$
+			if (line.indexOf("--") == -1) { //$NON-NLS-1$
 
 				EObject locatedElement = analyser.getLocatedElement(offset
 						- prefix.length());
