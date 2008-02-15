@@ -77,7 +77,7 @@ public class DSLResourceProvider {
 			BufferedReader in = getURL("contents.list").openBufferedReader();
 			String line;
 			while((line = in.readLine()) != null) {
-				if(!line.trim().isEmpty()) {
+				if(!(line.trim().length() == 0)) {
 					addResource(resourcesById, line);
 				}
 			}
