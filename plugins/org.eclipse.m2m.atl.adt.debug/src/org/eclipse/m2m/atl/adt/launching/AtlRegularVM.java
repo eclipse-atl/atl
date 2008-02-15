@@ -467,8 +467,8 @@ public class AtlRegularVM extends AtlVM {
 			}
 		}
 
-	public void launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options) {
-		AtlLauncher.getDefault().launch(asmUrl, libs, models, params, superimps, options);
+	public Object launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options) {
+		return AtlLauncher.getDefault().launch(asmUrl, libs, models, params, superimps, options);
 	}
 
 }

@@ -99,5 +99,5 @@ public abstract class AtlVM implements ILaunchConfigurationDelegate {
 		return atlVMs;
 	}
 
-	public abstract void launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options);
+	public abstract Object launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options);
 }
