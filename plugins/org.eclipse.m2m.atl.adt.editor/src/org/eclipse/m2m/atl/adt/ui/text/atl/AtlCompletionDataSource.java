@@ -65,7 +65,7 @@ public class AtlCompletionDataSource {
 	/** The main editor, containing the outline model. */
 	private AtlEditor fEditor;
 
-	/** The detected metamodels Map<id,EPackage>. */
+	/** The detected metamodels Map<id,List<EPackage>>. */
 	private Map metamodels;
 
 	/** Input metamodels ids list. */
@@ -113,6 +113,7 @@ public class AtlCompletionDataSource {
 		try {
 			parseMetamodels(text);	
 		} catch (IOException e) {
+			//TODO apply marker on the file
 			AtlUIPlugin.log(e);
 		}
 	}
@@ -144,7 +145,9 @@ public class AtlCompletionDataSource {
 					//EPackage registration
 					EPackage regValue = EPackage.Registry.INSTANCE.getEPackage(uri);
 					if (regValue != null) {
-						metamodels.put(name, regValue);
+						ArrayList list = new ArrayList();
+						list.add(regValue);
+						metamodels.put(name, list );
 					}
 				}
 			}
@@ -158,11 +161,16 @@ public class AtlCompletionDataSource {
 				String path = line.split("=")[1].trim(); //$NON-NLS-1$
 				if (path != null && path.length() > 0) {
 					path = path.trim();
-					EPackage regValue = (EPackage) load(URI.createPlatformResourceURI(path, true), resourceSet);
-					if (regValue != null) {
-						metamodels.put(name, regValue);
+					Resource resource = (Resource) load(URI.createPlatformResourceURI(path, true), resourceSet);
+					if (resource != null) {
+						ArrayList list = new ArrayList();
+						for (Iterator it = resource.getContents().iterator(); it.hasNext();) {
+							Object object = (Object) it.next();
+							if (object instanceof EPackage)
+								list.add(object);				
+						}
+						metamodels.put(name, list);
 					}
-
 				}
 			}
 		}
@@ -227,7 +235,7 @@ public class AtlCompletionDataSource {
 	 * @param filter
 	 * @return the map of searched metamodels
 	 */
-	private Map getMetamodels(int filter) {
+	private Map getMetamodelPackages(int filter) {
 		if (inputMetamodelsIds == null && outputMetamodelsIds == null) {
 			return metamodels;
 		}
@@ -259,8 +267,8 @@ public class AtlCompletionDataSource {
 	 * @param metamodelId
 	 * @return
 	 */
-	private EPackage getMetamodel(String metamodelId) {
-		return (EPackage) metamodels.get(metamodelId);
+	private List getMetamodelPackages(String metamodelId) {
+		return (List) metamodels.get(metamodelId);
 	}
 
 	/**
@@ -273,13 +281,20 @@ public class AtlCompletionDataSource {
 	 */
 	public List getMetaElementsProposals(String prefix, int offset, int filter) {
 		List res = new ArrayList();
-		Set entries = getMetamodels(filter).entrySet();
+		Set entries = getMetamodelPackages(filter).entrySet();
+		//input or output metamodels
 		for (Iterator iterator = entries.iterator(); iterator.hasNext();) {
 			Entry entry = (Entry) iterator.next();
 			String metamodelName = entry.getKey().toString();
-			EPackage metamodel = (EPackage) entry.getValue();
-			res.addAll(getMetaElementsProposals(metamodelName, metamodel,
-					prefix, offset));
+			List packages = (List) entry.getValue();
+			if (packages != null) {
+				//packages of the current metamodel
+				for (Iterator it = packages.iterator(); it.hasNext();) {
+					EPackage metamodel = (EPackage) it.next();
+					res.addAll(getMetaElementsProposals(metamodelName, metamodel,
+							prefix, offset));
+				}				
+			}
 		}
 		return res;
 	}
@@ -380,12 +395,15 @@ public class AtlCompletionDataSource {
 			String prefix, int offset) {
 		EObject model = (EObject) eGet(atlType,"model"); //$NON-NLS-1$
 		String metamodelId = eGet(model,"name").toString(); //$NON-NLS-1$
-		EPackage metamodel = getMetamodel(metamodelId);
-		if (metamodel != null) {
-			EClassifier res = metamodel.getEClassifier(eGet(atlType,"name").toString()); //$NON-NLS-1$
-			if (res instanceof EClass) {
-				return getMetaFeaturesProposals(existing, (EClass) res, prefix,
-						offset);
+		List packages = getMetamodelPackages(metamodelId);
+		if (packages != null) {
+			for (Iterator iterator = packages.iterator(); iterator.hasNext();) {
+				EPackage pack = (EPackage) iterator.next();
+				EClassifier res = pack.getEClassifier(eGet(atlType,"name").toString()); //$NON-NLS-1$
+				if (res instanceof EClass) {
+					return getMetaFeaturesProposals(existing, (EClass) res, prefix,
+							offset);
+				}
 			}
 		}
 		return new ArrayList();
@@ -585,13 +603,11 @@ public class AtlCompletionDataSource {
 	 *            {@link org.eclipse.emf.common.util.URI URI} where the model is stored.
 	 * @param resourceSet
 	 *            The {@link ResourceSet} to load the model in.
-	 * @return The model loaded from the URI.
+	 * @return The packages of the model loaded from the URI.
 	 * @throws IOException
 	 *             If the given file does not exist.
 	 */
-	public static EObject load(URI modelURI, ResourceSet resourceSet) throws IOException {
-		EObject result = null;
-
+	public static Resource load(URI modelURI, ResourceSet resourceSet) throws IOException {
 		String fileExtension = modelURI.fileExtension();
 		if (fileExtension == null || fileExtension.length() == 0) {
 			fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
@@ -611,9 +627,7 @@ public class AtlCompletionDataSource {
 		final Map options = new HashMap();
 		options.put(XMLResource.OPTION_ENCODING, System.getProperty("file.encoding")); //$NON-NLS-1$
 		modelResource.load(options);
-		if (modelResource.getContents().size() > 0)
-			result = (EObject)modelResource.getContents().get(0);
-		return result;
+		return modelResource;
 	}
 
 	public static Object eGet(EObject self, String featureName) {
