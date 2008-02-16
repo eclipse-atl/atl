@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault - initial API and implementation
+ *    Frï¿½dï¿½ric Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -43,7 +43,9 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 public class AtlEMFSpecificVM extends AtlVM {
 
 	// launch from Regular VM arguments (used for ant tasks)
-	public void launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options) {
+	public Object launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options) {
+		Object ret = null;
+
 		Map actualModels = new HashMap();
 		// handle metamodels first
 		List targetModels = new ArrayList();
@@ -93,7 +95,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 			}
 			
 			try {
-				asm.run(actualModels, libs, options);
+				ret = asm.run(actualModels, libs, options);
 			} catch(VMException vme) {
 				vme.printStackTrace(System.out);
 				throw vme;
@@ -106,6 +108,8 @@ public class AtlEMFSpecificVM extends AtlVM {
 		} catch(IOException ioe) {
 			ioe.printStackTrace();
 		}
+
+		return ret;
 	}
 
 	// direct launch from debug plugin

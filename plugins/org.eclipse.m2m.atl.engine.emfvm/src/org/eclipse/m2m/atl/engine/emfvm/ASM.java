@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault - initial API and implementation
+ *    Frï¿½dï¿½ric Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -56,7 +56,8 @@ public class ASM {
 	// TODO:
 	//	- implements other options
 	//	- define options somewhere (currently, best definition is in regular VM)
-	public void run(Map models, Map libraries, Map options) {
+	public Object run(Map models, Map libraries, Map options) {
+		Object ret = null;
 		boolean printExecutionTime = "true".equals(options.get("printExecutionTime"));
 
 		long startTime = System.currentTimeMillis();
@@ -113,13 +114,14 @@ public class ASM {
 				library.mainOperation.exec(new StackFrame(execEnv, asmModule, library.mainOperation));
 		}
 		
-		mainOperation.exec(frame);
+		ret = mainOperation.exec(frame);
 		long endTime = System.currentTimeMillis();
 		if(printExecutionTime)
 			System.out.println("Executed " + name + " in " + ((endTime - startTime) / 1000.) + "s.");
 		
 		if("true".equals(options.get("showSummary")))
 			System.out.println("Number of instructions executed: " + execEnv.nbExecutedBytecodes);
+		return ret;
 	}
 	
 	public void registerOperations(ExecEnv execEnv, List operations) {
