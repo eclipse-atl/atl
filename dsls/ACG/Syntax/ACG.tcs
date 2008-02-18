@@ -10,7 +10,7 @@ syntax ACG {
 		value = "%token%";
 
 	primitiveTemplate stringSymbol for String using STRING:
-		value = "%token%",
+		value = "ei.unescapeString(%token%, 1)",
 		serializer="'\'' + %value%.toCString() + '\''";
 
 	primitiveTemplate integerSymbol for Integer default using INT:
@@ -418,6 +418,7 @@ syntax ACG {
 	}
 
 	token COMMENT	: endOfLine(start = "--");
+	token STRING	: multiLine(start = "\'", end = "\'", esc = "\\");
 
 	lexer = "
 NL
@@ -525,17 +526,6 @@ ESC
 				}
 		)
 	;
-
-STRING
-	:	'\\''!
-		(	ESC
-		|	'\\n' {newline();}
-		|	~('\\\\'|'\\''|'\\n')
-		)*
-		'\\''!
-%v3			{setText(ei.unescapeString(getText(), 1));}
-	;
-
 	";
 
 }
