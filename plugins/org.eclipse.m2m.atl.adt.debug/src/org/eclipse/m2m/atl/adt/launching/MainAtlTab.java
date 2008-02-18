@@ -589,11 +589,14 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		this.configuration = configuration;
 		try {
+			String projectName = configuration.getAttribute(AtlLauncherTools.PROJECTNAME,"");
+			String fileName = configuration.getAttribute(AtlLauncherTools.ATLFILENAME,"");
+			
             superimposedFromLaunchConfig = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
-            
-			projectsList.setText(configuration.getAttribute(AtlLauncherTools.PROJECTNAME, "")); //$NON-NLS-1$
-			projectFilesList.setItems(AtlLauncherTools.fileNames(projectsList.getText()));
-			projectFilesList.setText(configuration.getAttribute(AtlLauncherTools.ATLFILENAME, "")); //$NON-NLS-1$
+
+			projectsList.setText(projectName); //$NON-NLS-1$
+			projectFilesList.setItems(AtlLauncherTools.fileNames(projectName));
+			projectFilesList.setText(fileName); //$NON-NLS-1$
 		}
 		catch (CoreException e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
