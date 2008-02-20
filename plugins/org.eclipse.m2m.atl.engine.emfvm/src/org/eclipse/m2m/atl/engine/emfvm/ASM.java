@@ -56,7 +56,7 @@ public class ASM {
 	// TODO:
 	//	- implements other options
 	//	- define options somewhere (currently, best definition is in regular VM)
-	public Object run(Map models, Map libraries, Map options) {
+	public Object run(Map models, Map libraries, Map options) {		
 		Object ret = null;
 		boolean printExecutionTime = "true".equals(options.get("printExecutionTime"));
 
@@ -65,6 +65,8 @@ public class ASM {
 		ExecEnv execEnv = new ExecEnv(models);
 		if("true".equals(options.get("step")))
 			execEnv.step = true;
+		if ("true".equals(options.get("supportUML2Stereotypes")))
+			execEnv.supportUML2Stereotypes = true;
 		
 		String ext = (String)options.get("extensions");
 		if(ext != null) {

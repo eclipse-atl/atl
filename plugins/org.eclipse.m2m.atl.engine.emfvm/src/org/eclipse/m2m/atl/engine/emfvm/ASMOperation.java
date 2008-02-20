@@ -210,6 +210,8 @@ public class ASMOperation extends Operation {
 		// Note: debug is not initialized from a constant, and therefore has a performance impact
 		// TODO: measure this impact, and possibly remove the debug code
 		final boolean debug = frame.execEnv.step;
+		final boolean supportUML2Stereotypes = frame.execEnv.supportUML2Stereotypes;
+
 		Object localVars[] = frame.localVars;
 		int pc = 0;
 		int fp = 0;
@@ -223,7 +225,7 @@ public class ASMOperation extends Operation {
 				frame.execEnv.nbExecutedBytecodes++;
 				if(debug) {
 					frame.execEnv.out.println(name + ":" + (pc - 1) + "\t" + bytecode);
-//					frame.execEnv.out.println("" + frame.execEnv.nbExecutedBytecodes);
+					//					frame.execEnv.out.println("" + frame.execEnv.nbExecutedBytecodes);
 				}
 				switch(bytecode.opcode) {
 				case Bytecode.PUSHD:
@@ -270,18 +272,32 @@ public class ASMOperation extends Operation {
 							frame.execEnv.out.println(")");
 						}
 						Method method = findMethod(self.getClass(), bytecode.operand.toString(), argumentTypes);
-						
+
 						if (method == null)
 							throw new VMException(frame, "operation not found: " + frame.execEnv.toPrettyPrintedString(self) + "." + bytecode.operand);
 
 						--fp;	// pop self, that we already retrieved earlier to get the operation
 
-						s = method.invoke(self, arguments);
-
+						s = null;
+						if (supportUML2Stereotypes) {
+							if(bytecode.operand.equals("applyProfile") || bytecode.operand.equals("applyStereotype") 
+									|| bytecode.operand.equals("setValue") 
+									|| bytecode.operand.equals("applyAllRequiredStereotypes")
+									|| bytecode.operand.equals("applyAllStereotypes")
+									|| bytecode.operand.equals("unapplyAllStereotype")
+									|| bytecode.operand.equals("unapplyAllNonApplicableStereotypes")
+							) {
+								frame.execEnv.getModelOf((EObject)self).addDelayedInvocation(method, self, bytecode.operand.toString(), arguments);
+							} else {
+								s = method.invoke(self, arguments);
+							}
+						} else {
+							s = method.invoke(self, arguments);
+						}
 						if(s != null) stack[fp++] = s;
 
 						break;
-						
+
 					} 
 
 					StackFrame calleeFrame = (StackFrame)frame.newFrame(operation);
@@ -359,7 +375,7 @@ public class ASMOperation extends Operation {
 					Object mname = stack[--fp];
 					Object me = stack[--fp];
 					if(mname.equals("#native")){
-//						TODO: makes sure the Map implementation is actually faster, then get rid of if-else-if implementation
+						//						TODO: makes sure the Map implementation is actually faster, then get rid of if-else-if implementation
 						/*
 					if(me.equals("Sequence")) {
 						stack[fp++] = new ArrayList();

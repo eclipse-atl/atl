@@ -44,7 +44,8 @@ public class ExecEnv {
 
 	private Map operationsByType = new HashMap();
 
-	// TODO: map this to corresponding option
+	// TODO: map this to corresponding option	public boolean supportUML2Stereotypes = false;
+
 	private boolean cacheAttributeHelperResults = true;
 	private Map helperValuesByElement = new HashMap();
 	private Map attributeInitializers = new HashMap();
@@ -53,7 +54,9 @@ public class ExecEnv {
 	private Map nameByModel;
 	private Map modelsByResource;
 
-	public boolean step = false;
+	public boolean step = false;	
+	public boolean supportUML2Stereotypes = false;
+
 	// TODO: replace with a logger
 	public PrintStream out = System.out;
 
@@ -79,7 +82,12 @@ public class ExecEnv {
 			for(Iterator i = modelsByName.keySet().iterator() ; i.hasNext() && (ret == null); ) {
 				String name = (String)i.next();
 				Model model = (Model)modelsByName.get(name);
+				/*
 				if(model.newElements.contains(element)) {
+					ret = model;
+				}
+				*/
+				if(model.contains(element)) {
 					ret = model;
 				}
 			}			
