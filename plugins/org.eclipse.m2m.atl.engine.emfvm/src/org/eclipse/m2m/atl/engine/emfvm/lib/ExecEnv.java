@@ -332,7 +332,7 @@ public class ExecEnv {
 		} else if(value instanceof HashSet) {
 			out.print("Set {");
 			prettyPrintCollection(out, (Collection)value);
-		} else if(value instanceof ArrayList) {
+		} else if(value instanceof ArrayList || value instanceof EList) {
 			out.print("Sequence {");
 			prettyPrintCollection(out, (Collection)value);
 		} else if(value instanceof Bag) {
@@ -769,7 +769,6 @@ public class ExecEnv {
 		operationsByName.put("indexOf", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-
 				return new Integer(((List)localVars[0]).indexOf(localVars[1]) + 1);
 			}
 		});
@@ -818,7 +817,13 @@ public class ExecEnv {
 		operationsByName.put("asSequence", new Operation(1) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				return localVars[0];
+				return new ArrayList((Collection)localVars[0]);
+			}
+		});
+		operationsByName.put("asBag", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Bag((Collection)localVars[0]);
 			}
 		});
 		operationsByName.put("first", new Operation(1) {
@@ -987,6 +992,12 @@ public class ExecEnv {
 				return localVars[0];
 			}
 		});
+		operationsByName.put("asBag", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Bag((Collection)localVars[0]);
+			}
+		});
 		operationsByName.put("first", new Operation(1) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
@@ -1086,6 +1097,12 @@ public class ExecEnv {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 				return localVars[0];
+			}
+		});
+		operationsByName.put("asBag", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Bag((Collection)localVars[0]);
 			}
 		});
 		operationsByName.put("flatten", new Operation(1) {
@@ -1233,6 +1250,12 @@ public class ExecEnv {
 				return ret;
 			}
 		});
+		operationsByName.put("asBag", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Bag((Collection)localVars[0]);
+			}
+		});
 
 		// String
 		operationsByName = new HashMap();
@@ -1247,6 +1270,12 @@ public class ExecEnv {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 				return ((String)localVars[0]).replaceAll((String)localVars[1], (String)localVars[2]);					
+			}
+		});
+		operationsByName.put("replaceAll", new Operation(3) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return ((String)localVars[0]).replace(((String)localVars[1]).charAt(0), ((String)localVars[2]).charAt(0));					
 			}
 		});
 		operationsByName.put("split", new Operation(2) {
@@ -1277,6 +1306,16 @@ public class ExecEnv {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 				return ((String)localVars[0]).toLowerCase();					
+			}
+		});
+		operationsByName.put("toSequence", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				String tmp = (String)localVars[0];
+				ArrayList ret = new ArrayList();
+				for(int i = 0 ; i < tmp.length() ; i++)
+					ret.add("" + tmp.charAt(i));
+				return ret;					
 			}
 		});
 		operationsByName.put("startsWith", new Operation(2) {
