@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.tests.util;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,10 +25,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.m2m.atl.adt.launching.AtlVM;
-import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
-import org.eclipse.m2m.atl.engine.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.w3c.dom.Document;
@@ -46,6 +42,7 @@ import org.xml.sax.SAXException;
 public class TransfoLauncher {
 
 	//transformation parameters
+	protected URL atlUrl;
 	protected URL asmUrl;
 	protected Map libsFromConfig;
 	protected List superimpose;
@@ -85,6 +82,10 @@ public class TransfoLauncher {
 				String key = element.getAttribute("key"); //$NON-NLS-1$
 				if (key.equals("ATL File Name")) { //$NON-NLS-1$
 					String asmFilePath = element.getAttribute("value"); //$NON-NLS-1$
+					atlUrl = FileUtils.fileNameToURL(asmFilePath);
+					if (asmFilePath.endsWith(".atl")) { //$NON-NLS-1$
+						asmFilePath = asmFilePath.substring(0,asmFilePath.length() - 4)+".asm"; //$NON-NLS-1$
+					}
 					asmUrl = FileUtils.fileNameToURL(asmFilePath);
 				} else if (key.equals("Superimpose")) { //$NON-NLS-1$
 					NodeList entriesList = element.getChildNodes();
@@ -166,8 +167,8 @@ public class TransfoLauncher {
 
 		Collection toDispose = new HashSet();
 
-		Map inModel = getSourceModels(input, path, modelHandler, atlModelHandler, checkSameModel, toDispose);
-		Map outModel = getTargetModels(output, path, modelHandler, atlModelHandler, inModel, checkSameModel, toDispose);
+		Map inModel = AtlUtils.getSourceModels(input, path, modelHandler, atlModelHandler, checkSameModel, toDispose);
+		Map outModel = AtlUtils.getTargetModels(output, path, modelHandler, atlModelHandler, inModel, checkSameModel, toDispose);
 
 		Map models = new HashMap();
 
@@ -203,107 +204,12 @@ public class TransfoLauncher {
 		return (endTime - startTime) / 1000.;
 	}
 
-	private Map getSourceModels(Map arg, Map path, Map modelHandler, Map atlModelHandler, boolean checkSameModel, Collection toDispose) throws CoreException {
-		Map toReturn = new HashMap();
-		try {
-			for(Iterator i = arg.keySet().iterator() ; i.hasNext() ; ) {
-				String mName = (String)i.next();
-				String mmName = (String)arg.get(mName);
-
-				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
-				ASMModel mofmm = amh.getMof();
-				toReturn.put("%" + modelHandler.get(mmName), mofmm); //$NON-NLS-1$
-				mofmm.setIsTarget(false);
-				ASMModel inputModel;
-				if (((String)path.get(mmName)).startsWith("#")) { //$NON-NLS-1$
-					toReturn.put(mmName, mofmm);
-					inputModel = (ASMModel)toReturn.get(mName);
-					if(inputModel == null)
-						inputModel = loadModel(amh, mName, mofmm, (String)path.get(mName), toDispose);
-				}
-				else {
-					ASMModel inputMetaModel = (ASMModel)toReturn.get(mmName);
-					if(inputMetaModel == null) {
-						inputMetaModel = loadModel(amh, mmName, mofmm, (String)path.get(mmName), toDispose);
-						toReturn.put(mmName, inputMetaModel);
-					}
-					inputMetaModel.setIsTarget(false);
-					inputModel = loadModel(amh, mName, inputMetaModel, (String)path.get(mName), toDispose);
-				}
-				inputModel.setIsTarget(false);
-				if (inputModel instanceof ASMEMFModel)
-					((ASMEMFModel)inputModel).setCheckSameModel(checkSameModel);
-				toReturn.put(mName, inputModel);
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return toReturn;
+	public URL getAtlURL(){
+		return atlUrl;
 	}
 
-	private Map getTargetModels(Map arg, Map path, Map modelHandler, Map atlModelHandler, Map input, boolean checkSameModel, Collection toDispose) throws CoreException {
-		Map toReturn = new HashMap();
-		try {
-			for(Iterator i = arg.keySet().iterator() ; i.hasNext() ; ) {
-				String mName = (String)i.next();
-				String mmName = (String)arg.get(mName);
-
-				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
-				ASMModel mofmm = amh.getMof();
-				mofmm.setIsTarget(false);
-				ASMModel outputModel;
-
-				if (((String)path.get(mmName)).startsWith("#")) {//$NON-NLS-1$
-					if (input.get(mmName) == null)
-						toReturn.put(mmName, mofmm);
-					outputModel = (ASMModel)toReturn.get(mName);
-					if(outputModel == null)
-						outputModel = newModel(amh, mName, mofmm, (String)path.get(mName), toDispose);
-				}
-				else {
-					ASMModel outputMetaModel = (ASMModel)input.get(mmName);
-					if (outputMetaModel == null)
-						outputMetaModel = (ASMModel)toReturn.get(mmName);
-					if(outputMetaModel == null) {
-						outputMetaModel = loadModel(amh, mmName, mofmm, (String)path.get(mmName), toDispose);
-						toReturn.put(mmName, outputMetaModel);
-					}
-					outputMetaModel.setIsTarget(false);
-					outputModel = newModel(amh, mName, outputMetaModel, (String)path.get(mName), toDispose);
-				}
-				outputModel.setIsTarget(true);
-				if (outputModel instanceof ASMEMFModel)
-					((ASMEMFModel)outputModel).setCheckSameModel(checkSameModel);
-				toReturn.put(mName, outputModel);
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return toReturn;
+	public void setAsmUrl(URL asmUrl) {
+		this.asmUrl = asmUrl;
 	}
-
-	private ASMModel loadModel(AtlModelHandler amh, String mName, ASMModel metamodel, String path, Collection toDispose) throws IOException, CoreException, FileNotFoundException {
-		ASMModel ret = null;
-
-		if(amh instanceof AtlEMFModelHandler) {
-			if(path.startsWith("uri:")) { //$NON-NLS-1$
-				ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, path);
-				// this model should not be disposed of because we did not load it
-			} else {
-				ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, FileUtils.fileNameToURI(path));				
-				toDispose.add(ret);
-			}
-		}
-
-		return ret;
-	}
-
-	private ASMModel newModel(AtlModelHandler amh, String mName, ASMModel metamodel, String path, Collection toDispose) throws IOException {
-		ASMModel ret = amh.newModel(mName, FileUtils.fileNameToURI(path).toString(), metamodel);
-		toDispose.add(ret);
-		return ret;
-	}
-
+	
 }

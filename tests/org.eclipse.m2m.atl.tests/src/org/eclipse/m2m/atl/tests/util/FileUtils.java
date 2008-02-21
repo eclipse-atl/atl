@@ -101,9 +101,6 @@ public class FileUtils {
 	 */
 	public static URL fileNameToURL(String filePath) throws IOException, MalformedURLException {
 		filePath="file:"+getTestCommonDirectory()+filePath; //$NON-NLS-1$
-		if (filePath.endsWith(".atl")) { //$NON-NLS-1$
-			filePath = filePath.substring(0,filePath.length() - 4)+".asm"; //$NON-NLS-1$
-		}
 		return new URL(filePath);
 	}
 	

@@ -12,9 +12,14 @@ package org.eclipse.m2m.atl.tests.unit;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.m2m.atl.engine.AtlCompiler;
+import org.eclipse.m2m.atl.engine.CompilerNotFoundException;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
@@ -27,6 +32,9 @@ import org.eclipse.m2m.atl.tests.util.TransfoLauncher;
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
  */
 public abstract class TestNonRegressionTransfo extends TestNonRegression {
+
+	private final static boolean RECOMPILE_BEFORE_LAUNCH = true;
+	private final static boolean APPLY_COMPILATION = false;
 
 	private double totalTime = 0;
 	private String vmName = null;
@@ -44,13 +52,55 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
 		if (!new File(buildURI).exists()) fail(AtlTestsMessages.getString("TestNonRegressionTransfo.3")); //$NON-NLS-1$
 		if (launcher == null) fail(AtlTestsMessages.getString("TestNonRegressionTransfo.4")); //$NON-NLS-1$
-		
+
 		try {
 			launcher.parseConfiguration(buildURI);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.5")); //$NON-NLS-1$
 		} 
+
+		if (RECOMPILE_BEFORE_LAUNCH) {
+			/*
+			 * COMPILER LAUNCH 
+			 * 
+			 */			
+			URL atlUrl = launcher.getAtlURL();
+			String atlFilePath = atlUrl.getFile();
+			String outName = "";
+			InputStream is = null;
+			
+			try {
+				if (APPLY_COMPILATION) {
+					outName = atlFilePath.substring(0, atlFilePath.lastIndexOf('.')) + ".asm";//$NON-NLS-1$
+				} else {
+					try {
+						outName = atlFilePath.substring(0, atlFilePath.lastIndexOf('.')) + ".temp.asm";//$NON-NLS-1$
+						launcher.setAsmUrl(new URL("file:"+outName));						
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+						fail("URL problem : "+atlUrl); //$NON-NLS-1$
+					}
+				}
+				
+				is = atlUrl.openStream();
+			} catch(IOException e) {
+				e.printStackTrace();
+				fail("File not found : "+atlUrl); //$NON-NLS-1$
+			}
+			try {
+				AtlCompiler.getDefault().compile(is, outName);
+			} catch(CompilerNotFoundException cnfee) {
+				cnfee.printStackTrace();
+				fail("Compiler not found"); //$NON-NLS-1$
+			}
+			try {
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				fail(atlUrl+" compilation failed"); //$NON-NLS-1$
+			}
+		}
 
 		/*
 		 * TRANSFORMATION LAUNCH 
@@ -83,7 +133,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.7")); //$NON-NLS-1$
 			}		
 		}
-		
+
 		for (Iterator iter = output.keySet().iterator(); iter.hasNext();) {
 			String outputid = (String) iter.next();
 			String outputPath = (String) launcher.getPath().get(outputid);
