@@ -27,7 +27,7 @@
       <property name="data-dir" value="${m2m-folder}"/>
       <property name="plugin-name" value="${plugin-name}"/>
       <!--property name="classname" value="org.eclipse.m2m.atl.tests.suite.DummyTests"/-->
-      <property name="classname" value="org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionVM"/>
+      <property name="classname" value="org.eclipse.m2m.atl.tests.suite.DummyTests"/>
     </ant>
   </target>
 
