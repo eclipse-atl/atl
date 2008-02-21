@@ -181,6 +181,7 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 	protected ITextViewer fTextViewer;	
 	protected boolean fToggleEating;
 	private char[] fTriggerCharacters;
+	private String additionalProposalInfo;
 	
 	/**
 	 * Creates a new completion proposal. All fields are initialized based on the provided information.
@@ -192,8 +193,8 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 	 * @param displayString the string to be displayed for the proposal
 	 * If set to <code>null</code>, the replacement string will be taken as display string.
 	 */
-	public AtlCompletionProposal(String replacementString, int replacementOffset, int replacementLength, Image image, String displayString, int relevance) {
-		this(replacementString, replacementOffset, replacementLength, image, displayString, relevance, null);
+	public AtlCompletionProposal(String replacementString, int replacementOffset, int replacementLength, Image image, String displayString, int relevance, String additionalProposalInfo) {
+		this(replacementString, replacementOffset, replacementLength, image, displayString, relevance, null, additionalProposalInfo);
 	}
 	
 	/**
@@ -207,7 +208,7 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 	 * @param viewer the text viewer for which this proposal is computed, may be <code>null</code>
 	 * If set to <code>null</code>, the replacement string will be taken as display string.
 	 */
-	public AtlCompletionProposal(String replacementString, int replacementOffset, int replacementLength, Image image, String displayString, int relevance, ITextViewer viewer) {
+	public AtlCompletionProposal(String replacementString, int replacementOffset, int replacementLength, Image image, String displayString, int relevance, ITextViewer viewer, String additionalProposalInfo) {
 		Assert.isNotNull(replacementString);
 		Assert.isTrue(replacementOffset >= 0);
 		Assert.isTrue(replacementLength >= 0);
@@ -225,6 +226,7 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 		fContextInformation= null;
 		fContextInformationPosition= -1;
 		fTriggerCharacters= null;
+		this.additionalProposalInfo = additionalProposalInfo;
 	}
 	
 	/*
@@ -345,7 +347,7 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 	 * @see ICompletionProposal#getAdditionalProposalInfo()
 	 */
 	public String getAdditionalProposalInfo() {
-		return null;
+		return additionalProposalInfo;
 	}
 	
 	/*

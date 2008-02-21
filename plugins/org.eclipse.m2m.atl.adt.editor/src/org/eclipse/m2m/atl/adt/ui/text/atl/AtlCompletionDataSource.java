@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Obeo.
+ * Copyright (c) 2007, 2008 Obeo and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Obeo - completion system
+ *     INRIA - additionalProposalInfo implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text.atl;
 
@@ -52,6 +53,7 @@ import org.eclipse.swt.graphics.Image;
  * The AtlCompletionDataSource, retrieves data from EMF metamodels.
  * 
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author Frédéric Jouault
  */
 public class AtlCompletionDataSource {
 
@@ -221,7 +223,7 @@ public class AtlCompletionDataSource {
 			if (startsWithIgnoreCase(prefix, replacementString)) {
 				ICompletionProposal proposal = new AtlCompletionProposal(
 						replacementString, offset - prefix.length(),
-						replacementString.length(), null, replacementString, 0);
+						replacementString.length(), null, replacementString, 0, null);
 				res.add(proposal);
 			}
 		}
@@ -331,9 +333,42 @@ public class AtlCompletionDataSource {
 			if (startsWithIgnoreCase(prefix, replacementString)
 					&& !prefix.equals(replacementString)) {
 				Image image = getImage("model_class.gif"); //$NON-NLS-1$
+
+				StringBuffer additionalProposalInfo = new StringBuffer();
+				if(classifier instanceof EClass) {
+					EClass cl = (EClass)classifier;
+					if(cl.isAbstract()) {
+						additionalProposalInfo.append("abstract ");
+					}
+					additionalProposalInfo.append("class ");
+					additionalProposalInfo.append(cl.getName());
+					boolean first = true;
+					for(Iterator i = cl.getESuperTypes().iterator() ; i.hasNext() ; ) {
+						EClass st = (EClass)i.next();
+						if(first) {
+							additionalProposalInfo.append(" extends\n\t");
+							first = false;
+						} else {
+							additionalProposalInfo.append(",\n\t");
+						}
+						additionalProposalInfo.append(st.getName());
+					}
+/*
+					for(Iterator i = cl.getEAnnotations().iterator() ; i.hasNext() ; ) {
+						EAnnotation a = (EAnnotation)i.next();
+						EMap details = a.getDetails();
+						if("documentation".equals(details.get("key"))) {
+							additionalProposalInfo.append('\n');
+							additionalProposalInfo.append(details.get("value"));
+							break;
+						}
+					}
+*/
+				}
+
 				ICompletionProposal proposal = new AtlCompletionProposal(
 						replacementString, offset - prefix.length(),
-						replacementString.length(), image, replacementString, 0);
+						replacementString.length(), image, replacementString, 0, additionalProposalInfo.toString());
 				res.add(proposal);
 			}
 		}
@@ -371,7 +406,7 @@ public class AtlCompletionDataSource {
 		while (classifiers.hasNext()) {
 			EClassifier classifier = (EClassifier) classifiers.next();
 			if (classifier instanceof EClass
-					&& !((EClass) classifier).isAbstract()
+//					&& !((EClass) classifier).isAbstract()
 					&& !((EClass) classifier).isInterface()) {
 				all.add(classifier);
 			}
@@ -444,10 +479,44 @@ public class AtlCompletionDataSource {
 								image = getImage("model_attribute.gif"); //$NON-NLS-1$
 							else if (feature instanceof EReference)
 								image = getImage("model_reference.gif"); //$NON-NLS-1$
+							
+							StringBuffer additionalProposalInfo = new StringBuffer();
+							if(feature instanceof EAttribute)
+								additionalProposalInfo.append("attribute ");
+							else if(feature instanceof EReference)
+								additionalProposalInfo.append("reference ");
+							additionalProposalInfo.append(feature.getName());
+							if((feature.getLowerBound() == 1) && (feature.getUpperBound() == 1)) {
+								// display nothing
+							} else {
+								additionalProposalInfo.append('[');
+								if((feature.getLowerBound() == 0) && (feature.getUpperBound() == -1)) {
+									additionalProposalInfo.append('*');
+								} else {
+									additionalProposalInfo.append(feature.getLowerBound());
+									additionalProposalInfo.append('-');
+									additionalProposalInfo.append(feature.getUpperBound());
+								}
+								additionalProposalInfo.append(']');
+							}
+							if(feature.isOrdered())
+								additionalProposalInfo.append(" ordered");
+							if((feature instanceof EReference) && ((EReference)feature).isContainment())
+								additionalProposalInfo.append(" container");
+							additionalProposalInfo.append(" :\n\t");
+							additionalProposalInfo.append(feature.getEType().getName());
+							if(feature instanceof EReference) {
+								EReference opposite = ((EReference)feature).getEOpposite();
+								if(opposite != null) {
+									additionalProposalInfo.append(" oppositeOf ");
+									additionalProposalInfo.append(opposite.getName());
+								}
+							}
+							
 							ICompletionProposal proposal = new AtlCompletionProposal(
 									replacementString, offset - prefix.length(),
 									replacementString.length(), image,
-									replacementString, 0);
+									replacementString, 0, additionalProposalInfo.toString());
 							res.add(proposal);
 						}
 					}
@@ -476,7 +545,7 @@ public class AtlCompletionDataSource {
 			if (startsWithIgnoreCase(prefix, replacementString)) {
 				ICompletionProposal proposal = new AtlCompletionProposal(
 						replacementString, offset - prefix.length(),
-						replacementString.length(), null, replacementString, 0);
+						replacementString.length(), null, replacementString, 0, null);
 				res.add(proposal);
 			}
 		}

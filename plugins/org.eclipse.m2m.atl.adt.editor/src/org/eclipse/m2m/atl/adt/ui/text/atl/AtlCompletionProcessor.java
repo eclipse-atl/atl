@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Obeo.
+ * Copyright (c) 2007, 2008 Obeo and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Obeo - completion system
+ *     INRIA - additionalProposalInfo
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text.atl;
 
@@ -31,6 +32,7 @@ import org.eclipse.ui.IEditorPart;
  * The completion processor, provides content assist.
  *
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author Frédéric Jouault
  */
 public class AtlCompletionProcessor implements IContentAssistProcessor {
 
@@ -198,7 +200,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 						if (fromTemplate.startsWith(prefix)) {
 							AtlCompletionProposal fromProposal = new AtlCompletionProposal(
 									fromTemplate, offset - prefix.length(),
-									fromTemplate.length(), AtlCompletionDataSource.getImage("inPattern.gif"), "from", 0); //$NON-NLS-1$ //$NON-NLS-2$
+									fromTemplate.length(), AtlCompletionDataSource.getImage("inPattern.gif"), "from", 0, null); //$NON-NLS-1$ //$NON-NLS-2$
 							fromProposal.setCursorPosition(fromTemplate.length() - 19);
 							res.add(fromProposal);
 						}
@@ -208,13 +210,13 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 						if (usingTemplate.startsWith(prefix))
 							res.add(new AtlCompletionProposal(
 									usingTemplate, offset - prefix.length(),
-									usingTemplate.length(),AtlCompletionDataSource.getImage("using.gif") , "using", 0)); //$NON-NLS-1$ //$NON-NLS-2$
+									usingTemplate.length(),AtlCompletionDataSource.getImage("using.gif") , "using", 0, null)); //$NON-NLS-1$ //$NON-NLS-2$
 
 					case AtlModelAnalyser.USING_CONTEXT:	
 						if (toTemplate.startsWith(prefix)) {
 							AtlCompletionProposal toProposal = new AtlCompletionProposal(
 									toTemplate, offset - prefix.length(),
-									toTemplate.length(), AtlCompletionDataSource.getImage("outPattern.gif"), "to", 0); //$NON-NLS-1$ //$NON-NLS-2$
+									toTemplate.length(), AtlCompletionDataSource.getImage("outPattern.gif"), "to", 0, null); //$NON-NLS-1$ //$NON-NLS-2$
 							toProposal.setCursorPosition(toTemplate.length() - 20);
 							res.add(toProposal);
 						}
@@ -224,21 +226,21 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 						if (doTemplate.startsWith(prefix))
 							res.add(new AtlCompletionProposal(
 									doTemplate, offset - prefix.length(),
-									doTemplate.length(),AtlCompletionDataSource.getImage("imperative.gif") , "do", 0)); //$NON-NLS-1$ //$NON-NLS-2$
+									doTemplate.length(),AtlCompletionDataSource.getImage("imperative.gif") , "do", 0, null)); //$NON-NLS-1$ //$NON-NLS-2$
 
 					case AtlModelAnalyser.DO_CONTEXT:
 					case AtlModelAnalyser.MODULE_CONTEXT:
 						if (ruleTemplate.startsWith(prefix)) {
 							AtlCompletionProposal ruleProposal = new AtlCompletionProposal(
 									ruleTemplate, offset - prefix.length(),
-									ruleTemplate.length(), AtlCompletionDataSource.getImage("matchedRule.gif"), "rule", 0); //$NON-NLS-1$ //$NON-NLS-2$
+									ruleTemplate.length(), AtlCompletionDataSource.getImage("matchedRule.gif"), "rule", 0, null); //$NON-NLS-1$ //$NON-NLS-2$
 							ruleProposal.setCursorPosition(ruleTemplate.length() - 11);
 							res.add(ruleProposal);
 						}
 						if (helperTemplate.startsWith(prefix)) {
 							AtlCompletionProposal helperProposal = new AtlCompletionProposal(
 									helperTemplate, offset - prefix.length(),
-									helperTemplate.length(), AtlCompletionDataSource.getImage("helper.gif"), "helper", 0); //$NON-NLS-1$ //$NON-NLS-2$
+									helperTemplate.length(), AtlCompletionDataSource.getImage("helper.gif"), "helper", 0, null); //$NON-NLS-1$ //$NON-NLS-2$
 							helperProposal.setCursorPosition(helperTemplate.length() - 33);
 							res.add(helperProposal);
 						}
