@@ -46,6 +46,7 @@ public class AtlCompiler {
 	}
 
 	private static final int MAX_LINE_LENGTH = 1000;
+
 	/**
 	 * 
 	 * @param in The InputStream to get atl source from.
@@ -144,4 +145,43 @@ public class AtlCompiler {
 		
 		return ret;
 	}
+	
+	
+	/**
+	 * Standalone compilation.
+	 * @param in The InputStream to get atl source from.
+	 * @param out The output file name
+	 * @return the problems which occured during compilation 
+	 */
+	public EObject[] compile(InputStream in, String outputFileName) {
+        EObject ret[] = null;
+		String atlcompiler = null;
+		
+		// The BufferedInputStream is required to reset the stream before actually compiling
+		in = new BufferedInputStream(in, MAX_LINE_LENGTH);
+		in.mark(MAX_LINE_LENGTH);
+		byte buffer[] = new byte[MAX_LINE_LENGTH];
+		try {
+			int length = in.read(buffer);
+			BufferedReader brin = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer, 0, length)));
+			String firstLine = brin.readLine();
+			atlcompiler = firstLine.replaceFirst("^\\p{Space}*--\\p{Space}*@atlcompiler\\p{Space}+([^\\p{Space}]*)\\p{Space}*$", "$1");//$NON-NLS-1$ //$NON-NLS-2$
+			// if firstLine does not match the pattern then nothing was replaced and atlcompiler = firstLine
+			if(atlcompiler.equals(firstLine)) {
+				atlcompiler = "atl2004";//$NON-NLS-1$
+			}
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
+		
+        try {
+			in.reset();
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
+		
+        ret = getCompiler(atlcompiler).compileWithProblemModel(in, outputFileName);
+        return ret;
+	}
+
 }
