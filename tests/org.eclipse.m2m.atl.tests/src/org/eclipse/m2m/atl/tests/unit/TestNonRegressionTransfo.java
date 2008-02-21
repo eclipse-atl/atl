@@ -111,7 +111,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			executionTime = launcher.run(vmName);
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.6")); //$NON-NLS-1$
+			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.6", new Object[]{e})); //$NON-NLS-1$
 		}
 		System.out.println(executionTime+"s."); //$NON-NLS-1$
 		AtlTestPlugin.getResourceSet().getResources().clear();
