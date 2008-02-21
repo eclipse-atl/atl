@@ -33,7 +33,7 @@ import org.eclipse.m2m.atl.tests.util.TransfoLauncher;
  */
 public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
-	private final static boolean RECOMPILE_BEFORE_LAUNCH = true;
+	private final static boolean RECOMPILE_BEFORE_LAUNCH = false;
 	private final static boolean APPLY_COMPILATION = false;
 
 	private double totalTime = 0;
