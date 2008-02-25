@@ -368,6 +368,10 @@ public class ASMOperation extends Operation {
 					stack[fp - 2] = stack[fp - 3];
 					stack[fp - 3] = stack[fp - 1];
 					break;
+				case Bytecode.DELETE:
+					s = stack[--fp];
+					EMFUtils.delete(frame, (EObject)s);
+					break;
 				case Bytecode.GETASM:
 					stack[fp++] = frame.asmModule;
 					break;

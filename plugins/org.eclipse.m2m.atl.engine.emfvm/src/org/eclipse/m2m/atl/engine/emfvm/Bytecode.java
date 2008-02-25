@@ -33,13 +33,14 @@ public class Bytecode {
 	public final static int SWAP = 18;
 	public final static int FINDME = 19;
 	public final static int DUP_X1 = 20;
+	public final static int DELETE = 21;
 	
 	public final static String opcodeNames[] = {
 		"push", "pushi", "pushd", "pusht", "pushf",
 		"call", "load", "store", "new", "iterate",
 		"enditerate", "dup", "set", "get", "pop",
 		"getasm", "if", "goto", "swap", "findme",
-		"dup_x1"
+		"dup_x1", "delete"
 	};
 	
 	public String toString() {
@@ -121,6 +122,8 @@ public class Bytecode {
 			this.opcode = FINDME;
 		} else if(opcode.equals("dup_x1")) {
 			this.opcode = DUP_X1;
+		} else if(opcode.equals("delete")) {
+			this.opcode = DELETE;
 		} else {
 			throw new RuntimeException("unsupported opcode without argument: " + opcode);
 		}
