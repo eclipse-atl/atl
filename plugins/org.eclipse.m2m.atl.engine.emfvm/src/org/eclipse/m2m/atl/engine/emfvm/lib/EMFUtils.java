@@ -122,4 +122,10 @@ public class EMFUtils {
 			frame.execEnv.out.println("Warning: could not assign " + value + " to " + frame.execEnv.toPrettyPrintedString(eo) + "." + name);
 		}
 	}
+	
+	public static void delete(StackFrame frame, EObject eo) {
+		EObject container = eo.eContainer();
+		container.eContents().remove(eo);
+	}
+	
 }
