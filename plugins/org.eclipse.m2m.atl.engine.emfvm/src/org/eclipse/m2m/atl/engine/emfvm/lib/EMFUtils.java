@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 public class EMFUtils {
 	
@@ -124,8 +125,8 @@ public class EMFUtils {
 	}
 	
 	public static void delete(StackFrame frame, EObject eo) {
-		EObject container = eo.eContainer();
-		container.eContents().remove(eo);
+		eo.eAdapters().clear();
+		EcoreUtil.remove(eo);
 	}
 	
 }
