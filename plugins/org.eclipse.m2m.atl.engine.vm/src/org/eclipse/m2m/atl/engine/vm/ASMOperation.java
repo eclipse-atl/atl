@@ -266,6 +266,9 @@ public class ASMOperation extends Operation {
 				frame.push(val1);
 				frame.push(val2);
 				frame.push(val1);
+			} else if(mn == "delete") {
+				//TODO implement a delete method for ASMModelElements
+				//(frame.pop()).delete(frame, ops);
 			} else if(mn == "findme") {
 				String mname = ((ASMString)frame.pop()).getSymbol();
 				String name = ((ASMString)frame.pop()).getSymbol();
