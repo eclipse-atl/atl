@@ -761,7 +761,7 @@ public class ExecEnv {
 				int start = ((Integer)localVars[1]).intValue();
 				int end = ((Integer)localVars[2]).intValue();
 				if(end >= start)
-					return new ArrayList(((List)localVars[0]).subList(start - 1, end - 1));
+					return new ArrayList(((List)localVars[0]).subList(start - 1, end));
 				else
 					return emptySequence;
 			}
