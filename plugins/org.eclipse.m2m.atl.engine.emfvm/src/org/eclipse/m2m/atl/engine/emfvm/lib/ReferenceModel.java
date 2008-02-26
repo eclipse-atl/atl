@@ -116,11 +116,24 @@ public class ReferenceModel extends Model {
 			for(Iterator i = getElementsByType(EcorePackage.eINSTANCE.getEClass()).iterator() ; i.hasNext() ; ) {
 				EClass metaElement = (EClass)i.next();
 				metaElementByName.put(metaElement.getName(), metaElement);
+				String completeName = getCompletePackageName(metaElement.getEPackage())+"::"+metaElement.getName();
+				metaElementByName.put(completeName, metaElement);
 			}
-		}
-		
+		}		
 		return (EClass)metaElementByName.get(name);
 	}
+	
+	private String getCompletePackageName(EPackage p)
+	  {
+	    String fullPackageName = "";
+	    EPackage parent = p.getESuperPackage();
+	    if (parent != null) {
+	    	fullPackageName+=getCompletePackageName(parent) + "::" + p.getName();
+		} else {
+			fullPackageName=p.getName();
+		}
+	    return fullPackageName;
+	  }
 	
 	public static ReferenceModel getMetametamodel() {
 		if(metametamodel == null) {
