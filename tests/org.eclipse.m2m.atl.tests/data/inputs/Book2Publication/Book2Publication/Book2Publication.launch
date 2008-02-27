@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
-<stringAttribute key="ATL File Name" value="/data/inputs/Book2Publication/Book2Publication/Book2Publication.atl"/>
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/Book2Publication/Book2Publication/Book2Publication.atl"/>
 <stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <mapAttribute key="Input">
@@ -22,10 +22,10 @@
 <mapEntry key="OUT" value="Publication"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="Book" value="/data/inputs/Book2Publication/Book.ecore"/>
-<mapEntry key="IN" value="/data/inputs/Book2Publication/Book2Publication/modelBook.ecore"/>
-<mapEntry key="OUT" value="/data/inputs/Book2Publication/Book2Publication/outputModelPublication.ecore"/>
-<mapEntry key="Publication" value="/data/inputs/Book2Publication/Publication.ecore"/>
+<mapEntry key="Book" value="/org.eclipse.m2m.atl.tests/data/inputs/Book2Publication/Book.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Book2Publication/Book2Publication/modelBook.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Book2Publication/Book2Publication/outputModelPublication.ecore"/>
+<mapEntry key="Publication" value="/org.eclipse.m2m.atl.tests/data/inputs/Book2Publication/Publication.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>
 <listAttribute key="Superimpose"/>

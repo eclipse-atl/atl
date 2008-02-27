@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
-<stringAttribute key="ATL File Name" value="/data/inputs/Families2Persons/Families2Persons.atl"/>
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons/Families2Persons.atl"/>
 <stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <booleanAttribute key="ContinueAfterError" value="false"/>
@@ -23,10 +23,10 @@
 <mapEntry key="OUT" value="Persons"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="Families" value="/data/inputs/Families2Persons/Families.ecore"/>
-<mapEntry key="IN" value="/data/inputs/Families2Persons/sample-Families.ecore"/>
-<mapEntry key="OUT" value="/data/inputs/Families2Persons/sample-Persons.ecore"/>
-<mapEntry key="Persons" value="/data/inputs/Families2Persons/Persons.ecore"/>
+<mapEntry key="Families" value="/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons/Families.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons/sample-Families.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons/sample-Persons.ecore"/>
+<mapEntry key="Persons" value="/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons/Persons.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.vm.tests"/>
 <listAttribute key="Superimpose"/>

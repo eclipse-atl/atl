@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.m2m.eclipse.atl.adt.launching.atlTransformation">
-<stringAttribute key="ATL File Name" value="/data/inputs/RSM2TPC/RSM2TPC_V0/RSM2TPC_V0.atl"/>
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/RSM2TPC/RSM2TPC_V0/RSM2TPC_V0.atl"/>
 <stringAttribute key="ATL VM" value="EMF-specific VM"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <mapAttribute key="Input">
@@ -22,10 +22,10 @@
 <mapEntry key="OUT" value="Di"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="OUT" value="/data/inputs/RSM2TPC/Topcased.umldi"/>
-<mapEntry key="Di" value="/data/inputs/RSM2TPC/Topcased.ecore"/>
-<mapEntry key="IN" value="/data/inputs/RSM2TPC/Topcased.rsm"/>
-<mapEntry key="Emx" value="/data/inputs/RSM2TPC/RSM.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/RSM2TPC/Topcased.umldi"/>
+<mapEntry key="Di" value="/org.eclipse.m2m.atl.tests/data/inputs/RSM2TPC/Topcased.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/RSM2TPC/Topcased.rsm"/>
+<mapEntry key="Emx" value="/org.eclipse.m2m.atl.tests/data/inputs/RSM2TPC/RSM.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="RSM2TPC_V0"/>
 <listAttribute key="Superimpose"/>

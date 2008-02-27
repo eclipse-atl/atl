@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
-<stringAttribute key="ATL File Name" value="/data/inputs/DSLBridge/MetamodelBridge/EMF2DSL/DSL2XML/DSL2XML.atl"/>
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/EMF2DSL/DSL2XML/DSL2XML.atl"/>
 <stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <mapAttribute key="Input">
@@ -22,10 +22,10 @@
 <mapEntry key="OUT" value="XML"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="IN" value="/data/inputs/DSLBridge/MetamodelBridge/EMF2DSL/DSL2XML/SimpleExampleMM-DSL-2.ecore"/>
-<mapEntry key="DSL" value="/data/inputs/DSLBridge/DSL.ecore"/>
-<mapEntry key="OUT" value="/data/inputs/DSLBridge/MetamodelBridge/EMF2DSL/DSL2XML/SimpleExampleMM-XML-2.ecore"/>
-<mapEntry key="XML" value="/data/inputs/DSLBridge/XML.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/EMF2DSL/DSL2XML/SimpleExampleMM-DSL-2.ecore"/>
+<mapEntry key="DSL" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/DSL.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/EMF2DSL/DSL2XML/SimpleExampleMM-XML-2.ecore"/>
+<mapEntry key="XML" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/XML.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.vm.tests"/>
 <listAttribute key="Superimpose"/>

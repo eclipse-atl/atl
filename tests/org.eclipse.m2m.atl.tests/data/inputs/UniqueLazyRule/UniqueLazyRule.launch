@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
-<stringAttribute key="ATL File Name" value="/data/inputs/UniqueLazyRule/UniqueLazyRule.atl"/>
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/UniqueLazyRule/UniqueLazyRule.atl"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <mapAttribute key="Input">
 <mapEntry key="IN" value="UniqueLazyRule"/>
@@ -19,9 +19,9 @@
 <mapEntry key="OUT" value="UniqueLazyRule"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="IN" value="/data/inputs/UniqueLazyRule/in.ecore"/>
-<mapEntry key="UniqueLazyRule" value="/data/inputs/UniqueLazyRule/UniqueLazyRule.ecore"/>
-<mapEntry key="OUT" value="/data/inputs/UniqueLazyRule/out.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/UniqueLazyRule/in.ecore"/>
+<mapEntry key="UniqueLazyRule" value="/org.eclipse.m2m.atl.tests/data/inputs/UniqueLazyRule/UniqueLazyRule.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/UniqueLazyRule/out.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="UniqueLazyRule"/>
 <listAttribute key="Superimpose"/>

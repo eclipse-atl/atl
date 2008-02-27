@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
-<stringAttribute key="ATL File Name" value="/data/inputs/Ant2Maven/Maven2XML/Maven2XML.atl"/>
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/Maven2XML.atl"/>
 <stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <mapAttribute key="Input">
@@ -30,14 +30,14 @@
 <mapEntry key="XML1" value="XMLMaven"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="XML2" value="/data/inputs/Ant2Maven/Maven2XML/projectFileXML.ecore"/>
-<mapEntry key="XMLProject" value="/data/inputs/Ant2Maven/XMLProject.ecore"/>
-<mapEntry key="XML1" value="/data/inputs/Ant2Maven/Maven2XML/mavenFileXML.ecore"/>
-<mapEntry key="MavenMaven" value="/data/inputs/Ant2Maven/MavenMaven.ecore"/>
-<mapEntry key="InMaven" value="/data/inputs/Ant2Maven/Maven2XML/mavenFile.ecore"/>
-<mapEntry key="XMLMaven" value="/data/inputs/Ant2Maven/XMLMaven.ecore"/>
-<mapEntry key="InProject" value="/data/inputs/Ant2Maven/Maven2XML/projectFile.ecore"/>
-<mapEntry key="MavenProject" value="/data/inputs/Ant2Maven/MavenProject.ecore"/>
+<mapEntry key="XML2" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/projectFileXML.ecore"/>
+<mapEntry key="XMLProject" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XMLProject.ecore"/>
+<mapEntry key="XML1" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/mavenFileXML.ecore"/>
+<mapEntry key="MavenMaven" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/MavenMaven.ecore"/>
+<mapEntry key="InMaven" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/mavenFile.ecore"/>
+<mapEntry key="XMLMaven" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XMLMaven.ecore"/>
+<mapEntry key="InProject" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/projectFile.ecore"/>
+<mapEntry key="MavenProject" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/MavenProject.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>
 <listAttribute key="Superimpose"/>

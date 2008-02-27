@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
-<stringAttribute key="ATL File Name" value="/data/inputs/Class2Relational/Ecore2Class/Ecore2Class.atl"/>
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Ecore2Class/Ecore2Class.atl"/>
 <stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <mapAttribute key="Input">
@@ -22,9 +22,9 @@
 <mapEntry key="OUT" value="Class"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="IN" value="/data/inputs/Class2Relational/Ecore2Class/sample.ecore"/>
-<mapEntry key="Class" value="/data/inputs/Class2Relational/Class.ecore"/>
-<mapEntry key="OUT" value="/data/inputs/Class2Relational/Ecore2Class/outSample.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Ecore2Class/sample.ecore"/>
+<mapEntry key="Class" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Class.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Ecore2Class/outSample.ecore"/>
 <mapEntry key="MOF" value="#EMF"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>

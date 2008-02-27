@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.adt.launching.atlTransformation">
-<stringAttribute key="ATL File Name" value="/data/inputs/Ant2Maven/Ant2Maven/Ant2Maven.atl"/>
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant2Maven/Ant2Maven.atl"/>
 <stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <mapAttribute key="Input">
@@ -26,12 +26,12 @@
 <mapEntry key="OUTMaven" value="MavenMaven"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="IN" value="/data/inputs/Ant2Maven/Ant2Maven/buildAnt.ecore"/>
-<mapEntry key="MavenMaven" value="/data/inputs/Ant2Maven/MavenMaven.ecore"/>
-<mapEntry key="OUTMaven" value="/data/inputs/Ant2Maven/Ant2Maven/mavenFile.ecore"/>
-<mapEntry key="OUTProject" value="/data/inputs/Ant2Maven/Ant2Maven/projectFile.ecore"/>
-<mapEntry key="Ant" value="/data/inputs/Ant2Maven/Ant.ecore"/>
-<mapEntry key="MavenProject" value="/data/inputs/Ant2Maven/MavenProject.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant2Maven/buildAnt.ecore"/>
+<mapEntry key="MavenMaven" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/MavenMaven.ecore"/>
+<mapEntry key="OUTMaven" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant2Maven/mavenFile.ecore"/>
+<mapEntry key="OUTProject" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant2Maven/projectFile.ecore"/>
+<mapEntry key="Ant" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant.ecore"/>
+<mapEntry key="MavenProject" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/MavenProject.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>
 <listAttribute key="Superimpose"/>

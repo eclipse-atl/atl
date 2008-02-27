@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
-<stringAttribute key="ATL File Name" value="/data/inputs/AssertionModification/AssertionModification.atl"/>
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/AssertionModification/AssertionModification.atl"/>
 <stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <mapAttribute key="Input">
@@ -26,11 +26,11 @@
 <mapEntry key="OUT" value="UML2Target"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="Lib" value="/data/inputs/AssertionModification/lib-XML.ecore"/>
-<mapEntry key="IN" value="/data/inputs/AssertionModification/example-UML2.uml"/>
+<mapEntry key="Lib" value="/org.eclipse.m2m.atl.tests/data/inputs/AssertionModification/lib-XML.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/AssertionModification/example-UML2.uml"/>
 <mapEntry key="UML2" value="uri:http://www.eclipse.org/uml2/2.0.0/UML"/>
-<mapEntry key="OUT" value="/data/inputs/AssertionModification/example-UML2Target.uml"/>
-<mapEntry key="XML" value="/data/inputs/AssertionModification/XML.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/AssertionModification/example-UML2Target.uml"/>
+<mapEntry key="XML" value="/org.eclipse.m2m.atl.tests/data/inputs/AssertionModification/XML.ecore"/>
 <mapEntry key="UML2Target" value="uri:http://www.eclipse.org/uml2/2.0.0/UML"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>

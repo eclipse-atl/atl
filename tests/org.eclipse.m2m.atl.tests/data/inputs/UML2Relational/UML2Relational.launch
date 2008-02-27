@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
-<stringAttribute key="ATL File Name" value="/data/inputs/UML2Relational/UML2Relational.atl"/>
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/UML2Relational/UML2Relational.atl"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <mapAttribute key="Input">
 <mapEntry key="IN" value="UML"/>
@@ -21,9 +21,9 @@
 <mapEntry key="OUT" value="Relational"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="Relational" value="/data/inputs/UML2Relational/relational.ecore"/>
-<mapEntry key="IN" value="/data/inputs/UML2Relational/sample-Relational.uml"/>
-<mapEntry key="OUT" value="/data/inputs/UML2Relational/sample-Relational.ecore"/>
+<mapEntry key="Relational" value="/org.eclipse.m2m.atl.tests/data/inputs/UML2Relational/relational.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/UML2Relational/sample-Relational.uml"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/UML2Relational/sample-Relational.ecore"/>
 <mapEntry key="UML" value="uri:http://www.eclipse.org/uml2/2.1.0/UML"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="UML2Relational"/>

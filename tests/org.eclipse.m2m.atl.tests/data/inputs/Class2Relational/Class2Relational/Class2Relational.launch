@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
-<stringAttribute key="ATL File Name" value="/data/inputs/Class2Relational/Class2Relational/Class2Relational.atl"/>
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Class2Relational/Class2Relational.atl"/>
 <stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <mapAttribute key="Input">
@@ -22,10 +22,10 @@
 <mapEntry key="OUT" value="Relational"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="IN" value="/data/inputs/Class2Relational/Class2Relational/inClass.ecore"/>
-<mapEntry key="Relational" value="/data/inputs/Class2Relational/Relational.ecore"/>
-<mapEntry key="Class" value="/data/inputs/Class2Relational/Class.ecore"/>
-<mapEntry key="OUT" value="/data/inputs/Class2Relational/Class2Relational/outRelational.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Class2Relational/inClass.ecore"/>
+<mapEntry key="Relational" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Relational.ecore"/>
+<mapEntry key="Class" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Class.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Class2Relational/outRelational.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>
 <listAttribute key="Superimpose"/>
