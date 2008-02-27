@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.tests;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -52,7 +56,16 @@ public class AtlTestPlugin extends Plugin {
 	 * 
 	 * @return the main ResourceSet
 	 */
-	public static ResourceSet getResourceSet() {
+	public ResourceSet getResourceSet() {
 		return resourceSet;
+	}
+	
+	public String getBaseDirectory(){
+		try {
+			return new File(FileLocator.toFileURL(AtlTestPlugin.getDefault().getBundle().getEntry("/")).getFile()).getParent();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

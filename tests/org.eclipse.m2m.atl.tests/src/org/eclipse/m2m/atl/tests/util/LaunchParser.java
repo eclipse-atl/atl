@@ -13,11 +13,7 @@ package org.eclipse.m2m.atl.tests.util;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +21,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.m2m.atl.adt.launching.AtlVM;
-import org.eclipse.m2m.atl.engine.AtlModelHandler;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
+import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,18 +33,26 @@ import org.xml.sax.SAXException;
  * 
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
  */
-public class TransfoLauncher {
+public class LaunchParser {
 
 	//transformation parameters
-	protected URL atlUrl;
-	protected URL asmUrl;
-	protected Map libsFromConfig;
-	protected List superimpose;
-	protected Map input;
-	protected Map output;
-	protected Map modelHandler;
-	protected Map path;
+	public URL atlUrl;
+	public URL asmUrl;
+	public Map libsFromConfig;
+	public List superimpose;
+	public Map input;
+	public Map output;
+	public Map modelHandler;
+	public Map path;
+	public Map options;
 
+	private String convertPath(String path){
+		if (!path.startsWith("uri:") && !path.startsWith("#")) {
+			return AtlTestPlugin.getDefault().getBaseDirectory()+path;
+		}
+		return path;
+	}
+	
 	/**
 	 * Parse the .launch files to set transformation parameters.
 	 * 
@@ -61,6 +63,7 @@ public class TransfoLauncher {
 	 * @throws ParserConfigurationException
 	 */
 	public void parseConfiguration(String uri) throws Exception {
+		
 		//static variables initialization
 		libsFromConfig = new HashMap();
 		superimpose = new ArrayList();
@@ -68,6 +71,7 @@ public class TransfoLauncher {
 		output = new HashMap();
 		modelHandler = new HashMap();
 		path = new HashMap();
+		options = new HashMap();
 
 		//parsing configuration
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -80,20 +84,22 @@ public class TransfoLauncher {
 			if (node instanceof Element) {
 				Element element = (Element) node;
 				String key = element.getAttribute("key"); //$NON-NLS-1$
-				if (key.equals("ATL File Name")) { //$NON-NLS-1$
+				if (element.getNodeName().equals("booleanAttribute")) {
+					options.put(key, element.getAttribute("value"));
+				} else if (key.equals("ATL File Name")) { //$NON-NLS-1$
 					String asmFilePath = element.getAttribute("value"); //$NON-NLS-1$
-					atlUrl = FileUtils.fileNameToURL(asmFilePath);
+					atlUrl = new URL("file:"+convertPath(asmFilePath));
 					if (asmFilePath.endsWith(".atl")) { //$NON-NLS-1$
 						asmFilePath = asmFilePath.substring(0,asmFilePath.length() - 4)+".asm"; //$NON-NLS-1$
 					}
-					asmUrl = FileUtils.fileNameToURL(asmFilePath);
+					asmUrl = new URL("file:"+convertPath(asmFilePath));
 				} else if (key.equals("Superimpose")) { //$NON-NLS-1$
 					NodeList entriesList = element.getChildNodes();
 					for (int j = 0; j < entriesList.getLength(); j++) {
 						Node nodeEntry = entriesList.item(j);
 						if (nodeEntry instanceof Element) {
 							Element entry = (Element) nodeEntry;
-							URL moduleUrl = FileUtils.fileNameToURL(entry.getAttribute("value")); //$NON-NLS-1$
+							URL moduleUrl = new URL("file:"+convertPath(entry.getAttribute("value"))); //$NON-NLS-1$
 							superimpose.add(moduleUrl);
 						}
 					}				
@@ -103,7 +109,7 @@ public class TransfoLauncher {
 						Node nodeEntry = nodes.item(j);
 						if (nodeEntry instanceof Element) {
 							Element entry = (Element) nodeEntry;
-							libsFromConfig.put(entry.getAttribute("key"),FileUtils.fileNameToURL(entry.getAttribute("value")));			 //$NON-NLS-1$ //$NON-NLS-2$
+							libsFromConfig.put(entry.getAttribute("key"),new URL("file:"+convertPath(entry.getAttribute("value"))));			 //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
@@ -112,7 +118,7 @@ public class TransfoLauncher {
 						Node nodeEntry = element.getChildNodes().item(j);
 						if (nodeEntry instanceof Element) {
 							Element entry = (Element) nodeEntry;
-							path.put(entry.getAttribute("key"),entry.getAttribute("value"));			 //$NON-NLS-1$ //$NON-NLS-2$
+							path.put(entry.getAttribute("key"),convertPath(entry.getAttribute("value")));		
 						}
 					}
 				}			
@@ -145,71 +151,6 @@ public class TransfoLauncher {
 				}
 			}
 		}
-	}
-	
-	public Map getOutput() {
-		return output;
-	}
-
-	public Map getPath() {
-		return path;
-	}
-
-	public double run(String atlVMName) throws Exception {
-		boolean checkSameModel = false;
-		//model handler
-		Map atlModelHandler = new HashMap();
-		for (Iterator i = modelHandler.keySet().iterator(); i.hasNext();) {
-			String currentModelHandler = (String)modelHandler.get(i.next());
-			if (!atlModelHandler.containsKey(currentModelHandler) && !currentModelHandler.equals("")) //$NON-NLS-1$
-				atlModelHandler.put(currentModelHandler, AtlModelHandler.getDefault(currentModelHandler));
-		}
-
-		Collection toDispose = new HashSet();
-
-		Map inModel = AtlUtils.getSourceModels(input, path, modelHandler, atlModelHandler, checkSameModel, toDispose);
-		Map outModel = AtlUtils.getTargetModels(output, path, modelHandler, atlModelHandler, inModel, checkSameModel, toDispose);
-
-		Map models = new HashMap();
-
-		for(Iterator i = inModel.keySet().iterator() ; i.hasNext() ; ) {
-			String mName = (String)i.next();
-			models.put(mName, inModel.get(mName));
-		}
-
-		for(Iterator i = outModel.keySet().iterator() ; i.hasNext() ; ) {
-			String mName = (String)i.next();
-			models.put(mName, outModel.get(mName));
-		}
-		
-		AtlVM atlVM = AtlVM.getVM(atlVMName);		
-		long startTime = System.currentTimeMillis();
-		atlVM.launch(asmUrl, libsFromConfig, models, Collections.EMPTY_MAP, superimpose, Collections.EMPTY_MAP);
-		long endTime = System.currentTimeMillis();
-	
-
-		// save output models
-		for(Iterator i = output.keySet().iterator(); i.hasNext() ; ) {
-			String mName = (String)i.next();
-			ASMModel currentOutModel = (ASMModel) outModel.get(mName);
-			String newPath = FileUtils.fileNameToURI((String) path.get(mName)).toString();	
-			AtlModelHandler.getHandler(currentOutModel).saveModel(currentOutModel, newPath);
-		}			
-
-		for(Iterator i = toDispose.iterator() ; i.hasNext() ; ) {
-			ASMModel model = (ASMModel)i.next();
-			AtlModelHandler.getHandler(model).disposeOfModel(model);
-		}
-		
-		return (endTime - startTime) / 1000.;
-	}
-
-	public URL getAtlURL(){
-		return atlUrl;
-	}
-
-	public void setAsmUrl(URL asmUrl) {
-		this.asmUrl = asmUrl;
 	}
 	
 }

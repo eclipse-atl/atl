@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.AtlParser;
+import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 
 /**
  * Init parser data.
@@ -29,7 +30,7 @@ public class InitParserData {
 	 */
 	public static void main(String[] args) {
 		System.out.println("-- init --");
-		File expDir = new File(FileUtils.getTestCommonDirectory() + "/data/expected");
+		File expDir = new File(AtlTestPlugin.getDefault().getBaseDirectory() + "/org.eclipse.m2m.atl.tests/data/expected");
 		final File[] directories = FileUtils.listDirectories(expDir);
 		if (directories != null) {
 			for (int i = 0; i < directories.length; i++) {

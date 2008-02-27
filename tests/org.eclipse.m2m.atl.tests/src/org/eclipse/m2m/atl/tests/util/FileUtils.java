@@ -13,17 +13,9 @@ package org.eclipse.m2m.atl.tests.util;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 
 /**
@@ -32,89 +24,6 @@ import org.eclipse.m2m.atl.tests.AtlTestsMessages;
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
  */
 public class FileUtils {
-
-	private static final String CLASS_FILE = "org/eclipse/m2m/atl/tests/util/FileUtils.class"; //$NON-NLS-1$
-
-	public static String getTestCommonDirectory() {
-		try
-		{
-			return new File(FileLocator.toFileURL(AtlTestPlugin.getDefault().getBundle().getEntry("/")).getFile()).toString(); //$NON-NLS-1$
-		}
-		catch (Throwable t)
-		{
-			// Ignore
-		}
-
-		URL url = ClassLoader.getSystemResource(CLASS_FILE);
-		if (url != null)
-		{
-			URI uri = URI.createURI(url.toString());
-			if (uri.isArchive())
-			{
-				// Returns the inner URI
-				String authority = uri.authority();
-
-				// Removing the !
-				authority = authority.substring(0, authority.length()-1);
-
-				uri = URI.createURI(authority);
-			}
-
-			if (uri.isFile())
-			{
-				File parentDir = new File(uri.toFileString()).getParentFile();
-				while (parentDir != null && parentDir.isDirectory())
-				{
-					String name = parentDir.getName();
-					if (name.equals(AtlTestPlugin.PLUGIN_ID) || name.startsWith(AtlTestPlugin.PLUGIN_ID + "_")) //$NON-NLS-1$
-					{
-						return parentDir.getAbsolutePath(); 
-					}
-					parentDir = parentDir.getParentFile();
-				}
-			}
-		}
-		throw new RuntimeException(AtlTestsMessages.getString("FileUtils.DIRERROR",new Object[]{AtlTestPlugin.PLUGIN_ID})); //$NON-NLS-1$
-	}
-
-	/**
-	 * With the path of a file, the URI of the file is returned
-	 * @param filePath
-	 * @return the URL corresponding to the file
-	 * @throws IllegalArgumentException
-	 */
-	public static URI fileNameToURI(String filePath) throws IOException, IllegalArgumentException {
-		if (filePath.startsWith("uri:")) { //$NON-NLS-1$
-			filePath = filePath.substring(4);
-			return URI.createURI(filePath, false);
-		} else {
-			filePath=getTestCommonDirectory()+filePath;
-			return URI.createFileURI(filePath);
-		}
-	}
-
-	/**
-	 * With the path of a file, the URL of the file is returned
-	 * @param filePath
-	 * @return the URL corresponding to the file
-	 * @throws MalformedURLException
-	 */
-	public static URL fileNameToURL(String filePath) throws IOException, MalformedURLException {
-		filePath="file:"+getTestCommonDirectory()+filePath; //$NON-NLS-1$
-		return new URL(filePath);
-	}
-	
-	/**
-	 * With the path of a file, the input stream of the file is returned
-	 * @param filePath
-	 * @return the input stream corresponding to the file
-	 * @throws FileNotFoundException
-	 */
-	public static InputStream fileNameToInputStream(String filePath) throws FileNotFoundException, CoreException {
-		filePath="file:"+getTestCommonDirectory()+filePath; //$NON-NLS-1$
-		File f = new File(filePath.substring(4));
-		return new FileInputStream(f);
-	}
 
 	/**
 	 * Compare bytes of two files.

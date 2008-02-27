@@ -19,6 +19,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
 
 /**
@@ -39,7 +40,7 @@ public abstract class TestNonRegression extends TestCase {
 	}
 
 	/** The path for usecases */
-	protected static final String INPUT_PATH = "/data/inputs";//$NON-NLS-1$
+	protected static final String INPUT_PATH = "/org.eclipse.m2m.atl.tests/data/inputs";//$NON-NLS-1$
 	private String propertiesPath = null;
 
 	/**
@@ -50,7 +51,7 @@ public abstract class TestNonRegression extends TestCase {
 	 * @throws InterruptedException If one of the threads is interrupted.
 	 */
 	public void testNonRegression() throws Exception {
-		File inputDir = new File(FileUtils.getTestCommonDirectory() + INPUT_PATH);
+		File inputDir = new File(AtlTestPlugin.getDefault().getBaseDirectory() + INPUT_PATH);
 		final File[] directories = FileUtils.listDirectories(inputDir);
 		if (directories != null) {
 			for (int i = 0; i < directories.length; i++) {
@@ -95,7 +96,7 @@ public abstract class TestNonRegression extends TestCase {
 		String[] res = null;
 		Properties props = new Properties();
 		if (propertiesPath == null) return null;
-		File propertiesFile = new File(FileUtils.getTestCommonDirectory() + propertiesPath);
+		File propertiesFile = new File(AtlTestPlugin.getDefault().getBaseDirectory() + propertiesPath);
 		FileInputStream fis = new FileInputStream(propertiesFile);
 		props.load(fis);
 		Set tests_to_jump = props.keySet();
