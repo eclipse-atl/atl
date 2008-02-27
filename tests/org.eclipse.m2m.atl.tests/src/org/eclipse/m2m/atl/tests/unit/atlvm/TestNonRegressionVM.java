@@ -21,9 +21,9 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.adt.launching.AtlVM;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.engine.AtlEMFModelHandler;
+import org.eclipse.m2m.atl.engine.AtlLauncher;
 import org.eclipse.m2m.atl.engine.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo;
@@ -69,10 +69,9 @@ public class TestNonRegressionVM extends TestNonRegressionTransfo {
 			String mName = (String)i.next();
 			models.put(mName, outModel.get(mName));
 		}
-		
-		AtlVM atlVM = AtlVM.getVM("Regular VM (with debugger)");		
+				
 		long startTime = System.currentTimeMillis();
-		atlVM.launch(launchParser.asmUrl, launchParser.libsFromConfig, models, Collections.EMPTY_MAP, launchParser.superimpose, launchParser.options);
+		AtlLauncher.getDefault().launch(launchParser.asmUrl, launchParser.libsFromConfig, models, Collections.EMPTY_MAP, launchParser.superimpose, launchParser.options);
 		long endTime = System.currentTimeMillis();
 	
 	

@@ -19,7 +19,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.adt.launching.AtlLauncherTools;
 import org.eclipse.m2m.atl.engine.emfvm.ASM;
 import org.eclipse.m2m.atl.engine.emfvm.ASMXMLReader;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Model;
@@ -77,12 +76,6 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 		}
 
 		try {
-			Map options = new HashMap();
-			for(int i = 0 ; i < AtlLauncherTools.additionalParamIds.length ; i++) {
-				boolean value = new Boolean((String)launchParser.options.get(AtlLauncherTools.additionalParamIds[i])).booleanValue();
-				options.put(AtlLauncherTools.additionalParamIds[i], value ? "true" : "false");
-			}
-
 			Map libraries = new HashMap();
 			for(Iterator i = launchParser.libsFromConfig.keySet().iterator() ; i.hasNext() ; ) {
 				String libName = (String)i.next();
@@ -92,7 +85,7 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 			}
 
 			startTime = System.currentTimeMillis();
-			asm.run(models, libraries, options);
+			asm.run(models, libraries, launchParser.options);
 			endTime = System.currentTimeMillis();
 
 			for(Iterator i = launchParser.output.keySet().iterator() ; i.hasNext() ; ) {
