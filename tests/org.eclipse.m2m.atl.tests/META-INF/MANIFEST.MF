@@ -15,7 +15,8 @@ Require-Bundle: org.junit,
  org.eclipse.emf.compare.match,
  org.eclipse.emf.compare.diff,
  org.eclipse.m2m.atl.adt.debug,
- org.eclipse.m2m.atl.engine
+ org.eclipse.m2m.atl.engine,
+ org.eclipse.m2m.atl.engine.emfvm
 Bundle-Activator: org.eclipse.m2m.atl.tests.AtlTestPlugin
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
