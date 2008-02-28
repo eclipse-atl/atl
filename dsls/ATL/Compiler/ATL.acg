@@ -635,7 +635,13 @@ acg ATL startsWith Unit {
 								variable v named v.varName {
 								[
 									analyze self.mostConcreteOutPatternElements() mode apply
-									analyze self.actionBlock.asSequence()
+									if(not self.actionBlock.oclIsUndefined()) {
+										if(self.module.isRefining) {
+											report error 'do block not supported in refining mode'
+										} else {
+											analyze self.actionBlock
+										}
+									}
 								]
 								}
 							}
@@ -950,6 +956,7 @@ acg ATL startsWith Unit {
 	LazyMatchedRule mode create {	-- TODO: REFINING
 		foreach(ope in self.mostConcreteOutPatternElements()) {
 			if(ope isa ForEachOutPatternElement) {
+				-- TODO: compiler crashes
 				report error 'distinct-foreach target pattern elements are deprecated and not compatible with lazy rules'
 			} else {
 			
@@ -1661,6 +1668,10 @@ acg ATL startsWith Unit {
 		} else {
 			store self.source.referredVariable
 		}
+	}
+
+	code BindingStat {
+		report error 'only variables or navigations are allowed on the left of a binding statement'
 	}
 
 	-- TODO: pop value if any?
