@@ -170,6 +170,7 @@ syntax ATL(k = 0) {
 		:	varName ":" type
 			(isDefined(model) ? "in" model{separator = ",", refersTo = name, lookIn = #all})
 			(isDefined(sourceElement) ? "mapsTo" sourceElement{refersTo = varName})
+			(isDefined(reverseBindings) ? "->" "(" reverseBindings{separator = ","} ")")
 			(isDefined(bindings) ?
 				<space> "(" [
 					bindings{separator = ","}

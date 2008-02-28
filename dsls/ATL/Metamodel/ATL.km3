@@ -109,7 +109,9 @@ package ATL {
 		reference model[0-1] : OclModel;
 	}
 
-	class SimpleOutPatternElement extends OutPatternElement {}
+	class SimpleOutPatternElement extends OutPatternElement {
+		reference reverseBindings[*] ordered container : OclExpression;
+	}
 
 	class ForEachOutPatternElement extends OutPatternElement {
 		reference collection container : OclExpression;
