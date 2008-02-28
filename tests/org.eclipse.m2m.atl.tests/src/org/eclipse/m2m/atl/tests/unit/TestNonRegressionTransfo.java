@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.tests.unit;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -38,6 +39,15 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
 	private double totalTime = 0;
 	protected LaunchParser launchParser = new LaunchParser();
+
+	private FileWriter results;
+	
+	protected void setUp() throws Exception {
+		super.setUp();
+		results = new FileWriter("results/"+getVMName()+"_results.xml");
+		results.write("<?xml version=\"1.0\"?>\n");
+		results.write("<vm>\n");
+	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#singleTest(java.io.File)
@@ -105,12 +115,15 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		double executionTime = 0;
 		try {
 			executionTime = launch();
+			results.write("\t<test name=\""+directory.getName()+"\" directory=\""+
+					directory.toString().substring(AtlTestPlugin.getDefault().getBaseDirectory().length())+"\" time=\""+executionTime+"\"/>\n");
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.6", new Object[]{e})); //$NON-NLS-1$
 		}
 		System.out.println(executionTime+"s."); //$NON-NLS-1$
 		AtlTestPlugin.getDefault().getResourceSet().getResources().clear();
+
 
 		/*
 		 * RESULTS COMPARISON 
@@ -149,9 +162,14 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
 	protected void tearDown() throws Exception {
 		System.out.println("total time : "+ totalTime +"s.");
+		results.write("\t<test name=\"TOTAL\" time=\""+totalTime+"\"/>\n");
+		results.write("</vm>\n");
+		results.close();
 		super.tearDown();
 	}
 	
 	protected abstract double launch() throws Exception ;
+	
+	protected abstract String getVMName() ;
 }
 

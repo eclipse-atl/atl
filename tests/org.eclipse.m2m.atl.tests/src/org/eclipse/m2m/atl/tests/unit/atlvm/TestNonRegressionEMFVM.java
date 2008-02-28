@@ -33,6 +33,10 @@ import org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo;
  */
 public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 
+	protected String getVMName() {
+		return "EMFVM";
+	}
+
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
