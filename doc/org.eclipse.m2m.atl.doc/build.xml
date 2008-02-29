@@ -2,17 +2,15 @@
 <project name="org.eclipse.m2m.atl.doc" default="build.jars" basedir=".">
 	
 	<!-- Plug-in information.  This is a HACK.  Do not forget to update version numbers, etc.. -->
-	<property file="${buildDirectory}/finalPluginsVersions.properties"/>
-	<property name="pluginVersion" value="${org.eclipse.m2m.atl.doc}"/>
-
-
+	<property name="pluginVersion" value="_VERSION_"/>
+	
 	<property name="plugin" value="org.eclipse.m2m.atl"/>
 	<property name="docPlugin" value="org.eclipse.m2m.atl.doc"/>
+	
+	<!-- TODO: if you add new folders in your doc plugin, make sure you include them here -->
+	<property name="filesToInclude" value="META-INF/**,images/**,tasks/**,references/**,tutorials/**,notices.html,about.*,eclipse*.gif,modeling*.png,plugin.*,*.css,toc*.xml,topics_*.xml,index/**,doc.zip"/>
 
-	<property name="filesToInclude" value="META-INF/**,about.html,about.ini,about.mappings,about.properties,modeling*.png,plugin.xml,plugin.properties,doc.zip,*.xml,index/**"/>
-	<property name="filesToExclude" value="**/*.dnx"/>
-
-	<!-- Compiler settings. -->
+	<!-- Compiler settings -->
 	<property name="javacFailOnError" value="false"/>
 	<property name="javacDebugInfo" value="on"/>
 	<property name="javacVerbose" value="true"/>
@@ -25,7 +23,6 @@
 		</fileset>
 	</path>
 	<property name="bootclasspath" refid="path_bootclasspath"/>
-
 	<property name="bundleJavacSource" value="${javacSource}"/>
 	<property name="bundleJavacTarget" value="${javacTarget}"/>
 	<property name="bundleBootClasspath" value="${bootclasspath}"/>
@@ -49,10 +46,9 @@
 
 	<target name="properties" if="eclipse.running">
 		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
-
 	</target>
 
-	<target name="build.update.jar" depends="init" description="Build the plug-in: ${plugin} for an update site.">
+	<target name="build.update.jar" depends="init" description="Build the plug-in: ${docPlugin} for an update site.">
 		<delete dir="${temp.folder}"/>
 		<mkdir dir="${temp.folder}"/>
 		<antcall target="build.jars"/>
@@ -65,42 +61,33 @@
 
 	<target name="build.jars" depends="init" description="Build all the jars for the plug-in: ${docPlugin}.">
 		<!-- Execute a shell script that will create an ant javadoc script and then run it for us -->
+		<chmod perm="754" file="build/antJavadoc.sh"/>
 		<exec executable="sh">
 			<arg value="build/antJavadoc.sh"/>
 			<arg value="${eclipse.home}/../eclipse"/>
 		</exec>
-		<!--
+
 		<antcall target="build.index"/>
-		-->
-		
-		<!-- Zip up all of the documentation artifacts - references(including javadoc), images, tutorials, etc. -->
-		<zip destfile="doc.zip" compress="true">
-			<!-- Add new folders for documentation zip here. -->
-			<zipfileset dir="references" prefix="references" excludes="**/impl,**/impl/**"/>
-			<zipfileset dir="images" prefix="images"/>
-			<zipfileset dir="tutorials" prefix="tutorials"/>
-			<zipfileset dir="html" prefix="html"/>
-		</zip>
+
 	</target>
 
 	<target name="build.index" depends="init" description="Builds search index for the plug-in" if="eclipse.running">
 		<help.buildHelpIndex manifest="plugin.xml" destination="."/>
 	</target>
-	
+
 	<target name="build.sources" depends="init">
 	</target>
+
 	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
 		<mkdir dir="${destination.temp.folder}/${docPlugin}_${pluginVersion}"/>
 		<copy todir="${destination.temp.folder}/${docPlugin}_${pluginVersion}" failonerror="true" overwrite="false">
-			<fileset dir="${basedir}"
-				includes="${filesToInclude}"
-				excludes="${filesToExclude}"/>
+			<fileset dir="${basedir}" includes="${filesToInclude}"/>
 		</copy>
 		<eclipse.versionReplacer 
 			path="${destination.temp.folder}/${docPlugin}_${pluginVersion}" 
 			version="${pluginVersion}"/>
 	</target>
-	
+
 	<target name="build.zips" depends="init">
 	</target>
 

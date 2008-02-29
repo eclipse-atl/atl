@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-  <!-- ====================================================================== -->
-  <!-- Define primary TOC                                                     -->
-  <!-- ====================================================================== -->
-  
   <extension point="org.eclipse.help.toc">
     <toc file="toc.xml" primary="true"/>
-  </extension>
-
-  <!-- ====================================================================== -->
-  <!-- Define TOCs                                                            -->
-  <!-- ====================================================================== -->
-
-   <extension point="org.eclipse.help.toc">
-       <toc file="topics_Reference.xml" />
+    <index path="index"/>
+    <toc file="topics_Reference.xml" primary="false"/>
    </extension>
 
 <!-- ============================================================================= -->

@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<span>File created to avoid PDE warnings.
-The actual content is created during the build.</span>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Javadoc place holder" link_to="toc.xml#reference"> 
+</toc>

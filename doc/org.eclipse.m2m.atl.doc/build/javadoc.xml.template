@@ -4,7 +4,7 @@
 	<property name="classpath"  value="bin"/>
 	<property name="overview"   value="build/overview.html"/>
 	<property name="eclipseDir" value="."/>
-	<property name="docjar" value="org.eclipse.m2m.atl.doc.isv.jar"/>
+	<property name="docjar" value="org.eclipse.platform.doc.isv.jar"/>
 	
 	<!-- other properties that must be passed to this script include:
 		 windowTitle
