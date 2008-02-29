@@ -16,7 +16,7 @@ javadocExclusions="<exclude name=\"**/internal/**\"/> <exclude name=\"**/example
 
 ##########################################################################
 
-debug=0; if [ $debug -gt 0 ]; then echo "[antJd] debug: "$debug; fi
+debug=1; if [ $debug -gt 0 ]; then echo "[antJd] debug: "$debug; fi
 
 if [ "x"$ANT_HOME = "x" ]; then export ANT_HOME=/opt/apache-ant-1.6; fi
 if [ "x"$JAVA_HOME = "x" ]; then export JAVA_HOME=/opt/ibm-java2-1.4; fi
@@ -79,6 +79,7 @@ packagesets="";
 copydocfiles="";
 for pluginDir in $pluginDirs; do
 	pluginDir=`echo $pluginDir | sed -e 's/\/runtime$//g'`;
+	if [ $pluginDir = $pluginPath/$pluginName.source ] ; then continue ; fi # skip .source folders
 	srcDir=$pluginDir/src;
 	if [ $debug -gt 0 ]; then echo "[antJd] srcDir: "$srcDir; fi
 	if [ -d "$srcDir" ]; then
