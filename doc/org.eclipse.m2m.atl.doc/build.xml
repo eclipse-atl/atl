@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="org.eclipse.m2m.atl.doc" default="build.jars" basedir=".">
 	
-	<!-- Plug-in information.  This is a HACK.  Do not forget to update version numbers, etc.. -->
-	<property name="pluginVersion" value="2.0.0"/>
-	
+    <property file="${buildDirectory}/finalPluginsVersions.properties"/>
+	<property name="pluginVersion" value="${org.eclipse.m2m.atl.doc}"/>
+		
 	<property name="plugin" value="org.eclipse.m2m.atl.engine"/>
 	<property name="docPlugin" value="org.eclipse.m2m.atl.doc"/>
 	
