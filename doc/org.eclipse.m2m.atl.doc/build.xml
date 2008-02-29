@@ -4,7 +4,7 @@
 	<!-- Plug-in information.  This is a HACK.  Do not forget to update version numbers, etc.. -->
 	<property name="pluginVersion" value="_VERSION_"/>
 	
-	<property name="plugin" value="org.eclipse.m2m.atl"/>
+	<property name="plugin" value="org.eclipse.m2m.atl.engine"/>
 	<property name="docPlugin" value="org.eclipse.m2m.atl.doc"/>
 	
 	<!-- TODO: if you add new folders in your doc plugin, make sure you include them here -->
