@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-  <extension point="org.eclipse.help.toc">
+  <extension 
+  		point="org.eclipse.help.toc">
     <toc file="toc.xml" primary="true"/>
     <index path="index"/>
    </extension>
-
+   
 <!-- ============================================================================= -->
 <!-- Define Javadoc locations                                                      -->
 <!-- ============================================================================= -->
@@ -18,5 +19,5 @@
        	<plugin id="org.eclipse.m2m.atl.engine.emfvm"/>
        </javadoc>
    </extension>
-
+   
 </plugin>
