@@ -57,7 +57,7 @@ public class MarkerMaker {
 	 * @param res the resource associated to the created marker
 	 * @param problem the EObject representing a problem
 	 */
-	private void eObjectToPbmMarker(IResource res, EObject problem, int tabWidth) {
+	private void eObjectToPbmMarker(IResource res, AtlNbCharFile help, EObject problem, int tabWidth) {
 		EPackage pkProblem = null;
 		EClass clProblem = null;
 		EStructuralFeature sfSeverity = null;
@@ -77,16 +77,12 @@ public class MarkerMaker {
 		int lineNumber = Integer.parseInt(location.split(":")[0]);//$NON-NLS-1$
 		int charStart = 0, charEnd = 0;
 		try {
-			AtlNbCharFile help = new AtlNbCharFile(((IFile)res).getContents());
 			if (location.indexOf('-') == -1) {
 				location +=  '-' + location;
 			}
 			int[] pos = help.getIndexChar(location, tabWidth);
 			charStart = pos[0];
 			charEnd = pos[1];
-		} catch (CoreException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
-//			e1.printStackTrace();
 		} catch(Exception e) {
 			description += " [location \"" + location + "\" incorrectly reported because of error]";//$NON-NLS-1$//$NON-NLS-2$
 		}
@@ -108,8 +104,14 @@ public class MarkerMaker {
 	}
 	
 	private void createPbmMarkers(IResource res, EObject[] eos, int tabWidth) {
-		for (int i = 0; i  < eos.length; i++) {
-			eObjectToPbmMarker(res, eos[i], tabWidth);
+		try {
+			AtlNbCharFile help = new AtlNbCharFile(((IFile)res).getContents());
+			for (int i = 0; i  < eos.length; i++) {
+				eObjectToPbmMarker(res, help, eos[i], tabWidth);
+			}
+		} catch (CoreException e1) {
+			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+//			e1.printStackTrace();
 		}
 	}
 	
