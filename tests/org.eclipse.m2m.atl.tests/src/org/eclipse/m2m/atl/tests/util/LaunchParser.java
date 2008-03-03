@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.tests.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class LaunchParser {
 	 * @throws IOException
 	 * @throws ParserConfigurationException
 	 */
-	public void parseConfiguration(String uri) throws Exception {
+	public void parseConfiguration(String launchPath) throws Exception {
 		
 		//static variables initialization
 		libsFromConfig = new HashMap();
@@ -76,7 +77,7 @@ public class LaunchParser {
 		//parsing configuration
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = factory.newDocumentBuilder();
-		Document document = docBuilder.parse(uri);			
+		Document document = docBuilder.parse(new File(launchPath));			
 		Element root = (Element) document.getFirstChild();
 		NodeList nodeList = root.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
