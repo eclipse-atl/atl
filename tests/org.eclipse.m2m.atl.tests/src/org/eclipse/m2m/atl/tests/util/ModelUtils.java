@@ -118,7 +118,7 @@ public final class ModelUtils {
 		Resource.Factory myEcoreFactory = new EcoreResourceFactoryImpl();
 		Resource mmExtent = myEcoreFactory.createResource(metamodelURI);
 		try {
-			mmExtent.load(new FileInputStream(metamodelURI.path()),Collections.EMPTY_MAP);
+			mmExtent.load(new FileInputStream(metamodelURI.toFileString()),Collections.EMPTY_MAP);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception ex) {
