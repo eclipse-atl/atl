@@ -27,7 +27,7 @@
 <mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/sample-Relational.ecore"/>
 <mapEntry key="Relational" value="/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/relational.ecore"/>
 <mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/sample-Relational.uml"/>
-<mapEntry key="PRO" value="/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/relational.uml"/>
+<mapEntry key="PRO" value="/org.eclipse.m2m.atl.tests/profiles/relational.uml"/>
 <mapEntry key="UML" value="uri:http://www.eclipse.org/uml2/2.1.0/UML"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="Relational2UML"/>
