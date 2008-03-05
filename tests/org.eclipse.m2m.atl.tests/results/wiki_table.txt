@@ -14,13 +14,13 @@
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/SpreadsheetMLSimplified2Trace?root=Modeling_Project SpreadsheetMLSimplified2Trace]
 ! colspan=1 | <b style="color:green">PASS</b>
 ! colspan=1 | 0.031s.
-! colspan=1 | 0.015s.
+! colspan=1 | 0.0s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Ecore2Class?root=Modeling_Project Ecore2Class]
 ! colspan=1 | <b style="color:green">PASS</b>
 ! colspan=1 | 0.016s.
-! colspan=1 | 0.015s.
+! colspan=1 | 0.016s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons?root=Modeling_Project Families2Persons]
@@ -31,13 +31,13 @@
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/EMF2DSL/KM32DSL?root=Modeling_Project KM32DSL]
 ! colspan=1 | <b style="color:green">PASS</b>
-! colspan=1 | 0.047s.
-! colspan=1 | 0.015s.
+! colspan=1 | 0.062s.
+! colspan=1 | 0.032s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/ModelBridge/XML2DSLModel?root=Modeling_Project XML2DSLModel]
 ! colspan=1 | <b style="color:green">PASS</b>
-! colspan=1 | 10.219s.
+! colspan=1 | 10.078s.
 ! colspan=1 | 0.922s.
 ! colspan=1 | 
 |-
@@ -49,14 +49,14 @@
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/XML2DSL?root=Modeling_Project XML2DSL]
 ! colspan=1 | <b style="color:green">PASS</b>
-! colspan=1 | 0.484s.
-! colspan=1 | 0.063s.
+! colspan=1 | 0.468s.
+! colspan=1 | 0.062s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/ModelBridge/DSLModel2KM2?root=Modeling_Project DSLModel2KM2]
 ! colspan=1 | <b style="color:green">PASS</b>
 ! colspan=1 | 0.047s.
-! colspan=1 | 0.016s.
+! colspan=1 | 0.0s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/UniqueLazyRule?root=Modeling_Project UniqueLazyRule]
@@ -67,38 +67,38 @@
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/Book2Publication/XML2Book?root=Modeling_Project XML2Book]
 ! colspan=1 | <b style="color:green">PASS</b>
-! colspan=1 | 0.015s.
+! colspan=1 | 0.016s.
 ! colspan=1 | 0.0s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/EMF2DSL/DSL2XML?root=Modeling_Project DSL2XML]
 ! colspan=1 | <b style="color:green">PASS</b>
 ! colspan=1 | 0.172s.
-! colspan=1 | 0.031s.
+! colspan=1 | 0.032s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML?root=Modeling_Project Maven2XML]
 ! colspan=1 | <b style="color:green">PASS</b>
 ! colspan=1 | 0.062s.
-! colspan=1 | 0.015s.
+! colspan=1 | 0.0s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant2Maven?root=Modeling_Project Ant2Maven]
 ! colspan=1 | <b style="color:green">PASS</b>
 ! colspan=1 | 0.109s.
-! colspan=1 | 0.094s.
+! colspan=1 | 0.063s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/ModelBridge/KM32ATL_KM22MM?root=Modeling_Project KM32ATL_KM22MM]
 ! colspan=1 | <b style="color:green">PASS</b>
 ! colspan=1 | 0.047s.
-! colspan=1 | 0.047s.
+! colspan=1 | 0.031s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/UML2Relational?root=Modeling_Project UML2Relational]
 ! colspan=1 | <b style="color:green">PASS</b>
 ! colspan=1 | 0.047s.
-! colspan=1 | 0.015s.
+! colspan=1 | 0.016s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/Book2Publication/Book2Publication?root=Modeling_Project Book2Publication]
@@ -113,10 +113,16 @@
 ! colspan=1 | 0.016s.
 ! colspan=1 | 
 |-
+! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML?root=Modeling_Project Relational2UML]
+! colspan=1 | <b style="color:green">PASS</b>
+! colspan=1 | 0.031s.
+! colspan=1 | 0.016s.
+! colspan=1 | 
+|-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook?root=Modeling_Project BibTeX2DocBook]
 ! colspan=1 | <b style="color:green">PASS</b>
 ! colspan=1 | 0.062s.
-! colspan=1 | 0.0s.
+! colspan=1 | 0.016s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/FlattenTest?root=Modeling_Project FlattenTest]
@@ -128,33 +134,33 @@
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/AssertionModification?root=Modeling_Project AssertionModification]
 ! colspan=1 | <b style="color:green">PASS</b>
 ! colspan=1 | 0.156s.
-! colspan=1 | 0.078s.
+! colspan=1 | 0.063s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XML2Ant?root=Modeling_Project XML2Ant]
 ! colspan=1 | <b style="color:green">PASS</b>
-! colspan=1 | 2.11s.
-! colspan=1 | 0.219s.
+! colspan=1 | 2.078s.
+! colspan=1 | 0.235s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Class2Relational?root=Modeling_Project Class2Relational]
 ! colspan=1 | <b style="color:green">PASS</b>
 ! colspan=1 | 0.016s.
-! colspan=1 | 0.0s.
+! colspan=1 | 0.016s.
 ! colspan=1 | 
 |-
 ! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/data/inputs/ATL2Problem?root=Modeling_Project ATL2Problem]
 ! colspan=1 | <b style="color:green">PASS</b>
-! colspan=1 | 0.078s.
+! colspan=1 | 0.094s.
 ! colspan=1 | 0.016s.
 ! colspan=1 | EnumLiteral support added on 25/01/2008.
 |-
 ! colspan=2 | Total time : 
-! colspan=1 | 13.812s.
-! colspan=1 | 1.592s.
+! colspan=1 | 13.686s.
+! colspan=1 | 1.567s.
 |}
 
-Tests realized on Thu Feb 28 15:49:33 CET 2008 with :
+Tests realized on Wed Mar 05 18:39:38 CET 2008 with :
 Hardware
 *Processor : Pentium 2 GHz
 *RAM : 2 Go
