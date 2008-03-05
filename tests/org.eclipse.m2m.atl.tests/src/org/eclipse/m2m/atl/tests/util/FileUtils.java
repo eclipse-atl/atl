@@ -86,8 +86,8 @@ public class FileUtils {
 					&& !file.getName().equals("CVS"); //$NON-NLS-1$
 				}
 			});
+			Arrays.sort(directories);
 		}
-		Arrays.sort(directories);
 		return directories;
 	}
 }

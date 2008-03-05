@@ -42,33 +42,20 @@ public class TestNonRegressionParser extends TestNonRegression {
 		final File expectedDir = new File(directory.getPath().replace(File.separator + "inputs", //$NON-NLS-1$
 				File.separator + "expected")); //$NON-NLS-1$
 		final String transfoPath = directory+ File.separator + directory.getName() + ".atl";	 //$NON-NLS-1$
-		final String outputPath = directory+ File.separator + directory.getName() + ".atl.ecore";	 //$NON-NLS-1$
-		final String expectedPath = expectedDir+ File.separator + directory.getName() + ".atl.ecore";	 //$NON-NLS-1$
+		final String outputPath = directory+ File.separator + directory.getName() + ".atl.xmi";	 //$NON-NLS-1$
+		final String expectedPath = expectedDir+ File.separator + directory.getName() + ".atl.xmi";	 //$NON-NLS-1$
 		if (!new File(transfoPath).exists()) fail(AtlTestsMessages.getString("TestNonRegressionParser.FILENOTFOUND")); //$NON-NLS-1$
 
 		try {
 			EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));
-			ModelUtils.save(result, "file:/"+transfoPath+".ecore");	 //$NON-NLS-1$ //$NON-NLS-2$
+			ModelUtils.save(result, "file:/"+transfoPath+".xmi");	 //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(AtlTestsMessages.getString("TestNonRegressionParser.FAIL")); //$NON-NLS-1$
 		}		
 
 		try {
-			FileUtils.compareFiles(new File(outputPath), new File(expectedPath), false);
-			//TODO : solve models problems
-			//ModelUtils.compareModels(new File(outputPath), new File(expectedPath), true, true);
-			
-			/* NOTE : 
-			 * ======
-			 * To integrate a new test, you can generate the <TEST_NAME>.atl.ecore
-			 * by firstly use the following line :
-			 * FileUtils.compareFiles(new File(outputPath), new File(expectedPath), false);
-			 * 
-			 * Test will fail but you will be able to move the <TEST_NAME>.atl.ecore file
-			 * into the corresponding "expected" directory.
-			 */
-			
+			FileUtils.compareFiles(new File(outputPath), new File(expectedPath), true);			
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(AtlTestsMessages.getString("TestNonRegressionParser.COMPARISONFAIL",new Object[]{directory.getName()})); //$NON-NLS-1$

@@ -15,7 +15,6 @@ import java.io.FileInputStream;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.AtlParser;
-import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 
 /**
  * Init parser data.
@@ -30,34 +29,34 @@ public class InitParserData {
 	 */
 	public static void main(String[] args) {
 		System.out.println("-- init --");
-		File expDir = new File(AtlTestPlugin.getDefault().getBaseDirectory() + "/org.eclipse.m2m.atl.tests/data/expected");
+		File expDir = new File("data/expected");
 		final File[] directories = FileUtils.listDirectories(expDir);
 		if (directories != null) {
 			for (int i = 0; i < directories.length; i++) {
-				initSnapshots(directories[i], true);
+				initSnapshots(directories[i]);
 			}
 		}
 		System.out.println("-- done --");
 	}
 
-	private static void initSnapshots(File directory, boolean useEmfCompare){
+	private static void initSnapshots(File directory){
 		if (FileUtils.listDirectories(directory).length != 0) {
 			for (int i = 0; i < FileUtils.listDirectories(directory).length; i++) {
-				initSnapshots(FileUtils.listDirectories(directory)[i], useEmfCompare);
+				initSnapshots(FileUtils.listDirectories(directory)[i]);
 			}
 		} else {
 			initTest(directory);
 		}
 	}
 	
-	private static void initTest(File directory) {	
-		final String transfoPath = directory.toString().replaceFirst("expected","inputs")+ File.separator + directory.getName() + ".atl";	 //$NON-NLS-1$
-		final String ecoreTransfoPath = directory.toString()+ File.separator + directory.getName() + ".atl.ecore";	 //$NON-NLS-1$
-		if (new File(ecoreTransfoPath).exists())
+	private static void initTest(File directory) {
+		final String transfoPath = directory.toString().replaceAll("expected","inputs") + "/" + directory.getName() + ".atl";	 //$NON-NLS-1$
+		final String xmiTransfoPath = directory.toString() + "/" + directory.getName() + ".atl.xmi";	 //$NON-NLS-1$
+		if (new File(xmiTransfoPath).exists())
 			return;
 		try {
 			EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));
-			ModelUtils.save(result, "file:/"+ecoreTransfoPath);	 //$NON-NLS-1$ //$NON-NLS-2$
+			ModelUtils.save(result, xmiTransfoPath);
 			System.out.println(transfoPath+" extracted.");
 		} catch (Exception e) {
 			e.printStackTrace();
