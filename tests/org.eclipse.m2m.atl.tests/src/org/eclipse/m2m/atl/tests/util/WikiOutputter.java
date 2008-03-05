@@ -70,12 +70,14 @@ public class WikiOutputter {
 				String emfVMTime = (String) emfVMResults.get(testName);
 				String vmTime = (String) vmResults.get(testName);
 				String directory = (String) directories.get(testName);
-				fw.write("|-\n");
-				fw.write("! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests"+directory.replaceAll("\\\\","/")+"?root=Modeling_Project "+testName+"]\n");
-				fw.write("! colspan=1 | <b style=\"color:green\">PASS</b>\n");
-				fw.write("! colspan=1 | "+vmTime+"s.\n");
-				fw.write("! colspan=1 | "+emfVMTime+"s.\n");
-				fw.write("! colspan=1 | "+comment+"\n");
+				if (directory != null) {
+					fw.write("|-\n");
+					fw.write("! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests"+directory.replaceAll("\\\\","/")+"?root=Modeling_Project "+testName+"]\n");
+					fw.write("! colspan=1 | <b style=\"color:green\">PASS</b>\n");
+					fw.write("! colspan=1 | "+vmTime+"s.\n");
+					fw.write("! colspan=1 | "+emfVMTime+"s.\n");
+					fw.write("! colspan=1 | "+comment+"\n");
+				}
 			}
 			fw.write("|-\n");
 			fw.write("! colspan=2 | Total time : \n");
