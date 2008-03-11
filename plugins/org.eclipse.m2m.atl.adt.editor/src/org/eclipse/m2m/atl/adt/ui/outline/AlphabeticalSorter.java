@@ -1,6 +1,13 @@
-/*
- * Created on 21 avr. 2004
- */
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tarik Idrissi (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.outline;
 
 import org.eclipse.jface.viewers.ContentViewer;
@@ -9,9 +16,6 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
-/**
- * @author idrissi
- */
 public class AlphabeticalSorter extends ViewerSorter 
 { 
 	
@@ -51,9 +55,9 @@ public class AlphabeticalSorter extends ViewerSorter
 			}
 		}
 		if (name1 == null)
-			name1 = "";
+			name1 = "";//$NON-NLS-1$
 		if (name2 == null)
-			name2 = "";
-		return collator.compare(name1, name2);
+			name2 = "";//$NON-NLS-1$
+		return getComparator().compare(name1, name2);
 	}
 }

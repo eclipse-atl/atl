@@ -1,11 +1,18 @@
-/*
- * Created on 19 juil. 2004
- */
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    INRIA - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text.atl;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
-import org.eclipse.jface.text.Assert;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPositionCategoryException;
 import org.eclipse.jface.text.DefaultPositionUpdater;
@@ -45,12 +52,16 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.texteditor.link.EditorLinkedModeUI;
 
-
-/**
- * @author C. MONTI for ATL team
- */
-public class AtlCompletionProposal implements ICompletionProposalExtension, ICompletionProposalExtension2, ICompletionProposalExtension3, ICompletionProposal {
+public class AtlCompletionProposal implements ICompletionProposalExtension, ICompletionProposalExtension2, ICompletionProposalExtension3, ICompletionProposal, Comparable {
 	
+	public int compareTo(Object arg0) {
+		if (arg0 instanceof AtlCompletionProposal) {
+			AtlCompletionProposal comp = (AtlCompletionProposal) arg0;
+			return fReplacementString.compareTo(comp.getReplacementString());
+		}
+		throw new ClassCastException();
+	}
+
 	protected static class ExitPolicy implements IExitPolicy {
 		
 		final char fExitCharacter;
@@ -88,7 +99,7 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 	private static final class ReferenceTracker {
 		
 		/** The reference position category name. */
-		private static final String CATEGORY= "reference_position";
+		private static final String CATEGORY= "reference_position";//$NON-NLS-1$
 		/** The reference position. */
 		private final Position fPosition= new Position(0);
 		/** The position updater of the reference position. */
@@ -284,7 +295,7 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 			}
 			
 			if (fTextViewer != null && string != null) {
-				int index= string.indexOf("()");
+				int index= string.indexOf("()");//$NON-NLS-1$
 				if (index != -1 && index + 1 == fCursorPosition) {
 					IPreferenceStore preferenceStore= AtlUIPlugin.getDefault().getPreferenceStore();
 					if (preferenceStore.getBoolean(AtlPreferenceConstants.TYPING_CLOSE_BRACKETS)) {

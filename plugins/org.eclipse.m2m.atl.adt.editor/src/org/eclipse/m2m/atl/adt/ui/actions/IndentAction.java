@@ -1,11 +1,18 @@
-/*
- * Created on 13 juil. 2004
- */
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    INRIA - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.actions;
 
 import java.util.ResourceBundle;
 
-import org.eclipse.jface.text.Assert;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IDocument;
@@ -38,8 +45,6 @@ import org.eclipse.ui.texteditor.TextEditorAction;
  * AST must be present, the indentation is computed using heuristics. The algorith used is fast for
  * single lines, but does not store any information and therefore not so efficient for large line
  * ranges.
- * 
- * @author C. MONTI for ATL team
  */
 public class IndentAction extends TextEditorAction {
 	
@@ -132,7 +137,7 @@ public class IndentAction extends TextEditorAction {
 				buf.append(' ');
 			tab= buf.toString();
 		} else
-			tab= "\t";
+			tab= "\t";//$NON-NLS-1$
 		
 		return tab;
 	}
@@ -173,7 +178,7 @@ public class IndentAction extends TextEditorAction {
 				}
 				
 				DocumentCommand command= new DocumentCommand() {};
-				command.text= "\n";
+				command.text= "\n";//$NON-NLS-1$
 				command.offset= start;
 				// TODO atl documentation auto indent strategy
 //				new AtlDocAutoIndentStrategy(IAtlPartitions.PARTITIONING).customizeDocumentCommand(document, command);

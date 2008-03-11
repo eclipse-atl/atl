@@ -1,11 +1,18 @@
-/*
- * Created on 26 juil. 2004
- */
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    INRIA - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text;
 
 import java.util.Arrays;
 
-import org.eclipse.jface.text.Assert;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -17,8 +24,6 @@ import org.eclipse.jface.text.TextUtilities;
  * Utility methods for heuristic based manipulations in an incomplete source file.
  * 
  * <p>An instance holds some internal position in the document and is therefore not threadsafe.</p>
- * 
- * @author C. MONTI for ATL team
  */
 public class AtlHeuristicScanner implements Symbols {
 	
