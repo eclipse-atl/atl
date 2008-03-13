@@ -8,10 +8,11 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: ReferenceModel.java,v 1.2.4.1 2008/03/04 21:12:13 mbarbero Exp $
+ * $Id: ReferenceModel.java,v 1.2.4.2 2008/03/13 16:21:45 dwagelaar Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.lib;
+
 
 /**
  * 
@@ -22,4 +23,11 @@ package org.eclipse.m2m.atl.engine.emfvm.lib;
 public interface ReferenceModel extends Model {
 
 	public abstract Object getMetaElementByName(String name);
+
+    /**
+     * @param object The model element.
+     * @return True if object is contained in this model's resource or a referenced resource.
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     */
+    public abstract boolean isModelOf(Object object);
 }

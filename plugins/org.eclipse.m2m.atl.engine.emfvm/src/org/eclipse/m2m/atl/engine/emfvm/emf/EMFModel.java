@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFModel.java,v 1.1.2.1 2008/03/04 21:12:12 mbarbero Exp $
+ * $Id: EMFModel.java,v 1.1.2.2 2008/03/13 16:21:45 dwagelaar Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.emf;
@@ -41,7 +41,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
  * 
  * @author Frederic Jouault
  * @author Mikael Barbero
- *
+ * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
  */
 public class EMFModel extends AbstractModel implements Model {
 
@@ -161,6 +161,7 @@ public class EMFModel extends AbstractModel implements Model {
 		List toDelete = new ArrayList();
 		for(Iterator i = resource.getAllContents() ; i.hasNext() ; ) {
 			EObject eo = (EObject)i.next();
+			//TODO Test what happens to UML2 stereotype applications (typically don't have a container)
 			if(eo.eContainer() != null)
 				toDelete.add(eo);
 		}

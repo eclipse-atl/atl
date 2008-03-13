@@ -8,7 +8,7 @@
  * Contributors:
  *    INRIA - initial API and implementation
  *    
- * $Id: AtlEMFSpecificVM.java,v 1.4.4.1 2008/03/04 21:12:13 mbarbero Exp $
+ * $Id: AtlEMFSpecificVM.java,v 1.4.4.2 2008/03/13 16:21:45 dwagelaar Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -105,10 +106,17 @@ public class AtlEMFSpecificVM extends AtlVM {
 				libs.put(libName, lib);
 			}
 			
+			List superimpose = new ArrayList();
+			for(Iterator i = superimps.iterator() ; i.hasNext() ; ) {
+				URL url = (URL)i.next();
+				ASM module = new ASMXMLReader().read(url.openStream());
+				superimpose.add(module);
+			}
+			
 			try {
-				ret = asm.run(actualModels, libs, options);
+				ret = asm.run(actualModels, libs, superimpose, options);
 			} catch(VMException vme) {
-				vme.printStackTrace(System.out);
+				logger.log(Level.SEVERE, vme.getLocalizedMessage(), vme);
 				throw vme;
 			}
 			
@@ -117,7 +125,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 				model.commitToResource();
 			}
 		} catch(IOException ioe) {
-			ioe.printStackTrace();
+			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 
 		return ret;
@@ -150,6 +158,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 		Map targetModels = configuration.getAttribute(AtlLauncherTools.OUTPUT, new HashMap());
 		Map modelPaths = configuration.getAttribute(AtlLauncherTools.PATH, new HashMap());
 		Map libs = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
+		List superimps = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
 
 		try {
 			for(Iterator i = sourceModels.keySet().iterator() ; i.hasNext() ; ) {
@@ -161,7 +170,10 @@ public class AtlEMFSpecificVM extends AtlVM {
 					mm = loadReferenceModel(mmName, modelPaths);
 					models.put(mmName, mm);
 				}
-				Model m = new EMFModel(mm, URI.createPlatformResourceURI((String)modelPaths.get(mName), true),false);			
+				Model m = new EMFModel(
+						mm, 
+						URI.createPlatformResourceURI((String)modelPaths.get(mName), true),
+						false);			
 				models.put(mName, m);
 			}
 
@@ -174,9 +186,11 @@ public class AtlEMFSpecificVM extends AtlVM {
 					mm = loadReferenceModel(mmName, modelPaths);
 					models.put(mmName, mm);
 				}
-				AbstractModel m = new EMFModel(mm, URI.createPlatformResourceURI((String)modelPaths.get(mName), true),true);		
+				AbstractModel m = new EMFModel(
+						mm, 
+						URI.createPlatformResourceURI((String)modelPaths.get(mName), true),
+						true);		
 				models.put(mName, m);
-				m.isTarget = true;
 			}
 
 			try {
@@ -194,7 +208,15 @@ public class AtlEMFSpecificVM extends AtlVM {
 					libraries.put(libName, lib);
 				}
 
-				asm.run(models, libraries, options);
+				List superimpose = new ArrayList();
+				for(Iterator i = superimps.iterator() ; i.hasNext() ; ) {
+					String path = (String)i.next();
+					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(path));
+					ASM module = new ASMXMLReader().read(file.getContents());
+					superimpose.add(module);
+				}
+
+				asm.run(models, libraries, superimpose, options);
 
 				for(Iterator i = targetModels.keySet().iterator() ; i.hasNext() ; ) {
 					String mName = (String)i.next();
@@ -203,7 +225,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 					m.save(URI.createPlatformResourceURI((String)modelPaths.get(mName), true));
 				}
 			} catch(VMException vme) {
-				vme.printStackTrace(System.out);
+				logger.log(Level.SEVERE, vme.getLocalizedMessage(), vme);
 				throw vme;
 			} finally {
 				for(Iterator i = models.values().iterator() ; i.hasNext() ; ) {
@@ -212,7 +234,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 				}
 			}
 		} catch(IOException ioe) {
-			ioe.printStackTrace(System.out);
+			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 
 

@@ -10,16 +10,19 @@
  *    Obeo - bag implementation
  *    
  *
- * $Id: ExecEnv.java,v 1.9.4.1 2008/03/04 21:12:13 mbarbero Exp $
+ * $Id: ExecEnv.java,v 1.9.4.2 2008/03/13 16:21:45 dwagelaar Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,15 +30,23 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
+
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.m2m.atl.engine.emfvm.EmfvmPlugin;
 
 /**
  * Execution environment.
  *
- * @author Frédéric Jouault <a href="mailto:frederic.jouault@univ-nantes.fr">frederic.jouault@univ-nantes.fr</a>
+ * @author FrŽdŽric Jouault <a href="mailto:frederic.jouault@univ-nantes.fr">frederic.jouault@univ-nantes.fr</a>
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
  * @author Mikael Barbero <a href="mailto:mikael.barbero@univ-nantes.fr">mikael.barbero@univ-nantes.fr</a>
+ * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
  */
 public class ExecEnv {
+
+	public Logger logger = Logger.getLogger(EmfvmPlugin.LOGGER);
 
 	private Map operationsByType = new HashMap();
 
@@ -51,14 +62,16 @@ public class ExecEnv {
 
 	public ModelAdapter modelAdapter;
 
-	// TODO: replace with a logger
-	public PrintStream out = System.out;
-
 	public long nbExecutedBytecodes = 0;
 
 	public ExecEnv(Map models) {
 		this.modelsByName = models;
 		nameByModel = new HashMap();
+		for(Iterator i = modelsByName.keySet().iterator() ; i.hasNext() ; ) {
+			String name = (String)i.next();
+			Model model = (Model)modelsByName.get(name);
+			nameByModel.put(model, name);
+		}
 	}
 
 	public void init(ModelAdapter modelAdapter) {
@@ -71,8 +84,16 @@ public class ExecEnv {
 		return (String)nameByModel.get(modelAdapter.getModelOf(element));
 	}
 
+	public String getNameOf(Model model) {
+		return (String)nameByModel.get(model);
+	}
+
 	public Model getModel(Object name) {
 		return (Model)modelsByName.get(name);
+	}
+
+	public Iterator getModels() {
+		return modelsByName.values().iterator();
 	}
 
 	public Operation getOperation(Object type, Object name) {
@@ -84,10 +105,10 @@ public class ExecEnv {
 			ret = (Operation)map.get(name);
 
 		if(debug)
-			System.out.println(this + "@" + this.hashCode() + ".getOperation(" + type + ", " + name + ")");
+			logger.info(this + "@" + this.hashCode() + ".getOperation(" + type + ", " + name + ")");
 		if(ret == null) {
 			if(debug)
-				System.out.println("looking in super of this for operation " + name);
+				logger.info("looking in super of this for operation " + name);
 			for(Iterator i = modelAdapter.getSupertypes(type).iterator() ; i.hasNext() && (ret == null) ; ) {
 				Object st = i.next();
 				ret = getOperation(st, name);
@@ -240,7 +261,8 @@ public class ExecEnv {
 	}
 
 	public void prettyPrint(Object value) {
-		prettyPrint(out, value);
+//		prettyPrint(out, value);
+		logger.info(toPrettyPrintedString(value));
 	}
 
 	public void prettyPrint(PrintStream out, Object value) {
@@ -318,12 +340,11 @@ public class ExecEnv {
 
 	public Object newElement(StackFrame frame, Object ec) {
 		Object s = null;
-		ReferenceModel referenceModel = (ReferenceModel)modelAdapter.getModelOf(ec);
-		for(Iterator i = modelsByName.values().iterator() ; i.hasNext() ; ) {
+		for(Iterator i = getModels() ; i.hasNext() ; ) {
 			AbstractModel model = (AbstractModel)i.next();
 			if(!model.isTarget)
 				continue;
-			if(model.getReferenceModel().equals(referenceModel)) {
+			if(model.getReferenceModel().isModelOf(ec)) {
 				s = model.newElement(ec);
 				break;
 			}
@@ -647,6 +668,12 @@ public class ExecEnv {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 				return new Boolean(((Boolean)localVars[0]).booleanValue() ^ ((Boolean)localVars[1]).booleanValue());					
+			}
+		});
+		operationsByName.put("implies", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Boolean(((Boolean)localVars[0]).booleanValue() ? ((Boolean)localVars[1]).booleanValue() : true);					
 			}
 		});
 
@@ -1119,8 +1146,7 @@ public class ExecEnv {
 
 				Collection s = (Collection)localVars[0];
 				for(Iterator i = ((Collection)localVars[1]).iterator() ; i.hasNext() ; ) {
-					Object object = i.next();
-					ret = ret && !s.contains(object);
+					ret = ret && !s.contains(i.next());
 				}
 
 				return new Boolean(ret);
@@ -1297,6 +1323,18 @@ public class ExecEnv {
 				return new Boolean(((String)localVars[0]).equals(localVars[1]));					
 			}
 		});
+		operationsByName.put("writeTo", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Boolean(writeToWithCharset(frame, (String)localVars[0], (String)localVars[1], null));					
+			}
+		});
+		operationsByName.put("writeToWithCharset", new Operation(3) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Boolean(writeToWithCharset(frame, (String)localVars[0], (String)localVars[1], (String)localVars[2]));					
+			}
+		});
 
 		// Tuple
 		operationsByName = new HashMap();
@@ -1337,11 +1375,7 @@ public class ExecEnv {
 		operationsByName.put("debug", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-//				out.println("Executed " + nbExecutedBytecodes + " bytecodes so far.");
-				out.print(localVars[1]);
-				out.print(": ");
-				prettyPrint(localVars[0]);
-				out.println();
+				logger.info(localVars[1] + ": " + toPrettyPrintedString(localVars[0]));
 				return localVars[0];
 			}
 		});
@@ -1363,6 +1397,12 @@ public class ExecEnv {
 				Object localVars[] = frame.localVars;
 				((OclType)localVars[0]).setName((String)localVars[1]);
 				return null;
+			}
+		});
+		operationsByName.put("conformsTo", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Boolean(((OclType)localVars[0]).conformsTo((OclType)localVars[1]));
 			}
 		});
 
@@ -1387,6 +1427,12 @@ public class ExecEnv {
 				String initOperationName = (String)localVars[2];
 				frame.execEnv.registerAttributeHelper(localVars[0], name, initOperationName);
 				return null;
+			}
+		});
+		operationsByName.put("conformsTo", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Boolean(((Class)localVars[1]).isAssignableFrom(((Class)localVars[0])));
 			}
 		});
 
@@ -1554,4 +1600,65 @@ public class ExecEnv {
 			return null;
 		}
 	};
+	
+	/**
+	 * Writes self to fileName with given character set.
+	 * @param frame VM stack frame
+	 * @param self the string to write
+	 * @param fileName the file to write to
+	 * @param charset the character set to use, or use default when null
+	 * @return true on success
+	 * @throws VMException if an {@link IOException} occurs
+	 */
+	private static boolean writeToWithCharset(StackFrame frame, String self,
+			String fileName, String charset) throws VMException {
+		boolean ret = false;
+		try {
+			File file = getFile(fileName);
+			if (file.getParentFile() != null)
+				file.getParentFile().mkdirs();
+			PrintStream out = null;
+			if (charset == null) {
+				out = new PrintStream(new BufferedOutputStream(
+						new FileOutputStream(file)), true);
+			} else {
+				out = new PrintStream(new BufferedOutputStream(
+						new FileOutputStream(file)), true, charset);
+			}
+			out.print(self);
+			out.close();
+			ret = true;
+		} catch (IOException ioe) {
+			throw new VMException(frame, ioe);
+		}
+		return ret;
+	}
+
+	/**
+     * @param path The absolute or relative path to a file. 
+     * @return The file in the workspace, or the file in the filesystem if
+     * the workspace is not available.
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     */
+    private static File getFile(String path) {
+		try {
+			Class[] emptyClassArray = new Class[] {};
+			Object[] emptyObjectArray = new Object[] {};
+			Class rp = Class
+					.forName("org.eclipse.core.resources.ResourcesPlugin");
+			Object ws = rp.getMethod("getWorkspace", emptyClassArray).invoke(
+					null, emptyObjectArray);
+			Object root = ws.getClass().getMethod("getRoot", emptyClassArray)
+					.invoke(ws, emptyObjectArray);
+			Path wspath = new Path(path);
+			Object wsfile = root.getClass().getMethod("getFile",
+					new Class[] { IPath.class }).invoke(root,
+					new Object[] { wspath });
+			path = wsfile.getClass().getMethod("getLocation", emptyClassArray)
+					.invoke(wsfile, emptyObjectArray).toString();
+		} catch (Throwable e) {
+			//fall back to native java.io.File path resolution
+		}
+		return new File(path);
+	}
 }

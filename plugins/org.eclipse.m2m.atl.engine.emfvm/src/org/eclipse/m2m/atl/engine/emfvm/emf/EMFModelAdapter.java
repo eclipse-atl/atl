@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFModelAdapter.java,v 1.1.2.1 2008/03/04 21:12:12 mbarbero Exp $
+ * $Id: EMFModelAdapter.java,v 1.1.2.2 2008/03/13 16:21:45 dwagelaar Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.emf;
@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
@@ -44,6 +45,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.OclParametrizedType;
 import org.eclipse.m2m.atl.engine.emfvm.lib.OclType;
 import org.eclipse.m2m.atl.engine.emfvm.lib.OclUndefined;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
+import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame;
 import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 
@@ -57,9 +59,8 @@ public class EMFModelAdapter implements ModelAdapter {
 
 	private Map modelsByResource;
 	
-	// TODO: map this to allowInterModelReferences option
-	private static final boolean allowInterModelReferences = false;
-	
+	private boolean allowInterModelReferences = false;
+
 	// TODO: map this to corresponding option	public boolean supportUML2Stereotypes = false;
 	public boolean supportUML2Stereotypes = false;
 	
@@ -76,8 +77,30 @@ public class EMFModelAdapter implements ModelAdapter {
 		}
 	}
 
+	/**
+	 * Sets "allow inter-model references" for this model adapter.
+	 * @param allowInterModelRefs
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	public void setAllowInterModelReferences(boolean allowInterModelRefs) {
+		allowInterModelReferences = allowInterModelRefs;
+	}
+
 	public Model getModelOf(Object element) {
 		return (Model)modelsByResource.get(((EObject)element).eResource());
+	}
+	
+	public static Object getNameOf(EObject eo) {
+		Object ret = null;
+		
+		final EClass ec = eo.eClass();
+		final EStructuralFeature sf = ec.getEStructuralFeature("name");
+		if (sf != null) {
+			ret = eo.eGet(sf);
+		}
+		if(ret == null) ret = "<unnamed>";
+
+		return ret;
 	}
 
 	public List getSupertypes(Object type) {
@@ -88,6 +111,14 @@ public class EMFModelAdapter implements ModelAdapter {
 				ret = ((EClass)type).getESuperTypes();
 				if(ret.size() == 0)	// extends OclAny
 					ret = Arrays.asList(new Class[] {Object.class});
+				else {
+					// invert list to comply with regular ATL VM behaviour
+					final List sts = ret;
+					ret = new ArrayList(sts.size());
+					for (int i = sts.size() - 1; i >= 0; i--) {
+						ret.add(sts.get(i));
+					}
+				}
 			} else {
 				ret = (List)execEnv.supertypes.get(type);
 				if(ret == null) {
@@ -117,8 +148,13 @@ public class EMFModelAdapter implements ModelAdapter {
 
 	public boolean prettyPrint(PrintStream out, Object value) {
 		if(value instanceof EClass){
-			EClass c = (EClass)value;
-			out.print(execEnv.getModelNameOf(c));
+			final EClass c = (EClass)value;
+			final String mName = execEnv.getModelNameOf(c);
+			if(mName != null){
+				out.print(mName);
+			} else {
+				out.print("<unknown>");
+			}
 			out.print('!');
 			String name = c.getName();
 			if(name == null)
@@ -126,10 +162,27 @@ public class EMFModelAdapter implements ModelAdapter {
 			out.print(name);
 			return true;
 		} else if(value instanceof EObject) {
-			EObject eo = (EObject)value;
-			prettyPrint(out, eo.eClass());
-			out.print('@');
-			out.print(execEnv.getModelNameOf(eo));
+			final EObject eo = (EObject)value;
+			final Model model = getModelOf(eo);
+			if(model != null) {
+				out.print((String) execEnv.getNameOf(model));
+			} else {
+				out.print("<unknown>");
+			}
+			out.print('!');
+			out.print(getNameOf(eo));
+			out.print(':');
+			if(model != null) {
+				final ReferenceModel mModel = model.getReferenceModel();
+				out.print((String) execEnv.getNameOf(mModel));
+				out.print('!');
+				String name = eo.eClass().getName();
+				if(name == null)
+					name = "<unnamed>";
+				out.print(name);
+			} else {
+				prettyPrint(out, eo.eClass());
+			}
 			return true;
 		} else if(value instanceof EList) {
 			out.print("Sequence {");
@@ -146,7 +199,23 @@ public class EMFModelAdapter implements ModelAdapter {
 	}
 
 	public void registerVMTypeOperations(Map vmTypeOperations) {
+		// Object
 		Map operationsByName = (Map)vmTypeOperations.get(Object.class);
+		operationsByName.put("=", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				/* handle EMF enumeration literals by calling other end's
+				 * equals() method. Other end can be Enumerator, in which case
+				 * comparison is done according to EMF semantics. Other end
+				 * can also be EnumLiteral, in which case EnumLiteral.equals()
+				 * handles the comparison against EMF Enumerators.
+				 */
+				if (localVars[0] instanceof Enumerator) {
+					return new Boolean(localVars[1].equals(localVars[0]));
+				}
+				return new Boolean(localVars[0].equals(localVars[1]));					
+			}
+		});
 		operationsByName.put("refGetValue", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
@@ -248,10 +317,10 @@ public class EMFModelAdapter implements ModelAdapter {
 				// could be a Set (actually was) instead of an OrderedSet
 				Set ret = new LinkedHashSet();
 				EClass ec = (EClass)localVars[0];
-				Model rm = getModelOf(ec);
+//				Model rm = getModelOf(ec); // this is not possible when considering referenced resources!
 				for(Iterator i = frame.execEnv.modelsByName.values().iterator() ; i.hasNext() ; ) {
 					AbstractModel model = (AbstractModel)i.next();
-					if((!model.isTarget) && (model.getReferenceModel() == rm))
+					if((!model.isTarget) && (model.getReferenceModel().isModelOf(ec)))
 						ret.addAll(model.getElementsByType(ec));
 				}
 				return ret;
@@ -281,6 +350,12 @@ public class EMFModelAdapter implements ModelAdapter {
 				if(ret == null)
 					ret = OclUndefined.SINGLETON;
 				return ret;
+			}
+		});
+		operationsByName.put("conformsTo", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Boolean(((EClass)localVars[1]).isSuperTypeOf(((EClass)localVars[0])));
 			}
 		});
 	}
@@ -313,8 +388,9 @@ public class EMFModelAdapter implements ModelAdapter {
 	//		- may be too permissive (any value for which toString returns a valid literal name works) 
 	//	- should flatten nested collections
 	public void set(StackFrame frame, Object modelElement, String name, Object value) {
-		EObject eo = (EObject)modelElement;
-		EStructuralFeature feature = eo.eClass().getEStructuralFeature(name);
+		final ExecEnv execEnv = frame.execEnv;
+		final EObject eo = (EObject)modelElement;
+		final EStructuralFeature feature = eo.eClass().getEStructuralFeature(name);
 		
 		// makes it possible to use an integer to set a floating point property  
 		if(value instanceof Integer) {
@@ -363,7 +439,7 @@ public class EMFModelAdapter implements ModelAdapter {
 				}
 			} else {
 				if(value instanceof Collection) {
-					frame.execEnv.out.println("Warning: assigning a Collection to a single-valued feature");
+					execEnv.logger.warning("Assigning a Collection to a single-valued feature");
 					Collection c = (Collection)value;
 					if(!c.isEmpty()) {
 						value = c.iterator().next();
@@ -383,7 +459,7 @@ public class EMFModelAdapter implements ModelAdapter {
 			}
 		} catch(Exception e) {
 			// TODO: implement a better mechanism than println for warnings
-			frame.execEnv.out.println("Warning: could not assign " + value + " to " + frame.execEnv.toPrettyPrintedString(eo) + "." + name);
+			execEnv.logger.warning("Warning: could not assign " + value + " to " + frame.execEnv.toPrettyPrintedString(eo) + "." + name);
 		}
 	}
 	

@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: ModelAdapter.java,v 1.1.2.1 2008/03/04 21:12:13 mbarbero Exp $
+ * $Id: ModelAdapter.java,v 1.1.2.2 2008/03/13 16:21:46 dwagelaar Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.lib;
@@ -41,4 +41,11 @@ public interface ModelAdapter {
 	public abstract List getSupertypes(Object type);
 	
 	public Model getModelOf(Object element);
+	
+	/**
+	 * Sets "allow inter-model references" for this model adapter.
+	 * @param allowInterModelRefs
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	public abstract void setAllowInterModelReferences(boolean allowInterModelRefs);
 }
