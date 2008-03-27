@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EClassImpl;
@@ -1434,7 +1435,11 @@ public class ExecEnv {
 		operationsByName.put("=", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				return new Boolean(localVars[0].equals(localVars[1]));					
+				if(localVars[0] instanceof EEnumLiteral) {
+					return new Boolean(((EEnumLiteral)localVars[0]).getName().equals(localVars[1].toString()));
+				} else {
+					return new Boolean(localVars[0].equals(localVars[1]));	
+				}				
 			}
 		});
 		operationsByName.put("<>", new Operation(2) {
