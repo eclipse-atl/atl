@@ -1,0 +1,627 @@
+<?xml version = "1.0" encoding = "ISO-8859-1" ?>
+<Sildex:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:Sildex="http:///Sildex.ecore">
+  <Model id="P0" name="bidon">
+    <Class value="Model"/>
+    <Library name="WorkArea"/>
+    <Extent x="3000" y="2400"/>
+    <EPSFGraphics href="/home/to37707/sildextemp/bidon_119.ps"/>
+    <Property name="modelName" value="bidon"/>
+    <Property name="newWidth" value="150.0"/>
+    <Property name="newHeight" value="120.0"/>
+    <Property name="comment"/>
+    <Property name="declarations" value="	use Lib_Spec;
+"/>
+    <Block id="A0" name="I1">
+      <Class value="Instance"/>
+      <Position x="400" y="360"/>
+      <Extent x="694" y="770"/>
+      <Property name="references" value="R1"/>
+      <Property name="requirements" value="DR1"/>
+      <Property name="instanceName" value="I1"/>
+      <Property name="inst_description" value="C1"/>
+      <Modelref ref="//@Model.1">
+        <PositionPort ref="//@Model.1/@Port.0" x="0" y="298"/>
+        <PositionPort ref="//@Model.1/@Port.1" x="1000" y="376"/>
+        <PositionPort ref="//@Model.1/@Port.2" x="1000" y="102"/>
+        <PositionPort ref="//@Model.1/@Port.3" x="0" y="714"/>
+      </Modelref>
+    </Block>
+    <Block id="A1" name="I2">
+      <Class value="Instance"/>
+      <Position x="740" y="1340"/>
+      <Extent x="860" y="880"/>
+      <Property name="instanceName" value="I2"/>
+      <Property name="inst_description" value="C2"/>
+      <Modelref ref="//@Model.2">
+        <PositionPort ref="//@Model.2/@Port.0" x="0" y="420"/>
+        <PositionPort ref="//@Model.2/@Port.1" x="1000" y="159"/>
+        <PositionPort ref="//@Model.2/@Port.2" x="0" y="534"/>
+      </Modelref>
+    </Block>
+    <Block id="A2">
+      <Class value="Instance"/>
+      <Position x="1740" y="320"/>
+      <Extent x="212" y="598"/>
+      <Property name="instanceName" value="Comb(1)"/>
+      <Modelref ref="//@Model.6">
+        <PositionPort ref="//@Model.6/@Port.0" x="0" y="769"/>
+        <PositionPort ref="//@Model.6/@Port.1" x="0" y="200"/>
+        <PositionPort ref="//@Model.6/@Port.2" x="1000" y="448"/>
+      </Modelref>
+    </Block>
+    <Block id="A3">
+      <Class value="Instance"/>
+      <Position x="1960" y="1540"/>
+      <Extent x="300" y="300"/>
+      <Property name="instanceName" value="data_store_g"/>
+      <Modelref ref="//@Model.7">
+        <PositionPort ref="//@Model.7/@Port.0" x="190" y="0"/>
+        <PositionPort ref="//@Model.7/@Port.1" x="773" y="0"/>
+        <ParameterValue ref="//@Model.7/@Parameter.0"/>
+        <ParameterValue ref="//@Model.7/@Parameter.1"/>
+      </Modelref>
+    </Block>
+    <Block id="A4">
+      <Class value="Instance"/>
+      <Position x="2430" y="1056"/>
+      <Extent x="310" y="304"/>
+      <Property name="instanceName" value="Submodel3"/>
+      <Modelref ref="//@Model.9">
+        <PositionPort ref="//@Model.9/@Port.0" x="0" y="506"/>
+        <PositionPort ref="//@Model.9/@Port.1" x="1000" y="536"/>
+      </Modelref>
+    </Block>
+    <Block id="A5">
+      <Class value="Instance"/>
+      <Position x="312" y="1662"/>
+      <Extent x="268" y="478"/>
+      <Property name="instanceName" value="Comb(2)"/>
+      <Modelref ref="//@Model.10">
+        <PositionPort ref="//@Model.10/@Port.0" x="0" y="435"/>
+        <PositionPort ref="//@Model.10/@Port.1" x="1000" y="330"/>
+        <PositionPort ref="//@Model.10/@Port.2" x="1000" y="790"/>
+      </Modelref>
+    </Block>
+    <Port id="P30" name="c">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="0" y="729"/>
+      <Property name="portName" value="c"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P31" name="c2">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="dreal"/>
+      <Position x="3000" y="588"/>
+      <Property name="portName" value="c2"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P32" name="c3">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="event"/>
+      <Position x="0" y="909"/>
+      <Property name="portName" value="c3"/>
+      <Property name="typeName" value="event"/>
+    </Port>
+    <Port id="P33" name="c4">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="0" y="1869"/>
+      <Property name="portName" value="c4"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P34" name="c5">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="event"/>
+      <Position x="3000" y="1219"/>
+      <Property name="portName" value="c5"/>
+      <Property name="typeName" value="event"/>
+    </Port>
+    <Connection id="C0">
+      <Start instance="//@Model.0" port="//@Model.0/@Port.0"/>
+      <Stop instance="//@Model.0/@Block.0" port="//@Model.1/@Port.0"/>
+      <InitialPoint firstSegment="horizontal" x="0" y="729"/>
+      <Segment value="342"/>
+      <Segment value="-140"/>
+      <Segment value="58"/>
+    </Connection>
+    <Connection id="C1">
+      <Start instance="//@Model.0/@Block.0" port="//@Model.1/@Port.1"/>
+      <Stop instance="//@Model.0/@Block.1" port="//@Model.2/@Port.0"/>
+      <InitialPoint firstSegment="horizontal" x="1094" y="649"/>
+      <Segment value="68"/>
+      <Segment value="571"/>
+      <Segment value="-479"/>
+      <Segment value="489"/>
+      <Segment value="57"/>
+    </Connection>
+    <Connection id="C2">
+      <Start instance="//@Model.0/@Block.1" port="//@Model.2/@Port.1"/>
+      <Stop instance="//@Model.0/@Block.2" port="//@Model.6/@Port.0"/>
+      <InitialPoint firstSegment="horizontal" x="1600" y="1479"/>
+      <Segment value="70"/>
+      <Segment value="-700"/>
+      <Segment value="70"/>
+    </Connection>
+    <Connection id="C3">
+      <Start instance="//@Model.0/@Block.0" port="//@Model.1/@Port.2"/>
+      <Stop instance="//@Model.0/@Block.2" port="//@Model.6/@Port.1"/>
+      <InitialPoint firstSegment="horizontal" x="1094" y="438"/>
+      <Segment value="323"/>
+      <Segment value="0"/>
+      <Segment value="323"/>
+    </Connection>
+    <Connection id="C4">
+      <Start instance="//@Model.0/@Block.2" port="//@Model.6/@Port.2"/>
+      <Stop instance="//@Model.0" port="//@Model.0/@Port.1"/>
+      <InitialPoint firstSegment="horizontal" x="1952" y="587"/>
+      <Segment value="524"/>
+      <Segment value="0"/>
+      <Segment value="524"/>
+    </Connection>
+    <Connection id="C5">
+      <Start instance="//@Model.0" port="//@Model.0/@Port.2"/>
+      <Stop instance="//@Model.0/@Block.0" port="//@Model.1/@Port.3"/>
+      <InitialPoint firstSegment="horizontal" x="0" y="909"/>
+      <Segment value="200"/>
+      <Segment value="0"/>
+      <Segment value="200"/>
+    </Connection>
+    <Connection id="C6">
+      <Start instance="//@Model.0" port="//@Model.0/@Port.3"/>
+      <Stop instance="//@Model.0/@Block.5" port="//@Model.10/@Port.0"/>
+      <InitialPoint firstSegment="horizontal" x="0" y="1869"/>
+      <Segment value="156"/>
+      <Segment value="0"/>
+      <Segment value="156"/>
+    </Connection>
+    <Connection id="C7">
+      <Start instance="//@Model.0/@Block.5" port="//@Model.10/@Port.1"/>
+      <Stop instance="//@Model.0/@Block.1" port="//@Model.2/@Port.2"/>
+      <InitialPoint firstSegment="horizontal" x="580" y="1819"/>
+      <Segment value="67"/>
+      <Segment value="-10"/>
+      <Segment value="93"/>
+    </Connection>
+    <Connection id="C8">
+      <Start instance="//@Model.0/@Block.5" port="//@Model.10/@Port.2"/>
+      <Stop instance="//@Model.0/@Block.3" port="//@Model.7/@Port.0"/>
+      <InitialPoint firstSegment="horizontal" x="580" y="2039"/>
+      <Segment value="60"/>
+      <Segment value="291"/>
+      <Segment value="1140"/>
+      <Segment value="-970"/>
+      <Segment value="237"/>
+      <Segment value="180"/>
+    </Connection>
+    <Connection id="C9">
+      <Start instance="//@Model.0/@Block.3" port="//@Model.7/@Port.1"/>
+      <Stop instance="//@Model.0/@Block.4" port="//@Model.9/@Port.0"/>
+      <InitialPoint firstSegment="vertical" x="2191" y="1540"/>
+      <Segment value="-331"/>
+      <Segment value="239"/>
+    </Connection>
+    <Connection id="C10">
+      <Start instance="//@Model.0/@Block.4" port="//@Model.9/@Port.1"/>
+      <Stop instance="//@Model.0" port="//@Model.0/@Port.4"/>
+      <InitialPoint firstSegment="horizontal" x="2740" y="1218"/>
+      <Segment value="130"/>
+      <Segment value="0"/>
+      <Segment value="130"/>
+    </Connection>
+  </Model>
+  <Model id="P1" name="Submodel">
+    <Class value="Model"/>
+    <Extent x="3000" y="2400"/>
+    <EPSFGraphics href="/home/to37707/sildextemp/Submodel_120.ps"/>
+    <Property name="modelName" value="Submodel"/>
+    <Property name="newWidth" value="150.0"/>
+    <Property name="newHeight" value="120.0"/>
+    <Property name="comment"/>
+    <Property name="declarations"/>
+    <Port id="P11" name="c">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="0" y="715"/>
+      <Property name="portName" value="c"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P12" name="c2">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="dreal"/>
+      <Position x="3000" y="902"/>
+      <Property name="portName" value="c2"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P13" name="c3">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="dreal"/>
+      <Position x="3000" y="309"/>
+      <Property name="portName" value="c3"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P14" name="c4">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="event"/>
+      <Position x="0" y="1713"/>
+      <Property name="portName" value="c4"/>
+      <Property name="typeName" value="event"/>
+    </Port>
+  </Model>
+  <Model id="P2" name="Submodel2">
+    <Class value="Model"/>
+    <Extent x="3000" y="2400"/>
+    <EPSFGraphics href="/home/to37707/sildextemp/Submodel2_121.ps"/>
+    <Property name="modelName" value="Submodel2"/>
+    <Property name="newWidth" value="150.0"/>
+    <Property name="newHeight" value="120.0"/>
+    <Property name="comment"/>
+    <Property name="declarations"/>
+    <Block id="A6" name="I22">
+      <Class value="Instance"/>
+      <Position x="792" y="624"/>
+      <Extent x="328" y="316"/>
+      <Property name="instanceName" value="I22"/>
+      <Property name="inst_description" value="C22"/>
+      <Modelref ref="//@Model.3">
+        <PositionPort ref="//@Model.3/@Port.0" x="1000" y="525"/>
+        <PositionPort ref="//@Model.3/@Port.1" x="0" y="398"/>
+      </Modelref>
+    </Block>
+    <Block id="A7" name="I21">
+      <Class value="Instance"/>
+      <Position x="798" y="1356"/>
+      <Extent x="722" y="824"/>
+      <Property name="instanceName" value="I21"/>
+      <Modelref ref="//@Model.4">
+        <PositionPort ref="//@Model.4/@Port.0" x="0" y="623"/>
+        <PositionPort ref="//@Model.4/@Port.1" x="1000" y="599"/>
+        <PositionPort ref="//@Model.4/@Port.2" x="0" y="247"/>
+      </Modelref>
+    </Block>
+    <Block id="A8">
+      <Class value="Instance"/>
+      <Position x="1974" y="786"/>
+      <Extent x="306" y="794"/>
+      <Property name="instanceName" value="Comb"/>
+      <Modelref ref="//@Model.5">
+        <PositionPort ref="//@Model.5/@Port.0" x="1000" y="433"/>
+        <PositionPort ref="//@Model.5/@Port.1" x="0" y="748"/>
+        <PositionPort ref="//@Model.5/@Port.2" x="0" y="231"/>
+      </Modelref>
+    </Block>
+    <Port id="P15" name="c">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="0" y="1008"/>
+      <Property name="portName" value="c"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P16" name="c2">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="dreal"/>
+      <Position x="3000" y="381"/>
+      <Property name="portName" value="c2"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P17" name="c3">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="0" y="1670"/>
+      <Property name="portName" value="c3"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Connection id="C11">
+      <Start instance="//@Model.2" port="//@Model.2/@Port.2"/>
+      <Stop instance="//@Model.2/@Block.1" port="//@Model.4/@Port.0"/>
+      <InitialPoint firstSegment="horizontal" x="0" y="1670"/>
+      <Segment value="429"/>
+      <Segment value="199"/>
+      <Segment value="369"/>
+    </Connection>
+    <Connection id="C12">
+      <Start instance="//@Model.2/@Block.2" port="//@Model.5/@Port.0"/>
+      <Stop instance="//@Model.2" port="//@Model.2/@Port.1"/>
+      <InitialPoint firstSegment="horizontal" x="2280" y="1129"/>
+      <Segment value="276"/>
+      <Segment value="-748"/>
+      <Segment value="444"/>
+    </Connection>
+    <Connection id="C13">
+      <Start instance="//@Model.2/@Block.1" port="//@Model.4/@Port.1"/>
+      <Stop instance="//@Model.2/@Block.2" port="//@Model.5/@Port.1"/>
+      <InitialPoint firstSegment="horizontal" x="1520" y="1849"/>
+      <Segment value="241"/>
+      <Segment value="-470"/>
+      <Segment value="213"/>
+    </Connection>
+    <Connection id="C14">
+      <Start instance="//@Model.2/@Block.0" port="//@Model.3/@Port.0"/>
+      <Stop instance="//@Model.2/@Block.2" port="//@Model.5/@Port.2"/>
+      <InitialPoint firstSegment="horizontal" x="1120" y="789"/>
+      <Segment value="425"/>
+      <Segment value="180"/>
+      <Segment value="429"/>
+    </Connection>
+    <Connection id="C15">
+      <Start instance="//@Model.2" port="//@Model.2/@Port.0"/>
+      <Stop instance="//@Model.2/@Block.0" port="//@Model.3/@Port.1"/>
+      <InitialPoint firstSegment="horizontal" x="0" y="1008"/>
+      <Segment value="437"/>
+      <Segment value="-259"/>
+      <Segment value="355"/>
+    </Connection>
+    <Connection id="C16">
+      <Start instance="//@Model.2" port="//@Model.2/@Port.0"/>
+      <Stop instance="//@Model.2/@Block.1" port="//@Model.4/@Port.2"/>
+      <InitialPoint firstSegment="horizontal" x="0" y="1008"/>
+      <Segment value="458"/>
+      <Segment value="551"/>
+      <Segment value="340"/>
+    </Connection>
+  </Model>
+  <Model id="P3" name="Submodel">
+    <Class value="Model"/>
+    <Extent x="3000" y="2400"/>
+    <EPSFGraphics href="/home/to37707/sildextemp/Submodel_122.ps"/>
+    <Property name="modelName" value="Submodel"/>
+    <Property name="newWidth" value="150.0"/>
+    <Property name="newHeight" value="120.0"/>
+    <Property name="comment"/>
+    <Property name="declarations"/>
+    <Port id="P35" name="c">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="dreal"/>
+      <Position x="3000" y="1260"/>
+      <Property name="portName" value="c"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P36" name="c2">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="0" y="955"/>
+      <Property name="portName" value="c2"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+  </Model>
+  <Model id="P4" name="Submodel2">
+    <Class value="Model"/>
+    <Extent x="3000" y="2400"/>
+    <EPSFGraphics href="/home/to37707/sildextemp/Submodel2_123.ps"/>
+    <Property name="modelName" value="Submodel2"/>
+    <Property name="newWidth" value="150.0"/>
+    <Property name="newHeight" value="120.0"/>
+    <Property name="comment"/>
+    <Property name="declarations"/>
+    <Port id="P37" name="c3">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="0" y="1495"/>
+      <Property name="portName" value="c3"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P38" name="c">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="dreal"/>
+      <Position x="3000" y="1437"/>
+      <Property name="portName" value="c"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P39" name="c2">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="0" y="592"/>
+      <Property name="portName" value="c2"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+  </Model>
+  <Model id="P5">
+    <Class value="ConvergentComb"/>
+    <Extent x="3000" y="2400"/>
+    <Port id="P40" name="c2">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="dreal"/>
+      <Position x="3000" y="1039"/>
+      <Property name="portName" value="c2"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P41" name="c">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="1038" y="2400"/>
+      <Property name="portName" value="c"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P42" name="c3">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="0" y="554"/>
+      <Property name="portName" value="c3"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+  </Model>
+  <Model id="P6">
+    <Class value="ConvergentComb"/>
+    <Extent x="3000" y="2400"/>
+    <Port id="P18" name="c">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="1980" y="2400"/>
+      <Property name="portName" value="c"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P19" name="c2">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="1272" y="0"/>
+      <Property name="portName" value="c2"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P20" name="c3">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="dreal"/>
+      <Position x="3000" y="1161"/>
+      <Property name="portName" value="c3"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+  </Model>
+  <Model id="P7" name="data_store_g">
+    <Class value="Model"/>
+    <Library name="Lib_Spec"/>
+    <Extent x="3000" y="1800"/>
+    <EPSFGraphics href="/home/to37707/sildextemp/data_store_g_124.ps"/>
+    <Property name="modelName" value="data_store_g"/>
+    <Property name="newWidth" value="150.0"/>
+    <Property name="newHeight" value="90.0"/>
+    <Property name="comment"/>
+    <Property name="declarations"/>
+    <Parameter id="P23" name="T">
+      <Type/>
+    </Parameter>
+    <Parameter id="P24" name="val_init">
+      <Type value="T"/>
+    </Parameter>
+    <Block id="A9">
+      <Class value="Instance"/>
+      <Position x="280" y="380"/>
+      <Extent x="2400" y="960"/>
+      <Property name="instanceName" value="signal_code"/>
+      <Modelref ref="//@Model.8">
+        <PositionPort ref="//@Model.8/@Port.0" x="0" y="541"/>
+        <PositionPort ref="//@Model.8/@Port.1" x="1000" y="510"/>
+      </Modelref>
+    </Block>
+    <Port id="P21" name="in">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="T"/>
+      <Position x="570" y="0"/>
+      <Property name="portName" value="in"/>
+      <Property name="typeName" value="T"/>
+    </Port>
+    <Port id="P22" name="out">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="T"/>
+      <Position x="2320" y="0"/>
+      <Property name="portName" value="out"/>
+      <Property name="typeName" value="T"/>
+    </Port>
+    <Connection id="C17">
+      <Start instance="//@Model.7/@Block.0" port="//@Model.8/@Port.1"/>
+      <Stop instance="//@Model.7" port="//@Model.7/@Port.1"/>
+      <InitialPoint firstSegment="horizontal" x="2680" y="869"/>
+      <Segment value="69"/>
+      <Segment value="-795"/>
+      <Segment value="-429"/>
+      <Segment value="-74"/>
+    </Connection>
+    <Connection id="C18">
+      <Start instance="//@Model.7" port="//@Model.7/@Port.0"/>
+      <Stop instance="//@Model.7/@Block.0" port="//@Model.8/@Port.0"/>
+      <InitialPoint firstSegment="vertical" x="570" y="0"/>
+      <Segment value="72"/>
+      <Segment value="-362"/>
+      <Segment value="827"/>
+      <Segment value="72"/>
+    </Connection>
+  </Model>
+  <Model id="P8">
+    <Class value="SignalBox"/>
+    <Code value="out := in$ init val_init"/>
+    <Extent x="3000" y="2400"/>
+    <Port id="P43" name="in">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="T"/>
+      <Position x="0" y="1298"/>
+      <Property name="portName" value="in"/>
+      <Property name="typeName" value="T"/>
+    </Port>
+    <Port id="P44" name="out">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="T"/>
+      <Position x="3000" y="1231"/>
+      <Property name="portName" value="out"/>
+      <Property name="typeName" value="T"/>
+    </Port>
+  </Model>
+  <Model id="P9" name="Submodel3">
+    <Class value="Model"/>
+    <Extent x="3000" y="2400"/>
+    <EPSFGraphics href="/home/to37707/sildextemp/Submodel3_125.ps"/>
+    <Property name="modelName" value="Submodel3"/>
+    <Property name="newWidth" value="150.0"/>
+    <Property name="newHeight" value="120.0"/>
+    <Property name="comment"/>
+    <Property name="declarations"/>
+    <Port id="P25" name="out">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="T"/>
+      <Position x="1062" y="0"/>
+      <Property name="portName" value="out"/>
+      <Property name="typeName" value="T"/>
+    </Port>
+    <Port id="P26" name="c">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="event"/>
+      <Position x="3000" y="1452"/>
+      <Property name="portName" value="c"/>
+      <Property name="typeName" value="event"/>
+    </Port>
+  </Model>
+  <Model id="P10">
+    <Class value="DivergentComb"/>
+    <Extent x="3000" y="2400"/>
+    <Port id="P27" name="c">
+      <Class value="Port"/>
+      <Direction value="in"/>
+      <Type value="dreal"/>
+      <Position x="0" y="1044"/>
+      <Property name="portName" value="c"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P28" name="c2">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="dreal"/>
+      <Position x="1431" y="0"/>
+      <Property name="portName" value="c2"/>
+      <Property name="typeName" value="dreal"/>
+    </Port>
+    <Port id="P29" name="in">
+      <Class value="Port"/>
+      <Direction value="out"/>
+      <Type value="T"/>
+      <Position x="2214" y="2400"/>
+      <Property name="portName" value="in"/>
+      <Property name="typeName" value="T"/>
+    </Port>
+  </Model>
+</Sildex:Package>

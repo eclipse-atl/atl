@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<sam:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sam="http://www.topcased.org/SAM/1.0">
+  <modelContent xsi:type="sam:System" name="bidon">
+    <listPorts xsi:type="sam:InDataPort" name="c" outlink="//@modelContent/@listFlows.0"/>
+    <listPorts xsi:type="sam:OutDataPort" name="c2" inlink="//@modelContent/@listFlows.4"/>
+    <listPorts xsi:type="sam:InControlPort" name="c3" outlink="//@modelContent/@listFlows.5"/>
+    <listPorts xsi:type="sam:InDataPort" name="c4" outlink="//@modelContent/@listFlows.6"/>
+    <listPorts xsi:type="sam:OutControlPort" name="c5" inlink="//@modelContent/@listFlows.10"/>
+    <listStores name="data_store_g">
+      <in name="in" inlink="//@modelContent/@listFlows.8"/>
+      <out name="out" outlink="//@modelContent/@listFlows.9"/>
+    </listStores>
+    <listSynchronisation xsi:type="sam:Composition">
+      <out name="c3" outlink="//@modelContent/@listFlows.4"/>
+      <in name="c" inlink="//@modelContent/@listFlows.2"/>
+      <in name="c2" inlink="//@modelContent/@listFlows.3"/>
+    </listSynchronisation>
+    <listSynchronisation xsi:type="sam:Decomposition">
+      <out name="c2" outlink="//@modelContent/@listFlows.7"/>
+      <out name="in" outlink="//@modelContent/@listFlows.8"/>
+      <in name="c" inlink="//@modelContent/@listFlows.6"/>
+    </listSynchronisation>
+    <listFlows xsi:type="sam:DataFlow" name="c" source="//@modelContent/@listPorts.0" dest="//@modelContent/@listElements.0/@listPorts.0"/>
+    <listFlows xsi:type="sam:DataFlow" name="c2" source="//@modelContent/@listElements.0/@listPorts.1" dest="//@modelContent/@listElements.1/@listPorts.0"/>
+    <listFlows xsi:type="sam:DataFlow" name="c2" source="//@modelContent/@listElements.1/@listPorts.1" dest="//@modelContent/@listSynchronisation.0/@in.0"/>
+    <listFlows xsi:type="sam:DataFlow" name="c3" source="//@modelContent/@listElements.0/@listPorts.2" dest="//@modelContent/@listSynchronisation.0/@in.1"/>
+    <listFlows xsi:type="sam:DataFlow" name="c3" source="//@modelContent/@listSynchronisation.0/@out.0" dest="//@modelContent/@listPorts.1"/>
+    <listFlows xsi:type="sam:ControlFlow" name="c3" source="//@modelContent/@listPorts.2" dest="//@modelContent/@listElements.0/@listPorts.3"/>
+    <listFlows xsi:type="sam:DataFlow" name="c4" source="//@modelContent/@listPorts.3" dest="//@modelContent/@listSynchronisation.1/@in.0"/>
+    <listFlows xsi:type="sam:DataFlow" name="c2" source="//@modelContent/@listSynchronisation.1/@out.0" dest="//@modelContent/@listElements.1/@listPorts.2"/>
+    <listFlows xsi:type="sam:DataFlow" name="in" source="//@modelContent/@listSynchronisation.1/@out.1" dest="//@modelContent/@listStores.0/@in"/>
+    <listFlows xsi:type="sam:DataFlow" name="out" source="//@modelContent/@listStores.0/@out" dest="//@modelContent/@listElements.2/@listPorts.0"/>
+    <listFlows xsi:type="sam:ControlFlow" name="c" source="//@modelContent/@listElements.2/@listPorts.1" dest="//@modelContent/@listPorts.4"/>
+    <listElements xsi:type="sam:System" name="Submodel">
+      <listPorts xsi:type="sam:InDataPort" name="c" inlink="//@modelContent/@listFlows.0"/>
+      <listPorts xsi:type="sam:OutDataPort" name="c2" outlink="//@modelContent/@listFlows.1"/>
+      <listPorts xsi:type="sam:OutDataPort" name="c3" outlink="//@modelContent/@listFlows.3"/>
+      <listPorts xsi:type="sam:InControlPort" name="c4" inlink="//@modelContent/@listFlows.5"/>
+    </listElements>
+    <listElements xsi:type="sam:System" name="Submodel2">
+      <listPorts xsi:type="sam:InDataPort" name="c" outlink="//@modelContent/@listElements.1/@listFlows.4" inlink="//@modelContent/@listFlows.1"/>
+      <listPorts xsi:type="sam:OutDataPort" name="c2" outlink="//@modelContent/@listFlows.2" inlink="//@modelContent/@listElements.1/@listFlows.1"/>
+      <listPorts xsi:type="sam:InDataPort" name="c3" outlink="//@modelContent/@listElements.1/@listFlows.0" inlink="//@modelContent/@listFlows.7"/>
+      <listSynchronisation xsi:type="sam:Composition">
+        <out name="c2" outlink="//@modelContent/@listElements.1/@listFlows.1"/>
+        <in name="c" inlink="//@modelContent/@listElements.1/@listFlows.2"/>
+        <in name="c3" inlink="//@modelContent/@listElements.1/@listFlows.3"/>
+      </listSynchronisation>
+      <listFlows xsi:type="sam:DataFlow" name="c3" source="//@modelContent/@listElements.1/@listPorts.2" dest="//@modelContent/@listElements.1/@listElements.1/@listPorts.0"/>
+      <listFlows xsi:type="sam:DataFlow" name="c2" source="//@modelContent/@listElements.1/@listSynchronisation.0/@out.0" dest="//@modelContent/@listElements.1/@listPorts.1"/>
+      <listFlows xsi:type="sam:DataFlow" name="c" source="//@modelContent/@listElements.1/@listElements.1/@listPorts.1" dest="//@modelContent/@listElements.1/@listSynchronisation.0/@in.0"/>
+      <listFlows xsi:type="sam:DataFlow" name="c" source="//@modelContent/@listElements.1/@listElements.0/@listPorts.0" dest="//@modelContent/@listElements.1/@listSynchronisation.0/@in.1"/>
+      <listFlows xsi:type="sam:DataFlow" name="c" source="//@modelContent/@listElements.1/@listPorts.0" dest="//@modelContent/@listElements.1/@listElements.0/@listPorts.1"/>
+      <listFlows xsi:type="sam:DataFlow" name="c" source="//@modelContent/@listElements.1/@listPorts.0" dest="//@modelContent/@listElements.1/@listElements.1/@listPorts.2"/>
+      <listElements xsi:type="sam:System" name="Submodel">
+        <listPorts xsi:type="sam:OutDataPort" name="c" outlink="//@modelContent/@listElements.1/@listFlows.3"/>
+        <listPorts xsi:type="sam:InDataPort" name="c2" inlink="//@modelContent/@listElements.1/@listFlows.4"/>
+      </listElements>
+      <listElements xsi:type="sam:System" name="Submodel2">
+        <listPorts xsi:type="sam:InDataPort" name="c3" inlink="//@modelContent/@listElements.1/@listFlows.0"/>
+        <listPorts xsi:type="sam:OutDataPort" name="c" outlink="//@modelContent/@listElements.1/@listFlows.2"/>
+        <listPorts xsi:type="sam:InDataPort" name="c2" inlink="//@modelContent/@listElements.1/@listFlows.5"/>
+      </listElements>
+    </listElements>
+    <listElements xsi:type="sam:System" name="Submodel3">
+      <listPorts xsi:type="sam:InDataPort" name="out" inlink="//@modelContent/@listFlows.9"/>
+      <listPorts xsi:type="sam:OutControlPort" name="c" outlink="//@modelContent/@listFlows.10"/>
+    </listElements>
+  </modelContent>
+</sam:Model>

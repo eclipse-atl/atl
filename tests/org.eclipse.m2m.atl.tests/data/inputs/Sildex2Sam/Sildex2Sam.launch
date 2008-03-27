@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/Sildex2Sam/Sildex2Sam.atl"/>
+<booleanAttribute key="AllowInterModelReferences" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="IN" value="Sildex"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<booleanAttribute key="Mode Debug" value="false"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="SAM" value="EMF"/>
+<mapEntry key="Sildex" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="IN" value="MODELINPUT"/>
+<mapEntry key="OUT" value="MODELOUTPUT"/>
+<mapEntry key="SAM" value="METAMODELOUTPUT"/>
+<mapEntry key="Sildex" value="METAMODELINPUT"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT" value="SAM"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Sildex2Sam/input_sildex.xmi"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Sildex2Sam/output_sam.xmi"/>
+<mapEntry key="SAM" value="/org.eclipse.m2m.atl.tests/data/inputs/Sildex2Sam/SAM.ecore"/>
+<mapEntry key="Sildex" value="/org.eclipse.m2m.atl.tests/data/inputs/Sildex2Sam/Sildex.ecore"/>
+</mapAttribute>
+<listAttribute key="Superimpose"/>
+<booleanAttribute key="continueAfterError" value="false"/>
+<booleanAttribute key="disableAttributeHelperCache" value="false"/>
+<booleanAttribute key="printExecutionTime" value="false"/>
+<booleanAttribute key="profile" value="false"/>
+<booleanAttribute key="showSummary" value="false"/>
+<booleanAttribute key="step" value="false"/>
+<booleanAttribute key="supportUML2Stereotypes" value="false"/>
+</launchConfiguration>
