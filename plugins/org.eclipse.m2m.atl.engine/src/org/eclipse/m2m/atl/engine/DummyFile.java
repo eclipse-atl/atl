@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -569,5 +571,14 @@ public class DummyFile implements IFile {
 	
 	public boolean isDerived(int val){
 		return false;
+	}
+	
+	/** eclipse 3.4M6 compatibility **/
+	public Map getPersistentProperties() throws CoreException {
+		return Collections.EMPTY_MAP;
+	}
+	
+	public Map getSessionProperties() throws CoreException {
+		return Collections.EMPTY_MAP;
 	}
 }
