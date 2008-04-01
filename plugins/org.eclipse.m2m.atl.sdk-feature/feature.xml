@@ -224,14 +224,6 @@ litigation.
    </url>
 
    <includes
-         id="org.eclipse.m2m.atl.engine"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.m2m.atl.adt"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.m2m.atl.doc"
          version="0.0.0"/>
 
@@ -242,12 +234,5 @@ litigation.
    <includes
          id="org.eclipse.m2m.atl"
          version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.m2m.atl.engine.emfvm"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
 </feature>
