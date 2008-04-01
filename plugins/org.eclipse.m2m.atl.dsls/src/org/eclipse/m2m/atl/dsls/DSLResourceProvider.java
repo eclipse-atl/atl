@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.atl.dsls.textsource.TextSource;
 import org.eclipse.m2m.atl.dsls.textsource.URLTextSource;
 import org.osgi.framework.Bundle;
@@ -64,8 +65,8 @@ public class DSLResourceProvider {
 		return INSTANCE;
 	}
 
-	public TextSource getResource(String id) {
-		return (TextSource)resourcesById.get(id);
+	public Resource getResource(String id) {
+		return (Resource)resourcesById.get(id);
 	}
 
 	protected DSLResourceProvider() {
@@ -74,11 +75,29 @@ public class DSLResourceProvider {
 
 	private void initResources(Map resourcesById) {
 		try {
-			BufferedReader in = getURL("contents.list").openBufferedReader();
+			BufferedReader in = new URLTextSource(getURL("contents.list")).openBufferedReader();
 			String line;
 			while((line = in.readLine()) != null) {
 				if(!(line.trim().length() == 0)) {
-					addResource(resourcesById, line);
+					final URL url = getURL(line);	// will throw an Exception if cannot load
+					// Note: url could be recomputed, but we need to compute it
+					// before creating the Resource to make sure the resource exists
+
+					final String path = line;
+					final String pluginId = getPluginId();
+					resourcesById.put(line.intern(), new Resource() {
+						public TextSource asTextSource() {
+							return new URLTextSource(url);
+						}
+
+						public URL asURL() {
+							return url;
+						}
+
+						public URI asEMFURI() {
+							return URI.createPlatformPluginURI("/" + pluginId + "/" + resourcesRoot + path, true);
+						}
+					});
 				}
 			}
 		} catch (IOException e) {
@@ -86,22 +105,29 @@ public class DSLResourceProvider {
 		}
 	}
 
-	private void addResource(Map resourcesById, String path) {
-		resourcesById.put(path.intern(), getURL(path));
-		
-	}
-	
-	private TextSource getURL(String path) {
+	private URL getURL(String path) {
 		Bundle bundle = getBundle();
 		URL url = FileLocator.find(bundle, new Path(resourcesRoot + path), Collections.EMPTY_MAP);
 		if(url != null) {
-			return new URLTextSource(url);
+			return url;
 		} else {
 			throw new RuntimeException("could not load " + path);
 		}
 	}
 	
+	/**
+	 * Must be redefined in sub-classes.
+	 * @return
+	 */
 	protected Bundle getBundle() {
 		return Activator.getDefault().getBundle();
+	}
+
+	/**
+	 * Must be redefined in sub-classes.
+	 * @return
+	 */
+	protected String getPluginId() {
+		return Activator.PLUGIN_ID;
 	}
 }
