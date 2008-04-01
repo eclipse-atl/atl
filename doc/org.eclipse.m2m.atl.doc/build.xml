@@ -9,7 +9,7 @@
 	<property name="docPlugin" value="org.eclipse.m2m.atl.doc"/>
 	
 	<!-- TODO: if you add new folders in your doc plugin, make sure you include them here -->
-	<property name="filesToInclude" value="META-INF/**,images/**,tasks/**,references/**,tutorials/**,notices.html,about.*,eclipse*.gif,modeling*.png,plugin.*,*.css,toc*.xml,topics_*.xml,index/**,doc.zip"/>
+	<property name="filesToInclude" value="META-INF/**,images/**,html/**,tasks/**,references/**,tutorials/**,notices.html,about.*,eclipse*.gif,modeling*.png,plugin.*,*.css,toc*.xml,topics_*.xml,index/**,doc.zip"/>
 
 	<property name="filesToInclude" value="META-INF/**,about.html,about.ini,about.mappings,about.properties,modeling*.png,plugin.xml,plugin.properties,doc.zip,*.xml,index/**"/>
 
@@ -80,6 +80,7 @@
 			<zipfileset dir="references" prefix="references" excludes="**/impl,**/impl/**"/>
 			<zipfileset dir="images" prefix="images"/>
 			<zipfileset dir="tutorials" prefix="tutorials"/>
+			<zipfileset dir="html" prefix="html"/>
 		</zip>
 	</target>
 
@@ -93,7 +94,9 @@
 	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
 		<mkdir dir="${destination.temp.folder}/${docPlugin}_${pluginVersion}"/>
 		<copy todir="${destination.temp.folder}/${docPlugin}_${pluginVersion}" failonerror="true" overwrite="false">
-			<fileset dir="${basedir}" includes="${filesToInclude}"/>
+			<fileset dir="${basedir}"
+				includes="${filesToInclude}"
+				excludes="${filesToExclude}"/>
 		</copy>
 		<eclipse.versionReplacer 
 			path="${destination.temp.folder}/${docPlugin}_${pluginVersion}" 
