@@ -95,7 +95,13 @@ public class DSLResourceProvider {
 						}
 
 						public URI asEMFURI() {
-							return URI.createPlatformPluginURI("/" + pluginId + "/" + resourcesRoot + path, true);
+							// The following line is not compatible with Eclipse 2.2.x
+							//return URI.createPlatformPluginURI("/" + pluginId + "/" + resourcesRoot + path, true);
+							try {
+								return URI.createURI(FileLocator.resolve(url).toString());
+							} catch (IOException e) {
+								return null;
+							}
 						}
 					});
 				}
