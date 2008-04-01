@@ -36,10 +36,7 @@ public abstract class OclEvaluator {
 		ASM ret = null;
 //		System.out.println(atl);
 		AtlCompiler ac = AtlCompiler.getDefault();
-
-		// forcing usage of ATL 2006
-		atl = "-- @atlcompiler atl2006\n" + atl;
-
+		
 		String key = "ID=" + id++;//$NON-NLS-1$
 		ByteArrayInputStream input = new ByteArrayInputStream(atl.getBytes());
 		pbs = ac.compile(input, new DummyFile(key));
