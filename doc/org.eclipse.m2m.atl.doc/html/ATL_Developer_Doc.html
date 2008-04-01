@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>ATL Description</title>
+</head>
+
+<body>
+<h1>ATL Description</h1>
+ATL Description
+<h3>Introduction</h3>
+	<p>	
+ATL language which can be split into two parts :
+<ul>
+    <li> declarative : matched rules, and called rules body. The main use of ATL is declarative. Imperative part should only be used in specific cases. </li> 
+    <li> imperative : called rules (imperatively called), and action blocks (« do », usable in any rules) </li>
+</ul>	
+	</p> 
+	<p>	
+ATL architecture is composed of four main components :
+<ul>
+    <li> ATL Editor </li>
+    <li> ATL Compiler </li>
+    <li> ATL VM </li>
+    <li> Model handlers </li>
+</ul>	
+
+ATL VM is intercalated between the ATL compiler and the used frameworks (EMF, MDR), allowing modularity. Consequently, changes on ATL Language only involve ATL compiler. The following schema describes ATL components and their role during the execution of a transformation.
+	</p>
+	<p>	 
+	<div align="center">
+	  	<img src="../images/ATL_compilation_process.JPG"/>
+		<p align="center"><em>ATL Execution Process</em></p>
+	</div>
+	</p>
+</body>
+</html>
