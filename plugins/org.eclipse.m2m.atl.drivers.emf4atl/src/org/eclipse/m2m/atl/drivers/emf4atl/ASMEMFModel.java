@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA and Vrije Universiteit Brussel.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Frederic Jouault (INRIA) - initial API and implementation
+ *    Freddy Allilaire (INRIA)
+ *    Dennis Wagelaar (Vrije Universiteit Brussel)
+ *******************************************************************************/
 package org.eclipse.m2m.atl.drivers.emf4atl;
 
 import java.io.InputStream;
@@ -8,6 +20,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -197,6 +210,9 @@ public class ASMEMFModel extends ASMModel {
 	protected ASMEMFModel(String name, Resource extent, ASMEMFModel metamodel, boolean isTarget, ModelLoader ml) {
 		super(name, metamodel, isTarget, ml);
 		this.extent = extent;
+		if(metamodel != null) {	// metamodel == null when the metametamodel is initially created
+			metamodel.addConformingModel(this);
+		}
 	}
 
 	/**
@@ -207,14 +223,25 @@ public class ASMEMFModel extends ASMModel {
 		ASMEMFModel ret = null;
 		
 		ret = new ASMEMFModel(name, extent, metamodel, false, ml);
+        ret.addAllReferencedExtents(extent);
+		ret.setIsTarget(false);
+		adaptMetamodel(ret, metamodel);
 		
 		return ret;
 	}
-			
+
 	public void dispose() {
 		//System.err.println("INFO: Disposing ASMEMFModel " + getName());
 		
         if (extent != null) {
+        	// A metamodel cannot be freed before all its conforming models are freed
+        	// however, it may be finalized before. Here, we make sure the conforming
+        	// models are nonetheless disposed off before the metamodel.
+        	// Note: this also means that disposing a metamodel disposes all its
+        	// conforming models.
+        	for(Iterator i = conformingModels.keySet().iterator() ; i.hasNext() ; ) {
+        		((ASMEMFModel)i.next()).dispose();
+        	}
             referencedExtents.clear();
             referencedExtents = null;
             for (Iterator unrs = unregister.iterator(); unrs.hasNext();) {
@@ -225,12 +252,31 @@ public class ASMEMFModel extends ASMModel {
             	//System.err.println("\tINFO: Unregistering " + nsURI + " from local EMF registry");
             	
             }
-            synchronized (resourceSet) {
-                resourceSet.getResources().remove(extent);
-            }
+			Map asmModels = (Map)asmModelsByResource.get(extent);
+			boolean removeResourceFromSet = true;
+			if(asmModels != null) {
+				if(asmModels.containsKey(this)) {
+					asmModels.remove(this);
+				}
+				if(asmModels.isEmpty()) {
+					asmModelsByResource.remove(extent);
+				} else {
+					removeResourceFromSet = false;
+				}
+			}
+			if(removeResourceFromSet) {
+	            synchronized (resourceSet) {
+	            	resourceSet.getResources().remove(extent);
+	            }
+			}
+
+            // Unload only is necessary if we would like to re-use the resource later 
+            // (we do not need this behavior) 
+            /*
             if (unload) {
             	extent.unload();
             }
+            */
             extent = null;
 
             modelElements.clear();
@@ -315,6 +361,15 @@ public class ASMEMFModel extends ASMModel {
             ret.addAllReferencedExtents(extent);
 			ret.setIsTarget(false);
 			ret.unload = true;
+
+			Map asmModels = (Map)asmModelsByResource.get(extent);
+			if(asmModels == null) {
+				asmModels = new WeakHashMap();
+				asmModels.put(ret, "dummy");
+				asmModelsByResource.put(extent, asmModels);
+			} else {
+				asmModels.put(ret, "dummy");
+			}
 		} catch(Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 //			e.printStackTrace();
@@ -440,6 +495,17 @@ public class ASMEMFModel extends ASMModel {
 	}
 	
 	protected static ResourceSet resourceSet;
+	private static Map asmModelsByResource = new WeakHashMap();
+
+	private Map conformingModels = new WeakHashMap();
+
+	private void addConformingModel(ASMEMFModel model) {
+		if(this.getMetamodel() != this) {
+			synchronized(conformingModels) {
+				conformingModels.put(model, "dummy");
+			}
+		}
+	}
 
 	protected static ASMEMFModel mofmm = null;
 	private Resource extent;
