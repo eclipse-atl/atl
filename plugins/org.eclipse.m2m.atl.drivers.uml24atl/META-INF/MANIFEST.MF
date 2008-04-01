@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: UML24ATL Plug-in
+Bundle-SymbolicName: org.eclipse.m2m.atl.drivers.uml24atl;singleton:=true
+Bundle-Version: 2.0.0.qualifier
+Bundle-Vendor: Eclipse.org
+Bundle-Localization: plugin
+Export-Package: org.eclipse.m2m.atl.drivers.uml24atl
+Require-Bundle: org.eclipse.emf.ecore.xmi,
+ org.eclipse.core.resources,
+ org.eclipse.m2m.atl.engine,
+ org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
