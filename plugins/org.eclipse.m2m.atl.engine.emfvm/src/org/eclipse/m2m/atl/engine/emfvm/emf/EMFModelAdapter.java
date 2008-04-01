@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFModelAdapter.java,v 1.1.2.2 2008/03/13 16:21:45 dwagelaar Exp $
+ * $Id: EMFModelAdapter.java,v 1.1.2.3 2008/04/01 12:17:12 fjouault Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.emf;
@@ -376,7 +376,7 @@ public class EMFModelAdapter implements ModelAdapter {
 				ret = val;
 			}
 		} catch(Exception e) {
-			throw new VMException(frame, "error accessing " + ec + "." + name);
+			throw new VMException(frame, "error accessing " + frame.execEnv.toPrettyPrintedString(ec) + "." + name, e);
 		}
 
 		return ret;
@@ -388,6 +388,7 @@ public class EMFModelAdapter implements ModelAdapter {
 	//		- may be too permissive (any value for which toString returns a valid literal name works) 
 	//	- should flatten nested collections
 	public void set(StackFrame frame, Object modelElement, String name, Object value) {
+		if(value == null) return;
 		final ExecEnv execEnv = frame.execEnv;
 		final EObject eo = (EObject)modelElement;
 		final EStructuralFeature feature = eo.eClass().getEStructuralFeature(name);
