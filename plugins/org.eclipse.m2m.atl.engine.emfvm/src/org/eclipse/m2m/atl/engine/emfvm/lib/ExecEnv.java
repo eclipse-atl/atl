@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    
  *
- * $Id: ExecEnv.java,v 1.9.4.2 2008/03/13 16:21:45 dwagelaar Exp $
+ * $Id: ExecEnv.java,v 1.9.4.3 2008/04/01 08:37:19 fjouault Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -303,6 +303,26 @@ public class ExecEnv {
 				prettyPrint(out, entry.getValue());
 			}
 			out.print('}');
+		} else if(value instanceof HashMap) {
+			out.print("Map {");
+			boolean first = true;
+			for(Iterator i = ((Map)value).entrySet().iterator() ; i.hasNext(); ) {
+				Map.Entry entry = (Map.Entry)i.next();
+				
+				if(first) {
+					first = false;
+				} else {
+					out.print(", ");
+				}
+				out.print('(');
+				out.print(entry.getKey());
+				out.print(", ");
+				prettyPrint(out, entry.getValue());
+				out.print(')');
+			}
+			out.print('}');
+		} else if(value instanceof OclUndefined) {
+			out.print("OclUndefined");
 		} else {
 			if (!modelAdapter.prettyPrint(out, value)) {
 				out.print(value);
