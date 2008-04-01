@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Freddy Allilaire (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.launching;
 
 import java.io.File;
@@ -48,7 +58,7 @@ public class AtlRegularVM extends AtlVM {
 	 * @throws FileNotFoundException
 	 */
 	private static InputStream fileNameToInputStream(String filePath) throws FileNotFoundException, CoreException {
-		if (filePath.startsWith("ext:")) {
+		if (filePath.startsWith("ext:")) {//$NON-NLS-1$
 			File f = new File(filePath.substring(4));
 			return new FileInputStream(f);
 		}
@@ -60,7 +70,7 @@ public class AtlRegularVM extends AtlVM {
 	}
 
 	private static URI fileNameToURI(String filePath) throws IllegalArgumentException {
-		if (filePath.startsWith("ext:")) {
+		if (filePath.startsWith("ext:")) {//$NON-NLS-1$
 			File f = new File(filePath.substring(4));
 			return URI.createFileURI(f.getPath());
 		} else {
@@ -69,16 +79,16 @@ public class AtlRegularVM extends AtlVM {
 	}
 
 	private static URL fileNameToURL(String filePath) throws MalformedURLException {
-		if (filePath.startsWith("ext:")) {
+		if (filePath.startsWith("ext:")) {//$NON-NLS-1$
 			File f = new File(filePath.substring(4));
-			return f.toURL();
+			return f.toURI().toURL();
 		}
 		else {
 			IWorkspace wks = ResourcesPlugin.getWorkspace();
 			IWorkspaceRoot wksroot = wks.getRoot();
 	
 			IFile currentLib = wksroot.getFile(new Path(filePath));
-			return currentLib.getLocation().toFile().toURL();
+			return currentLib.getLocation().toFile().toURI().toURL();
 		}
 	}
 
@@ -97,7 +107,7 @@ public class AtlRegularVM extends AtlVM {
 		
 		String extension = currentAtlFile.getFileExtension().toLowerCase();
 		if (AtlLauncherTools.EXTENSIONS.contains(extension)) {
-			String currentAsmPath = currentAtlFile.getFullPath().toString().substring(0, currentAtlFile.getFullPath().toString().length() - extension.length()) + "asm";
+			String currentAsmPath = currentAtlFile.getFullPath().toString().substring(0, currentAtlFile.getFullPath().toString().length() - extension.length()) + "asm";//$NON-NLS-1$
 			return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(currentAsmPath));
 		}
 		else
@@ -119,10 +129,10 @@ public class AtlRegularVM extends AtlVM {
 	
 				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
 				ASMModel mofmm = amh.getMof();
-				toReturn.put("%" + modelHandler.get(mmName), mofmm);
+				toReturn.put("%" + modelHandler.get(mmName), mofmm);//$NON-NLS-1$
 				mofmm.setIsTarget(false);
 				ASMModel inputModel;
-				if (((String)path.get(mmName)).startsWith("#")) {
+				if (((String)path.get(mmName)).startsWith("#")) {//$NON-NLS-1$
 					toReturn.put(mmName, mofmm);
 					inputModel = (ASMModel)toReturn.get(mName);
 					if(inputModel == null)
@@ -168,7 +178,7 @@ public class AtlRegularVM extends AtlVM {
 				mofmm.setIsTarget(false);
 				ASMModel outputModel;
 				
-				if (((String)path.get(mmName)).startsWith("#")) {
+				if (((String)path.get(mmName)).startsWith("#")) {//$NON-NLS-1$
 					if (input.get(mmName) == null)
 						toReturn.put(mmName, mofmm);
 					outputModel = (ASMModel)toReturn.get(mName);
@@ -213,7 +223,7 @@ public class AtlRegularVM extends AtlVM {
 			ASMModel ret = null;
 			
 			if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
-				if(path.startsWith("uri:")) {
+				if(path.startsWith("uri:")) {//$NON-NLS-1$
 					ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, path);
 					// this model should not be disposed of because we did not load it
 				} else {
@@ -289,19 +299,19 @@ public class AtlRegularVM extends AtlVM {
 //	}
 
 	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, /*Map linkWithNextTransformation, Map inModel, */List superimpose, Map options) {
-			boolean checkSameModel = "true".equals(options.get("checkSameModel")); 
+			boolean checkSameModel = "true".equals(options.get("checkSameModel"));//$NON-NLS-1$//$NON-NLS-2$
 			Map toReturn = new HashMap();
 			try {
 				//asmUrl
 				IFile asmFile = getASMFile(filePath);
 				URL asmUrl;
-				asmUrl = asmFile.getLocation().toFile().toURL();
+				asmUrl = asmFile.getLocation().toFile().toURI().toURL();
 	
 				//model handler
 				Map atlModelHandler = new HashMap();
 				for (Iterator i = modelHandler.keySet().iterator(); i.hasNext();) {
 					String currentModelHandler = (String)modelHandler.get(i.next());
-					if (!atlModelHandler.containsKey(currentModelHandler) && !currentModelHandler.equals(""))
+					if (!atlModelHandler.containsKey(currentModelHandler) && !currentModelHandler.equals(""))//$NON-NLS-1$
 						atlModelHandler.put(currentModelHandler, AtlModelHandler.getDefault(currentModelHandler));
 				}
 				
@@ -447,7 +457,7 @@ public class AtlRegularVM extends AtlVM {
 				Map options = new HashMap();
 				for(int i = 0 ; i < AtlLauncherTools.additionalParamIds.length ; i++) {
 					boolean value = configuration.getAttribute(AtlLauncherTools.additionalParamIds[i], false);
-					options.put(AtlLauncherTools.additionalParamIds[i], value ? "true" : "false");
+					options.put(AtlLauncherTools.additionalParamIds[i], value ? "true" : "false");//$NON-NLS-1$//$NON-NLS-2$
 				}
 				
 				runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode, superimpose, options);
@@ -457,8 +467,8 @@ public class AtlRegularVM extends AtlVM {
 			}
 		}
 
-	public void launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options) {
-		AtlLauncher.getDefault().launch(asmUrl, libs, models, params, superimps, options);
+	public Object launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options) {
+		return AtlLauncher.getDefault().launch(asmUrl, libs, models, params, superimps, options);
 	}
 
 }
