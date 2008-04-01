@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA and other.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Frederic Jouault (INRIA) - initial API and implementation
+ *    Dennis Wagelaar (Vrije Universiteit Brussel)
+ *******************************************************************************/
 package org.eclipse.m2m.atl.drivers.mdr4atl;
 
 import java.io.File;
@@ -329,7 +340,7 @@ if(debug) logger.info("\tAdding acquaintance \"" + name2 + "\" to " + type1);
     }
 
 	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, String url, ModelLoader ml) throws Exception {
-		return loadASMMDRModel(name, metamodel, new File(url).toURL(), ml);
+		return loadASMMDRModel(name, metamodel, new File(url).toURI().toURL(), ml);
 	}
 
 	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, URL url, ModelLoader ml) throws Exception {
