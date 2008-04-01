@@ -1,7 +1,14 @@
-/*
- * Created on 21 juil. 2004
- * @author idrissi
- */
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * 	   Tarik Idrissi (INRIA) - initial API and implementation
+ *     Frédéric Jouault (INRIA)
+ *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
 
 import java.util.Collection;
@@ -29,7 +36,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
- * @author idrissi
+ * @author Tarik Idrissi
  *
  */
 public class MarkerMaker {	
@@ -39,9 +46,9 @@ public class MarkerMaker {
 	private static Map severities = new HashMap();
 	
 	static {
-		severities.put("error", new Integer(IMarker.SEVERITY_ERROR));
-		severities.put("warning", new Integer(IMarker.SEVERITY_WARNING));		
-		severities.put("critic", new Integer(IMarker.SEVERITY_INFO));		
+		severities.put("error", new Integer(IMarker.SEVERITY_ERROR));//$NON-NLS-1$
+		severities.put("warning", new Integer(IMarker.SEVERITY_WARNING));//$NON-NLS-1$		
+		severities.put("critic", new Integer(IMarker.SEVERITY_INFO));//$NON-NLS-1$		
 	}
 	
 	/**
@@ -50,7 +57,7 @@ public class MarkerMaker {
 	 * @param res the resource associated to the created marker
 	 * @param problem the EObject representing a problem
 	 */
-	private void eObjectToPbmMarker(IResource res, EObject problem, int tabWidth) {
+	private void eObjectToPbmMarker(IResource res, AtlNbCharFile help, EObject problem, int tabWidth) {
 		EPackage pkProblem = null;
 		EClass clProblem = null;
 		EStructuralFeature sfSeverity = null;
@@ -58,28 +65,26 @@ public class MarkerMaker {
 		EStructuralFeature sfDescription = null;
 		
 		pkProblem = problem.eClass().getEPackage();
-		clProblem = (EClass)pkProblem.getEClassifier("Problem");
-		sfSeverity = clProblem.getEStructuralFeature("severity");
-		sfLocation = clProblem.getEStructuralFeature("location");
-		sfDescription = clProblem.getEStructuralFeature("description");
+		clProblem = (EClass)pkProblem.getEClassifier("Problem");//$NON-NLS-1$
+		sfSeverity = clProblem.getEStructuralFeature("severity");//$NON-NLS-1$
+		sfLocation = clProblem.getEStructuralFeature("location");//$NON-NLS-1$
+		sfDescription = clProblem.getEStructuralFeature("description");//$NON-NLS-1$
 
 
 		String description = (String)problem.eGet(sfDescription);
 		
 		String location = (String)problem.eGet(sfLocation);
-		int lineNumber = Integer.parseInt(location.split(":")[0]);
+		int lineNumber = Integer.parseInt(location.split(":")[0]);//$NON-NLS-1$
 		int charStart = 0, charEnd = 0;
 		try {
-			AtlNbCharFile help = new AtlNbCharFile(((IFile)res).getContents());
 			if (location.indexOf('-') == -1) {
 				location +=  '-' + location;
 			}
 			int[] pos = help.getIndexChar(location, tabWidth);
 			charStart = pos[0];
 			charEnd = pos[1];
-		} catch (CoreException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
-//			e1.printStackTrace();
+		} catch(Exception e) {
+			description += " [location \"" + location + "\" incorrectly reported because of error]";//$NON-NLS-1$//$NON-NLS-2$
 		}
 		
 		String severity = ((EEnumLiteral)problem.eGet(sfSeverity)).getName();
@@ -99,8 +104,14 @@ public class MarkerMaker {
 	}
 	
 	private void createPbmMarkers(IResource res, EObject[] eos, int tabWidth) {
-		for (int i = 0; i  < eos.length; i++) {
-			eObjectToPbmMarker(res, eos[i], tabWidth);
+		try {
+			AtlNbCharFile help = new AtlNbCharFile(((IFile)res).getContents());
+			for (int i = 0; i  < eos.length; i++) {
+				eObjectToPbmMarker(res, help, eos[i], tabWidth);
+			}
+		} catch (CoreException e1) {
+			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+//			e1.printStackTrace();
 		}
 	}
 	
@@ -137,13 +148,13 @@ public class MarkerMaker {
 	public int applyMarkers(IFile file, ASMModel pbs, int tabWidth) throws CoreException {
 		int nbErrors = 0;
 		
-		Collection pbsc = pbs.getElementsByType("Problem");
+		Collection pbsc = pbs.getElementsByType("Problem");//$NON-NLS-1$
 		EObject pbsa[] = new EObject[pbsc.size()];
 		int k = 0;
 		for(Iterator i = pbsc.iterator() ; i.hasNext() ; ) {
 			ASMEMFModelElement ame = (ASMEMFModelElement)i.next();
 			pbsa[k] = ame.getObject();
-			if("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) {
+			if("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) {//$NON-NLS-1$//$NON-NLS-2$
 				nbErrors++;
 			}
 			k++;
