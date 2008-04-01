@@ -37,6 +37,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
  * @author Tarik Idrissi
+ * @author Frédéric Jouault
  *
  */
 public class MarkerMaker {	
@@ -74,7 +75,9 @@ public class MarkerMaker {
 		String description = (String)problem.eGet(sfDescription);
 		
 		String location = (String)problem.eGet(sfLocation);
-		int lineNumber = Integer.parseInt(location.split(":")[0]);//$NON-NLS-1$
+		String parts[] = location.split("-")[0].split(":");
+		int lineNumber = Integer.parseInt(parts[0]);
+		int columnNumber = Integer.parseInt(parts[1]);
 		int charStart = 0, charEnd = 0;
 		try {
 			if (location.indexOf('-') == -1) {
@@ -95,6 +98,7 @@ public class MarkerMaker {
 			pbmMarker.setAttribute(IMarker.SEVERITY, eclipseSeverity);
 			pbmMarker.setAttribute(IMarker.MESSAGE, description);
 			pbmMarker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
+			pbmMarker.setAttribute(IMarker.LOCATION, "line" + lineNumber + ", column " + columnNumber);
 			pbmMarker.setAttribute(IMarker.CHAR_START, charStart);
 			pbmMarker.setAttribute(IMarker.CHAR_END, (charEnd > charStart) ? charEnd : charStart + 1);
 		} catch (CoreException e) {
