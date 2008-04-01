@@ -2,5 +2,6 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="ATL Developer Guide">
+	<topic label="ATL Developer Doc" href="html/ATL_Developer_Doc.html"/>
 	<topic label="Reference" href="references/javadoc/index.html"/>
 </toc>
