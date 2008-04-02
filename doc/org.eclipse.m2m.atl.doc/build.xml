@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="org.eclipse.m2m.atl.doc" default="build.jars" basedir=".">
-	
-    <property file="${buildDirectory}/finalPluginsVersions.properties"/>
-	<property name="pluginVersion" value="${org.eclipse.m2m.atl.doc}"/>
-	
-		
-	<property name="plugin" value="org.eclipse.m2m.atl.engine"/>
-	<property name="docPlugin" value="org.eclipse.m2m.atl.doc"/>
-	
-	<!-- TODO: if you add new folders in your doc plugin, make sure you include them here -->
-	<property name="filesToInclude" value="META-INF/**,images/**,html/**,tasks/**,references/**,tutorials/**,notices.html,about.*,eclipse*.gif,modeling*.png,plugin.*,*.css,toc*.xml,topics_*.xml,index/**,doc.zip"/>
 
-	<property name="filesToInclude" value="META-INF/**,about.html,about.ini,about.mappings,about.properties,modeling*.png,plugin.xml,plugin.properties,doc.zip,*.xml,index/**"/>
+	<!-- Plug-in version.  This is a HACK.  Do not forget to update. -->
+	<property name="pluginVersion" value="2.0.0"/>
+
+	<property name="plugin" value="org.eclipse.m2m.atl"/>
+	<property name="docPlugin" value="org.eclipse.m2m.atl.doc"/>
+
+	<property name="filesToInclude" value="META-INF/,about.*,modeling*.png,eclipse*.gif,eclipse*.png,eclipse_lg.gif,plugin.*,doc.zip,toc.xml,index/**"/>
 
 	<!-- Compiler settings. -->
 	<property name="javacFailOnError" value="false"/>
@@ -60,7 +56,7 @@
 		<antcall target="gather.bin.parts">
 			<param name="destination.temp.folder" value="${temp.folder}/"/>
 		</antcall>
-		<zip destfile="${plugin.destination}/${docPlugin}_${pluginVersion}.jar" basedir="${temp.folder}/${docPlugin}_${pluginVersion}" filesonly="false" whenempty="skip" update="false"/>
+		<zip destfile="${plugin.destination}/${docPlugin}_${pluginVersion}.${forceContextQualifier}.jar" basedir="${temp.folder}/${docPlugin}_${pluginVersion}.${forceContextQualifier}" filesonly="false" whenempty="skip" update="false"/>
 		<delete dir="${temp.folder}"/>
 	</target>
 
@@ -70,9 +66,8 @@
 			<arg value="build/antJavadoc.sh"/>
 			<arg value="${eclipse.home}/../eclipse"/>
 		</exec>
-		<!--
+		
 		<antcall target="build.index"/>
-		-->
 		
 		<!-- Zip up all of the documentation artifacts - references(including javadoc), images, tutorials, etc. -->
 		<zip destfile="doc.zip" compress="true">
@@ -80,27 +75,24 @@
 			<zipfileset dir="references" prefix="references" excludes="**/impl,**/impl/**"/>
 			<zipfileset dir="images" prefix="images"/>
 			<zipfileset dir="tutorials" prefix="tutorials"/>
-			<zipfileset dir="html" prefix="html"/>
 		</zip>
 	</target>
 
 	<target name="build.index" depends="init" description="Builds search index for the plug-in" if="eclipse.running">
 		<help.buildHelpIndex manifest="plugin.xml" destination="."/>
 	</target>
-
+	
 	<target name="build.sources" depends="init">
 	</target>
 
 	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
-		<mkdir dir="${destination.temp.folder}/${docPlugin}_${pluginVersion}"/>
-		<copy todir="${destination.temp.folder}/${docPlugin}_${pluginVersion}" failonerror="true" overwrite="false">
-			<fileset dir="${basedir}"
-				includes="${filesToInclude}"
-				excludes="${filesToExclude}"/>
+		<mkdir dir="${destination.temp.folder}/${docPlugin}_${pluginVersion}.${forceContextQualifier}"/>
+		<copy todir="${destination.temp.folder}/${docPlugin}_${pluginVersion}.${forceContextQualifier}" failonerror="true" overwrite="false">
+			<fileset dir="${basedir}" includes="${filesToInclude}"/>
 		</copy>
 		<eclipse.versionReplacer 
-			path="${destination.temp.folder}/${docPlugin}_${pluginVersion}" 
-			version="${pluginVersion}"/>
+			path="${destination.temp.folder}/${docPlugin}_${pluginVersion}.${forceContextQualifier}" 
+			version="${pluginVersion}.${forceContextQualifier}"/>
 	</target>
 
 	<target name="build.zips" depends="init">
@@ -113,8 +105,8 @@
 	</target>
 
 	<target name="clean" depends="init" description="Clean the plug-in: ${docPlugin} of all the zips, jars and logs created.">
-		<delete file="${plugin.destination}/${docPlugin}_${pluginVersion}.jar"/>
-		<delete file="${plugin.destination}/${docPlugin}_${pluginVersion}.zip"/>
+		<delete file="${plugin.destination}/${docPlugin}_${pluginVersion}.${forceContextQualifier}.jar"/>
+		<delete file="${plugin.destination}/${docPlugin}_${pluginVersion}.${forceContextQualifier}.zip"/>
 		<delete dir="${temp.folder}"/>
 	</target>
 
@@ -132,7 +124,7 @@
 		<delete>
 			<fileset dir="${temp.folder}" includes="**/*.bin.log"			/>
 		</delete>
-		<zip destfile="${plugin.destination}/${docPlugin}_${pluginVersion}.zip" basedir="${temp.folder}" filesonly="true" whenempty="skip" update="false"/>
+		<zip destfile="${plugin.destination}/${docPlugin}_${pluginVersion}.${forceContextQualifier}.zip" basedir="${temp.folder}" filesonly="true" whenempty="skip" update="false"/>
 		<delete dir="${temp.folder}"/>
 	</target>
 
