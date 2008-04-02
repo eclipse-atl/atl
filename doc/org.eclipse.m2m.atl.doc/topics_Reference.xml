@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<span>File created to avoid PDE warnings.
-The actual content is created during the build.</span>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<!-- This file is just a placeholder to avoid plugin.xml warnings -->
+<toc label="Reference">
+	<topic label="ATL API Reference" href="references/javadoc/dummy.html"/>
+</toc>
