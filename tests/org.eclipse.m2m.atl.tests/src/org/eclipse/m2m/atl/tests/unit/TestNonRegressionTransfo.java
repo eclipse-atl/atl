@@ -34,8 +34,8 @@ import org.eclipse.m2m.atl.tests.util.ModelUtils;
  */
 public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
-	private final static boolean RECOMPILE_BEFORE_LAUNCH = false;
-	private final static boolean APPLY_COMPILATION = false;
+	protected static boolean RECOMPILE_BEFORE_LAUNCH = false;
+	protected static boolean APPLY_COMPILATION = false;
 
 	private double totalTime = 0;
 	protected LaunchParser launchParser = new LaunchParser();
