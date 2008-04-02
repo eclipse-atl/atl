@@ -149,8 +149,9 @@ public class AtlCompiler {
 	
 	/**
 	 * Standalone compilation.
+	 * 
 	 * @param in The InputStream to get atl source from.
-	 * @param out The output file name
+	 * @param outputFileName The output file name
 	 * @return the problems which occured during compilation 
 	 */
 	public EObject[] compile(InputStream in, String outputFileName) {

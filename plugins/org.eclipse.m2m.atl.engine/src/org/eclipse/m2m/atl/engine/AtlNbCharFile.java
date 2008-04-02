@@ -65,8 +65,7 @@ public class AtlNbCharFile {
 	private List lines;
 
 	/**
-	 * @param projectName
-	 * @param fileName
+	 * @param in
 	 */
 	public AtlNbCharFile(InputStream in) {
 		computePosition(in);
@@ -75,7 +74,8 @@ public class AtlNbCharFile {
 	/**
 	 * This is the main method which compute for each line of the file
 	 * the index of the first char and the index of the tabs
-	 *
+	 * 
+	 * @param is
 	 */
 	private void computePosition(InputStream is) {
 		lines = new ArrayList();
@@ -125,7 +125,7 @@ public class AtlNbCharFile {
 	 * To compute start char and last char, AtlStackFrame calls this method
 	 * @param lineNumber
 	 * @param column
-	 * @return
+	 * @return the position to select in the file 
 	 */
 	public int getIndexChar(int lineNumber, int column, int tabWidth) {
 		int ret = 0;
