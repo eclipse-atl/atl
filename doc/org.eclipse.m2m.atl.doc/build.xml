@@ -5,8 +5,8 @@
 	<property name="pluginVersion" value="${org.eclipse.m2m.atl.doc}"/>
 	
 	
-	<property name="plugin" value="org.eclipse.emf.compare"/>
-	<property name="docPlugin" value="org.eclipse.emf.compare.doc"/>
+	<property name="plugin" value="org.eclipse.m2m.atl"/>
+	<property name="docPlugin" value="org.eclipse.m2m.atl.doc"/>
 
 	<property name="filesToInclude" value="META-INF/**,about.html,about.ini,about.mappings,about.properties,modeling*.png,plugin.xml,plugin.properties,doc.zip,*.xml,index/**"/>
 	<property name="filesToExclude" value="**/*.dnx"/>
