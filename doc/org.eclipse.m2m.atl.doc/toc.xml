@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="ATL Developer Guide">
-	<topic label="ATL Developer Doc" href="html/ATL_Developer_Doc.html"/>
-	<topic label="Reference" href="references/javadoc/index.html"/>
+<toc label="ATL Table of Contents">
+	<topic label="Javadoc" href="references/javadoc/index.html"/>
 </toc>
