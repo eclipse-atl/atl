@@ -489,8 +489,9 @@ public class ASMEMFModel extends ASMModel {
     /**
      * Searches for and adds all Resource extents that are
      * referenced from the main extent to referencedExtents.
-     * @param The main extent
-     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     * author : Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     * 
+     * @param extent The main extent
      */
     protected void addAllReferencedExtents(Resource extent) {
         Iterator contents = extent.getAllContents();

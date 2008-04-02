@@ -80,7 +80,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 					ret = o.equals(t) || ((EClass)o).isSuperTypeOf((EClass)t);
 				} catch(Exception e) {
 					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//					e.printStackTrace(System.out);
+					//					e.printStackTrace(System.out);
 				}
 			}
 		}
@@ -96,10 +96,10 @@ public class ASMEMFModelElement extends ASMModelElement {
 		if(p != null) {
 			ret = (ASMModelElement)p.get(null, "eType");
 		}
-		
+
 		return ret;
 	}
-	
+
 	// only for metamodels...?
 	public ASMModelElement getProperty(String name) {
 		ASMModelElement ret = null;
@@ -111,7 +111,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 				ret = ((ASMEMFModel)getModel()).getASMModelElement(((EClass)t).getEStructuralFeature(name));
 			} catch(Exception e) {
 				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//				e.printStackTrace(System.out);
+				//				e.printStackTrace(System.out);
 			}
 		}
 
@@ -120,14 +120,14 @@ public class ASMEMFModelElement extends ASMModelElement {
 
 	public ASMOclAny refImmediateComposite() {
 		ASMOclAny ret = null;
-		
+
 		EObject ic = object.eContainer();
 		if(ic == null) {
 			ret = super.refImmediateComposite();
 		} else {
 			ret = ((ASMEMFModel)getModel()).getASMModelElement(ic);
 		}
-		
+
 		return ret;
 	}
 
@@ -148,10 +148,10 @@ public class ASMEMFModelElement extends ASMModelElement {
 		}
 		return ret;
 	}
-	
+
 	public ASMOclAny emf2ASM(StackFrame frame, Object value) {
 		ASMOclAny ret = null;
-		
+
 		if(value instanceof String) {
 			ret = new ASMString((String)value);
 		} else if(value instanceof Boolean) {
@@ -172,14 +172,14 @@ public class ASMEMFModelElement extends ASMModelElement {
 			ret = new ASMInteger(((Character)value).charValue());
 		} else if(value instanceof Enumerator) {
 			ret = new ASMEnumLiteral(((Enumerator)value).getName());
-        } else if(value instanceof FeatureMap.Entry) {
-            ret = new ASMTuple();
-            ret.set(frame, "eStructuralFeature", 
-                    emf2ASM(frame, ((FeatureMap.Entry)value).getEStructuralFeature()));
-            ret.set(frame, "value", 
-                    emf2ASM(frame, ((FeatureMap.Entry)value).getValue()));
+		} else if(value instanceof FeatureMap.Entry) {
+			ret = new ASMTuple();
+			ret.set(frame, "eStructuralFeature", 
+					emf2ASM(frame, ((FeatureMap.Entry)value).getEStructuralFeature()));
+			ret.set(frame, "value", 
+					emf2ASM(frame, ((FeatureMap.Entry)value).getValue()));
 		} else if(value instanceof EObject) {
-            ret = eObjectToASM(frame, (EObject)value);
+			ret = eObjectToASM(frame, (EObject)value);
 		} else if(value == null) {
 			ret = new ASMOclUndefined();
 		} else if(value instanceof Collection) {
@@ -190,7 +190,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 				col = new ASMSet();
 			else
 				col = new ASMBag();
-			
+
 			for(Iterator i = ((Collection)value).iterator() ; i.hasNext() ; ) {
 				col.add(emf2ASM(frame, i.next()));
 			}
@@ -198,49 +198,49 @@ public class ASMEMFModelElement extends ASMModelElement {
 		} else {
 			frame.printStackTrace("ERROR: cannot convert " + value + " : " + value.getClass() + " from EMF.");
 		}
-		
+
 		return ret;
 	}
-    
-    /**
-     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
-     * @param frame The ATL VM stackframe
-     * @param value The EMF value to convert
-     * @return The corresponding ASMModelElement, taking into account
-     * the model in which the element should reside. Uses this model as a proxy
-     * if no other model contains the given value.
-     */
-    private ASMOclAny eObjectToASM(StackFrame frame, EObject value) {
-        ASMEMFModel model = (ASMEMFModel) getModel();
-        Resource valueExtent = value.eResource();
-        if (model.getExtent().equals(valueExtent)) {
-            return model.getASMModelElement(value);
-        } else {
-            Iterator models = frame.getModels().values().iterator();
-            while (models.hasNext()) {
-                Object m = models.next();
-                if ((m instanceof ASMEMFModel) && (!model.equals(m))) {
-                    if (((ASMEMFModel)m).getExtent().equals(valueExtent)) {
-                        return ((ASMEMFModel)m).getASMModelElement(value);
-                    }
-                }
-            }
-        }
-        //Use this model as proxy
-        return model.getASMModelElement(value);
-    }
-    
+
+	/**
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @param frame The ATL VM stackframe
+	 * @param value The EMF value to convert
+	 * @return The corresponding ASMModelElement, taking into account
+	 * the model in which the element should reside. Uses this model as a proxy
+	 * if no other model contains the given value.
+	 */
+	private ASMOclAny eObjectToASM(StackFrame frame, EObject value) {
+		ASMEMFModel model = (ASMEMFModel) getModel();
+		Resource valueExtent = value.eResource();
+		if (model.getExtent().equals(valueExtent)) {
+			return model.getASMModelElement(value);
+		} else {
+			Iterator models = frame.getModels().values().iterator();
+			while (models.hasNext()) {
+				Object m = models.next();
+				if ((m instanceof ASMEMFModel) && (!model.equals(m))) {
+					if (((ASMEMFModel)m).getExtent().equals(valueExtent)) {
+						return ((ASMEMFModel)m).getASMModelElement(value);
+					}
+				}
+			}
+		}
+		//Use this model as proxy
+		return model.getASMModelElement(value);
+	}
+
 	public void set(StackFrame frame, String name, ASMOclAny value) {
 
-final boolean debug = false;
-//final boolean checkSameModel = !true;
-		
-if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to " + value);
-//if(debug) System.out.println("Setting: " + this + " : " + getType() + "." + name + " to " + value);
+		final boolean debug = false;
+		//final boolean checkSameModel = !true;
+
+		if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to " + value);
+		//if(debug) System.out.println("Setting: " + this + " : " + getType() + "." + name + " to " + value);
 
 		super.set(frame, name, value);
 		EStructuralFeature feature = object.eClass().getEStructuralFeature(name);
-		
+
 		if("__xmiID__".equals(name)) {
 			// WARNING: Allowed manual setting of XMI ID for the current model element
 			// This operation is advised against but seems necessary of some special case
@@ -299,7 +299,7 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 			}
 		}
 	}
-	
+
 	/**
 	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
 	 * @param feature The feature to assign to.
@@ -321,7 +321,7 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 		}
 		return false;
 	}
-	
+
 	private void checkContainment(EStructuralFeature feature, Object val) {
 		if((val != null) && (feature instanceof EReference)) {
 			EReference ref = (EReference)feature;
@@ -360,11 +360,11 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 			}
 		}
 	}
-	
+
 	public Object asm2EMF(StackFrame frame, ASMOclAny value, String propName, EStructuralFeature feature) {
 		Object ret = null;
-        
-        if(value instanceof ASMString) {
+
+		if(value instanceof ASMString) {
 			ret = ((ASMString)value).getSymbol();
 		} else if(value instanceof ASMBoolean) {
 			ret = new Boolean(((ASMBoolean)value).getSymbol());
@@ -390,18 +390,18 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 			String name = ((ASMEnumLiteral)value).getName();
 			EClassifier type = ((EClass)((ASMEMFModelElement)getMetaobject()).object).getEStructuralFeature(propName).getEType();
 			ret = ((EEnum)type).getEEnumLiteral(name).getInstance();
-        } else if (value instanceof ASMTuple) {
-            Object f = asm2EMF(frame, 
-                    ((ASMTuple)value).get(frame, "eStructuralFeature"),
-                    propName, feature);
-            if (f instanceof EStructuralFeature) {
-                Object v = asm2EMF(frame, 
-                        ((ASMTuple)value).get(frame, "value"),
-                        propName, feature);
-                ret = FeatureMapUtil.createEntry((EStructuralFeature)f, v);
-            } else {
-                frame.printStackTrace("ERROR: cannot convert " + value + " : " + value.getClass() + " to EMF.");
-            }
+		} else if (value instanceof ASMTuple) {
+			Object f = asm2EMF(frame, 
+					((ASMTuple)value).get(frame, "eStructuralFeature"),
+					propName, feature);
+			if (f instanceof EStructuralFeature) {
+				Object v = asm2EMF(frame, 
+						((ASMTuple)value).get(frame, "value"),
+						propName, feature);
+				ret = FeatureMapUtil.createEntry((EStructuralFeature)f, v);
+			} else {
+				frame.printStackTrace("ERROR: cannot convert " + value + " : " + value.getClass() + " to EMF.");
+			}
 		} else if(value instanceof ASMCollection) {
 			ret = new ArrayList();
 			for(Iterator i = ((ASMCollection)value).iterator() ; i.hasNext() ; ) {
@@ -412,28 +412,28 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 		} else {
 			frame.printStackTrace("ERROR: cannot convert " + value + " : " + value.getClass() + " to EMF.");
 		}
-		
+
 		return ret;
 	}
-	
+
 	private static ASMModelElement getMetaobject(ASMModel model, EObject object) {
 		ASMModelElement ret = null;
-		
+
 		EObject metaobject = object.eClass();
 		if(metaobject != object) {
 			ret= ((ASMEMFModel)model.getMetamodel()).getASMModelElement(metaobject);
 		}
-		
+
 		return ret;
 	}
-	
+
 	protected static void registerMOFOperation(String modelelementName, String methodName, Class args[]) throws Exception {
 		List realArgs = new ArrayList(Arrays.asList(args));
 		realArgs.add(0, ASMEMFModelElement.class);
 		realArgs.add(0, StackFrame.class);
 		ClassNativeOperation no = new ClassNativeOperation(ASMEMFModelElement.class.getMethod(methodName, (Class[])realArgs.toArray(args)));
 		ASMModelElement amme = ASMEMFModel.getMOF().findModelElement(modelelementName);
-//		System.out.println("Registering on " + amme + " : " + no);
+		//		System.out.println("Registering on " + amme + " : " + no);
 		amme.registerVMOperation(no);
 	}
 
@@ -448,25 +448,25 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 			registerMOFOperation("EClass", "allInstancesFrom", new Class[] {ASMString.class});
 			registerMOFOperation("EClassifier", "newInstance", new Class[] {});
 			registerMOFOperation("EClassifier", "getInstanceById", new Class[] {ASMString.class, ASMString.class});
-//			registerMOFOperation("Classifier", "getElementBy", new Class[] {ASMString.class, ASMOclAny.class});
-//			registerMOFOperation("Classifier", "getElementsBy", new Class[] {ASMString.class, ASMOclAny.class});
+			//			registerMOFOperation("Classifier", "getElementBy", new Class[] {ASMString.class, ASMOclAny.class});
+			//			registerMOFOperation("Classifier", "getElementsBy", new Class[] {ASMString.class, ASMOclAny.class});
 
 			// Operations on MOF!GeneralizableElement
-//			registerMOFOperation("GeneralizableElement", "findElementsByTypeExtended", new Class[] {ASMMDRModelElement.class, ASMBoolean.class});
-//			registerMOFOperation("GeneralizableElement", "lookupElementExtended", new Class[] {ASMString.class});
+			//			registerMOFOperation("GeneralizableElement", "findElementsByTypeExtended", new Class[] {ASMMDRModelElement.class, ASMBoolean.class});
+			//			registerMOFOperation("GeneralizableElement", "lookupElementExtended", new Class[] {ASMString.class});
 
 			// Operations on MOF!AssociationEnd
-//			registerMOFOperation("AssociationEnd", "otherEnd", new Class[] {});
+			//			registerMOFOperation("AssociationEnd", "otherEnd", new Class[] {});
 		} catch(Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace(System.out);
+			//			e.printStackTrace(System.out);
 		}
 	}
-	
+
 	// For testing purpose
 	public static ASMOclAny getInstanceById(StackFrame frame, ASMEMFModelElement self, ASMString modelName, ASMString id) {
 		ASMOclAny ret = null;
-		
+
 		ASMModel model = (ASMModel)frame.getModels().get(modelName.getSymbol());
 		if(model instanceof ASMEMFModel) {
 			//TODO: test new version, was: getIDToEObjectMap().get(id.getSymbol());
@@ -474,7 +474,7 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 			if(eo != null)
 				ret = ((ASMEMFModel)model).getASMModelElement(eo);
 		}
-		
+
 		return (ret == null) ? new ASMOclUndefined() : ret;
 	}
 
@@ -486,65 +486,64 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 	// However, keeping resource (i.e., XMI) order is sometimes less confusing
 	public static ASMOrderedSet allInstancesFrom(StackFrame frame, ASMEMFModelElement self, ASMString sourceModelName) {
 
-final boolean debug = false;
+		final boolean debug = false;
 
 		ASMOrderedSet aret = new ASMOrderedSet();
 		Collection ret = aret.collection();
 
-if(debug) logger.info(self + ".allInstancesFrom(" + ((sourceModelName == null) ? "null" : "\"" + sourceModelName + "\"") + ")");
-//if(debug) System.out.println(self + ".allInstancesFrom(" + ((sourceModelName == null) ? "null" : "\"" + sourceModelName + "\"") + ")");
-		
+		if(debug) logger.info(self + ".allInstancesFrom(" + ((sourceModelName == null) ? "null" : "\"" + sourceModelName + "\"") + ")");
+
 		//if(self.object.eClass().equals()) {
-			for(Iterator i = frame.getModels().keySet().iterator() ; i.hasNext() ; ) {
-				String mname = (String)i.next();
+		for(Iterator i = frame.getModels().keySet().iterator() ; i.hasNext() ; ) {
+			String mname = (String)i.next();
 
-if(debug) logger.info("\ttrying: " + mname);
-//if(debug) System.out.println("\ttrying: " + mname);
+			if(debug) logger.info("\ttrying: " + mname);
+			//if(debug) System.out.println("\ttrying: " + mname);
 
-				if((sourceModelName != null) && !mname.equals(sourceModelName.getSymbol())) continue;
-				ASMModel am = (ASMModel)frame.getModels().get(mname);
+			if((sourceModelName != null) && !mname.equals(sourceModelName.getSymbol())) continue;
+			ASMModel am = (ASMModel)frame.getModels().get(mname);
 
-if(debug) logger.info("\t\tfound: " + am.getName());
-if(debug) logger.info("\t\tam.getMetamodel() = " + am.getMetamodel().hashCode());
-if(debug) logger.info("\t\tself.getModel() = " + self.getModel().hashCode());
-if(debug) logger.info("\t\tam.getMetamodel().equals(self.getModel()) = " + am.getMetamodel().equals(self.getModel()));
-//if(debug) System.out.println("\t\tfound: " + am.getName());
-//if(debug) System.out.println("\t\tam.getMetamodel() = " + am.getMetamodel().hashCode());
-//if(debug) System.out.println("\t\tself.getModel() = " + self.getModel().hashCode());
-//if(debug) System.out.println("\t\tam.getMetamodel().equals(self.getModel()) = " + am.getMetamodel().equals(self.getModel()));
+			if(debug) logger.info("\t\tfound: " + am.getName());
+			if(debug) logger.info("\t\tam.getMetamodel() = " + am.getMetamodel().hashCode());
+			if(debug) logger.info("\t\tself.getModel() = " + self.getModel().hashCode());
+			if(debug) logger.info("\t\tam.getMetamodel().equals(self.getModel()) = " + am.getMetamodel().equals(self.getModel()));
+			//if(debug) System.out.println("\t\tfound: " + am.getName());
+			//if(debug) System.out.println("\t\tam.getMetamodel() = " + am.getMetamodel().hashCode());
+			//if(debug) System.out.println("\t\tself.getModel() = " + self.getModel().hashCode());
+			//if(debug) System.out.println("\t\tam.getMetamodel().equals(self.getModel()) = " + am.getMetamodel().equals(self.getModel()));
 
-				if(!am.getMetamodel().equals(self.getModel())) continue;
+			if(!am.getMetamodel().equals(self.getModel())) continue;
 
-if(debug) logger.info("\t\t\tsearching on: " + am.getName());
-//if(debug) System.out.println("\t\t\tsearching on: " + am.getName());
+			if(debug) logger.info("\t\t\tsearching on: " + am.getName());
+			//if(debug) System.out.println("\t\t\tsearching on: " + am.getName());
 
-				Set elems = am.getElementsByType(self);
-				ret.addAll(elems);
+			Set elems = am.getElementsByType(self);
+			ret.addAll(elems);
 
-if(debug) logger.info("\t\t\t\tfound: " + elems);
-//if(debug) System.out.println("\t\t\t\tfound: " + elems);
+			if(debug) logger.info("\t\t\t\tfound: " + elems);
+			//if(debug) System.out.println("\t\t\t\tfound: " + elems);
 
-			}
+		}
 		//}
-			
+
 		return aret;
 	}
-	
+
 	public static ASMModelElement newInstance(StackFrame frame, ASMEMFModelElement self) {
 		ASMModelElement ret = null;
 		if(self.object.eClass().getName().equals("EClass")) {
 			ret = createNewInstance(frame, self);
 		}
-		
-//		if(self.object.eClass().getName().equals("EClass")) {
-//			for(Iterator i = self.getModel().getSubModels().values().iterator() ; i.hasNext() ; ) {
-//				ASMModel am = (ASMModel)i.next();
-//				if(am.isTarget()) {
-//					ret = am.newModelElement(self);
-//					break;
-//				}
-//			}
-//		}
+
+		//		if(self.object.eClass().getName().equals("EClass")) {
+		//			for(Iterator i = self.getModel().getSubModels().values().iterator() ; i.hasNext() ; ) {
+		//				ASMModel am = (ASMModel)i.next();
+		//				if(am.isTarget()) {
+		//					ret = am.newModelElement(self);
+		//					break;
+		//				}
+		//			}
+		//		}
 
 		return ret;
 	}
@@ -556,10 +555,10 @@ if(debug) logger.info("\t\t\t\tfound: " + elems);
 	protected ASMEMFModelElement(Map modelElements, ASMModel model, EObject object) {
 		super(model, getMetaobject(model, object));
 		this.object = object;
-		
+
 		// must be done here and not in getASMModelElement because EClass extends EClassifier whose type is EClass
 		modelElements.put(object, this);
-		
+
 		EStructuralFeature sfName = object.eClass().getEStructuralFeature("name");
 		if (sfName != null) {
 			String name = null;
@@ -580,7 +579,7 @@ if(debug) logger.info("\t\t\t\tfound: " + elems);
 			setMetaobject(this);
 		}
 		setType(getMetaobject());
-		
+
 		// Supertypes
 		if(object instanceof EClass) {
 			addSupertype(ASMOclType.myType);
@@ -608,14 +607,14 @@ if(debug) logger.info("\t\t\t\tfound: " + elems);
 					boolean ok = true;
 					for(int j = 0 ; (j < pts.length) && ok ; j++) {
 						if(!pts[j].isAssignableFrom(argumentTypes[j])) {
-                            if (!(pts[j] == boolean.class && argumentTypes[j] == Boolean.class
-                            		|| pts[j] == int.class && argumentTypes[j] == Integer.class
-                            		|| pts[j] == char.class && argumentTypes[j] == Character.class
-                            		|| pts[j] == long.class && argumentTypes[j] == Long.class
-                            		|| pts[j] == float.class && argumentTypes[j] == Float.class
-                            		|| pts[j] == double.class && argumentTypes[j] == Double.class)) {
-                            	ok = false;
-                            }
+							if (!(pts[j] == boolean.class && argumentTypes[j] == Boolean.class
+									|| pts[j] == int.class && argumentTypes[j] == Integer.class
+									|| pts[j] == char.class && argumentTypes[j] == Character.class
+									|| pts[j] == long.class && argumentTypes[j] == Long.class
+									|| pts[j] == float.class && argumentTypes[j] == Float.class
+									|| pts[j] == double.class && argumentTypes[j] == Double.class)) {
+								ok = false;
+							}
 						}
 					}
 					if(ok)
@@ -623,18 +622,18 @@ if(debug) logger.info("\t\t\t\tfound: " + elems);
 				}
 			}
 		}
-		
+
 		if((ret == null) && (cls.getSuperclass() != null)) {
 			ret = findMethod(cls.getSuperclass(), name, argumentTypes);
 		}
-		
+
 		cacheMethod(sig, ret);
 
 		return ret;
 	}
-	
+
 	private static WeakHashMap methodCache = new WeakHashMap();
-	
+
 	private Method findCachedMethod(String signature) {
 		Method ret = null;
 		Map sigMap = (Map) methodCache.get(getMetaobject());
@@ -643,7 +642,7 @@ if(debug) logger.info("\t\t\t\tfound: " + elems);
 		}
 		return ret;
 	}
-	
+
 	private void cacheMethod(String signature, Method method) {
 		ASMModelElement mo = getMetaobject();
 		synchronized (methodCache) {
@@ -655,7 +654,7 @@ if(debug) logger.info("\t\t\t\tfound: " + elems);
 			sigMap.put(signature, method);
 		}
 	}
-	
+
 	/**
 	 * @param name
 	 * @param argumentTypes
@@ -674,7 +673,7 @@ if(debug) logger.info("\t\t\t\tfound: " + elems);
 		sig.append(')');
 		return sig.toString();
 	}
-	
+
 	public ASMOclAny invoke(StackFrame frame, String opName, List arguments) {
 		ASMOclAny ret = null;
 
@@ -691,7 +690,7 @@ if(debug) logger.info("\t\t\t\tfound: " + elems);
 				argumentTypes[k] = args[k].getClass();
 				k++;
 			}
-			
+
 			Method method = findMethod(object.getClass(), opName, argumentTypes);
 			try {
 				if(method != null) {
@@ -707,7 +706,7 @@ if(debug) logger.info("\t\t\t\tfound: " + elems);
 				frame.printStackTrace("ERROR: exception during invocation of operation " + opName + " on " + getType() + " (java method: " + method + ")", toReport);				
 			}
 		}
-		
+
 		return ret;
 	}
 
@@ -730,7 +729,7 @@ if(debug) logger.info("\t\t\t\tfound: " + elems);
 				argumentTypes[k] = args[k].getClass();
 				k++;
 			}
-			
+
 			Method method = findMethod(object.getClass().getSuperclass(), opName, argumentTypes);
 			try {
 				if(method != null) {
@@ -746,14 +745,14 @@ if(debug) logger.info("\t\t\t\tfound: " + elems);
 				frame.printStackTrace("ERROR: exception during invocation of operation " + opName + " on " + getType() + " (java method: " + method + ")", toReport);				
 			}
 		}
-		
+
 		return ret;
 	}
 
 	public EObject getObject() {
 		return object;
 	}
-	
+
 	protected EObject object;
-    
+
 }
