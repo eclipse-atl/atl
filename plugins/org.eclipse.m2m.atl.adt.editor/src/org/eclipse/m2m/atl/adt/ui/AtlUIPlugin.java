@@ -124,11 +124,6 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 	private ProblemMarkerManager problemMarkerManager ;
 	
 	/**
-	 * The specific ATL compilation editor.
-	 */
-	//    private ICompilationUnitDocumentProvider compilationUnitDocumentProvider;
-	
-	/**
 	 * The resource bundle exists for the internationalization of the plug-in.
 	 * The informations are stored in a file .properties and Eclipse used these files
 	 * to set the default values. It also uses it to fPreferenceeStore the client values. 
@@ -139,7 +134,6 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 	 * Creates a new instance of the ATL plug-in.
 	 * Use the AbstractUIPlugin constructor to define it, and try to get the resource bundle.
 	 * 
-	 * @param descriptor the plug-in descriptor
 	 * @deprecated
 	 */
 	public AtlUIPlugin() {
@@ -159,13 +153,7 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 			problemMarkerManager= new ProblemMarkerManager();
 		return problemMarkerManager;
 	}
-	
-	//    public synchronized ICompilationUnitDocumentProvider getCompilationUnitDocumentProvider() {
-	//        if (compilationUnitDocumentProvider == null)
-	//            compilationUnitDocumentProvider = new CompilationUnitDocumentProvider();
-	//        return compilationUnitDocumentProvider;
-	//    }
-	
+		
 	/**
 	 * Returns the plugin's resource bundle.
 	 */

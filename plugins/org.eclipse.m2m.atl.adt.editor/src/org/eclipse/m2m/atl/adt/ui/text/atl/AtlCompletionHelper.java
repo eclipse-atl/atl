@@ -216,7 +216,7 @@ public class AtlCompletionHelper {
 	/**
 	 * Retrieves the last typed keyword.
 	 * @param offset
-	 * @return
+	 * @return the last typed keyword
 	 */
 	public String getLastKeyWord(int offset) throws BadLocationException {
 		int[] location = getLastKeyWordLocation(offset, HIGH_LEVEL_KEYWORDS);

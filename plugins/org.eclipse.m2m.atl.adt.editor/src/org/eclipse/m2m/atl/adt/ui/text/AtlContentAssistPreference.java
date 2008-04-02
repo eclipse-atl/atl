@@ -27,7 +27,7 @@ public class AtlContentAssistPreference {
 	 * Handles the preference fPreferenceeStore changes for the content assistant.
 	 * 
 	 * @param assistant the given content assistant
-	 * @param fPreferenceeStore the given preference fPreferenceeStore
+	 * @param store the given preference store
 	 * @param event the given property change event
 	 */
 	public static void changeConfiguration(ContentAssistant assistant, IPreferenceStore store, PropertyChangeEvent event) {

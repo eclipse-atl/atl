@@ -56,7 +56,7 @@ public class Root {
 	}
 	
 	/**
-	 * @param module The module to set.
+	 * @param unit The module to set.
 	 */
 	public void setUnit(EObject unit) {
 		this.unit = unit;
