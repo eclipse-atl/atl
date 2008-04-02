@@ -37,7 +37,7 @@
 			destdir="${destDir}" 
 			classpath="${classpath}"
 			overview="${overview}"
-
+			encoding="UTF-8"
 			windowtitle="${windowTitle}"
 			footer="Copyright 2007 IBM Corporation and others.&lt;br&gt; All Rights Reserved."
 
