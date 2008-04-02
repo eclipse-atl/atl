@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
 import java.text.CharacterIterator;
@@ -258,12 +268,79 @@ public class ASMExecEnv extends ExecEnv {
 
 		return ret;
 	}
+
+	public void terminated() {
+		getDebugger().terminated();
+
+		// saving persistent weaving helpers
+		for(Iterator i = weavingHelperToPersistToByType.entrySet().iterator() ; i.hasNext() ; ) {
+			Map.Entry entry = (Map.Entry)i.next();
+			Map weavingHelperToPersistTo = (Map)entry.getValue();
+			if(weavingHelperToPersistTo != null) {
+				Object type = entry.getKey();
+				if(type instanceof ASMModelElement) {
+					persistWeavingHelpers((ASMModelElement)type, weavingHelperToPersistTo);
+				} else {
+					// can only persist for model elements
+				}
+			}
+		}
+	}
+
+	private void persistWeavingHelpers(ASMModelElement type, Map weavingHelperToPersistTo) {
+		for(Iterator i = weavingHelperToPersistTo.entrySet().iterator() ; i.hasNext() ; ) {
+			Map.Entry entry = (Map.Entry)i.next();
+			String persistTo = (String)entry.getValue();
+			if(persistTo != null) {
+				String name = (String)entry.getKey();
+				ASMModel metamodel = type.getModel();
+				for(Iterator j = getModels().values().iterator() ; j.hasNext() ; ) {
+					ASMModel model = (ASMModel)j.next();
+					if(model.getMetamodel() == metamodel) {
+						for(Iterator k = model.getElementsByType(type).iterator() ; k.hasNext() ; ) {
+							ASMModelElement ame = (ASMModelElement)k.next();
+							ASMOclAny value = getHelperValue(null, ame, name);
+							ame.set(null, persistTo, value.get(null, "__xmiID__"));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void registerWeavingHelper(ASMOclType type, String name, String persistTo) {
+		getWeavingHelperToPersistTo(type, true).put(name, persistTo);
+	}
+
+	private Map getWeavingHelperToPersistTo(ASMOclType type, boolean createIfMissing) {
+		Map ret = (Map)weavingHelperToPersistToByType.get(type);
+
+		if(createIfMissing && (ret == null)) {
+			ret = new HashMap();
+			weavingHelperToPersistToByType.put(type, ret);
+		}
+
+		return ret;
+	}
 	
 	public void registerAttributeHelper(ASMOclType type, String name, Operation oper) {
 		getAttributeInitializers(type, true).put(name, oper);
 	}
 
-	public Operation getAttributeInitializer(ASMOclType type, String name) {
+	public boolean isHelper(ASMOclType type, String name) {
+		return (getAttributeInitializer(type, name) != null) || isWeavingHelper(type, name);
+	}
+
+	public boolean isWeavingHelper(ASMOclType type, String name) {
+		Map weavingHelperToPersitTo = getWeavingHelperToPersistTo(type, false);
+		if(weavingHelperToPersitTo != null) {
+			return weavingHelperToPersitTo.containsKey(name);
+		} else {
+			return false;
+		}
+	}
+
+	private Operation getAttributeInitializer(ASMOclType type, String name) {
 		Operation ret = null;
 		Map map = getAttributeInitializers(type, false);
 		if(map != null)
@@ -301,20 +378,31 @@ public class ASMExecEnv extends ExecEnv {
 		return ret;
 	}
 
+	// both for attribute helpers, and weaving helpers
 	public ASMOclAny getHelperValue(StackFrame frame, ASMOclAny element, String name) {
 		Map helperValues = getHelperValues(element);
 		ASMOclAny ret = (ASMOclAny)helperValues.get(name);
 		
 		if(ret == null) {
 			ASMOperation o = (ASMOperation)getAttributeInitializer(element.getType(), name);
-			List args = new ArrayList();
-			args.add(element);
-			ret = o.exec(frame.enterFrame(o, args));
-			if(cacheAttributeHelperResults)
-				helperValues.put(name, ret);
+			if(o != null) {
+				List args = new ArrayList();
+				args.add(element);
+				ret = o.exec(frame.enterFrame(o, args));
+				if(cacheAttributeHelperResults)
+					helperValues.put(name, ret);
+			} else {
+				ret = new ASMOclUndefined();	// this is a weaving helper for which the value has not been set yet
+			}
 		}
 		
 		return ret;
+	}
+
+	// only for weaving helpers
+	public void setHelperValue(StackFrame frame, ASMOclAny element, String name, ASMOclAny value) {
+		Map helperValues = getHelperValues(element);
+		helperValues.put(name, value);
 	}
 
 	private boolean cacheAttributeHelperResults;
@@ -323,4 +411,5 @@ public class ASMExecEnv extends ExecEnv {
 	private Map vmTypeOperations;
 	private Map attributeInitializers;
 	private Map helperValuesByElement;
+	private Map weavingHelperToPersistToByType = new HashMap();
 }

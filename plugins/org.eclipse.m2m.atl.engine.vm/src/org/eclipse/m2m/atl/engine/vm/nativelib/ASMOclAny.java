@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
 import java.util.ArrayList;
@@ -151,7 +161,7 @@ public class ASMOclAny extends ASMNativeObject {
 	
 	public boolean isHelper(StackFrame frame, String name) {
 		//return type.getHelperAttributes().containsKey(name);
-		return ((ASMExecEnv)frame.getExecEnv()).getAttributeInitializer(type, name) != null;
+		return ((ASMExecEnv)frame.getExecEnv()).isHelper(type, name);
 	}
 	
 	public ASMOclAny getHelper(StackFrame frame, String name) {

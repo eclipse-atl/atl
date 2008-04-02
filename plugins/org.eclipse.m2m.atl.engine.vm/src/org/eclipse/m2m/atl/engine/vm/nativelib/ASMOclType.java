@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
 import java.util.ArrayList;
@@ -126,6 +136,12 @@ public abstract class ASMOclType extends ASMOclAny {
 	public static void registerHelperAttribute(StackFrame frame, ASMOclType self, ASMString name, ASMString initOperationName) {
 		ASMExecEnv aee = ((ASMExecEnv)frame.getExecEnv());
 		aee.registerAttributeHelper(self, name.getSymbol(), aee.getOperation(self, initOperationName.getSymbol()));
+	}
+
+	// persistTo may be OclUndefined for non-persistent weaving helpers, otherwise it must be a String
+	public static void registerWeavingHelper(StackFrame frame, ASMOclType self, ASMString name, ASMOclAny persistTo) {
+		ASMExecEnv aee = ((ASMExecEnv)frame.getExecEnv());
+		aee.registerWeavingHelper(self, name.getSymbol(), (persistTo instanceof ASMOclUndefined) ? null : ((ASMString)persistTo).getSymbol());
 	}
 
 	private List supertypes;
