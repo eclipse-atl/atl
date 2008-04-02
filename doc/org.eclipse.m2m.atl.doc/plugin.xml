@@ -5,20 +5,6 @@
          point="org.eclipse.help.toc">
       <toc file="toc.xml" primary="true"/>
       <index path="index"/>
-   </extension>
-   
-<!-- ============================================================================= -->
-<!-- Define Javadoc locations                                                      -->
-<!-- ============================================================================= -->
-   <extension point="org.eclipse.pde.core.javadoc">
-       <javadoc path="doc.zip!/references/javadoc" archive="true">
-       	<plugin id="org.eclipse.m2m.atl.engine"/>
-       	<plugin id="org.eclipse.m2m.atl.compilers.atl2006"/>
-       	<plugin id="org.eclipse.m2m.atl.drivers.emf4atl"/>
-       	<plugin id="org.eclipse.m2m.atl.drivers.uml24atl"/>
-       	<plugin id="org.eclipse.m2m.atl.engine.emfvm"/>
-       </javadoc>
-   </extension>
-   
+   </extension>   
 </plugin>
 
