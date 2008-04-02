@@ -164,11 +164,9 @@ public class ASMEMFModel extends ASMModel {
 		return ret;
 	}
 
-    /**
-     * @param type The type of element to search for.
-     * @return The set of ASMModelElements that are instances of type.
-     * @see ASMModelElement
-     */
+	/* (non-Javadoc)
+	 * @see org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel#getElementsByType(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement)
+	 */
 	public Set getElementsByType(ASMModelElement type) {
 		Set ret = new LinkedHashSet();
 		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
@@ -191,6 +189,9 @@ public class ASMEMFModel extends ASMModel {
         }
     }
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel#newModelElement(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement)
+	 */
 	public ASMModelElement newModelElement(ASMModelElement type) {
 		ASMModelElement ret = null;
 		
@@ -201,10 +202,15 @@ public class ASMEMFModel extends ASMModel {
 		
 		return ret;
 	}
+	
 	/**
+	 * Instantiates a new ASMEMFModel.
+	 * 
 	 * @param name
+	 * @param extent
 	 * @param metamodel
 	 * @param isTarget
+	 * @param ml
 	 */
 	protected ASMEMFModel(String name, Resource extent, ASMEMFModel metamodel, boolean isTarget, ModelLoader ml) {
 		super(name, metamodel, isTarget, ml);
@@ -212,8 +218,14 @@ public class ASMEMFModel extends ASMModel {
 	}
 
 	/**
-	 * Simple Resource wrapping factory. 
+	 * Loads a model.
+	 * 
+	 * @param name
+	 * @param metamodel
+	 * @param extent
 	 * @param ml ModelLoader used to load the model if available, null otherwise.
+	 * @return the loaded model
+	 * @throws Exception
 	 */
 	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, Resource extent, ModelLoader ml) throws Exception {
 		ASMEMFModel ret = null;
@@ -264,10 +276,11 @@ public class ASMEMFModel extends ASMModel {
     /**
      * Creates a new ASMEMFModel. Do not use this method for models that
      * require a special registered factory (e.g. uml2).
+     * 
      * @param name The model name. Also used as EMF model URI.
      * @param metamodel
      * @param ml
-     * @return
+     * @return the new ASMEMFModel
      * @throws Exception
      * @deprecated
      */
@@ -277,13 +290,14 @@ public class ASMEMFModel extends ASMModel {
 	
     /**
      * Creates a new ASMEMFModel.
+     * author : Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     * 
      * @param name The model name. Not used by EMF.
      * @param uri The model URI. EMF uses this to determine the correct factory.
      * @param metamodel
      * @param ml
-     * @return
+     * @return the new ASMEMFModel
      * @throws Exception
-     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
      */
     public static ASMEMFModel newASMEMFModel(String name, String uri, ASMEMFModel metamodel, ModelLoader ml) throws Exception {
         ASMEMFModel ret = null;
