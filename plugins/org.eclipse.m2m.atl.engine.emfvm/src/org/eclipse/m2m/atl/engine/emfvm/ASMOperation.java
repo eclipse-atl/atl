@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault - initial API and implementation
+ *    Frï¿½dï¿½ric Jouault - initial API and implementation
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *******************************************************************************/
@@ -43,7 +43,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 /**
  * ASM commands sheduler.
  *
- * @author Frédéric Jouault <a href="mailto:frederic.jouault@univ-nantes.fr">frederic.jouault@univ-nantes.fr</a>
+ * @author Frï¿½dï¿½ric Jouault <a href="mailto:frederic.jouault@univ-nantes.fr">frederic.jouault@univ-nantes.fr</a>
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
  */
 public class ASMOperation extends Operation {
@@ -506,7 +506,8 @@ public class ASMOperation extends Operation {
 
 	/**
 	 * Looks for a method into cache and metamodel.
-	 * @param caller The class of the method
+	 *
+	 * @param cls The class of the method
 	 * @param name The method name
 	 * @param argumentTypes The types of all arguments
 	 * @return the method
