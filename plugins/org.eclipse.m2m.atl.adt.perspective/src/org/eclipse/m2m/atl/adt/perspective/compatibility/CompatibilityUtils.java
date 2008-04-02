@@ -54,7 +54,7 @@ public class CompatibilityUtils {
 	public static final String newConfigId = "org.eclipse.m2m.atl.adt.launching.atlTransformation"; //$NON-NLS-1$
 
 	/**
-	 * @return
+	 * @return the list of the old projects
 	 * @throws CoreException
 	 */
 	public static IProject[] getProjects() throws CoreException {
@@ -80,7 +80,7 @@ public class CompatibilityUtils {
 	}
 	
 	/**
-	 * @return
+	 * @return the list of the old configurations
 	 * @throws CoreException
 	 */
 	public static ILaunchConfiguration[] getConfigurations() throws CoreException {
@@ -96,7 +96,7 @@ public class CompatibilityUtils {
 	}
 	
 	/**
-	 * @param projects
+	 * @param projects the projects to convert
 	 * @throws CoreException
 	 */
 	public static void convertProjects(Object[] projects) throws Exception {
@@ -140,8 +140,9 @@ public class CompatibilityUtils {
 	}
 
 	/**
-	 * @param projects
-	 * @throws CoreException
+	 * @param configurations the configurations to convert
+	 * @return true if Eclipse needs to be restarted
+	 * @throws Exception
 	 */
 	public static boolean convertConfigurations(Object[] configurations) throws Exception {
 		//TODO The NullProgressMonitor does nothing, it could be interesting to catch a ProgressMonitor or to add one.
