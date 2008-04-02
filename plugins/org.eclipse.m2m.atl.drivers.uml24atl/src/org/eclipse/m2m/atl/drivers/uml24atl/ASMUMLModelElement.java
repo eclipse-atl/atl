@@ -55,7 +55,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMTuple;
 
 /**
- * @author Frédéric Jouault (INRIA)
+ * @author Frï¿½dï¿½ric Jouault (INRIA)
  * @author Freddy Allilaire (INRIA)
  * @author Christophe Le Camus (C-S)
  * @author Sebastien Gabel (C-S) 
@@ -477,8 +477,9 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 	}
 
 	/**
+	 * @param modelElements
 	 * @param model
-	 * @param metaobject
+	 * @param object
 	 */
 	protected ASMUMLModelElement(Map modelElements, ASMModel model, EObject object) {
 		super(model, getMetaobject(model, object));
