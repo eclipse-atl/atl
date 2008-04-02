@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault (INRIA) - initial API and implementation
+ *    Frï¿½dï¿½ric Jouault (INRIA) - initial API and implementation
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
@@ -39,10 +39,9 @@ public abstract class AtlModelHandler {
 	
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
-//	public final static String AMH_MDR = "MDR";
 	public final static String AMH_EMF = "EMF"; //$NON-NLS-1$
 
-	private static String modelHandlers[] = null;	//new String[] {/*AMH_MDR, */AMH_EMF};
+	private static String modelHandlers[] = null;
 	
 	private static Map defaultModelHandlers = new HashMap();
     
