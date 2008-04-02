@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA and other.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Frederic Jouault (INRIA) - initial API and implementation
+ *    Freddy Allilaire (INRIA)
+ *    Dennis Wagelaar (Vrije Universiteit Brussel)
+ *******************************************************************************/
 package org.eclipse.m2m.atl.drivers.emf4atl;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,6 +38,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.ClassNativeOperation;
 import org.eclipse.m2m.atl.engine.vm.Operation;
@@ -227,8 +241,29 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 
 		super.set(frame, name, value);
 		EStructuralFeature feature = object.eClass().getEStructuralFeature(name);
+		
+		if("__xmiID__".equals(name)) {
+			// WARNING: Allowed manual setting of XMI ID for the current model element
+			// This operation is advised against but seems necessary of some special case
+			Resource r = ((ASMEMFModel)getModel()).getExtent();
+			logger.warning("\t\tManual setting of " + this + ":" + getType() + " XMI ID.");
+			((XMLResource)r).setID(object, value.toString());
+			return;
+		}
+		if(frame != null) {
+			ASMExecEnv execEnv = (ASMExecEnv)frame.getExecEnv();
+			if(execEnv.isWeavingHelper(getMetaobject(), name)) {
+				execEnv.setHelperValue(frame, this, name, value);
+				return;
+			}
+		}
 		if(feature == null) {
-			frame.printStackTrace("feature " + name + " does not exist on " + getType());
+			String msg = "feature " + name + " does not exist on " + getType();
+			if(frame == null) {
+				throw new RuntimeException(msg);
+			} else {
+				frame.printStackTrace(msg);
+			}
 		}
 		if(!feature.isChangeable()) {
 			frame.printStackTrace("feature " + name + " is not changeable");			
@@ -242,11 +277,13 @@ if(debug) logger.info("Setting: " + this + " : " + getType() + "." + name + " to
 						continue;
 					}
 					Object val = asm2EMF(frame, sv, name, feature);
-					try {
-						l.add(val);
-						checkContainment(feature, val);
-					} catch(Exception e) {
-						frame.printStackTrace("cannot set feature " + getType() + "." + name + " to value " + val);
+					if(val != null) {
+						try {
+							l.add(val);
+							checkContainment(feature, val);
+						} catch(Exception e) {
+							frame.printStackTrace("cannot set feature " + getType() + "." + name + " to value " + val);
+						}
 					}
 				}
 			} else {
