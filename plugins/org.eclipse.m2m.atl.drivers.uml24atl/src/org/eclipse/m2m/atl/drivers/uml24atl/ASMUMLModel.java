@@ -251,7 +251,7 @@ public class ASMUMLModel extends ASMModel {
      * @param name The model name. Also used as EMF model URI.
      * @param metamodel
      * @param ml
-     * @return
+     * @return the new ASMUMLModel
      * @throws Exception
      */
 	public static ASMUMLModel newASMUMLModel(String name, ASMUMLModel metamodel, ModelLoader ml) throws Exception {
@@ -260,13 +260,14 @@ public class ASMUMLModel extends ASMModel {
 	
     /**
      * Creates a new ASMEMFModel.
+     * author : Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     * 
      * @param name The model name. Not used by EMF.
      * @param uri The model URI. EMF uses this to determine the correct factory.
      * @param metamodel
      * @param ml
-     * @return
+     * @return the new ASMUMLModel
      * @throws Exception
-     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
      */
     public static ASMUMLModel newASMUMLModel(String name, String uri, ASMUMLModel metamodel, ModelLoader ml) throws Exception {
         ASMUMLModel ret = null;
