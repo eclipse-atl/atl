@@ -964,7 +964,6 @@ public class AtlEditor extends TextEditor {
 	}
 	
 	/**
-	 * @param editor the editor for which to find the associated <code>IResource</code>
 	 * @return the IResource associated to <code>AtlEditor</code> or <code>null</code> if none
 	 */
 	public IResource getUnderlyingResource() {

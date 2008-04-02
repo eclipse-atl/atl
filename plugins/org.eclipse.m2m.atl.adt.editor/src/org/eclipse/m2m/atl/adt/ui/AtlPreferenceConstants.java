@@ -241,7 +241,7 @@ public class AtlPreferenceConstants {
 	/**
 	 * Initialize a preference fPreferenceeStore with the default values that are setting up by the inline constants.
 	 * 
-	 * @param fPreferenceeStore  The preference fPreferenceeStore to modify.
+	 * @param store  The preference fPreferenceeStore to modify.
 	 */
 	public static void initializeDefaultValues(IPreferenceStore store) {
 		TextEditorPreferenceConstants.initializeDefaultValues(store);

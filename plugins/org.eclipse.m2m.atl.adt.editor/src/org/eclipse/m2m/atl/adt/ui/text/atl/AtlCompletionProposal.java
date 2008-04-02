@@ -595,14 +595,14 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * @param length
 	 */
 	public void updateReplacementLength(int length) {
 		setReplacementLength(length);
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * @param newOffset
 	 */
 	public void updateReplacementOffset(int newOffset) {
 		setReplacementOffset(newOffset);

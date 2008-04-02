@@ -34,20 +34,16 @@ public class ToggleCommentBlock implements IEditorActionDelegate {
 
 	/**
 	 * The constructor.
-	 * 
-	 * @param bundle the resource bundle
-	 * @param prefix the prefix to use for keys in <code>bundle</code>
-	 * @param editor the text editor
-	 * @param isTabAction whether the action should insert tabs if over the indentation
 	 */
 	public ToggleCommentBlock() {
 	}
 	
-	/**
+	/* 
 	 * The action has been activated. The argument of the
 	 * method represents the 'real' action sitting
 	 * in the workbench UI.
-	 * @see IWorkbenchWindowActionDelegate#run
+	 * 
+	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
 		IWorkbench wb = PlatformUI.getWorkbench();

@@ -20,8 +20,8 @@ public interface IProblemChangedListener {
 	
 	/**
 	 * Called when problems changed.
-	 * @param changedElements  A set with elements of type <code>IResource</code> that
-	 * describe the resources that had a problem change.
+	 * @param changedResources A set with elements of type <code>IResource</code> that
+	 * @param isMarkerChange
 	 */
 	void problemsChanged(IResource[] changedResources, boolean isMarkerChange);
 	

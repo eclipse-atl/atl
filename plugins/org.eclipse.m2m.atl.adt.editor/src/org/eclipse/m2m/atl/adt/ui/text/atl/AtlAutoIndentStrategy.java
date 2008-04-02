@@ -119,7 +119,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 	/**
 	 * Creates a new ATL auto indent strategy for the given document fPartitioning.
 	 * 
-	 * @param fPartitioning the document fPartitioning
+	 * @param partitioning the document fPartitioning
 	 */
 	public AtlAutoIndentStrategy(String partitioning) {
 		super();
