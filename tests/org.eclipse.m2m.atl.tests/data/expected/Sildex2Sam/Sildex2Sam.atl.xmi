@@ -3384,19 +3384,14 @@
         </bindings>
       </elements>
     </outPattern>
-    <inPattern location="448:2-448:64">
-      <elements xsi:type="atl:SimpleInPatternElement" location="448:7-448:22" varName="e" variableExp="//@elements.65/@inPattern/@filter/@source/@source //@elements.65/@inPattern/@filter/@arguments.0/@source //@elements.65/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.65/@outPattern/@elements.0/@bindings.1/@value/@source/@source/@body/@arguments.0/@source">
+    <inPattern location="448:2-448:50">
+      <elements xsi:type="atl:SimpleInPatternElement" location="448:7-448:22" varName="e" variableExp="//@elements.65/@inPattern/@filter/@source //@elements.65/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.65/@outPattern/@elements.0/@bindings.1/@value/@source/@source/@body/@arguments.0/@source">
         <type xsi:type="ocl:OclModelElement" location="448:11-448:22" name="Port">
           <model href="temp#/1"/>
         </type>
       </elements>
-      <filter xsi:type="ocl:OperationCallExp" location="448:24-448:63" operationName="debug">
-        <source xsi:type="ocl:OperationCallExp" location="448:24-448:49" operationName="port2InDataPortTransf">
-          <source xsi:type="ocl:VariableExp" location="448:24-448:25" referredVariable="//@elements.65/@inPattern/@elements.0"/>
-        </source>
-        <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="448:56-448:62" name="name">
-          <source xsi:type="ocl:VariableExp" location="448:56-448:57" referredVariable="//@elements.65/@inPattern/@elements.0"/>
-        </arguments>
+      <filter xsi:type="ocl:OperationCallExp" location="448:24-448:49" operationName="port2InDataPortTransf">
+        <source xsi:type="ocl:VariableExp" location="448:24-448:25" referredVariable="//@elements.65/@inPattern/@elements.0"/>
       </filter>
     </inPattern>
   </elements>
