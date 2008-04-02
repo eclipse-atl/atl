@@ -7,7 +7,7 @@ pluginName="org.eclipse.m2m.atl";
 
 # string labels for javadoc content
 windowTitle="ATL Javadoc";
-groupTitle="ATL Developer Doc";
+groupTitle="ATL";
 
 # files to exclude from javadoc process - use Ant syntax
 javadocExclusions="<exclude name=\"**/internal/**\"/> <exclude name=\"**/examples/**\"/> <exclude name=\"**/tests/**\"/>";
@@ -81,7 +81,6 @@ packagesets="";
 copydocfiles="";
 for pluginDir in $pluginDirs; do
 	pluginDir=`echo $pluginDir | sed -e 's/\/runtime$//g'`;
-	if [ $pluginDir = $pluginPath/$pluginName.source ] ; then continue ; fi # skip .source folders
 	srcDir=$pluginDir/src;
 	if [ $debug -gt 0 ]; then echo "[antJd] srcDir: "$srcDir; fi
 	if [ -d "$srcDir" ]; then
@@ -131,7 +130,7 @@ rm -f $antScript $antScript.template.tmp $antScript.template.tmp2;
 
 # Generate topics_Reference.xml (replacement for doclet). 
 trXML=$currentPath"/../topics_Reference.xml";
-echo '<?xml version="1.0" encoding="UTF-8"?>' >> $trXML;
+echo '<?xml version="1.0" encoding="UTF-8"?>' > $trXML;
 echo '<?NLS TYPE="org.eclipse.help.toc"?>' >> $trXML;
 echo '<toc label="Reference">' >> $trXML;
 echo '  <topic label="API Reference" href="references/javadoc/overview-summary.html">' >> $trXML;
