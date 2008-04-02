@@ -21,13 +21,15 @@ import org.eclipse.ui.texteditor.MarkerAnnotation;
 
 /**
  * @author idrissi
+ * @author wpiers
+ *
  */
 public class AtlBreakpointImageProvider implements IAnnotationImageProvider {
 	
 	private IDebugModelPresentation fPresentation;
 
-	/**
-	 * @see org.eclipse.jface.text.source.IAnnotationImageProvider#getManagedImage(org.eclipse.jface.text.source.Annotation)
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getManagedImage(org.eclipse.jface.text.source.Annotation)
 	 */
 	public Image getManagedImage(Annotation annotation) {
 		if (annotation instanceof MarkerAnnotation) {
@@ -40,15 +42,15 @@ public class AtlBreakpointImageProvider implements IAnnotationImageProvider {
 		return null;
 	}
 
-	/**
-	 * @see org.eclipse.jface.text.source.IAnnotationImageProvider#getImageDescriptorId(org.eclipse.jface.text.source.Annotation)
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getImageDescriptorId(org.eclipse.jface.text.source.Annotation)
 	 */
 	public String getImageDescriptorId(Annotation annotation) {
 		return null;
 	}
 
-	/**
-	 * @see org.eclipse.jface.text.source.IAnnotationImageProvider#getImageDescriptor(java.lang.String)
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getImageDescriptor(java.lang.String)
 	 */
 	public ImageDescriptor getImageDescriptor(String imageDescritporId) {
 		return null;

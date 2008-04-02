@@ -167,7 +167,7 @@ public class AtlLauncherTools {
 	/**
 	 * This method returns an image from the path
 	 * @param path
-	 * @return
+	 * @return the created image
 	 */
 	public static Image createImage(String path) {
 		try {

@@ -68,8 +68,8 @@ public class AtlDebugPlugin extends AbstractUIPlugin {
 	}
 	
 	/**
-	 * Return the unique identifier of the plugin
-	 * @return
+	 * Returns the unique identifier of the plugin
+	 * @return the unique identifier of the plugin
 	 */
 	public static String getUniqueIdentifier() {
 		return AtlDebugPlugin.getDefault().getBundle().getSymbolicName();
