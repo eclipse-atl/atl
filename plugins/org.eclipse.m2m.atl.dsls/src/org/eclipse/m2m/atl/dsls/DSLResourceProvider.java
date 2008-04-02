@@ -42,6 +42,7 @@ public class DSLResourceProvider {
 	public static DSLResourceProvider getDefault() {
 		if(INSTANCE == null) {
 			INSTANCE = new DSLResourceProvider();
+			INSTANCE.initResources();
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 	        if (registry == null) {
 	            throw new RuntimeException("Extension registry not found");
@@ -70,10 +71,6 @@ public class DSLResourceProvider {
 
 	public Resource getResource(String id) {
 		return (Resource)resourcesById.get(id);
-	}
-
-	protected DSLResourceProvider() {
-		initResources();
 	}
 
 	private void initResources() {
