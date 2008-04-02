@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-   <extension
-         point="org.eclipse.help.toc">
-      <toc file="toc.xml" primary="true"/>
-      <index path="index"/>
-   </extension>   
-</plugin>
 
+  <!-- ====================================================================== -->
+  <!-- Define primary TOC                                                     -->
+  <!-- ====================================================================== -->
+  
+  <extension point="org.eclipse.help.toc">
+    <toc file="toc.xml" primary="true"/>
+  </extension>
+
+  <!-- ====================================================================== -->
+  <!-- Define TOCs                                                            -->
+  <!-- ====================================================================== -->
+
+   <extension point="org.eclipse.help.toc">
+       <toc file="topics_Reference.xml" />
+   </extension>
+
+<!-- ============================================================================= -->
+<!-- Define Javadoc locations                                                      -->
+<!-- ============================================================================= -->
+   <extension point="org.eclipse.pde.core.javadoc">
+       <javadoc path="doc.zip!/references/javadoc" archive="true">
+          <plugin id="org.eclipse.m2m.atl.engine"/>
+          <plugin id="org.eclipse.m2m.atl.engine.vm"/>
+          <plugin id="org.eclipse.m2m.atl.engine.emfvm"/>
+       </javadoc>
+   </extension>
+
+
+
+</plugin>
