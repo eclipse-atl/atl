@@ -12,6 +12,8 @@ package org.eclipse.m2m.atl.dsls;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -52,7 +54,8 @@ public class DSLResourceProvider {
 				IConfigurationElement[] elements = extensions[i].getConfigurationElements();
 				for(int j = 0 ; j < elements.length ; j++){
 					try {					
-						elements[j].createExecutableExtension("class"); //$NON-NLS-1$
+						DSLResourceProvider resourceProvider = (DSLResourceProvider)elements[j].createExecutableExtension("class"); //$NON-NLS-1$
+						resourceProvider.initResources();
 						break extensions;
 					} catch (CoreException e){
 	//					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -70,10 +73,10 @@ public class DSLResourceProvider {
 	}
 
 	protected DSLResourceProvider() {
-		initResources(resourcesById);
+		initResources();
 	}
 
-	private void initResources(Map resourcesById) {
+	private void initResources() {
 		try {
 			BufferedReader in = new URLTextSource(getURL("contents.list")).openBufferedReader();
 			String line;
