@@ -549,8 +549,9 @@ public class ASMEMFModelElement extends ASMModelElement {
 	}
 
 	/**
+	 * @param modelElements
 	 * @param model
-	 * @param metaobject
+	 * @param object
 	 */
 	protected ASMEMFModelElement(Map modelElements, ASMModel model, EObject object) {
 		super(model, getMetaobject(model, object));
