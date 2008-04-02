@@ -337,7 +337,7 @@ package OCL {
 
 
 -- @begin Types
-	abstract class CollectionType extends OclType {
+	class CollectionType extends OclType {
 		reference elementType container : OclType oppositeOf collectionTypes;
 	}
 
