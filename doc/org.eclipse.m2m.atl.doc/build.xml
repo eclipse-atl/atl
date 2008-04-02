@@ -4,7 +4,7 @@
 	<!-- Plug-in version.  This is a HACK.  Do not forget to update. -->
 	<property name="pluginVersion" value="2.0.0"/>
 
-	<property name="plugin" value="org.eclipse.m2m.atl"/>
+	<property name="plugin" value="org.eclipse.m2m.atl.engine"/>
 	<property name="docPlugin" value="org.eclipse.m2m.atl.doc"/>
 
 	<property name="filesToInclude" value="META-INF/,about.*,modeling*.png,eclipse*.gif,eclipse*.png,eclipse_lg.gif,plugin.*,doc.zip,toc.xml,index/**"/>
