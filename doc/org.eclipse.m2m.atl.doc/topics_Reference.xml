@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?NLS TYPE="org.eclipse.help.toc"?>
-
-<!-- This file is just a placeholder to avoid plugin.xml warnings -->
-<toc label="Reference">
-	<topic label="ATL API Reference" href="references/javadoc/dummy.html"/>
-</toc>
