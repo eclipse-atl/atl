@@ -58,6 +58,14 @@ acg ATL startsWith Unit {
 				new
 				call 'J.oclType():J'
 				set 'enumLiteralType'
+
+				-- OclType.registerWeavingHelper(name : String, persistTo : String)
+				push 'Element'
+				push 'RefiningTrace'
+				findme
+				push 'sourceElement'
+				push 'persistedSourceElement'
+				call 'J.registerWeavingHelper(SS):V'
 			}
 
 			analyze self.elements->select(e | e isa Helper) mode register
@@ -108,7 +116,7 @@ acg ATL startsWith Unit {
 				load 'value'
 				call 'NTransientLinkSet;.getLinkBySourceElement(S):QNTransientLink;'
 				dup
-				call 'J.oclIsUndefined():J'
+				call 'J.oclIsUndefined():B'
 				if thn2
 					load 'value'
 					call 'NTransientLink;.getTargetFromSource(J):J'
@@ -175,36 +183,85 @@ acg ATL startsWith Unit {
 		}
 		if(self.isRefining) {
 			operation
+					context 'MRefiningTrace!Element;'
+					name 'setProperty' {
+				param 'propertyName' : 'S'
+				param 'value' : 'J'
+	
+				load 'self'
+				push 'Slot'
+				push 'RefiningTrace'
+				new
+				dup
+				load 'propertyName'
+				set 'name'		-- traceElement, slot
+				dup				-- traceElement, slot, slot
+				load 'value'	-- traceElement, slot, slot, value
+				dup
+				getasm
+				get 'col'
+				call 'J.oclIsKindOf(J):B'
+				if setPropertyThn
+					-- not a collection
+					call 'J.__toValue():J'
+					goto setPropertyEoi
+			  setPropertyThn:
+					push 'Sequence'
+					push '#native'
+					new
+					call 'QJ.first():J'
+			  setPropertyEoi:				-- element, slot, slot, value
+				set 'value'
+				set 'slots'
+			}
+			operation
 					context 'A'
 					name '__applyRefiningTrace__' {
 				foreach(r in self.elements->select(e | e isa MatchedRule and not (e isa LazyMatchedRule))) {
-					getasm
-					get 'links'
-					push r.name
-					call 'NTransientLinkSet;.getLinksByRule(S):QNTransientLink;'
+					push 'Element'
+					push 'RefiningTrace'
+					findme
+					push 'refiningTrace'
+					call 'MMOF!Classifier;.allInstancesFrom(S):QJ'
+					dup
 					iterate
-						variable self named 'link' {
-							load self
-							push r.inPattern.elements.first().varName
-							call 'NTransientLink;.getSourceElement(S):J'
-							load self
-							push r.outPattern.elements.first().varName
-							call 'NTransientLink;.getTargetElement(S):J'
-	
-							-- sourceElement, traceElement
-	
+														-- traceElement
+							dup							-- traceElement, traceElement
+							get 'sourceElement'			-- traceElement, element|OclUndefined
+							call 'J.oclIsUndefined():B'	-- traceElement, oclIsUndefined?
+							call 'B.not():B'			-- traceElement, oclIsDefined?
+							if sourceElement
+								-- create the new element
+														-- traceElement
+								dup		 				-- traceElement, traceElement
+								get 'type'				-- traceElement, typeName
+								swap					-- typeName, traceElement
+								dup_x1					-- traceElement, typeName, traceElement
+								get 'metamodel'			-- traceElement, typeName, metamodelName
+								new						-- traceElement, element
+								set 'sourceElement'		-- nothing
+								goto next
+						  sourceElement:
+						  								-- traceElement
+								pop
+						  next:
+					enditerate
+					iterate
+												-- traceElement
+							dup					-- traceElement, traceElement
+							get 'sourceElement'	-- traceElement, element
+							swap				-- element, traceElement
 							get 'slots'
 							iterate
-								-- sourceElement, slot
+												-- element, slot
 								dup
-								get 'name'	-- sourceElement, slot, name
-								swap		-- sourceElement, name, slot
-								get 'value'	-- sourceElement, name, value
+								get 'name'		-- sourceElement, slot, name
+								swap			-- sourceElement, name, slot
+								get 'value'		-- sourceElement, name, value
 								call 'J.__fromValue():J'	-- sourceElement, name, actualValue
 								call 'J.refSetValue(SJ):J'
 							enditerate
 							pop
-						}
 					enditerate
 				}
 			}
@@ -249,6 +306,16 @@ acg ATL startsWith Unit {
 				set 'value'
 			}
 			operation
+					context 'MRefiningTrace!Element;'
+					name '__toValue' {
+				push 'ElementVal'
+				push 'RefiningTrace'
+				new
+				dup
+				load 'self'
+				set 'value'
+			}
+			operation
 					context 'J'
 					name '__toValue' {
 				load 'self'
@@ -261,6 +328,10 @@ acg ATL startsWith Unit {
 					push 'ElementVal'
 					push 'RefiningTrace'
 					new
+					dup
+					load 'self'
+					call 'J.__asElement():J'
+					set 'value'
 					goto eoi3
 			  thn3:
 					push 'EnumLiteralVal'
@@ -271,6 +342,18 @@ acg ATL startsWith Unit {
 					call 'J.toString():S'
 					set 'value'
 			  eoi3:
+			}
+			-- should only be called on model elements
+			operation
+					context 'J'
+					name '__asElement' {
+				-- TODO: use a Map as cache
+				push 'Element'
+				push 'RefiningTrace'
+				new
+				dup
+				load 'self'
+				set 'sourceElement'
 			}
 			operation
 					context 'MRefiningTrace!BooleanVal;'
@@ -295,6 +378,13 @@ acg ATL startsWith Unit {
 					name '__fromValue' {
 				load 'self'
 				get 'value'
+			}
+			operation
+					context 'MRefiningTrace!ElementVal;'
+					name '__fromValue' {
+				load 'self'
+				get 'value'
+				get 'sourceElement'
 			}
 			operation
 					context 'MRefiningTrace!EnumLiteralVal;'
@@ -616,6 +706,7 @@ acg ATL startsWith Unit {
 				context 'A'
 				name '__apply' + self.name {
 			param 'link' : 'NTransientLink;'
+			-- TODO: only one source element for refining mode
 			foreach(ipe in self.inPatternElements()) {
 				load 'link'
 				push ipe.varName
@@ -662,9 +753,36 @@ acg ATL startsWith Unit {
 		dup
 		push self.varName
 		if(self.isRefiningMode) {
-			-- TODO: REFINING
+			push 'Element'
+			push 'RefiningTrace'
+			new
+			dup
+			push self.type.name
+			set 'type'
+			dup
+			push self.type.model.name
+			set 'metamodel'
 		} else {
 			analyze self.type mode create
+		}
+					-- transientLink, varName, element
+		foreach(rb in self.reverseBindings) {
+			dup		-- transientLink, varName, element, element
+			if(rb isa NavigationOrAttributeCallExp) {
+				analyze rb.source	-- transientLink, varName, element, element, value
+				if(self.isRefiningMode) {
+					call 'J.__asElement():J'	-- transientLink, varName, traceElement, traceElement, valueTraceElement
+					swap						-- transientLink, varName, traceElement, valueTraceElement, traceElement
+					push rb.name	-- transientLink, varName, traceElement, valueTraceElement, traceElement, propertyName
+					swap			-- transientLink, varName, traceElement, valueTraceElement, propertyName, traceElement
+					call 'MRefiningTrace!Element;.setProperty(SJ):V'
+				} else {
+					swap			-- transientLink, varName, element, value, element
+					set rb.name		-- transientLink, varName, element
+				}
+			} else {
+				report error 'only navigations are allowed in reversebindings' 
+			}
 		}
 		call 'NTransientLink;.addTargetElement(SJ):V'
 	}
@@ -676,6 +794,7 @@ acg ATL startsWith Unit {
 			new
 		}
 
+	-- TODO: removal, change...
 	code SimpleOutPatternElement mode matchFirstRefining {
 		dup
 		push self.varName
@@ -689,6 +808,9 @@ acg ATL startsWith Unit {
 		dup
 		push self.type.model.name
 		set 'metamodel'
+		dup
+		load self.outPattern.rule.inPatternElements().first()
+		set 'sourceElement'
 
 		call 'NTransientLink;.addTargetElement(SJ):V'
 	}
@@ -747,34 +869,13 @@ acg ATL startsWith Unit {
 
 	code Binding mode refining {
 		dup
+		push self.propertyName
 		getasm
 		analyze self.value
 		call 'A.__resolve__(J):J'
 
-		push 'Slot'
-		push 'RefiningTrace'
-		new
-		dup
-		push self.propertyName
-		set 'name'		-- element, value, slot
-		dup_x1			-- element, slot, value, slot
-		swap			-- element, slot, slot, value
-		dup
-		getasm
-		get 'col'
-		call 'J.oclIsKindOf(J):B'
-		if thn
-			-- not a collection
-			call 'J.__toValue():J'
-			goto eoi
-	  thn:
-			push 'Sequence'
-			push '#native'
-			new
-			call 'QJ.first():J'
-	  eoi:				-- element, slot, slot, value
-		set 'value'
-		set 'slots'
+				-- traceElement, propertyName, value
+		call 'MRefiningTrace!Element;.setProperty(SJ):V'
 	}
 -- @end SimpleOutPatternElement
 
@@ -874,7 +975,7 @@ acg ATL startsWith Unit {
 					load self.inPattern.elements.first().varName
 					call 'NTransientLinkSet;.getLinkByRuleAndSourceElement(SJ):QNTransientLink;'
 					dup
-					call 'J.oclIsUndefined():J'
+					call 'J.oclIsUndefined():B'
 					if thn
 						load self.inPattern.elements.first().varName
 						call 'NTransientLink;.getTargetFromSource(J):J'
