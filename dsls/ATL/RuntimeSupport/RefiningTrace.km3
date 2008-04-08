@@ -45,6 +45,8 @@ package RefiningTrace {
 		attribute value : String;
 	}
 
+	class NullVal extends Value {}
+
 	class EnumLiteralVal extends Value {
 		attribute value : String;
 	}

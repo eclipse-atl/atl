@@ -325,6 +325,11 @@ acg ATL startsWith Unit {
 				call 'J.=(J):B'
 				if thn3
 					-- not enum literal
+					load 'self'
+					call 'J.oclIsUndefined():B'
+				if oclUndefined
+					-- This point should only be reached for model elements
+					
 					push 'ElementVal'
 					push 'RefiningTrace'
 					new
@@ -332,6 +337,11 @@ acg ATL startsWith Unit {
 					load 'self'
 					call 'J.__asElement():J'
 					set 'value'
+					goto eoi3
+			  oclUndefined:
+					push 'NullVal'
+					push 'RefiningTrace'
+					new
 					goto eoi3
 			  thn3:
 					push 'EnumLiteralVal'
@@ -348,12 +358,12 @@ acg ATL startsWith Unit {
 					context 'J'
 					name '__asElement' {
 				-- TODO: use a Map as cache
-				push 'Element'
-				push 'RefiningTrace'
-				new
-				dup
-				load 'self'
-				set 'sourceElement'
+					push 'Element'
+					push 'RefiningTrace'
+					new
+					dup
+					load 'self'
+					set 'sourceElement'
 			}
 			operation
 					context 'MRefiningTrace!BooleanVal;'
@@ -378,6 +388,14 @@ acg ATL startsWith Unit {
 					name '__fromValue' {
 				load 'self'
 				get 'value'
+			}
+			operation
+					context 'MRefiningTrace!NullVal;'
+					name '__fromValue' {
+				push 'Sequence'
+				push '#native'
+				new
+				call 'QJ.first():J'
 			}
 			operation
 					context 'MRefiningTrace!ElementVal;'
