@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
 import java.util.ArrayList;
@@ -76,7 +86,8 @@ public abstract class ASMCollection extends ASMOclAny {
 		boolean ret = true;
 		
 		for(Iterator i = o.iterator() ; i.hasNext() ; ) {
-			ret = ret && !self.collection().contains(i.next());
+			Object object = i.next();
+			ret = ret && !self.collection().contains(object);
 		}
 		
 		return new ASMBoolean(ret);
@@ -126,11 +137,9 @@ public abstract class ASMCollection extends ASMOclAny {
 		return new ASMSequence(self.collection());
 	}
 
-/* TODO
   	public static ASMOrderedSet asOrderedSet(StackFrame frame, ASMCollection self) {
 		return new ASMOrderedSet(self.collection());
 	}
- */
 
 	public static ASMSet asSet(StackFrame frame, ASMCollection self) {
 		return new ASMSet(self.collection());

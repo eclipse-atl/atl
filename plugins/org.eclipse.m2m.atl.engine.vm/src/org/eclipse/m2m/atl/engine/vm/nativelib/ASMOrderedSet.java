@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
 import java.util.Collection;
@@ -171,23 +181,34 @@ public class ASMOrderedSet extends ASMCollection {
 
 		return ret;
 	}
-
-	// TODO: recursive flatten + for Bag and Set
+	
 	public static ASMOrderedSet flatten(StackFrame frame, ASMOrderedSet self) {
-		ASMOrderedSet ret = new ASMOrderedSet();
-
-		for(Iterator i = self.s.iterator() ; i.hasNext() ; ) {
-			Object o = i.next();
-			if(o instanceof ASMCollection) {
-				for(Iterator j = ((ASMCollection)o).iterator() ; j.hasNext() ; ) {
-					ret.s.add(j.next());
+		Set base = null;
+		Set ret = new LinkedHashSet(self.collection());
+		boolean containsCollection;
+		do {
+			base = ret;
+			ret = new LinkedHashSet();
+			containsCollection = false;
+			Iterator iterator = base.iterator();
+			while (iterator.hasNext()) {
+				ASMOclAny object = (ASMOclAny) iterator.next();
+				if (object instanceof ASMCollection) {
+					ASMCollection subCollection = (ASMCollection) object;
+					ret.addAll(subCollection.collection()); 
+					Iterator subIterator = subCollection.iterator();
+					while (containsCollection == false && subIterator.hasNext()) {
+						ASMOclAny subCollectionObject = (ASMOclAny) subIterator.next();
+						if (subCollectionObject instanceof ASMCollection) {
+							containsCollection = true;
+						}
+					}
+				} else {
+					ret.add(object);
 				}
-			} else {
-				ret.s.add(o);
-			}	
-		}
-
-		return ret;
+			}
+		} while (containsCollection);
+		return new ASMOrderedSet(ret);
 	}
 
 	public static ASMOrderedSet including(StackFrame frame, ASMOrderedSet self, ASMOclAny o) {
@@ -206,8 +227,8 @@ public class ASMOrderedSet extends ASMCollection {
 		return ret;
 	}
 
-	public static ASMSequence asSequence(StackFrame frame, ASMOrderedSet self) {
-		return new ASMSequence(self.s);
+	public static ASMOrderedSet asOrderedSet(StackFrame frame, ASMOrderedSet self) {
+		return self;
 	}
 
 	private Set s;
