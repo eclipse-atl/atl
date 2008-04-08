@@ -244,14 +244,6 @@ public class ASMEMFModel extends ASMModel {
         	}
             referencedExtents.clear();
             referencedExtents = null;
-            for (Iterator unrs = unregister.iterator(); unrs.hasNext();) {
-            	String nsURI = (String)unrs.next();
-            	synchronized (resourceSet) {
-                	resourceSet.getPackageRegistry().remove(nsURI);
-            	}
-            	//System.err.println("\tINFO: Unregistering " + nsURI + " from local EMF registry");
-            	
-            }
 			Map asmModels = (Map)asmModelsByResource.get(extent);
 			boolean removeResourceFromSet = true;
 			if(asmModels != null) {
@@ -265,6 +257,14 @@ public class ASMEMFModel extends ASMModel {
 				}
 			}
 			if(removeResourceFromSet) {
+	            for (Iterator unrs = unregister.iterator(); unrs.hasNext();) {
+	            	String nsURI = (String)unrs.next();
+	            	synchronized (resourceSet) {
+	                	resourceSet.getPackageRegistry().remove(nsURI);
+	            	}
+	            	//System.err.println("\tINFO: Unregistering " + nsURI + " from local EMF registry");
+	            	
+	            }
 	            synchronized (resourceSet) {
 	            	resourceSet.getResources().remove(extent);
 	            }
