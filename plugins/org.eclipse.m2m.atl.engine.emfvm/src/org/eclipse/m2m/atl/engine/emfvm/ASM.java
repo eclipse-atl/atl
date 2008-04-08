@@ -8,7 +8,7 @@
  * Contributors:
  *    INRIA - initial API and implementation
  *    
- * $Id: ASM.java,v 1.2.4.2 2008/03/13 16:21:45 dwagelaar Exp $
+ * $Id: ASM.java,v 1.2.4.3 2008/04/08 15:00:51 fjouault Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -94,7 +94,8 @@ public class ASM {
 		
 		ExecEnv execEnv = new ExecEnv(models);
 		ModelAdapter modelAdapter = new EMFModelAdapter(execEnv);
-		modelAdapter.setAllowInterModelReferences(!("true".equals(options.get("checkSameModel"))));
+		// by default (if options.get("checkSameModel") == null) interModelReferences are not allowed
+		modelAdapter.setAllowInterModelReferences("false".equals(options.get("checkSameModel")));
 		execEnv.init(modelAdapter);
 		
 		if("true".equals(options.get("step")))
