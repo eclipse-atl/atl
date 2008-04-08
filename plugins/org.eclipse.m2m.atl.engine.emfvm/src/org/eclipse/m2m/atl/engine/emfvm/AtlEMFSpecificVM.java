@@ -8,7 +8,7 @@
  * Contributors:
  *    INRIA - initial API and implementation
  *    
- * $Id: AtlEMFSpecificVM.java,v 1.4.4.2 2008/03/13 16:21:45 dwagelaar Exp $
+ * $Id: AtlEMFSpecificVM.java,v 1.4.4.3 2008/04/08 15:01:11 fjouault Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -191,6 +191,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 						URI.createPlatformResourceURI((String)modelPaths.get(mName), true),
 						true);		
 				models.put(mName, m);
+				m.isTarget = true;
 			}
 
 			try {
