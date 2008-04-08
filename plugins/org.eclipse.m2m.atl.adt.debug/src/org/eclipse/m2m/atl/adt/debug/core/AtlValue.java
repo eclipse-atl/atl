@@ -1,7 +1,13 @@
-/*
- * Created on 10 mai 2004
- */
-
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Freddy Allilaire (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.debug.core;
 
 import java.util.ArrayList;
@@ -46,8 +52,8 @@ public class AtlValue extends AtlDebugElement implements IValue {
 		this.value = value;
 		this.atlDT = atlDT;
 		this.typeName = getTypeName(value);
-		if(typeName.equals("EnumLiteral")) {
-			asString = ((StringValue)(((ObjectReference)value).call("toString",Collections.EMPTY_LIST))).getValue();
+		if(typeName.equals("EnumLiteral")) {//$NON-NLS-1$
+			asString = ((StringValue)(((ObjectReference)value).call("toString",Collections.EMPTY_LIST))).getValue();//$NON-NLS-1$
 		} else {
 			asString = value.toString();
 		}
@@ -61,24 +67,24 @@ public class AtlValue extends AtlDebugElement implements IValue {
 		String ret = null;
 		
 		if (value instanceof BooleanValue)
-			ret = "Boolean";
+			ret = "Boolean";//$NON-NLS-1$
 		if (value instanceof IntegerValue)
-			ret = "Integer";
+			ret = "Integer";//$NON-NLS-1$
 		if (value instanceof RealValue)
-			ret = "Real";
+			ret = "Real";//$NON-NLS-1$
 		if (value instanceof StringValue)
-			ret = "String";
+			ret = "String";//$NON-NLS-1$
 		if (value instanceof NullValue)
-			ret = "Null";
+			ret = "Null";//$NON-NLS-1$
 		if (value instanceof ObjectReference) {
 			ObjectReference or = (ObjectReference)value;
 			Object v = asType;
-			if(v == null) v = or.call("oclType", new ArrayList());
+			if(v == null) v = or.call("oclType", new ArrayList());//$NON-NLS-1$
 			if(v instanceof ObjectReference) {
 				or = (ObjectReference)v;
-				ret = ((StringValue)or.call("getName", new ArrayList())).getValue();
+				ret = ((StringValue)or.call("getName", new ArrayList())).getValue();//$NON-NLS-1$
 			} else {
-				ret = "ObjectReference";
+				ret = "ObjectReference";//$NON-NLS-1$
 			}
 		}
 		return ret;
@@ -112,26 +118,26 @@ public class AtlValue extends AtlDebugElement implements IValue {
 
 		// Add supertypes
 		ObjectReference supertypes = (ObjectReference) type.get(supertypesName); // Sequence
-		int n = ((IntegerValue) supertypes.call("size", new ArrayList()))
+		int n = ((IntegerValue) supertypes.call("size", new ArrayList()))//$NON-NLS-1$
 				.getValue();
 		for (int i = 1; i <= n; i++) {
-			ObjectReference element = (ObjectReference)supertypes.call("at", Arrays.asList(new Object[]{IntegerValue.valueOf(i)}));  
-			list.add(new AtlVariable("<supertype>", new AtlValue(value, element, atlDT), atlDT, AtlVariable.SUPERTYPE));
+			ObjectReference element = (ObjectReference)supertypes.call("at", Arrays.asList(new Object[]{IntegerValue.valueOf(i)}));//$NON-NLS-1$  
+			list.add(new AtlVariable("<supertype>", new AtlValue(value, element, atlDT), atlDT, AtlVariable.SUPERTYPE));//$NON-NLS-1$
 		}
 		
 		// Add StructuralFeatures in contents
 		ObjectReference contents = (ObjectReference) type.get(contentsName); // Sequence
-		n = ((IntegerValue) contents.call("size", new ArrayList())).getValue();
+		n = ((IntegerValue) contents.call("size", new ArrayList())).getValue();//$NON-NLS-1$
 		for (int i = 1; i <= n; i++) {
-			ObjectReference element = (ObjectReference)contents.call("at", Arrays.asList(new Object[]{IntegerValue.valueOf(i)}));
+			ObjectReference element = (ObjectReference)contents.call("at", Arrays.asList(new Object[]{IntegerValue.valueOf(i)}));//$NON-NLS-1$
 			String tn = getTypeName(element);
 			if(tn.equals(referenceName)) {
-				String en = ((StringValue)element.get("name")).getValue();
+				String en = ((StringValue)element.get("name")).getValue();//$NON-NLS-1$
 				Value varValue = orValue.get(en); 
 				list.add(new AtlVariable(en, new AtlValue(varValue, atlDT), atlDT, AtlVariable.REFERENCE));
 			}
 			else if(tn.equals(attributeName)) {
-				String en = ((StringValue)element.get("name")).getValue();
+				String en = ((StringValue)element.get("name")).getValue();//$NON-NLS-1$
 				Value varValue = orValue.get(en); 
 				list.add(new AtlVariable(en, new AtlValue(varValue, atlDT), atlDT, AtlVariable.ATTRIBUTE));
 			}
@@ -150,33 +156,37 @@ public class AtlValue extends AtlDebugElement implements IValue {
 		if (value instanceof ObjectReference) {
 			ObjectReference orValue = (ObjectReference) value;
 			Value v = asType;
-			if(v == null) v = orValue.call("oclType", new ArrayList());
+			if(v == null) v = orValue.call("oclType", new ArrayList());//$NON-NLS-1$
 			if (v instanceof ObjectReference) {
 				ObjectReference type = (ObjectReference) v;
 				String ttn = getTypeName(type);
-				if(ttn.equals("MOF!Class")) {
-					ret = getProperties(orValue, type, "supertypes", "contents", "MOF!Reference", "MOF!Attribute");
-				} else if(ttn.equals("MOF!EClass")) {
-					ret = getProperties(orValue, type, "eSuperTypes", "eStructuralFeatures", "MOF!EReference", "MOF!EAttribute");
+				if(ttn.equals("MOF!Class")) {//$NON-NLS-1$
+					ret = getProperties(orValue, type, "supertypes", "contents", "MOF!Reference", "MOF!Attribute");//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+				} else if(ttn.equals("MOF!EClass")) { //$NON-NLS-1$
+					ret = getProperties(orValue, type, "eSuperTypes", "eStructuralFeatures", "MOF!EReference", "MOF!EAttribute"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				}
 				else {
 					String tn = typeName;
-					if(tn.equals("Sequence")) {
+					if(tn.equals("Sequence")) { //$NON-NLS-1$
 						ret = doSequence(orValue);
 					}
-					else if(tn.equals("Set")) {
-						orValue = (ObjectReference)orValue.call("asSequence", new ArrayList());
+					else if(tn.equals("Set")) { //$NON-NLS-1$
+						orValue = (ObjectReference)orValue.call("asSequence", new ArrayList()); //$NON-NLS-1$
 						ret = doSequence(orValue);
 					}
-					else if(tn.equals("Bag")) {
-						orValue = (ObjectReference)orValue.call("asSequence", new ArrayList());
+					else if(tn.equals("Bag")) { //$NON-NLS-1$
+						orValue = (ObjectReference)orValue.call("asSequence", new ArrayList()); //$NON-NLS-1$
 						ret = doSequence(orValue);
 					}
-					else if(tn.equals("Map")) {
+					else if(tn.equals("OrderedSet")) { //$NON-NLS-1$
+						orValue = (ObjectReference)orValue.call("asSequence", new ArrayList()); //$NON-NLS-1$
+						ret = doSequence(orValue);
+					}
+					else if(tn.equals("Map")) { //$NON-NLS-1$
 						ret = doMap(orValue, false);
 					}
-					else if(tn.equals("Tuple")) {
-						ObjectReference map = (ObjectReference)orValue.call("asMap", new ArrayList());
+					else if(tn.equals("Tuple")) { //$NON-NLS-1$
+						ObjectReference map = (ObjectReference)orValue.call("asMap", new ArrayList()); //$NON-NLS-1$
 						ret = doMap(map, true);
 					}
 				}
@@ -192,20 +202,20 @@ public class AtlValue extends AtlDebugElement implements IValue {
 
 	private IVariable[] doMap(ObjectReference orValue, boolean useKeyAsName) {
 		IVariable ret[] = null;
-		ObjectReference keys = (ObjectReference)orValue.call("getKeys", new ArrayList());
+		ObjectReference keys = (ObjectReference)orValue.call("getKeys", new ArrayList()); //$NON-NLS-1$
 	
-		keys = (ObjectReference)keys.call("asSequence", new ArrayList());
+		keys = (ObjectReference)keys.call("asSequence", new ArrayList()); //$NON-NLS-1$
 		
 		List list = new ArrayList();
-		int n = ((IntegerValue) keys.call("size", new ArrayList())).getValue();
+		int n = ((IntegerValue) keys.call("size", new ArrayList())).getValue(); //$NON-NLS-1$
 		for (int i = 1; i <= n; i++) {
-			Value varKey = (Value)keys.call("at", Arrays.asList(new Object[]{IntegerValue.valueOf(i)}));
-			Value varValue = (Value)orValue.call("get", Arrays.asList(new Object[]{varKey}));
+			Value varKey = (Value)keys.call("at", Arrays.asList(new Object[]{IntegerValue.valueOf(i)})); //$NON-NLS-1$
+			Value varValue = (Value)orValue.call("get", Arrays.asList(new Object[]{varKey})); //$NON-NLS-1$
 			
 			if(useKeyAsName) {
 				list.add(new AtlVariable(((StringValue)varKey).getValue(), new AtlValue(varValue, atlDT), atlDT, AtlVariable.ATTRIBUTE));
 			} else {
-				list.add(new AtlVariable("Map[" + i + "]", new AtlMapValue(varKey, varValue, atlDT), atlDT, AtlVariable.ELEMENT));
+				list.add(new AtlVariable("Map[" + i + "]", new AtlMapValue(varKey, varValue, atlDT), atlDT, AtlVariable.ELEMENT)); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		ret = (IVariable[])list.toArray(new IVariable[0]);
@@ -225,10 +235,10 @@ public class AtlValue extends AtlDebugElement implements IValue {
 		IVariable[] ret = null;
 		List list = new ArrayList();
 
-		int n = ((IntegerValue) orValue.call("size", new ArrayList())).getValue();
+		int n = ((IntegerValue) orValue.call("size", new ArrayList())).getValue(); //$NON-NLS-1$
 		for (int i = 1; i <= n; i++) {
-			Value varValue = (Value)orValue.call("at", Arrays.asList(new Object[]{IntegerValue.valueOf(i)}));
-			list.add(new AtlVariable("[" + i + "]", new AtlValue(varValue, atlDT), atlDT, AtlVariable.ELEMENT));
+			Value varValue = (Value)orValue.call("at", Arrays.asList(new Object[]{IntegerValue.valueOf(i)})); //$NON-NLS-1$
+			list.add(new AtlVariable("[" + i + "]", new AtlValue(varValue, atlDT), atlDT, AtlVariable.ELEMENT)); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		ret = (IVariable[])list.toArray(new IVariable[0]);
 		return ret;
