@@ -224,12 +224,10 @@ litigation.
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.antlr.runtime" version="3.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.emf.common"/>
-      <import plugin="org.antlr.runtime" version="3.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.m2m.atl.adt.debug"/>
-      <import plugin="org.eclipse.debug.core"/>
    </requires>
 
    <plugin
