@@ -22,11 +22,14 @@
       <update label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
    </url>
 
+   <requires>
+      <import plugin="org.eclipse.help"/>
+   </requires>
+
    <plugin
          id="org.eclipse.m2m.atl.doc"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="true"/>
+         version="0.0.0"/>
 
 </feature>
