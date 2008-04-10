@@ -1,0 +1,10 @@
+ATL/Metamodel/ATL.ecore
+ATL/Syntax/ATL-parser.jar
+ATL/Syntax/ATL-TCS.xmi
+ATL/Compiler/ATL.asm
+ATL/RuntimeSupport/RefiningTrace.ecore
+
+ACG/Metamodel/ACG.ecore
+ACG/Syntax/ACG-parser.jar
+ACG/Syntax/ACG-TCS.xmi
+ACG/Compiler/ACG.asm
