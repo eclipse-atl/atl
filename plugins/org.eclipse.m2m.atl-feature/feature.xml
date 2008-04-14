@@ -4,6 +4,7 @@
       label="%featureName"
       version="2.0.0.qualifier"
       provider-name="%providerName"
+      plugin="org.eclipse.m2m.atl"
       image="eclipse_update_120.jpg">
 
    <description>
