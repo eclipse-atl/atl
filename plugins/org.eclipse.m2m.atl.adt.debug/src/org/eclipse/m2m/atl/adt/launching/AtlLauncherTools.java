@@ -45,7 +45,7 @@ public class AtlLauncherTools {
 
 	public static final String ATLVM = "ATL VM"; //$NON-NLS-1$
 	public static final String ATLFILENAME = "ATL File Name"; //$NON-NLS-1$
-	public static final String AllowInterModelReferences = "AllowInterModelReferences"; //$NON-NLS-1$
+	//public static final String AllowInterModelReferences = "AllowInterModelReferences"; //$NON-NLS-1$
 	public static final String PROJECTNAME = "Project Name"; //$NON-NLS-1$
 	public static final String OUTPUT = "Output"; //$NON-NLS-1$
 	public static final String INPUT = "Input"; //$NON-NLS-1$
@@ -78,18 +78,12 @@ public class AtlLauncherTools {
 	
 	public static final String OPTION_CONTINUE_AFTER_ERROR = "continueAfterError"; //$NON-NLS-1$
 	public static final String OPTION_DISABLE_ATTRIBUTE_HELPER_CACHE = "disableAttributeHelperCache"; //$NON-NLS-1$
-	public static final String OPTION_ALLOW_TARGET_NAVIGATION = "allowTargetNavigation"; //$NON-NLS-1$
-	public static final String OPTION_ALLOW_SOURCE_MODIFICATION = "allowSourceModification"; //$NON-NLS-1$
-	public static final String OPTION_ALLOW_CONTAINER_REASSIGNMENT = "allowContainerReassignment"; //$NON-NLS-1$
 	public static final String OPTION_PRINT_EXECUTION_TIME = "printExecutionTime"; //$NON-NLS-1$
 	public static final String OPTION_STEP = "step"; //$NON-NLS-1$
 	public static final String OPTION_SHOW_SUMMARY = "showSummary"; //$NON-NLS-1$
 	public static final String OPTION_PROFILE = "profile"; //$NON-NLS-1$
 	public static final String OPTION_SUPPORTUML2STEREOTYPES = "supportUML2Stereotypes"; //$NON-NLS-1$
 	public static final String[] additionalParamIds = new String[] {
-//		ALLOW_TARGET_NAVIGATION,
-//		ALLOW_SOURCE_MODIFICATION,
-//		ALLOW_CONTAINER_REASSIGNMENT,
 		OPTION_CONTINUE_AFTER_ERROR,
 		OPTION_DISABLE_ATTRIBUTE_HELPER_CACHE,
 		OPTION_PRINT_EXECUTION_TIME,
@@ -99,9 +93,6 @@ public class AtlLauncherTools {
 		OPTION_SUPPORTUML2STEREOTYPES
 	};
 	public static final String[] additionalParamLabels = new String[] {
-//		"Allow navigation in target models",
-//		"Allow modification of source models",
-//		"Allow container reassignment",
 		AtlDebugMessages.getString("AtlLauncherTools.0"), //$NON-NLS-1$
 		AtlDebugMessages.getString("AtlLauncherTools.1"), //$NON-NLS-1$
 		AtlDebugMessages.getString("AtlLauncherTools.2"), //$NON-NLS-1$
