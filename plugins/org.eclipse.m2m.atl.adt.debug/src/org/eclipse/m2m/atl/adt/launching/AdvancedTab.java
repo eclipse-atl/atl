@@ -71,7 +71,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
     
 	private Group groupOthersInformation;
 	private Button buttonModeDebug;
-	//private Button buttonAllowInterModelReferences;
+	private Button buttonAllowInterModelReferences;
 	private Combo atlVMs;
 
 	private Map buttonArray = new HashMap();
@@ -87,7 +87,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 
         groupOthersInformation = new Group(container,SWT.NULL);
 		buttonModeDebug = new Button(groupOthersInformation,SWT.CHECK);
-		//buttonAllowInterModelReferences = new Button(groupOthersInformation, SWT.CHECK);
+		buttonAllowInterModelReferences = new Button(groupOthersInformation, SWT.CHECK);
         
         GridLayout layout = new GridLayout();
         layout.numColumns = 1;
@@ -156,9 +156,9 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 
 		groupOthersInformation.setText(AtlDebugMessages.getString("MainAtlTab.OTHERSPARAMETERS")); //$NON-NLS-1$
 
-		//buttonAllowInterModelReferences.setLayoutData(new GridData(GridData.FILL_BOTH));
-		//buttonAllowInterModelReferences.setText(AtlDebugMessages.getString("MainAtlTab.INTERMODELREFS")); //$NON-NLS-1$
-		//buttonAllowInterModelReferences.addSelectionListener(this);
+		buttonAllowInterModelReferences.setLayoutData(new GridData(GridData.FILL_BOTH));
+		buttonAllowInterModelReferences.setText(AtlDebugMessages.getString("MainAtlTab.INTERMODELREFS")); //$NON-NLS-1$
+		buttonAllowInterModelReferences.addSelectionListener(this);
 
 		buttonModeDebug.setLayoutData(new GridData(GridData.FILL_BOTH));
 		buttonModeDebug.setText(AtlDebugMessages.getString("MainAtlTab.MODEDEBUG")); //$NON-NLS-1$
@@ -230,7 +230,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
             }
             
             buttonModeDebug.setSelection(configuration.getAttribute(AtlLauncherTools.MODEDEBUG, false));
-			//buttonAllowInterModelReferences.setSelection(configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false));
+			buttonAllowInterModelReferences.setSelection(configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false));
 
 			for (int item = 0; item < atlVMs.getItems().length; item++) {
 				if (atlVMs.getItem(item).equals(configuration.getAttribute(AtlLauncherTools.ATLVM, ""))) {//$NON-NLS-1$
@@ -249,8 +249,9 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
         } catch (CoreException e) {
             tableSuperimpose.removeAll();
 			buttonModeDebug.setSelection(false);
-			//buttonAllowInterModelReferences.setSelection(true);
+			buttonAllowInterModelReferences.setSelection(true);
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//            e.printStackTrace();
         }
     }
     
@@ -266,7 +267,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
     public void performApply(ILaunchConfigurationWorkingCopy configuration) {
         configuration.setAttribute(AtlLauncherTools.SUPERIMPOSE, createSuperimposedList());
         
-		//configuration.setAttribute(AtlLauncherTools.AllowInterModelReferences, buttonAllowInterModelReferences.getSelection());
+		configuration.setAttribute(AtlLauncherTools.AllowInterModelReferences, buttonAllowInterModelReferences.getSelection());
 		configuration.setAttribute(AtlLauncherTools.MODEDEBUG, buttonModeDebug.getSelection());
 		configuration.setAttribute(AtlLauncherTools.ATLVM, atlVMs.getItem(atlVMs.getSelectionIndex()));
 		
@@ -292,6 +293,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
                     return false;
                 }
         }
+        
         this.setErrorMessage(null);
         return true;
     }
