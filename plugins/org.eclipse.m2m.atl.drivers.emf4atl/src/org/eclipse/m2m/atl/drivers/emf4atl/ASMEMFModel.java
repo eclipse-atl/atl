@@ -519,7 +519,7 @@ public class ASMEMFModel extends ASMModel {
 		Iterator eRefs = eClass.getEReferences().iterator();
 		while (eRefs.hasNext()) {
 			EReference eRef = (EReference) eRefs.next();
-			if (eRef.isContainment()) {
+			//if (eRef.isContainment()) {
 				EClassifier eType = eRef.getEType();
 				if (eType.eResource() != null) {
 					referencedExtents.add(eType.eResource());
@@ -533,7 +533,7 @@ public class ASMEMFModel extends ASMModel {
 				if (eType instanceof EClass) {
 					addReferencedExtentsFor((EClass) eType, ignore);
 				}
-			}
+			//}
 		}
 		Iterator eAtts = eClass.getEAttributes().iterator();
 		while (eAtts.hasNext()) {
