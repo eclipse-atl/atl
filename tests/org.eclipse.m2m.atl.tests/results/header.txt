@@ -1,0 +1,12 @@
+==Non-regression tests==
+
+{| border="1"
+<!-- Table headers -->
+|+ Non-regression tests on emfvm
+! rowspan=2 | Test case
+! rowspan=2 | Status
+! colspan=2 | Time
+! rowspan=2 | Comments
+|-
+! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.engine.vm/?root=Modeling_Project Regular VM]
+! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.engine.emfvm/?root=Modeling_Project emfvm]

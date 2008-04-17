@@ -1,0 +1,549 @@
+--@atlcompiler atl2006
+module Sild2Sam;
+create OUT : SAM from IN : Sildex;
+
+-- ===== HELPER ATTRIBUTES ===== -- 
+helper def : event : String = 'event';
+helper def : comment : String = 'comment';
+helper def : model : String = 'Model'; 
+helper def: automaton : String = 'Automaton';
+helper def: connection : String = 'connectionName';
+helper def: convergent : String = 'ConvergentComb';
+helper def: divergent: String = 'DivergentComb';
+
+--Helper converting a string into an integer
+helper context String def: toInteger() : Integer =
+	if self.size() = 0 
+		then	0
+		else if self.size() = 1
+			then if self = '1' 
+				then 1
+				else if self = '2' then 2
+				else if self = '3' then 3
+				else if self = '4' then 4
+				else if self = '5' then 5
+				else if self = '6' then 6
+				else if self = '7' then 7
+				else if self = '8' then 8
+				else if self = '9' then 9
+				else 0 endif endif endif endif
+				endif endif endif endif endif
+			else
+				self.substring(1,self.size()-1).toInteger()*10 + self.substring(self.size(),self.size()).toInteger()
+			endif endif;
+
+-- Helper returning the position of a character or size+1 if the character is not found
+helper context String def : indexOf(char : String) : Integer =
+	if self.size() = 0 then 1
+	else
+		if self.substring(1,1) = char then 1
+		else
+			1 + self.substring(2,self.size()).indexOf(char)
+		endif
+	endif;
+
+-- Helper returning the given string but free of space
+helper context String def: trim() : String =
+	if self.size() = 0 then self
+	else if self.substring(1,1) = ' ' then self.substring(2,self.size()).trim()
+	else if self.substring(self.size(),self.size()) = ' ' then self.substring(1,self.size()-1).trim()
+	else self
+	endif endif endif;
+
+helper context Sildex!Block def: getBlockClassIncluded() : String =
+	self.Modelref.ref.name;
+
+helper context Sildex!Connection def : getConnectionNamePort() : String =
+	self.Start.port.name;
+
+--Un élément model se transforme en System que si la class est "Model" et 
+--qu'il n'est pas contenu par un model de class "Automate" ?????.
+helper context Sildex!Model def: model2systemTransf() : Boolean =
+	self.Class.value = thisModule.model and
+	if self.firstModel() 
+	  then true 
+	  else self.container().Class.value <> thisModule.automaton 
+	endif;
+
+helper context Sildex!Model def : firstModel() : Boolean = 
+	self.Package.Model->asSequence()->first().id = self.id;
+
+--Un élément connection se transforme en flow (quelque soit le type) 
+--uniquement s'il n'est pas contenu par un model de class "Automaton"
+helper context Sildex!Connection def: connection2FlowTransf(): Boolean =
+	self.Model.Class.value <> thisModule.automaton;
+	
+--Transf. Connection to DataFlow
+helper context Sildex!Connection def : connection2DataFlowTransf() : Boolean =
+	self.Start.port.Type.value <> thisModule.event;
+
+--Transf. Connection to ControlFlow
+helper context Sildex!Connection def : connection2ControlFlowTransf() : Boolean =
+	self.Start.port.Type.value = thisModule.event;
+
+--Transf. Port to InDataPort
+helper context Sildex!Port def : port2InDataPortTransf(): Boolean =
+	self.Direction.value = #"in" and self.Type.value <> thisModule.event;
+
+--Transf. Port to OutDataPort
+helper context Sildex!Port def : port2OutDataPortTransf(): Boolean =
+	self.Direction.value = #"out" and self.Type.value <> thisModule.event;
+
+--Transf. Port to InControlPort
+helper context Sildex!Port def : port2InControlPortTransf(): Boolean =
+	self.Direction.value = #"in" and self.Type.value = thisModule.event;
+
+--Transf. Port to OutControlPort
+helper context Sildex!Port def : port2OutControlPortTransf(): Boolean =
+	self.Direction.value = #"out" and self.Type.value = thisModule.event;
+
+--Un élément model se transforme en objet Automaton si la class de model 
+--est "Automaton".
+helper context Sildex!Model def: model2automatonTransf() : Boolean =
+	self.Class.value = thisModule.automaton;
+
+--Un élément model se transforme en objet InitialState si l'élément block 
+--qui référence le model est dans un model de class "Automaton" et que 
+--l'attribut IsInitial du modelRef du block est mis à "true".
+helper context Sildex!Model def: model2initalstateTransf() : Boolean =
+	not (self.Package.Model->select(x | x.model2automatonTransf()
+		and not (x.Block->select(z | z.Modelref.ref = self)->select(z | z.Class.value='State' and not z.Modelref.IsInitial.oclIsUndefined())->select(z|z.Modelref.IsInitial.value='true')->isEmpty()) )->isEmpty());
+
+--Un élément model se transforme en objet State si l'élément block qui 
+--référence le model est dans un model de class "Automaton" et s'il n'est 
+--ni MacroState, ni InitialState (dans la garde, tester les conditions 
+--inverses pour s'assurer de l'exclusion des cas).
+helper context Sildex!Model def: model2stateTransf() : Boolean =
+	not(self.Package.Model->select(x | x.model2automatonTransf() and not (x.Block->select(y | y.Modelref.ref.id=self.id)->isEmpty()))->isEmpty());
+
+--Un élément model se transforme en objet MacroState si l'élément block 
+--qui référence le model est dans un model de class "Automaton" et que
+--le block "contient grahiquement" un autre block (position du block contenu dans le rectangle que forme le block/macrostate)
+helper context Sildex!Model def : model2macrostateTransf() : Boolean =
+	not(self.Package.Model->select(a | a.model2automatonTransf() and not(a.Block->select(b | b.Modelref.ref.id = self.id and not(a.Block->select(c | c.id <> b.id and
+		c.isIncludedBy(b)
+		--(c.Position.x > b.Position.x and c.Position.x < (b.Position.x+b.Extent.x) and c.Position.y > b.Position.y and c.Position.y < (b.Position.y+b.Extent.y))
+	)->isEmpty()) )->isEmpty()) )->isEmpty());
+	
+-- Helper indicating if the state corresponding to the model is included in a macro state or not
+helper context Sildex!Model def : isStateIncluded() : Boolean =
+	-- self.Package.Model->select(a | not(a.Block->select(b| b.Modelref.ref.id = self.id)->isEmpty()))->asSequence()->first().Class.value = 'Automaton' and
+	not(self.Package.Model->select(a | not(a.Block->select(b| b.Modelref.ref.id = self.id and not(a.Block->select(c|c.id <> b.id and 
+		(b.isIncludedBy(c)))->isEmpty()
+		))->isEmpty()))->isEmpty());
+
+-- This helper indicates if the block is included by the parameter block
+helper context Sildex!Block def : isIncludedBy(macro : Sildex!Block) : Boolean =
+	self.Position.x > macro.Position.x and self.Position.x < (macro.Position.x+macro.Extent.x) and self.Position.y > macro.Position.y and self.Position.y < (macro.Position.y+macro.Extent.y);
+
+-- This helper retrieves the model containing the block  referencing current model
+helper context Sildex!Model def : container() : Sildex!Model = 
+	if self.firstModel() then
+		Sequence {}->first() -- this returns null, in case we are on the root element
+	else
+		self.Package.Model->select(x | not (x.Block->select(y|y.Modelref.ref = self)
+			->isEmpty()))->asSequence()->first()
+	endif;
+
+--Un élément connection se transforme en objet Transition s'il est contenu 
+--dans un model dont la class est "Automaton".
+helper context Sildex!Connection def: connection2transitionTransf(): Boolean =
+	self.Model.Class.value = thisModule.automaton;
+
+helper context Sildex!Model def : model2datastoreTransf() : Boolean =
+	if self.Class.value = thisModule.model then
+		if self.name.size() < 10 then false
+		else self.name.substring(1,10) = 'data_store'
+		endif
+	else false
+	endif;
+
+--Property->select(x | x.name = 'connectionName')->asSequence()->first().value.substring(e.Property->select(x | x.name = 'connectionName')->asSequence()->first().value.indexOf('?')+1,e.Property->select(x | x.name = 'connectionName')->asSequence()->first().value.indexOf('!')-1)
+helper context Sildex!Connection def : conditionExtraction() : String =
+	if self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.indexOf('!') <1 or self.Property->select(x | x.name = 'connectionName')->asSequence()->first().value.indexOf('!') > self.Property->select(x | x.name = 'connectionName')->asSequence()->first().value.size() then
+		self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.substring(self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.indexOf('?')+1,self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.size())
+	else
+		self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.substring(self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.indexOf('?')+1,self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.indexOf('!')-1)
+	endif;
+
+--Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.substring(e.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.indexOf('!')+1,e.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.size())
+helper context Sildex!Connection def : emissionExtraction() : String =
+	if self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.indexOf('!') <1 or self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.indexOf('!') > self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.size() then
+		' '
+	else
+		self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.substring(self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.indexOf('!')+1,self.Property->select(x | x.name = thisModule.connection)->asSequence()->first().value.size())
+	endif;
+
+-- This helper returns a set, but should not contain more than one element.
+helper context Sildex!Port def : containingMports() : Set(Sildex!Mport) =
+	Sildex!Mport->allInstances()->select(m | m.PortRef->select(r | r.ref = self)->size() > 0);
+
+-- This helper indicates wheter or not a port is contained a multiport.
+helper context Sildex!Port def : isMportContained() : Boolean =
+	not(self.containingMports()->isEmpty());
+
+-- Check if the Model is a Library
+helper context Sildex!Model def : isLibraryDefined() : Boolean =
+	if not self.Library.oclIsUndefined() then
+		if self.Library.name <> '' then
+			true
+		else
+			false
+		endif
+	else false
+	endif;
+
+helper context Sildex!Model def : modelLibrary() : Sildex!Model =
+	if self.isLibraryDefined() then
+		self
+	else Sequence{}->first()
+	endif;
+
+helper context Sildex!Model def : libraryName() : String =
+	if self.isLibraryDefined() then
+		self.Library.name
+	else ''
+	endif;
+
+-- Helper for extracting comment when it exists
+helper context Sildex!Port def : getComment() : String =
+	if not self.Property.oclIsUndefined()
+		then if not self.Property->select(x | x.name = thisModule.comment)->isEmpty()
+					then self.Property->select(x | x.name = thisModule.comment)->first().value
+					else OclUndefined
+				 endif
+		else OclUndefined
+	endif;
+
+-- Helper for extracting comment when it exists
+helper context Sildex!Connection def : getComment() : String =
+	if not self.Property.oclIsUndefined()
+		then if not self.Property->select(x | x.name = thisModule.comment)->isEmpty()
+					then self.Property->select(x | x.name = thisModule.comment)->first().value
+					else OclUndefined
+				 endif
+		else OclUndefined
+	endif;
+
+-- Helper for extracting comment when it exists
+helper context Sildex!Model def : getComment() : String =
+	if not self.Property.oclIsUndefined()
+		then if not self.Property->select(x | x.name = thisModule.comment)->isEmpty()
+					then self.Property->select(x | x.name = thisModule.comment)->first().value
+					else OclUndefined
+				 endif
+		else OclUndefined
+	endif;
+
+-- Helper for extracting the priority
+helper context Sildex!Connection def : getPriority()  : Integer = 
+	if not self.Property->select(x | x.name = thisModule.connection)->isEmpty()
+		then self.Property->select(x | x.name = thisModule.connection)->first().value.substring(1, self.Property->select(x | x.name = thisModule.connection)->first().value.indexOf(':') - 1).toInteger()
+		else 0
+	endif;
+
+-- package to Model
+rule Package2Model {
+	from p : Sildex!Package
+	to out : SAM!Model
+}
+
+-- Abstract rule defining Model to System
+abstract rule Model2System {
+	from e : Sildex!Model 						
+	to out : SAM!System (
+		name <- e.name,
+		comment <- e.getComment(),
+		listPorts <- e.Port,
+		listFlows <- e.Connection
+	)
+}
+
+-- First Model to System
+rule FirstModel2System extends Model2System {
+	from e : Sildex!Model (e.Class.value = thisModule.model and e.firstModel())						
+	to out : SAM!System (
+		parentModel <- e.Package
+	)
+}
+
+-- Other Model to System
+rule OtherModel2System extends Model2System {
+	from e : Sildex!Model (not e.firstModel() and e.model2systemTransf() and not e.model2datastoreTransf())	
+	to out : SAM!System (
+		parentSystem <- e.Package.Model->select(x | not (x.Block->select(y | y.Modelref.ref.id = e.id))->isEmpty())->asSequence()->first()
+	)
+}
+
+-- Abstract rule defining Connection to DataFlow
+abstract rule Conn2Flow {
+	from e : Sildex!Connection (e.connection2FlowTransf()  and not e.Model.model2datastoreTransf())
+	to out : SAM!Flow(
+		parentSystem <- e.Model,
+		name <- e.getConnectionNamePort(),
+		comment <- e.getComment()
+	)
+}
+
+rule Conn2DataFlow extends Conn2Flow {
+	from e : Sildex!Connection (e.connection2DataFlowTransf())
+	to out : SAM!DataFlow(
+		source <- e.Start.port,
+		dest <- Sequence{e.Stop.port}
+	)
+}
+
+rule Conn2ControlFlow extends Conn2Flow  {
+	from e : Sildex!Connection (e.connection2ControlFlowTransf())
+	to out : SAM!ControlFlow(
+		source <- e.Start.port,
+		dest <- Sequence{e.Stop.port}
+	)	
+}
+
+--Model to Automaton
+abstract rule Model2Automaton {
+	from e : Sildex!Model (e.model2automatonTransf() )
+	to out : SAM!Automaton (
+		name <- e.name,
+		listTransitions <- e.Connection,
+		listStates <- e.Package.Model->select(x| not (e.Block->select(y|y.Modelref.ref.id = x.id)->isEmpty()) and not x.isStateIncluded()),
+		comment <- e.getComment()
+	)
+}
+
+rule FirstModel2Automaton extends Model2Automaton {
+	from e : Sildex!Model (e.firstModel())
+	to out : SAM!Automaton (
+		parentModel <- e.Package
+	)
+}
+
+rule OtherModel2Automaton extends Model2Automaton {
+	from e : Sildex!Model (not e.firstModel())
+	to out : SAM!Automaton (
+		parentSystem <- e.Package.Model->select(x | not (x.Block->select(y | y.Modelref.ref.id = e.id)->isEmpty()))->asSequence()->first()
+	)
+}
+
+-- Connection to Transition
+rule Conn2Transition{
+	from e : Sildex!Connection (e.connection2transitionTransf())
+	to out : SAM!Transition (
+		parentAutomaton <- e.Model,
+		source <- e.Start.port.Model,
+		dest <- e.Stop.port.Model,
+		priority <- e.getPriority(), 
+		condition <- e.conditionExtraction().trim(),
+		emission <- e.emissionExtraction().trim(),
+		comment <- e.getComment() 
+	)
+}
+
+--Model to Composition
+rule Composition {
+	from e : Sildex!Model (e.Class.value = thisModule.convergent)
+	to out : SAM!Composition(
+		parentSystem <- e.Package.Model->select(x | not (x.Block->select(y | y.Modelref.ref.id = e.id))->isEmpty())->asSequence()->first()
+	)
+}
+--Model to Decomposition
+rule Decomposition {
+	from e : Sildex!Model (e.Class.value = thisModule.divergent)
+	to out : SAM!Decomposition(
+		parentSystem <- e.Package.Model->select(x | not (x.Block->select(y | y.Modelref.ref.id = e.id))->isEmpty())->asSequence()->first()
+	)
+}
+
+rule Model2InitialState {
+	from e : Sildex!Model (e.model2initalstateTransf())
+	to out : SAM!InitialState (
+		name <- e.container().Block->select(x | x.Modelref.ref = e)->asSequence()->first().name,
+		comment <- e.getComment()
+	)
+}
+
+rule Model2State {
+	from e : Sildex!Model (e.model2stateTransf() and not e.model2initalstateTransf() and not e.model2macrostateTransf())
+	to out : SAM!State (
+		name <- e.container().Block->select(x | x.Modelref.ref = e)->asSequence()->first().name,
+		comment <- e.getComment()
+	)
+}
+
+rule Model2MacroState {
+	from e : Sildex!Model (e.model2macrostateTransf())
+	using  {
+		container : Sildex!Model = e.container();
+		macroblock : Sildex!Block = container.Block->select(y|y.Modelref.ref = e)->asSequence()->first();
+	}
+	to out : SAM!MacroState (
+		name <- macroblock.name,
+		comment <- e.getComment(),
+		composition <- e.Package.Model->select(m | not(container.Block->select(x|x.isIncludedBy(macroblock) and x.Modelref.ref = m 
+			and container.Block->select(z| x.isIncludedBy(z) and z.isIncludedBy(macroblock))->isEmpty()))->isEmpty())
+	)
+}
+
+rule Model2DataStore {
+	from e : Sildex!Model (not e.firstModel() and e.model2datastoreTransf())
+	to out : SAM!DataStore (
+		parentSystem <- e.container(),
+		name <- e.name,
+		comment <- e.getComment()
+	)
+}
+
+-- Abstract rule defining Port to Port
+abstract rule  Port2Port {
+	from e : Sildex!Port (e.Model.model2systemTransf() and not e.isMportContained())
+	to out : SAM!IPort(
+		parentSystem <- e.Model,
+		name <- e.name,
+		outlink <- Sildex!Connection.allInstances()->select(x | x.Start.port.id = e.id)->asSequence()->first(),
+		inlink <- Sildex!Connection.allInstances()->select(x | x.Stop.port.id = e.id)->asSequence()->first(),
+		comment <- e.getComment() 
+	)
+}
+
+rule Port2InDataPort extends Port2Port {
+	from e : Sildex!Port (e.port2InDataPortTransf() and not e.Model.model2datastoreTransf())
+	to out : SAM!InDataPort()
+}
+
+rule Port2OutDataPort extends Port2Port {
+	from e : Sildex!Port (e.port2OutDataPortTransf() and not e.Model.model2datastoreTransf())
+	to out : SAM!OutDataPort()
+}
+
+rule Port2InControlPort extends Port2Port {
+	from e : Sildex!Port (e.port2InControlPortTransf())
+	to out : SAM!InControlPort()
+}
+
+rule Port2OutControlPort extends Port2Port {
+	from e : Sildex!Port (e.port2OutControlPortTransf())
+	to out : SAM!OutControlPort()
+}
+
+-- Handle MultiPort
+rule MultiPort {
+	from e : Sildex!Mport
+	to out : SAM!MultiPort(
+		parent <- e.Model,
+		name <- e.name,
+		listPort <- e.PortRef->collect(p | p.ref)
+		)
+}
+
+-- Abstract rule for transforming Port 
+abstract rule SyncPort2Port {
+	from e : Sildex!Port (e.Model.Class.value = thisModule.divergent or e.Model.Class.value = thisModule.convergent)
+	to out : SAM!Port(
+		name <- e.name
+	)
+}
+
+rule SyncPort2InDataPort extends SyncPort2Port {
+	from e : Sildex!Port (e.port2InDataPortTransf())
+	to out : SAM!InDataPort(
+		parentSync <- e.Model,
+		inlink <- Sildex!Connection.allInstances()->select(x | x.Stop.port.id = e.id)->asSequence()->first()
+	)
+}
+rule SyncPort2OutDataPort extends SyncPort2Port {
+	from e : Sildex!Port (e.port2OutDataPortTransf())
+	to out : SAM!OutDataPort(
+		parentSync <- e.Model,
+		outlink <- Sildex!Connection.allInstances()->select(x | x.Start.port.id = e.id)->asSequence()->first()
+	)
+}
+
+-- Abstract rule defining DataStorePort to Port
+abstract rule DataStorePort2Port {
+	from e : Sildex!Port (e.Model.model2systemTransf() and e.Model.model2datastoreTransf())
+	to out : SAM!InDataPort(
+		name <- e.name
+	)
+}
+
+rule DataStorePort2InDataPort extends DataStorePort2Port {
+	from e : Sildex!Port (e.port2InDataPortTransf())
+	to out : SAM!InDataPort(
+		parentDataStore <- e.Model,
+		inlink <- Sildex!Connection.allInstances()->select(x | x.Stop.port.id = e.id)->asSequence()->first()
+	)
+}
+
+rule DataStorePort2OutDataPort extends DataStorePort2Port {
+	from e : Sildex!Port (e.port2OutDataPortTransf())
+	to out : SAM!OutDataPort(
+		parentDataStore <- e.Model,
+		outlink <- Sildex!Connection.allInstances()->select(x | x.Start.port.id = e.id)->asSequence()->first()
+	)
+}
+
+-- Abstract rule to transform Sildex Ports in SAM ports
+abstract rule PortsFromMultiPort{
+	from e : Sildex!Port (e.isMportContained())
+	to out : SAM!Port(
+		parentMultiPort <- e.containingMports()->asSequence()->first(),
+		name <- e.name,
+		outlink <- Sildex!Connection.allInstances()->select(x | x.Start.port.id = e.id)->asSequence()->first(),
+		inlink <- Sildex!Connection.allInstances()->select(x | x.Stop.port.id = e.id)->asSequence()->first(),
+		comment <- e.getComment()
+	)
+}
+
+rule InDataPortsFromMultiPort extends PortsFromMultiPort{
+	from e : Sildex!Port (e.port2InDataPortTransf())
+	to out : SAM!InDataPort()
+}
+
+rule OutDataPortsFromMultiPort extends PortsFromMultiPort{
+	from e : Sildex!Port (e.port2OutDataPortTransf())
+	to out : SAM!OutDataPort()
+}
+
+rule InControlPortsFromMultiPort extends PortsFromMultiPort{
+	from e : Sildex!Port (e.port2InControlPortTransf())
+	to out : SAM!InControlPort()
+}
+
+rule OutControlPortsFromMultiPort extends PortsFromMultiPort{
+	from e : Sildex!Port (e.port2OutControlPortTransf())
+	to out : SAM!OutControlPort()
+}
+
+
+-- Abstract rule defining AutomatonPort to Port
+abstract rule AutomatonPort2Port {
+	from e : Sildex!Port (e.Model.model2automatonTransf() and not e.isMportContained())
+	to out : SAM!Port(
+		parentAutomaton <- e.Model,
+		name <- e.name,
+		outlink <- Sildex!Connection.allInstances()->select(x | x.Start.port.id = e.id)->asSequence()->first(),
+		inlink <- Sildex!Connection.allInstances()->select(x | x.Stop.port.id = e.id)->asSequence()->first(),
+		comment <- e.getComment() 
+	)
+}
+
+rule AutomatonPort2InDataPort extends AutomatonPort2Port {
+	from e : Sildex!Port (e.port2InDataPortTransf())
+	to out : SAM!InDataPort()
+}
+
+rule AutomatonPort2OutDataPort extends AutomatonPort2Port {
+	from e : Sildex!Port (e.port2OutDataPortTransf())
+	to out : SAM!OutDataPort()
+}
+
+rule AutomatonPort2InControlPort extends AutomatonPort2Port {
+	from e : Sildex!Port (e.port2InControlPortTransf())
+	to out : SAM!InControlPort()
+}
+
+rule AutomatonPort2OutControlPort extends AutomatonPort2Port {
+	from e : Sildex!Port (e.port2OutControlPortTransf())
+	to out : SAM!OutControlPort()
+}

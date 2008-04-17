@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/ModelBridge/XML2DSLModel/XML2DSLModel.atl"/>
+<stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
+<booleanAttribute key="AllowInterModelReferences" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="IN2" value="DSL"/>
+<mapEntry key="IN1" value="XML"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<booleanAttribute key="Mode Debug" value="false"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="DSLModel" value="EMF"/>
+<mapEntry key="DSL" value="EMF"/>
+<mapEntry key="XML" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="IN2" value="MODELINPUT"/>
+<mapEntry key="IN1" value="MODELINPUT"/>
+<mapEntry key="DSLModel" value="METAMODELOUTPUT"/>
+<mapEntry key="DSL" value="METAMODELINPUT"/>
+<mapEntry key="OUT" value="MODELOUTPUT"/>
+<mapEntry key="XML" value="METAMODELINPUT"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT" value="DSLModel"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="IN2" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/ModelBridge/XML2DSLModel/SimpleExampleMM-DSL.ecore"/>
+<mapEntry key="IN1" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/ModelBridge/XML2DSLModel/SimpleExampleM-XML.ecore"/>
+<mapEntry key="DSLModel" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/DSLModel.ecore"/>
+<mapEntry key="DSL" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/DSL.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/ModelBridge/XML2DSLModel/SimpleExampleM-DSLModel.ecore"/>
+<mapEntry key="XML" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/XML.ecore"/>
+</mapAttribute>
+<stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.vm.tests"/>
+<listAttribute key="Superimpose"/>
+<booleanAttribute key="continueAfterError" value="false"/>
+<booleanAttribute key="disableAttributeHelperCache" value="false"/>
+<booleanAttribute key="printExecutionTime" value="false"/>
+<booleanAttribute key="profile" value="false"/>
+<booleanAttribute key="showSummary" value="false"/>
+<booleanAttribute key="step" value="false"/>
+</launchConfiguration>

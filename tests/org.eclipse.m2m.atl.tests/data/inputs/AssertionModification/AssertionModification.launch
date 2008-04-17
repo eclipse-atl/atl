@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/AssertionModification/AssertionModification.atl"/>
+<stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
+<booleanAttribute key="AllowInterModelReferences" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="Lib" value="XML"/>
+<mapEntry key="IN" value="UML2"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<booleanAttribute key="Mode Debug" value="false"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="UML2" value="EMF"/>
+<mapEntry key="XML" value="EMF"/>
+<mapEntry key="UML2Target" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="Lib" value="MODELINPUT"/>
+<mapEntry key="IN" value="MODELINPUT"/>
+<mapEntry key="UML2" value="METAMODELINPUT"/>
+<mapEntry key="OUT" value="MODELOUTPUT"/>
+<mapEntry key="XML" value="METAMODELINPUT"/>
+<mapEntry key="UML2Target" value="METAMODELOUTPUT"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT" value="UML2Target"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="Lib" value="/org.eclipse.m2m.atl.tests/data/inputs/AssertionModification/lib-XML.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/AssertionModification/example-UML2.uml"/>
+<mapEntry key="UML2" value="uri:http://www.eclipse.org/uml2/2.0.0/UML"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/AssertionModification/example-UML2Target.uml"/>
+<mapEntry key="XML" value="/org.eclipse.m2m.atl.tests/data/inputs/AssertionModification/XML.ecore"/>
+<mapEntry key="UML2Target" value="uri:http://www.eclipse.org/uml2/2.0.0/UML"/>
+</mapAttribute>
+<stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>
+<listAttribute key="Superimpose"/>
+<booleanAttribute key="continueAfterError" value="false"/>
+<booleanAttribute key="disableAttributeHelperCache" value="false"/>
+<booleanAttribute key="printExecutionTime" value="false"/>
+<booleanAttribute key="profile" value="false"/>
+<booleanAttribute key="showSummary" value="false"/>
+<booleanAttribute key="step" value="false"/>
+</launchConfiguration>

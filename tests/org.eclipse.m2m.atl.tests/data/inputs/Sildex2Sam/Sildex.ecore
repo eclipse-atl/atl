@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="sildex"
+    nsURI="http:///Sildex.ecore" nsPrefix="sildex">
+  <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//Instance">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="- nature attribute. is not present in the  rbite  instance&#xD;&#xA;- class . is the result of element transformation to attribute&#xD;&#xA;- code . same as class&#xD;&#xA;&#xD;&#xA;- id is deleted"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typedoute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="naturedoute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Package" lowerBound="1"
+        eType="#//Package" transient="true" eOpposite="#//Package/Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Library" eType="#//Library"
+        containment="true" eOpposite="#//Library/Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Extent" lowerBound="1"
+        eType="#//Extent" containment="true" eOpposite="#//Extent/Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Property" upperBound="-1"
+        eType="#//Property" containment="true" eOpposite="#//Property/Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Parameter" upperBound="-1"
+        eType="#//Parameter" containment="true" eOpposite="#//Parameter/Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Block" upperBound="-1"
+        eType="#//Block" containment="true" eOpposite="#//Block/Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Port" upperBound="-1" eType="#//Port"
+        containment="true" eOpposite="#//Port/Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Mport" upperBound="-1"
+        eType="#//Mport" containment="true" eOpposite="#//Mport/Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Connection" upperBound="-1"
+        eType="#//Connection" containment="true" eOpposite="#//Connection/Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EPSFGraphics" eType="#//EPSFGraphics"
+        containment="true" eOpposite="#//EPSFGraphics/Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Class" lowerBound="1" eType="#//Class"
+        containment="true" eOpposite="#//Class/Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Code" eType="#//Code" containment="true"
+        eOpposite="#//Code/Model"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Package">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Model" upperBound="-1"
+        eType="#//Model" containment="true" eOpposite="#//Model/Package"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Library">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Model" lowerBound="1" eType="#//Model"
+        transient="true" eOpposite="#//Model/Library"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Extent">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Model" lowerBound="1" eType="#//Model"
+        transient="true" eOpposite="#//Model/Extent"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Block" lowerBound="1" eType="#//Block"
+        transient="true" eOpposite="#//Block/Extent"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Property">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="-- Rbite2.xml&#xD;&#xA;&lt;property name=&quot;portName&quot; xml:space=&quot;preserve&quot;>never&lt;/property>&#xD;&#xA;-- DTD&#xD;&#xA;&lt;!-- properties -->&#xD;&#xA;&lt;!ELEMENT property (#PCDATA)>&#xD;&#xA;&lt;!ATTLIST property&#xD;&#xA;        name CDATA #REQUIRED&#xD;&#xA;        xml:space (default | preserve) &quot;preserve&quot;&#xD;&#xA;"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlspace" eType="#//PropertyRange"
+        defaultValueLiteral="preserve"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Model" lowerBound="1" eType="#//Model"
+        transient="true" eOpposite="#//Model/Property"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Block" lowerBound="1" eType="#//Block"
+        transient="true" eOpposite="#//Block/Property"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Port" lowerBound="1" eType="#//Port"
+        transient="true" eOpposite="#//Port/Property"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Mport" eType="#//Mport"
+        transient="true" eOpposite="#//Mport/Property"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Connection" lowerBound="1"
+        eType="#//Connection" transient="true" eOpposite="#//Connection/Property"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="-Dim Element not found inn rbite.&#xD;&#xA;&#xD;&#xA;&lt;!-- parameter -->&#xD;&#xA;&lt;!ELEMENT parameter (type, dim*)>&#xD;&#xA;&lt;!ATTLIST parameter&#xD;&#xA;        id ID #REQUIRED&#xD;&#xA;        name CDATA #REQUIRED&#xD;&#xA;>&#xD;&#xA;&lt;!ELEMENT dim (#PCDATA)>&#xD;&#xA;"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Model" lowerBound="1" eType="#//Model"
+        transient="true" eOpposite="#//Model/Parameter"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Type" lowerBound="1" eType="#//Type"
+        containment="true" eOpposite="#//Type/Parameter"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Type">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Parameter" lowerBound="1"
+        eType="#//Parameter" transient="true" eOpposite="#//Parameter/Type"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Port" lowerBound="1" eType="#//Port"
+        transient="true" eOpposite="#//Port/Type"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Block" eSuperTypes="#//Instance">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="- class atribute merge.&#xD;&#xA;&#xD;&#xA;- id is deleted"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typedoute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Model" lowerBound="1" eType="#//Model"
+        transient="true" eOpposite="#//Model/Block"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Extent" lowerBound="1"
+        eType="#//Extent" containment="true" eOpposite="#//Extent/Block"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Property" upperBound="-1"
+        eType="#//Property" containment="true" eOpposite="#//Property/Block"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Modelref" lowerBound="1"
+        eType="#//Modelref" containment="true" eOpposite="#//Modelref/Block"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Position" lowerBound="1"
+        eType="#//Position" containment="true" eOpposite="#//Position/Block"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Class" lowerBound="1" eType="#//Class"
+        containment="true" eOpposite="#//Class/Block"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Port">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Model" lowerBound="1" eType="#//Model"
+        transient="true" eOpposite="#//Model/Port"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Position" lowerBound="1"
+        eType="#//Position" containment="true" eOpposite="#//Position/Port"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Type" eType="#//Type" containment="true"
+        eOpposite="#//Type/Port"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Property" upperBound="-1"
+        eType="#//Property" containment="true" eOpposite="#//Property/Port"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Class" lowerBound="1" eType="#//Class"
+        containment="true" eOpposite="#//Class/Port"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Direction" lowerBound="1"
+        eType="#//Direction" containment="true" eOpposite="#//Direction/Port"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Mport">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Model" lowerBound="1" eType="#//Model"
+        transient="true" eOpposite="#//Model/Mport"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Position" lowerBound="1"
+        eType="#//Position" containment="true" eOpposite="#//Position/Mport"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Property" upperBound="-1"
+        eType="#//Property" containment="true" eOpposite="#//Property/Mport"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="PortRef" upperBound="-1"
+        eType="#//PortRef" containment="true" eOpposite="#//PortRef/Mport"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Class" lowerBound="1" eType="#//Class"
+        containment="true" eOpposite="#//Class/Mport"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Connection">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="A Property is describe as part of a Connection in the previous DTD. This is not present in the rbite instance."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Model" lowerBound="1" eType="#//Model"
+        transient="true" eOpposite="#//Model/Connection"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Segment" upperBound="-1"
+        eType="#//Segment" containment="true" eOpposite="#//Segment/Connection"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="InitialPoint" lowerBound="1"
+        eType="#//InitialPoint" containment="true" eOpposite="#//InitialPoint/Connection"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Start" lowerBound="1" eType="#//Start"
+        containment="true" eOpposite="#//Start/Connection"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Stop" lowerBound="1" eType="#//Stop"
+        containment="true" eOpposite="#//Stop/Connection"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Hidden" eType="#//Hidden"
+        containment="true" eOpposite="#//Hidden/Connection"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Property" upperBound="-1"
+        eType="#//Property" containment="true" eOpposite="#//Property/Connection"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EPSFGraphics">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="href" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Model" lowerBound="1" eType="#//Model"
+        transient="true" eOpposite="#//Model/EPSFGraphics"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Modelref">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="- ref is for reference towards a Model.&#xD;&#xA;&#xD;&#xA; - id is deleted"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Block" lowerBound="1" eType="#//Block"
+        transient="true" eOpposite="#//Block/Modelref"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="PositionPort" upperBound="-1"
+        eType="#//PositionPort" containment="true" eOpposite="#//PositionPort/Modelref"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" lowerBound="1" eType="#//Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ParameterValue" upperBound="-1"
+        eType="#//ParameterValue" containment="true" eOpposite="#//ParameterValue/Modelref"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="IsInitial" eType="#//IsInitial"
+        containment="true" eOpposite="#//IsInitial/Modelref"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="PositionMPort" upperBound="-1"
+        eType="#//PositionMPort" containment="true" eOpposite="#//PositionMPort/Modelref"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Position">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Block" lowerBound="1" eType="#//Block"
+        transient="true" eOpposite="#//Block/Position"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Port" lowerBound="1" eType="#//Port"
+        transient="true" eOpposite="#//Port/Position"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Mport" lowerBound="1" eType="#//Mport"
+        transient="true" eOpposite="#//Mport/Position"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PositionPort">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Modelref" eType="#//Modelref"
+        transient="true" eOpposite="#//Modelref/PositionPort"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" lowerBound="1" eType="#//Port"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ParameterValue">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="- value attribute addition.&#xD;&#xA;&#xD;&#xA;&lt;!ELEMENT parameterValue (#PCDATA)>&#xD;&#xA;&lt;!ATTLIST parameterValue&#xD;&#xA;        ref IDREF #REQUIRED&#xD;&#xA;>&#xD;&#xA;"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Modelref" eType="#//Modelref"
+        transient="true" eOpposite="#//Modelref/ParameterValue"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" lowerBound="1" eType="#//Parameter"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IsInitial">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Modelref" eType="#//Modelref"
+        transient="true" eOpposite="#//Modelref/IsInitial"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PortRef">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" lowerBound="1" eType="#//Port"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Mport" lowerBound="1" eType="#//Mport"
+        transient="true" eOpposite="#//Mport/PortRef"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Start">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="port" lowerBound="1" eType="#//Port"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instance" lowerBound="1"
+        eType="#//Instance"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Connection" lowerBound="1"
+        eType="#//Connection" transient="true" eOpposite="#//Connection/Start"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Stop">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="port" lowerBound="1" eType="#//Port"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instance" lowerBound="1"
+        eType="#//Instance"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Connection" lowerBound="1"
+        eType="#//Connection" transient="true" eOpposite="#//Connection/Stop"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InitialPoint">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="firstSegment" eType="#//FirstSegmentEnumeration"
+        defaultValueLiteral="horizontal"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Connection" lowerBound="1"
+        eType="#//Connection" transient="true" eOpposite="#//Connection/InitialPoint"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Segment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Connection" lowerBound="1"
+        eType="#//Connection" transient="true" eOpposite="#//Connection/Segment"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Hidden">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Connection" lowerBound="1"
+        eType="#//Connection" transient="true" eOpposite="#//Connection/Hidden"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Instance" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="FirstSegmentEnumeration">
+    <eLiterals name="horizontal"/>
+    <eLiterals name="vertical" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="PropertyRange">
+    <eLiterals name="default"/>
+    <eLiterals name="preserve" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="DirectionRange">
+    <eLiterals name="in"/>
+    <eLiterals name="out" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Class">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Model" eType="#//Model"
+        transient="true" eOpposite="#//Model/Class"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Block" eType="#//Block"
+        transient="true" eOpposite="#//Block/Class"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Port" eType="#//Port" transient="true"
+        eOpposite="#//Port/Class"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Mport" eType="#//Mport"
+        transient="true" eOpposite="#//Mport/Class"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Direction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="#//DirectionRange"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Port" lowerBound="1" eType="#//Port"
+        transient="true" eOpposite="#//Port/Direction"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PositionMPort">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Modelref" eType="#//Modelref"
+        transient="true" eOpposite="#//Modelref/PositionMPort"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" lowerBound="1" eType="#//Mport"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Code">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Model" lowerBound="1" eType="#//Model"
+        transient="true" eOpposite="#//Model/Code"/>
+  </eClassifiers>
+</ecore:EPackage>

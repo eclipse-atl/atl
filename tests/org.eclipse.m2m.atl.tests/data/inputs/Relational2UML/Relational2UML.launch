@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/Relational2UML.atl"/>
+<stringAttribute key="ATL VM" value="EMF-specific VM"/>
+<booleanAttribute key="AllowInterModelReferences" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="IN" value="Relational"/>
+<mapEntry key="PRO" value="UML"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<booleanAttribute key="Mode Debug" value="false"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="Relational" value="EMF"/>
+<mapEntry key="UML" value="UML2"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="Relational" value="METAMODELINPUT"/>
+<mapEntry key="IN" value="MODELINPUT"/>
+<mapEntry key="OUT" value="MODELOUTPUT"/>
+<mapEntry key="PRO" value="MODELINPUT"/>
+<mapEntry key="UML" value="METAMODELOUTPUT"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT" value="UML"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/sample-Relational.ecore"/>
+<mapEntry key="Relational" value="/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/relational.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/sample-Relational.uml"/>
+<mapEntry key="PRO" value="/org.eclipse.m2m.atl.tests/profiles/relational.uml"/>
+<mapEntry key="UML" value="uri:http://www.eclipse.org/uml2/2.1.0/UML"/>
+</mapAttribute>
+<stringAttribute key="Project Name" value="Relational2UML"/>
+<listAttribute key="Superimpose"/>
+<booleanAttribute key="Support UML2 stereotypes (EMF-specific VM only)" value="true"/>
+<booleanAttribute key="continueAfterError" value="false"/>
+<booleanAttribute key="disableAttributeHelperCache" value="false"/>
+<booleanAttribute key="printExecutionTime" value="false"/>
+<booleanAttribute key="profile" value="false"/>
+<booleanAttribute key="showSummary" value="false"/>
+<booleanAttribute key="step" value="false"/>
+<booleanAttribute key="supportUML2Stereotypes" value="true"/>
+</launchConfiguration>
