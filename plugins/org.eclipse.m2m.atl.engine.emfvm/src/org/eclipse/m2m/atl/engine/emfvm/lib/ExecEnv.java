@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    
  *
- * $Id: ExecEnv.java,v 1.9.4.3 2008/04/01 08:37:19 fjouault Exp $
+ * $Id: ExecEnv.java,v 1.9.4.4 2008/04/22 11:12:28 fjouault Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -210,9 +211,13 @@ public class ExecEnv {
 	}
 
 	public Object getHelperValue(StackFrame frame, Object type, Object element, String name) {
+		Object ret = null;
 		Map helperValues = getHelperValues(element);
-		Object ret = helperValues.get(name);
+		SoftReference sr = (SoftReference)helperValues.get(name);
 
+		if(sr != null) {
+			ret = sr.get();
+		}
 		if(ret == null) {
 			Operation o = getAttributeInitializer(type, name);
 
@@ -222,7 +227,7 @@ public class ExecEnv {
 
 			ret = o.exec(calleeFrame);
 			if(cacheAttributeHelperResults)
-				helperValues.put(name, ret);
+				helperValues.put(name, new SoftReference(ret));
 		}
 
 		return ret;

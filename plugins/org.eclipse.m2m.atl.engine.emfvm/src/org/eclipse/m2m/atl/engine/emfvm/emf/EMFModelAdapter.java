@@ -8,9 +8,8 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFModelAdapter.java,v 1.1.2.3 2008/04/01 12:17:12 fjouault Exp $
+ * $Id: EMFModelAdapter.java,v 1.1.2.4 2008/04/22 11:12:28 fjouault Exp $
  */
-
 package org.eclipse.m2m.atl.engine.emfvm.emf;
 
 import java.io.PrintStream;
