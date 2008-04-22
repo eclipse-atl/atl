@@ -98,7 +98,7 @@ public class MarkerMaker {
 			pbmMarker.setAttribute(IMarker.SEVERITY, eclipseSeverity);
 			pbmMarker.setAttribute(IMarker.MESSAGE, description);
 			pbmMarker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
-			pbmMarker.setAttribute(IMarker.LOCATION, "line" + lineNumber + ", column " + columnNumber);
+			pbmMarker.setAttribute(IMarker.LOCATION, "line " + lineNumber + ", column " + columnNumber);
 			pbmMarker.setAttribute(IMarker.CHAR_START, charStart);
 			pbmMarker.setAttribute(IMarker.CHAR_END, (charEnd > charStart) ? charEnd : charStart + 1);
 		} catch (CoreException e) {
@@ -124,15 +124,16 @@ public class MarkerMaker {
 	}
 	
 	public void resetPbmMarkers(final IResource res, final EObject[] eos, final int tabWidth) throws CoreException {
-		try {
-			res.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-		} catch (CoreException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
-		}
 		IWorkspaceRunnable r = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
-				createPbmMarkers(res, eos, tabWidth);
+				synchronized(res) {
+					try {
+						res.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+					} catch (CoreException e) {
+						logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					}
+					createPbmMarkers(res, eos, tabWidth);
+				}
 			}
 		};
 		
