@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.adt.ui.text.atl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -179,6 +180,16 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 									return fDatasource.getMetaFeaturesProposals(existingBindings,oclModelElement,prefix, offset);
 								}
 							}
+						} else if (fHelper.getCurrentLine(offset).contains("<-") && 
+								(oclIsKindOf(locatedElement, "Binding") ||
+								 oclIsKindOf(locatedElement, "VariableExp") || 
+								 oclIsKindOf(locatedElement, "NavigationOrAttributeCallExp"))) { //$NON-NLS-1$
+							String[] analyzedExp = analyzeVariableExp(prefix);
+							if (analyzedExp[0]=="") {
+								return fDatasource.getVariablesProposals(analyser.getRootElement(), prefix, offset);
+							}
+							return fDatasource.getMetaFeaturesProposals(Collections.EMPTY_LIST,
+									(EObject) AtlCompletionDataSource.getVariables(analyser.getRootElement()).get(analyzedExp[0]),analyzedExp[1], offset);
 						}
 						break;
 					}
@@ -256,6 +267,27 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 		return new ArrayList();
 	}
 
+	private static String[] analyzeVariableExp(String prefix) {
+		prefix = prefix.replaceFirst("<-","");
+		String varName = "";
+		String lastPrefix = "";
+		if (prefix.contains(".")) {
+			String[] splittedPrefix = prefix.split("\\.");
+			if (splittedPrefix.length>0) {
+				if (prefix.endsWith(".")) {
+					varName = splittedPrefix[splittedPrefix.length-1];
+					lastPrefix = "";
+				} else {
+					varName = splittedPrefix[splittedPrefix.length-2];
+					lastPrefix = splittedPrefix[splittedPrefix.length-1];
+				}				
+			}
+		} else {
+			lastPrefix = prefix;
+		}
+		return new String[]{varName,lastPrefix};
+	}	
+	
 	/**
 	 * Equivalent of ASMOclAny oclIsKindOf method for EObjects.
 	 * @param element
