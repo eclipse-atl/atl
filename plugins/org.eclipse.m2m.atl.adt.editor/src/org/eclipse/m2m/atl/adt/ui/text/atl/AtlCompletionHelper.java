@@ -11,9 +11,13 @@
 package org.eclipse.m2m.atl.adt.ui.text.atl;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmt.tcs.injector.TCSInjector;
 import org.eclipse.jface.text.BadLocationException;
@@ -102,14 +106,14 @@ public class AtlCompletionHelper {
 
 		/* DEBUGGING 
 		 * 
-		 
+
 		AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
 		amh.saveModel(atlmodel, System.out);	
-		*/
-		
+		 */
+
 		return res;
 	}
-	
+
 	/**
 	 * Compute the right offset from an element, according to 
 	 * the base offset of the model.
@@ -167,8 +171,22 @@ public class AtlCompletionHelper {
 				params.put("name", "ATL-" + expressionType); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			params.put("problems", ret[1]); //$NON-NLS-1$
+
+			//desactivate standard output
+			OutputStream stream = new ByteArrayOutputStream();
+			PrintStream out = new PrintStream(stream);
+			PrintStream origOut = System.out;
+			System.setOut(out);
+
+			//launch parsing
 			ebnfi.inject(ret[0],
 					new ByteArrayInputStream(expression.getBytes()), params);
+
+			//reactivate standard output
+			System.setOut(origOut);
+			stream.close();
+			out.close();
+
 		} catch (Throwable e) {
 			// nothing : silent incorrect expressions parsing
 		}
