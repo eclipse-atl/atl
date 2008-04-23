@@ -353,7 +353,7 @@ public class AtlCompletionDataSource {
 						}
 						additionalProposalInfo.append(st.getName());
 					}
-/*
+					/*
 					for(Iterator i = cl.getEAnnotations().iterator() ; i.hasNext() ; ) {
 						EAnnotation a = (EAnnotation)i.next();
 						EMap details = a.getDetails();
@@ -363,7 +363,7 @@ public class AtlCompletionDataSource {
 							break;
 						}
 					}
-*/
+					 */
 				}
 
 				ICompletionProposal proposal = new AtlCompletionProposal(
@@ -388,7 +388,7 @@ public class AtlCompletionDataSource {
 				res.add(proposal);
 			}
 		}
-		*/
+		 */
 
 		Collections.sort(res);
 		return res;
@@ -406,7 +406,7 @@ public class AtlCompletionDataSource {
 		while (classifiers.hasNext()) {
 			EClassifier classifier = (EClassifier) classifiers.next();
 			if (classifier instanceof EClass
-//					&& !((EClass) classifier).isAbstract()
+					//					&& !((EClass) classifier).isAbstract()
 					&& !((EClass) classifier).isInterface()) {
 				all.add(classifier);
 			}
@@ -428,19 +428,13 @@ public class AtlCompletionDataSource {
 	 */
 	public List getMetaFeaturesProposals(List existing, EObject atlType,
 			String prefix, int offset) {
-		EObject model = (EObject) eGet(atlType,"model"); //$NON-NLS-1$
-		String metamodelId = eGet(model,"name").toString(); //$NON-NLS-1$
-		List packages = getMetamodelPackages(metamodelId);
-		if (packages != null) {
-			for (Iterator iterator = packages.iterator(); iterator.hasNext();) {
-				EPackage pack = (EPackage) iterator.next();
-				EClassifier res = pack.getEClassifier(eGet(atlType,"name").toString()); //$NON-NLS-1$
-				if (res instanceof EClass) {
-					return getMetaFeaturesProposals(existing, (EClass) res, prefix,
-							offset);
-				}
-			}
-		}
+		if (atlType != null) {
+			EClassifier res = getEClassifierFromAtlType(atlType);
+			if (res instanceof EClass) {
+				return getMetaFeaturesProposals(existing, (EClass) res, prefix,
+						offset);
+			}	
+		}		
 		return new ArrayList();
 	}
 
@@ -479,7 +473,7 @@ public class AtlCompletionDataSource {
 								image = getImage("model_attribute.gif"); //$NON-NLS-1$
 							else if (feature instanceof EReference)
 								image = getImage("model_reference.gif"); //$NON-NLS-1$
-							
+
 							StringBuffer additionalProposalInfo = new StringBuffer();
 							if(feature instanceof EAttribute)
 								additionalProposalInfo.append("attribute ");
@@ -512,7 +506,7 @@ public class AtlCompletionDataSource {
 									additionalProposalInfo.append(opposite.getName());
 								}
 							}
-							
+
 							ICompletionProposal proposal = new AtlCompletionProposal(
 									replacementString, offset - prefix.length(),
 									replacementString.length(), image,
@@ -550,38 +544,6 @@ public class AtlCompletionDataSource {
 			}
 		}
 		return res;
-	}
-
-	/**
-	 * Computes the type of a given variable in a given rule. Uses the outline model for that.
-	 * 
-	 * @param ruleName
-	 * @param variableName
-	 * @return the type of the variable
-	 */
-	public EObject getVariableType(String ruleName, String variableName) {
-		EObject model = fEditor.getOutlinePage().getModel();
-		EList contents = model.eContents();
-		for (Iterator iterator = contents.iterator(); iterator.hasNext();) {
-			EObject object = (EObject) iterator.next();
-			if (object.eClass().getName().equals("MatchedRule")) { //$NON-NLS-1$
-				if (ruleName.equals(eGet(object,"name"))) { //$NON-NLS-1$
-					TreeIterator ruleContentsIterator = object.eAllContents();
-					while (ruleContentsIterator.hasNext()) {
-						EObject content = (EObject) ruleContentsIterator.next();
-						if (content.eClass().getName().equals(
-						"SimpleInPatternElement")) { //$NON-NLS-1$
-							if (variableName.equals(eGet(content,"varName"))) { //$NON-NLS-1$
-								return (EObject) eGet(content,"type"); //$NON-NLS-1$
-							}
-						}
-					}
-
-				}
-			}
-		}
-
-		return null;
 	}
 
 	/**
@@ -705,5 +667,68 @@ public class AtlCompletionDataSource {
 			return self.eGet(feature);
 		}
 		return null;
+	}
+
+	public EClassifier getEClassifierFromAtlType(EObject atlType) {
+		if (atlType != null) {
+			EObject model = (EObject) eGet(atlType,"model"); //$NON-NLS-1$
+			if (model != null) {
+				String metamodelId = eGet(model,"name").toString(); //$NON-NLS-1$
+				List packages = getMetamodelPackages(metamodelId);
+				if (packages != null) {
+					for (Iterator iterator = packages.iterator(); iterator.hasNext();) {
+						EPackage pack = (EPackage) iterator.next();
+						EClassifier res = pack.getEClassifier(eGet(atlType,"name").toString()); //$NON-NLS-1$
+						return res;
+					}
+				}			
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Computes the type of a given variable in a given rule. Uses the outline model for that.
+	 * 
+	 * @param ruleName
+	 * @param variableName
+	 * @return the type of the variable
+	 */
+	public static Map getVariables(EObject rule) {
+		Map res = new HashMap();
+		res.put("thisModule",null);
+		TreeIterator ruleContentsIterator = rule.eAllContents();
+		while (ruleContentsIterator.hasNext()) {
+			EObject content = (EObject) ruleContentsIterator.next();
+			if (content.eClass().getName().equals(
+			"SimpleInPatternElement")) { //$NON-NLS-1$
+				res.put(eGet(content,"varName"), eGet(content,"type"));
+			}
+		}
+		return res;
+	}
+
+	public List getVariablesProposals(EObject rule,
+			String prefix, int offset) {
+		List res = new ArrayList();
+		Map variables = getVariables(rule);
+		for (Iterator iterator = variables.entrySet().iterator(); iterator.hasNext();) {
+			Entry entry = (Entry) iterator.next();
+			String replacementString = entry.getKey().toString();
+			StringBuffer additionalProposalInfo = new StringBuffer();
+			EClassifier classifier = getEClassifierFromAtlType((EObject) entry.getValue());
+			if (classifier != null) {
+				additionalProposalInfo.append(getEClassifierShortPath(classifier,false));
+			}			
+			if (startsWithIgnoreCase(prefix, replacementString)
+					&& !prefix.equals(replacementString)) {
+				ICompletionProposal proposal = new AtlCompletionProposal(
+						replacementString, offset - prefix.length(),
+						replacementString.length(), null,
+						replacementString, 0, additionalProposalInfo.toString());
+				res.add(proposal);
+			}
+		}
+		return res;
 	}
 }
