@@ -62,6 +62,16 @@ public class AtlModelAnalyser {
 			AtlUIPlugin.log(e);
 		}
 	}
+	
+	/**
+	 * Search the root element of the model.
+	 * 
+	 * @return the element
+	 * @throws BadLocationException
+	 */
+	public EObject getRootElement() throws BadLocationException {
+		return emfRoot;
+	}
 
 	/**
 	 * Search the nearest element of the given offset.
