@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %Plugin.name
+Bundle-Name: ATL
 Bundle-SymbolicName: org.eclipse.m2m.atl; singleton:=true
 Bundle-Version: 2.0.0.qualifier
-Bundle-Vendor: %Provider.name
+Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
