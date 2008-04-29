@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -64,6 +67,14 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	}
 
 	public void saveModel(final ASMModel model, String uri) {
+		if (uri.startsWith("ext:")) {
+			File f = new File(uri.substring(4));
+			try {
+				saveModel(model, null, new FileOutputStream(f));
+			} catch (FileNotFoundException e) {
+				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			}
+		}			
 		saveModel(model, URI.createURI(uri), null);
 	}
 	
