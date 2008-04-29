@@ -185,6 +185,10 @@ public class AtlValue extends AtlDebugElement implements IValue {
 						ObjectReference map = (ObjectReference)orValue.call("asMap", new ArrayList()); //$NON-NLS-1$
 						ret = doMap(map, true);
 					}
+					else if(tn.equals("OrderedSet")) { //$NON-NLS-1$
+						orValue = (ObjectReference)orValue.call("asSequence", new ArrayList()); //$NON-NLS-1$
+						ret = doSequence(orValue);
+					}
 				}
 			}
 
