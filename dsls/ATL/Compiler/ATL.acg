@@ -23,13 +23,10 @@ acg ATL startsWith Unit {
 	asm Module name self.name {
 		field 'links' : 'NTransientLinkSet;'
 		field 'col' : 'J'
-		if(self.isRefining) {
-			field 'enumLiteralType' : 'J'
-		}
 
---		if(self.isRefining) {
---			report error 'refining mode not supported by ATL 2006 yet'
---		}
+		if(self.isRefining) {
+			report error 'refining mode not supported by ATL 2006 yet'
+		}
 
 		operation
 				context 'A'
@@ -51,23 +48,6 @@ acg ATL startsWith Unit {
 			call 'J.setElementType(J):V'
 			set 'col'
 
-			if(self.isRefining) {
-				getasm
-				push 'EnumLiteral'
-				push '#native'
-				new
-				call 'J.oclType():J'
-				set 'enumLiteralType'
-
-				-- OclType.registerWeavingHelper(name : String, persistTo : String)
-				push 'Element'
-				push 'RefiningTrace'
-				findme
-				push 'sourceElement'
-				push 'persistedSourceElement'
-				call 'J.registerWeavingHelper(SS):V'
-			}
-
 			analyze self.elements->select(e | e isa Helper) mode register
 
 			getasm
@@ -87,11 +67,6 @@ acg ATL startsWith Unit {
 			call 'A.__matcher__():V'
 			getasm
 			call 'A.__exec__():V'
-
-			if(self.isRefining) {
-				getasm
-				call 'A.__applyRefiningTrace__():V'
-			}
 
 			let ep = self.elements->select(e | e isa CalledRule)->select(e | e.isEndpoint).first() {
 				if(not ep.oclIsUndefined()) {
@@ -116,7 +91,7 @@ acg ATL startsWith Unit {
 				load 'value'
 				call 'NTransientLinkSet;.getLinkBySourceElement(S):QNTransientLink;'
 				dup
-				call 'J.oclIsUndefined():B'
+				call 'J.oclIsUndefined():J'
 				if thn2
 					load 'value'
 					call 'NTransientLink;.getTargetFromSource(J):J'
@@ -179,241 +154,6 @@ acg ATL startsWith Unit {
 						call 'A.__apply' + r.name + '(NTransientLink;):V'
 					}
 				enditerate
-			}
-		}
-		if(self.isRefining) {
-			operation
-					context 'MRefiningTrace!Element;'
-					name 'setProperty' {
-				param 'propertyName' : 'S'
-				param 'value' : 'J'
-	
-				load 'self'
-				push 'Slot'
-				push 'RefiningTrace'
-				new
-				dup
-				load 'propertyName'
-				set 'name'		-- traceElement, slot
-				dup				-- traceElement, slot, slot
-				load 'value'	-- traceElement, slot, slot, value
-				dup
-				getasm
-				get 'col'
-				call 'J.oclIsKindOf(J):B'
-				if setPropertyThn
-					-- not a collection
-					call 'J.__toValue():J'
-					goto setPropertyEoi
-			  setPropertyThn:
-					push 'Sequence'
-					push '#native'
-					new
-					call 'QJ.first():J'
-			  setPropertyEoi:				-- element, slot, slot, value
-				set 'value'
-				set 'slots'
-			}
-			operation
-					context 'A'
-					name '__applyRefiningTrace__' {
-				foreach(r in self.elements->select(e | e isa MatchedRule and not (e isa LazyMatchedRule))) {
-					push 'Element'
-					push 'RefiningTrace'
-					findme
-					push 'refiningTrace'
-					call 'MMOF!Classifier;.allInstancesFrom(S):QJ'
-					dup
-					iterate
-														-- traceElement
-							dup							-- traceElement, traceElement
-							get 'sourceElement'			-- traceElement, element|OclUndefined
-							call 'J.oclIsUndefined():B'	-- traceElement, oclIsUndefined?
-							call 'B.not():B'			-- traceElement, oclIsDefined?
-							if sourceElement
-								-- create the new element
-														-- traceElement
-								dup		 				-- traceElement, traceElement
-								get 'type'				-- traceElement, typeName
-								swap					-- typeName, traceElement
-								dup_x1					-- traceElement, typeName, traceElement
-								get 'metamodel'			-- traceElement, typeName, metamodelName
-								new						-- traceElement, element
-								set 'sourceElement'		-- nothing
-								goto next
-						  sourceElement:
-						  								-- traceElement
-								pop
-						  next:
-					enditerate
-					iterate
-												-- traceElement
-							dup					-- traceElement, traceElement
-							get 'sourceElement'	-- traceElement, element
-							swap				-- element, traceElement
-							get 'slots'
-							iterate
-												-- element, slot
-								dup
-								get 'name'		-- sourceElement, slot, name
-								swap			-- sourceElement, name, slot
-								get 'value'		-- sourceElement, name, value
-								call 'J.__fromValue():J'	-- sourceElement, name, actualValue
-								call 'J.refSetValue(SJ):J'
-							enditerate
-							pop
-					enditerate
-				}
-			}
-			operation
-					context 'B'
-					name '__toValue' {
-				push 'BooleanVal'
-				push 'RefiningTrace'
-				new
-				dup
-				load 'self'
-				set 'value'
-			}
-			operation
-					context 'I'
-					name '__toValue' {
-				push 'IntegerVal'
-				push 'RefiningTrace'
-				new
-				dup
-				load 'self'
-				set 'value'
-			}
-			operation
-					context 'D'
-					name '__toValue' {
-				push 'RealVal'
-				push 'RefiningTrace'
-				new
-				dup
-				load 'self'
-				set 'value'
-			}
-			operation
-					context 'S'
-					name '__toValue' {
-				push 'StringVal'
-				push 'RefiningTrace'
-				new
-				dup
-				load 'self'
-				set 'value'
-			}
-			operation
-					context 'MRefiningTrace!Element;'
-					name '__toValue' {
-				push 'ElementVal'
-				push 'RefiningTrace'
-				new
-				dup
-				load 'self'
-				set 'value'
-			}
-			operation
-					context 'J'
-					name '__toValue' {
-				load 'self'
-				call 'J.oclType():J'
-				getasm
-				get 'enumLiteralType'
-				call 'J.=(J):B'
-				if thn3
-					-- not enum literal
-					load 'self'
-					call 'J.oclIsUndefined():B'
-				if oclUndefined
-					-- This point should only be reached for model elements
-					
-					push 'ElementVal'
-					push 'RefiningTrace'
-					new
-					dup
-					load 'self'
-					call 'J.__asElement():J'
-					set 'value'
-					goto eoi3
-			  oclUndefined:
-					push 'NullVal'
-					push 'RefiningTrace'
-					new
-					goto eoi3
-			  thn3:
-					push 'EnumLiteralVal'
-					push 'RefiningTrace'
-					new
-					dup
-					load 'self'
-					call 'J.toString():S'
-					set 'value'
-			  eoi3:
-			}
-			-- should only be called on model elements
-			operation
-					context 'J'
-					name '__asElement' {
-				-- TODO: use a Map as cache
-					push 'Element'
-					push 'RefiningTrace'
-					new
-					dup
-					load 'self'
-					set 'sourceElement'
-			}
-			operation
-					context 'MRefiningTrace!BooleanVal;'
-					name '__fromValue' {
-				load 'self'
-				get 'value'
-			}
-			operation
-					context 'MRefiningTrace!IntegerVal;'
-					name '__fromValue' {
-				load 'self'
-				get 'value'
-			}
-			operation
-					context 'MRefiningTrace!RealVal;'
-					name '__fromValue' {
-				load 'self'
-				get 'value'
-			}
-			operation
-					context 'MRefiningTrace!StringVal;'
-					name '__fromValue' {
-				load 'self'
-				get 'value'
-			}
-			operation
-					context 'MRefiningTrace!NullVal;'
-					name '__fromValue' {
-				push 'Sequence'
-				push '#native'
-				new
-				call 'QJ.first():J'
-			}
-			operation
-					context 'MRefiningTrace!ElementVal;'
-					name '__fromValue' {
-				load 'self'
-				get 'value'
-				get 'sourceElement'
-			}
-			operation
-					context 'MRefiningTrace!EnumLiteralVal;'
-					name '__fromValue' {
-				push 'EnumLiteral'
-				push '#native'
-				new
-				dup
-				load 'self'
-				get 'value'
-				set 'name'
 			}
 		}
 		analyze self.elements
@@ -695,14 +435,7 @@ acg ATL startsWith Unit {
 			variable v named v.varName {
 				call 'NTransientLink;.addVariable(SJ):V'
 			[
-				let opes = self.mostConcreteOutPatternElements() {
-					if(self.module.isRefining) {
-						analyze opes.first() mode matchFirstRefining
-						analyze opes.subSequence(2, opes.size()) mode match
-					} else {
-						analyze opes mode match
-					}
-				}
+				analyze self.mostConcreteOutPatternElements() mode match
 			]
 			}
 		}
@@ -724,7 +457,6 @@ acg ATL startsWith Unit {
 				context 'A'
 				name '__apply' + self.name {
 			param 'link' : 'NTransientLink;'
-			-- TODO: only one source element for refining mode
 			foreach(ipe in self.inPatternElements()) {
 				load 'link'
 				push ipe.varName
@@ -744,13 +476,7 @@ acg ATL startsWith Unit {
 								variable v named v.varName {
 								[
 									analyze self.mostConcreteOutPatternElements() mode apply
-									if(not self.actionBlock.oclIsUndefined()) {
-										if(self.module.isRefining) {
-											report error 'do block not supported in refining mode'
-										} else {
-											analyze self.actionBlock
-										}
-									}
+									analyze self.actionBlock.asSequence()
 								]
 								}
 							}
@@ -763,75 +489,18 @@ acg ATL startsWith Unit {
 		}
 	}
 
-	attribute OutPatternElement::isRefiningMode =
-		self.outPattern.rule.module.isRefining;
- 
 -- @begin SimpleOutPatternElement
 	code SimpleOutPatternElement mode match {
 		dup
 		push self.varName
-		if(self.isRefiningMode) {
-			push 'Element'
-			push 'RefiningTrace'
-			new
-			dup
-			push self.type.name
-			set 'type'
-			dup
-			push self.type.model.name
-			set 'metamodel'
-		} else {
-			analyze self.type mode create
-		}
-					-- transientLink, varName, element
-		foreach(rb in self.reverseBindings) {
-			dup		-- transientLink, varName, element, element
-			if(rb isa NavigationOrAttributeCallExp) {
-				analyze rb.source	-- transientLink, varName, element, element, value
-				if(self.isRefiningMode) {
-					call 'J.__asElement():J'	-- transientLink, varName, traceElement, traceElement, valueTraceElement
-					swap						-- transientLink, varName, traceElement, valueTraceElement, traceElement
-					push rb.name	-- transientLink, varName, traceElement, valueTraceElement, traceElement, propertyName
-					swap			-- transientLink, varName, traceElement, valueTraceElement, propertyName, traceElement
-					call 'MRefiningTrace!Element;.setProperty(SJ):V'
-				} else {
-					swap			-- transientLink, varName, element, value, element
-					set rb.name		-- transientLink, varName, element
-				}
-			} else {
-				report error 'only navigations are allowed in reversebindings' 
-			}
-		}
+		analyze self.type mode create
 		call 'NTransientLink;.addTargetElement(SJ):V'
 	}
-
-		-- Not in refining mode (see previous rule)
 		code OclModelElement mode create {
 			push self.name
 			push self.model.name
 			new
 		}
-
-	-- TODO: removal, change...
-	code SimpleOutPatternElement mode matchFirstRefining {
-		dup
-		push self.varName
-
-		push 'Element'
-		push 'RefiningTrace'
-		new
-		dup
-		push self.type.name
-		set 'type'
-		dup
-		push self.type.model.name
-		set 'metamodel'
-		dup
-		load self.outPattern.rule.inPatternElements().first()
-		set 'sourceElement'
-
-		call 'NTransientLink;.addTargetElement(SJ):V'
-	}
 
 	function MatchedRule::getBindings(varName, ret) =
 		if self.outPattern.oclIsUndefined() then
@@ -869,11 +538,7 @@ acg ATL startsWith Unit {
 
 	code SimpleOutPatternElement mode apply {
 		load self.actualDeclaration()
-		if(self.isRefiningMode) {
-			analyze self.allBindings() mode refining
-		} else {
-			analyze self.allBindings()
-		}
+		analyze self.allBindings()
 		pop
 	}
 
@@ -884,43 +549,28 @@ acg ATL startsWith Unit {
 		call 'A.__resolve__(J):J'
 		set self.propertyName
 	}
-
-	code Binding mode refining {
-		dup
-		push self.propertyName
-		getasm
-		analyze self.value
-		call 'A.__resolve__(J):J'
-
-				-- traceElement, propertyName, value
-		call 'MRefiningTrace!Element;.setProperty(SJ):V'
-	}
 -- @end SimpleOutPatternElement
 
 -- ForEachOutPatternElement does not support rule inheritance.
 -- It is now deprecated anyway.
 -- @begin ForEachOutPatternElement
 	code ForEachOutPatternElement mode match {
-		if(self.isRefiningMode) {
-			report error 'distinct-foreach target pattern elements are not supported in refining mode, use lazy rules instead'
-		} else {
-			report warning 'distinct-foreach target pattern elements are deprecated, use lazy rules instead'
-			dup
-			push self.varName
-	
-			push 'Sequence'
-			push '#native'
+		report warning 'distinct-foreach target pattern elements are deprecated, use lazy rules instead'
+		dup
+		push self.varName
+
+		push 'Sequence'
+		push '#native'
+		new
+		analyze self.collection
+		iterate
+			pop
+			push self.type.name
+			push self.type.model.name
 			new
-			analyze self.collection
-			iterate
-				pop
-				push self.type.name
-				push self.type.model.name
-				new
-				call 'CJ.including(J):CJ'
-			enditerate
-			call 'NTransientLink;.addTargetElement(SJ):V'
-		}
+			call 'CJ.including(J):CJ'
+		enditerate
+		call 'NTransientLink;.addTargetElement(SJ):V'
 	}
 
 	code ForEachOutPatternElement mode apply {
@@ -976,52 +626,48 @@ acg ATL startsWith Unit {
 	}
 
 	LazyMatchedRule | self.superRule.oclIsUndefined() {
-		if(self.module.isRefining) {
-			report error 'lazy rules not supported in refining mode yet'
-		} else {
-			operation
-					context 'A'
-					name self.name {
-				foreach(ipe in self.inPattern.elements) {
-					param ipe.varName : ipe.type.encode()
-				}
-	
-				if(self.isUnique) {
-					getasm
-					get 'links'
-					push self.name
-					load self.inPattern.elements.first().varName
-					call 'NTransientLinkSet;.getLinkByRuleAndSourceElement(SJ):QNTransientLink;'
-					dup
-					call 'J.oclIsUndefined():B'
-					if thn
-						load self.inPattern.elements.first().varName
-						call 'NTransientLink;.getTargetFromSource(J):J'
-						goto eoo
-				    thn:
-				}
-	
+		operation
+				context 'A'
+				name self.name {
+			foreach(ipe in self.inPattern.elements) {
+				param ipe.varName : ipe.type.encode()
+			}
+
+			if(self.isUnique) {
 				getasm
 				get 'links'
-	
-				push 'TransientLink'
-				push '#native'
-				new
-	
-				dup
 				push self.name
-				call 'NTransientLink;.setRule(MATL!Rule;):V'
-	
-				foreach(ipe in self.inPattern.elements) {
-					dup
-					push ipe.varName
-					load ipe.varName
-					call 'NTransientLink;.addSourceElement(SJ):V'
-				}
-	
-				analyze self mode checkSubRules
-			    eoo:
+				load self.inPattern.elements.first().varName
+				call 'NTransientLinkSet;.getLinkByRuleAndSourceElement(SJ):QNTransientLink;'
+				dup
+				call 'J.oclIsUndefined():J'
+				if thn
+					load self.inPattern.elements.first().varName
+					call 'NTransientLink;.getTargetFromSource(J):J'
+					goto eoo
+			    thn:
 			}
+
+			getasm
+			get 'links'
+
+			push 'TransientLink'
+			push '#native'
+			new
+
+			dup
+			push self.name
+			call 'NTransientLink;.setRule(MATL!Rule;):V'
+
+			foreach(ipe in self.inPattern.elements) {
+				dup
+				push ipe.varName
+				load ipe.varName
+				call 'NTransientLink;.addSourceElement(SJ):V'
+			}
+
+			analyze self mode checkSubRules
+		    eoo:
 		}
 	}
 
@@ -1072,35 +718,33 @@ acg ATL startsWith Unit {
 		}
 	}
 
-	LazyMatchedRule mode create {	-- TODO: REFINING
+	LazyMatchedRule mode create {
 		foreach(ope in self.mostConcreteOutPatternElements()) {
 			if(ope isa ForEachOutPatternElement) {
-				-- TODO: compiler crashes
 				report error 'distinct-foreach target pattern elements are deprecated and not compatible with lazy rules'
-			} else {
+			}
 			
-				dup
-				push ope.varName
-	
-				push ope.type.name
-				push ope.type.model.name
-				new
-				dup
-				variable ope.actualDeclaration() named ope.varName {
-					call 'NTransientLink;.addTargetElement(SJ):V'
-				[
-					pushf
-					call 'NTransientLinkSet;.addLink2(NTransientLink;B):V'
-	
-					analyze self.mostConcreteOutPatternElements() mode apply
-	
-					if(not self.actionBlock.oclIsUndefined()) {
-						analyze self.actionBlock
-					}
-	
-					load self.mostConcreteOutPatternElements().first().actualDeclaration()
-				]
+			dup
+			push ope.varName
+
+			push ope.type.name
+			push ope.type.model.name
+			new
+			dup
+			variable ope.actualDeclaration() named ope.varName {
+				call 'NTransientLink;.addTargetElement(SJ):V'
+			[
+				pushf
+				call 'NTransientLinkSet;.addLink2(NTransientLink;B):V'
+
+				analyze self.mostConcreteOutPatternElements() mode apply
+
+				if(not self.actionBlock.oclIsUndefined()) {
+					analyze self.actionBlock
 				}
+
+				load self.mostConcreteOutPatternElements().first().actualDeclaration()
+			]
 			}
 		}
 	}
@@ -1732,39 +1376,35 @@ acg ATL startsWith Unit {
 
 -- @begin Imperative Part
 
-	CalledRule {	-- TODO: REFINING
-		if(self.module.isRefining) {
-			report error 'called rules not supported in refining mode yet'
-		} else {
-			operation
-					context 'A'
-					name self.name {
-				foreach(p in self.parameters) {
-					param p.varName : 'J'
-				}
-				foreach(v in self.variables) {
-					analyze v.initExpression
-					variable v named v.varName {
-					[
-						foreach(ope in self.ruleOutPatternElements()) {
-							push ope.type.name
-							push ope.type.model.name
-							new
-							variable ope named ope.varName {
-							[
-								foreach(ope in self.ruleOutPatternElements()) {
-									load ope
-									analyze ope.bindings
-									pop
-								}
-								if(not self.actionBlock.oclIsUndefined()) {
-									analyze self.actionBlock
-								}
-							]
+	CalledRule {
+		operation
+				context 'A'
+				name self.name {
+			foreach(p in self.parameters) {
+				param p.varName : 'J'
+			}
+			foreach(v in self.variables) {
+				analyze v.initExpression
+				variable v named v.varName {
+				[
+					foreach(ope in self.ruleOutPatternElements()) {
+						push ope.type.name
+						push ope.type.model.name
+						new
+						variable ope named ope.varName {
+						[
+							foreach(ope in self.ruleOutPatternElements()) {
+								load ope
+								analyze ope.bindings
+								pop
 							}
+							if(not self.actionBlock.oclIsUndefined()) {
+								analyze self.actionBlock
+							}
+						]
 						}
-					]
 					}
+				]
 				}
 			}
 		}
@@ -1787,10 +1427,6 @@ acg ATL startsWith Unit {
 		} else {
 			store self.source.referredVariable
 		}
-	}
-
-	code BindingStat {
-		report error 'only variables or navigations are allowed on the left of a binding statement'
 	}
 
 	-- TODO: pop value if any?
