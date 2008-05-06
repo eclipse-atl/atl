@@ -1,0 +1,695 @@
+-- @authors		Frédéric Jouault
+-- @date		2007/07/25
+-- @description	This ACG code generator generates .asm files that run on the ATL VM from ACG models.
+acg ACG startsWith ACG {
+
+	function Node::suffix() =
+		if self.mode.oclIsUndefined() then
+			''
+		else
+			'_' + self.mode
+		endif;
+
+	function AnalyzeStat::suffix() =
+		if self.mode.oclIsUndefined() then
+			''
+		else
+			'_' + self.mode
+		endif;
+
+	asm ACG
+			name self.metamodel + 'Compiler' {
+		field 'asmEmitter' : 'J'
+		field 'col' : 'J'
+		field 'fileName' : 'S'
+
+		operation
+				context 'A'
+				name 'main' {
+			param 'WriteTo' : 'S'
+
+			getasm
+			load 'WriteTo'
+			set 'fileName'
+
+			getasm
+			push 'OclParametrizedType'
+			push '#native'
+			new
+			dup
+			push 'Collection'
+			call 'J.setName(S):V'
+			dup
+			push 'OclSimpleType'
+			push '#native'
+			new
+			dup
+			push 'OclAny'
+			call 'J.setName(S):V'
+			call 'J.setElementType(J):V'
+			set 'col'
+			
+			foreach(a in self.elements->select(e | e isa Attribute)) {
+				push a.context
+				push self.metamodel
+				findme
+				push a.name
+				push '__init' + a.name
+				call 'J.registerHelperAttribute(SS):V'
+			}
+
+			push self.startsWith
+			push self.metamodel 
+			findme
+			call 'MMOF!Classifier;.allInstances():QJ'
+			call 'QJ.asSequence():QJ'
+			call 'QJ.first():J'
+			call 'J.process():V'
+		}
+
+		operation
+				context 'J'
+				name 'process' {
+			push 'Error: could not find matching node for '
+			load 'self'
+			call 'J.oclType():J'
+			get 'name'
+			call 'S.+(S):S'
+			push ' at '
+			call 'S.+(S):S'
+			load 'self'
+			get 'location'
+			call 'S.+(S):S'
+			push 'BEGIN'
+			call 'J.debug(S):J'
+		}
+
+		analyze self.elements
+	}
+
+	Function {
+		operation
+				context 'M' + self.acg.metamodel + '!' + self.context + ';'
+				name self.name {
+			foreach(p in self.parameters) {
+				param p.name : 'J'
+			}
+			analyze self.body
+		}
+	}
+	
+	Attribute {
+		operation
+				context 'M' + self.acg.metamodel + '!' + self.context + ';'
+				name '__init' + self.name {
+			analyze self.body
+		}
+	}
+-- @begin Nodes
+	ASMNode {
+		operation
+				context 'M' + self.acg.metamodel + '!' + self.element + ';'
+				name 'process' + self.suffix() {
+			getasm
+			dup
+			push 'ASMEmitter'
+			push '#native'
+			new
+			set 'asmEmitter'
+			get 'asmEmitter'
+			analyze self.name
+			call 'J.newASM(S):V'
+
+			analyze self.statements
+
+			getasm
+			get 'asmEmitter'
+			getasm
+			get 'fileName'
+			call 'J.dumpASM(S):V'
+		}
+	}
+
+	-- For the first node with the same element we generate the process operation that handles all of them.
+	Node {
+		let nodesWithSameContext = self.acg.nodes()->select(e | e.element = self.element and e.mode = self.mode) {
+			if(nodesWithSameContext.indexOf(self) = 1) {
+				operation
+						context 'M' + self.acg.metamodel + '!' + self.element + ';'
+						name 'process' + self.suffix() {
+
+					analyze self mode head
+
+					foreach(n in nodesWithSameContext->select(e | not e.guard.oclIsUndefined())) {
+						analyze n.guard
+						call 'B.not():B'
+						if thn
+							analyze n.statements
+							goto end
+					    thn(n):
+					}
+					let unguarded = nodesWithSameContext->select(e | e.guard.oclIsUndefined()).first() {
+						if(not unguarded.oclIsUndefined()) {
+							analyze unguarded.statements
+						} else {
+							push 'Error: could not find matching node for ' + self.element + ' at '
+							load 'self'
+							get 'location'
+							call 'S.+(S):S'
+							push 'BEGIN'
+							call 'J.debug(S):J'
+						}
+					}
+
+					
+				    end:
+					analyze self mode tail
+				}
+			}
+		}
+	}
+
+	CodeNode mode head {
+		getasm
+		get 'asmEmitter'
+		load 'self'
+		get 'location'
+		call 'J.beginLineNumberEntry(S):V'
+	}
+
+	CodeNode mode tail {
+		getasm
+		get 'asmEmitter'
+		load 'self'
+		get 'location'
+		call 'J.endLineNumberEntry(S):V'
+	}
+
+	SimpleNode mode head {}
+
+	SimpleNode mode tail {}
+-- @end Nodes
+
+-- @begin Statements
+-- @begin CompoundStats
+	function ACG::nodes() = self.elements->select(e | e isa Node);
+
+	code ForEachStat {
+		analyze self.collection
+		variable self named 'forEach' {
+			load self
+			iterate
+				variable self.iterator named self.iterator.name {
+					analyze self.statements
+				}
+			enditerate
+		}
+	}
+
+	function Statement::forEach() =
+		if self.refImmediateComposite() isa ForEachStat then
+			self.refImmediateComposite()
+		else
+			self.refImmediateComposite().forEach()
+		endif;
+
+	code OnceStat {
+		enditerate
+		analyze self.statements
+		load self.forEach()
+		iterate
+		store self.forEach().iterator
+	}
+
+	code VariableStat {
+		getasm
+		get 'asmEmitter'
+		analyze self.definition
+		get '__xmiID__'
+		analyze self.name
+		call 'J.beginLocalVariableEntry(SS):V'
+
+		getasm
+		get 'asmEmitter'
+		push 'store'
+		analyze self.definition
+		get '__xmiID__'
+		call 'J.emit(SS):V'
+		analyze self.statements
+
+		getasm
+		get 'asmEmitter'
+		analyze self.definition
+		get '__xmiID__'
+		call 'J.endLocalVariableEntry(S):V'
+	}
+
+	code LetStat {
+		analyze self.value
+		variable self.variable named self.variable.name {
+			analyze self.statements
+		}
+	}
+
+	code OperationStat {
+		getasm
+		get 'asmEmitter'
+		dup
+		analyze self.name
+		call 'J.addOperation(S):V'
+		analyze self.context
+		call 'J.setContext(S):V'
+
+		analyze self.statements
+	}
+
+	code ConditionalStat | self.elseStatements.size() = 0 {
+		analyze self.condition
+		call 'B.not():B'
+		if thn
+			analyze self.statements
+	    thn:
+	}
+
+	code ConditionalStat {
+		analyze self.condition
+		if thn
+			analyze self.elseStatements
+			goto eoi
+	    thn:
+			analyze self.statements
+	    eoi:
+	}
+
+	code AnalyzeStat {
+		analyze self.target
+		dup
+		getasm
+		get 'col'
+		call 'J.oclIsKindOf(J):B'
+		if thn
+			call 'J.process' + self.suffix() + '():V'
+			analyze self.statements
+			goto eoi
+	    thn:
+			iterate
+				call 'J.process' + self.suffix() + '():V'
+				analyze self.statements
+			enditerate
+	    eoi:
+	}
+-- @end CompoundStats
+
+	code ReportStat {
+		push 'Problem'
+		push 'Problem'
+		new
+		
+		dup
+		push 'EnumLiteral'
+		push '#native'
+		new
+		dup
+		push self.severity.toString()
+		set 'name'
+		set 'severity'
+		
+		dup
+		analyze self.message
+		set 'description'
+		
+		load 'self'
+		get 'location'
+		set 'location'
+	}
+
+	code FieldStat {
+		getasm
+		get 'asmEmitter'
+		analyze self.name
+		analyze self.type
+		call 'J.addField(SS):V'
+	}
+
+	code ParamStat {
+		getasm
+		get 'asmEmitter'
+		analyze self.name
+		analyze self.type
+		call 'J.addParameter(SS):V'
+	}
+
+-- @begin EmitStats
+	code LabelStat {
+		getasm
+		get 'asmEmitter'
+		push 'label'
+		analyze self mode id
+		call 'J.emit(SS):V'
+	}
+
+	-- TODO: there is a problem here, when a label is in a loop, because the same "location" may be used
+	-- several times.
+	-- Cannot be a CodeNode because there is already a line number entry for it (in default mode, see above)
+	LabelStat mode id {
+		load 'self'
+		get 'location'
+		push self.location	-- __xmiID__ does not work, sometimes there are several with same value!!!
+		call 'S.+(S):S'
+		if(not self.id.oclIsUndefined()) {
+			analyze self.id
+			get '__xmiID__'
+			call 'S.+(S):S'
+		}
+					-- what is important is that it is unique, name cannot be guarranteed to be unique
+	}
+
+	code NewStat {
+		getasm
+		get 'asmEmitter'
+		push 'new'
+		call 'J.emitSimple(S):V'
+	}
+
+	code DupStat {
+		getasm
+		get 'asmEmitter'
+		push 'dup'
+		call 'J.emitSimple(S):V'
+	}
+
+	code DupX1Stat {
+		getasm
+		get 'asmEmitter'
+		push 'dup_x1'
+		call 'J.emitSimple(S):V'
+	}
+
+	code PopStat {
+		getasm
+		get 'asmEmitter'
+		push 'pop'
+		call 'J.emitSimple(S):V'
+	}
+
+	code SwapStat {
+		getasm
+		get 'asmEmitter'
+		push 'swap'
+		call 'J.emitSimple(S):V'
+	}
+
+	code IterateStat {
+		getasm
+		get 'asmEmitter'
+		push 'iterate'
+		call 'J.emitSimple(S):V'
+	}
+
+	code EndIterateStat {
+		getasm
+		get 'asmEmitter'
+		push 'enditerate'
+		call 'J.emitSimple(S):V'
+	}
+
+	code GetAsmStat {
+		getasm
+		get 'asmEmitter'
+		push 'getasm'
+		call 'J.emitSimple(S):V'
+	}
+
+	code FindMEStat {
+		getasm
+		get 'asmEmitter'
+		push 'findme'
+		call 'J.emitSimple(S):V'
+	}
+
+	code PushTStat {
+		getasm
+		get 'asmEmitter'
+		push 'pusht'
+		call 'J.emitSimple(S):V'
+	}
+
+	code PushFStat {
+		getasm
+		get 'asmEmitter'
+		push 'pushf'
+		call 'J.emitSimple(S):V'
+	}
+
+-- @begin EmitWithOperandStats
+	code PushStat {
+		getasm
+		get 'asmEmitter'
+		push 'push'
+		analyze self.operand
+		call 'J.emit(SS):V'
+	}
+
+	code PushIStat {
+		getasm
+		get 'asmEmitter'
+		push 'pushi'
+		analyze self.operand
+		call 'J.toString():S'
+		call 'J.emit(SS):V'
+	}
+
+	code PushDStat {
+		getasm
+		get 'asmEmitter'
+		push 'pushd'
+		analyze self.operand
+		call 'J.toString():S'
+		call 'J.emit(SS):V'
+	}
+
+	code LoadStat {
+		getasm
+		get 'asmEmitter'
+		push 'load'
+
+		analyze self.operand
+		dup
+		push 'String'
+		push '#native'
+		findme
+		call 'J.oclIsKindOf(J):B'
+		if thn
+		get '__xmiID__'
+	    thn:
+		call 'J.emit(SS):V'
+	}
+
+	code StoreStat {
+		getasm
+		get 'asmEmitter'
+		push 'store'
+
+		analyze self.operand
+		dup
+		push 'String'
+		push '#native'
+		findme
+		call 'J.oclIsKindOf(J):B'
+		if thn
+		get '__xmiID__'
+	    thn:
+		call 'J.emit(SS):V'
+		getasm
+	}
+
+	code CallStat {
+		getasm
+		get 'asmEmitter'
+		push 'call'
+		analyze self.operand
+		call 'J.emit(SS):V'
+	}
+
+	code SuperCallStat {
+		getasm
+		get 'asmEmitter'
+		push 'supercall'
+		analyze self.operand
+		call 'J.emit(SS):V'
+	}
+
+	code GetStat {
+		getasm
+		get 'asmEmitter'
+		push 'get'
+		analyze self.operand
+		call 'J.emit(SS):V'
+	}
+
+	code SetStat {
+		getasm
+		get 'asmEmitter'
+		push 'set'
+		analyze self.operand
+		call 'J.emit(SS):V'
+	}
+-- @end EmitWithOperandStats
+
+-- @begin EmitWithLabelRefStats
+	code IfStat {
+		getasm
+		get 'asmEmitter'
+		push 'if'
+		analyze self.label mode id
+		call 'J.emit(SS):V'
+	}
+
+	code GotoStat {
+		getasm
+		get 'asmEmitter'
+		push 'goto'
+		analyze self.label mode id
+		call 'J.emit(SS):V'
+	}
+-- @end EmitWithLabelRefStats
+-- @end EmitStats
+-- @end Statements
+
+-- @begin Expressions
+	code VariableExp | self.variable isa Parameter {
+		load self.variable.name
+	}
+
+	code VariableExp {
+		load self.variable
+	}
+
+	code SelfExp {
+		load 'self'
+	}
+
+	code LastExp {	-- TODO: handle nested foreach
+		load 'last'
+	}
+
+	code IfExp {
+		analyze self.condition
+		if thn
+			analyze self.elseExp
+			goto eoi
+	    thn:
+			analyze self.thenExp
+	    eoi:
+	}
+
+	function LocatedElement::getACG() =
+		if self.refImmediateComposite() isa ACG then
+			self.refImmediateComposite()
+		else
+			self.refImmediateComposite().getACG()
+		endif;
+
+	code IsAExp {
+		analyze self.source
+		push self.type
+		push self.getACG().metamodel
+		findme
+		call 'J.oclIsKindOf(J):B'
+	}
+
+	code LetExp {
+		analyze self.value
+		variable self.variable named self.variable.name {
+			analyze self.in
+		}
+	}
+
+-- @begin ProperyCallExps
+	code NavigationExp {
+		analyze self.source
+		get self.name
+	}
+
+	code IteratorExp | self.name = 'collect' {
+		push 'Sequence'
+		push '#native'
+		new
+		analyze self.source
+		iterate
+			variable self.iterator named self.iterator.name {
+				analyze self.body
+				call 'CJ.including(J):CJ'
+			}
+		enditerate
+	}
+
+	code IteratorExp | self.name = 'select' {
+		push 'Sequence'
+		push '#native'
+		new
+		analyze self.source
+		iterate
+			variable self.iterator named self.iterator.name {
+				analyze self.body
+				call 'B.not():B'
+				if thn
+					load self.iterator
+					call 'CJ.including(J):CJ'
+			    thn:
+			}
+		enditerate
+	}
+
+	code IteratorExp {
+		report error 'iterator \'' + self.name + '\' not supported'
+	}
+	
+	code OperationCallExp {
+		analyze self.source
+		analyze self.arguments
+		call 'J.' + self.name + '(' + self.arguments->collect(e | 'J').prepend('').sum() + '):J'
+	}
+-- @end ProperyCallExps
+
+-- @begin LiteralExps
+
+	code OclUndefinedExp {
+		push 'Sequence'
+		push '#native'
+		new
+		call 'QJ.first():J'
+	}
+
+-- @begin CollectionExps
+	code SequenceExp {
+		push 'Sequence'
+		push '#native'
+		new
+		analyze self.elements {
+			call 'CJ.including(J):CJ'
+		}
+	}
+-- @end CollectionExps
+
+-- @begin Primitive LiteralExps
+	code BooleanExp | self.value {
+		pusht
+	}
+
+	code BooleanExp | not self.value {
+		pushf
+	}
+
+	code IntegerExp {
+		pushi self.value
+	}
+
+	code StringExp {
+		push self.value
+	}
+-- @end Primitive LiteralExps
+-- @end LiteralExps
+-- @end Expressions
+}
+
