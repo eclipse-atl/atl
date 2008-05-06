@@ -1,0 +1,454 @@
+-- @name		ATL
+-- @version		2.0
+-- @domains		MDE/Model Transformation
+-- @authors		Frédéric Jouault
+-- @date		2007/07/26
+-- @description	ATL (ATLAS Transformation Language) is a model-to-model transformation language.
+
+-- @nsURI http://www.eclipse.org/gmt/2005/ATL
+-- @nsPrefix atl
+package ATL {
+
+	abstract class LocatedElement {
+		attribute location[0-1] : String;
+		attribute commentsBefore[*] ordered : String;
+		attribute commentsAfter[*] ordered : String;
+	}
+
+-- @begin Units
+	class Unit extends LocatedElement {
+		reference libraries[*] container : LibraryRef oppositeOf unit;
+		attribute name : String;
+	}
+
+	class Library extends Unit {
+		reference helpers[*] ordered container : Helper oppositeOf library;
+	}
+
+	class Query extends Unit {
+		reference body container : OclExpression;
+		reference helpers[*] ordered container : Helper oppositeOf query;
+	}
+
+	class Module extends Unit {
+		attribute isRefining : Boolean;
+		reference inModels[1-*] ordered container : OclModel;
+		reference outModels[1-*] container : OclModel;
+		reference elements[*] ordered container : ModuleElement oppositeOf module;
+	}
+-- @end Units
+
+-- @begin ModuleElements
+	abstract class ModuleElement extends LocatedElement {
+		reference module : Module oppositeOf elements;
+	}
+
+	class Helper extends ModuleElement {
+		reference query[0-1] : Query oppositeOf helpers;
+		reference library[0-1] : Library oppositeOf helpers;
+		reference definition container : OclFeatureDefinition;
+	}
+-- @begin Rules
+	abstract class Rule extends ModuleElement {
+		reference outPattern[0-1] container : OutPattern oppositeOf rule;
+		reference actionBlock[0-1] container : ActionBlock oppositeOf rule;
+		reference variables[*] ordered container : RuleVariableDeclaration oppositeOf rule;
+		attribute name : String;
+	}
+
+	class MatchedRule extends Rule {
+		reference inPattern[0-1] container : InPattern oppositeOf rule;
+		reference children[*] : MatchedRule oppositeOf superRule;
+		reference superRule[0-1] : MatchedRule oppositeOf children;
+		attribute isAbstract : Boolean;
+		attribute isRefining : Boolean;
+		attribute isNoDefault : Boolean;
+	}
+
+	class LazyMatchedRule extends MatchedRule {
+		attribute isUnique : Boolean;
+	}
+
+	class CalledRule extends Rule {
+		reference parameters[*] container : Parameter;
+		attribute isEntrypoint : Boolean;
+		attribute isEndpoint : Boolean;
+	}
+-- @end Rules
+-- @end ModuleElements
+
+	class InPattern extends LocatedElement {
+		reference elements[1-*] container : InPatternElement oppositeOf inPattern;
+		reference rule : MatchedRule oppositeOf inPattern;
+		reference filter[0-1] container : OclExpression;
+	}
+
+	class OutPattern extends LocatedElement {
+		reference rule : Rule oppositeOf outPattern;
+		reference elements[1-*] ordered container : OutPatternElement oppositeOf outPattern;
+	}
+
+-- @begin PatternElements
+	abstract class PatternElement extends VariableDeclaration {}
+
+-- @begin InPatternElements
+	abstract class InPatternElement extends PatternElement {
+		reference mapsTo : OutPatternElement oppositeOf sourceElement;
+		reference inPattern : InPattern oppositeOf elements;
+		reference models[0-*] : OclModel;
+	}
+
+	class SimpleInPatternElement extends InPatternElement {}
+-- @end InPatternElements
+
+-- @begin OutPatternElements
+	abstract class OutPatternElement extends PatternElement {
+		reference outPattern : OutPattern oppositeOf elements;
+		reference sourceElement[0-1] : InPatternElement oppositeOf mapsTo;
+		reference bindings[*] ordered container : Binding oppositeOf outPatternElement;
+		reference model[0-1] : OclModel;
+	}
+
+	class SimpleOutPatternElement extends OutPatternElement {
+		reference reverseBindings[*] ordered container : OclExpression;
+	}
+
+	class ForEachOutPatternElement extends OutPatternElement {
+		reference collection container : OclExpression;
+		reference iterator container : Iterator;
+	}
+-- @end OutPatternElements
+-- @end PatternElements
+
+	class Binding extends LocatedElement {
+		reference value container : OclExpression;
+		reference outPatternElement : OutPatternElement oppositeOf bindings;
+		attribute propertyName : String;
+	}
+
+	class RuleVariableDeclaration extends VariableDeclaration {
+		reference rule : Rule oppositeOf variables;
+	}
+
+	class LibraryRef extends LocatedElement {
+		reference unit : Unit oppositeOf libraries;
+		attribute name : String;
+	}
+
+	class ActionBlock extends LocatedElement {
+		reference rule : Rule oppositeOf actionBlock;
+		reference statements[*] ordered container : Statement;
+	}
+
+-- @begin Statements
+	abstract class Statement extends LocatedElement {}
+
+	class ExpressionStat extends Statement {
+		reference expression container : OclExpression;
+	}
+
+	class BindingStat extends Statement {
+		reference source container : OclExpression;
+		attribute propertyName : String;
+		reference value container : OclExpression;
+	}
+
+	class IfStat extends Statement {
+		reference condition container : OclExpression;
+		reference thenStatements[*] ordered container : Statement;
+		reference elseStatements[*] ordered container : Statement;
+	}
+
+	class ForStat extends Statement {
+		reference iterator container : Iterator;
+		reference collection container : OclExpression;
+		reference statements[*] ordered container : Statement;
+	}
+-- @end Statements
+}
+
+-- @nsURI http://www.eclipse.org/gmt/2005/OCL
+-- @nsPrefix ocl
+package OCL {
+
+-- @begin Expressions
+	abstract class OclExpression extends LocatedElement {
+		reference type[0-1] container : OclType oppositeOf oclExpression;
+
+		-- Opposite references:
+		reference ifExp3[0-1] : IfExp oppositeOf elseExpression;
+		reference appliedProperty[0-1] : PropertyCallExp oppositeOf source;
+		reference collection[0-1] : CollectionExp oppositeOf elements;
+		reference letExp[0-1] : LetExp oppositeOf in_;
+		reference loopExp[0-1] : LoopExp oppositeOf body;
+		reference parentOperation[0-1] : OperationCallExp oppositeOf arguments;
+		reference initializedVariable[0-1] : VariableDeclaration oppositeOf initExpression;
+		reference ifExp2[0-1] : IfExp oppositeOf thenExpression;
+		reference owningOperation[0-1] : Operation oppositeOf body;
+		reference ifExp1[0-1] : IfExp oppositeOf condition;
+		reference owningAttribute[0-1] : Attribute oppositeOf initExpression;
+	}
+
+	class VariableExp extends OclExpression {
+		reference referredVariable : VariableDeclaration oppositeOf variableExp;
+	}
+
+	class SuperExp extends OclExpression {}
+
+-- @begin LiteralExps
+-- @begin PrimitiveExps
+	abstract class PrimitiveExp extends OclExpression {}
+
+	class StringExp extends PrimitiveExp {
+		attribute stringSymbol : String;
+	}
+
+	class BooleanExp extends PrimitiveExp {
+		attribute booleanSymbol : Boolean;
+	}
+
+	abstract class NumericExp extends PrimitiveExp {}
+
+	class RealExp extends NumericExp {
+		attribute realSymbol : Double;
+	}
+
+	class IntegerExp extends NumericExp {
+		attribute integerSymbol : Integer;
+	}
+-- @end PrimitiveExps
+
+
+-- @begin CollectionExps
+	abstract class CollectionExp extends OclExpression {
+		reference elements[*] ordered container : OclExpression oppositeOf collection;
+	}
+
+	class BagExp extends CollectionExp {}
+
+	class OrderedSetExp extends CollectionExp {}
+
+	class SequenceExp extends CollectionExp {}
+
+	class SetExp extends CollectionExp {}
+-- @end CollectionExps
+
+
+	class TupleExp extends OclExpression {
+		reference tuplePart[*] ordered container : TuplePart oppositeOf tuple;
+	}
+
+	class TuplePart extends VariableDeclaration {
+		reference tuple : TupleExp oppositeOf tuplePart;
+	}
+
+	class MapExp extends OclExpression {
+		reference elements[*] ordered container : MapElement oppositeOf map;
+	}
+
+	class MapElement extends LocatedElement {
+		reference map : MapExp oppositeOf elements;
+		reference key container : OclExpression;
+		reference value container : OclExpression;
+	}
+
+	class EnumLiteralExp extends OclExpression {
+		attribute name : String;
+	}
+
+	class OclUndefinedExp extends OclExpression {}
+-- @end LiteralExps
+
+
+-- @begin PropertyCallExps
+	abstract class PropertyCallExp extends OclExpression {
+		reference source container : OclExpression oppositeOf appliedProperty;
+	}
+
+	class NavigationOrAttributeCallExp extends PropertyCallExp {
+		attribute name : String;
+	}
+
+-- @begin OperationCallExps
+	class OperationCallExp extends PropertyCallExp {
+		reference arguments[*] ordered container : OclExpression oppositeOf parentOperation;
+		attribute operationName : String;
+	}
+
+	class OperatorCallExp extends OperationCallExp {}
+
+	class CollectionOperationCallExp extends OperationCallExp {}
+-- @end OperationCallExps
+
+
+-- @begin LoopExps
+	abstract class LoopExp extends PropertyCallExp {
+		reference body container : OclExpression oppositeOf loopExp;
+		reference iterators[1-*] container : Iterator oppositeOf loopExpr;
+	}
+
+	class IterateExp extends LoopExp {
+		reference result container : VariableDeclaration oppositeOf baseExp;
+	}
+
+	class IteratorExp extends LoopExp {
+		attribute name : String;
+	}
+-- @end LoopExps
+-- @end PropertyCallExps
+
+	class LetExp extends OclExpression {
+		reference variable container : VariableDeclaration oppositeOf letExp;
+		reference in_ container : OclExpression oppositeOf letExp;
+	}
+
+	class IfExp extends OclExpression {
+		reference thenExpression container : OclExpression oppositeOf ifExp2;
+		reference condition container : OclExpression oppositeOf ifExp1;
+		reference elseExpression container : OclExpression oppositeOf ifExp3;
+	}
+-- @end Expressions
+
+
+-- @begin VariableDeclarations
+	class VariableDeclaration extends LocatedElement {
+		-- Used by compiler
+		attribute id[0-1] : String;
+
+		attribute varName : String;
+		reference type[0-1] container : OclType oppositeOf variableDeclaration;
+		reference initExpression[0-1] container : OclExpression oppositeOf initializedVariable;
+
+		-- Opposite references:
+		reference letExp[0-1] : LetExp oppositeOf variable;
+		reference baseExp[0-1] : IterateExp oppositeOf result;
+		reference variableExp[*] : VariableExp oppositeOf referredVariable;
+	}
+
+	class Iterator extends VariableDeclaration {
+		reference loopExpr[0-1] : LoopExp oppositeOf iterators;
+	}
+
+	class Parameter extends VariableDeclaration {
+		reference "operation" : Operation oppositeOf parameters;
+	}
+-- @end VariableDeclarations
+
+
+
+-- @begin Types
+	class CollectionType extends OclType {
+		reference elementType container : OclType oppositeOf collectionTypes;
+	}
+
+	class OclType extends OclExpression {
+		attribute name : String;
+		
+		-- Opposite references:
+		reference definitions[0-1] : OclContextDefinition oppositeOf context_;
+		reference oclExpression[0-1] : OclExpression oppositeOf type;
+		reference "operation"[0-1] : Operation oppositeOf returnType;
+		reference mapType2[0-1] : MapType oppositeOf valueType;
+		reference "attribute"[0-1] : Attribute oppositeOf type;
+		reference mapType[0-1] : MapType oppositeOf keyType;
+		reference collectionTypes[0-1] : CollectionType oppositeOf elementType;
+		reference tupleTypeAttribute[0-1] : TupleTypeAttribute oppositeOf type;
+		reference variableDeclaration[0-1] : VariableDeclaration oppositeOf type;
+	}
+
+-- @begin PrimitiveTypes
+	abstract class Primitive extends OclType {}
+
+	class StringType extends Primitive {}
+
+	class BooleanType extends Primitive {}
+
+	abstract class NumericType extends Primitive {}
+
+	class IntegerType extends NumericType {}
+
+	class RealType extends NumericType {}
+-- @end PrimitiveTypes
+
+
+-- @begin CollectionTypes
+	class BagType extends CollectionType {}
+
+	class OrderedSetType extends CollectionType {}
+
+	class SequenceType extends CollectionType {}
+
+	class SetType extends CollectionType {}
+-- @end CollectionTypes
+
+	class OclAnyType extends OclType {
+
+	}
+
+	class TupleType extends OclType {
+		reference attributes[*] ordered container : TupleTypeAttribute oppositeOf tupleType;
+	}
+
+	class TupleTypeAttribute extends LocatedElement {
+		reference type container : OclType oppositeOf tupleTypeAttribute;
+		reference tupleType : TupleType oppositeOf attributes;
+		attribute name : String;
+	}
+
+	class OclModelElement extends OclType {
+		reference model : OclModel oppositeOf elements;
+	}
+
+	class MapType extends OclType {
+		reference valueType container : OclType oppositeOf mapType2;
+		reference keyType container : OclType oppositeOf mapType;
+	}
+-- @end Types
+
+	class OclFeatureDefinition extends LocatedElement {
+		reference feature container : OclFeature oppositeOf definition;
+		reference context_[0-1] container : OclContextDefinition oppositeOf definition;
+	}
+
+	class OclContextDefinition extends LocatedElement {
+		reference definition : OclFeatureDefinition oppositeOf context_;
+		reference context_ container : OclType oppositeOf definitions;
+	}
+
+-- @begin OclFeatures
+	abstract class OclFeature extends LocatedElement {
+		reference definition[0-1] : OclFeatureDefinition oppositeOf feature;
+	}
+
+	class Attribute extends OclFeature {
+		attribute name : String;
+		reference initExpression container : OclExpression oppositeOf owningAttribute;
+		reference type container : OclType oppositeOf "attribute";
+	}
+
+	class Operation extends OclFeature {
+		attribute name : String;
+		reference parameters[*] ordered container : Parameter oppositeOf "operation";
+		reference returnType container : OclType oppositeOf "operation";
+		reference body container : OclExpression oppositeOf owningOperation;
+	}
+-- @end OclFeatures
+
+	class OclModel extends LocatedElement {
+		attribute name : String;
+		reference metamodel : OclModel oppositeOf model;
+
+		-- Opposite references:
+		reference elements[*] : OclModelElement oppositeOf model;
+		reference model[*] : OclModel oppositeOf metamodel;
+	}
+}
+
+-- @nsURI http://www.eclipse.org/gmt/2005/PrimitiveTypes
+-- @nsPrefix ptypes
+package PrimitiveTypes {
+	datatype Boolean;
+	datatype Double;
+	datatype Integer;
+	datatype String;
+}
