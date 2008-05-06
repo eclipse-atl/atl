@@ -5,7 +5,7 @@
       version="2.0.0.qualifier"
       provider-name="%providerName"
       image="modeling32.png">
-      
+
    <description>
       %description
    </description>
@@ -30,7 +30,7 @@
       <import plugin="org.eclipse.emf.compare.match"/>
       <import plugin="org.eclipse.emf.compare.diff"/>
       <import plugin="org.eclipse.m2m.atl.engine"/>
-      <import plugin="org.eclipse.m2m.atl.adt.debug"/>
+      <import plugin="org.eclipse.m2m.atl.engine.emfvm"/>
    </requires>
 
    <plugin
