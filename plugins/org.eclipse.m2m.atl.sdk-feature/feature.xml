@@ -6,7 +6,7 @@
       provider-name="Eclipse.org">
 
    <description>
-      ATL SDK includes runtime, source, and documentation
+      ATL SDK includes runtime, source, examples and documentation
    </description>
 
    <copyright url="http://www.eclipse.org/legal/epl-v10.html">
@@ -220,7 +220,8 @@ litigation.
    </license>
 
    <url>
-      <update label="ATL Updates" url="http://download.eclipse.org/modeling/m2m/updates/"/>
+      <update label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
    </url>
 
    <includes
