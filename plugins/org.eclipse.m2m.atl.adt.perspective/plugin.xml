@@ -19,7 +19,7 @@
           visible="false">
        <menu
              id="ATLCompatibility"
-             label="ATL &amp;Compatibility">
+             label="Compatibility">
           <separator
                 name="compatibilityGroup">
           </separator>
