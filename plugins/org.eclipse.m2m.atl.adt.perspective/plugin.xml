@@ -26,6 +26,7 @@
        </menu>
        <action
              class="org.eclipse.m2m.atl.adt.perspective.compatibility.UpdateCompatibility"
+             icon="icons/atl_logo.gif"
              id="org.eclipse.m2m.atl.adt.perspective.compatibility.UpdateCompatibility"
              label="&amp;Update compatibility"
              menubarPath="ATLCompatibility/compatibilityGroup"
