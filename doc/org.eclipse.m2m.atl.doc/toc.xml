@@ -2,6 +2,13 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="ATL Developer Guide">
+	<topic label="Online Docs">		
+		<topic label="ATL documentation" href="http://www.eclipse.org/m2m/atl/doc/" />
+		<topic label="ATL wiki" href="http://wiki.eclipse.org/index.php/ATL" />
+		<topic label="ATL basic examples" href="http://www.eclipse.org/m2m/atl/basicExamples_Patterns/" />
+		<topic label="ATL use cases" href="http://www.eclipse.org/m2m/atl/usecases/" />
+		<topic label="ATL transformation zoo" href="http://www.eclipse.org/m2m/atl/atlTransformations/" />
+	</topic>
 	<topic label="Reference">
 	    <link toc="topics_Reference.xml"/>
 	</topic>
