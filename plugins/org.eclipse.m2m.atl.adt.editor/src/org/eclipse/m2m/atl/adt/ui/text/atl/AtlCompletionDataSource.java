@@ -114,9 +114,10 @@ public class AtlCompletionDataSource {
 		String text = fEditor.getEditorInputContent();
 		try {
 			parseMetamodels(text);	
-		} catch (IOException e) {
+		} catch (Exception e) {
 			//TODO apply marker on the file
-			AtlUIPlugin.log(e);
+			//Exceptions are detected by the compiler
+			//AtlUIPlugin.log(e);
 		}
 	}
 
