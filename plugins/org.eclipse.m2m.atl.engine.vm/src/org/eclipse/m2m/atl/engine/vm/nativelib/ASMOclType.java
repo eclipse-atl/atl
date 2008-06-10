@@ -43,6 +43,7 @@ public abstract class ASMOclType extends ASMOclAny {
 
 			NativeOperation.registerOperations(ASMTupleType.myType, ASMTupleType.class);
 			NativeOperation.registerOperations(ASMTuple.myType, ASMTuple.class);
+			NativeOperation.registerOperations(ASMModule.myType, ASMModule.class);
 			NativeOperation.registerOperations(ASMTransientLinkSet.myType, ASMTransientLinkSet.class);
 			NativeOperation.registerOperations(ASMTransientLink.myType, ASMTransientLink.class);
 			NativeOperation.registerOperations(ASMString.myType, ASMString.class);

@@ -1,6 +1,17 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.m2m.atl.engine.vm.ASM;
@@ -40,7 +51,17 @@ public class ASMModule extends ASMOclAny {
 		return asm.getName();
 	}
 
+	// Native Operations below
+	
+	public static ASMMap asMap(StackFrame frame, ASMModule self) {
+		Map ret = new HashMap();
+		for(Iterator i = self.fields.entrySet().iterator() ; i.hasNext() ; ) {
+			Map.Entry e = (Map.Entry)i.next();
+			ret.put(new ASMString((String)e.getKey()), e.getValue());
+		}
+		return new ASMMap(ret);
+	}
+
 	private Map fields = new HashMap();
 	private ASM asm;
 }
-
