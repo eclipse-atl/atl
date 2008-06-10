@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.5.4.2 2008/03/13 16:21:45 dwagelaar Exp $
+ * $Id: ASMOperation.java,v 1.5.4.3 2008/06/10 12:10:07 fjouault Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -179,6 +179,10 @@ public class ASMOperation extends Operation {
 		this.bytecodes = bytecodes;
 		this.nbBytecodes = bytecodes.length;
 
+		// There are at least as many local variables (excluding self) as parameters.
+		// This statement is necessary because the last parameters may be unused.
+		maxLocals = parameters.size();
+
 		// pre-computes:
 		//	- target and nesting levels for iterate and enditerate
 		//	- maxLocals
@@ -196,6 +200,8 @@ public class ASMOperation extends Operation {
 				bytecode.value2 = stack.size();
 				bytecodes[iterateIndex].value = i + 1;
 			} else if((bytecode.opcode == Bytecode.LOAD) || (bytecode.opcode == Bytecode.STORE)) {
+				// With the new model-based ASM the variables are explicit even without debug information.
+				// Therefore, we could use that information instead of analyzing loads and stores.
 				if(bytecode.value > maxLocals)
 					maxLocals = bytecode.value;
 			}
