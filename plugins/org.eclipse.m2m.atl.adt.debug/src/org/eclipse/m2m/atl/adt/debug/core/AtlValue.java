@@ -185,7 +185,10 @@ public class AtlValue extends AtlDebugElement implements IValue {
 					else if(tn.equals("Map")) { //$NON-NLS-1$
 						ret = doMap(orValue, false);
 					}
-					else if(tn.equals("Tuple")) { //$NON-NLS-1$
+					else if(tn.startsWith("TupleType(")) { //$NON-NLS-1$
+						ObjectReference map = (ObjectReference)orValue.call("asMap", new ArrayList()); //$NON-NLS-1$
+						ret = doMap(map, true);
+					} else if(tn.equals("Module")) {
 						ObjectReference map = (ObjectReference)orValue.call("asMap", new ArrayList()); //$NON-NLS-1$
 						ret = doMap(map, true);
 					}
