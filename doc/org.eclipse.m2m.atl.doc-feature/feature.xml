@@ -3,8 +3,7 @@
       id="org.eclipse.m2m.atl.doc"
       label="ATL Documentation"
       version="2.0.0.qualifier"
-      provider-name="Eclipse.org"
-      image="modeling32.png">
+      provider-name="Eclipse.org">
 
    <description>
       ATL Documentation
