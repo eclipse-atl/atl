@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.m2m.atl.tests"
-      label="%featureName"
+      label="ATL Tests"
       version="2.0.0.qualifier"
-      provider-name="%providerName"
-      image="modeling32.png">
+      provider-name="Eclipse.org">
 
    <description>
       %description
