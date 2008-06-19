@@ -8,6 +8,7 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.tests;
  org.eclipse.m2m.atl.tests.unit;
  org.eclipse.m2m.atl.tests.util
+Bundle-ClassPath: .
 Require-Bundle: org.junit,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
