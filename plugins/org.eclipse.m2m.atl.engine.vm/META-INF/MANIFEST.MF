@@ -14,8 +14,8 @@ Export-Package: org.eclipse.m2m.atl.engine.extractors,
  org.eclipse.m2m.atl.engine.vm.adwp,
  org.eclipse.m2m.atl.engine.vm.nativelib,
  org.eclipse.m2m.atl.logging
+Bundle-ClassPath: .
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources
 Eclipse-LazyStart: true
-Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
