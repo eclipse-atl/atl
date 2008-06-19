@@ -11,6 +11,7 @@ Export-Package: org.eclipse.m2m.atl.adt.debug,
  org.eclipse.m2m.atl.adt.debug.ui,
  org.eclipse.m2m.atl.adt.launching,
  org.eclipse.m2m.atl.adt.launching.sourcelookup
+Bundle-ClassPath: .
 Require-Bundle: org.eclipse.ui,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
