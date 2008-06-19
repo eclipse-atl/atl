@@ -6,7 +6,8 @@ Bundle-Version: 2.0.0.qualifier
 Bundle-ClassPath: org.eclipse.m2m.atl.engine.jar,
  lib/org.eclipse.gmt.tcs.extractor_1.0.0.jar,
  lib/org.eclipse.gmt.tcs.injector_1.0.0.jar,
- lib/ATL-parser.jar
+ lib/ATL-parser.jar,
+ .
 Bundle-Activator: org.eclipse.m2m.atl.engine.EnginePlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
