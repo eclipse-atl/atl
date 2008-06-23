@@ -50,9 +50,10 @@ public class Bag implements Collection {
 	/* (non-Javadoc)
 	 * @see java.util.Collection#add(E)
 	 */
+	private static final Integer ONE = new Integer(1);
 	public boolean add(Object arg0) {
 		if (!contains(arg0)) {
-			map.put(arg0, new Integer(1));
+			map.put(arg0, ONE);
 		}
 		else {
 			Integer val = (Integer)map.get(arg0);
