@@ -1,8 +1,8 @@
 -- @name		RefiningTrace
 -- @version		1.0
--- @authors		${author}
--- @date		${date}
--- @description	${description}
+-- @authors		Frédéric Jouault
+-- @date		2008/02/08
+-- @description	Metamodel of the trace information used by the ATL 2006 refining mode.
 package RefiningTrace {
 
 	-- Every class should extend LocatedElement, directly or indirectly.
@@ -19,6 +19,7 @@ package RefiningTrace {
 		attribute metamodel : String;
 		reference slots[*] ordered container : Slot;
 
+		-- The source element weaving helper may be persisted in this attribute
 		attribute persistedSourceElement[0-1] : String; 
 	}
 	
