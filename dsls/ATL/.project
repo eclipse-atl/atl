@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>ATL</name>
+	<name>ATL_dev</name>
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
 		<buildCommand>
-			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
-			<triggers>clean,full,incremental,</triggers>
+			<name>org.eclipse.gmt.tcs.builder.Builder</name>
 			<arguments>
-				<dictionary>
-					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/ATL DSL Builder.launch</value>
-				</dictionary>
 			</arguments>
 		</buildCommand>
 		<buildCommand>

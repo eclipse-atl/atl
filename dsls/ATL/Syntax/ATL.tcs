@@ -390,7 +390,7 @@ syntax ATL(k = 0) {
 		:	"OclType"
 		;
 
-	template OclAnyType abstract
+	template OclAnyType
 		:	"OclAny"
 		;
 
