@@ -397,15 +397,14 @@ public class ExecEnv {
 			return value.getClass();
 		}
 	}
-
+	
 	public Object newElement(StackFrame frame, EClass ec) {
 		Object s = null;
-		ReferenceModel referenceModel = (ReferenceModel)getModelOf(ec);
 		for(Iterator i = getModels() ; i.hasNext() ; ) {
 			Model model = (Model)i.next();
 			if(!model.isTarget)
 				continue;
-			if(model.getReferenceModel().equals(referenceModel)) {
+			if(model.getReferenceModel().isModelOf(ec)) {
 				s = model.newElement(ec);
 				break;
 			}
