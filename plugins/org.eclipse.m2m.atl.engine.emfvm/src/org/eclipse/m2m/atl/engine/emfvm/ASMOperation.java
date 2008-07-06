@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.5.4.3 2008/06/10 12:10:07 fjouault Exp $
+ * $Id: ASMOperation.java,v 1.5.4.4 2008/07/06 15:28:52 fjouault Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -617,5 +617,9 @@ public class ASMOperation extends Operation {
 		}
 		sig.append(')');
 		return sig.toString();
+	}
+
+	public String toString() {
+		return this.context + "." + this.name;
 	}
 }
