@@ -8,7 +8,7 @@
  * Contributors:
  *    INRIA - initial API and implementation
  *    
- * $Id: ASM.java,v 1.2.4.3 2008/04/08 15:00:51 fjouault Exp $
+ * $Id: ASM.java,v 1.2.4.4 2008/07/07 13:22:03 fjouault Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -134,6 +134,12 @@ public class ASM {
 				} catch (IllegalAccessException e) {
 					throw new RuntimeException("error while instantiating extension class: \"" + extensions[i] +"\"", e);
 				}
+			}
+		}
+		List extensionObjects = (List)options.get("extensionObjects");
+		if(extensionObjects != null) {
+			for(Iterator i = extensionObjects.iterator() ; i.hasNext() ; ) {
+				((Extension)i.next()).apply(execEnv, options);
 			}
 		}
 
