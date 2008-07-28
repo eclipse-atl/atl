@@ -46,13 +46,13 @@
             delegate="org.eclipse.m2m.atl.adt.launching.RemoteAtlConfigurationDelegate"
             id="org.atl.eclipse.adt.launching.remoteAtlTransformation"
             modes="debug"
-            name="Remote ATL Transformation (OLD)">
+            name="Remote ATL Compatibility">
       </launchConfigurationType>
       <launchConfigurationType
             delegate="org.eclipse.m2m.atl.adt.launching.AtlLaunchConfigurationDelegate"
             id="org.atl.eclipse.adt.launching.atlTransformation"
             modes="run, debug"
-            name="ATL Transformation (OLD)">
+            name="ATL Compatibility">
       </launchConfigurationType>
    </extension>
 <!-- extension point : screen configuration for launching ATL transformation-->
@@ -70,13 +70,13 @@
       </launchConfigurationTabGroup>
       <launchConfigurationTabGroup
             class="org.eclipse.m2m.atl.adt.launching.AtlTabGroup"
-            description="Present for OLD configurations"
+            description="Compatibility utility"
             id="AtlTabGroup"
             type="org.atl.eclipse.adt.launching.atlTransformation">
       </launchConfigurationTabGroup>
       <launchConfigurationTabGroup
             class="org.eclipse.m2m.atl.adt.launching.RemoteAtlTabGroup"
-            description="Present for OLD configurations"
+            description="Compatibility utility"
             id="RemoteAtlTabGroup"
             type="org.atl.eclipse.adt.launching.remoteAtlTransformation">
       </launchConfigurationTabGroup>
