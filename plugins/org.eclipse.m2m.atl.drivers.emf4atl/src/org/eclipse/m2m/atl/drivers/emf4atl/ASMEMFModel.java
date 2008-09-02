@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -164,9 +165,11 @@ public class ASMEMFModel extends ASMModel {
 		return ret;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel#getElementsByType(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement)
-	 */
+    /**
+     * @param type The type of element to search for.
+     * @return The set of ASMModelElements that are instances of type.
+     * @see ASMModelElement
+     */
 	public Set getElementsByType(ASMModelElement type) {
 		Set ret = new LinkedHashSet();
 		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
@@ -189,9 +192,6 @@ public class ASMEMFModel extends ASMModel {
         }
     }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel#newModelElement(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement)
-	 */
 	public ASMModelElement newModelElement(ASMModelElement type) {
 		ASMModelElement ret = null;
 		
@@ -202,30 +202,22 @@ public class ASMEMFModel extends ASMModel {
 		
 		return ret;
 	}
-	
 	/**
-	 * Instantiates a new ASMEMFModel.
-	 * 
 	 * @param name
-	 * @param extent
 	 * @param metamodel
 	 * @param isTarget
-	 * @param ml
 	 */
 	protected ASMEMFModel(String name, Resource extent, ASMEMFModel metamodel, boolean isTarget, ModelLoader ml) {
 		super(name, metamodel, isTarget, ml);
 		this.extent = extent;
+		if(metamodel != null) {	// metamodel == null when the metametamodel is initially created
+			metamodel.addConformingModel(this);
+		}
 	}
 
 	/**
-	 * Loads a model.
-	 * 
-	 * @param name
-	 * @param metamodel
-	 * @param extent
+	 * Simple Resource wrapping factory. 
 	 * @param ml ModelLoader used to load the model if available, null otherwise.
-	 * @return the loaded model
-	 * @throws Exception
 	 */
 	public static ASMEMFModel loadASMEMFModel(String name, ASMEMFModel metamodel, Resource extent, ModelLoader ml) throws Exception {
 		ASMEMFModel ret = null;
@@ -237,24 +229,47 @@ public class ASMEMFModel extends ASMModel {
 		
 		return ret;
 	}
-			
+
 	public void dispose() {
 		//System.err.println("INFO: Disposing ASMEMFModel " + getName());
 		
         if (extent != null) {
+        	// A metamodel cannot be freed before all its conforming models are freed
+        	// however, it may be finalized before. Here, we make sure the conforming
+        	// models are nonetheless disposed off before the metamodel.
+        	// Note: this also means that disposing a metamodel disposes all its
+        	// conforming models.
+        	for(Iterator i = conformingModels.keySet().iterator() ; i.hasNext() ; ) {
+        		((ASMEMFModel)i.next()).dispose();
+        	}
             referencedExtents.clear();
             referencedExtents = null;
-            for (Iterator unrs = unregister.iterator(); unrs.hasNext();) {
-            	String nsURI = (String)unrs.next();
-            	synchronized (resourceSet) {
-                	resourceSet.getPackageRegistry().remove(nsURI);
-            	}
-            	//System.err.println("\tINFO: Unregistering " + nsURI + " from local EMF registry");
-            	
-            }
-            synchronized (resourceSet) {
-                resourceSet.getResources().remove(extent);
-            }
+			Map asmModels = (Map)asmModelsByResource.get(extent);
+			boolean removeResourceFromSet = true;
+			if(asmModels != null) {
+				if(asmModels.containsKey(this)) {
+					asmModels.remove(this);
+				}
+				if(asmModels.isEmpty()) {
+					asmModelsByResource.remove(extent);
+				} else {
+					removeResourceFromSet = false;
+				}
+			}
+			if(removeResourceFromSet) {
+	            for (Iterator unrs = unregister.iterator(); unrs.hasNext();) {
+	            	String nsURI = (String)unrs.next();
+	            	synchronized (resourceSet) {
+	                	resourceSet.getPackageRegistry().remove(nsURI);
+	            	}
+	            	//System.err.println("\tINFO: Unregistering " + nsURI + " from local EMF registry");
+	            	
+	            }
+	            synchronized (resourceSet) {
+	            	resourceSet.getResources().remove(extent);
+	            }
+			}
+
             // Unload only is necessary if we would like to re-use the resource later 
             // (we do not need this behavior) 
             /*
@@ -276,11 +291,10 @@ public class ASMEMFModel extends ASMModel {
     /**
      * Creates a new ASMEMFModel. Do not use this method for models that
      * require a special registered factory (e.g. uml2).
-     * 
      * @param name The model name. Also used as EMF model URI.
      * @param metamodel
      * @param ml
-     * @return the new ASMEMFModel
+     * @return
      * @throws Exception
      * @deprecated
      */
@@ -290,14 +304,13 @@ public class ASMEMFModel extends ASMModel {
 	
     /**
      * Creates a new ASMEMFModel.
-     * author : Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
-     * 
      * @param name The model name. Not used by EMF.
      * @param uri The model URI. EMF uses this to determine the correct factory.
      * @param metamodel
      * @param ml
-     * @return the new ASMEMFModel
+     * @return
      * @throws Exception
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
      */
     public static ASMEMFModel newASMEMFModel(String name, String uri, ASMEMFModel metamodel, ModelLoader ml) throws Exception {
         ASMEMFModel ret = null;
@@ -348,6 +361,15 @@ public class ASMEMFModel extends ASMModel {
             ret.addAllReferencedExtents(extent);
 			ret.setIsTarget(false);
 			ret.unload = true;
+
+			Map asmModels = (Map)asmModelsByResource.get(extent);
+			if(asmModels == null) {
+				asmModels = new WeakHashMap();
+				asmModels.put(ret, "dummy");
+				asmModelsByResource.put(extent, asmModels);
+			} else {
+				asmModels.put(ret, "dummy");
+			}
 		} catch(Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 //			e.printStackTrace();
@@ -473,6 +495,17 @@ public class ASMEMFModel extends ASMModel {
 	}
 	
 	protected static ResourceSet resourceSet;
+	private static Map asmModelsByResource = new WeakHashMap();
+
+	private Map conformingModels = new WeakHashMap();
+
+	private void addConformingModel(ASMEMFModel model) {
+		if(this.getMetamodel() != this) {
+			synchronized(conformingModels) {
+				conformingModels.put(model, "dummy");
+			}
+		}
+	}
 
 	protected static ASMEMFModel mofmm = null;
 	private Resource extent;
@@ -489,9 +522,8 @@ public class ASMEMFModel extends ASMModel {
     /**
      * Searches for and adds all Resource extents that are
      * referenced from the main extent to referencedExtents.
-     * author : Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
-     * 
-     * @param extent The main extent
+     * @param The main extent
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
      */
     protected void addAllReferencedExtents(Resource extent) {
         Iterator contents = extent.getAllContents();
@@ -519,7 +551,7 @@ public class ASMEMFModel extends ASMModel {
 		Iterator eRefs = eClass.getEReferences().iterator();
 		while (eRefs.hasNext()) {
 			EReference eRef = (EReference) eRefs.next();
-			//if (eRef.isContainment()) {
+			if (eRef.isContainment()) {
 				EClassifier eType = eRef.getEType();
 				if (eType.eResource() != null) {
 					referencedExtents.add(eType.eResource());
@@ -533,7 +565,7 @@ public class ASMEMFModel extends ASMModel {
 				if (eType instanceof EClass) {
 					addReferencedExtentsFor((EClass) eType, ignore);
 				}
-			//}
+			}
 		}
 		Iterator eAtts = eClass.getEAttributes().iterator();
 		while (eAtts.hasNext()) {
