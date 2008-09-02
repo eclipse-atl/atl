@@ -88,10 +88,10 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 
 	/**
 	 * Saves the provided model in/out of the Eclipse workspace using the given relative/absolute path.
-	 * 
 	 * @param model The model to save.
 	 * @param path The workspace relative path (e.g. "/ProjectXXX/fileName.ecore") if the outputFileIsInWorkspace boolean is set to true, or the absolute path if not (e.g. "C:/FolderXXX/fileName.ecore").
 	 * @param outputFileIsInWorkspace Indicates if the model output file is stored into the Eclipse workspace.
+	 * @author Hugo Bruneliere
 	 */
 	public void saveModel(final ASMModel model, String path, boolean outputFileIsInWorkspace) {
 		URI uri = null;
@@ -282,10 +282,9 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		return ret;
 	}
 	
-    /* 
-     * author : Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
-     * 
-     * @see org.eclipse.m2m.atl.engine.AtlModelHandler#newModel(java.lang.String, java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+    /**
+     * @see ASMEMFModel#newASMEMFModel(String, String, ASMEMFModel, ModelLoader)
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
      */
     public ASMModel newModel(String name, String uri, ASMModel metamodel) {
         ASMModel ret = null;

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frï¿½dï¿½ric Jouault (INRIA) - initial API and implementation
+ *    Frédéric Jouault (INRIA) - initial API and implementation
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
