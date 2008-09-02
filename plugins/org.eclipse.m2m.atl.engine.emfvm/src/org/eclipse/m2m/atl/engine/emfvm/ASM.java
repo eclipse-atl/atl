@@ -1,12 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2007 INRIA.
+ * Copyright (c) 2007, 2008 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Fr�d�ric Jouault - initial API and implementation
+ *    INRIA - initial API and implementation
+ *    
+ * $Id: ASM.java,v 1.4 2008/09/02 15:29:17 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -20,13 +22,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
-import org.eclipse.emf.ecore.EClass;
+import org.eclipse.m2m.atl.engine.emfvm.AtlSuperimposeModule.AtlSuperimposeModuleException;
+import org.eclipse.m2m.atl.engine.emfvm.emf.EMFModelAdapter;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ASMModule;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Extension;
+import org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
+import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 
+/**
+ * 
+ * @author Frederic Jouault
+ * @author Mikael Barbero
+ * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ */
 public class ASM {
 
 	private String name;
@@ -53,20 +65,41 @@ public class ASM {
 		}
 	}
 
+	/**
+	 * @return All registered operations.
+	 * @see #addOperation(ASMOperation)
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	public Iterator getOperations() {
+		return operations.iterator();
+	}
+	
+	/**
+	 * @return "main" operation, if any.
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	public ASMOperation getMainOperation() {
+		return mainOperation;
+	}
+
 	// TODO:
 	//	- implements other options
 	//	- define options somewhere (currently, best definition is in regular VM)
-	public Object run(Map models, Map libraries, Map options) {		
+	public Object run(Map models, Map libraries, List superimpose, Map options) {
 		Object ret = null;
+
 		boolean printExecutionTime = "true".equals(options.get("printExecutionTime"));
 
 		long startTime = System.currentTimeMillis();
 		
 		ExecEnv execEnv = new ExecEnv(models);
+		ModelAdapter modelAdapter = new EMFModelAdapter(execEnv);
+		// by default (if options.get("checkSameModel") == null) interModelReferences are not allowed
+		modelAdapter.setAllowInterModelReferences("false".equals(options.get("checkSameModel")));
+		execEnv.init(modelAdapter);
+		
 		if("true".equals(options.get("step")))
 			execEnv.step = true;
-		if ("true".equals(options.get("supportUML2Stereotypes")))
-			execEnv.supportUML2Stereotypes = true;
 		
 		String ext = (String)options.get("extensions");
 		if(ext != null) {
@@ -103,8 +136,12 @@ public class ASM {
 				}
 			}
 		}
-		
-		registerOperations(execEnv, operations);
+		List extensionObjects = (List)options.get("extensionObjects");
+		if(extensionObjects != null) {
+			for(Iterator i = extensionObjects.iterator() ; i.hasNext() ; ) {
+				((Extension)i.next()).apply(execEnv, options);
+			}
+		}
 
 		ASMModule asmModule = new ASMModule();
 		StackFrame frame = new StackFrame(execEnv, asmModule, mainOperation);
@@ -115,14 +152,30 @@ public class ASM {
 			if(library.mainOperation != null)
 				library.mainOperation.exec(new StackFrame(execEnv, asmModule, library.mainOperation));
 		}
-		
+
+		// register module operations after libraries to avoid overriding
+		// "main" in execEnv (avoid superimposition problems)
+		registerOperations(execEnv, operations);
+
+        for(Iterator i = superimpose.iterator() ; i.hasNext() ; ) {
+            ASM module = (ASM)i.next();
+            AtlSuperimposeModule ami = new AtlSuperimposeModule(execEnv, module);
+            try {
+                ami.adaptModuleOperations();
+            } catch (AtlSuperimposeModuleException e) {
+            	throw new VMException(frame, e);
+            }
+            registerOperations(execEnv, module.operations);
+        }
+
 		ret = mainOperation.exec(frame);
 		long endTime = System.currentTimeMillis();
 		if(printExecutionTime)
-			System.out.println("Executed " + name + " in " + ((endTime - startTime) / 1000.) + "s.");
+			execEnv.logger.info("Executed " + name + " in " + ((endTime - startTime) / 1000.) + "s.");
 		
 		if("true".equals(options.get("showSummary")))
-			System.out.println("Number of instructions executed: " + execEnv.nbExecutedBytecodes);
+			execEnv.logger.info("Number of instructions executed: " + execEnv.nbExecutedBytecodes);
+		
 		return ret;
 	}
 	
@@ -132,17 +185,18 @@ public class ASM {
 			String signature = op.getContext();
 			if(signature.matches("^(Q|G|C|E|O|N).*$")) {
 				// Sequence, Bag, Collection, Set, OrderedSet, Native type
-				System.out.println("Unsupported registration: " + signature);
+				execEnv.logger.warning("Unsupported registration: " + signature);
 //				} else if(signature.startsWith("T")) {
-//					System.out.println("Unsupported registration: " + signature);
+//					logger.warning("Unsupported registration: " + signature);
 			} else {
 				try {
 					Object type = parseType(execEnv, new StringCharacterIterator(signature));
-					//System.out.println("registering " + op + " on " + type);
+					//logger.info("registering " + op + " on " + type);
 					execEnv.registerOperation(type, op, op.getName());
 					//op.setContextType(type);
 				} catch(SignatureParsingException spe) {
-					spe.printStackTrace(System.out);
+					execEnv.logger.log(Level.SEVERE, spe.getLocalizedMessage(), spe);
+//					spe.printStackTrace(System.out);
 				}
 			}
 		}
@@ -206,12 +260,12 @@ public class ASM {
 				String name = readUntil(ci, ';');
 				ReferenceModel model = (ReferenceModel)execEnv.getModel(mname);
 				if(model != null) {
-					EClass ec = model.getMetaElementByName(name);
+					Object ec = model.getMetaElementByName(name);
 					if(ec == null)
 						throw new SignatureParsingException("ERROR: could not find model element " + name + " from " + mname);
 					ret = ec;
 				} else {
-					System.out.println("WARNING: could not find model " + mname + ".");
+					execEnv.logger.warning("Could not find model " + mname + ".");
 				}
 				break;
 				

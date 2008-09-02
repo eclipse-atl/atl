@@ -18,6 +18,8 @@ import org.osgi.framework.BundleContext;
  */
 public class EmfvmPlugin extends Plugin {
 
+	public static final String LOGGER = "org.eclipse.m2m.atl";
+
 	//The shared instance.
 	private static EmfvmPlugin plugin;
 	

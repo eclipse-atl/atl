@@ -57,6 +57,7 @@ public class TransientLinkSet {
 			}
 			TransientLink other = (TransientLink)linksBySourceElement.get(se);
 			if(other != null) {
+				// TODO: pretty print
 				throw new RuntimeException("trying to register several rules as default for element " + se + ": " + other.rule + " and " + tl.rule);
 			}
 			linksBySourceElement.put(se, tl);

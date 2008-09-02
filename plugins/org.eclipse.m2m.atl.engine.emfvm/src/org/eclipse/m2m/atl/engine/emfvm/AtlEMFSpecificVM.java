@@ -1,12 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2007 INRIA.
+ * Copyright (c) 2007, 2008 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Fr�d�ric Jouault - initial API and implementation
+ *    INRIA - initial API and implementation
+ *    
+ * $Id: AtlEMFSpecificVM.java,v 1.5 2008/09/02 15:29:17 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -31,6 +34,9 @@ import org.eclipse.m2m.atl.adt.launching.AtlLauncherTools;
 import org.eclipse.m2m.atl.adt.launching.AtlVM;
 import org.eclipse.m2m.atl.adt.launching.sourcelookup.AtlSourceLocator;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
+import org.eclipse.m2m.atl.engine.emfvm.emf.EMFModel;
+import org.eclipse.m2m.atl.engine.emfvm.emf.EMFReferenceModel;
+import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Model;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
@@ -40,6 +46,12 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 //	- improve the way VMs are made pluggable
 //		- put extension point in engine plugin, not debug
 //		- make ant tasks independant of ASMModels (i.e., regular VM arguments)
+/**
+ * 
+ * @author Frederic Jouault
+ * @author Mikael Barbero
+ *
+ */
 public class AtlEMFSpecificVM extends AtlVM {
 
 	// launch from Regular VM arguments (used for ant tasks)
@@ -55,9 +67,9 @@ public class AtlEMFSpecificVM extends AtlVM {
 			ASMModel m = (ASMModel)models.get(mName);
 			ReferenceModel rm;
 			if(m.equals(ASMEMFModel.getMOF())) {
-				rm = ReferenceModel.getMetametamodel();
+				rm = EMFReferenceModel.getMetametamodel();
 			} else if(m.getMetamodel().equals(ASMEMFModel.getMOF())) {
-				rm = new ReferenceModel(ReferenceModel.getMetametamodel(), ((ASMEMFModel)m).getExtent());
+				rm = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), ((ASMEMFModel)m).getExtent());
 				referenceModelOfASMModel.put(m, rm);
 			} else {
 				continue;
@@ -74,7 +86,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 				ASMModel mm = m.getMetamodel();
 			
 				ReferenceModel rm = (ReferenceModel)referenceModelOfASMModel.get(mm);
-				Model actualM = new Model(rm, ((ASMEMFModel)m).getExtent());
+				AbstractModel actualM = new EMFModel(rm, ((ASMEMFModel)m).getExtent());
 				actualModels.put(mName, actualM);
 				
 				if(m.isTarget()) {
@@ -94,19 +106,26 @@ public class AtlEMFSpecificVM extends AtlVM {
 				libs.put(libName, lib);
 			}
 			
+			List superimpose = new ArrayList();
+			for(Iterator i = superimps.iterator() ; i.hasNext() ; ) {
+				URL url = (URL)i.next();
+				ASM module = new ASMXMLReader().read(url.openStream());
+				superimpose.add(module);
+			}
+			
 			try {
-				ret = asm.run(actualModels, libs, options);
+				ret = asm.run(actualModels, libs, superimpose, options);
 			} catch(VMException vme) {
-				vme.printStackTrace(System.out);
+				logger.log(Level.SEVERE, vme.getLocalizedMessage(), vme);
 				throw vme;
 			}
 			
 			for(Iterator i = targetModels.iterator() ; i.hasNext() ; ) {
-				Model model = (Model)i.next();
+				EMFModel model = (EMFModel)i.next();
 				model.commitToResource();
 			}
 		} catch(IOException ioe) {
-			ioe.printStackTrace();
+			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 
 		return ret;
@@ -139,6 +158,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 		Map targetModels = configuration.getAttribute(AtlLauncherTools.OUTPUT, new HashMap());
 		Map modelPaths = configuration.getAttribute(AtlLauncherTools.PATH, new HashMap());
 		Map libs = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
+		List superimps = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
 
 		try {
 			for(Iterator i = sourceModels.keySet().iterator() ; i.hasNext() ; ) {
@@ -150,7 +170,10 @@ public class AtlEMFSpecificVM extends AtlVM {
 					mm = loadReferenceModel(mmName, modelPaths);
 					models.put(mmName, mm);
 				}
-				Model m = new Model(mm, URI.createPlatformResourceURI((String)modelPaths.get(mName), true),false);			
+				Model m = new EMFModel(
+						mm, 
+						URI.createPlatformResourceURI((String)modelPaths.get(mName), true),
+						false);			
 				models.put(mName, m);
 			}
 
@@ -163,7 +186,10 @@ public class AtlEMFSpecificVM extends AtlVM {
 					mm = loadReferenceModel(mmName, modelPaths);
 					models.put(mmName, mm);
 				}
-				Model m = new Model(mm, URI.createPlatformResourceURI((String)modelPaths.get(mName), true),true);		
+				AbstractModel m = new EMFModel(
+						mm, 
+						URI.createPlatformResourceURI((String)modelPaths.get(mName), true),
+						true);		
 				models.put(mName, m);
 				m.isTarget = true;
 			}
@@ -183,16 +209,24 @@ public class AtlEMFSpecificVM extends AtlVM {
 					libraries.put(libName, lib);
 				}
 
-				asm.run(models, libraries, options);
+				List superimpose = new ArrayList();
+				for(Iterator i = superimps.iterator() ; i.hasNext() ; ) {
+					String path = (String)i.next();
+					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(path));
+					ASM module = new ASMXMLReader().read(file.getContents());
+					superimpose.add(module);
+				}
+
+				asm.run(models, libraries, superimpose, options);
 
 				for(Iterator i = targetModels.keySet().iterator() ; i.hasNext() ; ) {
 					String mName = (String)i.next();
 					
-					Model m = (Model)models.get(mName);			
+					EMFModel m = (EMFModel)models.get(mName);			
 					m.save(URI.createPlatformResourceURI((String)modelPaths.get(mName), true));
 				}
 			} catch(VMException vme) {
-				vme.printStackTrace(System.out);
+				logger.log(Level.SEVERE, vme.getLocalizedMessage(), vme);
 				throw vme;
 			} finally {
 				for(Iterator i = models.values().iterator() ; i.hasNext() ; ) {
@@ -201,7 +235,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 				}
 			}
 		} catch(IOException ioe) {
-			ioe.printStackTrace(System.out);
+			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 
 
@@ -216,11 +250,11 @@ public class AtlEMFSpecificVM extends AtlVM {
 		
 		String path = (String)modelPaths.get(mmName);
 		if(path.startsWith("#")) {
-			ret = ReferenceModel.getMetametamodel();
+			ret = EMFReferenceModel.getMetametamodel();
 		} else if(path.startsWith("uri:")){
-			ret = new ReferenceModel(ReferenceModel.getMetametamodel(), path.substring(4));
+			ret = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), path.substring(4));
 		} else {
-			ret = new ReferenceModel(ReferenceModel.getMetametamodel(), URI.createPlatformResourceURI(path, true));
+			ret = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), URI.createPlatformResourceURI(path, true));
 		}		
 		
 		return ret;

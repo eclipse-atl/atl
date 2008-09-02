@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
 import java.io.PrintStream;
+import java.io.PrintWriter;
 
 
 public class VMException extends RuntimeException {
@@ -22,6 +23,11 @@ public class VMException extends RuntimeException {
 		this.frame = frame;
 	}
 	
+	public VMException(StackFrame frame, String message, Exception cause) {
+		super(message, cause);
+		this.frame = frame;
+	}
+	
 	public VMException(StackFrame frame, Exception cause) {
 		super(cause);
 		this.frame = frame;
@@ -30,6 +36,11 @@ public class VMException extends RuntimeException {
 	private StackFrame frame;
 
 	public void printStackTrace(PrintStream s) {
+		super.printStackTrace(s);
+		s.println(frame);
+	}
+
+	public void printStackTrace(PrintWriter s) {
 		super.printStackTrace(s);
 		s.println(frame);
 	}

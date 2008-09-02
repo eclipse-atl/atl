@@ -12,28 +12,28 @@ package org.eclipse.m2m.atl.engine.emfvm;
 
 public class Bytecode {
 	
-	public final static int PUSH = 0;
-	public final static int PUSHI = 1;
-	public final static int PUSHD = 2;
-	public final static int PUSHT = 3;
-	public final static int PUSHF = 4;
-	public final static int CALL = 5;
-	public final static int LOAD = 6;
-	public final static int STORE = 7;
-	public final static int NEW = 8;
-	public final static int ITERATE = 9;
-	public final static int ENDITERATE = 10;
-	public final static int DUP = 11;
-	public final static int SET = 12;
-	public final static int GET = 13;
-	public final static int POP = 14;
-	public final static int GETASM = 15;
-	public final static int IF = 16;
-	public final static int GOTO = 17;
-	public final static int SWAP = 18;
-	public final static int FINDME = 19;
-	public final static int DUP_X1 = 20;
-	public final static int DELETE = 21;
+	public final static int PUSH 		= 0;
+	public final static int PUSHI 		= 1;
+	public final static int PUSHD 		= 2;
+	public final static int PUSHT 		= 3;
+	public final static int PUSHF 		= 4;
+	public final static int CALL 		= 5;
+	public final static int LOAD 		= 6;
+	public final static int STORE 		= 7;
+	public final static int NEW 		= 8;
+	public final static int ITERATE 	= 9;
+	public final static int ENDITERATE 	= 10;
+	public final static int DUP 		= 11;
+	public final static int SET 		= 12;
+	public final static int GET 		= 13;
+	public final static int POP 		= 14;
+	public final static int GETASM 		= 15;
+	public final static int IF 			= 16;
+	public final static int GOTO 		= 17;
+	public final static int SWAP 		= 18;
+	public final static int FINDME 		= 19;
+	public final static int DUP_X1 		= 20;
+	public final static int DELETE		= 21;
 	
 	public final static String opcodeNames[] = {
 		"push", "pushi", "pushd", "pusht", "pushf",

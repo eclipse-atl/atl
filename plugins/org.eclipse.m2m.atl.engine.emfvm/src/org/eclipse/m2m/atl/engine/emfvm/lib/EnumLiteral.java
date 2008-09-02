@@ -1,5 +1,7 @@
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
+import org.eclipse.emf.common.util.Enumerator;
+
 public class EnumLiteral implements HasFields {
 
 	private String name;
@@ -28,5 +30,15 @@ public class EnumLiteral implements HasFields {
 		} else {
 			throw new VMException(frame, "error assigning " + value + " to EnumLiteral." + name);
 		}
+	}
+	
+	public boolean equals(Object arg) {
+		boolean ret = false;
+		if (arg instanceof Enumerator) {
+			ret = toString().equals(((Enumerator)arg).getLiteral());
+		} else if (arg instanceof EnumLiteral) {
+			ret = toString().equals(arg.toString());
+		}
+		return ret;
 	}
 }

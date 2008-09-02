@@ -1,14 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2007 INRIA.
+ * Copyright (c) 2007, 2008 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Fr�d�ric Jouault - initial API and implementation
+ *    INRIA - initial API and implementation
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
+ *    
+ * $Id: ASMOperation.java,v 1.9 2008/09/02 15:29:17 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -24,10 +26,8 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.WeakHashMap;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Bag;
-import org.eclipse.m2m.atl.engine.emfvm.lib.EMFUtils;
 import org.eclipse.m2m.atl.engine.emfvm.lib.EnumLiteral;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.HasFields;
@@ -45,6 +45,8 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
  *
  * @author Fr�d�ric Jouault <a href="mailto:frederic.jouault@univ-nantes.fr">frederic.jouault@univ-nantes.fr</a>
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author Mikael Barbero <a href="mailto:mikael.barbero@univ-nantes.fr">mikael.barbero@univ-nantes.fr</a>
+ * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
  */
 public class ASMOperation extends Operation {
 
@@ -177,6 +179,10 @@ public class ASMOperation extends Operation {
 		this.bytecodes = bytecodes;
 		this.nbBytecodes = bytecodes.length;
 
+		// There are at least as many local variables (excluding self) as parameters.
+		// This statement is necessary because the last parameters may be unused.
+		maxLocals = parameters.size();
+
 		// pre-computes:
 		//	- target and nesting levels for iterate and enditerate
 		//	- maxLocals
@@ -194,6 +200,8 @@ public class ASMOperation extends Operation {
 				bytecode.value2 = stack.size();
 				bytecodes[iterateIndex].value = i + 1;
 			} else if((bytecode.opcode == Bytecode.LOAD) || (bytecode.opcode == Bytecode.STORE)) {
+				// With the new model-based ASM the variables are explicit even without debug information.
+				// Therefore, we could use that information instead of analyzing loads and stores.
 				if(bytecode.value > maxLocals)
 					maxLocals = bytecode.value;
 			}
@@ -202,30 +210,40 @@ public class ASMOperation extends Operation {
 		nbNestedIterates++;	// because the highest encountered nesting level is nbNestedIterates - 1
 	}
 
+	/**
+	 * @return The bytecodes, if any.
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	public Bytecode[] getBytecodes() {
+		return bytecodes;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public Object exec(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame frame) {
+		final ExecEnv execEnv = frame.execEnv;
+		
 		// Note: debug is not initialized from a constant, and therefore has a performance impact
 		// TODO: measure this impact, and possibly remove the debug code
-		final boolean debug = frame.execEnv.step;
-		final boolean supportUML2Stereotypes = frame.execEnv.supportUML2Stereotypes;
-
-		Object localVars[] = frame.localVars;
+		final boolean debug = execEnv.step;
+		
+		final Object localVars[] = frame.localVars;
 		int pc = 0;
 		int fp = 0;
-		Object stack[] = new Object[MAX_STACK];
-		Iterator nestedIterate[] = new Iterator[nbNestedIterates];
+		final Object stack[] = new Object[MAX_STACK];
+		final Iterator nestedIterate[] = new Iterator[nbNestedIterates];
 		Iterator it;
 		Object s;
+		StringBuffer log = null;
 		try {
 			while(pc < nbBytecodes) {
 				Bytecode bytecode = bytecodes[pc++];
-				frame.execEnv.nbExecutedBytecodes++;
+				execEnv.nbExecutedBytecodes++;
 				if(debug) {
-					frame.execEnv.out.println(name + ":" + (pc - 1) + "\t" + bytecode);
-					//					frame.execEnv.out.println("" + frame.execEnv.nbExecutedBytecodes);
+					execEnv.logger.info(name + ":" + (pc - 1) + "\t" + bytecode);
+//					logger.info("" + frame.execEnv.nbExecutedBytecodes);
 				}
 				switch(bytecode.opcode) {
 				case Bytecode.PUSHD:
@@ -242,85 +260,67 @@ public class ASMOperation extends Operation {
 				case Bytecode.CALL:
 					Object self = stack[fp - bytecode.value - 1];
 					if(debug) {
-						frame.execEnv.out.print("\tCalling ");
-						frame.execEnv.prettyPrint(self);
-						frame.execEnv.out.print("." + bytecode.operand + "(");
+						log = new StringBuffer();
+						log.append("\tCalling ");
+						log.append(frame.execEnv.toPrettyPrintedString(self));
+						log.append(".");
+						log.append(bytecode.operand);
+						log.append("(");
 					}
-					Object type = ExecEnv.getType(self);
-					Operation operation = frame.execEnv.getOperation(type, bytecode.operand);
+					Object type = execEnv.modelAdapter.getType(self);
+					int nbCalleeArgs = bytecode.value;
+					Operation operation = execEnv.getOperation(type, bytecode.operand);
 
-					/*
-					 * Metamodel methods support					 * 
-					 */
-					if(operation == null) {
-						int nbCalleeArgs = bytecode.value;
-						Object arguments[] = new Object[nbCalleeArgs];
-						Class argumentTypes[] = new Class[nbCalleeArgs];
+					if (operation != null) {
+						StackFrame calleeFrame = (StackFrame)frame.newFrame(operation);
+						Object arguments[] = calleeFrame.localVars;
+
 						boolean first = true;
 						for(int i = nbCalleeArgs ; i >= 1 ; i--) {
-							arguments[i-1] = stack[--fp];
-							argumentTypes[i-1] = arguments[i-1].getClass();	
+							arguments[i] = stack[--fp];
 							if(debug) {
 								if(!first)
-									frame.execEnv.out.print(", ");
+									log.append(", ");
 								first = false;
-								frame.execEnv.prettyPrint(arguments[i-1]);
+								log.append(execEnv.toPrettyPrintedString(arguments[i]));
 							}
 						}
-
 						if(debug) {
-							frame.execEnv.out.println(")");
+							log.append(")");
+							execEnv.logger.info(log.toString());
 						}
-						Method method = findMethod(self.getClass(), bytecode.operand.toString(), argumentTypes);
-
-						if (method == null)
-							throw new VMException(frame, "operation not found: " + frame.execEnv.toPrettyPrintedString(self) + "." + bytecode.operand);
-
 						--fp;	// pop self, that we already retrieved earlier to get the operation
+						arguments[0] = self;
 
-						s = null;
-						if (supportUML2Stereotypes) {
-							if(bytecode.operand.equals("applyProfile") || bytecode.operand.equals("applyStereotype") 
-									|| bytecode.operand.equals("setValue") 
-									|| bytecode.operand.equals("applyAllRequiredStereotypes")
-									|| bytecode.operand.equals("applyAllStereotypes")
-									|| bytecode.operand.equals("unapplyAllStereotype")
-									|| bytecode.operand.equals("unapplyAllNonApplicableStereotypes")
-							) {
-								frame.execEnv.getModelOf((EObject)self).addDelayedInvocation(method, self, bytecode.operand.toString(), arguments);
-							} else {
-								s = method.invoke(self, arguments);
+						s = operation.exec(calleeFrame);
+					} else {
+						Assert.isTrue(bytecode.operand instanceof String);
+						// find native method
+						Object arguments[] = new Object[nbCalleeArgs];
+
+						boolean first = true;
+						for(int i = nbCalleeArgs-1 ; i >= 0 ; i--) {
+							arguments[i] = stack[--fp];
+							if(debug) {
+								if(!first)
+									log.append(", ");
+								first = false;
+								log.append(execEnv.toPrettyPrintedString(arguments[i]));
 							}
-						} else {
-							s = method.invoke(self, arguments);
 						}
-						if(s != null) stack[fp++] = s;
-
-						break;
-
-					} 
-
-					StackFrame calleeFrame = (StackFrame)frame.newFrame(operation);
-					Object arguments[] = calleeFrame.localVars;
-					int nbCalleeArgs = bytecode.value;
-
-					boolean first = true;
-					for(int i = nbCalleeArgs ; i >= 1 ; i--) {
-						arguments[i] = stack[--fp];
 						if(debug) {
-							if(!first)
-								frame.execEnv.out.print(", ");
-							first = false;
-							frame.execEnv.prettyPrint(arguments[i]);
+							log.append(")");
+							execEnv.logger.info(log.toString());
 						}
+						--fp;	// pop self, that we already retrieved earlier to get the operation
+						
+						Method m = findMethod(self.getClass(), (String)bytecode.operand, getTypesOf(arguments));
+						if (m == null)
+							throw new VMException(frame, "operation not found: " + execEnv.toPrettyPrintedString(self) + "." + bytecode.operand);
+						
+						s = m.invoke(self, arguments);
 					}
-					if(debug) {
-						frame.execEnv.out.println(")");
-					}
-					--fp;	// pop self, that we already retrieved earlier to get the operation
-					arguments[0] = self;
-
-					s = operation.exec(calleeFrame);
+					
 					if(s != null) stack[fp++] = s;
 					break;
 				case Bytecode.LOAD:
@@ -332,7 +332,9 @@ public class ASMOperation extends Operation {
 				case Bytecode.SET:
 					Object value = stack[--fp];
 					s = stack[--fp];
-					if(s instanceof EObject) {
+					if(s instanceof HasFields) {
+						((HasFields)s).set(frame, bytecode.operand, value);						
+					} else {
 						if(value instanceof Collection) {
 							Collection c = (Collection)value;
 							//TODO collections of collections have to be managed
@@ -340,22 +342,20 @@ public class ASMOperation extends Operation {
 						} else if(value instanceof OclUndefined) {	// other values are *not* wrapped
 							value = null;
 						}
-						EMFUtils.set(frame, (EObject)s, (String)bytecode.operand, value);
-					} else {
-						((HasFields)s).set(frame, bytecode.operand, value);
+						execEnv.modelAdapter.set(frame, s, (String)bytecode.operand, value);
 					}
 					break;
 				case Bytecode.GET:
 					s = stack[--fp];
-					type = ExecEnv.getType(s);
+					type = execEnv.modelAdapter.getType(s);
 					String propName = (String)bytecode.operand;
-					Operation ai = frame.execEnv.getAttributeInitializer(type, propName);
+					Operation ai = execEnv.getAttributeInitializer(type, propName);
 					if(ai != null) {
-						stack[fp++] = frame.execEnv.getHelperValue(frame, type, s, propName);
-					} else if(s instanceof EObject) {
-						stack[fp++] = EMFUtils.get(frame, (EObject)s, propName);
-					} else {
+						stack[fp++] = execEnv.getHelperValue(frame, type, s, propName);
+					} else if(s instanceof HasFields) {
 						stack[fp++] = ((HasFields)s).get(frame, propName);
+					} else {
+						stack[fp++] = execEnv.modelAdapter.get(frame, s, propName);						
 					}
 					break;
 				case Bytecode.DUP:
@@ -370,7 +370,7 @@ public class ASMOperation extends Operation {
 					break;
 				case Bytecode.DELETE:
 					s = stack[--fp];
-					EMFUtils.delete(frame, (EObject)s);
+					execEnv.modelAdapter.delete(frame, s);
 					break;
 				case Bytecode.GETASM:
 					stack[fp++] = frame.asmModule;
@@ -379,7 +379,7 @@ public class ASMOperation extends Operation {
 					Object mname = stack[--fp];
 					Object me = stack[--fp];
 					if(mname.equals("#native")){
-						//						TODO: makes sure the Map implementation is actually faster, then get rid of if-else-if implementation
+//						TODO: makes sure the Map implementation is actually faster, then get rid of if-else-if implementation
 						/*
 					if(me.equals("Sequence")) {
 						stack[fp++] = new ArrayList();
@@ -411,8 +411,8 @@ public class ASMOperation extends Operation {
 						}
 						/**/
 					} else {
-						EClass ec = ExecEnv.findMetaElement(frame, mname, me);
-						stack[fp++] = frame.execEnv.newElement(frame, ec);
+						Object ec = ExecEnv.findMetaElement(frame, mname, me);
+						stack[fp++] = execEnv.newElement(frame, ec);
 					}
 					break;
 				case Bytecode.FINDME:
@@ -426,7 +426,7 @@ public class ASMOperation extends Operation {
 							throw new VMException(frame, "cannot find " + mname + "!" + me);
 						}
 					} else {
-						EClass ec = ExecEnv.findMetaElement(frame, mname, me);
+						Object ec = ExecEnv.findMetaElement(frame, mname, me);
 						stack[fp++] = ec;
 					}
 					break;
@@ -469,28 +469,30 @@ public class ASMOperation extends Operation {
 				}
 
 				if(debug) {
-					frame.execEnv.out.print("\tstack: ");
+					log = new StringBuffer();
+					log.append("\tstack: ");
 					for(int i = 0 ; i < fp ; i++) {
 						if(i > 0)
-							frame.execEnv.out.print(", ");
-						frame.execEnv.prettyPrint(stack[i]);
+							log.append(", ");
+						log.append(frame.execEnv.toPrettyPrintedString(stack[i]));
 					}
-					frame.execEnv.out.println();
-
-					frame.execEnv.out.print("\tlocals: ");
+					execEnv.logger.info(log.toString());
+					
+					log = new StringBuffer();
+					log.append("\tlocals: ");
 					boolean first = true;
 					for(int i = 0 ; i < localVars.length ; i++) {
 						String name = resolveVariableName(i, pc);
 						if(name != null) {
 							if(!first) {
-								frame.execEnv.out.print(", ");
+								log.append(", ");
 							}
 							first = false;
-							frame.execEnv.out.print(name + "=");
-							frame.execEnv.prettyPrint(localVars[i]);
+							log.append(name + "=");
+							log.append(frame.execEnv.toPrettyPrintedString(localVars[i]));
 						}
 					}
-					frame.execEnv.out.println();
+					execEnv.logger.info(log.toString());
 				}
 			}
 		} catch(Exception e) {
@@ -503,23 +505,30 @@ public class ASMOperation extends Operation {
 
 		return (fp > 0 ? stack[--fp] : null);
 	}
+	
+	private static Class[] getTypesOf(Object[] arguments) {
+		final Class argumentTypes[] = new Class[arguments.length];
+		for(int i = 0; i < arguments.length; i++) {
+			argumentTypes[i] = arguments[i].getClass();
+		}
+		return argumentTypes;
+	}
 
 	/**
 	 * Looks for a method into cache and metamodel.
-	 *
-	 * @param cls The class of the method
+	 * @param caller The class of the method
 	 * @param name The method name
 	 * @param argumentTypes The types of all arguments
-	 * @return the method
-	 * @throws NoSuchMethodException
+	 * @return the method if found, null otherwise
 	 */
-	public Method findMethod(Class cls, String name, Class argumentTypes[]) throws NoSuchMethodException {
-		String sig = getMethodSignature(name, argumentTypes);
-		Method ret = findCachedMethod(cls,sig);
+	protected static Method findMethod(Class caller, String name, Class argumentTypes[]) {
+		final String sig = getMethodSignature(name, argumentTypes);
+		Method ret = findCachedMethod(caller, sig);
 		if (ret != null) {
 			return ret;
 		}
-		Method methods[] = cls.getDeclaredMethods(); 
+
+		Method methods[] = caller.getDeclaredMethods(); 
 		for(int i = 0 ; i < (methods.length) && (ret == null) ; i++) {
 			Method method = methods[i];
 			if(method.getName().equals(name)) {
@@ -543,11 +552,12 @@ public class ASMOperation extends Operation {
 				}
 			}
 		}
-		if((ret == null) && (cls.getSuperclass() != null)) {
-			ret = findMethod(cls.getSuperclass(), name, argumentTypes);
+
+		if((ret == null) && (caller.getSuperclass() != null)) {
+			ret = findMethod(caller.getSuperclass(), name, argumentTypes);
 		}
 
-		cacheMethod(cls,sig, ret);
+		cacheMethod(caller, sig, ret);
 
 		return ret;
 	}
@@ -563,7 +573,7 @@ public class ASMOperation extends Operation {
 	 * @param signature The method signature
 	 * @return the method
 	 */
-	public Method findCachedMethod(Class caller, String signature) {
+	private static Method findCachedMethod(Class caller, String signature) {
 		Method ret = null;
 		Map sigMap = (Map) methodCache.get(caller);
 		if (sigMap != null) {
@@ -578,7 +588,7 @@ public class ASMOperation extends Operation {
 	 * @param signature The method signature
 	 * @param method The method to store
 	 */
-	public void cacheMethod(Class caller, String signature, Method method) {
+	private static void cacheMethod(Class caller, String signature, Method method) {
 		synchronized (methodCache) {
 			Map sigMap = (Map) methodCache.get(caller);
 			if (sigMap == null) {
@@ -595,7 +605,7 @@ public class ASMOperation extends Operation {
 	 * @param argumentTypes
 	 * @return The method signature
 	 */
-	public static String getMethodSignature(String name, Class argumentTypes[]) {
+	private static String getMethodSignature(String name, Class argumentTypes[]) {
 		StringBuffer sig = new StringBuffer();
 		sig.append(name);
 		sig.append('(');
@@ -607,5 +617,9 @@ public class ASMOperation extends Operation {
 		}
 		sig.append(')');
 		return sig.toString();
+	}
+
+	public String toString() {
+		return this.context + "." + this.name;
 	}
 }

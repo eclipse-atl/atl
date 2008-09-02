@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault - initial API and implementation
+ *    Frï¿½dï¿½ric Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -14,6 +14,10 @@ public abstract class OclType {
 
 	private String name;
 	
+	public String getName() {
+		return name;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -21,4 +25,6 @@ public abstract class OclType {
 	public String toString() {
 		return (name == null) ? "<unnamed>" : name;
 	}
+	
+	public abstract boolean conformsTo(OclType other);
 }

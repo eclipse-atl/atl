@@ -1,23 +1,29 @@
 /*******************************************************************************
- * Copyright (c) 2007 INRIA.
+ * Copyright (c) 2007, 2008 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault - initial API and implementation
+ *    INRIA - initial API and implementation
  *    Obeo - bag implementation
- *    Mikael Barbero
+ *    
+ *
+ * $Id: ExecEnv.java,v 1.15 2008/09/02 15:29:17 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,80 +31,62 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnumLiteral;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.impl.EClassImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.m2m.atl.engine.emfvm.EmfvmPlugin;
 
 /**
  * Execution environment.
  *
- * @author Frédéric Jouault <a href="mailto:frederic.jouault@univ-nantes.fr">frederic.jouault@univ-nantes.fr</a>
+ * @author FrŽdŽric Jouault <a href="mailto:frederic.jouault@univ-nantes.fr">frederic.jouault@univ-nantes.fr</a>
  * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
  * @author Mikael Barbero <a href="mailto:mikael.barbero@univ-nantes.fr">mikael.barbero@univ-nantes.fr</a>
+ * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
  */
 public class ExecEnv {
 
+	public Logger logger = Logger.getLogger(EmfvmPlugin.LOGGER);
+
 	private Map operationsByType = new HashMap();
 
-	// TODO: map this to corresponding option	public boolean supportUML2Stereotypes = false;
-
+	// TODO: map this to corresponding option
 	private boolean cacheAttributeHelperResults = true;
 	private Map helperValuesByElement = new HashMap();
 	private Map attributeInitializers = new HashMap();
 
-	private Map modelsByName;
+	public Map modelsByName;
 	private Map nameByModel;
-	private Map modelsByResource;
 
-	public boolean step = false;	
-	public boolean supportUML2Stereotypes = false;
+	public boolean step = false;
 
-	// TODO: replace with a logger
-	public PrintStream out = System.out;
+	public ModelAdapter modelAdapter;
 
 	public long nbExecutedBytecodes = 0;
 
 	public ExecEnv(Map models) {
 		this.modelsByName = models;
-		modelsByResource = new HashMap();
 		nameByModel = new HashMap();
 		for(Iterator i = modelsByName.keySet().iterator() ; i.hasNext() ; ) {
 			String name = (String)i.next();
 			Model model = (Model)modelsByName.get(name);
-			modelsByResource.put(model.resource, model);
 			nameByModel.put(model, name);
 		}
 	}
 
-	public Model getModelOf(EObject element) {
-		Model ret = (Model)modelsByResource.get(element.eResource());
-
-		if(ret == null) {	// element may be a target model element
-			// TODO: evaluate performance gain of changing to entrySet().iterator()
-			for(Iterator i = modelsByName.keySet().iterator() ; i.hasNext() && (ret == null); ) {
-				String name = (String)i.next();
-				Model model = (Model)modelsByName.get(name);
-				/*
-				if(model.newElements.contains(element)) {
-					ret = model;
-				}
-				*/
-				if(model.contains(element)) {
-					ret = model;
-				}
-			}			
-		}
-
-		return ret;
+	public void init(ModelAdapter modelAdapter) {
+		this.modelAdapter = modelAdapter;
+		this.modelAdapter.registerVMSupertypes(this.supertypes);
+		this.modelAdapter.registerVMTypeOperations(this.vmTypeOperations);
 	}
 
-	public String getModelNameOf(EObject element) {
-		return (String)nameByModel.get(getModelOf(element));
+	public String getModelNameOf(Object element) {
+		return (String)nameByModel.get(modelAdapter.getModelOf(element));
+	}
+
+	public String getNameOf(Model model) {
+		return (String)nameByModel.get(model);
 	}
 
 	public Model getModel(Object name) {
@@ -118,11 +106,11 @@ public class ExecEnv {
 			ret = (Operation)map.get(name);
 
 		if(debug)
-			System.out.println(this + "@" + this.hashCode() + ".getOperation(" + type + ", " + name + ")");
+			logger.info(this + "@" + this.hashCode() + ".getOperation(" + type + ", " + name + ")");
 		if(ret == null) {
 			if(debug)
-				System.out.println("looking in super of this for operation " + name);
-			for(Iterator i = getSupertypes(type).iterator() ; i.hasNext() && (ret == null) ; ) {
+				logger.info("looking in super of this for operation " + name);
+			for(Iterator i = modelAdapter.getSupertypes(type).iterator() ; i.hasNext() && (ret == null) ; ) {
 				Object st = i.next();
 				ret = getOperation(st, name);
 			}
@@ -134,7 +122,7 @@ public class ExecEnv {
 		return ret;
 	}
 
-	private Map supertypes = new HashMap();
+	public Map supertypes = new HashMap();
 	{
 		// Integer extends Real
 		supertypes.put(Integer.class, Arrays.asList(new Class[] {Double.class}));
@@ -158,8 +146,6 @@ public class ExecEnv {
 		supertypes.put(OclParametrizedType.class, Arrays.asList(new Class[] {OclType.class}));
 		// OclSimpleType extends OclType
 		supertypes.put(OclSimpleType.class, Arrays.asList(new Class[] {OclType.class}));
-		// EClass extends EObject
-		supertypes.put(EClassImpl.class, Arrays.asList(new Class[] {EObjectImpl.class}));
 		// OclUndefined extends OclAny
 		supertypes.put(OclUndefined.class, Arrays.asList(new Class[] {Object.class}));
 		// TransientLink extends OclAny
@@ -174,33 +160,8 @@ public class ExecEnv {
 		supertypes.put(EnumLiteral.class, Arrays.asList(new Class[] {Object.class}));
 	}
 
-	public List getSupertypes(Object type) {
-		List ret = null;
-
-		if(type != null) {
-			if(type instanceof EClass) {
-				ret = ((EClass)type).getESuperTypes();
-				if(ret.size() == 0)	// extends OclAny
-					ret = Arrays.asList(new Class[] {Object.class});
-			} else {
-				ret = (List)supertypes.get(type);
-				if(ret == null) {
-					// Support for Java subclasses that do not correspond to OCL subtypes
-					Class sc = ((Class)type).getSuperclass();
-					if(sc != null) {
-						ret = Arrays.asList(new Class[] {sc});
-					}
-				}
-			}
-		}
-
-		if(ret == null) ret = Collections.EMPTY_LIST; 
-
-		return ret;
-	}
-
 	public void registerAttributeHelper(Object type, String name, String initOperationName) {
-		Operation op = (Operation)getOperation(type, initOperationName);
+		Operation op = getOperation(type, initOperationName);
 		getAttributeInitializers(type, true).put(name, op);
 	}
 
@@ -211,7 +172,7 @@ public class ExecEnv {
 			ret = (Operation)map.get(name);
 
 		if(ret == null) {
-			for(Iterator i = getSupertypes(type).iterator() ; i.hasNext() && (ret == null) ; ) {
+			for(Iterator i = modelAdapter.getSupertypes(type).iterator() ; i.hasNext() && (ret == null) ; ) {
 				Object st = i.next();
 				ret = getAttributeInitializer(st, name);
 			}
@@ -250,9 +211,13 @@ public class ExecEnv {
 	}
 
 	public Object getHelperValue(StackFrame frame, Object type, Object element, String name) {
+		Object ret = null;
 		Map helperValues = getHelperValues(element);
-		Object ret = helperValues.get(name);
+		SoftReference sr = (SoftReference)helperValues.get(name);
 
+		if(sr != null) {
+			ret = sr.get();
+		}
 		if(ret == null) {
 			Operation o = getAttributeInitializer(type, name);
 
@@ -262,7 +227,7 @@ public class ExecEnv {
 
 			ret = o.exec(calleeFrame);
 			if(cacheAttributeHelperResults)
-				helperValues.put(name, ret);
+				helperValues.put(name, new SoftReference(ret));
 		}
 
 		return ret;
@@ -301,7 +266,8 @@ public class ExecEnv {
 	}
 
 	public void prettyPrint(Object value) {
-		prettyPrint(out, value);
+//		prettyPrint(out, value);
+		logger.info(toPrettyPrintedString(value));
 	}
 
 	public void prettyPrint(PrintStream out, Object value) {
@@ -314,26 +280,13 @@ public class ExecEnv {
 		} else if(value instanceof EnumLiteral) {
 			out.print('#');
 			out.print(value);	// TODO: escape
-		} else if(value instanceof EClass){
-			EClass c = (EClass)value;
-			out.print(getModelNameOf(c));
-			out.print('!');
-			String name = c.getName();
-			if(name == null)
-				name = "<unnamed>";
-			out.print(name);
-		} else if(value instanceof EObject) {
-			EObject eo = (EObject)value;
-			prettyPrint(out, eo.eClass());
-			out.print('@');
-			out.print(getModelNameOf(eo));
 		} else if(value instanceof LinkedHashSet) {
 			out.print("OrderedSet {");
 			prettyPrintCollection(out, (Collection)value);
 		} else if(value instanceof HashSet) {
 			out.print("Set {");
 			prettyPrintCollection(out, (Collection)value);
-		} else if(value instanceof ArrayList || value instanceof EList) {
+		} else if(value instanceof ArrayList) {
 			out.print("Sequence {");
 			prettyPrintCollection(out, (Collection)value);
 		} else if(value instanceof Bag) {
@@ -355,12 +308,34 @@ public class ExecEnv {
 				prettyPrint(out, entry.getValue());
 			}
 			out.print('}');
+		} else if(value instanceof HashMap) {
+			out.print("Map {");
+			boolean first = true;
+			for(Iterator i = ((Map)value).entrySet().iterator() ; i.hasNext(); ) {
+				Map.Entry entry = (Map.Entry)i.next();
+				
+				if(first) {
+					first = false;
+				} else {
+					out.print(", ");
+				}
+				out.print('(');
+				prettyPrint(out, entry.getKey());
+				out.print(", ");
+				prettyPrint(out, entry.getValue());
+				out.print(')');
+			}
+			out.print('}');
+		} else if(value instanceof OclUndefined) {
+			out.print("OclUndefined");
 		} else {
-			out.print(value);
+			if (!modelAdapter.prettyPrint(out, value)) {
+				out.print(value);
+			}
 		}
 	}
 
-	private void prettyPrintCollection(PrintStream out, Collection col) {
+	public void prettyPrintCollection(PrintStream out, Collection col) {
 		boolean first = true;
 		for(Iterator i = col.iterator() ; i.hasNext() ; ) {
 			if(!first) {
@@ -372,8 +347,8 @@ public class ExecEnv {
 		out.print('}');
 	}
 
-	public static EClass findMetaElement(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame frame, Object mname, Object me) {
-		EClass ret = null;
+	public static Object findMetaElement(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame frame, Object mname, Object me) {
+		Object ret = null;
 
 		ReferenceModel referenceModel = (ReferenceModel)frame.execEnv.getModel(mname);
 		if(referenceModel != null) {
@@ -388,20 +363,10 @@ public class ExecEnv {
 		return ret;
 	}
 
-	public static Object getType(Object value) {
-		if(value instanceof EObject) {
-			return ((EObject)value).eClass();
-		} else if(value instanceof EList) {
-			return ArrayList.class;
-		} else {
-			return value.getClass();
-		}
-	}
-	
-	public Object newElement(StackFrame frame, EClass ec) {
+	public Object newElement(StackFrame frame, Object ec) {
 		Object s = null;
 		for(Iterator i = getModels() ; i.hasNext() ; ) {
-			Model model = (Model)i.next();
+			AbstractModel model = (AbstractModel)i.next();
 			if(!model.isTarget)
 				continue;
 			if(model.getReferenceModel().isModelOf(ec)) {
@@ -730,6 +695,12 @@ public class ExecEnv {
 				return new Boolean(((Boolean)localVars[0]).booleanValue() ^ ((Boolean)localVars[1]).booleanValue());					
 			}
 		});
+		operationsByName.put("implies", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Boolean(((Boolean)localVars[0]).booleanValue() ? ((Boolean)localVars[1]).booleanValue() : true);					
+			}
+		});
 
 		// Sequence
 		operationsByName = new HashMap();
@@ -817,13 +788,7 @@ public class ExecEnv {
 		operationsByName.put("asSequence", new Operation(1) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				return new ArrayList((Collection)localVars[0]);
-			}
-		});
-		operationsByName.put("asBag", new Operation(1) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				return new Bag((Collection)localVars[0]);
+				return localVars[0];
 			}
 		});
 		operationsByName.put("first", new Operation(1) {
@@ -857,13 +822,13 @@ public class ExecEnv {
 					ret = new ArrayList();
 					containsCollection = false;
 					for (Iterator iterator = base.iterator(); iterator.hasNext();) {
-						Object object = (Object) iterator.next();
+						Object object = iterator.next();
 						if (object instanceof Collection) {
 							Collection subCollection = (Collection) object;
 							ret.addAll(subCollection);
 							Iterator iterator2 = subCollection.iterator();
 							while (containsCollection == false && iterator2.hasNext()) {
-								Object subCollectionObject = (Object) iterator2.next();
+								Object subCollectionObject = iterator2.next();
 								if (subCollectionObject instanceof Collection) {
 									containsCollection = true;
 								}
@@ -913,13 +878,13 @@ public class ExecEnv {
 					ret = new Bag();
 					containsCollection = false;
 					for (Iterator iterator = base.iterator(); iterator.hasNext();) {
-						Object object = (Object) iterator.next();
+						Object object = iterator.next();
 						if (object instanceof Collection) {
 							Collection subCollection = (Collection) object;
 							ret.addAll(subCollection);
 							Iterator iterator2 = subCollection.iterator();
 							while (containsCollection == false && iterator2.hasNext()) {
-								Object subCollectionObject = (Object) iterator2.next();
+								Object subCollectionObject = iterator2.next();
 								if (subCollectionObject instanceof Collection) {
 									containsCollection = true;
 								}
@@ -978,6 +943,14 @@ public class ExecEnv {
 				return ret;
 			}
 		});
+		operationsByName.put("excluding", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				LinkedHashSet ret = new LinkedHashSet((Collection)localVars[0]);
+				ret.removeAll(Arrays.asList(new Object[] {localVars[1]}));
+				return ret;
+			}
+		});
 		operationsByName.put("append", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
@@ -990,12 +963,6 @@ public class ExecEnv {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 				return localVars[0];
-			}
-		});
-		operationsByName.put("asBag", new Operation(1) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				return new Bag((Collection)localVars[0]);
 			}
 		});
 		operationsByName.put("first", new Operation(1) {
@@ -1031,13 +998,13 @@ public class ExecEnv {
 					ret = new LinkedHashSet();
 					containsCollection = false;
 					for (Iterator iterator = base.iterator(); iterator.hasNext();) {
-						Object object = (Object) iterator.next();
+						Object object = iterator.next();
 						if (object instanceof Collection) {
 							Collection subCollection = (Collection) object;
 							ret.addAll(subCollection);
 							Iterator iterator2 = subCollection.iterator();
 							while (containsCollection == false && iterator2.hasNext()) {
-								Object subCollectionObject = (Object) iterator2.next();
+								Object subCollectionObject = iterator2.next();
 								if (subCollectionObject instanceof Collection) {
 									containsCollection = true;
 								}
@@ -1060,6 +1027,14 @@ public class ExecEnv {
 				Object localVars[] = frame.localVars;
 				Set ret = new HashSet((Collection)localVars[0]);
 				ret.add(localVars[1]);
+				return ret;
+			}
+		});
+		operationsByName.put("excluding", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				Set ret = new HashSet((Collection)localVars[0]);
+				ret.removeAll(Arrays.asList(new Object[] {localVars[1]}));
 				return ret;
 			}
 		});
@@ -1099,12 +1074,6 @@ public class ExecEnv {
 				return localVars[0];
 			}
 		});
-		operationsByName.put("asBag", new Operation(1) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				return new Bag((Collection)localVars[0]);
-			}
-		});
 		operationsByName.put("flatten", new Operation(1) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
@@ -1116,13 +1085,13 @@ public class ExecEnv {
 					ret = new HashSet();
 					containsCollection = false;
 					for (Iterator iterator = base.iterator(); iterator.hasNext();) {
-						Object object = (Object) iterator.next();
+						Object object = iterator.next();
 						if (object instanceof Collection) {
 							Collection subCollection = (Collection) object;
 							ret.addAll(subCollection);
 							Iterator iterator2 = subCollection.iterator();
 							while (containsCollection == false && iterator2.hasNext()) {
-								Object subCollectionObject = (Object) iterator2.next();
+								Object subCollectionObject = iterator2.next();
 								if (subCollectionObject instanceof Collection) {
 									containsCollection = true;
 								}
@@ -1170,7 +1139,7 @@ public class ExecEnv {
 				} else {
 					Iterator i = c.iterator();
 					Object ret = i.next();
-					Operation operation = getOperation(getType(ret), "+");
+					Operation operation = getOperation(modelAdapter.getType(ret), "+");
 					while(i.hasNext()) {
 						StackFrame callee = frame.newFrame(operation);
 						callee.localVars[0] = ret;
@@ -1218,8 +1187,7 @@ public class ExecEnv {
 
 				Collection s = (Collection)localVars[0];
 				for(Iterator i = ((Collection)localVars[1]).iterator() ; i.hasNext() ; ) {
-					Object object = i.next();
-					ret = ret && !s.contains(object);
+					ret = ret && !s.contains(i.next());
 				}
 
 				return new Boolean(ret);
@@ -1254,6 +1222,12 @@ public class ExecEnv {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 				return new Bag((Collection)localVars[0]);
+			}
+		});
+		operationsByName.put("asOrderedSet", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new LinkedHashSet((Collection)localVars[0]);
 			}
 		});
 
@@ -1390,6 +1364,18 @@ public class ExecEnv {
 				return new Boolean(((String)localVars[0]).equals(localVars[1]));					
 			}
 		});
+		operationsByName.put("writeTo", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Boolean(writeToWithCharset(frame, (String)localVars[0], (String)localVars[1], null));					
+			}
+		});
+		operationsByName.put("writeToWithCharset", new Operation(3) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Boolean(writeToWithCharset(frame, (String)localVars[0], (String)localVars[1], (String)localVars[2]));					
+			}
+		});
 
 		// Tuple
 		operationsByName = new HashMap();
@@ -1397,7 +1383,7 @@ public class ExecEnv {
 		operationsByName.put("=", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				return new Boolean(((Tuple)localVars[0]).equals((Tuple)localVars[1]));					
+				return new Boolean(((Tuple)localVars[0]).equals(localVars[1]));					
 			}
 		});
 
@@ -1410,35 +1396,10 @@ public class ExecEnv {
 				return toPrettyPrintedString(localVars[0]);
 			}
 		});
-		operationsByName.put("refGetValue", new Operation(2) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				if(localVars[0] instanceof EObject) {
-					return EMFUtils.get(frame, (EObject)localVars[0], (String)localVars[1]);
-				} else {
-					return ((HasFields)localVars[0]).get(frame, localVars[1]);
-				}
-			}
-		});
-		operationsByName.put("refSetValue", new Operation(3) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				if(localVars[0] instanceof EObject) {
-					EMFUtils.set(frame, (EObject)localVars[0], (String)localVars[1], localVars[2]);
-				} else {
-					((HasFields)localVars[0]).set(frame, localVars[1], localVars[2]);
-				}
-				return localVars[0];
-			}
-		});
 		operationsByName.put("=", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				if(localVars[0] instanceof EEnumLiteral) {
-					return new Boolean(((EEnumLiteral)localVars[0]).getName().equals(localVars[1].toString()));
-				} else {
-					return new Boolean(localVars[0].equals(localVars[1]));	
-				}				
+				return new Boolean(localVars[0].equals(localVars[1]));					
 			}
 		});
 		operationsByName.put("<>", new Operation(2) {
@@ -1452,76 +1413,11 @@ public class ExecEnv {
 				return Boolean.FALSE;					
 			}
 		});
-		operationsByName.put("oclType", new Operation(1) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				if(localVars[0] instanceof EObject) {
-					return ((EObject)localVars[0]).eClass();
-				} else {
-					throw new RuntimeException(".oclType not implemented for OCL library yet");
-				}
-			}
-		});
 		operationsByName.put("debug", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-//				out.println("Executed " + nbExecutedBytecodes + " bytecodes so far.");
-				out.print(localVars[1]);
-				out.print(": ");
-				prettyPrint(localVars[0]);
-				out.println();
+				logger.info(localVars[1] + ": " + toPrettyPrintedString(localVars[0]));
 				return localVars[0];
-			}
-		});
-		operationsByName.put("oclIsKindOf", new Operation(2) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				if(localVars[1] instanceof Class) {
-					return new Boolean(((Class)localVars[1]).isInstance(localVars[0]));
-				} else if(localVars[1] instanceof OclType) {
-					if(localVars[1] instanceof OclParametrizedType)
-						return new Boolean(localVars[0] instanceof Collection);
-					else
-						return Boolean.FALSE;	//TODO
-				} else if(localVars[1] instanceof EClass) {
-					return new Boolean(((EClass)localVars[1]).isInstance(localVars[0]));					
-				} else {
-					throw new RuntimeException("do not know how to handle type: " + localVars[1]);
-				}
-			}
-		});
-		operationsByName.put("oclIsTypeOf", new Operation(2) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				if(localVars[1] instanceof Class) {
-					return new Boolean(localVars[1].equals(localVars[0].getClass()));
-//					} else if(localVars[1] instanceof OclType) {		// TODO
-//					if(localVars[1] instanceof OclParametrizedType)
-//					return new Boolean(localVars[0] instanceof Collection);
-//					else
-//					return Boolean.FALSE;	//TODO
-				} else if(localVars[1] instanceof EClass) {
-					if(localVars[0] instanceof EObject) {
-						return new Boolean(localVars[1].equals(((EObject)localVars[0]).eClass()));
-					} else {
-						return Boolean.FALSE;
-					}
-				} else {
-					throw new RuntimeException("do not know how to handle type: " + localVars[1]);
-				}
-			}
-		});
-		operationsByName.put("refImmediateComposite", new Operation(1) {	// TODO: should only exist on EObject
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				if(localVars[0] instanceof EObject) {
-					Object ret = ((EObject)localVars[0]).eContainer();
-					if(ret == null)
-						ret = OclUndefined.SINGLETON;
-					return ret;
-				} else {
-					throw new RuntimeException("refImmediateComposite only valid on model elements");
-				}
 			}
 		});
 
@@ -1544,6 +1440,12 @@ public class ExecEnv {
 				return null;
 			}
 		});
+		operationsByName.put("conformsTo", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Boolean(((OclType)localVars[0]).conformsTo((OclType)localVars[1]));
+			}
+		});
 
 		// OclParametrizedType
 		operationsByName = new HashMap();
@@ -1553,61 +1455,6 @@ public class ExecEnv {
 				Object localVars[] = frame.localVars;
 				((OclParametrizedType)localVars[0]).setElementType(localVars[1]);
 				return null;
-			}
-		});
-
-		// EClass
-		operationsByName = new HashMap();
-		vmTypeOperations.put(EcorePackage.eINSTANCE.getEClass(), operationsByName);
-		operationsByName.put("allInstancesFrom", new Operation(2) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				Model model = frame.execEnv.getModel(localVars[1]);
-				if(model == null)
-					throw new RuntimeException("model not found: " + localVars[1]);
-				return model.getElementsByType((EClass)localVars[0]);
-			}
-		});
-		operationsByName.put("allInstances", new Operation(1) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-
-				// could be a Set (actually was) instead of an OrderedSet
-				Set ret = new LinkedHashSet();
-				EClass ec = (EClass)localVars[0];
-				Model rm = getModelOf(ec);
-				for(Iterator i = frame.execEnv.modelsByName.values().iterator() ; i.hasNext() ; ) {
-					Model model = (Model)i.next();
-					if((!model.isTarget) && (model.getReferenceModel() == rm))
-						ret.addAll(model.getElementsByType(ec));
-				}
-				return ret;
-			}
-		});
-		operationsByName.put("registerHelperAttribute", new Operation(3) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				String name = (String)localVars[1];
-				String initOperationName = (String)localVars[2];
-				frame.execEnv.registerAttributeHelper(localVars[0], name, initOperationName);
-				return null;
-			}
-		});
-		operationsByName.put("newInstance", new Operation(1) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				EClass ec = (EClass)localVars[0];
-				return newElement(frame, ec);
-			}
-		});
-		operationsByName.put("getInstanceById", new Operation(3) {
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				Model model = getModel(localVars[1]);
-				Object ret = model.resource.getEObject((String)localVars[2]);
-				if(ret == null)
-					ret = OclUndefined.SINGLETON;
-				return ret;
 			}
 		});
 
@@ -1621,6 +1468,12 @@ public class ExecEnv {
 				String initOperationName = (String)localVars[2];
 				frame.execEnv.registerAttributeHelper(localVars[0], name, initOperationName);
 				return null;
+			}
+		});
+		operationsByName.put("conformsTo", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				return new Boolean(((Class)localVars[1]).isAssignableFrom(((Class)localVars[0])));
 			}
 		});
 
@@ -1780,6 +1633,14 @@ public class ExecEnv {
 				return ((Map)localVars[0]).values();
 			}
 		});
+		operationsByName.put("union", new Operation(2) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				Map ret = new HashMap((Map)localVars[0]);
+				ret.putAll((Map)localVars[1]);
+				return ret;
+			}
+		});
 	}
 
 	private ArrayList emptySequence = new ArrayList();
@@ -1788,4 +1649,65 @@ public class ExecEnv {
 			return null;
 		}
 	};
+	
+	/**
+	 * Writes self to fileName with given character set.
+	 * @param frame VM stack frame
+	 * @param self the string to write
+	 * @param fileName the file to write to
+	 * @param charset the character set to use, or use default when null
+	 * @return true on success
+	 * @throws VMException if an {@link IOException} occurs
+	 */
+	private static boolean writeToWithCharset(StackFrame frame, String self,
+			String fileName, String charset) throws VMException {
+		boolean ret = false;
+		try {
+			File file = getFile(fileName);
+			if (file.getParentFile() != null)
+				file.getParentFile().mkdirs();
+			PrintStream out = null;
+			if (charset == null) {
+				out = new PrintStream(new BufferedOutputStream(
+						new FileOutputStream(file)), true);
+			} else {
+				out = new PrintStream(new BufferedOutputStream(
+						new FileOutputStream(file)), true, charset);
+			}
+			out.print(self);
+			out.close();
+			ret = true;
+		} catch (IOException ioe) {
+			throw new VMException(frame, ioe);
+		}
+		return ret;
+	}
+
+	/**
+     * @param path The absolute or relative path to a file. 
+     * @return The file in the workspace, or the file in the filesystem if
+     * the workspace is not available.
+     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+     */
+    private static File getFile(String path) {
+		try {
+			Class[] emptyClassArray = new Class[] {};
+			Object[] emptyObjectArray = new Object[] {};
+			Class rp = Class
+					.forName("org.eclipse.core.resources.ResourcesPlugin");
+			Object ws = rp.getMethod("getWorkspace", emptyClassArray).invoke(
+					null, emptyObjectArray);
+			Object root = ws.getClass().getMethod("getRoot", emptyClassArray)
+					.invoke(ws, emptyObjectArray);
+			Path wspath = new Path(path);
+			Object wsfile = root.getClass().getMethod("getFile",
+					new Class[] { IPath.class }).invoke(root,
+					new Object[] { wspath });
+			path = wsfile.getClass().getMethod("getLocation", emptyClassArray)
+					.invoke(wsfile, emptyObjectArray).toString();
+		} catch (Throwable e) {
+			//fall back to native java.io.File path resolution
+		}
+		return new File(path);
+	}
 }

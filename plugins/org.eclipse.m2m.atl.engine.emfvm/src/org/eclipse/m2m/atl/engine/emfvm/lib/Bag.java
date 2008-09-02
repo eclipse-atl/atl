@@ -50,9 +50,10 @@ public class Bag implements Collection {
 	/* (non-Javadoc)
 	 * @see java.util.Collection#add(E)
 	 */
+	private static final Integer ONE = new Integer(1);
 	public boolean add(Object arg0) {
 		if (!contains(arg0)) {
-			map.put(arg0, new Integer(1));
+			map.put(arg0, ONE);
 		}
 		else {
 			Integer val = (Integer)map.get(arg0);
@@ -68,7 +69,7 @@ public class Bag implements Collection {
 	 */
 	public boolean addAll(Collection arg0) {
 		for (Iterator iterator = arg0.iterator(); iterator.hasNext();) {
-			Object object = (Object) iterator.next();
+			Object object = iterator.next();
 			add(object);
 		}
 		return true;
@@ -93,7 +94,7 @@ public class Bag implements Collection {
 	 */
 	public boolean containsAll(Collection arg0) {
 		for (Iterator iterator = arg0.iterator(); iterator.hasNext();) {
-			Object object = (Object) iterator.next();
+			Object object = iterator.next();
 			if (!contains(object)) {
 				return false;				
 			}
@@ -132,7 +133,7 @@ public class Bag implements Collection {
 	 */
 	public boolean removeAll(Collection arg0) {
 		for (Iterator iterator = arg0.iterator(); iterator.hasNext();) {
-			Object object = (Object) iterator.next();
+			Object object = iterator.next();
 			remove(object);
 		}
 		return true;
@@ -169,7 +170,7 @@ public class Bag implements Collection {
 	 */
 	public boolean retainAll(Collection arg0) {
 		for (Iterator iterator = iterator(); iterator.hasNext();) {
-			Object object = (Object) iterator.next();
+			Object object = iterator.next();
 			if (!arg0.contains(object)) {
 				remove(object);
 			}
@@ -184,7 +185,7 @@ public class Bag implements Collection {
 		Object[] res = new Object[size()];
 		int i = 0;
 		for (Iterator iterator = iterator(); iterator.hasNext();) {
-			Object object = (Object) iterator.next();
+			Object object = iterator.next();
 			res[i] = object;
 			i++;
 		}
@@ -197,7 +198,7 @@ public class Bag implements Collection {
 	public Object[] toArray(Object[] arg0) {
 		int i = 0;
 		for (Iterator iterator = iterator(); iterator.hasNext();) {
-			Object object = (Object) iterator.next();
+			Object object = iterator.next();
 			arg0[i] = object;
 			i++;
 		}
