@@ -25,7 +25,7 @@ import org.eclipse.ui.IWorkbenchPart;
  * @author Freddy Allilaire
  *
  * DisassemblyModeAction is the action runned by the popup menu Disassembly Mode for IElement
- * see the extension point="org.eclipse.ui.popupMenus" in plugin.xml
+ * @see extension point="org.eclipse.ui.popupMenus" in plugin.xml
  * This action allows to switch between normal and disassembly mode.
  */
 public class DisassemblyModeAction implements IObjectActionDelegate {

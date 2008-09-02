@@ -85,7 +85,6 @@ public class AtlLauncherTools {
 	public static final String OPTION_STEP = "step"; //$NON-NLS-1$
 	public static final String OPTION_SHOW_SUMMARY = "showSummary"; //$NON-NLS-1$
 	public static final String OPTION_PROFILE = "profile"; //$NON-NLS-1$
-	public static final String OPTION_SUPPORTUML2STEREOTYPES = "supportUML2Stereotypes"; //$NON-NLS-1$
 	public static final String[] additionalParamIds = new String[] {
 //		ALLOW_TARGET_NAVIGATION,
 //		ALLOW_SOURCE_MODIFICATION,
@@ -96,7 +95,6 @@ public class AtlLauncherTools {
 		OPTION_STEP,
 		OPTION_SHOW_SUMMARY,
 		OPTION_PROFILE,
-		OPTION_SUPPORTUML2STEREOTYPES
 	};
 	public static final String[] additionalParamLabels = new String[] {
 //		"Allow navigation in target models",

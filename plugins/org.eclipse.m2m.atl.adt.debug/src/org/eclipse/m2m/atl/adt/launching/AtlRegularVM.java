@@ -81,14 +81,14 @@ public class AtlRegularVM extends AtlVM {
 	private static URL fileNameToURL(String filePath) throws MalformedURLException {
 		if (filePath.startsWith("ext:")) {//$NON-NLS-1$
 			File f = new File(filePath.substring(4));
-			return f.toURL();
+			return f.toURI().toURL();
 		}
 		else {
 			IWorkspace wks = ResourcesPlugin.getWorkspace();
 			IWorkspaceRoot wksroot = wks.getRoot();
-
+	
 			IFile currentLib = wksroot.getFile(new Path(filePath));
-			return currentLib.getLocation().toFile().toURL();
+			return currentLib.getLocation().toFile().toURI().toURL();
 		}
 	}
 
@@ -99,12 +99,12 @@ public class AtlRegularVM extends AtlVM {
 	 * @return ASM File corresponding to the ATL File
 	 */
 	private static IFile getASMFile(String atlFilePath) {
-
+	
 		// TODO Get properties of the project
 		// know where bin files are, then choose good ASM File for ATL File
-
+	
 		IFile currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(atlFilePath));
-
+		
 		String extension = currentAtlFile.getFileExtension().toLowerCase();
 		if (AtlLauncherTools.EXTENSIONS.contains(extension)) {
 			String currentAsmPath = currentAtlFile.getFullPath().toString().substring(0, currentAtlFile.getFullPath().toString().length() - extension.length()) + "asm";//$NON-NLS-1$
@@ -126,7 +126,7 @@ public class AtlRegularVM extends AtlVM {
 			for(Iterator i = arg.keySet().iterator() ; i.hasNext() ; ) {
 				String mName = (String)i.next();
 				String mmName = (String)arg.get(mName);
-
+	
 				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
 				ASMModel mofmm = amh.getMof();
 				toReturn.put("%" + modelHandler.get(mmName), mofmm);//$NON-NLS-1$
@@ -155,7 +155,7 @@ public class AtlRegularVM extends AtlVM {
 		}
 		catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			//			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return toReturn;
 	}
@@ -172,12 +172,12 @@ public class AtlRegularVM extends AtlVM {
 			for(Iterator i = arg.keySet().iterator() ; i.hasNext() ; ) {
 				String mName = (String)i.next();
 				String mmName = (String)arg.get(mName);
-
+	
 				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
 				ASMModel mofmm = amh.getMof();
 				mofmm.setIsTarget(false);
 				ASMModel outputModel;
-
+				
 				if (((String)path.get(mmName)).startsWith("#")) {//$NON-NLS-1$
 					if (input.get(mmName) == null)
 						toReturn.put(mmName, mofmm);
@@ -204,40 +204,40 @@ public class AtlRegularVM extends AtlVM {
 		}
 		catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			//			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return toReturn;
 	}
 
 	/**
-	 * @param param
-	 * @return Returns the property value of the project
-	 */
+		 * @param param
+		 * @return Returns the property value of the project
+		 */
 	//	private String getAtlProjectProperties(String param) {
 	//		// TODO getAtlProjectProperties
 	//		return null;
 	//	}
-
-
-	private static ASMModel loadModel(AtlModelHandler amh, String mName, ASMModel metamodel, String path, Collection toDispose) throws CoreException, FileNotFoundException {
-		ASMModel ret = null;
-
-		if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
-			if(path.startsWith("uri:")) {//$NON-NLS-1$
-				ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, path);
-				// this model should not be disposed of because we did not load it
-			} else {
-				ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, fileNameToURI(path));				
+		
+		
+		private static ASMModel loadModel(AtlModelHandler amh, String mName, ASMModel metamodel, String path, Collection toDispose) throws CoreException, FileNotFoundException {
+			ASMModel ret = null;
+			
+			if(useEMFURIs && (amh instanceof AtlEMFModelHandler)) {
+				if(path.startsWith("uri:")) {//$NON-NLS-1$
+					ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, path);
+					// this model should not be disposed of because we did not load it
+				} else {
+					ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, fileNameToURI(path));				
+					toDispose.add(ret);
+				}
+			}
+			else {
+				ret = amh.loadModel(mName, metamodel, fileNameToInputStream(path));
 				toDispose.add(ret);
 			}
+	
+			return ret;
 		}
-		else {
-			ret = amh.loadModel(mName, metamodel, fileNameToInputStream(path));
-			toDispose.add(ret);
-		}
-
-		return ret;
-	}
 
 	/**
 	 * @param amh
@@ -249,118 +249,155 @@ public class AtlRegularVM extends AtlVM {
 	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
 	 */
 	private static ASMModel newModel(AtlModelHandler amh, String mName, ASMModel metamodel, String path, Collection toDispose) {
-		ASMModel ret = amh.newModel(mName, fileNameToURI(path).toString(), metamodel);
-		toDispose.add(ret);
-		return ret;
+	    ASMModel ret = amh.newModel(mName, fileNameToURI(path).toString(), metamodel);
+	    toDispose.add(ret);
+	    return ret;
 	}
 
 	/**
 	 * 
-	 * @param filePath path of the ATL Transformation
-	 * @param input Map {model_input --> metamodel_input}
-	 * @param output Map {model_output --> metamodel_output}
-	 * @param path Map {model_name --> URI}
-	 * @param modelType Map {model_name --> type if the model(mIn, mmIn, ...)}
-	 * @param modelHandler MDR, UML2 or EMF
-	 * @param mode DEBUG or RUN
-	 * @param libsFromConfig Map {lib_name --> URI}
-	 * @param superimpose list of module URIs to superimpose 
+	 * @param filePath		: path of the ATL Transformation
+	 * @param input			: Map {model_input --> metamodel_input}
+	 * @param output		: Map {model_output --> metamodel_output}
+	 * @param path			: Map {model_name --> URI}
+	 * @param modelType		: Map {model_name --> type if the model(mIn, mmIn, ...)}
+	 * @param modelHandler	: modelHandler (MDR or EMF)
+	 * @param mode			: mode (DEBUG or RUN)
+	 * @param ckeckSameModel TODO
+	 * @param libsFromConfig: Map {lib_name --> URI}
+	 * @param superimpose   : list of module URIs to superimpose 
 	 */
-	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, List superimpose, Map options) {
-		boolean checkSameModel = "true".equals(options.get("checkSameModel"));//$NON-NLS-1$//$NON-NLS-2$
-		Map toReturn = new HashMap();
-		try {
-			//asmUrl
-			IFile asmFile = getASMFile(filePath);
-			URL asmUrl;
-			asmUrl = asmFile.getLocation().toFile().toURL();
+//	public static void runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, boolean checkSameModel, List superimpose) {
+//		runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, Collections.EMPTY_MAP, checkSameModel, superimpose);
+//	}
+//
+//	public static void runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, boolean checkSameModel, List superimpose, boolean continueAfterErrors) {
+//		runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, Collections.EMPTY_MAP, checkSameModel, superimpose, continueAfterErrors);
+//	}
 
-			//model handler
-			Map atlModelHandler = new HashMap();
-			for (Iterator i = modelHandler.keySet().iterator(); i.hasNext();) {
-				String currentModelHandler = (String)modelHandler.get(i.next());
-				if (!atlModelHandler.containsKey(currentModelHandler) && !currentModelHandler.equals(""))//$NON-NLS-1$
-					atlModelHandler.put(currentModelHandler, AtlModelHandler.getDefault(currentModelHandler));
-			}
+	/**
+	 * 
+	 * @param filePath		: path of the ATL Transformation
+	 * @param input			: Map {model_input --> metamodel_input}
+	 * @param output		: Map {model_output --> metamodel_output}
+	 * @param path			: Map {model_name --> URI}
+	 * @param modelType		: Map {model_name --> type if the model(mIn, mmIn, ...)}
+	 * @param modelHandler	: modelHandler (MDR or EMF)
+	 * @param mode			: mode (DEBUG or RUN)
+	 * @param linkWithNextTransformation
+	 * @param checkSameModel TODO
+	 * @param libsFromConfig: Map {lib_name --> URI}
+	 * @param superimpose   : list of module URIs to superimpose 
+	 * @return
+	 */
+//	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, boolean checkSameModel, List superimpose) {
+//		return runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, linkWithNextTransformation, Collections.EMPTY_MAP, checkSameModel, superimpose, false);
+//	}
+//
+//	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, Map linkWithNextTransformation, boolean checkSameModel, List superimpose, boolean continueAfterErrors) {
+//		return runAtlLauncher(filePath, libsFromConfig, input, output, path, modelType, modelHandler, mode, linkWithNextTransformation, Collections.EMPTY_MAP, checkSameModel, superimpose, continueAfterErrors);
+//	}
 
-			//libs
-			Map libs = new HashMap();
-			for(Iterator i = libsFromConfig.keySet().iterator() ; i.hasNext() ; ) {
-				String libName = (String)i.next();
-				URL stringsUrl = fileNameToURL((String)libsFromConfig.get(libName));
-				libs.put(libName, stringsUrl);
-			}
-
-			//superimpose
-			List superimposeURLs = new ArrayList();
-			for(Iterator i = superimpose.iterator() ; i.hasNext() ; ) {
-				URL moduleUrl = fileNameToURL((String)i.next());
-				superimposeURLs.add(moduleUrl);
-			}
-
-			Collection toDispose = new HashSet();
-			//models
-			//if (inModel.isEmpty())
-			Map inModel = getSourceModels(input, path, modelHandler, atlModelHandler, checkSameModel, toDispose);
-			Map outModel = getTargetModels(output, path, modelHandler, atlModelHandler, inModel, checkSameModel, toDispose);
-
-			Map models = new HashMap();
-
-			for(Iterator i = inModel.keySet().iterator() ; i.hasNext() ; ) {
-				String mName = (String)i.next();
-				models.put(mName, inModel.get(mName));
-			}
-
-			for(Iterator i = outModel.keySet().iterator() ; i.hasNext() ; ) {
-				String mName = (String)i.next();
-				models.put(mName, outModel.get(mName));
-			}
-
-			//params
-			Map params = Collections.EMPTY_MAP;
-
-			AtlLauncher myLauncher = AtlLauncher.getDefault();
-			if (mode.equals(ILaunchManager.DEBUG_MODE))
-				myLauncher.debug(asmUrl, libs, models, params, superimposeURLs, options);
-			else
-				myLauncher.launch(asmUrl, libs, models, params, superimposeURLs, options);
-
-			for(Iterator i = outModel.keySet().iterator(); i.hasNext() ; ) {
-				String mName = (String)i.next();
-				ASMModel currentOutModel = (ASMModel)outModel.get(mName);
-				//					if (linkWithNextTransformation.containsKey(mName))
-				//						toReturn.put(linkWithNextTransformation.get(mName), currentOutModel);
-
-				if ((modelType.get(mName) != null) && ((String)modelType.get(mName)).equals(ModelChoiceTab.MODEL_OUTPUT)) {
-					// TODO mettre un boolean peut gérer la non sauvegarde
-					String mmName = (String)output.get(mName);
-					((AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName))).saveModel(currentOutModel, (String)path.get(mName));
+	public static Map runAtlLauncher(String filePath, Map libsFromConfig, Map input, Map output, Map path, Map modelType, Map modelHandler, String mode, /*Map linkWithNextTransformation, Map inModel, */List superimpose, Map options) {
+			boolean checkSameModel = "true".equals(options.get("checkSameModel"));//$NON-NLS-1$//$NON-NLS-2$
+			Map toReturn = new HashMap();
+			try {
+				//asmUrl
+				IFile asmFile = getASMFile(filePath);
+				URL asmUrl;
+				asmUrl = asmFile.getLocation().toFile().toURI().toURL();
+	
+				//model handler
+				Map atlModelHandler = new HashMap();
+				for (Iterator i = modelHandler.keySet().iterator(); i.hasNext();) {
+					String currentModelHandler = (String)modelHandler.get(i.next());
+					if (!atlModelHandler.containsKey(currentModelHandler) && !currentModelHandler.equals(""))//$NON-NLS-1$
+						atlModelHandler.put(currentModelHandler, AtlModelHandler.getDefault(currentModelHandler));
 				}
+				
+				//libs
+				Map libs = new HashMap();
+				for(Iterator i = libsFromConfig.keySet().iterator() ; i.hasNext() ; ) {
+					String libName = (String)i.next();
+					URL stringsUrl = fileNameToURL((String)libsFromConfig.get(libName));
+					libs.put(libName, stringsUrl);
+				}
+	
+	            //superimpose
+	            List superimposeURLs = new ArrayList();
+	            for(Iterator i = superimpose.iterator() ; i.hasNext() ; ) {
+	                URL moduleUrl = fileNameToURL((String)i.next());
+	                superimposeURLs.add(moduleUrl);
+	            }
+	
+				Collection toDispose = new HashSet();
+				//models
+				//if (inModel.isEmpty())
+				Map inModel = getSourceModels(input, path, modelHandler, atlModelHandler, checkSameModel, toDispose);
+				Map outModel = getTargetModels(output, path, modelHandler, atlModelHandler, inModel, checkSameModel, toDispose);
+	
+				Map models = new HashMap();
+	
+				for(Iterator i = inModel.keySet().iterator() ; i.hasNext() ; ) {
+					String mName = (String)i.next();
+					models.put(mName, inModel.get(mName));
+				}
+				
+				for(Iterator i = outModel.keySet().iterator() ; i.hasNext() ; ) {
+					String mName = (String)i.next();
+					models.put(mName, outModel.get(mName));
+				}
+	
+	//			models.put("ATL", amh.getAtl());
+	//			models.put("MOF", amh.getMof());
+				
+				//params
+				Map params = Collections.EMPTY_MAP;
+	
+				AtlLauncher myLauncher = AtlLauncher.getDefault();
+				if (mode.equals(ILaunchManager.DEBUG_MODE))
+					myLauncher.debug(asmUrl, libs, models, params, superimposeURLs, options);
+				else
+					myLauncher.launch(asmUrl, libs, models, params, superimposeURLs, options);
+				
+				for(Iterator i = outModel.keySet().iterator(); i.hasNext() ; ) {
+					String mName = (String)i.next();
+					ASMModel currentOutModel = (ASMModel)outModel.get(mName);
+//					if (linkWithNextTransformation.containsKey(mName))
+//						toReturn.put(linkWithNextTransformation.get(mName), currentOutModel);
+	
+					if ((modelType.get(mName) != null) && ((String)modelType.get(mName)).equals(ModelChoiceTab.MODEL_OUTPUT)) {
+						// TODO mettre un boolean peut gérer la non sauvegarde
+						String mmName = (String)output.get(mName);
+						((AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName))).saveModel(currentOutModel, (String)path.get(mName));
+					}
+				}
+				
+				for(Iterator i = toDispose.iterator() ; i.hasNext() ; ) {
+					ASMModel model = (ASMModel)i.next();
+					AtlModelHandler.getHandler(model).disposeOfModel(model);
+				}
+			} catch (MalformedURLException e) {
+				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//				e.printStackTrace();
+			} catch (CoreException e1) {
+				logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+//				e1.printStackTrace();
 			}
-
-			for(Iterator i = toDispose.iterator() ; i.hasNext() ; ) {
-				ASMModel model = (ASMModel)i.next();
-				AtlModelHandler.getHandler(model).disposeOfModel(model);
-			}
-		} catch (MalformedURLException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			//				e.printStackTrace();
-		} catch (CoreException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
-			//				e1.printStackTrace();
+			return toReturn;
 		}
-		return toReturn;
-	}
 
+	//	private static AtlModelHandler amh;
+	
 	/**
 	 * Launches the given configuration in the specified mode, contributing
 	 * debug targets to the given launch object. The
 	 * launch object has already been registered with the launch manager.
 	 * 
-	 * @param configurationParam the configuration to launch
+	 * @param configuration the configuration to launch
 	 * @param mode the mode in which to launch, one of the mode constants
 	 * defined by ILaunchManager - RUN_MODE or DEBUG_MODE.
-	 * @param launchParam the launch object to contribute processes and debug
+	 * @param launch the launch object to contribute processes and debug
 	 *  targets to
 	 * @param monitor progress monitor, not is used here
 	 * @exception CoreException if launching fails
@@ -368,11 +405,11 @@ public class AtlRegularVM extends AtlVM {
 	 * @see ILaunchConfigurationDelegate#launch(ILaunchConfiguration, String, ILaunch, IProgressMonitor) 
 	 */
 	public void launch(ILaunchConfiguration configurationParam, String mode, ILaunch launchParam, IProgressMonitor monitor) throws CoreException {
-
+	
 		final String currentMode = mode;
 		final ILaunchConfiguration configuration = configurationParam;
 		final ILaunch launch = launchParam;
-
+		
 		/*
 		 * If the mode choosen was Debug, an ATLDebugTarget was created
 		 * */
@@ -380,13 +417,13 @@ public class AtlRegularVM extends AtlVM {
 			// link between the debug target and the source locator
 			launch.setSourceLocator(new AtlSourceLocator());
 			AtlDebugTarget mTarget = new AtlDebugTarget(launchParam);
-
+	
 			new Thread() {
 				public void run() {
 					runAtlLauncher(configuration, launch, currentMode);
 				}
 			}.start();
-
+			
 			mTarget.start();
 			launchParam.addDebugTarget(mTarget);
 		}
@@ -401,34 +438,34 @@ public class AtlRegularVM extends AtlVM {
 	}
 
 	/**
-	 * Launcher of the debuggee with AtlLauncher
-	 * @param configuration
-	 * @param launch
-	 */
-	private void runAtlLauncher(ILaunchConfiguration configuration, ILaunch launch, String mode) {
-		try {
-			String fileName = configuration.getAttribute(AtlLauncherTools.ATLFILENAME, AtlLauncherTools.NULLPARAMETER);
-			//			String projectName = configuration.getAttribute(AtlLauncherTools.PROJECTNAME, AtlLauncherTools.NULLPARAMETER);
-			Map input = configuration.getAttribute(AtlLauncherTools.INPUT, new HashMap());
-			Map output = configuration.getAttribute(AtlLauncherTools.OUTPUT, new HashMap());
-			Map path = configuration.getAttribute(AtlLauncherTools.PATH, new HashMap());
-			Map modelType = configuration.getAttribute(AtlLauncherTools.MODELTYPE, new HashMap());
-			Map libsFromConfig = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
-			Map modelHandler = configuration.getAttribute(AtlLauncherTools.MODELHANDLER, new HashMap());
-			List superimpose = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
-
-			Map options = new HashMap();
-			for(int i = 0 ; i < AtlLauncherTools.additionalParamIds.length ; i++) {
-				boolean value = configuration.getAttribute(AtlLauncherTools.additionalParamIds[i], false);
-				options.put(AtlLauncherTools.additionalParamIds[i], value ? "true" : "false");//$NON-NLS-1$//$NON-NLS-2$
+		 * Launcher of the debuggee with AtlLauncher
+		 * @param configuration
+		 * @param launch
+		 */
+		private void runAtlLauncher(ILaunchConfiguration configuration, ILaunch launch, String mode) {
+			try {
+				String fileName = configuration.getAttribute(AtlLauncherTools.ATLFILENAME, AtlLauncherTools.NULLPARAMETER);
+	//			String projectName = configuration.getAttribute(AtlLauncherTools.PROJECTNAME, AtlLauncherTools.NULLPARAMETER);
+				Map input = configuration.getAttribute(AtlLauncherTools.INPUT, new HashMap());
+				Map output = configuration.getAttribute(AtlLauncherTools.OUTPUT, new HashMap());
+				Map path = configuration.getAttribute(AtlLauncherTools.PATH, new HashMap());
+				Map modelType = configuration.getAttribute(AtlLauncherTools.MODELTYPE, new HashMap());
+				Map libsFromConfig = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
+				Map modelHandler = configuration.getAttribute(AtlLauncherTools.MODELHANDLER, new HashMap());
+	            List superimpose = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
+	
+				Map options = new HashMap();
+				for(int i = 0 ; i < AtlLauncherTools.additionalParamIds.length ; i++) {
+					boolean value = configuration.getAttribute(AtlLauncherTools.additionalParamIds[i], false);
+					options.put(AtlLauncherTools.additionalParamIds[i], value ? "true" : "false");//$NON-NLS-1$//$NON-NLS-2$
+				}
+				
+				runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode, superimpose, options);
+			} catch (CoreException e1) {
+				logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+//				e1.printStackTrace();
 			}
-
-			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode, superimpose, options);
-		} catch (CoreException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
-			//				e1.printStackTrace();
 		}
-	}
 
 	public Object launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options) {
 		return AtlLauncher.getDefault().launch(asmUrl, libs, models, params, superimps, options);
