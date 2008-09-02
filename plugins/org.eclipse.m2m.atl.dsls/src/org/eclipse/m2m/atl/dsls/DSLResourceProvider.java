@@ -40,6 +40,7 @@ public class DSLResourceProvider {
 	public static DSLResourceProvider getDefault() {
 		if(INSTANCE == null) {
 			INSTANCE = new DSLResourceProvider();
+			INSTANCE.initResources();
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 	        if (registry == null) {
 	            throw new RuntimeException("Extension registry not found");
@@ -52,7 +53,8 @@ public class DSLResourceProvider {
 				IConfigurationElement[] elements = extensions[i].getConfigurationElements();
 				for(int j = 0 ; j < elements.length ; j++){
 					try {					
-						elements[j].createExecutableExtension("class"); //$NON-NLS-1$
+						DSLResourceProvider resourceProvider = (DSLResourceProvider)elements[j].createExecutableExtension("class"); //$NON-NLS-1$
+						resourceProvider.initResources();
 						break extensions;
 					} catch (CoreException e){
 	//					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -69,11 +71,7 @@ public class DSLResourceProvider {
 		return (Resource)resourcesById.get(id);
 	}
 
-	protected DSLResourceProvider() {
-		initResources(resourcesById);
-	}
-
-	private void initResources(Map resourcesById) {
+	private void initResources() {
 		try {
 			BufferedReader in = new URLTextSource(getURL("contents.list")).openBufferedReader();
 			String line;
@@ -95,7 +93,13 @@ public class DSLResourceProvider {
 						}
 
 						public URI asEMFURI() {
-							return URI.createPlatformPluginURI("/" + pluginId + "/" + resourcesRoot + path, true);
+							// The following line is not compatible with Eclipse 2.2.x
+							//return URI.createPlatformPluginURI("/" + pluginId + "/" + resourcesRoot + path, true);
+							try {
+								return URI.createURI(FileLocator.resolve(url).toString());
+							} catch (IOException e) {
+								return null;
+							}
 						}
 					});
 				}
