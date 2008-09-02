@@ -55,7 +55,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMTuple;
 
 /**
- * @author Frï¿½dï¿½ric Jouault (INRIA)
+ * @author Frédéric Jouault (INRIA)
  * @author Freddy Allilaire (INRIA)
  * @author Christophe Le Camus (C-S)
  * @author Sebastien Gabel (C-S) 
