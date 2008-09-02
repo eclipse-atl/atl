@@ -340,7 +340,7 @@ if(debug) logger.info("\tAdding acquaintance \"" + name2 + "\" to " + type1);
     }
 
 	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, String url, ModelLoader ml) throws Exception {
-		return loadASMMDRModel(name, metamodel, new File(url).toURL(), ml);
+		return loadASMMDRModel(name, metamodel, new File(url).toURI().toURL(), ml);
 	}
 
 	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, URL url, ModelLoader ml) throws Exception {
