@@ -12,8 +12,10 @@ package org.eclipse.m2m.atl.examples;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -22,6 +24,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.atl.engine.emfvm.ASM;
 import org.eclipse.m2m.atl.engine.emfvm.ASMXMLReader;
+import org.eclipse.m2m.atl.engine.emfvm.emf.EMFModel;
+import org.eclipse.m2m.atl.engine.emfvm.emf.EMFReferenceModel;
+import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Model;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
@@ -53,7 +58,7 @@ public class EMFVMLauncher {
 	 * @throws Exception
 	 */
 	public static double launch(URL asmURL, Map input, Map output, Map path,
-			Map libsFromConfig, Map options) throws Exception {
+			Map libsFromConfig, List superimps, Map options) throws Exception {
 		long startTime;
 		long endTime;
 		ASM asm = new ASMXMLReader().read(asmURL.openStream());
@@ -68,7 +73,7 @@ public class EMFVMLauncher {
 				mm = loadReferenceModel(mmName, path);
 				models.put(mmName, mm);
 			}
-			Model m = new Model(mm,
+			AbstractModel m = new EMFModel(mm,
 					URI.createFileURI((String) path.get(mName)), false);
 			models.put(mName, m);
 		}
@@ -82,7 +87,7 @@ public class EMFVMLauncher {
 				mm = loadReferenceModel(mmName, path);
 				models.put(mmName, mm);
 			}
-			Model m = new Model(mm, URI.createPlatformResourceURI((String) path
+			AbstractModel m = new EMFModel(mm, URI.createPlatformResourceURI((String) path
 					.get(mName), true), true);
 			models.put(mName, m);
 			m.isTarget = true;
@@ -100,15 +105,24 @@ public class EMFVMLauncher {
 				libraries.put(libName, lib);
 			}
 
+			List superimpose = new ArrayList();
+			for(Iterator i = superimps.iterator() ; i.hasNext() ; ) {
+				String supPath = (String)i.next();
+				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(supPath));
+				ASM module = new ASMXMLReader().read(file.getContents());
+				superimpose.add(module);
+			}
+			
 			startTime = System.currentTimeMillis();
-			asm.run(models, libraries, options);
+			asm.run(models, libraries,superimpose, options);
 			endTime = System.currentTimeMillis();
 
 			for (Iterator i = output.keySet().iterator(); i.hasNext();) {
 				String mName = (String) i.next();
 
 				Model m = (Model) models.get(mName);
-				m.save(URI.createFileURI((String) path.get(mName)));
+				m.save(URI.createFileURI((String) path.get(mName)).toString());
+				
 			}
 		} catch (VMException vme) {
 			vme.printStackTrace(System.out);
@@ -123,21 +137,18 @@ public class EMFVMLauncher {
 		return (endTime - startTime) / 1000.;
 	}
 
-	private static ReferenceModel loadReferenceModel(String mmName,
-			Map modelPaths) throws IOException {
+	private static ReferenceModel loadReferenceModel(String mmName, Map modelPaths) throws IOException {
 		ReferenceModel ret = null;
-
-		String path = (String) modelPaths.get(mmName);
-		if (path.startsWith("#")) {
-			ret = ReferenceModel.getMetametamodel();
-		} else if (path.startsWith("uri:")) {
-			ret = new ReferenceModel(ReferenceModel.getMetametamodel(), path
-					.substring(4));
+		
+		String path = (String)modelPaths.get(mmName);
+		if(path.startsWith("#")) {
+			ret = EMFReferenceModel.getMetametamodel();
+		} else if(path.startsWith("uri:")){
+			ret = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), path.substring(4));
 		} else {
-			ret = new ReferenceModel(ReferenceModel.getMetametamodel(), URI
-					.createFileURI(path));
-		}
-
+			ret = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), URI.createPlatformResourceURI(path, true));
+		}		
+		
 		return ret;
 	}
 }
