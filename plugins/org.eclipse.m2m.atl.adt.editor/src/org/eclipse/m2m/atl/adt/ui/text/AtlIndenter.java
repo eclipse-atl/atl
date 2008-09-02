@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.Assert;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -19,7 +19,7 @@ import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 
 /**
- * Uses the {@link AtlHeuristicScanner} to
+ * Uses the {@link org.eclipse.jdt.internal.ui.text.AtlHeuristicScanner}to
  * get the indentation level for a certain position in a document.
  * 
  * <p>

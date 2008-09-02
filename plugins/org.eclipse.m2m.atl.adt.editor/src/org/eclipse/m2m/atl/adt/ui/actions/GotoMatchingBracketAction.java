@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.actions;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.text.Assert;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
 

@@ -58,6 +58,6 @@ public class AlphabeticalSorter extends ViewerSorter
 			name1 = "";//$NON-NLS-1$
 		if (name2 == null)
 			name2 = "";//$NON-NLS-1$
-		return collator.compare(name1, name2);
+		return getComparator().compare(name1, name2);
 	}
 }
