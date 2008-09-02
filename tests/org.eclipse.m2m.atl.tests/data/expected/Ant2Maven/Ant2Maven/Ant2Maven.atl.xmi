@@ -10,7 +10,11 @@
     <metamodel href="temp#/1"/>
   </outModels>
   <elements xsi:type="atl:MatchedRule" location="7:1-38:2" name="AntProject2Maven">
+    <commentsBefore>-- central element : Project</commentsBefore>
+    <commentsBefore>-- two files to create : MavenMaven (representing maven.xml)</commentsBefore>
+    <commentsBefore>--&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and MavenProject (representing project.xml)</commentsBefore>
     <outPattern location="15:3-37:5">
+      <commentsBefore>-- for MavenProject</commentsBefore>
       <elements xsi:type="atl:SimpleOutPatternElement" location="15:6-20:6" varName="mp">
         <type xsi:type="ocl:OclModelElement" location="15:11-15:31" name="Project">
           <model href="temp#/1"/>
@@ -52,6 +56,7 @@
         </bindings>
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="26:4-33:7" varName="mm">
+        <commentsBefore>-- for MavenMaven</commentsBefore>
         <type xsi:type="ocl:OclModelElement" location="26:9-26:27" name="Project">
           <model href="temp#/0"/>
         </type>
@@ -97,6 +102,7 @@
       </elements>
     </outPattern>
     <inPattern location="8:3-13:3">
+      <commentsAfter>-- for MavenProject</commentsAfter>
       <elements xsi:type="atl:SimpleInPatternElement" location="8:8-8:23" varName="a" variableExp="//@elements.0/@inPattern/@filter/@condition/@source/@source //@elements.0/@inPattern/@filter/@elseExpression/@source/@source/@source //@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.0/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.0/@outPattern/@elements.0/@bindings.2/@value/@source //@elements.0/@outPattern/@elements.1/@bindings.0/@value/@source //@elements.0/@outPattern/@elements.1/@bindings.1/@value/@source/@source //@elements.0/@outPattern/@elements.2/@bindings.1/@value/@source //@elements.0/@outPattern/@elements.2/@bindings.2/@value/@source //@elements.0/@outPattern/@elements.2/@bindings.3/@value/@source //@elements.0/@outPattern/@elements.2/@bindings.4/@value/@source //@elements.0/@outPattern/@elements.2/@bindings.5/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="8:12-8:23" name="Project">
           <model href="temp#/2"/>
@@ -121,7 +127,21 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="40:1-71:2" name="AntProject2MavenWithoutDescription">
+    <commentsAfter>-----------------------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>-----------------------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- rules only for Maven.xml (meta model : MavenMaven)</commentsAfter>
+    <commentsAfter>-- goals</commentsAfter>
+    <commentsAfter>-- rule AntTarget2MavenMavenGoal2{</commentsAfter>
+    <commentsAfter>--&#x9;from a : Ant!Target(</commentsAfter>
+    <commentsAfter>--&#x9;&#x9;a.depends.oclIsUndefined() or a.depends->size()=0</commentsAfter>
+    <commentsAfter>--&#x9;)</commentsAfter>
+    <commentsAfter>--&#x9;to mg : MavenMaven!Goal(</commentsAfter>
+    <commentsAfter>--&#x9;&#x9;name &lt;- a.name,</commentsAfter>
+    <commentsAfter>--&#x9;&#x9;contentsGoal &lt;- a.tasks</commentsAfter>
+    <commentsAfter>--&#x9;&#x9;)</commentsAfter>
+    <commentsAfter>-- }</commentsAfter>
     <outPattern location="48:3-70:5">
+      <commentsBefore>-- for MavenProject</commentsBefore>
       <elements xsi:type="atl:SimpleOutPatternElement" location="48:6-52:6" varName="mp">
         <type xsi:type="ocl:OclModelElement" location="48:11-48:31" name="Project">
           <model href="temp#/1"/>
@@ -158,6 +178,7 @@
         </bindings>
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="58:4-66:7" varName="mm">
+        <commentsBefore>-- for MavenMaven</commentsBefore>
         <type xsi:type="ocl:OclModelElement" location="58:9-58:27" name="Project">
           <model href="temp#/0"/>
         </type>
@@ -185,7 +206,11 @@
           </value>
         </bindings>
         <bindings location="64:5-64:23" propertyName="goals">
+          <commentsAfter>--,</commentsAfter>
+          <commentsAfter>--&#x9;prePostGoals &lt;- a.targets -> select(e|not e.depends.oclIsUndefined() and e.depends->size()>0)</commentsAfter>
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="64:14-64:23" name="targets">
+            <commentsAfter>--,</commentsAfter>
+            <commentsAfter>--&#x9;prePostGoals &lt;- a.targets -> select(e|not e.depends.oclIsUndefined() and e.depends->size()>0)</commentsAfter>
             <source xsi:type="ocl:VariableExp" location="64:14-64:15" referredVariable="//@elements.1/@inPattern/@elements.0"/>
           </value>
         </bindings>
@@ -203,6 +228,7 @@
       </elements>
     </outPattern>
     <inPattern location="41:3-46:3">
+      <commentsAfter>-- for MavenProject</commentsAfter>
       <elements xsi:type="atl:SimpleInPatternElement" location="41:8-41:23" varName="a" variableExp="//@elements.1/@inPattern/@filter/@condition/@source/@source //@elements.1/@inPattern/@filter/@elseExpression/@source/@source //@elements.1/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.1/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.1/@outPattern/@elements.1/@bindings.0/@value/@source //@elements.1/@outPattern/@elements.1/@bindings.1/@value/@source/@source //@elements.1/@outPattern/@elements.2/@bindings.1/@value/@source //@elements.1/@outPattern/@elements.2/@bindings.2/@value/@source //@elements.1/@outPattern/@elements.2/@bindings.3/@value/@source //@elements.1/@outPattern/@elements.2/@bindings.4/@value/@source //@elements.1/@outPattern/@elements.2/@bindings.5/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="41:12-41:23" name="Project">
           <model href="temp#/2"/>
@@ -225,6 +251,25 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="88:1-100:3" name="AntTarget2MavenMavenGoal">
+    <commentsBefore>-----------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-----------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- rules only for Maven.xml (meta model : MavenMaven)</commentsBefore>
+    <commentsBefore>-- goals</commentsBefore>
+    <commentsBefore>-- rule AntTarget2MavenMavenGoal2{</commentsBefore>
+    <commentsBefore>--&#x9;from a : Ant!Target(</commentsBefore>
+    <commentsBefore>--&#x9;&#x9;a.depends.oclIsUndefined() or a.depends->size()=0</commentsBefore>
+    <commentsBefore>--&#x9;)</commentsBefore>
+    <commentsBefore>--&#x9;to mg : MavenMaven!Goal(</commentsBefore>
+    <commentsBefore>--&#x9;&#x9;name &lt;- a.name,</commentsBefore>
+    <commentsBefore>--&#x9;&#x9;contentsGoal &lt;- a.tasks</commentsBefore>
+    <commentsBefore>--&#x9;&#x9;)</commentsBefore>
+    <commentsBefore>-- }</commentsBefore>
+    <commentsAfter>------------------------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>------------------------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>------------------------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- for the following rules : simple copy</commentsAfter>
+    <commentsAfter>-----------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- copy of Ant Properties</commentsAfter>
     <outPattern location="93:2-99:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="93:5-96:4" varName="mg">
         <type xsi:type="ocl:OclModelElement" location="93:10-93:25" name="Goal">
@@ -276,6 +321,12 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="109:1-115:2" name="AntPropertyValue2MavenMavenAntPropertyValue">
+    <commentsBefore>------------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>------------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>------------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- for the following rules : simple copy</commentsBefore>
+    <commentsBefore>-----------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- copy of Ant Properties</commentsBefore>
     <outPattern location="111:2-114:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="111:5-114:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="111:9-111:36" name="AntPropertyValue">
@@ -349,6 +400,10 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="132:1-136:2" name="AntPropertyEnv2MavenMavenAntPropertyEnv">
+    <commentsAfter>----------------------------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- copy of tasks</commentsAfter>
+    <commentsAfter>------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- java tasks</commentsAfter>
     <outPattern location="134:2-135:32">
       <elements xsi:type="atl:SimpleOutPatternElement" location="134:5-135:32" varName="m">
         <type xsi:type="ocl:OclModelElement" location="134:9-134:34" name="AntPropertyEnv">
@@ -370,6 +425,10 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="143:1-151:2" name="AntJava2MavenMavenJava">
+    <commentsBefore>----------------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- copy of tasks</commentsBefore>
+    <commentsBefore>------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- java tasks</commentsBefore>
     <outPattern location="145:2-150:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="145:5-150:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="145:9-145:24" name="Java">
@@ -442,6 +501,8 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="163:1-175:2" name="AntJavadoc2MavenMavenJavadoc">
+    <commentsAfter>---------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- MANAGEMENT PROPERTIES tasks </commentsAfter>
     <outPattern location="165:2-174:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="165:5-174:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="165:9-165:27" name="Javadoc">
@@ -498,6 +559,10 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="179:1-182:2" name="AntTstamp2MavenMavenTstamp">
+    <commentsBefore>---------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- MANAGEMENT PROPERTIES tasks </commentsBefore>
+    <commentsAfter>---------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- MANAGEMENT ARCHIVE tasks </commentsAfter>
     <outPattern location="181:2-181:28">
       <elements xsi:type="atl:SimpleOutPatternElement" location="181:5-181:28" varName="m">
         <type xsi:type="ocl:OclModelElement" location="181:9-181:26" name="Tstamp">
@@ -514,6 +579,10 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="186:1-191:2" name="AntJar2MavenMavenJar">
+    <commentsBefore>---------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- MANAGEMENT ARCHIVE tasks </commentsBefore>
+    <commentsAfter>---------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- MANAGEMENT FILES tasks </commentsAfter>
     <outPattern location="188:2-190:24">
       <elements xsi:type="atl:SimpleOutPatternElement" location="188:5-190:24" varName="m">
         <type xsi:type="ocl:OclModelElement" location="188:9-188:23" name="Jar">
@@ -540,6 +609,8 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="195:1-199:2" name="AntMkdir2MavenMavenMkdir">
+    <commentsBefore>---------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- MANAGEMENT FILES tasks </commentsBefore>
     <outPattern location="197:2-198:16">
       <elements xsi:type="atl:SimpleOutPatternElement" location="197:5-198:16" varName="m">
         <type xsi:type="ocl:OclModelElement" location="197:9-197:25" name="Mkdir">
@@ -592,6 +663,8 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="211:1-215:2" name="AntDelete2MavenMavenDelete">
+    <commentsAfter>------------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- tasks defined by the user</commentsAfter>
     <outPattern location="213:2-214:16">
       <elements xsi:type="atl:SimpleOutPatternElement" location="213:5-214:16" varName="m">
         <type xsi:type="ocl:OclModelElement" location="213:9-213:26" name="Delete">
@@ -613,6 +686,8 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="219:1-225:2" name="AntTaskDef2MavenMavenTaskDef">
+    <commentsBefore>------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- tasks defined by the user</commentsBefore>
     <outPattern location="221:2-224:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="221:5-224:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="221:9-221:30" name="AntTaskDef">
@@ -665,6 +740,8 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="235:1-241:2" name="AntAttribut2MavenMavenAttribut">
+    <commentsAfter>-------------------------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- copy for Path</commentsAfter>
     <outPattern location="237:2-240:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="237:5-240:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="237:9-237:28" name="Attribut">
@@ -691,6 +768,8 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="245:2-254:2" name="AntPath2MavenMavenPath">
+    <commentsBefore>-------------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- copy for Path</commentsBefore>
     <outPattern location="247:2-253:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="247:5-253:3" varName="mm">
         <type xsi:type="ocl:OclModelElement" location="247:10-247:25" name="Path">
@@ -789,6 +868,7 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="273:1-281:2" name="AntFileSet2MavenMavenFileSet">
+    <commentsAfter>-- filters</commentsAfter>
     <outPattern location="275:2-280:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="275:5-280:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="275:9-275:27" name="FileSet">
@@ -825,6 +905,7 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="284:1-292:2" name="AntFilterSet2MavenMavenFilterSet">
+    <commentsBefore>-- filters</commentsBefore>
     <outPattern location="286:2-291:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="286:5-291:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="286:9-286:29" name="FilterSet">
@@ -887,6 +968,7 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="302:1-307:2" name="AntFiltersFile2MavenMavenFiltersFile">
+    <commentsAfter>-- pattern</commentsAfter>
     <outPattern location="304:2-306:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="304:5-306:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="304:9-304:31" name="FiltersFile">
@@ -908,6 +990,7 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="310:1-315:2" name="AntPatternset2MavenMavenPatternset">
+    <commentsBefore>-- pattern</commentsBefore>
     <outPattern location="312:2-314:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="312:5-314:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="312:9-312:30" name="PatternSet">

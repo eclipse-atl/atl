@@ -23,6 +23,8 @@ import org.eclipse.m2m.atl.engine.AtlParser;
  */
 public class InitParserData {
 
+	private final static boolean FORCE = true;
+	
 	/*
 	 * PARSER TEST INITIALIZER
 	 * creates all missing atl.ecore files into the expected directory
@@ -52,7 +54,7 @@ public class InitParserData {
 	private static void initTest(File directory) {
 		final String transfoPath = directory.toString().replaceAll("expected","inputs") + "/" + directory.getName() + ".atl";	 //$NON-NLS-1$
 		final String xmiTransfoPath = directory.toString() + "/" + directory.getName() + ".atl.xmi";	 //$NON-NLS-1$
-		if (new File(xmiTransfoPath).exists())
+		if (new File(xmiTransfoPath).exists() && !FORCE)
 			return;
 		try {
 			EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));

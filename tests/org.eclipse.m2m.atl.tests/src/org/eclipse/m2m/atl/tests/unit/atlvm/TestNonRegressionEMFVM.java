@@ -11,8 +11,10 @@
 package org.eclipse.m2m.atl.tests.unit.atlvm;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -21,6 +23,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.atl.engine.emfvm.ASM;
 import org.eclipse.m2m.atl.engine.emfvm.ASMXMLReader;
+import org.eclipse.m2m.atl.engine.emfvm.emf.EMFModel;
+import org.eclipse.m2m.atl.engine.emfvm.emf.EMFReferenceModel;
+import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Model;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
@@ -49,9 +54,8 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 		long startTime;
 		long endTime;
 		ASM asm = new ASMXMLReader().read(launchParser.asmUrl.openStream());
-
 		Map models = new HashMap();
-		
+
 		for(Iterator i = launchParser.input.keySet().iterator() ; i.hasNext() ; ) {
 			String mName = (String)i.next();
 			String mmName = (String)launchParser.input.get(mName);
@@ -61,7 +65,10 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 				mm = loadReferenceModel(mmName, launchParser.path);
 				models.put(mmName, mm);
 			}
-			Model m = new Model(mm, URI.createFileURI((String)launchParser.path.get(mName)),false);			
+			Model m = new EMFModel(
+					mm, 
+					URI.createFileURI((String)launchParser.path.get(mName)),
+					false);			
 			models.put(mName, m);
 		}
 
@@ -74,7 +81,10 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 				mm = loadReferenceModel(mmName, launchParser.path);
 				models.put(mmName, mm);
 			}
-			Model m = new Model(mm, URI.createPlatformResourceURI((String)launchParser.path.get(mName), true),true);		
+			AbstractModel m = new EMFModel(
+					mm, 
+					URI.createPlatformResourceURI((String)launchParser.path.get(mName), true),
+					true);		
 			models.put(mName, m);
 			m.isTarget = true;
 		}
@@ -88,14 +98,22 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 				libraries.put(libName, lib);
 			}
 
+			List superimpose = new ArrayList();
+			for(Iterator i = launchParser.superimpose.iterator() ; i.hasNext() ; ) {
+				String path = (String)i.next();
+				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(path));
+				ASM module = new ASMXMLReader().read(file.getContents());
+				superimpose.add(module);
+			}
+
 			startTime = System.currentTimeMillis();
-			asm.run(models, libraries, launchParser.options);
+			asm.run(models, libraries,superimpose, launchParser.options);
 			endTime = System.currentTimeMillis();
 
 			for(Iterator i = launchParser.output.keySet().iterator() ; i.hasNext() ; ) {
 				String mName = (String)i.next();
 
-				Model m = (Model)models.get(mName);			
+				EMFModel m = (EMFModel)models.get(mName);			
 				m.save(URI.createFileURI((String)launchParser.path.get(mName)));
 			}
 		} catch(VMException vme) {
@@ -116,11 +134,11 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 
 		String path = (String)modelPaths.get(mmName);
 		if(path.startsWith("#")) {
-			ret = ReferenceModel.getMetametamodel();
+			ret = EMFReferenceModel.getMetametamodel();
 		} else if(path.startsWith("uri:")){
-			ret = new ReferenceModel(ReferenceModel.getMetametamodel(), path.substring(4));
+			ret = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), path.substring(4));
 		} else {
-			ret = new ReferenceModel(ReferenceModel.getMetametamodel(), URI.createFileURI(path));
+			ret = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), URI.createFileURI(path));
 		}		
 
 		return ret;
