@@ -42,11 +42,21 @@ public class ASMEnumLiteral extends ASMOclAny {
 	}
 
 	public boolean equals(Object o) {
-		return (o instanceof ASMEnumLiteral) && (((ASMEnumLiteral)o).name.equals(name));
+		if(!(o instanceof ASMEnumLiteral))
+			return false;
+		if(name != null) {
+			return  name.equals(((ASMEnumLiteral)o).name);
+		} else {
+			return ((ASMEnumLiteral)o).name == null;
+		}
 	}
 	
 	public int hashCode() {
-		return name.hashCode(); 
+		if(name != null) {
+			return name.hashCode();
+		} else {
+			return super.hashCode();
+		}
 	}
 
 	public String toString() {

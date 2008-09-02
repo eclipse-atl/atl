@@ -161,7 +161,7 @@ public class ASMOclAny extends ASMNativeObject {
 	
 	public boolean isHelper(StackFrame frame, String name) {
 		//return type.getHelperAttributes().containsKey(name);
-		return ((ASMExecEnv)frame.getExecEnv()).getAttributeInitializer(type, name) != null;
+		return ((ASMExecEnv)frame.getExecEnv()).isHelper(type, name);
 	}
 	
 	public ASMOclAny getHelper(StackFrame frame, String name) {

@@ -137,11 +137,9 @@ public abstract class ASMCollection extends ASMOclAny {
 		return new ASMSequence(self.collection());
 	}
 
-/* TODO
   	public static ASMOrderedSet asOrderedSet(StackFrame frame, ASMCollection self) {
 		return new ASMOrderedSet(self.collection());
 	}
- */
 
 	public static ASMSet asSet(StackFrame frame, ASMCollection self) {
 		return new ASMSet(self.collection());

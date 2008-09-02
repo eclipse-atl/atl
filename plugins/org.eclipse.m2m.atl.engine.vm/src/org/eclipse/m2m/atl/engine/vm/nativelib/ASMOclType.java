@@ -43,6 +43,7 @@ public abstract class ASMOclType extends ASMOclAny {
 
 			NativeOperation.registerOperations(ASMTupleType.myType, ASMTupleType.class);
 			NativeOperation.registerOperations(ASMTuple.myType, ASMTuple.class);
+			NativeOperation.registerOperations(ASMModule.myType, ASMModule.class);
 			NativeOperation.registerOperations(ASMTransientLinkSet.myType, ASMTransientLinkSet.class);
 			NativeOperation.registerOperations(ASMTransientLink.myType, ASMTransientLink.class);
 			NativeOperation.registerOperations(ASMString.myType, ASMString.class);
@@ -136,6 +137,12 @@ public abstract class ASMOclType extends ASMOclAny {
 	public static void registerHelperAttribute(StackFrame frame, ASMOclType self, ASMString name, ASMString initOperationName) {
 		ASMExecEnv aee = ((ASMExecEnv)frame.getExecEnv());
 		aee.registerAttributeHelper(self, name.getSymbol(), aee.getOperation(self, initOperationName.getSymbol()));
+	}
+
+	// persistTo may be OclUndefined for non-persistent weaving helpers, otherwise it must be a String
+	public static void registerWeavingHelper(StackFrame frame, ASMOclType self, ASMString name, ASMOclAny persistTo) {
+		ASMExecEnv aee = ((ASMExecEnv)frame.getExecEnv());
+		aee.registerWeavingHelper(self, name.getSymbol(), (persistTo instanceof ASMOclUndefined) ? null : ((ASMString)persistTo).getSymbol());
 	}
 
 	private List supertypes;

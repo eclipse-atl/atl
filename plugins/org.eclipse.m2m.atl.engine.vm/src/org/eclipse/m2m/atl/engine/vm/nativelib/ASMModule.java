@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.m2m.atl.engine.vm.ASM;
@@ -50,7 +51,17 @@ public class ASMModule extends ASMOclAny {
 		return asm.getName();
 	}
 
+	// Native Operations below
+	
+	public static ASMMap asMap(StackFrame frame, ASMModule self) {
+		Map ret = new HashMap();
+		for(Iterator i = self.fields.entrySet().iterator() ; i.hasNext() ; ) {
+			Map.Entry e = (Map.Entry)i.next();
+			ret.put(new ASMString((String)e.getKey()), e.getValue());
+		}
+		return new ASMMap(ret);
+	}
+
 	private Map fields = new HashMap();
 	private ASM asm;
 }
-
