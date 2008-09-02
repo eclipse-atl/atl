@@ -3,13 +3,13 @@ annotate ACG {
         nsURI='http://www.eclipse.org/m2m/atl/2007/ACG',
         nsPrefix='acg';
     
-    annotate "ACG::Severity::critic" with
+    annotate "ACG::critic" with
         literalValue='critic';
     
-    annotate "ACG::Severity::error" with
+    annotate "ACG::error" with
         literalValue='error';
     
-    annotate "ACG::Severity::warning" with
+    annotate "ACG::warning" with
         literalValue='warning';
     
     annotate PrimitiveTypes with
