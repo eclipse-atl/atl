@@ -1,0 +1,70 @@
+-- @name		RefiningTrace
+-- @version		1.0
+-- @authors		Frédéric Jouault
+-- @date		2008/02/08
+-- @description	Metamodel of the trace information used by the ATL 2006 refining mode.
+package RefiningTrace {
+
+	-- Every class should extend LocatedElement, directly or indirectly.
+	-- This is a technical constraint to support text-to-model traceability.
+	abstract class LocatedElement {
+		attribute location[0-1] : String;
+		attribute commentsBefore[*] ordered : String;
+		attribute commentsAfter[*] ordered : String;
+	}
+
+-- BEGIN DSL-specific classes (replace sample contents)
+	class Element {
+		attribute type : String;
+		attribute metamodel : String;
+		reference slots[*] ordered container : Slot;
+
+		-- The source element weaving helper may be persisted in this attribute
+		attribute persistedSourceElement[0-1] : String; 
+	}
+	
+	class Slot {
+		attribute name : String;
+		reference value container : Value;
+	}
+	
+	abstract class Value {}
+	
+	class BooleanVal extends Value {
+		attribute value : Boolean;
+	}
+
+	class IntegerVal extends Value {
+		attribute value : Integer;
+	}
+
+	class RealVal extends Value {
+		attribute value : Double;
+	}
+
+	class StringVal extends Value {
+		attribute value : String;
+	}
+
+	class NullVal extends Value {}
+
+	class EnumLiteralVal extends Value {
+		attribute value : String;
+	}
+
+	class ElementVal extends Value {
+		reference value : Element;
+	}
+	
+	class CollectionVal extends Value {
+		reference elements[*] ordered container : Value;
+	}
+-- END DSL-specific classes
+}
+
+package PrimitiveTypes {
+	datatype Boolean;
+	datatype Integer;
+	datatype Double;
+	datatype String;
+}

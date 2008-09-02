@@ -21,7 +21,7 @@ syntax ATL(k = 0) {
 		value = "%token%";
 
 	primitiveTemplate stringSymbol for String using STRING:
-		value = "%token%",
+		value = "ei.unescapeString(%token%, 1)",
 		serializer="'\'' + %value%.toCString() + '\''";
 
 	primitiveTemplate integerSymbol for Integer default using INT:
@@ -170,6 +170,7 @@ syntax ATL(k = 0) {
 		:	varName ":" type
 			(isDefined(model) ? "in" model{separator = ",", refersTo = name, lookIn = #all})
 			(isDefined(sourceElement) ? "mapsTo" sourceElement{refersTo = varName})
+			(isDefined(reverseBindings) ? "->" "(" reverseBindings{separator = ","} ")")
 			(isDefined(bindings) ?
 				<space> "(" [
 					bindings{separator = ","}
@@ -389,7 +390,7 @@ syntax ATL(k = 0) {
 		:	"OclType"
 		;
 
-	template OclAnyType abstract
+	template OclAnyType
 		:	"OclAny"
 		;
 
@@ -522,6 +523,7 @@ syntax ATL(k = 0) {
 	}
 
 	token COMMENT	: endOfLine(start = "--");
+	token STRING	: multiLine(start = "\'", end = "\'", esc = "\\");
 	
 	lexer = "
 %options testLiterals = false;
@@ -632,17 +634,6 @@ ESC
 				}
 		)
 	;
-
-STRING
-	:	'\\''!
-		(	ESC
-		|	'\\n' {newline();}
-		|	~('\\\\'|'\\''|'\\n')
-		)*
-		'\\''!
-%v3		{setText(ei.unescapeString(getText(), 1));}
-	;
 	";
 
 }
-
