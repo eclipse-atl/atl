@@ -78,7 +78,7 @@ public class ServiceTransformationUtil {
 				// TODO delete pre-string 'uri:'
 				ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, "uri:" + nsUri);//$NON-NLS-1$
 			else if (inWorkspace)
-				ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, URI.createPlatformResourceURI(path));
+				ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, URI.createPlatformResourceURI(path, true));
 			else {
 				try {
 					Bundle bundle = Platform.getBundle(pluginId);
@@ -192,8 +192,8 @@ public class ServiceTransformationUtil {
 		try {
 			InputStream in = Platform.getBundle(pluginId).getEntry(filePath).openStream();
 			
-			ASMModel model = amh.newModel(name, metamodel);
-			TCSInjector ebnfi = new TCSInjector();
+			ASMModel model = amh.newModel(name, "model.xmi", metamodel);
+			TCSInjector inj = new TCSInjector();
 			
 			ClassLoader oldCl = Thread.currentThread().getContextClassLoader();
 			JarClassLoader loader = createLoader(pluginId, parserPath, oldCl);
@@ -201,8 +201,11 @@ public class ServiceTransformationUtil {
 			Class lexer = loader.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Lexer", true); //$NON-NLS-1$ //$NON-NLS-2$
 			Class parser = loader.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Parser", true); //$NON-NLS-1$ //$NON-NLS-2$
 
-			ebnfi.performImportation(metamodel, model, in, metamodelName, lexer, parser);
-			
+			Map injParams = new HashMap();
+			injParams.put("name", metamodelName);
+			injParams.put("lexerClass", lexer);
+			injParams.put("parserClass", parser);
+			inj.inject(model, in, injParams);			
 			in.close();
 			
 			return model;
