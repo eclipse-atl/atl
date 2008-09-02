@@ -11,16 +11,12 @@
 package org.eclipse.m2m.atl.ocl.core;
 
 import java.io.ByteArrayInputStream;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.engine.ASMRetriever;
 import org.eclipse.m2m.atl.engine.AtlCompiler;
 import org.eclipse.m2m.atl.engine.vm.ASM;
-import org.eclipse.m2m.atl.engine.vm.ASMEmitter;
-import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
-import org.eclipse.m2m.atl.engine.vm.StackFrame;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 
 /**
  * 
@@ -29,52 +25,21 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
  */
 public abstract class OclEvaluator {
 	
-	private static long id = 0;
 	protected EObject pbs[];
 
 	protected ASM compile(String atl) throws Exception {
-		ASM ret = null;
-//		System.out.println(atl);
 		AtlCompiler ac = AtlCompiler.getDefault();
 		
-		String key = "ID=" + id++;//$NON-NLS-1$
+		// forcing usage of ATL 2006
+		atl = "-- @atlcompiler atl2006\n" + atl;
 		ByteArrayInputStream input = new ByteArrayInputStream(atl.getBytes());
-		pbs = ac.compile(input, new DummyFile(key));
+		IFile file = ASMRetriever.getFile();
+		pbs = ac.compile(input, file);
 		input.close();
 //		for(int i = 0 ; i < pbs.length ; i++) {
 //			String sev = get(pbs[i], "severity").toString();
 //			System.out.println(sev + ":" + get(pbs[i], "location") + ":" + get(pbs[i], "description"));
 //		}
-		ret = (ASM)dumpedASMs.get(key);
-		dumpedASMs.remove(key);
-		return ret;
+		return ASMRetriever.getASM(file);
 	}
-	
-	/*
-	private static Object get(EObject o, String f) {
-		EStructuralFeature sf = o.eClass().getEStructuralFeature(f);
-		return o.eGet(sf);
-	}
-	*/
-	
-	private static Map dumpedASMs = new HashMap();
-	
-	static {
-		try {
-			ATLVMTools.addVMOperation(ASMEmitter.myType, ATLVMTools.toVMOperation(OclEvaluator.class, "dumpASM"));//$NON-NLS-1$
-		} catch(Exception e) {
-			
-		}
-	}
-
-	// New VM Operations
-	public static void dumpASM(StackFrame frame, ASMEmitter self, ASMString fileName) {
-		self.finishOperation();
-		String key = ((ASMString)((ASMExecEnv)frame.getExecEnv()).getASMModule().get(frame, "fileName")).getSymbol();//$NON-NLS-1$
-		if(key.startsWith("ID=")) {//$NON-NLS-1$
-			dumpedASMs.put(key, self.getASM());
-		} else {
-			self.dumpASM(fileName.getSymbol());
-		}
-	}	
 }
