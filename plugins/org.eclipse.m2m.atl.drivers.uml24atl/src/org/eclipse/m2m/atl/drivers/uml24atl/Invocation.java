@@ -18,10 +18,12 @@ import java.util.List;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
 /**
- * @author Frédéric Jouault (INRIA)
+ * Stores an UML specific invocation method.
+ * 
+ * @author Frederic Jouault (INRIA)
  * @author Freddy Allilaire (INRIA)
  * @author Christophe Le Camus (C-S)
- * @author Sebastien Gabel (C-S) 
+ * @author Sebastien Gabel (C-S)
  */
 public class Invocation {
 	public Invocation(StackFrame frame, ASMUMLModelElement self, String opName, List arguments) {
@@ -30,9 +32,12 @@ public class Invocation {
 		this.opName = opName;
 		this.arguments = arguments;
 	}
-	
+
 	public StackFrame frame;
+
 	public ASMUMLModelElement self;
+
 	public String opName;
+
 	public List arguments;
 }
