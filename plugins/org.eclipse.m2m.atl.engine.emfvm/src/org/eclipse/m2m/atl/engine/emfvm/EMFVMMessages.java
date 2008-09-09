@@ -17,12 +17,12 @@ import java.util.ResourceBundle;
 /**
  * Utility class to access externalized Strings for EMF VM.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public class EMFVMMessages {
+public final class EMFVMMessages {
 	
 	/** Full qualified path to the properties file in which to seek the keys. */
-	private static final String BUNDLE_NAME = "org.eclipse.m2m.atl.engine.emfvm.messages";//$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.m2m.atl.engine.emfvm.messages"; //$NON-NLS-1$
 	
 	/** Contains the locale specific {@link String}s needed by this plug-in. */
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
@@ -59,8 +59,9 @@ public class EMFVMMessages {
 	 * @see MessageFormat#format(String, Object[])
 	 */
 	public static String getString(String key, Object[] arguments) {
-		if (arguments == null)
+		if (arguments == null) {
 			return getString(key);
+		}
 		return MessageFormat.format(getString(key), arguments);
 	}
 }

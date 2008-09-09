@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFModelAdapter.java,v 1.2 2008/09/02 15:29:17 wpiers Exp $
+ * $Id: EMFModelAdapter.java,v 1.3 2008/09/09 13:15:01 wpiers Exp $
  */
 package org.eclipse.m2m.atl.engine.emfvm.emf;
 
@@ -23,6 +23,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
@@ -35,6 +36,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EClassImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.m2m.atl.engine.emfvm.EmfvmPlugin;
 import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.HasFields;
@@ -46,71 +48,96 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.OclUndefined;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame;
-import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 
 /**
+ * The model adapter dedicated to EMF.
  * 
- * @author Frederic Jouault
- * @author Mikael Barbero
- *
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
  */
 public class EMFModelAdapter implements ModelAdapter {
+	/** The common ATL logger. */
+	protected static Logger logger = Logger.getLogger(EmfvmPlugin.LOGGER);
 
 	private Map modelsByResource;
-	
-	private boolean allowInterModelReferences = false;
 
-	// TODO: map this to corresponding option	public boolean supportUML2Stereotypes = false;
-	public boolean supportUML2Stereotypes = false;
-	
+	private boolean allowInterModelReferences;
+
 	private ExecEnv execEnv;
-	
+
+	/**
+	 * Creates an EMF model adapter.
+	 * 
+	 * @param execEnv
+	 *            the execution environment
+	 */
 	public EMFModelAdapter(ExecEnv execEnv) {
 		this.execEnv = execEnv;
-		
+
 		modelsByResource = new HashMap();
-		for(Iterator i = execEnv.modelsByName.keySet().iterator() ; i.hasNext() ; ) {
+		for (Iterator i = execEnv.getModelsByName().keySet().iterator(); i.hasNext();) {
 			String name = (String)i.next();
-			EMFModel model = (EMFModel)execEnv.modelsByName.get(name);
-			modelsByResource.put(model.resource, model);
+			EMFModel model = (EMFModel)execEnv.getModelsByName().get(name);
+			modelsByResource.put(model.getResource(), model);
 		}
 	}
 
 	/**
 	 * Sets "allow inter-model references" for this model adapter.
+	 * 
 	 * @param allowInterModelRefs
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 *            the parameter value
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public void setAllowInterModelReferences(boolean allowInterModelRefs) {
 		allowInterModelReferences = allowInterModelRefs;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#getModelOf(java.lang.Object)
+	 */
 	public Model getModelOf(Object element) {
 		return (Model)modelsByResource.get(((EObject)element).eResource());
 	}
-	
+
+	/**
+	 * Returns the name of an eObject.
+	 * 
+	 * @param eo
+	 *            the eObject
+	 * @return the name of an eObject
+	 */
 	public static Object getNameOf(EObject eo) {
 		Object ret = null;
-		
+
 		final EClass ec = eo.eClass();
 		final EStructuralFeature sf = ec.getEStructuralFeature("name");
 		if (sf != null) {
 			ret = eo.eGet(sf);
 		}
-		if(ret == null) ret = "<unnamed>";
+		if (ret == null) {
+			ret = "<unnamed>";
+		}
 
 		return ret;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#getSupertypes(java.lang.Object)
+	 */
 	public List getSupertypes(Object type) {
 		List ret = null;
 
-		if(type != null) {
-			if(type instanceof EClass) {
+		if (type != null) {
+			if (type instanceof EClass) {
 				ret = ((EClass)type).getESuperTypes();
-				if(ret.size() == 0)	// extends OclAny
+				if (ret.size() == 0) { // extends OclAny
 					ret = Arrays.asList(new Class[] {Object.class});
-				else {
+				} else {
 					// invert list to comply with regular ATL VM behaviour
 					final List sts = ret;
 					ret = new ArrayList(sts.size());
@@ -119,106 +146,131 @@ public class EMFModelAdapter implements ModelAdapter {
 					}
 				}
 			} else {
-				ret = (List)execEnv.supertypes.get(type);
-				if(ret == null) {
+				ret = (List)execEnv.getSupertypes().get(type);
+				if (ret == null) {
 					// Support for Java subclasses that do not correspond to OCL subtypes
 					Class sc = ((Class)type).getSuperclass();
-					if(sc != null) {
+					if (sc != null) {
 						ret = Arrays.asList(new Class[] {sc});
 					}
 				}
 			}
 		}
 
-		if(ret == null) ret = Collections.EMPTY_LIST; 
+		if (ret == null) {
+			ret = Collections.EMPTY_LIST;
+		}
 
 		return ret;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#getType(java.lang.Object)
+	 */
 	public Object getType(Object value) {
-		if(value instanceof EObject) {
+		if (value instanceof EObject) {
 			return ((EObject)value).eClass();
-		} else if(value instanceof EList) {
+		} else if (value instanceof EList) {
 			return ArrayList.class;
 		} else {
 			return value.getClass();
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#prettyPrint(java.io.PrintStream,
+	 *      java.lang.Object)
+	 */
 	public boolean prettyPrint(PrintStream out, Object value) {
-		if(value instanceof EClass){
+		if (value instanceof EClass) {
 			final EClass c = (EClass)value;
 			final String mName = execEnv.getModelNameOf(c);
-			if(mName != null){
+			if (mName != null) {
 				out.print(mName);
 			} else {
 				out.print("<unknown>");
 			}
 			out.print('!');
 			String name = c.getName();
-			if(name == null)
+			if (name == null) {
 				name = "<unnamed>";
+			}
 			out.print(name);
 			return true;
-		} else if(value instanceof EObject) {
+		} else if (value instanceof EObject) {
 			final EObject eo = (EObject)value;
 			final Model model = getModelOf(eo);
-			if(model != null) {
-				out.print((String) execEnv.getNameOf(model));
+			if (model != null) {
+				out.print((String)execEnv.getNameOf(model));
 			} else {
 				out.print("<unknown>");
 			}
 			out.print('!');
 			out.print(getNameOf(eo));
 			out.print(':');
-			if(model != null) {
+			if (model != null) {
 				final ReferenceModel mModel = model.getReferenceModel();
-				out.print((String) execEnv.getNameOf(mModel));
+				out.print((String)execEnv.getNameOf(mModel));
 				out.print('!');
 				String name = eo.eClass().getName();
-				if(name == null)
+				if (name == null) {
 					name = "<unnamed>";
+				}
 				out.print(name);
 			} else {
 				prettyPrint(out, eo.eClass());
 			}
 			return true;
-		} else if(value instanceof EList) {
+		} else if (value instanceof EList) {
 			out.print("Sequence {");
 			execEnv.prettyPrintCollection(out, (Collection)value);
 			return true;
-		} 
+		}
 		return false;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#registerVMSupertypes(java.util.Map)
+	 */
 	public void registerVMSupertypes(Map vmSupertypes) {
 		// EClass extends EObject
 		vmSupertypes.put(EClassImpl.class, Arrays.asList(new Class[] {EObjectImpl.class}));
 		// is necessary ? vmSupertypes.put(EObjectImpl.class, Arrays.asList(new Class[] {Object.class}));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#registerVMTypeOperations(java.util.Map)
+	 */
 	public void registerVMTypeOperations(Map vmTypeOperations) {
 		// Object
 		Map operationsByName = (Map)vmTypeOperations.get(Object.class);
 		operationsByName.put("=", new Operation(2) {
 			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				/* handle EMF enumeration literals by calling other end's
-				 * equals() method. Other end can be Enumerator, in which case
-				 * comparison is done according to EMF semantics. Other end
-				 * can also be EnumLiteral, in which case EnumLiteral.equals()
-				 * handles the comparison against EMF Enumerators.
+				Object[] localVars = frame.getLocalVars();
+				/*
+				 * handle EMF enumeration literals by calling other end's equals() method. Other end can be
+				 * Enumerator, in which case comparison is done according to EMF semantics. Other end can also
+				 * be EnumLiteral, in which case EnumLiteral.equals() handles the comparison against EMF
+				 * Enumerators.
 				 */
 				if (localVars[0] instanceof Enumerator) {
 					return new Boolean(localVars[1].equals(localVars[0]));
 				}
-				return new Boolean(localVars[0].equals(localVars[1]));					
+				return new Boolean(localVars[0].equals(localVars[1]));
 			}
 		});
 		operationsByName.put("refGetValue", new Operation(2) {
 			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				if(localVars[0] instanceof EObject) {
+				Object[] localVars = frame.getLocalVars();
+				if (localVars[0] instanceof EObject) {
 					return EMFModelAdapter.this.get(frame, (EObject)localVars[0], (String)localVars[1]);
 				} else {
 					return ((HasFields)localVars[0]).get(frame, localVars[1]);
@@ -227,9 +279,10 @@ public class EMFModelAdapter implements ModelAdapter {
 		});
 		operationsByName.put("refSetValue", new Operation(3) {
 			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				if(localVars[0] instanceof EObject) {
-					EMFModelAdapter.this.set(frame, (EObject)localVars[0], (String)localVars[1], localVars[2]);
+				Object[] localVars = frame.getLocalVars();
+				if (localVars[0] instanceof EObject) {
+					EMFModelAdapter.this
+							.set(frame, (EObject)localVars[0], (String)localVars[1], localVars[2]);
 				} else {
 					((HasFields)localVars[0]).set(frame, localVars[1], localVars[2]);
 				}
@@ -238,8 +291,8 @@ public class EMFModelAdapter implements ModelAdapter {
 		});
 		operationsByName.put("oclType", new Operation(1) {
 			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				if(localVars[0] instanceof EObject) {
+				Object[] localVars = frame.getLocalVars();
+				if (localVars[0] instanceof EObject) {
 					return ((EObject)localVars[0]).eClass();
 				} else {
 					throw new RuntimeException(".oclType not implemented for OCL library yet");
@@ -248,16 +301,16 @@ public class EMFModelAdapter implements ModelAdapter {
 		});
 		operationsByName.put("oclIsTypeOf", new Operation(2) {
 			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				if(localVars[1] instanceof Class) {
+				Object[] localVars = frame.getLocalVars();
+				if (localVars[1] instanceof Class) {
 					return new Boolean(localVars[1].equals(localVars[0].getClass()));
-//					} else if(localVars[1] instanceof OclType) {		// TODO
-//					if(localVars[1] instanceof OclParametrizedType)
-//					return new Boolean(localVars[0] instanceof Collection);
-//					else
-//					return Boolean.FALSE;	//TODO
-				} else if(localVars[1] instanceof EClass) {
-					if(localVars[0] instanceof EObject) {
+					// } else if(localVars[1] instanceof OclType) { // TODO
+					// if(localVars[1] instanceof OclParametrizedType)
+					// return new Boolean(localVars[0] instanceof Collection);
+					// else
+					// return Boolean.FALSE; //TODO
+				} else if (localVars[1] instanceof EClass) {
+					if (localVars[0] instanceof EObject) {
 						return new Boolean(localVars[1].equals(((EObject)localVars[0]).eClass()));
 					} else {
 						return Boolean.FALSE;
@@ -269,200 +322,233 @@ public class EMFModelAdapter implements ModelAdapter {
 		});
 		operationsByName.put("oclIsKindOf", new Operation(2) {
 			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				if(localVars[1] instanceof Class) {
+				Object[] localVars = frame.getLocalVars();
+				if (localVars[1] instanceof Class) {
 					return new Boolean(((Class)localVars[1]).isInstance(localVars[0]));
-				} else if(localVars[1] instanceof OclType) {
-					if(localVars[1] instanceof OclParametrizedType)
+				} else if (localVars[1] instanceof OclType) {
+					if (localVars[1] instanceof OclParametrizedType) {
 						return new Boolean(localVars[0] instanceof Collection);
-					else
-						return Boolean.FALSE;	//TODO
-				} else if(localVars[1] instanceof EClass) {
-					return new Boolean(((EClass)localVars[1]).isInstance(localVars[0]));					
+					} else {
+						return Boolean.FALSE;
+					}
+				} else if (localVars[1] instanceof EClass) {
+					return new Boolean(((EClass)localVars[1]).isInstance(localVars[0]));
 				} else {
 					throw new RuntimeException("do not know how to handle type: " + localVars[1]);
 				}
 			}
 		});
-		operationsByName.put("refImmediateComposite", new Operation(1) {	// TODO: should only exist on EObject
-			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				if(localVars[0] instanceof EObject) {
-					Object ret = ((EObject)localVars[0]).eContainer();
-					if(ret == null)
-						ret = OclUndefined.SINGLETON;
-					return ret;
-				} else {
-					throw new RuntimeException("refImmediateComposite only valid on model elements");
-				}
-			}
-		});
+		operationsByName.put("refImmediateComposite", new Operation(1) { // TODO: should only exist on
+					// EObject
+					public Object exec(StackFrame frame) {
+						Object[] localVars = frame.getLocalVars();
+						if (localVars[0] instanceof EObject) {
+							Object ret = ((EObject)localVars[0]).eContainer();
+							if (ret == null) {
+								ret = OclUndefined.SINGLETON;
+							}
+							return ret;
+						} else {
+							throw new RuntimeException("refImmediateComposite only valid on model elements");
+						}
+					}
+				});
 		// EClass
 		operationsByName = new HashMap();
 		vmTypeOperations.put(EcorePackage.eINSTANCE.getEClass(), operationsByName);
 		operationsByName.put("allInstancesFrom", new Operation(2) {
 			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				Model model = frame.execEnv.getModel(localVars[1]);
-				if(model == null)
+				Object[] localVars = frame.getLocalVars();
+				Model model = frame.getExecEnv().getModel(localVars[1]);
+				if (model == null) {
 					throw new RuntimeException("model not found: " + localVars[1]);
+				}
 				return model.getElementsByType(localVars[0]);
 			}
 		});
 		operationsByName.put("allInstances", new Operation(1) {
 			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
+				Object[] localVars = frame.getLocalVars();
 
 				// could be a Set (actually was) instead of an OrderedSet
 				Set ret = new LinkedHashSet();
 				EClass ec = (EClass)localVars[0];
-//				Model rm = getModelOf(ec); // this is not possible when considering referenced resources!
-				for(Iterator i = frame.execEnv.modelsByName.values().iterator() ; i.hasNext() ; ) {
+				// Model rm = getModelOf(ec); // this is not possible when considering referenced resources!
+				for (Iterator i = frame.getExecEnv().getModelsByName().values().iterator(); i.hasNext();) {
 					AbstractModel model = (AbstractModel)i.next();
-					if((!model.isTarget) && (model.getReferenceModel().isModelOf(ec)))
+					if ((!model.isTarget()) && (model.getReferenceModel().isModelOf(ec))) {
 						ret.addAll(model.getElementsByType(ec));
+					}
 				}
 				return ret;
 			}
 		});
 		operationsByName.put("registerHelperAttribute", new Operation(3) {
 			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
+				Object[] localVars = frame.getLocalVars();
 				String name = (String)localVars[1];
 				String initOperationName = (String)localVars[2];
-				frame.execEnv.registerAttributeHelper(localVars[0], name, initOperationName);
+				frame.getExecEnv().registerAttributeHelper(localVars[0], name, initOperationName);
 				return null;
 			}
 		});
 		operationsByName.put("newInstance", new Operation(1) {
 			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
+				Object[] localVars = frame.getLocalVars();
 				EClass ec = (EClass)localVars[0];
 				return execEnv.newElement(frame, ec);
 			}
 		});
 		operationsByName.put("getInstanceById", new Operation(3) {
 			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
+				Object[] localVars = frame.getLocalVars();
 				EMFModel model = (EMFModel)execEnv.getModel(localVars[1]);
-				Object ret = model.resource.getEObject((String)localVars[2]);
-				if(ret == null)
+				Object ret = model.getResource().getEObject((String)localVars[2]);
+				if (ret == null) {
 					ret = OclUndefined.SINGLETON;
+				}
 				return ret;
 			}
 		});
 		operationsByName.put("conformsTo", new Operation(2) {
 			public Object exec(StackFrame frame) {
-				Object localVars[] = frame.localVars;
-				return new Boolean(((EClass)localVars[1]).isSuperTypeOf(((EClass)localVars[0])));
+				Object[] localVars = frame.getLocalVars();
+				return new Boolean(((EClass)localVars[1]).isSuperTypeOf((EClass)localVars[0]));
 			}
 		});
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#get(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame,
+	 *      java.lang.Object, java.lang.String)
+	 */
 	public Object get(StackFrame frame, Object modelElement, String name) {
 		EObject eo = (EObject)modelElement;
 		Object ret = null;
-		
+
 		EClass ec = eo.eClass();
-		try {
-			if("__xmiID__".equals(name)) {
-				// TODO: optimize using ((EObject)modelElement).getResource()
-				ret = ((EMFModel)getModelOf(eo)).resource.getURIFragment(eo);
-			} else {
-				EStructuralFeature sf = ec.getEStructuralFeature(name);
-				Object val = eo.eGet(sf);
-				if(val == null) val = OclUndefined.SINGLETON;
-				ret = val;
+		// try {
+		if ("__xmiID__".equals(name)) {
+			// TODO: optimize using ((EObject)modelElement).getResource()
+			ret = ((EMFModel)getModelOf(eo)).getResource().getURIFragment(eo);
+		} else {
+			EStructuralFeature sf = ec.getEStructuralFeature(name);
+			Object val = eo.eGet(sf);
+			if (val == null) {
+				val = OclUndefined.SINGLETON;
 			}
-		} catch(Exception e) {
-			throw new VMException(frame, "error accessing " + frame.execEnv.toPrettyPrintedString(ec) + "." + name, e);
+			ret = val;
 		}
+		// } catch (IOException e) {
+		// throw new VMException(frame, "error accessing " + frame.execEnv.toPrettyPrintedString(ec) + "."
+		// + name, e);
+		// }
 
 		return ret;
 	}
 
 	// TODO:
-	//	- EEnumliteral implementation
-	//		- could be different (faster?) when same metamodel in source and target
-	//		- may be too permissive (any value for which toString returns a valid literal name works) 
-	//	- should flatten nested collections
+	// - EEnumliteral implementation
+	// - could be different (faster?) when same metamodel in source and target
+	// - may be too permissive (any value for which toString returns a valid literal name works)
+	// - should flatten nested collections
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#set(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame,
+	 *      java.lang.Object, java.lang.String, java.lang.Object)
+	 */
 	public void set(StackFrame frame, Object modelElement, String name, Object value) {
-		if(value == null) return;
-		final ExecEnv execEnv = frame.execEnv;
+		Object settableValue = value;
+
+		if (settableValue == null) {
+			return;
+		}
 		final EObject eo = (EObject)modelElement;
 		final EStructuralFeature feature = eo.eClass().getEStructuralFeature(name);
-		
-		// makes it possible to use an integer to set a floating point property  
-		if(value instanceof Integer) {
+
+		// makes it possible to use an integer to set a floating point property
+		if (settableValue instanceof Integer) {
 			String targetType = feature.getEType().getInstanceClassName();
-			if("java.lang.Double".equals(targetType) || "java.lang.Float".equals(targetType)) {
-				value = new Double(((Integer)value).doubleValue());
+			if ("java.lang.Double".equals(targetType) || "java.lang.Float".equals(targetType)) {
+				settableValue = new Double(((Integer)value).doubleValue());
 			}
 		}
-		
+
 		EClassifier type = feature.getEType();
 		boolean targetIsEnum = type instanceof EEnum;
-		try {
-			Object oldValue = eo.eGet(feature);
-			if(oldValue instanceof Collection) {
-				Collection oldCol = (Collection)oldValue;
-				if(value instanceof Collection) {
-					if(targetIsEnum) {
-						EEnum eenum = (EEnum)type;
-						for(Iterator i = ((Collection)value).iterator() ; i.hasNext() ; ) {
-							Object v = i.next();
-							oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());							
-						}
-					} else if(allowInterModelReferences) {
-						oldCol.addAll((Collection)value);
-					} else {	// !allowIntermodelReferences
-						for(Iterator i = ((Collection)value).iterator() ; i.hasNext() ; ) {
-							Object v = i.next();
-							if(v instanceof EObject) {
-								if(getModelOf(eo) == getModelOf(v))
-									oldCol.add(v);
-							} else {
-								oldCol.add(v);								
-							}
-						}
+		// try {
+		Object oldValue = eo.eGet(feature);
+		if (oldValue instanceof Collection) {
+			Collection oldCol = (Collection)oldValue;
+			if (settableValue instanceof Collection) {
+				if (targetIsEnum) {
+					EEnum eenum = (EEnum)type;
+					for (Iterator i = ((Collection)settableValue).iterator(); i.hasNext();) {
+						Object v = i.next();
+						oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());
 					}
-				} else {
-					if(targetIsEnum) {
-						EEnum eenum = (EEnum)type;
-						oldCol.add(eenum.getEEnumLiteral(value.toString()).getInstance());							
-					} else if(allowInterModelReferences || !(value instanceof EObject)) {
-						oldCol.add(value);
-					} else {	// (!allowIntermodelReferences) && (value intanceof EObject)
-						if(getModelOf(eo) == getModelOf(value))
-							oldCol.add(value);
+				} else if (allowInterModelReferences) {
+					oldCol.addAll((Collection)settableValue);
+				} else { // !allowIntermodelReferences
+					for (Iterator i = ((Collection)settableValue).iterator(); i.hasNext();) {
+						Object v = i.next();
+						if (v instanceof EObject) {
+							if (getModelOf(eo) == getModelOf(v)) {
+								oldCol.add(v);
+							}
+						} else {
+							oldCol.add(v);
+						}
 					}
 				}
 			} else {
-				if(value instanceof Collection) {
-					execEnv.logger.warning("Assigning a Collection to a single-valued feature");
-					Collection c = (Collection)value;
-					if(!c.isEmpty()) {
-						value = c.iterator().next();
-					} else {
-						value = null;
+				if (targetIsEnum) {
+					EEnum eenum = (EEnum)type;
+					oldCol.add(eenum.getEEnumLiteral(settableValue.toString()).getInstance());
+				} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
+					oldCol.add(settableValue);
+				} else { // (!allowIntermodelReferences) && (value intanceof EObject)
+					if (getModelOf(eo) == getModelOf(settableValue)) {
+						oldCol.add(settableValue);
 					}
 				}
-				if(targetIsEnum) {
-					EEnum eenum = (EEnum)type;
-					eo.eSet(feature, eenum.getEEnumLiteral(value.toString()).getInstance());							
-				} else if(allowInterModelReferences || !(value instanceof EObject)) {
-					eo.eSet(feature, value);
-				} else {	// (!allowIntermodelReferences) && (value intanceof EObject)
-					if(getModelOf(eo) == getModelOf(value))
-						eo.eSet(feature, value);
+			}
+		} else {
+			if (settableValue instanceof Collection) {
+				logger.warning("Assigning a Collection to a single-valued feature");
+				Collection c = (Collection)settableValue;
+				if (!c.isEmpty()) {
+					settableValue = c.iterator().next();
+				} else {
+					settableValue = null;
 				}
 			}
-		} catch(Exception e) {
-			// TODO: implement a better mechanism than println for warnings
-			execEnv.logger.warning("Warning: could not assign " + value + " to " + frame.execEnv.toPrettyPrintedString(eo) + "." + name);
+			if (targetIsEnum) {
+				EEnum eenum = (EEnum)type;
+				eo.eSet(feature, eenum.getEEnumLiteral(settableValue.toString()).getInstance());
+			} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
+				eo.eSet(feature, settableValue);
+			} else { // (!allowIntermodelReferences) && (value intanceof EObject)
+				if (getModelOf(eo) == getModelOf(settableValue)) {
+					eo.eSet(feature, settableValue);
+				}
+			}
 		}
+		// } catch (IOException e) {
+		// currentExecEnv.logger.warning("Warning: could not assign " + settableValue + " to "
+		// + frame.execEnv.toPrettyPrintedString(eo) + "." + name);
+		// }
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#delete(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame,
+	 *      java.lang.Object)
+	 */
 	public void delete(StackFrame frame, Object modelElement) {
 		EObject eo = (EObject)modelElement;
 		eo.eAdapters().clear();

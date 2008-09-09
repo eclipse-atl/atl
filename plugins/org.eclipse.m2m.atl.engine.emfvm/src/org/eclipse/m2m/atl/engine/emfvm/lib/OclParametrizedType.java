@@ -6,16 +6,26 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Fr�d�ric Jouault - initial API and implementation
+ *    Frederic Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
 import org.eclipse.emf.ecore.EClass;
 
+/**
+ * An OCL complex type.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ */
 public class OclParametrizedType extends OclType {
 
 	private Object elementType;
-	
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.OclType#toString()
+	 */
 	public String toString() {
 		return super.toString() + "(" + elementType + ")";
 	}
@@ -27,11 +37,16 @@ public class OclParametrizedType extends OclType {
 	public void setElementType(Object elementType) {
 		this.elementType = elementType;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.OclType#conformsTo(org.eclipse.m2m.atl.engine.emfvm.lib.OclType)
+	 */
 	public boolean conformsTo(OclType other) {
 		boolean ret = false;
-		
-		if(other instanceof OclParametrizedType) {
+
+		if (other instanceof OclParametrizedType) {
 			final OclParametrizedType aopt = (OclParametrizedType)other;
 			final String oname = aopt.getName();
 			if ((oname.equals("Collection")) || (oname.equals(getName()))) {
@@ -42,7 +57,7 @@ public class OclParametrizedType extends OclType {
 				}
 			}
 		}
-		
+
 		return ret;
 	}
 }

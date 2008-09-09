@@ -6,13 +6,24 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault - initial API and implementation
+ *    Frederic Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
 import java.util.Map;
 
+/**
+ * The Extension interface.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ */
 public interface Extension {
 
-	public void apply(ExecEnv execEnv, Map options);
+	/**
+	 * Apply the extension.
+	 * 
+	 * @param execEnv the execution environment
+	 * @param options the options map
+	 */
+	void apply(ExecEnv execEnv, Map options);
 }

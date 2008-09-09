@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: ModelAdapter.java,v 1.2 2008/09/02 15:29:17 wpiers Exp $
+ * $Id: ModelAdapter.java,v 1.3 2008/09/09 13:15:01 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.lib;
@@ -18,34 +18,109 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * The model adapter interface, defining model interactions.
  * 
- * @author Mikaël Barbero
- *
+ * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
  */
 public interface ModelAdapter {
 
-	public abstract Object get(StackFrame frame, Object eo, String name);
-	
-	public abstract void set(StackFrame frame, Object eo, String name, Object value);
-	
-	public abstract void delete(StackFrame frame, Object eo);
-	
-	public abstract void registerVMSupertypes(Map vmSupertypes);
-	
-	public abstract void registerVMTypeOperations(Map vmTypeOperations);
-	
-	public abstract boolean prettyPrint(PrintStream out, Object value);
-	
-	public abstract Object getType(Object value);
-	
-	public abstract List getSupertypes(Object type);
-	
-	public Model getModelOf(Object element);
-	
+	/**
+	 * Returns the value of a feature in a given model element.
+	 * 
+	 * @param frame
+	 *            the frame context
+	 * @param eo
+	 *            the model element
+	 * @param name
+	 *            the feature name
+	 * @return the value
+	 */
+	Object get(StackFrame frame, Object eo, String name);
+
+	/**
+	 * Sets the value of a feature in a given model element.
+	 * 
+	 * @param frame
+	 *            the frame context
+	 * @param eo
+	 *            the model element
+	 * @param name
+	 *            the feature name
+	 * @param value
+	 *            the value to set
+	 */
+	void set(StackFrame frame, Object eo, String name, Object value);
+
+	/**
+	 * Deletes a model element.
+	 * 
+	 * @param frame
+	 *            the frame context
+	 * @param eo
+	 *            the model element to delete
+	 */
+	void delete(StackFrame frame, Object eo);
+
+	/**
+	 * Registers a map of supertypes.
+	 * 
+	 * @param vmSupertypes
+	 *            the supertypes map
+	 */
+	void registerVMSupertypes(Map vmSupertypes);
+
+	/**
+	 * Registers a map of operations.
+	 * 
+	 * @param vmTypeOperations
+	 *            the operations map
+	 */
+	void registerVMTypeOperations(Map vmTypeOperations);
+
+	/**
+	 * Displays a value.
+	 * 
+	 * @param out
+	 *            the stream where to display the value
+	 * @param value
+	 *            the value to display
+	 * @return true if the value has been displayed
+	 */
+	boolean prettyPrint(PrintStream out, Object value);
+
+	/**
+	 * Returns the type of a given value.
+	 * 
+	 * @param value
+	 *            the value
+	 * @return the type of a given value.
+	 */
+	Object getType(Object value);
+
+	/**
+	 * Returns the list of the supertypes of a given type.
+	 * 
+	 * @param type
+	 *            a model element type
+	 * @return the list of the supertypes of a given type
+	 */
+	List getSupertypes(Object type);
+
+	/**
+	 * Returns the model of a given element.
+	 * 
+	 * @param element
+	 *            a model element
+	 * @return the model of a given element
+	 */
+	Model getModelOf(Object element);
+
 	/**
 	 * Sets "allow inter-model references" for this model adapter.
+	 * 
 	 * @param allowInterModelRefs
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 *            the value
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	public abstract void setAllowInterModelReferences(boolean allowInterModelRefs);
+	void setAllowInterModelReferences(boolean allowInterModelRefs);
 }

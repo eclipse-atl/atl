@@ -6,13 +6,23 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Fr�d�ric Jouault - initial API and implementation
+ *    Frederic Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
+/**
+ * OCL simple type.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ */
 public class OclSimpleType extends OclType {
-	
-	public boolean conformsTo(OclType other){
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.OclType#conformsTo(org.eclipse.m2m.atl.engine.emfvm.lib.OclType)
+	 */
+	public boolean conformsTo(OclType other) {
 		throw new RuntimeException("OclSimpleType.conformsTo(OclType) not yet implemented");
 	}
 }

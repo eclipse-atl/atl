@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault - initial API and implementation
+ *    Frederic Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -15,11 +15,65 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Stores a transient link.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ */
 public class TransientLink {
 
-	public String rule;
-	public Map sourceElements = new HashMap();
-	public Map targetElements = new HashMap();
-	public List targetElementsList = new ArrayList();
-	public Map variables = new HashMap();
+	/** The rule making the link. */
+	private String rule;
+
+	/** The source elements map. */
+	private Map sourceElements = new HashMap();
+
+	/** The target elements map. */
+	private Map targetElements = new HashMap();
+
+	/** The target elements list. */
+	private List targetElementsList = new ArrayList();
+
+	/** The variables of the link. */
+	private Map variables = new HashMap();
+
+	public String getRule() {
+		return rule;
+	}
+
+	public void setRule(String rule) {
+		this.rule = rule;
+	}
+
+	public Map getSourceElements() {
+		return sourceElements;
+	}
+
+	public void setSourceElements(Map sourceElements) {
+		this.sourceElements = sourceElements;
+	}
+
+	public Map getTargetElements() {
+		return targetElements;
+	}
+
+	public void setTargetElements(Map targetElements) {
+		this.targetElements = targetElements;
+	}
+
+	public List getTargetElementsList() {
+		return targetElementsList;
+	}
+
+	public void setTargetElementsList(List targetElementsList) {
+		this.targetElementsList = targetElementsList;
+	}
+
+	public Map getVariables() {
+		return variables;
+	}
+
+	public void setVariables(Map variables) {
+		this.variables = variables;
+	}
 }

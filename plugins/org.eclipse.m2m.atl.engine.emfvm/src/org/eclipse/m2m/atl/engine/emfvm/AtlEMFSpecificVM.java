@@ -8,7 +8,7 @@
  * Contributors:
  *    INRIA - initial API and implementation
  *    
- * $Id: AtlEMFSpecificVM.java,v 1.5 2008/09/02 15:29:17 wpiers Exp $
+ * $Id: AtlEMFSpecificVM.java,v 1.6 2008/09/09 13:15:01 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -43,18 +43,24 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 // TODO:
-//	- improve the way VMs are made pluggable
-//		- put extension point in engine plugin, not debug
-//		- make ant tasks independant of ASMModels (i.e., regular VM arguments)
+// - improve the way VMs are made pluggable
+// - put extension point in engine plugin, not debug
+// - make ant tasks independant of ASMModels (i.e., regular VM arguments)
+
 /**
+ * The ATL EMFVM launcher.
  * 
- * @author Frederic Jouault
- * @author Mikael Barbero
- *
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
  */
 public class AtlEMFSpecificVM extends AtlVM {
 
-	// launch from Regular VM arguments (used for ant tasks)
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.adt.launching.AtlVM#launch(java.net.URL, java.util.Map, java.util.Map,
+	 *      java.util.Map, java.util.List, java.util.Map)
+	 */
 	public Object launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options) {
 		Object ret = null;
 
@@ -62,77 +68,84 @@ public class AtlEMFSpecificVM extends AtlVM {
 		// handle metamodels first
 		List targetModels = new ArrayList();
 		Map referenceModelOfASMModel = new HashMap();
-		for(Iterator i = models.keySet().iterator() ; i.hasNext() ; ) {
+		for (Iterator i = models.keySet().iterator(); i.hasNext();) {
 			String mName = (String)i.next();
 			ASMModel m = (ASMModel)models.get(mName);
 			ReferenceModel rm;
-			if(m.equals(ASMEMFModel.getMOF())) {
+			if (m.equals(ASMEMFModel.getMOF())) {
 				rm = EMFReferenceModel.getMetametamodel();
-			} else if(m.getMetamodel().equals(ASMEMFModel.getMOF())) {
+			} else if (m.getMetamodel().equals(ASMEMFModel.getMOF())) {
 				rm = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), ((ASMEMFModel)m).getExtent());
 				referenceModelOfASMModel.put(m, rm);
 			} else {
 				continue;
 			}
 			actualModels.put(mName, rm);
-			if(m.isTarget())
+			if (m.isTarget()) {
 				targetModels.add(rm);
+			}
 		}
 		// handle models second
-		for(Iterator i = models.keySet().iterator() ; i.hasNext() ; ) {
+		for (Iterator i = models.keySet().iterator(); i.hasNext();) {
 			String mName = (String)i.next();
 			ASMModel m = (ASMModel)models.get(mName);
-			if(!m.getMetamodel().equals(ASMEMFModel.getMOF())) {
+			if (!m.getMetamodel().equals(ASMEMFModel.getMOF())) {
 				ASMModel mm = m.getMetamodel();
-			
+
 				ReferenceModel rm = (ReferenceModel)referenceModelOfASMModel.get(mm);
 				AbstractModel actualM = new EMFModel(rm, ((ASMEMFModel)m).getExtent());
 				actualModels.put(mName, actualM);
-				
-				if(m.isTarget()) {
+
+				if (m.isTarget()) {
 					targetModels.add(actualM);
-					actualM.isTarget = true;
+					actualM.setIsTarget(true);
 				}
 			}
 		}
-		
+
 		try {
 			ASM asm = new ASMXMLReader().read(asmUrl.openStream());
 
-			for(Iterator i = libs.keySet().iterator() ; i.hasNext() ; ) {
+			for (Iterator i = libs.keySet().iterator(); i.hasNext();) {
 				String libName = (String)i.next();
 				URL libUrl = (URL)libs.get(libName);
 				ASM lib = new ASMXMLReader().read(libUrl.openStream());
 				libs.put(libName, lib);
 			}
-			
+
 			List superimpose = new ArrayList();
-			for(Iterator i = superimps.iterator() ; i.hasNext() ; ) {
+			for (Iterator i = superimps.iterator(); i.hasNext();) {
 				URL url = (URL)i.next();
 				ASM module = new ASMXMLReader().read(url.openStream());
 				superimpose.add(module);
 			}
-			
+
 			try {
 				ret = asm.run(actualModels, libs, superimpose, options);
-			} catch(VMException vme) {
+			} catch (VMException vme) {
 				logger.log(Level.SEVERE, vme.getLocalizedMessage(), vme);
 				throw vme;
 			}
-			
-			for(Iterator i = targetModels.iterator() ; i.hasNext() ; ) {
+
+			for (Iterator i = targetModels.iterator(); i.hasNext();) {
 				EMFModel model = (EMFModel)i.next();
 				model.commitToResource();
 			}
-		} catch(IOException ioe) {
+		} catch (IOException ioe) {
 			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 
 		return ret;
 	}
 
-	// direct launch from debug plugin
-	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration,
+	 *      java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
+			IProgressMonitor monitor) throws CoreException {
 		launch.setSourceLocator(new AtlSourceLocator());
 		AtlRunTarget mTarget = new AtlRunTarget(launch);
 		launch.addDebugTarget(mTarget);
@@ -140,16 +153,34 @@ public class AtlEMFSpecificVM extends AtlVM {
 		mTarget.terminate();
 	}
 
-	private void actualLaunch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		String fileName = configuration.getAttribute(AtlLauncherTools.ATLFILENAME, AtlLauncherTools.NULLPARAMETER);
+	/**
+	 * EMFVM launch method.
+	 * 
+	 * @param configuration
+	 *            the launch configuration
+	 * @param mode
+	 *            the launch mode
+	 * @param launch
+	 *            the launch interface
+	 * @param monitor
+	 *            the progress monitor
+	 * @throws CoreException
+	 *             if there are errors during the transformation
+	 */
+	private void actualLaunch(ILaunchConfiguration configuration, String mode, ILaunch launch,
+			IProgressMonitor monitor) throws CoreException {
+		String fileName = configuration.getAttribute(AtlLauncherTools.ATLFILENAME,
+				AtlLauncherTools.NULLPARAMETER);
 		IFile currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(fileName));
 		String extension = currentAtlFile.getFileExtension().toLowerCase();
-		if (AtlLauncherTools.EXTENSIONS.contains(extension)) {
-			String currentAsmPath = currentAtlFile.getFullPath().toString().substring(0, currentAtlFile.getFullPath().toString().length() - extension.length()) + "asm";
+		if (AtlLauncherTools.getExtensions().contains(extension)) {
+			String currentAsmPath = currentAtlFile.getFullPath().toString().substring(0,
+					currentAtlFile.getFullPath().toString().length() - extension.length())
+					+ "asm";
 			currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(currentAsmPath));
-		}
-		else
+		} else {
 			currentAtlFile = null;
+		}
 
 		ASM asm = new ASMXMLReader().read(currentAtlFile.getContents());
 
@@ -161,56 +192,53 @@ public class AtlEMFSpecificVM extends AtlVM {
 		List superimps = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
 
 		try {
-			for(Iterator i = sourceModels.keySet().iterator() ; i.hasNext() ; ) {
+			for (Iterator i = sourceModels.keySet().iterator(); i.hasNext();) {
 				String mName = (String)i.next();
 				String mmName = (String)sourceModels.get(mName);
-				
+
 				ReferenceModel mm = (ReferenceModel)models.get(mmName);
-				if(mm == null) {
+				if (mm == null) {
 					mm = loadReferenceModel(mmName, modelPaths);
 					models.put(mmName, mm);
 				}
-				Model m = new EMFModel(
-						mm, 
-						URI.createPlatformResourceURI((String)modelPaths.get(mName), true),
-						false);			
+				Model m = new EMFModel(mm,
+						URI.createPlatformResourceURI((String)modelPaths.get(mName), true), false);
 				models.put(mName, m);
 			}
 
-			for(Iterator i = targetModels.keySet().iterator() ; i.hasNext() ; ) {
+			for (Iterator i = targetModels.keySet().iterator(); i.hasNext();) {
 				String mName = (String)i.next();
 				String mmName = (String)targetModels.get(mName);
-				
+
 				ReferenceModel mm = (ReferenceModel)models.get(mmName);
-				if(mm == null) {
+				if (mm == null) {
 					mm = loadReferenceModel(mmName, modelPaths);
 					models.put(mmName, mm);
 				}
-				AbstractModel m = new EMFModel(
-						mm, 
-						URI.createPlatformResourceURI((String)modelPaths.get(mName), true),
-						true);		
+				AbstractModel m = new EMFModel(mm, URI.createPlatformResourceURI((String)modelPaths
+						.get(mName), true), true);
 				models.put(mName, m);
-				m.isTarget = true;
+				m.setIsTarget(true);
 			}
 
 			try {
 				Map options = new HashMap();
-				for(int i = 0 ; i < AtlLauncherTools.additionalParamIds.length ; i++) {
-					boolean value = configuration.getAttribute(AtlLauncherTools.additionalParamIds[i], false);
-					options.put(AtlLauncherTools.additionalParamIds[i], value ? "true" : "false");
+				for (int i = 0; i < AtlLauncherTools.ADDITIONAL_PARAM_IDS.length; i++) {
+					boolean value = configuration.getAttribute(AtlLauncherTools.ADDITIONAL_PARAM_IDS[i], false);
+					options.put(AtlLauncherTools.ADDITIONAL_PARAM_IDS[i], value ? "true" : "false");
 				}
-				
+
 				Map libraries = new HashMap();
-				for(Iterator i = libs.keySet().iterator() ; i.hasNext() ; ) {
+				for (Iterator i = libs.keySet().iterator(); i.hasNext();) {
 					String libName = (String)i.next();
-					IFile libFile = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString((String)libs.get(libName)));
+					IFile libFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
+							Path.fromOSString((String)libs.get(libName)));
 					ASM lib = new ASMXMLReader().read(libFile.getContents());
 					libraries.put(libName, lib);
 				}
 
 				List superimpose = new ArrayList();
-				for(Iterator i = superimps.iterator() ; i.hasNext() ; ) {
+				for (Iterator i = superimps.iterator(); i.hasNext();) {
 					String path = (String)i.next();
 					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(path));
 					ASM module = new ASMXMLReader().read(file.getContents());
@@ -219,44 +247,40 @@ public class AtlEMFSpecificVM extends AtlVM {
 
 				asm.run(models, libraries, superimpose, options);
 
-				for(Iterator i = targetModels.keySet().iterator() ; i.hasNext() ; ) {
+				for (Iterator i = targetModels.keySet().iterator(); i.hasNext();) {
 					String mName = (String)i.next();
-					
-					EMFModel m = (EMFModel)models.get(mName);			
+
+					EMFModel m = (EMFModel)models.get(mName);
 					m.save(URI.createPlatformResourceURI((String)modelPaths.get(mName), true));
 				}
-			} catch(VMException vme) {
+			} catch (VMException vme) {
 				logger.log(Level.SEVERE, vme.getLocalizedMessage(), vme);
 				throw vme;
 			} finally {
-				for(Iterator i = models.values().iterator() ; i.hasNext() ; ) {
+				for (Iterator i = models.values().iterator(); i.hasNext();) {
 					Model model = (Model)i.next();
 					model.dispose();
 				}
 			}
-		} catch(IOException ioe) {
+		} catch (IOException ioe) {
 			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 
-
-//					Map modelType = configuration.getAttribute(AtlLauncherTools.MODELTYPE, new HashMap());
-//					Map modelHandler = configuration.getAttribute(AtlLauncherTools.MODELHANDLER, new HashMap());
-//					boolean checkSameModel = !configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false);
-//		            List superimpose = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
 	}
-	
+
 	private ReferenceModel loadReferenceModel(String mmName, Map modelPaths) throws IOException {
 		ReferenceModel ret = null;
-		
+
 		String path = (String)modelPaths.get(mmName);
-		if(path.startsWith("#")) {
+		if (path.startsWith("#")) {
 			ret = EMFReferenceModel.getMetametamodel();
-		} else if(path.startsWith("uri:")){
+		} else if (path.startsWith("uri:")) {
 			ret = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), path.substring(4));
 		} else {
-			ret = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), URI.createPlatformResourceURI(path, true));
-		}		
-		
+			ret = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), URI.createPlatformResourceURI(
+					path, true));
+		}
+
 		return ret;
 	}
 }

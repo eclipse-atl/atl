@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault - initial API and implementation
+ *    Frederic Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -15,14 +15,17 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class EmfvmPlugin extends Plugin {
 
+	/** The common ATL logger. */
 	public static final String LOGGER = "org.eclipse.m2m.atl";
 
-	//The shared instance.
+	/** The shared instance. */
 	private static EmfvmPlugin plugin;
-	
+
 	/**
 	 * The constructor.
 	 */
@@ -31,14 +34,18 @@ public class EmfvmPlugin extends Plugin {
 	}
 
 	/**
-	 * This method is called upon plug-in activation
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
 
 	/**
-	 * This method is called when the plug-in is stopped
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
@@ -47,6 +54,8 @@ public class EmfvmPlugin extends Plugin {
 
 	/**
 	 * Returns the shared instance.
+	 *
+	 * @return the shared instance
 	 */
 	public static EmfvmPlugin getDefault() {
 		return plugin;

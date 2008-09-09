@@ -8,26 +8,35 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: ReferenceModel.java,v 1.5 2008/09/02 15:29:17 wpiers Exp $
+ * $Id: ReferenceModel.java,v 1.6 2008/09/09 13:15:01 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
-
 /**
+ * The Reference model (used to define metamodels).
  * 
- * @author Mikael Barbero
- * @author Frederic Jouault
- *
+ * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public interface ReferenceModel extends Model {
 
-	public abstract Object getMetaElementByName(String name);
+	/**
+	 * Returns a metaelement by its name.
+	 * 
+	 * @param name
+	 *            the metaelement name
+	 * @return a metaelement by its name
+	 */
+	Object getMetaElementByName(String name);
 
-    /**
-     * @param object The model element.
-     * @return True if object is contained in this model's resource or a referenced resource.
-     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
-     */
-    public abstract boolean isModelOf(Object object);
+	/**
+	 * Returns True if object is contained in this model's resource or a referenced resource.
+	 * 
+	 * @param object
+	 *            The model element.
+	 * @return True if object is contained in this model's resource or a referenced resource.
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	boolean isModelOf(Object object);
 }

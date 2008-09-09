@@ -6,27 +6,47 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault - initial API and implementation
+ *    Frederic Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
-
+/**
+ * The ASM Module, which symbolizes an ATL transformation.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ */
 public class ASMModule implements HasFields {
-	
+
 	private Map fields = new HashMap();
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.HasFields#set(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame,
+	 *      java.lang.Object, java.lang.Object)
+	 */
 	public void set(StackFrame frame, Object name, Object value) {
 		fields.put(name, value);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.HasFields#get(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame,
+	 *      java.lang.Object)
+	 */
 	public Object get(StackFrame frame, Object name) {
 		return fields.get(name);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		return "thisModule";
 	}

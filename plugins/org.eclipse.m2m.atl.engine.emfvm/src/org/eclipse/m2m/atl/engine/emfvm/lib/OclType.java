@@ -6,10 +6,15 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Fr�d�ric Jouault - initial API and implementation
+ *    Frederic Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
+/**
+ * Abstract OCLtype.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ */
 public abstract class OclType {
 
 	private String name;
@@ -22,9 +27,20 @@ public abstract class OclType {
 		this.name = name;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		return (name == null) ? "<unnamed>" : name;
 	}
 	
+	/**
+	 * Tests if the current object conforms to the given object.
+	 * 
+	 * @param other the other object
+	 * @return true if the current object conforms to the given object
+	 */
 	public abstract boolean conformsTo(OclType other);
 }

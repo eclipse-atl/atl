@@ -6,137 +6,205 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault - initial API and implementation
+ *    Frederic Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
+/**
+ * Defines the ATL VM bytecodes.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ */
 public class Bytecode {
-	
-	public final static int PUSH 		= 0;
-	public final static int PUSHI 		= 1;
-	public final static int PUSHD 		= 2;
-	public final static int PUSHT 		= 3;
-	public final static int PUSHF 		= 4;
-	public final static int CALL 		= 5;
-	public final static int LOAD 		= 6;
-	public final static int STORE 		= 7;
-	public final static int NEW 		= 8;
-	public final static int ITERATE 	= 9;
-	public final static int ENDITERATE 	= 10;
-	public final static int DUP 		= 11;
-	public final static int SET 		= 12;
-	public final static int GET 		= 13;
-	public final static int POP 		= 14;
-	public final static int GETASM 		= 15;
-	public final static int IF 			= 16;
-	public final static int GOTO 		= 17;
-	public final static int SWAP 		= 18;
-	public final static int FINDME 		= 19;
-	public final static int DUP_X1 		= 20;
-	public final static int DELETE		= 21;
-	
-	public final static String opcodeNames[] = {
-		"push", "pushi", "pushd", "pusht", "pushf",
-		"call", "load", "store", "new", "iterate",
-		"enditerate", "dup", "set", "get", "pop",
-		"getasm", "if", "goto", "swap", "findme",
-		"dup_x1", "delete"
-	};
-	
-	public String toString() {
-		return opcodeNames[opcode] + ((operand != null) ? " " + operand : "");
-	}
-	
-	public int opcode;
-	public Object operand;
-	
-	// used for
-	//	- nbArgs of call,
-	//	- index of load & store,
-	//	- target pc of if & goto & iterate(i.e., corresponding enditerate + 1) & enditerate (i.e., corresponding iterate + 1)
-	public int value;
-	//	- nesting level of iterate & enditerate
-	public int value2;
-	
-	public Bytecode(String opcode, String operand) {
-		if(opcode.equals("push")) {
-			this.opcode = PUSH;
-			this.operand = operand;
-		} else if(opcode.equals("pushi")) {
-			this.opcode = PUSHI;
-			this.operand = Integer.valueOf(operand);
-		} else if(opcode.equals("pushd")) {
-			this.opcode = PUSHD;
-			this.operand = Double.valueOf(operand);
-		} else if(opcode.equals("call")) {
-			this.opcode = CALL;
-			this.operand = getOpName(operand);
-			this.value = getNbArgs(operand);
-		} else if(opcode.equals("load")) {
-			this.opcode = LOAD;
-			this.operand = operand;		// for toString
-			this.value = Integer.parseInt(operand);
-		} else if(opcode.equals("store")) {
-			this.opcode = STORE;
-			this.operand = operand;		// for toString
-			this.value = Integer.parseInt(operand);
-		} else if(opcode.equals("set")) {
-			this.opcode = SET;
-			this.operand = operand;
-		} else if(opcode.equals("get")) {
-			this.opcode = GET;
-			this.operand = operand;
-		} else if(opcode.equals("if")) {
-			this.opcode = IF;
-			this.operand = operand;		// for toString
-			this.value = Integer.parseInt(operand);
-		} else if(opcode.equals("goto")) {
-			this.opcode = GOTO;
-			this.operand = operand;		// for toString
-			this.value = Integer.parseInt(operand);
-		} else {
-			throw new RuntimeException("unsupported opcode with argument: " + opcode);
-		}
-	}
-	
+
+	/** Push string constant. */
+	public static final int PUSH = 0;
+
+	/** Push int constant. */
+	public static final int PUSHI = 1;
+
+	/** Push double constant. */
+	public static final int PUSHD = 2;
+
+	/** Push true boolean constant. */
+	public static final int PUSHT = 3;
+
+	/** Push false boolean constant. */
+	public static final int PUSHF = 4;
+
+	/** Call a method. */
+	public static final int CALL = 5;
+
+	/** Load value from local variable. */
+	public static final int LOAD = 6;
+
+	/** Store value into local variable. */
+	public static final int STORE = 7;
+
+	/** Call a method. */
+	public static final int NEW = 8;
+
+	/** Delimitate the beginning of iteration on collection elements. */
+	public static final int ITERATE = 9;
+
+	/** Delimitate the end of iteration on collection elements. */
+	public static final int ENDITERATE = 10;
+
+	/** Duplicate the top operand stack value. */
+	public static final int DUP = 11;
+
+	/** Set field in object. */
+	public static final int SET = 12;
+
+	/** Fetch field from object. */
+	public static final int GET = 13;
+
+	/** Pop the top operand stack value. */
+	public static final int POP = 14;
+
+	/** Fetch the asm element. */
+	public static final int GETASM = 15;
+
+	/** Branch if boolean value b is true. */
+	public static final int IF = 16;
+
+	/** Branch always. */
+	public static final int GOTO = 17;
+
+	/** Swap the two top operand stack values. */
+	public static final int SWAP = 18;
+
+	/** Fetch a classifier. */
+	public static final int FINDME = 19;
+
+	/** Duplicate the top operand stack value and insert two values down. */
+	public static final int DUP_X1 = 20;
+
+	/** Deletes an element. */
+	public static final int DELETE = 21;
+
+	/** List of codes. */
+	public static final String[] OPCODENAMES = {"push", "pushi", "pushd", "pusht", "pushf", "call", "load",
+			"store", "new", "iterate", "enditerate", "dup", "set", "get", "pop", "getasm", "if", "goto",
+			"swap", "findme", "dup_x1", "delete",};
+
+	/** current code. */
+	private int opcode;
+
+	/** current operand. */
+	private Object operand;
+
+	/**
+	 * used for - nbArgs of call, - index of load & store, - target pc of if & goto & iterate(i.e.,
+	 * corresponding enditerate + 1) & enditerate (i.e., corresponding iterate + 1).
+	 */
+	private int value;
+
+	/** - nesting level of iterate & enditerate. */
+	private int value2;
+
+	/**
+	 * Bytecode constructor, for bytecodes which needs an operand.
+	 * 
+	 * @param opcode
+	 *            the bytecode name
+	 */
 	public Bytecode(String opcode) {
-		if(opcode.equals("pusht")) {
+		if (opcode.equals("pusht")) {
 			this.opcode = PUSHT;
-		} else if(opcode.equals("pushf")) {
+		} else if (opcode.equals("pushf")) {
 			this.opcode = PUSHF;
-		} else if(opcode.equals("new")) {
+		} else if (opcode.equals("new")) {
 			this.opcode = NEW;
-		} else if(opcode.equals("iterate")) {
+		} else if (opcode.equals("iterate")) {
 			this.opcode = ITERATE;
-		} else if(opcode.equals("enditerate")) {
+		} else if (opcode.equals("enditerate")) {
 			this.opcode = ENDITERATE;
-		} else if(opcode.equals("dup")) {
+		} else if (opcode.equals("dup")) {
 			this.opcode = DUP;
-		} else if(opcode.equals("pop")) {
+		} else if (opcode.equals("pop")) {
 			this.opcode = POP;
-		} else if(opcode.equals("getasm")) {
+		} else if (opcode.equals("getasm")) {
 			this.opcode = GETASM;
-		} else if(opcode.equals("swap")) {
+		} else if (opcode.equals("swap")) {
 			this.opcode = SWAP;
-		} else if(opcode.equals("findme")) {
+		} else if (opcode.equals("findme")) {
 			this.opcode = FINDME;
-		} else if(opcode.equals("dup_x1")) {
+		} else if (opcode.equals("dup_x1")) {
 			this.opcode = DUP_X1;
-		} else if(opcode.equals("delete")) {
+		} else if (opcode.equals("delete")) {
 			this.opcode = DELETE;
 		} else {
 			throw new RuntimeException("unsupported opcode without argument: " + opcode);
 		}
 	}
-	
-//	 BEGIN SIGNATURE TOOLS
+
+	/**
+	 * Bytecode constructor, for bytecodes which needs an operand.
+	 * 
+	 * @param opcode
+	 *            the bytecode name
+	 * @param operand
+	 *            the operand
+	 */
+	public Bytecode(String opcode, String operand) {
+		if (opcode.equals("push")) {
+			this.opcode = PUSH;
+			this.operand = operand;
+		} else if (opcode.equals("pushi")) {
+			this.opcode = PUSHI;
+			this.operand = Integer.valueOf(operand);
+		} else if (opcode.equals("pushd")) {
+			this.opcode = PUSHD;
+			this.operand = Double.valueOf(operand);
+		} else if (opcode.equals("call")) {
+			this.opcode = CALL;
+			this.operand = getOpName(operand);
+			this.value = getNbArgs(operand);
+		} else if (opcode.equals("load")) {
+			this.opcode = LOAD;
+			this.operand = operand; // for toString
+			this.value = Integer.parseInt(operand);
+		} else if (opcode.equals("store")) {
+			this.opcode = STORE;
+			this.operand = operand; // for toString
+			this.value = Integer.parseInt(operand);
+		} else if (opcode.equals("set")) {
+			this.opcode = SET;
+			this.operand = operand;
+		} else if (opcode.equals("get")) {
+			this.opcode = GET;
+			this.operand = operand;
+		} else if (opcode.equals("if")) {
+			this.opcode = IF;
+			this.operand = operand; // for toString
+			this.value = Integer.parseInt(operand);
+		} else if (opcode.equals("goto")) {
+			this.opcode = GOTO;
+			this.operand = operand; // for toString
+			this.value = Integer.parseInt(operand);
+		} else {
+			throw new RuntimeException("unsupported opcode with argument: " + opcode);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return OPCODENAMES[opcode] + ((operand != null) ? " " + operand : "");
+	}
+
+	// BEGIN SIGNATURE TOOLS
 	private static int getNbArgs(String s) {
 		int ret = 0;
-
-		s = s.replaceFirst("^.*\\(", "");
-		while(!s.startsWith(")")) {
+		String tmp = s;
+		tmp = tmp.replaceFirst("^.*\\(", "");
+		while (!tmp.startsWith(")")) {
 			ret++;
-			 s = removeFirst(s);
+			tmp = removeFirst(tmp);
 		}
 
 		return ret;
@@ -144,24 +212,52 @@ public class Bytecode {
 
 	private static String removeFirst(String s) {
 		String simple = "^J|I|B|S|D|A|(M|N)[^;]*;|L";
-
-		if(s.startsWith("T")) {
-			s = s.substring(1);
-			while(!s.startsWith(";")) {
-				s = removeFirst(s);
+		String tmp = s;
+		if (s.startsWith("T")) {
+			tmp = tmp.substring(1);
+			while (!tmp.startsWith(";")) {
+				tmp = removeFirst(tmp);
 			}
-			s = s.substring(1);
-		} else if(s.matches("^(Q|G|C|E|O).*")) {
-			s = removeFirst(s.substring(1));
+			tmp = tmp.substring(1);
+		} else if (tmp.matches("^(Q|G|C|E|O).*")) {
+			tmp = removeFirst(s.substring(1));
 		} else {
-			s = s.replaceFirst(simple, "");
+			tmp = tmp.replaceFirst(simple, "");
 		}
 
-		return s;
+		return tmp;
 	}
 
 	private static String getOpName(String s) {
 		return s.substring(s.indexOf(".") + 1, s.indexOf("("));
 	}
-// END SIGNATURE TOOLS
+	// END SIGNATURE TOOLS
+
+	public int getOpcode() {
+		return opcode;
+	}
+
+	public Object getOperand() {
+		return operand;
+	}
+
+	public void setOperand(Object operand) {
+		this.operand = operand;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public int getValue2() {
+		return value2;
+	}
+
+	public void setValue2(int value2) {
+		this.value2 = value2;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
 }

@@ -6,19 +6,36 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault - initial API and implementation
+ *    Frederic Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
-
+/**
+ * The abstract Operation class.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ */
 public abstract class Operation {
 
-	public int maxLocals;
-	
+	protected int maxLocals;
+
+	/**
+	 * Creates a new operation.
+	 * 
+	 * @param maxLocals
+	 *            max locals
+	 */
 	public Operation(int maxLocals) {
 		this.maxLocals = maxLocals;
 	}
-	
+
+	/**
+	 * Executes an operation.
+	 * 
+	 * @param frame
+	 *            the frame for execution
+	 * @return the result
+	 */
 	public abstract Object exec(StackFrame frame);
 
 	public int getMaxLocals() {
