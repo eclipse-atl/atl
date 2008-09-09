@@ -12,17 +12,14 @@ package org.eclipse.m2m.atl.adt.ui.outline;
 
 import org.eclipse.jface.viewers.ISelection;
 
-public class RenameAction extends AtlAction
-{	
+public class RenameAction extends AtlAction {
 	RenameFrame rf;
-	
-	public RenameAction(ISelection is)
-	{
+
+	public RenameAction(ISelection is) {
 		super(is);
 	}
-	
-	public void run()
-	{
+
+	public void run() {
 		rf = new RenameFrame(this);
 	}
 }

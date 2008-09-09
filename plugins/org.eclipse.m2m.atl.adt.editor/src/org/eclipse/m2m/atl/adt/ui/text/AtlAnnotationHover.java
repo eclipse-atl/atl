@@ -43,8 +43,9 @@ public class AtlAnnotationHover implements IAnnotationHover {
 		IDocument document = viewer.getDocument();
 		IAnnotationModel model = viewer.getAnnotationModel();
 
-		if (model == null)
+		if (model == null) {
 			return new String[0];
+		}
 
 		ArrayList messages = new ArrayList();
 
@@ -52,25 +53,20 @@ public class AtlAnnotationHover implements IAnnotationHover {
 		while (iter.hasNext()) {
 			Object object = iter.next();
 			if (object instanceof MarkerAnnotation) {
-				MarkerAnnotation annotation = (MarkerAnnotation) object;
-				if (compareRulerLine(model.getPosition(annotation),
-					document,
-					line)) {
+				MarkerAnnotation annotation = (MarkerAnnotation)object;
+				if (compareRulerLine(model.getPosition(annotation), document, line)) {
 					IMarker marker = annotation.getMarker();
-					String message =
-						marker.getAttribute(IMarker.MESSAGE, (String) null);
-					if (message != null && message.trim().length() > 0)
+					String message = marker.getAttribute(IMarker.MESSAGE, (String)null);
+					if (message != null && message.trim().length() > 0) {
 						messages.add(message);
+					}
 				}
 			}
 		}
-		return (String[]) messages.toArray(new String[messages.size()]);
+		return (String[])messages.toArray(new String[messages.size()]);
 	}
 
-	private boolean compareRulerLine(
-		Position position,
-		IDocument document,
-		int line) {
+	private boolean compareRulerLine(Position position, IDocument document, int line) {
 
 		try {
 			if (position.getOffset() > -1 && position.getLength() > -1) {
@@ -80,5 +76,5 @@ public class AtlAnnotationHover implements IAnnotationHover {
 		}
 		return false;
 	}
-	
+
 }

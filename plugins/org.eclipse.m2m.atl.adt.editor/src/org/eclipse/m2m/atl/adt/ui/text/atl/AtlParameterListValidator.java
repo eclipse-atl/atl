@@ -23,65 +23,71 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 
 public class AtlParameterListValidator implements IContextInformationValidator, IContextInformationPresenter {
-	
+
 	private int fCurrentParameter;
+
 	private IContextInformation fInformation;
+
 	private int fPosition;
+
 	private ITextViewer fViewer;
-	
-	private int getCharCount(IDocument document, int start, int end, char increment, char decrement, boolean considerNesting) throws BadLocationException {
+
+	private int getCharCount(IDocument document, int start, int end, char increment, char decrement,
+			boolean considerNesting) throws BadLocationException {
 		Assert.isTrue((increment != 0 || decrement != 0) && increment != decrement);
-		
-		int nestingLevel= 0;
-		int charCount= 0;
+
+		int nestingLevel = 0;
+		int charCount = 0;
 		while (start < end) {
-			char curr= document.getChar(start++);
+			char curr = document.getChar(start++);
 			switch (curr) {
-			case '-':
-				if (start < end) {
-					char next= document.getChar(start);
-					if (next == '-') {
-						// '--'-comment: nothing to do anymore on this line 
-						start= end;
+				case '-':
+					if (start < end) {
+						char next = document.getChar(start);
+						if (next == '-') {
+							// '--'-comment: nothing to do anymore on this line
+							start = end;
+						}
 					}
-				}
-				break;
-			case '\'':
-				start= getStringEnd(document, start, end, curr);
-				break;
-			default:
-				if (considerNesting) {
-					if ('(' == curr)
-						++ nestingLevel;
-					else if (')' == curr)
-						-- nestingLevel;
-					
-					if (nestingLevel != 0)
-						break;
-				}
-				
-			if (increment != 0) {
-				if (curr == increment)
-					++ charCount;
-			}
-			
-			if (decrement != 0) {
-				if (curr == decrement)
-					-- charCount;
-			}
+					break;
+				case '\'':
+					start = getStringEnd(document, start, end, curr);
+					break;
+				default:
+					if (considerNesting) {
+						if ('(' == curr) {
+							++nestingLevel;
+						}
+						else if (')' == curr) {
+							--nestingLevel;
+						}
+						if (nestingLevel != 0) {
+							break;
+						}
+					}
+
+					if (increment != 0) {
+						if (curr == increment)
+							++charCount;
+					}
+
+					if (decrement != 0) {
+						if (curr == decrement)
+							--charCount;
+					}
 			}
 		}
-		
+
 		return charCount;
 	}
-	
-//	private int getCommentEnd(IDocument d, int pos, int end) throws BadLocationException {
-//		return Math.min(end, d.getLineOffset(d.getLineOfOffset(pos) + 1));
-//	}
-	
+
+	// private int getCommentEnd(IDocument d, int pos, int end) throws BadLocationException {
+	// return Math.min(end, d.getLineOffset(d.getLineOfOffset(pos) + 1));
+	// }
+
 	private int getStringEnd(IDocument d, int pos, int end, char ch) throws BadLocationException {
 		while (pos < end) {
-			char curr= d.getChar(pos);
+			char curr = d.getChar(pos);
 			pos++;
 			if (curr == '\\') {
 				// ignore escaped characters
@@ -92,93 +98,105 @@ public class AtlParameterListValidator implements IContextInformationValidator, 
 		}
 		return end;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.text.contentassist.IContextInformationPresenter#install(org.eclipse.jface.text.contentassist.IContextInformation, org.eclipse.jface.text.ITextViewer, int)
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.text.contentassist.IContextInformationValidator#install(org.eclipse.jface.text.contentassist.IContextInformation,
+	 *      org.eclipse.jface.text.ITextViewer, int)
 	 */
 	public void install(IContextInformation info, ITextViewer viewer, int documentPosition) {
-		fPosition= documentPosition;
-		fViewer= viewer;
-		fInformation= info;
-		fCurrentParameter= -1;
+		fPosition = documentPosition;
+		fViewer = viewer;
+		fInformation = info;
+		fCurrentParameter = -1;
 	}
-	
-	/* (non-Javadoc)
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.jface.text.contentassist.IContextInformationValidator#isContextInformationValid(int)
 	 */
-	public boolean isContextInformationValid(int position) {		
+	public boolean isContextInformationValid(int position) {
 		try {
-			if (position < fPosition)
+			if (position < fPosition) {
 				return false;
-			
-			IDocument document= fViewer.getDocument();
-			IRegion line= document.getLineInformationOfOffset(fPosition);
-			
-			if (position > line.getOffset() + line.getLength())
+			}
+
+			IDocument document = fViewer.getDocument();
+			IRegion line = document.getLineInformationOfOffset(fPosition);
+
+			if (position > line.getOffset() + line.getLength()) {
 				return false;
-			
-			return (getCharCount(document, fPosition, position, '(', ')', false) >= 0);
-			
+			}
+
+			return getCharCount(document, fPosition, position, '(', ')', false) >= 0;
+
 		} catch (BadLocationException x) {
 			return false;
 		}
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.text.contentassist.IContextInformationPresenter#updatePresentation(int, org.eclipse.jface.text.TextPresentation)
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.text.contentassist.IContextInformationPresenter#updatePresentation(int,
+	 *      org.eclipse.jface.text.TextPresentation)
 	 */
 	public boolean updatePresentation(int position, TextPresentation presentation) {
-		
-		int currentParameter= -1;
-		
+
+		int currentParameter = -1;
+
 		try {
-			currentParameter= getCharCount(fViewer.getDocument(), fPosition, position, ',', (char) 0, true);
+			currentParameter = getCharCount(fViewer.getDocument(), fPosition, position, ',', (char)0, true);
 		} catch (BadLocationException x) {
 			return false;
 		}
-		
+
 		if (fCurrentParameter != -1) {
-			if (currentParameter == fCurrentParameter)
+			if (currentParameter == fCurrentParameter) {
 				return false;
+			}
 		}
-		
+
 		presentation.clear();
-		fCurrentParameter= currentParameter;
-		
-		String s= fInformation.getInformationDisplayString();
-		int start= 0;
-		int occurrences= 0;
+		fCurrentParameter = currentParameter;
+
+		String s = fInformation.getInformationDisplayString();
+		int start = 0;
+		int occurrences = 0;
 		while (occurrences < fCurrentParameter) {
-			int found= s.indexOf(',', start);
-			if (found == -1)
+			int found = s.indexOf(',', start);
+			if (found == -1) {
 				break;
-			start= found + 1;
-			++ occurrences;
+			}
+			start = found + 1;
+			++occurrences;
 		}
-		
+
 		if (occurrences < fCurrentParameter) {
 			presentation.addStyleRange(new StyleRange(0, s.length(), null, null, SWT.NORMAL));
 			return true;
 		}
-		
-		if (start == -1)
-			start= 0;
-		
-		int end= s.indexOf(',', start);
-		if (end == -1)
-			end= s.length();
-		
-		if (start > 0)	
+
+		if (start == -1) {
+			start = 0;
+		}
+
+		int end = s.indexOf(',', start);
+		if (end == -1) {
+			end = s.length();
+		}
+		if (start > 0) {
 			presentation.addStyleRange(new StyleRange(0, start, null, null, SWT.NORMAL));
-		
-		if (end > start)
+		}
+		if (end > start) {
 			presentation.addStyleRange(new StyleRange(start, end - start, null, null, SWT.BOLD));
-		
-		if (end < s.length())
+		}
+		if (end < s.length()) {
 			presentation.addStyleRange(new StyleRange(end, s.length() - end, null, null, SWT.NORMAL));
-		
+		}
 		return true;
 	}
-	
-}
 
+}

@@ -33,7 +33,7 @@ import org.eclipse.m2m.atl.adt.ui.text.IAtlLexems;
  * This class controls the highlight syntaxing coloration for the ATL editor.
  */
 public class AtlCodeScanner extends AbstractScanner {
-	
+
 	/**
 	 * Rule to detect atl identifier.
 	 */
@@ -47,24 +47,27 @@ public class AtlCodeScanner extends AbstractScanner {
 		/**
 		 * Creates a new identifier rule.
 		 * 
-		 * @param token the given token for this rule.
+		 * @param token
+		 *            the given token for this rule.
 		 */
 		public IdentifierRule(Token token) {
 			this.token = token;
 		}
 
-		/* (non-Javadoc)
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see org.eclipse.jface.text.rules.IRule#evaluate(org.eclipse.jface.text.rules.ICharacterScanner)
 		 */
 		public IToken evaluate(ICharacterScanner scanner) {
 			int character = scanner.read();
-			if((char) character == '"') {
+			if ((char)character == '"') {
 				evaluateSimpleName(scanner);
 				scanner.unread();
-				if((char) character == '"') {
+				if ((char)character == '"') {
 					return token;
 				}
-			} else if(Character.isLetter((char) character) || ((char) character == '_')) {
+			} else if (Character.isLetter((char)character) || ((char)character == '_')) {
 				evaluateSimpleName(scanner);
 				scanner.unread();
 				return token;
@@ -72,43 +75,46 @@ public class AtlCodeScanner extends AbstractScanner {
 			scanner.unread();
 			return Token.UNDEFINED;
 		}
-		
+
 		private void evaluateSimpleName(ICharacterScanner scanner) {
 			int character = scanner.read();
 			do {
 				character = scanner.read();
-			} while(Character.isLetterOrDigit((char) character) || ((char) character == '_'));
+			} while (Character.isLetterOrDigit((char)character) || ((char)character == '_'));
 		}
 
 	}
-	
+
 	/**
 	 * Rule to detect atl literals.
 	 */
 	public class EnumLiteralRule implements IRule {
-		
+
 		/** Token to return for this rule */
 		private final IToken token;
 
 		/**
 		 * Creates a new operator rule.
 		 * 
-         * @param token the token associated with this rule
-         */
-        public EnumLiteralRule(Token token) {
-            this.token = token;
-        }
+		 * @param token
+		 *            the token associated with this rule
+		 */
+		public EnumLiteralRule(Token token) {
+			this.token = token;
+		}
 
-		/* (non-Javadoc)
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see org.eclipse.jface.text.rules.IRule#evaluate(org.eclipse.jface.text.rules.ICharacterScanner)
 		 */
 		public IToken evaluate(ICharacterScanner scanner) {
 			int character = scanner.read();
-			if((char) character == '#') {
+			if ((char)character == '#') {
 				character = scanner.read();
 				do {
 					character = scanner.read();
-				} while(Character.isLetterOrDigit((char) character) || ((char) character == '_'));
+				} while (Character.isLetterOrDigit((char)character) || ((char)character == '_'));
 				scanner.unread();
 				return token;
 			} else {
@@ -118,37 +124,38 @@ public class AtlCodeScanner extends AbstractScanner {
 		}
 
 	}
-	
+
 	/**
 	 * Rule to detect symbols.
 	 */
 	protected class SymbolRule implements IRule {
-		
+
 		/** Token to return for this rule */
 		private final IToken token;
-		
+
 		/** The associated list with this tule */
 		private final String[] list;
-		
+
 		/**
 		 * Creates a new operator rule.
 		 * 
-         * @param token the token associated with this rule
-         */
-        public SymbolRule(String[] list, Token token) {
-        	this.list = list;
-            this.token = token;
-        }
+		 * @param token
+		 *            the token associated with this rule
+		 */
+		public SymbolRule(String[] list, Token token) {
+			this.list = list;
+			this.token = token;
+		}
 
-        /*
+		/*
 		 * @see org.eclipse.jface.text.rules.IRule#evaluate(org.eclipse.jface.text.rules.ICharacterScanner)
 		 */
 		public IToken evaluate(ICharacterScanner scanner) {
-			int character= scanner.read();
-			if(isInList((char) character)) {
+			int character = scanner.read();
+			if (isInList((char)character)) {
 				do {
 					character = scanner.read();
-				} while(isInList((char) character));
+				} while (isInList((char)character));
 				scanner.unread();
 				return token;
 			} else {
@@ -156,27 +163,29 @@ public class AtlCodeScanner extends AbstractScanner {
 				return Token.UNDEFINED;
 			}
 		}
-		
+
 		/**
 		 * Is this character in the list?
 		 * 
-		 * @param character Character to determine whether it is an operator character
+		 * @param character
+		 *            Character to determine whether it is an operator character
 		 * @return <code>true</code> iff the character is an operator, <code>false</code> otherwise.
 		 */
 		public boolean isInList(char character) {
-			for(int i = 0; i < list.length; ++i) {
-				if(list[i].equals(Character.toString(character)))
+			for (int i = 0; i < list.length; ++i) {
+				if (list[i].equals(Character.toString(character)))
 					return true;
 			}
 			return false;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Creates a new instance of the ATL scanner.
 	 * 
-	 * @param textTools the ATL text tools
+	 * @param textTools
+	 *            the ATL text tools
 	 */
 	public AtlCodeScanner(AtlTextTools textTools) {
 		super(textTools);
@@ -186,7 +195,7 @@ public class AtlCodeScanner extends AbstractScanner {
 	 * @see AbstractScanner#adaptToPreferenceChange(PropertyChangeEvent)
 	 */
 	public void adaptToPreferenceChange(PropertyChangeEvent event) {
-		if(super.affectsBehavior(event)) {
+		if (super.affectsBehavior(event)) {
 			super.adaptToPreferenceChange(event);
 		}
 	}
@@ -197,55 +206,55 @@ public class AtlCodeScanner extends AbstractScanner {
 	public boolean affectsBehavior(PropertyChangeEvent event) {
 		return super.affectsBehavior(event);
 	}
-	
-	/*(non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.m2m.atl.adt.ui.text.AbstractScanner#createRules()
 	 */
 	protected List createRules() {
 		List rules = new ArrayList();
-		
+
 		rules.add(new EndOfLineRule("--", getToken(AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT_COLOR))); //$NON-NLS-1$
 		rules.add(new EnumLiteralRule(getToken(AtlPreferenceConstants.SYNTAX_LITERAL_COLOR)));
 		rules.add(new MultiLineRule("'", "'", getToken(AtlPreferenceConstants.SYNTAX_STRING_COLOR), '\\')); //$NON-NLS-1$ //$NON-NLS-2$
 		rules.add(new NumberRule(getToken(AtlPreferenceConstants.SYNTAX_NUMBER_COLOR)));
 		rules.add(new SymbolRule(IAtlLexems.BRACKETS, getToken(AtlPreferenceConstants.SYNTAX_BRACKET_COLOR)));
-		rules.add(new SymbolRule(IAtlLexems.OPERATORS, getToken(AtlPreferenceConstants.SYNTAX_OPERATOR_COLOR)));
+		rules
+				.add(new SymbolRule(IAtlLexems.OPERATORS,
+						getToken(AtlPreferenceConstants.SYNTAX_OPERATOR_COLOR)));
 		rules.add(new SymbolRule(IAtlLexems.SYMBOLS, getToken(AtlPreferenceConstants.SYNTAX_SYMBOL_COLOR)));
-		
-		WordRule wordRule = new WordRule(new AtlWordDetector(), getToken(AtlPreferenceConstants.SYNTAX_DEFAULT_COLOR));
-		for(int i = 0; i < IAtlLexems.CONSTANTS.length; ++i)
+
+		WordRule wordRule = new WordRule(new AtlWordDetector(),
+				getToken(AtlPreferenceConstants.SYNTAX_DEFAULT_COLOR));
+		for (int i = 0; i < IAtlLexems.CONSTANTS.length; ++i)
 			wordRule.addWord(IAtlLexems.CONSTANTS[i], getToken(AtlPreferenceConstants.SYNTAX_CONSTANT_COLOR));
-		for(int i = 0; i < IAtlLexems.KEYWORDS.length; ++i)
+		for (int i = 0; i < IAtlLexems.KEYWORDS.length; ++i)
 			wordRule.addWord(IAtlLexems.KEYWORDS[i], getToken(AtlPreferenceConstants.SYNTAX_KEYWORD_COLOR));
-		for(int i = 0; i < IAtlLexems.TYPES.length; ++i)
+		for (int i = 0; i < IAtlLexems.TYPES.length; ++i)
 			wordRule.addWord(IAtlLexems.TYPES[i], getToken(AtlPreferenceConstants.SYNTAX_TYPE_COLOR));
 		rules.add(wordRule);
-		
+
 		// TODO identifiers rule not well done
-		//rules.add(new IdentifierRule(getToken(IAtlConstants.EDITOR_IDENTIFIER)));
-		rules.add(new WordPatternRule(new AtlWordDetector(), "\"", "\"", getToken(AtlPreferenceConstants.SYNTAX_IDENTIFIER_COLOR))); //$NON-NLS-1$ //$NON-NLS-2$
+		// rules.add(new IdentifierRule(getToken(IAtlConstants.EDITOR_IDENTIFIER)));
+		rules.add(new WordPatternRule(new AtlWordDetector(),
+				"\"", "\"", getToken(AtlPreferenceConstants.SYNTAX_IDENTIFIER_COLOR))); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return rules;
 	}
-	
-	/*(non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.m2m.atl.adt.ui.text.AbstractScanner#getPropertyNames()
 	 */
 	protected String[] getPropertyNames() {
-		return new String[] {
-				AtlPreferenceConstants.SYNTAX_BRACKET,
-				AtlPreferenceConstants.SYNTAX_CONSTANT,
-				AtlPreferenceConstants.SYNTAX_DEFAULT,
-				AtlPreferenceConstants.SYNTAX_IDENTIFIER,
-				AtlPreferenceConstants.SYNTAX_KEYWORD,
-				AtlPreferenceConstants.SYNTAX_LITERAL,
-				AtlPreferenceConstants.SYNTAX_NUMBER,
-				AtlPreferenceConstants.SYNTAX_OPERATOR,
-				AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT,
-				AtlPreferenceConstants.SYNTAX_STRING,
-				AtlPreferenceConstants.SYNTAX_SYMBOL,
-				AtlPreferenceConstants.SYNTAX_TYPE
-		};
+		return new String[] {AtlPreferenceConstants.SYNTAX_BRACKET, AtlPreferenceConstants.SYNTAX_CONSTANT,
+				AtlPreferenceConstants.SYNTAX_DEFAULT, AtlPreferenceConstants.SYNTAX_IDENTIFIER,
+				AtlPreferenceConstants.SYNTAX_KEYWORD, AtlPreferenceConstants.SYNTAX_LITERAL,
+				AtlPreferenceConstants.SYNTAX_NUMBER, AtlPreferenceConstants.SYNTAX_OPERATOR,
+				AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT, AtlPreferenceConstants.SYNTAX_STRING,
+				AtlPreferenceConstants.SYNTAX_SYMBOL, AtlPreferenceConstants.SYNTAX_TYPE};
 	}
-	
+
 }

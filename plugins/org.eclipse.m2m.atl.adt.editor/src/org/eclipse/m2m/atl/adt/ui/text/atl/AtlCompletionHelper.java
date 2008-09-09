@@ -12,12 +12,14 @@ package org.eclipse.m2m.atl.adt.ui.text.atl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmt.tcs.injector.TCSInjector;
 import org.eclipse.jface.text.BadLocationException;
@@ -30,23 +32,24 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 /**
  * Completion helper, dedicated to document parsing.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class AtlCompletionHelper {
 
-	/** ATL parsing triggers */
-	private static final String[] PARSING_KEYWORDS = { "rule", "helper" }; //$NON-NLS-1$ //$NON-NLS-2$
+	/** ATL parsing triggers. */
+	private static final String[] PARSING_KEYWORDS = {"rule", "helper"}; //$NON-NLS-1$ //$NON-NLS-2$
 
-	/** Context indicators */
-	private static final String[] HIGH_LEVEL_KEYWORDS = { "rule", "helper", //$NON-NLS-1$ //$NON-NLS-2$
-		"from", "to", "do", "using", "module" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+	/** Context indicators. */
+	private static final String[] HIGH_LEVEL_KEYWORDS = {"rule", "helper", //$NON-NLS-1$ //$NON-NLS-2$
+			"from", "to", "do", "using", "module", }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
-	/** Observed document */
+	/** Observed document. */
 	private IDocument document;
 
 	/**
 	 * Configures the IDocument for this helper.
-	 * @param document
+	 * 
+	 * @param document the current document
 	 */
 	public void setDocument(IDocument document) {
 		this.document = document;
@@ -55,20 +58,19 @@ public class AtlCompletionHelper {
 	/**
 	 * Computes the document part to analyze, process the analysis.
 	 * 
-	 * @param offset
-	 * @param prefix
+	 * @param offset the current offset
+	 * @param prefix the current prefix
 	 * @return an analyser which purposes contextual informations.
 	 * @throws BadLocationException
 	 */
-	public AtlModelAnalyser computeContext(int offset, String prefix)
-	throws BadLocationException {
+	public AtlModelAnalyser computeContext(int offset, String prefix) throws BadLocationException {
 		// parsed zone computation
 		int begin = 0;
 		int[] lastParsingKeyWordLocation = getLastKeyWordLocation(offset - prefix.length(), PARSING_KEYWORDS);
 		begin = lastParsingKeyWordLocation[0];
 		String lastParsingKeyWord = null;
 		if (begin > 0) {
-			lastParsingKeyWord = document.get(lastParsingKeyWordLocation[0],lastParsingKeyWordLocation[1]);
+			lastParsingKeyWord = document.get(lastParsingKeyWordLocation[0], lastParsingKeyWordLocation[1]);
 			// take the line from beginning
 			int lineNumber = document.getLineOfOffset(begin);
 			begin = document.getLineOffset(lineNumber);
@@ -79,7 +81,7 @@ public class AtlCompletionHelper {
 		String text = document.get(begin, end - begin);
 		if (prefix.equals("")) { //$NON-NLS-1$
 			text += "a"; //$NON-NLS-1$
-		} else if (prefix.startsWith("'")){ //$NON-NLS-1$
+		} else if (prefix.startsWith("'")) { //$NON-NLS-1$
 			text += "'"; //$NON-NLS-1$
 		}
 
@@ -89,56 +91,49 @@ public class AtlCompletionHelper {
 		}
 
 		// code fragment parsing
-		ASMModel[] ret = AtlCompletionHelper.parseExpression(text,
-				lastParsingKeyWord);
-		ASMEMFModel atlmodel = (ASMEMFModel) ret[0];
+		ASMModel[] ret = AtlCompletionHelper.parseExpression(text, lastParsingKeyWord);
+		ASMEMFModel atlmodel = (ASMEMFModel)ret[0];
 
 		// retrieves root element
 		EObject emfRoot = null;
-		Set modules = atlmodel.getElementsByType(Character
-				.toUpperCase(lastParsingKeyWord.charAt(0))
+		Set modules = atlmodel.getElementsByType(Character.toUpperCase(lastParsingKeyWord.charAt(0))
 				+ lastParsingKeyWord.substring(1));
 		if (modules.size() > 0) {
-			emfRoot = ((ASMEMFModelElement) modules.iterator().next())
-			.getObject();
+			emfRoot = ((ASMEMFModelElement)modules.iterator().next()).getObject();
 		}
-		AtlModelAnalyser res = new AtlModelAnalyser(this, emfRoot, begin, getLastKeyWord(offset - prefix.length()), offset);
+		AtlModelAnalyser res = new AtlModelAnalyser(this, emfRoot, begin, getLastKeyWord(offset
+				- prefix.length()), offset);
 
-		/* DEBUGGING 
-		 * 
-
-		AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
-		amh.saveModel(atlmodel, System.out);	
+		/*
+		 * DEBUGGING AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
+		 * amh.saveModel(atlmodel, System.out);
 		 */
 
 		return res;
 	}
 
 	/**
-	 * Compute the right offset from an element, according to 
-	 * the base offset of the model.
+	 * Compute the right offset from an element, according to the base offset of the model.
 	 * 
-	 * @param element
-	 * @param baseOffset
+	 * @param element the given element
+	 * @param baseOffset the base offset
 	 * @return [deboffset, endoffset]
 	 * @throws BadLocationException
 	 */
-	public int[] getElementOffsets(EObject element, int baseOffset)
-	throws BadLocationException {
-		Object loc = AtlCompletionDataSource.eGet(element,"location"); //$NON-NLS-1$
+	public int[] getElementOffsets(EObject element, int baseOffset) throws BadLocationException {
+		Object loc = AtlCompletionDataSource.eGet(element, "location"); //$NON-NLS-1$
 		if (loc != null) {
 			String location = loc.toString();
 			location = location.replaceAll("'", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			int linesToAdd = document.getLineOfOffset(baseOffset);
-			int columnsToAdd = baseOffset - document.getLineOffset(document
-					.getLineOfOffset(baseOffset));
+			int columnsToAdd = baseOffset - document.getLineOffset(document.getLineOfOffset(baseOffset));
 			int debLine = new Integer(location.split("-")[0].split(":")[0]).intValue() + linesToAdd; //$NON-NLS-1$ //$NON-NLS-2$
 			int debColumn = new Integer(location.split("-")[0].split(":")[1]).intValue() + columnsToAdd; //$NON-NLS-1$ //$NON-NLS-2$
 			int endLine = new Integer(location.split("-")[1].split(":")[0]).intValue() + linesToAdd; //$NON-NLS-1$ //$NON-NLS-2$
 			int endColumn = new Integer(location.split("-")[1].split(":")[1]).intValue() + columnsToAdd; //$NON-NLS-1$ //$NON-NLS-2$
 			int debOffset = document.getLineOffset(debLine - 1) + debColumn - 1;
 			int endOffset = document.getLineOffset(endLine - 1) + endColumn - 1;
-			return new int[] { debOffset, endOffset };
+			return new int[] {debOffset, endOffset};
 
 		}
 		return null;
@@ -147,21 +142,20 @@ public class AtlCompletionHelper {
 	/**
 	 * ATL injector launcher.
 	 * 
-	 * @param expression
-	 * @param expressionType the Syntax Element parsed
+	 * @param expression an ATL expression
+	 * @param expressionType the ATL expression type
+	 *            the Syntax Element parsed
 	 * @return outputs models
 	 */
-	public static ASMModel[] parseExpression(String expression,
-			String expressionType) {
+	public static ASMModel[] parseExpression(String expression, String expressionType) {
 		ASMModel[] ret = new ASMModel[2];
-		AtlModelHandler amh = AtlModelHandler
-		.getDefault(AtlModelHandler.AMH_EMF);
+		AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
 		ASMModel atlmm = amh.getAtl();
 		ASMModel pbmm = amh.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
 
 		try {
 			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp", //$NON-NLS-1$ //$NON-NLS-2$
-					(ASMEMFModel) atlmm, null);
+					(ASMEMFModel)atlmm, null);
 			ret[1] = amh.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
 			TCSInjector ebnfi = new TCSInjector();
 			Map params = new HashMap();
@@ -172,42 +166,43 @@ public class AtlCompletionHelper {
 			}
 			params.put("problems", ret[1]); //$NON-NLS-1$
 
-			//desactivate standard output
+			// desactivate standard output
 			OutputStream stream = new ByteArrayOutputStream();
 			PrintStream out = new PrintStream(stream);
 			PrintStream origOut = System.out;
 			System.setOut(out);
 
-			//launch parsing
-			ebnfi.inject(ret[0],
-					new ByteArrayInputStream(expression.getBytes()), params);
+			// launch parsing
+			ebnfi.inject(ret[0], new ByteArrayInputStream(expression.getBytes()), params);
 
-			//reactivate standard output
+			// reactivate standard output
 			System.setOut(origOut);
 			stream.close();
 			out.close();
 
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			// nothing : silent incorrect expressions parsing
 		}
 		return ret;
 	}
 
 	/**
-	 * Extracts the prefix of the last typed characters
+	 * Extracts the prefix of the last typed characters.
 	 * 
-	 * @param offset
+	 * @param offset the current offset
 	 * @return the prefix of the last word
 	 */
 	public String extractPrefix(int offset) {
 		int i = offset;
-		if (i > document.getLength())
+		if (i > document.getLength()) {
 			return ""; //$NON-NLS-1$
+		}
 		try {
 			while (i > 0) {
 				char ch = document.getChar(i - 1);
-				if (Character.isWhitespace(ch))
+				if (Character.isWhitespace(ch)) {
 					break;
+				}
 				i--;
 			}
 			return document.get(i, offset - i);
@@ -218,7 +213,8 @@ public class AtlCompletionHelper {
 
 	/**
 	 * Compute the whole line of the current offset.
-	 * @param offset
+	 * 
+	 * @param offset the current offset
 	 * @return the line containing the offset, ended with the offset
 	 * @throws BadLocationException
 	 */
@@ -233,38 +229,40 @@ public class AtlCompletionHelper {
 
 	/**
 	 * Retrieves the last typed keyword.
-	 * @param offset
+	 * 
+	 * @param offset the current offset
 	 * @return the last typed keyword
 	 */
 	public String getLastKeyWord(int offset) throws BadLocationException {
 		int[] location = getLastKeyWordLocation(offset, HIGH_LEVEL_KEYWORDS);
-		if (location[0]>0) {
-			return document.get(location[0],location[1]);			
+		if (location[0] > 0) {
+			return document.get(location[0], location[1]);
 		}
 		return null;
 	}
 
 	private int[] getLastKeyWordLocation(int offset, String[] keywords) throws BadLocationException {
 		int bestindex = 0;
-		String nearest_keyword = ""; //$NON-NLS-1$
+		String nearestKeyword = ""; //$NON-NLS-1$
 		for (int i = 0; i < keywords.length; i++) {
 			String keyword = keywords[i];
 			int lastindex = getLastKeyWordLocation(offset, keyword)[0];
 			if (lastindex > 0 && lastindex > bestindex) {
 				bestindex = lastindex;
-				nearest_keyword = keyword;
+				nearestKeyword = keyword;
 			}
 		}
-		return new int[]{bestindex, nearest_keyword.length()};
+		return new int[] {bestindex, nearestKeyword.length()};
 	}
 
 	private int[] getLastKeyWordLocation(int offset, String keyword) throws BadLocationException {
-		int lastindex = document.get().lastIndexOf(keyword, offset-1);
+		int lastindex = document.get().lastIndexOf(keyword, offset - 1);
 		String line = getCurrentLine(lastindex);
 		if (line != null) {
-			if (line.indexOf("--") > -1) 	 //$NON-NLS-1$
-				return getLastKeyWordLocation(document.get().lastIndexOf("--", offset-1), keyword); //$NON-NLS-1$
-		} 
-		return new int[]{lastindex, keyword.length()};
+			if (line.indexOf("--") > -1) { //$NON-NLS-1$
+				return getLastKeyWordLocation(document.get().lastIndexOf("--", offset - 1), keyword); //$NON-NLS-1$
+			}
+		}
+		return new int[] {lastindex, keyword.length()};
 	}
 }

@@ -24,171 +24,221 @@ import org.eclipse.swt.widgets.Group;
  * This is the page for setting the highlight syntaxing coloration options.
  */
 public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
-	
+
 	private Button backgroundColorButton;
+
 	private ColorSelector backgroundColorSelector;
+
 	private Button backgroundCustomRadioButton;
+
 	private Button backgroundDefaultRadioButton;
+
 	private Button foregroundBoldCheckBox;
+
 	private Button foregroundColorButton;
+
 	private Button foregroundItalicCheckBox;
-	
+
 	/**
-	 * Creates a new ATL editor preference page telling to the
-	 * super class the title using the resource bundle.
+	 * Creates a new ATL editor preference page telling to the super class the title using the resource
+	 * bundle.
 	 */
 	public AtlSyntaxPreferencePage() {
 		super(AtlPreferencesMessages.getString("SyntaxPreferencePage.description")); //$NON-NLS-1$
-		
+
 		colorListModel = new String[][] {
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.brackets"), AtlPreferenceConstants.SYNTAX_BRACKET }, //$NON-NLS-1$
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.constants"), AtlPreferenceConstants.SYNTAX_CONSTANT }, //$NON-NLS-1$
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.identifiers"), AtlPreferenceConstants.SYNTAX_IDENTIFIER }, //$NON-NLS-1$
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.keywords"), AtlPreferenceConstants.SYNTAX_KEYWORD }, //$NON-NLS-1$
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.literals"), AtlPreferenceConstants.SYNTAX_LITERAL }, //$NON-NLS-1$
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.numbers"), AtlPreferenceConstants.SYNTAX_NUMBER }, //$NON-NLS-1$
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.operators"), AtlPreferenceConstants.SYNTAX_OPERATOR }, //$NON-NLS-1$
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.others"), AtlPreferenceConstants.SYNTAX_DEFAULT }, //$NON-NLS-1$
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.singleLineComments"), AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT }, //$NON-NLS-1$
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.strings"), AtlPreferenceConstants.SYNTAX_STRING }, //$NON-NLS-1$
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.symbols"), AtlPreferenceConstants.SYNTAX_SYMBOL }, //$NON-NLS-1$
-				{ AtlPreferencesMessages.getString("SyntaxPreferencePage.types"), AtlPreferenceConstants.SYNTAX_TYPE } //$NON-NLS-1$
-				};
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.brackets"), AtlPreferenceConstants.SYNTAX_BRACKET}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.constants"), AtlPreferenceConstants.SYNTAX_CONSTANT}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.identifiers"), AtlPreferenceConstants.SYNTAX_IDENTIFIER}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.keywords"), AtlPreferenceConstants.SYNTAX_KEYWORD}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.literals"), AtlPreferenceConstants.SYNTAX_LITERAL}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.numbers"), AtlPreferenceConstants.SYNTAX_NUMBER}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.operators"), AtlPreferenceConstants.SYNTAX_OPERATOR}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.others"), AtlPreferenceConstants.SYNTAX_DEFAULT}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.singleLineComments"), AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.strings"), AtlPreferenceConstants.SYNTAX_STRING}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.symbols"), AtlPreferenceConstants.SYNTAX_SYMBOL}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.types"), AtlPreferenceConstants.SYNTAX_TYPE}, //$NON-NLS-1$
+		};
 	}
-	
-	/* (non-Javadoc)
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
 	 */
 	protected Control createContents(Composite parent) {
 		Composite control = newComposite(parent, 1);
-		Group background = newGroup(control, AtlPreferencesMessages.getString("SyntaxPreferencePage.backgroundColor")); //$NON-NLS-1$
-		
+		Group background = newGroup(control, AtlPreferencesMessages
+				.getString("SyntaxPreferencePage.backgroundColor")); //$NON-NLS-1$
+
 		SelectionListener backgroundSelectionListener = new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {}
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
 			public void widgetSelected(SelectionEvent e) {
 				boolean custom = backgroundCustomRadioButton.getSelection();
 				backgroundColorButton.setEnabled(custom);
 				fPreferenceeStore.setValue(AtlPreferenceConstants.EDITOR_BACKGROUND_COLOR_DEFAULT, !custom);
 			}
 		};
-		
-		backgroundDefaultRadioButton = newRadioButton(background, AtlPreferencesMessages.getString("SyntaxPreferencePage.systemDefault"), backgroundSelectionListener); //$NON-NLS-1$
-		backgroundCustomRadioButton = newRadioButton(background, AtlPreferencesMessages.getString("SyntaxPreferencePage.custom"), backgroundSelectionListener); //$NON-NLS-1$
+
+		backgroundDefaultRadioButton = newRadioButton(background, AtlPreferencesMessages
+				.getString("SyntaxPreferencePage.systemDefault"), backgroundSelectionListener); //$NON-NLS-1$
+		backgroundCustomRadioButton = newRadioButton(background, AtlPreferencesMessages
+				.getString("SyntaxPreferencePage.custom"), backgroundSelectionListener); //$NON-NLS-1$
 		backgroundColorSelector = new ColorSelector(background);
 		backgroundColorButton = backgroundColorSelector.getButton();
 		backgroundColorButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {}
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
 			public void widgetSelected(SelectionEvent e) {
-				PreferenceConverter.setValue(fPreferenceeStore, AtlPreferenceConstants.EDITOR_BACKGROUND_COLOR, backgroundColorSelector.getColorValue());					
+				PreferenceConverter.setValue(fPreferenceeStore,
+						AtlPreferenceConstants.EDITOR_BACKGROUND_COLOR, backgroundColorSelector
+								.getColorValue());
 			}
 		});
-		
+
 		Composite foreground1 = newComposite(control, 1);
-//		Label foregroundLabel = newLabelField(foreground1, AtlPreferencesMessages.getString("SyntaxPreferencePage.foregroundColor"));
+		// Label foregroundLabel = newLabelField(foreground1,
+		// AtlPreferencesMessages.getString("SyntaxPreferencePage.foregroundColor"));
 
 		Composite foreground2 = newComposite(foreground1, 2);
 		colorList = newScrollList(foreground2);
 		colorList.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {}
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
 			public void widgetSelected(SelectionEvent e) {
 				handleColorListSelection();
 			}
 		});
-		
+
 		Composite foreground3 = newComposite(foreground2, 1);
-		
+
 		Composite foreground4 = newComposite(foreground3, 2);
-//		Label foregroundColorLabel = newLabelField(foreground4, AtlPreferencesMessages.getString("SyntaxPreferencePage.color"));
+		// Label foregroundColorLabel = newLabelField(foreground4,
+		// AtlPreferencesMessages.getString("SyntaxPreferencePage.color"));
 		colorSelector = new ColorSelector(foreground4);
 		foregroundColorButton = colorSelector.getButton();
 		foregroundColorButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {}
-			public void widgetSelected(SelectionEvent e) {
-				int i = colorList.getSelectionIndex();
-				String key = colorListModel[i][1];
-				PreferenceConverter.setValue(fPreferenceeStore, key + AtlPreferenceConstants.__COLOR_SUFFIX, colorSelector.getColorValue());
+			public void widgetDefaultSelected(SelectionEvent e) {
 			}
-		});
-		
-		foregroundBoldCheckBox = newCheckBoxField(
-				foreground3,
-				AtlPreferencesMessages.getString("SyntaxPreferencePage.bold")); //$NON-NLS-1$
-		foregroundBoldCheckBox.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {}
+
 			public void widgetSelected(SelectionEvent e) {
 				int i = colorList.getSelectionIndex();
 				String key = colorListModel[i][1];
-				fPreferenceeStore.setValue(key + AtlPreferenceConstants.__BOLD_SUFFIX, foregroundBoldCheckBox.getSelection());
+				PreferenceConverter.setValue(fPreferenceeStore, key + AtlPreferenceConstants.COLOR_SUFFIX,
+						colorSelector.getColorValue());
 			}
 		});
 
-		foregroundItalicCheckBox = newCheckBoxField(
-				foreground3,
-				AtlPreferencesMessages.getString("SyntaxPreferencePage.italic")); //$NON-NLS-1$
-		foregroundItalicCheckBox.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {}
+		foregroundBoldCheckBox = newCheckBoxField(foreground3, AtlPreferencesMessages
+				.getString("SyntaxPreferencePage.bold")); //$NON-NLS-1$
+		foregroundBoldCheckBox.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
 			public void widgetSelected(SelectionEvent e) {
 				int i = colorList.getSelectionIndex();
 				String key = colorListModel[i][1];
-				fPreferenceeStore.setValue(key + AtlPreferenceConstants.__ITALIC_SUFFIX, foregroundItalicCheckBox.getSelection());
+				fPreferenceeStore.setValue(key + AtlPreferenceConstants.BOLD_SUFFIX, foregroundBoldCheckBox
+						.getSelection());
 			}
 		});
-		
+
+		foregroundItalicCheckBox = newCheckBoxField(foreground3, AtlPreferencesMessages
+				.getString("SyntaxPreferencePage.italic")); //$NON-NLS-1$
+		foregroundItalicCheckBox.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				int i = colorList.getSelectionIndex();
+				String key = colorListModel[i][1];
+				fPreferenceeStore.setValue(key + AtlPreferenceConstants.ITALIC_SUFFIX,
+						foregroundItalicCheckBox.getSelection());
+			}
+		});
+
 		initialize();
 		return control;
 	}
-	
-	/* (non-Javadoc)
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.m2m.atl.adt.ui.preferences.AbstractPreferencePage#handleColorListSelection()
 	 */
 	protected void handleColorListSelection() {
 		String key = colorListModel[colorList.getSelectionIndex()][1];
-		colorSelector.setColorValue(PreferenceConverter.getColor(fPreferenceeStore, key + AtlPreferenceConstants.__COLOR_SUFFIX));
-		foregroundBoldCheckBox.setSelection(fPreferenceeStore.getBoolean(key + AtlPreferenceConstants.__BOLD_SUFFIX));
-		foregroundItalicCheckBox.setSelection(fPreferenceeStore.getBoolean(key + AtlPreferenceConstants.__ITALIC_SUFFIX));
+		colorSelector.setColorValue(PreferenceConverter.getColor(fPreferenceeStore, key
+				+ AtlPreferenceConstants.COLOR_SUFFIX));
+		foregroundBoldCheckBox.setSelection(fPreferenceeStore.getBoolean(key
+				+ AtlPreferenceConstants.BOLD_SUFFIX));
+		foregroundItalicCheckBox.setSelection(fPreferenceeStore.getBoolean(key
+				+ AtlPreferenceConstants.ITALIC_SUFFIX));
 	}
-	
-	/* (non-Javadoc)
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.m2m.atl.adt.ui.preferences.AbstractPreferencePage#initialize()
 	 */
 	protected void initialize() {
 		super.initialize();
-		
-		backgroundColorSelector.setColorValue(PreferenceConverter.getColor(fPreferenceeStore, AtlPreferenceConstants.EDITOR_BACKGROUND_COLOR));
-		boolean _default_ = fPreferenceeStore.getBoolean(AtlPreferenceConstants.EDITOR_BACKGROUND_COLOR_DEFAULT);
-		backgroundDefaultRadioButton.setSelection(_default_);
-		backgroundCustomRadioButton.setSelection(!_default_);
-		backgroundColorSelector.setEnabled(!_default_);
+
+		backgroundColorSelector.setColorValue(PreferenceConverter.getColor(fPreferenceeStore,
+				AtlPreferenceConstants.EDITOR_BACKGROUND_COLOR));
+		boolean defaultValue = fPreferenceeStore
+				.getBoolean(AtlPreferenceConstants.EDITOR_BACKGROUND_COLOR_DEFAULT);
+		backgroundDefaultRadioButton.setSelection(defaultValue);
+		backgroundCustomRadioButton.setSelection(!defaultValue);
+		backgroundColorSelector.setEnabled(!defaultValue);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
 	 */
 	protected void performDefaults() {
 		super.performDefaults();
-		
+
 		fPreferenceeStore.setValue(AtlPreferenceConstants.EDITOR_BACKGROUND_COLOR_DEFAULT, true);
 		backgroundDefaultRadioButton.setSelection(true);
 		backgroundCustomRadioButton.setSelection(false);
 		backgroundColorSelector.setEnabled(false);
-		
-		for(int i = 0; i < colorListModel.length; ++i) {
+
+		for (int i = 0; i < colorListModel.length; ++i) {
 			String key = colorListModel[i][1];
-			PreferenceConverter.setValue(
-					fPreferenceeStore,
-					key + AtlPreferenceConstants.__COLOR_SUFFIX,
-					PreferenceConverter.getDefaultColor(fPreferenceeStore, key + AtlPreferenceConstants.__COLOR_SUFFIX));
-			fPreferenceeStore.setValue(
-					key + AtlPreferenceConstants.__BOLD_SUFFIX,
-					fPreferenceeStore.getDefaultBoolean(key + AtlPreferenceConstants.__BOLD_SUFFIX));
-			fPreferenceeStore.setValue(
-					key + AtlPreferenceConstants.__ITALIC_SUFFIX,
-					fPreferenceeStore.getDefaultBoolean(key + AtlPreferenceConstants.__ITALIC_SUFFIX));
+			PreferenceConverter.setValue(fPreferenceeStore, key + AtlPreferenceConstants.COLOR_SUFFIX,
+					PreferenceConverter.getDefaultColor(fPreferenceeStore, key
+							+ AtlPreferenceConstants.COLOR_SUFFIX));
+			fPreferenceeStore.setValue(key + AtlPreferenceConstants.BOLD_SUFFIX, fPreferenceeStore
+					.getDefaultBoolean(key + AtlPreferenceConstants.BOLD_SUFFIX));
+			fPreferenceeStore.setValue(key + AtlPreferenceConstants.ITALIC_SUFFIX, fPreferenceeStore
+					.getDefaultBoolean(key + AtlPreferenceConstants.ITALIC_SUFFIX));
 		}
 		handleColorListSelection();
 	}
-	
+
 }

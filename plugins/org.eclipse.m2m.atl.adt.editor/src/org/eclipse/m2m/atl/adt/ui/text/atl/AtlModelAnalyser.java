@@ -21,38 +21,66 @@ import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 /**
  * Atl model analyser, used to get information from an incomplete ATL model.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class AtlModelAnalyser {
 
-	/** context types */
-	public final static int NULL_CONTEXT = 0;
-	public final static int MODULE_CONTEXT = 1;
-	public final static int HELPER_CONTEXT = 2;
-	public final static int RULE_CONTEXT = 3;
-	public final static int FROM_CONTEXT = 4;
-	public final static int TO_CONTEXT = 5;
-	public final static int DO_CONTEXT = 6;
-	public final static int USING_CONTEXT = 7;
+	/** context types. */
+	public static final int NULL_CONTEXT = 0;
 
-	/** detached types considered as "normal" */
-	private final static String[] NORMAL_TYPES = { "OclModel", "Helper", //$NON-NLS-1$ //$NON-NLS-2$
-			"Module", "MatchedRule", "CalledRule", "Rule", "LazyRule" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+	/** ATL module. */
+	public static final int MODULE_CONTEXT = 1;
 
-	/** completion helper used to find located elements */
+	/** Helper. */
+	public static final int HELPER_CONTEXT = 2;
+
+	/** Rule. */
+	public static final int RULE_CONTEXT = 3;
+
+	/** From section. */
+	public static final int FROM_CONTEXT = 4;
+
+	/** To section. */
+	public static final int TO_CONTEXT = 5;
+
+	/** Do section. */
+	public static final int DO_CONTEXT = 6;
+
+	/** Using section. */
+	public static final int USING_CONTEXT = 7;
+
+	/** detached types considered as "normal". */
+	private static final String[] NORMAL_TYPES = {"OclModel", "Helper", //$NON-NLS-1$ //$NON-NLS-2$
+			"Module", "MatchedRule", "CalledRule", "Rule", "LazyRule",}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+
+	/** completion helper used to find located elements. */
 	private AtlCompletionHelper fHelper;
 
-	/** code model root (EMF object) */
-	private EObject emfRoot = null;
+	/** code model root (EMF object). */
+	private EObject emfRoot;
 
-	/** base offset of the model in the document */
+	/** base offset of the model in the document. */
 	private int modelOffset;
 
-	/** user offset in the document */
+	/** user offset in the document. */
 	private int context;
-	
-	public AtlModelAnalyser(AtlCompletionHelper fHelper, EObject emfRoot,
-			int modelOffset, String lastKeyword, int userOffset) {
+
+	/**
+	 * Creates an analyser for ATL models.
+	 * 
+	 * @param fHelper
+	 *            the completion helper
+	 * @param emfRoot
+	 *            the model root
+	 * @param modelOffset
+	 *            the model offset
+	 * @param lastKeyword
+	 *            the last detected keyword
+	 * @param userOffset
+	 *            the user current offset
+	 */
+	public AtlModelAnalyser(AtlCompletionHelper fHelper, EObject emfRoot, int modelOffset,
+			String lastKeyword, int userOffset) {
 		this.fHelper = fHelper;
 		this.modelOffset = modelOffset;
 		this.emfRoot = emfRoot;
@@ -62,7 +90,7 @@ public class AtlModelAnalyser {
 			AtlUIPlugin.log(e);
 		}
 	}
-	
+
 	/**
 	 * Search the root element of the model.
 	 * 
@@ -77,6 +105,7 @@ public class AtlModelAnalyser {
 	 * Search the nearest element of the given offset.
 	 * 
 	 * @param offset
+	 *            the given offset
 	 * @return the element
 	 * @throws BadLocationException
 	 */
@@ -86,12 +115,10 @@ public class AtlModelAnalyser {
 			TreeIterator ti = emfRoot.eResource().getAllContents();
 			int maxDebOffset = -1;
 			while (ti.hasNext()) {
-				EObject object = (EObject) ti.next();
-				int[] elementOffsets = fHelper.getElementOffsets(object,
-						modelOffset);
+				EObject object = (EObject)ti.next();
+				int[] elementOffsets = fHelper.getElementOffsets(object, modelOffset);
 				if (elementOffsets != null) {
-					if (elementOffsets[0] <= offset
-							&& elementOffsets[1] >= offset) {
+					if (elementOffsets[0] <= offset && elementOffsets[1] >= offset) {
 						if (elementOffsets[0] > maxDebOffset) {
 							maxDebOffset = elementOffsets[0];
 							res = object;
@@ -104,7 +131,7 @@ public class AtlModelAnalyser {
 	}
 
 	/**
-	 * Looks for a specific type in the anormal root types
+	 * Looks for a specific type in the anormal root types.
 	 * 
 	 * @param type
 	 *            the name of the searched type
@@ -114,15 +141,16 @@ public class AtlModelAnalyser {
 		if (emfRoot != null) {
 			EList ti = emfRoot.eResource().getContents();
 			for (Iterator iterator = ti.iterator(); iterator.hasNext();) {
-				EObject object = (EObject) iterator.next();
+				EObject object = (EObject)iterator.next();
 				String currentType = object.eClass().getName();
 				boolean isnormal = false;
 				for (int i = 0; i < NORMAL_TYPES.length; i++) {
 					isnormal = isnormal || NORMAL_TYPES[i].equals(currentType);
 				}
 				if (!isnormal) {
-					if (type.equals(currentType))
+					if (type.equals(currentType)) {
 						return object;
+					}
 				}
 			}
 		}
@@ -134,46 +162,69 @@ public class AtlModelAnalyser {
 	}
 
 	private int getContext(String keyword, int offset) throws BadLocationException {
-		if (keyword == null)
+		if (keyword == null) {
 			return AtlModelAnalyser.NULL_CONTEXT;
-		if (keyword.equalsIgnoreCase("module")) //$NON-NLS-1$
+		}
+		if (keyword.equalsIgnoreCase("module")) { //$NON-NLS-1$
 			return AtlModelAnalyser.MODULE_CONTEXT;
+		}
 		if (keyword.equalsIgnoreCase("helper")) { //$NON-NLS-1$
-			if (getLocatedElement(offset) == null)
+			if (getLocatedElement(offset) == null) {
 				return AtlModelAnalyser.MODULE_CONTEXT;
+			}
 			return AtlModelAnalyser.HELPER_CONTEXT;
 		}
-		if (keyword.equalsIgnoreCase("rule")) //$NON-NLS-1$
+		if (keyword.equalsIgnoreCase("rule")) { //$NON-NLS-1$
 			return AtlModelAnalyser.RULE_CONTEXT;
+		}
 		if (keyword.equalsIgnoreCase("from")) { //$NON-NLS-1$
-			if (emfRoot == null)
+			if (emfRoot == null) {
 				return AtlModelAnalyser.MODULE_CONTEXT;
+			}
 			return AtlModelAnalyser.FROM_CONTEXT;
 		}
 		if (keyword.equalsIgnoreCase("to")) { //$NON-NLS-1$
 			return AtlModelAnalyser.TO_CONTEXT;
 		}
 		if (keyword.equalsIgnoreCase("do")) { //$NON-NLS-1$
-			if (getLocatedElement(offset) == null)
+			if (getLocatedElement(offset) == null) {
 				return AtlModelAnalyser.MODULE_CONTEXT;
+			}
 			return AtlModelAnalyser.DO_CONTEXT;
 		}
-		if (keyword.equalsIgnoreCase("using")) //$NON-NLS-1$
+		if (keyword.equalsIgnoreCase("using")) { //$NON-NLS-1$
 			return AtlModelAnalyser.USING_CONTEXT;
+		}
 		return AtlModelAnalyser.NULL_CONTEXT;
 	}
 
+	/**
+	 * Returns the context name by id.
+	 * 
+	 * @param id
+	 *            the given id
+	 * @return the context name
+	 */
 	public static String getContextName(int id) {
 		switch (id) {
-		case NULL_CONTEXT : return "NULL_CONTEXT"; //$NON-NLS-1$
-		case MODULE_CONTEXT : return "MODULE_CONTEXT"; //$NON-NLS-1$
-		case HELPER_CONTEXT : return "HELPER_CONTEXT"; //$NON-NLS-1$
-		case RULE_CONTEXT : return "RULE_CONTEXT"; //$NON-NLS-1$
-		case FROM_CONTEXT : return "FROM_CONTEXT"; //$NON-NLS-1$
-		case TO_CONTEXT : return "TO_CONTEXT"; //$NON-NLS-1$
-		case DO_CONTEXT : return "DO_CONTEXT"; //$NON-NLS-1$
-		case USING_CONTEXT : return "USING_CONTEXT"; //$NON-NLS-1$
+			case NULL_CONTEXT:
+				return "NULL_CONTEXT"; //$NON-NLS-1$
+			case MODULE_CONTEXT:
+				return "MODULE_CONTEXT"; //$NON-NLS-1$
+			case HELPER_CONTEXT:
+				return "HELPER_CONTEXT"; //$NON-NLS-1$
+			case RULE_CONTEXT:
+				return "RULE_CONTEXT"; //$NON-NLS-1$
+			case FROM_CONTEXT:
+				return "FROM_CONTEXT"; //$NON-NLS-1$
+			case TO_CONTEXT:
+				return "TO_CONTEXT"; //$NON-NLS-1$
+			case DO_CONTEXT:
+				return "DO_CONTEXT"; //$NON-NLS-1$
+			case USING_CONTEXT:
+				return "USING_CONTEXT"; //$NON-NLS-1$
+			default:
+				return "NULL_CONTEXT"; //$NON-NLS-1$
 		}
-		return "NULL_CONTEXT"; //$NON-NLS-1$
 	}
 }

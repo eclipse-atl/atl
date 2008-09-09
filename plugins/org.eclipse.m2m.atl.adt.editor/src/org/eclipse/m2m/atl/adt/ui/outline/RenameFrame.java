@@ -38,51 +38,52 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-public class RenameFrame extends Composite 
-{
+public class RenameFrame extends Composite {
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private Button ok;
+
 	private Button cancel;
+
 	private Text tNewName;
+
 	private Label lNewName;
+
 	private Canvas canvas1;
-//	private RenameAction renameAction;
-	
-	public RenameFrame(RenameAction renameAction) 
-	{
+
+	// private RenameAction renameAction;
+
+	public RenameFrame(RenameAction renameAction) {
 		super(new Shell(Display.getDefault()), SWT.NULL);
-//		this.renameAction = renameAction;
+		// this.renameAction = renameAction;
 		getShell().setLayout(new org.eclipse.swt.layout.FillLayout());
-		Rectangle shellBounds = getShell().computeTrim(0,0,552,319);				
+		Rectangle shellBounds = getShell().computeTrim(0, 0, 552, 319);
 		getShell().setSize(shellBounds.width, shellBounds.height);
 		getShell().open();
-		initGUI();		
+		initGUI();
 	}
 
 	/**
-	* Initializes the GUI.
-	* Auto-generated code - any changes you make will disappear.
-	*/
-	public void initGUI(){
-		try 
-		{
+	 * Initializes the GUI. Auto-generated code - any changes you make will disappear.
+	 */
+	public void initGUI() {
+		try {
 			preInitGUI();
-	
-			canvas1 = new Canvas(this,SWT.NULL);
-			ok = new Button(canvas1,SWT.PUSH| SWT.CENTER);
-			lNewName = new Label(canvas1,SWT.NULL);
-			tNewName = new Text(canvas1,SWT.NULL);
+
+			canvas1 = new Canvas(this, SWT.NULL);
+			ok = new Button(canvas1, SWT.PUSH | SWT.CENTER);
+			lNewName = new Label(canvas1, SWT.NULL);
+			tNewName = new Text(canvas1, SWT.NULL);
 			tNewName.addKeyListener(new KeyAdapter() {
 				public void keyPressed(KeyEvent ke) {
 					tNewNameKeyPressed(ke);
 				}
 			});
-			cancel = new Button(canvas1,SWT.PUSH| SWT.CENTER);	
-			this.setSize(new org.eclipse.swt.graphics.Point(552,319));
-			final Color NewSWTAppbackground = new Color(Display.getDefault(),128,128,128);
-			this.setBackground(NewSWTAppbackground);
-	
+			cancel = new Button(canvas1, SWT.PUSH | SWT.CENTER);
+			this.setSize(new org.eclipse.swt.graphics.Point(552, 319));
+			final Color newSWTAppbackground = new Color(Display.getDefault(), 128, 128, 128);
+			this.setBackground(newSWTAppbackground);
+
 			GridData canvas1LData = new GridData();
 			canvas1LData.verticalAlignment = GridData.CENTER;
 			canvas1LData.horizontalAlignment = GridData.BEGINNING;
@@ -94,60 +95,60 @@ public class RenameFrame extends Composite
 			canvas1LData.grabExcessHorizontalSpace = false;
 			canvas1LData.grabExcessVerticalSpace = false;
 			canvas1.setLayoutData(canvas1LData);
-			canvas1.setSize(new org.eclipse.swt.graphics.Point(549,313));
-	
+			canvas1.setSize(new org.eclipse.swt.graphics.Point(549, 313));
+
 			FormData okLData = new FormData();
 			okLData.height = 32;
 			okLData.width = 107;
-			okLData.left =  new FormAttachment(439, 1000, 0);
-			okLData.right =  new FormAttachment(634, 1000, 0);
-			okLData.top =  new FormAttachment(822, 1000, 0);
-			okLData.bottom =  new FormAttachment(924, 1000, 0);
+			okLData.left = new FormAttachment(439, 1000, 0);
+			okLData.right = new FormAttachment(634, 1000, 0);
+			okLData.top = new FormAttachment(822, 1000, 0);
+			okLData.bottom = new FormAttachment(924, 1000, 0);
 			ok.setLayoutData(okLData);
-			ok.setText("OK");//$NON-NLS-1$
-			ok.addSelectionListener( new SelectionAdapter() {
+			ok.setText("OK"); //$NON-NLS-1$
+			ok.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
 					okWidgetSelected(evt);
 				}
-			});	
-			ok.setSize(new org.eclipse.swt.graphics.Point(107,32));
-	
+			});
+			ok.setSize(new org.eclipse.swt.graphics.Point(107, 32));
+
 			FormData lNewNameLData = new FormData();
 			lNewNameLData.height = 28;
 			lNewNameLData.width = 111;
-			lNewNameLData.left =  new FormAttachment(188, 1000, 0);
-			lNewNameLData.right =  new FormAttachment(390, 1000, 0);
-			lNewNameLData.top =  new FormAttachment(423, 1000, 0);
-			lNewNameLData.bottom =  new FormAttachment(512, 1000, 0);
+			lNewNameLData.left = new FormAttachment(188, 1000, 0);
+			lNewNameLData.right = new FormAttachment(390, 1000, 0);
+			lNewNameLData.top = new FormAttachment(423, 1000, 0);
+			lNewNameLData.bottom = new FormAttachment(512, 1000, 0);
 			lNewName.setLayoutData(lNewNameLData);
 			lNewName.setText("New name"); //$NON-NLS-1$
-			lNewName.setSize(new org.eclipse.swt.graphics.Point(111,28));
-	
+			lNewName.setSize(new org.eclipse.swt.graphics.Point(111, 28));
+
 			FormData tNewNameLData = new FormData();
 			tNewNameLData.height = 24;
 			tNewNameLData.width = 243;
-			tNewNameLData.left =  new FormAttachment(438, 1000, 0);
-			tNewNameLData.right =  new FormAttachment(891, 1000, 0);
-			tNewNameLData.top =  new FormAttachment(400, 1000, 0);
-			tNewNameLData.bottom =  new FormAttachment(496, 1000, 0);
+			tNewNameLData.left = new FormAttachment(438, 1000, 0);
+			tNewNameLData.right = new FormAttachment(891, 1000, 0);
+			tNewNameLData.top = new FormAttachment(400, 1000, 0);
+			tNewNameLData.bottom = new FormAttachment(496, 1000, 0);
 			tNewName.setLayoutData(tNewNameLData);
-			tNewName.setSize(new org.eclipse.swt.graphics.Point(243,24));
-	
+			tNewName.setSize(new org.eclipse.swt.graphics.Point(243, 24));
+
 			FormData button1LData = new FormData();
 			button1LData.height = 32;
 			button1LData.width = 107;
-			button1LData.left =  new FormAttachment(698, 1000, 0);
-			button1LData.right =  new FormAttachment(893, 1000, 0);
-			button1LData.top =  new FormAttachment(822, 1000, 0);
-			button1LData.bottom =  new FormAttachment(924, 1000, 0);
+			button1LData.left = new FormAttachment(698, 1000, 0);
+			button1LData.right = new FormAttachment(893, 1000, 0);
+			button1LData.top = new FormAttachment(822, 1000, 0);
+			button1LData.bottom = new FormAttachment(924, 1000, 0);
 			cancel.setLayoutData(button1LData);
-			cancel.setText("Cancel");//$NON-NLS-1$
-			cancel.addSelectionListener( new SelectionAdapter() {
+			cancel.setText("Cancel"); //$NON-NLS-1$
+			cancel.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
 					cancelWidgetSelected(evt);
 				}
-			});			
-			cancel.setSize(new org.eclipse.swt.graphics.Point(107,32));
+			});
+			cancel.setSize(new org.eclipse.swt.graphics.Point(107, 32));
 			FormLayout canvas1Layout = new FormLayout();
 			canvas1.setLayout(canvas1Layout);
 			canvas1Layout.marginWidth = 0;
@@ -165,62 +166,54 @@ public class RenameFrame extends Composite
 			this.layout();
 			addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
-					NewSWTAppbackground.dispose();
+					newSWTAppbackground.dispose();
 				}
 			});
-	
+
 			postInitGUI();
-		} 
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
-	public void preInitGUI(){}
+	public void preInitGUI() {
+	}
 
-	public void postInitGUI()
-	{
+	public void postInitGUI() {
 		// tNewName.setText(renameAction.getElement().getName());
 		tNewName.selectAll();
-		tNewName.setFocus();		
+		tNewName.setFocus();
 	}
-	
 
-	protected void cancelWidgetSelected(SelectionEvent evt)
-	{
+	protected void cancelWidgetSelected(SelectionEvent evt) {
 		getShell().close();
 	}
 
 	/**
-	 * this method is executed when the user confirms the refactoring
-	 * either by clicking on the Ok button or by pressing enter key 
+	 * this method is executed when the user confirms the refactoring either by clicking on the Ok button or
+	 * by pressing enter key
 	 */
-	protected void confirmRename()
-	{
-		if (tNewName.getText().equals("")) //$NON-NLS-1$
-		{
+	protected void confirmRename() {
+		if (tNewName.getText().equals("")) { //$NON-NLS-1$
 			MessageBox msg = new MessageBox(this.getShell(), SWT.ICON_ERROR);
 			msg.setMessage(AtlEditorMessages.getString("RenameFrame.0")); //$NON-NLS-1$
 			msg.open();
 			return;
-		}			
-	//	renameAction.getElement().setName(tNewName.getText());
+		}
+		// renameAction.getElement().setName(tNewName.getText());
 		getShell().close();
 	}
-	
+
 	/**
-	 * 
-	 * @param evt the selectionEvent
+	 * @param evt
+	 *            the selectionEvent
 	 */
-	protected void okWidgetSelected(SelectionEvent evt)
-	{
-			confirmRename();
+	protected void okWidgetSelected(SelectionEvent evt) {
+		confirmRename();
 	}
-	
-	public void tNewNameKeyPressed(KeyEvent key)
-	{
+
+	public void tNewNameKeyPressed(KeyEvent key) {
 		if (key.keyCode == SWT.KEYPAD_CR || key.keyCode == SWT.CR)
 			confirmRename();
 	}

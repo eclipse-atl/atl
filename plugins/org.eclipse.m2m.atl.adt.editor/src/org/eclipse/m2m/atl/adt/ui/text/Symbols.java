@@ -14,36 +14,66 @@ package org.eclipse.m2m.atl.adt.ui.text;
  * Symbols for the heuristic scanner.
  */
 public interface Symbols {
-	
-	int TokenEOF= -1;
-	int TokenLBRACE= 1;
-	int TokenRBRACE= 2;
-	int TokenLBRACKET= 3;
-	int TokenRBRACKET= 4;
-	int TokenLPAREN= 5;
-	int TokenRPAREN= 6;
-	int TokenSEMICOLON= 7;
-	int TokenOTHER= 8;
-	int TokenCOLON= 9;
-	int TokenQUESTIONMARK= 10;
-	int TokenCOMMA= 11;
-	int TokenEQUAL= 12;
-	int TokenIF= 109;
-	int TokenDO= 1010;
-	int TokenFOR= 1011;
-	int TokenTRY= 1012;
-	int TokenCASE= 1013;
-	int TokenELSE= 1014;
-	int TokenBREAK= 1015;
-	int TokenCATCH= 1016;
-	int TokenWHILE= 1017;
-	int TokenRETURN= 1018;
-	int TokenSTATIC= 1019;
-	int TokenSWITCH= 1020;
-	int TokenFINALLY= 1021;
-	int TokenSYNCHRONIZED= 1022;
-	int TokenGOTO= 1023;
-	int TokenDEFAULT= 1024;
-	int TokenNEW= 1025;
-	int TokenIDENT= 2000;
+
+	int TOKEN_EOF = -1;
+
+	int TOKEN_LBRACE = 1;
+
+	int TOKEN_RBRACE = 2;
+
+	int TOKEN_LBRACKET = 3;
+
+	int TOKEN_RBRACKET = 4;
+
+	int TOKEN_LPAREN = 5;
+
+	int TOKEN_RPAREN = 6;
+
+	int TOKEN_SEMICOLON = 7;
+
+	int TOKEN_OTHER = 8;
+
+	int TOKEN_COLON = 9;
+
+	int TOKEN_QUESTIONMARK = 10;
+
+	int TOKEN_COMMA = 11;
+
+	int TOKEN_EQUAL = 12;
+
+	int TOKEN_IF = 109;
+
+	int TOKEN_DO = 1010;
+
+	int TOKEN_FOR = 1011;
+
+	int TOKEN_TRY = 1012;
+
+	int TOKEN_CASE = 1013;
+
+	int TOKEN_ELSE = 1014;
+
+	int TOKEN_BREAK = 1015;
+
+	int TOKEN_CATCH = 1016;
+
+	int TOKEN_WHILE = 1017;
+
+	int TOKEN_RETURN = 1018;
+
+	int TOKEN_STATIC = 1019;
+
+	int TOKEN_SWITCH = 1020;
+
+	int TOKEN_FINALLY = 1021;
+
+	int TOKEN_SYNCHRONIZED = 1022;
+
+	int TOKEN_GOTO = 1023;
+
+	int TOKEN_DEFAULT = 1024;
+
+	int TOKEN_NEW = 1025;
+
+	int TOKEN_IDENT = 2000;
 }

@@ -13,16 +13,17 @@ package org.eclipse.m2m.atl.adt.ui.outline;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-public class HideHelperFilter extends ViewerFilter 
-{
-	
+public class HideHelperFilter extends ViewerFilter {
+
 	/**
-	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object,
+	 *      java.lang.Object)
 	 */
-	public boolean select(Viewer viewer, Object parentElement, Object element) 
-	{
-		/*return (parentElement instanceof Root || 
-				(AtlEMFConstants.clModule.isInstance(parentElement) && !(AtlEMFConstants.clHelper.isInstance(element))));*/
+	public boolean select(Viewer viewer, Object parentElement, Object element) {
+		/*
+		 * return (parentElement instanceof Root || (AtlEMFConstants.clModule.isInstance(parentElement) &&
+		 * !(AtlEMFConstants.clHelper.isInstance(element))));
+		 */
 		return !(AtlEMFConstants.clHelper.isInstance(element));
 	}
 }

@@ -14,20 +14,24 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class AtlEditorMessages {
-    
-	private static final String RESOURCE_BUNDLE = "org.eclipse.m2m.atl.adt.ui.editor.EditorMessages";//$NON-NLS-1$
+
+	private static final String RESOURCE_BUNDLE = "org.eclipse.m2m.atl.adt.ui.editor.EditorMessages"; //$NON-NLS-1$
+
 	private static ResourceBundle rb = ResourceBundle.getBundle(RESOURCE_BUNDLE);
-	
+
+	private AtlEditorMessages() {
+	}
+
 	public static String getString(String key) {
 		try {
 			return getResourceBundle().getString(key);
 		} catch (MissingResourceException e) {
-			return "AtlEditorMessages says : !" + key + "!";//$NON-NLS-1$//$NON-NLS-2$
+			return "AtlEditorMessages says : !" + key + "!"; //$NON-NLS-1$//$NON-NLS-2$
 		}
 	}
-	
+
 	public static ResourceBundle getResourceBundle() {
 		return rb;
 	}
-	
+
 }

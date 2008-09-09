@@ -16,25 +16,47 @@ import java.io.PrintStream;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 public class OutputStreamRedirector extends PrintStream {
-	
-	private MessageConsoleStream consoleStream = null;
-	
-	public OutputStreamRedirector (MessageConsoleStream cStream) {		
-		super (System.out);
+
+	private MessageConsoleStream consoleStream;
+
+	public OutputStreamRedirector(MessageConsoleStream cStream) {
+		super(System.out);
 		consoleStream = cStream;
 	}
-	
-	public void print (String s) {
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.io.PrintStream#print(java.lang.String)
+	 */
+	public void print(String s) {
 		consoleStream.print(s);
 	}
-	public void print (Object o) {
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.io.PrintStream#print(java.lang.Object)
+	 */
+	public void print(Object o) {
 		consoleStream.print(o.toString());
 	}
-	public void println (String s) {
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.io.PrintStream#println(java.lang.String)
+	 */
+	public void println(String s) {
 		consoleStream.println(s);
 	}
-	
-	public void println (Object o) {
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.io.PrintStream#println(java.lang.Object)
+	 */
+	public void println(Object o) {
 		consoleStream.println(o.toString());
 	}
 

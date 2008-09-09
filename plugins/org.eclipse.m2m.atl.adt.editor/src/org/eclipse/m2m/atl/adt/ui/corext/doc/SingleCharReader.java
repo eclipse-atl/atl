@@ -14,26 +14,28 @@ import java.io.IOException;
 import java.io.Reader;
 
 public abstract class SingleCharReader extends Reader {
-	
+
 	/**
 	 * Gets the content as a String
 	 */
 	public String getString() throws IOException {
-		StringBuffer buf= new StringBuffer();
+		StringBuffer buf = new StringBuffer();
 		int ch;
-		while ((ch= read()) != -1) {
+		while ((ch = read()) != -1) {
 			buf.append((char)ch);
 		}
 		return buf.toString();
 	}
-	
-	/* (non-Javadoc)
+
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see java.io.Reader#read(char[], int, int)
 	 */
 	public int read(char[] cbuf, int off, int len) throws IOException {
-		int end= off + len;
-		for (int i= off; i < end; i++) {
-			int ch= read();
+		int end = off + len;
+		for (int i = off; i < end; i++) {
+			int ch = read();
 			if (ch == -1) {
 				if (i == off) {
 					return -1;
@@ -41,16 +43,18 @@ public abstract class SingleCharReader extends Reader {
 					return i - off;
 				}
 			}
-			cbuf[i]= (char)ch;
+			cbuf[i] = (char)ch;
 		}
 		return len;
 	}
-	
-	/* (non-Javadoc)
+
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see java.io.Reader#ready()
 	 */
 	public boolean ready() throws IOException {
 		return true;
 	}
-	
+
 }

@@ -23,38 +23,37 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 public class AtlElementProperties implements IPropertySource {
 
 	private EObject eo;
-	
-	/** Used to build the list of property descriptors
-	 *  property descriptor id => property display name
-	 */ 
+
+	/**
+	 * Used to build the list of property descriptors property descriptor id => property display name
+	 */
 	private static Map properties = new HashMap();
 
 	private static final String INFO_CATEGORY = "Info"; //$NON-NLS-1$
-	
+
 	private static final String PROPERTY_ID_LOCATION = "location"; //$NON-NLS-1$
-	
+
 	private static final String PROPERTY_ID_TYPE = "type"; //$NON-NLS-1$
-	
+
 	private static final String PROPERTY_ID_NAME = "name"; //$NON-NLS-1$
-	
+
 	static {
 		properties.put(PROPERTY_ID_LOCATION, "Location"); //$NON-NLS-1$
 		properties.put(PROPERTY_ID_TYPE, "Type"); //$NON-NLS-1$
 		properties.put(PROPERTY_ID_NAME, "Name"); //$NON-NLS-1$
 	}
-	
-	
-	public AtlElementProperties(EObject eo)	{
+
+	public AtlElementProperties(EObject eo) {
 		this.eo = eo;
 	}
-	
+
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getEditableValue()
 	 */
 	public Object getEditableValue() {
 		return this;
 	}
-	
+
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyDescriptors()
 	 */
@@ -70,7 +69,7 @@ public class AtlElementProperties implements IPropertySource {
 		}
 		return pds;
 	}
-	
+
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
@@ -78,30 +77,31 @@ public class AtlElementProperties implements IPropertySource {
 		String value;
 		if (id.equals(PROPERTY_ID_LOCATION))
 			value = (String)eo.eGet(AtlEMFConstants.sfLocation);
-		else if(id.equals(PROPERTY_ID_TYPE))
+		else if (id.equals(PROPERTY_ID_TYPE))
 			value = eo.eClass().getName();
-		else 
+		else
 			value = ""; //$NON-NLS-1$
-		
+
 		return value;
 	}
-	
+
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#isPropertySet(java.lang.Object)
 	 */
 	public boolean isPropertySet(Object id) {
 		return false;
 	}
-	
+
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#resetPropertyValue(java.lang.Object)
 	 */
 	public void resetPropertyValue(Object id) {
-		
+
 	}
-	
+
 	/**
-	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object, java.lang.Object)
+	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object,
+	 *      java.lang.Object)
 	 */
 	public void setPropertyValue(Object id, Object value) {
 	}

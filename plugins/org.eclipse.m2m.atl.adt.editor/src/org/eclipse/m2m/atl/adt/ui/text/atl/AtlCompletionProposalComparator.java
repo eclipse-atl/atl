@@ -14,27 +14,29 @@ import java.util.Comparator;
 
 public class AtlCompletionProposalComparator implements Comparator {
 
-    private boolean orderAlphabetically = false;
+	private boolean orderAlphabetically = false;
 
-    /* (non-Javadoc)
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-     */
-    public int compare(Object o1, Object o2) {
-		AtlCompletionProposal p1 = (AtlCompletionProposal) o1;
-		AtlCompletionProposal p2 = (AtlCompletionProposal) o2;
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.util.Comparator#compare(T, T)
+	 */
+	public int compare(Object o1, Object o2) {
+		AtlCompletionProposal p1 = (AtlCompletionProposal)o1;
+		AtlCompletionProposal p2 = (AtlCompletionProposal)o2;
 
-		if (! orderAlphabetically) {
+		if (!orderAlphabetically) {
 			int relevanceDif = p2.getRelevance() - p1.getRelevance();
 			if (relevanceDif != 0) {
 				return relevanceDif;
 			}
 		}
-		
+
 		return p1.getDisplayString().compareToIgnoreCase(p2.getDisplayString());
-    }
-    
-    public void setOrderAlphabetically(boolean order) {
-        orderAlphabetically = order;
-    }
+	}
+
+	public void setOrderAlphabetically(boolean order) {
+		orderAlphabetically = order;
+	}
 
 }

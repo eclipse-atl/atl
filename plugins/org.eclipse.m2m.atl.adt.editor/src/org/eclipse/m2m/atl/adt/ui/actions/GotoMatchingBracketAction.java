@@ -15,21 +15,26 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
 
-
 public class GotoMatchingBracketAction extends Action {
 
-	public final static String ID = "org.eclipse.m2m.atl.adt.ui.actions.GotoMatchingBracket";//$NON-NLS-1$
+	public static final String ID = "org.eclipse.m2m.atl.adt.ui.actions.GotoMatchingBracket"; //$NON-NLS-1$
+
 	private final AtlEditor editor;
-	
+
 	public GotoMatchingBracketAction(AtlEditor editor) {
-		super(AtlEditorMessages.getString(ID + ".label"));//$NON-NLS-1$
+		super(AtlEditorMessages.getString(ID + ".label")); //$NON-NLS-1$
 		Assert.isNotNull(editor);
 		this.editor = editor;
 		setEnabled(true);
 		// TODO WorkbenchHelp
-		//WorkbenchHelp.setHelp(this, IJavaHelpContextIds.GOTO_MATCHING_BRACKET_ACTION);
+		// WorkbenchHelp.setHelp(this, IJavaHelpContextIds.GOTO_MATCHING_BRACKET_ACTION);
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.jface.action.Action#run()
+	 */
 	public void run() {
 		editor.gotoMatchingBracket();
 	}

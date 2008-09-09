@@ -23,22 +23,28 @@ import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public abstract class AtlOutlinePage extends Page implements IContentOutlinePage, IPostSelectionProvider {
-	
+
 	protected TreeViewer treeViewer;
-	/** 
-	 * <p>Will contain the listener added to the tree viewer if this one is still null</p>
-	 *  <p> When tree viewer will be instantiated in method <code>createPartControl</code>it will be added these listeners</p>
-	 */ 
-	protected ListenerList selectionChangedListeners= new ListenerList();
-	
+
+	/**
+	 * <p>
+	 * Will contain the listener added to the tree viewer if this one is still null
+	 * </p>
+	 * <p>
+	 * When tree viewer will be instantiated in method <code>createPartControl</code>it will be added these
+	 * listeners
+	 * </p>
+	 */
+	protected ListenerList selectionChangedListeners = new ListenerList();
+
 	/**
 	 * @see org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	public void createControl(Composite parent) {
 		treeViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		treeViewer.setUseHashlookup(true);		
+		treeViewer.setUseHashlookup(true);
 	}
-	
+
 	/**
 	 * @see org.eclipse.ui.part.IPage#getControl()
 	 */
@@ -48,16 +54,21 @@ public abstract class AtlOutlinePage extends Page implements IContentOutlinePage
 		}
 		return treeViewer.getControl();
 	}
-	
+
 	/**
-	 * @see org.eclipse.ui.part.IPage#setFocus()
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.part.Page#setFocus()
 	 */
-	public void setFocus() {		
-		if(treeViewer != null)
+	public void setFocus() {
+		if (treeViewer != null) {
 			treeViewer.getControl().setFocus();
+		}
 	}
-	
+
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.viewers.IPostSelectionProvider#addPostSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
 	 */
 	public void addPostSelectionChangedListener(ISelectionChangedListener listener) {
@@ -67,7 +78,7 @@ public abstract class AtlOutlinePage extends Page implements IContentOutlinePage
 			selectionChangedListeners.add(listener);
 		}
 	}
-	
+
 	/**
 	 * @see org.eclipse.jface.viewers.IPostSelectionProvider#removePostSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
 	 */
@@ -78,7 +89,7 @@ public abstract class AtlOutlinePage extends Page implements IContentOutlinePage
 			selectionChangedListeners.add(listener);
 		}
 	}
-	
+
 	/**
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#addSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
 	 */
@@ -89,7 +100,7 @@ public abstract class AtlOutlinePage extends Page implements IContentOutlinePage
 			selectionChangedListeners.add(listener);
 		}
 	}
-	
+
 	/**
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
 	 */
@@ -98,9 +109,9 @@ public abstract class AtlOutlinePage extends Page implements IContentOutlinePage
 			return StructuredSelection.EMPTY;
 		}
 		return treeViewer.getSelection();
-		
+
 	}
-	
+
 	/**
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#removeSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
 	 */
@@ -109,12 +120,12 @@ public abstract class AtlOutlinePage extends Page implements IContentOutlinePage
 			treeViewer.removeSelectionChangedListener(listener);
 		}
 	}
-	
+
 	/**
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#setSelection(org.eclipse.jface.viewers.ISelection)
 	 */
 	public void setSelection(ISelection selection) {
-		if (treeViewer != null) { 
+		if (treeViewer != null) {
 			treeViewer.setSelection(selection);
 		}
 	}

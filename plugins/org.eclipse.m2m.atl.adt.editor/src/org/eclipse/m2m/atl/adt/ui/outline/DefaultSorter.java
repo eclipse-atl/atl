@@ -14,34 +14,35 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.m2m.atl.engine.AtlNbCharFile;
 
-public class DefaultSorter extends ViewerSorter 
-{
-	/** Used to compute index of start character and end character from a location String
-	 * the location String is structured as follows : <line_start>:<column_start>-<lined_End>:<column_end>
-	 * @see AtlNbCharFile
-	 */
-	private AtlNbCharFile help;
-	
+public class DefaultSorter extends ViewerSorter {
 	
 	/**
-	 * @see org.eclipse.jface.viewers.ViewerSorter#category(java.lang.Object)
+	 * Used to compute index of start character and end character from a location String the location String
+	 * is structured as follows : <line_start>:<column_start>-<lined_End>:<column_end>
 	 */
-	public int category(Object element) 
-	{
-		if (element instanceof Root)
+	private AtlNbCharFile help;
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.ViewerComparator#category(java.lang.Object)
+	 */
+	public int category(Object element) {
+		if (element instanceof Root) {
 			return super.category(element);
-			
+		}
+
 		EObject eo = (EObject)element;
 		String location = (String)eo.eGet(AtlEMFConstants.sfLocation);
-		if (location == null)
+		if (location == null) {
 			return super.category(element);
-		
-		int pos[] = help.getIndexChar(location);			
+		}
+
+		int[] pos = help.getIndexChar(location);
 		return pos[0];
 	}
-		
-	public void setHelp(AtlNbCharFile help) 
-	{
+
+	public void setHelp(AtlNbCharFile help) {
 		this.help = help;
 	}
 }

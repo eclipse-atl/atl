@@ -18,6 +18,8 @@ import org.eclipse.m2m.atl.logging.ATLLogFormatter;
 
 /**
  * Flushes after every log and doesn't close output stream.
+ * 
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ConsoleStreamHandler extends StreamHandler {
 
