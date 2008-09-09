@@ -6,11 +6,12 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault (INRIA) - initial API and implementation
+ *    Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.ocl.core;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
@@ -19,27 +20,30 @@ import org.eclipse.m2m.atl.engine.AtlCompiler;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 
 /**
+ * Utility to evaluate ocl.
  * 
- * @author Frédéric Jouault
- *
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public abstract class OclEvaluator {
-	
-	protected EObject pbs[];
 
-	protected ASM compile(String atl) throws Exception {
+	protected EObject[] pbs;
+
+	/**
+	 * Compiles an atl string into asm.
+	 * 
+	 * @param atlArg the string
+	 * @return the ASM file
+	 * @throws Exception
+	 */
+	protected ASM compile(String atlArg) throws IOException {
 		AtlCompiler ac = AtlCompiler.getDefault();
-		
+
 		// forcing usage of ATL 2006
-		atl = "-- @atlcompiler atl2006\n" + atl;
+		String atl = "-- @atlcompiler atl2006\n" + atlArg;
 		ByteArrayInputStream input = new ByteArrayInputStream(atl.getBytes());
 		IFile file = ASMRetriever.getFile();
 		pbs = ac.compile(input, file);
 		input.close();
-//		for(int i = 0 ; i < pbs.length ; i++) {
-//			String sev = get(pbs[i], "severity").toString();
-//			System.out.println(sev + ":" + get(pbs[i], "location") + ":" + get(pbs[i], "description"));
-//		}
 		return ASMRetriever.getASM(file);
 	}
 }
