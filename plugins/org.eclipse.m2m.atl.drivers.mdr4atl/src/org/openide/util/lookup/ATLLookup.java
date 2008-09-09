@@ -25,7 +25,7 @@ import org.openide.util.Lookup;
 
 /**
  * This class seems necessary to make MDR work within Eclipse.
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ATLLookup extends Lookup {
 

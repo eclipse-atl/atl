@@ -48,7 +48,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMTuple;
 
 /**
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMMDRModelElement extends ASMModelElement {
 
@@ -94,7 +94,7 @@ public class ASMMDRModelElement extends ASMModelElement {
 	}
 
 
-	private static void registerMOFOperation(String modelelementName, String methodName, Class args[]) throws Exception {
+	private static void registerMOFOperation(String modelelementName, String methodName, Class[] args) throws Exception {
 		List realArgs = new ArrayList(Arrays.asList(args));
 		realArgs.add(0, ASMMDRModelElement.class);
 		realArgs.add(0, StackFrame.class);

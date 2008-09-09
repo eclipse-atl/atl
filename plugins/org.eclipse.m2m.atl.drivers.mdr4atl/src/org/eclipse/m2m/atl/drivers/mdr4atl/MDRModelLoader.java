@@ -17,7 +17,7 @@ import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class MDRModelLoader extends ModelLoader {
 
