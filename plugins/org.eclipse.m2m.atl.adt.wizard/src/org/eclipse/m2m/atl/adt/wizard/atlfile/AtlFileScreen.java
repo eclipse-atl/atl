@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
@@ -40,49 +39,80 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 /**
- * @author Freddy Allilaire
+ * The ATL file wizard.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
+
 public class AtlFileScreen extends WizardPage {
 
-	final public static String NAME = "NAME";//$NON-NLS-1$
-	final public static String TYPE = "TYPE";//$NON-NLS-1$
-	final public static String CONTAINER = "CONTAINER";//$NON-NLS-1$
-	final public static String IN = "IN";//$NON-NLS-1$
-	final public static String OUT = "OUT";//$NON-NLS-1$
-	final public static String LIB = "LIB";//$NON-NLS-1$
-	final public static String MODULE = "module";//$NON-NLS-1$
-	final public static String QUERY = "query";//$NON-NLS-1$
-	final public static String LIBRARY = "library";//$NON-NLS-1$
+	/** ATL Module name. */
+	public static final String NAME = "NAME"; //$NON-NLS-1$
+
+	/** ATL File type. */
+	public static final String TYPE = "TYPE"; //$NON-NLS-1$
+
+	/** ATL Module container. */
+	public static final String CONTAINER = "CONTAINER"; //$NON-NLS-1$
+
+	/** IN models map. */
+	public static final String IN = "IN"; //$NON-NLS-1$
+
+	/** OUT models map. */
+	public static final String OUT = "OUT"; //$NON-NLS-1$
+
+	/** Libraries map. */
+	public static final String LIB = "LIB"; //$NON-NLS-1$
+
+	/** The atl module file type. */
+	public static final String MODULE = "module"; //$NON-NLS-1$
+
+	/** The atl query file type. */
+	public static final String QUERY = "query"; //$NON-NLS-1$
+
+	/** The library file type. */
+	public static final String LIBRARY = "library"; //$NON-NLS-1$
 
 	private ISelection selection;
 
 	private Group groupHead;
+
 	private Group groupIn;
+
 	private Group groupOut;
+
 	private Group groupLib;
+
 	private Text textName;
+
 	private Text textProject;
+
 	private Combo comboType;
+
 	private Table tableIn;
+
 	private Table tableOut;
+
 	private Table tableLib;
 
 	/**
+	 * Constructor.
 	 * 
 	 * @param selection
+	 *            the selection interface.
 	 */
 	public AtlFileScreen(ISelection selection) {
 		super("ATL File Wizard"); //$NON-NLS-1$
 		setTitle("ATL File Wizard"); //$NON-NLS-1$
 		setDescription(""); //$NON-NLS-1$
 		this.selection = selection;
-		//		System.out.println("selection: " + this.selection);
 		this.setPageComplete(false);
 	}
 
 	/**
-	 * @see IDialogPage#createControl(Composite)
-	 * In this method, the GUI is created
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
@@ -97,9 +127,9 @@ public class AtlFileScreen extends WizardPage {
 		groupOut = new Group(container, SWT.NULL);
 		groupLib = new Group(container, SWT.NULL);
 
-		/***********************************************************************
+		/*****************************************************************************************************
 		 * GroupHead
-		 **********************************************************************/
+		 ****************************************************************************************************/
 		layout = new GridLayout();
 		layout.numColumns = 3;
 
@@ -110,16 +140,19 @@ public class AtlFileScreen extends WizardPage {
 		new Label(groupHead, SWT.NULL).setText("Container"); //$NON-NLS-1$
 		textProject = new Text(groupHead, SWT.BORDER);
 
-		if (selection!=null && selection.isEmpty()==false && selection instanceof IStructuredSelection) {
+		if (selection != null && !selection.isEmpty() && selection instanceof IStructuredSelection) {
 			IStructuredSelection ssel = (IStructuredSelection)selection;
-			if (ssel.size()>1) return;
+			if (ssel.size() > 1) {
+				return;
+			}
 			Object obj = ssel.getFirstElement();
 			if (obj instanceof IResource) {
 				IContainer selectionContainer;
-				if (obj instanceof IContainer)
+				if (obj instanceof IContainer) {
 					selectionContainer = (IContainer)obj;
-				else
+				} else {
 					selectionContainer = ((IResource)obj).getParent();
+				}
 				textProject.setText(selectionContainer.getFullPath().toOSString());
 			}
 		}
@@ -136,7 +169,7 @@ public class AtlFileScreen extends WizardPage {
 
 		new Label(groupHead, SWT.NULL).setText("ATL Module Name"); //$NON-NLS-1$
 		textName = new Text(groupHead, SWT.BORDER);
-		textName.addKeyListener( new KeyAdapter() {
+		textName.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent evt) {
 				textNameKeyPressed(evt);
 			}
@@ -154,9 +187,9 @@ public class AtlFileScreen extends WizardPage {
 		gdATLType.horizontalSpan = 2;
 		comboType.setLayoutData(gdATLType);
 
-		/***********************************************************************
+		/*****************************************************************************************************
 		 * GroupIn
-		 **********************************************************************/
+		 ****************************************************************************************************/
 		layout = new GridLayout();
 		layout.numColumns = 5;
 
@@ -197,9 +230,9 @@ public class AtlFileScreen extends WizardPage {
 				addTextTable(tableIn, new String[] {inM1.getText(), inM2.getText()});
 			}
 		});
-		/***********************************************************************
+		/*****************************************************************************************************
 		 * GroupOut
-		 **********************************************************************/
+		 ****************************************************************************************************/
 		layout = new GridLayout();
 		layout.numColumns = 5;
 
@@ -230,7 +263,7 @@ public class AtlFileScreen extends WizardPage {
 		tc.setText("Model"); //$NON-NLS-1$
 		tc.setWidth(250);
 		tc.setAlignment(SWT.CENTER);
-		tc= new TableColumn(tableOut, SWT.CENTER);
+		tc = new TableColumn(tableOut, SWT.CENTER);
 		tc.setText("Metamodel"); //$NON-NLS-1$
 		tc.setWidth(250);
 		tc.setAlignment(SWT.CENTER);
@@ -240,9 +273,9 @@ public class AtlFileScreen extends WizardPage {
 				addTextTable(tableOut, new String[] {outM1.getText(), outM2.getText()});
 			}
 		});
-		/***********************************************************************
+		/*****************************************************************************************************
 		 * GroupLib
-		 **********************************************************************/
+		 ****************************************************************************************************/
 		layout = new GridLayout();
 		layout.numColumns = 3;
 
@@ -285,16 +318,14 @@ public class AtlFileScreen extends WizardPage {
 					setEnabled(groupOut.getChildren(), true);
 					groupLib.setEnabled(true);
 					setEnabled(groupLib.getChildren(), true);
-				}
-				else if (comboType.getText().equals(LIBRARY)) {
+				} else if (comboType.getText().equals(LIBRARY)) {
 					groupIn.setEnabled(false);
 					setEnabled(groupIn.getChildren(), false);
 					groupOut.setEnabled(false);
 					setEnabled(groupOut.getChildren(), false);
 					groupLib.setEnabled(false);
 					setEnabled(groupLib.getChildren(), false);
-				}
-				else if (comboType.getText().equals(QUERY)) {
+				} else if (comboType.getText().equals(QUERY)) {
 					groupIn.setEnabled(false);
 					setEnabled(groupIn.getChildren(), false);
 					groupOut.setEnabled(false);
@@ -308,123 +339,127 @@ public class AtlFileScreen extends WizardPage {
 		buttonIn.setEnabled(false);
 		buttonOut.setEnabled(false);
 		buttonLib.setEnabled(false);
-		
+
 		ModifyListener addInEnabler = new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				buttonIn.setEnabled(inM1.getText().trim() != "" && inM2.getText().trim() != "");
+				buttonIn.setEnabled(!inM1.getText().trim().equals("") && !inM2.getText().trim().equals(""));
 			}
 		};
-		
+
 		ModifyListener addOutEnabler = new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				buttonOut.setEnabled(outM1.getText().trim() != "" && outM2.getText().trim() != "");
+				buttonOut
+						.setEnabled(!outM1.getText().trim().equals("") && !outM2.getText().trim().equals(""));
 			}
 		};
-		
+
 		ModifyListener addLibEnabler = new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				buttonLib.setEnabled(textLib.getText().trim() != "");
+				buttonLib.setEnabled(!textLib.getText().trim().equals(""));
 			}
 		};
-		
+
 		inM1.addModifyListener(addInEnabler);
 		inM2.addModifyListener(addInEnabler);
-		
+
 		outM1.addModifyListener(addOutEnabler);
 		outM2.addModifyListener(addOutEnabler);
-		
+
 		textLib.addModifyListener(addLibEnabler);
 
 		container.layout();
 		setControl(container);
-}
-
-/**
- * 
- * @param controlArray
- * @param enabled
- */
-private void setEnabled(Control[] controlArray, boolean enabled) {
-	for (int i=0; i < controlArray.length; i++) {
-		controlArray[i].setEnabled(enabled);
 	}
-}
 
-/**
- * Opens the browse container file
- */
-private void handleProjectBrowse() {
-	ContainerSelectionDialog dialog =
-		new ContainerSelectionDialog(
-				getShell(),
-				ResourcesPlugin.getWorkspace().getRoot(),
-				false,
-		"Select a container"); //$NON-NLS-1$
-	if (dialog.open() == ContainerSelectionDialog.OK) {
-		Object[] result = dialog.getResult();
-		if (result.length == 1) {
-			textProject.setText(((Path)result[0]).toOSString());
+	/**
+	 * Sets the control to enabled/disabled.
+	 * 
+	 * @param controlArray
+	 *            the specified control
+	 * @param enabled
+	 *            the parameter
+	 */
+	private void setEnabled(Control[] controlArray, boolean enabled) {
+		for (int i = 0; i < controlArray.length; i++) {
+			controlArray[i].setEnabled(enabled);
 		}
 	}
-}	
 
-/**
- * 
- * @param tableParam
- * @param itemAdded
- */
-private void addTextTable(Table tableParam, String[] itemAdded) {
-	TableItem item = new TableItem(tableParam, SWT.NONE);
-	item.setText(itemAdded);
-}
+	/**
+	 * Opens the browse container file.
+	 */
+	private void handleProjectBrowse() {
+		ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(), ResourcesPlugin
+				.getWorkspace().getRoot(), false, "Select a container"); //$NON-NLS-1$
+		if (dialog.open() == ContainerSelectionDialog.OK) {
+			Object[] result = dialog.getResult();
+			if (result.length == 1) {
+				textProject.setText(((Path)result[0]).toOSString());
+			}
+		}
+	}
 
-/**
- * 
- * @param evt
- */
-protected void textNameKeyPressed(KeyEvent evt) {
-	if (textName.getText().equals("")) //$NON-NLS-1$
-		this.setPageComplete(false);
-	else
-		this.setPageComplete(true);
-}
+	private void addTextTable(Table tableParam, String[] itemAdded) {
+		TableItem item = new TableItem(tableParam, SWT.NONE);
+		item.setText(itemAdded);
+	}
 
-public String getParameter(String parameter) {
-	if (parameter.equals(NAME))
-		return textName.getText();
-	if (parameter.equals(TYPE))
-		return comboType.getText();
-	if (parameter.equals(CONTAINER))
-		return textProject.getText();
-	if (parameter.equals(IN)) {
-		String ret = ""; //$NON-NLS-1$
-		for (int i=0; i < tableIn.getItems().length; i++) {
-			if (i > 0)
-				ret += ", "; //$NON-NLS-1$
-			ret += tableIn.getItem(i).getText(0);
-			ret += " : "; //$NON-NLS-1$
-			ret += tableIn.getItem(i).getText(1);
+	private void textNameKeyPressed(KeyEvent evt) {
+		if (textName.getText().equals("")) { //$NON-NLS-1$
+			this.setPageComplete(false);
+		} else {
+			this.setPageComplete(true);
 		}
-		return ret;
 	}
-	if (parameter.equals(OUT)) {
-		String ret = ""; //$NON-NLS-1$
-		for (int i=0; i < tableOut.getItems().length; i++) {
-			if (i > 0)
-				ret += ", "; //$NON-NLS-1$
-			ret += tableOut.getItem(i).getText(0);
-			ret += " : "; //$NON-NLS-1$
-			ret += tableOut.getItem(i).getText(1);
+
+	/**
+	 * Returns the value of the given parameter name.
+	 * 
+	 * @param parameter
+	 *            the parameter name
+	 * @return the value of the given parameter name
+	 */
+	public String getParameter(String parameter) {
+		if (parameter.equals(NAME)) {
+			return textName.getText();
 		}
-		return ret;
-	}
-	if (parameter.equals(LIB)) {
-		String ret = ""; //$NON-NLS-1$
-		for (int i=0; i < tableLib.getItems().length; i++) {
-			ret += "uses " + tableLib.getItem(i).getText(0) + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
+		if (parameter.equals(TYPE)) {
+			return comboType.getText();
 		}
-		return ret;
+		if (parameter.equals(CONTAINER)) {
+			return textProject.getText();
+		}
+		if (parameter.equals(IN)) {
+			String ret = ""; //$NON-NLS-1$
+			for (int i = 0; i < tableIn.getItems().length; i++) {
+				if (i > 0) {
+					ret += ", "; //$NON-NLS-1$
+				}
+				ret += tableIn.getItem(i).getText(0);
+				ret += " : "; //$NON-NLS-1$
+				ret += tableIn.getItem(i).getText(1);
+			}
+			return ret;
+		}
+		if (parameter.equals(OUT)) {
+			String ret = ""; //$NON-NLS-1$
+			for (int i = 0; i < tableOut.getItems().length; i++) {
+				if (i > 0) {
+					ret += ", "; //$NON-NLS-1$
+				}
+				ret += tableOut.getItem(i).getText(0);
+				ret += " : "; //$NON-NLS-1$
+				ret += tableOut.getItem(i).getText(1);
+			}
+			return ret;
+		}
+		if (parameter.equals(LIB)) {
+			String ret = ""; //$NON-NLS-1$
+			for (int i = 0; i < tableLib.getItems().length; i++) {
+				ret += "uses " + tableLib.getItem(i).getText(0) + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			return ret;
+		}
+		return null;
 	}
-	return null;
-}
 }

@@ -22,22 +22,29 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
- * @author Tarik Idrissi
+ * Resource visitor.
+ * 
+ * @author <a href="mailto:tarik.idrissi@laposte.net">Tarik Idrissi</a>
  */
 public class ResourceDeltaVisitor implements IResourceDeltaVisitor {
-	
+
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	/**
-	 * <p>Finds the asm file associated to an atl file</p>
-	 * <p> A file is considered to be the asm file associated to an atl file if it has the same name but the extesnsion "asm"
-	 * and is located in the same folder
-	 * @param res the atl file for which to find the associated asm file
+	 * <p>
+	 * Finds the asm file associated to an atl file.
+	 * </p>
+	 * <p>
+	 * A file is considered to be the asm file associated to an atl file if it has the same name but the
+	 * extesnsion "asm" and is located in the same folder
+	 * 
+	 * @param res
+	 *            the atl file for which to find the associated asm file
 	 * @return <code>null</code> if the atl file does not have an associated asm, the asm file otherwize.
 	 */
 	private IResource findAsmFile(IResource res) {
 		String atlFileName = res.getName();
-		String asmFileName = atlFileName.substring(0, atlFileName.lastIndexOf('.')) + ".asm";//$NON-NLS-1$
+		String asmFileName = atlFileName.substring(0, atlFileName.lastIndexOf('.')) + ".asm"; //$NON-NLS-1$
 		IFile asm = res.getParent().getFile(new Path(asmFileName));
 		if (asm.exists()) {
 			return asm;
@@ -45,10 +52,12 @@ public class ResourceDeltaVisitor implements IResourceDeltaVisitor {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * Deletes the asm file associated to an atl file
-	 * @param res the atl file for which to delete the associated asm file
+	 * Deletes the asm file associated to an atl file.
+	 * 
+	 * @param res
+	 *            the atl file for which to delete the associated asm file
 	 */
 	private void delAsmFile(final IResource res) {
 		Thread op = new Thread() {
@@ -59,24 +68,28 @@ public class ResourceDeltaVisitor implements IResourceDeltaVisitor {
 						asm.delete(true, null);
 					} catch (CoreException e) {
 						logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//						e.printStackTrace();
+						// e.printStackTrace();
 					}
 				}
 			}
-		};		
+		};
 		op.start();
 	}
-	
+
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)
 	 */
 	public boolean visit(IResourceDelta delta) throws CoreException {
 		IResource res = delta.getResource();
-		switch(delta.getKind()) {
-			case IResourceDelta.REMOVED : // when a file is removed or renamed.	
-				if ("atl".equals(res.getFileExtension())) {	//$NON-NLS-1$				
+		switch (delta.getKind()) {
+			case IResourceDelta.REMOVED: // when a file is removed or renamed.
+				if ("atl".equals(res.getFileExtension())) { //$NON-NLS-1$				
 					delAsmFile(res);
 				}
+				break;
+			default:
 				break;
 		}
 		return true;

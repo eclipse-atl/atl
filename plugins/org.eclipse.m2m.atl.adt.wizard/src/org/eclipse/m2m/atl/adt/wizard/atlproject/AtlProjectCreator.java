@@ -24,112 +24,114 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.m2m.atl.adt.builder.AtlNature;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
+/**
+ * The ATL project creation wizard.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ */
 public class AtlProjectCreator extends Wizard implements INewWizard, IExecutableExtension {
-	
+
 	private AtlDescriptionProjectScreen page;
-	
+
 	private IConfigurationElement configElement;
-	
-	private ISelection selection;
-	
+
+	private ISelection selectionInterface;
+
 	private IProject modelProject;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	public AtlProjectCreator() {
 		super();
-		setNeedsProgressMonitor(true);		
+		setNeedsProgressMonitor(true);
 	}
-	
+
 	/**
 	 * Adding the page to the wizard.
 	 */
 
 	public void addPages() {
-		page = new AtlDescriptionProjectScreen(selection);
+		page = new AtlDescriptionProjectScreen(selectionInterface);
 		addPage(page);
 	}
-	
+
 	/**
-	 * This method is called when 'Finish' button is pressed in
-	 * the wizard. We will create an operation and run it
-	 * using wizard as execution context.
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
 	public boolean performFinish() {
 		String projectName = page.getProjectName();
 
-		try{
+		try {
 			// Get the worskspace container (IWorkspaceRoot)
 			IWorkspace wks = ResourcesPlugin.getWorkspace();
 			IWorkspaceRoot wksroot = wks.getRoot();
 
 			// Create a project model instance
 			modelProject = wksroot.getProject(projectName);
-			if (!modelProject.exists())
+			if (!modelProject.exists()) {
 				modelProject.create(null);
+			}
 
 			// open project if necessary
-			if (!modelProject.isOpen())
+			if (!modelProject.isOpen()) {
 				modelProject.open(null);
-			
-			//What's this good for?!
-//			modelProject.setLocal(true, IResource.DEPTH_ZERO, null);
+			}
+
+			// What's this good for?!
+			// modelProject.setLocal(true, IResource.DEPTH_ZERO, null);
 
 			addNature(modelProject, AtlNature.ATL_NATURE_ID);
 			BasicNewProjectResourceWizard.updatePerspective(configElement);
-		}
-		catch(CoreException ce){
+		} catch (CoreException ce) {
 			System.err.println(ce);
 		}
 
 		return true;
 	}
-	
-//	/**
-//	 * This method transforms string into inputstream
-//	 * @param contents content of the file to cast in InputStream
-//	 * @return the InputStream content
-//	 */
-//	private InputStream openContentStream(String contents) {
-//		return new ByteArrayInputStream(contents.getBytes());
-//	}
-	
+
 	/**
-	 * We will accept the selection in the workbench to see if
-	 * we can initialize from it.
-	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;
+		this.selectionInterface = selection;
 	}
 
 	/**
-	 * Adds a nature to a project
-	 * @param project the project to add a nature to
-	 * @param natureId the natureId of the nature to be added to the project
+	 * Adds a nature to a project.
+	 * 
+	 * @param project
+	 *            the project to add a nature to
+	 * @param natureId
+	 *            the natureId of the nature to be added to the project
 	 */
 	public void addNature(IProject project, String natureId) {
-	try {
-	      IProjectDescription description = project.getDescription();
-	      String[] natures = description.getNatureIds();
-	      String[] newNatures = new String[natures.length + 1];
-	      System.arraycopy(natures, 0, newNatures, 0, natures.length);
-	      newNatures[natures.length] = natureId;
-	      description.setNatureIds(newNatures);
-	      project.setDescription(description, null);
-	   } catch (CoreException e) {
-	   		System.err.println(e);
-	   }
+		try {
+			IProjectDescription description = project.getDescription();
+			String[] natures = description.getNatureIds();
+			String[] newNatures = new String[natures.length + 1];
+			System.arraycopy(natures, 0, newNatures, 0, natures.length);
+			newNatures[natures.length] = natureId;
+			description.setNatureIds(newNatures);
+			project.setDescription(description, null);
+		} catch (CoreException e) {
+			System.err.println(e);
+		}
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement, java.lang.String, java.lang.Object)
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data) throws CoreException {
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
 		this.configElement = config;
 	}
 }

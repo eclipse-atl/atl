@@ -29,42 +29,46 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
+/**
+ * The ATL new file wizard.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ */
 public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExtension {
-	
+
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private IConfigurationElement configElement;
-	
+
 	private AtlFileScreen page;
-	
-	private ISelection selection;
-	
+
+	private ISelection selectionInterface;
+
 	private IContainer modelProject;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	public AtlFileWizard() {
 		super();
-		setNeedsProgressMonitor(true);		
+		setNeedsProgressMonitor(true);
 	}
-	
+
 	/**
 	 * Adding the page to the wizard.
 	 */
 
 	public void addPages() {
-		page = new AtlFileScreen(selection);
+		page = new AtlFileScreen(selectionInterface);
 		addPage(page);
 	}
-	
+
 	/**
-	 * This method is called when 'Finish' button is pressed in
-	 * the wizard. We will create an operation and run it
-	 * using wizard as execution context.
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
 	public boolean performFinish() {
 		newProjectBuilder();
@@ -73,45 +77,42 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	}
 
 	/**
-	 * This method creates an ATL project in the workspace with :
-	 * 		the ATL transformation file 
-	 *		the toString file (if the project needs it)
-	 *		the toString query file (if the project needs it)
+	 * This method creates an ATL project in the workspace with : the ATL transformation file the toString
+	 * file (if the project needs it) the toString query file (if the project needs it).
 	 */
 	public void newProjectBuilder() {
 		String fileName = page.getParameter(AtlFileScreen.NAME);
 		String fileType = page.getParameter(AtlFileScreen.TYPE);
-		modelProject = (IContainer)ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(page.getParameter(AtlFileScreen.CONTAINER)));
-		String contentFile = "";//$NON-NLS-1$
+		modelProject = (IContainer)ResourcesPlugin.getWorkspace().getRoot().findMember(
+				new Path(page.getParameter(AtlFileScreen.CONTAINER)));
+		String contentFile = ""; //$NON-NLS-1$
 
 		if (fileType.equals(AtlFileScreen.MODULE)) {
 			contentFile = AtlFileScreen.MODULE + " " + fileName + "; -- Module Template\n"; //$NON-NLS-1$ //$NON-NLS-2$
 			contentFile += "create " + page.getParameter(AtlFileScreen.OUT); //$NON-NLS-1$
 			contentFile += " from " + page.getParameter(AtlFileScreen.IN) + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
 			contentFile += page.getParameter(AtlFileScreen.LIB);
-		}
-		else if (fileType.equals(AtlFileScreen.QUERY)) {
+		} else if (fileType.equals(AtlFileScreen.QUERY)) {
 			contentFile = AtlFileScreen.QUERY + " " + fileName + " = ; -- Query Template\n"; //$NON-NLS-1$ //$NON-NLS-2$
 			contentFile += page.getParameter(AtlFileScreen.LIB);
-		}
-		else if (fileType.equals(AtlFileScreen.LIBRARY)) {
+		} else if (fileType.equals(AtlFileScreen.LIBRARY)) {
 			contentFile = AtlFileScreen.LIBRARY + " " + fileName + "; -- Library Template\n"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		createFile(fileName + ".atl", contentFile); //$NON-NLS-1$
-		
+
 	}
-	
+
 	/**
-	 * This method creates a file with its content in the project
-	 * There is two cases :
-	 * 		the project has external location
-	 * 		the project has local location
-	 * In the first case, a file is created in the file system and there is a link between this file
-	 * and the ATL project.
-	 * In the second case, a file is created in the project
-	 * @param fileName name of the file to create
-	 * @param content content of the file to create
+	 * This method creates a file with its content in the project There is two cases : the project has
+	 * external location the project has local location In the first case, a file is created in the file
+	 * system and there is a link between this file and the ATL project. In the second case, a file is created
+	 * in the project
+	 * 
+	 * @param fileName
+	 *            name of the file to create
+	 * @param content
+	 *            content of the file to create
 	 */
 	private void createFile(String fileName, String content) {
 		IFile file = modelProject.getFile(new Path(fileName));
@@ -122,40 +123,41 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 			} else {
 				file.create(stream, true, null);
 			}
-			stream.close();	
-		}
-		catch (IOException e) {
+			stream.close();
+		} catch (IOException e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
-		}
-		catch (CoreException e1) {
+		} catch (CoreException e1) {
 			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
-//			e1.printStackTrace();
 		}
 	}
 
 	/**
-	 * This method transforms string into inputstream
-	 * @param contents content of the file to cast in InputStream
+	 * This method transforms string into inputstream.
+	 * 
+	 * @param contents
+	 *            content of the file to cast in InputStream
 	 * @return the InputStream content
 	 */
 	private InputStream openContentStream(String contents) {
 		return new ByteArrayInputStream(contents.getBytes());
 	}
-	
+
 	/**
-	 * We will accept the selection in the workbench to see if
-	 * we can initialize from it.
-	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;
+		this.selectionInterface = selection;
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement, java.lang.String, java.lang.Object)
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data) throws CoreException {
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
 		this.configElement = config;
 	}
 }

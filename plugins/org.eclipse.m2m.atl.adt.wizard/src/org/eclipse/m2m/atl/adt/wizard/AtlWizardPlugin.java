@@ -17,6 +17,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * The main plugin class to be used in the desktop.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AtlWizardPlugin extends AbstractUIPlugin {
 	//The shared instance.
@@ -31,7 +33,7 @@ public class AtlWizardPlugin extends AbstractUIPlugin {
 		super();
 		plugin = this;
 		try {
-			resourceBundle = ResourceBundle.getBundle("org.eclipse.m2m.atl.adt.wizard.AtlWizardPluginResources");//$NON-NLS-1$
+			resourceBundle = ResourceBundle.getBundle("org.eclipse.m2m.atl.adt.wizard.AtlWizardPluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -39,14 +41,19 @@ public class AtlWizardPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance.
+	 * 
+	 * @return the shared instance.
 	 */
 	public static AtlWizardPlugin getDefault() {
 		return plugin;
 	}
 
 	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
+	 * Returns the string from the plugin's resource bundle, or 'key' if not found.
+	 * 
+	 * @param key
+	 *            the default value
+	 * @return the string from the plugin's resource bundle, or 'key' if not found
 	 */
 	public static String getResourceString(String key) {
 		ResourceBundle bundle = AtlWizardPlugin.getDefault().getResourceBundle();
@@ -58,7 +65,9 @@ public class AtlWizardPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the plugin's resource bundle,
+	 * Returns the plugin's resource bundle.
+	 * 
+	 * @return the plugin's resource bundle
 	 */
 	public ResourceBundle getResourceBundle() {
 		return resourceBundle;

@@ -15,16 +15,21 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.ui.IStartup;
 
 /**
- * @author Tarik Idrissi
- *
+ * The startup adt class.
+ * 
+ * @author <a href="mailto:tarik.idrissi@laposte.net">Tarik Idrissi</a>
  */
 public class Startup implements IStartup {
-	
+
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.ui.IStartup#earlyStartup()
 	 */
 	public void earlyStartup() {
-		// listen for change in the workspace. It is then possible to take action such as deleting an asm file when its associated atl file is deleted.
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(), IResourceChangeEvent.POST_CHANGE);
+		// listen for change in the workspace. It is then possible to take action such as deleting an asm file
+		// when its associated atl file is deleted.
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(),
+				IResourceChangeEvent.POST_CHANGE);
 	}
 }
