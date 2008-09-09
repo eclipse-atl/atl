@@ -6,38 +6,46 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Frédéric Jouault & Mikaël Barbero (INRIA) - initial API and implementation
+ *     Frederic Jouault & Mikael Barbero (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.dsls;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
+/**
+ * The plugin Activator.
+ * 
+ * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ */
 public class Activator extends Plugin {
 
-	// The plug-in ID
+	/** The plug-in ID. */
 	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.dsls";
 
-	// The shared instance
+	/** The shared instance. */
 	private static Activator plugin;
-	
+
 	/**
-	 * The constructor
+	 * The constructor.
 	 */
 	public Activator() {
 		plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
@@ -46,8 +54,8 @@ public class Activator extends Plugin {
 	}
 
 	/**
-	 * Returns the shared instance
-	 *
+	 * Returns the shared instance.
+	 * 
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {

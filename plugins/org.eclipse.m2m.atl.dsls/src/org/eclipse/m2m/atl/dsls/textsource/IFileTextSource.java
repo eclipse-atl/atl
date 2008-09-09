@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Frédéric Jouault - initial API and implementation
+ *     Frederic Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.dsls.textsource;
 
@@ -16,14 +16,28 @@ import java.io.InputStream;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 
+/**
+ * IFile text utility.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ */
 public class IFileTextSource extends TextSource {
 	
-	public IFile file;
+	private IFile file;
 	
+	/**
+	 * Creates a new IFileTextSource.
+	 * 
+	 * @param file the file to manage
+	 */
 	public IFileTextSource(IFile file) {
 		this.file = file;
 	}
 
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.dsls.textsource.TextSource#openStream()
+	 */
 	public InputStream openStream() throws IOException {
 		try {
 			return file.getContents();

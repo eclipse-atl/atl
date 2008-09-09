@@ -6,19 +6,36 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Frédéric Jouault - initial API and implementation
+ *     Frederic Jouault - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.dsls.textsource;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-
+/**
+ * The abstract text source definition.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ */
 public abstract class TextSource {
 
+	/**
+	 * Returns an input stream of the text source.
+	 * 
+	 * @return an input stream of the text source
+	 * @throws IOException
+	 */
 	public abstract InputStream openStream() throws IOException;
 
+	/**
+	 * Returns a buffered reader of the text source.
+	 * 
+	 * @return a buffered reader of the text source
+	 * @throws IOException
+	 */
 	public BufferedReader openBufferedReader() throws IOException {
 		return new BufferedReader(new InputStreamReader(openStream()));
 	}

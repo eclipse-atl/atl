@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Frédéric Jouault & Mikaël Barbero (INRIA) - initial API and implementation
+ *     Frederic Jouault & Mikael Barbero (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.dsls;
 
@@ -30,43 +30,62 @@ import org.eclipse.m2m.atl.dsls.textsource.TextSource;
 import org.eclipse.m2m.atl.dsls.textsource.URLTextSource;
 import org.osgi.framework.Bundle;
 
+/**
+ * The DSL resource provider.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ */
 public class DSLResourceProvider {
-	
-	private static DSLResourceProvider INSTANCE = null;
+
+	private static DSLResourceProvider instance;
 
 	private static String resourcesRoot = "resources/";
+
 	private static Map resourcesById = new HashMap();
 
+	/**
+	 * Returns the default DSL provider.
+	 * 
+	 * @return the default DSL provider
+	 */
 	public static DSLResourceProvider getDefault() {
-		if(INSTANCE == null) {
-			INSTANCE = new DSLResourceProvider();
-			INSTANCE.initResources();
+		if (instance == null) {
+			instance = new DSLResourceProvider();
+			instance.initResources();
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
-	        if (registry == null) {
-	            throw new RuntimeException("Extension registry not found");
-	        }
-	        
-			IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.dsls.dslresourceprovider"); //$NON-NLS-1$
-	
-			IExtension[] extensions = point.getExtensions();		
-			extensions: for(int i = 0 ; i < extensions.length ; i++){		
+			if (registry == null) {
+				throw new RuntimeException("Extension registry not found");
+			}
+
+			IExtensionPoint point = registry
+					.getExtensionPoint("org.eclipse.m2m.atl.dsls.dslresourceprovider"); //$NON-NLS-1$
+
+			IExtension[] extensions = point.getExtensions();
+			extensions: for (int i = 0; i < extensions.length; i++) {
 				IConfigurationElement[] elements = extensions[i].getConfigurationElements();
-				for(int j = 0 ; j < elements.length ; j++){
-					try {					
-						DSLResourceProvider resourceProvider = (DSLResourceProvider)elements[j].createExecutableExtension("class"); //$NON-NLS-1$
+				for (int j = 0; j < elements.length; j++) {
+					try {
+						DSLResourceProvider resourceProvider = (DSLResourceProvider)elements[j]
+								.createExecutableExtension("class"); //$NON-NLS-1$
 						resourceProvider.initResources();
 						break extensions;
-					} catch (CoreException e){
-	//					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					} catch (CoreException e) {
+						// logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 						e.printStackTrace();
-					}				
+					}
 				}
 			}
 
 		}
-		return INSTANCE;
+		return instance;
 	}
 
+	/**
+	 * Returns the resource by id.
+	 * 
+	 * @param id the resource Id
+	 * @return the resource by id
+	 */
 	public Resource getResource(String id) {
 		return (Resource)resourcesById.get(id);
 	}
@@ -75,14 +94,12 @@ public class DSLResourceProvider {
 		try {
 			BufferedReader in = new URLTextSource(getURL("contents.list")).openBufferedReader();
 			String line;
-			while((line = in.readLine()) != null) {
-				if(!(line.trim().length() == 0)) {
-					final URL url = getURL(line);	// will throw an Exception if cannot load
+			while ((line = in.readLine()) != null) {
+				if (!(line.trim().length() == 0)) {
+					final URL url = getURL(line); // will throw an Exception if cannot load
 					// Note: url could be recomputed, but we need to compute it
 					// before creating the Resource to make sure the resource exists
 
-					final String path = line;
-					final String pluginId = getPluginId();
 					resourcesById.put(line.intern(), new Resource() {
 						public TextSource asTextSource() {
 							return new URLTextSource(url);
@@ -94,7 +111,8 @@ public class DSLResourceProvider {
 
 						public URI asEMFURI() {
 							// The following line is not compatible with Eclipse 2.2.x
-							//return URI.createPlatformPluginURI("/" + pluginId + "/" + resourcesRoot + path, true);
+							// return URI.createPlatformPluginURI("/" + pluginId + "/" + resourcesRoot + path,
+							// true);
 							try {
 								return URI.createURI(FileLocator.resolve(url).toString());
 							} catch (IOException e) {
@@ -112,24 +130,28 @@ public class DSLResourceProvider {
 	private URL getURL(String path) {
 		Bundle bundle = getBundle();
 		URL url = FileLocator.find(bundle, new Path(resourcesRoot + path), Collections.EMPTY_MAP);
-		if(url != null) {
+		if (url != null) {
 			return url;
 		} else {
 			throw new RuntimeException("could not load " + path);
 		}
 	}
-	
+
 	/**
+	 * Returns the bundle.
 	 * Must be redefined in sub-classes.
-	 * @return
+	 * 
+	 * @return the bundle
 	 */
 	protected Bundle getBundle() {
 		return Activator.getDefault().getBundle();
 	}
 
 	/**
+	 * Returns the plugin Id.
 	 * Must be redefined in sub-classes.
-	 * @return
+	 * 
+	 * @return the plugin Id
 	 */
 	protected String getPluginId() {
 		return Activator.PLUGIN_ID;
