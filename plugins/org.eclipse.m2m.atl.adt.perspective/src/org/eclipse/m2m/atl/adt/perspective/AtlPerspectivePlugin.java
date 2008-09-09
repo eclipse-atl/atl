@@ -23,18 +23,22 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * The main plugin class to be used in the desktop.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AtlPerspectivePlugin extends AbstractUIPlugin {
-	//The shared instance.
+
+	/** The shared instance. */
 	private static AtlPerspectivePlugin plugin;
-	//Resource bundle.
-	private ResourceBundle resourceBundle;
-	
+
 	/**
 	 * Gets the image at the given plug-in relative path.
 	 */
 	private static Map path2image = new HashMap();
-	
+
+	/** Resource bundle. */
+	private ResourceBundle resourceBundle;
+
 	/**
 	 * The constructor.
 	 */
@@ -42,7 +46,7 @@ public class AtlPerspectivePlugin extends AbstractUIPlugin {
 		super();
 		plugin = this;
 		try {
-			resourceBundle   = ResourceBundle.getBundle("atlPerspective.AtlPerspectivePluginResources"); //$NON-NLS-1$
+			resourceBundle = ResourceBundle.getBundle("atlPerspective.AtlPerspectivePluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -50,14 +54,18 @@ public class AtlPerspectivePlugin extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance.
+	 * 
+	 * @return the shared instance
 	 */
 	public static AtlPerspectivePlugin getDefault() {
 		return plugin;
 	}
 
 	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
+	 * Returns the string from the plugin's resource bundle, or 'key' if not found.
+	 * 
+	 * @param key the default value
+	 * @return the string from the plugin's resource bundle, or 'key' if not found
 	 */
 	public static String getResourceString(String key) {
 		ResourceBundle bundle = AtlPerspectivePlugin.getDefault().getResourceBundle();
@@ -69,20 +77,23 @@ public class AtlPerspectivePlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the plugin's resource bundle,
+	 * Returns the plugin's resource bundle.
+	 * 
+	 * @return the plugin's resource bundle
 	 */
 	public ResourceBundle getResourceBundle() {
 		return resourceBundle;
 	}
-	
+
 	/**
 	 * Looks for an image in the icons folder.
 	 * 
 	 * @param path
+	 *            the image path
 	 * @return the searched Image
 	 */
 	public static Image getImage(String path) {
-		Image result = (Image) path2image.get(path);
+		Image result = (Image)path2image.get(path);
 		if (result == null && !path2image.containsKey(path)) {
 			ImageDescriptor descriptor = getImageDescriptor(path);
 			if (descriptor != null) {
@@ -97,18 +108,20 @@ public class AtlPerspectivePlugin extends AbstractUIPlugin {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Returns the image descriptor with the given relative path.
+	 * 
+	 * @param name
+	 *            the image name
+	 * @return the image descriptor
 	 */
-	static public ImageDescriptor getImageDescriptor(String name) {
+	public static ImageDescriptor getImageDescriptor(String name) {
 		String pluginDir = plugin.getBundle().getEntry("/").toString(); //$NON-NLS-1$
 		String iconPath = "icons/"; //$NON-NLS-1$
 		try {
-			return ImageDescriptor.createFromURL(
-					new URL(pluginDir + iconPath + name));
-		}
-		catch(MalformedURLException mfe) {
+			return ImageDescriptor.createFromURL(new URL(pluginDir + iconPath + name));
+		} catch (MalformedURLException mfe) {
 			return ImageDescriptor.getMissingImageDescriptor();
 		}
 	}

@@ -19,8 +19,8 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.m2m.atl.adt.perspective.AtlPerspectivePlugin;
 import org.eclipse.m2m.atl.adt.perspective.AtlPerspectiveMessages;
+import org.eclipse.m2m.atl.adt.perspective.AtlPerspectivePlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -39,31 +39,45 @@ import org.eclipse.ui.PlatformUI;
 /**
  * An UI class for old ATL projects conversion.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class CompatibilityDialog extends TitleAreaDialog {
 
-	private CheckboxTableViewer fProjectsTable = null;
-	private CheckboxTableViewer fConfTable = null;
+	private CheckboxTableViewer fProjectsTable;
+
+	private CheckboxTableViewer fConfTable;
 
 	/**
 	 * Create an instance of this Dialog.
 	 * 
-	 * @param shell the shell
+	 * @param shell
+	 *            the shell
+	 * @param window
+	 *            the workbench window
 	 */
 	public CompatibilityDialog(Shell shell, IWorkbenchWindow window) {
 		super(shell);
 		setShellStyle(SWT.MAX | SWT.RESIZE | getShellStyle());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+	 */
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		String title=AtlPerspectiveMessages.getString("CompatibilityDialog.0");  //$NON-NLS-1$
+		String title = AtlPerspectiveMessages.getString("CompatibilityDialog.0"); //$NON-NLS-1$
 		shell.setText(title);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.dialogs.TitleAreaDialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+	 */
 	protected Control createDialogArea(Composite parent) {
-		Composite area = (Composite) super.createDialogArea(parent);
+		Composite area = (Composite)super.createDialogArea(parent);
 		setTitle(AtlPerspectiveMessages.getString("CompatibilityDialog.1")); //$NON-NLS-1$
 		setMessage(AtlPerspectiveMessages.getString("CompatibilityDialog.2")); //$NON-NLS-1$
 
@@ -73,21 +87,22 @@ public class CompatibilityDialog extends TitleAreaDialog {
 
 		// Projects tab
 		Composite projectsComposite = new Composite(tabFolder, SWT.NONE);
-		projectsComposite.setLayout(new GridLayout(2,false));
+		projectsComposite.setLayout(new GridLayout(2, false));
 		projectsComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		TabItem projectItem = new TabItem(tabFolder, SWT.NONE);
 		projectItem.setText(AtlPerspectiveMessages.getString("CompatibilityDialog.3")); //$NON-NLS-1$
 		projectItem.setControl(projectsComposite);
-		
-		//creates the projects table
-		fProjectsTable = CheckboxTableViewer.newCheckList(projectsComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+
+		// creates the projects table
+		fProjectsTable = CheckboxTableViewer.newCheckList(projectsComposite, SWT.BORDER | SWT.H_SCROLL
+				| SWT.V_SCROLL);
 		fProjectsTable.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
 		ProjectContentProvider provider = new ProjectContentProvider();
 		fProjectsTable.setContentProvider(provider);
 		fProjectsTable.setLabelProvider(new ProjectLabelProvider());
-		fProjectsTable.setInput(provider);	
+		fProjectsTable.setInput(provider);
 
-		//create select/deselect commands
+		// create select/deselect commands
 		Composite buttonsGroup = new Composite(projectsComposite, SWT.MAX);
 		buttonsGroup.setLayout(new GridLayout());
 
@@ -106,24 +121,25 @@ public class CompatibilityDialog extends TitleAreaDialog {
 				fProjectsTable.setAllChecked(false);
 			}
 		});
-		
+
 		// Configuration tab
 		Composite confComposite = new Composite(tabFolder, SWT.NONE);
-		confComposite.setLayout(new GridLayout(2,false));
+		confComposite.setLayout(new GridLayout(2, false));
 		confComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		TabItem confItem = new TabItem(tabFolder, SWT.NONE);
 		confItem.setText(AtlPerspectiveMessages.getString("CompatibilityDialog.6")); //$NON-NLS-1$
 		confItem.setControl(confComposite);
-		
-		//creates the conf table
-		fConfTable = CheckboxTableViewer.newCheckList(confComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+
+		// creates the conf table
+		fConfTable = CheckboxTableViewer
+				.newCheckList(confComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		fConfTable.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
 		ConfContentProvider confProvider = new ConfContentProvider();
 		fConfTable.setContentProvider(confProvider);
 		fConfTable.setLabelProvider(new ConfLabelProvider());
-		fConfTable.setInput(confProvider);	
+		fConfTable.setInput(confProvider);
 
-		//create select/deselect commands
+		// create select/deselect commands
 		Composite confButtonsGroup = new Composite(confComposite, SWT.MAX);
 		confButtonsGroup.setLayout(new GridLayout());
 
@@ -142,20 +158,26 @@ public class CompatibilityDialog extends TitleAreaDialog {
 				fConfTable.setAllChecked(false);
 			}
 		});
-		
+
 		return tabFolder;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+	 */
 	protected void okPressed() {
 		try {
 			CompatibilityUtils.convertProjects(fProjectsTable.getCheckedElements());
 			if (CompatibilityUtils.convertConfigurations(fConfTable.getCheckedElements())) {
-				//need to restart eclipse
-				boolean restart = RestartDialog.openQuestion(this.getShell(),true);
-				if (restart)
+				// need to restart eclipse
+				boolean restart = RestartDialog.openQuestion(this.getShell(), true);
+				if (restart) {
 					PlatformUI.getWorkbench().restart();
+				}
 			}
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -163,8 +185,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * Provides the labels for the projects table
-	 *
+	 * Provides the labels for the projects table.
 	 */
 	class ProjectLabelProvider implements ITableLabelProvider {
 
@@ -173,39 +194,47 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		}
 
 		public String getColumnText(Object element, int columnIndex) {
-			return ((IProject) element).getName();
+			return ((IProject)element).getName();
 		}
 
-		public void addListener(ILabelProviderListener listener) {}
+		public void addListener(ILabelProviderListener listener) {
+		}
 
-		public void dispose() {}
+		public void dispose() {
+		}
 
-		public boolean isLabelProperty(Object element, String property) {return false;}
-		public void removeListener(ILabelProviderListener listener) {}		
+		public boolean isLabelProperty(Object element, String property) {
+			return false;
+		}
+
+		public void removeListener(ILabelProviderListener listener) {
+		}
 	}
 
 	/**
-	 * Content provider for the projects table
+	 * Content provider for the projects table.
 	 */
 	class ProjectContentProvider implements IStructuredContentProvider {
 
 		public Object[] getElements(Object inputElement) {
 			try {
-				return CompatibilityUtils.getProjects();					
+				return CompatibilityUtils.getProjects();
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
 			return null;
 		}
 
-		public void dispose() {}
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
+		public void dispose() {
+		}
+
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		}
 
 	}
-	
+
 	/**
-	 * Provides the labels for the configuration table
-	 *
+	 * Provides the labels for the configuration table.
 	 */
 	class ConfLabelProvider implements ITableLabelProvider {
 
@@ -214,33 +243,42 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		}
 
 		public String getColumnText(Object element, int columnIndex) {
-			return ((ILaunchConfiguration) element).getName();
+			return ((ILaunchConfiguration)element).getName();
 		}
 
-		public void addListener(ILabelProviderListener listener) {}
+		public void addListener(ILabelProviderListener listener) {
+		}
 
-		public void dispose() {}
+		public void dispose() {
+		}
 
-		public boolean isLabelProperty(Object element, String property) {return false;}
-		public void removeListener(ILabelProviderListener listener) {}		
+		public boolean isLabelProperty(Object element, String property) {
+			return false;
+		}
+
+		public void removeListener(ILabelProviderListener listener) {
+		}
 	}
 
 	/**
-	 * Content provider for the conf table
+	 * Content provider for the conf table.
 	 */
 	class ConfContentProvider implements IStructuredContentProvider {
 
 		public Object[] getElements(Object inputElement) {
 			try {
-				return CompatibilityUtils.getConfigurations();					
+				return CompatibilityUtils.getConfigurations();
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
 			return null;
 		}
 
-		public void dispose() {}
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
+		public void dispose() {
+		}
+
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		}
 
 	}
 }
