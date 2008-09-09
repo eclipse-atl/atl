@@ -10,13 +10,20 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
 
+/**
+ * Compiler not found exception.
+ * 
+ * @author <a href="mailto:mbohlen@mbohlen.de">Matthias Bohlen</a>
+ */
 public class CompilerNotFoundException extends RuntimeException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Creates a CompilerNotFoundException with the given message.
+	 * 
+	 * @param message the error message
+	 */
 	public CompilerNotFoundException(String message) {
 		super(message);
 	}

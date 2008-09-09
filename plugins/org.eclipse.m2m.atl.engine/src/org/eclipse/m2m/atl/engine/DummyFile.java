@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault (INRIA) - initial API and implementation
+ *    Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
 
@@ -36,208 +36,415 @@ import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
 /**
+ * Dummy file class.
  * 
- * @author Frédéric Jouault
- *
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class DummyFile implements IFile {
 	private String location;
-	
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param location the file location 
+	 */
 	public DummyFile(String location) {
 		this.location = location;
 	}
 
-	public void appendContents(InputStream source, boolean force,
-			boolean keepHistory, IProgressMonitor monitor) throws CoreException {
-	}
-
-	public void appendContents(InputStream source, int updateFlags,
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#appendContents(java.io.InputStream, boolean, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void appendContents(InputStream source, boolean force, boolean keepHistory,
 			IProgressMonitor monitor) throws CoreException {
 	}
 
-	public void create(InputStream source, boolean force,
-			IProgressMonitor monitor) throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#appendContents(java.io.InputStream, int, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void appendContents(InputStream source, int updateFlags, IProgressMonitor monitor)
+			throws CoreException {
 	}
 
-	public void create(InputStream source, int updateFlags,
-			IProgressMonitor monitor) throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#create(java.io.InputStream, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void create(InputStream source, boolean force, IProgressMonitor monitor) throws CoreException {
 	}
 
-	public void createLink(IPath localLocation, int updateFlags,
-			IProgressMonitor monitor) throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#create(java.io.InputStream, int, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void create(InputStream source, int updateFlags, IProgressMonitor monitor) throws CoreException {
 	}
 
-	public void delete(boolean force, boolean keepHistory,
-			IProgressMonitor monitor) throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#createLink(org.eclipse.core.runtime.IPath, int, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void createLink(IPath localLocation, int updateFlags, IProgressMonitor monitor)
+			throws CoreException {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#delete(boolean, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void delete(boolean force, boolean keepHistory, IProgressMonitor monitor) throws CoreException {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#getCharset()
+	 */
 	public String getCharset() throws CoreException {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#getCharset(boolean)
+	 */
 	public String getCharset(boolean checkImplicit) throws CoreException {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#getCharsetFor(java.io.Reader)
+	 */
 	public String getCharsetFor(Reader reader) throws CoreException {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#getContentDescription()
+	 */
 	public IContentDescription getContentDescription() throws CoreException {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#getContents()
+	 */
 	public InputStream getContents() throws CoreException {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#getContents(boolean)
+	 */
 	public InputStream getContents(boolean force) throws CoreException {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#getEncoding()
+	 */
 	public int getEncoding() throws CoreException {
 		return 0;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#getFullPath()
+	 */
 	public IPath getFullPath() {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#getHistory(org.eclipse.core.runtime.IProgressMonitor)
+	 */
 	public IFileState[] getHistory(IProgressMonitor monitor) throws CoreException {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#getName()
+	 */
 	public String getName() {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#isReadOnly()
+	 */
 	public boolean isReadOnly() {
 		return false;
 	}
 
-	public void move(IPath destination, boolean force, boolean keepHistory,
-			IProgressMonitor monitor) throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#move(org.eclipse.core.runtime.IPath, boolean, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void move(IPath destination, boolean force, boolean keepHistory, IProgressMonitor monitor)
+			throws CoreException {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#setCharset(java.lang.String)
+	 */
 	public void setCharset(String newCharset) throws CoreException {
 
 	}
 
-	public void setCharset(String newCharset, IProgressMonitor monitor)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#setCharset(java.lang.String, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void setCharset(String newCharset, IProgressMonitor monitor) throws CoreException {
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#setContents(java.io.InputStream, boolean, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void setContents(InputStream source, boolean force, boolean keepHistory, IProgressMonitor monitor)
 			throws CoreException {
 
 	}
 
-	public void setContents(InputStream source, boolean force,
-			boolean keepHistory, IProgressMonitor monitor) throws CoreException {
-
-	}
-
-	public void setContents(IFileState source, boolean force,
-			boolean keepHistory, IProgressMonitor monitor) throws CoreException {
-
-	}
-
-	public void setContents(InputStream source, int updateFlags,
-			IProgressMonitor monitor) throws CoreException {
-
-	}
-
-	public void setContents(IFileState source, int updateFlags,
-			IProgressMonitor monitor) throws CoreException {
-
-	}
-
-	public void accept(IResourceProxyVisitor visitor, int memberFlags)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#setContents(org.eclipse.core.resources.IFileState, boolean, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void setContents(IFileState source, boolean force, boolean keepHistory, IProgressMonitor monitor)
 			throws CoreException {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#setContents(java.io.InputStream, int, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void setContents(InputStream source, int updateFlags, IProgressMonitor monitor)
+			throws CoreException {
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#setContents(org.eclipse.core.resources.IFileState, int, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void setContents(IFileState source, int updateFlags, IProgressMonitor monitor)
+			throws CoreException {
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#accept(org.eclipse.core.resources.IResourceProxyVisitor, int)
+	 */
+	public void accept(IResourceProxyVisitor visitor, int memberFlags) throws CoreException {
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#accept(org.eclipse.core.resources.IResourceVisitor)
+	 */
 	public void accept(IResourceVisitor visitor) throws CoreException {
 
 	}
 
-	public void accept(IResourceVisitor visitor, int depth,
-			boolean includePhantoms) throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#accept(org.eclipse.core.resources.IResourceVisitor, int, boolean)
+	 */
+	public void accept(IResourceVisitor visitor, int depth, boolean includePhantoms) throws CoreException {
 
 	}
 
-	public void accept(IResourceVisitor visitor, int depth, int memberFlags)
-			throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#accept(org.eclipse.core.resources.IResourceVisitor, int, int)
+	 */
+	public void accept(IResourceVisitor visitor, int depth, int memberFlags) throws CoreException {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#clearHistory(org.eclipse.core.runtime.IProgressMonitor)
+	 */
 	public void clearHistory(IProgressMonitor monitor) throws CoreException {
 
 	}
 
-	public void copy(IPath destination, boolean force, IProgressMonitor monitor)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#copy(org.eclipse.core.runtime.IPath, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void copy(IPath destination, boolean force, IProgressMonitor monitor) throws CoreException {
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#copy(org.eclipse.core.runtime.IPath, int, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void copy(IPath destination, int updateFlags, IProgressMonitor monitor) throws CoreException {
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#copy(org.eclipse.core.resources.IProjectDescription, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void copy(IProjectDescription description, boolean force, IProgressMonitor monitor)
 			throws CoreException {
 
 	}
 
-	public void copy(IPath destination, int updateFlags,
-			IProgressMonitor monitor) throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#copy(org.eclipse.core.resources.IProjectDescription, int, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void copy(IProjectDescription description, int updateFlags, IProgressMonitor monitor)
+			throws CoreException {
 
 	}
 
-	public void copy(IProjectDescription description, boolean force,
-			IProgressMonitor monitor) throws CoreException {
-
-	}
-
-	public void copy(IProjectDescription description, int updateFlags,
-			IProgressMonitor monitor) throws CoreException {
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#createMarker(java.lang.String)
+	 */
 	public IMarker createMarker(String type) throws CoreException {
 		return null;
 	}
 
-	public void delete(boolean force, IProgressMonitor monitor)
-			throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#delete(boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void delete(boolean force, IProgressMonitor monitor) throws CoreException {
 
 	}
 
-	public void delete(int updateFlags, IProgressMonitor monitor)
-			throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#delete(int, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void delete(int updateFlags, IProgressMonitor monitor) throws CoreException {
 
 	}
 
-	public void deleteMarkers(String type, boolean includeSubtypes, int depth)
-			throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#deleteMarkers(java.lang.String, boolean, int)
+	 */
+	public void deleteMarkers(String type, boolean includeSubtypes, int depth) throws CoreException {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#exists()
+	 */
 	public boolean exists() {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#findMarker(long)
+	 */
 	public IMarker findMarker(long id) throws CoreException {
 		return null;
 	}
 
-	public IMarker[] findMarkers(String type, boolean includeSubtypes, int depth)
-			throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#findMarkers(java.lang.String, boolean, int)
+	 */
+	public IMarker[] findMarkers(String type, boolean includeSubtypes, int depth) throws CoreException {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#getFileExtension()
+	 */
 	public String getFileExtension() {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#getLocalTimeStamp()
+	 */
 	public long getLocalTimeStamp() {
 		return 0;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#getLocation()
+	 */
 	public IPath getLocation() {
 		return new IPath() {
 
 			public String toString() {
 				return location;
 			}
-			
+
 			public IPath addFileExtension(String extension) {
 				return null;
 			}
@@ -365,10 +572,15 @@ public class DummyFile implements IFile {
 			public IPath uptoSegment(int count) {
 				return null;
 			}
-			
+
 		};
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#getMarker(long)
+	 */
 	public IMarker getMarker(long id) {
 		return null;
 	}
@@ -381,6 +593,11 @@ public class DummyFile implements IFile {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#getPersistentProperty(org.eclipse.core.runtime.QualifiedName)
+	 */
 	public String getPersistentProperty(QualifiedName key) throws CoreException {
 		return null;
 	}
@@ -401,6 +618,11 @@ public class DummyFile implements IFile {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#getSessionProperty(org.eclipse.core.runtime.QualifiedName)
+	 */
 	public Object getSessionProperty(QualifiedName key) throws CoreException {
 		return null;
 	}
@@ -421,6 +643,11 @@ public class DummyFile implements IFile {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#isLocal(int)
+	 */
 	public boolean isLocal(int depth) {
 		return false;
 	}
@@ -433,6 +660,11 @@ public class DummyFile implements IFile {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#isSynchronized(int)
+	 */
 	public boolean isSynchronized(int depth) {
 		return false;
 	}
@@ -441,100 +673,183 @@ public class DummyFile implements IFile {
 		return false;
 	}
 
-	public void move(IPath destination, boolean force, IProgressMonitor monitor)
-			throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#move(org.eclipse.core.runtime.IPath, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void move(IPath destination, boolean force, IProgressMonitor monitor) throws CoreException {
 
 	}
 
-	public void move(IPath destination, int updateFlags,
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#move(org.eclipse.core.runtime.IPath, int, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void move(IPath destination, int updateFlags, IProgressMonitor monitor) throws CoreException {
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#move(org.eclipse.core.resources.IProjectDescription, boolean, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void move(IProjectDescription description, boolean force, boolean keepHistory,
 			IProgressMonitor monitor) throws CoreException {
 
 	}
 
-	public void move(IProjectDescription description, boolean force,
-			boolean keepHistory, IProgressMonitor monitor) throws CoreException {
-
-	}
-
-	public void move(IProjectDescription description, int updateFlags,
-			IProgressMonitor monitor) throws CoreException {
-
-	}
-
-	public void refreshLocal(int depth, IProgressMonitor monitor)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#move(org.eclipse.core.resources.IProjectDescription, int, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void move(IProjectDescription description, int updateFlags, IProgressMonitor monitor)
 			throws CoreException {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#refreshLocal(int, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void refreshLocal(int depth, IProgressMonitor monitor) throws CoreException {
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#revertModificationStamp(long)
+	 */
 	public void revertModificationStamp(long value) throws CoreException {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#setDerived(boolean)
+	 */
 	public void setDerived(boolean isDerived) throws CoreException {
 
 	}
 
-	public void setLocal(boolean flag, int depth, IProgressMonitor monitor)
-			throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#setLocal(boolean, int, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void setLocal(boolean flag, int depth, IProgressMonitor monitor) throws CoreException {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#setLocalTimeStamp(long)
+	 */
 	public long setLocalTimeStamp(long value) throws CoreException {
 		return 0;
 	}
 
-	public void setPersistentProperty(QualifiedName key, String value)
-			throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#setPersistentProperty(org.eclipse.core.runtime.QualifiedName, java.lang.String)
+	 */
+	public void setPersistentProperty(QualifiedName key, String value) throws CoreException {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#setReadOnly(boolean)
+	 */
 	public void setReadOnly(boolean readOnly) {
 
 	}
 
-	public void setResourceAttributes(ResourceAttributes attributes)
-			throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#setResourceAttributes(org.eclipse.core.resources.ResourceAttributes)
+	 */
+	public void setResourceAttributes(ResourceAttributes attributes) throws CoreException {
 
 	}
 
-	public void setSessionProperty(QualifiedName key, Object value)
-			throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#setSessionProperty(org.eclipse.core.runtime.QualifiedName, java.lang.Object)
+	 */
+	public void setSessionProperty(QualifiedName key, Object value) throws CoreException {
 
 	}
 
-	public void setTeamPrivateMember(boolean isTeamPrivate)
-			throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#setTeamPrivateMember(boolean)
+	 */
+	public void setTeamPrivateMember(boolean isTeamPrivate) throws CoreException {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#touch(org.eclipse.core.runtime.IProgressMonitor)
+	 */
 	public void touch(IProgressMonitor monitor) throws CoreException {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+	 */
 	public Object getAdapter(Class adapter) {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.runtime.jobs.ISchedulingRule#contains(org.eclipse.core.runtime.jobs.ISchedulingRule)
+	 */
 	public boolean contains(ISchedulingRule rule) {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.runtime.jobs.ISchedulingRule#isConflicting(org.eclipse.core.runtime.jobs.ISchedulingRule)
+	 */
 	public boolean isConflicting(ISchedulingRule rule) {
 		return false;
 	}
 
 	/**
-	 * @param args
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IFile#createLink(java.net.URI, int, org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public static void main(String[] args) {
-
+	public void createLink(URI linkLocation, int updateFlags, IProgressMonitor monitor) throws CoreException {
 	}
 
-	public void createLink(URI location, int updateFlags, IProgressMonitor monitor) throws CoreException {
-		// TODO Auto-generated method stub
-		
-	}
-
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#createProxy()
+	 */
 	public IResourceProxy createProxy() {
 		// TODO Auto-generated method stub
 		return null;
@@ -550,34 +865,68 @@ public class DummyFile implements IFile {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#isLinked(int)
+	 */
 	public boolean isLinked(int options) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public int findMaxProblemSeverity(String type, boolean includeSubtypes,
-			int depth) throws CoreException {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#findMaxProblemSeverity(java.lang.String, boolean, int)
+	 */
+	public int findMaxProblemSeverity(String type, boolean includeSubtypes, int depth) throws CoreException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	/** eclipse 3.4M4 compatibility **/
-	public boolean isHidden(){
+	/** eclipse 3.4M4 compatibility * */
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#isHidden()
+	 */
+	public boolean isHidden() {
 		return false;
 	}
-	
-	public void setHidden(boolean val){
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#setHidden(boolean)
+	 */
+	public void setHidden(boolean val) {
 	}
-	
-	public boolean isDerived(int val){
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#isDerived(int)
+	 */
+	public boolean isDerived(int val) {
 		return false;
 	}
-	
-	/** eclipse 3.4M6 compatibility **/
+
+	/** eclipse 3.4M6 compatibility * */
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#getPersistentProperties()
+	 */
 	public Map getPersistentProperties() throws CoreException {
 		return Collections.EMPTY_MAP;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#getSessionProperties()
+	 */
 	public Map getSessionProperties() throws CoreException {
 		return Collections.EMPTY_MAP;
 	}

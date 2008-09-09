@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Frédéric Jouault (INRIA) - initial API and implementation
+ *     Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
 
@@ -16,12 +16,15 @@ import java.util.ResourceBundle;
 import org.eclipse.core.runtime.Plugin;
 
 /**
- * The main plugin class to be used in the desktop.
+ * The main plugin class to be used in the desktop. *
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class EnginePlugin extends Plugin {
-	//The shared instance.
+	// The shared instance.
 	private static EnginePlugin plugin;
-	//Resource bundle.
+
+	// Resource bundle.
 	private ResourceBundle resourceBundle;
 
 	/**
@@ -31,7 +34,7 @@ public class EnginePlugin extends Plugin {
 		super();
 		plugin = this;
 		try {
-			resourceBundle   = ResourceBundle.getBundle("org.eclipse.m2m.atl.engine.EnginePluginResources"); //$NON-NLS-1$
+			resourceBundle = ResourceBundle.getBundle("org.eclipse.m2m.atl.engine.EnginePluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -39,14 +42,19 @@ public class EnginePlugin extends Plugin {
 
 	/**
 	 * Returns the shared instance.
+	 * 
+	 * @return the shared instance
 	 */
 	public static EnginePlugin getDefault() {
 		return plugin;
 	}
 
 	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
+	 * Returns the string from the plugin's resource bundle, or 'key' if not found.
+	 * 
+	 * @param key
+	 *            the default value
+	 * @return the string from the plugin's resource bundle, or 'key' if not found
 	 */
 	public static String getResourceString(String key) {
 		ResourceBundle bundle = EnginePlugin.getDefault().getResourceBundle();
@@ -58,7 +66,9 @@ public class EnginePlugin extends Plugin {
 	}
 
 	/**
-	 * Returns the plugin's resource bundle,
+	 * Returns the plugin's resource bundle.
+	 * 
+	 * @return the plugin's resource bundle
 	 */
 	public ResourceBundle getResourceBundle() {
 		return resourceBundle;

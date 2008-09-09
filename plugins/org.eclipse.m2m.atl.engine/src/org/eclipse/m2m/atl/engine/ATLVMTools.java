@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault (INRIA) - initial API and implementation
+ *    Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
 
@@ -20,32 +20,48 @@ import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclType;
 
 /**
+ * ATL VM utilities.
  * 
- * @author Frédéric Jouault
- *
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public abstract class ATLVMTools {
-	
-	public static Operation toVMOperation(Class cl, String name) throws Exception {
+
+	private ATLVMTools() {
+	}
+
+	/**
+	 * Converts an operation to a VM operation.
+	 * 
+	 * @param cl the class which contains the operation
+	 * @param name the operation name
+	 * @return the VM operation
+	 */
+	public static Operation toVMOperation(Class cl, String name) {
 		Operation ret = null;
-		
+
 		Method m = null;
-		
-		for(Iterator i = Arrays.asList(cl.getDeclaredMethods()).iterator() ; i.hasNext() && (m == null) ; ) {
+
+		for (Iterator i = Arrays.asList(cl.getDeclaredMethods()).iterator(); i.hasNext() && (m == null);) {
 			Method me = (Method)i.next();
-			if(me.getName().equals(name)) {
+			if (me.getName().equals(name)) {
 				m = me;
 			}
 		}
-		
-		if(m != null) {
+
+		if (m != null) {
 			ret = new ClassNativeOperation(m);
 		}
 
 		return ret;
 	}
-	
+
+	/**
+	 * Adds a VM operation to a context.
+	 * 
+	 * @param context the context
+	 * @param op operation
+	 */
 	public static void addVMOperation(ASMOclType context, Operation op) {
-		((Map)ASMOclType.getVMOperations().get(context)).put(op.getName(), op);		
+		((Map)ASMOclType.getVMOperations().get(context)).put(op.getName(), op);
 	}
 }

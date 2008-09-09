@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Frédéric Jouault (INRIA) - initial API and implementation
+ *    Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
 
@@ -43,29 +43,100 @@ import org.eclipse.gmt.tcs.injector.TCSInjector;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.EMFModelLoader;
 import org.eclipse.m2m.atl.engine.injectors.xml.XMLInjector;
-import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
- * @author Frederic Jouault
- *
+ * The model handler dedicated to EMF.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class AtlEMFModelHandler extends AtlModelHandler {
+
 	protected ASMEMFModel mofmm;
+
 	protected ASMEMFModel atlmm;
-	
+
+	protected boolean useIDs;
+
+	protected boolean removeIDs;
+
+	protected String encoding = "ISO-8859-1"; //$NON-NLS-1$
+
 	// we only use a ModelLoader to make sure ASMString.inject(...) can work
 	protected EMFModelLoader ml;
-		
-	public void saveModel(final ASMModel model, IProject project) {
-		saveModel(model, model.getName() + ".ecore", project);//$NON-NLS-1$
+
+	private Map bimm = new HashMap();
+
+	/**
+	 * Creates a new EMF model handler.
+	 */
+	protected AtlEMFModelHandler() {
+		URL atlurl = AtlEMFModelHandler.class.getResource("resources/ATL-0.2.ecore"); //$NON-NLS-1$
+
+		ml = new EMFModelLoader();
+		ml.addInjector("xml", XMLInjector.class); //$NON-NLS-1$
+		ml.addInjector("ebnf2", TCSInjector.class); //$NON-NLS-1$
+
+		if (Platform.isRunning()) {
+			// no IExtensionRegistry supported outside Eclipse
+			IExtensionRegistry registry = Platform.getExtensionRegistry();
+			if (registry != null) {
+				IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.injector"); //$NON-NLS-1$
+
+				IExtension[] extensions = point.getExtensions();
+				for (int i = 0; i < extensions.length; i++) {
+					IConfigurationElement[] elements = extensions[i].getConfigurationElements();
+					for (int j = 0; j < elements.length; j++) {
+						try {
+							ml
+									.addInjector(
+											elements[j].getAttribute("name"), elements[j].createExecutableExtension("class").getClass()); //$NON-NLS-1$//$NON-NLS-2$
+						} catch (CoreException e) {
+							logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+
+						}
+					}
+				}
+			}
+		}
+
+		mofmm = (ASMEMFModel)ml.getMOF();
+		// org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel.createMOF(ml);
+
+		try {
+			atlmm = ASMEMFModel.loadASMEMFModel("ATL", mofmm, atlurl, ml); //$NON-NLS-1$
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
+	 *      org.eclipse.core.resources.IProject)
+	 */
+	public void saveModel(final ASMModel model, IProject project) {
+		saveModel(model, model.getName() + ".ecore", project); //$NON-NLS-1$
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
+	 *      java.lang.String, org.eclipse.core.resources.IProject)
+	 */
 	public void saveModel(final ASMModel model, String fileName, IProject project) {
-		String uri = project.getFullPath().toString() + "/" + fileName;//$NON-NLS-1$
+		String uri = project.getFullPath().toString() + "/" + fileName; //$NON-NLS-1$
 		saveModel(model, uri);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
+	 *      java.lang.String)
+	 */
 	public void saveModel(final ASMModel model, String uri) {
 		if (uri.startsWith("ext:")) {
 			File f = new File(uri.substring(4));
@@ -74,150 +145,134 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 			} catch (FileNotFoundException e) {
 				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
-		}			
+		}
 		saveModel(model, URI.createURI(uri), null);
 	}
-	
-    public void saveModel(final ASMModel model, OutputStream out) {
-        saveModel(model, null, out);
-    }
-    
-	protected boolean useIDs = false;
-	protected boolean removeIDs = false;
-	protected String encoding = "ISO-8859-1";//$NON-NLS-1$
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
+	 *      java.io.OutputStream)
+	 */
+	public void saveModel(final ASMModel model, OutputStream out) {
+		saveModel(model, null, out);
+	}
 
 	/**
 	 * Saves the provided model in/out of the Eclipse workspace using the given relative/absolute path.
-	 * @param model The model to save.
-	 * @param path The workspace relative path (e.g. "/ProjectXXX/fileName.ecore") if the outputFileIsInWorkspace boolean is set to true, or the absolute path if not (e.g. "C:/FolderXXX/fileName.ecore").
-	 * @param outputFileIsInWorkspace Indicates if the model output file is stored into the Eclipse workspace.
+	 * 
+	 * @param model
+	 *            The model to save.
+	 * @param path
+	 *            The workspace relative path (e.g. "/ProjectXXX/fileName.ecore") if the
+	 *            outputFileIsInWorkspace boolean is set to true, or the absolute path if not (e.g.
+	 *            "C:/FolderXXX/fileName.ecore").
+	 * @param outputFileIsInWorkspace
+	 *            Indicates if the model output file is stored into the Eclipse workspace.
 	 * @author Hugo Bruneliere
 	 */
 	public void saveModel(final ASMModel model, String path, boolean outputFileIsInWorkspace) {
 		URI uri = null;
-		if( outputFileIsInWorkspace )
+		if (outputFileIsInWorkspace) {
 			uri = URI.createURI(path);
-		else
+		} else {
 			uri = URI.createFileURI(path);
+		}
 		Resource r = ((ASMEMFModel)model).getExtent();
-        r.setURI(uri);
+		r.setURI(uri);
 
-        Map options = new HashMap();
-        options.put(XMIResource.OPTION_ENCODING, encoding);
-        options.put(XMIResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
-        
-        if((useIDs || removeIDs) && (r instanceof XMIResource)) {
-            XMIResource xr = ((XMIResource)r);
-            int id = 1;
-            Set alreadySet = new HashSet();
-            for(Iterator i = r.getAllContents() ; i.hasNext() ; ) {
-                EObject eo = (EObject)i.next();
-                if(alreadySet.contains(eo)) continue;   // because sometimes a single element gets processed twice
-                xr.setID(eo, removeIDs ? null : ("a" + (id++)));//$NON-NLS-1$
-                alreadySet.add(eo);
-            }
-        }
-        
-        try {
-            r.save(options);
-            if( outputFileIsInWorkspace ) {
-            	IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uri.path()));
-            	file.setDerived(true);
-            }
-        } catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-        } catch (CoreException e) {
-        	logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		Map options = new HashMap();
+		options.put(XMIResource.OPTION_ENCODING, encoding);
+		options.put(XMIResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
+
+		if ((useIDs || removeIDs) && (r instanceof XMIResource)) {
+			XMIResource xr = (XMIResource)r;
+			int id = 1;
+			Set alreadySet = new HashSet();
+			for (Iterator i = r.getAllContents(); i.hasNext();) {
+				EObject eo = (EObject)i.next();
+				if (alreadySet.contains(eo)) {
+					continue; // because sometimes a single element gets processed twice
+				}
+				xr.setID(eo, removeIDs ? null : ("a" + (id++))); //$NON-NLS-1$
+				alreadySet.add(eo);
+			}
 		}
-	}
-	
-    protected void saveModel(final ASMModel model, URI uri, OutputStream out) {
-        Resource r = ((ASMEMFModel)model).getExtent();
-        if (uri != null) {
-            r.setURI(uri);
-        }
-        Map options = new HashMap();
-        options.put(XMIResource.OPTION_ENCODING, encoding);
-        options.put(XMIResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
-        
-        if((useIDs || removeIDs) && (r instanceof XMIResource)) {
-            XMIResource xr = ((XMIResource)r);
-            int id = 1;
-            Set alreadySet = new HashSet();
-            for(Iterator i = r.getAllContents() ; i.hasNext() ; ) {
-                EObject eo = (EObject)i.next();
-                if(alreadySet.contains(eo)) continue;   // because sometimes a single element gets processed twice
-                xr.setID(eo, removeIDs ? null : ("a" + (id++)));//$NON-NLS-1$
-                alreadySet.add(eo);
-            }
-        }
-        
-        try {
-            if (out != null) {
-                r.save(out, options);
-            } else {
-                r.save(options);
-            }
-            
-            try {
-            	if (uri != null) {
-        			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uri.path()));
-        			if (file.exists()) {
-            			file.setDerived(true);
-        			}
-        		}
-            } catch (IllegalStateException e) {
-            	// workspace is closed
-    			logger.log(Level.FINE, e.getLocalizedMessage(), e);
-            }
-        } catch (IOException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
-//            e1.printStackTrace();
-        } catch (CoreException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//            e1.printStackTrace();
-		}
-    }
-    
-	protected AtlEMFModelHandler() {
-		URL atlurl = AtlEMFModelHandler.class.getResource("resources/ATL-0.2.ecore");//$NON-NLS-1$
-		
-		ml = new EMFModelLoader();
-		ml.addInjector("xml", XMLInjector.class);//$NON-NLS-1$
-		ml.addInjector("ebnf2", TCSInjector.class);//$NON-NLS-1$
-		
-		if (Platform.isRunning()) {
-			//no IExtensionRegistry supported outside Eclipse
-			IExtensionRegistry registry = Platform.getExtensionRegistry();
-	        if (registry != null) {
-				IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.injector");//$NON-NLS-1$
-		
-				IExtension[] extensions = point.getExtensions();		
-				for(int i = 0 ; i < extensions.length ; i++){		
-					IConfigurationElement[] elements = extensions[i].getConfigurationElements();
-					for(int j = 0 ; j < elements.length ; j++){
-						try {
-							ml.addInjector(elements[j].getAttribute("name"), elements[j].createExecutableExtension("class").getClass());//$NON-NLS-1$//$NON-NLS-2$
-						} catch (CoreException e){
-							logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//							e.printStackTrace();
-						}				
-					}
-				 }
-	        }
-		}
-		
-		mofmm = (ASMEMFModel)ml.getMOF();
-		//org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel.createMOF(ml);
-			
+
 		try {
-			atlmm = ASMEMFModel.loadASMEMFModel("ATL", mofmm, atlurl, ml);//$NON-NLS-1$
-		} catch (Exception e) {
+			r.save(options);
+			if (outputFileIsInWorkspace) {
+				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uri.path()));
+				file.setDerived(true);
+			}
+		} catch (IOException e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
+		} catch (CoreException e) {
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
-	
+
+	/**
+	 * Saves a model.
+	 * 
+	 * @param model
+	 *            the model to save
+	 * @param uri
+	 *            the model uri
+	 * @param out
+	 *            the output stream
+	 */
+	protected void saveModel(final ASMModel model, URI uri, OutputStream out) {
+		Resource r = ((ASMEMFModel)model).getExtent();
+		if (uri != null) {
+			r.setURI(uri);
+		}
+		Map options = new HashMap();
+		options.put(XMIResource.OPTION_ENCODING, encoding);
+		options.put(XMIResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
+
+		if ((useIDs || removeIDs) && (r instanceof XMIResource)) {
+			XMIResource xr = (XMIResource)r;
+			int id = 1;
+			Set alreadySet = new HashSet();
+			for (Iterator i = r.getAllContents(); i.hasNext();) {
+				EObject eo = (EObject)i.next();
+				if (alreadySet.contains(eo)) {
+					continue; // because sometimes a single element gets processed twice
+				}
+				xr.setID(eo, removeIDs ? null : ("a" + (id++))); //$NON-NLS-1$
+				alreadySet.add(eo);
+			}
+		}
+
+		try {
+			if (out != null) {
+				r.save(out, options);
+			} else {
+				r.save(options);
+			}
+
+			try {
+				if (uri != null) {
+					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uri.path()));
+					if (file.exists()) {
+						file.setDerived(true);
+					}
+				}
+			} catch (IllegalStateException e) {
+				// workspace is closed
+				logger.log(Level.FINE, e.getLocalizedMessage(), e);
+			}
+		} catch (IOException e1) {
+			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			// e1.printStackTrace();
+		} catch (CoreException e) {
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			// e1.printStackTrace();
+		}
+	}
+
 	public ASMModel getMof() {
 		return mofmm;
 	}
@@ -225,96 +280,128 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	public ASMModel getAtl() {
 		return atlmm;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#loadModel(java.lang.String,
+	 *      org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.InputStream)
+	 */
 	public ASMModel loadModel(String name, ASMModel metamodel, InputStream in) {
 		ASMModel ret = null;
-		
+
 		try {
 			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in, ml);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
+
 		}
 
 		return ret;
 	}
 
+	/**
+	 * Loads a model.
+	 * 
+	 * @param name the model name
+	 * @param metamodel the metamodel
+	 * @param uri the uri
+	 * @return the loaded {@link ASMModel}
+	 */
 	public ASMModel loadModel(String name, ASMModel metamodel, URI uri) {
 		ASMModel ret = null;
-		
+
 		try {
 			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri, ml);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
+
 		}
 
 		return ret;
 	}
 
+	/**
+	 * Loads a model.
+	 * 
+	 * @param name the model name
+	 * @param metamodel the metamodel
+	 * @param uri the uri (as String)
+	 * @return the loaded {@link ASMModel}
+	 */
 	public ASMModel loadModel(String name, ASMModel metamodel, String uri) {
 		ASMModel ret = null;
-		
+
 		try {
 			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri, ml);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
+
 		}
 
 		return ret;
 	}
 
-    /**
-     * @see ASMEMFModel#newASMEMFModel(String, ASMEMFModel, ModelLoader)
-     * @deprecated
-     */
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @deprecated
+	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#newModel(java.lang.String,
+	 *      org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 */
 	public ASMModel newModel(String name, ASMModel metamodel) {
 		ASMModel ret = null;
-		
+
 		try {
 			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel, ml);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
+
 		}
-		
+
 		return ret;
 	}
-	
-    /**
-     * @see ASMEMFModel#newASMEMFModel(String, String, ASMEMFModel, ModelLoader)
-     * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
-     */
-    public ASMModel newModel(String name, String uri, ASMModel metamodel) {
-        ASMModel ret = null;
-        
-        if(uri == null)
-        	uri = name;
-        
-        try {
-            ret = ASMEMFModel.newASMEMFModel(name, uri, (ASMEMFModel)metamodel, ml);
-        } catch (Exception e) {
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#newModel(java.lang.String, java.lang.String,
+	 *      org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 */
+	public ASMModel newModel(String name, String uri, ASMModel metamodel) {
+		ASMModel ret = null;
+		String uriToLoad = uri;
+		if (uriToLoad == null) {
+			uriToLoad = name;
+		}
+
+		try {
+			ret = ASMEMFModel.newASMEMFModel(name, uriToLoad, (ASMEMFModel)metamodel, ml);
+		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//            e.printStackTrace();
-        }
-        
-        return ret;
-    }
-    
-	private Map bimm = new HashMap();
-	
+
+		}
+
+		return ret;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#getBuiltInMetaModel(java.lang.String)
+	 */
 	public ASMModel getBuiltInMetaModel(String name) {
 		ASMModel ret = (ASMModel)bimm.get(name);
 
-		if(ret == null) {
-			URL mmurl = AtlParser.class.getResource("resources/" + name + ".ecore");//$NON-NLS-1$//$NON-NLS-2$
-			
+		if (ret == null) {
+			URL mmurl = AtlParser.class.getResource("resources/" + name + ".ecore"); //$NON-NLS-1$//$NON-NLS-2$
+
 			try {
 				ret = loadModel(name, mofmm, mmurl.openStream());
 			} catch (IOException e) {
 				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//				e.printStackTrace();
+
 			}
 			bimm.put(name, ret);
 		}
@@ -322,10 +409,20 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		return ret;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#isHandling(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 */
 	public boolean isHandling(ASMModel model) {
 		return model instanceof ASMEMFModel;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#disposeOfModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 */
 	public void disposeOfModel(ASMModel model) {
 		((ASMEMFModel)model).dispose();
 	}
