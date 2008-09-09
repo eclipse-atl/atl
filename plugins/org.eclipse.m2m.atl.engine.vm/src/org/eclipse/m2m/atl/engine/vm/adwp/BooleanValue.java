@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.adwp;
 
@@ -14,17 +14,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class BooleanValue extends Value {
 
 	private static Map values = new HashMap();
 
+	private boolean value;
+
 	public static BooleanValue valueOf(boolean value_) {
 		Boolean value = new Boolean(value_);
 		BooleanValue ret = (BooleanValue)values.get(value);
 
-		if(ret == null) {
+		if (ret == null) {
 			ret = new BooleanValue(value_);
 			values.put(value, ret);
 		}
@@ -40,10 +42,12 @@ public class BooleanValue extends Value {
 		return value;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		return value ? "true" : "false";
 	}
-
-	private boolean value;
 }
-

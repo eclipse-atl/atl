@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
@@ -14,13 +14,15 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
 /**
  * An OclType for parameterized types, principally collections.
- * @author Frédéric Jouault
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMOclParametrizedType extends ASMOclType {
 
 	public static ASMOclType myType = new ASMOclSimpleType("OclParametrizedType", ASMOclType.myType);
 
-	public static ASMOclParametrizedType getASMOclParametrizedType(String name, ASMOclType elementType, ASMOclType supertype) {
+	public static ASMOclParametrizedType getASMOclParametrizedType(String name, ASMOclType elementType,
+			ASMOclType supertype) {
 		return new ASMOclParametrizedType(name, elementType, supertype);
 	}
 
@@ -50,8 +52,8 @@ public class ASMOclParametrizedType extends ASMOclType {
 	private boolean equals(Object o1, Object o2) {
 		boolean ret = false;
 
-		if(o1 == null) {
-			ret = (o2 == null);
+		if (o1 == null) {
+			ret = o2 == null;
 		} else {
 			ret = o1.equals(o2);
 		}
@@ -62,8 +64,8 @@ public class ASMOclParametrizedType extends ASMOclType {
 	public boolean equals(Object other) {
 		boolean ret = false;
 
-		if(other instanceof ASMOclParametrizedType) {
-			if(equals(name, ((ASMOclParametrizedType)other).name)) {
+		if (other instanceof ASMOclParametrizedType) {
+			if (equals(name, ((ASMOclParametrizedType)other).name)) {
 				ret = equals(elementType, ((ASMOclParametrizedType)other).elementType);
 			}
 		}
@@ -74,9 +76,9 @@ public class ASMOclParametrizedType extends ASMOclType {
 	public ASMBoolean conformsTo(ASMOclType other) {
 		boolean ret = false;
 
-		if(other instanceof ASMOclParametrizedType) {
+		if (other instanceof ASMOclParametrizedType) {
 			ASMOclParametrizedType aopt = (ASMOclParametrizedType)other;
-			if(aopt.name.equals("Collection")) {
+			if (aopt.name.equals("Collection")) {
 				ret = elementType.conformsTo(aopt.elementType).getSymbol();
 			} else {
 				ret = aopt.name.equals(name) && elementType.conformsTo(aopt.elementType).getSymbol();
@@ -100,6 +102,6 @@ public class ASMOclParametrizedType extends ASMOclType {
 	}
 
 	private String name = "<unamedyet>";
+
 	private ASMOclType elementType;
 }
-

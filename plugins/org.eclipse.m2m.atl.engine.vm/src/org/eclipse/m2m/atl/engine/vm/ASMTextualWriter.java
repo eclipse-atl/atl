@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
@@ -17,7 +17,7 @@ import java.util.Iterator;
  * Textual ATL VM bytecode serializer.
  * There is no corresponding reader, but the resulting text
  * makes it is easier to debug ATL compiler in some cases.
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMTextualWriter extends ASMWriter {
 

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 
 /**
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMXMLWriter extends ASMWriter {
 

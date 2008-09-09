@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
@@ -18,7 +18,7 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
 /**
  * A non-OCL type. Proves useful in some transformations to establish mappings.
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMMap extends ASMOclAny {
 

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
@@ -18,7 +18,7 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
  * There is no separate class for special model elements such as metamodel
  * elements. Therefore, some operations of ASMModelElement are only valid
  * for metamodel ASMModelElements.
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public abstract class ASMModelElement extends ASMOclType {
 
@@ -83,7 +83,7 @@ public abstract class ASMModelElement extends ASMOclType {
 	 * @param frame
 	 * @param self The meta-class to instantiate
 	 * @return A new instance of self, if a suitable target model is found, null otherwise
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	protected static ASMModelElement createNewInstance(StackFrame frame, ASMModelElement self) {
 		ASMModel selfModel = self.getModel();

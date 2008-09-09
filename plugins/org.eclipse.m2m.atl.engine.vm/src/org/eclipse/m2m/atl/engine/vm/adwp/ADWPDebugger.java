@@ -6,14 +6,13 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.adwp;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,7 +24,7 @@ import java.util.logging.Logger;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ADWPDebugger extends ADWP {
 
@@ -44,17 +43,17 @@ public class ADWPDebugger extends ADWP {
 			out.writeByte(cmd);
 			out.writeByte(msgId++);
 			out.writeInt(args.size());
-			for(Iterator i = args.iterator() ; i.hasNext() ; ) {
+			for (Iterator i = args.iterator(); i.hasNext();) {
 				writeValue((Value)i.next());
 			}
 			out.flush();
-			if((cmd == CMD_SET_BP) || (cmd == CMD_UNSET_BP)) {
+			if ((cmd == CMD_SET_BP) || (cmd == CMD_UNSET_BP)) {
 				logger.info("sent : " + cmd + " - " + args);
-//				System.out.println("sent : " + cmd + " - " + args);
+				// System.out.println("sent : " + cmd + " - " + args);
 			}
-		} catch(IOException ioe) {
+		} catch (IOException ioe) {
 			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
-//			ioe.printStackTrace(System.out);
+			// ioe.printStackTrace(System.out);
 		}
 	}
 
@@ -70,14 +69,14 @@ public class ADWPDebugger extends ADWP {
 		ADWPCommand ret = null;
 
 		synchronized(list) {
-			if(list.size() == 0) {
+			if (list.size() == 0) {
 				try {
 					do {
 						list.wait();
-					} while(list.size() == 0);
-				} catch(InterruptedException ie) {
+					} while (list.size() == 0);
+				} catch (InterruptedException ie) {
 					logger.log(Level.SEVERE, ie.getLocalizedMessage(), ie);
-//					ie.printStackTrace(System.out);
+					// ie.printStackTrace(System.out);
 				}
 			}
 		}
@@ -108,13 +107,13 @@ public class ADWPDebugger extends ADWP {
 	public void run() {
 		setName("ADWPDebugger receiver");
 		try {
-			while(true) {
+			while (true) {
 				List msgs = null;
 				ADWPCommand msg = null;
-				int type = (in.readByte() & 0xFF);
-				int ack = (in.readByte() & 0xFF);
+				int type = in.readByte() & 0xFF;
+				int ack = in.readByte() & 0xFF;
 				int length = in.readInt();
-				switch(type) {
+				switch (type) {
 					case MSG_TERMINATED:
 						msg = new ADWPCommand(type, ack, Collections.EMPTY_LIST);
 						msgs = nonAnswers;
@@ -125,33 +124,28 @@ public class ADWPDebugger extends ADWP {
 						break;
 
 					case MSG_STOPPED:
-						msg = new ADWPCommand(type, ack, Arrays.asList(new Object[] {
-							readValue(),
-							readValue(),
-							readValue(),
-							readValue(),
-							readValue()
-						}));
+						msg = new ADWPCommand(type, ack, Arrays.asList(new Object[] {readValue(),
+								readValue(), readValue(), readValue(), readValue()}));
 						msgs = nonAnswers;
 						break;
 
 					case MSG_DISAS_CODE:
 						List args = new ArrayList();
-						for(int i = 0 ; i < length ; i++) {
+						for (int i = 0; i < length; i++) {
 							args.add(readValue());
 						}
 						msg = new ADWPCommand(type, ack, args);
 						msgs = answers;
 						break;
 				}
-				//System.out.println("> " + msg);
+				// System.out.println("> " + msg);
 				synchronized(msgs) {
 					msgs.add(msg);
 					msgs.notifyAll();
 				}
 			}
-		} catch(IOException ioe) {
-			//ioe.printStackTrace(System.out);
+		} catch (IOException ioe) {
+			// ioe.printStackTrace(System.out);
 		}
 	}
 
@@ -160,7 +154,8 @@ public class ADWPDebugger extends ADWP {
 	}
 
 	private int msgId = 1;
+
 	private List nonAnswers = new ArrayList();
+
 	private List answers = new ArrayList();
 }
-

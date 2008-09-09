@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.injectors.xml;
 
@@ -34,12 +34,12 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class XMLInjector extends DefaultHandler implements Injector {
 
 	/** Set to true to enable debugging information printouts. */
-	private final static boolean debug = false;
+	private static final boolean debug = false;
 	
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 

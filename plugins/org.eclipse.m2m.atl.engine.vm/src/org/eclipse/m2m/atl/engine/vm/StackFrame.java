@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
@@ -20,7 +20,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclType;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMSequence;
 
 /**
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public abstract class StackFrame extends ASMOclAny {
 
@@ -34,13 +34,13 @@ public abstract class StackFrame extends ASMOclAny {
 		this.debugger = execEnv.getDebugger();
 	}
 
-	public StackFrame enterFrame(Operation op, List args) {
+	public StackFrame enterFrame(Operation op, List enterArgs) {
 		StackFrame ret = null;
 
 		if(op instanceof ASMOperation) {
-			ret = new ASMStackFrame(execEnv, (ASMOperation)op, args);
+			ret = new ASMStackFrame(execEnv, (ASMOperation)op, enterArgs);
 		} else {
-			ret = new NativeStackFrame(execEnv, (NativeOperation)op, args);
+			ret = new NativeStackFrame(execEnv, (NativeOperation)op, enterArgs);
 		}
 		ret.setParent(this);
 		debugger.enter(ret);

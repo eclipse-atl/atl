@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
@@ -31,11 +31,12 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 
 /**
  * The line number table contains a list of IDs (startLine:startColumn-endLine:endColumn) of source elements
- * associated to a range of asm instructions. This list is depth first (first the condition is found, then the if).
- * However, it is entered root first... so it is a LIFO.
- * To find the source element (and its location, IDs being positions) associated to an asm instruction, we just
- * have to find the first range matching the instruction.
- * @author Frédéric Jouault
+ * associated to a range of asm instructions. This list is depth first (first the condition is found, then the
+ * if). However, it is entered root first... so it is a LIFO. To find the source element (and its location,
+ * IDs being positions) associated to an asm instruction, we just have to find the first range matching the
+ * instruction.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMOperation extends Operation {
 
@@ -75,13 +76,13 @@ public class ASMOperation extends Operation {
 		instructions.add(instruction);
 		Label label = (Label)labels.get(labelName);
 
-		if(label == null) {
+		if (label == null) {
 			label = new Label(labelName);
 			labels.put(labelName, label);
 		}
 
 		int index = label.getIndex();
-		if(index != -1) {
+		if (index != -1) {
 			instruction.setOperand("" + index);
 		} else {
 			label.addInstruction(instruction);
@@ -95,7 +96,7 @@ public class ASMOperation extends Operation {
 	public void addLabel(String labelName) {
 		Label label = (Label)labels.get(labelName);
 
-		if(label == null) {
+		if (label == null) {
 			label = new Label(labelName);
 			labels.put(labelName, label);
 		}
@@ -105,9 +106,10 @@ public class ASMOperation extends Operation {
 
 	public void addVariableInstruction(ASMInstructionWithOperand instruction, String varId) {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.get(varId);
-		if(lve == null) {
+		if (lve == null) {
 			logger.severe("ERROR: no slot reserved for variable: " + varId + " used at " + lastLNE + ".");
-//			System.out.println("ERROR: no slot reserved for variable: " + varId + " used at " + lastLNE + ".");
+			// System.out.println("ERROR: no slot reserved for variable: " + varId + " used at " + lastLNE +
+			// ".");
 		}
 		instruction.setOperand("" + lve.slot);
 		instructions.add(instruction);
@@ -130,7 +132,7 @@ public class ASMOperation extends Operation {
 		public void setIndex(int index) {
 			this.index = index;
 			String id = "" + index;
-			for(Iterator i = instr.iterator() ; i.hasNext() ; ) {
+			for (Iterator i = instr.iterator(); i.hasNext();) {
 				((ASMInstructionWithOperand)i.next()).setOperand(id);
 			}
 		}
@@ -140,7 +142,9 @@ public class ASMOperation extends Operation {
 		}
 
 		private String name;
+
 		private int index = -1;
+
 		private ArrayList instr = new ArrayList();
 	}
 
@@ -154,9 +158,9 @@ public class ASMOperation extends Operation {
 		ret.append(".");
 		ret.append(name);
 		ret.append("(");
-		for(Iterator i = parameters.iterator() ; i.hasNext() ; ) {
+		for (Iterator i = parameters.iterator(); i.hasNext();) {
 			ret.append(i.next());
-			if(i.hasNext())
+			if (i.hasNext())
 				ret.append(", ");
 		}
 		ret.append(") : ??");
@@ -169,9 +173,9 @@ public class ASMOperation extends Operation {
 
 		try {
 			realExec((ASMStackFrame)frame);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			frame.printStackTrace(e);
-		} catch(StackOverflowError soe) {
+		} catch (StackOverflowError soe) {
 			frame.printStackTrace("stack overflow");
 		}
 		ret = frame.leaveFrame();
@@ -180,33 +184,33 @@ public class ASMOperation extends Operation {
 	}
 
 	private void realExec(ASMStackFrame frame) throws Exception {
-		while(frame.hasNextInstruction()) {
+		while (frame.hasNextInstruction()) {
 			ASMInstruction instr = frame.nextInstruction();
 			String mn = instr.getMnemonic();
 			ASMString op = null;
 			String ops = null;
-			if(instr instanceof ASMInstructionWithOperand) {
+			if (instr instanceof ASMInstructionWithOperand) {
 				ops = ((ASMInstructionWithOperand)instr).getOperand();
 				op = new ASMString(ops);
 			}
 
 			frame.step();
 
-			if(mn == "push") {
+			if (mn == "push") {
 				frame.push(op);
-			} else if(mn == "pop") {
+			} else if (mn == "pop") {
 				frame.pop();
-			} else if(mn == "swap") {
+			} else if (mn == "swap") {
 				ASMOclAny o1 = frame.pop();
 				ASMOclAny o2 = frame.pop();
 				frame.push(o1);
 				frame.push(o2);
-			} else if(mn == "new") {
+			} else if (mn == "new") {
 				String mname = ((ASMString)frame.pop()).getSymbol();
 				String me = ((ASMString)frame.pop()).getSymbol();
-				if(mname.equals("#native")) {
+				if (mname.equals("#native")) {
 					Class c = ASMNativeObject.getNativeImpl(me);
-					if(c != null) {
+					if (c != null) {
 						frame.push((ASMOclAny)c.newInstance());
 					} else {
 						frame.printStackTrace("ERROR: element " + me + " not found in native");
@@ -221,135 +225,137 @@ public class ASMOperation extends Operation {
 						}
 					}
 
-
-//					for(Iterator j = frame.getModel(mname).getSubModels().values().iterator() ; j.hasNext() ; ) {
-//					ASMModel model = (ASMModel)j.next();
-//					if(frame.getModels().containsValue(model) && model.isTarget()) {
-//					frame.push(model.newModelElement(frame, me));
-//					break;
-//					}
-//					}
+					// for(Iterator j = frame.getModel(mname).getSubModels().values().iterator() ; j.hasNext()
+					// ; ) {
+					// ASMModel model = (ASMModel)j.next();
+					// if(frame.getModels().containsValue(model) && model.isTarget()) {
+					// frame.push(model.newModelElement(frame, me));
+					// break;
+					// }
+					// }
 				}
-			} else if(mn == "call") {
+			} else if (mn == "call") {
 				int nb = getNbArgs(ops);
 				String opName = getOpName(ops);
 				ArrayList arguments = new ArrayList();
-				for(int j = 0 ; j < nb ; j++)
+				for (int j = 0; j < nb; j++)
 					arguments.add(0, frame.pop());
-				ASMOclAny o = frame.pop();	// self
-				ASMOclAny ret = o.invoke(frame, opName, arguments); 
+				ASMOclAny o = frame.pop(); // self
+				ASMOclAny ret = o.invoke(frame, opName, arguments);
 
-				if(ret != null) {
+				if (ret != null) {
 					frame.push(ret);
 				}
-			} else if(mn == "supercall") {
+			} else if (mn.equals("supercall")) {
 				int nb = getNbArgs(ops);
 				String opName = getOpName(ops);
 				ArrayList arguments = new ArrayList();
-				for(int j = 0 ; j < nb ; j++)
+				for (int j = 0; j < nb; j++) {
 					arguments.add(0, frame.pop());
-				ASMOclAny o = frame.pop();	// self
-				ASMOclAny ret = o.invokeSuper(frame, opName, arguments); 
+				}
+				ASMOclAny o = frame.pop(); // self
+				ASMOclAny ret = o.invokeSuper(frame, opName, arguments);
 
-				if(ret != null) {
+				if (ret != null) {
 					frame.push(ret);
 				}
-			} else if(mn == "store") {
+			} else if (mn.equals("store")) {
 				frame.popVariable(ops);
-			} else if(mn == "load") {
+			} else if (mn.equals("load")) {
 				frame.pushVariable(ops);
-			} else if(mn == "dup") {
+			} else if (mn.equals("dup")) {
 				frame.push(frame.peek());
-			} else if(mn == "dup_x1") {
+			} else if (mn.equals("dup_x1")) {
 				ASMOclAny val1 = frame.pop();
 				ASMOclAny val2 = frame.pop();
 				frame.push(val1);
 				frame.push(val2);
 				frame.push(val1);
-			} else if(mn == "delete") {
-				//TODO implement a delete method for ASMModelElements
-				//(frame.pop()).delete(frame, ops);
-			} else if(mn == "findme") {
+			} else if (mn.equals("delete")) {
+				// TODO implement a delete method for ASMModelElements
+				// (frame.pop()).delete(frame, ops);
+			} else if (mn.equals("findme")) {
 				String mname = ((ASMString)frame.pop()).getSymbol();
 				String name = ((ASMString)frame.pop()).getSymbol();
-				if(mname.equals("#native")) {
-					if(name.equals("String")) {
+				if (mname.equals("#native")) {
+					if (name.equals("String")) {
 						frame.push(ASMString.myType);
-					} else if(name.equals("OclAny")) {
+					} else if (name.equals("OclAny")) {
 						frame.push(ASMOclAny.myType);
-					} else if(name.equals("Integer")) {
+					} else if (name.equals("Integer")) {
 						frame.push(ASMInteger.myType);
-					} else if(name.equals("Boolean")) {
+					} else if (name.equals("Boolean")) {
 						frame.push(ASMBoolean.myType);
-					} else if(name.equals("Real")) {
+					} else if (name.equals("Real")) {
 						frame.push(ASMReal.myType);
 					} else {
 						frame.printStackTrace("ERROR: element " + name + " not found in native");
 					}
 				} else {
 					ASMModel model = frame.getModel(mname);
-					if(model == null) {
+					if (model == null) {
 						frame.printStackTrace("cannot find model " + mname);
 					}
 					ASMModelElement ame = model.findModelElement(name);
-					if(ame == null) {
+					if (ame == null) {
 						frame.printStackTrace("cannot find metamodel element " + name + " in model " + mname);
 					}
 					frame.push(ame);
 				}
-			} else if(mn == "get") {
+			} else if (mn == "get") {
 				frame.push((frame.pop()).get(frame, ops));
-			} else if(mn == "set") {
+			} else if (mn == "set") {
 				ASMOclAny value = frame.pop();
 				ASMOclAny o = frame.pop();
 				o.set(frame, ops, value);
-			} else if(mn == "pushi") {
+			} else if (mn == "pushi") {
 				ASMInteger ai = new ASMInteger(Integer.parseInt(ops));
 				frame.push(ai);
-			} else if(mn == "pushd") {
+			} else if (mn == "pushd") {
 				ASMReal ar = new ASMReal(Double.parseDouble(ops));
 				frame.push(ar);
-			} else if(mn == "pusht") {
+			} else if (mn == "pusht") {
 				frame.push(new ASMBoolean(true));
-			} else if(mn == "pushf") {
+			} else if (mn == "pushf") {
 				frame.push(new ASMBoolean(false));
-			} else if(mn == "enditerate") {
+			} else if (mn == "enditerate") {
 				return;
-			} else if(mn == "if") {
-				if(((ASMBoolean)frame.pop()).getSymbol()) {
+			} else if (mn == "if") {
+				if (((ASMBoolean)frame.pop()).getSymbol()) {
 					int target = Integer.parseInt(ops);
 					frame.setLocation(target - 1);
 				}
-			} else if(mn == "goto") {
+			} else if (mn == "goto") {
 				int target = Integer.parseInt(ops);
 				frame.setLocation(target - 1);
-			} else if(mn == "getasm") {
+			} else if (mn == "getasm") {
 				frame.push(((ASMExecEnv)frame.getExecEnv()).getASMModule());
-			} else if(mn == "iterate") {
+			} else if (mn == "iterate") {
 				ASMOclAny v = frame.pop();
-				if(!(v instanceof ASMCollection)) {
+				if (!(v instanceof ASMCollection)) {
 					frame.printStackTrace("cannot iterate on non-collection");
 				}
-				ASMCollection c = (ASMCollection)v;	// TODO: iterate <index> (jusqu'ou iterer...) plutot que enditerate
+				ASMCollection c = (ASMCollection)v; // TODO: iterate <index> (jusqu'ou iterer...) plutot que
+													// enditerate
 				int oldLocation = frame.getLocation();
-				for(Iterator j = c.iterator() ; j.hasNext() ; ) {
+				for (Iterator j = c.iterator(); j.hasNext();) {
 					frame.push((ASMOclAny)j.next());
-//					frame.step();
+					// frame.step();
 					realExec(frame);
 					frame.setLocation(oldLocation);
 				}
 				int nested = 0;
 				do {
 					String mnc = frame.nextInstruction().getMnemonic();
-					if(mnc == "enditerate") {
-						if(nested == 0) {
+					if (mnc == "enditerate") {
+						if (nested == 0) {
 							break;
-						} 
+						}
 						nested--;
-					} else if(mnc == "iterate") {
+					} else if (mnc == "iterate") {
 						nested++;
 					}
-				} while(true);
+				} while (true);
 			} else {
 				frame.printStackTrace("ERROR: instruction not implemented yet : " + mn);
 			}
@@ -357,14 +363,14 @@ public class ASMOperation extends Operation {
 		}
 	}
 
-//	BEGIN SIGNATURE TOOLS
+	// BEGIN SIGNATURE TOOLS
 	private static Pattern pattern1 = Pattern.compile("^.*\\(");
 
 	private static int getNbArgs(String s) {
 		int ret = 0;
 
 		s = pattern1.matcher(s).replaceFirst("");
-		while(!s.startsWith(")") && s.length() > 0) {
+		while (!s.startsWith(")") && s.length() > 0) {
 			ret++;
 			s = removeFirst(s);
 		}
@@ -373,16 +379,17 @@ public class ASMOperation extends Operation {
 	}
 
 	private static Pattern simple = Pattern.compile("^J|I|B|S|D|A|(M|N)[^;]*;|L");
+
 	private static Pattern pattern2 = Pattern.compile("^(Q|G|C|E|O).*");
 
 	private static String removeFirst(String s) {
-		if(s.startsWith("T")) {
+		if (s.startsWith("T")) {
 			s = s.substring(1);
-			while(!s.startsWith(";")) {
+			while (!s.startsWith(";")) {
 				s = removeFirst(s);
 			}
 			s = s.substring(1);
-		} else if(pattern2.matcher(s).matches()) {
+		} else if (pattern2.matcher(s).matches()) {
 			s = removeFirst(s.substring(1));
 		} else {
 			s = simple.matcher(s).replaceFirst("");
@@ -394,12 +401,14 @@ public class ASMOperation extends Operation {
 	private static String getOpName(String s) {
 		return s.substring(s.indexOf(".") + 1, s.indexOf("("));
 	}
-//	END SIGNATURE TOOLS
+
+	// END SIGNATURE TOOLS
 
 	/** Temporary storage for lineNumberEntries began but not yet ended. */
 	private Map lineNumberEntries = new HashMap();
 
 	private String lastLNE = null;
+
 	public void beginLineNumberEntry(String id) {
 		lastLNE = id;
 		lineNumberEntries.put(id, new LineNumberEntry(id, instructions.size(), -1));
@@ -422,9 +431,9 @@ public class ASMOperation extends Operation {
 	public String resolveLineNumber(int l) {
 		String ret = null;
 
-		for(Iterator i = lineNumberTable.iterator() ; i.hasNext() && (ret == null) ; ) {
+		for (Iterator i = lineNumberTable.iterator(); i.hasNext() && (ret == null);) {
 			LineNumberEntry lne = (LineNumberEntry)i.next();
-			if((l >= lne.begin) && (l <= lne.end)) {
+			if ((l >= lne.begin) && (l <= lne.end)) {
 				ret = lne.id;
 			}
 		}
@@ -440,8 +449,10 @@ public class ASMOperation extends Operation {
 			this.end = end;
 		}
 
-		public String id;	/* startLine:startColumn-endLine:endColumn */
+		public String id; /* startLine:startColumn-endLine:endColumn */
+
 		public int begin;
+
 		public int end;
 	}
 
@@ -450,7 +461,7 @@ public class ASMOperation extends Operation {
 
 	public int beginLocalVariableEntry(String id, String name) {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.get(id);
-		if(lve != null) {
+		if (lve != null) {
 			throw new Error("variable id already in use: " + id);
 		}
 		int slot = reserveSlot();
@@ -460,9 +471,9 @@ public class ASMOperation extends Operation {
 
 	public int endLocalVariableEntry(String id) {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.remove(id);
-		if(lve == null) {
+		if (lve == null) {
 			logger.severe("ERROR: variable id not defined: " + id);
-//			System.out.println("ERROR: variable id not defined: " + id);
+			// System.out.println("ERROR: variable id not defined: " + id);
 		}
 		lve.end = instructions.size() - 1;
 		localVariableTable.add(lve);
@@ -481,10 +492,10 @@ public class ASMOperation extends Operation {
 	public String resolveVariableName(int slot, int l) {
 		String ret = null;
 
-		for(Iterator i = localVariableTable.iterator() ; i.hasNext() & (ret == null) ; ) {
+		for (Iterator i = localVariableTable.iterator(); i.hasNext() & (ret == null);) {
 			LocalVariableEntry lve = (LocalVariableEntry)i.next();
 
-			if((slot == lve.slot) && (l >= lve.begin) && (l <= lve.end)) {
+			if ((slot == lve.slot) && (l >= lve.begin) && (l <= lve.end)) {
 				ret = lve.name;
 			}
 		}
@@ -502,8 +513,11 @@ public class ASMOperation extends Operation {
 		}
 
 		public int slot;
+
 		public String name;
+
 		public int begin;
+
 		public int end;
 	}
 
@@ -514,14 +528,14 @@ public class ASMOperation extends Operation {
 	private int reserveSlot() {
 		int ret = -1;
 
-		for(int i = 0 ; (i < slots.size()) && (ret == -1); i++) {
-			if(!((Boolean)slots.get(i)).booleanValue()) {
+		for (int i = 0; (i < slots.size()) && (ret == -1); i++) {
+			if (!((Boolean)slots.get(i)).booleanValue()) {
 				ret = i;
 				slots.set(ret, new Boolean(true));
 			}
 		}
 
-		if(ret == -1) {
+		if (ret == -1) {
 			ret = slots.size();
 			slots.add(new Boolean(true));
 		}
@@ -537,13 +551,19 @@ public class ASMOperation extends Operation {
 	private List slots = new ArrayList();
 
 	private String name;
+
 	private String context;
+
 	private List parameters = new ArrayList();
 
 	private List instructions = new ArrayList();
+
 	private Map labels = new HashMap();
+
 	private List lineNumberTable = new ArrayList();
+
 	private List localVariableTable = new ArrayList();
+
 	private ASM asm;
 
 	private ASMOclType contextType;
@@ -561,4 +581,3 @@ public class ASMOperation extends Operation {
 		return contextType;
 	}
 }
-

@@ -6,17 +6,16 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
 import java.util.Iterator;
 
 /**
- * ASMModel Navigator helpers
+ * ASMModel Navigator helpers.
  * 
- * @author Frederic Jouault
- *
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frédéric Jouault</a>
  */
 public class AMN {
 
@@ -31,21 +30,19 @@ public class AMN {
 	public static String getString(ASMModelElement ame, String propName) {
 		String ret = null;
 		ASMOclAny v = get(ame, propName);
-		
-		if(v == null) {
-			
-		} else {
-			if((v instanceof ASMCollection) && (((ASMCollection)v).size() == 1)) {
+
+		if (v != null) {
+			if ((v instanceof ASMCollection) && (((ASMCollection)v).size() == 1)) {
 				v = (ASMOclAny)((ASMCollection)v).iterator().next();
 			}
-			
-			if(v instanceof ASMString) {
+
+			if (v instanceof ASMString) {
 				ret = ((ASMString)v).getSymbol();
-			} else if(v instanceof ASMEnumLiteral) {
+			} else if (v instanceof ASMEnumLiteral) {
 				ret = ((ASMEnumLiteral)v).getName();
 			}
 		}
-		
+
 		return ret;
 	}
 
@@ -55,23 +52,24 @@ public class AMN {
 
 	public static boolean getBool(ASMModelElement ame, String propName) {
 		boolean ret = false;
-		
+
 		try {
 			ret = ((ASMBoolean)get(ame, propName)).getSymbol();
-		} catch(Exception e) {
-			throw new ASMModelNavigationException("could not read property \"" + propName + "\" of element " + ame + " : " + ame.getType(), e);
+		} catch (Exception e) {
+			throw new ASMModelNavigationException("could not read property \"" + propName + "\" of element "
+					+ ame + " : " + ame.getType(), e);
 		}
-		
+
 		return ret;
 	}
 
 	public static boolean getBoolUndefinedIsFalse(ASMModelElement ame, String propName) {
 		boolean ret = false;
-		
+
 		ASMOclAny v = get(ame, propName);
-		if(v instanceof ASMBoolean)
+		if (v instanceof ASMBoolean)
 			ret = ((ASMBoolean)v).getSymbol();
-		
+
 		return ret;
 	}
 
@@ -83,8 +81,9 @@ public class AMN {
 		ASMOclAny ret = null;
 		try {
 			ret = ame.get(null, propName);
-		} catch(Exception e) {
-			throw new ASMModelNavigationException("could not read property \"" + propName + "\" of element " + ame + ((ame != null) ? " : " + ame.getType() : ""), e);
+		} catch (Exception e) {
+			throw new ASMModelNavigationException("could not read property \"" + propName + "\" of element "
+					+ ame + ((ame != null) ? " : " + ame.getType() : ""), e);
 		}
 		return (ret instanceof ASMOclUndefined) ? null : ret;
 	}
@@ -92,21 +91,21 @@ public class AMN {
 	public static Iterator getCol(ASMModelElement ame, String propName) {
 		return ((ASMCollection)ame.get(null, propName)).iterator();
 	}
-	
+
 	public static ASMModelElement nextME(Iterator i) {
-		return ((ASMModelElement)i.next());
+		return (ASMModelElement)i.next();
 	}
-	
+
 	public static String nextString(Iterator i) {
-		return ((ASMString)i.next()).getSymbol(); 
+		return ((ASMString)i.next()).getSymbol();
 	}
 
 	public static boolean isa(ASMModelElement element, String otherName) {
 		ASMModelElement type = element.getMetaobject();
-		return c2(type, otherName);		
+		return c2(type, otherName);
 	}
 
 	public static boolean c2(ASMModelElement type, String otherName) {
-		return type.conformsTo(type.getModel().findModelElement(otherName)).getSymbol();		
+		return type.conformsTo(type.getModel().findModelElement(otherName)).getSymbol();
 	}
 }

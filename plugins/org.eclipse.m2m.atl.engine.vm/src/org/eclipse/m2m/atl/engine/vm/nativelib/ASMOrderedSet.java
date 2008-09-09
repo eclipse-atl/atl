@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
@@ -19,11 +19,13 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
 /**
  * This class does not compile as of now. Consider it unimplemented.
- * @author Frédéric Jouault
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMOrderedSet extends ASMCollection {
 
-	public static ASMOclType myType = ASMOclParametrizedType.getASMOclParametrizedType("OrderedSet", getOclAnyType(), ASMSet.myType);
+	public static ASMOclType myType = ASMOclParametrizedType.getASMOclParametrizedType("OrderedSet",
+			getOclAnyType(), ASMSet.myType);
 
 	public ASMOrderedSet() {
 		super(myType);
@@ -44,9 +46,10 @@ public class ASMOrderedSet extends ASMCollection {
 		StringBuffer ret = new StringBuffer();
 
 		ret.append("OrderedSet {");
-		for(Iterator i = s.iterator() ; i.hasNext() ; ) {
+		for (Iterator i = s.iterator(); i.hasNext();) {
 			ret.append(i.next());
-			if(i.hasNext()) ret.append(", ");
+			if (i.hasNext())
+				ret.append(", ");
 		}
 		ret.append("}");
 
@@ -58,7 +61,7 @@ public class ASMOrderedSet extends ASMCollection {
 	}
 
 	public void add(Iterator i) {
-		for( ; i.hasNext() ; ) {
+		for (; i.hasNext();) {
 			add((ASMOclAny)i.next());
 		}
 	}
@@ -78,9 +81,9 @@ public class ASMOrderedSet extends ASMCollection {
 	public int hashCode() {
 		return s.hashCode();
 	}
-	
+
 	// Native Operations below
-	
+
 	public static ASMOrderedSet append(StackFrame frame, ASMOrderedSet self, ASMOclAny o) {
 		return including(frame, self, o);
 	}
@@ -91,11 +94,11 @@ public class ASMOrderedSet extends ASMCollection {
 
 	public static ASMOrderedSet insertAt(StackFrame frame, ASMOrderedSet self, ASMInteger index, ASMOclAny o) {
 		Set ret = new LinkedHashSet();
-		
+
 		int k = 0;
 		int idx = index.getSymbol() - 1;
-		for(Iterator i = self.s.iterator() ; i.hasNext() ; ) {
-			if(k++ == idx)
+		for (Iterator i = self.s.iterator(); i.hasNext();) {
+			if (k++ == idx)
 				ret.add(o);
 			ret.add(i.next());
 		}
@@ -103,16 +106,17 @@ public class ASMOrderedSet extends ASMCollection {
 		return new ASMOrderedSet(ret);
 	}
 
-	public static ASMOrderedSet subOrderedSet(StackFrame frame, ASMOrderedSet self, ASMInteger lower, ASMInteger upper) {
+	public static ASMOrderedSet subOrderedSet(StackFrame frame, ASMOrderedSet self, ASMInteger lower,
+			ASMInteger upper) {
 		ASMOrderedSet ret = new ASMOrderedSet();
 		int l = lower.getSymbol();
 		int u = upper.getSymbol();
 
 		int k = 1;
-		for(Iterator i = self.iterator() ; i.hasNext() && (k <= u) ; ) {
+		for (Iterator i = self.iterator(); i.hasNext() && (k <= u);) {
 			ASMOclAny object = (ASMOclAny)i.next();
 
-			if(k >= l) {
+			if (k >= l) {
 				ret.add(object);
 			}
 
@@ -124,30 +128,30 @@ public class ASMOrderedSet extends ASMCollection {
 
 	public static ASMOclAny at(StackFrame frame, ASMOrderedSet self, ASMInteger i) {
 		ASMOclAny ret = null;
-		
+
 		int k = 0;
 		int idx = i.getSymbol() - 1;
-		for(Iterator j = self.s.iterator() ; j.hasNext() && (ret == null) ; ) {
-			if(k++ == idx)
+		for (Iterator j = self.s.iterator(); j.hasNext() && (ret == null);) {
+			if (k++ == idx)
 				ret = (ASMOclAny)j.next();
 			else
 				j.next();
 		}
-		
+
 		return ret;
 	}
 
 	public static ASMInteger indexOf(StackFrame frame, ASMOrderedSet self, ASMOclAny o) {
 		int i = -2;
-		
+
 		int k = 1;
-		for(Iterator j = self.s.iterator() ; j.hasNext() && (i < 0) ; ) {
-			ASMOclAny p = (ASMOclAny)j.next(); 
-			if(o.equals(p))
+		for (Iterator j = self.s.iterator(); j.hasNext() && (i < 0);) {
+			ASMOclAny p = (ASMOclAny)j.next();
+			if (o.equals(p))
 				i = k;
 			k++;
 		}
-		
+
 		return new ASMInteger(i);
 	}
 
@@ -158,20 +162,19 @@ public class ASMOrderedSet extends ASMCollection {
 	public static ASMOclAny last(StackFrame frame, ASMOrderedSet self) {
 		ASMOclAny ret = null;
 
-		if(self.s.size() == 0) {
+		if (self.s.size() == 0) {
 			ret = new ASMOclUndefined();
-		} else {		
-			for(Iterator j = self.s.iterator() ; j.hasNext() ; ) {
+		} else {
+			for (Iterator j = self.s.iterator(); j.hasNext();) {
 				ret = (ASMOclAny)j.next();
 			}
 		}
-		
+
 		return ret;
 	}
 
-		
 	// count already in ASMCollection
-	
+
 	// = already in ASMOclAny
 
 	public static ASMOrderedSet union(StackFrame frame, ASMOrderedSet self, ASMCollection other) {
@@ -181,7 +184,7 @@ public class ASMOrderedSet extends ASMCollection {
 
 		return ret;
 	}
-	
+
 	public static ASMOrderedSet flatten(StackFrame frame, ASMOrderedSet self) {
 		Set base = null;
 		Set ret = new LinkedHashSet(self.collection());
@@ -192,13 +195,13 @@ public class ASMOrderedSet extends ASMCollection {
 			containsCollection = false;
 			Iterator iterator = base.iterator();
 			while (iterator.hasNext()) {
-				ASMOclAny object = (ASMOclAny) iterator.next();
+				ASMOclAny object = (ASMOclAny)iterator.next();
 				if (object instanceof ASMCollection) {
-					ASMCollection subCollection = (ASMCollection) object;
-					ret.addAll(subCollection.collection()); 
+					ASMCollection subCollection = (ASMCollection)object;
+					ret.addAll(subCollection.collection());
 					Iterator subIterator = subCollection.iterator();
 					while (containsCollection == false && subIterator.hasNext()) {
-						ASMOclAny subCollectionObject = (ASMOclAny) subIterator.next();
+						ASMOclAny subCollectionObject = (ASMOclAny)subIterator.next();
 						if (subCollectionObject instanceof ASMCollection) {
 							containsCollection = true;
 						}
@@ -233,4 +236,3 @@ public class ASMOrderedSet extends ASMCollection {
 
 	private Set s;
 }
-

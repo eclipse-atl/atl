@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
@@ -41,7 +41,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMTupleType;
  *	* the Map of models used by the program,
  *	* the Map of program-specific operations and attribute helpers.
  *		This permits several transformations to be launched in sequence without altering one another.
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMExecEnv extends ExecEnv {
 
@@ -66,8 +66,8 @@ public class ASMExecEnv extends ExecEnv {
 		return asm;
 	}
 
-	public void registerOperations(ASM asm) {
-		for(Iterator i = asm.getOperations().iterator() ; i.hasNext() ; ) {
+	public void registerOperations(ASM currentAsm) {
+		for(Iterator i = currentAsm.getOperations().iterator() ; i.hasNext() ; ) {
 			ASMOperation op = (ASMOperation)i.next();
 			String signature = op.getContextSignature();
 			if(signature.matches("^(Q|G|C|E|O|N).*$")) {

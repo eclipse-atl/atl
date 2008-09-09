@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
@@ -19,7 +19,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclType;
 
 /**
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ClassNativeOperation extends NativeOperation {
 
@@ -31,32 +31,32 @@ public class ClassNativeOperation extends NativeOperation {
 	public ClassNativeOperation(Method method) {
 		super(method, getParameters(method), getReturnType(method), getContextType(method));
 	}
-	
+
 	private static List getParameters(Method method) {
 		List ret = new ArrayList();
-		
-		Class paramTypes[] = method.getParameterTypes();
-		for(int i = 2 ; i < paramTypes.length ; i++) {	// paramTypes[0] is a StackFrame
-														// paramTypes[1] is self
+
+		Class[] paramTypes = method.getParameterTypes();
+		for (int i = 2; i < paramTypes.length; i++) { // paramTypes[0] is a StackFrame
+			// paramTypes[1] is self
 			ret.add(getASMType(paramTypes[i], false));
 		}
-		
+
 		return ret;
 	}
 
 	private static ASMOclType getReturnType(Method method) {
 		ASMOclType ret = null;
-		
+
 		ret = getASMType(method.getReturnType(), false);
-		
+
 		return ret;
 	}
 
 	private static ASMOclType getContextType(Method method) {
 		ASMOclType ret = null;
-		
+
 		ret = getASMType(method.getParameterTypes()[1], false);
-		
+
 		return ret;
 	}
 
@@ -67,13 +67,13 @@ public class ClassNativeOperation extends NativeOperation {
 			List args = new ArrayList(frame.getArgs());
 			args.add(0, frame);
 			ret = (ASMOclAny)getMethod().invoke(null, args.toArray());
-		} catch(IllegalAccessException iae) {
+		} catch (IllegalAccessException iae) {
 			frame.printStackTrace(iae);
 			ret = null;
-		} catch(IllegalArgumentException iae2) {
+		} catch (IllegalArgumentException iae2) {
 			frame.printStackTrace(iae2);
 			ret = null;
-		} catch(InvocationTargetException ite) {
+		} catch (InvocationTargetException ite) {
 			frame.printStackTrace(ite);
 			ret = null;
 		}
@@ -83,4 +83,3 @@ public class ClassNativeOperation extends NativeOperation {
 		return ret;
 	}
 }
-

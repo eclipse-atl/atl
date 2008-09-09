@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
@@ -33,14 +33,26 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMSet;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 
 /**
- * @author Frédéric Jouault
+ * The native operations definition class.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public abstract class NativeOperation extends Operation {
 
 	private static Map trans;
 
+	private List parameters;
+
+	private ASMOclType returnType;
+
+	private ASMOclType contextType;
+
+	private Method method;
+
+	private String name;
+
 	private static Map getTrans() {
-		if(trans == null) {
+		if (trans == null) {
 			trans = new HashMap();
 			trans.put("operatorMinus", "-");
 			trans.put("operatorPlus", "+");
@@ -56,72 +68,101 @@ public abstract class NativeOperation extends Operation {
 		return trans;
 	}
 
-	// The Method must be static and must have <type> self as a first parameter.
+	/**
+	 * NativeOperation constructor. TODO The Method must be static and must have self as a first parameter.
+	 * 
+	 * @param method
+	 * @param parameters
+	 * @param returnType
+	 * @param contextType
+	 */
 	public NativeOperation(Method method, List parameters, ASMOclType returnType, ASMOclType contextType) {
 		this.method = method;
 		this.parameters = parameters;
 		this.returnType = returnType;
 		this.contextType = contextType;
 		name = method.getName();
-		if(getTrans().containsKey(name)) name = (String)getTrans().get(name);
+		if (getTrans().containsKey(name)) {
+			name = (String)getTrans().get(name);
+		}
 	}
 
+	/**
+	 * @param t
+	 * @param c
+	 */
 	public static void registerOperations(ASMOclType t, Class c) {
 		registerOperations(t, c, true, false, false, false);
 	}
 
-	public static void registerOperations(ASMOclType t, Class c, boolean allowClassLevel, boolean allowInstanceLevel, boolean allowTypeTranslation, boolean allowDontUseFrame) {
+	/**
+	 * @param t
+	 * @param c
+	 * @param allowClassLevel
+	 * @param allowInstanceLevel
+	 * @param allowTypeTranslation
+	 * @param allowDontUseFrame
+	 */
+	public static void registerOperations(ASMOclType t, Class c, boolean allowClassLevel,
+			boolean allowInstanceLevel, boolean allowTypeTranslation, boolean allowDontUseFrame) {
 
-final boolean debug = false;
+		final boolean debug = false;
 
-		for(Iterator i = Arrays.asList(c.getDeclaredMethods()).iterator() ; i.hasNext() ; ) {
+		for (Iterator i = Arrays.asList(c.getDeclaredMethods()).iterator(); i.hasNext();) {
 			Method m = (Method)i.next();
-			boolean isStatic = ((Modifier.STATIC & m.getModifiers()) != 0);
-			if((!allowClassLevel) && isStatic) continue;
-			if((!allowInstanceLevel) && !isStatic) continue;
-			if(((Modifier.PUBLIC & m.getModifiers()) == 0)) continue;
+			boolean isStatic = (Modifier.STATIC & m.getModifiers()) != 0;
+			if (!allowClassLevel && isStatic) {
+				continue;
+			}
+			if ((!allowInstanceLevel) && !isStatic) {
+				continue;
+			}
+			if ((Modifier.PUBLIC & m.getModifiers()) == 0) {
+				continue;
+			}
 
 			boolean dontUseFrame = false;
 			boolean notGood = false;
 
 			Iterator j = Arrays.asList(m.getParameterTypes()).iterator();
 			List parameters = new ArrayList();
-			if(j.hasNext()) {
+			if (j.hasNext()) {
 				Class pt = (Class)j.next();
-				if(!pt.equals(StackFrame.class)) {
-					if(allowDontUseFrame) {
+				if (!pt.equals(StackFrame.class)) {
+					if (allowDontUseFrame) {
 						dontUseFrame = true;
 					} else {
 						notGood = true;
-
-if(debug) logger.info("No StackFrame as first parameter");
-//if(debug) System.out.println("No StackFrame as first parameter");
-
+						if (debug) {
+							logger.info("No StackFrame as first parameter");
+						}
 					}
 					j = Arrays.asList(m.getParameterTypes()).iterator();
 				}
-				if(!isStatic) {
+				if (!isStatic) {
 					j = Arrays.asList(m.getParameterTypes()).iterator();
 				}
 			} else {
-				if(allowDontUseFrame) {
+				if (allowDontUseFrame) {
 					dontUseFrame = true;
 				} else {
 					notGood = true;
 
-if(debug) logger.info("No StackFrame as first parameter");
-//if(debug) System.out.println("No StackFrame as first parameter");
+					if (debug) {
+						logger.info("No StackFrame as first parameter");
+					}
 
 				}
 			}
-			for( ; j.hasNext() && !notGood ; ) {
+			for ( ; j.hasNext() && !notGood;) {
 				Class pt = (Class)j.next();
 				ASMOclType paramType = getASMType(pt, allowTypeTranslation);
-				if(paramType == null) {
+				if (paramType == null) {
 					notGood = true;
 
-if(debug) logger.info("Incompatible type as parameter");
-//if(debug) System.out.println("Incompatible type as parameter");
+					if (debug) {
+						logger.info("Incompatible type as parameter");
+					}
 
 				} else {
 					parameters.add(paramType);
@@ -130,67 +171,72 @@ if(debug) logger.info("Incompatible type as parameter");
 
 			Class rt = m.getReturnType();
 			ASMOclType returnType = getASMType(rt, allowTypeTranslation);
-			if((returnType == null) && (!(rt.isPrimitive() && rt.getName().equals("void")))) {
+			if ((returnType == null) && (!(rt.isPrimitive() && rt.getName().equals("void")))) {
 				notGood = true;
 
-if(debug) logger.info("Incompatible return type");
-//if(debug) System.out.println("Incompatible return type");
+				if (debug) {
+					logger.info("Incompatible return type");
+				}
 
 			}
 
-			if(!notGood) {
-				if((Modifier.STATIC & m.getModifiers()) != 0) {
-					parameters.remove(0);	// first is self
-					t.registerVMOperation(new ClassNativeOperation(m, parameters, returnType, getASMType(c, allowTypeTranslation)));
+			if (!notGood) {
+				if ((Modifier.STATIC & m.getModifiers()) != 0) {
+					parameters.remove(0); // first is self
+					t.registerVMOperation(new ClassNativeOperation(m, parameters, returnType, getASMType(c,
+							allowTypeTranslation)));
 				} else {
-					t.registerVMOperation(new InstanceNativeOperation(m, allowTypeTranslation, dontUseFrame, parameters, returnType, getASMType(c, allowTypeTranslation)));
+					t.registerVMOperation(new InstanceNativeOperation(m, allowTypeTranslation, dontUseFrame,
+							parameters, returnType, getASMType(c, allowTypeTranslation)));
 				}
 			} else {
 
-if(debug) logger.info("Strange !!! This method is not good: " + m);
-//if(debug) System.err.println("Strange !!! This method is not good: " + m);
+				if (debug) {
+					logger.info("Strange !!! This method is not good: " + m);
+				}
 
 			}
 		}
 	}
-	
+
 	protected static ASMOclType getASMType(Class pt, boolean allowTypeTranslation) {
 		ASMOclType ret = null;
-		
-		if(ASMOclAny.class.isAssignableFrom(pt)) {
-			if(ASMOclAny.class.equals(pt)) {
+
+		if (ASMOclAny.class.isAssignableFrom(pt)) {
+			if (ASMOclAny.class.equals(pt)) {
 				ret = ASMOclAny.getOclAnyType();
 			} else {
 				try {
 					ret = (ASMOclType)pt.getField("myType").get(null);
-				} catch(IllegalAccessException iae) {
-				} catch(NoSuchFieldException iae) {}
+				} catch (IllegalAccessException iae) {
+				} catch (NoSuchFieldException iae) {
+				}
 			}
-		} else if(allowTypeTranslation) {
-			if(pt.equals(Integer.TYPE) || pt.equals(Integer.class)) {
+		} else if (allowTypeTranslation) {
+			if (pt.equals(Integer.TYPE) || pt.equals(Integer.class)) {
 				ret = ASMInteger.myType;
-			} else if(pt.equals(Double.TYPE) || pt.equals(Double.class) ||
-					pt.equals(Float.TYPE) || pt.equals(Float.class)) {
+			} else if (pt.equals(Double.TYPE) || pt.equals(Double.class) || pt.equals(Float.TYPE)
+					|| pt.equals(Float.class)) {
 				ret = ASMReal.myType;
-			} else if(pt.equals(Boolean.TYPE) || pt.equals(Boolean.class)) {
+			} else if (pt.equals(Boolean.TYPE) || pt.equals(Boolean.class)) {
 				ret = ASMBoolean.myType;
-			} else if(pt.equals(String.class)) {
+			} else if (pt.equals(String.class)) {
 				ret = ASMString.myType;
-			} else if(pt.equals(List.class)) {
+			} else if (pt.equals(List.class)) {
 				ret = ASMSequence.myType;
-			} else if(pt.equals(Set.class)) {
+			} else if (pt.equals(Set.class)) {
 				ret = ASMSet.myType;
-			} else if(pt.equals(Collection.class)) {
+			} else if (pt.equals(Collection.class)) {
 				ret = ASMBag.myType;
-			} else if(pt.equals(Map.class)) {
+			} else if (pt.equals(Map.class)) {
 				ret = ASMMap.myType;
-			} else {	// TODO: collections
-				ret = null;	// untranslatable type
+			} else { // TODO: collections
+				ret = null; // untranslatable type
 			}
 		} else {
-			ret = null;		// not a valid type
+			ret = null; // not a valid type
 		}
-		
+
 		return ret;
 	}
 
@@ -206,8 +252,18 @@ if(debug) logger.info("Strange !!! This method is not good: " + m);
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.vm.Operation#exec(org.eclipse.m2m.atl.engine.vm.StackFrame)
+	 */
 	public abstract ASMOclAny exec(StackFrame frame);
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		return "NativeOperation " + method;
 	}
@@ -228,10 +284,4 @@ if(debug) logger.info("Strange !!! This method is not good: " + m);
 		return contextType;
 	}
 
-	private List parameters;
-	private ASMOclType returnType;
-	private ASMOclType contextType;
-	private Method method;
-	private String name;	
 }
-

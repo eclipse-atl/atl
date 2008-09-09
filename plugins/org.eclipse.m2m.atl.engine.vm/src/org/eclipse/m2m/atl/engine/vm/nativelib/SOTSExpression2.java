@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
@@ -36,7 +36,7 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
  * INT ::= [0-9]+;
  * SKIP ::= ' ' | '\t' | '\n' | '\r';
  * </code>
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class SOTSExpression2 {
 
@@ -396,7 +396,7 @@ if(debug) logger.info("\tpartial return value = " + ret);
 		return ret;
 	}
 
-	private static String tokenNames[] = {
+	private static String[] tokenNames = {
 		"EOF",
 		"DOT",
 		"COMA",

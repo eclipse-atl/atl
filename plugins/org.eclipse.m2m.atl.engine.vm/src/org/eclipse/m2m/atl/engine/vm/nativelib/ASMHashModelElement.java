@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
@@ -20,7 +20,7 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
  * Prototype ASMModelElement using HashMaps for storage.
  * It has not been updated for a long time and may not work without
  * some improvements.
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @deprecated
  */
 public class ASMHashModelElement extends ASMModelElement {

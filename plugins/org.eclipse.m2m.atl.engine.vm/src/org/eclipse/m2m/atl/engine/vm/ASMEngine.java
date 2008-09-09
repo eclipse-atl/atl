@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
@@ -26,14 +26,14 @@ import java.util.logging.Logger;
  * It delegates to another class depending on the kind of operation
  * to perform: simple transformation or composite transformation execution,
  * or simply copy (with possible use of injectors and extractors).
- * @author Frédéric Jouault 
+ * @author Frederic Jouault 
  */
 public class ASMEngine {
 
 	public static PluginClassLoader cl = null;
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
-	public static void main(String args[]) throws Exception {
+	public static void main(String[] args) throws Exception {
 		List locations = new ArrayList();
 		locations.add(ASMEngine.class.getResource("ASMEngine.class").toString().replaceAll("!/.*", "!/"));
 		cl = new PluginClassLoader(locations);
@@ -48,7 +48,7 @@ public class ASMEngine {
 		}
 	}
 
-	public static void realMain(String args[], PluginClassLoader pcl) throws Exception {
+	public static void realMain(String[] args, PluginClassLoader pcl) throws Exception {
 		for(Iterator i = Arrays.asList(args).iterator() ; i.hasNext() ; ) {
 			String s = (String)i.next();
 			if(s.startsWith("ACT")) {

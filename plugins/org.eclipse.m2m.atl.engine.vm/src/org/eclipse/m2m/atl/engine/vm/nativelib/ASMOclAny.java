@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
@@ -21,7 +21,7 @@ import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
 /**
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMOclAny extends ASMNativeObject {
 
@@ -136,7 +136,7 @@ public class ASMOclAny extends ASMNativeObject {
 	 * @param oper The Operation to invoke
 	 * @param arguments The operation arguments, excluding self
 	 * @return The Operation's result
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public ASMOclAny invoke(StackFrame frame, Operation oper, List arguments) {
 		arguments.add(0, this);	// self

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
@@ -26,16 +26,16 @@ import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
 /**
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public abstract class ASMOclType extends ASMOclAny {
 
 	public static ASMOclType myType = new ASMOclSimpleType("OclType");
 
 	private static Map typeOperations;
-	
+
 	public static Map getVMOperations() {
-		if(typeOperations == null) {
+		if (typeOperations == null) {
 			typeOperations = new HashMap();
 			NativeOperation.registerOperations(ASMOclType.myType, ASMOclType.class);
 			myType.setType(myType);
@@ -60,15 +60,19 @@ public abstract class ASMOclType extends ASMOclAny {
 			NativeOperation.registerOperations(ASMBoolean.myType, ASMBoolean.class);
 			NativeOperation.registerOperations(ASMBag.myType, ASMBag.class);
 			NativeOperation.registerOperations(ASMOrderedSet.myType, ASMOrderedSet.class);
-			
+
 			NativeOperation.registerOperations(ASMEmitter.myType, ASMEmitter.class, false, true, true, true);
-//TODO BUG?			NativeOperation.registerOperations(ASM.myType, ASMEmitter.class, false, true, true, true);
+			// TODO BUG? NativeOperation.registerOperations(ASM.myType, ASMEmitter.class, false, true, true,
+			// true);
 			NativeOperation.registerOperations(ASM.myType, ASM.class, false, true, true, true);
-			NativeOperation.registerOperations(ASMStackFrame.myType, ASMStackFrame.class, false, true, true, true);
-			NativeOperation.registerOperations(NativeStackFrame.myType, NativeStackFrame.class, false, true, true, true);
+			NativeOperation.registerOperations(ASMStackFrame.myType, ASMStackFrame.class, false, true, true,
+					true);
+			NativeOperation.registerOperations(NativeStackFrame.myType, NativeStackFrame.class, false, true,
+					true, true);
 			NativeOperation.registerOperations(StackFrame.myType, StackFrame.class, false, true, true, true);
 			NativeOperation.registerOperations(Operation.myType, Operation.class, false, true, true, true);
-			NativeOperation.registerOperations(ASMOperation.myType, ASMOperation.class, false, true, true, true);
+			NativeOperation.registerOperations(ASMOperation.myType, ASMOperation.class, false, true, true,
+					true);
 		}
 		return typeOperations;
 	}
@@ -81,7 +85,7 @@ public abstract class ASMOclType extends ASMOclAny {
 	private static Map getVMOperations(ASMOclType type) {
 		Map ret = (Map)getVMOperations().get(type);
 
-		if(ret == null) {
+		if (ret == null) {
 			ret = new HashMap();
 			getVMOperations().put(type, ret);
 		}
@@ -95,7 +99,7 @@ public abstract class ASMOclType extends ASMOclAny {
 	}
 
 	public void addSupertype(ASMOclType supertype) {
-		if(supertype != null) {
+		if (supertype != null) {
 			supertypes.add(0, supertype);
 		}
 	}
@@ -103,24 +107,24 @@ public abstract class ASMOclType extends ASMOclAny {
 	public List getSupertypes() {
 		return supertypes;
 	}
-	
+
 	public abstract ASMBoolean conformsTo(ASMOclType other);
 
 	public abstract String getName();
-	
+
 	public ASMOclAny get(StackFrame frame, String name) {
 		ASMOclAny ret = null;
-		
-		if(name.equals("name")) {
+
+		if (name.equals("name")) {
 			ret = getName(frame, this);
-		} else if(name.equals("operations")) {
+		} else if (name.equals("operations")) {
 			ret = new ASMSet(((ASMExecEnv)frame.getExecEnv()).getOperations(this));
-		} else if(name.equals("supertypes")) {
+		} else if (name.equals("supertypes")) {
 			ret = new ASMSet(supertypes);
 		} else {
 			ret = super.get(frame, name);
 		}
-		
+
 		return ret;
 	}
 
@@ -129,22 +133,25 @@ public abstract class ASMOclType extends ASMOclAny {
 	public static ASMString getName(StackFrame frame, ASMOclType self) {
 		return new ASMString(self.getName());
 	}
-	
+
 	public static ASMBoolean conformsTo(StackFrame frame, ASMOclType self, ASMOclType other) {
 		return self.conformsTo(other);
 	}
-	
-	public static void registerHelperAttribute(StackFrame frame, ASMOclType self, ASMString name, ASMString initOperationName) {
-		ASMExecEnv aee = ((ASMExecEnv)frame.getExecEnv());
-		aee.registerAttributeHelper(self, name.getSymbol(), aee.getOperation(self, initOperationName.getSymbol()));
+
+	public static void registerHelperAttribute(StackFrame frame, ASMOclType self, ASMString name,
+			ASMString initOperationName) {
+		ASMExecEnv aee = (ASMExecEnv)frame.getExecEnv();
+		aee.registerAttributeHelper(self, name.getSymbol(), aee.getOperation(self, initOperationName
+				.getSymbol()));
 	}
 
 	// persistTo may be OclUndefined for non-persistent weaving helpers, otherwise it must be a String
-	public static void registerWeavingHelper(StackFrame frame, ASMOclType self, ASMString name, ASMOclAny persistTo) {
-		ASMExecEnv aee = ((ASMExecEnv)frame.getExecEnv());
-		aee.registerWeavingHelper(self, name.getSymbol(), (persistTo instanceof ASMOclUndefined) ? null : ((ASMString)persistTo).getSymbol());
+	public static void registerWeavingHelper(StackFrame frame, ASMOclType self, ASMString name,
+			ASMOclAny persistTo) {
+		ASMExecEnv aee = (ASMExecEnv)frame.getExecEnv();
+		aee.registerWeavingHelper(self, name.getSymbol(), (persistTo instanceof ASMOclUndefined) ? null
+				: ((ASMString)persistTo).getSymbol());
 	}
 
 	private List supertypes;
 }
-

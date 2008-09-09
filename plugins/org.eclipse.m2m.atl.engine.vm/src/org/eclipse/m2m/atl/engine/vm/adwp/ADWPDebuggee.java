@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.adwp;
 
@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ADWPDebuggee extends ADWP {
 
@@ -35,17 +35,17 @@ public class ADWPDebuggee extends ADWP {
 	}
 
 	public void sendMessage(int msg, int ack, List args) {
-		try {   
+		try {
 			out.writeByte(msg);
 			out.writeByte(ack);
 			out.writeInt(args.size());
-			for(Iterator i = args.iterator() ; i.hasNext() ; ) {
+			for (Iterator i = args.iterator(); i.hasNext();) {
 				writeValue((Value)i.next());
 			}
 			out.flush();
-		} catch(IOException ioe) {
+		} catch (IOException ioe) {
 			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
-//			ioe.printStackTrace(System.out);
+			// ioe.printStackTrace(System.out);
 		}
 	}
 
@@ -53,12 +53,12 @@ public class ADWPDebuggee extends ADWP {
 		ADWPCommand ret = null;
 
 		synchronized(cmds) {
-			if(cmds.size() == 0) {
+			if (cmds.size() == 0) {
 				try {
 					cmds.wait();
-				} catch(InterruptedException ie) {
+				} catch (InterruptedException ie) {
 					logger.log(Level.SEVERE, ie.getLocalizedMessage(), ie);
-//					ie.printStackTrace(System.out);
+					// ie.printStackTrace(System.out);
 				}
 			}
 		}
@@ -71,12 +71,12 @@ public class ADWPDebuggee extends ADWP {
 	public void run() {
 		setName("ADWPDebuggee receiver");
 		try {
-			while(true) {
+			while (true) {
 				ADWPCommand cmd = null;
-				int type = (in.readByte() & 0xFF);
-				int ack = (in.readByte() & 0xFF);
+				int type = in.readByte() & 0xFF;
+				int ack = in.readByte() & 0xFF;
 				int length = in.readInt();
-				switch(type) {
+				switch (type) {
 					case CMD_CONTINUE:
 					case CMD_STEP:
 					case CMD_STEP_OVER:
@@ -89,33 +89,35 @@ public class ADWPDebuggee extends ADWP {
 					case CMD_DISASSEMBLE:
 						cmd = new ADWPCommand(type, ack, Arrays.asList(new Object[] {readValue()}));
 						break;
-						
+
 					case CMD_QUERY:
 					case CMD_GET:
-						cmd = new ADWPCommand(type, ack, Arrays.asList(new Object[] {readValue(), readValue()}));
+						cmd = new ADWPCommand(type, ack, Arrays
+								.asList(new Object[] {readValue(), readValue()}));
 						break;
 					case CMD_SET:
-						cmd = new ADWPCommand(type, ack, Arrays.asList(new Object[] {readValue(), readValue(), readValue()}));
+						cmd = new ADWPCommand(type, ack, Arrays.asList(new Object[] {readValue(),
+								readValue(), readValue()}));
 						break;
 					case CMD_CALL:
 						List args = new ArrayList();
-						args.add(readValue());	// ObjectReference
-						args.add(readValue());	// opName
+						args.add(readValue()); // ObjectReference
+						args.add(readValue()); // opName
 
-						for(int i = 0 ; i < length - 2 ; i++) {
+						for (int i = 0; i < length - 2; i++) {
 							args.add(readValue());
 						}
 						cmd = new ADWPCommand(type, ack, args);
 						break;
 
 				}
-				//System.out.println("< " + cmd);
-				while(cmds.size() != 0) {
+				// System.out.println("< " + cmd);
+				while (cmds.size() != 0) {
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//						e.printStackTrace();
+						// e.printStackTrace();
 					}
 				}
 				synchronized(cmds) {
@@ -123,8 +125,8 @@ public class ADWPDebuggee extends ADWP {
 					cmds.notifyAll();
 				}
 			}
-		} catch(IOException ioe) {
-			//ioe.printStackTrace(System.out);
+		} catch (IOException ioe) {
+			// ioe.printStackTrace(System.out);
 		}
 	}
 
@@ -134,4 +136,3 @@ public class ADWPDebuggee extends ADWP {
 
 	private List cmds = new ArrayList();
 }
-

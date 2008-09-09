@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
@@ -19,19 +19,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A basic plugin facillity used in command-line.
- * Eclipse plugins are used within Eclipse.
- * @author Frédéric Jouault
+ * A basic plugin facillity used in command-line. Eclipse plugins are used within Eclipse.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class PluginClassLoader extends URLClassLoader {
 
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static URL[] toURLs(List locations) {
-		URL ret[] = new URL[locations.size()];
+		URL[] ret = new URL[locations.size()];
 		int k = 0;
 
-		for(Iterator i = locations.iterator() ; i.hasNext() ; ) {
+		for (Iterator i = locations.iterator(); i.hasNext();) {
 			ret[k++] = toURL((String)i.next());
 		}
 
@@ -43,9 +43,9 @@ public class PluginClassLoader extends URLClassLoader {
 
 		try {
 			ret = new URL("file:" + location);
-		} catch(MalformedURLException mue) {
+		} catch (MalformedURLException mue) {
 			logger.log(Level.SEVERE, mue.getLocalizedMessage(), mue);
-//			mue.printStackTrace(System.out);
+			// mue.printStackTrace(System.out);
 		}
 
 		return ret;
@@ -59,4 +59,3 @@ public class PluginClassLoader extends URLClassLoader {
 		addURL(toURL(location));
 	}
 }
-

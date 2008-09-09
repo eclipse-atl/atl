@@ -6,25 +6,41 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
-
 /**
  * Interface for ATL VM debuggers (or other tools like profilers).
- * @author Frédéric Jouault
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public interface Debugger {
 
-	public void enter(StackFrame frame);
+	/**
+	 * @param frame
+	 */
+	void enter(StackFrame frame);
 
-	public void leave(StackFrame frame);
+	/**
+	 * @param frame
+	 */
+	void leave(StackFrame frame);
 
-	public void step(ASMStackFrame frame);
-	
-	public void terminated();
+	/**
+	 * @param frame
+	 */
+	void step(ASMStackFrame frame);
 
-	public void error(StackFrame frame, String msg, Exception e);
+	/**
+	 * 
+	 */
+	void terminated();
+
+	/**
+	 * @param frame
+	 * @param msg
+	 * @param e
+	 */
+	void error(StackFrame frame, String msg, Exception e);
 }
-

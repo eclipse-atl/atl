@@ -18,7 +18,7 @@ import java.util.logging.SimpleFormatter;
 
 /**
  * Log formatter that is less verbose than {@link SimpleFormatter}
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ATLLogFormatter extends Formatter {
 	

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
@@ -29,7 +29,7 @@ import org.eclipse.m2m.atl.engine.vm.ModelLoader;
  * This class has not been modified to use the ModelLoader scheme.
  * It has not been updated for a long time and may not work without
  * some improvements.
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @deprecated
  */
 public class ASMHashModel extends ASMModel {
@@ -97,7 +97,7 @@ public class ASMHashModel extends ASMModel {
 	public static ASMHashModel loadASMHashModel(String name, ASMModel metamodel, String url, ModelLoader ml) throws Exception {
 		ASMHashModel ret = newASMHashModel(name, metamodel, ml);
 
-		String ss[] = url.split(":");
+		String[] ss = url.split(":");
 		if(ss.length == 1) {
 			ss = new String[] {"xmi", ss[0]};
 		}

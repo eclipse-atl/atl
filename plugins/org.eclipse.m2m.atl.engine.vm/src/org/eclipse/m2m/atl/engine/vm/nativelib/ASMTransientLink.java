@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * 	   Frédéric Jouault (INRIA) - initial API and implementation
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
@@ -23,7 +23,7 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
  * An ASMTransientLink represents an internal traceability link.
  * Other languages than ATL may be compiled to ATL VM and reuse this class.
  * They can also define their own traceability links using Maps and Tuples.
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMTransientLink extends ASMOclAny {
 
