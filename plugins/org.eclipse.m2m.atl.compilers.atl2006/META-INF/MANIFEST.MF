@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ATL Compiler 2006 Plug-in
 Bundle-SymbolicName: org.eclipse.m2m.atl.compilers.atl2006;singleton:=true
-Bundle-Version: 2.0.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-Activator: org.eclipse.m2m.atl.compilers.atl2006.Atl2006Plugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
