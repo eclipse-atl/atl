@@ -16,16 +16,23 @@ import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
 /**
- * @author Freddy Allilaire
+ * The remote ATL tab definition.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class RemoteAtlTabGroup extends AbstractLaunchConfigurationTabGroup {
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.debug.ui.ILaunchConfigurationTabGroup#createTabs(org.eclipse.debug.ui.ILaunchConfigurationDialog, java.lang.String)
+	 */
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		ILaunchConfigurationTab[] tabs;
 		tabs = new ILaunchConfigurationTab[] {
 				new RemoteAtlTab(),
 				new CommonTab()
-		};
+		,};
 		setTabs(tabs);
 	}
 }

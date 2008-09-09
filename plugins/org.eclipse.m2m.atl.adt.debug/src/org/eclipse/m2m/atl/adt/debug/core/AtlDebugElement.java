@@ -23,35 +23,44 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
+/**
+ * An abstract class to mark debugged elements.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ */
 public abstract class AtlDebugElement extends PlatformObject implements IDebugElement {
 
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
-	public String getModelIdentifier() {
-		return "org.eclipse.m2m.atl.adt.debug";//$NON-NLS-1$
-	}
-
-	// containing target 
+	/** containing target. */
 	protected AtlDebugTarget fTarget;
-	
+
 	/**
-	 * Constructs a new debug element contained in the given
-	 * debug target.
+	 * Constructs a new debug element contained in the given debug target.
 	 * 
-	 * @param target debug target (PDA VM)
+	 * @param target
+	 *            debug target (PDA VM)
 	 */
 	public AtlDebugElement(AtlDebugTarget target) {
 		fTarget = target;
 	}
-	
+
+	public String getModelIdentifier() {
+		return "org.eclipse.m2m.atl.adt.debug"; //$NON-NLS-1$
+	}
+
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.debug.core.model.IDebugElement#getDebugTarget()
 	 */
 	public IDebugTarget getDebugTarget() {
 		return fTarget;
 	}
-	
+
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.debug.core.model.IDebugElement#getLaunch()
 	 */
 	public ILaunch getLaunch() {
@@ -59,7 +68,9 @@ public abstract class AtlDebugElement extends PlatformObject implements IDebugEl
 	}
 
 	/**
-	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.core.runtime.PlatformObject#getAdapter(java.lang.Class)
 	 */
 	public Object getAdapter(Class adapter) {
 		if (adapter == IDebugElement.class) {
@@ -67,53 +78,17 @@ public abstract class AtlDebugElement extends PlatformObject implements IDebugEl
 		}
 		return super.getAdapter(adapter);
 	}
-	
+
+	/**
+	 * Aborts the current debug.
+	 * 
+	 * @param message abort message
+	 * @param e exception
+	 * @throws DebugException
+	 */
 	protected void abort(String message, Throwable e) throws DebugException {
 		throw new DebugException(new Status(IStatus.ERROR, AtlDebugPlugin.getUniqueIdentifier(),
 				DebugPlugin.INTERNAL_ERROR, message, e));
 	}
-	
-//	/**
-//	 * Fires a debug event
-//	 * 
-//	 * @param event the event to be fired
-//	 */
-//	protected void fireEvent(DebugEvent event) {
-//		DebugPlugin.getDefault().fireDebugEventSet(new DebugEvent[] {event});
-//	}
-//	
-//	/**
-//	 * Fires a <code>CREATE</code> event for this element.
-//	 */
-//	protected void fireCreationEvent() {
-//		fireEvent(new DebugEvent(this, DebugEvent.CREATE));
-//	}	
-//	
-//	/**
-//	 * Fires a <code>RESUME</code> event for this element with
-//	 * the given detail.
-//	 * 
-//	 * @param detail event detail code
-//	 */
-//	public void fireResumeEvent(int detail) {
-//		fireEvent(new DebugEvent(this, DebugEvent.RESUME, detail));
-//	}
-//
-//	/**
-//	 * Fires a <code>SUSPEND</code> event for this element with
-//	 * the given detail.
-//	 * 
-//	 * @param detail event detail code
-//	 */
-//	public void fireSuspendEvent(int detail) {
-//		fireEvent(new DebugEvent(this, DebugEvent.SUSPEND, detail));
-//	}
-//	
-//	/**
-//	 * Fires a <code>TERMINATE</code> event for this element.
-//	 */
-//	protected void fireTerminateEvent() {
-//		fireEvent(new DebugEvent(this, DebugEvent.TERMINATE));
-//	}
-	
+
 }

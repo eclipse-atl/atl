@@ -14,12 +14,16 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * @author Freddy Allilaire
+ * The atl launch configuration comparator.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AtlLaunchConfigurationComparator implements Comparator {
 
-	/*
-	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.util.Comparator#compare(T, T)
 	 */
 	public int compare(Object o1, Object o2) {
 		List list1 = (List)o1;
@@ -38,7 +42,7 @@ public class AtlLaunchConfigurationComparator implements Comparator {
 		return -1;
 	}
 	
-	protected boolean equalsIgnoreWhitespace(String one, String two) {
+	private boolean equalsIgnoreWhitespace(String one, String two) {
 		int i1 = 0;
 		int i2 = 0;
 		int l1 = one.length();

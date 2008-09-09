@@ -28,16 +28,20 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
 
 /**
- * @author Freddy Allilaire
+ * The uri selection dialog.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class DialogUriSelection extends SelectionStatusDialog {
 
 	private List listUri;
 
-	private String uri = "";//$NON-NLS-1$
+	private String uri = ""; //$NON-NLS-1$
 
 	/**
-	 * @param parent
+	 * Constructor.
+	 * 
+	 * @param parent the parent shell
 	 */
 	public DialogUriSelection(Shell parent) {
 		super(parent);
@@ -46,6 +50,8 @@ public class DialogUriSelection extends SelectionStatusDialog {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.dialogs.SelectionStatusDialog#computeResult()
 	 */
 	protected void computeResult() {
@@ -53,6 +59,8 @@ public class DialogUriSelection extends SelectionStatusDialog {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */
 	protected Control createDialogArea(Composite parent) {
@@ -67,19 +75,20 @@ public class DialogUriSelection extends SelectionStatusDialog {
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		container.setLayoutData(gd);
 
-		new Label(container, SWT.NULL).setText("Registered EPackages: ");//$NON-NLS-1$
+		new Label(container, SWT.NULL).setText("Registered EPackages: "); //$NON-NLS-1$
 		listUri = new List(container, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL);
 		
-		for (Iterator it = ((Map)EPackage.Registry.INSTANCE).keySet().iterator(); it.hasNext();)
+		for (Iterator it = ((Map)EPackage.Registry.INSTANCE).keySet().iterator(); it.hasNext();) {
 			uris.add((it.next()).toString());
-		
+		}		
 		
 		for (Iterator it = ASMEMFModel.getResourceSet().getPackageRegistry().keySet().iterator(); it.hasNext(); ) {
 			uris.add((it.next()).toString());
 		}
 		
-		for (Iterator it = uris.iterator(); it.hasNext();)
+		for (Iterator it = uris.iterator(); it.hasNext();) {
 			listUri.add((it.next()).toString());
+		}
 		
 		listUri.setLayoutData(new GridData(GridData.FILL_BOTH));
 
@@ -88,11 +97,14 @@ public class DialogUriSelection extends SelectionStatusDialog {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.dialogs.SelectionStatusDialog#okPressed()
 	 */
 	protected void okPressed() {
-		if (listUri.getSelectionCount() == 1)
+		if (listUri.getSelectionCount() == 1) {
 			uri = listUri.getSelection()[0];
+		}
 		super.okPressed();
 	}
 

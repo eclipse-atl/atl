@@ -27,8 +27,8 @@ import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
+import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 import org.eclipse.m2m.atl.adt.debug.core.AtlBreakpoint;
 import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlStackFrame;
@@ -44,49 +44,40 @@ import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
-
 /**
- * @author Freddy Allilaire
- * A debug model presentation is responsible for providing labels, images,
- * and editors associated with debug elements in a specific debug model.
- *
- * To allow for an extensible configuration, IDebugModelPresentation interface defines
- * a setAttribute method.
+ * A debug model presentation is responsible for providing labels, images, and editors associated with debug
+ * elements in a specific debug model. To allow for an extensible configuration, IDebugModelPresentation
+ * interface defines a setAttribute method.
  * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
-
 public class AtlDebugModelPresentation extends LabelProvider implements IDebugModelPresentation {
+	/** If you add a constant here, look in the class AtlVariable if the value is not already used. */
+	public static final int BREAKPOINT = 5;
 
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
-	static final URL BASE_URL = AtlDebugPlugin.getDefault().getBundle().getEntry("/");//$NON-NLS-1$
-	static final String iconPath = "icons/";//$NON-NLS-1$
+	static final URL BASE_URL = AtlDebugPlugin.getDefault().getBundle().getEntry("/"); //$NON-NLS-1$
 
-	// If you add a constant here, look in the class AtlVariable if the value is not already used
-	public final static int BREAKPOINT = 5;
-	private Map mapImage = null;
-	
-	private HashMap fAttributes= new HashMap(3);
+	static final String ICON_PATH = "icons/"; //$NON-NLS-1$
+
+	private Map mapImage;
+
+	private HashMap fAttributes = new HashMap(3);
 
 	/**
-	 * If the button DISPLAY VARIABLE TYPE NAMES in debugUI is pressed
-	 * then the status of the variable DISPLAY_VARIABLE_TYPE_NAMES is changed
-	 * 
-	 * This method returns true if DISPLAY_VARIABLE_TYPE_NAMES is selected in debugUI
+	 * If the button DISPLAY VARIABLE TYPE NAMES in debugUI is pressed then the status of the variable
+	 * DISPLAY_VARIABLE_TYPE_NAMES is changed. This method returns true if DISPLAY_VARIABLE_TYPE_NAMES is
+	 * selected in debugUI
 	 */
 	private boolean isShowVariableTypeNames() {
-		Boolean show= (Boolean) fAttributes.get(DISPLAY_VARIABLE_TYPE_NAMES);
-		show= show == null ? Boolean.FALSE : show;
+		Boolean show = (Boolean)fAttributes.get(DISPLAY_VARIABLE_TYPE_NAMES);
+		show = show == null ? Boolean.FALSE : show;
 		return show.booleanValue();
 	}
-	
+
 	/**
-	 * Clients may define new presentation attributes. For example, a client may wish
-	 * to define a "hexadecimal" property to display numeric values in hexadecimal. Implementations
-	 * should honor the presentation attributes defined by this interface where possible,
-	 * but do not need to honor presentation attributes defined by other clients.
-	 * To access the debug model presentation for a debug view, clients should use
-	 * DebugView#getPresentation(String).
+	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.debug.ui.IDebugModelPresentation#setAttribute(java.lang.String, java.lang.Object)
 	 */
@@ -98,7 +89,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	}
 
 	/**
-	 * This method returns an image from the path
+	 * This method returns an image from the path.
+	 * 
 	 * @param path
 	 * @return
 	 */
@@ -106,8 +98,10 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		try {
 			URL url = new URL(BASE_URL, path);
 			return ImageDescriptor.createFromURL(url).createImage();
+		} catch (MalformedURLException e) {
+			//TODO test if necessary
+			e.printStackTrace();
 		}
-		catch(MalformedURLException e) {}
 		return null;
 	}
 
@@ -121,47 +115,56 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		mapImage.put(new Integer(BREAKPOINT), null);
 	}
 
-	
 	/**
-	 * This method returns the image associate to the type of the parameter
+	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
+	 * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
 	 */
 	public Image getImage(Object item) {
-		if (mapImage == null)
+		if (mapImage == null) {
 			initMapImage();
-		
+		}
+
 		if (item instanceof AtlVariable) {
 			String imageName = null;
 			AtlVariable atlVar = (AtlVariable)item;
-//			String typeVar = null;
-//			try {
-//				typeVar = atlVar.getReferenceTypeName();
-//			} catch (DebugException e) {
-//				e.printStackTrace();
-//			}
+			// String typeVar = null;
+			// try {
+			// typeVar = atlVar.getReferenceTypeName();
+			// } catch (DebugException e) {
+			// e.printStackTrace();
+			// }
 			switch (atlVar.getDescription()) {
-				case AtlVariable.ATTRIBUTE : imageName = "attribute.gif"; break;//$NON-NLS-1$
-				case AtlVariable.ELEMENT : imageName = "element.gif"; break;//$NON-NLS-1$
-				case AtlVariable.LOCALVARIABLE : imageName = "localVariable.gif"; break;//$NON-NLS-1$
-				case AtlVariable.REFERENCE : imageName = "reference.gif"; break;//$NON-NLS-1$
-				case AtlVariable.SUPERTYPE : imageName = "supertype.gif"; break;//$NON-NLS-1$
-				default : return null;
-			}				
+				case AtlVariable.ATTRIBUTE:
+					imageName = "attribute.gif"; //$NON-NLS-1$
+					break;
+				case AtlVariable.ELEMENT:
+					imageName = "element.gif"; //$NON-NLS-1$
+					break;
+				case AtlVariable.LOCALVARIABLE:
+					imageName = "localVariable.gif"; //$NON-NLS-1$
+					break;
+				case AtlVariable.REFERENCE:
+					imageName = "reference.gif"; //$NON-NLS-1$
+					break;
+				case AtlVariable.SUPERTYPE:
+					imageName = "supertype.gif"; //$NON-NLS-1$
+					break;
+				default:
+					return null;
+			}
 			if (mapImage.get(new Integer(atlVar.getDescription())) == null) {
-				mapImage.put(new Integer(atlVar.getDescription()), createImage(iconPath + imageName));
+				mapImage.put(new Integer(atlVar.getDescription()), createImage(ICON_PATH + imageName));
 			}
 			return (Image)mapImage.get(new Integer(atlVar.getDescription()));
-		}
-		else if (item instanceof AtlBreakpoint) {
+		} else if (item instanceof AtlBreakpoint) {
 			if (mapImage.get(new Integer(BREAKPOINT)) == null) {
-				mapImage.put(new Integer(BREAKPOINT), createImage(iconPath + "breakpoint.gif"));//$NON-NLS-1$
+				mapImage.put(new Integer(BREAKPOINT), createImage(ICON_PATH + "breakpoint.gif")); //$NON-NLS-1$
 			}
 			return (Image)mapImage.get(new Integer(BREAKPOINT));
-		}
-		else if (item instanceof IMarker) {
+		} else if (item instanceof IMarker) {
 			if (mapImage.get(new Integer(BREAKPOINT)) == null) {
-				mapImage.put(new Integer(BREAKPOINT), createImage(iconPath + "breakpoint.gif"));//$NON-NLS-1$
+				mapImage.put(new Integer(BREAKPOINT), createImage(ICON_PATH + "breakpoint.gif")); //$NON-NLS-1$
 			}
 			return (Image)mapImage.get(new Integer(BREAKPOINT));
 		}
@@ -169,73 +172,80 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	}
 
 	/**
-	 * This method returns the text associate to the parameter
+	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.jface.viewers.ILabelProvider#getText(java.lang.Object)
+	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
 	 */
 	public String getText(Object item) {
 		if (item instanceof AtlDebugTarget) {
-			AtlDebugTarget target = (AtlDebugTarget) item;
-			String name = "";//$NON-NLS-1$
+			AtlDebugTarget target = (AtlDebugTarget)item;
+			String name = ""; //$NON-NLS-1$
 			try {
 				name = target.getName();
-			}
-			catch (DebugException e) {
+			} catch (DebugException e) {
 				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//				e.printStackTrace();
+				// e.printStackTrace();
 			}
-			return name + AtlDebugMessages.getString("AtlDebugModelPresentation.CONNECTEDONHOST")+ target.getHost() + AtlDebugMessages.getString("AtlDebugModelPresentation.PORT") + target.getPort(); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		else if (item instanceof AtlThread) {
-			AtlThread thread = (AtlThread) item;
+			return name
+					+ AtlDebugMessages.getString("AtlDebugModelPresentation.CONNECTEDONHOST") + target.getHost() + AtlDebugMessages.getString("AtlDebugModelPresentation.PORT") + target.getPort(); //$NON-NLS-1$ //$NON-NLS-2$
+		} else if (item instanceof AtlThread) {
+			AtlThread thread = (AtlThread)item;
 			try {
 				String currentState;
-				String message = "";//$NON-NLS-1$
+				String message = ""; //$NON-NLS-1$
 				switch (((AtlDebugTarget)thread.getDebugTarget()).getState()) {
-					case AtlDebugTarget.stateDisconnected: 	currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.DISCONNECTED"); 	break; //$NON-NLS-1$
-					case AtlDebugTarget.stateRunning: 		currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.RUNNING"); 		break; //$NON-NLS-1$
-					case AtlDebugTarget.stateSuspended: 	currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.SUSPENDED"); //$NON-NLS-1$
-															message = ((AtlDebugTarget)thread.getDebugTarget()).getMessageFromDebuggee();
-															return thread.getName() + " (" + currentState + " (" + message + "))"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					case AtlDebugTarget.stateTerminated: 	currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.TERMINATED"); 	break; //$NON-NLS-1$
-					default : currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.UNKNOWN"); //$NON-NLS-1$
+					case AtlDebugTarget.STATE_DISCONNECTED:
+						currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.DISCONNECTED"); //$NON-NLS-1$
+						break;
+					case AtlDebugTarget.STATE_RUNNING:
+						currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.RUNNING"); //$NON-NLS-1$
+						break;
+					case AtlDebugTarget.STATE_SUSPENDED:
+						currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.SUSPENDED"); //$NON-NLS-1$
+						message = ((AtlDebugTarget)thread.getDebugTarget()).getMessageFromDebuggee();
+						return thread.getName() + " (" + currentState + " (" + message + "))"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					case AtlDebugTarget.STATE_TERMINATED:
+						currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.TERMINATED"); //$NON-NLS-1$
+						break;
+					default:
+						currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.UNKNOWN"); //$NON-NLS-1$
 				}
-				return thread.getName() + " (" + currentState + ")";//$NON-NLS-1$//$NON-NLS-2$
-			}
-			catch (DebugException e) {
+				return thread.getName() + " (" + currentState + ")"; //$NON-NLS-1$//$NON-NLS-2$
+			} catch (DebugException e) {
 				return null;
 			}
-		}
-		else if (item instanceof AtlStackFrame)
+		} else if (item instanceof AtlStackFrame) {
 			return null;
-		else if (item instanceof AtlVariable) {
+		} else if (item instanceof AtlVariable) {
 			AtlVariable atlVar = (AtlVariable)item;
 			String typeVar = null;
 			try {
-				if (isShowVariableTypeNames())
+				if (isShowVariableTypeNames()) {
 					typeVar = atlVar.getReferenceTypeName();
-				else
-					typeVar = "";//$NON-NLS-1$
-				
+				} else {
+					typeVar = ""; //$NON-NLS-1$
+				}
 				String rtn = atlVar.getValue().getReferenceTypeName();
 				if (rtn.equals("Boolean") || //$NON-NLS-1$
-					rtn.equals("Integer") ||//$NON-NLS-1$
-					rtn.equals("Real"))//$NON-NLS-1$
-					return typeVar + " " + atlVar.getName() + " = " + atlVar.getValue().getValueString();//$NON-NLS-1$//$NON-NLS-2$
-				else if (rtn.equals("String"))//$NON-NLS-1$
-					return typeVar + " " + atlVar.getName() + " = '" + atlVar.getValue().getValueString() + "'";//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-				else if (rtn.equals("EnumLiteral"))//$NON-NLS-1$
-					return typeVar + " " + atlVar.getName() + " = #" + atlVar.getValue().getValueString();//$NON-NLS-1$//$NON-NLS-2$
-				else if (rtn.equals("Map Element"))//$NON-NLS-1$
+						rtn.equals("Integer") || //$NON-NLS-1$
+						rtn.equals("Real")) { //$NON-NLS-1$
+					return typeVar + " " + atlVar.getName() + " = " + atlVar.getValue().getValueString(); //$NON-NLS-1$//$NON-NLS-2$
+				} else if (rtn.equals("String")) { //$NON-NLS-1$
+					return typeVar
+							+ " " + atlVar.getName() + " = '" + atlVar.getValue().getValueString() + "'"; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+				} else if (rtn.equals("EnumLiteral")) { //$NON-NLS-1$
+					return typeVar + " " + atlVar.getName() + " = #" + atlVar.getValue().getValueString(); //$NON-NLS-1$//$NON-NLS-2$
+				} else if (rtn.equals("Map Element")) { //$NON-NLS-1$
 					return atlVar.getName();
-				else
-					return typeVar + " " + atlVar.getName() + " = " + atlVar.getReferenceTypeName() + " (id = " + atlVar.getIdVariable() + ")";//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+				} else {
+					return typeVar
+							+ " " + atlVar.getName() + " = " + atlVar.getReferenceTypeName() + " (id = " + atlVar.getIdVariable() + ")"; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+				}
 			} catch (DebugException e) {
 				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//				e.printStackTrace();
+				// e.printStackTrace();
 			}
-		}
-		else if (item instanceof AtlBreakpoint)	{
+		} else if (item instanceof AtlBreakpoint) {
 			IMarker marker = ((AtlBreakpoint)item).getMarker();
 			String location;
 			try {
@@ -244,13 +254,12 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 				Integer charStart = (Integer)marker.getAttribute(IMarker.CHAR_START);
 				Integer charEnd = (Integer)marker.getAttribute(IMarker.CHAR_END);
 				return location + " [line: " + lineNumber + //$NON-NLS-1$
-				", charStart: " + charStart + //$NON-NLS-1$
-				", charEnd: " + charEnd +//$NON-NLS-1$
-				"]";//$NON-NLS-1$
-			}
-			catch (CoreException e) {
+						", charStart: " + charStart + //$NON-NLS-1$
+						", charEnd: " + charEnd + //$NON-NLS-1$
+						"]"; //$NON-NLS-1$
+			} catch (CoreException e) {
 				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//				e.printStackTrace();
+				// e.printStackTrace();
 			}
 		}
 
@@ -258,28 +267,34 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.debug.ui.IDebugModelPresentation#computeDetail(org.eclipse.debug.core.model.IValue,
 	 *      org.eclipse.debug.ui.IValueDetailListener)
 	 */
 	public void computeDetail(IValue value, IValueDetailListener listener) {
 		try {
-			listener.detailComputed(value,value.getValueString());
-		}
-		catch (DebugException e) {
+			listener.detailComputed(value, value.getValueString());
+		} catch (DebugException e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Specific implementation of the {@link IStorageEditorInput} for disassembly.
+	 */
 	private class DisassemblyEditorInput implements IStorageEditorInput {
 
 		private IStorage contents;
-		
+
 		public DisassemblyEditorInput(IStorage contents) {
 			this.contents = contents;
 		}
-		
+
 		/**
+		 * {@inheritDoc}
+		 * 
 		 * @see org.eclipse.ui.IEditorInput#exists()
 		 */
 		public boolean exists() {
@@ -287,6 +302,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		}
 
 		/**
+		 * {@inheritDoc}
+		 * 
 		 * @see org.eclipse.ui.IEditorInput#getImageDescriptor()
 		 */
 		public ImageDescriptor getImageDescriptor() {
@@ -294,6 +311,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		}
 
 		/**
+		 * {@inheritDoc}
+		 * 
 		 * @see org.eclipse.ui.IEditorInput#getName()
 		 */
 		public String getName() {
@@ -301,6 +320,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		}
 
 		/**
+		 * {@inheritDoc}
+		 * 
 		 * @see org.eclipse.ui.IEditorInput#getPersistable()
 		 */
 		public IPersistableElement getPersistable() {
@@ -308,6 +329,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		}
 
 		/**
+		 * {@inheritDoc}
+		 * 
 		 * @see org.eclipse.ui.IEditorInput#getToolTipText()
 		 */
 		public String getToolTipText() {
@@ -315,6 +338,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		}
 
 		/**
+		 * {@inheritDoc}
+		 * 
 		 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 		 */
 		public Object getAdapter(Class adapter) {
@@ -322,6 +347,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		}
 
 		/**
+		 * {@inheritDoc}
+		 * 
 		 * @see org.eclipse.ui.IStorageEditorInput#getStorage()
 		 */
 		public IStorage getStorage() throws CoreException {
@@ -329,8 +356,12 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		}
 	}
 
-//	private IEditorPart dte;
-	
+	/**
+	 * Returns the disassembly editor.
+	 * 
+	 * @param frame the frame context
+	 * @return the disassembly editor
+	 */
 	public IEditorInput getDisassemblyEditorInput(AtlStackFrame frame) {
 		IEditorInput ret = null;
 
@@ -340,16 +371,18 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.debug.ui.ISourcePresentation#getEditorInput(java.lang.Object)
 	 */
 	public IEditorInput getEditorInput(Object element) {
-		if(element instanceof AtlStackFrame ) {
-			AtlStackFrame frame = (AtlStackFrame) element;
-			if(((AtlDebugTarget)frame.getDebugTarget()).isDisassemblyMode()) return getDisassemblyEditorInput(frame);
+		if (element instanceof AtlStackFrame) {
+			AtlStackFrame frame = (AtlStackFrame)element;
+			if (((AtlDebugTarget)frame.getDebugTarget()).isDisassemblyMode()) {
+				return getDisassemblyEditorInput(frame);
+			}
 			return new FileEditorInput(frame.getSourcefile());
-		}
-		else if(element instanceof AtlBreakpoint) {
+		} else if (element instanceof AtlBreakpoint) {
 			IMarker marker = ((AtlBreakpoint)element).getMarker();
 			IFile ifile = (IFile)marker.getResource();
 			return new FileEditorInput(ifile);
@@ -358,18 +391,21 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.debug.ui.ISourcePresentation#getEditorId(org.eclipse.ui.IEditorInput,
 	 *      java.lang.Object)
 	 */
 	public String getEditorId(IEditorInput input, Object element) {
-		if(input instanceof DisassemblyEditorInput)
-			return "org.eclipse.ui.DefaultTextEditor";//$NON-NLS-1$
-		IEditorRegistry registry= PlatformUI.getWorkbench().getEditorRegistry();
-		IEditorDescriptor descriptor= registry.getDefaultEditor(input.getName());
+		if (input instanceof DisassemblyEditorInput) {
+			return "org.eclipse.ui.DefaultTextEditor"; //$NON-NLS-1$
+		}
+		IEditorRegistry registry = PlatformUI.getWorkbench().getEditorRegistry();
+		IEditorDescriptor descriptor = registry.getDefaultEditor(input.getName());
 		if (descriptor != null) {
 			return descriptor.getId();
 		} else {
-			return "org.eclipse.ui.DefaultTextEditor";//$NON-NLS-1$
+			return "org.eclipse.ui.DefaultTextEditor"; //$NON-NLS-1$
 		}
 	}
 

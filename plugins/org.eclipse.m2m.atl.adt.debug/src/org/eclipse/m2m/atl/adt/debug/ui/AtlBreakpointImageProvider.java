@@ -20,45 +20,53 @@ import org.eclipse.ui.texteditor.IAnnotationImageProvider;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 
 /**
- * @author idrissi
- * @author wpiers
- *
+ * The ATL breakpoint image provider.
+ * 
+ * @author <a href="mailto:tarik.idrissi@laposte.net">Tarik Idrissi</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class AtlBreakpointImageProvider implements IAnnotationImageProvider {
-	
+
 	private IDebugModelPresentation fPresentation;
 
-	/* (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getManagedImage(org.eclipse.jface.text.source.Annotation)
 	 */
 	public Image getManagedImage(Annotation annotation) {
 		if (annotation instanceof MarkerAnnotation) {
-			MarkerAnnotation markerAnnotation= (MarkerAnnotation) annotation;
-			IMarker marker= markerAnnotation.getMarker();
-			if (marker != null && marker.exists())
+			MarkerAnnotation markerAnnotation = (MarkerAnnotation)annotation;
+			IMarker marker = markerAnnotation.getMarker();
+			if (marker != null && marker.exists()) {
 				return getPresentation().getImage(marker);
+			}
 		}
-		
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getImageDescriptorId(org.eclipse.jface.text.source.Annotation)
 	 */
 	public String getImageDescriptorId(Annotation annotation) {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getImageDescriptor(java.lang.String)
 	 */
 	public ImageDescriptor getImageDescriptor(String imageDescritporId) {
 		return null;
 	}
-	
+
 	private IDebugModelPresentation getPresentation() {
-		if (fPresentation == null) 
-			fPresentation= DebugUITools.newDebugModelPresentation();
+		if (fPresentation == null) {
+			fPresentation = DebugUITools.newDebugModelPresentation();
+		}
 		return fPresentation;
 	}
 }

@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Freddy Allilaire (INRIA) - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.m2m.atl.adt.debug.core;
 
 import java.util.logging.Level;
@@ -25,43 +25,54 @@ import org.eclipse.debug.core.model.LineBreakpoint;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
-public class AtlBreakpoint extends LineBreakpoint 
-{
-	public static final String ATL_BREAKPOINT_MARKER = "org.eclipse.m2m.atl.adt.debug.atlBreakpointMarker";//$NON-NLS-1$
-	
+/**
+ * ATL breakpoint redefinition.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ */
+public class AtlBreakpoint extends LineBreakpoint {
+
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
-	public AtlBreakpoint() {}
-	
-	public AtlBreakpoint(final IResource resource, final String location, final int lineNumber, final int charStart, final int charEnd) throws DebugException {
-		IWorkspaceRunnable wr= new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {				
+	private static final String ATL_BREAKPOINT_MARKER = "org.eclipse.m2m.atl.adt.debug.atlBreakpointMarker"; //$NON-NLS-1$
+
+	/**
+	 * Creates a breakpoint.
+	 * 
+	 * @param resource the resource to mark
+	 * @param location the breakpoint location
+	 * @param lineNumber the line number
+	 * @param charStart the start index
+	 * @param charEnd the end index
+	 * @throws DebugException
+	 */
+	public AtlBreakpoint(final IResource resource, final String location, final int lineNumber,
+			final int charStart, final int charEnd) throws DebugException {
+		IWorkspaceRunnable wr = new IWorkspaceRunnable() {
+			public void run(IProgressMonitor monitor) throws CoreException {
 				// create the marker
 				setMarker(resource.createMarker(ATL_BREAKPOINT_MARKER));
 				// add attributes
-				addBreakpointAttributes(getModelIdentifier(), location, true, lineNumber, charStart, charEnd);			
+				addBreakpointAttributes(getModelIdentifier(), location, true, lineNumber, charStart, charEnd);
 				// add to breakpoint manager
-				setRegistered(true);				
+				setRegistered(true);
 			}
 		};
 		run(wr);
 	}
 
-	
 	/**
-	 * Adds the standard attributes of a line breakpoint
-	 * The standard attributes are:
+	 * Adds the standard attributes of a line breakpoint. The standard attributes are:
 	 * <ol>
 	 * <li>IBreakpoint.ID</li>
 	 * <li>IBreakpoint.ENABLED</li>
 	 * <li>IMarker.LINE_NUMBER</li>
 	 * <li>IMarker.CHAR_START</li>
 	 * <li>IMarker.CHAR_END</li>
-	 * </ol>	
-	 * 
-	 */	
-	private void addBreakpointAttributes(String modelIdentifier, String location, boolean enabled, int lineNumber, int charStart, int charEnd) 
-	{
+	 * </ol>
+	 */
+	private void addBreakpointAttributes(String modelIdentifier, String location, boolean enabled,
+			int lineNumber, int charStart, int charEnd) {
 		try {
 			IMarker marker = ensureMarker();
 			marker.setAttribute(IBreakpoint.ID, modelIdentifier);
@@ -71,23 +82,27 @@ public class AtlBreakpoint extends LineBreakpoint
 			marker.setAttribute(IMarker.CHAR_START, new Integer(charStart));
 			marker.setAttribute(IMarker.CHAR_END, new Integer(charEnd));
 			marker.setAttribute(IBreakpoint.REGISTERED, false); // breakpoint has not been registered yet
-		} catch(CoreException e) {
+		} catch (CoreException e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			System.err.println(e);
+			// System.err.println(e);
 		}
-	}	
-	
-	
+	}
+
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.debug.core.model.IBreakpoint#getModelIdentifier()
 	 */
-	public String getModelIdentifier() 
-	{
-		 return AtlDebugPlugin.getUniqueIdentifier();
+	public String getModelIdentifier() {
+		return AtlDebugPlugin.getUniqueIdentifier();
 	}
-	
+
 	/**
-	 * Execute the given workspace runnable
+	 * Execute the given workspace runnable.
+	 * 
+	 * @param wr
+	 *            the workspace runnable
+	 * @throws DebugException
 	 */
 	protected void run(IWorkspaceRunnable wr) throws DebugException {
 		try {

@@ -20,18 +20,25 @@ import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.adt.launching.sourcelookup.AtlSourceLocator;
 
 /**
- * @author Freddy Allilaire
+ * The delegate for remote ATL configurations.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class RemoteAtlConfigurationDelegate	implements ILaunchConfigurationDelegate {
 
 	AtlDebugTarget mTarget;
-	ILaunchConfiguration configuration;
-	ILaunch launch;
+	ILaunchConfiguration launchConfiguration;
+	ILaunch launchInterface;
 	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
+	 */
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		
-		this.configuration = configuration;
-		this.launch = launch;
+		this.launchConfiguration = configuration;
+		this.launchInterface = launch;
 		
 		if (launch.getLaunchMode().equals(ILaunchManager.DEBUG_MODE)) {
 			launch.setSourceLocator(new AtlSourceLocator());

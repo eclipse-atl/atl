@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
@@ -35,28 +34,43 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * @author Freddy Allilaire
+ * The remote configuration tab.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements ModifyListener {
-	
+
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private Composite container;
 
 	private Group group1;
+
 	private Combo listProject;
+
 	private Label labelProject;
+
 	private Combo listFile;
+
 	private Label labelFile;
-	
+
 	private Group group2;
+
 	private Text textHost;
+
 	private Label labelHost;
+
 	private Text textPort;
+
 	private Label labelPort;
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#createControl(org.eclipse.swt.widgets.Composite)
+	 */
 	public void createControl(Composite parent) {
-		
+
 		container = new Composite(parent, SWT.NULL);
 
 		GridLayout layout = new GridLayout();
@@ -65,38 +79,38 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 		layout.verticalSpacing = 9;
 		layout.makeColumnsEqualWidth = true;
 
-		group1 = new Group(container,SWT.NULL);
-		labelProject = new Label(group1,SWT.NULL);
-		listProject = new Combo(group1,SWT.NULL | SWT.READ_ONLY);
-		labelFile = new Label(group1,SWT.NULL);
-		listFile = new Combo(group1,SWT.NULL | SWT.READ_ONLY);
+		group1 = new Group(container, SWT.NULL);
+		labelProject = new Label(group1, SWT.NULL);
+		listProject = new Combo(group1, SWT.NULL | SWT.READ_ONLY);
+		labelFile = new Label(group1, SWT.NULL);
+		listFile = new Combo(group1, SWT.NULL | SWT.READ_ONLY);
 
-		group2 = new Group(container,SWT.NULL);
-		labelHost = new Label(group2,SWT.NULL);
-		textHost = new Text(group2,SWT.BORDER | SWT.SINGLE);
-		labelPort = new Label(group2,SWT.NULL);
-		textPort = new Text(group2,SWT.BORDER | SWT.SINGLE);
-		
+		group2 = new Group(container, SWT.NULL);
+		labelHost = new Label(group2, SWT.NULL);
+		textHost = new Text(group2, SWT.BORDER | SWT.SINGLE);
+		labelPort = new Label(group2, SWT.NULL);
+		textPort = new Text(group2, SWT.BORDER | SWT.SINGLE);
+
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		GridData gd2 = new GridData(GridData.FILL_HORIZONTAL);
-		
+
 		group1.setLayoutData(gd);
 		group2.setLayoutData(gd2);
 
-		/*********************************
+		/*****************************************************************************************************
 		 * Creation of FormData
-		 ******************************* */
-		
-		FormData labelLData = AtlLauncherTools.createFormData(15,35,10,40);
-		FormData textLData = AtlLauncherTools.createFormData(45,75,10,40); 
-		FormData label2LData = AtlLauncherTools.createFormData(15,35,60,90);
-		FormData text2LData = AtlLauncherTools.createFormData(45,75,60,90);
-		
+		 ****************************************************************************************************/
+
+		FormData labelLData = AtlLauncherTools.createFormData(15, 35, 10, 40);
+		FormData textLData = AtlLauncherTools.createFormData(45, 75, 10, 40);
+		FormData label2LData = AtlLauncherTools.createFormData(15, 35, 60, 90);
+		FormData text2LData = AtlLauncherTools.createFormData(45, 75, 60, 90);
+
 		FormLayout groupLayout = new FormLayout();
 
-		/**********************
+		/*****************************************************************************************************
 		 * Components of group1
-		 **********************/
+		 ****************************************************************************************************/
 
 		group1.setText(AtlDebugMessages.getString("RemoteAtlTab.PROJECT")); //$NON-NLS-1$
 
@@ -105,27 +119,27 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 
 		listProject.setLayoutData(textLData);
 		listProject.setItems(AtlLauncherTools.projectNames());
-		
+
 		listProject.addModifyListener(this);
 		listProject.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				listFile.setItems(AtlLauncherTools.fileNames(listProject.getText()));
 			}
 		});
-		
+
 		labelFile.setLayoutData(label2LData);
 		labelFile.setText(AtlDebugMessages.getString("RemoteAtlTab.ATLFILENAME")); //$NON-NLS-1$
 
 		listFile.setLayoutData(text2LData);
 
 		listFile.addModifyListener(this);
-		
+
 		group1.setLayout(groupLayout);
 		group1.layout();
-		
-		/**********************
+
+		/*****************************************************************************************************
 		 * Components of group2
-		 **********************/
+		 ****************************************************************************************************/
 
 		group2.setText(AtlDebugMessages.getString("RemoteAtlTab.CONNECTIONPROPERTIES")); //$NON-NLS-1$
 
@@ -134,34 +148,36 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 
 		textHost.setLayoutData(textLData);
 		textHost.addModifyListener(this);
-		
+
 		labelPort.setLayoutData(label2LData);
 		labelPort.setText(AtlDebugMessages.getString("RemoteAtlTab.PORT")); //$NON-NLS-1$
 
 		textPort.setLayoutData(text2LData);
 		textPort.addModifyListener(this);
-		
+
 		group2.setLayout(groupLayout);
 		group2.layout();
 
 		group1.pack();
 		group2.pack();
-		
+
 		container.layout();
 		container.pack();
 		setControl(container);
 		canSave();
 	}
-	
+
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#setDefaults(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
 	 */
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 	}
-	
+
 	/**
-	 * Display the configuration saved
-	 * 
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#initializeFrom(org.eclipse.debug.core.ILaunchConfiguration)
 	 */
 	public void initializeFrom(ILaunchConfiguration configuration) {
@@ -172,22 +188,19 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 			textHost.setText(configuration.getAttribute(AtlLauncherTools.HOST, "")); //$NON-NLS-1$
 			canSave();
 			updateLaunchConfigurationDialog();
-		}
-		catch (CoreException e) {
+		} catch (CoreException e) {
 			listProject.setText(""); //$NON-NLS-1$
 			listFile.setText(""); //$NON-NLS-1$
 			textPort.setText(""); //$NON-NLS-1$
 			textHost.setText(""); //$NON-NLS-1$
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * When the button "Apply" is pushed, this method is launched
-	 * The configuration is saved.
-	 * INPUT, OUTPUT and PATH
-	 * 
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
@@ -198,8 +211,8 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 	}
 
 	/**
-	 * Returns the name of the tab
-	 * 
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getName()
 	 */
 	public String getName() {
@@ -207,7 +220,9 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 	}
 
 	/**
-	 * @see ILaunchConfigurationTab#canSave()
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#canSave()
 	 */
 	public boolean canSave() {
 		if (listProject.getText().equals("")) { //$NON-NLS-1$
@@ -219,14 +234,14 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 			return false;
 		}
 		try {
-			if (!textPort.getText().equals("")) //$NON-NLS-1$
+			if (!textPort.getText().equals("")) { //$NON-NLS-1$
 				Integer.parseInt(textPort.getText());
-		}
-		catch (NumberFormatException nfe) {
+			}
+		} catch (NumberFormatException nfe) {
 			setErrorMessage(AtlDebugMessages.getString("RemoteAtlTab.PORTNOTINTEGER")); //$NON-NLS-1$
 			return false;
 		}
-		
+
 		this.setErrorMessage(null);
 		return true;
 	}
@@ -236,11 +251,13 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
 	 */
 	public void modifyText(ModifyEvent e) {
 		canSave();
 		updateLaunchConfigurationDialog();
 	}
-	
+
 }

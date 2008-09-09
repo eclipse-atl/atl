@@ -19,14 +19,19 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * The main plugin class to be used in the desktop.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AtlDebugPlugin extends AbstractUIPlugin {
-	//The shared instance.
+
+	/** The shared instance. */
 	private static AtlDebugPlugin plugin;
-	//Resource bundle.
-	private ResourceBundle resourceBundle;
-	
+
 	IDebugModelPresentation fUtilPresentation;
+
+	/** Resource bundle. */
+	private ResourceBundle resourceBundle;
+
 	/**
 	 * The constructor.
 	 */
@@ -34,7 +39,8 @@ public class AtlDebugPlugin extends AbstractUIPlugin {
 		super();
 		plugin = this;
 		try {
-			resourceBundle = ResourceBundle.getBundle("org.eclipse.m2m.atl.adt.debug.AtlDebugPluginResources");//$NON-NLS-1$
+			resourceBundle = ResourceBundle
+					.getBundle("org.eclipse.m2m.atl.adt.debug.AtlDebugPluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -42,14 +48,19 @@ public class AtlDebugPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance.
+	 * 
+	 * @return the shared instance.
 	 */
 	public static AtlDebugPlugin getDefault() {
 		return plugin;
 	}
 
 	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
+	 * Returns the string from the plugin's resource bundle, or 'key' if not found.
+	 * 
+	 * @param key
+	 *            the default value
+	 * @return the string from the plugin's resource bundle, or 'key' if not found
 	 */
 	public static String getResourceString(String key) {
 		ResourceBundle bundle = AtlDebugPlugin.getDefault().getResourceBundle();
@@ -61,23 +72,25 @@ public class AtlDebugPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the plugin's resource bundle,
+	 * Returns the plugin's resource bundle.
+	 * 
+	 * @return the plugin's resource bundle
 	 */
 	public ResourceBundle getResourceBundle() {
 		return resourceBundle;
 	}
-	
+
 	/**
-	 * Returns the unique identifier of the plugin
+	 * Returns the unique identifier of the plugin.
+	 * 
 	 * @return the unique identifier of the plugin
 	 */
 	public static String getUniqueIdentifier() {
 		return AtlDebugPlugin.getDefault().getBundle().getSymbolicName();
 	}
-	
+
 	/**
-	 * Returns a shared utility Atl debug model presentation. Clients should not
-	 * dispose the presentation.
+	 * Returns a shared utility Atl debug model presentation. Clients should not dispose the presentation.
 	 * 
 	 * @return an Atl debug model presentation
 	 */

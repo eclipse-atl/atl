@@ -16,76 +16,82 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlStackFrame;
 import org.eclipse.m2m.atl.adt.debug.core.AtlThread;
-import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
+ * DisassemblyModeAction is the action runned by the popup menu Disassembly Mode for IElement.
  * 
- * @author Freddy Allilaire
- *
- * DisassemblyModeAction is the action runned by the popup menu Disassembly Mode for IElement
- * @see extension point="org.eclipse.ui.popupMenus" in plugin.xml
- * This action allows to switch between normal and disassembly mode.
+ * @see extension point="org.eclipse.ui.popupMenus" in plugin.xml This action allows to switch between normal
+ *      and disassembly mode.
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class DisassemblyModeAction implements IObjectActionDelegate {
 
+	private ISelection selectionInterface;
+
 	/**
-	 * Constructor for DisassemblyModeAction
+	 * Constructor for DisassemblyModeAction.
 	 */
 	public DisassemblyModeAction() {
 		super();
 	}
 
 	/**
-	 * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
+	 *      org.eclipse.ui.IWorkbenchPart)
 	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 	}
 
 	/**
-	 * Main method of the action, when the action is selected => "run" is launched
-	 * @see IActionDelegate#run(IAction)
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
 		boolean checked = action.isChecked();
-		
-		Object elem = ((IStructuredSelection)selection).getFirstElement();
+
+		Object elem = ((IStructuredSelection)selectionInterface).getFirstElement();
 		AtlDebugTarget adt = null;
-		if(elem instanceof AtlThread) {
+		if (elem instanceof AtlThread) {
 			adt = (AtlDebugTarget)((AtlThread)elem).getDebugTarget();
-		} else if(elem instanceof AtlStackFrame) {
-				adt = (AtlDebugTarget)((AtlStackFrame)elem).getDebugTarget();
-		} else if(elem instanceof AtlDebugTarget) {
+		} else if (elem instanceof AtlStackFrame) {
+			adt = (AtlDebugTarget)((AtlStackFrame)elem).getDebugTarget();
+		} else if (elem instanceof AtlDebugTarget) {
 			adt = (AtlDebugTarget)elem;
 		}
 
-		if(adt != null) {
+		if (adt != null) {
 			adt.setDisassemblyMode(checked);
 		}
 	}
 
 	/**
-	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
+	 *      org.eclipse.jface.viewers.ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
-		this.selection = selection;
+		this.selectionInterface = selection;
 
 		Object elem = ((IStructuredSelection)selection).getFirstElement();
 		AtlDebugTarget adt = null;
-		
-		if(elem instanceof AtlThread) {
+
+		if (elem instanceof AtlThread) {
 			adt = (AtlDebugTarget)((AtlThread)elem).getDebugTarget();
-		} else if(elem instanceof AtlStackFrame) {
-				adt = (AtlDebugTarget)((AtlStackFrame)elem).getDebugTarget();
-		} else if(elem instanceof AtlDebugTarget) {
+		} else if (elem instanceof AtlStackFrame) {
+			adt = (AtlDebugTarget)((AtlStackFrame)elem).getDebugTarget();
+		} else if (elem instanceof AtlDebugTarget) {
 			adt = (AtlDebugTarget)elem;
 		}
-		
-		if(adt != null) {
+
+		if (adt != null) {
 			action.setChecked(adt.isDisassemblyMode());
 		}
 	}
 
-	private ISelection selection;
 }

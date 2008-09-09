@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.launching;
 
-
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.CoreException;
@@ -23,28 +22,42 @@ import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
- * The method "launch" is launched when you click on the button "Run" or "Debug"
+ * The method "launch" is launched when you click on the button "Run" or "Debug".
  * 
- * @author Freddy Allilaire
- *
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
 
+	/** The common ATL logger. */
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
-	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		String atlVMName = configuration.getAttribute(AtlLauncherTools.ATLVM, "");//$NON-NLS-1$
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration,
+	 *      java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
+			IProgressMonitor monitor) throws CoreException {
+		String atlVMName = configuration.getAttribute(AtlLauncherTools.ATLVM, ""); //$NON-NLS-1$
 		AtlVM atlVM = AtlVM.getVM(atlVMName);
-		
-		boolean printExecutionTime = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.OPTION_PRINT_EXECUTION_TIME, false);
+
+		boolean printExecutionTime = launch.getLaunchConfiguration().getAttribute(
+				AtlLauncherTools.OPTION_PRINT_EXECUTION_TIME, false);
 
 		long startTime = System.currentTimeMillis();
 		atlVM.launch(configuration, mode, launch, monitor);
 		long endTime = System.currentTimeMillis();
-		if(printExecutionTime && !mode.equals(ILaunchManager.DEBUG_MODE)) {
-			logger.info(launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.ATLFILENAME, AtlDebugMessages.getString("AtlLaunchConfigurationDelegate.RESULT", new Object[]{new Double(((endTime - startTime) / 1000.))} ))); //$NON-NLS-1$
+		if (printExecutionTime && !mode.equals(ILaunchManager.DEBUG_MODE)) {
+			logger
+					.info(launch
+							.getLaunchConfiguration()
+							.getAttribute(
+									AtlLauncherTools.ATLFILENAME,
+									AtlDebugMessages
+											.getString(
+													"AtlLaunchConfigurationDelegate.RESULT", new Object[] {new Double((endTime - startTime) / 1000.)}))); //$NON-NLS-1$
 		}
 	}
 
 }
-

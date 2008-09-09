@@ -56,103 +56,120 @@ import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+/**
+ * The "advanced" tab in ATL configurations.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ */
 public class AdvancedTab extends AbstractLaunchConfigurationTab implements ModifyListener, SelectionListener {
 
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
-	final static String SUPERIMPOSE = "SUPERIMPOSE";//$NON-NLS-1$
+	static final String SUPERIMPOSE = "SUPERIMPOSE"; //$NON-NLS-1$
 
-    private Composite container;
+	private Composite container;
 
-    private Group groupSuperimpose;
-    private Table tableSuperimpose;
-    private Button buttonSuperimpose;
-    private Button buttonRemoveSuperimpose;
-    
+	private Group groupSuperimpose;
+
+	private Table tableSuperimpose;
+
+	private Button buttonSuperimpose;
+
+	private Button buttonRemoveSuperimpose;
+
 	private Group groupOthersInformation;
+
 	private Button buttonModeDebug;
+
 	private Button buttonAllowInterModelReferences;
+
 	private Combo atlVMs;
 
 	private Map buttonArray = new HashMap();
-	
-    public void createControl(Composite parent) {
 
-        container = new Composite(parent, SWT.NULL);
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#createControl(org.eclipse.swt.widgets.Composite)
+	 */
+	public void createControl(Composite parent) {
 
-        groupSuperimpose = new Group(container, SWT.NULL);
-        buttonSuperimpose = new Button(groupSuperimpose, SWT.CENTER);
-        tableSuperimpose = new Table(groupSuperimpose, SWT.FULL_SELECTION | SWT.BORDER);
-        buttonRemoveSuperimpose = new Button(groupSuperimpose, SWT.CENTER);
+		container = new Composite(parent, SWT.NULL);
 
-        groupOthersInformation = new Group(container,SWT.NULL);
-		buttonModeDebug = new Button(groupOthersInformation,SWT.CHECK);
+		groupSuperimpose = new Group(container, SWT.NULL);
+		buttonSuperimpose = new Button(groupSuperimpose, SWT.CENTER);
+		tableSuperimpose = new Table(groupSuperimpose, SWT.FULL_SELECTION | SWT.BORDER);
+		buttonRemoveSuperimpose = new Button(groupSuperimpose, SWT.CENTER);
+
+		groupOthersInformation = new Group(container, SWT.NULL);
+		buttonModeDebug = new Button(groupOthersInformation, SWT.CHECK);
 		buttonAllowInterModelReferences = new Button(groupOthersInformation, SWT.CHECK);
-        
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 1;
-        layout.makeColumnsEqualWidth = true;
-        
-        GridData gd3 = new GridData(GridData.FILL_HORIZONTAL);
-        groupOthersInformation.setLayoutData(gd3);
-        
-        container.setLayout(layout);
-        
-        groupSuperimpose.setLayoutData(new GridData(GridData.FILL_BOTH));
-        
-        /***********************************************************************
-         * GroupSuperimpose
-         **********************************************************************/
-        
-        GridLayout groupLayout = new GridLayout();
-        groupLayout.numColumns = 4;
-        groupLayout.makeColumnsEqualWidth = true;
 
-        groupSuperimpose.setLayout(groupLayout);
-        
-        groupSuperimpose.setText(AtlDebugMessages.getString("AdvancedTab.SUPERIMPOSE")); //$NON-NLS-1$
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 1;
+		layout.makeColumnsEqualWidth = true;
 
-        buttonSuperimpose.setText(AtlDebugMessages.getString("AdvancedTab.ADD")); //$NON-NLS-1$
-        buttonSuperimpose.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent evt) {
-                addPath(AdvancedTab.SUPERIMPOSE, tableSuperimpose);
-                canSave();
-                updateLaunchConfigurationDialog();
-            }
-        });
-        
-        buttonRemoveSuperimpose.setText(AtlDebugMessages.getString("AdvancedTab.REMOVE")); //$NON-NLS-1$
-        buttonRemoveSuperimpose.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent evt) {
-                removePath(tableSuperimpose);
-                canSave();
-                updateLaunchConfigurationDialog();
-            }
-        });
+		GridData gd3 = new GridData(GridData.FILL_HORIZONTAL);
+		groupOthersInformation.setLayoutData(gd3);
 
-        TableLayout tableLayout = new TableLayout();
-        tableSuperimpose.setLayout(tableLayout);
-        tableLayout.addColumnData(new ColumnWeightData(100));
-        tableSuperimpose.setLinesVisible(true);
-        tableSuperimpose.setHeaderVisible(true);
+		container.setLayout(layout);
 
-        //ModelChoiceTab.TABLELIBNAME
-        TableColumn superimposeName = new TableColumn(tableSuperimpose, SWT.LEFT);
-        superimposeName.setText(AtlDebugMessages.getString("AdvancedTab.SUPERIMPOSE")); //$NON-NLS-1$
+		groupSuperimpose.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-        buttonSuperimpose.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        buttonRemoveSuperimpose.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		/*****************************************************************************************************
+		 * GroupSuperimpose
+		 ****************************************************************************************************/
 
-        GridData gd = new GridData(GridData.FILL_BOTH);
-        gd.horizontalSpan = 3;
-        gd.verticalSpan = 3;
-        tableSuperimpose.setLayoutData(gd);
+		GridLayout groupLayout = new GridLayout();
+		groupLayout.numColumns = 4;
+		groupLayout.makeColumnsEqualWidth = true;
 
-        /** ***************************************** */
-        
-        /**********************
+		groupSuperimpose.setLayout(groupLayout);
+
+		groupSuperimpose.setText(AtlDebugMessages.getString("AdvancedTab.SUPERIMPOSE")); //$NON-NLS-1$
+
+		buttonSuperimpose.setText(AtlDebugMessages.getString("AdvancedTab.ADD")); //$NON-NLS-1$
+		buttonSuperimpose.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent evt) {
+				addPath(AdvancedTab.SUPERIMPOSE, tableSuperimpose);
+				canSave();
+				updateLaunchConfigurationDialog();
+			}
+		});
+
+		buttonRemoveSuperimpose.setText(AtlDebugMessages.getString("AdvancedTab.REMOVE")); //$NON-NLS-1$
+		buttonRemoveSuperimpose.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent evt) {
+				removePath(tableSuperimpose);
+				canSave();
+				updateLaunchConfigurationDialog();
+			}
+		});
+
+		TableLayout tableLayout = new TableLayout();
+		tableSuperimpose.setLayout(tableLayout);
+		tableLayout.addColumnData(new ColumnWeightData(100));
+		tableSuperimpose.setLinesVisible(true);
+		tableSuperimpose.setHeaderVisible(true);
+
+		// ModelChoiceTab.TABLELIBNAME
+		TableColumn superimposeName = new TableColumn(tableSuperimpose, SWT.LEFT);
+		superimposeName.setText(AtlDebugMessages.getString("AdvancedTab.SUPERIMPOSE")); //$NON-NLS-1$
+
+		buttonSuperimpose.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		buttonRemoveSuperimpose.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
+				| GridData.VERTICAL_ALIGN_BEGINNING));
+
+		GridData gd = new GridData(GridData.FILL_BOTH);
+		gd.horizontalSpan = 3;
+		gd.verticalSpan = 3;
+		tableSuperimpose.setLayoutData(gd);
+
+		/** ***************************************** */
+
+		/*****************************************************************************************************
 		 * Components of group3
-		 **********************/
+		 ****************************************************************************************************/
 
 		groupOthersInformation.setText(AtlDebugMessages.getString("MainAtlTab.OTHERSPARAMETERS")); //$NON-NLS-1$
 
@@ -163,20 +180,20 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 		buttonModeDebug.setLayoutData(new GridData(GridData.FILL_BOTH));
 		buttonModeDebug.setText(AtlDebugMessages.getString("MainAtlTab.MODEDEBUG")); //$NON-NLS-1$
 		buttonModeDebug.addSelectionListener(this);
-		
+
 		checkButtonFactory();
-		
-        Composite groupATLVMs = new Composite(groupOthersInformation, SWT.SHADOW_NONE);
+
+		Composite groupATLVMs = new Composite(groupOthersInformation, SWT.SHADOW_NONE);
 		Label atlVMLabel = new Label(groupATLVMs, SWT.NULL);
-		atlVMLabel.setText("ATL Virtual Machine: ");//$NON-NLS-1$
+		atlVMLabel.setText("ATL Virtual Machine: "); //$NON-NLS-1$
 		atlVMLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		
+
 		atlVMs = new Combo(groupATLVMs, SWT.NULL | SWT.READ_ONLY);
 		atlVMs.setItems(AtlVM.getVMs());
 		atlVMs.select(0);
 		atlVMs.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 		atlVMs.addModifyListener(this);
-		
+
 		groupATLVMs.setLayout(new GridLayout(2, false));
 
 		groupLayout = new GridLayout();
@@ -184,56 +201,66 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 		groupLayout.makeColumnsEqualWidth = true;
 
 		groupOthersInformation.setLayout(groupLayout);
-        
-        
-        container.layout();
-        container.pack();
-        setControl(container);
-        canSave();
-    }
 
-    protected void updateLaunchConfigurationDialog() {
+		container.layout();
+		container.pack();
+		setControl(container);
+		canSave();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#updateLaunchConfigurationDialog()
+	 */
+	protected void updateLaunchConfigurationDialog() {
 		if (getLaunchConfigurationDialog() != null) {
 			ILaunchConfigurationTab[] tabs = getLaunchConfigurationDialog().getTabs();
 			for (int i = 0; i < tabs.length; i++) {
 				if (tabs[i] instanceof MainAtlTab) {
-					((MainAtlTab) tabs[i]).superimposedChanged(createSuperimposedList());
+					((MainAtlTab)tabs[i]).superimposedChanged(createSuperimposedList());
 				}
 			}
 		}
-    	super.updateLaunchConfigurationDialog();
-    }
+		super.updateLaunchConfigurationDialog();
+	}
 
 	private void checkButtonFactory() {
-		for (int i = 0; i < AtlLauncherTools.additionalParamIds.length; i++) {
+		for (int i = 0; i < AtlLauncherTools.ADDITIONAL_PARAM_IDS.length; i++) {
 			Button newCheckButton = new Button(groupOthersInformation, SWT.CHECK);
 			newCheckButton.setLayoutData(new GridData(GridData.FILL_BOTH));
-			newCheckButton.setText(AtlLauncherTools.additionalParamLabels[i]);
+			newCheckButton.setText(AtlLauncherTools.ADDITIONAL_PARAM_LABELS[i]);
 			newCheckButton.addSelectionListener(this);
-			buttonArray.put(AtlLauncherTools.additionalParamIds[i], newCheckButton);
+			buttonArray.put(AtlLauncherTools.ADDITIONAL_PARAM_IDS[i], newCheckButton);
 		}
 	}
-    
-    public String getName() {
-        return AtlLauncherTools.ADVANCEDTABNAME;
-    }
 
-    public void initializeFrom(ILaunchConfiguration configuration) {
-        try {
-            List superimpose = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
+	public String getName() {
+		return AtlLauncherTools.ADVANCEDTABNAME;
+	}
 
-            tableSuperimpose.removeAll();
-            for (Iterator i = superimpose.iterator(); i.hasNext();) {
-                String mName = (String) i.next();
-                TableItem item = new TableItem(tableSuperimpose, SWT.NONE);
-                item.setText(mName);
-            }
-            
-            buttonModeDebug.setSelection(configuration.getAttribute(AtlLauncherTools.MODEDEBUG, false));
-			buttonAllowInterModelReferences.setSelection(configuration.getAttribute(AtlLauncherTools.AllowInterModelReferences, false));
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#initializeFrom(org.eclipse.debug.core.ILaunchConfiguration)
+	 */
+	public void initializeFrom(ILaunchConfiguration configuration) {
+		try {
+			List superimpose = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
+
+			tableSuperimpose.removeAll();
+			for (Iterator i = superimpose.iterator(); i.hasNext();) {
+				String mName = (String)i.next();
+				TableItem item = new TableItem(tableSuperimpose, SWT.NONE);
+				item.setText(mName);
+			}
+
+			buttonModeDebug.setSelection(configuration.getAttribute(AtlLauncherTools.MODEDEBUG, false));
+			buttonAllowInterModelReferences.setSelection(configuration.getAttribute(
+					AtlLauncherTools.ALLOWINTERMODELREFERENCES, false));
 
 			for (int item = 0; item < atlVMs.getItems().length; item++) {
-				if (atlVMs.getItem(item).equals(configuration.getAttribute(AtlLauncherTools.ATLVM, ""))) {//$NON-NLS-1$
+				if (atlVMs.getItem(item).equals(configuration.getAttribute(AtlLauncherTools.ATLVM, ""))) { //$NON-NLS-1$
 					atlVMs.select(item);
 				}
 			}
@@ -243,139 +270,167 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 				Button currentButton = (Button)buttonArray.get(currentButtonName);
 				currentButton.setSelection(configuration.getAttribute(currentButtonName, false));
 			}
-			
-            canSave();
-            updateLaunchConfigurationDialog();
-        } catch (CoreException e) {
-            tableSuperimpose.removeAll();
+
+			canSave();
+			updateLaunchConfigurationDialog();
+		} catch (CoreException e) {
+			tableSuperimpose.removeAll();
 			buttonModeDebug.setSelection(false);
 			buttonAllowInterModelReferences.setSelection(true);
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//            e.printStackTrace();
-        }
-    }
-    
-    private List createSuperimposedList() {
-        List superimpose = new ArrayList();
-        for (int i=0; i < tableSuperimpose.getItemCount(); i++) {
-            TableItem ti = tableSuperimpose.getItem(i);
-            superimpose.add(ti.getText());
-        }
-        return superimpose;
-    }
+			// e.printStackTrace();
+		}
+	}
 
-    public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-        configuration.setAttribute(AtlLauncherTools.SUPERIMPOSE, createSuperimposedList());
-        
-		configuration.setAttribute(AtlLauncherTools.AllowInterModelReferences, buttonAllowInterModelReferences.getSelection());
+	private List createSuperimposedList() {
+		List superimpose = new ArrayList();
+		for (int i = 0; i < tableSuperimpose.getItemCount(); i++) {
+			TableItem ti = tableSuperimpose.getItem(i);
+			superimpose.add(ti.getText());
+		}
+		return superimpose;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
+	 */
+	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+		configuration.setAttribute(AtlLauncherTools.SUPERIMPOSE, createSuperimposedList());
+
+		configuration.setAttribute(AtlLauncherTools.ALLOWINTERMODELREFERENCES,
+				buttonAllowInterModelReferences.getSelection());
 		configuration.setAttribute(AtlLauncherTools.MODEDEBUG, buttonModeDebug.getSelection());
 		configuration.setAttribute(AtlLauncherTools.ATLVM, atlVMs.getItem(atlVMs.getSelectionIndex()));
-		
+
 		for (Iterator it = buttonArray.keySet().iterator(); it.hasNext();) {
 			String currentButtonName = (String)it.next();
 			Button currentButton = (Button)buttonArray.get(currentButtonName);
 			configuration.setAttribute(currentButtonName, currentButton.getSelection());
 		}
-    }
+	}
 
-    public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-    }
-    
-    /**
-     * Validates tab for saving.
-     * @return True if the tab information is valid for saving 
-     */
-    public boolean canSave() {
-        if (tableSuperimpose.getItemCount() != 0) {
-            for (int i=0; i < tableSuperimpose.getItemCount(); i++)
-                if (tableSuperimpose.getItem(i).getText().equals("")) { //$NON-NLS-1$
-                    this.setErrorMessage(AtlDebugMessages.getString("AdvancedTab.GIVEPATHSUPERIMPOSE")); //$NON-NLS-1$
-                    return false;
-                }
-        }
-        
-        this.setErrorMessage(null);
-        return true;
-    }
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#setDefaults(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
+	 */
+	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
+	}
 
-    /**
-     * Returns the icon associate with the tab
-     */
-    public Image getImage() {
-        return AtlLauncherTools.createImage(AtlLauncherTools.PATHICONATL);
-    }
+	/**
+	 * Validates tab for saving.
+	 * 
+	 * @return True if the tab information is valid for saving
+	 */
+	public boolean canSave() {
+		if (tableSuperimpose.getItemCount() != 0) {
+			for (int i = 0; i < tableSuperimpose.getItemCount(); i++) {
+				if (tableSuperimpose.getItem(i).getText().equals("")) { //$NON-NLS-1$
+					this.setErrorMessage(AtlDebugMessages.getString("AdvancedTab.GIVEPATHSUPERIMPOSE")); //$NON-NLS-1$
+					return false;
+				}
+			}
+		}
 
-    /**
-     * This method adds a path to the given table. The path corresponds to a file in the workspace 
-     * @param type
-     * @param table
-     */
-    private void addPath(final String type, Table table) {
-        ElementTreeSelectionDialog elementTreeSelectionDialog = new ElementTreeSelectionDialog( getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
-        elementTreeSelectionDialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-        elementTreeSelectionDialog.setMessage(AtlDebugMessages.getString("AdvancedTab.CHOOSE") + type); //$NON-NLS-1$
-        elementTreeSelectionDialog.setAllowMultiple(false);
-        elementTreeSelectionDialog.setDoubleClickSelects(true);
-        elementTreeSelectionDialog.addFilter(new ViewerFilter() {
-            public boolean select(Viewer viewer, Object parentElement, Object element) {
-                boolean ret = false;
+		this.setErrorMessage(null);
+		return true;
+	}
 
-                if(element instanceof IContainer) {
-                    ret = true;
-                } else if(element instanceof IFile) {
-                    IFile currentFile = (IFile)element;
-                    if (currentFile.getFileExtension() == null)
-                        return false;
-                    if (type == AdvancedTab.SUPERIMPOSE)
-                        ret = (currentFile.getFileExtension().toUpperCase()).equals("ASM");//$NON-NLS-1$
-                    else
-                        ret = true;
-                }
-                return ret;
-            }
-        });
-        elementTreeSelectionDialog.setValidator(new ISelectionStatusValidator() {
-            public IStatus validate(Object[] selection) {
-                IStatus ret = Status.CANCEL_STATUS;
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#getImage()
+	 */
+	public Image getImage() {
+		return AtlLauncherTools.createImage(AtlLauncherTools.PATHICONATL);
+	}
 
-                if(selection.length == 1) {
-                    if(selection[0] instanceof IFile) { // no need to verify again extension here
-                        ret = Status.OK_STATUS; 
-                    }
-                }
+	/**
+	 * This method adds a path to the given table. The path corresponds to a file in the workspace
+	 * 
+	 * @param type
+	 * @param table
+	 */
+	private void addPath(final String type, Table table) {
+		ElementTreeSelectionDialog elementTreeSelectionDialog = new ElementTreeSelectionDialog(getShell(),
+				new WorkbenchLabelProvider(), new WorkbenchContentProvider());
+		elementTreeSelectionDialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
+		elementTreeSelectionDialog.setMessage(AtlDebugMessages.getString("AdvancedTab.CHOOSE") + type); //$NON-NLS-1$
+		elementTreeSelectionDialog.setAllowMultiple(false);
+		elementTreeSelectionDialog.setDoubleClickSelects(true);
+		elementTreeSelectionDialog.addFilter(new ViewerFilter() {
+			public boolean select(Viewer viewer, Object parentElement, Object element) {
+				boolean ret = false;
 
-                return ret;
-            }               
-        });
-        elementTreeSelectionDialog.open();
-        Object result = elementTreeSelectionDialog.getFirstResult();
+				if (element instanceof IContainer) {
+					ret = true;
+				} else if (element instanceof IFile) {
+					IFile currentFile = (IFile)element;
+					if (currentFile.getFileExtension() == null) {
+						return false;
+					}
+					if (type == AdvancedTab.SUPERIMPOSE) {
+						ret = (currentFile.getFileExtension().toUpperCase()).equals("ASM"); //$NON-NLS-1$
+					} else {
+						ret = true;
+					}
+				}
+				return ret;
+			}
+		});
+		elementTreeSelectionDialog.setValidator(new ISelectionStatusValidator() {
+			public IStatus validate(Object[] selection) {
+				IStatus ret = Status.CANCEL_STATUS;
 
-        if ((result != null) && (result instanceof IFile)) {
-            IFile currentFile = (IFile)result;
-            TableItem item = new TableItem(table, SWT.NONE);
-            item.setText(currentFile.getFullPath().toString());
-        }
-    }
+				if (selection.length == 1) {
+					if (selection[0] instanceof IFile) { // no need to verify again extension here
+						ret = Status.OK_STATUS;
+					}
+				}
 
-    /**
-     * Delete a path in the table
-     * @param table
-     */
-    private void removePath(Table table) {
-        int index = table.getSelectionIndex();
-        if (index == -1) {
-            AtlLauncherTools.messageBox(AtlDebugMessages.getString("AdvancedTab.CHOOSEENTRY")); //$NON-NLS-1$
-            return;
-        }
-        table.remove(index);
-    }
+				return ret;
+			}
+		});
+		elementTreeSelectionDialog.open();
+		Object result = elementTreeSelectionDialog.getFirstResult();
 
+		if ((result != null) && (result instanceof IFile)) {
+			IFile currentFile = (IFile)result;
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setText(currentFile.getFullPath().toString());
+		}
+	}
+
+	/**
+	 * Delete a path in the table.
+	 * 
+	 * @param table
+	 */
+	private void removePath(Table table) {
+		int index = table.getSelectionIndex();
+		if (index == -1) {
+			AtlLauncherTools.messageBox(AtlDebugMessages.getString("AdvancedTab.CHOOSEENTRY")); //$NON-NLS-1$
+			return;
+		}
+		table.remove(index);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
+	 */
 	public void modifyText(ModifyEvent e) {
 		canSave();
 		updateLaunchConfigurationDialog();
 	}
 
+
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
 	 */
 	public void widgetSelected(SelectionEvent e) {
@@ -384,10 +439,12 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
 	 */
 	public void widgetDefaultSelected(SelectionEvent e) {
-		
+
 	}
 
 	public Table getTableSuperimpose() {

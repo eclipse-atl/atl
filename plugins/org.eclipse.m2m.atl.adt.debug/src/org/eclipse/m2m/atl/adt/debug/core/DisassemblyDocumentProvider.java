@@ -18,24 +18,28 @@ import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 
 /**
- * @author Frederic Jouault
+ * The disassembly provider class.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class DisassemblyDocumentProvider extends TextFileDocumentProvider {
 
 	private Map ams = new HashMap();
-	/* 
-	 * @see org.eclipse.ui.texteditor.AbstractDocumentProvider#createAnnotationModel(java.lang.Object)
-	 * TODO: this is not a correct implementation. We keep references to every element, which means
-	 * they won't be garbage collected. However, it works.
+
+	/**
+	 * {@inheritDoc} TODO: this is not a correct implementation. We keep references to every element, which
+	 * means they won't be garbage collected. However, it works.
+	 * 
+	 * @see org.eclipse.ui.editors.text.TextFileDocumentProvider#getAnnotationModel(java.lang.Object)
 	 */
 	public IAnnotationModel getAnnotationModel(Object element) {
 		IAnnotationModel ret = (IAnnotationModel)ams.get(element);
-		
-		if(ret == null) {
+
+		if (ret == null) {
 			ret = new AnnotationModel();
 			ams.put(element, ret);
 		}
-		
+
 		return ret;
 	}
 

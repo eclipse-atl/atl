@@ -14,14 +14,26 @@ import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class AtlDebugMessages {
-	private static final String BUNDLE_NAME = "org.eclipse.m2m.atl.adt.debug.messages";//$NON-NLS-1$
+/**
+ * Utility class to access externalized Strings for ATLDebug.
+ * 
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ */
+public final class AtlDebugMessages {
+	private static final String BUNDLE_NAME = "org.eclipse.m2m.atl.adt.debug.messages"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
 	private AtlDebugMessages() {
 	}
 
+	/**
+	 * Returns a specified {@link String} from the resource bundle.
+	 * 
+	 * @param key
+	 *            Key of the String we seek.
+	 * @return The String from the resource bundle associated with <code>key</code>.
+	 */
 	public static String getString(String key) {
 		try {
 			return RESOURCE_BUNDLE.getString(key);
@@ -29,7 +41,7 @@ public class AtlDebugMessages {
 			return '!' + key + '!';
 		}
 	}
-	
+
 	/**
 	 * Returns a String from the resource bundle binded with the given arguments.
 	 * 
@@ -41,8 +53,9 @@ public class AtlDebugMessages {
 	 * @see MessageFormat#format(String, Object[])
 	 */
 	public static String getString(String key, Object[] arguments) {
-		if (arguments == null)
+		if (arguments == null) {
 			return getString(key);
+		}
 		return MessageFormat.format(getString(key), arguments);
 	}
 }

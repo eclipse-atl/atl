@@ -21,24 +21,25 @@ import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.m2m.atl.engine.vm.adwp.Value;
 
 /**
- * Map elements are special case of AtlValue
- * There is a key and a value.
+ * Map elements are special case of AtlValue There is a key and a value. AtlMapValue represents this special
+ * value
  * 
- * AtlMapValue represents this special value
- * 
- * @author Freddy Allilaire
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AtlMapValue implements IValue {
 
 	private Value key;
+
 	private Value valueKey;
+
 	private AtlDebugTarget atlDT;
-	
+
 	/**
-	 * This AtlMapValue is built with two value (key, value) and a debug target 
-	 * @param key
-	 * @param value
-	 * @param atlDT
+	 * This AtlMapValue is built with two value (key, value) and a debug target.
+	 * 
+	 * @param key the key
+	 * @param value the value
+	 * @param atlDT the debug target
 	 */
 	public AtlMapValue(Value key, Value value, AtlDebugTarget atlDT) {
 		this.key = key;
@@ -47,22 +48,25 @@ public class AtlMapValue implements IValue {
 	}
 
 	/**
-	 * This returns the two variables composing a AtlMapValue
-	 * There is the key and the value for the key
-	 * */
+	 * {@inheritDoc} This returns the two variables composing a AtlMapValue.
+	 * 
+	 * @see org.eclipse.debug.core.model.IValue#getVariables()
+	 */
 	public IVariable[] getVariables() throws DebugException {
- 		IVariable ret[] = null;
-		
+		IVariable[] ret = null;
+
 		List list = new ArrayList();
-		list.add(new AtlVariable(AtlDebugModelConstants.KEY, new AtlValue(key, atlDT), atlDT, AtlVariable.ATTRIBUTE));
-		list.add(new AtlVariable(AtlDebugModelConstants.VALUE, new AtlValue(valueKey, atlDT), atlDT, AtlVariable.ATTRIBUTE));
+		list.add(new AtlVariable(AtlDebugModelConstants.KEY, new AtlValue(key, atlDT), atlDT,
+				AtlVariable.ATTRIBUTE));
+		list.add(new AtlVariable(AtlDebugModelConstants.VALUE, new AtlValue(valueKey, atlDT), atlDT,
+				AtlVariable.ATTRIBUTE));
 		ret = (IVariable[])list.toArray(new IVariable[0]);
 
 		return ret;
 	}
 
 	/**
-	 * Return the type
+	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.debug.core.model.IValue#getReferenceTypeName()
 	 */
@@ -71,7 +75,7 @@ public class AtlMapValue implements IValue {
 	}
 
 	/**
-	 * Return the value of AtlMapValue
+	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.debug.core.model.IValue#getValueString()
 	 */
@@ -80,6 +84,8 @@ public class AtlMapValue implements IValue {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.debug.core.model.IValue#isAllocated()
 	 */
 	public boolean isAllocated() throws DebugException {
@@ -87,7 +93,7 @@ public class AtlMapValue implements IValue {
 	}
 
 	/**
-	 * An AtlMapValue is always composed of two variables (key, value)
+	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.debug.core.model.IValue#hasVariables()
 	 */
@@ -96,6 +102,8 @@ public class AtlMapValue implements IValue {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.debug.core.model.IDebugElement#getModelIdentifier()
 	 */
 	public String getModelIdentifier() {
@@ -103,6 +111,8 @@ public class AtlMapValue implements IValue {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.debug.core.model.IDebugElement#getDebugTarget()
 	 */
 	public IDebugTarget getDebugTarget() {
@@ -110,6 +120,8 @@ public class AtlMapValue implements IValue {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.debug.core.model.IDebugElement#getLaunch()
 	 */
 	public ILaunch getLaunch() {
@@ -117,6 +129,8 @@ public class AtlMapValue implements IValue {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
 	public Object getAdapter(Class adapter) {
