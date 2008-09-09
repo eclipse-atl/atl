@@ -187,27 +187,19 @@ public class AtlNbCharFile {
 	 */
 	public int[] getIndexChar(String sourceLocation, int tabWidth) {
 		int[] ret = new int[2];
-		int usedTabWidth = 0;
-		if (tabWidth < 0) {
-			usedTabWidth = ANTLR_TAB_WIDTH;
+		int currentTabWidth = tabWidth;
+		if (currentTabWidth < 0) {
+			currentTabWidth = ANTLR_TAB_WIDTH;
 		}
-
-		/*
-		 * String[] ss = sourceLocation.split("-"); String starts[] = ss[0].split(":"); int startLine =
-		 * Integer.parseInt(starts[0]); int startColumn = Integer.parseInt(starts[1]) - 1; // ANTLR assigns
-		 * index 1 to first char String ends[] = ss[1].split(":"); int endLine = Integer.parseInt(ends[0]);
-		 * int endColumn = Integer.parseInt(ends[1]) - 1; ret[0] = getIndexChar(startLine, startColumn,
-		 * tabWidth); ret[1] = getIndexChar(endLine, endColumn, tabWidth);
-		 */
 
 		String locRegex = "^(-?\\d{1,9}):(-?\\d{1,9})-(-?\\d{1,9}):(-?\\d{1,9})$"; //$NON-NLS-1$
 		if (sourceLocation.matches(locRegex)) {
 			ret[0] = getIndexChar(Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$1")), //$NON-NLS-1$
 					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$2")) - 1, //$NON-NLS-1$
-					usedTabWidth);
+					currentTabWidth);
 			ret[1] = getIndexChar(Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$3")), //$NON-NLS-1$
 					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$4")) - 1, //$NON-NLS-1$
-					usedTabWidth);
+					currentTabWidth);
 		} else {
 			ret[0] = 0;
 			ret[1] = -1;
