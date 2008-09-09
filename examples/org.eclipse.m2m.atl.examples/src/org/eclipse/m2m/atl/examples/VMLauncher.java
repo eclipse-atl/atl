@@ -32,13 +32,19 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 /**
  * Launches an ATL transformation using the Regular vm.
  * 
- * @author William Piers <a
- *         href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public class VMLauncher {
+public final class VMLauncher {
 
 	/**
-	 * A method launching the VM
+	 * Utility classes don't need to (and shouldn't) be instantiated.
+	 */
+	private VMLauncher() {
+		// prevents instantiation
+	}
+	
+	/**
+	 * A method launching the VM.
 	 * 
 	 * @param asmURL
 	 *            the URL of the .asm file (the compiled transformation)
@@ -59,56 +65,51 @@ public class VMLauncher {
 	 * @return the execution time
 	 * @throws Exception
 	 */
-	public static double launch(URL asmURL, Map input, Map output, Map path,
-			Map libsFromConfig, Map options, Map modelHandler, List superimpose)
-			throws Exception {
+	public static double launch(URL asmURL, Map input, Map output, Map path, Map libsFromConfig, Map options,
+			Map modelHandler, List superimpose) throws Exception {
 		boolean checkSameModel = false;
 		// model handler
 		Map atlModelHandler = new HashMap();
 		for (Iterator i = modelHandler.keySet().iterator(); i.hasNext();) {
-			String currentModelHandler = (String) modelHandler.get(i.next());
-			if (!atlModelHandler.containsKey(currentModelHandler)
-					&& !currentModelHandler.equals("")) //$NON-NLS-1$
-				atlModelHandler.put(currentModelHandler, AtlModelHandler
-						.getDefault(currentModelHandler));
+			String currentModelHandler = (String)modelHandler.get(i.next());
+			if (!atlModelHandler.containsKey(currentModelHandler) && !currentModelHandler.equals("")) { //$NON-NLS-1$
+				atlModelHandler.put(currentModelHandler, AtlModelHandler.getDefault(currentModelHandler));
+			}
 		}
 
 		Collection toDispose = new HashSet();
 
-		Map inModel = getSourceModels(input, path, modelHandler,
-				atlModelHandler, checkSameModel, toDispose);
-		Map outModel = getTargetModels(output, path, modelHandler,
-				atlModelHandler, inModel, checkSameModel, toDispose);
+		Map inModel = getSourceModels(input, path, modelHandler, atlModelHandler, checkSameModel, toDispose);
+		Map outModel = getTargetModels(output, path, modelHandler, atlModelHandler, inModel, checkSameModel,
+				toDispose);
 
 		Map models = new HashMap();
 
 		for (Iterator i = inModel.keySet().iterator(); i.hasNext();) {
-			String mName = (String) i.next();
+			String mName = (String)i.next();
 			models.put(mName, inModel.get(mName));
 		}
 
 		for (Iterator i = outModel.keySet().iterator(); i.hasNext();) {
-			String mName = (String) i.next();
+			String mName = (String)i.next();
 			models.put(mName, outModel.get(mName));
 		}
 
 		long startTime = System.currentTimeMillis();
-		AtlLauncher.getDefault().launch(asmURL, libsFromConfig, models,
-				Collections.EMPTY_MAP, superimpose, options);
+		AtlLauncher.getDefault().launch(asmURL, libsFromConfig, models, Collections.EMPTY_MAP, superimpose,
+				options);
 		long endTime = System.currentTimeMillis();
 
 		// save output models
 		for (Iterator i = output.keySet().iterator(); i.hasNext();) {
-			String mName = (String) i.next();
-			ASMModel currentOutModel = (ASMModel) outModel.get(mName);
-			String newPath = URI.createFileURI((String) path.get(mName))
-					.toString();
-			AtlModelHandler.getHandler(currentOutModel).saveModel(
-					currentOutModel, newPath);
+			String mName = (String)i.next();
+			ASMModel currentOutModel = (ASMModel)outModel.get(mName);
+			String newPath = URI.createFileURI((String)path.get(mName)).toString();
+			AtlModelHandler.getHandler(currentOutModel).saveModel(currentOutModel, newPath);
 		}
 
 		for (Iterator i = toDispose.iterator(); i.hasNext();) {
-			ASMModel model = (ASMModel) i.next();
+			ASMModel model = (ASMModel)i.next();
 			AtlModelHandler.getHandler(model).disposeOfModel(model);
 		}
 
@@ -129,45 +130,43 @@ public class VMLauncher {
 	 * @return a map containing loaded ASMModels
 	 * @throws CoreException
 	 */
-	private static Map getSourceModels(Map arg, Map path, Map modelHandler,
-			Map atlModelHandler, boolean checkSameModel, Collection toDispose)
-			throws CoreException {
+	private static Map getSourceModels(Map arg, Map path, Map modelHandler, Map atlModelHandler,
+			boolean checkSameModel, Collection toDispose) throws CoreException {
 		Map toReturn = new HashMap();
 		try {
 			for (Iterator i = arg.keySet().iterator(); i.hasNext();) {
-				String mName = (String) i.next();
-				String mmName = (String) arg.get(mName);
+				String mName = (String)i.next();
+				String mmName = (String)arg.get(mName);
 
-				AtlModelHandler amh = (AtlModelHandler) atlModelHandler
-						.get(modelHandler.get(mmName));
+				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
 				ASMModel mofmm = amh.getMof();
 				toReturn.put("%" + modelHandler.get(mmName), mofmm); //$NON-NLS-1$
 				mofmm.setIsTarget(false);
 				ASMModel inputModel;
-				if (((String) path.get(mmName)).startsWith("#")) { //$NON-NLS-1$
+				if (((String)path.get(mmName)).startsWith("#")) { //$NON-NLS-1$
 					toReturn.put(mmName, mofmm);
-					inputModel = (ASMModel) toReturn.get(mName);
-					if (inputModel == null)
-						inputModel = loadModel(amh, mName, mofmm, (String) path
-								.get(mName), toDispose);
+					inputModel = (ASMModel)toReturn.get(mName);
+					if (inputModel == null) {
+						inputModel = loadModel(amh, mName, mofmm, (String)path.get(mName), toDispose);
+					}
 				} else {
-					ASMModel inputMetaModel = (ASMModel) toReturn.get(mmName);
+					ASMModel inputMetaModel = (ASMModel)toReturn.get(mmName);
 					if (inputMetaModel == null) {
-						inputMetaModel = loadModel(amh, mmName, mofmm,
-								(String) path.get(mmName), toDispose);
+						inputMetaModel = loadModel(amh, mmName, mofmm, (String)path.get(mmName), toDispose);
 						toReturn.put(mmName, inputMetaModel);
 					}
 					inputMetaModel.setIsTarget(false);
-					inputModel = loadModel(amh, mName, inputMetaModel,
-							(String) path.get(mName), toDispose);
+					inputModel = loadModel(amh, mName, inputMetaModel, (String)path.get(mName), toDispose);
 				}
 				inputModel.setIsTarget(false);
-				if (inputModel instanceof ASMEMFModel)
-					((ASMEMFModel) inputModel)
-							.setCheckSameModel(checkSameModel);
+				if (inputModel instanceof ASMEMFModel) {
+					((ASMEMFModel)inputModel).setCheckSameModel(checkSameModel);
+				}
 				toReturn.put(mName, inputModel);
 			}
-		} catch (Exception e) {
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return toReturn;
@@ -188,48 +187,46 @@ public class VMLauncher {
 	 * @return a map containing loaded ASMModels
 	 * @throws CoreException
 	 */
-	private static Map getTargetModels(Map arg, Map path, Map modelHandler,
-			Map atlModelHandler, Map input, boolean checkSameModel,
-			Collection toDispose) throws CoreException {
+	private static Map getTargetModels(Map arg, Map path, Map modelHandler, Map atlModelHandler, Map input,
+			boolean checkSameModel, Collection toDispose) throws CoreException {
 		Map toReturn = new HashMap();
 		try {
 			for (Iterator i = arg.keySet().iterator(); i.hasNext();) {
-				String mName = (String) i.next();
-				String mmName = (String) arg.get(mName);
+				String mName = (String)i.next();
+				String mmName = (String)arg.get(mName);
 
-				AtlModelHandler amh = (AtlModelHandler) atlModelHandler
-						.get(modelHandler.get(mmName));
+				AtlModelHandler amh = (AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName));
 				ASMModel mofmm = amh.getMof();
 				mofmm.setIsTarget(false);
 				ASMModel outputModel;
 
-				if (((String) path.get(mmName)).startsWith("#")) {//$NON-NLS-1$
-					if (input.get(mmName) == null)
+				if (((String)path.get(mmName)).startsWith("#")) { //$NON-NLS-1$
+					if (input.get(mmName) == null) {
 						toReturn.put(mmName, mofmm);
-					outputModel = (ASMModel) toReturn.get(mName);
-					if (outputModel == null)
-						outputModel = newModel(amh, mName, mofmm, (String) path
-								.get(mName), toDispose);
+					}
+					outputModel = (ASMModel)toReturn.get(mName);
+					if (outputModel == null) {
+						outputModel = newModel(amh, mName, mofmm, (String)path.get(mName), toDispose);
+					}
 				} else {
-					ASMModel outputMetaModel = (ASMModel) input.get(mmName);
-					if (outputMetaModel == null)
-						outputMetaModel = (ASMModel) toReturn.get(mmName);
+					ASMModel outputMetaModel = (ASMModel)input.get(mmName);
 					if (outputMetaModel == null) {
-						outputMetaModel = loadModel(amh, mmName, mofmm,
-								(String) path.get(mmName), toDispose);
+						outputMetaModel = (ASMModel)toReturn.get(mmName);
+					}
+					if (outputMetaModel == null) {
+						outputMetaModel = loadModel(amh, mmName, mofmm, (String)path.get(mmName), toDispose);
 						toReturn.put(mmName, outputMetaModel);
 					}
 					outputMetaModel.setIsTarget(false);
-					outputModel = newModel(amh, mName, outputMetaModel,
-							(String) path.get(mName), toDispose);
+					outputModel = newModel(amh, mName, outputMetaModel, (String)path.get(mName), toDispose);
 				}
 				outputModel.setIsTarget(true);
-				if (outputModel instanceof ASMEMFModel)
-					((ASMEMFModel) outputModel)
-							.setCheckSameModel(checkSameModel);
+				if (outputModel instanceof ASMEMFModel) {
+					((ASMEMFModel)outputModel).setCheckSameModel(checkSameModel);
+				}
 				toReturn.put(mName, outputModel);
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return toReturn;
@@ -252,20 +249,17 @@ public class VMLauncher {
 	 * @throws CoreException
 	 * @throws FileNotFoundException
 	 */
-	private static ASMModel loadModel(AtlModelHandler amh, String mName,
-			ASMModel metamodel, String path, Collection toDispose)
-			throws IOException, CoreException, FileNotFoundException {
+	private static ASMModel loadModel(AtlModelHandler amh, String mName, ASMModel metamodel, String path,
+			Collection toDispose) throws IOException, CoreException, FileNotFoundException {
 		ASMModel ret = null;
 
 		if (amh instanceof AtlEMFModelHandler) {
 			if (path.startsWith("uri:")) { //$NON-NLS-1$
-				ret = ((AtlEMFModelHandler) amh).loadModel(mName, metamodel,
-						path);
+				ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, path);
 				// this model should not be disposed of because we did not load
 				// it
 			} else {
-				ret = ((AtlEMFModelHandler) amh).loadModel(mName, metamodel,
-						URI.createFileURI(path));
+				ret = ((AtlEMFModelHandler)amh).loadModel(mName, metamodel, URI.createFileURI(path));
 				toDispose.add(ret);
 			}
 		}
@@ -288,11 +282,9 @@ public class VMLauncher {
 	 * @return the new ASMModel
 	 * @throws IOException
 	 */
-	private static ASMModel newModel(AtlModelHandler amh, String mName,
-			ASMModel metamodel, String path, Collection toDispose)
-			throws IOException {
-		ASMModel ret = amh.newModel(mName, URI.createFileURI(path).toString(),
-				metamodel);
+	private static ASMModel newModel(AtlModelHandler amh, String mName, ASMModel metamodel, String path,
+			Collection toDispose) throws IOException {
+		ASMModel ret = amh.newModel(mName, URI.createFileURI(path).toString(), metamodel);
 		toDispose.add(ret);
 		return ret;
 	}
