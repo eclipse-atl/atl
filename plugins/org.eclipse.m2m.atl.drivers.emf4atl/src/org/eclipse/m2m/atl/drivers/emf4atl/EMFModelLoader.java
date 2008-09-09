@@ -27,108 +27,146 @@ import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
- * @author Frédéric Jouault
+ * The EMF model loader.
+ * 
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class EMFModelLoader extends ModelLoader {
 
-	private ASMModel mofmm;
+	private boolean useIDs;
+
+	private boolean removeIDs;
+
+	private String encoding = "ISO-8859-1";
 	
+	private ASMModel mofmm;
+
+	/**
+	 * EMFModelLoader constructor.
+	 */
 	public EMFModelLoader() {
 		mofmm = ASMEMFModel.createMOF(this);
 	}
-		
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#getMOF()
+	 */
 	public ASMModel getMOF() {
 		return mofmm;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#loadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.InputStream)
+	 */
 	public ASMModel loadModel(String name, ASMModel metamodel, InputStream in) {
 		ASMModel ret = null;
-		
+
 		try {
 			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in, this);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
 		}
-		
-		return ret;
-	}
-	
-	protected ASMModel realLoadModel(String name, ASMModel metamodel, String href) {
-		ASMModel ret = null;
-		
-		try {
-			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, href, this);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
-		}
-		
+
 		return ret;
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#realLoadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String)
+	 */
+	protected ASMModel realLoadModel(String name, ASMModel metamodel, String href) {
+		ASMModel ret = null;
+
+		try {
+			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, href, this);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
+
+		return ret;
+	}
+
+	/**
+	 * {@inheritDoc}
 	 * @deprecated
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#newModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
 	 */
 	public ASMModel newModel(String name, ASMModel metamodel) {
 		ASMModel ret = null;
-		
+
 		try {
 			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel, this);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
 		}
-		
+
 		return ret;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#newModel(java.lang.String, java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 */
 	public ASMModel newModel(String name, String uri, ASMModel metamodel) {
 		ASMModel ret = null;
-		
+
 		try {
 			ret = ASMEMFModel.newASMEMFModel(name, uri, (ASMEMFModel)metamodel, this);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
 		}
-		
+
 		return ret;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#setParameter(java.lang.String, java.lang.Object)
+	 */
 	protected void setParameter(String name, Object value) {
-		if("useIDs".equals(name)) {
-			if("true".equals(value)) {
+		if ("useIDs".equals(name)) {
+			if ("true".equals(value)) {
 				useIDs = true;
-			} else if("false".equals(value)) {
-				useIDs = false;				
+			} else if ("false".equals(value)) {
+				useIDs = false;
 			}
-		} else if("removeIDs".equals(name)) {
-			if("true".equals(value)) {
+		} else if ("removeIDs".equals(name)) {
+			if ("true".equals(value)) {
 				removeIDs = true;
-			} else if("false".equals(value)) {
-				removeIDs = false;				
+			} else if ("false".equals(value)) {
+				removeIDs = false;
 			}
-		} else if("encoding".equals(name)) {
+		} else if ("encoding".equals(name)) {
 			encoding = (String)value;
 		}
 	}
-	
-	private boolean useIDs = false;
-	private boolean removeIDs = false;
-	private String encoding = "ISO-8859-1";
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#realSave(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String)
+	 */
 	protected void realSave(ASMModel model, String href) {
 		Resource r = ((ASMEMFModel)model).getExtent();
 		r.setURI(URI.createURI(href));
-		
-		if(useIDs || removeIDs) {
-			XMIResource xr = ((XMIResource)r);
+
+		if (useIDs || removeIDs) {
+			XMIResource xr = (XMIResource)r;
 			int id = 1;
 			Set alreadySet = new HashSet();
-			for(Iterator i = r.getAllContents() ; i.hasNext() ; ) {
+			for (Iterator i = r.getAllContents(); i.hasNext();) {
 				EObject eo = (EObject)i.next();
-				if(alreadySet.contains(eo)) continue;	// because sometimes a single element gets processed twice
+				if (alreadySet.contains(eo)) {
+					continue; // because sometimes a single element gets processed twice
+				}
 				xr.setID(eo, removeIDs ? null : ("a" + (id++)));
 				alreadySet.add(eo);
 			}
@@ -139,7 +177,6 @@ public class EMFModelLoader extends ModelLoader {
 			r.save(options);
 		} catch (IOException e1) {
 			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
-//			e1.printStackTrace();
 		}
 	}
 }
