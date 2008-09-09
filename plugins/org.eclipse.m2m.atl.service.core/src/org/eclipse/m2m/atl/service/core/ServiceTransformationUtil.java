@@ -88,16 +88,25 @@ public final class ServiceTransformationUtil {
 	}
 
 	/**
+	 * Loads a model.
+	 * 
 	 * @param amh
+	 *            the model handler
 	 * @param modelName
+	 *            the model name
 	 * @param metamodel
+	 *            the metamodel
 	 * @param path
+	 *            the model path
 	 * @param nsUri
+	 *            the model uri
 	 * @param isM3
+	 *            true if the metamodel is a metametamodel
 	 * @param inWorkspace
+	 *            true if the model is in workspace
 	 * @param pluginId
-	 * @return
-	 * @throws ServiceException
+	 *            the plugin id
+	 * @return the model
 	 */
 	public static ASMModel loadModel(AtlModelHandler amh, String modelName, ASMModel metamodel, String path,
 			String nsUri, boolean isM3, boolean inWorkspace, String pluginId) throws ServiceException {
@@ -137,6 +146,16 @@ public final class ServiceTransformationUtil {
 		return ret;
 	}
 
+	/**
+	 * Process the XML extraction.
+	 * 
+	 * @param model
+	 *            the model to extract
+	 * @param path
+	 *            the path where to extract
+	 * @param amh
+	 *            the model handler
+	 */
 	public static void xmlExtraction(final ASMModel model, String path, AtlModelHandler amh) {
 		try {
 			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
@@ -148,7 +167,7 @@ public final class ServiceTransformationUtil {
 
 			final XMLExtractor xmle = new XMLExtractor();
 
-			new Thread() {
+			Thread th = new Thread() {
 				public void run() {
 					try {
 						xmle.extract(model, out, parameters);
@@ -158,15 +177,17 @@ public final class ServiceTransformationUtil {
 						try {
 							out.close();
 						} catch (IOException ioe) {
-
+							ioe.printStackTrace();
 						}
 					}
 				}
-			}.start();
-			if (file.exists())
+			};
+			th.start();
+			if (file.exists()) {
 				file.setContents(in, IFile.FORCE, null);
-			else
+			} else {
 				file.create(in, IFile.FORCE, null);
+			}
 
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
@@ -175,6 +196,18 @@ public final class ServiceTransformationUtil {
 		}
 	}
 
+	/**
+	 * Process the EBNF extraction.
+	 * 
+	 * @param model
+	 *            the model to extract
+	 * @param path
+	 *            the path where to extract
+	 * @param amh
+	 *            the model handler
+	 * @param params
+	 *            the extractor parameters
+	 */
 	public static void ebnfExtraction(final ASMModel model, String path, AtlModelHandler amh, Map params) {
 		try {
 			PipedInputStream in = new PipedInputStream();
@@ -182,7 +215,7 @@ public final class ServiceTransformationUtil {
 
 			final TCSExtractor ebnfe = new TCSExtractor();
 
-			ASMModel TCS = loadModel(
+			ASMModel tcs = loadModel(
 					AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF),
 					"TCS", AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF).getMof(), "resources/TCS.ecore", null, false, false, "org.eclipse.m2m.atl.service.core"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -190,20 +223,21 @@ public final class ServiceTransformationUtil {
 
 			tempParam
 					.put(
-							"format", loadModel(amh, "model.tcs", TCS, (String)params.get("path"), null, false, false, (String)params.get("pluginId"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+							"format", loadModel(amh, "model.tcs", tcs, (String)params.get("path"), null, false, false, (String)params.get("pluginId"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 			for (Iterator it = params.keySet().iterator(); it.hasNext();) {
 				String paramName = (String)it.next();
 				String paramType = (String)ebnfe.getParameterTypes().get(paramName);
-				if (paramType != null && paramType.equals("String")) //$NON-NLS-1$
+				if (paramType != null && paramType.equals("String")) { //$NON-NLS-1$
 					tempParam.put(paramName, params.get(paramName));
+				}
 			}
 
 			final Map parameters = tempParam;
 
 			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
 
-			new Thread() {
+			Thread th = new Thread() {
 				public void run() {
 					try {
 						ebnfe.extract(model, out, parameters);
@@ -213,15 +247,17 @@ public final class ServiceTransformationUtil {
 						try {
 							out.close();
 						} catch (IOException ioe) {
-
+							ioe.printStackTrace();
 						}
 					}
 				}
-			}.start();
-			if (file.exists())
+			};
+			th.start();
+			if (file.exists()) {
 				file.setContents(in, IFile.FORCE, null);
-			else
+			} else {
 				file.create(in, IFile.FORCE, null);
+			}
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (CoreException e) {
@@ -229,6 +265,27 @@ public final class ServiceTransformationUtil {
 		}
 	}
 
+	/**
+	 * Process the injection.
+	 * 
+	 * @param name
+	 *            the model nama
+	 * @param filePath
+	 *            the path where to inject
+	 * @param amh
+	 *            the model handler
+	 * @param metamodel
+	 *            the metamodel
+	 * @param params
+	 *            the injection parameters
+	 * @param parserPath
+	 *            the parser
+	 * @param metamodelName
+	 *            the metamodel name
+	 * @param pluginId
+	 *            the plugin id
+	 * @return the model
+	 */
 	public static ASMModel ebnfInjection(String name, String filePath, AtlModelHandler amh,
 			ASMModel metamodel, Map params, String parserPath, String metamodelName, String pluginId) {
 
@@ -271,11 +328,11 @@ public final class ServiceTransformationUtil {
 			String requires = (String)Platform.getBundle(pluginId).getHeaders().get(
 					Constants.BUNDLE_CLASSPATH);
 
-			if (requires == null)
+			if (requires == null) {
 				requires = parserPath;
-			else if (requires.indexOf(parserPath) == -1)
+			} else if (requires.indexOf(parserPath) == -1) {
 				requires += "," + parserPath; //$NON-NLS-1$
-
+			}
 			ManifestElement[] elements = ManifestElement.parseHeader(Constants.BUNDLE_CLASSPATH, requires);
 			for (int i = 0; i < elements.length; i++) {
 				ManifestElement element = elements[i];
@@ -295,6 +352,16 @@ public final class ServiceTransformationUtil {
 		return null;
 	}
 
+	/**
+	 * Applies markers on a file.
+	 * 
+	 * @param path
+	 *            the path where to apply
+	 * @param pbs
+	 *            the problem model to apply
+	 * @return errors count
+	 * @throws CoreException
+	 */
 	public static int applyMarkers(String path, ASMModel pbs) throws CoreException {
 		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
 		MarkerMaker markerMaker = new MarkerMaker();

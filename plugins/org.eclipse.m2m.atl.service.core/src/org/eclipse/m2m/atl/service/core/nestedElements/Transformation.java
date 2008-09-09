@@ -28,12 +28,12 @@ public class Transformation {
 	 * 
 	 * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
 	 */
-	private class OutModel {
+	private final class OutModel {
 		private String globalModelName;
 
 		private String globalMetamodelName;
 
-		public OutModel(String modelName, String metamodelName) {
+		private OutModel(String modelName, String metamodelName) {
 			this.globalModelName = modelName;
 			this.globalMetamodelName = metamodelName;
 		}
@@ -73,14 +73,38 @@ public class Transformation {
 		this.transformationPath = transformationPath;
 	}
 
+	/**
+	 * Adds an input model.
+	 * 
+	 * @param modelNameInTransformationHeader
+	 *            the "simple" model name
+	 * @param globalModelName
+	 *            the model name
+	 */
 	public void addInModel(String modelNameInTransformationHeader, String globalModelName) {
 		inModels.put(modelNameInTransformationHeader, globalModelName);
 	}
 
+	/**
+	 * Adds a model which is not preloaded.
+	 * 
+	 * @param modelName
+	 *            the model name
+	 */
 	public void addInNotPreloadedList(String modelName) {
 		modelsNotPreloaded.add(modelName);
 	}
 
+	/**
+	 * Adds an output model.
+	 * 
+	 * @param modelNameInConfiguration
+	 *            the in model configuration
+	 * @param modelName
+	 *            the out model name
+	 * @param metamodelName
+	 *            the metamodel name
+	 */
 	public void addOutModel(String modelNameInConfiguration, String modelName, String metamodelName) {
 		outModels.put(modelNameInConfiguration, new OutModel(modelName, metamodelName));
 	}

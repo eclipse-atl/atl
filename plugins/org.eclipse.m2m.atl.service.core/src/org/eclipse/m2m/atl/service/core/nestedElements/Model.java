@@ -19,60 +19,150 @@ import org.eclipse.m2m.atl.service.core.ServiceTransformationUtil;
 import org.eclipse.m2m.atl.service.core.exception.ServiceException;
 
 /**
+ * The model class.
  * 
- * @author Freddy Allilaire
- *
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class Model {
 
-	private class Injector {
+	/**
+	 * The injector definition.
+	 */
+	private final class Injector {
 		private String type;
+
 		private Map params;
 
-		public Injector(String type) {
+		private Injector(String type) {
 			this.type = type;
 			params = new HashMap();
-		}		
+		}
 	}
-	
+
 	private Injector injector;
-	
+
 	/**
 	 * ASMModel.
 	 */
 	private ASMModel asmModel;
+
 	/**
 	 * Global model name.
 	 */
 	private String name;
+
 	private String atlModelHandlerId;
+
 	private String metamodelName;
+
 	private String fileName;
 
 	// TODO add subclasses: PreloadedModel, ModelLoadedFromWorkspace, ModelCreatedByTransformation
-	public Model(String name, ASMModel metamodel, String path, String nsUri, boolean isM3, String atlModelHandlerId, String pluginId) throws ServiceException {
-		this.asmModel = ServiceTransformationUtil.loadModel(AtlModelHandler.getDefault(atlModelHandlerId), name, metamodel, path, nsUri, isM3, false, pluginId);
+	/**
+	 * Creates a new model.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param metamodel
+	 *            the metamodel
+	 * @param path
+	 *            the model path
+	 * @param nsUri
+	 *            the model uri
+	 * @param isM3
+	 *            true if the metamodel is a metametamodel
+	 * @param atlModelHandlerId
+	 *            the model handler id
+	 * @param pluginId
+	 *            the plugin id
+	 * @throws ServiceException
+	 */
+	public Model(String name, ASMModel metamodel, String path, String nsUri, boolean isM3,
+			String atlModelHandlerId, String pluginId) throws ServiceException {
+		this.asmModel = ServiceTransformationUtil.loadModel(AtlModelHandler.getDefault(atlModelHandlerId),
+				name, metamodel, path, nsUri, isM3, false, pluginId);
 		this.name = name;
 	}
 
+	/**
+	 * Creates a new model.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param metamodel
+	 *            the metamodel
+	 * @param fileName
+	 *            the model filename
+	 * @param atlModelHandlerId
+	 *            the modelhandler id
+	 */
 	public Model(String name, ASMModel metamodel, String fileName, String atlModelHandlerId) {
 		this.asmModel = AtlModelHandler.getDefault(atlModelHandlerId).newModel(name, fileName, metamodel);
 		this.fileName = fileName;
 	}
 
+	/**
+	 * Creates a new model.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param metamodel
+	 *            the metamodel name
+	 * @param modelHandler
+	 *            the modelhandler name
+	 */
 	public Model(String name, String metamodel, String modelHandler) {
 		this.name = name;
 		this.metamodelName = metamodel;
 		this.atlModelHandlerId = modelHandler;
 	}
 
-	public Model(String name, ASMModel metamodel, String path, String nsUri, boolean isM3, String atlModelHandlerId, String pluginId, String injectorType, Map paramsInjector) {
-		if (injectorType.equals("ebnf"))//$NON-NLS-1$
-			this.asmModel = ServiceTransformationUtil.ebnfInjection(name, path, AtlModelHandler.getDefault(atlModelHandlerId), metamodel, paramsInjector, (String)paramsInjector.get("parserPath"), metamodel.getName(), pluginId); //$NON-NLS-1$
-		
+	/**
+	 * Creates a new model.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param metamodel
+	 *            the metamodel
+	 * @param path
+	 *            the model path
+	 * @param nsUri
+	 *            the model uri
+	 * @param isM3
+	 *            true if the metamodel is a metametamodel
+	 * @param atlModelHandlerId
+	 *            the model handler id
+	 * @param pluginId
+	 *            the plugin id
+	 * @param injectorType
+	 *            the injector type
+	 * @param paramsInjector
+	 *            the injector parameters
+	 */
+	public Model(String name, ASMModel metamodel, String path, String nsUri, boolean isM3,
+			String atlModelHandlerId, String pluginId, String injectorType, Map paramsInjector) {
+		if (injectorType.equals("ebnf")) { //$NON-NLS-1$
+			this.asmModel = ServiceTransformationUtil.ebnfInjection(name, path, AtlModelHandler
+					.getDefault(atlModelHandlerId), metamodel, paramsInjector, (String)paramsInjector
+					.get("parserPath"), metamodel.getName(), pluginId); //$NON-NLS-1$
+		}
 		this.name = name;
 	}
-	
+
+	/**
+	 * Creates a new model.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param metamodel
+	 *            the metamodel
+	 * @param modelHandler
+	 *            the model handler
+	 * @param injectorType
+	 *            the injector type
+	 * @param paramsInjector
+	 *            the injector parameters
+	 */
 	public Model(String name, String metamodel, String modelHandler, String injectorType, Map paramsInjector) {
 		this.name = name;
 		this.metamodelName = metamodel;
@@ -81,18 +171,33 @@ public class Model {
 		i.params = paramsInjector;
 		this.injector = i;
 	}
-	
+
+	/**
+	 * Loads a model.
+	 * 
+	 * @param path
+	 *            the model path
+	 * @param asmMetamodel
+	 *            the metamodel
+	 * @param pluginId
+	 *            the plugin id
+	 * @throws ServiceException
+	 */
 	public void loadModel(String path, ASMModel asmMetamodel, String pluginId) throws ServiceException {
-		if (this.injector == null)
-			asmModel = ServiceTransformationUtil.loadModel(AtlModelHandler.getDefault(atlModelHandlerId), name, asmMetamodel, path, null, false, true, pluginId);
-		else if (this.injector.type.equals("ebnf"))//$NON-NLS-1$
-			this.asmModel = ServiceTransformationUtil.ebnfInjection(name, path, AtlModelHandler.getDefault(atlModelHandlerId), asmMetamodel, this.injector.params, (String)this.injector.params.get("parserPath"), asmMetamodel.getName(), pluginId); //$NON-NLS-1$
+		if (this.injector == null) {
+			asmModel = ServiceTransformationUtil.loadModel(AtlModelHandler.getDefault(atlModelHandlerId),
+					name, asmMetamodel, path, null, false, true, pluginId);
+		} else if (this.injector.type.equals("ebnf")) { //$NON-NLS-1$
+			this.asmModel = ServiceTransformationUtil.ebnfInjection(name, path, AtlModelHandler
+					.getDefault(atlModelHandlerId), asmMetamodel, this.injector.params,
+					(String)this.injector.params.get("parserPath"), asmMetamodel.getName(), pluginId); //$NON-NLS-1$
+		}
 	}
 
 	public ASMModel getAsmModel() {
 		return asmModel;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

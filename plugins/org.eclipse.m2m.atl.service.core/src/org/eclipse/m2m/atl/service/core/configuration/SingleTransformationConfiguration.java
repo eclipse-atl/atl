@@ -32,17 +32,39 @@ import org.eclipse.m2m.atl.service.core.nestedElements.Transformation;
  * transformations, and metadata transformation TransformationConfiguration are built and stocked by the
  * ServiceExtensionManager UI parts can execute a transformationConfiguration with method execute()
  * 
- * @author Freddy Allilaire
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class SingleTransformationConfiguration extends TransformationConfiguration {
 
 	private Transformation transformation;
 
+	/**
+	 * Creates a single transformation configuration.
+	 * 
+	 * @param path
+	 *            the transformation path
+	 * @param name
+	 *            the transformation name
+	 * @param pluginId
+	 *            the plugin id
+	 */
 	public SingleTransformationConfiguration(String path, String name, String pluginId) {
 		super(name, pluginId);
 		transformation = new Transformation(path);
 	}
 
+	/**
+	 * Adds an input model to the configuration.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param path
+	 *            the model path
+	 * @param metamodel
+	 *            the metamodel name
+	 * @param inWorkspace
+	 *            true if the model is in the workspace
+	 */
 	public void addInModel(String name, String path, String metamodel, boolean inWorkspace) {
 		// TODO
 		try {
@@ -60,26 +82,52 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 		}
 	}
 
+	/**
+	 * Adds an output model.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param fileName
+	 *            the model file
+	 * @param metamodel
+	 *            the metamodel name
+	 */
 	public void addOutModel(String name, String fileName, String metamodel) {
 		// TODO
 		models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), fileName, "EMF")); //$NON-NLS-1$
 		transformation.addOutModel(name, name, metamodel);
 	}
 
+	/**
+	 * Adds a Metamodel to the configuration.
+	 * 
+	 * @param name
+	 *            the metamodel name
+	 * @param path
+	 *            the metamodel path
+	 * @param nsUri
+	 *            the metamodel uri
+	 * @param isM3
+	 *            true is it is a metametamodel
+	 * @param modelHandler
+	 *            the model handler
+	 */
 	public void addMetamodel(String name, String path, String nsUri, boolean isM3, String modelHandler) {
 		// TODO
 		try {
 			models.put(name, new Model(name, AtlModelHandler.getDefault(modelHandler).getMof(), path, nsUri,
 					isM3, modelHandler, pluginId));
 			transformation.addInModel(name, name);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Main method launchs by UI
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.service.core.configuration.TransformationConfiguration#execute(java.lang.String,
+	 *      java.lang.String)
 	 */
 	public void execute(String pathFolder, String pathInModel) throws ServiceException {
 		Map params = Collections.EMPTY_MAP;
@@ -94,8 +142,7 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 			((Model)models.get(transformation.getModelsNotPreloaded().get(0))).loadModel(pathInModel,
 					((Model)models.get(((Model)models.get(transformation.getModelsNotPreloaded().get(0)))
 							.getMetamodelName())).getAsmModel(), pluginId);
-		}
-		else {
+		} else {
 			throw new ServiceException(IStatus.CANCEL, ServiceMessages
 					.getString("SingleTransformationConfiguration.0")); //$NON-NLS-1$
 		}

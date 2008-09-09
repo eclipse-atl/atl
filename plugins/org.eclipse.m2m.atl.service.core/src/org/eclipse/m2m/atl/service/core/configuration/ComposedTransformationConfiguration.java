@@ -44,6 +44,14 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 
 	private Map modelsToSave;
 
+	/**
+	 * Creates a new configuration to compose transformations.
+	 * 
+	 * @param configurationName
+	 *            the configuration name
+	 * @param pluginId
+	 *            the plugin id
+	 */
 	public ComposedTransformationConfiguration(String configurationName, String pluginId) {
 		super(configurationName, pluginId);
 		transformations = new ArrayList();
@@ -51,55 +59,115 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 		applyMarker = new ArrayList();
 	}
 
+	/**
+	 * Adds a transformation to the configuration.
+	 * 
+	 * @param t
+	 *            the transformation to add
+	 */
 	public void addTransformation(Transformation t) {
 		transformations.add(t);
 	}
 
+	/**
+	 * Adds an input model to the configuration.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param path
+	 *            the model path
+	 * @param metamodel
+	 *            the metamodel name
+	 * @param inWorkspace
+	 *            true if the model is in the workspace
+	 */
 	public void addInModel(String name, String path, String metamodel, boolean inWorkspace) {
 		// TODO
 		if (inWorkspace) {
 			models.put(name, new Model(name, metamodel, "EMF")); //$NON-NLS-1$
-		} else
+		} else {
 			try {
 				models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), path, null,
 						false, "EMF", pluginId)); //$NON-NLS-1$
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
+			} catch (ServiceException e) {
 				e.printStackTrace();
 			}
+		}
 	}
 
+	/**
+	 * Adds a Metamodel to the configuration.
+	 * 
+	 * @param name
+	 *            the metamodel name
+	 * @param path
+	 *            the metamodel path
+	 * @param nsUri
+	 *            the metamodel uri
+	 * @param isM3
+	 *            true is it is a metametamodel
+	 * @param modelHandler
+	 *            the model handler
+	 */
 	public void addMetamodel(String name, String path, String nsUri, boolean isM3, String modelHandler) {
-		// TODO
 		try {
 			models.put(name, new Model(name, AtlModelHandler.getDefault(modelHandler).getMof(), path, nsUri,
 					isM3, modelHandler, pluginId));
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Adds a {@link ModelToSave} to the configuration.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param fileName
+	 *            the file where to save the model
+	 */
 	public void addModelToSave(String name, String fileName) {
 		modelsToSave.put(name, new ModelToSave(name, fileName));
 	}
 
+	/**
+	 * Adds a {@link ModelToSave} to the configuration.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param fileName
+	 *            the file where to save the model
+	 * @param extractorType
+	 *            the extractor type
+	 * @param extractorParams
+	 *            the extractor parameters
+	 */
 	public void addModelToSave(String name, String fileName, String extractorType, Map extractorParams) {
 		modelsToSave.put(name, new ModelToSave(name, fileName, extractorType, extractorParams));
 	}
 
+	/**
+	 * Adds marker.
+	 * 
+	 * @param modelProblemName
+	 *            the problem name
+	 */
 	public void addApplyMarker(String modelProblemName) {
 		applyMarker.add(modelProblemName);
 	}
 
 	/**
-	 * Main method launchs by UI.
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.service.core.configuration.TransformationConfiguration#execute(java.lang.String,
+	 *      java.lang.String)
 	 */
 	public void execute(String pathFolder, String pathInModel) throws ServiceException {
 		for (Iterator it = transformations.iterator(); it.hasNext();) {
 			Transformation t = (Transformation)it.next();
-			if (t.getModelsNotPreloaded().size() == 1)
+			if (t.getModelsNotPreloaded().size() == 1) {
 				loadModel(t, pathInModel);
+			}
 			executeTransformation(t);
 		}
 
