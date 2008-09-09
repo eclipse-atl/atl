@@ -41,12 +41,11 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
-import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 
 /**
  * Utility class for models.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public final class ModelUtils {
 	/** Constant for the file encoding system property. */
@@ -62,8 +61,8 @@ public final class ModelUtils {
 	/**
 	 * Loads a model from a {@link java.io.File File} in a given {@link ResourceSet}.
 	 * 
-	 * @param modelURI
-	 *            {@link org.eclipse.emf.common.util.URI URI} where the model is stored.
+	 * @param file
+	 *            where the model is stored.
 	 * @param resourceSet
 	 *            The {@link ResourceSet} to load the model in.
 	 * @return The model loaded from the URI.
@@ -95,20 +94,22 @@ public final class ModelUtils {
 		return result;
 	}
 
-	private static Set getElementsByType(Resource extent,String type) {
+	private static Set getElementsByType(Resource extent, String type) {
 		Set ret = new HashSet();
-		for(Iterator i = extent.getAllContents(); i.hasNext(); ) {
+		for (Iterator i = extent.getAllContents(); i.hasNext();) {
 			EObject eo = (EObject)i.next();
-			if (eo.eClass().getName().equals(type))
+			if (eo.eClass().getName().equals(type)) {
 				ret.add(eo);
+			}
 		}
 		return ret;
 	}
 
 	/**
-	 * Metamodel register : allows to open/compare specific models
-	 * @param metamodelURI
-	 * @param resourceSet
+	 * Metamodel register : allows to open/compare specific models.
+	 * 
+	 * @param metamodelURI the metamodel uri
+	 * @param resourceSet the resource set
 	 * @throws IOException
 	 */
 	public static void registerMetamodel(URI metamodelURI, ResourceSet resourceSet) throws IOException {
@@ -118,43 +119,42 @@ public final class ModelUtils {
 		Resource.Factory myEcoreFactory = new EcoreResourceFactoryImpl();
 		Resource mmExtent = myEcoreFactory.createResource(metamodelURI);
 		try {
-			mmExtent.load(new FileInputStream(metamodelURI.toFileString()),Collections.EMPTY_MAP);
+			mmExtent.load(new FileInputStream(metamodelURI.toFileString()), Collections.EMPTY_MAP);
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
 
-		for(Iterator it = getElementsByType(mmExtent,"EPackage").iterator() ; it.hasNext() ; ) { //$NON-NLS-1$
+		for (Iterator it = getElementsByType(mmExtent, "EPackage").iterator(); it.hasNext();) { //$NON-NLS-1$
 			EPackage p = (EPackage)it.next();
 			String nsURI = p.getNsURI();
-			if(nsURI == null) {
+			if (nsURI == null) {
 				nsURI = p.getName();
 				p.setNsURI(nsURI);
 			}
 			EPackage.Registry.INSTANCE.put(nsURI, p);
 		}
 
-		for(Iterator it = getElementsByType(mmExtent,"EDataType").iterator(); it.hasNext(); ) { //$NON-NLS-1$
+		for (Iterator it = getElementsByType(mmExtent, "EDataType").iterator(); it.hasNext();) { //$NON-NLS-1$
 			EObject eo = (EObject)it.next();
 			EStructuralFeature sf;
-			sf = eo.eClass().getEStructuralFeature("name");	  //$NON-NLS-1$
-			String tname = (String)eo.eGet(sf);			 
+			sf = eo.eClass().getEStructuralFeature("name"); //$NON-NLS-1$
+			String tname = (String)eo.eGet(sf);
 			String icn = null;
-			if(tname.equals("Boolean")) //$NON-NLS-1$
+			if (tname.equals("Boolean")) { //$NON-NLS-1$
 				icn = "java.lang.Boolean"; //$NON-NLS-1$
-			else if(tname.equals("Double")) //$NON-NLS-1$
+			} else if (tname.equals("Double")) { //$NON-NLS-1$
 				icn = "java.lang.Double"; //$NON-NLS-1$
-			else if(tname.equals("Float")) //$NON-NLS-1$
+			} else if (tname.equals("Float")) { //$NON-NLS-1$
 				icn = "java.lang.Float"; //$NON-NLS-1$
-			else if(tname.equals("Integer")) //$NON-NLS-1$
+			} else if (tname.equals("Integer")) { //$NON-NLS-1$
 				icn = "java.lang.Integer"; //$NON-NLS-1$
-			else if(tname.equals("String")) //$NON-NLS-1$
+			} else if (tname.equals("String")) { //$NON-NLS-1$
 				icn = "java.lang.String"; //$NON-NLS-1$
+			}
 
-			if(icn != null) {
+			if (icn != null) {
 				sf = eo.eClass().getEStructuralFeature("instanceClassName"); //$NON-NLS-1$
-				eo.eSet(sf, icn);                
+				eo.eSet(sf, icn);
 			}
 		}
 	}
@@ -171,7 +171,7 @@ public final class ModelUtils {
 	 */
 	public static void save(EObject root, String path) throws IOException {
 		final URI modelURI = URI.createURI(path);
-		//final ResourceSet resourceSet = AtlTestPlugin.getResourceSet();
+		// final ResourceSet resourceSet = AtlTestPlugin.getResourceSet();
 		final ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
 				Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
@@ -192,8 +192,9 @@ public final class ModelUtils {
 	 *             Thrown if an I/O operation has failed or been interrupted during the saving process.
 	 */
 	public static String serialize(EObject root) throws IOException {
-		if (root == null)
+		if (root == null) {
 			throw new NullPointerException("ModelUtils.NullSaveRoot"); //$NON-NLS-1$
+		}
 
 		final XMIResourceImpl newResource = new XMIResourceImpl();
 		final StringWriter writer = new StringWriter();
@@ -205,28 +206,30 @@ public final class ModelUtils {
 	/**
 	 * Compare two ecore files as models.
 	 * 
-	 * @param leftUri
-	 * @param rightUri
+	 * @param leftUri the left file uri
+	 * @param rightUri the right file uri
+	 * @param ignoreIds if <code>true</code>, ignore xmi ids
+	 * @param delete if <code>true</code>, delete the right file after comparison
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public static void compareModels(File leftUri, File rightUri, boolean ignoreIds, boolean delete) throws Exception {
+	public static void compareModels(File leftUri, File rightUri, boolean ignoreIds, boolean delete)
+			throws IOException, InterruptedException {
 		Resource leftModel = load(leftUri, AtlTestPlugin.getDefault().getResourceSet());
-		Resource rightModel = load(rightUri,AtlTestPlugin.getDefault().getResourceSet());
+		Resource rightModel = load(rightUri, AtlTestPlugin.getDefault().getResourceSet());
 
 		Map options = new HashMap();
 		if (ignoreIds) {
-			options.put(MatchOptions.OPTION_IGNORE_XMI_ID, Boolean.TRUE);	
+			options.put(MatchOptions.OPTION_IGNORE_XMI_ID, Boolean.TRUE);
 		}
 		final MatchModel inputMatch = MatchService.doResourceMatch(leftModel, rightModel, options);
 		final DiffModel inputDiff = DiffService.doDiff(inputMatch);
 
-		if (((DiffGroup) inputDiff.getOwnedElements().get(0)).getSubchanges() != 0){
+		if (((DiffGroup)inputDiff.getOwnedElements().get(0)).getSubchanges() != 0) {
 			ModelInputSnapshot snapshot = DiffFactory.eINSTANCE.createModelInputSnapshot();
 			snapshot.setDiff(inputDiff);
 			snapshot.setMatch(inputMatch);
-			ModelUtils.save(snapshot, "file:/"+leftUri.toString()+".emfdiff"); //$NON-NLS-1$ //$NON-NLS-2$
-			throw new Exception(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
+			ModelUtils.save(snapshot, "file:/" + leftUri.toString() + ".emfdiff"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (delete) {
 			leftUri.delete();

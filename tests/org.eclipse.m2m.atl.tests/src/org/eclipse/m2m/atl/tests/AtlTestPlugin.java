@@ -21,17 +21,17 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 /**
  * The activator class controls the plug-in life cycle.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class AtlTestPlugin extends Plugin {
+
 	/** The plug-in ID. */
 	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.tests"; //$NON-NLS-1$
 
-	/** The shared instance */
+	/** The shared instance. */
 	private static AtlTestPlugin plugin;
 
-	/** the main resourceSet */
-	//private final static ResourceSet resourceSet = new ResourceSetImpl();
+	/** the main resourceSet. */
 	private static ResourceSet resourceSet = new ResourceSetImpl();
 
 	/**
@@ -59,10 +59,16 @@ public class AtlTestPlugin extends Plugin {
 	public ResourceSet getResourceSet() {
 		return resourceSet;
 	}
-	
-	public String getBaseDirectory(){
+
+	/**
+	 * Returns the base test data directory.
+	 * 
+	 * @return the base test data directory
+	 */
+	public String getBaseDirectory() {
 		try {
-			return new File(FileLocator.toFileURL(AtlTestPlugin.getDefault().getBundle().getEntry("/")).getFile()).getParent();
+			return new File(FileLocator.toFileURL(AtlTestPlugin.getDefault().getBundle().getEntry("/"))
+					.getFile()).getParent();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

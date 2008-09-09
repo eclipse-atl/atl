@@ -32,40 +32,47 @@ import org.xml.sax.SAXException;
 /**
  * Parse persisted launch configurations and run the ATL VM.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class LaunchParser {
 
-	//transformation parameters
-	public URL atlUrl;
-	public URL asmUrl;
-	public Map libsFromConfig;
-	public List superimpose;
-	public Map input;
-	public Map output;
-	public Map modelHandler;
-	public Map path;
-	public Map options;
+	// transformation parameters
+	private URL atlUrl;
 
-	private String convertPath(String path){
-		if (!path.startsWith("uri:") && !path.startsWith("#")) {
-			return AtlTestPlugin.getDefault().getBaseDirectory()+path;
+	private URL asmUrl;
+
+	private Map libsFromConfig;
+
+	private List superimpose;
+
+	private Map input;
+
+	private Map output;
+
+	private Map modelHandler;
+
+	private Map path;
+
+	private Map options;
+
+	private String convertPath(String pathParam) {
+		if (!pathParam.startsWith("uri:") && !pathParam.startsWith("#")) {
+			return AtlTestPlugin.getDefault().getBaseDirectory() + pathParam;
 		}
-		return path;
+		return pathParam;
 	}
-	
+
 	/**
 	 * Parse the .launch files to set transformation parameters.
 	 * 
-	 * @param uri the .launch file uri
-	 * @param testPath the base directory path
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws ParserConfigurationException
+	 * @param launchPath
+	 *            the base directory path
+	 * @throws Exception
 	 */
-	public void parseConfiguration(String launchPath) throws Exception {
-		
-		//static variables initialization
+	public void parseConfiguration(String launchPath) throws IOException, ParserConfigurationException,
+			SAXException {
+
+		// static variables initialization
 		libsFromConfig = new HashMap();
 		superimpose = new ArrayList();
 		input = new HashMap();
@@ -74,84 +81,122 @@ public class LaunchParser {
 		path = new HashMap();
 		options = new HashMap();
 
-		//parsing configuration
+		// parsing configuration
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = factory.newDocumentBuilder();
-		Document document = docBuilder.parse(new File(launchPath));			
-		Element root = (Element) document.getFirstChild();
+		Document document = docBuilder.parse(new File(launchPath));
+		Element root = (Element)document.getFirstChild();
 		NodeList nodeList = root.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
 			if (node instanceof Element) {
-				Element element = (Element) node;
+				Element element = (Element)node;
 				String key = element.getAttribute("key"); //$NON-NLS-1$
 				if (element.getNodeName().equals("booleanAttribute")) {
 					options.put(key, element.getAttribute("value"));
 				} else if (key.equals("ATL File Name")) { //$NON-NLS-1$
 					String asmFilePath = element.getAttribute("value"); //$NON-NLS-1$
-					atlUrl = new URL("file:"+convertPath(asmFilePath));
+					atlUrl = new URL("file:" + convertPath(asmFilePath));
 					if (asmFilePath.endsWith(".atl")) { //$NON-NLS-1$
-						asmFilePath = asmFilePath.substring(0,asmFilePath.length() - 4)+".asm"; //$NON-NLS-1$
+						asmFilePath = asmFilePath.substring(0, asmFilePath.length() - 4) + ".asm"; //$NON-NLS-1$
 					}
-					asmUrl = new URL("file:"+convertPath(asmFilePath));
+					asmUrl = new URL("file:" + convertPath(asmFilePath));
 				} else if (key.equals("Superimpose")) { //$NON-NLS-1$
 					NodeList entriesList = element.getChildNodes();
 					for (int j = 0; j < entriesList.getLength(); j++) {
 						Node nodeEntry = entriesList.item(j);
 						if (nodeEntry instanceof Element) {
-							Element entry = (Element) nodeEntry;
-							URL moduleUrl = new URL("file:"+convertPath(entry.getAttribute("value"))); //$NON-NLS-1$
+							Element entry = (Element)nodeEntry;
+							URL moduleUrl = new URL("file:" + convertPath(entry.getAttribute("value"))); //$NON-NLS-1$
 							superimpose.add(moduleUrl);
 						}
-					}				
+					}
 				} else if (key.equals("Libs")) { //$NON-NLS-1$
 					NodeList nodes = element.getChildNodes();
 					for (int j = 0; j < nodes.getLength(); j++) {
 						Node nodeEntry = nodes.item(j);
 						if (nodeEntry instanceof Element) {
-							Element entry = (Element) nodeEntry;
-							libsFromConfig.put(entry.getAttribute("key"),new URL("file:"+convertPath(entry.getAttribute("value"))));			 //$NON-NLS-1$ //$NON-NLS-2$
+							Element entry = (Element)nodeEntry;
+							libsFromConfig
+									.put(
+											entry.getAttribute("key"), new URL("file:" + convertPath(entry.getAttribute("value")))); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
-				}
-				else if (key.equals("Path")) { //$NON-NLS-1$
+				} else if (key.equals("Path")) { //$NON-NLS-1$
 					for (int j = 0; j < element.getChildNodes().getLength(); j++) {
 						Node nodeEntry = element.getChildNodes().item(j);
 						if (nodeEntry instanceof Element) {
-							Element entry = (Element) nodeEntry;
-							path.put(entry.getAttribute("key"),convertPath(entry.getAttribute("value")));		
+							Element entry = (Element)nodeEntry;
+							path.put(entry.getAttribute("key"), convertPath(entry.getAttribute("value")));
 						}
 					}
-				}			
-				else if (key.equals("Input")) { //$NON-NLS-1$
+				} else if (key.equals("Input")) { //$NON-NLS-1$
 					for (int j = 0; j < element.getChildNodes().getLength(); j++) {
 						Node nodeEntry = element.getChildNodes().item(j);
 						if (nodeEntry instanceof Element) {
-							Element entry = (Element) nodeEntry;
-							input.put(entry.getAttribute("key"),entry.getAttribute("value")); //$NON-NLS-1$ //$NON-NLS-2$
+							Element entry = (Element)nodeEntry;
+							input.put(entry.getAttribute("key"), entry.getAttribute("value")); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
-				}
-				else if (key.equals("Output")) { //$NON-NLS-1$
+				} else if (key.equals("Output")) { //$NON-NLS-1$
 					for (int j = 0; j < element.getChildNodes().getLength(); j++) {
 						Node nodeEntry = element.getChildNodes().item(j);
 						if (nodeEntry instanceof Element) {
-							Element entry = (Element) nodeEntry;
-							output.put(entry.getAttribute("key"),entry.getAttribute("value")); //$NON-NLS-1$ //$NON-NLS-2$
+							Element entry = (Element)nodeEntry;
+							output.put(entry.getAttribute("key"), entry.getAttribute("value")); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
-				}
-				else if (key.equals("Model Handler")) { //$NON-NLS-1$
+				} else if (key.equals("Model Handler")) { //$NON-NLS-1$
 					for (int j = 0; j < element.getChildNodes().getLength(); j++) {
 						Node nodeEntry = element.getChildNodes().item(j);
 						if (nodeEntry instanceof Element) {
-							Element entry = (Element) nodeEntry;
-							modelHandler.put(entry.getAttribute("key"),entry.getAttribute("value"));			 //$NON-NLS-1$ //$NON-NLS-2$
+							Element entry = (Element)nodeEntry;
+							modelHandler.put(entry.getAttribute("key"), entry.getAttribute("value")); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
 			}
 		}
 	}
-	
+
+	public URL getAtlUrl() {
+		return atlUrl;
+	}
+
+	public URL getAsmUrl() {
+		return asmUrl;
+	}
+
+	public Map getLibsFromConfig() {
+		return libsFromConfig;
+	}
+
+	public List getSuperimpose() {
+		return superimpose;
+	}
+
+	public Map getInput() {
+		return input;
+	}
+
+	public Map getOutput() {
+		return output;
+	}
+
+	public Map getModelHandler() {
+		return modelHandler;
+	}
+
+	public Map getPath() {
+		return path;
+	}
+
+	public Map getOptions() {
+		return options;
+	}
+
+	public void setAsmUrl(URL asmUrl) {
+		this.asmUrl = asmUrl;
+	}
+
 }

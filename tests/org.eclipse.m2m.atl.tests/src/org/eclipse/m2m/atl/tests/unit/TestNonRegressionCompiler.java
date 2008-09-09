@@ -15,18 +15,19 @@ import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionEMFVM;
 /**
  * Specifies TestNonRegressionTransfo for the emfvm.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class TestNonRegressionCompiler extends TestNonRegressionEMFVM {
 
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionEMFVM#setUp()
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		RECOMPILE_BEFORE_LAUNCH = true;
-		setPropertiesPath("/org.eclipse.m2m.atl.tests/data/emfvm.properties");//$NON-NLS-1$
+		recompileBeforeLaunch = true;
+		setPropertiesPath("/org.eclipse.m2m.atl.tests/data/emfvm.properties"); //$NON-NLS-1$
 	}
 
 }
-

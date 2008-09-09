@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.atl.engine.emfvm.ASM;
@@ -34,7 +35,7 @@ import org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo;
 /**
  * Specifies TestNonRegressionTransfo for the emfvm.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 
@@ -42,64 +43,67 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 		return "EMFVM";
 	}
 
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo#setUp()
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		setPropertiesPath("/org.eclipse.m2m.atl.tests/data/emfvm.properties");//$NON-NLS-1$
+		setPropertiesPath("/org.eclipse.m2m.atl.tests/data/emfvm.properties"); //$NON-NLS-1$
 	}
 
-	public double launch() throws Exception {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo#launch()
+	 */
+	public double launch() throws CoreException, IOException {
 		long startTime;
 		long endTime;
-		ASM asm = new ASMXMLReader().read(launchParser.asmUrl.openStream());
+		ASM asm = new ASMXMLReader().read(launchParser.getAsmUrl().openStream());
 		Map models = new HashMap();
 
-		for(Iterator i = launchParser.input.keySet().iterator() ; i.hasNext() ; ) {
+		for (Iterator i = launchParser.getInput().keySet().iterator(); i.hasNext();) {
 			String mName = (String)i.next();
-			String mmName = (String)launchParser.input.get(mName);
+			String mmName = (String)launchParser.getInput().get(mName);
 
 			ReferenceModel mm = (ReferenceModel)models.get(mmName);
-			if(mm == null) {
-				mm = loadReferenceModel(mmName, launchParser.path);
+			if (mm == null) {
+				mm = loadReferenceModel(mmName, launchParser.getPath());
 				models.put(mmName, mm);
 			}
-			Model m = new EMFModel(
-					mm, 
-					URI.createFileURI((String)launchParser.path.get(mName)),
-					false);			
+			Model m = new EMFModel(mm, URI.createFileURI((String)launchParser.getPath().get(mName)), false);
 			models.put(mName, m);
 		}
 
-		for(Iterator i = launchParser.output.keySet().iterator() ; i.hasNext() ; ) {
+		for (Iterator i = launchParser.getOutput().keySet().iterator(); i.hasNext();) {
 			String mName = (String)i.next();
-			String mmName = (String)launchParser.output.get(mName);
+			String mmName = (String)launchParser.getOutput().get(mName);
 
 			ReferenceModel mm = (ReferenceModel)models.get(mmName);
-			if(mm == null) {
-				mm = loadReferenceModel(mmName, launchParser.path);
+			if (mm == null) {
+				mm = loadReferenceModel(mmName, launchParser.getPath());
 				models.put(mmName, mm);
 			}
-			AbstractModel m = new EMFModel(
-					mm, 
-					URI.createPlatformResourceURI((String)launchParser.path.get(mName), true),
-					true);		
+			AbstractModel m = new EMFModel(mm, URI.createPlatformResourceURI((String)launchParser.getPath()
+					.get(mName), true), true);
 			models.put(mName, m);
-			m.isTarget = true;
+			m.setIsTarget(true);
 		}
 
 		try {
 			Map libraries = new HashMap();
-			for(Iterator i = launchParser.libsFromConfig.keySet().iterator() ; i.hasNext() ; ) {
+			for (Iterator i = launchParser.getLibsFromConfig().keySet().iterator(); i.hasNext();) {
 				String libName = (String)i.next();
-				IFile libFile = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString((String)launchParser.libsFromConfig.get(libName)));
+				IFile libFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
+						Path.fromOSString((String)launchParser.getLibsFromConfig().get(libName)));
 				ASM lib = new ASMXMLReader().read(libFile.getContents());
 				libraries.put(libName, lib);
 			}
 
 			List superimpose = new ArrayList();
-			for(Iterator i = launchParser.superimpose.iterator() ; i.hasNext() ; ) {
+			for (Iterator i = launchParser.getSuperimpose().iterator(); i.hasNext();) {
 				String path = (String)i.next();
 				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(path));
 				ASM module = new ASMXMLReader().read(file.getContents());
@@ -107,20 +111,20 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 			}
 
 			startTime = System.currentTimeMillis();
-			asm.run(models, libraries,superimpose, launchParser.options);
+			asm.run(models, libraries, superimpose, launchParser.getOptions());
 			endTime = System.currentTimeMillis();
 
-			for(Iterator i = launchParser.output.keySet().iterator() ; i.hasNext() ; ) {
+			for (Iterator i = launchParser.getOutput().keySet().iterator(); i.hasNext();) {
 				String mName = (String)i.next();
 
-				EMFModel m = (EMFModel)models.get(mName);			
-				m.save(URI.createFileURI((String)launchParser.path.get(mName)));
+				EMFModel m = (EMFModel)models.get(mName);
+				m.save(URI.createFileURI((String)launchParser.getPath().get(mName)));
 			}
-		} catch(VMException vme) {
+		} catch (VMException vme) {
 			vme.printStackTrace(System.out);
 			throw vme;
 		} finally {
-			for(Iterator i = models.values().iterator() ; i.hasNext() ; ) {
+			for (Iterator i = models.values().iterator(); i.hasNext();) {
 				Model model = (Model)i.next();
 				model.dispose();
 			}
@@ -133,15 +137,14 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 		ReferenceModel ret = null;
 
 		String path = (String)modelPaths.get(mmName);
-		if(path.startsWith("#")) {
+		if (path.startsWith("#")) {
 			ret = EMFReferenceModel.getMetametamodel();
-		} else if(path.startsWith("uri:")){
+		} else if (path.startsWith("uri:")) {
 			ret = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), path.substring(4));
 		} else {
 			ret = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(), URI.createFileURI(path));
-		}		
+		}
 
 		return ret;
 	}
 }
-

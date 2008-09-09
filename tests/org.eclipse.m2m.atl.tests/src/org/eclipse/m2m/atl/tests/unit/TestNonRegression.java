@@ -25,30 +25,35 @@ import org.eclipse.m2m.atl.tests.util.FileUtils;
 /**
  * Launches all non-regression tests.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public abstract class TestNonRegression extends TestCase {
+	
+	/** The path for usecases. */
+	protected static final String INPUT_PATH = "/org.eclipse.m2m.atl.tests/data/inputs"; //$NON-NLS-1$
 
+	private String propertiesPath;
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see junit.framework.TestCase#setUp()
+	 */
 	protected void setUp() throws Exception {
 		super.setUp();
 		String name = this.getClass().getName();
 		System.out.println(this.getClass().getName());
 		for (int i = 0; i < name.length(); i++) {
-			System.out.print("=");//$NON-NLS-1$
+			System.out.print("="); //$NON-NLS-1$
 		}
 		System.out.println();
 	}
 
-	/** The path for usecases */
-	protected static final String INPUT_PATH = "/org.eclipse.m2m.atl.tests/data/inputs";//$NON-NLS-1$
-	private String propertiesPath = null;
-
 	/**
-	 * Compare the expected models (in the expected directories) with the result
-	 * of the transformation.
+	 * Compare the expected models (in the expected directories) with the result of the transformation.
 	 * 
-	 * @throws IOException Thrown if an I/O operation has failed or been interrupted.
-	 * @throws InterruptedException If one of the threads is interrupted.
+	 * @throws Exception
+	 *             Thrown if an operation has failed or been interrupted.
 	 */
 	public void testNonRegression() throws Exception {
 		File inputDir = new File(AtlTestPlugin.getDefault().getBaseDirectory() + INPUT_PATH);
@@ -69,12 +74,13 @@ public abstract class TestNonRegression extends TestCase {
 	 *             Thrown if an operation has failed or been interrupted.
 	 */
 	private void compareSnapshots(File directory, boolean useEmfCompare) throws IOException {
-		String[] tests_to_jump = getTestsToJump();
-		if (tests_to_jump != null) {
-			for (int i = 0; i < tests_to_jump.length; i++) {
-				String test_to_jump = tests_to_jump[i];
-				if (test_to_jump.equals(directory.getName()))
+		String[] testsToJump = getTestsToJump();
+		if (testsToJump != null) {
+			for (int i = 0; i < testsToJump.length; i++) {
+				String testToJump = testsToJump[i];
+				if (testToJump.equals(directory.getName())) {
 					return;
+				}
 			}
 		}
 		if (FileUtils.listDirectories(directory).length != 0) {
@@ -95,15 +101,17 @@ public abstract class TestNonRegression extends TestCase {
 	private String[] getTestsToJump() throws IOException {
 		String[] res = null;
 		Properties props = new Properties();
-		if (propertiesPath == null) return null;
+		if (propertiesPath == null) {
+			return null;
+		}
 		File propertiesFile = new File(AtlTestPlugin.getDefault().getBaseDirectory() + propertiesPath);
 		FileInputStream fis = new FileInputStream(propertiesFile);
 		props.load(fis);
-		Set tests_to_jump = props.keySet();
-		int i =0;
-		res = new String[tests_to_jump.size()];
-		for (Iterator iterator = tests_to_jump.iterator(); iterator.hasNext();) {
-			String test = (String) iterator.next();
+		Set testsToJump = props.keySet();
+		int i = 0;
+		res = new String[testsToJump.size()];
+		for (Iterator iterator = testsToJump.iterator(); iterator.hasNext();) {
+			String test = (String)iterator.next();
 			res[i] = test.trim();
 			i++;
 		}
@@ -111,14 +119,14 @@ public abstract class TestNonRegression extends TestCase {
 	}
 
 	/**
-	 * Process specific instructions on a given use case
+	 * Process specific instructions on a given use case.
 	 * 
-	 * @param directory the use case container
+	 * @param directory
+	 *            the use case container
 	 */
-	protected abstract void singleTest(File directory) ;
+	protected abstract void singleTest(File directory);
 
 	protected void setPropertiesPath(String propertiesPath) {
 		this.propertiesPath = propertiesPath;
 	}
 }
-

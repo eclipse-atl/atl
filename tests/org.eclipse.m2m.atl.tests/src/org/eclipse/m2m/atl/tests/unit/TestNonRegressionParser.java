@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.tests.unit;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.AtlParser;
@@ -22,47 +23,52 @@ import org.eclipse.m2m.atl.tests.util.ModelUtils;
 /**
  * Launches parsing on each atl file, compare results.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class TestNonRegressionParser extends TestNonRegression {
 
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#setUp()
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		//ModelUtils.registerMetamodel(FileUtils.fileNameToURI("/models/ATL-0.2.ecore"), AtlTestPlugin.getResourceSet());//$NON-NLS-1$		
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#singleTest(java.io.File)
 	 */
-	protected void singleTest(File directory) {	
-		System.out.print(AtlTestsMessages.getString("TestNonRegressionParser.SINGLETEST",new Object[]{directory.getName()})); //$NON-NLS-1$ 
+	protected void singleTest(File directory) {
+		System.out.print(AtlTestsMessages.getString(
+				"TestNonRegressionParser.SINGLETEST", new Object[] {directory.getName()})); //$NON-NLS-1$ 
 		final File expectedDir = new File(directory.getPath().replace(File.separator + "inputs", //$NON-NLS-1$
 				File.separator + "expected")); //$NON-NLS-1$
-		final String transfoPath = directory+ File.separator + directory.getName() + ".atl";	 //$NON-NLS-1$
-		final String outputPath = directory+ File.separator + directory.getName() + ".atl.xmi";	 //$NON-NLS-1$
-		final String expectedPath = expectedDir+ File.separator + directory.getName() + ".atl.xmi";	 //$NON-NLS-1$
-		if (!new File(transfoPath).exists()) fail(AtlTestsMessages.getString("TestNonRegressionParser.FILENOTFOUND")); //$NON-NLS-1$
-
+		final String transfoPath = directory + File.separator + directory.getName() + ".atl"; //$NON-NLS-1$
+		final String outputPath = directory + File.separator + directory.getName() + ".atl.xmi"; //$NON-NLS-1$
+		final String expectedPath = expectedDir + File.separator + directory.getName() + ".atl.xmi"; //$NON-NLS-1$
+		if (!new File(transfoPath).exists()) {
+			fail(AtlTestsMessages.getString("TestNonRegressionParser.FILENOTFOUND")); //$NON-NLS-1$
+		}
 		try {
 			EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));
-			ModelUtils.save(result, "file:/"+transfoPath+".xmi");	 //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (Exception e) {
+			ModelUtils.save(result, "file:/" + transfoPath + ".xmi"); //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (IOException e) {
 			e.printStackTrace();
 			fail(AtlTestsMessages.getString("TestNonRegressionParser.FAIL")); //$NON-NLS-1$
-		}		
+		}
 
 		try {
-			FileUtils.compareFiles(new File(outputPath), new File(expectedPath), true);			
-		} catch (Exception e) {
+			FileUtils.compareFiles(new File(outputPath), new File(expectedPath), true);
+		} catch (IOException e) {
 			e.printStackTrace();
-			fail(AtlTestsMessages.getString("TestNonRegressionParser.COMPARISONFAIL",new Object[]{directory.getName()})); //$NON-NLS-1$
+			fail(AtlTestsMessages.getString(
+					"TestNonRegressionParser.COMPARISONFAIL", new Object[] {directory.getName()})); //$NON-NLS-1$
 		}
-		
+
 		System.out.println(AtlTestsMessages.getString("TestNonRegressionParser.OK")); //$NON-NLS-1$
 	}
-	
-}
 
+}

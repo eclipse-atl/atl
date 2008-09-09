@@ -23,7 +23,7 @@ import org.eclipse.equinox.app.IApplicationContext;
 /**
  * Launches no JUnit tests for ATL.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class DummyTests extends TestCase implements IApplication {
 

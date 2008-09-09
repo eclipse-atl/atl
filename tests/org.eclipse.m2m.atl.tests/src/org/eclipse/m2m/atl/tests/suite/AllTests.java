@@ -27,7 +27,7 @@ import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionVM;
 /**
  * Launches all the JUnit tests for ATL.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class AllTests extends TestCase implements IApplication {
 
@@ -47,7 +47,7 @@ public class AllTests extends TestCase implements IApplication {
 	 * @return The testsuite containing all the tests
 	 */
 	public static Test suite() {
-		final TestSuite suite = new TestSuite("ATL test suite");//$NON-NLS-1$	
+		final TestSuite suite = new TestSuite("ATL test suite"); //$NON-NLS-1$	
 		suite.addTestSuite(TestNonRegressionEMFVM.class);
 		suite.addTestSuite(TestNonRegressionVM.class);
 		suite.addTestSuite(TestNonRegressionParser.class);

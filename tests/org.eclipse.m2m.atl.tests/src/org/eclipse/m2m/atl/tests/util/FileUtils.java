@@ -21,43 +21,46 @@ import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 /**
  * Provide utilities to get file paths, or compare files.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public class FileUtils {
+public final class FileUtils {
 
+	/**
+	 * Utility classes don't need to (and shouldn't) be instantiated.
+	 */
+	private FileUtils() {
+		// prevents instantiation
+	}
+	
 	/**
 	 * Compare bytes of two files.
 	 * 
-	 * @param left
-	 * @param right
-	 * @throws IOException
+	 * @param left the left file
+	 * @param right the right file 
+	 * @param delete if <code>true</code>, delete the right file after comparison
+	 * @throws Exception
 	 */
-	public static void compareFiles(File left, File right, boolean delete) throws Exception {
-		if (left.length() != right.length())
-			throw new Exception(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
-
+	public static void compareFiles(File left, File right, boolean delete) throws IOException {
+		if (left.length() != right.length()) {
+			throw new IOException(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
+		}
 		FileInputStream lin = new FileInputStream(left);
 		FileInputStream rin = new FileInputStream(right);
-		try
-		{
+		try {
 			byte[] lbuffer = new byte[4096];
 			byte[] rbuffer = new byte[lbuffer.length];
-			for (int lcount = 0; (lcount = lin.read(lbuffer)) > 0;)
-			{
+			for (int lcount = 0; (lcount = lin.read(lbuffer)) > 0;) {
 				int bytesRead = 0;
-				for (int rcount = 0; (rcount = rin.read(rbuffer, bytesRead, lcount - bytesRead)) > 0;)
-				{
+				for (int rcount = 0; (rcount = rin.read(rbuffer, bytesRead, lcount - bytesRead)) > 0;) {
 					bytesRead += rcount;
 				}
-				for (int byteIndex = 0; byteIndex < lcount; byteIndex++)
-				{
-					if (lbuffer[byteIndex] != rbuffer[byteIndex])
-						throw new Exception(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
+				for (int byteIndex = 0; byteIndex < lcount; byteIndex++) {
+					if (lbuffer[byteIndex] != rbuffer[byteIndex]) {
+						throw new IOException(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
+					}
 				}
 			}
-		}
-		finally
-		{
+		} finally {
 			lin.close();
 			rin.close();
 		}
@@ -67,13 +70,12 @@ public class FileUtils {
 	}
 
 	/**
-	 * Lists all subdirectories contained within a given folder, with the exception
-	 * of directories starting with a "." or directories named "CVS".
+	 * Lists all subdirectories contained within a given folder, with the exception of directories starting
+	 * with a "." or directories named "CVS".
 	 * 
 	 * @param aDirectory
-	 * 			Directory from which we need to list subfolders.
-	 * @return
-	 * 			Array composed by all <code>aDirectory</code> subfolders.
+	 *            Directory from which we need to list subfolders.
+	 * @return Array composed by all <code>aDirectory</code> subfolders.
 	 */
 	public static File[] listDirectories(File aDirectory) {
 		File[] directories = null;
@@ -81,9 +83,8 @@ public class FileUtils {
 		if (aDirectory.exists() && aDirectory.isDirectory()) {
 			directories = aDirectory.listFiles(new FileFilter() {
 				public boolean accept(File file) {
-					return file.isDirectory() 
-					&& !file.getName().startsWith(".") //$NON-NLS-1$
-					&& !file.getName().equals("CVS"); //$NON-NLS-1$
+					return file.isDirectory() && !file.getName().startsWith(".") //$NON-NLS-1$
+							&& !file.getName().equals("CVS"); //$NON-NLS-1$
 				}
 			});
 			Arrays.sort(directories);
