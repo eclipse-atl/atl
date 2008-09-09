@@ -18,16 +18,18 @@ import java.util.ResourceBundle;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-
 /**
  * The main plugin class to be used in the desktop.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class BuilderPlugin extends AbstractUIPlugin {
-	//The shared instance.
+	/** The shared instance. */
 	private static BuilderPlugin plugin;
-	//Resource bundle.
-	private ResourceBundle resourceBundle;	
-	
+
+	/** Resource bundle. */
+	private ResourceBundle resourceBundle;
+
 	/**
 	 * The constructor.
 	 */
@@ -35,38 +37,46 @@ public class BuilderPlugin extends AbstractUIPlugin {
 		super();
 		plugin = this;
 		try {
-			resourceBundle   = ResourceBundle.getBundle("org.eclipse.m2m.atl.adt.builder.BuilderPluginResources");//$NON-NLS-1$
+			resourceBundle = ResourceBundle
+					.getBundle("org.eclipse.m2m.atl.adt.builder.BuilderPluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
-		}	
+		}
 	}
-	
+
 	/**
-     * Returns the image descriptor with the given relative path.
-     */
-    static public ImageDescriptor getImageDescriptor(String name) {
-        BuilderPlugin plugin = BuilderPlugin.getDefault();
-        String pluginDir = plugin.getBundle().getEntry("/").toString();//$NON-NLS-1$
-        String iconPath = "icons/";//$NON-NLS-1$
-        try {
-            return ImageDescriptor.createFromURL(
-                    new URL(pluginDir + iconPath + name));
-        }
-        catch(MalformedURLException mfe) {
-            return ImageDescriptor.getMissingImageDescriptor();
-        }
-    }
-	
+	 * Returns the image descriptor with the given relative path.
+	 * 
+	 * @param name
+	 *            the image name
+	 * @return the image descriptor with the given relative path
+	 */
+	public static ImageDescriptor getImageDescriptor(String name) {
+		BuilderPlugin builderPlugin = BuilderPlugin.getDefault();
+		String pluginDir = builderPlugin.getBundle().getEntry("/").toString(); //$NON-NLS-1$
+		String iconPath = "icons/"; //$NON-NLS-1$
+		try {
+			return ImageDescriptor.createFromURL(new URL(pluginDir + iconPath + name));
+		} catch (MalformedURLException mfe) {
+			return ImageDescriptor.getMissingImageDescriptor();
+		}
+	}
+
 	/**
 	 * Returns the shared instance.
+	 * 
+	 * @return the shared instance
 	 */
 	public static BuilderPlugin getDefault() {
 		return plugin;
 	}
 
 	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
+	 * Returns the string from the plugin's resource bundle, or 'key' if not found.
+	 * 
+	 * @param key
+	 *            the default value
+	 * @return the string from the plugin's resource bundle, or 'key' if not found
 	 */
 	public static String getResourceString(String key) {
 		ResourceBundle bundle = BuilderPlugin.getDefault().getResourceBundle();
@@ -78,7 +88,9 @@ public class BuilderPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the plugin's resource bundle,
+	 * Returns the plugin's resource bundle.
+	 * 
+	 * @return the plugin's resource bundle
 	 */
 	public ResourceBundle getResourceBundle() {
 		return resourceBundle;

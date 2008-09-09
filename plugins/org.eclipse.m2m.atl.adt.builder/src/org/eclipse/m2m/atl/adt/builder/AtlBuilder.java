@@ -25,56 +25,78 @@ import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * The ATL project builder.
- *
- * @author Tarik Idrissi (INRIA)
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * 
+ * @author <a href="mailto:tarik.idrissi@laposte.net">Tarik Idrissi</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class AtlBuilder extends IncrementalProjectBuilder {
-	
+
+	/** The Atl builder id. */
+	public static final String ATL_BUILDER_ID = "org.eclipse.m2m.atl.adt.builder.atlBuilder"; //$NON-NLS-1$
+
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
-	
-	/** The Atl builder id */
-	public static final String ATL_BUILDER_ID = "org.eclipse.m2m.atl.adt.builder.atlBuilder";//$NON-NLS-1$
-	
-	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {		
-		IWorkspaceRunnable wr= new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {				
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IncrementalProjectBuilder#build(int, java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {
+		IWorkspaceRunnable wr = new IWorkspaceRunnable() {
+			public void run(IProgressMonitor monitor) throws CoreException {
 				fullBuild(monitor);
 			}
 		};
-		run(wr, monitor);								
+		run(wr, monitor);
 		return null;
 	}
-		
+
+	/**
+	 * Process a full build.
+	 * 
+	 * @param monitor the progress monitor
+	 */
 	protected void fullBuild(IProgressMonitor monitor) {
 		try {
 			IProject p = getProject();
-			monitor.beginTask(AtlBuilderMessages.getString("AtlBuilder.COMPILETASK",new Object[]{p.getName()}), IProgressMonitor.UNKNOWN);//$NON-NLS-1$
+			monitor.beginTask(AtlBuilderMessages.getString(
+					"AtlBuilder.COMPILETASK", new Object[] {p.getName()}), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 			p.accept(new AtlBuildVisitor(monitor));
 		} catch (CoreException e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}		
+		}
 	}
-	
-	//@Override
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IncrementalProjectBuilder#clean(org.eclipse.core.runtime.IProgressMonitor)
+	 */
 	protected void clean(IProgressMonitor monitor) throws CoreException {
 		super.clean(monitor);
-		IWorkspaceRunnable wr= new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {				
+		IWorkspaceRunnable wr = new IWorkspaceRunnable() {
+			public void run(IProgressMonitor monitor) throws CoreException {
 				try {
 					IProject p = getProject();
-					monitor.beginTask(AtlBuilderMessages.getString("AtlBuilder.CLEANTASK",new Object[]{p.getName()}), IProgressMonitor.UNKNOWN);//$NON-NLS-1$
+					monitor.beginTask(AtlBuilderMessages.getString(
+							"AtlBuilder.CLEANTASK", new Object[] {p.getName()}), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 					p.accept(new AtlCleanVisitor(monitor));
 				} catch (CoreException e) {
 					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				}		
+				}
 			}
 		};
-		run(wr, monitor);								
+		run(wr, monitor);
 	}
-	
+
 	/**
-	 * Execute the given workspace runnable
+	 * Execute the given workspace runnable.
+	 * 
+	 * @param wr
+	 *            the given workspace runnable
+	 * @param monitor
+	 *            the progress monitor
+	 * @throws CoreException
 	 */
 	protected void run(IWorkspaceRunnable wr, IProgressMonitor monitor) throws CoreException {
 		ResourcesPlugin.getWorkspace().run(wr, monitor);
