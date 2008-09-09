@@ -45,10 +45,7 @@ public class ModelToSave {
 	}
 
 	public boolean isExtractor() {
-		if (extractor != null)
-			return true;
-		else
-			return false;
+		return extractor != null;
 	}
 	
 	public String getExtractorType() {

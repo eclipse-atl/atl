@@ -49,16 +49,35 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 
 /**
- * This class provides a set of util methods
- * @author Freddy Allilaire
- *
+ * This class provides a set of util methods.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
-public class ServiceTransformationUtil {
+public final class ServiceTransformationUtil {
 
-	public static final String XMLExtractor = "XML";//$NON-NLS-1$
-	public static final String XMIExtractor = "XMI";//$NON-NLS-1$
-	public static final String EBNFExtractor = "EBNF";//$NON-NLS-1$
-	
+	/** XML Extractor name. */
+	public static final String XML_EXTRACTOR = "XML"; //$NON-NLS-1$
+
+	/** XMI Extractor name. */
+	public static final String XMI_EXTRACTOR = "XMI"; //$NON-NLS-1$
+
+	/** EBNF Extractor name. */
+	public static final String EBNF_EXTRACTOR = "EBNF"; //$NON-NLS-1$
+
+	private ServiceTransformationUtil() {
+		super();
+	}
+
+	/**
+	 * Returns the URL of a given ASM file.
+	 * 
+	 * @param filePath
+	 *            the ASM file path
+	 * @param pluginId
+	 *            the plugin id
+	 * @return the URL of a given ASM file.
+	 * @throws ServiceException
+	 */
 	public static URL getURLFromASMFile(String filePath, String pluginId) throws ServiceException {
 		URL tPlatform = Platform.getBundle(pluginId).getEntry(filePath);
 		try {
@@ -67,45 +86,64 @@ public class ServiceTransformationUtil {
 			throw new ServiceException(IStatus.CANCEL, e);
 		}
 	}
-	
-	public static ASMModel loadModel(AtlModelHandler amh, String modelName, ASMModel metamodel, String path, String nsUri, boolean isM3, boolean inWorkspace, String pluginId) throws ServiceException {
+
+	/**
+	 * @param amh
+	 * @param modelName
+	 * @param metamodel
+	 * @param path
+	 * @param nsUri
+	 * @param isM3
+	 * @param inWorkspace
+	 * @param pluginId
+	 * @return
+	 * @throws ServiceException
+	 */
+	public static ASMModel loadModel(AtlModelHandler amh, String modelName, ASMModel metamodel, String path,
+			String nsUri, boolean isM3, boolean inWorkspace, String pluginId) throws ServiceException {
 		ASMModel ret = null;
-		
-		if((amh instanceof AtlEMFModelHandler))
-			if (isM3)
+
+		if (amh instanceof AtlEMFModelHandler) {
+			if (isM3) {
 				ret = amh.getMof();
-			else if(nsUri != null && !nsUri.equals(""))//$NON-NLS-1$
+			} else if (nsUri != null && !nsUri.equals("")) { //$NON-NLS-1$
 				// TODO delete pre-string 'uri:'
-				ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, "uri:" + nsUri);//$NON-NLS-1$
-			else if (inWorkspace)
-				ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, URI.createPlatformResourceURI(path, true));
-			else {
+				ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, "uri:" + nsUri); //$NON-NLS-1$
+			} else if (inWorkspace) {
+				ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, URI
+						.createPlatformResourceURI(path, true));
+			} else {
 				try {
 					Bundle bundle = Platform.getBundle(pluginId);
-					if (bundle == null)
-						throw new ServiceException(IStatus.ERROR, ServiceMessages.getString("ServiceTransformationUtil.0",new Object[]{pluginId}));//$NON-NLS-1$
+					if (bundle == null) {
+						throw new ServiceException(IStatus.ERROR, ServiceMessages.getString(
+								"ServiceTransformationUtil.0", new Object[] {pluginId})); //$NON-NLS-1$
+					}
 					URL urlFile = bundle.getEntry(path);
-					if (urlFile == null)
-						throw new ServiceException(IStatus.ERROR, ServiceMessages.getString("ServiceTransformationUtil.1",new Object[]{path,pluginId}));//$NON-NLS-1$
+					if (urlFile == null) {
+						throw new ServiceException(IStatus.ERROR, ServiceMessages.getString(
+								"ServiceTransformationUtil.1", new Object[] {path, pluginId})); //$NON-NLS-1$
+					}
 					InputStream in = urlFile.openStream();
 					ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, in);
 				} catch (IOException e) {
 					throw new ServiceException(IStatus.ERROR, e);
 				}
 			}
-		else
-			throw new ServiceException(IStatus.CANCEL, ServiceMessages.getString("ServiceTransformationUtil.2")); //$NON-NLS-1$
-
+		} else {
+			throw new ServiceException(IStatus.CANCEL, ServiceMessages
+					.getString("ServiceTransformationUtil.2")); //$NON-NLS-1$
+		}
 		return ret;
 	}
-	
+
 	public static void xmlExtraction(final ASMModel model, String path, AtlModelHandler amh) {
 		try {
 			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
-			
+
 			PipedInputStream in = new PipedInputStream();
 			final OutputStream out = new PipedOutputStream(in);
-			
+
 			final Map parameters = Collections.EMPTY_MAP;
 
 			final XMLExtractor xmle = new XMLExtractor();
@@ -114,22 +152,22 @@ public class ServiceTransformationUtil {
 				public void run() {
 					try {
 						xmle.extract(model, out, parameters);
-					} catch(Exception e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					} finally {
 						try {
 							out.close();
-						} catch(IOException ioe) {
-							
+						} catch (IOException ioe) {
+
 						}
 					}
 				}
 			}.start();
-			if(file.exists())
+			if (file.exists())
 				file.setContents(in, IFile.FORCE, null);
 			else
 				file.create(in, IFile.FORCE, null);
-			
+
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (CoreException e) {
@@ -141,15 +179,19 @@ public class ServiceTransformationUtil {
 		try {
 			PipedInputStream in = new PipedInputStream();
 			final OutputStream out = new PipedOutputStream(in);
-			
+
 			final TCSExtractor ebnfe = new TCSExtractor();
-			
-			ASMModel TCS = loadModel(AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF), "TCS", AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF).getMof(), "resources/TCS.ecore", null, false, false, "org.eclipse.m2m.atl.service.core"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			
+
+			ASMModel TCS = loadModel(
+					AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF),
+					"TCS", AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF).getMof(), "resources/TCS.ecore", null, false, false, "org.eclipse.m2m.atl.service.core"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
 			Map tempParam = new HashMap();
 
-			tempParam.put("format", loadModel(amh, "model.tcs", TCS, (String)params.get("path"), null, false, false, (String)params.get("pluginId"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			
+			tempParam
+					.put(
+							"format", loadModel(amh, "model.tcs", TCS, (String)params.get("path"), null, false, false, (String)params.get("pluginId"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
 			for (Iterator it = params.keySet().iterator(); it.hasNext();) {
 				String paramName = (String)it.next();
 				String paramType = (String)ebnfe.getParameterTypes().get(paramName);
@@ -160,23 +202,23 @@ public class ServiceTransformationUtil {
 			final Map parameters = tempParam;
 
 			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
-			
+
 			new Thread() {
 				public void run() {
 					try {
 						ebnfe.extract(model, out, parameters);
-					} catch(Exception e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					} finally {
 						try {
 							out.close();
-						} catch(IOException ioe) {
-							
+						} catch (IOException ioe) {
+
 						}
 					}
 				}
 			}.start();
-			if(file.exists())
+			if (file.exists())
 				file.setContents(in, IFile.FORCE, null);
 			else
 				file.create(in, IFile.FORCE, null);
@@ -186,35 +228,37 @@ public class ServiceTransformationUtil {
 			e.printStackTrace();
 		}
 	}
-	
-	public static ASMModel ebnfInjection(String name, String filePath, AtlModelHandler amh, ASMModel metamodel, Map params, String parserPath, String metamodelName, String pluginId)  {
+
+	public static ASMModel ebnfInjection(String name, String filePath, AtlModelHandler amh,
+			ASMModel metamodel, Map params, String parserPath, String metamodelName, String pluginId) {
 
 		try {
 			InputStream in = Platform.getBundle(pluginId).getEntry(filePath).openStream();
-			
+
 			ASMModel model = amh.newModel(name, "model.xmi", metamodel);
 			TCSInjector inj = new TCSInjector();
-			
+
 			ClassLoader oldCl = Thread.currentThread().getContextClassLoader();
 			JarClassLoader loader = createLoader(pluginId, parserPath, oldCl);
 
 			Class lexer = loader.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Lexer", true); //$NON-NLS-1$ //$NON-NLS-2$
-			Class parser = loader.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Parser", true); //$NON-NLS-1$ //$NON-NLS-2$
+			Class parser = loader
+					.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Parser", true); //$NON-NLS-1$ //$NON-NLS-2$
 
 			Map injParams = new HashMap();
 			injParams.put("name", metamodelName);
 			injParams.put("lexerClass", lexer);
 			injParams.put("parserClass", parser);
-			inj.inject(model, in, injParams);			
+			inj.inject(model, in, injParams);
 			in.close();
-			
+
 			return model;
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}	catch (IOException e1) {
+		} catch (IOException e1) {
 			System.err.println(e1);
 		}
-		
+
 		return null;
 	}
 
@@ -224,11 +268,12 @@ public class ServiceTransformationUtil {
 			String urlString = url.toString();
 
 			LinkedList list = new LinkedList();
-			String requires = (String)Platform.getBundle(pluginId).getHeaders().get(Constants.BUNDLE_CLASSPATH);
+			String requires = (String)Platform.getBundle(pluginId).getHeaders().get(
+					Constants.BUNDLE_CLASSPATH);
 
 			if (requires == null)
 				requires = parserPath;
-			else if	(requires.indexOf(parserPath) == -1)
+			else if (requires.indexOf(parserPath) == -1)
 				requires += "," + parserPath; //$NON-NLS-1$
 
 			ManifestElement[] elements = ManifestElement.parseHeader(Constants.BUNDLE_CLASSPATH, requires);
@@ -239,8 +284,8 @@ public class ServiceTransformationUtil {
 				URL libUrl = new URL(libUrlStr);
 				list.add(libUrl);
 			}
-			URL[] libUrls = (URL[]) list.toArray(new URL[list.size()]);
-			
+			URL[] libUrls = (URL[])list.toArray(new URL[list.size()]);
+
 			return new JarClassLoader(libUrls, parent);
 		} catch (BundleException e) {
 			e.printStackTrace();
@@ -249,27 +294,27 @@ public class ServiceTransformationUtil {
 		}
 		return null;
 	}
-	
+
 	public static int applyMarkers(String path, ASMModel pbs) throws CoreException {
 		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
 		MarkerMaker markerMaker = new MarkerMaker();
 
 		int nbErrors = 0;
-		
+
 		Collection pbsc = pbs.getElementsByType("Problem"); //$NON-NLS-1$
-		EObject pbsa[] = new EObject[pbsc.size()];
+		EObject[] pbsa = new EObject[pbsc.size()];
 		int k = 0;
-		for(Iterator i = pbsc.iterator() ; i.hasNext() ; ) {
+		for (Iterator i = pbsc.iterator(); i.hasNext();) {
 			ASMEMFModelElement ame = (ASMEMFModelElement)i.next();
 			pbsa[k] = ame.getObject();
-			if("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) { //$NON-NLS-1$ //$NON-NLS-2$
+			if ("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) { //$NON-NLS-1$ //$NON-NLS-2$
 				nbErrors++;
 			}
 			k++;
 		}
 		markerMaker.resetPbmMarkers(file, pbsa);
-		
+
 		return nbErrors;
 	}
-	
+
 }

@@ -39,7 +39,7 @@ public class ServiceException extends CoreException {
 	 * @param status the status (IStatus.OK, IStatus.INFO, IStatus.WARNING, IStatus.ERROR, IStatus.CANCEL)
 	 */
 	public ServiceException(int status, String message) {
-		super(new Status(status, "org.eclipse.m2m.atl.service.core", IStatus.OK, message, null));//$NON-NLS-1$
+		super(new Status(status, "org.eclipse.m2m.atl.service.core", IStatus.OK, message, null)); //$NON-NLS-1$
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class ServiceException extends CoreException {
 	 * @param status the status (IStatus.OK, IStatus.INFO, IStatus.WARNING, IStatus.ERROR, IStatus.CANCEL)
 	 */
 	public ServiceException(int status, String message, Exception exception) {
-		super(new Status(status, "org.eclipse.m2m.atl.service.core", IStatus.OK, message + "\n" + exception.getMessage(), exception));//$NON-NLS-1$//$NON-NLS-2$
+		super(new Status(status, "org.eclipse.m2m.atl.service.core", IStatus.OK, message + "\n" + exception.getMessage(), exception)); //$NON-NLS-1$//$NON-NLS-2$
 	}		
 	
 	/**
@@ -55,7 +55,7 @@ public class ServiceException extends CoreException {
 	 * @param status the status (IStatus.OK, IStatus.INFO, IStatus.WARNING, IStatus.ERROR, IStatus.CANCEL)
 	 */
 	public ServiceException(int status, Exception exception) {
-		super(new Status(status, "org.eclipse.m2m.atl.service.core", IStatus.OK, exception.getMessage(), exception));//$NON-NLS-1$
+		super(new Status(status, "org.eclipse.m2m.atl.service.core", IStatus.OK, exception.getMessage(), exception)); //$NON-NLS-1$
 	}
 		
 }

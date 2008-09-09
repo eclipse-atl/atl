@@ -15,33 +15,54 @@ import java.net.URLClassLoader;
 import java.util.HashMap;
 
 /**
- * @author Freddy Allilaire
+ * Loads a class form a jar.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class JarClassLoader extends URLClassLoader {
 
 	HashMap fMap = new HashMap();
-	
+
+	/**
+	 * Creates a new JarClassLoader.
+	 * 
+	 * @param urls
+	 *            jar urls
+	 * @param parent
+	 *            parent class loader
+	 */
 	public JarClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);
 	}
-	
+
+	/**
+	 * Loads a class.
+	 * 
+	 * @param name
+	 *            the class name
+	 * @param resolve
+	 *            resolve the name if true
+	 * @return the class
+	 * @throws ClassNotFoundException
+	 */
 	public Class loadClass2(String name, boolean resolve) throws ClassNotFoundException {
 
-		Class c = (Class) fMap.get(name);
-		
+		Class c = (Class)fMap.get(name);
+
 		if (c == null) {
 			c = findClass(name);
-		
-			if (c != null)
+
+			if (c != null) {
 				fMap.put(name, c);
-			else {
+			} else {
 				c = loadClass(name);
 			}
 		}
-		
-		if (c != null && resolve)
+
+		if (c != null && resolve) {
 			resolveClass(c);
-		
+		}
+
 		return c;
 	}
 }

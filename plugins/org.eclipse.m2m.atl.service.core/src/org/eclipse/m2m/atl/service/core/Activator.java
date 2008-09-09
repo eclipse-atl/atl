@@ -14,25 +14,28 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class Activator extends AbstractUIPlugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.service.core";//$NON-NLS-1$
+	/** The plug-in ID. */
+	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.service.core"; //$NON-NLS-1$
 
-	// The shared instance
+	/** The shared instance. */
 	private static Activator plugin;
-	
+
 	/**
-	 * The constructor
+	 * The Activator constructor.
 	 */
 	public Activator() {
 		plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
@@ -40,8 +43,9 @@ public class Activator extends AbstractUIPlugin {
 		// TODO Find all jar to load, they should be grouped by plugin id
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
@@ -50,8 +54,8 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the shared instance
-	 *
+	 * Returns the shared instance.
+	 * 
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {

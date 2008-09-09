@@ -17,39 +17,54 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class contains metadata for a single ATL transformation
- * @author Freddy Allilaire
- *
+ * This class contains metadata for a single ATL transformation.
+ * 
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class Transformation {
-	
+
+	/**
+	 * The out model.
+	 * 
+	 * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+	 */
 	private class OutModel {
 		private String globalModelName;
+
 		private String globalMetamodelName;
-		
+
 		public OutModel(String modelName, String metamodelName) {
 			this.globalModelName = modelName;
 			this.globalMetamodelName = metamodelName;
 		}
 	}
-	
+
 	/**
-	 * Transformation path
+	 * Transformation path.
 	 */
 	private String transformationPath;
+
 	/**
-	 * Map <modelNameInTransformationHeader, globalModelName>
+	 * Map [modelNameInTransformationHeader, globalModelName].
 	 */
 	private Map inModels;
+
 	/**
-	 * Map <modelNameInTransformationHeader, OutModel(globalModelName, globalMetamodelName)>
+	 * Map [modelNameInTransformationHeader, OutModel(globalModelName, globalMetamodelName)>.
 	 */
 	private Map outModels;
+
 	/**
-	 * List of models not preloaded (i.e. models selected from the workspace)
+	 * List of models not preloaded (i.e. models selected from the workspace).
 	 */
 	private List modelsNotPreloaded;
-	
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param transformationPath
+	 *            the transformation path
+	 */
 	public Transformation(String transformationPath) {
 		super();
 		inModels = new HashMap();
@@ -57,11 +72,11 @@ public class Transformation {
 		modelsNotPreloaded = new ArrayList();
 		this.transformationPath = transformationPath;
 	}
-	
+
 	public void addInModel(String modelNameInTransformationHeader, String globalModelName) {
 		inModels.put(modelNameInTransformationHeader, globalModelName);
 	}
-	
+
 	public void addInNotPreloadedList(String modelName) {
 		modelsNotPreloaded.add(modelName);
 	}
@@ -69,41 +84,46 @@ public class Transformation {
 	public void addOutModel(String modelNameInConfiguration, String modelName, String metamodelName) {
 		outModels.put(modelNameInConfiguration, new OutModel(modelName, metamodelName));
 	}
-	
+
 	public String getTransformationPath() {
 		return transformationPath;
 	}
-	
+
 	/**
+	 * Returns Map [modelNameInTransformationHeader, globalModelName].
 	 * 
-	 * @return Map <modelNameInTransformationHeader, globalModelName>
+	 * @return Map [modelNameInTransformationHeader, globalModelName]
 	 */
 	public Map getInModels() {
 		return inModels;
 	}
 
 	/**
+	 * Returns Map [modelNameInTransformationHeader, globalModelName].
 	 * 
-	 * @return Map <modelNameInTransformationHeader, globalModelName>
+	 * @return Map [modelNameInTransformationHeader, globalModelName]
 	 */
 	public Map getOutModels() {
 		Map ret = new HashMap();
 		for (Iterator it = outModels.keySet().iterator(); it.hasNext();) {
 			String modelNameInConfiguration = (String)it.next();
-			ret.put(modelNameInConfiguration, ((OutModel)outModels.get(modelNameInConfiguration)).globalModelName);
+			ret.put(modelNameInConfiguration,
+					((OutModel)outModels.get(modelNameInConfiguration)).globalModelName);
 		}
 		return ret;
 	}
-	
+
 	/**
+	 * Returns a map of [globalModelName, globalMetamodelName].
 	 * 
-	 * @return Map <globalModelName, globalMetamodelName>
+	 * @return a map of [globalModelName, globalMetamodelName]
 	 */
 	public Map getOutModelsForLoading() {
 		Map ret = new HashMap();
 		for (Iterator it = outModels.keySet().iterator(); it.hasNext();) {
 			String modelNameInConfiguration = (String)it.next();
-			ret.put(((OutModel)outModels.get(modelNameInConfiguration)).globalModelName, ((OutModel)outModels.get(modelNameInConfiguration)).globalMetamodelName);
+			ret.put(((OutModel)outModels.get(modelNameInConfiguration)).globalModelName, ((OutModel)outModels
+					.get(modelNameInConfiguration)).globalMetamodelName);
 		}
 		return ret;
 	}
