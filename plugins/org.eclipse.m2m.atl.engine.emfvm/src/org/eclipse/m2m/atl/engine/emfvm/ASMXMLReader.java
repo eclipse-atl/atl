@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -71,7 +72,7 @@ public class ASMXMLReader extends DefaultHandler {
 			err.printStackTrace(System.out);
 		}
 		if (errors > 0) {
-			System.exit(1);
+			logger.log(Level.SEVERE, "Fatal error reading .asm file");
 		}
 		return ret;
 	}
@@ -180,7 +181,6 @@ public class ASMXMLReader extends DefaultHandler {
 		throw new ASMXMLReaderException("Fatal error reading .asm file: line " + e.getLineNumber() + ":"
 				+ e.getColumnNumber() + ": " + e.getLocalizedMessage(), e.getPublicId(), e.getSystemId(), e
 				.getLineNumber(), e.getColumnNumber(), e);
-		// System.exit(1); // NEVER call System.exit() from a framework, such as Eclipse!!!
 	}
 
 }
