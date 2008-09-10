@@ -206,18 +206,13 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 		return getWorkbench().getActiveWorkbenchWindow().getActivePage();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
 		try {
-			// if(compilationUnitDocumentProvider != null) {
-			// compilationUnitDocumentProvider.shutdown();
-			// compilationUnitDocumentProvider = null;
-			// }
-
 			if (atlTextTools != null) {
 				atlTextTools.dispose();
 				atlTextTools = null;
