@@ -44,7 +44,7 @@ public class ProblemConverter
      */
     private static String getStringFeature (EObject eObject, String featureName) {
         EStructuralFeature sfLocation = eObject.eClass().getEStructuralFeature(featureName);
-        return (String) eObject.eGet(sfLocation);
+        return (String) eObject.eGet(sfLocation).toString();
     }
 
 }
