@@ -15,7 +15,7 @@ import java.util.Iterator;
 /**
  * ASMModel Navigator helpers.
  * 
- * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frédéric Jouault</a>
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class AMN {
 
