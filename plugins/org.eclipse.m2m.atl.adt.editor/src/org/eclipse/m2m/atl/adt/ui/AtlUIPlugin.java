@@ -221,25 +221,16 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 			consoleStream.print(toPrint);
 	}	
 	
-	private void initConsole () {
+	private void initConsole() {
 		console = findConsole(ATL_CONSOLE);
-		Font f = null;
-		try {
-			FontData data = new FontData ("Arial", 9, 9);//$NON-NLS-1$
-			data.setStyle(SWT.NORMAL);
-			f = new Font (null, data);
-
-			console.setFont(f);
-		} catch (Exception ex) {	   	
-		}
-		// console.setFont(new Font());
+		/*
+		 * REMOVED : cause bug 240284 Font f = null; try { FontData data = new FontData ("Arial", 9, 9);
+		 * //$NON-NLS-1$ data.setStyle(SWT.NORMAL); f = new Font (null, data); console.setFont(f); } catch
+		 * (Exception ex) { }
+		 */
 		consoleStream = console.newMessageStream();
 		activateConsole();
-		// System.out = out;	   
-		consoleStream.println(AtlUIMessages.getString("AtlUIPlugin.INIT")); //$NON-NLS-1$
-//		PrintStream redirStream = new PrintStream (consoleStream);
-//		System.setOut(redirStream);
-		// System.setErr(redirStream);	   
+		//consoleStream.println(AtlUIMessages.getString("AtlUIPlugin.INIT")); //$NON-NLS-1$	   
 		Handler handler = new ConsoleStreamHandler(consoleStream);
 		Logger.getLogger(ATLVMPlugin.LOGGER).addHandler(handler);
 	}
