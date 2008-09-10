@@ -12,3 +12,4 @@ Require-Bundle: org.eclipse.emf.common,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.emf.ecore.xmi
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
