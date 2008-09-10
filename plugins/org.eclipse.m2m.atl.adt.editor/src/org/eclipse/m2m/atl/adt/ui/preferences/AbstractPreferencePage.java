@@ -46,11 +46,13 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  */
 public abstract class AbstractPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
+	/*
 	private static void indent(Control control) {
 		GridData gridData = new GridData();
 		gridData.horizontalIndent = 20;
 		control.setLayoutData(gridData);
 	}
+	*/
 
 	private HashMap checkBoxes = new HashMap();
 
@@ -110,6 +112,7 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 		fPreferenceeStore.start();
 	}
 
+	/*
 	private void createDependency(final Button master, String masterKey, final Control slave) {
 		indent(slave);
 		boolean masterState = fPreferenceeStore.getBoolean(masterKey);
@@ -126,6 +129,7 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 		master.addSelectionListener(listener);
 		fMasterSlaveListeners.add(listener);
 	}
+	*/
 
 	/*
 	 * (non-Javadoc)
