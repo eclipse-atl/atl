@@ -13,7 +13,6 @@ package org.eclipse.m2m.atl.adt.ui.outline;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 
 public abstract class AtlEMFConstants {
 
