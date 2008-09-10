@@ -40,63 +40,65 @@ public class ASMXMLReader extends DefaultHandler {
 			SAXParser saxParser = factory.newSAXParser();
 			saxParser.parse(in, this);
 		} catch (Throwable err) {
-		       	err.printStackTrace(System.out);
+			err.printStackTrace(System.out);
 		}
-		if(errors > 0) System.exit(1);
+		if (errors > 0) {			
+			System.err.println("Fatal error reading .asm file");
+		}
 		return ret;
 	}
 
 	private String resolve(Object index) {
 		int idx = toInt(index);
-		return (String)cp.get(idx);
+		return (String) cp.get(idx);
 	}
 
 	private int toInt(Object s) {
-		return Integer.parseInt((String)s);
+		return Integer.parseInt((String) s);
 	}
 
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 		Map attrs = new HashMap();
-		for(int i = 0 ; i < attributes.getLength() ; i++) {
+		for (int i = 0; i < attributes.getLength(); i++) {
 			attrs.put(attributes.getQName(i), attributes.getValue(i));
 		}
 
-		if(qName.equals("asm")) {
+		if (qName.equals("asm")) {
 			asmNameIndex = attrs.get("name");
-		} else if(qName.equals("cp")) {
+		} else if (qName.equals("cp")) {
 			// nothing to do
-		} else if(qName.equals("constant")) {
+		} else if (qName.equals("constant")) {
 			cp.add(attrs.get("value"));
-		} else if(qName.equals("field")) {
+		} else if (qName.equals("field")) {
 			ret.addField(resolve(attrs.get("name")), resolve(attrs.get("type")));
-		} else if(qName.equals("operation")) {
+		} else if (qName.equals("operation")) {
 			currentOperation = new ASMOperation(resolve(attrs.get("name")));
 			bytecodes = new ArrayList();
-		} else if(qName.equals("context")) {
+		} else if (qName.equals("context")) {
 			currentOperation.setContext(resolve(attrs.get("type")));
-		} else if(qName.equals("parameters")) {
+		} else if (qName.equals("parameters")) {
 			// nothing to do
-		} else if(qName.equals("parameter")) {
+		} else if (qName.equals("parameter")) {
 			currentOperation.addParameter(resolve(attrs.get("name")), resolve(attrs.get("type")));
-		} else if(qName.equals("code")) {
+		} else if (qName.equals("code")) {
 			inCode = true;
-		} else if(qName.equals("linenumbertable")) {
+		} else if (qName.equals("linenumbertable")) {
 			// nothing to do
-		} else if(qName.equals("lne")) {
+		} else if (qName.equals("lne")) {
 			currentOperation.addLineNumberEntry(resolve(attrs.get("id")), toInt(attrs.get("begin")), toInt(attrs.get("end")));
-		} else if(qName.equals("localvariabletable")) {
+		} else if (qName.equals("localvariabletable")) {
 			// nothing to do
-		} else if(qName.equals("lve")) {
+		} else if (qName.equals("lve")) {
 			currentOperation.addLocalVariableEntry(toInt(attrs.get("slot")), resolve(attrs.get("name")), toInt(attrs.get("begin")), toInt(attrs.get("end")));
 
 		} else {
-			if(inCode) {
-				if(attrs.containsKey("arg")) {
-//					if(qName.equals("if") || qName.equals("goto")) {
-						
-//					} else {
+			if (inCode) {
+				if (attrs.containsKey("arg")) {
+					// if(qName.equals("if") || qName.equals("goto")) {
+
+					// } else {
 					bytecodes.add(new Bytecode(qName, resolve(attrs.get("arg"))));
-//					}
+					// }
 				} else {
 					bytecodes.add(new Bytecode(qName));
 				}
@@ -105,11 +107,11 @@ public class ASMXMLReader extends DefaultHandler {
 	}
 
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-		if(qName.equals("cp")) {
+		if (qName.equals("cp")) {
 			ret.setName(resolve(asmNameIndex));
-		} else if(qName.equals("code")) {
+		} else if (qName.equals("code")) {
 			inCode = false;
-		} else if(qName.equals("operation")) {
+		} else if (qName.equals("operation")) {
 			currentOperation.setBytecodes((Bytecode[])bytecodes.toArray(new Bytecode[0]));
 			ret.addOperation(currentOperation);
 			currentOperation = null;
@@ -118,7 +120,7 @@ public class ASMXMLReader extends DefaultHandler {
 
 	public void error(SAXParseException e) {
 		System.out.println("Error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
-	       	errors++;
+		errors++;
 	}
 
 	public void fatalError(SAXParseException e) {
