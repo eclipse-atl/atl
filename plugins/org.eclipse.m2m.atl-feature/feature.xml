@@ -240,6 +240,7 @@ litigation.
       <import plugin="org.eclipse.ui.views"/>
       <import plugin="org.eclipse.ui.console"/>
       <import plugin="org.eclipse.update.core"/>
+      <import plugin="org.eclipse.emf.common"/>
    </requires>
 
    <plugin
@@ -316,7 +317,8 @@ litigation.
          id="org.eclipse.m2m.atl.engine"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.m2m.atl.engine.vm"
@@ -345,5 +347,11 @@ litigation.
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.dsls"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>
