@@ -363,7 +363,7 @@ public class AtlRegularVM extends AtlVM {
 
 				if ((modelType.get(mName) != null)
 						&& ((String)modelType.get(mName)).equals(ModelChoiceTab.MODEL_OUTPUT)) {
-					// TODO mettre un boolean peut gérer la non sauvegarde
+					// TODO a boolean may manage the saving
 					String mmName = (String)output.get(mName);
 					((AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName))).saveModel(
 							currentOutModel, (String)path.get(mName));
