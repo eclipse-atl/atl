@@ -17,12 +17,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
@@ -36,6 +36,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
@@ -44,35 +45,56 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 /**
  * The UML implementation of ASMModel.
  * 
- * @author Frederic Jouault (INRIA)
- * @author Freddy Allilaire (INRIA)
- * @author Christophe Le Camus (C-S)
- * @author Sebastien Gabel (C-S)
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ * @author <a href="mailto:christophe.le-camus@c-s.fr">Christophe Le Camus</a>
+ * @author <a href="mailto:sebastien.gabel@c-s.fr">Sebastien Gabel</a>
  */
-public class ASMUMLModel extends ASMModel {
+public final class ASMUMLModel extends ASMEMFModel {
 
-	// true if extent was explicitly loaded and requires explicit unloading
-	protected boolean unload = false;
+	private static ResourceSet resourceSet;
 
-	// nsURIs that were explicitly registered and need unregistering
-	protected Set unregister = new HashSet();
+	private static ASMUMLModel mofmm;
 
-	// if not null, model could not yet be loaded from URI and needs to be loaded later from this URI
-	protected String resolveURI = null;
+	// mof metamodel shall be unique for each model handler of a given type,
+	// but shall be redefined for a model handler that redefined a another model
+	// handler.
+	// use of static attributes is not advisable !
 
-	private boolean checkSameModel = true;
+	private Resource extent;
 
-	public static ASMModel getMOF() {
-		return mofmm;
+	private Set referencedExtents = new HashSet();
+
+	private List delayedInvocations = new ArrayList();
+
+	/**
+	 * Creates a new {@link ASMUMLModel}.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param metamodel
+	 *            the metamodel
+	 * @param isTarget
+	 *            true if the model is an output model
+	 */
+	private ASMUMLModel(String name, Resource extent, ASMUMLModel metamodel, boolean isTarget, ModelLoader ml) {
+		super(name, extent, metamodel, isTarget, ml);
+		this.extent = extent; // MOF UML2 PRO IN OUT
 	}
 
-	private Map modelElements = new HashMap();
+	public static ASMModel getMOF() {
+		return ASMUMLModel.mofmm;
+	}
 
-	// ok
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel#getASMModelElement(org.eclipse.emf.ecore.EObject)
+	 */
 	public ASMModelElement getASMModelElement(EObject object) {
 		ASMModelElement ret = null;
 
-		synchronized(modelElements) {
+		synchronized (modelElements) {
 			ret = (ASMModelElement)modelElements.get(object);
 			if (ret == null) {
 				ret = new ASMUMLModelElement(modelElements, this, object);
@@ -82,87 +104,10 @@ public class ASMUMLModel extends ASMModel {
 		return ret;
 	}
 
-	private Map classifiers = null;
-
-	private ASMModelElement getClassifier(String name) {
-		if (classifiers == null) {
-			classifiers = new HashMap();
-			initClassifiersInAllExtents(classifiers);
-		}
-		ASMModelElement ret = null;
-
-		EObject eo = (EObject)classifiers.get(name);
-		if (eo != null) {
-			ret = getASMModelElement(eo);
-		}
-
-		return ret;
-	}
-
 	/**
-	 * Indexes all classifiers in main extent and referenced extents.
+	 * {@inheritDoc}
 	 * 
-	 * @param classifiers
-	 *            The classifier map to build.
-	 * @see #register(Map, String, EObject)
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	private void initClassifiersInAllExtents(Map classifiers) {
-		initClassifiers(getExtent().getContents().iterator(), classifiers, null);
-		Iterator refExtents = referencedExtents.iterator();
-		while (refExtents.hasNext()) {
-			initClassifiers(((Resource)refExtents.next()).getContents().iterator(), classifiers, null);
-		}
-	}
-
-	private void initClassifiers(Iterator i, Map classifiers, String base) {
-		for ( ; i.hasNext(); ) {
-			EObject eo = (EObject)i.next();
-			if (eo instanceof EPackage) {
-				String name = ((EPackage)eo).getName();
-				if (base != null) {
-					name = base + "::" + name;
-				}
-				initClassifiers(((EPackage)eo).eContents().iterator(), classifiers, name);
-			} else if (eo instanceof EClassifier) {
-				String name = ((EClassifier)eo).getName();
-				// register the classifier under its simple name
-				register(classifiers, name, eo);
-				if (base != null) {
-					name = base + "::" + name;
-					// register the classifier under its full name
-					register(classifiers, name, eo);
-				}
-			} else {
-				// No meta-package or meta-class => just keep digging.
-				// N.B. This situation occurs in UML2 profiles, where
-				// EPackages containing EClasses are buried somewhere
-				// underneath other elements.
-				initClassifiers(eo.eContents().iterator(), classifiers, base);
-			}
-		}
-	}
-
-	private void register(Map classifiers, String name, EObject classifier) {
-		if (classifiers.containsKey(name)) {
-			System.out.println("Warning: metamodel contains several classifiers with same name: " + name);
-		}
-		classifiers.put(name, classifier);
-	}
-
-	public ASMModelElement findModelElement(String name) {
-		ASMModelElement ret = null;
-
-		ret = getClassifier(name);
-
-		return ret;
-	}
-
-	/**
-	 * @param type
-	 *            The type of element to search for.
-	 * @return The set of ASMModelElements that are instances of type.
-	 * @see ASMModelElement
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel#getElementsByType(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement)
 	 */
 	public Set getElementsByType(ASMModelElement type) {
 		Set ret = new HashSet();
@@ -177,24 +122,10 @@ public class ASMUMLModel extends ASMModel {
 	}
 
 	/**
-	 * Adds all elements of the given type to the set.
+	 * {@inheritDoc}
 	 * 
-	 * @param elements
-	 *            The set to add to.
-	 * @param type
-	 *            The type to test for.
-	 * @param res
-	 *            The resource containing the elements.
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel#newModelElement(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement)
 	 */
-	private void addElementsOfType(Set elements, EClassifier type, Resource res) {
-		for (Iterator i = res.getAllContents(); i.hasNext();) {
-			EObject eo = (EObject)i.next();
-			if (type.isInstance(eo)) {
-				elements.add(getASMModelElement(eo));
-			}
-		}
-	}
-
 	public ASMModelElement newModelElement(ASMModelElement type) {
 		ASMModelElement ret = null;
 
@@ -207,20 +138,18 @@ public class ASMUMLModel extends ASMModel {
 	}
 
 	/**
-	 * @param name
-	 * @param metamodel
-	 * @param isTarget
-	 */
-	private ASMUMLModel(String name, Resource extent, ASMUMLModel metamodel, boolean isTarget, ModelLoader ml) {
-		super(name, metamodel, isTarget, ml);
-		this.extent = extent;// MOF UML2 PRO IN OUT
-	}
-
-	/**
 	 * Simple Resource wrapping factory.
 	 * 
+	 * @param name
+	 *            the model name
+	 * @param metamodel
+	 *            the metamodel
+	 * @param extent
+	 *            the resource extent
 	 * @param ml
 	 *            ModelLoader used to load the model if available, null otherwise.
+	 * @return the loaded model
+	 * @throws Exception
 	 */
 	public static ASMUMLModel loadASMUMLModel(String name, ASMUMLModel metamodel, Resource extent,
 			ModelLoader ml) throws Exception {
@@ -231,6 +160,11 @@ public class ASMUMLModel extends ASMModel {
 		return ret;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel#dispose()
+	 */
 	public void dispose() {
 		if (extent != null) {
 			referencedExtents.clear();
@@ -251,8 +185,18 @@ public class ASMUMLModel extends ASMModel {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#finalize()
+	 */
 	public void finalize() {
 		dispose();
+		try {
+			super.finalize();
+		} catch (Throwable e) {
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
 	}
 
 	/**
@@ -262,7 +206,9 @@ public class ASMUMLModel extends ASMModel {
 	 * @param name
 	 *            The model name. Also used as EMF model URI.
 	 * @param metamodel
+	 *            the metamodel
 	 * @param ml
+	 *            the model loader
 	 * @return the new ASMUMLModel
 	 * @throws Exception
 	 */
@@ -272,16 +218,19 @@ public class ASMUMLModel extends ASMModel {
 	}
 
 	/**
-	 * Creates a new ASMEMFModel. author : Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * Creates a new ASMEMFModel.
 	 * 
 	 * @param name
 	 *            The model name. Not used by EMF.
 	 * @param uri
 	 *            The model URI. EMF uses this to determine the correct factory.
 	 * @param metamodel
+	 *            the metamodel
 	 * @param ml
+	 *            the model loader
 	 * @return the new ASMUMLModel
 	 * @throws Exception
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static ASMUMLModel newASMUMLModel(String name, String uri, ASMUMLModel metamodel, ModelLoader ml)
 			throws Exception {
@@ -295,6 +244,20 @@ public class ASMUMLModel extends ASMModel {
 		return ret;
 	}
 
+	/**
+	 * Loads an {@link ASMUMLModel}.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param metamodel
+	 *            the metamodel
+	 * @param url
+	 *            the model url (as String)
+	 * @param ml
+	 *            the model loader
+	 * @return the loaded model
+	 * @throws Exception
+	 */
 	public static ASMUMLModel loadASMUMLModel(String name, ASMUMLModel metamodel, String url, ModelLoader ml)
 			throws Exception {
 		ASMUMLModel ret = null;
@@ -308,7 +271,7 @@ public class ASMUMLModel extends ASMModel {
 			} else {
 				Resource extent = pack.eResource();
 				ret = new ASMUMLModel(name, extent, metamodel, false, ml);
-				ret.addAllReferencedExtents();
+				ret.addAllReferencedExtents(extent);
 			}
 		} else {
 			ret = loadASMUMLModel(name, metamodel, URI.createURI(url), ml);
@@ -317,6 +280,20 @@ public class ASMUMLModel extends ASMModel {
 		return ret;
 	}
 
+	/**
+	 * Loads an {@link ASMUMLModel}.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param metamodel
+	 *            the metamodel
+	 * @param url
+	 *            the model url
+	 * @param ml
+	 *            the model loader
+	 * @return the loaded model
+	 * @throws Exception
+	 */
 	public static ASMUMLModel loadASMUMLModel(String name, ASMUMLModel metamodel, URL url, ModelLoader ml)
 			throws Exception {
 		ASMUMLModel ret = null;
@@ -326,6 +303,20 @@ public class ASMUMLModel extends ASMModel {
 		return ret;
 	}
 
+	/**
+	 * Loads an {@link ASMUMLModel}.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param metamodel
+	 *            the metamodel
+	 * @param uri
+	 *            the model uri
+	 * @param ml
+	 *            the model loader
+	 * @return the loaded model
+	 * @throws Exception
+	 */
 	public static ASMUMLModel loadASMUMLModel(String name, ASMUMLModel metamodel, URI uri, ModelLoader ml)
 			throws Exception {
 		ASMUMLModel ret = null;
@@ -334,7 +325,7 @@ public class ASMUMLModel extends ASMModel {
 			Resource extent = resourceSet.createResource(uri);
 			extent.load(Collections.EMPTY_MAP);
 			ret = new ASMUMLModel(name, extent, metamodel, true, ml);
-			ret.addAllReferencedExtents();
+			ret.addAllReferencedExtents(extent);
 			ret.setIsTarget(false);
 			ret.unload = true;
 		} catch (Exception e) {
@@ -345,13 +336,27 @@ public class ASMUMLModel extends ASMModel {
 		return ret;
 	}
 
+	/**
+	 * Loads an {@link ASMUMLModel}.
+	 * 
+	 * @param name
+	 *            the model name
+	 * @param metamodel
+	 *            the metamodel
+	 * @param in
+	 *            the model {@link InputStream}
+	 * @param ml
+	 *            the model loader
+	 * @return the loaded model
+	 * @throws Exception
+	 */
 	public static ASMUMLModel loadASMUMLModel(String name, ASMUMLModel metamodel, InputStream in,
 			ModelLoader ml) throws Exception {
 		ASMUMLModel ret = newASMUMLModel(name, metamodel, ml);
 
 		try {
 			ret.getExtent().load(in, Collections.EMPTY_MAP);
-			ret.addAllReferencedExtents();
+			ret.addAllReferencedExtents(ret.getExtent());
 			ret.unload = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -363,6 +368,14 @@ public class ASMUMLModel extends ASMModel {
 		return ret;
 	}
 
+	/**
+	 * Adapts the model to its metamodel.
+	 * 
+	 * @param model
+	 *            the model
+	 * @param metamodel
+	 *            the metamodel
+	 */
 	private static void adaptMetamodel(ASMUMLModel model, ASMUMLModel metamodel) {
 		if (metamodel == mofmm) {
 			for (Iterator i = model.getElementsByType("EPackage").iterator(); i.hasNext();) {
@@ -400,8 +413,9 @@ public class ASMUMLModel extends ASMModel {
 				} else if (tname.equals("String")) {
 					icn = "java.lang.String";
 				}
-				if (icn != null)
+				if (icn != null) {
 					ame.set(null, "instanceClassName", new ASMString(icn));
+				}
 			}
 		}
 
@@ -410,19 +424,29 @@ public class ASMUMLModel extends ASMModel {
 		 */
 	}
 
-	public static ASMUMLModel createMOF(ModelLoader ml) {
-
-		if (mofmm == null) {
-			// Resource extent =
-			// resourceSet.createResource(URI.createURI("http://www.eclipse.org/emf/2002/Ecore"));
-			// System.out.println("Actual resource class: " + extent.getClass());
-			// extent.getContents().add(EcorePackage.eINSTANCE);
-			mofmm = new ASMUMLModel("MOF", EcorePackage.eINSTANCE.eResource(), null, false, ml);
+	/*
+	 * To be able to adapt return type (ASMUMLModel), we have to use jdk5 features (covariance)
+	 */
+	/**
+	 * Creates the MOF metametamodel.
+	 * 
+	 * @param ml
+	 *            the model loader
+	 * @return the mof
+	 */
+	public static ASMEMFModel createMOF(ModelLoader ml) {
+		if (ASMUMLModel.mofmm == null) {
+			ASMUMLModel.mofmm = new ASMUMLModel("MOF", EcorePackage.eINSTANCE.eResource(), null, false, ml);
 		}
 
-		return mofmm;
+		return ASMUMLModel.mofmm;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel#getExtent()
+	 */
 	public Resource getExtent() {
 		if ((extent == null) && (resolveURI != null)) {
 			EPackage pack = resourceSet.getPackageRegistry().getEPackage(resolveURI);
@@ -445,22 +469,39 @@ public class ASMUMLModel extends ASMModel {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel#equals(java.lang.Object)
+	 */
 	public boolean equals(Object o) {
 		return (o instanceof ASMUMLModel) && (((ASMUMLModel)o).extent == extent);
 	}
 
-	private static ResourceSet resourceSet;
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel#hashCode()
+	 */
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
 
-	private static ASMUMLModel mofmm = null;
-
-	private Resource extent;
-
-	private Set referencedExtents = new HashSet();
-
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel#isCheckSameModel()
+	 */
 	public boolean isCheckSameModel() {
 		return checkSameModel;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel#setCheckSameModel(boolean)
+	 */
 	public void setCheckSameModel(boolean checkSameModel) {
 		this.checkSameModel = checkSameModel;
 	}
@@ -536,7 +577,9 @@ public class ASMUMLModel extends ASMModel {
 	}
 
 	/**
-	 * @return The set of referenced Resources.
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel#getReferencedExtents()
 	 */
 	public Set getReferencedExtents() {
 		return referencedExtents;
@@ -545,47 +588,62 @@ public class ASMUMLModel extends ASMModel {
 	/*
 	 * // Unsupported Methods needed //
 	 */
-
-	private List delayedInvocations = new ArrayList();
-
-	public int getLastStereotypeMethod(String opName, List delayedInvocations) {
+	/**
+	 * Gets the last stereotype method in the delayed invocations list.
+	 * 
+	 * @param opName
+	 *            the operation name
+	 * @return the last stereotype method index
+	 */
+	public int getLastStereotypeMethod(String opName) {
 		int rang = 0;
 		for (int i = 0; i < delayedInvocations.size(); i++) {
 			Invocation invoc = (Invocation)(delayedInvocations.get(rang));
-			if (invoc.opName.equals(opName)) {
+			if (invoc.getOpName().equals(opName)) {
 				rang = i;
 			}
 		}
 		return rang;
 	}
 
+	/**
+	 * Delays an invocation.
+	 * 
+	 * @param invocation
+	 *            the operation invocation to delay
+	 */
 	public void addDelayedInvocation(Invocation invocation) {
 		// Guarantee the applied profiles operations are the first applied
-		if (invocation.opName.equals("applyProfile")) {
+		if (invocation.getOpName().equals("applyProfile")) {
 			delayedInvocations.add(0, invocation);
 		} else {
-			if (invocation.opName.equals("applyStereotype")
-					|| invocation.opName.equals("applyAllStereotypes")
-					|| invocation.opName.equals("applyAllRequiredStereotypes")) {
-				// Guarantee the applied stereotypes operations are applied before setValue and after
-				// applyProfile
-				int lastApplyProfile = getLastStereotypeMethod("applyProfile", delayedInvocations);
+			if (invocation.getOpName().equals("applyStereotype")
+					|| invocation.getOpName().equals("applyAllStereotypes")
+					|| invocation.getOpName().equals("applyAllRequiredStereotypes")) {
+				// Guarantee the applied stereotypes operations are applied
+				// before setValue and after applyProfile
+				int lastApplyProfile = getLastStereotypeMethod("applyProfile");
 				if (lastApplyProfile < delayedInvocations.size() - 1) {
 					delayedInvocations.add(lastApplyProfile + 1, invocation);
 				} else {
 					delayedInvocations.add(invocation);
 				}
-			} else
+			} else {
 				// SetValue operation follow this way
 				delayedInvocations.add(invocation);
+			}
 		}
 	}
 
+	/**
+	 * Applies all delayed operation invocations.
+	 */
 	public void applyDelayedInvocations() {
 
 		for (Iterator i = delayedInvocations.iterator(); i.hasNext();) {
 			Invocation invocation = (Invocation)i.next();
-			invocation.self.realInvoke(invocation.frame, invocation.opName, invocation.arguments);
+			invocation.getSelf().realInvoke(invocation.getFrame(), invocation.getOpName(),
+					invocation.getArguments());
 		}
 
 	}

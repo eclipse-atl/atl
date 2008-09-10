@@ -20,12 +20,33 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
 /**
  * Stores an UML specific invocation method.
  * 
- * @author Frederic Jouault (INRIA)
- * @author Freddy Allilaire (INRIA)
- * @author Christophe Le Camus (C-S)
- * @author Sebastien Gabel (C-S)
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ * @author <a href="mailto:christophe.le-camus@c-s.fr">Christophe Le Camus</a>
+ * @author <a href="mailto:sebastien.gabel@c-s.fr">Sebastien Gabel</a>
  */
 public class Invocation {
+
+	private StackFrame frame;
+
+	private ASMUMLModelElement self;
+
+	private String opName;
+
+	private List arguments;
+
+	/**
+	 * Creates a new delayed Invocation.
+	 * 
+	 * @param frame
+	 *            the frame context
+	 * @param self
+	 *            the model element caller
+	 * @param opName
+	 *            the operation name
+	 * @param arguments
+	 *            the operation arguments
+	 */
 	public Invocation(StackFrame frame, ASMUMLModelElement self, String opName, List arguments) {
 		this.frame = frame;
 		this.self = self;
@@ -33,11 +54,19 @@ public class Invocation {
 		this.arguments = arguments;
 	}
 
-	public StackFrame frame;
+	public StackFrame getFrame() {
+		return frame;
+	}
 
-	public ASMUMLModelElement self;
+	public ASMUMLModelElement getSelf() {
+		return self;
+	}
 
-	public String opName;
+	public String getOpName() {
+		return opName;
+	}
 
-	public List arguments;
+	public List getArguments() {
+		return arguments;
+	}
 }
