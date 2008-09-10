@@ -243,7 +243,7 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 		 */
 		consoleStream = console.newMessageStream();
 		activateConsole();
-		consoleStream.println(AtlUIMessages.getString("AtlUIPlugin.INIT")); //$NON-NLS-1$	   
+		//consoleStream.println(AtlUIMessages.getString("AtlUIPlugin.INIT")); //$NON-NLS-1$	   
 		Handler handler = new ConsoleStreamHandler(consoleStream);
 		Logger.getLogger(ATLVMPlugin.LOGGER).addHandler(handler);
 	}
