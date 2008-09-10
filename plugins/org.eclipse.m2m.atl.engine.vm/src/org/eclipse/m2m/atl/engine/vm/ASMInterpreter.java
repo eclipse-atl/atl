@@ -143,8 +143,6 @@ public class ASMInterpreter {
 		String ATL = (String)params.get("ATL");
 		if (ATL == null) {
 			throw new ASMInterpreterException("ERROR: ATL meta-model location not given on command line.");
-			// System.out.println("ERROR: ATL meta-model location not given on command line.");
-			// System.exit(1);
 		}
 		env.addModel(ml.loadModel("ATL", env.getModel("MOF"), ATL));
 		try {
@@ -153,14 +151,12 @@ public class ASMInterpreter {
 			ml.addInjector("ebnf2", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSInjector"));
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace(System.out);
 		}
 		try {
 			// TODO: use a plugin mechanism to properly register injectors and extractors
 			ml.addInjector("bin", pcl.loadClass("org.atl.engine.injectors.bin.BINInjector"));
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace(System.out);
 		}
 		try {
 			// TODO: use a plugin mechanism to properly register injectors and extractors

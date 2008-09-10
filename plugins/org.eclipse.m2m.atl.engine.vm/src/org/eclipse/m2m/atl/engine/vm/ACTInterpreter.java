@@ -68,16 +68,10 @@ public class ACTInterpreter {
 			if (filehref == null) {
 				throw new ACTInterpreterException("ERROR: Location of file " + file.name
 						+ " not specified on command line.");
-				// System.out.println("ERROR: Location of file " + file.name + " not specified on command
-				// line.");
-				// System.exit(1);
 			}
 			if ((file instanceof InFile) && !new File(filehref).exists()) {
 				throw new ACTInterpreterException("ERROR: Location of input file " + file.name + ": \""
 						+ filehref + "\" does not denote a valid file.");
-				// System.out.println("ERROR: Location of input file " + file.name + ": \"" + filehref + "\"
-				// does not denote a valid file.");
-				// System.exit(1);
 			}
 			parameters.put(file.name, filehref);
 		}
@@ -86,24 +80,17 @@ public class ACTInterpreter {
 			Model model = (Model)i.next();
 			if (model instanceof InModel) {
 				logger.info("Loading model " + model.name + "...");
-				// System.out.println("Loading model " + model.name + "...");
 				ASMModel m = (ASMModel)models.get(model.name);
 				if (m == null) {
 					String mhref = (String)params.get(model.name);
 					if (mhref == null) {
 						throw new ACTInterpreterException("ERROR: Location of input model " + model.name
 								+ " not specified on command line.");
-						// System.out.println("ERROR: Location of input model " + model.name + " not specified
-						// on command line.");
-						// System.exit(1);
 					}
 					ASMModel mm = (ASMModel)models.get(model.metaModel);
 					if (mm == null) {
 						throw new ACTInterpreterException("ERROR: Metamodel " + model.metaModel
 								+ " is not already loaded.");
-						// System.out.println("ERROR: Metamodel " + model.metaModel + " is not already
-						// loaded.");
-						// System.exit(1);
 					}
 					m = ml.loadModel(model.name, mm, mhref);
 					models.put(model.name, m);
@@ -120,15 +107,12 @@ public class ACTInterpreter {
 				if (mm == null) {
 					throw new ACTInterpreterException("ERROR: Metamodel " + im.metaModel
 							+ " is not already loaded.");
-					// System.out.println("ERROR: Metamodel " + im.metaModel + " is not already loaded.");
-					// System.exit(1);
 				}
 				String href = expand(im.href, parameters);
 				ASMModel m = ml.loadModel(im.storeTo, mm, im.kind + ":" + im.subKind + ":" + href);
 				models.put(im.storeTo, m);
 			} else if (op instanceof Query) {
 				logger.info("Querying...");
-				// System.out.println("Querying...");
 				Query q = (Query)op;
 	
 				ASM asm = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(q.asm,
@@ -186,7 +170,6 @@ public class ACTInterpreter {
 					Library l = (Library)j.next();
 	
 					logger.info("Loading library " + l.name + " from " + l.href + ".");
-					// System.out.println("Loading library " + l.name + " from " + l.href + ".");
 					ASM lib = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(
 							l.href, parameters))));
 					env.registerOperations(lib);
@@ -219,7 +202,6 @@ public class ACTInterpreter {
 				}
 			} else if (op instanceof Transform) {
 				logger.info("Transforming...");
-				// System.out.println("Transforming...");
 				Transform tr = (Transform)op;
 				ASM asm = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(tr.asm,
 						parameters))));
@@ -251,8 +233,6 @@ public class ACTInterpreter {
 						ASMModel m = (ASMModel)models.get(l.model);
 						if (m == null) {
 							throw new ACTInterpreterException("ERROR: model " + l.model + " not loaded yet.");
-							// System.out.println("ERROR: model " + l.model + " not loaded yet.");
-							// System.exit(1);
 						}
 						env.addModel(l.name, m);
 					} else if (l instanceof OutModel) {
@@ -262,8 +242,6 @@ public class ACTInterpreter {
 							if (mm == null) {
 								throw new ACTInterpreterException("ERROR: model " + l.metaModel
 										+ " not loaded yet.");
-								// System.out.println("ERROR: model " + l.metaModel + " not loaded yet.");
-								// System.exit(1);
 							}
 							m = ml.newModel(l.model, (String)params.get(l.name), mm);
 						}
@@ -271,7 +249,6 @@ public class ACTInterpreter {
 						models.put(l.model, m);
 					} else {
 						logger.warning(l + " not dealt with yet.");
-						// System.out.println("Warning: " + l + " not dealt with yet.");
 					}
 				}
 	
@@ -280,7 +257,6 @@ public class ACTInterpreter {
 					Library l = (Library)j.next();
 	
 					logger.info("Loading library " + l.name + " from " + l.href + ".");
-					// System.out.println("Loading library " + l.name + " from " + l.href + ".");
 					ASM lib = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(
 							l.href, parameters))));
 					env.registerOperations(lib);
@@ -300,21 +276,15 @@ public class ACTInterpreter {
 			Model model = (Model)i.next();
 			if (model instanceof OutModel) {
 				logger.info("Saving model " + model.name + "...");
-				// System.out.println("Saving model " + model.name + "...");
 				String mhref = (String)params.get(model.name);
 				if (mhref == null) {
 					throw new ACTInterpreterException("ERROR: Location of output model " + model.name
 							+ " not specified on command line.");
-					// System.out.println("ERROR: Location of output model " + model.name + " not specified on
-					// command line.");
-					// System.exit(1);
 				}
 				ASMModel m = (ASMModel)models.get(model.name);
 				if (m == null) {
 					throw new ACTInterpreterException("ERROR: Model " + model.name
 							+ " is not already loaded.");
-					// System.out.println("ERROR: Model " + model.name + " is not already loaded.");
-					// System.exit(1);
 				}
 				ml.save(m, mhref);
 			}
@@ -418,8 +388,6 @@ public class ACTInterpreter {
 						String value = (String)parameters.get(varName);
 						if (value == null) {
 							throw new ACTInterpreterException("ERROR: Variable not initialized: " + varName);
-							// System.out.println("ERROR: Variable not initialized: " + varName);
-							// System.exit(1);
 						}
 						ret.append(value);
 						state = 0;

@@ -121,7 +121,6 @@ public class ASMXMLReader extends DefaultHandler {
 
 	public void error(SAXParseException e) {
 		logger.severe("Error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
-//		System.out.println("Error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
        	errors++;
 	}
 
@@ -129,8 +128,6 @@ public class ASMXMLReader extends DefaultHandler {
 		throw new ASMXMLReaderException(
 				"Fatal error reading .asm file: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getLocalizedMessage(),
 				e.getPublicId(), e.getSystemId(), e.getLineNumber(), e.getColumnNumber(), e);
-//		System.out.println("Fatal error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
-//		System.exit(1);
 	}
 
 	private int errors;

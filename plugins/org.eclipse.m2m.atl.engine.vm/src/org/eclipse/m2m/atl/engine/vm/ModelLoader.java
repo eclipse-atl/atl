@@ -128,9 +128,6 @@ public abstract class ModelLoader {
 							} else {
 								logger.warning("could not find value for parameter \"" + pname + "\" : "
 										+ type + ".");
-								// System.err.println("Warning: could not find value for parameter \"" + pname
-								// + "\" : " + type + ".");
-								// System.exit(1);
 							}
 						} else if (type.startsWith("Model:")) {
 							paramsMap.put(pname, loadedModels.get(args.get(pname)));
@@ -138,8 +135,6 @@ public abstract class ModelLoader {
 							paramsMap.put(pname, new RandomAccessFile(uri, "r"));
 						} else {
 							logger.warning("unknown parameter type \"" + type + "\" of \"" + pname + "\".");
-							// System.err.println("Warning: unknown parameter type \"" + type + "\" of \"" +
-							// pname + "\".");
 						}
 					}
 				}
@@ -149,7 +144,6 @@ public abstract class ModelLoader {
 				// getAllAcquaintances ?
 			} else {
 				logger.severe("ERROR: could not find injector for \"" + kind + "\"");
-				// System.out.println("ERROR: could not find injector for \"" + kind + "\"");
 			}
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -248,23 +242,17 @@ public abstract class ModelLoader {
 							} else {
 								logger.warning("could not find value for parameter \"" + pname + "\" : "
 										+ type + ".");
-								// System.err.println("Warning: could not find value for parameter \"" + pname
-								// + "\" : " + type + ".");
-								// System.exit(1);
 							}
 						} else if (type.startsWith("Model:")) {
 							paramsMap.put(pname, loadedModels.get(args.get(pname)));
 						} else {
 							logger.warning("unknown parameter type \"" + type + "\" of \"" + pname + "\".");
-							// System.err.println("Warning: unknown parameter type \"" + type + "\" of \"" +
-							// pname + "\".");
 						}
 					}
 				}
 				ext.extract(model, out, paramsMap);
 			} else {
 				logger.severe("ERROR: could not find extractor for \"" + kind + "\"");
-				// System.out.println("ERROR: could not find extractor for \"" + kind + "\"");
 			}
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
