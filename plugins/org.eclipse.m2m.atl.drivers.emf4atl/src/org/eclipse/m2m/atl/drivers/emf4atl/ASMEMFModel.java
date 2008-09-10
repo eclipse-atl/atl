@@ -55,9 +55,16 @@ public class ASMEMFModel extends ASMModel {
 
 	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
+	/** These meta model definition shall be redefined in all sub-classes of ASMEMFModel. */
 	protected static ASMEMFModel mofmm;
 
 	private static Map asmModelsByResource = new WeakHashMap();
+
+	/** These meta model definition shall be redefined in all sub-classes of ASMEMFModel. */
+	protected Resource extent;
+
+	/** These meta model definition shall be redefined in all sub-classes of ASMEMFModel. */
+	protected Set referencedExtents = new HashSet();
 
 	// true if extent was explicitly loaded and requires explicit unloading
 	protected boolean unload;
@@ -75,10 +82,6 @@ public class ASMEMFModel extends ASMModel {
 	private Map classifiers;
 
 	private Map conformingModels = new WeakHashMap();
-
-	private Resource extent;
-
-	private Set referencedExtents = new HashSet();
 
 	/**
 	 * Creates a new {@link ASMEMFModel}.
@@ -128,7 +131,14 @@ public class ASMEMFModel extends ASMModel {
 		return ret;
 	}
 
-	private ASMModelElement getClassifier(String name) {
+	/**
+	 * Returns the classifier with the given name.
+	 * 
+	 * @param name
+	 *            the classifier name
+	 * @return the classifier with the given name
+	 */
+	protected ASMModelElement getClassifier(String name) {
 		if (classifiers == null) {
 			// synchronized (this) {
 			// if (classifiers == null) {
@@ -164,7 +174,7 @@ public class ASMEMFModel extends ASMModel {
 	}
 
 	private void initClassifiers(Iterator i, Map allClassifiers, String base) {
-		for ( ; i.hasNext(); ) {
+		for ( ; i.hasNext();) {
 			EObject eo = (EObject)i.next();
 			if (eo instanceof EPackage) {
 				String name = ((EPackage)eo).getName();
@@ -236,7 +246,7 @@ public class ASMEMFModel extends ASMModel {
 	 * @param res
 	 *            The resource containing the elements.
 	 */
-	private void addElementsOfType(Set elements, EClassifier type, Resource res) {
+	protected void addElementsOfType(Set elements, EClassifier type, Resource res) {
 		for (Iterator i = res.getAllContents(); i.hasNext();) {
 			EObject eo = (EObject)i.next();
 			if (type.isInstance(eo)) {
