@@ -16,9 +16,6 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMEmitter;
-import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
-import org.eclipse.m2m.atl.engine.vm.StackFrame;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 
 /**
  * ASM utility class.
@@ -62,6 +59,7 @@ public abstract class ASMRetriever {
 		ATLVMTools.addVMOperation(ASMEmitter.myType, ATLVMTools.toVMOperation(ASMRetriever.class, "dumpASM")); //$NON-NLS-1$
 	}
 
+	/*
 	// New VM Operations
 	private static void dumpASM(StackFrame frame, ASMEmitter self, ASMString fileName) {
 		self.finishOperation();
@@ -72,4 +70,5 @@ public abstract class ASMRetriever {
 			self.dumpASM(fileName.getSymbol());
 		}
 	}
+	*/
 }
