@@ -2,11 +2,15 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EMF4ATL Plug-in
 Bundle-SymbolicName: org.eclipse.m2m.atl.drivers.emf4atl;singleton:=true
-Bundle-Version: 2.0.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.drivers.emf4atl
+Bundle-ClassPath: .
 Require-Bundle: org.eclipse.emf.ecore.xmi,
- org.eclipse.m2m.atl.engine.vm
+ org.eclipse.m2m.atl.engine.vm,
+ org.eclipse.core.runtime,
+ org.eclipse.m2m.atl.dsls,
+ org.eclipse.core.resources;bundle-version="3.4.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
 

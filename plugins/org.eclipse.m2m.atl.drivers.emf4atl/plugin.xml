@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
+<?eclipse version="3.2"?>
 <plugin>
+   <extension
+         point="org.eclipse.emf.ecore.dynamic_package">
+      <resource
+            location="bin/org/eclipse/m2m/atl/drivers/emf4atl/resources/ATL-0.2.ecore"
+            uri="http://www.eclipse.org/gmt/2005/ATL">
+      </resource>
+      <resource
+            location="bin/org/eclipse/m2m/atl/drivers/emf4atl/resources/ATL-0.2.ecore"
+            uri="http://www.eclipse.org/gmt/2005/OCL">
+      </resource>
+      <resource
+            location="bin/org/eclipse/m2m/atl/drivers/emf4atl/resources/ATL-0.2.ecore"
+            uri="http://www.eclipse.org/gmt/2005/PrimitiveTypes">
+      </resource>
+      <resource
+            location="bin/org/eclipse/m2m/atl/drivers/emf4atl/resources/Problem.ecore"
+            uri="http://www.eclipse.org/gmt/2005/Problem">
+      </resource>
+   </extension>
 
-    
 </plugin>
