@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: Model.java,v 1.2.4.1 2008/03/04 21:12:13 mbarbero Exp $
+ * $Id: Model.java,v 1.5.2.1 2008/09/11 15:15:37 dwagelaar Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.lib;
@@ -18,23 +18,57 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
+ * The model interface.
  * 
- * @author Mikael Barbero
- * @author Frederic Jouault
- *
+ * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public interface Model {
 	// returned value could (actually was) a non-ordered set Set, because there is no order in theory
 	// BUT keeping the same order (i.e., resource/XMI order) typically makes things simpler
-	public abstract Set getElementsByType(Object metaElement);
+	/**
+	 * Returns all elements of the given type.
+	 * 
+	 * @param metaElement
+	 *            the meta type
+	 * @return all elements of the given type
+	 */
+	Set getElementsByType(Object metaElement);
 
-	public abstract ReferenceModel getReferenceModel();
+	/**
+	 * Returns the metamodel.
+	 * 
+	 * @return the metamodel
+	 */
+	ReferenceModel getReferenceModel();
 
-	public abstract Object newElement(Object metaElement);
+	/**
+	 * Creates a new element.
+	 * 
+	 * @param metaElement
+	 *            the new element metaclass
+	 * @return the new element
+	 */
+	Object newElement(Object metaElement);
 
-	public abstract Iterator getContents(); // is it necessary ?
-	
-	public abstract void save(String uri) throws IOException;
+	/**
+	 * Returns the model content.
+	 * 
+	 * @return the model content
+	 */
+	Iterator getContents(); // is it necessary ?
 
-	public abstract void dispose();
+	/**
+	 * Saves the model, by uri.
+	 * 
+	 * @param uri
+	 *            the uri
+	 * @throws IOException
+	 */
+	void save(String uri) throws IOException;
+
+	/**
+	 * Disposes the model.
+	 */
+//	void dispose();
 }
