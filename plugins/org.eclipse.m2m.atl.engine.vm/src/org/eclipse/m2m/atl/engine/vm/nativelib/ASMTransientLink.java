@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
 import java.util.ArrayList;
@@ -13,7 +23,7 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
  * An ASMTransientLink represents an internal traceability link.
  * Other languages than ATL may be compiled to ATL VM and reuse this class.
  * They can also define their own traceability links using Maps and Tuples.
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMTransientLink extends ASMOclAny {
 
@@ -120,6 +130,19 @@ public class ASMTransientLink extends ASMOclAny {
 
 	public static ASMOclAny getVariable(StackFrame frame, ASMTransientLink self, ASMString name) {
 		return (ASMOclAny)self.variables.get(name.getSymbol());
+	}
+
+	/**
+	 * This method allows for retrieving all the target elements for a given
+	 * source element without knowing the local variable names of the rule
+	 * that created the mappings. This reduces fragility.
+	 * @param frame
+	 * @param self
+	 * @return All target elements for this link.
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	public static ASMSequence getTargetElements(StackFrame frame, ASMTransientLink self) {
+		return new ASMSequence(self.getTargetElements());
 	}
 
 	private Map sourceElements = new HashMap();

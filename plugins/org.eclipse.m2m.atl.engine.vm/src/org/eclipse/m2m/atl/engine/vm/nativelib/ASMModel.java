@@ -1,8 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * 	   Frederic Jouault (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
@@ -15,14 +22,13 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
  * Therefore some of the methods of ASMModel only apply to metamodels.
  * TODO (for this class and ASMModelElement): separate metamodel-specific in
  * ASMMetamodel and rename some methods.
- * @author Frédéric Jouault
+<<<<<<< ASMModel.java
+ * @author Frï¿½dï¿½ric Jouault
+=======
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+>>>>>>> 1.4
  */
 public abstract class ASMModel extends ASMOclAny {
-
-	private static ASMModel mof = null;
-	public static ASMModel getMOF() {
-		return mof;
-	}
 
 	private ModelLoader ml;
 	
@@ -33,7 +39,6 @@ public abstract class ASMModel extends ASMOclAny {
 	public static ASMOclType myType = new ASMOclSimpleType("Model", getOclAnyType());
 	public ASMModel(String name, ASMModel metamodel, boolean isTarget, ModelLoader ml) {
 		super(myType);
-		if(name.equals("MOF")) mof = this;
 		this.name = name;
 		this.ml = ml;
 		if(metamodel == null) {
@@ -41,7 +46,6 @@ public abstract class ASMModel extends ASMOclAny {
 		} else {
 			this.metamodel = metamodel;
 		}
-		//this.metamodel.addSubModel(this);
 		this.isTarget = isTarget;
 	}
 
@@ -68,7 +72,6 @@ public abstract class ASMModel extends ASMOclAny {
 			String msg = "no type named '" + typeName + "' in metamodel '" + metamodel.name + "'";
 			if(frame == null) {
 				logger.severe(msg);
-//				System.out.println(msg);
 			} else {
 				frame.printStackTrace(msg);
 			}
@@ -86,23 +89,6 @@ public abstract class ASMModel extends ASMOclAny {
 		return metamodel;
 	}
 
-	// TODO remove this method
-	/**
-	 * @deprecated
-	 */
-	public void addSubModel(ASMModel subModel) {
-		//subModels.put(subModel.name, subModel);
-	}
-
-	// TODO remove this method
-	/**
-	 * @deprecated
-	 */
-	public Map getSubModels() {
-		return Collections.EMPTY_MAP;
-		//return subModels;
-	}
-	
 	public boolean isTarget() {
 		return isTarget;
 	}
@@ -111,25 +97,18 @@ public abstract class ASMModel extends ASMOclAny {
 		this.isTarget = isTarget;
 	}
 
-	public ASMOclAny get(StackFrame frame, String name) {
-		logger.severe("ERROR !!!!!");
-//		System.out.println("ERROR !!!!!");
-		return null;
-	}
-
-	public void set(StackFrame frame, String name, ASMOclAny value) {
-		logger.severe("ERROR !!!!!");
-//		System.out.println("ERROR !!!!!");
-	}
-
-	public void save(String url) throws IOException {
-		logger.severe("ERROR: save not implemented !");
-//		System.out.println("ERROR: save not implemented !");
-	}
+	//TODO why re-implement get/set?
+//	public ASMOclAny get(StackFrame frame, String name) {
+//		logger.severe("ERROR !!!!!");
+//		return null;
+//	}
+//
+//	public void set(StackFrame frame, String name, ASMOclAny value) {
+//		logger.severe("ERROR !!!!!");
+//	}
 
 	private String name;
 	private ASMModel metamodel;
-	//private Map subModels = new HashMap();
 	private boolean isTarget;
 
 }
