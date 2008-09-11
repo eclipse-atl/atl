@@ -41,6 +41,8 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
+import org.eclipse.m2m.atl.tests.AtlTestsMessages;
+import org.eclipse.m2m.atl.tests.TestException;
 
 /**
  * Utility class for models.
@@ -214,7 +216,7 @@ public final class ModelUtils {
 	 * @throws InterruptedException
 	 */
 	public static void compareModels(File leftUri, File rightUri, boolean ignoreIds, boolean delete)
-			throws IOException, InterruptedException {
+			throws IOException, InterruptedException, TestException {
 		Resource leftModel = load(leftUri, AtlTestPlugin.getDefault().getResourceSet());
 		Resource rightModel = load(rightUri, AtlTestPlugin.getDefault().getResourceSet());
 
@@ -230,6 +232,7 @@ public final class ModelUtils {
 			snapshot.setDiff(inputDiff);
 			snapshot.setMatch(inputMatch);
 			ModelUtils.save(snapshot, "file:/" + leftUri.toString() + ".emfdiff"); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new TestException(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
 		}
 		if (delete) {
 			leftUri.delete();

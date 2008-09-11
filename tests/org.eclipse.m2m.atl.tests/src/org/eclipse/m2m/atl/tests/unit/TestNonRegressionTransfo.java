@@ -27,6 +27,7 @@ import org.eclipse.m2m.atl.engine.AtlCompiler;
 import org.eclipse.m2m.atl.engine.CompilerNotFoundException;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 import org.eclipse.m2m.atl.tests.AtlTestsMessages;
+import org.eclipse.m2m.atl.tests.TestException;
 import org.eclipse.m2m.atl.tests.util.LaunchParser;
 import org.eclipse.m2m.atl.tests.util.ModelUtils;
 import org.xml.sax.SAXException;
@@ -180,6 +181,9 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 				e.printStackTrace();
 				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.8")); //$NON-NLS-1$
 			} catch (InterruptedException e) {
+				e.printStackTrace();
+				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.8")); //$NON-NLS-1$
+			} catch (TestException e) {
 				e.printStackTrace();
 				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.8")); //$NON-NLS-1$
 			}
