@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    
  *
- * $Id: ExecEnv.java,v 1.16 2008/09/09 13:15:01 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.17 2008/09/11 15:35:53 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -567,7 +567,7 @@ public class ExecEnv {
 							Collection subCollection = (Collection)object;
 							ret.addAll(subCollection);
 							Iterator iterator2 = subCollection.iterator();
-							while (containsCollection && iterator2.hasNext()) {
+							while (!containsCollection && iterator2.hasNext()) {
 								Object subCollectionObject = iterator2.next();
 								if (subCollectionObject instanceof Collection) {
 									containsCollection = true;
@@ -745,7 +745,7 @@ public class ExecEnv {
 							Collection subCollection = (Collection)object;
 							ret.addAll(subCollection);
 							Iterator iterator2 = subCollection.iterator();
-							while (containsCollection && iterator2.hasNext()) {
+							while (!containsCollection && iterator2.hasNext()) {
 								Object subCollectionObject = iterator2.next();
 								if (subCollectionObject instanceof Collection) {
 									containsCollection = true;
@@ -831,7 +831,7 @@ public class ExecEnv {
 							Collection subCollection = (Collection)object;
 							ret.addAll(subCollection);
 							Iterator iterator2 = subCollection.iterator();
-							while (containsCollection && iterator2.hasNext()) {
+							while (!containsCollection && iterator2.hasNext()) {
 								Object subCollectionObject = iterator2.next();
 								if (subCollectionObject instanceof Collection) {
 									containsCollection = true;
