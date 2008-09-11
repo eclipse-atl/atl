@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.m2m.atl.engine"
-      label="ATL Feature"
-      version="2.0.0"
+      id="org.eclipse.m2m.atl"
+      label="ATL"
+      version="2.1.0.qualifier"
       provider-name="Eclipse.org"
-      plugin="org.eclipse.m2m.atl.engine">
+      plugin="org.eclipse.m2m.atl">
 
    <description>
-      ATL Engine Feature
+      ATL Runtime
    </description>
 
    <copyright url="http://www.eclipse.org/legal/epl-v10.html">
       /*  
- * Copyright (c) 2004, ATLAS Group (INRIA and LINA).
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- */
+* Copyright (c) 2004, INRIA.
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License
+v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+* 
+*/
    </copyright>
 
    <license url="http://www.eclipse.org/legal/epl-v10.html">
@@ -220,19 +221,76 @@ Each party waives its rights to a jury trial in any resulting
 litigation.
    </license>
 
-   <includes
-         id="org.eclipse.m2m.atl.adt_feature"
-         version="0.0.0"
-         optional="true"/>
+   <url>
+      <update label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
+   </url>
 
    <requires>
-      <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.update.core"/>
+      <import plugin="org.eclipse.emf.common"/>
    </requires>
+
+   <plugin
+         id="org.eclipse.m2m.atl.engine.emfvm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.adt.builder"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.adt.debug"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.adt.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.adt.perspective"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.adt.wizard"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.m2m.atl.compilers.atl2006"
@@ -245,22 +303,53 @@ litigation.
          id="org.eclipse.m2m.atl.drivers.emf4atl"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.drivers.uml24atl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.m2m.atl.engine"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.m2m.atl.engine.vm"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.m2m.atl.ocl.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.service.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.antlr.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.dsls"
          download-size="0"
          install-size="0"
          version="0.0.0"
