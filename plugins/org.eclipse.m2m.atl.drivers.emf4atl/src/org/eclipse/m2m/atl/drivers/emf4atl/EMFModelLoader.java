@@ -46,6 +46,7 @@ import org.eclipse.m2m.atl.engine.injectors.xml.XMLInjector;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
+import org.osgi.framework.Bundle;
 
 /**
  * Loads EMF models into a {@link ResourceSet}. Make sure to use the same
@@ -56,6 +57,8 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class EMFModelLoader extends ModelLoader {
+	
+	protected static Bundle bundle = Platform.getBundle("org.eclipse.m2m.atl.drivers.emf4atl"); //$NON-NLS-1$
 
 	protected ResourceSet resourceSet;
 
@@ -67,7 +70,7 @@ public class EMFModelLoader extends ModelLoader {
 
 	protected boolean removeIDs = false;
 
-	protected String encoding = "ISO-8859-1";
+	protected String encoding = "ISO-8859-1"; //$NON-NLS-1$
 	
 	protected Map saveOptions = new HashMap();
 	
@@ -83,8 +86,8 @@ public class EMFModelLoader extends ModelLoader {
 		loadOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
 		loadOptions.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
 		// add injectors
-		addInjector("xml", XMLInjector.class);//$NON-NLS-1$
-		addInjector("ebnf2", TCSInjector.class);//$NON-NLS-1$
+		addInjector("xml", XMLInjector.class); //$NON-NLS-1$
+		addInjector("ebnf2", TCSInjector.class); //$NON-NLS-1$
 		if (Platform.isRunning()) {
 			//no IExtensionRegistry supported outside Eclipse
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
@@ -127,15 +130,16 @@ public class EMFModelLoader extends ModelLoader {
 	}
 
 	public ASMModel getATL() {
-		if (atlmm == null) {
-			final URL atlurl = EMFModelLoader.class.getResource("resources/ATL-0.2.ecore");//$NON-NLS-1$
-			try {
-				atlmm = loadModel("ATL", getMOF(), atlurl.openStream());//$NON-NLS-1$
-			} catch (Exception e) {
-				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			}
-		}
-		return atlmm;
+		return getBuiltInMetaModel("ATL"); //$NON-NLS-1$
+//		if (atlmm == null) {
+//			final URL atlurl = EMFModelLoader.class.getResource("resources/ATL-0.2.ecore");//$NON-NLS-1$
+//			try {
+//				atlmm = loadModel("ATL", getMOF(), atlurl.openStream());//$NON-NLS-1$
+//			} catch (Exception e) {
+//				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			}
+//		}
+//		return atlmm;
 	}
 	
 	/**
@@ -243,10 +247,18 @@ public class EMFModelLoader extends ModelLoader {
 		ASMModel ret = (ASMModel)bimm.get(name);
 
 		if(ret == null) {
-			URL mmurl = EMFModelLoader.class.getResource("resources/" + name + ".ecore");//$NON-NLS-1$//$NON-NLS-2$
+			URL resource = null;
+			if (bundle == null) {
+				resource = EMFModelLoader.class.getResource(
+						"../../../../../../resources" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
+			} else {
+				resource = bundle.getResource("resources/" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+
+//			URL mmurl = EMFModelLoader.class.getResource("resources/" + name + ".ecore");//$NON-NLS-1$//$NON-NLS-2$
 			
 			try {
-				ret = loadModel(name, getMOF(), mmurl.openStream());
+				ret = loadModel(name, getMOF(), resource.openStream());
 			} catch (IOException e) {
 				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
