@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
-import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
@@ -35,16 +34,11 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  */
 public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
-	private AtlModelHandler amh;
-
-//	private ASMModel pbmm;
-
 	/**
 	 * Constructor.
 	 */
 	public AtlDefaultCompiler() {
-		amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
-//		pbmm = amh.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
+		super();
 	}
 	
 	/**
@@ -133,15 +127,13 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 		Object[] a = getProblems(problems, new EObject[0]);
 		int nbErrors = ((Integer)a[0]).intValue();
 		ret = (EObject[])a[1];
-		final ModelLoader ml = amh.createModelLoader();
-		final ASMModel pbmm = ml.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
 
 		if (nbErrors == 0) {
 			Map models = new HashMap();
-			models.put("MOF", ml.getMOF()); //$NON-NLS-1$
+			models.put("MOF", atlmodel.getModelLoader().getMOF()); //$NON-NLS-1$
 			models.put("ATL", atlmodel.getMetamodel()); //$NON-NLS-1$
 			models.put("IN", atlmodel); //$NON-NLS-1$
-			models.put("Problem", pbmm); //$NON-NLS-1$
+			models.put("Problem", problems.getMetamodel()); //$NON-NLS-1$
 			models.put("OUT", problems); //$NON-NLS-1$
 
 			Map params = Collections.EMPTY_MAP;
@@ -158,13 +150,11 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
 		if (nbErrors == 0) {
 			// Generating code
-			final AtlModelHandler defaultAmh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
-			final ModelLoader defaultMl = defaultAmh.createModelLoader();
 			Map models = new HashMap();
-			models.put("MOF", defaultMl.getMOF()); //$NON-NLS-1$
-			models.put("ATL", defaultMl.getATL()); //$NON-NLS-1$
+			models.put("MOF", atlmodel.getModelLoader().getMOF()); //$NON-NLS-1$
+			models.put("ATL", atlmodel.getMetamodel()); //$NON-NLS-1$
 			models.put("IN", atlmodel); //$NON-NLS-1$
-			models.put("Problem", pbmm); //$NON-NLS-1$
+			models.put("Problem", problems.getMetamodel()); //$NON-NLS-1$
 			models.put("OUT", problems); //$NON-NLS-1$
 
 			Map params = new HashMap();
