@@ -29,7 +29,7 @@ public class TestNonRegressionParser extends TestNonRegression {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#setUp()
 	 */
 	protected void setUp() throws Exception {
@@ -38,14 +38,13 @@ public class TestNonRegressionParser extends TestNonRegression {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#singleTest(java.io.File)
 	 */
 	protected void singleTest(File directory) {
 		System.out.print(AtlTestsMessages.getString(
 				"TestNonRegressionParser.SINGLETEST", new Object[] {directory.getName()})); //$NON-NLS-1$ 
-		final File expectedDir = new File(directory.getPath().replace(File.separator + "inputs", //$NON-NLS-1$
-				File.separator + "expected")); //$NON-NLS-1$
+		final File expectedDir = new File(directory.getPath().replaceFirst("inputs", "expected")); //$NON-NLS-1$//$NON-NLS-2$
 		final String transfoPath = directory + File.separator + directory.getName() + ".atl"; //$NON-NLS-1$
 		final String outputPath = directory + File.separator + directory.getName() + ".atl.xmi"; //$NON-NLS-1$
 		final String expectedPath = expectedDir + File.separator + directory.getName() + ".atl.xmi"; //$NON-NLS-1$
