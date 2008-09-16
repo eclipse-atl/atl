@@ -55,7 +55,8 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * Constructor.
 	 * 
-	 * @param editor the editor part
+	 * @param editor
+	 *            the editor part
 	 */
 	public AtlCompletionProcessor(IEditorPart editor) {
 		fEditor = (AtlEditor)editor;
@@ -187,7 +188,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 												oclModelElement, prefix, offset);
 									}
 								}
-							} else if (fHelper.getCurrentLine(offset).contains("<-")
+							} else if (fHelper.getCurrentLine(offset).indexOf("<-") > 0
 									&& (oclIsKindOf(locatedElement, "Binding")
 											|| oclIsKindOf(locatedElement, "VariableExp") || oclIsKindOf(
 											locatedElement, "NavigationOrAttributeCallExp"))) { //$NON-NLS-1$
@@ -285,7 +286,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 		currentPrefix = currentPrefix.replaceFirst("<-", "");
 		String varName = "";
 		String lastPrefix = "";
-		if (currentPrefix.contains(".")) {
+		if (currentPrefix.indexOf(".")>0) {
 			String[] splittedPrefix = currentPrefix.split("\\.");
 			if (splittedPrefix.length > 0) {
 				if (currentPrefix.endsWith(".")) {
