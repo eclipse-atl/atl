@@ -261,10 +261,14 @@ public class ASMEMFModelElement extends ASMModelElement {
 				if (targetType.equals("java.lang.Double") || targetType.equals("java.lang.Float")) {
 					ret = new Double(val);
 				} else {
-					ret = Integer.valueOf(val);
+					ret = new Integer(val);
+					// Java 1.5 API:
+					// ret = Integer.valueOf(val);
 				}
 			} else {
-				ret = Integer.valueOf(val);
+				ret = new Integer(val);
+				// Java 1.5 API:
+				// ret = Integer.valueOf(val);
 			}
 		} else if (value instanceof ASMEMFModelElement) {
 			ret = ((ASMEMFModelElement)value).object;
