@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -26,6 +27,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.dsls.textsource.TextSource;
 import org.eclipse.m2m.atl.dsls.textsource.URLTextSource;
 import org.osgi.framework.Bundle;
@@ -70,8 +72,7 @@ public class DSLResourceProvider {
 						resourceProvider.initResources();
 						break extensions;
 					} catch (CoreException e) {
-						// logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-						e.printStackTrace();
+						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 				}
 			}
