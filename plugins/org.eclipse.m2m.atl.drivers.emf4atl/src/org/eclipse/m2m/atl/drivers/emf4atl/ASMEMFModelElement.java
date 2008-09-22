@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
@@ -39,8 +38,8 @@ import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.ClassNativeOperation;
 import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
@@ -67,8 +66,6 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMTuple;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMEMFModelElement extends ASMModelElement {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static WeakHashMap methodCache = new WeakHashMap();
 
@@ -141,8 +138,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 				try {
 					ret = o.equals(t) || ((EClass)o).isSuperTypeOf((EClass)t);
 				} catch (Exception e) {
-					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-					// e.printStackTrace(System.out);
+					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				}
 			}
 		}
@@ -182,8 +178,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 			try {
 				ret = ((ASMEMFModel)getModel()).getASMModelElement(((EClass)t).getEStructuralFeature(name));
 			} catch (Exception e) {
-				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				// e.printStackTrace(System.out);
+				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
 
@@ -409,7 +404,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		// final boolean checkSameModel = !true;
 
 		if (debug) {
-			logger.info("Setting: " + this + " : " + getType() + "." + name + " to " + value);
+			ATLPlugin.info("Setting: " + this + " : " + getType() + "." + name + " to " + value);
 		}
 
 		super.set(frame, name, value);
@@ -419,7 +414,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 			// WARNING: Allowed manual setting of XMI ID for the current model element
 			// This operation is advised against but seems necessary of some special case
 			Resource r = ((ASMEMFModel)getModel()).getExtent();
-			logger.warning("\t\tManual setting of " + this + ":" + getType() + " XMI ID.");
+			ATLPlugin.warning("\t\tManual setting of " + this + ":" + getType() + " XMI ID.");
 			((XMLResource)r).setID(object, value.toString());
 			return;
 		}
@@ -579,7 +574,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 					ASMString.class,});
 
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -646,14 +641,14 @@ public class ASMEMFModelElement extends ASMModelElement {
 		Collection ret = aret.collection();
 
 		if (debug) {
-			logger.info(self + ".allInstancesFrom("
+			ATLPlugin.info(self + ".allInstancesFrom("
 					+ ((sourceModelName == null) ? "null" : "\"" + sourceModelName + "\"") + ")");
 		}
 		for (Iterator i = frame.getModels().keySet().iterator(); i.hasNext();) {
 			String mname = (String)i.next();
 
 			if (debug) {
-				logger.info("\ttrying: " + mname);
+				ATLPlugin.info("\ttrying: " + mname);
 			}
 
 			if ((sourceModelName != null) && !mname.equals(sourceModelName.getSymbol())) {
@@ -662,10 +657,10 @@ public class ASMEMFModelElement extends ASMModelElement {
 			ASMModel am = (ASMModel)frame.getModels().get(mname);
 
 			if (debug) {
-				logger.info("\t\tfound: " + am.getName());
-				logger.info("\t\tam.getMetamodel() = " + am.getMetamodel().hashCode());
-				logger.info("\t\tself.getModel() = " + self.getModel().hashCode());
-				logger.info("\t\tam.getMetamodel().equals(self.getModel()) = "
+				ATLPlugin.info("\t\tfound: " + am.getName());
+				ATLPlugin.info("\t\tam.getMetamodel() = " + am.getMetamodel().hashCode());
+				ATLPlugin.info("\t\tself.getModel() = " + self.getModel().hashCode());
+				ATLPlugin.info("\t\tam.getMetamodel().equals(self.getModel()) = "
 						+ am.getMetamodel().equals(self.getModel()));
 			}
 
@@ -674,14 +669,14 @@ public class ASMEMFModelElement extends ASMModelElement {
 			}
 
 			if (debug) {
-				logger.info("\t\t\tsearching on: " + am.getName());
+				ATLPlugin.info("\t\t\tsearching on: " + am.getName());
 			}
 
 			Set elems = am.getElementsByType(self);
 			ret.addAll(elems);
 
 			if (debug) {
-				logger.info("\t\t\t\tfound: " + elems);
+				ATLPlugin.info("\t\t\t\tfound: " + elems);
 			}
 
 		}

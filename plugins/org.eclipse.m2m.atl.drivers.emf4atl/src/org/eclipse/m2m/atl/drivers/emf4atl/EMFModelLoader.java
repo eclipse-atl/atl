@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
@@ -68,7 +69,7 @@ public class EMFModelLoader extends ModelLoader {
 		try {
 			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in, this);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;
@@ -85,7 +86,7 @@ public class EMFModelLoader extends ModelLoader {
 		try {
 			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, href, this);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;
@@ -103,7 +104,7 @@ public class EMFModelLoader extends ModelLoader {
 		try {
 			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel, this);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;
@@ -120,7 +121,7 @@ public class EMFModelLoader extends ModelLoader {
 		try {
 			ret = ASMEMFModel.newASMEMFModel(name, uri, (ASMEMFModel)metamodel, this);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;
@@ -176,7 +177,7 @@ public class EMFModelLoader extends ModelLoader {
 			options.put(XMIResource.OPTION_ENCODING, encoding);
 			r.save(options);
 		} catch (IOException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 		}
 	}
 }

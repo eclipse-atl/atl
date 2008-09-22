@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
@@ -38,7 +37,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
@@ -52,8 +51,6 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
  */
 public class ASMEMFModel extends ASMModel {
 	protected static ResourceSet resourceSet;
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	/** These meta model definition shall be redefined in all sub-classes of ASMEMFModel. */
 	protected static ASMEMFModel mofmm;
@@ -174,7 +171,7 @@ public class ASMEMFModel extends ASMModel {
 	}
 
 	private void initClassifiers(Iterator i, Map allClassifiers, String base) {
-		for ( ; i.hasNext();) {
+		for ( ; i.hasNext(); ) {
 			EObject eo = (EObject)i.next();
 			if (eo instanceof EPackage) {
 				String name = ((EPackage)eo).getName();
@@ -203,7 +200,7 @@ public class ASMEMFModel extends ASMModel {
 
 	private void register(Map allClassifiers, String name, EObject classifier) {
 		if (allClassifiers.containsKey(name)) {
-			logger.warning("metamodel contains several classifiers with same name: " + name);
+			ATLPlugin.warning("metamodel contains several classifiers with same name: " + name);
 		}
 		allClassifiers.put(name, classifier);
 	}
@@ -358,7 +355,7 @@ public class ASMEMFModel extends ASMModel {
 		try {
 			super.finalize();
 		} catch (Throwable e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -501,8 +498,7 @@ public class ASMEMFModel extends ASMModel {
 				asmModels.put(ret, "dummy");
 			}
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		adaptMetamodel(ret, metamodel);
 
@@ -554,22 +550,15 @@ public class ASMEMFModel extends ASMModel {
 				EPackage p = (EPackage)ame.getObject();
 				String nsURI = p.getNsURI();
 				if (nsURI == null) {
-					// System.err.println("DEBUG: EPackage " + p.getName() + " in model " + model.getName() +
-					// " has no nsURI.");
 					nsURI = p.getName();
 					p.setNsURI(nsURI);
 				}
-				if (resourceSet.getPackageRegistry().containsKey(nsURI)) {
-					if (!p.equals(resourceSet.getPackageRegistry().getEPackage(nsURI))) {
-						// System.err.println("WARNING: overwriting local EMF registry entry for " + nsURI);
-					}
-				} else {
+				if (!resourceSet.getPackageRegistry().containsKey(nsURI)) {
 					model.unregister.add(nsURI);
 				}
 				synchronized (resourceSet) {
 					resourceSet.getPackageRegistry().put(nsURI, p);
 				}
-				// System.err.println("INFO: Registering " + nsURI + " in local EMF registry");
 			}
 			for (Iterator i = model.getElementsByType("EDataType").iterator(); i.hasNext();) {
 				ASMEMFModelElement ame = (ASMEMFModelElement)i.next();
@@ -723,7 +712,7 @@ public class ASMEMFModel extends ASMModel {
 				if (eType.eResource() != null) {
 					referencedExtents.add(eType.eResource());
 				} else {
-					logger.warning("Resource for " + eType.toString() + " is null; cannot be referenced");
+					ATLPlugin.warning("Resource for " + eType.toString() + " is null; cannot be referenced");
 				}
 				if (eType instanceof EClass) {
 					addReferencedExtentsFor((EClass)eType, ignore);
@@ -737,7 +726,7 @@ public class ASMEMFModel extends ASMModel {
 			if (eType.eResource() != null) {
 				referencedExtents.add(eType.eResource());
 			} else {
-				logger.warning("Resource for " + eType.toString() + " is null; cannot be referenced");
+				ATLPlugin.warning("Resource for " + eType.toString() + " is null; cannot be referenced");
 			}
 		}
 		Iterator eSupers = eClass.getESuperTypes().iterator();
@@ -747,7 +736,7 @@ public class ASMEMFModel extends ASMModel {
 				referencedExtents.add(eSuper.eResource());
 				addReferencedExtentsFor(eSuper, ignore);
 			} else {
-				logger.warning("Resource for " + eSuper.toString() + " is null; cannot be referenced");
+				ATLPlugin.warning("Resource for " + eSuper.toString() + " is null; cannot be referenced");
 			}
 		}
 	}
