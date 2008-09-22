@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.jmi.reflect.InvalidCallException;
 import javax.jmi.reflect.RefAssociation;
@@ -33,7 +32,7 @@ import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.xmi.MalformedXMIException;
 
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMCollection;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -54,8 +53,6 @@ import org.netbeans.api.xmi.XMIWriterFactory;
  */
 public class ASMMDRModel extends ASMModel {
 
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
-
 	private static int verboseLevel = 1;
 
 	private static boolean persist = false;
@@ -67,8 +64,7 @@ public class ASMMDRModel extends ASMModel {
 	private static XMIWriter writer;
 
 	static {
-		logger.info("Initializing MDR...");
-		// System.out.println("Initializing MDR...");
+		ATLPlugin.info("Initializing MDR...");
 		initMDR();
 	}
 
@@ -135,8 +131,7 @@ public class ASMMDRModel extends ASMModel {
 
 	private static void register(Map classifiers, String name, RefObject classifier) {
 		if (classifiers.containsKey(name)) {
-			logger.warning("metamodel contains several classifiers with same name: " + name);
-			// System.out.println("Warning: metamodel contains several classifiers with same name: " + name);
+			ATLPlugin.warning("metamodel contains several classifiers with same name: " + name);
 		}
 		classifiers.put(name, classifier);
 	}
@@ -149,21 +144,10 @@ public class ASMMDRModel extends ASMModel {
 		return ret;
 	}
 
-	/*
-	 * // only for metamodels... public ASMModelElement findModelElement(String name) {
-	 * //System.out.println(this + ".findModelElement(" + name + ")"); ASMModelElement ret =
-	 * (ASMModelElement)modelElements.get(name); if(ret == null) { RefObject retro = null; RefClass cl =
-	 * pack.refClass("Classifier"); for(Iterator i = cl.refAllOfType().iterator() ; i.hasNext() ; ) {
-	 * RefObject ro = (RefObject)i.next(); try { if(ro.refGetValue("name").equals(name)) { retro = ro; break; } }
-	 * catch(Exception e) { retro = null; } } if(retro != null) { ret = getASMModelElement(retro);
-	 * modelElements.put(name, ret); } } return ret; }
-	 */
-
 	public Set getElementsByType(ASMModelElement ame) {
 		Set ret = new HashSet();
 		RefObject o = ((ASMMDRModelElement)ame).getObject();
 
-		// System.out.println(this + ".getElementsByType(" + o + ")");
 		for (Iterator i = findRefClass(pack, o).refAllOfType().iterator(); i.hasNext();) {
 			ret.add(getASMModelElement((RefObject)i.next()));
 		}
@@ -230,7 +214,7 @@ public class ASMMDRModel extends ASMModel {
 				ASMMDRModelElement asso = (ASMMDRModelElement)i.next();
 
 				if (debug) {
-					logger.info(asso.toString());
+					ATLPlugin.info(asso.toString());
 				}
 
 				ASMMDRModelElement type1 = null;
@@ -258,7 +242,7 @@ public class ASMMDRModel extends ASMModel {
 				// if(!((Boolean)ae1.refGetValue("isNavigable")).booleanValue()) {
 
 				if (debug)
-					logger.info("\tAdding acquaintance \"" + name1 + "\" to " + type2);
+					ATLPlugin.info("\tAdding acquaintance \"" + name1 + "\" to " + type2);
 				// if(debug) System.out.println("\tAdding acquaintance \"" + name1 + "\" to " + type2);
 
 				type2.addAcquaintance(name1, asso, ae1, true);
@@ -266,7 +250,7 @@ public class ASMMDRModel extends ASMModel {
 				// if(!((Boolean)ae2.refGetValue("isNavigable")).booleanValue()) {
 
 				if (debug)
-					logger.info("\tAdding acquaintance \"" + name2 + "\" to " + type1);
+					ATLPlugin.info("\tAdding acquaintance \"" + name2 + "\" to " + type1);
 				// if(debug) System.out.println("\tAdding acquaintance \"" + name2 + "\" to " + type1);
 
 				type1.addAcquaintance(name2, asso, ae2, false);
@@ -375,8 +359,6 @@ public class ASMMDRModel extends ASMModel {
 			ret.xmiIdByElement = xmiIdByElement;
 		} catch (Exception e) {
 			throw new Exception("Error while reading " + name + ":" + e.getLocalizedMessage(), e);
-			// System.out.println("Error while reading " + name + ":");
-			// e.printStackTrace(System.out);
 		}
 		ret.setIsTarget(false);
 		ret.getAllAcquaintances();
@@ -391,8 +373,7 @@ public class ASMMDRModel extends ASMModel {
 			ret = new ASMMDRModel("MOF", rep.getExtent("MOF"), null, false, ml);
 			mofmm = ret;
 		} catch (org.netbeans.mdr.util.DebugException de) {
-			logger.log(Level.SEVERE, de.getLocalizedMessage(), de);
-			// de.printStackTrace(System.out);
+			ATLPlugin.log(Level.SEVERE, de.getLocalizedMessage(), de);
 		}
 
 		return ret;
