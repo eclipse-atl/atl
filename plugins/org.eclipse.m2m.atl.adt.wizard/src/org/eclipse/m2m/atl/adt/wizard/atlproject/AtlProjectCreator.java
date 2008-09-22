@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.wizard.atlproject;
 
+import java.util.logging.Level;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspace;
@@ -21,6 +23,7 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.builder.AtlNature;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -121,7 +124,7 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
 		} catch (CoreException e) {
-			System.err.println(e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

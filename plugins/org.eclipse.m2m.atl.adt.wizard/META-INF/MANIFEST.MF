@@ -11,11 +11,11 @@ Export-Package: org.eclipse.m2m.atl.adt.startup,
  org.eclipse.m2m.atl.adt.wizard.atlfile,
  org.eclipse.m2m.atl.adt.wizard.atlproject
 Bundle-ClassPath: .
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.resources,
- org.eclipse.ui.ide,
+Require-Bundle: org.eclipse.core.resources,
  org.eclipse.core.runtime,
- org.eclipse.m2m.atl.adt.builder,
- org.eclipse.m2m.atl.engine
+ org.eclipse.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.m2m.atl,
+ org.eclipse.m2m.atl.adt.builder
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

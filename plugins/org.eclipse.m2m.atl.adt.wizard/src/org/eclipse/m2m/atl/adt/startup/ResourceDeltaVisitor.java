@@ -11,7 +11,6 @@
 package org.eclipse.m2m.atl.adt.startup;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -19,7 +18,7 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 
 /**
  * Resource visitor.
@@ -27,8 +26,6 @@ import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
  * @author <a href="mailto:tarik.idrissi@laposte.net">Tarik Idrissi</a>
  */
 public class ResourceDeltaVisitor implements IResourceDeltaVisitor {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	/**
 	 * <p>
@@ -67,8 +64,7 @@ public class ResourceDeltaVisitor implements IResourceDeltaVisitor {
 					try {
 						asm.delete(true, null);
 					} catch (CoreException e) {
-						logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-						// e.printStackTrace();
+						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 				}
 			}

@@ -14,7 +14,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -26,7 +25,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
@@ -37,8 +36,6 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExtension {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private IConfigurationElement configElement;
 
@@ -125,9 +122,9 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 			}
 			stream.close();
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (CoreException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 		}
 	}
 
