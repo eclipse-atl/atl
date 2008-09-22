@@ -10,20 +10,19 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.extractors.xml;
 
+import java.io.BufferedOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.eclipse.m2m.atl.engine.extractors.Extractor;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMCollection;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
-
-import java.io.BufferedOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>

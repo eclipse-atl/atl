@@ -24,6 +24,7 @@ import java.util.logging.Level;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
@@ -289,8 +290,7 @@ public class ASMString extends ASMOclAny {
 	}
 
 	public static void println(StackFrame frame, ASMString self) {
-		logger.info(self.s);
-		// System.out.println(self.s);
+		ATLPlugin.info(self.s);
 	}
 
 	// End File output
@@ -322,14 +322,13 @@ public class ASMString extends ASMOclAny {
 		try {
 			ret = new SOTSExpression2(self.s).exec(frame, args);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace(System.out);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return ret;
 	}
 
 	public static ASMOclAny evalSOTSBrackets(StackFrame frame, ASMString self, ASMTuple args) { // TODO: en
-																								// asm ou ocl
+		// asm ou ocl
 
 		boolean debug = false;
 
@@ -337,10 +336,10 @@ public class ASMString extends ASMOclAny {
 		Reader in = new StringReader(self.s);
 		int c;
 
-		if (debug)
-			logger.info("evalBrackets(\"" + self.s + "\")");
-		// if(debug) System.out.println("evalBrackets(\"" + self.s + "\")");
-
+		if (debug) {
+			ATLPlugin.info("evalBrackets(\"" + self.s + "\")");
+		}
+		
 		try {
 			boolean done = false;
 			do {
@@ -356,13 +355,13 @@ public class ASMString extends ASMOclAny {
 						}
 
 						if (debug)
-							logger.info("\tEvaluating : " + exp);
+							ATLPlugin.info("\tEvaluating : " + exp);
 						// if(debug) System.out.println("\tEvaluating : " + exp);
 
 						ASMOclAny result = new SOTSExpression2(exp.toString()).exec(frame, args);
 
 						if (debug)
-							logger.info("\t\t=>" + result);
+							ATLPlugin.info("\t\t=>" + result);
 						// if(debug) System.out.println("\t\t=>" + result);
 
 						if (result instanceof ASMCollection) {
@@ -380,12 +379,12 @@ public class ASMString extends ASMOclAny {
 				}
 			} while (!done);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			// e.printStackTrace(System.out);
 		}
 
 		if (debug)
-			logger.info("result = \"" + ret + "\"");
+			ATLPlugin.info("result = \"" + ret + "\"");
 		// if(debug) System.out.println("result = \"" + ret + "\"");
 
 		return new ASMString(ret.toString());

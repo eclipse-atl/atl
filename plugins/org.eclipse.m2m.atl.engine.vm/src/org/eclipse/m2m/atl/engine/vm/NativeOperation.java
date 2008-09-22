@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBag;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBoolean;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMInteger;
@@ -134,7 +135,7 @@ public abstract class NativeOperation extends Operation {
 					} else {
 						notGood = true;
 						if (debug) {
-							logger.info("No StackFrame as first parameter");
+							ATLPlugin.info("No StackFrame as first parameter");
 						}
 					}
 					j = Arrays.asList(m.getParameterTypes()).iterator();
@@ -149,7 +150,7 @@ public abstract class NativeOperation extends Operation {
 					notGood = true;
 
 					if (debug) {
-						logger.info("No StackFrame as first parameter");
+						ATLPlugin.info("No StackFrame as first parameter");
 					}
 
 				}
@@ -161,7 +162,7 @@ public abstract class NativeOperation extends Operation {
 					notGood = true;
 
 					if (debug) {
-						logger.info("Incompatible type as parameter");
+						ATLPlugin.info("Incompatible type as parameter");
 					}
 
 				} else {
@@ -175,7 +176,7 @@ public abstract class NativeOperation extends Operation {
 				notGood = true;
 
 				if (debug) {
-					logger.info("Incompatible return type");
+					ATLPlugin.info("Incompatible return type");
 				}
 
 			}
@@ -192,7 +193,7 @@ public abstract class NativeOperation extends Operation {
 			} else {
 
 				if (debug) {
-					logger.info("Strange !!! This method is not good: " + m);
+					ATLPlugin.info("Strange !!! This method is not good: " + m);
 				}
 
 			}

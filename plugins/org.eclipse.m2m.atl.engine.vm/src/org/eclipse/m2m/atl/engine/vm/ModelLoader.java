@@ -10,13 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
-import org.eclipse.m2m.atl.engine.extractors.Extractor;
-import org.eclipse.m2m.atl.engine.extractors.xml.XMLExtractor;
-import org.eclipse.m2m.atl.engine.injectors.Injector;
-import org.eclipse.m2m.atl.engine.injectors.xml.XMLInjector;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -28,7 +21,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.engine.extractors.Extractor;
+import org.eclipse.m2m.atl.engine.extractors.xml.XMLExtractor;
+import org.eclipse.m2m.atl.engine.injectors.Injector;
+import org.eclipse.m2m.atl.engine.injectors.xml.XMLInjector;
+import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
+import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
 
 /**
  * Model loading and saving facillity. Must be extended by concrete implementations such as for EMF or MDR.
@@ -37,8 +37,6 @@ import java.util.logging.Logger;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public abstract class ModelLoader {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	protected static Map loadedModels = new HashMap();
 
@@ -126,7 +124,7 @@ public abstract class ModelLoader {
 							if (val != null) {
 								paramsMap.put(pname, val);
 							} else {
-								logger.warning("could not find value for parameter \"" + pname + "\" : "
+								ATLPlugin.warning("could not find value for parameter \"" + pname + "\" : "
 										+ type + ".");
 							}
 						} else if (type.startsWith("Model:")) {
@@ -134,7 +132,7 @@ public abstract class ModelLoader {
 						} else if (type.equals("RandomAccessFile") && (uri != null)) {
 							paramsMap.put(pname, new RandomAccessFile(uri, "r"));
 						} else {
-							logger.warning("unknown parameter type \"" + type + "\" of \"" + pname + "\".");
+							ATLPlugin.warning("unknown parameter type \"" + type + "\" of \"" + pname + "\".");
 						}
 					}
 				}
@@ -143,10 +141,10 @@ public abstract class ModelLoader {
 				ret.setIsTarget(false);
 				// getAllAcquaintances ?
 			} else {
-				logger.severe("ERROR: could not find injector for \"" + kind + "\"");
+				ATLPlugin.severe("ERROR: could not find injector for \"" + kind + "\"");
 			}
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 		}
 		return root;
@@ -240,22 +238,23 @@ public abstract class ModelLoader {
 							if (val != null) {
 								paramsMap.put(pname, val);
 							} else {
-								logger.warning("could not find value for parameter \"" + pname + "\" : "
+								ATLPlugin.warning("could not find value for parameter \"" + pname + "\" : "
 										+ type + ".");
 							}
 						} else if (type.startsWith("Model:")) {
 							paramsMap.put(pname, loadedModels.get(args.get(pname)));
 						} else {
-							logger.warning("unknown parameter type \"" + type + "\" of \"" + pname + "\".");
+							ATLPlugin
+									.warning("unknown parameter type \"" + type + "\" of \"" + pname + "\".");
 						}
 					}
 				}
 				ext.extract(model, out, paramsMap);
 			} else {
-				logger.severe("ERROR: could not find extractor for \"" + kind + "\"");
+				ATLPlugin.severe("ERROR: could not find extractor for \"" + kind + "\"");
 			}
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

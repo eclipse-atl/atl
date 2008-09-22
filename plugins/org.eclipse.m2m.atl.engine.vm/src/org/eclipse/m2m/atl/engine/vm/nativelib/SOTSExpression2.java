@@ -15,18 +15,14 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.logging.Logger;
 
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
 /**
- * Simple query language evaluator.
- * This is used in the present version of the compiler.
- * 
- * Recognized grammar:
+ * Simple query language evaluator. This is used in the present version of the compiler. Recognized grammar:
  * <code>
  * exp ::= (simpleExp '+' exp) | simpleExp | INT | STRING | ('(' exp ')')
  * simpleExp ::= '$' varName:IDENT ('.' propName:IDENT ('(' ')')? ('[' ("ISA" '(' mname:IDENT '!' mename:IDENT ')') | (propName:IDENT '=' value:exp) | (index:exp) ']')*)* (',' default:exp)?;
@@ -36,11 +32,10 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
  * INT ::= [0-9]+;
  * SKIP ::= ' ' | '\t' | '\n' | '\r';
  * </code>
+ * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class SOTSExpression2 {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static final boolean debug = false;
 
@@ -51,13 +46,15 @@ public class SOTSExpression2 {
 
 	public ASMOclAny exec(StackFrame frame, ASMTuple args) throws IOException {
 
-if(debug) logger.info("Trying to execute " + exp);
-//if(debug) System.out.println("Trying to execute " + exp);
+		if (debug)
+			ATLPlugin.info("Trying to execute " + exp);
+		// if(debug) System.out.println("Trying to execute " + exp);
 
 		ASMOclAny ret = exp(frame, args);
 
-if(debug) logger.info("\treturn value = " + ret);
-//if(debug) System.out.println("\treturn value = " + ret);
+		if (debug)
+			ATLPlugin.info("\treturn value = " + ret);
+		// if(debug) System.out.println("\treturn value = " + ret);
 
 		return ret;
 	}
@@ -67,32 +64,32 @@ if(debug) logger.info("\treturn value = " + ret);
 		Token t = null;
 
 		t = next();
-		if(t.type == Token.LPAREN) {
+		if (t.type == Token.LPAREN) {
 			ret = exp(frame, args);
 			match(Token.RPAREN);
 			return ret;
-		} else if((t.type == Token.STRING) || (t.type == Token.INT)) {
+		} else if ((t.type == Token.STRING) || (t.type == Token.INT)) {
 			ret = convValue(t);
 		} else {
 			unread(t);
 			ret = simpleExp(frame, args);
 		}
 		t = next();
-		if(t.type == Token.PLUS) {
+		if (t.type == Token.PLUS) {
 			ASMOclAny right = exp(frame, args);
-			if(right == null) {
+			if (right == null) {
 				ret = null;
-			} else if(ret instanceof ASMInteger) {
+			} else if (ret instanceof ASMInteger) {
 				ret = ASMInteger.operatorPlus(frame, (ASMInteger)ret, (ASMInteger)right);
-			} else if(ret instanceof ASMString) {
-				if(right instanceof ASMString) {
+			} else if (ret instanceof ASMString) {
+				if (right instanceof ASMString) {
 					ret = ASMString.operatorPlus(frame, (ASMString)ret, (ASMString)right);
 				} else {
 					ret = ASMString.operatorPlus(frame, (ASMString)ret, new ASMString(right.toString()));
 				}
 			} else {
-				logger.severe("ERROR: could not add type " + ASMOclAny.oclType(frame, ret) + ".");
-//				System.out.println("ERROR: could not add type " + ASMOclAny.oclType(frame, ret) + ".");
+				ATLPlugin.severe("ERROR: could not add type " + ASMOclAny.oclType(frame, ret) + ".");
+				// System.out.println("ERROR: could not add type " + ASMOclAny.oclType(frame, ret) + ".");
 			}
 		} else {
 			unread(t);
@@ -111,21 +108,24 @@ if(debug) logger.info("\treturn value = " + ret);
 		boolean done = false;
 		do {
 
-if(debug) logger.info("\tcontext = " + ret + ((ret != null) ? " : " + ASMOclAny.oclType(frame, ret) : ""));
-//if(debug) System.out.println("\tcontext = " + ret + ((ret != null) ? " : " + ASMOclAny.oclType(frame, ret) : ""));
+			if (debug)
+				ATLPlugin.info("\tcontext = " + ret
+						+ ((ret != null) ? " : " + ASMOclAny.oclType(frame, ret) : ""));
+			// if(debug) System.out.println("\tcontext = " + ret + ((ret != null) ? " : " +
+			// ASMOclAny.oclType(frame, ret) : ""));
 
 			t = next();
 			ASMModelElement ame = null;
 			ASMSequence col = null;
 			ASMOclAny value = null;
-			switch(t.type) {
+			switch (t.type) {
 				case Token.EOF:
 					done = true;
 					break;
 				case Token.DOT:
 					t = next();
 
-					if((t.type != Token.IDENT) && (t.type != Token.STRING))
+					if ((t.type != Token.IDENT) && (t.type != Token.STRING))
 						error(t);
 
 					ret = toCollection(ret);
@@ -133,29 +133,32 @@ if(debug) logger.info("\tcontext = " + ret + ((ret != null) ? " : " + ASMOclAny.
 					col = new ASMSequence();
 
 					Token n = next();
-					if(n.type == Token.LPAREN) {
+					if (n.type == Token.LPAREN) {
 						match(Token.RPAREN);
 
-						for(Iterator i = ((ASMSequence)ret).iterator() ; i.hasNext() ; ) {
+						for (Iterator i = ((ASMSequence)ret).iterator(); i.hasNext();) {
 							ASMOclAny o = (ASMOclAny)i.next();
-							Operation oper = ((ASMExecEnv)frame.getExecEnv()).getOperation(o.getType(), t.value);
+							Operation oper = ((ASMExecEnv)frame.getExecEnv()).getOperation(o.getType(),
+									t.value);
 
-							if(oper != null) {
-								ASMOclAny v = oper.exec(frame.enterFrame(oper, Arrays.asList(new Object[] {o})));
+							if (oper != null) {
+								ASMOclAny v = oper.exec(frame.enterFrame(oper, Arrays
+										.asList(new Object[] {o})));
 								col.add(v);
 							} else {
-								frame.printStackTrace("ERROR: could not find operation " + t.value + " on " + o.getType() + " having supertypes: " + o.getType().getSupertypes());
+								frame.printStackTrace("ERROR: could not find operation " + t.value + " on "
+										+ o.getType() + " having supertypes: " + o.getType().getSupertypes());
 							}
 
 						}
 					} else {
 						unread(n);
 
-						for(Iterator i = ((ASMSequence)ret).iterator() ; i.hasNext() ; ) {
+						for (Iterator i = ((ASMSequence)ret).iterator(); i.hasNext();) {
 							ame = (ASMModelElement)i.next();
-							if(t.type == Token.IDENT) {
+							if (t.type == Token.IDENT) {
 								ASMOclAny v = ame.get(frame, t.value);
-								if(!(v instanceof ASMOclUndefined))
+								if (!(v instanceof ASMOclUndefined))
 									col.add(v);
 							} else
 								col.add(new ASMString(t.value));
@@ -164,11 +167,13 @@ if(debug) logger.info("\tcontext = " + ret + ((ret != null) ? " : " + ASMOclAny.
 					ret = ASMSequence.flatten(frame, col);
 					break;
 				case Token.COMA:
-//					t = next();
-//					if(!(t.type == Token.INT) && !(t.type == Token.STRING)) {
-//						error(t);
-//					}
-					if((ret == null) || ((ret instanceof ASMSequence) && (ASMSequence.size(frame, (ASMSequence)ret).getSymbol() == 0))) {
+					// t = next();
+					// if(!(t.type == Token.INT) && !(t.type == Token.STRING)) {
+					// error(t);
+					// }
+					if ((ret == null)
+							|| ((ret instanceof ASMSequence) && (ASMSequence.size(frame, (ASMSequence)ret)
+									.getSymbol() == 0))) {
 						value = exp(frame, args);
 						ret = value;
 					}
@@ -179,43 +184,44 @@ if(debug) logger.info("\tcontext = " + ret + ((ret != null) ? " : " + ASMOclAny.
 					ret = toCollection(ret);
 					col = new ASMSequence();
 
-					if(t.type == Token.ISA) {
+					if (t.type == Token.ISA) {
 						match(Token.LPAREN);
 						String mname = match(Token.IDENT).value;
 						match(Token.EXCL);
 						String mename = match(Token.IDENT).value;
 						match(Token.RPAREN);
 						String expectedTypeName = mname + "!" + mename;
-						for(Iterator i = ((ASMSequence)ret).iterator() ; i.hasNext() ; ) {
+						for (Iterator i = ((ASMSequence)ret).iterator(); i.hasNext();) {
 							ame = (ASMModelElement)i.next();
 							String typeName = ASMOclAny.oclType(frame, ame).toString();
-							if(typeName.equals(expectedTypeName)) {
+							if (typeName.equals(expectedTypeName)) {
 								col.add(ame);
 							}
 						}
 						ret = col;
-					} else if(t.type == Token.INT) {
+					} else if (t.type == Token.INT) {
 						unread(t);
-//						int val =
+						// int val =
 						((ASMInteger)exp(frame, args)).getSymbol();
-						if(ASMSequence.size(frame, (ASMSequence)ret).getSymbol() > 0)
-							ret = (ASMOclAny)((ASMSequence)ret).iterator().next();	// TODO: index rather than first
+						if (ASMSequence.size(frame, (ASMSequence)ret).getSymbol() > 0)
+							ret = (ASMOclAny)((ASMSequence)ret).iterator().next(); // TODO: index rather than
+																					// first
 						else
 							ret = null;
 					} else {
-						if(t.type != Token.IDENT)
+						if (t.type != Token.IDENT)
 							error(t);
 						String propName = t.value;
 						match(Token.EQ);
-//						t = next();
-//						if(!(t.type == Token.INT) && !(t.type == Token.STRING)) {
-//							error(t);
-//						}
-//						ASMOclAny value = convValue(t);
+						// t = next();
+						// if(!(t.type == Token.INT) && !(t.type == Token.STRING)) {
+						// error(t);
+						// }
+						// ASMOclAny value = convValue(t);
 						value = exp(frame, args);
-						for(Iterator i = ((ASMCollection)ret).iterator() ; i.hasNext() ; ) {
+						for (Iterator i = ((ASMCollection)ret).iterator(); i.hasNext();) {
 							ame = (ASMModelElement)i.next();
-							if(ame.get(frame, propName).equals(value)) {
+							if (ame.get(frame, propName).equals(value)) {
 								col.add(ame);
 							}
 						}
@@ -228,10 +234,11 @@ if(debug) logger.info("\tcontext = " + ret + ((ret != null) ? " : " + ASMOclAny.
 					done = true;
 					break;
 			}
-		} while(!done);
+		} while (!done);
 
-if(debug) logger.info("\tpartial return value = " + ret);
-//if(debug) System.out.println("\tpartial return value = " + ret);
+		if (debug)
+			ATLPlugin.info("\tpartial return value = " + ret);
+		// if(debug) System.out.println("\tpartial return value = " + ret);
 
 		return ret;
 	}
@@ -239,12 +246,12 @@ if(debug) logger.info("\tpartial return value = " + ret);
 	private ASMOclAny toCollection(ASMOclAny value) {
 		ASMSequence ret = null;
 
-		if(value instanceof ASMSequence) {
+		if (value instanceof ASMSequence) {
 			ret = (ASMSequence)value;
 		} else {
 			ASMOclAny elem = value;
 			ret = new ASMSequence();
-			if(elem != null)
+			if (elem != null)
 				ret.add(elem);
 		}
 
@@ -254,7 +261,7 @@ if(debug) logger.info("\tpartial return value = " + ret);
 	private ASMOclAny convValue(Token value) {
 		ASMOclAny ret = null;
 
-		if(value.type == Token.INT) {
+		if (value.type == Token.INT) {
 			ret = new ASMInteger(java.lang.Integer.parseInt(value.value));
 		} else {
 			ret = new ASMString(value.value);
@@ -265,14 +272,14 @@ if(debug) logger.info("\tpartial return value = " + ret);
 
 	private void error(Token t) throws IOException {
 		throw new IOException("ERROR: unexpected " + t);
-//		System.out.println("ERROR: unexpected " + t);
-//		new Exception().printStackTrace();
+		// System.out.println("ERROR: unexpected " + t);
+		// new Exception().printStackTrace();
 	}
 
 	private Token match(int type) throws IOException {
 		Token ret = next();
 
-		if(ret.type != type)
+		if (ret.type != type)
 			error(ret);
 
 		return ret;
@@ -286,22 +293,22 @@ if(debug) logger.info("\tpartial return value = " + ret);
 		Token ret = null;
 		String value = "";
 
-		if(readAhead != null) {
+		if (readAhead != null) {
 			Token tmp = readAhead;
 			readAhead = null;
 			return tmp;
 		}
 
 		int c = in.read();
-		switch(c) {
-			case ' ': case '\t': case '\n': case '\r':
+		switch (c) {
+			case ' ':
+			case '\t':
+			case '\n':
+			case '\r':
 				do {
 					in.mark(1);
 					c = in.read();
-				} while(
-					(c == ' ') || (c == '\t') ||
-					(c == '\n') || (c == '\r')
-				);
+				} while ((c == ' ') || (c == '\t') || (c == '\n') || (c == '\r'));
 				in.reset();
 				ret = next();
 				break;
@@ -335,99 +342,138 @@ if(debug) logger.info("\tpartial return value = " + ret);
 			case ')':
 				ret = new Token(Token.RPAREN, ")");
 				break;
-			case '0': case '1': case '2': case '3':
-			case '4': case '5': case '6': case '7':
-			case '8': case '9':
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
 				do {
 					value += (char)c;
 					in.mark(1);
 					c = in.read();
-				} while((c >= '0') && (c <= '9'));
+				} while ((c >= '0') && (c <= '9'));
 				in.reset();
 				ret = new Token(Token.INT, value);
 				break;
 			case '\'':
-				while((c = in.read()) != '\'') {
+				while ((c = in.read()) != '\'') {
 					value += (char)c;
 				}
 				ret = new Token(Token.STRING, value);
 				break;
-			case 'A': case 'B': case 'C': case 'D':
-			case 'E': case 'F': case 'G': case 'H':
-			case 'I': case 'J': case 'K': case 'L':
-			case 'M': case 'N': case 'O': case 'P':
-			case 'Q': case 'R': case 'S': case 'T':
-			case 'U': case 'V': case 'W': case 'X':
-			case 'Z': case '_':
-			case 'a': case 'b': case 'c': case 'd':
-			case 'e': case 'f': case 'g': case 'h':
-			case 'i': case 'j': case 'k': case 'l':
-			case 'm': case 'n': case 'o': case 'p':
-			case 'q': case 'r': case 's': case 't':
-			case 'u': case 'v': case 'w': case 'x':
+			case 'A':
+			case 'B':
+			case 'C':
+			case 'D':
+			case 'E':
+			case 'F':
+			case 'G':
+			case 'H':
+			case 'I':
+			case 'J':
+			case 'K':
+			case 'L':
+			case 'M':
+			case 'N':
+			case 'O':
+			case 'P':
+			case 'Q':
+			case 'R':
+			case 'S':
+			case 'T':
+			case 'U':
+			case 'V':
+			case 'W':
+			case 'X':
+			case 'Z':
+			case '_':
+			case 'a':
+			case 'b':
+			case 'c':
+			case 'd':
+			case 'e':
+			case 'f':
+			case 'g':
+			case 'h':
+			case 'i':
+			case 'j':
+			case 'k':
+			case 'l':
+			case 'm':
+			case 'n':
+			case 'o':
+			case 'p':
+			case 'q':
+			case 'r':
+			case 's':
+			case 't':
+			case 'u':
+			case 'v':
+			case 'w':
+			case 'x':
 			case 'z':
 				do {
 					value += (char)c;
 					in.mark(1);
 					c = in.read();
-				} while(
-					((c >= '0') && (c <= '9')) ||
-					((c >= 'A') && (c <= 'Z')) ||
-					((c >= 'a') && (c <= 'z')) ||
-					(c == '_')
-				);
+				} while (((c >= '0') && (c <= '9')) || ((c >= 'A') && (c <= 'Z'))
+						|| ((c >= 'a') && (c <= 'z')) || (c == '_'));
 				in.reset();
-				if(value.equals("ISA")) {
+				if (value.equals("ISA")) {
 					ret = new Token(Token.ISA, value);
 				} else {
 					ret = new Token(Token.IDENT, value);
 				}
 				break;
 			case '$':
-				ret = next();	// ignore '$'
+				ret = next(); // ignore '$'
 				break;
 			default:
-				logger.severe("ERROR: unexpected char \'" + (char)c + "\'.");
-//				System.out.println("ERROR: unexpected char \'" + (char)c + "\'.");
-				ret = next();	// trying to recover
+				ATLPlugin.severe("ERROR: unexpected char \'" + (char)c + "\'.");
+				// System.out.println("ERROR: unexpected char \'" + (char)c + "\'.");
+				ret = next(); // trying to recover
 				break;
 		}
 
 		return ret;
 	}
 
-	private static String[] tokenNames = {
-		"EOF",
-		"DOT",
-		"COMA",
-		"EXCL",
-		"EQ",
-		"PLUS",
-		"LSQUARE",
-		"RSQUARE",
-		"LPAREN",
-		"RPAREN",
-		"INT",
-		"STRING",
-		"IDENT",
-		"ISA"
-	};
+	private static String[] tokenNames = {"EOF", "DOT", "COMA", "EXCL", "EQ", "PLUS", "LSQUARE", "RSQUARE",
+			"LPAREN", "RPAREN", "INT", "STRING", "IDENT", "ISA"};
 
 	private class Token {
-		public static final int EOF	=	0;
-		public static final int DOT	=	1;
-		public static final int COMA	=	2;
-		public static final int EXCL	=	3;
-		public static final int EQ	=	4;
-		public static final int PLUS	=	5;
-		public static final int LSQUARE	=	6;
-		public static final int RSQUARE	=	7;
-		public static final int LPAREN	=	8;
-		public static final int RPAREN	=	9;
-		public static final int INT	=	10;
-		public static final int STRING	=	11;
-		public static final int IDENT	=	12;
-		public static final int ISA	=	13;
+		public static final int EOF = 0;
+
+		public static final int DOT = 1;
+
+		public static final int COMA = 2;
+
+		public static final int EXCL = 3;
+
+		public static final int EQ = 4;
+
+		public static final int PLUS = 5;
+
+		public static final int LSQUARE = 6;
+
+		public static final int RSQUARE = 7;
+
+		public static final int LPAREN = 8;
+
+		public static final int RPAREN = 9;
+
+		public static final int INT = 10;
+
+		public static final int STRING = 11;
+
+		public static final int IDENT = 12;
+
+		public static final int ISA = 13;
 
 		public Token(int type, String value) {
 			this.type = type;
@@ -439,11 +485,13 @@ if(debug) logger.info("\tpartial return value = " + ret);
 		}
 
 		public int type;
+
 		public String value;
 	}
 
 	private String exp;
+
 	private Reader in;
+
 	private Token readAhead = null;
 }
-

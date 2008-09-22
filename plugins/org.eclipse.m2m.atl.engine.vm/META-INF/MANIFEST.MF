@@ -12,10 +12,10 @@ Export-Package: org.eclipse.m2m.atl.engine.extractors,
  org.eclipse.m2m.atl.engine.injectors.xml,
  org.eclipse.m2m.atl.engine.vm,
  org.eclipse.m2m.atl.engine.vm.adwp,
- org.eclipse.m2m.atl.engine.vm.nativelib,
- org.eclipse.m2m.atl.logging
+ org.eclipse.m2m.atl.engine.vm.nativelib
 Bundle-ClassPath: .
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.eclipse.m2m.atl
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

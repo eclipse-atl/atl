@@ -16,7 +16,8 @@ import java.net.URLClassLoader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.eclipse.m2m.atl.ATLPlugin;
 
 /**
  * A basic plugin facillity used in command-line. Eclipse plugins are used within Eclipse.
@@ -24,8 +25,6 @@ import java.util.logging.Logger;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class PluginClassLoader extends URLClassLoader {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static URL[] toURLs(List locations) {
 		URL[] ret = new URL[locations.size()];
@@ -44,8 +43,7 @@ public class PluginClassLoader extends URLClassLoader {
 		try {
 			ret = new URL("file:" + location);
 		} catch (MalformedURLException mue) {
-			logger.log(Level.SEVERE, mue.getLocalizedMessage(), mue);
-			// mue.printStackTrace(System.out);
+			ATLPlugin.log(Level.SEVERE, mue.getLocalizedMessage(), mue);
 		}
 
 		return ret;

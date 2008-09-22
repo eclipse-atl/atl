@@ -10,26 +10,25 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.logging.Level;
+
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclSimpleType;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclType;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * This class is used by ATL compiler to create an ASM file.
+ * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMEmitter extends ASMOclAny {
 
 	public static ASMOclType myType = new ASMOclSimpleType("ASMEmitter", getOclAnyType());
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	public ASMEmitter() {
 		super(myType);
@@ -52,9 +51,9 @@ public class ASMEmitter extends ASMOclAny {
 	}
 
 	public void finishOperation() {
-		if(currentOperation != null) {
+		if (currentOperation != null) {
 			currentOperation.endLocalVariableEntry("self");
-			for(Iterator i = currentOperation.getParameters().iterator() ; i.hasNext() ; ) {
+			for (Iterator i = currentOperation.getParameters().iterator(); i.hasNext();) {
 				ASMParameter p = (ASMParameter)i.next();
 				int slot = currentOperation.endLocalVariableEntry(p.getName());
 				p.setName("" + slot);
@@ -62,7 +61,7 @@ public class ASMEmitter extends ASMOclAny {
 			currentOperation = null;
 		}
 	}
-	
+
 	public void addOperation(String name) {
 		finishOperation();
 		currentOperation = new ASMOperation(asm, name);
@@ -113,18 +112,18 @@ public class ASMEmitter extends ASMOclAny {
 	}
 
 	public void emitSimple(String mnemonic) {
-		if(!mnemonic.equals("nop")) {
+		if (!mnemonic.equals("nop")) {
 			currentOperation.addInstruction(new ASMInstruction(mnemonic));
 		}
 	}
 
 	public void emit(String mnemonic, String param) {
-		if(mnemonic.equals("nop")) {
-		} else if(mnemonic.equals("if") || mnemonic.equals("goto")) {
+		if (mnemonic.equals("nop")) {
+		} else if (mnemonic.equals("if") || mnemonic.equals("goto")) {
 			currentOperation.addLabeledInstruction(new ASMInstructionWithOperand(mnemonic, null), param);
-		} else if(mnemonic.equals("label")) {
+		} else if (mnemonic.equals("label")) {
 			currentOperation.addLabel(param);
-		} else if(mnemonic.equals("store") || mnemonic.equals("load")) {
+		} else if (mnemonic.equals("store") || mnemonic.equals("load")) {
 			currentOperation.addVariableInstruction(new ASMInstructionWithOperand(mnemonic, null), param);
 		} else {
 			currentOperation.addInstruction(new ASMInstructionWithOperand(mnemonic, param));
@@ -132,7 +131,7 @@ public class ASMEmitter extends ASMOclAny {
 	}
 
 	public void emitWithoutLabel(String mnemonic, String param) {
-		if(!mnemonic.equals("nop")) {
+		if (!mnemonic.equals("nop")) {
 			currentOperation.addInstruction(new ASMInstructionWithOperand(mnemonic, param));
 		}
 	}
@@ -143,19 +142,17 @@ public class ASMEmitter extends ASMOclAny {
 
 	public void dumpASM(String fileName) {
 		finishOperation();
-		logger.info("Dumping ASM to " + fileName);
-//		System.out.println("Dumping ASM to " + fileName);
+		ATLPlugin.info("Dumping ASM to " + fileName);
 		try {
 			PrintWriter out = new PrintWriter(new FileWriter(fileName));
 			new ASMXMLWriter(out, false).print(asm);
 			out.close();
-		} catch(IOException ioe) {
-			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
-//			ioe.printStackTrace(System.out);
+		} catch (IOException ioe) {
+			ATLPlugin.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 	}
 
 	private ASMOperation currentOperation;
+
 	private ASM asm;
 }
-

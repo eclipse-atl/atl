@@ -13,10 +13,9 @@ package org.eclipse.m2m.atl.engine.vm.nativelib;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
@@ -26,18 +25,19 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
 public class ASMOclAny extends ASMNativeObject {
 
 	public static ASMOclType myType = getOclAnyType();
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	static {
 		ASMOclType.myType.addSupertype(getOclAnyType());
 	}
 
 	private static ASMOclType oclAnyType = null;
+
 	protected static ASMOclType getOclAnyType() {
-		if(oclAnyType == null)
+		if (oclAnyType == null)
 			oclAnyType = new ASMOclSimpleType("OclAny");
 		return oclAnyType;
 	}
+
 	public ASMOclAny(ASMOclType type) {
 		this.type = type;
 	}
@@ -58,38 +58,15 @@ public class ASMOclAny extends ASMNativeObject {
 		return ((ASMExecEnv)frame.getExecEnv()).getOperation(type, opName);
 	}
 
-	// The Operation to execute on this object is searched for in its type.
-//	public ASMOclAny invoke(StackFrame frame, String opName, List arguments) {
-//		return invoke(frame, opName, arguments, getType());
-//	}
-	
-	/**
-	 * Searches for Operation opName and invokes it if found.
-	 * @param frame The current stack frame
-	 * @param opName The Operation's name
-	 * @param arguments The operation arguments, excluding self
-	 * @param type The operation context type
-	 * @return The Operation's result or null
-	 */
-//	public ASMOclAny invoke(StackFrame frame, String opName, List arguments, ASMOclType type) {
-//		ASMOclAny ret = null;
-//				
-//		Operation oper = findOperation(frame, opName, arguments, type);
-//
-//		if(oper != null) {
-//			ret = invoke(frame, oper, arguments);
-//		} else {
-//			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes());
-//		}
-//
-//		return ret;
-//	}
-
 	/**
 	 * Searches for Operation opName in this context and invokes it if found.
-	 * @param frame The current stack frame
-	 * @param opName The Operation's name
-	 * @param arguments The operation arguments, excluding self
+	 * 
+	 * @param frame
+	 *            The current stack frame
+	 * @param opName
+	 *            The Operation's name
+	 * @param arguments
+	 *            The operation arguments, excluding self
 	 * @return The Operation's result or null
 	 */
 	public ASMOclAny invoke(StackFrame frame, String opName, List arguments) {
@@ -97,10 +74,11 @@ public class ASMOclAny extends ASMNativeObject {
 
 		Operation oper = findOperation(frame, opName, arguments, getType());
 
-		if(oper != null) {
+		if (oper != null) {
 			ret = invoke(frame, oper, arguments);
 		} else {
-			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes());
+			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType()
+					+ " having supertypes: " + getType().getSupertypes());
 		}
 
 		return ret;
@@ -108,23 +86,28 @@ public class ASMOclAny extends ASMNativeObject {
 
 	/**
 	 * Searches for Operation opName in the superclass context and invokes it if found.
-	 * @param frame The current stack frame
-	 * @param opName The Operation's name
-	 * @param arguments The operation arguments, excluding self
+	 * 
+	 * @param frame
+	 *            The current stack frame
+	 * @param opName
+	 *            The Operation's name
+	 * @param arguments
+	 *            The operation arguments, excluding self
 	 * @return The Operation's result or null
 	 */
 	public ASMOclAny invokeSuper(StackFrame frame, String opName, List arguments) {
 		ASMOclAny ret = null;
-		
+
 		Operation oper = null;
 		for (Iterator i = getType().getSupertypes().iterator(); i.hasNext() && oper == null;) {
 			oper = findOperation(frame, opName, arguments, (ASMOclType)i.next());
 		}
 
-		if(oper != null) {
+		if (oper != null) {
 			ret = invoke(frame, oper, arguments);
 		} else {
-			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType() + " having supertypes: " + getType().getSupertypes());
+			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType()
+					+ " having supertypes: " + getType().getSupertypes());
 		}
 
 		return ret;
@@ -132,19 +115,23 @@ public class ASMOclAny extends ASMNativeObject {
 
 	/**
 	 * Invokes the given Operation.
-	 * @param frame The current stack frame
-	 * @param oper The Operation to invoke
-	 * @param arguments The operation arguments, excluding self
+	 * 
+	 * @param frame
+	 *            The current stack frame
+	 * @param oper
+	 *            The Operation to invoke
+	 * @param arguments
+	 *            The operation arguments, excluding self
 	 * @return The Operation's result
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public ASMOclAny invoke(StackFrame frame, Operation oper, List arguments) {
-		arguments.add(0, this);	// self
+		arguments.add(0, this); // self
 		return oper.exec(frame.enterFrame(oper, arguments));
 	}
 
 	public ASMOclAny get(StackFrame frame, String name) {
-		if(isHelper(frame, name)) {
+		if (isHelper(frame, name)) {
 			return getHelper(frame, name);
 		}
 		frame.printStackTrace("ERROR: get unsupported on OclAny.");
@@ -154,16 +141,16 @@ public class ASMOclAny extends ASMNativeObject {
 	public void set(StackFrame frame, String name, ASMOclAny value) {
 		frame.printStackTrace("ERROR: set unsupported on OclAny");
 	}
-	
+
 	public ASMOclAny refImmediateComposite() {
 		return new ASMOclUndefined();
 	}
-	
+
 	public boolean isHelper(StackFrame frame, String name) {
-		//return type.getHelperAttributes().containsKey(name);
+		// return type.getHelperAttributes().containsKey(name);
 		return ((ASMExecEnv)frame.getExecEnv()).isHelper(type, name);
 	}
-	
+
 	public ASMOclAny getHelper(StackFrame frame, String name) {
 		return ((ASMExecEnv)frame.getExecEnv()).getHelperValue(frame, this, name);
 	}
@@ -203,19 +190,20 @@ public class ASMOclAny extends ASMNativeObject {
 		return self.refImmediateComposite();
 	}
 
-	public static ASMOclAny refInvokeOperation(StackFrame frame, ASMOclAny self, ASMString opName_, ASMSequence arguments_) {
+	public static ASMOclAny refInvokeOperation(StackFrame frame, ASMOclAny self, ASMString opName_,
+			ASMSequence arguments_) {
 		ASMOclAny ret = null;
 
 		String opName = opName_.getSymbol();
 		ArrayList arguments = new ArrayList();
-		for(Iterator i = arguments_.iterator() ; i.hasNext() ; )
+		for (Iterator i = arguments_.iterator(); i.hasNext();)
 			arguments.add(i.next());
 
 		ret = self.invoke(frame, opName, arguments);
-		
+
 		return ret;
 	}
-	
+
 	public static ASMOclAny operatorEQ(StackFrame frame, ASMOclAny self, ASMOclAny other) {
 		return new ASMBoolean(self.equals(other));
 	}
@@ -249,24 +237,20 @@ public class ASMOclAny extends ASMNativeObject {
 	}
 
 	public static void output(StackFrame frame, ASMOclAny self) {
-		logger.info(self.toString());
-//		System.out.println(self);
+		ATLPlugin.info(self.toString());
 	}
 
 	public static ASMOclAny debug(StackFrame frame, ASMOclAny self, ASMString msg) {
-		logger.info(msg.getSymbol() + ": " + self.toString());
-//		System.out.println(msg.getSymbol() + ": " + self.toString());
+		ATLPlugin.info(msg.getSymbol() + ": " + self.toString());
 		return self;
 	}
 
 	public static ASMOclAny check(StackFrame frame, ASMOclAny self, ASMString msg, ASMBoolean cond) {
-		if(!cond.getSymbol()) {
-			logger.info(msg.getSymbol());
-//			System.out.println(msg.getSymbol());
+		if (!cond.getSymbol()) {
+			ATLPlugin.info(msg.getSymbol());
 		}
 		return self;
 	}
 
 	private ASMOclType type;
 }
-

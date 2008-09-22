@@ -25,8 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
@@ -40,15 +40,12 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ACTInterpreter {
-
-	/** The common ATL logger. */
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 	
 	public ACTInterpreter(PluginClassLoader pcl, ModelLoader ml, ASMModelElement root, Map params, Map models)
 			throws Exception {
 		ACT act = new ACT();
 		load(root, act);
-		logger.info("Executing ATL Composite Transformation: " + act.name);
+		ATLPlugin.info("Executing ATL Composite Transformation: " + act.name);
 		Map parameters = new HashMap();
 		parameters.put("ACT_LOCATION", params.get("ACT_LOCATION"));
 		for (Iterator i = act.plugins.iterator(); i.hasNext();) {
@@ -59,7 +56,7 @@ public class ACTInterpreter {
 			ml.addInjector("ebnf", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSInjector"));
 			ml.addInjector("ebnf2", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSInjector"));
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	
 		for (Iterator i = act.file_s.iterator(); i.hasNext();) {
@@ -79,7 +76,7 @@ public class ACTInterpreter {
 		for (Iterator i = act.models.iterator(); i.hasNext();) {
 			Model model = (Model)i.next();
 			if (model instanceof InModel) {
-				logger.info("Loading model " + model.name + "...");
+				ATLPlugin.info("Loading model " + model.name + "...");
 				ASMModel m = (ASMModel)models.get(model.name);
 				if (m == null) {
 					String mhref = (String)params.get(model.name);
@@ -112,7 +109,7 @@ public class ACTInterpreter {
 				ASMModel m = ml.loadModel(im.storeTo, mm, im.kind + ":" + im.subKind + ":" + href);
 				models.put(im.storeTo, m);
 			} else if (op instanceof Query) {
-				logger.info("Querying...");
+				ATLPlugin.info("Querying...");
 				Query q = (Query)op;
 	
 				ASM asm = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(q.asm,
@@ -161,7 +158,7 @@ public class ACTInterpreter {
 						env.addModel(l.name, m);
 						models.put(l.model, m);
 					} else {
-						logger.warning(l + " not dealt with yet.");
+						ATLPlugin.warning(l + " not dealt with yet.");
 					}
 				}
 	
@@ -169,7 +166,7 @@ public class ACTInterpreter {
 				for (Iterator j = q.librarys.iterator(); j.hasNext();) {
 					Library l = (Library)j.next();
 	
-					logger.info("Loading library " + l.name + " from " + l.href + ".");
+					ATLPlugin.info("Loading library " + l.name + " from " + l.href + ".");
 					ASM lib = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(
 							l.href, parameters))));
 					env.registerOperations(lib);
@@ -201,7 +198,7 @@ public class ACTInterpreter {
 					System.out.println(value.toString());
 				}
 			} else if (op instanceof Transform) {
-				logger.info("Transforming...");
+				ATLPlugin.info("Transforming...");
 				Transform tr = (Transform)op;
 				ASM asm = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(tr.asm,
 						parameters))));
@@ -248,7 +245,7 @@ public class ACTInterpreter {
 						env.addModel(l.name, m);
 						models.put(l.model, m);
 					} else {
-						logger.warning(l + " not dealt with yet.");
+						ATLPlugin.warning(l + " not dealt with yet.");
 					}
 				}
 	
@@ -256,7 +253,7 @@ public class ACTInterpreter {
 				for (Iterator j = tr.librarys.iterator(); j.hasNext();) {
 					Library l = (Library)j.next();
 	
-					logger.info("Loading library " + l.name + " from " + l.href + ".");
+					ATLPlugin.info("Loading library " + l.name + " from " + l.href + ".");
 					ASM lib = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(
 							l.href, parameters))));
 					env.registerOperations(lib);
@@ -275,7 +272,7 @@ public class ACTInterpreter {
 		for (Iterator i = act.models.iterator(); i.hasNext();) {
 			Model model = (Model)i.next();
 			if (model instanceof OutModel) {
-				logger.info("Saving model " + model.name + "...");
+				ATLPlugin.info("Saving model " + model.name + "...");
 				String mhref = (String)params.get(model.name);
 				if (mhref == null) {
 					throw new ACTInterpreterException("ERROR: Location of output model " + model.name
@@ -314,7 +311,7 @@ public class ACTInterpreter {
 			String[] ss = plugins.split(",");
 			for (Iterator i = Arrays.asList(ss).iterator(); i.hasNext();) {
 				String plg = (String)i.next();
-				logger.info("Loading plugin: " + plg);
+				ATLPlugin.info("Loading plugin: " + plg);
 				// System.out.println("Loading plugin: " + plg);
 				pcl.addLocation(plg);
 			}
@@ -356,7 +353,7 @@ public class ACTInterpreter {
 		new ACTInterpreter(pcl, ml, actRoot, params, models);
 
 		long end = new Date().getTime();
-		logger.info("Execution took " + ((end - start) / 1000.) + "s.");
+		ATLPlugin.info("Execution took " + ((end - start) / 1000.) + "s.");
 		// System.out.println("Execution took " + ((end - start) / 1000.) + "s.");
 	}
 
@@ -418,17 +415,17 @@ public class ACTInterpreter {
 			} else if (typeName.equals("Element")) {
 
 				if (debug) {
-					logger.info("For element " + name);
+					ATLPlugin.info("For element " + name);
 				}
 				String cname = convName(name, true);
 
 				if (debug) {
-					logger.info(" converted into " + cname + " ");
+					ATLPlugin.info(" converted into " + cname + " ");
 				}
 				Class c = Class.forName("org.eclipse.m2m.atl.engine.vm.ACTInterpreter$" + cname);
 
 				if (debug) {
-					logger.info("using class " + c);
+					ATLPlugin.info("using class " + c);
 				}
 
 				Object value = c.getDeclaredConstructors()[0].newInstance(new Object[] {this});
@@ -455,7 +452,7 @@ public class ACTInterpreter {
 			} catch (NoSuchFieldException nsfe2) {
 				Class s = valueType.getSuperclass();
 				if (s == null) {
-					logger.warning("Not found: " + name);
+					ATLPlugin.warning("Not found: " + name);
 				} else {
 					setValue(target, value, s);
 				}

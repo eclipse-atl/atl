@@ -11,7 +11,6 @@
 package org.eclipse.m2m.atl.engine.vm;
 
 import java.io.PrintWriter;
-
 import java.util.Iterator;
 
 /**

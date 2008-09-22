@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclSimpleType;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclType;
@@ -17,9 +20,6 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclUndefined;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMSequence;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMTuple;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>

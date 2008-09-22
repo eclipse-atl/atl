@@ -16,9 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
 import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBoolean;
@@ -32,8 +31,8 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
  */
 public class LocalObjectReference extends ObjectReference {
 
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 	private static Map values = new HashMap();
+
 	private static Map valuesById = new HashMap();
 
 	public static ObjectReference valueOf(int id_) {
@@ -51,7 +50,7 @@ public class LocalObjectReference extends ObjectReference {
 		key.add(debugger);
 		ObjectReference ret = (ObjectReference)values.get(key);
 
-		if(ret == null) {
+		if (ret == null) {
 			int id = idGenerator++;
 			ret = new LocalObjectReference(object, id, debugger);
 			values.put(key, ret);
@@ -73,9 +72,8 @@ public class LocalObjectReference extends ObjectReference {
 		ASMOclAny o = null;
 		try {
 			o = object.get(debugger.getExecEnv().peek(), propName);
-		} catch(Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace();
+		} catch (Exception e) {
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		ret = asm2value(o);
@@ -86,19 +84,19 @@ public class LocalObjectReference extends ObjectReference {
 	private Value asm2value(ASMOclAny o) {
 		return asm2value(o, debugger);
 	}
-	
+
 	public static Value asm2value(ASMOclAny o, NetworkDebugger debugger) {
 		Value ret = null;
 
-		if(o instanceof ASMString) {
+		if (o instanceof ASMString) {
 			ret = StringValue.valueOf(((ASMString)o).getSymbol());
-		} else if(o instanceof ASMInteger) {
+		} else if (o instanceof ASMInteger) {
 			ret = IntegerValue.valueOf(((ASMInteger)o).getSymbol());
-		} else if(o instanceof ASMReal) {
+		} else if (o instanceof ASMReal) {
 			ret = RealValue.valueOf(((ASMReal)o).getSymbol());
-		} else if(o instanceof ASMBoolean) {
+		} else if (o instanceof ASMBoolean) {
 			ret = BooleanValue.valueOf(((ASMBoolean)o).getSymbol());
-		} else if(o == null) {
+		} else if (o == null) {
 			ret = new NullValue();
 		} else {
 			ret = valueOf(o, debugger);
@@ -110,23 +108,22 @@ public class LocalObjectReference extends ObjectReference {
 	public ASMOclAny value2asm(Value value) {
 		ASMOclAny ret = null;
 
-		if(value instanceof LocalObjectReference) {
+		if (value instanceof LocalObjectReference) {
 			ret = ((LocalObjectReference)value).object;
-		} else if(value instanceof StringValue) {
+		} else if (value instanceof StringValue) {
 			ret = new ASMString(((StringValue)value).getValue());
-		} else if(value instanceof IntegerValue) {
+		} else if (value instanceof IntegerValue) {
 			ret = new ASMInteger(((IntegerValue)value).getValue());
-		} else if(value instanceof RealValue) {
+		} else if (value instanceof RealValue) {
 			ret = new ASMReal(((RealValue)value).getValue());
-		} else if(value instanceof BooleanValue) {
+		} else if (value instanceof BooleanValue) {
 			ret = new ASMBoolean(((BooleanValue)value).getValue());
-		} else if(value instanceof NullValue) {
+		} else if (value instanceof NullValue) {
 			ret = null;
 		}
 
 		return ret;
 	}
-
 
 	public void set(String propName, Value value) {
 		ASMOclAny realValue = value2asm(value);
@@ -136,36 +133,41 @@ public class LocalObjectReference extends ObjectReference {
 
 	public Value call(String opName, List args) {
 
-final boolean debug = false;
+		final boolean debug = false;
 
 		Value ret = null;
 
 		Operation op = debugger.getExecEnv().getOperation(object.getType(), opName);
-		if(op == null) {
-			logger.severe("ERROR: operation not found: " + opName + " on " + object + " : "+ object.getType());
-//			System.out.println("ERROR: operation not found: " + opName + " on " + object + " : "+ object.getType());
+		if (op == null) {
+			ATLPlugin.severe("ERROR: operation not found: " + opName + " on " + object + " : "
+					+ object.getType());
 		} else {
 			List realArgs = new ArrayList();
 			realArgs.add(value2asm(this));
 
-if(debug) logger.info(object + " : " + object.getType() + "." + opName + "(");
-//if(debug) System.out.print(object + " : " + object.getType() + "." + opName + "(");
-
-			for(Iterator i = args.iterator() ; i.hasNext() ; ) {
+			if (debug) {
+				ATLPlugin.info(object + " : " + object.getType() + "." + opName + "(");
+			}
+			
+			for (Iterator i = args.iterator(); i.hasNext();) {
 				Value v = (Value)i.next();
 
-if(debug) logger.info(v + ((i.hasNext()) ? ", " : ""));
-//if(debug) System.out.print(v + ((i.hasNext()) ? ", " : ""));
-
+				if (debug) {
+					ATLPlugin.info(v + ((i.hasNext()) ? ", " : ""));
+				}
+				
 				realArgs.add(value2asm(v));
 			}
 			ASMOclAny o = op.exec(new ADWPStackFrame(op, args).enterFrame(op, realArgs));
 			ret = asm2value(o);
 
-if(debug) logger.info(") = " + o);
-if(debug) logger.info(" => " + ret);
-//if(debug) System.out.print(") = " + o);
-//if(debug) System.out.println(" => " + ret);
+			if (debug) {
+				ATLPlugin.info(") = " + o);
+			}
+			
+			if (debug) {
+				ATLPlugin.info(" => " + ret);
+			}
 
 		}
 
@@ -177,7 +179,8 @@ if(debug) logger.info(" => " + ret);
 	}
 
 	private static int idGenerator = 0;
+
 	private ASMOclAny object;
+
 	private NetworkDebugger debugger;
 }
-

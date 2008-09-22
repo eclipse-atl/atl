@@ -19,16 +19,13 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 
 /**
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ADWPDebugger extends ADWP {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	public ADWPDebugger(InputStream in, OutputStream out) {
 		super(in, out);
@@ -48,12 +45,10 @@ public class ADWPDebugger extends ADWP {
 			}
 			out.flush();
 			if ((cmd == CMD_SET_BP) || (cmd == CMD_UNSET_BP)) {
-				logger.info("sent : " + cmd + " - " + args);
-				// System.out.println("sent : " + cmd + " - " + args);
+				ATLPlugin.info("sent : " + cmd + " - " + args);
 			}
 		} catch (IOException ioe) {
-			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
-			// ioe.printStackTrace(System.out);
+			ATLPlugin.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 	}
 
@@ -68,15 +63,14 @@ public class ADWPDebugger extends ADWP {
 	private ADWPCommand getMessageFrom(List list) {
 		ADWPCommand ret = null;
 
-		synchronized(list) {
+		synchronized (list) {
 			if (list.size() == 0) {
 				try {
 					do {
 						list.wait();
 					} while (list.size() == 0);
 				} catch (InterruptedException ie) {
-					logger.log(Level.SEVERE, ie.getLocalizedMessage(), ie);
-					// ie.printStackTrace(System.out);
+					ATLPlugin.log(Level.SEVERE, ie.getLocalizedMessage(), ie);
 				}
 			}
 		}
@@ -138,14 +132,12 @@ public class ADWPDebugger extends ADWP {
 						msgs = answers;
 						break;
 				}
-				// System.out.println("> " + msg);
-				synchronized(msgs) {
+				synchronized (msgs) {
 					msgs.add(msg);
 					msgs.notifyAll();
 				}
 			}
 		} catch (IOException ioe) {
-			// ioe.printStackTrace(System.out);
 		}
 	}
 

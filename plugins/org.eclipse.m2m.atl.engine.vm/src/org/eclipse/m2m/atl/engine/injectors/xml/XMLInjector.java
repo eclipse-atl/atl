@@ -15,13 +15,12 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.injectors.Injector;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMInteger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
@@ -40,8 +39,6 @@ public class XMLInjector extends DefaultHandler implements Injector {
 
 	/** Set to true to enable debugging information printouts. */
 	private static final boolean debug = false;
-	
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private boolean keepWhitespace = true;
 
@@ -108,8 +105,7 @@ public class XMLInjector extends DefaultHandler implements Injector {
 			SAXParser saxParser = factory.newSAXParser();
 			saxParser.parse(in, new ProtectedHandler(this));
 		} catch (Throwable err) {
-			logger.log(Level.SEVERE, err.getLocalizedMessage(), err);
-//			err.printStackTrace(System.out);
+			ATLPlugin.log(Level.SEVERE, err.getLocalizedMessage(), err);
 		}
 	}
 	
@@ -125,8 +121,7 @@ public class XMLInjector extends DefaultHandler implements Injector {
 		String value = new String(ch, start, length);
 
 		if(debug) {
-			logger.info("text = " + value);
-//			System.out.println("text = " + value);
+			ATLPlugin.info("text = " + value);
 		}
 		
 		if(!keepWhitespace) {
@@ -166,12 +161,9 @@ public class XMLInjector extends DefaultHandler implements Injector {
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 		ASMModelElement parent = current;
 		if(debug) {
-			logger.info("uri = " + uri);
-			logger.info("localName = " + localName);
-			logger.info("qName = " + qName);
-//			System.out.println("uri = " + uri);
-//			System.out.println("localName = " + localName);
-//			System.out.println("qName = " + qName);
+			ATLPlugin.info("uri = " + uri);
+			ATLPlugin.info("localName = " + localName);
+			ATLPlugin.info("qName = " + qName);
 		}
 
 		if(current == null) {
@@ -184,10 +176,8 @@ public class XMLInjector extends DefaultHandler implements Injector {
 		current.set(null, "name", new ASMString(qName));
 		for(int i = 0 ; i < attributes.getLength() ; i++) {
 			if(debug) {
-				logger.info("Attribute localName = " + attributes.getLocalName(i));
-				logger.info("Attribute qName = " + attributes.getQName(i));
-//				System.out.println("Attribute localName = " + attributes.getLocalName(i));
-//				System.out.println("Attribute qName = " + attributes.getQName(i));
+				ATLPlugin.info("Attribute localName = " + attributes.getLocalName(i));
+				ATLPlugin.info("Attribute qName = " + attributes.getQName(i));
 			}
 			ASMModelElement attr = extent.newModelElement("Attribute");
 			attr.set(null, "name", new ASMString(attributes.getQName(i)));
@@ -227,14 +217,12 @@ public class XMLInjector extends DefaultHandler implements Injector {
 	}
 
 	public void error(SAXParseException e) {
-		logger.severe("Error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
-//		System.out.println("Error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
+		ATLPlugin.severe("Error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
 		errors++;
 	}
 
     public void fatalError(SAXParseException e) {
-    	logger.severe("Fatal error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
-//		System.out.println("Fatal error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
+    	ATLPlugin.severe("Fatal error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
 		errors++;
 	}
 }
