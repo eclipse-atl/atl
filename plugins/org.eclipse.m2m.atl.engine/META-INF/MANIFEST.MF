@@ -14,6 +14,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.m2m.atl.engine.vm;visibility:=reexport,
  org.eclipse.m2m.atl.drivers.emf4atl;visibility:=reexport,
- org.eclipse.m2m.atl.dsls;visibility:=reexport
+ org.eclipse.m2m.atl.dsls;visibility:=reexport,
+ org.eclipse.m2m.atl
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

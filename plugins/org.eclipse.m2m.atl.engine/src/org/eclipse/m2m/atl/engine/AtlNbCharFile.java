@@ -17,9 +17,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 
 /**
  * This class is used by a stackframe to compute char position in a file With the file name and project name,
@@ -29,15 +28,13 @@ import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
  */
 public class AtlNbCharFile {
 
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
-
 	private static final int ANTLR_TAB_WIDTH = 1;
 
 	/**
 	 * This class corresponding to the structure Line : for each line : index of first char and position of
 	 * tabs.
 	 * 
-	 * @author allilaire
+	 * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
 	 */
 	class Line {
 		/** Absolute offset of the first char of the line. */
@@ -117,8 +114,7 @@ public class AtlNbCharFile {
 			}
 			lines.add(new Line(currentLineCharIndex, indexTabs, tabsWidth));
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -135,7 +131,7 @@ public class AtlNbCharFile {
 	 *            the width of the tab
 	 * @return the position to select in the file
 	 */
-	public int getIndexChar(int lineNumber, int column, int tabWidth) {
+	private int getIndexChar(int lineNumber, int column, int tabWidth) {
 		int ret = 0;
 
 		if (!((lineNumber == 1) && (column == 1))) {

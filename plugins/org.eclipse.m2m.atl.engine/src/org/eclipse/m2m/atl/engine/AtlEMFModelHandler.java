@@ -40,6 +40,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.gmt.tcs.injector.TCSInjector;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.EMFModelLoader;
 import org.eclipse.m2m.atl.engine.injectors.xml.XMLInjector;
@@ -92,7 +93,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 									.addInjector(
 											elements[j].getAttribute("name"), elements[j].createExecutableExtension("class").getClass()); //$NON-NLS-1$//$NON-NLS-2$
 						} catch (CoreException e) {
-							logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+							ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 						}
 					}
@@ -106,7 +107,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		try {
 			atlmm = ASMEMFModel.loadASMEMFModel("ATL", mofmm, atlurl, ml); //$NON-NLS-1$
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -143,7 +144,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 			try {
 				saveModel(model, null, new FileOutputStream(f));
 			} catch (FileNotFoundException e) {
-				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
 		saveModel(model, URI.createURI(uri), null);
@@ -207,9 +208,9 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 				file.setDerived(true);
 			}
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (CoreException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -262,14 +263,12 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 				}
 			} catch (IllegalStateException e) {
 				// workspace is closed
-				logger.log(Level.FINE, e.getLocalizedMessage(), e);
+				ATLPlugin.log(Level.FINE, e.getLocalizedMessage(), e);
 			}
 		} catch (IOException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
-			// e1.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 		} catch (CoreException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e1.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -293,7 +292,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		try {
 			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, in, ml);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 		}
 
@@ -314,7 +313,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		try {
 			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri, ml);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 		}
 
@@ -335,7 +334,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		try {
 			ret = ASMEMFModel.loadASMEMFModel(name, (ASMEMFModel)metamodel, uri, ml);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 		}
 
@@ -355,7 +354,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		try {
 			ret = ASMEMFModel.newASMEMFModel(name, (ASMEMFModel)metamodel, ml);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 		}
 
@@ -379,7 +378,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 		try {
 			ret = ASMEMFModel.newASMEMFModel(name, uriToLoad, (ASMEMFModel)metamodel, ml);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 		}
 
@@ -400,7 +399,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 			try {
 				ret = loadModel(name, mofmm, mmurl.openStream());
 			} catch (IOException e) {
-				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 			}
 			bimm.put(name, ret);

@@ -20,7 +20,6 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -30,7 +29,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 
 /**
  * The ATL compiler.
@@ -39,8 +38,6 @@ import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
  * @author <a href="mailto:mbohlen@mbohlen.de">Matthias Bohlen</a>
  */
 public class AtlCompiler {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static AtlCompiler defaultCompiler;
 
@@ -90,14 +87,13 @@ public class AtlCompiler {
 				atlcompiler = "atl2004"; //$NON-NLS-1$
 			}
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		try {
 			newIn.reset();
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			// e.printStackTrace();
 		}
 
@@ -106,7 +102,7 @@ public class AtlCompiler {
 		try {
 			out.refreshLocal(0, null);
 		} catch (CoreException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			// e.printStackTrace();
 		}
 
@@ -146,8 +142,7 @@ public class AtlCompiler {
 								break extensions;
 							}
 						} catch (CoreException e) {
-							logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-							// e.printStackTrace();
+							ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 						}
 					}
 				}
@@ -191,13 +186,13 @@ public class AtlCompiler {
 				atlcompiler = "atl2004"; //$NON-NLS-1$
 			}
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		try {
 			newIn.reset();
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		ret = getCompiler(atlcompiler).compileWithProblemModel(newIn, outputFileName);

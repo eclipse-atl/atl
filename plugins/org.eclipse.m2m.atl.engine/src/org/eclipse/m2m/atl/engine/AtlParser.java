@@ -17,13 +17,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmt.tcs.injector.TCSInjector;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
@@ -32,8 +31,6 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public final class AtlParser {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static AtlParser defaultParser;
 
@@ -90,9 +87,9 @@ public final class AtlParser {
 			ebnfi.inject(ret[0], in, params);
 
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;
@@ -131,8 +128,7 @@ public final class AtlParser {
 			pbs = problems.getElementsByType("Problem"); //$NON-NLS-1$
 		} else {
 			Object o = atlmodel.getElementsByType("Unit"); //$NON-NLS-1$
-			logger.info(o.toString());
-			// System.out.println(o);
+			ATLPlugin.info(o.toString());
 		}
 
 		if (pbs != null) {

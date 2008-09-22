@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -28,7 +27,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
@@ -41,8 +40,6 @@ public abstract class AtlModelHandler {
 
 	/** EMF model handler name. */
 	public static final String AMH_EMF = "EMF"; //$NON-NLS-1$
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static String[] modelHandlers;
 
@@ -92,8 +89,7 @@ public abstract class AtlModelHandler {
 								break extensions;
 							}
 						} catch (CoreException e) {
-							logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-							// e.printStackTrace();
+							ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 						}
 					}
 				}

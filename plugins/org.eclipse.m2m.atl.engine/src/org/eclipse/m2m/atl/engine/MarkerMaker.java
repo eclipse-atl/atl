@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -30,8 +29,8 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
@@ -42,8 +41,6 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class MarkerMaker {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static Map severities = new HashMap();
 
@@ -107,8 +104,7 @@ public class MarkerMaker {
 			pbmMarker.setAttribute(IMarker.CHAR_START, charStart);
 			pbmMarker.setAttribute(IMarker.CHAR_END, (charEnd > charStart) ? charEnd : charStart + 1);
 		} catch (CoreException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -119,7 +115,7 @@ public class MarkerMaker {
 				eObjectToPbmMarker(res, help, eos[i], tabWidth);
 			}
 		} catch (CoreException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 
 		}
 	}
@@ -143,7 +139,7 @@ public class MarkerMaker {
 					try {
 						res.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 					} catch (CoreException e) {
-						logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 					createPbmMarkers(res, eos, tabWidth);
 				}

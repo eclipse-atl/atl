@@ -20,8 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.AtlSuperimposeModule.AtlSuperimposeModuleException;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
@@ -29,7 +29,6 @@ import org.eclipse.m2m.atl.engine.vm.ASMInterpreter;
 import org.eclipse.m2m.atl.engine.vm.ASMOperation;
 import org.eclipse.m2m.atl.engine.vm.ASMStackFrame;
 import org.eclipse.m2m.atl.engine.vm.ASMXMLReader;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.Debugger;
 import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
 import org.eclipse.m2m.atl.engine.vm.SimpleDebugger;
@@ -42,8 +41,6 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public final class AtlLauncher {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static AtlLauncher defaultLauncher;
 
@@ -160,7 +157,7 @@ public final class AtlLauncher {
 			ASM asm = new ASMXMLReader().read(new BufferedInputStream(asmurl.openStream()));
 			return launch(asm, libraries, models, asmParams, superimpose, options, debugger);
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 		}
 		return null;
@@ -237,14 +234,14 @@ public final class AtlLauncher {
 			ASMInterpreter ai = new ASMInterpreter(asm, asmModule, env, asmParams);
 			long endTime = System.currentTimeMillis();
 			if (printExecutionTime && !(debugger instanceof NetworkDebugger)) {
-				logger.info(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s."); //$NON-NLS-1$ //$NON-NLS-2$
+				ATLPlugin.info(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s."); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			ret = ai.getReturnValue();
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (AtlSuperimposeModuleException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;
