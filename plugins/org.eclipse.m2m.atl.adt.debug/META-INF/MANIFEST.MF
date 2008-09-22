@@ -12,17 +12,18 @@ Export-Package: org.eclipse.m2m.atl.adt.debug,
  org.eclipse.m2m.atl.adt.launching,
  org.eclipse.m2m.atl.adt.launching.sourcelookup
 Bundle-ClassPath: .
-Require-Bundle: org.eclipse.ui,
+Require-Bundle: org.eclipse.core.resources,
+ org.eclipse.core.runtime,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
- org.eclipse.core.resources,
- org.eclipse.core.runtime,
+ org.eclipse.emf.ecore,
  org.eclipse.jface.text,
+ org.eclipse.m2m.atl,
+ org.eclipse.m2m.atl.engine,
+ org.eclipse.m2m.atl.ocl.core,
+ org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide,
- org.eclipse.ui.workbench.texteditor,
- org.eclipse.emf.ecore,
- org.eclipse.m2m.atl.engine,
- org.eclipse.m2m.atl.ocl.core
+ org.eclipse.ui.workbench.texteditor
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

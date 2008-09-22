@@ -10,16 +10,14 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.launching;
 
-import java.util.logging.Logger;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * The method "launch" is launched when you click on the button "Run" or "Debug".
@@ -27,9 +25,6 @@ import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
-
-	/** The common ATL logger. */
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	/**
 	 * {@inheritDoc}
@@ -49,7 +44,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		atlVM.launch(configuration, mode, launch, monitor);
 		long endTime = System.currentTimeMillis();
 		if (printExecutionTime && !mode.equals(ILaunchManager.DEBUG_MODE)) {
-			logger
+			ATLPlugin
 					.info(launch
 							.getLaunchConfiguration()
 							.getAttribute(

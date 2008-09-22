@@ -17,6 +17,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.vm.adwp.ObjectReference;
 
 /**
@@ -78,8 +79,7 @@ public class AtlVariable extends AtlDebugElement implements IVariable {
 				}
 			}
 		} catch (DebugException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		this.atlDT = atlDT;
 	}

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.debug.core;
 
-import java.util.logging.Logger;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.core.runtime.Status;
@@ -21,7 +19,6 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * An abstract class to mark debugged elements.
@@ -29,8 +26,6 @@ import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public abstract class AtlDebugElement extends PlatformObject implements IDebugElement {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	/** containing target. */
 	protected AtlDebugTarget fTarget;

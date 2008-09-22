@@ -11,14 +11,13 @@
 package org.eclipse.m2m.atl.adt.launching;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -39,8 +38,6 @@ import org.eclipse.swt.widgets.Text;
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements ModifyListener {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private Composite container;
 
@@ -193,8 +190,7 @@ public class RemoteAtlTab extends AbstractLaunchConfigurationTab implements Modi
 			listFile.setText(""); //$NON-NLS-1$
 			textPort.setText(""); //$NON-NLS-1$
 			textHost.setText(""); //$NON-NLS-1$
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

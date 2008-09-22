@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -32,8 +31,8 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -62,8 +61,6 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AdvancedTab extends AbstractLaunchConfigurationTab implements ModifyListener, SelectionListener {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	static final String SUPERIMPOSE = "SUPERIMPOSE"; //$NON-NLS-1$
 
@@ -277,8 +274,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab implements Modif
 			tableSuperimpose.removeAll();
 			buttonModeDebug.setSelection(false);
 			buttonAllowInterModelReferences.setSelection(true);
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

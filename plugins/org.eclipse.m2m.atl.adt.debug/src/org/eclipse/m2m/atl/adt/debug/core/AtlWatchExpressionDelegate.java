@@ -16,6 +16,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
@@ -26,6 +27,7 @@ import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.debug.core.model.IWatchExpressionDelegate;
 import org.eclipse.debug.core.model.IWatchExpressionListener;
 import org.eclipse.debug.core.model.IWatchExpressionResult;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMXMLWriter;
@@ -130,7 +132,7 @@ public class AtlWatchExpressionDelegate implements IWatchExpressionDelegate {
 				frame = (AtlStackFrame)((IThread)context).getTopStackFrame();
 			} catch (DebugException e) {
 				//TODO test if necessary
-				e.printStackTrace();
+				ATLPlugin.log(Level.INFO,e.getLocalizedMessage(), e);
 			}
 		}
 		if (frame == null) {

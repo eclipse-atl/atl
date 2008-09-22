@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -31,9 +30,9 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.AtlModelHandler;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -76,8 +75,6 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 
 	/** Metamodel input notation. */
 	public static final String METAMODEL_INPUT = "METAMODELINPUT"; //$NON-NLS-1$
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	static final int INPUT = 0;
 
@@ -1151,8 +1148,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			tableOut.removeAll();
 			tablePath.removeAll();
 			tableLib.removeAll();
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

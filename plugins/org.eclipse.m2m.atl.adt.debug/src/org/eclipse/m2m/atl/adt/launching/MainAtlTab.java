@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,9 +41,9 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.AtlParser;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMCollection;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
@@ -97,8 +96,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 
 	/** Library type. */
 	public static final int IS_LIBRARY = 1 << 5;
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private ScrolledComposite scrollContainer;
 
@@ -352,9 +349,9 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			build();
 			initializeWidgetValuesFrom(launchConfiguration);
 			layout();
-			logger.fine("MainAtlTab rebuild"); //$NON-NLS-1$
+			ATLPlugin.fine("MainAtlTab rebuild"); //$NON-NLS-1$
 		} catch (CoreException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -517,7 +514,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			if (res instanceof IFile) {
 				getModelsFromATLFile((IFile)res);
 			} else {
-				logger.severe(AtlDebugMessages.getString("MainAtlTab.FILENOTFOUND") + path); //$NON-NLS-1$
+				ATLPlugin.severe(AtlDebugMessages.getString("MainAtlTab.FILENOTFOUND") + path); //$NON-NLS-1$
 			}
 		}
 	}
@@ -617,7 +614,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			projectFilesList.setItems(AtlLauncherTools.fileNames(projectName));
 			projectFilesList.setText(fileName); //$NON-NLS-1$
 		} catch (CoreException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		rebuild();
 	}
@@ -1151,7 +1148,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			if (asmFileCache.containsKey(file)) {
 				atlmodel = (ASMModel)asmFileCache.get(file);
 				if (debug) {
-					logger.info("Cached ASMModel found for " + file.toString()); //$NON-NLS-1$
+					ATLPlugin.info("Cached ASMModel found for " + file.toString()); //$NON-NLS-1$
 				}
 			} else {
 				InputStream input = file.getContents();
@@ -1159,7 +1156,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 				input.close();
 				asmFileCache.put(file, atlmodel);
 				if (debug) {
-					logger.info("Loaded ASMModel from " + file.toString()); //$NON-NLS-1$
+					ATLPlugin.info("Loaded ASMModel from " + file.toString()); //$NON-NLS-1$
 				}
 			}
 
@@ -1242,9 +1239,9 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 		} catch (IOException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 		} catch (CoreException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			ATLPlugin.log(Level.WARNING, e1.getLocalizedMessage(), e1);
 		}
 	}
 

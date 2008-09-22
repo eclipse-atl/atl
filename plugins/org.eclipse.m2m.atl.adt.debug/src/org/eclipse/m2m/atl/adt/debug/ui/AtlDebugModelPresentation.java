@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -27,6 +26,7 @@ import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 import org.eclipse.m2m.atl.adt.debug.core.AtlBreakpoint;
@@ -34,7 +34,6 @@ import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlStackFrame;
 import org.eclipse.m2m.atl.adt.debug.core.AtlThread;
 import org.eclipse.m2m.atl.adt.debug.core.AtlVariable;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
@@ -54,8 +53,6 @@ import org.eclipse.ui.part.FileEditorInput;
 public class AtlDebugModelPresentation extends LabelProvider implements IDebugModelPresentation {
 	/** If you add a constant here, look in the class AtlVariable if the value is not already used. */
 	public static final int BREAKPOINT = 5;
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	static final URL BASE_URL = AtlDebugPlugin.getDefault().getBundle().getEntry("/"); //$NON-NLS-1$
 
@@ -99,8 +96,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 			URL url = new URL(BASE_URL, path);
 			return ImageDescriptor.createFromURL(url).createImage();
 		} catch (MalformedURLException e) {
-			//TODO test if necessary
-			e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return null;
 	}
@@ -128,12 +124,6 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		if (item instanceof AtlVariable) {
 			String imageName = null;
 			AtlVariable atlVar = (AtlVariable)item;
-			// String typeVar = null;
-			// try {
-			// typeVar = atlVar.getReferenceTypeName();
-			// } catch (DebugException e) {
-			// e.printStackTrace();
-			// }
 			switch (atlVar.getDescription()) {
 				case AtlVariable.ATTRIBUTE:
 					imageName = "attribute.gif"; //$NON-NLS-1$
@@ -183,8 +173,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 			try {
 				name = target.getName();
 			} catch (DebugException e) {
-				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				// e.printStackTrace();
+				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 			return name
 					+ AtlDebugMessages.getString("AtlDebugModelPresentation.CONNECTEDONHOST") + target.getHost() + AtlDebugMessages.getString("AtlDebugModelPresentation.PORT") + target.getPort(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -242,8 +231,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 							+ " " + atlVar.getName() + " = " + atlVar.getReferenceTypeName() + " (id = " + atlVar.getIdVariable() + ")"; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 				}
 			} catch (DebugException e) {
-				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				// e.printStackTrace();
+				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		} else if (item instanceof AtlBreakpoint) {
 			IMarker marker = ((AtlBreakpoint)item).getMarker();
@@ -258,8 +246,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 						", charEnd: " + charEnd + //$NON-NLS-1$
 						"]"; //$NON-NLS-1$
 			} catch (CoreException e) {
-				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				// e.printStackTrace();
+				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
 
@@ -276,8 +263,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		try {
 			listener.detailComputed(value, value.getValueString());
 		} catch (DebugException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -359,7 +345,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	/**
 	 * Returns the disassembly editor.
 	 * 
-	 * @param frame the frame context
+	 * @param frame
+	 *            the frame context
 	 * @return the disassembly editor
 	 */
 	public IEditorInput getDisassemblyEditorInput(AtlStackFrame frame) {

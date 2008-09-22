@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -27,11 +26,10 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
-
 import org.eclipse.m2m.atl.engine.AtlModelHandler;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
@@ -169,8 +167,6 @@ public final class AtlLauncherTools {
 			AtlDebugMessages.getString("AtlLauncherTools.6"), //$NON-NLS-1$
 	};
 
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
-
 	private static String[] modelHandlersNames;
 
 	private static int emfKey = -1;
@@ -267,8 +263,7 @@ public final class AtlLauncherTools {
 			URL url = new URL(baseUrl, path);
 			return ImageDescriptor.createFromURL(url).createImage();
 		} catch (MalformedURLException e) {
-			//TODO test if necessary
-			e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return null;
 	}
@@ -333,8 +328,7 @@ public final class AtlLauncherTools {
 				}
 			});
 		} catch (CoreException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		String[] fileNames = new String[fileList.size()];

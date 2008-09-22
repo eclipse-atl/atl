@@ -147,13 +147,6 @@ public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 			}
 
 			atlVars.add(atlVariable);
-
-			/*
-			 * else { System.out.println("ERROR: variable " + name + " is named " + val + " : " +
-			 * val.getClass() + " which is not a StringValue => renamed as null-name"); AtlVariable
-			 * atlVariable = new AtlVariable( "null-name", atlValue, (AtlDebugTarget)thread.getDebugTarget(),
-			 * AtlVariable.LOCALVARIABLE); atlVars[i-1] = atlVariable; }
-			 */
 		}
 		return (IVariable[])atlVars.toArray(new IVariable[0]);
 	}

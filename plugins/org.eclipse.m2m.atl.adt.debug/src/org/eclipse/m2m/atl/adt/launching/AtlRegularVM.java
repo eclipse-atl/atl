@@ -38,11 +38,12 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlRunTarget;
 import org.eclipse.m2m.atl.adt.launching.sourcelookup.AtlSourceLocator;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
-import org.eclipse.m2m.atl.engine.AtlEMFModelHandler;
+import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.AtlLauncher;
 import org.eclipse.m2m.atl.engine.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -166,7 +167,7 @@ public class AtlRegularVM extends AtlVM {
 				toReturn.put(mName, inputModel);
 			}
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return toReturn;
 	}
@@ -218,7 +219,7 @@ public class AtlRegularVM extends AtlVM {
 				toReturn.put(mName, outputModel);
 			}
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return toReturn;
 	}
@@ -375,10 +376,9 @@ public class AtlRegularVM extends AtlVM {
 				AtlModelHandler.getHandler(model).disposeOfModel(model);
 			}
 		} catch (MalformedURLException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (CoreException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 
 		}
 		return toReturn;
@@ -453,7 +453,7 @@ public class AtlRegularVM extends AtlVM {
 			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode,
 					superimpose, options);
 		} catch (CoreException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 
 		}
 	}

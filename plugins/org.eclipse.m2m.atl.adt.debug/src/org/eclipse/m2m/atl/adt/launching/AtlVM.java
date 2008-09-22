@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -24,8 +23,8 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * The ATL VM launch abstract class.
@@ -36,8 +35,6 @@ public abstract class AtlVM implements ILaunchConfigurationDelegate {
 
 	/** The ATL regular vm name. */
 	public static final String ATLVM_REGULAR = "Regular VM (with debugger)"; //$NON-NLS-1$
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static String[] atlVMs;
 
@@ -77,8 +74,7 @@ public abstract class AtlVM implements ILaunchConfigurationDelegate {
 							break extensions;
 						}
 					} catch (CoreException e) {
-						logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-						// e.printStackTrace();
+						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 				}
 			}
