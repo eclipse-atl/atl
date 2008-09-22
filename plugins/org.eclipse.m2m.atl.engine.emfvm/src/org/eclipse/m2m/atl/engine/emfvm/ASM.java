@@ -8,7 +8,7 @@
  * Contributors:
  *    INRIA - initial API and implementation
  *    
- * $Id: ASM.java,v 1.5 2008/09/09 13:15:01 wpiers Exp $
+ * $Id: ASM.java,v 1.6 2008/09/22 15:28:51 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.emfvm.AtlSuperimposeModule.AtlSuperimposeModuleException;
 import org.eclipse.m2m.atl.engine.emfvm.emf.EMFModelAdapter;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ASMModule;
@@ -212,10 +213,10 @@ public class ASM {
 		ret = mainOperation.exec(frame);
 		long endTime = System.currentTimeMillis();
 		if (printExecutionTime) {
-			logger.info("Executed " + name + " in " + ((endTime - startTime) / 1000.) + "s.");
+			ATLPlugin.info("Executed " + name + " in " + ((endTime - startTime) / 1000.) + "s.");
 		}
 		if ("true".equals(options.get("showSummary"))) {
-			logger.info("Number of instructions executed: " + execEnv.getNbExecutedBytecodes());
+			ATLPlugin.info("Number of instructions executed: " + execEnv.getNbExecutedBytecodes());
 		}
 		return ret;
 	}
@@ -238,12 +239,11 @@ public class ASM {
 			} else {
 				try {
 					Object type = parseType(execEnv, new StringCharacterIterator(signature));
-					// logger.info("registering " + op + " on " + type);
+					// ATLPlugin.info("registering " + op + " on " + type);
 					execEnv.registerOperation(type, op, op.getName());
 					// op.setContextType(type);
 				} catch (SignatureParsingException spe) {
-					logger.log(Level.SEVERE, spe.getLocalizedMessage(), spe);
-					// spe.printStackTrace(System.out);
+					ATLPlugin.log(Level.SEVERE, spe.getLocalizedMessage(), spe);
 				}
 			}
 		}

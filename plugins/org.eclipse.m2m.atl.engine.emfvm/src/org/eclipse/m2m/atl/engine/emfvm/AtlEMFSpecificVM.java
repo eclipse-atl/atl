@@ -8,7 +8,7 @@
  * Contributors:
  *    INRIA - initial API and implementation
  *    
- * $Id: AtlEMFSpecificVM.java,v 1.6 2008/09/09 13:15:01 wpiers Exp $
+ * $Id: AtlEMFSpecificVM.java,v 1.7 2008/09/22 15:28:51 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.core.AtlRunTarget;
 import org.eclipse.m2m.atl.adt.launching.AtlLauncherTools;
 import org.eclipse.m2m.atl.adt.launching.AtlVM;
@@ -123,7 +124,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 			try {
 				ret = asm.run(actualModels, libs, superimpose, options);
 			} catch (VMException vme) {
-				logger.log(Level.SEVERE, vme.getLocalizedMessage(), vme);
+				ATLPlugin.log(Level.SEVERE, vme.getLocalizedMessage(), vme);
 				throw vme;
 			}
 
@@ -132,7 +133,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 				model.commitToResource();
 			}
 		} catch (IOException ioe) {
-			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
+			ATLPlugin.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 
 		return ret;
@@ -254,7 +255,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 					m.save(URI.createPlatformResourceURI((String)modelPaths.get(mName), true));
 				}
 			} catch (VMException vme) {
-				logger.log(Level.SEVERE, vme.getLocalizedMessage(), vme);
+				ATLPlugin.log(Level.SEVERE, vme.getLocalizedMessage(), vme);
 				throw vme;
 			} finally {
 				for (Iterator i = models.values().iterator(); i.hasNext();) {
@@ -263,7 +264,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 				}
 			}
 		} catch (IOException ioe) {
-			logger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
+			ATLPlugin.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 
 	}

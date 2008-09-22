@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    
  *
- * $Id: ExecEnv.java,v 1.17 2008/09/11 15:35:53 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.18 2008/09/22 15:28:51 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -35,6 +35,7 @@ import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.emfvm.EmfvmPlugin;
 
 /**
@@ -1164,7 +1165,7 @@ public class ExecEnv {
 		operationsByName.put("debug", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object[] localVars = frame.localVars;
-				logger.info(localVars[1] + ": " + toPrettyPrintedString(localVars[0]));
+				ATLPlugin.info(localVars[1] + ": " + toPrettyPrintedString(localVars[0]));
 				return localVars[0];
 			}
 		});
@@ -1510,11 +1511,11 @@ public class ExecEnv {
 			ret = (Operation)map.get(name);
 		}
 		if (debug) {
-			logger.info(this + "@" + this.hashCode() + ".getOperation(" + type + ", " + name + ")");
+			ATLPlugin.info(this + "@" + this.hashCode() + ".getOperation(" + type + ", " + name + ")");
 		}
 		if (ret == null) {
 			if (debug) {
-				logger.info("looking in super of this for operation " + name);
+				ATLPlugin.info("looking in super of this for operation " + name);
 			}
 			for (Iterator i = modelAdapter.getSupertypes(type).iterator(); i.hasNext() && (ret == null);) {
 				Object st = i.next();
@@ -1696,7 +1697,7 @@ public class ExecEnv {
 	 */
 	public void prettyPrint(Object value) {
 		// prettyPrint(out, value);
-		logger.info(toPrettyPrintedString(value));
+		ATLPlugin.info(toPrettyPrintedString(value));
 	}
 
 	/**

@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.10 2008/09/09 13:15:01 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.11 2008/09/22 15:28:51 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -29,6 +29,7 @@ import java.util.WeakHashMap;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Bag;
 import org.eclipse.m2m.atl.engine.emfvm.lib.EnumLiteral;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
@@ -342,8 +343,7 @@ public class ASMOperation extends Operation {
 				Bytecode bytecode = bytecodes[pc++];
 				execEnv.incNbExecutedBytecodes();
 				if (debug) {
-					logger.info(name + ":" + (pc - 1) + "\t" + bytecode);
-					// logger.info("" + frame.execEnv.nbExecutedBytecodes);
+					ATLPlugin.info(name + ":" + (pc - 1) + "\t" + bytecode);
 				}
 				switch (bytecode.getOpcode()) {
 					case Bytecode.PUSHD:
@@ -388,7 +388,7 @@ public class ASMOperation extends Operation {
 							}
 							if (debug) {
 								log.append(")");
-								logger.info(log.toString());
+								ATLPlugin.info(log.toString());
 							}
 							--fp; // pop self, that we already retrieved earlier to get the operation
 							arguments[0] = self;
@@ -412,7 +412,7 @@ public class ASMOperation extends Operation {
 							}
 							if (debug) {
 								log.append(")");
-								logger.info(log.toString());
+								ATLPlugin.info(log.toString());
 							}
 							--fp; // pop self, that we already retrieved earlier to get the operation
 
@@ -575,7 +575,7 @@ public class ASMOperation extends Operation {
 						}
 						log.append(frame.getExecEnv().toPrettyPrintedString(stack[i]));
 					}
-					logger.info(log.toString());
+					ATLPlugin.info(log.toString());
 
 					log = new StringBuffer();
 					log.append("\tlocals: ");
@@ -591,7 +591,7 @@ public class ASMOperation extends Operation {
 							log.append(frame.getExecEnv().toPrettyPrintedString(localVars[i]));
 						}
 					}
-					logger.info(log.toString());
+					ATLPlugin.info(log.toString());
 				}
 			}
 		} catch (VMException e) {
