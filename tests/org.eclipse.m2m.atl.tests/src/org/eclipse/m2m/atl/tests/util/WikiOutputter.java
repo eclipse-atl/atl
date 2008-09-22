@@ -22,11 +22,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -108,11 +110,11 @@ public final class WikiOutputter {
 			fw.write(getFragment(BOTTOM_PATH));
 			fw.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (SAXException e) {
-			e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

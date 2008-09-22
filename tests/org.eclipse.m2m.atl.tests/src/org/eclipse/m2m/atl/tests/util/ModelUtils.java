@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.diff.metamodel.DiffFactory;
@@ -40,6 +41,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 import org.eclipse.m2m.atl.tests.TestException;
@@ -123,7 +125,7 @@ public final class ModelUtils {
 		try {
 			mmExtent.load(new FileInputStream(metamodelURI.toFileString()), Collections.EMPTY_MAP);
 		} catch (IOException e) {
-			e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		for (Iterator it = getElementsByType(mmExtent, "EPackage").iterator(); it.hasNext();) { //$NON-NLS-1$

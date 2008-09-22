@@ -13,8 +13,10 @@ package org.eclipse.m2m.atl.tests.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.AtlParser;
 
 /**
@@ -71,7 +73,7 @@ public final class InitParserData {
 			ModelUtils.save(result, xmiTransfoPath);
 			System.out.println(transfoPath + " extracted.");
 		} catch (IOException e) {
-			e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 }

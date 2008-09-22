@@ -13,8 +13,10 @@ package org.eclipse.m2m.atl.tests.unit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.AtlParser;
 import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
@@ -55,14 +57,14 @@ public class TestNonRegressionParser extends TestNonRegression {
 			EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));
 			ModelUtils.save(result, "file:/" + transfoPath + ".xmi"); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (IOException e) {
-			e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			fail(AtlTestsMessages.getString("TestNonRegressionParser.FAIL")); //$NON-NLS-1$
 		}
 
 		try {
 			FileUtils.compareFiles(new File(outputPath), new File(expectedPath), true);
 		} catch (IOException e) {
-			e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			fail(AtlTestsMessages.getString(
 					"TestNonRegressionParser.COMPARISONFAIL", new Object[] {directory.getName()})); //$NON-NLS-1$
 		}
