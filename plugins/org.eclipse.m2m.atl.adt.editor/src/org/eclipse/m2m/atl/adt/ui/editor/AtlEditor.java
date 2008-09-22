@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -55,6 +54,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.actions.GotoMatchingBracketAction;
@@ -72,7 +72,6 @@ import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionDataSource;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionProcessor;
 import org.eclipse.m2m.atl.adt.ui.viewsupport.AtlEditorTickErrorUpdater;
 import org.eclipse.m2m.atl.engine.AtlNbCharFile;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.VerifyKeyListener;
@@ -104,8 +103,6 @@ import org.eclipse.ui.views.properties.PropertySheetPage;
  * declared here.
  */
 public class AtlEditor extends TextEditor {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	/** The editor's bracket matcher. */
 	protected AtlPairMatcher bracketMatcher = new AtlPairMatcher(IAtlLexems.BRACKETS);
@@ -358,9 +355,9 @@ public class AtlEditor extends TextEditor {
 						event.doit = false;
 
 					} catch (BadLocationException e) {
-						logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					} catch (BadPositionCategoryException e) {
-						logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 					break;
 			}
@@ -959,14 +956,12 @@ public class AtlEditor extends TextEditor {
 			while ((c = is.read()) != -1)
 				content.append((char)c);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// System.out.println(e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} finally {
 			try {
 				is.close();
 			} catch (IOException e1) {
-				logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
-				// e1.printStackTrace();
+				ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 			}
 		}
 		return content.toString();

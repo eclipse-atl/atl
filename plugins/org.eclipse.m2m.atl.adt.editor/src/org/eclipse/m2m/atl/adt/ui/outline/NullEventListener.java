@@ -10,12 +10,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.outline;
 
-import java.util.logging.Logger;
-
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 
 public class NullEventListener implements EventListener {
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private static NullEventListener instance;
 
@@ -25,11 +22,13 @@ public class NullEventListener implements EventListener {
 		return instance;
 	}
 
-	/*
-	 * @see EventListener#add(Event)
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.adt.ui.outline.EventListener#update(org.eclipse.m2m.atl.adt.ui.outline.Event)
 	 */
 	public void update(Event event) {
-		logger.info("update"); //$NON-NLS-1$
+		ATLPlugin.info("update"); //$NON-NLS-1$
 	}
 
 }

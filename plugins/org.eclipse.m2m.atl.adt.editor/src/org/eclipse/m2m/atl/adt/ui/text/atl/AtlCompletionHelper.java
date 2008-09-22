@@ -102,11 +102,6 @@ public class AtlCompletionHelper {
 		AtlModelAnalyser res = new AtlModelAnalyser(this, emfRoot, begin, getLastKeyWord(offset
 				- prefix.length()), offset);
 
-		/*
-		 * DEBUGGING AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
-		 * amh.saveModel(atlmodel, System.out);
-		 */
-
 		return res;
 	}
 

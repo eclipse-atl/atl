@@ -12,7 +12,6 @@ package org.eclipse.m2m.atl.adt.ui.text.atl;
 
 import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;
@@ -21,6 +20,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.TextUtilities;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.text.AtlHeuristicScanner;
@@ -29,14 +29,11 @@ import org.eclipse.m2m.atl.adt.ui.text.AtlPairMatcher;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlLexems;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlPartitions;
 import org.eclipse.m2m.atl.adt.ui.text.Symbols;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.texteditor.ITextEditorExtension3;
 
 public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private boolean fCloseBrace;
 
@@ -129,7 +126,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 				return document.getLineDelimiter(0);
 			}
 		} catch (BadLocationException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return System.getProperty("line.separator"); //$NON-NLS-1$
 	}
@@ -236,40 +233,6 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 			return 0;
 		}
 	}
-
-	// private void smartIndentAfterNewLine(IDocument document, DocumentCommand command) {
-	// int length = document.getLength();
-	// if((command.offset == -1) && (length <= 0)) {
-	// // There's nothing to indent
-	// } else {
-	// try {
-	// int cursorAt = (command.offset == length ? command.offset - 1 : command.offset);
-	// int line = document.getLineOfOffset(cursorAt);
-	// String buffer = new String(command.text);
-	// int lineStartsAt = document.getLineOffset(line);
-	// int lineEndsAt = lineStartsAt + document.getLineLength(line);
-	// char lastChar = getLastChar(document, lineStartsAt, cursorAt);
-	//				
-	// if(cursorAt <= 0) {
-	// // Nothing to do on the first character.
-	// } else if(lastChar == '{') {
-	// buffer += getIndentOfLine(document, line) + createIndent();
-	// } else if(lastChar == '}') {
-	// buffer += getIndentOfLine(document, line);
-	// // int bufferLength = buffer.length();
-	// // if(1 < bufferLength) {
-	// // buffer = buffer.substring(0, bufferLength - 1);
-	// // }
-	// } else {
-	// buffer += getIndentOfLine(document, line);
-	// }
-	//				
-	// command.text = buffer;
-	// } catch(BadLocationException e) {
-	// System.out.println(AtlEditorMessages.getString("smartIndentAfterNewLine.error.badLocation"));
-	// }
-	// }
-	// }
 
 	private int getBracketCount(IDocument d, int startOffset, int endOffset, boolean ignoreCloseBrackets)
 			throws BadLocationException {
@@ -423,7 +386,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 				command.text = replaceText.toString();
 			}
 		} catch (BadLocationException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -498,8 +461,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 			c.text = buf.toString();
 
 		} catch (BadLocationException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// System.out.println(e.toString());
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -535,8 +497,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 				}
 			}
 		} catch (BadLocationException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// System.out.println(AtlEditorMessages.getString("smartIndentAfterOpeningBracket.error.badLocation"));
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

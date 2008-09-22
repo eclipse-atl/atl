@@ -11,10 +11,9 @@
 package org.eclipse.m2m.atl.adt.ui.outline;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -39,7 +38,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class RenameFrame extends Composite {
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private Button ok;
 
@@ -172,8 +170,7 @@ public class RenameFrame extends Composite {
 
 			postInitGUI();
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -181,7 +178,6 @@ public class RenameFrame extends Composite {
 	}
 
 	public void postInitGUI() {
-		// tNewName.setText(renameAction.getElement().getName());
 		tNewName.selectAll();
 		tNewName.setFocus();
 	}

@@ -14,27 +14,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.m2m.atl.adt.ui.logging.ConsoleStreamHandler;
 import org.eclipse.m2m.atl.adt.ui.text.AtlTextTools;
 import org.eclipse.m2m.atl.adt.ui.viewsupport.ProblemMarkerManager;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.IConsoleConstants;
-import org.eclipse.ui.console.IConsoleManager;
-import org.eclipse.ui.console.IConsoleView;
-import org.eclipse.ui.console.MessageConsole;
-import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.texteditor.MarkerAnnotationPreferences;
 import org.osgi.framework.BundleContext;
@@ -46,16 +32,6 @@ import org.osgi.framework.BundleContext;
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AtlUIPlugin extends AbstractUIPlugin {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
-
-	private static MessageConsole console;
-
-	private static MessageConsoleStream consoleStream;
-
-	private static IConsoleManager consoleMgr;
-
-	private static final String ATL_CONSOLE = "org.eclipse.m2m.atl.adt.editor.console"; //$NON-NLS-1$
 
 	private static final String ID = "org.eclipse.m2m.atl.adt.editor"; //$NON-NLS-1$
 
@@ -114,15 +90,6 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 		}
 	}
 
-	public static void log(IStatus status) {
-		getDefault().getLog().log(status);
-	}
-
-	public static void log(Throwable e) {
-		log(new Status(IStatus.ERROR, getPluginId(), IAtlStatusConstants.INTERNAL_ERROR, AtlUIMessages
-				.getString("JavaPlugin.internal_error"), e)); //$NON-NLS-1$
-	}
-
 	/**
 	 * Our plug-in uses a text tools to allow every part of the plug-in to have the same tools for configuring
 	 * their variables.
@@ -153,9 +120,6 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
-
-		if (console == null)
-			initConsole();
 	}
 
 	public synchronized ProblemMarkerManager getProblemMarkerManager() {
@@ -219,59 +183,6 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 			}
 		} finally {
 			super.stop(context);
-		}
-	}
-
-	public void println(String toPrint) {
-		if (consoleStream != null) {
-			consoleStream.println(toPrint);
-		}
-	}
-
-	public void print(String toPrint) {
-		if (consoleStream != null) {
-			consoleStream.print(toPrint);
-		}
-	}
-
-	private void initConsole() {
-		console = findConsole(ATL_CONSOLE);
-		/*
-		 * REMOVED : cause bug 240284 Font f = null; try { FontData data = new FontData ("Arial", 9, 9);
-		 * //$NON-NLS-1$ data.setStyle(SWT.NORMAL); f = new Font (null, data); console.setFont(f); } catch
-		 * (Exception ex) { }
-		 */
-		consoleStream = console.newMessageStream();
-		activateConsole();
-		//consoleStream.println(AtlUIMessages.getString("AtlUIPlugin.INIT")); //$NON-NLS-1$	   
-		Handler handler = new ConsoleStreamHandler(consoleStream);
-		Logger.getLogger(ATLVMPlugin.LOGGER).addHandler(handler);
-	}
-
-	private MessageConsole findConsole(String name) {
-		ConsolePlugin plugin = ConsolePlugin.getDefault();
-		consoleMgr = plugin.getConsoleManager();
-		IConsole[] existing = consoleMgr.getConsoles();
-		for (int i = 0; i < existing.length; i++)
-			if (name.equals(existing[i].getName()))
-				return (MessageConsole)existing[i];
-		// no console found, so create a new one
-		MessageConsole myConsole = new MessageConsole(name, null);
-		consoleMgr.addConsoles(new IConsole[] {myConsole});
-		return myConsole;
-	}
-
-	private void activateConsole() {
-		IWorkbenchPage page = AtlUIPlugin.getActivePage();
-		String id = IConsoleConstants.ID_CONSOLE_VIEW;
-		try {
-			if (page != null) {
-				IConsoleView view = (IConsoleView)page.showView(id);
-				view.display(console);
-			}
-		} catch (org.eclipse.ui.PartInitException pex) {
-			logger.log(Level.SEVERE, "AtlUiPlugin - " + pex.getLocalizedMessage(), pex); //$NON-NLS-1$
-			// System.out.println ("AtlUiPlugin - " + pex);
 		}
 	}
 

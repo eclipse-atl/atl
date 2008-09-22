@@ -13,7 +13,6 @@ package org.eclipse.m2m.atl.adt.ui.outline;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.debug.core.DebugException;
@@ -31,12 +30,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.core.AtlBreakpoint;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.engine.AtlNbCharFile;
 import org.eclipse.m2m.atl.engine.AtlParser;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IEditorInput;
@@ -49,8 +48,6 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 public class AtlContentOutlinePage extends AtlOutlinePage {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	/**
 	 * perspective listener
@@ -111,8 +108,8 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * Each ATL element has a location String that indicates where it is located in the source file.
 	 * </p>
 	 * <p>
-	 * <code>AtlNbCharFile</code> class is useful to get index char start and index char end from the
-	 * location string
+	 * <code>AtlNbCharFile</code> class is useful to get index char start and index char end from the location
+	 * string
 	 * </p>
 	 * 
 	 * @see AtlNbCharFile
@@ -134,8 +131,11 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 
 	/* Actions that will be used in the toolBar and menu bar */
 	private Action refreshItemAction;
+
 	private Action filterHelperAction;
+
 	private Action filterRuleAction;
+
 	private Action sorterAction;
 
 	private Action addBreakPointAction;
@@ -183,10 +183,8 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		int lineNumber = Integer.parseInt(location.split("-")[0].split(":")[0]); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			new AtlBreakpoint(ifile, location, lineNumber, charStart, charEnd);
-			// AtlBreakpoint bkpt = new AtlBreakpoint(ifile, location, lineNumber, charStart, charEnd);
 		} catch (DebugException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -307,7 +305,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.adt.ui.outline.AtlOutlinePage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	public void createControl(Composite arg0) {
@@ -436,15 +434,15 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	}
 
 	/**
-	 * Initializes the <code>AtlNbCharFile</code> object used to convert the location string and passes it
-	 * to the <code>DefaultSorter</code> object.
+	 * Initializes the <code>AtlNbCharFile</code> object used to convert the location string and passes it to
+	 * the <code>DefaultSorter</code> object.
 	 */
 	private void initAtlNbCharFile(String content) {
 		help = new AtlNbCharFile(toInputStream(content));
 		((DefaultSorter)defaultSorter).setHelp(help);
 		((AtlEditor)textEditor).setHelp(help);
 	}
- 
+
 	/**
 	 * Sets the Unit of the input of the tree Viewer.
 	 */
@@ -496,7 +494,8 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	/**
 	 * Sets the selection to the given cursorPosition.
 	 * 
-	 * @param currentCursorPosition the cursor position
+	 * @param currentCursorPosition
+	 *            the cursor position
 	 */
 	public void setSelection(String currentCursorPosition) {
 		doSetSelection(currentCursorPosition);
@@ -530,8 +529,9 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 
 	/**
 	 * Updates the filters of the tree viewer Multiple filters can be enabled at a time.
-	 *
-	 * @param actionParam the action
+	 * 
+	 * @param actionParam
+	 *            the action
 	 */
 	protected void updateFilters(Action actionParam) {
 		if (actionParam == filterHelperAction) {
@@ -551,8 +551,9 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 
 	/**
 	 * Updates the sorter of the tree viewer One sorter can be enabled at a time.
-	 *
-	 * @param actionParam the action
+	 * 
+	 * @param actionParam
+	 *            the action
 	 */
 	protected void updateSorter(Action actionParam) {
 		if (actionParam == sorterAction) {

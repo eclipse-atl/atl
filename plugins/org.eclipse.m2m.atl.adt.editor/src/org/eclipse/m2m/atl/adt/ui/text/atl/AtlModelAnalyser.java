@@ -11,12 +11,13 @@
 package org.eclipse.m2m.atl.adt.ui.text.atl;
 
 import java.util.Iterator;
+import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 
 /**
  * Atl model analyser, used to get information from an incomplete ATL model.
@@ -87,7 +88,7 @@ public class AtlModelAnalyser {
 		try {
 			this.context = getContext(lastKeyword, userOffset);
 		} catch (BadLocationException e) {
-			AtlUIPlugin.log(e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text.atl;
 
+import java.util.logging.Level;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
@@ -39,6 +41,7 @@ import org.eclipse.jface.text.link.LinkedPosition;
 import org.eclipse.jface.text.link.LinkedPositionGroup;
 import org.eclipse.jface.text.link.LinkedModeUI.ExitFlags;
 import org.eclipse.jface.text.link.LinkedModeUI.IExitPolicy;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.text.AtlTextTools;
@@ -121,7 +124,7 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 				document.removePositionCategory(CATEGORY);
 			} catch (BadPositionCategoryException e) {
 				// should not happen
-				AtlUIPlugin.log(e);
+				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 			return fPosition.getOffset();
 		}
@@ -141,7 +144,7 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 
 			} catch (BadPositionCategoryException e) {
 				// should not happen
-				AtlUIPlugin.log(e);
+				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
 	}

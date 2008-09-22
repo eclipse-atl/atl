@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.adt.ui.actions;
 
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.BadLocationException;
@@ -26,6 +27,7 @@ import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
@@ -285,30 +287,6 @@ public class IndentAction extends TextEditorAction {
 					&& AtlUIPlugin.getDefault().getPreferenceStore().getBoolean(
 							AtlPreferenceConstants.EDITOR_SMART_BACKSPACE)) {
 				ITextEditor editor = getTextEditor();
-				if (editor != null) {
-					// TODO create smart backspace manager to enable indent action
-					// final SmartBackspaceManager manager= (SmartBackspaceManager)
-					// editor.getAdapter(SmartBackspaceManager.class);
-					// if (manager != null) {
-					// try {
-					// // restore smart portion
-					// ReplaceEdit smart= new ReplaceEdit(offset, indent.length(), deletedText);
-					//							
-					// final UndoSpec spec= new UndoSpec(
-					// offset + indent.length(),
-					// new Region(caret, 0),
-					// new TextEdit[] { smart },
-					// 2,
-					// null);
-					// manager.register(spec);
-					// } catch (MalformedTreeException e) {
-					// // log & ignore
-					// System.out.println(new Status(IStatus.ERROR, AtlUIPlugin.getPluginId(), IStatus.OK,
-					// "Illegal smart
-					// backspace action", e));
-					// }
-					// }
-				}
 			}
 
 			return true;
@@ -401,9 +379,7 @@ public class IndentAction extends TextEditorAction {
 				nLines = document.getLineOfOffset(offset + length - minusOne) - firstLine + 1;
 			} catch (BadLocationException e) {
 				// will only happen on concurrent modification
-				AtlUIPlugin.log(e);
-				// System.out.println(new Status(IStatus.ERROR, AtlUIPlugin.getPluginId(), IStatus.OK, "",
-				// e));
+				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				return;
 			}
 
@@ -447,9 +423,7 @@ public class IndentAction extends TextEditorAction {
 						document.removePosition(end);
 					} catch (BadLocationException e) {
 						// will only happen on concurrent modification
-						AtlUIPlugin.log(e);
-						// System.out.println(new Status(IStatus.ERROR, AtlUIPlugin.getPluginId(), IStatus.OK,
-						// "ConcurrentModification in IndentAction", e));
+						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					} finally {
 						if (target != null) {
 							target.endCompoundChange();
