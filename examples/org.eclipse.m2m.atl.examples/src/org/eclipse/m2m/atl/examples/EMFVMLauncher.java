@@ -129,9 +129,9 @@ public final class EMFVMLauncher {
 				m.save(URI.createFileURI((String)path.get(mName)).toString());
 
 			}
-		} catch (VMException vme) {
-			vme.printStackTrace(System.out);
-			throw vme;
+		} catch (VMException e) {
+			e.printStackTrace();
+			throw e;
 		} finally {
 			for (Iterator i = models.values().iterator(); i.hasNext();) {
 				Model model = (Model)i.next();
