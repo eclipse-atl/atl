@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,6 +35,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.perspective.AtlPerspectiveMessages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -204,14 +206,14 @@ public final class CompatibilityUtils {
 					DOMSource source = new DOMSource(document);
 					transformer.transform(source, result);
 
-				} catch (ParserConfigurationException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				} catch (SAXException e1) {
-					e1.printStackTrace();
-				} catch (TransformerException e1) {
-					e1.printStackTrace();
+				} catch (ParserConfigurationException e) {
+					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				} catch (IOException e) {
+					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				} catch (SAXException e) {
+					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				} catch (TransformerException e) {
+					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				}
 
 				if (ifile != null) {

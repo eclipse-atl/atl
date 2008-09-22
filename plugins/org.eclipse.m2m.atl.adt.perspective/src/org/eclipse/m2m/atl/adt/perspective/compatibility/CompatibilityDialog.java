@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.perspective.compatibility;
 
+import java.util.logging.Level;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -19,6 +21,7 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.perspective.AtlPerspectiveMessages;
 import org.eclipse.m2m.atl.adt.perspective.AtlPerspectivePlugin;
 import org.eclipse.swt.SWT;
@@ -178,8 +181,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 				}
 			}
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		super.okPressed();
 	}
@@ -220,7 +222,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 			try {
 				return CompatibilityUtils.getProjects();
 			} catch (CoreException e) {
-				e.printStackTrace();
+				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 			return null;
 		}
@@ -269,7 +271,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 			try {
 				return CompatibilityUtils.getConfigurations();
 			} catch (CoreException e) {
-				e.printStackTrace();
+				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 			return null;
 		}
