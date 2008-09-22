@@ -36,6 +36,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -195,7 +196,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 		try {
 			super.finalize();
 		} catch (Throwable e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -329,7 +330,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 			ret.setIsTarget(false);
 			ret.unload = true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		adaptMetamodel(ret, metamodel);
 
@@ -359,7 +360,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 			ret.addAllReferencedExtents(ret.getExtent());
 			ret.unload = true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		adaptMetamodel(ret, metamodel);
@@ -383,20 +384,13 @@ public final class ASMUMLModel extends ASMEMFModel {
 				EPackage p = (EPackage)ame.getObject();
 				String nsURI = p.getNsURI();
 				if (nsURI == null) {
-					// System.err.println("DEBUG: EPackage " + p.getName() + " in model " + model.getName() +
-					// " has no nsURI.");
 					nsURI = p.getName();
 					p.setNsURI(nsURI);
 				}
-				if (resourceSet.getPackageRegistry().containsKey(nsURI)) {
-					if (!p.equals(resourceSet.getPackageRegistry().getEPackage(nsURI))) {
-						// System.err.println("WARNING: overwriting local EMF registry entry for " + nsURI);
-					}
-				} else {
+				if (!resourceSet.getPackageRegistry().containsKey(nsURI)) {
 					model.unregister.add(nsURI);
 				}
 				resourceSet.getPackageRegistry().put(nsURI, p);
-				// System.err.println("INFO: Registering " + nsURI + " in local EMF registry");
 			}
 			for (Iterator i = model.getElementsByType("EDataType").iterator(); i.hasNext();) {
 				ASMUMLModelElement ame = (ASMUMLModelElement)i.next();
@@ -544,7 +538,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 				if (eType.eResource() != null) {
 					referencedExtents.add(eType.eResource());
 				} else {
-					System.err.println("WARNING: Resource for " + eType.toString()
+					ATLPlugin.log(Level.SEVERE, "WARNING: Resource for " + eType.toString()
 							+ " is null; cannot be referenced");
 				}
 				if (eType instanceof EClass) {
@@ -559,7 +553,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 			if (eType.eResource() != null) {
 				referencedExtents.add(eType.eResource());
 			} else {
-				System.err.println("WARNING: Resource for " + eType.toString()
+				ATLPlugin.log(Level.SEVERE, "WARNING: Resource for " + eType.toString()
 						+ " is null; cannot be referenced");
 			}
 		}
@@ -570,7 +564,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 				referencedExtents.add(eSuper.eResource());
 				addReferencedExtentsFor(eSuper, ignore);
 			} else {
-				System.err.println("WARNING: Resource for " + eSuper.toString()
+				ATLPlugin.log(Level.SEVERE, "WARNING: Resource for " + eSuper.toString()
 						+ " is null; cannot be referenced");
 			}
 		}
