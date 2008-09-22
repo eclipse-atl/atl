@@ -13,7 +13,6 @@ package org.eclipse.m2m.atl.adt.builder;
 
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -21,7 +20,7 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 
 /**
  * The ATL project builder.
@@ -33,8 +32,6 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 
 	/** The Atl builder id. */
 	public static final String ATL_BUILDER_ID = "org.eclipse.m2m.atl.adt.builder.atlBuilder"; //$NON-NLS-1$
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	/**
 	 * {@inheritDoc}
@@ -63,7 +60,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 					"AtlBuilder.COMPILETASK", new Object[] {p.getName()}), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 			p.accept(new AtlBuildVisitor(monitor));
 		} catch (CoreException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -82,7 +79,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 							"AtlBuilder.CLEANTASK", new Object[] {p.getName()}), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 					p.accept(new AtlCleanVisitor(monitor));
 				} catch (CoreException e) {
-					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				}
 			}
 		};

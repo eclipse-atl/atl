@@ -13,7 +13,6 @@ package org.eclipse.m2m.atl.adt.builder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -23,10 +22,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.engine.AtlCompiler;
 import org.eclipse.m2m.atl.engine.CompilerNotFoundException;
 import org.eclipse.m2m.atl.engine.MarkerMaker;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 
 /**
  * The ATL build visitor.
@@ -34,8 +33,6 @@ import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
  * @author <a href="mailto:tarik.idrissi@laposte.net">Tarik Idrissi</a>
  */
 public class AtlBuildVisitor implements IResourceVisitor {
-
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	/** Contains routines to manage problem markers when compiling. */
 	private MarkerMaker markerMaker = new MarkerMaker();
@@ -124,8 +121,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 			try {
 				is.close();
 			} catch (IOException e) {
-				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				// e.printStackTrace();
+				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 			return false;
 		}

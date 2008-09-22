@@ -11,7 +11,6 @@
 package org.eclipse.m2m.atl.adt.builder;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -19,7 +18,7 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
+import org.eclipse.m2m.atl.ATLPlugin;
 
 /**
  * The ATL clean visitor.
@@ -27,7 +26,6 @@ import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
  * @author <a href="mailto:tarik.idrissi@laposte.net">Tarik Idrissi</a>
  */
 public class AtlCleanVisitor implements IResourceVisitor {
-	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
 
 	private IProgressMonitor monitor;
 
@@ -87,7 +85,7 @@ public class AtlCleanVisitor implements IResourceVisitor {
 			try {
 				asmFile.delete(true, monitor);
 			} catch (CoreException ce) {
-				logger.log(Level.SEVERE, ce.getLocalizedMessage(), ce);
+				ATLPlugin.log(Level.SEVERE, ce.getLocalizedMessage(), ce);
 				return false;
 			}
 		}
