@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFReferenceModel.java,v 1.3 2008/09/09 13:15:01 wpiers Exp $
+ * $Id: EMFReferenceModel.java,v 1.4 2008/09/23 09:37:49 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.emf;
@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.m2m.atl.engine.AtlEMFModelHandler;
+import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.emfvm.EmfvmPlugin;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
 
