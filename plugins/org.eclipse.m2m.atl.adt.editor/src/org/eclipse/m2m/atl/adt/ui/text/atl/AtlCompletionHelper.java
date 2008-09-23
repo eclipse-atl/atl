@@ -26,7 +26,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
-import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
+import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
@@ -142,9 +142,9 @@ public class AtlCompletionHelper {
 	 *            the Syntax Element parsed
 	 * @return outputs models
 	 */
-	public static ASMModel[] parseExpression(String expression, String expressionType) {
+	private static ASMModel[] parseExpression(String expression, String expressionType) {
 		ASMModel[] ret = new ASMModel[2];
-		AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
+		AtlEMFModelHandler amh = new AtlEMFModelHandler();
 		ASMModel atlmm = amh.getAtl();
 		URL pbURL = ATLPlugin.class.getResource("resources/Problem.ecore"); //$NON-NLS-1$
 		ASMModel pbmm = amh.getBuiltInMetaModel("Problem",pbURL); //$NON-NLS-1$
