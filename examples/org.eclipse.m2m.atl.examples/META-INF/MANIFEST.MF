@@ -6,10 +6,10 @@ Bundle-Version: 2.1.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-ClassPath: .
-Require-Bundle: org.eclipse.emf.common,
- org.eclipse.m2m.atl.engine,
- org.eclipse.m2m.atl.engine.emfvm,
+Require-Bundle: org.eclipse.core.resources,
  org.eclipse.core.runtime,
- org.eclipse.core.resources,
+ org.eclipse.m2m.atl.engine.emfvm,
+ org.eclipse.m2m.atl.drivers.emf4atl,
+ org.eclipse.emf.common,
  org.eclipse.emf.ecore.xmi
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
