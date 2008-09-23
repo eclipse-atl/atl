@@ -22,18 +22,16 @@
    </url>
 
    <requires>
-      <import plugin="org.junit"/>
-      <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
       <import plugin="org.eclipse.emf.compare.match"/>
       <import plugin="org.eclipse.emf.compare.diff"/>
+      <import plugin="org.junit"/>
       <import plugin="org.eclipse.m2m.atl.engine"/>
       <import plugin="org.eclipse.m2m.atl.engine.emfvm"/>
-      <import plugin="org.apache.ant"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.ui.ide.application"/>
-      <import plugin="org.eclipse.equinox.app"/>
+      <import plugin="org.eclipse.m2m.atl"/>
+      <import plugin="org.eclipse.m2m.atl.drivers.emf4atl"/>
    </requires>
 
    <plugin
