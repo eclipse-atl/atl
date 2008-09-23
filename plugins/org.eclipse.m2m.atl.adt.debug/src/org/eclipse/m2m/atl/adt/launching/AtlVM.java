@@ -33,9 +33,6 @@ import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
  */
 public abstract class AtlVM implements ILaunchConfigurationDelegate {
 
-	/** The ATL regular vm name. */
-	public static final String ATLVM_REGULAR = "Regular VM (with debugger)"; //$NON-NLS-1$
-
 	private static String[] atlVMs;
 
 	/**
@@ -47,41 +44,30 @@ public abstract class AtlVM implements ILaunchConfigurationDelegate {
 	 */
 	public static AtlVM getVM(String vm) {
 		AtlVM ret = null;
-		String usedVm = vm;
-		// TODO old ATL launch configuration does not have vm attribute, retro-compatibility may be dealed by
-		// ATL launch configuration
-		if (usedVm == null || usedVm.equals("")) { //$NON-NLS-1$
-			usedVm = ATLVM_REGULAR;
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		if (registry == null) {
+			throw new RuntimeException(AtlDebugMessages.getString("AtlVM.EMFREGISTRYNOTFOUND")); //$NON-NLS-1$
 		}
 
-		if (ATLVM_REGULAR.equals(usedVm)) {
-			ret = new AtlRegularVM();
-		} else {
-			IExtensionRegistry registry = Platform.getExtensionRegistry();
-			if (registry == null) {
-				throw new RuntimeException(AtlDebugMessages.getString("AtlVM.EMFREGISTRYNOTFOUND")); //$NON-NLS-1$
-			}
+		IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.adt.debug.atlvm"); //$NON-NLS-1$
 
-			IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.adt.debug.atlvm"); //$NON-NLS-1$
-
-			IExtension[] extensions = point.getExtensions();
-			extensions: for (int i = 0; i < extensions.length; i++) {
-				IConfigurationElement[] elements = extensions[i].getConfigurationElements();
-				for (int j = 0; j < elements.length; j++) {
-					try {
-						if (elements[j].getAttribute("name").equals(usedVm)) { //$NON-NLS-1$
-							ret = (AtlVM)elements[j].createExecutableExtension("class"); //$NON-NLS-1$
-							break extensions;
-						}
-					} catch (CoreException e) {
-						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		IExtension[] extensions = point.getExtensions();
+		extensions: for (int i = 0; i < extensions.length; i++) {
+			IConfigurationElement[] elements = extensions[i].getConfigurationElements();
+			for (int j = 0; j < elements.length; j++) {
+				try {
+					if (elements[j].getAttribute("name").equals(vm)) { //$NON-NLS-1$
+						ret = (AtlVM)elements[j].createExecutableExtension("class"); //$NON-NLS-1$
+						break extensions;
 					}
+				} catch (CoreException e) {
+					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				}
 			}
 		}
 
 		if (ret == null) {
-			throw new RuntimeException(AtlDebugMessages.getString("AtlVM.VMNOTFOUND", new Object[] {usedVm})); //$NON-NLS-1$
+			throw new RuntimeException(AtlDebugMessages.getString("AtlVM.VMNOTFOUND", new Object[] {vm})); //$NON-NLS-1$
 		}
 
 		return ret;
@@ -95,7 +81,6 @@ public abstract class AtlVM implements ILaunchConfigurationDelegate {
 	public static String[] getVMs() {
 		if (atlVMs == null) {
 			List avms = new ArrayList();
-			avms.add(ATLVM_REGULAR);
 
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.adt.debug.atlvm"); //$NON-NLS-1$

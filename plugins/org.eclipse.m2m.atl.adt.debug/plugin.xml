@@ -154,5 +154,19 @@
             inputTypes="org.eclipse.m2m.atl.adt.debug.ui.AtlDebugModelPresentation$DisassemblyEditorInput"
             id="org.eclipse.m2m.atl.adt.debug.provider1"/>
    </extension>
+   <extension
+         point="org.eclipse.m2m.atl.adt.debug.atlvm">
+      <atlvm
+            class="org.eclipse.m2m.atl.adt.launching.AtlRegularVM"
+            name="Regular VM (with debugger)">
+      </atlvm>
+   </extension>
+   <extension
+         point="org.eclipse.m2m.atl.adt.debug.atlvm">
+      <atlvm
+            class="org.eclipse.m2m.atl.adt.launching.AtlEMFSpecificVM"
+            name="EMF Specific VM">
+      </atlvm>
+   </extension>
 
 </plugin>

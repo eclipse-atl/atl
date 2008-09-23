@@ -32,7 +32,6 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
-import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -44,7 +43,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -172,7 +170,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 
 	private Button buttonIsEMF;
 
-	private List listModelHandlerAvailables;
+//	private List listModelHandlerAvailables;
 
 	private Button buttonSelectModelHandler;
 
@@ -226,7 +224,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 
 		groupPath = new Group(container, SWT.NULL);
 		tablePath = new Table(groupPath, SWT.FULL_SELECTION | SWT.BORDER);
-		listModelHandlerAvailables = new List(groupPath, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
+//		listModelHandlerAvailables = new List(groupPath, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
 		buttonSelectModelHandler = new Button(groupPath, SWT.CENTER);
 		buttonSetPath = new Button(groupPath, SWT.CENTER);
 		buttonSetExternalPath = new Button(groupPath, SWT.CENTER);
@@ -427,7 +425,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		listModelHandlerAvailables.setItems(AtlModelHandler.getModelHandlers());
+//		listModelHandlerAvailables.setItems(AtlModelHandler.getModelHandlers());
 
 		buttonSelectModelHandler.setText("Select Model Handler"); //$NON-NLS-1$
 		buttonSelectModelHandler.addSelectionListener(new SelectionAdapter() {
@@ -502,8 +500,8 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 		buttonIsMDR.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
 		buttonIsEMF.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
 		GridData gData = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
-		gData.heightHint = listModelHandlerAvailables.getItemHeight() * 2;
-		listModelHandlerAvailables.setLayoutData(gData);
+//		gData.heightHint = listModelHandlerAvailables.getItemHeight() * 2;
+//		listModelHandlerAvailables.setLayoutData(gData);
 		buttonSelectModelHandler.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
 				| GridData.VERTICAL_ALIGN_BEGINNING));
 		buttonAffectUri.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
@@ -794,6 +792,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			return;
 		}
 
+		/*
 		String[] selection = listModelHandlerAvailables.getSelection();
 		if (selection.length == 1) {
 			tablePath.getItem(index).setText(TABLEPATHMODELHANDLER, selection[0]);
@@ -804,6 +803,7 @@ public class ModelChoiceTab extends AbstractLaunchConfigurationTab {
 			AtlLauncherTools.messageBox(AtlDebugMessages.getString("ModelChoiceTab.MHSELECTION")); //$NON-NLS-1$
 			return;
 		}
+		*/
 	}
 
 	/**
