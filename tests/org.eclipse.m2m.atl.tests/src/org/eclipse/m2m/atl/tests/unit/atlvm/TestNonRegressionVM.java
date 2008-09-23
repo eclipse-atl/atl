@@ -24,9 +24,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
-import org.eclipse.m2m.atl.engine.AtlEMFModelHandler;
-import org.eclipse.m2m.atl.engine.AtlLauncher;
-import org.eclipse.m2m.atl.engine.AtlModelHandler;
+import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
+import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
+import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo;
 
