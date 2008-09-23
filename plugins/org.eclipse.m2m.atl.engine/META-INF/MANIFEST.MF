@@ -7,14 +7,14 @@ Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.m2m.atl.engine.EnginePlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
-Export-Package: org.eclipse.m2m.atl.engine
-Require-Bundle: org.eclipse.core.runtime,
+Export-Package: org.eclipse.m2m.atl.engine,
+ org.eclipse.m2m.atl.engine.compiler
+Require-Bundle: org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.m2m.atl,
+ org.eclipse.m2m.atl.dsls,
+ org.eclipse.m2m.atl.drivers.emf4atl,
  org.eclipse.emf.ecore,
- org.eclipse.core.resources,
- org.eclipse.emf.ecore.xmi,
- org.eclipse.m2m.atl.engine.vm;visibility:=reexport,
- org.eclipse.m2m.atl.drivers.emf4atl;visibility:=reexport,
- org.eclipse.m2m.atl.dsls;visibility:=reexport,
- org.eclipse.m2m.atl
+ org.eclipse.emf.ecore.xmi
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

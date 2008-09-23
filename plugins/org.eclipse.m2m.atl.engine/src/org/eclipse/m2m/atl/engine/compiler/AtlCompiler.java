@@ -9,7 +9,7 @@
  *    Frederic Jouault (INRIA) - initial API and implementation
  *    Matthias Bohlen - refactorings for ease of use and elimination of duplicate code
  *******************************************************************************/
-package org.eclipse.m2m.atl.engine;
+package org.eclipse.m2m.atl.engine.compiler;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.engine.AtlEngineMessages;
 
 /**
  * The ATL compiler.

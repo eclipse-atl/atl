@@ -8,7 +8,7 @@
  * Contributors:
  *    Matthias Bohlen - initial API and implementation
  *******************************************************************************/
-package org.eclipse.m2m.atl.engine;
+package org.eclipse.m2m.atl.engine.compiler;
 
 /**
  * Describes an error which has occurred when compiling an ATL script.

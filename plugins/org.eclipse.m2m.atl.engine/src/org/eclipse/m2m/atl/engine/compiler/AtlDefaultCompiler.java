@@ -9,7 +9,7 @@
  *    Frederic Jouault (INRIA) - initial API and implementation
  *    Matthias Bohlen - refactoring to eliminate duplicate code
  *******************************************************************************/
-package org.eclipse.m2m.atl.engine;
+package org.eclipse.m2m.atl.engine.compiler;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -20,7 +20,12 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
+import org.eclipse.m2m.atl.engine.AtlParser;
+import org.eclipse.m2m.atl.engine.ProblemConverter;
+import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
+import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
@@ -42,13 +47,14 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	 */
 	public AtlDefaultCompiler() {
 		amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
-		pbmm = amh.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
+		URL pbURL = ATLPlugin.class.getResource("resources/Problem.ecore"); //$NON-NLS-1$
+		pbmm = amh.getBuiltInMetaModel("Problem", pbURL); //$NON-NLS-1$
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlStandaloneCompiler#compile(java.io.InputStream, java.lang.String)
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compile(java.io.InputStream, java.lang.String)
 	 */
 	public final CompileTimeError[] compile(InputStream in, String outputFileName) {
 		EObject[] eObjects = internalCompile(in, outputFileName);
@@ -66,7 +72,7 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlStandaloneCompiler#compileWithProblemModel(java.io.InputStream,
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(java.io.InputStream,
 	 *      java.lang.String)
 	 */
 	public EObject[] compileWithProblemModel(InputStream in, String outputFileName) {
@@ -167,8 +173,8 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 			params.put("WriteTo", outputFileName); //$NON-NLS-1$
 
 			Map libs = new HashMap();
-			libs.put("typeencoding", AtlParser.class.getResource("resources/typeencoding.asm")); //$NON-NLS-1$//$NON-NLS-2$
-			libs.put("strings", AtlParser.class.getResource("resources/strings.asm")); //$NON-NLS-1$//$NON-NLS-2$
+			libs.put("typeencoding", AtlDefaultCompiler.class.getResource("resources/typeencoding.asm")); //$NON-NLS-1$//$NON-NLS-2$
+			libs.put("strings", AtlDefaultCompiler.class.getResource("resources/strings.asm")); //$NON-NLS-1$//$NON-NLS-2$
 
 			AtlLauncher.getDefault().launch(getCodegeneratorURL(), libs, models, params,
 					Collections.EMPTY_LIST, Collections.EMPTY_MAP);

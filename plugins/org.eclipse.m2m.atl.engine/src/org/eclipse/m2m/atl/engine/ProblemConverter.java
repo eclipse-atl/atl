@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.engine;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.m2m.atl.engine.compiler.CompileTimeError;
 
 /**
  * Utility class that translates ATL problem objects into an easily accessible {@link CompileTimeError}

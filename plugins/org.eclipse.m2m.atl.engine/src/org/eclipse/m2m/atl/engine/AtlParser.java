@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.engine;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +24,7 @@ import org.eclipse.gmt.tcs.injector.TCSInjector;
 import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
+import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
@@ -40,7 +42,8 @@ public final class AtlParser {
 
 	private AtlParser() {
 		amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
-		pbmm = amh.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
+		URL pbURL = ATLPlugin.class.getResource("resources/Problem.ecore"); //$NON-NLS-1$
+		pbmm = amh.getBuiltInMetaModel("Problem",pbURL); //$NON-NLS-1$
 	}
 
 	/**
@@ -144,4 +147,5 @@ public final class AtlParser {
 
 		return ret;
 	}
+	
 }

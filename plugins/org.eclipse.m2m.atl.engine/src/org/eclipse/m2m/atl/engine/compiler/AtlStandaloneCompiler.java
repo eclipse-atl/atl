@@ -8,7 +8,7 @@
  * Contributors:
  *     Matthias Bohlen - initial API and implementation
  *******************************************************************************/
-package org.eclipse.m2m.atl.engine;
+package org.eclipse.m2m.atl.engine.compiler;
 
 import java.io.InputStream;
 

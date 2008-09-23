@@ -9,7 +9,7 @@
  *    Frederic Jouault (INRIA) - initial API and implementation
  *    Matthias Bohlen
  *******************************************************************************/
-package org.eclipse.m2m.atl.engine;
+package org.eclipse.m2m.atl.engine.compiler;
 
 import java.net.URL;
 
