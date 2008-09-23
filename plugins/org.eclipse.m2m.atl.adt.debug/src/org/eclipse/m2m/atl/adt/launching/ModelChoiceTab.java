@@ -32,7 +32,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
-import org.eclipse.m2m.atl.engine.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
