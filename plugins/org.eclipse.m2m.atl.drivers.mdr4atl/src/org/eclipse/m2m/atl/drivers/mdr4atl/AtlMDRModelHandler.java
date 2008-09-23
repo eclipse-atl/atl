@@ -24,7 +24,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.m2m.atl.ATLPlugin;
-import org.eclipse.m2m.atl.engine.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
@@ -170,11 +170,10 @@ public class AtlMDRModelHandler extends AtlModelHandler {
 			atlmm = ASMMDRModel.loadASMMDRModel("ATL", mofmm, atlurl, null);
 		} catch (Exception e) {
 			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
 		}
 	}
 
-	public ASMModel getBuiltInMetaModel(String name) {
+	public ASMModel getBuiltInMetaModel(String name, URL mmurl) {
 		ASMModel ret = null;
 
 		return ret;
