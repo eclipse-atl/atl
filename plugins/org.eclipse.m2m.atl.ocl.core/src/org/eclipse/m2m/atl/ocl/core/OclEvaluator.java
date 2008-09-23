@@ -15,8 +15,7 @@ import java.io.IOException;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.engine.ASMRetriever;
-import org.eclipse.m2m.atl.engine.AtlCompiler;
+import org.eclipse.m2m.atl.engine.compiler.AtlCompiler;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 
 /**

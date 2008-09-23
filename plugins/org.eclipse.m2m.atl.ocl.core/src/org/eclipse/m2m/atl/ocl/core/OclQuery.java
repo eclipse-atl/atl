@@ -17,8 +17,8 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
-import org.eclipse.m2m.atl.engine.AtlLauncher;
 import org.eclipse.m2m.atl.engine.vm.ASM;
+import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
 import org.eclipse.m2m.atl.engine.vm.Debugger;
 import org.eclipse.m2m.atl.engine.vm.SimpleDebugger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBoolean;
