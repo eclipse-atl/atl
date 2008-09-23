@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+   <extension-point id="modelhandler" name="modelHandler" schema="schema/modelhandler.exsd"/>
+   <extension-point id="injector" name="Injector" schema="schema/injector.exsd"/>
 
     
 </plugin>
