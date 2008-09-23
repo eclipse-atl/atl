@@ -24,6 +24,7 @@ import org.eclipse.gmt.tcs.injector.TCSInjector;
 import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
+import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
@@ -41,7 +42,7 @@ public final class AtlParser {
 	private ASMModel pbmm;
 
 	private AtlParser() {
-		amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
+		amh = new AtlEMFModelHandler();
 		URL pbURL = ATLPlugin.class.getResource("resources/Problem.ecore"); //$NON-NLS-1$
 		pbmm = amh.getBuiltInMetaModel("Problem",pbURL); //$NON-NLS-1$
 	}
