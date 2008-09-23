@@ -31,7 +31,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.ATLPlugin;
-import org.eclipse.m2m.atl.engine.AtlEMFModelHandler;
+import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
@@ -57,7 +57,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 	 * {@inheritDoc} TODO GB : this method was not redefined initially. However, do we have to redirect all
 	 * ways to save a model to handle UML2 specificities ?
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlEMFModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
 	 *      java.lang.String, boolean)
 	 */
 	public void saveModel(final ASMModel model, String path, boolean outputFileIsInWorkspace) {
@@ -73,7 +73,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.m2m.atl.engine.AtlEMFModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, org.eclipse.emf.common.util.URI, java.io.OutputStream)
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, org.eclipse.emf.common.util.URI, java.io.OutputStream)
 	 */
 	protected void saveModel(final ASMModel model, URI uri, OutputStream out) {
 		((ASMUMLModel)model).applyDelayedInvocations();
@@ -133,7 +133,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.m2m.atl.engine.AtlEMFModelHandler#loadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.InputStream)
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler#loadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.InputStream)
 	 */
 	public ASMModel loadModel(String name, ASMModel metamodel, InputStream in) {
 		ASMModel ret = null;
@@ -150,7 +150,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.m2m.atl.engine.AtlEMFModelHandler#newModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler#newModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
 	 */
 	public ASMModel newModel(String name, ASMModel metamodel) {
 		ASMModel ret = null;
@@ -168,7 +168,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 	 * {@inheritDoc}
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 *
-	 * @see org.eclipse.m2m.atl.engine.AtlEMFModelHandler#newModel(java.lang.String, java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler#newModel(java.lang.String, java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
 	 */
 	public ASMModel newModel(String name, String uri, ASMModel metamodel) {
 		ASMModel ret = null;
@@ -185,7 +185,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.m2m.atl.engine.AtlEMFModelHandler#getBuiltInMetaModel(java.lang.String)
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler#getBuiltInMetaModel(java.lang.String)
 	 */
 	public ASMModel getBuiltInMetaModel(String name) {
 		ASMModel ret = null;
@@ -196,7 +196,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.m2m.atl.engine.AtlEMFModelHandler#isHandling(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler#isHandling(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
 	 */
 	public boolean isHandling(ASMModel model) {
 		return model instanceof ASMUMLModel;
@@ -205,7 +205,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.m2m.atl.engine.AtlEMFModelHandler#loadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String)
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler#loadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String)
 	 */
 	public ASMModel loadModel(String name, ASMModel metamodel, String uri) {
 		ASMModel ret = null;
@@ -222,7 +222,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.m2m.atl.engine.AtlEMFModelHandler#loadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, org.eclipse.emf.common.util.URI)
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler#loadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, org.eclipse.emf.common.util.URI)
 	 */
 	public ASMModel loadModel(String name, ASMModel metamodel, URI uri) {
 		ASMModel ret = null;

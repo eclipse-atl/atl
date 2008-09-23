@@ -2,7 +2,7 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
-         point="org.eclipse.m2m.atl.engine.modelhandler">
+         point="org.eclipse.m2m.atl.engine.vm.modelhandler">
       <modelhandler
             class="org.eclipse.m2m.atl.drivers.uml24atl.AtlUML2ModelHandler"
             name="UML2">
