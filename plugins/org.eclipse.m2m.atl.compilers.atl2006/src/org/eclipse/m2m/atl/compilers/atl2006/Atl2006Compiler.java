@@ -13,7 +13,7 @@ package org.eclipse.m2m.atl.compilers.atl2006;
 
 import java.net.URL;
 
-import org.eclipse.m2m.atl.engine.AtlDefaultCompiler;
+import org.eclipse.m2m.atl.engine.compiler.AtlDefaultCompiler;
 
 /**
  * The 2006 version of the ATL compiler.
