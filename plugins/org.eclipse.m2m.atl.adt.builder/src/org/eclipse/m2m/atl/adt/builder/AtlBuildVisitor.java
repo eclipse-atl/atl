@@ -23,9 +23,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.ATLPlugin;
-import org.eclipse.m2m.atl.engine.AtlCompiler;
-import org.eclipse.m2m.atl.engine.CompilerNotFoundException;
 import org.eclipse.m2m.atl.engine.MarkerMaker;
+import org.eclipse.m2m.atl.engine.compiler.AtlCompiler;
+import org.eclipse.m2m.atl.engine.compiler.CompilerNotFoundException;
 
 /**
  * The ATL build visitor.
