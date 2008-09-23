@@ -13,7 +13,7 @@ package org.eclipse.m2m.atl.service.core.nestedElements;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.m2m.atl.engine.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.service.core.ServiceTransformationUtil;
 import org.eclipse.m2m.atl.service.core.exception.ServiceException;

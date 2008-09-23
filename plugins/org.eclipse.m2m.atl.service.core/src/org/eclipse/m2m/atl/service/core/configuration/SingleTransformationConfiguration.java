@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.m2m.atl.engine.AtlLauncher;
-import org.eclipse.m2m.atl.engine.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
+import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.service.core.ServiceMessages;
 import org.eclipse.m2m.atl.service.core.ServiceTransformationUtil;
 import org.eclipse.m2m.atl.service.core.exception.ServiceException;
