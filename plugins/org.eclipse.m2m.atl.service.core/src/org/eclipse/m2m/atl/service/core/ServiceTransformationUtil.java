@@ -215,9 +215,10 @@ public final class ServiceTransformationUtil {
 
 			final TCSExtractor ebnfe = new TCSExtractor();
 
+			AtlModelHandler amhEmf = new AtlEMFModelHandler();
 			ASMModel tcs = loadModel(
-					AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF),
-					"TCS", AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF).getMof(), "resources/TCS.ecore", null, false, false, "org.eclipse.m2m.atl.service.core"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					amhEmf,
+					"TCS", amhEmf.getMof(), "resources/TCS.ecore", null, false, false, "org.eclipse.m2m.atl.service.core"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 			Map tempParam = new HashMap();
 

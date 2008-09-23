@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
@@ -222,7 +223,7 @@ public final class ServiceExtensionManager {
 	private ComposedTransformationConfiguration createComposedTransformationConfigurationFromASLExtensionPoint(
 			String configName, String aslPath, String pluginId) {
 
-		AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
+		AtlModelHandler amh = new AtlEMFModelHandler();
 		try {
 			ASMModel aslMM = ServiceTransformationUtil
 					.loadModel(

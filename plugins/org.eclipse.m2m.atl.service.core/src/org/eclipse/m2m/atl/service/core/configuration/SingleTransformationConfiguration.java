@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.service.core.ServiceMessages;
@@ -154,8 +155,8 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 		for (Iterator it = transformation.getOutModels().keySet().iterator(); it.hasNext();) {
 			String modelName = (String)it.next();
 			Model currentOutModel = (Model)models.get(modelName);
-			AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF).saveModel(currentOutModel.getAsmModel(),
-					pathFolder + "/" + currentOutModel.getFileName()); //$NON-NLS-1$
+			new AtlEMFModelHandler().saveModel(currentOutModel.getAsmModel(), pathFolder
+					+ "/" + currentOutModel.getFileName()); //$NON-NLS-1$
 		}
 	}
 

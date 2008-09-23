@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.service.core.ServiceMessages;
@@ -239,16 +240,17 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 	public void saveModel(String pathFolder, String modelName) throws ServiceException {
 		ModelToSave mts = (ModelToSave)modelsToSave.get(modelName);
 		Model currentOutModel = (Model)models.get(modelName);
+		AtlModelHandler amh = new AtlEMFModelHandler();
+
 		if (!mts.isExtractor()) {
-			AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF).saveModel(currentOutModel.getAsmModel(),
-					pathFolder + "/" + mts.getFileName()); //$NON-NLS-1$
+			amh.saveModel(currentOutModel.getAsmModel(), pathFolder + "/" + mts.getFileName()); //$NON-NLS-1$
 		} else if (mts.getExtractorType().equals(ServiceTransformationUtil.XML_EXTRACTOR)) {
 			ServiceTransformationUtil.xmlExtraction(currentOutModel.getAsmModel(), pathFolder
-					+ "/" + mts.getFileName(), AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF)); //$NON-NLS-1$
+					+ "/" + mts.getFileName(), amh); //$NON-NLS-1$
 		} else if (mts.getExtractorType().equals(ServiceTransformationUtil.EBNF_EXTRACTOR)) {
 			Map params = mts.getExtractorParams();
 			ServiceTransformationUtil.ebnfExtraction(currentOutModel.getAsmModel(), pathFolder
-					+ "/" + mts.getFileName(), AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF), params); //$NON-NLS-1$
+					+ "/" + mts.getFileName(), amh, params); //$NON-NLS-1$
 		} else {
 			throw new ServiceException(IStatus.ERROR, ServiceMessages.getString(
 					"ComposedTransformationConfiguration.0", new Object[] {mts.getExtractorType()})); //$NON-NLS-1$
