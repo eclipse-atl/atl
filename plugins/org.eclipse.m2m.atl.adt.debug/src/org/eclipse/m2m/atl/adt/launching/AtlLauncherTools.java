@@ -29,6 +29,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
+import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -194,7 +195,7 @@ public final class AtlLauncherTools {
 		if (modelHandlersNames == null) {
 			modelHandlersNames = AtlModelHandler.getModelHandlers();
 			for (int i = 0; i < modelHandlersNames.length; i++) {
-				if (modelHandlersNames[i].equals(AtlModelHandler.AMH_EMF)) {
+				if (modelHandlersNames[i].equals(AtlEMFModelHandler.ID)) {
 					emfKey = i;
 				}
 			}

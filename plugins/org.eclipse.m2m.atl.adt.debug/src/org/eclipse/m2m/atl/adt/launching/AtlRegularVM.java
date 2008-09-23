@@ -463,6 +463,7 @@ public class AtlRegularVM extends AtlVM {
 	 * 
 	 * @see org.eclipse.m2m.atl.adt.launching.AtlVM#launch(java.net.URL, java.util.Map, java.util.Map,
 	 *      java.util.Map, java.util.List, java.util.Map)
+	 * @deprecated
 	 */
 	public Object launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options) {
 		return AtlLauncher.getDefault().launch(asmUrl, libs, models, params, superimps, options);

@@ -128,6 +128,7 @@ public abstract class AtlVM implements ILaunchConfigurationDelegate {
 	 * @param options
 	 *            transformation options
 	 * @return unused (TODO)
+	 * @deprecated
 	 */
 	public abstract Object launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options);
 }
