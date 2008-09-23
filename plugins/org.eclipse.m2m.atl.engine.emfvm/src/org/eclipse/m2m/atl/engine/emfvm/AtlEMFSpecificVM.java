@@ -8,7 +8,7 @@
  * Contributors:
  *    INRIA - initial API and implementation
  *    
- * $Id: AtlEMFSpecificVM.java,v 1.7 2008/09/22 15:28:51 wpiers Exp $
+ * $Id: AtlEMFSpecificVM.java,v 1.8 2008/09/23 12:36:01 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -34,14 +34,12 @@ import org.eclipse.m2m.atl.adt.debug.core.AtlRunTarget;
 import org.eclipse.m2m.atl.adt.launching.AtlLauncherTools;
 import org.eclipse.m2m.atl.adt.launching.AtlVM;
 import org.eclipse.m2m.atl.adt.launching.sourcelookup.AtlSourceLocator;
-import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.engine.emfvm.emf.EMFModel;
 import org.eclipse.m2m.atl.engine.emfvm.emf.EMFReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Model;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 // TODO:
 // - improve the way VMs are made pluggable
@@ -65,6 +63,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 	public Object launch(URL asmUrl, Map libs, Map models, Map params, List superimps, Map options) {
 		Object ret = null;
 
+		/*
 		Map actualModels = new HashMap();
 		// handle metamodels first
 		List targetModels = new ArrayList();
@@ -135,6 +134,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 		} catch (IOException ioe) {
 			ATLPlugin.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
+		*/
 
 		return ret;
 	}

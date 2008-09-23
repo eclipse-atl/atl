@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFReferenceModel.java,v 1.4 2008/09/23 09:37:49 wpiers Exp $
+ * $Id: EMFReferenceModel.java,v 1.5 2008/09/23 12:36:01 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.emf;
@@ -32,7 +32,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.emfvm.EmfvmPlugin;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
 
@@ -118,7 +117,7 @@ public class EMFReferenceModel extends EMFModel implements ReferenceModel {
 	 *            the reference model uri, as String
 	 */
 	public EMFReferenceModel(ReferenceModel referenceModel, String uri) {
-		super(referenceModel, AtlEMFModelHandler.getResourceSet().getPackageRegistry().getEPackage(uri)
+		super(referenceModel, resourceSet.getPackageRegistry().getEPackage(uri)
 				.eResource());
 		registerPackages();
 		addAllReferencedResources(this.getResource());
