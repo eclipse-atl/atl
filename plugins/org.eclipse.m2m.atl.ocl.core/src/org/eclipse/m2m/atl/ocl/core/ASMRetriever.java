@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.m2m.atl.engine.ATLVMTools;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMEmitter;
+import org.eclipse.m2m.atl.engine.vm.ATLVMTools;
 
 /**
  * ASM utility class.
