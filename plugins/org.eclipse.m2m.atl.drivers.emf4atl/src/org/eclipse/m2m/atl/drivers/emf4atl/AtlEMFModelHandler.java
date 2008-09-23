@@ -51,6 +51,8 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class AtlEMFModelHandler extends AtlModelHandler {
+	/** The model handler extension id. */
+	public static final String ID = "EMF";
 
 	protected boolean useIDs;
 
