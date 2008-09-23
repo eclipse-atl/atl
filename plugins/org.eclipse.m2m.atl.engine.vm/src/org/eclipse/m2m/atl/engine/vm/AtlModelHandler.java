@@ -39,9 +39,6 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  */
 public abstract class AtlModelHandler {
 
-	/** EMF model handler name. */
-	public static final String AMH_EMF = "EMF"; //$NON-NLS-1$
-
 	private static String[] modelHandlers;
 
 	private static Map defaultModelHandlers = new HashMap();
@@ -68,10 +65,6 @@ public abstract class AtlModelHandler {
 	public static AtlModelHandler getDefault(String repository) {
 		AtlModelHandler ret = (AtlModelHandler)defaultModelHandlers.get(repository);
 		if (ret == null) {
-			// if (AMH_EMF.equals(repository)) {
-			// ret = new AtlEMFModelHandler();
-			// defaultModelHandlers.put(repository, ret);
-			// } else {
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			if (registry == null) {
 				throw new RuntimeException(
@@ -101,10 +94,9 @@ public abstract class AtlModelHandler {
 			throw new RuntimeException(
 					"Model handler for " + repository + " not found. You may need to install a model handler plugin."); //$NON-NLS-1$
 		}
-		// }
-
 		return ret;
 	}
+
 
 	/**
 	 * Returns the model handlers ids.
@@ -114,8 +106,6 @@ public abstract class AtlModelHandler {
 	public static String[] getModelHandlers() {
 		if (modelHandlers == null) {
 			List mhs = new ArrayList();
-			mhs.add(AMH_EMF);
-
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.vm.modelhandler"); //$NON-NLS-1$
 
