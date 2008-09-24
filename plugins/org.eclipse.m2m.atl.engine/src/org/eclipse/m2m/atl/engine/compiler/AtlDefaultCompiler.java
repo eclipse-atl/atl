@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
 import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.AtlParser;
@@ -47,15 +46,14 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	 * Constructor.
 	 */
 	public AtlDefaultCompiler() {
-		amh = new AtlEMFModelHandler();
-		URL pbURL = ATLPlugin.class.getResource("resources/Problem.ecore"); //$NON-NLS-1$
-		pbmm = amh.getBuiltInMetaModel("Problem", pbURL); //$NON-NLS-1$
+		amh = AtlModelHandler.getDefault(AtlEMFModelHandler.ID);
+		pbmm = amh.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compile(java.io.InputStream, java.lang.String)
+	 * @see org.eclipse.m2m.atl.engine.AtlStandaloneCompiler#compile(java.io.InputStream, java.lang.String)
 	 */
 	public final CompileTimeError[] compile(InputStream in, String outputFileName) {
 		EObject[] eObjects = internalCompile(in, outputFileName);
@@ -73,7 +71,7 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(java.io.InputStream,
+	 * @see org.eclipse.m2m.atl.engine.AtlStandaloneCompiler#compileWithProblemModel(java.io.InputStream,
 	 *      java.lang.String)
 	 */
 	public EObject[] compileWithProblemModel(InputStream in, String outputFileName) {
@@ -161,7 +159,7 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
 		if (nbErrors == 0) {
 			// Generating code
-			AtlModelHandler defaultAmh = new AtlEMFModelHandler();
+			AtlModelHandler defaultAmh = AtlModelHandler.getDefault(AtlEMFModelHandler.ID);
 			Map models = new HashMap();
 			models.put("MOF", defaultAmh.getMof()); //$NON-NLS-1$
 			models.put("ATL", defaultAmh.getAtl()); //$NON-NLS-1$

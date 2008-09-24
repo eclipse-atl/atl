@@ -12,7 +12,6 @@ package org.eclipse.m2m.atl.engine;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,9 +41,8 @@ public final class AtlParser {
 	private ASMModel pbmm;
 
 	private AtlParser() {
-		amh = new AtlEMFModelHandler();
-		URL pbURL = ATLPlugin.class.getResource("resources/Problem.ecore"); //$NON-NLS-1$
-		pbmm = amh.getBuiltInMetaModel("Problem",pbURL); //$NON-NLS-1$
+		amh = AtlModelHandler.getDefault(AtlEMFModelHandler.ID);
+		pbmm = amh.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
 	}
 
 	/**
