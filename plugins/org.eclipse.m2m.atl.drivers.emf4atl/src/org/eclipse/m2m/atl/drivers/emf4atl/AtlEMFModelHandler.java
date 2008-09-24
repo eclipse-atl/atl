@@ -115,7 +115,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
 	 *      org.eclipse.core.resources.IProject)
 	 */
 	public void saveModel(final ASMModel model, IProject project) {
@@ -125,7 +125,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
 	 *      java.lang.String, org.eclipse.core.resources.IProject)
 	 */
 	public void saveModel(final ASMModel model, String fileName, IProject project) {
@@ -136,7 +136,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
 	 *      java.lang.String)
 	 */
 	public void saveModel(final ASMModel model, String uri) {
@@ -154,7 +154,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
 	 *      java.io.OutputStream)
 	 */
 	public void saveModel(final ASMModel model, OutputStream out) {
@@ -284,7 +284,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#loadModel(java.lang.String,
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#loadModel(java.lang.String,
 	 *      org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.InputStream)
 	 */
 	public ASMModel loadModel(String name, ASMModel metamodel, InputStream in) {
@@ -352,7 +352,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	 * {@inheritDoc}
 	 * 
 	 * @deprecated
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#newModel(java.lang.String,
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#newModel(java.lang.String,
 	 *      org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
 	 */
 	public ASMModel newModel(String name, ASMModel metamodel) {
@@ -372,7 +372,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	 * {@inheritDoc}
 	 * 
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#newModel(java.lang.String, java.lang.String,
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#newModel(java.lang.String, java.lang.String,
 	 *      org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
 	 */
 	public ASMModel newModel(String name, String uri, ASMModel metamodel) {
@@ -395,12 +395,13 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#getBuiltInMetaModel(java.lang.String)
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#getBuiltInMetaModel(java.lang.String)
 	 */
-	public ASMModel getBuiltInMetaModel(String name, URL mmurl) {
+	public ASMModel getBuiltInMetaModel(String name) {
 		ASMModel ret = (ASMModel)bimm.get(name);
 
 		if (ret == null) {
+			URL mmurl = ATLPlugin.class.getResource("resources/" + name + ".ecore"); //$NON-NLS-1$//$NON-NLS-2$
 
 			try {
 				ret = loadModel(name, mofmm, mmurl.openStream());
@@ -417,7 +418,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#isHandling(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#isHandling(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
 	 */
 	public boolean isHandling(ASMModel model) {
 		return model instanceof ASMEMFModel;
@@ -426,7 +427,7 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#disposeOfModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#disposeOfModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
 	 */
 	public void disposeOfModel(ASMModel model) {
 		((ASMEMFModel)model).dispose();
