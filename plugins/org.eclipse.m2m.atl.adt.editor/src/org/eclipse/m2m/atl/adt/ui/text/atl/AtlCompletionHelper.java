@@ -14,7 +14,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -23,10 +22,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmt.tcs.injector.TCSInjector;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
 import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
+import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
@@ -144,10 +143,9 @@ public class AtlCompletionHelper {
 	 */
 	private static ASMModel[] parseExpression(String expression, String expressionType) {
 		ASMModel[] ret = new ASMModel[2];
-		AtlEMFModelHandler amh = new AtlEMFModelHandler();
+		AtlModelHandler amh = AtlModelHandler.getDefault(AtlEMFModelHandler.ID);
 		ASMModel atlmm = amh.getAtl();
-		URL pbURL = ATLPlugin.class.getResource("resources/Problem.ecore"); //$NON-NLS-1$
-		ASMModel pbmm = amh.getBuiltInMetaModel("Problem",pbURL); //$NON-NLS-1$
+		ASMModel pbmm = amh.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
 
 		try {
 			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp", //$NON-NLS-1$ //$NON-NLS-2$
