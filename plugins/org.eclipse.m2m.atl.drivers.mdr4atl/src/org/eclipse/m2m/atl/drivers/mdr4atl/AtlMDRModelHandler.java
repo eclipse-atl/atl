@@ -173,7 +173,7 @@ public class AtlMDRModelHandler extends AtlModelHandler {
 		}
 	}
 
-	public ASMModel getBuiltInMetaModel(String name, URL mmurl) {
+	public ASMModel getBuiltInMetaModel(String name) {
 		ASMModel ret = null;
 
 		return ret;
