@@ -13,7 +13,6 @@ package org.eclipse.m2m.atl.engine.vm;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -65,38 +64,38 @@ public abstract class AtlModelHandler {
 	public static AtlModelHandler getDefault(String repository) {
 		AtlModelHandler ret = (AtlModelHandler)defaultModelHandlers.get(repository);
 		if (ret == null) {
-			IExtensionRegistry registry = Platform.getExtensionRegistry();
-			if (registry == null) {
+				IExtensionRegistry registry = Platform.getExtensionRegistry();
+				if (registry == null) {
 				throw new RuntimeException(
 						"Eclipse platform extension registry not found. Dynamic repository lookup does not work outside Eclipse."); //$NON-NLS-1$
-			}
+				}
 
-			IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.vm.modelhandler"); //$NON-NLS-1$
+				IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.vm.modelhandler"); //$NON-NLS-1$
 
-			IExtension[] extensions = point.getExtensions();
-			extensions: for (int i = 0; i < extensions.length; i++) {
-				IConfigurationElement[] elements = extensions[i].getConfigurationElements();
-				for (int j = 0; j < elements.length; j++) {
-					try {
-						if (elements[j].getAttribute("name").equals(repository)) { //$NON-NLS-1$
-							ret = (AtlModelHandler)elements[j].createExecutableExtension("class"); //$NON-NLS-1$
-							defaultModelHandlers.put(repository, ret);
-							break extensions;
+				IExtension[] extensions = point.getExtensions();
+				extensions: for (int i = 0; i < extensions.length; i++) {
+					IConfigurationElement[] elements = extensions[i].getConfigurationElements();
+					for (int j = 0; j < elements.length; j++) {
+						try {
+							if (elements[j].getAttribute("name").equals(repository)) { //$NON-NLS-1$
+								ret = (AtlModelHandler)elements[j].createExecutableExtension("class"); //$NON-NLS-1$
+								defaultModelHandlers.put(repository, ret);
+								break extensions;
+							}
+						} catch (CoreException e) {
+							ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 						}
-					} catch (CoreException e) {
-						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 				}
-			}
 		}
 
-		if (ret == null) {
+			if (ret == null) {
 			throw new RuntimeException(
 					"Model handler for " + repository + " not found. You may need to install a model handler plugin."); //$NON-NLS-1$
 		}
+
 		return ret;
 	}
-
 
 	/**
 	 * Returns the model handlers ids.
@@ -259,7 +258,7 @@ public abstract class AtlModelHandler {
 	 *            the given name
 	 * @return the built in metamodel with the given name
 	 */
-	public abstract ASMModel getBuiltInMetaModel(String name, URL mmurl);
+	public abstract ASMModel getBuiltInMetaModel(String name);
 
 	/**
 	 * Returns true if the model is handled by the current model handler.
