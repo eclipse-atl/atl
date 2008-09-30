@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.11 2008/09/22 15:28:51 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.12 2008/09/30 14:19:20 fallilaire Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -44,7 +44,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.Tuple;
 import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 
 /**
- * ASM commands sheduler.
+ * ASM commands scheduler.
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
