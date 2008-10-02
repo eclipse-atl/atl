@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -115,21 +119,24 @@ public final class AtlParser {
 	 * @return An array of EObject, the first one being an ATL!Unit and the following ones Problem!Problem.
 	 */
 	public EObject[] parseWithProblems(InputStream in) {
+		return convertToEmf(parseToModelWithProblems(in), "Unit");
+	}
+	
+	private static EObject[] convertToEmf(ASMModel[] parsed, String rootTypeName) {
 		EObject[] ret = null;
 		EObject retUnit = null;
 		Collection pbs = null;
 
-		ASMModel[] parsed = parseToModelWithProblems(in);
 		ASMModel atlmodel = parsed[0];
 		ASMModel problems = parsed[1];
 		if (atlmodel instanceof ASMEMFModel) {
-			Collection modules = atlmodel.getElementsByType("Unit"); //$NON-NLS-1$
+			Collection modules = atlmodel.getElementsByType(rootTypeName); //$NON-NLS-1$
 			if (modules.size() > 0) {
 				retUnit = ((ASMEMFModelElement)modules.iterator().next()).getObject();
 			}
 			pbs = problems.getElementsByType("Problem"); //$NON-NLS-1$
 		} else {
-			Object o = atlmodel.getElementsByType("Unit"); //$NON-NLS-1$
+			Object o = atlmodel.getElementsByType(rootTypeName); //$NON-NLS-1$
 			ATLPlugin.info(o.toString());
 		}
 
@@ -146,5 +153,59 @@ public final class AtlParser {
 
 		return ret;
 	}
-	
+
+	/**
+	 * ATL injector launcher.
+	 * 
+	 * @param expression
+	 *            an ATL expression
+	 * @param expressionType
+	 *            the ATL expression type the Syntax Element parsed
+	 * @param hideErrors
+	 *            disable standard output in order to hide errors
+	 * @return outputs models
+	 */
+	public EObject[] parseExpression(String expression, String expressionType, boolean hideErrors) {
+		ASMModel[] ret = new ASMModel[2];
+		ASMModel atlmm = amh.getAtl();
+
+		try {
+			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp", //$NON-NLS-1$ //$NON-NLS-2$
+					(ASMEMFModel)atlmm, null);
+			ret[1] = amh.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
+			TCSInjector ebnfi = new TCSInjector();
+			Map params = new HashMap();
+			if (expressionType == null) {
+				params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
+			} else {
+				params.put("name", "ATL-" + expressionType); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			params.put("problems", ret[1]); //$NON-NLS-1$
+
+			if (hideErrors) {
+				// desactivate standard output
+				OutputStream stream = new ByteArrayOutputStream();
+				PrintStream out = new PrintStream(stream);
+				PrintStream origOut = System.out;
+				System.setOut(out);
+
+				// launch parsing
+				ebnfi.inject(ret[0], new ByteArrayInputStream(expression.getBytes()), params);
+
+				// reactivate standard output
+				System.setOut(origOut);
+				stream.close();
+				out.close();
+			} else {
+				// launch parsing
+				ebnfi.inject(ret[0], new ByteArrayInputStream(expression.getBytes()), params);
+			}
+
+		} catch (Exception e) {
+			// nothing : silent incorrect expressions parsing
+		}
+		String rootTypeName = Character.toUpperCase(expressionType.charAt(0)) + expressionType.substring(1);
+		return convertToEmf(ret, rootTypeName);
+	}
+
 }
