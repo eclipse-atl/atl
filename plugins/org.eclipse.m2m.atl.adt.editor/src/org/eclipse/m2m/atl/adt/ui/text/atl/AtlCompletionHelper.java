@@ -10,23 +10,10 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text.atl;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.gmt.tcs.injector.TCSInjector;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
-import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
-import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
-import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
+import org.eclipse.m2m.atl.engine.AtlParser;
 
 /**
  * Completion helper, dedicated to document parsing.
@@ -40,7 +27,7 @@ public class AtlCompletionHelper {
 
 	/** Context indicators. */
 	private static final String[] HIGH_LEVEL_KEYWORDS = {"rule", "helper", //$NON-NLS-1$ //$NON-NLS-2$
-			"from", "to", "do", "using", "module", }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"from", "to", "do", "using", "module",}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 	/** Observed document. */
 	private IDocument document;
@@ -90,17 +77,8 @@ public class AtlCompletionHelper {
 		}
 
 		// code fragment parsing
-		ASMModel[] ret = AtlCompletionHelper.parseExpression(text, lastParsingKeyWord);
-		ASMEMFModel atlmodel = (ASMEMFModel)ret[0];
-
-		// retrieves root element
-		EObject emfRoot = null;
-		Set modules = atlmodel.getElementsByType(Character.toUpperCase(lastParsingKeyWord.charAt(0))
-				+ lastParsingKeyWord.substring(1));
-		if (modules.size() > 0) {
-			emfRoot = ((ASMEMFModelElement)modules.iterator().next()).getObject();
-		}
-		AtlModelAnalyser res = new AtlModelAnalyser(this, emfRoot, begin, getLastKeyWord(offset
+		EObject[] ret = AtlParser.getDefault().parseExpression(text, lastParsingKeyWord, true);
+		AtlModelAnalyser res = new AtlModelAnalyser(this, ret[0], begin, getLastKeyWord(offset
 				- prefix.length()), offset);
 
 		return res;
@@ -131,53 +109,6 @@ public class AtlCompletionHelper {
 
 		}
 		return null;
-	}
-
-	/**
-	 * ATL injector launcher.
-	 * 
-	 * @param expression an ATL expression
-	 * @param expressionType the ATL expression type
-	 *            the Syntax Element parsed
-	 * @return outputs models
-	 */
-	private static ASMModel[] parseExpression(String expression, String expressionType) {
-		ASMModel[] ret = new ASMModel[2];
-		AtlModelHandler amh = AtlModelHandler.getDefault(AtlEMFModelHandler.ID);
-		ASMModel atlmm = amh.getAtl();
-		ASMModel pbmm = amh.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
-
-		try {
-			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp", //$NON-NLS-1$ //$NON-NLS-2$
-					(ASMEMFModel)atlmm, null);
-			ret[1] = amh.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
-			TCSInjector ebnfi = new TCSInjector();
-			Map params = new HashMap();
-			if (expressionType == null) {
-				params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
-			} else {
-				params.put("name", "ATL-" + expressionType); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-			params.put("problems", ret[1]); //$NON-NLS-1$
-
-			// desactivate standard output
-			OutputStream stream = new ByteArrayOutputStream();
-			PrintStream out = new PrintStream(stream);
-			PrintStream origOut = System.out;
-			System.setOut(out);
-
-			// launch parsing
-			ebnfi.inject(ret[0], new ByteArrayInputStream(expression.getBytes()), params);
-
-			// reactivate standard output
-			System.setOut(origOut);
-			stream.close();
-			out.close();
-
-		} catch (Exception e) {
-			// nothing : silent incorrect expressions parsing
-		}
-		return ret;
 	}
 
 	/**
