@@ -35,7 +35,6 @@ import org.eclipse.m2m.atl.adt.debug.core.AtlBreakpoint;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.engine.AtlNbCharFile;
-import org.eclipse.m2m.atl.engine.AtlParser;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IEditorInput;
@@ -447,9 +446,8 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * Sets the Unit of the input of the tree Viewer.
 	 */
 	public void setUnit() {
+		EObject eo = ((AtlEditor)textEditor).getSourceManager().getModel();
 		String newContent = ((AtlEditor)textEditor).getDocumentProviderContent();
-		AtlParser parser = AtlParser.getDefault();
-		EObject eo = parser.parse(toInputStream(newContent));
 		if (eo != null) {
 			root.setUnit(eo);
 			if (!inputSet) {

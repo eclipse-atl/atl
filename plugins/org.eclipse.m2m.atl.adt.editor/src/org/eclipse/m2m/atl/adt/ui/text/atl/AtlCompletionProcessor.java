@@ -29,6 +29,7 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
+import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 import org.eclipse.ui.IEditorPart;
 
 /**
@@ -74,9 +75,6 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 	 *      int)
 	 */
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer refViewer, int documentOffset) {
-		if (!fDatasource.initialized()) {
-			fDatasource.updateDataSource();
-		}
 		try {
 			List listProposals = new ArrayList();
 			fHelper.setDocument(refViewer.getDocument());
@@ -118,7 +116,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 		 * URIs completion
 		 */
 		if (analyser.getContext() == AtlModelAnalyser.NULL_CONTEXT) {
-			if (line.trim().startsWith("-- @" + AtlCompletionDataSource.URI_TAG)) { //$NON-NLS-1$
+			if (line.trim().startsWith("-- @" + AtlSourceManager.URI_TAG)) { //$NON-NLS-1$
 				if (prefix.indexOf("=") > -1) { //$NON-NLS-1$
 					if (prefix.split("=").length == 2) { //$NON-NLS-1$
 						String uriPrefix = prefix.split("=")[1]; //$NON-NLS-1$
@@ -154,7 +152,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 									oclIsKindOf(locatedElement, "OclModelElement")) { //$NON-NLS-1$
 								if (analyser.getLostType("InPattern") != null) { //$NON-NLS-1$
 									return fDatasource.getMetaElementsProposals(prefix, offset,
-											AtlCompletionDataSource.INPUT_METAMODELS);
+											AtlSourceManager.INPUT_METAMODELS);
 								}
 							}
 							break;
@@ -166,7 +164,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 							if ((oclIsKindOf(locatedElement, "OclModel") || oclIsKindOf(locatedElement, "OclModelElement")) || //$NON-NLS-1$ //$NON-NLS-2$
 									(oclIsKindOf(locatedElement, "SimpleOutPatternElement"))) { //$NON-NLS-1$
 								return fDatasource.getMetaElementsProposals(prefix, offset,
-										AtlCompletionDataSource.OUTPUT_METAMODELS);
+										AtlSourceManager.OUTPUT_METAMODELS);
 							} else if (oclIsKindOf(locatedElement, "OutPattern")) { //$NON-NLS-1$
 								if (analyser.getLostType("Binding") != null) { //$NON-NLS-1$
 									EObject simpleOutPatternElement = analyser

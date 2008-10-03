@@ -13,7 +13,7 @@ package org.eclipse.m2m.atl.adt.ui.text.atl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.m2m.atl.engine.AtlParser;
+import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
  * Completion helper, dedicated to document parsing.

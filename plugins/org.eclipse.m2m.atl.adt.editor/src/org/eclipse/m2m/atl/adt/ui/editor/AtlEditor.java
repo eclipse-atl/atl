@@ -68,10 +68,9 @@ import org.eclipse.m2m.atl.adt.ui.text.AtlPairMatcher;
 import org.eclipse.m2m.atl.adt.ui.text.AtlSourceViewerConfiguration;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlLexems;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlPartitions;
-import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionDataSource;
-import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionProcessor;
 import org.eclipse.m2m.atl.adt.ui.viewsupport.AtlEditorTickErrorUpdater;
 import org.eclipse.m2m.atl.engine.AtlNbCharFile;
+import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.VerifyKeyListener;
@@ -114,6 +113,8 @@ public class AtlEditor extends TextEditor {
 	private BracketInserter fBracketInserter = new BracketInserter();
 
 	private TabConverter fTabConverter;
+
+	private AtlSourceManager sourceManager;
 	
 	private class BracketInserter implements VerifyKeyListener, ILinkedModeListener {
 		private final String category = toString();
@@ -714,6 +715,7 @@ public class AtlEditor extends TextEditor {
 		super();
 		setPreferenceStore(AtlUIPlugin.getDefault().getPreferenceStore());
 		tickErrorUpdater = new AtlEditorTickErrorUpdater(this);
+		sourceManager = new AtlSourceManager();
 	}
 
 	/*
@@ -868,14 +870,17 @@ public class AtlEditor extends TextEditor {
 	 */
 	public void doSave(IProgressMonitor progressMonitor) {
 		super.doSave(progressMonitor);
-		if (outlinePage != null)
+		sourceManager.updateDataSource(getDocumentProviderContent());
+		if (outlinePage != null) {
 			outlinePage.setUnit();
-		AtlSourceViewerConfiguration sourceViewerConfiguration = (AtlSourceViewerConfiguration)getSourceViewerConfiguration();
-		AtlCompletionProcessor processor = (AtlCompletionProcessor)sourceViewerConfiguration.getFProcessor();
-		AtlCompletionDataSource datasource = processor.getCompletionDatasource();
-		if (datasource != null) {
-			datasource.updateDataSource();
 		}
+	}
+
+	public AtlSourceManager getSourceManager() {
+		if (!sourceManager.initialized()) {
+			sourceManager.updateDataSource(getDocumentProviderContent());
+		}
+		return sourceManager;
 	}
 
 	protected void doSelectionChanged(SelectionChangedEvent event) {
