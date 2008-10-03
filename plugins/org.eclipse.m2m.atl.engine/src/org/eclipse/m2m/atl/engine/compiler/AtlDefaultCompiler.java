@@ -22,8 +22,8 @@ import java.util.Map;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
 import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
-import org.eclipse.m2m.atl.engine.AtlParser;
 import org.eclipse.m2m.atl.engine.ProblemConverter;
+import org.eclipse.m2m.atl.engine.parser.AtlParser;
 import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
@@ -129,7 +129,7 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	private EObject[] internalCompile(InputStream in, String outputFileName) {
 		EObject[] ret = null;
 		// Parsing + Semantic Analysis
-		ASMModel[] parsed = AtlParser.getDefault().parseToModelWithProblems(in);
+		ASMModel[] parsed = AtlParser.getDefault().parseToModelWithProblems(in, true);
 		ASMModel atlmodel = parsed[0];
 		ASMModel problems = parsed[1];
 
