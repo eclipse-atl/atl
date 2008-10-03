@@ -9,18 +9,17 @@
  *    Mikael Barbero (INRIA) - initial API and implementation
  *    Freddy Allilaire (INRIA)
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
+ *    William Piers (Obeo)
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.launching;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,12 +42,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.m2m.atl.ATLPlugin;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
-import org.eclipse.m2m.atl.engine.AtlParser;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMCollection;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclUndefined;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
+import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
@@ -79,6 +73,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class MainAtlTab extends AbstractLaunchConfigurationTab {
 
@@ -156,6 +151,8 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	private Pattern moduleName = Pattern.compile("^.*/(.*)\\.a(tl|sm)$"); //$NON-NLS-1$
 
 	private Map asmFileCache = new HashMap();
+
+	private Map metamodelLocations = new HashMap();
 
 	private ILaunchConfiguration launchConfiguration;
 
@@ -873,6 +870,12 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		final Text metamodelLocation = new Text(parent, SWT.BORDER);
 		thisGroupWidgets.put("metamodelLocation", metamodelLocation); //$NON-NLS-1$
 		metamodelLocation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1));
+		if (metamodelLocations != null) {
+			String defaultLocation = (String)metamodelLocations.get(metamodelName);
+			if (defaultLocation != null) {
+				metamodelLocation.setText(defaultLocation);
+			}
+		}
 
 		final Button remove = new Button(parent, SWT.NULL);
 		remove.setText("X"); //$NON-NLS-1$
@@ -1143,80 +1146,28 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	private void getModelsFromATLFile(IFile file) {
 		final boolean debug = false;
 
-		try {
-			ASMModel atlmodel;
-			if (asmFileCache.containsKey(file)) {
-				atlmodel = (ASMModel)asmFileCache.get(file);
-				if (debug) {
-					ATLPlugin.info("Cached ASMModel found for " + file.toString()); //$NON-NLS-1$
-				}
-			} else {
-				InputStream input = file.getContents();
-				atlmodel = AtlParser.getDefault().parseToModel(input);
-				input.close();
-				asmFileCache.put(file, atlmodel);
-				if (debug) {
-					ATLPlugin.info("Loaded ASMModel from " + file.toString()); //$NON-NLS-1$
-				}
+		AtlSourceManager sourceManager;
+		if (asmFileCache.containsKey(file)) {
+			sourceManager = (AtlSourceManager)asmFileCache.get(file);
+			if (debug) {
+				ATLPlugin.info("Cached ATL File found for " + file.toString()); //$NON-NLS-1$
 			}
+		} else {
+			sourceManager = new AtlSourceManager();
+			sourceManager.updateDataSource(file);
+			asmFileCache.put(file, sourceManager);
+			if (debug) {
+				ATLPlugin.info("Loaded ATL File from " + file.toString()); //$NON-NLS-1$
+			}
+		}
 
-			Set module = atlmodel.getElementsByType("Module"); //$NON-NLS-1$
-			Set query = atlmodel.getElementsByType("Query"); //$NON-NLS-1$
-
-			if (module.size() > 0) {
-				ASMModelElement atlModule = (ASMModelElement)module.toArray()[0];
-
-				Iterator inModelsIt = ((ASMCollection)atlModule.get(null, "inModels")).iterator(); //$NON-NLS-1$
-				Iterator outModelsIt = ((ASMCollection)atlModule.get(null, "outModels")).iterator(); //$NON-NLS-1$
-				Iterator librariesIt = ((ASMCollection)atlModule.get(null, "libraries")).iterator(); //$NON-NLS-1$
-
-				while (inModelsIt.hasNext()) {
-					ASMModelElement current = (ASMModelElement)inModelsIt.next();
-					if (!(current.get(null, "metamodel") instanceof ASMOclUndefined)) { //$NON-NLS-1$
-						String modelName = ((ASMString)current.get(null, "name")).getSymbol(); //$NON-NLS-1$
-						String metamodelName = ((ASMString)current.get(null, "metamodel").get(null, "name")).getSymbol(); //$NON-NLS-1$ //$NON-NLS-2$
-						if (!sourceMetamodelsFromModule.contains(metamodelName)) {
-							sourceMetamodelsFromModule.add(metamodelName);
-						}
-						if (!sourceModelsFromModule.contains(modelName)) {
-							sourceModelsFromModule.add(modelName);
-							sourceC2RelationshipFromModule.put(modelName, metamodelName);
-						}
-					}
-				}
-
-				while (outModelsIt.hasNext()) {
-					ASMModelElement current = (ASMModelElement)outModelsIt.next();
-					if (!(current.get(null, "metamodel") instanceof ASMOclUndefined)) { //$NON-NLS-1$
-						String modelName = ((ASMString)current.get(null, "name")).getSymbol(); //$NON-NLS-1$
-						String metamodelName = ((ASMString)current.get(null, "metamodel").get(null, "name")).getSymbol(); //$NON-NLS-1$ //$NON-NLS-2$
-						if (!targetMetamodelsFromModule.contains(metamodelName)) {
-							targetMetamodelsFromModule.add(metamodelName);
-						}
-						if (!targetModelsFromModule.contains(modelName)) {
-							targetModelsFromModule.add(modelName);
-							targetC2RelationshipFromModule.put(modelName, metamodelName);
-						}
-					}
-				}
-
-				while (librariesIt.hasNext()) {
-					ASMModelElement current = (ASMModelElement)librariesIt.next();
-					String library = ((ASMString)current.get(null, "name")).getSymbol(); //$NON-NLS-1$
-					if (nonLibraries.contains(library)) {
-						continue;
-					}
-					if (!librariesFromModule.contains(library)) {
-						librariesFromModule.add(library);
-					}
-				}
-			} else if (query.size() > 0) {
-				ASMModelElement atlQuery = (ASMModelElement)query.toArray()[0];
-				Set models = atlQuery.getModel().getElementsByType("OclModel"); //$NON-NLS-1$
-				for (Iterator it = models.iterator(); it.hasNext();) {
-					ASMModelElement model = (ASMModelElement)it.next();
-					String modelName = "IN"; //$NON-NLS-1$
-					String metamodelName = ((ASMString)model.get(null, "name")).getSymbol(); //$NON-NLS-1$
+		switch (sourceManager.getATLFileType()) {
+			case AtlSourceManager.ATL_FILE_TYPE_MODULE:
+				for (Iterator iterator = sourceManager.getInputModels().entrySet().iterator(); iterator
+						.hasNext();) {
+					Entry entry = (Entry)iterator.next();
+					String modelName = (String)entry.getKey();
+					String metamodelName = (String)entry.getValue();
 					if (!sourceMetamodelsFromModule.contains(metamodelName)) {
 						sourceMetamodelsFromModule.add(metamodelName);
 					}
@@ -1225,11 +1176,21 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 						sourceC2RelationshipFromModule.put(modelName, metamodelName);
 					}
 				}
-
-				Iterator librariesIt = ((ASMCollection)atlQuery.get(null, "libraries")).iterator(); //$NON-NLS-1$
-				while (librariesIt.hasNext()) {
-					ASMModelElement current = (ASMModelElement)librariesIt.next();
-					String library = ((ASMString)current.get(null, "name")).getSymbol(); //$NON-NLS-1$
+				for (Iterator iterator = sourceManager.getOutputModels().entrySet().iterator(); iterator
+						.hasNext();) {
+					Entry entry = (Entry)iterator.next();
+					String modelName = (String)entry.getKey();
+					String metamodelName = (String)entry.getValue();
+					if (!targetMetamodelsFromModule.contains(metamodelName)) {
+						targetMetamodelsFromModule.add(metamodelName);
+					}
+					if (!targetModelsFromModule.contains(modelName)) {
+						targetModelsFromModule.add(modelName);
+						targetC2RelationshipFromModule.put(modelName, metamodelName);
+					}
+				}
+				for (Iterator iterator = sourceManager.getLibrariesImports().iterator(); iterator.hasNext();) {
+					String library = (String)iterator.next();
 					if (nonLibraries.contains(library)) {
 						continue;
 					}
@@ -1237,12 +1198,35 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 						librariesFromModule.add(library);
 					}
 				}
-			}
-		} catch (IOException e1) {
-			ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
-		} catch (CoreException e1) {
-			ATLPlugin.log(Level.WARNING, e1.getLocalizedMessage(), e1);
+				break;
+			case AtlSourceManager.ATL_FILE_TYPE_QUERY:
+				for (Iterator iterator = sourceManager.getInputModels().entrySet().iterator(); iterator
+						.hasNext();) {
+					Entry entry = (Entry)iterator.next();
+					String modelName = (String)entry.getKey();
+					String metamodelName = (String)entry.getValue();
+					if (!sourceMetamodelsFromModule.contains(metamodelName)) {
+						sourceMetamodelsFromModule.add(metamodelName);
+					}
+					if (!sourceModelsFromModule.contains(modelName)) {
+						sourceModelsFromModule.add(modelName);
+						sourceC2RelationshipFromModule.put(modelName, metamodelName);
+					}
+				}
+				for (Iterator iterator = sourceManager.getLibrariesImports().iterator(); iterator.hasNext();) {
+					String library = (String)iterator.next();
+					if (nonLibraries.contains(library)) {
+						continue;
+					}
+					if (!librariesFromModule.contains(library)) {
+						librariesFromModule.add(library);
+					}
+				}
+				break;
+			default:
+				break;
 		}
+		metamodelLocations = sourceManager.getMetamodelLocations();
 	}
 
 }
