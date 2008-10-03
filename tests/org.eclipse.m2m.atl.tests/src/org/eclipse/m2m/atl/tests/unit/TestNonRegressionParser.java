@@ -17,7 +17,7 @@ import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.ATLPlugin;
-import org.eclipse.m2m.atl.engine.AtlParser;
+import org.eclipse.m2m.atl.engine.parser.AtlParser;
 import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
 import org.eclipse.m2m.atl.tests.util.ModelUtils;
