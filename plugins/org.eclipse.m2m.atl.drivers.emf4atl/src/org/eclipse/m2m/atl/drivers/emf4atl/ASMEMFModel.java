@@ -12,12 +12,14 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.drivers.emf4atl;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -285,8 +287,13 @@ public class ASMEMFModel extends ASMModel {
 					extent = r;
 				}
 			}
-			if (adapt)
-				ml.adaptMetamodel(this, (ASMEMFModel)getMetamodel());
+			if (adapt) {
+				try {
+					ml.adaptMetamodel(this, (ASMEMFModel)getMetamodel());
+				} catch (IOException e) {
+					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				}
+			}
 		}
 		return extent;
 	}

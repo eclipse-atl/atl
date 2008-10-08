@@ -35,6 +35,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -59,6 +60,8 @@ import org.osgi.framework.Bundle;
 public class EMFModelLoader extends ModelLoader {
 	
 	protected static Bundle bundle = Platform.getBundle("org.eclipse.m2m.atl.drivers.emf4atl"); //$NON-NLS-1$
+	
+	protected static URI mofURI = EcorePackage.eINSTANCE.eResource().getURI();
 
 	protected ResourceSet resourceSet;
 
@@ -131,15 +134,6 @@ public class EMFModelLoader extends ModelLoader {
 
 	public ASMModel getATL() {
 		return getBuiltInMetaModel("ATL"); //$NON-NLS-1$
-//		if (atlmm == null) {
-//			final URL atlurl = EMFModelLoader.class.getResource("resources/ATL-0.2.ecore");//$NON-NLS-1$
-//			try {
-//				atlmm = loadModel("ATL", getMOF(), atlurl.openStream());//$NON-NLS-1$
-//			} catch (Exception e) {
-//				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			}
-//		}
-//		return atlmm;
 	}
 	
 	/**
@@ -162,33 +156,31 @@ public class EMFModelLoader extends ModelLoader {
 	 *
 	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#loadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.InputStream)
 	 */
-	public ASMModel loadModel(String name, ASMModel metamodel, InputStream in) {
+	public ASMModel loadModel(String name, ASMModel metamodel, InputStream in)
+			throws IOException {
 		ASMEMFModel ret = null;
 		
-		try {
-	        final Resource extent = resourceSet.createResource(URI.createURI(name));
-			extent.load(in, resourceSet.getLoadOptions());
-	        ret = createASMEMFModel(name, extent, metamodel, true);
-    		adaptMetamodel(ret, (ASMEMFModel)metamodel);
-    		ret.setIsTarget(false);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
+        final Resource extent = resourceSet.createResource(URI.createURI(name));
+		extent.load(in, resourceSet.getLoadOptions());
+        ret = createASMEMFModel(name, extent, metamodel, true);
+   		adaptMetamodel(ret, (ASMEMFModel)metamodel);
+   		ret.setIsTarget(false);
 		
 		loadedModels.put(name, ret);
 		return ret;
 	}
 	
-	public ASMEMFModel loadModel(String name, ASMModel metamodel, URI uri) {
+	public ASMEMFModel loadModel(String name, ASMModel metamodel, URI uri)
+			throws IOException {
 		ASMEMFModel ret = null;
 		
-		try {
-            Resource extent = resourceSet.getResource(uri, true);
+		if (mofURI.equals(uri)) {
+			ret = (ASMEMFModel) getMOF();
+		} else {
+			final Resource extent = resourceSet.getResource(uri, true);
 			ret = createASMEMFModel(name, extent, metamodel, true);
     		adaptMetamodel(ret, (ASMEMFModel)metamodel);
 			ret.setIsTarget(false);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		loadedModels.put(name, ret);
@@ -207,8 +199,12 @@ public class EMFModelLoader extends ModelLoader {
 			if(href.startsWith("uri:")) {
 				//only initialise on demand (after loading instance of this metamodel)
 				String uri = href.substring(4);
-				ret = createASMEMFModel(name, null, metamodel, false);
-				ret.resolveURI = uri;
+				if (mofURI.toString().equals(uri)) {
+					ret = (ASMEMFModel) getMOF();
+				} else {
+					ret = createASMEMFModel(name, null, metamodel, false);
+					ret.resolveURI = uri;
+				}
 			} else {
 				ret = loadModel(name, metamodel, URI.createURI(href));
 			}
@@ -232,12 +228,8 @@ public class EMFModelLoader extends ModelLoader {
 	public ASMModel newModel(String name, String uri, ASMModel metamodel) {
 		ASMEMFModel ret = null;
 		
-		try {
-	        Resource extent = resourceSet.createResource(URI.createURI(uri));
-	        ret = createASMEMFModel(name, extent, metamodel, true);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
+        Resource extent = resourceSet.createResource(URI.createURI(uri));
+        ret = createASMEMFModel(name, extent, metamodel, true);
 
 		loadedModels.put(name, ret);
 		return ret;
@@ -255,8 +247,6 @@ public class EMFModelLoader extends ModelLoader {
 				resource = bundle.getResource("resources/" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
-//			URL mmurl = EMFModelLoader.class.getResource("resources/" + name + ".ecore");//$NON-NLS-1$//$NON-NLS-2$
-			
 			try {
 				ret = loadModel(name, getMOF(), resource.openStream());
 			} catch (IOException e) {
@@ -297,7 +287,8 @@ public class EMFModelLoader extends ModelLoader {
 	 *
 	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#realSave(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String)
 	 */
-	protected void realSave(ASMModel model, String href) {
+	protected void realSave(ASMModel model, String href)
+			throws IOException {
 		Resource r = ((ASMEMFModel)model).getExtent();
 		if (href != null) {
 			r.setURI(URI.createURI(href));
@@ -327,11 +318,9 @@ public class EMFModelLoader extends ModelLoader {
 			}
 		} catch (IllegalStateException e) {
 			// workspace is closed
-			logger.log(Level.FINE, e.getLocalizedMessage(), e);
+			throw new IOException(e.getLocalizedMessage());
 		} catch (CoreException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		} catch (IOException e1) {
-			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			throw new IOException(e.getLocalizedMessage());
 		}
 	}
 	
@@ -340,8 +329,10 @@ public class EMFModelLoader extends ModelLoader {
 	 * and primitive datatypes are mapped to Java types.
 	 * @param model
 	 * @param metamodel
+	 * @throws IOException
 	 */
-	protected void adaptMetamodel(ASMEMFModel model, ASMEMFModel metamodel) {
+	protected void adaptMetamodel(ASMEMFModel model, ASMEMFModel metamodel)
+			throws IOException {
 		final ASMModel mofmm = model.getModelLoader().getMOF();
 		if (metamodel == mofmm) {
 			for (Iterator i = model.getElementsByType("EPackage").iterator(); i
@@ -352,6 +343,8 @@ public class EMFModelLoader extends ModelLoader {
 				if (nsURI == null) {
 					nsURI = p.getName();
 					p.setNsURI(nsURI);
+				} else if (mofURI.toString().equals(nsURI)) {
+					throw new IOException("Cannot overload Ecore");
 				}
 				synchronized (resourceSet) {
 					resourceSet.getPackageRegistry().put(nsURI, p);

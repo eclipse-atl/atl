@@ -95,7 +95,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		// EClass
 		modelElements.put(object, this);
 
-		EStructuralFeature sfName = object.eClass().getEStructuralFeature("name");
+		final EStructuralFeature sfName = object.eClass().getEStructuralFeature("name");
 		if (sfName != null) {
 			String name = null;
 			try {
@@ -119,7 +119,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		// Supertypes
 		if (object instanceof EClass) {
 			addSupertype(ASMOclType.myType);
-			EClass cl = (EClass)object;
+			final EClass cl = (EClass)object;
 			for (Iterator i = cl.getESuperTypes().iterator(); i.hasNext();) {
 				EClass s = (EClass)i.next();
 				addSupertype(((ASMEMFModel)model).getASMModelElement(s));
@@ -139,8 +139,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 		boolean ret = false;
 
 		if (other instanceof ASMEMFModelElement) {
-			EObject o = ((ASMEMFModelElement)other).object;
-			EObject t = object;
+			final EObject o = ((ASMEMFModelElement)other).object;
+			final EObject t = object;
 
 			if ((o instanceof EClass) && (t instanceof EClass)) {
 				try {
@@ -404,8 +404,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 	 *         reside
 	 */
 	private ASMOclAny eObjectToASM(StackFrame frame, EObject value) {
-		ASMEMFModel model = (ASMEMFModel)getModel();
-		Resource valueExtent = value.eResource();
+		final ASMEMFModel model = (ASMEMFModel)getModel();
+		final Resource valueExtent = value.eResource();
 		if (model.getExtent().equals(valueExtent)) {
 			return model.getASMModelElement(value);
 		} else {
