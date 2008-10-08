@@ -65,7 +65,8 @@ public class MDRModelLoader extends ModelLoader {
 //		rep.getExtent("MOF");
 	}
 	
-	public ASMModel loadModel(String name, ASMModel metamodel, InputStream in) {
+	public ASMModel loadModel(String name, ASMModel metamodel, InputStream in)
+			throws IOException {
 		ASMMDRModel ret = (ASMMDRModel) newModel(name, metamodel);
 
 		try {
@@ -93,8 +94,8 @@ public class MDRModelLoader extends ModelLoader {
 			
 			ret.elementByXmiId = elementByXmiId;
 			ret.xmiIdByElement = xmiIdByElement;
-		} catch(Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		} catch(MalformedXMIException e) {
+			throw new IOException(e.getLocalizedMessage());
 		}
 		ret.setIsTarget(false);
 		ret.getAllAcquaintances();
@@ -102,15 +103,12 @@ public class MDRModelLoader extends ModelLoader {
 		return ret;
 	}
 
-	protected ASMModel realLoadModel(String name, ASMModel metamodel, String href) {
+	protected ASMModel realLoadModel(String name, ASMModel metamodel, String href)
+			throws IOException {
 		ASMModel ret = null;
 
-		try {
-			final InputStream in = new File(href).toURI().toURL().openStream();
-			ret = loadModel(name, metamodel, in);
-		} catch(Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
+		final InputStream in = new File(href).toURI().toURL().openStream();
+		ret = loadModel(name, metamodel, in);
 
 		return ret;
 	}
