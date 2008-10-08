@@ -108,9 +108,10 @@ public final class ServiceTransformationUtil {
 	 * @param pluginId
 	 *            the plugin id
 	 * @return the model
+	 * @throws IOException 
 	 */
 	public static ASMModel loadModel(String modelName, ASMModel metamodel, ModelLoader ml, String path,
-			String nsUri, boolean isM3, boolean inWorkspace, String pluginId) throws ServiceException {
+			String nsUri, boolean isM3, boolean inWorkspace, String pluginId) throws ServiceException, IOException {
 		ASMModel ret = null;
 		
 		if (ml instanceof EMFModelLoader) {

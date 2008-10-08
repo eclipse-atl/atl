@@ -29,7 +29,6 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMSequence;
 import org.eclipse.m2m.atl.service.core.configuration.ComposedTransformationConfiguration;
 import org.eclipse.m2m.atl.service.core.configuration.SingleTransformationConfiguration;
-import org.eclipse.m2m.atl.service.core.exception.ServiceException;
 import org.eclipse.m2m.atl.service.core.nestedElements.Transformation;
 
 /**
@@ -263,7 +262,7 @@ public final class ServiceExtensionManager {
 				}
 
 			}
-		} catch (ServiceException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

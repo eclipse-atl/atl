@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.service.core.configuration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -91,7 +92,7 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 			try {
 				models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), ml, path,
 						null, false, pluginId)); //$NON-NLS-1$
-			} catch (ServiceException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -114,7 +115,7 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 	public void addMetamodel(String name, String path, String nsUri, boolean isM3, ModelLoader ml) {
 		try {
 			models.put(name, new Model(name, ml.getMOF(), ml, path, nsUri, isM3, pluginId));
-		} catch (ServiceException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -159,11 +160,12 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 
 	/**
 	 * {@inheritDoc}
+	 * @throws IOException 
 	 * 
 	 * @see org.eclipse.m2m.atl.service.core.configuration.TransformationConfiguration#execute(java.lang.String,
 	 *      java.lang.String)
 	 */
-	public void execute(String pathFolder, String pathInModel) throws ServiceException {
+	public void execute(String pathFolder, String pathInModel) throws ServiceException, IOException {
 		for (Iterator it = transformations.iterator(); it.hasNext();) {
 			Transformation t = (Transformation)it.next();
 			if (t.getModelsNotPreloaded().size() == 1) {
@@ -196,8 +198,9 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 	 * @param pathInModel
 	 *            the model in path
 	 * @throws ServiceException
+	 * @throws IOException 
 	 */
-	public void loadModel(Transformation transformation, String pathInModel) throws ServiceException {
+	public void loadModel(Transformation transformation, String pathInModel) throws ServiceException, IOException {
 		final Model m = (Model) models.get(transformation.getModelsNotPreloaded().get(0));
 		final Model mm = (Model) models.get(m.getMetamodelName());
 		final ModelLoader ml = AtlModelHandler.getDefault(m.getAtlModelHandlerId()).createModelLoader();
@@ -239,8 +242,9 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 	 *            location to save the created model
 	 * @param modelName
 	 *            modelName for the created model
+	 * @throws IOException 
 	 */
-	public void saveModel(String pathFolder, String modelName) throws ServiceException {
+	public void saveModel(String pathFolder, String modelName) throws ServiceException, IOException {
 		final ModelToSave mts = (ModelToSave)modelsToSave.get(modelName);
 		final Model currentOutModel = (Model)models.get(modelName);
 		final ModelLoader ml = currentOutModel.getAsmModel().getModelLoader();

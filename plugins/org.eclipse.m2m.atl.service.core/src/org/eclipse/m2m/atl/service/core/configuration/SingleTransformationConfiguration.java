@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.service.core.configuration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,18 +122,19 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 		try {
 			models.put(name, new Model(name, ml.getMOF(), ml, path, nsUri, isM3, pluginId));
 			transformation.addInModel(name, name);
-		} catch (ServiceException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * @throws IOException 
 	 * 
 	 * @see org.eclipse.m2m.atl.service.core.configuration.TransformationConfiguration#execute(java.lang.String,
 	 *      java.lang.String)
 	 */
-	public void execute(String pathFolder, String pathInModel) throws ServiceException {
+	public void execute(String pathFolder, String pathInModel) throws ServiceException, IOException {
 		Map params = Collections.EMPTY_MAP;
 		Map libs = new HashMap();
 		List superimps = new ArrayList();

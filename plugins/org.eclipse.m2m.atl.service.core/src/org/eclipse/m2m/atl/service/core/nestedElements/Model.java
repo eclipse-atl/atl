@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.service.core.nestedElements;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,10 +77,11 @@ public class Model {
 	 * @param pluginId
 	 *            the plugin id
 	 * @throws ServiceException
+	 * @throws IOException 
 	 */
 	public Model(String name, ASMModel metamodel, ModelLoader ml, String path,
 			String nsUri, boolean isM3, String pluginId)
-			throws ServiceException {
+			throws ServiceException, IOException {
 		this.asmModel = ServiceTransformationUtil.loadModel(name, metamodel,
 				ml, path, nsUri, isM3, false, pluginId);
 		this.name = name;
@@ -185,9 +187,10 @@ public class Model {
 	 * @param pluginId
 	 *            the plugin id
 	 * @throws ServiceException
+	 * @throws IOException 
 	 */
 	public void loadModel(String path, ASMModel asmMetamodel, ModelLoader ml,
-			String pluginId) throws ServiceException {
+			String pluginId) throws ServiceException, IOException {
 		if (this.injector == null) {
 			asmModel = ServiceTransformationUtil.loadModel(name, asmMetamodel,
 					ml, path, null, false, true, pluginId);
