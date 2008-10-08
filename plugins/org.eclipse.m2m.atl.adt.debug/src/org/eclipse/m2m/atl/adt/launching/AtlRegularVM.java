@@ -229,7 +229,7 @@ public class AtlRegularVM extends AtlVM {
 
 	private static ASMModel loadModel(ModelLoader ml, String mName,
 			ASMModel metamodel, String path) throws CoreException,
-			FileNotFoundException {
+			IOException {
 		ASMModel ret = null;
 
 		if (USE_EMF_URIS && (ml instanceof EMFModelLoader)) {
@@ -365,7 +365,8 @@ public class AtlRegularVM extends AtlVM {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (CoreException e1) {
 			logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
-
+		} catch (IOException e2) {
+			logger.log(Level.SEVERE, e2.getLocalizedMessage(), e2);
 		}
 		return toReturn;
 	}
