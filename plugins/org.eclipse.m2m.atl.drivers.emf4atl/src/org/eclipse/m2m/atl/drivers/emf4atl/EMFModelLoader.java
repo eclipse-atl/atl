@@ -65,7 +65,7 @@ public class EMFModelLoader extends ModelLoader {
 
 	protected ResourceSet resourceSet;
 
-	protected ASMModel atlmm = null;
+	protected static ASMModel atlmm = null;
 	
 	protected Map bimm = new HashMap();
 	
@@ -133,7 +133,10 @@ public class EMFModelLoader extends ModelLoader {
 	}
 
 	public ASMModel getATL() {
-		return getBuiltInMetaModel("ATL"); //$NON-NLS-1$
+		if (atlmm == null) {
+			atlmm = getBuiltInMetaModel("ATL"); //$NON-NLS-1$
+		}
+		return atlmm;
 	}
 	
 	/**
