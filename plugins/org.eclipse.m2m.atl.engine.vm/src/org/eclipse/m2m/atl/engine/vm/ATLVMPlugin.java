@@ -27,7 +27,7 @@ public class ATLVMPlugin extends Plugin {
 	public static final String LOGGER = "org.eclipse.m2m.atl";
 	
 	//TODO change level to Level.INFO for production use
-	public static final Level LOGLEVEL = Level.ALL;
+	public static final Level LOGLEVEL = Level.INFO;
 
 	//The shared instance.
 	private static ATLVMPlugin plugin;

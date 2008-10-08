@@ -20,6 +20,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
@@ -68,10 +69,11 @@ public abstract class ModelLoader {
 	 * @param metamodel The metamodel of the model to be loaded.
 	 * @param in The input stream from which to load.
 	 * @return The loaded ASMModel.
+	 * @throws IOException
 	 */
-	public abstract ASMModel loadModel(String name, ASMModel metamodel, InputStream in);
+	public abstract ASMModel loadModel(String name, ASMModel metamodel, InputStream in) throws IOException;
 
-	protected abstract ASMModel realLoadModel(String name, ASMModel metamodel, String href);
+	protected abstract ASMModel realLoadModel(String name, ASMModel metamodel, String href) throws IOException;
 
 	/**
 	 * Loads a model from the URI represented by href.
@@ -79,8 +81,9 @@ public abstract class ModelLoader {
 	 * @param metamodel The metamodel of the model to be loaded.
 	 * @param href The model URI.
 	 * @return The loaded ASMModel.
+	 * @throws IOException
 	 */
-	public ASMModel loadModel(String name, ASMModel metamodel, String href) {
+	public ASMModel loadModel(String name, ASMModel metamodel, String href) throws IOException {
 		ASMModel ret = null;
 
 		href = href.replaceAll("\\\\:", "<colon>");
@@ -187,14 +190,15 @@ public abstract class ModelLoader {
 
 	protected abstract void setParameter(String name, Object value);
 
-	protected abstract void realSave(ASMModel model, String href);
+	protected abstract void realSave(ASMModel model, String href) throws IOException;
 
 	/**
 	 * Saves the model to a writable URL.
 	 * @param model The model to save
 	 * @param href The writable URL
+	 * @throws IOException
 	 */
-	public void save(ASMModel model, String href) {
+	public void save(ASMModel model, String href) throws IOException {
 		String[] ss = href.split(":");
 		if (ss.length == 1) {
 			realSave(model, href);

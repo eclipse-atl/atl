@@ -22,11 +22,7 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
  * Therefore some of the methods of ASMModel only apply to metamodels.
  * TODO (for this class and ASMModelElement): separate metamodel-specific in
  * ASMMetamodel and rename some methods.
-<<<<<<< ASMModel.java
- * @author Fr�d�ric Jouault
-=======
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
->>>>>>> 1.4
  */
 public abstract class ASMModel extends ASMOclAny {
 
