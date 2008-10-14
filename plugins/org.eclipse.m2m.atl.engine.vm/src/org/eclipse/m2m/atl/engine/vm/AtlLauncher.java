@@ -176,18 +176,20 @@ public final class AtlLauncher {
 	public Object launch(ASM asm, Map libraries, Map models, Map asmParams, List superimpose, Map options,
 			Debugger debugger) {
 		Object ret = null;
+
+		ASMModule asmModule = new ASMModule(asm);
+
+		ASMExecEnv env = new ASMExecEnv(asmModule, debugger,
+				!"true".equals(options.get("disableAttributeHelperCache"))); //$NON-NLS-1$ //$NON-NLS-2$
+		env.addPermission("file.read");
+		env.addPermission("file.write");
+
+		for (Iterator i = models.keySet().iterator(); i.hasNext();) {
+			String mname = (String)i.next();
+			env.addModel(mname, (ASMModel)models.get(mname));
+		}
+
 		try {
-			ASMModule asmModule = new ASMModule(asm);
-
-			ASMExecEnv env = new ASMExecEnv(asmModule, debugger,
-					!"true".equals(options.get("disableAttributeHelperCache"))); //$NON-NLS-1$ //$NON-NLS-2$
-			env.addPermission("file.read");
-			env.addPermission("file.write");
-
-			for (Iterator i = models.keySet().iterator(); i.hasNext();) {
-				String mname = (String)i.next();
-				env.addModel(mname, (ASMModel)models.get(mname));
-			}
 
 			for (Iterator i = libraries.keySet().iterator(); i.hasNext();) {
 				String lname = (String)i.next();
@@ -208,8 +210,14 @@ public final class AtlLauncher {
 				}
 			}
 
-			// Register module operations AFTER lib operations to avoid overwriting 'main'
-			env.registerOperations(asm);
+		} catch (IOException e) {
+			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
+
+		// Register module operations AFTER lib operations to avoid overwriting 'main'
+		env.registerOperations(asm);
+
+		try {
 
 			for (Iterator i = superimpose.iterator(); i.hasNext();) {
 				URL url = (URL)i.next();
@@ -218,22 +226,22 @@ public final class AtlLauncher {
 				ami.adaptModuleOperations();
 				env.registerOperations(module);
 			}
-
-			boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
-
-			long startTime = System.currentTimeMillis();
-			ASMInterpreter ai = new ASMInterpreter(asm, asmModule, env, asmParams);
-			long endTime = System.currentTimeMillis();
-			if (printExecutionTime && !(debugger instanceof NetworkDebugger)) {
-				ATLPlugin.info(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s."); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-
-			ret = ai.getReturnValue();
 		} catch (IOException e) {
 			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (AtlSuperimposeModuleException e) {
 			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
+
+		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
+
+		long startTime = System.currentTimeMillis();
+		ASMInterpreter ai = new ASMInterpreter(asm, asmModule, env, asmParams);
+		long endTime = System.currentTimeMillis();
+		if (printExecutionTime && !(debugger instanceof NetworkDebugger)) {
+			ATLPlugin.info(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s."); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		ret = ai.getReturnValue();
 
 		return ret;
 	}
