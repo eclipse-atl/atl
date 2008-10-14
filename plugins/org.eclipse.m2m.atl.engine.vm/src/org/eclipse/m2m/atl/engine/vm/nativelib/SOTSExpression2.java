@@ -88,7 +88,7 @@ public class SOTSExpression2 {
 					ret = ASMString.operatorPlus(frame, (ASMString)ret, new ASMString(right.toString()));
 				}
 			} else {
-				ATLPlugin.severe("ERROR: could not add type " + ASMOclAny.oclType(frame, ret) + ".");
+				ATLPlugin.severe("Could not add type " + ASMOclAny.oclType(frame, ret) + ".");
 				// System.out.println("ERROR: could not add type " + ASMOclAny.oclType(frame, ret) + ".");
 			}
 		} else {
@@ -146,7 +146,7 @@ public class SOTSExpression2 {
 										.asList(new Object[] {o})));
 								col.add(v);
 							} else {
-								frame.printStackTrace("ERROR: could not find operation " + t.value + " on "
+								frame.printStackTrace("Could not find operation " + t.value + " on "
 										+ o.getType() + " having supertypes: " + o.getType().getSupertypes());
 							}
 
