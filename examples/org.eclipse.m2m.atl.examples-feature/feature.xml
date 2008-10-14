@@ -227,8 +227,6 @@ litigation.
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.m2m.atl.engine.emfvm"/>
-      <import plugin="org.eclipse.emf.common"/>
-      <import plugin="org.eclipse.emf.ecore.xmi"/>
       <import plugin="org.eclipse.m2m.atl.drivers.emf4atl"/>
    </requires>
 
