@@ -286,7 +286,6 @@ public class IndentAction extends TextEditorAction {
 					&& indent.length() > currentIndent.length()
 					&& AtlUIPlugin.getDefault().getPreferenceStore().getBoolean(
 							AtlPreferenceConstants.EDITOR_SMART_BACKSPACE)) {
-				ITextEditor editor = getTextEditor();
 			}
 
 			return true;
