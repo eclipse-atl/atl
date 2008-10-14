@@ -36,12 +36,12 @@ public class ASMStackFrame extends StackFrame {
 		for(Iterator i = operation.getParameters().iterator() ; i.hasNext() ; ) {
 			ASMParameter p = (ASMParameter)i.next();
 			if(!j.hasNext()) {
-				printStackTrace("too few arguments");
+				printStackTrace("Too few arguments");
 			}
 			localVariables.put(p.getName(), j.next());
 		}
 		if(j.hasNext()) {
-			printStackTrace("too many arguments");
+			printStackTrace("Too many arguments");
 		}
 		localStack = new Stack();
 		location = -1;

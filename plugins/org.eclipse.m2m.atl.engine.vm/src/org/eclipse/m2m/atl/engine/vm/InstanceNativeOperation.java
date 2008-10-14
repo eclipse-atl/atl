@@ -60,7 +60,7 @@ public class InstanceNativeOperation extends NativeOperation {
 					if(ASMOclAny.class.isAssignableFrom(type)) {
 						// nothing to do
 					} else if(!translateTypes) {
-						frame.printStackTrace("ERROR: type translation not allowed but " + o + " is of type " + o.getClass() + ".");
+						frame.printStackTrace("Type translation not allowed but " + o + " is of type " + o.getClass() + ".");
 					} else if(type.equals(String.class) && (o instanceof ASMString)) {
 						o = ((ASMString)o).getSymbol();
 					} else if(type.isPrimitive() && type.getName().equals("int") && (o instanceof ASMInteger)) {
@@ -68,7 +68,7 @@ public class InstanceNativeOperation extends NativeOperation {
 					} else if(type.isPrimitive() && type.getName().equals("boolean") && (o instanceof ASMBoolean)) {
 						o = new Boolean(((ASMBoolean)o).getSymbol());
 					} else {
-						frame.printStackTrace("ERROR: cannot convert " + o + " to " + type + ".");
+						frame.printStackTrace("Cannot convert " + o + " to " + type + ".");
 					}
 					args.add(o);
 				}
@@ -127,7 +127,7 @@ public class InstanceNativeOperation extends NativeOperation {
 				((ASMMap)ret).put(java2ASM(frame, key), java2ASM(frame, value));
 			}
 		} else {
-			frame.printStackTrace("ERROR: cannot convert " + r + " to ASMOclAny.");
+			frame.printStackTrace("Cannot convert " + r + " to ASMOclAny.");
 		}
 
 		return ret;
