@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFModelAdapter.java,v 1.3 2008/09/09 13:15:01 wpiers Exp $
+ * $Id: EMFModelAdapter.java,v 1.4 2008/10/14 13:44:44 wpiers Exp $
  */
 package org.eclipse.m2m.atl.engine.emfvm.emf;
 
@@ -48,6 +48,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.OclUndefined;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame;
+import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 
 /**
  * The model adapter dedicated to EMF.
@@ -429,22 +430,22 @@ public class EMFModelAdapter implements ModelAdapter {
 		Object ret = null;
 
 		EClass ec = eo.eClass();
-		// try {
-		if ("__xmiID__".equals(name)) {
-			// TODO: optimize using ((EObject)modelElement).getResource()
-			ret = ((EMFModel)getModelOf(eo)).getResource().getURIFragment(eo);
-		} else {
-			EStructuralFeature sf = ec.getEStructuralFeature(name);
-			Object val = eo.eGet(sf);
-			if (val == null) {
-				val = OclUndefined.SINGLETON;
+		try {
+			if ("__xmiID__".equals(name)) {
+				// TODO: optimize using ((EObject)modelElement).getResource()
+				ret = ((EMFModel)getModelOf(eo)).getResource().getURIFragment(eo);
+			} else {
+				EStructuralFeature sf = ec.getEStructuralFeature(name);
+				Object val = eo.eGet(sf);
+				if (val == null) {
+					val = OclUndefined.SINGLETON;
+				}
+				ret = val;
 			}
-			ret = val;
+		} catch (Exception e) {
+			throw new VMException(frame, "error accessing " + frame.getExecEnv().toPrettyPrintedString(ec)
+					+ "." + name);
 		}
-		// } catch (IOException e) {
-		// throw new VMException(frame, "error accessing " + frame.execEnv.toPrettyPrintedString(ec) + "."
-		// + name, e);
-		// }
 
 		return ret;
 	}
@@ -469,78 +470,79 @@ public class EMFModelAdapter implements ModelAdapter {
 		final EObject eo = (EObject)modelElement;
 		final EStructuralFeature feature = eo.eClass().getEStructuralFeature(name);
 
-		// makes it possible to use an integer to set a floating point property
-		if (settableValue instanceof Integer) {
-			String targetType = feature.getEType().getInstanceClassName();
-			if ("java.lang.Double".equals(targetType) || "java.lang.Float".equals(targetType)) {
-				settableValue = new Double(((Integer)value).doubleValue());
+		try {
+			// makes it possible to use an integer to set a floating point property
+			if (settableValue instanceof Integer) {
+				String targetType = feature.getEType().getInstanceClassName();
+				if ("java.lang.Double".equals(targetType) || "java.lang.Float".equals(targetType)) {
+					settableValue = new Double(((Integer)value).doubleValue());
+				}
 			}
-		}
 
-		EClassifier type = feature.getEType();
-		boolean targetIsEnum = type instanceof EEnum;
-		// try {
-		Object oldValue = eo.eGet(feature);
-		if (oldValue instanceof Collection) {
-			Collection oldCol = (Collection)oldValue;
-			if (settableValue instanceof Collection) {
-				if (targetIsEnum) {
-					EEnum eenum = (EEnum)type;
-					for (Iterator i = ((Collection)settableValue).iterator(); i.hasNext();) {
-						Object v = i.next();
-						oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());
-					}
-				} else if (allowInterModelReferences) {
-					oldCol.addAll((Collection)settableValue);
-				} else { // !allowIntermodelReferences
-					for (Iterator i = ((Collection)settableValue).iterator(); i.hasNext();) {
-						Object v = i.next();
-						if (v instanceof EObject) {
-							if (getModelOf(eo) == getModelOf(v)) {
+			EClassifier type = feature.getEType();
+			boolean targetIsEnum = type instanceof EEnum;
+
+			Object oldValue = eo.eGet(feature);
+			if (oldValue instanceof Collection) {
+				Collection oldCol = (Collection)oldValue;
+				if (settableValue instanceof Collection) {
+					if (targetIsEnum) {
+						EEnum eenum = (EEnum)type;
+						for (Iterator i = ((Collection)settableValue).iterator(); i.hasNext();) {
+							Object v = i.next();
+							oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());
+						}
+					} else if (allowInterModelReferences) {
+						oldCol.addAll((Collection)settableValue);
+					} else { // !allowIntermodelReferences
+						for (Iterator i = ((Collection)settableValue).iterator(); i.hasNext();) {
+							Object v = i.next();
+							if (v instanceof EObject) {
+								if (getModelOf(eo) == getModelOf(v)) {
+									oldCol.add(v);
+								}
+							} else {
 								oldCol.add(v);
 							}
-						} else {
-							oldCol.add(v);
+						}
+					}
+				} else {
+					if (targetIsEnum) {
+						EEnum eenum = (EEnum)type;
+						oldCol.add(eenum.getEEnumLiteral(settableValue.toString()).getInstance());
+					} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
+						oldCol.add(settableValue);
+					} else { // (!allowIntermodelReferences) && (value intanceof EObject)
+						if (getModelOf(eo) == getModelOf(settableValue)) {
+							oldCol.add(settableValue);
 						}
 					}
 				}
 			} else {
+				if (settableValue instanceof Collection) {
+					logger.warning("Assigning a Collection to a single-valued feature");
+					Collection c = (Collection)settableValue;
+					if (!c.isEmpty()) {
+						settableValue = c.iterator().next();
+					} else {
+						settableValue = null;
+					}
+				}
 				if (targetIsEnum) {
 					EEnum eenum = (EEnum)type;
-					oldCol.add(eenum.getEEnumLiteral(settableValue.toString()).getInstance());
+					eo.eSet(feature, eenum.getEEnumLiteral(settableValue.toString()).getInstance());
 				} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
-					oldCol.add(settableValue);
+					eo.eSet(feature, settableValue);
 				} else { // (!allowIntermodelReferences) && (value intanceof EObject)
 					if (getModelOf(eo) == getModelOf(settableValue)) {
-						oldCol.add(settableValue);
+						eo.eSet(feature, settableValue);
 					}
 				}
 			}
-		} else {
-			if (settableValue instanceof Collection) {
-				logger.warning("Assigning a Collection to a single-valued feature");
-				Collection c = (Collection)settableValue;
-				if (!c.isEmpty()) {
-					settableValue = c.iterator().next();
-				} else {
-					settableValue = null;
-				}
-			}
-			if (targetIsEnum) {
-				EEnum eenum = (EEnum)type;
-				eo.eSet(feature, eenum.getEEnumLiteral(settableValue.toString()).getInstance());
-			} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
-				eo.eSet(feature, settableValue);
-			} else { // (!allowIntermodelReferences) && (value intanceof EObject)
-				if (getModelOf(eo) == getModelOf(settableValue)) {
-					eo.eSet(feature, settableValue);
-				}
-			}
+		} catch (Exception e) {
+			throw new VMException(frame, "Could not assign " + settableValue + " to "
+					+ frame.getExecEnv().toPrettyPrintedString(eo) + "." + name);
 		}
-		// } catch (IOException e) {
-		// currentExecEnv.logger.warning("Warning: could not assign " + settableValue + " to "
-		// + frame.execEnv.toPrettyPrintedString(eo) + "." + name);
-		// }
 	}
 
 	/**
