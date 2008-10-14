@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    
  *
- * $Id: ExecEnv.java,v 1.18 2008/09/22 15:28:51 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.19 2008/10/14 13:44:21 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -1812,10 +1812,10 @@ public class ExecEnv {
 		if (referenceModel != null) {
 			ret = referenceModel.getMetaElementByName((String)me);
 			if (ret == null) {
-				throw new RuntimeException("cannot find class " + me + " in reference model " + mname);
+				throw new VMException(frame,"Cannot find class " + me + " in reference model " + mname);
 			}
 		} else {
-			throw new RuntimeException("cannot find reference model " + mname);
+			throw new VMException(frame,"cannot find reference model " + mname);
 		}
 
 		return ret;
@@ -1881,7 +1881,7 @@ public class ExecEnv {
 			out.close();
 			ret = true;
 		} catch (IOException ioe) {
-			throw new VMException(frame, ioe);
+			throw new VMException(frame, ioe.getLocalizedMessage(), ioe);
 		}
 		return ret;
 	}
