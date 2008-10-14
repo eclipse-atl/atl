@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.outline;
 
-import org.eclipse.m2m.atl.ATLPlugin;
 
 public class NullEventListener implements EventListener {
 
@@ -28,7 +27,6 @@ public class NullEventListener implements EventListener {
 	 * @see org.eclipse.m2m.atl.adt.ui.outline.EventListener#update(org.eclipse.m2m.atl.adt.ui.outline.Event)
 	 */
 	public void update(Event event) {
-		ATLPlugin.info("update"); //$NON-NLS-1$
 	}
 
 }
