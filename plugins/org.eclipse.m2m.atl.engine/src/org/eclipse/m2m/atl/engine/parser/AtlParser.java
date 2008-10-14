@@ -214,7 +214,6 @@ public final class AtlParser {
 			pbs = problems.getElementsByType("Problem"); //$NON-NLS-1$
 		} else {
 			Object o = atlmodel.getElementsByType(rootTypeName); //$NON-NLS-1$
-			ATLPlugin.info(o.toString());
 		}
 
 		if (pbs != null) {
