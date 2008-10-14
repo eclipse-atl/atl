@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -143,28 +142,6 @@ public abstract class AtlModelHandler {
 	public static AtlModelHandler getHandler(ASMModel model) {
 		return (AtlModelHandler)defaultModelHandlers.get(getHandlerName(model));
 	}
-
-	/**
-	 * Saves a model in a project, with its default name.
-	 * 
-	 * @param model
-	 *            the model to save
-	 * @param project
-	 *            the project containing the file
-	 */
-	public abstract void saveModel(final ASMModel model, IProject project);
-
-	/**
-	 * Saves a model in a file.
-	 * 
-	 * @param model
-	 *            the model to save
-	 * @param fileName
-	 *            the file name
-	 * @param project
-	 *            the project containing the file
-	 */
-	public abstract void saveModel(final ASMModel model, String fileName, IProject project);
 
 	/**
 	 * Saves a model at the specified uri (as String).
