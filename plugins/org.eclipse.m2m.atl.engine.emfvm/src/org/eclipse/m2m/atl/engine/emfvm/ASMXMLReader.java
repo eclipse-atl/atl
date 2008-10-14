@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -35,8 +34,6 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMXMLReader extends DefaultHandler {
-
-	protected static Logger logger = Logger.getLogger(EmfvmPlugin.LOGGER);
 
 	private Object asmNameIndex;
 
@@ -73,7 +70,7 @@ public class ASMXMLReader extends DefaultHandler {
 			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		if (errors > 0) {
-			ATLPlugin.log(Level.SEVERE, "Fatal error reading .asm file");
+			ATLPlugin.severe("Fatal error reading .asm file");
 		}
 		return ret;
 	}
