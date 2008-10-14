@@ -346,7 +346,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			build();
 			initializeWidgetValuesFrom(launchConfiguration);
 			layout();
-			ATLPlugin.fine("MainAtlTab rebuild"); //$NON-NLS-1$
 		} catch (CoreException e) {
 			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
