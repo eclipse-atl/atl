@@ -32,7 +32,7 @@ public class ASMModule extends ASMOclAny {
 		ASMOclAny ret = (ASMOclAny)fields.get(name);
 		
 		if(ret == null) {
-			frame.printStackTrace("transformation module \"" + asm.getName() +
+			frame.printStackTrace("Transformation module \"" + asm.getName() +
 					"\" does not have an initialized field named \"" + name + "\"");
 		}
 		
