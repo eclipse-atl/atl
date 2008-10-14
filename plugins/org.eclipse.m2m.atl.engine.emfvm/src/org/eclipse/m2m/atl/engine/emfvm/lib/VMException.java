@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Frederic Jouault - initial API and implementation
+ *    Obeo - refactoring
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -17,6 +18,7 @@ import java.io.PrintWriter;
  * Exceptions thrown by the VM.
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class VMException extends RuntimeException {
 
@@ -38,15 +40,17 @@ public class VMException extends RuntimeException {
 	}
 
 	/**
-	 * Creates a VM exception with the given Exception.
+	 * Creates a VM exception with the given message and cause.
 	 * 
 	 * @param frame
 	 *            the frame context
+	 * @param message
+	 *            the message
 	 * @param cause
-	 *            the exception
+	 *            the cause
 	 */
-	public VMException(StackFrame frame, Exception cause) {
-		super(cause);
+	public VMException(StackFrame frame, String message, Throwable cause) {
+		super(message, cause);
 		this.frame = frame;
 	}
 
@@ -56,8 +60,12 @@ public class VMException extends RuntimeException {
 	 * @see java.lang.Throwable#printStackTrace(java.io.PrintStream)
 	 */
 	public void printStackTrace(PrintStream s) {
-		super.printStackTrace(s);
 		s.println(frame);
+		if (getCause() != null) {
+			s.println();
+			// Java stack trace :
+			super.printStackTrace(s);
+		}
 	}
 
 	/**
@@ -66,7 +74,11 @@ public class VMException extends RuntimeException {
 	 * @see java.lang.Throwable#printStackTrace(java.io.PrintWriter)
 	 */
 	public void printStackTrace(PrintWriter s) {
-		super.printStackTrace(s);
 		s.println(frame);
+		if (getCause() != null) {
+			s.println();
+			// Java stack trace :
+			super.printStackTrace(s);
+		}
 	}
 }

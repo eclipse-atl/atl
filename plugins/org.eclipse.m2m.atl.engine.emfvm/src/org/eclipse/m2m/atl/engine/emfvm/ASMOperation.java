@@ -10,11 +10,10 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.12 2008/09/30 14:19:20 fallilaire Exp $
+ * $Id: ASMOperation.java,v 1.13 2008/10/14 14:36:55 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,10 +55,8 @@ public class ASMOperation extends Operation {
 	/** The max size of the Stack. */
 	public static final int MAX_STACK = 100;
 
-	
 	/** The common ATL logger. */
 	protected static Logger logger = Logger.getLogger(EmfvmPlugin.LOGGER);
-	
 
 	private static Map nativeClasses = new HashMap();
 
@@ -392,7 +389,6 @@ public class ASMOperation extends Operation {
 							}
 							--fp; // pop self, that we already retrieved earlier to get the operation
 							arguments[0] = self;
-
 							s = operation.exec(calleeFrame);
 						} else {
 							Assert.isTrue(bytecode.getOperand() instanceof String);
@@ -495,11 +491,11 @@ public class ASMOperation extends Operation {
 							 * if(me.equals("OrderedSet")) { stack[fp++] = new LinkedHashSet(); } else
 							 * if(me.equals("Tuple")) { stack[fp++] = new Tuple(); } else
 							 * if(me.equals("OclSimpleType")) { stack[fp++] = new OclSimpleType(); } else
-							 * if(me.equals("OclParametrizedType")) { stack[fp++] = new OclParametrizedType(); }
-							 * else if(me.equals("TransientLinkSet")) { stack[fp++] = new TransientLinkSet(); }
-							 * else if(me.equals("TransientLink")) { stack[fp++] = new TransientLink(); } else
-							 * if(me.equals("Map")) { stack[fp++] = new HashMap(); } else { throw new
-							 * VMException(frame, "cannot create " + mname + "!" + me); } /
+							 * if(me.equals("OclParametrizedType")) { stack[fp++] = new OclParametrizedType();
+							 * } else if(me.equals("TransientLinkSet")) { stack[fp++] = new
+							 * TransientLinkSet(); } else if(me.equals("TransientLink")) { stack[fp++] = new
+							 * TransientLink(); } else if(me.equals("Map")) { stack[fp++] = new HashMap(); }
+							 * else { throw new VMException(frame, "cannot create " + mname + "!" + me); } /
 							 */
 							Class c = (Class)nativeClasses.get(me);
 							if (c != null) {
@@ -596,16 +592,17 @@ public class ASMOperation extends Operation {
 			}
 		} catch (VMException e) {
 			((StackFrame)frame).setPc(pc - 1);
-			throw (VMException)e; // do not rewrap
-		} catch (IllegalAccessException e) {
+			throw e; // do not rewrap
+		} catch (Exception e) {
 			((StackFrame)frame).setPc(pc - 1);
-			throw new VMException(frame, e);
-		} catch (InstantiationException e) {
-			((StackFrame)frame).setPc(pc - 1);
-			throw new VMException(frame, e);
-		} catch (InvocationTargetException e) {
-			((StackFrame)frame).setPc(pc - 1);
-			throw new VMException(frame, e);
+			String msg = e.getLocalizedMessage();
+			Throwable cause = e;
+			while (msg == null && cause != null) {
+				cause = cause.getCause();
+				msg = cause.getLocalizedMessage();
+			}
+			msg = cause.getClass().getCanonicalName() + ": " + msg;
+			throw new VMException(frame, msg, cause);
 		}
 
 		return fp > 0 ? stack[--fp] : null;

@@ -7,8 +7,8 @@
  *
  * Contributors:
  *    INRIA - initial API and implementation
+ *    Obeo - refactoring
  *    
- * $Id: ASM.java,v 1.6 2008/09/22 15:28:51 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -41,6 +41,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class ASM {
 
@@ -205,12 +206,17 @@ public class ASM {
 			try {
 				ami.adaptModuleOperations();
 			} catch (AtlSuperimposeModuleException e) {
-				throw new VMException(frame, e);
+				throw new VMException(frame, e.getLocalizedMessage(), e);
 			}
 			registerOperations(execEnv, module.operations);
 		}
 
-		ret = mainOperation.exec(frame);
+		try {
+			ret = mainOperation.exec(frame);	
+		} catch (VMException e) {
+			ATLPlugin.log(Level.SEVERE, e.getMessage(),e);
+		}
+		
 		long endTime = System.currentTimeMillis();
 		if (printExecutionTime) {
 			ATLPlugin.info("Executed " + name + " in " + ((endTime - startTime) / 1000.) + "s.");
