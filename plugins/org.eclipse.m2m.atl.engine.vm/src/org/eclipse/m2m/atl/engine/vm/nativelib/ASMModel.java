@@ -76,7 +76,7 @@ public abstract class ASMModel extends ASMOclAny {
 	public ASMModelElement newModelElement(StackFrame frame, String typeName) {
 		ASMModelElement type = getMetamodel().findModelElement(typeName);
 		if(type == null) {
-			String msg = "no type named '" + typeName + "' in metamodel '" + metamodel.name + "'";
+			String msg = "No type named '" + typeName + "' in metamodel '" + metamodel.name + "'";
 			if(frame == null) {
 				ATLPlugin.severe(msg);
 			} else {
