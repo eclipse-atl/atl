@@ -10,17 +10,10 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl;
 
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.m2m.atl.logging.ConsoleStreamHandler;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.IConsoleManager;
-import org.eclipse.ui.console.MessageConsole;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -31,11 +24,9 @@ import org.osgi.framework.BundleContext;
 public class ATLPlugin extends Plugin {
 
 	/** The plugin ID. */
-	public static final String PLUGIN_ID = "org.eclipse.m2m.atl"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.m2m.atl"; //$NON-NLS-1$
 
 	private static Logger logger;
-
-	private static MessageConsole console;
 
 	/** Plug-in's shared instance. */
 	private static ATLPlugin plugin;
@@ -63,35 +54,8 @@ public class ATLPlugin extends Plugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		logger = Logger.getLogger(PLUGIN_ID);
+		logger = Logger.getLogger(ID);
 		logger.setUseParentHandlers(false);
-		
-		Handler handler = new ConsoleHandler();
-		handler.setFormatter(ATLLogFormatter.INSTANCE);
-		logger.addHandler(handler);	
-		if (console == null) {
-			initConsole();
-		}
-	}
-
-	private void initConsole() {
-		console = findConsole("ATL");
-		Handler handler = new ConsoleStreamHandler(console.newMessageStream());		
-		logger.addHandler(handler);
-	}
-
-	private MessageConsole findConsole(String name) {
-		IConsoleManager consoleMgr = ConsolePlugin.getDefault().getConsoleManager();
-		IConsole[] existing = consoleMgr.getConsoles();
-		for (int i = 0; i < existing.length; i++) {
-			if (name.equals(existing[i].getName())) {
-				return (MessageConsole)existing[i];
-			}
-		}
-		// no console found, so create a new one
-		MessageConsole myConsole = new MessageConsole(name, null);
-		consoleMgr.addConsoles(new IConsole[] {myConsole});
-		return myConsole;
 	}
 
 	/**
@@ -105,31 +69,18 @@ public class ATLPlugin extends Plugin {
 	}
 
 	/**
-	 * Log a message, with associated Throwable information.
+	 * Log a message.
 	 * 
 	 * @param level
-	 *            One of the message level identifiers, e.g. SEVERE
+	 *            the message severity
 	 * @param msg
 	 *            The string message (or a key in the message catalog)
 	 * @param thrown
-	 *            Throwable associated with log message.
+	 *            the throwable cause
 	 */
 	public static void log(Level level, String msg, Throwable thrown) {
 		logger.log(level, msg, thrown);
 	}
-	
-	/**
-	 * Log a message.
-	 * 
-	 * @param level
-	 *            One of the message level identifiers, e.g. SEVERE
-	 * @param msg
-	 *            The string message (or a key in the message catalog)
-	 */
-	public static void log(Level level, String msg) {
-		logger.log(level, msg);
-	}
-
 
 	/**
 	 * Log an INFO message.
@@ -138,34 +89,27 @@ public class ATLPlugin extends Plugin {
 	 *            The string message (or a key in the message catalog)
 	 */
 	public static void info(String msg) {
-		logger.info(msg);
+		log(Level.INFO, msg, null);
 	}
-	
-    /**
-     * Log a FINE message.
-     * 
-     * @param   msg	The string message (or a key in the message catalog)
-     */
-    public static void fine(String msg) {
-    	logger.fine(msg);
-    }
-    
-    /**
-     * Log a SEVERE message.
-     * 
-     * @param   msg	The string message (or a key in the message catalog)
-     */
-    public static void severe(String msg) {
-    	logger.severe(msg);
-    }
-    
-    /**
-     * Log a WARNING message.
-     * 
-     * @param   msg	The string message (or a key in the message catalog)
-     */
-    public static void warning(String msg) {
-    	logger.warning(msg);
-    }
+
+	/**
+	 * Log a SEVERE message.
+	 * 
+	 * @param msg
+	 *            The string message (or a key in the message catalog)
+	 */
+	public static void severe(String msg) {
+		log(Level.SEVERE, msg, null);
+	}
+
+	/**
+	 * Log a WARNING message.
+	 * 
+	 * @param msg
+	 *            The string message (or a key in the message catalog)
+	 */
+	public static void warning(String msg) {
+		log(Level.WARNING, msg, null);
+	}
 
 }
