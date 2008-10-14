@@ -108,7 +108,7 @@ public class ASMOperation extends Operation {
 	public void addVariableInstruction(ASMInstructionWithOperand instruction, String varId) {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.get(varId);
 		if (lve == null) {
-			ATLPlugin.severe("ERROR: no slot reserved for variable: " + varId + " used at " + lastLNE + ".");
+			ATLPlugin.severe("No slot reserved for variable: " + varId + " used at " + lastLNE + ".");
 		}
 		instruction.setOperand("" + lve.slot);
 		instructions.add(instruction);
@@ -169,20 +169,12 @@ public class ASMOperation extends Operation {
 
 	public ASMOclAny exec(StackFrame frame) {
 		ASMOclAny ret = null;
-
-		try {
-			realExec((ASMStackFrame)frame);
-		} catch (Exception e) {
-			frame.printStackTrace(e);
-		} catch (StackOverflowError soe) {
-			frame.printStackTrace("stack overflow");
-		}
+		realExec((ASMStackFrame)frame);		
 		ret = frame.leaveFrame();
-
 		return ret;
 	}
 
-	private void realExec(ASMStackFrame frame) throws Exception {
+	private void realExec(ASMStackFrame frame) {
 		while (frame.hasNextInstruction()) {
 			ASMInstruction instr = frame.nextInstruction();
 			String mn = instr.getMnemonic();
@@ -210,9 +202,13 @@ public class ASMOperation extends Operation {
 				if (mname.equals("#native")) {
 					Class c = ASMNativeObject.getNativeImpl(me);
 					if (c != null) {
-						frame.push((ASMOclAny)c.newInstance());
+						try {
+							frame.push((ASMOclAny)c.newInstance());							
+						} catch (Exception e) {
+							frame.printStackTrace("Cannot instantiate "+ me);
+						}
 					} else {
-						frame.printStackTrace("ERROR: element " + me + " not found in native");
+						frame.printStackTrace("Element " + me + " not found in native");
 					}
 				} else {
 					ASMModel mm = frame.getModel(mname);
@@ -288,16 +284,16 @@ public class ASMOperation extends Operation {
 					} else if (name.equals("Real")) {
 						frame.push(ASMReal.myType);
 					} else {
-						frame.printStackTrace("ERROR: element " + name + " not found in native");
+						frame.printStackTrace("Element " + name + " not found in native");
 					}
 				} else {
 					ASMModel model = frame.getModel(mname);
 					if (model == null) {
-						frame.printStackTrace("cannot find model " + mname);
+						frame.printStackTrace("Cannot find model " + mname);
 					}
 					ASMModelElement ame = model.findModelElement(name);
 					if (ame == null) {
-						frame.printStackTrace("cannot find metamodel element " + name + " in model " + mname);
+						frame.printStackTrace("Cannot find metamodel element " + name + " in model " + mname);
 					}
 					frame.push(ame);
 				}
@@ -332,7 +328,7 @@ public class ASMOperation extends Operation {
 			} else if (mn == "iterate") {
 				ASMOclAny v = frame.pop();
 				if (!(v instanceof ASMCollection)) {
-					frame.printStackTrace("cannot iterate on non-collection");
+					frame.printStackTrace("Cannot iterate on non-collection");
 				}
 				ASMCollection c = (ASMCollection)v; // TODO: iterate <index> (jusqu'ou iterer...) plutot que
 													// enditerate
@@ -356,7 +352,7 @@ public class ASMOperation extends Operation {
 					}
 				} while (true);
 			} else {
-				frame.printStackTrace("ERROR: instruction not implemented yet : " + mn);
+				frame.printStackTrace("Instruction not implemented yet : " + mn);
 			}
 
 		}
@@ -471,7 +467,7 @@ public class ASMOperation extends Operation {
 	public int endLocalVariableEntry(String id) {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.remove(id);
 		if (lve == null) {
-			ATLPlugin.severe("ERROR: variable id not defined: " + id);
+			ATLPlugin.severe("Variable id not defined: " + id);
 			// System.out.println("ERROR: variable id not defined: " + id);
 		}
 		lve.end = instructions.size() - 1;

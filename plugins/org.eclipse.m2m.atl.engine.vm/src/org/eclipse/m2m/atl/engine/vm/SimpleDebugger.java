@@ -27,7 +27,7 @@ import org.eclipse.m2m.atl.ATLPlugin;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class SimpleDebugger implements Debugger {
-	
+
 	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops, boolean showStackTrace) {
 		this(step, stepops, deepstepops, nostepops, deepnostepops, showStackTrace, false, false, /*continueAfterError*/true);
 	}
@@ -35,7 +35,7 @@ public class SimpleDebugger implements Debugger {
 	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops, boolean showStackTrace, boolean continueAfterErrors) {
 		this(step, stepops, deepstepops, nostepops, deepnostepops, showStackTrace, false, false, continueAfterErrors);
 	}
-	
+
 	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops, boolean showStackTrace, boolean showSummary, boolean profile, boolean continueAfterErrors) {
 		this.step = step;
 		this.stepops = stepops;
@@ -46,18 +46,18 @@ public class SimpleDebugger implements Debugger {
 		this.showSummary = showSummary;
 		this.profile = profile;
 		this.continueAfterErrors = continueAfterErrors;
-		
+
 		this.terminated = false;
 	}
 
 	public void enter(StackFrame frame) {
 		Operation op = frame.getOperation();
 		String opName = op.getName();
-		
-		if(profile) {
-			if(op instanceof ASMOperation) {
+
+		if (profile) {
+			if (op instanceof ASMOperation) {
 				OperationCall oc = (OperationCall)operationCalls.get(op);
-				if(oc == null) {
+				if (oc == null) {
 					oc = new OperationCall(op);
 					operationCalls.put(op, oc);
 				}
@@ -65,20 +65,20 @@ public class SimpleDebugger implements Debugger {
 			}
 		}
 
-		if(stepops.contains(opName)) {
+		if (stepops.contains(opName)) {
 			// TODO
-		} else if(deepstepops.contains(opName)) {
+		} else if (deepstepops.contains(opName)) {
 			stepStack.push(new Boolean(step));
 			step = true;
-		} else if(nostepops.contains(opName)) {
+		} else if (nostepops.contains(opName)) {
 			// TODO
-		} else if(deepnostepops.contains(opName)) {
+		} else if (deepnostepops.contains(opName)) {
 			stepStack.push(new Boolean(step));
 			step = false;
 		}
 
-		if(getShowEnter()) {
-			if(frame instanceof ASMStackFrame) {
+		if (getShowEnter()) {
+			if (frame instanceof ASMStackFrame) {
 				ATLPlugin.info("********************* Entering " + op + " with " + ((ASMStackFrame)frame).getLocalVariables());
 			} else {
 				ATLPlugin.info("********************* Entering " + op + " with " + frame.getArgs());
@@ -90,11 +90,11 @@ public class SimpleDebugger implements Debugger {
 		Operation op = frame.getOperation();
 		String opName = op.getName();
 
-		if(getShowLeave()) {
+		if (getShowLeave()) {
 			Object ret = null;
 
-			if(frame instanceof ASMStackFrame) {
-				if(!((ASMStackFrame)frame).empty())
+			if (frame instanceof ASMStackFrame) {
+				if (!((ASMStackFrame)frame).empty())
 					ret = ((ASMStackFrame)frame).peek();
 			} else {
 				ret = ((NativeStackFrame)frame).getRet();
@@ -102,43 +102,43 @@ public class SimpleDebugger implements Debugger {
 			ATLPlugin.info("********************* Leaving " + op + " with " + ret);
 		}
 
-		if(stepops.contains(opName)) {
+		if (stepops.contains(opName)) {
 			// TODO
-		} else if(deepstepops.contains(opName)) {
+		} else if (deepstepops.contains(opName)) {
 			step = ((Boolean)stepStack.pop()).booleanValue();
-		} else if(nostepops.contains(opName)) {
+		} else if (nostepops.contains(opName)) {
 			// TODO
-		} else if(deepnostepops.contains(opName)) {
+		} else if (deepnostepops.contains(opName)) {
 			step = ((Boolean)stepStack.pop()).booleanValue();
 		}
 	}
 
 	private String conv(int i) {
-		if(i < 10)
+		if (i < 10)
 			return "000" + i;
-		else if(i < 100)
+		else if (i < 100)
 			return "00" + i;
-		else if(i < 1000)
+		else if (i < 1000)
 			return "0" + i;
 		else
 			return "" + i;
 	}
 
 	private void printStack(ASMStackFrame frame) {
-		if(!true) {
+		if (!true) {
 			ATLPlugin.info(frame.getLocalStack().toString());
 		} else {
 			StringBuffer out = new StringBuffer("[");
-			for(Iterator i = frame.getLocalStack().iterator() ; i.hasNext() ; ) {
+			for (Iterator i = frame.getLocalStack().iterator(); i.hasNext();) {
 				Object o = i.next();
-				if(o == null) {
+				if (o == null) {
 					out.append("null");
 				} else {
 					String s = o.toString();
 					if(s.length() > 30) s = s.substring(0, 10) + "..." + s.substring(s.length() - 10);
 					out.append(s);
 				}
-				if(i.hasNext()) {
+				if (i.hasNext()) {
 					out.append(", ");
 				}
 			}
@@ -150,51 +150,55 @@ public class SimpleDebugger implements Debugger {
 
 	public void step(ASMStackFrame frame) {
 		instr++;
-		if(step) {
+		if (step) {
 			printStack(frame);
 			ATLPlugin.info(conv(frame.getLocation()) + ": " + ((ASMOperation)frame.getOperation()).getInstructions().get(frame.getLocation()));
 		}
 	}
 
 	public void error(StackFrame frame, String msg, Exception e) {
-		if(terminated) {
-			throw (RuntimeException)e;
+		if (terminated) {
+			throw new RuntimeException(e);
 		}
-		if(getShowStackTrace()) {
-			ATLPlugin.severe("****** BEGIN Stack Trace");
-			if(msg != null) {
-				ATLPlugin.severe("\tmessage: " + msg);
+		VMException exception = null;
+
+		while (msg == null && e != null) {
+			msg = e.getLocalizedMessage();
+			if (msg != null) {
+				msg = e.getClass().getCanonicalName() + ": " + msg;
+			} else {
+				e = (Exception)e.getCause();
 			}
-			if(e != null) {
-				ATLPlugin.severe("\texception: ");
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			}
-			frame.getExecEnv().printStackTrace();
-			ATLPlugin.severe("****** END Stack Trace");
 		}
-		if(!continueAfterErrors) {
-			ATLPlugin.info("Execution terminated due to error (see launch configuration to allow continuation after errors).");			
-			terminated = true;
-			throw new RuntimeException(msg, e);
+
+		if (getShowStackTrace()) {
+			exception = new VMException(frame, msg, e);
 		} else {
+			exception = new VMException(null, msg, e);
+		}
+		if (!continueAfterErrors) {
+			terminated = true;
+			throw exception;
+		} else {
+			ATLPlugin.warning(msg);
 			ATLPlugin.info("Trying to continue execution despite the error.");
 		}
 	}
 
 	public void terminated() {
-		if(showSummary || profile) {
+		if (showSummary || profile) {
 			ATLPlugin.info("Number of instructions executed: " + instr);
-			if(profile) {
+			if (profile) {
 				ATLPlugin.info("Operation calls:");
 				List opCalls = new ArrayList(operationCalls.values());
 				Collections.sort(opCalls, Collections.reverseOrder());
-				for(Iterator i = opCalls.iterator() ; i.hasNext() ; ) {
+				for (Iterator i = opCalls.iterator(); i.hasNext();) {
 					ATLPlugin.info("\t" + i.next());
 				}
 			}
 		}
 	}
-	
+
 	private boolean getShowEnter() {
 		return step;
 	}
@@ -208,7 +212,7 @@ public class SimpleDebugger implements Debugger {
 	}
 
 	private Stack stepStack = new Stack();
-	
+
 	/** Show stack trace. */
 	private boolean showStackTrace;
 
@@ -229,45 +233,45 @@ public class SimpleDebugger implements Debugger {
 
 	/** Show summary on termination. */
 	private boolean showSummary;
-	
+
 	/** Run a simple profiler. */
-	private boolean profile;	
-	
+	private boolean profile;
+
 	private boolean continueAfterErrors;
-	
+
 	private boolean terminated;
-	
+
 	/** Profiling information about operation calls. */
 	private Map operationCalls = new HashMap();
-	
+
 	private class OperationCall implements Comparable {
 		public OperationCall(Operation op) {
 			this.op = op;
 		}
-		
+
 		public void incrementCallCount(List args) {
 			callCount++;
 			Integer ccba = (Integer)callCountByArgs.get(args);
 			int ccbai = 0;
 			if(ccba != null) ccbai = ccba.intValue();
 			callCountByArgs.put(args, new Integer(++ccbai));
-			if(maxCallCountByArgs < ccbai) {
+			if (maxCallCountByArgs < ccbai) {
 				maxCallCountByArgs = ccbai;
 				maxCalledArgs = args;
 			}
 		}
-		
+
 		public int getCallCount() {
 			return callCount;
 		}
-		
+
 		public String toString() {
 			StringBuffer ret = new StringBuffer(op.toString());
-			
+
 			ret.append(": called ");
 			ret.append(toTimes(callCount));
 			ret.append(" and at most ");
-			
+
 /*			for(Iterator i = callCountByArgs.keySet().iterator() ; i.hasNext() ; ) {
 				List args = (List)i.next();
 				if(args != null) {
@@ -280,36 +284,40 @@ public class SimpleDebugger implements Debugger {
 					// should not happen but does happen...
 				}
 			}
-*/
+			 */
 			ret.append(toTimes(maxCallCountByArgs));
 			ret.append(" for the same set of arguments: " + maxCalledArgs + ".");
-			
+
 			return ret.toString();
 		}
-		
+
 		public int hashCode() {
 			return op.hashCode();
 		}
-		
+
 		public boolean equals(Object o) {
 			return this == o;
 		}
-		
+
 		public int compareTo(Object o) {
 			return maxCallCountByArgs - ((OperationCall)o).maxCallCountByArgs;
 		}
-		
+
 		private Operation op;
+
 		private int callCount = 0;
+
 		private Map callCountByArgs = new HashMap();
+
 		private int maxCallCountByArgs = 0;
+
 		private List maxCalledArgs = null;
 	}
-	
+
 	private String toTimes(int n) {
 		String ret = null;
-		
-		switch(n) {
+
+		switch (n) {
 			case 1:
 				ret = "once";
 				break;
@@ -320,11 +328,10 @@ public class SimpleDebugger implements Debugger {
 				ret = n + " times";
 				break;
 		}
-		
+
 		return ret;
 	}
-	
+
 	/** Number of instructions executed. */
 	private long instr = 0;
 }
-

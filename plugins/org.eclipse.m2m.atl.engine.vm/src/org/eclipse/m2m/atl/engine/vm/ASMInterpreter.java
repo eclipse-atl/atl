@@ -62,7 +62,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMInterpreter {
-	
+
 	private ASMOclAny returnValue;
 
 	public static void realMain(String[] args, PluginClassLoader pcl) throws Exception {
@@ -220,21 +220,27 @@ public class ASMInterpreter {
 	public ASMInterpreter(ASM asm, ASMModule asmModule, ASMExecEnv env, Map params) {
 		List args = new ArrayList();
 
-		ASMOperation op = asm.getOperation("main");
-		args.add(asmModule); // self
-		for (Iterator i = op.getParameters().iterator(); i.hasNext();) {
-			ASMParameter p = (ASMParameter)i.next();
-			String pname = p.getName();
-			pname = op.resolveVariableName(Integer.parseInt(pname), 0);
-			String svalue = (String)params.get(pname);
-			ASMOclAny value = new ASMOclUndefined();
-			if (svalue != null) {
-				value = new ASMString(svalue);
+		try {
+
+			ASMOperation op = asm.getOperation("main");
+			args.add(asmModule); // self
+			for (Iterator i = op.getParameters().iterator(); i.hasNext();) {
+				ASMParameter p = (ASMParameter)i.next();
+				String pname = p.getName();
+				pname = op.resolveVariableName(Integer.parseInt(pname), 0);
+				String svalue = (String)params.get(pname);
+				ASMOclAny value = new ASMOclUndefined();
+				if (svalue != null) {
+					value = new ASMString(svalue);
+				}
+				args.add(value);
 			}
-			args.add(value);
+			returnValue = op.exec(ASMStackFrame.rootFrame(env, op, args));
+			env.terminated();
+
+		} catch (Exception e) {
+			ATLPlugin.log(Level.SEVERE, e.getMessage(), e);
 		}
-		returnValue = op.exec(ASMStackFrame.rootFrame(env, op, args));
-		env.terminated();
 	}
 
 	public ASMOclAny getReturnValue() {
