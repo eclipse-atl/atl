@@ -538,7 +538,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 				if (eType.eResource() != null) {
 					referencedExtents.add(eType.eResource());
 				} else {
-					ATLPlugin.log(Level.SEVERE, "WARNING: Resource for " + eType.toString()
+					ATLPlugin.warning("Resource for " + eType.toString()
 							+ " is null; cannot be referenced");
 				}
 				if (eType instanceof EClass) {
@@ -553,7 +553,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 			if (eType.eResource() != null) {
 				referencedExtents.add(eType.eResource());
 			} else {
-				ATLPlugin.log(Level.SEVERE, "WARNING: Resource for " + eType.toString()
+				ATLPlugin.warning("Resource for " + eType.toString()
 						+ " is null; cannot be referenced");
 			}
 		}
@@ -564,7 +564,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 				referencedExtents.add(eSuper.eResource());
 				addReferencedExtentsFor(eSuper, ignore);
 			} else {
-				ATLPlugin.log(Level.SEVERE, "WARNING: Resource for " + eSuper.toString()
+				ATLPlugin.warning("Resource for " + eSuper.toString()
 						+ " is null; cannot be referenced");
 			}
 		}
