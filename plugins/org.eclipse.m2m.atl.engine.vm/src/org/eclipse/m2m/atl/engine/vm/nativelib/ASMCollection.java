@@ -35,7 +35,7 @@ public abstract class ASMCollection extends ASMOclAny {
 	public abstract Collection collection();
 	
 	public ASMOclAny get(StackFrame frame, String name) {
-		frame.printStackTrace("ERROR: Collections do not have properties, use ->collect()");
+		frame.printStackTrace("Collections do not have properties, use ->collect()");
 		return null;
 	}
 
@@ -118,7 +118,7 @@ public abstract class ASMCollection extends ASMOclAny {
 				if(oper != null) {
 					ret = oper.exec(frame.enterFrame(oper, arguments));
 				} else {
-					frame.printStackTrace("ERROR: could not find operation + on " + ret.getType() + " having supertypes: " + ret.getType().getSupertypes());
+					frame.printStackTrace("Could not find operation + on " + ret.getType() + " having supertypes: " + ret.getType().getSupertypes());
 				}
 
 			}
