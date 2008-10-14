@@ -36,7 +36,7 @@ public class ASMOclUndefined extends ASMOclAny {
 	}
 
 	public ASMOclAny get(StackFrame frame, String name) {
-		frame.printStackTrace("ERROR: OclUndefined has no property");
+		frame.printStackTrace("OclUndefined has no property");
 		return null;
 	}
 
