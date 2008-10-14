@@ -149,14 +149,14 @@ public final class AtlSourceManager {
 		try {
 			inputStream = file.getContents();
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage());
+			ATLPlugin.log(Level.SEVERE,e.getLocalizedMessage(),e);
 		}
 		try {
 			byte[] bytes = new byte[inputStream.available()];
 			inputStream.read(bytes);
 			content = new String(bytes);
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage());
+			ATLPlugin.log(Level.SEVERE,e.getLocalizedMessage(),e);
 		}
 		updateDataSource(content);
 	}
