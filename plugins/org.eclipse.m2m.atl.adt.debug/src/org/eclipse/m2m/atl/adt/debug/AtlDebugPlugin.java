@@ -12,20 +12,33 @@ package org.eclipse.m2m.atl.adt.debug;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
+import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.adt.launching.logging.ConsoleStreamHandler;
+import org.eclipse.m2m.atl.adt.launching.logging.ErrorLogHandler;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleManager;
+import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * The main plugin class to be used in the desktop.
  * 
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class AtlDebugPlugin extends AbstractUIPlugin {
 
 	/** The shared instance. */
 	private static AtlDebugPlugin plugin;
+	
+	private static MessageConsole console;
 
 	IDebugModelPresentation fUtilPresentation;
 
@@ -38,12 +51,35 @@ public class AtlDebugPlugin extends AbstractUIPlugin {
 	public AtlDebugPlugin() {
 		super();
 		plugin = this;
+		
+		Logger.getLogger(ATLPlugin.ID).addHandler(new ErrorLogHandler());
+		
+		console = findConsole("ATL");
+		Handler handler = new ConsoleStreamHandler(console.newMessageStream());
+        handler.setLevel(Level.INFO);	
+        
+        Logger.getLogger(ATLPlugin.ID).addHandler(handler);	
+				
 		try {
 			resourceBundle = ResourceBundle
 					.getBundle("org.eclipse.m2m.atl.adt.debug.AtlDebugPluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
+	}
+
+	private MessageConsole findConsole(String name) {
+		IConsoleManager consoleMgr = ConsolePlugin.getDefault().getConsoleManager();
+		IConsole[] existing = consoleMgr.getConsoles();
+		for (int i = 0; i < existing.length; i++) {
+			if (name.equals(existing[i].getName())) {
+				return (MessageConsole)existing[i];
+			}
+		}
+		// no console found, so create a new one
+		MessageConsole myConsole = new MessageConsole(name, null);
+		consoleMgr.addConsoles(new IConsole[] {myConsole});
+		return myConsole;
 	}
 
 	/**
