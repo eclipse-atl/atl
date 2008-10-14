@@ -139,7 +139,7 @@ public class LocalObjectReference extends ObjectReference {
 
 		Operation op = debugger.getExecEnv().getOperation(object.getType(), opName);
 		if (op == null) {
-			ATLPlugin.severe("ERROR: operation not found: " + opName + " on " + object + " : "
+			ATLPlugin.severe("Operation not found: " + opName + " on " + object + " : "
 					+ object.getType());
 		} else {
 			List realArgs = new ArrayList();
