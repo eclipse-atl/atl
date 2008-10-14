@@ -142,7 +142,6 @@ public class ASMEmitter extends ASMOclAny {
 
 	public void dumpASM(String fileName) {
 		finishOperation();
-		ATLPlugin.info("Dumping ASM to " + fileName);
 		try {
 			PrintWriter out = new PrintWriter(new FileWriter(fileName));
 			new ASMXMLWriter(out, false).print(asm);
