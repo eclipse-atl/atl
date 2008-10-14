@@ -246,7 +246,7 @@ public class ASMString extends ASMOclAny {
 
 				ret = new ASMString(sb.toString());
 			} catch (IOException ioe) {
-				frame.printStackTrace("error: could not read from file " + self.s);
+				frame.printStackTrace("Could not read from file " + self.s);
 				ret = new ASMOclUndefined();
 				;
 			}
@@ -305,7 +305,7 @@ public class ASMString extends ASMOclAny {
 
 		ASMModel tgt = frame.getExecEnv().getModel(targetModelName.getSymbol());
 		if (tgt == null)
-			frame.printStackTrace("Error: could not find model " + targetModelName);
+			frame.printStackTrace("Could not find model " + targetModelName);
 		ModelLoader ml = tgt.getModelLoader();
 		ret = ml.inject(tgt, kind.getSymbol(), params.getSymbol(), null, new ByteArrayInputStream(self.s
 				.getBytes()));
@@ -354,16 +354,15 @@ public class ASMString extends ASMOclAny {
 							exp.append((char)c);
 						}
 
-						if (debug)
+						if (debug) {
 							ATLPlugin.info("\tEvaluating : " + exp);
-						// if(debug) System.out.println("\tEvaluating : " + exp);
-
+						}
 						ASMOclAny result = new SOTSExpression2(exp.toString()).exec(frame, args);
 
-						if (debug)
+						if (debug) {
 							ATLPlugin.info("\t\t=>" + result);
-						// if(debug) System.out.println("\t\t=>" + result);
-
+						}
+						
 						if (result instanceof ASMCollection) {
 							result = (ASMOclAny)((ASMCollection)result).iterator().next();
 						}
@@ -383,10 +382,9 @@ public class ASMString extends ASMOclAny {
 			// e.printStackTrace(System.out);
 		}
 
-		if (debug)
+		if (debug) {
 			ATLPlugin.info("result = \"" + ret + "\"");
-		// if(debug) System.out.println("result = \"" + ret + "\"");
-
+		}
 		return new ASMString(ret.toString());
 	}
 
