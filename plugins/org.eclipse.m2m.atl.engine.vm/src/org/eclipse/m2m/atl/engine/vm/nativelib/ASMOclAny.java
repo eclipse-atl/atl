@@ -77,7 +77,7 @@ public class ASMOclAny extends ASMNativeObject {
 		if (oper != null) {
 			ret = invoke(frame, oper, arguments);
 		} else {
-			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType()
+			frame.printStackTrace("Could not find operation " + opName + " on " + getType()
 					+ " having supertypes: " + getType().getSupertypes());
 		}
 
@@ -106,7 +106,7 @@ public class ASMOclAny extends ASMNativeObject {
 		if (oper != null) {
 			ret = invoke(frame, oper, arguments);
 		} else {
-			frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType()
+			frame.printStackTrace("Could not find operation " + opName + " on " + getType()
 					+ " having supertypes: " + getType().getSupertypes());
 		}
 
@@ -134,12 +134,12 @@ public class ASMOclAny extends ASMNativeObject {
 		if (isHelper(frame, name)) {
 			return getHelper(frame, name);
 		}
-		frame.printStackTrace("ERROR: get unsupported on OclAny.");
+		frame.printStackTrace("Get unsupported on OclAny.");
 		return null;
 	}
 
 	public void set(StackFrame frame, String name, ASMOclAny value) {
-		frame.printStackTrace("ERROR: set unsupported on OclAny");
+		frame.printStackTrace("Set unsupported on OclAny");
 	}
 
 	public ASMOclAny refImmediateComposite() {
