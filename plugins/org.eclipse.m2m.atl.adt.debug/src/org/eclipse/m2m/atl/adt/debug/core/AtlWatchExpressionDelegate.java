@@ -29,12 +29,12 @@ import org.eclipse.debug.core.model.IWatchExpressionListener;
 import org.eclipse.debug.core.model.IWatchExpressionResult;
 import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
+import org.eclipse.m2m.atl.adt.debug.core.ocl.OclHelper;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMXMLWriter;
 import org.eclipse.m2m.atl.engine.vm.adwp.ADWPDebugger;
 import org.eclipse.m2m.atl.engine.vm.adwp.StringValue;
 import org.eclipse.m2m.atl.engine.vm.adwp.Value;
-import org.eclipse.m2m.atl.ocl.core.OclHelper;
 
 /**
  * A delegate which computes the value of a watch expression when provided a context. Watch delegates are
