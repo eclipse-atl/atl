@@ -26,7 +26,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
@@ -264,7 +264,7 @@ public final class AtlLauncherTools {
 			URL url = new URL(baseUrl, path);
 			return ImageDescriptor.createFromURL(url).createImage();
 		} catch (MalformedURLException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return null;
 	}
@@ -329,7 +329,7 @@ public final class AtlLauncherTools {
 				}
 			});
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		String[] fileNames = new String[fileList.size()];

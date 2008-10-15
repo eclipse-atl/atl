@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 
 /**
@@ -61,7 +61,7 @@ public abstract class AtlVM implements ILaunchConfigurationDelegate {
 						break extensions;
 					}
 				} catch (CoreException e) {
-					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				}
 			}
 		}

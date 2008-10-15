@@ -26,7 +26,7 @@ import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 import org.eclipse.m2m.atl.adt.debug.core.AtlBreakpoint;
@@ -96,7 +96,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 			URL url = new URL(BASE_URL, path);
 			return ImageDescriptor.createFromURL(url).createImage();
 		} catch (MalformedURLException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return null;
 	}
@@ -173,7 +173,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 			try {
 				name = target.getName();
 			} catch (DebugException e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 			return name
 					+ AtlDebugMessages.getString("AtlDebugModelPresentation.CONNECTEDONHOST") + target.getHost() + AtlDebugMessages.getString("AtlDebugModelPresentation.PORT") + target.getPort(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -231,7 +231,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 							+ " " + atlVar.getName() + " = " + atlVar.getReferenceTypeName() + " (id = " + atlVar.getIdVariable() + ")"; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 				}
 			} catch (DebugException e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		} else if (item instanceof AtlBreakpoint) {
 			IMarker marker = ((AtlBreakpoint)item).getMarker();
@@ -246,7 +246,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 						", charEnd: " + charEnd + //$NON-NLS-1$
 						"]"; //$NON-NLS-1$
 			} catch (CoreException e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
 
@@ -263,7 +263,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		try {
 			listener.detailComputed(value, value.getValueString());
 		} catch (DebugException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

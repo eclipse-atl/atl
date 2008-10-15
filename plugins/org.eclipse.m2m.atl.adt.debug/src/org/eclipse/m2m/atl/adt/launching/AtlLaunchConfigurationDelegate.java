@@ -10,13 +10,15 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.launching;
 
+import java.util.logging.Level;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 
 /**
@@ -41,10 +43,14 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				AtlLauncherTools.OPTION_PRINT_EXECUTION_TIME, false);
 
 		long startTime = System.currentTimeMillis();
+		try {		
 		atlVM.launch(configuration, mode, launch, monitor);
+		} catch (Exception e) {
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
 		long endTime = System.currentTimeMillis();
 		if (printExecutionTime && !mode.equals(ILaunchManager.DEBUG_MODE)) {
-			ATLPlugin
+			ATLLogger
 					.info(launch
 							.getLaunchConfiguration()
 							.getAttribute(

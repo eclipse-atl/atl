@@ -21,7 +21,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.adwp.BooleanValue;
 import org.eclipse.m2m.atl.engine.vm.adwp.IntegerValue;
 import org.eclipse.m2m.atl.engine.vm.adwp.NullValue;
@@ -345,7 +345,7 @@ public class AtlValue extends AtlDebugElement implements IValue {
 		try {
 			hasVariables();
 		} catch (DebugException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return false;
 	}

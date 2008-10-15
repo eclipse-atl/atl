@@ -40,7 +40,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 import org.eclipse.swt.SWT;
@@ -347,7 +347,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			initializeWidgetValuesFrom(launchConfiguration);
 			layout();
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -510,7 +510,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			if (res instanceof IFile) {
 				getModelsFromATLFile((IFile)res);
 			} else {
-				ATLPlugin.severe(AtlDebugMessages.getString("MainAtlTab.FILENOTFOUND") + path); //$NON-NLS-1$
+				ATLLogger.severe(AtlDebugMessages.getString("MainAtlTab.FILENOTFOUND") + path); //$NON-NLS-1$
 			}
 		}
 	}
@@ -610,7 +610,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			projectFilesList.setItems(AtlLauncherTools.fileNames(projectName));
 			projectFilesList.setText(fileName); //$NON-NLS-1$
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		rebuild();
 	}
@@ -1149,14 +1149,14 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		if (asmFileCache.containsKey(file)) {
 			sourceManager = (AtlSourceManager)asmFileCache.get(file);
 			if (debug) {
-				ATLPlugin.info("Cached ATL File found for " + file.toString()); //$NON-NLS-1$
+				ATLLogger.info("Cached ATL File found for " + file.toString()); //$NON-NLS-1$
 			}
 		} else {
 			sourceManager = new AtlSourceManager();
 			sourceManager.updateDataSource(file);
 			asmFileCache.put(file, sourceManager);
 			if (debug) {
-				ATLPlugin.info("Loaded ATL File from " + file.toString()); //$NON-NLS-1$
+				ATLLogger.info("Loaded ATL File from " + file.toString()); //$NON-NLS-1$
 			}
 		}
 

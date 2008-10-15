@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.LineBreakpoint;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 
 /**
@@ -80,7 +80,7 @@ public class AtlBreakpoint extends LineBreakpoint {
 			marker.setAttribute(IMarker.CHAR_END, new Integer(charEnd));
 			marker.setAttribute(IBreakpoint.REGISTERED, false); // breakpoint has not been registered yet
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

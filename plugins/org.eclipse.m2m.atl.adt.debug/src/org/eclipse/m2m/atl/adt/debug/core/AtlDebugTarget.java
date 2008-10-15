@@ -46,7 +46,7 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 import org.eclipse.m2m.atl.adt.launching.AtlLauncherTools;
@@ -154,7 +154,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 		try {
 			disassemblyMode = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.MODEDEBUG, false);
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 		}
 		state = STATE_DISCONNECTED;
@@ -165,7 +165,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	 * Starts debug.
 	 */
 	public void start() {
-		ATLPlugin.info(AtlDebugMessages.getString("AtlDebugTarget.CONNECTIONDEBUGEE")); //$NON-NLS-1$
+		ATLLogger.info(AtlDebugMessages.getString("AtlDebugTarget.CONNECTIONDEBUGEE")); //$NON-NLS-1$
 		try {
 			do {
 				try {
@@ -182,19 +182,19 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 						}
 						socket = new Socket(host, Integer.parseInt(port));
 					} catch (CoreException e1) {
-						ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+						ATLLogger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 					}
 				} catch (ConnectException ce) {
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException ie) {
-						ATLPlugin.info(AtlDebugMessages.getString("Problem encountered during connection.")); //$NON-NLS-1$
+						ATLLogger.info(AtlDebugMessages.getString("Problem encountered during connection.")); //$NON-NLS-1$
 					}
 				}
 			} while (socket == null);
 
 			debugger = new ADWPDebugger(socket.getInputStream(), socket.getOutputStream());
-			ATLPlugin.info(AtlDebugMessages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
+			ATLLogger.info(AtlDebugMessages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
 			state = STATE_SUSPENDED;
 
 			threads = new AtlThread[1];
@@ -206,10 +206,10 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 				breakpointAdded(bpArray[i]);
 			}
 		} catch (UnknownHostException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 		}
 
@@ -260,7 +260,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 
 								frames[n - i] = new AtlStackFrame(threads[0], stackFrame, structFile, file);
 							} catch (CoreException e1) {
-								ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+								ATLLogger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 							}
 						}
 						threads[0].setStackFrames(frames);
@@ -275,7 +275,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 				try {
 					terminate();
 				} catch (DebugException e) {
-					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 				}
 			}
@@ -354,7 +354,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 			location = (String)ab.getMarker().getAttribute(IMarker.LOCATION);
 			enabled = (Boolean)ab.getMarker().getAttribute(IBreakpoint.ENABLED);
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 			return;
 		}
@@ -380,7 +380,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 			location = (String)ab.getMarker().getAttribute(IMarker.LOCATION);
 			enabled = (Boolean)ab.getMarker().getAttribute(IBreakpoint.ENABLED);
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 			return;
 		}
@@ -408,7 +408,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 		try {
 			location = (String)ab.getMarker().getAttribute(IMarker.LOCATION);
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 			return;
 		}
@@ -701,7 +701,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 			debugEvents[0] = event;
 			DebugPlugin.getDefault().fireDebugEventSet(debugEvents);
 		} catch (DebugException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

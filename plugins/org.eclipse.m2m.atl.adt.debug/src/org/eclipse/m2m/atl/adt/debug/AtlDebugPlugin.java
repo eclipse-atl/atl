@@ -13,14 +13,11 @@ package org.eclipse.m2m.atl.adt.debug;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.launching.logging.ConsoleStreamHandler;
-import org.eclipse.m2m.atl.adt.launching.logging.ErrorLogHandler;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
@@ -52,13 +49,11 @@ public class AtlDebugPlugin extends AbstractUIPlugin {
 		super();
 		plugin = this;
 		
-		Logger.getLogger(ATLPlugin.ID).addHandler(new ErrorLogHandler());
+		//Logger.getLogger(ATLLogger.ID).addHandler(new ErrorLogHandler());
 		
 		console = findConsole("ATL");
-		Handler handler = new ConsoleStreamHandler(console.newMessageStream());
-        handler.setLevel(Level.INFO);	
-        
-        Logger.getLogger(ATLPlugin.ID).addHandler(handler);	
+		Handler handler = new ConsoleStreamHandler(console.newMessageStream());	
+        ATLLogger.getLogger().addHandler(handler);	
 				
 		try {
 			resourceBundle = ResourceBundle

@@ -38,7 +38,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlRunTarget;
 import org.eclipse.m2m.atl.adt.launching.sourcelookup.AtlSourceLocator;
@@ -167,7 +167,7 @@ public class AtlRegularVM extends AtlVM {
 				toReturn.put(mName, inputModel);
 			}
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return toReturn;
 	}
@@ -219,7 +219,7 @@ public class AtlRegularVM extends AtlVM {
 				toReturn.put(mName, outputModel);
 			}
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return toReturn;
 	}
@@ -376,9 +376,9 @@ public class AtlRegularVM extends AtlVM {
 				AtlModelHandler.getHandler(model).disposeOfModel(model);
 			}
 		} catch (MalformedURLException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (CoreException e1) {
-			ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			ATLLogger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 
 		}
 		return toReturn;
@@ -453,7 +453,7 @@ public class AtlRegularVM extends AtlVM {
 			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode,
 					superimpose, options);
 		} catch (CoreException e1) {
-			ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			ATLLogger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 
 		}
 	}

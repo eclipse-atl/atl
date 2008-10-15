@@ -11,7 +11,6 @@
 package org.eclipse.m2m.atl.adt.launching.logging;
 
 import java.io.OutputStream;
-import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
 
@@ -36,10 +35,8 @@ public class ConsoleStreamHandler extends StreamHandler {
      * @see java.util.logging.StreamHandler#publish(java.util.logging.LogRecord)
      */
     public void publish(LogRecord record) {
-    	if (record.getLevel().equals(Level.INFO)) {
-    		super.publish(record);
-            flush();	
-		}        
+    	super.publish(record);
+        flush();
     }
     
     /**

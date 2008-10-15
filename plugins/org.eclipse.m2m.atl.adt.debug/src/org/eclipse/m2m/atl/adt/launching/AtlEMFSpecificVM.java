@@ -8,7 +8,7 @@
  * Contributors:
  *    INRIA - initial API and implementation
  *    
- * $Id: AtlEMFSpecificVM.java,v 1.2 2008/10/14 13:37:08 wpiers Exp $
+ * $Id: AtlEMFSpecificVM.java,v 1.3 2008/10/15 10:21:04 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.launching;
 
@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.debug.core.AtlRunTarget;
 import org.eclipse.m2m.atl.adt.launching.sourcelookup.AtlSourceLocator;
 import org.eclipse.m2m.atl.engine.emfvm.ASM;
@@ -39,6 +39,7 @@ import org.eclipse.m2m.atl.engine.emfvm.emf.EMFReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Model;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
+import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 
 // TODO:
 // - improve the way VMs are made pluggable
@@ -179,8 +180,8 @@ public class AtlEMFSpecificVM extends AtlVM {
 					EMFModel m = (EMFModel)models.get(mName);
 					m.save(URI.createPlatformResourceURI((String)modelPaths.get(mName), true));
 				}
-			} catch (Exception e) {
-				ATLPlugin.log(Level.SEVERE,e.getMessage(), e);
+			} catch (VMException e) {
+				ATLLogger.log(Level.SEVERE,e.getMessage(), e);
 			} finally {
 				for (Iterator i = models.values().iterator(); i.hasNext();) {
 					Model model = (Model)i.next();
@@ -188,7 +189,7 @@ public class AtlEMFSpecificVM extends AtlVM {
 				}
 			}
 		} catch (IOException ioe) {
-			ATLPlugin.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
+			ATLLogger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 
 	}

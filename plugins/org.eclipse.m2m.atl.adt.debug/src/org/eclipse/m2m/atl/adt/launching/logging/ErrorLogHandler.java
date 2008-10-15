@@ -15,7 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import org.eclipse.core.runtime.Status;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
 
 /**
  * The error log handler, which displays ATL messages on the standard error log.
@@ -48,8 +49,8 @@ public class ErrorLogHandler extends Handler {
 	public void publish(LogRecord record) {
 		int severity = getSeverityFromLevel(record.getLevel());
 		if (severity != Status.CANCEL) {
-			Status status = new Status(severity, ATLPlugin.ID, record.getMessage(), record.getThrown());
-			ATLPlugin.getDefault().getLog().log(status);
+			Status status = new Status(severity, ATLLogger.ID, record.getMessage(), record.getThrown());
+			AtlDebugPlugin.getDefault().getLog().log(status);
 		}
 	}
 
