@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
 import org.eclipse.m2m.atl.engine.vm.ClassNativeOperation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
@@ -100,7 +100,7 @@ public class ASMUMLModelElement extends ASMEMFModelElement {
 					ASMString.class,});
 
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

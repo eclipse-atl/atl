@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.xmi.XMIResource;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
@@ -121,12 +121,12 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 				}
 			} catch (IllegalStateException e) {
 				// workspace is closed
-				ATLPlugin.log(Level.FINE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.FINE, e.getLocalizedMessage(), e);
 			} catch (CoreException e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -141,7 +141,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 		try {
 			ret = ASMUMLModel.loadASMUMLModel(name, (ASMUMLModel)metamodel, in, null);
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;
@@ -158,7 +158,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 		try { // OUT
 			ret = ASMUMLModel.newASMUMLModel(name, (ASMUMLModel)metamodel, null);
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;
@@ -176,7 +176,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 		try {
 			ret = ASMUMLModel.newASMUMLModel(name, uri, (ASMUMLModel)metamodel, null);
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;
@@ -213,7 +213,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 		try { // UML2
 			ret = ASMUMLModel.loadASMUMLModel(name, (ASMUMLModel)metamodel, uri, null);
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;
@@ -230,7 +230,7 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 		try {
 			ret = ASMUMLModel.loadASMUMLModel(name, (ASMUMLModel)metamodel, uri, null);
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;

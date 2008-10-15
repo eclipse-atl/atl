@@ -36,7 +36,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -196,7 +196,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 		try {
 			super.finalize();
 		} catch (Throwable e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -330,7 +330,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 			ret.setIsTarget(false);
 			ret.unload = true;
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		adaptMetamodel(ret, metamodel);
 
@@ -360,7 +360,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 			ret.addAllReferencedExtents(ret.getExtent());
 			ret.unload = true;
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		adaptMetamodel(ret, metamodel);
@@ -538,7 +538,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 				if (eType.eResource() != null) {
 					referencedExtents.add(eType.eResource());
 				} else {
-					ATLPlugin.warning("Resource for " + eType.toString()
+					ATLLogger.warning("Resource for " + eType.toString()
 							+ " is null; cannot be referenced");
 				}
 				if (eType instanceof EClass) {
@@ -553,7 +553,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 			if (eType.eResource() != null) {
 				referencedExtents.add(eType.eResource());
 			} else {
-				ATLPlugin.warning("Resource for " + eType.toString()
+				ATLLogger.warning("Resource for " + eType.toString()
 						+ " is null; cannot be referenced");
 			}
 		}
@@ -564,7 +564,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 				referencedExtents.add(eSuper.eResource());
 				addReferencedExtentsFor(eSuper, ignore);
 			} else {
-				ATLPlugin.warning("Resource for " + eSuper.toString()
+				ATLLogger.warning("Resource for " + eSuper.toString()
 						+ " is null; cannot be referenced");
 			}
 		}
