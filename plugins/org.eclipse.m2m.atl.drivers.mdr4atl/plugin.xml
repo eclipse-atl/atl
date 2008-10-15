@@ -31,8 +31,8 @@
    <requires>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.m2m.atl"/>
       <import plugin="org.eclipse.m2m.atl.engine.vm"/>
+      <import plugin="org.eclipse.m2m.atl"/>
    </requires>
    <extension
          point="org.eclipse.m2m.atl.engine.vm.modelhandler">

@@ -13,7 +13,7 @@ package org.eclipse.m2m.atl.drivers.mdr4atl;
 import java.io.InputStream;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
@@ -32,7 +32,7 @@ public class MDRModelLoader extends ModelLoader {
 		try {
 			ret = ASMMDRModel.loadASMMDRModel(name, (ASMMDRModel)metamodel, href, this);
 		} catch(Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 //			e.printStackTrace(System.out);
 		}
 
@@ -45,7 +45,7 @@ public class MDRModelLoader extends ModelLoader {
 		try {
 			ret = ASMMDRModel.newASMMDRModel(name, (ASMMDRModel)metamodel, this);
 		} catch(Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 //			e.printStackTrace(System.out);
 		}
 
@@ -58,7 +58,7 @@ public class MDRModelLoader extends ModelLoader {
 		try {
 			ret = ASMMDRModel.newASMMDRModel(name, uri, (ASMMDRModel)metamodel, this);
 		} catch(Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 //			e.printStackTrace(System.out);
 		}
 
@@ -80,7 +80,7 @@ public class MDRModelLoader extends ModelLoader {
 		try {
 			((ASMMDRModel)model).save(href, xmiVersion, encoding);
 		} catch(Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 //			e.printStackTrace(System.out);
 		}
 	}

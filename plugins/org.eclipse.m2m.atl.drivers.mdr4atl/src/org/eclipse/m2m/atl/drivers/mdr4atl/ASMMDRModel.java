@@ -32,7 +32,7 @@ import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.xmi.MalformedXMIException;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMCollection;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -64,7 +64,7 @@ public class ASMMDRModel extends ASMModel {
 	private static XMIWriter writer;
 
 	static {
-		ATLPlugin.info("Initializing MDR...");
+		ATLLogger.info("Initializing MDR...");
 		initMDR();
 	}
 
@@ -131,7 +131,7 @@ public class ASMMDRModel extends ASMModel {
 
 	private static void register(Map classifiers, String name, RefObject classifier) {
 		if (classifiers.containsKey(name)) {
-			ATLPlugin.warning("metamodel contains several classifiers with same name: " + name);
+			ATLLogger.warning("metamodel contains several classifiers with same name: " + name);
 		}
 		classifiers.put(name, classifier);
 	}
@@ -214,7 +214,7 @@ public class ASMMDRModel extends ASMModel {
 				ASMMDRModelElement asso = (ASMMDRModelElement)i.next();
 
 				if (debug) {
-					ATLPlugin.info(asso.toString());
+					ATLLogger.info(asso.toString());
 				}
 
 				ASMMDRModelElement type1 = null;
@@ -242,7 +242,7 @@ public class ASMMDRModel extends ASMModel {
 				// if(!((Boolean)ae1.refGetValue("isNavigable")).booleanValue()) {
 
 				if (debug)
-					ATLPlugin.info("\tAdding acquaintance \"" + name1 + "\" to " + type2);
+					ATLLogger.info("\tAdding acquaintance \"" + name1 + "\" to " + type2);
 				// if(debug) System.out.println("\tAdding acquaintance \"" + name1 + "\" to " + type2);
 
 				type2.addAcquaintance(name1, asso, ae1, true);
@@ -250,7 +250,7 @@ public class ASMMDRModel extends ASMModel {
 				// if(!((Boolean)ae2.refGetValue("isNavigable")).booleanValue()) {
 
 				if (debug)
-					ATLPlugin.info("\tAdding acquaintance \"" + name2 + "\" to " + type1);
+					ATLLogger.info("\tAdding acquaintance \"" + name2 + "\" to " + type1);
 				// if(debug) System.out.println("\tAdding acquaintance \"" + name2 + "\" to " + type1);
 
 				type1.addAcquaintance(name2, asso, ae2, false);
@@ -373,7 +373,7 @@ public class ASMMDRModel extends ASMModel {
 			ret = new ASMMDRModel("MOF", rep.getExtent("MOF"), null, false, ml);
 			mofmm = ret;
 		} catch (org.netbeans.mdr.util.DebugException de) {
-			ATLPlugin.log(Level.SEVERE, de.getLocalizedMessage(), de);
+			ATLLogger.log(Level.SEVERE, de.getLocalizedMessage(), de);
 		}
 
 		return ret;

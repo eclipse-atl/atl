@@ -29,7 +29,7 @@ import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.reflect.RefStruct;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.ClassNativeOperation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBag;
@@ -125,7 +125,7 @@ public class ASMMDRModelElement extends ASMModelElement {
 			// Operations on MOF!AssociationEnd
 			registerMOFOperation("AssociationEnd", "otherEnd", new Class[] {});
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -388,7 +388,7 @@ public class ASMMDRModelElement extends ASMModelElement {
 			if (frame != null) {
 				frame.printStackTrace(msg, e);
 			} else {
-				ATLPlugin.log(Level.INFO, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.INFO, e.getLocalizedMessage(), e);
 			}
 		}
 	}
@@ -504,7 +504,7 @@ public class ASMMDRModelElement extends ASMModelElement {
 							|| ((Collection)t.refInvokeOperation("allSupertypes", new ArrayList()))
 									.contains(o);
 				} catch (Exception e) {
-					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				}
 			}
 		}
@@ -550,7 +550,7 @@ public class ASMMDRModelElement extends ASMModelElement {
 				ret = ((ASMMDRModel)getModel()).getASMModelElement((RefObject)t.refInvokeOperation(
 						"lookupElementExtended", args));
 			} catch (Exception e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
 
