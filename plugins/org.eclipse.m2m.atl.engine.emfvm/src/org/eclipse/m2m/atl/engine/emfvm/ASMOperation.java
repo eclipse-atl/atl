@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.13 2008/10/14 14:36:55 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.14 2008/10/15 10:21:08 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -25,10 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.WeakHashMap;
-import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Bag;
 import org.eclipse.m2m.atl.engine.emfvm.lib.EnumLiteral;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
@@ -54,9 +53,6 @@ public class ASMOperation extends Operation {
 
 	/** The max size of the Stack. */
 	public static final int MAX_STACK = 100;
-
-	/** The common ATL logger. */
-	protected static Logger logger = Logger.getLogger(EmfvmPlugin.LOGGER);
 
 	private static Map nativeClasses = new HashMap();
 
@@ -340,7 +336,7 @@ public class ASMOperation extends Operation {
 				Bytecode bytecode = bytecodes[pc++];
 				execEnv.incNbExecutedBytecodes();
 				if (debug) {
-					ATLPlugin.info(name + ":" + (pc - 1) + "\t" + bytecode);
+					ATLLogger.info(name + ":" + (pc - 1) + "\t" + bytecode);
 				}
 				switch (bytecode.getOpcode()) {
 					case Bytecode.PUSHD:
@@ -385,7 +381,7 @@ public class ASMOperation extends Operation {
 							}
 							if (debug) {
 								log.append(")");
-								ATLPlugin.info(log.toString());
+								ATLLogger.info(log.toString());
 							}
 							--fp; // pop self, that we already retrieved earlier to get the operation
 							arguments[0] = self;
@@ -408,7 +404,7 @@ public class ASMOperation extends Operation {
 							}
 							if (debug) {
 								log.append(")");
-								ATLPlugin.info(log.toString());
+								ATLLogger.info(log.toString());
 							}
 							--fp; // pop self, that we already retrieved earlier to get the operation
 
@@ -571,7 +567,7 @@ public class ASMOperation extends Operation {
 						}
 						log.append(frame.getExecEnv().toPrettyPrintedString(stack[i]));
 					}
-					ATLPlugin.info(log.toString());
+					ATLLogger.info(log.toString());
 
 					log = new StringBuffer();
 					log.append("\tlocals: ");
@@ -587,7 +583,7 @@ public class ASMOperation extends Operation {
 							log.append(frame.getExecEnv().toPrettyPrintedString(localVars[i]));
 						}
 					}
-					ATLPlugin.info(log.toString());
+					ATLLogger.info(log.toString());
 				}
 			}
 		} catch (VMException e) {
@@ -595,14 +591,7 @@ public class ASMOperation extends Operation {
 			throw e; // do not rewrap
 		} catch (Exception e) {
 			((StackFrame)frame).setPc(pc - 1);
-			String msg = e.getLocalizedMessage();
-			Throwable cause = e;
-			while (msg == null && cause != null) {
-				cause = cause.getCause();
-				msg = cause.getLocalizedMessage();
-			}
-			msg = cause.getClass().getCanonicalName() + ": " + msg;
-			throw new VMException(frame, msg, cause);
+			throw new VMException(frame, e.getLocalizedMessage(),e);
 		}
 
 		return fp > 0 ? stack[--fp] : null;

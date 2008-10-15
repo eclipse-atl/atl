@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFModelAdapter.java,v 1.4 2008/10/14 13:44:44 wpiers Exp $
+ * $Id: EMFModelAdapter.java,v 1.5 2008/10/15 10:21:08 wpiers Exp $
  */
 package org.eclipse.m2m.atl.engine.emfvm.emf;
 
@@ -23,7 +23,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
@@ -36,7 +35,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EClassImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.m2m.atl.engine.emfvm.EmfvmPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.HasFields;
@@ -57,8 +56,6 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
  * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
  */
 public class EMFModelAdapter implements ModelAdapter {
-	/** The common ATL logger. */
-	protected static Logger logger = Logger.getLogger(EmfvmPlugin.LOGGER);
 
 	private Map modelsByResource;
 
@@ -520,7 +517,7 @@ public class EMFModelAdapter implements ModelAdapter {
 				}
 			} else {
 				if (settableValue instanceof Collection) {
-					logger.warning("Assigning a Collection to a single-valued feature");
+					ATLLogger.warning("Assigning a Collection to a single-valued feature");
 					Collection c = (Collection)settableValue;
 					if (!c.isEmpty()) {
 						settableValue = c.iterator().next();

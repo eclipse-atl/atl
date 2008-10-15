@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    
  *
- * $Id: ExecEnv.java,v 1.19 2008/10/14 13:44:21 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.20 2008/10/15 10:21:08 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -31,12 +31,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.m2m.atl.ATLPlugin;
-import org.eclipse.m2m.atl.engine.emfvm.EmfvmPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * Execution environment.
@@ -47,9 +45,6 @@ import org.eclipse.m2m.atl.engine.emfvm.EmfvmPlugin;
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ExecEnv {
-
-	/** The common ATL logger. */
-	protected static Logger logger = Logger.getLogger(EmfvmPlugin.LOGGER);
 
 	/** Supertypes correspondance map. */
 	private Map supertypes = new HashMap();
@@ -1165,7 +1160,7 @@ public class ExecEnv {
 		operationsByName.put("debug", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object[] localVars = frame.localVars;
-				ATLPlugin.info(localVars[1] + ": " + toPrettyPrintedString(localVars[0]));
+				ATLLogger.info(localVars[1] + ": " + toPrettyPrintedString(localVars[0]));
 				return localVars[0];
 			}
 		});
@@ -1511,11 +1506,11 @@ public class ExecEnv {
 			ret = (Operation)map.get(name);
 		}
 		if (debug) {
-			ATLPlugin.info(this + "@" + this.hashCode() + ".getOperation(" + type + ", " + name + ")");
+			ATLLogger.info(this + "@" + this.hashCode() + ".getOperation(" + type + ", " + name + ")");
 		}
 		if (ret == null) {
 			if (debug) {
-				ATLPlugin.info("looking in super of this for operation " + name);
+				ATLLogger.info("looking in super of this for operation " + name);
 			}
 			for (Iterator i = modelAdapter.getSupertypes(type).iterator(); i.hasNext() && (ret == null);) {
 				Object st = i.next();
@@ -1697,7 +1692,7 @@ public class ExecEnv {
 	 */
 	public void prettyPrint(Object value) {
 		// prettyPrint(out, value);
-		ATLPlugin.info(toPrettyPrintedString(value));
+		ATLLogger.info(toPrettyPrintedString(value));
 	}
 
 	/**

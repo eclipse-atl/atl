@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFReferenceModel.java,v 1.5 2008/09/23 12:36:01 wpiers Exp $
+ * $Id: EMFReferenceModel.java,v 1.6 2008/10/15 10:21:08 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.emf;
@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
@@ -32,7 +31,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.m2m.atl.engine.emfvm.EmfvmPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
 
 /**
@@ -42,8 +41,6 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
  * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
  */
 public class EMFReferenceModel extends EMFModel implements ReferenceModel {
-
-	protected static Logger logger = Logger.getLogger(EmfvmPlugin.LOGGER);
 
 	private static ReferenceModel metametamodel;
 
@@ -260,7 +257,7 @@ public class EMFReferenceModel extends EMFModel implements ReferenceModel {
 
 	private static void register(Map eClassifiers, String name, EObject classifier) {
 		if (eClassifiers.containsKey(name)) {
-			logger.warning("metamodel contains several classifiers with same name: " + name);
+			ATLLogger.warning("metamodel contains several classifiers with same name: " + name);
 		}
 		eClassifiers.put(name, classifier);
 	}
@@ -304,7 +301,7 @@ public class EMFReferenceModel extends EMFModel implements ReferenceModel {
 				if (eType.eResource() != null) {
 					referencedResources.add(eType.eResource());
 				} else {
-					logger.warning("Resource for " + eType.toString() + " is null; cannot be referenced");
+					ATLLogger.warning("Resource for " + eType.toString() + " is null; cannot be referenced");
 				}
 				if (eType instanceof EClass) {
 					addReferencedResourcesFor((EClass)eType, ignore);
@@ -318,7 +315,7 @@ public class EMFReferenceModel extends EMFModel implements ReferenceModel {
 			if (eType.eResource() != null) {
 				referencedResources.add(eType.eResource());
 			} else {
-				logger.warning("Resource for " + eType.toString() + " is null; cannot be referenced");
+				ATLLogger.warning("Resource for " + eType.toString() + " is null; cannot be referenced");
 			}
 		}
 		Iterator eSupers = eClass.getESuperTypes().iterator();
@@ -328,7 +325,7 @@ public class EMFReferenceModel extends EMFModel implements ReferenceModel {
 				referencedResources.add(eSuper.eResource());
 				addReferencedResourcesFor(eSuper, ignore);
 			} else {
-				logger.warning("Resource for " + eSuper.toString() + " is null; cannot be referenced");
+				ATLLogger.warning("Resource for " + eSuper.toString() + " is null; cannot be referenced");
 			}
 		}
 	}

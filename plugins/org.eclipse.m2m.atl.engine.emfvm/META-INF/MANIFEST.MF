@@ -3,12 +3,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: ATL EMF Virtual Machine
 Bundle-SymbolicName: org.eclipse.m2m.atl.engine.emfvm; singleton:=true
 Bundle-Version: 2.1.0.qualifier
-Bundle-Activator: org.eclipse.m2m.atl.engine.emfvm.EmfvmPlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Bundle-ClassPath: .
-Require-Bundle: org.eclipse.m2m.atl,
- org.eclipse.emf.ecore.xmi,
+Require-Bundle: org.eclipse.emf.ecore.xmi,
+ org.eclipse.m2m.atl,
  org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.m2m.atl.engine.emfvm,

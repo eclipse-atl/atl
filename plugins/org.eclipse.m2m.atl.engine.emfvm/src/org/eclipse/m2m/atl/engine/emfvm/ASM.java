@@ -22,10 +22,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.emfvm.AtlSuperimposeModule.AtlSuperimposeModuleException;
 import org.eclipse.m2m.atl.engine.emfvm.emf.EMFModelAdapter;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ASMModule;
@@ -44,9 +42,6 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class ASM {
-
-	/** The common ATL logger. */
-	protected static Logger logger = Logger.getLogger(EmfvmPlugin.LOGGER);
 
 	private String name;
 
@@ -69,8 +64,10 @@ public class ASM {
 	/**
 	 * Adds a field.
 	 * 
-	 * @param fieldName the field name
-	 * @param type the field type
+	 * @param fieldName
+	 *            the field name
+	 * @param type
+	 *            the field type
 	 */
 	public void addField(String fieldName, String type) {
 		fields.add(fieldName);
@@ -79,7 +76,8 @@ public class ASM {
 	/**
 	 * Adds an operation.
 	 * 
-	 * @param operation the operation to add
+	 * @param operation
+	 *            the operation to add
 	 */
 	public void addOperation(ASMOperation operation) {
 		operations.add(operation);
@@ -115,10 +113,14 @@ public class ASM {
 	/**
 	 * Launches the ASM.
 	 * 
-	 * @param models the model map
-	 * @param libraries the library map
-	 * @param superimpose the superimpose list
-	 * @param options the option map
+	 * @param models
+	 *            the model map
+	 * @param libraries
+	 *            the library map
+	 * @param superimpose
+	 *            the superimpose list
+	 * @param options
+	 *            the option map
 	 * @return the execution result
 	 */
 	public Object run(Map models, Map libraries, List superimpose, Map options) {
@@ -211,18 +213,14 @@ public class ASM {
 			registerOperations(execEnv, module.operations);
 		}
 
-		try {
-			ret = mainOperation.exec(frame);	
-		} catch (VMException e) {
-			ATLPlugin.log(Level.SEVERE, e.getMessage(),e);
-		}
-		
+		ret = mainOperation.exec(frame);
+
 		long endTime = System.currentTimeMillis();
 		if (printExecutionTime) {
-			ATLPlugin.info("Executed " + name + " in " + ((endTime - startTime) / 1000.) + "s.");
+			ATLLogger.info("Executed " + name + " in " + ((endTime - startTime) / 1000.) + "s.");
 		}
 		if ("true".equals(options.get("showSummary"))) {
-			ATLPlugin.info("Number of instructions executed: " + execEnv.getNbExecutedBytecodes());
+			ATLLogger.info("Number of instructions executed: " + execEnv.getNbExecutedBytecodes());
 		}
 		return ret;
 	}
@@ -230,8 +228,10 @@ public class ASM {
 	/**
 	 * Registers all ATL operations.
 	 * 
-	 * @param execEnv the execution environment where to register operations
-	 * @param operationsToRegister the list of operations to register
+	 * @param execEnv
+	 *            the execution environment where to register operations
+	 * @param operationsToRegister
+	 *            the list of operations to register
 	 */
 	public void registerOperations(ExecEnv execEnv, List operationsToRegister) {
 		for (Iterator i = operationsToRegister.iterator(); i.hasNext();) {
@@ -239,17 +239,17 @@ public class ASM {
 			String signature = op.getContext();
 			if (signature.matches("^(Q|G|C|E|O|N).*$")) {
 				// Sequence, Bag, Collection, Set, OrderedSet, Native type
-				logger.warning("Unsupported registration: " + signature);
+				ATLLogger.warning("Unsupported registration: " + signature);
 				// } else if(signature.startsWith("T")) {
 				// logger.warning("Unsupported registration: " + signature);
 			} else {
 				try {
 					Object type = parseType(execEnv, new StringCharacterIterator(signature));
-					// ATLPlugin.info("registering " + op + " on " + type);
+					// ATLLogger.info("registering " + op + " on " + type);
 					execEnv.registerOperation(type, op, op.getName());
 					// op.setContextType(type);
 				} catch (SignatureParsingException spe) {
-					ATLPlugin.log(Level.SEVERE, spe.getLocalizedMessage(), spe);
+					throw new VMException(null, spe.getLocalizedMessage(), spe);
 				}
 			}
 		}
@@ -318,12 +318,12 @@ public class ASM {
 				if (model != null) {
 					Object ec = model.getMetaElementByName(modelName);
 					if (ec == null) {
-						throw new SignatureParsingException("ERROR: could not find model element " + modelName
-								+ " from " + mname);
+						throw new SignatureParsingException("ERROR: could not find model element "
+								+ modelName + " from " + mname);
 					}
 					ret = ec;
 				} else {
-					logger.warning("Could not find model " + mname + ".");
+					ATLLogger.warning("Could not find model " + mname + ".");
 				}
 				break;
 
