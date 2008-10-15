@@ -20,7 +20,7 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * The ATL project builder.
@@ -60,7 +60,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 					"AtlBuilder.COMPILETASK", new Object[] {p.getName()}), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 			p.accept(new AtlBuildVisitor(monitor));
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -79,7 +79,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 							"AtlBuilder.CLEANTASK", new Object[] {p.getName()}), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 					p.accept(new AtlCleanVisitor(monitor));
 				} catch (CoreException e) {
-					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				}
 			}
 		};

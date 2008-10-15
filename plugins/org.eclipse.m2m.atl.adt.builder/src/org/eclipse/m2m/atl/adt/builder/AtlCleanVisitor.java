@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * The ATL clean visitor.
@@ -85,7 +85,7 @@ public class AtlCleanVisitor implements IResourceVisitor {
 			try {
 				asmFile.delete(true, monitor);
 			} catch (CoreException ce) {
-				ATLPlugin.log(Level.SEVERE, ce.getLocalizedMessage(), ce);
+				ATLLogger.log(Level.SEVERE, ce.getLocalizedMessage(), ce);
 				return false;
 			}
 		}
