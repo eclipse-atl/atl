@@ -38,7 +38,7 @@ import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
 import org.eclipse.m2m.atl.engine.vm.ClassNativeOperation;
 import org.eclipse.m2m.atl.engine.vm.Operation;
@@ -138,7 +138,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 				try {
 					ret = o.equals(t) || ((EClass)o).isSuperTypeOf((EClass)t);
 				} catch (Exception e) {
-					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				}
 			}
 		}
@@ -178,7 +178,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 			try {
 				ret = ((ASMEMFModel)getModel()).getASMModelElement(((EClass)t).getEStructuralFeature(name));
 			} catch (Exception e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
 
@@ -404,7 +404,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		// final boolean checkSameModel = !true;
 
 		if (debug) {
-			ATLPlugin.info("Setting: " + this + " : " + getType() + "." + name + " to " + value);
+			ATLLogger.info("Setting: " + this + " : " + getType() + "." + name + " to " + value);
 		}
 
 		super.set(frame, name, value);
@@ -414,7 +414,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 			// WARNING: Allowed manual setting of XMI ID for the current model element
 			// This operation is advised against but seems necessary of some special case
 			Resource r = ((ASMEMFModel)getModel()).getExtent();
-			ATLPlugin.warning("\t\tManual setting of " + this + ":" + getType() + " XMI ID.");
+			ATLLogger.warning("\t\tManual setting of " + this + ":" + getType() + " XMI ID.");
 			((XMLResource)r).setID(object, value.toString());
 			return;
 		}
@@ -574,7 +574,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 					ASMString.class,});
 
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE,e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE,e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -641,14 +641,14 @@ public class ASMEMFModelElement extends ASMModelElement {
 		Collection ret = aret.collection();
 
 		if (debug) {
-			ATLPlugin.info(self + ".allInstancesFrom("
+			ATLLogger.info(self + ".allInstancesFrom("
 					+ ((sourceModelName == null) ? "null" : "\"" + sourceModelName + "\"") + ")");
 		}
 		for (Iterator i = frame.getModels().keySet().iterator(); i.hasNext();) {
 			String mname = (String)i.next();
 
 			if (debug) {
-				ATLPlugin.info("\ttrying: " + mname);
+				ATLLogger.info("\ttrying: " + mname);
 			}
 
 			if ((sourceModelName != null) && !mname.equals(sourceModelName.getSymbol())) {
@@ -657,10 +657,10 @@ public class ASMEMFModelElement extends ASMModelElement {
 			ASMModel am = (ASMModel)frame.getModels().get(mname);
 
 			if (debug) {
-				ATLPlugin.info("\t\tfound: " + am.getName());
-				ATLPlugin.info("\t\tam.getMetamodel() = " + am.getMetamodel().hashCode());
-				ATLPlugin.info("\t\tself.getModel() = " + self.getModel().hashCode());
-				ATLPlugin.info("\t\tam.getMetamodel().equals(self.getModel()) = "
+				ATLLogger.info("\t\tfound: " + am.getName());
+				ATLLogger.info("\t\tam.getMetamodel() = " + am.getMetamodel().hashCode());
+				ATLLogger.info("\t\tself.getModel() = " + self.getModel().hashCode());
+				ATLLogger.info("\t\tam.getMetamodel().equals(self.getModel()) = "
 						+ am.getMetamodel().equals(self.getModel()));
 			}
 
@@ -669,14 +669,14 @@ public class ASMEMFModelElement extends ASMModelElement {
 			}
 
 			if (debug) {
-				ATLPlugin.info("\t\t\tsearching on: " + am.getName());
+				ATLLogger.info("\t\t\tsearching on: " + am.getName());
 			}
 
 			Set elems = am.getElementsByType(self);
 			ret.addAll(elems);
 
 			if (debug) {
-				ATLPlugin.info("\t\t\t\tfound: " + elems);
+				ATLLogger.info("\t\t\t\tfound: " + elems);
 			}
 
 		}
