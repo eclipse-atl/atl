@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * This class is used by a stackframe to compute char position in a file With the file name and project name,
@@ -114,7 +114,7 @@ public class AtlNbCharFile {
 			}
 			lines.add(new Line(currentLineCharIndex, indexTabs, tabsWidth));
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

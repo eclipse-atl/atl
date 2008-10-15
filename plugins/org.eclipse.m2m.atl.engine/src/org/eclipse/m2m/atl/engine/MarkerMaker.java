@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -104,7 +104,7 @@ public class MarkerMaker {
 			pbmMarker.setAttribute(IMarker.CHAR_START, charStart);
 			pbmMarker.setAttribute(IMarker.CHAR_END, (charEnd > charStart) ? charEnd : charStart + 1);
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -115,7 +115,7 @@ public class MarkerMaker {
 				eObjectToPbmMarker(res, help, eos[i], tabWidth);
 			}
 		} catch (CoreException e1) {
-			ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			ATLLogger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 
 		}
 	}
@@ -139,7 +139,7 @@ public class MarkerMaker {
 					try {
 						res.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 					} catch (CoreException e) {
-						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 					createPbmMarkers(res, eos, tabWidth);
 				}

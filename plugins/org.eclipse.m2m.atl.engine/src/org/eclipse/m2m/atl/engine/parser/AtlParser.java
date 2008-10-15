@@ -25,7 +25,7 @@ import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmt.tcs.injector.TCSInjector;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
 import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
@@ -126,9 +126,9 @@ public final class AtlParser {
 			}
 
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;

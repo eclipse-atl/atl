@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.AtlEngineMessages;
 
 /**
@@ -88,14 +88,13 @@ public class AtlCompiler {
 				atlcompiler = "atl2004"; //$NON-NLS-1$
 			}
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		try {
 			newIn.reset();
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		ret = getCompiler(atlcompiler).compileWithProblemModel(newIn, out.getLocation().toString());
@@ -103,8 +102,7 @@ public class AtlCompiler {
 		try {
 			out.refreshLocal(0, null);
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			// e.printStackTrace();
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return ret;
@@ -143,7 +141,7 @@ public class AtlCompiler {
 								break extensions;
 							}
 						} catch (CoreException e) {
-							ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+							ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 						}
 					}
 				}
@@ -187,13 +185,13 @@ public class AtlCompiler {
 				atlcompiler = "atl2004"; //$NON-NLS-1$
 			}
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		try {
 			newIn.reset();
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		ret = getCompiler(atlcompiler).compileWithProblemModel(newIn, outputFileName);

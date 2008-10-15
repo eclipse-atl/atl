@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * ATL source inspector, used to catch main file informations. Also allows to update them.
@@ -149,14 +149,14 @@ public final class AtlSourceManager {
 		try {
 			inputStream = file.getContents();
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE,e.getLocalizedMessage(),e);
+			ATLLogger.log(Level.SEVERE,e.getLocalizedMessage(),e);
 		}
 		try {
 			byte[] bytes = new byte[inputStream.available()];
 			inputStream.read(bytes);
 			content = new String(bytes);
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE,e.getLocalizedMessage(),e);
+			ATLLogger.log(Level.SEVERE,e.getLocalizedMessage(),e);
 		}
 		updateDataSource(content);
 	}
