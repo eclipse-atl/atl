@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.dsls.textsource.TextSource;
 import org.eclipse.m2m.atl.dsls.textsource.URLTextSource;
 import org.osgi.framework.Bundle;
@@ -72,7 +72,7 @@ public class DSLResourceProvider {
 						resourceProvider.initResources();
 						break extensions;
 					} catch (CoreException e) {
-						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 				}
 			}
