@@ -13,59 +13,35 @@ package org.eclipse.m2m.atl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.core.runtime.Plugin;
-import org.osgi.framework.BundleContext;
-
 /**
  * The activator class, controls the plug-in life cycle. Defines the common log utilities for all ATL plugins.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public class ATLPlugin extends Plugin {
+public class ATLLogger {
 
 	/** The plugin ID. */
 	public static final String ID = "org.eclipse.m2m.atl"; //$NON-NLS-1$
 
-	private static Logger logger;
-
-	/** Plug-in's shared instance. */
-	private static ATLPlugin plugin;
-
+	protected static final Logger LOGGER = Logger.getLogger(ID);
+	{
+		LOGGER.setUseParentHandlers(false);
+	}
+	
 	/**
-	 * Default constructor.
+	 * Constructor.
 	 */
-	public ATLPlugin() {
-		plugin = this;
+	protected ATLLogger() {
+		super();
 	}
 
 	/**
-	 * Returns the plugin's shared instance.
+	 * Returns the ATL logger.
 	 * 
-	 * @return The plugin's shared instance.
+	 * @return The ATL logger
 	 */
-	public static ATLPlugin getDefault() {
-		return plugin;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see Plugin#start(BundleContext)
-	 */
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		logger = Logger.getLogger(ID);
-		logger.setUseParentHandlers(false);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see Plugin#stop(BundleContext)
-	 */
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
+	public static Logger getLogger() {
+		return LOGGER;
 	}
 
 	/**
@@ -79,7 +55,7 @@ public class ATLPlugin extends Plugin {
 	 *            the throwable cause
 	 */
 	public static void log(Level level, String msg, Throwable thrown) {
-		logger.log(level, msg, thrown);
+		LOGGER.log(level, msg, thrown);
 	}
 
 	/**
@@ -93,16 +69,6 @@ public class ATLPlugin extends Plugin {
 	}
 
 	/**
-	 * Log a SEVERE message.
-	 * 
-	 * @param msg
-	 *            The string message (or a key in the message catalog)
-	 */
-	public static void severe(String msg) {
-		log(Level.SEVERE, msg, null);
-	}
-
-	/**
 	 * Log a WARNING message.
 	 * 
 	 * @param msg
@@ -111,5 +77,16 @@ public class ATLPlugin extends Plugin {
 	public static void warning(String msg) {
 		log(Level.WARNING, msg, null);
 	}
+	
+	/**
+	 * Log a SEVERE message.
+	 * 
+	 * @param msg
+	 *            The string message (or a key in the message catalog)
+	 */
+	public static void severe(String msg) {
+		log(Level.SEVERE, msg, null);
+	}
+	
 
 }
