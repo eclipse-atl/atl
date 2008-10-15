@@ -54,7 +54,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.actions.GotoMatchingBracketAction;
@@ -356,9 +356,9 @@ public class AtlEditor extends TextEditor {
 						event.doit = false;
 
 					} catch (BadLocationException e) {
-						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					} catch (BadPositionCategoryException e) {
-						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 					break;
 			}
@@ -961,12 +961,12 @@ public class AtlEditor extends TextEditor {
 			while ((c = is.read()) != -1)
 				content.append((char)c);
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} finally {
 			try {
 				is.close();
 			} catch (IOException e1) {
-				ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+				ATLLogger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 			}
 		}
 		return content.toString();

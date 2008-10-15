@@ -41,7 +41,7 @@ import org.eclipse.jface.text.link.LinkedPosition;
 import org.eclipse.jface.text.link.LinkedPositionGroup;
 import org.eclipse.jface.text.link.LinkedModeUI.ExitFlags;
 import org.eclipse.jface.text.link.LinkedModeUI.IExitPolicy;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.text.AtlTextTools;
@@ -124,7 +124,7 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 				document.removePositionCategory(CATEGORY);
 			} catch (BadPositionCategoryException e) {
 				// should not happen
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 			return fPosition.getOffset();
 		}
@@ -144,7 +144,7 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 
 			} catch (BadPositionCategoryException e) {
 				// should not happen
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
 	}

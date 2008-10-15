@@ -12,7 +12,7 @@ package org.eclipse.m2m.atl.adt.ui.outline;
 
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -170,7 +170,7 @@ public class RenameFrame extends Composite {
 
 			postInitGUI();
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

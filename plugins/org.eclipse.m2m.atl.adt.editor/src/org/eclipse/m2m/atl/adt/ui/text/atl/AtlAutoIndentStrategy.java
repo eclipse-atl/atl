@@ -20,7 +20,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.TextUtilities;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.text.AtlHeuristicScanner;
@@ -126,7 +126,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 				return document.getLineDelimiter(0);
 			}
 		} catch (BadLocationException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return System.getProperty("line.separator"); //$NON-NLS-1$
 	}
@@ -386,7 +386,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 				command.text = replaceText.toString();
 			}
 		} catch (BadLocationException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -461,7 +461,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 			c.text = buf.toString();
 
 		} catch (BadLocationException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -497,7 +497,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 				}
 			}
 		} catch (BadLocationException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

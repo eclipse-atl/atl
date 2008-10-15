@@ -27,7 +27,7 @@ import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
@@ -378,7 +378,7 @@ public class IndentAction extends TextEditorAction {
 				nLines = document.getLineOfOffset(offset + length - minusOne) - firstLine + 1;
 			} catch (BadLocationException e) {
 				// will only happen on concurrent modification
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				return;
 			}
 
@@ -422,7 +422,7 @@ public class IndentAction extends TextEditorAction {
 						document.removePosition(end);
 					} catch (BadLocationException e) {
 						// will only happen on concurrent modification
-						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					} finally {
 						if (target != null) {
 							target.endCompoundChange();

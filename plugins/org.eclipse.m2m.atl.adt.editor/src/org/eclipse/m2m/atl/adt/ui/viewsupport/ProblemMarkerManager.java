@@ -24,7 +24,7 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * Listens to resource deltas and filters for marker changes of type IMarker.PROBLEM Viewers showing error
@@ -103,7 +103,7 @@ public class ProblemMarkerManager implements IResourceChangeListener {
 			if (delta != null)
 				delta.accept(new ProjectErrorVisitor(changedElements));
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		if (!changedElements.isEmpty()) {
