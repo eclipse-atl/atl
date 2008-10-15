@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
@@ -73,7 +73,7 @@ public class ASMInterpreter {
 			String[] ss = plugins.split(",");
 			for (Iterator i = Arrays.asList(ss).iterator(); i.hasNext();) {
 				String plg = (String)i.next();
-				ATLPlugin.info("Loading plugin: " + plg);
+				ATLLogger.info("Loading plugin: " + plg);
 				pcl.addLocation(plg);
 			}
 		}
@@ -91,7 +91,7 @@ public class ASMInterpreter {
 					.newInstance();
 		}
 
-		ATLPlugin.info("ATL 0.2 State Machine Interpreter");
+		ATLLogger.info("ATL 0.2 State Machine Interpreter");
 		long start = new Date().getTime();
 
 		boolean step = "true".equals(params.get("step"));
@@ -104,7 +104,7 @@ public class ASMInterpreter {
 		List nostepops = parseOpList(params.get("nostepops"));
 		List deepnostepops = parseOpList(params.get("deepnostepops"));
 
-		ATLPlugin.info("Loading the ATL State Machine...");
+		ATLLogger.info("Loading the ATL State Machine...");
 		ASM asm = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(((String)params
 				.get("ASM")).split(",")[0])));
 		ASMModule asmModule = new ASMModule(asm);
@@ -145,19 +145,19 @@ public class ASMInterpreter {
 			ml.addInjector("ebnf", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSInjector"));
 			ml.addInjector("ebnf2", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSInjector"));
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		try {
 			// TODO: use a plugin mechanism to properly register injectors and extractors
 			ml.addInjector("bin", pcl.loadClass("org.atl.engine.injectors.bin.BINInjector"));
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		try {
 			// TODO: use a plugin mechanism to properly register injectors and extractors
 			ml.addExtractor("ebnf", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSExtractor"));
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		loadModels(env, params, ml);
 
@@ -178,7 +178,7 @@ public class ASMInterpreter {
 		if (asmi.getReturnValue() != null) {
 			String storeResultTo = (String)params.get("storeResultTo");
 			if (storeResultTo == null) {
-				ATLPlugin.info("Return value = " + asmi.getReturnValue());
+				ATLLogger.info("Return value = " + asmi.getReturnValue());
 				// System.out.println("Return value = " + asmi.getReturnValue());
 			} else {
 				FileWriter out = new FileWriter(storeResultTo);
@@ -194,7 +194,7 @@ public class ASMInterpreter {
 
 		String reser = (String)params.get("reserialize");
 		if (reser != null) {
-			ATLPlugin.info("Reserializing:");
+			ATLLogger.info("Reserializing:");
 			// System.out.println("Reserializing:");
 			String[] resers = reser.split(",");
 			for (int i = 0; i < resers.length; i++) {
@@ -204,16 +204,16 @@ public class ASMInterpreter {
 				if (path.startsWith("as ")) {
 					path = (String)params.get(path.substring(3));
 				}
-				ATLPlugin.info("\t" + m + " to " + path);
+				ATLLogger.info("\t" + m + " to " + path);
 				ml.save(m, path);
 			}
 		}
 
-		ATLPlugin.info("End of program execution.");
+		ATLLogger.info("End of program execution.");
 
 		long end = new Date().getTime();
-		ATLPlugin.info("Overall execution took " + ((end - start) / 1000.) + "s.");
-		ATLPlugin.info("Program execution (exclusing model handler startup, program reading, xmi reading and writing) took "
+		ATLLogger.info("Overall execution took " + ((end - start) / 1000.) + "s.");
+		ATLLogger.info("Program execution (exclusing model handler startup, program reading, xmi reading and writing) took "
 						+ ((endProgram - startProgram) / 1000.) + "s.");
 	}
 
@@ -239,7 +239,7 @@ public class ASMInterpreter {
 			env.terminated();
 
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getMessage(), e);
 		}
 	}
 
@@ -260,7 +260,7 @@ public class ASMInterpreter {
 
 	private static void loadLibrary(ASMExecEnv env, String name, String fileName, ASMModule asmModule)
 			throws FileNotFoundException {
-		ATLPlugin.info("Loading library " + name + " from " + fileName + ".");
+		ATLLogger.info("Loading library " + name + " from " + fileName + ".");
 		// System.out.println("Loading library " + name + " from " + fileName + ".");
 		ASM lib = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(fileName)));
 		env.registerOperations(lib);
@@ -329,16 +329,16 @@ public class ASMInterpreter {
 			ASMModel mm = env.getModel(mAndMm[1]);
 			if (mm == null) {
 				String url = getURL(params, mAndMm[1]);
-				ATLPlugin.info("Loading meta-model " + mAndMm[1] + " from \"" + url + "\".");
+				ATLLogger.info("Loading meta-model " + mAndMm[1] + " from \"" + url + "\".");
 				env.addModel(ml.loadModel(mAndMm[1], env.getModel("MOF"), url));
 			}
 			if (isTarget) {
 				String url = getURL(params, mAndMm[0]);
-				ATLPlugin.info("Creating model " + mAndMm[0] + " : " + mAndMm[1]);
+				ATLLogger.info("Creating model " + mAndMm[0] + " : " + mAndMm[1]);
 				env.addModel(ml.newModel(mAndMm[0], url, env.getModel(mAndMm[1])));
 			} else {
 				String url = getURL(params, mAndMm[0]);
-				ATLPlugin.info("Loading model " + mAndMm[0] + " : " + mAndMm[1] + " from \"" + url + "\".");
+				ATLLogger.info("Loading model " + mAndMm[0] + " : " + mAndMm[1] + " from \"" + url + "\".");
 				env.addModel(ml.loadModel(mAndMm[0], env.getModel(mAndMm[1]), (String)params.get(mAndMm[0])));
 			}
 		}
@@ -352,7 +352,7 @@ public class ASMInterpreter {
 				String[] mAndMm = model.split(":");
 				ASMModel m = env.getModel(mAndMm[0]);
 				String url = getURL(params, mAndMm[0]);
-				ATLPlugin.info("Saving model " + mAndMm[0] + " : " + mAndMm[1] + " to \"" + url + "\".");
+				ATLLogger.info("Saving model " + mAndMm[0] + " : " + mAndMm[1] + " to \"" + url + "\".");
 				ml.save(m, (String)params.get(mAndMm[0]));
 			}
 		}

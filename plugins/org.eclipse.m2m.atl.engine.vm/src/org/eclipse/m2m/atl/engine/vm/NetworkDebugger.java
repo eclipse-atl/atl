@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.adwp.ADWPCommand;
 import org.eclipse.m2m.atl.engine.vm.adwp.ADWPDebuggee;
 import org.eclipse.m2m.atl.engine.vm.adwp.IntegerValue;
@@ -80,7 +80,7 @@ public class NetworkDebugger implements Debugger {
 					server.close();
 					debuggee = new ADWPDebuggee(socket.getInputStream(), socket.getOutputStream());
 				} catch (IOException ioe) {
-					ATLPlugin.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
+					ATLLogger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 					// ioe.printStackTrace();
 				}
 			}
@@ -157,7 +157,7 @@ public class NetworkDebugger implements Debugger {
 			debuggee.sendMessage(ADWPDebuggee.MSG_TERMINATED, 0, Collections.EMPTY_LIST);
 			socket.close();
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -193,7 +193,7 @@ public class NetworkDebugger implements Debugger {
 
 			Command cmd = (Command)commands.get(new Integer(acmd.getCode()));
 			if (cmd == null) {
-				ATLPlugin.warning("unsupported command: " + acmd.getCode());
+				ATLLogger.warning("unsupported command: " + acmd.getCode());
 			} else {
 				resume = cmd.doIt(acmd, frame);
 			}
@@ -208,17 +208,17 @@ public class NetworkDebugger implements Debugger {
 	 *      java.lang.String, java.lang.Exception)
 	 */
 	public void error(StackFrame frame, String msg, Exception e) {
-		ATLPlugin.severe("********************************* ERROR *********************************");
-		ATLPlugin.log(Level.SEVERE, "", new Exception());
+		ATLLogger.severe("********************************* ERROR *********************************");
+		ATLLogger.log(Level.SEVERE, "", new Exception());
 		dialog(frame, "ERROR: " + msg);
 		if (msg != null) {
-			ATLPlugin.severe("Message: " + msg);
+			ATLLogger.severe("Message: " + msg);
 		}
 		if (e != null) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		frame.getExecEnv().printStackTrace();
-		ATLPlugin.severe("*************************************************************************");
+		ATLLogger.severe("*************************************************************************");
 	}
 
 	{
@@ -304,7 +304,7 @@ public class NetworkDebugger implements Debugger {
 					StackFrame qframe = ASMStackFrame.rootFrame(env, op, arguments);
 					asmRet = op.exec(qframe);
 				} catch (Exception e) {
-					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					// e.printStackTrace(System.out);
 				}
 				Value ret = LocalObjectReference.asm2value(asmRet, thisDebugger);

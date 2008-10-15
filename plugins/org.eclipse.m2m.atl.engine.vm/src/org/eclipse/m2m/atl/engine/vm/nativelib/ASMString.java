@@ -24,7 +24,7 @@ import java.util.logging.Level;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
@@ -290,7 +290,7 @@ public class ASMString extends ASMOclAny {
 	}
 
 	public static void println(StackFrame frame, ASMString self) {
-		ATLPlugin.info(self.s);
+		ATLLogger.info(self.s);
 	}
 
 	// End File output
@@ -322,7 +322,7 @@ public class ASMString extends ASMOclAny {
 		try {
 			ret = new SOTSExpression2(self.s).exec(frame, args);
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return ret;
 	}
@@ -337,7 +337,7 @@ public class ASMString extends ASMOclAny {
 		int c;
 
 		if (debug) {
-			ATLPlugin.info("evalBrackets(\"" + self.s + "\")");
+			ATLLogger.info("evalBrackets(\"" + self.s + "\")");
 		}
 		
 		try {
@@ -355,12 +355,12 @@ public class ASMString extends ASMOclAny {
 						}
 
 						if (debug) {
-							ATLPlugin.info("\tEvaluating : " + exp);
+							ATLLogger.info("\tEvaluating : " + exp);
 						}
 						ASMOclAny result = new SOTSExpression2(exp.toString()).exec(frame, args);
 
 						if (debug) {
-							ATLPlugin.info("\t\t=>" + result);
+							ATLLogger.info("\t\t=>" + result);
 						}
 						
 						if (result instanceof ASMCollection) {
@@ -378,12 +378,12 @@ public class ASMString extends ASMOclAny {
 				}
 			} while (!done);
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			// e.printStackTrace(System.out);
 		}
 
 		if (debug) {
-			ATLPlugin.info("result = \"" + ret + "\"");
+			ATLLogger.info("result = \"" + ret + "\"");
 		}
 		return new ASMString(ret.toString());
 	}

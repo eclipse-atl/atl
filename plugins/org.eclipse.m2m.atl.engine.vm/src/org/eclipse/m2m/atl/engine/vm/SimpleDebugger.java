@@ -17,9 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * A simple ATL VM debugger with step tracing and basic
@@ -79,9 +78,9 @@ public class SimpleDebugger implements Debugger {
 
 		if (getShowEnter()) {
 			if (frame instanceof ASMStackFrame) {
-				ATLPlugin.info("********************* Entering " + op + " with " + ((ASMStackFrame)frame).getLocalVariables());
+				ATLLogger.info("********************* Entering " + op + " with " + ((ASMStackFrame)frame).getLocalVariables());
 			} else {
-				ATLPlugin.info("********************* Entering " + op + " with " + frame.getArgs());
+				ATLLogger.info("********************* Entering " + op + " with " + frame.getArgs());
 			}
 		}
 	}
@@ -99,7 +98,7 @@ public class SimpleDebugger implements Debugger {
 			} else {
 				ret = ((NativeStackFrame)frame).getRet();
 			}
-			ATLPlugin.info("********************* Leaving " + op + " with " + ret);
+			ATLLogger.info("********************* Leaving " + op + " with " + ret);
 		}
 
 		if (stepops.contains(opName)) {
@@ -126,7 +125,7 @@ public class SimpleDebugger implements Debugger {
 
 	private void printStack(ASMStackFrame frame) {
 		if (!true) {
-			ATLPlugin.info(frame.getLocalStack().toString());
+			ATLLogger.info(frame.getLocalStack().toString());
 		} else {
 			StringBuffer out = new StringBuffer("[");
 			for (Iterator i = frame.getLocalStack().iterator(); i.hasNext();) {
@@ -143,7 +142,7 @@ public class SimpleDebugger implements Debugger {
 				}
 			}
 			out.append("]");
-			ATLPlugin.info(out.toString());
+			ATLLogger.info(out.toString());
 		}
 
 	}
@@ -152,7 +151,7 @@ public class SimpleDebugger implements Debugger {
 		instr++;
 		if (step) {
 			printStack(frame);
-			ATLPlugin.info(conv(frame.getLocation()) + ": " + ((ASMOperation)frame.getOperation()).getInstructions().get(frame.getLocation()));
+			ATLLogger.info(conv(frame.getLocation()) + ": " + ((ASMOperation)frame.getOperation()).getInstructions().get(frame.getLocation()));
 		}
 	}
 
@@ -161,16 +160,6 @@ public class SimpleDebugger implements Debugger {
 			throw new RuntimeException(e);
 		}
 		VMException exception = null;
-
-		while (msg == null && e != null) {
-			msg = e.getLocalizedMessage();
-			if (msg != null) {
-				msg = e.getClass().getCanonicalName() + ": " + msg;
-			} else {
-				e = (Exception)e.getCause();
-			}
-		}
-
 		if (getShowStackTrace()) {
 			exception = new VMException(frame, msg, e);
 		} else {
@@ -180,20 +169,20 @@ public class SimpleDebugger implements Debugger {
 			terminated = true;
 			throw exception;
 		} else {
-			ATLPlugin.warning(msg);
-			ATLPlugin.info("Trying to continue execution despite the error.");
+			ATLLogger.warning(msg);
+			ATLLogger.info("Trying to continue execution despite the error.");
 		}
 	}
 
 	public void terminated() {
 		if (showSummary || profile) {
-			ATLPlugin.info("Number of instructions executed: " + instr);
+			ATLLogger.info("Number of instructions executed: " + instr);
 			if (profile) {
-				ATLPlugin.info("Operation calls:");
+				ATLLogger.info("Operation calls:");
 				List opCalls = new ArrayList(operationCalls.values());
 				Collections.sort(opCalls, Collections.reverseOrder());
 				for (Iterator i = opCalls.iterator(); i.hasNext();) {
-					ATLPlugin.info("\t" + i.next());
+					ATLLogger.info("\t" + i.next());
 				}
 			}
 		}

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBoolean;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMInteger;
@@ -69,14 +69,14 @@ public class ASMExecEnv extends ExecEnv {
 			String signature = op.getContextSignature();
 			if (signature.matches("^(Q|G|C|E|O|N).*$")) {
 				// Sequence, Bag, Collection, Set, OrderedSet, Native type
-				ATLPlugin.warning("Unsupported registration: " + signature);
+				ATLLogger.warning("Unsupported registration: " + signature);
 			} else {
 				try {
 					ASMOclType type = parseType(new StringCharacterIterator(signature));
 					registerOperation(type, op);
 					op.setContextType(type);
 				} catch (SignatureParsingException spe) {
-					ATLPlugin.log(Level.SEVERE, spe.getLocalizedMessage(), spe);
+					ATLLogger.log(Level.SEVERE, spe.getLocalizedMessage(), spe);
 				}
 			}
 		}
@@ -153,7 +153,7 @@ public class ASMExecEnv extends ExecEnv {
 								+ " from " + mname);
 					ret = ame;
 				} else {
-					ATLPlugin.warning("could not find model " + mname + ".");
+					ATLLogger.warning("could not find model " + mname + ".");
 				}
 				break;
 
@@ -255,11 +255,11 @@ public class ASMExecEnv extends ExecEnv {
 			ret = (Operation)map.get(name);
 
 		if (debug)
-			ATLPlugin.info(this + "@" + this.hashCode() + ".getOperation(" + name + ")");
+			ATLLogger.info(this + "@" + this.hashCode() + ".getOperation(" + name + ")");
 		// if(debug) System.out.println(this + "@" + this.hashCode() + ".getOperation(" + name + ")");
 		if (ret == null) {
 			if (debug)
-				ATLPlugin.info("looking in super of this for operation " + name);
+				ATLLogger.info("looking in super of this for operation " + name);
 			// if(debug) System.out.println("looking in super of this for operation " + name);
 			for (Iterator i = type.getSupertypes().iterator(); i.hasNext() && (ret == null);) {
 				ASMOclType st = (ASMOclType)i.next();

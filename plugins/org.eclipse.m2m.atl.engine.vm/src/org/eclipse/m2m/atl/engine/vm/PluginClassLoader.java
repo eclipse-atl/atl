@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * A basic plugin facillity used in command-line. Eclipse plugins are used within Eclipse.
@@ -43,7 +43,7 @@ public class PluginClassLoader extends URLClassLoader {
 		try {
 			ret = new URL("file:" + location);
 		} catch (MalformedURLException mue) {
-			ATLPlugin.log(Level.SEVERE, mue.getLocalizedMessage(), mue);
+			ATLLogger.log(Level.SEVERE, mue.getLocalizedMessage(), mue);
 		}
 
 		return ret;

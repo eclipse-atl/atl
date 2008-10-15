@@ -12,7 +12,7 @@ package org.eclipse.m2m.atl.engine.injectors.xml;
 
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -31,7 +31,7 @@ public class ProtectedHandler extends DefaultHandler {
 		try {
 			handler.setDocumentLocator(locator);
 		} catch (Exception ex) {
-			ATLPlugin.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+			ATLLogger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
 		}
 	}
 
@@ -39,7 +39,7 @@ public class ProtectedHandler extends DefaultHandler {
 		try {
 			handler.characters(ch, start, length);
 		} catch (Exception ex) {
-			ATLPlugin.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+			ATLLogger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
 		}
 	}
 
@@ -48,7 +48,7 @@ public class ProtectedHandler extends DefaultHandler {
 		try {
 			handler.startElement(uri, localName, qName, attributes);
 		} catch (Exception ex) {
-			ATLPlugin.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+			ATLLogger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
 		}
 	}
 
@@ -56,7 +56,7 @@ public class ProtectedHandler extends DefaultHandler {
 		try {
 			handler.endElement(uri, localName, qName);
 		} catch (Exception ex) {
-			ATLPlugin.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+			ATLLogger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
 		}
 	}
 
@@ -64,7 +64,7 @@ public class ProtectedHandler extends DefaultHandler {
 		try {
 			handler.error(e);
 		} catch (Exception ex) {
-			ATLPlugin.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+			ATLLogger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
 		}
 	}
 
@@ -72,7 +72,7 @@ public class ProtectedHandler extends DefaultHandler {
 		try {
 			handler.fatalError(e);
 		} catch (Exception ex) {
-			ATLPlugin.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+			ATLLogger.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
 		}
 	}
 }

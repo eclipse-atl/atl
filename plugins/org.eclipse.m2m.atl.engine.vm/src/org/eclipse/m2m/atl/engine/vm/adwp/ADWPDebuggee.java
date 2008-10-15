@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
@@ -40,7 +40,7 @@ public class ADWPDebuggee extends ADWP {
 			}
 			out.flush();
 		} catch (IOException ioe) {
-			ATLPlugin.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
+			ATLLogger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class ADWPDebuggee extends ADWP {
 				try {
 					cmds.wait();
 				} catch (InterruptedException ie) {
-					ATLPlugin.log(Level.SEVERE, ie.getLocalizedMessage(), ie);
+					ATLLogger.log(Level.SEVERE, ie.getLocalizedMessage(), ie);
 				}
 			}
 		}
@@ -109,7 +109,7 @@ public class ADWPDebuggee extends ADWP {
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
-						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 				}
 				synchronized(cmds) {

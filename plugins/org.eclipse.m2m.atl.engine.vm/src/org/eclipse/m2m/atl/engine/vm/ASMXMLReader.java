@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -49,7 +49,7 @@ public class ASMXMLReader extends DefaultHandler {
 			SAXParser saxParser = factory.newSAXParser();
 			saxParser.parse(in, this);
 		} catch (Throwable err) {
-			ATLPlugin.log(Level.SEVERE, err.getLocalizedMessage(), err);
+			ATLLogger.log(Level.SEVERE, err.getLocalizedMessage(), err);
 		}
 		if (errors > 0)
 			throw new RuntimeException("error reading .asm file");
@@ -125,7 +125,7 @@ public class ASMXMLReader extends DefaultHandler {
 	}
 
 	public void error(SAXParseException e) {
-		ATLPlugin.severe("Error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
+		ATLLogger.severe("Error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage());
 		errors++;
 	}
 

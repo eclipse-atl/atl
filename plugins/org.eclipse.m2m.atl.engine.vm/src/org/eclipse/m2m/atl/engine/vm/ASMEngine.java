@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * ASM Engine.
@@ -42,7 +42,7 @@ public class ASMEngine {
 		try {
 			m.invoke(null, new Object[] {args, cl});
 		} catch(InvocationTargetException ite) {
-			ATLPlugin.log(Level.SEVERE, ite.getCause().getLocalizedMessage(), ite.getCause());
+			ATLLogger.log(Level.SEVERE, ite.getCause().getLocalizedMessage(), ite.getCause());
 		}
 	}
 

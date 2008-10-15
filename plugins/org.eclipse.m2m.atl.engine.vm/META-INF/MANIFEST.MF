@@ -14,7 +14,7 @@ Export-Package: org.eclipse.m2m.atl.engine.extractors,
  org.eclipse.m2m.atl.engine.vm.adwp,
  org.eclipse.m2m.atl.engine.vm.nativelib
 Bundle-ClassPath: .
-Require-Bundle: org.eclipse.m2m.atl,  
- org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.m2m.atl
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

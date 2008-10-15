@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
@@ -45,10 +45,10 @@ public class ADWPDebugger extends ADWP {
 			}
 			out.flush();
 			if ((cmd == CMD_SET_BP) || (cmd == CMD_UNSET_BP)) {
-				ATLPlugin.info("sent : " + cmd + " - " + args);
+				ATLLogger.info("sent : " + cmd + " - " + args);
 			}
 		} catch (IOException ioe) {
-			ATLPlugin.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
+			ATLLogger.log(Level.SEVERE, ioe.getLocalizedMessage(), ioe);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class ADWPDebugger extends ADWP {
 						list.wait();
 					} while (list.size() == 0);
 				} catch (InterruptedException ie) {
-					ATLPlugin.log(Level.SEVERE, ie.getLocalizedMessage(), ie);
+					ATLLogger.log(Level.SEVERE, ie.getLocalizedMessage(), ie);
 				}
 			}
 		}

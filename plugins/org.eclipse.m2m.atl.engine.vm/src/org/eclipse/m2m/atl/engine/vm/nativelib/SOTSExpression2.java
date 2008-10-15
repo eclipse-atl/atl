@@ -16,7 +16,7 @@ import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
 import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
@@ -47,13 +47,13 @@ public class SOTSExpression2 {
 	public ASMOclAny exec(StackFrame frame, ASMTuple args) throws IOException {
 
 		if (debug)
-			ATLPlugin.info("Trying to execute " + exp);
+			ATLLogger.info("Trying to execute " + exp);
 		// if(debug) System.out.println("Trying to execute " + exp);
 
 		ASMOclAny ret = exp(frame, args);
 
 		if (debug)
-			ATLPlugin.info("\treturn value = " + ret);
+			ATLLogger.info("\treturn value = " + ret);
 		// if(debug) System.out.println("\treturn value = " + ret);
 
 		return ret;
@@ -88,7 +88,7 @@ public class SOTSExpression2 {
 					ret = ASMString.operatorPlus(frame, (ASMString)ret, new ASMString(right.toString()));
 				}
 			} else {
-				ATLPlugin.severe("Could not add type " + ASMOclAny.oclType(frame, ret) + ".");
+				ATLLogger.severe("Could not add type " + ASMOclAny.oclType(frame, ret) + ".");
 				// System.out.println("ERROR: could not add type " + ASMOclAny.oclType(frame, ret) + ".");
 			}
 		} else {
@@ -109,7 +109,7 @@ public class SOTSExpression2 {
 		do {
 
 			if (debug)
-				ATLPlugin.info("\tcontext = " + ret
+				ATLLogger.info("\tcontext = " + ret
 						+ ((ret != null) ? " : " + ASMOclAny.oclType(frame, ret) : ""));
 			// if(debug) System.out.println("\tcontext = " + ret + ((ret != null) ? " : " +
 			// ASMOclAny.oclType(frame, ret) : ""));
@@ -237,7 +237,7 @@ public class SOTSExpression2 {
 		} while (!done);
 
 		if (debug)
-			ATLPlugin.info("\tpartial return value = " + ret);
+			ATLLogger.info("\tpartial return value = " + ret);
 		// if(debug) System.out.println("\tpartial return value = " + ret);
 
 		return ret;
@@ -434,7 +434,7 @@ public class SOTSExpression2 {
 				ret = next(); // ignore '$'
 				break;
 			default:
-				ATLPlugin.severe("ERROR: unexpected char \'" + (char)c + "\'.");
+				ATLLogger.severe("ERROR: unexpected char \'" + (char)c + "\'.");
 				// System.out.println("ERROR: unexpected char \'" + (char)c + "\'.");
 				ret = next(); // trying to recover
 				break;

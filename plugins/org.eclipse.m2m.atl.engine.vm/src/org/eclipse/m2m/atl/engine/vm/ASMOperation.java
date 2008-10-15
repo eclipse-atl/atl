@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBoolean;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMCollection;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMInteger;
@@ -108,7 +108,7 @@ public class ASMOperation extends Operation {
 	public void addVariableInstruction(ASMInstructionWithOperand instruction, String varId) {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.get(varId);
 		if (lve == null) {
-			ATLPlugin.severe("No slot reserved for variable: " + varId + " used at " + lastLNE + ".");
+			ATLLogger.severe("No slot reserved for variable: " + varId + " used at " + lastLNE + ".");
 		}
 		instruction.setOperand("" + lve.slot);
 		instructions.add(instruction);
@@ -467,7 +467,7 @@ public class ASMOperation extends Operation {
 	public int endLocalVariableEntry(String id) {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.remove(id);
 		if (lve == null) {
-			ATLPlugin.severe("Variable id not defined: " + id);
+			ATLLogger.severe("Variable id not defined: " + id);
 			// System.out.println("ERROR: variable id not defined: " + id);
 		}
 		lve.end = instructions.size() - 1;

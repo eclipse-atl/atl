@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.injectors.Injector;
 import org.eclipse.m2m.atl.engine.injectors.xml.XMLInjector;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
@@ -51,7 +51,7 @@ public class ASMHashModel extends ASMModel {
 	}
 
 	public ASMModelElement findModelElement(String name) {
-		ATLPlugin.severe("ERROR: can't use ASMHashModel as a meta-model so far.");
+		ATLLogger.severe("ERROR: can't use ASMHashModel as a meta-model so far.");
 		return null;
 	}
 

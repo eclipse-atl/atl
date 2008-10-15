@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.extractors.Extractor;
 import org.eclipse.m2m.atl.engine.extractors.xml.XMLExtractor;
 import org.eclipse.m2m.atl.engine.injectors.Injector;
@@ -124,7 +124,7 @@ public abstract class ModelLoader {
 							if (val != null) {
 								paramsMap.put(pname, val);
 							} else {
-								ATLPlugin.warning("could not find value for parameter \"" + pname + "\" : "
+								ATLLogger.warning("could not find value for parameter \"" + pname + "\" : "
 										+ type + ".");
 							}
 						} else if (type.startsWith("Model:")) {
@@ -132,7 +132,7 @@ public abstract class ModelLoader {
 						} else if (type.equals("RandomAccessFile") && (uri != null)) {
 							paramsMap.put(pname, new RandomAccessFile(uri, "r"));
 						} else {
-							ATLPlugin.warning("unknown parameter type \"" + type + "\" of \"" + pname + "\".");
+							ATLLogger.warning("unknown parameter type \"" + type + "\" of \"" + pname + "\".");
 						}
 					}
 				}
@@ -141,10 +141,10 @@ public abstract class ModelLoader {
 				ret.setIsTarget(false);
 				// getAllAcquaintances ?
 			} else {
-				ATLPlugin.severe("ERROR: could not find injector for \"" + kind + "\"");
+				ATLLogger.severe("ERROR: could not find injector for \"" + kind + "\"");
 			}
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 		}
 		return root;
@@ -238,23 +238,23 @@ public abstract class ModelLoader {
 							if (val != null) {
 								paramsMap.put(pname, val);
 							} else {
-								ATLPlugin.warning("could not find value for parameter \"" + pname + "\" : "
+								ATLLogger.warning("could not find value for parameter \"" + pname + "\" : "
 										+ type + ".");
 							}
 						} else if (type.startsWith("Model:")) {
 							paramsMap.put(pname, loadedModels.get(args.get(pname)));
 						} else {
-							ATLPlugin
+							ATLLogger
 									.warning("unknown parameter type \"" + type + "\" of \"" + pname + "\".");
 						}
 					}
 				}
 				ext.extract(model, out, paramsMap);
 			} else {
-				ATLPlugin.severe("ERROR: could not find extractor for \"" + kind + "\"");
+				ATLLogger.severe("ERROR: could not find extractor for \"" + kind + "\"");
 			}
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 

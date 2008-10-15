@@ -12,7 +12,7 @@ package org.eclipse.m2m.atl.engine.vm.adwp;
 
 import java.util.List;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.DummyDebugger;
 import org.eclipse.m2m.atl.engine.vm.ExecEnv;
 import org.eclipse.m2m.atl.engine.vm.Operation;
@@ -30,7 +30,7 @@ public class ADWPStackFrame extends StackFrame {
 
 	// An error during a debugger request should not trigger the debugger
 	public void printStackTrace(String msg, Exception e) {
-		ATLPlugin.severe(msg);
+		ATLLogger.severe(msg);
 	}
 }
 

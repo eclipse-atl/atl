@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
 import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBoolean;
@@ -73,7 +73,7 @@ public class LocalObjectReference extends ObjectReference {
 		try {
 			o = object.get(debugger.getExecEnv().peek(), propName);
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		ret = asm2value(o);
@@ -139,21 +139,21 @@ public class LocalObjectReference extends ObjectReference {
 
 		Operation op = debugger.getExecEnv().getOperation(object.getType(), opName);
 		if (op == null) {
-			ATLPlugin.severe("Operation not found: " + opName + " on " + object + " : "
+			ATLLogger.severe("Operation not found: " + opName + " on " + object + " : "
 					+ object.getType());
 		} else {
 			List realArgs = new ArrayList();
 			realArgs.add(value2asm(this));
 
 			if (debug) {
-				ATLPlugin.info(object + " : " + object.getType() + "." + opName + "(");
+				ATLLogger.info(object + " : " + object.getType() + "." + opName + "(");
 			}
 			
 			for (Iterator i = args.iterator(); i.hasNext();) {
 				Value v = (Value)i.next();
 
 				if (debug) {
-					ATLPlugin.info(v + ((i.hasNext()) ? ", " : ""));
+					ATLLogger.info(v + ((i.hasNext()) ? ", " : ""));
 				}
 				
 				realArgs.add(value2asm(v));
@@ -162,11 +162,11 @@ public class LocalObjectReference extends ObjectReference {
 			ret = asm2value(o);
 
 			if (debug) {
-				ATLPlugin.info(") = " + o);
+				ATLLogger.info(") = " + o);
 			}
 			
 			if (debug) {
-				ATLPlugin.info(" => " + ret);
+				ATLLogger.info(" => " + ret);
 			}
 
 		}

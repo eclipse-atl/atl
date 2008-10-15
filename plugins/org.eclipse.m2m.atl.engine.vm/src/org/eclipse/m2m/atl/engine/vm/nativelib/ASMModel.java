@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
@@ -78,7 +78,7 @@ public abstract class ASMModel extends ASMOclAny {
 		if(type == null) {
 			String msg = "No type named '" + typeName + "' in metamodel '" + metamodel.name + "'";
 			if(frame == null) {
-				ATLPlugin.severe(msg);
+				ATLLogger.severe(msg);
 			} else {
 				frame.printStackTrace(msg);
 			}
@@ -122,16 +122,16 @@ public abstract class ASMModel extends ASMOclAny {
 	}
 
 	public ASMOclAny get(StackFrame frame, String name) {
-		ATLPlugin.severe("ERROR !!!!!");
+		ATLLogger.severe("ERROR !!!!!");
 		return null;
 	}
 
 	public void set(StackFrame frame, String name, ASMOclAny value) {
-		ATLPlugin.severe("ERROR !!!!!");
+		ATLLogger.severe("ERROR !!!!!");
 	}
 
 	public void save(String url) throws IOException {
-		ATLPlugin.severe("ERROR: save not implemented !");
+		ATLLogger.severe("ERROR: save not implemented !");
 	}
 
 	private String name;

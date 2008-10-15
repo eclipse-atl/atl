@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
 import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
@@ -237,17 +237,17 @@ public class ASMOclAny extends ASMNativeObject {
 	}
 
 	public static void output(StackFrame frame, ASMOclAny self) {
-		ATLPlugin.info(self.toString());
+		ATLLogger.info(self.toString());
 	}
 
 	public static ASMOclAny debug(StackFrame frame, ASMOclAny self, ASMString msg) {
-		ATLPlugin.info(msg.getSymbol() + ": " + self.toString());
+		ATLLogger.info(msg.getSymbol() + ": " + self.toString());
 		return self;
 	}
 
 	public static ASMOclAny check(StackFrame frame, ASMOclAny self, ASMString msg, ASMBoolean cond) {
 		if (!cond.getSymbol()) {
-			ATLPlugin.info(msg.getSymbol());
+			ATLLogger.info(msg.getSymbol());
 		}
 		return self;
 	}

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.AtlSuperimposeModule.AtlSuperimposeModuleException;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
@@ -148,7 +148,7 @@ public final class AtlLauncher {
 			ASM asm = new ASMXMLReader().read(new BufferedInputStream(asmurl.openStream()));
 			return launch(asm, libraries, models, asmParams, superimpose, options, debugger);
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
 		}
 		return null;
@@ -211,7 +211,7 @@ public final class AtlLauncher {
 			}
 
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		// Register module operations AFTER lib operations to avoid overwriting 'main'
@@ -227,9 +227,9 @@ public final class AtlLauncher {
 				env.registerOperations(module);
 			}
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (AtlSuperimposeModuleException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -238,7 +238,7 @@ public final class AtlLauncher {
 		ASMInterpreter ai = new ASMInterpreter(asm, asmModule, env, asmParams);
 		long endTime = System.currentTimeMillis();
 		if (printExecutionTime && !(debugger instanceof NetworkDebugger)) {
-			ATLPlugin.info(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s."); //$NON-NLS-1$ //$NON-NLS-2$
+			ATLLogger.info(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		ret = ai.getReturnValue();

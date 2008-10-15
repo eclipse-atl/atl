@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
@@ -37,7 +37,7 @@ public class ASMProjector {
 			String[] ss = plugins.split(",");
 			for (Iterator i = Arrays.asList(ss).iterator(); i.hasNext();) {
 				String plg = (String)i.next();
-				ATLPlugin.info("Loading plugin: " + plg);
+				ATLLogger.info("Loading plugin: " + plg);
 				pcl.addLocation(plg);
 			}
 		}
@@ -59,17 +59,17 @@ public class ASMProjector {
 			ml.addInjector("ebnf", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSInjector"));
 			ml.addInjector("ebnf2", pcl.loadClass("org.eclipse.gmt.tcs.injector.TCSInjector"));
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		try {
 			ml.addExtractor("ebnf", pcl.loadClass("org.eclipse.gmt.tcs.extractor.TCSExtractor"));
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		try {
 			ml.addInjector("bin", pcl.loadClass("org.atl.engine.injectors.bin.BINInjector"));
 		} catch (Exception e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		Map models = new HashMap();

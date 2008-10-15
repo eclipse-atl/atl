@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 
@@ -71,7 +71,7 @@ public class ExecEnv {
 		for(Iterator i = frames.iterator() ; i.hasNext() ; ) {
 			StringTokenizer lines = new StringTokenizer(i.next().toString(), "\n");
 			while (lines.hasMoreTokens()) {
-				ATLPlugin.severe(lines.nextToken());
+				ATLLogger.severe(lines.nextToken());
 			}
 //			System.out.println(i.next());
 		}
