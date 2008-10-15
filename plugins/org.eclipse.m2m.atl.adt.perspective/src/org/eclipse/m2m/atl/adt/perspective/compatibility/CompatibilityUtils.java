@@ -35,7 +35,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.perspective.AtlPerspectiveMessages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -207,13 +207,13 @@ public final class CompatibilityUtils {
 					transformer.transform(source, result);
 
 				} catch (ParserConfigurationException e) {
-					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				} catch (IOException e) {
-					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				} catch (SAXException e) {
-					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				} catch (TransformerException e) {
-					ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				}
 
 				if (ifile != null) {
