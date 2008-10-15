@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
@@ -122,9 +122,9 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 			}
 			stream.close();
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (CoreException e1) {
-			ATLPlugin.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			ATLLogger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 		}
 	}
 

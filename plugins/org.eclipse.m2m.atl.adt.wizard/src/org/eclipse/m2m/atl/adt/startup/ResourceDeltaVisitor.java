@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * Resource visitor.
@@ -64,7 +64,7 @@ public class ResourceDeltaVisitor implements IResourceDeltaVisitor {
 					try {
 						asm.delete(true, null);
 					} catch (CoreException e) {
-						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 				}
 			}
