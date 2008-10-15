@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 
 /**
  * The activator class controls the plug-in life cycle.
@@ -72,7 +72,7 @@ public class AtlTestPlugin extends Plugin {
 			return new File(FileLocator.toFileURL(AtlTestPlugin.getDefault().getBundle().getEntry("/"))
 					.getFile()).getParent();
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return null;
 	}

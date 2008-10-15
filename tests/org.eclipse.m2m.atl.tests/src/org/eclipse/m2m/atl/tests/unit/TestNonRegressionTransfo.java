@@ -24,7 +24,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.compiler.AtlCompiler;
 import org.eclipse.m2m.atl.engine.compiler.CompilerNotFoundException;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
@@ -82,13 +82,13 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		try {
 			launchParser.parseConfiguration(buildURI);
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.5")); //$NON-NLS-1$
 		} catch (SAXException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.5")); //$NON-NLS-1$
 		} catch (ParserConfigurationException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.5")); //$NON-NLS-1$
 		} 
 
@@ -110,26 +110,26 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 						outName = atlFilePath.substring(0, atlFilePath.lastIndexOf('.')) + ".temp.asm"; //$NON-NLS-1$
 						launchParser.setAsmUrl(new URL("file:" + outName));
 					} catch (MalformedURLException e) {
-						ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 						fail("URL problem : " + atlUrl); //$NON-NLS-1$
 					}
 				}
 
 				is = atlUrl.openStream();
 			} catch (IOException e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				fail("File not found : " + atlUrl); //$NON-NLS-1$
 			}
 			try {
 				AtlCompiler.getDefault().compile(is, outName);
 			} catch (CompilerNotFoundException e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				fail("Compiler not found"); //$NON-NLS-1$
 			}
 			try {
 				is.close();
 			} catch (IOException e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				fail(atlUrl + " compilation failed"); //$NON-NLS-1$
 			}
 		}
@@ -144,10 +144,10 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 					+ directory.toString().substring(AtlTestPlugin.getDefault().getBaseDirectory().length())
 					+ "\" time=\"" + executionTime + "\"/>\n");
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.6", new Object[] {e})); //$NON-NLS-1$
 		} catch (CoreException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.6", new Object[] {e})); //$NON-NLS-1$
 		}
 		System.out.println(executionTime + "s."); //$NON-NLS-1$
@@ -168,7 +168,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 							.getResourceSet());
 				}
 			} catch (IOException e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.7")); //$NON-NLS-1$
 			}
 		}
@@ -180,13 +180,13 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			try {
 				ModelUtils.compareModels(new File(outputPath), new File(expectedPath), true, true);
 			} catch (IOException e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.8")); //$NON-NLS-1$
 			} catch (InterruptedException e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.8")); //$NON-NLS-1$
 			} catch (TestException e) {
-				ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.8")); //$NON-NLS-1$
 			}
 		}

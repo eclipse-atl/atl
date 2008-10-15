@@ -41,7 +41,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 import org.eclipse.m2m.atl.tests.TestException;
@@ -125,7 +125,7 @@ public final class ModelUtils {
 		try {
 			mmExtent.load(new FileInputStream(metamodelURI.toFileString()), Collections.EMPTY_MAP);
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		for (Iterator it = getElementsByType(mmExtent, "EPackage").iterator(); it.hasNext();) { //$NON-NLS-1$

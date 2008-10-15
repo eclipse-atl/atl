@@ -23,7 +23,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.emfvm.ASM;
 import org.eclipse.m2m.atl.engine.emfvm.ASMXMLReader;
 import org.eclipse.m2m.atl.engine.emfvm.emf.EMFModel;
@@ -123,7 +123,7 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 				m.save(URI.createFileURI((String)launchParser.getPath().get(mName)));
 			}
 		} catch (VMException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			throw e;
 		} finally {
 			for (Iterator i = models.values().iterator(); i.hasNext();) {

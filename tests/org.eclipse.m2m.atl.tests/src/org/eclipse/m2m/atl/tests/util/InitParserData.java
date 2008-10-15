@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
@@ -73,7 +73,7 @@ public final class InitParserData {
 			ModelUtils.save(result, xmiTransfoPath);
 			System.out.println(transfoPath + " extracted.");
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 }

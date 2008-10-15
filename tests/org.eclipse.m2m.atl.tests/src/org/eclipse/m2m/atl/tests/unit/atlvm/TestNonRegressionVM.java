@@ -22,7 +22,7 @@ import java.util.logging.Level;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.ATLPlugin;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
@@ -156,7 +156,7 @@ public class TestNonRegressionVM extends TestNonRegressionTransfo {
 				toReturn.put(mName, inputModel);
 			}
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return toReturn;
 	}
@@ -216,7 +216,7 @@ public class TestNonRegressionVM extends TestNonRegressionTransfo {
 				toReturn.put(mName, outputModel);
 			}
 		} catch (IOException e) {
-			ATLPlugin.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return toReturn;
 	}
