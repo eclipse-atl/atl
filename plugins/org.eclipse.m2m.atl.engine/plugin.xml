@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="atlcompiler" name="ATLCompiler" schema="schema/atlcompiler.exsd"/>
+   <extension-point id="org.eclipse.m2m.atl.engine.atlcompiler" name="ATLCompiler" schema="schema/atlcompiler.exsd"/>
+   <extension
+         point="org.eclipse.m2m.atl.engine.atlcompiler">
+      <atlcompiler
+            class="org.eclipse.m2m.atl.engine.compiler.atl2006.Atl2006Compiler"
+            name="atl2006">
+      </atlcompiler>
+   </extension>
 </plugin>

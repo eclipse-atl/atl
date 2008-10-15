@@ -125,7 +125,7 @@ public class AtlCompiler {
 			} else {
 				IExtensionRegistry registry = Platform.getExtensionRegistry();
 				if (registry == null) {
-					throw new RuntimeException(AtlEngineMessages.getString("AtlCompiler.EMFREGISTRYNOTFOUND")); //$NON-NLS-1$
+					throw new RuntimeException(AtlEngineMessages.getString("AtlCompiler.REGISTRYNOTFOUND")); //$NON-NLS-1$
 				}
 
 				IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.atlcompiler"); //$NON-NLS-1$

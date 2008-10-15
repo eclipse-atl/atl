@@ -9,6 +9,7 @@ Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.engine,
  org.eclipse.m2m.atl.engine.compiler,
+ org.eclipse.m2m.atl.engine.compiler.atl2006,
  org.eclipse.m2m.atl.engine.parser
 Require-Bundle: org.eclipse.core.resources,
  org.eclipse.core.runtime,
