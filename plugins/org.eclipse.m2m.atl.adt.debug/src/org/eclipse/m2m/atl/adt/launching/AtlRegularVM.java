@@ -359,18 +359,11 @@ public class AtlRegularVM extends AtlVM {
 			for (Iterator i = outModel.keySet().iterator(); i.hasNext();) {
 				String mName = (String)i.next();
 				ASMModel currentOutModel = (ASMModel)outModel.get(mName);
-				// if (linkWithNextTransformation.containsKey(mName))
-				// toReturn.put(linkWithNextTransformation.get(mName), currentOutModel);
-
-				if ((modelType.get(mName) != null)
-						&& ((String)modelType.get(mName)).equals(ModelChoiceTab.MODEL_OUTPUT)) {
-					// TODO a boolean may manage the saving
-					String mmName = (String)output.get(mName);
-					((AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName))).saveModel(
-							currentOutModel, (String)path.get(mName));
-				}
+				String mmName = (String)output.get(mName);
+				((AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName))).saveModel(currentOutModel,
+						(String)path.get(mName));
 			}
-
+			
 			for (Iterator i = toDispose.iterator(); i.hasNext();) {
 				ASMModel model = (ASMModel)i.next();
 				AtlModelHandler.getHandler(model).disposeOfModel(model);
