@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007, 2008 Obeo.
+ * Copyright (c) 2008 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,19 +14,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The activator class, controls the plug-in life cycle. Defines the common log utilities for all ATL plugins.
+ * The common ATL logger.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class ATLLogger {
 
-	/** The plugin ID. */
-	public static final String ID = "org.eclipse.m2m.atl"; //$NON-NLS-1$
+	/** The logger ID. */
+	public static final String LOGGER_ID = "org.eclipse.m2m.atl"; //$NON-NLS-1$
 
-	protected static final Logger LOGGER = Logger.getLogger(ID);
-	{
-		LOGGER.setUseParentHandlers(false);
-	}
+	protected static Logger logger;
 	
 	/**
 	 * Constructor.
@@ -41,7 +38,11 @@ public class ATLLogger {
 	 * @return The ATL logger
 	 */
 	public static Logger getLogger() {
-		return LOGGER;
+		if (logger == null) {
+			logger = Logger.getLogger(LOGGER_ID);
+			logger.setUseParentHandlers(false);			
+		}
+		return logger;
 	}
 
 	/**
@@ -55,7 +56,7 @@ public class ATLLogger {
 	 *            the throwable cause
 	 */
 	public static void log(Level level, String msg, Throwable thrown) {
-		LOGGER.log(level, msg, thrown);
+		logger.log(level, msg, thrown);
 	}
 
 	/**
