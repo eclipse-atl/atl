@@ -212,8 +212,6 @@ public final class AtlParser {
 				retUnit = ((ASMEMFModelElement)modules.iterator().next()).getObject();
 			}
 			pbs = problems.getElementsByType("Problem"); //$NON-NLS-1$
-		} else {
-			Object o = atlmodel.getElementsByType(rootTypeName); //$NON-NLS-1$
 		}
 
 		if (pbs != null) {

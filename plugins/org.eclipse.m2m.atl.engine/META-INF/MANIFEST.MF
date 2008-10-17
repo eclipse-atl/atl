@@ -4,7 +4,6 @@ Bundle-Name: ATL Engine
 Bundle-SymbolicName: org.eclipse.m2m.atl.engine; singleton:=true
 Bundle-Version: 2.1.0.qualifier
 Bundle-ClassPath: .
-Bundle-Activator: org.eclipse.m2m.atl.engine.EnginePlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.engine,
