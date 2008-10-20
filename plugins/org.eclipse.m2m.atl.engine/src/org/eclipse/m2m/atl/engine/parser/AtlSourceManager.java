@@ -280,7 +280,7 @@ public final class AtlSourceManager {
 			return;
 		}
 
-		if (model.eClass().getName().equals("Module")) {
+		if (model.eClass().getName().equals("Module")) { //$NON-NLS-1$
 			atlFileType = ATL_FILE_TYPE_MODULE;
 			// input models computation
 			EList inModelsList = (EList)eGet(model, "inModels"); //$NON-NLS-1$
@@ -288,7 +288,7 @@ public final class AtlSourceManager {
 				for (Iterator iterator = inModelsList.iterator(); iterator.hasNext();) {
 					EObject me = (EObject)iterator.next();
 					EObject mm = (EObject)eGet(me, "metamodel"); //$NON-NLS-1$
-					inputModels.put(eGet(me, "name").toString(), eGet(mm, "name").toString()); //$NON-NLS-1$
+					inputModels.put(eGet(me, "name").toString(), eGet(mm, "name").toString()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 
@@ -298,22 +298,22 @@ public final class AtlSourceManager {
 				for (Iterator iterator = outModelsList.iterator(); iterator.hasNext();) {
 					EObject me = (EObject)iterator.next();
 					EObject mm = (EObject)eGet(me, "metamodel"); //$NON-NLS-1$
-					outputModels.put(eGet(me, "name").toString(), eGet(mm, "name").toString()); //$NON-NLS-1$
+					outputModels.put(eGet(me, "name").toString(), eGet(mm, "name").toString()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 
-		} else if (model.eClass().getName().equals("Query")) {
+		} else if (model.eClass().getName().equals("Query")) { //$NON-NLS-1$
 			atlFileType = ATL_FILE_TYPE_QUERY;
 			outputModels = null;
 			for (Iterator iterator = model.eResource().getAllContents(); iterator.hasNext();) {
 				EObject eo = (EObject)iterator.next();
-				if (eo.eClass().getName().equals("OclModel")) {
+				if (eo.eClass().getName().equals("OclModel")) { //$NON-NLS-1$
 					String metamodelName = (String)eGet(eo, "name"); //$NON-NLS-1$
-					inputModels.put("IN", metamodelName);
+					inputModels.put("IN", metamodelName); //$NON-NLS-1$
 					break;
 				}
 			}
-		} else if (model.eClass().getName().equals("Library")) {
+		} else if (model.eClass().getName().equals("Library")) { //$NON-NLS-1$
 			atlFileType = ATL_FILE_TYPE_LIBRARY;
 		}
 

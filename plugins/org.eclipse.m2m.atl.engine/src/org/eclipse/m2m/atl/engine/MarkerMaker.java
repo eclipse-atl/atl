@@ -53,7 +53,7 @@ public class MarkerMaker {
 	/**
 	 * creates a problem marker from an Eobject. This EObject contain the required information.
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.compiler.resources#Problem.ecore
+	 * @see org.eclipse.m2m.atl.engine.compiler.resources#Problem
 	 * @param res
 	 *            the resource associated to the created marker
 	 * @param problem
@@ -75,7 +75,7 @@ public class MarkerMaker {
 		String description = (String)problem.eGet(sfDescription);
 
 		String location = (String)problem.eGet(sfLocation);
-		String[] parts = location.split("-")[0].split(":");
+		String[] parts = location.split("-")[0].split(":"); //$NON-NLS-1$ //$NON-NLS-2$
 		int lineNumber = Integer.parseInt(parts[0]);
 		int columnNumber = Integer.parseInt(parts[1]);
 		int charStart = 0;
@@ -100,7 +100,8 @@ public class MarkerMaker {
 			pbmMarker.setAttribute(IMarker.SEVERITY, eclipseSeverity);
 			pbmMarker.setAttribute(IMarker.MESSAGE, description);
 			pbmMarker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
-			pbmMarker.setAttribute(IMarker.LOCATION, "line " + lineNumber + ", column " + columnNumber);
+			pbmMarker.setAttribute(IMarker.LOCATION, Messages.getString("MarkerMaker.LINECOLUMN", //$NON-NLS-1$
+					new Object[] {new Integer(lineNumber), new Integer(columnNumber)}));
 			pbmMarker.setAttribute(IMarker.CHAR_START, charStart);
 			pbmMarker.setAttribute(IMarker.CHAR_END, (charEnd > charStart) ? charEnd : charStart + 1);
 		} catch (CoreException e) {
@@ -123,8 +124,10 @@ public class MarkerMaker {
 	/**
 	 * Resets the marker on a resource.
 	 * 
-	 * @param res the resource
-	 * @param eos the problem list
+	 * @param res
+	 *            the resource
+	 * @param eos
+	 *            the problem list
 	 * @throws CoreException
 	 */
 	public void resetPbmMarkers(IResource res, EObject[] eos) throws CoreException {

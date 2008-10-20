@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.ATLLogger;
-import org.eclipse.m2m.atl.engine.AtlEngineMessages;
+import org.eclipse.m2m.atl.engine.Messages;
 
 /**
  * The ATL compiler.
@@ -125,7 +125,7 @@ public class AtlCompiler {
 			} else {
 				IExtensionRegistry registry = Platform.getExtensionRegistry();
 				if (registry == null) {
-					throw new RuntimeException(AtlEngineMessages.getString("AtlCompiler.REGISTRYNOTFOUND")); //$NON-NLS-1$
+					throw new RuntimeException(Messages.getString("AtlCompiler.REGISTRYNOTFOUND")); //$NON-NLS-1$
 				}
 
 				IExtensionPoint point = registry.getExtensionPoint("org.eclipse.m2m.atl.engine.atlcompiler"); //$NON-NLS-1$
@@ -148,7 +148,7 @@ public class AtlCompiler {
 			}
 
 			if (ret == null) {
-				throw new CompilerNotFoundException(AtlEngineMessages.getString(
+				throw new CompilerNotFoundException(Messages.getString(
 						"AtlCompiler.COMPILERNOTFOUND", new Object[] {compilerName})); //$NON-NLS-1$
 			}
 		}

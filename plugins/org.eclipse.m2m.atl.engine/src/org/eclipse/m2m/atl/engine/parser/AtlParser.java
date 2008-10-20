@@ -142,7 +142,7 @@ public final class AtlParser {
 	 * @return An array of EObject, the first one being an ATL!Unit and the following ones Problem!Problem.
 	 */
 	public EObject[] parseWithProblems(InputStream in) {
-		return convertToEmf(parseToModelWithProblems(in, true), "Unit");
+		return convertToEmf(parseToModelWithProblems(in, true), "Unit"); //$NON-NLS-1$
 	}
 	
 	/**
@@ -207,7 +207,7 @@ public final class AtlParser {
 		ASMModel atlmodel = parsed[0];
 		ASMModel problems = parsed[1];
 		if (atlmodel instanceof ASMEMFModel) {
-			Collection modules = atlmodel.getElementsByType(rootTypeName); //$NON-NLS-1$
+			Collection modules = atlmodel.getElementsByType(rootTypeName);
 			if (modules.size() > 0) {
 				retUnit = ((ASMEMFModelElement)modules.iterator().next()).getObject();
 			}
