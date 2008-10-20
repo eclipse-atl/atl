@@ -15,6 +15,7 @@ import java.io.InputStream;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.m2m.atl.dsls.Messages;
 
 /**
  * IFile text utility.
@@ -42,7 +43,7 @@ public class IFileTextSource extends TextSource {
 		try {
 			return file.getContents();
 		} catch (CoreException e) {
-			IOException ioe = new IOException("problem opening IFile");
+			IOException ioe = new IOException(Messages.getString("IFileTextSource.OPENINGPROBLEM")); //$NON-NLS-1$
 			ioe.initCause(e);
 			throw ioe;
 		}

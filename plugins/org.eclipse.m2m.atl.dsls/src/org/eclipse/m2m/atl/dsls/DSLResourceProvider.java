@@ -41,7 +41,7 @@ public class DSLResourceProvider {
 
 	private static DSLResourceProvider instance;
 
-	private static String resourcesRoot = "resources/";
+	private static String resourcesRoot = "resources/"; //$NON-NLS-1$
 
 	private static Map resourcesById = new HashMap();
 
@@ -56,7 +56,7 @@ public class DSLResourceProvider {
 			instance.initResources();
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			if (registry == null) {
-				throw new RuntimeException("Extension registry not found");
+				throw new RuntimeException(Messages.getString("DSLResourceProvider.EXTENSIONREGISTRYNOTFOUND")); //$NON-NLS-1$
 			}
 
 			IExtensionPoint point = registry
@@ -93,7 +93,7 @@ public class DSLResourceProvider {
 
 	private void initResources() {
 		try {
-			BufferedReader in = new URLTextSource(getURL("contents.list")).openBufferedReader();
+			BufferedReader in = new URLTextSource(getURL("contents.list")).openBufferedReader(); //$NON-NLS-1$
 			String line;
 			while ((line = in.readLine()) != null) {
 				if (!(line.trim().length() == 0)) {
@@ -124,7 +124,7 @@ public class DSLResourceProvider {
 				}
 			}
 		} catch (IOException e) {
-			throw new RuntimeException("error loading resource", e);
+			throw new RuntimeException(Messages.getString("DSLResourceProvider.LOADINGERROR"), e); //$NON-NLS-1$
 		}
 	}
 
@@ -134,7 +134,7 @@ public class DSLResourceProvider {
 		if (url != null) {
 			return url;
 		} else {
-			throw new RuntimeException("could not load " + path);
+			throw new RuntimeException(Messages.getString("DSLResourceProvider.COULDNOTLOAD",new Object[]{path})); //$NON-NLS-1$
 		}
 	}
 
