@@ -188,12 +188,12 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 												oclModelElement, prefix, offset);
 									}
 								}
-							} else if (fHelper.getCurrentLine(offset).indexOf("<-") > 0
-									&& (oclIsKindOf(locatedElement, "Binding")
-											|| oclIsKindOf(locatedElement, "VariableExp") || oclIsKindOf(
+							} else if (fHelper.getCurrentLine(offset).indexOf("<-") > 0 //$NON-NLS-1$
+									&& (oclIsKindOf(locatedElement, "Binding") //$NON-NLS-1$
+											|| oclIsKindOf(locatedElement, "VariableExp") || oclIsKindOf( //$NON-NLS-1$
 											locatedElement, "NavigationOrAttributeCallExp"))) { //$NON-NLS-1$
 								String[] analyzedExp = analyzeVariableExp(prefix);
-								if (analyzedExp[0].equals("")) {
+								if (analyzedExp[0].equals("")) { //$NON-NLS-1$
 									return fDatasource.getVariablesProposals(analyser.getRootElement(),
 											prefix, offset);
 								}
@@ -283,15 +283,15 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 
 	private static String[] analyzeVariableExp(String prefix) {
 		String currentPrefix = prefix;
-		currentPrefix = currentPrefix.replaceFirst("<-", "");
-		String varName = "";
-		String lastPrefix = "";
-		if (currentPrefix.indexOf(".")>0) {
-			String[] splittedPrefix = currentPrefix.split("\\.");
+		currentPrefix = currentPrefix.replaceFirst("<-", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		String varName = ""; //$NON-NLS-1$
+		String lastPrefix = ""; //$NON-NLS-1$
+		if (currentPrefix.indexOf(".")>0) { //$NON-NLS-1$
+			String[] splittedPrefix = currentPrefix.split("\\."); //$NON-NLS-1$
 			if (splittedPrefix.length > 0) {
-				if (currentPrefix.endsWith(".")) {
+				if (currentPrefix.endsWith(".")) { //$NON-NLS-1$
 					varName = splittedPrefix[splittedPrefix.length - 1];
-					lastPrefix = "";
+					lastPrefix = ""; //$NON-NLS-1$
 				} else {
 					varName = splittedPrefix[splittedPrefix.length - 2];
 					lastPrefix = splittedPrefix[splittedPrefix.length - 1];

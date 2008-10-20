@@ -157,18 +157,18 @@ public class AtlCompletionDataSource {
 				if (classifier instanceof EClass) {
 					EClass cl = (EClass)classifier;
 					if (cl.isAbstract()) {
-						additionalProposalInfo.append("abstract ");
+						additionalProposalInfo.append("abstract "); //$NON-NLS-1$
 					}
-					additionalProposalInfo.append("class ");
+					additionalProposalInfo.append("class "); //$NON-NLS-1$
 					additionalProposalInfo.append(cl.getName());
 					boolean first = true;
 					for (Iterator i = cl.getESuperTypes().iterator(); i.hasNext();) {
 						EClass st = (EClass)i.next();
 						if (first) {
-							additionalProposalInfo.append(" extends\n\t");
+							additionalProposalInfo.append(" extends\n\t"); //$NON-NLS-1$
 							first = false;
 						} else {
-							additionalProposalInfo.append(",\n\t");
+							additionalProposalInfo.append(",\n\t"); //$NON-NLS-1$
 						}
 						additionalProposalInfo.append(st.getName());
 					}
@@ -279,9 +279,9 @@ public class AtlCompletionDataSource {
 							}
 							StringBuffer additionalProposalInfo = new StringBuffer();
 							if (feature instanceof EAttribute) {
-								additionalProposalInfo.append("attribute ");
+								additionalProposalInfo.append("attribute "); //$NON-NLS-1$
 							} else if (feature instanceof EReference) {
-								additionalProposalInfo.append("reference ");
+								additionalProposalInfo.append("reference "); //$NON-NLS-1$
 							}
 							additionalProposalInfo.append(feature.getName());
 							if ((feature.getLowerBound() == 1) && (feature.getUpperBound() == 1)) {
@@ -298,17 +298,17 @@ public class AtlCompletionDataSource {
 								additionalProposalInfo.append(']');
 							}
 							if (feature.isOrdered()) {
-								additionalProposalInfo.append(" ordered");
+								additionalProposalInfo.append(" ordered"); //$NON-NLS-1$
 							}
 							if ((feature instanceof EReference) && ((EReference)feature).isContainment()) {
-								additionalProposalInfo.append(" container");
+								additionalProposalInfo.append(" container"); //$NON-NLS-1$
 							}
-							additionalProposalInfo.append(" :\n\t");
+							additionalProposalInfo.append(" :\n\t"); //$NON-NLS-1$
 							additionalProposalInfo.append(feature.getEType().getName());
 							if (feature instanceof EReference) {
 								EReference opposite = ((EReference)feature).getEOpposite();
 								if (opposite != null) {
-									additionalProposalInfo.append(" oppositeOf ");
+									additionalProposalInfo.append(" oppositeOf "); //$NON-NLS-1$
 									additionalProposalInfo.append(opposite.getName());
 								}
 							}
@@ -462,12 +462,12 @@ public class AtlCompletionDataSource {
 	 */
 	public static Map getVariables(EObject rule) {
 		Map res = new HashMap();
-		res.put("thisModule", null);
+		res.put("thisModule", null); //$NON-NLS-1$
 		TreeIterator ruleContentsIterator = rule.eAllContents();
 		while (ruleContentsIterator.hasNext()) {
 			EObject content = (EObject)ruleContentsIterator.next();
 			if (content.eClass().getName().equals("SimpleInPatternElement")) { //$NON-NLS-1$
-				res.put(eGet(content, "varName"), eGet(content, "type"));
+				res.put(eGet(content, "varName"), eGet(content, "type")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		return res;
