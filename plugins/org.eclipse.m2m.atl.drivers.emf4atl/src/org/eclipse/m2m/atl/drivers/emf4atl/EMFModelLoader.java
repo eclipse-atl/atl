@@ -347,7 +347,9 @@ public class EMFModelLoader extends ModelLoader {
 					nsURI = p.getName();
 					p.setNsURI(nsURI);
 				} else if (mofURI.toString().equals(nsURI)) {
-					throw new IOException("Cannot overload Ecore");
+					if (!((ASMEMFModel)getMOF()).getExtent().equals(p.eResource())) {
+						throw new IOException("Cannot overload Ecore");
+					}
 				}
 				synchronized (resourceSet) {
 					resourceSet.getPackageRegistry().put(nsURI, p);
