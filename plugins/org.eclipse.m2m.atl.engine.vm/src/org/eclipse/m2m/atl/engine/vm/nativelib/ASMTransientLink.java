@@ -138,11 +138,11 @@ public class ASMTransientLink extends ASMOclAny {
 	 * that created the mappings. This reduces fragility.
 	 * @param frame
 	 * @param self
-	 * @return All target elements for this link.
+	 * @return A Map of target element names to target elements for this link.
 	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
 	 */
-	public static ASMSequence getTargetElements(StackFrame frame, ASMTransientLink self) {
-		return new ASMSequence(self.getTargetElements());
+	public static ASMMap getTargetElements(StackFrame frame, ASMTransientLink self) {
+		return new ASMMap(self.targetElements);
 	}
 
 	private Map sourceElements = new HashMap();
