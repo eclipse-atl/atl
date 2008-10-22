@@ -88,7 +88,7 @@ public final class AtlSourceManager {
 	private boolean initialized;
 
 	private EObject model;
-	
+
 	private Map metamodelLocations;
 
 	/**
@@ -148,7 +148,7 @@ public final class AtlSourceManager {
 			inputStream.read(bytes);
 			content = new String(bytes);
 		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE,e.getLocalizedMessage(),e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		updateDataSource(content);
 	}
@@ -212,12 +212,12 @@ public final class AtlSourceManager {
 		inputModels = new HashMap();
 		outputModels = new HashMap();
 		librariesImports = new ArrayList();
-		
+	
 		byte[] buffer = text.getBytes();
 		int length = buffer.length;
 		BufferedReader brin = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer, 0,
 				length)));
-
+	
 		List uris = getTaggedInformations(brin, URI_TAG);
 		for (Iterator iterator = uris.iterator(); iterator.hasNext();) {
 			String line = (String)iterator.next();
@@ -226,19 +226,19 @@ public final class AtlSourceManager {
 				String uri = line.split("=")[1].trim(); //$NON-NLS-1$
 				if (uri != null && uri.length() > 0) {
 					uri = uri.trim();
-
+	
 					// EPackage registration
 					EPackage regValue = EPackage.Registry.INSTANCE.getEPackage(uri);
 					if (regValue != null) {
 						ArrayList list = new ArrayList();
 						list.add(regValue);
 						metamodelsPackages.put(name, list);
-						metamodelLocations.put(name, uri);
+						metamodelLocations.put(name, "uri:" + uri);
 					}
 				}
 			}
 		}
-
+	
 		List paths = getTaggedInformations(brin, PATH_TAG);
 		for (Iterator iterator = paths.iterator(); iterator.hasNext();) {
 			String line = (String)iterator.next();
@@ -263,15 +263,15 @@ public final class AtlSourceManager {
 				}
 			}
 		}
-
+	
 		model = AtlParser.getDefault().parse(new ByteArrayInputStream(text.getBytes()));
-
+	
 		if (model == null) {
 			inputModels = null;
 			outputModels = null;
 			return;
 		}
-
+	
 		if (model.eClass().getName().equals("Module")) { //$NON-NLS-1$
 			atlFileType = ATL_FILE_TYPE_MODULE;
 			// input models computation
@@ -283,7 +283,7 @@ public final class AtlSourceManager {
 					inputModels.put(eGet(me, "name").toString(), eGet(mm, "name").toString()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
-
+	
 			// output models computation
 			EList outModelsList = (EList)eGet(model, "outModels"); //$NON-NLS-1$
 			if (outModelsList != null) {
@@ -293,7 +293,7 @@ public final class AtlSourceManager {
 					outputModels.put(eGet(me, "name").toString(), eGet(mm, "name").toString()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
-
+	
 		} else if (model.eClass().getName().equals("Query")) { //$NON-NLS-1$
 			atlFileType = ATL_FILE_TYPE_QUERY;
 			outputModels = null;
@@ -308,7 +308,7 @@ public final class AtlSourceManager {
 		} else if (model.eClass().getName().equals("Library")) { //$NON-NLS-1$
 			atlFileType = ATL_FILE_TYPE_LIBRARY;
 		}
-
+	
 		// libraries computation
 		EList librariesList = (EList)eGet(model, "libraries"); //$NON-NLS-1$
 		if (librariesList != null) {
@@ -317,7 +317,7 @@ public final class AtlSourceManager {
 				librariesImports.add((String)eGet(lib, "name")); //$NON-NLS-1$
 			}
 		}
-
+	
 		initialized = true;
 	}
 
@@ -344,7 +344,7 @@ public final class AtlSourceManager {
 	 * @return the tagged information
 	 * @throws IOException
 	 */
-	public static List getTaggedInformations(BufferedReader reader, String tag) throws IOException {
+	private static List getTaggedInformations(BufferedReader reader, String tag) throws IOException {
 		reader.mark(1000);
 		List res = new ArrayList();
 		while (reader.ready()) {
@@ -376,7 +376,7 @@ public final class AtlSourceManager {
 	 * @throws IOException
 	 *             If the given file does not exist.
 	 */
-	public static Resource load(URI modelURI, ResourceSet resourceSet) throws IOException {
+	private static Resource load(URI modelURI, ResourceSet resourceSet) throws IOException {
 		String fileExtension = modelURI.fileExtension();
 		if (fileExtension == null || fileExtension.length() == 0) {
 			fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
@@ -408,7 +408,7 @@ public final class AtlSourceManager {
 	 *            the feature name
 	 * @return the feature value
 	 */
-	public static Object eGet(EObject self, String featureName) {
+	private static Object eGet(EObject self, String featureName) {
 		EStructuralFeature feature = self.eClass().getEStructuralFeature(featureName);
 		if (feature != null) {
 			return self.eGet(feature);
