@@ -329,7 +329,7 @@ public final class AtlLauncherTools {
 				}
 			});
 		} catch (CoreException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.warning(e.getMessage());
 		}
 
 		String[] fileNames = new String[fileList.size()];

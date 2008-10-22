@@ -49,7 +49,7 @@ public class ErrorLogHandler extends Handler {
 	public void publish(LogRecord record) {
 		int severity = getSeverityFromLevel(record.getLevel());
 		if (severity != Status.CANCEL) {
-			Status status = new Status(severity, ATLLogger.ID, record.getMessage(), record.getThrown());
+			Status status = new Status(severity, ATLLogger.LOGGER_ID, record.getMessage(), record.getThrown());
 			AtlDebugPlugin.getDefault().getLog().log(status);
 		}
 	}

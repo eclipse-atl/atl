@@ -358,10 +358,12 @@ public class AtlRegularVM extends AtlVM {
 
 			for (Iterator i = outModel.keySet().iterator(); i.hasNext();) {
 				String mName = (String)i.next();
-				ASMModel currentOutModel = (ASMModel)outModel.get(mName);
-				String mmName = (String)output.get(mName);
-				((AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName))).saveModel(currentOutModel,
-						(String)path.get(mName));
+				if (modelType.get(mName).equals("MODELOUTPUT")) {
+					ASMModel currentOutModel = (ASMModel)outModel.get(mName);
+					String mmName = (String)output.get(mName);
+					((AtlModelHandler)atlModelHandler.get(modelHandler.get(mmName))).saveModel(
+							currentOutModel, (String)path.get(mName));
+				}
 			}
 			
 			for (Iterator i = toDispose.iterator(); i.hasNext();) {

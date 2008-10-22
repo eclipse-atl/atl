@@ -1153,7 +1153,12 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			}
 		} else {
 			sourceManager = new AtlSourceManager();
-			sourceManager.updateDataSource(file);
+			try {
+				sourceManager.updateDataSource(file.getContents());
+			} catch (CoreException e) {
+				ATLLogger.warning("Unable to detect meta-informations from " + file.getName());
+				return;
+			}
 			asmFileCache.put(file, sourceManager);
 			if (debug) {
 				ATLLogger.info("Loaded ATL File from " + file.toString()); //$NON-NLS-1$
