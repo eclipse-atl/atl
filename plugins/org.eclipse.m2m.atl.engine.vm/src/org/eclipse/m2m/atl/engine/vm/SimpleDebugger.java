@@ -157,7 +157,7 @@ public class SimpleDebugger implements Debugger {
 
 	public void error(StackFrame frame, String msg, Exception e) {
 		if (terminated) {
-			throw new RuntimeException(e);
+			throw new VMException(frame, msg, e);
 		}
 		VMException exception = null;
 		if (getShowStackTrace()) {
