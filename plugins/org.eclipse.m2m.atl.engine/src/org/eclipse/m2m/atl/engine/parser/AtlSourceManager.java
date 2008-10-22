@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -140,17 +138,11 @@ public final class AtlSourceManager {
 	/**
 	 * Update method : parsing and metamodel detection.
 	 * 
-	 * @param file
-	 *            the atl file
+	 * @param inputStream
+	 *            the atl file input stream
 	 */
-	public void updateDataSource(IFile file) {
+	public void updateDataSource(InputStream inputStream) {
 		String content = null;
-		InputStream inputStream = null;
-		try {
-			inputStream = file.getContents();
-		} catch (CoreException e) {
-			ATLLogger.log(Level.SEVERE,e.getLocalizedMessage(),e);
-		}
 		try {
 			byte[] bytes = new byte[inputStream.available()];
 			inputStream.read(bytes);
