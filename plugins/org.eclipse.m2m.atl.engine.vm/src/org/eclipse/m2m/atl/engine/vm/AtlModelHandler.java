@@ -119,7 +119,7 @@ public abstract class AtlModelHandler {
 		return modelHandlers;
 	}
 
-	private static String getHandlerName(ASMModel model) {
+	public static String getHandlerName(ASMModel model) {
 		String ret = null;
 
 		for (Iterator i = defaultModelHandlers.keySet().iterator(); i.hasNext() && (ret == null);) {
