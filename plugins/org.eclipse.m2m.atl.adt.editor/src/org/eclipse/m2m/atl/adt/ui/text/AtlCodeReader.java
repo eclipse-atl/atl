@@ -45,7 +45,7 @@ public class AtlCodeReader extends SingleCharReader {
 	}
 
 	public void configureBackwardReader(IDocument document, int offset, boolean skipComments,
-			boolean skipStrings) throws IOException {
+			boolean skipStrings) {
 		this.document = document;
 		this.offset = offset;
 		this.skipComments = skipComments;
@@ -54,7 +54,7 @@ public class AtlCodeReader extends SingleCharReader {
 	}
 
 	public void configureForwardReader(IDocument document, int offset, int length, boolean skipComments,
-			boolean skipStrings) throws IOException {
+			boolean skipStrings) {
 		this.document = document;
 		this.offset = offset;
 		this.skipComments = skipComments;

@@ -29,7 +29,7 @@ public abstract class SingleCharReader extends Reader {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see java.io.Reader#read(char[], int, int)
 	 */
 	public int read(char[] cbuf, int off, int len) throws IOException {
@@ -39,9 +39,8 @@ public abstract class SingleCharReader extends Reader {
 			if (ch == -1) {
 				if (i == off) {
 					return -1;
-				} else {
-					return i - off;
 				}
+				return i - off;
 			}
 			cbuf[i] = (char)ch;
 		}
@@ -50,7 +49,7 @@ public abstract class SingleCharReader extends Reader {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see java.io.Reader#ready()
 	 */
 	public boolean ready() throws IOException {

@@ -96,9 +96,8 @@ public class AtlModelAnalyser {
 	 * Search the root element of the model.
 	 * 
 	 * @return the element
-	 * @throws BadLocationException
 	 */
-	public EObject getRootElement() throws BadLocationException {
+	public EObject getRootElement() {
 		return emfRoot;
 	}
 

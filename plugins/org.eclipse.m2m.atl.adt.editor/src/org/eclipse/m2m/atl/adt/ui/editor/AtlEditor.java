@@ -87,7 +87,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ContentAssistAction;
-import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.IEditorStatusLine;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
@@ -115,7 +114,7 @@ public class AtlEditor extends TextEditor {
 	private TabConverter fTabConverter;
 
 	private AtlSourceManager sourceManager;
-	
+
 	private class BracketInserter implements VerifyKeyListener, ILinkedModeListener {
 		private final String category = toString();
 
@@ -172,8 +171,9 @@ public class AtlEditor extends TextEditor {
 		}
 
 		/*
-		 * @see org.eclipse.jface.text.link.ILinkedModeListener#left(org.eclipse.jface.text.link.LinkedModeModel,
-		 *      int)
+		 * @see
+		 * org.eclipse.jface.text.link.ILinkedModeListener#left(org.eclipse.jface.text.link.LinkedModeModel,
+		 * int)
 		 */
 		public void left(LinkedModeModel environment, int flags) {
 
@@ -216,8 +216,9 @@ public class AtlEditor extends TextEditor {
 		}
 
 		/*
-		 * @see org.eclipse.jface.text.link.ILinkedModeListener#resume(org.eclipse.jface.text.link.LinkedModeModel,
-		 *      int)
+		 * @see
+		 * org.eclipse.jface.text.link.ILinkedModeListener#resume(org.eclipse.jface.text.link.LinkedModeModel,
+		 * int)
 		 */
 		public void resume(LinkedModeModel environment, int flags) {
 		}
@@ -229,10 +230,10 @@ public class AtlEditor extends TextEditor {
 		public void setCloseStringsEnabled(boolean enabled) {
 			fCloseStrings = enabled;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
-		 *
+		 * 
 		 * @see org.eclipse.jface.text.link.ILinkedModeListener#suspend(org.eclipse.jface.text.link.LinkedModeModel)
 		 */
 		public void suspend(LinkedModeModel environment) {
@@ -240,7 +241,7 @@ public class AtlEditor extends TextEditor {
 
 		/**
 		 * {@inheritDoc}
-		 *
+		 * 
 		 * @see org.eclipse.swt.custom.VerifyKeyListener#verifyKey(org.eclipse.swt.events.VerifyEvent)
 		 */
 		public void verifyKey(VerifyEvent event) {
@@ -385,7 +386,9 @@ public class AtlEditor extends TextEditor {
 	private class EditorSelectionChangedListener implements ISelectionChangedListener {
 
 		/*
-		 * @see org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
+		 * @see
+		 * org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.
+		 * SelectionChangedEvent)
 		 */
 		public void selectionChanged(SelectionChangedEvent event) {
 			synchronizeOutlinePageSelection();
@@ -423,7 +426,6 @@ public class AtlEditor extends TextEditor {
 
 		/*
 		 * (non-Javadoc)
-		 * 
 		 * @see org.eclipse.jface.text.IPositionUpdater#update(org.eclipse.jface.text.DocumentEvent)
 		 */
 		public void update(DocumentEvent event) {
@@ -451,8 +453,7 @@ public class AtlEditor extends TextEditor {
 						// position comes
 						// after change - shift
 						position.setOffset(offset + deltaLength);
-					}
-					else if (end <= eventOffset) {
+					} else if (end <= eventOffset) {
 						// position comes way before change -
 						// leave alone
 					} else if (offset <= eventOffset && end >= eventOffset + eventOldLength) {
@@ -498,8 +499,9 @@ public class AtlEditor extends TextEditor {
 		}
 
 		/*
-		 * @see org.eclipse.jdt.internal.ui.text.link.LinkedPositionUI.ExitPolicy#doExit(org.eclipse.jdt.internal.ui.text.link.LinkedPositionManager,
-		 *      org.eclipse.swt.events.VerifyEvent, int, int)
+		 * @see
+		 * org.eclipse.jdt.internal.ui.text.link.LinkedPositionUI.ExitPolicy#doExit(org.eclipse.jdt.internal
+		 * .ui.text.link.LinkedPositionManager, org.eclipse.swt.events.VerifyEvent, int, int)
 		 */
 		public ExitFlags doExit(LinkedModeModel model, VerifyEvent event, int offset, int length) {
 
@@ -677,8 +679,8 @@ public class AtlEditor extends TextEditor {
 	 * Each ATL element has a location String that indicates where it is located in the source file
 	 * </p>
 	 * <p>
-	 * <code>AtlNbCharFile</code> class is useful to get index char start and index char end from the
-	 * location string
+	 * <code>AtlNbCharFile</code> class is useful to get index char start and index char end from the location
+	 * string
 	 * </p>
 	 * 
 	 * @see AtlNbCharFile
@@ -691,7 +693,8 @@ public class AtlEditor extends TextEditor {
 	/**
 	 * <p>
 	 * The <code>PropertySheetPage</code> associated with this Editor
-	 * </p>.
+	 * </p>
+	 * .
 	 * <p>
 	 * It will be used to display, in the properties view, information about any object selected in the tree
 	 * viewer.
@@ -720,8 +723,8 @@ public class AtlEditor extends TextEditor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#affectsTextPresentation(org.eclipse.jface.util.PropertyChangeEvent)
+	 * @seeorg.eclipse.ui.texteditor.AbstractTextEditor#affectsTextPresentation(org.eclipse.jface.util.
+	 * PropertyChangeEvent)
 	 */
 	protected boolean affectsTextPresentation(PropertyChangeEvent event) {
 		return ((AtlSourceViewerConfiguration)getSourceViewerConfiguration()).affectsTextPresentation(event)
@@ -730,8 +733,9 @@ public class AtlEditor extends TextEditor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#configureSourceViewerDecorationSupport(org.eclipse.ui.texteditor.SourceViewerDecorationSupport)
+	 * @see
+	 * org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#configureSourceViewerDecorationSupport(org.eclipse
+	 * .ui.texteditor.SourceViewerDecorationSupport)
 	 */
 	protected void configureSourceViewerDecorationSupport(SourceViewerDecorationSupport support) {
 		support.setCharacterPairMatcher(bracketMatcher);
@@ -744,18 +748,15 @@ public class AtlEditor extends TextEditor {
 
 	private void configureTabConverter() {
 		if (fTabConverter != null) {
-			IDocumentProvider provider = getDocumentProvider();
-			if (provider instanceof IDocumentProvider) {
-				// TODO create line tracket method from the compulation unit document provider
-				// fTabConverter.setLineTracker((IDocumentProvider)
-				// provider.createLineTracker(getEditorInput()));
-			}
+			//IDocumentProvider provider = getDocumentProvider();
+			// TODO create line tracket method from the compulation unit document provider
+			// fTabConverter.setLineTracker((IDocumentProvider)
+			// provider.createLineTracker(getEditorInput()));
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#createActions()
 	 */
 	protected void createActions() {
@@ -813,7 +814,6 @@ public class AtlEditor extends TextEditor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.ui.texteditor.ExtendedTextEditor#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
 	public void createPartControl(Composite parent) {
@@ -849,7 +849,6 @@ public class AtlEditor extends TextEditor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.ui.texteditor.ExtendedTextEditor#dispose()
 	 */
 	public void dispose() {
@@ -865,7 +864,6 @@ public class AtlEditor extends TextEditor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#doSave(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void doSave(IProgressMonitor progressMonitor) {
@@ -891,7 +889,6 @@ public class AtlEditor extends TextEditor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#doSetSelection(org.eclipse.jface.viewers.ISelection)
 	 */
 	protected void doSetSelection(ISelection selection) {
@@ -963,10 +960,12 @@ public class AtlEditor extends TextEditor {
 		} catch (Exception e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} finally {
-			try {
-				is.close();
-			} catch (IOException e1) {
-				ATLLogger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e1) {
+					ATLLogger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+				}
 			}
 		}
 		return content.toString();
@@ -1078,8 +1077,8 @@ public class AtlEditor extends TextEditor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#handlePreferenceStoreChanged(org.eclipse.jface.util.PropertyChangeEvent)
+	 * @seeorg.eclipse.ui.texteditor.AbstractTextEditor#handlePreferenceStoreChanged(org.eclipse.jface.util.
+	 * PropertyChangeEvent)
 	 */
 	protected void handlePreferenceStoreChanged(PropertyChangeEvent event) {
 		try {
@@ -1137,9 +1136,8 @@ public class AtlEditor extends TextEditor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#init(org.eclipse.ui.IEditorSite,
-	 *      org.eclipse.ui.IEditorInput)
+	 * org.eclipse.ui.IEditorInput)
 	 */
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		super.init(site, input);
@@ -1148,7 +1146,6 @@ public class AtlEditor extends TextEditor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.ui.texteditor.ExtendedTextEditor#initializeEditor()
 	 */
 	protected void initializeEditor() {
@@ -1184,8 +1181,8 @@ public class AtlEditor extends TextEditor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#setNewPreferenceStore(org.eclipse.jface.preference.IPreferenceStore)
+	 * @seeorg.eclipse.ui.texteditor.AbstractTextEditor#setNewPreferenceStore(org.eclipse.jface.preference.
+	 * IPreferenceStore)
 	 */
 	protected void setNewPreferenceStore(IPreferenceStore store) {
 		super.setPreferenceStore(store);

@@ -41,7 +41,6 @@ public class ToggleCommentBlock implements IEditorActionDelegate {
 	/*
 	 * The action has been activated. The argument of the method represents the 'real' action sitting in the
 	 * workbench UI.
-	 * 
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
@@ -108,8 +107,8 @@ public class ToggleCommentBlock implements IEditorActionDelegate {
 					if (length == 0 && !ignoreWhitespace && line.getLength() > 0) {
 						// found a non-empty line which cannot be shifted
 						return;
-					} else
-						occurrences[i] = new Region(index, length);
+					}
+					occurrences[i] = new Region(index, length);
 				} else {
 					// found a line which cannot be shifted
 					return;

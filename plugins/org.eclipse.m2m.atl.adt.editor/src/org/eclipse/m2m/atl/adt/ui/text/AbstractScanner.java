@@ -65,12 +65,8 @@ public abstract class AbstractScanner extends RuleBasedScanner {
 		if (rgb != null) {
 
 			String property = event.getProperty();
-
-			if (getTextTools().getColorManager() instanceof AtlColorManager) {
-				getTextTools().getColorManager().unbindColor(property);
-				getTextTools().getColorManager().bindColor(property, rgb);
-			}
-
+			getTextTools().getColorManager().unbindColor(property);
+			getTextTools().getColorManager().bindColor(property, rgb);
 			Object data = token.getData();
 			if (data instanceof TextAttribute) {
 				TextAttribute oldAttr = (TextAttribute)data;

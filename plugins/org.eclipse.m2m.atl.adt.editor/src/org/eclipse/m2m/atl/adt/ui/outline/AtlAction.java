@@ -31,8 +31,9 @@ public abstract class AtlAction {
 	 * @return the element to rename
 	 */
 	public Object getElement() {
-		if (theSelection instanceof IStructuredSelection)
-			return (Object)((IStructuredSelection)theSelection).getFirstElement();
+		if (theSelection instanceof IStructuredSelection) {
+			return ((IStructuredSelection)theSelection).getFirstElement();
+		}
 		// else if (theSelection instanceof ITextSelection)
 		return null;
 	}

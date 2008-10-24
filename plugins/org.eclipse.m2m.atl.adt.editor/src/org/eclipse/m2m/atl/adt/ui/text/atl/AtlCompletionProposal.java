@@ -74,8 +74,9 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 		}
 
 		/*
-		 * @see org.eclipse.jdt.internal.ui.text.link.LinkedPositionUI.ExitPolicy#doExit(org.eclipse.jdt.internal.ui.text.link.LinkedPositionManager,
-		 *      org.eclipse.swt.events.VerifyEvent, int, int)
+		 * @see
+		 * org.eclipse.jdt.internal.ui.text.link.LinkedPositionUI.ExitPolicy#doExit(org.eclipse.jdt.internal
+		 * .ui.text.link.LinkedPositionManager, org.eclipse.swt.events.VerifyEvent, int, int)
 		 */
 		public ExitFlags doExit(LinkedModeModel environment, VerifyEvent event, int offset, int length) {
 
@@ -170,7 +171,8 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 	private static boolean insertCompletion() {
 		/**
 		 * TODO insert completion to set up. return
-		 * AtlUIPlugin.getDefault().getPreferenceStore().getBoolean(AtlPreferenceConstants.CODEASSIST_INSERT_COMPLETION);
+		 * AtlUIPlugin.getDefault().getPreferenceStore().getBoolean(AtlPreferenceConstants
+		 * .CODEASSIST_INSERT_COMPLETION);
 		 */
 		return true;
 	}
@@ -295,8 +297,8 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 				StringBuffer buffer = new StringBuffer(fReplacementString);
 
 				// fix for PR #5533. Assumes that no eating takes place.
-				if (fCursorPosition > 0 && fCursorPosition <= buffer.length() && buffer
-						.charAt(fCursorPosition - 1) != trigger) {
+				if (fCursorPosition > 0 && fCursorPosition <= buffer.length()
+						&& buffer.charAt(fCursorPosition - 1) != trigger) {
 					buffer.insert(fCursorPosition, trigger);
 					++fCursorPosition;
 				}
@@ -367,8 +369,9 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 	}
 
 	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension1#apply(org.eclipse.jface.text.ITextViewer,
-	 *      char, int, int)
+	 * @see
+	 * org.eclipse.jface.text.contentassist.ICompletionProposalExtension1#apply(org.eclipse.jface.text.ITextViewer
+	 * , char, int, int)
 	 */
 	public void apply(ITextViewer viewer, char trigger, int stateMask, int offset) {
 
@@ -644,7 +647,9 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 		try {
 			int length = offset - fReplacementOffset;
 			String start = document.get(fReplacementOffset, length);
-			return word.substring(0, length).equalsIgnoreCase(start);
+			if (word != null) {
+				return word.substring(0, length).equalsIgnoreCase(start);
+			}
 		} catch (BadLocationException x) {
 		}
 
@@ -717,8 +722,9 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 	}
 
 	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension2#validate(org.eclipse.jface.text.IDocument,
-	 *      int, org.eclipse.jface.text.DocumentEvent)
+	 * @see
+	 * org.eclipse.jface.text.contentassist.ICompletionProposalExtension2#validate(org.eclipse.jface.text.
+	 * IDocument, int, org.eclipse.jface.text.DocumentEvent)
 	 */
 	public boolean validate(IDocument document, int offset, DocumentEvent event) {
 

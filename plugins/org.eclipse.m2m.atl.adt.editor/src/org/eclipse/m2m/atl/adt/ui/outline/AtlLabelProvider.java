@@ -16,7 +16,6 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -130,7 +129,7 @@ public class AtlLabelProvider extends LabelProvider {
 
 	private void initForText(EObject unit) {
 		if (!initialized) {
-			AtlEMFConstants.pkAtl = (EPackage)unit.eClass().getEPackage();
+			AtlEMFConstants.pkAtl = unit.eClass().getEPackage();
 			AtlEMFConstants.clModule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Module"); //$NON-NLS-1$
 			AtlEMFConstants.clLibrary = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Library"); //$NON-NLS-1$
 			AtlEMFConstants.clQuery = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Query"); //$NON-NLS-1$

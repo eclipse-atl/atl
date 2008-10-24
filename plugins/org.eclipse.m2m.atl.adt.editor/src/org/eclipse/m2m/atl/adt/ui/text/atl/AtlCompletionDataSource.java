@@ -46,7 +46,7 @@ import org.eclipse.swt.graphics.Image;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class AtlCompletionDataSource {
-	
+
 	/**
 	 * Gets the image at the given plug-in relative path.
 	 */
@@ -79,7 +79,7 @@ public class AtlCompletionDataSource {
 		List res = new ArrayList();
 		Set uris = EPackage.Registry.INSTANCE.keySet();
 		for (Iterator iterator = uris.iterator(); iterator.hasNext();) {
-			Object object = (Object)iterator.next();
+			Object object = iterator.next();
 			String replacementString = object.toString();
 			if (startsWithIgnoreCase(prefix, replacementString)) {
 				ICompletionProposal proposal = new AtlCompletionProposal(replacementString, offset
@@ -253,75 +253,73 @@ public class AtlCompletionDataSource {
 	 *            completion offset
 	 * @return the proposals
 	 */
-	private List getMetaFeaturesProposals(List existing, EClass modelElement, String prefix, int offset) {
+	private List getMetaFeaturesProposals(List existing, EClass type, String prefix, int offset) {
 		List res = new ArrayList();
-		if (modelElement instanceof EClass) {
-			EClass type = (EClass)modelElement;
-			Collection features = new TreeSet(new Comparator() {
-				public int compare(Object arg0, Object arg1) {
-					EStructuralFeature f0 = (EStructuralFeature)arg0;
-					EStructuralFeature f1 = (EStructuralFeature)arg1;
-					return f0.getName().compareTo(f1.getName());
-				}
-			});
-			features.addAll(((EClass)type).getEAllStructuralFeatures());
-			for (Iterator iterator = features.iterator(); iterator.hasNext();) {
-				EStructuralFeature feature = (EStructuralFeature)iterator.next();
-				String replacementString = feature.getName();
-				if (!existing.contains(replacementString)) {
-					if (startsWithIgnoreCase(prefix, replacementString) && !prefix.equals(replacementString)) {
-						Image image = null;
-						if (feature.isChangeable()) {
-							if (feature instanceof EAttribute) {
-								image = getImage("model_attribute.gif"); //$NON-NLS-1$
-							} else if (feature instanceof EReference) {
-								image = getImage("model_reference.gif"); //$NON-NLS-1$
-							}
-							StringBuffer additionalProposalInfo = new StringBuffer();
-							if (feature instanceof EAttribute) {
-								additionalProposalInfo.append("attribute "); //$NON-NLS-1$
-							} else if (feature instanceof EReference) {
-								additionalProposalInfo.append("reference "); //$NON-NLS-1$
-							}
-							additionalProposalInfo.append(feature.getName());
-							if ((feature.getLowerBound() == 1) && (feature.getUpperBound() == 1)) {
-								// display nothing
-							} else {
-								additionalProposalInfo.append('[');
-								if ((feature.getLowerBound() == 0) && (feature.getUpperBound() == -1)) {
-									additionalProposalInfo.append('*');
-								} else {
-									additionalProposalInfo.append(feature.getLowerBound());
-									additionalProposalInfo.append('-');
-									additionalProposalInfo.append(feature.getUpperBound());
-								}
-								additionalProposalInfo.append(']');
-							}
-							if (feature.isOrdered()) {
-								additionalProposalInfo.append(" ordered"); //$NON-NLS-1$
-							}
-							if ((feature instanceof EReference) && ((EReference)feature).isContainment()) {
-								additionalProposalInfo.append(" container"); //$NON-NLS-1$
-							}
-							additionalProposalInfo.append(" :\n\t"); //$NON-NLS-1$
-							additionalProposalInfo.append(feature.getEType().getName());
-							if (feature instanceof EReference) {
-								EReference opposite = ((EReference)feature).getEOpposite();
-								if (opposite != null) {
-									additionalProposalInfo.append(" oppositeOf "); //$NON-NLS-1$
-									additionalProposalInfo.append(opposite.getName());
-								}
-							}
-
-							ICompletionProposal proposal = new AtlCompletionProposal(replacementString,
-									offset - prefix.length(), replacementString.length(), image,
-									replacementString, 0, additionalProposalInfo.toString());
-							res.add(proposal);
+		Collection features = new TreeSet(new Comparator() {
+			public int compare(Object arg0, Object arg1) {
+				EStructuralFeature f0 = (EStructuralFeature)arg0;
+				EStructuralFeature f1 = (EStructuralFeature)arg1;
+				return f0.getName().compareTo(f1.getName());
+			}
+		});
+		features.addAll(type.getEAllStructuralFeatures());
+		for (Iterator iterator = features.iterator(); iterator.hasNext();) {
+			EStructuralFeature feature = (EStructuralFeature)iterator.next();
+			String replacementString = feature.getName();
+			if (!existing.contains(replacementString)) {
+				if (startsWithIgnoreCase(prefix, replacementString) && !prefix.equals(replacementString)) {
+					Image image = null;
+					if (feature.isChangeable()) {
+						if (feature instanceof EAttribute) {
+							image = getImage("model_attribute.gif"); //$NON-NLS-1$
+						} else if (feature instanceof EReference) {
+							image = getImage("model_reference.gif"); //$NON-NLS-1$
 						}
+						StringBuffer additionalProposalInfo = new StringBuffer();
+						if (feature instanceof EAttribute) {
+							additionalProposalInfo.append("attribute "); //$NON-NLS-1$
+						} else if (feature instanceof EReference) {
+							additionalProposalInfo.append("reference "); //$NON-NLS-1$
+						}
+						additionalProposalInfo.append(feature.getName());
+						if ((feature.getLowerBound() == 1) && (feature.getUpperBound() == 1)) {
+							// display nothing
+						} else {
+							additionalProposalInfo.append('[');
+							if ((feature.getLowerBound() == 0) && (feature.getUpperBound() == -1)) {
+								additionalProposalInfo.append('*');
+							} else {
+								additionalProposalInfo.append(feature.getLowerBound());
+								additionalProposalInfo.append('-');
+								additionalProposalInfo.append(feature.getUpperBound());
+							}
+							additionalProposalInfo.append(']');
+						}
+						if (feature.isOrdered()) {
+							additionalProposalInfo.append(" ordered"); //$NON-NLS-1$
+						}
+						if ((feature instanceof EReference) && ((EReference)feature).isContainment()) {
+							additionalProposalInfo.append(" container"); //$NON-NLS-1$
+						}
+						additionalProposalInfo.append(" :\n\t"); //$NON-NLS-1$
+						additionalProposalInfo.append(feature.getEType().getName());
+						if (feature instanceof EReference) {
+							EReference opposite = ((EReference)feature).getEOpposite();
+							if (opposite != null) {
+								additionalProposalInfo.append(" oppositeOf "); //$NON-NLS-1$
+								additionalProposalInfo.append(opposite.getName());
+							}
+						}
+
+						ICompletionProposal proposal = new AtlCompletionProposal(replacementString, offset
+								- prefix.length(), replacementString.length(), image, replacementString, 0,
+								additionalProposalInfo.toString());
+						res.add(proposal);
 					}
 				}
 			}
 		}
+
 		Collections.sort(res);
 		return res;
 	}
@@ -398,18 +396,16 @@ public class AtlCompletionDataSource {
 			ImageDescriptor descriptor = AtlUIPlugin.getImageDescriptor(path);
 			if (descriptor != null) {
 				result = descriptor.createImage();
-			} else {
+				path2image.put(path, result);
+			}
+		}
+		if (result != null) {
+			if (result.isDisposed()) {
 				result = null;
 			}
-			path2image.put(path, result);
-		}
-		if (result.isDisposed()) {
-			result = null;
 		}
 		return result;
 	}
-
-
 
 	/**
 	 * Returns the value of a feature on an EObject.

@@ -366,8 +366,8 @@ public class AtlHeuristicScanner implements Symbols {
 	 *            the first position in <code>fDocument</code> to not consider any more, with
 	 *            <code>bound</code> &lt; <code>position</code>, or <code>UNBOUND</code>
 	 * @return the highest position of a non-whitespace character in (<code>bound</code>,
-	 *         <code>position</code>] that resides in a Atl partition, or <code>NOT_FOUND</code> if none
-	 *         can be found
+	 *         <code>position</code>] that resides in a Atl partition, or <code>NOT_FOUND</code> if none can
+	 *         be found
 	 */
 	public int findNonWhitespaceBackward(int position, int bound) {
 		return scanBackward(position, bound, fNonWSDefaultPart);
@@ -385,8 +385,8 @@ public class AtlHeuristicScanner implements Symbols {
 	 *            the first position in <code>fDocument</code> to not consider any more, with
 	 *            <code>bound</code> &gt; <code>position</code>, or <code>UNBOUND</code>
 	 * @return the smallest position of a non-whitespace character in [<code>position</code>,
-	 *         <code>bound</code>) that resides in a Atl partition, or <code>NOT_FOUND</code> if none can
-	 *         be found
+	 *         <code>bound</code>) that resides in a Atl partition, or <code>NOT_FOUND</code> if none can be
+	 *         found
 	 */
 	public int findNonWhitespaceForward(int position, int bound) {
 		return scanForward(position, bound, fNonWSDefaultPart);
@@ -453,8 +453,8 @@ public class AtlHeuristicScanner implements Symbols {
 
 	/**
 	 * Computes the surrounding block around <code>offset</code>. The search is started at the beginning of
-	 * <code>offset</code>, i.e. an opening brace at <code>offset</code> will not be part of the
-	 * surrounding block, but a closing brace will.
+	 * <code>offset</code>, i.e. an opening brace at <code>offset</code> will not be part of the surrounding
+	 * block, but a closing brace will.
 	 * 
 	 * @param offset
 	 *            the offset for which the surrounding block is computed
@@ -551,7 +551,6 @@ public class AtlHeuristicScanner implements Symbols {
 	 * if (condition)
 	 * 	doStuff();
 	 * </pre>
-	 * 
 	 * <p>
 	 * Algorithm: if the last non-WS, non-Comment code on the line is an if (condition), while (condition),
 	 * for( expression), do, else, and there is no statement after that
@@ -610,10 +609,10 @@ public class AtlHeuristicScanner implements Symbols {
 	}
 
 	/**
-	 * Returns the next token in forward direction, starting at <code>start</code>, and not extending
-	 * further than <code>bound</code>. The return value is one of the constants defined in {@link Symbols}.
-	 * After a call, {@link #getPosition()} will return the position just after the scanned token (i.e. the
-	 * next position that will be scanned).
+	 * Returns the next token in forward direction, starting at <code>start</code>, and not extending further
+	 * than <code>bound</code>. The return value is one of the constants defined in {@link Symbols}. After a
+	 * call, {@link #getPosition()} will return the position just after the scanned token (i.e. the next
+	 * position that will be scanned).
 	 * 
 	 * @param start
 	 *            the first character position in the document to consider
@@ -670,17 +669,17 @@ public class AtlHeuristicScanner implements Symbols {
 
 			return getToken(identOrKeyword);
 
-		} else {
-			// operators, number literals etc
-			return TOKEN_OTHER;
 		}
+		// operators, number literals etc
+		return TOKEN_OTHER;
+
 	}
 
 	/**
-	 * Returns the next token in backward direction, starting at <code>start</code>, and not extending
-	 * further than <code>bound</code>. The return value is one of the constants defined in {@link Symbols}.
-	 * After a call, {@link #getPosition()} will return the position just before the scanned token starts
-	 * (i.e. the next position that will be scanned).
+	 * Returns the next token in backward direction, starting at <code>start</code>, and not extending further
+	 * than <code>bound</code>. The return value is one of the constants defined in {@link Symbols}. After a
+	 * call, {@link #getPosition()} will return the position just before the scanned token starts (i.e. the
+	 * next position that will be scanned).
 	 * 
 	 * @param start
 	 *            the first character position in the document to consider
@@ -748,9 +747,9 @@ public class AtlHeuristicScanner implements Symbols {
 
 	/**
 	 * Finds the highest position in <code>fDocument</code> such that the position is &lt;=
-	 * <code>position</code> and &gt; <code>bound</code> and
-	 * <code>fDocument.getChar(position) == ch</code> evaluates to <code>true</code> for at least one ch
-	 * in <code>chars</code> and the position is in the default partition.
+	 * <code>position</code> and &gt; <code>bound</code> and <code>fDocument.getChar(position) == ch</code>
+	 * evaluates to <code>true</code> for at least one ch in <code>chars</code> and the position is in the
+	 * default partition.
 	 * 
 	 * @param position
 	 *            the first character position in <code>fDocument</code> to be considered
@@ -760,8 +759,8 @@ public class AtlHeuristicScanner implements Symbols {
 	 * @param ch
 	 *            the <code>char</code> to search for
 	 * @return the highest position of one element in <code>chars</code> in (<code>bound</code>,
-	 *         <code>position</code>] that resides in a Atl partition, or <code>NOT_FOUND</code> if none
-	 *         can be found
+	 *         <code>position</code>] that resides in a Atl partition, or <code>NOT_FOUND</code> if none can
+	 *         be found
 	 */
 	public int scanBackward(int position, int bound, char ch) {
 		return scanBackward(position, bound, new CharacterMatch(ch));
@@ -769,9 +768,9 @@ public class AtlHeuristicScanner implements Symbols {
 
 	/**
 	 * Finds the highest position in <code>fDocument</code> such that the position is &lt;=
-	 * <code>position</code> and &gt; <code>bound</code> and
-	 * <code>fDocument.getChar(position) == ch</code> evaluates to <code>true</code> for at least one ch
-	 * in <code>chars</code> and the position is in the default partition.
+	 * <code>position</code> and &gt; <code>bound</code> and <code>fDocument.getChar(position) == ch</code>
+	 * evaluates to <code>true</code> for at least one ch in <code>chars</code> and the position is in the
+	 * default partition.
 	 * 
 	 * @param position
 	 *            the first character position in <code>fDocument</code> to be considered
@@ -781,17 +780,17 @@ public class AtlHeuristicScanner implements Symbols {
 	 * @param chars
 	 *            an array of <code>char</code> to search for
 	 * @return the highest position of one element in <code>chars</code> in (<code>bound</code>,
-	 *         <code>position</code>] that resides in a Atl partition, or <code>NOT_FOUND</code> if none
-	 *         can be found
+	 *         <code>position</code>] that resides in a Atl partition, or <code>NOT_FOUND</code> if none can
+	 *         be found
 	 */
 	public int scanBackward(int position, int bound, char[] chars) {
 		return scanBackward(position, bound, new CharacterMatch(chars));
 	}
 
 	/**
-	 * Finds the highest position <code>p</code> in <code>fDocument</code> such that <code>bound</code>
-	 * &lt; <code>p</code> &lt;= <code>start</code> and
-	 * <code>condition.stop(fDocument.getChar(p), p)</code> evaluates to <code>true</code>.
+	 * Finds the highest position <code>p</code> in <code>fDocument</code> such that <code>bound</code> &lt;
+	 * <code>p</code> &lt;= <code>start</code> and <code>condition.stop(fDocument.getChar(p), p)</code>
+	 * evaluates to <code>true</code>.
 	 * 
 	 * @param start
 	 *            the first character position in <code>fDocument</code> to be considered
@@ -827,9 +826,8 @@ public class AtlHeuristicScanner implements Symbols {
 
 	/**
 	 * Finds the lowest position in <code>fDocument</code> such that the position is &gt;=
-	 * <code>position</code> and &lt; <code>bound</code> and
-	 * <code>fDocument.getChar(position) == ch</code> evaluates to <code>true</code> and the position is
-	 * in the default partition.
+	 * <code>position</code> and &lt; <code>bound</code> and <code>fDocument.getChar(position) == ch</code>
+	 * evaluates to <code>true</code> and the position is in the default partition.
 	 * 
 	 * @param position
 	 *            the first character position in <code>fDocument</code> to be considered
@@ -838,8 +836,8 @@ public class AtlHeuristicScanner implements Symbols {
 	 *            <code>bound</code> &gt; <code>position</code>, or <code>UNBOUND</code>
 	 * @param ch
 	 *            the <code>char</code> to search for
-	 * @return the lowest position of <code>ch</code> in (<code>bound</code>, <code>position</code>]
-	 *         that resides in a Atl partition, or <code>NOT_FOUND</code> if none can be found
+	 * @return the lowest position of <code>ch</code> in (<code>bound</code>, <code>position</code>] that
+	 *         resides in a Atl partition, or <code>NOT_FOUND</code> if none can be found
 	 */
 	public int scanForward(int position, int bound, char ch) {
 		return scanForward(position, bound, new CharacterMatch(ch));
@@ -847,9 +845,9 @@ public class AtlHeuristicScanner implements Symbols {
 
 	/**
 	 * Finds the lowest position in <code>fDocument</code> such that the position is &gt;=
-	 * <code>position</code> and &lt; <code>bound</code> and
-	 * <code>fDocument.getChar(position) == ch</code> evaluates to <code>true</code> for at least one ch
-	 * in <code>chars</code> and the position is in the default partition.
+	 * <code>position</code> and &lt; <code>bound</code> and <code>fDocument.getChar(position) == ch</code>
+	 * evaluates to <code>true</code> for at least one ch in <code>chars</code> and the position is in the
+	 * default partition.
 	 * 
 	 * @param position
 	 *            the first character position in <code>fDocument</code> to be considered
@@ -858,18 +856,17 @@ public class AtlHeuristicScanner implements Symbols {
 	 *            <code>bound</code> &gt; <code>position</code>, or <code>UNBOUND</code>
 	 * @param chars
 	 *            an array of <code>char</code> to search for
-	 * @return the lowest position of a non-whitespace character in [<code>position</code>,
-	 *         <code>bound</code>) that resides in a Atl partition, or <code>NOT_FOUND</code> if none can
-	 *         be found
+	 * @return the lowest position of a non-whitespace character in [<code>position</code>, <code>bound</code>
+	 *         ) that resides in a Atl partition, or <code>NOT_FOUND</code> if none can be found
 	 */
 	public int scanForward(int position, int bound, char[] chars) {
 		return scanForward(position, bound, new CharacterMatch(chars));
 	}
 
 	/**
-	 * Finds the lowest position <code>p</code> in <code>fDocument</code> such that <code>start</code>
-	 * &lt;= p &lt; <code>bound</code> and <code>condition.stop(fDocument.getChar(p), p)</code> evaluates
-	 * to <code>true</code>.
+	 * Finds the lowest position <code>p</code> in <code>fDocument</code> such that <code>start</code> &lt;= p
+	 * &lt; <code>bound</code> and <code>condition.stop(fDocument.getChar(p), p)</code> evaluates to
+	 * <code>true</code>.
 	 * 
 	 * @param start
 	 *            the first character position in <code>fDocument</code> to be considered

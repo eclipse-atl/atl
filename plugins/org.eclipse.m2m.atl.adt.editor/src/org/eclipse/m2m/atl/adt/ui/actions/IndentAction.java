@@ -53,8 +53,8 @@ public class IndentAction extends TextEditorAction {
 	private int fCaretOffset;
 
 	/**
-	 * Whether this is the action invoked by TAB. When <code>true</code>, indentation behaves differently
-	 * to accomodate normal TAB operation.
+	 * Whether this is the action invoked by TAB. When <code>true</code>, indentation behaves differently to
+	 * accomodate normal TAB operation.
 	 */
 	private final boolean fIsTabAction;
 
@@ -289,9 +289,8 @@ public class IndentAction extends TextEditorAction {
 			}
 
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -337,10 +336,8 @@ public class IndentAction extends TextEditorAction {
 			// or the selection has to extend over multiple lines
 			if (length == 0) {
 				return document.get(lineOffset, offset - lineOffset).trim().length() == 0;
-			} else {
-				// return lineOffset + firstLine.getLength() < offset + length;
-				return false; // only enable for empty selections for now
 			}
+			return false; // only enable for empty selections for now
 		} catch (BadLocationException e) {
 		}
 
@@ -349,7 +346,7 @@ public class IndentAction extends TextEditorAction {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
 	public void run() {
@@ -468,7 +465,7 @@ public class IndentAction extends TextEditorAction {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.texteditor.TextEditorAction#update()
 	 */
 	public void update() {
@@ -495,17 +492,15 @@ public class IndentAction extends TextEditorAction {
 		if (indent == null) {
 			return 0;
 		}
-		else {
-			int size = 0;
-			int l = indent.length();
-			int tabSize = AtlUIPlugin.getDefault().getPreferenceStore().getInt(
-					AtlPreferenceConstants.APPEARANCE_TAB_WIDTH);
+		int size = 0;
+		int l = indent.length();
+		int tabSize = AtlUIPlugin.getDefault().getPreferenceStore().getInt(
+				AtlPreferenceConstants.APPEARANCE_TAB_WIDTH);
 
-			for (int i = 0; i < l; i++) {
-				size += indent.charAt(i) == '\t' ? tabSize : 1;
-			}
-			return size;
+		for (int i = 0; i < l; i++) {
+			size += indent.charAt(i) == '\t' ? tabSize : 1;
 		}
+		return size;
 	}
 
 }
