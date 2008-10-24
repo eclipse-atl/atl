@@ -220,7 +220,12 @@ public class ASMEMFModelElement extends ASMModelElement {
 		} else {
 			EStructuralFeature sf = object.eClass().getEStructuralFeature(name);
 			if (sf == null) {
-				frame.printStackTrace("Feature " + name + " does not exist on " + getType());
+				String msg = "Feature " + name + " does not exist on " + getType();
+				if (frame == null) {
+					throw new RuntimeException(msg);
+				} else {
+					frame.printStackTrace(msg);
+				}
 			}
 			ret = emf2ASM(frame, object.eGet(sf));
 		}
@@ -280,8 +285,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 				Object v = asm2EMF(frame, ((ASMTuple)value).get(frame, "value"), propName, feature);
 				ret = FeatureMapUtil.createEntry((EStructuralFeature)f, v);
 			} else {
-				frame.printStackTrace("Cannot convert " + value + " : " + value.getClass()
-						+ " to EMF.");
+				frame.printStackTrace("Cannot convert " + value + " : " + value.getClass() + " to EMF.");
 			}
 		} else if (value instanceof ASMCollection) {
 			ret = new ArrayList();
@@ -426,52 +430,69 @@ public class ASMEMFModelElement extends ASMModelElement {
 			}
 		}
 		if (feature == null) {
-			String msg = "feature " + name + " does not exist on " + getType();
+			String msg = "Feature " + name + " does not exist on " + getType();
 			if (frame == null) {
 				throw new RuntimeException(msg);
 			} else {
 				frame.printStackTrace(msg);
 			}
-		}
-		if (!feature.isChangeable()) {
-			frame.printStackTrace("Feature " + name + " is not changeable");
-		}
-		if (feature.isMany()) {
-			EList l = (EList)object.eGet(feature);
-			if (value instanceof ASMCollection) {
-				for (Iterator i = ((ASMCollection)value).iterator(); i.hasNext();) {
-					ASMOclAny sv = (ASMOclAny)i.next();
-					if (isNotAssignable(feature, sv)) {
-						continue;
-					}
-					Object val = asm2EMF(frame, sv, name, feature);
-					if (val != null) {
-						try {
-							l.add(val);
-							checkContainment(feature, val);
-						} catch (Exception e) {
-							frame.printStackTrace("Cannot set feature " + getType() + "." + name
-									+ " to value " + val);
+		} else {
+			if (!feature.isChangeable()) {
+				String msg = "Feature " + name + " is not changeable";
+				if (frame == null) {
+					throw new RuntimeException(msg);
+				} else {
+					frame.printStackTrace(msg);
+				}
+			}
+			if (feature.isMany()) {
+				EList l = (EList)object.eGet(feature);
+				if (value instanceof ASMCollection) {
+					for (Iterator i = ((ASMCollection)value).iterator(); i.hasNext();) {
+						ASMOclAny sv = (ASMOclAny)i.next();
+						if (isNotAssignable(feature, sv)) {
+							continue;
+						}
+						Object val = asm2EMF(frame, sv, name, feature);
+						if (val != null) {
+							try {
+								l.add(val);
+								checkContainment(feature, val);
+							} catch (Exception e) {
+								String msg = "Cannot set feature " + getType() + "." + name
+								+ " to value " + val;
+								if (frame == null) {
+									throw new RuntimeException(msg,e);
+								} else {
+									frame.printStackTrace(msg,e);
+								}
+							}
 						}
 					}
+				} else {
+					Object val = asm2EMF(frame, value, name, feature);
+					l.add(val);
+					checkContainment(feature, val);
 				}
 			} else {
-				Object val = asm2EMF(frame, value, name, feature);
-				l.add(val);
-				checkContainment(feature, val);
-			}
-		} else {
-			if (isNotAssignable(feature, value)) {
-				// should not happen but the ATL compiler does not add checks for this in resolveTemp yet
-			} else {
-				Object val = asm2EMF(frame, value, name, feature);
-				if (val != null) {
-					try {
-						object.eSet(feature, val);
-						checkContainment(feature, val);
-					} catch (Exception e) {
-						frame.printStackTrace("Cannot set feature " + getType() + "." + name + " to value "
-								+ val, e);
+				if (isNotAssignable(feature, value)) {
+					// should not happen but the ATL compiler does not add checks for this in resolveTemp yet
+				} else {
+					Object val = asm2EMF(frame, value, name, feature);
+					if (val != null) {
+						try {
+							object.eSet(feature, val);
+							checkContainment(feature, val);
+						} catch (Exception e) {
+							String msg = "Cannot set feature " + getType() + "." + name
+							+ " to value " + val;
+							if (frame == null) {
+								throw new RuntimeException(msg,e);
+							} else {
+								frame.printStackTrace(msg,e);
+							}
+
+						}
 					}
 				}
 			}
@@ -574,7 +595,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 					ASMString.class,});
 
 		} catch (Exception e) {
-			ATLLogger.log(Level.SEVERE,e.getLocalizedMessage(), e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -598,7 +619,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		ASMModel model = (ASMModel)frame.getModels().get(modelName.getSymbol());
 		if (model instanceof ASMEMFModel) {
 			// TODO: test new version, was: getIDToEObjectMap().get(id.getSymbol());
-			EObject eo = (EObject)((XMIResource)((ASMEMFModel)model).getExtent()).getEObject(id.getSymbol());
+			EObject eo = ((XMIResource)((ASMEMFModel)model).getExtent()).getEObject(id.getSymbol());
 			if (eo != null) {
 				ret = ((ASMEMFModel)model).getASMModelElement(eo);
 			}

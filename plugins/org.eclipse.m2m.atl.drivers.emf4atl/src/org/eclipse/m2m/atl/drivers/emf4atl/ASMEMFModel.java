@@ -262,7 +262,7 @@ public class ASMEMFModel extends ASMModel {
 
 		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
 		EObject eo = t.getEPackage().getEFactoryInstance().create(t);
-		ret = (ASMEMFModelElement)getASMModelElement(eo);
+		ret = getASMModelElement(eo);
 		getExtent().getContents().add(eo);
 
 		return ret;
