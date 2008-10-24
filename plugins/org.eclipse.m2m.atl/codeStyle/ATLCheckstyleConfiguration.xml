@@ -151,7 +151,6 @@
             <property name="severity" value="error"/>
             <property name="tokens" value="LITERAL_CATCH,LITERAL_FINALLY,LITERAL_ELSE"/>
         </module>
-        <module name="AvoidInlineConditionals"/>
         <module name="NoWhitespaceAfter">
             <property name="severity" value="error"/>
             <property name="tokens" value="BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS,TYPECAST"/>
@@ -331,6 +330,9 @@
         </module>
         <module name="NeedBraces">
             <property name="severity" value="error"/>
+        </module>
+        <module name="AvoidInlineConditionals">
+            <property name="severity" value="ignore"/>
         </module>
     </module>
 </module>
