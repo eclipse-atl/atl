@@ -304,12 +304,13 @@ public class ASMString extends ASMOclAny {
 		ASMOclAny ret = null;
 
 		ASMModel tgt = frame.getExecEnv().getModel(targetModelName.getSymbol());
-		if (tgt == null)
+		if (tgt == null) {
 			frame.printStackTrace("Could not find model " + targetModelName);
-		ModelLoader ml = tgt.getModelLoader();
-		ret = ml.inject(tgt, kind.getSymbol(), params.getSymbol(), null, new ByteArrayInputStream(self.s
-				.getBytes()));
-
+		} else {
+			ModelLoader ml = tgt.getModelLoader();
+			ret = ml.inject(tgt, kind.getSymbol(), params.getSymbol(), null, new ByteArrayInputStream(self.s
+					.getBytes()));
+		}
 		if (ret == null)
 			ret = new ASMOclUndefined();
 
@@ -339,7 +340,7 @@ public class ASMString extends ASMOclAny {
 		if (debug) {
 			ATLLogger.info("evalBrackets(\"" + self.s + "\")");
 		}
-		
+
 		try {
 			boolean done = false;
 			do {
@@ -362,7 +363,7 @@ public class ASMString extends ASMOclAny {
 						if (debug) {
 							ATLLogger.info("\t\t=>" + result);
 						}
-						
+
 						if (result instanceof ASMCollection) {
 							result = (ASMOclAny)((ASMCollection)result).iterator().next();
 						}

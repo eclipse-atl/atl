@@ -69,13 +69,10 @@ public class ClassNativeOperation extends NativeOperation {
 			ret = (ASMOclAny)getMethod().invoke(null, args.toArray());
 		} catch (IllegalAccessException iae) {
 			frame.printStackTrace(iae);
-			ret = null;
 		} catch (IllegalArgumentException iae2) {
 			frame.printStackTrace(iae2);
-			ret = null;
 		} catch (InvocationTargetException ite) {
 			frame.printStackTrace(ite);
-			ret = null;
 		}
 		((NativeStackFrame)frame).setRet(ret);
 		frame.leaveFrame();

@@ -109,9 +109,10 @@ public class ASMOperation extends Operation {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.get(varId);
 		if (lve == null) {
 			ATLLogger.severe("No slot reserved for variable: " + varId + " used at " + lastLNE + ".");
+		} else {
+			instruction.setOperand("" + lve.slot);
+			instructions.add(instruction);
 		}
-		instruction.setOperand("" + lve.slot);
-		instructions.add(instruction);
 	}
 
 	private class Label {
@@ -169,7 +170,7 @@ public class ASMOperation extends Operation {
 
 	public ASMOclAny exec(StackFrame frame) {
 		ASMOclAny ret = null;
-		realExec((ASMStackFrame)frame);		
+		realExec((ASMStackFrame)frame);
 		ret = frame.leaveFrame();
 		return ret;
 	}
@@ -203,9 +204,9 @@ public class ASMOperation extends Operation {
 					Class c = ASMNativeObject.getNativeImpl(me);
 					if (c != null) {
 						try {
-							frame.push((ASMOclAny)c.newInstance());							
+							frame.push((ASMOclAny)c.newInstance());
 						} catch (Exception e) {
-							frame.printStackTrace("Cannot instantiate "+ me);
+							frame.printStackTrace("Cannot instantiate " + me);
 						}
 					} else {
 						frame.printStackTrace("Element " + me + " not found in native");
@@ -290,12 +291,14 @@ public class ASMOperation extends Operation {
 					ASMModel model = frame.getModel(mname);
 					if (model == null) {
 						frame.printStackTrace("Cannot find model " + mname);
+					} else {
+						ASMModelElement ame = model.findModelElement(name);
+						if (ame == null) {
+							frame.printStackTrace("Cannot find metamodel element " + name + " in model "
+									+ mname);
+						}
+						frame.push(ame);
 					}
-					ASMModelElement ame = model.findModelElement(name);
-					if (ame == null) {
-						frame.printStackTrace("Cannot find metamodel element " + name + " in model " + mname);
-					}
-					frame.push(ame);
 				}
 			} else if (mn == "get") {
 				frame.push((frame.pop()).get(frame, ops));
@@ -331,7 +334,7 @@ public class ASMOperation extends Operation {
 					frame.printStackTrace("Cannot iterate on non-collection");
 				}
 				ASMCollection c = (ASMCollection)v; // TODO: iterate <index> (jusqu'ou iterer...) plutot que
-													// enditerate
+				// enditerate
 				int oldLocation = frame.getLocation();
 				for (Iterator j = c.iterator(); j.hasNext();) {
 					frame.push((ASMOclAny)j.next());
@@ -468,12 +471,13 @@ public class ASMOperation extends Operation {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.remove(id);
 		if (lve == null) {
 			ATLLogger.severe("Variable id not defined: " + id);
-			// System.out.println("ERROR: variable id not defined: " + id);
+			return -1;
+		} else {
+			lve.end = instructions.size() - 1;
+			localVariableTable.add(lve);
+			freeSlot(lve.slot);
+			return lve.slot;
 		}
-		lve.end = instructions.size() - 1;
-		localVariableTable.add(lve);
-		freeSlot(lve.slot);
-		return lve.slot;
 	}
 
 	public void addLocalVariableEntry(int slot, String name, int begin, int end) {

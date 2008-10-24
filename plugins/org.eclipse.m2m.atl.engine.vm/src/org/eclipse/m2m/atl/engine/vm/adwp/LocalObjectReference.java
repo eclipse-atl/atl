@@ -118,29 +118,21 @@ public class LocalObjectReference extends ObjectReference {
 			ret = new ASMReal(((RealValue)value).getValue());
 		} else if (value instanceof BooleanValue) {
 			ret = new ASMBoolean(((BooleanValue)value).getValue());
-		} else if (value instanceof NullValue) {
-			ret = null;
 		}
-
 		return ret;
 	}
 
 	public void set(String propName, Value value) {
 		ASMOclAny realValue = value2asm(value);
-
 		object.set(null, propName, realValue);
 	}
 
 	public Value call(String opName, List args) {
-
 		final boolean debug = false;
-
 		Value ret = null;
-
 		Operation op = debugger.getExecEnv().getOperation(object.getType(), opName);
 		if (op == null) {
-			ATLLogger.severe("Operation not found: " + opName + " on " + object + " : "
-					+ object.getType());
+			ATLLogger.severe("Operation not found: " + opName + " on " + object + " : " + object.getType());
 		} else {
 			List realArgs = new ArrayList();
 			realArgs.add(value2asm(this));
@@ -148,14 +140,14 @@ public class LocalObjectReference extends ObjectReference {
 			if (debug) {
 				ATLLogger.info(object + " : " + object.getType() + "." + opName + "(");
 			}
-			
+
 			for (Iterator i = args.iterator(); i.hasNext();) {
 				Value v = (Value)i.next();
 
 				if (debug) {
 					ATLLogger.info(v + ((i.hasNext()) ? ", " : ""));
 				}
-				
+
 				realArgs.add(value2asm(v));
 			}
 			ASMOclAny o = op.exec(new ADWPStackFrame(op, args).enterFrame(op, realArgs));
@@ -164,7 +156,7 @@ public class LocalObjectReference extends ObjectReference {
 			if (debug) {
 				ATLLogger.info(") = " + o);
 			}
-			
+
 			if (debug) {
 				ATLLogger.info(" => " + ret);
 			}

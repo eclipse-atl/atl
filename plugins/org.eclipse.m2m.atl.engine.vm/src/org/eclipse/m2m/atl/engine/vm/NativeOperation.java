@@ -231,11 +231,7 @@ public abstract class NativeOperation extends Operation {
 				ret = ASMBag.myType;
 			} else if (pt.equals(Map.class)) {
 				ret = ASMMap.myType;
-			} else { // TODO: collections
-				ret = null; // untranslatable type
 			}
-		} else {
-			ret = null; // not a valid type
 		}
 
 		return ret;

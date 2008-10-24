@@ -133,8 +133,10 @@ public class ADWPDebugger extends ADWP {
 						break;
 				}
 				synchronized (msgs) {
-					msgs.add(msg);
-					msgs.notifyAll();
+					if (msgs != null) {
+						msgs.add(msg);
+						msgs.notifyAll();
+					}
 				}
 			}
 		} catch (IOException ioe) {
