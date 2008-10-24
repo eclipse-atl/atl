@@ -56,7 +56,8 @@ public class DSLResourceProvider {
 			instance.initResources();
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			if (registry == null) {
-				throw new RuntimeException(Messages.getString("DSLResourceProvider.EXTENSIONREGISTRYNOTFOUND")); //$NON-NLS-1$
+				ATLLogger.log(Level.SEVERE,Messages.getString("DSLResourceProvider.EXTENSIONREGISTRYNOTFOUND"),null); //$NON-NLS-1$
+				return null;
 			}
 
 			IExtensionPoint point = registry
@@ -124,7 +125,7 @@ public class DSLResourceProvider {
 				}
 			}
 		} catch (IOException e) {
-			throw new RuntimeException(Messages.getString("DSLResourceProvider.LOADINGERROR"), e); //$NON-NLS-1$
+			ATLLogger.log(Level.SEVERE,Messages.getString("DSLResourceProvider.LOADINGERROR"), e); //$NON-NLS-1$
 		}
 	}
 
@@ -134,7 +135,8 @@ public class DSLResourceProvider {
 		if (url != null) {
 			return url;
 		} else {
-			throw new RuntimeException(Messages.getString("DSLResourceProvider.COULDNOTLOAD",new Object[]{path})); //$NON-NLS-1$
+			ATLLogger.log(Level.SEVERE,Messages.getString("DSLResourceProvider.COULDNOTLOAD",new Object[]{path}),null); //$NON-NLS-1$
+			return null;
 		}
 	}
 
