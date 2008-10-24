@@ -90,8 +90,8 @@ public class AtlUML2ModelHandler extends AtlEMFModelHandler {
 		options.put(XMIResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
 		options.put(XMIResource.OPTION_SAVE_TYPE_INFORMATION, Boolean.TRUE);
 		useIDs = true;
-		if ((useIDs || removeIDs) && (r instanceof XMIResource)) {
-			XMIResource xr = (XMIResource)r;
+		if (useIDs || removeIDs) {
+			XMIResource xr = r;
 			int id = 1;
 			Set alreadySet = new HashSet();
 			for (Iterator i = r.getAllContents(); i.hasNext();) {

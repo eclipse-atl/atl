@@ -132,7 +132,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 
 		EClass t = (EClass)((ASMUMLModelElement)type).getObject();
 		EObject eo = t.getEPackage().getEFactoryInstance().create(t);
-		ret = (ASMUMLModelElement)getASMModelElement(eo);
+		ret = getASMModelElement(eo);
 		getExtent().getContents().add(eo);
 
 		return ret;
