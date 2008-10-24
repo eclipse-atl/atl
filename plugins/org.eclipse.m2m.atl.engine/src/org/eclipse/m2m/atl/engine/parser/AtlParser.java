@@ -66,7 +66,8 @@ public final class AtlParser {
 	/**
 	 * Parses the given input stream.
 	 * 
-	 * @param in an input stream
+	 * @param in
+	 *            an input stream
 	 * @return the resulting EObject
 	 */
 	public EObject parse(InputStream in) {
@@ -76,7 +77,8 @@ public final class AtlParser {
 	/**
 	 * Parses the given input stream.
 	 * 
-	 * @param in an input stream
+	 * @param in
+	 *            an input stream
 	 * @return the resulting ASMModel
 	 */
 	public ASMModel parseToModel(InputStream in) {
@@ -86,7 +88,8 @@ public final class AtlParser {
 	/**
 	 * Parses the given input stream.
 	 * 
-	 * @param in an input stream
+	 * @param in
+	 *            an input stream
 	 * @param hideErrors
 	 *            disable standard output in order to hide errors
 	 * @return the parser resulting ASMModel[model,problemModel]
@@ -104,8 +107,7 @@ public final class AtlParser {
 			Map params = new HashMap();
 			params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
 			params.put("problems", ret[1]); //$NON-NLS-1$
-			
-			
+
 			if (hideErrors) {
 				// desactivate standard output
 				OutputStream stream = new ByteArrayOutputStream();
@@ -115,7 +117,7 @@ public final class AtlParser {
 
 				// launch parsing
 				ebnfi.inject(ret[0], in, params);
-				
+
 				// reactivate standard output
 				System.setOut(origOut);
 				stream.close();
@@ -144,7 +146,7 @@ public final class AtlParser {
 	public EObject[] parseWithProblems(InputStream in) {
 		return convertToEmf(parseToModelWithProblems(in, true), "Unit"); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * ATL injector launcher.
 	 * 
@@ -157,32 +159,31 @@ public final class AtlParser {
 	 * @return outputs models
 	 */
 	public EObject[] parseExpression(String expression, String expressionType, boolean hideErrors) {
+		if (expressionType == null) {
+			return null;
+		}
 		ASMModel[] ret = new ASMModel[2];
 		ASMModel atlmm = amh.getAtl();
-	
+
 		try {
 			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp", //$NON-NLS-1$ //$NON-NLS-2$
 					(ASMEMFModel)atlmm, null);
 			ret[1] = amh.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
 			TCSInjector ebnfi = new TCSInjector();
 			Map params = new HashMap();
-			if (expressionType == null) {
-				params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
-			} else {
-				params.put("name", "ATL-" + expressionType); //$NON-NLS-1$ //$NON-NLS-2$
-			}
+			params.put("name", "ATL-" + expressionType); //$NON-NLS-1$ //$NON-NLS-2$
 			params.put("problems", ret[1]); //$NON-NLS-1$
-	
+
 			if (hideErrors) {
 				// desactivate standard output
 				OutputStream stream = new ByteArrayOutputStream();
 				PrintStream out = new PrintStream(stream);
 				PrintStream origOut = System.out;
 				System.setOut(out);
-	
+
 				// launch parsing
 				ebnfi.inject(ret[0], new ByteArrayInputStream(expression.getBytes()), params);
-	
+
 				// reactivate standard output
 				System.setOut(origOut);
 				stream.close();
@@ -191,7 +192,7 @@ public final class AtlParser {
 				// launch parsing
 				ebnfi.inject(ret[0], new ByteArrayInputStream(expression.getBytes()), params);
 			}
-	
+
 		} catch (Exception e) {
 			// nothing : silent incorrect expressions parsing
 		}

@@ -233,7 +233,7 @@ public final class AtlSourceManager {
 						ArrayList list = new ArrayList();
 						list.add(regValue);
 						metamodelsPackages.put(name, list);
-						metamodelLocations.put(name, "uri:" + uri);
+						metamodelLocations.put(name, "uri:" + uri); //$NON-NLS-1$
 					}
 				}
 			}
@@ -247,12 +247,12 @@ public final class AtlSourceManager {
 				String path = line.split("=")[1].trim(); //$NON-NLS-1$
 				if (path != null && path.length() > 0) {
 					path = path.trim();
-					Resource resource = (Resource)load(URI.createPlatformResourceURI(path, true),
+					Resource resource = load(URI.createPlatformResourceURI(path, true),
 							RESOURCE_SET);
 					if (resource != null) {
 						ArrayList list = new ArrayList();
 						for (Iterator it = resource.getContents().iterator(); it.hasNext();) {
-							Object object = (Object)it.next();
+							Object object = it.next();
 							if (object instanceof EPackage) {
 								list.add(object);
 							}
@@ -314,7 +314,7 @@ public final class AtlSourceManager {
 		if (librariesList != null) {
 			for (Iterator iterator = librariesList.iterator(); iterator.hasNext();) {
 				EObject lib = (EObject)iterator.next();
-				librariesImports.add((String)eGet(lib, "name")); //$NON-NLS-1$
+				librariesImports.add(eGet(lib, "name")); //$NON-NLS-1$
 			}
 		}
 	
