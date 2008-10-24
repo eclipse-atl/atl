@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -44,6 +45,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.eclipse.gmt.tcs.injector.TCSInjector;
 import org.eclipse.m2m.atl.engine.injectors.xml.XMLInjector;
+import org.eclipse.m2m.atl.engine.vm.ATLVMPlugin;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
@@ -59,9 +61,13 @@ import org.osgi.framework.Bundle;
  */
 public class EMFModelLoader extends ModelLoader {
 	
+	protected static Logger logger = Logger.getLogger(ATLVMPlugin.LOGGER);
+
 	protected static Bundle bundle = Platform.getBundle("org.eclipse.m2m.atl.drivers.emf4atl"); //$NON-NLS-1$
 	
 	protected static URI mofURI = EcorePackage.eINSTANCE.eResource().getURI();
+	
+	protected static String atlURI = "uri:http://www.eclipse.org/gmt/2005/ATL";
 
 	protected ResourceSet resourceSet;
 
@@ -134,7 +140,11 @@ public class EMFModelLoader extends ModelLoader {
 
 	public ASMModel getATL() {
 		if (atlmm == null) {
-			atlmm = getBuiltInMetaModel("ATL"); //$NON-NLS-1$
+			try {
+				atlmm = loadModel("ATL", getMOF(), atlURI);
+			} catch (IOException e) {
+				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			}
 		}
 		return atlmm;
 	}

@@ -8,11 +8,11 @@
             uri="http://www.eclipse.org/gmt/2005/ATL">
       </resource>
       <resource
-            location="resources/ATL.ecore"
+            location="resources/OCL.ecore"
             uri="http://www.eclipse.org/gmt/2005/OCL">
       </resource>
       <resource
-            location="resources/ATL.ecore"
+            location="resources/PrimitiveTypes.ecore"
             uri="http://www.eclipse.org/gmt/2005/PrimitiveTypes">
       </resource>
       <resource
