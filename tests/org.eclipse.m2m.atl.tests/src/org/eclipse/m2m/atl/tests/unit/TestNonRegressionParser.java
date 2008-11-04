@@ -39,7 +39,7 @@ public class TestNonRegressionParser extends TestNonRegression {
 	 */
 	protected void singleTest(File directory) {	
 		System.out.print(AtlTestsMessages.getString("TestNonRegressionParser.SINGLETEST",new Object[]{directory.getName()})); //$NON-NLS-1$ 
-		final File expectedDir = new File(directory.getPath().replace(File.separator + "inputs", //$NON-NLS-1$
+		final File expectedDir = new File(directory.getPath().replaceFirst(File.separator + "inputs", //$NON-NLS-1$
 				File.separator + "expected")); //$NON-NLS-1$
 		final String transfoPath = directory+ File.separator + directory.getName() + ".atl";	 //$NON-NLS-1$
 		final String outputPath = directory+ File.separator + directory.getName() + ".atl.xmi";	 //$NON-NLS-1$
