@@ -180,7 +180,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 									return fDatasource.getMetaFeaturesProposals(existingBindings,oclModelElement,prefix, offset);
 								}
 							}
-						} else if (fHelper.getCurrentLine(offset).contains("<-") && 
+						} else if (fHelper.getCurrentLine(offset).indexOf("<-") > 0 && 
 								(oclIsKindOf(locatedElement, "Binding") ||
 								 oclIsKindOf(locatedElement, "VariableExp") || 
 								 oclIsKindOf(locatedElement, "NavigationOrAttributeCallExp"))) { //$NON-NLS-1$
@@ -271,7 +271,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 		prefix = prefix.replaceFirst("<-","");
 		String varName = "";
 		String lastPrefix = "";
-		if (prefix.contains(".")) {
+		if (prefix.indexOf(".") > 0) {
 			String[] splittedPrefix = prefix.split("\\.");
 			if (splittedPrefix.length>0) {
 				if (prefix.endsWith(".")) {
