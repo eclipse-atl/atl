@@ -30,7 +30,8 @@ import org.eclipse.m2m.atl.tests.util.ModelUtils;
 /**
  * Test if the results models are still the same as expected.
  * 
- * @author William Piers <a href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
+ * @author William Piers <a
+ *         href="mailto:william.piers@obeo.fr">william.piers@obeo.fr</a>
  */
 public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
@@ -41,62 +42,74 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	protected LaunchParser launchParser = new LaunchParser();
 
 	private FileWriter results;
-	
+
 	protected void setUp() throws Exception {
 		super.setUp();
-		results = new FileWriter("results/"+getVMName()+"_results.xml");
+		results = new FileWriter("results/" + getVMName() + "_results.xml");
 		results.write("<?xml version=\"1.0\"?>\n");
 		results.write("<vm>\n");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#singleTest(java.io.File)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.m2m.atl.tests.unit.TestNonRegression#singleTest(java.io.File)
 	 */
 	protected void singleTest(File directory) {
-		System.out.print(AtlTestsMessages.getString("TestNonRegressionTransfo.SINGLETEST",new Object[]{directory.getName()})); //$NON-NLS-1$
-		final String buildURI = directory+ File.separator + directory.getName() + ".launch";	 //$NON-NLS-1$
+		System.out
+				.print(AtlTestsMessages
+						.getString(
+								"TestNonRegressionTransfo.SINGLETEST", new Object[] { directory.getName() })); //$NON-NLS-1$
+		final String buildURI = directory + File.separator
+				+ directory.getName() + ".launch"; //$NON-NLS-1$
 
-		if (!new File(buildURI).exists()) fail(AtlTestsMessages.getString("TestNonRegressionTransfo.3")); //$NON-NLS-1$
-		if (launchParser == null) fail(AtlTestsMessages.getString("TestNonRegressionTransfo.4")); //$NON-NLS-1$
+		if (!new File(buildURI).exists())
+			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.3")); //$NON-NLS-1$
+		if (launchParser == null)
+			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.4")); //$NON-NLS-1$
 
 		try {
 			launchParser.parseConfiguration(buildURI);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.5")); //$NON-NLS-1$
-		} 
+		}
 
 		if (RECOMPILE_BEFORE_LAUNCH) {
 			/*
-			 * COMPILER LAUNCH 
-			 * 
-			 */			
+			 * COMPILER LAUNCH
+			 */
 			URL atlUrl = launchParser.atlUrl;
 			String atlFilePath = atlUrl.getFile();
 			String outName = "";
 			InputStream is = null;
-			
+
 			try {
 				if (APPLY_COMPILATION) {
-					outName = atlFilePath.substring(0, atlFilePath.lastIndexOf('.')) + ".asm";//$NON-NLS-1$
+					outName = atlFilePath.substring(0, atlFilePath
+							.lastIndexOf('.'))
+							+ ".asm";//$NON-NLS-1$
 				} else {
 					try {
-						outName = atlFilePath.substring(0, atlFilePath.lastIndexOf('.')) + ".temp.asm";//$NON-NLS-1$
-						launchParser.asmUrl = new URL("file:"+outName);						
+						outName = atlFilePath.substring(0, atlFilePath
+								.lastIndexOf('.'))
+								+ ".temp.asm";//$NON-NLS-1$
+						launchParser.asmUrl = new URL("file:" + outName);
 					} catch (MalformedURLException e) {
 						e.printStackTrace();
-						fail("URL problem : "+atlUrl); //$NON-NLS-1$
+						fail("URL problem : " + atlUrl); //$NON-NLS-1$
 					}
 				}
-				
+
 				is = atlUrl.openStream();
-			} catch(IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
-				fail("File not found : "+atlUrl); //$NON-NLS-1$
+				fail("File not found : " + atlUrl); //$NON-NLS-1$
 			}
 			try {
 				AtlCompiler.getDefault().compile(is, outName);
-			} catch(CompilerNotFoundException cnfee) {
+			} catch (CompilerNotFoundException cnfee) {
 				cnfee.printStackTrace();
 				fail("Compiler not found"); //$NON-NLS-1$
 			}
@@ -104,72 +117,80 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 				is.close();
 			} catch (IOException e) {
 				e.printStackTrace();
-				fail(atlUrl+" compilation failed"); //$NON-NLS-1$
+				fail(atlUrl + " compilation failed"); //$NON-NLS-1$
 			}
 		}
 
 		/*
-		 * TRANSFORMATION LAUNCH 
-		 * 
+		 * TRANSFORMATION LAUNCH
 		 */
-		double executionTime = 0;
+		double time = 0;
 		try {
-			executionTime = launch();
-			results.write("\t<test name=\""+directory.getName()+"\" directory=\""+
-					directory.toString().substring(AtlTestPlugin.getDefault().getBaseDirectory().length())+"\" time=\""+executionTime+"\"/>\n");
+			long startTime = System.currentTimeMillis();
+			launch();
+			long endTime = System.currentTimeMillis();
+			time = (endTime - startTime) / 1000.;
+			results
+					.write("\t<test name=\""
+							+ directory.getName()
+							+ "\" directory=\""
+							+ directory.toString().substring(
+									AtlTestPlugin.getDefault()
+											.getBaseDirectory().length())
+							+ "\" time=\"" + time + "\"/>\n");
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.6", new Object[]{e})); //$NON-NLS-1$
+			fail(AtlTestsMessages.getString(
+					"TestNonRegressionTransfo.6", new Object[] { e })); //$NON-NLS-1$
 		}
-		System.out.println(executionTime+"s."); //$NON-NLS-1$
+		System.out.println(time + "s."); //$NON-NLS-1$
 		AtlTestPlugin.getDefault().getResourceSet().getResources().clear();
 
-
 		/*
-		 * RESULTS COMPARISON 
-		 * 
+		 * RESULTS COMPARISON
 		 */
 
 		Map output = launchParser.output;
-		//metamodels registration for emf comparison
+		// metamodels registration for emf comparison
 		for (Iterator iter = output.values().iterator(); iter.hasNext();) {
 			String metaid = (String) iter.next();
 			String metapath = (String) launchParser.path.get(metaid);
 			try {
 				if (!metapath.startsWith("uri:")) {
-					ModelUtils.registerMetamodel(URI.createFileURI(metapath), AtlTestPlugin.getDefault().getResourceSet());
-				}				
+					ModelUtils.registerMetamodel(URI.createFileURI(metapath),
+							AtlTestPlugin.getDefault().getResourceSet());
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.7")); //$NON-NLS-1$
-			}		
+			}
 		}
 
 		for (Iterator iter = output.keySet().iterator(); iter.hasNext();) {
 			String outputid = (String) iter.next();
 			String outputPath = (String) launchParser.path.get(outputid);
-			String expectedPath = outputPath.replaceFirst("inputs","expected"); //$NON-NLS-1$ //$NON-NLS-2$
+			String expectedPath = outputPath.replaceFirst("inputs", "expected"); //$NON-NLS-1$ //$NON-NLS-2$
 			try {
-				ModelUtils.compareModels(new File(outputPath), new File(expectedPath), true, true);
+				ModelUtils.compareModels(new File(outputPath), new File(
+						expectedPath), true, true);
 			} catch (Exception e) {
 				e.printStackTrace();
 				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.8")); //$NON-NLS-1$
 			}
 		}
-		totalTime+=executionTime;
+		totalTime += time;
 		AtlTestPlugin.getDefault().getResourceSet().getResources().clear();
 	}
 
 	protected void tearDown() throws Exception {
-		System.out.println("total time : "+ totalTime +"s.");
-		results.write("\t<test name=\"TOTAL\" time=\""+totalTime+"\"/>\n");
+		System.out.println("total time : " + totalTime + "s.");
+		results.write("\t<test name=\"TOTAL\" time=\"" + totalTime + "\"/>\n");
 		results.write("</vm>\n");
 		results.close();
 		super.tearDown();
 	}
-	
-	protected abstract double launch() throws Exception ;
-	
-	protected abstract String getVMName() ;
-}
 
+	protected abstract void launch() throws Exception;
+
+	protected abstract String getVMName();
+}

@@ -24,7 +24,6 @@ import org.eclipse.m2m.atl.engine.emfvm.ASMXMLReader;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Model;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
-import org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo;
 
 /**
  * Specifies TestNonRegressionTransfo for the emfvm.
@@ -46,9 +45,7 @@ public class TestNonRegressionCompiler extends TestNonRegressionTransfo {
 		setPropertiesPath("/org.eclipse.m2m.atl.tests/data/emfvm.properties");//$NON-NLS-1$
 	}
 
-	public double launch() throws Exception {
-		long startTime;
-		long endTime;
+	public void launch() throws Exception {
 		ASM asm = new ASMXMLReader().read(launchParser.asmUrl.openStream());
 
 		Map models = new HashMap();
@@ -89,9 +86,7 @@ public class TestNonRegressionCompiler extends TestNonRegressionTransfo {
 				libraries.put(libName, lib);
 			}
 
-			startTime = System.currentTimeMillis();
 			asm.run(models, libraries, launchParser.options);
-			endTime = System.currentTimeMillis();
 
 			for(Iterator i = launchParser.output.keySet().iterator() ; i.hasNext() ; ) {
 				String mName = (String)i.next();
@@ -108,8 +103,6 @@ public class TestNonRegressionCompiler extends TestNonRegressionTransfo {
 				model.dispose();
 			}
 		}
-
-		return (endTime - startTime) / 1000.;
 	}
 
 	private ReferenceModel loadReferenceModel(String mmName, Map modelPaths) throws IOException {

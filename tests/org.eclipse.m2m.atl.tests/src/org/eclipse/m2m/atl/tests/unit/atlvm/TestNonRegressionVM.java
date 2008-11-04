@@ -47,7 +47,7 @@ public class TestNonRegressionVM extends TestNonRegressionTransfo {
 		setPropertiesPath("/org.eclipse.m2m.atl.tests/data/vm.properties");//$NON-NLS-1$
 	}
 	
-	public double launch() throws Exception {
+	public void launch() throws Exception {
 		boolean checkSameModel = false;
 		//model handler
 		Map atlModelHandler = new HashMap();
@@ -73,10 +73,8 @@ public class TestNonRegressionVM extends TestNonRegressionTransfo {
 			String mName = (String)i.next();
 			models.put(mName, outModel.get(mName));
 		}
-				
-		long startTime = System.currentTimeMillis();
+		
 		AtlLauncher.getDefault().launch(launchParser.asmUrl, launchParser.libsFromConfig, models, Collections.EMPTY_MAP, launchParser.superimpose, launchParser.options);
-		long endTime = System.currentTimeMillis();
 	
 	
 		// save output models
@@ -91,8 +89,6 @@ public class TestNonRegressionVM extends TestNonRegressionTransfo {
 			ASMModel model = (ASMModel)i.next();
 			AtlModelHandler.getHandler(model).disposeOfModel(model);
 		}
-		
-		return (endTime - startTime) / 1000.;
 	}
 
 	/**
