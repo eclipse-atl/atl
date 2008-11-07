@@ -451,7 +451,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 				}
 
 				for (int item = 0; item < modelHandlers.getItems().length; item++) {
-					if (modelHandlers.getItem(item).equals((String)savedModelHandlers.get(modelName))) {
+					if (modelHandlers.getItem(item).equals(savedModelHandlers.get(modelName))) {
 						modelHandlers.select(item);
 					}
 				}
