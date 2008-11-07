@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.parser;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -33,6 +34,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.engine.compiler.AtlCompiler;
 
 /**
  * ATL source inspector, used to catch main file informations. Also allows to update them.
@@ -41,34 +43,37 @@ import org.eclipse.m2m.atl.ATLLogger;
  */
 public final class AtlSourceManager {
 
-	// ATL File Type:
-	/** 0 : undefined. */
-	public static final int ATL_FILE_TYPE_UNDEFINED = 0;
-
-	/** 0 : module. */
-	public static final int ATL_FILE_TYPE_MODULE = 1;
-
-	/** 0 : query. */
-	public static final int ATL_FILE_TYPE_QUERY = 2;
-
-	/** 0 : library. */
-	public static final int ATL_FILE_TYPE_LIBRARY = 3;
-
-	// Metamodel filter types:
-	/** 0 : input + output metamodels. */
-	public static final int ALL_METAMODELS = 0;
-
-	/** 1 : input metamodels. */
-	public static final int INPUT_METAMODELS = 1;
-
-	/** 2 : OUTPUT metamodels. */
-	public static final int OUTPUT_METAMODELS = 2;
+	/** ATL compiler tag. */
+	public static final String COMPILER_TAG = "atlcompiler";
 
 	/** URI tag value. */
 	public static final String URI_TAG = "nsURI"; //$NON-NLS-1$
 
 	/** PATH tag value. */
 	public static final String PATH_TAG = "path"; //$NON-NLS-1$
+
+	// ATL File Type:
+	/** Undefined. */
+	public static final int ATL_FILE_TYPE_UNDEFINED = 0;
+
+	/** Module. */
+	public static final int ATL_FILE_TYPE_MODULE = 1;
+
+	/** Query. */
+	public static final int ATL_FILE_TYPE_QUERY = 3;
+
+	/** Library. */
+	public static final int ATL_FILE_TYPE_LIBRARY = 4;
+
+	// Metamodel filter types:
+	/** 0 : input + output metamodels. */
+	public static final int FILTER_ALL_METAMODELS = 0;
+
+	/** 1 : input metamodels. */
+	public static final int FILTER_INPUT_METAMODELS = 1;
+
+	/** 2 : OUTPUT metamodels. */
+	public static final int FILTER_OUTPUT_METAMODELS = 2;
 
 	private static final ResourceSet RESOURCE_SET = new ResourceSetImpl();
 
@@ -85,7 +90,11 @@ public final class AtlSourceManager {
 
 	private int atlFileType;
 
+	private String atlCompiler;
+
 	private boolean initialized;
+
+	private boolean isRefining;
 
 	private EObject model;
 
@@ -153,6 +162,10 @@ public final class AtlSourceManager {
 		updateDataSource(content);
 	}
 
+	public boolean isRefining() {
+		return isRefining;
+	}
+
 	public EObject getModel() {
 		return model;
 	}
@@ -169,14 +182,14 @@ public final class AtlSourceManager {
 			return metamodelsPackages;
 		}
 		switch (filter) {
-			case INPUT_METAMODELS:
+			case FILTER_INPUT_METAMODELS:
 				Map inputres = new HashMap();
 				for (Iterator iterator = inputModels.values().iterator(); iterator.hasNext();) {
 					String id = (String)iterator.next();
 					inputres.put(id, metamodelsPackages.get(id));
 				}
 				return inputres;
-			case OUTPUT_METAMODELS:
+			case FILTER_OUTPUT_METAMODELS:
 				Map outputres = new HashMap();
 				for (Iterator iterator = outputModels.values().iterator(); iterator.hasNext();) {
 					String id = (String)iterator.next();
@@ -212,12 +225,15 @@ public final class AtlSourceManager {
 		inputModels = new HashMap();
 		outputModels = new HashMap();
 		librariesImports = new ArrayList();
-	
+
 		byte[] buffer = text.getBytes();
 		int length = buffer.length;
 		BufferedReader brin = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer, 0,
 				length)));
-	
+
+		List compilers = getTaggedInformations(brin, COMPILER_TAG);
+		atlCompiler = getCompilerName(compilers);
+		
 		List uris = getTaggedInformations(brin, URI_TAG);
 		for (Iterator iterator = uris.iterator(); iterator.hasNext();) {
 			String line = (String)iterator.next();
@@ -226,7 +242,7 @@ public final class AtlSourceManager {
 				String uri = line.split("=")[1].trim(); //$NON-NLS-1$
 				if (uri != null && uri.length() > 0) {
 					uri = uri.trim();
-	
+
 					// EPackage registration
 					EPackage regValue = EPackage.Registry.INSTANCE.getEPackage(uri);
 					if (regValue != null) {
@@ -238,7 +254,7 @@ public final class AtlSourceManager {
 				}
 			}
 		}
-	
+
 		List paths = getTaggedInformations(brin, PATH_TAG);
 		for (Iterator iterator = paths.iterator(); iterator.hasNext();) {
 			String line = (String)iterator.next();
@@ -247,8 +263,7 @@ public final class AtlSourceManager {
 				String path = line.split("=")[1].trim(); //$NON-NLS-1$
 				if (path != null && path.length() > 0) {
 					path = path.trim();
-					Resource resource = load(URI.createPlatformResourceURI(path, true),
-							RESOURCE_SET);
+					Resource resource = load(URI.createPlatformResourceURI(path, true), RESOURCE_SET);
 					if (resource != null) {
 						ArrayList list = new ArrayList();
 						for (Iterator it = resource.getContents().iterator(); it.hasNext();) {
@@ -263,17 +278,19 @@ public final class AtlSourceManager {
 				}
 			}
 		}
-	
+
 		model = AtlParser.getDefault().parse(new ByteArrayInputStream(text.getBytes()));
-	
+
 		if (model == null) {
 			inputModels = null;
 			outputModels = null;
 			return;
 		}
-	
+
 		if (model.eClass().getName().equals("Module")) { //$NON-NLS-1$
 			atlFileType = ATL_FILE_TYPE_MODULE;
+			isRefining = ((Boolean)eGet(model, "isRefining")).booleanValue();
+
 			// input models computation
 			EList inModelsList = (EList)eGet(model, "inModels"); //$NON-NLS-1$
 			if (inModelsList != null) {
@@ -283,7 +300,7 @@ public final class AtlSourceManager {
 					inputModels.put(eGet(me, "name").toString(), eGet(mm, "name").toString()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
-	
+
 			// output models computation
 			EList outModelsList = (EList)eGet(model, "outModels"); //$NON-NLS-1$
 			if (outModelsList != null) {
@@ -293,7 +310,7 @@ public final class AtlSourceManager {
 					outputModels.put(eGet(me, "name").toString(), eGet(mm, "name").toString()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
-	
+
 		} else if (model.eClass().getName().equals("Query")) { //$NON-NLS-1$
 			atlFileType = ATL_FILE_TYPE_QUERY;
 			outputModels = null;
@@ -308,7 +325,7 @@ public final class AtlSourceManager {
 		} else if (model.eClass().getName().equals("Library")) { //$NON-NLS-1$
 			atlFileType = ATL_FILE_TYPE_LIBRARY;
 		}
-	
+
 		// libraries computation
 		EList librariesList = (EList)eGet(model, "libraries"); //$NON-NLS-1$
 		if (librariesList != null) {
@@ -317,14 +334,18 @@ public final class AtlSourceManager {
 				librariesImports.add(eGet(lib, "name")); //$NON-NLS-1$
 			}
 		}
-	
+
 		initialized = true;
+	}
+
+	public String getAtlCompiler() {
+		return atlCompiler;
 	}
 
 	public Map getMetamodelLocations() {
 		return metamodelLocations;
 	}
-	
+
 	/**
 	 * Status method.
 	 * 
@@ -363,6 +384,36 @@ public final class AtlSourceManager {
 		}
 		reader.reset();
 		return res;
+	}
+
+	/**
+	 * Returns the atl compiler name.
+	 * 
+	 * @param in
+	 *            the atl file reader
+	 * @return the atl compiler name
+	 */
+	public static String getCompilerName(InputStream in) throws IOException {
+		InputStream newIn = in;
+		// The BufferedInputStream is required to reset the stream before actually compiling
+		newIn = new BufferedInputStream(newIn, 1000);
+		newIn.mark(1000);
+		byte[] buffer = new byte[1000];
+		int length = newIn.read(buffer);
+		BufferedReader brin = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer, 0,
+				length)));
+
+		List compilers = getTaggedInformations(brin, COMPILER_TAG);
+		newIn.reset();
+		return getCompilerName(compilers);
+	}
+
+	private static String getCompilerName(List compilers) {
+		if (compilers.isEmpty()) {
+			return AtlCompiler.DEFAULT_COMPILER_NAME;
+		} else {
+			return compilers.get(0).toString();
+		}
 	}
 
 	/**
