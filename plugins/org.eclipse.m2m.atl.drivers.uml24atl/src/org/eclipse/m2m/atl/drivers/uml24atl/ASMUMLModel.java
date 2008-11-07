@@ -454,7 +454,10 @@ public final class ASMUMLModel extends ASMEMFModel {
 		init();
 	}
 
-	private static void init() {
+	/**
+	 * init.
+	 */
+	public static void init() {
 		Map etfm = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap();
 		if (!etfm.containsKey("*")) {
 			etfm.put("*", new XMIResourceFactoryImpl());
