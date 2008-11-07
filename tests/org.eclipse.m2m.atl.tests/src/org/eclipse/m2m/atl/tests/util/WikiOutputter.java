@@ -127,7 +127,7 @@ public final class WikiOutputter {
 		Element rootElement = doc.getDocumentElement();
 		NodeList childs = rootElement.getChildNodes();
 		for (int i = 0; i < childs.getLength(); i++) {
-			Node node = (Node)childs.item(i);
+			Node node = childs.item(i);
 			if (node instanceof Element) {
 				Element element = (Element)node;
 				String name = element.getAttribute("name");
