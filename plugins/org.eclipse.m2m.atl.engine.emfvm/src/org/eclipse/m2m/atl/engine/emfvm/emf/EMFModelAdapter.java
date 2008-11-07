@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFModelAdapter.java,v 1.5 2008/10/15 10:21:08 wpiers Exp $
+ * $Id: EMFModelAdapter.java,v 1.6 2008/11/07 17:40:33 wpiers Exp $
  */
 package org.eclipse.m2m.atl.engine.emfvm.emf;
 
@@ -203,7 +203,7 @@ public class EMFModelAdapter implements ModelAdapter {
 			final EObject eo = (EObject)value;
 			final Model model = getModelOf(eo);
 			if (model != null) {
-				out.print((String)execEnv.getNameOf(model));
+				out.print(execEnv.getNameOf(model));
 			} else {
 				out.print("<unknown>");
 			}
@@ -212,7 +212,7 @@ public class EMFModelAdapter implements ModelAdapter {
 			out.print(':');
 			if (model != null) {
 				final ReferenceModel mModel = model.getReferenceModel();
-				out.print((String)execEnv.getNameOf(mModel));
+				out.print(execEnv.getNameOf(mModel));
 				out.print('!');
 				String name = eo.eClass().getName();
 				if (name == null) {
