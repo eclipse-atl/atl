@@ -106,7 +106,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 			IFile out = resource.getParent().getFile(new Path(outName));
 			InputStream is = ((IFile)resource).getContents();
 			try {
-				EObject[] pbms = AtlCompiler.getDefault().compile(is, out);
+				EObject[] pbms = AtlCompiler.compile(is, out);
 				markerMaker.resetPbmMarkers(resource, pbms);
 				IFile asmFile = getAsmFile(resource);
 				if (asmFile.exists()) {
