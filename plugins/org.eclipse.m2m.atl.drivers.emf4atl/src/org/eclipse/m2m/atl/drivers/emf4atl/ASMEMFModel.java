@@ -171,7 +171,7 @@ public class ASMEMFModel extends ASMModel {
 	}
 
 	private void initClassifiers(Iterator i, Map allClassifiers, String base) {
-		for ( ; i.hasNext(); ) {
+		for ( ; i.hasNext();) {
 			EObject eo = (EObject)i.next();
 			if (eo instanceof EPackage) {
 				String name = ((EPackage)eo).getName();
@@ -622,7 +622,10 @@ public class ASMEMFModel extends ASMModel {
 		init();
 	}
 
-	private static void init() {
+	/**
+	 * Inits the resourceSet.
+	 */
+	public static void init() {
 		Map etfm = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap();
 		if (!etfm.containsKey("*")) {
 			etfm.put("*", new XMIResourceFactoryImpl());
