@@ -237,7 +237,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 			IMarker marker = ((AtlBreakpoint)item).getMarker();
 			String location;
 			try {
-				location = (String)marker.getResource().getName();
+				location = marker.getResource().getName();
 				Integer lineNumber = (Integer)marker.getAttribute(IMarker.LINE_NUMBER);
 				Integer charStart = (Integer)marker.getAttribute(IMarker.CHAR_START);
 				Integer charEnd = (Integer)marker.getAttribute(IMarker.CHAR_END);
