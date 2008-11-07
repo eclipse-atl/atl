@@ -248,8 +248,8 @@ public class AtlValue extends AtlDebugElement implements IValue {
 		List list = new ArrayList();
 		int n = ((IntegerValue)keys.call("size", new ArrayList())).getValue(); //$NON-NLS-1$
 		for (int i = 1; i <= n; i++) {
-			Value varKey = (Value)keys.call("at", Arrays.asList(new Object[] {IntegerValue.valueOf(i)})); //$NON-NLS-1$
-			Value varValue = (Value)orValue.call("get", Arrays.asList(new Object[] {varKey})); //$NON-NLS-1$
+			Value varKey = keys.call("at", Arrays.asList(new Object[] {IntegerValue.valueOf(i)})); //$NON-NLS-1$
+			Value varValue = orValue.call("get", Arrays.asList(new Object[] {varKey})); //$NON-NLS-1$
 
 			if (useKeyAsName) {
 				list.add(new AtlVariable(((StringValue)varKey).getValue(), new AtlValue(varValue, atlDT),
@@ -282,7 +282,7 @@ public class AtlValue extends AtlDebugElement implements IValue {
 
 		int n = ((IntegerValue)orValue.call("size", new ArrayList())).getValue(); //$NON-NLS-1$
 		for (int i = 1; i <= n; i++) {
-			Value varValue = (Value)orValue.call("at", Arrays.asList(new Object[] {IntegerValue.valueOf(i)})); //$NON-NLS-1$
+			Value varValue = orValue.call("at", Arrays.asList(new Object[] {IntegerValue.valueOf(i)})); //$NON-NLS-1$
 			list
 					.add(new AtlVariable(
 							"[" + i + "]", new AtlValue(varValue, atlDT), atlDT, AtlVariable.ELEMENT)); //$NON-NLS-1$ //$NON-NLS-2$

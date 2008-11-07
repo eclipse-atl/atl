@@ -161,7 +161,7 @@ public class AtlVariable extends AtlDebugElement implements IVariable {
 	 * @see org.eclipse.debug.core.model.IValueModification#setValue(org.eclipse.debug.core.model.IValue)
 	 */
 	public void setValue(IValue value) throws DebugException {
-		this.variableValue = (AtlValue)value;
+		this.variableValue = value;
 	}
 
 	/**
