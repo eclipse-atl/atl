@@ -335,7 +335,7 @@ public class AtlCompletionDataSource {
 	 */
 	public List getHelperTypesProposals(String prefix, int offset) {
 		List res = new ArrayList();
-		res.addAll(getMetaElementsProposals(prefix, offset, AtlSourceManager.ALL_METAMODELS));
+		res.addAll(getMetaElementsProposals(prefix, offset, AtlSourceManager.FILTER_ALL_METAMODELS));
 		String[] types = {"Boolean", "String", "Integer", "Sequence", "Set", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				"Bag", "OrderedSet", "Map",}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		for (int i = 0; i < types.length; i++) {

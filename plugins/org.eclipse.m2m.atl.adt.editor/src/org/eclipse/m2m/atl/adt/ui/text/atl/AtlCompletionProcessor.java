@@ -152,7 +152,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 									oclIsKindOf(locatedElement, "OclModelElement")) { //$NON-NLS-1$
 								if (analyser.getLostType("InPattern") != null) { //$NON-NLS-1$
 									return fDatasource.getMetaElementsProposals(prefix, offset,
-											AtlSourceManager.INPUT_METAMODELS);
+											AtlSourceManager.FILTER_INPUT_METAMODELS);
 								}
 							}
 							break;
@@ -164,7 +164,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 							if ((oclIsKindOf(locatedElement, "OclModel") || oclIsKindOf(locatedElement, "OclModelElement")) || //$NON-NLS-1$ //$NON-NLS-2$
 									(oclIsKindOf(locatedElement, "SimpleOutPatternElement"))) { //$NON-NLS-1$
 								return fDatasource.getMetaElementsProposals(prefix, offset,
-										AtlSourceManager.OUTPUT_METAMODELS);
+										AtlSourceManager.FILTER_OUTPUT_METAMODELS);
 							} else if (oclIsKindOf(locatedElement, "OutPattern")) { //$NON-NLS-1$
 								if (analyser.getLostType("Binding") != null) { //$NON-NLS-1$
 									EObject simpleOutPatternElement = analyser
