@@ -19,7 +19,7 @@ import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.m2m.atl.ATLLogger;
-import org.eclipse.m2m.atl.adt.launching.logging.ConsoleStreamHandler;
+import org.eclipse.m2m.atl.ConsoleStreamHandler;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
