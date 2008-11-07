@@ -121,7 +121,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 				fail("File not found : " + atlUrl); //$NON-NLS-1$
 			}
 			try {
-				AtlCompiler.getDefault().compile(is, outName);
+				AtlCompiler.compile(is, outName);
 			} catch (CompilerNotFoundException e) {
 				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 				fail("Compiler not found"); //$NON-NLS-1$
