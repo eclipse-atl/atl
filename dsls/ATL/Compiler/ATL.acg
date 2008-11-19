@@ -206,10 +206,9 @@ acg ATL startsWith Unit {
 					call 'J.__toValue():J'
 					goto setPropertyEoi
 			  setPropertyThn:
-					push 'Sequence'
-					push '#native'
-					new
-					call 'QJ.first():J'
+			  		getasm
+			  		swap
+			  		call 'A.__collectionToValue(QJ):J'
 			  setPropertyEoi:				-- element, slot, slot, value
 				set 'value'
 				set 'slots'
@@ -217,53 +216,70 @@ acg ATL startsWith Unit {
 			operation
 					context 'A'
 					name '__applyRefiningTrace__' {
-				foreach(r in self.elements->select(e | e isa MatchedRule and not (e isa LazyMatchedRule))) {
-					push 'Element'
-					push 'RefiningTrace'
-					findme
-					push 'refiningTrace'
-					call 'MMOF!Classifier;.allInstancesFrom(S):QJ'
-					dup
-					iterate
-														-- traceElement
-							dup							-- traceElement, traceElement
-							get 'sourceElement'			-- traceElement, element|OclUndefined
-							call 'J.oclIsUndefined():B'	-- traceElement, oclIsUndefined?
-							call 'B.not():B'			-- traceElement, oclIsDefined?
-							if sourceElement
-								-- create the new element
-														-- traceElement
-								dup		 				-- traceElement, traceElement
-								get 'type'				-- traceElement, typeName
-								swap					-- typeName, traceElement
-								dup_x1					-- traceElement, typeName, traceElement
-								get 'metamodel'			-- traceElement, typeName, metamodelName
-								new						-- traceElement, element
-								set 'sourceElement'		-- nothing
-								goto next
-						  sourceElement:
-						  								-- traceElement
-								pop
-						  next:
-					enditerate
-					iterate
-												-- traceElement
-							dup					-- traceElement, traceElement
-							get 'sourceElement'	-- traceElement, element
-							swap				-- element, traceElement
-							get 'slots'
-							iterate
-												-- element, slot
-								dup
-								get 'name'		-- sourceElement, slot, name
-								swap			-- sourceElement, name, slot
-								get 'value'		-- sourceElement, name, value
-								call 'J.__fromValue():J'	-- sourceElement, name, actualValue
-								call 'J.refSetValue(SJ):J'
-							enditerate
+				push 'Element'
+				push 'RefiningTrace'
+				findme
+				push 'refiningTrace'
+				call 'MMOF!Classifier;.allInstancesFrom(S):QJ'
+				dup
+				iterate
+													-- traceElement
+						dup							-- traceElement, traceElement
+						get 'sourceElement'			-- traceElement, element|OclUndefined
+						call 'J.oclIsUndefined():B'	-- traceElement, oclIsUndefined?
+						call 'B.not():B'			-- traceElement, oclIsDefined?
+						if sourceElement
+							-- create the new element
+													-- traceElement
+							dup		 				-- traceElement, traceElement
+							get 'type'				-- traceElement, typeName
+							swap					-- typeName, traceElement
+							dup_x1					-- traceElement, typeName, traceElement
+							get 'metamodel'			-- traceElement, typeName, metamodelName
+							new						-- traceElement, element
+							set 'sourceElement'		-- nothing
+							goto next
+--TODO:use id?		
+					  sourceElement:
+					  								-- traceElement
 							pop
-					enditerate
-				}
+					  next:
+				enditerate
+				iterate
+											-- traceElement
+						dup					-- traceElement, traceElement
+						get 'sourceElement'	-- traceElement, element
+						swap				-- element, traceElement
+						get 'slots'
+						iterate
+											-- element, slot
+							dup
+							get 'name'		-- sourceElement, slot, name
+							swap			-- sourceElement, name, slot
+							get 'value'		-- sourceElement, name, value
+							call 'J.__fromValue():J'	-- sourceElement, name, actualValue
+							call 'J.refSetValue(SJ):J'
+						enditerate
+						pop
+				enditerate
+			}
+			operation
+					context 'A'
+					name '__collectionToValue' {
+				param 'c' : 'CJ'
+
+				push 'CollectionVal'
+				push 'RefiningTrace'
+				new
+				load 'c'
+				iterate
+											-- collectionVal, element
+					call 'J.__toValue():J'	-- collectionVal, value
+					swap					-- value, collectionVal
+					dup_x1					-- collectionVal, value, collectionVal
+					swap					-- collectionVal, collectionVal, value
+					set 'elements'			-- collectionVal
+				enditerate
 			}
 			operation
 					context 'B'
@@ -364,6 +380,19 @@ acg ATL startsWith Unit {
 					dup
 					load 'self'
 					set 'sourceElement'
+			}
+			operation
+					context 'MRefiningTrace!CollectionVal;'
+					name '__fromValue' {
+				push 'Sequence'
+				push '#native'
+				new
+				load 'self'
+				get 'elements'
+				iterate
+					call 'J.__fromValue():J'
+					call 'QJ.append(J):QJ'
+				enditerate
 			}
 			operation
 					context 'MRefiningTrace!BooleanVal;'
@@ -990,7 +1019,19 @@ acg ATL startsWith Unit {
 					getasm
 					get 'links'
 					push self.name
-					load self.inPattern.elements.first().varName
+					--TODO: finish this (also in VM code)
+--					if(self.inPattern.elements.size() = 1) {
+						load self.inPattern.elements.first().varName
+--					} else {
+--						push 'Tuple'
+--						push '#native'
+--						new				-- links, name, Tuple
+--						foreach(e in self.inPattern.elements) {		-- TODO: change TransientLinkSet implementation accordingly
+--							dup
+--							load e.varName
+--							set e.varName
+--						}
+--					}
 					call 'NTransientLinkSet;.getLinkByRuleAndSourceElement(SJ):QNTransientLink;'
 					dup
 					call 'J.oclIsUndefined():B'
@@ -1189,15 +1230,13 @@ acg ATL startsWith Unit {
 		push 'Tuple'
 		push '#native'
 		new
-		dup
 		analyze self.tuplePart
-		pop
 	}
 
 	code TuplePart {
+		dup
 		analyze self.initExpression
 		set self.varName
-		dup
 	}
 
 	code MapExp {
