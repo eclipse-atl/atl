@@ -3,8 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: ATL Engine
 Bundle-SymbolicName: org.eclipse.m2m.atl.engine; singleton:=true
 Bundle-Version: 2.0.1.qualifier
-Bundle-ClassPath: .,
- org.eclipse.m2m.atl.engine.jar,
+Bundle-ClassPath: org.eclipse.m2m.atl.engine.jar,
  lib/org.eclipse.gmt.tcs.extractor_1.0.0.jar,
  lib/org.eclipse.gmt.tcs.injector_1.0.0.jar,
  lib/ATL-parser.jar
