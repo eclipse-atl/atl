@@ -96,6 +96,7 @@ public class ASMUMLModelElement extends ASMEMFModelElement {
 			registerMOFOperation("EClass", "allInstances", new Class[] {});
 			registerMOFOperation("EClass", "allInstancesFrom", new Class[] {ASMString.class});
 			registerMOFOperation("EClassifier", "newInstance", new Class[] {});
+			registerMOFOperation("EClassifier", "newInstanceIn", new Class[] {ASMString.class});
 			registerMOFOperation("EClassifier", "getInstanceById", new Class[] {ASMString.class,
 					ASMString.class,});
 
@@ -127,6 +128,30 @@ public class ASMUMLModelElement extends ASMEMFModelElement {
 		return ret;
 	}
 
+	/**
+	 * Creates a new instance of a given type.
+	 * 
+	 * @param frame
+	 *            the frame context
+	 * @param self
+	 *            the given type
+	 * @param modelName
+	 *            the model where to create the element
+	 * @return the new element
+	 */
+	public static ASMModelElement newInstanceIn(StackFrame frame, ASMUMLModelElement self, ASMString modelName) {
+		ASMModelElement ret = null;
+		if (self.object.eClass().getName().equals("EClass")) {
+			for (Iterator j = frame.getExecEnv().getModels().values().iterator(); j.hasNext();) {
+				ASMModel model = (ASMModel)j.next();
+				if (model.isTarget() && model.getName().equals(modelName.cString())) {
+					return model.newModelElement(self);
+				}
+			}
+		}
+		return ret;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 * 
