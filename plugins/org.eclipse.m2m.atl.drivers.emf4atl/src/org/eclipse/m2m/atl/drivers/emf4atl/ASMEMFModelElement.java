@@ -459,12 +459,12 @@ public class ASMEMFModelElement extends ASMModelElement {
 								l.add(val);
 								checkContainment(feature, val);
 							} catch (Exception e) {
-								String msg = "Cannot set feature " + getType() + "." + name
-								+ " to value " + val;
+								String msg = "Cannot set feature " + getType() + "." + name + " to value "
+										+ val;
 								if (frame == null) {
-									throw new RuntimeException(msg,e);
+									throw new RuntimeException(msg, e);
 								} else {
-									frame.printStackTrace(msg,e);
+									frame.printStackTrace(msg, e);
 								}
 							}
 						}
@@ -484,12 +484,11 @@ public class ASMEMFModelElement extends ASMModelElement {
 							object.eSet(feature, val);
 							checkContainment(feature, val);
 						} catch (Exception e) {
-							String msg = "Cannot set feature " + getType() + "." + name
-							+ " to value " + val;
+							String msg = "Cannot set feature " + getType() + "." + name + " to value " + val;
 							if (frame == null) {
-								throw new RuntimeException(msg,e);
+								throw new RuntimeException(msg, e);
 							} else {
-								frame.printStackTrace(msg,e);
+								frame.printStackTrace(msg, e);
 							}
 
 						}
@@ -591,6 +590,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 			registerMOFOperation("EClass", "allInstances", new Class[] {});
 			registerMOFOperation("EClass", "allInstancesFrom", new Class[] {ASMString.class});
 			registerMOFOperation("EClassifier", "newInstance", new Class[] {});
+			registerMOFOperation("EClassifier", "newInstanceIn", new Class[] {ASMString.class});
 			registerMOFOperation("EClassifier", "getInstanceById", new Class[] {ASMString.class,
 					ASMString.class,});
 
@@ -719,6 +719,30 @@ public class ASMEMFModelElement extends ASMModelElement {
 		ASMModelElement ret = null;
 		if (self.object.eClass().getName().equals("EClass")) {
 			ret = createNewInstance(frame, self);
+		}
+		return ret;
+	}
+
+	/**
+	 * Creates a new instance of a given type.
+	 * 
+	 * @param frame
+	 *            the frame context
+	 * @param self
+	 *            the given type
+	 * @param modelName
+	 *            the model where to create the element
+	 * @return the new element
+	 */
+	public static ASMModelElement newInstanceIn(StackFrame frame, ASMEMFModelElement self, ASMString modelName) {
+		ASMModelElement ret = null;
+		if (self.object.eClass().getName().equals("EClass")) {
+			for (Iterator j = frame.getExecEnv().getModels().values().iterator(); j.hasNext();) {
+				ASMModel model = (ASMModel)j.next();
+				if (model.isTarget() && model.getName().equals(modelName.cString())) {
+					return model.newModelElement(self);
+				}
+			}
 		}
 		return ret;
 	}
