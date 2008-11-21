@@ -101,7 +101,7 @@ syntax ACG {
 			] "}"
 		;
 
-	template OperationStat
+	template OperationStat context
 		:	"operation" "context" context "name" name "{" [
 				statements
 			] "}"
