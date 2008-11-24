@@ -1004,6 +1004,17 @@ public class ExecEnv {
 				return ((LinkedHashSet)localVars[0]).iterator().next();
 			}
 		});
+		operationsByName.put("last", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				LinkedHashSet l = (LinkedHashSet)localVars[0];
+				Object ret = OclUndefined.SINGLETON;
+				for(Iterator i = l.iterator() ; i.hasNext() ; ) {
+					ret = i.next();
+				}
+				return ret;
+			}
+		});
 		// optimized version
 		operationsByName.put("count", new Operation(2) {
 			public Object exec(StackFrame frame) {
