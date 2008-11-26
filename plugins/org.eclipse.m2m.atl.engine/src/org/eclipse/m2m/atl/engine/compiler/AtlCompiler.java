@@ -12,11 +12,8 @@
 package org.eclipse.m2m.atl.engine.compiler;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -32,6 +29,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.Messages;
 import org.eclipse.m2m.atl.engine.compiler.atl2006.Atl2006Compiler;
+import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 
 /**
  * The ATL compiler.
@@ -139,26 +137,13 @@ public final class AtlCompiler {
 		EObject[] ret = null;
 		String atlcompiler = null;
 		InputStream newIn = in;
-		// The BufferedInputStream is required to reset the stream before actually compiling
-		newIn = new BufferedInputStream(newIn, MAX_LINE_LENGTH);
-		newIn.mark(MAX_LINE_LENGTH);
-		byte[] buffer = new byte[MAX_LINE_LENGTH];
 		try {
-			int length = newIn.read(buffer);
-			BufferedReader brin = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer,
-					0, length)));
-			String firstLine = brin.readLine();
-			atlcompiler = firstLine.replaceFirst(
-					"^\\p{Space}*--\\p{Space}*@atlcompiler\\p{Space}+([^\\p{Space}]*)\\p{Space}*$", "$1"); //$NON-NLS-1$ //$NON-NLS-2$
-			// if firstLine does not match the pattern then nothing was replaced and atlcompiler = firstLine
-			if (atlcompiler.equals(firstLine)) {
-				atlcompiler = "atl2004"; //$NON-NLS-1$
-			}
-		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
-
-		try {
+			// The BufferedInputStream is required to reset the stream before actually compiling
+			newIn = new BufferedInputStream(newIn, MAX_LINE_LENGTH);
+			newIn.mark(MAX_LINE_LENGTH);
+			byte[] buffer = new byte[MAX_LINE_LENGTH];
+			newIn.read(buffer);
+			atlcompiler = AtlSourceManager.getCompilerName(AtlSourceManager.getTaggedInformations(buffer, AtlSourceManager.COMPILER_TAG));
 			newIn.reset();
 		} catch (IOException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);

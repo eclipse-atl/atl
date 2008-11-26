@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.parser;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -135,13 +134,7 @@ public final class AtlSourceManager {
 	 *            the content of the atl file
 	 */
 	public void updateDataSource(String content) {
-		try {
-			parseMetamodels(content);
-		} catch (IOException e) {
-			// TODO apply marker on the file
-			// Exceptions are detected by the compiler
-			// AtlUIPlugin.log(e);
-		}
+		parseMetamodels(content);
 	}
 
 	/**
@@ -219,22 +212,17 @@ public final class AtlSourceManager {
 	 *            the atl file.
 	 * @throws IOException
 	 */
-	private void parseMetamodels(String text) throws IOException {
+	private void parseMetamodels(String text) {
 		metamodelsPackages = new HashMap();
 		metamodelLocations = new HashMap();
 		inputModels = new HashMap();
 		outputModels = new HashMap();
 		librariesImports = new ArrayList();
 
-		byte[] buffer = text.getBytes();
-		int length = buffer.length;
-		BufferedReader brin = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer, 0,
-				length)));
-
-		List compilers = getTaggedInformations(brin, COMPILER_TAG);
+		List compilers = getTaggedInformations(text.getBytes(), COMPILER_TAG);
 		atlCompiler = getCompilerName(compilers);
-		
-		List uris = getTaggedInformations(brin, URI_TAG);
+
+		List uris = getTaggedInformations(text.getBytes(), URI_TAG);
 		for (Iterator iterator = uris.iterator(); iterator.hasNext();) {
 			String line = (String)iterator.next();
 			if (line.split("=").length == 2) { //$NON-NLS-1$
@@ -255,7 +243,8 @@ public final class AtlSourceManager {
 			}
 		}
 
-		List paths = getTaggedInformations(brin, PATH_TAG);
+		List paths = getTaggedInformations(text.getBytes(), PATH_TAG);
+		
 		for (Iterator iterator = paths.iterator(); iterator.hasNext();) {
 			String line = (String)iterator.next();
 			if (line.split("=").length == 2) { //$NON-NLS-1$
@@ -263,7 +252,14 @@ public final class AtlSourceManager {
 				String path = line.split("=")[1].trim(); //$NON-NLS-1$
 				if (path != null && path.length() > 0) {
 					path = path.trim();
-					Resource resource = load(URI.createPlatformResourceURI(path, true), RESOURCE_SET);
+					Resource resource = null;
+					try {
+						resource = load(URI.createPlatformResourceURI(path, true), RESOURCE_SET);
+					} catch (IOException e) {
+						// TODO apply marker on the file
+						// Exceptions are detected by the compiler
+						// AtlUIPlugin.log(e);
+					}
 					if (resource != null) {
 						ArrayList list = new ArrayList();
 						for (Iterator it = resource.getContents().iterator(); it.hasNext();) {
@@ -358,57 +354,49 @@ public final class AtlSourceManager {
 	/**
 	 * Returns the list of tagged informations (header).
 	 * 
-	 * @param reader
+	 * @param buffer
 	 *            the input
 	 * @param tag
 	 *            the tag to search
 	 * @return the tagged information
 	 * @throws IOException
 	 */
-	private static List getTaggedInformations(BufferedReader reader, String tag) throws IOException {
-		reader.mark(1000);
+	public static List getTaggedInformations(byte[] buffer, String tag) {
 		List res = new ArrayList();
-		while (reader.ready()) {
-			String line = reader.readLine();
-			// code begins, uris checking stops.
-			if (line == null || line.startsWith("library") //$NON-NLS-1$
-					|| line.startsWith("module") || line.startsWith("query")) { //$NON-NLS-1$ //$NON-NLS-2$
-				break;
-			} else {
-				if (line.trim().startsWith("-- @" + tag)) { //$NON-NLS-1$
-					line = line.replaceFirst("^\\p{Space}*--\\p{Space}*@" //$NON-NLS-1$
-							+ tag + "\\p{Space}+([^\\p{Space}]*)\\p{Space}*$", "$1"); //$NON-NLS-1$ //$NON-NLS-2$
-					res.add(line);
+		try {
+			int length = buffer.length;
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer, 0,
+					length)));
+			while (reader.ready()) {
+				String line = reader.readLine();
+				// code begins, checking stops.
+				if (line == null || line.startsWith("library") //$NON-NLS-1$
+						|| line.startsWith("module") || line.startsWith("query")) { //$NON-NLS-1$ //$NON-NLS-2$
+					break;
+				} else {
+					if (line.trim().startsWith("-- @" + tag)) { //$NON-NLS-1$
+						line = line.replaceFirst("^\\p{Space}*--\\p{Space}*@" //$NON-NLS-1$
+								+ tag + "\\p{Space}+([^\\p{Space}]*)\\p{Space}*$", "$1"); //$NON-NLS-1$ //$NON-NLS-2$
+						res.add(line);
+					}
 				}
 			}
+			reader.close();
+		} catch (IOException e) {
+			// TODO apply marker on the file
+			// Exceptions are detected by the compiler
+			// AtlUIPlugin.log(e);
 		}
-		reader.reset();
 		return res;
 	}
 
 	/**
-	 * Returns the atl compiler name.
+	 * Returns the compiler name, or the default name if null.
 	 * 
-	 * @param in
-	 *            the atl file reader
-	 * @return the atl compiler name
+	 * @param compilers the list of compilers
+	 * @return the compiler name, or the default name if null
 	 */
-	public static String getCompilerName(InputStream in) throws IOException {
-		InputStream newIn = in;
-		// The BufferedInputStream is required to reset the stream before actually compiling
-		newIn = new BufferedInputStream(newIn, 1000);
-		newIn.mark(1000);
-		byte[] buffer = new byte[1000];
-		int length = newIn.read(buffer);
-		BufferedReader brin = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer, 0,
-				length)));
-
-		List compilers = getTaggedInformations(brin, COMPILER_TAG);
-		newIn.reset();
-		return getCompilerName(compilers);
-	}
-
-	private static String getCompilerName(List compilers) {
+	public static String getCompilerName(List compilers) {
 		if (compilers.isEmpty()) {
 			return AtlCompiler.DEFAULT_COMPILER_NAME;
 		} else {
