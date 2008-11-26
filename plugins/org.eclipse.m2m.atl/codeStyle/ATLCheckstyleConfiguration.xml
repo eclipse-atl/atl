@@ -89,6 +89,7 @@
         </module>
         <module name="FileLength">
             <property name="severity" value="error"/>
+            <property name="max" value="2500"/>
         </module>
         <module name="MethodLength">
             <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity" value="error"/>
