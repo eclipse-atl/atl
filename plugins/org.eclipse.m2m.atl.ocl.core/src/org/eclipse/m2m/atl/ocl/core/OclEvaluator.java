@@ -30,18 +30,17 @@ public abstract class OclEvaluator {
 	/**
 	 * Compiles an atl string into asm.
 	 * 
-	 * @param atlArg the string
+	 * @param atlArg
+	 *            the string
 	 * @return the ASM file
 	 * @throws Exception
 	 */
 	protected ASM compile(String atlArg) throws IOException {
-		AtlCompiler ac = AtlCompiler.getDefault();
-
 		// forcing usage of ATL 2006
 		String atl = "-- @atlcompiler atl2006\n" + atlArg;
 		ByteArrayInputStream input = new ByteArrayInputStream(atl.getBytes());
 		IFile file = ASMRetriever.getFile();
-		pbs = ac.compile(input, file);
+		pbs = AtlCompiler.compile(input, file);
 		input.close();
 		return ASMRetriever.getASM(file);
 	}
