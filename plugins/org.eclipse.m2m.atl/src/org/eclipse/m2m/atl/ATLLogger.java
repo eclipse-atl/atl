@@ -56,7 +56,7 @@ public class ATLLogger {
 	 *            the throwable cause
 	 */
 	public static void log(Level level, String msg, Throwable thrown) {
-		logger.log(level, msg, thrown);
+		getLogger().log(level, msg, thrown);
 	}
 
 	/**
