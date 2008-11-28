@@ -31,4 +31,14 @@ public class UMLModelLoader extends EMFModelLoader {
 		return new ASMUMLModel(name, extent, (ASMUMLModel)metamodel, isTarget, this);
 	}
 
+	/**
+	 * Finalizes r by calling {@link Resource#unload()}. This works around a
+	 * memory leak that is currently only experienced with UML models.
+	 * @param r
+	 */
+	protected void finalizeResource(Resource r) {
+		r.unload();
+		logger.fine(r + " is unloaded");
+	}
+	
 }
