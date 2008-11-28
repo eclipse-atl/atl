@@ -214,7 +214,8 @@ public class ASMEMFModel extends ASMModel {
 	}
 
 	/**
-	 * Returns The set of ASMModelElements that are instances of type.
+	 * Returns The set of ASMModelElements that are instances of type
+	 * and are contained in this model.
 	 * 
 	 * @param type
 	 *            The type of element to search for.
@@ -222,6 +223,35 @@ public class ASMEMFModel extends ASMModel {
 	 * @see ASMModelElement
 	 */
 	public Set getElementsByType(ASMModelElement type) {
+		Set ret = new LinkedHashSet();
+		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
+		addElementsOfType(ret, t, getExtent());
+		return ret;
+	}
+
+	/**
+	 * Returns The set of ASMModelElements that are instances of type
+	 * and are contained in this model or any referenced meta-model.
+	 * 
+	 * @param type
+	 *            The type of element to search for.
+	 * @return The set of ASMModelElements that are instances of type.
+	 * @see ASMModelElement
+	 */
+	public Set getAllElementsByType(String typeName) {
+		return getAllElementsByType(getMetamodel().findModelElement(typeName));
+	}
+
+	/**
+	 * Returns The set of ASMModelElements that are instances of type
+	 * and are contained in this model or any referenced meta-model.
+	 * 
+	 * @param type
+	 *            The type of element to search for.
+	 * @return The set of ASMModelElements that are instances of type.
+	 * @see ASMModelElement
+	 */
+	public Set getAllElementsByType(ASMModelElement type) {
 		Set ret = new LinkedHashSet();
 		EClass t = (EClass)((ASMEMFModelElement)type).getObject();
 		addElementsOfType(ret, t, getExtent());
