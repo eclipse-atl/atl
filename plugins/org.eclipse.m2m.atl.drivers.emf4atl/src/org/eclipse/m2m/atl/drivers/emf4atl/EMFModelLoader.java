@@ -348,7 +348,7 @@ public class EMFModelLoader extends ModelLoader {
 			throws IOException {
 		final ASMModel mofmm = model.getModelLoader().getMOF();
 		if (metamodel == mofmm) {
-			for (Iterator i = model.getElementsByType("EPackage").iterator(); i
+			for (Iterator i = model.getAllElementsByType("EPackage").iterator(); i
 					.hasNext();) {
 				ASMEMFModelElement ame = (ASMEMFModelElement) i.next();
 				EPackage p = (EPackage) ame.getObject();
@@ -365,7 +365,7 @@ public class EMFModelLoader extends ModelLoader {
 					resourceSet.getPackageRegistry().put(nsURI, p);
 				}
 			}
-			for (Iterator i = model.getElementsByType("EDataType").iterator(); i
+			for (Iterator i = model.getAllElementsByType("EDataType").iterator(); i
 					.hasNext();) {
 				ASMEMFModelElement ame = (ASMEMFModelElement) i.next();
 				String tname = ((ASMString) ame.get(null, "name")).getSymbol();
@@ -393,10 +393,18 @@ public class EMFModelLoader extends ModelLoader {
 		for (Iterator it = resourceSet.getResources().iterator(); it.hasNext();) {
 			Resource r = (Resource) it.next();
 			it.remove();
-			//TODO memory is still leaking on UML resources without unload()
-			r.unload();
-			logger.fine(r + " is removed and unloaded");
+			finalizeResource(r);
+			logger.fine(r + " is removed");
 		}
+	}
+	
+	/**
+	 * Finalizes r. This implementation does nothing, but allows for overriding
+	 * in subclasses.
+	 * @param r
+	 */
+	protected void finalizeResource(Resource r) {
+		//do nothing
 	}
 	
 	private static String resourceSetToString(ResourceSet rs) {
@@ -416,8 +424,7 @@ public class EMFModelLoader extends ModelLoader {
 			if (rs.contains(r)) {
 				loadedModels.remove(model.getName());
 				rs.remove(r);
-				//TODO memory is still leaking on UML resources without unload()
-				r.unload();
+				finalizeResource(r);
 			}
 		}
 	}
