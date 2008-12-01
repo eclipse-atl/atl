@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil;
@@ -230,7 +231,24 @@ public class ASMEMFModelElement extends ASMModelElement {
 			if (sf == null) {
 				frame.printStackTrace("feature " + name + " does not exist on " + getType());
 			}
-			ret = emf2ASM(frame, object.eGet(sf));
+			if (sf.equals(EcorePackage.eINSTANCE.getEEnum_ELiterals())) {
+				// treat meta-description of enum literals as ASMModelElements:
+				final Object value = object.eGet(sf);
+				ASMCollection col;
+				if (value instanceof List) {
+					col = new ASMSequence();
+				} else if (value instanceof Set) {
+					col = new ASMSet();
+				} else {
+					col = new ASMBag();
+				}
+				for (Iterator i = ((Collection)value).iterator(); i.hasNext();) {
+					col.add(eObjectToASM(frame, (EObject)i.next()));
+				}
+				ret = col;
+			} else {
+				ret = emf2ASM(frame, object.eGet(sf));
+			}
 		}
 		return ret;
 	}
