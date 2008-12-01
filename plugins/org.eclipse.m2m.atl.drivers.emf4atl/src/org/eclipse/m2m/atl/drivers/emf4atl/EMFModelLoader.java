@@ -255,7 +255,7 @@ public class EMFModelLoader extends ModelLoader {
 			URL resource = null;
 			if (bundle == null) {
 				resource = EMFModelLoader.class.getResource(
-						"../../../../../../resources" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
+						"../../../../../../resources/" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
 				resource = bundle.getResource("resources/" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
