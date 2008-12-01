@@ -43,7 +43,7 @@ import org.eclipse.m2m.atl.engine.compiler.AtlCompiler;
 public final class AtlSourceManager {
 
 	/** ATL compiler tag. */
-	public static final String COMPILER_TAG = "atlcompiler";
+	public static final String COMPILER_TAG = "atlcompiler"; //$NON-NLS-1$
 
 	/** URI tag value. */
 	public static final String URI_TAG = "nsURI"; //$NON-NLS-1$
@@ -285,7 +285,7 @@ public final class AtlSourceManager {
 
 		if (model.eClass().getName().equals("Module")) { //$NON-NLS-1$
 			atlFileType = ATL_FILE_TYPE_MODULE;
-			isRefining = ((Boolean)eGet(model, "isRefining")).booleanValue();
+			isRefining = ((Boolean)eGet(model, "isRefining")).booleanValue(); //$NON-NLS-1$
 
 			// input models computation
 			EList inModelsList = (EList)eGet(model, "inModels"); //$NON-NLS-1$

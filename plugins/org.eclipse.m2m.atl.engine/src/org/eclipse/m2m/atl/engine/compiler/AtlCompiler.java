@@ -40,7 +40,7 @@ import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 public final class AtlCompiler {
 
 	/** The default ATL compiler. */
-	public static final String DEFAULT_COMPILER_NAME = "atl2006";
+	public static final String DEFAULT_COMPILER_NAME = "atl2006"; //$NON-NLS-1$
 
 	private static final int MAX_LINE_LENGTH = 1000;
 
