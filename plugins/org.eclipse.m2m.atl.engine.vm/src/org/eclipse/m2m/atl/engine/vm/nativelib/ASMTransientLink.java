@@ -131,10 +131,32 @@ public class ASMTransientLink extends ASMOclAny {
 	public static ASMOclAny getVariable(StackFrame frame, ASMTransientLink self, ASMString name) {
 		return (ASMOclAny)self.variables.get(name.getSymbol());
 	}
-
 	/**
-	 * This method allows for retrieving all the target elements for a given
-	 * source element without knowing the local variable names of the rule
+	 * This method allows for retrieving all source elements for this link
+	 * without knowing the local variable names of the rule
+	 * that created the mappings. This reduces fragility.
+	 * @param frame
+	 * @param self
+	 * @return A Map of source element names to target elements for this link.
+	 * @author Andres Yie <ayiegarz@vub.ac.be>
+	 */
+	public static ASMMap getSourceElements(StackFrame frame, ASMTransientLink self) {
+		Map map = new HashMap();
+		
+		// It is necessary to create a new Map in order to have the name of the variables 
+		// in String
+		for(Iterator i = self.sourceElements.keySet().iterator() ; i.hasNext() ; ) {
+			Object name = i.next();
+			map.put(new ASMString(name.toString()), self.sourceElements.get(name));
+		}
+		
+		
+		return new ASMMap(map);
+	}
+	
+	/**
+	 * This method allows for retrieving all target elements for this link
+	 * without knowing the local variable names of the rule
 	 * that created the mappings. This reduces fragility.
 	 * @param frame
 	 * @param self
@@ -142,7 +164,18 @@ public class ASMTransientLink extends ASMOclAny {
 	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
 	 */
 	public static ASMMap getTargetElements(StackFrame frame, ASMTransientLink self) {
-		return new ASMMap(self.targetElements);
+		Map map = new HashMap();
+		
+
+		// It is necessary to create a new Map in order to have the name of the variables 
+		// in String
+		for(Iterator i = self.targetElements.keySet().iterator() ; i.hasNext() ; ) {
+			Object name = i.next();
+			map.put(new ASMString(name.toString()), self.targetElements.get(name));
+		}
+		
+		
+		return new ASMMap(map);
 	}
 
 	private Map sourceElements = new HashMap();
