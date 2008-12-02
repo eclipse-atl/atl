@@ -113,6 +113,7 @@ public class AtlNbCharFile {
 				nbCharsSinceLastTab++;
 			}
 			lines.add(new Line(currentLineCharIndex, indexTabs, tabsWidth));
+			is.close();
 		} catch (IOException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
