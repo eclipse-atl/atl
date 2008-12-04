@@ -46,7 +46,6 @@ public class VMException extends RuntimeException {
 	 */
 	public void printStackTrace(PrintStream s) {
 		s.println("ATL VM Stack:");
-		s.println("-------------");
 		s.println(frame);
 		if (getCause() != null) {
 			s.println("Java Stack:");
@@ -63,7 +62,6 @@ public class VMException extends RuntimeException {
 	 */
 	public void printStackTrace(PrintWriter s) {
 		s.println("ATL VM Stack:");
-		s.println("-------------");
 		s.println(frame);
 		if (getCause() != null) {
 			s.println("Java Stack:");
