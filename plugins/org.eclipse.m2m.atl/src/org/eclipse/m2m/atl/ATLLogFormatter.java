@@ -16,14 +16,15 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
 /**
- * Log formatter that is less verbose than {@link SimpleFormatter}.
+ * Log formatter that is less verbose than SimpleFormatter.
+ * 
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ATLLogFormatter extends Formatter {
-	
+
 	/** The log formatter. */
 	public static final ATLLogFormatter INSTANCE = new ATLLogFormatter();
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -33,7 +34,7 @@ public class ATLLogFormatter extends Formatter {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
 	 */
 	public String format(LogRecord record) {
