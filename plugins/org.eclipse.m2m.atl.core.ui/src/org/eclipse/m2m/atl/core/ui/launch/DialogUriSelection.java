@@ -55,6 +55,7 @@ public class DialogUriSelection extends SelectionStatusDialog {
 	 * 
 	 * @see org.eclipse.ui.dialogs.SelectionStatusDialog#computeResult()
 	 */
+	@Override
 	protected void computeResult() {
 
 	}
@@ -64,6 +65,7 @@ public class DialogUriSelection extends SelectionStatusDialog {
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Set<String> uris = new TreeSet<String>();
 
@@ -104,6 +106,7 @@ public class DialogUriSelection extends SelectionStatusDialog {
 	 * 
 	 * @see org.eclipse.ui.dialogs.SelectionStatusDialog#okPressed()
 	 */
+	@Override
 	protected void okPressed() {
 		if (listUri.getSelectionCount() == 1) {
 			uri = listUri.getSelection()[0];

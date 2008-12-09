@@ -211,6 +211,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		});
 
 		browseWorkspace.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				String path = editPath(IS_MODULE);
 				if (path.trim().length() > 0) {
@@ -252,6 +253,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		addLibBtn.setText(Messages.getString("MainAtlTab.ADDLIB")); //$NON-NLS-1$
 
 		addSourceModelBtn.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				InputDialog dlg = new InputDialog(getShell(),
 						Messages.getString("MainAtlTab.ADDSOURCEMODEL"), //$NON-NLS-1$
@@ -287,6 +289,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		});
 
 		addTargetModelBtn.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				InputDialog dlg = new InputDialog(getShell(),
 						Messages.getString("MainAtlTab.ADDTARGETMODEL"), //$NON-NLS-1$
@@ -322,6 +325,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		});
 
 		addLibBtn.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				InputDialog dlg = new InputDialog(getShell(), Messages.getString("MainAtlTab.ADDLIBRARY"), //$NON-NLS-1$
 						Messages.getString("MainAtlTab.LIBRARYNAME"), //$NON-NLS-1$
@@ -746,6 +750,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 * 
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#canSave()
 	 */
+	@Override
 	public boolean canSave() {
 		boolean ret = true;
 		if (atlPathText.getText().equals("")) { //$NON-NLS-1$
@@ -800,6 +805,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 * 
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#getImage()
 	 */
+	@Override
 	public Image getImage() {
 		return ATLCoreUIPlugin.createImage(ATLLaunchConstants.ATL_ICON_PATH);
 	}
@@ -861,6 +867,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			elementTreeSelectionDialog.setAllowMultiple(false);
 			elementTreeSelectionDialog.setDoubleClickSelects(true);
 			elementTreeSelectionDialog.addFilter(new ViewerFilter() {
+				@Override
 				public boolean select(Viewer viewer, Object parentElement, Object element) {
 					boolean ret = false;
 					try {
@@ -999,6 +1006,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		});
 
 		isMetametamodel.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				metamodelLocation.setEnabled(!isMetametamodel.getSelection());
 				browseWorkspace.setEnabled(!isMetametamodel.getSelection());
@@ -1018,6 +1026,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		});
 
 		browseWorkspace.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				String path = editPath(type);
 				if (path.trim().length() > 0) {
@@ -1027,6 +1036,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		});
 
 		browseFilesystem.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				String path = editExternalPath(type);
 				if (path.trim().length() > 0) {
@@ -1036,6 +1046,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		});
 
 		browseEMFRegistry.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				DialogUriSelection launcher = new DialogUriSelection(new Shell());
 				launcher.create();
@@ -1046,6 +1057,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		});
 
 		final SelectionAdapter removeAdapter = new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				metamodelsGroupWidgets.remove(metamodelName);
 				sourceMetamodelsFromModule.remove(metamodelName);
@@ -1116,6 +1128,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		});
 
 		browseWorkspace.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				String path = editPath(type);
 				if (path.trim().length() > 0) {
@@ -1125,6 +1138,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		});
 
 		browseFilesystem.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				String path = editExternalPath(type);
 				if (path.trim().length() > 0) {
@@ -1134,6 +1148,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		});
 
 		final SelectionAdapter removeAdapter = new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				if (sourceModelsGroupWidgets.get(modelName) != null) {
 					sourceModelsGroupWidgets.remove(modelName);

@@ -125,6 +125,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 
 		buttonSuperimpose.setText(Messages.getString("AdvancedTab.ADD")); //$NON-NLS-1$
 		buttonSuperimpose.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				addPath(AdvancedTab.SUPERIMPOSE, tableSuperimpose);
 				updateLaunchConfigurationDialog();
@@ -133,6 +134,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 
 		buttonRemoveSuperimpose.setText(Messages.getString("AdvancedTab.REMOVE")); //$NON-NLS-1$
 		buttonRemoveSuperimpose.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				removePath(tableSuperimpose);
 				updateLaunchConfigurationDialog();
@@ -201,6 +203,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	 * 
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#updateLaunchConfigurationDialog()
 	 */
+	@Override
 	protected void updateLaunchConfigurationDialog() {
 		if (getLaunchConfigurationDialog() != null) {
 			ILaunchConfigurationTab[] tabs = getLaunchConfigurationDialog().getTabs();
@@ -241,6 +244,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 			newCheckButton.setLayoutData(new GridData(GridData.FILL_BOTH));
 			newCheckButton.setText(option.getValue());
 			newCheckButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					updateLaunchConfigurationDialog();
 				}
@@ -329,6 +333,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	 * 
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#canSave()
 	 */
+	@Override
 	public boolean canSave() {
 		if (tableSuperimpose.getItemCount() != 0) {
 			for (int i = 0; i < tableSuperimpose.getItemCount(); i++) {
@@ -347,6 +352,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	 * 
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#getImage()
 	 */
+	@Override
 	public Image getImage() {
 		return ATLCoreUIPlugin.createImage(ATLLaunchConstants.ATL_ICON_PATH);
 	}
@@ -365,6 +371,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		elementTreeSelectionDialog.setAllowMultiple(false);
 		elementTreeSelectionDialog.setDoubleClickSelects(true);
 		elementTreeSelectionDialog.addFilter(new ViewerFilter() {
+			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
 				boolean ret = false;
 

@@ -79,6 +79,7 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	 * 
 	 * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		console = findConsole("ATL"); //$NON-NLS-1$
