@@ -47,9 +47,9 @@ import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.m2m.atl.ATLLogger;
-import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
-import org.eclipse.m2m.atl.adt.launching.AtlLauncherTools;
+import org.eclipse.m2m.atl.adt.debug.Messages;
+import org.eclipse.m2m.atl.core.ui.launch.ATLLaunchConstants;
 import org.eclipse.m2m.atl.engine.AtlNbCharFile;
 import org.eclipse.m2m.atl.engine.vm.adwp.ADWP;
 import org.eclipse.m2m.atl.engine.vm.adwp.ADWPCommand;
@@ -152,7 +152,9 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 		// DebugPlugin.getDefault().addDebugEventListener(this);
 
 		try {
-			disassemblyMode = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.MODEDEBUG, false);
+			disassemblyMode = new Boolean((String)(launch.getLaunchConfiguration().getAttribute(
+					ATLLaunchConstants.OPTIONS, Collections.EMPTY_MAP)).get("disassemblyMode")) //$NON-NLS-1$
+					.booleanValue();
 		} catch (CoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 
@@ -165,14 +167,14 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	 * Starts debug.
 	 */
 	public void start() {
-		ATLLogger.info(AtlDebugMessages.getString("AtlDebugTarget.CONNECTIONDEBUGEE")); //$NON-NLS-1$
+		ATLLogger.info(Messages.getString("AtlDebugTarget.CONNECTIONDEBUGEE")); //$NON-NLS-1$
 		try {
 			do {
 				try {
 					try {
-						port = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.PORT,
+						port = launch.getLaunchConfiguration().getAttribute(ATLLaunchConstants.PORT,
 								AtlDebugModelConstants.PORT);
-						host = launch.getLaunchConfiguration().getAttribute(AtlLauncherTools.HOST,
+						host = launch.getLaunchConfiguration().getAttribute(ATLLaunchConstants.HOST,
 								AtlDebugModelConstants.HOST);
 						if (port.equals("")) { //$NON-NLS-1$
 							port = AtlDebugModelConstants.PORT;
@@ -188,13 +190,13 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException ie) {
-						ATLLogger.info(AtlDebugMessages.getString("Problem encountered during connection.")); //$NON-NLS-1$
+						ATLLogger.info(Messages.getString("AtlDebugTarget.CONNECTIONPROBLEMS")); //$NON-NLS-1$
 					}
 				}
 			} while (socket == null);
 
 			debugger = new ADWPDebugger(socket.getInputStream(), socket.getOutputStream());
-			ATLLogger.info(AtlDebugMessages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
+			ATLLogger.info(Messages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
 			state = STATE_SUSPENDED;
 
 			threads = new AtlThread[1];
@@ -304,14 +306,14 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 		Assert.isNotNull(asmName);
 
 		ILaunchConfiguration configuration = launch.getLaunchConfiguration();
-		List superimpose = configuration.getAttribute(AtlLauncherTools.SUPERIMPOSE, new ArrayList());
+		List superimpose = configuration.getAttribute(ATLLaunchConstants.SUPERIMPOSE, new ArrayList());
 		for (Iterator i = superimpose.iterator(); i.hasNext();) {
 			path = (String)i.next();
 			if (asmName.equals(getAsmNameFrom(path))) {
 				return path.substring(0, path.length() - 3) + "atl"; //$NON-NLS-1$
 			}
 		}
-		Map libraries = configuration.getAttribute(AtlLauncherTools.LIBS, new HashMap());
+		Map libraries = configuration.getAttribute(ATLLaunchConstants.LIBS, new HashMap());
 		for (Iterator i = libraries.keySet().iterator(); i.hasNext();) {
 			String lib = (String)i.next();
 			path = (String)libraries.get(lib);
@@ -319,7 +321,8 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 				return path.substring(0, path.length() - 3) + "atl"; //$NON-NLS-1$
 			}
 		}
-		path = configuration.getAttribute(AtlLauncherTools.ATLFILENAME, AtlLauncherTools.NULLPARAMETER);
+		path = configuration
+				.getAttribute(ATLLaunchConstants.ATL_FILE_NAME, ATLLaunchConstants.NULL_PARAMETER);
 
 		return path;
 	}

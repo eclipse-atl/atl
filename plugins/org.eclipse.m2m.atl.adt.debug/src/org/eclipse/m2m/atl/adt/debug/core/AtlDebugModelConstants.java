@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.debug.core;
 
-import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
+import org.eclipse.m2m.atl.adt.debug.Messages;
 
 /**
  * Common constants for debugging.
@@ -26,15 +26,15 @@ public final class AtlDebugModelConstants {
 	public static final String HOST = "localhost"; //$NON-NLS-1$
 
 	/** Debug target name. */
-	public static final String DEBUGTARGETNAME = AtlDebugMessages
+	public static final String DEBUGTARGETNAME = Messages
 			.getString("AtlDebugModelConstants.DEBUGTARGETNAME"); //$NON-NLS-1$
 
 	/** Run target name. */
-	public static final String RUNTARGETNAME = AtlDebugMessages
+	public static final String RUNTARGETNAME = Messages
 			.getString("AtlDebugModelConstants.RUNTARGETNAME"); //$NON-NLS-1$
 
 	/** Thread name. */
-	public static final String THREADNAME = AtlDebugMessages.getString("AtlDebugModelConstants.THREADNAME"); //$NON-NLS-1$
+	public static final String THREADNAME = Messages.getString("AtlDebugModelConstants.THREADNAME"); //$NON-NLS-1$
 
 	/** null debug notation. */
 	public static final String NULL = "<null>"; //$NON-NLS-1$
@@ -46,7 +46,7 @@ public final class AtlDebugModelConstants {
 	public static final String VALUE = "value"; //$NON-NLS-1$
 
 	/** map element debug notation. */
-	public static final String MAPELEMENT = AtlDebugMessages.getString("AtlDebugModelConstants.MAPELEMENT"); //$NON-NLS-1$
+	public static final String MAPELEMENT = Messages.getString("AtlDebugModelConstants.MAPELEMENT"); //$NON-NLS-1$
 
 	/**
 	 * Utility class.

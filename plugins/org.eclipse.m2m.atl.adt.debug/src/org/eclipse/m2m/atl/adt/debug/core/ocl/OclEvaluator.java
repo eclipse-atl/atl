@@ -36,7 +36,7 @@ public abstract class OclEvaluator {
 	 */
 	protected ASM compile(String atlArg) throws IOException {
 		// forcing usage of ATL 2006
-		String atl = "-- @atlcompiler atl2006\n" + atlArg;
+		String atl = "-- @atlcompiler atl2006\n" + atlArg; //$NON-NLS-1$
 		ByteArrayInputStream input = new ByteArrayInputStream(atl.getBytes());
 		IFile file = ASMRetriever.getFile();
 		pbs = AtlCompiler.compile(input, file);

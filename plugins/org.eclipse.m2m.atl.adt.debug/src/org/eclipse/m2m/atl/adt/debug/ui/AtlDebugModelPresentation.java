@@ -27,8 +27,8 @@ import org.eclipse.debug.ui.IValueDetailListener;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.m2m.atl.ATLLogger;
-import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
 import org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin;
+import org.eclipse.m2m.atl.adt.debug.Messages;
 import org.eclipse.m2m.atl.adt.debug.core.AtlBreakpoint;
 import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlStackFrame;
@@ -176,7 +176,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 			return name
-					+ AtlDebugMessages.getString("AtlDebugModelPresentation.CONNECTEDONHOST") + target.getHost() + AtlDebugMessages.getString("AtlDebugModelPresentation.PORT") + target.getPort(); //$NON-NLS-1$ //$NON-NLS-2$
+					+ Messages.getString("AtlDebugModelPresentation.CONNECTEDONHOST") + target.getHost() + Messages.getString("AtlDebugModelPresentation.PORT") + target.getPort(); //$NON-NLS-1$ //$NON-NLS-2$
 		} else if (item instanceof AtlThread) {
 			AtlThread thread = (AtlThread)item;
 			try {
@@ -184,20 +184,20 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 				String message = ""; //$NON-NLS-1$
 				switch (((AtlDebugTarget)thread.getDebugTarget()).getState()) {
 					case AtlDebugTarget.STATE_DISCONNECTED:
-						currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.DISCONNECTED"); //$NON-NLS-1$
+						currentState = Messages.getString("AtlDebugModelPresentation.DISCONNECTED"); //$NON-NLS-1$
 						break;
 					case AtlDebugTarget.STATE_RUNNING:
-						currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.RUNNING"); //$NON-NLS-1$
+						currentState = Messages.getString("AtlDebugModelPresentation.RUNNING"); //$NON-NLS-1$
 						break;
 					case AtlDebugTarget.STATE_SUSPENDED:
-						currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.SUSPENDED"); //$NON-NLS-1$
+						currentState = Messages.getString("AtlDebugModelPresentation.SUSPENDED"); //$NON-NLS-1$
 						message = ((AtlDebugTarget)thread.getDebugTarget()).getMessageFromDebuggee();
 						return thread.getName() + " (" + currentState + " (" + message + "))"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					case AtlDebugTarget.STATE_TERMINATED:
-						currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.TERMINATED"); //$NON-NLS-1$
+						currentState = Messages.getString("AtlDebugModelPresentation.TERMINATED"); //$NON-NLS-1$
 						break;
 					default:
-						currentState = AtlDebugMessages.getString("AtlDebugModelPresentation.UNKNOWN"); //$NON-NLS-1$
+						currentState = Messages.getString("AtlDebugModelPresentation.UNKNOWN"); //$NON-NLS-1$
 				}
 				return thread.getName() + " (" + currentState + ")"; //$NON-NLS-1$//$NON-NLS-2$
 			} catch (DebugException e) {
@@ -391,9 +391,8 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		IEditorDescriptor descriptor = registry.getDefaultEditor(input.getName());
 		if (descriptor != null) {
 			return descriptor.getId();
-		} else {
-			return "org.eclipse.ui.DefaultTextEditor"; //$NON-NLS-1$
 		}
+		return "org.eclipse.ui.DefaultTextEditor"; //$NON-NLS-1$
 	}
 
 }

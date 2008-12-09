@@ -1,16 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ATL Debugger
-Bundle-SymbolicName: org.eclipse.m2m.atl.adt.debug; singleton:=true
-Bundle-Version: 2.1.0.qualifier
+Bundle-SymbolicName: org.eclipse.m2m.atl.adt.debug;singleton:=true
+Bundle-Version: 3.0.0.qualifier
 Bundle-Activator: org.eclipse.m2m.atl.adt.debug.AtlDebugPlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.adt.debug,
  org.eclipse.m2m.atl.adt.debug.core,
- org.eclipse.m2m.atl.adt.debug.ui,
- org.eclipse.m2m.atl.adt.launching,
- org.eclipse.m2m.atl.adt.launching.sourcelookup
+ org.eclipse.m2m.atl.adt.debug.core.ocl,
+ org.eclipse.m2m.atl.adt.debug.ui
 Bundle-ClassPath: .
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.ui,
@@ -22,7 +21,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide,
  org.eclipse.ui.workbench.texteditor,
- org.eclipse.m2m.atl.engine.emfvm,
- org.eclipse.ui.console
+ org.eclipse.m2m.atl.core.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

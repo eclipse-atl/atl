@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="atlvm" name="ATL Virtual Machine" schema="schema/atlvm.exsd"/>
 
    <extension
          id="atlBreakpointMarker"
@@ -28,59 +27,7 @@
 			delegateClass="org.eclipse.m2m.atl.adt.debug.core.AtlWatchExpressionDelegate"/>
 	</extension>
 <!-- extension point : launch method is contained in this class-->
-   <extension
-         point="org.eclipse.debug.core.launchConfigurationTypes">
-      <launchConfigurationType
-            delegate="org.eclipse.m2m.atl.adt.launching.AtlLaunchConfigurationDelegate"
-            id="org.eclipse.m2m.atl.adt.launching.atlTransformation"
-            modes="run, debug"
-            name="ATL Transformation">
-      </launchConfigurationType>
-      <launchConfigurationType
-            delegate="org.eclipse.m2m.atl.adt.launching.RemoteAtlConfigurationDelegate"
-            id="org.eclipse.m2m.atl.adt.launching.remoteAtlTransformation"
-            modes="debug"
-            name="Remote ATL Transformation">
-      </launchConfigurationType>
-      <launchConfigurationType
-            delegate="org.eclipse.m2m.atl.adt.launching.RemoteAtlConfigurationDelegate"
-            id="org.atl.eclipse.adt.launching.remoteAtlTransformation"
-            modes="debug"
-            name="Remote ATL Compatibility">
-      </launchConfigurationType>
-      <launchConfigurationType
-            delegate="org.eclipse.m2m.atl.adt.launching.AtlLaunchConfigurationDelegate"
-            id="org.atl.eclipse.adt.launching.atlTransformation"
-            modes="run, debug"
-            name="ATL Compatibility">
-      </launchConfigurationType>
-   </extension>
 <!-- extension point : screen configuration for launching ATL transformation-->
-   <extension
-         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-      <launchConfigurationTabGroup
-            type="org.eclipse.m2m.atl.adt.launching.atlTransformation"
-            class="org.eclipse.m2m.atl.adt.launching.AtlTabGroup"
-            id="AtlTabGroup">
-      </launchConfigurationTabGroup>
-      <launchConfigurationTabGroup
-            class="org.eclipse.m2m.atl.adt.launching.RemoteAtlTabGroup"
-            id="RemoteAtlTabGroup"
-            type="org.eclipse.m2m.atl.adt.launching.remoteAtlTransformation">
-      </launchConfigurationTabGroup>
-      <launchConfigurationTabGroup
-            class="org.eclipse.m2m.atl.adt.launching.AtlTabGroup"
-            description="Compatibility utility"
-            id="AtlTabGroup"
-            type="org.atl.eclipse.adt.launching.atlTransformation">
-      </launchConfigurationTabGroup>
-      <launchConfigurationTabGroup
-            class="org.eclipse.m2m.atl.adt.launching.RemoteAtlTabGroup"
-            description="Compatibility utility"
-            id="RemoteAtlTabGroup"
-            type="org.atl.eclipse.adt.launching.remoteAtlTransformation">
-      </launchConfigurationTabGroup>
-   </extension>
 <!-- extension point : debug model presentation-->
    <extension
          point="org.eclipse.debug.ui.debugModelPresentations">
@@ -90,38 +37,7 @@
       </debugModelPresentation>
    </extension>
 <!-- extension point : source locator -->
-   <extension
-         point="org.eclipse.debug.core.sourceLocators">
-      <sourceLocator
-            name="ATL Source Locator"
-            class="org.eclipse.m2m.atl.adt.launching.sourcelookup.AtlSourceLocator"
-            id="AtlSourceLocator">
-      </sourceLocator>
-   </extension>
 <!-- extension point : images for Atl launch configuration -->
-   <extension
-         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
-      <launchConfigurationTypeImage
-            icon="icons/atllogo_icon.gif"
-            configTypeID="org.eclipse.m2m.atl.adt.launching.atlTransformation"
-            id="AtlApplication">
-      </launchConfigurationTypeImage>
-      <launchConfigurationTypeImage
-            configTypeID="org.eclipse.m2m.atl.adt.launching.remoteAtlTransformation"
-            icon="icons/atllogo_icon.gif"
-            id="AtlRemoteApplication">
-      </launchConfigurationTypeImage>
-      <launchConfigurationTypeImage
-            configTypeID="org.atl.eclipse.adt.launching.atlTransformation"
-            icon="icons/atllogo_icon_old.gif"
-            id="AtlApplication">
-      </launchConfigurationTypeImage>
-      <launchConfigurationTypeImage
-            configTypeID="org.atl.eclipse.adt.launching.remoteAtlTransformation"
-            icon="icons/atllogo_icon_old.gif"
-            id="AtlRemoteApplication">
-      </launchConfigurationTypeImage>
-   </extension>
 <!-- extension point : new action in popup menu -->
    <extension
          point="org.eclipse.ui.popupMenus">
@@ -153,20 +69,6 @@
             class="org.eclipse.m2m.atl.adt.debug.core.DisassemblyDocumentProvider"
             inputTypes="org.eclipse.m2m.atl.adt.debug.ui.AtlDebugModelPresentation$DisassemblyEditorInput"
             id="org.eclipse.m2m.atl.adt.debug.provider1"/>
-   </extension>
-   <extension
-         point="org.eclipse.m2m.atl.adt.debug.atlvm">
-      <atlvm
-            class="org.eclipse.m2m.atl.adt.launching.AtlRegularVM"
-            name="Regular VM (with debugger)">
-      </atlvm>
-   </extension>
-   <extension
-         point="org.eclipse.m2m.atl.adt.debug.atlvm">
-      <atlvm
-            class="org.eclipse.m2m.atl.adt.launching.AtlEMFSpecificVM"
-            name="EMF Specific VM">
-      </atlvm>
    </extension>
 
 </plugin>

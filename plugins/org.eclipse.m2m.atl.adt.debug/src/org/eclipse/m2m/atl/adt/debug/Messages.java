@@ -19,12 +19,12 @@ import java.util.ResourceBundle;
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public final class AtlDebugMessages {
+public final class Messages {
 	private static final String BUNDLE_NAME = "org.eclipse.m2m.atl.adt.debug.messages"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
-	private AtlDebugMessages() {
+	private Messages() {
 	}
 
 	/**

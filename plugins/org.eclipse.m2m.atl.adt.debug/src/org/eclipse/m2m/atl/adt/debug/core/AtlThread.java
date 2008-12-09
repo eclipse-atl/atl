@@ -90,9 +90,7 @@ public class AtlThread extends AtlDebugElement implements IThread {
 		if (hasStackFrames()) {
 			return getStackFrames()[0];
 		}
-		else {
-			return null;
-		}
+		return null;
 	}
 
 	/**

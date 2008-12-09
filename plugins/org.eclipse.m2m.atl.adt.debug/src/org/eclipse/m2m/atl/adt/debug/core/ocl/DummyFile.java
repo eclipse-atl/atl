@@ -46,7 +46,8 @@ public class DummyFile implements IFile {
 	/**
 	 * Constructor.
 	 * 
-	 * @param location the file location 
+	 * @param location
+	 *            the file location
 	 */
 	public DummyFile(String location) {
 		this.location = location;
@@ -54,8 +55,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#appendContents(java.io.InputStream, boolean, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#appendContents(java.io.InputStream, boolean, boolean,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void appendContents(InputStream source, boolean force, boolean keepHistory,
 			IProgressMonitor monitor) throws CoreException {
@@ -63,8 +65,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#appendContents(java.io.InputStream, int, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#appendContents(java.io.InputStream, int,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void appendContents(InputStream source, int updateFlags, IProgressMonitor monitor)
 			throws CoreException {
@@ -72,24 +75,27 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#create(java.io.InputStream, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#create(java.io.InputStream, boolean,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void create(InputStream source, boolean force, IProgressMonitor monitor) throws CoreException {
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#create(java.io.InputStream, int, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#create(java.io.InputStream, int,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void create(InputStream source, int updateFlags, IProgressMonitor monitor) throws CoreException {
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#createLink(org.eclipse.core.runtime.IPath, int, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#createLink(org.eclipse.core.runtime.IPath, int,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void createLink(IPath localLocation, int updateFlags, IProgressMonitor monitor)
 			throws CoreException {
@@ -97,15 +103,16 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#delete(boolean, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#delete(boolean, boolean,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void delete(boolean force, boolean keepHistory, IProgressMonitor monitor) throws CoreException {
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IFile#getCharset()
 	 */
 	public String getCharset() throws CoreException {
@@ -114,7 +121,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IFile#getCharset(boolean)
 	 */
 	public String getCharset(boolean checkImplicit) throws CoreException {
@@ -123,7 +130,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IFile#getCharsetFor(java.io.Reader)
 	 */
 	public String getCharsetFor(Reader reader) throws CoreException {
@@ -132,7 +139,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IFile#getContentDescription()
 	 */
 	public IContentDescription getContentDescription() throws CoreException {
@@ -141,7 +148,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IFile#getContents()
 	 */
 	public InputStream getContents() throws CoreException {
@@ -150,7 +157,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IFile#getContents(boolean)
 	 */
 	public InputStream getContents(boolean force) throws CoreException {
@@ -159,7 +166,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IFile#getEncoding()
 	 */
 	public int getEncoding() throws CoreException {
@@ -168,7 +175,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IFile#getFullPath()
 	 */
 	public IPath getFullPath() {
@@ -177,7 +184,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IFile#getHistory(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public IFileState[] getHistory(IProgressMonitor monitor) throws CoreException {
@@ -186,7 +193,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IFile#getName()
 	 */
 	public String getName() {
@@ -195,7 +202,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IFile#isReadOnly()
 	 */
 	public boolean isReadOnly() {
@@ -204,8 +211,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#move(org.eclipse.core.runtime.IPath, boolean, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#move(org.eclipse.core.runtime.IPath, boolean, boolean,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void move(IPath destination, boolean force, boolean keepHistory, IProgressMonitor monitor)
 			throws CoreException {
@@ -213,7 +221,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IFile#setCharset(java.lang.String)
 	 */
 	public void setCharset(String newCharset) throws CoreException {
@@ -222,8 +230,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#setCharset(java.lang.String, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#setCharset(java.lang.String,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void setCharset(String newCharset, IProgressMonitor monitor) throws CoreException {
 
@@ -231,8 +240,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#setContents(java.io.InputStream, boolean, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#setContents(java.io.InputStream, boolean, boolean,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void setContents(InputStream source, boolean force, boolean keepHistory, IProgressMonitor monitor)
 			throws CoreException {
@@ -241,8 +251,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#setContents(org.eclipse.core.resources.IFileState, boolean, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#setContents(org.eclipse.core.resources.IFileState, boolean,
+	 *      boolean, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void setContents(IFileState source, boolean force, boolean keepHistory, IProgressMonitor monitor)
 			throws CoreException {
@@ -251,8 +262,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#setContents(java.io.InputStream, int, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#setContents(java.io.InputStream, int,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void setContents(InputStream source, int updateFlags, IProgressMonitor monitor)
 			throws CoreException {
@@ -261,8 +273,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#setContents(org.eclipse.core.resources.IFileState, int, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#setContents(org.eclipse.core.resources.IFileState, int,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void setContents(IFileState source, int updateFlags, IProgressMonitor monitor)
 			throws CoreException {
@@ -271,7 +284,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#accept(org.eclipse.core.resources.IResourceProxyVisitor, int)
 	 */
 	public void accept(IResourceProxyVisitor visitor, int memberFlags) throws CoreException {
@@ -280,7 +293,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#accept(org.eclipse.core.resources.IResourceVisitor)
 	 */
 	public void accept(IResourceVisitor visitor) throws CoreException {
@@ -289,8 +302,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IResource#accept(org.eclipse.core.resources.IResourceVisitor, int, boolean)
+	 * 
+	 * @see org.eclipse.core.resources.IResource#accept(org.eclipse.core.resources.IResourceVisitor, int,
+	 *      boolean)
 	 */
 	public void accept(IResourceVisitor visitor, int depth, boolean includePhantoms) throws CoreException {
 
@@ -298,7 +312,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#accept(org.eclipse.core.resources.IResourceVisitor, int, int)
 	 */
 	public void accept(IResourceVisitor visitor, int depth, int memberFlags) throws CoreException {
@@ -307,7 +321,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#clearHistory(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void clearHistory(IProgressMonitor monitor) throws CoreException {
@@ -316,8 +330,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IResource#copy(org.eclipse.core.runtime.IPath, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IResource#copy(org.eclipse.core.runtime.IPath, boolean,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void copy(IPath destination, boolean force, IProgressMonitor monitor) throws CoreException {
 
@@ -325,8 +340,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IResource#copy(org.eclipse.core.runtime.IPath, int, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IResource#copy(org.eclipse.core.runtime.IPath, int,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void copy(IPath destination, int updateFlags, IProgressMonitor monitor) throws CoreException {
 
@@ -334,8 +350,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IResource#copy(org.eclipse.core.resources.IProjectDescription, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IResource#copy(org.eclipse.core.resources.IProjectDescription, boolean,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void copy(IProjectDescription description, boolean force, IProgressMonitor monitor)
 			throws CoreException {
@@ -344,8 +361,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IResource#copy(org.eclipse.core.resources.IProjectDescription, int, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IResource#copy(org.eclipse.core.resources.IProjectDescription, int,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void copy(IProjectDescription description, int updateFlags, IProgressMonitor monitor)
 			throws CoreException {
@@ -354,7 +372,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#createMarker(java.lang.String)
 	 */
 	public IMarker createMarker(String type) throws CoreException {
@@ -363,7 +381,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#delete(boolean, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void delete(boolean force, IProgressMonitor monitor) throws CoreException {
@@ -372,7 +390,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#delete(int, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void delete(int updateFlags, IProgressMonitor monitor) throws CoreException {
@@ -381,7 +399,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#deleteMarkers(java.lang.String, boolean, int)
 	 */
 	public void deleteMarkers(String type, boolean includeSubtypes, int depth) throws CoreException {
@@ -390,7 +408,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#exists()
 	 */
 	public boolean exists() {
@@ -399,7 +417,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#findMarker(long)
 	 */
 	public IMarker findMarker(long id) throws CoreException {
@@ -408,7 +426,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#findMarkers(java.lang.String, boolean, int)
 	 */
 	public IMarker[] findMarkers(String type, boolean includeSubtypes, int depth) throws CoreException {
@@ -417,7 +435,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#getFileExtension()
 	 */
 	public String getFileExtension() {
@@ -426,7 +444,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#getLocalTimeStamp()
 	 */
 	public long getLocalTimeStamp() {
@@ -435,7 +453,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#getLocation()
 	 */
 	public IPath getLocation() {
@@ -578,7 +596,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#getMarker(long)
 	 */
 	public IMarker getMarker(long id) {
@@ -595,7 +613,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#getPersistentProperty(org.eclipse.core.runtime.QualifiedName)
 	 */
 	public String getPersistentProperty(QualifiedName key) throws CoreException {
@@ -620,7 +638,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#getSessionProperty(org.eclipse.core.runtime.QualifiedName)
 	 */
 	public Object getSessionProperty(QualifiedName key) throws CoreException {
@@ -645,7 +663,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#isLocal(int)
 	 */
 	public boolean isLocal(int depth) {
@@ -662,7 +680,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#isSynchronized(int)
 	 */
 	public boolean isSynchronized(int depth) {
@@ -675,8 +693,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IResource#move(org.eclipse.core.runtime.IPath, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IResource#move(org.eclipse.core.runtime.IPath, boolean,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void move(IPath destination, boolean force, IProgressMonitor monitor) throws CoreException {
 
@@ -684,8 +703,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IResource#move(org.eclipse.core.runtime.IPath, int, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IResource#move(org.eclipse.core.runtime.IPath, int,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void move(IPath destination, int updateFlags, IProgressMonitor monitor) throws CoreException {
 
@@ -693,8 +713,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IResource#move(org.eclipse.core.resources.IProjectDescription, boolean, boolean, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IResource#move(org.eclipse.core.resources.IProjectDescription, boolean,
+	 *      boolean, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void move(IProjectDescription description, boolean force, boolean keepHistory,
 			IProgressMonitor monitor) throws CoreException {
@@ -703,8 +724,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IResource#move(org.eclipse.core.resources.IProjectDescription, int, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IResource#move(org.eclipse.core.resources.IProjectDescription, int,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void move(IProjectDescription description, int updateFlags, IProgressMonitor monitor)
 			throws CoreException {
@@ -713,7 +735,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#refreshLocal(int, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void refreshLocal(int depth, IProgressMonitor monitor) throws CoreException {
@@ -722,7 +744,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#revertModificationStamp(long)
 	 */
 	public void revertModificationStamp(long value) throws CoreException {
@@ -731,7 +753,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#setDerived(boolean)
 	 */
 	public void setDerived(boolean isDerived) throws CoreException {
@@ -740,8 +762,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IResource#setLocal(boolean, int, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IResource#setLocal(boolean, int,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void setLocal(boolean flag, int depth, IProgressMonitor monitor) throws CoreException {
 
@@ -749,7 +772,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#setLocalTimeStamp(long)
 	 */
 	public long setLocalTimeStamp(long value) throws CoreException {
@@ -758,8 +781,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IResource#setPersistentProperty(org.eclipse.core.runtime.QualifiedName, java.lang.String)
+	 * 
+	 * @see org.eclipse.core.resources.IResource#setPersistentProperty(org.eclipse.core.runtime.QualifiedName,
+	 *      java.lang.String)
 	 */
 	public void setPersistentProperty(QualifiedName key, String value) throws CoreException {
 
@@ -767,7 +791,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#setReadOnly(boolean)
 	 */
 	public void setReadOnly(boolean readOnly) {
@@ -776,7 +800,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#setResourceAttributes(org.eclipse.core.resources.ResourceAttributes)
 	 */
 	public void setResourceAttributes(ResourceAttributes attributes) throws CoreException {
@@ -785,8 +809,9 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IResource#setSessionProperty(org.eclipse.core.runtime.QualifiedName, java.lang.Object)
+	 * 
+	 * @see org.eclipse.core.resources.IResource#setSessionProperty(org.eclipse.core.runtime.QualifiedName,
+	 *      java.lang.Object)
 	 */
 	public void setSessionProperty(QualifiedName key, Object value) throws CoreException {
 
@@ -794,7 +819,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#setTeamPrivateMember(boolean)
 	 */
 	public void setTeamPrivateMember(boolean isTeamPrivate) throws CoreException {
@@ -803,7 +828,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#touch(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void touch(IProgressMonitor monitor) throws CoreException {
@@ -812,7 +837,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
 	public Object getAdapter(Class adapter) {
@@ -821,7 +846,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.runtime.jobs.ISchedulingRule#contains(org.eclipse.core.runtime.jobs.ISchedulingRule)
 	 */
 	public boolean contains(ISchedulingRule rule) {
@@ -830,7 +855,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.runtime.jobs.ISchedulingRule#isConflicting(org.eclipse.core.runtime.jobs.ISchedulingRule)
 	 */
 	public boolean isConflicting(ISchedulingRule rule) {
@@ -839,56 +864,57 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IFile#createLink(java.net.URI, int, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IFile#createLink(java.net.URI, int,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void createLink(URI linkLocation, int updateFlags, IProgressMonitor monitor) throws CoreException {
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#createProxy()
 	 */
 	public IResourceProxy createProxy() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	public URI getLocationURI() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	public URI getRawLocationURI() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#isLinked(int)
 	 */
 	public boolean isLinked(int options) {
-		// TODO Auto-generated method stub
+
 		return false;
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#findMaxProblemSeverity(java.lang.String, boolean, int)
 	 */
 	public int findMaxProblemSeverity(String type, boolean includeSubtypes, int depth) throws CoreException {
-		// TODO Auto-generated method stub
+
 		return 0;
 	}
 
 	/** eclipse 3.4M4 compatibility * */
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#isHidden()
 	 */
 	public boolean isHidden() {
@@ -897,7 +923,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#setHidden(boolean)
 	 */
 	public void setHidden(boolean val) {
@@ -905,7 +931,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#isDerived(int)
 	 */
 	public boolean isDerived(int val) {
@@ -915,7 +941,7 @@ public class DummyFile implements IFile {
 	/** eclipse 3.4M6 compatibility * */
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#getPersistentProperties()
 	 */
 	public Map getPersistentProperties() throws CoreException {
@@ -924,7 +950,7 @@ public class DummyFile implements IFile {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IResource#getSessionProperties()
 	 */
 	public Map getSessionProperties() throws CoreException {

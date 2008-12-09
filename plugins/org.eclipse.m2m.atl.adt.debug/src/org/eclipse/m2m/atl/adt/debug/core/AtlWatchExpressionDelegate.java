@@ -28,7 +28,7 @@ import org.eclipse.debug.core.model.IWatchExpressionDelegate;
 import org.eclipse.debug.core.model.IWatchExpressionListener;
 import org.eclipse.debug.core.model.IWatchExpressionResult;
 import org.eclipse.m2m.atl.ATLLogger;
-import org.eclipse.m2m.atl.adt.debug.AtlDebugMessages;
+import org.eclipse.m2m.atl.adt.debug.Messages;
 import org.eclipse.m2m.atl.adt.debug.core.ocl.OclHelper;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMXMLWriter;
@@ -131,7 +131,6 @@ public class AtlWatchExpressionDelegate implements IWatchExpressionDelegate {
 			try {
 				frame = (AtlStackFrame)((IThread)context).getTopStackFrame();
 			} catch (DebugException e) {
-				//TODO test if necessary
 				ATLLogger.log(Level.INFO,e.getLocalizedMessage(), e);
 			}
 		}
@@ -178,7 +177,7 @@ public class AtlWatchExpressionDelegate implements IWatchExpressionDelegate {
 			de = new DebugException(
 					new Status(
 							Status.ERROR,
-							"org.eclipse.m2m.atl.adt.debug", Status.OK, AtlDebugMessages.getString("AtlWatchExpressionDelegate.EXPRESSIONERROR"), e)); //$NON-NLS-1$//$NON-NLS-2$
+							"org.eclipse.m2m.atl.adt.debug", Status.OK, Messages.getString("AtlWatchExpressionDelegate.EXPRESSIONERROR"), e)); //$NON-NLS-1$//$NON-NLS-2$
 		}
 		return new AtlWatchExpressionResult(de, errorMessages, value);
 	}
