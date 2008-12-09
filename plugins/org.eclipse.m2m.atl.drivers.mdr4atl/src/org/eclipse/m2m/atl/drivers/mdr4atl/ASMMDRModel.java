@@ -266,7 +266,7 @@ public class ASMMDRModel extends ASMModel {
 	 *            The model name. Used as a basis for creating a new extent.
 	 * @param metamodel
 	 * @param ml
-	 * @return
+	 * @return the new model
 	 * @throws Exception
 	 */
 	public static ASMMDRModel newASMMDRModel(String name, ASMMDRModel metamodel, ModelLoader ml)
@@ -283,7 +283,7 @@ public class ASMMDRModel extends ASMModel {
 	 *            The model URI. Not used by MDR.
 	 * @param metamodel
 	 * @param ml
-	 * @return
+	 * @return the new model
 	 * @throws Exception
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */

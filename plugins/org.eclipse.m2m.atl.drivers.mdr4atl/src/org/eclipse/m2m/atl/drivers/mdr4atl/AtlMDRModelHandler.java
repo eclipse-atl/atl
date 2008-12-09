@@ -34,19 +34,23 @@ public class AtlMDRModelHandler extends AtlModelHandler {
 
 	private ASMMDRModel mofmm;
 
+
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, org.eclipse.core.resources.IProject)
+	 * Saves a model in the given {@link IProject}.
+	 * 
+	 * @param model the model
+	 * @param project the project
 	 */
 	public void saveModel(final ASMModel model, IProject project) {
 		saveModel(model, model.getName() + ".xmi", project);
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String, org.eclipse.core.resources.IProject)
+	 * Saves a model in the given {@link IProject}.
+	 * 
+	 * @param model the model
+	 * @param fileName the file name
+	 * @param project the project
 	 */
 	public void saveModel(final ASMModel model, String fileName, IProject project) {
 		IFile file = project.getFile(fileName);
@@ -56,7 +60,7 @@ public class AtlMDRModelHandler extends AtlModelHandler {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String)
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String)
 	 */
 	public void saveModel(final ASMModel model, String uri) {
 		try {
@@ -98,7 +102,7 @@ public class AtlMDRModelHandler extends AtlModelHandler {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.OutputStream)
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.OutputStream)
 	 */
 	public void saveModel(final ASMModel model, OutputStream out) {
 		try {
