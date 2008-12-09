@@ -43,7 +43,7 @@ public class DummyTests extends TestCase implements IApplication {
 	 * @return The testsuite containing all the tests
 	 */
 	public static Test suite() {
-		final TestSuite suite = new TestSuite("ATL test suite");
+		final TestSuite suite = new TestSuite("ATL test suite"); //$NON-NLS-1$
 		return suite;
 	}
 

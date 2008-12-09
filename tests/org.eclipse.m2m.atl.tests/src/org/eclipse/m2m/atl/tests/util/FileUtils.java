@@ -16,8 +16,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.eclipse.m2m.atl.tests.AtlTestsMessages;
-
 /**
  * Provide utilities to get file paths, or compare files.
  * 
@@ -42,7 +40,7 @@ public final class FileUtils {
 	 */
 	public static void compareFiles(File left, File right, boolean delete) throws IOException {
 		if (left.length() != right.length()) {
-			throw new IOException(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
+			throw new RuntimeException("There are differences between files " + left + " and " + right); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		FileInputStream lin = new FileInputStream(left);
 		FileInputStream rin = new FileInputStream(right);
@@ -56,7 +54,7 @@ public final class FileUtils {
 				}
 				for (int byteIndex = 0; byteIndex < lcount; byteIndex++) {
 					if (lbuffer[byteIndex] != rbuffer[byteIndex]) {
-						throw new IOException(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
+						throw new RuntimeException("There are differences between files " + left + " and " + right); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}

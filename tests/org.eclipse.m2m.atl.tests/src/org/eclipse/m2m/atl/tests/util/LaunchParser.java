@@ -41,22 +41,22 @@ public class LaunchParser {
 
 	private URL asmUrl;
 
-	private Map libsFromConfig;
+	private Map<String, URL> libsFromConfig;
 
-	private List superimpose;
+	private List<URL> superimpose;
 
-	private Map input;
+	private Map<String, String> input;
 
-	private Map output;
+	private Map<String, String> output;
 
-	private Map modelHandler;
+	private Map<String, String> modelHandler;
 
-	private Map path;
+	private Map<String, String> path;
 
-	private Map options;
+	private Map<String, Object> options;
 
-	private String convertPath(String pathParam) {
-		if (!pathParam.startsWith("uri:") && !pathParam.startsWith("#")) {
+	private String convertPath(String pathParam) throws IOException {
+		if (!pathParam.startsWith("uri:") && !pathParam.startsWith("#")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return AtlTestPlugin.getDefault().getBaseDirectory() + pathParam;
 		}
 		return pathParam;
@@ -73,13 +73,13 @@ public class LaunchParser {
 			SAXException {
 
 		// static variables initialization
-		libsFromConfig = new HashMap();
-		superimpose = new ArrayList();
-		input = new HashMap();
-		output = new HashMap();
-		modelHandler = new HashMap();
-		path = new HashMap();
-		options = new HashMap();
+		libsFromConfig = new HashMap<String, URL>();
+		superimpose = new ArrayList<URL>();
+		input = new HashMap<String, String>();
+		output = new HashMap<String, String>();
+		modelHandler = new HashMap<String, String>();
+		path = new HashMap<String, String>();
+		options = new HashMap<String, Object>();
 
 		// parsing configuration
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -92,22 +92,22 @@ public class LaunchParser {
 			if (node instanceof Element) {
 				Element element = (Element)node;
 				String key = element.getAttribute("key"); //$NON-NLS-1$
-				if (element.getNodeName().equals("booleanAttribute")) {
-					options.put(key, element.getAttribute("value"));
+				if (element.getNodeName().equals("booleanAttribute")) { //$NON-NLS-1$
+					options.put(key, element.getAttribute("value")); //$NON-NLS-1$
 				} else if (key.equals("ATL File Name")) { //$NON-NLS-1$
 					String asmFilePath = element.getAttribute("value"); //$NON-NLS-1$
-					atlUrl = new URL("file:" + convertPath(asmFilePath));
+					atlUrl = new URL("file:" + convertPath(asmFilePath)); //$NON-NLS-1$
 					if (asmFilePath.endsWith(".atl")) { //$NON-NLS-1$
 						asmFilePath = asmFilePath.substring(0, asmFilePath.length() - 4) + ".asm"; //$NON-NLS-1$
 					}
-					asmUrl = new URL("file:" + convertPath(asmFilePath));
+					asmUrl = new URL("file:" + convertPath(asmFilePath)); //$NON-NLS-1$
 				} else if (key.equals("Superimpose")) { //$NON-NLS-1$
 					NodeList entriesList = element.getChildNodes();
 					for (int j = 0; j < entriesList.getLength(); j++) {
 						Node nodeEntry = entriesList.item(j);
 						if (nodeEntry instanceof Element) {
 							Element entry = (Element)nodeEntry;
-							URL moduleUrl = new URL("file:" + convertPath(entry.getAttribute("value"))); //$NON-NLS-1$
+							URL moduleUrl = new URL("file:" + convertPath(entry.getAttribute("value"))); //$NON-NLS-1$ //$NON-NLS-2$
 							superimpose.add(moduleUrl);
 						}
 					}
@@ -119,7 +119,7 @@ public class LaunchParser {
 							Element entry = (Element)nodeEntry;
 							libsFromConfig
 									.put(
-											entry.getAttribute("key"), new URL("file:" + convertPath(entry.getAttribute("value")))); //$NON-NLS-1$ //$NON-NLS-2$
+											entry.getAttribute("key"), new URL("file:" + convertPath(entry.getAttribute("value")))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						}
 					}
 				} else if (key.equals("Path")) { //$NON-NLS-1$
@@ -127,7 +127,12 @@ public class LaunchParser {
 						Node nodeEntry = element.getChildNodes().item(j);
 						if (nodeEntry instanceof Element) {
 							Element entry = (Element)nodeEntry;
-							path.put(entry.getAttribute("key"), convertPath(entry.getAttribute("value")));
+							String pathParam = entry.getAttribute("value"); //$NON-NLS-1$
+							pathParam = convertPath(pathParam);
+							if (!pathParam.startsWith("uri:") && !pathParam.startsWith("#")) { //$NON-NLS-1$ //$NON-NLS-2$
+								pathParam = "ext:" + pathParam; //$NON-NLS-1$
+							}
+							path.put(entry.getAttribute("key"), pathParam); //$NON-NLS-1$
 						}
 					}
 				} else if (key.equals("Input")) { //$NON-NLS-1$
@@ -167,31 +172,31 @@ public class LaunchParser {
 		return asmUrl;
 	}
 
-	public Map getLibsFromConfig() {
+	public Map<String, URL> getLibsFromConfig() {
 		return libsFromConfig;
 	}
 
-	public List getSuperimpose() {
+	public List<URL> getSuperimpose() {
 		return superimpose;
 	}
 
-	public Map getInput() {
+	public Map<String, String> getInput() {
 		return input;
 	}
 
-	public Map getOutput() {
+	public Map<String, String> getOutput() {
 		return output;
 	}
 
-	public Map getModelHandler() {
+	public Map<String, String> getModelHandler() {
 		return modelHandler;
 	}
 
-	public Map getPath() {
+	public Map<String, String> getPath() {
 		return path;
 	}
 
-	public Map getOptions() {
+	public Map<String, Object> getOptions() {
 		return options;
 	}
 

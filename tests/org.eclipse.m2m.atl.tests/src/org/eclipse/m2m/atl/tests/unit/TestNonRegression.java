@@ -28,7 +28,7 @@ import org.eclipse.m2m.atl.tests.util.FileUtils;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public abstract class TestNonRegression extends TestCase {
-	
+
 	/** The path for usecases. */
 	protected static final String INPUT_PATH = "/org.eclipse.m2m.atl.tests/data/inputs"; //$NON-NLS-1$
 
@@ -36,17 +36,18 @@ public abstract class TestNonRegression extends TestCase {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see junit.framework.TestCase#setUp()
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
 		String name = this.getClass().getName();
-		System.out.println(this.getClass().getName());
+		info(name);
+		String line = ""; //$NON-NLS-1$
 		for (int i = 0; i < name.length(); i++) {
-			System.out.print("="); //$NON-NLS-1$
+			line += "="; //$NON-NLS-1$
 		}
-		System.out.println();
+		info(line);
 	}
 
 	/**
@@ -107,10 +108,10 @@ public abstract class TestNonRegression extends TestCase {
 		File propertiesFile = new File(AtlTestPlugin.getDefault().getBaseDirectory() + propertiesPath);
 		FileInputStream fis = new FileInputStream(propertiesFile);
 		props.load(fis);
-		Set testsToJump = props.keySet();
+		Set<Object> testsToJump = props.keySet();
 		int i = 0;
 		res = new String[testsToJump.size()];
-		for (Iterator iterator = testsToJump.iterator(); iterator.hasNext();) {
+		for (Iterator<Object> iterator = testsToJump.iterator(); iterator.hasNext();) {
 			String test = (String)iterator.next();
 			res[i] = test.trim();
 			i++;
@@ -129,4 +130,29 @@ public abstract class TestNonRegression extends TestCase {
 	protected void setPropertiesPath(String propertiesPath) {
 		this.propertiesPath = propertiesPath;
 	}
+	
+	
+	/**
+	 * Log a failure message.
+	 * 
+	 * @param msg
+	 *            The string message (or a key in the message catalog)
+	 * @param thrown
+	 *            the throwable cause
+	 */
+	public static void fail(String msg, Throwable thrown) {
+		thrown.printStackTrace();
+		fail(msg);
+	}
+	
+	/**
+	 * Log a message.
+	 * 
+	 * @param msg
+	 *            The string message (or a key in the message catalog)
+	 */
+	public static void info(String msg) {
+		System.out.println(msg);
+	}
+
 }

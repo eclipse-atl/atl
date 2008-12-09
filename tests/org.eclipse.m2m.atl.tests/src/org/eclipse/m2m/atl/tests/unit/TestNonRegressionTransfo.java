@@ -16,20 +16,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.core.IExtractor;
+import org.eclipse.m2m.atl.core.IInjector;
+import org.eclipse.m2m.atl.core.ModelFactory;
+import org.eclipse.m2m.atl.core.launch.ILauncher;
+import org.eclipse.m2m.atl.core.service.CoreService;
+import org.eclipse.m2m.atl.core.service.LauncherService;
 import org.eclipse.m2m.atl.engine.compiler.AtlCompiler;
 import org.eclipse.m2m.atl.engine.compiler.CompilerNotFoundException;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
-import org.eclipse.m2m.atl.tests.AtlTestsMessages;
-import org.eclipse.m2m.atl.tests.TestException;
 import org.eclipse.m2m.atl.tests.util.LaunchParser;
 import org.eclipse.m2m.atl.tests.util.ModelUtils;
 import org.xml.sax.SAXException;
@@ -58,9 +63,9 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		results = new FileWriter("results/" + getVMName() + "_results.xml");
-		results.write("<?xml version=\"1.0\"?>\n");
-		results.write("<vm>\n");
+		results = new FileWriter("results/" + getVMName() + "_results.xml"); //$NON-NLS-1$ //$NON-NLS-2$
+		results.write("<?xml version=\"1.0\"?>\n"); //$NON-NLS-1$
+		results.write("<vm>\n"); //$NON-NLS-1$
 	}
 
 	/**
@@ -69,29 +74,20 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#singleTest(java.io.File)
 	 */
 	protected void singleTest(File directory) {
-		System.out.print(AtlTestsMessages.getString(
-				"TestNonRegressionTransfo.SINGLETEST", new Object[] {directory.getName()})); //$NON-NLS-1$
 		final String buildURI = directory + File.separator + directory.getName() + ".launch"; //$NON-NLS-1$
 
 		if (!new File(buildURI).exists()) {
-			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.3")); //$NON-NLS-1$
-		}
-		if (launchParser == null) {
-			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.4")); //$NON-NLS-1$
+			fail("Launch configuration file " + buildURI + "not found"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		try {
 			launchParser.parseConfiguration(buildURI);
 		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.5")); //$NON-NLS-1$
-		} catch (SAXException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.5")); //$NON-NLS-1$
+			fail("Error accessing launch configuration " + buildURI, e); //$NON-NLS-1$
 		} catch (ParserConfigurationException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.5")); //$NON-NLS-1$
-		} 
-
+			fail("Error configuring launch configuration parser for:" + buildURI, e); //$NON-NLS-1$
+		} catch (SAXException e) {
+			fail("Error parsing launch configuration " + buildURI, e); //$NON-NLS-1$
+		}
 
 		if (recompileBeforeLaunch) {
 			/*
@@ -99,7 +95,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			 */
 			URL atlUrl = launchParser.getAtlUrl();
 			String atlFilePath = atlUrl.getFile();
-			String outName = "";
+			String outName = ""; //$NON-NLS-1$
 			InputStream is = null;
 
 			try {
@@ -108,86 +104,85 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 				} else {
 					try {
 						outName = atlFilePath.substring(0, atlFilePath.lastIndexOf('.')) + ".temp.asm"; //$NON-NLS-1$
-						launchParser.setAsmUrl(new URL("file:" + outName));
+						launchParser.setAsmUrl(new URL("file:" + outName)); //$NON-NLS-1$
 					} catch (MalformedURLException e) {
-						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-						fail("URL problem : " + atlUrl); //$NON-NLS-1$
+						fail("URL problem: " + atlUrl, e); //$NON-NLS-1$
 					}
 				}
 
 				is = atlUrl.openStream();
+				try {
+					AtlCompiler.compile(is, outName);
+				} catch (CompilerNotFoundException e) {
+					fail("Compiler not found", e); //$NON-NLS-1$
+				}
+				try {
+					is.close();
+				} catch (IOException e) {
+					fail(atlUrl + " compilation failed", e); //$NON-NLS-1$
+				}
 			} catch (IOException e) {
-				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				fail("File not found : " + atlUrl); //$NON-NLS-1$
+				fail("File not found: " + atlUrl, e); //$NON-NLS-1$
 			}
-			try {
-				AtlCompiler.compile(is, outName);
-			} catch (CompilerNotFoundException e) {
-				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				fail("Compiler not found"); //$NON-NLS-1$
-			}
-			try {
-				is.close();
-			} catch (IOException e) {
-				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				fail(atlUrl + " compilation failed"); //$NON-NLS-1$
-			}
+
 		}
 
 		/*
 		 * TRANSFORMATION LAUNCH
 		 */
 		double executionTime = 0;
+		double pureExecutionTime = 0;
 		try {
-			executionTime = launch();
-			results.write("\t<test name=\"" + directory.getName() + "\" directory=\""
+			long startTime = System.currentTimeMillis();
+			pureExecutionTime = launch();
+			long endTime = System.currentTimeMillis();
+			executionTime = (endTime - startTime) / 1000.;
+			results.write("\t<test name=\"" + directory.getName() + "\" directory=\"" //$NON-NLS-1$ //$NON-NLS-2$
 					+ directory.toString().substring(AtlTestPlugin.getDefault().getBaseDirectory().length())
-					+ "\" time=\"" + executionTime + "\"/>\n");
+					+ "\" time=\"" + executionTime + "\"/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.6", new Object[] {e})); //$NON-NLS-1$
+			fail("Error writing results for: " + directory.getName(), e); //$NON-NLS-1$
 		} catch (CoreException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			fail(AtlTestsMessages.getString("TestNonRegressionTransfo.6", new Object[] {e})); //$NON-NLS-1$
+			fail(directory.getName() + ": " + e.getMessage(), e); //$NON-NLS-1$
 		}
-		System.out.println(executionTime + "s."); //$NON-NLS-1$
+		info(directory.getName() + ": " + executionTime + "s (pure execution: " + pureExecutionTime + "s)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		AtlTestPlugin.getDefault().getResourceSet().getResources().clear();
 
 		/*
 		 * RESULTS COMPARISON
 		 */
 
-		Map output = launchParser.getOutput();
+		Map<String, String> output = launchParser.getOutput();
 		// metamodels registration for emf comparison
-		for (Iterator iter = output.values().iterator(); iter.hasNext();) {
-			String metaid = (String)iter.next();
-			String metapath = (String)launchParser.getPath().get(metaid);
+		for (Iterator<String> iter = output.values().iterator(); iter.hasNext();) {
+			String metaid = iter.next();
+			String metapath = launchParser.getPath().get(metaid);
 			try {
-				if (!metapath.startsWith("uri:")) {
+				if (!metapath.startsWith("uri:")) { //$NON-NLS-1$
+					if (metapath.startsWith("ext:")) { //$NON-NLS-1$
+						metapath = metapath.substring(4);
+					}
 					ModelUtils.registerMetamodel(URI.createFileURI(metapath), AtlTestPlugin.getDefault()
 							.getResourceSet());
 				}
-			} catch (IOException e) {
-				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.7")); //$NON-NLS-1$
+			} catch (IOException ex) {
+				fail("Unable to register output metamodel " + metaid + " for comparison: " + ex); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 
-		for (Iterator iter = output.keySet().iterator(); iter.hasNext();) {
-			String outputid = (String)iter.next();
-			String outputPath = (String)launchParser.getPath().get(outputid);
+		for (Iterator<String> iter = output.keySet().iterator(); iter.hasNext();) {
+			String outputid = iter.next();
+			String outputPath = launchParser.getPath().get(outputid);
+			if (outputPath.startsWith("ext:")) { //$NON-NLS-1$
+				outputPath = outputPath.substring(4);
+			}
 			String expectedPath = outputPath.replaceFirst("inputs", "expected"); //$NON-NLS-1$ //$NON-NLS-2$
 			try {
 				ModelUtils.compareModels(new File(outputPath), new File(expectedPath), true, true);
-			} catch (IOException e) {
-				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.8")); //$NON-NLS-1$
-			} catch (InterruptedException e) {
-				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.8")); //$NON-NLS-1$
-			} catch (TestException e) {
-				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				fail(AtlTestsMessages.getString("TestNonRegressionTransfo.8")); //$NON-NLS-1$
+			} catch (IOException ex) {
+				fail(ex.getMessage());
+			} catch (InterruptedException ex) {
+				fail(ex.getMessage());
 			}
 		}
 		totalTime += executionTime;
@@ -200,9 +195,9 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 * @see junit.framework.TestCase#tearDown()
 	 */
 	protected void tearDown() throws Exception {
-		System.out.println("total time : " + totalTime + "s.");
-		results.write("\t<test name=\"TOTAL\" time=\"" + totalTime + "\"/>\n");
-		results.write("</vm>\n");
+		info("total time : " + totalTime + "s"); //$NON-NLS-1$ //$NON-NLS-2$
+		results.write("\t<test name=\"TOTAL\" time=\"" + totalTime + "\"/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		results.write("</vm>\n"); //$NON-NLS-1$
 		results.close();
 		super.tearDown();
 	}
@@ -210,10 +205,68 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	/**
 	 * Abstract method to launch a transformation.
 	 * 
-	 * @return the execution time
+	 * @return pureExecutionTime, i.e. the execution time without loading/saving models
 	 * @throws Exception
 	 */
-	protected abstract double launch() throws CoreException, IOException;
+	protected double launch() throws CoreException, IOException {
+		String launcherName = getVMName();
+
+		// Launch configuration analysis
+		URL asmURL = launchParser.getAsmUrl();
+		Map<String, String> sourceModels = launchParser.getInput();
+		Map<String, String> targetModels = launchParser.getOutput();
+		Map<String, String> modelPaths = launchParser.getPath();
+		Map<String, URL> libs = launchParser.getLibsFromConfig();
+		List<URL> superimps = launchParser.getSuperimpose();
+		Map<String, Object> options = launchParser.getOptions();
+
+		Map<String, String> modelHandlers = launchParser.getModelHandler();
+		options.put("modelHandlers", modelHandlers); //$NON-NLS-1$
+
+		// API extensions management
+		ILauncher launcher = CoreService.getLauncher(launcherName);
+		Map<String, ModelFactory> modelFactories = new HashMap<String, ModelFactory>();
+		Map<String, IExtractor> extractors = new HashMap<String, IExtractor>();
+		Map<String, IInjector> injectors = new HashMap<String, IInjector>();
+
+		ModelFactory modelfactory = launcher.getDefaultModelFactory();
+		IInjector injector = modelfactory.getDefaultInjector();
+		IExtractor extractor = modelfactory.getDefaultExtractor();
+
+		for (Iterator<String> iterator = modelPaths.keySet().iterator(); iterator.hasNext();) {
+			String modelName = iterator.next();
+			modelFactories.put(modelName, modelfactory);
+			extractors.put(modelName, extractor);
+			injectors.put(modelName, injector);
+		}
+
+		InputStream asmInputStream = asmURL.openStream();
+		InputStream[] modules = new InputStream[superimps.size() + 1];
+		modules[0] = asmInputStream;
+		for (int i = 1; i < modules.length; i++) {
+			URL url = superimps.get(i - 1);
+			try {
+				modules[i] = url.openStream();
+			} catch (IOException e) {
+				fail(e.getLocalizedMessage());
+			}
+		}
+
+		// Libraries
+		Map<String, Object> libraries = new HashMap<String, Object>();
+		for (Iterator<String> i = libs.keySet().iterator(); i.hasNext();) {
+			String libName = i.next();
+			libraries.put(libName, libs.get(libName).openStream());
+		}
+		long startTime = System.currentTimeMillis();
+		LauncherService.launch(ILauncher.RUN_MODE, launcher, modelFactories, extractors, injectors,
+				sourceModels, Collections.<String, String> emptyMap(), targetModels, modelPaths, options,
+				libraries, (Object[])modules);
+
+		long endTime = System.currentTimeMillis();
+
+		return (endTime - startTime) / 1000.;
+	}
 
 	/**
 	 * Returns the used VM name.

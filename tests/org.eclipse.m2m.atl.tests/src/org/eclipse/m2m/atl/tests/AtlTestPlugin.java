@@ -12,13 +12,14 @@ package org.eclipse.m2m.atl.tests;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
+import java.util.logging.Handler;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.atl.ATLLogger;
+import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle.
@@ -36,6 +37,8 @@ public class AtlTestPlugin extends Plugin {
 	/** the main resourceSet. */
 	private static ResourceSet resourceSet = new ResourceSetImpl();
 
+	private static Handler handler;
+	
 	/**
 	 * Default constructor for the plugin.
 	 */
@@ -54,6 +57,29 @@ public class AtlTestPlugin extends Plugin {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
+	 */
+	@Override
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		handler = new StandardStreamHandler();
+		ATLLogger.getLogger().addHandler(handler);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+	 */
+	@Override
+	public void stop(BundleContext context) throws Exception {
+		ATLLogger.getLogger().removeHandler(handler);
+		super.stop(context);
+	}
+
+	/**
 	 * Returns the main ResourceSet.
 	 * 
 	 * @return the main ResourceSet
@@ -67,13 +93,8 @@ public class AtlTestPlugin extends Plugin {
 	 * 
 	 * @return the base test data directory
 	 */
-	public String getBaseDirectory() {
-		try {
-			return new File(FileLocator.toFileURL(AtlTestPlugin.getDefault().getBundle().getEntry("/"))
-					.getFile()).getParent();
-		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
-		return null;
+	public String getBaseDirectory() throws IOException {
+		return new File(FileLocator.toFileURL(AtlTestPlugin.getDefault().getBundle().getEntry("/")).getFile()) //$NON-NLS-1$
+				.getParent();
 	}
 }

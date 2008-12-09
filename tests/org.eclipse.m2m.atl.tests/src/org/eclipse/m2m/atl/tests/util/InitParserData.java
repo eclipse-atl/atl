@@ -13,10 +13,8 @@ package org.eclipse.m2m.atl.tests.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
@@ -26,7 +24,7 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
  */
 public final class InitParserData {
 
-	private static final  boolean FORCE = true;
+	private static final boolean FORCE = true;
 
 	/**
 	 * Utility classes don't need to (and shouldn't) be instantiated.
@@ -34,25 +32,28 @@ public final class InitParserData {
 	private InitParserData() {
 		// prevents instantiation
 	}
-	
+
 	/**
 	 * PARSER TEST INITIALIZER creates all missing atl.ecore files into the expected directory.
 	 * 
-	 * @param args unused
+	 * @param args
+	 *            unused
 	 */
 	public static void main(String[] args) {
-		System.out.println("-- init --");
-		File expDir = new File("data/expected");
+		File expDir = new File("data/expected"); //$NON-NLS-1$
 		final File[] directories = FileUtils.listDirectories(expDir);
-		if (directories != null) {
-			for (int i = 0; i < directories.length; i++) {
-				initSnapshots(directories[i]);
+		try {
+			if (directories != null) {
+				for (int i = 0; i < directories.length; i++) {
+					initSnapshots(directories[i]);
+				}
 			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
-		System.out.println("-- done --");
 	}
 
-	private static void initSnapshots(File directory) {
+	private static void initSnapshots(File directory) throws IOException {
 		if (FileUtils.listDirectories(directory).length != 0) {
 			for (int i = 0; i < FileUtils.listDirectories(directory).length; i++) {
 				initSnapshots(FileUtils.listDirectories(directory)[i]);
@@ -62,18 +63,14 @@ public final class InitParserData {
 		}
 	}
 
-	private static void initTest(File directory) {
-		final String transfoPath = directory.toString().replaceAll("expected", "inputs") + "/" + directory.getName() + ".atl"; //$NON-NLS-1$
-		final String xmiTransfoPath = directory.toString() + "/" + directory.getName() + ".atl.xmi"; //$NON-NLS-1$
+	private static void initTest(File directory) throws IOException {
+		final String transfoPath = directory.toString().replaceAll("expected", "inputs") + "/" + directory.getName() + ".atl"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		final String xmiTransfoPath = directory.toString() + "/" + directory.getName() + ".atl.xmi"; //$NON-NLS-1$ //$NON-NLS-2$
 		if (new File(xmiTransfoPath).exists() && !FORCE) {
 			return;
 		}
-		try {
-			EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));
-			ModelUtils.save(result, xmiTransfoPath);
-			System.out.println(transfoPath + " extracted.");
-		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
+		EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));
+		ModelUtils.save(result, xmiTransfoPath);
+		System.out.println(transfoPath + " extracted.\n"); //$NON-NLS-1$
 	}
 }

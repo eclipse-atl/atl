@@ -20,15 +20,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.m2m.atl.ATLLogger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,19 +39,19 @@ import org.xml.sax.SAXException;
  */
 public final class WikiOutputter {
 
-	private static final String TESTS_PATH = "results/tests.properties";
+	private static final String TESTS_PATH = "results/tests.properties"; //$NON-NLS-1$
 
-	private static final String HEADER_PATH = "results/header.txt";
+	private static final String HEADER_PATH = "results/header.txt"; //$NON-NLS-1$
 
-	private static final String WIKI_PATH = "results/wiki_table.txt";
+	private static final String WIKI_PATH = "results/wiki_table.txt"; //$NON-NLS-1$
 
-	private static final String BOTTOM_PATH = "results/bottom.txt";
+	private static final String BOTTOM_PATH = "results/bottom.txt"; //$NON-NLS-1$
 
-	private static final String EMFVM_DATA_PATH = "results/EMFVM_results.xml";
+	private static final String EMFVM_DATA_PATH = "results/EMFVM_results.xml"; //$NON-NLS-1$
 
-	private static final String VM_DATA_PATH = "results/VM_results.xml";
+	private static final String VM_DATA_PATH = "results/VM_results.xml"; //$NON-NLS-1$
 
-	private static Map directories = new HashMap();
+	private static Map<String, String> directories = new HashMap<String, String>();
 
 	/**
 	 * Utility classes don't need to (and shouldn't) be instantiated.
@@ -73,8 +70,8 @@ public final class WikiOutputter {
 	 */
 	public static void main(String[] args) {
 		try {
-			Map vmResults = initResults(VM_DATA_PATH);
-			Map emfVMResults = initResults(EMFVM_DATA_PATH);
+			Map<String, String> vmResults = initResults(VM_DATA_PATH);
+			Map<String, String> emfVMResults = initResults(EMFVM_DATA_PATH);
 
 			FileWriter fw = new FileWriter(WIKI_PATH);
 
@@ -82,45 +79,45 @@ public final class WikiOutputter {
 			Properties tests = new Properties();
 			FileInputStream fis = new FileInputStream(new File(TESTS_PATH));
 			tests.load(fis);
-			for (Iterator iterator = tests.entrySet().iterator(); iterator.hasNext();) {
-				Entry test = (Entry)iterator.next();
+			for (Iterator<Map.Entry<Object, Object>> iterator = tests.entrySet().iterator(); iterator.hasNext();) {
+				Map.Entry<Object, Object> test = iterator.next();
 				String testName = (String)test.getKey();
 				String comment = (String)test.getValue();
-				String emfVMTime = (String)emfVMResults.get(testName);
-				String vmTime = (String)vmResults.get(testName);
-				String directory = (String)directories.get(testName);
+				String emfVMTime = emfVMResults.get(testName);
+				String vmTime = vmResults.get(testName);
+				String directory = directories.get(testName);
 				if (directory != null) {
-					fw.write("|-\n");
+					fw.write("|-\n"); //$NON-NLS-1$
 					fw
-							.write("! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests"
-									+ directory.replaceAll("\\\\", "/")
-									+ "?root=Modeling_Project "
-									+ testName + "]\n");
-					fw.write("! colspan=1 | <b style=\"color:green\">PASS</b>\n");
-					fw.write("! colspan=1 | " + vmTime + "s.\n");
-					fw.write("! colspan=1 | " + emfVMTime + "s.\n");
-					fw.write("! colspan=1 | " + comment + "\n");
+							.write("! colspan=1 | [http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests" //$NON-NLS-1$
+									+ directory.replaceAll("\\\\", "/") //$NON-NLS-1$ //$NON-NLS-2$
+									+ "?root=Modeling_Project " //$NON-NLS-1$
+									+ testName + "]\n"); //$NON-NLS-1$
+					fw.write("! colspan=1 | <b style=\"color:green\">PASS</b>\n"); //$NON-NLS-1$
+					fw.write("! colspan=1 | " + vmTime + "s.\n"); //$NON-NLS-1$ //$NON-NLS-2$
+					fw.write("! colspan=1 | " + emfVMTime + "s.\n"); //$NON-NLS-1$ //$NON-NLS-2$
+					fw.write("! colspan=1 | " + comment + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
-			fw.write("|-\n");
-			fw.write("! colspan=2 | Total time : \n");
-			fw.write("! colspan=1 | " + new Double((String)vmResults.get("TOTAL")).floatValue() + "s.\n");
-			fw.write("! colspan=1 | " + new Double((String)emfVMResults.get("TOTAL")).floatValue() + "s.\n");
-			fw.write("|}\n\nTests realized on " + new Date() + " with :\n");
+			fw.write("|-\n"); //$NON-NLS-1$
+			fw.write("! colspan=2 | Total time : \n"); //$NON-NLS-1$
+			fw.write("! colspan=1 | " + new Double(vmResults.get("TOTAL")).floatValue() + "s.\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			fw.write("! colspan=1 | " + new Double(emfVMResults.get("TOTAL")).floatValue() + "s.\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			fw.write("|}\n\nTests realized on " + new Date() + " with :\n"); //$NON-NLS-1$ //$NON-NLS-2$
 			fw.write(getFragment(BOTTOM_PATH));
 			fw.close();
 		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			throw new RuntimeException(e);
 		} catch (ParserConfigurationException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			throw new RuntimeException(e);
 		} catch (SAXException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			throw new RuntimeException(e);
 		}
 	}
 
-	private static Map initResults(String path) throws SAXException, ParserConfigurationException,
-			IOException {
-		Map res = new HashMap();
+	private static Map<String, String> initResults(String path) throws SAXException,
+			ParserConfigurationException, IOException {
+		Map<String, String> res = new HashMap<String, String>();
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 		Document doc = docBuilder.parse(new File(path));
@@ -130,10 +127,10 @@ public final class WikiOutputter {
 			Node node = childs.item(i);
 			if (node instanceof Element) {
 				Element element = (Element)node;
-				String name = element.getAttribute("name");
-				res.put(name, element.getAttribute("time"));
+				String name = element.getAttribute("name"); //$NON-NLS-1$
+				res.put(name, element.getAttribute("time")); //$NON-NLS-1$
 				if (directories.get(name) == null) {
-					directories.put(name, element.getAttribute("directory"));
+					directories.put(name, element.getAttribute("directory")); //$NON-NLS-1$
 				}
 			}
 		}

@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.diff.metamodel.DiffFactory;
@@ -41,10 +40,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
-import org.eclipse.m2m.atl.tests.AtlTestsMessages;
-import org.eclipse.m2m.atl.tests.TestException;
 
 /**
  * Utility class for models.
@@ -92,16 +88,16 @@ public final class ModelUtils {
 		}
 
 		final Resource result = resourceSet.createResource(modelURI);
-		final Map options = new HashMap();
+		final Map<String, Object> options = new HashMap<String, Object>();
 		options.put(XMLResource.OPTION_ENCODING, System.getProperty(ENCODING_PROPERTY));
 		result.load(options);
 		return result;
 	}
 
-	private static Set getElementsByType(Resource extent, String type) {
-		Set ret = new HashSet();
-		for (Iterator i = extent.getAllContents(); i.hasNext();) {
-			EObject eo = (EObject)i.next();
+	private static Set<EObject> getElementsByType(Resource extent, String type) {
+		Set<EObject> ret = new HashSet<EObject>();
+		for (Iterator<EObject> i = extent.getAllContents(); i.hasNext();) {
+			EObject eo = i.next();
 			if (eo.eClass().getName().equals(type)) {
 				ret.add(eo);
 			}
@@ -112,8 +108,10 @@ public final class ModelUtils {
 	/**
 	 * Metamodel register : allows to open/compare specific models.
 	 * 
-	 * @param metamodelURI the metamodel uri
-	 * @param resourceSet the resource set
+	 * @param metamodelURI
+	 *            the metamodel uri
+	 * @param resourceSet
+	 *            the resource set
 	 * @throws IOException
 	 */
 	public static void registerMetamodel(URI metamodelURI, ResourceSet resourceSet) throws IOException {
@@ -122,13 +120,8 @@ public final class ModelUtils {
 		}
 		Resource.Factory myEcoreFactory = new EcoreResourceFactoryImpl();
 		Resource mmExtent = myEcoreFactory.createResource(metamodelURI);
-		try {
-			mmExtent.load(new FileInputStream(metamodelURI.toFileString()), Collections.EMPTY_MAP);
-		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
-
-		for (Iterator it = getElementsByType(mmExtent, "EPackage").iterator(); it.hasNext();) { //$NON-NLS-1$
+		mmExtent.load(new FileInputStream(metamodelURI.toFileString()), Collections.EMPTY_MAP);
+		for (Iterator<EObject> it = getElementsByType(mmExtent, "EPackage").iterator(); it.hasNext();) { //$NON-NLS-1$
 			EPackage p = (EPackage)it.next();
 			String nsURI = p.getNsURI();
 			if (nsURI == null) {
@@ -138,8 +131,8 @@ public final class ModelUtils {
 			EPackage.Registry.INSTANCE.put(nsURI, p);
 		}
 
-		for (Iterator it = getElementsByType(mmExtent, "EDataType").iterator(); it.hasNext();) { //$NON-NLS-1$
-			EObject eo = (EObject)it.next();
+		for (Iterator<EObject> it = getElementsByType(mmExtent, "EDataType").iterator(); it.hasNext();) { //$NON-NLS-1$
+			EObject eo = it.next();
 			EStructuralFeature sf;
 			sf = eo.eClass().getEStructuralFeature("name"); //$NON-NLS-1$
 			String tname = (String)eo.eGet(sf);
@@ -181,7 +174,7 @@ public final class ModelUtils {
 				Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		final Resource newModelResource = resourceSet.createResource(modelURI);
 		newModelResource.getContents().add(root);
-		final Map options = new HashMap();
+		final Map<String, Object> options = new HashMap<String, Object>();
 		options.put(XMLResource.OPTION_ENCODING, System.getProperty(ENCODING_PROPERTY));
 		newModelResource.save(options);
 	}
@@ -199,7 +192,6 @@ public final class ModelUtils {
 		if (root == null) {
 			throw new NullPointerException("ModelUtils.NullSaveRoot"); //$NON-NLS-1$
 		}
-
 		final XMIResourceImpl newResource = new XMIResourceImpl();
 		final StringWriter writer = new StringWriter();
 		newResource.getContents().add(root);
@@ -210,19 +202,23 @@ public final class ModelUtils {
 	/**
 	 * Compare two ecore files as models.
 	 * 
-	 * @param leftUri the left file uri
-	 * @param rightUri the right file uri
-	 * @param ignoreIds if <code>true</code>, ignore xmi ids
-	 * @param delete if <code>true</code>, delete the right file after comparison
+	 * @param leftUri
+	 *            the left file uri
+	 * @param rightUri
+	 *            the right file uri
+	 * @param ignoreIds
+	 *            if <code>true</code>, ignore xmi ids
+	 * @param delete
+	 *            if <code>true</code>, delete the right file after comparison
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
 	public static void compareModels(File leftUri, File rightUri, boolean ignoreIds, boolean delete)
-			throws IOException, InterruptedException, TestException {
+			throws IOException, InterruptedException {
 		Resource leftModel = load(leftUri, AtlTestPlugin.getDefault().getResourceSet());
 		Resource rightModel = load(rightUri, AtlTestPlugin.getDefault().getResourceSet());
 
-		Map options = new HashMap();
+		Map<String, Object> options = new HashMap<String, Object>();
 		if (ignoreIds) {
 			options.put(MatchOptions.OPTION_IGNORE_XMI_ID, Boolean.TRUE);
 		}
@@ -234,7 +230,7 @@ public final class ModelUtils {
 			snapshot.setDiff(inputDiff);
 			snapshot.setMatch(inputMatch);
 			ModelUtils.save(snapshot, "file:/" + leftUri.toString() + ".emfdiff"); //$NON-NLS-1$ //$NON-NLS-2$
-			throw new TestException(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
+			throw new RuntimeException("There are differences between models " + leftUri + " and " + rightUri); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (delete) {
 			leftUri.delete();
