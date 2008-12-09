@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="org.eclipse.m2m.atl.adt.builder.atlNature"
+         name="ATL Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run class="org.eclipse.m2m.atl.adt.AtlNature"></run>
+      </runtime>
+      <builder id="org.eclipse.m2m.atl.adt.builder.atlBuilder"></builder>
+   </extension>
+   <extension
+         id="org.eclipse.m2m.atl.adt.builder.atlBuilder"
+         name="ATL builder"
+         point="org.eclipse.core.resources.builders">
+      <builder hasNature="true">
+         <run class="org.eclipse.m2m.atl.adt.AtlBuilder"/>
+      </builder>
+   </extension>
+   <extension point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="icons/atl_logo_small.gif"
+            natureId="org.eclipse.m2m.atl.adt.builder.atlNature"
+            id="org.eclipse.ui.atlProjectNatureImage">
+      </image>
+   </extension>  
+</plugin>

@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ATL IDE
+Bundle-SymbolicName: org.eclipse.m2m.atl.adt;singleton:=true
+Bundle-Version: 3.0.0.qualifier
+Bundle-Vendor: Eclipse.org
+Bundle-Localization: plugin
+Export-Package: org.eclipse.m2m.atl.adt
+Bundle-ClassPath: .
+Require-Bundle: org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.emf.ecore,
+ org.eclipse.m2m.atl,
+ org.eclipse.m2m.atl.engine
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
