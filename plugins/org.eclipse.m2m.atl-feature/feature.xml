@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.m2m.atl"
       label="ATL"
-      version="2.1.0.qualifier"
+      version="3.0.0.qualifier"
       provider-name="Eclipse.org"
       plugin="org.eclipse.m2m.atl">
 
@@ -226,20 +226,21 @@ litigation.
    </url>
 
    <requires>
-      <import plugin="org.eclipse.emf.ecore.xmi"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.debug.ui"/>
       <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
       <import plugin="org.eclipse.ui.views"/>
-      <import plugin="org.eclipse.update.core"/>
+      <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.update.core"/>
+      <import plugin="org.eclipse.debug.core"/>
    </requires>
 
    <plugin
@@ -257,13 +258,6 @@ litigation.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.m2m.atl.adt.builder"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.m2m.atl.adt.debug"
          download-size="0"
          install-size="0"
@@ -272,20 +266,6 @@ litigation.
 
    <plugin
          id="org.eclipse.m2m.atl.adt.editor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2m.atl.adt.perspective"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2m.atl.adt.wizard"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -331,5 +311,47 @@ litigation.
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.adt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.adt.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.core.emf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.core.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.core.ui.vm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
