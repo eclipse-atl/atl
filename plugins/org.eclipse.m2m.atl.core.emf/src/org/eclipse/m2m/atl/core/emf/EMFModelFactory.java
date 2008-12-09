@@ -63,6 +63,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#newReferenceModel(java.util.Map)
 	 */
+	@Override
 	public IReferenceModel newReferenceModel(Map<String, Object> options) {
 		return newReferenceModel();
 	}
@@ -72,6 +73,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#newReferenceModel()
 	 */
+	@Override
 	public IReferenceModel newReferenceModel() {
 		return new EMFReferenceModel(EMFReferenceModel.getMetametamodel());
 	}
@@ -82,6 +84,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#newModel(org.eclipse.m2m.atl.core.IReferenceModel,
 	 *      java.util.Map)
 	 */
+	@Override
 	public IModel newModel(IReferenceModel referenceModel, Map<String, Object> options) {
 		return newModel(referenceModel);
 	}
@@ -91,6 +94,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#newModel(org.eclipse.m2m.atl.core.IReferenceModel)
 	 */
+	@Override
 	public IModel newModel(IReferenceModel referenceModel) {
 		return new EMFModel((EMFReferenceModel)referenceModel);
 	}
@@ -100,6 +104,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultExtractor()
 	 */
+	@Override
 	public IExtractor getDefaultExtractor() {
 		return new EMFExtractor();
 	}
@@ -109,6 +114,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultInjector()
 	 */
+	@Override
 	public IInjector getDefaultInjector() {
 		return new EMFInjector();
 	}
@@ -122,6 +128,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#getBuiltInResource(java.lang.String)
 	 */
+	@Override
 	public IReferenceModel getBuiltInResource(String name) {
 		EMFReferenceModel model = new EMFReferenceModel(EMFReferenceModel.getMetametamodel());
 		String path = "org.eclipse.m2m.atl/src/org/eclipse/m2m/atl/resources/" + name + ".ecore"; //$NON-NLS-1$//$NON-NLS-2$

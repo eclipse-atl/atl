@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFReferenceModel.java,v 1.1 2008/12/09 11:28:13 wpiers Exp $
+ * $Id: EMFReferenceModel.java,v 1.2 2008/12/09 14:28:22 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -109,6 +109,7 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.emf.engine.emfvm.emf.EMFModel#dispose()
 	 */
+	@Override
 	public void dispose() {
 		metaElementByName = null;
 		// unregister packages
