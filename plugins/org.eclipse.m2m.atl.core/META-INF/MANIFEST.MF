@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ATL Core API
+Bundle-SymbolicName: org.eclipse.m2m.atl.core;singleton:=true
+Bundle-Version: 3.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: org.eclipse.m2m.atl.core,
+ org.eclipse.m2m.atl.core.launch;uses:="org.eclipse.m2m.atl.core",
+ org.eclipse.m2m.atl.core.service;uses:="org.eclipse.m2m.atl.core,org.eclipse.m2m.atl.core.launch"
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.core.runtime
+Bundle-Vendor: Eclipse.org
