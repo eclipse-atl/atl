@@ -24,6 +24,7 @@ public class TestNonRegressionCompiler extends TestNonRegressionEMFVM {
 	 *
 	 * @see org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionEMFVM#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		recompileBeforeLaunch = true;

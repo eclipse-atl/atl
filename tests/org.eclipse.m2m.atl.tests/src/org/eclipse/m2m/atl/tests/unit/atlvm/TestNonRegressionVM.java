@@ -19,6 +19,12 @@ import org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo;
  */
 public class TestNonRegressionVM extends TestNonRegressionTransfo {
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo#getVMName()
+	 */
+	@Override
 	protected String getVMName() {
 		return "RegularVM"; //$NON-NLS-1$
 	}
@@ -28,6 +34,7 @@ public class TestNonRegressionVM extends TestNonRegressionTransfo {
 	 * 
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		setPropertiesPath("/org.eclipse.m2m.atl.tests/data/vm.properties"); //$NON-NLS-1$

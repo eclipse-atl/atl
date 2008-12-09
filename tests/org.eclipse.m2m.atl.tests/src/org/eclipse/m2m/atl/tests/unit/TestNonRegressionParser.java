@@ -31,6 +31,7 @@ public class TestNonRegressionParser extends TestNonRegression {
 	 * 
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 	}
@@ -40,6 +41,7 @@ public class TestNonRegressionParser extends TestNonRegression {
 	 * 
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#singleTest(java.io.File)
 	 */
+	@Override
 	protected void singleTest(File directory) {
 		final File expectedDir = new File(directory.getPath().replaceFirst("inputs", "expected")); //$NON-NLS-1$//$NON-NLS-2$
 		final String transfoPath = directory + File.separator + directory.getName() + ".atl"; //$NON-NLS-1$

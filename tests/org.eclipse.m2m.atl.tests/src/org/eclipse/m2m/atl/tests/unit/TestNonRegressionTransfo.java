@@ -61,6 +61,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 * 
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		results = new FileWriter("results/" + getVMName() + "_results.xml"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -73,6 +74,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 * 
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#singleTest(java.io.File)
 	 */
+	@Override
 	protected void singleTest(File directory) {
 		final String buildURI = directory + File.separator + directory.getName() + ".launch"; //$NON-NLS-1$
 
@@ -194,6 +196,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 * 
 	 * @see junit.framework.TestCase#tearDown()
 	 */
+	@Override
 	protected void tearDown() throws Exception {
 		info("total time : " + totalTime + "s"); //$NON-NLS-1$ //$NON-NLS-2$
 		results.write("\t<test name=\"TOTAL\" time=\"" + totalTime + "\"/>\n"); //$NON-NLS-1$ //$NON-NLS-2$

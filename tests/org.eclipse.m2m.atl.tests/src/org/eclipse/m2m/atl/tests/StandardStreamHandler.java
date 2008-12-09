@@ -26,6 +26,7 @@ public class StandardStreamHandler extends StreamHandler {
 	 *
 	 * @see java.util.logging.StreamHandler#publish(java.util.logging.LogRecord)
 	 */
+	@Override
 	public synchronized void publish(LogRecord record) {
 		if (record.getLevel().equals(Level.SEVERE)) {
 			System.err.println(record.getMessage());
