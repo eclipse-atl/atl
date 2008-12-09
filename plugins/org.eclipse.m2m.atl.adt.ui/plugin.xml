@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   	<!-- extension point: perspective -->
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.eclipse.m2m.atl.adt.ui.startup.Startup">
+      </startup>
+   </extension>
+ <extension
+       point="org.eclipse.ui.actionSets">
+    <actionSet
+          id="org.eclipse.m2m.atl.adt.ui.compatibility"
+          label="ATL Compatibility Actions"
+          visible="false">
+       <menu
+             id="ATLCompatibility"
+             label="Compatibility">
+          <separator
+                name="compatibilityGroup">
+          </separator>
+       </menu>
+       <action
+             class="org.eclipse.m2m.atl.adt.ui.compatibility.UpdateCompatibility"
+             icon="icons/atl_logo.gif"
+             id="org.eclipse.m2m.atl.adt.ui.compatibility.UpdateCompatibility"
+             label="&amp;Update compatibility"
+             menubarPath="ATLCompatibility/compatibilityGroup"
+             tooltip="Updates the ATL builder and configuration to versions up to 2.0.0RC2">
+       </action>
+    </actionSet>
+ </extension>
+	<extension point="org.eclipse.ui.perspectives">
+		<perspective
+        	icon="icons/atl_logo.gif"
+	        class="org.eclipse.m2m.atl.adt.ui.perspective.AtlPerspective"
+	        name="ATL"
+	        id="org.eclipse.m2m.atl.adt.ui.atlPerspective">
+   		</perspective>
+	</extension>
+ <extension
+       point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+          targetID="org.eclipse.m2m.atl.adt.ui.atlPerspective">
+       <actionSet
+             id="org.eclipse.m2m.atl.adt.ui.compatibility">
+       </actionSet>
+    </perspectiveExtension>
+ </extension>
+     <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="ATL"
+            id="atlWizard">
+      </category>
+      <wizard
+            name="ATL Project"
+            icon="icons/atllogo_icon.gif"
+            category="atlWizard"
+            class="org.eclipse.m2m.atl.adt.ui.wizard.atlproject.AtlProjectCreator"
+            preferredPerspectives="org.eclipse.m2m.atl.adt.ui.atlPerspective"
+            finalPerspective="org.eclipse.m2m.atl.adt.ui.atlPerspective"
+            project="true"
+            id="atlProjectWizard">
+         <description>
+            Create an ATL transformation project
+         </description>
+      </wizard>
+      <wizard
+            name="ATL File"
+            icon="icons/atllogo_icon.gif"
+            category="atlWizard"
+            class="org.eclipse.m2m.atl.adt.ui.wizard.atlfile.AtlFileWizard"
+            preferredPerspectives="org.eclipse.m2m.atl.adt.ui.atlPerspective"
+            finalPerspective="org.eclipse.m2m.atl.adt.ui.atlPerspective"
+            project="true"
+            id="atlFileWizard">
+         <description>
+            Create an ATL transformation file
+         </description>
+      </wizard>
+   </extension>
+
+</plugin>
