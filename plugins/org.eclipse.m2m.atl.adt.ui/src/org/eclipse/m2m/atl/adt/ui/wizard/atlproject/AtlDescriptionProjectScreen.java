@@ -76,6 +76,7 @@ public class AtlDescriptionProjectScreen extends WizardPage {
 		textProjectName = new Text(groupProject, SWT.BORDER);
 		textProjectName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		textProjectName.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyReleased(KeyEvent evt) {
 				textProjectNameKeyPressed(evt);
 			}

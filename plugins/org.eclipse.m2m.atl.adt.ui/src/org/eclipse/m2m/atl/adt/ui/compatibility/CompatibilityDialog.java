@@ -68,6 +68,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 	 * 
 	 * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
 	 */
+	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		String title = Messages.getString("CompatibilityDialog.0"); //$NON-NLS-1$
@@ -79,6 +80,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 	 * 
 	 * @see org.eclipse.jface.dialogs.TitleAreaDialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite)super.createDialogArea(parent);
 		setTitle(Messages.getString("CompatibilityDialog.1")); //$NON-NLS-1$
@@ -112,6 +114,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		Button selectAll = new Button(buttonsGroup, SWT.CENTER);
 		selectAll.setText(Messages.getString("CompatibilityDialog.4")); //$NON-NLS-1$
 		selectAll.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				fProjectsTable.setAllChecked(true);
 			}
@@ -120,6 +123,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		Button deselectAll = new Button(buttonsGroup, SWT.CENTER);
 		deselectAll.setText(Messages.getString("CompatibilityDialog.5")); //$NON-NLS-1$
 		deselectAll.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				fProjectsTable.setAllChecked(false);
 			}
@@ -149,6 +153,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		Button confSelectAll = new Button(confButtonsGroup, SWT.CENTER);
 		confSelectAll.setText(Messages.getString("CompatibilityDialog.7")); //$NON-NLS-1$
 		confSelectAll.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				fConfTable.setAllChecked(true);
 			}
@@ -157,6 +162,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 		Button confDeselectAll = new Button(confButtonsGroup, SWT.CENTER);
 		confDeselectAll.setText(Messages.getString("CompatibilityDialog.8")); //$NON-NLS-1$
 		confDeselectAll.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				fConfTable.setAllChecked(false);
 			}
@@ -170,6 +176,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
 	 */
+	@Override
 	protected void okPressed() {
 		try {
 			CompatibilityUtils.convertProjects(fProjectsTable.getCheckedElements());

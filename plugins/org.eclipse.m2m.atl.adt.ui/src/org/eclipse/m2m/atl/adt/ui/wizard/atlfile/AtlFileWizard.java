@@ -56,7 +56,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	/**
 	 * Adding the page to the wizard.
 	 */
-
+	@Override
 	public void addPages() {
 		page = new AtlFileScreen(selectionInterface);
 		addPage(page);
@@ -67,6 +67,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	 *
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
+	@Override
 	public boolean performFinish() {
 		newProjectBuilder();
 		BasicNewProjectResourceWizard.updatePerspective(configElement);

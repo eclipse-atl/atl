@@ -163,6 +163,7 @@ public class AtlFileScreen extends WizardPage {
 		Button buttonBrowse = new Button(groupHead, SWT.PUSH);
 		buttonBrowse.setText(Messages.getString("AtlFileScreen.BROWSE")); //$NON-NLS-1$
 		buttonBrowse.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleProjectBrowse();
 			}
@@ -171,6 +172,7 @@ public class AtlFileScreen extends WizardPage {
 		new Label(groupHead, SWT.NULL).setText(Messages.getString("AtlFileScreen.MODULE_NAME")); //$NON-NLS-1$
 		textName = new Text(groupHead, SWT.BORDER);
 		textName.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyReleased(KeyEvent evt) {
 				textNameKeyPressed(evt);
 			}
@@ -227,6 +229,7 @@ public class AtlFileScreen extends WizardPage {
 		tc.setAlignment(SWT.CENTER);
 
 		buttonIn.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				addTextTable(tableIn, new String[] {inM1.getText(), inM2.getText()});
 			}
@@ -270,6 +273,7 @@ public class AtlFileScreen extends WizardPage {
 		tc.setAlignment(SWT.CENTER);
 
 		buttonOut.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				addTextTable(tableOut, new String[] {outM1.getText(), outM2.getText()});
 			}
@@ -305,12 +309,14 @@ public class AtlFileScreen extends WizardPage {
 		tc.setAlignment(SWT.CENTER);
 
 		buttonLib.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				addTextTable(tableLib, new String[] {textLib.getText()});
 			}
 		});
 
 		comboType.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				if (comboType.getText().equals(MODULE)) {
 					groupIn.setEnabled(true);

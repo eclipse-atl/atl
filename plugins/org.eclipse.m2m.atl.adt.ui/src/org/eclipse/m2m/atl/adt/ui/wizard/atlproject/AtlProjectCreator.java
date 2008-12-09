@@ -55,7 +55,7 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 	/**
 	 * Adding the page to the wizard.
 	 */
-
+	@Override
 	public void addPages() {
 		page = new AtlDescriptionProjectScreen(selectionInterface);
 		addPage(page);
@@ -66,6 +66,7 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 	 *
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
+	@Override
 	public boolean performFinish() {
 		String projectName = page.getProjectName();
 

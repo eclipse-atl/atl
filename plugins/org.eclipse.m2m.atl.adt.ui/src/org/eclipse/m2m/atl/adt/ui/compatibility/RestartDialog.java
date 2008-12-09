@@ -82,6 +82,7 @@ public class RestartDialog extends MessageDialog {
 	 *
 	 * @see org.eclipse.jface.dialogs.MessageDialog#buttonPressed(int)
 	 */
+	@Override
 	protected void buttonPressed(int id) {
 		if (id == 2) {
 			buttonId = CONTINUE;

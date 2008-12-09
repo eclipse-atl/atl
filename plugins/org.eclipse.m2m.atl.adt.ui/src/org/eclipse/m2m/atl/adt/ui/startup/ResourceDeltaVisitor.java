@@ -58,6 +58,7 @@ public class ResourceDeltaVisitor implements IResourceDeltaVisitor {
 	 */
 	private void delAsmFile(final IResource res) {
 		Thread op = new Thread() {
+			@Override
 			public void run() {
 				IResource asm = findAsmFile(res);
 				if (asm != null) {
