@@ -223,13 +223,6 @@ litigation.
       <update label="ATL Updates" url="http://download.eclipse.org/modeling/m2m/updates/"/>
    </url>
 
-   <requires>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.m2m.atl.engine.emfvm"/>
-      <import plugin="org.eclipse.m2m.atl.drivers.emf4atl"/>
-   </requires>
-
    <plugin
          id="org.eclipse.m2m.atl.examples"
          download-size="0"
