@@ -794,7 +794,7 @@ public class AtlEditor extends TextEditor {
 	 * of key strokes.
 	 * 
 	 * @author Matthias Bohlen
-	 * @see http://wiki.eclipse.org/FAQ_How_do_I_add_Content_Assist_to_my_editor%3F
+	 * @see "http://wiki.eclipse.org/FAQ_How_do_I_add_Content_Assist_to_my_editor%3F"
 	 */
 	private void installContentAssistAction() {
 		ResourceBundle resourceBundle = AtlEditorMessages.getResourceBundle();

@@ -19,7 +19,7 @@ import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 
 /**
- * Uses the {@link org.eclipse.jdt.internal.ui.text.AtlHeuristicScanner}to get the indentation level for a
+ * Uses the {@link AtlHeuristicScanner}to get the indentation level for a
  * certain position in a document.
  * <p>
  * An instance holds some internal position in the document and is therefore not threadsafe.

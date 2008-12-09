@@ -19,7 +19,7 @@ public class AtlCompletionProposalComparator implements Comparator {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see java.util.Comparator#compare(T, T)
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
 	public int compare(Object o1, Object o2) {
 		AtlCompletionProposal p1 = (AtlCompletionProposal)o1;
