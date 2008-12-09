@@ -350,7 +350,7 @@ public class ASMEMFModel extends ASMModel {
 	 * 
 	 * @see java.lang.Object#finalize()
 	 */
-	public void finalize() {
+	protected void finalize() {
 		dispose();
 		try {
 			super.finalize();

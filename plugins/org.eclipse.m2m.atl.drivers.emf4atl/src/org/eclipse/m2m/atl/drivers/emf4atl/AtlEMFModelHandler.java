@@ -113,20 +113,21 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Saves a model in the given {@link IProject}.
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
-	 *      org.eclipse.core.resources.IProject)
+	 * @param model the model
+	 * @param project the project
 	 */
 	public void saveModel(final ASMModel model, IProject project) {
 		saveModel(model, model.getName() + ".ecore", project); //$NON-NLS-1$
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Saves a model in the given {@link IProject}.
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#saveModel(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel,
-	 *      java.lang.String, org.eclipse.core.resources.IProject)
+	 * @param model the model
+	 * @param fileName the file name
+	 * @param project the project
 	 */
 	public void saveModel(final ASMModel model, String fileName, IProject project) {
 		String uri = project.getFullPath().toString() + "/" + fileName; //$NON-NLS-1$
