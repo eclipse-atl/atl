@@ -22,7 +22,7 @@ import org.eclipse.ui.IWorkbenchPart;
 /**
  * DisassemblyModeAction is the action runned by the popup menu Disassembly Mode for IElement.
  * 
- * @see extension point="org.eclipse.ui.popupMenus" in plugin.xml This action allows to switch between normal
+ * @see IObjectActionDelegate and extension point="org.eclipse.ui.popupMenus" in plugin.xml This action allows to switch between normal
  *      and disassembly mode.
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */

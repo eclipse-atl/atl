@@ -79,7 +79,7 @@ public class OclHelper extends OclEvaluator {
 	 * Compiles the current helper.
 	 * 
 	 * @return the compiled helper in an ASM form
-	 * @throws Exception
+	 * @throws IOException
 	 */
 	public ASM compile() throws IOException {
 		String params = ""; //$NON-NLS-1$
