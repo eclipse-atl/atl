@@ -67,7 +67,7 @@ public class LaunchParser {
 	 * 
 	 * @param launchPath
 	 *            the base directory path
-	 * @throws Exception
+	 * @throws SAXException
 	 */
 	public void parseConfiguration(String launchPath) throws IOException, ParserConfigurationException,
 			SAXException {

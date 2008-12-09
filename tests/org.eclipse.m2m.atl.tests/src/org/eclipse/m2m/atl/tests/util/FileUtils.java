@@ -36,7 +36,7 @@ public final class FileUtils {
 	 * @param left the left file
 	 * @param right the right file 
 	 * @param delete if <code>true</code>, delete the right file after comparison
-	 * @throws Exception
+	 * @throws IOException
 	 */
 	public static void compareFiles(File left, File right, boolean delete) throws IOException {
 		if (left.length() != right.length()) {
