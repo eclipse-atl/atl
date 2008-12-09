@@ -31,10 +31,9 @@ import org.eclipse.m2m.atl.core.IModel;
 public class EMFExtractor implements IExtractor {
 
 	/**
-	 * {@inheritDoc} The options Map must define a ModelFactory.OPTION_PATH entry containing a Map associating
-	 * a path for each resource.
-	 * 
-	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.util.Map)
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.Object, java.util.Map)
 	 */
 	public void extract(IModel targetModel, Object target, Map<String, Object> options) {
 		Map<?, ?> pathMap = null;

@@ -31,8 +31,8 @@ public class EMFInjector implements IInjector {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.util.Map)
+	 *
+	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.Object, java.util.Map)
 	 */
 	public void inject(IModel sourceModel, Object source, Map<String, Object> options) {
 		Resource mainResource = null;

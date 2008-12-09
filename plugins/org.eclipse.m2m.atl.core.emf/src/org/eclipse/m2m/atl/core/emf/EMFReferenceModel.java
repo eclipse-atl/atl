@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFReferenceModel.java,v 1.2 2008/12/09 14:28:22 wpiers Exp $
+ * $Id: EMFReferenceModel.java,v 1.3 2008/12/09 16:31:46 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -67,7 +67,7 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.newapi.lib.ReferenceModel#getMetaElementByName(java.lang.String)
+	 * @see org.eclipse.m2m.atl.core.IReferenceModel#getMetaElementByName(java.lang.String)
 	 */
 	public Object getMetaElementByName(String name) {
 		return metaElementByName.get(name);
@@ -107,7 +107,7 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.core.emf.engine.emfvm.emf.EMFModel#dispose()
+	 * @see org.eclipse.m2m.atl.core.emf.EMFModel#dispose()
 	 */
 	@Override
 	public void dispose() {
