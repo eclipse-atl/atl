@@ -41,6 +41,8 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class DummyFile implements IFile {
+
+
 	private String location;
 
 	/**
@@ -534,6 +536,10 @@ public class DummyFile implements IFile {
 			public IPath makeRelative() {
 				return null;
 			}
+			
+			public IPath makeRelative(IPath anotherPath) {
+				return null;
+			}
 
 			public IPath makeUNC(boolean toUNC) {
 				return null;
@@ -955,5 +961,23 @@ public class DummyFile implements IFile {
 	 */
 	public Map getSessionProperties() throws CoreException {
 		return Collections.EMPTY_MAP;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#isHidden(int)
+	 */
+	public boolean isHidden(int options) {
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResource#isTeamPrivateMember(int)
+	 */
+	public boolean isTeamPrivateMember(int options) {
+		return false;
 	}
 }
