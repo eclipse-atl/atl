@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.core.sourceLocators">
+      <sourceLocator
+            class="org.eclipse.m2m.atl.core.ui.vm.AtlSourceLocator"
+            id="AtlSourceLocator"
+            name="ATL Source Locator">
+      </sourceLocator>
+   </extension>
+   <extension
+         point="org.eclipse.m2m.atl.core.launcher">
+      <launcher
+            class="org.eclipse.m2m.atl.core.ui.vm.RegularVMLauncher"
+            name="RegularVM">
+         <option
+               description="Allow inter-model references"
+               name="allowInterModelReferences">
+         </option>
+         <option
+               description="Run mode only: print execution times to console"
+               name="printExecutionTime">
+         </option>
+         <option
+               description="Run mode only: print an execution summary to console (i.e., number of executed bytecodes)"
+               name="showSummary">
+         </option>
+         <option
+               description="Run mode only: print execution information to console for each executed bytecode (very verbose!)"
+               name="step">
+         </option>
+         <option
+               description="Continue execution after errors in Run mode"
+               name="continueAfterError">
+         </option>
+         <option
+               description="Disable attribute helpers caching"
+               name="disableAttributeHelperCache">
+         </option>
+         <option
+               description="Run mode only: print information on the number of times operations are called with the same arguments to the console"
+               name="profile">
+         </option>
+         <option
+               description="Disassembly mode"
+               name="disassemblyMode">
+         </option>
+         <option
+               description="Delete Resources between transformations"
+               name="clearResourceSet">
+         </option>
+      </launcher>
+   </extension>
+   <extension
+         point="org.eclipse.m2m.atl.core.model">
+      <model
+            model="org.eclipse.m2m.atl.core.ui.vm.asm.ASMModelWrapper"
+            modelFactory="org.eclipse.m2m.atl.core.ui.vm.asm.ASMFactory"
+            name="ASM"
+            referenceModel="org.eclipse.m2m.atl.core.ui.vm.asm.ASMModelWrapper">
+      </model>
+   </extension>
+   <extension
+         point="org.eclipse.m2m.atl.core.injector">
+      <injector
+            class="org.eclipse.m2m.atl.core.ui.vm.asm.ASMInjector"
+            name="ASM"></injector>
+   </extension>
+   <extension
+         point="org.eclipse.m2m.atl.core.extractor">
+      <extractor
+            class="org.eclipse.m2m.atl.core.ui.vm.asm.ASMExtractor"
+            name="ASM"></extractor>
+   </extension>
+
+    
+</plugin>
