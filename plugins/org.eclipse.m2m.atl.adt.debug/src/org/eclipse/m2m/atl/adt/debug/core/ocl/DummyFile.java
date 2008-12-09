@@ -537,7 +537,7 @@ public class DummyFile implements IFile {
 				return null;
 			}
 			
-			public IPath makeRelative(IPath anotherPath) {
+			public IPath makeRelativeTo(IPath anotherPath) {
 				return null;
 			}
 
