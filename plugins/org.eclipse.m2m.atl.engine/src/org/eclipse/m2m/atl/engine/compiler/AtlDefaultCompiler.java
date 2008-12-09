@@ -52,8 +52,8 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlStandaloneCompiler#compile(java.io.InputStream, java.lang.String)
+	 *
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compile(java.io.InputStream, java.lang.String)
 	 */
 	public final CompileTimeError[] compile(InputStream in, String outputFileName) {
 		EObject[] eObjects = internalCompile(in, outputFileName);
@@ -70,9 +70,8 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlStandaloneCompiler#compileWithProblemModel(java.io.InputStream,
-	 *      java.lang.String)
+	 *
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(java.io.InputStream, java.lang.String)
 	 */
 	public EObject[] compileWithProblemModel(InputStream in, String outputFileName) {
 		return internalCompile(in, outputFileName);

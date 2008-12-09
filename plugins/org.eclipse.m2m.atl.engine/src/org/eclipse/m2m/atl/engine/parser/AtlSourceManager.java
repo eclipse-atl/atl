@@ -244,7 +244,7 @@ public final class AtlSourceManager {
 		}
 
 		List paths = getTaggedInformations(text.getBytes(), PATH_TAG);
-		
+
 		for (Iterator iterator = paths.iterator(); iterator.hasNext();) {
 			String line = (String)iterator.next();
 			if (line.split("=").length == 2) { //$NON-NLS-1$
@@ -359,14 +359,13 @@ public final class AtlSourceManager {
 	 * @param tag
 	 *            the tag to search
 	 * @return the tagged information
-	 * @throws IOException
 	 */
 	public static List getTaggedInformations(byte[] buffer, String tag) {
 		List res = new ArrayList();
 		try {
 			int length = buffer.length;
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer, 0,
-					length)));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer,
+					0, length)));
 			while (reader.ready()) {
 				String line = reader.readLine();
 				// code begins, checking stops.
@@ -393,7 +392,8 @@ public final class AtlSourceManager {
 	/**
 	 * Returns the compiler name, or the default name if null.
 	 * 
-	 * @param compilers the list of compilers
+	 * @param compilers
+	 *            the list of compilers
 	 * @return the compiler name, or the default name if null
 	 */
 	public static String getCompilerName(List compilers) {
