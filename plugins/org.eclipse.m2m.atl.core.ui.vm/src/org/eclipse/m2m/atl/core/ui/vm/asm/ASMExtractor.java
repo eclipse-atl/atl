@@ -30,7 +30,7 @@ public class ASMExtractor implements IExtractor {
 	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.Object,
 	 *      java.util.Map)
 	 */
-	public void extract(IModel targetModel, Object target, Map options) {
+	public void extract(IModel targetModel, Object target, Map<String, Object> options) {
 		extract(targetModel, target);
 	}
 

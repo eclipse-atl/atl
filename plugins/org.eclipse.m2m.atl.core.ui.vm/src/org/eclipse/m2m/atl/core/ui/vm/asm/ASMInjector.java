@@ -43,7 +43,7 @@ public class ASMInjector implements IInjector {
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.Object,
 	 *      java.util.Map)
 	 */
-	public void inject(IModel sourceModel, Object source, Map options) {
+	public void inject(IModel sourceModel, Object source, Map<String, Object> options) {
 		boolean checkSameModel = "true".equals(options.get("checkSameModel")); //$NON-NLS-1$ //$NON-NLS-2$
 		inject(sourceModel, source, ((ASMModelWrapper)sourceModel).getName(), checkSameModel);
 	}

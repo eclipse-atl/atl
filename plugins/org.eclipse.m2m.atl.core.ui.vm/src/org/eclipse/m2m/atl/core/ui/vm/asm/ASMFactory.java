@@ -41,9 +41,9 @@ public class ASMFactory extends ModelFactory {
 	/** The newModel boolean. */
 	public static final String OPTION_NEW_MODEL = "newModel"; //$NON-NLS-1$
 
-	private static Map metametamodels = new HashMap();
+	private static Map<String, ASMModelWrapper> metametamodels = new HashMap<String, ASMModelWrapper>();
 
-	private static Map builtin = new HashMap();
+	private static Map<String, ASMModelWrapper> builtin = new HashMap<String, ASMModelWrapper>();
 
 	private static final AtlModelHandler DEFAULT_MODEL_HANDLER = AtlModelHandler.getDefault("EMF"); //$NON-NLS-1$
 
@@ -52,6 +52,7 @@ public class ASMFactory extends ModelFactory {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultExtractor()
 	 */
+	@Override
 	public IExtractor getDefaultExtractor() {
 		return new ASMExtractor();
 	}
@@ -61,6 +62,7 @@ public class ASMFactory extends ModelFactory {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultInjector()
 	 */
+	@Override
 	public IInjector getDefaultInjector() {
 		return new ASMInjector();
 	}
@@ -77,7 +79,8 @@ public class ASMFactory extends ModelFactory {
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#newModel(org.eclipse.m2m.atl.core.IReferenceModel,
 	 *      java.util.Map)
 	 */
-	public IModel newModel(IReferenceModel referenceModel, Map options) {
+	@Override
+	public IModel newModel(IReferenceModel referenceModel, Map<String, Object> options) {
 		String modelName = (String)options.get(OPTION_MODEL_NAME);
 		String path = (String)options.get(OPTION_MODEL_PATH);
 		boolean newModel = "true".equals(options.get(OPTION_NEW_MODEL).toString()); //$NON-NLS-1$
@@ -95,7 +98,8 @@ public class ASMFactory extends ModelFactory {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#newReferenceModel(java.util.Map)
 	 */
-	public IReferenceModel newReferenceModel(Map options) {
+	@Override
+	public IReferenceModel newReferenceModel(Map<String, Object> options) {
 		String modelHandlerName = (String)options.get(OPTION_MODEL_HANDLER);
 		String modelName = (String)options.get(OPTION_MODEL_NAME);
 		String path = (String)options.get(OPTION_MODEL_PATH);
@@ -123,6 +127,7 @@ public class ASMFactory extends ModelFactory {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#newModel(org.eclipse.m2m.atl.core.IReferenceModel)
 	 */
+	@Override
 	public IModel newModel(IReferenceModel referenceModel) {
 		ATLLogger.severe(Messages.getString("ASMFactory.MISSING_PARAMS")); //$NON-NLS-1$
 		return null;
@@ -133,6 +138,7 @@ public class ASMFactory extends ModelFactory {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#newReferenceModel()
 	 */
+	@Override
 	public IReferenceModel newReferenceModel() {
 		ATLLogger.severe(Messages.getString("ASMFactory.MISSING_PARAMS")); //$NON-NLS-1$
 		return null;
@@ -143,12 +149,13 @@ public class ASMFactory extends ModelFactory {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#getBuiltInResource(java.lang.String)
 	 */
+	@Override
 	public IReferenceModel getBuiltInResource(String name) {
 		if (builtin.get(name) == null) {
 			ASMModelWrapper metamodel = new ASMModelWrapper(DEFAULT_MODEL_HANDLER.getBuiltInMetaModel(name), DEFAULT_MODEL_HANDLER);
 			builtin.put(name, metamodel);
 		}
-		return (ASMModelWrapper)builtin.get(name);
+		return builtin.get(name);
 	}
 
 	/**
@@ -164,6 +171,6 @@ public class ASMFactory extends ModelFactory {
 			ASMModelWrapper metametamodel = new ASMModelWrapper(amh.getMof(), amh);
 			metametamodels.put(modelHandlerName, metametamodel);
 		}
-		return (ASMModelWrapper)metametamodels.get(modelHandlerName);
+		return metametamodels.get(modelHandlerName);
 	}
 }

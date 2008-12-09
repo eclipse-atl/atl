@@ -12,8 +12,8 @@ package org.eclipse.m2m.atl.core.ui.vm;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -55,9 +55,9 @@ public class RegularVMLauncher implements ILauncher {
 
 	private static final String LAUNCHER_NAME = "RegularVM"; //$NON-NLS-1$
 
-	private Map models;
+	private Map<String, IModel> models;
 
-	private Map libraries;
+	private Map<String, ASM> libraries;
 
 	public String getName() {
 		return LAUNCHER_NAME;
@@ -126,9 +126,9 @@ public class RegularVMLauncher implements ILauncher {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#initialize(java.util.Map)
 	 */
-	public void initialize(Map options) {
-		models = new HashMap();
-		libraries = new HashMap();
+	public void initialize(Map<String, Object> options) {
+		models = new HashMap<String, IModel>();
+		libraries = new HashMap<String, ASM>();
 		boolean clearResourceSet = "true".equals(options.get("clearResourceSet")); //$NON-NLS-1$//$NON-NLS-2$
 		if (clearResourceSet) {
 			ASMEMFModel.init();
@@ -148,17 +148,15 @@ public class RegularVMLauncher implements ILauncher {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.util.Map,
-	 *      java.lang.Object[])
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.util.Map, java.lang.Object[])
 	 */
-	public Object launch(final Map options, final Object[] modules) {
+	public Object launch(final Map<String, Object> options, final Object... modules) {
 		return launch(ILauncher.RUN_MODE, options, modules);
 	}
-	
 
 	/**
 	 * {@inheritDoc}
@@ -166,7 +164,7 @@ public class RegularVMLauncher implements ILauncher {
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String, java.util.Map,
 	 *      java.lang.Object[])
 	 */
-	public Object launch(final String mode, final Map options, final Object[] modules) {
+	public Object launch(final String mode, final Map<String, Object> options, final Object... modules) {
 		IDebugTarget mTarget = null;
 		ILaunch launchParam = (ILaunch)options.get("launch"); //$NON-NLS-1$
 		try {
@@ -180,6 +178,7 @@ public class RegularVMLauncher implements ILauncher {
 					mTarget = new AtlDebugTarget(launchParam);
 				}
 				Thread th = new Thread() {
+					@Override
 					public void run() {
 						launch(new NetworkDebugger(6060, true), options, modules);
 					}
@@ -197,10 +196,10 @@ public class RegularVMLauncher implements ILauncher {
 					launchParam.addDebugTarget(mTarget);
 				}
 				launch(new SimpleDebugger(/* step = */"true".equals(options.get("step")), //$NON-NLS-1$ //$NON-NLS-2$
-						/* stepops = */new ArrayList(),
-						/* deepstepops = */new ArrayList(),
-						/* nostepops = */new ArrayList(),
-						/* deepnostepops = */new ArrayList(),
+						/* stepops = */Collections.EMPTY_LIST,
+						/* deepstepops = */Collections.EMPTY_LIST,
+						/* nostepops = */Collections.EMPTY_LIST,
+						/* deepnostepops = */Collections.EMPTY_LIST,
 						/* showStackTrace = */true, "true".equals(options.get("showSummary")), //$NON-NLS-1$ //$NON-NLS-2$
 						"true".equals(options.get("profile")), //$NON-NLS-1$ //$NON-NLS-2$
 						"true".equals(options.get("continueAfterError")) //$NON-NLS-1$ //$NON-NLS-2$
@@ -216,7 +215,7 @@ public class RegularVMLauncher implements ILauncher {
 		return null;
 	}
 
-	private Object launch(Debugger debugger, Map options, Object[] modules) {
+	private Object launch(Debugger debugger, Map<String, Object> options, Object[] modules) {
 		Object ret = null;
 		ASM asm = new ASMXMLReader().read(new BufferedInputStream((InputStream)modules[0]));
 		ASMModule asmModule = new ASMModule(asm);
@@ -226,15 +225,14 @@ public class RegularVMLauncher implements ILauncher {
 		env.addPermission("file.read"); //$NON-NLS-1$
 		env.addPermission("file.write"); //$NON-NLS-1$
 
-		for (Iterator i = models.keySet().iterator(); i.hasNext();) {
-			String mname = (String)i.next();
+		for (Iterator<String> i = models.keySet().iterator(); i.hasNext();) {
+			String mname = i.next();
 			env.addModel(mname, ((ASMModelWrapper)models.get(mname)).getAsmModel());
 		}
 
-		for (Iterator i = libraries.keySet().iterator(); i.hasNext();) {
-			String lname = (String)i.next();
-			InputStream is = (InputStream)libraries.get(lname);
-			ASM lib = new ASMXMLReader().read(new BufferedInputStream(is));
+		for (Iterator<String> i = libraries.keySet().iterator(); i.hasNext();) {
+			String lname = i.next();
+			ASM lib = libraries.get(lname);
 			env.registerOperations(lib);
 
 			// If there is a main operation, run it to register attribute helpers
@@ -279,7 +277,7 @@ public class RegularVMLauncher implements ILauncher {
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getModel(java.lang.String)
 	 */
 	public IModel getModel(String modelName) {
-		return (IModel)models.get(modelName);
+		return models.get(modelName);
 	}
 
 	/**

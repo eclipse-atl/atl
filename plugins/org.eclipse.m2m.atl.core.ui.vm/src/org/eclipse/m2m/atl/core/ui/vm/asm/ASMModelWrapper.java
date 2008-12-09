@@ -152,7 +152,7 @@ public class ASMModelWrapper implements IModel, IReferenceModel {
 	 * @see org.eclipse.m2m.atl.core.IModel#getElementsByType(java.lang.Object)
 	 * @deprecated unused in this implementation
 	 */
-	public Set getElementsByType(Object metaElement) {
+	public Set<? extends Object> getElementsByType(Object metaElement) {
 		return null;
 	}
 
