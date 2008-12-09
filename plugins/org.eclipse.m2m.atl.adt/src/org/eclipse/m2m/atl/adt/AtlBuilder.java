@@ -40,6 +40,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 	 *
 	 * @see org.eclipse.core.resources.IncrementalProjectBuilder#build(int, java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {
 		IWorkspaceRunnable wr = new IWorkspaceRunnable() {
@@ -72,6 +73,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 	 *
 	 * @see org.eclipse.core.resources.IncrementalProjectBuilder#clean(org.eclipse.core.runtime.IProgressMonitor)
 	 */
+	@Override
 	protected void clean(IProgressMonitor monitor) throws CoreException {
 		super.clean(monitor);
 		IWorkspaceRunnable wr = new IWorkspaceRunnable() {
