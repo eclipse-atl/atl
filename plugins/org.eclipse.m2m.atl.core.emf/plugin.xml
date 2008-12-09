@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.m2m.atl.core.model">
+      <model
+            model="org.eclipse.m2m.atl.core.emf.EMFModel"
+            modelFactory="org.eclipse.m2m.atl.core.emf.EMFModelFactory"
+            name="EMF"
+            referenceModel="org.eclipse.m2m.atl.core.emf.EMFReferenceModel">
+      </model>
+   </extension>
+   <extension
+         point="org.eclipse.m2m.atl.core.injector">
+      <injector
+            class="org.eclipse.m2m.atl.core.emf.EMFInjector"
+            name="EMF">
+      </injector>
+   </extension>
+   <extension
+         point="org.eclipse.m2m.atl.core.extractor">
+      <extractor
+            class="org.eclipse.m2m.atl.core.emf.EMFExtractor"
+            name="EMF">
+      </extractor>
+   </extension>
+
+</plugin>
