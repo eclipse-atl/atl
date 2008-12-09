@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.14 2008/10/15 10:21:08 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.15 2008/12/09 13:11:26 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -18,9 +18,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -28,18 +26,12 @@ import java.util.WeakHashMap;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.m2m.atl.ATLLogger;
-import org.eclipse.m2m.atl.engine.emfvm.lib.Bag;
-import org.eclipse.m2m.atl.engine.emfvm.lib.EnumLiteral;
+import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.HasFields;
-import org.eclipse.m2m.atl.engine.emfvm.lib.OclParametrizedType;
-import org.eclipse.m2m.atl.engine.emfvm.lib.OclSimpleType;
+import org.eclipse.m2m.atl.engine.emfvm.lib.OclType;
 import org.eclipse.m2m.atl.engine.emfvm.lib.OclUndefined;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
-import org.eclipse.m2m.atl.engine.emfvm.lib.TransientLink;
-import org.eclipse.m2m.atl.engine.emfvm.lib.TransientLinkSet;
-import org.eclipse.m2m.atl.engine.emfvm.lib.Tuple;
-import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 
 /**
  * ASM commands scheduler.
@@ -53,8 +45,6 @@ public class ASMOperation extends Operation {
 
 	/** The max size of the Stack. */
 	public static final int MAX_STACK = 100;
-
-	private static Map nativeClasses = new HashMap();
 
 	/**
 	 * Cache used to store methods.
@@ -90,27 +80,6 @@ public class ASMOperation extends Operation {
 
 	public int getMaxLocals() {
 		return maxLocals;
-	}
-
-	static {
-		nativeClasses.put("Sequence", ArrayList.class);
-		nativeClasses.put("Set", HashSet.class);
-		nativeClasses.put("Bag", Bag.class);
-		nativeClasses.put("OrderedSet", LinkedHashSet.class);
-		nativeClasses.put("Tuple", Tuple.class);
-		nativeClasses.put("EnumLiteral", EnumLiteral.class);
-		nativeClasses.put("OclSimpleType", OclSimpleType.class);
-		nativeClasses.put("OclParametrizedType", OclParametrizedType.class);
-		nativeClasses.put("TransientLinkSet", TransientLinkSet.class);
-		nativeClasses.put("TransientLink", TransientLink.class);
-		nativeClasses.put("Map", HashMap.class);
-
-		// should not use "new" on the following types
-		nativeClasses.put("String", String.class);
-		nativeClasses.put("Integer", Integer.class);
-		nativeClasses.put("OclAny", Object.class);
-		nativeClasses.put("Boolean", Boolean.class);
-		nativeClasses.put("Real", Double.class);
 	}
 
 	public void setContext(String context) {
@@ -314,9 +283,9 @@ public class ASMOperation extends Operation {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#exec(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame)
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#exec(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame)
 	 */
-	public Object exec(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame frame) {
+	public Object exec(AbstractStackFrame frame) {
 		final ExecEnv execEnv = frame.getExecEnv();
 
 		// Note: debug is not initialized from a constant, and therefore has a performance impact
@@ -330,13 +299,13 @@ public class ASMOperation extends Operation {
 		final Iterator[] nestedIterate = new Iterator[nbNestedIterates];
 		Iterator it;
 		Object s;
-		StringBuffer log = null;
+		StringBuffer log = new StringBuffer();
 		try {
 			while (pc < nbBytecodes) {
 				Bytecode bytecode = bytecodes[pc++];
 				execEnv.incNbExecutedBytecodes();
 				if (debug) {
-					ATLLogger.info(name + ":" + (pc - 1) + "\t" + bytecode);
+					ATLLogger.info(name + ":" + (pc - 1) + "\t" + bytecode); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				switch (bytecode.getOpcode()) {
 					case Bytecode.PUSHD:
@@ -353,12 +322,11 @@ public class ASMOperation extends Operation {
 					case Bytecode.CALL:
 						Object self = stack[fp - bytecode.getValue() - 1];
 						if (debug) {
-							log = new StringBuffer();
-							log.append("\tCalling ");
+							log.append("\tCalling "); //$NON-NLS-1$
 							log.append(frame.getExecEnv().toPrettyPrintedString(self));
-							log.append(".");
+							log.append("."); //$NON-NLS-1$
 							log.append(bytecode.getOperand());
-							log.append("(");
+							log.append("("); //$NON-NLS-1$
 						}
 						Object type = execEnv.getModelAdapter().getType(self);
 						int nbCalleeArgs = bytecode.getValue();
@@ -373,14 +341,14 @@ public class ASMOperation extends Operation {
 								arguments[i] = stack[--fp];
 								if (debug) {
 									if (!first) {
-										log.append(", ");
+										log.append(", "); //$NON-NLS-1$
 									}
 									first = false;
 									log.append(execEnv.toPrettyPrintedString(arguments[i]));
 								}
 							}
 							if (debug) {
-								log.append(")");
+								log.append(")"); //$NON-NLS-1$
 								ATLLogger.info(log.toString());
 							}
 							--fp; // pop self, that we already retrieved earlier to get the operation
@@ -396,14 +364,14 @@ public class ASMOperation extends Operation {
 								arguments[i] = stack[--fp];
 								if (debug) {
 									if (!first) {
-										log.append(", ");
+										log.append(", "); //$NON-NLS-1$
 									}
 									first = false;
 									log.append(execEnv.toPrettyPrintedString(arguments[i]));
 								}
 							}
 							if (debug) {
-								log.append(")");
+								log.append(")"); //$NON-NLS-1$
 								ATLLogger.info(log.toString());
 							}
 							--fp; // pop self, that we already retrieved earlier to get the operation
@@ -411,10 +379,13 @@ public class ASMOperation extends Operation {
 							Method m = findMethod(self.getClass(), (String)bytecode.getOperand(),
 									getTypesOf(arguments));
 							if (m == null) {
-								throw new VMException(frame, "operation not found: "
-										+ execEnv.toPrettyPrintedString(self) + "." + bytecode.getOperand());
+								throw new VMException(
+										frame,
+										Messages
+												.getString(
+														"ASMOperation.OPERATIONNOTFOUND", new Object[] {execEnv.toPrettyPrintedString(self), bytecode.getOperand()})); //$NON-NLS-1$)
 							}
-							s = m.invoke(self, arguments);
+							s = execEnv.getModelAdapter().invoke(m, self, arguments);
 						}
 
 						if (s != null) {
@@ -478,7 +449,8 @@ public class ASMOperation extends Operation {
 					case Bytecode.NEW:
 						Object mname = stack[--fp];
 						Object me = stack[--fp];
-						if (mname.equals("#native")) {
+
+						if (mname.equals("#native")) { //$NON-NLS-1$
 							// TODO: makes sure the Map implementation is actually faster, then get rid of
 							// if-else-if implementation
 							/*
@@ -493,13 +465,13 @@ public class ASMOperation extends Operation {
 							 * TransientLink(); } else if(me.equals("Map")) { stack[fp++] = new HashMap(); }
 							 * else { throw new VMException(frame, "cannot create " + mname + "!" + me); } /
 							 */
-							Class c = (Class)nativeClasses.get(me);
+							Class c = OclType.getNativeClassfromOclTypeName(me.toString());
 							if (c != null) {
 								stack[fp++] = c.newInstance();
 							} else {
-								throw new VMException(frame, "cannot create " + mname + "!" + me);
+								throw new VMException(frame, Messages.getString(
+										"ASMOperation.CANNOTCREATE", new Object[] {mname, me})); //$NON-NLS-1$ 
 							}
-							/**/
 						} else {
 							Object ec = ExecEnv.findMetaElement(frame, mname, me);
 							stack[fp++] = execEnv.newElement(frame, ec);
@@ -508,12 +480,13 @@ public class ASMOperation extends Operation {
 					case Bytecode.FINDME:
 						mname = stack[--fp];
 						me = stack[--fp];
-						if (mname.equals("#native")) {
-							Class c = (Class)nativeClasses.get(me);
+						if (mname.equals("#native")) { //$NON-NLS-1$
+							Class c = OclType.getNativeClassfromOclTypeName(me.toString());
 							if (c != null) {
 								stack[fp++] = c;
 							} else {
-								throw new VMException(frame, "cannot find " + mname + "!" + me);
+								throw new VMException(frame, Messages.getString(
+										"ASMOperation.CANNOTFIND", new Object[] {mname, me})); //$NON-NLS-1$
 							}
 						} else {
 							Object ec = ExecEnv.findMetaElement(frame, mname, me);
@@ -555,31 +528,35 @@ public class ASMOperation extends Operation {
 						pc = bytecode.getValue();
 						break;
 					default:
-						throw new VMException(frame, "Unimplemented bytecode " + bytecode.getOpcode());
+						throw new VMException(
+								frame,
+								Messages
+										.getString(
+												"ASMOperation.UNKNOWNBYTECODE", new Object[] {new Integer(bytecode.getOpcode())})); //$NON-NLS-1$
 				}
 
 				if (debug) {
 					log = new StringBuffer();
-					log.append("\tstack: ");
+					log.append("\tstack: "); //$NON-NLS-1$
 					for (int i = 0; i < fp; i++) {
 						if (i > 0) {
-							log.append(", ");
+							log.append(", "); //$NON-NLS-1$
 						}
 						log.append(frame.getExecEnv().toPrettyPrintedString(stack[i]));
 					}
 					ATLLogger.info(log.toString());
 
 					log = new StringBuffer();
-					log.append("\tlocals: ");
+					log.append("\tlocals: "); //$NON-NLS-1$
 					boolean first = true;
 					for (int i = 0; i < localVars.length; i++) {
 						String vname = resolveVariableName(i, pc);
 						if (vname != null) {
 							if (!first) {
-								log.append(", ");
+								log.append(", "); //$NON-NLS-1$
 							}
 							first = false;
-							log.append(vname + "=");
+							log.append(vname + "="); //$NON-NLS-1$
 							log.append(frame.getExecEnv().toPrettyPrintedString(localVars[i]));
 						}
 					}
@@ -589,9 +566,12 @@ public class ASMOperation extends Operation {
 		} catch (VMException e) {
 			((StackFrame)frame).setPc(pc - 1);
 			throw e; // do not rewrap
-		} catch (Exception e) {
+		} catch (InstantiationException e) {
 			((StackFrame)frame).setPc(pc - 1);
-			throw new VMException(frame, e.getLocalizedMessage(),e);
+			throw new VMException(frame, e.getLocalizedMessage(), e);
+		} catch (IllegalAccessException e) {
+			((StackFrame)frame).setPc(pc - 1);
+			throw new VMException(frame, e.getLocalizedMessage(), e);
 		}
 
 		return fp > 0 ? stack[--fp] : null;
@@ -724,6 +704,6 @@ public class ASMOperation extends Operation {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return this.context + "." + this.name;
+		return this.context + "." + this.name; //$NON-NLS-1$
 	}
 }

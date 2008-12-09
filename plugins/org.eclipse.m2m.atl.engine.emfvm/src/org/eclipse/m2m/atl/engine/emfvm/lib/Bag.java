@@ -29,7 +29,7 @@ public class Bag implements Collection {
 	private static final Integer ONE = new Integer(1);
 
 	/**
-	 * An internal map storing objects and the number of their occurences.
+	 * An internal map storing objects and the number of their occurrences.
 	 */
 	private Map map;
 
@@ -41,7 +41,7 @@ public class Bag implements Collection {
 	}
 
 	/**
-	 * Constructor parametrized with an existing collection.
+	 * Constructor parameterized with an existing collection.
 	 * 
 	 * @param arg0
 	 *            the collection
@@ -51,8 +51,9 @@ public class Bag implements Collection {
 		addAll(arg0);
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#add(E)
 	 */
 	public boolean add(Object arg0) {
@@ -67,8 +68,9 @@ public class Bag implements Collection {
 		return true;
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#addAll(java.util.Collection)
 	 */
 	public boolean addAll(Collection arg0) {
@@ -79,25 +81,27 @@ public class Bag implements Collection {
 		return true;
 	}
 
-
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#clear()
 	 */
 	public void clear() {
 		map = Collections.EMPTY_MAP;
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#contains(java.lang.Object)
 	 */
 	public boolean contains(Object arg0) {
 		return map.containsKey(arg0);
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#containsAll(java.util.Collection)
 	 */
 	public boolean containsAll(Collection arg0) {
@@ -110,16 +114,18 @@ public class Bag implements Collection {
 		return true;
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#isEmpty()
 	 */
 	public boolean isEmpty() {
 		return map.isEmpty();
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#remove(java.lang.Object)
 	 */
 	public boolean remove(Object arg0) {
@@ -137,8 +143,9 @@ public class Bag implements Collection {
 		return true;
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#removeAll(java.util.Collection)
 	 */
 	public boolean removeAll(Collection arg0) {
@@ -149,8 +156,9 @@ public class Bag implements Collection {
 		return true;
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#size()
 	 */
 	public int size() {
@@ -162,8 +170,9 @@ public class Bag implements Collection {
 		return res;
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#iterator()
 	 */
 	public Iterator iterator() {
@@ -177,8 +186,9 @@ public class Bag implements Collection {
 		return iterable.iterator();
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#retainAll(java.util.Collection)
 	 */
 	public boolean retainAll(Collection arg0) {
@@ -191,8 +201,9 @@ public class Bag implements Collection {
 		return false;
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#toArray()
 	 */
 	public Object[] toArray() {
@@ -206,8 +217,9 @@ public class Bag implements Collection {
 		return res;
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.util.Collection#toArray(T[])
 	 */
 	public Object[] toArray(Object[] arg0) {

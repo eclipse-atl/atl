@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 INRIA.
+ * Copyright (c) 2007 INRIA and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,19 +7,66 @@
  *
  * Contributors:
  *    Frederic Jouault - initial API and implementation
+ *    William Piers - oclType implementation
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
-import org.eclipse.emf.ecore.EClass;
+import org.eclipse.m2m.atl.engine.emfvm.Messages;
+import org.eclipse.m2m.atl.engine.emfvm.VMException;
+
 
 /**
  * An OCL complex type.
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class OclParametrizedType extends OclType {
 
-	private Object elementType;
+	private OclType elementType;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param name
+	 *            the type name
+	 * @param elementType
+	 *            the type
+	 */
+	public OclParametrizedType(String name, Object elementType) {
+		super();
+		setName(name);
+		setElementType(elementType);
+	}
+
+	/**
+	 * Constructor.
+	 */
+	public OclParametrizedType() {
+		super();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object obj) {
+		if (obj instanceof OclParametrizedType) {
+			return ((OclParametrizedType)obj).getName().equals(getName())
+					&& ((OclParametrizedType)obj).getElementType().equals(elementType);
+		}
+		return super.equals(obj);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return super.hashCode();
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -27,15 +74,30 @@ public class OclParametrizedType extends OclType {
 	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.OclType#toString()
 	 */
 	public String toString() {
-		return super.toString() + "(" + elementType + ")";
+		return super.toString() + "(" + elementType + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	public Object getElementType() {
+	public OclType getElementType() {
 		return elementType;
 	}
 
+	/**
+	 * Sets the element type.
+	 * 
+	 * @param elementType
+	 *            the type to set
+	 */
 	public void setElementType(Object elementType) {
-		this.elementType = elementType;
+		if (elementType instanceof OclType) {
+			this.elementType = (OclType)elementType;
+		} else {
+			OclType oclType = getOclTypeFromObject(elementType);
+			if (oclType != null) {
+				this.elementType = getOclTypeFromObject(elementType);
+			} else {
+				throw new VMException(null, Messages.getString("OclParametrizedType.UNDEFINED_PARAM_TYPE") + elementType); //$NON-NLS-1$
+			}
+		}
 	}
 
 	/**
@@ -44,20 +106,15 @@ public class OclParametrizedType extends OclType {
 	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.OclType#conformsTo(org.eclipse.m2m.atl.engine.emfvm.lib.OclType)
 	 */
 	public boolean conformsTo(OclType other) {
-		boolean ret = false;
-
-		if (other instanceof OclParametrizedType) {
-			final OclParametrizedType aopt = (OclParametrizedType)other;
-			final String oname = aopt.getName();
-			if ((oname.equals("Collection")) || (oname.equals(getName()))) {
-				if ((elementType instanceof EClass) && (aopt.elementType instanceof EClass)) {
-					ret = ((EClass)aopt.elementType).isSuperTypeOf((EClass)elementType);
-				} else if ((elementType instanceof Class) && (aopt.elementType instanceof Class)) {
-					ret = ((Class)aopt.elementType).isAssignableFrom((Class)elementType);
-				}
+		boolean ret = equals(other);
+		if (!ret && other instanceof OclParametrizedType) {
+			OclParametrizedType aopt = (OclParametrizedType)other;
+			if (aopt.getName().equals("Collection")) { //$NON-NLS-1$
+				ret = elementType.conformsTo(aopt.getElementType());
+			} else {
+				ret = aopt.getName().equals(getName()) && elementType.conformsTo(aopt.getElementType());
 			}
 		}
-
 		return ret;
 	}
 }

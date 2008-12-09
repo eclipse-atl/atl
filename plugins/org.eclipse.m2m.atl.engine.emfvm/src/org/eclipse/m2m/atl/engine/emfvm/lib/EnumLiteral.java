@@ -11,6 +11,8 @@
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
 import org.eclipse.emf.common.util.Enumerator;
+import org.eclipse.m2m.atl.engine.emfvm.Messages;
+import org.eclipse.m2m.atl.engine.emfvm.VMException;
 
 /**
  * Enumeration literal implementation.
@@ -31,43 +33,52 @@ public class EnumLiteral implements HasFields {
 		this.name = name;
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return name;
+		return (name == null) ? "<unnamed_yet>" : name; //$NON-NLS-1$
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.HasFields#get(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame, java.lang.Object)
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.HasFields#get(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
+	 *      java.lang.Object)
 	 */
-	public Object get(StackFrame frame, Object literalName) {
-		if ("name".equals(literalName)) {
+	public Object get(AbstractStackFrame frame, Object literalName) {
+		if ("name".equals(literalName)) { //$NON-NLS-1$
 			return this.name;
 		} else {
-			throw new VMException(frame, "error accessing EnumLiteral." + literalName);
+			throw new VMException(frame, Messages.getString(
+					"EnumLiteral.ACCESSERROR", new Object[] {literalName})); //$NON-NLS-1$
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.HasFields#set(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame, java.lang.Object, java.lang.Object)
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.HasFields#set(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
+	 *      java.lang.Object, java.lang.Object)
 	 */
-	public void set(StackFrame frame, Object literalName, Object value) {
-		if ("name".equals(literalName) && (value instanceof String)) {
-			this.name = (String)value;
+	public void set(AbstractStackFrame frame, Object literalName, Object value) {
+		if ("name".equals(literalName) && (value instanceof String)) { //$NON-NLS-1$
+			if (((String)value).startsWith("#")) { //$NON-NLS-1$
+				this.name = ((String)value).substring(1);
+			} else {
+				this.name = (String)value;
+			}
 		} else {
-			throw new VMException(frame, "error assigning " + value + " to EnumLiteral." + literalName);
+			throw new VMException(frame, Messages.getString(
+					"EnumLiteral.ASSIGNMENTERROR", new Object[] {value, literalName})); //$NON-NLS-1$
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
@@ -76,7 +87,7 @@ public class EnumLiteral implements HasFields {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public boolean equals(Object arg) {

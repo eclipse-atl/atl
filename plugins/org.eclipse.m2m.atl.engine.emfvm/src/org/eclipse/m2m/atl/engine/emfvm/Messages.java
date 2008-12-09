@@ -19,18 +19,18 @@ import java.util.ResourceBundle;
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public final class EMFVMMessages {
-	
+public final class Messages {
+
 	/** Full qualified path to the properties file in which to seek the keys. */
 	private static final String BUNDLE_NAME = "org.eclipse.m2m.atl.engine.emfvm.messages"; //$NON-NLS-1$
-	
+
 	/** Contains the locale specific {@link String}s needed by this plug-in. */
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
 	/**
 	 * Utility classes don't need to (and shouldn't) be instantiated.
 	 */
-	private EMFVMMessages() {
+	private Messages() {
 	}
 
 	/**
@@ -47,7 +47,7 @@ public final class EMFVMMessages {
 			return '!' + key + '!';
 		}
 	}
-	
+
 	/**
 	 * Returns a String from the resource bundle binded with the given arguments.
 	 * 

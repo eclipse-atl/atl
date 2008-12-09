@@ -21,7 +21,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -69,7 +68,7 @@ public class ASMXMLReader extends DefaultHandler {
 			throw new VMException(null, e.getLocalizedMessage(), e);
 		}
 		if (errors > 0) {
-			throw new VMException(null, "Fatal error reading .asm file");
+			throw new VMException(null, Messages.getString("ASMXMLReader.FATALERROR")); //$NON-NLS-1$
 		}
 		return ret;
 	}
@@ -96,43 +95,43 @@ public class ASMXMLReader extends DefaultHandler {
 			attrs.put(attributes.getQName(i), attributes.getValue(i));
 		}
 
-		if (qName.equals("asm")) {
-			asmNameIndex = attrs.get("name");
-		} else if (qName.equals("cp")) {
+		if (qName.equals("asm")) { //$NON-NLS-1$
+			asmNameIndex = attrs.get("name"); //$NON-NLS-1$
+		} else if (qName.equals("cp")) { //$NON-NLS-1$
 			// nothing to do
-		} else if (qName.equals("constant")) {
-			cp.add(attrs.get("value"));
-		} else if (qName.equals("field")) {
-			ret.addField(resolve(attrs.get("name")), resolve(attrs.get("type")));
-		} else if (qName.equals("operation")) {
-			currentOperation = new ASMOperation(resolve(attrs.get("name")));
+		} else if (qName.equals("constant")) { //$NON-NLS-1$
+			cp.add(attrs.get("value")); //$NON-NLS-1$
+		} else if (qName.equals("field")) { //$NON-NLS-1$
+			ret.addField(resolve(attrs.get("name")), resolve(attrs.get("type"))); //$NON-NLS-1$ //$NON-NLS-2$
+		} else if (qName.equals("operation")) { //$NON-NLS-1$
+			currentOperation = new ASMOperation(resolve(attrs.get("name"))); //$NON-NLS-1$
 			bytecodes = new ArrayList();
-		} else if (qName.equals("context")) {
-			currentOperation.setContext(resolve(attrs.get("type")));
-		} else if (qName.equals("parameters")) {
+		} else if (qName.equals("context")) { //$NON-NLS-1$
+			currentOperation.setContext(resolve(attrs.get("type"))); //$NON-NLS-1$
+		} else if (qName.equals("parameters")) { //$NON-NLS-1$
 			// nothing to do
-		} else if (qName.equals("parameter")) {
-			currentOperation.addParameter(resolve(attrs.get("name")), resolve(attrs.get("type")));
-		} else if (qName.equals("code")) {
+		} else if (qName.equals("parameter")) { //$NON-NLS-1$
+			currentOperation.addParameter(resolve(attrs.get("name")), resolve(attrs.get("type"))); //$NON-NLS-1$ //$NON-NLS-2$
+		} else if (qName.equals("code")) { //$NON-NLS-1$
 			inCode = true;
-		} else if (qName.equals("linenumbertable")) {
+		} else if (qName.equals("linenumbertable")) { //$NON-NLS-1$
 			// nothing to do
-		} else if (qName.equals("lne")) {
-			currentOperation.addLineNumberEntry(resolve(attrs.get("id")), toInt(attrs.get("begin")),
-					toInt(attrs.get("end")));
-		} else if (qName.equals("localvariabletable")) {
+		} else if (qName.equals("lne")) { //$NON-NLS-1$
+			currentOperation.addLineNumberEntry(resolve(attrs.get("id")), toInt(attrs.get("begin")), //$NON-NLS-1$ //$NON-NLS-2$
+					toInt(attrs.get("end"))); //$NON-NLS-1$
+		} else if (qName.equals("localvariabletable")) { //$NON-NLS-1$
 			// nothing to do
-		} else if (qName.equals("lve")) {
-			currentOperation.addLocalVariableEntry(toInt(attrs.get("slot")), resolve(attrs.get("name")),
-					toInt(attrs.get("begin")), toInt(attrs.get("end")));
+		} else if (qName.equals("lve")) { //$NON-NLS-1$
+			currentOperation.addLocalVariableEntry(toInt(attrs.get("slot")), resolve(attrs.get("name")), //$NON-NLS-1$ //$NON-NLS-2$
+					toInt(attrs.get("begin")), toInt(attrs.get("end"))); //$NON-NLS-1$ //$NON-NLS-2$
 
 		} else {
 			if (inCode) {
-				if (attrs.containsKey("arg")) {
+				if (attrs.containsKey("arg")) { //$NON-NLS-1$
 					// if(qName.equals("if") || qName.equals("goto")) {
 
 					// } else {
-					bytecodes.add(new Bytecode(qName, resolve(attrs.get("arg"))));
+					bytecodes.add(new Bytecode(qName, resolve(attrs.get("arg")))); //$NON-NLS-1$
 					// }
 				} else {
 					bytecodes.add(new Bytecode(qName));
@@ -148,11 +147,11 @@ public class ASMXMLReader extends DefaultHandler {
 	 *      java.lang.String)
 	 */
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-		if (qName.equals("cp")) {
+		if (qName.equals("cp")) { //$NON-NLS-1$
 			ret.setName(resolve(asmNameIndex));
-		} else if (qName.equals("code")) {
+		} else if (qName.equals("code")) { //$NON-NLS-1$
 			inCode = false;
-		} else if (qName.equals("operation")) {
+		} else if (qName.equals("operation")) { //$NON-NLS-1$
 			currentOperation.setBytecodes((Bytecode[])bytecodes.toArray(new Bytecode[0]));
 			ret.addOperation(currentOperation);
 			currentOperation = null;
@@ -166,7 +165,11 @@ public class ASMXMLReader extends DefaultHandler {
 	 */
 	public void error(SAXParseException e) {
 		errors++;
-		throw new VMException(null,"Error: line " + e.getLineNumber() + ":" + e.getColumnNumber() + ": " + e.getMessage(),null);
+		throw new VMException(
+				null,
+				Messages
+						.getString(
+								"ASMXMLReader.PARSINGERROR", new Object[] {new Integer(e.getLineNumber()), new Integer(e.getColumnNumber()), e.getMessage()})); //$NON-NLS-1$
 	}
 
 	/**
@@ -175,9 +178,11 @@ public class ASMXMLReader extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#fatalError(org.xml.sax.SAXParseException)
 	 */
 	public void fatalError(SAXParseException e) throws SAXParseException {
-		throw new ASMXMLReaderException("Fatal error reading .asm file: line " + e.getLineNumber() + ":"
-				+ e.getColumnNumber() + ": " + e.getLocalizedMessage(), e.getPublicId(), e.getSystemId(), e
-				.getLineNumber(), e.getColumnNumber(), e);
+		throw new ASMXMLReaderException(
+				Messages
+						.getString(
+								"ASMXMLReader.PARSINGERROR", new Object[] {new Integer(e.getLineNumber()), new Integer(e.getColumnNumber()), e.getLocalizedMessage()}), e.getPublicId(), e.getSystemId(), e //$NON-NLS-1$
+						.getLineNumber(), e.getColumnNumber(), e);
 	}
 
 }

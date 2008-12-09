@@ -9,10 +9,12 @@
  *    Frederic Jouault - initial API and implementation
  *    Obeo - refactoring
  *******************************************************************************/
-package org.eclipse.m2m.atl.engine.emfvm.lib;
+package org.eclipse.m2m.atl.engine.emfvm;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
+
+import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame;
 
 /**
  * Exceptions thrown by the VM.
@@ -24,7 +26,7 @@ public class VMException extends RuntimeException {
 
 	private static final long serialVersionUID = 8297602709605088805L;
 
-	private final StackFrame frame;
+	private final AbstractStackFrame frame;
 
 	/**
 	 * Creates a VM exception with the given message.
@@ -34,7 +36,7 @@ public class VMException extends RuntimeException {
 	 * @param message
 	 *            the message
 	 */
-	public VMException(StackFrame frame, String message) {
+	public VMException(AbstractStackFrame frame, String message) {
 		super(message);
 		this.frame = frame;
 	}
@@ -49,22 +51,23 @@ public class VMException extends RuntimeException {
 	 * @param cause
 	 *            the cause
 	 */
-	public VMException(StackFrame frame, String message, Throwable cause) {
+	public VMException(AbstractStackFrame frame, String message, Throwable cause) {
 		super(message, cause);
 		this.frame = frame;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see java.lang.Throwable#printStackTrace(java.io.PrintStream)
 	 */
 	public void printStackTrace(PrintStream s) {
-		s.println("ATL VM Stack:");
-		s.println("-------------");
-		s.println(frame);
+		if (frame != null) {
+			s.println("ATL VM Stack:"); //$NON-NLS-1$
+			s.println(frame);
+		}
 		if (getCause() != null) {
-			s.println("Java Stack:");
+			s.println("Java Stack:"); //$NON-NLS-1$
 			// Java stack trace :
 			super.printStackTrace(s);
 		}
@@ -77,11 +80,12 @@ public class VMException extends RuntimeException {
 	 * @see java.lang.Throwable#printStackTrace(java.io.PrintWriter)
 	 */
 	public void printStackTrace(PrintWriter s) {
-		s.println("ATL VM Stack:");
-		s.println("-------------");
-		s.println(frame);
+		if (frame != null) {
+			s.println("ATL VM Stack:"); //$NON-NLS-1$
+			s.println(frame);
+		}
 		if (getCause() != null) {
-			s.println("Java Stack:");
+			s.println("Java Stack:"); //$NON-NLS-1$
 			// Java stack trace :
 			super.printStackTrace(s);
 		}

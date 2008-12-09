@@ -23,12 +23,19 @@ public class ASMXMLReaderException extends SAXParseException {
 
 	/**
 	 * Creates a new {@link ASMXMLReaderException} with the given parameters.
-	 * @param message the error message
-	 * @param publicId the public id
-	 * @param systemId the system id
-	 * @param lineNumber the error location line
-	 * @param columnNumber  the error location column
-	 * @param e the exception
+	 * 
+	 * @param message
+	 *            the error message
+	 * @param publicId
+	 *            the public id
+	 * @param systemId
+	 *            the system id
+	 * @param lineNumber
+	 *            the error location line
+	 * @param columnNumber
+	 *            the error location column
+	 * @param e
+	 *            the exception
 	 */
 	public ASMXMLReaderException(String message, String publicId, String systemId, int lineNumber,
 			int columnNumber, Exception e) {

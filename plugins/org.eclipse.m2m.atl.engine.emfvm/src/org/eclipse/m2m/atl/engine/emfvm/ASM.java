@@ -24,14 +24,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.AtlSuperimposeModule.AtlSuperimposeModuleException;
-import org.eclipse.m2m.atl.engine.emfvm.emf.EMFModelAdapter;
+import org.eclipse.m2m.atl.engine.emfvm.adapter.EMFModelAdapter;
+import org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter;
+import org.eclipse.m2m.atl.engine.emfvm.adapter.UML2ModelAdapter;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ASMModule;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Extension;
-import org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter;
-import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
-import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 
 /**
  * The ASM Class, which manages an ASM program.
@@ -81,7 +81,7 @@ public class ASM {
 	 */
 	public void addOperation(ASMOperation operation) {
 		operations.add(operation);
-		if (operation.getName().equals("main") && operation.getContext().equals("A")) {
+		if (operation.getName().equals("main") && operation.getContext().equals("A")) { //$NON-NLS-1$ //$NON-NLS-2$
 			mainOperation = operation;
 		}
 	}
@@ -107,7 +107,7 @@ public class ASM {
 		return mainOperation;
 	}
 
-	// TODO:
+	// TODO analyze:
 	// - implements other options
 	// - define options somewhere (currently, best definition is in regular VM)
 	/**
@@ -126,61 +126,69 @@ public class ASM {
 	public Object run(Map models, Map libraries, List superimpose, Map options) {
 		Object ret = null;
 
-		boolean printExecutionTime = "true".equals(options.get("printExecutionTime"));
+		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		long startTime = System.currentTimeMillis();
 
 		ExecEnv execEnv = new ExecEnv(models);
-		ModelAdapter modelAdapter = new EMFModelAdapter(execEnv);
+
+		IModelAdapter modelAdapter;
+
+		if ("true".equals(options.get("supportUML2Stereotypes"))) { //$NON-NLS-1$ //$NON-NLS-2$
+			modelAdapter = new UML2ModelAdapter(execEnv);
+		} else {
+			modelAdapter = new EMFModelAdapter(execEnv);
+		}
+
 		// by default (if options.get("checkSameModel") == null) interModelReferences are not allowed
-		modelAdapter.setAllowInterModelReferences("false".equals(options.get("checkSameModel")));
+		modelAdapter.setAllowInterModelReferences("false".equals(options.get("checkSameModel"))); //$NON-NLS-1$ //$NON-NLS-2$
 		execEnv.init(modelAdapter);
 
-		if ("true".equals(options.get("step"))) {
+		if ("true".equals(options.get("step"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			execEnv.setStep(true);
 		}
 
-		String ext = (String)options.get("extensions");
+		String ext = (String)options.get("extensions"); //$NON-NLS-1$
 		if (ext != null) {
 			ClassLoader cl = getClass().getClassLoader();
 
-			String extraClasspath = (String)options.get("extraClasspath");
+			String extraClasspath = (String)options.get("extraClasspath"); //$NON-NLS-1$
 			if (extraClasspath != null) {
-				String[] paths = extraClasspath.split(",");
+				String[] paths = extraClasspath.split(","); //$NON-NLS-1$
 				URL[] urls = new URL[paths.length];
-				String userDir = (String)options.get("user.dir");
+				String userDir = (String)options.get("user.dir"); //$NON-NLS-1$
 				if (userDir == null) {
-					userDir = System.getProperty("user.dir");
+					userDir = System.getProperty("user.dir"); //$NON-NLS-1$
 				}
 				for (int i = 0; i < paths.length; i++) {
 					try {
 						urls[i] = new File(userDir, paths[i]).toURI().toURL();
 					} catch (MalformedURLException e) {
-						throw new RuntimeException("error while loading extra classpath entry: \"" + paths[i]
-								+ "\"", e);
+						throw new VMException(null,Messages.getString(
+								"ASM.LOADINGERROR", new Object[] {paths[i]}), e); //$NON-NLS-1$
 					}
 				}
 				cl = new URLClassLoader(urls, cl);
 			}
 
-			String[] extensions = ext.split(",");
+			String[] extensions = ext.split(","); //$NON-NLS-1$
 			for (int i = 0; i < extensions.length; i++) {
 				try {
 					Extension extension = (Extension)cl.loadClass(extensions[i]).newInstance();
 					extension.apply(execEnv, options);
 				} catch (ClassNotFoundException e) {
-					throw new RuntimeException("error while loading extension class: \"" + extensions[i]
-							+ "\"", e);
+					throw new VMException(null,Messages.getString(
+							"ASM.EXTLOADINGERROR", new Object[] {extensions[i]}), e); //$NON-NLS-1$
 				} catch (InstantiationException e) {
-					throw new RuntimeException("error while instantiating extension class: \""
-							+ extensions[i] + "\"", e);
+					throw new VMException(null,Messages.getString(
+							"ASM.EXTINSTANTIATEERROR", new Object[] {extensions[i]}), e); //$NON-NLS-1$
 				} catch (IllegalAccessException e) {
-					throw new RuntimeException("error while instantiating extension class: \""
-							+ extensions[i] + "\"", e);
+					throw new VMException(null,Messages.getString(
+							"ASM.EXTINSTANTIATEERROR", new Object[] {extensions[i]}), e); //$NON-NLS-1$
 				}
 			}
 		}
-		List extensionObjects = (List)options.get("extensionObjects");
+		List extensionObjects = (List)options.get("extensionObjects"); //$NON-NLS-1$
 		if (extensionObjects != null) {
 			for (Iterator i = extensionObjects.iterator(); i.hasNext();) {
 				((Extension)i.next()).apply(execEnv, options);
@@ -214,13 +222,15 @@ public class ASM {
 		}
 
 		ret = mainOperation.exec(frame);
-
+		execEnv.terminated();
 		long endTime = System.currentTimeMillis();
 		if (printExecutionTime) {
-			ATLLogger.info("Executed " + name + " in " + ((endTime - startTime) / 1000.) + "s.");
+			ATLLogger.info(Messages.getString(
+					"ASM.EXECUTIONTIME", new Object[] {name, new Double((endTime - startTime) / 1000.)})); //$NON-NLS-1$
 		}
-		if ("true".equals(options.get("showSummary"))) {
-			ATLLogger.info("Number of instructions executed: " + execEnv.getNbExecutedBytecodes());
+		if ("true".equals(options.get("showSummary"))) { //$NON-NLS-1$ //$NON-NLS-2$
+			ATLLogger.info(Messages.getString(
+					"ASM.INSTRUCTIONSCOUNT", new Object[] {new Double(execEnv.getNbExecutedBytecodes())})); //$NON-NLS-1$
 		}
 		return ret;
 	}
@@ -237,17 +247,14 @@ public class ASM {
 		for (Iterator i = operationsToRegister.iterator(); i.hasNext();) {
 			ASMOperation op = (ASMOperation)i.next();
 			String signature = op.getContext();
-			if (signature.matches("^(Q|G|C|E|O|N).*$")) {
+			if (signature.matches("^(Q|G|C|E|O|N).*$")) { //$NON-NLS-1$
 				// Sequence, Bag, Collection, Set, OrderedSet, Native type
-				ATLLogger.warning("Unsupported registration: " + signature);
-				// } else if(signature.startsWith("T")) {
-				// logger.warning("Unsupported registration: " + signature);
+				ATLLogger
+						.warning(Messages.getString("ASM.UNSUPPORTEDREGISTRATION", new Object[] {signature})); //$NON-NLS-1$
 			} else {
 				try {
 					Object type = parseType(execEnv, new StringCharacterIterator(signature));
-					// ATLLogger.info("registering " + op + " on " + type);
 					execEnv.registerOperation(type, op, op.getName());
-					// op.setContextType(type);
 				} catch (SignatureParsingException spe) {
 					throw new VMException(null, spe.getLocalizedMessage(), spe);
 				}
@@ -271,8 +278,10 @@ public class ASM {
 
 	private void read(CharacterIterator ci, char c) throws SignatureParsingException {
 		if (ci.current() != c) {
-			throw new SignatureParsingException("Expected \'" + c + "\', found \'" + ci.current()
-					+ "\' at position " + ci.getIndex() + ".");
+			throw new SignatureParsingException(
+					Messages
+							.getString(
+									"ASM.PARSINGERROR", new Object[] {new Character(c), new Character(ci.current()), new Integer(ci.getIndex())})); //$NON-NLS-1$
 		}
 		ci.next();
 	}
@@ -282,8 +291,8 @@ public class ASM {
 		Object ret = parseTypeInternal(execEnv, ci);
 
 		if (ci.next() != CharacterIterator.DONE) {
-			throw new SignatureParsingException("End of type signature expected at position " + ci.getIndex()
-					+ ".");
+			throw new SignatureParsingException(Messages.getString(
+					"ASM.SIGNATUREPARSINGERROR", new Object[] {new Integer(ci.getIndex())})); //$NON-NLS-1$
 		}
 
 		return ret;
@@ -305,7 +314,7 @@ public class ASM {
 			// while(ci.current() != ';') {
 			// ASMOclType attrType = parseTypeInternal(ci);
 			// String attrName = readUntil(ci, ';');
-			// //attrs.put(attrName, attrType); // TODO: correct type
+			// //attrs.put(attrName, attrType); //TO DO: correct type
 			// attrs.put(attrName, ASMOclAny.myType);
 			// }
 			// ret = new ASMTupleType(attrs);
@@ -314,16 +323,16 @@ public class ASM {
 				ci.next();
 				String mname = readUntil(ci, '!');
 				String modelName = readUntil(ci, ';');
-				ReferenceModel model = (ReferenceModel)execEnv.getModel(mname);
+				IReferenceModel model = (IReferenceModel)execEnv.getModel(mname);
 				if (model != null) {
 					Object ec = model.getMetaElementByName(modelName);
 					if (ec == null) {
-						throw new SignatureParsingException("ERROR: could not find model element "
-								+ modelName + " from " + mname);
+						throw new SignatureParsingException(Messages.getString(
+								"ASM.MODELELEMENTNOTFOUND", new Object[] {modelName, mname})); //$NON-NLS-1$
 					}
 					ret = ec;
 				} else {
-					ATLLogger.warning("Could not find model " + mname + ".");
+					throw new VMException(null,Messages.getString("ASM.MODELNOTFOUND", new Object[] {mname})); //$NON-NLS-1$
 				}
 				break;
 
@@ -365,10 +374,11 @@ public class ASM {
 			// ci.next();
 			// break;
 			case CharacterIterator.DONE:
-				throw new SignatureParsingException("End of type signature unexpected at position "
-						+ ci.getIndex() + ".");
+				throw new SignatureParsingException(Messages.getString(
+						"ASM.SIGNATUREPARSINGERROR", new Object[] {new Integer(ci.getIndex())})); //$NON-NLS-1$
 			default:
-				throw new SignatureParsingException("Unknown type code : " + ci.current() + ".");
+				throw new SignatureParsingException(Messages.getString(
+						"ASM.UNKNOWTYPECODE", new Object[] {new Character(ci.current())})); //$NON-NLS-1$
 		}
 
 		return ret;

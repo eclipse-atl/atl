@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
+
 /**
  * Defines the ATL VM bytecodes.
  * 
@@ -84,9 +85,29 @@ public class Bytecode {
 	public static final int DELETE = 21;
 
 	/** List of codes. */
-	public static final String[] OPCODENAMES = {"push", "pushi", "pushd", "pusht", "pushf", "call", "load",
-			"store", "new", "iterate", "enditerate", "dup", "set", "get", "pop", "getasm", "if", "goto",
-			"swap", "findme", "dup_x1", "delete",};
+	public static final String[] OPCODENAMES = {"push", //$NON-NLS-1$
+			"pushi", //$NON-NLS-1$
+			"pushd", //$NON-NLS-1$
+			"pusht", //$NON-NLS-1$
+			"pushf", //$NON-NLS-1$
+			"call", //$NON-NLS-1$
+			"load", //$NON-NLS-1$
+			"store", //$NON-NLS-1$
+			"new", //$NON-NLS-1$
+			"iterate", //$NON-NLS-1$
+			"enditerate", //$NON-NLS-1$
+			"dup", //$NON-NLS-1$
+			"set", //$NON-NLS-1$
+			"get", //$NON-NLS-1$
+			"pop", //$NON-NLS-1$
+			"getasm", //$NON-NLS-1$
+			"if", //$NON-NLS-1$
+			"goto", //$NON-NLS-1$
+			"swap", //$NON-NLS-1$
+			"findme", //$NON-NLS-1$
+			"dup_x1", //$NON-NLS-1$
+			"delete", //$NON-NLS-1$
+	};
 
 	/** current code. */
 	private int opcode;
@@ -110,32 +131,33 @@ public class Bytecode {
 	 *            the bytecode name
 	 */
 	public Bytecode(String opcode) {
-		if (opcode.equals("pusht")) {
+		if (opcode.equals("pusht")) { //$NON-NLS-1$
 			this.opcode = PUSHT;
-		} else if (opcode.equals("pushf")) {
+		} else if (opcode.equals("pushf")) { //$NON-NLS-1$
 			this.opcode = PUSHF;
-		} else if (opcode.equals("new")) {
+		} else if (opcode.equals("new")) { //$NON-NLS-1$
 			this.opcode = NEW;
-		} else if (opcode.equals("iterate")) {
+		} else if (opcode.equals("iterate")) { //$NON-NLS-1$
 			this.opcode = ITERATE;
-		} else if (opcode.equals("enditerate")) {
+		} else if (opcode.equals("enditerate")) { //$NON-NLS-1$
 			this.opcode = ENDITERATE;
-		} else if (opcode.equals("dup")) {
+		} else if (opcode.equals("dup")) { //$NON-NLS-1$
 			this.opcode = DUP;
-		} else if (opcode.equals("pop")) {
+		} else if (opcode.equals("pop")) { //$NON-NLS-1$
 			this.opcode = POP;
-		} else if (opcode.equals("getasm")) {
+		} else if (opcode.equals("getasm")) { //$NON-NLS-1$
 			this.opcode = GETASM;
-		} else if (opcode.equals("swap")) {
+		} else if (opcode.equals("swap")) { //$NON-NLS-1$
 			this.opcode = SWAP;
-		} else if (opcode.equals("findme")) {
+		} else if (opcode.equals("findme")) { //$NON-NLS-1$
 			this.opcode = FINDME;
-		} else if (opcode.equals("dup_x1")) {
+		} else if (opcode.equals("dup_x1")) { //$NON-NLS-1$
 			this.opcode = DUP_X1;
-		} else if (opcode.equals("delete")) {
+		} else if (opcode.equals("delete")) { //$NON-NLS-1$
 			this.opcode = DELETE;
 		} else {
-			throw new RuntimeException("unsupported opcode without argument: " + opcode);
+			throw new VMException(null,Messages.getString(
+					"ByteCode.UNSUPPORTEDOPCODEWOARGS", new Object[] {opcode})); //$NON-NLS-1$
 		}
 	}
 
@@ -148,43 +170,44 @@ public class Bytecode {
 	 *            the operand
 	 */
 	public Bytecode(String opcode, String operand) {
-		if (opcode.equals("push")) {
+		if (opcode.equals("push")) { //$NON-NLS-1$
 			this.opcode = PUSH;
 			this.operand = operand;
-		} else if (opcode.equals("pushi")) {
+		} else if (opcode.equals("pushi")) { //$NON-NLS-1$
 			this.opcode = PUSHI;
 			this.operand = Integer.valueOf(operand);
-		} else if (opcode.equals("pushd")) {
+		} else if (opcode.equals("pushd")) { //$NON-NLS-1$
 			this.opcode = PUSHD;
 			this.operand = Double.valueOf(operand);
-		} else if (opcode.equals("call")) {
+		} else if (opcode.equals("call")) { //$NON-NLS-1$
 			this.opcode = CALL;
 			this.operand = getOpName(operand);
 			this.value = getNbArgs(operand);
-		} else if (opcode.equals("load")) {
+		} else if (opcode.equals("load")) { //$NON-NLS-1$
 			this.opcode = LOAD;
 			this.operand = operand; // for toString
 			this.value = Integer.parseInt(operand);
-		} else if (opcode.equals("store")) {
+		} else if (opcode.equals("store")) { //$NON-NLS-1$
 			this.opcode = STORE;
 			this.operand = operand; // for toString
 			this.value = Integer.parseInt(operand);
-		} else if (opcode.equals("set")) {
+		} else if (opcode.equals("set")) { //$NON-NLS-1$
 			this.opcode = SET;
 			this.operand = operand;
-		} else if (opcode.equals("get")) {
+		} else if (opcode.equals("get")) { //$NON-NLS-1$
 			this.opcode = GET;
 			this.operand = operand;
-		} else if (opcode.equals("if")) {
+		} else if (opcode.equals("if")) { //$NON-NLS-1$
 			this.opcode = IF;
 			this.operand = operand; // for toString
 			this.value = Integer.parseInt(operand);
-		} else if (opcode.equals("goto")) {
+		} else if (opcode.equals("goto")) { //$NON-NLS-1$
 			this.opcode = GOTO;
 			this.operand = operand; // for toString
 			this.value = Integer.parseInt(operand);
 		} else {
-			throw new RuntimeException("unsupported opcode with argument: " + opcode);
+			throw new VMException(null,Messages.getString(
+					"ByteCode.UNSUPPORTEDOPCODEWARGS", new Object[] {opcode})); //$NON-NLS-1$
 		}
 	}
 
@@ -194,15 +217,15 @@ public class Bytecode {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return OPCODENAMES[opcode] + ((operand != null) ? " " + operand : "");
+		return OPCODENAMES[opcode] + ((operand != null) ? " " + operand : ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	// BEGIN SIGNATURE TOOLS
 	private static int getNbArgs(String s) {
 		int ret = 0;
 		String tmp = s;
-		tmp = tmp.replaceFirst("^.*\\(", "");
-		while (!tmp.startsWith(")")) {
+		tmp = tmp.replaceFirst("^.*\\(", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		while (!tmp.startsWith(")")) { //$NON-NLS-1$
 			ret++;
 			tmp = removeFirst(tmp);
 		}
@@ -211,26 +234,27 @@ public class Bytecode {
 	}
 
 	private static String removeFirst(String s) {
-		String simple = "^J|I|B|S|D|A|(M|N)[^;]*;|L";
+		String simple = "^J|I|B|S|D|A|(M|N)[^;]*;|L"; //$NON-NLS-1$
 		String tmp = s;
-		if (s.startsWith("T")) {
+		if (s.startsWith("T")) { //$NON-NLS-1$
 			tmp = tmp.substring(1);
-			while (!tmp.startsWith(";")) {
+			while (!tmp.startsWith(";")) { //$NON-NLS-1$
 				tmp = removeFirst(tmp);
 			}
 			tmp = tmp.substring(1);
-		} else if (tmp.matches("^(Q|G|C|E|O).*")) {
+		} else if (tmp.matches("^(Q|G|C|E|O).*")) { //$NON-NLS-1$
 			tmp = removeFirst(s.substring(1));
 		} else {
-			tmp = tmp.replaceFirst(simple, "");
+			tmp = tmp.replaceFirst(simple, ""); //$NON-NLS-1$
 		}
 
 		return tmp;
 	}
 
 	private static String getOpName(String s) {
-		return s.substring(s.indexOf(".") + 1, s.indexOf("("));
+		return s.substring(s.indexOf(".") + 1, s.indexOf("(")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+
 	// END SIGNATURE TOOLS
 
 	public int getOpcode() {

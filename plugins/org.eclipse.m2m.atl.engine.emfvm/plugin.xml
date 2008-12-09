@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+   <extension-point id="org.eclipse.m2m.atl.engine.emfvm.adapter" name="ModelAdapter" schema="schema/org.eclipse.m2m.atl.engine.emfvm.adapter.exsd"/>
+   <extension
+         point="org.eclipse.m2m.atl.engine.emfvm.adapter">
+      <modeladapter
+            class="org.eclipse.m2m.atl.engine.emfvm.adapter.EMFModelAdapter"
+            name="EMF Model Adapter">
+      </modeladapter>
+      <modeladapter
+            class="org.eclipse.m2m.atl.engine.emfvm.adapter.UML2ModelAdapter"
+            name="UML2 Model Adapter">
+      </modeladapter>
+   </extension>
+   <extension
+         point="org.eclipse.m2m.atl.core.launcher">
+      <launcher
+            class="org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher"
+            name="EMFVM">
+         <option
+               description="Run mode only: print execution times to console"
+               name="printExecutionTime"></option>
+         <option
+               description="Allow inter-model references"
+               name="allowInterModelReferences"></option>
+         <option
+               description="Run mode only: print execution information to console for each executed bytecode (very verbose!)"
+               name="step"></option>
+         <option
+               description="Support UML2 stereotypes"
+               name="supportUML2Stereotypes"></option>
+         <option
+               description="Delete Resources between transformations"
+               name="clearResourceSet">
+         </option>               
+      </launcher>
+   </extension>
 
 </plugin>

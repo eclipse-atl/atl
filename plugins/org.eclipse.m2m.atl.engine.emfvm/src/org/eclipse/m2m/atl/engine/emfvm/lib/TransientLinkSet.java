@@ -18,6 +18,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.m2m.atl.engine.emfvm.Messages;
+import org.eclipse.m2m.atl.engine.emfvm.VMException;
+
 /**
  * Stores a {@link TransientLink} Set.
  * 
@@ -79,8 +82,7 @@ public class TransientLinkSet {
 			}
 			TransientLink other = (TransientLink)linksBySourceElement.get(se);
 			if (other != null) {
-				throw new VMException(null, "Trying to register several rules as default for element " + se
-						+ ": " + other.getRule() + " and " + tl.getRule());
+				throw new VMException(null, Messages.getString("TransientLinkSet.DUPLICATESRULES", new Object[]{se,other.getRule(),tl.getRule()})); //$NON-NLS-1$
 			}
 			linksBySourceElement.put(se, tl);
 		}

@@ -15,14 +15,14 @@ package org.eclipse.m2m.atl.engine.emfvm.lib;
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
-public abstract class StackFrame {
+public abstract class AbstractStackFrame {
 
 	// public static final int MAX_VARS = 100;
 
 	/** The execution environment. */
 	protected ExecEnv execEnv;
 
-	protected StackFrame caller;
+	protected AbstractStackFrame caller;
 
 	protected Operation operation;
 
@@ -33,7 +33,7 @@ public abstract class StackFrame {
 
 
 	/**
-	 * Creates a new {@link StackFrame} with the given parameters.
+	 * Creates a new {@link AbstractStackFrame} with the given parameters.
 	 * 
 	 * @param execEnv
 	 *            the execution environment
@@ -42,7 +42,7 @@ public abstract class StackFrame {
 	 * @param operation
 	 *            the main operation
 	 */
-	public StackFrame(ExecEnv execEnv, ASMModule asmModule, Operation operation) {
+	public AbstractStackFrame(ExecEnv execEnv, ASMModule asmModule, Operation operation) {
 		this(null, operation);
 		this.execEnv = execEnv;
 		this.asmModule = asmModule;
@@ -57,7 +57,7 @@ public abstract class StackFrame {
 	 * @param frameOperation
 	 *            the operation
 	 */
-	protected StackFrame(StackFrame caller, Operation frameOperation) {
+	protected AbstractStackFrame(AbstractStackFrame caller, Operation frameOperation) {
 		this.caller = caller;
 		this.operation = frameOperation;
 		if (caller != null) {
@@ -74,7 +74,7 @@ public abstract class StackFrame {
 	 *            the frame operation
 	 * @return a new frame for the given operation
 	 */
-	public abstract StackFrame newFrame(Operation frameOperation);
+	public abstract AbstractStackFrame newFrame(Operation frameOperation);
 
 	public ASMModule getAsmModule() {
 		return asmModule;

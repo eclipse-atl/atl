@@ -36,7 +36,7 @@ public abstract class Operation {
 	 *            the frame for execution
 	 * @return the result
 	 */
-	public abstract Object exec(StackFrame frame);
+	public abstract Object exec(AbstractStackFrame frame);
 
 	public int getMaxLocals() {
 		return maxLocals;

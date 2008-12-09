@@ -126,8 +126,10 @@ public class AtlSuperimposeModule {
 			String ins1 = main1.getBytecodes()[i].toString();
 			String ins2 = main2.getBytecodes()[i].toString();
 			if (!ins1.equals(ins2)) {
-				throw new AtlSuperimposeModuleException(EMFVMMessages.getString("AtlSuperimposeModule.0") + //$NON-NLS-1$
-						ins1 + " != " + ins2 + " @ " + String.valueOf(i) + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				throw new AtlSuperimposeModuleException(
+						Messages
+								.getString(
+										"AtlSuperimposeModule.MAINPATTERNNOTEQUAL", new Object[] {ins1, ins2, String.valueOf(i)})); //$NON-NLS-1$
 			}
 		}
 	}
@@ -143,16 +145,18 @@ public class AtlSuperimposeModule {
 	private void mainSanityCheck(ASMOperation main) throws AtlSuperimposeModuleException {
 		final List instructions = Arrays.asList(main.getBytecodes());
 		if (instructions.size() < 21) {
-			throw new AtlSuperimposeModuleException(EMFVMMessages.getString("AtlSuperimposeModule.1") + //$NON-NLS-1$
-					String.valueOf(instructions.size()) + EMFVMMessages.getString("AtlSuperimposeModule.2")); //$NON-NLS-1$
+			throw new AtlSuperimposeModuleException(
+					Messages
+							.getString(
+									"AtlSuperimposeModule.UNEXPECTEDINSTRUCTIONCOUNT", new Object[] {String.valueOf(instructions.size())})); //$NON-NLS-1$
 		}
 		final String instr16 = instructions.get(15).toString();
 		if (!instr16.equals("set col")) { //$NON-NLS-1$
-			throw new AtlSuperimposeModuleException(EMFVMMessages.getString("AtlSuperimposeModule.3") + //$NON-NLS-1$
-					instr16 + EMFVMMessages.getString("AtlSuperimposeModule.4")); //$NON-NLS-1$
+			throw new AtlSuperimposeModuleException(Messages.getString("AtlSuperimposeModule.UNEXPECTEDINSTRUCTIONSEQUENCE",new Object[]{instr16})); //$NON-NLS-1$
 		}
 		if (indexOfInstruction(instructions, "set links", 16) == -1) { //$NON-NLS-1$
-			throw new AtlSuperimposeModuleException(EMFVMMessages.getString("AtlSuperimposeModule.5")); //$NON-NLS-1$
+			throw new AtlSuperimposeModuleException(Messages
+					.getString("AtlSuperimposeModule.SETLINKSNOTFOUND")); //$NON-NLS-1$
 		}
 		final String instr1 = instructions.get(0).toString();
 		if (instr1.equals("getasm")) { //$NON-NLS-1$
@@ -314,9 +318,10 @@ public class AtlSuperimposeModule {
 			int i1 = ((Bytecode)instr1.get(i)).getOpcode();
 			int i2 = ((Bytecode)instr2.get(i)).getOpcode();
 			if (i1 != i2) {
-				throw new AtlSuperimposeModuleException(EMFVMMessages.getString("AtlSuperimposeModule.6") + //$NON-NLS-1$
-						op1.getName() + " (" + Bytecode.OPCODENAMES[i1] + " != " + //$NON-NLS-1$ //$NON-NLS-2$
-						Bytecode.OPCODENAMES[i2] + " @ " + String.valueOf(i) + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new AtlSuperimposeModuleException(
+						Messages
+								.getString(
+										"AtlSuperimposeModule.PATTERNNOTEQUAL", new Object[] {op1.getName(), Bytecode.OPCODENAMES[i1], Bytecode.OPCODENAMES[i2], String.valueOf(i)})); //$NON-NLS-1$
 			}
 		}
 	}
@@ -334,17 +339,19 @@ public class AtlSuperimposeModule {
 	private void sanityCheck(ASMOperation op, int patternLength) throws AtlSuperimposeModuleException {
 		final List instr = Arrays.asList(op.getBytecodes());
 		if (instr.size() % patternLength > 0) {
-			throw new AtlSuperimposeModuleException(EMFVMMessages.getString("AtlSuperimposeModule.7") + //$NON-NLS-1$
-					String.valueOf(patternLength) + " for " + op.getName()); //$NON-NLS-1$
+			throw new AtlSuperimposeModuleException(
+					Messages
+							.getString(
+									"AtlSuperimposeModule.INSTRUCTIONCOUNTPROBLEM", new Object[] {String.valueOf(patternLength), op.getName()})); //$NON-NLS-1$
 		}
 		for (int i = 0; i < instr.size() - patternLength; i++) {
 			int i1 = ((Bytecode)instr.get(i)).getOpcode();
 			int i2 = ((Bytecode)instr.get(i + patternLength)).getOpcode();
 			if (i1 != i2) {
-				throw new AtlSuperimposeModuleException(EMFVMMessages.getString("AtlSuperimposeModule.8") + //$NON-NLS-1$
-						String.valueOf(patternLength) + " instructions in " + op.getName() + //$NON-NLS-1$
-						" (" + Bytecode.OPCODENAMES[i1] + " != " + //$NON-NLS-1$ //$NON-NLS-2$
-						Bytecode.OPCODENAMES[i2] + " @ " + String.valueOf(i) + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new AtlSuperimposeModuleException(
+						Messages
+								.getString(
+										"AtlSuperimposeModule.PATTERNDOESNOTREPEAT", new Object[] {String.valueOf(patternLength), op.getName(), Bytecode.OPCODENAMES[i1], Bytecode.OPCODENAMES[i2], String.valueOf(i)})); //$NON-NLS-1$
 			}
 		}
 	}

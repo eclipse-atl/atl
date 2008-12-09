@@ -25,20 +25,20 @@ public class ASMModule implements HasFields {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.HasFields#set(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame,
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.HasFields#set(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
 	 *      java.lang.Object, java.lang.Object)
 	 */
-	public void set(StackFrame frame, Object name, Object value) {
+	public void set(AbstractStackFrame frame, Object name, Object value) {
 		fields.put(name, value);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.HasFields#get(org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame,
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.HasFields#get(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
 	 *      java.lang.Object)
 	 */
-	public Object get(StackFrame frame, Object name) {
+	public Object get(AbstractStackFrame frame, Object name) {
 		return fields.get(name);
 	}
 
@@ -48,6 +48,6 @@ public class ASMModule implements HasFields {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return "thisModule";
+		return "thisModule"; //$NON-NLS-1$
 	}
 }

@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.engine.emfvm;
 
 import org.eclipse.m2m.atl.engine.emfvm.lib.ASMModule;
+import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
 
@@ -19,7 +20,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
-public class StackFrame extends org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame {
+public class StackFrame extends AbstractStackFrame {
 
 	/** only initialized when there is a VMException to avoid performance impact. */
 	private int pc = -1;
@@ -27,9 +28,13 @@ public class StackFrame extends org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame 
 	/**
 	 * Creates a new {@link StackFrame} with the given parameters.
 	 * 
-	 * @param execEnv the execution environment
-	 * @param asmModule the transformation module
-	 * @param operation the main operation
+	 * @param execEnv
+	 *            the execution environment
+	 * @param asmModule
+	 * 
+	 *            the transformation module
+	 * @param operation
+	 *            the main operation
 	 */
 	public StackFrame(ExecEnv execEnv, ASMModule asmModule, Operation operation) {
 		super(execEnv, asmModule, operation);
@@ -38,8 +43,10 @@ public class StackFrame extends org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame 
 	/**
 	 * Creates a new StackFrame.
 	 * 
-	 * @param caller the parent stack frame
-	 * @param operation the operation
+	 * @param caller
+	 *            the parent stack frame
+	 * @param operation
+	 *            the operation
 	 */
 	protected StackFrame(StackFrame caller, Operation operation) {
 		super(caller, operation);
@@ -47,10 +54,10 @@ public class StackFrame extends org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame 
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame#newFrame(org.eclipse.m2m.atl.engine.emfvm.lib.Operation)
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame#newFrame(org.eclipse.m2m.atl.engine.emfvm.lib.Operation)
 	 */
-	public org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame newFrame(Operation operation) {
+	public org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame newFrame(Operation operation) {
 		return new StackFrame(this, operation);
 	}
 
@@ -63,16 +70,16 @@ public class StackFrame extends org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame 
 		String ret = ((ASMOperation)operation).resolveLineNumber(pc);
 
 		if (ret == null) {
-			ret = "";
+			ret = ""; //$NON-NLS-1$
 		}
-		ret += "#" + pc;
+		ret += "#" + pc; //$NON-NLS-1$
 
 		return ret;
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
@@ -86,7 +93,7 @@ public class StackFrame extends org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame 
 		if (operation instanceof ASMOperation) {
 			ret.append(((ASMOperation)operation).getName());
 			if (operation instanceof ASMOperation) {
-				ret.append(": ");
+				ret.append(": "); //$NON-NLS-1$
 				ASMOperation ao = (ASMOperation)operation;
 				String location = getLocation();
 				if (location != null) {
@@ -94,13 +101,13 @@ public class StackFrame extends org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame 
 					ret.append(' ');
 				}
 
-				ret.append("\n\tlocal variables: ");
+				ret.append("\n\tlocal variables: "); //$NON-NLS-1$
 				boolean first = true;
 				for (int i = 0; i < ao.getMaxLocals(); i++) {
 					String varName = ao.resolveVariableName(i, pc);
 					if (varName != null) {
 						if (!first) {
-							ret.append(", ");
+							ret.append(", "); //$NON-NLS-1$
 						}
 						first = false;
 						ret.append(varName);
@@ -110,7 +117,7 @@ public class StackFrame extends org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame 
 				}
 			}
 		} else {
-			ret.append("<native>");
+			ret.append("<native>"); //$NON-NLS-1$
 		}
 		return ret.toString();
 	}

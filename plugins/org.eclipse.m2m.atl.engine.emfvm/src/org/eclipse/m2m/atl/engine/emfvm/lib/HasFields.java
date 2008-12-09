@@ -27,7 +27,7 @@ public interface HasFields {
 	 * @param value
 	 *            the value
 	 */
-	void set(StackFrame frame, Object name, Object value);
+	void set(AbstractStackFrame frame, Object name, Object value);
 
 	/**
 	 * Gets a value.
@@ -38,6 +38,6 @@ public interface HasFields {
 	 *            the value name
 	 * @return the value
 	 */
-	Object get(StackFrame frame, Object name);
+	Object get(AbstractStackFrame frame, Object name);
 
 }
