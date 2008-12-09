@@ -86,7 +86,7 @@ public class ASMMDRModelElement extends ASMModelElement {
 			addSupertype(ASMOclType.myType);
 			for (Iterator i = ((Collection)object.refGetValue("supertypes")).iterator(); i.hasNext();) {
 				RefObject ro = (RefObject)i.next();
-				ASMModelElement ame = ((ASMMDRModel)model).getASMModelElement(ro);
+				ASMModelElement ame = model.getASMModelElement(ro);
 				addSupertype(ame);
 			}
 		}
