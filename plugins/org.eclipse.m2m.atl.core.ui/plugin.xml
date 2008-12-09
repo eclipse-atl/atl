@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.m2m.atl.core.ui.launch.AtlLaunchConfigurationDelegate"
+            id="org.eclipse.m2m.atl.adt.launching.atlTransformation"
+            modes="run, debug"
+            name="ATL Transformation">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.m2m.atl.core.ui.launch.AtlTabGroup"
+            id="org.eclipse.m2m.atl.core.ui.atlTransformationTabGroup"
+            type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.m2m.atl.adt.launching.atlTransformation"
+            icon="icons/atllogo_icon.gif"
+            id="org.eclipse.m2m.atl.core.ui.atlTransformationImage">
+      </launchConfigurationTypeImage>
+   </extension>
+
+</plugin>
