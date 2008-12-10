@@ -1,0 +1,34 @@
+-- @atlcompiler atl2006
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+module Public2Private;
+create OUT : UML refining IN : UML;
+
+helper context String def : toU1Case : String = 
+	self.substring(1,1).toUpper() + 
+	self.substring(2,self.size());
+
+rule Property {
+	from
+		publicAttribute : UML!Property (
+			publicAttribute.visibility = #public
+		)
+	to
+		privateAttribute : UML!Property (
+			visibility <- #private
+		),
+		getter : UML!Operation (
+			name <- 'get'+publicAttribute.name.toU1Case,
+			class <- publicAttribute.refImmediateComposite(),
+			type <- publicAttribute.type
+		),
+		setter : UML!Operation (
+			name <- 'set'+publicAttribute.name.toU1Case,
+			class <- publicAttribute.refImmediateComposite(),
+			ownedParameter <- setterParam
+		),
+		setterParam : UML!Parameter (
+			name <- publicAttribute.name,
+			type <- publicAttribute.type
+		)
+}
+
