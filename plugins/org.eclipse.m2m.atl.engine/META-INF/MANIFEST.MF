@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: ATL Engine
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.m2m.atl.engine; singleton:=true
 Bundle-Version: 3.0.0.qualifier
 Bundle-ClassPath: .
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.engine,
  org.eclipse.m2m.atl.engine.compiler,
