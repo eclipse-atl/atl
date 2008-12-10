@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.m2m.atl.doc"
-      label="ATL Documentation"
+      label="%featureName"
       version="3.0.0.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="%providerName">
 
    <description>
-      ATL Documentation
+      %description
    </description>
 
    <copyright url="http://www.eclipse.org/legal/epl-v10.html">
@@ -220,7 +220,7 @@ litigation.
    </license>
 
    <url>
-      <update label="ATL Updates" url="http://download.eclipse.org/modeling/m2m/updates/"/>
+      <update label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
    </url>
 
    <requires>
