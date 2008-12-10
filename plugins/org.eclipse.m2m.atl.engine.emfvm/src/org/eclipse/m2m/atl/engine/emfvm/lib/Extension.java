@@ -25,5 +25,5 @@ public interface Extension {
 	 * @param execEnv the execution environment
 	 * @param options the options map
 	 */
-	void apply(ExecEnv execEnv, Map options);
+	void apply(ExecEnv execEnv, Map<String, Object> options);
 }

@@ -27,9 +27,9 @@ public class EMFVMLauncher implements ILauncher {
 
 	private static final String LAUNCHER_NAME = "EMFVM"; //$NON-NLS-1$
 
-	private Map models;
+	private Map<String, IModel> models;
 
-	private Map libraries;
+	private Map<String, ASM> libraries;
 
 	public String getName() {
 		return LAUNCHER_NAME;
@@ -97,9 +97,9 @@ public class EMFVMLauncher implements ILauncher {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#initialize(java.util.Map)
 	 */
-	public void initialize(Map parameters) {
-		models = new HashMap();
-		libraries = new HashMap();
+	public void initialize(Map<String, Object> parameters) {
+		models = new HashMap<String, IModel>();
+		libraries = new HashMap<String, ASM>();
 		boolean clearResourceSet = "true".equals(parameters.get("clearResourceSet")); //$NON-NLS-1$//$NON-NLS-2$
 		if (clearResourceSet) {
 			EMFModelFactory.init();
@@ -108,23 +108,23 @@ public class EMFVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.util.Map, java.lang.Object[])
 	 */
-	public Object launch(final Map options, final Object[] modules) {
+	public Object launch(final Map<String, Object> options, final Object... modules) {
 		return launch(ILauncher.RUN_MODE, options, modules);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.util.Map, java.lang.Object[])
 	 */
-	public Object launch(String mode, Map options, Object[] modules) {
+	public Object launch(String mode, Map<String, Object> options, Object... modules) {
 		if (!mode.equals(ILauncher.RUN_MODE)) {
 			ATLLogger.warning("mode " + mode + " unsupported for EMFVM, running launch instead"); //$NON-NLS-1$//$NON-NLS-2$
 		}
-		List superimpose = new ArrayList();
+		List<ASM> superimpose = new ArrayList<ASM>();
 		ASMXMLReader reader = new ASMXMLReader();
 		ASM mainModule = reader.read((InputStream)modules[0]);
 		for (int i = 1; i < modules.length; i++) {
@@ -141,7 +141,7 @@ public class EMFVMLauncher implements ILauncher {
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getModel(java.lang.String)
 	 */
 	public IModel getModel(String modelName) {
-		return (IModel)models.get(modelName);
+		return models.get(modelName);
 	}
 
 	/**

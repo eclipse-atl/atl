@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.15 2008/12/09 13:11:26 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.16 2008/12/10 09:27:59 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -49,13 +49,13 @@ public class ASMOperation extends Operation {
 	/**
 	 * Cache used to store methods.
 	 */
-	private static WeakHashMap methodCache = new WeakHashMap();
+	private static WeakHashMap<Class<?>, Map<String, Method>> methodCache = new WeakHashMap<Class<?>, Map<String, Method>>();
 
 	private String name;
 
 	private String context;
 
-	private List parameters = new ArrayList();
+	private List<String> parameters = new ArrayList<String>();
 
 	private Bytecode[] bytecodes;
 
@@ -63,9 +63,9 @@ public class ASMOperation extends Operation {
 
 	private int nbNestedIterates;
 
-	private List lineNumberTable = new ArrayList();
+	private List<LineNumberEntry> lineNumberTable = new ArrayList<LineNumberEntry>();
 
-	private List localVariableTable = new ArrayList();
+	private List<LocalVariableEntry> localVariableTable = new ArrayList<LocalVariableEntry>();
 
 	/**
 	 * ASMOperation constructor.
@@ -78,6 +78,12 @@ public class ASMOperation extends Operation {
 		this.name = name;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#getMaxLocals()
+	 */
+	@Override
 	public int getMaxLocals() {
 		return maxLocals;
 	}
@@ -116,7 +122,7 @@ public class ASMOperation extends Operation {
 		lineNumberTable.add(new LineNumberEntry(id, begin, end));
 	}
 
-	public List getLineNumberTable() {
+	public List<LineNumberEntry> getLineNumberTable() {
 		return lineNumberTable;
 	}
 
@@ -130,8 +136,8 @@ public class ASMOperation extends Operation {
 	public String resolveLineNumber(int l) {
 		String ret = null;
 
-		for (Iterator i = lineNumberTable.iterator(); i.hasNext() && (ret == null);) {
-			LineNumberEntry lne = (LineNumberEntry)i.next();
+		for (Iterator<LineNumberEntry> i = lineNumberTable.iterator(); i.hasNext() && (ret == null);) {
+			LineNumberEntry lne = i.next();
 			if ((l >= lne.begin) && (l <= lne.end)) {
 				ret = lne.id;
 			}
@@ -175,7 +181,7 @@ public class ASMOperation extends Operation {
 		localVariableTable.add(new LocalVariableEntry(slot, variableName, begin, end));
 	}
 
-	public List getLocalVariableTable() {
+	public List<LocalVariableEntry> getLocalVariableTable() {
 		return localVariableTable;
 	}
 
@@ -191,8 +197,8 @@ public class ASMOperation extends Operation {
 	public String resolveVariableName(int slot, int l) {
 		String ret = null;
 
-		for (Iterator i = localVariableTable.iterator(); i.hasNext() & (ret == null);) {
-			LocalVariableEntry lve = (LocalVariableEntry)i.next();
+		for (Iterator<LocalVariableEntry> i = localVariableTable.iterator(); i.hasNext() & (ret == null);) {
+			LocalVariableEntry lve = i.next();
 
 			if ((slot == lve.slot) && (l >= lve.begin) && (l <= lve.end)) {
 				ret = lve.name;
@@ -240,7 +246,7 @@ public class ASMOperation extends Operation {
 		// pre-computes:
 		// - target and nesting levels for iterate and enditerate
 		// - maxLocals
-		Stack stack = new Stack();
+		Stack<Object> stack = new Stack<Object>();
 		for (int i = 0; i < nbBytecodes; i++) {
 			Bytecode bytecode = bytecodes[i];
 			if (bytecode.getOpcode() == Bytecode.ITERATE) {
@@ -285,6 +291,7 @@ public class ASMOperation extends Operation {
 	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#exec(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame)
 	 */
+	@Override
 	public Object exec(AbstractStackFrame frame) {
 		final ExecEnv execEnv = frame.getExecEnv();
 
@@ -296,8 +303,8 @@ public class ASMOperation extends Operation {
 		int pc = 0;
 		int fp = 0;
 		final Object[] stack = new Object[MAX_STACK];
-		final Iterator[] nestedIterate = new Iterator[nbNestedIterates];
-		Iterator it;
+		final Iterator<?>[] nestedIterate = new Iterator[nbNestedIterates];
+		Iterator<?> it;
 		Object s;
 		StringBuffer log = new StringBuffer();
 		try {
@@ -405,7 +412,7 @@ public class ASMOperation extends Operation {
 							((HasFields)s).set(frame, bytecode.getOperand(), value);
 						} else {
 							if (value instanceof Collection) {
-								Collection c = (Collection)value;
+								Collection<?> c = (Collection<?>)value;
 								// TODO collections of collections have to be managed
 								while (c.remove(OclUndefined.SINGLETON)) {
 									;
@@ -465,7 +472,7 @@ public class ASMOperation extends Operation {
 							 * TransientLink(); } else if(me.equals("Map")) { stack[fp++] = new HashMap(); }
 							 * else { throw new VMException(frame, "cannot create " + mname + "!" + me); } /
 							 */
-							Class c = OclType.getNativeClassfromOclTypeName(me.toString());
+							Class<?> c = OclType.getNativeClassfromOclTypeName(me.toString());
 							if (c != null) {
 								stack[fp++] = c.newInstance();
 							} else {
@@ -481,7 +488,7 @@ public class ASMOperation extends Operation {
 						mname = stack[--fp];
 						me = stack[--fp];
 						if (mname.equals("#native")) { //$NON-NLS-1$
-							Class c = OclType.getNativeClassfromOclTypeName(me.toString());
+							Class<?> c = OclType.getNativeClassfromOclTypeName(me.toString());
 							if (c != null) {
 								stack[fp++] = c;
 							} else {
@@ -494,7 +501,7 @@ public class ASMOperation extends Operation {
 						}
 						break;
 					case Bytecode.ITERATE:
-						Collection c = (Collection)stack[--fp];
+						Collection<?> c = (Collection<?>)stack[--fp];
 						it = c.iterator();
 						if (it.hasNext()) {
 							nestedIterate[bytecode.getValue2()] = it;
@@ -577,8 +584,8 @@ public class ASMOperation extends Operation {
 		return fp > 0 ? stack[--fp] : null;
 	}
 
-	private static Class[] getTypesOf(Object[] arguments) {
-		final Class[] argumentTypes = new Class[arguments.length];
+	private static Class<?>[] getTypesOf(Object[] arguments) {
+		final Class<?>[] argumentTypes = new Class[arguments.length];
 		for (int i = 0; i < arguments.length; i++) {
 			argumentTypes[i] = arguments[i].getClass();
 		}
@@ -596,7 +603,7 @@ public class ASMOperation extends Operation {
 	 *            The types of all arguments
 	 * @return the method if found, null otherwise
 	 */
-	protected static Method findMethod(Class caller, String name, Class[] argumentTypes) {
+	protected static Method findMethod(Class<?> caller, String name, Class<?>[] argumentTypes) {
 		final String sig = getMethodSignature(name, argumentTypes);
 		Method ret = findCachedMethod(caller, sig);
 		if (ret != null) {
@@ -607,7 +614,7 @@ public class ASMOperation extends Operation {
 		for (int i = 0; i < (methods.length) && (ret == null); i++) {
 			Method method = methods[i];
 			if (method.getName().equals(name)) {
-				Class[] pts = method.getParameterTypes();
+				Class<?>[] pts = method.getParameterTypes();
 				if (pts.length == argumentTypes.length) {
 					boolean ok = true;
 					for (int j = 0; (j < pts.length) && ok; j++) {
@@ -647,11 +654,11 @@ public class ASMOperation extends Operation {
 	 *            The method signature
 	 * @return the method
 	 */
-	private static Method findCachedMethod(Class caller, String signature) {
+	private static Method findCachedMethod(Class<?> caller, String signature) {
 		Method ret = null;
-		Map sigMap = (Map)methodCache.get(caller);
+		Map<String, Method> sigMap = methodCache.get(caller);
 		if (sigMap != null) {
-			ret = (Method)sigMap.get(signature);
+			ret = sigMap.get(signature);
 		}
 		return ret;
 	}
@@ -666,11 +673,11 @@ public class ASMOperation extends Operation {
 	 * @param method
 	 *            The method to store
 	 */
-	private static void cacheMethod(Class caller, String signature, Method method) {
+	private static void cacheMethod(Class<?> caller, String signature, Method method) {
 		synchronized (methodCache) {
-			Map sigMap = (Map)methodCache.get(caller);
+			Map<String, Method> sigMap = methodCache.get(caller);
 			if (sigMap == null) {
-				sigMap = new HashMap();
+				sigMap = new HashMap<String, Method>();
 				methodCache.put(caller, sigMap);
 			}
 			sigMap.put(signature, method);
@@ -684,7 +691,7 @@ public class ASMOperation extends Operation {
 	 * @param argumentTypes
 	 * @return The method signature
 	 */
-	private static String getMethodSignature(String name, Class[] argumentTypes) {
+	private static String getMethodSignature(String name, Class<?>[] argumentTypes) {
 		StringBuffer sig = new StringBuffer();
 		sig.append(name);
 		sig.append('(');
@@ -703,6 +710,7 @@ public class ASMOperation extends Operation {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return this.context + "." + this.name; //$NON-NLS-1$
 	}

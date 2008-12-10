@@ -57,6 +57,7 @@ public class StackFrame extends AbstractStackFrame {
 	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame#newFrame(org.eclipse.m2m.atl.engine.emfvm.lib.Operation)
 	 */
+	@Override
 	public org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame newFrame(Operation operation) {
 		return new StackFrame(this, operation);
 	}
@@ -82,6 +83,7 @@ public class StackFrame extends AbstractStackFrame {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		StringBuffer ret = new StringBuffer();
 

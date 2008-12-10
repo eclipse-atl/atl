@@ -26,16 +26,16 @@ public class TransientLink {
 	private String rule;
 
 	/** The source elements map. */
-	private Map sourceElements = new HashMap();
+	private Map<Object,Object> sourceElements = new HashMap<Object,Object>();
 
 	/** The target elements map. */
-	private Map targetElements = new HashMap();
+	private Map<Object,Object> targetElements = new HashMap<Object,Object>();
 
 	/** The target elements list. */
-	private List targetElementsList = new ArrayList();
+	private List<Object> targetElementsList = new ArrayList<Object>();
 
 	/** The variables of the link. */
-	private Map variables = new HashMap();
+	private Map<Object,Object> variables = new HashMap<Object,Object>();
 
 	public String getRule() {
 		return rule;
@@ -45,35 +45,35 @@ public class TransientLink {
 		this.rule = rule;
 	}
 
-	public Map getSourceElements() {
+	public Map<Object,Object> getSourceElements() {
 		return sourceElements;
 	}
 
-	public void setSourceElements(Map sourceElements) {
+	public void setSourceElements(Map<Object,Object> sourceElements) {
 		this.sourceElements = sourceElements;
 	}
 
-	public Map getTargetElements() {
+	public Map<Object,Object> getTargetElements() {
 		return targetElements;
 	}
 
-	public void setTargetElements(Map targetElements) {
+	public void setTargetElements(Map<Object,Object> targetElements) {
 		this.targetElements = targetElements;
 	}
 
-	public List getTargetElementsList() {
+	public List<Object> getTargetElementsList() {
 		return targetElementsList;
 	}
 
-	public void setTargetElementsList(List targetElementsList) {
+	public void setTargetElementsList(List<Object> targetElementsList) {
 		this.targetElementsList = targetElementsList;
 	}
 
-	public Map getVariables() {
+	public Map<Object,Object> getVariables() {
 		return variables;
 	}
 
-	public void setVariables(Map variables) {
+	public void setVariables(Map<Object,Object> variables) {
 		this.variables = variables;
 	}
 }

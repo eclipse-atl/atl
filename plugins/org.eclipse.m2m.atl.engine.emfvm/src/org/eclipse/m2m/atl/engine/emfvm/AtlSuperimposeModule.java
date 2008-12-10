@@ -91,16 +91,16 @@ public class AtlSuperimposeModule {
 		final ASMOperation newOp = asm.getMainOperation();
 		if ((origOp != null) && (newOp != null)) {
 			mainSanityCrossCheck(origOp, newOp);
-			final List from = Arrays.asList(newOp.getBytecodes());
-			final List into = new ArrayList(Arrays.asList(origOp.getBytecodes()));
+			final List<Bytecode> from = Arrays.asList(newOp.getBytecodes());
+			final List<Bytecode> into = new ArrayList<Bytecode>(Arrays.asList(origOp.getBytecodes()));
 			if (atl2006) {
 				insertHelperInits(from, into);
 			} else {
-				final List origInit = getInstructions(into, "call A.__init", 20, 1); //$NON-NLS-1$
-				final List newInit = getInstructions(from, "call A.__init", 20, 1); //$NON-NLS-1$
+				final List<Bytecode> origInit = getInstructions(into, "call A.__init", 20, 1); //$NON-NLS-1$
+				final List<Bytecode> newInit = getInstructions(from, "call A.__init", 20, 1); //$NON-NLS-1$
 				into.addAll(origInit.size() + 21, newInit);
 			}
-			origOp.setBytecodes((Bytecode[])into.toArray(new Bytecode[0]));
+			origOp.setBytecodes(into.toArray(new Bytecode[0]));
 		}
 	}
 
@@ -143,7 +143,7 @@ public class AtlSuperimposeModule {
 	 *             if sanity check fails
 	 */
 	private void mainSanityCheck(ASMOperation main) throws AtlSuperimposeModuleException {
-		final List instructions = Arrays.asList(main.getBytecodes());
+		final List<Bytecode> instructions = Arrays.asList(main.getBytecodes());
 		if (instructions.size() < 21) {
 			throw new AtlSuperimposeModuleException(
 					Messages
@@ -152,7 +152,8 @@ public class AtlSuperimposeModule {
 		}
 		final String instr16 = instructions.get(15).toString();
 		if (!instr16.equals("set col")) { //$NON-NLS-1$
-			throw new AtlSuperimposeModuleException(Messages.getString("AtlSuperimposeModule.UNEXPECTEDINSTRUCTIONSEQUENCE",new Object[]{instr16})); //$NON-NLS-1$
+			throw new AtlSuperimposeModuleException(Messages.getString(
+					"AtlSuperimposeModule.UNEXPECTEDINSTRUCTIONSEQUENCE", new Object[] {instr16})); //$NON-NLS-1$
 		}
 		if (indexOfInstruction(instructions, "set links", 16) == -1) { //$NON-NLS-1$
 			throw new AtlSuperimposeModuleException(Messages
@@ -179,8 +180,8 @@ public class AtlSuperimposeModule {
 	 * @return list of instructions with given prefix and context amount of preceding instructions for every
 	 *         match
 	 */
-	private List getInstructions(List instr, String prefix, int start, int context) {
-		final List init = new ArrayList();
+	private List<Bytecode> getInstructions(List<Bytecode> instr, String prefix, int start, int context) {
+		final List<Bytecode> init = new ArrayList<Bytecode>();
 		for (int i = start + context; i < instr.size(); i++) {
 			Object ins = instr.get(i);
 			if (ins.toString().startsWith(prefix)) {
@@ -201,7 +202,7 @@ public class AtlSuperimposeModule {
 	 *            The instruction index to start searching
 	 * @return The index of the first instruction with given prefix, -1 otherwise
 	 */
-	private int indexOfInstruction(List instr, String prefix, int start) {
+	private int indexOfInstruction(List<Bytecode> instr, String prefix, int start) {
 		for (int i = start; i < instr.size(); i++) {
 			Object ins = instr.get(i);
 			if (ins.toString().startsWith(prefix)) {
@@ -226,8 +227,8 @@ public class AtlSuperimposeModule {
 	private void adaptOperation(String op, int patternLength) throws AtlSuperimposeModuleException {
 		final ASMOperation origOp = (ASMOperation)env.getOperation(ASMModule.class, op);
 		ASMOperation newOp = null;
-		for (Iterator i = asm.getOperations(); i.hasNext();) {
-			ASMOperation thisOp = (ASMOperation)i.next();
+		for (Iterator<ASMOperation> i = asm.getOperations(); i.hasNext();) {
+			ASMOperation thisOp = i.next();
 			if (op.equals(thisOp.getName())) {
 				Assert.isTrue(newOp == null);
 				newOp = thisOp;
@@ -235,8 +236,8 @@ public class AtlSuperimposeModule {
 		}
 		if ((origOp != null) && (newOp != null)) {
 			sanityCrossCheck(origOp, newOp, patternLength);
-			final List from = Arrays.asList(newOp.getBytecodes());
-			final List into = new ArrayList(Arrays.asList(origOp.getBytecodes()));
+			final List<Bytecode> from = Arrays.asList(newOp.getBytecodes());
+			final List<Bytecode> into = new ArrayList<Bytecode>(Arrays.asList(origOp.getBytecodes()));
 			final String origOpRun = serialise(into, 0, into.size());
 			for (int i = 0; i < from.size(); i += patternLength) {
 				String newOpRun = serialise(from, i, patternLength);
@@ -246,7 +247,7 @@ public class AtlSuperimposeModule {
 					}
 				}
 			}
-			origOp.setBytecodes((Bytecode[])into.toArray(new Bytecode[0]));
+			origOp.setBytecodes(into.toArray(new Bytecode[0]));
 		}
 	}
 
@@ -258,9 +259,9 @@ public class AtlSuperimposeModule {
 	 * @param into
 	 *            The list of instructions to augment.
 	 */
-	private void insertHelperInits(List from, List into) {
+	private void insertHelperInits(List<Bytecode> from, List<Bytecode> into) {
 		final int endOfInitCode = indexOfInstruction(from, "set links", 16) - 4; //$NON-NLS-1$
-		final List initInstr = from.subList(16, endOfInitCode);
+		final List<Bytecode> initInstr = from.subList(16, endOfInitCode);
 		final int pos = indexOfInstruction(into, "set links", 16) - 4; //$NON-NLS-1$
 		transposeOffsets(into, initInstr.size(), pos);
 		transposeOffsets(initInstr, pos - 16, 0);
@@ -277,8 +278,8 @@ public class AtlSuperimposeModule {
 	 * @param start
 	 *            The offset from which to start transposing.
 	 */
-	private void transposeOffsets(List instructions, int transpose, int start) {
-		for (Iterator i = instructions.iterator(); i.hasNext();) {
+	private void transposeOffsets(List<Bytecode> instructions, int transpose, int start) {
+		for (Iterator<Bytecode> i = instructions.iterator(); i.hasNext();) {
 			Object instruction = i.next();
 			if (instruction instanceof Bytecode) {
 				Bytecode instr = (Bytecode)instruction;
@@ -310,13 +311,13 @@ public class AtlSuperimposeModule {
 			throws AtlSuperimposeModuleException {
 		sanityCheck(op1, patternLength);
 		sanityCheck(op2, patternLength);
-		final List instr1 = Arrays.asList(op1.getBytecodes());
-		final List instr2 = Arrays.asList(op2.getBytecodes());
+		final List<Bytecode> instr1 = Arrays.asList(op1.getBytecodes());
+		final List<Bytecode> instr2 = Arrays.asList(op2.getBytecodes());
 		int limit = Math.min(instr1.size(), instr2.size());
 		limit = Math.min(limit, patternLength);
 		for (int i = 0; i < limit; i++) {
-			int i1 = ((Bytecode)instr1.get(i)).getOpcode();
-			int i2 = ((Bytecode)instr2.get(i)).getOpcode();
+			int i1 = instr1.get(i).getOpcode();
+			int i2 = instr2.get(i).getOpcode();
 			if (i1 != i2) {
 				throw new AtlSuperimposeModuleException(
 						Messages
@@ -337,7 +338,7 @@ public class AtlSuperimposeModule {
 	 *             if sanity check fails
 	 */
 	private void sanityCheck(ASMOperation op, int patternLength) throws AtlSuperimposeModuleException {
-		final List instr = Arrays.asList(op.getBytecodes());
+		final List<Bytecode> instr = Arrays.asList(op.getBytecodes());
 		if (instr.size() % patternLength > 0) {
 			throw new AtlSuperimposeModuleException(
 					Messages
@@ -345,8 +346,8 @@ public class AtlSuperimposeModule {
 									"AtlSuperimposeModule.INSTRUCTIONCOUNTPROBLEM", new Object[] {String.valueOf(patternLength), op.getName()})); //$NON-NLS-1$
 		}
 		for (int i = 0; i < instr.size() - patternLength; i++) {
-			int i1 = ((Bytecode)instr.get(i)).getOpcode();
-			int i2 = ((Bytecode)instr.get(i + patternLength)).getOpcode();
+			int i1 = instr.get(i).getOpcode();
+			int i2 = instr.get(i + patternLength).getOpcode();
 			if (i1 != i2) {
 				throw new AtlSuperimposeModuleException(
 						Messages
@@ -367,7 +368,7 @@ public class AtlSuperimposeModule {
 	 *            The length of the run
 	 * @return The semi-colon-separated run of instructions
 	 */
-	private static String serialise(List instrs, int start, int length) {
+	private static String serialise(List<Bytecode> instrs, int start, int length) {
 		StringBuffer ser = new StringBuffer();
 		for (int i = Math.max(0, start); i < Math.min(instrs.size(), start + length); i++) {
 			ser.append(instrs.get(i));
@@ -384,8 +385,8 @@ public class AtlSuperimposeModule {
 	 */
 	private void removeOperation(String op) {
 		boolean removed = false;
-		for (Iterator i = asm.getOperations(); i.hasNext();) {
-			ASMOperation asmOp = (ASMOperation)i.next();
+		for (Iterator<ASMOperation> i = asm.getOperations(); i.hasNext();) {
+			ASMOperation asmOp = i.next();
 			if (op.equals(asmOp.getName())) {
 				Assert.isTrue(!removed);
 				i.remove();

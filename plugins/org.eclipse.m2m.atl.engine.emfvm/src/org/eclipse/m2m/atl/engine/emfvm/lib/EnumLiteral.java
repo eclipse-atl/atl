@@ -38,6 +38,7 @@ public class EnumLiteral implements HasFields {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return (name == null) ? "<unnamed_yet>" : name; //$NON-NLS-1$
 	}
@@ -81,6 +82,7 @@ public class EnumLiteral implements HasFields {
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return super.hashCode();
 	}
@@ -90,6 +92,7 @@ public class EnumLiteral implements HasFields {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object arg) {
 		boolean ret = false;
 		if (arg instanceof Enumerator) {

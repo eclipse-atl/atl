@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class ASMModule implements HasFields {
 
-	private Map fields = new HashMap();
+	private Map<Object, Object> fields = new HashMap<Object, Object>();
 
 	/**
 	 * {@inheritDoc}
@@ -47,6 +47,7 @@ public class ASMModule implements HasFields {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "thisModule"; //$NON-NLS-1$
 	}

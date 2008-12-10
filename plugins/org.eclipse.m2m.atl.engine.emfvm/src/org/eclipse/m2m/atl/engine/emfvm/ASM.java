@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.AtlSuperimposeModule.AtlSuperimposeModuleException;
 import org.eclipse.m2m.atl.engine.emfvm.adapter.EMFModelAdapter;
@@ -45,9 +46,9 @@ public class ASM {
 
 	private String name;
 
-	private List operations = new ArrayList();
+	private List<ASMOperation> operations = new ArrayList<ASMOperation>();
 
-	private List fields = new ArrayList();
+	private List<String> fields = new ArrayList<String>();
 
 	private ASMOperation mainOperation;
 
@@ -93,7 +94,7 @@ public class ASM {
 	 * @see #addOperation(ASMOperation)
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	public Iterator getOperations() {
+	public Iterator<ASMOperation> getOperations() {
 		return operations.iterator();
 	}
 
@@ -123,7 +124,9 @@ public class ASM {
 	 *            the option map
 	 * @return the execution result
 	 */
-	public Object run(Map models, Map libraries, List superimpose, Map options) {
+	@SuppressWarnings("unchecked")
+	public Object run(Map<String, IModel> models, Map<String, ASM> libraries, List<ASM> superimpose,
+			Map<String, Object> options) {
 		Object ret = null;
 
 		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -164,7 +167,7 @@ public class ASM {
 					try {
 						urls[i] = new File(userDir, paths[i]).toURI().toURL();
 					} catch (MalformedURLException e) {
-						throw new VMException(null,Messages.getString(
+						throw new VMException(null, Messages.getString(
 								"ASM.LOADINGERROR", new Object[] {paths[i]}), e); //$NON-NLS-1$
 					}
 				}
@@ -177,29 +180,29 @@ public class ASM {
 					Extension extension = (Extension)cl.loadClass(extensions[i]).newInstance();
 					extension.apply(execEnv, options);
 				} catch (ClassNotFoundException e) {
-					throw new VMException(null,Messages.getString(
+					throw new VMException(null, Messages.getString(
 							"ASM.EXTLOADINGERROR", new Object[] {extensions[i]}), e); //$NON-NLS-1$
 				} catch (InstantiationException e) {
-					throw new VMException(null,Messages.getString(
+					throw new VMException(null, Messages.getString(
 							"ASM.EXTINSTANTIATEERROR", new Object[] {extensions[i]}), e); //$NON-NLS-1$
 				} catch (IllegalAccessException e) {
-					throw new VMException(null,Messages.getString(
+					throw new VMException(null, Messages.getString(
 							"ASM.EXTINSTANTIATEERROR", new Object[] {extensions[i]}), e); //$NON-NLS-1$
 				}
 			}
 		}
-		List extensionObjects = (List)options.get("extensionObjects"); //$NON-NLS-1$
+		List<Extension> extensionObjects = (List<Extension>)options.get("extensionObjects"); //$NON-NLS-1$
 		if (extensionObjects != null) {
-			for (Iterator i = extensionObjects.iterator(); i.hasNext();) {
-				((Extension)i.next()).apply(execEnv, options);
+			for (Iterator<Extension> i = extensionObjects.iterator(); i.hasNext();) {
+				i.next().apply(execEnv, options);
 			}
 		}
 
 		ASMModule asmModule = new ASMModule();
 		StackFrame frame = new StackFrame(execEnv, asmModule, mainOperation);
 
-		for (Iterator i = libraries.values().iterator(); i.hasNext();) {
-			ASM library = (ASM)i.next();
+		for (Iterator<ASM> i = libraries.values().iterator(); i.hasNext();) {
+			ASM library = i.next();
 			registerOperations(execEnv, library.operations);
 			if (library.mainOperation != null) {
 				library.mainOperation.exec(new StackFrame(execEnv, asmModule, library.mainOperation));
@@ -210,8 +213,8 @@ public class ASM {
 		// "main" in execEnv (avoid superimposition problems)
 		registerOperations(execEnv, operations);
 
-		for (Iterator i = superimpose.iterator(); i.hasNext();) {
-			ASM module = (ASM)i.next();
+		for (Iterator<ASM> i = superimpose.iterator(); i.hasNext();) {
+			ASM module = i.next();
 			AtlSuperimposeModule ami = new AtlSuperimposeModule(execEnv, module);
 			try {
 				ami.adaptModuleOperations();
@@ -243,9 +246,9 @@ public class ASM {
 	 * @param operationsToRegister
 	 *            the list of operations to register
 	 */
-	public void registerOperations(ExecEnv execEnv, List operationsToRegister) {
-		for (Iterator i = operationsToRegister.iterator(); i.hasNext();) {
-			ASMOperation op = (ASMOperation)i.next();
+	public void registerOperations(ExecEnv execEnv, List<ASMOperation> operationsToRegister) {
+		for (Iterator<ASMOperation> i = operationsToRegister.iterator(); i.hasNext();) {
+			ASMOperation op = i.next();
 			String signature = op.getContext();
 			if (signature.matches("^(Q|G|C|E|O|N).*$")) { //$NON-NLS-1$
 				// Sequence, Bag, Collection, Set, OrderedSet, Native type
@@ -332,7 +335,7 @@ public class ASM {
 					}
 					ret = ec;
 				} else {
-					throw new VMException(null,Messages.getString("ASM.MODELNOTFOUND", new Object[] {mname})); //$NON-NLS-1$
+					throw new VMException(null, Messages.getString("ASM.MODELNOTFOUND", new Object[] {mname})); //$NON-NLS-1$
 				}
 				break;
 

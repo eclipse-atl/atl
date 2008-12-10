@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: IModelAdapter.java,v 1.1 2008/12/09 13:11:26 wpiers Exp $
+ * $Id: IModelAdapter.java,v 1.2 2008/12/10 09:27:59 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.adapter;
@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame;
+import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
 
 /**
  * The EMFVM execution interface. Defines a set of methods dedicated to the execution of transformations.
@@ -72,7 +73,7 @@ public interface IModelAdapter {
 	 * @param vmSupertypes
 	 *            the map
 	 */
-	void registerVMSupertypes(Map vmSupertypes);
+	void registerVMSupertypes(Map<Class<?>, List<Class<?>>> vmSupertypes);
 
 	/**
 	 * Registers a map of operations.
@@ -80,7 +81,7 @@ public interface IModelAdapter {
 	 * @param vmTypeOperations
 	 *            the map
 	 */
-	void registerVMTypeOperations(Map vmTypeOperations);
+	void registerVMTypeOperations(Map<Object, Map<String, Operation>> vmTypeOperations);
 
 	/**
 	 * Displays in a readable format the given object.
@@ -109,7 +110,7 @@ public interface IModelAdapter {
 	 *            the type
 	 * @return the list of supertypes
 	 */
-	List getSupertypes(Object type);
+	List<Object> getSupertypes(Object type);
 
 	/**
 	 * Returns the model containing the given element.

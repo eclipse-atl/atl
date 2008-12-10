@@ -24,20 +24,20 @@ import java.util.Map.Entry;
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public class Bag implements Collection {
+public class Bag implements Collection<Object> {
 
 	private static final Integer ONE = new Integer(1);
 
 	/**
 	 * An internal map storing objects and the number of their occurrences.
 	 */
-	private Map map;
+	private Map<Object, Integer> map;
 
 	/**
 	 * Constructor.
 	 */
 	public Bag() {
-		map = new HashMap();
+		map = new HashMap<Object, Integer>();
 	}
 
 	/**
@@ -46,21 +46,21 @@ public class Bag implements Collection {
 	 * @param arg0
 	 *            the collection
 	 */
-	public Bag(Collection arg0) {
-		map = new HashMap();
+	public Bag(Collection<?> arg0) {
+		map = new HashMap<Object, Integer>();
 		addAll(arg0);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see java.util.Collection#add(E)
+	 *
+	 * @see java.util.Collection#add(java.lang.Object)
 	 */
 	public boolean add(Object arg0) {
 		if (!contains(arg0)) {
 			map.put(arg0, ONE);
 		} else {
-			Integer val = (Integer)map.get(arg0);
+			Integer val = map.get(arg0);
 			int prev = val.intValue();
 			int cur = prev + 1;
 			map.put(arg0, new Integer(cur));
@@ -73,8 +73,8 @@ public class Bag implements Collection {
 	 * 
 	 * @see java.util.Collection#addAll(java.util.Collection)
 	 */
-	public boolean addAll(Collection arg0) {
-		for (Iterator iterator = arg0.iterator(); iterator.hasNext();) {
+	public boolean addAll(Collection<?> arg0) {
+		for (Iterator<?> iterator = arg0.iterator(); iterator.hasNext();) {
 			Object object = iterator.next();
 			add(object);
 		}
@@ -87,7 +87,7 @@ public class Bag implements Collection {
 	 * @see java.util.Collection#clear()
 	 */
 	public void clear() {
-		map = Collections.EMPTY_MAP;
+		map = Collections.<Object,Integer>emptyMap();
 	}
 
 	/**
@@ -104,8 +104,8 @@ public class Bag implements Collection {
 	 * 
 	 * @see java.util.Collection#containsAll(java.util.Collection)
 	 */
-	public boolean containsAll(Collection arg0) {
-		for (Iterator iterator = arg0.iterator(); iterator.hasNext();) {
+	public boolean containsAll(Collection<?> arg0) {
+		for (Iterator<?> iterator = arg0.iterator(); iterator.hasNext();) {
 			Object object = iterator.next();
 			if (!contains(object)) {
 				return false;
@@ -132,7 +132,7 @@ public class Bag implements Collection {
 		if (!contains(arg0)) {
 			return false;
 		}
-		Integer val = (Integer)map.get(arg0);
+		Integer val = map.get(arg0);
 		int prev = val.intValue();
 		int cur = prev - 1;
 		if (cur >= 1) {
@@ -148,8 +148,8 @@ public class Bag implements Collection {
 	 * 
 	 * @see java.util.Collection#removeAll(java.util.Collection)
 	 */
-	public boolean removeAll(Collection arg0) {
-		for (Iterator iterator = arg0.iterator(); iterator.hasNext();) {
+	public boolean removeAll(Collection<?> arg0) {
+		for (Iterator<?> iterator = arg0.iterator(); iterator.hasNext();) {
 			Object object = iterator.next();
 			remove(object);
 		}
@@ -163,8 +163,8 @@ public class Bag implements Collection {
 	 */
 	public int size() {
 		int res = 0;
-		for (Iterator iterator = map.values().iterator(); iterator.hasNext();) {
-			Integer value = (Integer)iterator.next();
+		for (Iterator<Integer> iterator = map.values().iterator(); iterator.hasNext();) {
+			Integer value = iterator.next();
 			res += value.intValue();
 		}
 		return res;
@@ -175,11 +175,11 @@ public class Bag implements Collection {
 	 * 
 	 * @see java.util.Collection#iterator()
 	 */
-	public Iterator iterator() {
-		List iterable = new ArrayList();
-		for (Iterator iterator = map.entrySet().iterator(); iterator.hasNext();) {
-			Entry entry = (Entry)iterator.next();
-			for (int i = 0; i < ((Integer)entry.getValue()).intValue(); i++) {
+	public Iterator<Object> iterator() {
+		List<Object> iterable = new ArrayList<Object>();
+		for (Iterator<Entry<Object, Integer>> iterator = map.entrySet().iterator(); iterator.hasNext();) {
+			Entry<Object, Integer> entry = iterator.next();
+			for (int i = 0; i < (entry.getValue()).intValue(); i++) {
 				iterable.add(entry.getKey());
 			}
 		}
@@ -191,8 +191,8 @@ public class Bag implements Collection {
 	 * 
 	 * @see java.util.Collection#retainAll(java.util.Collection)
 	 */
-	public boolean retainAll(Collection arg0) {
-		for (Iterator iterator = iterator(); iterator.hasNext();) {
+	public boolean retainAll(Collection<?> arg0) {
+		for (Iterator<?> iterator = iterator(); iterator.hasNext();) {
 			Object object = iterator.next();
 			if (!arg0.contains(object)) {
 				remove(object);
@@ -209,7 +209,7 @@ public class Bag implements Collection {
 	public Object[] toArray() {
 		Object[] res = new Object[size()];
 		int i = 0;
-		for (Iterator iterator = iterator(); iterator.hasNext();) {
+		for (Iterator<Object> iterator = iterator(); iterator.hasNext();) {
 			Object object = iterator.next();
 			res[i] = object;
 			i++;
@@ -219,12 +219,13 @@ public class Bag implements Collection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see java.util.Collection#toArray(T[])
+	 *
+	 * @see java.util.Collection#toArray(Object[])
 	 */
+	@SuppressWarnings("unchecked")
 	public Object[] toArray(Object[] arg0) {
 		int i = 0;
-		for (Iterator iterator = iterator(); iterator.hasNext();) {
+		for (Iterator<Object> iterator = iterator(); iterator.hasNext();) {
 			Object object = iterator.next();
 			arg0[i] = object;
 			i++;

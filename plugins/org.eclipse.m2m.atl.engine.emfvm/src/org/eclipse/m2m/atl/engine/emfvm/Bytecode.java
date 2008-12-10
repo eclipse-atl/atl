@@ -216,6 +216,7 @@ public class Bytecode {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return OPCODENAMES[opcode] + ((operand != null) ? " " + operand : ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}

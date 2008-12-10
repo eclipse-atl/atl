@@ -28,7 +28,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 public class UML2ModelAdapter extends EMFModelAdapter implements IModelAdapter {
 
 	/** Ordered methods to delay. */
-	private List delayedInvocations = new ArrayList();
+	private List<Invocation> delayedInvocations = new ArrayList<Invocation>();
 
 	/**
 	 * Creates a new UMLModelAdapter.
@@ -42,9 +42,10 @@ public class UML2ModelAdapter extends EMFModelAdapter implements IModelAdapter {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.emf.EMFModelAdapter#notifyFinish()
+	 *
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.EMFModelAdapter#notifyFinish()
 	 */
+	@Override
 	public void notifyFinish() {
 		super.notifyFinish();
 		try {
@@ -58,10 +59,10 @@ public class UML2ModelAdapter extends EMFModelAdapter implements IModelAdapter {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.emf.EMFModelAdapter#invoke(java.lang.reflect.Method,
-	 *      java.lang.Object, java.lang.Object[])
+	 *
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.EMFModelAdapter#invoke(java.lang.reflect.Method, java.lang.Object, java.lang.Object[])
 	 */
+	@Override
 	public Object invoke(Method method, Object self, Object[] arguments) {
 		if (method.getName().equals("applyProfile") //$NON-NLS-1$ 
 				|| method.getName().equals("applyStereotype") //$NON-NLS-1$
@@ -123,7 +124,7 @@ public class UML2ModelAdapter extends EMFModelAdapter implements IModelAdapter {
 	private int getLastStereotypeMethod(String opName) {
 		int rang = 0;
 		for (int i = 0; i < delayedInvocations.size(); i++) {
-			Invocation invoc = (Invocation)(delayedInvocations.get(rang));
+			Invocation invoc = delayedInvocations.get(rang);
 			if (invoc.opName.equals(opName)) {
 				rang = i;
 			}
@@ -132,8 +133,8 @@ public class UML2ModelAdapter extends EMFModelAdapter implements IModelAdapter {
 	}
 
 	private void applyDelayedInvocations() throws InvocationTargetException, IllegalAccessException {
-		for (Iterator i = delayedInvocations.iterator(); i.hasNext();) {
-			Invocation invocation = (Invocation)i.next();
+		for (Iterator<Invocation> i = delayedInvocations.iterator(); i.hasNext();) {
+			Invocation invocation = i.next();
 			invocation.method.invoke(invocation.self, invocation.arguments);
 		}
 	}

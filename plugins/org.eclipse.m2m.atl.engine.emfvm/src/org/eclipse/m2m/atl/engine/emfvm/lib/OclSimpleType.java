@@ -42,6 +42,7 @@ public class OclSimpleType extends OclType {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof OclSimpleType) {
 			return ((OclSimpleType)obj).getName().equals(getName());
@@ -55,6 +56,7 @@ public class OclSimpleType extends OclType {
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return super.hashCode();
 	}
@@ -64,11 +66,12 @@ public class OclSimpleType extends OclType {
 	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.OclType#conformsTo(org.eclipse.m2m.atl.engine.emfvm.lib.OclType)
 	 */
+	@Override
 	public boolean conformsTo(OclType other) {
 		boolean ret = equals(other);
 		if (!ret && other != null) {
-			Class currentClass = getNativeClassfromOclTypeName(getName());
-			Class otherClass = getNativeClassfromOclTypeName(other.getName());
+			Class<? extends Object> currentClass = getNativeClassfromOclTypeName(getName());
+			Class<? extends Object> otherClass = getNativeClassfromOclTypeName(other.getName());
 			ret = otherClass.isAssignableFrom(currentClass);
 		}
 		return ret;

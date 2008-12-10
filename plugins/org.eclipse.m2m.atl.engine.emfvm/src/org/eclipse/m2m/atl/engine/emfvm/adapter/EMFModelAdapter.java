@@ -60,7 +60,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
  */
 public class EMFModelAdapter implements IModelAdapter {
 
-	private Map modelsByResource;
+	private Map<Resource, EMFModel> modelsByResource;
 
 	private boolean allowInterModelReferences;
 
@@ -75,12 +75,12 @@ public class EMFModelAdapter implements IModelAdapter {
 	public EMFModelAdapter(ExecEnv execEnv) {
 		this.execEnv = execEnv;
 
-		modelsByResource = new HashMap();
-		for (Iterator i = execEnv.getModelsByName().keySet().iterator(); i.hasNext();) {
-			String name = (String)i.next();
+		modelsByResource = new HashMap<Resource, EMFModel>();
+		for (Iterator<String> i = execEnv.getModelsByName().keySet().iterator(); i.hasNext();) {
+			String name = i.next();
 			EMFModel model = (EMFModel)execEnv.getModelsByName().get(name);
-			for (Iterator iterator = model.getResources().iterator(); iterator.hasNext();) {
-				Resource resource = (Resource)iterator.next();
+			for (Iterator<Resource> iterator = model.getResources().iterator(); iterator.hasNext();) {
+				Resource resource = iterator.next();
 				modelsByResource.put(resource, model);
 			}
 		}
@@ -100,10 +100,10 @@ public class EMFModelAdapter implements IModelAdapter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#getModelOf(java.lang.Object)
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#getModelOf(java.lang.Object)
 	 */
 	public IModel getModelOf(Object element) {
-		return (IModel)modelsByResource.get(((EObject)element).eResource());
+		return modelsByResource.get(((EObject)element).eResource());
 	}
 
 	/**
@@ -131,9 +131,10 @@ public class EMFModelAdapter implements IModelAdapter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#getSupertypes(java.lang.Object)
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#getSupertypes(java.lang.Object)
 	 */
-	public List getSupertypes(Object type) {
+	@SuppressWarnings("unchecked")
+	public List<Object> getSupertypes(Object type) {
 		List ret = null;
 
 		if (type != null) {
@@ -150,7 +151,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				}
 			} else {
-				ret = (List)OclType.getSupertypes().get(type);
+				ret = OclType.getSupertypes().get(type);
 				if (ret == null) {
 					// Support for Java subclasses that do not correspond to OCL subtypes
 					Class sc = ((Class)type).getSuperclass();
@@ -171,7 +172,7 @@ public class EMFModelAdapter implements IModelAdapter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#getType(java.lang.Object)
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#getType(java.lang.Object)
 	 */
 	public Object getType(Object value) {
 		if (value instanceof EObject) {
@@ -186,7 +187,7 @@ public class EMFModelAdapter implements IModelAdapter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#prettyPrint(java.io.PrintStream,
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#prettyPrint(java.io.PrintStream,
 	 *      java.lang.Object)
 	 */
 	public boolean prettyPrint(PrintStream out, Object value) {
@@ -231,7 +232,7 @@ public class EMFModelAdapter implements IModelAdapter {
 			return true;
 		} else if (value instanceof EList) {
 			out.print("Sequence {"); //$NON-NLS-1$
-			execEnv.prettyPrintCollection(out, (Collection)value);
+			execEnv.prettyPrintCollection(out, (EList<?>)value);
 			return true;
 		}
 		return false;
@@ -240,23 +241,24 @@ public class EMFModelAdapter implements IModelAdapter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#registerVMSupertypes(java.util.Map)
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#registerVMSupertypes(java.util.Map)
 	 */
-	public void registerVMSupertypes(Map vmSupertypes) {
+	public void registerVMSupertypes(Map<Class<?>, List<Class<?>>> vmSupertypes) {
 		// EClass extends EObject
-		vmSupertypes.put(EClassImpl.class, Arrays.asList(new Class[] {EObjectImpl.class}));
+		vmSupertypes.put(EClassImpl.class, Arrays.asList(new Class<?>[] {EObjectImpl.class}));
 		// is necessary ? vmSupertypes.put(EObjectImpl.class, Arrays.asList(new Class[] {Object.class}));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#registerVMTypeOperations(java.util.Map)
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#registerVMTypeOperations(java.util.Map)
 	 */
-	public void registerVMTypeOperations(Map vmTypeOperations) {
+	public void registerVMTypeOperations(Map<Object, Map<String, Operation>> vmTypeOperations) {
 		// Object
-		Map operationsByName = (Map)vmTypeOperations.get(Object.class);
+		Map<String, Operation> operationsByName = vmTypeOperations.get(Object.class);
 		operationsByName.put("=", new Operation(2) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						/*
@@ -272,6 +274,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		operationsByName.put("refGetValue", new Operation(2) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						if (localVars[0] instanceof EObject) {
@@ -283,6 +286,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		operationsByName.put("refSetValue", new Operation(3) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						if (localVars[0] instanceof EObject) {
@@ -295,6 +299,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		operationsByName.put("oclType", new Operation(1) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						if (localVars[0] instanceof EObject) {
@@ -304,6 +309,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		operationsByName.put("oclIsTypeOf", new Operation(2) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						if (localVars[1] instanceof Class) {
@@ -324,10 +330,11 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		operationsByName.put("oclIsKindOf", new Operation(2) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						if (localVars[1] instanceof Class) {
-							return new Boolean(((Class)localVars[1]).isInstance(localVars[0]));
+							return new Boolean(((Class<?>)localVars[1]).isInstance(localVars[0]));
 						} else if (localVars[1] instanceof EClass) {
 							return new Boolean(((EClass)localVars[1]).isInstance(localVars[0]));
 						} else if (localVars[1] instanceof OclType) {
@@ -340,6 +347,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		operationsByName.put("refImmediateComposite", new Operation(1) { //$NON-NLS-1$ 
+					@Override
 					// TODO: should only exist on EObject
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -356,9 +364,10 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		// EClass
-		operationsByName = new HashMap();
+		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(EcorePackage.eINSTANCE.getEClass(), operationsByName);
 		operationsByName.put("allInstancesFrom", new Operation(2) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						IModel model = frame.getExecEnv().getModel(localVars[1]);
@@ -370,17 +379,18 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		operationsByName.put("allInstances", new Operation(1) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 
 						// could be a Set (actually was) instead of an OrderedSet
-						Set ret = new LinkedHashSet();
+						Set<Object> ret = new LinkedHashSet<Object>();
 						EClass ec = (EClass)localVars[0];
 						// Model rm = getModelOf(ec); // this is not possible when considering referenced
 						// resources!
-						for (Iterator i = frame.getExecEnv().getModelsByName().values().iterator(); i
+						for (Iterator<IModel> i = frame.getExecEnv().getModelsByName().values().iterator(); i
 								.hasNext();) {
-							IModel model = (IModel)i.next();
+							IModel model = i.next();
 							if ((!model.isTarget()) && (model.getReferenceModel().isModelOf(ec))) {
 								ret.addAll(model.getElementsByType(ec));
 							}
@@ -389,6 +399,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		operationsByName.put("registerHelperAttribute", new Operation(3) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						String name = (String)localVars[1];
@@ -398,6 +409,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		operationsByName.put("newInstance", new Operation(1) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						EClass ec = (EClass)localVars[0];
@@ -405,6 +417,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		operationsByName.put("newInstanceIn", new Operation(2) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						EClass ec = (EClass)localVars[0];
@@ -413,13 +426,15 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		operationsByName.put("getInstanceById", new Operation(3) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						EMFModel model = (EMFModel)execEnv.getModel(localVars[1]);
 						Object ret = null;
-						for (Iterator iterator = model.getResources().iterator(); iterator.hasNext()
+						for (Iterator<Resource> iterator = model.getResources().iterator(); iterator
+								.hasNext()
 								&& ret == null;) {
-							Resource resource = (Resource)iterator.next();
+							Resource resource = iterator.next();
 							ret = resource.getEObject((String)localVars[2]);
 						}
 						if (ret == null) {
@@ -429,6 +444,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		operationsByName.put("conformsTo", new Operation(2) { //$NON-NLS-1$
+					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						return new Boolean(((EClass)localVars[1]).isSuperTypeOf((EClass)localVars[0]));
@@ -439,7 +455,7 @@ public class EMFModelAdapter implements IModelAdapter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#get(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#get(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
 	 *      java.lang.Object, java.lang.String)
 	 */
 	public Object get(AbstractStackFrame frame, Object modelElement, String name) {
@@ -474,9 +490,10 @@ public class EMFModelAdapter implements IModelAdapter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#set(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#set(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
 	 *      java.lang.Object, java.lang.String, java.lang.Object)
 	 */
+	@SuppressWarnings("unchecked")
 	public void set(AbstractStackFrame frame, Object modelElement, String name, Object value) {
 		Object settableValue = value;
 		if (settableValue == null || value.equals(OclUndefined.SINGLETON)) {
@@ -511,18 +528,18 @@ public class EMFModelAdapter implements IModelAdapter {
 
 		Object oldValue = eo.eGet(feature);
 		if (oldValue instanceof Collection) {
-			Collection oldCol = (Collection)oldValue;
+			Collection<Object> oldCol = (Collection<Object>)oldValue;
 			if (settableValue instanceof Collection) {
 				if (targetIsEnum) {
 					EEnum eenum = (EEnum)type;
-					for (Iterator i = ((Collection)settableValue).iterator(); i.hasNext();) {
+					for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
 						Object v = i.next();
 						oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());
 					}
 				} else if (allowInterModelReferences) {
-					oldCol.addAll((Collection)settableValue);
+					oldCol.addAll((Collection<?>)settableValue);
 				} else { // !allowIntermodelReferences
-					for (Iterator i = ((Collection)settableValue).iterator(); i.hasNext();) {
+					for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
 						Object v = i.next();
 						if (v instanceof EObject) {
 							if (getModelOf(eo) == getModelOf(v)) {
@@ -548,7 +565,7 @@ public class EMFModelAdapter implements IModelAdapter {
 		} else {
 			if (settableValue instanceof Collection) {
 				ATLLogger.warning(Messages.getString("EMFModelAdapter.ASSIGNMENTWARNING")); //$NON-NLS-1$
-				Collection c = (Collection)settableValue;
+				Collection<?> c = (Collection<?>)settableValue;
 				if (!c.isEmpty()) {
 					settableValue = c.iterator().next();
 				} else {
@@ -562,8 +579,10 @@ public class EMFModelAdapter implements IModelAdapter {
 					if (literal != null) {
 						eo.eSet(feature, literal.getInstance());
 					} else {
-						ATLLogger.severe(Messages.getString(
-								"EMFModelAdapter.LITERALERROR", new Object[] {settableValue, eenum.getName()})); //$NON-NLS-1$
+						ATLLogger
+								.severe(Messages
+										.getString(
+												"EMFModelAdapter.LITERALERROR", new Object[] {settableValue, eenum.getName()})); //$NON-NLS-1$
 						return;
 					}
 				}
@@ -581,7 +600,7 @@ public class EMFModelAdapter implements IModelAdapter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.ModelAdapter#delete(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#delete(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
 	 *      java.lang.Object)
 	 */
 	public void delete(AbstractStackFrame frame, Object modelElement) {
@@ -593,7 +612,7 @@ public class EMFModelAdapter implements IModelAdapter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.emf.IModelAdapter#invoke(java.lang.reflect.Method,
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#invoke(java.lang.reflect.Method,
 	 *      java.lang.Object, java.lang.Object[])
 	 */
 	public Object invoke(Method method, Object self, Object[] arguments) {
@@ -617,10 +636,10 @@ public class EMFModelAdapter implements IModelAdapter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.emf.IModelAdapter#notifyFinish()
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#notifyFinish()
 	 */
 	public void notifyFinish() {
-		for (Iterator it = execEnv.getModels(); it.hasNext();) {
+		for (Iterator<IModel> it = execEnv.getModels(); it.hasNext();) {
 			EMFModel model = (EMFModel)it.next();
 			if (model.isTarget()) {
 				model.commitToResources();

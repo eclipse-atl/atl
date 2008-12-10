@@ -20,13 +20,13 @@ import java.util.Map;
  */
 public class Tuple implements HasFields {
 
-	private Map values;
+	private Map<Object, Object> values;
 
 	/**
 	 * Creates an new tuple.
 	 */
 	public Tuple() {
-		values = new HashMap();
+		values = new HashMap<Object, Object>();
 	}
 
 	/**
@@ -35,8 +35,8 @@ public class Tuple implements HasFields {
 	 * @param map
 	 *            the given map
 	 */
-	public Tuple(Map map) {
-		values = new HashMap(map);
+	public Tuple(Map<Object, Object> map) {
+		values = new HashMap<Object, Object>(map);
 	}
 
 	/**
@@ -64,6 +64,7 @@ public class Tuple implements HasFields {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "Tuple " + values.toString(); //$NON-NLS-1$
 	}
@@ -73,11 +74,12 @@ public class Tuple implements HasFields {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object o) {
 		return (o instanceof Tuple) ? values.equals(((Tuple)o).values) : false;
 	}
 
-	public Map getMap() {
+	public Map<Object, Object> getMap() {
 		return values;
 	}
 
@@ -86,6 +88,7 @@ public class Tuple implements HasFields {
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return values.hashCode();
 	}

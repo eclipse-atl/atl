@@ -61,6 +61,7 @@ public class VMException extends RuntimeException {
 	 * 
 	 * @see java.lang.Throwable#printStackTrace(java.io.PrintStream)
 	 */
+	@Override
 	public void printStackTrace(PrintStream s) {
 		if (frame != null) {
 			s.println("ATL VM Stack:"); //$NON-NLS-1$
@@ -79,6 +80,7 @@ public class VMException extends RuntimeException {
 	 * 
 	 * @see java.lang.Throwable#printStackTrace(java.io.PrintWriter)
 	 */
+	@Override
 	public void printStackTrace(PrintWriter s) {
 		if (frame != null) {
 			s.println("ATL VM Stack:"); //$NON-NLS-1$

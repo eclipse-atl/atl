@@ -51,6 +51,7 @@ public class OclParametrizedType extends OclType {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof OclParametrizedType) {
 			return ((OclParametrizedType)obj).getName().equals(getName())
@@ -64,6 +65,7 @@ public class OclParametrizedType extends OclType {
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return super.hashCode();
 	}
@@ -73,6 +75,7 @@ public class OclParametrizedType extends OclType {
 	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.OclType#toString()
 	 */
+	@Override
 	public String toString() {
 		return super.toString() + "(" + elementType + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -105,6 +108,7 @@ public class OclParametrizedType extends OclType {
 	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.OclType#conformsTo(org.eclipse.m2m.atl.engine.emfvm.lib.OclType)
 	 */
+	@Override
 	public boolean conformsTo(OclType other) {
 		boolean ret = equals(other);
 		if (!ret && other instanceof OclParametrizedType) {

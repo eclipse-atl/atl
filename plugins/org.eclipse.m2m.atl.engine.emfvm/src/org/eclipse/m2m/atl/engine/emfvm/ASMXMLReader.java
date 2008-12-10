@@ -35,7 +35,7 @@ public class ASMXMLReader extends DefaultHandler {
 
 	private Object asmNameIndex;
 
-	private ArrayList cp = new ArrayList();
+	private List<String> cp = new ArrayList<String>();
 
 	private boolean inCode;
 
@@ -43,7 +43,7 @@ public class ASMXMLReader extends DefaultHandler {
 
 	private ASMOperation currentOperation;
 
-	private List bytecodes;
+	private List<Bytecode> bytecodes;
 
 	private int errors;
 
@@ -75,7 +75,7 @@ public class ASMXMLReader extends DefaultHandler {
 
 	private String resolve(Object index) {
 		int idx = toInt(index);
-		return (String)cp.get(idx);
+		return cp.get(idx);
 	}
 
 	private int toInt(Object s) {
@@ -88,9 +88,10 @@ public class ASMXMLReader extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String,
 	 *      java.lang.String, org.xml.sax.Attributes)
 	 */
+	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes)
 			throws SAXException {
-		Map attrs = new HashMap();
+		Map<String, String> attrs = new HashMap<String, String>();
 		for (int i = 0; i < attributes.getLength(); i++) {
 			attrs.put(attributes.getQName(i), attributes.getValue(i));
 		}
@@ -105,7 +106,7 @@ public class ASMXMLReader extends DefaultHandler {
 			ret.addField(resolve(attrs.get("name")), resolve(attrs.get("type"))); //$NON-NLS-1$ //$NON-NLS-2$
 		} else if (qName.equals("operation")) { //$NON-NLS-1$
 			currentOperation = new ASMOperation(resolve(attrs.get("name"))); //$NON-NLS-1$
-			bytecodes = new ArrayList();
+			bytecodes = new ArrayList<Bytecode>();
 		} else if (qName.equals("context")) { //$NON-NLS-1$
 			currentOperation.setContext(resolve(attrs.get("type"))); //$NON-NLS-1$
 		} else if (qName.equals("parameters")) { //$NON-NLS-1$
@@ -146,13 +147,14 @@ public class ASMXMLReader extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String,
 	 *      java.lang.String)
 	 */
+	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		if (qName.equals("cp")) { //$NON-NLS-1$
 			ret.setName(resolve(asmNameIndex));
 		} else if (qName.equals("code")) { //$NON-NLS-1$
 			inCode = false;
 		} else if (qName.equals("operation")) { //$NON-NLS-1$
-			currentOperation.setBytecodes((Bytecode[])bytecodes.toArray(new Bytecode[0]));
+			currentOperation.setBytecodes(bytecodes.toArray(new Bytecode[0]));
 			ret.addOperation(currentOperation);
 			currentOperation = null;
 		}
@@ -163,6 +165,7 @@ public class ASMXMLReader extends DefaultHandler {
 	 * 
 	 * @see org.xml.sax.helpers.DefaultHandler#error(org.xml.sax.SAXParseException)
 	 */
+	@Override
 	public void error(SAXParseException e) {
 		errors++;
 		throw new VMException(
@@ -177,6 +180,7 @@ public class ASMXMLReader extends DefaultHandler {
 	 * 
 	 * @see org.xml.sax.helpers.DefaultHandler#fatalError(org.xml.sax.SAXParseException)
 	 */
+	@Override
 	public void fatalError(SAXParseException e) throws SAXParseException {
 		throw new ASMXMLReaderException(
 				Messages
