@@ -3,5 +3,4 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.m2m.atl.examples.public2private
 Bundle-Version: 3.0.0
-Require-Bundle: org.eclipse.uml2.uml
 Bundle-Vendor: %providerName
