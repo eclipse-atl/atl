@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xmi:id="_c_GlgMVDEd27wsg-MdwaAg" name="sampleModel">
+  <packagedElement xmi:type="uml:Class" xmi:id="_eI3p8MVDEd27wsg-MdwaAg" name="sampleClass">
+    <ownedAttribute xmi:id="_gLQYcMVDEd27wsg-MdwaAg" name="a" visibility="private" type="_eI3p8MVDEd27wsg-MdwaAg"/>
+    <ownedAttribute xmi:id="_g_tUMMVDEd27wsg-MdwaAg" name="sampleAttribute2" visibility="private">
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_5mV2QMVEEd2Sfb7WvOAq2Q" value=""/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_BDbLgMVIEd2AtvBLfz_gfw" name="getA">
+      <ownedParameter xmi:id="_BDbLhsVIEd2AtvBLfz_gfw" type="_eI3p8MVDEd27wsg-MdwaAg" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_BDbLgcVIEd2AtvBLfz_gfw" name="setA">
+      <ownedParameter xmi:id="_BDbLgsVIEd2AtvBLfz_gfw" name="a" type="_eI3p8MVDEd27wsg-MdwaAg"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_BDbLg8VIEd2AtvBLfz_gfw" name="getSampleAttribute2"/>
+    <ownedOperation xmi:id="_BDbLhMVIEd2AtvBLfz_gfw" name="setSampleAttribute2">
+      <ownedParameter xmi:id="_BDbLhcVIEd2AtvBLfz_gfw" name="sampleAttribute2"/>
+    </ownedOperation>
+  </packagedElement>
+</uml:Model>
