@@ -15,7 +15,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * Utility class to access externalized Strings..
+ * Utility class to access externalized Strings.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
