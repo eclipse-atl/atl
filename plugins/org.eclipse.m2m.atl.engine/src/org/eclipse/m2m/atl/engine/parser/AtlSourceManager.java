@@ -171,7 +171,7 @@ public final class AtlSourceManager {
 	 * @return the map of searched metamodels
 	 */
 	public Map getMetamodelPackages(int filter) {
-		if (inputModels == null && inputModels == null) {
+		if (inputModels == null && outputModels == null) {
 			return metamodelsPackages;
 		}
 		switch (filter) {
@@ -186,7 +186,7 @@ public final class AtlSourceManager {
 				Map outputres = new HashMap();
 				for (Iterator iterator = outputModels.values().iterator(); iterator.hasNext();) {
 					String id = (String)iterator.next();
-					outputres.put(id, inputModels.get(id));
+					outputres.put(id, metamodelsPackages.get(id));
 				}
 				return outputres;
 			default:
