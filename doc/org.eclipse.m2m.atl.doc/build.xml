@@ -15,8 +15,8 @@
 	<property name="javacFailOnError" value="false"/>
 	<property name="javacDebugInfo" value="on"/>
 	<property name="javacVerbose" value="true"/>
-	<property name="javacSource" value="1.4"/>
-	<property name="javacTarget" value="1.4"/>
+	<property name="javacSource" value="1.5"/>
+	<property name="javacTarget" value="1.5"/>
 	<property name="compilerArg" value=""/>
 	<path id="path_bootclasspath">
 		<fileset dir="${java.home}/lib">
