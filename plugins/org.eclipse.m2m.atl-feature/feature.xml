@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.m2m.atl"
-      label="ATL"
+      label="%featureName"
       version="3.0.0.qualifier"
-      provider-name="Eclipse.org"
+      provider-name="%providerName"
       plugin="org.eclipse.m2m.atl">
 
    <description>
