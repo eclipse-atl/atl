@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.m2m.atl.sdk"
-      label="ATL SDK"
+      label="%featureName"
       version="3.0.0.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="%providerName">
 
    <description>
-      ATL SDK includes runtime, source, examples and documentation
+      %description
    </description>
 
    <copyright url="http://www.eclipse.org/legal/epl-v10.html">
