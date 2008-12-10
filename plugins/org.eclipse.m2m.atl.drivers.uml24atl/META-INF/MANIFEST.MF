@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: UML24ATL Plug-in
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.m2m.atl.drivers.uml24atl;singleton:=true
 Bundle-Version: 3.0.0.qualifier
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.drivers.uml24atl
 Bundle-ClassPath: .
