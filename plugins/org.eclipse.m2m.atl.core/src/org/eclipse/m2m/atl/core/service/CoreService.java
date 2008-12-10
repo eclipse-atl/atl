@@ -47,19 +47,19 @@ public final class CoreService {
 
 	private static final String MODELS_EXTENSION_POINT = "org.eclipse.m2m.atl.core.model"; //$NON-NLS-1$
 
-	private static Map<String, ILauncher> launcherRegistry = new HashMap<String, ILauncher>();
+	private static Map<String, Object> launcherRegistry = new HashMap<String, Object>();
 
-	private static Map<String, IInjector> injectorRegistry = new HashMap<String, IInjector>();
+	private static Map<String, Object> injectorRegistry = new HashMap<String, Object>();
 
-	private static Map<String, IExtractor> extractorRegistry = new HashMap<String, IExtractor>();
+	private static Map<String, Object> extractorRegistry = new HashMap<String, Object>();
 
-	private static Map<String, ModelFactory> factoryRegistry = new HashMap<String, ModelFactory>();
+	private static Map<String, Object> factoryRegistry = new HashMap<String, Object>();
 
 	private CoreService() {
 		super();
 	}
 
-	private static void register(Map registry, String extensionName, Object value) {
+	private static void register(Map<String, Object> registry, String extensionName, Object value) {
 		if (!registry.containsKey(extensionName)) {
 			registry.put(extensionName, value);
 		}
@@ -112,7 +112,7 @@ public final class CoreService {
 	}
 
 	private static Object getExtensionClass(String extensionId, String executableExtensionName,
-			String extensionName, Map registry) throws CoreException {
+			String extensionName, Map<String, Object> registry) throws CoreException {
 		if (registry.containsKey(extensionName)) {
 			return registry.get(extensionName);
 		} else {

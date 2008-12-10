@@ -70,6 +70,7 @@ public final class LauncherService {
 	 *            a list of modules to superimpose and. The first module overrides the next ones.
 	 * @return the transformation result
 	 */
+	@SuppressWarnings("unchecked")
 	public static Object launch(String mode, ILauncher launcher, Map<String, ModelFactory> modelFactories,
 			Map<String, IExtractor> extractors, Map<String, IInjector> injectors,
 			Map<String, String> inModels, Map<String, String> inoutModels, Map<String, String> outModels,
