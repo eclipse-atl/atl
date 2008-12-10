@@ -10,3 +10,5 @@ Export-Package: org.eclipse.m2m.atl.core,
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.runtime
 Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+
