@@ -13,3 +13,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.m2m.atl.examples.ATLExamplesPlugin
+Export-Package: org.eclipse.m2m.atl.examples
