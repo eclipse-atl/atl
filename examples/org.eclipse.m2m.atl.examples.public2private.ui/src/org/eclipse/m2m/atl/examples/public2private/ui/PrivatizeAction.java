@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.examples.public2private.ui;
 
 import java.net.URL;
 import java.util.Collections;
+import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -81,23 +82,27 @@ public class PrivatizeAction implements IObjectActionDelegate {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction, org.eclipse.ui.IWorkbenchPart)
+	 * 
+	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
+	 *      org.eclipse.ui.IWorkbenchPart)
 	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
-		// Getting file from selection
+		// Getting files from selection
 		IStructuredSelection iss = (IStructuredSelection)currentSelection;
-		IFile currentFile = (IFile)iss.getFirstElement();
-		String artifactUri = currentFile.getFullPath().toString();
+		for (Iterator<?> iterator = iss.iterator(); iterator.hasNext();) {
+			privatize((IFile)iterator.next());
+		}
+	}
 
+	private void privatize(IFile file) {
 		// Getting launcher
 		ILauncher launcher = null;
 		try {
@@ -112,7 +117,7 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		IModel umlModel = factory.newModel(umlMetamodel);
 
 		// Loading existing model
-		injector.inject(umlModel, artifactUri);
+		injector.inject(umlModel, file.getFullPath().toString());
 
 		// Launching
 		launcher.addOutModel(refiningTraceModel, "refiningTrace", "RefiningTrace"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -124,7 +129,7 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		}
 
 		// Saving model
-		extractor.extract(umlModel, artifactUri);
+		extractor.extract(umlModel, file.getFullPath().toString());
 
 		// Disposing models
 		umlModel.dispose();
@@ -132,7 +137,7 @@ public class PrivatizeAction implements IObjectActionDelegate {
 
 		// Refresh workspace
 		try {
-			currentFile.getParent().refreshLocal(IProject.DEPTH_INFINITE, null);
+			file.getParent().refreshLocal(IProject.DEPTH_INFINITE, null);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
@@ -140,8 +145,9 @@ public class PrivatizeAction implements IObjectActionDelegate {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+	 * 
+	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
+	 *      org.eclipse.jface.viewers.ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 		this.currentSelection = selection;
