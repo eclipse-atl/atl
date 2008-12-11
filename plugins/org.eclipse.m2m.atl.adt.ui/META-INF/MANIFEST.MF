@@ -6,6 +6,8 @@ Bundle-Version: 3.0.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.adt.ui,
+ org.eclipse.m2m.atl.adt.ui.compatibility,
+ org.eclipse.m2m.atl.adt.ui.perspective,
  org.eclipse.m2m.atl.adt.ui.startup,
  org.eclipse.m2m.atl.adt.ui.wizard.atlfile,
  org.eclipse.m2m.atl.adt.ui.wizard.atlproject
