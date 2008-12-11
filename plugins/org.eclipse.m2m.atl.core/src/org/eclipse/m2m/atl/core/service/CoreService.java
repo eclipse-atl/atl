@@ -107,7 +107,7 @@ public final class CoreService {
 	 * @param factory
 	 *            the factory
 	 */
-	public static void registerfactory(String name, ModelFactory factory) {
+	public static void registerFactory(String name, ModelFactory factory) {
 		register(factoryRegistry, name, factory);
 	}
 
