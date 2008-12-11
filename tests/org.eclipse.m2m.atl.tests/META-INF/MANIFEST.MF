@@ -5,8 +5,10 @@ Bundle-SymbolicName: org.eclipse.m2m.atl.tests;singleton:=true
 Bundle-Version: 3.0.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Export-Package: org.eclipse.m2m.atl.tests;
- org.eclipse.m2m.atl.tests.unit;
+Export-Package: org.eclipse.m2m.atl.tests,
+ org.eclipse.m2m.atl.tests.suite,
+ org.eclipse.m2m.atl.tests.unit,
+ org.eclipse.m2m.atl.tests.unit.atlvm,
  org.eclipse.m2m.atl.tests.util
 Bundle-ClassPath: .
 Require-Bundle: org.eclipse.core.resources,

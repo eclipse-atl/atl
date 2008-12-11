@@ -32,7 +32,6 @@
 </mapAttribute>
 <stringAttribute key="Project Name" value="Relational2UML"/>
 <listAttribute key="Superimpose"/>
-<booleanAttribute key="Support UML2 stereotypes (EMF-specific VM only)" value="true"/>
 <booleanAttribute key="continueAfterError" value="false"/>
 <booleanAttribute key="disableAttributeHelperCache" value="false"/>
 <booleanAttribute key="printExecutionTime" value="false"/>
