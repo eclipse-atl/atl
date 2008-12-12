@@ -320,7 +320,12 @@ public class ASMMDRModel extends ASMModel {
 
 	private static ASMMDRModel mofmm;
 
-	public void finalize() {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.lang.Object#finalize()
+	 */
+	protected void finalize() {
 		getModelLoader().unload(this);
 	}
 }
