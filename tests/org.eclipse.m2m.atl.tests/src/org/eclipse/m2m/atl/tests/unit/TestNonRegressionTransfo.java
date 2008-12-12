@@ -232,9 +232,9 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		Map<String, IExtractor> extractors = new HashMap<String, IExtractor>();
 		Map<String, IInjector> injectors = new HashMap<String, IInjector>();
 
-		ModelFactory modelfactory = launcher.getDefaultModelFactory();
-		IInjector injector = modelfactory.getDefaultInjector();
-		IExtractor extractor = modelfactory.getDefaultExtractor();
+		ModelFactory modelfactory = CoreService.createModelFactory(launcher.getDefaultModelFactoryName());
+		IInjector injector = CoreService.getInjector(modelfactory.getDefaultInjectorName());
+		IExtractor extractor = CoreService.getExtractor(modelfactory.getDefaultExtractorName());
 
 		for (Iterator<String> iterator = modelPaths.keySet().iterator(); iterator.hasNext();) {
 			String modelName = iterator.next();
