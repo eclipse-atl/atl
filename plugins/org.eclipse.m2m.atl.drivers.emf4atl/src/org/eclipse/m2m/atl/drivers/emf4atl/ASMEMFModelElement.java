@@ -229,7 +229,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		} else {
 			EStructuralFeature sf = object.eClass().getEStructuralFeature(name);
 			if (sf == null) {
-				frame.printStackTrace("feature " + name + " does not exist on " + getType());
+				error("feature " + name + " does not exist on " + getType(), frame);
 			}
 			if (sf.equals(EcorePackage.eINSTANCE.getEEnum_ELiterals())) {
 				// treat meta-description of enum literals as ASMModelElements:
@@ -302,8 +302,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 				Object v = asm2EMF(frame, ((ASMTuple)value).get(frame, "value"), propName, feature);
 				ret = FeatureMapUtil.createEntry((EStructuralFeature)f, v);
 			} else {
-				frame.printStackTrace("ERROR: cannot convert " + value + " : " + value.getClass()
-						+ " to EMF.");
+				error("ERROR: cannot convert " + value + " : " + value.getClass()
+						+ " to EMF.", frame);
 			}
 		} else if (value instanceof ASMCollection) {
 			ret = new ArrayList();
@@ -314,7 +314,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 				}
 			}
 		} else {
-			frame.printStackTrace("ERROR: cannot convert " + value + " : " + value.getClass() + " to EMF.");
+			error("ERROR: cannot convert " + value + " : " + value.getClass() + " to EMF.", frame);
 		}
 
 		return ret;
@@ -376,7 +376,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 			}
 			ret = col;
 		} else {
-			frame.printStackTrace("ERROR: cannot convert " + value + " : " + value.getClass() + " from EMF.");
+			error("ERROR: cannot convert " + value + " : " + value.getClass() + " from EMF.", frame);
 		}
 
 		return ret;
@@ -388,7 +388,7 @@ public class ASMEMFModelElement extends ASMModelElement {
      * @param frame
      * @param e
      */
-    private void error(String msg, StackFrame frame, Exception e) {
+    private static void error(String msg, StackFrame frame, Exception e) {
 		if(frame == null) {
 			throw new RuntimeException(msg, e);
 		} else {
@@ -401,7 +401,7 @@ public class ASMEMFModelElement extends ASMModelElement {
      * @param msg
      * @param frame
      */
-    private void error(String msg, StackFrame frame) {
+    private static void error(String msg, StackFrame frame) {
 		if(frame == null) {
 			throw new RuntimeException(msg);
 		} else {
@@ -870,20 +870,19 @@ public class ASMEMFModelElement extends ASMModelElement {
 				if (method != null) {
 					ret = emf2ASM(frame, method.invoke(object, args));
 				} else {
-					frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType()
+					error("ERROR: could not find operation " + opName + " on " + getType()
 							+ " having supertypes: " + getType().getSupertypes()
-							+ " (including Java operations)");
+							+ " (including Java operations)", frame);
 				}
 			} catch (IllegalAccessException e) {
-				frame
-						.printStackTrace("ERROR: could not invoke operation " + opName + " on " + getType()
+				error("ERROR: could not invoke operation " + opName + " on " + getType()
 								+ " having supertypes: " + getType().getSupertypes()
-								+ " (including Java operations)");
+								+ " (including Java operations)", frame, e);
 			} catch (InvocationTargetException e) {
 				Throwable cause = e.getCause();
 				Exception toReport = (cause instanceof Exception) ? (Exception)cause : e;
-				frame.printStackTrace("ERROR: exception during invocation of operation " + opName + " on "
-						+ getType() + " (java method: " + method + ")", toReport);
+				error("ERROR: exception during invocation of operation " + opName + " on "
+						+ getType() + " (java method: " + method + ")", frame, toReport);
 			}
 		}
 
@@ -921,20 +920,19 @@ public class ASMEMFModelElement extends ASMModelElement {
 				if (method != null) {
 					ret = emf2ASM(frame, method.invoke(object, args));
 				} else {
-					frame.printStackTrace("ERROR: could not find operation " + opName + " on " + getType()
+					error("ERROR: could not find operation " + opName + " on " + getType()
 							+ " having supertypes: " + getType().getSupertypes()
-							+ " (including Java operations)");
+							+ " (including Java operations)", frame);
 				}
 			} catch (IllegalAccessException e) {
-				frame
-						.printStackTrace("ERROR: could not invoke operation " + opName + " on " + getType()
+				error("ERROR: could not invoke operation " + opName + " on " + getType()
 								+ " having supertypes: " + getType().getSupertypes()
-								+ " (including Java operations)");
+								+ " (including Java operations)", frame, e);
 			} catch (InvocationTargetException e) {
 				Throwable cause = e.getCause();
 				Exception toReport = (cause instanceof Exception) ? (Exception)cause : e;
-				frame.printStackTrace("ERROR: exception during invocation of operation " + opName + " on "
-						+ getType() + " (java method: " + method + ")", toReport);
+				error("ERROR: exception during invocation of operation " + opName + " on "
+						+ getType() + " (java method: " + method + ")", frame, toReport);
 			}
 		}
 
