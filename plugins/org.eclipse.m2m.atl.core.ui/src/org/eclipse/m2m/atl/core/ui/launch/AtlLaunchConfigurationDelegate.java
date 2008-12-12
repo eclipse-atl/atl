@@ -89,9 +89,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		Map<String, IInjector> injectors = new HashMap<String, IInjector>();
 
 		// Loading defaults
-		ModelFactory defaultModelfactory = launcher.getDefaultModelFactory();
-		IInjector defaultInjector = defaultModelfactory.getDefaultInjector();
-		IExtractor defaultExtractor = defaultModelfactory.getDefaultExtractor();
+		ModelFactory defaultModelfactory = CoreService.createModelFactory(launcher.getDefaultModelFactoryName());
+		IInjector defaultInjector = CoreService.getInjector(defaultModelfactory.getDefaultInjectorName());
+		IExtractor defaultExtractor = CoreService.getExtractor(defaultModelfactory.getDefaultExtractorName());
 
 		for (Iterator<String> iterator = modelPaths.keySet().iterator(); iterator.hasNext();) {
 			String modelName = iterator.next();
