@@ -63,4 +63,11 @@ public interface IModel {
 	 * Deletes the model in memory.
 	 */
 	void dispose();
+	
+	/**
+	 * Returns the ModelFactory used to create the current model.
+	 * 
+	 * @return true if the model allows writing
+	 */
+	ModelFactory getModelFactory();
 }

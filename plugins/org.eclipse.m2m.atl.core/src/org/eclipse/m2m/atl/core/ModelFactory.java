@@ -24,14 +24,14 @@ public abstract class ModelFactory {
 	 * 
 	 * @return the default {@link IInjector}
 	 */
-	public abstract IInjector getDefaultInjector();
+	public abstract String getDefaultInjectorName();
 
 	/**
 	 * Returns a default {@link IExtractor} associated with the current factory.
 	 * 
 	 * @return the default {@link IExtractor}
 	 */
-	public abstract IExtractor getDefaultExtractor();
+	public abstract String getDefaultExtractorName();
 
 	/**
 	 * Creates a new {@link IReferenceModel} using default options.

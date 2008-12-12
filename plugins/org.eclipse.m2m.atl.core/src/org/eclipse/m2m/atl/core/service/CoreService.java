@@ -53,8 +53,6 @@ public final class CoreService {
 
 	private static Map<String, Object> extractorRegistry = new HashMap<String, Object>();
 
-	private static Map<String, Object> factoryRegistry = new HashMap<String, Object>();
-
 	private CoreService() {
 		super();
 	}
@@ -100,15 +98,14 @@ public final class CoreService {
 	}
 
 	/**
-	 * Registers an factory in the factoryRegistry.
+	 * Creates a new {@link ModelFactory} with the given name.
 	 * 
 	 * @param name
 	 *            the factory name
-	 * @param factory
-	 *            the factory
+	 * @return the new ModelFactory
 	 */
-	public static void registerFactory(String name, ModelFactory factory) {
-		register(factoryRegistry, name, factory);
+	public static ModelFactory createModelFactory(String name) throws CoreException {
+		return (ModelFactory)getExtensionClass(MODELS_EXTENSION_POINT, "modelFactory", name);
 	}
 
 	private static Object getExtensionClass(String extensionId, String executableExtensionName,
@@ -116,18 +113,24 @@ public final class CoreService {
 		if (registry.containsKey(extensionName)) {
 			return registry.get(extensionName);
 		} else {
-			if (Platform.isRunning()) {
-				final IExtension[] extensions = Platform.getExtensionRegistry()
-						.getExtensionPoint(extensionId).getExtensions();
-				for (int i = 0; i < extensions.length; i++) {
-					final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
-					for (int j = 0; j < configElements.length; j++) {
-						if (configElements[j].getAttribute("name").equals(extensionName)) { //$NON-NLS-1$
-							Object executable = configElements[j]
-									.createExecutableExtension(executableExtensionName);
-							registry.put(extensionName, executable);
-							return executable;
-						}
+			Object executable = getExtensionClass(extensionId, executableExtensionName, extensionName);
+			registry.put(extensionName, executable);
+			return executable;
+		}
+	}
+
+	private static Object getExtensionClass(String extensionId, String executableExtensionName,
+			String extensionName) throws CoreException {
+		if (Platform.isRunning()) {
+			final IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(extensionId)
+					.getExtensions();
+			for (int i = 0; i < extensions.length; i++) {
+				final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
+				for (int j = 0; j < configElements.length; j++) {
+					if (configElements[j].getAttribute("name").equals(extensionName)) { //$NON-NLS-1$
+						Object executable = configElements[j]
+								.createExecutableExtension(executableExtensionName);
+						return executable;
 					}
 				}
 			}
@@ -169,18 +172,6 @@ public final class CoreService {
 	 */
 	public static IExtractor getExtractor(String name) throws CoreException {
 		return (IExtractor)getExtensionClass(EXTRACTORS_EXTENSION_POINT, "class", name, extractorRegistry); //$NON-NLS-1$
-	}
-
-	/**
-	 * Returns the ModelFactory matching the given name.
-	 * 
-	 * @param name
-	 *            the ModelFactory name
-	 * @return the ModelFactory matching the given name
-	 * @throws CoreException
-	 */
-	public static ModelFactory getModelFactory(String name) throws CoreException {
-		return (ModelFactory)getExtensionClass(MODELS_EXTENSION_POINT, "modelFactory", name, factoryRegistry); //$NON-NLS-1$
 	}
 
 	private static String[] getExtensionsNames(String extensionId) {

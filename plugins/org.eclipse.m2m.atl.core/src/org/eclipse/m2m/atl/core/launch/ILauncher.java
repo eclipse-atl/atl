@@ -13,7 +13,6 @@ package org.eclipse.m2m.atl.core.launch;
 import java.util.Map;
 
 import org.eclipse.m2m.atl.core.IModel;
-import org.eclipse.m2m.atl.core.ModelFactory;
 
 /**
  * The ILauncher interface defines a transformation launcher, and a set of associated options.
@@ -112,7 +111,7 @@ public interface ILauncher {
 	 * @return the transformation return result
 	 */
 	Object launch(String mode, Map<String, Object> options, Object... modules);
-	
+
 	/**
 	 * Launches the transformation using the given parameters and the given set of modules.
 	 * 
@@ -142,11 +141,12 @@ public interface ILauncher {
 	 * @return a previously added library with the given name
 	 */
 	Object getLibrary(String libraryName);
-	
+
 	/**
-	 * Returns the default {@link ModelFactory}.
-	 * @return the default {@link ModelFactory}
+	 * Returns the default ModelFactory name.
+	 * 
+	 * @return the default ModelFactory name
 	 */
-	ModelFactory getDefaultModelFactory();
+	String getDefaultModelFactoryName();
 
 }
