@@ -16,6 +16,7 @@ import java.util.Set;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
+import org.eclipse.m2m.atl.core.ModelFactory;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
@@ -184,6 +185,16 @@ public class ASMModelWrapper implements IModel, IReferenceModel {
 	 */
 	public boolean isModelOf(Object object) {
 		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.core.IModel#getModelFactory()
+	 * @deprecated unused in this implementation
+	 */
+	public ModelFactory getModelFactory() {
+		return null;
 	}
 
 }

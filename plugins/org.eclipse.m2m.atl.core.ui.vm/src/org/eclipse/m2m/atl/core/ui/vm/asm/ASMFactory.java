@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.m2m.atl.ATLLogger;
-import org.eclipse.m2m.atl.core.IExtractor;
-import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.core.ModelFactory;
@@ -41,31 +39,14 @@ public class ASMFactory extends ModelFactory {
 	/** The newModel boolean. */
 	public static final String OPTION_NEW_MODEL = "newModel"; //$NON-NLS-1$
 
+	/** The model factory name which is also the extractor/injector name. */
+	public static final String MODEL_FACTORY_NAME = "ASM"; //$NON-NLS-1$
+
 	private static Map<String, ASMModelWrapper> metametamodels = new HashMap<String, ASMModelWrapper>();
 
 	private static Map<String, ASMModelWrapper> builtin = new HashMap<String, ASMModelWrapper>();
 
 	private static final AtlModelHandler DEFAULT_MODEL_HANDLER = AtlModelHandler.getDefault("EMF"); //$NON-NLS-1$
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultExtractor()
-	 */
-	@Override
-	public IExtractor getDefaultExtractor() {
-		return new ASMExtractor();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultInjector()
-	 */
-	@Override
-	public IInjector getDefaultInjector() {
-		return new ASMInjector();
-	}
 
 	/**
 	 * {@inheritDoc} This method needs additional parameters to be launched, passed as options:
@@ -152,7 +133,8 @@ public class ASMFactory extends ModelFactory {
 	@Override
 	public IReferenceModel getBuiltInResource(String name) {
 		if (builtin.get(name) == null) {
-			ASMModelWrapper metamodel = new ASMModelWrapper(DEFAULT_MODEL_HANDLER.getBuiltInMetaModel(name), DEFAULT_MODEL_HANDLER);
+			ASMModelWrapper metamodel = new ASMModelWrapper(DEFAULT_MODEL_HANDLER.getBuiltInMetaModel(name),
+					DEFAULT_MODEL_HANDLER);
 			builtin.put(name, metamodel);
 		}
 		return builtin.get(name);
@@ -172,5 +154,25 @@ public class ASMFactory extends ModelFactory {
 			metametamodels.put(modelHandlerName, metametamodel);
 		}
 		return metametamodels.get(modelHandlerName);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultExtractorName()
+	 */
+	@Override
+	public String getDefaultExtractorName() {
+		return MODEL_FACTORY_NAME;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultInjectorName()
+	 */
+	@Override
+	public String getDefaultInjectorName() {
+		return MODEL_FACTORY_NAME;
 	}
 }

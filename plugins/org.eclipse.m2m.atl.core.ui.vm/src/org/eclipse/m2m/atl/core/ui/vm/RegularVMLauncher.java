@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchManager;
@@ -28,9 +27,8 @@ import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlRunTarget;
 import org.eclipse.m2m.atl.core.IModel;
-import org.eclipse.m2m.atl.core.ModelFactory;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
-import org.eclipse.m2m.atl.core.service.CoreService;
+import org.eclipse.m2m.atl.core.ui.vm.asm.ASMFactory;
 import org.eclipse.m2m.atl.core.ui.vm.asm.ASMModelWrapper;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.engine.vm.ASM;
@@ -137,16 +135,11 @@ public class RegularVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getDefaultModelFactory()
+	 *
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getDefaultModelFactoryName()
 	 */
-	public ModelFactory getDefaultModelFactory() {
-		try {
-			return CoreService.getModelFactory("ASM"); //$NON-NLS-1$
-		} catch (CoreException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
-		return null;
+	public String getDefaultModelFactoryName() {
+		return ASMFactory.MODEL_FACTORY_NAME;
 	}
 
 	/**
