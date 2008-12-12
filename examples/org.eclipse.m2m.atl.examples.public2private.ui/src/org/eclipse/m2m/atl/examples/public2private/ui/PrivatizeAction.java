@@ -39,8 +39,6 @@ import org.osgi.framework.Bundle;
  */
 public class PrivatizeAction implements IObjectActionDelegate {
 
-	private static ModelFactory factory;
-
 	private static IInjector injector;
 
 	private static IExtractor extractor;
@@ -57,20 +55,12 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		// ATL public2private transformation
 		Bundle bundle = Platform.getBundle("org.eclipse.m2m.atl.examples.public2private"); //$NON-NLS-1$
 		asmURL = bundle.getEntry("transformation/Public2Private.asm"); //$NON-NLS-1$
-
-		// Defaults
 		try {
-			factory = CoreService.getModelFactory("EMF"); //$NON-NLS-1$
+			injector = CoreService.getInjector("EMF");
+			extractor = CoreService.getExtractor("EMF");			
 		} catch (CoreException e) {
 			e.printStackTrace();
-		}
-		injector = factory.getDefaultInjector();
-		extractor = factory.getDefaultExtractor();
-
-		// Metamodels
-		umlMetamodel = factory.newReferenceModel();
-		injector.inject(umlMetamodel, "uri:http://www.eclipse.org/uml2/2.1.0/UML"); //$NON-NLS-1$
-		refiningTraceMetamodel = factory.getBuiltInResource("RefiningTrace"); //$NON-NLS-1$
+		}		
 	}
 
 	/**
@@ -98,11 +88,23 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		// Getting files from selection
 		IStructuredSelection iss = (IStructuredSelection)currentSelection;
 		for (Iterator<?> iterator = iss.iterator(); iterator.hasNext();) {
-			privatize((IFile)iterator.next());
+			try {
+				privatize((IFile)iterator.next());				
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	private void privatize(IFile file) {
+	private void privatize(IFile file) throws CoreException {
+		// Defaults
+		ModelFactory factory = CoreService.createModelFactory("EMF"); //$NON-NLS-1$
+
+		// Metamodels
+		umlMetamodel = factory.newReferenceModel();
+		injector.inject(umlMetamodel, "uri:http://www.eclipse.org/uml2/2.1.0/UML"); //$NON-NLS-1$
+		refiningTraceMetamodel = factory.getBuiltInResource("RefiningTrace"); //$NON-NLS-1$
+		
 		// Getting launcher
 		ILauncher launcher = null;
 		try {
