@@ -26,7 +26,6 @@ import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.xmi.MalformedXMIException;
 
-import org.eclipse.m2m.atl.drivers.emf4atl.EMFModelLoader;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.netbeans.api.mdr.MDRepository;
@@ -192,7 +191,7 @@ public class MDRModelLoader extends ModelLoader {
 		ASMModel ret = (ASMModel)bimm.get(name);
 
 		if(ret == null) {
-			URL mmurl = EMFModelLoader.class.getResource("resources/" + name + ".xmi");//$NON-NLS-1$//$NON-NLS-2$
+			URL mmurl = MDRModelLoader.class.getResource("resources/" + name + ".xmi");//$NON-NLS-1$//$NON-NLS-2$
 			
 			try {
 				ret = loadModel(name, getMOF(), mmurl.openStream());
