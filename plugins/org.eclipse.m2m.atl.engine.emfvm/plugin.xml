@@ -30,10 +30,6 @@
          <option
                description="Support UML2 stereotypes"
                name="supportUML2Stereotypes"></option>
-         <option
-               description="Delete Resources between transformations"
-               name="clearResourceSet">
-         </option>               
       </launcher>
    </extension>
 

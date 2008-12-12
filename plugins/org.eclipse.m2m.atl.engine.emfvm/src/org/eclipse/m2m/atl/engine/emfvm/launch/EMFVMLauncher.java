@@ -5,15 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
-import org.eclipse.m2m.atl.core.ModelFactory;
-import org.eclipse.m2m.atl.core.emf.EMFModelFactory;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
-import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.engine.emfvm.ASM;
 import org.eclipse.m2m.atl.engine.emfvm.ASMXMLReader;
 import org.eclipse.m2m.atl.engine.emfvm.Messages;
@@ -100,10 +95,6 @@ public class EMFVMLauncher implements ILauncher {
 	public void initialize(Map<String, Object> parameters) {
 		models = new HashMap<String, IModel>();
 		libraries = new HashMap<String, ASM>();
-		boolean clearResourceSet = "true".equals(parameters.get("clearResourceSet")); //$NON-NLS-1$//$NON-NLS-2$
-		if (clearResourceSet) {
-			EMFModelFactory.init();
-		}
 	}
 
 	/**
@@ -158,13 +149,8 @@ public class EMFVMLauncher implements ILauncher {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getDefaultModelFactory()
 	 */
-	public ModelFactory getDefaultModelFactory() {
-		try {
-			return CoreService.getModelFactory("EMF"); //$NON-NLS-1$
-		} catch (CoreException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
-		return null;
+	public String getDefaultModelFactoryName() {
+		return "EMF";
 	}
 
 }
