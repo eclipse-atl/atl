@@ -21,8 +21,6 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.eclipse.m2m.atl.ATLLogger;
-import org.eclipse.m2m.atl.core.IExtractor;
-import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.core.ModelFactory;
@@ -34,19 +32,26 @@ import org.eclipse.m2m.atl.core.ModelFactory;
  */
 public final class EMFModelFactory extends ModelFactory {
 
+	/** The model factory name which is also the extractor/injector name. */
+	public static final String MODEL_FACTORY_NAME = "EMF"; //$NON-NLS-1$
+
 	/** Content type. */
 	public static final String OPTION_CONTENT_TYPE = "OPTION_CONTENT_TYPE"; //$NON-NLS-1$
 
-	private static ResourceSet resourceSet;
+	private ResourceSet resourceSet;
 
-	static {
+	/**
+	 * Creates a new {@link EMFModelFactory} and initialize the {@link ResourceSet}.
+	 */
+	public EMFModelFactory() {
+		super();
 		init();
 	}
 
 	/**
 	 * Recreates the {@link ResourceSet}.
 	 */
-	public static void init() {
+	public void init() {
 		Map<String, Object> etfm = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap();
 		if (!etfm.containsKey("*")) { //$NON-NLS-1$
 			etfm.put("*", new XMIResourceFactoryImpl()); //$NON-NLS-1$
@@ -75,7 +80,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 */
 	@Override
 	public IReferenceModel newReferenceModel() {
-		return new EMFReferenceModel(EMFReferenceModel.getMetametamodel());
+		return new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this));
 	}
 
 	/**
@@ -102,24 +107,24 @@ public final class EMFModelFactory extends ModelFactory {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultExtractor()
+	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultExtractorName()
 	 */
 	@Override
-	public IExtractor getDefaultExtractor() {
-		return new EMFExtractor();
+	public String getDefaultExtractorName() {
+		return MODEL_FACTORY_NAME;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultInjector()
+	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultInjectorName()
 	 */
 	@Override
-	public IInjector getDefaultInjector() {
-		return new EMFInjector();
+	public String getDefaultInjectorName() {
+		return MODEL_FACTORY_NAME;
 	}
 
-	public static ResourceSet getResourceSet() {
+	public ResourceSet getResourceSet() {
 		return resourceSet;
 	}
 
@@ -130,7 +135,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 */
 	@Override
 	public IReferenceModel getBuiltInResource(String name) {
-		EMFReferenceModel model = new EMFReferenceModel(EMFReferenceModel.getMetametamodel());
+		EMFReferenceModel model = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this));
 		String path = "org.eclipse.m2m.atl/src/org/eclipse/m2m/atl/resources/" + name + ".ecore"; //$NON-NLS-1$//$NON-NLS-2$
 		Resource builtin = resourceSet.getResource(URI.createPlatformPluginURI(path, false), true);
 		if (builtin == null) {

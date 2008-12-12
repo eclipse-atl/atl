@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFModel.java,v 1.1 2008/12/09 11:28:13 wpiers Exp $
+ * $Id: EMFModel.java,v 1.2 2008/12/12 15:40:51 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -39,6 +39,8 @@ public class EMFModel implements IModel {
 
 	protected List<Resource> resources;
 
+	protected EMFModelFactory modelFactory;
+	
 	private boolean isTarget;
 
 	private EMFReferenceModel referenceModel;
@@ -54,6 +56,10 @@ public class EMFModel implements IModel {
 	public EMFModel(EMFReferenceModel referenceModel) {
 		this.resources = new ArrayList<Resource>();
 		this.referenceModel = referenceModel;
+		// If the current model isn't a metametamodel
+		if (referenceModel != null) {
+			this.modelFactory = referenceModel.getModelFactory();	
+		}		
 	}
 
 	/**
@@ -64,7 +70,7 @@ public class EMFModel implements IModel {
 	public Object newElement(Object metaElement) {
 		Resource mainResource = null;
 		if (resources.isEmpty()) {
-			mainResource = EMFModelFactory.getResourceSet().createResource(URI.createURI("new-model")); //$NON-NLS-1$
+			mainResource = modelFactory.getResourceSet().createResource(URI.createURI("new-model")); //$NON-NLS-1$
 			resources.add(mainResource);
 		} else {
 			mainResource = resources.get(0);
@@ -137,13 +143,22 @@ public class EMFModel implements IModel {
 		if (this != referenceModel) {
 			// we clean our references, except for the metametamodel
 			for (Resource resource : resources) {
-				EMFModelFactory.getResourceSet().getResources().remove(resource);
+				modelFactory.getResourceSet().getResources().remove(resource);
 			}
 		}
 	}
 
 	public List<Resource> getResources() {
 		return resources;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.core.IModel#getModelFactory()
+	 */
+	public EMFModelFactory getModelFactory() {
+		return modelFactory;
 	}
 
 	/**

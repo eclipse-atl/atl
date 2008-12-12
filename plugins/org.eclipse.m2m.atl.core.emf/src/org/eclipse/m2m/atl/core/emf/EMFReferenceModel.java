@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFReferenceModel.java,v 1.3 2008/12/09 16:31:46 wpiers Exp $
+ * $Id: EMFReferenceModel.java,v 1.4 2008/12/12 15:40:51 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -50,8 +50,9 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	/**
 	 * Metametamodel constructor.
 	 */
-	private EMFReferenceModel() {
+	private EMFReferenceModel(EMFModelFactory modelFactory) {
 		super(null);
+		this.modelFactory = modelFactory;
 	}
 
 	/**
@@ -94,11 +95,13 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	/**
 	 * Returns the Metametamodel.
 	 * 
+	 * @param modelFactory
+	 *            the model factory used to create models.
 	 * @return the Metametamodel
 	 */
-	public static EMFReferenceModel getMetametamodel() {
+	public static EMFReferenceModel getMetametamodel(EMFModelFactory modelFactory) {
 		if (metametamodel == null) {
-			metametamodel = new EMFReferenceModel();
+			metametamodel = new EMFReferenceModel(modelFactory);
 			metametamodel.getResources().add(EcorePackage.eINSTANCE.eResource());
 		}
 		return metametamodel;
@@ -115,13 +118,13 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 		// unregister packages
 		for (Iterator<String> unrs = unregister.iterator(); unrs.hasNext();) {
 			String nsURI = unrs.next();
-			synchronized (EMFModelFactory.getResourceSet()) {
-				EMFModelFactory.getResourceSet().getPackageRegistry().remove(nsURI);
+			synchronized (modelFactory.getResourceSet()) {
+				modelFactory.getResourceSet().getPackageRegistry().remove(nsURI);
 			}
 		}
 		// take resource out of (static) resourceSet
-		synchronized (EMFModelFactory.getResourceSet()) {
-			EMFModelFactory.getResourceSet().getResources().removeAll(resources);
+		synchronized (modelFactory.getResourceSet()) {
+			modelFactory.getResourceSet().getResources().removeAll(resources);
 		}
 		resources.clear();
 		super.dispose();
@@ -176,11 +179,11 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 				nsURI = p.getName();
 				p.setNsURI(nsURI);
 			}
-			if (!EMFModelFactory.getResourceSet().getPackageRegistry().containsKey(nsURI)) {
+			if (!modelFactory.getResourceSet().getPackageRegistry().containsKey(nsURI)) {
 				unregister.add(nsURI);
 			}
-			synchronized (EMFModelFactory.getResourceSet()) {
-				EMFModelFactory.getResourceSet().getPackageRegistry().put(nsURI, p);
+			synchronized (modelFactory.getResourceSet()) {
+				modelFactory.getResourceSet().getPackageRegistry().put(nsURI, p);
 			}
 		}
 	}

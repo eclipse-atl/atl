@@ -18,6 +18,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
@@ -36,6 +37,8 @@ public class EMFInjector implements IInjector {
 	 */
 	public void inject(IModel sourceModel, Object source, Map<String, Object> options) {
 		Resource mainResource = null;
+		ResourceSet resourceSet = ((EMFModelFactory)sourceModel.getModelFactory()).getResourceSet();
+		
 		String path = source.toString();
 		if (path != null) {
 			// EMF Registry
@@ -52,13 +55,13 @@ public class EMFInjector implements IInjector {
 				// File system
 			} else if (path.startsWith("ext:")) { //$NON-NLS-1$
 				path = path.substring(4);
-				mainResource = EMFModelFactory.getResourceSet().getResource(URI.createFileURI(path), true);
+				mainResource = resourceSet.getResource(URI.createFileURI(path), true);
 				// EMF
 			} else if (path.equals("#EMF")) { //$NON-NLS-1$
 				mainResource = EcorePackage.eINSTANCE.eResource();
 				// Workspace
 			} else {
-				mainResource = EMFModelFactory.getResourceSet().getResource(
+				mainResource = resourceSet.getResource(
 						URI.createPlatformResourceURI(path, false), true);
 			}
 		} else {

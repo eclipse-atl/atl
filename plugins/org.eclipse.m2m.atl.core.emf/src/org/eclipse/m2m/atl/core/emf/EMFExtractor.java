@@ -18,6 +18,7 @@ import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.core.IExtractor;
@@ -37,6 +38,8 @@ public class EMFExtractor implements IExtractor {
 	 */
 	public void extract(IModel targetModel, Object target, Map<String, Object> options) {
 		Map<?, ?> pathMap = null;
+		ResourceSet resourceSet = ((EMFModelFactory)targetModel.getModelFactory()).getResourceSet();
+		
 		Object contentType = options.get(EMFModelFactory.OPTION_CONTENT_TYPE);
 		Object object = target.toString();
 		if (object instanceof Map<?, ?>) {
@@ -46,7 +49,7 @@ public class EMFExtractor implements IExtractor {
 				if (path.startsWith("ext:")) { //$NON-NLS-1$
 					path = path.substring(4);
 				}
-				extract(resource, path, contentType, options);
+				extract(resourceSet, resource, path, contentType, options);
 			}
 		} else if (object instanceof String) {
 			String path = (String)object;
@@ -54,7 +57,7 @@ public class EMFExtractor implements IExtractor {
 				path = path.substring(4);
 			}
 			if (!((EMFModel)targetModel).getResources().isEmpty()) {
-				extract(((EMFModel)targetModel).getResources().get(0), path, contentType, options);
+				extract(resourceSet, ((EMFModel)targetModel).getResources().get(0), path, contentType, options);
 			} else {
 				ATLLogger.severe(Messages.getString("EMFExtractor.NO_RESOURCE", new Object[] {path})); //$NON-NLS-1$
 			}
@@ -70,15 +73,16 @@ public class EMFExtractor implements IExtractor {
 		extract(targetModel, target, Collections.<String, Object> emptyMap());
 	}
 
-	private void extract(Resource resource, String path, Object contentType, Map<String, Object> options) {
+	private void extract(ResourceSet resourceSet, Resource resource, String path, Object contentType, Map<String, Object> options) {
+		//TODO do not systematically recreate the resource
 		Resource newResource = null;
 		if (contentType == null) {
-			newResource = EMFModelFactory.getResourceSet().createResource(URI.createFileURI(path));
+			newResource = resourceSet.createResource(URI.createFileURI(path));
 		} else {
 			// TODO compatibility
 			// newResource = EMFModelFactory.getResourceSet().createResource(URI.createFileURI(path),
 			// (String)contentType);
-			newResource = EMFModelFactory.getResourceSet().createResource(URI.createFileURI(path));
+			newResource = resourceSet.createResource(URI.createFileURI(path));
 		}
 		newResource.getContents().addAll(resource.getContents());
 
@@ -93,7 +97,7 @@ public class EMFExtractor implements IExtractor {
 		} catch (IOException e) {
 			ATLLogger.log(Level.SEVERE, Messages.getString("EMFExtractor.ERROR_EXTRACTING", path), e); //$NON-NLS-1$
 		}
-		EMFModelFactory.getResourceSet().getResources().remove(newResource);
+		resourceSet.getResources().remove(newResource);
 	}
 
 }
