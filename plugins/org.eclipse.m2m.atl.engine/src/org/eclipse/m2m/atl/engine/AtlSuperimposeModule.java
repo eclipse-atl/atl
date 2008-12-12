@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 Vrije Universiteit Brussel.
+ * Copyright (c) 2004-2008 Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Dennis Wagelaar (Vrije Universiteit Brussel) - initial API and implementation
+ *    Andres Yie (Vrije Universiteit Brussel, UniAndes)
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine;
 
@@ -96,6 +97,8 @@ public class AtlSuperimposeModule {
 			mainSanityCrossCheck(origOp, newOp);
 			if (atl2006) {
 				insertHelperInits(newOp.getInstructions(), origOp.getInstructions());
+				insertEntryPointRuleCall(newOp.getInstructions(), origOp.getInstructions());
+				insertEndPointRuleCall(newOp.getInstructions(), origOp.getInstructions());
 			} else {
 				List origInit = getInstructions(origOp.getInstructions(), "call A.__init", 20, 1); //$NON-NLS-1$
 				List newInit = getInstructions(newOp.getInstructions(), "call A.__init", 20, 1); //$NON-NLS-1$
@@ -255,7 +258,71 @@ public class AtlSuperimposeModule {
 		transposeOffsets(initInstr, pos - 16, 0);
 		into.addAll(pos, initInstr);
 	}
+	
+	/**
+	 * Copies the call to the entrypoint rule from "from" to "into".
+	 * 
+	 * @param from
+	 *            The list of instructions to copy the call code to entrypoint rule from.
+	 * @param into
+	 *            The list of instructions to augment.
+	 * @author Andres Yie <ayiegarz@vub.ac.be>
+	 */
+	private void insertEntryPointRuleCall(List from, List into) {
+		if  (includesEntryPointRule(from) && ! includesEntryPointRule(into)) {
+			final int firstInstructionCode = indexOfInstruction(from, "set links", 16) + 2; //$NON-NLS-1$
+			//verify if an entrypoint rule exists in the superimposed rule. 
+			final List entryPointInstr = from.subList(firstInstructionCode, firstInstructionCode + 2);
+			//verify if an entrypoint rule exists in the base rule (what to do? replace it?) 
+			final int pos = indexOfInstruction(into, "set links", 16) + 2; //$NON-NLS-1$
+			transposeOffsets(into, entryPointInstr.size(), pos);
+			transposeOffsets(entryPointInstr, pos - 16, 0); //This is necessary
+			into.addAll(pos, entryPointInstr);
+		}
+	}
+	
+	/**
+	 * Copies the call to the endpoint rule from "from" to "into".
+	 * 
+	 * @param from
+	 *            The list of instructions to copy the call code to endpoint rule from.
+	 * @param into
+	 *            The list of instructions to augment.
+	 * @author Andres Yie <ayiegarz@vub.ac.be>
+	 */
+	private void insertEndPointRuleCall(List from, List into) {
+		if  (includesEndPointRule(from) && ! includesEndPointRule(into)) {
+			final int lastInstructionCode = indexOfInstruction(from, "call A.__exec__", 16) + 1; //$NON-NLS-1$
+			final List endPointInstr = from.subList(lastInstructionCode, lastInstructionCode + 2);
+			final int pos = indexOfInstruction(into, "call A.__exec__", 16) + 1; //$NON-NLS-1$
+			transposeOffsets(into, endPointInstr.size(), pos);
+			transposeOffsets(endPointInstr, pos - 16, 0);
+			into.addAll(pos, endPointInstr);
+		}
+	}
 
+	/**
+	 * Verify if an entrypoint rule is included.
+	 * 
+	 * @param instructions
+	 *            The list of instructions where we are going to verify the the inclusion of an entrypoint rule.
+	 * @author Andres Yie <ayiegarz@vub.ac.be>
+	 */
+	private boolean includesEntryPointRule(List instructions) {
+		return (indexOfInstruction(instructions, "call A.__matcher__", 16) - indexOfInstruction(instructions, "set links", 16)) > 2 ;
+	}
+	
+	/**
+	 * Verify if an endpoint rule is included.
+	 * 
+	 * @param instructions
+	 *            The list of instructions where we are going to verify the the inclusion of an endpoint rule.
+	 * @author Andres Yie <ayiegarz@vub.ac.be>
+	 */
+	private boolean includesEndPointRule(List instructions) {
+		return instructions.size() - indexOfInstruction(instructions, "call A.__exec__", 16)  > 1  ;
+	}
+	
 	/**
 	 * Transposes the offset address of "if" and "goto" instructions.
 	 * 
