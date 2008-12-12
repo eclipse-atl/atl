@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2004 INRIA and other.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Frederic Jouault (INRIA) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.m2m.atl.drivers.mdr4atl;
 
 import java.util.ArrayList;
@@ -38,7 +48,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMTuple;
 
 /**
- * @author Frédéric Jouault
+ * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ASMMDRModelElement extends ASMModelElement {
 
@@ -67,12 +77,10 @@ public class ASMMDRModelElement extends ASMModelElement {
 			setName("<unnamed>");
 		}
 
-//new Exception(this + " : " + getMetaobject()).printStackTrace(System.out);
 		if(getMetaobject() == null) {
 			setMetaobject(this);
 		}
 		setType(getMetaobject());
-//		if((model.equals(ASMMDRModel.getMOF()) && (getName().equals("Class") || getName().equals("Classifier"))) || object.refIsInstanceOf(getClassifier(), true)) {
 		if(object instanceof Classifier) {
 			addSupertype(ASMOclType.myType);
 			for(Iterator i = ((Collection)object.refGetValue("supertypes")).iterator() ; i.hasNext() ; ) {
@@ -84,7 +92,7 @@ public class ASMMDRModelElement extends ASMModelElement {
 	}
 
 
-	private static void registerMOFOperation(String modelelementName, String methodName, Class args[]) throws Exception {
+	private static void registerMOFOperation(String modelelementName, String methodName, Class[] args) throws Exception {
 		List realArgs = new ArrayList(Arrays.asList(args));
 		realArgs.add(0, ASMMDRModelElement.class);
 		realArgs.add(0, StackFrame.class);
@@ -114,7 +122,6 @@ public class ASMMDRModelElement extends ASMModelElement {
 			registerMOFOperation("AssociationEnd", "otherEnd", new Class[] {});
 		} catch(Exception e) {
 			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			e.printStackTrace(System.out);
 		}
 	}
 
@@ -124,8 +131,7 @@ public class ASMMDRModelElement extends ASMModelElement {
 		try {
 			ret = (RefObject)self.object.refInvokeOperation("otherEnd", new ArrayList());
 		} catch(RefException re) {
-			frame.printStackTrace(re);
-//			re.printStackTrace(System.out);
+			error(frame, re);
 		}
 
 		return (ASMModelElement)java2ASM(frame, self.getModel(), ret);
@@ -137,8 +143,7 @@ public class ASMMDRModelElement extends ASMModelElement {
 		try {
 			ret = (RefObject)self.object.refInvokeOperation("lookupElementExtended", Arrays.asList(new Object[] {name.getSymbol()}));
 		} catch(RefException re) {
-			frame.printStackTrace(re);
-//			re.printStackTrace(System.out);
+			error(frame, re);
 		}
 
 		return (ASMModelElement)java2ASM(frame, self.getModel(), ret);
@@ -150,8 +155,7 @@ public class ASMMDRModelElement extends ASMModelElement {
 		try {
 			ret = (List)self.object.refInvokeOperation("findElementsByTypeExtended", Arrays.asList(new Object[] {ofType.object, new Boolean(includeSubtypes.getSymbol())}));
 		} catch(RefException re) {
-			frame.printStackTrace(re);
-//			re.printStackTrace(System.out);
+			error(frame, re);
 		}
 
 		return (ASMSequence)java2ASM(frame, self.getModel(), ret);
@@ -251,11 +255,9 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 				Object o = object.refGetValue(name);
 				ret = java2ASM(frame, getModel(), o);
 			} catch(Exception e) {
-				if(frame != null)
-					frame.printStackTrace("this = " + this + " ; name = " + name, e);
+				error("this = " + this + " ; name = " + name, frame, e);
 			} catch(Error e) {
-				if(frame != null)
-					frame.printStackTrace("this = " + this + " ; name = " + name + " ; " + e.toString());				
+				error("this = " + this + " ; name = " + name + " ; " + e.toString(), frame);				
 			}
 		}
 
@@ -302,7 +304,7 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 		} else if(o == null) {
 			ret = new ASMOclUndefined();
 		} else {
-			frame.printStackTrace("ERROR: could not convert " + o + " : " + o.getClass());
+			error("ERROR: could not convert " + o + " : " + o.getClass(), frame);
 		}
 
 		return ret;
@@ -340,7 +342,7 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 					}
 				} else {
 					if(valueToSet instanceof Collection) {
-						frame.printStackTrace("Warning: trying to set a Collection (" + valueToSet + ")to a single-valued property, using first element");
+						error("Warning: trying to set a Collection (" + valueToSet + ")to a single-valued property, using first element", frame);
 						if(((Collection)valueToSet).size() >= 1) {
 							valueToSet = ((Collection)valueToSet).iterator().next();
 							object.refSetValue(name, valueToSet);
@@ -351,13 +353,9 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 				}
 			}
 		} catch(Exception e) {
-			String msg = "Cannot set property " + name + " on element " + this + " : " + getMetaobject() + " to " + value + " : " + value.getType() + " (old value is " + oldValue + ")";
-			if(frame != null) {
-				frame.printStackTrace(msg, e);
-			} else {
-				System.out.println(msg);
-				e.printStackTrace(System.out);
-			}
+			error("Cannot set property " + name + " on element " + this + " : " + 
+					getMetaobject() + " to " + value + " : " + value.getType() + 
+					" (old value is " + oldValue + ")", frame, e);
 		}
 	}
 
@@ -376,7 +374,6 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 			if(((ASMModelElement)asmValue).getModel().equals(model)) {
 				ret = ((ASMMDRModelElement)asmValue).getObject();
 			} else {
-//				frame.printStackTrace("Warning: trying to set " + o + " : " + ((ASMModelElement)o).getType() + " from " + ((ASMModelElement)o).getModel() + " to an element off model " + model);
 				ret = null;
 			}
 		} else if(asmValue instanceof ASMCollection) {
@@ -397,14 +394,14 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 				}
 				ret = pack.refGetEnum(typeObject, ((ASMEnumLiteral)asmValue).getName());
 			} else {
-				frame.printStackTrace("ERROR: could not convert " + asmValue);
+				error("ERROR: could not convert " + asmValue, frame);
 			}
 		} else if(asmValue instanceof ASMTuple) {
 			ret = asm2JavaStructure(frame, model, asmValue, (ASMMDRModelElement)getMetaobject(), propertyName);
 		} else if(asmValue instanceof ASMOclUndefined) {
 			ret = null;		// TODO: means unset ?
 		} else {
-			frame.printStackTrace("ERROR: could not convert " + asmValue);
+			error("ERROR: could not convert " + asmValue, frame);
 		}
 
 		return ret;
@@ -436,7 +433,7 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 			}
 			ret = rp.refCreateStruct(type.getObject(), args);
 		} else {
-			frame.printStackTrace("ERROR: could not convert " + asmValue);
+			error("ERROR: could not convert " + asmValue, frame);
 		}
 		return ret;
 	}
@@ -449,7 +446,6 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 	public ASMBoolean conformsTo(ASMOclType other) {
 		boolean ret = false;
 
-//System.out.println(this + ".conformsTo(" + other);
 		if(other instanceof ASMMDRModelElement) {
 			RefObject o = ((ASMMDRModelElement)other).object;
 			RefObject t = object;
@@ -459,7 +455,6 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 					ret = o.equals(t) || ((Collection)t.refInvokeOperation("allSupertypes", new ArrayList())).contains(o);
 				} catch(Exception e) {
 					logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//					e.printStackTrace(System.out);
 				}
 			}
 		}
@@ -505,7 +500,6 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 				ret = ((ASMMDRModel)getModel()).getASMModelElement((RefObject)t.refInvokeOperation("lookupElementExtended", args));
 			} catch(Exception e) {
 				logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//				e.printStackTrace(System.out);
 			}
 		}
 
@@ -577,5 +571,46 @@ if(debug) System.out.println("\t\t\t\tfound: " + elems);
 	private Map acquaintances = new HashMap();
 	private Map nonNavigableAcquaintances = new HashMap();
 	private RefObject object;
+
+    /**
+     * Reports e through frame if not null, RuntimeException otherwise
+     * @param frame
+     * @param e
+     */
+    private static void error(StackFrame frame, Exception e) {
+		if(frame == null) {
+			throw new RuntimeException(e);
+		} else {
+			frame.printStackTrace(e);
+		}
+    }
+    
+    /**
+     * Reports msg through frame if not null, RuntimeException otherwise
+     * @param msg
+     * @param frame
+     * @param e
+     */
+    private static void error(String msg, StackFrame frame, Exception e) {
+		if(frame == null) {
+			throw new RuntimeException(msg, e);
+		} else {
+			frame.printStackTrace(msg, e);
+		}
+    }
+    
+    /**
+     * Reports msg through frame if not null, RuntimeException otherwise
+     * @param msg
+     * @param frame
+     */
+    private static void error(String msg, StackFrame frame) {
+		if(frame == null) {
+			throw new RuntimeException(msg);
+		} else {
+			frame.printStackTrace(msg);
+		}
+    }
+    
 }
 
