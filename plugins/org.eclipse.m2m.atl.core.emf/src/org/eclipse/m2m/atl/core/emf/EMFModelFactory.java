@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.emf;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -136,10 +139,15 @@ public final class EMFModelFactory extends ModelFactory {
 	@Override
 	public IReferenceModel getBuiltInResource(String name) {
 		EMFReferenceModel model = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this));
-		String path = "org.eclipse.m2m.atl/src/org/eclipse/m2m/atl/resources/" + name + ".ecore"; //$NON-NLS-1$//$NON-NLS-2$
-		Resource builtin = resourceSet.getResource(URI.createPlatformPluginURI(path, false), true);
+		URL url = ATLLogger.class.getResource("resources/" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
+		Resource builtin = resourceSet.createResource(URI.createURI(name));
+		try {
+			builtin.load(url.openStream(), Collections.EMPTY_MAP);	
+		} catch (IOException e) {
+			ATLLogger.log(Level.SEVERE, Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND"), e); //$NON-NLS-1$
+		}		
 		if (builtin == null) {
-			ATLLogger.log(Level.SEVERE, Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND"), null); //$NON-NLS-1$
+			ATLLogger.severe(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND")); //$NON-NLS-1$
 			return null;
 		}
 		model.getResources().add(builtin);
