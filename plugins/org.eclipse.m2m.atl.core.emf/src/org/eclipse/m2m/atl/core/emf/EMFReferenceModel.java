@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFReferenceModel.java,v 1.4 2008/12/12 15:40:51 wpiers Exp $
+ * $Id: EMFReferenceModel.java,v 1.5 2008/12/15 14:20:34 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -83,11 +83,6 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 		final Resource res = ((EObject)object).eResource();
 		if (resources.contains(res)) {
 			return true;
-		}
-		for (Iterator<Resource> i = resources.iterator(); i.hasNext();) {
-			if (res.equals(i.next())) {
-				return true;
-			}
 		}
 		return false;
 	}
@@ -197,7 +192,9 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	 */
 	private Map<String, EObject> initMetaElementsInAllResources() {
 		Map<String, EObject> eClassifiers = new HashMap<String, EObject>();
-		initMetaElements(eClassifiers, resources.get(0).getContents().iterator(), null);
+		for (Resource resource : resources) {
+			initMetaElements(eClassifiers, resource.getContents().iterator(), null);	
+		}
 		return eClassifiers;
 	}
 
@@ -244,7 +241,7 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 				addReferencedResourcesFor((EClass)o, new HashSet<EClass>());
 			}
 		}
-		resources.remove(resource);
+		//resources.remove(resource);
 	}
 
 	/**
@@ -264,7 +261,10 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 			if (eRef.isContainment()) {
 				EClassifier eType = eRef.getEType();
 				if (eType.eResource() != null) {
-					resources.add(eType.eResource());
+					Resource resource = eType.eResource();
+					if (!resources.contains(resource)) {
+						resources.add(resource);
+					}
 				} else {
 					ATLLogger
 							.warning(Messages.getString("EMFReferenceModel.NULL_RESOURCE", eType.toString())); //$NON-NLS-1$
@@ -277,14 +277,20 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 		for (EAttribute eAtt : eClass.getEAttributes()) {
 			EClassifier eType = eAtt.getEType();
 			if (eType.eResource() != null) {
-				resources.add(eType.eResource());
+				Resource resource = eType.eResource();
+				if (!resources.contains(resource)) {
+					resources.add(resource);
+				}
 			} else {
 				ATLLogger.warning(Messages.getString("EMFReferenceModel.NULL_RESOURCE", eType.toString())); //$NON-NLS-1$
 			}
 		}
 		for (EClass eSuper : eClass.getESuperTypes()) {
 			if (eSuper.eResource() != null) {
-				resources.add(eSuper.eResource());
+				Resource resource = eSuper.eResource();
+				if (!resources.contains(resource)) {
+					resources.add(resource);
+				}
 				addReferencedResourcesFor(eSuper, ignore);
 			} else {
 				ATLLogger.warning(Messages.getString("EMFReferenceModel.NULL_RESOURCE", eSuper.toString())); //$NON-NLS-1$
