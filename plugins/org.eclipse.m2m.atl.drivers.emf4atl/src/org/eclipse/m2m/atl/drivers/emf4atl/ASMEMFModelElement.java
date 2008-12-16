@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil;
@@ -64,10 +65,14 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMTuple;
  * The EMF implementation for ASMModelElement.
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ASMEMFModelElement extends ASMModelElement {
 
 	private static WeakHashMap methodCache = new WeakHashMap();
+
+	// instance counter for memory leak testing
+	private static int instanceCount;
 
 	protected EObject object;
 
@@ -89,7 +94,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 		// EClass
 		modelElements.put(object, this);
 
-		EStructuralFeature sfName = object.eClass().getEStructuralFeature("name");
+		final EStructuralFeature sfName = object.eClass().getEStructuralFeature("name");
 		if (sfName != null) {
 			String name = null;
 			try {
@@ -113,12 +118,14 @@ public class ASMEMFModelElement extends ASMModelElement {
 		// Supertypes
 		if (object instanceof EClass) {
 			addSupertype(ASMOclType.myType);
-			EClass cl = (EClass)object;
+			final EClass cl = (EClass)object;
 			for (Iterator i = cl.getESuperTypes().iterator(); i.hasNext();) {
 				EClass s = (EClass)i.next();
 				addSupertype(((ASMEMFModel)model).getASMModelElement(s));
 			}
 		}
+		instanceCount++;
+		ATLLogger.fine(this + " created (" + instanceCount + ")");
 	}
 
 	// only for metamodels...?
@@ -131,8 +138,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 		boolean ret = false;
 
 		if (other instanceof ASMEMFModelElement) {
-			EObject o = ((ASMEMFModelElement)other).object;
-			EObject t = object;
+			final EObject o = ((ASMEMFModelElement)other).object;
+			final EObject t = object;
 
 			if ((o instanceof EClass) && (t instanceof EClass)) {
 				try {
@@ -220,14 +227,26 @@ public class ASMEMFModelElement extends ASMModelElement {
 		} else {
 			EStructuralFeature sf = object.eClass().getEStructuralFeature(name);
 			if (sf == null) {
-				String msg = "Feature " + name + " does not exist on " + getType();
-				if (frame == null) {
-					throw new RuntimeException(msg);
-				} else {
-					frame.printStackTrace(msg);
-				}
+				error("Feature " + name + " does not exist on " + getType(), frame);
 			}
-			ret = emf2ASM(frame, object.eGet(sf));
+			if (sf.equals(EcorePackage.eINSTANCE.getEEnum_ELiterals())) {
+				// treat meta-description of enum literals as ASMModelElements:
+				final Object value = object.eGet(sf);
+				ASMCollection col;
+				if (value instanceof List) {
+					col = new ASMSequence();
+				} else if (value instanceof Set) {
+					col = new ASMSet();
+				} else {
+					col = new ASMBag();
+				}
+				for (Iterator i = ((Collection)value).iterator(); i.hasNext();) {
+					col.add(eObjectToASM(frame, (EObject)i.next()));
+				}
+				ret = col;
+			} else {
+				ret = emf2ASM(frame, object.eGet(sf));
+			}
 		}
 		return ret;
 	}
@@ -262,13 +281,9 @@ public class ASMEMFModelElement extends ASMModelElement {
 					ret = new Double(val);
 				} else {
 					ret = new Integer(val);
-					// Java 1.5 API:
-					// ret = Integer.valueOf(val);
 				}
 			} else {
 				ret = new Integer(val);
-				// Java 1.5 API:
-				// ret = Integer.valueOf(val);
 			}
 		} else if (value instanceof ASMEMFModelElement) {
 			ret = ((ASMEMFModelElement)value).object;
@@ -285,7 +300,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 				Object v = asm2EMF(frame, ((ASMTuple)value).get(frame, "value"), propName, feature);
 				ret = FeatureMapUtil.createEntry((EStructuralFeature)f, v);
 			} else {
-				frame.printStackTrace("Cannot convert " + value + " : " + value.getClass() + " to EMF.");
+				error("Cannot convert " + value + " : " + value.getClass() + " to EMF.", frame);
 			}
 		} else if (value instanceof ASMCollection) {
 			ret = new ArrayList();
@@ -296,7 +311,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 				}
 			}
 		} else {
-			frame.printStackTrace("Cannot convert " + value + " : " + value.getClass() + " to EMF.");
+			error("Cannot convert " + value + " : " + value.getClass() + " to EMF.", frame);
 		}
 
 		return ret;
@@ -358,12 +373,41 @@ public class ASMEMFModelElement extends ASMModelElement {
 			}
 			ret = col;
 		} else {
-			frame.printStackTrace("Cannot convert " + value + " : " + value.getClass() + " from EMF.");
+			error("Cannot convert " + value + " : " + value.getClass() + " from EMF.", frame);
 		}
 
 		return ret;
 	}
-
+    
+    /**
+     * Reports msg through frame if not null, RuntimeException otherwise.
+     * 
+     * @param msg
+     * @param frame
+     * @param e
+     */
+    private void error(String msg, StackFrame frame, Exception e) {
+		if (frame == null) {
+			throw new RuntimeException(msg, e);
+		} else {
+			frame.printStackTrace(msg, e);
+		}
+    }
+    
+    /**
+     * Reports msg through frame if not null, RuntimeException otherwise.
+     * 
+     * @param msg
+     * @param frame
+     */
+    private void error(String msg, StackFrame frame) {
+		if (frame == null) {
+			throw new RuntimeException(msg);
+		} else {
+			frame.printStackTrace(msg);
+		}
+    }
+    
 	/**
 	 * Returns the corresponding ASMModelElement, taking into account the model in which the element should
 	 * reside. Uses this model as a proxy if no other model contains the given value.
@@ -430,20 +474,10 @@ public class ASMEMFModelElement extends ASMModelElement {
 			}
 		}
 		if (feature == null) {
-			String msg = "Feature " + name + " does not exist on " + getType();
-			if (frame == null) {
-				throw new RuntimeException(msg);
-			} else {
-				frame.printStackTrace(msg);
-			}
+			error("Feature " + name + " does not exist on " + getType(), frame);
 		} else {
 			if (!feature.isChangeable()) {
-				String msg = "Feature " + name + " is not changeable";
-				if (frame == null) {
-					throw new RuntimeException(msg);
-				} else {
-					frame.printStackTrace(msg);
-				}
+				error("Feature " + name + " is not changeable", frame);
 			}
 			if (feature.isMany()) {
 				EList l = (EList)object.eGet(feature);
@@ -459,13 +493,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 								l.add(val);
 								checkContainment(feature, val);
 							} catch (Exception e) {
-								String msg = "Cannot set feature " + getType() + "." + name + " to value "
-										+ val;
-								if (frame == null) {
-									throw new RuntimeException(msg, e);
-								} else {
-									frame.printStackTrace(msg, e);
-								}
+								error("Cannot set feature " + getType() + "." + name + " to value "
+										+ val, frame, e);
 							}
 						}
 					}
@@ -484,13 +513,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 							object.eSet(feature, val);
 							checkContainment(feature, val);
 						} catch (Exception e) {
-							String msg = "Cannot set feature " + getType() + "." + name + " to value " + val;
-							if (frame == null) {
-								throw new RuntimeException(msg, e);
-							} else {
-								frame.printStackTrace(msg, e);
-							}
-
+							error("Cannot set feature " + getType() + "." + name + " to value " + val, frame, e);
 						}
 					}
 				}
@@ -872,20 +895,19 @@ public class ASMEMFModelElement extends ASMModelElement {
 				if (method != null) {
 					ret = emf2ASM(frame, method.invoke(object, args));
 				} else {
-					frame.printStackTrace("Could not find operation " + opName + " on " + getType()
+					error("Could not find operation " + opName + " on " + getType()
 							+ " having supertypes: " + getType().getSupertypes()
-							+ " (including Java operations)");
+							+ " (including Java operations)", frame);
 				}
 			} catch (IllegalAccessException e) {
-				frame
-						.printStackTrace("Could not invoke operation " + opName + " on " + getType()
+				error("Could not invoke operation " + opName + " on " + getType()
 								+ " having supertypes: " + getType().getSupertypes()
-								+ " (including Java operations)");
+								+ " (including Java operations)", frame, e);
 			} catch (InvocationTargetException e) {
 				Throwable cause = e.getCause();
 				Exception toReport = (cause instanceof Exception) ? (Exception)cause : e;
-				frame.printStackTrace("Exception during invocation of operation " + opName + " on "
-						+ getType() + " (java method: " + method + ")", toReport);
+				error("Exception during invocation of operation " + opName + " on "
+						+ getType() + " (java method: " + method + ")", frame, toReport);
 			}
 		}
 
@@ -923,28 +945,42 @@ public class ASMEMFModelElement extends ASMModelElement {
 				if (method != null) {
 					ret = emf2ASM(frame, method.invoke(object, args));
 				} else {
-					frame.printStackTrace("Could not find operation " + opName + " on " + getType()
+					error("Could not find operation " + opName + " on " + getType()
 							+ " having supertypes: " + getType().getSupertypes()
-							+ " (including Java operations)");
+							+ " (including Java operations)", frame);
 				}
 			} catch (IllegalAccessException e) {
-				frame
-						.printStackTrace("Could not invoke operation " + opName + " on " + getType()
+				error("Could not invoke operation " + opName + " on " + getType()
 								+ " having supertypes: " + getType().getSupertypes()
-								+ " (including Java operations)");
+								+ " (including Java operations)", frame, e);
 			} catch (InvocationTargetException e) {
 				Throwable cause = e.getCause();
 				Exception toReport = (cause instanceof Exception) ? (Exception)cause : e;
-				frame.printStackTrace("Exception during invocation of operation " + opName + " on "
-						+ getType() + " (java method: " + method + ")", toReport);
+				error("Exception during invocation of operation " + opName + " on "
+						+ getType() + " (java method: " + method + ")", frame, toReport);
 			}
 		}
 
 		return ret;
 	}
 
+	/**
+	 * Returns the internal EObject.
+	 * 
+	 * @return The internal EObject.
+	 */
 	public EObject getObject() {
 		return object;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#finalize()
+	 */
+	protected void finalize() throws Throwable {
+		instanceCount--;
+		ATLLogger.fine(this + " is being collected (" + instanceCount + ")");
+		super.finalize();
+	}
 }

@@ -3,7 +3,7 @@
     <local-check-config name="ATL" location="/org.eclipse.m2m.atl/codeStyle/ATLCheckstyleConfiguration.xml" type="project" description="">
         <additional-data name="protect-config-file" value="false"/>
     </local-check-config>
-    <fileset name="tous" enabled="true" check-config-name="ATL" local="true">
+    <fileset name="all" enabled="true" check-config-name="ATL" local="true">
         <file-match-pattern match-pattern="." include-pattern="true"/>
     </fileset>
 </fileset-config>

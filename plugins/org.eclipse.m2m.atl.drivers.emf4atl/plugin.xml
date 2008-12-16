@@ -9,5 +9,23 @@
       </modelhandler>
    </extension>
 
-    
+   <extension
+         point="org.eclipse.emf.ecore.dynamic_package">
+      <resource
+            location="resources/ATL.ecore"
+            uri="http://www.eclipse.org/gmt/2005/ATL">
+      </resource>
+      <resource
+            location="resources/OCL.ecore"
+            uri="http://www.eclipse.org/gmt/2005/OCL">
+      </resource>
+      <resource
+            location="resources/PrimitiveTypes.ecore"
+            uri="http://www.eclipse.org/gmt/2005/PrimitiveTypes">
+      </resource>
+      <resource
+            location="resources/Problem.ecore"
+            uri="http://www.eclipse.org/gmt/2005/Problem">
+      </resource>
+   </extension>
 </plugin>
