@@ -17,10 +17,13 @@ import org.eclipse.m2m.atl.engine.emfvm.Messages;
  * The EMFVM implementation of the {@link ILauncher} interface.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class EMFVMLauncher implements ILauncher {
 
 	private static final String LAUNCHER_NAME = "EMFVM"; //$NON-NLS-1$
+
+	private static final String MODEL_FACTORY_NAME = "EMF"; //$NON-NLS-1$
 
 	private Map<String, IModel> models;
 
@@ -95,6 +98,11 @@ public class EMFVMLauncher implements ILauncher {
 	public void initialize(Map<String, Object> parameters) {
 		models = new HashMap<String, IModel>();
 		libraries = new HashMap<String, ASM>();
+		//TODO remove this option
+//		boolean clearResourceSet = "true".equals(parameters.get("clearResourceSet")); //$NON-NLS-1$//$NON-NLS-2$
+//		if (clearResourceSet) {
+//			EMFModelFactory.init();
+//		}
 	}
 
 	/**
@@ -146,11 +154,11 @@ public class EMFVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getDefaultModelFactory()
+	 *
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getDefaultModelFactoryName()
 	 */
 	public String getDefaultModelFactoryName() {
-		return "EMF";
+		return MODEL_FACTORY_NAME;
 	}
 
 }

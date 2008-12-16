@@ -8,8 +8,9 @@
  * Contributors:
  *    INRIA - initial API and implementation
  *    Obeo - bag, weaving helper implementation    
+ *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.22 2008/12/10 09:27:59 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.23 2008/12/16 08:17:10 dwagelaar Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -1813,7 +1814,6 @@ public class ExecEnv {
 	 * @param value
 	 *            the value to display
 	 */
-	@SuppressWarnings("unchecked")
 	public void prettyPrint(PrintStream out, Object value) {
 		if (value == null) {
 			out.print("<null>"); // print(null) does not work //$NON-NLS-1$

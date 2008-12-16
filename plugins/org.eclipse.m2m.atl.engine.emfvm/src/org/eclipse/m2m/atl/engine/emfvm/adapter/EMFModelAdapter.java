@@ -8,6 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *     William Piers - oclType implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  */
 package org.eclipse.m2m.atl.engine.emfvm.adapter;
 
@@ -57,6 +58,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class EMFModelAdapter implements IModelAdapter {
 
@@ -79,10 +81,11 @@ public class EMFModelAdapter implements IModelAdapter {
 		for (Iterator<String> i = execEnv.getModelsByName().keySet().iterator(); i.hasNext();) {
 			String name = i.next();
 			EMFModel model = (EMFModel)execEnv.getModelsByName().get(name);
-			for (Iterator<Resource> iterator = model.getResources().iterator(); iterator.hasNext();) {
-				Resource resource = iterator.next();
-				modelsByResource.put(resource, model);
-			}
+			modelsByResource.put(model.getResource(), model);
+//			for (Iterator<Resource> iterator = model.getResources().iterator(); iterator.hasNext();) {
+//				Resource resource = iterator.next();
+//				modelsByResource.put(resource, model);
+//			}
 		}
 	}
 
@@ -428,15 +431,16 @@ public class EMFModelAdapter implements IModelAdapter {
 		operationsByName.put("getInstanceById", new Operation(3) { //$NON-NLS-1$
 					@Override
 					public Object exec(AbstractStackFrame frame) {
-						Object[] localVars = frame.getLocalVars();
-						EMFModel model = (EMFModel)execEnv.getModel(localVars[1]);
-						Object ret = null;
-						for (Iterator<Resource> iterator = model.getResources().iterator(); iterator
-								.hasNext()
-								&& ret == null;) {
-							Resource resource = iterator.next();
-							ret = resource.getEObject((String)localVars[2]);
-						}
+						final Object[] localVars = frame.getLocalVars();
+						final EMFModel model = (EMFModel)execEnv.getModel(localVars[1]);
+						final Resource resource = model.getResource();
+						Object ret = resource.getEObject((String)localVars[2]);
+//						for (Iterator<Resource> iterator = model.getResources().iterator(); iterator
+//								.hasNext()
+//								&& ret == null;) {
+//							Resource resource = iterator.next();
+//							ret = resource.getEObject((String)localVars[2]);
+//						}
 						if (ret == null) {
 							ret = OclUndefined.SINGLETON;
 						}
@@ -642,7 +646,7 @@ public class EMFModelAdapter implements IModelAdapter {
 		for (Iterator<IModel> it = execEnv.getModels(); it.hasNext();) {
 			EMFModel model = (EMFModel)it.next();
 			if (model.isTarget()) {
-				model.commitToResources();
+				model.commitToResource();
 			}
 		}
 	}

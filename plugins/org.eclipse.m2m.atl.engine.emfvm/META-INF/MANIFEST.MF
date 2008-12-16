@@ -14,4 +14,4 @@ Export-Package: org.eclipse.m2m.atl.engine.emfvm,
  org.eclipse.m2m.atl.engine.emfvm.adapter,
  org.eclipse.m2m.atl.engine.emfvm.launch,
  org.eclipse.m2m.atl.engine.emfvm.lib
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
