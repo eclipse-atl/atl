@@ -9,7 +9,7 @@
  *     INRIA - initial API and implementation
  *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: EMFModel.java,v 1.3 2008/12/16 08:39:11 dwagelaar Exp $
+ * $Id: EMFModel.java,v 1.4 2008/12/16 13:45:02 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -178,6 +178,7 @@ public class EMFModel implements IModel {
 	 *
 	 * @see java.lang.Object#finalize()
 	 */
+	@Override
 	protected void finalize() throws Throwable {
 		EMFModelFactory mf = getModelFactory();
 		if (mf != null) {

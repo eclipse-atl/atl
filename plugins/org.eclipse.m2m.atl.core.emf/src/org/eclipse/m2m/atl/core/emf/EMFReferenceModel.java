@@ -8,8 +8,6 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *     Dennis Wagelaar (Vrije Universiteit Brussel)
- *
- * $Id: EMFReferenceModel.java,v 1.6 2008/12/16 08:39:11 dwagelaar Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -78,19 +76,10 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	 */
 	public boolean isModelOf(Object object) {
 		final Resource res = ((EObject)object).eResource();
-		if (getResource() == res) {
+		if (getResource().equals(res)) {
 			return true;
 		}
-		final Set<Resource> resources = getReferencedResources();
-		if (resources.contains(res)) {
-			return true;
-		}
-		for (Iterator<Resource> i = resources.iterator(); i.hasNext();) {
-			if (res.equals(i.next())) {
-				return true;
-			}
-		}
-		return false;
+		return getReferencedResources().contains(res);
 	}
 
 	/**
