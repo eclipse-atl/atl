@@ -39,20 +39,11 @@ public class EMFExtractor implements IExtractor {
 	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.Object, java.util.Map)
 	 */
 	public void extract(IModel targetModel, Object target, Map<String, Object> options) {
-		Map<?, ?> pathMap = null;
 		ResourceSet resourceSet = ((EMFModelFactory)targetModel.getModelFactory()).getResourceSet();
 		
 		Object contentType = options.get(EMFModelFactory.OPTION_CONTENT_TYPE);
 		Object object = target.toString();
-		if (object instanceof Map<?, ?>) {
-			pathMap = (Map<?, ?>)object;
-			final Resource resource = ((EMFModel)target).getResource();
-			String path = (String)pathMap.get(resource);
-			if (path.startsWith("ext:")) { //$NON-NLS-1$
-				path = path.substring(4);
-			}
-			extract(resourceSet, resource, path, contentType, options);
-		} else if (object instanceof String) {
+		if (object instanceof String) {
 			String path = (String)object;
 			if (path.startsWith("ext:")) { //$NON-NLS-1$
 				path = path.substring(4);
