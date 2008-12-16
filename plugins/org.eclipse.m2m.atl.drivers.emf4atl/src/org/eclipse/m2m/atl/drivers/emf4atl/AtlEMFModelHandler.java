@@ -27,8 +27,8 @@ public class AtlEMFModelHandler extends AtlModelHandler {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.engine.AtlModelHandler#isHandling(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#isHandling(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
 	 */
 	public boolean isHandling(ASMModel model) {
 		return model instanceof ASMEMFModel;
