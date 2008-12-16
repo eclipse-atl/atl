@@ -7,8 +7,9 @@
  * 
  * Contributors:
  *     INRIA - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: EMFReferenceModel.java,v 1.5 2008/12/15 14:20:34 wpiers Exp $
+ * $Id: EMFReferenceModel.java,v 1.6 2008/12/16 08:39:11 dwagelaar Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -37,32 +38,28 @@ import org.eclipse.m2m.atl.core.IReferenceModel;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 
 	private static EMFReferenceModel metametamodel;
 
-	/** nsURIs that were explicitly registered and need unregistering. */
-	protected Set<String> unregister = new HashSet<String>();
-
 	private Map<String, EObject> metaElementByName;
+	
+	private Set<Resource> referencedResources = new HashSet<Resource>();
 
-	/**
-	 * Metametamodel constructor.
-	 */
-	private EMFReferenceModel(EMFModelFactory modelFactory) {
-		super(null);
-		this.modelFactory = modelFactory;
-	}
+	private Map<EClass, Set<EObject>> allElementsByType = new HashMap<EClass, Set<EObject>>();
 
 	/**
 	 * Creates a new {@link EMFReferenceModel}.
 	 * 
 	 * @param referenceModel
-	 *            the metamodel
+	 *            the metamodel.
+	 * @param mf
+	 *            the model factory that is creating this model.
 	 */
-	public EMFReferenceModel(EMFReferenceModel referenceModel) {
-		super(referenceModel);
+	public EMFReferenceModel(EMFReferenceModel referenceModel, EMFModelFactory mf) {
+		super(referenceModel, mf);
 	}
 
 	/**
@@ -81,8 +78,17 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	 */
 	public boolean isModelOf(Object object) {
 		final Resource res = ((EObject)object).eResource();
+		if (getResource() == res) {
+			return true;
+		}
+		final Set<Resource> resources = getReferencedResources();
 		if (resources.contains(res)) {
 			return true;
+		}
+		for (Iterator<Resource> i = resources.iterator(); i.hasNext();) {
+			if (res.equals(i.next())) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -96,33 +102,38 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	 */
 	public static EMFReferenceModel getMetametamodel(EMFModelFactory modelFactory) {
 		if (metametamodel == null) {
-			metametamodel = new EMFReferenceModel(modelFactory);
-			metametamodel.getResources().add(EcorePackage.eINSTANCE.eResource());
+			metametamodel = new EMFReferenceModel(null, modelFactory);
+			metametamodel.setResource(EcorePackage.eINSTANCE.eResource());
+			metametamodel.referenceModel = metametamodel;
 		}
 		return metametamodel;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns a {@link Set} of the elements matching the given type,
+	 * including elements in {@link #getReferencedResources()}.
 	 * 
-	 * @see org.eclipse.m2m.atl.core.emf.EMFModel#dispose()
+	 * @param metaElement
+	 *            a metatype
+	 * @return a {@link Set} of the elements matching the given type
+	 * 
+	 * @see org.eclipse.m2m.atl.core.IModel#getElementsByType(java.lang.Object)
 	 */
-	@Override
-	public void dispose() {
-		metaElementByName = null;
-		// unregister packages
-		for (Iterator<String> unrs = unregister.iterator(); unrs.hasNext();) {
-			String nsURI = unrs.next();
-			synchronized (modelFactory.getResourceSet()) {
-				modelFactory.getResourceSet().getPackageRegistry().remove(nsURI);
+	public Set<EObject> getAllElementsByType(EClass metaElement) {
+		Set<EObject> ret = allElementsByType.get(metaElement);
+		if (ret == null) {
+			ret = getElementsByType(metaElement);
+			for (Resource res : getReferencedResources()) {
+				for (Iterator<EObject> iterator = res.getAllContents(); iterator.hasNext();) {
+					EObject element = iterator.next();
+					if (metaElement.isInstance(element)) {
+						ret.add(element);
+					}
+				}
 			}
+			allElementsByType.put(metaElement, ret);
 		}
-		// take resource out of (static) resourceSet
-		synchronized (modelFactory.getResourceSet()) {
-			modelFactory.getResourceSet().getResources().removeAll(resources);
-		}
-		resources.clear();
-		super.dispose();
+		return ret;
 	}
 
 	/**
@@ -131,7 +142,7 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	public void register() {
 		registerPackages();
 		adapt();
-		addAllReferencedResources(resources.get(0));
+		addAllReferencedResources(getResource());
 		metaElementByName = initMetaElementsInAllResources();
 	}
 
@@ -143,7 +154,7 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	}
 
 	private void adapt() {
-		for (Iterator<EObject> i = getElementsByType(EcorePackage.eINSTANCE.getEDataType()).iterator(); i
+		for (Iterator<EObject> i = getAllElementsByType(EcorePackage.eINSTANCE.getEDataType()).iterator(); i
 				.hasNext();) {
 			EDataType dt = (EDataType)i.next();
 			String tname = dt.getName();
@@ -174,9 +185,7 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 				nsURI = p.getName();
 				p.setNsURI(nsURI);
 			}
-			if (!modelFactory.getResourceSet().getPackageRegistry().containsKey(nsURI)) {
-				unregister.add(nsURI);
-			}
+			final EMFModelFactory modelFactory = getModelFactory();
 			synchronized (modelFactory.getResourceSet()) {
 				modelFactory.getResourceSet().getPackageRegistry().put(nsURI, p);
 			}
@@ -192,8 +201,9 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	 */
 	private Map<String, EObject> initMetaElementsInAllResources() {
 		Map<String, EObject> eClassifiers = new HashMap<String, EObject>();
-		for (Resource resource : resources) {
-			initMetaElements(eClassifiers, resource.getContents().iterator(), null);	
+		initMetaElements(eClassifiers, getResource().getContents().iterator(), null);
+		for (Resource res : getReferencedResources()) {
+			initMetaElements(eClassifiers, res.getContents().iterator(), null);
 		}
 		return eClassifiers;
 	}
@@ -241,7 +251,7 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 				addReferencedResourcesFor((EClass)o, new HashSet<EClass>());
 			}
 		}
-		//resources.remove(resource);
+		getReferencedResources().remove(resource);
 	}
 
 	/**
@@ -257,14 +267,12 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 			return;
 		}
 		ignore.add(eClass);
+		final Set<Resource> resources = getReferencedResources();
 		for (EReference eRef : eClass.getEReferences()) {
 			if (eRef.isContainment()) {
 				EClassifier eType = eRef.getEType();
 				if (eType.eResource() != null) {
-					Resource resource = eType.eResource();
-					if (!resources.contains(resource)) {
-						resources.add(resource);
-					}
+					resources.add(eType.eResource());
 				} else {
 					ATLLogger
 							.warning(Messages.getString("EMFReferenceModel.NULL_RESOURCE", eType.toString())); //$NON-NLS-1$
@@ -277,25 +285,28 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 		for (EAttribute eAtt : eClass.getEAttributes()) {
 			EClassifier eType = eAtt.getEType();
 			if (eType.eResource() != null) {
-				Resource resource = eType.eResource();
-				if (!resources.contains(resource)) {
-					resources.add(resource);
-				}
+				resources.add(eType.eResource());
 			} else {
 				ATLLogger.warning(Messages.getString("EMFReferenceModel.NULL_RESOURCE", eType.toString())); //$NON-NLS-1$
 			}
 		}
 		for (EClass eSuper : eClass.getESuperTypes()) {
 			if (eSuper.eResource() != null) {
-				Resource resource = eSuper.eResource();
-				if (!resources.contains(resource)) {
-					resources.add(resource);
-				}
+				resources.add(eSuper.eResource());
 				addReferencedResourcesFor(eSuper, ignore);
 			} else {
 				ATLLogger.warning(Messages.getString("EMFReferenceModel.NULL_RESOURCE", eSuper.toString())); //$NON-NLS-1$
 			}
 		}
+	}
+
+	/**
+	 * Returns the referencedResources.
+	 *
+	 * @return the referencedResources
+	 */
+	public Set<Resource> getReferencedResources() {
+		return referencedResources;
 	}
 
 }

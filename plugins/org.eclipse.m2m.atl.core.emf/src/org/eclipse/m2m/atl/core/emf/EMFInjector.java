@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.emf;
 
@@ -27,6 +28,7 @@ import org.eclipse.m2m.atl.core.IModel;
  * The EMF implementation of the {@link IInjector} interface.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class EMFInjector implements IInjector {
 
@@ -69,7 +71,7 @@ public class EMFInjector implements IInjector {
 			return;
 		}
 
-		((EMFModel)sourceModel).getResources().add(mainResource);
+		((EMFModel)sourceModel).setResource(mainResource);
 
 		if (sourceModel instanceof EMFReferenceModel) {
 			((EMFReferenceModel)sourceModel).register();

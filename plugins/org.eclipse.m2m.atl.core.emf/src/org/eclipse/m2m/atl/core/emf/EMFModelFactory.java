@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.emf;
 
@@ -16,6 +17,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -32,6 +34,7 @@ import org.eclipse.m2m.atl.core.ModelFactory;
  * The EMF implementation of the {@link ModelFactory}.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public final class EMFModelFactory extends ModelFactory {
 
@@ -48,13 +51,6 @@ public final class EMFModelFactory extends ModelFactory {
 	 */
 	public EMFModelFactory() {
 		super();
-		init();
-	}
-
-	/**
-	 * Recreates the {@link ResourceSet}.
-	 */
-	public void init() {
 		Map<String, Object> etfm = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap();
 		if (!etfm.containsKey("*")) { //$NON-NLS-1$
 			etfm.put("*", new XMIResourceFactoryImpl()); //$NON-NLS-1$
@@ -63,7 +59,6 @@ public final class EMFModelFactory extends ModelFactory {
 		Map<Object, Object> loadOptions = resourceSet.getLoadOptions();
 		loadOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
 		loadOptions.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
-
 	}
 
 	/**
@@ -83,7 +78,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 */
 	@Override
 	public IReferenceModel newReferenceModel() {
-		return new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this));
+		return new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this), this);
 	}
 
 	/**
@@ -104,7 +99,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 */
 	@Override
 	public IModel newModel(IReferenceModel referenceModel) {
-		return new EMFModel((EMFReferenceModel)referenceModel);
+		return new EMFModel((EMFReferenceModel)referenceModel, this);
 	}
 
 	/**
@@ -138,7 +133,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 */
 	@Override
 	public IReferenceModel getBuiltInResource(String name) {
-		EMFReferenceModel model = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this));
+		EMFReferenceModel model = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this), this);
 		URL url = ATLLogger.class.getResource("resources/" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
 		Resource builtin = resourceSet.createResource(URI.createURI(name));
 		try {
@@ -150,8 +145,33 @@ public final class EMFModelFactory extends ModelFactory {
 			ATLLogger.severe(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND")); //$NON-NLS-1$
 			return null;
 		}
-		model.getResources().add(builtin);
+		model.setResource(builtin);
 		model.register();
 		return model;
+	}
+	
+	/**
+	 * Removes the model's {@link Resource} from the {@link ResourceSet} and
+	 * calls {@link #finalizeResource(Resource)}.
+	 * 
+	 * @param model The model of which to remove the {@link Resource}.
+	 */
+	public void unload(EMFModel model) {
+		final Resource r = model.getResource();
+		final EList<Resource> resources = getResourceSet().getResources();
+		if (resources.contains(r)) {
+			resources.remove(r);
+			finalizeResource(r);
+		}
+	}
+
+	/**
+	 * Finalizes r. This implementation does nothing, but allows for overriding
+	 * in subclasses.
+	 * 
+	 * @param r The resource to finalize.
+	 */
+	protected void finalizeResource(Resource r) {
+		//do nothing
 	}
 }

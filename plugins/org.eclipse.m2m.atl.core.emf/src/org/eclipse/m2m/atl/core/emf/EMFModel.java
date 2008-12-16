@@ -7,8 +7,9 @@
  * 
  * Contributors:
  *     INRIA - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: EMFModel.java,v 1.2 2008/12/12 15:40:51 wpiers Exp $
+ * $Id: EMFModel.java,v 1.3 2008/12/16 08:39:11 dwagelaar Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -37,13 +38,14 @@ import org.eclipse.m2m.atl.core.IModel;
  */
 public class EMFModel implements IModel {
 
-	protected List<Resource> resources;
+	/** The metamodel. */
+	protected EMFReferenceModel referenceModel;
 
-	protected EMFModelFactory modelFactory;
+	private Resource resource;
+
+	private EMFModelFactory modelFactory;
 	
 	private boolean isTarget;
-
-	private EMFReferenceModel referenceModel;
 
 	private Map<EClass, Set<EObject>> elementsByType = new HashMap<EClass, Set<EObject>>();
 
@@ -51,15 +53,13 @@ public class EMFModel implements IModel {
 	 * Creates a new {@link EMFModel} conforming to the given {@link EMFReferenceModel}.
 	 * 
 	 * @param referenceModel
-	 *            the metamodel
+	 *            the metamodel.
+	 * @param mf
+	 *            the model factory that is creating this model.
 	 */
-	public EMFModel(EMFReferenceModel referenceModel) {
-		this.resources = new ArrayList<Resource>();
+	public EMFModel(EMFReferenceModel referenceModel, EMFModelFactory mf) {
 		this.referenceModel = referenceModel;
-		// If the current model isn't a metametamodel
-		if (referenceModel != null) {
-			this.modelFactory = referenceModel.getModelFactory();	
-		}		
+		this.modelFactory = mf;	
 	}
 
 	/**
@@ -68,12 +68,10 @@ public class EMFModel implements IModel {
 	 * @see org.eclipse.m2m.atl.core.IModel#newElement(java.lang.Object)
 	 */
 	public Object newElement(Object metaElement) {
-		Resource mainResource = null;
-		if (resources.isEmpty()) {
-			mainResource = modelFactory.getResourceSet().createResource(URI.createURI("new-model")); //$NON-NLS-1$
-			resources.add(mainResource);
-		} else {
-			mainResource = resources.get(0);
+		Resource mainResource = getResource();
+		if (mainResource == null) {
+			mainResource = getModelFactory().getResourceSet().createResource(URI.createURI("new-model")); //$NON-NLS-1$
+			setResource(mainResource);
 		}
 
 		EClass ec = (EClass)metaElement;
@@ -102,12 +100,11 @@ public class EMFModel implements IModel {
 		Set<EObject> ret = elementsByType.get(ec);
 		if (ret == null) {
 			ret = new LinkedHashSet<EObject>();
-			for (Resource resource : resources) {
-				for (Iterator<EObject> iterator = resource.getAllContents(); iterator.hasNext();) {
-					EObject element = iterator.next();
-					if (ec.isInstance(element)) {
-						ret.add(element);
-					}
+			final Resource res = getResource();
+			for (Iterator<EObject> iterator = res.getAllContents(); iterator.hasNext();) {
+				EObject element = iterator.next();
+				if (ec.isInstance(element)) {
+					ret.add(element);
 				}
 			}
 			elementsByType.put(ec, ret);
@@ -135,21 +132,21 @@ public class EMFModel implements IModel {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.IModel#dispose()
+	 * Returns the resource.
+	 *
+	 * @return the resource
 	 */
-	public void dispose() {
-		if (this != referenceModel) {
-			// we clean our references, except for the metametamodel
-			for (Resource resource : resources) {
-				modelFactory.getResourceSet().getResources().remove(resource);
-			}
-		}
+	public Resource getResource() {
+		return resource;
 	}
 
-	public List<Resource> getResources() {
-		return resources;
+	/**
+	 * Sets the resource with the resource value.
+	 *
+	 * @param resource the resource to set
+	 */
+	public void setResource(Resource resource) {
+		this.resource = resource;
 	}
 
 	/**
@@ -164,17 +161,29 @@ public class EMFModel implements IModel {
 	/**
 	 * Finalizes the model.
 	 */
-	public void commitToResources() {
-		for (Resource resource : resources) {
-			List<EObject> toDelete = new ArrayList<EObject>();
-			for (Iterator<EObject> i = resource.getAllContents(); i.hasNext();) {
-				EObject eo = i.next();
-				if (eo.eContainer() != null) {
-					toDelete.add(eo);
-				}
+	public void commitToResource() {
+		final Resource res  = getResource();
+		List<EObject> toDelete = new ArrayList<EObject>();
+		for (Iterator<EObject> i = res.getAllContents(); i.hasNext();) {
+			EObject eo = i.next();
+			if (eo.eContainer() != null) {
+				toDelete.add(eo);
 			}
-			resource.getContents().removeAll(toDelete);
 		}
+		res.getContents().removeAll(toDelete);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.lang.Object#finalize()
+	 */
+	protected void finalize() throws Throwable {
+		EMFModelFactory mf = getModelFactory();
+		if (mf != null) {
+			mf.unload(this);
+		}
+		super.finalize();
 	}
 
 }

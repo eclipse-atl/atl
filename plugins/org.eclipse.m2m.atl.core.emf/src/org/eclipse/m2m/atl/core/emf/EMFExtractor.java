@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.emf;
 
@@ -28,6 +29,7 @@ import org.eclipse.m2m.atl.core.IModel;
  * The EMF implementation of the {@link IExtractor} interface.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class EMFExtractor implements IExtractor {
 
@@ -44,20 +46,19 @@ public class EMFExtractor implements IExtractor {
 		Object object = target.toString();
 		if (object instanceof Map<?, ?>) {
 			pathMap = (Map<?, ?>)object;
-			for (Resource resource : ((EMFModel)target).getResources()) {
-				String path = (String)pathMap.get(resource);
-				if (path.startsWith("ext:")) { //$NON-NLS-1$
-					path = path.substring(4);
-				}
-				extract(resourceSet, resource, path, contentType, options);
+			final Resource resource = ((EMFModel)target).getResource();
+			String path = (String)pathMap.get(resource);
+			if (path.startsWith("ext:")) { //$NON-NLS-1$
+				path = path.substring(4);
 			}
+			extract(resourceSet, resource, path, contentType, options);
 		} else if (object instanceof String) {
 			String path = (String)object;
 			if (path.startsWith("ext:")) { //$NON-NLS-1$
 				path = path.substring(4);
 			}
-			if (!((EMFModel)targetModel).getResources().isEmpty()) {
-				extract(resourceSet, ((EMFModel)targetModel).getResources().get(0), path, contentType, options);
+			if (((EMFModel)targetModel).getResource() != null) {
+				extract(resourceSet, ((EMFModel)targetModel).getResource(), path, contentType, options);
 			} else {
 				ATLLogger.severe(Messages.getString("EMFExtractor.NO_RESOURCE", new Object[] {path})); //$NON-NLS-1$
 			}
