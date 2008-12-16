@@ -46,10 +46,6 @@
                description="Disassembly mode"
                name="disassemblyMode">
          </option>
-         <option
-               description="Delete Resources between transformations"
-               name="clearResourceSet">
-         </option>
       </launcher>
    </extension>
    <extension

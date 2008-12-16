@@ -128,11 +128,6 @@ public class RegularVMLauncher implements ILauncher {
 	public void initialize(Map<String, Object> options) {
 		models = new HashMap<String, IModel>();
 		libraries = new HashMap<String, ASM>();
-		//TODO remove this option
-//		boolean clearResourceSet = "true".equals(options.get("clearResourceSet")); //$NON-NLS-1$//$NON-NLS-2$
-//		if (clearResourceSet) {
-//			ASMEMFModel.init();
-//		}
 	}
 
 	/**
