@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 /**
  * Loads a class form a jar.
- * 
+ *
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class JarClassLoader extends URLClassLoader {

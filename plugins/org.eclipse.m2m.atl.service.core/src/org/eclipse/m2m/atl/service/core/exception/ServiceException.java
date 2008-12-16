@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * Service specific Exception.
- * 
+ *
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class ServiceException extends CoreException {

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.service.core.configuration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -70,8 +71,9 @@ public abstract class TransformationConfiguration {
 	 * @param pathInModel
 	 *            the in model path
 	 * @throws ServiceException
+	 * @throws IOException 
 	 */
-	public abstract void execute(String projectPath, String pathInModel) throws ServiceException;
+	public abstract void execute(String projectPath, String pathInModel) throws ServiceException, IOException;
 
 	/**
 	 * Adds a file extension.

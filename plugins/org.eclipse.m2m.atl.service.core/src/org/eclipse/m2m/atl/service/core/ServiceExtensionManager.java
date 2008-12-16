@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.service.core;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,8 +23,8 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMSequence;
@@ -46,6 +47,7 @@ public final class ServiceExtensionManager {
 	 * ServiceExtensionManager creates transformation configurations available from declared extension points.
 	 */
 	private ServiceExtensionManager() {
+		final AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
 		transformationConfigurations = new ArrayList();
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
@@ -61,6 +63,7 @@ public final class ServiceExtensionManager {
 			for (int j = 0; j < elements.length; j++) {
 				SingleTransformationConfiguration tc = new SingleTransformationConfiguration(
 						elements[j].getAttribute("path"), elements[j].getAttribute("name"), extensions[i].getNamespaceIdentifier()); //$NON-NLS-1$//$NON-NLS-2$
+    			ModelLoader ml = amh.createModelLoader();
 
 				IConfigurationElement[] elementsFileExtension = elements[j].getChildren("fileExtension"); //$NON-NLS-1$
 				for (int k = 0; k < elementsFileExtension.length; k++) {
@@ -77,7 +80,7 @@ public final class ServiceExtensionManager {
 					tc.addMetamodel(elementsMetamodel[k].getAttribute("name"), //$NON-NLS-1$
 							elementsMetamodel[k].getAttribute("path"), //$NON-NLS-1$
 							elementsMetamodel[k].getAttribute("nsUri"), //$NON-NLS-1$
-							isM3, "EMF" //$NON-NLS-1$
+							isM3, ml
 					);
 				}
 
@@ -86,6 +89,7 @@ public final class ServiceExtensionManager {
 					tc.addInModel(elementsInModel[k].getAttribute("name"), //$NON-NLS-1$
 							elementsInModel[k].getAttribute("path"), //$NON-NLS-1$
 							elementsInModel[k].getAttribute("metamodel"), //$NON-NLS-1$
+							ml,
 							new Boolean(elementsInModel[k].getAttribute("inWorkspace")).booleanValue() //$NON-NLS-1$
 							);
 				}
@@ -94,8 +98,8 @@ public final class ServiceExtensionManager {
 				for (int k = 0; k < elementsOutModel.length; k++) {
 					tc.addOutModel(elementsOutModel[k].getAttribute("name"), //$NON-NLS-1$
 							elementsOutModel[k].getAttribute("fileName"), //$NON-NLS-1$
-							elementsOutModel[k].getAttribute("metamodel") //$NON-NLS-1$
-							);
+							elementsOutModel[k].getAttribute("metamodel"), //$NON-NLS-1$
+							ml);
 				}
 
 				transformationConfigurations.add(tc);
@@ -110,6 +114,7 @@ public final class ServiceExtensionManager {
 			for (int j = 0; j < elements.length; j++) {
 				ComposedTransformationConfiguration tc = new ComposedTransformationConfiguration(elements[j]
 						.getAttribute("name"), extensions[i].getNamespaceIdentifier()); //$NON-NLS-1$
+    			ModelLoader ml = amh.createModelLoader();
 
 				IConfigurationElement[] elementsFileExtension = elements[j].getChildren("fileExtension"); //$NON-NLS-1$
 				for (int k = 0; k < elementsFileExtension.length; k++) {
@@ -126,7 +131,7 @@ public final class ServiceExtensionManager {
 					tc.addMetamodel(elementsMetamodel[k].getAttribute("name"), //$NON-NLS-1$
 							elementsMetamodel[k].getAttribute("path"), //$NON-NLS-1$
 							elementsMetamodel[k].getAttribute("nsUri"), //$NON-NLS-1$
-							isM3, "EMF" //$NON-NLS-1$
+							isM3, ml
 					);
 				}
 
@@ -138,7 +143,7 @@ public final class ServiceExtensionManager {
 					tc.addInModel(elementsInModel[k].getAttribute("name"), //$NON-NLS-1$
 							elementsInModel[k].getAttribute("path"), //$NON-NLS-1$
 							elementsInModel[k].getAttribute("metamodel"), //$NON-NLS-1$
-							isInWorkspace);
+							ml, isInWorkspace);
 					if (isInWorkspace) {
 						notPreLoadedModels.add(elementsInModel[k].getAttribute("name")); //$NON-NLS-1$
 					}
@@ -223,15 +228,18 @@ public final class ServiceExtensionManager {
 	private ComposedTransformationConfiguration createComposedTransformationConfigurationFromASLExtensionPoint(
 			String configName, String aslPath, String pluginId) {
 
-		AtlModelHandler amh = new AtlEMFModelHandler();
+    	final AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
+    	final ModelLoader ml = amh.createModelLoader();
 		try {
 			ASMModel aslMM = ServiceTransformationUtil
 					.loadModel(
-							amh,
-							"ASL", amh.getMof(), "resources/ASL/ASL.ecore", "", false, false, "org.eclipse.m2m.atl.service.core"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+							"ASL", ml.getMOF(), ml, "resources/ASL/ASL.ecore", "", false, false, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							"org.eclipse.m2m.atl.service.core"); //$NON-NLS-4$
 			ASMModel sample = ServiceTransformationUtil
 					.ebnfInjection(
-							"sample-ASL", aslPath, amh, aslMM, new HashMap(), "resources/ASL/ASL-importer.jar", "ASL", "org.eclipse.m2m.atl.service.core"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+							"sample-ASL", aslPath, aslMM, new HashMap(), //$NON-NLS-1$
+							"resources/ASL/ASL-importer.jar", "ASL", //$NON-NLS-2$ //$NON-NLS-3$
+							"org.eclipse.m2m.atl.service.core"); //$NON-NLS-4$
 			Set modelElements = sample.getElementsByType("ASL"); //$NON-NLS-1$
 			for (Iterator it = modelElements.iterator(); it.hasNext();) {
 				ASMModelElement me = (ASMModelElement)it.next();
@@ -257,6 +265,9 @@ public final class ServiceExtensionManager {
 
 			}
 		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

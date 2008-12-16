@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 
 /**
  * Utility class to access externalized Strings for ATL services.
- * 
+ *
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public final class ServiceMessages {

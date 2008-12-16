@@ -36,10 +36,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmt.tcs.extractor.TCSExtractor;
 import org.eclipse.gmt.tcs.injector.TCSInjector;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
-import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
+import org.eclipse.m2m.atl.drivers.emf4atl.EMFModelLoader;
 import org.eclipse.m2m.atl.engine.MarkerMaker;
 import org.eclipse.m2m.atl.engine.extractors.xml.XMLExtractor;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.service.core.exception.ServiceException;
@@ -90,12 +91,12 @@ public final class ServiceTransformationUtil {
 	/**
 	 * Loads a model.
 	 * 
-	 * @param amh
-	 *            the model handler
 	 * @param modelName
 	 *            the model name
 	 * @param metamodel
 	 *            the metamodel
+	 * @param ml
+	 *            the model loader
 	 * @param path
 	 *            the model path
 	 * @param nsUri
@@ -107,20 +108,21 @@ public final class ServiceTransformationUtil {
 	 * @param pluginId
 	 *            the plugin id
 	 * @return the model
+	 * @throws IOException 
 	 */
-	public static ASMModel loadModel(AtlModelHandler amh, String modelName, ASMModel metamodel, String path,
-			String nsUri, boolean isM3, boolean inWorkspace, String pluginId) throws ServiceException {
+	public static ASMModel loadModel(String modelName, ASMModel metamodel, ModelLoader ml, String path,
+			String nsUri, boolean isM3, boolean inWorkspace, String pluginId) throws ServiceException, IOException {
 		ASMModel ret = null;
-
-		if (amh instanceof AtlEMFModelHandler) {
+		
+		if (ml instanceof EMFModelLoader) {
+			final EMFModelLoader emfml = (EMFModelLoader)ml;
 			if (isM3) {
-				ret = amh.getMof();
+				ret = emfml.getMOF();
 			} else if (nsUri != null && !nsUri.equals("")) { //$NON-NLS-1$
 				// TODO delete pre-string 'uri:'
-				ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, "uri:" + nsUri); //$NON-NLS-1$
+				ret = emfml.loadModel(modelName, metamodel, "uri:" + nsUri); //$NON-NLS-1$
 			} else if (inWorkspace) {
-				ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, URI
-						.createPlatformResourceURI(path, true));
+				ret = emfml.loadModel(modelName, metamodel, URI.createPlatformResourceURI(path, true));
 			} else {
 				try {
 					Bundle bundle = Platform.getBundle(pluginId);
@@ -134,7 +136,7 @@ public final class ServiceTransformationUtil {
 								"ServiceTransformationUtil.1", new Object[] {path, pluginId})); //$NON-NLS-1$
 					}
 					InputStream in = urlFile.openStream();
-					ret = ((AtlEMFModelHandler)amh).loadModel(modelName, metamodel, in);
+					ret = emfml.loadModel(modelName, metamodel, in);
 				} catch (IOException e) {
 					throw new ServiceException(IStatus.ERROR, e);
 				}
@@ -153,10 +155,8 @@ public final class ServiceTransformationUtil {
 	 *            the model to extract
 	 * @param path
 	 *            the path where to extract
-	 * @param amh
-	 *            the model handler
 	 */
-	public static void xmlExtraction(final ASMModel model, String path, AtlModelHandler amh) {
+	public static void xmlExtraction(final ASMModel model, String path) {
 		try {
 			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
 
@@ -203,28 +203,27 @@ public final class ServiceTransformationUtil {
 	 *            the model to extract
 	 * @param path
 	 *            the path where to extract
-	 * @param amh
-	 *            the model handler
 	 * @param params
 	 *            the extractor parameters
 	 */
-	public static void ebnfExtraction(final ASMModel model, String path, AtlModelHandler amh, Map params) {
+	public static void ebnfExtraction(final ASMModel model, String path, Map params) {
 		try {
 			PipedInputStream in = new PipedInputStream();
 			final OutputStream out = new PipedOutputStream(in);
 
 			final TCSExtractor ebnfe = new TCSExtractor();
 
-			AtlModelHandler amhEmf = new AtlEMFModelHandler();
+			final AtlModelHandler amh = AtlModelHandler.getDefault(AtlModelHandler.AMH_EMF);
+			final ModelLoader ml = amh.createModelLoader();
 			ASMModel tcs = loadModel(
-					amhEmf,
-					"TCS", amhEmf.getMof(), "resources/TCS.ecore", null, false, false, "org.eclipse.m2m.atl.service.core"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"TCS", ml.getMOF(), ml, "resources/TCS.ecore", null, false, false, //$NON-NLS-1$ //$NON-NLS-2$
+					"org.eclipse.m2m.atl.service.core"); //$NON-NLS-3$
 
 			Map tempParam = new HashMap();
 
 			tempParam
 					.put(
-							"format", loadModel(amh, "model.tcs", tcs, (String)params.get("path"), null, false, false, (String)params.get("pluginId"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+							"format", loadModel("model.tcs", tcs, ml, (String)params.get("path"), null, false, false, (String)params.get("pluginId"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 			for (Iterator it = params.keySet().iterator(); it.hasNext();) {
 				String paramName = (String)it.next();
@@ -273,8 +272,6 @@ public final class ServiceTransformationUtil {
 	 *            the model nama
 	 * @param filePath
 	 *            the path where to inject
-	 * @param amh
-	 *            the model handler
 	 * @param metamodel
 	 *            the metamodel
 	 * @param params
@@ -287,20 +284,22 @@ public final class ServiceTransformationUtil {
 	 *            the plugin id
 	 * @return the model
 	 */
-	public static ASMModel ebnfInjection(String name, String filePath, AtlModelHandler amh,
-			ASMModel metamodel, Map params, String parserPath, String metamodelName, String pluginId) {
+	public static ASMModel ebnfInjection(String name, String filePath, ASMModel metamodel,
+			Map params, String parserPath, String metamodelName, String pluginId) {
 
 		try {
 			InputStream in = Platform.getBundle(pluginId).getEntry(filePath).openStream();
 
-			ASMModel model = amh.newModel(name, "model.xmi", metamodel);
-			TCSInjector inj = new TCSInjector();
+			final AtlModelHandler amh = AtlModelHandler.getHandler(metamodel);
+			final ModelLoader ml = amh.createModelLoader();
+			final ASMModel model = ml.newModel(name, "model.xmi", metamodel);
+			final TCSInjector inj = new TCSInjector();
 
-			ClassLoader oldCl = Thread.currentThread().getContextClassLoader();
-			JarClassLoader loader = createLoader(pluginId, parserPath, oldCl);
+			final ClassLoader oldCl = Thread.currentThread().getContextClassLoader();
+			final JarClassLoader loader = createLoader(pluginId, parserPath, oldCl);
 
-			Class lexer = loader.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Lexer", true); //$NON-NLS-1$ //$NON-NLS-2$
-			Class parser = loader
+			final Class lexer = loader.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Lexer", true); //$NON-NLS-1$ //$NON-NLS-2$
+			final Class parser = loader
 					.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Parser", true); //$NON-NLS-1$ //$NON-NLS-2$
 
 			Map injParams = new HashMap();

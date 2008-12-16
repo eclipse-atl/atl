@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.service.core.nestedElements;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.service.core.ServiceTransformationUtil;
 import org.eclipse.m2m.atl.service.core.exception.ServiceException;
@@ -65,22 +66,24 @@ public class Model {
 	 *            the model name
 	 * @param metamodel
 	 *            the metamodel
+	 * @param ml
+	 *            the model loader
 	 * @param path
 	 *            the model path
 	 * @param nsUri
 	 *            the model uri
 	 * @param isM3
 	 *            true if the metamodel is a metametamodel
-	 * @param atlModelHandlerId
-	 *            the model handler id
 	 * @param pluginId
 	 *            the plugin id
 	 * @throws ServiceException
+	 * @throws IOException 
 	 */
-	public Model(String name, ASMModel metamodel, String path, String nsUri, boolean isM3,
-			String atlModelHandlerId, String pluginId) throws ServiceException {
-		this.asmModel = ServiceTransformationUtil.loadModel(AtlModelHandler.getDefault(atlModelHandlerId),
-				name, metamodel, path, nsUri, isM3, false, pluginId);
+	public Model(String name, ASMModel metamodel, ModelLoader ml, String path,
+			String nsUri, boolean isM3, String pluginId)
+			throws ServiceException, IOException {
+		this.asmModel = ServiceTransformationUtil.loadModel(name, metamodel,
+				ml, path, nsUri, isM3, false, pluginId);
 		this.name = name;
 	}
 
@@ -91,13 +94,13 @@ public class Model {
 	 *            the model name
 	 * @param metamodel
 	 *            the metamodel
+	 * @param ml
+	 *            the model loader
 	 * @param fileName
 	 *            the model filename
-	 * @param atlModelHandlerId
-	 *            the modelhandler id
 	 */
-	public Model(String name, ASMModel metamodel, String fileName, String atlModelHandlerId) {
-		this.asmModel = AtlModelHandler.getDefault(atlModelHandlerId).newModel(name, fileName, metamodel);
+	public Model(String name, ASMModel metamodel, ModelLoader ml, String fileName) {
+		this.asmModel = ml.newModel(name, fileName, metamodel);
 		this.fileName = fileName;
 	}
 
@@ -130,8 +133,6 @@ public class Model {
 	 *            the model uri
 	 * @param isM3
 	 *            true if the metamodel is a metametamodel
-	 * @param atlModelHandlerId
-	 *            the model handler id
 	 * @param pluginId
 	 *            the plugin id
 	 * @param injectorType
@@ -139,12 +140,13 @@ public class Model {
 	 * @param paramsInjector
 	 *            the injector parameters
 	 */
-	public Model(String name, ASMModel metamodel, String path, String nsUri, boolean isM3,
-			String atlModelHandlerId, String pluginId, String injectorType, Map paramsInjector) {
+	public Model(String name, ASMModel metamodel, String path, String nsUri,
+			boolean isM3, String pluginId, String injectorType,
+			Map paramsInjector) {
 		if (injectorType.equals("ebnf")) { //$NON-NLS-1$
-			this.asmModel = ServiceTransformationUtil.ebnfInjection(name, path, AtlModelHandler
-					.getDefault(atlModelHandlerId), metamodel, paramsInjector, (String)paramsInjector
-					.get("parserPath"), metamodel.getName(), pluginId); //$NON-NLS-1$
+			this.asmModel = ServiceTransformationUtil.ebnfInjection(name, path,
+					metamodel, paramsInjector, (String)paramsInjector
+							.get("parserPath"), metamodel.getName(), pluginId); //$NON-NLS-1$
 		}
 		this.name = name;
 	}
@@ -163,7 +165,8 @@ public class Model {
 	 * @param paramsInjector
 	 *            the injector parameters
 	 */
-	public Model(String name, String metamodel, String modelHandler, String injectorType, Map paramsInjector) {
+	public Model(String name, String metamodel, String modelHandler,
+			String injectorType, Map paramsInjector) {
 		this.name = name;
 		this.metamodelName = metamodel;
 		this.atlModelHandlerId = modelHandler;
@@ -179,18 +182,27 @@ public class Model {
 	 *            the model path
 	 * @param asmMetamodel
 	 *            the metamodel
+	 * @param ml
+	 *            the model loader
 	 * @param pluginId
 	 *            the plugin id
 	 * @throws ServiceException
+	 * @throws IOException 
 	 */
-	public void loadModel(String path, ASMModel asmMetamodel, String pluginId) throws ServiceException {
+	public void loadModel(String path, ASMModel asmMetamodel, ModelLoader ml,
+			String pluginId) throws ServiceException, IOException {
 		if (this.injector == null) {
-			asmModel = ServiceTransformationUtil.loadModel(AtlModelHandler.getDefault(atlModelHandlerId),
-					name, asmMetamodel, path, null, false, true, pluginId);
+			asmModel = ServiceTransformationUtil.loadModel(name, asmMetamodel,
+					ml, path, null, false, true, pluginId);
 		} else if (this.injector.type.equals("ebnf")) { //$NON-NLS-1$
-			this.asmModel = ServiceTransformationUtil.ebnfInjection(name, path, AtlModelHandler
-					.getDefault(atlModelHandlerId), asmMetamodel, this.injector.params,
-					(String)this.injector.params.get("parserPath"), asmMetamodel.getName(), pluginId); //$NON-NLS-1$
+			this.asmModel = ServiceTransformationUtil
+					.ebnfInjection(
+							name,
+							path,
+							asmMetamodel,
+							this.injector.params,
+							(String)this.injector.params.get("parserPath"), 
+							asmMetamodel.getName(), pluginId); //$NON-NLS-1$
 		}
 	}
 
@@ -208,6 +220,10 @@ public class Model {
 
 	public String getFileName() {
 		return fileName;
+	}
+
+	public String getAtlModelHandlerId() {
+		return atlModelHandlerId;
 	}
 
 }

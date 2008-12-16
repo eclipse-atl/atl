@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.service.core.configuration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,9 +21,10 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.ModelLoader;
+import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.service.core.ServiceMessages;
 import org.eclipse.m2m.atl.service.core.ServiceTransformationUtil;
 import org.eclipse.m2m.atl.service.core.exception.ServiceException;
@@ -79,18 +81,23 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 	 *            the model path
 	 * @param metamodel
 	 *            the metamodel name
+	 * @param ml
+	 *            the model loader
 	 * @param inWorkspace
 	 *            true if the model is in the workspace
 	 */
-	public void addInModel(String name, String path, String metamodel, boolean inWorkspace) {
+	public void addInModel(String name, String path, String metamodel, ModelLoader ml, boolean inWorkspace) {
 		// TODO
 		if (inWorkspace) {
 			models.put(name, new Model(name, metamodel, "EMF")); //$NON-NLS-1$
 		} else {
 			try {
-				models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), path, null,
-						false, "EMF", pluginId)); //$NON-NLS-1$
+				models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), ml, path,
+						null, false, pluginId)); //$NON-NLS-1$
 			} catch (ServiceException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -107,14 +114,16 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 	 *            the metamodel uri
 	 * @param isM3
 	 *            true is it is a metametamodel
-	 * @param modelHandler
-	 *            the model handler
+	 * @param ml
+	 *            the model loader
 	 */
-	public void addMetamodel(String name, String path, String nsUri, boolean isM3, String modelHandler) {
+	public void addMetamodel(String name, String path, String nsUri, boolean isM3, ModelLoader ml) {
 		try {
-			models.put(name, new Model(name, AtlModelHandler.getDefault(modelHandler).getMof(), path, nsUri,
-					isM3, modelHandler, pluginId));
+			models.put(name, new Model(name, ml.getMOF(), ml, path, nsUri, isM3, pluginId));
 		} catch (ServiceException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -159,11 +168,12 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 
 	/**
 	 * {@inheritDoc}
+	 * @throws IOException 
 	 * 
 	 * @see org.eclipse.m2m.atl.service.core.configuration.TransformationConfiguration#execute(java.lang.String,
 	 *      java.lang.String)
 	 */
-	public void execute(String pathFolder, String pathInModel) throws ServiceException {
+	public void execute(String pathFolder, String pathInModel) throws ServiceException, IOException {
 		for (Iterator it = transformations.iterator(); it.hasNext();) {
 			Transformation t = (Transformation)it.next();
 			if (t.getModelsNotPreloaded().size() == 1) {
@@ -196,11 +206,13 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 	 * @param pathInModel
 	 *            the model in path
 	 * @throws ServiceException
+	 * @throws IOException 
 	 */
-	public void loadModel(Transformation transformation, String pathInModel) throws ServiceException {
-		((Model)models.get(transformation.getModelsNotPreloaded().get(0))).loadModel(pathInModel,
-				((Model)models.get(((Model)models.get(transformation.getModelsNotPreloaded().get(0)))
-						.getMetamodelName())).getAsmModel(), pluginId);
+	public void loadModel(Transformation transformation, String pathInModel) throws ServiceException, IOException {
+		final Model m = (Model)models.get(transformation.getModelsNotPreloaded().get(0));
+		final Model mm = (Model)models.get(m.getMetamodelName());
+		final ModelLoader ml = AtlModelHandler.getDefault(m.getAtlModelHandlerId()).createModelLoader();
+		m.loadModel(pathInModel, mm.getAsmModel(), ml, pluginId);
 	}
 
 	/**
@@ -220,8 +232,10 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 
 		for (Iterator it = transformation.getOutModelsForLoading().keySet().iterator(); it.hasNext();) {
 			String modelName = (String)it.next();
-			models.put(modelName, new Model(modelName, ((Model)models.get(transformation
-					.getOutModelsForLoading().get(modelName))).getAsmModel(), modelName, "EMF")); //$NON-NLS-1$
+			ASMModel mm = ((Model)models.get(transformation.getOutModelsForLoading().get(modelName))).getAsmModel();
+			AtlModelHandler amh = AtlModelHandler.getHandler(mm);
+			ModelLoader ml = amh.createModelLoader();
+			models.put(modelName, new Model(modelName, mm, ml, modelName));
 		}
 
 		// TODO Nouvelle API
@@ -236,21 +250,21 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 	 *            location to save the created model
 	 * @param modelName
 	 *            modelName for the created model
+	 * @throws IOException 
 	 */
-	public void saveModel(String pathFolder, String modelName) throws ServiceException {
-		ModelToSave mts = (ModelToSave)modelsToSave.get(modelName);
-		Model currentOutModel = (Model)models.get(modelName);
-		AtlModelHandler amh = new AtlEMFModelHandler();
-
+	public void saveModel(String pathFolder, String modelName) throws ServiceException, IOException {
+		final ModelToSave mts = (ModelToSave)modelsToSave.get(modelName);
+		final Model currentOutModel = (Model)models.get(modelName);
+		final ModelLoader ml = currentOutModel.getAsmModel().getModelLoader();
 		if (!mts.isExtractor()) {
-			amh.saveModel(currentOutModel.getAsmModel(), pathFolder + "/" + mts.getFileName()); //$NON-NLS-1$
+			ml.save(currentOutModel.getAsmModel(), pathFolder + "/" + mts.getFileName()); //$NON-NLS-1$
 		} else if (mts.getExtractorType().equals(ServiceTransformationUtil.XML_EXTRACTOR)) {
 			ServiceTransformationUtil.xmlExtraction(currentOutModel.getAsmModel(), pathFolder
-					+ "/" + mts.getFileName(), amh); //$NON-NLS-1$
+					+ "/" + mts.getFileName()); //$NON-NLS-1$
 		} else if (mts.getExtractorType().equals(ServiceTransformationUtil.EBNF_EXTRACTOR)) {
 			Map params = mts.getExtractorParams();
 			ServiceTransformationUtil.ebnfExtraction(currentOutModel.getAsmModel(), pathFolder
-					+ "/" + mts.getFileName(), amh, params); //$NON-NLS-1$
+					+ "/" + mts.getFileName(), params); //$NON-NLS-1$
 		} else {
 			throw new ServiceException(IStatus.ERROR, ServiceMessages.getString(
 					"ComposedTransformationConfiguration.0", new Object[] {mts.getExtractorType()})); //$NON-NLS-1$

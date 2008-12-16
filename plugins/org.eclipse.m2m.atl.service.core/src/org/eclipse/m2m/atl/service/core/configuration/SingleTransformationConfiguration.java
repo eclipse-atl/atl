@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.service.core.configuration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,9 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.service.core.ServiceMessages;
 import org.eclipse.m2m.atl.service.core.ServiceTransformationUtil;
 import org.eclipse.m2m.atl.service.core.exception.ServiceException;
@@ -63,21 +64,27 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 	 *            the model path
 	 * @param metamodel
 	 *            the metamodel name
+	 * @param ml
+	 *            the model loader
 	 * @param inWorkspace
 	 *            true if the model is in the workspace
 	 */
-	public void addInModel(String name, String path, String metamodel, boolean inWorkspace) {
+	public void addInModel(String name, String path, String metamodel, ModelLoader ml,
+			boolean inWorkspace) {
 		// TODO
 		try {
 			if (inWorkspace) {
 				models.put(name, new Model(name, metamodel, "EMF")); //$NON-NLS-1$
 				transformation.addInNotPreloadedList(name);
 			} else {
-				models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), path, null,
-						false, "EMF", pluginId)); //$NON-NLS-1$
+				models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), ml, path, null,
+						false, pluginId)); //$NON-NLS-1$
 			}
 			transformation.addInModel(name, name);
-		} catch (Exception e) {
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -92,10 +99,12 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 	 *            the model file
 	 * @param metamodel
 	 *            the metamodel name
+	 * @param ml
+	 *            the model loader
 	 */
-	public void addOutModel(String name, String fileName, String metamodel) {
+	public void addOutModel(String name, String fileName, String metamodel, ModelLoader ml) {
 		// TODO
-		models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), fileName, "EMF")); //$NON-NLS-1$
+		models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), ml, fileName)); //$NON-NLS-1$
 		transformation.addOutModel(name, name, metamodel);
 	}
 
@@ -110,27 +119,30 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 	 *            the metamodel uri
 	 * @param isM3
 	 *            true is it is a metametamodel
-	 * @param modelHandler
-	 *            the model handler
+	 * @param ml
+	 *            the model loader 
 	 */
-	public void addMetamodel(String name, String path, String nsUri, boolean isM3, String modelHandler) {
+	public void addMetamodel(String name, String path, String nsUri, boolean isM3, ModelLoader ml) {
 		// TODO
 		try {
-			models.put(name, new Model(name, AtlModelHandler.getDefault(modelHandler).getMof(), path, nsUri,
-					isM3, modelHandler, pluginId));
+			models.put(name, new Model(name, ml.getMOF(), ml, path, nsUri, isM3, pluginId));
 			transformation.addInModel(name, name);
 		} catch (ServiceException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * @throws IOException 
 	 * 
 	 * @see org.eclipse.m2m.atl.service.core.configuration.TransformationConfiguration#execute(java.lang.String,
 	 *      java.lang.String)
 	 */
-	public void execute(String pathFolder, String pathInModel) throws ServiceException {
+	public void execute(String pathFolder, String pathInModel) throws ServiceException, IOException {
 		Map params = Collections.EMPTY_MAP;
 		Map libs = new HashMap();
 		List superimps = new ArrayList();
@@ -140,9 +152,11 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 
 		// TODO
 		if (transformation.getModelsNotPreloaded().size() == 1) {
-			((Model)models.get(transformation.getModelsNotPreloaded().get(0))).loadModel(pathInModel,
-					((Model)models.get(((Model)models.get(transformation.getModelsNotPreloaded().get(0)))
-							.getMetamodelName())).getAsmModel(), pluginId);
+			final Model m = (Model)models.get(transformation.getModelsNotPreloaded().get(0));
+			final Model mm = (Model)models.get(m.getMetamodelName());
+			final ModelLoader ml = AtlModelHandler.getDefault(m.getAtlModelHandlerId())
+					.createModelLoader();
+			m.loadModel(pathInModel, mm.getAsmModel(), ml, pluginId);
 		} else {
 			throw new ServiceException(IStatus.CANCEL, ServiceMessages
 					.getString("SingleTransformationConfiguration.0")); //$NON-NLS-1$
@@ -155,8 +169,8 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 		for (Iterator it = transformation.getOutModels().keySet().iterator(); it.hasNext();) {
 			String modelName = (String)it.next();
 			Model currentOutModel = (Model)models.get(modelName);
-			new AtlEMFModelHandler().saveModel(currentOutModel.getAsmModel(), pathFolder
-					+ "/" + currentOutModel.getFileName()); //$NON-NLS-1$
+			ModelLoader ml = currentOutModel.getAsmModel().getModelLoader();
+			ml.save(currentOutModel.getAsmModel(), pathFolder + "/" + currentOutModel.getFileName()); //$NON-NLS-1$
 		}
 	}
 
