@@ -98,11 +98,6 @@ public class EMFVMLauncher implements ILauncher {
 	public void initialize(Map<String, Object> parameters) {
 		models = new HashMap<String, IModel>();
 		libraries = new HashMap<String, ASM>();
-		//TODO remove this option
-//		boolean clearResourceSet = "true".equals(parameters.get("clearResourceSet")); //$NON-NLS-1$//$NON-NLS-2$
-//		if (clearResourceSet) {
-//			EMFModelFactory.init();
-//		}
 	}
 
 	/**
