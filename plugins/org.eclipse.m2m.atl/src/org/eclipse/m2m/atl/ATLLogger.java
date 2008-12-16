@@ -7,9 +7,12 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl;
 
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,11 +20,16 @@ import java.util.logging.Logger;
  * The common ATL logger.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ATLLogger {
 
 	/** The logger ID. */
 	public static final String LOGGER_ID = "org.eclipse.m2m.atl"; //$NON-NLS-1$
+
+	//TODO change level to Level.INFO for production use
+	/**	The lowest logging level to log. */
+	public static final Level LOGLEVEL = Level.INFO;
 
 	protected static Logger logger;
 	
@@ -40,7 +48,12 @@ public class ATLLogger {
 	public static Logger getLogger() {
 		if (logger == null) {
 			logger = Logger.getLogger(LOGGER_ID);
+			logger.setLevel(LOGLEVEL);
 			logger.setUseParentHandlers(false);			
+			Handler handler = new ConsoleHandler();
+			handler.setFormatter(ATLLogFormatter.INSTANCE);
+			handler.setLevel(LOGLEVEL);
+			logger.addHandler(handler);
 		}
 		return logger;
 	}
@@ -57,6 +70,16 @@ public class ATLLogger {
 	 */
 	public static void log(Level level, String msg, Throwable thrown) {
 		getLogger().log(level, msg, thrown);
+	}
+
+	/**
+	 * Log a FINE message.
+	 * 
+	 * @param msg
+	 *            The string message (or a key in the message catalog)
+	 */
+	public static void fine(String msg) {
+		log(Level.FINE, msg, null);
 	}
 
 	/**

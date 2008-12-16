@@ -193,7 +193,7 @@
         </module>
         <module name="IllegalThrows">
             <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity" value="error"/>
-            <property name="severity" value="error"/>
+            <property name="severity" value="ignore"/>
         </module>
         <module name="InnerAssignment"/>
         <module name="JUnitTestCase">
