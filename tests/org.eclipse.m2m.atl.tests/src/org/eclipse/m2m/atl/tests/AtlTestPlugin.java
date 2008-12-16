@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.m2m.atl.ATLLogger;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -65,7 +64,6 @@ public class AtlTestPlugin extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		handler = new StandardStreamHandler();
-		ATLLogger.getLogger().addHandler(handler);
 	}
 
 	/**
@@ -75,7 +73,6 @@ public class AtlTestPlugin extends Plugin {
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		ATLLogger.getLogger().removeHandler(handler);
 		super.stop(context);
 	}
 
