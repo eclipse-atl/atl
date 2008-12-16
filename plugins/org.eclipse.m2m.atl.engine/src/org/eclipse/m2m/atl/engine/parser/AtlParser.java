@@ -8,6 +8,7 @@
  * Contributors:
  *     Frederic Jouault (INRIA) - initial API and implementation
  *	   William Piers (Obeo) - refactoring
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.parser;
 
@@ -30,6 +31,7 @@ import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
 import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
@@ -37,6 +39,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public final class AtlParser {
 
@@ -44,11 +47,8 @@ public final class AtlParser {
 
 	private AtlModelHandler amh;
 
-	private ASMModel pbmm;
-
 	private AtlParser() {
 		amh = AtlModelHandler.getDefault(AtlEMFModelHandler.ID);
-		pbmm = amh.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
 	}
 
 	/**
@@ -95,33 +95,48 @@ public final class AtlParser {
 	 * @return the parser resulting ASMModel[model,problemModel]
 	 */
 	public ASMModel[] parseToModelWithProblems(InputStream in, boolean hideErrors) {
-		ASMModel[] ret = new ASMModel[2];
-		ASMModel atlmm = amh.getAtl();
-		// ASMModel mofmm = amh.getMof();
+		final ASMModel[] ret = new ASMModel[2];
+		final ModelLoader ml = amh.createModelLoader();
+		final ASMModel atlmm = ml.getATL();
+		final ASMModel pbmm = ml.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
 
 		try {
-			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp", (ASMEMFModel)atlmm, null); //$NON-NLS-1$ //$NON-NLS-2$
-			ret[1] = amh.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
+			ret[0] = ml.newModel("temp", "temp", atlmm); //$NON-NLS-1$ //$NON-NLS-2$
+			ret[1] = ml.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
 
-			TCSInjector ebnfi = new TCSInjector();
-			Map params = new HashMap();
+			final TCSInjector ebnfi = new TCSInjector();
+			final Map params = new HashMap();
 			params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
 			params.put("problems", ret[1]); //$NON-NLS-1$
 
 			if (hideErrors) {
+				//TODO Find another way to hide parsing errors.
+				//
+				// Dennis Wagelaar: ATL does not "own" the System object in Eclipse, 
+				// so don't fight with the other threads over who gets to set System.out.
+				// Even though System.out is only temporarily redirected here,
+				// it may cause unexpected results with other threads that "inexplicably"
+				// lose some System.out.println() output.
+				//
+				// N.B. This was also the reason to switch from System.out logging to
+				// a logging framework, as ATL previously hijacked System.out for its own
+				// console widget. MOFscript was then fighting with ATL over who gets
+				// to hijack System.out, resulting in MOFscript output to show up in the
+				// ATL console.
+
 				// desactivate standard output
-				OutputStream stream = new ByteArrayOutputStream();
-				PrintStream out = new PrintStream(stream);
-				PrintStream origOut = System.out;
-				System.setOut(out);
+//				OutputStream stream = new ByteArrayOutputStream();
+//				PrintStream out = new PrintStream(stream);
+//				PrintStream origOut = System.out;
+//				System.setOut(out);
 
 				// launch parsing
 				ebnfi.inject(ret[0], in, params);
 
 				// reactivate standard output
-				System.setOut(origOut);
-				stream.close();
-				out.close();
+//				System.setOut(origOut);
+//				stream.close();
+//				out.close();
 			} else {
 				// launch parsing
 				ebnfi.inject(ret[0], in, params);
@@ -162,13 +177,14 @@ public final class AtlParser {
 		if (expressionType == null) {
 			return null;
 		}
-		ASMModel[] ret = new ASMModel[2];
-		ASMModel atlmm = amh.getAtl();
+		final ASMModel[] ret = new ASMModel[2];
+		final ModelLoader ml = amh.createModelLoader();
+		final ASMModel atlmm = ml.getATL();
+		final ASMModel pbmm = ml.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
 
 		try {
-			ret[0] = ASMEMFModel.newASMEMFModel("temp", "temp", //$NON-NLS-1$ //$NON-NLS-2$
-					(ASMEMFModel)atlmm, null);
-			ret[1] = amh.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
+			ret[0] = ml.newModel("temp", "temp", atlmm); //$NON-NLS-1$ //$NON-NLS-2$
+			ret[1] = ml.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
 			TCSInjector ebnfi = new TCSInjector();
 			Map params = new HashMap();
 			params.put("name", "ATL-" + expressionType); //$NON-NLS-1$ //$NON-NLS-2$

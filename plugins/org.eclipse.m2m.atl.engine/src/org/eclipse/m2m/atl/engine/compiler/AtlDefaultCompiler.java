@@ -8,6 +8,7 @@
  * Contributors:
  *    Frederic Jouault (INRIA) - initial API and implementation
  *    Matthias Bohlen - refactoring to eliminate duplicate code
+ *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.compiler;
 
@@ -21,11 +22,9 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
-import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.engine.ProblemConverter;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
 import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
-import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
@@ -35,21 +34,10 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:mbohlen@mbohlen.de">Matthias Bohlen</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
-	private AtlModelHandler amh;
-
-	private ASMModel pbmm;
-
-	/**
-	 * Constructor.
-	 */
-	public AtlDefaultCompiler() {
-		amh = AtlModelHandler.getDefault(AtlEMFModelHandler.ID);
-		pbmm = amh.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
-	}
-	
 	/**
 	 * {@inheritDoc}
 	 *
@@ -138,10 +126,10 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
 		if (nbErrors == 0) {
 			Map models = new HashMap();
-			models.put("MOF", amh.getMof()); //$NON-NLS-1$
+			models.put("MOF", atlmodel.getModelLoader().getMOF()); //$NON-NLS-1$
 			models.put("ATL", atlmodel.getMetamodel()); //$NON-NLS-1$
 			models.put("IN", atlmodel); //$NON-NLS-1$
-			models.put("Problem", pbmm); //$NON-NLS-1$
+			models.put("Problem", problems.getMetamodel()); //$NON-NLS-1$
 			models.put("OUT", problems); //$NON-NLS-1$
 
 			Map params = Collections.EMPTY_MAP;
@@ -158,12 +146,11 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
 		if (nbErrors == 0) {
 			// Generating code
-			AtlModelHandler defaultAmh = AtlModelHandler.getDefault(AtlEMFModelHandler.ID);
 			Map models = new HashMap();
-			models.put("MOF", defaultAmh.getMof()); //$NON-NLS-1$
-			models.put("ATL", defaultAmh.getAtl()); //$NON-NLS-1$
+			models.put("MOF", atlmodel.getModelLoader().getMOF()); //$NON-NLS-1$
+			models.put("ATL", atlmodel.getMetamodel()); //$NON-NLS-1$
 			models.put("IN", atlmodel); //$NON-NLS-1$
-			models.put("Problem", pbmm); //$NON-NLS-1$
+			models.put("Problem", problems.getMetamodel()); //$NON-NLS-1$
 			models.put("OUT", problems); //$NON-NLS-1$
 
 			Map params = new HashMap();
