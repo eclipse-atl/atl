@@ -7,12 +7,16 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.ui.vm.asm;
 
+import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -21,6 +25,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  * The RegularVM adaptation of the {@link IExtractor}.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ASMExtractor implements IExtractor {
 
@@ -46,7 +51,11 @@ public class ASMExtractor implements IExtractor {
 		if (path.startsWith("ext:")) { //$NON-NLS-1$
 			path = path.substring(4);
 		}
-		modelWrapper.getModelHandler().saveModel(asmModel, URI.createFileURI(path).toString());
+		try {
+			modelWrapper.getModelLoader().save(asmModel, URI.createFileURI(path).toString());
+		} catch (IOException e) {
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
 	}
 
 }

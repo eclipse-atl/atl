@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.ui.vm.asm;
 
@@ -19,13 +20,18 @@ import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.core.ModelFactory;
 import org.eclipse.m2m.atl.core.ui.vm.Messages;
 import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 
 /**
  * The RegularVM adaptation of the {@link ModelFactory}.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ASMFactory extends ModelFactory {
+
+	/** The model factory name which is also the extractor/injector name. */
+	public static final String MODEL_FACTORY_NAME = "ASM"; //$NON-NLS-1$
 
 	/** The model handler name. */
 	public static final String OPTION_MODEL_HANDLER = "modelHandlerName"; //$NON-NLS-1$
@@ -39,14 +45,33 @@ public class ASMFactory extends ModelFactory {
 	/** The newModel boolean. */
 	public static final String OPTION_NEW_MODEL = "newModel"; //$NON-NLS-1$
 
-	/** The model factory name which is also the extractor/injector name. */
-	public static final String MODEL_FACTORY_NAME = "ASM"; //$NON-NLS-1$
-
 	private static Map<String, ASMModelWrapper> metametamodels = new HashMap<String, ASMModelWrapper>();
 
 	private static Map<String, ASMModelWrapper> builtin = new HashMap<String, ASMModelWrapper>();
 
 	private static final AtlModelHandler DEFAULT_MODEL_HANDLER = AtlModelHandler.getDefault("EMF"); //$NON-NLS-1$
+	
+	private Map<AtlModelHandler, ModelLoader> modelLoaders = new HashMap<AtlModelHandler, ModelLoader>();
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultExtractorName()
+	 */
+	@Override
+	public String getDefaultExtractorName() {
+		return MODEL_FACTORY_NAME;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultInjectorName()
+	 */
+	@Override
+	public String getDefaultInjectorName() {
+		return MODEL_FACTORY_NAME;
+	}
 
 	/**
 	 * {@inheritDoc} This method needs additional parameters to be launched, passed as options:
@@ -65,8 +90,8 @@ public class ASMFactory extends ModelFactory {
 		String modelName = (String)options.get(OPTION_MODEL_NAME);
 		String path = (String)options.get(OPTION_MODEL_PATH);
 		boolean newModel = "true".equals(options.get(OPTION_NEW_MODEL).toString()); //$NON-NLS-1$
-		return new ASMModelWrapper((ASMModelWrapper)referenceModel, ((ASMModelWrapper)referenceModel)
-				.getModelHandler(), modelName, path, newModel);
+		return new ASMModelWrapper((ASMModelWrapper)referenceModel, this, ((ASMModelWrapper)referenceModel)
+				.getModelLoader(), modelName, path, newModel);
 	}
 
 	/**
@@ -89,7 +114,9 @@ public class ASMFactory extends ModelFactory {
 				return getMetametamodel(modelHandlerName);
 			}
 		}
-		return new ASMModelWrapper(getMetametamodel(modelHandlerName), getModelHandler(modelHandlerName),
+		return new ASMModelWrapper(
+				getMetametamodel(modelHandlerName), this,
+				getModelLoader(getModelHandler(modelHandlerName)),
 				modelName, path, false);
 	}
 
@@ -101,6 +128,15 @@ public class ASMFactory extends ModelFactory {
 			modelHandler = DEFAULT_MODEL_HANDLER;
 		}
 		return modelHandler;
+	}
+	
+	private ModelLoader getModelLoader(AtlModelHandler handler) {
+		ModelLoader ml = modelLoaders.get(handler);
+		if (ml == null) {
+			ml = handler.createModelLoader();
+			modelLoaders.put(handler, ml);
+		}
+		return ml;
 	}
 
 	/**
@@ -133,8 +169,8 @@ public class ASMFactory extends ModelFactory {
 	@Override
 	public IReferenceModel getBuiltInResource(String name) {
 		if (builtin.get(name) == null) {
-			ASMModelWrapper metamodel = new ASMModelWrapper(DEFAULT_MODEL_HANDLER.getBuiltInMetaModel(name),
-					DEFAULT_MODEL_HANDLER);
+			final ModelLoader ml = getModelLoader(DEFAULT_MODEL_HANDLER);
+			final ASMModelWrapper metamodel = new ASMModelWrapper(ml.getBuiltInMetaModel(name), ml);
 			builtin.put(name, metamodel);
 		}
 		return builtin.get(name);
@@ -149,30 +185,11 @@ public class ASMFactory extends ModelFactory {
 	 */
 	public static ASMModelWrapper getMetametamodel(String modelHandlerName) {
 		if (metametamodels.get(modelHandlerName) == null) {
-			AtlModelHandler amh = AtlModelHandler.getDefault(modelHandlerName);
-			ASMModelWrapper metametamodel = new ASMModelWrapper(amh.getMof(), amh);
+			final AtlModelHandler amh = AtlModelHandler.getDefault(modelHandlerName);
+			final ModelLoader ml = amh.createModelLoader();
+			final ASMModelWrapper metametamodel = new ASMModelWrapper(ml.getMOF(), ml);
 			metametamodels.put(modelHandlerName, metametamodel);
 		}
 		return metametamodels.get(modelHandlerName);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultExtractorName()
-	 */
-	@Override
-	public String getDefaultExtractorName() {
-		return MODEL_FACTORY_NAME;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.ModelFactory#getDefaultInjectorName()
-	 */
-	@Override
-	public String getDefaultInjectorName() {
-		return MODEL_FACTORY_NAME;
 	}
 }

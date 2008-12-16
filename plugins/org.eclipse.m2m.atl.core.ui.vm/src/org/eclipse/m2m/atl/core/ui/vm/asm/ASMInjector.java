@@ -7,12 +7,14 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.ui.vm.asm;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,14 +28,15 @@ import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
-import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
-import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
+import org.eclipse.m2m.atl.drivers.emf4atl.EMFModelLoader;
+import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
  * The RegularVM adaptation of the {@link IInjector}.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ASMInjector implements IInjector {
 
@@ -58,29 +61,29 @@ public class ASMInjector implements IInjector {
 	}
 
 	private void inject(IModel sourceModel, Object source, String modelName, boolean checkSameModel) {
-		ASMModelWrapper modelWrapper = (ASMModelWrapper)sourceModel;
+		final ASMModelWrapper modelWrapper = (ASMModelWrapper)sourceModel;
 		try {
-			AtlModelHandler amh = modelWrapper.getModelHandler();
+			final ModelLoader ml = modelWrapper.getModelLoader();
 			String path = (String)source;
 			ASMModel asmModel = null;
 
 			if (((String)source).startsWith("#")) { //$NON-NLS-1$
 				// nothing to do, ever loaded in newModel
 				return;
-			} else if (amh instanceof AtlEMFModelHandler) {
+			} else if (ml instanceof EMFModelLoader) {
 				if (path.startsWith("uri:")) { //$NON-NLS-1$
-					asmModel = ((AtlEMFModelHandler)amh).loadModel(modelName, ((ASMModelWrapper)modelWrapper
+					asmModel = ml.loadModel(modelName, ((ASMModelWrapper)modelWrapper
 							.getReferenceModel()).getAsmModel(), path);
 				} else if (path.startsWith("ext:")) { //$NON-NLS-1$
 					path = path.substring(4);
-					asmModel = ((AtlEMFModelHandler)amh).loadModel(modelName, ((ASMModelWrapper)modelWrapper
+					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
 							.getReferenceModel()).getAsmModel(), URI.createFileURI(path));
 				} else {
-					asmModel = ((AtlEMFModelHandler)amh).loadModel(modelName, ((ASMModelWrapper)modelWrapper
+					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
 							.getReferenceModel()).getAsmModel(), URI.createPlatformResourceURI(path, false));
 				}
 			} else {
-				asmModel = amh.loadModel(modelName, ((ASMModelWrapper)modelWrapper.getReferenceModel())
+				asmModel = ml.loadModel(modelName, ((ASMModelWrapper)modelWrapper.getReferenceModel())
 						.getAsmModel(), fileNameToInputStream((String)source));
 			}
 
@@ -91,7 +94,7 @@ public class ASMInjector implements IInjector {
 
 		} catch (CoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}

@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.ui.vm.asm;
 
@@ -16,14 +17,14 @@ import java.util.Set;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
-import org.eclipse.m2m.atl.core.ModelFactory;
-import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
  * The RegularVM adaptation of the {@link IModel}, {@link IReferenceModel}.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ASMModelWrapper implements IModel, IReferenceModel {
 
@@ -31,17 +32,19 @@ public class ASMModelWrapper implements IModel, IReferenceModel {
 
 	private ASMModelWrapper referenceModel;
 
-	private AtlModelHandler modelHandler;
+	private ASMFactory modelFactory;
 
-	private String modelName;
+	private ModelLoader modelLoader;
 
 	/**
 	 * Creates a new {@link ASMModelWrapper}.
 	 * 
 	 * @param referenceModel
 	 *            the {@link ASMModelWrapper} metamodel
-	 * @param modelHandler
-	 *            the modelHandler
+	 * @param modelFactory
+	 *            the model loader creating this model.
+	 * @param modelLoader
+	 *            the model loader creating the wrapped model.
 	 * @param modelName
 	 *            the model name
 	 * @param path
@@ -49,11 +52,11 @@ public class ASMModelWrapper implements IModel, IReferenceModel {
 	 * @param newModel
 	 *            true if the model is a new one (output model)
 	 */
-	public ASMModelWrapper(ASMModelWrapper referenceModel, AtlModelHandler modelHandler, String modelName,
+	public ASMModelWrapper(ASMModelWrapper referenceModel, ASMFactory modelFactory, ModelLoader modelLoader, String modelName,
 			String path, boolean newModel) {
 		this.referenceModel = referenceModel;
-		this.modelHandler = modelHandler;
-		this.modelName = modelName;
+		this.modelFactory = modelFactory;
+		this.modelLoader = modelLoader;
 		if (newModel) {
 			String newPath;
 			if (path == null) {
@@ -66,7 +69,7 @@ public class ASMModelWrapper implements IModel, IReferenceModel {
 					newPath = URI.createPlatformResourceURI(path, true).toString();
 				}
 			}
-			asmModel = modelHandler.newModel(modelName, newPath, referenceModel.getAsmModel());
+			asmModel = modelLoader.newModel(modelName, newPath, referenceModel.getAsmModel());
 		}
 	}
 
@@ -76,13 +79,13 @@ public class ASMModelWrapper implements IModel, IReferenceModel {
 	 * 
 	 * @param asmModel
 	 *            the {@link ASMModel}
-	 * @param modelHandler
-	 *            the {@link AtlModelHandler}
+	 * @param modelLoader
+	 *            the {@link ModelLoader}
 	 */
-	public ASMModelWrapper(ASMModel asmModel, AtlModelHandler modelHandler) {
+	public ASMModelWrapper(ASMModel asmModel, ModelLoader modelLoader) {
 		this.referenceModel = this;
 		this.asmModel = asmModel;
-		this.modelHandler = modelHandler;
+		this.modelLoader = modelLoader;
 	}
 
 	/**
@@ -94,28 +97,55 @@ public class ASMModelWrapper implements IModel, IReferenceModel {
 		return referenceModel;
 	}
 
+	/**
+	 * Sets the metamodel.
+	 * 
+	 * @param referenceModel
+	 *            The metamodel to set.
+	 */
 	public void setReferenceModel(ASMModelWrapper referenceModel) {
 		this.referenceModel = referenceModel;
 	}
 
-	public AtlModelHandler getModelHandler() {
-		return modelHandler;
+	/**
+	 * Returns the model loader that created the inner {@link ASMModel}.
+	 * 
+	 * @return The model loader.
+	 */
+	public ModelLoader getModelLoader() {
+		return modelLoader;
 	}
 
-	public void setModelHandler(AtlModelHandler modelHandler) {
-		this.modelHandler = modelHandler;
-	}
-
+	/**
+	 * Returns the inner {@link ASMModel}.
+	 * 
+	 * @return the inner {@link ASMModel}.
+	 */
 	public ASMModel getAsmModel() {
 		return asmModel;
 	}
 
+	/**
+	 * Sets the inner {@link ASMModel}.
+	 * 
+	 * @param asmModel
+	 *            The inner {@link ASMModel} to set.
+	 */
 	public void setAsmModel(ASMModel asmModel) {
 		this.asmModel = asmModel;
 	}
 
+	/**
+	 * Returns the inner model name or {@literal &lt;unnamed&gt;}.
+	 * 
+	 * @return the inner model name or {@literal &lt;unnamed&gt;}.
+	 */
 	public String getName() {
-		return modelName;
+		final ASMModel am = getAsmModel();
+		if (am != null) {
+			return am.getName();
+		}
+		return "<unnamed>";
 	}
 
 	/**
@@ -134,17 +164,6 @@ public class ASMModelWrapper implements IModel, IReferenceModel {
 	 */
 	public void setIsTarget(boolean value) {
 		asmModel.setIsTarget(value);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.IModel#dispose()
-	 */
-	public void dispose() {
-		if (!this.referenceModel.equals(this)) {
-			modelHandler.disposeOfModel(asmModel);
-		}
 	}
 
 	/**
@@ -191,10 +210,9 @@ public class ASMModelWrapper implements IModel, IReferenceModel {
 	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.m2m.atl.core.IModel#getModelFactory()
-	 * @deprecated unused in this implementation
 	 */
-	public ModelFactory getModelFactory() {
-		return null;
+	public ASMFactory getModelFactory() {
+		return modelFactory;
 	}
 
 }

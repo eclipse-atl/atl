@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.ui.vm;
 
@@ -30,7 +31,6 @@ import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.core.ui.vm.asm.ASMFactory;
 import org.eclipse.m2m.atl.core.ui.vm.asm.ASMModelWrapper;
-import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
 import org.eclipse.m2m.atl.engine.vm.ASMInterpreter;
@@ -48,6 +48,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
  * The RegularVM implementation of the {@link ILauncher}.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class RegularVMLauncher implements ILauncher {
 
@@ -127,10 +128,11 @@ public class RegularVMLauncher implements ILauncher {
 	public void initialize(Map<String, Object> options) {
 		models = new HashMap<String, IModel>();
 		libraries = new HashMap<String, ASM>();
-		boolean clearResourceSet = "true".equals(options.get("clearResourceSet")); //$NON-NLS-1$//$NON-NLS-2$
-		if (clearResourceSet) {
-			ASMEMFModel.init();
-		}
+		//TODO remove this option
+//		boolean clearResourceSet = "true".equals(options.get("clearResourceSet")); //$NON-NLS-1$//$NON-NLS-2$
+//		if (clearResourceSet) {
+//			ASMEMFModel.init();
+//		}
 	}
 
 	/**
