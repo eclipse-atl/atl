@@ -80,17 +80,17 @@ public class MarkerMaker {
 		int columnNumber = Integer.parseInt(parts[1]);
 		int charStart = 0;
 		int charEnd = 0;
-		// try {
-		if (location.indexOf('-') == -1) {
-			location += '-' + location;
+		try {
+			if (location.indexOf('-') == -1) {
+				location += '-' + location;
+			}
+			int[] pos = help.getIndexChar(location, tabWidth);
+			charStart = pos[0];
+			charEnd = pos[1];
+		} catch (Exception e) {
+			description += " [location \"" + location + "\" incorrectly reported because of error]"; //$NON-NLS-1$ //$NON-NLS-2$
+			//$NON-NLS-1$//$NON-NLS-2$
 		}
-		int[] pos = help.getIndexChar(location, tabWidth);
-		charStart = pos[0];
-		charEnd = pos[1];
-		// } catch (Exception e) {
-		// description += " [location \"" + location + "\" incorrectly reported because of error]";
-		// //$NON-NLS-1$//$NON-NLS-2$
-		// }
 
 		String severity = ((EEnumLiteral)problem.eGet(sfSeverity)).getName();
 		int eclipseSeverity = ((Integer)severities.get(severity)).intValue();
