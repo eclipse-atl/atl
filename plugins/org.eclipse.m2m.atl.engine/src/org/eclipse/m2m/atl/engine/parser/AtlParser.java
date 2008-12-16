@@ -13,11 +13,8 @@
 package org.eclipse.m2m.atl.engine.parser;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -110,9 +107,9 @@ public final class AtlParser {
 			params.put("problems", ret[1]); //$NON-NLS-1$
 
 			if (hideErrors) {
-				//TODO Find another way to hide parsing errors.
+				// TODO Find another way to hide parsing errors.
 				//
-				// Dennis Wagelaar: ATL does not "own" the System object in Eclipse, 
+				// Dennis Wagelaar: ATL does not "own" the System object in Eclipse,
 				// so don't fight with the other threads over who gets to set System.out.
 				// Even though System.out is only temporarily redirected here,
 				// it may cause unexpected results with other threads that "inexplicably"
@@ -125,18 +122,18 @@ public final class AtlParser {
 				// ATL console.
 
 				// desactivate standard output
-//				OutputStream stream = new ByteArrayOutputStream();
-//				PrintStream out = new PrintStream(stream);
-//				PrintStream origOut = System.out;
-//				System.setOut(out);
+				// OutputStream stream = new ByteArrayOutputStream();
+				// PrintStream out = new PrintStream(stream);
+				// PrintStream origOut = System.out;
+				// System.setOut(out);
 
 				// launch parsing
 				ebnfi.inject(ret[0], in, params);
 
 				// reactivate standard output
-//				System.setOut(origOut);
-//				stream.close();
-//				out.close();
+				// System.setOut(origOut);
+				// stream.close();
+				// out.close();
 			} else {
 				// launch parsing
 				ebnfi.inject(ret[0], in, params);
@@ -191,19 +188,19 @@ public final class AtlParser {
 			params.put("problems", ret[1]); //$NON-NLS-1$
 
 			if (hideErrors) {
-				// desactivate standard output
-				OutputStream stream = new ByteArrayOutputStream();
-				PrintStream out = new PrintStream(stream);
-				PrintStream origOut = System.out;
-				System.setOut(out);
+				// // desactivate standard output
+				// OutputStream stream = new ByteArrayOutputStream();
+				// PrintStream out = new PrintStream(stream);
+				// PrintStream origOut = System.out;
+				// System.setOut(out);
 
 				// launch parsing
 				ebnfi.inject(ret[0], new ByteArrayInputStream(expression.getBytes()), params);
 
-				// reactivate standard output
-				System.setOut(origOut);
-				stream.close();
-				out.close();
+				// // reactivate standard output
+				// System.setOut(origOut);
+				// stream.close();
+				// out.close();
 			} else {
 				// launch parsing
 				ebnfi.inject(ret[0], new ByteArrayInputStream(expression.getBytes()), params);
