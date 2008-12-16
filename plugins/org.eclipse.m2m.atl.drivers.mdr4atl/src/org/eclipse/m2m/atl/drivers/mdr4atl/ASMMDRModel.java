@@ -11,13 +11,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.drivers.mdr4atl;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -30,7 +23,6 @@ import javax.jmi.reflect.RefAssociation;
 import javax.jmi.reflect.RefClass;
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
-import javax.jmi.xmi.MalformedXMIException;
 
 import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
@@ -40,12 +32,6 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 import org.netbeans.api.mdr.MDRManager;
 import org.netbeans.api.mdr.MDRepository;
-import org.netbeans.api.xmi.XMIInputConfig;
-import org.netbeans.api.xmi.XMIReader;
-import org.netbeans.api.xmi.XMIReaderFactory;
-import org.netbeans.api.xmi.XMIReferenceResolver;
-import org.netbeans.api.xmi.XMIWriter;
-import org.netbeans.api.xmi.XMIWriterFactory;
 
 /**
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
@@ -57,38 +43,35 @@ public class ASMMDRModel extends ASMModel {
 
 	private static boolean persist = false;
 
-	private static MDRepository rep = null;
-
-	private static XMIReader reader;
-
-	private static XMIWriter writer;
+	protected static MDRepository rep = null;
 
 	static {
 		ATLLogger.info("Initializing MDR...");
 		initMDR();
 	}
 
-	private ASMMDRModel(String name, RefPackage pack, ASMModel metamodel, boolean isTarget, ModelLoader ml) {
+	protected ASMMDRModel(String name, RefPackage pack, ASMModel metamodel, boolean isTarget, ModelLoader ml) {
 		super(name, metamodel, isTarget, ml);
 		this.pack = pack;
 	}
 
-	private Map allModelElements = new HashMap();
+	private Map modelElements = new HashMap();
 
 	public ASMModelElement getASMModelElement(RefObject object) {
-		ASMModelElement ret = null;
+		ASMModelElement ret = (ASMModelElement)modelElements.get(object);
 
-		synchronized(allModelElements) {
-			ret = (ASMModelElement)allModelElements.get(object);
-			if (ret == null) {
-				ret = new ASMMDRModelElement(allModelElements, this, object);
+		if (ret == null) { // don't do expensive synchronize if ret is already defined
+			synchronized(modelElements) {
+				// check again, since another locking thread may have created a new element
+				ret = (ASMModelElement)modelElements.get(object);
+				if (ret == null) {
+					ret = new ASMMDRModelElement(modelElements, this, object);
+				}
 			}
 		}
 
 		return ret;
 	}
-
-	// private Map modelElements = new HashMap();
 
 	private Map classifiers = null;
 
@@ -204,7 +187,7 @@ public class ASMMDRModel extends ASMModel {
 		return ret;
 	}
 
-	private void getAllAcquaintances() {
+	protected void getAllAcquaintances() {
 
 		final boolean debug = false;
 
@@ -259,153 +242,16 @@ public class ASMMDRModel extends ASMModel {
 		}
 	}
 
-	/**
-	 * Creates a new ASMMDRModel.
-	 * 
-	 * @param name
-	 *            The model name. Used as a basis for creating a new extent.
-	 * @param metamodel
-	 * @param ml
-	 * @return the new model
-	 * @throws Exception
-	 */
-	public static ASMMDRModel newASMMDRModel(String name, ASMMDRModel metamodel, ModelLoader ml)
-			throws Exception {
-		return newASMMDRModel(name, name, metamodel, ml);
-	}
-
-	/**
-	 * Creates a new ASMMDRModel.
-	 * 
-	 * @param name
-	 *            The model name. Used as a basis for creating a new extent.
-	 * @param uri
-	 *            The model URI. Not used by MDR.
-	 * @param metamodel
-	 * @param ml
-	 * @return the new model
-	 * @throws Exception
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	public static ASMMDRModel newASMMDRModel(String name, String uri, ASMMDRModel metamodel, ModelLoader ml)
-			throws Exception {
-		RefPackage mextent = null;
-		String modifiedName = name;
-		int id = 0;
-
-		while (rep.getExtent(modifiedName) != null) {
-			modifiedName = name + "_" + id++;
-		}
-
-		if (metamodel.getName().equals("MOF")) {
-			mextent = rep.createExtent(modifiedName);
-		} else {
-			RefPackage mmextent = metamodel.pack;
-			RefObject pack = null;
-			for (Iterator it = mmextent.refClass("Package").refAllOfClass().iterator(); it.hasNext();) {
-				pack = (RefObject)it.next();
-				if (pack.refGetValue("name").equals(metamodel.getName())) {
-					break;
-				}
-			} // mp now contains a package with the same name as the extent
-			// or the last package
-			mextent = rep.createExtent(modifiedName, pack);
-		}
-
-		return new ASMMDRModel(name, mextent, metamodel, true, ml);
-	}
-
-	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, String url, ModelLoader ml)
-			throws Exception {
-		return loadASMMDRModel(name, metamodel, new File(url).toURI().toURL(), ml);
-	}
-
-	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, URL url, ModelLoader ml)
-			throws Exception {
-		return loadASMMDRModel(name, metamodel, url.openStream(), ml);
-	}
-
-	public static ASMMDRModel loadASMMDRModel(String name, ASMMDRModel metamodel, InputStream in,
-			ModelLoader ml) throws Exception {
-		ASMMDRModel ret = newASMMDRModel(name, metamodel, ml);
-
-		try {
-			XMIInputConfig inputConfig = reader.getConfiguration();
-			final XMIReferenceResolver originalReferenceResolver = inputConfig.getReferenceResolver();
-			final Map elementByXmiId = new HashMap();
-			final Map xmiIdByElement = new HashMap();
-			inputConfig.setReferenceResolver(new XMIReferenceResolver() {
-
-				public void register(String systemId, String xmiId, RefObject object) {
-					elementByXmiId.put(xmiId, object);
-					xmiIdByElement.put(object, xmiId);
-					if (originalReferenceResolver != null)
-						originalReferenceResolver.register(systemId, xmiId, object);
-				}
-
-				public void resolve(Client client, RefPackage extent, String systemId,
-						XMIInputConfig configuration, Collection hrefs) throws MalformedXMIException,
-						IOException {
-					if (originalReferenceResolver != null) // anyway, if we do nothing the default resolver
-						// will be used
-						originalReferenceResolver.resolve(client, extent, systemId, configuration, hrefs);
-				}
-
-			});
-			reader.read(in, null, ret.pack);
-			inputConfig.setReferenceResolver(originalReferenceResolver);
-
-			ret.elementByXmiId = elementByXmiId;
-			ret.xmiIdByElement = xmiIdByElement;
-		} catch (Exception e) {
-			throw new Exception("Error while reading " + name + ":" + e.getLocalizedMessage(), e);
-		}
-		ret.setIsTarget(false);
-		ret.getAllAcquaintances();
-
-		return ret;
-	}
-
-	public static ASMMDRModel createMOF(ModelLoader ml) {
+	private static ASMMDRModel createMOF() {
 		ASMMDRModel ret = null;
 
 		try {
-			ret = new ASMMDRModel("MOF", rep.getExtent("MOF"), null, false, ml);
-			mofmm = ret;
+			ret = new ASMMDRModel("MOF", rep.getExtent("MOF"), null, false, null);
 		} catch (org.netbeans.mdr.util.DebugException de) {
 			ATLLogger.log(Level.SEVERE, de.getLocalizedMessage(), de);
 		}
 
 		return ret;
-	}
-
-	public void save(String url) throws IOException {
-		OutputStream out = new FileOutputStream(url);
-		save(out);
-	}
-
-	public void save(OutputStream out) throws IOException {
-		writer.write(out, pack, null);
-	}
-
-	public void save(String url, String xmiVersion) throws IOException {
-		save(url, xmiVersion, null);
-	}
-
-	public void save(String url, String xmiVersion, String encoding) throws IOException {
-		OutputStream out = new FileOutputStream(url);
-		save(out, xmiVersion, encoding);
-	}
-
-	public void save(OutputStream out, String xmiVersion) throws IOException {
-		save(out, xmiVersion, null);
-	}
-
-	public void save(OutputStream out, String xmiVersion, String encoding) throws IOException {
-		if (encoding != null) {
-			writer.getConfiguration().setEncoding(encoding);
-		}
-		writer.write(out, pack, xmiVersion);
 	}
 
 	private static void initMDR() {
@@ -426,12 +272,7 @@ public class ASMMDRModel extends ASMModel {
 				.setContextClassLoader(org.openide.util.lookup.ATLLookup.class.getClassLoader());
 
 		rep = MDRManager.getDefault().getDefaultRepository();
-
-		// reader = (XmiReader)Lookup.getDefault().lookup(XmiReader.class);
-		// writer = (XmiWriter)Lookup.getDefault().lookup(XmiWriter.class);
-		reader = XMIReaderFactory.getDefault().createXMIReader();
-		writer = XMIWriterFactory.getDefault().createXMIWriter();
-		rep.getExtent("MOF");
+//		rep.getExtent("MOF");
 	}
 
 	public RefPackage getPackage() {
@@ -447,30 +288,21 @@ public class ASMMDRModel extends ASMModel {
 	}
 
 	public static ASMModel getMOF() {
+		if (mofmm == null) {
+			mofmm = createMOF();
+		}
 		return mofmm;
 	}
 
 	private RefPackage pack;
 
-	private Map elementByXmiId;
+	protected Map elementByXmiId;
 
-	private Map xmiIdByElement;
+	protected Map xmiIdByElement;
 
 	private static ASMMDRModel mofmm;
 
-	public void dispose() {
-		if (pack != null) {
-			pack.refDelete();
-			pack = null;
-			// modelElements = null;
-			allModelElements = null;
-			elementByXmiId = null;
-			xmiIdByElement = null;
-			classifiers = null;
-		}
-	}
-
 	public void finalize() {
-		dispose();
+		getModelLoader().unload(this);
 	}
 }
