@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.eclipse.m2m.atl.dsls;singleton:=true
 Bundle-Version: 3.0.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-ClassPath: .,
- org.eclipse.m2m.atl.dsls.jar,
  resources/ACG/Syntax/ACG-parser.jar,
  resources/ATL/Syntax/ATL-parser.jar,
  libraries/org.eclipse.gmt.tcs.extractor.jar,

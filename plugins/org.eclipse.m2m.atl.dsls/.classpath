@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="libraries/org.eclipse.gmt.tcs.extractor.jar"/>
-	<classpathentry exported="true" kind="lib" path="libraries/org.eclipse.gmt.tcs.injector.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.4"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="resources/ACG/Syntax/ACG-parser.jar"/>
-	<classpathentry kind="lib" path="resources/ATL/Syntax/ATL-parser.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="resources/ACG/Syntax/ACG-parser.jar" sourcepath="org.eclipse.m2m.atl.dslssrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="resources/ATL/Syntax/ATL-parser.jar" sourcepath="org.eclipse.m2m.atl.dslssrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="libraries/org.eclipse.gmt.tcs.extractor.jar" sourcepath="org.eclipse.m2m.atl.dslssrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="libraries/org.eclipse.gmt.tcs.injector.jar" sourcepath="/org.eclipse.gmt.tcs.injector/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
