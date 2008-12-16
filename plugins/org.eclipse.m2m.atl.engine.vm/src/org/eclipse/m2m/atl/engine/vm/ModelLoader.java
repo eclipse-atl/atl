@@ -7,12 +7,14 @@
  *
  * Contributors:
  * 	   Frederic Jouault (INRIA) - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
@@ -31,14 +33,15 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
 
 /**
- * Model loading and saving facillity. Must be extended by concrete implementations such as for EMF or MDR.
- * This is only used in command-line mode at the present time.
+ * Model loading and saving facility. Must be extended by concrete implementations
+ * such as for EMF or MDR. This is only used in command-line mode at the present time.
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public abstract class ModelLoader {
 
-	protected static Map loadedModels = new HashMap();
+	protected Map loadedModels = new HashMap();
 
 	private Map injectors = new HashMap();
 	{
@@ -58,11 +61,28 @@ public abstract class ModelLoader {
 		extractors.put(prefix, ext);
 	}
 
-	public abstract ASMModel loadModel(String name, ASMModel metamodel, InputStream in);
+	/**
+	 * Loads a model with given name and metamodel from in.
+	 * Use this method only if there is no real URI available!
+	 * @param name The model name.
+	 * @param metamodel The metamodel of the model to be loaded.
+	 * @param in The input stream from which to load.
+	 * @return The loaded ASMModel.
+	 * @throws IOException
+	 */
+	public abstract ASMModel loadModel(String name, ASMModel metamodel, InputStream in) throws IOException;
 
-	protected abstract ASMModel realLoadModel(String name, ASMModel metamodel, String href);
+	protected abstract ASMModel realLoadModel(String name, ASMModel metamodel, String href) throws IOException;
 
-	public ASMModel loadModel(String name, ASMModel metamodel, String href) {
+	/**
+	 * Loads a model from the URI represented by href.
+	 * @param name The model name.
+	 * @param metamodel The metamodel of the model to be loaded.
+	 * @param href The model URI.
+	 * @return The loaded ASMModel.
+	 * @throws IOException
+	 */
+	public ASMModel loadModel(String name, ASMModel metamodel, String href) throws IOException {
 		ASMModel ret = null;
 
 		href = href.replaceAll("\\\\:", "<colon>");
@@ -71,8 +91,10 @@ public abstract class ModelLoader {
 			ss[i] = ss[i].replaceAll("<colon>", ":");
 		if (ss.length == 1) {
 			ret = realLoadModel(name, metamodel, ss[0]);
-		} else if (ss[0].equals("xmi")) {
-			String url = ss[ss.length - 1];
+		} else if(ss[0].equals("uri") || ss[0].equals("platform")) {
+			ret = realLoadModel(name, metamodel, href);
+		} else if(ss[0].equals("xmi")) {
+			final String url = ss[ss.length - 1];
 			ret = realLoadModel(name, metamodel, url);
 		} else {
 			ret = newModel(name, ss[ss.length - 1], metamodel);
@@ -168,9 +190,15 @@ public abstract class ModelLoader {
 
 	protected abstract void setParameter(String name, Object value);
 
-	protected abstract void realSave(ASMModel model, String href);
+	protected abstract void realSave(ASMModel model, String href) throws IOException;
 
-	public void save(ASMModel model, String href) {
+	/**
+	 * Saves the model to a writable URL.
+	 * @param model The model to save
+	 * @param href The writable URL
+	 * @throws IOException
+	 */
+	public void save(ASMModel model, String href) throws IOException {
 		String[] ss = href.split(":");
 		if (ss.length == 1) {
 			realSave(model, href);
@@ -259,4 +287,11 @@ public abstract class ModelLoader {
 	}
 
 	public abstract ASMModel getMOF();
+	
+	public abstract ASMModel getATL();
+	
+	public abstract ASMModel getBuiltInMetaModel(String name);
+	
+	public abstract void unload(ASMModel model);
+	
 }

@@ -7,6 +7,8 @@
  *
  * Contributors:
  * 	   Frederic Jouault (INRIA) - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
+ *     Andres Yie (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
@@ -23,7 +25,9 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
  * An ASMTransientLink represents an internal traceability link.
  * Other languages than ATL may be compiled to ATL VM and reuse this class.
  * They can also define their own traceability links using Maps and Tuples.
+ *
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ASMTransientLink extends ASMOclAny {
 
@@ -130,6 +134,52 @@ public class ASMTransientLink extends ASMOclAny {
 
 	public static ASMOclAny getVariable(StackFrame frame, ASMTransientLink self, ASMString name) {
 		return (ASMOclAny)self.variables.get(name.getSymbol());
+	}
+	/**
+	 * This method allows for retrieving all source elements for this link
+	 * without knowing the local variable names of the rule
+	 * that created the mappings. This reduces fragility.
+	 * @param frame
+	 * @param self
+	 * @return A Map of source element names to target elements for this link.
+	 * @author Andres Yie <ayiegarz@vub.ac.be>
+	 */
+	public static ASMMap getSourceElements(StackFrame frame, ASMTransientLink self) {
+		Map map = new HashMap();
+		
+		// It is necessary to create a new Map in order to have the name of the variables 
+		// in String
+		for(Iterator i = self.sourceElements.keySet().iterator() ; i.hasNext() ; ) {
+			Object name = i.next();
+			map.put(new ASMString(name.toString()), self.sourceElements.get(name));
+		}
+		
+		
+		return new ASMMap(map);
+	}
+	
+	/**
+	 * This method allows for retrieving all target elements for this link
+	 * without knowing the local variable names of the rule
+	 * that created the mappings. This reduces fragility.
+	 * @param frame
+	 * @param self
+	 * @return A Map of target element names to target elements for this link.
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	public static ASMMap getTargetElements(StackFrame frame, ASMTransientLink self) {
+		Map map = new HashMap();
+		
+
+		// It is necessary to create a new Map in order to have the name of the variables 
+		// in String
+		for(Iterator i = self.targetElements.keySet().iterator() ; i.hasNext() ; ) {
+			Object name = i.next();
+			map.put(new ASMString(name.toString()), self.targetElements.get(name));
+		}
+		
+		
+		return new ASMMap(map);
 	}
 
 	private Map sourceElements = new HashMap();

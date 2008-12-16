@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,6 +34,9 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public abstract class AtlModelHandler {
+
+	/** EMF model handler name. */
+	public static final String AMH_EMF = "EMF"; //$NON-NLS-1$
 
 	private static String[] modelHandlers;
 
@@ -144,100 +145,6 @@ public abstract class AtlModelHandler {
 	}
 
 	/**
-	 * Saves a model at the specified uri (as String).
-	 * 
-	 * @param model
-	 *            the model to save
-	 * @param uri
-	 *            the uri
-	 */
-	public abstract void saveModel(final ASMModel model, String uri);
-
-	/**
-	 * Saves a model in an output stream.
-	 * 
-	 * @param model
-	 *            the model to save
-	 * @param out
-	 *            the output stream
-	 */
-	public abstract void saveModel(final ASMModel model, OutputStream out);
-
-	/**
-	 * Returns the ATL metamodel.
-	 * 
-	 * @return the ATL metamodel
-	 */
-	public abstract ASMModel getAtl();
-
-	/**
-	 * Returns the MOF.
-	 * 
-	 * @return the MOF
-	 */
-	public abstract ASMModel getMof();
-
-	/**
-	 * Loads a model by an input stream.
-	 * 
-	 * @param name
-	 *            the model name
-	 * @param metamodel
-	 *            the metamodel
-	 * @param in
-	 *            the input stream
-	 * @return the loaded ASMModel
-	 */
-	public abstract ASMModel loadModel(String name, ASMModel metamodel, InputStream in);
-
-	/**
-	 * Creates a new ASMModel. Only use this method if the model URI is not known.
-	 * 
-	 * @param name
-	 *            The model name.
-	 * @param metamodel
-	 *            the metamodel
-	 * @deprecated Use {@link #newModel(String, String, ASMModel)} instead
-	 * @return the new ASMModel
-	 */
-	public abstract ASMModel newModel(String name, ASMModel metamodel);
-
-	/**
-	 * Creates a new ASMModel. Use this method whenever the model URI is known.
-	 * 
-	 * @param name
-	 *            The model name.
-	 * @param uri
-	 *            The model uri.
-	 * @param metamodel
-	 *            the metamodel
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 * @return the new ASMModel
-	 */
-	public abstract ASMModel newModel(String name, String uri, ASMModel metamodel);
-
-	/**
-	 * Performs necessary clean-up such as freeing memory. It should be redefined by any AtlModelHandler
-	 * requiring specific clean-upon actions to be performed. This method should be called once the ASMModel
-	 * is not needed any more.
-	 * 
-	 * @param model
-	 *            the model to dispose
-	 */
-	public void disposeOfModel(ASMModel model) {
-
-	}
-
-	/**
-	 * Returns the built in metamodel with the given name.
-	 * 
-	 * @param name
-	 *            the given name
-	 * @return the built in metamodel with the given name
-	 */
-	public abstract ASMModel getBuiltInMetaModel(String name);
-
-	/**
 	 * Returns true if the model is handled by the current model handler.
 	 * 
 	 * @param model
@@ -245,4 +152,10 @@ public abstract class AtlModelHandler {
 	 * @return true if the model is handled by the current model handler.
 	 */
 	public abstract boolean isHandling(ASMModel model);
+	
+	/**
+	 * @return A new ModelLoader instance corresponding to this kind of handler.
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	public abstract ModelLoader createModelLoader();
 }

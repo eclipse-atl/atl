@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -88,7 +89,8 @@ public class ASMProjector {
 
 	// BEGIN TOOLS
 	/* returns the last loaded model */
-	private static ASMModel loadModels(String name, Map params, Map models, ModelLoader ml) {
+	private static ASMModel loadModels(String name, Map params, Map models, ModelLoader ml)
+			throws IOException {
 		ASMModel ret = null;
 		String list = (String)params.get(name);
 		if (list != null) {

@@ -7,6 +7,7 @@
  *
  * Contributors:
  * 	   Frederic Jouault (INRIA) - initial API and implementation
+ *     Andres Yie (Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.vm.nativelib;
 
@@ -59,6 +60,7 @@ public class ASMTransientLinkSet extends ASMOclAny {
 			s = new ASMSequence();
 			self.linksByRule.put(rule, s);
 		}
+		self.links.add(link);
 		s.add(link);
 
 		Map linksBySourceElements2 = (Map)self.linksBySourceElementByRule.get(rule);
@@ -147,6 +149,17 @@ public class ASMTransientLinkSet extends ASMOclAny {
 
 		return ret;
 	}
+	
+	/**
+	 * This method allows for retrieving all the TransientLinks in a Sequence
+	 * @param frame
+	 * @param self
+	 * @return A Sequence of TransientLinks is returned.
+	 * @author Andres Yie <ayiegarz@vub.ac.be>
+	 */
+	public static ASMSequence getAllLinks(StackFrame frame, ASMTransientLinkSet self) {
+		return self.links;
+	}
 
 	private Map linksByRule = new HashMap();
 
@@ -155,4 +168,9 @@ public class ASMTransientLinkSet extends ASMOclAny {
 	private Map linksBySourceElement = new HashMap();
 
 	private Map linksByTargetElement = new HashMap();
+	
+	/**
+	 * The attribute links store the sequence of all TransientLinks
+	 */
+	private ASMSequence links = new ASMSequence();
 }
