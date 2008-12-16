@@ -133,10 +133,6 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		// Saving model
 		extractor.extract(umlModel, file.getFullPath().toString());
 
-		// Disposing models
-		umlModel.dispose();
-		refiningTraceModel.dispose();
-
 		// Refresh workspace
 		try {
 			file.getParent().refreshLocal(IProject.DEPTH_INFINITE, null);
