@@ -19,7 +19,7 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
 /**
  * Stores an UML specific invocation method.
- * 
+ *
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  * @author <a href="mailto:christophe.le-camus@c-s.fr">Christophe Le Camus</a>
