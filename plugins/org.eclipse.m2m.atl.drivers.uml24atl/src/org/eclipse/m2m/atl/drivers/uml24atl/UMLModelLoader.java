@@ -18,7 +18,7 @@ import org.eclipse.m2m.atl.drivers.emf4atl.EMFModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
- * Loads UML models into a {@link ResourceSet}. Make sure to use the same
+ * Loads UML models into a ResourceSet. Make sure to use the same
  * model loader for all EMF models used in a model transformation!
  * Use different model loaders for different threads.
  *
