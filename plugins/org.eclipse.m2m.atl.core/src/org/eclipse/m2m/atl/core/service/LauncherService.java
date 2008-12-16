@@ -157,11 +157,6 @@ public final class LauncherService {
 					paths.get(getRefinedModelName(modelName)));
 		}
 
-		// DISPOSE MODELS
-		for (Iterator<IModel> iterator = toDispose.iterator(); iterator.hasNext();) {
-			iterator.next().dispose();
-		}
-
 		return transformationResult;
 	}
 

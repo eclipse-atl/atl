@@ -60,11 +60,6 @@ public interface IModel {
 	void setIsTarget(boolean value);
 
 	/**
-	 * Deletes the model in memory.
-	 */
-	void dispose();
-	
-	/**
 	 * Returns the ModelFactory used to create the current model.
 	 * 
 	 * @return true if the model allows writing
