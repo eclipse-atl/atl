@@ -60,7 +60,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 	 * @param ml
 	 *            the model loader creating this model
 	 */
-	protected ASMUMLModel(String name, Resource extent, ASMUMLModel metamodel, boolean isTarget, ModelLoader ml) {
+	protected ASMUMLModel(String name, Resource extent, ASMEMFModel metamodel, boolean isTarget, ModelLoader ml) {
 		super(name, extent, metamodel, isTarget, ml);
 	}
 
@@ -85,6 +85,20 @@ public final class ASMUMLModel extends ASMEMFModel {
 	 */
 	protected ASMModelElement createASMModelElement(EObject object) {
 		return new ASMUMLModelElement(modelElements, this, object);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel#getASMModelElement(org.eclipse.emf.ecore.EObject)
+	 */
+	public synchronized ASMModelElement getASMModelElement(EObject object) {
+		//TODO reinstate double checked locking with final field when switching to Java 5
+		ASMModelElement ret = (ASMModelElement)modelElements.get(object);
+		if (ret == null) {
+			ret = new ASMUMLModelElement(modelElements, this, object);
+		}
+		return ret;
 	}
 
 	/*

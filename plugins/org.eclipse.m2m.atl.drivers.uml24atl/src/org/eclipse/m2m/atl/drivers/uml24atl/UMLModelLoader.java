@@ -43,7 +43,7 @@ public class UMLModelLoader extends EMFModelLoader {
 	 * @see org.eclipse.m2m.atl.drivers.emf4atl.EMFModelLoader#createASMEMFModel(java.lang.String, org.eclipse.emf.ecore.resource.Resource, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, boolean)
 	 */
 	protected ASMEMFModel createASMEMFModel(String name, Resource extent, ASMModel metamodel, boolean isTarget) {
-		return new ASMUMLModel(name, extent, (ASMUMLModel)metamodel, isTarget, this);
+		return new ASMUMLModel(name, extent, (ASMEMFModel)metamodel, isTarget, this);
 	}
 
 	/**
