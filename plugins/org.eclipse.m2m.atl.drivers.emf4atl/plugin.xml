@@ -9,6 +9,7 @@
       </modelhandler>
    </extension>
 
+<!-- EMF 2.4 specific: removed for compatibility
    <extension
          point="org.eclipse.emf.ecore.dynamic_package">
       <resource
@@ -28,4 +29,5 @@
             uri="http://www.eclipse.org/gmt/2005/Problem">
       </resource>
    </extension>
+  -->
 </plugin>

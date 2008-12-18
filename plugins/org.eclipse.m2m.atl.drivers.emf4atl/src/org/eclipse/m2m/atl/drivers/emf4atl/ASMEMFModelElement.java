@@ -39,7 +39,7 @@ import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
 import org.eclipse.m2m.atl.engine.vm.ClassNativeOperation;
 import org.eclipse.m2m.atl.engine.vm.Operation;

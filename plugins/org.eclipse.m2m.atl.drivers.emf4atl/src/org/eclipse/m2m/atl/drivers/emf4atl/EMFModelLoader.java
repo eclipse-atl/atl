@@ -44,7 +44,8 @@ import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.eclipse.gmt.tcs.injector.TCSInjector;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLResourceProvider;
 import org.eclipse.m2m.atl.engine.injectors.xml.XMLInjector;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -62,28 +63,28 @@ import org.osgi.framework.Bundle;
 public class EMFModelLoader extends ModelLoader {
 
 	protected static Bundle bundle = Platform.getBundle("org.eclipse.m2m.atl.drivers.emf4atl"); //$NON-NLS-1$
-	
+
 	protected static URI mofURI = EcorePackage.eINSTANCE.eResource().getURI();
-	
-	protected static String atlURI = "uri:http://www.eclipse.org/gmt/2005/ATL";
+
+	// protected static String atlURI = "uri:http://www.eclipse.org/gmt/2005/ATL";
 
 	protected static ASMModel atlmm;
-	
+
 	// instance counter for memory leak testing
 	private static int instanceCount;
-	
+
 	protected ResourceSet resourceSet;
 
 	protected Map bimm = new HashMap();
-	
+
 	protected boolean useIDs;
 
 	protected boolean removeIDs;
 
 	protected String encoding = "ISO-8859-1"; //$NON-NLS-1$
-	
+
 	protected Map saveOptions = new HashMap();
-	
+
 	/**
 	 * EMFModelLoader constructor.
 	 */
@@ -97,13 +98,13 @@ public class EMFModelLoader extends ModelLoader {
 		addInjector("xml", XMLInjector.class); //$NON-NLS-1$
 		addInjector("ebnf2", TCSInjector.class); //$NON-NLS-1$
 		if (Platform.isRunning()) {
-			//no IExtensionRegistry supported outside Eclipse
+			// no IExtensionRegistry supported outside Eclipse
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
-	        if (registry != null) {
+			if (registry != null) {
 				IExtensionPoint point = registry
 						.getExtensionPoint("org.eclipse.m2m.atl.engine.injector"); //$NON-NLS-1$
 				if (point != null) {
-					IExtension[] extensions = point.getExtensions();		
+					IExtension[] extensions = point.getExtensions();
 					for (int i = 0; i < extensions.length; i++) {
 						IConfigurationElement[] elements = extensions[i].getConfigurationElements();
 						for (int j = 0; j < elements.length; j++) {
@@ -113,11 +114,11 @@ public class EMFModelLoader extends ModelLoader {
 										elements[j].createExecutableExtension("class").getClass()); //$NON-NLS-2$
 							} catch (CoreException e) {
 								ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-							}				
+							}
 						}
-					 }
+					}
 				}
-	        }
+			}
 		}
 		saveOptions.put(XMIResource.OPTION_ENCODING, encoding);
 		instanceCount++;
@@ -136,7 +137,7 @@ public class EMFModelLoader extends ModelLoader {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#getMOF()
 	 */
 	public ASMModel getMOF() {
@@ -145,20 +146,20 @@ public class EMFModelLoader extends ModelLoader {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#getATL()
 	 */
 	public ASMModel getATL() {
 		if (atlmm == null) {
 			try {
-				atlmm = loadModel("ATL", getMOF(), atlURI);
+				atlmm = loadModel("ATL", getMOF(), ATLResourceProvider.getURL("ATL").openStream());
 			} catch (IOException e) {
 				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
 		return atlmm;
 	}
-	
+
 	/**
 	 * Creates a new {@link ASMEMFModel}.
 	 * 
@@ -178,23 +179,23 @@ public class EMFModelLoader extends ModelLoader {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#loadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.InputStream)
 	 */
 	public ASMModel loadModel(String name, ASMModel metamodel, InputStream in)
 			throws IOException {
 		ASMEMFModel ret = null;
-		
-        final Resource extent = resourceSet.createResource(URI.createURI(name));
+
+		final Resource extent = resourceSet.createResource(URI.createURI(name));
 		extent.load(in, resourceSet.getLoadOptions());
-        ret = createASMEMFModel(name, extent, metamodel, true);
-   		adaptMetamodel(ret, (ASMEMFModel)metamodel);
-   		ret.setIsTarget(false);
-		
+		ret = createASMEMFModel(name, extent, metamodel, true);
+		adaptMetamodel(ret, (ASMEMFModel)metamodel);
+		ret.setIsTarget(false);
+
 		loadedModels.put(name, ret);
 		return ret;
 	}
-	
+
 	/**
 	 * Loads an {@link ASMEMFModel} with the given name, metamodel and uri.
 	 * 
@@ -210,13 +211,13 @@ public class EMFModelLoader extends ModelLoader {
 	public ASMEMFModel loadModel(String name, ASMModel metamodel, URI uri)
 			throws IOException {
 		ASMEMFModel ret = null;
-		
+
 		if (mofURI.equals(uri)) {
 			ret = (ASMEMFModel)getMOF();
 		} else {
 			final Resource extent = resourceSet.getResource(uri, true);
 			ret = createASMEMFModel(name, extent, metamodel, true);
-    		adaptMetamodel(ret, (ASMEMFModel)metamodel);
+			adaptMetamodel(ret, (ASMEMFModel)metamodel);
 			ret.setIsTarget(false);
 		}
 
@@ -226,15 +227,15 @@ public class EMFModelLoader extends ModelLoader {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#realLoadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String)
 	 */
 	protected ASMModel realLoadModel(String name, ASMModel metamodel, String href) {
 		ASMEMFModel ret = null;
-		
+
 		try {
 			if (href.startsWith("uri:")) {
-				//only initialise on demand (after loading instance of this metamodel)
+				// only initialise on demand (after loading instance of this metamodel)
 				String uri = href.substring(4);
 				if (mofURI.toString().equals(uri)) {
 					ret = (ASMEMFModel)getMOF();
@@ -264,14 +265,14 @@ public class EMFModelLoader extends ModelLoader {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#newModel(java.lang.String, java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
 	 */
 	public ASMModel newModel(String name, String uri, ASMModel metamodel) {
 		ASMEMFModel ret = null;
-		
-        Resource extent = resourceSet.createResource(URI.createURI(uri));
-        ret = createASMEMFModel(name, extent, metamodel, true);
+
+		Resource extent = resourceSet.createResource(URI.createURI(uri));
+		ret = createASMEMFModel(name, extent, metamodel, true);
 
 		loadedModels.put(name, ret);
 		return ret;
@@ -286,13 +287,14 @@ public class EMFModelLoader extends ModelLoader {
 		ASMModel ret = (ASMModel)bimm.get(name);
 
 		if (ret == null) {
-			URL resource = null;
-			if (bundle == null) {
-				resource = EMFModelLoader.class.getResource(
-						"../../../../../../resources/" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
-			} else {
-				resource = bundle.getResource("resources/" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
+			URL resource = ATLResourceProvider.getURL(name);
+			// TODO refactor atl.common to use osgi if necessary
+			// if (bundle == null) {
+			// resource = EMFModelLoader.class.getResource(
+			//						"../../../../../../resources/" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
+			// } else {
+			//				resource = bundle.getResource("resources/" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
+			// }
 
 			try {
 				ret = loadModel(name, getMOF(), resource.openStream());
@@ -308,7 +310,7 @@ public class EMFModelLoader extends ModelLoader {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#setParameter(java.lang.String, java.lang.Object)
 	 */
 	protected void setParameter(String name, Object value) {
@@ -331,7 +333,7 @@ public class EMFModelLoader extends ModelLoader {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#realSave(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String)
 	 */
 	protected void realSave(ASMModel model, String href)
@@ -340,7 +342,7 @@ public class EMFModelLoader extends ModelLoader {
 		if (href != null) {
 			r.setURI(URI.createURI(href));
 		}
-		
+
 		if (useIDs || removeIDs) {
 			XMIResource xr = (XMIResource)r;
 			int id = 1;
@@ -370,7 +372,7 @@ public class EMFModelLoader extends ModelLoader {
 			throw new IOException(e.getLocalizedMessage());
 		}
 	}
-	
+
 	/**
 	 * Adapts model if its metamodel is MOF, such that its NsURI is registered
 	 * and primitive datatypes are mapped to Java types.
@@ -421,7 +423,7 @@ public class EMFModelLoader extends ModelLoader {
 			}
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -438,7 +440,7 @@ public class EMFModelLoader extends ModelLoader {
 		}
 		super.finalize();
 	}
-	
+
 	/**
 	 * Finalizes r. This implementation does nothing, but allows for overriding
 	 * in subclasses.
@@ -446,9 +448,9 @@ public class EMFModelLoader extends ModelLoader {
 	 * @param r The {@link Resource} to finalize.
 	 */
 	protected void finalizeResource(Resource r) {
-		//do nothing
+		// do nothing
 	}
-	
+
 	private static String resourceSetToString(ResourceSet rs) {
 		List ret = new ArrayList();
 		for (Iterator i = rs.getResources().iterator(); i.hasNext();) {

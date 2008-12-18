@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
