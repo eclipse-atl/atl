@@ -14,7 +14,7 @@ package org.eclipse.m2m.atl.core.ui.vm.asm;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.core.ModelFactory;

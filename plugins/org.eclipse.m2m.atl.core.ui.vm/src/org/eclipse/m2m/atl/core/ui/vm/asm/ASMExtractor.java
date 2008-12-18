@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
