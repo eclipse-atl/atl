@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.23 2008/12/16 08:17:10 dwagelaar Exp $
+ * $Id: ExecEnv.java,v 1.24 2008/12/18 09:43:01 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -1057,7 +1057,7 @@ public class ExecEnv {
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return Arrays.asList(((String)localVars[0]).split((String)localVars[1]));
+						return new ArrayList<String>(Arrays.asList(((String)localVars[0]).split((String)localVars[1])));
 					}
 				});
 		operationsByName.put("toInteger", new Operation(1) { //$NON-NLS-1$
