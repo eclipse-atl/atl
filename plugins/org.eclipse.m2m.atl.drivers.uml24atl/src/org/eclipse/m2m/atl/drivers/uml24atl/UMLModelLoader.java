@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.drivers.uml24atl;
 
+import java.io.IOException;
+
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.common.ATLLogger;
@@ -54,6 +56,16 @@ public class UMLModelLoader extends EMFModelLoader {
 	protected void finalizeResource(Resource r) {
 		r.unload();
 		ATLLogger.fine(r + " is unloaded");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.drivers.emf4atl.EMFModelLoader#realSave(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String)
+	 */
+	protected void realSave(ASMModel model, String href) throws IOException {
+		((ASMUMLModel)model).applyDelayedInvocations();
+		super.realSave(model, href);
 	}
 	
 }
