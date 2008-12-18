@@ -12,7 +12,7 @@ package org.eclipse.m2m.atl.drivers.uml24atl;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMIResource;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.EMFModelLoader;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;

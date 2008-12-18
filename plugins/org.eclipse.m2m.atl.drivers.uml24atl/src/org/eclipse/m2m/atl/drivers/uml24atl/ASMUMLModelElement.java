@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
 import org.eclipse.m2m.atl.engine.vm.ClassNativeOperation;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
