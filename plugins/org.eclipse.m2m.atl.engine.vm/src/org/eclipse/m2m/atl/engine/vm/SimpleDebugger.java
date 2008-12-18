@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 
 /**
  * A simple ATL VM debugger with step tracing and basic

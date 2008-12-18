@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
 import org.eclipse.m2m.atl.engine.vm.Operation;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBoolean;

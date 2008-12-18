@@ -12,7 +12,7 @@ package org.eclipse.m2m.atl.engine.injectors.xml;
 
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;

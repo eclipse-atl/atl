@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.injectors.Injector;
 import org.eclipse.m2m.atl.engine.injectors.xml.XMLInjector;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;

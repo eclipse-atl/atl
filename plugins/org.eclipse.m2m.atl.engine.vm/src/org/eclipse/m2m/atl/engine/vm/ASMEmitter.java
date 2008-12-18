@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclSimpleType;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclType;

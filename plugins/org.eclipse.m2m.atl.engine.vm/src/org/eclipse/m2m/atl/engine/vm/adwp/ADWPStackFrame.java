@@ -12,7 +12,7 @@ package org.eclipse.m2m.atl.engine.vm.adwp;
 
 import java.util.List;
 
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.DummyDebugger;
 import org.eclipse.m2m.atl.engine.vm.ExecEnv;
 import org.eclipse.m2m.atl.engine.vm.Operation;

@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 
 /**
  * A basic plugin facillity used in command-line. Eclipse plugins are used within Eclipse.

@@ -13,7 +13,7 @@ package org.eclipse.m2m.atl.engine.vm.nativelib;
 
 import java.util.Set;
 
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 

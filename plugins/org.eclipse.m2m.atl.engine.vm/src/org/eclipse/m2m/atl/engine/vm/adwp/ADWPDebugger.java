@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 
 /**
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>

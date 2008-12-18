@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 
