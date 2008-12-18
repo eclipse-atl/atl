@@ -21,7 +21,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.adwp.BooleanValue;
 import org.eclipse.m2m.atl.engine.vm.adwp.IntegerValue;
 import org.eclipse.m2m.atl.engine.vm.adwp.NullValue;
