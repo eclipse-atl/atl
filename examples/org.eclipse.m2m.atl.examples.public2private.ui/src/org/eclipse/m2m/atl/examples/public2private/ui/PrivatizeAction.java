@@ -56,8 +56,8 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		Bundle bundle = Platform.getBundle("org.eclipse.m2m.atl.examples.public2private"); //$NON-NLS-1$
 		asmURL = bundle.getEntry("transformation/Public2Private.asm"); //$NON-NLS-1$
 		try {
-			injector = CoreService.getInjector("EMF");
-			extractor = CoreService.getExtractor("EMF");			
+			injector = CoreService.getInjector("EMF"); //$NON-NLS-1$
+			extractor = CoreService.getExtractor("EMF"); //$NON-NLS-1$			
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}		
