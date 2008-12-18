@@ -105,7 +105,7 @@ public final class CoreService {
 	 * @return the new ModelFactory
 	 */
 	public static ModelFactory createModelFactory(String name) throws CoreException {
-		return (ModelFactory)getExtensionClass(MODELS_EXTENSION_POINT, "modelFactory", name);
+		return (ModelFactory)getExtensionClass(MODELS_EXTENSION_POINT, "modelFactory", name); //$NON-NLS-1$
 	}
 
 	private static Object getExtensionClass(String extensionId, String executableExtensionName,
