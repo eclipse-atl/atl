@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.console,
  org.eclipse.debug.ui,
  org.eclipse.emf.ecore,
- org.eclipse.m2m.atl,
+ org.eclipse.m2m.atl.common,
  org.eclipse.m2m.atl.core,
  org.eclipse.m2m.atl.engine
 Bundle-Activator: org.eclipse.m2m.atl.core.ui.ATLCoreUIPlugin

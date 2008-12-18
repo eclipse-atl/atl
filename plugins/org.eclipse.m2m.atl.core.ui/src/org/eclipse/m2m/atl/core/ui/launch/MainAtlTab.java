@@ -46,7 +46,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.ui.ATLCoreUIPlugin;
 import org.eclipse.m2m.atl.core.ui.Messages;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;

@@ -32,7 +32,7 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.core.ui.ATLCoreUIPlugin;
 import org.eclipse.m2m.atl.core.ui.Messages;

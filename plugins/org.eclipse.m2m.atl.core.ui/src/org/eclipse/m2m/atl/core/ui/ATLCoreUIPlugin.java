@@ -16,8 +16,8 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.m2m.atl.ATLLogger;
-import org.eclipse.m2m.atl.ConsoleStreamHandler;
+import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.common.ConsoleStreamHandler;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
