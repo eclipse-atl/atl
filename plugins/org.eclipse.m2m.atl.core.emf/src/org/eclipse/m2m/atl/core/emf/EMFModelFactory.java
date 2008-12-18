@@ -25,7 +25,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLResourceProvider;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.core.ModelFactory;
@@ -134,7 +135,7 @@ public final class EMFModelFactory extends ModelFactory {
 	@Override
 	public IReferenceModel getBuiltInResource(String name) {
 		EMFReferenceModel model = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this), this);
-		URL url = ATLLogger.class.getResource("resources/" + name + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
+		URL url = ATLResourceProvider.getURL(name); //$NON-NLS-1$ //$NON-NLS-2$
 		Resource builtin = resourceSet.createResource(URI.createURI(name));
 		try {
 			builtin.load(url.openStream(), Collections.EMPTY_MAP);	
