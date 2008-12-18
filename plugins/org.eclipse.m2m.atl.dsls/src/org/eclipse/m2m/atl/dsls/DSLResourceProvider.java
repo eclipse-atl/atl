@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.dsls.textsource.TextSource;
 import org.eclipse.m2m.atl.dsls.textsource.URLTextSource;
 import org.osgi.framework.Bundle;

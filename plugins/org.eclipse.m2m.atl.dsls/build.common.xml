@@ -1,0 +1,14 @@
+<project name="copy.ecore.to.common" default="all">
+	<property name="source.path" value="/org.eclipse.m2m.atl.dsls/resources"/>
+	<property name="target.path" value="/org.eclipse.m2m.atl.common/resources"/>
+	
+	<eclipse.convertPath property="source.absolute.path" resourcepath="${source.path}"/>
+	<eclipse.convertPath property="target.absolute.path" resourcepath="${target.path}"/>
+	
+	<target name="all">
+		<copy todir="${target.absolute.path}">
+			<fileset file="${source.absolute.path}/ATL/Metamodel/ATL.ecore"/>
+			<fileset file="${source.absolute.path}/ATL/RuntimeSupport/RefiningTrace.ecore"/>
+		</copy>
+	</target>
+</project>
