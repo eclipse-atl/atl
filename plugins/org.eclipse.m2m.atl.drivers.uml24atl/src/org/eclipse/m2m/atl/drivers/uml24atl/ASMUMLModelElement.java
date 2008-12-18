@@ -157,7 +157,7 @@ public class ASMUMLModelElement extends ASMEMFModelElement {
 	 * 
 	 * @param frame
 	 *            the environment
-	 * @parma opName the name of the operation to invoke or delay
+	 * @param opName the name of the operation to invoke or delay
 	 * @param arguments
 	 *            arguments of the method
 	 * @see org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement#invoke(org.eclipse.m2m.atl.engine.vm.StackFrame,
