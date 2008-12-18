@@ -211,7 +211,6 @@ public class EMFModelLoader extends ModelLoader {
 	public ASMEMFModel loadModel(String name, ASMModel metamodel, URI uri)
 			throws IOException {
 		ASMEMFModel ret = null;
-
 		if (mofURI.equals(uri)) {
 			ret = (ASMEMFModel)getMOF();
 		} else {
@@ -394,7 +393,7 @@ public class EMFModelLoader extends ModelLoader {
 					p.setNsURI(nsURI);
 				} else if (mofURI.toString().equals(nsURI)) {
 					if (!((ASMEMFModel)getMOF()).getExtent().equals(p.eResource())) {
-						throw new IOException("Cannot overload Ecore");
+						ATLLogger.warning("Cannot overload Ecore");
 					}
 				}
 				synchronized (resourceSet) {
