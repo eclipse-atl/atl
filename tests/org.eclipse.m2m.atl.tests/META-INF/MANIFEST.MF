@@ -19,7 +19,7 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.m2m.atl.engine,
  org.eclipse.m2m.atl.core,
  org.eclipse.m2m.atl.drivers.emf4atl,
- org.eclipse.m2m.atl,
+ org.eclipse.m2m.atl.common,
  org.eclipse.m2m.atl.engine.emfvm,
  org.eclipse.m2m.atl.core.emf,
  org.eclipse.m2m.atl.core.ui.vm
