@@ -145,7 +145,7 @@ public class ASMModelWrapper implements IModel, IReferenceModel {
 		if (am != null) {
 			return am.getName();
 		}
-		return "<unnamed>";
+		return "<unnamed>"; //$NON-NLS-1$
 	}
 
 	/**
