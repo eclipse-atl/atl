@@ -1292,7 +1292,7 @@ public class ExecEnv {
 		operationsByName.put("split", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
-				return Arrays.asList(((String)localVars[0]).split((String)localVars[1]));					
+				return new ArrayList(Arrays.asList(((String)localVars[0]).split((String)localVars[1])));					
 			}
 		});
 		operationsByName.put("toInteger", new Operation(1) {
