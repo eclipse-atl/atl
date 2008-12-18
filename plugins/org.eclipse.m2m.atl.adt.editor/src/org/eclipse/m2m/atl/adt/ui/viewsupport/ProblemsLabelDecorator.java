@@ -26,8 +26,8 @@ import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import org.eclipse.jface.viewers.LabelProviderChangedEvent;
-import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.swt.graphics.Image;
 
 public class ProblemsLabelDecorator implements ILabelDecorator, ILightweightLabelDecorator {

@@ -27,7 +27,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.ide,
  org.eclipse.ui.views,
  org.eclipse.ui.workbench.texteditor,
- org.eclipse.m2m.atl,
+ org.eclipse.m2m.atl.common,
  org.eclipse.m2m.atl.engine,
  org.eclipse.m2m.atl.adt.debug
 Bundle-ActivationPolicy: lazy

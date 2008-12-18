@@ -27,8 +27,8 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
-import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 import org.eclipse.ui.IEditorPart;
 

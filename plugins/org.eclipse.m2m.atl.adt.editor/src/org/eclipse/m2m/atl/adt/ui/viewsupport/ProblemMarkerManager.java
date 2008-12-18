@@ -24,7 +24,7 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 
 /**
  * Listens to resource deltas and filters for marker changes of type IMarker.PROBLEM Viewers showing error

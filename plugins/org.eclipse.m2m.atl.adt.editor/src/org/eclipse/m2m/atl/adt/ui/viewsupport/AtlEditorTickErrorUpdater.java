@@ -19,9 +19,9 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 

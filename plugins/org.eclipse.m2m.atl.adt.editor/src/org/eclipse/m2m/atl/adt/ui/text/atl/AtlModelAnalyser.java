@@ -17,7 +17,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.m2m.atl.ATLLogger;
+import org.eclipse.m2m.atl.common.ATLLogger;
 
 /**
  * Atl model analyser, used to get information from an incomplete ATL model.

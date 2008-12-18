@@ -12,8 +12,8 @@ package org.eclipse.m2m.atl.adt.ui.outline;
 
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.ATLLogger;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
