@@ -9,7 +9,7 @@
  *     INRIA - initial API and implementation
  *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: EMFModel.java,v 1.4 2008/12/16 13:45:02 wpiers Exp $
+ * $Id: EMFModel.java,v 1.5 2008/12/19 18:05:37 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -44,7 +44,7 @@ public class EMFModel implements IModel {
 	private Resource resource;
 
 	private EMFModelFactory modelFactory;
-	
+
 	private boolean isTarget;
 
 	private Map<EClass, Set<EObject>> elementsByType = new HashMap<EClass, Set<EObject>>();
@@ -59,7 +59,7 @@ public class EMFModel implements IModel {
 	 */
 	public EMFModel(EMFReferenceModel referenceModel, EMFModelFactory mf) {
 		this.referenceModel = referenceModel;
-		this.modelFactory = mf;	
+		this.modelFactory = mf;
 	}
 
 	/**
@@ -101,10 +101,12 @@ public class EMFModel implements IModel {
 		if (ret == null) {
 			ret = new LinkedHashSet<EObject>();
 			final Resource res = getResource();
-			for (Iterator<EObject> iterator = res.getAllContents(); iterator.hasNext();) {
-				EObject element = iterator.next();
-				if (ec.isInstance(element)) {
-					ret.add(element);
+			if (res != null) {
+				for (Iterator<EObject> iterator = res.getAllContents(); iterator.hasNext();) {
+					EObject element = iterator.next();
+					if (ec.isInstance(element)) {
+						ret.add(element);
+					}
 				}
 			}
 			elementsByType.put(ec, ret);
@@ -133,7 +135,7 @@ public class EMFModel implements IModel {
 
 	/**
 	 * Returns the resource.
-	 *
+	 * 
 	 * @return the resource
 	 */
 	public Resource getResource() {
@@ -142,8 +144,9 @@ public class EMFModel implements IModel {
 
 	/**
 	 * Sets the resource with the resource value.
-	 *
-	 * @param resource the resource to set
+	 * 
+	 * @param resource
+	 *            the resource to set
 	 */
 	public void setResource(Resource resource) {
 		this.resource = resource;
@@ -151,7 +154,7 @@ public class EMFModel implements IModel {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.core.IModel#getModelFactory()
 	 */
 	public EMFModelFactory getModelFactory() {
@@ -162,20 +165,22 @@ public class EMFModel implements IModel {
 	 * Finalizes the model.
 	 */
 	public void commitToResource() {
-		final Resource res  = getResource();
+		final Resource res = getResource();
 		List<EObject> toDelete = new ArrayList<EObject>();
-		for (Iterator<EObject> i = res.getAllContents(); i.hasNext();) {
-			EObject eo = i.next();
-			if (eo.eContainer() != null) {
-				toDelete.add(eo);
+		if (res != null) {
+			for (Iterator<EObject> i = res.getAllContents(); i.hasNext();) {
+				EObject eo = i.next();
+				if (eo.eContainer() != null) {
+					toDelete.add(eo);
+				}
 			}
+			res.getContents().removeAll(toDelete);
 		}
-		res.getContents().removeAll(toDelete);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see java.lang.Object#finalize()
 	 */
 	@Override
