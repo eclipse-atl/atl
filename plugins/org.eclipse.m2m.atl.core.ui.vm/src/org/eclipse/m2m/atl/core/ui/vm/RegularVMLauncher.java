@@ -52,7 +52,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
  */
 public class RegularVMLauncher implements ILauncher {
 
-	private static final String LAUNCHER_NAME = "RegularVM"; //$NON-NLS-1$
+	private static final String LAUNCHER_NAME = "Regular VM (with debugger)"; //$NON-NLS-1$
 
 	private Map<String, IModel> models;
 

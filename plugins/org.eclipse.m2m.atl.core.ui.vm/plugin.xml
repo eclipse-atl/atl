@@ -13,7 +13,7 @@
          point="org.eclipse.m2m.atl.core.launcher">
       <launcher
             class="org.eclipse.m2m.atl.core.ui.vm.RegularVMLauncher"
-            name="RegularVM">
+            name="Regular VM (with debugger)">
          <option
                description="Allow inter-model references"
                name="allowInterModelReferences">
