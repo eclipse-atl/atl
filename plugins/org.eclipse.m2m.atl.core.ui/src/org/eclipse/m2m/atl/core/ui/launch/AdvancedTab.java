@@ -180,6 +180,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 			public void modifyText(ModifyEvent e) {
 				clearCheckButtons();
 				buildCheckButtons();
+				container.layout();
 				updateLaunchConfigurationDialog();
 			}
 		});
