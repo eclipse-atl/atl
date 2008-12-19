@@ -38,7 +38,7 @@ public final class ATLResourceProvider {
 	 */
 	public static URL getURL(String resourceName) {
 		return ATLResourceProvider.class
-				.getResource("../../../../../../resources/" + resourceName + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
+				.getResource("resources/" + resourceName + ".ecore"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }
