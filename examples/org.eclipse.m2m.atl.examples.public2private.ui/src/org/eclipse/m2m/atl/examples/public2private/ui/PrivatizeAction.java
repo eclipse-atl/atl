@@ -108,7 +108,7 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		// Getting launcher
 		ILauncher launcher = null;
 		try {
-			launcher = CoreService.getLauncher("EMFVM"); //$NON-NLS-1$
+			launcher = CoreService.getLauncher("EMF-specific VM"); //$NON-NLS-1$
 			launcher.initialize(Collections.<String, Object> emptyMap());
 		} catch (CoreException e) {
 			e.printStackTrace();
