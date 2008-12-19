@@ -12,7 +12,6 @@ package org.eclipse.m2m.atl.tests;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Handler;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Plugin;
@@ -36,8 +35,6 @@ public class AtlTestPlugin extends Plugin {
 	/** the main resourceSet. */
 	private static ResourceSet resourceSet = new ResourceSetImpl();
 
-	private static Handler handler;
-	
 	/**
 	 * Default constructor for the plugin.
 	 */
@@ -57,18 +54,17 @@ public class AtlTestPlugin extends Plugin {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		handler = new StandardStreamHandler();
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
