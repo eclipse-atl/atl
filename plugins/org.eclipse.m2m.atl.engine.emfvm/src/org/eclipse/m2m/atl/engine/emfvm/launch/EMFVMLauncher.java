@@ -21,7 +21,7 @@ import org.eclipse.m2m.atl.engine.emfvm.Messages;
  */
 public class EMFVMLauncher implements ILauncher {
 
-	private static final String LAUNCHER_NAME = "EMFVM"; //$NON-NLS-1$
+	private static final String LAUNCHER_NAME = "EMF-specific VM"; //$NON-NLS-1$
 
 	private static final String MODEL_FACTORY_NAME = "EMF"; //$NON-NLS-1$
 

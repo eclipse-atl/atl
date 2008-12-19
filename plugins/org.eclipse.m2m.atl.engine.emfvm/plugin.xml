@@ -17,7 +17,7 @@
          point="org.eclipse.m2m.atl.core.launcher">
       <launcher
             class="org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher"
-            name="EMFVM">
+            name="EMF-specific VM">          
          <option
                description="Run mode only: print execution times to console"
                name="printExecutionTime"></option>
