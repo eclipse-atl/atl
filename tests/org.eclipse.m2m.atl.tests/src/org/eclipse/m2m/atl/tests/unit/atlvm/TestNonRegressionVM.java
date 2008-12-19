@@ -26,7 +26,7 @@ public class TestNonRegressionVM extends TestNonRegressionTransfo {
 	 */
 	@Override
 	protected String getVMName() {
-		return "RegularVM"; //$NON-NLS-1$
+		return "Regular VM (with debugger)"; //$NON-NLS-1$
 	}
 
 	/**

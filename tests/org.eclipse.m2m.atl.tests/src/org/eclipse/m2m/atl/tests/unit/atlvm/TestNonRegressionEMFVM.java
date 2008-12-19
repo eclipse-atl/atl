@@ -26,7 +26,7 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 	 */
 	@Override
 	protected String getVMName() {
-		return "EMFVM"; //$NON-NLS-1$
+		return "EMF-specific VM"; //$NON-NLS-1$
 	}
 
 	/**
