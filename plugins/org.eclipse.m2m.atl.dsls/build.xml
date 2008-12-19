@@ -2,12 +2,10 @@
 	<property name="ammacore.path" value="/AMMACore"/>
 	<property name="copy.to.path" value="/org.eclipse.m2m.atl.dsls/resources"/>
 	<property name="export.to.path" value="/org.eclipse.m2m.atl.dsls/libraries"/>
-	<property name="copy.ecore.to.path" value="/org.eclipse.m2m.atl.common/resources"/>
 	
 	<eclipse.convertPath property="ammacore.absolute.path" resourcepath="${ammacore.path}"/>
 	<eclipse.convertPath property="copy.to.absolute.path" resourcepath="${copy.to.path}"/>
 	<eclipse.convertPath property="export.to.absolute.path" resourcepath="${export.to.path}"/>
-	<eclipse.convertPath property="copy.ecore.to.absolute.path" resourcepath="${copy.ecore.to.path}"/>
 	
 	<target name="all">
 		<loadfile property="files" srcfile="${copy.to.absolute.path}/contents.list">
@@ -44,12 +42,5 @@
 		<delete file="${export.to.absolute.path}/${jar.filename}"/>
 		
 		<jar destfile="${export.to.absolute.path}/${jar.filename}" basedir="${basedir}"/>
-	</target>
-
-	<target name="export.ecore.files">
-		<copy todir="${copy.ecore.to.absolute.path}">
-			<fileset file="${copy.to.absolute.path}/ATL/Metamodel/ATL.ecore"/>
-			<fileset file="${copy.to.absolute.path}/ATL/RuntimeSupport/RefiningTrace.ecore"/>
-		</copy>
 	</target>
 </project>
