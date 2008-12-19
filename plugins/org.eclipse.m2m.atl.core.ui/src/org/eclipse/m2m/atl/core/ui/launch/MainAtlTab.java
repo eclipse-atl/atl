@@ -752,10 +752,9 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 */
 	@Override
 	public boolean canSave() {
-		boolean ret = true;
 		if (atlPathText.getText().equals("")) { //$NON-NLS-1$
 			this.setErrorMessage(Messages.getString("MainAtlTab.GIVETRANSFORMATIONNAME")); //$NON-NLS-1$
-			ret = false;
+			return false;
 		}
 		for (Iterator<Entry<String, Map<String, Object>>> i = metamodelsGroupWidgets.entrySet().iterator(); i
 				.hasNext();) {
@@ -766,16 +765,11 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			Button isMetametamodel = (Button)widgets.get("isMetametamodel"); //$NON-NLS-1$
 			if ((metamodelLocation.getText().length() == 0) && (!isMetametamodel.getSelection())) {
 				this.setErrorMessage(Messages.getString("MainAtlTab.GIVEPATHFOR") + mName); //$NON-NLS-1$
-				ret = false;
+				return false;
 			}
 		}
-		if (!canSaveModelsGroupWidgets(sourceModelsGroupWidgets)
-				|| !canSaveModelsGroupWidgets(targetModelsGroupWidgets)
-				|| !canSaveModelsGroupWidgets(librariesGroupWidgets)) {
-			ret = false;
-		}
-		this.setErrorMessage(null);
-		return ret;
+		return canSaveGroupWidgets(sourceModelsGroupWidgets) && canSaveGroupWidgets(targetModelsGroupWidgets)
+				&& canSaveGroupWidgets(librariesGroupWidgets);
 	}
 
 	/**
@@ -785,7 +779,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 *            input/output models or libraries widgets
 	 * @return True if modelsGroupWidgets is in a correct state, false otherwise
 	 */
-	private boolean canSaveModelsGroupWidgets(Map<String, Map<String, Object>> modelsGroupWidgets) {
+	private boolean canSaveGroupWidgets(Map<String, Map<String, Object>> modelsGroupWidgets) {
 		for (Iterator<Entry<String, Map<String, Object>>> i = modelsGroupWidgets.entrySet().iterator(); i
 				.hasNext();) {
 			Entry<String, Map<String, Object>> entry = i.next();
@@ -797,6 +791,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 				return false;
 			}
 		}
+		this.setErrorMessage(null);
 		return true;
 	}
 
