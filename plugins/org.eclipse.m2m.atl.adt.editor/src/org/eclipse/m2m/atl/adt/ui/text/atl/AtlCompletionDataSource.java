@@ -23,6 +23,14 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
@@ -76,19 +84,62 @@ public class AtlCompletionDataSource {
 	 * @return the proposals
 	 */
 	public List getURIProposals(String prefix, int offset) {
-		List res = new ArrayList();
-		Set uris = EPackage.Registry.INSTANCE.keySet();
-		for (Iterator iterator = uris.iterator(); iterator.hasNext();) {
-			Object object = iterator.next();
-			String replacementString = object.toString();
-			if (startsWithIgnoreCase(prefix, replacementString)) {
-				ICompletionProposal proposal = new AtlCompletionProposal(replacementString, offset
-						- prefix.length(), replacementString.length(), null, replacementString, 0, null);
-				res.add(proposal);
+		return getProposalsFromList(offset, prefix, EPackage.Registry.INSTANCE.keySet().toArray());
+	}
+
+	/**
+	 * Computes proposals for EMF paths.
+	 * 
+	 * @param prefix
+	 *            the current prefix
+	 * @param offset
+	 *            the current offset
+	 * @return the proposals
+	 */
+	public List getPathProposals(String prefix, int offset) {
+		final IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		final IWorkspaceRoot root = workspace.getRoot();
+		final IProject[] projects = root.getProjects();
+		final List allFiles = new ArrayList();
+		try {
+			getWorkspaceEcoreFileNames(projects, allFiles);
+		} catch (final CoreException e1) {
+			// do nothing -- fail silentlty
+		}
+		return getProposalsFromList(offset, prefix, allFiles.toArray());
+	}
+
+	/**
+	 * Get all files contained in a set of resources.
+	 * 
+	 * @param resources
+	 *            the resources to scan
+	 * @param fileNames
+	 *            the result files
+	 * @throws CoreException
+	 *             if {@link org.eclipse.core.resources.IContainer#members()} on a resource fails. Reasons
+	 *             include:
+	 *             <ul>
+	 *             <li>This resource does not exist.</li>
+	 *             <li>This resource is a project that is not open.</li>
+	 *             </ul>
+	 */
+	private static void getWorkspaceEcoreFileNames(final IResource[] resources, final List fileNames)
+			throws CoreException {
+		for (int i = 0; i < resources.length; i++) {
+			final IResource resource = resources[i];
+			if (resource.isAccessible()) {
+				if (resource instanceof IFile) {
+					if (resource.getFileExtension().equals("ecore")) {
+						fileNames.add(resource.getFullPath());
+					}
+				} else if (resource instanceof IProject) {
+					getWorkspaceEcoreFileNames(((IProject)resource).members(), fileNames);
+				} else if (resource instanceof IFolder) {
+					getWorkspaceEcoreFileNames(((IFolder)resource).members(), fileNames);
+				}
 			}
 		}
-		Collections.sort(res);
-		return res;
 	}
 
 	/**
@@ -119,6 +170,20 @@ public class AtlCompletionDataSource {
 			}
 		}
 		return res;
+	}
+
+	/**
+	 * Metamodels names proposals.
+	 * 
+	 * @param prefix
+	 *            completion prefix
+	 * @param offset
+	 *            completion offset
+	 * @return the filtered proposals
+	 */
+	public List getMetamodelsProposals(String prefix, int offset) {
+		return getProposalsFromList(offset, prefix, fEditor.getSourceManager().getMetamodelPackages(
+				AtlSourceManager.FILTER_ALL_METAMODELS).keySet().toArray());
 	}
 
 	/**
@@ -338,14 +403,7 @@ public class AtlCompletionDataSource {
 		res.addAll(getMetaElementsProposals(prefix, offset, AtlSourceManager.FILTER_ALL_METAMODELS));
 		String[] types = {"Boolean", "String", "Integer", "Sequence", "Set", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				"Bag", "OrderedSet", "Map",}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		for (int i = 0; i < types.length; i++) {
-			String replacementString = types[i];
-			if (startsWithIgnoreCase(prefix, replacementString)) {
-				ICompletionProposal proposal = new AtlCompletionProposal(replacementString, offset
-						- prefix.length(), replacementString.length(), null, replacementString, 0, null);
-				res.add(proposal);
-			}
-		}
+		res.addAll(getProposalsFromList(offset, prefix, types));
 		return res;
 	}
 
@@ -498,6 +556,19 @@ public class AtlCompletionDataSource {
 				res.add(proposal);
 			}
 		}
+		return res;
+	}
+
+	public static List getProposalsFromList(int offset, String prefix, Object[] proposals) {
+		List res = new ArrayList();
+		for (int i = 0; i < proposals.length; i++) {
+			String replacementString = proposals[i].toString();
+			if (startsWithIgnoreCase(prefix, replacementString)) {
+				res.add(new AtlCompletionProposal(replacementString, offset - prefix.length(),
+						replacementString.length(), null, replacementString, 0, null));
+			}
+		}
+		Collections.sort(res);
 		return res;
 	}
 }

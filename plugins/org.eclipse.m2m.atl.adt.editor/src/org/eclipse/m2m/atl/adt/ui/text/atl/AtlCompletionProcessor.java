@@ -116,7 +116,9 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 		 * URIs completion
 		 */
 		if (analyser.getContext() == AtlModelAnalyser.NULL_CONTEXT) {
-			if (line.trim().startsWith("-- @" + AtlSourceManager.URI_TAG)) { //$NON-NLS-1$
+			if (line.trim().startsWith("-- @" + AtlSourceManager.COMPILER_TAG)) { //$NON-NLS-1$
+				//TODO
+			} else if (line.trim().startsWith("-- @" + AtlSourceManager.URI_TAG)) { //$NON-NLS-1$
 				if (prefix.indexOf("=") > -1) { //$NON-NLS-1$
 					if (prefix.split("=").length == 2) { //$NON-NLS-1$
 						String uriPrefix = prefix.split("=")[1]; //$NON-NLS-1$
@@ -124,7 +126,25 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 					} else if (prefix.endsWith("=")) { //$NON-NLS-1$
 						return fDatasource.getURIProposals("", offset); //$NON-NLS-1$
 					}
+				} else {
+					return fDatasource.getMetamodelsProposals(prefix, offset); //$NON-NLS-1$
 				}
+			} else if (line.trim().startsWith("-- @" + AtlSourceManager.PATH_TAG)) { //$NON-NLS-1$
+				if (prefix.indexOf("=") > -1) { //$NON-NLS-1$
+					if (prefix.split("=").length == 2) { //$NON-NLS-1$
+						String uriPrefix = prefix.split("=")[1]; //$NON-NLS-1$
+						return fDatasource.getPathProposals(uriPrefix, offset);
+					} else if (prefix.endsWith("=")) { //$NON-NLS-1$
+						return fDatasource.getPathProposals("", offset); //$NON-NLS-1$
+					}
+				} else {
+					return fDatasource.getMetamodelsProposals(prefix, offset);
+				}
+			} else {
+				String pathTemplate = "-- @" + AtlSourceManager.PATH_TAG; //$NON-NLS-1$
+				String uriTemplate = "-- @" + AtlSourceManager.URI_TAG; //$NON-NLS-1$
+				String compilerTemplate = "-- @" + AtlSourceManager.COMPILER_TAG; //$NON-NLS-1$
+				return AtlCompletionDataSource.getProposalsFromList(offset, prefix, new String[]{pathTemplate, uriTemplate, compilerTemplate});
 			}
 		} else {
 			// no completion on comments
@@ -286,7 +306,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 		currentPrefix = currentPrefix.replaceFirst("<-", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		String varName = ""; //$NON-NLS-1$
 		String lastPrefix = ""; //$NON-NLS-1$
-		if (currentPrefix.indexOf(".")>0) { //$NON-NLS-1$
+		if (currentPrefix.indexOf(".") > 0) { //$NON-NLS-1$
 			String[] splittedPrefix = currentPrefix.split("\\."); //$NON-NLS-1$
 			if (splittedPrefix.length > 0) {
 				if (currentPrefix.endsWith(".")) { //$NON-NLS-1$
