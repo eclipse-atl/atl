@@ -102,7 +102,14 @@ public class EMFModelLoader extends ModelLoader {
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			if (registry != null) {
 				IExtensionPoint point = registry
-						.getExtensionPoint("org.eclipse.m2m.atl.engine.injector"); //$NON-NLS-1$
+						.getExtensionPoint("org.eclipse.m2m.atl.engine.vm.injector"); //$NON-NLS-1$
+				
+				IExtensionPoint[] points = registry.getExtensionPoints();
+				for (int i = 0; i < points.length; i++) {
+					IExtensionPoint	p = points[i];
+					System.out.println(p.getSchemaReference() + " " + p.getUniqueIdentifier() + " " + p.getSimpleIdentifier());
+				} 
+			
 				if (point != null) {
 					IExtension[] extensions = point.getExtensions();
 					for (int i = 0; i < extensions.length; i++) {
