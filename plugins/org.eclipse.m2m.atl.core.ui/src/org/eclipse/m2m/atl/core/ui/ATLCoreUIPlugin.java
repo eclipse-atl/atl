@@ -12,17 +12,22 @@ package org.eclipse.m2m.atl.core.ui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Filter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.common.ConsoleStreamHandler;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -37,8 +42,8 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 
 	private static MessageConsole console;
 
-	private static Handler handler;
-
+	private static Handler[] handlers = new Handler[3];
+	
 	/**
 	 * Creates a new {@link ATLCoreUIPlugin}.
 	 */
@@ -83,8 +88,35 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		console = findConsole("ATL"); //$NON-NLS-1$
-		handler = new ConsoleStreamHandler(console.newMessageStream());
-		ATLLogger.getLogger().addHandler(handler);
+		MessageConsoleStream infoStream = console.newMessageStream();
+		MessageConsoleStream warningStream = console.newMessageStream();
+		MessageConsoleStream errorStream = console.newMessageStream();
+
+		infoStream.setColor(new Color(Display.getCurrent(),new RGB(0, 0, 255)));
+		warningStream.setColor(new Color(Display.getCurrent(),new RGB(250, 100, 0)));
+		errorStream.setColor(new Color(Display.getCurrent(),new RGB(255, 0, 0)));
+		
+		handlers[0] = new ConsoleStreamHandler(infoStream);
+		handlers[0].setFilter(new Filter() {
+			public boolean isLoggable(java.util.logging.LogRecord record) {
+				return record.getLevel().equals(Level.INFO);
+			}
+		});
+		handlers[1] = new ConsoleStreamHandler(warningStream);
+		handlers[1].setFilter(new Filter() {
+			public boolean isLoggable(java.util.logging.LogRecord record) {
+				return record.getLevel().equals(Level.WARNING);
+			}
+		});
+		handlers[2] = new ConsoleStreamHandler(errorStream);
+		handlers[2].setFilter(new Filter() {
+			public boolean isLoggable(java.util.logging.LogRecord record) {
+				return record.getLevel().equals(Level.SEVERE);
+			}
+		});
+		for (int i = 0; i < handlers.length; i++) {
+			ATLLogger.getLogger().addHandler(handlers[i]);
+		}
 	}
 
 	/**
@@ -94,7 +126,9 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		ATLLogger.getLogger().removeHandler(handler);
+		for (int i = 0; i < handlers.length; i++) {
+			ATLLogger.getLogger().removeHandler(handlers[i]);
+		}
 		super.stop(context);
 	}
 
