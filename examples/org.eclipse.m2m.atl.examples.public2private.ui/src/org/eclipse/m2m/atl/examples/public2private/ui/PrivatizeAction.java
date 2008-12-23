@@ -107,12 +107,8 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		
 		// Getting launcher
 		ILauncher launcher = null;
-		try {
-			launcher = CoreService.getLauncher("EMF-specific VM"); //$NON-NLS-1$
-			launcher.initialize(Collections.<String, Object> emptyMap());
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+		launcher = CoreService.getLauncher("EMF-specific VM"); //$NON-NLS-1$
+		launcher.initialize(Collections.<String, Object> emptyMap());
 
 		// Creating models
 		IModel refiningTraceModel = factory.newModel(refiningTraceMetamodel);
@@ -134,11 +130,7 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		extractor.extract(umlModel, file.getFullPath().toString());
 
 		// Refresh workspace
-		try {
-			file.getParent().refreshLocal(IProject.DEPTH_INFINITE, null);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+		file.getParent().refreshLocal(IProject.DEPTH_INFINITE, null);
 	}
 
 	/**
