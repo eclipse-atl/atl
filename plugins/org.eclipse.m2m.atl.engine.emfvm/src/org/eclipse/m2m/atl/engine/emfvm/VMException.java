@@ -72,7 +72,6 @@ public class VMException extends RuntimeException {
 			// Java stack trace :
 			super.printStackTrace(s);
 		}
-		s.println();
 	}
 
 	/**
@@ -91,6 +90,5 @@ public class VMException extends RuntimeException {
 			// Java stack trace :
 			super.printStackTrace(s);
 		}
-		s.println();
 	}
 }
