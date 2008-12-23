@@ -25,6 +25,7 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IInjector;
@@ -262,7 +263,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			libraries.put(libName, libs.get(libName).openStream());
 		}
 		long startTime = System.currentTimeMillis();
-		LauncherService.launch(ILauncher.RUN_MODE, launcher, modelFactories, extractors, injectors,
+		LauncherService.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), launcher, modelFactories, extractors, injectors,
 				sourceModels, Collections.<String, String> emptyMap(), targetModels, modelPaths, options,
 				libraries, (Object[])modules);
 
