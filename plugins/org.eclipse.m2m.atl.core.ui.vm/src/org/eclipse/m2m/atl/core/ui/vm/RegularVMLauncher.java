@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchManager;
@@ -132,7 +133,7 @@ public class RegularVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getDefaultModelFactoryName()
 	 */
 	public String getDefaultModelFactoryName() {
@@ -141,20 +142,10 @@ public class RegularVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.util.Map, java.lang.Object[])
+	 *
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String, org.eclipse.core.runtime.IProgressMonitor, java.util.Map, java.lang.Object[])
 	 */
-	public Object launch(final Map<String, Object> options, final Object... modules) {
-		return launch(ILauncher.RUN_MODE, options, modules);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String, java.util.Map,
-	 *      java.lang.Object[])
-	 */
-	public Object launch(final String mode, final Map<String, Object> options, final Object... modules) {
+	public Object launch(final String mode, final IProgressMonitor monitor, final Map<String, Object> options, final Object... modules) {
 		IDebugTarget mTarget = null;
 		ILaunch launchParam = (ILaunch)options.get("launch"); //$NON-NLS-1$
 		try {
