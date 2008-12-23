@@ -17,6 +17,7 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -121,7 +122,7 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		launcher.addOutModel(refiningTraceModel, "refiningTrace", "RefiningTrace"); //$NON-NLS-1$ //$NON-NLS-2$
 		launcher.addInOutModel(umlModel, "IN", "UML"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
-			launcher.launch(Collections.<String, Object> emptyMap(), new Object[] {asmURL.openStream()});
+			launcher.launch(ILauncher.RUN_MODE, new NullProgressMonitor() ,Collections.<String, Object> emptyMap(), new Object[] {asmURL.openStream()});
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
