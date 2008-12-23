@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.core.ui.launch;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,6 +23,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -33,6 +35,7 @@ import org.eclipse.m2m.atl.core.ModelFactory;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.core.service.LauncherService;
+import org.eclipse.m2m.atl.core.ui.Messages;
 
 /**
  * The method "launch" is launched when you click on the button "Run" or "Debug".
@@ -51,6 +54,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	@SuppressWarnings("unchecked")
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
 
 		String launcherName = configuration.getAttribute(ATLLaunchConstants.ATL_VM, ""); //$NON-NLS-1$		
 		String atlCompiler = configuration.getAttribute(ATLLaunchConstants.ATL_COMPILER, ""); //$NON-NLS-1$
@@ -84,12 +90,23 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 		// API extensions management
 		ILauncher launcher = CoreService.getLauncher(launcherName);
+
+		if (launcher == null) {
+			String[] registeredLaunchers = CoreService.getLaunchersNames();
+			ATLLogger
+					.severe(Messages
+							.getString(
+									"AtlLaunchConfigurationDelegate.LAUNCHER_NOT_FOUND", launcherName, Arrays.asList(registeredLaunchers))); //$NON-NLS-1$
+			return;
+		}
+
 		Map<String, ModelFactory> modelFactories = new HashMap<String, ModelFactory>();
 		Map<String, IExtractor> extractors = new HashMap<String, IExtractor>();
 		Map<String, IInjector> injectors = new HashMap<String, IInjector>();
 
 		// Loading defaults
-		ModelFactory defaultModelfactory = CoreService.createModelFactory(launcher.getDefaultModelFactoryName());
+		ModelFactory defaultModelfactory = CoreService.createModelFactory(launcher
+				.getDefaultModelFactoryName());
 		IInjector defaultInjector = CoreService.getInjector(defaultModelfactory.getDefaultInjectorName());
 		IExtractor defaultExtractor = CoreService.getExtractor(defaultModelfactory.getDefaultExtractorName());
 
@@ -126,6 +143,11 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			libraries.put(libName, libFile.getContents());
 		}
 
+		// check for cancellation
+		if (monitor.isCanceled()) {
+			return;
+		}
+		
 		try {
 			if (isRefiningTraceMode) {
 				modelFactories.put("RefiningTrace", defaultModelfactory); //$NON-NLS-1$
@@ -153,17 +175,19 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				newSourceModels.remove(refinedModelName);
 				newTargetModels.remove(targetToRemove);
 
-				LauncherService.launch(mode, launcher, modelFactories, extractors, injectors,
+				LauncherService.launch(mode, monitor, launcher, modelFactories, extractors, injectors,
 						newSourceModels, inoutModels, newTargetModels, modelPaths, options, libraries,
 						(Object[])modules);
 			} else {
-				LauncherService.launch(mode, launcher, modelFactories, extractors, injectors, sourceModels,
-						Collections.EMPTY_MAP, targetModels, modelPaths, options, libraries,
+				LauncherService.launch(mode, monitor, launcher, modelFactories, extractors, injectors,
+						sourceModels, Collections.EMPTY_MAP, targetModels, modelPaths, options, libraries,
 						(Object[])modules);
 			}
 
 		} catch (RuntimeException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		} finally {
+			monitor.done();
 		}
 
 	}
