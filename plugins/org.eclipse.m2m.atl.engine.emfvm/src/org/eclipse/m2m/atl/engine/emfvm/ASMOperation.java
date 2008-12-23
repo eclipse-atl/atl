@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.17 2008/12/18 17:38:08 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.18 2008/12/23 14:56:24 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -25,6 +25,8 @@ import java.util.Stack;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
@@ -288,11 +290,14 @@ public class ASMOperation extends Operation {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#exec(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame)
+	 *
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#exec(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
-	public Object exec(AbstractStackFrame frame) {
+	public Object exec(AbstractStackFrame frame, IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new VMException(null, Messages.getString("ASMOperation.EXECUTION_CANCELED")); //$NON-NLS-1$
+		}
 		final ExecEnv execEnv = frame.getExecEnv();
 
 		// Note: debug is not initialized from a constant, and therefore has a performance impact
@@ -360,7 +365,7 @@ public class ASMOperation extends Operation {
 							}
 							--fp; // pop self, that we already retrieved earlier to get the operation
 							arguments[0] = self;
-							s = operation.exec(calleeFrame);
+							s = operation.exec(calleeFrame, monitor);
 						} else {
 							Assert.isTrue(bytecode.getOperand() instanceof String);
 							// find native method
@@ -582,6 +587,16 @@ public class ASMOperation extends Operation {
 		}
 
 		return fp > 0 ? stack[--fp] : null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#exec(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame)
+	 */
+	@Override
+	public Object exec(AbstractStackFrame frame) {
+		return exec(frame, new NullProgressMonitor());
 	}
 
 	private static Class<?>[] getTypesOf(Object[] arguments) {

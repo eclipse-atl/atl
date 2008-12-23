@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
@@ -102,19 +103,10 @@ public class EMFVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.util.Map, java.lang.Object[])
+	 *
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String, org.eclipse.core.runtime.IProgressMonitor, java.util.Map, java.lang.Object[])
 	 */
-	public Object launch(final Map<String, Object> options, final Object... modules) {
-		return launch(ILauncher.RUN_MODE, options, modules);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.util.Map, java.lang.Object[])
-	 */
-	public Object launch(String mode, Map<String, Object> options, Object... modules) {
+	public Object launch(final String mode, final IProgressMonitor monitor, final Map<String, Object> options, final Object... modules) {
 		if (!mode.equals(ILauncher.RUN_MODE)) {
 			ATLLogger.warning("mode " + mode + " unsupported for EMFVM, running launch instead"); //$NON-NLS-1$//$NON-NLS-2$
 		}
@@ -126,7 +118,7 @@ public class EMFVMLauncher implements ILauncher {
 			InputStream module = (InputStream)modules[i];
 			superimpose.add(reader.read(module));
 		}
-		return mainModule.run(models, libraries, superimpose, options);
+		return mainModule.run(models, libraries, superimpose, options, monitor);
 	}
 
 	/**

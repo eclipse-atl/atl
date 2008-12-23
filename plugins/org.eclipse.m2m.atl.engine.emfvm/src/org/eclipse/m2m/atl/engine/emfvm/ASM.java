@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
@@ -122,15 +123,16 @@ public class ASM {
 	 *            the superimpose list
 	 * @param options
 	 *            the option map
+	 * @param monitor
+	 *            the progress monitor
 	 * @return the execution result
 	 */
 	@SuppressWarnings("unchecked")
 	public Object run(Map<String, IModel> models, Map<String, ASM> libraries, List<ASM> superimpose,
-			Map<String, Object> options) {
+			Map<String, Object> options, IProgressMonitor monitor) {
 		Object ret = null;
 
 		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
-
 		long startTime = System.currentTimeMillis();
 
 		ExecEnv execEnv = new ExecEnv(models);
@@ -205,7 +207,7 @@ public class ASM {
 			ASM library = i.next();
 			registerOperations(execEnv, library.operations);
 			if (library.mainOperation != null) {
-				library.mainOperation.exec(new StackFrame(execEnv, asmModule, library.mainOperation));
+				library.mainOperation.exec(new StackFrame(execEnv, asmModule, library.mainOperation), monitor);
 			}
 		}
 
@@ -223,8 +225,8 @@ public class ASM {
 			}
 			registerOperations(execEnv, module.operations);
 		}
-
-		ret = mainOperation.exec(frame);
+		
+		ret = mainOperation.exec(frame, monitor);
 		execEnv.terminated();
 		long endTime = System.currentTimeMillis();
 		if (printExecutionTime) {
