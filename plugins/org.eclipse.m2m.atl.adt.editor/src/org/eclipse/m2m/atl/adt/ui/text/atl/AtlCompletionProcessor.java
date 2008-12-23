@@ -18,6 +18,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
@@ -78,15 +81,11 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 		try {
 			List listProposals = new ArrayList();
 			fHelper.setDocument(refViewer.getDocument());
-
 			ITextSelection selection = (ITextSelection)refViewer.getSelectionProvider().getSelection();
 			int offset = selection.getOffset() + selection.getLength();
 			String prefix = fHelper.extractPrefix(offset);
-
 			AtlModelAnalyser analyser = fHelper.computeContext(offset, prefix);
-
 			listProposals.addAll(getProposalsFromAnalyser(analyser, prefix, offset));
-
 			ICompletionProposal[] proposals = (ICompletionProposal[])listProposals
 					.toArray(new ICompletionProposal[listProposals.size()]);
 			return proposals;
@@ -117,7 +116,16 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 		 */
 		if (analyser.getContext() == AtlModelAnalyser.NULL_CONTEXT) {
 			if (line.trim().startsWith("-- @" + AtlSourceManager.COMPILER_TAG)) { //$NON-NLS-1$
-				//TODO
+				List compilersNames = new ArrayList();
+				IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(
+						"org.eclipse.m2m.atl.engine.atlcompiler").getExtensions(); //$NON-NLS-1$
+				for (int i = 0; i < extensions.length; i++) {
+					IConfigurationElement[] elements = extensions[i].getConfigurationElements();
+					for (int j = 0; j < elements.length; j++) {
+						compilersNames.add(elements[j].getAttribute("name"));
+					}
+				}
+				return AtlCompletionDataSource.getProposalsFromList(offset, prefix, compilersNames.toArray());
 			} else if (line.trim().startsWith("-- @" + AtlSourceManager.URI_TAG)) { //$NON-NLS-1$
 				if (prefix.indexOf("=") > -1) { //$NON-NLS-1$
 					if (prefix.split("=").length == 2) { //$NON-NLS-1$
@@ -144,7 +152,8 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 				String pathTemplate = "-- @" + AtlSourceManager.PATH_TAG; //$NON-NLS-1$
 				String uriTemplate = "-- @" + AtlSourceManager.URI_TAG; //$NON-NLS-1$
 				String compilerTemplate = "-- @" + AtlSourceManager.COMPILER_TAG; //$NON-NLS-1$
-				return AtlCompletionDataSource.getProposalsFromList(offset, prefix, new String[]{pathTemplate, uriTemplate, compilerTemplate});
+				return AtlCompletionDataSource.getProposalsFromList(offset, line, new String[] {
+						pathTemplate, uriTemplate, compilerTemplate});
 			}
 		} else {
 			// no completion on comments
