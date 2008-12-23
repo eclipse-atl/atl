@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
@@ -46,6 +47,8 @@ public final class LauncherService {
 	 * 
 	 * @param mode
 	 *            the launching mode
+	 * @param monitor
+	 *            the progress monitor
 	 * @param launcher
 	 *            the {@link ILauncher}
 	 * @param modelFactories
@@ -71,11 +74,11 @@ public final class LauncherService {
 	 * @return the transformation result
 	 */
 	@SuppressWarnings("unchecked")
-	public static Object launch(String mode, ILauncher launcher, Map<String, ModelFactory> modelFactories,
-			Map<String, IExtractor> extractors, Map<String, IInjector> injectors,
-			Map<String, String> inModels, Map<String, String> inoutModels, Map<String, String> outModels,
-			Map<String, String> paths, Map<String, Object> options, Map<String, Object> libraries,
-			Object... modules) {
+	public static Object launch(String mode, IProgressMonitor monitor, ILauncher launcher,
+			Map<String, ModelFactory> modelFactories, Map<String, IExtractor> extractors,
+			Map<String, IInjector> injectors, Map<String, String> inModels, Map<String, String> inoutModels,
+			Map<String, String> outModels, Map<String, String> paths, Map<String, Object> options,
+			Map<String, Object> libraries, Object... modules) {
 
 		launcher.initialize(options);
 		Map<String, String> modelHandlers = (Map<String, String>)options.get("modelHandlers"); //$NON-NLS-1$
@@ -142,7 +145,7 @@ public final class LauncherService {
 		}
 
 		// LAUNCH
-		Object transformationResult = launcher.launch(mode, options, modules);
+		Object transformationResult = launcher.launch(mode, monitor, options, modules);
 
 		// OUTPUT MODELS EXTRACTION
 		for (Iterator<String> i = outModels.keySet().iterator(); i.hasNext();) {

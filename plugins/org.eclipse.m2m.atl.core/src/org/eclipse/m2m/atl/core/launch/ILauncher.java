@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.core.launch;
 
 import java.util.Map;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2m.atl.core.IModel;
 
 /**
@@ -103,6 +104,8 @@ public interface ILauncher {
 	 * 
 	 * @param mode
 	 *            the launching mode
+	 * @param monitor
+	 *            the progress monitor
 	 * @param options
 	 *            vm options
 	 * @param modules
@@ -110,19 +113,7 @@ public interface ILauncher {
 	 *            module of the set is override by the next ones.
 	 * @return the transformation return result
 	 */
-	Object launch(String mode, Map<String, Object> options, Object... modules);
-
-	/**
-	 * Launches the transformation using the given parameters and the given set of modules.
-	 * 
-	 * @param options
-	 *            vm options
-	 * @param modules
-	 *            single module/ordered module set. A module set is used for superimposition, where the first
-	 *            module of the set is override by the next ones.
-	 * @return the transformation return result
-	 */
-	Object launch(Map<String, Object> options, Object... modules);
+	Object launch(String mode, IProgressMonitor monitor, Map<String, Object> options, Object... modules);
 
 	/**
 	 * Returns a previously added model with the given name.
