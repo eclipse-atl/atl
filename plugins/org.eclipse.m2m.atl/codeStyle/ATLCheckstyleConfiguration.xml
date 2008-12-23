@@ -229,9 +229,7 @@
         <module name="PackageDeclaration">
             <property name="severity" value="error"/>
         </module>
-        <module name="ParameterAssignment">
-            <property name="severity" value="error"/>
-        </module>
+        <module name="ParameterAssignment"/>
         <module name="RedundantThrows">
             <property name="severity" value="error"/>
             <property name="allowUnchecked" value="true"/>
