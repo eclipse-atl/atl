@@ -20,7 +20,7 @@ import org.eclipse.m2m.atl.core.ui.Messages;
 public interface ATLLaunchConstants {
 
 	/** Regular VM name, for launch compatibility adaptations. */
-	String REGULAR_VM_NAME = "RegularVM"; //$NON-NLS-1$
+	String REGULAR_VM_NAME = "Regular VM (with debugger)"; //$NON-NLS-1$
 
 	/** Default model handler name. */
 	String DEFAULT_MODEL_HANDLER_NAME = "EMF"; //$NON-NLS-1$
