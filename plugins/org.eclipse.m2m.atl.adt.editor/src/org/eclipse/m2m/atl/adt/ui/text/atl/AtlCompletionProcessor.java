@@ -108,7 +108,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 	 * @return the proposals
 	 * @throws BadLocationException
 	 */
-	private List getProposalsFromAnalyser(AtlModelAnalyser analyser, String prefix, int offset)
+	private Collection getProposalsFromAnalyser(AtlModelAnalyser analyser, String prefix, int offset)
 			throws BadLocationException {
 		String line = fHelper.getCurrentLine(offset);
 		/*

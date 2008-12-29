@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -181,9 +182,11 @@ public class AtlCompletionDataSource {
 	 *            completion offset
 	 * @return the filtered proposals
 	 */
-	public List getMetamodelsProposals(String prefix, int offset) {
-		return getProposalsFromList(offset, prefix, fEditor.getSourceManager().getMetamodelPackages(
-				AtlSourceManager.FILTER_ALL_METAMODELS).keySet().toArray());
+	public Collection getMetamodelsProposals(String prefix, int offset) {
+		Set res = new HashSet();
+		res.addAll(fEditor.getSourceManager().getInputModels().values());
+		res.addAll(fEditor.getSourceManager().getOutputModels().values());
+		return getProposalsFromList(offset, prefix, res.toArray());
 	}
 
 	/**
