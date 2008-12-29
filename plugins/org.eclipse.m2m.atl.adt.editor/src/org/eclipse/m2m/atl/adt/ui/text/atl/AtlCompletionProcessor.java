@@ -58,6 +58,12 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 
 	private char[] fProposalAutoActivationSet = new char[] {' '};
 
+	private static String uriTagRegex = "^\\p{Space}*--\\p{Space}*@" + AtlSourceManager.URI_TAG + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+
+	private static String pathTagRegex = "^\\p{Space}*--\\p{Space}*@" + AtlSourceManager.PATH_TAG + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+
+	private static String compilerTagRegex = "^\\p{Space}*--\\p{Space}*@" + AtlSourceManager.COMPILER_TAG + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+
 	/**
 	 * Constructor.
 	 * 
@@ -115,7 +121,8 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 		 * URIs completion
 		 */
 		if (analyser.getContext() == AtlModelAnalyser.NULL_CONTEXT) {
-			if (line.trim().startsWith("-- @" + AtlSourceManager.COMPILER_TAG)) { //$NON-NLS-1$
+
+			if (line.matches(compilerTagRegex)) {
 				List compilersNames = new ArrayList();
 				IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(
 						"org.eclipse.m2m.atl.engine.atlcompiler").getExtensions(); //$NON-NLS-1$
@@ -126,7 +133,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 					}
 				}
 				return AtlCompletionDataSource.getProposalsFromList(offset, prefix, compilersNames.toArray());
-			} else if (line.trim().startsWith("-- @" + AtlSourceManager.URI_TAG)) { //$NON-NLS-1$
+			} else if (line.matches(uriTagRegex)) { //$NON-NLS-1$
 				if (prefix.indexOf("=") > -1) { //$NON-NLS-1$
 					if (prefix.split("=").length == 2) { //$NON-NLS-1$
 						String uriPrefix = prefix.split("=")[1]; //$NON-NLS-1$
@@ -137,7 +144,7 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 				} else {
 					return fDatasource.getMetamodelsProposals(prefix, offset); //$NON-NLS-1$
 				}
-			} else if (line.trim().startsWith("-- @" + AtlSourceManager.PATH_TAG)) { //$NON-NLS-1$
+			} else if (line.matches(pathTagRegex)) { //$NON-NLS-1$
 				if (prefix.indexOf("=") > -1) { //$NON-NLS-1$
 					if (prefix.split("=").length == 2) { //$NON-NLS-1$
 						String uriPrefix = prefix.split("=")[1]; //$NON-NLS-1$
@@ -152,8 +159,8 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 				String pathTemplate = "-- @" + AtlSourceManager.PATH_TAG; //$NON-NLS-1$
 				String uriTemplate = "-- @" + AtlSourceManager.URI_TAG; //$NON-NLS-1$
 				String compilerTemplate = "-- @" + AtlSourceManager.COMPILER_TAG; //$NON-NLS-1$
-				return AtlCompletionDataSource.getProposalsFromList(offset, line, new String[] {
-						pathTemplate, uriTemplate, compilerTemplate});
+				return AtlCompletionDataSource.getProposalsFromList(offset, line, new String[] {pathTemplate,
+						uriTemplate, compilerTemplate});
 			}
 		} else {
 			// no completion on comments
