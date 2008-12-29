@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.18 2008/12/23 14:56:24 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.19 2008/12/29 10:31:05 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -290,8 +290,9 @@ public class ASMOperation extends Operation {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#exec(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#exec(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
 	public Object exec(AbstractStackFrame frame, IProgressMonitor monitor) {
@@ -395,7 +396,7 @@ public class ASMOperation extends Operation {
 										frame,
 										Messages
 												.getString(
-														"ASMOperation.OPERATIONNOTFOUND", new Object[] {execEnv.toPrettyPrintedString(self), bytecode.getOperand()})); //$NON-NLS-1$)
+														"ASMOperation.OPERATIONNOTFOUND", new Object[] {execEnv.toPrettyPrintedString(self), getMethodSignature(bytecode.getOperand().toString(), getTypesOf(arguments))})); //$NON-NLS-1$)
 							}
 							s = execEnv.getModelAdapter().invoke(m, self, arguments);
 						}
@@ -591,11 +592,11 @@ public class ASMOperation extends Operation {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#exec(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame)
 	 */
 	@Override
-	public Object exec(AbstractStackFrame frame) {
+	protected Object exec(AbstractStackFrame frame) {
 		return exec(frame, new NullProgressMonitor());
 	}
 
