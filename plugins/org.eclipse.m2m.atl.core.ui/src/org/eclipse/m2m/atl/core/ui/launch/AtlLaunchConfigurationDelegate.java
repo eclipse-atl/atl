@@ -68,9 +68,6 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		options.put("launch", launch); //$NON-NLS-1$
 		options.put("monitor", monitor); //$NON-NLS-1$
 
-		/*
-		 * EMFVM launch:
-		 */
 		// Launch configuration analysis
 		String fileName = configuration.getAttribute(ATLLaunchConstants.ATL_FILE_NAME,
 				ATLLaunchConstants.NULL_PARAMETER);
