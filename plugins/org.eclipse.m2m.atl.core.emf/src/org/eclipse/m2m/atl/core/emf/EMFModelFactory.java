@@ -135,7 +135,7 @@ public final class EMFModelFactory extends ModelFactory {
 	@Override
 	public IReferenceModel getBuiltInResource(String name) {
 		EMFReferenceModel model = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this), this);
-		URL url = ATLResourceProvider.getURL(name); //$NON-NLS-1$ //$NON-NLS-2$
+		URL url = ATLResourceProvider.getURL(name);
 		Resource builtin = resourceSet.createResource(URI.createURI(name));
 		try {
 			builtin.load(url.openStream(), Collections.EMPTY_MAP);	
