@@ -62,6 +62,8 @@ public class EMFInjector implements IInjector {
 			} else if (path.equals("#EMF")) { //$NON-NLS-1$
 				mainResource = EcorePackage.eINSTANCE.eResource();
 				// Workspace
+			} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
+				mainResource = resourceSet.getResource(URI.createURI(path).trimFragment(), true);				
 			} else {
 				mainResource = resourceSet.getResource(
 						URI.createPlatformResourceURI(path, false), true);
