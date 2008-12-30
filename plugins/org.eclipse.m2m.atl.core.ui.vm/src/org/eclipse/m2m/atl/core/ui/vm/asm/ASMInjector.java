@@ -78,7 +78,7 @@ public class ASMInjector implements IInjector {
 					path = path.substring(4);
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
 							.getReferenceModel()).getAsmModel(), URI.createFileURI(path));
-				} else if (path.startsWith("pathmap:")) {
+				} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
 							.getReferenceModel()).getAsmModel(), URI.createURI(path, true));
 				} else {
