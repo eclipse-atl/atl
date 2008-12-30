@@ -67,7 +67,7 @@ public class ASMInjector implements IInjector {
 			String path = (String)source;
 			ASMModel asmModel = null;
 
-			if (((String)source).startsWith("#")) { //$NON-NLS-1$
+			if (path.startsWith("#")) { //$NON-NLS-1$
 				// nothing to do, ever loaded in newModel
 				return;
 			} else if (ml instanceof EMFModelLoader) {
@@ -78,6 +78,9 @@ public class ASMInjector implements IInjector {
 					path = path.substring(4);
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
 							.getReferenceModel()).getAsmModel(), URI.createFileURI(path));
+				} else if (path.startsWith("pathmap:")) {
+					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
+							.getReferenceModel()).getAsmModel(), URI.createURI(path, true));
 				} else {
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
 							.getReferenceModel()).getAsmModel(), URI.createPlatformResourceURI(path, false));
