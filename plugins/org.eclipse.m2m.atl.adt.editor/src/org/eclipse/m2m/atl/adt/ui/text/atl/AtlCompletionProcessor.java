@@ -129,11 +129,11 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 				for (int i = 0; i < extensions.length; i++) {
 					IConfigurationElement[] elements = extensions[i].getConfigurationElements();
 					for (int j = 0; j < elements.length; j++) {
-						compilersNames.add(elements[j].getAttribute("name"));
+						compilersNames.add(elements[j].getAttribute("name")); //$NON-NLS-1$
 					}
 				}
 				return AtlCompletionDataSource.getProposalsFromList(offset, prefix, compilersNames.toArray());
-			} else if (line.matches(uriTagRegex)) { //$NON-NLS-1$
+			} else if (line.matches(uriTagRegex)) {
 				if (prefix.indexOf("=") > -1) { //$NON-NLS-1$
 					if (prefix.split("=").length == 2) { //$NON-NLS-1$
 						String uriPrefix = prefix.split("=")[1]; //$NON-NLS-1$
@@ -142,9 +142,9 @@ public class AtlCompletionProcessor implements IContentAssistProcessor {
 						return fDatasource.getURIProposals("", offset); //$NON-NLS-1$
 					}
 				} else {
-					return fDatasource.getMetamodelsProposals(prefix, offset); //$NON-NLS-1$
+					return fDatasource.getMetamodelsProposals(prefix, offset);
 				}
-			} else if (line.matches(pathTagRegex)) { //$NON-NLS-1$
+			} else if (line.matches(pathTagRegex)) {
 				if (prefix.indexOf("=") > -1) { //$NON-NLS-1$
 					if (prefix.split("=").length == 2) { //$NON-NLS-1$
 						String uriPrefix = prefix.split("=")[1]; //$NON-NLS-1$
