@@ -207,7 +207,7 @@ public class ASM {
 			ASM library = i.next();
 			registerOperations(execEnv, library.operations);
 			if (library.mainOperation != null) {
-				library.mainOperation.exec(new StackFrame(execEnv, asmModule, library.mainOperation), monitor);
+				library.mainOperation.exec(new StackFrame(execEnv, asmModule, library.mainOperation));
 			}
 		}
 
@@ -227,6 +227,7 @@ public class ASM {
 		}
 		
 		ret = mainOperation.exec(frame, monitor);
+		
 		execEnv.terminated();
 		long endTime = System.currentTimeMillis();
 		if (printExecutionTime) {
