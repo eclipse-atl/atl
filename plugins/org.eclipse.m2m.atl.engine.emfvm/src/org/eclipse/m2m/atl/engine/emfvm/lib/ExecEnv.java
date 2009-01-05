@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.26 2008/12/23 17:48:47 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.27 2009/01/05 15:28:12 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -1193,6 +1193,14 @@ public class ExecEnv {
 								(String)localVars[1], null));
 					}
 				});
+		operationsByName.put("println", new Operation(1) { //$NON-NLS-1$
+			@Override
+			public Object exec(AbstractStackFrame frame) {
+				Object[] localVars = frame.localVars;
+				ATLLogger.info(localVars[0].toString());
+				return OclUndefined.SINGLETON;
+			}
+		});
 		operationsByName.put("writeToWithCharset", new Operation(3) { //$NON-NLS-1$
 					@Override
 					public Object exec(AbstractStackFrame frame) {
