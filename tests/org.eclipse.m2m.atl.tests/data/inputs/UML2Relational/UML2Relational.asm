@@ -24,7 +24,7 @@
 		<constant value="J.oclIsKindOf(J):B"/>
 		<constant value="18"/>
 		<constant value="NTransientLinkSet;.getLinkBySourceElement(S):QNTransientLink;"/>
-		<constant value="J.oclIsUndefined():J"/>
+		<constant value="J.oclIsUndefined():B"/>
 		<constant value="15"/>
 		<constant value="NTransientLink;.getTargetFromSource(J):J"/>
 		<constant value="17"/>
