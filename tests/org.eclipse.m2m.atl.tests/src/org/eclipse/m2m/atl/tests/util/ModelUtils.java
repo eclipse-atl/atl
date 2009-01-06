@@ -139,7 +139,7 @@ public final class ModelUtils {
 			String icn = null;
 			if (tname.equals("Boolean")) { //$NON-NLS-1$
 				icn = "java.lang.Boolean"; //$NON-NLS-1$
-			} else if (tname.equals("Double")) { //$NON-NLS-1$
+			} else if (tname.equals("Double") || tname.equals("Real")) { //$NON-NLS-1$ //$NON-NLS-2$
 				icn = "java.lang.Double"; //$NON-NLS-1$
 			} else if (tname.equals("Float")) { //$NON-NLS-1$
 				icn = "java.lang.Float"; //$NON-NLS-1$
