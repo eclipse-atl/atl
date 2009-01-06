@@ -578,11 +578,11 @@ public class EMFModelAdapter implements IModelAdapter {
 					if (literal != null) {
 						eo.eSet(feature, literal.getInstance());
 					} else {
-						ATLLogger
-								.severe(Messages
+						throw new VMException(
+								frame,
+								Messages
 										.getString(
 												"EMFModelAdapter.LITERALERROR", new Object[] {settableValue, eenum.getName()})); //$NON-NLS-1$
-						return;
 					}
 				}
 			} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
