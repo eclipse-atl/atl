@@ -6,7 +6,7 @@ create OUT : Publication from IN : Book;
 
 helper context Book!Book def : getAuthors() : String =
        self.chapters->collect(e | e.author)->
-	   					asSet()->
+	   					asOrderedSet()->
 						iterate(authorName; acc : String = '' |
                    				acc + 
 								if acc = '' 

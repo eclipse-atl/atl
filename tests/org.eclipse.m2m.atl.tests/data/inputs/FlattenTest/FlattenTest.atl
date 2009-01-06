@@ -31,7 +31,7 @@ rule Class {
 			name <- thisModule.testSequence -> flatten() -> toString()
 		),
 		testBagClass : UML!Class (
-			name <- thisModule.testBag -> flatten() -> toString()
+			--name <- thisModule.testBag -> flatten() -> toString()
 		),
 		testSetClass : UML!Class (
 			name <- thisModule.testSet -> flatten() -> toString()
