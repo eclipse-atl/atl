@@ -407,7 +407,7 @@ public class EMFModelLoader extends ModelLoader {
 				String icn = null;
 				if (tname.equals("Boolean")) {
 					icn = "boolean"; // "java.lang.Boolean";
-				} else if (tname.equals("Double")) {
+				} else if (tname.equals("Double") || tname.equals("Real")) {
 					icn = "java.lang.Double";
 				} else if (tname.equals("Float")) {
 					icn = "java.lang.Float";
