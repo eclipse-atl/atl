@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.compiler;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
@@ -19,8 +20,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
 import org.eclipse.m2m.atl.engine.ProblemConverter;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
@@ -40,7 +43,7 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compile(java.io.InputStream, java.lang.String)
 	 */
 	public final CompileTimeError[] compile(InputStream in, String outputFileName) {
@@ -58,7 +61,7 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(java.io.InputStream, java.lang.String)
 	 */
 	public EObject[] compileWithProblemModel(InputStream in, String outputFileName) {
@@ -115,8 +118,14 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	 */
 	private EObject[] internalCompile(InputStream in, String outputFileName) {
 		EObject[] ret = null;
+		ASMModel[] parsed = null;
 		// Parsing + Semantic Analysis
-		ASMModel[] parsed = AtlParser.getDefault().parseToModelWithProblems(in, true);
+		try {
+			parsed = AtlParser.getDefault().parseToModelWithProblems(in, true);
+		} catch (IOException e) {
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			return null;
+		}
 		ASMModel atlmodel = parsed[0];
 		ASMModel problems = parsed[1];
 

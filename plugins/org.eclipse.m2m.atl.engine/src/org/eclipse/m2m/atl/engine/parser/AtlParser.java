@@ -19,11 +19,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmt.tcs.injector.TCSInjector;
-import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
 import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
@@ -67,7 +65,7 @@ public final class AtlParser {
 	 *            an input stream
 	 * @return the resulting EObject
 	 */
-	public EObject parse(InputStream in) {
+	public EObject parse(InputStream in) throws IOException {
 		return parseWithProblems(in)[0];
 	}
 
@@ -78,7 +76,7 @@ public final class AtlParser {
 	 *            an input stream
 	 * @return the resulting ASMModel
 	 */
-	public ASMModel parseToModel(InputStream in) {
+	public ASMModel parseToModel(InputStream in) throws IOException {
 		return parseToModelWithProblems(in, true)[0];
 	}
 
@@ -91,58 +89,51 @@ public final class AtlParser {
 	 *            disable standard output in order to hide errors
 	 * @return the parser resulting ASMModel[model,problemModel]
 	 */
-	public ASMModel[] parseToModelWithProblems(InputStream in, boolean hideErrors) {
+	public ASMModel[] parseToModelWithProblems(InputStream in, boolean hideErrors) throws IOException {
 		final ASMModel[] ret = new ASMModel[2];
 		final ModelLoader ml = amh.createModelLoader();
 		final ASMModel atlmm = ml.getATL();
 		final ASMModel pbmm = ml.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
 
-		try {
-			ret[0] = ml.newModel("temp", "temp", atlmm); //$NON-NLS-1$ //$NON-NLS-2$
-			ret[1] = ml.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
+		ret[0] = ml.newModel("temp", "temp", atlmm); //$NON-NLS-1$ //$NON-NLS-2$
+		ret[1] = ml.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
 
-			final TCSInjector ebnfi = new TCSInjector();
-			final Map params = new HashMap();
-			params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
-			params.put("problems", ret[1]); //$NON-NLS-1$
+		final TCSInjector ebnfi = new TCSInjector();
+		final Map params = new HashMap();
+		params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
+		params.put("problems", ret[1]); //$NON-NLS-1$
 
-			if (hideErrors) {
-				// TODO Find another way to hide parsing errors.
-				//
-				// Dennis Wagelaar: ATL does not "own" the System object in Eclipse,
-				// so don't fight with the other threads over who gets to set System.out.
-				// Even though System.out is only temporarily redirected here,
-				// it may cause unexpected results with other threads that "inexplicably"
-				// lose some System.out.println() output.
-				//
-				// N.B. This was also the reason to switch from System.out logging to
-				// a logging framework, as ATL previously hijacked System.out for its own
-				// console widget. MOFscript was then fighting with ATL over who gets
-				// to hijack System.out, resulting in MOFscript output to show up in the
-				// ATL console.
+		if (hideErrors) {
+			// TODO Find another way to hide parsing errors.
+			//
+			// Dennis Wagelaar: ATL does not "own" the System object in Eclipse,
+			// so don't fight with the other threads over who gets to set System.out.
+			// Even though System.out is only temporarily redirected here,
+			// it may cause unexpected results with other threads that "inexplicably"
+			// lose some System.out.println() output.
+			//
+			// N.B. This was also the reason to switch from System.out logging to
+			// a logging framework, as ATL previously hijacked System.out for its own
+			// console widget. MOFscript was then fighting with ATL over who gets
+			// to hijack System.out, resulting in MOFscript output to show up in the
+			// ATL console.
 
-				// desactivate standard output
-				// OutputStream stream = new ByteArrayOutputStream();
-				// PrintStream out = new PrintStream(stream);
-				// PrintStream origOut = System.out;
-				// System.setOut(out);
+			// desactivate standard output
+			// OutputStream stream = new ByteArrayOutputStream();
+			// PrintStream out = new PrintStream(stream);
+			// PrintStream origOut = System.out;
+			// System.setOut(out);
 
-				// launch parsing
-				ebnfi.inject(ret[0], in, params);
+			// launch parsing
+			ebnfi.inject(ret[0], in, params);
 
-				// reactivate standard output
-				// System.setOut(origOut);
-				// stream.close();
-				// out.close();
-			} else {
-				// launch parsing
-				ebnfi.inject(ret[0], in, params);
-			}
-
-		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		} catch (Exception e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			// reactivate standard output
+			// System.setOut(origOut);
+			// stream.close();
+			// out.close();
+		} else {
+			// launch parsing
+			ebnfi.inject(ret[0], in, params);
 		}
 
 		return ret;
@@ -155,7 +146,7 @@ public final class AtlParser {
 	 *            InputStream to parse ATL code from.
 	 * @return An array of EObject, the first one being an ATL!Unit and the following ones Problem!Problem.
 	 */
-	public EObject[] parseWithProblems(InputStream in) {
+	public EObject[] parseWithProblems(InputStream in) throws IOException {
 		return convertToEmf(parseToModelWithProblems(in, true), "Unit"); //$NON-NLS-1$
 	}
 

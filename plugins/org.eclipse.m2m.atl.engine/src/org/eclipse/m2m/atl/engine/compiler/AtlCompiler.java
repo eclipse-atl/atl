@@ -71,8 +71,8 @@ public final class AtlCompiler {
 				if (Platform.isRunning()) {
 					IExtensionRegistry registry = Platform.getExtensionRegistry();
 					if (registry == null) {
-						ATLLogger.log(Level.SEVERE, Messages.getString("AtlCompiler.REGISTRYNOTFOUND"), null); //$NON-NLS-1$
-						return null;
+						throw new CompilerNotFoundException(Messages
+								.getString("AtlCompiler.REGISTRYNOTFOUND")); //$NON-NLS-1$
 					}
 					IExtensionPoint point = registry
 							.getExtensionPoint("org.eclipse.m2m.atl.engine.atlcompiler"); //$NON-NLS-1$
@@ -89,7 +89,7 @@ public final class AtlCompiler {
 									break extensions;
 								}
 							} catch (CoreException e) {
-								ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+								throw new CompilerNotFoundException(e.getLocalizedMessage());
 							}
 						}
 					}
@@ -114,7 +114,7 @@ public final class AtlCompiler {
 	 *            The IFile to which the ATL compiled program will be saved.
 	 * @return the problems which occured during compilation
 	 */
-	public static EObject[] compile(InputStream in, IFile out) {
+	public static EObject[] compile(InputStream in, IFile out) throws IOException {
 		EObject[] ret = compile(in, out.getLocation().toString());
 		try {
 			out.refreshLocal(0, null);
@@ -133,21 +133,18 @@ public final class AtlCompiler {
 	 *            The output file name
 	 * @return the problems which occurred during compilation
 	 */
-	public static EObject[] compile(InputStream in, String outputFileName) {
+	public static EObject[] compile(InputStream in, String outputFileName) throws IOException {
 		EObject[] ret = null;
 		String atlcompiler = null;
 		InputStream newIn = in;
-		try {
-			// The BufferedInputStream is required to reset the stream before actually compiling
-			newIn = new BufferedInputStream(newIn, MAX_LINE_LENGTH);
-			newIn.mark(MAX_LINE_LENGTH);
-			byte[] buffer = new byte[MAX_LINE_LENGTH];
-			newIn.read(buffer);
-			atlcompiler = AtlSourceManager.getCompilerName(AtlSourceManager.getTaggedInformations(buffer, AtlSourceManager.COMPILER_TAG));
-			newIn.reset();
-		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
+		// The BufferedInputStream is required to reset the stream before actually compiling
+		newIn = new BufferedInputStream(newIn, MAX_LINE_LENGTH);
+		newIn.mark(MAX_LINE_LENGTH);
+		byte[] buffer = new byte[MAX_LINE_LENGTH];
+		newIn.read(buffer);
+		atlcompiler = AtlSourceManager.getCompilerName(AtlSourceManager.getTaggedInformations(buffer,
+				AtlSourceManager.COMPILER_TAG));
+		newIn.reset();
 
 		ret = getCompiler(atlcompiler).compileWithProblemModel(newIn, outputFileName);
 		return ret;

@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -32,7 +31,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.compiler.AtlCompiler;
 
 /**
@@ -143,15 +141,11 @@ public final class AtlSourceManager {
 	 * @param inputStream
 	 *            the atl file input stream
 	 */
-	public void updateDataSource(InputStream inputStream) {
+	public void updateDataSource(InputStream inputStream) throws IOException {
 		String content = null;
-		try {
-			byte[] bytes = new byte[inputStream.available()];
-			inputStream.read(bytes);
-			content = new String(bytes);
-		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
+		byte[] bytes = new byte[inputStream.available()];
+		inputStream.read(bytes);
+		content = new String(bytes);
 		updateDataSource(content);
 	}
 
@@ -275,7 +269,11 @@ public final class AtlSourceManager {
 			}
 		}
 
-		model = AtlParser.getDefault().parse(new ByteArrayInputStream(text.getBytes()));
+		try {
+			model = AtlParser.getDefault().parse(new ByteArrayInputStream(text.getBytes()));			
+		} catch (IOException e) {
+			//fail silently
+		}
 
 		if (model == null) {
 			inputModels = null;
