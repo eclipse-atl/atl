@@ -13,6 +13,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.ui.launch;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -1234,6 +1235,8 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			try {
 				sourceManager.updateDataSource(file.getContents());
 			} catch (CoreException e) {
+				return;
+			} catch (IOException e) {
 				return;
 			}
 			asmFileCache.put(file, sourceManager);
