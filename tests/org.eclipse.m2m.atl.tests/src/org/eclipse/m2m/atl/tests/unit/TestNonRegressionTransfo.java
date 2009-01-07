@@ -27,6 +27,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.m2m.atl.common.ATLExecutionException;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.ModelFactory;
@@ -147,6 +149,10 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			fail("Error writing results for: " + directory.getName(), e); //$NON-NLS-1$
 		} catch (CoreException e) {
 			fail(directory.getName() + ": " + e.getMessage(), e); //$NON-NLS-1$
+		} catch (ATLCoreException e) {
+			fail(directory.getName() + ": " + e.getMessage(), e); //$NON-NLS-1$
+		} catch (ATLExecutionException e) {
+			fail(directory.getName() + ": " + e.getMessage(), e); //$NON-NLS-1$
 		}
 		info(directory.getName() + ": " + executionTime + "s (pure execution: " + pureExecutionTime + "s)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		AtlTestPlugin.getDefault().getResourceSet().getResources().clear();
@@ -212,7 +218,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 * @return pureExecutionTime, i.e. the execution time without loading/saving models
 	 * @throws Exception
 	 */
-	protected double launch() throws CoreException, IOException {
+	protected double launch() throws ATLCoreException, CoreException, IOException {
 		String launcherName = getVMName();
 
 		// Launch configuration analysis
