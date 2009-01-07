@@ -14,15 +14,17 @@ package org.eclipse.m2m.atl.engine.vm;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+import org.eclipse.m2m.atl.common.ATLExecutionException;
+
 /**
  * Exceptions thrown by the VM.
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public class VMException extends RuntimeException {
+public class VMException extends ATLExecutionException {
 
-	private static final long serialVersionUID = 8297602709605088805L;
+	private static final long serialVersionUID = 1L;
 
 	private final StackFrame frame;
 
