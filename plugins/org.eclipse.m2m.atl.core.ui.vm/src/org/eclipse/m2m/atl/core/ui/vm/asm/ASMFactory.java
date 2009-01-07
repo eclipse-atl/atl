@@ -14,7 +14,7 @@ package org.eclipse.m2m.atl.core.ui.vm.asm;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.core.ModelFactory;
@@ -145,9 +145,8 @@ public class ASMFactory extends ModelFactory {
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#newModel(org.eclipse.m2m.atl.core.IReferenceModel)
 	 */
 	@Override
-	public IModel newModel(IReferenceModel referenceModel) {
-		ATLLogger.severe(Messages.getString("ASMFactory.MISSING_PARAMS")); //$NON-NLS-1$
-		return null;
+	public IModel newModel(IReferenceModel referenceModel) throws ATLCoreException {
+		throw new ATLCoreException(Messages.getString("ASMFactory.MISSING_PARAMS")); //$NON-NLS-1$
 	}
 
 	/**
@@ -156,9 +155,8 @@ public class ASMFactory extends ModelFactory {
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#newReferenceModel()
 	 */
 	@Override
-	public IReferenceModel newReferenceModel() {
-		ATLLogger.severe(Messages.getString("ASMFactory.MISSING_PARAMS")); //$NON-NLS-1$
-		return null;
+	public IReferenceModel newReferenceModel() throws ATLCoreException {
+		throw new ATLCoreException(Messages.getString("ASMFactory.MISSING_PARAMS")); //$NON-NLS-1$
 	}
 
 	/**

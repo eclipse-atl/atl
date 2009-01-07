@@ -13,10 +13,9 @@ package org.eclipse.m2m.atl.core.ui.vm.asm;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -35,7 +34,7 @@ public class ASMExtractor implements IExtractor {
 	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.Object,
 	 *      java.util.Map)
 	 */
-	public void extract(IModel targetModel, Object target, Map<String, Object> options) {
+	public void extract(IModel targetModel, Object target, Map<String, Object> options) throws ATLCoreException {
 		extract(targetModel, target);
 	}
 
@@ -44,7 +43,7 @@ public class ASMExtractor implements IExtractor {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.Object)
 	 */
-	public void extract(IModel targetModel, Object target) {
+	public void extract(IModel targetModel, Object target) throws ATLCoreException {
 		ASMModelWrapper modelWrapper = (ASMModelWrapper)targetModel;
 		ASMModel asmModel = modelWrapper.getAsmModel();
 		String path = (String)target;
@@ -54,7 +53,7 @@ public class ASMExtractor implements IExtractor {
 		try {
 			modelWrapper.getModelLoader().save(asmModel, URI.createFileURI(path).toString());
 		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			throw new ATLCoreException(e.getLocalizedMessage(), e);
 		}
 	}
 

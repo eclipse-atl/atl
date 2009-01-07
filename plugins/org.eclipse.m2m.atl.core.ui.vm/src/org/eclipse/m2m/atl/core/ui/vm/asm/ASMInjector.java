@@ -17,14 +17,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
@@ -46,7 +45,8 @@ public class ASMInjector implements IInjector {
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.Object,
 	 *      java.util.Map)
 	 */
-	public void inject(IModel sourceModel, Object source, Map<String, Object> options) {
+	public void inject(IModel sourceModel, Object source, Map<String, Object> options)
+			throws ATLCoreException {
 		boolean checkSameModel = "true".equals(options.get("checkSameModel")); //$NON-NLS-1$ //$NON-NLS-2$
 		inject(sourceModel, source, ((ASMModelWrapper)sourceModel).getName(), checkSameModel);
 	}
@@ -56,11 +56,12 @@ public class ASMInjector implements IInjector {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.Object)
 	 */
-	public void inject(IModel sourceModel, Object source) {
+	public void inject(IModel sourceModel, Object source) throws ATLCoreException {
 		inject(sourceModel, source, ((ASMModelWrapper)sourceModel).getName(), false);
 	}
 
-	private void inject(IModel sourceModel, Object source, String modelName, boolean checkSameModel) {
+	private void inject(IModel sourceModel, Object source, String modelName, boolean checkSameModel)
+			throws ATLCoreException {
 		final ASMModelWrapper modelWrapper = (ASMModelWrapper)sourceModel;
 		try {
 			final ModelLoader ml = modelWrapper.getModelLoader();
@@ -72,8 +73,8 @@ public class ASMInjector implements IInjector {
 				return;
 			} else if (ml instanceof EMFModelLoader) {
 				if (path.startsWith("uri:")) { //$NON-NLS-1$
-					asmModel = ml.loadModel(modelName, ((ASMModelWrapper)modelWrapper
-							.getReferenceModel()).getAsmModel(), path);
+					asmModel = ml.loadModel(modelName, ((ASMModelWrapper)modelWrapper.getReferenceModel())
+							.getAsmModel(), path);
 				} else if (path.startsWith("ext:")) { //$NON-NLS-1$
 					path = path.substring(4);
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
@@ -96,9 +97,9 @@ public class ASMInjector implements IInjector {
 			modelWrapper.setAsmModel(asmModel);
 
 		} catch (CoreException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			throw new ATLCoreException(e.getLocalizedMessage(), e);
 		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			throw new ATLCoreException(e.getLocalizedMessage(), e);
 		}
 	}
 

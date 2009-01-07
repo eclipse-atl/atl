@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugException;
@@ -27,6 +26,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlRunTarget;
+import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
@@ -39,10 +39,10 @@ import org.eclipse.m2m.atl.engine.vm.ASMOperation;
 import org.eclipse.m2m.atl.engine.vm.ASMStackFrame;
 import org.eclipse.m2m.atl.engine.vm.ASMXMLReader;
 import org.eclipse.m2m.atl.engine.vm.AtlSuperimposeModule;
-import org.eclipse.m2m.atl.engine.vm.AtlSuperimposeModule.AtlSuperimposeModuleException;
 import org.eclipse.m2m.atl.engine.vm.Debugger;
 import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
 import org.eclipse.m2m.atl.engine.vm.SimpleDebugger;
+import org.eclipse.m2m.atl.engine.vm.AtlSuperimposeModule.AtlSuperimposeModuleException;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
 
 /**
@@ -142,10 +142,12 @@ public class RegularVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String, org.eclipse.core.runtime.IProgressMonitor, java.util.Map, java.lang.Object[])
+	 * 
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String,
+	 *      org.eclipse.core.runtime.IProgressMonitor, java.util.Map, java.lang.Object[])
 	 */
-	public Object launch(final String mode, final IProgressMonitor monitor, final Map<String, Object> options, final Object... modules) {
+	public Object launch(final String mode, final IProgressMonitor monitor,
+			final Map<String, Object> options, final Object... modules) {
 		IDebugTarget mTarget = null;
 		ILaunch launchParam = (ILaunch)options.get("launch"); //$NON-NLS-1$
 		try {
@@ -190,9 +192,8 @@ public class RegularVMLauncher implements ILauncher {
 				}
 			}
 		} catch (DebugException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			throw new ATLExecutionException(e.getLocalizedMessage(), e);
 		}
-
 		return null;
 	}
 
@@ -235,7 +236,7 @@ public class RegularVMLauncher implements ILauncher {
 				env.registerOperations(module);
 			}
 		} catch (AtlSuperimposeModuleException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			throw new ATLExecutionException(e.getLocalizedMessage(), e);
 		}
 
 		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
