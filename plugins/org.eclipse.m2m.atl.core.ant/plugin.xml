@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ant.core.antTasks">
+      <antTask
+            class="org.eclipse.m2m.atl.core.ant.tasks.LoadModelTask"
+            eclipseRuntime="true"
+            headless="true"
+            library="lib/atlAntTasks.jar"
+            name="atl.loadModel">
+      </antTask>
+      <antTask
+            class="org.eclipse.m2m.atl.core.ant.tasks.ATLModelTransformationTask"
+            eclipseRuntime="true"
+            headless="true"
+            library="lib/atlAntTasks.jar"
+            name="atl.launch">
+      </antTask>
+      <antTask
+            class="org.eclipse.m2m.atl.core.ant.tasks.SaveModelTask"
+            eclipseRuntime="true"
+            headless="true"
+            library="lib/atlAntTasks.jar"
+            name="atl.saveModel">
+      </antTask>
+   </extension>
+
+</plugin>
