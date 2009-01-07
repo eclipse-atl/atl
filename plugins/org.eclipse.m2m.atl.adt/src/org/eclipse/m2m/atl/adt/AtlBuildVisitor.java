@@ -112,14 +112,12 @@ public class AtlBuildVisitor implements IResourceVisitor {
 				if (asmFile.exists()) {
 					asmFile.setDerived(true);
 				}
+				is.close();
 			} catch (CompilerNotFoundException cnfee) {
 				IMarker marker = resource.createMarker(IMarker.PROBLEM);
 				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
 				marker.setAttribute(IMarker.MESSAGE, cnfee.getMessage());
 				marker.setAttribute(IMarker.LINE_NUMBER, 1);
-			}
-			try {
-				is.close();
 			} catch (IOException e) {
 				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
