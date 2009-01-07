@@ -68,7 +68,8 @@
             <property name="severity" value="error"/>
         </module>
         <module name="ImportOrder">
-            <property name="severity" value="error"/>
+            <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity" value="error"/>
+            <property name="severity" value="ignore"/>
         </module>
         <module name="RedundantImport">
             <property name="severity" value="error"/>
