@@ -28,7 +28,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.ModelFactory;
@@ -181,7 +183,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 						(Object[])modules);
 			}
 
-		} catch (RuntimeException e) {
+		} catch (ATLCoreException e) {
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		} catch (ATLExecutionException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} finally {
 			monitor.done();
