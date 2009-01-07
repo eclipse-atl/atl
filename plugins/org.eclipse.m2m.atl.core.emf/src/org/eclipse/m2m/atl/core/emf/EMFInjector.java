@@ -13,14 +13,13 @@ package org.eclipse.m2m.atl.core.emf;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
 
@@ -34,13 +33,14 @@ public class EMFInjector implements IInjector {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.Object, java.util.Map)
+	 * 
+	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.Object,
+	 *      java.util.Map)
 	 */
-	public void inject(IModel sourceModel, Object source, Map<String, Object> options) {
+	public void inject(IModel sourceModel, Object source, Map<String, Object> options) throws ATLCoreException {
 		Resource mainResource = null;
 		ResourceSet resourceSet = ((EMFModelFactory)sourceModel.getModelFactory()).getResourceSet();
-		
+
 		String path = source.toString();
 		if (path != null) {
 			// EMF Registry
@@ -50,9 +50,7 @@ public class EMFInjector implements IInjector {
 				if (pack != null) {
 					mainResource = pack.eResource();
 				} else {
-					ATLLogger.log(Level.SEVERE,
-							Messages.getString("EMFInjector.PACKAGE_NOT_FOUND", path), null); //$NON-NLS-1$
-					return;
+					throw new ATLCoreException(Messages.getString("EMFInjector.PACKAGE_NOT_FOUND", path)); //$NON-NLS-1$
 				}
 				// File system
 			} else if (path.startsWith("ext:")) { //$NON-NLS-1$
@@ -63,14 +61,12 @@ public class EMFInjector implements IInjector {
 				mainResource = EcorePackage.eINSTANCE.eResource();
 				// Workspace
 			} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
-				mainResource = resourceSet.getResource(URI.createURI(path).trimFragment(), true);				
+				mainResource = resourceSet.getResource(URI.createURI(path).trimFragment(), true);
 			} else {
-				mainResource = resourceSet.getResource(
-						URI.createPlatformResourceURI(path, false), true);
+				mainResource = resourceSet.getResource(URI.createPlatformResourceURI(path, false), true);
 			}
 		} else {
-			ATLLogger.log(Level.SEVERE, Messages.getString("EMFInjector.NO_RESOURCE"), null); //$NON-NLS-1$
-			return;
+			throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE")); //$NON-NLS-1$
 		}
 
 		((EMFModel)sourceModel).setResource(mainResource);
@@ -85,7 +81,7 @@ public class EMFInjector implements IInjector {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.Object)
 	 */
-	public void inject(IModel sourceModel, Object source) {
+	public void inject(IModel sourceModel, Object source) throws ATLCoreException {
 		inject(sourceModel, source, Collections.<String, Object> emptyMap());
 	}
 

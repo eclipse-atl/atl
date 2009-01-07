@@ -15,13 +15,12 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IModel;
 
@@ -35,12 +34,14 @@ public class EMFExtractor implements IExtractor {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.Object, java.util.Map)
+	 * 
+	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.Object,
+	 *      java.util.Map)
 	 */
-	public void extract(IModel targetModel, Object target, Map<String, Object> options) {
+	public void extract(IModel targetModel, Object target, Map<String, Object> options)
+			throws ATLCoreException {
 		ResourceSet resourceSet = ((EMFModelFactory)targetModel.getModelFactory()).getResourceSet();
-		
+
 		Object contentType = options.get(EMFModelFactory.OPTION_CONTENT_TYPE);
 		Object object = target.toString();
 		if (object instanceof String) {
@@ -51,7 +52,8 @@ public class EMFExtractor implements IExtractor {
 			if (((EMFModel)targetModel).getResource() != null) {
 				extract(resourceSet, ((EMFModel)targetModel).getResource(), path, contentType, options);
 			} else {
-				ATLLogger.severe(Messages.getString("EMFExtractor.NO_RESOURCE", new Object[] {path})); //$NON-NLS-1$
+				throw new ATLCoreException(Messages
+						.getString("EMFExtractor.NO_RESOURCE", new Object[] {path})); //$NON-NLS-1$
 			}
 		}
 	}
@@ -61,12 +63,13 @@ public class EMFExtractor implements IExtractor {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.Object)
 	 */
-	public void extract(IModel targetModel, Object target) {
+	public void extract(IModel targetModel, Object target) throws ATLCoreException {
 		extract(targetModel, target, Collections.<String, Object> emptyMap());
 	}
 
-	private void extract(ResourceSet resourceSet, Resource resource, String path, Object contentType, Map<String, Object> options) {
-		//TODO do not systematically recreate the resource
+	private void extract(ResourceSet resourceSet, Resource resource, String path, Object contentType,
+			Map<String, Object> options) throws ATLCoreException {
+		// TODO do not systematically recreate the resource
 		Resource newResource = null;
 		if (contentType == null) {
 			newResource = resourceSet.createResource(URI.createFileURI(path));
@@ -87,7 +90,7 @@ public class EMFExtractor implements IExtractor {
 		try {
 			newResource.save(extractOptions);
 		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, Messages.getString("EMFExtractor.ERROR_EXTRACTING", path), e); //$NON-NLS-1$
+			throw new ATLCoreException(Messages.getString("EMFExtractor.ERROR_EXTRACTING", path), e); //$NON-NLS-1$
 		}
 		resourceSet.getResources().remove(newResource);
 	}

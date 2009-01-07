@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -25,8 +24,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
-import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.common.ATLResourceProvider;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.core.ModelFactory;
@@ -133,18 +132,17 @@ public final class EMFModelFactory extends ModelFactory {
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#getBuiltInResource(java.lang.String)
 	 */
 	@Override
-	public IReferenceModel getBuiltInResource(String name) {
+	public IReferenceModel getBuiltInResource(String name) throws ATLCoreException {
 		EMFReferenceModel model = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this), this);
 		URL url = ATLResourceProvider.getURL(name);
 		Resource builtin = resourceSet.createResource(URI.createURI(name));
 		try {
 			builtin.load(url.openStream(), Collections.EMPTY_MAP);	
 		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND"), e); //$NON-NLS-1$
+			throw new ATLCoreException(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND"), e); //$NON-NLS-1$
 		}		
 		if (builtin == null) {
-			ATLLogger.severe(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND")); //$NON-NLS-1$
-			return null;
+			throw new ATLCoreException(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND")); //$NON-NLS-1$
 		}
 		model.setResource(builtin);
 		model.register();
