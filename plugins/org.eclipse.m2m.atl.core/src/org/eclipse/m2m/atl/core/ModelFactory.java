@@ -38,8 +38,8 @@ public abstract class ModelFactory {
 	 * 
 	 * @return a new {@link IReferenceModel}
 	 */
-	public abstract IReferenceModel newReferenceModel();
-	
+	public abstract IReferenceModel newReferenceModel() throws ATLCoreException;
+
 	/**
 	 * Creates a new {@link IReferenceModel} using specified options.
 	 * 
@@ -47,18 +47,17 @@ public abstract class ModelFactory {
 	 *            the creation options
 	 * @return a new {@link IReferenceModel}
 	 */
-	public abstract IReferenceModel newReferenceModel(Map<String, Object> options);
+	public abstract IReferenceModel newReferenceModel(Map<String, Object> options) throws ATLCoreException;
 
 	/**
-	 * Creates a new {@link IModel} using default options and conforming to the given
-	 * {@link IReferenceModel}.
+	 * Creates a new {@link IModel} using default options and conforming to the given {@link IReferenceModel}.
 	 * 
 	 * @param referenceModel
 	 *            the {@link IReferenceModel}
 	 * @return a new {@link IModel}
 	 */
-	public abstract IModel newModel(IReferenceModel referenceModel);
-	
+	public abstract IModel newModel(IReferenceModel referenceModel) throws ATLCoreException;
+
 	/**
 	 * Creates a new {@link IModel} using specified options and conforming to the given
 	 * {@link IReferenceModel}.
@@ -69,7 +68,8 @@ public abstract class ModelFactory {
 	 *            the creation options
 	 * @return a new {@link IModel}
 	 */
-	public abstract IModel newModel(IReferenceModel referenceModel, Map<String, Object> options);
+	public abstract IModel newModel(IReferenceModel referenceModel, Map<String, Object> options)
+			throws ATLCoreException;
 
 	/**
 	 * Returns the built-in resource matching the given name.
@@ -78,5 +78,5 @@ public abstract class ModelFactory {
 	 *            the resource name
 	 * @return the built-in resource matching the given name
 	 */
-	public abstract IReferenceModel getBuiltInResource(String name);
+	public abstract IReferenceModel getBuiltInResource(String name) throws ATLCoreException;
 }
