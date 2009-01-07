@@ -141,7 +141,7 @@ public class MDRModelLoader extends ModelLoader {
 	            mextent = rep.createExtent(modifiedName, pack);
 	        }
 
-	        ret = new ASMMDRModel(name, mextent, (ASMMDRModel)metamodel, true, this);
+	        ret = new ASMMDRModel(name, mextent, metamodel, true, this);
 		} catch(Exception e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
@@ -150,7 +150,7 @@ public class MDRModelLoader extends ModelLoader {
 	}
 
 	public ASMModel newModel(String name, String uri, ASMModel metamodel) {
-		return newModel(name, (ASMMDRModel)metamodel);
+		return newModel(name, metamodel);
 	}
 
 	protected void setParameter(String name, Object value) {
