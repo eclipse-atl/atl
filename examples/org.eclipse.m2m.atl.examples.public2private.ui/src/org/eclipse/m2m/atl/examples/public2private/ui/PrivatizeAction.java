@@ -109,7 +109,7 @@ public class PrivatizeAction implements IObjectActionDelegate {
 
 		// Metamodels
 		umlMetamodel = factory.newReferenceModel();
-		injector.inject(umlMetamodel, "uri:http://www.declipse.org/uml2/2.1.0/UML"); //$NON-NLS-1$
+		injector.inject(umlMetamodel, "uri:http://www.eclipse.org/uml2/2.1.0/UML"); //$NON-NLS-1$
 		refiningTraceMetamodel = factory.getBuiltInResource("RefiningTrace"); //$NON-NLS-1$
 		
 		// Getting launcher
