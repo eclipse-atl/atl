@@ -13,7 +13,7 @@
  </copyright>
 -->
 
-<project name="ATL Examples" basedir="." default="buildZips">
+<project name="ATL Examples" basedir="." default="update">
 	<!-- Project properties -->
 	<property name="dest.dir" value="examples" />
 	<property name="plugins.base.dir" value=".." />
@@ -49,4 +49,9 @@
 			</zipfileset>
 		</zip>
 	</target>
+	
+	<target name="update" depends="buildZips">
+		<eclipse.refreshLocal resource="org.eclipse.m2m.atl.examples/examples"/>
+	</target>
+	
 </project>

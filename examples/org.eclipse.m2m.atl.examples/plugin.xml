@@ -21,6 +21,7 @@
             Creates plug-in projects defining an ATL transformation which privatizes public fields in an UML model and generate getters and setters. The transformation can be launched using a launch configuration, an ant file (using atl ant tasks).
          </description>
       </wizard>
+      <!--
       <wizard
             canFinishEarly="true"
             category="org.eclipse.ui.Examples/org.eclipse.m2m.atl.examples.category"
@@ -34,5 +35,6 @@
             Creates a command line tool launching the public2private example.
          </description>
       </wizard>
+      -->
    </extension>
 </plugin>
