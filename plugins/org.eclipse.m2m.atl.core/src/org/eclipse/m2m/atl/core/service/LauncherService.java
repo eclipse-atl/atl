@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -84,7 +82,6 @@ public final class LauncherService {
 		launcher.initialize(options);
 		Map<String, String> modelHandlers = (Map<String, String>)options.get("modelHandlers"); //$NON-NLS-1$
 		boolean isRefiningTraceMode = "true".equals(options.get("isRefiningTraceMode")); //$NON-NLS-1$//$NON-NLS-2$
-		List<IModel> toDispose = new ArrayList<IModel>();
 
 		// REFINING TRACE MODE SUPPORT {
 		if (isRefiningTraceMode) {
@@ -97,9 +94,6 @@ public final class LauncherService {
 			modelOptions.put("newModel", true); //$NON-NLS-1$
 			IModel refiningTraceModel = factory.newModel(refiningTraceMetamodel, modelOptions);
 			launcher.addOutModel(refiningTraceModel, REFINING_TRACE_MODEL, REFINING_TRACE_METAMODEL);
-
-			toDispose.add(refiningTraceModel);
-			toDispose.add(refiningTraceMetamodel);
 		}
 		// }
 
@@ -110,9 +104,6 @@ public final class LauncherService {
 			IModel model = getModel(modelName, referenceModelName, false, launcher, modelFactories, paths,
 					injectors, modelHandlers);
 			launcher.addInModel(model, modelName, referenceModelName);
-
-			toDispose.add(model);
-			toDispose.add(model.getReferenceModel());
 		}
 
 		// INOUT MODELS INJECTION
@@ -122,9 +113,6 @@ public final class LauncherService {
 			IModel model = getModel(modelName, referenceModelName, false, launcher, modelFactories, paths,
 					injectors, modelHandlers);
 			launcher.addInOutModel(model, modelName, referenceModelName);
-
-			toDispose.add(model);
-			toDispose.add(model.getReferenceModel());
 		}
 
 		// OUTPUT MODELS CREATION
@@ -134,9 +122,6 @@ public final class LauncherService {
 			IModel model = getModel(modelName, referenceModelName, true, launcher, modelFactories, paths,
 					injectors, modelHandlers);
 			launcher.addOutModel(model, modelName, referenceModelName);
-
-			toDispose.add(model);
-			toDispose.add(model.getReferenceModel());
 		}
 
 		// LIBRARIES
