@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+To launch this file, you must use a specific ant configuration:
+right-click -> Run as -> Ant Build...
+then set:
+		- JRE -> Run in same JRE as the workspace
+		- Refresh -> the entire workspace  
+-->
+<project name="Public2Private" default="run" basedir=".">
+	<property name="samplePath" value="../model/sample.uml" />
+
+	<target name="run">
+		<atl.loadModel name="UML" metamodel="MOF" nsURI="http://www.eclipse.org/uml2/2.1.0/UML" />
+		<atl.loadModel name="sample" metamodel="UML" path="${samplePath}" />
+
+		<atl.launch path="../transformation/public2private.asm" refining="true">
+			<inoutmodel model="sample" name="IN" />
+		</atl.launch>
+
+		<atl.saveModel model="sample" path="${samplePath}" />
+	</target>
+
+</project>
