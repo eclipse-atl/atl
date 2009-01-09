@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry kind="lib" path="lib/atl.core.emf.jar"/>
+	<classpathentry kind="lib" path="lib/atl.core.jar"/>
+	<classpathentry kind="lib" path="lib/atl.engine.emfvm.jar"/>
+	<classpathentry kind="lib" path="lib/atl.common.jar"/>
+	<classpathentry kind="lib" path="lib/core.resources.jar"/>
+	<classpathentry kind="lib" path="lib/core.runtime.jar"/>
+	<classpathentry kind="lib" path="lib/emf.common.jar"/>
+	<classpathentry kind="lib" path="lib/emf.ecore.jar"/>
+	<classpathentry kind="lib" path="lib/emf.ecore.xmi.jar"/>
+	<classpathentry kind="lib" path="lib/equinox.common.jar"/>
+	<classpathentry kind="lib" path="lib/osgi.jar"/>
+	<classpathentry kind="lib" path="lib/uml2.uml.jar"/>
+	<classpathentry kind="lib" path="lib/uml2.common.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

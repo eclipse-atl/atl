@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build lib" default="copy jars">
+
+	<target name="copy jars" depends="clean jars">
+		
+		<!-- Eclipse plugins -->
+		<copy tofile="equinox.common.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.equinox.common_*.jar" />
+			</fileset>
+		</copy>
+		<copy tofile="osgi.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.osgi_*.jar" />
+			</fileset>
+		</copy>
+		<copy tofile="core.resources.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.core.resources_*.jar" />
+			</fileset>
+		</copy>
+		<copy tofile="core.runtime.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.core.runtime_*.jar" />
+			</fileset>
+		</copy>
+
+		<!-- UML2 plugins -->
+		<copy tofile="uml2.uml.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.uml2.uml_*.jar" />
+			</fileset>
+		</copy>
+		<copy tofile="uml2.common.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.uml2.common_*.jar" />
+			</fileset>
+		</copy>
+
+		<!-- EMF plugins -->
+		<copy tofile="emf.common.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.emf.common_*.jar" />
+			</fileset>
+		</copy>
+		<copy tofile="emf.ecore.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.emf.ecore_*.jar" />
+			</fileset>
+		</copy>
+		<copy tofile="emf.ecore.xmi.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.emf.ecore.xmi_*.jar" />
+			</fileset>
+		</copy>
+
+		<!-- ATL plugins -->
+		<copy tofile="atl.common.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.m2m.atl.common_*.jar" />
+			</fileset>
+		</copy>
+		<copy tofile="atl.core.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.m2m.atl.core_*.jar" />
+			</fileset>
+		</copy>
+		<copy tofile="atl.core.emf.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.m2m.atl.core.emf_*.jar" />
+			</fileset>
+		</copy>
+		<copy tofile="atl.engine.emfvm.jar" verbose="true">
+			<fileset dir="${eclipse.home}/plugins">
+				<include name="org.eclipse.m2m.atl.engine.emfvm_*.jar" />
+			</fileset>
+		</copy>
+		
+	</target>
+
+	<target name="clean jars">
+		<delete verbose="true">
+			<fileset dir=".">
+
+				<!-- ATL plugins -->
+				<include name="atl.common.jar" />
+				<include name="atl.core.jar" />
+				<include name="atl.core.emf.jar" />
+				<include name="atl.engine.emfvm.jar" />
+
+				<!-- UML2 plugins -->
+				<include name="uml2.uml.jar" />
+				<include name="uml2.common.jar" />
+
+				<!-- EMF plugins -->
+				<include name="emf.common.jar" />
+				<include name="emf.ecore.jar" />
+				<include name="emf.ecore.xmi.jar" />
+
+				<!-- Eclipse plugins -->
+				<include name="equinox.common.jar" />
+				<include name="osgi.jar" />
+				<include name="core.resources.jar" />
+				<include name="core.runtime.jar" />
+
+			</fileset>
+		</delete>
+	</target>
+
+</project>

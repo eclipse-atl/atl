@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build" default="all">
+    <target name="clean">
+        <delete>
+        	<fileset dir=".">
+	       		<include name="public2private.jar"/>
+        	</fileset>
+        </delete>
+    </target>
+	
+    <target name="jar" depends="clean">
+        <jar destfile="public2private.jar" basedir="../bin">
+        	<include name="**"/>
+        	<manifest>
+        		<attribute name="Main-Class" value="org.eclipse.m2m.atl.examples.public2private.cmd.Main"/>
+        		<attribute name="Class-Path" value="atl.core.emf.jar atl.core.jar atl.engine.emfvm.jar atl.common.jar core.resources.jar core.runtime.jar emf.common.jar emf.ecore.jar emf.ecore.xmi.jar equinox.common.jar osgi.jar uml2.uml.jar uml2.common.jar" />
+        	</manifest>
+        </jar>
+    </target>
+	
+	<target name="all" depends="jar"/>
+</project>
