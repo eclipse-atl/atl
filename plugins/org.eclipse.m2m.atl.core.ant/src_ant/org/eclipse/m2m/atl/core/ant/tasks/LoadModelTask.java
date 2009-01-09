@@ -99,14 +99,10 @@ public class LoadModelTask extends AbstractAtlTask {
 		IInjector injectorInstance = null;
 		Map<String, Object> injectorParams = Collections.<String, Object> emptyMap();
 
-		try {
-			if (factory != null) {
-				factoryInstance = AtlBuildListener.getModelFactory(factory);
-			} else {
-				factoryInstance = getDefaultModelFactory();
-			}
-		} catch (CoreException e) {
-			error(Messages.getString("LoadModelTask.UNABLE_TO_LOAD_FACTORY"), e); //$NON-NLS-1$
+		if (factory != null) {
+			factoryInstance = AtlBuildListener.getModelFactory(factory);
+		} else {
+			factoryInstance = getDefaultModelFactory();
 		}
 		try {
 			if (!injectors.isEmpty()) {

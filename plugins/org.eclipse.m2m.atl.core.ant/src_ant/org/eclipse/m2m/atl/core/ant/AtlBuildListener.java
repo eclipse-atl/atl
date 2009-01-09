@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.logging.Handler;
 
 import org.apache.tools.ant.BuildEvent;
+import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.BuildListener;
 import org.apache.tools.ant.Project;
 import org.eclipse.core.runtime.CoreException;
@@ -34,7 +35,7 @@ public class AtlBuildListener implements BuildListener {
 	private static Map<String, ModelFactory> modelFactories = new HashMap<String, ModelFactory>();
 
 	private static Handler handler;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -75,10 +76,14 @@ public class AtlBuildListener implements BuildListener {
 	 *            the factory name
 	 * @return the factory instance
 	 */
-	public static ModelFactory getModelFactory(String factoryName) throws CoreException {
+	public static ModelFactory getModelFactory(String factoryName) throws BuildException {
 		ModelFactory res = modelFactories.get(factoryName);
 		if (res == null) {
-			res = CoreService.createModelFactory(factoryName);
+			try {
+				res = CoreService.createModelFactory(factoryName);
+			} catch (CoreException e) {
+				throw new BuildException(Messages.getString("AtlBuildListener.UNABLE_TO_LOAD_FACTORY"), e); //$NON-NLS-1$
+			}
 			modelFactories.put(factoryName, res);
 		}
 		return res;

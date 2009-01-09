@@ -24,8 +24,11 @@ import java.util.Map.Entry;
 import org.apache.tools.ant.BuildException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
+import org.eclipse.m2m.atl.core.ModelFactory;
+import org.eclipse.m2m.atl.core.ant.AtlBuildListener;
 import org.eclipse.m2m.atl.core.ant.Messages;
 import org.eclipse.m2m.atl.core.ant.tasks.nested.InModel;
 import org.eclipse.m2m.atl.core.ant.tasks.nested.Library;
@@ -33,6 +36,7 @@ import org.eclipse.m2m.atl.core.ant.tasks.nested.OutModel;
 import org.eclipse.m2m.atl.core.ant.tasks.nested.Param;
 import org.eclipse.m2m.atl.core.ant.tasks.nested.Superimpose;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
+import org.eclipse.m2m.atl.core.service.LauncherService;
 
 /**
  * Launches an ATL transformation, using the launcher specified as property in the ant project.
@@ -40,6 +44,8 @@ import org.eclipse.m2m.atl.core.launch.ILauncher;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class ATLModelTransformationTask extends AbstractAtlTask {
+
+	protected boolean isRefiningTraceMode;
 
 	protected File asmPath;
 
@@ -54,6 +60,10 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 	protected Map<String, Object> options = new HashMap<String, Object>();
 
 	protected List<Superimpose> superimposeModules = new ArrayList<Superimpose>();
+
+	public void setRefining(boolean isRefining) {
+		this.isRefiningTraceMode = isRefining;
+	}
 
 	public void setPath(File path) {
 		this.asmPath = path;
@@ -158,6 +168,26 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 		}
 		for (Library library : libraries) {
 			launcherInstance.addLibrary(library.getName(), getInputStreamFromPath(library.getPath()));
+		}
+
+		try {
+			if (isRefiningTraceMode) {
+				ModelFactory factory = AtlBuildListener.getModelFactory(launcherInstance
+						.getDefaultModelFactoryName());
+				IReferenceModel refiningTraceMetamodel = factory
+						.getBuiltInResource(LauncherService.REFINING_TRACE_METAMODEL);
+				getProject().addReference(LauncherService.REFINING_TRACE_METAMODEL, refiningTraceMetamodel);
+				Map<String, Object> modelOptions = new HashMap<String, Object>();
+				modelOptions.put(OPTION_MODEL_PATH, "temp"); //$NON-NLS-1$ 
+				modelOptions.put(OPTION_MODEL_NAME, LauncherService.REFINING_TRACE_MODEL);
+				modelOptions.put(OPTION_NEW_MODEL, true);
+				IModel refiningTraceModel = newModel(factory, LauncherService.REFINING_TRACE_MODEL,
+						LauncherService.REFINING_TRACE_METAMODEL, options);
+				launcherInstance.addOutModel(refiningTraceModel, LauncherService.REFINING_TRACE_MODEL,
+						LauncherService.REFINING_TRACE_METAMODEL);
+			}
+		} catch (ATLCoreException e) {
+			error(Messages.getString("ATLModelTransformationTask.UNABLE_TO_LOAD_REFINING")); //$NON-NLS-1$
 		}
 
 		InputStream[] moduleInputStreams = new InputStream[superimposeModules.size() + 1];

@@ -85,7 +85,6 @@ public class AbstractAtlTask extends Task {
 		super.execute();
 	}
 
-
 	/**
 	 * Stops the build, deletes log.
 	 * 
@@ -148,11 +147,7 @@ public class AbstractAtlTask extends Task {
 	protected ModelFactory getDefaultModelFactory() {
 		ModelFactory factory = null;
 		ILauncher launcher = getLauncher();
-		try {
-			factory = AtlBuildListener.getModelFactory(launcher.getDefaultModelFactoryName());
-		} catch (CoreException e) {
-			error("AbstractAtlTask.UNABLE_TO_LOAD_FACTORY", e); //$NON-NLS-1$
-		}
+		factory = AtlBuildListener.getModelFactory(launcher.getDefaultModelFactoryName());
 		return factory;
 	}
 
@@ -174,11 +169,7 @@ public class AbstractAtlTask extends Task {
 			Map<String, Object> options) throws BuildException {
 		ModelFactory factoryInstance = null;
 		IModel model = null;
-		try {
-			factoryInstance = AtlBuildListener.getModelFactory(factoryName);
-		} catch (CoreException e) {
-			error(Messages.getString("AbstractAtlTask.UNABLE_TO_LOAD_FACTORY", factoryName), e); //$NON-NLS-1$
-		}
+		factoryInstance = AtlBuildListener.getModelFactory(factoryName);
 		if (factoryInstance == null) {
 			error(Messages.getString("AbstractAtlTask.FACTORY_NOT_FOUND", factoryName)); //$NON-NLS-1$
 		} else {
