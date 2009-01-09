@@ -19,7 +19,7 @@ import java.util.List;
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public class Public2PrivateExampleWizard extends AbstractExampleWizard {
+public class Public2PrivateCLExampleWizard extends AbstractExampleWizard {
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -27,13 +27,10 @@ public class Public2PrivateExampleWizard extends AbstractExampleWizard {
 	 */
 	@Override
 	protected Collection<ProjectDescriptor> getProjectDescriptors() {
-		final List<ProjectDescriptor> projects = new ArrayList<ProjectDescriptor>(2);
+		final List<ProjectDescriptor> projects = new ArrayList<ProjectDescriptor>(1);
 		projects
 				.add(new ProjectDescriptor(
-						"org.eclipse.m2m.atl.examples", "examples/org.eclipse.m2m.atl.examples.public2private.zip", "org.eclipse.m2m.atl.examples.public2private")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-		projects
-				.add(new ProjectDescriptor(
-						"org.eclipse.m2m.atl.examples", "examples/org.eclipse.m2m.atl.examples.public2private.ui.zip", "org.eclipse.m2m.atl.examples.public2private.ui")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+						"org.eclipse.m2m.atl.examples", "examples/org.eclipse.m2m.atl.examples.public2private.cmd.zip", "org.eclipse.m2m.atl.examples.public2private.cmd")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 		return projects;
 	}
 

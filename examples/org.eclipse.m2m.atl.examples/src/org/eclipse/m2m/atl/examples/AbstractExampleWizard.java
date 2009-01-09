@@ -33,8 +33,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -129,7 +131,14 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 	 * @param e
 	 *            Exception that should be logged.
 	 */
-	protected abstract void log(Exception e);
+	protected void log(Exception e) {
+		if (e instanceof CoreException) {
+			ATLExamplesPlugin.getDefault().getLog().log(((CoreException)e).getStatus());
+		} else {
+			ATLExamplesPlugin.getDefault().getLog().log(
+					new Status(IStatus.ERROR, ATLExamplesPlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e));
+		}
+	}
 
 	/**
 	 * This will unzip the project described by <code>descriptor</code>, open it and refresh the workspace.

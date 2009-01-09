@@ -18,8 +18,9 @@
 	<property name="dest.dir" value="examples" />
 	<property name="plugins.base.dir" value=".." />
 
-	<property name="public2private.plugin" value="org.eclipse.m2m.atl.examples.public2private" />
-	<property name="public2private.ui.plugin" value="org.eclipse.m2m.atl.examples.public2private.ui" />
+	<property name="public2private.project" value="org.eclipse.m2m.atl.examples.public2private" />
+	<property name="public2private.ui.project" value="org.eclipse.m2m.atl.examples.public2private.ui" />
+	<property name="public2private.cmd.project" value="org.eclipse.m2m.atl.examples.public2private.cmd" />
 
 	<!-- Clean -->
 	<target name="clean">
@@ -31,11 +32,21 @@
 
 	<!-- Build zip files -->
 	<target name="buildZips" depends="clean">
-		<zip destfile="${dest.dir}/${public2private.plugin}.zip">
-			<zipfileset dir="${plugins.base.dir}/${public2private.plugin}" />
+		<zip destfile="${dest.dir}/${public2private.project}.zip">
+			<zipfileset dir="${plugins.base.dir}/${public2private.project}" >
+				<exclude name="*.checkstyle" />
+			</zipfileset>			
 		</zip>
-		<zip destfile="${dest.dir}/${public2private.ui.plugin}.zip">
-			<zipfileset dir="${plugins.base.dir}/${public2private.ui.plugin}" />
+		<zip destfile="${dest.dir}/${public2private.ui.project}.zip">
+			<zipfileset dir="${plugins.base.dir}/${public2private.ui.project}" >
+				<exclude name="*.checkstyle" />
+			</zipfileset>			
+		</zip>
+		<zip destfile="${dest.dir}/${public2private.cmd.project}.zip">
+			<zipfileset dir="${plugins.base.dir}/${public2private.cmd.project}">
+				<exclude name="lib/*.jar" />
+				<exclude name="*.checkstyle" />
+			</zipfileset>
 		</zip>
 	</target>
 </project>
