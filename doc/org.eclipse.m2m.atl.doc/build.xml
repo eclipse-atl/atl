@@ -78,6 +78,7 @@
 			<zipfileset dir="references" prefix="references" excludes="**/impl,**/impl/**" />
 			<zipfileset dir="images" prefix="images" />
 			<zipfileset dir="tutorials" prefix="tutorials" />
+			<zipfileset dir="guide" prefix="guide" />
 		</zip>
 	</target>
 
