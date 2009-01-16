@@ -19,8 +19,7 @@ import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 
 /**
- * Uses the {@link AtlHeuristicScanner}to get the indentation level for a
- * certain position in a document.
+ * Uses the {@link AtlHeuristicScanner}to get the indentation level for a certain position in a document.
  * <p>
  * An instance holds some internal position in the document and is therefore not threadsafe.
  * </p>
@@ -205,9 +204,9 @@ public class AtlIndenter {
 
 	/**
 	 * Returns the reference position regarding to indentation for <code>offset</code>, or
-	 * <code>NOT_FOUND</code>. This method calls
-	 * {@link #findReferencePosition(int, int) findReferencePosition(offset, nextChar)} where
-	 * <code>nextChar</code> is the next character after <code>offset</code>.
+	 * <code>NOT_FOUND</code>. This method calls {@link #findReferencePosition(int, int)
+	 * findReferencePosition(offset, nextChar)} where <code>nextChar</code> is the next character after
+	 * <code>offset</code>.
 	 * 
 	 * @param offset
 	 *            the offset for which the reference is computed
@@ -387,9 +386,9 @@ public class AtlIndenter {
 	 * Returns the reference position regarding to indentation for <code>position</code>, or
 	 * <code>NOT_FOUND</code>.
 	 * <p>
-	 * If <code>peekNextChar</code> is <code>true</code>, the next token after <code>offset</code> is
-	 * read and taken into account when computing the indentation. Currently, if the next token is the first
-	 * token on the line (i.e. only preceded by whitespace), the following tokens are specially handled:
+	 * If <code>peekNextChar</code> is <code>true</code>, the next token after <code>offset</code> is read and
+	 * taken into account when computing the indentation. Currently, if the next token is the first token on
+	 * the line (i.e. only preceded by whitespace), the following tokens are specially handled:
 	 * <ul>
 	 * <li><code>switch</code> labels are indented relative to the switch block</li>
 	 * <li>opening curly braces are aligned correctly with the introducing code</li>
@@ -397,8 +396,8 @@ public class AtlIndenter {
 	 * <li>closing parenthesis' are aligned with their opening peer</li>
 	 * <li>the <code>else</code> keyword is aligned with its <code>if</code>, anything else is aligned
 	 * normally (i.e. with the base of any introducing statements).</li>
-	 * <li>if there is no token on the same line after <code>offset</code>, the indentation is the same as
-	 * for an <code>else</code> keyword</li>
+	 * <li>if there is no token on the same line after <code>offset</code>, the indentation is the same as for
+	 * an <code>else</code> keyword</li>
 	 * </ul>
 	 * 
 	 * @param offset
@@ -446,12 +445,10 @@ public class AtlIndenter {
 					case Symbols.TOKEN_LBRACE: // for opening-brace-on-new-line style
 						if (bracelessBlockStart && !prefIndentBracesForBlocks()) {
 							unindent = true;
-						}
-						else if ((prevToken == Symbols.TOKEN_COLON || prevToken == Symbols.TOKEN_EQUAL || prevToken == Symbols.TOKEN_RBRACKET)
+						} else if ((prevToken == Symbols.TOKEN_COLON || prevToken == Symbols.TOKEN_EQUAL || prevToken == Symbols.TOKEN_RBRACKET)
 								&& !prefIndentBracesForArrays()) {
 							unindent = true;
-						}
-						else if (!bracelessBlockStart && prefIndentBracesForMethods()) {
+						} else if (!bracelessBlockStart && prefIndentBracesForMethods()) {
 							indent = true;
 						}
 						break;
@@ -532,8 +529,7 @@ public class AtlIndenter {
 		int unit;
 		if (assumeOpeningBrace) {
 			unit = findReferencePosition(offset, Symbols.TOKEN_LBRACE);
-		}
-		else {
+		} else {
 			unit = findReferencePosition(offset, peekChar(offset));
 		}
 
@@ -549,12 +545,12 @@ public class AtlIndenter {
 	/**
 	 * Handles the introduction of a new scope. The current token must be one out of
 	 * <code>Symbols.TOKEN_LPAREN</code>, <code>Symbols.TOKEN_LBRACE</code>, and
-	 * <code>Symbols.TOKEN_LBRACKET</code>. Returns as the reference position either the token introducing
-	 * the scope or - if available - the first Atl token after that.
+	 * <code>Symbols.TOKEN_LBRACKET</code>. Returns as the reference position either the token introducing the
+	 * scope or - if available - the first Atl token after that.
 	 * <p>
 	 * Depending on the type of scope introduction, the indentation will align (deep indenting) with the
-	 * reference position (<code>fAlign</code> will be set to the reference position) or
-	 * <code>fIndent</code> will be set to the number of indentation units.
+	 * reference position (<code>fAlign</code> will be set to the reference position) or <code>fIndent</code>
+	 * will be set to the number of indentation units.
 	 * </p>
 	 * 
 	 * @param bound
@@ -629,11 +625,11 @@ public class AtlIndenter {
 
 	/**
 	 * while(condition); is ambiguous when parsed backwardly, as it is a valid statement by its own, so we
-	 * have to check whether there is a matching do. A <code>do</code> can either be separated from the
-	 * while by a block, or by a single statement, which limits our search distance.
+	 * have to check whether there is a matching do. A <code>do</code> can either be separated from the while
+	 * by a block, or by a single statement, which limits our search distance.
 	 * 
-	 * @return <code>true</code> if the <code>while</code> currently in <code>fToken</code> has a
-	 *         matching <code>do</code>.
+	 * @return <code>true</code> if the <code>while</code> currently in <code>fToken</code> has a matching
+	 *         <code>do</code>.
 	 */
 	private boolean hasMatchingDo() {
 		Assert.isTrue(fToken == Symbols.TOKEN_WHILE);
@@ -672,8 +668,8 @@ public class AtlIndenter {
 	}
 
 	/**
-	 * Returns <code>true</code> if the next token received after calling <code>nextToken</code> is either
-	 * an equal sign or an array designator ('[]').
+	 * Returns <code>true</code> if the next token received after calling <code>nextToken</code> is either an
+	 * equal sign or an array designator ('[]').
 	 * 
 	 * @return <code>true</code> if the next elements look like the start of an array definition
 	 */
@@ -717,8 +713,7 @@ public class AtlIndenter {
 		if (fToken == Symbols.TOKEN_IDENT) { // method name
 			do {
 				nextToken();
-			}
-			while (skipBrackets()); // optional brackets for array valued return types
+			} while (skipBrackets()); // optional brackets for array valued return types
 			return fToken == Symbols.TOKEN_IDENT; // type name
 
 		}
@@ -816,7 +811,8 @@ public class AtlIndenter {
 		// Plugin plugin= JavaCore.getPlugin();
 		// if (plugin != null) {
 		// String option=
-		// JavaCore.getOption(DefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_EXPRESSIONS_IN_ARRAY_INITIALIZER);
+		// JavaCore.getOption(DefaultCodeFormatterConstants.
+		// FORMATTER_ALIGNMENT_FOR_EXPRESSIONS_IN_ARRAY_INITIALIZER);
 		// try {
 		// return DefaultCodeFormatterConstants.getIndentStyle(option) ==
 		// DefaultCodeFormatterConstants.INDENT_ON_COLUMN;
@@ -836,7 +832,8 @@ public class AtlIndenter {
 		// Plugin plugin= AtlCore.getPlugin();
 		// if (plugin != null) {
 		// String option=
-		// AtlCore.getOption(DefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_EXPRESSIONS_IN_ARRAY_INITIALIZER);
+		// AtlCore.getOption(DefaultCodeFormatterConstants.
+		// FORMATTER_ALIGNMENT_FOR_EXPRESSIONS_IN_ARRAY_INITIALIZER);
 		// try {
 		// if (DefaultCodeFormatterConstants.getIndentStyle(option) ==
 		// DefaultCodeFormatterConstants.INDENT_BY_ONE)
@@ -861,14 +858,12 @@ public class AtlIndenter {
 	}
 
 	private int prefCaseBlockIndent() {
-		if (true)
-			return prefBlockIndent();
-
 		// TODO gets preferences from code formatter
 		// Plugin plugin= AtlCore.getPlugin();
 		// if (plugin != null) {
 		// if
-		// (DefaultCodeFormatterConstants.TRUE.equals(AtlCore.getOption(DefaultCodeFormatterConstants.FORMATTER_INDENT_SWITCHSTATEMENTS_COMPARE_TO_CASES)))
+		// (DefaultCodeFormatterConstants.TRUE.equals(AtlCore.getOption(DefaultCodeFormatterConstants.
+		// FORMATTER_INDENT_SWITCHSTATEMENTS_COMPARE_TO_CASES)))
 		// return prefBlockIndent();
 		// else
 		// return 0;
@@ -881,7 +876,8 @@ public class AtlIndenter {
 		// Plugin plugin= AtlCore.getPlugin();
 		// if (plugin != null) {
 		// if
-		// (DefaultCodeFormatterConstants.TRUE.equals(AtlCore.getOption(DefaultCodeFormatterConstants.FORMATTER_INDENT_SWITCHSTATEMENTS_COMPARE_TO_SWITCH)))
+		// (DefaultCodeFormatterConstants.TRUE.equals(AtlCore.getOption(DefaultCodeFormatterConstants.
+		// FORMATTER_INDENT_SWITCHSTATEMENTS_COMPARE_TO_SWITCH)))
 		// return prefBlockIndent();
 		// else
 		// return 0;
@@ -940,7 +936,8 @@ public class AtlIndenter {
 		// Plugin plugin= AtlCore.getPlugin();
 		// if (plugin != null) {
 		// String option=
-		// AtlCore.getOption(DefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_ARGUMENTS_IN_METHOD_INVOCATION);
+		// AtlCore.getOption(DefaultCodeFormatterConstants.
+		// FORMATTER_ALIGNMENT_FOR_ARGUMENTS_IN_METHOD_INVOCATION);
 		// try {
 		// return DefaultCodeFormatterConstants.getIndentStyle(option) ==
 		// DefaultCodeFormatterConstants.INDENT_ON_COLUMN;
@@ -956,7 +953,8 @@ public class AtlIndenter {
 		// Plugin plugin= AtlCore.getPlugin();
 		// if (plugin != null) {
 		// String option=
-		// AtlCore.getOption(DefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_ARGUMENTS_IN_METHOD_INVOCATION);
+		// AtlCore.getOption(DefaultCodeFormatterConstants.
+		// FORMATTER_ALIGNMENT_FOR_ARGUMENTS_IN_METHOD_INVOCATION);
 		// try {
 		// if (DefaultCodeFormatterConstants.getIndentStyle(option) ==
 		// DefaultCodeFormatterConstants.INDENT_BY_ONE)
@@ -975,7 +973,8 @@ public class AtlIndenter {
 		// Plugin plugin= AtlCore.getPlugin();
 		// if (plugin != null) {
 		// String option=
-		// AtlCore.getOption(DefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_PARAMETERS_IN_METHOD_DECLARATION);
+		// AtlCore.getOption(DefaultCodeFormatterConstants.
+		// FORMATTER_ALIGNMENT_FOR_PARAMETERS_IN_METHOD_DECLARATION);
 		// try {
 		// return DefaultCodeFormatterConstants.getIndentStyle(option) ==
 		// DefaultCodeFormatterConstants.INDENT_ON_COLUMN;
@@ -991,7 +990,8 @@ public class AtlIndenter {
 		// Plugin plugin= AtlCore.getPlugin();
 		// if (plugin != null) {
 		// String option=
-		// AtlCore.getOption(DefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_PARAMETERS_IN_METHOD_DECLARATION);
+		// AtlCore.getOption(DefaultCodeFormatterConstants.
+		// FORMATTER_ALIGNMENT_FOR_PARAMETERS_IN_METHOD_DECLARATION);
 		// try {
 		// if (DefaultCodeFormatterConstants.getIndentStyle(option) ==
 		// DefaultCodeFormatterConstants.INDENT_BY_ONE)
@@ -1006,9 +1006,7 @@ public class AtlIndenter {
 	}
 
 	private boolean prefParenthesisDeepIndent() {
-		if (true) // don't do parenthesis deep indentation
-			return false;
-
+		// don't do parenthesis deep indentation
 		// TODO gets preferences from code formatter
 		// Plugin plugin= AtlCore.getPlugin();
 		// if (plugin != null) {
@@ -1020,7 +1018,7 @@ public class AtlIndenter {
 		// // ignore and return default
 		// }
 		// }
-		return false; // sensible default
+		return false;
 	}
 
 	private int prefParenthesisIndent() {
@@ -1123,12 +1121,11 @@ public class AtlIndenter {
 
 	/**
 	 * Skips over the next <code>if</code> keyword. The current token when calling this method must be an
-	 * <code>else</code> keyword. Returns <code>true</code> if a matching <code>if</code> could be
-	 * found, <code>false</code> otherwise. The cursor (<code>fPosition</code>) is set to the offset of
-	 * the <code>if</code> token.
+	 * <code>else</code> keyword. Returns <code>true</code> if a matching <code>if</code> could be found,
+	 * <code>false</code> otherwise. The cursor (<code>fPosition</code>) is set to the offset of the
+	 * <code>if</code> token.
 	 * 
-	 * @return <code>true</code> if a matching <code>if</code> token was found, <code>false</code>
-	 *         otherwise
+	 * @return <code>true</code> if a matching <code>if</code> token was found, <code>false</code> otherwise
 	 */
 	private boolean skipNextIF() {
 		Assert.isTrue(fToken == Symbols.TOKEN_ELSE);
@@ -1163,8 +1160,8 @@ public class AtlIndenter {
 
 	/**
 	 * Skips a scope and positions the cursor (<code>fPosition</code>) on the token that opens the scope.
-	 * Returns <code>true</code> if a matching peer could be found, <code>false</code> otherwise. The
-	 * current token when calling must be one out of <code>Symbols.TOKEN_RPAREN</code>,
+	 * Returns <code>true</code> if a matching peer could be found, <code>false</code> otherwise. The current
+	 * token when calling must be one out of <code>Symbols.TOKEN_RPAREN</code>,
 	 * <code>Symbols.TOKEN_RBRACE</code>, and <code>Symbols.TOKEN_RBRACKET</code>.
 	 * 
 	 * @return <code>true</code> if a matching peer was found, <code>false</code> otherwise
@@ -1184,8 +1181,8 @@ public class AtlIndenter {
 	}
 
 	/**
-	 * Scans tokens for the matching opening peer. The internal cursor (<code>fPosition</code>) is set to
-	 * the offset of the opening peer if found.
+	 * Scans tokens for the matching opening peer. The internal cursor (<code>fPosition</code>) is set to the
+	 * offset of the opening peer if found.
 	 * 
 	 * @return <code>true</code> if a matching token was found, <code>false</code> otherwise
 	 */
