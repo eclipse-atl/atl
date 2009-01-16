@@ -21,21 +21,26 @@ import java.util.Stack;
 import org.eclipse.m2m.atl.common.ATLLogger;
 
 /**
- * A simple ATL VM debugger with step tracing and basic
- * profiling optional capabilities.
+ * A simple ATL VM debugger with step tracing and basic profiling optional capabilities.
+ * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class SimpleDebugger implements Debugger {
 
-	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops, boolean showStackTrace) {
-		this(step, stepops, deepstepops, nostepops, deepnostepops, showStackTrace, false, false, /*continueAfterError*/true);
+	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops,
+			boolean showStackTrace) {
+		this(step, stepops, deepstepops, nostepops, deepnostepops, showStackTrace, false, false, /* continueAfterError */
+				true);
 	}
 
-	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops, boolean showStackTrace, boolean continueAfterErrors) {
-		this(step, stepops, deepstepops, nostepops, deepnostepops, showStackTrace, false, false, continueAfterErrors);
+	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops,
+			boolean showStackTrace, boolean continueAfterErrors) {
+		this(step, stepops, deepstepops, nostepops, deepnostepops, showStackTrace, false, false,
+				continueAfterErrors);
 	}
 
-	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops, boolean showStackTrace, boolean showSummary, boolean profile, boolean continueAfterErrors) {
+	public SimpleDebugger(boolean step, List stepops, List deepstepops, List nostepops, List deepnostepops,
+			boolean showStackTrace, boolean showSummary, boolean profile, boolean continueAfterErrors) {
 		this.step = step;
 		this.stepops = stepops;
 		this.deepstepops = deepstepops;
@@ -78,7 +83,8 @@ public class SimpleDebugger implements Debugger {
 
 		if (getShowEnter()) {
 			if (frame instanceof ASMStackFrame) {
-				ATLLogger.info("********************* Entering " + op + " with " + ((ASMStackFrame)frame).getLocalVariables());
+				ATLLogger.info("********************* Entering " + op + " with "
+						+ ((ASMStackFrame)frame).getLocalVariables());
 			} else {
 				ATLLogger.info("********************* Entering " + op + " with " + frame.getArgs());
 			}
@@ -124,34 +130,31 @@ public class SimpleDebugger implements Debugger {
 	}
 
 	private void printStack(ASMStackFrame frame) {
-		if (!true) {
-			ATLLogger.info(frame.getLocalStack().toString());
-		} else {
-			StringBuffer out = new StringBuffer("[");
-			for (Iterator i = frame.getLocalStack().iterator(); i.hasNext();) {
-				Object o = i.next();
-				if (o == null) {
-					out.append("null");
-				} else {
-					String s = o.toString();
-					if(s.length() > 30) s = s.substring(0, 10) + "..." + s.substring(s.length() - 10);
-					out.append(s);
-				}
-				if (i.hasNext()) {
-					out.append(", ");
-				}
+		StringBuffer out = new StringBuffer("[");
+		for (Iterator i = frame.getLocalStack().iterator(); i.hasNext();) {
+			Object o = i.next();
+			if (o == null) {
+				out.append("null");
+			} else {
+				String s = o.toString();
+				if (s.length() > 30)
+					s = s.substring(0, 10) + "..." + s.substring(s.length() - 10);
+				out.append(s);
 			}
-			out.append("]");
-			ATLLogger.info(out.toString());
+			if (i.hasNext()) {
+				out.append(", ");
+			}
 		}
-
+		out.append("]");
+		ATLLogger.info(out.toString());
 	}
 
 	public void step(ASMStackFrame frame) {
 		instr++;
 		if (step) {
 			printStack(frame);
-			ATLLogger.info(conv(frame.getLocation()) + ": " + ((ASMOperation)frame.getOperation()).getInstructions().get(frame.getLocation()));
+			ATLLogger.info(conv(frame.getLocation()) + ": "
+					+ ((ASMOperation)frame.getOperation()).getInstructions().get(frame.getLocation()));
 		}
 	}
 
@@ -208,16 +211,28 @@ public class SimpleDebugger implements Debugger {
 	/** Currently stepping (inherited except if nostep, see below). */
 	private boolean step;
 
-	/** List of operations (names so far) which should be stepped regardless of inherited step status. This new step status is not inherited. */
+	/**
+	 * List of operations (names so far) which should be stepped regardless of inherited step status. This new
+	 * step status is not inherited.
+	 */
 	private List stepops;
 
-	/** List of operations (names so far) which should be stepped regardless of inherited step status. This new step status is inherited. */
+	/**
+	 * List of operations (names so far) which should be stepped regardless of inherited step status. This new
+	 * step status is inherited.
+	 */
 	private List deepstepops;
 
-	/** List of operations (names so far) which should not be stepped regardless of inherited step status. This new step status is not inherited. */
+	/**
+	 * List of operations (names so far) which should not be stepped regardless of inherited step status. This
+	 * new step status is not inherited.
+	 */
 	private List nostepops;
 
-	/** List of operations (names so far) which should not be stepped regardless of inherited step status. This new step status is not inherited. */
+	/**
+	 * List of operations (names so far) which should not be stepped regardless of inherited step status. This
+	 * new step status is not inherited.
+	 */
 	private List deepnostepops;
 
 	/** Show summary on termination. */
@@ -242,7 +257,8 @@ public class SimpleDebugger implements Debugger {
 			callCount++;
 			Integer ccba = (Integer)callCountByArgs.get(args);
 			int ccbai = 0;
-			if(ccba != null) ccbai = ccba.intValue();
+			if (ccba != null)
+				ccbai = ccba.intValue();
 			callCountByArgs.put(args, new Integer(++ccbai));
 			if (maxCallCountByArgs < ccbai) {
 				maxCallCountByArgs = ccbai;
@@ -261,18 +277,11 @@ public class SimpleDebugger implements Debugger {
 			ret.append(toTimes(callCount));
 			ret.append(" and at most ");
 
-/*			for(Iterator i = callCountByArgs.keySet().iterator() ; i.hasNext() ; ) {
-				List args = (List)i.next();
-				if(args != null) {
-					int ccbai = ((Integer)callCountByArgs.get(args)).intValue();
-					if(maxCallCountByArgs < ccbai) {
-						maxCallCountByArgs = ccbai;
-						maxCalledArgs = args;
-					}
-				} else {
-					// should not happen but does happen...
-				}
-			}
+			/*
+			 * for(Iterator i = callCountByArgs.keySet().iterator() ; i.hasNext() ; ) { List args =
+			 * (List)i.next(); if(args != null) { int ccbai = ((Integer)callCountByArgs.get(args)).intValue();
+			 * if(maxCallCountByArgs < ccbai) { maxCallCountByArgs = ccbai; maxCalledArgs = args; } } else {
+			 * // should not happen but does happen... } }
 			 */
 			ret.append(toTimes(maxCallCountByArgs));
 			ret.append(" for the same set of arguments: " + maxCalledArgs + ".");
