@@ -1,0 +1,443 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>ATL User Guide - The ATL Tools</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">The ATL Tools</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="The-ATL-Language.html" title="The ATL Language">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">The ATL Language</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="The_ATL_Tools">The ATL Tools</h1>
+		<p>This section provide a complete description of the ATL Tools, then aims to explain their usage.</p>
+		<h2 id="Perspectives">Perspectives</h2>
+		<p>In Eclipse, the notion of perspective refers to a workbench configuration that is arranged in order to optimise the handling of a certain task. A workbench is usually composed of several subwindows (called views) and toolkits.
+			ATL is associated with of two specific perspectives: the main ATL perspective and the ATL Debug perspective, which are respectively dedicated to the design and the debugging of ATL transformations.
+			Switching to the ATL, as well as to the other perspectives available on the Eclipse platform, can be achieved by either the perspective buttons available in the thumb index on the top right hand side of your workbench, or by selecting a perspective within the perspectives menu (
+			<i>Menu bar->Window->Open perspective->Other...</i>).
+		</p>
+		<h3 id="ATL_perspective">ATL perspective</h3>
+		<p>The ATL perspective is the main perspective for ATL development. It provides all the required features for the creation of ATL projects, ATL transformation files and ATL launch configurations. The perspective also includes a textual editor dedicated to ATL files.
+			The ATL perspective is composed of seven different views: the Navigator, the Editors, the Outline, the Console, the Error Log, the Properties and the Problems views. Here is a screenshot of an ATL project under the ATL perspective.</p>
+		<p>
+			<img border="0" src="images/ATL_perspective.png"/>
+		</p>
+		<p>In its default configuration, the ATL perspective displays the Navigator view on the left side of the window. The Editors view is situated in the top middle part of the windows, whereas the Outline view is positioned on the top left part of the perspective. Finally, the four remaining views (Problems, Properties, Error Log and Console) share the bottom part of the perspective. Note that it is possible to display a given view in the whole perspective by simply double-clicking onto the view title. Moving back to the original perspective configuration is achieved by double-clicking again onto the view title.
+			The different views of the ATL perspective are detailed in the following subsections.</p>
+		<h4 id="Navigator">Navigator</h4>
+		<p>Besides browsing the content of the workbench, the Navigator view provides a number of contextual actions on the different contained element it contains. The list of contextual actions, which depends on the type of the selected element, is displayed in a contextual menu obtained by right-clicking on a given element.</p>
+		<p>Interesting contextual actions available in the Navigator view include:</p>
+		<ul>
+			<li>Creating a new ATL project at the Navigator root (
+				<i>New->ATL Project</i>);
+			</li>
+			<li>Creating a new ATL file from an ATL project (
+				<i>New->ATL File</i>);
+			</li>
+			<li>Creating a directory from an ATL project (
+				<i>New->Other...->Simple->Folder</i>);
+			</li>
+			<li>Running/debugging an ATL file (
+				<i>Run As->Run.../Debug As->Debug</i>);
+			</li>
+			<li>Open an ATL file with the ATL Editor (
+				<i>Open With->ATL Editor</i>). Since ATL Editor is the default editor for ATL file, it is launched by a simple double-click on the ATL file;
+			</li>
+			<li>Open an Ecore file with the Sample Ecore Model Editor (
+				<i>Open With->Sample Ecore Model Editor</i>). The Sample Ecore Model Editor is the default editor for Ecore files. As a consequence, it can be launched by double-clicking on an Ecore file;
+			</li>
+		</ul>
+		<p>Note that the content of the files opened from the Navigator view is displayed within the Editors view by means of the selected editor.</p>
+		<h4 id="Editors">Editors</h4>
+		<p>Eclipse facilitates the development of powerful source editors. Thus, besides the default editors provided by Eclipse and by the EMF framework, an ATL editor has been implemented in order to ease the typing of ATL transformations. This editor is the default editor for 
+			<i>.atl</i> files. It performs syntax highlighting, displays the position of defined breakpoints, but also performs runtime parsing, compilation and error detection. The problems that are detected at compile-time are underlined by the ATL Editor. Details about these problems are displayed in the 
+			<a href="The-ATL-Tools.html#Problems">Problems view</a>. These details include the type of detected problem (Error, Warning or Style), a textual description of the problem and the positioning of this problem (line and column numbers) in the compiled file. Note that saving modifications of an ATL file that contains a syntactically correct ATL program triggers the compilation of this file, and thus the generation of a new ASM assembler file. An assembler file has the extension 
+			<i>.asm</i> and contains the compiled code of the corresponding ATL file.
+		</p>
+		<p>Note that, when editing an ATL file by means of the ATL Editor, an outline of the ATL transformation is simultaneously displayed within the 
+			<a href="The-ATL-Tools.html#Outline">Outline view</a>.
+		</p>
+		<h4 id="Outline">Outline</h4>
+		<p>The Outline view aims to provide ATL developers with an overview of the structural elements of the file being edited in the Editors view. To this end, the Outline view has to be synchronized with the active tab of the Editors view. </p>
+		<p>In the scope of an ATL file, the Outline view displays the structure of the currently edited transformation. Adding, from the ATL Editor view, the code for a new structural element such as a rule or a helper operation will automatically lead to a corresponding addition in the Outline view (at latest when the file is saved). Furthermore, cursors of the ATL Editor and the Outline view always point to the same structural element, as illustrated in the following picture. As a consequence, if the cursor is moved in one of them (either the ATL Editor or the Outline), the other view will replace its own cursor correspondingly.</p>
+		<p>Details about the transformation element selected in the Outline view are displayed in the Properties view.</p>
+		<p>In the scope of an ATL transformation, the Outline view also enables to position new breakpoints in the transformation code. The definition of a new breakpoint is achieved, from a selected element of the Outline view, by selecting the 
+			<i>Add breakpoint</i> option of the contextual menu. The breakpoints defined within the Outline view will be listed in the Breakpoints view available in the 
+			<a href="The-ATL-Tools.html#ATL_Debug_perspective">ATL Debug perspective</a>. They are marked in the ATL Editor by means of green points.
+		</p>
+		<h4 id="Problems">Problems</h4>
+		<p>The Problems view aims to display the problems (typically some syntax errors) that have been detected within the currently edited file. In the scope of the current ATL tools current implementation, this view is mainly useful for the edition of ATL files. It therefore displays the list of problems that have been detected in an ATL program at compile-time (when the edited file is saved).</p>
+		<p>The Problems view currently displays two main kinds of Problems in the scope of an ATL transformation:</p>
+		<ul>
+			<li>Error problems, which are raised for invalid ATL statements (for instance, declaring two models with the same name);</li>
+			<li>Warning problems, which are raised for valid ATL statements that may be source of errors (for instance, declaring a variable that hides an already existing variable).</li>
+		</ul>
+		<p>For each detected problem, the Problems view displays its type (Error or Warning), a short explanation message and the localisation (in terms of line and column number) of the Problem. Note that the corresponding problems are also directly localised in the Editors view.</p>
+		<h4 id="Error_Log">Error Log</h4>
+		<p>The Error Log view aims to display and log the Eclipse general errors. It is of no particular use for ATL developers, as ATL errors are displayed in the Console view.</p>
+		<h4 id="Console">Console</h4>
+		<p>The Console view displays the messages that may be written from the ATL code, using for instance the string operation 
+			<a href="The-ATL-Language.html#String_data_type_operations">''println()''</a>. It also displays the error messages that may be raised by the execution of incorrect ATL programs. Note that these displayed error messages may provide useful information while trying to identify errors within faulty ATL transformations.
+		</p>
+		<h3 id="ATL_Debug_perspective">ATL Debug perspective</h3>
+		<p>The ATL Debug perspective is dedicated to the debugging of ATL transformations. It provides ATL developers with the usual set of debugging facilities:</p>
+		<ul>
+			<li>positioning of breakpoints;</li>
+			<li>step-by-step transformation execution;</li>
+			<li>running transformation to the next breakpoint;</li>
+			<li>display of variables values;</li>
+			<li>etc...</li>
+		</ul>
+		<p>This section focuses on the organisation of the ATL Debug perspective and the role of the different views that are part of this perspective. For a detailed description of the debugging facilities offered by the perspective, refer to the 
+			<a href="The-ATL-Tools.html#Debugging_ATL">Debugging ATL section</a>.
+			The ATL Debug perspective is structured into seven distinct views: the Debug, the Variables, the Breakpoints, the Editors, the Outline, the Console and the Tasks views. Here is a screenshot of the ATL Debug perspective.
+		</p>
+		<p>
+			<img border="0" src="images/ATL_Debug_perspective.png"/>
+		</p>
+		<p>In its default configuration, the ATL Debug perspective displays the Debug view on the top left side of the window. The Variables and the Breakpoints views share the top right side of the window. The Editors view is displayed on the middle left side, whereas the Outline view is positioned on the middle right side. Finally, the Console and the Tasks view share the bottom part of the perspective.</p>
+		<h4 id="Debug">Debug</h4>
+		<p>The Debug view provides information on the state of operation stack of the transformation currently being debugged. For this purpose, it displays, as root elements, the list of ATL program currently running in debug mode. For each of these programs, it displays the list of running threads. Note here that an ATL transformation is executed within a single thread. In the scope of this thread, the Debug view displays the stack of called operations.</p>
+		<p>In the previous 
+			<a href="The-ATL-Tools.html#ATL_Debug_perspective">screenshot</a>, the Debug view provides information on a single ATL execution of the Author2Person transformation. The call stack of the executed thread contains three operations. The operation currently being executed is _applyAuthor(). This operation has been called by the internal _exec()_ operation which has been itself called by the operation main().
+		</p>
+		<p>The Debug view also provides useful shortcuts for the common debugging operations (Resume, Terminate, Step Into, Step Over, Step return, etc.). These shortcuts are provides as buttons on the right of the view title bar. Their use is further described in the section dedicated to the 
+			<a href="The-ATL-Tools.html#Debugging_ATL">debugging of ATL programs</a>.
+		</p>
+		<h4 id="Variables">Variables</h4>
+		<p>As previously 
+			<a href="The-ATL-Tools.html#ATL_Debug_perspective">illustrated</a>, the Variables view is divided into two distinct parts. The top part of the view displays the values of the variables that are visible from the operation currently being selected in the Debug view. This view offers the possibility to browse the reference properties of these visible variables. By this mean, it is possible to access to the value of model elements that are not directly visible in the scope of the current operation, but that are pointed by some of the currently visible model elements.
+		</p>
+		<p>The bottom part of the Variables view makes it possible for ATL developers to specify and execute requests onto the set of visible variables.</p>
+		<h4 id="Breakpoints">Breakpoints</h4>
+		<p>The Breakpoints view displays the list of the breakpoints that are currently defined in the transformation being executed. This view makes it possible to select, among defined breakpoints, a subset of active breakpoints. It also provides a number of shortcuts dedicated to the management of breakpoints. These shortcuts are provided as buttons on the right of the title bar of the Breakpoints view.</p>
+		<h2 id="Programming_ATL">Programming ATL</h2>
+		<p>This section aims to present the different steps of the design and the programming of an ATL transformation with the provided ATL IDE. Executing an ATL transformation obviously requires an ATL transformation file, but also the source and target metamodels as well as the source models of this transformation.</p>
+		<p>The first step in the process of designing an ATL transformation is to create an ATL project. Source and target metamodels can be imported from different sources. The main task therefore consists in designing the ATL transformation in itself.</p>
+		<h3 id="Creating_an_ATL_project">Creating an ATL project</h3>
+		<p>The first step in the design of a new ATL transformation is to be positioned under an ATL project. If no ATL project already exists, this first step requires creating a new empty ATL project (
+			<i>New->ATL Project</i>).
+		</p>
+		<p>This operation triggers the apparition of the ATL Project Creator window in which the name of the project to be created has to be entered. At this stage, it is advised to give the project a sensible name, for instance by concatenating the source metamodel name, the character "2" and the target metamodel name (such as Author2Person). The ATL project creation is then validated by pushing the Finish button.</p>
+		<p>For each created project, Eclipse creates a project folder in the Navigator view. A newly generated project can be opened by double-clicking onto the project item in the view. It initially contains a .project file. This file contains the Eclipse metadata that are relative to the project.</p>
+		<h3 id="Content_assist">Content assist</h3>
+		<p>Completion purposes basic templates for rule, helper, from, to, do, using sections.
+			You can also access EMF metamodels informations (from their nsURI, or a relative path).</p>
+		<h4 id="Completion_on_helpers">Completion on helpers</h4>
+		<ul>
+			<li>primitive types</li>
+			<li>some model elements: context, parameter types, output type</li>
+		</ul>
+		<h4 id="Completion_on_rules">Completion on rules</h4>
+		<ul>
+			<li>input, output model elements</li>
+			<li>left-part of bindings</li>
+		</ul>
+		<h4 id="Usage">Usage</h4>
+		<p>To make model elements completion available, you have to put some information on the top of the file :</p>
+		<ul>
+			<li>
+				<i>'-- @nsURI</i>' : the nsURI for a given metamodel, if you want to load a metamodel from the EMF registry,
+			</li>
+			<li>
+				<i>'-- @path</i>' : the path of a given metamodel, if you want to dynamically load a metamodel from an ecore file.
+			</li>
+		</ul>
+		<p>Only EMF metamodels are supported. You must specify the relative path of the file into the workspace.</p>
+		<p>Here is the top of an UML2AnyMM transformation :</p>
+		<pre>-- @path AnyMM=/AnyProject/AnyFolder/AnyMM.ecore
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+</pre>
+		<pre>module Class2Relational;
+create OUT : AnyMM from IN : UML;
+</pre>
+		<pre>-- ...transformation helpers and rules
+</pre>
+		<p>Completion is triggered with the Ctrl + space keys, or when typing a space in a context where some content assist is available.</p>
+		<h3 id="Creating_an_ATL_file">Creating an ATL file</h3>
+		<p>The ATL IDE provides a specific wizard dedicated to the creation of ATL files. Beginner ATL developers are encouraged to use this wizard to create new ATL files. Experimented developers may find the wizard tool too complex for the creation of very simple transformations. In this case, they may prefer to create their ATL files from scratch. Both procedures are described in the following subsections.</p>
+		<h4 id="The_ATL_File_Wizard">The ATL File Wizard</h4>
+		<p>The ATL File Wizard is launch, from the Navigator view, by selecting the 
+			<i>New->ATL File</i> entry in the contextual menu. Note that is command is also available from the File menu of the Eclipse menu bar. This command triggers the apparition the ATL File Wizard window:
+		</p>
+		<p>
+			<i>TODO: update with the ATL 3.0 file wizard</i>
+		</p>
+		<p>The ATL File Wizard makes it possible to specify the name of the file to be created, the type of the ATL unit that will be contained by the file (an ATL module, query or library), the name of the source and target model and metamodel variables as well as the name of the libraries that will be required for the ATL program to run. From these data, the wizard generates the ATL file with the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Header_section">header section</a> that corresponds to the provided information.
+		</p>
+		<p>The ATL wizard window is organized into four sections: HEAD, IN, OUT and LIB. The HEAD section aims to specify the name of the ATL file, the project it is attached to and its type. The project the ATL transformation is attached to can be selected among the list of existing projects in the Navigator view. The name of the file is not restricted. However, it is strongly advised to give ATL files relevant names. A good naming convention is to name ATL files with the name of the source metamodel, followed by the character "2", followed by the name of the target metamodel. The ATL file will be created with the .atl extension in the root folder of the selected project. As a last point, the developer has to select the type of ATL file to be generated among module (for a classical transformation), query and library. Note that, depending on the selected type of ATL unit, the remaining parts of the ATL File Wizard can be totally or partially disabled.</p>
+		<p>The IN and OUT sections of the wizard window respectively enable to specify the name of the variables associated with the source and target models and metamodels. In each section, the name of the model and the name of the metamodel this model conforms to have to be respectively entered in the Model and the Metamodel fields. A couple defined by this mean is validated with the Add button. The wizard makes it possible to define multiple source and target models/metamodels. Developers must take care, when specifying the name of the model/metamodel variables to give each of them a unique name.</p>
+		<p>Finally, the LIB section of the window makes it possible to specify the name of the libraries that will be required for executing the ATL program. A distinct 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Import_section">use</a> instruction will be included into the generated ATL file for each specified library.
+		</p>
+		<h4 id="Creating_an_ATL_file_from_scratch">Creating an ATL file from scratch</h4>
+		<p>It is possible, for ATL developers, to edit their ATL files from scratch by themselves. To this end, the first step is to create an empty generic file. The naming of the file to be created should follow the conventions proposed in the previous section. Moreover, the file must here be explicitly associated with the 
+			<i>.atl</i> extension.
+		</p>
+		<p>Once the ATL file has been created, the developer has to manually edit the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Header_section">header section</a> of the ATL file. Note that the constraints on the naming of the declared model and metamodel variables still have to be respected when editing an ATL header from scratch.
+		</p>
+		<h3 id="Compiling_an_ATL_file">Compiling an ATL file</h3>
+		<p>The compilation of an ATL file corresponds to the update of its associated ASM file. This compilation can only be performed if the considered ATL program is syntactically correct. In the scope of the ATL IDE, the compilation policy is based on the default Eclipse compilation policy: compilation is automatically performed in the background when an edited ATL file is saved 
+			<b>into an ATL Project</b> (or any project configured with the ATL nature).
+		</p>
+		<h3 id="Setting_up_an_ATL_run_launch_configuration">Setting up an ATL run launch configuration</h3>
+		<p>Executing an ATL transformation first requires setting up a transformation launch configuration. An ATL launch configuration aims to resume all the information that is required to execute an ATL transformation. This information includes the paths of the file involved in the transformation (e.g. the ATL file, but also the model, metamodel and library files).</p>
+		<h4 id="The_ATL_Configuration_tab">The ATL Configuration tab</h4>
+		<p>
+			<i>TODO: update with the ATL 3.0 configuration tab</i>
+		</p>
+		<h4 id="The_Advanced_tab">The Advanced tab</h4>
+		<p>
+			<i>TODO: update with the ATL 3.0 advanced configuration tab</i>
+		</p>
+		<h4 id="The_Common_tab">The Common tab</h4>
+		<p>The Common tab offers the ATL developer to configure the execution environment of the designed transformation. The Common tab is divided in four blocks: 
+			<i>Save as</i>, 
+			<i>Display in favorites menu</i>, 
+			<i>Console Encoding</i>, and 
+			<i>Standard Input and Output</i>. Here is a screenshot of the Common tab of the run ATL launch configuration wizard.
+		</p>
+		<p>
+			<img border="0" src="images/ATL_common_launch.png"/>
+		</p>
+		<ul>
+			<li>The 
+				<i>Save as</i> section enables to specify whether the launch configuration data have to be saved as a local or a shared file. As a local file, the launch configuration will only be available through the launch configuration window. The launch configuration can also be saved into a file in order to be shared. When selecting this option, the developer has to specify the path to the launch configuration file (the file has to be saved within the current project). When saved as a shared file, the launched configuration file appears at the specified location. This file, which is an XML file, has the name of the considered transformation with the .launch file extension. Thus, saving the launch configuration in the scope of the current example will trigger the creation of the file 
+				<i>Author2Person.launch</i>.
+			</li>
+		</ul>
+		<ul>
+			<li>The 
+				<i>Display in favorites</i> menu section enables ATL developers to customize the perspective by choosing whether they want a shortcut to the designed launch configuration to appear in the Run and/or Debug menus.
+			</li>
+		</ul>
+		<ul>
+			<li>The 
+				<i>Console Encoding</i> section enables to select the encoding type of the Console that will be used by the transformation for standard inputs and outputs.
+			</li>
+		</ul>
+		<ul>
+			<li>Next section deals with these standard inputs and outputs. It provides developers with the possibility to select the input and output facilities for the ATL program. In this scope, it is possible to allocate a console (default option) and/or a file. The developer can also choose to allocate both a console and a file or, at the opposite, to provide no standard input/output facilities to the transformation. Note that, when specifying a file as standard output, the developer can choose to append the results of the successive transformation executions to the output file.</li>
+		</ul>
+		<ul>
+			<li>The last option defined in the 
+				<i>Common</i> tab enables to select whether the ATL program has to be executed in background (default option) or not.
+			</li>
+		</ul>
+		<h3 id="Module_superimposition">Module superimposition</h3>
+		<h4 id="Description">Description</h4>
+		<p>While 
+			<a href="http://wiki.eclipse.org/ATL/ATL" title="ATL">ATL</a> transformation modules and queries are normally run by themselves, that is one transformation module or query at a time, it is also possible to superimpose several transformation modules on top of eachother. The end result is a transformation module that contains the union of all transformation rules and all helpers, where it is possible for a transformation module to override rules and helpers from the transformation modules underneath. Below is an example of a typical use case for superimposition: the transformation rules of the UML2Copy 
+			<a href="http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-transformations/UML2Copy.atl?view=markup">http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-transformations/UML2Copy.atl?view=markup</a> module are reused and overridden where necessary by the UML2Profiles 
+			<a href="http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-transformations/UML2Profiles.atl?view=markup">http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-transformations/UML2Profiles.atl?view=markup</a> module.
+		</p>
+		<p>
+			<img border="0" src="images/ATL_Superimposition-example.png"/>
+		</p>
+		<p>The UML2Copy transformation module includes a transformation rule for every meta-class instance it must copy. This amounts to approximately 200 rules for the entire UML2 meta-model 
+			<a href="http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-transformations/metamodels/UML.ecore?view=markup">http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-transformations/metamodels/UML.ecore?view=markup</a>. 
+		</p>
+		<p>Any refinement transformation basically needs to copy all meta-class instances, except for the few meta-class instances that are refined. The UML2Profiles transformation module applies a profile to the "uml::Model" instance, provided it was not yet applied. All other elements should just be copied. </p>
+		<p>To achieve this, the UML2Profiles module is superimposed on the UML2Copy module. It overrides the "Model" rule, which copies each "uml::Model" instance, by a version that checks that the profile we want to apply has already been applied. It also introduces a new rule "ModelProfile", which checks that the profile we want to apply has not been applied and then applies the profile. The resulting transformation contains all rules from the above figure that have not been striked through. </p>
+		<p>Note that superimposition is a load-time construct: there is no real transformation module that represents the result of superimposing several modules on top of eachother. Instead, several modules are simply loaded on top of eachother, overriding existing rules and adding new rules.</p>
+		<h4 id="Usage_2">Usage</h4>
+		<p>
+			<i>TODO: update with ATL 3.0 ant tasks</i>
+		</p>
+		<p>ATL Superimposition is configured in the Eclipse "Run..." dialog, in the Advanced tab to be exact. You can also use Superimposition from AM3 Ant scripts. An example Ant script can be found 
+			<a href="http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-instantmessenger-model/outmodels/common/build.xml?rev=5633&amp;view=markup">here</a> (see the "profiles" macro).
+		</p>
+		<p>See also the 
+			<a href="http://wiki.eclipse.org/ATL/ATL_FAQ#What.27s_this_ATL_feature_called_.22superimposition.22.3F" title="ATL FAQ#What.27s_this_ATL_feature_called_.22superimposition.22.3F">ATL FAQ entry on Superimposition</a>.
+		</p>
+		<p>
+			<i>TODO: update with ATL 3.0 launch configuration</i>
+		</p>
+		<p>Note: when adding superimposed modules in the Advanced tab, they override the "main" module specified in the ATL Main Configuration Tab.</p>
+		<h3 id="Running_an_ATL_launch_configuration">Running an ATL launch configuration</h3>
+		<p>Once the launch configuration of a transformation has been correctly fulfilled, it can be run as many times as needed without requiring any change to the configuration. In order to the run a designed ATL transformation, the developer just has to go back to the configuration 
+			<i>Run</i> window, to select the created transformation in the ATL Transformation folder (on the left column) and click on the Run button.
+			The other option for running an existing ATL launch configuration is to define shortcuts for this configuration. This could be achieved from the Common tab of the ATL run launch configuration by selecting the Run option within the Display in favourites menu section.
+		</p>
+		<h3 id="ATL_ant_tasks">ATL ant tasks</h3>
+		<p>
+			<i>TODO: write ATL ant tasks documentation</i>
+		</p>
+		<p>
+			<b>Sample build.xml, launches public2private example:</b>
+		</p>
+		<p>To launch this file, you must use a specific ant configuration:
+
+			<i>right-click->Run as->Ant Build...</i> then set:
+		</p>
+		<ul>
+			<li>
+				<i>JRE->Run in same JRE as the workspace</i>
+			</li>
+			<li>
+				<i>Refresh->the entire workspace</i>  
+			</li>
+		</ul>
+		<pre>&lt;?xml version="1.0"?>
+&lt;project name="Public2Private" default="run" basedir=".">
+	&lt;property name="samplePath" value="../model/sample.uml" />
+</pre>
+		<pre>	&lt;target name="run">
+		&lt;atl.loadModel name="UML" metamodel="MOF" nsURI="http://www.eclipse.org/uml2/2.1.0/UML" />
+		&lt;atl.loadModel name="sample" metamodel="UML" path="${samplePath}" />
+</pre>
+		<pre>		&lt;atl.launch path="../transformation/public2private.asm" refining="true">
+			&lt;inoutmodel model="sample" name="IN" />
+		&lt;/atl.launch>
+</pre>
+		<pre>		&lt;atl.saveModel model="sample" path="${samplePath}" />
+	&lt;/target>
+</pre>
+		<pre>&lt;/project>
+</pre>
+		<h2 id="Debugging_ATL">Debugging ATL</h2>
+		<p>This section aims to introduce the debugging facilities provided by the ATL IDE. The ATL development environment therefore offers ATL developers a dedicated ATL Debug perspective. This perspective provides developers with the most common debugging facilities, including step-by-step transformation execution, running a transformation to the next breakpoint, display of the variables content, etc. Moreover, the ATL IDE enables developers to know, at any time, the ATL instructions currently being executed by highlighting the corresponding code in the ATL Editor.</p>
+		<p>The ATL debugging operations are available from the ATL Debug perspective. As for a Java program, debugging an ATL transformation implies to execute this transformation in debug mode. This supposes developers to create an ATL debug launch configuration for the transformation. The debug execution mode, along with its associated debugging actions, is triggered by the execution of this debug launch configuration.</p>
+		<h3 id="Managing_breakpoints">Managing breakpoints</h3>
+		<p>The ATL debugging mode makes it possible to define breakpoints within any kind of ATL units, including the libraries that are imported from other ATL units. These breakpoints have to be positioned by means of the Outline view, which is available from both the ATL and the ATL Debug perspectives. Note that, the Outline view only displays the structure of ATL units that are edited with the ATL Editor.</p>
+		<h4 id="Setting.2FRemoving_breakpoints">Setting/Removing breakpoints</h4>
+		<p>In the scope of the ATL IDE, the setting of breakpoints in ATL programs can only be achieved through the Outline view. Remember that the Outline view displays the structure of the ATL file currently being edited with the ATL Editor (as a matter of fact, it displays the ATL model corresponding to the edited ATL file). A new breakpoint can be defined at the level of an ATL structural element by selecting the 
+			<i>Add breakpoint</i> entry in the contextual menu of the selected element. This is illustrated in the next screenshot in which a breakpoint is positioned at the level of a NavigationOrAttributeCallExp element. Note that the code corresponding to the element selected in the Outline view is simultaneously highlighted in the ATL Editor view.
+		</p>
+		<p>The Outline view currently allows developers to associate breakpoints with any kind of the structural element of an ATL program. However, positioning a new breakpoint only makes sense for those structural elements that are associated with executed instructions. Structural elements that constitute relevant targets for breakpoints roughly correspond to the OCL expressions that are evaluated by the ATL engine. This means that transformation elements such as a MatchedRule (or a CalledRule) element, a Helper element, or InPattern and OutPattern elements should not be associated with breakpoints. Note that the Outline view allows defining breakpoints for these elements, but they will be ignored during the debugging of the program.</p>
+		<p>Defined breakpoints appear in the left column of the ATL Editor view. This is illustrated by the following screenshot in which the breakpoint previously positioned onto a NavigationOrAttributeCallExp element is localized by a blue circle in the left column of the ATL Editor. Although the ATL Editor displays the position of the defined breakpoints, it does not enable to handle them. This must be achieved by means of the Breakpoints view of the ATL Debug perspective.</p>
+		<p>Defined breakpoints can only be removed from the Breakpoints view of the ATL Debug perspective. This view makes it possible to select a number of breakpoints among defined ones. These breakpoints can be removed using the Remove Select Breakpoints button.</p>
+		<p>Note that breakpoints removal actions are also available in the contextual menu when selecting breakpoints from the breakpoints list (in the Breakpoints view).</p>
+		<h4 id="Activating.2FDeactivating_breakpoints">Activating/Deactivating breakpoints</h4>
+		<p>The Breakpoints view also offers the possibility to activate and deactivate defined breakpoints. Deactivated breakpoints will not be considered while debugging an ATL transformation. This facility makes it possible to ignore some of the defined breakpoints without having to remove them.</p>
+		<p>Breakpoint activation/ deactivation is only available from the contextual menu associated with the elements of the breakpoints list. Note that, as breakpoints setting and removal, activation/deactivation can either be performed before or during the debugging of an ATL program.</p>
+		<h4 id="Limitations_2">Limitations</h4>
+		<p>Beside the fact that the Outline view allows defining breakpoints on irrelevant locations, the ATL development environment currently offers poor support in updating the position of already defined breakpoints when an ATL file is compiled (the default ATL compiling policy is to compile files at save-time). It may therefore appear, once an ATL file for which breakpoints are defined has been compiled, that the defined breakpoints point to irrelevant locations in the considered program file. This could materialize by internal errors while debugging the ATL unit.</p>
+		<h3 id="Creating_an_ATL_Debug_launch_configuration">Creating an ATL Debug launch configuration</h3>
+		<p>As for the run mode, executing an ATL transformation in debug mode first requires to set up an ATL Debug launch configuration. Creating of a new ATL debug launch configuration is achieved, from the Navigator view, by selecting an ATL file in the Navigator view and selecting the 
+			<i>'Debug As->Debug...</i> entry of its contextual menu. Note that this debug launch configuration wizard can also be launched from the Eclipse menu bar by selecting the 
+			<i>Debug...</i> entry of the Debug menu.
+		</p>
+		<p>ATL programs share a common launch configuration for both the run and debug modes. This has two consequences. First, this means that once the run launch configuration of an ATL unit has been configured, there is no need for creating a new launch configuration dedicated to the debug mode. The second consequence is that both kinds of launch configuration must be 
+			<a href="The-ATL-Tools.html#Setting_up_an_ATL_run_launch_configuration">configured</a> in the same way (except for the disassembly mode option, see below).
+		</p>
+		<p>The Disassembly mode option available in the ATL Configuration tab of the launch configuration has no effect in run mode. However, in debug mode, this option makes it possible for developers to debug an ATL unit from its bytecode (e.g. contained by the ASM file associated with the ATL program). This debug mode is mainly provided for developers of the ATL language and is out of the scope of this manual.</p>
+		<h3 id="Running_an_ATL_Debug_launch_configuration">Running an ATL Debug launch configuration</h3>
+		<p>Executing an ATL debug launch configuration follows the same scheme that for an ATL run launch configuration: from the configuration Debug window, the developer just has to select a transformation in the ATL Transformation folder (on the left column) and click on the Debug button.</p>
+		<p>As for the run mode, there exists another option which consists in defining a debug shortcut for this configuration. This could be achieved from the 
+			<a href="The-ATL-Tools.html#The_Common_tab">Common tab</a> of the ATL launch configuration by selecting the Debug option within the Display in favourites menu section.
+		</p>
+		<h3 id="Debugging_actions">Debugging actions</h3>
+		<p>While debugging a program, developers are used to be offered a set of standard debugging actions. In the scope of the ATL IDE, the Debug view of the ATL Debug perspective provides shortcuts to the main debugging operations. While debugging a transformation, the debugging actions can also be reach from the Run menu of Eclipse menu bar and from the contextual menu of either the current thread or its content:</p>
+		<p>
+			<img border="0" src="images/ATL_debug_actions.png"/>
+		</p>
+		<ul>
+			<li>The 
+				<i>Resume</i> action triggers the execution of the debugged transformation up to the following breakpoint. A program containing no breakpoint will be executed up to termination.
+			</li>
+		</ul>
+		<ul>
+			<li>The 
+				<i>Step Over</i> action is a step-by-step action. Activating this action triggers the execution of the current instruction. Note that if this instruction is an operation call (an element of type OperationCallExp in the Outline view), the debugger will step over the execution of the call operation. In the same way, if the current instruction is the last one of the currently executed operation, the debugger will resume to the calling operation.
+			</li>
+		</ul>
+		<ul>
+			<li>The 
+				<i>Step Into</i> action is another step-by-step action. Triggered onto an expression call instruction, it jumps into the body (e.g. the first instruction) of the called operation. Note that when called onto an instruction that is not an operation call, this Step Into action will behave in the same way that the 
+				<i>Step Over</i> one.
+			</li>
+		</ul>
+		<ul>
+			<li>The last step-by-step action is the 
+				<i>Step Return</i> action. This action resumes the transformation execution up the point from which the current operation was called. Triggered from either a helper, an attribute or a called rule, the Step Return action will resume to the calling user code. Triggered from a source pattern element, the action will resume to the generated main operation 
+				<i>__exec__()</i> that will, in turn, call either the next 
+				<i>__match</i> operation or the first 
+				<i>__exec</i> operation. Finally, triggered from a target pattern element, the action will resume to the generated main operation 
+				<i>__exec__()</i> that will, in turn, either call the next 
+				<i>__exec</i> operation or run up to the program termination. Note that called from the last instruction of a celled operation, this action behaves in the same way that the previous ones.
+			</li>
+		</ul>
+		<ul>
+			<li>The 
+				<i>Terminate and Remove</i> action terminates the transformation being debugged, and removes it from the Debug view.
+			</li>
+		</ul>
+		<ul>
+			<li>The 
+				<i>Remove All Terminated Launches</i> action removes all terminated transformation from the Debug view. This action is not available if the view contains no terminated transformation.
+			</li>
+		</ul>
+		<p>Finally, although available in the debugging perspective, the 
+			<i>Disconnect</i> and 
+			<i>Terminate</i> actions currently have no effect.
+		</p>
+		<h3 id="Displaying_variables_values">Displaying variables values</h3>
+		<p>In the scope of the ATL Debug perspective, the Variables view aims to provide developers with a convenient mean to observe the content of the ATL variables during the execution of a transformation. For this purpose, the Variables view displays all the variables that are visible from the current execution context. Note that the variable self is defined whatever the considered execution context.</p>
+		<p>In the context of a helper, visible variables correspond to the helper arguments, the local variables introduced by means of the let instruction and the iterator variables that are used in the scope of the collection iterative expressions. The variable self here corresponds to the element in which the context is declared. Except for arguments, the set of visible variables is similar in the scope of an ATL attribute.</p>
+		<p>During the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Default_mode_execution_semantics">matching phase</a> of a transformation execution, the variables visible in the context of a matched rule include the source pattern element variable along with the variables and iterators that may be declared in the scope of the source pattern element expression. During the initialization phase, this set of visible variables changes to the rule local variables declared in the rule using section, the source and target pattern element variables and the variables/iterators declared within the executed expressions.
+		</p>
+		<p>
+			<img border="0" src="images/ATL_navigate_debug_variables.png"/>
+		</p>
+		<p>In this example, a breakpoint has been set on the first binding of the target pattern element of rule Author (visible on left column of the Editors view). The Debug view indicates that the operation currently being executed (e.g. the operation 
+			<i>__applyAuthor()</i>) corresponds to the initialization phase of the rule Author (the 
+			<i>__apply</i> prefix being associated with the rule initialization phase). Going back to the Editors view, it is possible to identify the current instruction which is highlighted in green: it here corresponds to the evaluation of the variable 
+			<i>a'' in the ''surname</i> binding of the rule target pattern element.
+		</p>
+		<p>The 
+			<i>Variables</i> view makes it possible to navigate the content of the variables that are visible in this context. The variable a corresponds to the source model element currently matched by the rule. The variable 
+			<i>p'' corresponds to the target pattern model element that is currently initialized. Note that, at this stage, since the execution of the surname binding is not completed, the only initialized property of this variable is ''name</i>. The variable 
+			<i>self</i> here points to the ATL module. Finally, the variable link appearing during the transformation initialization phase corresponds to an ATL engine internal variable and could be ignored by the developers.
+			Although not illustrated in the considered example, the Variables view enables to navigate the content of collection variables. It also makes it possible to navigate the source and, at some point, the target model elements using the references defined by these elements.
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="The-ATL-Language.html" title="The ATL Language">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="ATL User Guide.html" title="ATL User Guide">
+						<img alt="ATL User Guide" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">The ATL Language</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>

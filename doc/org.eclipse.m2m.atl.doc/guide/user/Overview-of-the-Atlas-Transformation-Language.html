@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>ATL User Guide - Overview of the Atlas Transformation Language</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Overview of the Atlas Transformation Language</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Installation.html" title="Installation">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="The-ATL-Language.html" title="The ATL Language">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Installation</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">The ATL Language</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Overview_of_the_Atlas_Transformation_Language">Overview of the Atlas Transformation Language</h1>
+		<p>The ATL language offers ATL developers to design different kinds of ATL units. An ATL unit, whatever its type, is defined in its own distinct ATL file. ATL files are characterized by the 
+			<i>.atl</i> extension.
+		</p>
+		<p>As an answer to the 
+			<a href="http://www.omg.org/docs/formal/02-04-03.pdf">OMG MOF</a>/
+			<a href="http://www.omg.org/docs/ad/02-04-10.pdf">QVT RFP</a>, ATL mainly focus on the model to model transformations. Such model operations can be specified by means of ATL 
+			<i>modules</i>. Besides modules, the ATL transformation language also enables developers to create model to primitive data type programs. These units are called ATL 
+			<i>queries</i>. The aim of a query is to compute a 
+			<a href="The-ATL-Language.html#Primitive_data_types">primitive</a> value, such as a string or an integer, from source models. Finally, the ATL language also offers the possibility to develop independent ATL 
+			<i>libraries</i> that can be imported from the different types of ATL units, including libraries themselves. This provides a convenient way to factorize ATL code that is used in multiple ATL units. Note that the three ATL unit kinds same the share 
+			<i>.atl</i> extension.
+		</p>
+		<p>These different ATL units are detailed in the following subsections. This section explains what each kind of unit should be used for, and provides an overview of the content of these different units.</p>
+		<h2 id="Examples_metamodels">Examples metamodels</h2>
+		<p>This section provides two simple metamodels which will be used all along this guide to demonstrate ATL syntax and use.</p>
+		<h3 id="Author_metamodel">Author metamodel</h3>
+		<p>
+			<img border="0" src="images/Author_metamodel.png"/>
+		</p>
+		<h3 id="Person_metamodel">Person metamodel</h3>
+		<p>
+			<img border="0" src="images/Person_metamodel.png"/>
+		</p>
+		<h3 id="Biblio_metamodel">Biblio metamodel</h3>
+		<p>
+			<img border="0" src="images/Biblio_metamodel.png"/>
+		</p>
+		<h2 id="ATL_module">ATL module</h2>
+		<p>An ATL module corresponds to a model to model transformation. This kind of ATL unit enables ATL developers to specify the way to produce a set of target models from a set of source models. Both source and target models of an ATL module must be "typed" by their respective metamodels. Moreover, an ATL module accepts a fixed number of models as input, and returns a fixed number of target models. As a consequence, an ATL module can not generate an unknown number of similar target models (e.g. models that conform to a same metamodel).</p>
+		<h3 id="Structure_of_an_ATL_module">Structure of an ATL module</h3>
+		<p>An ATL module defines a model to model transformation. It is composed of the following elements:</p>
+		<ul>
+			<li>A header section that defines some attributes that are relative to the transformation module;</li>
+			<li>An optional import section that enables to import some existing 
+				<a href="Overview-of-the-Atlas-Transformation-Language.html#ATL_Library">ATL libraries</a>;
+			</li>
+			<li>A set of helpers that can be viewed as an ATL equivalent to Java methods;</li>
+			<li>A set of rules that defines the way target models are generated from source ones.</li>
+		</ul>
+		<p>Helpers and rules do not belong to specific sections in an ATL transformation. They may be declared in any order with respect to certain conditions (see 
+			<a href="The-ATL-Language.html#ATL_Helpers">ATL Helpers</a> section for further details). These four distinct element types are now detailed in the following subsections.
+		</p>
+		<h4 id="Header_section">Header section</h4>
+		<p>The header section defines the name of the transformation module and the name of the variables corresponding to the source and target models. It also encodes the execution mode of the module. The syntax for the header section is defined as follows:</p>
+		<pre>module module_name;
+create output_models [from|refining] input_models;
+</pre>
+		<p>The keyword 
+			<i>module</i> introduces the name of the module. Note that the name of the ATL file containing the code of the module has to correspond to the name of this module. For instance, a ModelA2ModelB transformation module has to be defined into the 
+			<i>ModelA2ModelB</i>.atl file.
+			The target models declaration is introduced by the 
+			<i>create</i> keyword, whereas the source models are introduced either by the keyword 
+			<i>from</i> (in normal mode) or 
+			<i>refining</i> (in case of refining transformation). The declaration of a model, either a source input or a target one, must conform the scheme 
+			<i>model_name : metamodel_name</i>. It is possible to declare more than one input or output model by simply separating the declared models by a coma. Note that the name of the declared models will be used to identity them. As a consequence, each declared model name has to be unique within the set of declared models (both input and output ones).
+			The following ATL source code represents the header of the 
+			<i>Book2Publication.atl</i> file, e.g. the ATL header for the 
+			<a href="http://www.eclipse.org/m2m/atl/atlTransformations/#Book2Publication">transformation</a> from the Book metamodel to the Publication metamodel:
+		</p>
+		<pre>module Book2Publication;
+create OUT : Publication from IN : Book;
+</pre>
+		<h4 id="Import_section">Import section</h4>
+		<p>The optional import section enables to declare which 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#ATL_Library">ATL libraries</a> have to be imported. The declaration of an ATL library is achieved as follows:
+		</p>
+		<pre>uses extensionless_library_file_name;
+</pre>
+		<p>For instance, to import the strings library, one would write:</p>
+		<pre>uses strings;
+</pre>
+		<p>Note that it is possible to declare several distinct libraries by using several successive uses instructions.</p>
+		<h4 id="Helpers">Helpers</h4>
+		<p>ATL helpers can be viewed as the ATL equivalent to Java methods. They make it possible to define factorized ATL code that can be called from different points of an ATL transformation.
+			An ATL helper is defined by the following elements:</p>
+		<ul>
+			<li>a name (which corresponds to the name of the method);</li>
+			<li>a context type. The context type defines the context in which this attribute is defined (in the same way a method is defined in the context of given class in object-programming);</li>
+			<li>a return value type. Note that, in ATL, each helper must have a return value;</li>
+			<li>an ATL expression that represents the code of the ATL helper;</li>
+			<li>an optional set of parameters, in which a parameter is identified by a couple (parameter name, parameter type).</li>
+		</ul>
+		<p>As an example, it is possible to consider a helper that returns the maximum of two integer values: the contextual integer and an additional integer value which is passed as parameter. The declaration of such a helper will look like (detail of the helper code is not interesting at this stage, please refer to 
+			<a href="The-ATL-Language.html#ATL_Helpers">ATL Helpers</a> section for further details):
+		</p>
+		<pre>helper context Integer def : max(x : Integer) : Integer = ...;
+</pre>
+		<p>It is also possible to declare a helper that accepts no parameter. This is, for instance, the case for a helper that just multiplies an integer value by two:</p>
+		<pre>helper context Integer def : double() : Integer = self * 2;
+</pre>
+		<p>In some cases, it may be interesting to be able to declare an ATL helper without any particular context. This is not possible in ATL since each helper must be associated with a given context. However, the ATL language allows ATL developers to declare helpers within a default context (which corresponds to the ATL module). This is achieved by simply omitting the context part of the helper definition. It is possible, by this mean, to provide a new version of the max helper defined above:</p>
+		<pre>helper def : max(x1 : Integer, x2 : Integer) : Integer = ...;
+</pre>
+		<p>Note that several helpers may have the same name in a single transformation. However, helpers with a same name must have distinct signatures to be distinguishable by the ATL engine (see 
+			<a href="The-ATL-Language.html#ATL_Helpers">ATL Helpers</a> section for further details).
+			The ATL language also makes it possible to define attributes. An attribute helper is a specific kind of helper that accepts no parameters, and that is defined either in the context of the ATL module or of a model element. In the remaining of the present document, the term 
+			<i>attribute</i> will be specifically used to refer to attribute helpers, whereas the generic term of 
+			<i>helper</i> will refer to a functional helper.
+			Thus, the attribute version of the double helper defined above will be declared as follows:
+		</p>
+		<pre>helper context Integer def : double : Integer = self * 2;
+</pre>
+		<p>Declaring a functional helper with no parameter or an attribute may appear to be equivalent. It is therefore equivalent from a functional point of view. However, there exists a significant difference between these two approaches when considering the execution semantics. Indeed, compared to the result of a functional helper which is calculated each time the helper is called, the return value of an ATL attribute is computed only once when the value is required for the first time. As a consequence, declaring an ATL attribute is more efficient than defining an ATL helper that will be executed as many times as it is called.
+			Note that the ATL attributes that are defined in the context of the ATL module are initialized (during the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Default_mode_execution_semantics">initialization phase</a>) in the order they have been declared in the ATL file. This implies that the order of declaration of this kind of attribute is of some importance: an attribute defined in the context of the ATL module has to be declared after the other ATL module attributes it depends on for its initialization. A wrong order in the declaration of the ATL module attributes will raise an error during the initialization phase of the ATL program execution.
+		</p>
+		<h4 id="Rules">Rules</h4>
+		<p>In ATL, there exist three different kinds of rules that correspond to the two different programming modes provided by ATL (e.g. declarative and imperative programming): the matched rules (declarative programming), the lazy rules, and the called rules (imperative programming).</p>
+		<p>
+			<b>Matched rules</b>. The matched rules constitute the core of an ATL declarative transformation since they make it possible to specify:
+		</p>
+		<p>1) for which kinds of source elements target elements must be generated,</p>
+		<p>2) the way the generated target elements have to be initialized. </p>
+		<p>A matched rule is identified by its name. It matches a given type of source model element, and generates one or more kinds of target model elements. The rule specifies the way generated target model elements must be initialized from each matched source model element.
+			A matched rule is introduced by the keyword 
+			<i>rule</i>. It is composed of two mandatory (the source and the target patterns) and two optional (the local variables and the imperative) sections. When defined, the local variable section is introduced by the keyword 
+			<i>using</i>. It enables to locally declare and initialize a number of local variables (that will only be visible in the scope of the current rule).
+			The source pattern of a matched rule is defined after the keyword 
+			<i>from</i>. It enables to specify a model element variable that corresponds to the type of source elements the rule has to match. This type corresponds to an entity of a source metamodel of the transformation. This means that the rule will generate target elements for each source model element that conforms to this matching type. In many cases, the developer will be interested in matching only a subset of the source elements that conform to the matching type. This is simply achieved by specifying an optional condition (expressed as an ATL expression, see 
+			<a href="The-ATL-Language.html#OCL_Declarative_Expressions">OCL Declarative Expressions</a> section for further details) within the rule source pattern. By this mean, the rule will only generate target elements for the source model elements that both conform to the matching type and verify the specified condition.
+		</p>
+		<p>The target pattern of a matched rule is introduced by the keyword 
+			<i>to</i>. It aims to specify the elements to be generated when the source pattern of the rule is matched, and how these generated elements are initialized. Thus, the target pattern of a matched rule specifies a distinct target pattern element for each target model element the rule has to generate when its source pattern is matched. A target pattern element corresponds to a model element variable declaration associated with its corresponding set of initialization bindings. This model element variable declaration has to correspond to an entity of the target metamodels of the transformation.
+		</p>
+		<p>Finally, the optional imperative section, introduced by the keyword 
+			<i>do</i>, makes it possible to specify some imperative code that will be executed after the initialization of the target elements generated by the rule.
+			As an example, consider the following simple ATL matched rule between two metamodels, 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Author_metamodel">MMAuthor</a> and 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Person_metamodel">MMPerson</a>:
+		</p>
+		<pre>rule Author {
+	from
+		a : MMAuthor!Author
+	to
+		p : MMPerson!Person (
+			name &lt;- a.name,
+			surname &lt;- a.surname
+		)
+}
+</pre>
+		<p>This rule, called Author, aims to transform Author source model elements (from the MMAuthor source model) to Person target model elements in the MMPerson target model. This rule only contains the mandatory source and target patterns. The source pattern defines no filter, which means that all Author classes of the source MMAuthor model will be matched by the rule. The rule target pattern contains a single simple target pattern element (called 
+			<i>p</i>). This target pattern element aims to allocate a Person class of the MMPerson target model for each source model element matched by the source pattern. The features of the generated model element are initialized with the corresponding features of the matched source model element.
+			Note that a source model element of an ATL transformation should not be matched by more than one ATL matched rule. This implies the source pattern of matched rules to be designed carefully in order to respect this constraint. Moreover, an ATL matched rule can not generate ATL primitive type values.
+		</p>
+		<p>
+			<b>Lazy rules</b>.
+		</p>
+		<p>
+			<i>TODO: write lazy rules documentation overview</i>
+		</p>
+		<p>
+			<b>Called rules</b>. The called rules provide ATL developers with convenient imperative programming facilities. Called rules can be seen as a particular type of helpers: they have to be explicitly called to be executed and they can accept parameters. However, as opposed to helpers, called rules can generate target model elements as matched rules do. A called rule has to be called from an imperative code section, either from a match rule or another called rule.
+		</p>
+		<p>As a matched rule, a called rule is introduced by the keyword rule. As matched 
+			<i>rules</i>, called rules may include an optional local variables section. However, since it does not have to match source model elements, a called rule does not include a source pattern. Moreover, its target pattern, which makes it possible to generate target model elements, is also optional. Note that, since the called rule does not match any source model element, the initialization of the target model elements that are generated by the target pattern has to be based on a combination of local variables, parameters and module attributes. The target pattern of a called rule is defined in the same way the target pattern of a matched rule is. It is also introduced by the keyword 
+			<i>to</i>.
+			A called rule can also have an imperative section, which is similar to the ones that can be defined within matched rules. Note that this imperative code section is not mandatory: it is possible to specify a called rule that only contains either a target pattern section or an imperative code section.
+			In order to illustrate the called rule structure, consider the following simple example:
+		</p>
+		<pre>rule NewPerson (na: String, s_na: String) {
+	to
+		p : MMPerson!Person (
+			name &lt;- na
+		)
+	do {
+		p.surname &lt;- s_na
+	}
+}
+</pre>
+		<p>This called rule, named NewPerson, aims to generate Person target model elements. The rule accepts two parameters that correspond to the name and the surname of the Person model element that will be created by the rule execution. The rule has both a target pattern (called 
+			<i>p'') and an imperative code section. The target pattern allocates a Person class each time the rule is called, and initializes the ''name</i> attribute of the allocated model element. The imperative code section is executed after the initialization of the allocated element (see 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Default_mode_execution_semantics">Default mode execution semantics</a> section for further details on execution semantics). In this example, the imperative code sets the 
+			<i>surname</i> attribute of the generated Person model element to the value of the parameter 
+			<i>s_na</i>.
+		</p>
+		<h3 id="Module_execution_modes">Module execution modes</h3>
+		<p>The ATL execution engine defines two different execution modes for ATL modules. With the default execution mode, the ATL developer has to explicitly specify the way target model elements must be generated from source model elements.
+			In this scope, the design of a transformation which aims to copy its source model with only a few modifications may prove to be very tiresome. Designing this transformation in default execution mode therefore requires the developer to specify the rules that will generate the modified model elements, but also all the rules that will only copy, without any modification, source to target model elements. The refining execution mode has been designed for this kind of situation: it enables ATL developers to only specify the modifications that have to be performed between the transformation source and target models.
+			These two execution modes are described in the following subsections.</p>
+		<h4 id="Normal_execution_mode">Normal execution mode</h4>
+		<p>The normal execution mode is the ATL module default execution mode. It is associated with the keyword 
+			<i>from</i> in the module 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Header_section">header</a>.
+			In default execution mode, the ATL developer has to specify, either by matched or called rules, the way to generate each of the expected target model elements. This execution mode suits to most ATL transformations where target models differ from the source ones.
+		</p>
+		<h4 id="Refining_execution_mode">Refining execution mode</h4>
+		<p>The refining execution mode has been introduced to ease the programming of refining transformations between similar source and target models. With the refining mode, ATL developers can focus on the ATL code dedicated to the generation of modified target elements. Other model elements (e.g. those that remain unchanged between the source and the target model) are implicitly copied from the source to the target model by the ATL engine.
+			The refining mode is associated with the keyword 
+			<i>refining</i> in the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Header_section">header</a> of the ATL module. Granularity of the refining mode is defined at the model element level. This means that the developer will have to specify how to generate a model element as soon as the transformation modifies one of its features (either an attribute or a reference). On the other side, the developer is not required to specify the ATL code that corresponds to the copy of unchanged model elements. This feature may result in important saving of ATL code, which, in the end, makes the programming of refining ATL transformations simpler and easier.
+			At current time, the refining mode can only be used to transform a single source model into a single target model. Both source and target models must conform to the same metamodel.
+		</p>
+		<h3 id="Module_execution_semantics">Module execution semantics</h3>
+		<p>This section introduces the basics of the ATL execution semantics. Although designing ATL transformations does not require any particular knowledge on the ATL execution semantics, understanding the way an ATL transformation is processed by the ATL engine can prove to be helpful in certain cases (in particular, when debugging a transformation).</p>
+		<p>The semantics of the two available ATL execution modes, the normal and the refining modes, are introduced in the following subsections.</p>
+		<h4 id="Default_mode_execution_semantics">Default mode execution semantics</h4>
+		<p>The execution of an ATL module is organized into three successive phases: </p>
+		<ul>
+			<li>a module initialization phase, </li>
+			<li>a matching phase of the source model elements, </li>
+			<li>a target model elements initialization phase.</li>
+		</ul>
+		<p>The module initialization step corresponds to the first phase of the execution of an ATL module. In this phase, the attributes defined in the context of the transformation module are initialized. Note that the initialization of these module attributes may make use of attributes that are defined in the context of source model elements. This implies these new attributes to be also initialized during the module initialization phase. If an entry point 
+			<a href="The-ATL-Language.html#Called_Rules">called rule</a> has been defined in the scope of the ATL module, the code of this rule (including target model elements generation) is executed after the initialization of the ATL module attributes.
+		</p>
+		<p>During the source model elements matching phase, the matching condition of the declared matched rules are tested with the model elements of the module source models. When the matching condition of a matched rule is fulfilled, the ATL engine allocates the set of target model elements that correspond to the target pattern elements declared in the rule. Note that, at this stage, the target model elements are simply allocated: they are initialized during the target model elements initialization phase.</p>
+		<p>The last phase of the execution of an ATL module corresponds to the initialization of the target model elements that have been generated during the previous step. At this stage, each allocated target model element is initialized by executing the code of the bindings that are associated with the target pattern element the element comes from. Note that this phase allows invocations of the 
+			<a href="The-ATL-Language.html#The_ATL_Module_data_type">resolveTemp()</a> operation that is defined in the context of the ATL module.
+			The imperative code section that can be specified in the scope of a matched rule is executed once the rule initialization step has completed. This imperative code can trigger the execution of some of the called rules that have been defined in the scope of the ATL module.
+		</p>
+		<h4 id="Refining_mode_execution_semantics">Refining mode execution semantics</h4>
+		<p>
+			<i>TODO: update with the current refining mode execution semantics</i>
+		</p>
+		<h2 id="ATL_Query">ATL Query</h2>
+		<p>An ATL query consists in a model to 
+			<a href="The-ATL-Language.html#Primitive_data_types">primitive type</a> value transformation. An ATL query can be viewed as an operation that computes a primitive value from a set of source models. The most common use of ATL queries is the generation of a textual output (encoded into a string value) from a set of source models. However, ATL queries are not limited to the computation of string values and can also return a numerical or a boolean value.
+		</p>
+		<p>The following subsections respectively describe the structure and the execution semantics of an ATL query.</p>
+		<h3 id="Structure_of_an_ATL_query">Structure of an ATL query</h3>
+		<p>After an optional 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Import_section">import</a> section, an ATL query must define a query instantiation. A query instantiation is introduced by the keyword query and specifies the way its result must be computed by means of an ATL expression:
+		</p>
+		<pre>query query_name = exp;
+</pre>
+		<p>Beside the query instantiation, an ATL query may include a number of helper or attribute definitions. Note that, although an ATL query is not strictly a module, it defines its own kind of default module context. It is therefore possible, for ATL developers, to declare helpers and attributes defined in the context of the module in the scope of an ATL query.</p>
+		<h3 id="Query_execution_semantics">Query execution semantics</h3>
+		<p>As an ATL module, the execution of an ATL query is organized in several successive phases. The first phase is the initialization phase. It corresponds to the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Default_mode_execution_semantics">initialization phase</a> of the ATL modules and is dedicated to the initialization of the attributes that are defined in the context of the ATL module.
+		</p>
+		<p>The second phase of the execution of an ATL query is the computation phase. During this phase, the return value of the query is calculated by executing the declarative code of the query element of the ATL query. Note that the helpers that have been defined within the query file can be called at both the initialization and the computation phases.</p>
+		<h2 id="ATL_Library">ATL Library</h2>
+		<p>The last type of ATL unit is the ATL library. Developing an ATL library enables to define a set of ATL helpers that can be called from different ATL units (modules, but also queries and libraries).</p>
+		<p>As the other kinds of ATL units, an ATL library can include an optional 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Import_section">import section</a>. Besides this import section, an ATL library defines a number of ATL helpers that will be made available in the ATL units that will import the library.
+		</p>
+		<p>Compared to an ATL module, there exists no default module element for ATL libraries. As a consequence, it is impossible, in libraries, to declare helpers that are defined in the default context of the module. This means that all the helpers defined within an ATL library must be explicitly associated with a given context.</p>
+		<p>Compared to both modules and queries, an ATL library cannot be executed independently. This currently means that a library is not associated with any initialization step at execution time (as described in 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Module_execution_semantics">Module execution semantics</a>). Due to this lack of initialization step, attribute helpers cannot be defined within an ATL library.
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Installation.html" title="Installation">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="ATL User Guide.html" title="ATL User Guide">
+						<img alt="ATL User Guide" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="The-ATL-Language.html" title="The ATL Language">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Installation</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">The ATL Language</td>
+			</tr>
+		</table>
+	</body>
+</html>

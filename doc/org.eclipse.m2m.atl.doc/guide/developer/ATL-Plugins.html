@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>ATL Developer Guide - ATL Plugins</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">ATL Plugins</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="ATL Developer Guide.html" title="Introduction">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="ATL-Language.html" title="ATL Language">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Introduction</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">ATL Language</td>
+			</tr>
+		</table><hr/>
+		<h1 id="ATL_Plugins">ATL Plugins</h1>
+		<h2 id="Overview">Overview</h2>
+		<p>Below is the list of the 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/?root=Modeling_Project">ATL plugins</a>:
+		</p>
+		<ul>
+			<li>
+				<b>ATL Core</b>: provides APIs to launch and extend ATL
+				<ul>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.common/?root=Modeling_Project">org.eclipse.m2m.atl.common</a>: provide common utilities
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core/?root=Modeling_Project">org.eclipse.m2m.atl.core</a>: defines the 
+						<a href="ATL-Core-API.html#ATL_Core_API">ATL Core API</a> (launching, model handling)
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.emf/?root=Modeling_Project">org.eclipse.m2m.atl.core.emf</a>: EMF implementation of the Core API
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ui.vm/?root=Modeling_Project">org.eclipse.m2m.atl.core.ui.vm</a>: defines a wrapper which allow to launch the ATL Regular VM using the Core API
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ant/?root=Modeling_Project">org.eclipse.m2m.atl.core.ant</a>: provides the ATL ant tasks, based on the Core API
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>ADT</b> 
+				<b>
+					<i>(ATL Development Tools)</i>
+				</b>: Eclipse integration plugins:
+				<ul>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ui/?root=Modeling_Project">org.eclipse.m2m.atl.core.ui</a>: provides the ATL launch configuration, based on the Core API
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.adt/?root=Modeling_Project">org.eclipse.m2m.atl.adt</a>: provides ATL nature and builder
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.adt.ui/?root=Modeling_Project">org.eclipse.m2m.atl.adt.ui</a>: provides ATL perspective and wizards (new file, new project)
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.adt.debug/?root=Modeling_Project">org.eclipse.m2m.atl.adt.debug</a>: the ATL Regular VM debugger
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.adt.editor/?root=Modeling_Project">org.eclipse.m2m.atl.adt.editor</a>: the ATL textual editor
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>ATL Parser and Compiler</b>:
+				<ul>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.dsls/?root=Modeling_Project">org.eclipse.m2m.atl.dsls</a>: provides the syntaxic/semantic definition of ATL and ACG
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.engine/?root=Modeling_Project">org.eclipse.m2m.atl.engine</a>: provides ATL compiling and parsing utilities
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>ATL Virtual Machines</b>: 
+				<ul>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.engine.emfvm/?root=Modeling_Project">org.eclipse.m2m.atl.engine.emfvm</a>: the ATL EMF-specific VM
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.engine.vm/?root=Modeling_Project">org.eclipse.m2m.atl.engine.vm</a>: the ATL Regular VM, using model handlers:
+						<ul>
+							<li>
+								<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.drivers.emf4atl/?root=Modeling_Project">org.eclipse.m2m.atl.drivers.emf4atl</a>: the ATL Regular VM model handler for EMF
+							</li>
+							<li>
+								<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.drivers.uml24atl/?root=Modeling_Project">org.eclipse.m2m.atl.drivers.uml24atl</a>: the ATL Regular VM model handler for UML2
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h2 id="External_dependencies">External dependencies</h2>
+		<h3 id="ATL">ATL</h3>
+		<p>Historically, ATL imports two libraries : ANTLR version 2 and MDR. Those libraries are not authorized in Eclipse because of their non-compliance with the Eclipse IP policy. Consequently, ATL imposes users to download those libraries by themselves and install them into Eclipse plugin folder.</p>
+		<p>Today, ATL dependencies have been strongly reduced : ATL only needs ANTLR-runtime (version 3) library, which is compliant with the Eclipse IP policy and included into ATL source code. The MDR library is only necessary for the MDR Model Handler. According to the fact that most of people uses EMF Model Handler (which seems to be more powerful), MDR Model Handler has been separated into a single feature, which is not natively required for ATL.</p>
+		<h3 id="Other_tools">Other tools</h3>
+		<p>
+			<a href="http://wiki.eclipse.org/TCS">TCS (Textual Concrete Syntax)</a>, a tool for parsing and extraction, is used to generate some ATL components (e.g. ATL-Parser). Unlike ATL, TCS uses both ANTLR library, in version 2 and newly in version 3. TCS is available on 
+			<a href="http://www.eclipse.org/gmt/">GMT</a>. ATL doesn't have any dependency with TCS. Specific injectors depend on ANTLR too.
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="ATL Developer Guide.html" title="Introduction">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="ATL Developer Guide.html" title="ATL Developer Guide">
+						<img alt="ATL Developer Guide" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="ATL-Language.html" title="ATL Language">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Introduction</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">ATL Language</td>
+			</tr>
+		</table>
+	</body>
+</html>

@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>ATL Concepts - Model Transformation</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Model Transformation</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="The-Model-Driven-Architecture.html" title="The Model-Driven Architecture">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">The Model-Driven Architecture</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Model_Transformation">Model Transformation</h1>
+		<p>In the scope of model-driven engineering, model transformation aims to provide a mean to specify the way to produce target models from a number of source models. For this purpose, it should enable developers to define the way source model elements must be matched and navigated in order to initialize the target model elements.
+			Formally, a simple model transformation has to define the way for generating a model Mb, conforming to a metamodel MMb, from a model Ma conforming to a metamodel MMa. As previously highlighted, a major feature in model engineering is to consider, as far as possible, all handled items as models. The model transformation itself therefore has to be defined as a model. This transformation model has to conform to a transformation metamodel that defines the model transformation semantics. As other metamodels, the transformation metamodel has, in turn, to conform to the considered metametamodel.</p>
+		<p>
+			<img border="0" src="images/Model_Transformation.png"/>
+		</p>
+		<p>This schema summarizes the full model transformation process. A model Ma, conforming to a metamodel MMa, is here transformed into a model Mb that conforms to a metamodel MMb. The transformation is defined by the model transformation model Mt which itself conforms to a model transformation metamodel MMt. This last metamodel, along with the MMa and MMb metamodels, has to conform to a metametamodel MMM (such as MOF or Ecore).
+			ATL is a model transformation language that enables to specify how one (or more) target model can be produced from a set of source models. In other word, ATL introduces a set of concepts that make it possible to describe model transformations.</p>
+		<p>
+			<img border="0" src="images/ATL_Transformation_sample.png"/>
+		</p>
+		<p>This schema provides an overview of the ATL transformation (Author2Person) that enables to generate a Person model, conforming to the metamodel MMPerson, from an Author model that conforms to the metamodel MMAuthor. The designed transformation, which is expressed by means of the ATL language, conforms to the ATL metamodel. In this example, the three metamodels (MMAuthor, MMPerson and ATL) are expressed using the semantics of the Ecore metametamodel.</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="The-Model-Driven-Architecture.html" title="The Model-Driven Architecture">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="ATL Concepts.html" title="ATL Concepts">
+						<img alt="ATL Concepts" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">The Model-Driven Architecture</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>

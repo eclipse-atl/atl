@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>ATL Developer Guide - ACG (ATL VM Code Generator)</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">ACG (ATL VM Code Generator)</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="ATL-Core-API.html" title="ATL Core API">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="ATL-VM.html" title="ATL VM">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">ATL Core API</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">ATL VM</td>
+			</tr>
+		</table><hr/>
+		<h1 id="ACG_.28ATL_VM_Code_Generator.29">ACG (ATL VM Code Generator)</h1>
+		<h2 id="Description">Description</h2>
+		<p>ACG is a compiler-oriented DSL, which intends to make easier to create a compiler targeting the 
+			<a href="ATL-VM.html#ATL_VM">ATL VM</a>. A compiler described with ACG generates ASM files and contains a description of ASM instructions to generate for each type of input elements, coming from a compiled file. Therefore the input of this kind of compiler is a model describing the content of a compiled file (for instance, an ATL file).
+		</p>
+		<p>An ACG file, when compiled, looks through the input model using a visitor design pattern.
+			ACG is bootstrapped : an ACG.acg file exists and describes the ACG compiler. Since an ACG file describes precisely ASM instructions, the ACG.acg file is rather trivial.</p>
+		<p>A complete ACG documentation is available 
+			<a href="http://wiki.eclipse.org/ACG">here</a>.
+		</p>
+		<h2 id="ACG_in_AMMA_platform">ACG in AMMA platform</h2>
+		<p>The following schema places ACG in the AMMA platform.</p>
+		<p>
+			<img border="0" src="images/AMMA_bootstrap.JPG"/>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="ATL-Core-API.html" title="ATL Core API">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="ATL Developer Guide.html" title="ATL Developer Guide">
+						<img alt="ATL Developer Guide" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="ATL-VM.html" title="ATL VM">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">ATL Core API</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">ATL VM</td>
+			</tr>
+		</table>
+	</body>
+</html>

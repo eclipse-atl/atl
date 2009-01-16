@@ -1,0 +1,2130 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>ATL User Guide - The ATL Language</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">The ATL Language</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Overview-of-the-Atlas-Transformation-Language.html" title="Overview of the Atlas Transformation Language">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="The-ATL-Tools.html" title="The ATL Tools">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Overview of the Atlas Transformation Language</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">The ATL Tools</td>
+			</tr>
+		</table><hr/>
+		<h1 id="The_ATL_Language">The ATL Language</h1>
+		<p>This section is dedicated to the description of the ATL language. As introduced in 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Overview_of_the_Atlas_Transformation_Language">Overview of the Atlas Transformation Language</a>, the language enables to define three kinds of ATL units: the ATL transformation modules, the ATL queries and the ATL libraries. According to their type, these different kinds of units may be composed of a combination of ATL helpers, attributes, matched and called rules. This section aims to detail the syntax of these different ATL elements. For this purpose, the ATL language is based on 
+			<a href="http://www.omg.org/docs/ptc/03-10-14.pdf">OMG OCL (Object Constraint Language) norm</a> for both its data types and its declarative expressions.
+			There exist a few differences between the OCL definition and the current ATL implementation. They will be specified in this section by specific remarks.
+		</p>
+		<h2 id="Data_types">Data types</h2>
+		<p>The ATL data type scheme is very close, but not similar, to the one defined by OCL. The following schema provides an overview of the data type's structure considered in ATL. The different data types presented in this schema represent the possible instances of the OclType class.</p>
+		<p>The root element of the OclType instances structure is the abstract OclAny type, from which all other considered types directly or indirectly inherit. ATL considers six main kinds of data types: the primitive data types, the collection data types, the tuple type, the map type, the enumeration type and the model element type. Note that the map data type is implemented by ATL as an additional facility, but does not appear in the OCL specification.</p>
+		<p>The class OclType can be considered as the definition of a type in the scope of the ATL language. The different elements appearing in the schema represent the type instances that are defined by OCL (except the map and the ATL module data types), and implemented within the ATL engine.</p>
+		<p>The OCL primitive data types correspond to the basic data types of the language (the string, boolean and numerical types). The set of collection types introduced by OCL provides ATL developers with different semantics for the handling of collections of elements. Additional data types include the enumerations, a tuple and a mapping data type and the model element data type. This last corresponds to the type of the entities that may be declared within the models handled by the ATL engine. Finally, the ATL module data type, which is specific to the ATL language, is associated with the running ATL units (either modules or queries).</p>
+		<p>
+			<img border="0" src="images/OCL_Primitive_Types.png"/>
+		</p>
+		<p>Before going further in the description of these data types, it must be noted that each OCL expression, including the operations associated with each kind of data type (that are presented along with their respective data type), is defined in the context of an instance of a specific type. In ATL as in OCL, the reserved keyword 
+			<i>self</i> is used to refer to this contextual instance.
+		</p>
+		<h3 id="OclType_operations">OclType operations</h3>
+		<p>The class OclType corresponds to the definition of the type instances specified by OCL. It is associated with a specific OCL operation: 
+			<i>allInstances()</i>. This operation, which accepts no parameter, returns a set containing all the currently existing instances of the type 
+			<i>self</i>.
+		</p>
+		<p>The ATL implementation provides an additional operation that enables to get all the instances of a given type that belong to a given metamodel. Thus, the 
+			<i>allInstancesFrom(metamodel : String)</i> operation returns a set containing the instances of type self that are defined within the model namely identified by 
+			<i>metamodel</i>.
+		</p>
+		<h3 id="OclAny_operations">OclAny operations</h3>
+		<p>This section describes a set of operations that are common to all existing data types. The syntax used to call an operation from a variable in ATL follows the classical dot notation:</p>
+		<pre>self.operation_name(parameters)
+</pre>
+		<p>ATL currently provides support for the following OCL-defined operations:</p>
+		<ul>
+			<li>comparison operators: =, &lt;>;</li>
+			<li>
+				<i>oclIsUndefined()</i> returns a boolean value stating whether self is undefined;
+			</li>
+			<li>
+				<i>oclIsKindOf(t : oclType)</i> returns a boolean value stating whether self is an either an instance of t or of one of its subtypes;
+			</li>
+			<li>
+				<i>oclIsTypeOf(t : oclType)</i> returns a boolean value stating whether self is an instance of t.
+			</li>
+		</ul>
+		<p>The operations 
+			<i>oclIsNew()</i> and 
+			<i>oclAsType()</i> defined by OCL are currently not supported by the ATL engine. ATL however implements a number of additional operations:
+		</p>
+		<ul>
+			<li>
+				<i>toString()</i> returns a string representation of self. Note that the operation may return irrelevant string values for a few remaining types;
+			</li>
+			<li>
+				<i>oclType()</i> returns the oclType of 
+				<i>self</i>;
+			</li>
+			<li>
+				<i>asSequence(), asSet(), asBag()</i> respectively return a sequence, a set or a bag containing self. These operations are redefined for the collection types;
+			</li>
+			<li>
+				<i>output(s : String)</i> writes the string s to the Eclipse console. Since the operation has no return value, it shall only be used in ATL imperative blocks;
+			</li>
+			<li>
+				<i>debug(s : String)</i> returns the 
+				<i>self</i> value and writes the 
+				<i>"s : self_value"</i> string to the eclipse console;
+			</li>
+			<li>
+				<i>refSetValue(name : String, val : oclAny)</i> is a reflective operation that enables to set the 
+				<i>self</i> feature identified by 
+				<i>name</i> to value 
+				<i>val</i>. It returns 
+				<i>self</i>;
+			</li>
+			<li>
+				<i>refGetValue(name : String)</i> is a reflective operation that returns the value of the 
+				<i>self</i> feature identified by 
+				<i>name</i>;
+			</li>
+			<li>
+				<i>refImmediateComposite()</i> is a reflective operation that returns the immediate composite (e.g. the immediate container) of 
+				<i>self</i>;
+			</li>
+			<li>
+				<i>refInvokeOperation(opName : String, args : Sequence)</i> is a reflective operation that enables to invoke the 
+				<i>self</i> operation named 
+				<i>opName</i> with the sequence of parameter contained by 
+				<i>args</i>.
+			</li>
+		</ul>
+		<h3 id="The_ATL_Module_data_type">The ATL Module data type</h3>
+		<p>The ATL Module data type is specific to the ATL language. This internal data type aims to represent the ATL unit (either a module or a query) that is currently run by the ATL engine. There exists a single instance of this data type, and developers can refer to it (in their ATL code) using the variable 
+			<i>thisModule</i>. The 
+			<i>thisModule</i> variable makes it possible to access the 
+			<a href="The-ATL-Language.html#Helpers_2">helpers</a> and the 
+			<a href="The-ATL-Language.html#Attributes">attributes</a> that have been declared in the context of the ATL module.
+		</p>
+		<p>The ATL Module data type also provides the 
+			<i>resolveTemp</i> operation. This specific operation makes it possible to point, from an ATL rule, to any of the target model elements (including non-default ones) that will be generated from a given source model element by an ATL matched rule.
+		</p>
+		<p>The operation 
+			<i>resolveTemp</i> has the following declaration: 
+		</p>
+		<pre>resolveTemp(var, target_pattern_name)
+</pre>
+		<p>The parameter var corresponds to an ATL variable that contains the source model element from which the searched target model element is produced. The parameter 
+			<i>target_pattern_name</i> is a string value that encodes the name of the 
+			<a href="The-ATL-Language.html#Matched_Rules">target pattern</a> element that maps the provided source model element (contained by var) into the searched target model element.
+		</p>
+		<p>Note that, as it is defined in the scope of the ATL module, this operation must be called from the variable 
+			<i>thisModule</i>. The 
+			<i>resolveTemp</i> operation must not be called before the completion of the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Module_execution_semantics">matching phase</a>. This means that the operation can be called from:
+		</p>
+		<ul>
+			<li>the 
+				<i>target pattern</i> and 
+				<i>do</i> sections of any matched rule;
+			</li>
+			<li>the 
+				<i>target pattern</i> and 
+				<i>do</i> sections of a called rule, provided that this called rule is executed after the matching phase (e.g. is not called from a transformation entrypoint).
+			</li>
+		</ul>
+		<p>ATL developers may note that the operation call does not specify the matched rule from which the generated target model element comes from. However, as explained in the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Rules">Rules</a> section, a source model element should not be matched by more than one matched rule. As a consequence, the concerned matched rule can be derived from the specified source model element.
+		</p>
+		<h3 id="Primitive_data_types">Primitive data types</h3>
+		<p>OCL defines four basic primitive data types:</p>
+		<ul>
+			<li>the 
+				<b>Boolean</b> data type, for which possible values are 
+				<i>true</i> or 
+				<i>false</i>;
+			</li>
+			<li>the 
+				<b>Integer</b> data type which is associated with the integer numerical values (1, -5, 2, 34, 26524, ...);
+			</li>
+			<li>the 
+				<b>Real</b> data type which is associated with the floating numerical values (1.5, 3.14, ...);
+			</li>
+			<li>the 
+				<b>String</b> data type ('To be or not to be', ...). A string is defined between '. The escape character '\' enables to include ' characters within handled string variables. Note that, in OCL:
+				<ul>
+					<li>a character is encoded as a one-character string;</li>
+					<li>the characters composing a string are numbered from 1 to the size of the string.</li>
+				</ul>
+			</li>
+		</ul>
+		<p>According to the considered data type (string, numerical values and boolean values), OCL defines a number of specific operations. They are detailed in the following sections along with some additional functions provided by the ATL engine.</p>
+		<h4 id="Boolean_data_type_operations">Boolean data type operations</h4>
+		<p>The set of OCL operations defined for the boolean data type is the following:</p>
+		<ul>
+			<li>logical operators: 
+				<i>and, or, xor, not</i>;
+			</li>
+			<li>
+				<i>implies(b : Boolean)</i> returns 
+				<i>false</i> if self is 
+				<i>true</i> and b is 
+				<i>false</i>, and
+			</li>
+		</ul>
+		<p>returns 
+			<i>true</i> otherwise.
+		</p>
+		<h5 id="Boolean_expressions_evaluation">Boolean expressions evaluation</h5>
+		<p>In this case:</p>
+		<pre>if (exp1 and exp2)
+then ...
+else ...
+endif
+</pre>
+		<p>exp2 will always be evaluated, regardless of the result of the first expression. ATL evaluates it like this:</p>
+		<pre>if (exp1.and(exp2))
+then ...
+else ...
+endif
+</pre>
+		<p>So remember that in this case:</p>
+		<pre>if (self.attributes->size() > 0
+     and self.attributes->first().attr)
+</pre>
+		<p>Even though the first member is false, there may be a call of the "attr" property on an undefined element, which will cause an error.</p>
+		<h4 id="String_data_type_operations">String data type operations</h4>
+		<p>OCL defines the following operations for the string data type:</p>
+		<ul>
+			<li>
+				<i>size()</i> returns the number of characters contained by the string 
+				<i>self</i>;
+			</li>
+			<li>
+				<i>concat(s : String)</i> returns a string in which the specified string 
+				<i>s'' is concatenated to the end of ''self</i>;
+			</li>
+			<li>
+				<i>substring(lower : Integer, upper : Integer)</i> returns the substring of 
+				<i>self</i> starting from character 
+				<i>lower</i> to character 
+				<i>upper</i>;
+			</li>
+			<li>
+				<i>toInteger()</i> and 
+				<i>toReal()</i>.
+			</li>
+		</ul>
+		<p>Besides the OCL-defined operations, ATL implements a number of additional operations for the string data type:</p>
+		<ul>
+			<li>comparison operators: &lt;, >, =>, =&lt;;</li>
+			<li>the string concatenation operator (+) can be used as a shortcut for the string 
+				<i>concat()</i> function;
+			</li>
+			<li>
+				<i>toUpper(), toLower()</i> respectively return an upper/lower case copy of 
+				<i>self</i>;
+			</li>
+			<li>
+				<i>toSequence()</i> returns the sequence of characters (e.g. of one-character strings) corresponding to 
+				<i>self</i>;
+			</li>
+			<li>
+				<i>trim()</i> returns a copy of 
+				<i>self</i> with leading and trailing white spaces (' ', '\t', '\n', '\f', '\r') omitted;
+			</li>
+			<li>
+				<i>startsWith(s : String), endsWith(s : String)</i> return a boolean value respectively stating whether 
+				<i>self</i> starts/ends with 
+				<i>s</i>;
+			</li>
+			<li>
+				<i>indexOf(s : String), lastIndexOf(s : String)</i> respectively return the index (an integer value) within 
+				<i>self</i> of the first/last occurrence of the specified substring 
+				<i>s</i>;
+			</li>
+			<li>
+				<i>split(regex : String)</i> splits the 
+				<i>self</i> string around matches of the regular expression 
+				<i>regex</i>. Specification of regular expression must follow the definition of 
+				<a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html">Java regular expressions</a>. Result is returned as a sequence of strings;
+			</li>
+			<li>
+				<i>replaceAll(c1 : String, c2 : String)</i> returns a copy of 
+				<i>self</i> in which each occurrence of character 
+				<i>c1</i> is replaced with the character 
+				<i>c2</i>. Note that both 
+				<i>c1</i> and 
+				<i>c2</i> are specified as OCL strings. However the function only considers the first character of each of the provided strings;
+			</li>
+			<li>
+				<i>regexReplaceAll(regex : String, replacement : String)</i> returns a copy of 
+				<i>self</i> in which each substring of this string that matches the given regular expression 
+				<i>regex</i> is replaced with the given 
+				<i>replacement</i>. Specification of regular expression must follow the definition of 
+				<a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html">Java regular expressions</a>.
+			</li>
+		</ul>
+		<p>As a last point, ATL currently defines two additional functions that make it possible to write strings to outputs. These functions are useful for redirecting the result of ATL queries, but they may also be used for debugging purposes:</p>
+		<ul>
+			<li>
+				<i>writeTo(fileName : String)</i> enables to write the 
+				<i>self</i> string into the file identified by the string 
+				<i>fileName</i>. Note that this string may encode either a full or a relative path to the file. In the last case, the path is relative to the \eclipse directory from which the ATL tool kit is run. If the identified file already exists, the function writes the new content over this existing file;
+			</li>
+			<li>
+				<i>println()</i> writes the 
+				<i>self</i> string onto the default output, that is the 
+				<a href="The-ATL-Tools.html#Console">Eclipse console</a>.
+			</li>
+		</ul>
+		<p>Note that these two functions are provided as temporary solutions as the ATL toolkit does still not provide any integrated solution for the redirection of the result of ATL queries. They are likely to be removed from future releases of the ATL tool suite.</p>
+		<h4 id="Numerical_data_type_operations">Numerical data type operations</h4>
+		<p>The following OCL operations are defined for both OCL numerical data types (integer and real):</p>
+		<ul>
+			<li>comparison operators: &lt;, >, =>, =&lt;;</li>
+			<li>binary operators: *, +, -, /, 
+				<i>div(), max(), min()</i>;
+			</li>
+			<li>unary operator: 
+				<i>abs()</i>.
+			</li>
+		</ul>
+		<p>Note that the - unary operator defined by OCL (that returns the negative value of 
+			<i>self</i>) is not implemented in current version of ATL. As a consequence, a -x negative numerical value has to be declared as the result of a call to the - binary operator: 0-x.
+		</p>
+		<p>OCL also defines some operations that are specific to the integer and the real data types:</p>
+		<ul>
+			<li>integer operation: 
+				<i>mod()</i>;
+			</li>
+			<li>real operations: 
+				<i>floor(), round()</i>.
+			</li>
+		</ul>
+		<p>Besides the OCL-defined operations, ATL provides a set of additional functions. The 
+			<i>toString()</i> operation, available for both the integer and real data types returns a string representing the integer/real value of 
+			<i>self</i>. There also exist a set of ATL operations specific to the real data type:
+		</p>
+		<ul>
+			<li>
+				<i>cos(), sin(), tan(), acos(), asin()</i>;
+			</li>
+			<li>
+				<i>toDegrees(), toRadians()</i>;
+			</li>
+			<li>
+				<i>exp(), log(), sqrt()</i>.
+			</li>
+		</ul>
+		<h4 id="Examples">Examples</h4>
+		<p>In the following, some usage examples of OCL operations on primitive data types are illustrated:</p>
+		<ul>
+			<li>testing whether a string is of type OclAny: <code>'test'.oclIsTypeOf(OclAny)</code>
+				<ul>
+					<li>evaluates to <code>false</code></li>
+				</ul>
+			</li>
+			<li>testing whether a string is of kind OclAny: <code>'test'.oclIsKindOf(OclAny)</code>
+				<ul>
+					<li>evaluates to <code>true</code></li>
+				</ul>
+			</li>
+			<li>boolean operations: <code>true</code> or <code>false</code>
+				<ul>
+					<li>evaluates to <code>true</code></li>
+				</ul>
+			</li>
+			<li>computing a substring of a given string: <code>'test'.substring(2, 3)</code>
+				<ul>
+					<li>evaluates to 'es'</li>
+				</ul>
+			</li>
+			<li>casting a string into upper case: <code>'test'.toUpper()</code>
+				<ul>
+					<li>evaluates to 'TEST'</li>
+				</ul>
+			</li>
+			<li>casting a string into a sequence: <code>'test'.toSequence()</code>
+				<ul>
+					<li>evaluates to <code>Sequence{'t', 'e', 's', 't'}</code></li>
+				</ul>
+			</li>
+			<li>checking whether a string ends by a given substring: <code>'test'.endsWith('ast')</code>
+				<ul>
+					<li>evaluates to <code>false</code></li>
+				</ul>
+			</li>
+			<li>getting last index of character "t" in string "test": <code>'test'.lastIndexOf('t')</code>
+				<ul>
+					<li>evaluates to 4 </li>
+				</ul>
+			</li>
+			<li>replacing character "t" by character "o" in string "test": <code>'test'.replaceAll('t', 'o')</code>
+				<ul>
+					<li>evaluates to 'oeso'</li>
+				</ul>
+			</li>
+			<li>replacing occurrences of regular expression "a*" by string "A" in string "aaabaftaap":	<code>'aaabaftaap'.regexReplaceAll('a*', 'A')</code>
+				<ul>
+					<li>evaluates to 'AbAftAp'</li>
+				</ul>
+			</li>
+			<li>integer division: <code>23 div 2 or 23."div"(2)</code>
+				<ul>
+					<li>evaluates to 11</li>
+				</ul>
+			</li>
+			<li>real division: <code>23/2</code>
+				<ul>
+					<li>evaluates to 11.5</li>
+				</ul>
+			</li>
+		</ul>
+		<h3 id="Collection_data_types">Collection data types</h3>
+		<p>OCL defines a number of collection data types that provide developers with different ways to handle collections of elements. The provided collection types are Set, OrderedSet, Bag and Sequence. Collection is the common abstract superclass of these different types of collections.</p>
+		<p>The existing collection classes have the following characteristics:</p>
+		<ul>
+			<li>Set is a collection without duplicates. Set has no order;</li>
+			<li>OrderedSet is a collection without duplicates. OrderedSet is ordered;</li>
+			<li>Bag is a collection in which duplicates are allowed. Bag has no order;</li>
+			<li>Sequence is a collection in which duplicates are allowed. Sequence is ordered.</li>
+		</ul>
+		<p>A collection can be seen as a template data type. This means that the declaration of a collection data type has to include the type of the elements that will be contained by the type instances. Whatever the type of the contained elements, the declaration of a collection data type has to conform to the following scheme:</p>
+		<pre>collection_type(element_datatype)
+</pre>
+		<p>The supported collection data types are 
+			<b>Set</b>, 
+			<b>OrderedSet</b>, 
+			<b>Sequence</b> and 
+			<b>Bag</b>. The element data type can be any supported oclType, including another collection type.
+		</p>
+		<p>The definition of a collection variable is achieved as follows:</p>
+		<pre>collection_type{elements}
+</pre>
+		<p>Please note that the brackets used in the type definition must here be replaced by curly brackets. Examples of collection type definitions and instantiations can be found 
+			<a href="The-ATL-Language.html#Examples_2">here</a>.
+		</p>
+		<h4 id="Operations_on_collections">Operations on collections</h4>
+		<p>ATL provides a large number of operations in the context of the different supported collection types. Note that there exists a specific syntax for invoking an operation onto a collection type:</p>
+		<pre>self->operation_name(parameters)
+</pre>
+		<p>The different kinds of existing OCL collections share a number of common operations:</p>
+		<ul>
+			<li>
+				<i>size()</i> returns the number of elements in the collection 
+				<i>self</i>;
+			</li>
+			<li>
+				<i>includes(o : oclAny)</i> returns a boolean stating whether the object 
+				<i>o'' is part of the collection ''self</i>;
+			</li>
+			<li>
+				<i>excludes(o : oclAny)</i> returns a boolean stating whether the object 
+				<i>o'' is not part of the collection ''self</i>;
+			</li>
+			<li>
+				<i>count(o : oclAny)</i> returns the number of times the object 
+				<i>o'' occurs in the collection ''self</i>;
+			</li>
+			<li>
+				<i>includesAll(c : Collection)</i> returns a boolean stating whether all the objects contained by the collection 
+				<i>c'' are part of the ''self</i> collection;
+			</li>
+			<li>
+				<i>excludesAll(c : Collection)</i> returns a boolean stating whether none of the objects contained by the collection 
+				<i>c'' are part of the ''self</i> collection;
+			</li>
+			<li>
+				<i>isEmpty()</i> returns a boolean stating whether the collection 
+				<i>self</i> is empty;
+			</li>
+			<li>
+				<i>notEmpty()</i> returns a boolean stating whether the collection 
+				<i>self</i> is not empty;
+			</li>
+			<li>
+				<i>sum()</i> returns a value that corresponds to the addition of all elements in 
+				<i>self</i>. These elements must be of a type that support the + operation.
+			</li>
+		</ul>
+		<p>Note that the 
+			<i>product()</i> operation defined by OCL is unsupported by the current ATL implementation. However, ATL defines three additional operations in the context of a collection (OCL defines similar operations in the context of each collection type):
+		</p>
+		<ul>
+			<li>
+				<i>asBag()</i> returns a bag containing the elements of the 
+				<i>self</i> collection. Order is lost from a sequence or an ordered set. Has no effect in the context of a bag;
+			</li>
+			<li>
+				<i>asSequence()</i> returns a sequence containing the elements of the 
+				<i>self</i> collection. Introduces an order from a bag or a set. Has no effect in the context of a sequence;
+			</li>
+			<li>
+				<i>asSet()</i> returns a set containing the elements of the 
+				<i>self</i> collection. Order is lost from a sequence or an ordered set. Duplicates are removed from a bag or a sequence. Has no effect in the context of a set.
+			</li>
+		</ul>
+		<p>Note that, in the current ATL version, the casting operation 
+			<i>asOrderedSet()</i> defined by OCL is implemented for none of the collection types.
+		</p>
+		<h4 id="Sequence_data_type_operations">Sequence data type operations</h4>
+		<p>The sequence type supports all the collection operations. OCL defines a number of additional operations that are specific to sequences:</p>
+		<ul>
+			<li>
+				<i>union(c : Collection)</i> returns a sequence composed of all elements of 
+				<i>self</i> followed by the elements of 
+				<i>c</i>;
+			</li>
+			<li>
+				<i>flatten()</i> returns a sequence directly containing the children of the nested subordinate collections contained by 
+				<i>self</i>;
+			</li>
+			<li>
+				<i>append(o : oclAny)</i> returns a copy of 
+				<i>self</i> with the element 
+				<i>o</i> added at the end of the sequence;
+			</li>
+			<li>
+				<i>prepend(o : oclAny)</i> returns a copy of 
+				<i>self</i> with the element 
+				<i>o</i> added at the beginning of the sequence;
+			</li>
+			<li>
+				<i>insertAt(n : Integer, o : oclAny)</i>, returns a copy of 
+				<i>self</i> with the element 
+				<i>o'' added at rank ''n</i> of the sequence;
+			</li>
+			<li>
+				<i>subSequence(lower : Integer, upper : Integer)</i> returns a subsequence of 
+				<i>self</i> starting from rank 
+				<i>lower</i> to rank 
+				<i>upper</i> (both bounds being included);
+			</li>
+			<li>
+				<i>at(n : Integer)</i> returns the element located at rank 
+				<i>n'' in ''self</i>;
+			</li>
+			<li>
+				<i>indexOf(o : oclAny)</i> returns the rank of first occurrence of 
+				<i>o'' in ''self</i>;
+			</li>
+			<li>
+				<i>first()</i> returns the first element of 
+				<i>self</i> (
+				<i>oclUndefined</i> if 
+				<i>self</i> is empty);
+			</li>
+			<li>
+				<i>last()</i> returns the last element of 
+				<i>self</i> (
+				<i>oclUndefined</i> if 
+				<i>self</i> is empty);
+			</li>
+			<li>
+				<i>including(o : oclAny)</i> returns a copy of 
+				<i>self</i> with the element 
+				<i>o</i> added at the end of the sequence;
+			</li>
+			<li>
+				<i>excluding(o : oclAny)</i> returns a copy of 
+				<i>self</i> with all occurrences of element 
+				<i>o</i> removed.
+			</li>
+		</ul>
+		<h4 id="Set_data_type_operations">Set data type operations</h4>
+		<p>Set supports all collection operations and some specific ones:</p>
+		<ul>
+			<li>
+				<i>union(c : Collection)</i> returns a set composed of the elements of 
+				<i>self</i> and the elements of 
+				<i>c'' with duplicates removed (they may appear within ''c</i>, and between 
+				<i>c'' and ''self</i> elements);
+			</li>
+			<li>
+				<i>intersection(c : Collection)</i> returns a set composed of the elements that appear both in 
+				<i>self</i> and 
+				<i>c</i>;
+			</li>
+			<li>operator - (s : Set) returns a set composed of the elements of 
+				<i>self</i> that are not in 
+				<i>s</i>;
+			</li>
+			<li>
+				<i>including(o : oclAny)</i>, returns a copy of 
+				<i>self</i> with the element 
+				<i>o'' if not already present in ''self</i>;
+			</li>
+			<li>
+				<i>excluding(o : oclAny)</i>, returns a copy of 
+				<i>self</i> with the element 
+				<i>o</i> removed from the set;
+			</li>
+			<li>
+				<i>symetricDifference(s : Set)</i> returns a set composed of the elements that are in 
+				<i>self</i> or 
+				<i>s</i>, but not in both.
+			</li>
+		</ul>
+		<p>Note that the 
+			<i>flatten()</i> operation defined by OCL is not implemented in the current version of ATL.
+		</p>
+		<h4 id="OrderedSet_data_type_operations">OrderedSet data type operations</h4>
+		<p>The sequence type supports all the collection operations. OCL defines a number of additional operations that are specific to ordered sets:</p>
+		<ul>
+			<li>
+				<i>append(o : oclAny)</i> returns a copy of 
+				<i>self</i> with the element 
+				<i>o'' added at the end of the ordered set if it does not already appear in ''self</i>;
+			</li>
+			<li>
+				<i>prepend(o : oclAny)</i> returns a copy of 
+				<i>self</i> with the element 
+				<i>o'' added at the beginning of the ordered set if it does not already appear in ''self</i>;
+			</li>
+			<li>
+				<i>insertAt(n : Integer, o : oclAny)</i>, returns a copy of 
+				<i>self</i> with the element 
+				<i>o'' added at rank ''n</i> of the ordered set if it does not already appear in 
+				<i>self</i>;
+			</li>
+			<li>
+				<i>subOrderedSet (lower : Integer, upper : Integer)</i> returns a subsequence of 
+				<i>self</i> starting from rank 
+				<i>lower</i> to rank 
+				<i>upper</i> (both bounds being included);
+			</li>
+			<li>
+				<i>at(n : Integer)</i> returns the element located at rank 
+				<i>n'' in ''self</i>;
+			</li>
+			<li>
+				<i>indexOf(o : oclAny)</i> returns the rank of first occurrence of 
+				<i>o'' in ''self</i>;
+			</li>
+			<li>
+				<i>first()</i> returns the first element of 
+				<i>self</i> (oclUndefined if 
+				<i>self</i> is empty);
+			</li>
+			<li>
+				<i>last()</i> returns the last element of 
+				<i>self</i> (oclUndefined if 
+				<i>self</i> is empty).
+			</li>
+		</ul>
+		<p>Besides this set of operations specified by OCL, ATL implements the following additional functions:</p>
+		<ul>
+			<li>
+				<i>union(c : Collection)</i> returns an ordered set composed of the elements of 
+				<i>self</i> followed by the elements of 
+				<i>c'' with duplicates removed (they may appear within ''c</i>, and between 
+				<i>c'' and ''self</i> elements);
+			</li>
+			<li>
+				<i>flatten()</i> returns an ordered set directly containing the children of the nested subordinate collections contained by 
+				<i>self</i>;
+			</li>
+			<li>
+				<i>including(o : oclAny)</i> returns a copy of 
+				<i>self</i> with the element 
+				<i>o'' added at the end of the ordered set if it does not already appear in ''self</i>;
+			</li>
+			<li>
+				<i>excluding(o : oclAny)</i> returns a copy of 
+				<i>self</i> with the 
+				<i>o</i> removed.
+			</li>
+		</ul>
+		<h4 id="Bag_data_type_operations">Bag data type operations</h4>
+		<p>The bag operations defined by the OCL specification are not available with the current ATL implementation.</p>
+		<h4 id="Iterating_over_collections">Iterating over collections</h4>
+		<p>The OCL specification defines a number of iterative operations, also called iterative expressions, on the collection types. The main difference between a classical operation and an iterative expression on a collection is that the iterator accepts an expression as parameter, whereas operations only deal with data. The definition of an iterative expression includes:</p>
+		<ul>
+			<li>the iterated collection, which is referred as the 
+				<i>source</i> collection;
+			</li>
+			<li>the iterator variables declared in iterative expressions, which are referred as the 
+				<i>iterators</i>;
+			</li>
+			<li>the expression passed as parameter to the operation, which is referred as the iterator 
+				<i>body</i>.
+			</li>
+		</ul>
+		<p>The syntax used to call an iterative expression is the following:</p>
+		<pre>source->operation_name(iterators | body)
+</pre>
+		<p>ATL currently provides support for the following set of defined iterative expressions:</p>
+		<ul>
+			<li>
+				<i>exists(body)</i> returns a boolean value stating whether 
+				<i>body</i> evaluates to true for at least one element of the 
+				<i>source</i> collection;
+			</li>
+			<li>
+				<i>forAll(body)</i> returns a boolean value stating whether 
+				<i>body</i> evaluates to true for all elements of the 
+				<i>source</i> collection;
+			</li>
+			<li>
+				<i>isUnique(body)</i> returns a boolean value stating whether 
+				<i>body</i> evaluates to a different value for each element of the 
+				<i>source</i> collection;
+			</li>
+			<li>
+				<i>any(body)</i> returns one element of the 
+				<i>source</i> collection for which 
+				<i>body</i> evaluates to true. If 
+				<i>body</i> never evaluates to true, the operation returns OclUndefined;
+			</li>
+			<li>
+				<i>one(body)</i> returns a boolean value stating whether there is exactly one element of the 
+				<i>source</i> collection for which 
+				<i>body</i> evaluates to true;
+			</li>
+			<li>
+				<i>collect(body)</i> returns a collection of elements which results in applying 
+				<i>body</i> to each element of the 
+				<i>source</i> collection;
+			</li>
+			<li>
+				<i>select(body)</i> returns the subset of the 
+				<i>source</i> collection for which 
+				<i>body</i> evaluates to true;
+			</li>
+			<li>
+				<i>reject(body)</i> returns the subset of the 
+				<i>source</i> collection for which 
+				<i>body</i> evaluates to false (is equivalent to 
+				<i>select(not body)</i>);
+			</li>
+			<li>
+				<i>sortedBy(body)</i> returns a collection ordered according to 
+				<i>body</i> from the lowest to the highest value. Elements of the 
+				<i>source</i> collection must have the &lt; operator defined.
+			</li>
+		</ul>
+		<p>Note that the 
+			<i>collect()</i> operation provided by ATL implements the semantics of the 
+			<i>collectNested()</i> operation defined in the OCL specification. Getting the semantics of the 
+			<i>collect()</i> operation as defined by OCL can simply be achieved with ATL by calling the 
+			<i>flatten()</i> operation onto the result provided by the ATL 
+			<i>collect()</i> iterative expression, as follows:
+		</p>
+		<pre>source->collect(iterator | body)->flatten()
+</pre>
+		<p>The ATL language introduces another constraint compared to the OCL specification. The specification indeed allows declaring multiple iterators in the scope of the 
+			<i>exists()</i> and the 
+			<i>forAll()</i> iterative expressions. This feature is not supported by the current ATL implementation, in which the number of iterator is limited to one, whatever the considered iterative expression.
+		</p>
+		<p>Besides these predefined iterative operations, OCL specifies a more generic collection iterator, named 
+			<i>iterate()</i>. This iterative expression has an iterator, an accumulator and a body. The accumulator corresponds to an initialized variable declaration. The body of an 
+			<i>iterate()</i> expression is an expression that should make use of both the declared iterator and accumulator. The value returned by an 
+			<i>iterate()</i> expression corresponds to the value of the accumulator variable once the last iteration has been performed.
+			An iterative expression is defined with the following syntax:
+		</p>
+		<pre>source->iterate(iterator, variable_declaration = init_exp |
+	body
+)
+</pre>
+		<h4 id="Examples_2">Examples</h4>
+		<p>In the following, some operations on collections are illustrated:</p>
+		<ul>
+			<li>declaring the sequence of integer type: <code>Sequence(Integer)</code></li>
+			<li>specifying a sequence of integers: <code>Sequence{1, 2, 3}</code></li>
+			<li>declaring the set of sequences of string type: <code>Set(Sequence(String))</code></li>
+			<li>specifying a set of sequences of strings: <code>Set{Sequence{'monday'}, Sequence{'march', 'april', 'may'}}</code></li>
+			<li>testing whether a bag is empty: <code>Bag{1, 2, 3}->isEmpty()</code>
+				<ul>
+					<li>evaluates to <code>false</code></li>
+				</ul>
+			</li>
+			<li>testing whether a set contains an element: Set{1, 2, 3}->includes(1)
+				<ul>
+					<li>evaluates to <code>true</code></li>
+				</ul>
+			</li>
+			<li>testing whether a set contains all the elements of another set: Set{1, 2, 3}->includesAll(Set{3, 2})
+				<ul>
+					<li>evaluates to <code>true</code></li>
+				</ul>
+			</li>
+			<li>getting the size of a sequence: <code>Sequence{1, 2, 3}->size()</code>
+				<ul>
+					<li>evaluates to 3</li>
+					<li>note that <code>Set{3, 3, 3}->size()</code> evaluates to 1 since the set data type eliminates duplicates</li>
+				</ul>
+			</li>
+			<li>getting the first element of an ordered set sequence: <code>OrderedSet{1, 2, 3}->first()</code>
+				<ul>
+					<li>evaluates to 1</li>
+				</ul>
+			</li>
+			<li>computing the union of two sequences: <code>Sequence{1, 2, 3}->union(Sequence{7, 3, 5})</code>
+				<ul>
+					<li>evaluates to <code>Sequence{1, 2, 3, 7, 3, 5}</code></li>
+				</ul>
+			</li>
+			<li>computing the union of two sets: <code>Set{1, 2, 3}->union(Set{7, 3, 5})</code>
+				<ul>
+					<li>evaluates to <code>Set{1, 2, 3, 7}</code></li>
+				</ul>
+			</li>
+			<li>flattening a sequence of sequences: <code>Sequence{Sequence{1, 2}, Sequence{3, 5, 2}, Sequence{1}}->flatten()</code>
+				<ul>
+					<li>evaluates to <code>Sequence{1, 2, 3, 5, 2, 1}</code></li>
+				</ul>
+			</li>
+			<li>computing a subsequence of a sequence:	<code>Sequence{Sequence{1, 2}, Sequence{3, 5, 2}, Sequence{1}}->subSequence(2, 3)</code>
+				<ul>
+					<li>evaluates to <code>Sequence{ Sequence{3, 5, 2}, Sequence{1}}</code></li>
+				</ul>
+			</li>
+			<li>inserting an element at a given position into a sequence: <code>Sequence{5, 15, 20}->insertAt(2, 10)</code>
+				<ul>
+					<li>evaluates to <code>Sequence{5, 10, 15, 20}</code></li>
+				</ul>
+			</li>
+			<li>computing the intersection of two sets: <code>Set{1, 2, 3}->intersection(Set{7, 3, 5})</code>
+				<ul>
+					<li>evaluates to <code>Set{3}</code></li>
+				</ul>
+			</li>
+			<li>computing the symmetric difference of two sets: <code>Set{1, 2, 3}->symetricDifference(Set{7, 3, 5})</code>
+				<ul>
+					<li>evaluates to <code>Set{1, 2, 7, 5}</code></li>
+				</ul>
+			</li>
+			<li>selecting all elements of a sequence that are smaller or equal to 3: <code>Sequence{1, 2, 3, 4, 5, 6}->select(i | i &lt;= 3)</code>
+				<ul>
+					<li>evaluates to <code>Set{1, 2, 3}</code></li>
+				</ul>
+			</li>
+			<li>collecting the names of all MOF classes: <code>MOF!Class.allInstances()->collect(e | e.name)</code>
+				<ul>
+					<li>checking whether all the numbers in a sequence are greater than 2: <code>Sequence{12, 13, 12}->forAll(i | i > 2)</code></li>
+					<li>evalutes to <code>true</code></li>
+				</ul>
+			</li>
+			<li>checking whether there is only one element of the sequence that is greater that 2: <code>Sequence{12, 13, 12}->one(i | i > 2)</code>
+				<ul>
+					<li>evalutes to <code>false</code></li>
+				</ul>
+			</li>
+			<li>checking whether there exists a number in the sequence that is greater than 2: <code>Sequence{12, 13, 12}->exists(i | i > 2)</code>
+				<ul>
+					<li>evaluates to <code>true</code></li>
+				</ul>
+			</li>
+			<li>computing the sum of the positive integer of a sequence using the iterate instruction:<code>Sequence{8, -1, 2, 2, -3}->iterate(e; res : Integer = 0 |
+				<br/>if e > 0
+				<br/>then res + e
+				<br/>else res
+				<br/>endif
+				<br/>)
+				<br/></code>
+				<ul>
+					<li>evaluates to 12;</li>
+					<li>is equivalent to <code>Sequence{8, -1, 2, 2, -3}->select(e | e > 0)->sum()</code></li>
+				</ul>
+			</li>
+		</ul>
+		<h3 id="Enumeration_data_types">Enumeration data types</h3>
+		<p>An enumeration is an OclType. It has a name just as any other data type. However, compared to the data presented up to now, the enumerations have to be defined within the source and target metamodels of a transformation.</p>
+		<p>With the OCL specification, referring to an enumeration literal (e.g. an enumeration defined value) is achieved by specifying the enumeration type (e.g. the name of the enumeration), followed by two double-points and the enumeration value. Consider, as an example, an enumeration named Gender that defines two possible values, 
+			<i>male</i> and 
+			<i>female</i>. Accessing to the female value of this enumeration type in OCL is achieved as follows: Gender::female.
+		</p>
+		<p>The current ATL implementation differs from the OCL specification. Access to enumeration values is simply achieved by prefixing the enumeration by a sharp character (the enumeration type is no more required): 
+			<b>#female</b>.
+			The enumeration data type is associated with no specific operation.
+		</p>
+		<h3 id="Tuple_data_type">Tuple data type</h3>
+		<p>The tuple data type enables to compose several values into a single variable. A tuple consists into a number of named parts that may each have a distinct type. Note that a tuple type is not named. As a consequence, a declared tuple type has to be identified by its full declaration each time it is required.</p>
+		<p>Each part of a tuple type is associated with an OclType and is identified by a unique name. The declaration of a tuple data type must conform to the following syntax:</p>
+		<pre>TupleType(var_name1 : var_type1, ..., var_nameN : var_typeN)
+</pre>
+		<p>Note that the order in which the different parts are declared is not significant. As an example, it is possible to consider the declaration of a tuple type associating an Author model element from the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Author_metamodel">MMAuthor metamodel</a> with a couple of strings encoding the title of a book and the name of the editor of this book:
+		</p>
+		<pre>TupleType(a : MMAuthor!Author, title : String, editor : String)
+</pre>
+		<p>The instantiation of a declared tuple variable has to respect the following syntax:</p>
+		<pre>Tuple{var_name1 [: var_type1]? = init_exp1, ..., var_namen [: var_typen]? = init_expn}
+</pre>
+		<p>When declaring a tuple instance, the types of the tuple parts can be omitted. As a consequence, the two following tuple instantiations corresponding to the tuple type defined above are equivalent:</p>
+		<pre>Tuple{editor : String = 'ATL Eds.', title : String = 'ATL Manual', a : MMAuthor!Author = anAuthor}
+Tuple{title = 'ATL Manual', a = anAuthor, editor = 'ATL Eds.'}
+</pre>
+		<p>As for the declaration of a tuple type, the instantiation of the different parts of a tuple variable may be performed in any order.
+			The different parts of a tuple structure can be accessed using the same dot notation that is used for the invocation of operations or the access to 
+			<a href="The-ATL-Language.html#Model_element_data_type">model element</a> attributes. Thus, the expression
+		</p>
+		<pre>Tuple{title = 'ATL Manual', a = anAuthor, editor = 'ATL Eds.'}.title
+</pre>
+		<p>provides access to the 
+			<i>title</i> part of the tuple.
+		</p>
+		<p>Besides the set of common operations, the current ATL implementation defines an additional casting operation in the context of the tuple dada type: the 
+			<i>asMap()</i> operation returns a 
+			<a href="The-ATL-Language.html#Map_data_type">map</a> variable in which the name of the tuple parts are associated with their respective values.
+		</p>
+		<h3 id="Map_data_type">Map data type</h3>
+		<p>Provided as an additional facility in the ATL implementation, the map data type does not belong to the OCL specification. This data type enables to manage a structure in which each value is associated with a unique key that enables to access it (see the 
+			<a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/Map.html">Java Map interface</a> for further details).
+		</p>
+		<p>The declaration of a map type has to conform to the following syntax:</p>
+		<pre>Map(key_type, value_type)
+</pre>
+		<p>Note that, as a tuple type, a map type is not named, which again implies to specify the full type declaration when required. The following map declaration associates some Author model element values with integer keys:</p>
+		<pre>Map(Integer, MMAuthor!Author)
+</pre>
+		<p>Instantiating a map variable is achieved according to the following syntax:</p>
+		<pre>Map{(key1, value1), ..., (keyn, valuen)}
+</pre>
+		<p>As an example, the following expression instantiates a two entries map corresponding to the map type declared above:</p>
+		<pre>Map{(0, anAuthor1), (1, anAuthor2)}
+</pre>
+		<p>Besides the set of common operations, the ATL implementation provides the following operations on map data:</p>
+		<ul>
+			<li>
+				<i>get(key : oclAny)</i> returns the value associated with 
+				<i>key</i> within the 
+				<i>self</i> map (or OclUndefined if 
+				<i>key</i> is not a key of 
+				<i>self</i>);
+			</li>
+			<li>
+				<i>including(key : oclAny, val : oclAny)</i> returns a copy of 
+				<i>self</i> in which the couple (
+				<i>key, val</i>) has been inserted if 
+				<i>key</i> is not already a key of 
+				<i>self</i>;
+			</li>
+			<li>
+				<i>union(m : Map)</i> returns a map containing all 
+				<i>self</i> elements to which are added those elements of 
+				<i>m'' whose key does not appear in ''self</i>;
+			</li>
+			<li>
+				<i>getKeys()</i> returns a set containing all the keys of 
+				<i>self</i>;
+			</li>
+			<li>
+				<i>getValues()</i> returns a bag containing all the values of 
+				<i>self</i>.
+			</li>
+		</ul>
+		<h3 id="Model_element_data_type">Model element data type</h3>
+		<p>The last kind of data type introduced by the OCL specification corresponds to the model elements. These last are defined within the source and target metamodels of an ATL transformation. Metamodels usually define a number of different model elements (also called classes).</p>
+		<p>In ATL, model element variables are referred to by means of the notation 
+			<i>metamodel!class</i> in which 
+			<i>metamodel</i> identifies (through its name) one of the metamodels handled by the transformation, and 
+			<i>class</i> points to a given model element (e.g. class) of this metamodel. Note that, as opposed to the OCL notation, which does not specify the metamodel a given class comes from, the ATL notation makes it possible to handle several metamodel at once.
+		</p>
+		<p>A model element has a number of features that can be either attributes or references. Both are accessed through the dot notation 
+			<i>self.feature</i>. Thus, in the context of the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Author_metamodel">MMAuthor metamodel</a>, the expression 
+			<i>anAuthor.name</i> enables to access to the attribute 
+			<i>name</i> of the instance 
+			<i>anAuthor</i> of the Author class.
+		</p>
+		<p>In ATL, the model elements can only be generated by means of the ATL rules (either matched or called rules). Initializing a newly generated model element consists in initializing its different features. Such assignments are operated by means of the bindings of the 
+			<a href="The-ATL-Language.html#ATL_Rules">rules</a> target pattern elements.
+		</p>
+		<p>Please note that the operation 
+			<i>oclIsUndefined()</i>, defined for the OclAny data type, tests whether the value of an expression is undefined. This operation is useful when applied on an attribute with a multiplicity zero to one (which is void or not). However, attributes with the multiplicity 
+			<i>n</i> are usually represented as collections that may be empty and not void.
+		</p>
+		<h4 id="Full_name_reference_to_metamodel_classes">Full name reference to metamodel classes</h4>
+		<p>It is also possible to include the full path using the following scheme:</p>
+		<pre>&lt;Package1Name>::&lt;Package2Name>::&lt;ClassifierName>
+</pre>
+		<p>Actually the ATL Parser doesn't deal well with "::" so we need to surround the path using ".</p>
+		<p>For instance, using the metamodel excerpt given above, we could write:</p>
+		<pre>MM!"P1::C1"
+MM!"P1::P2::C2"
+MM!"P3::C3"
+</pre>
+		<p>In some cases, full name reference is required to avoid ambiguity due to name collision.
+			Let us consider the following metamodel:</p>
+		<pre>package P1 {
+</pre>
+		<pre>  class C1 {}
+</pre>
+		<pre>  package P2 {
+    class C1 {}
+  }
+}
+</pre>
+		<pre>package P3 {
+  class C1 {}
+}
+</pre>
+		<p>Using MM!C1 is incorrect because it cannot reliably me mapped to a specific class.
+			If you try to do this, a warning will be reported in the ATL console.
+			In this case, it is mandatory to write:</p>
+		<pre>MM!"P1::C1"
+MM!"P1::P2::C1"
+MM!"P3::C1"
+</pre>
+		<h4 id="Examples_3">Examples</h4>
+		<p>Here is a sample of OCL expressions using features of model elements. They are defined in the context of the 
+			<a href="http://www.omg.org/docs/formal/02-04-03.pdf">MOF</a> metamodel:
+		</p>
+		<ul>
+			<li>collect the names of all MOF classes:</li>
+		</ul>
+		<pre>MOF!Class.allInstances()->collect(e | e.name)
+</pre>
+		<ul>
+			<li>getting the names of all primitive MOF types by filtering:</li>
+		</ul>
+		<pre>MOF!DataType.allInstances()
+       ->select(e | e.oclIsTypeOf(MOF!PrimitiveType))
+       ->collect(e| e.name)
+</pre>
+		<ul>
+			<li>getting the names of all primitive MOF types the simple way:</li>
+		</ul>
+		<pre>MOF!PrimitiveType.allInstances()->collect(e| e.name)
+</pre>
+		<ul>
+			<li>an enumeration instance in MOF: </li>
+		</ul>
+		<pre>MOF!VisibilityKind.labels
+</pre>
+		<ul>
+			<li>getting the names of all classes inheriting from more than one class:</li>
+		</ul>
+		<pre>MOF!Class.allInstances()
+       ->select(e | e.supertypes->size() > 1)
+       ->collect(e | e.name)
+</pre>
+		<h2 id="ATL_Comments">ATL Comments</h2>
+		<p>In ATL, as in the OCL standard, comments start with two consecutive hyphens "--" and end at the end of the line.
+			The ATL editor in Eclipse colours comments with dark green, if the standard configuration is used:</p>
+		<pre>-- this is an example of a comment
+</pre>
+		<h2 id="OCL_Declarative_Expressions">OCL Declarative Expressions</h2>
+		<p>Besides the declarative expressions that correspond to the instances of the supported data types, as well as the invocation of operations on these data types, OCL defines additional declarative expressions that aim to enable developers to structure OCL code. This section is dedicated to the description of these declarative expressions.
+			There exist two kinds of advanced declarative expressions: the "if" and the "let" expressions. The "if" expression provides an alternative expression facility. The "let" expression, as for it, enables to define and initialize new OCL variables.</p>
+		<h3 id="If_expression">If expression</h3>
+		<p>An OCL "if" expression is expressed with an if-then-else-endif structure. As an expression, an "if" expression should be evaluated (e.g. must have a value) in any cases. This means that the "else" clause of an "if" expression can not be omitted. All "if" expressions must conform to the following syntax:</p>
+		<pre>if condition
+then
+	exp1
+else
+       exp2
+endif
+</pre>
+		<p>The 
+			<i>condition</i> of the "if" expression is a boolean expression. According to the evaluation of this boolean expression, the "if" expression will return the value corresponding to either 
+			<i>exp1</i> (in case 
+			<i>condition</i> is evaluated to true) or 
+			<i>exp2</i> (in case 
+			<i>condition</i> is evaluated to false). This is illustrated by the following simple "if" expression:
+		</p>
+		<pre>if 3 > 2
+then
+	'three is greater than two'
+else
+	'this case should never occur'
+endif
+</pre>
+		<p>Note that the different parts of an "if" expression can, in turn, include another composed OCL expression, including operation invocations, 
+			<a href="The-ATL-Language.html#Let_expression">"let"</a> expressions or nested "if" expressions. As an example, it is possible to consider the following example:
+		</p>
+		<pre>if mySequence->notEmpty()
+then
+	if mySequence->includes(myElement)
+	then
+		'the element is at position '
+		+ mySequence->indexOf(myElement).toString()
+	else
+		'the sequence does not contain the element'
+	endif
+else
+	'the sequence is empty'
+endif
+</pre>
+		<h3 id="Let_expression">Let expression</h3>
+		<p>The OCL "let" expression enables the definition of variables. A "let" expression has to conform to the following syntax:</p>
+		<pre>let var_name : var_type = var_init_exp in exp
+</pre>
+		<p>The identifier 
+			<i>var_name</i> corresponds to the name of the declared variable. 
+			<i>var_type</i> identifies the type of the declared variable. A variable declared by means of a "let" expression must be initialized with the 
+			<i>var_init_exp</i>. The initialization expression can be of any available OCL expression type, including nested "let" expressions. Finally, the 
+			<i>in</i> keyword introduces the expression in which the newly declared variable can be used. Again, this expression can be of any existing OCL expression type. This is illustrated by the following simple example:
+		</p>
+		<pre>let a : Integer = 1 in a + 1
+</pre>
+		<p>Several "let" expressions can be enchained in order to declare several variables, as in the following example:</p>
+		<pre>let x : Real =
+	if aNumber > 0
+	then
+		aNumber.sqrt()
+	else
+		aNumber.square()
+	endif
+in let y : Real = 2 in x/y
+</pre>
+		<p>An OCL variable is visible from is declaration to the end of the OCL expression it belongs to. Note that, although it is not advised, OCL allows developers to declare several variables of the same name within a single expression. In such a case, the lastly declared variable will hide the other variables having the same name.</p>
+		<p>The "let" expressions also prove to be very useful at the 
+			<a href="The-ATL-Tools.html#Debugging_ATL">debugging</a> stage. Indeed, the ATL development tools integrate debugging facilities that enable, among other things, to consult the value of the declared variables during the execution of an ATL program. In many cases, it proves to be useful to also be able to consult the value returned by a complex OCL expression. This could be achieved with few modification of the OCL code by declaring an OCL variable initialized with the complex expression to be checked. By this means, the value computed by the expression will be stored in an OCL variable, and thus be available for visualization during the debugging of the ATL program.
+		</p>
+		<p>In order to illustrate this point, consider the following expression:</p>
+		<pre>aSequence->first().square()
+</pre>
+		<p>It is here assumed that the collection aSequence is a sequence of Real elements. In case this sequence is empty, the invocation of the operation 
+			<i>first()</i> will return the value OclUndefined. Invoked onto OclUndefined, the operation 
+			<i>square()</i> will raise an error at runtime. In such a case, it may be interesting to be able to check, at debug stage, whether the first element exists or is undefined by storing its value in a dedicated variable. This is the purpose of the following expression:
+		</p>
+		<pre>let firstElt : Real = aSequence->first() in firstElt.square()
+</pre>
+		<h3 id="Other_expressions">Other expressions</h3>
+		<p>Besides the "if" and "let" structural expressions, the OCL language enables to define different kinds of expressions whose syntax has been introduced in the 
+			<a href="The-ATL-Language.html#Data_types">Data Types</a> section. These expressions include:
+		</p>
+		<ul>
+			<li>the constant expressions, which correspond to a constant value of any supported data type;</li>
+			<li>the helper/attribute call expressions which correspond to the call of an helper/attribute either defined in the context of the ATL module or of any source model element. The expression is resolved into the value returned by the helper/attribute;</li>
+			<li>the operation call expressions, which correspond to the call of a standard operation defined for a supported data type. The expression is resolved into the value returned by the operation;</li>
+			<li>the collection iterative expressions, which correspond to the call of an iterative expression on a supported collection data type. The expression is resolved into the value returned by the called iterative operation.</li>
+		</ul>
+		<h3 id="Expressions_tips_.26_tricks">Expressions tips &amp; tricks</h3>
+		<p>A number of errors, while designing OCL expressions in ATL, come from the evaluation mode of these OCL expressions. Indeed, in many languages, such as C++ and Java, there exists an optimiser that stops the evaluation of logical expressions when finding either a true value followed by the "or" logical operator or a false value followed by the "and" logical operator. No matter the rest of the expression may result into an error or an exception, the expression will be successfully evaluated.</p>
+		<p>As opposed to these common programming languages, the semantics of composed expressions, as defined by OCL, are such that each expression has to be fully evaluated. As a consequence, some expressions that usually appear to be correct will raise errors in ATL, as illustrated by the following example:</p>
+		<pre>not person.oclIsUndefined() and person.name = 'Isabel'
+</pre>
+		<p>This expression will therefore raise an error for an undefined person model element when evaluating the expression 
+			<i>person.name</i>. An error-free way to express an equivalent logical expression is:
+		</p>
+		<pre>if person.oclIsUndefined()
+then
+	false
+else
+	person.name = 'Isabel'
+endif
+</pre>
+		<p>The same remark can be applied similarly to the logical expressions that use the logical "or" operator, such as:</p>
+		<pre>person.oclIsUndefined() or person.name = 'Isabel'
+</pre>
+		<p>The correct way to express this logical expression is:</p>
+		<pre>if person.oclIsUndefined()
+then
+	true
+else
+	person.name = 'Isabel'
+endif
+</pre>
+		<p>Note that the logical expressions that are likely to raise this kind of errors may be embedded in more complex OCL expressions:</p>
+		<pre>collection->select(person | not person.oclIsUndefined() and person.name = 'Isabel')
+</pre>
+		<p>Using the same rewriting rule, this expression can be transformed into the correct following expression:</p>
+		<pre>collection->select(person |
+	if person.oclIsUndefined()
+	then
+		false
+	else
+		person.name = 'Isabel'
+	endif
+)
+</pre>
+		<p>There may exist several ways to rewrite an incorrect expression. Thus, the following expression will compute the same result:</p>
+		<pre>collection
+	->select(person | not person.oclIsUndefined())
+	->select(person | person.name = 'Isabel')
+</pre>
+		<p>Note that the first solution should here be preferred to this one for efficient reasons: the first solution iterates the collection only once.</p>
+		<h2 id="ATL_Helpers">ATL Helpers</h2>
+		<p>ATL enables developers to define methods within the different kinds of ATL units. In the ATL context, these methods are called helpers. They make it possible to define factorized ATL code that can then be called from different points of an ATL program.
+			There exist two different, although very similar from their syntax, kinds of helpers: the functional and the attribute helpers. Both kinds of helpers must be defined in the context of a given data type. However, compared to an attribute helper, which is commonly referred to as an attribute, a functional helper, referred to as a helper, can accept parameters. This difference implies some differences in the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Module_execution_semantics">execution semantics</a> of both helper kinds.
+		</p>
+		<h3 id="Helpers_2">Helpers</h3>
+		<p>ATL helpers can be viewed as the ATL equivalent to methods. They make it possible to define factorized ATL code that can be called from different points of an ATL transformation.
+			An ATL helper is defined according to the following scheme:</p>
+		<pre>helper [context context_type]? def : helper_name(parameters) : return_type = exp;
+</pre>
+		<p>Each helper is characterized by its context (context_type), its name (helper_name), its set of parameters (parameters) and its return type (return_type). The context of a helper is introduced by the keyword context. It defines the kind of elements the helper applies to, that is, the type of the elements from which it will be possible to invoke it. Note that the context may be omitted in a helper definition. In such a case, the helper is associated with the global context of the ATL module. This means that, in the scope of such a helper, the variable self refers to the run module/query itself.</p>
+		<p>The name of a helper is introduced by the keyword 
+			<i>def</i>. As its context, it is part of the signature of the helper (along with the parameters and the 
+			<i>return_type</i>). A helper accepts a set of parameters that is specified between brackets after the helper's name. A parameter definition includes both the parameter name and the parameter type, as specified by the following scheme:
+		</p>
+		<pre>parameter_name : parameter_type
+</pre>
+		<p>Several parameters can be declared by separating them with a comma (","). The name of the parameter (
+			<i>parameter_name</i>) is a variable identifier within the helper. This means that, within a given helper definition, each parameter name must be unique. Note that the specified context type as well as the parameters' type and the return type may be of any of the data types supported by ATL.
+			The body of a helper is specified as an OCL expression. This expression can be of any of the supported expression types. As an example, it is possible to consider the following helper:
+		</p>
+		<pre>helper def : averageLowerThan(s : Sequence(Integer), value : Real) : Boolean =
+	let avg : Real = s->sum()/s->size() in avg &lt; value;
+</pre>
+		<p>This helper, named 
+			<i>averageLowerThan</i>, is defined in the context of the ATL module (since no context is explicitly specified). It aims to compute a boolean value stating whether the average of the values contained by an integer sequence (the 
+			<i>s'' parameter) is strictly lower than a given real value (the ''value</i> parameter). The body of the helper consists in a "let" expression which defines and initializes the 
+			<i>avg</i> variable. This variable is then compared to the reference 
+			<i>value</i>.
+		</p>
+		<p>Note that several helpers may have the same name in a single transformation. However, helpers with a same name must have distinct signatures to be distinguishable by the ATL engine (see 
+			<a href="The-ATL-Language.html#Limitations">Limitations</a>).
+		</p>
+		<h4 id="Calling_super_helpers">Calling super helpers</h4>
+		<p>The <code>super</code> keyword lets you call helpers with the same name defined on a super type of the current type.</p>
+		<p>Suppose you have the following metamodel:</p>
+		<pre>class A {}
+class B extends A {}
+</pre>
+		<p>Then you can write:</p>
+		<pre>helper context A def: test() : Integer = 1;
+helper context B def: test() : Integer = super.test() + 1;
+</pre>
+		<h3 id="Attributes">Attributes</h3>
+		<p>Besides helpers, the ATL language makes it possible to define attributes. Compared to a helper, an attribute can be viewed as a constant that is specified within a specific context. The major difference between a helper and an attribute definition is that the attribute accepts no parameter.</p>
+		<p>The syntax used to define an ATL attribute is very close to the definition of functional helpers. The only difference is that the attribute syntax does not enable to define any parameter:</p>
+		<pre>helper [context context_type]? def : attribute_name : return_type = exp;
+</pre>
+		<p>As for a helper, the context definition can be omitted in the declaration of an attribute. In this case, the attribute will be associated with the ATL module context. The following attribute, which is related to the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Person_metamodel">MMPerson metamodel</a>, can be considered as an example:
+		</p>
+		<pre>helper def : getYoungest : MMPerson!Person =
+	let allPersons : Sequence(MMPerson!Person) =
+		MMPerson!Person.allInstances()->asSequence() in
+	allPersons->iterate(p; y : MMPerson!Person = allPersons->first() |
+		if p.age &lt; y.age
+		then
+			p
+		else
+			y
+		endif
+	);
+</pre>
+		<p>This attribute, named 
+			<i>getYoungest</i>, is defined within the ATL module context. It applies to a source metamodel 
+			<i>MMPerson</i> that contains 
+			<i>Person</i> model elements. It aims to compute the youngest person of the source model (the return type is therefore MMPerson!Person). The attribute body consists in a "let" expression that defines the 
+			<i>allPersons</i> variable. This variable is a sequence of MMPerson!Person model elements that contains all the persons defined within the source model (note that the computed set has to be cast into a sequence). 
+			The computed sequence is then iterated by means of an 
+			<i>iterate</i> expression in which the iteration variable 
+			<i>p'' represents the currently iterated person. The iterate expression results into a MMPerson!Person model element which will correspond to the youngest of the iterated persons. This result is contained by the variable ''y</i> which is initialized to the first person of the 
+			<i>allPersons</i> sequence (in order to get this first person, it is required to define a sequence rather than a set). The body of this 
+			<i>iterate</i> expression consists in an "if" expression that simply compares the ages of the current youngest person to the one of the currently iterated person. According to the result of this comparison, the "if" expression will either return the previous youngest person or the iterated one.
+		</p>
+		<p>Declaring a parameter-less helper and an attribute may appear to be equivalent. However, there exists a major difference between the helpers and the attributes execution semantics. The code of a helper is executed each time this helper is invoked. As opposed to a helper, an attribute accepts no parameter. This means that, for a given execution context (an input model element or the ATL module), an attribute will always return the same value. The ATL engine therefore computes the return value of an attribute only once, either when this attribute is invoked for the first time, or at the transformation/query initialization stage for those attributes that are declared in the context of the ATL module.</p>
+		<h3 id="Limitations">Limitations</h3>
+		<p>Current implementation suffers from three limitations in the domain of helpers/attributes. The first one deals with the definition of the signature of the helpers. Helpers are indeed identified through their signature which includes the helper name, its context and its parameters. However, current implementation only considers the subset composed of the helper name and the helper context of this signature: the helpers' parameters do not make it possible to discriminate helpers that have a same name and same context. This implies that all the helpers defined within a given context in an ATL program must have a distinct name. This restriction also concerns the helpers that are defined within a library which is imported in either a query or a module.</p>
+		<p>The second limitation concerns the definition of helpers in the context of a collection type. Such definitions are actually unsupported by the ATL engine. A simple solution to get round this problem is to move the collection element from context to parameters and to declare the helper in the context of the ATL module. Consider the definition of a helper that aims to select among a set of Person model elements those who are younger than a given age. This helper should be defined as:</p>
+		<pre>helper context Set(MMPerson!Person) def : getYoungPersons(age : Integer) :
+	Set(MMPerson!Person) =
+	self->select(p | p.age &lt; age);
+</pre>
+		<p>Taking into account the current ATL limitation, this helper can be defined as follows:</p>
+		<pre>helper def : getYoungPersons(s : Set(MMPerson!Person), age : Integer) :
+	Set(MMPerson!Person) =
+	s->select(p | p.age &lt; age);
+</pre>
+		<p>Note that this change has a very limited impact onto the body of the helper. The only difference is the self variable used in the previous version of the helper that has to be replaced by the name of the parameter that represents the collection (
+			<i>s</i>).
+			Finally, last limitation concerning helpers is related to the library unit. Current implementation does not support the definition of attributes within an ATL library. The developer should therefore substitute a parameter-less helper to each of the attributes of the developed libraries. As an example, in the scope of a library, the following attribute:
+		</p>
+		<pre>helper context String def : getFirstChar : String = self.substring(1, 1);
+</pre>
+		<p>must be replaced by its corresponding helper:</p>
+		<pre>helper context String def : getFirstChar() : String = self.substring(1, 1);
+</pre>
+		<h2 id="ATL_Rules">ATL Rules</h2>
+		<p>In the scope of the ATL language, the generation of target model elements is achieved through the specification of transformation rules. ATL defines two different kinds of transformation rules: the matched and the called rules. A matched rule enables to match some of the model elements of a source model, and to generate from them a number of distinct target model elements.</p>
+		<p>As opposed to matched rules, a called rule has to be invoked from an ATL imperative block in order to be executed. ATL imperative code can be defined within either the action block of matched rules, or the body of the called rules</p>
+		<h3 id="ATL_imperative_code">ATL imperative code</h3>
+		<p>ATL enables developers to specify imperative code within dedicated blocks, either in matched or called rules. An imperative block is composed of sequence of imperative statements. As in the Java C or C++ languages, each statement must be ended with a semicolon character (";").</p>
+		<p>The current ATL implementation provides three kinds of statements: the assignment statements, the "if" statements and the "for" statements. Note that, as opposed to the OCL expressions, these statements do not return any value. As a consequence, they can not be used in the scope of some ATL declarative code. The three different imperative statements are detailed in the following subsections.</p>
+		<h4 id="The_assignment_statement">The assignment statement</h4>
+		<p>The ATL assignment statement enables to assign values to either attributes that are defined in the context of the ATL module, or to target model element features. The syntax of the assignment statement conforms to the following scheme:</p>
+		<pre>target &lt;- exp;
+</pre>
+		<p>As specified, the 
+			<i>target</i> of the assignment is either a module attribute or an output model element feature. The assigned expression (exp) can be of any of the supported 
+			<a href="The-ATL-Language.html#OCL_Declarative_Expressions">ATL expressions</a>.
+		</p>
+		<p>Consider, as a first example, the following attribute definition which defines an integer counter in the context of the ATL module:</p>
+		<pre>helper def: counter : Integer = 0;
+</pre>
+		<p>The value of this 
+			<i>counter</i> attribute can be incremented in the scope of an imperative block using an assignment operation:
+		</p>
+		<pre>thisModule.counter &lt;- thisModule.counter + 1;
+</pre>
+		<p>The assignment statement can be used in the same way to assign values to model element features in the way. For instance, considering a Person model element 
+			<i>aPerson</i>, it is possible to write:
+		</p>
+		<pre>aPerson.father.age &lt;- aPerson.age + 25;
+</pre>
+		<p>It is possible to initialize the references of a newly generated target model element. The following assignment illustrates this with the assignment of another locally generated (e.g. in the same rule) model element (
+			<i>anotherPerson</i>):
+		</p>
+		<pre>aPerson.father &lt;- anotherPerson;
+</pre>
+		<p>In the same way, it is also possible to assign to a reference a model element that is generated by a different 
+			<i>matched rule</i>. As described 
+			<a href="The-ATL-Language.html#Simple_target_pattern_element">here</a>, in such a case, the assigned element is the corresponding source element. If this last does not correspond to a rule default target pattern element, it is required to use the operation 
+			<a href="The-ATL-Language.html#The_ATL_Module_data_type">resolveTemp()</a>. Note however that the operation resolveTemp shall be called only once the matching phase of the transformation has completed. This means that resolveTemp cannot be invoked neither from the entrypoint 
+			<a href="The-ATL-Language.html#Called_Rules">called rule</a>, nor from another called rule invoked from this entrypoint.
+		</p>
+		<h4 id="The_if_statement">The if statement</h4>
+		<p>The "if" statement enables to define alternative imperative treatments. "if" statements have to conform to the following syntax:</p>
+		<pre>if(condition) {
+	statements1
+}
+[else {
+	statements2
+}]?
+</pre>
+		<p>Each "if" statement defines a 
+			<i>condition</i>. This condition must be an OCL expression that returns a boolean value. An "if" statement must also include a "then" statements section. This section, specified between curved brackets, contains the sequence of statements (
+			<i>statements1</i>) that is executed when the conditional expression is evaluated to true. An "if" statement may also include an optional "else" statements section. When specified, this section has to follow the "then" statements section. It is introduced by the keyword 
+			<i>else</i>, and must also be defined between curved brackets. This section contains the optional sequence of statements (
+			<i>statements2</i>) that has to be executed when the conditional expression is evaluated to false.
+		</p>
+		<p>The following example illustrates the use of an "if" statement limited to a simple "then" section:</p>
+		<pre>if(aPerson.gender = #male) {
+	thisModule.menNb &lt;- thisModule.menNb + 1;
+	thisModule.men->including(aPerson);
+}
+</pre>
+		<p>Next example presents an "if" expression defining both a "then" and an "else" sections, with a nested "if" statement:</p>
+		<pre>if(aPerson.gender = #male) {
+	thisModule.fullName &lt;- 'Mr. ' + aPerson.name + ' ' + aPerson.surname;
+}
+else {
+	if(aPerson.isSingle) {
+		thisModule.fullName &lt;- 'Miss ' + aPerson.name;
+		thisModule.surname &lt;- aPerson.surname;
+	}
+	else {
+		thisModule.fullName &lt;- 'Mrs. ' + aPerson.name;
+		thisModule.surname &lt;- aPerson.marriedTo.surname;
+	}
+	thisModule.fullName &lt;- thisModule.fullName + ' ' + thisModule.surname;
+}
+</pre>
+		<p>Note that the curved brackets delimitating both the "then" and the "else" sections may be omitted when the corresponding sections contain a single statement, as in the following example:</p>
+		<pre>if(aPerson.gender = #male)
+	thisModule.men->including(aPerson);
+else
+	thisModule.women->including(aPerson);
+</pre>
+		<h4 id="The_for_statement">The for statement</h4>
+		<p>The "for" statement enables to define iterative imperative computations. A "for" statement has to conform to the following syntax:</p>
+		<pre>for(iterator in collection) {
+	statements
+}
+</pre>
+		<p>The "for" statement defines an iteration variable (iterator) that will iterate over the different elements of the reference 
+			<i>collection</i>. For each of these elements, the sequence of 
+			<i>statements</i> contained by the "for" statement will be executed.
+		</p>
+		<p>The following example, also related to the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Person_metamodel">MMPerson metamodel</a> illustrates the use of the "for" imperative statement:
+		</p>
+		<pre>for(p in MMPerson!Person.allInstances()) {
+	if(p.gender = #male)
+		thisModule.men->including(aPerson);
+	else
+		thisModule.women->including(aPerson);
+}
+</pre>
+		<h4 id="Current_limitations">Current limitations</h4>
+		<p>It is currently not possible to declare variables within ATL imperative blocks. The variables that can be used in the scope of these blocks are:</p>
+		<ul>
+			<li>The source and target model elements declared in the local matched rule;</li>
+			<li>The target model elements declared in the local called matched rule;</li>
+			<li>The variables locally declared (e.g. within the rule);</li>
+			<li>The attributes declared in the context of the ATL module.</li>
+		</ul>
+		<p>Note that the current implantation does not enable to modify the locally defined variables from an imperative assignment statement. This means that, beside the source and target model elements, the only variables that can be modified from an imperative block are the attributes that have been defined in the context of the ATL module. As a consequence, the modifiable variables that may be required in the scope of an imperative bock must, with the current implementation, be declared as ATL module attributes.</p>
+		<h3 id="Matched_Rules">Matched Rules</h3>
+		<p>The ATL matched rule mechanism provides ATL developers with a convenient mean to specify the way target model elements must be generated from source model elements. For this purpose, a matched rule enables to specify 1) which source model element must be matched, 2) the number and the type of the generated target model elements, and 3) the way these target model elements must be initialized from the matched source elements. The specification of a matched rule has to conform to the following syntax:</p>
+		<pre>rule rule_name {
+	from
+		in_var : in_type [(
+			condition
+		)]?
+	[using {
+		var1 : var_type1 = init_exp1;
+		...
+		varn : var_typen = init_expn;
+	}]?
+	to
+		out_var1 : out_type1 (
+			bindings1
+		),
+		out_var2 : distinct out_type2 foreach(e in collection)(
+			bindings2
+		),
+		...
+		out_varn : out_typen (
+			bindingsn
+		)
+	[do {
+		statements
+	}]?
+}
+</pre>
+		<p>Each matched rule is identified by its name (
+			<i>rule_name</i>). A matched rule name must be unique within an ATL transformation. An ATL matched rule is composed of two mandatory (the 
+			<i>from</i> and the 
+			<i>to</i> parts) and two optional (the 
+			<i>using</i> and the 
+			<i>do</i> parts) sections. Note that the different variables that may be declared in the scope of a rule (the source and target pattern elements and the local variables) must have a unique name. This restriction does not apply to the OCL expressions contained by this rule. The different sections of an ATL matched rule are detailed in the following subsections.
+		</p>
+		<h4 id="Source_pattern">Source pattern</h4>
+		<p>The from section corresponds to the rule source pattern. This pattern, composed of a single source pattern element contains the source variable declaration (
+			<i>in_var</i>). This declaration specifies the type of the source model elements that will be matched by the rule (
+			<i>in_type</i>). It can moreover contain, between brackets, an optional boolean expression (
+			<i>condition</i>) that enable to target a subset of the transformation source model elements that conform to the source type. If the source pattern element includes no explicit condition, all the source model elements of the transformation that conform to the specified source type will be matched by the rule.
+			The following code excerpt illustrates the syntax of the 
+			<i>from</i> section:
+		</p>
+		<pre>from
+	p : MMPerson!Person (
+		p.name = 'Smith'
+	)
+</pre>
+		<p>Note that the following excerpt</p>
+		<pre>from
+	p : MMPerson!Person (
+		true
+	)
+</pre>
+		<p>is equivalent to:</p>
+		<pre>from
+	p : MMPerson!Person
+</pre>
+		<h4 id="Local_variables_section">Local variables section</h4>
+		<p>The optional 
+			<i>using</i> section makes it possible to locally declare a number of local variables. The variables declared in this section can be used in the 
+			<i>using</i> section itself (provided that the variable is not invoked before its declaration), as well as in the 
+			<i>to</i> and the 
+			<i>do</i> sections. Each declared variable is identified by its name (
+			<i>vari</i>) and its type (
+			<i>var_typei</i>), and must be initialized using an OCL expression.
+		</p>
+		<p>The following code excerpt illustrates the use of the using section:</p>
+		<pre>from
+	c : GeometricElement!Circle
+using {
+	pi : Real = 3.14;
+	area : Real = pi * c.radius.square();
+}
+</pre>
+		<h4 id="Simple_target_pattern_element">Simple target pattern element</h4>
+		<p>The 
+			<i>to</i> section corresponds to the target pattern of the rule. It contains a number of target pattern elements. This section is mandatory and must contain at least one target pattern element. When several target pattern elements are specified, they must be separated by comas (","). Note that the first target pattern element corresponds to the default pattern element of the rule. This means that the target model element associated with this rule's default target pattern can be viewed as the default counterpart of the source model element matched by the rule.
+		</p>
+		<p>In ATL, there exist two different kinds of target pattern elements: the simple and the iterative ones. Each target pattern element, whatever its type, corresponds to a variable declaration characterized by a name (
+			<i>out_vari</i>) and a type (
+			<i>out_typei</i>). A simple target pattern is specified as a set of bindings that define the way the features (either attributes or references) of the generated element must be initialized. Each binding has to conform to the following syntax:
+		</p>
+		<pre>feature_name &lt;- exp
+</pre>
+		<p>The name of the initialized feature (
+			<i>feature_name</i>) has to refer to a feature of the variable associated with the target pattern element, as defined in its metamodel. The specified expression (
+			<i>exp</i>) is an OCL expression. When a target pattern element contains more than one binding, the successive bindings have to be separated by comas. Note that it is not required to explicitly initialize all the features of a generated model element. The default value of the features that are not initialized by means of an explicit binding may change according to the model handler used to access the model element. As a consequence, ATL developers are strongly encouraged not to produce code that depends on these default values.
+		</p>
+		<p>As an example, it is possible to consider the following ATL rule, which is defined in the context of the Biblio metamodel defined on the 
+
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Biblio_metamodel">Biblio metamodel</a>:
+		</p>
+		<pre>rule Journal2Book {
+	from
+		j : Biblio!Journal
+	to
+		b : Biblio!Book (
+			title &lt;- j.title + '_(' + j.vol + '):' + j.num,
+			authors &lt;- j.articles
+					->collect(e | e.authors)->flatten()->asSet()
+			chapters &lt;- j.articles,
+			pagesNb &lt;- j.articles->collect(e | e.pagesNb)->sum()
+		)
+}
+</pre>
+		<p>This rule aims to produce a Book model element from a Journal model element. It initializes the 
+			<i>title</i>, 
+			<i>authors</i>, 
+			<i>chapters</i> and 
+			<i>pagesNb</i> features of the generated Book:
+		</p>
+		<ul>
+			<li>the title of the Book corresponds to the title of the journal concatenated with its volume (vol) and its number (num);</li>
+			<li>the chapters of the Book correspond to the model elements that will be generated for the articles of the source Journal;</li>
+			<li>the authors of the Book correspond to the authors of the different articles of the source Journal, without any duplicate;</li>
+			<li>the attribute pagesNb is initialized with the sum of the number of pages (pagesNb) of the articles of the source Journal.</li>
+		</ul>
+		<p>This example has illustrated the initialization of the attributes of a generated target model element. As previously stated, the bindings also enable to initialize reference features. Three main cases therefore have to be considered:</p>
+		<ul>
+			<li>assigning to a reference a target model element generated by the current rule;</li>
+			<li>assigning to a reference the default target model element of another rule;</li>
+			<li>assigning to a reference a non-default target model element of another rule.</li>
+		</ul>
+		<p>The first case (assigning a model element produced by the same rule) is also the simplest one: the considered reference can be initialized with the name of the other target pattern element. Consider the following example in which the rule 
+			<i>Case1</i> has two target pattern model elements (
+			<i>o_1</i> and 
+			<i>o_2</i>), with 
+			<i>o_1</i> having a reference to a Class2 model element defined (
+			<i>linkToClass2</i>):
+		</p>
+		<pre>rule Case1 {
+	from
+		i : MM_A!ClassA
+	to
+		o_1 : MM_B!Class1 (
+			linkToClass2 &lt;- o_2
+		),
+		o_2 : MM_B!Class2 (
+			...
+		)
+}
+</pre>
+		<p>The reference feature is here simply initialized with the local target pattern element that corresponds to the target model element.</p>
+		<p>In the second case (assigning the default target element of another rule), the considered reference has to be initialized with the source model element which is matched by the remote rule for generating the target model element to be assigned. In the following example, the rule 
+			<i>Case2_R1</i> aims to generate a target model element (
+			<i>o_1</i>) that has a reference to a target model element that corresponds to the default target pattern (
+			<i>o_1</i>) of the rule 
+			<i>Case2_R2</i>. Assuming that the source model element matched by 
+			<i>Case2_R1</i> has a reference (
+			<i>linkToClassB</i>) to the relevant 
+			<i>MM_A!ClassB</i> source model element, this assignment is expressed as follows:
+		</p>
+		<pre>rule Case2_R1 {
+	from
+		i : MM_A!ClassA
+	to
+		o_1 : MM_B!Class1 (
+			linkToClass2 &lt;- i.linkToClassB
+		)
+}
+</pre>
+		<pre>rule Case2_R2 {
+ 	from
+		i : MM_A!ClassB
+	to
+		o_1 : MM_B!Class2 (
+			...
+		),
+		...
+}
+</pre>
+		<p>The reference is here initialized with the source model element that is matched by rule 
+			<i>Case2_R2</i> when generating the target model element 
+			<i>MM_B!Class2</i>.
+		</p>
+		<p>It may also happen that a developer wants to initialize a reference with a non-default target pattern element of a remote rule. This last case requires the use of the 
+			<a href="The-ATL-Language.html#The_ATL_Module_data_type">resolveTemp()</a> operation defined in the context of the ATL module. This operation makes it possible to access the target model elements that are associated with the non-default target pattern elements of a remote rule. It accepts two parameters: the source model element which is matched by the remote rule for generating the target model element to be assigned, and the name of the target pattern element it is associated with. This is illustrated with the following example, which is similar to the previous one, except that the target model element to be assigned is not generated by the default target pattern of rule 
+			<i>Case3_R2</i>.
+		</p>
+		<pre>rule Case3_R1 {
+	from
+		i : MM_A!ClassA
+	to
+		o_1 : MM_B!Class1 (
+			linkToClass2 &lt;- thisModule.resolveTemp(i.linkToClassB, 'o_n')
+		)
+}
+</pre>
+		<pre>rule Case3_R2 {
+	from
+		in : MM_A!ClassB
+	to
+		o_1 : MM_B!Class3 (
+			...
+		),
+		...
+		o_n : MM_B!Class2 (
+			...
+		),
+		...
+}
+</pre>
+		<p>Compared to the previous case, the reference is here initialized by invoking the operation 
+			<i>resolveTemp()</i> with the source model element (
+			<i>i.linkToClassB</i>, the same that in the previous example) and the name of the target pattern ("
+			<i>o_n</i>") as arguments.
+		</p>
+		<h4 id="Iterative_target_pattern_element">Iterative target pattern element</h4>
+		<p>As opposed to the simple target pattern element, which allows generating a single target model element, the iterative target pattern element makes it possible to generate a set of target model elements conforming to a same type. An iterative target pattern element is introduced by the keyword 
+			<i>distinct</i>. It produces a target model element for each element belonging to a given reference ordered collection (either a Sequence or an OrderedSet). This collection, along with its associated iterator (e), is introduced by the keyword 
+			<i>foreach</i>. As for a simple target pattern element, an iterative target pattern element defines a number of bindings. These bindings specify the way the features of the target model elements generated by this target pattern element will be initialized.
+		</p>
+		<p>The following example aims to generate a number of distinct Cell model elements equal to the size of a collection:</p>
+		<pre>using {
+	coll : Sequence(String) = Sequence{'a', 'b', 'c'};
+}
+to
+	cells : distinct Table!Cell foreach(e in coll)(
+		content &lt;- e,
+		id &lt;- coll->indexOf(e)
+	)
+</pre>
+		<p>Note that the collection operation 
+			<i>indexOf</i> can be used here to compute a unique column 
+			<i>id</i> because the reference collection (
+			<i>coll</i>) does not contain multiple instances of a same element in the collection. Otherwise, the 
+			<i>id</i> of the multiple instances of a same element would all have been initialized with the index of the first instance of this element.
+		</p>
+		<p>Since the reference collection is defined, in this example, as a constant, both its size and its content are known. It is thus possible, instead of using a single iterative target pattern element, to define as many simple target pattern elements as the number of elements in the collection. However, the use of an iterative out pattern element will be required when working with a collection which is a priori unknown (for instance, a collection that comes from a source model).</p>
+		<p>Attention must be paid when assigning a collection to a target model element feature in the scope of an iterative target pattern element. Indeed, when executing an iterative target pattern element, the ATL engine iterates over the reference collection, but also, in the same time, over the collection expressions that are assigned to features within this pattern element. During the iteration over the reference collection, the current element of a collection expression is assigned to its targeted feature. This has two main consequences:</p>
+		<ul>
+			<li>the assigned collections must have the same size that the reference collection of the target pattern element;</li>
+			<li>assigning a collection to a feature in the scope of an iterative target pattern element requires to build a collection of collections.</li>
+		</ul>
+		<p>The following example illustrates the way to assign a collection to feature in the scope of an iterative out pattern element:</p>
+		<pre>using {
+	coll : Sequence(String) = Sequence{'a', 'b', 'c'};
+}
+to
+	lines : distinct Table!Line foreach(e in coll)(
+		id &lt;- coll->indexOf(e),
+		cell_titles &lt;-
+			Sequence{
+				Set{'PlayerA_Score1', 'PlayerB_Score1'},
+				Set{'PlayerA_Score2', 'PlayerB_Score2'},
+				Set{'PlayerA_Total', 'PlayerB_ Total', 'Total'}
+			}
+	)
+</pre>
+		<p>This example is quite similar to the previous one. Instead of generating some Cell model elements, it generates a Line model element for each element of a reference collection (
+			<i>coll</i>). Each line is associated with a unique 
+			<i>id</i>, which is computed in the same way it was in the previous example. The difference is here that each line is also characterized by a sequence of strings that encode the title of the different cells of the line.
+		</p>
+		<p>In order to associate each generated Line model element with its own set of cell titles, the property 
+			<i>cell_titles</i> is initialized with a sequence containing as many elements as the reference collection. Each generated line will be associated with its corresponding element in this sequence (the one positioned at the same rank). Thus, the first generated line will be associated with the "PlayerA_Score1" and "PlayerB_Score1" cell titles whereas the third line will be associated with the "PlayerA_Total", "PlayerB_Total" and "Total" cell titles. Please note that:
+		</p>
+		<ul>
+			<li>the type of the assigned collections (here a set) can differ from the type of the collection in which assigned collections are grouped (here a sequence):
+				<ul>
+					<li>the type of the grouping collection must conform to the type of the reference collection when the defined order has to be respected;</li>
+					<li>the type of the assigned collection have to conform to the semantics of the model element being initialized;</li>
+				</ul>
+			</li>
+			<li>the assigned collections are not supposed to have the same size.</li>
+		</ul>
+		<p>Attention must also be paid when referring to the elements generated in the scope of an iterative target pattern. Thus, in the scope of a simple target pattern element, an iterative target pattern variable refers to the whole set of generated elements that are generated by the corresponding pattern element. It is also possible to invoke an iterative target pattern variable from another iterative target pattern element provided that: 1) both iterative target pattern elements belong to the same rule, and 2) both iterative target pattern elements iterate over the same ordered collection. In such a case, the variable refers to the target model element generated by the current iteration.</p>
+		<p>The following code excerpt illustrates the different ways to refer to elements produced by iterative target pattern elements:</p>
+		<pre>using {
+	coll : Sequence(String) = Sequence{'Score1', 'Score2', 'Total'};
+}
+to
+	tab : Table!Table (
+		lines &lt;- t_lines
+	),
+	t_lines : distinct Table!Line foreach(e in coll)(
+		id &lt;- coll->indexOf(e),
+		caption &lt;- line_captions
+	),
+	line_captions : distinct Table!Caption foreach(e in coll)(
+		content &lt;- e
+	)
+</pre>
+		<p>This new example is inspired from the previous ones. The objective is here to create a Table model element, itself composed of Line model elements. Each Line has to be associated with its own Caption model element. In the scope of the simple target pattern element 
+			<i>tab</i>, the variable 
+			<i>t_lines</i> refers to the whole sequence of generated Line model elements.
+		</p>
+		<p>Since both iterative target pattern elements iterate over the same reference collection, the variable 
+			<i>line_captions</i> used in the 
+			<i>t_lines</i> target pattern element refers to a single of the Caption model elements generated by the 
+			<i>line_captions</i> target pattern element. Since the used reference collection is ordered, the 
+			<i>line_captions</i> variable will refer to the Caption generated from the same element of the reference collection.
+		</p>
+		<h4 id="Imperative_block_section">Imperative block section</h4>
+		<p>The last section of an ATL matched rule is the optional 
+			<i>do</i> section. This section enables to specify a sequence of ATL imperative 
+			<i>statements</i> that will be executed once the initialization of the target model elements generated by the rule has completed. This imperative block can in particular be used to initialize some model element features that have not been initialized using the declarative bindings, or to modify some already initialized features.
+		</p>
+		<p>The imperative block provides a convenient way to simply assign a unique id to each of the generated model elements. The following example, related to the 
+
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Biblio_metamodel">Biblio metamodel</a>, illustrates this point:
+		</p>
+		<pre>helper def : id : Integer = 0;
+...
+rule Journal2Book {
+	from
+		j : Biblio!Journal
+	to
+		b : Biblio!Book (
+			...
+		)
+	do {
+		thisModule.id &lt;- thisModule.id + 1;
+		b.id &lt;- thisModule.id;
+	}
+}
+</pre>
+		<p>In this example, a global id variable is defined in the context of the ATL module, and initialized to zero. In order to associate each generated model element with a unique id, the imperative block of the matched rule simply increments the value of the id global variable and assigned this new value to the 
+			<i>id</i> property of the generated model element.
+		</p>
+		<h3 id="Lazy_Rules">Lazy Rules</h3>
+		<p>
+			<i>TODO: write lazy rules documentation</i>
+		</p>
+		<p>
+			<b>How to call lazy rules:</b>
+		</p>
+		<p>Let a simple lazy rule: </p>
+		<pre> lazy rule getCross {
+   from
+     i: ecore!EObject
+   to 
+     rel: metamodel!Relationship (
+     )
+ }
+</pre>
+		<p>We can call it from a matched rule as follows:</p>
+		<pre> rule Example {
+   from 
+     s : ecore!EObject
+   to 
+     t : metamodel!Node (
+       name &lt;- s.toString(),
+       edges &lt;- thisModule.getCross(s)
+ }
+</pre>
+		<p>If we want to call lazy rule multiple times:</p>
+		<pre> rule Example {
+   from 
+     s : ecore!EObject
+   to 
+     t : metamodel!Node (
+       name &lt;- s.toString(),
+       edges &lt;- ecore!EClass.allInstancesFrom('yourmodel')->collect(e | thisModule.getCross(e))
+  }
+</pre>
+		<h4 id="Unique_Lazy_Rules">Unique Lazy Rules</h4>
+		<p>Declaring a lazy rule as 
+			<i>unique</i>, with the following syntax:
+		</p>
+		<pre>unique lazy rule Example{
+     ...
+}
+</pre>
+		<p>give it the following behavior:</p>
+		<p>When a unique lazy rule is executed, it always returns the same target element for a given source element. The target element is retrieved by navigating the internal traceability links, in a way similar to standard rules.</p>
+		<p>Non-unique lazy rule do not navigate the traceability links, and create new target elements at each execution.</p>
+		<h3 id="Called_Rules">Called Rules</h3>
+		<p>Besides matched rules, ATL defines an additional kind of rules enabling to explicitly generate target model elements from imperative code. Except for the entrypoint called rule, this kind of rules must be explicitly called from an ATL imperative block. The specification of a called rule has to conform to the following syntax:</p>
+		<pre>[entrypoint]? rule rule_name''(''parameters''){
+	[using {
+		var1 : var_type1 = init_exp1;
+		...
+		varn : var_typen = init_expn;
+	}]?
+	[to
+		out_var1 : out_type1 (
+			bindings1
+		),
+		out_var2 : distinct out_type2 foreach(e in collection)(
+			bindings2
+		),
+		...
+		out_varn : out_typen (
+			bindingsn
+		)]?
+	[do {
+		statements
+	}]?
+}
+</pre>
+		<p>A called rule is identified by its name (
+			<i>rule_name</i>). A called rule name has to be unique within an ATL transformation, and must not collide with a helper name. Moreover, a called rule cannot be called "main". A called rule can optionally be declared as the transformation 
+			<i>entrypoint</i>. An ATL transformation can include one entrypoint called rule. Compared to the other called rules, the entrypoint called rule does not need to be explicitly called: it is implicitly invoked at the beginning of the transformation execution, once the 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Default_mode_execution_semantics">module initialization phase</a> has completed.
+		</p>
+		<p>A called rule can accept parameters. They have to be specified in the same way they are for 
+			<a href="The-ATL-Language.html#Helpers_2">helpers</a>. It is composed of three optional sections: the 
+			<i>using</i>, the 
+			<i>to</i> and the 
+			<i>do</i> sections. Compared to a matched rule, a called rule has no 
+			<i>from</i> section, and its 
+			<i>to</i> section is optional. Note however that the semantics of the available sections are similar to those defined for matched rules:
+		</p>
+		<ul>
+			<li>the 
+				<i>using</i> section makes it possible to declare and initialize local variables. A declared variable is visible from the remaining of the using section as well as from the 
+				<i>to</i> and the 
+				<i>do</i> ones;
+			</li>
+			<li>the 
+				<i>to</i> section corresponds to the target pattern of the called rule. It contains a number of target pattern elements (either simple or iterative target pattern elements). As opposed to a matched rule, there is here no source matched model element whose features may be used in order to initialize the features of the target model elements;
+			</li>
+			<li>the 
+				<i>do</i> section enables to specify an imperative instruction block. If a 
+				<i>to</i> section is specified, the imperative block is executed once the computation of the target pattern has completed.
+			</li>
+		</ul>
+		<p>The following code excerpt, provides a called rule example:</p>
+		<pre>helper def: metamodel : KM3!Metamodel = OclUndefined;
+...
+entrypoint rule Metamodel() {
+	to
+		t : KM3!Metamodel
+	do {
+		thisModule.metamodel &lt;- t;
+	}
+}
+</pre>
+		<p>This called rule is defined as the transformation entry point. This means that it is executed between the initialization and the matching phases. It generates a Metamodel model element. The code specified within the imperative block makes a variable (metamodel) defined in the context of the ATL module pointing to this model element. By this mean, the generated Metamodel remains accessible for further computation during the transformation.</p>
+		<h3 id="Rule_inheritance">Rule inheritance</h3>
+		<p>There is two keywords introduced by rules inheritance: abstract and extends. They can be used like this:</p>
+		<pre> abstract rule A {
+   from [fromA]
+   using [usingA]
+   to [toA]
+   do [doA]
+ }
+ rule B extends A {
+   from [fromB]
+   using [usingB]
+   to [toB]
+   do [doB]
+ }
+ rule C extends B {
+   from [fromC]
+   using [usingC]
+   to [toC]
+   do [doC]
+ }
+</pre>
+		<p>When ATL compiles this transformation, it is the same as if you gave this as input:</p>
+		<pre> rule B {
+   from [fromB]
+   using [usingB]
+   to [toA.bindings union toB.bindings]
+   do [doB]
+ }
+ rule C {
+   from [fromC]
+   using [usingC]
+   to [toA.bindings union toB.bindings union toC.bindings]
+   do [doC]
+ }
+</pre>
+		<p>However, there are some limitations and constraints. First, the compiler does not support multiple inheritances and it is not planned to be implemented. Constraints are the following:</p>
+		<ul>
+			<li>sub rules (e.g. B or C) input pattern (i.e. the from part) has to match a subset of its super rule. For instance, if you match particular class in a super rule, you have to have a more restrictive filter or match a sub class.</li>
+			<li>input pattern variables names have to be the same in super and sub rules.</li>
+			<li>output pattern variables names have to be the same in super and sub rules for output pattern you want the union.</li>
+		</ul>
+		<p>Here is a complete example to illustrate. It is a KM3-copier,  i.e. every model element from the source model is copied as-is to the target model:</p>
+		<pre> module Copy;
+ create OUT : MM from IN : MM;
+</pre>
+		<pre> rule CopyDataType extends CopyClassifier {
+   from
+     s : MM!DataType
+   to
+     t : MM!DataType
+ }
+</pre>
+		<pre> rule CopyEnumeration extends CopyClassifier {
+   from
+     s : MM!Enumeration
+   to
+     t : MM!Enumeration (
+       literals &lt;- s.literals
+     )
+ }
+</pre>
+		<pre> rule CopyParameter extends CopyTypedElement {
+   from
+     s : MM!Parameter
+   to
+     t : MM!Parameter
+ }
+</pre>
+		<pre> rule CopyReference extends CopyStructuralFeature {
+   from
+     s : MM!Reference
+   to
+     t : MM!Reference (
+       isContainer &lt;- s.isContainer,
+       opposite &lt;- s.opposite
+     )
+ }
+</pre>
+		<pre> rule CopyTypedElement extends CopyModelElement {
+   from
+     s : MM!TypedElement
+   to
+     t : MM!TypedElement (
+       lower &lt;- s.lower,
+       upper &lt;- s.upper,
+       isOrdered &lt;- s.isOrdered,
+       isUnique &lt;- s.isUnique,
+       type &lt;- s.type
+     )
+ }
+</pre>
+		<pre> rule CopyOperation extends CopyTypedElement {
+   from
+     s : MM!Operation
+   to
+     t : MM!Operation (
+       parameters &lt;- s.parameters
+     )
+ }
+</pre>
+		<pre> rule CopyAttribute extends CopyStructuralFeature {
+   from
+     s : MM!Attribute
+   to
+     t : MM!Attribute
+ }
+</pre>
+		<pre> rule CopyEnumLiteral extends CopyModelElement {
+   from
+     s : MM!EnumLiteral
+   to
+     t : MM!EnumLiteral
+ }
+</pre>
+		<pre> rule CopyPackage extends CopyModelElement {
+   from
+     s : MM!Package
+   to
+     t : MM!Package (
+       contents &lt;- s.contents
+     )
+ }
+</pre>
+		<pre> rule CopyClass extends CopyClassifier {
+   from
+     s : MM!Class
+   to
+     t : MM!Class (
+       isAbstract &lt;- s.isAbstract,
+       supertypes &lt;- s.supertypes,
+       structuralFeatures &lt;- s.structuralFeatures,
+       operations &lt;- s.operations
+     )
+ }
+</pre>
+		<pre> rule CopyClassifier extends CopyModelElement {
+   from
+     s : MM!Classifier
+   to
+     t : MM!Classifier
+ }
+</pre>
+		<pre> abstract rule CopyModelElement extends CopyLocatedElement {
+   from
+     s : MM!ModelElement
+   to
+     t : MM!ModelElement (
+       name &lt;- s.name
+     )
+ }
+</pre>
+		<pre> rule CopyMetamodel extends CopyLocatedElement {
+   from
+     s : MM!Metamodel
+   to
+     t : MM!Metamodel (
+       contents &lt;- s.contents
+     )
+ }
+</pre>
+		<pre> abstract rule CopyLocatedElement {
+   from
+     s : MM!LocatedElement
+   to
+     t : MM!LocatedElement (
+       location &lt;- s.location
+     )
+ }
+</pre>
+		<pre> rule CopyStructuralFeature extends CopyTypedElement {
+   from
+     s : MM!StructuralFeature
+   to
+     t : MM!StructuralFeature (
+       subsetOf &lt;- s.subsetOf,
+       derivedFrom &lt;- s.derivedFrom
+     )
+ }
+</pre>
+		<h3 id="Rules_usage">Rules usage</h3>
+		<p>Here are three types of declarative rules:</p>
+		<ul>
+			<li>
+				<b>Matched rules</b> are applied once for each match. A given set of elements may only be matched by one standard rule,
+			</li>
+			<li>
+				<b>Lazy rules</b> are applied as many times for each match as it is referred to from other rules (possibly never for some matches).
+			</li>
+			<li>
+				<b>Unique lazy rules</b> are applied at most once for each match, and only if it is referred to from other rules.
+			</li>
+		</ul>
+		<p>The following table summarizes their differences with respect to the number of time they are applied.</p>
+		<table border="1">
+			<tr>
+				<th>Kind of rule</th>
+				<th>Number of references to source pattern</th>
+				<th>Number of times the target pattern gets created</th>
+				<th>Kind of traceability link created</th>
+			</tr>
+			<tr>
+				<td>standard</td>
+				<td>0</td>
+				<td>1</td>
+				<td>default or not (using keyword nodefault)</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>n > 1</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>lazy</td>
+				<td>0</td>
+				<td>0</td>
+				<td>Not default</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>n > 1</td>
+				<td>n</td>
+			</tr>
+			<tr>
+				<td>unique lazy</td>
+				<td>0</td>
+				<td>0</td>
+				<td>Not default</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>n > 1</td>
+				<td>1</td>
+			</tr>
+		</table>
+		<p>In addition, imperative rules may also be used.</p>
+		<p>Here are a few guidelines about which rules and constructs to use.
+			They may be summarized as: "Make your transformation as complex as necessary but 
+			<b>as simple as possible</b>".
+		</p>
+		<ul>
+			<li>Prefer declarative over imperative: only use imperative constructs for the part of a transformation that needs it if it even does.</li>
+			<li>Prefer simpler constructs over more complex ones:
+				<ul>
+					<li>Use standard rules when possible, otherwise use unique lazy rules, and use lazy rules only if necessary.</li>
+					<li>Only use resolveTemp if necessary.</li>
+					<li>Prefer iterators (e.g.,  select, collect) over iterate.</li>
+				</ul>
+			</li>
+		</ul>
+		<h2 id="ATL_Queries">ATL Queries</h2>
+		<p>Besides module units, ATL enables developers to define queries on model. A query unit accepts a number of source models and produces a single return value of any supported primitive data type. A query unit is composed a single query element along with a number of helpers and attributes that may be defined in the context of either the ATL module or any model element defined within the query source models. Note that an ATL query unit must start with the declaration of its query element. The specification of this query element has to conform to the following syntax:</p>
+		<pre>query ''query_name'' = ''exp'';
+</pre>
+		<p>There is no constraint on the naming of the query element. However, it is advised to give the query element the same name that the file in which it is defined.</p>
+		<p>The body of the query element (
+			<i>exp</i>) is an OCL expression of any of the supported primitive data types: string, boolean, integer or real. Helpers and attributes defined in the query file (as well as those that belong to imported ATL libraries) can be called in the scope of the body of the query element.
+		</p>
+		<p>When using the ATL Integrated Development Environment (IDE), developers may be interesting in writing the result of an executed query into a file. This could be easily achieved by producing a string value (other primitive data types will have to be cast into strings) on which the operation 
+			<a href="The-ATL-Language.html#String_data_type_operations">''writeTo()''</a> can be called. As an example, it is possible to consider the following query:
+		</p>
+		<pre>query PersonNb =
+	MMPerson!Person.allInstances()->size().toString().writeTo('result.txt');
+</pre>
+		<p>This query is executed on a MMPerson model containing a number of Person entities. The query first gets the set of all existing Person classes in the model and gets the size of the computed set. In order to write this value in a file, the computed integer value is cast into a string (operation 
+			<i>toString()</i>) before being written into the file "result.txt". Note that, although the result is written into a file, the query still returns the computed string.
+		</p>
+		<h2 id="ATL_Keywords">ATL Keywords</h2>
+		<p>This section provides the list of the ATL reserved keywords. These keywords cannot be used to name variables in any context of an ATL unit (either a module, a query or a library). It is possible to distinguish three kinds of keywords: the constant keywords, the language keywords and the type keywords:</p>
+		<ul>
+			<li>Constant keywords: true, false;</li>
+			<li>Type keywords: Bag, Set, OrderedSet, Sequence, Tuple, Integer, Real, Boolean, String, TupleType;</li>
+			<li>Language keywords: not, and, or, xor, implies, module, create, from, uses, helper, def, context, rule, using, derived, to, mapsTo, distinct, foreach, in, do, if, then, else, endif, let, library, query, for, div, refining, entrypoint.</li>
+		</ul>
+		<p>Note that the use of the string "main", which does not belong to the set of language keywords, is restricted. "main" cannot be used to identify (e.g. to name) neither a called rule, nor a helper or an attribute that is defined in the context of the ATL module.</p>
+		<h2 id="ATL_Tips_.26_Tricks">ATL Tips &amp; Tricks</h2>
+		<p>This section aims to highlight some common problems and errors that may be experienced while starting programming with ATL.</p>
+		<p>In ATL, an element of the input model should not be matched more than once. At present time, this constraint is not verified at compile time, and this kind of errors can lead to unexpected results. A typical case of multiple matching of an input model element appears with the definition, in the input metamodel, of an inheritance link in which the parent entity is not abstract. Here is a simple example of this kind of situation:</p>
+		<p>
+			<img border="0" src="images/Simple_inheritance.png"/>
+		</p>
+		<p>The multiple matching problem appears here when trying to respectively match A and B elements by means of two distinct rules (
+			<i>ruleA</i> and 
+			<i>ruleB</i>). With an intuitive source pattern such as a : MM!A, 
+			<i>ruleA</i> will match purely A elements as well as B elements. Since these last ones are also matched by 
+			<i>ruleB</i>, this raises a multiple matching problem. 
+		</p>
+		<p>To solve the problem, the developer has to ensure that 
+			<i>ruleA</i> only matches purely A elements. This is achieved by filtering, in the source pattern of 
+			<i>ruleA</i>, the type of the elements to be matched by the rule:
+		</p>
+		<pre>rule ruleA {
+	from
+		a : MM!A (
+			a.oclIsTypeOf(MM!A)
+		)
+	...
+</pre>
+		<p>The OCL function 
+			<i>oclIsTypeOf</i> here tests whether the input model element is an instance of the metamodel element passed as parameter.
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Overview-of-the-Atlas-Transformation-Language.html" title="Overview of the Atlas Transformation Language">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="ATL User Guide.html" title="ATL User Guide">
+						<img alt="ATL User Guide" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="The-ATL-Tools.html" title="The ATL Tools">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Overview of the Atlas Transformation Language</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">The ATL Tools</td>
+			</tr>
+		</table>
+	</body>
+</html>

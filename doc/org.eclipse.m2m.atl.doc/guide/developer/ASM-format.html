@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>ATL Developer Guide - ASM format</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">ASM format</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="ATL-VM.html" title="ATL VM">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">ATL VM</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="ASM_format">ASM format</h1>
+		<h2 id="Description_2">Description</h2>
+		<p>ASM language is a kind of assembly language, adapted to model handling. The low level of ASM allows  modularity facilities, with the intent to provide easier model management possibilities.
+			The current file format for ASM is XML. Thus it allows not to care about any syntax and to only focus on bytecode.
+			An ASM file only contains names and string constants. No Ecore reference is present. Those are resolved by launch configurations and AMMA Megamodel, with a name binding.</p>
+		<h2 id="Serialization">Serialization</h2>
+		<p>ASM transformations are serialized in a way to increase performance and preempt further serializations like binary files.
+			The ASMXMLWriter class is an ASM extractor used to save ASM into a file. Serialization computes the constant pool, which factorizes constants, values and method calls by generating an ordered constants list at the top of the ASM file.
+			ASMWriter is the parent abstract class which allows a binary implementation of ASM injection and extraction.</p>
+		<h2 id="Instructions">Instructions</h2>
+		<p>All instructions are explained into ATL VM specification. Here are details about some of them:</p>
+		<ul>
+			<li>The getasm instruction retrieves the ATL Context Module, i.e. The "thisModule" equivalent for ATL.</li>
+			<li>N symbolizes a native type, ATL specific</li>
+			<li>TransientLink are traceability links</li>
+			<li>all functions like "getLinkBySourceElement" are implemented in the nativelib</li>
+			<li>Object creation :
+				<ul>
+					<li>The "new" instruction takes two parameters : the metamodel name and the classifier type. Then it creates an element of this type in the output model (only one is allowed). The parameters are not available in the bytecode because they are pushed on the stack before calling instruction.</li>
+					<li>We can notice that ATL allows only one output model, but the ATL VM could be extended two allow many others.</li>
+					<li>A delete instruction could be implemented in the ATL VM</li>
+					<li>ATL provides the newInstance method which is directly mapped to the Model Handler method. This method doesn't generates a new because the call is dynamic. The main advantage is that the newInstance is directly applied to the class and do not use the ATL VM stack for that (otherwise it should store the class element).</li>
+				</ul>
+			</li>
+		</ul><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="ATL-VM.html" title="ATL VM">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="ATL Developer Guide.html" title="ATL Developer Guide">
+						<img alt="ATL Developer Guide" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">ATL VM</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>

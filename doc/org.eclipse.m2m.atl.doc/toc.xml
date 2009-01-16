@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="ATL Developer Guide">
+<toc label="ATL Guide">
+   <topic href="guide/concepts/ATL Concepts.html" label="Concepts">
+      <link toc="guide/concepts/ATL Concepts-toc.xml"/>
+   </topic>
+   <topic href="guide/user/ATL User Guide.html" label="User Guide">
+      <link toc="guide/user/ATL User Guide-toc.xml"/>
+   </topic>
+     <topic href="guide/developer/ATL Developer Guide.html" label="Developer Guide">
+      <link toc="guide/developer/ATL Developer Guide-toc.xml"/>
+   </topic>
+     <topic label="Reference">
+        <link toc="topics_Reference.xml"/>
+     </topic>
 	<topic label="Online Docs">		
-		<topic label="ATL documentation" href="http://www.eclipse.org/m2m/atl/doc/" />
+		<topic label="ATL pdf documentation" href="http://www.eclipse.org/m2m/atl/doc/" />
 		<topic label="ATL wiki" href="http://wiki.eclipse.org/index.php/ATL" />
 		<topic label="ATL basic examples" href="http://www.eclipse.org/m2m/atl/basicExamples_Patterns/" />
 		<topic label="ATL use cases" href="http://www.eclipse.org/m2m/atl/usecases/" />
 		<topic label="ATL transformation zoo" href="http://www.eclipse.org/m2m/atl/atlTransformations/" />
 	</topic>
-	<topic label="Reference">
-	    <link toc="topics_Reference.xml"/>
-	</topic>
+ <anchor id="additions"/>
 </toc>
