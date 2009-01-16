@@ -8,7 +8,7 @@
 	<property name="plugin" value="org.eclipse.m2m.atl" />
 	<property name="docPlugin" value="org.eclipse.m2m.atl.doc" />
 
-	<property name="filesToInclude" value="META-INF/**,about.html,about.ini,about.mappings,about.properties,modeling*.png,plugin.xml,plugin.properties,doc.zip,*.xml,index/**" />
+	<property name="filesToInclude" value="META-INF/**,about.html,about.ini,about.mappings,about.properties,modeling*.png,plugin.xml,plugin.properties,doc.zip,*.xml,index/**,guide/**/*toc.xml" />
 	<property name="filesToExclude" value="**/*.dnx" />
 
 	<!-- Compiler settings. -->
@@ -72,14 +72,14 @@
 		<antcall target="build.index"/>
 		-->
 
-		<!-- Zip up all of the documentation artifacts - references(including javadoc), images, tutorials, etc. 
+		<!-- Zip up all of the documentation artifacts - references(including javadoc), images, tutorials, etc. --> 
 		<zip destfile="doc.zip" compress="true">
 			<zipfileset dir="references" prefix="references" excludes="**/impl,**/impl/**" />
 			<zipfileset dir="images" prefix="images" />
 			<zipfileset dir="tutorials" prefix="tutorials" />
 			<zipfileset dir="guide" prefix="guide" />
 		</zip>
-		-->
+		
 	</target>
 
 	<target name="build.index" depends="init" description="Builds search index for the plug-in" if="eclipse.running">

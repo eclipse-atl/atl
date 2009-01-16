@@ -34,10 +34,8 @@
 <!-- Define Javadoc locations                                                      -->
 <!-- ============================================================================= -->
    <extension point="org.eclipse.pde.core.javadoc">
-       <javadoc path="references/javadoc" archive="false">
-          <plugin id="org.eclipse.m2m.atl.engine"/>
-          <plugin id="org.eclipse.m2m.atl.engine.vm"/>
-          <plugin id="org.eclipse.m2m.atl.engine.emfvm"/>
+       <javadoc path="doc.zip!/references/javadoc" archive="true">
+       		<plugin id="org.eclipse.m2m.atl.common"/>
        </javadoc>
    </extension>
 
