@@ -23,7 +23,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
@@ -33,7 +37,7 @@ import org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter;
 import org.eclipse.m2m.atl.engine.emfvm.adapter.UML2ModelAdapter;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ASMModule;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
-import org.eclipse.m2m.atl.engine.emfvm.lib.Extension;
+import org.eclipse.m2m.atl.engine.emfvm.lib.LibExtension;
 
 /**
  * The ASM Class, which manages an ASM program.
@@ -127,7 +131,6 @@ public class ASM {
 	 *            the progress monitor
 	 * @return the execution result
 	 */
-	@SuppressWarnings("unchecked")
 	public Object run(Map<String, IModel> models, Map<String, ASM> libraries, List<ASM> superimpose,
 			Map<String, Object> options, IProgressMonitor monitor) {
 		Object ret = null;
@@ -153,51 +156,8 @@ public class ASM {
 			execEnv.setStep(true);
 		}
 
-		String ext = (String)options.get("extensions"); //$NON-NLS-1$
-		if (ext != null) {
-			ClassLoader cl = getClass().getClassLoader();
-
-			String extraClasspath = (String)options.get("extraClasspath"); //$NON-NLS-1$
-			if (extraClasspath != null) {
-				String[] paths = extraClasspath.split(","); //$NON-NLS-1$
-				URL[] urls = new URL[paths.length];
-				String userDir = (String)options.get("user.dir"); //$NON-NLS-1$
-				if (userDir == null) {
-					userDir = System.getProperty("user.dir"); //$NON-NLS-1$
-				}
-				for (int i = 0; i < paths.length; i++) {
-					try {
-						urls[i] = new File(userDir, paths[i]).toURI().toURL();
-					} catch (MalformedURLException e) {
-						throw new VMException(null, Messages.getString(
-								"ASM.LOADINGERROR", new Object[] {paths[i]}), e); //$NON-NLS-1$
-					}
-				}
-				cl = new URLClassLoader(urls, cl);
-			}
-
-			String[] extensions = ext.split(","); //$NON-NLS-1$
-			for (int i = 0; i < extensions.length; i++) {
-				try {
-					Extension extension = (Extension)cl.loadClass(extensions[i]).newInstance();
-					extension.apply(execEnv, options);
-				} catch (ClassNotFoundException e) {
-					throw new VMException(null, Messages.getString(
-							"ASM.EXTLOADINGERROR", new Object[] {extensions[i]}), e); //$NON-NLS-1$
-				} catch (InstantiationException e) {
-					throw new VMException(null, Messages.getString(
-							"ASM.EXTINSTANTIATEERROR", new Object[] {extensions[i]}), e); //$NON-NLS-1$
-				} catch (IllegalAccessException e) {
-					throw new VMException(null, Messages.getString(
-							"ASM.EXTINSTANTIATEERROR", new Object[] {extensions[i]}), e); //$NON-NLS-1$
-				}
-			}
-		}
-		List<Extension> extensionObjects = (List<Extension>)options.get("extensionObjects"); //$NON-NLS-1$
-		if (extensionObjects != null) {
-			for (Iterator<Extension> i = extensionObjects.iterator(); i.hasNext();) {
-				i.next().apply(execEnv, options);
-			}
+		for (LibExtension extension : getAllExtensions(options)) {
+			extension.apply(execEnv, options);
 		}
 
 		ASMModule asmModule = new ASMModule();
@@ -225,9 +185,9 @@ public class ASM {
 			}
 			registerOperations(execEnv, module.operations);
 		}
-		
+
 		ret = mainOperation.exec(frame, monitor);
-		
+
 		execEnv.terminated();
 		long endTime = System.currentTimeMillis();
 		if (printExecutionTime) {
@@ -266,6 +226,81 @@ public class ASM {
 				}
 			}
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<LibExtension> getAllExtensions(Map<String, Object> options) {
+		List<LibExtension> res = new ArrayList<LibExtension>();
+		// Standalone
+		String ext = (String)options.get("extensions"); //$NON-NLS-1$
+		if (ext != null) {
+			ClassLoader cl = getClass().getClassLoader();
+
+			String extraClasspath = (String)options.get("extraClasspath"); //$NON-NLS-1$
+			if (extraClasspath != null) {
+				String[] paths = extraClasspath.split(","); //$NON-NLS-1$
+				URL[] urls = new URL[paths.length];
+				String userDir = (String)options.get("user.dir"); //$NON-NLS-1$
+				if (userDir == null) {
+					userDir = System.getProperty("user.dir"); //$NON-NLS-1$
+				}
+				for (int i = 0; i < paths.length; i++) {
+					try {
+						urls[i] = new File(userDir, paths[i]).toURI().toURL();
+					} catch (MalformedURLException e) {
+						throw new VMException(null, Messages.getString(
+								"ASM.LOADINGERROR", new Object[] {paths[i]}), e); //$NON-NLS-1$
+					}
+				}
+				cl = new URLClassLoader(urls, cl);
+			}
+
+			String[] extensions = ext.split(","); //$NON-NLS-1$
+			for (int i = 0; i < extensions.length; i++) {
+				try {
+					LibExtension extension = (LibExtension)cl.loadClass(extensions[i]).newInstance();
+					res.add(extension);
+				} catch (ClassNotFoundException e) {
+					throw new VMException(null, Messages.getString(
+							"ASM.EXTLOADINGERROR", new Object[] {extensions[i]}), e); //$NON-NLS-1$
+				} catch (InstantiationException e) {
+					throw new VMException(null, Messages.getString(
+							"ASM.EXTINSTANTIATEERROR", new Object[] {extensions[i]}), e); //$NON-NLS-1$
+				} catch (IllegalAccessException e) {
+					throw new VMException(null, Messages.getString(
+							"ASM.EXTINSTANTIATEERROR", new Object[] {extensions[i]}), e); //$NON-NLS-1$
+				}
+			}
+		}
+
+		// Java
+		List<LibExtension> extensionObjects = (List<LibExtension>)options.get("extensionObjects"); //$NON-NLS-1$		
+		if (extensionObjects != null) {
+			for (Iterator<LibExtension> i = extensionObjects.iterator(); i.hasNext();) {
+				res.add(i.next());
+			}
+		}
+
+		// Extension point
+		if (Platform.isRunning()) {
+			final IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(
+					"org.eclipse.m2m.atl.engine.emfvm.libextension") //$NON-NLS-1$
+					.getExtensions();
+			try {
+				for (int i = 0; i < extensions.length; i++) {
+					final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
+					for (int j = 0; j < configElements.length; j++) {
+						LibExtension extension = (LibExtension)configElements[j]
+								.createExecutableExtension("class"); //$NON-NLS-1$
+						res.add(extension);
+					}
+				}
+			} catch (CoreException e) {
+				throw new VMException(null, e.getMessage(), e);
+			}
+		}
+		return res;
+
 	}
 
 	// read until c, including c

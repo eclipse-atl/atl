@@ -17,7 +17,7 @@ import java.util.Map;
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
-public interface Extension {
+public interface LibExtension {
 
 	/**
 	 * Apply the extension.

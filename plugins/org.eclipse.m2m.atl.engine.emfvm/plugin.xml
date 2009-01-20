@@ -2,6 +2,7 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension-point id="org.eclipse.m2m.atl.engine.emfvm.adapter" name="ModelAdapter" schema="schema/org.eclipse.m2m.atl.engine.emfvm.adapter.exsd"/>
+   <extension-point id="org.eclipse.m2m.atl.engine.emfvm.libextension" name="LibExtension" schema="schema/org.eclipse.m2m.atl.engine.emfvm.libextension.exsd"/>
    <extension
          point="org.eclipse.m2m.atl.engine.emfvm.adapter">
       <modeladapter
@@ -32,5 +33,6 @@
                name="supportUML2Stereotypes"></option>
       </launcher>
    </extension>
+
 
 </plugin>
