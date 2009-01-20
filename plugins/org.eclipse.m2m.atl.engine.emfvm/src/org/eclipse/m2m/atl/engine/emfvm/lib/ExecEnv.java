@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.28 2009/01/07 13:18:27 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.29 2009/01/20 10:20:13 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -1249,11 +1249,16 @@ public class ExecEnv {
 						return Boolean.FALSE;
 					}
 				});
+		//TODO add to doc
 		operationsByName.put("debug", new Operation(2) { //$NON-NLS-1$
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						ATLLogger.info(localVars[1] + ": " + toPrettyPrintedString(localVars[0])); //$NON-NLS-1$
+						if (localVars[1] != null) {
+							ATLLogger.info(localVars[1] + ": " + toPrettyPrintedString(localVars[0])); //$NON-NLS-1$	
+						} else {
+							ATLLogger.info(toPrettyPrintedString(localVars[0]));
+						}
 						return localVars[0];
 					}
 				});
@@ -1822,6 +1827,7 @@ public class ExecEnv {
 	 * @param value
 	 *            the value to display
 	 */
+	@SuppressWarnings("unchecked")
 	public void prettyPrint(PrintStream out, Object value) {
 		if (value == null) {
 			out.print("<null>"); // print(null) does not work //$NON-NLS-1$
