@@ -525,73 +525,79 @@ public class EMFModelAdapter implements IModelAdapter {
 		EClassifier type = feature.getEType();
 		boolean targetIsEnum = type instanceof EEnum;
 
-		Object oldValue = eo.eGet(feature);
-		if (oldValue instanceof Collection) {
-			Collection<Object> oldCol = (Collection<Object>)oldValue;
-			if (settableValue instanceof Collection) {
-				if (targetIsEnum) {
-					EEnum eenum = (EEnum)type;
-					for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
-						Object v = i.next();
-						oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());
-					}
-				} else if (allowInterModelReferences) {
-					oldCol.addAll((Collection<?>)settableValue);
-				} else { // !allowIntermodelReferences
-					for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
-						Object v = i.next();
-						if (v instanceof EObject) {
-							if (getModelOf(eo) == getModelOf(v)) {
+		try {
+
+			Object oldValue = eo.eGet(feature);
+			if (oldValue instanceof Collection) {
+				Collection<Object> oldCol = (Collection<Object>)oldValue;
+				if (settableValue instanceof Collection) {
+					if (targetIsEnum) {
+						EEnum eenum = (EEnum)type;
+						for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
+							Object v = i.next();
+							oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());
+						}
+					} else if (allowInterModelReferences) {
+						oldCol.addAll((Collection<?>)settableValue);
+					} else { // !allowIntermodelReferences
+						for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
+							Object v = i.next();
+							if (v instanceof EObject) {
+								if (getModelOf(eo) == getModelOf(v)) {
+									oldCol.add(v);
+								}
+							} else {
 								oldCol.add(v);
 							}
-						} else {
-							oldCol.add(v);
+						}
+					}
+				} else {
+					if (targetIsEnum) {
+						EEnum eenum = (EEnum)type;
+						oldCol.add(eenum.getEEnumLiteral(settableValue.toString()).getInstance());
+					} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
+						oldCol.add(settableValue);
+					} else { // (!allowIntermodelReferences) && (value instanceof EObject)
+						if (getModelOf(eo) == getModelOf(settableValue)) {
+							oldCol.add(settableValue);
 						}
 					}
 				}
 			} else {
+				if (settableValue instanceof Collection) {
+					ATLLogger.warning(Messages.getString("EMFModelAdapter.ASSIGNMENTWARNING")); //$NON-NLS-1$
+					Collection<?> c = (Collection<?>)settableValue;
+					if (!c.isEmpty()) {
+						settableValue = c.iterator().next();
+					} else {
+						settableValue = null;
+					}
+				}
 				if (targetIsEnum) {
 					EEnum eenum = (EEnum)type;
-					oldCol.add(eenum.getEEnumLiteral(settableValue.toString()).getInstance());
+					if (settableValue != null) {
+						EEnumLiteral literal = eenum.getEEnumLiteral(settableValue.toString());
+						if (literal != null) {
+							eo.eSet(feature, literal.getInstance());
+						} else {
+							throw new VMException(
+									frame,
+									Messages
+											.getString(
+													"EMFModelAdapter.LITERALERROR", new Object[] {settableValue, eenum.getName()})); //$NON-NLS-1$
+						}
+					}
 				} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
-					oldCol.add(settableValue);
-				} else { // (!allowIntermodelReferences) && (value instanceof EObject)
-					if (getModelOf(eo) == getModelOf(settableValue)) {
-						oldCol.add(settableValue);
-					}
-				}
-			}
-		} else {
-			if (settableValue instanceof Collection) {
-				ATLLogger.warning(Messages.getString("EMFModelAdapter.ASSIGNMENTWARNING")); //$NON-NLS-1$
-				Collection<?> c = (Collection<?>)settableValue;
-				if (!c.isEmpty()) {
-					settableValue = c.iterator().next();
-				} else {
-					settableValue = null;
-				}
-			}
-			if (targetIsEnum) {
-				EEnum eenum = (EEnum)type;
-				if (settableValue != null) {
-					EEnumLiteral literal = eenum.getEEnumLiteral(settableValue.toString());
-					if (literal != null) {
-						eo.eSet(feature, literal.getInstance());
-					} else {
-						throw new VMException(
-								frame,
-								Messages
-										.getString(
-												"EMFModelAdapter.LITERALERROR", new Object[] {settableValue, eenum.getName()})); //$NON-NLS-1$
-					}
-				}
-			} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
-				eo.eSet(feature, settableValue);
-			} else { // (!allowIntermodelReferences) && (value intanceof EObject)
-				if (getModelOf(eo) == getModelOf(settableValue)) {
 					eo.eSet(feature, settableValue);
+				} else { // (!allowIntermodelReferences) && (value intanceof EObject)
+					if (getModelOf(eo) == getModelOf(settableValue)) {
+						eo.eSet(feature, settableValue);
+					}
 				}
 			}
+
+		} catch (ClassCastException e) {
+			throw new VMException(frame, e.getMessage(), e);
 		}
 
 	}
