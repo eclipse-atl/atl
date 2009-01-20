@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.20 2009/01/05 16:35:23 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.21 2009/01/20 10:19:10 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -427,8 +427,9 @@ public class ASMOperation extends Operation {
 							if (value instanceof Collection) {
 								Collection<?> c = (Collection<?>)value;
 								// TODO collections of collections have to be managed
-								while (c.remove(OclUndefined.SINGLETON)) {
-									;
+								boolean temp = true;
+								while (temp) {
+									temp = c.remove(OclUndefined.SINGLETON);
 								}
 							} else if (value instanceof OclUndefined) { // other values are *not* wrapped
 								value = null;
