@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Obeo.
+ * Copyright (c) 2008, 2009 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -92,8 +92,11 @@ public interface ATLLaunchConstants {
 	String MAIN_ATL_TAB_NAME = Messages.getString("ATLLaunchConstants.ATLCONFIGURATION"); //$NON-NLS-1$
 
 	/** ATL icon path. */
-	String ATL_ICON_PATH = "icons/atllogo_icon.gif"; //$NON-NLS-1$
+	String ATL_ICON_PATH = "atllogo_icon.gif"; //$NON-NLS-1$
 
+	/** Delete icon path. */
+	String DELETE_ICON_PATH = "delete_obj.gif"; //$NON-NLS-1$
+	
 	/** ATL extensions. */
 	String[] ATL_EXTENSIONS = new String[] {"atl", "acg"}; //$NON-NLS-1$ //$NON-NLS-2$
 

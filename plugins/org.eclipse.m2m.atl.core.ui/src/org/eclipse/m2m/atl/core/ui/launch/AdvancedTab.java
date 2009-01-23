@@ -131,7 +131,8 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 				updateLaunchConfigurationDialog();
 			}
 		});
-
+		
+//buttonRemoveSuperimpose.setImage(ATLCoreUIPlugin.getImage(ATLLaunchConstants.DELETE_ICON_PATH));
 		buttonRemoveSuperimpose.setText(Messages.getString("AdvancedTab.REMOVE")); //$NON-NLS-1$
 		buttonRemoveSuperimpose.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -355,7 +356,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	 */
 	@Override
 	public Image getImage() {
-		return ATLCoreUIPlugin.createImage(ATLLaunchConstants.ATL_ICON_PATH);
+		return ATLCoreUIPlugin.getImage(ATLLaunchConstants.ATL_ICON_PATH);
 	}
 
 	/**

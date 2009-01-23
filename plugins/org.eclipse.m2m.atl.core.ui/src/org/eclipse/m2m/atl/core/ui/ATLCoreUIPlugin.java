@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Obeo.
+ * Copyright (c) 2008, 2009 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@ package org.eclipse.m2m.atl.core.ui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Filter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -43,7 +45,12 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	private static MessageConsole console;
 
 	private static Handler[] handlers = new Handler[3];
-	
+
+	/**
+	 * Gets the image at the given plug-in relative path.
+	 */
+	private static Map<String, Image> path2image = new HashMap<String, Image>();
+
 	/**
 	 * Creates a new {@link ATLCoreUIPlugin}.
 	 */
@@ -62,21 +69,27 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * This method returns an image from the path.
+	 * Looks for an image in the icons folder.
 	 * 
 	 * @param path
 	 *            the image path
-	 * @return the created image
+	 * @return the searched Image
 	 */
-	public static Image createImage(String path) {
-		try {
-			URL baseUrl = plugin.getBundle().getEntry("/"); //$NON-NLS-1$
-			URL url = new URL(baseUrl, path);
-			return ImageDescriptor.createFromURL(url).createImage();
-		} catch (MalformedURLException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+	public static Image getImage(String path) {
+		Image result = path2image.get(path);
+		if (result == null && !path2image.containsKey(path)) {
+			ImageDescriptor descriptor = getImageDescriptor(path);
+			if (descriptor != null) {
+				result = descriptor.createImage();
+				path2image.put(path, result);
+			}
 		}
-		return null;
+		if (result != null) {
+			if (result.isDisposed()) {
+				result = null;
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -87,15 +100,33 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		startConsole();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 */
+	@Override
+	public void stop(BundleContext context) throws Exception {
+		super.stop(context);
+		stopConsole();
+	}
+
+	/**
+	 * Starts the ATL Console.
+	 */
+	public static void startConsole() {
 		console = findConsole("ATL"); //$NON-NLS-1$
 		MessageConsoleStream infoStream = console.newMessageStream();
 		MessageConsoleStream warningStream = console.newMessageStream();
 		MessageConsoleStream errorStream = console.newMessageStream();
 
-		infoStream.setColor(new Color(Display.getCurrent(),new RGB(0, 0, 255)));
-		warningStream.setColor(new Color(Display.getCurrent(),new RGB(250, 100, 0)));
-		errorStream.setColor(new Color(Display.getCurrent(),new RGB(255, 0, 0)));
-		
+		infoStream.setColor(new Color(Display.getCurrent(), new RGB(0, 0, 255)));
+		warningStream.setColor(new Color(Display.getCurrent(), new RGB(250, 100, 0)));
+		errorStream.setColor(new Color(Display.getCurrent(), new RGB(255, 0, 0)));
+
 		handlers[0] = new ConsoleStreamHandler(infoStream);
 		handlers[0].setFilter(new Filter() {
 			public boolean isLoggable(java.util.logging.LogRecord record) {
@@ -120,19 +151,15 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * Stops the ATL Console.
 	 */
-	@Override
-	public void stop(BundleContext context) throws Exception {
+	public static void stopConsole() {
 		for (int i = 0; i < handlers.length; i++) {
 			ATLLogger.getLogger().removeHandler(handlers[i]);
 		}
-		super.stop(context);
 	}
 
-	private MessageConsole findConsole(String name) {
+	private static MessageConsole findConsole(String name) {
 		IConsoleManager consoleMgr = ConsolePlugin.getDefault().getConsoleManager();
 		IConsole[] existing = consoleMgr.getConsoles();
 		for (int i = 0; i < existing.length; i++) {
@@ -141,7 +168,7 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 			}
 		}
 		// no console found, so create a new one
-		String pluginDir = getBundle().getEntry("/").toString(); //$NON-NLS-1$
+		String pluginDir = getDefault().getBundle().getEntry("/").toString(); //$NON-NLS-1$
 		ImageDescriptor imageDescriptor = null;
 		try {
 			imageDescriptor = ImageDescriptor.createFromURL(new URL(pluginDir + "icons/atl_logo.gif")); //$NON-NLS-1$
@@ -151,5 +178,22 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 		MessageConsole myConsole = new MessageConsole(name, imageDescriptor);
 		consoleMgr.addConsoles(new IConsole[] {myConsole});
 		return myConsole;
+	}
+	
+	/**
+	 * Returns the image descriptor with the given relative path.
+	 * 
+	 * @param name
+	 *            the image name
+	 * @return the image descriptor
+	 */
+	public static ImageDescriptor getImageDescriptor(String name) {
+		String pluginDir = plugin.getBundle().getEntry("/").toString(); //$NON-NLS-1$
+		String iconPath = "icons/"; //$NON-NLS-1$
+		try {
+			return ImageDescriptor.createFromURL(new URL(pluginDir + iconPath + name));
+		} catch (MalformedURLException mfe) {
+			return ImageDescriptor.getMissingImageDescriptor();
+		}
 	}
 }

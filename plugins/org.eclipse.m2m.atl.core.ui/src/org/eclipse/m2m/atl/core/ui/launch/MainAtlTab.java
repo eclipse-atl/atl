@@ -803,7 +803,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 */
 	@Override
 	public Image getImage() {
-		return ATLCoreUIPlugin.createImage(ATLLaunchConstants.ATL_ICON_PATH);
+		return ATLCoreUIPlugin.getImage(ATLLaunchConstants.ATL_ICON_PATH);
 	}
 
 	/**
