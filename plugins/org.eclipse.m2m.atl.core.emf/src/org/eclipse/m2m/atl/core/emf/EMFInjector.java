@@ -37,7 +37,8 @@ public class EMFInjector implements IInjector {
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.Object,
 	 *      java.util.Map)
 	 */
-	public void inject(IModel sourceModel, Object source, Map<String, Object> options) throws ATLCoreException {
+	public void inject(IModel sourceModel, Object source, Map<String, Object> options)
+			throws ATLCoreException {
 		Resource mainResource = null;
 		ResourceSet resourceSet = ((EMFModelFactory)sourceModel.getModelFactory()).getResourceSet();
 
@@ -62,6 +63,8 @@ public class EMFInjector implements IInjector {
 				// Workspace
 			} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
 				mainResource = resourceSet.getResource(URI.createURI(path).trimFragment(), true);
+			} else if (path.startsWith("platform:")) { //$NON-NLS-1$
+				mainResource = resourceSet.getResource(URI.createURI(path), true);
 			} else {
 				mainResource = resourceSet.getResource(URI.createPlatformResourceURI(path, false), true);
 			}
