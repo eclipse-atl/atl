@@ -22,6 +22,9 @@ public interface ATLLaunchConstants {
 	/** Regular VM name, for launch compatibility adaptations. */
 	String REGULAR_VM_NAME = "Regular VM (with debugger)"; //$NON-NLS-1$
 
+	/** EMF VM name, for default values. */
+	String EMF_VM_NAME = "EMF-specific VM"; //$NON-NLS-1$
+	
 	/** Default model handler name. */
 	String DEFAULT_MODEL_HANDLER_NAME = "EMF"; //$NON-NLS-1$
 

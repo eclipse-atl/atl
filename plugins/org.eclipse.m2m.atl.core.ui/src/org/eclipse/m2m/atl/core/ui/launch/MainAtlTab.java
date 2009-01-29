@@ -642,7 +642,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			superimposedFromAdvancedTab = configuration.getAttribute(ATLLaunchConstants.SUPERIMPOSE,
 					Collections.EMPTY_LIST);
 			launcherNameFromAdvancedTab = configuration.getAttribute(ATLLaunchConstants.ATL_VM,
-					ATLLaunchConstants.REGULAR_VM_NAME);
+					ATLLaunchConstants.EMF_VM_NAME);
 
 			atlPathText.setText(fileName);
 			currentAtlPath = fileName;
@@ -752,7 +752,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#canSave()
 	 */
 	@Override
-	public boolean canSave() {
+	public boolean canSave() {		
 		if (atlPathText.getText().equals("")) { //$NON-NLS-1$
 			this.setErrorMessage(Messages.getString("MainAtlTab.GIVETRANSFORMATIONNAME")); //$NON-NLS-1$
 			return false;
@@ -766,11 +766,15 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			Button isMetametamodel = (Button)widgets.get("isMetametamodel"); //$NON-NLS-1$
 			if ((metamodelLocation.getText().length() == 0) && (!isMetametamodel.getSelection())) {
 				this.setErrorMessage(Messages.getString("MainAtlTab.GIVEPATHFOR") + mName); //$NON-NLS-1$
-				return false;
+				//return false;
 			}
 		}
-		return canSaveGroupWidgets(sourceModelsGroupWidgets) && canSaveGroupWidgets(targetModelsGroupWidgets)
-				&& canSaveGroupWidgets(librariesGroupWidgets);
+		
+		canSaveGroupWidgets(sourceModelsGroupWidgets);
+		canSaveGroupWidgets(targetModelsGroupWidgets);
+		canSaveGroupWidgets(librariesGroupWidgets);
+		return true;
+		
 	}
 
 	/**

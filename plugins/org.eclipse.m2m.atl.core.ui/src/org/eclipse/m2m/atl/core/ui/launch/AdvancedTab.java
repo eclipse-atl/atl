@@ -131,8 +131,8 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 				updateLaunchConfigurationDialog();
 			}
 		});
-		
-//buttonRemoveSuperimpose.setImage(ATLCoreUIPlugin.getImage(ATLLaunchConstants.DELETE_ICON_PATH));
+
+		// buttonRemoveSuperimpose.setImage(ATLCoreUIPlugin.getImage(ATLLaunchConstants.DELETE_ICON_PATH));
 		buttonRemoveSuperimpose.setText(Messages.getString("AdvancedTab.REMOVE")); //$NON-NLS-1$
 		buttonRemoveSuperimpose.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -288,9 +288,10 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 			}
 
 			for (int item = 0; item < atlVMs.getItems().length; item++) {
-				if (atlVMs.getItem(item).equals(
-						configuration.getAttribute(ATLLaunchConstants.ATL_VM,
-								ATLLaunchConstants.REGULAR_VM_NAME))) {
+				if (atlVMs.getItem(item)
+						.equals(
+								configuration.getAttribute(ATLLaunchConstants.ATL_VM,
+										ATLLaunchConstants.EMF_VM_NAME))) {
 					atlVMs.select(item);
 				}
 			}

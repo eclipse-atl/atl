@@ -77,8 +77,10 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				Collections.EMPTY_MAP);
 		Map<String, String> targetModels = configuration.getAttribute(ATLLaunchConstants.OUTPUT,
 				Collections.EMPTY_MAP);
-		Map<String, String> modelPaths = configuration.getAttribute(ATLLaunchConstants.PATH,
+		Map<String, String> launchConfigModelPaths = configuration.getAttribute(ATLLaunchConstants.PATH,
 				Collections.EMPTY_MAP);
+		Map<String, String> modelPaths = convertPaths(launchConfigModelPaths);
+
 		Map<String, String> libs = configuration.getAttribute(ATLLaunchConstants.LIBS, Collections.EMPTY_MAP);
 		List<String> superimps = configuration.getAttribute(ATLLaunchConstants.SUPERIMPOSE,
 				Collections.EMPTY_LIST);
@@ -146,7 +148,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		if (monitor.isCanceled()) {
 			return;
 		}
-		
+
 		try {
 			if (isRefiningTraceMode) {
 				modelFactories.put("RefiningTrace", defaultModelfactory); //$NON-NLS-1$
@@ -192,4 +194,50 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		}
 
 	}
+
+	/**
+	 * Convert model map paths.
+	 * 
+	 * @param modelPaths
+	 *            the model path map
+	 * @return the converted map
+	 */
+	public static Map<String, String> convertPaths(Map<String, String> modelPaths) {
+		Map<String, String> result = new HashMap<String, String>();
+		for (Iterator<String> iterator = modelPaths.keySet().iterator(); iterator.hasNext();) {
+			String modelName = iterator.next();
+			String modelPath = modelPaths.get(modelName);
+			result.put(modelName, convertPath(modelPath));
+		}
+		return result;
+	}
+
+	/**
+	 * Convert "launch configuration style" paths to EMF uris:
+	 * <ul>
+	 * <li>ext:<i>path</i> => file:<i>path</i> (file system resource)</li>
+	 * <li>uri:<i>uri</i> => <i>uri</i> (EMF uri)</li>
+	 * <li><i>path</i> => platform:/resource/<i>path</i> (workspace resource)</li>
+	 * </ul>
+	 * Unchanged paths:
+	 * <ul>
+	 * <li>platform:/plugin/<i>path</i> (plugin resource)</li>
+	 * <li>pathmap:<i>path</i> (pathmap resource, e.g. UML2 profile)</li>
+	 * </ul>
+	 * 
+	 * @param path
+	 *            the path as created by the launchConfiguration
+	 * @return the converted path
+	 */
+	public static String convertPath(String path) {
+		if (path.startsWith("ext:")) { //$NON-NLS-1$
+			return path.replaceFirst("ext:", "file:/"); //$NON-NLS-1$ //$NON-NLS-2$
+		} else if (path.startsWith("uri:")) { //$NON-NLS-1$
+			return path.substring(4);
+		} else if (path.startsWith("#") || path.startsWith("platform:") || path.startsWith("pathmap")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			return path;
+		}
+		return "platform:/resource" + path; //$NON-NLS-1$
+	}
+
 }
