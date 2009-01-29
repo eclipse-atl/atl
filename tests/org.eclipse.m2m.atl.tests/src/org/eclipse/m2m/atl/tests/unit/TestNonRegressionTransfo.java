@@ -35,6 +35,7 @@ import org.eclipse.m2m.atl.core.ModelFactory;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.core.service.LauncherService;
+import org.eclipse.m2m.atl.core.ui.launch.AtlLaunchConfigurationDelegate;
 import org.eclipse.m2m.atl.engine.compiler.AtlCompiler;
 import org.eclipse.m2m.atl.engine.compiler.CompilerNotFoundException;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
@@ -270,7 +271,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		}
 		long startTime = System.currentTimeMillis();
 		LauncherService.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), launcher, modelFactories, extractors, injectors,
-				sourceModels, Collections.<String, String> emptyMap(), targetModels, modelPaths, options,
+				sourceModels, Collections.<String, String> emptyMap(), targetModels, AtlLaunchConfigurationDelegate.convertPaths(modelPaths), options,
 				libraries, (Object[])modules);
 
 		long endTime = System.currentTimeMillis();
