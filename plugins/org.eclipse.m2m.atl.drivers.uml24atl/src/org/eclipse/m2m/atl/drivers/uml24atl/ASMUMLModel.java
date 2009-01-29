@@ -55,7 +55,7 @@ public final class ASMUMLModel extends ASMEMFModel {
 	 * @param isTarget
 	 *            true if the model is an output model
 	 */
-	protected ASMUMLModel(String name, Resource extent, ASMUMLModel metamodel, boolean isTarget, ModelLoader ml) {
+	protected ASMUMLModel(String name, Resource extent, ASMEMFModel metamodel, boolean isTarget, ModelLoader ml) {
 		super(name, extent, metamodel, isTarget, ml);
 	}
 

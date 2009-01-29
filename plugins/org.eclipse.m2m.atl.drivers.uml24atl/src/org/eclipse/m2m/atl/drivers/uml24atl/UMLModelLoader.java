@@ -28,7 +28,7 @@ public class UMLModelLoader extends EMFModelLoader {
 	}
 
 	protected ASMEMFModel createASMEMFModel(String name, Resource extent, ASMModel metamodel, boolean isTarget) {
-		return new ASMUMLModel(name, extent, (ASMUMLModel)metamodel, isTarget, this);
+		return new ASMUMLModel(name, extent, (ASMEMFModel)metamodel, isTarget, this);
 	}
 
 	/**
