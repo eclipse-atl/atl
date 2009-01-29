@@ -230,6 +230,14 @@ public abstract class ModelLoader {
 			extract(model, ss[0], (ss.length == 3) ? ss[1] : null, ss[ss.length - 1], null);
 		}
 	}
+	
+	/**
+	 * Saves the model to an {@link OutputStream}.
+	 * @param model The model to save
+	 * @param out The output stream to save to
+	 * @throws IOException
+	 */
+	public abstract void save(ASMModel model, OutputStream out) throws IOException;
 
 	public void extract(ASMModel model, String kind, String params, String uri, OutputStream out) {
 		try {
