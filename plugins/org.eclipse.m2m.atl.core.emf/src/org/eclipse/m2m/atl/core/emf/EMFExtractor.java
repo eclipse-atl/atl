@@ -43,18 +43,16 @@ public class EMFExtractor implements IExtractor {
 		ResourceSet resourceSet = ((EMFModelFactory)targetModel.getModelFactory()).getResourceSet();
 
 		Object contentType = options.get(EMFModelFactory.OPTION_CONTENT_TYPE);
-		Object object = target.toString();
-		if (object instanceof String) {
-			String path = (String)object;
-			if (path.startsWith("ext:")) { //$NON-NLS-1$
-				path = path.substring(4);
-			}
+		String path = target.toString();
+		if (path != null) {
 			if (((EMFModel)targetModel).getResource() != null) {
 				extract(resourceSet, ((EMFModel)targetModel).getResource(), path, contentType, options);
 			} else {
 				throw new ATLCoreException(Messages
 						.getString("EMFExtractor.NO_RESOURCE", new Object[] {path})); //$NON-NLS-1$
 			}
+		} else {
+			throw new ATLCoreException(Messages.getString("EMFExtractor.NO_PATH")); //$NON-NLS-1$
 		}
 	}
 
@@ -72,7 +70,7 @@ public class EMFExtractor implements IExtractor {
 		// TODO do not systematically recreate the resource
 		Resource newResource = null;
 		if (contentType == null) {
-			newResource = resourceSet.createResource(URI.createFileURI(path));
+			newResource = resourceSet.createResource(URI.createURI(path));
 		} else {
 			// TODO compatibility
 			// newResource = EMFModelFactory.getResourceSet().createResource(URI.createFileURI(path),

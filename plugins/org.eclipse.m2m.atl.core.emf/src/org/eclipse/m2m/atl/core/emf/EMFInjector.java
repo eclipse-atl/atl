@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -44,29 +43,12 @@ public class EMFInjector implements IInjector {
 
 		String path = source.toString();
 		if (path != null) {
-			// EMF Registry
-			if (path.startsWith("uri:")) { //$NON-NLS-1$
-				path = path.substring(4);
-				EPackage pack = EPackage.Registry.INSTANCE.getEPackage(path);
-				if (pack != null) {
-					mainResource = pack.eResource();
-				} else {
-					throw new ATLCoreException(Messages.getString("EMFInjector.PACKAGE_NOT_FOUND", path)); //$NON-NLS-1$
-				}
-				// File system
-			} else if (path.startsWith("ext:")) { //$NON-NLS-1$
-				path = path.substring(4);
-				mainResource = resourceSet.getResource(URI.createFileURI(path), true);
-				// EMF
-			} else if (path.equals("#EMF")) { //$NON-NLS-1$
+			if (path.equals("#EMF")) { //$NON-NLS-1$
 				mainResource = EcorePackage.eINSTANCE.eResource();
-				// Workspace
 			} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
 				mainResource = resourceSet.getResource(URI.createURI(path).trimFragment(), true);
-			} else if (path.startsWith("platform:")) { //$NON-NLS-1$
-				mainResource = resourceSet.getResource(URI.createURI(path), true);
 			} else {
-				mainResource = resourceSet.getResource(URI.createPlatformResourceURI(path, false), true);
+				mainResource = resourceSet.getResource(URI.createURI(path), true);
 			}
 		} else {
 			throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE")); //$NON-NLS-1$

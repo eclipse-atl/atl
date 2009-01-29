@@ -135,6 +135,9 @@ public final class EMFModelFactory extends ModelFactory {
 	public IReferenceModel getBuiltInResource(String name) throws ATLCoreException {
 		EMFReferenceModel model = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this), this);
 		URL url = ATLResourceProvider.getURL(name);
+		if (url == null) {
+			throw new ATLCoreException(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND")); //$NON-NLS-1$
+		}
 		Resource builtin = resourceSet.createResource(URI.createURI(name));
 		try {
 			builtin.load(url.openStream(), Collections.EMPTY_MAP);	
