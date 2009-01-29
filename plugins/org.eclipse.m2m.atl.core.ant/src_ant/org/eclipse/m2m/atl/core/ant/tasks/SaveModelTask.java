@@ -113,7 +113,10 @@ public class SaveModelTask extends AbstractAtlTask {
 
 	private String convertTarget() {
 		if (path != null) {
-			return path.toString();
+			if (path.toString().startsWith("platform:")) { //$NON-NLS-1$
+				return path.toString();
+			}
+			return "file:/" + path.toString(); //$NON-NLS-1$
 		} else {
 			error(Messages.getString("SaveModelTask.UNSPECIFIED_TARGET")); //$NON-NLS-1$
 		}

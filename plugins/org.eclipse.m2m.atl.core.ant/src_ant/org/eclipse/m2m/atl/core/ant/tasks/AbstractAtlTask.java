@@ -195,6 +195,9 @@ public class AbstractAtlTask extends Task {
 	protected IModel newModel(ModelFactory factory, String modelName, String referenceModelName,
 			Map<String, Object> options) throws BuildException {
 		IModel model = null;
+		if (referenceModelName == null) {
+			error(Messages.getString("AbstractAtlTask.REFERENCE_MODEL_UNSPECIFIED")); //$NON-NLS-1$
+		}
 		IReferenceModel referenceModelInstance = (IReferenceModel)getProject().getReference(
 				referenceModelName);
 		if (referenceModelInstance == null) {

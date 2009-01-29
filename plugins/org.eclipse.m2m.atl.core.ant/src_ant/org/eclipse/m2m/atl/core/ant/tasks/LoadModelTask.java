@@ -119,35 +119,26 @@ public class LoadModelTask extends AbstractAtlTask {
 		IModel sourceModel = (IModel)getProject().getReference(name);
 		if (sourceModel == null) {
 			if (source != null) {
-				if (source.startsWith("#")) { //$NON-NLS-1$
-					try {
-						sourceModel = factoryInstance.getBuiltInResource(source.replaceFirst("#", "")); //$NON-NLS-1$ //$NON-NLS-2$	
-					} catch (ATLCoreException e) {
-						error(e.getMessage(), e);
-					}
-					getProject().addReference(name, sourceModel);
+				if (modelHandler == null) {
+					modelHandler = DEFAULT_MODEL_HANDLER;
+				}
+				if (metamodel.equals("MOF") || metamodel.startsWith("%")) { //$NON-NLS-1$ //$NON-NLS-2$
+					Map<String, Object> referenceModelOptions = new HashMap<String, Object>();
+					referenceModelOptions.put(OPTION_MODEL_HANDLER, modelHandler);
+					referenceModelOptions.put(OPTION_MODEL_NAME, name);
+					referenceModelOptions.put(OPTION_MODEL_PATH, path);
+					sourceModel = newReferenceModel(factoryInstance, name, referenceModelOptions);
 				} else {
-					if (modelHandler == null) {
-						modelHandler = DEFAULT_MODEL_HANDLER;
-					}
-					if (metamodel.equals("MOF") || metamodel.startsWith("#")) { //$NON-NLS-1$ //$NON-NLS-2$
-						Map<String, Object> referenceModelOptions = new HashMap<String, Object>();
-						referenceModelOptions.put(OPTION_MODEL_HANDLER, modelHandler);
-						referenceModelOptions.put(OPTION_MODEL_NAME, name);
-						referenceModelOptions.put(OPTION_MODEL_PATH, path);
-						sourceModel = newReferenceModel(factoryInstance, name, referenceModelOptions);
-					} else {
-						Map<String, Object> modelOptions = new HashMap<String, Object>();
-						modelOptions.put(OPTION_MODEL_NAME, name);
-						modelOptions.put(OPTION_MODEL_PATH, path);
-						modelOptions.put(OPTION_NEW_MODEL, false);
-						sourceModel = newModel(factoryInstance, name, metamodel, modelOptions);
-					}
-					try {
-						injectorInstance.inject(sourceModel, source, injectorParams);
-					} catch (ATLCoreException e) {
-						error(e.getMessage(), e);
-					}
+					Map<String, Object> modelOptions = new HashMap<String, Object>();
+					modelOptions.put(OPTION_MODEL_NAME, name);
+					modelOptions.put(OPTION_MODEL_PATH, path);
+					modelOptions.put(OPTION_NEW_MODEL, false);
+					sourceModel = newModel(factoryInstance, name, metamodel, modelOptions);
+				}
+				try {
+					injectorInstance.inject(sourceModel, source, injectorParams);
+				} catch (ATLCoreException e) {
+					error(e.getMessage(), e);
 				}
 			}
 		}
@@ -156,14 +147,8 @@ public class LoadModelTask extends AbstractAtlTask {
 
 	private String convertSource() {
 		if (path != null) {
-			if (!path.toString().startsWith("#")) { //$NON-NLS-1$
-				return "ext:" + path.toString(); //$NON-NLS-1$
-			}
-			return path.toString();
+			return "file:/" + path.toString(); //$NON-NLS-1$
 		} else if (nsUri != null) {
-			if (!nsUri.startsWith("pathmap:")) { //$NON-NLS-1$	
-				return "uri:" + nsUri; //$NON-NLS-1$	
-			}
 			return nsUri;
 		} else {
 			error(Messages.getString("LoadModelTask.UNSPECIFIED_SOURCE")); //$NON-NLS-1$
