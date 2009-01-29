@@ -73,10 +73,11 @@ public class ASMInjector implements IInjector {
 				return;
 			} else if (ml instanceof EMFModelLoader) {
 				if (path.startsWith("platform:/resource")) { //$NON-NLS-1$
+					path = path.substring(18); //$NON-NLS-1$ //$NON-NLS-2$
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
 							.getReferenceModel()).getAsmModel(), URI.createPlatformResourceURI(path, false));
 				} else if (path.startsWith("file:/")) { //$NON-NLS-1$
-					path = path.substring(5);
+					path = path.substring(6);
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
 							.getReferenceModel()).getAsmModel(), URI.createFileURI(path));
 				} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
@@ -107,7 +108,7 @@ public class ASMInjector implements IInjector {
 			CoreException {
 		String usedFilePath = filePath;
 		if (usedFilePath.startsWith("file:/")) { //$NON-NLS-1$
-			File f = new File(usedFilePath.substring(5));
+			File f = new File(usedFilePath.substring(6));
 			return new FileInputStream(f);
 		} else {
 			IWorkspaceRoot iwr = ResourcesPlugin.getWorkspace().getRoot();
