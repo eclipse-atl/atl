@@ -63,7 +63,12 @@ public class MDRModelLoader extends ModelLoader {
 		writer = XMIWriterFactory.getDefault().createXMIWriter();
 //		rep.getExtent("MOF");
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#loadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.InputStream)
+	 */
 	public ASMModel loadModel(String name, ASMModel metamodel, InputStream in)
 			throws IOException {
 		ASMMDRModel ret = (ASMMDRModel) newModel(name, metamodel);
@@ -102,6 +107,11 @@ public class MDRModelLoader extends ModelLoader {
 		return ret;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#realLoadModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String)
+	 */
 	protected ASMModel realLoadModel(String name, ASMModel metamodel, String href)
 			throws IOException {
 		ASMModel ret = null;
@@ -112,6 +122,11 @@ public class MDRModelLoader extends ModelLoader {
 		return ret;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#newModel(java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 */
 	public ASMModel newModel(String name, ASMModel metamodel) {
 		ASMModel ret = null;
 
@@ -147,10 +162,20 @@ public class MDRModelLoader extends ModelLoader {
 		return ret;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#newModel(java.lang.String, java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel)
+	 */
 	public ASMModel newModel(String name, String uri, ASMModel metamodel) {
 		return newModel(name, (ASMMDRModel)metamodel);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#setParameter(java.lang.String, java.lang.Object)
+	 */
 	protected void setParameter(String name, Object value) {
 		if("xmiVersion".equals(name)) {
 			xmiVersion = (String)value;
@@ -159,16 +184,26 @@ public class MDRModelLoader extends ModelLoader {
 		}
 	}
 
-	protected void realSave(ASMModel model, String href) {
-		try {
-			OutputStream out = new FileOutputStream(href);
-			if(encoding != null) {
-				writer.getConfiguration().setEncoding(encoding);
-			}
-			writer.write(out, ((ASMMDRModel)model).getPackage(), xmiVersion);
-		} catch(Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#realSave(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.lang.String)
+	 */
+	protected void realSave(ASMModel model, String href) throws IOException {
+		OutputStream out = new FileOutputStream(href);
+		save(model, out);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#save(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.OutputStream)
+	 */
+	public void save(ASMModel model, OutputStream out) throws IOException {
+		if(encoding != null) {
+			writer.getConfiguration().setEncoding(encoding);
 		}
+		writer.write(out, ((ASMMDRModel)model).getPackage(), xmiVersion);
 	}
 
 	public ASMModel getMOF() {
