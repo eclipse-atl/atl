@@ -72,19 +72,19 @@ public class ASMInjector implements IInjector {
 				// nothing to do, ever loaded in newModel
 				return;
 			} else if (ml instanceof EMFModelLoader) {
-				if (path.startsWith("uri:")) { //$NON-NLS-1$
-					asmModel = ml.loadModel(modelName, ((ASMModelWrapper)modelWrapper.getReferenceModel())
-							.getAsmModel(), path);
-				} else if (path.startsWith("ext:")) { //$NON-NLS-1$
-					path = path.substring(4);
+				if (path.startsWith("platform:/resource")) { //$NON-NLS-1$
+					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
+							.getReferenceModel()).getAsmModel(), URI.createPlatformResourceURI(path, false));
+				} else if (path.startsWith("file:/")) { //$NON-NLS-1$
+					path = path.substring(5);
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
 							.getReferenceModel()).getAsmModel(), URI.createFileURI(path));
 				} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
 							.getReferenceModel()).getAsmModel(), URI.createURI(path, true));
 				} else {
-					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
-							.getReferenceModel()).getAsmModel(), URI.createPlatformResourceURI(path, false));
+					asmModel = ml.loadModel(modelName, ((ASMModelWrapper)modelWrapper.getReferenceModel())
+							.getAsmModel(), "uri:" + path); //$NON-NLS-1$
 				}
 			} else {
 				asmModel = ml.loadModel(modelName, ((ASMModelWrapper)modelWrapper.getReferenceModel())
@@ -106,8 +106,8 @@ public class ASMInjector implements IInjector {
 	private static InputStream fileNameToInputStream(String filePath) throws FileNotFoundException,
 			CoreException {
 		String usedFilePath = filePath;
-		if (usedFilePath.startsWith("ext:")) { //$NON-NLS-1$
-			File f = new File(usedFilePath.substring(4));
+		if (usedFilePath.startsWith("file:/")) { //$NON-NLS-1$
+			File f = new File(usedFilePath.substring(5));
 			return new FileInputStream(f);
 		} else {
 			IWorkspaceRoot iwr = ResourcesPlugin.getWorkspace().getRoot();

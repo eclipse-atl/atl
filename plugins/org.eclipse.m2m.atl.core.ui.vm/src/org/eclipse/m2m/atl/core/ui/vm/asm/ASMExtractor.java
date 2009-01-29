@@ -47,8 +47,8 @@ public class ASMExtractor implements IExtractor {
 		ASMModelWrapper modelWrapper = (ASMModelWrapper)targetModel;
 		ASMModel asmModel = modelWrapper.getAsmModel();
 		String path = (String)target;
-		if (path.startsWith("ext:")) { //$NON-NLS-1$
-			path = path.substring(4);
+		if (path.startsWith("file:/")) { //$NON-NLS-1$
+			path = path.substring(5);
 		}
 		try {
 			modelWrapper.getModelLoader().save(asmModel, URI.createFileURI(path).toString());
