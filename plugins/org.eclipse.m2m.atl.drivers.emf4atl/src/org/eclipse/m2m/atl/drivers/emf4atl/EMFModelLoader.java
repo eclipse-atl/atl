@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.drivers.emf4atl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -333,6 +334,35 @@ public class EMFModelLoader extends ModelLoader {
 			// workspace is closed
 			throw new IOException(e.getLocalizedMessage());
 		} catch (CoreException e) {
+			throw new IOException(e.getLocalizedMessage());
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.ModelLoader#save(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.OutputStream)
+	 */
+	public void save(ASMModel model, OutputStream out) throws IOException {
+		Resource r = ((ASMEMFModel)model).getExtent();
+		
+		if(useIDs || removeIDs) {
+			XMIResource xr = (XMIResource)r;
+			int id = 1;
+			Set alreadySet = new HashSet();
+			for (Iterator i = r.getAllContents(); i.hasNext();) {
+				EObject eo = (EObject)i.next();
+				if (alreadySet.contains(eo)) {
+					continue; // because sometimes a single element gets processed twice
+				}
+				xr.setID(eo, removeIDs ? null : ("a" + (id++)));
+				alreadySet.add(eo);
+			}
+		}
+		try {
+			r.save(out, saveOptions);
+		} catch (IllegalStateException e) {
+			// workspace is closed
 			throw new IOException(e.getLocalizedMessage());
 		}
 	}
