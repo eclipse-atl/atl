@@ -535,7 +535,8 @@ public class EMFModelAdapter implements IModelAdapter {
 						EEnum eenum = (EEnum)type;
 						for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
 							Object v = i.next();
-							oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());
+							//oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());
+							oldCol.add(eenum.getEEnumLiteralByLiteral(v.toString()).getInstance());
 						}
 					} else if (allowInterModelReferences) {
 						oldCol.addAll((Collection<?>)settableValue);
