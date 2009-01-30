@@ -449,7 +449,6 @@ public class ASMEMFModelElement extends ASMModelElement {
 	public void set(StackFrame frame, String name, ASMOclAny value) {
 
 		final boolean debug = false;
-		// final boolean checkSameModel = !true;
 
 		if (debug) {
 			ATLLogger.info("Setting: " + this + " : " + getType() + "." + name + " to " + value);
