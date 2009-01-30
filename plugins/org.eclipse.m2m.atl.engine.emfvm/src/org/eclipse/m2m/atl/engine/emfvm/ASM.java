@@ -148,8 +148,7 @@ public class ASM {
 			modelAdapter = new EMFModelAdapter(execEnv);
 		}
 
-		// by default (if options.get("checkSameModel") == null) interModelReferences are not allowed
-		modelAdapter.setAllowInterModelReferences("false".equals(options.get("checkSameModel"))); //$NON-NLS-1$ //$NON-NLS-2$
+		modelAdapter.setAllowInterModelReferences("true".equals(options.get("allowInterModelReferences"))); //$NON-NLS-1$ //$NON-NLS-2$
 		execEnv.init(modelAdapter);
 
 		if ("true".equals(options.get("step"))) { //$NON-NLS-1$ //$NON-NLS-2$
