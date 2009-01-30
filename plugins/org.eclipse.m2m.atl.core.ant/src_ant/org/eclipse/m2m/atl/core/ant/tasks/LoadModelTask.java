@@ -126,12 +126,12 @@ public class LoadModelTask extends AbstractAtlTask {
 					Map<String, Object> referenceModelOptions = new HashMap<String, Object>();
 					referenceModelOptions.put(OPTION_MODEL_HANDLER, modelHandler);
 					referenceModelOptions.put(OPTION_MODEL_NAME, name);
-					referenceModelOptions.put(OPTION_MODEL_PATH, path);
+					referenceModelOptions.put(OPTION_MODEL_PATH, source);
 					sourceModel = newReferenceModel(factoryInstance, name, referenceModelOptions);
 				} else {
 					Map<String, Object> modelOptions = new HashMap<String, Object>();
 					modelOptions.put(OPTION_MODEL_NAME, name);
-					modelOptions.put(OPTION_MODEL_PATH, path);
+					modelOptions.put(OPTION_MODEL_PATH, source);
 					modelOptions.put(OPTION_NEW_MODEL, false);
 					sourceModel = newModel(factoryInstance, name, metamodel, modelOptions);
 				}
