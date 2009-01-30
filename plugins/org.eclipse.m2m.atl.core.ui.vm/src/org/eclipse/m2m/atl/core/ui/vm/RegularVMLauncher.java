@@ -32,6 +32,7 @@ import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.core.ui.vm.asm.ASMFactory;
 import org.eclipse.m2m.atl.core.ui.vm.asm.ASMModelWrapper;
+import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
 import org.eclipse.m2m.atl.engine.vm.ASMInterpreter;
@@ -43,6 +44,7 @@ import org.eclipse.m2m.atl.engine.vm.Debugger;
 import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
 import org.eclipse.m2m.atl.engine.vm.SimpleDebugger;
 import org.eclipse.m2m.atl.engine.vm.AtlSuperimposeModule.AtlSuperimposeModuleException;
+import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
 
 /**
@@ -59,6 +61,8 @@ public class RegularVMLauncher implements ILauncher {
 
 	private Map<String, ASM> libraries;
 
+	private boolean checkSameModel;
+	
 	public String getName() {
 		return LAUNCHER_NAME;
 	}
@@ -70,6 +74,7 @@ public class RegularVMLauncher implements ILauncher {
 	 *      java.lang.String, java.lang.String)
 	 */
 	public void addInModel(IModel model, String name, String referenceModelName) {
+		setCheckSameModel(model);
 		if (models.containsKey(name)) {
 			ATLLogger.warning(Messages.getString(
 					"RegularVMLauncher.MODEL_EVER_REGISTERED", new Object[] {name})); //$NON-NLS-1$
@@ -88,6 +93,7 @@ public class RegularVMLauncher implements ILauncher {
 	 *      java.lang.String, java.lang.String)
 	 */
 	public void addInOutModel(IModel model, String name, String referenceModelName) {
+		setCheckSameModel(model);
 		model.setIsTarget(true);
 		addInModel(model, name, referenceModelName);
 	}
@@ -99,6 +105,7 @@ public class RegularVMLauncher implements ILauncher {
 	 *      java.lang.String, java.lang.String)
 	 */
 	public void addOutModel(IModel model, String name, String referenceModelName) {
+		setCheckSameModel(model);
 		model.setIsTarget(true);
 		addInModel(model, name, referenceModelName);
 	}
@@ -129,6 +136,7 @@ public class RegularVMLauncher implements ILauncher {
 	public void initialize(Map<String, Object> options) {
 		models = new HashMap<String, IModel>();
 		libraries = new HashMap<String, ASM>();
+		checkSameModel = "false".equals(options.get("allowInterModelReferences")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -206,7 +214,7 @@ public class RegularVMLauncher implements ILauncher {
 				!"true".equals(options.get("disableAttributeHelperCache"))); //$NON-NLS-1$ //$NON-NLS-2$
 		env.addPermission("file.read"); //$NON-NLS-1$
 		env.addPermission("file.write"); //$NON-NLS-1$
-
+		
 		for (Iterator<String> i = models.keySet().iterator(); i.hasNext();) {
 			String mname = i.next();
 			env.addModel(mname, ((ASMModelWrapper)models.get(mname)).getAsmModel());
@@ -269,5 +277,12 @@ public class RegularVMLauncher implements ILauncher {
 	 */
 	public Object getLibrary(String libraryName) {
 		return libraries.get(libraryName);
+	}
+	
+	private void setCheckSameModel(IModel model) {
+		if (model instanceof ASMModelWrapper) {
+			ASMModel asmModel = ((ASMModelWrapper)model).getAsmModel();
+			((ASMEMFModel)asmModel).setCheckSameModel(checkSameModel);			
+		}
 	}
 }
