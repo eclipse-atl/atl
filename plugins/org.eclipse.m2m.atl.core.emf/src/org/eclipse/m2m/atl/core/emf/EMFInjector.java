@@ -39,19 +39,23 @@ public class EMFInjector implements IInjector {
 	public void inject(IModel sourceModel, Object source, Map<String, Object> options)
 			throws ATLCoreException {
 		Resource mainResource = null;
-		ResourceSet resourceSet = ((EMFModelFactory)sourceModel.getModelFactory()).getResourceSet();
-
-		String path = source.toString();
-		if (path != null) {
-			if (path.equals("#EMF")) { //$NON-NLS-1$
-				mainResource = EcorePackage.eINSTANCE.eResource();
-			} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
-				mainResource = resourceSet.getResource(URI.createURI(path).trimFragment(), true);
-			} else {
-				mainResource = resourceSet.getResource(URI.createURI(path), true);
-			}
+		if (source instanceof Resource) {
+			mainResource = (Resource)source;
 		} else {
-			throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE")); //$NON-NLS-1$
+			ResourceSet resourceSet = ((EMFModelFactory)sourceModel.getModelFactory()).getResourceSet();
+
+			String path = source.toString();
+			if (path != null) {
+				if (path.equals("#EMF")) { //$NON-NLS-1$
+					mainResource = EcorePackage.eINSTANCE.eResource();
+				} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
+					mainResource = resourceSet.getResource(URI.createURI(path).trimFragment(), true);
+				} else {
+					mainResource = resourceSet.getResource(URI.createURI(path), true);
+				}
+			} else {
+				throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE")); //$NON-NLS-1$
+			}
 		}
 
 		((EMFModel)sourceModel).setResource(mainResource);
