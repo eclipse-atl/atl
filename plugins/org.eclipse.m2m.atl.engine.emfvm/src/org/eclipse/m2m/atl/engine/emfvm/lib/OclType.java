@@ -75,6 +75,7 @@ public abstract class OclType {
 		nativeClasses.put("TransientLinkSet", TransientLinkSet.class); //$NON-NLS-1$
 		nativeClasses.put("TransientLink", TransientLink.class); //$NON-NLS-1$
 		nativeClasses.put("Map", HashMap.class); //$NON-NLS-1$
+		nativeClasses.put("Module", ASMModule.class); //$NON-NLS-1$
 
 		// should not use "new" on the following types
 		nativeClasses.put("String", String.class); //$NON-NLS-1$
