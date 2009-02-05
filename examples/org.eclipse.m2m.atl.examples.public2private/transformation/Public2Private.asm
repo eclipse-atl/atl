@@ -132,7 +132,10 @@
 		<constant value="visibility"/>
 		<constant value="public"/>
 		<constant value="J.=(J):J"/>
-		<constant value="83"/>
+		<constant value="association"/>
+		<constant value="J.oclIsUndefined():J"/>
+		<constant value="J.and(J):J"/>
+		<constant value="87"/>
 		<constant value="TransientLink"/>
 		<constant value="NTransientLink;.setRule(MATL!Rule;):V"/>
 		<constant value="publicAttribute"/>
@@ -149,6 +152,10 @@
 		<constant value="15:4-15:30"/>
 		<constant value="15:33-15:40"/>
 		<constant value="15:4-15:40"/>
+		<constant value="15:45-15:60"/>
+		<constant value="15:45-15:72"/>
+		<constant value="15:45-15:89"/>
+		<constant value="15:4-15:89"/>
 		<constant value="18:3-20:4"/>
 		<constant value="21:3-25:4"/>
 		<constant value="26:3-30:4"/>
@@ -776,22 +783,26 @@
 			<push arg="129"/>
 			<set arg="52"/>
 			<call arg="130"/>
+			<load arg="33"/>
+			<get arg="131"/>
+			<call arg="132"/>
+			<call arg="133"/>
 			<call arg="72"/>
-			<if arg="131"/>
+			<if arg="134"/>
 			<getasm/>
 			<get arg="1"/>
-			<push arg="132"/>
+			<push arg="135"/>
 			<push arg="9"/>
 			<new/>
 			<dup/>
 			<push arg="56"/>
-			<call arg="133"/>
+			<call arg="136"/>
 			<dup/>
-			<push arg="134"/>
+			<push arg="137"/>
 			<load arg="33"/>
-			<call arg="135"/>
+			<call arg="138"/>
 			<dup/>
-			<push arg="136"/>
+			<push arg="139"/>
 			<push arg="17"/>
 			<push arg="18"/>
 			<new/>
@@ -804,31 +815,7 @@
 			<dup/>
 			<load arg="33"/>
 			<set arg="19"/>
-			<call arg="137"/>
-			<dup/>
-			<push arg="138"/>
-			<push arg="17"/>
-			<push arg="18"/>
-			<new/>
-			<dup/>
-			<push arg="139"/>
-			<set arg="73"/>
-			<dup/>
-			<push arg="126"/>
-			<set arg="74"/>
-			<call arg="137"/>
-			<dup/>
-			<push arg="140"/>
-			<push arg="17"/>
-			<push arg="18"/>
-			<new/>
-			<dup/>
-			<push arg="139"/>
-			<set arg="73"/>
-			<dup/>
-			<push arg="126"/>
-			<set arg="74"/>
-			<call arg="137"/>
+			<call arg="140"/>
 			<dup/>
 			<push arg="141"/>
 			<push arg="17"/>
@@ -840,53 +827,81 @@
 			<dup/>
 			<push arg="126"/>
 			<set arg="74"/>
-			<call arg="137"/>
+			<call arg="140"/>
+			<dup/>
+			<push arg="143"/>
+			<push arg="17"/>
+			<push arg="18"/>
+			<new/>
+			<dup/>
+			<push arg="142"/>
+			<set arg="73"/>
+			<dup/>
+			<push arg="126"/>
+			<set arg="74"/>
+			<call arg="140"/>
+			<dup/>
+			<push arg="144"/>
+			<push arg="17"/>
+			<push arg="18"/>
+			<new/>
+			<dup/>
+			<push arg="145"/>
+			<set arg="73"/>
+			<dup/>
+			<push arg="126"/>
+			<set arg="74"/>
+			<call arg="140"/>
 			<pusht/>
-			<call arg="143"/>
+			<call arg="146"/>
 			<enditerate/>
 		</code>
 		<linenumbertable>
-			<lne id="144" begin="7" end="7"/>
-			<lne id="145" begin="7" end="8"/>
-			<lne id="146" begin="9" end="14"/>
-			<lne id="147" begin="7" end="15"/>
-			<lne id="148" begin="30" end="44"/>
-			<lne id="149" begin="45" end="56"/>
-			<lne id="150" begin="57" end="68"/>
-			<lne id="151" begin="69" end="80"/>
+			<lne id="147" begin="7" end="7"/>
+			<lne id="148" begin="7" end="8"/>
+			<lne id="149" begin="9" end="14"/>
+			<lne id="150" begin="7" end="15"/>
+			<lne id="151" begin="16" end="16"/>
+			<lne id="152" begin="16" end="17"/>
+			<lne id="153" begin="16" end="18"/>
+			<lne id="154" begin="7" end="19"/>
+			<lne id="155" begin="34" end="48"/>
+			<lne id="156" begin="49" end="60"/>
+			<lne id="157" begin="61" end="72"/>
+			<lne id="158" begin="73" end="84"/>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="1" name="134" begin="6" end="82"/>
-			<lve slot="0" name="31" begin="0" end="83"/>
+			<lve slot="1" name="137" begin="6" end="86"/>
+			<lve slot="0" name="31" begin="0" end="87"/>
 		</localvariabletable>
 	</operation>
-	<operation name="152">
+	<operation name="159">
 		<context type="7"/>
 		<parameters>
-			<parameter name="33" type="153"/>
+			<parameter name="33" type="160"/>
 		</parameters>
 		<code>
 			<load arg="33"/>
-			<push arg="134"/>
-			<call arg="154"/>
+			<push arg="137"/>
+			<call arg="161"/>
 			<store arg="43"/>
 			<load arg="33"/>
-			<push arg="136"/>
-			<call arg="155"/>
-			<store arg="156"/>
-			<load arg="33"/>
-			<push arg="138"/>
-			<call arg="155"/>
-			<store arg="157"/>
-			<load arg="33"/>
-			<push arg="140"/>
-			<call arg="155"/>
-			<store arg="158"/>
+			<push arg="139"/>
+			<call arg="162"/>
+			<store arg="163"/>
 			<load arg="33"/>
 			<push arg="141"/>
-			<call arg="155"/>
-			<store arg="159"/>
-			<load arg="156"/>
+			<call arg="162"/>
+			<store arg="164"/>
+			<load arg="33"/>
+			<push arg="143"/>
+			<call arg="162"/>
+			<store arg="165"/>
+			<load arg="33"/>
+			<push arg="144"/>
+			<call arg="162"/>
+			<store arg="166"/>
+			<load arg="163"/>
 			<dup/>
 			<push arg="128"/>
 			<getasm/>
@@ -894,124 +909,124 @@
 			<push arg="9"/>
 			<new/>
 			<dup/>
-			<push arg="160"/>
+			<push arg="167"/>
 			<set arg="52"/>
 			<call arg="44"/>
-			<call arg="161"/>
+			<call arg="168"/>
 			<pop/>
-			<load arg="157"/>
+			<load arg="164"/>
 			<dup/>
 			<push arg="52"/>
 			<getasm/>
-			<push arg="162"/>
+			<push arg="169"/>
 			<load arg="43"/>
 			<get arg="52"/>
 			<get arg="23"/>
 			<call arg="107"/>
 			<call arg="44"/>
-			<call arg="161"/>
+			<call arg="168"/>
 			<dup/>
-			<push arg="163"/>
+			<push arg="170"/>
 			<getasm/>
 			<load arg="43"/>
-			<call arg="164"/>
+			<call arg="171"/>
 			<call arg="44"/>
-			<call arg="161"/>
+			<call arg="168"/>
 			<dup/>
 			<push arg="73"/>
 			<getasm/>
 			<load arg="43"/>
 			<get arg="73"/>
 			<call arg="44"/>
-			<call arg="161"/>
+			<call arg="168"/>
 			<pop/>
-			<load arg="158"/>
+			<load arg="165"/>
 			<dup/>
 			<push arg="52"/>
 			<getasm/>
-			<push arg="165"/>
+			<push arg="172"/>
 			<load arg="43"/>
 			<get arg="52"/>
 			<get arg="23"/>
 			<call arg="107"/>
 			<call arg="44"/>
-			<call arg="161"/>
+			<call arg="168"/>
 			<dup/>
-			<push arg="163"/>
+			<push arg="170"/>
 			<getasm/>
 			<load arg="43"/>
-			<call arg="164"/>
+			<call arg="171"/>
 			<call arg="44"/>
-			<call arg="161"/>
+			<call arg="168"/>
 			<dup/>
-			<push arg="166"/>
+			<push arg="173"/>
 			<getasm/>
-			<load arg="159"/>
+			<load arg="166"/>
 			<call arg="44"/>
-			<call arg="161"/>
+			<call arg="168"/>
 			<pop/>
-			<load arg="159"/>
+			<load arg="166"/>
 			<dup/>
 			<push arg="52"/>
 			<getasm/>
 			<load arg="43"/>
 			<get arg="52"/>
 			<call arg="44"/>
-			<call arg="161"/>
+			<call arg="168"/>
 			<dup/>
 			<push arg="73"/>
 			<getasm/>
 			<load arg="43"/>
 			<get arg="73"/>
 			<call arg="44"/>
-			<call arg="161"/>
+			<call arg="168"/>
 			<pop/>
 		</code>
 		<linenumbertable>
-			<lne id="167" begin="24" end="29"/>
-			<lne id="168" begin="21" end="31"/>
-			<lne id="148" begin="20" end="32"/>
-			<lne id="169" begin="37" end="37"/>
-			<lne id="170" begin="38" end="38"/>
-			<lne id="171" begin="38" end="39"/>
-			<lne id="172" begin="38" end="40"/>
-			<lne id="173" begin="37" end="41"/>
-			<lne id="174" begin="34" end="43"/>
-			<lne id="175" begin="47" end="47"/>
-			<lne id="176" begin="47" end="48"/>
-			<lne id="177" begin="44" end="50"/>
-			<lne id="178" begin="54" end="54"/>
-			<lne id="179" begin="54" end="55"/>
-			<lne id="180" begin="51" end="57"/>
-			<lne id="149" begin="33" end="58"/>
-			<lne id="181" begin="63" end="63"/>
-			<lne id="182" begin="64" end="64"/>
-			<lne id="183" begin="64" end="65"/>
-			<lne id="184" begin="64" end="66"/>
-			<lne id="185" begin="63" end="67"/>
-			<lne id="186" begin="60" end="69"/>
-			<lne id="187" begin="73" end="73"/>
-			<lne id="188" begin="73" end="74"/>
-			<lne id="189" begin="70" end="76"/>
-			<lne id="190" begin="80" end="80"/>
-			<lne id="191" begin="77" end="82"/>
-			<lne id="150" begin="59" end="83"/>
-			<lne id="192" begin="88" end="88"/>
-			<lne id="193" begin="88" end="89"/>
-			<lne id="194" begin="85" end="91"/>
-			<lne id="195" begin="95" end="95"/>
-			<lne id="196" begin="95" end="96"/>
-			<lne id="197" begin="92" end="98"/>
-			<lne id="151" begin="84" end="99"/>
+			<lne id="174" begin="24" end="29"/>
+			<lne id="175" begin="21" end="31"/>
+			<lne id="155" begin="20" end="32"/>
+			<lne id="176" begin="37" end="37"/>
+			<lne id="177" begin="38" end="38"/>
+			<lne id="178" begin="38" end="39"/>
+			<lne id="179" begin="38" end="40"/>
+			<lne id="180" begin="37" end="41"/>
+			<lne id="181" begin="34" end="43"/>
+			<lne id="182" begin="47" end="47"/>
+			<lne id="183" begin="47" end="48"/>
+			<lne id="184" begin="44" end="50"/>
+			<lne id="185" begin="54" end="54"/>
+			<lne id="186" begin="54" end="55"/>
+			<lne id="187" begin="51" end="57"/>
+			<lne id="156" begin="33" end="58"/>
+			<lne id="188" begin="63" end="63"/>
+			<lne id="189" begin="64" end="64"/>
+			<lne id="190" begin="64" end="65"/>
+			<lne id="191" begin="64" end="66"/>
+			<lne id="192" begin="63" end="67"/>
+			<lne id="193" begin="60" end="69"/>
+			<lne id="194" begin="73" end="73"/>
+			<lne id="195" begin="73" end="74"/>
+			<lne id="196" begin="70" end="76"/>
+			<lne id="197" begin="80" end="80"/>
+			<lne id="198" begin="77" end="82"/>
+			<lne id="157" begin="59" end="83"/>
+			<lne id="199" begin="88" end="88"/>
+			<lne id="200" begin="88" end="89"/>
+			<lne id="201" begin="85" end="91"/>
+			<lne id="202" begin="95" end="95"/>
+			<lne id="203" begin="95" end="96"/>
+			<lne id="204" begin="92" end="98"/>
+			<lne id="158" begin="84" end="99"/>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="3" name="136" begin="7" end="99"/>
-			<lve slot="4" name="138" begin="11" end="99"/>
-			<lve slot="5" name="140" begin="15" end="99"/>
-			<lve slot="6" name="141" begin="19" end="99"/>
-			<lve slot="2" name="134" begin="3" end="99"/>
+			<lve slot="3" name="139" begin="7" end="99"/>
+			<lve slot="4" name="141" begin="11" end="99"/>
+			<lve slot="5" name="143" begin="15" end="99"/>
+			<lve slot="6" name="144" begin="19" end="99"/>
+			<lve slot="2" name="137" begin="3" end="99"/>
 			<lve slot="0" name="31" begin="0" end="99"/>
-			<lve slot="1" name="198" begin="0" end="99"/>
+			<lve slot="1" name="205" begin="0" end="99"/>
 		</localvariabletable>
 	</operation>
 </asm>
