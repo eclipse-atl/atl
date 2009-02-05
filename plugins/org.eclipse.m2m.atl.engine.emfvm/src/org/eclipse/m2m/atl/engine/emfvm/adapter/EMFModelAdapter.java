@@ -599,7 +599,10 @@ public class EMFModelAdapter implements IModelAdapter {
 
 		} catch (ClassCastException e) {
 			throw new VMException(frame, e.getMessage(), e);
+		} catch (ArrayStoreException e) {
+			throw new VMException(frame, e.getMessage(), e);
 		}
+
 
 	}
 
