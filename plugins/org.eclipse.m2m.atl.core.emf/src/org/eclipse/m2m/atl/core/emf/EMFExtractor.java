@@ -46,7 +46,7 @@ public class EMFExtractor implements IExtractor {
 		String path = target.toString();
 		if (path != null) {
 			if (((EMFModel)targetModel).getResource() != null) {
-				extract(resourceSet, ((EMFModel)targetModel).getResource(), path, contentType, options);
+				extract(resourceSet, (EMFModel)targetModel, path, contentType, options);
 			} else {
 				throw new ATLCoreException(Messages
 						.getString("EMFExtractor.NO_RESOURCE", new Object[] {path})); //$NON-NLS-1$
@@ -65,7 +65,7 @@ public class EMFExtractor implements IExtractor {
 		extract(targetModel, target, Collections.<String, Object> emptyMap());
 	}
 
-	private void extract(ResourceSet resourceSet, Resource resource, String path, Object contentType,
+	private void extract(ResourceSet resourceSet, EMFModel model, String path, Object contentType,
 			Map<String, Object> options) throws ATLCoreException {
 		// TODO do not systematically recreate the resource
 		Resource newResource = null;
@@ -77,8 +77,9 @@ public class EMFExtractor implements IExtractor {
 			// (String)contentType);
 			newResource = resourceSet.createResource(URI.createFileURI(path));
 		}
-		newResource.getContents().addAll(resource.getContents());
-
+		newResource.getContents().addAll(model.getResource().getContents());
+		model.setResource(newResource);
+		
 		// default options, may be replaced
 		Map<String, Object> extractOptions = new HashMap<String, Object>();
 		extractOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1"); //$NON-NLS-1$
@@ -90,7 +91,6 @@ public class EMFExtractor implements IExtractor {
 		} catch (IOException e) {
 			throw new ATLCoreException(Messages.getString("EMFExtractor.ERROR_EXTRACTING", path), e); //$NON-NLS-1$
 		}
-		resourceSet.getResources().remove(newResource);
 	}
 
 }
