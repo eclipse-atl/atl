@@ -175,7 +175,7 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 				ModelFactory factory = AtlBuildListener.getModelFactory(launcherInstance
 						.getDefaultModelFactoryName());
 				IReferenceModel refiningTraceMetamodel = factory
-						.getBuiltInResource(LauncherService.REFINING_TRACE_METAMODEL);
+						.getBuiltInResource(LauncherService.REFINING_TRACE_METAMODEL + ".ecore"); //$NON-NLS-1$
 				getProject().addReference(LauncherService.REFINING_TRACE_METAMODEL, refiningTraceMetamodel);
 				Map<String, Object> modelOptions = new HashMap<String, Object>();
 				modelOptions.put(OPTION_MODEL_PATH, "temp"); //$NON-NLS-1$ 
