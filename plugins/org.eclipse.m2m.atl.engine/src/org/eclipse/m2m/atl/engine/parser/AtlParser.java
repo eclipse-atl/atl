@@ -93,7 +93,7 @@ public final class AtlParser {
 		final ASMModel[] ret = new ASMModel[2];
 		final ModelLoader ml = amh.createModelLoader();
 		final ASMModel atlmm = ml.getATL();
-		final ASMModel pbmm = ml.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
+		final ASMModel pbmm = ml.getBuiltInMetaModel("Problem.ecore"); //$NON-NLS-1$
 
 		ret[0] = ml.newModel("temp", "temp", atlmm); //$NON-NLS-1$ //$NON-NLS-2$
 		ret[1] = ml.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
@@ -168,7 +168,7 @@ public final class AtlParser {
 		final ASMModel[] ret = new ASMModel[2];
 		final ModelLoader ml = amh.createModelLoader();
 		final ASMModel atlmm = ml.getATL();
-		final ASMModel pbmm = ml.getBuiltInMetaModel("Problem"); //$NON-NLS-1$
+		final ASMModel pbmm = ml.getBuiltInMetaModel("Problem.ecore"); //$NON-NLS-1$
 
 		try {
 			ret[0] = ml.newModel("temp", "temp", atlmm); //$NON-NLS-1$ //$NON-NLS-2$
