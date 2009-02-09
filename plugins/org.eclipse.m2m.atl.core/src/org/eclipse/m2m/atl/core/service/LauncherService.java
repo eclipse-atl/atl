@@ -86,7 +86,7 @@ public final class LauncherService {
 		// REFINING TRACE MODE SUPPORT {
 		if (isRefiningTraceMode) {
 			ModelFactory factory = modelFactories.get(REFINING_TRACE_METAMODEL);
-			IReferenceModel refiningTraceMetamodel = factory.getBuiltInResource(REFINING_TRACE_METAMODEL);
+			IReferenceModel refiningTraceMetamodel = factory.getBuiltInResource(REFINING_TRACE_METAMODEL + ".ecore"); //$NON-NLS-1$
 
 			Map<String, Object> modelOptions = new HashMap<String, Object>();
 			modelOptions.put("path", "temp"); //$NON-NLS-1$ //$NON-NLS-2$
