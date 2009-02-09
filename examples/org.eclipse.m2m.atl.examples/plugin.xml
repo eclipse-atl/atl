@@ -14,7 +14,7 @@
             class="org.eclipse.m2m.atl.examples.Public2PrivateExampleWizard"
             hasPages="false"
             id="org.eclipse.m2m.atl.examples.public2private"
-            name="Public to private"
+            name="Public to private Example"
             icon="icons/atllogo_icon.gif"
             project="true">
          <description>
