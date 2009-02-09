@@ -152,7 +152,7 @@ public class EMFModelLoader extends ModelLoader {
 	public ASMModel getATL() {
 		if (atlmm == null) {
 			try {
-				atlmm = loadModel("ATL", getMOF(), ATLResourceProvider.getURL("ATL").openStream());
+				atlmm = loadModel("ATL", getMOF(), ATLResourceProvider.getURL("ATL.ecore").openStream());
 			} catch (IOException e) {
 				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
