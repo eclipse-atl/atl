@@ -463,8 +463,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 			// WARNING: Allowed manual setting of XMI ID for the current model element
 			// This operation is advised against but seems necessary of some special case
 			Resource r = ((ASMEMFModel)getModel()).getExtent();
-			logger.warning("\t\tManual setting of " + this + ":" + getType() + " XMI ID.");
-			((XMLResource)r).setID(object, value.toString());
+//			logger.warning("\t\tManual setting of " + this + ":" + getType() + " XMI ID.");
+			((XMLResource)r).setID(object, ((ASMString)value).getSymbol());
 			return;
 		}
 		if (frame != null) {
