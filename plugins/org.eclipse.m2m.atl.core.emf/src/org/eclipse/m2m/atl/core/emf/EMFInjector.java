@@ -30,48 +30,60 @@ import org.eclipse.m2m.atl.core.IModel;
  */
 public class EMFInjector implements IInjector {
 
+	/** EMF loadOnDemand option. */
+	public static final String OPTION_LOAD_ON_DEMAND = "loadOnDemand"; //$NON-NLS-1$
+
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.Object,
+	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.String,
 	 *      java.util.Map)
 	 */
-	public void inject(IModel sourceModel, Object source, Map<String, Object> options)
+	public void inject(IModel sourceModel, String source, Map<String, Object> options)
 			throws ATLCoreException {
+		boolean loadOnDemand = true;
+		if (options.containsKey(OPTION_LOAD_ON_DEMAND)) {
+			loadOnDemand = options.get(OPTION_LOAD_ON_DEMAND).toString().equals("true"); //$NON-NLS-1$
+		}
 		Resource mainResource = null;
-		if (source instanceof Resource) {
-			mainResource = (Resource)source;
-		} else {
-			ResourceSet resourceSet = ((EMFModelFactory)sourceModel.getModelFactory()).getResourceSet();
-
-			String path = source.toString();
-			if (path != null) {
-				if (path.equals("#EMF")) { //$NON-NLS-1$
-					mainResource = EcorePackage.eINSTANCE.eResource();
-				} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
-					mainResource = resourceSet.getResource(URI.createURI(path).trimFragment(), true);
-				} else {
-					mainResource = resourceSet.getResource(URI.createURI(path), true);
-				}
+		ResourceSet resourceSet = ((EMFModelFactory)sourceModel.getModelFactory()).getResourceSet();
+		String path = source.toString();
+		if (path != null) {
+			if (path.equals("#EMF")) { //$NON-NLS-1$
+				mainResource = EcorePackage.eINSTANCE.eResource();
+			} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
+				mainResource = resourceSet.getResource(URI.createURI(path).trimFragment(), loadOnDemand);
 			} else {
-				throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE")); //$NON-NLS-1$
+				mainResource = resourceSet.getResource(URI.createURI(path), loadOnDemand);
 			}
+		} else {
+			throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE")); //$NON-NLS-1$
 		}
-
-		((EMFModel)sourceModel).setResource(mainResource);
-
-		if (sourceModel instanceof EMFReferenceModel) {
-			((EMFReferenceModel)sourceModel).register();
-		}
+		inject((EMFModel)sourceModel, mainResource);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.Object)
+	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.String)
 	 */
-	public void inject(IModel sourceModel, Object source) throws ATLCoreException {
+	public void inject(IModel sourceModel, String source) throws ATLCoreException {
 		inject(sourceModel, source, Collections.<String, Object> emptyMap());
+	}
+
+	/**
+	 * Injects data into an IModel from a {@link Resource}.
+	 * 
+	 * @param sourceModel
+	 *            the IModel where to inject
+	 * @param mainResource
+	 *            the main Resource
+	 */
+	public void inject(EMFModel sourceModel, Resource mainResource) {
+		sourceModel.setResource(mainResource);
+		if (sourceModel instanceof EMFReferenceModel) {
+			((EMFReferenceModel)sourceModel).register();
+		}
 	}
 
 }
