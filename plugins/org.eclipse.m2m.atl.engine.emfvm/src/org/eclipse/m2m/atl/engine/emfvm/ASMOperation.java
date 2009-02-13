@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.21 2009/01/20 10:19:10 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.22 2009/02/13 08:43:10 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -403,7 +403,7 @@ public class ASMOperation extends Operation {
 										frame,
 										Messages
 												.getString(
-														"ASMOperation.OPERATIONNOTFOUND", new Object[] {execEnv.toPrettyPrintedString(self), getMethodSignature(bytecode.getOperand().toString(), getTypesOf(arguments))})); //$NON-NLS-1$)
+														"ASMOperation.OPERATIONNOTFOUND", execEnv.toPrettyPrintedString(self), getMethodSignature(bytecode.getOperand().toString(), getTypesOf(arguments)))); //$NON-NLS-1$)
 							}
 							s = execEnv.getModelAdapter().invoke(m, self, arguments);
 						}

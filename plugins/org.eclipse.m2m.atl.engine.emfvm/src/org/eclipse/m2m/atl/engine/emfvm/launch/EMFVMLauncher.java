@@ -42,7 +42,7 @@ public class EMFVMLauncher implements ILauncher {
 	 */
 	public void addInModel(IModel model, String name, String referenceModelName) {
 		if (models.containsKey(name)) {
-			ATLLogger.warning(Messages.getString("EMFVMLauncher.MODEL_EVER_REGISTERED", new Object[] {name})); //$NON-NLS-1$
+			ATLLogger.warning(Messages.getString("EMFVMLauncher.MODEL_EVER_REGISTERED", name)); //$NON-NLS-1$
 		} else {
 			models.put(name, model);
 		}
@@ -83,7 +83,7 @@ public class EMFVMLauncher implements ILauncher {
 	public void addLibrary(String name, Object library) {
 		if (libraries.containsKey(name)) {
 			ATLLogger.warning(Messages
-					.getString("EMFVMLauncher.LIBRARY_EVER_REGISTERED", new Object[] {name})); //$NON-NLS-1$
+					.getString("EMFVMLauncher.LIBRARY_EVER_REGISTERED", name)); //$NON-NLS-1$
 		} else {
 			ASMXMLReader reader = new ASMXMLReader();
 			ASM asmLibrary = reader.read((InputStream)library);

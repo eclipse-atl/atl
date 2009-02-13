@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: IModelAdapter.java,v 1.2 2008/12/10 09:27:59 wpiers Exp $
+ * $Id: IModelAdapter.java,v 1.3 2009/02/13 08:43:10 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.adapter;
@@ -57,6 +57,18 @@ public interface IModelAdapter {
 	 */
 	void set(AbstractStackFrame frame, Object eo, String name, Object value);
 
+	/**
+	 * Unsets a value on an object in the given frame.
+	 * 
+	 * @param frame
+	 *            the {@link AbstractStackFrame}
+	 * @param eo
+	 *            the object
+	 * @param name
+	 *            the name of the attribute / feature which will contain the value
+	 */
+	void unSet(AbstractStackFrame frame, Object eo, String name);
+	
 	/**
 	 * Deletes an object on the given frame.
 	 * 

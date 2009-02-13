@@ -56,9 +56,9 @@ public final class Messages {
 	 * @param arguments
 	 *            Arguments for the String formatting.
 	 * @return formatted {@link String}.
-	 * @see MessageFormat#format(String, Object[])
+	 * @see MessageFormat#format(String, Object...)
 	 */
-	public static String getString(String key, Object[] arguments) {
+	public static String getString(String key, Object... arguments) {
 		if (arguments == null) {
 			return getString(key);
 		}

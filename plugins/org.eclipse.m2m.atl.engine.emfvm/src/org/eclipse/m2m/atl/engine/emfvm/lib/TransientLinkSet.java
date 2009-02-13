@@ -82,7 +82,7 @@ public class TransientLinkSet {
 			TransientLink other = linksBySourceElement.get(se);
 			if (other != null) {
 				throw new VMException(null, Messages.getString(
-						"TransientLinkSet.DUPLICATESRULES", new Object[] {se, other.getRule(), tl.getRule()})); //$NON-NLS-1$
+						"TransientLinkSet.DUPLICATESRULES", se, other.getRule(), tl.getRule())); //$NON-NLS-1$
 			}
 			linksBySourceElement.put(se, tl);
 		}

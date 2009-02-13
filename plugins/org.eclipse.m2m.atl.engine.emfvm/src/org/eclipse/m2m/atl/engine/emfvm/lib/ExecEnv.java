@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.29 2009/01/20 10:20:13 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.30 2009/02/13 08:43:10 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -1639,7 +1639,7 @@ public class ExecEnv {
 		}
 		if (ret == null) {
 			if (debug) {
-				ATLLogger.info(Messages.getString("ExecEnv.LOOKINGSUPERTYPES", new Object[] {name})); //$NON-NLS-1$
+				ATLLogger.info(Messages.getString("ExecEnv.LOOKINGSUPERTYPES", name)); //$NON-NLS-1$
 			}
 			for (Iterator<Object> i = modelAdapter.getSupertypes(type).iterator(); i.hasNext()
 					&& (ret == null);) {
@@ -1932,11 +1932,11 @@ public class ExecEnv {
 			ret = referenceModel.getMetaElementByName((String)me);
 			if (ret == null) {
 				throw new VMException(frame, Messages.getString(
-						"ExecEnv.CANNOTFINDCLASS", new Object[] {me, mname})); //$NON-NLS-1$
+						"ExecEnv.CANNOTFINDCLASS", me, mname)); //$NON-NLS-1$
 			}
 		} else {
 			throw new VMException(frame, Messages.getString(
-					"ExecEnv.CANNOTFINDMETAMODEL", new Object[] {mname})); //$NON-NLS-1$
+					"ExecEnv.CANNOTFINDMETAMODEL", mname)); //$NON-NLS-1$
 		}
 		return ret;
 	}
@@ -1964,7 +1964,7 @@ public class ExecEnv {
 		}
 		if (s == null) {
 			throw new VMException(frame, Messages.getString(
-					"ExecEnv.CANNOTCREATE", new Object[] {toPrettyPrintedString(ec)})); //$NON-NLS-1$
+					"ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
 		}
 		return s;
 	}
@@ -1985,18 +1985,18 @@ public class ExecEnv {
 		IModel model = modelsByName.get(modelName);
 		if (model == null) {
 			throw new VMException(frame, Messages.getString(
-					"ExecEnv.MODEL_NOT_FOUND", new Object[] {modelName})); //$NON-NLS-1$
+					"ExecEnv.MODEL_NOT_FOUND", modelName)); //$NON-NLS-1$
 		}
 		if (model.isTarget()) {
 			s = model.newElement(ec);
 		}
 		if (!model.getReferenceModel().isModelOf(ec)) {
 			throw new VMException(frame, Messages.getString(
-					"ExecEnv.UNABLE_TO_CREATE", new Object[] {ec, modelName})); //$NON-NLS-1$
+					"ExecEnv.UNABLE_TO_CREATE", ec, modelName)); //$NON-NLS-1$
 		}
 		if (s == null) {
 			throw new VMException(frame, Messages.getString(
-					"ExecEnv.CANNOTCREATE", new Object[] {toPrettyPrintedString(ec)})); //$NON-NLS-1$
+					"ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
 		}
 		return s;
 	}

@@ -54,7 +54,7 @@ public class EnumLiteral implements HasFields {
 			return this.name;
 		} else {
 			throw new VMException(frame, Messages.getString(
-					"EnumLiteral.ACCESSERROR", new Object[] {literalName})); //$NON-NLS-1$
+					"EnumLiteral.ACCESSERROR", literalName)); //$NON-NLS-1$
 		}
 	}
 
@@ -73,7 +73,7 @@ public class EnumLiteral implements HasFields {
 			}
 		} else {
 			throw new VMException(frame, Messages.getString(
-					"EnumLiteral.ASSIGNMENTERROR", new Object[] {value, literalName})); //$NON-NLS-1$
+					"EnumLiteral.ASSIGNMENTERROR", value, literalName)); //$NON-NLS-1$
 		}
 	}
 

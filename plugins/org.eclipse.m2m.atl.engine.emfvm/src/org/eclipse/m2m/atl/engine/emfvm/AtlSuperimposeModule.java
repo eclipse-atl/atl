@@ -129,7 +129,7 @@ public class AtlSuperimposeModule {
 				throw new AtlSuperimposeModuleException(
 						Messages
 								.getString(
-										"AtlSuperimposeModule.MAINPATTERNNOTEQUAL", new Object[] {ins1, ins2, String.valueOf(i)})); //$NON-NLS-1$
+										"AtlSuperimposeModule.MAINPATTERNNOTEQUAL", ins1, ins2, String.valueOf(i))); //$NON-NLS-1$
 			}
 		}
 	}
@@ -148,7 +148,7 @@ public class AtlSuperimposeModule {
 			throw new AtlSuperimposeModuleException(
 					Messages
 							.getString(
-									"AtlSuperimposeModule.UNEXPECTEDINSTRUCTIONCOUNT", new Object[] {String.valueOf(instructions.size())})); //$NON-NLS-1$
+									"AtlSuperimposeModule.UNEXPECTEDINSTRUCTIONCOUNT", String.valueOf(instructions.size()))); //$NON-NLS-1$
 		}
 		final String instr16 = instructions.get(15).toString();
 		if (!instr16.equals("set col")) { //$NON-NLS-1$
@@ -322,7 +322,7 @@ public class AtlSuperimposeModule {
 				throw new AtlSuperimposeModuleException(
 						Messages
 								.getString(
-										"AtlSuperimposeModule.PATTERNNOTEQUAL", new Object[] {op1.getName(), Bytecode.OPCODENAMES[i1], Bytecode.OPCODENAMES[i2], String.valueOf(i)})); //$NON-NLS-1$
+										"AtlSuperimposeModule.PATTERNNOTEQUAL", op1.getName(), Bytecode.OPCODENAMES[i1], Bytecode.OPCODENAMES[i2], String.valueOf(i))); //$NON-NLS-1$
 			}
 		}
 	}
@@ -343,7 +343,7 @@ public class AtlSuperimposeModule {
 			throw new AtlSuperimposeModuleException(
 					Messages
 							.getString(
-									"AtlSuperimposeModule.INSTRUCTIONCOUNTPROBLEM", new Object[] {String.valueOf(patternLength), op.getName()})); //$NON-NLS-1$
+									"AtlSuperimposeModule.INSTRUCTIONCOUNTPROBLEM", String.valueOf(patternLength), op.getName())); //$NON-NLS-1$
 		}
 		for (int i = 0; i < instr.size() - patternLength; i++) {
 			int i1 = instr.get(i).getOpcode();
@@ -352,7 +352,7 @@ public class AtlSuperimposeModule {
 				throw new AtlSuperimposeModuleException(
 						Messages
 								.getString(
-										"AtlSuperimposeModule.PATTERNDOESNOTREPEAT", new Object[] {String.valueOf(patternLength), op.getName(), Bytecode.OPCODENAMES[i1], Bytecode.OPCODENAMES[i2], String.valueOf(i)})); //$NON-NLS-1$
+										"AtlSuperimposeModule.PATTERNDOESNOTREPEAT", String.valueOf(patternLength), op.getName(), Bytecode.OPCODENAMES[i1], Bytecode.OPCODENAMES[i2], String.valueOf(i))); //$NON-NLS-1$
 			}
 		}
 	}

@@ -296,6 +296,17 @@ public class EMFModelAdapter implements IModelAdapter {
 						return localVars[0];
 					}
 				});
+		//TODO document
+		operationsByName.put("refUnSetValue", new Operation(3) { //$NON-NLS-1$
+			@Override
+			public Object exec(AbstractStackFrame frame) {
+				Object[] localVars = frame.getLocalVars();
+				if (localVars[0] instanceof EObject) {
+					EMFModelAdapter.this.unSet(frame, (EObject)localVars[0], (String)localVars[1]);
+				}
+				return localVars[0];
+			}
+		});
 		operationsByName.put("oclType", new Operation(1) { //$NON-NLS-1$
 					@Override
 					public Object exec(AbstractStackFrame frame) {
@@ -323,7 +334,7 @@ public class EMFModelAdapter implements IModelAdapter {
 									.getOclTypeFromObject(localVars[0])));
 						} else {
 							throw new VMException(frame, Messages.getString(
-									"EMFModelAdapter.UNHANDLEDTYPE", new Object[] {localVars[1]})); //$NON-NLS-1$
+									"EMFModelAdapter.UNHANDLEDTYPE", localVars[1])); //$NON-NLS-1$
 						}
 					}
 				});
@@ -340,7 +351,7 @@ public class EMFModelAdapter implements IModelAdapter {
 							return new Boolean(selfType.conformsTo((OclType)localVars[1]));
 						} else {
 							throw new VMException(frame, Messages.getString(
-									"EMFModelAdapter.UNHANDLEDTYPE", new Object[] {localVars[1]})); //$NON-NLS-1$
+									"EMFModelAdapter.UNHANDLEDTYPE", localVars[1])); //$NON-NLS-1$
 						}
 					}
 				});
@@ -371,7 +382,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						IModel model = frame.getExecEnv().getModel(localVars[1]);
 						if (model == null) {
 							throw new VMException(frame, Messages.getString(
-									"EMFModelAdapter.MODELNOTFOUND", new Object[] {localVars[1]})); //$NON-NLS-1$
+									"EMFModelAdapter.MODELNOTFOUND", localVars[1])); //$NON-NLS-1$
 						}
 						return model.getElementsByType(localVars[0]);
 					}
@@ -458,26 +469,30 @@ public class EMFModelAdapter implements IModelAdapter {
 	 *      java.lang.Object, java.lang.String)
 	 */
 	public Object get(AbstractStackFrame frame, Object modelElement, String name) {
-		EObject eo = (EObject)modelElement;
 		Object ret = null;
 
-		EClass ec = eo.eClass();
-
-		if ((frame != null) && execEnv.isHelper(ec, name)) {
-			ret = execEnv.getHelperValue(frame, ec, eo, name);
-		} else if ("__xmiID__".equals(name)) { //$NON-NLS-1$
-			ret = eo.eResource();
+		if (modelElement == null || modelElement.equals(OclUndefined.SINGLETON)) {
+			throw new VMException(frame, Messages.getString("EMFModelAdapter.GET_PROBLEM", name)); //$NON-NLS-1$
 		} else {
-			EStructuralFeature sf = ec.getEStructuralFeature(name);
-			if (sf == null) {
-				throw new VMException(frame, Messages.getString(
-						"EMFModelAdapter.FEATURE_NOT_EXISTS", new Object[] {name, ec.getName()})); //$NON-NLS-1$
+			EObject eo = (EObject)modelElement;
+			EClass ec = eo.eClass();
+
+			if ((frame != null) && execEnv.isHelper(ec, name)) {
+				ret = execEnv.getHelperValue(frame, ec, eo, name);
+			} else if ("__xmiID__".equals(name)) { //$NON-NLS-1$
+				ret = eo.eResource();
+			} else {
+				EStructuralFeature sf = ec.getEStructuralFeature(name);
+				if (sf == null) {
+					throw new VMException(frame, Messages.getString(
+							"EMFModelAdapter.FEATURE_NOT_EXISTS", new Object[] {name, ec.getName()})); //$NON-NLS-1$
+				}
+				Object val = eo.eGet(sf);
+				if (val == null) {
+					val = OclUndefined.SINGLETON;
+				}
+				ret = val;
 			}
-			Object val = eo.eGet(sf);
-			if (val == null) {
-				val = OclUndefined.SINGLETON;
-			}
-			ret = val;
 		}
 		return ret;
 	}
@@ -511,7 +526,7 @@ public class EMFModelAdapter implements IModelAdapter {
 
 		if (feature == null) {
 			throw new VMException(frame, Messages.getString(
-					"EMFModelAdapter.FEATURE_NOT_EXISTS", new Object[] {name, eo.eClass().getName()})); //$NON-NLS-1$
+					"EMFModelAdapter.FEATURE_NOT_EXISTS", name, eo.eClass().getName())); //$NON-NLS-1$
 		}
 
 		// makes it possible to use an integer to set a floating point property
@@ -535,7 +550,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						EEnum eenum = (EEnum)type;
 						for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
 							Object v = i.next();
-							//oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());
+							// oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());
 							oldCol.add(eenum.getEEnumLiteralByLiteral(v.toString()).getInstance());
 						}
 					} else if (allowInterModelReferences) {
@@ -603,7 +618,22 @@ public class EMFModelAdapter implements IModelAdapter {
 			throw new VMException(frame, e.getMessage(), e);
 		}
 
+	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#unSet(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame, java.lang.Object, java.lang.String)
+	 */
+	public void unSet(AbstractStackFrame frame, Object modelElement, String name) {
+		final EObject eo = (EObject)modelElement;
+		final EStructuralFeature feature = eo.eClass().getEStructuralFeature(name);
+
+		if (feature == null) {
+			throw new VMException(frame, Messages.getString(
+					"EMFModelAdapter.FEATURE_NOT_EXISTS", name, eo.eClass().getName())); //$NON-NLS-1$
+		}
+		eo.eUnset(feature);	
 	}
 
 	/**
@@ -630,14 +660,14 @@ public class EMFModelAdapter implements IModelAdapter {
 			res = method.invoke(self, arguments);
 		} catch (IllegalAccessException e) {
 			throw new VMException(null, Messages.getString(
-					"EMFModelAdapter.UNABLE_TO_INVOKE_OPERATION", new Object[] {method.getName(), self}), e); //$NON-NLS-1$
+					"EMFModelAdapter.UNABLE_TO_INVOKE_OPERATION", method.getName(), self), e); //$NON-NLS-1$
 		} catch (InvocationTargetException e) {
 			Throwable cause = e.getCause();
 			Exception toReport = (cause instanceof Exception) ? (Exception)cause : e;
 			throw new VMException(
 					null,
 					Messages.getString(
-							"EMFModelAdapter.INVOKE_OPERATION_ERROR", new Object[] {method.getName(), self}), toReport); //$NON-NLS-1$
+							"EMFModelAdapter.INVOKE_OPERATION_ERROR", method.getName(), self), toReport); //$NON-NLS-1$
 		}
 		return res;
 	}

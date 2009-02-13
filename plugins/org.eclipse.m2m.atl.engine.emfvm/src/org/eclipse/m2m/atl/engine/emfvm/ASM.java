@@ -191,11 +191,11 @@ public class ASM {
 		long endTime = System.currentTimeMillis();
 		if (printExecutionTime) {
 			ATLLogger.info(Messages.getString(
-					"ASM.EXECUTIONTIME", new Object[] {name, new Double((endTime - startTime) / 1000.)})); //$NON-NLS-1$
+					"ASM.EXECUTIONTIME", name, new Double((endTime - startTime) / 1000.))); //$NON-NLS-1$
 		}
 		if ("true".equals(options.get("showSummary"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			ATLLogger.info(Messages.getString(
-					"ASM.INSTRUCTIONSCOUNT", new Object[] {new Double(execEnv.getNbExecutedBytecodes())})); //$NON-NLS-1$
+					"ASM.INSTRUCTIONSCOUNT", new Double(execEnv.getNbExecutedBytecodes()))); //$NON-NLS-1$
 		}
 		return ret;
 	}
@@ -215,7 +215,7 @@ public class ASM {
 			if (signature.matches("^(Q|G|C|E|O|N).*$")) { //$NON-NLS-1$
 				// Sequence, Bag, Collection, Set, OrderedSet, Native type
 				ATLLogger
-						.warning(Messages.getString("ASM.UNSUPPORTEDREGISTRATION", new Object[] {signature})); //$NON-NLS-1$
+						.warning(Messages.getString("ASM.UNSUPPORTEDREGISTRATION", signature)); //$NON-NLS-1$
 			} else {
 				try {
 					Object type = parseType(execEnv, new StringCharacterIterator(signature));
@@ -248,7 +248,7 @@ public class ASM {
 						urls[i] = new File(userDir, paths[i]).toURI().toURL();
 					} catch (MalformedURLException e) {
 						throw new VMException(null, Messages.getString(
-								"ASM.LOADINGERROR", new Object[] {paths[i]}), e); //$NON-NLS-1$
+								"ASM.LOADINGERROR", paths[i]), e); //$NON-NLS-1$
 					}
 				}
 				cl = new URLClassLoader(urls, cl);
@@ -321,7 +321,7 @@ public class ASM {
 			throw new SignatureParsingException(
 					Messages
 							.getString(
-									"ASM.PARSINGERROR", new Object[] {new Character(c), new Character(ci.current()), new Integer(ci.getIndex())})); //$NON-NLS-1$
+									"ASM.PARSINGERROR", new Character(c), new Character(ci.current()), new Integer(ci.getIndex()))); //$NON-NLS-1$
 		}
 		ci.next();
 	}
@@ -332,7 +332,7 @@ public class ASM {
 
 		if (ci.next() != CharacterIterator.DONE) {
 			throw new SignatureParsingException(Messages.getString(
-					"ASM.SIGNATUREPARSINGERROR", new Object[] {new Integer(ci.getIndex())})); //$NON-NLS-1$
+					"ASM.SIGNATUREPARSINGERROR", new Integer(ci.getIndex()))); //$NON-NLS-1$
 		}
 
 		return ret;
@@ -368,11 +368,11 @@ public class ASM {
 					Object ec = model.getMetaElementByName(modelName);
 					if (ec == null) {
 						throw new SignatureParsingException(Messages.getString(
-								"ASM.MODELELEMENTNOTFOUND", new Object[] {modelName, mname})); //$NON-NLS-1$
+								"ASM.MODELELEMENTNOTFOUND", modelName, mname)); //$NON-NLS-1$
 					}
 					ret = ec;
 				} else {
-					throw new VMException(null, Messages.getString("ASM.MODELNOTFOUND", new Object[] {mname})); //$NON-NLS-1$
+					throw new VMException(null, Messages.getString("ASM.MODELNOTFOUND", mname)); //$NON-NLS-1$
 				}
 				break;
 

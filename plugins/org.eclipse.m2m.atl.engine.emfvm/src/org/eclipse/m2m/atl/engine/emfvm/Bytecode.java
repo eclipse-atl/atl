@@ -157,7 +157,7 @@ public class Bytecode {
 			this.opcode = DELETE;
 		} else {
 			throw new VMException(null,Messages.getString(
-					"ByteCode.UNSUPPORTEDOPCODEWOARGS", new Object[] {opcode})); //$NON-NLS-1$
+					"ByteCode.UNSUPPORTEDOPCODEWOARGS", opcode)); //$NON-NLS-1$
 		}
 	}
 
@@ -207,7 +207,7 @@ public class Bytecode {
 			this.value = Integer.parseInt(operand);
 		} else {
 			throw new VMException(null,Messages.getString(
-					"ByteCode.UNSUPPORTEDOPCODEWARGS", new Object[] {opcode})); //$NON-NLS-1$
+					"ByteCode.UNSUPPORTEDOPCODEWARGS", opcode)); //$NON-NLS-1$
 		}
 	}
 
