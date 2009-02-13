@@ -12,6 +12,7 @@
 
 package org.eclipse.m2m.atl.core.emf;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -42,7 +43,7 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 
 	private static EMFReferenceModel metametamodel;
 
-	private Map<String, EObject> metaElementByName;
+	private Map<String, EObject> metaElementByName = Collections.emptyMap();
 	
 	private Set<Resource> referencedResources = new HashSet<Resource>();
 
