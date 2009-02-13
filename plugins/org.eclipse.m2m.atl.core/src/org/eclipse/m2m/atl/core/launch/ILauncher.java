@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.launch;
 
+import java.io.InputStream;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -89,7 +90,7 @@ public interface ILauncher {
 	 * @param name
 	 *            the name of the library as described in the main module
 	 */
-	void addLibrary(String name, Object library);
+	void addLibrary(String name, InputStream library);
 
 	/**
 	 * Initialize the launcher.
@@ -113,7 +114,7 @@ public interface ILauncher {
 	 *            module of the set is override by the next ones.
 	 * @return the transformation return result
 	 */
-	Object launch(String mode, IProgressMonitor monitor, Map<String, Object> options, Object... modules);
+	Object launch(String mode, IProgressMonitor monitor, Map<String, Object> options, InputStream... modules);
 
 	/**
 	 * Returns a previously added model with the given name.

@@ -27,7 +27,7 @@ public interface IExtractor {
 	 * @param target
 	 *            the target indication to extract the targetModel
 	 */
-	void extract(IModel targetModel, Object target) throws ATLCoreException;
+	void extract(IModel targetModel, String target) throws ATLCoreException;
 
 	/**
 	 * Extracts an IModel using the given options.
@@ -39,5 +39,5 @@ public interface IExtractor {
 	 * @param options
 	 *            the extraction parameters
 	 */
-	void extract(IModel targetModel, Object target, Map<String, Object> options) throws ATLCoreException;
+	void extract(IModel targetModel, String target, Map<String, Object> options) throws ATLCoreException;
 }
