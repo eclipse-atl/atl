@@ -25,7 +25,7 @@ public interface IInjector {
 	 * @param sourceModel
 	 *            the IModel where to inject
 	 * @param source
-	 *            the source indication to extract the targetModel
+	 *            the source indication to load the sourceModel
 	 */
 	void inject(IModel sourceModel, String source) throws ATLCoreException;
 
@@ -35,7 +35,7 @@ public interface IInjector {
 	 * @param sourceModel
 	 *            the IModel where to inject
 	 * @param source
-	 *            the source indication to extract the targetModel
+	 *            the source indication to load the sourceModel
 	 * @param options
 	 *            the injection parameters
 	 */

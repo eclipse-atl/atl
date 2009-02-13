@@ -55,7 +55,7 @@ public final class LauncherService {
 	 * @param inModels
 	 *            a map defining the source models names: [model name, reference model name]
 	 * @param inoutModels
-	 *            a map defining the source models names: [model name, reference model name]
+	 *            a map defining the inout models names: [model name, reference model name]
 	 * @param outModels
 	 *            a map defining the target models names: [model name, reference model name]
 	 * @param paths
@@ -171,7 +171,7 @@ public final class LauncherService {
 	 * @param inModels
 	 *            a map defining the source models names: [model name, reference model name]
 	 * @param inoutModels
-	 *            a map defining the source models names: [model name, reference model name]
+	 *            a map defining the inout models names: [model name, reference model name]
 	 * @param outModels
 	 *            a map defining the target models names: [model name, reference model name]
 	 * @param paths
