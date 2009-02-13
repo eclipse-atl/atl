@@ -29,9 +29,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.core.ATLCoreException;
-import org.eclipse.m2m.atl.core.IExtractor;
-import org.eclipse.m2m.atl.core.IInjector;
-import org.eclipse.m2m.atl.core.ModelFactory;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.core.service.LauncherService;
@@ -236,21 +233,6 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
 		// API extensions management
 		ILauncher launcher = CoreService.getLauncher(launcherName);
-		Map<String, ModelFactory> modelFactories = new HashMap<String, ModelFactory>();
-		Map<String, IExtractor> extractors = new HashMap<String, IExtractor>();
-		Map<String, IInjector> injectors = new HashMap<String, IInjector>();
-
-		ModelFactory modelfactory = CoreService.createModelFactory(launcher.getDefaultModelFactoryName());
-		IInjector injector = CoreService.getInjector(modelfactory.getDefaultInjectorName());
-		IExtractor extractor = CoreService.getExtractor(modelfactory.getDefaultExtractorName());
-
-		for (Iterator<String> iterator = modelPaths.keySet().iterator(); iterator.hasNext();) {
-			String modelName = iterator.next();
-			modelFactories.put(modelName, modelfactory);
-			extractors.put(modelName, extractor);
-			injectors.put(modelName, injector);
-		}
-
 		InputStream asmInputStream = asmURL.openStream();
 		InputStream[] modules = new InputStream[superimps.size() + 1];
 		modules[0] = asmInputStream;
@@ -264,15 +246,15 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		}
 
 		// Libraries
-		Map<String, Object> libraries = new HashMap<String, Object>();
+		Map<String, InputStream> libraries = new HashMap<String, InputStream>();
 		for (Iterator<String> i = libs.keySet().iterator(); i.hasNext();) {
 			String libName = i.next();
 			libraries.put(libName, libs.get(libName).openStream());
 		}
 		long startTime = System.currentTimeMillis();
-		LauncherService.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), launcher, modelFactories, extractors, injectors,
-				sourceModels, Collections.<String, String> emptyMap(), targetModels, AtlLaunchConfigurationDelegate.convertPaths(modelPaths), options,
-				libraries, (Object[])modules);
+		LauncherService.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), launcher, sourceModels,
+				Collections.<String, String> emptyMap(), targetModels, AtlLaunchConfigurationDelegate
+						.convertPaths(modelPaths), options, libraries, modules);
 
 		long endTime = System.currentTimeMillis();
 
