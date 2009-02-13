@@ -37,8 +37,7 @@ public final class ATLResourceProvider {
 	 * @return the URL of the resource matching the given name.
 	 */
 	public static URL getURL(String resourceName) {
-		return ATLResourceProvider.class
-				.getResource("resources/" + resourceName); //$NON-NLS-1$ //$NON-NLS-2$
+		return ATLResourceProvider.class.getResource("resources/" + resourceName); //$NON-NLS-1$
 	}
 
 }
