@@ -65,7 +65,7 @@ public final class LauncherService {
 	 * @param libraries
 	 *            a map of libraries modules: [library name, module]
 	 * @param modules
-	 *            a list of modules to superimpose and. The first module overrides the next ones.
+	 *            a list of modules to superimpose. The first module overrides the next ones.
 	 * @return the transformation result
 	 */
 	@SuppressWarnings("unchecked")
@@ -181,7 +181,7 @@ public final class LauncherService {
 	 * @param libraries
 	 *            a map of libraries modules: [library name, module]
 	 * @param modules
-	 *            a list of modules to superimpose and. The first module overrides the next ones.
+	 *            a list of modules to superimpose. The first module overrides the next ones.
 	 * @return the transformation result
 	 */
 	@SuppressWarnings("unchecked")
@@ -214,8 +214,8 @@ public final class LauncherService {
 		for (Iterator<String> i = inModels.keySet().iterator(); i.hasNext();) {
 			String modelName = i.next();
 			String referenceModelName = inModels.get(modelName);
-			IModel model = getModel(modelName, referenceModelName, false, launcher, modelFactories, paths,
-					injectors, modelHandlers);
+			IModel model = getModel(modelName, referenceModelName, false, launcher, modelFactories.get(referenceModelName), paths,
+					injectors.get(modelName), modelHandlers);
 			launcher.addInModel(model, modelName, referenceModelName);
 		}
 
@@ -223,8 +223,8 @@ public final class LauncherService {
 		for (Iterator<String> i = inoutModels.keySet().iterator(); i.hasNext();) {
 			String modelName = i.next();
 			String referenceModelName = inoutModels.get(modelName);
-			IModel model = getModel(modelName, referenceModelName, false, launcher, modelFactories, paths,
-					injectors, modelHandlers);
+			IModel model = getModel(modelName, referenceModelName, false, launcher, modelFactories.get(referenceModelName), paths,
+					injectors.get(modelName), modelHandlers);
 			launcher.addInOutModel(model, modelName, referenceModelName);
 		}
 
@@ -232,8 +232,8 @@ public final class LauncherService {
 		for (Iterator<String> i = outModels.keySet().iterator(); i.hasNext();) {
 			String modelName = i.next();
 			String referenceModelName = outModels.get(modelName);
-			IModel model = getModel(modelName, referenceModelName, true, launcher, modelFactories, paths,
-					injectors, modelHandlers);
+			IModel model = getModel(modelName, referenceModelName, true, launcher, modelFactories.get(referenceModelName), paths,
+					injectors.get(modelName), modelHandlers);
 			launcher.addOutModel(model, modelName, referenceModelName);
 		}
 
@@ -261,34 +261,6 @@ public final class LauncherService {
 		}
 
 		return transformationResult;
-	}
-
-	private static IModel getModel(String modelName, String referenceModelName, boolean newModel,
-			ILauncher launcher, Map<String, ModelFactory> modelFactories, Map<String, String> paths,
-			Map<String, IInjector> injectors, Map<String, String> modelHandlers) throws ATLCoreException {
-		IReferenceModel referenceModel = (IReferenceModel)launcher.getModel(referenceModelName);
-
-		if (referenceModel == null) {
-
-			Map<String, Object> referenceModelOptions = new HashMap<String, Object>();
-			referenceModelOptions.put("modelHandlerName", modelHandlers.get(referenceModelName)); //$NON-NLS-1$
-			referenceModelOptions.put("modelName", referenceModelName); //$NON-NLS-1$
-			referenceModelOptions.put("path", paths.get(referenceModelName)); //$NON-NLS-1$
-
-			referenceModel = modelFactories.get(referenceModelName).newReferenceModel(referenceModelOptions);
-			injectors.get(referenceModelName).inject(referenceModel, paths.get(referenceModelName));
-		}
-
-		Map<String, Object> modelOptions = new HashMap<String, Object>();
-		modelOptions.put("modelName", modelName); //$NON-NLS-1$
-		modelOptions.put("path", paths.get(modelName)); //$NON-NLS-1$
-		modelOptions.put("newModel", newModel); //$NON-NLS-1$
-
-		IModel model = modelFactories.get(modelName).newModel(referenceModel, modelOptions);
-		if (!newModel) {
-			injectors.get(modelName).inject(model, paths.get(modelName));
-		}
-		return model;
 	}
 
 	private static IModel getModel(String modelName, String referenceModelName, boolean newModel,
