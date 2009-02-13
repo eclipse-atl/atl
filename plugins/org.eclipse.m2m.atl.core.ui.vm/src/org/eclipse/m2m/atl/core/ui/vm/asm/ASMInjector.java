@@ -40,54 +40,50 @@ public class ASMInjector implements IInjector {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.Object,
-	 *      java.util.Map)
+	 *
+	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.String, java.util.Map)
 	 */
-	public void inject(IModel sourceModel, Object source, Map<String, Object> options)
+	public void inject(IModel sourceModel, String source, Map<String, Object> options)
 			throws ATLCoreException {
 		inject(sourceModel, source, ((ASMModelWrapper)sourceModel).getName());
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.Object)
+	 *
+	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.String)
 	 */
-	public void inject(IModel sourceModel, Object source) throws ATLCoreException {
+	public void inject(IModel sourceModel, String source) throws ATLCoreException {
 		inject(sourceModel, source, ((ASMModelWrapper)sourceModel).getName());
 	}
 
-	private void inject(IModel sourceModel, Object source, String modelName)
+	private void inject(IModel sourceModel, String source, String modelName)
 			throws ATLCoreException {
 		final ASMModelWrapper modelWrapper = (ASMModelWrapper)sourceModel;
 		try {
 			final ModelLoader ml = modelWrapper.getModelLoader();
-			String path = (String)source;
 			ASMModel asmModel = null;
 
-			if (path.startsWith("#")) { //$NON-NLS-1$
+			if (source.startsWith("#")) { //$NON-NLS-1$
 				// nothing to do, ever loaded in newModel
 				return;
 			} else if (ml instanceof EMFModelLoader) {
-				if (path.startsWith("platform:/resource")) { //$NON-NLS-1$
-					path = path.substring(18);
+				if (source.startsWith("platform:/resource")) { //$NON-NLS-1$
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
-							.getReferenceModel()).getAsmModel(), URI.createPlatformResourceURI(path, false));
-				} else if (path.startsWith("file:/")) { //$NON-NLS-1$
-					path = path.substring(6);
+							.getReferenceModel()).getAsmModel(), URI.createPlatformResourceURI(source.substring(18), false));
+				} else if (source.startsWith("file:/")) { //$NON-NLS-1$
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
-							.getReferenceModel()).getAsmModel(), URI.createFileURI(path));
-				} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
+							.getReferenceModel()).getAsmModel(), URI.createFileURI(source.substring(6)));
+				} else if (source.startsWith("pathmap:")) { //$NON-NLS-1$
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
-							.getReferenceModel()).getAsmModel(), URI.createURI(path, true));
+							.getReferenceModel()).getAsmModel(), URI.createURI(source, true));
 				} else {
 					asmModel = ml.loadModel(modelName, ((ASMModelWrapper)modelWrapper.getReferenceModel())
-							.getAsmModel(), "uri:" + path); //$NON-NLS-1$
+							.getAsmModel(), "uri:" + source); //$NON-NLS-1$
 				}
 			} else {
 				asmModel = ml.loadModel(modelName, ((ASMModelWrapper)modelWrapper.getReferenceModel())
-						.getAsmModel(), fileNameToInputStream((String)source));
+						.getAsmModel(), fileNameToInputStream(source));
 			}
 			modelWrapper.setAsmModel(asmModel);
 

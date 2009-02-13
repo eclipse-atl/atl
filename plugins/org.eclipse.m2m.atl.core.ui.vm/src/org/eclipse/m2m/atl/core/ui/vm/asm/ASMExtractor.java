@@ -31,29 +31,30 @@ public class ASMExtractor implements IExtractor {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.Object,
+	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.String,
 	 *      java.util.Map)
 	 */
-	public void extract(IModel targetModel, Object target, Map<String, Object> options) throws ATLCoreException {
+	public void extract(IModel targetModel, String target, Map<String, Object> options)
+			throws ATLCoreException {
 		extract(targetModel, target);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.Object)
+	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.String)
 	 */
-	public void extract(IModel targetModel, Object target) throws ATLCoreException {
+	public void extract(IModel targetModel, String target) throws ATLCoreException {
 		ASMModelWrapper modelWrapper = (ASMModelWrapper)targetModel;
 		ASMModel asmModel = modelWrapper.getAsmModel();
-		String path = (String)target;
-		if (path.startsWith("file:/")) { //$NON-NLS-1$
-			path = path.substring(6);
-		} else if (path.startsWith("platform:/resource")) { //$NON-NLS-1$
-			path = path.substring(18);
-		}
 		try {
-			modelWrapper.getModelLoader().save(asmModel, URI.createFileURI(path).toString());
+			if (target.startsWith("file:/")) { //$NON-NLS-1$
+				modelWrapper.getModelLoader().save(asmModel,
+						URI.createFileURI(target.substring(6)).toString());
+			} else if (target.startsWith("platform:/resource")) { //$NON-NLS-1$
+				modelWrapper.getModelLoader().save(asmModel,
+						URI.createFileURI(target.substring(18)).toString());
+			}
 		} catch (IOException e) {
 			throw new ATLCoreException(e.getLocalizedMessage(), e);
 		}

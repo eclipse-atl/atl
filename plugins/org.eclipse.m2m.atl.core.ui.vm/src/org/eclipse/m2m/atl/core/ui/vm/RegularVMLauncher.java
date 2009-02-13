@@ -112,18 +112,16 @@ public class RegularVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @param library
-	 *            the library module {@link InputStream}
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addLibrary(java.lang.String, java.lang.Object)
+	 *
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addLibrary(java.lang.String, java.io.InputStream)
 	 */
-	public void addLibrary(String name, Object library) {
+	public void addLibrary(String name, InputStream library) {
 		if (libraries.containsKey(name)) {
 			ATLLogger.warning(Messages.getString(
 					"RegularVMLauncher.LIBRARY_EVER_REGISTERED", new Object[] {name})); //$NON-NLS-1$
 		} else {
 			ASMXMLReader reader = new ASMXMLReader();
-			ASM asmLibrary = reader.read((InputStream)library);
+			ASM asmLibrary = reader.read(library);
 			libraries.put(name, asmLibrary);
 		}
 	}
@@ -150,12 +148,11 @@ public class RegularVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String,
-	 *      org.eclipse.core.runtime.IProgressMonitor, java.util.Map, java.lang.Object[])
+	 *
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String, org.eclipse.core.runtime.IProgressMonitor, java.util.Map, java.io.InputStream[])
 	 */
 	public Object launch(final String mode, final IProgressMonitor monitor,
-			final Map<String, Object> options, final Object... modules) {
+			final Map<String, Object> options, final InputStream... modules) {
 		IDebugTarget mTarget = null;
 		ILaunch launchParam = (ILaunch)options.get("launch"); //$NON-NLS-1$
 		try {
