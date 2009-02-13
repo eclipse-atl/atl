@@ -128,7 +128,7 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		launcher.addOutModel(refiningTraceModel, "refiningTrace", "RefiningTrace"); //$NON-NLS-1$ //$NON-NLS-2$
 		launcher.addInOutModel(umlModel, "IN", "UML"); //$NON-NLS-1$ //$NON-NLS-2$
 	
-		launcher.launch(ILauncher.RUN_MODE, new NullProgressMonitor() ,Collections.<String, Object> emptyMap(), new Object[] {asmURL.openStream()});
+		launcher.launch(ILauncher.RUN_MODE, new NullProgressMonitor() ,Collections.<String, Object> emptyMap(), asmURL.openStream());
 
 		// Saving model
 		extractor.extract(umlModel, file.getFullPath().toString());
