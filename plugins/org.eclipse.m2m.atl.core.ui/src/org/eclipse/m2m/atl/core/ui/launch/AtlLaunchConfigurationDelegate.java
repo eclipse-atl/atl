@@ -31,9 +31,6 @@ import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.ATLCoreException;
-import org.eclipse.m2m.atl.core.IExtractor;
-import org.eclipse.m2m.atl.core.IInjector;
-import org.eclipse.m2m.atl.core.ModelFactory;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.core.service.LauncherService;
@@ -101,23 +98,6 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			return;
 		}
 
-		Map<String, ModelFactory> modelFactories = new HashMap<String, ModelFactory>();
-		Map<String, IExtractor> extractors = new HashMap<String, IExtractor>();
-		Map<String, IInjector> injectors = new HashMap<String, IInjector>();
-
-		// Loading defaults
-		ModelFactory defaultModelfactory = CoreService.createModelFactory(launcher
-				.getDefaultModelFactoryName());
-		IInjector defaultInjector = CoreService.getInjector(defaultModelfactory.getDefaultInjectorName());
-		IExtractor defaultExtractor = CoreService.getExtractor(defaultModelfactory.getDefaultExtractorName());
-
-		for (Iterator<String> iterator = modelPaths.keySet().iterator(); iterator.hasNext();) {
-			String modelName = iterator.next();
-			modelFactories.put(modelName, defaultModelfactory);
-			extractors.put(modelName, defaultExtractor);
-			injectors.put(modelName, defaultInjector);
-		}
-
 		// ATL modules
 		IFile currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(fileName));
 		String extension = currentAtlFile.getFileExtension().toLowerCase();
@@ -136,7 +116,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		}
 
 		// Libraries
-		Map<String, Object> libraries = new HashMap<String, Object>();
+		Map<String, InputStream> libraries = new HashMap<String, InputStream>();
 		for (Iterator<String> i = libs.keySet().iterator(); i.hasNext();) {
 			String libName = i.next();
 			IFile libFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
@@ -151,7 +131,6 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 		try {
 			if (isRefiningTraceMode) {
-				modelFactories.put("RefiningTrace", defaultModelfactory); //$NON-NLS-1$
 				Map<String, String> inoutModels = new HashMap<String, String>();
 				String refinedModelName = sourceModels.keySet().iterator().next();
 				String refinedMetamodelName = sourceModels.get(refinedModelName);
@@ -176,13 +155,11 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				newSourceModels.remove(refinedModelName);
 				newTargetModels.remove(targetToRemove);
 
-				LauncherService.launch(mode, monitor, launcher, modelFactories, extractors, injectors,
-						newSourceModels, inoutModels, newTargetModels, modelPaths, options, libraries,
-						(Object[])modules);
+				LauncherService.launch(mode, monitor, launcher, newSourceModels, inoutModels,
+						newTargetModels, modelPaths, options, libraries, modules);
 			} else {
-				LauncherService.launch(mode, monitor, launcher, modelFactories, extractors, injectors,
-						sourceModels, Collections.EMPTY_MAP, targetModels, modelPaths, options, libraries,
-						(Object[])modules);
+				LauncherService.launch(mode, monitor, launcher, sourceModels, Collections.EMPTY_MAP,
+						targetModels, modelPaths, options, libraries, modules);
 			}
 
 		} catch (ATLCoreException e) {
