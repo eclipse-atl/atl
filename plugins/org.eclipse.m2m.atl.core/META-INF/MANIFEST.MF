@@ -8,7 +8,7 @@ Export-Package: org.eclipse.m2m.atl.core,
  org.eclipse.m2m.atl.core.launch;uses:="org.eclipse.m2m.atl.core",
  org.eclipse.m2m.atl.core.service;uses:="org.eclipse.m2m.atl.core,org.eclipse.m2m.atl.core.launch"
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime;visibility:=reexport
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 
