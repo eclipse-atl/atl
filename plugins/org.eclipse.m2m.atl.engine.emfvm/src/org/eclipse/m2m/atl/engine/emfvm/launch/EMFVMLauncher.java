@@ -76,17 +76,14 @@ public class EMFVMLauncher implements ILauncher {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @param library
-	 *            the library module {@link InputStream}
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addLibrary(java.lang.String, java.lang.Object)
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addLibrary(java.lang.String, java.io.InputStream)
 	 */
-	public void addLibrary(String name, Object library) {
+	public void addLibrary(String name, InputStream library) {
 		if (libraries.containsKey(name)) {
-			ATLLogger.warning(Messages
-					.getString("EMFVMLauncher.LIBRARY_EVER_REGISTERED", name)); //$NON-NLS-1$
+			ATLLogger.warning(Messages.getString("EMFVMLauncher.LIBRARY_EVER_REGISTERED", name)); //$NON-NLS-1$
 		} else {
 			ASMXMLReader reader = new ASMXMLReader();
-			ASM asmLibrary = reader.read((InputStream)library);
+			ASM asmLibrary = reader.read(library);
 			libraries.put(name, asmLibrary);
 		}
 	}
@@ -103,19 +100,21 @@ public class EMFVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String, org.eclipse.core.runtime.IProgressMonitor, java.util.Map, java.lang.Object[])
+	 * 
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String,
+	 *      org.eclipse.core.runtime.IProgressMonitor, java.util.Map, java.io.InputStream[])
 	 */
-	public Object launch(final String mode, final IProgressMonitor monitor, final Map<String, Object> options, final Object... modules) {
+	public Object launch(final String mode, final IProgressMonitor monitor,
+			final Map<String, Object> options, final InputStream... modules) {
 		if (!mode.equals(ILauncher.RUN_MODE)) {
 			ATLLogger.warning("mode " + mode + " unsupported for EMFVM, running launch instead"); //$NON-NLS-1$//$NON-NLS-2$
 		}
 		List<ASM> superimpose = new ArrayList<ASM>();
 		ASMXMLReader reader = new ASMXMLReader();
-		ASM mainModule = reader.read((InputStream)modules[0]);
+		ASM mainModule = reader.read(modules[0]);
 		for (int i = 1; i < modules.length; i++) {
 			reader = new ASMXMLReader();
-			InputStream module = (InputStream)modules[i];
+			InputStream module = modules[i];
 			superimpose.add(reader.read(module));
 		}
 		return mainModule.run(models, libraries, superimpose, options, monitor);
@@ -141,7 +140,7 @@ public class EMFVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getDefaultModelFactoryName()
 	 */
 	public String getDefaultModelFactoryName() {

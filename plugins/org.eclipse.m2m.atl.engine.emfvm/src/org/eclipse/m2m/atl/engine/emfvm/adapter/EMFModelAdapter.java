@@ -519,7 +519,7 @@ public class EMFModelAdapter implements IModelAdapter {
 
 		if (frame != null) {
 			if (execEnv.isWeavingHelper(eo.eClass(), name)) {
-				execEnv.setHelperValue(frame, modelElement, name, value);
+				execEnv.setHelperValue(modelElement, name, value);
 				return;
 			}
 		}

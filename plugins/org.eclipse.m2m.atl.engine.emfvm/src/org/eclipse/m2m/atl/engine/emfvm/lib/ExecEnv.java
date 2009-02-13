@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.30 2009/02/13 08:43:10 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.31 2009/02/13 16:04:32 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -2154,8 +2154,6 @@ public class ExecEnv {
 	/**
 	 * Sets an helper value (only for weaving helpers).
 	 * 
-	 * @param frame
-	 *            the current frame
 	 * @param element
 	 *            the helper context
 	 * @param name
@@ -2163,7 +2161,7 @@ public class ExecEnv {
 	 * @param value
 	 *            the value to set
 	 */
-	public void setHelperValue(AbstractStackFrame frame, Object element, String name, Object value) {
+	public void setHelperValue(Object element, String name, Object value) {
 		Map<String, SoftReference<?>> helperValues = getHelperValues(element);
 		helperValues.put(name, new SoftReference<Object>(value));
 	}
