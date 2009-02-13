@@ -201,7 +201,7 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 		long startTime = System.currentTimeMillis();
 		try {
 			transformationResult = launcherInstance.launch(ILauncher.RUN_MODE, new NullProgressMonitor(),
-					options, (Object[])moduleInputStreams);
+					options, moduleInputStreams);
 		} catch (ATLExecutionException e) {
 			error(e.getMessage(), e);
 		}
