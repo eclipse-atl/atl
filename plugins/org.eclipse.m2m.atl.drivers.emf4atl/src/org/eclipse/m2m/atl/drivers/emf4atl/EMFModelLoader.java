@@ -307,19 +307,8 @@ public class EMFModelLoader extends ModelLoader {
 		if (href != null) {
 			r.setURI(URI.createURI(href));
 		}
-		
-		if(useIDs || removeIDs) {
-			XMIResource xr = (XMIResource)r;
-			int id = 1;
-			Set alreadySet = new HashSet();
-			for (Iterator i = r.getAllContents(); i.hasNext();) {
-				EObject eo = (EObject)i.next();
-				if (alreadySet.contains(eo)) {
-					continue; // because sometimes a single element gets processed twice
-				}
-				xr.setID(eo, removeIDs ? null : ("a" + (id++)));
-				alreadySet.add(eo);
-			}
+		if (r instanceof XMIResource) {
+			processIDs((XMIResource)r);
 		}
 		try {
 			r.save(saveOptions);
@@ -345,25 +334,35 @@ public class EMFModelLoader extends ModelLoader {
 	 */
 	public void save(ASMModel model, OutputStream out) throws IOException {
 		Resource r = ((ASMEMFModel)model).getExtent();
-		
-		if(useIDs || removeIDs) {
-			XMIResource xr = (XMIResource)r;
-			int id = 1;
-			Set alreadySet = new HashSet();
-			for (Iterator i = r.getAllContents(); i.hasNext();) {
-				EObject eo = (EObject)i.next();
-				if (alreadySet.contains(eo)) {
-					continue; // because sometimes a single element gets processed twice
-				}
-				xr.setID(eo, removeIDs ? null : ("a" + (id++)));
-				alreadySet.add(eo);
-			}
+		if (r instanceof XMIResource) {
+			processIDs((XMIResource)r);
 		}
 		try {
 			r.save(out, saveOptions);
 		} catch (IllegalStateException e) {
 			// workspace is closed
 			throw new IOException(e.getLocalizedMessage());
+		}
+	}
+	
+	/**
+	 * Processes XMI IDs for xr
+	 * @param xr
+	 */
+	protected void processIDs(XMIResource xr) {
+		if (useIDs || removeIDs) {
+			int id = 1;
+			Set alreadySet = new HashSet();
+			for (Iterator i = xr.getAllContents(); i.hasNext();) {
+				EObject eo = (EObject)i.next();
+				if (alreadySet.contains(eo)) {
+					continue; // because sometimes a single element gets processed twice
+				}
+				String idStr = xr.getID(eo); // reuse existing IDs
+				String newId = removeIDs ? null : (idStr == null) ? "a" + (id++) : idStr;
+				xr.setID(eo, newId);
+				alreadySet.add(eo);
+			}
 		}
 	}
 	
