@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.31 2009/02/13 16:04:32 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.32 2009/02/16 13:00:00 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -388,6 +388,29 @@ public class ExecEnv {
 							return new Boolean(((Number)localVars[0]).doubleValue() == ((Number)localVars[1])
 									.doubleValue());
 						}
+					}
+				});
+		operationsByName.put("max", new Operation(2) { //$NON-NLS-1$
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Integer(Math.max(((Integer)localVars[0]).intValue(),
+								((Number)localVars[1]).intValue())).intValue();
+					}
+				});
+		operationsByName.put("abs", new Operation(1) { //$NON-NLS-1$
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Integer(Math.abs(((Integer)localVars[0]).intValue())).intValue();
+					}
+				});
+		operationsByName.put("min", new Operation(2) { //$NON-NLS-1$
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Integer(Math.min(((Integer)localVars[0]).intValue(),
+								((Number)localVars[1]).intValue())).intValue();
 					}
 				});
 		operationsByName.put("toString", new Operation(1) { //$NON-NLS-1$
@@ -1057,7 +1080,8 @@ public class ExecEnv {
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new ArrayList<String>(Arrays.asList(((String)localVars[0]).split((String)localVars[1])));
+						return new ArrayList<String>(Arrays.asList(((String)localVars[0])
+								.split((String)localVars[1])));
 					}
 				});
 		operationsByName.put("toInteger", new Operation(1) { //$NON-NLS-1$
@@ -1194,13 +1218,13 @@ public class ExecEnv {
 					}
 				});
 		operationsByName.put("println", new Operation(1) { //$NON-NLS-1$
-			@Override
-			public Object exec(AbstractStackFrame frame) {
-				Object[] localVars = frame.localVars;
-				ATLLogger.info(localVars[0].toString());
-				return OclUndefined.SINGLETON;
-			}
-		});
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						ATLLogger.info(localVars[0].toString());
+						return OclUndefined.SINGLETON;
+					}
+				});
 		operationsByName.put("writeToWithCharset", new Operation(3) { //$NON-NLS-1$
 					@Override
 					public Object exec(AbstractStackFrame frame) {
@@ -1249,7 +1273,7 @@ public class ExecEnv {
 						return Boolean.FALSE;
 					}
 				});
-		//TODO add to doc
+		// TODO add to doc
 		operationsByName.put("debug", new Operation(2) { //$NON-NLS-1$
 					@Override
 					public Object exec(AbstractStackFrame frame) {
@@ -1869,7 +1893,7 @@ public class ExecEnv {
 		} else if (value instanceof HashMap) {
 			out.print("Map {"); //$NON-NLS-1$
 			boolean first = true;
-			for (Iterator<Entry<Object, Object>> i = ((Map<Object,Object>)value).entrySet().iterator(); i
+			for (Iterator<Entry<Object, Object>> i = ((Map<Object, Object>)value).entrySet().iterator(); i
 					.hasNext();) {
 				Entry<Object, Object> entry = i.next();
 				if (first) {
@@ -1931,12 +1955,10 @@ public class ExecEnv {
 		if (referenceModel != null) {
 			ret = referenceModel.getMetaElementByName((String)me);
 			if (ret == null) {
-				throw new VMException(frame, Messages.getString(
-						"ExecEnv.CANNOTFINDCLASS", me, mname)); //$NON-NLS-1$
+				throw new VMException(frame, Messages.getString("ExecEnv.CANNOTFINDCLASS", me, mname)); //$NON-NLS-1$
 			}
 		} else {
-			throw new VMException(frame, Messages.getString(
-					"ExecEnv.CANNOTFINDMETAMODEL", mname)); //$NON-NLS-1$
+			throw new VMException(frame, Messages.getString("ExecEnv.CANNOTFINDMETAMODEL", mname)); //$NON-NLS-1$
 		}
 		return ret;
 	}
@@ -1963,8 +1985,8 @@ public class ExecEnv {
 			}
 		}
 		if (s == null) {
-			throw new VMException(frame, Messages.getString(
-					"ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
+			throw new VMException(frame, Messages
+					.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
 		}
 		return s;
 	}
@@ -1984,19 +2006,17 @@ public class ExecEnv {
 		Object s = null;
 		IModel model = modelsByName.get(modelName);
 		if (model == null) {
-			throw new VMException(frame, Messages.getString(
-					"ExecEnv.MODEL_NOT_FOUND", modelName)); //$NON-NLS-1$
+			throw new VMException(frame, Messages.getString("ExecEnv.MODEL_NOT_FOUND", modelName)); //$NON-NLS-1$
 		}
 		if (model.isTarget()) {
 			s = model.newElement(ec);
 		}
 		if (!model.getReferenceModel().isModelOf(ec)) {
-			throw new VMException(frame, Messages.getString(
-					"ExecEnv.UNABLE_TO_CREATE", ec, modelName)); //$NON-NLS-1$
+			throw new VMException(frame, Messages.getString("ExecEnv.UNABLE_TO_CREATE", ec, modelName)); //$NON-NLS-1$
 		}
 		if (s == null) {
-			throw new VMException(frame, Messages.getString(
-					"ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
+			throw new VMException(frame, Messages
+					.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
 		}
 		return s;
 	}
