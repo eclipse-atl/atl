@@ -27,7 +27,6 @@ import org.eclipse.emf.compare.diff.metamodel.DiffFactory;
 import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
 import org.eclipse.emf.compare.diff.metamodel.DiffModel;
 import org.eclipse.emf.compare.diff.service.DiffService;
-import org.eclipse.emf.compare.match.MatchOptions;
 import org.eclipse.emf.compare.match.metamodel.MatchModel;
 import org.eclipse.emf.compare.match.service.MatchService;
 import org.eclipse.emf.ecore.EObject;
@@ -220,7 +219,7 @@ public final class ModelUtils {
 
 		Map<String, Object> options = new HashMap<String, Object>();
 		if (ignoreIds) {
-			options.put(MatchOptions.OPTION_IGNORE_XMI_ID, Boolean.TRUE);
+			options.put("match.ignore.xmi.id", Boolean.TRUE); //$NON-NLS-1$
 		}
 		final MatchModel inputMatch = MatchService.doResourceMatch(leftModel, rightModel, options);
 		final DiffModel inputDiff = DiffService.doDiff(inputMatch);
