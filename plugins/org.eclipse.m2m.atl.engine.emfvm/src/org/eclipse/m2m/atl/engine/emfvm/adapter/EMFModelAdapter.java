@@ -81,7 +81,7 @@ public class EMFModelAdapter implements IModelAdapter {
 			String name = i.next();
 			EMFModel model = (EMFModel)execEnv.getModelsByName().get(name);
 			modelsByResource.put(model.getResource(), model);
-		}
+	}
 	}
 
 	/**
@@ -400,7 +400,10 @@ public class EMFModelAdapter implements IModelAdapter {
 						for (Iterator<IModel> i = frame.getExecEnv().getModelsByName().values().iterator(); i
 								.hasNext();) {
 							IModel model = i.next();
-							if ((!model.isTarget()) && (model.getReferenceModel().isModelOf(ec))) {
+//							if ((!model.isTarget()) && (model.getReferenceModel().isModelOf(ec))) {
+//								ret.addAll(model.getElementsByType(ec));
+//							}
+							if (model.getReferenceModel().isModelOf(ec)) {
 								ret.addAll(model.getElementsByType(ec));
 							}
 						}
@@ -441,12 +444,6 @@ public class EMFModelAdapter implements IModelAdapter {
 						final EMFModel model = (EMFModel)execEnv.getModel(localVars[1]);
 						final Resource resource = model.getResource();
 						Object ret = resource.getEObject((String)localVars[2]);
-						// for (Iterator<Resource> iterator = model.getResources().iterator(); iterator
-						// .hasNext()
-						// && ret == null;) {
-						// Resource resource = iterator.next();
-						// ret = resource.getEObject((String)localVars[2]);
-						// }
 						if (ret == null) {
 							ret = OclUndefined.SINGLETON;
 						}
