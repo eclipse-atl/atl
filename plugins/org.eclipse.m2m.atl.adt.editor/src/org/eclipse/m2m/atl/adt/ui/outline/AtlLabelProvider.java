@@ -67,6 +67,9 @@ public class AtlLabelProvider extends LabelProvider {
 			public String getText(EObject helper) {
 				EObject featureDef = (EObject)helper.eGet(AtlEMFConstants.sfHelperDefinition);
 				EObject feature = (EObject)featureDef.eGet(sfFeature);
+				if (feature == null) {
+					return null;
+				}
 				return (String)feature.eGet(feature.eClass().getEStructuralFeature("name")); //$NON-NLS-1$
 			}
 		});
