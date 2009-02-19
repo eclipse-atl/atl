@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -209,8 +210,8 @@ public final class AtlSourceManager {
 	private void parseMetamodels(String text) {
 		metamodelsPackages = new HashMap();
 		metamodelLocations = new HashMap();
-		inputModels = new HashMap();
-		outputModels = new HashMap();
+		inputModels = new LinkedHashMap();
+		outputModels = new LinkedHashMap();
 		librariesImports = new ArrayList();
 
 		List compilers = getTaggedInformations(text.getBytes(), COMPILER_TAG);
@@ -287,14 +288,15 @@ public final class AtlSourceManager {
 
 			// input models computation
 			EList inModelsList = (EList)eGet(model, "inModels"); //$NON-NLS-1$
+
 			if (inModelsList != null) {
 				for (Iterator iterator = inModelsList.iterator(); iterator.hasNext();) {
 					EObject me = (EObject)iterator.next();
-					EObject mm = (EObject)eGet(me, "metamodel"); //$NON-NLS-1$
+					EObject mm = (EObject)eGet(me, "metamodel"); //$NON-NLS-1$			
 					inputModels.put(eGet(me, "name").toString(), eGet(mm, "name").toString()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
-
+			
 			// output models computation
 			EList outModelsList = (EList)eGet(model, "outModels"); //$NON-NLS-1$
 			if (outModelsList != null) {
