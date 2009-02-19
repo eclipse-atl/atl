@@ -125,6 +125,33 @@ public class EMFVMLauncher implements ILauncher {
 	}
 
 	/**
+	 * Launches the transformation using the given parameters and the given set of modules.
+	 * 
+	 * @param mode
+	 *            the launching mode
+	 * @param monitor
+	 *            the progress monitor
+	 * @param options
+	 *            vm options
+	 * @param modules
+	 *            single module/ordered module set, in their ASM form. A module set is used for
+	 *            superimposition, where the first module of the set is override by the next ones.
+	 * @return the transformation return result
+	 */
+	public Object launch(final String mode, final IProgressMonitor monitor,
+			final Map<String, Object> options, final ASM... modules) {
+		if (!mode.equals(ILauncher.RUN_MODE)) {
+			ATLLogger.warning("mode " + mode + " unsupported for EMFVM, running launch instead"); //$NON-NLS-1$//$NON-NLS-2$
+		}
+		List<ASM> superimpose = new ArrayList<ASM>();
+		ASM mainModule = modules[0];
+		for (int i = 1; i < modules.length; i++) {
+			superimpose.add(modules[i]);
+		}
+		return mainModule.run(models, libraries, superimpose, options, monitor);
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getModel(java.lang.String)
