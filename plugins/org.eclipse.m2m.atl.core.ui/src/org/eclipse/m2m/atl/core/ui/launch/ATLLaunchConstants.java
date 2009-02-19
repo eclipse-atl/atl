@@ -40,9 +40,15 @@ public interface ATLLaunchConstants {
 	/** Output models. */
 	String OUTPUT = "Output"; //$NON-NLS-1$
 
+	/** Ordered output models list. */
+	String ORDERED_OUTPUT = "OrderedOutput"; //$NON-NLS-1$
+	
 	/** Input models. */
 	String INPUT = "Input"; //$NON-NLS-1$
 
+	/** Ordered input models list. */
+	String ORDERED_INPUT = "OrderedInput"; //$NON-NLS-1$
+	
 	/** Null parameter. */
 	String NULL_PARAMETER = "<null>"; //$NON-NLS-1$
 

@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -131,9 +132,9 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 
 	private List<String> removableLibraries = new ArrayList<String>();
 
-	private Map<String, String> sourceC2RelationshipFromModule = new HashMap<String, String>();
+	private Map<String, String> sourceC2RelationshipFromModule = new LinkedHashMap<String, String>();
 
-	private Map<String, String> targetC2RelationshipFromModule = new HashMap<String, String>();
+	private Map<String, String> targetC2RelationshipFromModule = new LinkedHashMap<String, String>();
 
 	private Group moduleGroup;
 
@@ -149,9 +150,9 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 
 	private Map<String, Map<String, Object>> metamodelsGroupWidgets = new HashMap<String, Map<String, Object>>();
 
-	private Map<String, Map<String, Object>> sourceModelsGroupWidgets = new HashMap<String, Map<String, Object>>();
+	private Map<String, Map<String, Object>> sourceModelsGroupWidgets = new LinkedHashMap<String, Map<String, Object>>();
 
-	private Map<String, Map<String, Object>> targetModelsGroupWidgets = new HashMap<String, Map<String, Object>>();
+	private Map<String, Map<String, Object>> targetModelsGroupWidgets = new LinkedHashMap<String, Map<String, Object>>();
 
 	private Map<String, Map<String, Object>> librariesGroupWidgets = new HashMap<String, Map<String, Object>>();
 
@@ -661,8 +662,8 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		Map<String, String> savedPaths = new HashMap<String, String>();
 		Map<String, String> savedModelHandlers = new HashMap<String, String>();
 		Map<String, String> savedLibraries = new HashMap<String, String>();
-		Map<String, String> savedInput = new HashMap<String, String>();
-		Map<String, String> savedOutput = new HashMap<String, String>();
+		Map<String, String> savedInput = new LinkedHashMap<String, String>();
+		Map<String, String> savedOutput = new LinkedHashMap<String, String>();
 		Map<String, String> savedType = new HashMap<String, String>();
 
 		for (Iterator<String> it = sourceMetamodelsFromModule.iterator(); it.hasNext();) {
@@ -735,6 +736,11 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(ATLLaunchConstants.MODEL_TYPE, savedType);
 		configuration.setAttribute(ATLLaunchConstants.IS_REFINING, isRefining);
 		configuration.setAttribute(ATLLaunchConstants.ATL_COMPILER, atlcompiler);
+		if (isRefining) {
+			// refining mode workaround
+			configuration.setAttribute(ATLLaunchConstants.ORDERED_INPUT, new ArrayList<String>(savedInput.keySet()));
+			configuration.setAttribute(ATLLaunchConstants.ORDERED_OUTPUT, new ArrayList<String>(savedOutput.keySet()));
+		}
 	}
 
 	/**
@@ -752,7 +758,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#canSave()
 	 */
 	@Override
-	public boolean canSave() {		
+	public boolean canSave() {
 		if (atlPathText.getText().equals("")) { //$NON-NLS-1$
 			this.setErrorMessage(Messages.getString("MainAtlTab.GIVETRANSFORMATIONNAME")); //$NON-NLS-1$
 			return false;
@@ -766,15 +772,15 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			Button isMetametamodel = (Button)widgets.get("isMetametamodel"); //$NON-NLS-1$
 			if ((metamodelLocation.getText().length() == 0) && (!isMetametamodel.getSelection())) {
 				this.setErrorMessage(Messages.getString("MainAtlTab.GIVEPATHFOR") + mName); //$NON-NLS-1$
-				//return false;
+				// return false;
 			}
 		}
-		
+
 		canSaveGroupWidgets(sourceModelsGroupWidgets);
 		canSaveGroupWidgets(targetModelsGroupWidgets);
 		canSaveGroupWidgets(librariesGroupWidgets);
 		return true;
-		
+
 	}
 
 	/**
@@ -1256,7 +1262,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 					Entry<?, ?> entry = (Entry<?, ?>)iterator.next();
 					String modelName = (String)entry.getKey();
 					String metamodelName = (String)entry.getValue();
-
 					if (!sourceMetamodelsFromModule.contains(metamodelName)) {
 						sourceMetamodelsFromModule.add(metamodelName);
 					}

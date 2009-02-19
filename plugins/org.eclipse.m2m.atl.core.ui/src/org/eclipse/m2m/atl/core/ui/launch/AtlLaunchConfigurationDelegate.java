@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.core.ui.launch;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -131,31 +132,59 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 		try {
 			if (isRefiningTraceMode) {
-				Map<String, String> inoutModels = new HashMap<String, String>();
-				String refinedModelName = sourceModels.keySet().iterator().next();
-				String refinedMetamodelName = sourceModels.get(refinedModelName);
-				String targetToRemove = null;
-				for (Iterator iterator = targetModels.keySet().iterator(); iterator.hasNext();) {
-					String targetModelName = (String)iterator.next();
-					if (targetModels.get(targetModelName).equals(refinedMetamodelName)) {
-						String outputModelPath = modelPaths.get(targetModelName);
-						String refinedModelPathName = LauncherService.getRefinedModelName(refinedModelName);
-						modelPaths.put(refinedModelPathName, outputModelPath);
-						targetToRemove = targetModelName;
-						break;
-					}
-				}
-				inoutModels.put(refinedModelName, refinedMetamodelName);
+				/*
+				 * TODO: improve ATL header syntax to recognize inout models. Apply those changes to launch
+				 * config. Current workaround: refined models list must match output models list to be saved, 
+				 * with respect to the declaration order.
+				 */
+				Iterator<String> sourceIterator = sourceModels.keySet().iterator();
+				Iterator<String> targetIterator = targetModels.keySet().iterator();
 
-				Map<String, String> newSourceModels = new HashMap<String, String>();
-				newSourceModels.putAll(sourceModels);
+				List<String> orderedInput = configuration.getAttribute(ATLLaunchConstants.ORDERED_INPUT,
+						Collections.EMPTY_LIST);
+				if (!orderedInput.isEmpty()) {
+					sourceIterator = orderedInput.iterator();
+				}
+
+				List<String> orderedOutput = configuration.getAttribute(ATLLaunchConstants.ORDERED_OUTPUT,
+						Collections.EMPTY_LIST);
+				if (!orderedOutput.isEmpty()) {
+					targetIterator = orderedOutput.iterator();
+				}
+
 				Map<String, String> newTargetModels = new HashMap<String, String>();
 				newTargetModels.putAll(targetModels);
+				List<String> targetToRemove = new ArrayList<String>();
 
-				newSourceModels.remove(refinedModelName);
-				newTargetModels.remove(targetToRemove);
+				while (sourceIterator.hasNext()) {
+					String sourceModelName = sourceIterator.next();
+					String sourceMetamodelName = sourceModels.get(sourceModelName);
+					
+					// Lookup for a matching target model (same metamodel)
+					while (targetIterator.hasNext()) {
+						String targetModelName = targetIterator.next();
+						String targetMetamodelName = targetModels.get(targetModelName);
 
-				LauncherService.launch(mode, monitor, launcher, newSourceModels, inoutModels,
+						// Ignore previously used target models
+						if (targetMetamodelName.equals(sourceMetamodelName)
+								&& !targetToRemove.contains(targetModelName)) {
+							String targetModelPath = modelPaths.get(targetModelName);
+
+							// Compute the inout model path (for extraction)
+							String refinedModelPathName = LauncherService
+									.getRefinedModelName(sourceModelName);
+							modelPaths.put(refinedModelPathName, targetModelPath);
+							targetToRemove.add(targetModelName);
+							break;
+						}
+					}
+				}
+
+				for (String key : targetToRemove) {
+					newTargetModels.remove(key);
+				}
+
+				LauncherService.launch(mode, monitor, launcher, Collections.EMPTY_MAP, sourceModels,
 						newTargetModels, modelPaths, options, libraries, modules);
 			} else {
 				LauncherService.launch(mode, monitor, launcher, sourceModels, Collections.EMPTY_MAP,
