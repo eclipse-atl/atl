@@ -34,13 +34,7 @@ public class EMFVMLauncher implements ILauncher {
 		return LAUNCHER_NAME;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addInModel(org.eclipse.m2m.atl.core.IModel,
-	 *      java.lang.String, java.lang.String)
-	 */
-	public void addInModel(IModel model, String name, String referenceModelName) {
+	private void addModel(IModel model, String name, String referenceModelName) {
 		if (models.containsKey(name)) {
 			ATLLogger.warning(Messages.getString("EMFVMLauncher.MODEL_EVER_REGISTERED", name)); //$NON-NLS-1$
 		} else {
@@ -49,6 +43,16 @@ public class EMFVMLauncher implements ILauncher {
 		if (!models.containsKey(referenceModelName)) {
 			models.put(referenceModelName, model.getReferenceModel());
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addInModel(org.eclipse.m2m.atl.core.IModel,
+	 *      java.lang.String, java.lang.String)
+	 */
+	public void addInModel(IModel model, String name, String referenceModelName) {
+		addModel(model, name, referenceModelName);
 	}
 
 	/**
@@ -59,7 +63,7 @@ public class EMFVMLauncher implements ILauncher {
 	 */
 	public void addInOutModel(IModel model, String name, String referenceModelName) {
 		model.setIsTarget(true);
-		addInModel(model, name, referenceModelName);
+		addModel(model, name, referenceModelName);
 	}
 
 	/**
@@ -70,7 +74,7 @@ public class EMFVMLauncher implements ILauncher {
 	 */
 	public void addOutModel(IModel model, String name, String referenceModelName) {
 		model.setIsTarget(true);
-		addInModel(model, name, referenceModelName);
+		addModel(model, name, referenceModelName);
 	}
 
 	/**
