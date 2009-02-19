@@ -47,7 +47,9 @@ public class EMFExtractor implements IExtractor {
 				Map<String, Object> extractOptions = new HashMap<String, Object>();
 				extractOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1"); //$NON-NLS-1$
 				extractOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
-				extractOptions.putAll(options);
+				if (options != null) {
+					extractOptions.putAll(options);			
+				}
 				try {
 					((EMFModel)targetModel).getResource().save(extractOptions);
 				} catch (IOException e) {
@@ -103,7 +105,9 @@ public class EMFExtractor implements IExtractor {
 		Map<String, Object> extractOptions = new HashMap<String, Object>();
 		extractOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1"); //$NON-NLS-1$
 		extractOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
-		extractOptions.putAll(options);
+		if (options != null) {
+			extractOptions.putAll(options);			
+		}
 		try {
 			targetModel.getResource().save(target, extractOptions);
 		} catch (IOException e) {
