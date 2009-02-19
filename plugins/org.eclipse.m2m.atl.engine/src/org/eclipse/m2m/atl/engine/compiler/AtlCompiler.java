@@ -68,7 +68,7 @@ public final class AtlCompiler {
 				ret = new Atl2004Compiler();
 				compilers.put(compilerName, ret);
 			} else {
-				if (Platform.isRunning()) {
+				try {
 					IExtensionRegistry registry = Platform.getExtensionRegistry();
 					if (registry == null) {
 						throw new CompilerNotFoundException(Messages
@@ -93,6 +93,8 @@ public final class AtlCompiler {
 							}
 						}
 					}
+				} catch (Throwable exception) {
+					// Assume that it's not available.
 				}
 			}
 
