@@ -49,12 +49,16 @@ public class EMFInjector implements IInjector {
 		ResourceSet resourceSet = ((EMFModelFactory)sourceModel.getModelFactory()).getResourceSet();
 		String path = source.toString();
 		if (path != null) {
-			if (path.equals("#EMF")) { //$NON-NLS-1$
-				mainResource = EcorePackage.eINSTANCE.eResource();
-			} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
-				mainResource = resourceSet.getResource(URI.createURI(path).trimFragment(), loadOnDemand);
-			} else {
-				mainResource = resourceSet.getResource(URI.createURI(path), loadOnDemand);
+			try {
+				if (path.equals("#EMF")) { //$NON-NLS-1$
+					mainResource = EcorePackage.eINSTANCE.eResource();
+				} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
+					mainResource = resourceSet.getResource(URI.createURI(path).trimFragment(), loadOnDemand);
+				} else {
+					mainResource = resourceSet.getResource(URI.createURI(path), loadOnDemand);
+				}
+			} catch (Exception e) {
+				throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE"),e); //$NON-NLS-1$
 			}
 		} else {
 			throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE")); //$NON-NLS-1$
