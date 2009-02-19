@@ -147,7 +147,11 @@ public final class LauncherService {
 		// INPUT/OUTPUT MODELS EXTRACTION
 		for (Iterator<String> i = inoutModels.keySet().iterator(); i.hasNext();) {
 			String modelName = i.next();
-			extractor.extract(launcher.getModel(modelName), paths.get(getRefinedModelName(modelName)));
+			String path = paths.get(getRefinedModelName(modelName));
+			if (path != null) {
+				extractor.extract(launcher.getModel(modelName), path);	
+			}
+			//otherwise its considered as an input model
 		}
 
 		return transformationResult;
