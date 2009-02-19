@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -214,8 +213,7 @@ public class ASM {
 			String signature = op.getContext();
 			if (signature.matches("^(Q|G|C|E|O|N).*$")) { //$NON-NLS-1$
 				// Sequence, Bag, Collection, Set, OrderedSet, Native type
-				ATLLogger
-						.warning(Messages.getString("ASM.UNSUPPORTEDREGISTRATION", signature)); //$NON-NLS-1$
+				ATLLogger.warning(Messages.getString("ASM.UNSUPPORTEDREGISTRATION", signature)); //$NON-NLS-1$
 			} else {
 				try {
 					Object type = parseType(execEnv, new StringCharacterIterator(signature));
@@ -247,8 +245,7 @@ public class ASM {
 					try {
 						urls[i] = new File(userDir, paths[i]).toURI().toURL();
 					} catch (MalformedURLException e) {
-						throw new VMException(null, Messages.getString(
-								"ASM.LOADINGERROR", paths[i]), e); //$NON-NLS-1$
+						throw new VMException(null, Messages.getString("ASM.LOADINGERROR", paths[i]), e); //$NON-NLS-1$
 					}
 				}
 				cl = new URLClassLoader(urls, cl);
@@ -280,23 +277,21 @@ public class ASM {
 			}
 		}
 
-		// Extension point
-		if (Platform.isRunning()) {
+		try {
+			// Extension point
 			final IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(
 					"org.eclipse.m2m.atl.engine.emfvm.libextension") //$NON-NLS-1$
 					.getExtensions();
-			try {
-				for (int i = 0; i < extensions.length; i++) {
-					final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
-					for (int j = 0; j < configElements.length; j++) {
-						LibExtension extension = (LibExtension)configElements[j]
-								.createExecutableExtension("class"); //$NON-NLS-1$
-						res.add(extension);
-					}
+			for (int i = 0; i < extensions.length; i++) {
+				final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
+				for (int j = 0; j < configElements.length; j++) {
+					LibExtension extension = (LibExtension)configElements[j]
+							.createExecutableExtension("class"); //$NON-NLS-1$
+					res.add(extension);
 				}
-			} catch (CoreException e) {
-				throw new VMException(null, e.getMessage(), e);
 			}
+		} catch (Throwable exception) {
+			// Assume that it's not available.
 		}
 		return res;
 
