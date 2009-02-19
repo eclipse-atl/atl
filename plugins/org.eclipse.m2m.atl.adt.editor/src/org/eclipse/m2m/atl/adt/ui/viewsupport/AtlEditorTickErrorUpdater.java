@@ -71,7 +71,7 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 		try {
 			pbmMarkers = res.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		} catch (CoreException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			System.err.println(e);
 		}
 		int severity = -1; // none
 		if (pbmMarkers != null) {
