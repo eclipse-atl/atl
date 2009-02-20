@@ -65,4 +65,14 @@ public interface IModel {
 	 * @return true if the model allows writing
 	 */
 	ModelFactory getModelFactory();
+
+	/**
+	 * Returns true if the given object is contained in this model's resource or a referenced resource.
+	 * 
+	 * @param object
+	 *            the model element
+	 * @return true if object is contained in this model's resource or a referenced resource
+	 */
+	boolean isModelOf(Object object);
+	
 }
