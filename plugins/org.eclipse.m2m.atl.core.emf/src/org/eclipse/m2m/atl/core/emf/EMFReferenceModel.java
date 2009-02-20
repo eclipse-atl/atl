@@ -75,6 +75,7 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IReferenceModel#isModelOf(java.lang.Object)
 	 */
+	@Override
 	public boolean isModelOf(Object object) {
 		final Resource res = ((EObject)object).eResource();
 		if (getResource().equals(res)) {

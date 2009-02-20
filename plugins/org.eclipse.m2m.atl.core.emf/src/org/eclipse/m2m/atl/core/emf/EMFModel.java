@@ -9,7 +9,7 @@
  *     INRIA - initial API and implementation
  *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: EMFModel.java,v 1.5 2008/12/19 18:05:37 wpiers Exp $
+ * $Id: EMFModel.java,v 1.6 2009/02/20 13:13:58 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -178,6 +178,19 @@ public class EMFModel implements IModel {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.core.IReferenceModel#isModelOf(java.lang.Object)
+	 */
+	public boolean isModelOf(Object object) {
+		final Resource res = ((EObject)object).eResource();
+		if (getResource().equals(res)) {
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 * 
