@@ -62,6 +62,8 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
  */
 public class EMFModelAdapter implements IModelAdapter {
 
+	private Map<Resource, EMFModel> modelsByResource;
+
 	private boolean allowInterModelReferences;
 
 	private ExecEnv execEnv;
@@ -74,6 +76,12 @@ public class EMFModelAdapter implements IModelAdapter {
 	 */
 	public EMFModelAdapter(ExecEnv execEnv) {
 		this.execEnv = execEnv;
+		modelsByResource = new HashMap<Resource, EMFModel>();
+		for (Iterator<String> i = execEnv.getModelsByName().keySet().iterator(); i.hasNext();) {
+			String name = i.next();
+			EMFModel model = (EMFModel)execEnv.getModelsByName().get(name);
+			modelsByResource.put(model.getResource(), model);
+		}
 	}
 
 	/**
@@ -93,13 +101,7 @@ public class EMFModelAdapter implements IModelAdapter {
 	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#getModelOf(java.lang.Object)
 	 */
 	public IModel getModelOf(Object element) {
-		for (Iterator<IModel> i = execEnv.getModelsByName().values().iterator(); i.hasNext();) {
-			IModel model = i.next();
-			if (model.isModelOf(element)) {
-				return model;
-			}
-		}
-		return null;
+		return modelsByResource.get(((EObject)element).eResource());
 	}
 
 	/**
@@ -294,17 +296,17 @@ public class EMFModelAdapter implements IModelAdapter {
 						return localVars[0];
 					}
 				});
-		//TODO document
+		// TODO document
 		operationsByName.put("refUnSetValue", new Operation(3) { //$NON-NLS-1$
-			@Override
-			public Object exec(AbstractStackFrame frame) {
-				Object[] localVars = frame.getLocalVars();
-				if (localVars[0] instanceof EObject) {
-					EMFModelAdapter.this.unSet(frame, (EObject)localVars[0], (String)localVars[1]);
-				}
-				return localVars[0];
-			}
-		});
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.getLocalVars();
+						if (localVars[0] instanceof EObject) {
+							EMFModelAdapter.this.unSet(frame, (EObject)localVars[0], (String)localVars[1]);
+						}
+						return localVars[0];
+					}
+				});
 		operationsByName.put("oclType", new Operation(1) { //$NON-NLS-1$
 					@Override
 					public Object exec(AbstractStackFrame frame) {
@@ -398,9 +400,9 @@ public class EMFModelAdapter implements IModelAdapter {
 						for (Iterator<IModel> i = frame.getExecEnv().getModelsByName().values().iterator(); i
 								.hasNext();) {
 							IModel model = i.next();
-//							if ((!model.isTarget()) && (model.getReferenceModel().isModelOf(ec))) {
-//								ret.addAll(model.getElementsByType(ec));
-//							}
+							// if ((!model.isTarget()) && (model.getReferenceModel().isModelOf(ec))) {
+							// ret.addAll(model.getElementsByType(ec));
+							// }
 							if (model.getReferenceModel().isModelOf(ec)) {
 								ret.addAll(model.getElementsByType(ec));
 							}
@@ -616,8 +618,9 @@ public class EMFModelAdapter implements IModelAdapter {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#unSet(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame, java.lang.Object, java.lang.String)
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#unSet(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
+	 *      java.lang.Object, java.lang.String)
 	 */
 	public void unSet(AbstractStackFrame frame, Object modelElement, String name) {
 		final EObject eo = (EObject)modelElement;
@@ -627,7 +630,7 @@ public class EMFModelAdapter implements IModelAdapter {
 			throw new VMException(frame, Messages.getString(
 					"EMFModelAdapter.FEATURE_NOT_EXISTS", name, eo.eClass().getName())); //$NON-NLS-1$
 		}
-		eo.eUnset(feature);	
+		eo.eUnset(feature);
 	}
 
 	/**
@@ -658,10 +661,8 @@ public class EMFModelAdapter implements IModelAdapter {
 		} catch (InvocationTargetException e) {
 			Throwable cause = e.getCause();
 			Exception toReport = (cause instanceof Exception) ? (Exception)cause : e;
-			throw new VMException(
-					null,
-					Messages.getString(
-							"EMFModelAdapter.INVOKE_OPERATION_ERROR", method.getName(), self), toReport); //$NON-NLS-1$
+			throw new VMException(null, Messages.getString(
+					"EMFModelAdapter.INVOKE_OPERATION_ERROR", method.getName(), self), toReport); //$NON-NLS-1$
 		}
 		return res;
 	}
