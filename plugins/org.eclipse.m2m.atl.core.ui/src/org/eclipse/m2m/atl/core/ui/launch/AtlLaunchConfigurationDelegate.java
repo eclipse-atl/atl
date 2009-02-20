@@ -63,7 +63,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		boolean isRefining = configuration.getAttribute(ATLLaunchConstants.IS_REFINING, false);
 
 		Map<String, Object> options = new HashMap<String, Object>();
-		boolean isRefiningTraceMode = atlCompiler.equals("atl2006") && isRefining; //$NON-NLS-1$
+		boolean isRefiningTraceMode = "atl2006".equals(atlCompiler) && isRefining; //$NON-NLS-1$
 		options.put("isRefiningTraceMode", new Boolean(isRefiningTraceMode).toString()); //$NON-NLS-1$
 		options.put("launch", launch); //$NON-NLS-1$
 		options.put("monitor", monitor); //$NON-NLS-1$
