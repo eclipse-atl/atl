@@ -113,7 +113,7 @@ public class OclParametrizedType extends OclType {
 		boolean ret = equals(other);
 		if (!ret && other instanceof OclParametrizedType) {
 			OclParametrizedType aopt = (OclParametrizedType)other;
-			if (aopt.getName().equals("Collection")) { //$NON-NLS-1$
+			if ("Collection".equals(aopt.getName())) { //$NON-NLS-1$
 				ret = elementType.conformsTo(aopt.getElementType());
 			} else {
 				ret = aopt.getName().equals(getName()) && elementType.conformsTo(aopt.getElementType());
