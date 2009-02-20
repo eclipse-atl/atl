@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+  <extension point="org.eclipse.ui.activities">
+  	
+  		<activity
+            name="%activity.adt"
+            description="%activity.adt.desc"
+            id="org.eclipse.m2m.atl.adt">
+     	</activity>
+     	
+     	<categoryActivityBinding
+            activityId="org.eclipse.m2m.atl.adt"
+            categoryId="org.eclipse.categories.developmentCategory">
+      	</categoryActivityBinding>
+      	
+      	<activityPatternBinding
+            activityId="org.eclipse.m2m.atl.adt"
+            pattern="org\.eclipse\.m2m\.atl\.adt/.*">
+      	</activityPatternBinding>
+      	
+      	<activityPatternBinding
+            activityId="org.eclipse.m2m.atl.adt"
+            pattern="org\.eclipse\.m2m\.atl\.adt\.debug/.*">
+      	</activityPatternBinding>
+      	
+      	<activityPatternBinding
+            activityId="org.eclipse.m2m.atl.adt"
+            pattern="org\.eclipse\.m2m\.atl\.adt\.editor/.*">
+      	</activityPatternBinding>
+      	
+      	<activityPatternBinding
+            activityId="org.eclipse.m2m.atl.adt"
+            pattern="org\.eclipse\.m2m\.atl\.adt\.ui/.*">
+      	</activityPatternBinding>
+      	
+      	<activityPatternBinding
+            activityId="org.eclipse.m2m.atl.adt"
+            pattern="org\.eclipse\.m2m\.atl\.core\.ui/.*">
+      	</activityPatternBinding>
+      	
+      	<defaultEnablement
+            id="org.eclipse.m2m.atl.adt">
+      	</defaultEnablement>
+   </extension>
+   
+</plugin>
