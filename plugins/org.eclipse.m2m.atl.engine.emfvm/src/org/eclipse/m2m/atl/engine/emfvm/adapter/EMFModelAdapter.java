@@ -62,8 +62,6 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
  */
 public class EMFModelAdapter implements IModelAdapter {
 
-	private Map<Resource, EMFModel> modelsByResource;
-
 	private boolean allowInterModelReferences;
 
 	private ExecEnv execEnv;
@@ -76,12 +74,6 @@ public class EMFModelAdapter implements IModelAdapter {
 	 */
 	public EMFModelAdapter(ExecEnv execEnv) {
 		this.execEnv = execEnv;
-		modelsByResource = new HashMap<Resource, EMFModel>();
-		for (Iterator<String> i = execEnv.getModelsByName().keySet().iterator(); i.hasNext();) {
-			String name = i.next();
-			EMFModel model = (EMFModel)execEnv.getModelsByName().get(name);
-			modelsByResource.put(model.getResource(), model);
-	}
 	}
 
 	/**
@@ -101,7 +93,13 @@ public class EMFModelAdapter implements IModelAdapter {
 	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#getModelOf(java.lang.Object)
 	 */
 	public IModel getModelOf(Object element) {
-		return modelsByResource.get(((EObject)element).eResource());
+		for (Iterator<IModel> i = execEnv.getModelsByName().values().iterator(); i.hasNext();) {
+			IModel model = i.next();
+			if (model.isModelOf(element)) {
+				return model;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -547,7 +545,6 @@ public class EMFModelAdapter implements IModelAdapter {
 						EEnum eenum = (EEnum)type;
 						for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
 							Object v = i.next();
-							// oldCol.add(eenum.getEEnumLiteral(v.toString()).getInstance());
 							oldCol.add(eenum.getEEnumLiteralByLiteral(v.toString()).getInstance());
 						}
 					} else if (allowInterModelReferences) {
@@ -567,7 +564,7 @@ public class EMFModelAdapter implements IModelAdapter {
 				} else {
 					if (targetIsEnum) {
 						EEnum eenum = (EEnum)type;
-						oldCol.add(eenum.getEEnumLiteral(settableValue.toString()).getInstance());
+						oldCol.add(eenum.getEEnumLiteralByLiteral(settableValue.toString()).getInstance());
 					} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
 						oldCol.add(settableValue);
 					} else { // (!allowIntermodelReferences) && (value instanceof EObject)
