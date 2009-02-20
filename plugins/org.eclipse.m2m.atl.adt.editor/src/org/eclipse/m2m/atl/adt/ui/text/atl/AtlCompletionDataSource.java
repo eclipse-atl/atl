@@ -131,7 +131,7 @@ public class AtlCompletionDataSource {
 			final IResource resource = resources[i];
 			if (resource.isAccessible()) {
 				if (resource instanceof IFile) {
-					if (resource.getFileExtension().equals("ecore")) { //$NON-NLS-1$
+					if ("ecore".equals(resource.getFileExtension())) { //$NON-NLS-1$
 						fileNames.add(resource.getFullPath());
 					}
 				} else if (resource instanceof IProject) {
