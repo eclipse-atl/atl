@@ -32,7 +32,6 @@ import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.core.service.LauncherService;
-import org.eclipse.m2m.atl.core.ui.launch.AtlLaunchConfigurationDelegate;
 import org.eclipse.m2m.atl.engine.compiler.AtlCompiler;
 import org.eclipse.m2m.atl.engine.compiler.CompilerNotFoundException;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
@@ -54,6 +53,8 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	protected LaunchParser launchParser = new LaunchParser();
 
 	private double totalTime;
+
+	private double executionTotalTime;
 
 	private FileWriter results;
 
@@ -193,6 +194,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			}
 		}
 		totalTime += executionTime;
+		executionTotalTime += pureExecutionTime;
 		AtlTestPlugin.getDefault().getResourceSet().getResources().clear();
 	}
 
@@ -203,7 +205,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		info("total time : " + totalTime + "s"); //$NON-NLS-1$ //$NON-NLS-2$
+		info("total time : " + totalTime + "s (pure execution: " + executionTotalTime + "s"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		results.write("\t<test name=\"TOTAL\" time=\"" + totalTime + "\"/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		results.write("</vm>\n"); //$NON-NLS-1$
 		results.close();
@@ -253,8 +255,8 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		}
 		long startTime = System.currentTimeMillis();
 		LauncherService.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), launcher, sourceModels,
-				Collections.<String, String> emptyMap(), targetModels, AtlLaunchConfigurationDelegate
-						.convertPaths(modelPaths), options, libraries, modules);
+				Collections.<String, String> emptyMap(), targetModels, convertPaths(modelPaths), options,
+				libraries, modules);
 
 		long endTime = System.currentTimeMillis();
 
@@ -267,4 +269,49 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 * @return the used VM name
 	 */
 	protected abstract String getVMName();
+
+	/**
+	 * Convert model map paths.
+	 * 
+	 * @param modelPaths
+	 *            the model path map
+	 * @return the converted map
+	 */
+	public static Map<String, String> convertPaths(Map<String, String> modelPaths) {
+		Map<String, String> result = new HashMap<String, String>();
+		for (Iterator<String> iterator = modelPaths.keySet().iterator(); iterator.hasNext();) {
+			String modelName = iterator.next();
+			String modelPath = modelPaths.get(modelName);
+			result.put(modelName, convertPath(modelPath));
+		}
+		return result;
+	}
+
+	/**
+	 * Convert "launch configuration style" paths to EMF uris:
+	 * <ul>
+	 * <li>ext:<i>path</i> => file:<i>path</i> (file system resource)</li>
+	 * <li>uri:<i>uri</i> => <i>uri</i> (EMF uri)</li>
+	 * <li><i>path</i> => platform:/resource/<i>path</i> (workspace resource)</li>
+	 * </ul>
+	 * Unchanged paths:
+	 * <ul>
+	 * <li>platform:/plugin/<i>path</i> (plugin resource)</li>
+	 * <li>pathmap:<i>path</i> (pathmap resource, e.g. UML2 profile)</li>
+	 * </ul>
+	 * 
+	 * @param path
+	 *            the path as created by the launchConfiguration
+	 * @return the converted path
+	 */
+	public static String convertPath(String path) {
+		if (path.startsWith("ext:")) { //$NON-NLS-1$
+			return path.replaceFirst("ext:", "file:/"); //$NON-NLS-1$ //$NON-NLS-2$
+		} else if (path.startsWith("uri:")) { //$NON-NLS-1$
+			return path.substring(4);
+		} else if (path.startsWith("#") || path.startsWith("platform:") || path.startsWith("pathmap")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			return path;
+		}
+		return "platform:/resource" + path; //$NON-NLS-1$
+	}
 }
