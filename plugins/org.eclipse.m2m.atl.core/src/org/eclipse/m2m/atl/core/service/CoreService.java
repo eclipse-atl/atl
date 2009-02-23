@@ -53,6 +53,8 @@ public final class CoreService {
 
 	private static Map<String, Object> extractorRegistry = new HashMap<String, Object>();
 
+	private static Map<String, Object> factoryRegistry = new HashMap<String, Object>();
+
 	private CoreService() {
 		super();
 	}
@@ -98,6 +100,18 @@ public final class CoreService {
 	}
 
 	/**
+	 * Registers a factory in the factoryRegistry.
+	 * 
+	 * @param name
+	 *            the factory name
+	 * @param factory
+	 *            the factory
+	 */
+	public static void registerFactory(String name, ModelFactory factory) {
+		register(factoryRegistry, name, factory);
+	}
+
+	/**
 	 * Creates a new {@link ModelFactory} with the given name.
 	 * 
 	 * @param name
@@ -105,7 +119,11 @@ public final class CoreService {
 	 * @return the new ModelFactory
 	 */
 	public static ModelFactory createModelFactory(String name) throws CoreException {
-		return (ModelFactory)getExtensionClass(MODELS_EXTENSION_POINT, "modelFactory", name); //$NON-NLS-1$
+		if (factoryRegistry.containsKey(name)) {
+			return (ModelFactory)factoryRegistry.get(name);
+		} else {
+			return (ModelFactory)getExtensionClass(MODELS_EXTENSION_POINT, "modelFactory", name); //$NON-NLS-1$
+		}
 	}
 
 	private static Object getExtensionClass(String extensionId, String executableExtensionName,
