@@ -149,9 +149,9 @@ public final class LauncherService {
 			String modelName = i.next();
 			String path = paths.get(getRefinedModelName(modelName));
 			if (path != null) {
-				extractor.extract(launcher.getModel(modelName), path);	
+				extractor.extract(launcher.getModel(modelName), path);
 			}
-			//otherwise its considered as an input model
+			// otherwise its considered as an input model
 		}
 
 		return transformationResult;
@@ -218,8 +218,8 @@ public final class LauncherService {
 		for (Iterator<String> i = inModels.keySet().iterator(); i.hasNext();) {
 			String modelName = i.next();
 			String referenceModelName = inModels.get(modelName);
-			IModel model = getModel(modelName, referenceModelName, false, launcher, modelFactories.get(referenceModelName), paths,
-					injectors.get(modelName), modelHandlers);
+			IModel model = getModel(modelName, referenceModelName, false, launcher, modelFactories
+					.get(referenceModelName), paths, injectors.get(modelName), modelHandlers);
 			launcher.addInModel(model, modelName, referenceModelName);
 		}
 
@@ -227,8 +227,8 @@ public final class LauncherService {
 		for (Iterator<String> i = inoutModels.keySet().iterator(); i.hasNext();) {
 			String modelName = i.next();
 			String referenceModelName = inoutModels.get(modelName);
-			IModel model = getModel(modelName, referenceModelName, false, launcher, modelFactories.get(referenceModelName), paths,
-					injectors.get(modelName), modelHandlers);
+			IModel model = getModel(modelName, referenceModelName, false, launcher, modelFactories
+					.get(referenceModelName), paths, injectors.get(modelName), modelHandlers);
 			launcher.addInOutModel(model, modelName, referenceModelName);
 		}
 
@@ -236,8 +236,8 @@ public final class LauncherService {
 		for (Iterator<String> i = outModels.keySet().iterator(); i.hasNext();) {
 			String modelName = i.next();
 			String referenceModelName = outModels.get(modelName);
-			IModel model = getModel(modelName, referenceModelName, true, launcher, modelFactories.get(referenceModelName), paths,
-					injectors.get(modelName), modelHandlers);
+			IModel model = getModel(modelName, referenceModelName, true, launcher, modelFactories
+					.get(referenceModelName), paths, injectors.get(modelName), modelHandlers);
 			launcher.addOutModel(model, modelName, referenceModelName);
 		}
 
@@ -273,12 +273,12 @@ public final class LauncherService {
 		IReferenceModel referenceModel = (IReferenceModel)launcher.getModel(referenceModelName);
 
 		if (referenceModel == null) {
-
 			Map<String, Object> referenceModelOptions = new HashMap<String, Object>();
-			referenceModelOptions.put("modelHandlerName", modelHandlers.get(referenceModelName)); //$NON-NLS-1$
-			referenceModelOptions.put("modelName", referenceModelName); //$NON-NLS-1$
-			referenceModelOptions.put("path", paths.get(referenceModelName)); //$NON-NLS-1$
-
+			if (modelHandlers != null) {
+				referenceModelOptions.put("modelHandlerName", modelHandlers.get(referenceModelName)); //$NON-NLS-1$
+				referenceModelOptions.put("modelName", referenceModelName); //$NON-NLS-1$
+				referenceModelOptions.put("path", paths.get(referenceModelName)); //$NON-NLS-1$
+			}
 			referenceModel = modelFactory.newReferenceModel(referenceModelOptions);
 			injector.inject(referenceModel, paths.get(referenceModelName));
 		}
