@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: IModelAdapter.java,v 1.3 2009/02/13 08:43:10 wpiers Exp $
+ * $Id: IModelAdapter.java,v 1.4 2009/02/23 15:12:02 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.adapter;
@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame;
+import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
 
 /**
@@ -68,7 +69,7 @@ public interface IModelAdapter {
 	 *            the name of the attribute / feature which will contain the value
 	 */
 	void unSet(AbstractStackFrame frame, Object eo, String name);
-	
+
 	/**
 	 * Deletes an object on the given frame.
 	 * 
@@ -98,13 +99,15 @@ public interface IModelAdapter {
 	/**
 	 * Displays in a readable format the given object.
 	 * 
+	 * @param execEnv
+	 *            the current execEnv
 	 * @param out
 	 *            the output stream
 	 * @param value
 	 *            the object to display
 	 * @return true if display has been successful
 	 */
-	boolean prettyPrint(PrintStream out, Object value);
+	boolean prettyPrint(ExecEnv execEnv, PrintStream out, Object value);
 
 	/**
 	 * Returns the type of a given element.
@@ -125,15 +128,6 @@ public interface IModelAdapter {
 	List<Object> getSupertypes(Object type);
 
 	/**
-	 * Returns the model containing the given element.
-	 * 
-	 * @param element
-	 *            a model element
-	 * @return the model containing the given element
-	 */
-	IModel getModelOf(Object element);
-
-	/**
 	 * Sets "allow inter-model references" for this model adapter.
 	 * 
 	 * @param allowInterModelRefs
@@ -141,11 +135,6 @@ public interface IModelAdapter {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	void setAllowInterModelReferences(boolean allowInterModelRefs);
-
-	/**
-	 * Notifies that the transformation has finished.
-	 */
-	void notifyFinish();
 
 	/**
 	 * Invokes a method.
@@ -159,4 +148,12 @@ public interface IModelAdapter {
 	 * @return the method result
 	 */
 	Object invoke(Method method, Object self, Object[] arguments);
+
+	/**
+	 * Finalizes the given model.
+	 * 
+	 * @param model
+	 *            the given model
+	 */
+	void finalizeModel(IModel model);
 }

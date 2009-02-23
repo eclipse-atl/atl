@@ -142,9 +142,9 @@ public class ASM {
 		IModelAdapter modelAdapter;
 
 		if ("true".equals(options.get("supportUML2Stereotypes"))) { //$NON-NLS-1$ //$NON-NLS-2$
-			modelAdapter = new UML2ModelAdapter(execEnv);
+			modelAdapter = new UML2ModelAdapter();
 		} else {
-			modelAdapter = new EMFModelAdapter(execEnv);
+			modelAdapter = new EMFModelAdapter();
 		}
 
 		modelAdapter.setAllowInterModelReferences("true".equals(options.get("allowInterModelReferences"))); //$NON-NLS-1$ //$NON-NLS-2$

@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.32 2009/02/16 13:00:00 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.33 2009/02/23 15:12:02 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -1612,7 +1612,7 @@ public class ExecEnv {
 	 * @return the model containing the element
 	 */
 	public String getModelNameOf(Object element) {
-		return nameByModel.get(modelAdapter.getModelOf(element));
+		return nameByModel.get(getModelOf(element));
 	}
 
 	/**
@@ -1911,7 +1911,7 @@ public class ExecEnv {
 		} else if (value instanceof OclUndefined) {
 			out.print("OclUndefined"); //$NON-NLS-1$
 		} else {
-			if (!modelAdapter.prettyPrint(out, value)) {
+			if (!modelAdapter.prettyPrint(this, out, value)) {
 				out.print(value);
 			}
 		}
@@ -1985,8 +1985,8 @@ public class ExecEnv {
 			}
 		}
 		if (s == null) {
-			throw new VMException(frame, Messages
-					.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
+			throw new VMException(frame, Messages.getString(
+					"ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
 		}
 		return s;
 	}
@@ -2015,8 +2015,8 @@ public class ExecEnv {
 			throw new VMException(frame, Messages.getString("ExecEnv.UNABLE_TO_CREATE", ec, modelName)); //$NON-NLS-1$
 		}
 		if (s == null) {
-			throw new VMException(frame, Messages
-					.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
+			throw new VMException(frame, Messages.getString(
+					"ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
 		}
 		return s;
 	}
@@ -2204,7 +2204,9 @@ public class ExecEnv {
 				}
 			}
 		}
-		modelAdapter.notifyFinish();
+		for (IModel model : modelsByName.values()) {
+			modelAdapter.finalizeModel(model);
+		}
 	}
 
 	private void persistWeavingHelpers(EObject type, Map<String, String> weavingHelperToPersistTo) {
@@ -2213,7 +2215,7 @@ public class ExecEnv {
 			String persistTo = entry.getValue();
 			if (persistTo != null) {
 				String name = entry.getKey();
-				IModel metamodel = modelAdapter.getModelOf(type);
+				IModel metamodel = getModelOf(type);
 				for (Iterator<IModel> j = getModels(); j.hasNext();) {
 					IModel model = j.next();
 					if (model.getReferenceModel() == metamodel) {
@@ -2226,5 +2228,22 @@ public class ExecEnv {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Get the model of a given element.
+	 * 
+	 * @param element
+	 *            the given element
+	 * @return the model
+	 */
+	public IModel getModelOf(Object element) {
+		for (Iterator<IModel> i = getModelsByName().values().iterator(); i.hasNext();) {
+			IModel model = i.next();
+			if (model.isModelOf(element)) {
+				return model;
+			}
+		}
+		return null;
 	}
 }

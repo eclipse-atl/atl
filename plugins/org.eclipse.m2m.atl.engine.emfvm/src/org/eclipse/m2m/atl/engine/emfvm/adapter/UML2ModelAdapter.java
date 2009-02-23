@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.engine.emfvm.VMException;
-import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 
 /**
  * The {@link EMFModelAdapter} adaptation for UML2.
@@ -32,35 +32,33 @@ public class UML2ModelAdapter extends EMFModelAdapter implements IModelAdapter {
 
 	/**
 	 * Creates a new UMLModelAdapter.
-	 * 
-	 * @param execEnv
-	 *            the current execution environment
 	 */
-	public UML2ModelAdapter(ExecEnv execEnv) {
-		super(execEnv);
+	public UML2ModelAdapter() {
+		super();
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.EMFModelAdapter#notifyFinish()
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.EMFModelAdapter#finalizeModel(org.eclipse.m2m.atl.core.IModel)
 	 */
 	@Override
-	public void notifyFinish() {
-		super.notifyFinish();
+	public void finalizeModel(IModel model) {
+		super.finalizeModel(model);
 		try {
 			applyDelayedInvocations();
 		} catch (InvocationTargetException e) {
-			throw new VMException(null, e.getMessage(),e);
+			throw new VMException(null, e.getMessage(), e);
 		} catch (IllegalAccessException e) {
-			throw new VMException(null, e.getMessage(),e);
+			throw new VMException(null, e.getMessage(), e);
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.EMFModelAdapter#invoke(java.lang.reflect.Method, java.lang.Object, java.lang.Object[])
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.EMFModelAdapter#invoke(java.lang.reflect.Method,
+	 *      java.lang.Object, java.lang.Object[])
 	 */
 	@Override
 	public Object invoke(Method method, Object self, Object[] arguments) {
@@ -137,6 +135,7 @@ public class UML2ModelAdapter extends EMFModelAdapter implements IModelAdapter {
 			Invocation invocation = i.next();
 			invocation.method.invoke(invocation.self, invocation.arguments);
 		}
+		delayedInvocations.clear();
 	}
 
 }
