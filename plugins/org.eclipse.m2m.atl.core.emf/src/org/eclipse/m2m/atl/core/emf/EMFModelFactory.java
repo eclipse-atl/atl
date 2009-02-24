@@ -14,12 +14,14 @@ package org.eclipse.m2m.atl.core.emf;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.Resource.Factory;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
@@ -43,6 +45,9 @@ public final class EMFModelFactory extends ModelFactory {
 
 	/** Content type. */
 	public static final String OPTION_CONTENT_TYPE = "OPTION_CONTENT_TYPE"; //$NON-NLS-1$
+
+	/** URI option. */
+	public static final String OPTION_URI = "path"; //$NON-NLS-1$
 
 	private ResourceSet resourceSet;
 
@@ -89,7 +94,16 @@ public final class EMFModelFactory extends ModelFactory {
 	 */
 	@Override
 	public IModel newModel(IReferenceModel referenceModel, Map<String, Object> options) {
-		return newModel(referenceModel);
+		IModel model = newModel(referenceModel);
+		String uri = (String)options.get(OPTION_URI);
+		// String contentType = (String)options.get(OPTION_CONTENT_TYPE);
+		if (uri != null) {
+			// @since 2.4: causes compatibility issues
+			// Factory factory = resourceSet.getResourceFactoryRegistry().getFactory(uri, contentType);
+			Factory factory = resourceSet.getResourceFactoryRegistry().getFactory(URI.createURI(uri));
+			((EMFModel)model).setEmfResourceFactory(factory);
+		}
+		return model;
 	}
 
 	/**
@@ -100,6 +114,21 @@ public final class EMFModelFactory extends ModelFactory {
 	@Override
 	public IModel newModel(IReferenceModel referenceModel) {
 		return new EMFModel((EMFReferenceModel)referenceModel, this);
+	}
+
+	/**
+	 * Creates a new {@link EMFModel} using the given uri, which specifies the correct {@link Factory}.
+	 * 
+	 * @param referenceModel
+	 *            the {@link IReferenceModel}
+	 * @param uri
+	 *            the model uri
+	 * @return a new {@link IModel}
+	 */
+	public EMFModel newModel(EMFReferenceModel referenceModel, String uri) {
+		Map<String, Object> options = new HashMap<String, Object>();
+		options.put(OPTION_URI, uri);
+		return (EMFModel)newModel(referenceModel, options);
 	}
 
 	/**
@@ -136,27 +165,28 @@ public final class EMFModelFactory extends ModelFactory {
 		EMFReferenceModel model = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this), this);
 		URL url = ATLResourceProvider.getURL(name);
 		if (url == null) {
-			throw new ATLCoreException(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND",name)); //$NON-NLS-1$
+			throw new ATLCoreException(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND", name)); //$NON-NLS-1$
 		}
 		Resource builtin = resourceSet.createResource(URI.createURI(name));
 		try {
-			builtin.load(url.openStream(), Collections.EMPTY_MAP);	
+			builtin.load(url.openStream(), Collections.EMPTY_MAP);
 		} catch (IOException e) {
-			throw new ATLCoreException(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND",name), e); //$NON-NLS-1$
-		}		
+			throw new ATLCoreException(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND", name), e); //$NON-NLS-1$
+		}
 		if (builtin == null) {
-			throw new ATLCoreException(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND",name)); //$NON-NLS-1$
+			throw new ATLCoreException(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND", name)); //$NON-NLS-1$
 		}
 		model.setResource(builtin);
 		model.register();
 		return model;
 	}
-	
+
 	/**
-	 * Removes the model's {@link Resource} from the {@link ResourceSet} and
-	 * calls {@link #finalizeResource(Resource)}.
+	 * Removes the model's {@link Resource} from the {@link ResourceSet} and calls
+	 * {@link #finalizeResource(Resource)}.
 	 * 
-	 * @param model The model of which to remove the {@link Resource}.
+	 * @param model
+	 *            The model of which to remove the {@link Resource}.
 	 */
 	public void unload(EMFModel model) {
 		final Resource r = model.getResource();
@@ -168,12 +198,12 @@ public final class EMFModelFactory extends ModelFactory {
 	}
 
 	/**
-	 * Finalizes r. This implementation does nothing, but allows for overriding
-	 * in subclasses.
+	 * Finalizes r. This implementation does nothing, but allows for overriding in subclasses.
 	 * 
-	 * @param r The resource to finalize.
+	 * @param r
+	 *            The resource to finalize.
 	 */
 	protected void finalizeResource(Resource r) {
-		//do nothing
+		// do nothing
 	}
 }

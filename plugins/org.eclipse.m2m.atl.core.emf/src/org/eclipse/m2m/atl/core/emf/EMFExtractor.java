@@ -43,12 +43,12 @@ public class EMFExtractor implements IExtractor {
 			throws ATLCoreException {
 		if (target != null) {
 			if (((EMFModel)targetModel).getResource() != null) {
-				recreateResource((EMFModel)targetModel, URI.createURI(target));
+				recreateResourceIfNeeded((EMFModel)targetModel, URI.createURI(target));
 				Map<String, Object> extractOptions = new HashMap<String, Object>();
 				extractOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1"); //$NON-NLS-1$
 				extractOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
 				if (options != null) {
-					extractOptions.putAll(options);			
+					extractOptions.putAll(options);
 				}
 				try {
 					((EMFModel)targetModel).getResource().save(extractOptions);
@@ -87,7 +87,7 @@ public class EMFExtractor implements IExtractor {
 	 */
 	public void extract(EMFModel targetModel, OutputStream target, String fileExtension,
 			Map<String, Object> options) {
-		recreateResource(targetModel, URI.createURI("tmp." + fileExtension)); //$NON-NLS-1$
+		recreateResourceIfNeeded(targetModel, URI.createURI("tmp." + fileExtension)); //$NON-NLS-1$
 		extract(targetModel, target, options);
 	}
 
@@ -106,7 +106,7 @@ public class EMFExtractor implements IExtractor {
 		extractOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1"); //$NON-NLS-1$
 		extractOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
 		if (options != null) {
-			extractOptions.putAll(options);			
+			extractOptions.putAll(options);
 		}
 		try {
 			targetModel.getResource().save(target, extractOptions);
@@ -123,11 +123,16 @@ public class EMFExtractor implements IExtractor {
 	 * @param uri
 	 *            the target {@link URI} with the correct extension
 	 */
-	protected static void recreateResource(EMFModel targetModel, URI uri) {
-		ResourceSet resourceSet = targetModel.getModelFactory().getResourceSet();
-		Resource newResource = resourceSet.createResource(uri);
-		newResource.getContents().addAll(targetModel.getResource().getContents());
-		targetModel.setResource(newResource);
+	protected static void recreateResourceIfNeeded(EMFModel targetModel, URI uri) {
+		if (targetModel.getEmfResourceFactory() == null) {
+			// recreates the resource only if no correct factory has been initialized
+			ResourceSet resourceSet = targetModel.getModelFactory().getResourceSet();
+			Resource newResource = resourceSet.createResource(uri);
+			newResource.getContents().addAll(targetModel.getResource().getContents());
+			targetModel.setResource(newResource);
+		} else {
+			targetModel.getResource().setURI(uri);
+		}
 	}
 
 }
