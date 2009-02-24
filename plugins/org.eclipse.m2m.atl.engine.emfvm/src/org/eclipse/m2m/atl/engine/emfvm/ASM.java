@@ -163,7 +163,7 @@ public class ASM {
 
 		for (Iterator<ASM> i = libraries.values().iterator(); i.hasNext();) {
 			ASM library = i.next();
-			registerOperations(execEnv, library.operations);
+			registerOperations(execEnv, library.getOperations());
 			if (library.mainOperation != null) {
 				library.mainOperation.exec(new StackFrame(execEnv, asmModule, library.mainOperation));
 			}
@@ -171,7 +171,7 @@ public class ASM {
 
 		// register module operations after libraries to avoid overriding
 		// "main" in execEnv (avoid superimposition problems)
-		registerOperations(execEnv, operations);
+		registerOperations(execEnv, operations.iterator());
 
 		for (Iterator<ASM> i = superimpose.iterator(); i.hasNext();) {
 			ASM module = i.next();
@@ -181,7 +181,7 @@ public class ASM {
 			} catch (AtlSuperimposeModuleException e) {
 				throw new VMException(frame, e.getLocalizedMessage(), e);
 			}
-			registerOperations(execEnv, module.operations);
+			registerOperations(execEnv, module.getOperations());
 		}
 
 		ret = mainOperation.exec(frame, monitor);
@@ -207,9 +207,9 @@ public class ASM {
 	 * @param operationsToRegister
 	 *            the list of operations to register
 	 */
-	public void registerOperations(ExecEnv execEnv, List<ASMOperation> operationsToRegister) {
-		for (Iterator<ASMOperation> i = operationsToRegister.iterator(); i.hasNext();) {
-			ASMOperation op = i.next();
+	public static void registerOperations(ExecEnv execEnv, Iterator<ASMOperation> operationsToRegister) {
+		while (operationsToRegister.hasNext()) {
+			ASMOperation op = operationsToRegister.next();
 			String signature = op.getContext();
 			if (signature.matches("^(Q|G|C|E|O|N).*$")) { //$NON-NLS-1$
 				// Sequence, Bag, Collection, Set, OrderedSet, Native type
@@ -299,7 +299,7 @@ public class ASM {
 
 	// read until c, including c
 	// returns everything read before c
-	private String readUntil(CharacterIterator ci, char c) throws SignatureParsingException {
+	private static String readUntil(CharacterIterator ci, char c) throws SignatureParsingException {
 		StringBuffer ret = new StringBuffer();
 
 		while (ci.current() != c) {
@@ -311,7 +311,7 @@ public class ASM {
 		return ret.toString();
 	}
 
-	private void read(CharacterIterator ci, char c) throws SignatureParsingException {
+	private static void read(CharacterIterator ci, char c) throws SignatureParsingException {
 		if (ci.current() != c) {
 			throw new SignatureParsingException(
 					Messages
@@ -322,7 +322,7 @@ public class ASM {
 	}
 
 	// Type may be java.lang.Class, EClass, OclType
-	private Object parseType(ExecEnv execEnv, CharacterIterator ci) throws SignatureParsingException {
+	private static Object parseType(ExecEnv execEnv, CharacterIterator ci) throws SignatureParsingException {
 		Object ret = parseTypeInternal(execEnv, ci);
 
 		if (ci.next() != CharacterIterator.DONE) {
@@ -333,7 +333,8 @@ public class ASM {
 		return ret;
 	}
 
-	private Object parseTypeInternal(ExecEnv execEnv, CharacterIterator ci) throws SignatureParsingException {
+	private static Object parseTypeInternal(ExecEnv execEnv, CharacterIterator ci)
+			throws SignatureParsingException {
 		Object ret = null;
 
 		switch (ci.current()) {
@@ -422,7 +423,7 @@ public class ASM {
 	/**
 	 * Exception dedicated to signature parsing issues.
 	 */
-	private class SignatureParsingException extends Exception {
+	private static class SignatureParsingException extends Exception {
 
 		private static final long serialVersionUID = 7488097967558841786L;
 
