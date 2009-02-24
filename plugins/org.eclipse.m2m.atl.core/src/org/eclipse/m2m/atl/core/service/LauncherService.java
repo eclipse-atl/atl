@@ -276,9 +276,9 @@ public final class LauncherService {
 			Map<String, Object> referenceModelOptions = new HashMap<String, Object>();
 			if (modelHandlers != null) {
 				referenceModelOptions.put("modelHandlerName", modelHandlers.get(referenceModelName)); //$NON-NLS-1$
-				referenceModelOptions.put("modelName", referenceModelName); //$NON-NLS-1$
-				referenceModelOptions.put("path", paths.get(referenceModelName)); //$NON-NLS-1$
 			}
+			referenceModelOptions.put("modelName", referenceModelName); //$NON-NLS-1$
+			referenceModelOptions.put("path", paths.get(referenceModelName)); //$NON-NLS-1$
 			referenceModel = modelFactory.newReferenceModel(referenceModelOptions);
 			injector.inject(referenceModel, paths.get(referenceModelName));
 		}
