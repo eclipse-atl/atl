@@ -943,7 +943,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		Map<String, Object> thisGroupWidgets = new HashMap<String, Object>();
 
 		final Label metamodelLabel = new Label(parent, SWT.NULL);
-		metamodelLabel.setText(metamodelName + ": "); //$NON-NLS-1$
+		metamodelLabel.setText(metamodelName + ":"); //$NON-NLS-1$
 
 		final Text metamodelLocation = new Text(parent, SWT.BORDER);
 		thisGroupWidgets.put("metamodelLocation", metamodelLocation); //$NON-NLS-1$
@@ -1097,7 +1097,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		Map<String, Object> thisGroupWidgets = new HashMap<String, Object>();
 
 		final Label modelLabel = new Label(parent, SWT.NULL);
-		modelLabel.setText(modelName + ": "); //$NON-NLS-1$
+		modelLabel.setText(modelName + ":"); //$NON-NLS-1$
 
 		final Text location = new Text(parent, SWT.BORDER);
 		thisGroupWidgets.put("location", location); //$NON-NLS-1$
