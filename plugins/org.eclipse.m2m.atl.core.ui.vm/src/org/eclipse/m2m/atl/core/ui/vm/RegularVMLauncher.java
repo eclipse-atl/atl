@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.ui.vm;
 
-import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,7 +61,7 @@ public class RegularVMLauncher implements ILauncher {
 	private Map<String, ASM> libraries;
 
 	private boolean checkSameModel;
-	
+
 	public String getName() {
 		return LAUNCHER_NAME;
 	}
@@ -112,17 +111,15 @@ public class RegularVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addLibrary(java.lang.String, java.io.InputStream)
+	 * 
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addLibrary(java.lang.String, java.lang.Object)
 	 */
-	public void addLibrary(String name, InputStream library) {
+	public void addLibrary(String name, Object library) {
 		if (libraries.containsKey(name)) {
 			ATLLogger.warning(Messages.getString(
 					"RegularVMLauncher.LIBRARY_EVER_REGISTERED", new Object[] {name})); //$NON-NLS-1$
 		} else {
-			ASMXMLReader reader = new ASMXMLReader();
-			ASM asmLibrary = reader.read(library);
-			libraries.put(name, asmLibrary);
+			libraries.put(name, getASMFromObject(library));
 		}
 	}
 
@@ -148,11 +145,12 @@ public class RegularVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String, org.eclipse.core.runtime.IProgressMonitor, java.util.Map, java.io.InputStream[])
+	 * 
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String,
+	 *      org.eclipse.core.runtime.IProgressMonitor, java.util.Map, java.io.InputStream[])
 	 */
 	public Object launch(final String mode, final IProgressMonitor monitor,
-			final Map<String, Object> options, final InputStream... modules) {
+			final Map<String, Object> options, final Object... modules) {
 		IDebugTarget mTarget = null;
 		ILaunch launchParam = (ILaunch)options.get("launch"); //$NON-NLS-1$
 		try {
@@ -204,14 +202,14 @@ public class RegularVMLauncher implements ILauncher {
 
 	private Object launch(Debugger debugger, Map<String, Object> options, Object[] modules) {
 		Object ret = null;
-		ASM asm = new ASMXMLReader().read(new BufferedInputStream((InputStream)modules[0]));
+		ASM asm = getASMFromObject(modules[0]);
 		ASMModule asmModule = new ASMModule(asm);
 
 		ASMExecEnv env = new ASMExecEnv(asmModule, debugger,
 				!"true".equals(options.get("disableAttributeHelperCache"))); //$NON-NLS-1$ //$NON-NLS-2$
 		env.addPermission("file.read"); //$NON-NLS-1$
 		env.addPermission("file.write"); //$NON-NLS-1$
-		
+
 		for (Iterator<String> i = models.keySet().iterator(); i.hasNext();) {
 			String mname = i.next();
 			env.addModel(mname, ((ASMModelWrapper)models.get(mname)).getAsmModel());
@@ -234,8 +232,7 @@ public class RegularVMLauncher implements ILauncher {
 
 		try {
 			for (int i = 1; i < modules.length; i++) {
-				InputStream is = (InputStream)modules[i];
-				ASM module = new ASMXMLReader().read(new BufferedInputStream(is));
+				ASM module = getASMFromObject(modules[i]);
 				AtlSuperimposeModule ami = new AtlSuperimposeModule(env, module);
 				ami.adaptModuleOperations();
 				env.registerOperations(module);
@@ -261,6 +258,24 @@ public class RegularVMLauncher implements ILauncher {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#loadModule(java.io.InputStream)
+	 */
+	public Object loadModule(InputStream inputStream) {
+		return new ASMXMLReader().read(inputStream);
+	}
+
+	private ASM getASMFromObject(Object module) {
+		if (module instanceof InputStream) {
+			return (ASM)loadModule((InputStream)module);
+		} else if (module instanceof ASM) {
+			return (ASM)module;
+		}
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getModel(java.lang.String)
 	 */
 	public IModel getModel(String modelName) {
@@ -275,11 +290,11 @@ public class RegularVMLauncher implements ILauncher {
 	public Object getLibrary(String libraryName) {
 		return libraries.get(libraryName);
 	}
-	
+
 	private void setCheckSameModel(IModel model) {
 		if (model instanceof ASMModelWrapper) {
 			ASMModel asmModel = ((ASMModelWrapper)model).getAsmModel();
-			((ASMEMFModel)asmModel).setCheckSameModel(checkSameModel);			
+			((ASMEMFModel)asmModel).setCheckSameModel(checkSameModel);
 		}
 	}
 }
