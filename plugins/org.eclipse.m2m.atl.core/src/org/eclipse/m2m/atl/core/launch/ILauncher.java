@@ -83,14 +83,14 @@ public interface ILauncher {
 	void addInOutModel(IModel model, String name, String referenceModelName);
 
 	/**
-	 * Adds a library module to the transformation.
+	 * Adds a preloaded library module to the transformation, or an {@link InputStream}.
 	 * 
 	 * @param library
 	 *            the loaded library
 	 * @param name
 	 *            the name of the library as described in the main module
 	 */
-	void addLibrary(String name, InputStream library);
+	void addLibrary(String name, Object library);
 
 	/**
 	 * Initialize the launcher.
@@ -101,7 +101,8 @@ public interface ILauncher {
 	void initialize(Map<String, Object> options);
 
 	/**
-	 * Launches the transformation using the given parameters and the given set of modules.
+	 * Launches the transformation using the given parameters and the given set of preloaded modules, or
+	 * {@link InputStream}.
 	 * 
 	 * @param mode
 	 *            the launching mode
@@ -114,7 +115,16 @@ public interface ILauncher {
 	 *            module of the set is override by the next ones.
 	 * @return the transformation return result
 	 */
-	Object launch(String mode, IProgressMonitor monitor, Map<String, Object> options, InputStream... modules);
+	Object launch(String mode, IProgressMonitor monitor, Map<String, Object> options, Object... modules);
+
+	/**
+	 * Loads a transformation module from an {@link InputStream}.
+	 * 
+	 * @param inputStream
+	 *            the input stream to load
+	 * @return the loaded module
+	 */
+	Object loadModule(InputStream inputStream);
 
 	/**
 	 * Returns a previously added model with the given name.

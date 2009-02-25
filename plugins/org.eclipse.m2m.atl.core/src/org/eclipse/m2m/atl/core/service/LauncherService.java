@@ -136,7 +136,7 @@ public final class LauncherService {
 		}
 
 		// LAUNCH
-		Object transformationResult = launcher.launch(mode, monitor, options, modules);
+		Object transformationResult = launcher.launch(mode, monitor, options,(Object[])modules);
 
 		// OUTPUT MODELS EXTRACTION
 		for (Iterator<String> i = outModels.keySet().iterator(); i.hasNext();) {
@@ -249,7 +249,7 @@ public final class LauncherService {
 		}
 
 		// LAUNCH
-		Object transformationResult = launcher.launch(mode, monitor, options, modules);
+		Object transformationResult = launcher.launch(mode, monitor, options,(Object[])modules);
 
 		// OUTPUT MODELS EXTRACTION
 		for (Iterator<String> i = outModels.keySet().iterator(); i.hasNext();) {
