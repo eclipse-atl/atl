@@ -13,6 +13,9 @@ import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.engine.emfvm.ASM;
 import org.eclipse.m2m.atl.engine.emfvm.ASMXMLReader;
 import org.eclipse.m2m.atl.engine.emfvm.Messages;
+import org.eclipse.m2m.atl.engine.emfvm.adapter.EMFModelAdapter;
+import org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter;
+import org.eclipse.m2m.atl.engine.emfvm.adapter.UML2ModelAdapter;
 
 /**
  * The EMFVM implementation of the {@link ILauncher} interface.
@@ -44,7 +47,7 @@ public class EMFVMLauncher implements ILauncher {
 			models.put(referenceModelName, model.getReferenceModel());
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -80,15 +83,13 @@ public class EMFVMLauncher implements ILauncher {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addLibrary(java.lang.String, java.io.InputStream)
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addLibrary(java.lang.String, java.lang.Object)
 	 */
-	public void addLibrary(String name, InputStream library) {
+	public void addLibrary(String name, Object library) {
 		if (libraries.containsKey(name)) {
 			ATLLogger.warning(Messages.getString("EMFVMLauncher.LIBRARY_EVER_REGISTERED", name)); //$NON-NLS-1$
 		} else {
-			ASMXMLReader reader = new ASMXMLReader();
-			ASM asmLibrary = reader.read(library);
-			libraries.put(name, asmLibrary);
+			libraries.put(name, getASMFromObject(library));
 		}
 	}
 
@@ -106,49 +107,49 @@ public class EMFVMLauncher implements ILauncher {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String,
-	 *      org.eclipse.core.runtime.IProgressMonitor, java.util.Map, java.io.InputStream[])
+	 *      org.eclipse.core.runtime.IProgressMonitor, java.util.Map, java.lang.Object[])
 	 */
 	public Object launch(final String mode, final IProgressMonitor monitor,
-			final Map<String, Object> options, final InputStream... modules) {
+			final Map<String, Object> options, final Object... modules) {
 		if (!mode.equals(ILauncher.RUN_MODE)) {
 			ATLLogger.warning("mode " + mode + " unsupported for EMFVM, running launch instead"); //$NON-NLS-1$//$NON-NLS-2$
 		}
 		List<ASM> superimpose = new ArrayList<ASM>();
-		ASMXMLReader reader = new ASMXMLReader();
-		ASM mainModule = reader.read(modules[0]);
+		ASM mainModule = getASMFromObject(modules[0]);
 		for (int i = 1; i < modules.length; i++) {
-			reader = new ASMXMLReader();
-			InputStream module = modules[i];
-			superimpose.add(reader.read(module));
+			superimpose.add(getASMFromObject(modules[i]));
 		}
-		return mainModule.run(models, libraries, superimpose, options, monitor);
+		return launch(mode, monitor, options, mainModule, superimpose);
+	}
+
+	private Object launch(final String mode, final IProgressMonitor monitor,
+			final Map<String, Object> options, ASM mainModule, List<ASM> superimpose) {
+		IModelAdapter modelAdapter;
+		if ("true".equals(options.get("supportUML2Stereotypes"))) { //$NON-NLS-1$ //$NON-NLS-2$
+			modelAdapter = new UML2ModelAdapter();
+		} else {
+			modelAdapter = new EMFModelAdapter();
+		}
+		modelAdapter.setAllowInterModelReferences("true".equals(options.get("allowInterModelReferences"))); //$NON-NLS-1$ //$NON-NLS-2$
+		return mainModule.run(models, libraries, superimpose, options, monitor, modelAdapter);
 	}
 
 	/**
-	 * Launches the transformation using the given parameters and the given set of modules.
+	 * {@inheritDoc}
 	 * 
-	 * @param mode
-	 *            the launching mode
-	 * @param monitor
-	 *            the progress monitor
-	 * @param options
-	 *            vm options
-	 * @param modules
-	 *            single module/ordered module set, in their ASM form. A module set is used for
-	 *            superimposition, where the first module of the set is override by the next ones.
-	 * @return the transformation return result
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#loadModule(java.io.InputStream)
 	 */
-	public Object launch(final String mode, final IProgressMonitor monitor,
-			final Map<String, Object> options, final ASM... modules) {
-		if (!mode.equals(ILauncher.RUN_MODE)) {
-			ATLLogger.warning("mode " + mode + " unsupported for EMFVM, running launch instead"); //$NON-NLS-1$//$NON-NLS-2$
+	public Object loadModule(InputStream inputStream) {
+		return new ASMXMLReader().read(inputStream);
+	}
+
+	private ASM getASMFromObject(Object module) {
+		if (module instanceof InputStream) {
+			return (ASM)loadModule((InputStream)module);
+		} else if (module instanceof ASM) {
+			return (ASM)module;
 		}
-		List<ASM> superimpose = new ArrayList<ASM>();
-		ASM mainModule = modules[0];
-		for (int i = 1; i < modules.length; i++) {
-			superimpose.add(modules[i]);
-		}
-		return mainModule.run(models, libraries, superimpose, options, monitor);
+		return null;
 	}
 
 	/**

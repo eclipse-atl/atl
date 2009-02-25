@@ -31,9 +31,7 @@ import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.AtlSuperimposeModule.AtlSuperimposeModuleException;
-import org.eclipse.m2m.atl.engine.emfvm.adapter.EMFModelAdapter;
 import org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter;
-import org.eclipse.m2m.atl.engine.emfvm.adapter.UML2ModelAdapter;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ASMModule;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.LibExtension;
@@ -128,26 +126,18 @@ public class ASM {
 	 *            the option map
 	 * @param monitor
 	 *            the progress monitor
+	 * @param modelAdapter
+	 *            the {@link IModelAdapter} to use
 	 * @return the execution result
 	 */
 	public Object run(Map<String, IModel> models, Map<String, ASM> libraries, List<ASM> superimpose,
-			Map<String, Object> options, IProgressMonitor monitor) {
+			Map<String, Object> options, IProgressMonitor monitor, IModelAdapter modelAdapter) {
 		Object ret = null;
 
 		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
 		long startTime = System.currentTimeMillis();
 
 		ExecEnv execEnv = new ExecEnv(models);
-
-		IModelAdapter modelAdapter;
-
-		if ("true".equals(options.get("supportUML2Stereotypes"))) { //$NON-NLS-1$ //$NON-NLS-2$
-			modelAdapter = new UML2ModelAdapter();
-		} else {
-			modelAdapter = new EMFModelAdapter();
-		}
-
-		modelAdapter.setAllowInterModelReferences("true".equals(options.get("allowInterModelReferences"))); //$NON-NLS-1$ //$NON-NLS-2$
 		execEnv.init(modelAdapter);
 
 		if ("true".equals(options.get("step"))) { //$NON-NLS-1$ //$NON-NLS-2$
