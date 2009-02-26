@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.emf;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
 
@@ -58,7 +60,7 @@ public class EMFInjector implements IInjector {
 					mainResource = resourceSet.getResource(URI.createURI(path), loadOnDemand);
 				}
 			} catch (Exception e) {
-				throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE"),e); //$NON-NLS-1$
+				throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE"), e); //$NON-NLS-1$
 			}
 		} else {
 			throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE")); //$NON-NLS-1$
@@ -73,6 +75,26 @@ public class EMFInjector implements IInjector {
 	 */
 	public void inject(IModel sourceModel, String source) throws ATLCoreException {
 		inject(sourceModel, source, Collections.<String, Object> emptyMap());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.io.InputStream,
+	 *      java.util.Map)
+	 */
+	public void inject(IModel sourceModel, InputStream source, Map<String, Object> options)
+			throws ATLCoreException {
+		Resource mainResource = null;
+		ResourceSet resourceSet = ((EMFModelFactory)sourceModel.getModelFactory()).getResourceSet();
+		mainResource = resourceSet.createResource(URI.createURI("new-model")); //$NON-NLS-1$
+		try {
+			mainResource.load(source, options);
+		} catch (IOException e) {
+			throw new ATLCoreException(e.getMessage(), e);
+		}
+		inject((EMFModel)sourceModel, mainResource);
+
 	}
 
 	/**

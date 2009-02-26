@@ -92,16 +92,11 @@ public class EMFExtractor implements IExtractor {
 	}
 
 	/**
-	 * Extracts an {@link EMFModel} to an {@link OutputStream}.
-	 * 
-	 * @param targetModel
-	 *            the {@link EMFModel} to extract
-	 * @param target
-	 *            the target {@link OutputStream} to extract the targetModel
-	 * @param options
-	 *            the extraction parameters
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.io.OutputStream, java.util.Map)
 	 */
-	public void extract(EMFModel targetModel, OutputStream target, Map<String, Object> options) {
+	public void extract(IModel targetModel, OutputStream target, Map<String, Object> options) {
 		Map<String, Object> extractOptions = new HashMap<String, Object>();
 		extractOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1"); //$NON-NLS-1$
 		extractOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
@@ -109,7 +104,7 @@ public class EMFExtractor implements IExtractor {
 			extractOptions.putAll(options);
 		}
 		try {
-			targetModel.getResource().save(target, extractOptions);
+			((EMFModel)targetModel).getResource().save(target, extractOptions);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
