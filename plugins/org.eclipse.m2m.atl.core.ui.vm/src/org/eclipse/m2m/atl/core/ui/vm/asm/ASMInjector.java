@@ -40,8 +40,9 @@ public class ASMInjector implements IInjector {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.String, java.util.Map)
+	 * 
+	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.String,
+	 *      java.util.Map)
 	 */
 	public void inject(IModel sourceModel, String source, Map<String, Object> options)
 			throws ATLCoreException {
@@ -50,15 +51,33 @@ public class ASMInjector implements IInjector {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.String)
 	 */
 	public void inject(IModel sourceModel, String source) throws ATLCoreException {
 		inject(sourceModel, source, ((ASMModelWrapper)sourceModel).getName());
 	}
 
-	private void inject(IModel sourceModel, String source, String modelName)
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.io.InputStream,
+	 *      java.util.Map)
+	 */
+	public void inject(IModel sourceModel, InputStream source, Map<String, Object> options)
 			throws ATLCoreException {
+		final ASMModelWrapper modelWrapper = (ASMModelWrapper)sourceModel;
+		try {
+			final ModelLoader ml = modelWrapper.getModelLoader();
+			ASMModel asmModel = ml.loadModel(modelWrapper.getName(), ((ASMModelWrapper)modelWrapper
+					.getReferenceModel()).getAsmModel(), source);
+			modelWrapper.setAsmModel(asmModel);
+		} catch (IOException e) {
+			throw new ATLCoreException(e.getLocalizedMessage(), e);
+		}
+	}
+
+	private void inject(IModel sourceModel, String source, String modelName) throws ATLCoreException {
 		final ASMModelWrapper modelWrapper = (ASMModelWrapper)sourceModel;
 		try {
 			final ModelLoader ml = modelWrapper.getModelLoader();
@@ -70,7 +89,8 @@ public class ASMInjector implements IInjector {
 			} else if (ml instanceof EMFModelLoader) {
 				if (source.startsWith("platform:/resource")) { //$NON-NLS-1$
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
-							.getReferenceModel()).getAsmModel(), URI.createPlatformResourceURI(source.substring(18), false));
+							.getReferenceModel()).getAsmModel(), URI.createPlatformResourceURI(source
+							.substring(18), false));
 				} else if (source.startsWith("file:/")) { //$NON-NLS-1$
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
 							.getReferenceModel()).getAsmModel(), URI.createFileURI(source.substring(6)));

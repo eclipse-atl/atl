@@ -12,6 +12,7 @@
 package org.eclipse.m2m.atl.core.ui.vm.asm;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
@@ -58,6 +59,17 @@ public class ASMExtractor implements IExtractor {
 		} catch (IOException e) {
 			throw new ATLCoreException(e.getLocalizedMessage(), e);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.io.OutputStream, java.util.Map)
+	 */
+	public void extract(IModel targetModel, OutputStream target, Map<String, Object> options)
+			throws ATLCoreException {
+		// TODO implement in org.eclipse.m2m.atl.engine.vm.ModelLoader then here	
+		throw new ATLCoreException("Extraction on OutputStream unsupported by ModelLoader"); //$NON-NLS-1$
 	}
 
 }
