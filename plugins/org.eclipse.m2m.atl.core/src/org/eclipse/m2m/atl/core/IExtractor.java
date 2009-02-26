@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.core;
 
+import java.io.OutputStream;
 import java.util.Map;
 
 /**
@@ -40,4 +41,16 @@ public interface IExtractor {
 	 *            the extraction parameters
 	 */
 	void extract(IModel targetModel, String target, Map<String, Object> options) throws ATLCoreException;
+	
+	/**
+	 * Extracts an IModel using the given options.
+	 * 
+	 * @param targetModel
+	 *            the IModel to extract
+	 * @param target
+	 *            the {@link OutputStream} where to extract the targetModel
+	 * @param options
+	 *            the extraction parameters
+	 */
+	void extract(IModel targetModel, OutputStream target, Map<String, Object> options) throws ATLCoreException;
 }

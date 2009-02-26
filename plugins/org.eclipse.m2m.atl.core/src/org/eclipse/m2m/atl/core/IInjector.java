@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.core;
 
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -41,4 +42,17 @@ public interface IInjector {
 	 */
 	void inject(IModel sourceModel, String source, Map<String, Object> options) throws ATLCoreException;
 
+	/**
+	 * Injects data into an IModel using the given options.
+	 * 
+	 * @param sourceModel
+	 *            the IModel where to inject
+	 * @param source
+	 *            the {@link InputStream} containing the model
+	 * @param options
+	 *            the injection parameters
+	 */
+	void inject(IModel sourceModel, InputStream source, Map<String, Object> options) throws ATLCoreException;
+
+	
 }
