@@ -53,6 +53,16 @@ public class StackFrame extends AbstractStackFrame {
 	}
 
 	/**
+	 * Creates an empty StackFrame which refers to its {@link ExecEnv}.
+	 * 
+	 * @param execEnv
+	 *            the {@link ExecEnv}
+	 */
+	public StackFrame(ExecEnv execEnv) {
+		super(execEnv);
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame#newFrame(org.eclipse.m2m.atl.engine.emfvm.lib.Operation)

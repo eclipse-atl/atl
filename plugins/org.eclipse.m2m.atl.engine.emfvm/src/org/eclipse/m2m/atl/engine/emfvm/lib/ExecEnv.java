@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.33 2009/02/23 15:12:02 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.34 2009/02/26 16:30:17 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -42,6 +42,7 @@ import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.Messages;
+import org.eclipse.m2m.atl.engine.emfvm.StackFrame;
 import org.eclipse.m2m.atl.engine.emfvm.VMException;
 import org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter;
 
@@ -1985,8 +1986,8 @@ public class ExecEnv {
 			}
 		}
 		if (s == null) {
-			throw new VMException(frame, Messages.getString(
-					"ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
+			throw new VMException(frame, Messages
+					.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
 		}
 		return s;
 	}
@@ -2015,8 +2016,8 @@ public class ExecEnv {
 			throw new VMException(frame, Messages.getString("ExecEnv.UNABLE_TO_CREATE", ec, modelName)); //$NON-NLS-1$
 		}
 		if (s == null) {
-			throw new VMException(frame, Messages.getString(
-					"ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
+			throw new VMException(frame, Messages
+					.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
 		}
 		return s;
 	}
@@ -2222,7 +2223,8 @@ public class ExecEnv {
 						for (Iterator<?> k = model.getElementsByType(type).iterator(); k.hasNext();) {
 							EObject ame = (EObject)k.next();
 							EObject value = (EObject)getHelperValue(null, ame.eClass(), ame, name);
-							modelAdapter.set(null, ame, persistTo, value.eResource().getURIFragment(value));
+							modelAdapter.set(new StackFrame(this), ame, persistTo, value
+									.eResource().getURIFragment(value));
 						}
 					}
 				}

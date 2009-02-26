@@ -31,7 +31,6 @@ public abstract class AbstractStackFrame {
 
 	private ASMModule asmModule;
 
-
 	/**
 	 * Creates a new {@link AbstractStackFrame} with the given parameters.
 	 * 
@@ -66,6 +65,16 @@ public abstract class AbstractStackFrame {
 		}
 		localVars = new Object[frameOperation.getMaxLocals()];
 	}
+		
+	/**
+	 * Creates an empty StackFrame which refers to its {@link ExecEnv}.
+	 * 
+	 * @param execEnv
+	 *            the {@link ExecEnv}
+	 */
+	protected AbstractStackFrame(ExecEnv execEnv) {
+		this.execEnv = execEnv;
+	}
 
 	/**
 	 * Returns a new frame for the given operation.
@@ -79,7 +88,7 @@ public abstract class AbstractStackFrame {
 	public ASMModule getAsmModule() {
 		return asmModule;
 	}
-	
+
 	public Object[] getLocalVars() {
 		return localVars;
 	}
