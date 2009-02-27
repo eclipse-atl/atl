@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -35,6 +36,8 @@ public class AtlTestPlugin extends Plugin {
 	/** the main resourceSet. */
 	private static ResourceSet resourceSet = new ResourceSetImpl();
 
+	private static String baseDirectory;
+	
 	/**
 	 * Default constructor for the plugin.
 	 */
@@ -80,14 +83,27 @@ public class AtlTestPlugin extends Plugin {
 	public ResourceSet getResourceSet() {
 		return resourceSet;
 	}
-
+	
 	/**
 	 * Returns the base test data directory.
 	 * 
 	 * @return the base test data directory
 	 */
-	public String getBaseDirectory() throws IOException {
-		return new File(FileLocator.toFileURL(AtlTestPlugin.getDefault().getBundle().getEntry("/")).getFile()) //$NON-NLS-1$
-				.getParent();
+	public static String getBaseDirectory() {
+		if (baseDirectory == null) {
+			if (Platform.isRunning()) {
+				try {
+					baseDirectory = new File(FileLocator.toFileURL(
+							AtlTestPlugin.getDefault().getBundle().getEntry("/")).getFile()) //$NON-NLS-1$
+							.getParent();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			} else {
+				baseDirectory = new File(AtlTestPlugin.class.getResource("/").getPath()).getParentFile().getParent(); //$NON-NLS-1$
+			}
+		}
+		return baseDirectory;
 	}
+
 }
