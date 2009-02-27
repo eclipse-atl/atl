@@ -53,7 +53,7 @@ public final class CoreService {
 
 	private static Map<String, Object> extractorRegistry = new HashMap<String, Object>();
 
-	private static Map<String, Object> factoryRegistry = new HashMap<String, Object>();
+	private static Map<String, Class<?>> factoryRegistry = new HashMap<String, Class<?>>();
 
 	private CoreService() {
 		super();
@@ -104,11 +104,13 @@ public final class CoreService {
 	 * 
 	 * @param name
 	 *            the factory name
-	 * @param factory
-	 *            the factory
+	 * @param factoryClass
+	 *            the factory class
 	 */
-	public static void registerFactory(String name, ModelFactory factory) {
-		register(factoryRegistry, name, factory);
+	public static void registerFactory(String name, Class<?> factoryClass) {
+		if (!factoryRegistry.containsKey(name)) {
+			factoryRegistry.put(name, factoryClass);
+		}
 	}
 
 	/**
@@ -118,9 +120,10 @@ public final class CoreService {
 	 *            the factory name
 	 * @return the new ModelFactory
 	 */
-	public static ModelFactory createModelFactory(String name) throws CoreException {
+	public static ModelFactory createModelFactory(String name) throws CoreException, IllegalAccessException,
+			InstantiationException {
 		if (factoryRegistry.containsKey(name)) {
-			return (ModelFactory)factoryRegistry.get(name);
+			return (ModelFactory)factoryRegistry.get(name).newInstance();
 		} else {
 			return (ModelFactory)getExtensionClass(MODELS_EXTENSION_POINT, "modelFactory", name); //$NON-NLS-1$
 		}

@@ -85,6 +85,10 @@ public final class LauncherService {
 			injector = CoreService.getInjector(defaultFactory.getDefaultInjectorName());
 		} catch (CoreException e) {
 			throw new ATLCoreException(e.getMessage(), e);
+		} catch (InstantiationException e) {
+			throw new ATLCoreException(e.getMessage(), e);
+		} catch (IllegalAccessException e) {
+			throw new ATLCoreException(e.getMessage(), e);
 		}
 
 		// REFINING TRACE MODE SUPPORT {
