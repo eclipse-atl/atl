@@ -39,7 +39,6 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 
 /**
  * Utility class for models.
@@ -49,6 +48,8 @@ import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 public final class ModelUtils {
 	/** Constant for the file encoding system property. */
 	private static final String ENCODING_PROPERTY = "file.encoding"; //$NON-NLS-1$
+
+	private static ResourceSet resourceSet = new ResourceSetImpl();
 
 	/**
 	 * Utility classes don't need to (and shouldn't) be instantiated.
@@ -62,13 +63,11 @@ public final class ModelUtils {
 	 * 
 	 * @param file
 	 *            where the model is stored.
-	 * @param resourceSet
-	 *            The {@link ResourceSet} to load the model in.
 	 * @return The model loaded from the URI.
 	 * @throws IOException
 	 *             If the given file does not exist.
 	 */
-	public static Resource load(File file, ResourceSet resourceSet) throws IOException {
+	public static Resource load(File file) throws IOException {
 		URI modelURI = URI.createFileURI(file.getPath());
 
 		String fileExtension = modelURI.fileExtension();
@@ -109,11 +108,9 @@ public final class ModelUtils {
 	 * 
 	 * @param metamodelURI
 	 *            the metamodel uri
-	 * @param resourceSet
-	 *            the resource set
 	 * @throws IOException
 	 */
-	public static void registerMetamodel(URI metamodelURI, ResourceSet resourceSet) throws IOException {
+	public static void registerMetamodel(URI metamodelURI) throws IOException {
 		if (EPackage.Registry.INSTANCE.getEPackage(metamodelURI.toString()) != null) {
 			return;
 		}
@@ -167,8 +164,6 @@ public final class ModelUtils {
 	 */
 	public static void save(EObject root, String path) throws IOException {
 		final URI modelURI = URI.createURI(path);
-		// final ResourceSet resourceSet = AtlTestPlugin.getResourceSet();
-		final ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
 				Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		final Resource newModelResource = resourceSet.createResource(modelURI);
@@ -214,8 +209,8 @@ public final class ModelUtils {
 	 */
 	public static void compareModels(File leftUri, File rightUri, boolean ignoreIds, boolean delete)
 			throws IOException, InterruptedException {
-		Resource leftModel = load(leftUri, AtlTestPlugin.getDefault().getResourceSet());
-		Resource rightModel = load(rightUri, AtlTestPlugin.getDefault().getResourceSet());
+		Resource leftModel = load(leftUri);
+		Resource rightModel = load(rightUri);
 
 		Map<String, Object> options = new HashMap<String, Object>();
 		if (ignoreIds) {

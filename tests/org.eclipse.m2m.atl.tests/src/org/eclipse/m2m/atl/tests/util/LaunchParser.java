@@ -57,7 +57,7 @@ public class LaunchParser {
 
 	private String convertPath(String pathParam) throws IOException {
 		if (!pathParam.startsWith("uri:") && !pathParam.startsWith("#")) { //$NON-NLS-1$ //$NON-NLS-2$
-			return AtlTestPlugin.getDefault().getBaseDirectory() + pathParam;
+			return AtlTestPlugin.getBaseDirectory() + pathParam;
 		}
 		return pathParam;
 	}

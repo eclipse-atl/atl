@@ -141,20 +141,17 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			pureExecutionTime = launch();
 			long endTime = System.currentTimeMillis();
 			executionTime = (endTime - startTime) / 1000.;
+		} catch (Exception e) {
+			fail(directory.getName() + ": " + e.getMessage(), e); //$NON-NLS-1$
+		}
+		try {
 			results.write("\t<test name=\"" + directory.getName() + "\" directory=\"" //$NON-NLS-1$ //$NON-NLS-2$
-					+ directory.toString().substring(AtlTestPlugin.getDefault().getBaseDirectory().length())
+					+ directory.toString().substring(AtlTestPlugin.getBaseDirectory().length())
 					+ "\" time=\"" + executionTime + "\"/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (IOException e) {
 			fail("Error writing results for: " + directory.getName(), e); //$NON-NLS-1$
-		} catch (CoreException e) {
-			fail(directory.getName() + ": " + e.getMessage(), e); //$NON-NLS-1$
-		} catch (ATLCoreException e) {
-			fail(directory.getName() + ": " + e.getMessage(), e); //$NON-NLS-1$
-		} catch (ATLExecutionException e) {
-			fail(directory.getName() + ": " + e.getMessage(), e); //$NON-NLS-1$
 		}
 		info(directory.getName() + ": " + executionTime + "s (pure execution: " + pureExecutionTime + "s)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		AtlTestPlugin.getDefault().getResourceSet().getResources().clear();
 
 		/*
 		 * RESULTS COMPARISON
@@ -170,8 +167,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 					if (metapath.startsWith("ext:")) { //$NON-NLS-1$
 						metapath = metapath.substring(4);
 					}
-					ModelUtils.registerMetamodel(URI.createFileURI(metapath), AtlTestPlugin.getDefault()
-							.getResourceSet());
+					ModelUtils.registerMetamodel(URI.createFileURI(metapath));
 				}
 			} catch (IOException ex) {
 				fail("Unable to register output metamodel " + metaid + " for comparison: " + ex); //$NON-NLS-1$ //$NON-NLS-2$
@@ -195,7 +191,6 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		}
 		totalTime += executionTime;
 		executionTotalTime += pureExecutionTime;
-		AtlTestPlugin.getDefault().getResourceSet().getResources().clear();
 	}
 
 	/**
@@ -216,7 +211,6 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 * Abstract method to launch a transformation.
 	 * 
 	 * @return pureExecutionTime, i.e. the execution time without loading/saving models
-	 * @throws Exception
 	 */
 	protected double launch() throws ATLCoreException, CoreException, IOException {
 		String launcherName = getVMName();
@@ -254,10 +248,13 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			libraries.put(libName, libs.get(libName).openStream());
 		}
 		long startTime = System.currentTimeMillis();
-		LauncherService.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), launcher, sourceModels,
-				Collections.<String, String> emptyMap(), targetModels, convertPaths(modelPaths), options,
-				libraries, modules);
-
+		try {
+			LauncherService.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), launcher, sourceModels,
+					Collections.<String, String> emptyMap(), targetModels, convertPaths(modelPaths), options,
+					libraries, modules);
+		} catch (ATLExecutionException e) {
+			fail(asmURL.toString(), e);
+		}
 		long endTime = System.currentTimeMillis();
 
 		return (endTime - startTime) / 1000.;

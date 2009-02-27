@@ -58,7 +58,7 @@ public abstract class TestNonRegression extends TestCase {
 	 *             Thrown if an operation has failed or been interrupted.
 	 */
 	public void testNonRegression() throws Exception {
-		File inputDir = new File(AtlTestPlugin.getDefault().getBaseDirectory() + INPUT_PATH);
+		File inputDir = new File(AtlTestPlugin.getBaseDirectory() + INPUT_PATH);
 		final File[] directories = FileUtils.listDirectories(inputDir);
 		if (directories != null) {
 			for (int i = 0; i < directories.length; i++) {
@@ -106,7 +106,7 @@ public abstract class TestNonRegression extends TestCase {
 		if (propertiesPath == null) {
 			return null;
 		}
-		File propertiesFile = new File(AtlTestPlugin.getDefault().getBaseDirectory() + propertiesPath);
+		File propertiesFile = new File(AtlTestPlugin.getBaseDirectory() + propertiesPath);
 		FileInputStream fis = new FileInputStream(propertiesFile);
 		props.load(fis);
 		Set<Object> testsToJump = props.keySet();
@@ -142,6 +142,7 @@ public abstract class TestNonRegression extends TestCase {
 	 *            the throwable cause
 	 */
 	public static void fail(String msg, Throwable thrown) {
+		System.err.println(msg);
 		thrown.printStackTrace();
 		fail(msg);
 	}

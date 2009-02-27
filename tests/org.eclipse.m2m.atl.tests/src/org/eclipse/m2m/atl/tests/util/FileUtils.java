@@ -29,13 +29,16 @@ public final class FileUtils {
 	private FileUtils() {
 		// prevents instantiation
 	}
-	
+
 	/**
 	 * Compare bytes of two files.
 	 * 
-	 * @param left the left file
-	 * @param right the right file 
-	 * @param delete if <code>true</code>, delete the right file after comparison
+	 * @param left
+	 *            the left file
+	 * @param right
+	 *            the right file
+	 * @param delete
+	 *            if <code>true</code>, delete the right file after comparison
 	 * @throws IOException
 	 */
 	public static void compareFiles(File left, File right, boolean delete) throws IOException {
@@ -54,7 +57,8 @@ public final class FileUtils {
 				}
 				for (int byteIndex = 0; byteIndex < lcount; byteIndex++) {
 					if (lbuffer[byteIndex] != rbuffer[byteIndex]) {
-						throw new RuntimeException("There are differences between files " + left + " and " + right); //$NON-NLS-1$ //$NON-NLS-2$
+						throw new RuntimeException(
+								"There are differences between files " + left + " and " + right); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}
@@ -89,4 +93,5 @@ public final class FileUtils {
 		}
 		return directories;
 	}
+
 }
