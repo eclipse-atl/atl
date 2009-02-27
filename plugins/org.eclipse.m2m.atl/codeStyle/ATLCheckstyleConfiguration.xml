@@ -318,7 +318,7 @@
         <module name="j2ee.ThisParameter"/>
         <module name="j2ee.ThisReturn"/>
         <module name="RequiredRegexp">
-            <metadata name="com.atlassw.tools.eclipse.checkstyle.customMessage" value="Le copyright doit figurer dans le fichier sous la forme &quot;Copyright (c) 2006, 2007, 2008 Obeo.&quot;"/>
+            <metadata name="com.atlassw.tools.eclipse.checkstyle.customMessage" value="Le copyright doit figurer dans le fichier sous la forme &quot;Copyright (c) 2006, 2009 Obeo.&quot;"/>
             <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity" value="error"/>
             <property name="severity" value="ignore"/>
             <property name="format" value="Copyright\s\(c\)\s(20[0-9]{2},?\s)+Obeo\."/>
