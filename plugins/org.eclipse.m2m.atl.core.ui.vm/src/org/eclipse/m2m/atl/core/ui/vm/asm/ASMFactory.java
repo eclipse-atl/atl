@@ -45,13 +45,24 @@ public class ASMFactory extends ModelFactory {
 	/** The newModel boolean. */
 	public static final String OPTION_NEW_MODEL = "newModel"; //$NON-NLS-1$
 
-	private static Map<String, ASMModelWrapper> metametamodels = new HashMap<String, ASMModelWrapper>();
+	private static Map<String, ASMModelWrapper> metametamodels;
 
-	private static Map<String, ASMModelWrapper> builtin = new HashMap<String, ASMModelWrapper>();
+	private static Map<String, ASMModelWrapper> builtin;
 
-	private static final AtlModelHandler DEFAULT_MODEL_HANDLER = AtlModelHandler.getDefault("EMF"); //$NON-NLS-1$
-	
-	private Map<AtlModelHandler, ModelLoader> modelLoaders = new HashMap<AtlModelHandler, ModelLoader>();
+	private static AtlModelHandler defaultModelHandler;
+
+	private Map<AtlModelHandler, ModelLoader> modelLoaders;
+
+	/**
+	 * Creates a new {@link ASMFactory}.
+	 */
+	public ASMFactory() {
+		super();
+		metametamodels = new HashMap<String, ASMModelWrapper>();
+		builtin = new HashMap<String, ASMModelWrapper>();
+		defaultModelHandler = AtlModelHandler.getDefault("EMF"); //$NON-NLS-1$
+		modelLoaders = new HashMap<AtlModelHandler, ModelLoader>();
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -114,10 +125,8 @@ public class ASMFactory extends ModelFactory {
 				return getMetametamodel(modelHandlerName);
 			}
 		}
-		return new ASMModelWrapper(
-				getMetametamodel(modelHandlerName), this,
-				getModelLoader(getModelHandler(modelHandlerName)),
-				modelName, path, false);
+		return new ASMModelWrapper(getMetametamodel(modelHandlerName), this,
+				getModelLoader(getModelHandler(modelHandlerName)), modelName, path, false);
 	}
 
 	private AtlModelHandler getModelHandler(String modelHandlerName) {
@@ -125,11 +134,11 @@ public class ASMFactory extends ModelFactory {
 		if (modelHandlerName != null) {
 			modelHandler = AtlModelHandler.getDefault(modelHandlerName);
 		} else {
-			modelHandler = DEFAULT_MODEL_HANDLER;
+			modelHandler = defaultModelHandler;
 		}
 		return modelHandler;
 	}
-	
+
 	private ModelLoader getModelLoader(AtlModelHandler handler) {
 		ModelLoader ml = modelLoaders.get(handler);
 		if (ml == null) {
@@ -167,7 +176,7 @@ public class ASMFactory extends ModelFactory {
 	@Override
 	public IReferenceModel getBuiltInResource(String name) {
 		if (builtin.get(name) == null) {
-			final ModelLoader ml = getModelLoader(DEFAULT_MODEL_HANDLER);
+			final ModelLoader ml = getModelLoader(defaultModelHandler);
 			final ASMModelWrapper metamodel = new ASMModelWrapper(ml.getBuiltInMetaModel(name), ml);
 			builtin.put(name, metamodel);
 		}
