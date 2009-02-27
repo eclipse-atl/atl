@@ -81,6 +81,10 @@ public class AtlBuildListener implements BuildListener {
 		if (res == null) {
 			try {
 				res = CoreService.createModelFactory(factoryName);
+			} catch (IllegalAccessException e) {
+				throw new BuildException(Messages.getString("AtlBuildListener.UNABLE_TO_LOAD_FACTORY"), e); //$NON-NLS-1$
+			} catch (InstantiationException e) {
+				throw new BuildException(Messages.getString("AtlBuildListener.UNABLE_TO_LOAD_FACTORY"), e); //$NON-NLS-1$
 			} catch (CoreException e) {
 				throw new BuildException(Messages.getString("AtlBuildListener.UNABLE_TO_LOAD_FACTORY"), e); //$NON-NLS-1$
 			}
