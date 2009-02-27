@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.examples.public2private.ui;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Iterator;
@@ -23,7 +22,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
@@ -63,7 +61,7 @@ public class PrivatizeAction implements IObjectActionDelegate {
 			extractor = CoreService.getExtractor("EMF"); //$NON-NLS-1$			
 		} catch (CoreException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	/**
@@ -92,18 +90,14 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		IStructuredSelection iss = (IStructuredSelection)currentSelection;
 		for (Iterator<?> iterator = iss.iterator(); iterator.hasNext();) {
 			try {
-				privatize((IFile)iterator.next());				
-			} catch (CoreException e) {
-				throw new RuntimeException(e);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			} catch (ATLCoreException e) {
+				privatize((IFile)iterator.next());
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
 	}
 
-	private void privatize(IFile file) throws CoreException, IOException, ATLCoreException {
+	private void privatize(IFile file) throws Exception {
 		// Defaults
 		ModelFactory factory = CoreService.createModelFactory("EMF"); //$NON-NLS-1$
 
@@ -111,7 +105,7 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		umlMetamodel = factory.newReferenceModel();
 		injector.inject(umlMetamodel, "http://www.eclipse.org/uml2/2.1.0/UML"); //$NON-NLS-1$
 		refiningTraceMetamodel = factory.getBuiltInResource("RefiningTrace.ecore"); //$NON-NLS-1$
-		
+
 		// Getting launcher
 		ILauncher launcher = null;
 		launcher = CoreService.getLauncher("EMF-specific VM"); //$NON-NLS-1$
@@ -127,8 +121,9 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		// Launching
 		launcher.addOutModel(refiningTraceModel, "refiningTrace", "RefiningTrace"); //$NON-NLS-1$ //$NON-NLS-2$
 		launcher.addInOutModel(umlModel, "IN", "UML"); //$NON-NLS-1$ //$NON-NLS-2$
-	
-		launcher.launch(ILauncher.RUN_MODE, new NullProgressMonitor() ,Collections.<String, Object> emptyMap(), asmURL.openStream());
+
+		launcher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), Collections
+				.<String, Object> emptyMap(), asmURL.openStream());
 
 		// Saving model
 		extractor.extract(umlModel, file.getFullPath().toString());
