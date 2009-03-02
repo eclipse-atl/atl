@@ -34,7 +34,7 @@ import org.eclipse.m2m.atl.adt.debug.core.AtlBreakpoint;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.common.ATLLogger;
-import org.eclipse.m2m.atl.engine.AtlNbCharFile;
+import org.eclipse.m2m.atl.common.AtlNbCharFile;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IEditorInput;

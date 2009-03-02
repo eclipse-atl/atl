@@ -69,7 +69,7 @@ import org.eclipse.m2m.atl.adt.ui.text.IAtlLexems;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlPartitions;
 import org.eclipse.m2m.atl.adt.ui.viewsupport.AtlEditorTickErrorUpdater;
 import org.eclipse.m2m.atl.common.ATLLogger;
-import org.eclipse.m2m.atl.engine.AtlNbCharFile;
+import org.eclipse.m2m.atl.common.AtlNbCharFile;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;

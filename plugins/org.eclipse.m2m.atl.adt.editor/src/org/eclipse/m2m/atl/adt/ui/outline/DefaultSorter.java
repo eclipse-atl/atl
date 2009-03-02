@@ -12,7 +12,7 @@ package org.eclipse.m2m.atl.adt.ui.outline;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ViewerSorter;
-import org.eclipse.m2m.atl.engine.AtlNbCharFile;
+import org.eclipse.m2m.atl.common.AtlNbCharFile;
 
 public class DefaultSorter extends ViewerSorter {
 	
