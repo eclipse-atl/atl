@@ -23,14 +23,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -355,22 +352,23 @@ public class EMFModelLoader extends ModelLoader {
 		}
 
 		r.save(saveOptions);
-		if (Platform.isRunning()) {
-			try {
-				final URI uri = r.getURI();
-				if (uri != null) {
-					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uri.path()));
-					if (file.exists()) {
-						file.setDerived(true);
-					}
-				}
-			} catch (IllegalStateException e) {
-				// workspace is closed
-				throw new IOException(e.getLocalizedMessage());
-			} catch (CoreException e) {
-				throw new IOException(e.getLocalizedMessage());
-			}
-		}
+		// now managed in the launch configuration as an option
+//		if (Platform.isRunning()) {
+//			try {
+//				final URI uri = r.getURI();
+//				if (uri != null) {
+//					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uri.path()));
+//					if (file.exists()) {
+//						file.setDerived(true);
+//					}
+//				}
+//			} catch (IllegalStateException e) {
+//				// workspace is closed
+//				throw new IOException(e.getLocalizedMessage());
+//			} catch (CoreException e) {
+//				throw new IOException(e.getLocalizedMessage());
+//			}
+//		}
 	}
 
 	/**
