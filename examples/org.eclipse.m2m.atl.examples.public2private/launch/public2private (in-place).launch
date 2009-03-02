@@ -19,10 +19,15 @@
 <mapAttribute key="Options">
 <mapEntry key="supportUML2Stereotypes" value="false"/>
 <mapEntry key="printExecutionTime" value="false"/>
-<mapEntry key="clearResourceSet" value="false"/>
 <mapEntry key="allowInterModelReferences" value="false"/>
 <mapEntry key="step" value="false"/>
 </mapAttribute>
+<listAttribute key="OrderedInput">
+<listEntry value="IN"/>
+</listAttribute>
+<listAttribute key="OrderedOutput">
+<listEntry value="OUT"/>
+</listAttribute>
 <mapAttribute key="Output">
 <mapEntry key="OUT" value="UML"/>
 </mapAttribute>
