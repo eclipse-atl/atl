@@ -9,7 +9,7 @@
  *     INRIA - initial API and implementation
  *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: EMFModel.java,v 1.7 2009/02/24 16:58:48 wpiers Exp $
+ * $Id: EMFModel.java,v 1.8 2009/03/02 13:06:44 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -162,7 +162,7 @@ public class EMFModel implements IModel {
 	 * @param resource
 	 *            the resource to set
 	 */
-	public void setResource(Resource resource) {
+	protected void setResource(Resource resource) {
 		this.resource = resource;
 	}
 
