@@ -17,7 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.tools.ant.BuildException;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IModel;
@@ -34,6 +39,8 @@ import org.eclipse.m2m.atl.core.service.CoreService;
  */
 public class SaveModelTask extends AbstractAtlTask {
 
+	protected boolean setSavedFilesToDerived = true;
+
 	protected String model;
 
 	protected File path;
@@ -41,6 +48,14 @@ public class SaveModelTask extends AbstractAtlTask {
 	protected String factory;
 
 	private List<Extractor> extractors = new ArrayList<Extractor>();
+
+	public boolean isDerived() {
+		return setSavedFilesToDerived;
+	}
+
+	public void setDerived(boolean isDerived) {
+		this.setSavedFilesToDerived = isDerived;
+	}
 
 	public void setModel(String model) {
 		this.model = model;
@@ -104,8 +119,21 @@ public class SaveModelTask extends AbstractAtlTask {
 		}
 
 		try {
-			extractorInstance.extract(targetModel, convertTarget(), extractorParams);			
+			String convertedPath = convertTarget();
+			extractorInstance.extract(targetModel, convertedPath, extractorParams);
+			if (Platform.isRunning()) {
+				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+						new Path(path.getPath()));
+				file.getParent().refreshLocal(IResource.DEPTH_ONE, null);
+				if (setSavedFilesToDerived) {
+					if (file.exists()) {
+						file.setDerived(true);
+					}
+				}
+			}
 		} catch (ATLCoreException e) {
+			error(e.getMessage(), e);
+		} catch (CoreException e) {
 			error(e.getMessage(), e);
 		}
 		super.execute();
@@ -122,4 +150,5 @@ public class SaveModelTask extends AbstractAtlTask {
 		}
 		return null;
 	}
+
 }
