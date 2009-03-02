@@ -87,9 +87,12 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	private Map<String, Button> buttonArray = new HashMap<String, Button>();;
 
 	private Map<String, String> baseOptions = new HashMap<String, String>();
+	
+	private Map<String, String> baseOptionsDefaultValues = new HashMap<String, String>();
 
 	{
 		baseOptions.put(OPTION_DERIVED, "Set generated files as derived"); //$NON-NLS-1$
+		baseOptionsDefaultValues.put(OPTION_DERIVED, "true"); //$NON-NLS-1$
 	}
 
 	/**
@@ -265,12 +268,13 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 
 	@SuppressWarnings("unchecked")
 	private void initCheckButtons(ILaunchConfiguration configuration) throws CoreException {
-		Map<String, String> options = configuration.getAttribute(ATLLaunchConstants.OPTIONS, Collections
-				.<String, String> emptyMap());
+		Map<String, String> optionsValues = baseOptionsDefaultValues;
+		optionsValues.putAll(configuration.getAttribute(ATLLaunchConstants.OPTIONS, Collections
+				.<String, String> emptyMap()));
 		for (Iterator<String> it = buttonArray.keySet().iterator(); it.hasNext();) {
 			String currentButtonName = it.next();
 			Button currentButton = buttonArray.get(currentButtonName);
-			currentButton.setSelection(new Boolean(options.get(currentButtonName)).booleanValue());
+			currentButton.setSelection(new Boolean(optionsValues.get(currentButtonName)).booleanValue());
 		}
 	}
 
