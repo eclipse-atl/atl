@@ -65,6 +65,8 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AdvancedTab extends AbstractLaunchConfigurationTab {
+	/** Sets generated files as derived. */
+	public static final String OPTION_DERIVED = "OPTION_DERIVED"; //$NON-NLS-1$
 
 	static final String SUPERIMPOSE = "SUPERIMPOSE"; //$NON-NLS-1$
 
@@ -83,6 +85,12 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	private Combo atlVMs;
 
 	private Map<String, Button> buttonArray = new HashMap<String, Button>();;
+
+	private Map<String, String> baseOptions = new HashMap<String, String>();
+
+	{
+		baseOptions.put(OPTION_DERIVED, "Set generated files as derived"); //$NON-NLS-1$
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -238,8 +246,8 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private void buildCheckButtons() {
-		Map<String, String> options = CoreService.getLauncherOptions(atlVMs.getItem(atlVMs
-				.getSelectionIndex()));
+		Map<String, String> options = baseOptions;
+		options.putAll(CoreService.getLauncherOptions(atlVMs.getItem(atlVMs.getSelectionIndex())));
 		for (Iterator<Map.Entry<String, String>> iterator = options.entrySet().iterator(); iterator.hasNext();) {
 			Map.Entry<String, String> option = iterator.next();
 			final Button newCheckButton = new Button(groupOthersInformation, SWT.CHECK);

@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
@@ -134,7 +135,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			if (isRefiningTraceMode) {
 				/*
 				 * TODO: improve ATL header syntax to recognize inout models. Apply those changes to launch
-				 * config. Current workaround: refined models list must match output models list to be saved, 
+				 * config. Current workaround: refined models list must match output models list to be saved,
 				 * with respect to the declaration order.
 				 */
 				Iterator<String> sourceIterator = sourceModels.keySet().iterator();
@@ -159,7 +160,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				while (sourceIterator.hasNext()) {
 					String sourceModelName = sourceIterator.next();
 					String sourceMetamodelName = sourceModels.get(sourceModelName);
-					
+
 					// Lookup for a matching target model (same metamodel)
 					while (targetIterator.hasNext()) {
 						String targetModelName = targetIterator.next();
@@ -189,6 +190,14 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			} else {
 				LauncherService.launch(mode, monitor, launcher, sourceModels, Collections.EMPTY_MAP,
 						targetModels, modelPaths, options, libraries, modules);
+			}
+
+			if ("true".equals(options.get(AdvancedTab.OPTION_DERIVED.toString()))) { //$NON-NLS-1$
+				// Set generated files as derived
+				for (String targetModel : targetModels.keySet()) {
+					String path = launchConfigModelPaths.get(targetModel);
+					setDerived(path);
+				}
 			}
 
 		} catch (ATLCoreException e) {
@@ -244,6 +253,21 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			return path;
 		}
 		return "platform:/resource" + path; //$NON-NLS-1$
+	}
+
+	private void setDerived(String filePath) {
+		if (Platform.isRunning()) {
+			try {
+				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filePath));
+				if (file.exists()) {
+					file.setDerived(true);
+				}
+			} catch (IllegalStateException e) {
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			} catch (CoreException e) {
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			}
+		}
 	}
 
 }
