@@ -30,7 +30,7 @@ import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.m2m.atl.engine.AtlNbCharFile;
+import org.eclipse.m2m.atl.common.AtlNbCharFile;
 import org.eclipse.m2m.atl.engine.vm.adwp.ADWPDebugger;
 import org.eclipse.m2m.atl.engine.vm.adwp.IntegerValue;
 import org.eclipse.m2m.atl.engine.vm.adwp.ObjectReference;
