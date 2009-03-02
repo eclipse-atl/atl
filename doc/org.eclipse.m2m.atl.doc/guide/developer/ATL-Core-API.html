@@ -32,7 +32,55 @@
 		<h1 id="ATL_Core_API">ATL Core API</h1>
 		<p>
 			<i>TODO: explain the ATL 3.0 core API</i>
-		</p><hr/>
+		</p>
+		<h2 id="EMFInjector_.2F_EMFExtractor_usage">EMFInjector / EMFExtractor usage</h2>
+		<p>This section shows how to use ATL EMF-specific injector/extractor. For both, we use the EMF notation to select Resources:</p>
+		<table border="1">
+			<tr>
+				<th>Resource Type</th>
+				<th>ATL EMF API Syntax</th>
+				<th>Example</th>
+			</tr>
+			<tr>
+				<th>File system Resource</th>
+				<td>file:/&lt;path></td>
+				<td>file:/D:/eclipse/workspace/mmproject/sample_metamodel.ecore</td>
+			</tr>
+			<tr>
+				<th>EMF uri</th>
+				<td>&lt;uri></td>
+				<td>
+					<a href="http://www.eclipse.org/uml2/2.1.0/UML">http://www.eclipse.org/uml2/2.1.0/UML</a>
+				</td>
+			</tr>
+			<tr>
+				<th>pathmap</th>
+				<td>pathmap:&lt;path></td>
+				<td>pathmap://PROFILE/sample_profile.uml#_0</td>
+			</tr>
+			<tr>
+				<th>Workspace Resource</th>
+				<td>platform:/resource/&lt;path></td>
+				<td>platform:/resource/mmproject/sample_metamodel.ecore</td>
+			</tr>
+			<tr>
+				<th>Plug-in Resource</th>
+				<td>platform:/plugin/&lt;path></td>
+				<td>platform:/plugin/mmproject/sample_metamodel.ecore</td>
+			</tr>
+			<tr>
+				<th>Ecore metamodel</th>
+				<td>#EMF</td>
+			</tr>
+		</table>
+		<p>Here is an example of usage:</p>
+		<pre>ModelFactory factory = CoreService.createModelFactory("EMF");
+IReferenceModel umlMetamodel = factory.newReferenceModel();
+injector.inject(umlMetamodel, "http://www.eclipse.org/uml2/2.1.0/UML");
+</pre>
+		<p>According to the previous table, you can use another notation to load the model:</p>
+		<pre>injector.inject(sampleMetamodel, "file:/D:/eclipse/workspace/mmproject/sample_metamodel.ecore");
+</pre><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">

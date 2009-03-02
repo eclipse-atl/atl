@@ -16,7 +16,9 @@
 			<topic href="guide/developer/ATL-Language.html#NetworkDebugger" label="NetworkDebugger"></topic>
 		</topic>
 	</topic>
-	<topic href="guide/developer/ATL-Core-API.html" label="ATL Core API"></topic>
+	<topic href="guide/developer/ATL-Core-API.html" label="ATL Core API">
+		<topic href="guide/developer/ATL-Core-API.html#EMFInjector_.2F_EMFExtractor_usage" label="EMFInjector / EMFExtractor usage"></topic>
+	</topic>
 	<topic href="guide/developer/ACG-ATL-VM-Code-Generator-.html" label="ACG (ATL VM Code Generator)">
 		<topic href="guide/developer/ACG-ATL-VM-Code-Generator-.html#Description" label="Description"></topic>
 		<topic href="guide/developer/ACG-ATL-VM-Code-Generator-.html#ACG_in_AMMA_platform" label="ACG in AMMA platform"></topic>
