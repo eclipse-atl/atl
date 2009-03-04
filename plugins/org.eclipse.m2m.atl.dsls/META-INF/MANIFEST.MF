@@ -4,11 +4,7 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.m2m.atl.dsls;singleton:=true
 Bundle-Version: 3.0.0.qualifier
 Bundle-Vendor: %providerName
-Bundle-ClassPath: .,
- resources/ACG/Syntax/ACG-parser.jar,
- resources/ATL/Syntax/ATL-parser.jar,
- libraries/org.eclipse.gmt.tcs.extractor.jar,
- libraries/org.eclipse.gmt.tcs.injector.jar
+Bundle-ClassPath: .
 Export-Package: org.eclipse.gmt.tcs.extractor,
  org.eclipse.gmt.tcs.injector,
  org.eclipse.gmt.tcs.injector.wrappers,

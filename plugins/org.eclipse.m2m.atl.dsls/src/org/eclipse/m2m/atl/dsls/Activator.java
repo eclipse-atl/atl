@@ -16,7 +16,7 @@ import org.osgi.framework.BundleContext;
 /**
  * The plugin Activator.
  * 
- * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
+ * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class Activator extends Plugin {
