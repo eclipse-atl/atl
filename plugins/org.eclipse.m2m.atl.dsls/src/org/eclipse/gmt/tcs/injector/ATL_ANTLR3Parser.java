@@ -6543,13 +6543,14 @@ public class ATL_ANTLR3Parser extends Parser {
                 else if ( (true) ) {
                     alt71=2;
                 }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("426:284: ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () )", 71, 1, input);
-
-                    throw nvae;
-                }
+                //DEAD CODE
+//                else {
+//                    if (backtracking>0) {failed=true; return ret2;}
+//                    NoViableAltException nvae =
+//                        new NoViableAltException("426:284: ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () )", 71, 1, input);
+//
+//                    throw nvae;
+//                }
             }
             else if ( (LA71_0==EOF||(LA71_0>=NAME && LA71_0<=FLOAT)||LA71_0==LPAREN||LA71_0==RCURLY||LA71_0==SHARP||LA71_0==MINUS||LA71_0==67||LA71_0==69||(LA71_0>=71 && LA71_0<=73)||(LA71_0>=76 && LA71_0<=92)) ) {
                 alt71=2;
