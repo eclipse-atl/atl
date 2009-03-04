@@ -80,7 +80,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  * The main ATL tab.
  * 
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
- * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
+ * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
