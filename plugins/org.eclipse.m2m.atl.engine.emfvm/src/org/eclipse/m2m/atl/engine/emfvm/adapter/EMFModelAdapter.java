@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.impl.EClassImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
@@ -159,8 +160,9 @@ public class EMFModelAdapter implements IModelAdapter {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#prettyPrint(org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv, java.io.PrintStream, java.lang.Object)
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#prettyPrint(org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv,
+	 *      java.io.PrintStream, java.lang.Object)
 	 */
 	public boolean prettyPrint(ExecEnv execEnv, PrintStream out, Object value) {
 		if (value instanceof EClass) {
@@ -451,7 +453,7 @@ public class EMFModelAdapter implements IModelAdapter {
 			if ((frame != null) && frame.getExecEnv().isHelper(ec, name)) {
 				ret = frame.getExecEnv().getHelperValue(frame, ec, eo, name);
 			} else if ("__xmiID__".equals(name)) { //$NON-NLS-1$
-				ret = eo.eResource();
+				ret = eo.eResource().getURIFragment(eo);
 			} else {
 				EStructuralFeature sf = ec.getEStructuralFeature(name);
 				if (sf == null) {
@@ -486,6 +488,18 @@ public class EMFModelAdapter implements IModelAdapter {
 		}
 
 		final EObject eo = (EObject)modelElement;
+
+		if ("__xmiID__".equals(name)) { //$NON-NLS-1$
+			if (eo.eResource() instanceof XMIResource) {
+				XMIResource xmiResource = (XMIResource)eo.eResource();
+				// WARNING: Allowed manual setting of XMI ID for the current model element
+				// This operation is advised against but seems necessary of some special case
+				ATLLogger.warning("\t\tManual setting of " + this + ":" + eo.eClass().getName() + " XMI ID."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				xmiResource.setID(eo, value.toString());
+				return;
+			}
+		}
+
 		final EStructuralFeature feature = eo.eClass().getEStructuralFeature(name);
 
 		if (frame != null) {
