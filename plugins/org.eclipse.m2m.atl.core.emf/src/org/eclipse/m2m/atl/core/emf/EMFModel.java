@@ -9,7 +9,7 @@
  *     INRIA - initial API and implementation
  *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: EMFModel.java,v 1.9 2009/03/02 17:17:58 wpiers Exp $
+ * $Id: EMFModel.java,v 1.10 2009/03/04 16:04:13 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -33,7 +33,7 @@ import org.eclipse.m2m.atl.core.IModel;
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
- * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
+ * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class EMFModel implements IModel {
