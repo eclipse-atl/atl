@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: IModelAdapter.java,v 1.4 2009/02/23 15:12:02 wpiers Exp $
+ * $Id: IModelAdapter.java,v 1.5 2009/03/04 16:03:43 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.adapter;
@@ -27,7 +27,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
  * The EMFVM execution interface. Defines a set of methods dedicated to the execution of transformations.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
- * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a> *
+ * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a> *
  */
 public interface IModelAdapter {
 

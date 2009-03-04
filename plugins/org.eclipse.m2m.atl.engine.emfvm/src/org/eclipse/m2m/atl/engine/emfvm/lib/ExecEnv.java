@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.34 2009/02/26 16:30:17 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.35 2009/03/04 16:03:43 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -51,7 +51,7 @@ import org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter;
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
- * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
+ * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ExecEnv {

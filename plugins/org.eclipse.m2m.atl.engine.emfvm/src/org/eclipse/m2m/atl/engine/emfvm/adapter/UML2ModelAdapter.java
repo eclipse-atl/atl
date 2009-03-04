@@ -23,7 +23,7 @@ import org.eclipse.m2m.atl.engine.emfvm.VMException;
  * The {@link EMFModelAdapter} adaptation for UML2.
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
- * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
+ * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
  */
 public class UML2ModelAdapter extends EMFModelAdapter implements IModelAdapter {
 

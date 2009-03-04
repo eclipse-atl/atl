@@ -40,7 +40,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.LibExtension;
  * The ASM Class, which manages an ASM program.
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
- * @author <a href="mailto:mikael.barbero@univ-nantes.fr">Mikael Barbero</a>
+ * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
