@@ -8,10 +8,11 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: ParserLauncher.java,v 1.1 2009/03/04 16:06:01 wpiers Exp $
+ * $Id: ParserLauncher.java,v 1.2 2009/03/04 16:10:32 wpiers Exp $
  */
 package org.eclipse.gmt.tcs.injector;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +37,7 @@ public class ParserLauncher {
 	private List refSettings;
 	private ParserWrapper parserWrapper;
 
-	public Object parse(ModelAdapter target, InputStream in, Map arguments) {
+	public Object parse(ModelAdapter target, InputStream in, Map arguments) throws IOException {
 		Object ret = null;
 
 		refSettings = new ArrayList();
@@ -106,8 +107,7 @@ public class ParserLauncher {
 				try {
 					rs.doIt();
 				} catch(Exception e) {
-					System.out.println("Warning: one refSetting crashed:");
-					e.printStackTrace(System.out);
+					throw new IOException("Warning: one refSetting crashed");
 				}
 			}
 //		}

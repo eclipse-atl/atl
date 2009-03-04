@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: TCSInjector.java,v 1.1 2009/03/04 16:06:00 wpiers Exp $
+ * $Id: TCSInjector.java,v 1.2 2009/03/04 16:10:32 wpiers Exp $
  */
 package org.eclipse.gmt.tcs.injector;
 
@@ -50,6 +50,11 @@ public class TCSInjector implements Injector {
 		return parameterTypes;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.injectors.Injector#inject(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.InputStream, java.util.Map)
+	 */
 	public ASMModelElement inject(ASMModel target, InputStream source, Map params) throws IOException {
 		this.targetModelAdapter = new ASMModelAdapter(target);
 		
