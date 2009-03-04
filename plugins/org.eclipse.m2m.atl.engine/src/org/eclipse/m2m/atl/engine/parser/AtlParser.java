@@ -103,39 +103,11 @@ public final class AtlParser {
 		params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
 		params.put("problems", ret[1]); //$NON-NLS-1$
 
-		if (hideErrors) {
-			// TODO Find another way to hide parsing errors.
-			//
-			// Dennis Wagelaar: ATL does not "own" the System object in Eclipse,
-			// so don't fight with the other threads over who gets to set System.out.
-			// Even though System.out is only temporarily redirected here,
-			// it may cause unexpected results with other threads that "inexplicably"
-			// lose some System.out.println() output.
-			//
-			// N.B. This was also the reason to switch from System.out logging to
-			// a logging framework, as ATL previously hijacked System.out for its own
-			// console widget. MOFscript was then fighting with ATL over who gets
-			// to hijack System.out, resulting in MOFscript output to show up in the
-			// ATL console.
-
-			// desactivate standard output
-			// OutputStream stream = new ByteArrayOutputStream();
-			// PrintStream out = new PrintStream(stream);
-			// PrintStream origOut = System.out;
-			// System.setOut(out);
-
-			// launch parsing
+		try {
 			ebnfi.inject(ret[0], in, params);
-
-			// reactivate standard output
-			// System.setOut(origOut);
-			// stream.close();
-			// out.close();
-		} else {
-			// launch parsing
-			ebnfi.inject(ret[0], in, params);
+		} catch (Throwable e) {
+			// fail silently
 		}
-
 		return ret;
 	}
 
