@@ -17,5 +17,5 @@ Export-Package: org.eclipse.m2m.atl.service.core,
  org.eclipse.m2m.atl.service.core.configuration,
  org.eclipse.m2m.atl.service.core.exception,
  org.eclipse.m2m.atl.service.core.nestedElements
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: Eclipse Modeling Project
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
