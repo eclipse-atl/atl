@@ -88,8 +88,13 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				Collections.EMPTY_MAP);
 		options.put(ATLLaunchConstants.OPTION_MODEL_HANDLER, modelHandlers);
 
-		// API extensions management
-		ILauncher launcher = CoreService.getLauncher(launcherName);
+		ILauncher launcher = null;
+		try {
+			// API extensions management
+			launcher = CoreService.getLauncher(launcherName);
+		} catch (ATLCoreException e) {
+			ATLLogger.log(Level.SEVERE, e.getMessage(), e);
+		}
 
 		if (launcher == null) {
 			String[] registeredLaunchers = CoreService.getLaunchersNames();
