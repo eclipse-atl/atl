@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.ModelFactory;
@@ -120,28 +121,38 @@ public final class CoreService {
 	 *            the factory name
 	 * @return the new ModelFactory
 	 */
-	public static ModelFactory createModelFactory(String name) throws CoreException, IllegalAccessException,
-			InstantiationException {
+	public static ModelFactory createModelFactory(String name) throws ATLCoreException {
 		if (factoryRegistry.containsKey(name)) {
-			return (ModelFactory)factoryRegistry.get(name).newInstance();
+			try {
+				return (ModelFactory)factoryRegistry.get(name).newInstance();	
+			} catch (IllegalAccessException e) {
+				throw new ATLCoreException(e.getMessage(), e);
+			} catch (InstantiationException e) {
+				throw new ATLCoreException(e.getMessage(), e);
+			}			
 		} else {
 			return (ModelFactory)getExtensionClass(MODELS_EXTENSION_POINT, "modelFactory", name); //$NON-NLS-1$
 		}
 	}
 
 	private static Object getExtensionClass(String extensionId, String executableExtensionName,
-			String extensionName, Map<String, Object> registry) throws CoreException {
+			String extensionName, Map<String, Object> registry) throws ATLCoreException {
 		if (registry.containsKey(extensionName)) {
 			return registry.get(extensionName);
 		} else {
 			Object executable = getExtensionClass(extensionId, executableExtensionName, extensionName);
-			registry.put(extensionName, executable);
-			return executable;
+			if (executable != null) {
+				registry.put(extensionName, executable);
+				return executable;
+			} else {
+				throw new ATLCoreException(extensionId + " " + extensionName //$NON-NLS-1$
+						+ " not found, check the spelling or register it manually"); //$NON-NLS-1$
+			}
 		}
 	}
 
 	private static Object getExtensionClass(String extensionId, String executableExtensionName,
-			String extensionName) throws CoreException {
+			String extensionName) throws ATLCoreException {
 		if (Platform.isRunning()) {
 			final IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(extensionId)
 					.getExtensions();
@@ -149,8 +160,12 @@ public final class CoreService {
 				final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
 				for (int j = 0; j < configElements.length; j++) {
 					if (configElements[j].getAttribute("name").equals(extensionName)) { //$NON-NLS-1$
-						Object executable = configElements[j]
-								.createExecutableExtension(executableExtensionName);
+						Object executable;
+						try {
+							executable = configElements[j].createExecutableExtension(executableExtensionName);
+						} catch (CoreException e) {
+							throw new ATLCoreException(e.getMessage(), e);
+						}
 						return executable;
 					}
 				}
@@ -165,9 +180,9 @@ public final class CoreService {
 	 * @param name
 	 *            the launcher name
 	 * @return the launcher matching the given name
-	 * @throws CoreException
+	 * @throws ATLCoreException
 	 */
-	public static ILauncher getLauncher(String name) throws CoreException {
+	public static ILauncher getLauncher(String name) throws ATLCoreException {
 		return (ILauncher)getExtensionClass(LAUNCHERS_EXTENSION_POINT, "class", name, launcherRegistry); //$NON-NLS-1$
 	}
 
@@ -177,9 +192,9 @@ public final class CoreService {
 	 * @param name
 	 *            the injector name
 	 * @return the injector matching the given name
-	 * @throws CoreException
+	 * @throws ATLCoreException
 	 */
-	public static IInjector getInjector(String name) throws CoreException {
+	public static IInjector getInjector(String name) throws ATLCoreException {
 		return (IInjector)getExtensionClass(INJECTORS_EXTENSION_POINT, "class", name, injectorRegistry); //$NON-NLS-1$
 	}
 
@@ -189,9 +204,9 @@ public final class CoreService {
 	 * @param name
 	 *            the extractors name
 	 * @return the extractors matching the given name
-	 * @throws CoreException
+	 * @throws ATLCoreException
 	 */
-	public static IExtractor getExtractor(String name) throws CoreException {
+	public static IExtractor getExtractor(String name) throws ATLCoreException {
 		return (IExtractor)getExtensionClass(EXTRACTORS_EXTENSION_POINT, "class", name, extractorRegistry); //$NON-NLS-1$
 	}
 

@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IExtractor;
@@ -79,17 +78,10 @@ public final class LauncherService {
 		ModelFactory defaultFactory = null;
 		IExtractor extractor = null;
 		IInjector injector = null;
-		try {
-			defaultFactory = CoreService.createModelFactory(launcher.getDefaultModelFactoryName());
-			extractor = CoreService.getExtractor(defaultFactory.getDefaultExtractorName());
-			injector = CoreService.getInjector(defaultFactory.getDefaultInjectorName());
-		} catch (CoreException e) {
-			throw new ATLCoreException(e.getMessage(), e);
-		} catch (InstantiationException e) {
-			throw new ATLCoreException(e.getMessage(), e);
-		} catch (IllegalAccessException e) {
-			throw new ATLCoreException(e.getMessage(), e);
-		}
+
+		defaultFactory = CoreService.createModelFactory(launcher.getDefaultModelFactoryName());
+		extractor = CoreService.getExtractor(defaultFactory.getDefaultExtractorName());
+		injector = CoreService.getInjector(defaultFactory.getDefaultInjectorName());
 
 		// REFINING TRACE MODE SUPPORT {
 		if (isRefiningTraceMode) {
@@ -140,7 +132,7 @@ public final class LauncherService {
 		}
 
 		// LAUNCH
-		Object transformationResult = launcher.launch(mode, monitor, options,(Object[])modules);
+		Object transformationResult = launcher.launch(mode, monitor, options, (Object[])modules);
 
 		// OUTPUT MODELS EXTRACTION
 		for (Iterator<String> i = outModels.keySet().iterator(); i.hasNext();) {
@@ -253,7 +245,7 @@ public final class LauncherService {
 		}
 
 		// LAUNCH
-		Object transformationResult = launcher.launch(mode, monitor, options,(Object[])modules);
+		Object transformationResult = launcher.launch(mode, monitor, options, (Object[])modules);
 
 		// OUTPUT MODELS EXTRACTION
 		for (Iterator<String> i = outModels.keySet().iterator(); i.hasNext();) {
