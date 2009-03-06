@@ -14,7 +14,6 @@ import java.util.Map;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
@@ -130,7 +129,7 @@ public class AbstractAtlTask extends Task {
 		String launcherName = getLauncherName();
 		try {
 			launcher = CoreService.getLauncher(launcherName);
-		} catch (CoreException e) {
+		} catch (ATLCoreException e) {
 			error(Messages.getString("AbstractAtlTask.UNABLE_TO_LOAD_LAUNCHER", launcherName), e); //$NON-NLS-1$
 		}
 		if (launcher == null) {

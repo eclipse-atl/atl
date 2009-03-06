@@ -18,8 +18,8 @@ import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.BuildListener;
 import org.apache.tools.ant.Project;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.ModelFactory;
 import org.eclipse.m2m.atl.core.service.CoreService;
 
@@ -81,11 +81,7 @@ public class AtlBuildListener implements BuildListener {
 		if (res == null) {
 			try {
 				res = CoreService.createModelFactory(factoryName);
-			} catch (IllegalAccessException e) {
-				throw new BuildException(Messages.getString("AtlBuildListener.UNABLE_TO_LOAD_FACTORY"), e); //$NON-NLS-1$
-			} catch (InstantiationException e) {
-				throw new BuildException(Messages.getString("AtlBuildListener.UNABLE_TO_LOAD_FACTORY"), e); //$NON-NLS-1$
-			} catch (CoreException e) {
+			} catch (ATLCoreException e) {
 				throw new BuildException(Messages.getString("AtlBuildListener.UNABLE_TO_LOAD_FACTORY"), e); //$NON-NLS-1$
 			}
 			modelFactories.put(factoryName, res);

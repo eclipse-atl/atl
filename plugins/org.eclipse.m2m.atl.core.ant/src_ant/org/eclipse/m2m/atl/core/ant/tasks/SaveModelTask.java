@@ -109,7 +109,7 @@ public class SaveModelTask extends AbstractAtlTask {
 				String extractor = factoryInstance.getDefaultExtractorName();
 				extractorInstance = CoreService.getExtractor(extractor);
 			}
-		} catch (CoreException e) {
+		} catch (ATLCoreException e) {
 			error(Messages.getString("SaveModelTask.UNABLE_TO_LOAD_EXTRACTOR"), e); //$NON-NLS-1$
 		}
 

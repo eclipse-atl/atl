@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.tools.ant.BuildException;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
@@ -112,8 +111,8 @@ public class LoadModelTask extends AbstractAtlTask {
 				String injector = factoryInstance.getDefaultInjectorName();
 				injectorInstance = CoreService.getInjector(injector);
 			}
-		} catch (CoreException e) {
-			error(Messages.getString("LoadModelTask.UNABLE_TO_LOAD_INJECTOR"), e); //$NON-NLS-1$
+		} catch (ATLCoreException e) {
+			error(e.getMessage(), e);
 		}
 
 		IModel sourceModel = (IModel)getProject().getReference(name);
