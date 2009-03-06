@@ -16,12 +16,12 @@ import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
@@ -59,7 +59,7 @@ public class PrivatizeAction implements IObjectActionDelegate {
 		try {
 			injector = CoreService.getInjector("EMF"); //$NON-NLS-1$
 			extractor = CoreService.getExtractor("EMF"); //$NON-NLS-1$			
-		} catch (CoreException e) {
+		} catch (ATLCoreException e) {
 			e.printStackTrace();
 		}
 	}
