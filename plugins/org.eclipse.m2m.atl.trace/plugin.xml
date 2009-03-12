@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.1.2.1 2009/03/12 09:38:59 dwagelaar Exp $
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <factory
+            uri="http://www.eclipse.org/gmt/2008/Trace"
+            class="org.eclipse.m2m.atl.trace.provider.TraceItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eclipse.org/gmt/2008/Trace"
+            class="org.eclipse.m2m.atl.trace.TracePackage"
+            genModel="model/trace.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.eclipse.m2m.atl.trace.presentation.TraceModelWizardID"
+            name="%_UI_TraceModelWizard_label"
+            class="org.eclipse.m2m.atl.trace.presentation.TraceModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/TraceModelFile.gif">
+         <description>%_UI_TraceModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.eclipse.m2m.atl.trace.presentation.TraceEditorID"
+            name="%_UI_TraceEditor_label"
+            icon="icons/full/obj16/TraceModelFile.gif"
+            extensions="trace"
+            class="org.eclipse.m2m.atl.trace.presentation.TraceEditor"
+            contributorClass="org.eclipse.m2m.atl.trace.presentation.TraceActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

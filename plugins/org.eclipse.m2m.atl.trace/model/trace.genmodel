@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Copyright (C) 2009, Vrije Universiteit Brussel, Universidad de los Andes&#xD;All rights reserved. This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v1.0&#xA;which accompanies this distribution, and is available at&#xA;http://www.eclipse.org/legal/epl-v10.html&#xA;&#xD;Contributors:&#xD;&#x9;Andres Yie (Vrije Universiteit Brussel, Universidad de los Andes)&#xD;&#x9;Dennis Wagelaar (Vrije Universiteit Brussel)"
+    modelDirectory="/org.eclipse.m2m.atl.trace/src" editDirectory="/org.eclipse.m2m.atl.trace/src"
+    editorDirectory="/org.eclipse.m2m.atl.trace/src" modelPluginID="org.eclipse.m2m.atl.trace"
+    modelName="Trace" modelPluginClass="" testsDirectory="" testSuiteClass="" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="5.0" copyrightFields="false">
+  <foreignModel>trace.ecore</foreignModel>
+  <genPackages prefix="Trace" basePackage="org.eclipse.m2m.atl" disposableProviderFactory="true"
+      ecorePackage="trace.ecore#/">
+    <genClasses ecoreClass="trace.ecore#//TransientLinkSet">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference trace.ecore#//TransientLinkSet/links"/>
+    </genClasses>
+    <genClasses ecoreClass="trace.ecore#//TransientLink">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute trace.ecore#//TransientLink/rule"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference trace.ecore#//TransientLink/sourceElements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference trace.ecore#//TransientLink/targetElements"/>
+    </genClasses>
+    <genClasses ecoreClass="trace.ecore#//TransientElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute trace.ecore#//TransientElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute trace.ecore#//TransientElement/isDefault"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//TransientElement/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
