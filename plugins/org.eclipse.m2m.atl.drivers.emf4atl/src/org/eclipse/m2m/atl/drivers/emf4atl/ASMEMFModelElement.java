@@ -448,7 +448,6 @@ public class ASMEMFModelElement extends ASMModelElement {
 	 *      java.lang.String, org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny)
 	 */
 	public void set(StackFrame frame, String name, ASMOclAny value) {
-
 		final boolean debug = false;
 
 		if (debug) {
@@ -462,8 +461,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 			// WARNING: Allowed manual setting of XMI ID for the current model element
 			// This operation is advised against but seems necessary of some special case
 			Resource r = ((ASMEMFModel)getModel()).getExtent();
-			ATLLogger.warning("\t\tManual setting of " + this + ":" + getType() + " XMI ID.");
-			((XMLResource)r).setID(object, value.toString());
+			ATLLogger.warning("Manual setting of " + this + ":" + getType() + " XMI ID.");
+			((XMLResource)r).setID(object, ((ASMString)value).cString());
 			return;
 		}
 		if (frame != null) {
