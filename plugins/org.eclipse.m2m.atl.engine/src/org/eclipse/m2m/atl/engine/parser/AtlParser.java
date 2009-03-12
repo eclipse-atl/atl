@@ -105,7 +105,10 @@ public final class AtlParser {
 
 		try {
 			ebnfi.inject(ret[0], in, params);
-		} catch (Throwable e) {
+		} catch (IOException e) {
+			if (!hideErrors) {
+				throw e;
+			}
 			// fail silently
 		}
 		return ret;
@@ -129,11 +132,9 @@ public final class AtlParser {
 	 *            an ATL expression
 	 * @param expressionType
 	 *            the ATL expression type the Syntax Element parsed
-	 * @param hideErrors
-	 *            disable standard output in order to hide errors
 	 * @return outputs models
 	 */
-	public EObject[] parseExpression(String expression, String expressionType, boolean hideErrors) {
+	public EObject[] parseExpression(String expression, String expressionType) {
 		if (expressionType == null) {
 			return null;
 		}
@@ -142,35 +143,18 @@ public final class AtlParser {
 		final ASMModel atlmm = ml.getATL();
 		final ASMModel pbmm = ml.getBuiltInMetaModel("Problem.ecore"); //$NON-NLS-1$
 
+		ret[0] = ml.newModel("temp", "temp", atlmm); //$NON-NLS-1$ //$NON-NLS-2$
+		ret[1] = ml.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
+		TCSInjector ebnfi = new TCSInjector();
+		Map params = new HashMap();
+		params.put("name", "ATL-" + expressionType); //$NON-NLS-1$ //$NON-NLS-2$
+		params.put("problems", ret[1]); //$NON-NLS-1$
+
 		try {
-			ret[0] = ml.newModel("temp", "temp", atlmm); //$NON-NLS-1$ //$NON-NLS-2$
-			ret[1] = ml.newModel("pb", "pb", pbmm); //$NON-NLS-1$ //$NON-NLS-2$
-			TCSInjector ebnfi = new TCSInjector();
-			Map params = new HashMap();
-			params.put("name", "ATL-" + expressionType); //$NON-NLS-1$ //$NON-NLS-2$
-			params.put("problems", ret[1]); //$NON-NLS-1$
-
-			if (hideErrors) {
-				// // desactivate standard output
-				// OutputStream stream = new ByteArrayOutputStream();
-				// PrintStream out = new PrintStream(stream);
-				// PrintStream origOut = System.out;
-				// System.setOut(out);
-
-				// launch parsing
-				ebnfi.inject(ret[0], new ByteArrayInputStream(expression.getBytes()), params);
-
-				// // reactivate standard output
-				// System.setOut(origOut);
-				// stream.close();
-				// out.close();
-			} else {
-				// launch parsing
-				ebnfi.inject(ret[0], new ByteArrayInputStream(expression.getBytes()), params);
-			}
-
-		} catch (Exception e) {
-			// nothing : silent incorrect expressions parsing
+			// launch parsing
+			ebnfi.inject(ret[0], new ByteArrayInputStream(expression.getBytes()), params);
+		} catch (IOException e) {
+			// fail silently
 		}
 		String rootTypeName = Character.toUpperCase(expressionType.charAt(0)) + expressionType.substring(1);
 		return convertToEmf(ret, rootTypeName);

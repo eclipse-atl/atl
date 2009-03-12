@@ -20,10 +20,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
 import org.eclipse.m2m.atl.engine.ProblemConverter;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
@@ -123,8 +121,7 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 		try {
 			parsed = AtlParser.getDefault().parseToModelWithProblems(in, true);
 		} catch (IOException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			return null;
+			//fail silently
 		}
 		ASMModel atlmodel = parsed[0];
 		ASMModel problems = parsed[1];
