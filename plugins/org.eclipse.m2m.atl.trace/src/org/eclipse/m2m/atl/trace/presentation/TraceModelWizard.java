@@ -8,7 +8,7 @@
  * 	Andres Yie (Vrije Universiteit Brussel, Universidad de los Andes)
  * 	Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: TraceModelWizard.java,v 1.1.2.1 2009/03/12 09:39:00 dwagelaar Exp $
+ * $Id: TraceModelWizard.java,v 1.1.2.2 2009/03/12 11:57:43 dwagelaar Exp $
  */
 package org.eclipse.m2m.atl.trace.presentation;
 
@@ -405,8 +405,7 @@ public class TraceModelWizard extends Wizard implements INewWizard {
 		 * @generated
 		 */
 		public void createControl(Composite parent) {
-			Composite composite = new Composite(parent, SWT.NONE);
-			{
+			Composite composite = new Composite(parent, SWT.NONE); {
 				GridLayout layout = new GridLayout();
 				layout.numColumns = 1;
 				layout.verticalSpacing = 12;

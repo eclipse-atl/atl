@@ -8,7 +8,7 @@
  * 	Andres Yie (Vrije Universiteit Brussel, Universidad de los Andes)
  * 	Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: TransientLinkSetImpl.java,v 1.1.2.1 2009/03/12 09:39:01 dwagelaar Exp $
+ * $Id: TransientLinkSetImpl.java,v 1.1.2.2 2009/03/12 11:57:43 dwagelaar Exp $
  */
 package org.eclipse.m2m.atl.trace.impl;
 
@@ -88,6 +88,15 @@ public class TransientLinkSetImpl extends EObjectImpl implements TransientLinkSe
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public EList<TransientLink> getAllLinks() {
+		return getLinks();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -118,6 +127,7 @@ public class TransientLinkSetImpl extends EObjectImpl implements TransientLinkSe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {

@@ -11,6 +11,7 @@
       ecorePackage="trace.ecore#/">
     <genClasses ecoreClass="trace.ecore#//TransientLinkSet">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference trace.ecore#//TransientLinkSet/links"/>
+      <genOperations ecoreOperation="trace.ecore#//TransientLinkSet/getAllLinks"/>
     </genClasses>
     <genClasses ecoreClass="trace.ecore#//TransientLink">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute trace.ecore#//TransientLink/rule"/>

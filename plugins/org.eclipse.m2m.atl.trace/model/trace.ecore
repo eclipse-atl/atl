@@ -4,6 +4,7 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="trace"
     nsURI="http://www.eclipse.org/gmt/2008/Trace" nsPrefix="trace">
   <eClassifiers xsi:type="ecore:EClass" name="TransientLinkSet">
+    <eOperations name="getAllLinks" upperBound="-1" eType="#//TransientLink"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="links" upperBound="-1"
         eType="#//TransientLink" containment="true"/>
   </eClassifiers>

@@ -8,7 +8,7 @@
  * 	Andres Yie (Vrije Universiteit Brussel, Universidad de los Andes)
  * 	Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: TransientLinkSet.java,v 1.1.2.1 2009/03/12 09:38:58 dwagelaar Exp $
+ * $Id: TransientLinkSet.java,v 1.1.2.2 2009/03/12 11:57:43 dwagelaar Exp $
  */
 package org.eclipse.m2m.atl.trace;
 
@@ -48,5 +48,13 @@ public interface TransientLinkSet extends EObject {
 	 * @generated
 	 */
 	EList<TransientLink> getLinks();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	EList<TransientLink> getAllLinks();
 
 } // TransientLinkSet

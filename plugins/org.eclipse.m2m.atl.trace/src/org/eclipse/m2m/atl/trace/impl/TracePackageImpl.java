@@ -8,7 +8,7 @@
  * 	Andres Yie (Vrije Universiteit Brussel, Universidad de los Andes)
  * 	Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: TracePackageImpl.java,v 1.1.2.1 2009/03/12 09:39:01 dwagelaar Exp $
+ * $Id: TracePackageImpl.java,v 1.1.2.2 2009/03/12 11:57:43 dwagelaar Exp $
  */
 package org.eclipse.m2m.atl.trace.impl;
 
@@ -285,6 +285,8 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 		// Initialize classes and features; add operations and parameters
 		initEClass(transientLinkSetEClass, TransientLinkSet.class, "TransientLinkSet", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTransientLinkSet_Links(), this.getTransientLink(), null, "links", null, 0, -1, TransientLinkSet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		addEOperation(transientLinkSetEClass, this.getTransientLink(), "getAllLinks", 0, -1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(transientLinkEClass, TransientLink.class, "TransientLink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getTransientLink_Rule(), ecorePackage.getEString(), "rule", null, 0, 1, TransientLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
