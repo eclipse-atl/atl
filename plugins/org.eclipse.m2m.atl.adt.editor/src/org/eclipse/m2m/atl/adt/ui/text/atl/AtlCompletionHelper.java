@@ -77,7 +77,7 @@ public class AtlCompletionHelper {
 		}
 
 		// code fragment parsing
-		EObject[] ret = AtlParser.getDefault().parseExpression(text, lastParsingKeyWord, true);
+		EObject[] ret = AtlParser.getDefault().parseExpression(text, lastParsingKeyWord);
 		AtlModelAnalyser res = new AtlModelAnalyser(this, ret[0], begin, getLastKeyWord(offset
 				- prefix.length()), offset);
 
