@@ -482,6 +482,7 @@ public class EMFModelAdapter implements IModelAdapter {
 	 */
 	@SuppressWarnings("unchecked")
 	public void set(AbstractStackFrame frame, Object modelElement, String name, Object value) {
+	
 		Object settableValue = value;
 		if (settableValue == null || value.equals(OclUndefined.SINGLETON)) {
 			return;
@@ -494,7 +495,7 @@ public class EMFModelAdapter implements IModelAdapter {
 				XMIResource xmiResource = (XMIResource)eo.eResource();
 				// WARNING: Allowed manual setting of XMI ID for the current model element
 				// This operation is advised against but seems necessary of some special case
-				ATLLogger.warning("Manual setting of " + this + ":" + eo.eClass().getName() + " XMI ID."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				ATLLogger.warning("Manual setting of " + getNameOf(eo) + ":" + eo.eClass().getName() + " XMI ID."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				xmiResource.setID(eo, value.toString());
 				return;
 			}
