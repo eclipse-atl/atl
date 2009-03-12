@@ -31,9 +31,11 @@ import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.FeatureMap;
@@ -293,9 +295,15 @@ public class ASMEMFModelElement extends ASMModelElement {
 			ret = null;
 		} else if (value instanceof ASMEnumLiteral) {
 			String name = ((ASMEnumLiteral)value).getName();
-			EClassifier type = ((EClass)((ASMEMFModelElement)getMetaobject()).object).getEStructuralFeature(
-					propName).getEType();
-			ret = ((EEnum)type).getEEnumLiteral(name).getInstance();
+			if (propName != null) {
+				EClassifier type = ((EClass)((ASMEMFModelElement)getMetaobject()).object).getEStructuralFeature(
+						propName).getEType();
+				ret = ((EEnum)type).getEEnumLiteral(name).getInstance();
+			} else {
+				final EEnumLiteral retLiteral = EcoreFactory.eINSTANCE.createEEnumLiteral();
+				retLiteral.setName(name);
+				ret = retLiteral;
+			}
 		} else if (value instanceof ASMTuple) {
 			Object f = asm2EMF(frame, ((ASMTuple)value).get(frame, "eStructuralFeature"), propName, feature);
 			if (f instanceof EStructuralFeature) {
@@ -861,14 +869,26 @@ public class ASMEMFModelElement extends ASMModelElement {
 			for (Iterator i = arguments.iterator(); i.hasNext();) {
 				// warning: ASMEnumLiterals will not be converted!
 				args[k] = asm2EMF(frame, (ASMOclAny)i.next(), null, null);
-				argumentTypes[k] = args[k].getClass();
+				if (args[k] != null ) {
+					argumentTypes[k] = args[k].getClass();
+				} else {
+					try {
+						argumentTypes[k] = Class.forName("java.lang.Object") ;
+					} catch (ClassNotFoundException e) {
+						error("ERROR: could not find the Class Object", frame, e);
+					}
+				}
 				k++;
 			}
 
 			Method method = findMethod(object.getClass(), opName, argumentTypes);
 			try {
 				if (method != null) {
-					ret = emf2ASM(frame, method.invoke(object, args));
+					if (method.getReturnType() != Void.TYPE ) {
+						ret = emf2ASM(frame, method.invoke(object, args));
+					} else {
+						method.invoke(object, args);
+					}
 				} else {
 					error("ERROR: could not find operation " + opName + " on " + getType()
 							+ " having supertypes: " + getType().getSupertypes()
