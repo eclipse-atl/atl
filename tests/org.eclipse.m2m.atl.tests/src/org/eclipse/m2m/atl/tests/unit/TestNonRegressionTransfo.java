@@ -24,7 +24,6 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
@@ -212,7 +211,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 * 
 	 * @return pureExecutionTime, i.e. the execution time without loading/saving models
 	 */
-	protected double launch() throws ATLCoreException, CoreException, IOException {
+	protected double launch() throws ATLCoreException, IOException {
 		String launcherName = getVMName();
 
 		// Launch configuration analysis
