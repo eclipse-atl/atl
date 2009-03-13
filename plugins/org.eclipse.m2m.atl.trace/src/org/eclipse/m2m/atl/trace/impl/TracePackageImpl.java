@@ -8,12 +8,14 @@
  * 	Andres Yie (Vrije Universiteit Brussel, Universidad de los Andes)
  * 	Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: TracePackageImpl.java,v 1.1.2.2 2009/03/12 11:57:43 dwagelaar Exp $
+ * $Id: TracePackageImpl.java,v 1.1.2.3 2009/03/13 15:39:39 dwagelaar Exp $
  */
 package org.eclipse.m2m.atl.trace.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -288,10 +290,76 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 
 		addEOperation(transientLinkSetEClass, this.getTransientLink(), "getAllLinks", 0, -1, IS_UNIQUE, IS_ORDERED);
 
+		EOperation op = addEOperation(transientLinkSetEClass, this.getTransientLink(), "getLinksByRule", 0, -1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "rule", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(transientLinkSetEClass, this.getTransientLink(), "getLinkBySourceElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEJavaObject(), "sourceElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(transientLinkSetEClass, this.getTransientLink(), "getLinkByTargetElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEJavaObject(), "targetElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(transientLinkSetEClass, this.getTransientLink(), "getLinkByRuleAndSourceElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "rule", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEJavaObject(), "sourceElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(transientLinkSetEClass, null, "addLink", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getTransientLink(), "tl", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(transientLinkSetEClass, null, "addLink2", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getTransientLink(), "tl", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEBoolean(), "isDefault", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(transientLinkSetEClass, ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(transientLinkEClass, TransientLink.class, "TransientLink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getTransientLink_Rule(), ecorePackage.getEString(), "rule", null, 0, 1, TransientLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTransientLink_SourceElements(), this.getTransientElement(), null, "sourceElements", null, 0, -1, TransientLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEReference(getTransientLink_TargetElements(), this.getTransientElement(), null, "targetElements", null, 0, -1, TransientLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		op = addEOperation(transientLinkEClass, ecorePackage.getEJavaObject(), "getVariable", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(transientLinkEClass, null, "addVariable", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEJavaObject(), "element", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(transientLinkEClass, null, "addSourceElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEObject(), "element", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(transientLinkEClass, null, "addTargetElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEObject(), "element", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(transientLinkEClass, ecorePackage.getEObject(), "getTargetFromSource", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEObject(), "sourceElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(transientLinkEClass, ecorePackage.getEObject(), "getNamedTargetFromSource", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEObject(), "source", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(transientLinkEClass, null, "getSourceElementsMap", 0, 1, IS_UNIQUE, IS_ORDERED);
+		EGenericType g1 = createEGenericType(ecorePackage.getEMap());
+		EGenericType g2 = createEGenericType(ecorePackage.getEString());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(ecorePackage.getEObject());
+		g1.getETypeArguments().add(g2);
+		initEOperation(op, g1);
+
+		op = addEOperation(transientLinkEClass, null, "getTargetElementsMap", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(ecorePackage.getEMap());
+		g2 = createEGenericType(ecorePackage.getEString());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(ecorePackage.getEObject());
+		g1.getETypeArguments().add(g2);
+		initEOperation(op, g1);
+
+		op = addEOperation(transientLinkEClass, ecorePackage.getEObject(), "getSourceElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "varName", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(transientLinkEClass, ecorePackage.getEObject(), "getTargetElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "varName", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(transientElementEClass, TransientElement.class, "TransientElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getTransientElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, TransientElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -8,7 +8,7 @@
  * 	Andres Yie (Vrije Universiteit Brussel, Universidad de los Andes)
  * 	Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: TransientElementImpl.java,v 1.1.2.1 2009/03/12 09:39:01 dwagelaar Exp $
+ * $Id: TransientElementImpl.java,v 1.1.2.2 2009/03/13 15:39:39 dwagelaar Exp $
  */
 package org.eclipse.m2m.atl.trace.impl;
 

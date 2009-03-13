@@ -8,7 +8,7 @@
  * 	Andres Yie (Vrije Universiteit Brussel, Universidad de los Andes)
  * 	Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: TraceFactory.java,v 1.1.2.1 2009/03/12 09:38:58 dwagelaar Exp $
+ * $Id: TraceFactory.java,v 1.1.2.2 2009/03/13 15:39:39 dwagelaar Exp $
  */
 package org.eclipse.m2m.atl.trace;
 

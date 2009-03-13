@@ -8,11 +8,13 @@
  * 	Andres Yie (Vrije Universiteit Brussel, Universidad de los Andes)
  * 	Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: TransientLinkImpl.java,v 1.1.2.2 2009/03/12 11:57:43 dwagelaar Exp $
+ * $Id: TransientLinkImpl.java,v 1.1.2.3 2009/03/13 15:39:39 dwagelaar Exp $
  */
 package org.eclipse.m2m.atl.trace.impl;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -20,6 +22,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -87,14 +90,36 @@ public class TransientLinkImpl extends EObjectImpl implements TransientLink {
 	 * @ordered
 	 */
 	protected EList<TransientElement> targetElements;
+	
+	/**
+	 * Map with the source elements of the transient link. The key of the map is the variable's name
+	 */
+	protected Map<String, EObject> sourceElementsMap;
+	
+	/**
+	 * Map with the target elements of the transient link. The key of the map is the variable's name
+	 */
+	protected Map<String, EObject> targetElementsMap;
+	
+	/**
+	 * Map with the variables of the transient link. The key of the map is the variable's name
+	 */
+	protected Map<String, Object> variables;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	protected TransientLinkImpl() {
 		super();
+		
+		sourceElements = new EObjectContainmentEList<TransientElement>(TransientElement.class, this, TracePackage.TRANSIENT_LINK__SOURCE_ELEMENTS);
+		targetElements = new EObjectContainmentEList<TransientElement>(TransientElement.class, this, TracePackage.TRANSIENT_LINK__TARGET_ELEMENTS);
+		sourceElementsMap = new HashMap<String, EObject>();
+		targetElementsMap = new HashMap<String, EObject>();
+		variables = new HashMap<String, Object>();
+
 	}
 
 	/**
@@ -109,6 +134,7 @@ public class TransientLinkImpl extends EObjectImpl implements TransientLink {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Return the rule name 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -118,6 +144,7 @@ public class TransientLinkImpl extends EObjectImpl implements TransientLink {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Set the name of the rule
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -130,6 +157,7 @@ public class TransientLinkImpl extends EObjectImpl implements TransientLink {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Return the source elements list
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -142,6 +170,7 @@ public class TransientLinkImpl extends EObjectImpl implements TransientLink {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Return the target elements list
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -150,6 +179,179 @@ public class TransientLinkImpl extends EObjectImpl implements TransientLink {
 			targetElements = new EObjectContainmentEList<TransientElement>(TransientElement.class, this, TracePackage.TRANSIENT_LINK__TARGET_ELEMENTS);
 		}
 		return targetElements;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Get the value of a variable given its name
+	 * @param 
+	 * 			name of the variable
+	 * @return 
+	 * 			value of the variable
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Object getVariable(String name) {
+		return (Object) variables.get(name);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Add a variable to the map
+	 * @param 
+	 * 			name name of the variable
+	 * @param 
+	 * 			element value of the variable
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void addVariable(String name, Object element) {
+		variables.put(name, element);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * add a new source element to the collection and map
+	 * @param name
+	 * 					variable's name of the element
+	 * @param element
+	 * 					source element to be added
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void addSourceElement(String name, EObject element) {
+		TransientElement te = new TransientElementImpl();
+		te.setName(name);
+		te.setValue((EObject) element);		
+		
+		this.sourceElements.add(te);
+		this.sourceElementsMap.put(name, element);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * add a new target element to the collection and map
+	 * @param name
+	 * 					variable's name of the element
+	 * @param element
+	 * 					target element to be added
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void addTargetElement(String name, EObject element) {
+		TransientElement te = new TransientElementImpl();
+		te.setName(name);
+		te.setValue((EObject) element);		
+	
+		this.targetElements.add(te);
+		this.targetElementsMap.put(name, element);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Get the target element for a given source element
+	 * @param sourceElement
+	 * 				source element 
+	 * @return
+	 * 				target element for the source element
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public EObject getTargetFromSource(EObject sourceElement) {
+		EObject ret = null;
+		
+		if(!this.targetElements.isEmpty()) {
+			ret = (EObject)((TransientElement) this.targetElements.iterator().next()).getValue();
+		}
+		
+		return ret;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns a target element for a given source element and variable name
+	 * @param source
+	 * 				source element
+	 * @param name
+	 * 				variable naem of the target element
+	 * @return
+	 * 				the target element for the given source element and variable name
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public EObject getNamedTargetFromSource(EObject source, String name) {
+		EObject ret = null;
+		
+		if(!this.targetElements.isEmpty()) {
+			ret = (EObject)( this.targetElementsMap.get(name));
+		}
+		
+		return ret;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * This method allows for retrieving all source elements for this link
+	 * without knowing the local variable names of the rule
+	 * that created the mappings. This reduces fragility.
+	 * @param 
+	 * 			frame
+	 * @param 
+	 * 			self
+	 * @return 
+	 * 			A Map of source element names to target elements for this link.
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Map<String, EObject> getSourceElementsMap() {
+		return this.sourceElementsMap;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * This method allows for retrieving all target elements for this link
+	 * without knowing the local variable names of the rule
+	 * that created the mappings. This reduces fragility.
+	 * @param 
+	 * 			frame
+	 * @param 
+	 * 			self
+	 * @return 
+	 * 			A Map of target element names to target elements for this link.
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Map<String, EObject> getTargetElementsMap() {
+		return this.targetElementsMap;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Get the source element for a given variable name
+	 * @param varName
+	 * 				variable name
+	 * @return
+	 * 				source element for the variable name
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public EObject getSourceElement(String varName) {
+		return (EObject) this.sourceElementsMap.get(varName);
+
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Get the target element for a given variable name
+	 * @param varName
+	 * 				variable name
+	 * @return
+	 * 				target element for the variable name
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public EObject getTargetElement(String varName) {
+		return (EObject) this.targetElementsMap.get(varName);
 	}
 
 	/**
@@ -191,7 +393,6 @@ public class TransientLinkImpl extends EObjectImpl implements TransientLink {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {

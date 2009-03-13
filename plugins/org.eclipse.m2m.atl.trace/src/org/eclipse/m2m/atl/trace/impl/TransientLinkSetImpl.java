@@ -8,25 +8,25 @@
  * 	Andres Yie (Vrije Universiteit Brussel, Universidad de los Andes)
  * 	Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: TransientLinkSetImpl.java,v 1.1.2.2 2009/03/12 11:57:43 dwagelaar Exp $
+ * $Id: TransientLinkSetImpl.java,v 1.1.2.3 2009/03/13 15:39:39 dwagelaar Exp $
  */
 package org.eclipse.m2m.atl.trace.impl;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.eclipse.emf.common.notify.NotificationChain;
-
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
 import org.eclipse.m2m.atl.trace.TracePackage;
+import org.eclipse.m2m.atl.trace.TransientElement;
 import org.eclipse.m2m.atl.trace.TransientLink;
 import org.eclipse.m2m.atl.trace.TransientLinkSet;
 
@@ -44,6 +44,22 @@ import org.eclipse.m2m.atl.trace.TransientLinkSet;
  * @generated
  */
 public class TransientLinkSetImpl extends EObjectImpl implements TransientLinkSet {
+	
+	/**
+	 * Cached Map to links by the name of the rule
+	 */
+	private Map<String, EList<TransientLink>> linksByRule;
+	
+	/**
+	 * Cached Map to links by the Source Element
+	 */
+	private Map<Object, TransientLink> linksBySourceElement;	
+	
+	/**
+	 * Cached Map to links by the TargetElement
+	 */
+	private Map<Object, TransientLink> linksByTargetElement;
+	
 	/**
 	 * The cached value of the '{@link #getLinks() <em>Links</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -56,11 +72,16 @@ public class TransientLinkSetImpl extends EObjectImpl implements TransientLinkSe
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new TransientLinkSetImpl object.
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	protected TransientLinkSetImpl() {
 		super();
+		linksByRule = new HashMap<String, EList<TransientLink>>();
+		linksBySourceElement = new HashMap<Object, TransientLink>();	
+		linksByTargetElement = new HashMap<Object, TransientLink>();
+		links = new EObjectContainmentEList<TransientLink>(TransientLink.class, this, TracePackage.TRANSIENT_LINK_SET__LINKS);
 	}
 
 	/**
@@ -75,6 +96,7 @@ public class TransientLinkSetImpl extends EObjectImpl implements TransientLinkSe
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * returns a List with all the links
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -87,11 +109,156 @@ public class TransientLinkSetImpl extends EObjectImpl implements TransientLinkSe
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * returns a List with all the links
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public EList<TransientLink> getAllLinks() {
-		return getLinks();
+		return this.getLinks();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns a the List of links from the Rule
+	 * @param rule 
+	 * 				the name of the rule
+	 * @return
+	 * 				the list of links from the rule 
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public EList<TransientLink> getLinksByRule(String rule) {
+		EList<TransientLink> ret = this.linksByRule.get(rule);
+		if (ret == null) {
+			ret = new EObjectContainmentEList<TransientLink>(TransientLink.class, this, TracePackage.TRANSIENT_LINK_SET__LINKS);
+		}
+		return ret;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns the link from the given source element.
+	 * 
+	 * @param sourceElement
+	 *            	the source element
+	 * @return 
+	 * 				the link
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public TransientLink getLinkBySourceElement(Object sourceElement) {
+		TransientLink ret = linksBySourceElement.get(sourceElement);
+		return ret;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns the link from the given target element.
+	 * 
+	 * @param targetElement
+	 *            	the source element
+	 * @return 
+	 * 				the link
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public TransientLink getLinkByTargetElement(Object targetElement) {
+		TransientLink ret = linksByTargetElement.get(targetElement);
+		return ret;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns the link from the rule and the given source element.
+	 * 
+	 * @param rule the name of the rule
+	 * 
+	 * @param sourceElement
+	 *            	the source element
+	 * @return 
+	 * 				the link
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public TransientLink getLinkByRuleAndSourceElement(String rule, Object sourceElement) {
+		TransientLink ret = linksBySourceElement.get(sourceElement);
+		return ret;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * adds a new link to the TransienLinkSet
+	 * @param tl
+	 * 			the link to add
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void addLink(TransientLink tl) {
+		this.addLink2(tl, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @param tl
+	 * 			the link to add
+	 * @param isDefault
+	 * 			true if the link is the default
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void addLink2(TransientLink tl, boolean isDefault) {
+		String rule = tl.getRule();
+
+		this.links.add(tl);
+	
+		EList<TransientLink> linkList = linksByRule.get(rule);
+		if (linkList == null) {
+			linkList = new BasicEList<TransientLink>();
+			linksByRule.put(rule, linkList);
+		}
+		linkList.add(tl);
+		
+		if (isDefault) {
+			Object se = null;
+			if (tl.getSourceElements().size() == 1) {
+				se = tl.getSourceElements().iterator().next().getValue(); 
+			} else {
+				Map<String, Object> sem = new HashMap<String, Object>();
+				for (Iterator<TransientElement> i = tl.getSourceElements().iterator(); i.hasNext();) {
+					TransientElement te = i.next();
+					sem.put(te.getName(), te.getValue());
+				}
+				se = sem;
+			}
+			TransientLink other = linksBySourceElement.get(se);
+			if (other != null) {
+				// TODO: pretty print
+				throw new RuntimeException("trying to register several rules as default for element " + se
+						+ ": " + other.getRule() + " and " + tl.getRule());
+			}
+			linksBySourceElement.put(se, tl);
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Prints the every TransientLink
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public String toString() {
+		StringBuffer ret = new StringBuffer("TransientLinkSet {");
+
+		for (Iterator<TransientLink> i = links.iterator(); i.hasNext();) {
+			ret.append(i.next().toString());
+			if (i.hasNext()) {
+				ret.append(", ");
+			}
+		}
+
+		ret.append("}");
+
+		return ret.toString();
 	}
 
 	/**
@@ -127,7 +294,6 @@ public class TransientLinkSetImpl extends EObjectImpl implements TransientLinkSe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
