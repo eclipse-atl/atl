@@ -9,6 +9,7 @@
  *    Frederic Jouault (INRIA) - initial API and implementation
  *    Freddy Allilaire (INRIA)
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
+ *    Andres Yie (Universidad de los Andes - Vrije Universiteit Brussel)
  *******************************************************************************/
 package org.eclipse.m2m.atl.drivers.emf4atl;
 
@@ -52,6 +53,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMBoolean;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMCollection;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMInteger;
+import org.eclipse.m2m.atl.engine.vm.nativelib.ASMMap;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
@@ -321,6 +323,12 @@ public class ASMEMFModelElement extends ASMModelElement {
 					((List)ret).add(v);
 				}
 			}
+		} else if (value instanceof ASMMap) {
+			ret = new HashMap();
+			for(Iterator i = ((ASMMap)value).getKeys() ; i.hasNext() ; ) {
+				ASMOclAny name = (ASMOclAny) i.next();
+				((HashMap) ret).put(new ASMString(name.toString()), asm2EMF(frame, ((ASMMap)value).get(name), propName, feature));
+			}
 		} else {
 			error("ERROR: cannot convert " + value + " : " + value.getClass() + " to EMF.", frame);
 		}
@@ -383,6 +391,14 @@ public class ASMEMFModelElement extends ASMModelElement {
 				col.add(emf2ASM(frame, i.next()));
 			}
 			ret = col;
+		} else if (value instanceof Map) {
+			ASMMap map = new ASMMap();
+
+			for(Iterator i = ((Map)value).keySet().iterator() ; i.hasNext() ; ) {
+				Object name = i.next();
+				map.put(emf2ASM(frame,name.toString()), emf2ASM(frame,((Map)value).get(name)));
+			}
+			ret = map;
 		} else {
 			error("ERROR: cannot convert " + value + " : " + value.getClass() + " from EMF.", frame);
 		}
