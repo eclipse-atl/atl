@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    
  *
- * $Id: ExecEnv.java,v 1.16.2.1 2008/09/11 15:15:37 dwagelaar Exp $
+ * $Id: ExecEnv.java,v 1.16.2.1.2.1 2009/03/13 13:50:25 dwagelaar Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -1501,6 +1501,18 @@ public class ExecEnv {
 		return modelsByName.values().iterator();
 	}
 
+	/**
+	 * Find all operations for the given context type.
+	 * 
+	 * @param type
+	 *            operation context type
+	 * @return
+	 *            the collection of operations
+	 */
+	public Collection getOperations(Object type) {
+		return getOperations(type, true).values();
+	}
+	
 	/**
 	 * Find an operation by its context type and name.
 	 * 
