@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: ParserLauncher.java,v 1.2 2009/03/04 16:10:32 wpiers Exp $
+ * $Id: ParserLauncher.java,v 1.3 2009/03/16 09:05:52 wpiers Exp $
  */
 package org.eclipse.gmt.tcs.injector;
 
@@ -101,15 +101,19 @@ public class ParserLauncher {
 						return 0;	// don't care
 				}
 			});
-			
+
+			int nbCrashedRefSettings = 0;
 			for(Iterator i = refSettings.iterator() ; i.hasNext() ; ) {
 				RefSetting rs = (RefSetting)i.next();
 				try {
 					rs.doIt();
 				} catch(Exception e) {
-					throw new IOException("Warning: one refSetting crashed");
+					nbCrashedRefSettings++;
 				}
 			}
+			if(nbCrashedRefSettings > 0)
+				//TODO: check crashes cause
+				throw new IOException("Warning: " + nbCrashedRefSettings + " refSetting crashed");
 //		}
 
 		return ret;
