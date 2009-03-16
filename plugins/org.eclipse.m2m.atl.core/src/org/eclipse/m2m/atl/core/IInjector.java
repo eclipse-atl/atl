@@ -36,7 +36,7 @@ public interface IInjector {
 	 * @param sourceModel
 	 *            the IModel where to inject
 	 * @param source
-	 *            the source indication to load the sourceModel
+	 *            the source indication to load the sourceModel: an URL, or a specific thing
 	 * @param options
 	 *            the injection parameters
 	 */

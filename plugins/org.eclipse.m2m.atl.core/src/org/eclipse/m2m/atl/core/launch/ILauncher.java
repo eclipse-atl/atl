@@ -112,11 +112,12 @@ public interface ILauncher {
 	 *            vm options
 	 * @param modules
 	 *            single module/ordered module set. A module set is used for superimposition, where the first
-	 *            module of the set is override by the next ones.
+	 *            module of the set is override by the next ones. A module can be passed as an InputStream or
+	 *            directly a module loaded by the loadModule method.
 	 * @return the transformation return result
 	 */
 	Object launch(String mode, IProgressMonitor monitor, Map<String, Object> options, Object... modules);
-
+   
 	/**
 	 * Loads a transformation module from an {@link InputStream}.
 	 * 
