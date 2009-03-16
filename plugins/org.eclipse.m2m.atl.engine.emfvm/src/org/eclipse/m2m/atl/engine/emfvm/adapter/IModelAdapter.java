@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: IModelAdapter.java,v 1.5 2009/03/04 16:03:43 wpiers Exp $
+ * $Id: IModelAdapter.java,v 1.6 2009/03/16 16:02:29 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.adapter;
@@ -156,4 +156,23 @@ public interface IModelAdapter {
 	 *            the given model
 	 */
 	void finalizeModel(IModel model);
+
+	/**
+	 * Returns the element id.
+	 * 
+	 * @param element
+	 *            the element
+	 * @return the element id
+	 */
+	Object getID(Object element);
+
+	/**
+	 * Sets the element id.
+	 * 
+	 * @param element
+	 *            the element
+	 * @param id
+	 *            the id to set
+	 */
+	void setID(Object element, Object id);
 }

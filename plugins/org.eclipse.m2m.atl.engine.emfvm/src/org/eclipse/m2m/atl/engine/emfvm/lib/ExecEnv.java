@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.36 2009/03/12 16:41:42 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.37 2009/03/16 16:02:29 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -2206,7 +2206,7 @@ public class ExecEnv {
 			if (weavingHelperToPersistTo != null) {
 				Object type = entry.getKey();
 				if (type instanceof EObject) {
-					persistWeavingHelpers((EObject)type, weavingHelperToPersistTo);
+					persistWeavingHelpers(type, weavingHelperToPersistTo);
 				} else {
 					// can only persist for model elements
 				}
@@ -2217,7 +2217,7 @@ public class ExecEnv {
 		}
 	}
 
-	private void persistWeavingHelpers(EObject type, Map<String, String> weavingHelperToPersistTo) {
+	private void persistWeavingHelpers(Object type, Map<String, String> weavingHelperToPersistTo) {
 		for (Iterator<Entry<String, String>> i = weavingHelperToPersistTo.entrySet().iterator(); i.hasNext();) {
 			Entry<String, String> entry = i.next();
 			String persistTo = entry.getValue();
@@ -2228,10 +2228,9 @@ public class ExecEnv {
 					IModel model = j.next();
 					if (model.getReferenceModel() == metamodel) {
 						for (Iterator<?> k = model.getElementsByType(type).iterator(); k.hasNext();) {
-							EObject ame = (EObject)k.next();
-							EObject value = (EObject)getHelperValue(null, ame.eClass(), ame, name);
-							modelAdapter.set(new StackFrame(this), ame, persistTo, value
-									.eResource().getURIFragment(value));
+							Object ame = k.next();
+							Object value = getHelperValue(null, modelAdapter.getType(ame), ame, name);
+							modelAdapter.set(new StackFrame(this), ame, persistTo, modelAdapter.getID(value));
 						}
 					}
 				}

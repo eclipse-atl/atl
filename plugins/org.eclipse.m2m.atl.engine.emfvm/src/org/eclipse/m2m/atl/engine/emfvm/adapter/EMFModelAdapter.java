@@ -454,7 +454,7 @@ public class EMFModelAdapter implements IModelAdapter {
 			if ((frame != null) && frame.getExecEnv().isHelper(ec, name)) {
 				ret = frame.getExecEnv().getHelperValue(frame, ec, eo, name);
 			} else if ("__xmiID__".equals(name)) { //$NON-NLS-1$
-				ret = eo.eResource().getURIFragment(eo);
+				ret = getID(eo);
 			} else {
 				EStructuralFeature sf = ec.getEStructuralFeature(name);
 				if (sf == null) {
@@ -503,14 +503,7 @@ public class EMFModelAdapter implements IModelAdapter {
 		final EObject eo = (EObject)modelElement;
 
 		if ("__xmiID__".equals(name)) { //$NON-NLS-1$
-			if (eo.eResource() instanceof XMIResource) {
-				XMIResource xmiResource = (XMIResource)eo.eResource();
-				// WARNING: Allowed manual setting of XMI ID for the current model element
-				// This operation is advised against but seems necessary of some special case
-				ATLLogger.warning("Manual setting of " + getNameOf(eo) + ":" + eo.eClass().getName() + " XMI ID."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				xmiResource.setID(eo, value.toString());
-				return;
-			}
+			setID(eo, value);
 		}
 
 		final EStructuralFeature feature = eo.eClass().getEStructuralFeature(name);
@@ -677,6 +670,39 @@ public class EMFModelAdapter implements IModelAdapter {
 	public void finalizeModel(IModel model) {
 		if (model.isTarget()) {
 			((EMFModel)model).commitToResource();
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#getID(java.lang.Object)
+	 */
+	public Object getID(Object element) {
+		if (element instanceof EObject) {
+			EObject eo = (EObject)element;
+			return eo.eResource().getURIFragment(eo);
+		}
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#setID(java.lang.Object, java.lang.Object)
+	 */
+	public void setID(Object element, Object id) {
+		if (element instanceof EObject) {
+			EObject eo = (EObject)element;
+			Resource resource = eo.eResource();
+			if (resource instanceof XMIResource) {
+				XMIResource xmiResource = (XMIResource)resource;
+				// WARNING: Allowed manual setting of XMI ID for the current model element
+				// This operation is advised against but seems necessary of some special case
+				ATLLogger
+						.warning("Manual setting of " + getNameOf(eo) + ":" + eo.eClass().getName() + " XMI ID."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				xmiResource.setID(eo, id.toString());
+			}
 		}
 	}
 
