@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
-import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.m2m.atl.engine.emfvm.Messages;
 import org.eclipse.m2m.atl.engine.emfvm.VMException;
 
@@ -24,9 +23,19 @@ public class EnumLiteral implements HasFields {
 	private String name;
 
 	/**
-	 * Creates an EnumLiteral.
+	 * Creates an unnamed EnumLiteral.
 	 */
 	public EnumLiteral() {
+	}
+
+	/**
+	 * Creates an EnumLiteral with the given name.
+	 * 
+	 * @param name
+	 *            the name
+	 */
+	public EnumLiteral(String name) {
+		this.name = name;
 	}
 
 	public void setName(String name) {
@@ -53,8 +62,7 @@ public class EnumLiteral implements HasFields {
 		if ("name".equals(literalName)) { //$NON-NLS-1$
 			return this.name;
 		} else {
-			throw new VMException(frame, Messages.getString(
-					"EnumLiteral.ACCESSERROR", literalName)); //$NON-NLS-1$
+			throw new VMException(frame, Messages.getString("EnumLiteral.ACCESSERROR", literalName)); //$NON-NLS-1$
 		}
 	}
 
@@ -84,7 +92,7 @@ public class EnumLiteral implements HasFields {
 	 */
 	@Override
 	public int hashCode() {
-		return super.hashCode();
+		return this.name.hashCode();
 	}
 
 	/**
@@ -95,10 +103,8 @@ public class EnumLiteral implements HasFields {
 	@Override
 	public boolean equals(Object arg) {
 		boolean ret = false;
-		if (arg instanceof Enumerator) {
-			ret = toString().equals(((Enumerator)arg).getLiteral());
-		} else if (arg instanceof EnumLiteral) {
-			ret = toString().equals(arg.toString());
+		if (arg instanceof EnumLiteral) {
+			ret = this.name.equals(arg.toString());
 		}
 		return ret;
 	}

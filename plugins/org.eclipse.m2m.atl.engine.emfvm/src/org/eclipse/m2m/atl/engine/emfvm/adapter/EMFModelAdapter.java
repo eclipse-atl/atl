@@ -47,6 +47,7 @@ import org.eclipse.m2m.atl.core.emf.EMFModel;
 import org.eclipse.m2m.atl.engine.emfvm.Messages;
 import org.eclipse.m2m.atl.engine.emfvm.VMException;
 import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame;
+import org.eclipse.m2m.atl.engine.emfvm.lib.EnumLiteral;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.HasFields;
 import org.eclipse.m2m.atl.engine.emfvm.lib.OclType;
@@ -463,6 +464,17 @@ public class EMFModelAdapter implements IModelAdapter {
 				Object val = eo.eGet(sf);
 				if (val == null) {
 					val = OclUndefined.SINGLETON;
+				} else if (val instanceof Enumerator) {
+					val = new EnumLiteral(val.toString());
+				} else if (val instanceof Collection) {
+					if (sf.getEType() instanceof EEnum) {
+						Collection<Object> c = new ArrayList<Object>();
+						for (Iterator<?> i = ((Collection<?>)val).iterator(); i.hasNext();) {
+							Object v = i.next();
+							c.add(new EnumLiteral(v.toString()));
+						}
+						val = c;
+					}
 				}
 				ret = val;
 			}
@@ -482,7 +494,7 @@ public class EMFModelAdapter implements IModelAdapter {
 	 */
 	@SuppressWarnings("unchecked")
 	public void set(AbstractStackFrame frame, Object modelElement, String name, Object value) {
-	
+
 		Object settableValue = value;
 		if (settableValue == null || value.equals(OclUndefined.SINGLETON)) {
 			return;
