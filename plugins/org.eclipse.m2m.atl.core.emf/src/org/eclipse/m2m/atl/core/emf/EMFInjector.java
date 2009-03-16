@@ -36,7 +36,15 @@ public class EMFInjector implements IInjector {
 	public static final String OPTION_LOAD_ON_DEMAND = "loadOnDemand"; //$NON-NLS-1$
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} Below the source parameter semantic.
+	 * <ul>
+	 * <li><b>File system Resource: </b><code>file:/<i>path</i></code></li>
+	 * <li><b>EMF {@link URI}: </b><code><i>uri</i></code></li>
+	 * <li><b>pathmap: </b><code>pathmap:<i>path</i></code></li>
+	 * <li><b>Workspace Resource: </b><code>platform:/resource/<i>path</i></code></li>
+	 * <li><b>Plug-in Resource: </b><code>platform:/plugin/<i>path</i></code></li>
+	 * <li><b>metametamodel: </b><code><i>#EMF</i></code></li>
+	 * </ul>
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.String,
 	 *      java.util.Map)
@@ -59,6 +67,7 @@ public class EMFInjector implements IInjector {
 				} else {
 					mainResource = resourceSet.getResource(URI.createURI(path), loadOnDemand);
 				}
+			// Catching Exception to prevent EMF DiagnosticWrappedExceptions
 			} catch (Exception e) {
 				throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE"), e); //$NON-NLS-1$
 			}

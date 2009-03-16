@@ -34,7 +34,11 @@ import org.eclipse.m2m.atl.core.IModel;
 public class EMFExtractor implements IExtractor {
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} Below the target parameter semantic.
+	 * <ul>
+	 * <li><b>File system Resource: </b><code>file:/<i>path</i></code></li>
+	 * <li><b>Workspace Resource: </b><code>platform:/resource/<i>path</i></code></li>
+	 * </ul>
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.String,
 	 *      java.util.Map)
