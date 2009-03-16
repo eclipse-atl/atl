@@ -436,6 +436,8 @@ public class AtlRegularVM extends AtlVM {
 				boolean value = configuration.getAttribute(AtlLauncherTools.ADDITIONAL_PARAM_IDS[i], false);
 				options.put(AtlLauncherTools.ADDITIONAL_PARAM_IDS[i], value ? "true" : "false"); //$NON-NLS-1$//$NON-NLS-2$
 			}
+			boolean value = configuration.getAttribute(AtlLauncherTools.ALLOWINTERMODELREFERENCES, false);
+			options.put("checkSameModel", value ? "false" : "true"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 			runAtlLauncher(fileName, libsFromConfig, input, output, path, modelType, modelHandler, mode,
 					superimpose, options);
