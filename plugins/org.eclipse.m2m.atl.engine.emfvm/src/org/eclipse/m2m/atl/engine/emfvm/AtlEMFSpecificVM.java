@@ -8,7 +8,7 @@
  * Contributors:
  *    INRIA - initial API and implementation
  *    
- * $Id: AtlEMFSpecificVM.java,v 1.6.2.1 2008/09/11 15:15:37 dwagelaar Exp $
+ * $Id: AtlEMFSpecificVM.java,v 1.6.2.1.2.1 2009/03/16 10:39:58 dwagelaar Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -236,6 +236,8 @@ public class AtlEMFSpecificVM extends AtlVM {
 					boolean value = configuration.getAttribute(AtlLauncherTools.ADDITIONAL_PARAM_IDS[i], false);
 					options.put(AtlLauncherTools.ADDITIONAL_PARAM_IDS[i], value ? "true" : "false");
 				}
+				boolean value = configuration.getAttribute(AtlLauncherTools.ALLOWINTERMODELREFERENCES, false);
+				options.put("checkSameModel", value ? "false" : "true"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 				Map libraries = new HashMap();
 				for (Iterator i = libs.keySet().iterator(); i.hasNext();) {
@@ -256,9 +258,14 @@ public class AtlEMFSpecificVM extends AtlVM {
 
 				asm.run(models, libraries, superimpose, options);
 
+				// First commit to resource, or EMF trace model XMI refs will be invalid
 				for (Iterator i = targetModels.keySet().iterator(); i.hasNext();) {
 					String mName = (String)i.next();
-
+					EMFModel m = (EMFModel)models.get(mName);
+					m.commitToResource();
+				}
+				for (Iterator i = targetModels.keySet().iterator(); i.hasNext();) {
+					String mName = (String)i.next();
 					EMFModel m = (EMFModel)models.get(mName);
 					m.save(URI.createPlatformResourceURI((String)modelPaths.get(mName), true));
 				}
