@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    
  *
- * $Id: ExecEnv.java,v 1.16.2.1.2.1 2009/03/13 13:50:25 dwagelaar Exp $
+ * $Id: ExecEnv.java,v 1.16.2.1.2.2 2009/03/16 09:09:04 dwagelaar Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -1304,6 +1304,24 @@ public class ExecEnv {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
 				Object ret = ((TransientLink)localVars[0]).getTargetElementsList();
+				if(ret == null)
+					ret = OclUndefined.SINGLETON;
+				return ret;
+			}
+		});
+		operationsByName.put("getSourceElementsMap", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				Object ret = ((TransientLink)localVars[0]).getSourceElements();
+				if(ret == null)
+					ret = OclUndefined.SINGLETON;
+				return ret;
+			}
+		});
+		operationsByName.put("getTargetElementsMap", new Operation(1) {
+			public Object exec(StackFrame frame) {
+				Object localVars[] = frame.localVars;
+				Object ret = ((TransientLink)localVars[0]).getTargetElements();
 				if(ret == null)
 					ret = OclUndefined.SINGLETON;
 				return ret;

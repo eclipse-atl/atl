@@ -48,10 +48,6 @@ public class TransientLink {
 	public Map getSourceElements() {
 		return sourceElements;
 	}
-	
-	public Map getSourceElementsMap() {
-		return getSourceElements();
-	}
 
 	public void setSourceElements(Map sourceElements) {
 		this.sourceElements = sourceElements;
@@ -59,10 +55,6 @@ public class TransientLink {
 
 	public Map getTargetElements() {
 		return targetElements;
-	}
-	
-	public Map getTargetElementsMap() {
-		return getTargetElements();
 	}
 
 	public void setTargetElements(Map targetElements) {
