@@ -27,6 +27,7 @@ import org.eclipse.uml2.uml.resource.UMLResource;
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
+@SuppressWarnings("restriction")
 public class TestEMFVMStandalone extends TestNonRegressionEMFVM {
 
 	/**
