@@ -26,6 +26,10 @@ public class IFileTextSource extends TextSource {
 	
 	private IFile file;
 	
+	public IFile getFile() {
+		return file;
+	}
+
 	/**
 	 * Creates a new IFileTextSource.
 	 * 
