@@ -283,7 +283,7 @@ public abstract class ModelLoader {
 			} else {
 				ATLLogger.severe("ERROR: could not find extractor for \"" + kind + "\"");
 			}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
