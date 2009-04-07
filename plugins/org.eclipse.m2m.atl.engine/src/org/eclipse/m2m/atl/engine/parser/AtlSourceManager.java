@@ -293,7 +293,7 @@ public final class AtlSourceManager {
 				for (Iterator iterator = inModelsList.iterator(); iterator.hasNext();) {
 					EObject me = (EObject)iterator.next();
 					EObject mm = (EObject)eGet(me, "metamodel"); //$NON-NLS-1$			
-					inputModels.put(eGet(me, "name").toString(), eGet(mm, "name").toString()); //$NON-NLS-1$ //$NON-NLS-2$
+					inputModels.put(eGet(me, "name"), eGet(mm, "name")); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 			
@@ -303,7 +303,7 @@ public final class AtlSourceManager {
 				for (Iterator iterator = outModelsList.iterator(); iterator.hasNext();) {
 					EObject me = (EObject)iterator.next();
 					EObject mm = (EObject)eGet(me, "metamodel"); //$NON-NLS-1$
-					outputModels.put(eGet(me, "name").toString(), eGet(mm, "name").toString()); //$NON-NLS-1$ //$NON-NLS-2$
+					outputModels.put(eGet(me, "name"), eGet(mm, "name")); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 
