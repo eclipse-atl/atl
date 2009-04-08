@@ -68,8 +68,8 @@ public class EMFInjector implements IInjector {
 					mainResource = resourceSet.getResource(URI.createURI(path), loadOnDemand);
 				}
 			// Catching Exception to prevent EMF DiagnosticWrappedExceptions
-			} catch (Exception e) {
-				throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE"), e); //$NON-NLS-1$
+			} catch (Throwable e) {
+				throw new ATLCoreException(e.getMessage(), e);
 			}
 		} else {
 			throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE")); //$NON-NLS-1$
