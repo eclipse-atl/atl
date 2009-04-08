@@ -44,9 +44,9 @@ public class ASMInjector implements IInjector {
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.String,
 	 *      java.util.Map)
 	 */
-	public void inject(IModel sourceModel, String source, Map<String, Object> options)
+	public void inject(IModel targetModel, String source, Map<String, Object> options)
 			throws ATLCoreException {
-		inject(sourceModel, source, ((ASMModelWrapper)sourceModel).getName());
+		inject(targetModel, source, ((ASMModelWrapper)targetModel).getName());
 	}
 
 	/**
@@ -54,8 +54,8 @@ public class ASMInjector implements IInjector {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.String)
 	 */
-	public void inject(IModel sourceModel, String source) throws ATLCoreException {
-		inject(sourceModel, source, ((ASMModelWrapper)sourceModel).getName());
+	public void inject(IModel targetModel, String source) throws ATLCoreException {
+		inject(targetModel, source, ((ASMModelWrapper)targetModel).getName());
 	}
 
 	/**
@@ -64,9 +64,9 @@ public class ASMInjector implements IInjector {
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.io.InputStream,
 	 *      java.util.Map)
 	 */
-	public void inject(IModel sourceModel, InputStream source, Map<String, Object> options)
+	public void inject(IModel targetModel, InputStream source, Map<String, Object> options)
 			throws ATLCoreException {
-		final ASMModelWrapper modelWrapper = (ASMModelWrapper)sourceModel;
+		final ASMModelWrapper modelWrapper = (ASMModelWrapper)targetModel;
 		try {
 			final ModelLoader ml = modelWrapper.getModelLoader();
 			ASMModel asmModel = ml.loadModel(modelWrapper.getName(), ((ASMModelWrapper)modelWrapper
@@ -77,8 +77,8 @@ public class ASMInjector implements IInjector {
 		}
 	}
 
-	private void inject(IModel sourceModel, String source, String modelName) throws ATLCoreException {
-		final ASMModelWrapper modelWrapper = (ASMModelWrapper)sourceModel;
+	private void inject(IModel targetModel, String source, String modelName) throws ATLCoreException {
+		final ASMModelWrapper modelWrapper = (ASMModelWrapper)targetModel;
 		try {
 			final ModelLoader ml = modelWrapper.getModelLoader();
 			ASMModel asmModel = null;
