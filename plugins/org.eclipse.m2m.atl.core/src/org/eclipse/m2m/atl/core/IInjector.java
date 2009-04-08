@@ -23,36 +23,36 @@ public interface IInjector {
 	/**
 	 * Injects data into an IModel using default options.
 	 * 
-	 * @param sourceModel
+	 * @param targetModel
 	 *            the IModel where to inject
 	 * @param source
 	 *            the source indication to load the sourceModel
 	 */
-	void inject(IModel sourceModel, String source) throws ATLCoreException;
+	void inject(IModel targetModel, String source) throws ATLCoreException;
 
 	/**
 	 * Injects data into an IModel using the given options.
 	 * 
-	 * @param sourceModel
+	 * @param targetModel
 	 *            the IModel where to inject
 	 * @param source
 	 *            the source indication to load the sourceModel: an URL, or a specific thing
 	 * @param options
 	 *            the injection parameters
 	 */
-	void inject(IModel sourceModel, String source, Map<String, Object> options) throws ATLCoreException;
+	void inject(IModel targetModel, String source, Map<String, Object> options) throws ATLCoreException;
 
 	/**
 	 * Injects data into an IModel using the given options.
 	 * 
-	 * @param sourceModel
+	 * @param targetModel
 	 *            the IModel where to inject
 	 * @param source
 	 *            the {@link InputStream} containing the model
 	 * @param options
 	 *            the injection parameters
 	 */
-	void inject(IModel sourceModel, InputStream source, Map<String, Object> options) throws ATLCoreException;
+	void inject(IModel targetModel, InputStream source, Map<String, Object> options) throws ATLCoreException;
 
 	
 }

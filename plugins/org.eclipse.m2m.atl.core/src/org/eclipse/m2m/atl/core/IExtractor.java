@@ -23,34 +23,34 @@ public interface IExtractor {
 	/**
 	 * Extracts an IModel using default options.
 	 * 
-	 * @param targetModel
+	 * @param sourceModel
 	 *            the IModel to extract
 	 * @param target
 	 *            the target indication to extract the targetModel
 	 */
-	void extract(IModel targetModel, String target) throws ATLCoreException;
+	void extract(IModel sourceModel, String target) throws ATLCoreException;
 
 	/**
 	 * Extracts an IModel using the given options.
 	 * 
-	 * @param targetModel
+	 * @param sourceModel
 	 *            the IModel to extract
 	 * @param target
 	 *            the target indication to extract the targetModel
 	 * @param options
 	 *            the extraction parameters
 	 */
-	void extract(IModel targetModel, String target, Map<String, Object> options) throws ATLCoreException;
+	void extract(IModel sourceModel, String target, Map<String, Object> options) throws ATLCoreException;
 	
 	/**
 	 * Extracts an IModel using the given options.
 	 * 
-	 * @param targetModel
+	 * @param sourceModel
 	 *            the IModel to extract
 	 * @param target
 	 *            the {@link OutputStream} where to extract the targetModel
 	 * @param options
 	 *            the extraction parameters
 	 */
-	void extract(IModel targetModel, OutputStream target, Map<String, Object> options) throws ATLCoreException;
+	void extract(IModel sourceModel, OutputStream target, Map<String, Object> options) throws ATLCoreException;
 }
