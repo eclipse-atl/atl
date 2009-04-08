@@ -43,11 +43,11 @@ public class EMFExtractor implements IExtractor {
 	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.String,
 	 *      java.util.Map)
 	 */
-	public void extract(IModel targetModel, String target, Map<String, Object> options)
+	public void extract(IModel sourceModel, String target, Map<String, Object> options)
 			throws ATLCoreException {
 		if (target != null) {
-			if (((EMFModel)targetModel).getResource() != null) {
-				recreateResourceIfNeeded((EMFModel)targetModel, URI.createURI(target));
+			if (((EMFModel)sourceModel).getResource() != null) {
+				recreateResourceIfNeeded((EMFModel)sourceModel, URI.createURI(target));
 				Map<String, Object> extractOptions = new HashMap<String, Object>();
 				extractOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1"); //$NON-NLS-1$
 				extractOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
@@ -55,7 +55,7 @@ public class EMFExtractor implements IExtractor {
 					extractOptions.putAll(options);
 				}
 				try {
-					((EMFModel)targetModel).getResource().save(extractOptions);
+					((EMFModel)sourceModel).getResource().save(extractOptions);
 				} catch (IOException e) {
 					throw new ATLCoreException(e.getMessage(), e);
 				}
@@ -73,14 +73,14 @@ public class EMFExtractor implements IExtractor {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.String)
 	 */
-	public void extract(IModel targetModel, String target) throws ATLCoreException {
-		extract(targetModel, target, Collections.<String, Object> emptyMap());
+	public void extract(IModel sourceModel, String target) throws ATLCoreException {
+		extract(sourceModel, target, Collections.<String, Object> emptyMap());
 	}
 
 	/**
 	 * Extracts an {@link EMFModel} to an {@link OutputStream}.
 	 * 
-	 * @param targetModel
+	 * @param sourceModel
 	 *            the {@link EMFModel} to extract
 	 * @param target
 	 *            the target {@link OutputStream} to extract the targetModel
@@ -89,10 +89,10 @@ public class EMFExtractor implements IExtractor {
 	 * @param options
 	 *            the extraction parameters
 	 */
-	public void extract(EMFModel targetModel, OutputStream target, String fileExtension,
+	public void extract(EMFModel sourceModel, OutputStream target, String fileExtension,
 			Map<String, Object> options) throws ATLCoreException {
-		recreateResourceIfNeeded(targetModel, URI.createURI("tmp." + fileExtension)); //$NON-NLS-1$
-		extract(targetModel, target, options);
+		recreateResourceIfNeeded(sourceModel, URI.createURI("tmp." + fileExtension)); //$NON-NLS-1$
+		extract(sourceModel, target, options);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class EMFExtractor implements IExtractor {
 	 *
 	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.io.OutputStream, java.util.Map)
 	 */
-	public void extract(IModel targetModel, OutputStream target, Map<String, Object> options) throws ATLCoreException {
+	public void extract(IModel sourceModel, OutputStream target, Map<String, Object> options) throws ATLCoreException {
 		Map<String, Object> extractOptions = new HashMap<String, Object>();
 		extractOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1"); //$NON-NLS-1$
 		extractOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
@@ -108,7 +108,7 @@ public class EMFExtractor implements IExtractor {
 			extractOptions.putAll(options);
 		}
 		try {
-			((EMFModel)targetModel).getResource().save(target, extractOptions);
+			((EMFModel)sourceModel).getResource().save(target, extractOptions);
 		} catch (IOException e) {
 			throw new ATLCoreException(e.getMessage(), e);
 		}
@@ -117,20 +117,20 @@ public class EMFExtractor implements IExtractor {
 	/**
 	 * Recreates the resource in order to save in the correct format matching the file extension.
 	 * 
-	 * @param targetModel
+	 * @param model
 	 *            the model to recreate
 	 * @param uri
 	 *            the target {@link URI} with the correct extension
 	 */
-	protected static void recreateResourceIfNeeded(EMFModel targetModel, URI uri) {
-		if (targetModel.getEmfResourceFactory() == null) {
+	protected static void recreateResourceIfNeeded(EMFModel model, URI uri) {
+		if (model.getEmfResourceFactory() == null) {
 			// recreates the resource only if no correct factory has been initialized
-			ResourceSet resourceSet = targetModel.getModelFactory().getResourceSet();
+			ResourceSet resourceSet = model.getModelFactory().getResourceSet();
 			Resource newResource = resourceSet.createResource(uri);
-			newResource.getContents().addAll(targetModel.getResource().getContents());
-			targetModel.setResource(newResource);
+			newResource.getContents().addAll(model.getResource().getContents());
+			model.setResource(newResource);
 		} else {
-			targetModel.getResource().setURI(uri);
+			model.getResource().setURI(uri);
 		}
 	}
 
