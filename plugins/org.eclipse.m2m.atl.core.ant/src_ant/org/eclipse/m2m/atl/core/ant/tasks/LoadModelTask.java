@@ -121,23 +121,27 @@ public class LoadModelTask extends AbstractAtlTask {
 				if (modelHandler == null) {
 					modelHandler = DEFAULT_MODEL_HANDLER;
 				}
-				if (metamodel.equals("MOF") || metamodel.startsWith("%")) { //$NON-NLS-1$ //$NON-NLS-2$
-					Map<String, Object> referenceModelOptions = new HashMap<String, Object>();
-					referenceModelOptions.put(OPTION_MODEL_HANDLER, modelHandler);
-					referenceModelOptions.put(OPTION_MODEL_NAME, name);
-					referenceModelOptions.put(OPTION_MODEL_PATH, source);
-					sourceModel = newReferenceModel(factoryInstance, name, referenceModelOptions);
+				if (source.startsWith("#")) { //$NON-NLS-1$
+					sourceModel = factoryInstance.getMetametamodel();
 				} else {
-					Map<String, Object> modelOptions = new HashMap<String, Object>();
-					modelOptions.put(OPTION_MODEL_NAME, name);
-					modelOptions.put(OPTION_MODEL_PATH, source);
-					modelOptions.put(OPTION_NEW_MODEL, false);
-					sourceModel = newModel(factoryInstance, name, metamodel, modelOptions);
-				}
-				try {
-					injectorInstance.inject(sourceModel, source, injectorParams);
-				} catch (ATLCoreException e) {
-					error(e.getMessage(), e);
+					if (metamodel.equals("MOF") || metamodel.startsWith("%")) { //$NON-NLS-1$ //$NON-NLS-2$
+						Map<String, Object> referenceModelOptions = new HashMap<String, Object>();
+						referenceModelOptions.put(OPTION_MODEL_HANDLER, modelHandler);
+						referenceModelOptions.put(OPTION_MODEL_NAME, name);
+						referenceModelOptions.put(OPTION_MODEL_PATH, source);
+						sourceModel = newReferenceModel(factoryInstance, name, referenceModelOptions);
+					} else {
+						Map<String, Object> modelOptions = new HashMap<String, Object>();
+						modelOptions.put(OPTION_MODEL_NAME, name);
+						modelOptions.put(OPTION_MODEL_PATH, source);
+						modelOptions.put(OPTION_NEW_MODEL, false);
+						sourceModel = newModel(factoryInstance, name, metamodel, modelOptions);
+					}
+					try {
+						injectorInstance.inject(sourceModel, source, injectorParams);
+					} catch (ATLCoreException e) {
+						error(e.getMessage(), e);
+					}
 				}
 			}
 		}
