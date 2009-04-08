@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.Resource.Factory;
@@ -49,6 +50,8 @@ public final class EMFModelFactory extends ModelFactory {
 	/** URI option. */
 	public static final String OPTION_URI = "path"; //$NON-NLS-1$
 
+	private EMFReferenceModel metametamodel;
+	
 	private ResourceSet resourceSet;
 
 	/**
@@ -68,6 +71,22 @@ public final class EMFModelFactory extends ModelFactory {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.core.ModelFactory#getMetametamodel()
+	 */
+	@Override
+	public EMFReferenceModel getMetametamodel() {
+		if (metametamodel == null) {
+			metametamodel = new EMFReferenceModel(null, this);
+			metametamodel.setResource(EcorePackage.eINSTANCE.eResource());
+			metametamodel.referenceModel = metametamodel;
+			metametamodel.register();
+		}
+		return metametamodel;
+	}
+	
+	/**
+	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.m2m.atl.core.ModelFactory#newReferenceModel(java.util.Map)
 	 */
@@ -83,7 +102,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 */
 	@Override
 	public IReferenceModel newReferenceModel() {
-		return new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this), this);
+		return new EMFReferenceModel(getMetametamodel(), this);
 	}
 
 	/**
@@ -162,7 +181,7 @@ public final class EMFModelFactory extends ModelFactory {
 	 */
 	@Override
 	public IReferenceModel getBuiltInResource(String name) throws ATLCoreException {
-		EMFReferenceModel model = new EMFReferenceModel(EMFReferenceModel.getMetametamodel(this), this);
+		EMFReferenceModel model = new EMFReferenceModel(getMetametamodel(), this);
 		URL url = ATLResourceProvider.getURL(name);
 		if (url == null) {
 			throw new ATLCoreException(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND", name)); //$NON-NLS-1$

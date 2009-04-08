@@ -41,7 +41,6 @@ import org.eclipse.m2m.atl.core.IReferenceModel;
  */
 public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 
-	private static EMFReferenceModel metametamodel;
 
 	private Map<String, EObject> metaElementByName = Collections.emptyMap();
 	
@@ -82,22 +81,6 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 			return true;
 		}
 		return getReferencedResources().contains(res);
-	}
-
-	/**
-	 * Returns the Metametamodel.
-	 * 
-	 * @param modelFactory
-	 *            the model factory used to create models.
-	 * @return the Metametamodel
-	 */
-	public static EMFReferenceModel getMetametamodel(EMFModelFactory modelFactory) {
-		if (metametamodel == null) {
-			metametamodel = new EMFReferenceModel(null, modelFactory);
-			metametamodel.setResource(EcorePackage.eINSTANCE.eResource());
-			metametamodel.referenceModel = metametamodel;
-		}
-		return metametamodel;
 	}
 
 	/**

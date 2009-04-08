@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.m2m.atl.core.ATLCoreException;
@@ -43,38 +42,35 @@ public class EMFInjector implements IInjector {
 	 * <li><b>pathmap: </b><code>pathmap:<i>path</i></code></li>
 	 * <li><b>Workspace Resource: </b><code>platform:/resource/<i>path</i></code></li>
 	 * <li><b>Plug-in Resource: </b><code>platform:/plugin/<i>path</i></code></li>
-	 * <li><b>metametamodel: </b><code><i>#EMF</i></code></li>
 	 * </ul>
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.String,
 	 *      java.util.Map)
 	 */
-	public void inject(IModel sourceModel, String source, Map<String, Object> options)
+	public void inject(IModel targetModel, String source, Map<String, Object> options)
 			throws ATLCoreException {
 		boolean loadOnDemand = true;
 		if (options.containsKey(OPTION_LOAD_ON_DEMAND)) {
 			loadOnDemand = options.get(OPTION_LOAD_ON_DEMAND).toString().equals("true"); //$NON-NLS-1$
 		}
-		Resource mainResource = null;
-		ResourceSet resourceSet = ((EMFModelFactory)sourceModel.getModelFactory()).getResourceSet();
+		ResourceSet resourceSet = ((EMFModelFactory)targetModel.getModelFactory()).getResourceSet();
 		String path = source.toString();
 		if (path != null) {
 			try {
-				if (path.equals("#EMF")) { //$NON-NLS-1$
-					mainResource = EcorePackage.eINSTANCE.eResource();
-				} else if (path.startsWith("pathmap:")) { //$NON-NLS-1$
+				Resource mainResource = null;
+				if (path.startsWith("pathmap:")) { //$NON-NLS-1$
 					mainResource = resourceSet.getResource(URI.createURI(path).trimFragment(), loadOnDemand);
 				} else {
 					mainResource = resourceSet.getResource(URI.createURI(path), loadOnDemand);
 				}
-			// Catching Exception to prevent EMF DiagnosticWrappedExceptions
+				inject((EMFModel)targetModel, mainResource);
+				// Catching Exception to prevent EMF DiagnosticWrappedExceptions
 			} catch (Throwable e) {
 				throw new ATLCoreException(e.getMessage(), e);
 			}
 		} else {
 			throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE")); //$NON-NLS-1$
 		}
-		inject((EMFModel)sourceModel, mainResource);
 	}
 
 	/**
@@ -82,8 +78,8 @@ public class EMFInjector implements IInjector {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.lang.String)
 	 */
-	public void inject(IModel sourceModel, String source) throws ATLCoreException {
-		inject(sourceModel, source, Collections.<String, Object> emptyMap());
+	public void inject(IModel targetModel, String source) throws ATLCoreException {
+		inject(targetModel, source, Collections.<String, Object> emptyMap());
 	}
 
 	/**
@@ -92,32 +88,32 @@ public class EMFInjector implements IInjector {
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.io.InputStream,
 	 *      java.util.Map)
 	 */
-	public void inject(IModel sourceModel, InputStream source, Map<String, Object> options)
+	public void inject(IModel targetModel, InputStream source, Map<String, Object> options)
 			throws ATLCoreException {
 		Resource mainResource = null;
-		ResourceSet resourceSet = ((EMFModelFactory)sourceModel.getModelFactory()).getResourceSet();
+		ResourceSet resourceSet = ((EMFModelFactory)targetModel.getModelFactory()).getResourceSet();
 		mainResource = resourceSet.createResource(URI.createURI("new-model")); //$NON-NLS-1$
 		try {
 			mainResource.load(source, options);
 		} catch (IOException e) {
 			throw new ATLCoreException(e.getMessage(), e);
 		}
-		inject((EMFModel)sourceModel, mainResource);
+		inject((EMFModel)targetModel, mainResource);
 
 	}
 
 	/**
 	 * Injects data into an IModel from a {@link Resource}.
 	 * 
-	 * @param sourceModel
+	 * @param targetModel
 	 *            the IModel where to inject
 	 * @param mainResource
 	 *            the main Resource
 	 */
-	public void inject(EMFModel sourceModel, Resource mainResource) {
-		sourceModel.setResource(mainResource);
-		if (sourceModel instanceof EMFReferenceModel) {
-			((EMFReferenceModel)sourceModel).register();
+	public void inject(EMFModel targetModel, Resource mainResource) {
+		targetModel.setResource(mainResource);
+		if (targetModel instanceof EMFReferenceModel) {
+			((EMFReferenceModel)targetModel).register();
 		}
 	}
 
