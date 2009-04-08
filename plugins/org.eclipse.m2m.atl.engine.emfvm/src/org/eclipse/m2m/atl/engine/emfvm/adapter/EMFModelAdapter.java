@@ -706,4 +706,13 @@ public class EMFModelAdapter implements IModelAdapter {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#isModelElement(java.lang.Object)
+	 */
+	public boolean isModelElement(Object o) {
+		return o instanceof EObject;
+	}
+
 }

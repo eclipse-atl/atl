@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: IModelAdapter.java,v 1.6 2009/03/16 16:02:29 wpiers Exp $
+ * $Id: IModelAdapter.java,v 1.7 2009/04/08 12:18:14 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.adapter;
@@ -175,4 +175,13 @@ public interface IModelAdapter {
 	 *            the id to set
 	 */
 	void setID(Object element, Object id);
+
+	/**
+	 * Returns <code>true</code> if the given object is managed by the current model adapter.
+	 * 
+	 * @param o
+	 *            the given object
+	 * @return <code>true</code> if the given object is managed by the current model adapter
+	 */
+	boolean isModelElement(Object o);
 }

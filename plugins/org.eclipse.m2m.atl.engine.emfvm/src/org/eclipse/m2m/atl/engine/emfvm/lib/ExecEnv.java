@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.37 2009/03/16 16:02:29 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.38 2009/04/08 12:18:14 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -37,7 +37,6 @@ import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
@@ -1063,12 +1062,12 @@ public class ExecEnv {
 					}
 				});
 		operationsByName.put("toString", new Operation(1) { //$NON-NLS-1$
-			@Override
-			public Object exec(AbstractStackFrame frame) {
-				Object[] localVars = frame.localVars;
-				return localVars[0];
-			}
-		});
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return localVars[0];
+					}
+				});
 		operationsByName.put("regexReplaceAll", new Operation(3) { //$NON-NLS-1$
 					@Override
 					public Object exec(AbstractStackFrame frame) {
@@ -2205,7 +2204,7 @@ public class ExecEnv {
 			Map<String, String> weavingHelperToPersistTo = entry.getValue();
 			if (weavingHelperToPersistTo != null) {
 				Object type = entry.getKey();
-				if (type instanceof EObject) {
+				if (modelAdapter.isModelElement(type)) {
 					persistWeavingHelpers(type, weavingHelperToPersistTo);
 				} else {
 					// can only persist for model elements
