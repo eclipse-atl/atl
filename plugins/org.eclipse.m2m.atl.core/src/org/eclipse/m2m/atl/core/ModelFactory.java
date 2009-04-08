@@ -18,6 +18,12 @@ import java.util.Map;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public abstract class ModelFactory {
+	/**
+	 * Returns the Metametamodel.
+	 * 
+	 * @return the Metametamodel
+	 */
+	public abstract IReferenceModel getMetametamodel();
 
 	/**
 	 * Returns a default {@link IInjector} associated with the current factory.

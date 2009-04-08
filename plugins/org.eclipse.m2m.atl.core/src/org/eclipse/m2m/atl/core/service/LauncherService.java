@@ -269,26 +269,35 @@ public final class LauncherService {
 		IReferenceModel referenceModel = (IReferenceModel)launcher.getModel(referenceModelName);
 
 		if (referenceModel == null) {
-			Map<String, Object> referenceModelOptions = new HashMap<String, Object>();
-			if (modelHandlers != null) {
-				referenceModelOptions.put("modelHandlerName", modelHandlers.get(referenceModelName)); //$NON-NLS-1$
+			String referenceModelPath = paths.get(referenceModelName);
+			if (referenceModelPath.startsWith("#")) { //$NON-NLS-1$
+				referenceModel = modelFactory.getMetametamodel();
+			} else {
+				Map<String, Object> referenceModelOptions = new HashMap<String, Object>();
+				if (modelHandlers != null) {
+					referenceModelOptions.put("modelHandlerName", modelHandlers.get(referenceModelName)); //$NON-NLS-1$
+				}
+				referenceModelOptions.put("modelName", referenceModelName); //$NON-NLS-1$
+				referenceModelOptions.put("path", referenceModelPath); //$NON-NLS-1$
+				referenceModel = modelFactory.newReferenceModel(referenceModelOptions);
+				injector.inject(referenceModel, referenceModelPath);
 			}
-			referenceModelOptions.put("modelName", referenceModelName); //$NON-NLS-1$
-			referenceModelOptions.put("path", paths.get(referenceModelName)); //$NON-NLS-1$
-			referenceModel = modelFactory.newReferenceModel(referenceModelOptions);
-			injector.inject(referenceModel, paths.get(referenceModelName));
 		}
 
-		Map<String, Object> modelOptions = new HashMap<String, Object>();
-		modelOptions.put("modelName", modelName); //$NON-NLS-1$
-		modelOptions.put("path", paths.get(modelName)); //$NON-NLS-1$
-		modelOptions.put("newModel", newModel); //$NON-NLS-1$
-
-		IModel model = modelFactory.newModel(referenceModel, modelOptions);
-		if (!newModel) {
-			injector.inject(model, paths.get(modelName));
+		String modelPath = paths.get(modelName);
+		if (modelPath.startsWith("#")) { //$NON-NLS-1$
+			return modelFactory.getMetametamodel();
+		} else {
+			Map<String, Object> modelOptions = new HashMap<String, Object>();
+			modelOptions.put("modelName", modelName); //$NON-NLS-1$
+			modelOptions.put("path", modelPath); //$NON-NLS-1$
+			modelOptions.put("newModel", newModel); //$NON-NLS-1$
+			IModel model = modelFactory.newModel(referenceModel, modelOptions);
+			if (!newModel) {
+				injector.inject(model, modelPath);
+			}
+			return model;
 		}
-		return model;
 	}
 
 	/**
