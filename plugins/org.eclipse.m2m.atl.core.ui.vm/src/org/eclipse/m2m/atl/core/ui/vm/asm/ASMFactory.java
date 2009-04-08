@@ -199,4 +199,14 @@ public class ASMFactory extends ModelFactory {
 		}
 		return metametamodels.get(modelHandlerName);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.core.ModelFactory#getMetametamodel()
+	 */
+	@Override
+	public IReferenceModel getMetametamodel() {
+		return getMetametamodel("EMF"); //$NON-NLS-1$
+	}
 }
