@@ -35,9 +35,9 @@ public class ASMExtractor implements IExtractor {
 	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.String,
 	 *      java.util.Map)
 	 */
-	public void extract(IModel targetModel, String target, Map<String, Object> options)
+	public void extract(IModel sourceModel, String target, Map<String, Object> options)
 			throws ATLCoreException {
-		extract(targetModel, target);
+		extract(sourceModel, target);
 	}
 
 	/**
@@ -45,8 +45,8 @@ public class ASMExtractor implements IExtractor {
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.lang.String)
 	 */
-	public void extract(IModel targetModel, String target) throws ATLCoreException {
-		ASMModelWrapper modelWrapper = (ASMModelWrapper)targetModel;
+	public void extract(IModel sourceModel, String target) throws ATLCoreException {
+		ASMModelWrapper modelWrapper = (ASMModelWrapper)sourceModel;
 		ASMModel asmModel = modelWrapper.getAsmModel();
 		try {
 			if (target.startsWith("file:/")) { //$NON-NLS-1$
@@ -66,7 +66,7 @@ public class ASMExtractor implements IExtractor {
 	 *
 	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.io.OutputStream, java.util.Map)
 	 */
-	public void extract(IModel targetModel, OutputStream target, Map<String, Object> options)
+	public void extract(IModel sourceModel, OutputStream target, Map<String, Object> options)
 			throws ATLCoreException {
 		// TODO implement in org.eclipse.m2m.atl.engine.vm.ModelLoader then here	
 		throw new ATLCoreException("Extraction on OutputStream unsupported by ModelLoader"); //$NON-NLS-1$
