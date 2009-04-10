@@ -43,6 +43,11 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  */
 public class MarkerMaker {
 
+	/**
+	 * ATL Problem marker ID.
+	 */
+	public static final String PROBLEM_MARKER = "org.eclipse.m2m.atl.engine.problem"; //$NON-NLS-1$
+
 	private static Map severities = new HashMap();
 
 	static {
@@ -97,7 +102,7 @@ public class MarkerMaker {
 		int eclipseSeverity = ((Integer)severities.get(severity)).intValue();
 
 		try {
-			IMarker pbmMarker = res.createMarker(IMarker.PROBLEM);
+			IMarker pbmMarker = res.createMarker(PROBLEM_MARKER);
 			pbmMarker.setAttribute(IMarker.SEVERITY, eclipseSeverity);
 			pbmMarker.setAttribute(IMarker.MESSAGE, description);
 			pbmMarker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
