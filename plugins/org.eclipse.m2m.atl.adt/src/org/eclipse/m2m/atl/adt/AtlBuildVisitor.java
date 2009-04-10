@@ -114,7 +114,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 				}
 				is.close();
 			} catch (CompilerNotFoundException cnfee) {
-				IMarker marker = resource.createMarker(IMarker.PROBLEM);
+				IMarker marker = resource.createMarker(MarkerMaker.PROBLEM_MARKER);
 				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
 				marker.setAttribute(IMarker.MESSAGE, cnfee.getMessage());
 				marker.setAttribute(IMarker.LINE_NUMBER, 1);
