@@ -247,7 +247,7 @@ public class IndentAction extends TextEditorAction {
 			if (computed != null) {
 				indent = computed.toString();
 			} else {
-				indent = new String();
+				indent = ""; //$NON-NLS-1$
 			}
 		}
 
