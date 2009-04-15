@@ -127,7 +127,11 @@ public class TransientLinkSet {
 	 * @return the link
 	 */
 	public TransientLink getLinkByRuleAndSourceElement(Object rule, Object sourceElement) {
-		TransientLink ret = linksBySourceElement.get(sourceElement);
+		Map<Object, TransientLink> map = linksBySourceElementByRule.get(rule);
+		TransientLink ret = null;
+		if (map != null) {
+			ret = map.get(sourceElement);
+		}
 		return ret;
 	}
 }
