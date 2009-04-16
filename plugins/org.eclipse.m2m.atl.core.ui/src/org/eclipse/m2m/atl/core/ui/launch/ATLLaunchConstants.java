@@ -101,7 +101,7 @@ public interface ATLLaunchConstants {
 	String MAIN_ATL_TAB_NAME = Messages.getString("ATLLaunchConstants.ATLCONFIGURATION"); //$NON-NLS-1$
 
 	/** ATL icon path. */
-	String ATL_ICON_PATH = "atllogo_icon.gif"; //$NON-NLS-1$
+	String ATL_ICON_PATH = "atl_logo.gif"; //$NON-NLS-1$
 
 	/** Delete icon path. */
 	String DELETE_ICON_PATH = "delete_obj.gif"; //$NON-NLS-1$

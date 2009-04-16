@@ -22,7 +22,7 @@
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
             configTypeID="org.eclipse.m2m.atl.adt.launching.atlTransformation"
-            icon="icons/atllogo_icon.gif"
+            icon="icons/atl_logo.gif"
             id="org.eclipse.m2m.atl.core.ui.atlTransformationImage">
       </launchConfigurationTypeImage>
    </extension>
