@@ -20,13 +20,15 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.m2m.atl.adt.AtlNature;
+import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
+import org.eclipse.m2m.atl.adt.ui.Messages;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 /**
@@ -36,11 +38,14 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
  */
 public class AtlProjectCreator extends Wizard implements INewWizard, IExecutableExtension {
 
-	private AtlDescriptionProjectScreen page;
+	/**
+	 * Default prefix of the new module.
+	 */
+	public static final String PROJECT_NAME_PREFIX = "org.eclipse.m2m.atl."; //$NON-NLS-1$
+
+	private WizardNewProjectCreationPage page;
 
 	private IConfigurationElement configElement;
-
-	private ISelection selectionInterface;
 
 	private IProject modelProject;
 
@@ -50,6 +55,7 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 	public AtlProjectCreator() {
 		super();
 		setNeedsProgressMonitor(true);
+		setWindowTitle(Messages.getString("AtlProjectCreator.Title")); //$NON-NLS-1$
 	}
 
 	/**
@@ -57,13 +63,17 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 	 */
 	@Override
 	public void addPages() {
-		page = new AtlDescriptionProjectScreen(selectionInterface);
+		page = new WizardNewProjectCreationPage(Messages.getString("AtlProjectCreator.Page.Name")); //$NON-NLS-1$
+		page.setInitialProjectName(PROJECT_NAME_PREFIX + "sample"); //$NON-NLS-1$
+		page.setTitle(Messages.getString("AtlProjectCreator.Title")); //$NON-NLS-1$
+		page.setDescription(Messages.getString("AtlProjectCreator.Page.Description")); //$NON-NLS-1$
+		page.setImageDescriptor(AtlUIPlugin.getImageDescriptor("ATLWizard.png")); //$NON-NLS-1$
 		addPage(page);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
 	@Override
@@ -100,11 +110,11 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+	 * 
+	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
+	 *      org.eclipse.jface.viewers.IStructuredSelection)
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selectionInterface = selection;
 	}
 
 	/**
@@ -131,8 +141,9 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement, java.lang.String, java.lang.Object)
+	 * 
+	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
+	 *      java.lang.String, java.lang.Object)
 	 */
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
 			throws CoreException {

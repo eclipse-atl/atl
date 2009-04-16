@@ -62,14 +62,13 @@ public class AtlPerspective implements IPerspectiveFactory {
 
 		// place navigator to the left (of editor area)
 		IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, (float)0.25, editorArea); //$NON-NLS-1$
-		left.addView(IPageLayout.ID_RES_NAV);
+		left.addView("org.eclipse.jdt.ui.PackageExplorer"); //$NON-NLS-1$
 
 		// problem view at the bottom (of editor area)
 		IFolderLayout bottom = layout.createFolder("bottom", IPageLayout.BOTTOM, (float)0.75, editorArea); //$NON-NLS-1$
 		bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
-		bottom.addView(IPageLayout.ID_PROP_SHEET);
-		bottom.addView("org.eclipse.pde.runtime.LogView"); //$NON-NLS-1$
 		bottom.addView(IConsoleConstants.ID_CONSOLE_VIEW);
+		bottom.addView("org.eclipse.pde.runtime.LogView"); //$NON-NLS-1$
 
 		// outline view to right (of editor area)
 		IFolderLayout right = layout.createFolder("right", IPageLayout.RIGHT, (float)0.75, editorArea); //$NON-NLS-1$

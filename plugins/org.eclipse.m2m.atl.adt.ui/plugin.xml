@@ -56,21 +56,21 @@
             id="atlWizard">
       </category>
       <wizard
-            name="ATL Project"
-            icon="icons/atllogo_icon.gif"
             category="atlWizard"
             class="org.eclipse.m2m.atl.adt.ui.wizard.atlproject.AtlProjectCreator"
-            preferredPerspectives="org.eclipse.m2m.atl.adt.ui.atlPerspective"
             finalPerspective="org.eclipse.m2m.atl.adt.ui.atlPerspective"
-            project="true"
-            id="atlProjectWizard">
+            icon="icons/atl_project.gif"
+            id="atlProjectWizard"
+            name="ATL Project"
+            preferredPerspectives="org.eclipse.m2m.atl.adt.ui.atlPerspective"
+            project="true">
          <description>
             Create an ATL transformation project
          </description>
       </wizard>
       <wizard
             name="ATL File"
-            icon="icons/atllogo_icon.gif"
+            icon="icons/atl_file.gif"
             category="atlWizard"
             class="org.eclipse.m2m.atl.adt.ui.wizard.atlfile.AtlFileWizard"
             preferredPerspectives="org.eclipse.m2m.atl.adt.ui.atlPerspective"
