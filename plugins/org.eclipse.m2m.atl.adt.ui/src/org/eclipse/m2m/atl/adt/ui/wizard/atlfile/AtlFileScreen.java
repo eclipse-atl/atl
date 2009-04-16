@@ -10,13 +10,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.wizard.atlfile;
 
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -37,7 +33,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 /**
  * The ATL file wizard.
@@ -52,9 +47,6 @@ public class AtlFileScreen extends WizardPage {
 
 	/** ATL File type. */
 	public static final String TYPE = "TYPE"; //$NON-NLS-1$
-
-	/** ATL Module container. */
-	public static final String CONTAINER = "CONTAINER"; //$NON-NLS-1$
 
 	/** IN models map. */
 	public static final String IN = "IN"; //$NON-NLS-1$
@@ -74,8 +66,6 @@ public class AtlFileScreen extends WizardPage {
 	/** The library file type. */
 	public static final String LIBRARY = "library"; //$NON-NLS-1$
 
-	private ISelection selection;
-
 	private Group groupHead;
 
 	private Group groupIn;
@@ -85,8 +75,6 @@ public class AtlFileScreen extends WizardPage {
 	private Group groupLib;
 
 	private Text textName;
-
-	private Text textProject;
 
 	private Combo comboType;
 
@@ -103,10 +91,10 @@ public class AtlFileScreen extends WizardPage {
 	 *            the selection interface.
 	 */
 	public AtlFileScreen(ISelection selection) {
-		super(Messages.getString("AtlFileScreen.ATL_FILE_WIZARD")); //$NON-NLS-1$
-		setTitle(Messages.getString("AtlFileScreen.ATL_FILE_WIZARD")); //$NON-NLS-1$
-		setDescription(""); //$NON-NLS-1$
-		this.selection = selection;
+		super(Messages.getString("AtlFileScreen.Page.Name")); //$NON-NLS-1$
+		setTitle(Messages.getString("AtlFileScreen.Title")); //$NON-NLS-1$
+		setDescription(Messages.getString("AtlFileScreen.Page.Description")); //$NON-NLS-1$
+		setImageDescriptor(AtlUIPlugin.getImageDescriptor("ATLWizard.png")); //$NON-NLS-1$
 		this.setPageComplete(false);
 	}
 
@@ -137,37 +125,6 @@ public class AtlFileScreen extends WizardPage {
 		groupHead.setLayout(layout);
 		groupHead.setText("HEAD"); //$NON-NLS-1$
 		groupHead.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		new Label(groupHead, SWT.NULL).setText(Messages.getString("AtlFileScreen.CONTAINER")); //$NON-NLS-1$
-		textProject = new Text(groupHead, SWT.BORDER);
-
-		if (selection != null && !selection.isEmpty() && selection instanceof IStructuredSelection) {
-			IStructuredSelection ssel = (IStructuredSelection)selection;
-			if (ssel.size() > 1) {
-				return;
-			}
-			Object obj = ssel.getFirstElement();
-			if (obj instanceof IResource) {
-				IContainer selectionContainer;
-				if (obj instanceof IContainer) {
-					selectionContainer = (IContainer)obj;
-				} else {
-					selectionContainer = ((IResource)obj).getParent();
-				}
-				textProject.setText(selectionContainer.getFullPath().toOSString());
-			}
-		}
-
-		textProject.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		Button buttonBrowse = new Button(groupHead, SWT.PUSH);
-		buttonBrowse.setText(Messages.getString("AtlFileScreen.BROWSE")); //$NON-NLS-1$
-		buttonBrowse.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				handleProjectBrowse();
-			}
-		});
 
 		new Label(groupHead, SWT.NULL).setText(Messages.getString("AtlFileScreen.MODULE_NAME")); //$NON-NLS-1$
 		textName = new Text(groupHead, SWT.BORDER);
@@ -392,20 +349,6 @@ public class AtlFileScreen extends WizardPage {
 		}
 	}
 
-	/**
-	 * Opens the browse container file.
-	 */
-	private void handleProjectBrowse() {
-		ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(), ResourcesPlugin
-				.getWorkspace().getRoot(), false, Messages.getString("AtlFileScreen.SELECT_CONTAINER")); //$NON-NLS-1$
-		if (dialog.open() == ContainerSelectionDialog.OK) {
-			Object[] result = dialog.getResult();
-			if (result.length == 1) {
-				textProject.setText(((Path)result[0]).toOSString());
-			}
-		}
-	}
-
 	private void addTextTable(Table tableParam, String[] itemAdded) {
 		TableItem item = new TableItem(tableParam, SWT.NONE);
 		item.setText(itemAdded);
@@ -433,9 +376,6 @@ public class AtlFileScreen extends WizardPage {
 		}
 		if (parameter.equals(TYPE)) {
 			ret = comboType.getText();
-		}
-		if (parameter.equals(CONTAINER)) {
-			ret = textProject.getText();
 		}
 		if (parameter.equals(IN)) {
 			ret = ""; //$NON-NLS-1$
@@ -466,5 +406,15 @@ public class AtlFileScreen extends WizardPage {
 			}
 		}
 		return ret;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.jface.wizard.WizardPage#isCurrentPage()
+	 */
+	@Override
+	protected boolean isCurrentPage() {
+		return super.isCurrentPage();
 	}
 }

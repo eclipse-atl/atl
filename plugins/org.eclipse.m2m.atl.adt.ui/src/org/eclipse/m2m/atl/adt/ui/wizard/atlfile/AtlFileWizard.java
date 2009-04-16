@@ -15,19 +15,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
+import org.eclipse.m2m.atl.adt.ui.Messages;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.part.ISetSelectionTarget;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 /**
@@ -39,11 +46,13 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 
 	private IConfigurationElement configElement;
 
-	private AtlFileScreen page;
+	private WizardNewFileCreationPage simplePage;
 
-	private ISelection selectionInterface;
+	private AtlFileScreen advancedPage;
 
-	private IContainer modelProject;
+	private IStructuredSelection selection;
+
+	private IWorkbench workbench;
 
 	/**
 	 * Constructor.
@@ -51,25 +60,34 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	public AtlFileWizard() {
 		super();
 		setNeedsProgressMonitor(true);
-	}
-
-	/**
-	 * Adding the page to the wizard.
-	 */
-	@Override
-	public void addPages() {
-		page = new AtlFileScreen(selectionInterface);
-		addPage(page);
+		setWindowTitle(Messages.getString("AtlFileWizard.Title")); //$NON-NLS-1$
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
+	 * @see org.eclipse.jface.wizard.Wizard#addPages()
+	 */
+	@Override
+	public void addPages() {
+		simplePage = new WizardNewFileCreationPage(Messages.getString("AtlFileWizard.Page.Name"), selection); //$NON-NLS-1$
+		simplePage.setImageDescriptor(AtlUIPlugin.getImageDescriptor("ATLWizard.png")); //$NON-NLS-1$
+		simplePage.setTitle(Messages.getString("AtlFileWizard.Title")); //$NON-NLS-1$
+		simplePage.setDescription(Messages.getString("AtlFileWizard.Page.Description")); //$NON-NLS-1$
+		simplePage.setFileExtension("atl"); //$NON-NLS-1$
+		addPage(simplePage);
+		advancedPage = new AtlFileScreen(selection);
+		addPage(advancedPage);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
 	@Override
 	public boolean performFinish() {
-		newProjectBuilder();
+		newModuleBuilder();
 		BasicNewProjectResourceWizard.updatePerspective(configElement);
 		return true;
 	}
@@ -78,26 +96,28 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	 * This method creates an ATL project in the workspace with : the ATL transformation file the toString
 	 * file (if the project needs it) the toString query file (if the project needs it).
 	 */
-	public void newProjectBuilder() {
-		String fileName = page.getParameter(AtlFileScreen.NAME);
-		String fileType = page.getParameter(AtlFileScreen.TYPE);
-		modelProject = (IContainer)ResourcesPlugin.getWorkspace().getRoot().findMember(
-				new Path(page.getParameter(AtlFileScreen.CONTAINER)));
-		String contentFile = ""; //$NON-NLS-1$
-
-		if (fileType.equals(AtlFileScreen.MODULE)) {
-			contentFile = AtlFileScreen.MODULE + " " + fileName + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
-			contentFile += "create " + page.getParameter(AtlFileScreen.OUT); //$NON-NLS-1$
-			contentFile += " from " + page.getParameter(AtlFileScreen.IN) + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
-			contentFile += page.getParameter(AtlFileScreen.LIB);
-		} else if (fileType.equals(AtlFileScreen.QUERY)) {
-			contentFile = AtlFileScreen.QUERY + " " + fileName + " = ;\n"; //$NON-NLS-1$ //$NON-NLS-2$
-			contentFile += page.getParameter(AtlFileScreen.LIB);
-		} else if (fileType.equals(AtlFileScreen.LIBRARY)) {
-			contentFile = AtlFileScreen.LIBRARY + " " + fileName + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
+	public void newModuleBuilder() {
+		String fileContent = ""; //$NON-NLS-1$
+		if (advancedPage.isPageComplete()) {
+			String unitType = advancedPage.getParameter(AtlFileScreen.TYPE);
+			String unitName = advancedPage.getParameter(AtlFileScreen.NAME);
+			if (unitType.equals(AtlFileScreen.MODULE)) {
+				fileContent = AtlFileScreen.MODULE + " " + unitName + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
+				String in = advancedPage.getParameter(AtlFileScreen.IN);
+				String out = advancedPage.getParameter(AtlFileScreen.OUT);
+				if (in != null && out != null) {
+					fileContent += "create " + advancedPage.getParameter(AtlFileScreen.OUT); //$NON-NLS-1$
+					fileContent += " from " + advancedPage.getParameter(AtlFileScreen.IN) + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
+				}
+				fileContent += advancedPage.getParameter(AtlFileScreen.LIB);
+			} else if (unitType.equals(AtlFileScreen.QUERY)) {
+				fileContent = AtlFileScreen.QUERY + " " + unitName + " = ;\n"; //$NON-NLS-1$ //$NON-NLS-2$
+				fileContent += advancedPage.getParameter(AtlFileScreen.LIB);
+			} else if (unitType.equals(AtlFileScreen.LIBRARY)) {
+				fileContent = AtlFileScreen.LIBRARY + " " + unitName + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
+			}
 		}
-
-		createFile(fileName + ".atl", contentFile); //$NON-NLS-1$
+		createFile(fileContent);
 
 	}
 
@@ -112,8 +132,8 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	 * @param content
 	 *            content of the file to create
 	 */
-	private void createFile(String fileName, String content) {
-		IFile file = modelProject.getFile(new Path(fileName));
+	private void createFile(String content) {
+		IFile file = simplePage.createNewFile();
 		try {
 			InputStream stream = openContentStream(content);
 			if (file.exists()) {
@@ -127,6 +147,33 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 		} catch (CoreException e1) {
 			ATLLogger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 		}
+
+		// Select the new file resource in the current view.
+		//
+		IWorkbenchWindow workbenchWindow = workbench.getActiveWorkbenchWindow();
+		IWorkbenchPage page = workbenchWindow.getActivePage();
+		final IWorkbenchPart activePart = page.getActivePart();
+		if (activePart instanceof ISetSelectionTarget) {
+			final ISelection targetSelection = new StructuredSelection(file);
+			getShell().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					((ISetSelectionTarget)activePart).selectReveal(targetSelection);
+				}
+			});
+		}
+
+		// Open editor on new file.
+		IWorkbenchWindow dw = workbench.getActiveWorkbenchWindow();
+		try {
+			if (dw != null) {
+				if (page != null) {
+					IDE.openEditor(page, file, true);
+				}
+			}
+		} catch (PartInitException e) {
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
+
 	}
 
 	/**
@@ -142,20 +189,36 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+	 * 
+	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
+	 *      org.eclipse.jface.viewers.IStructuredSelection)
 	 */
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selectionInterface = selection;
+	public void init(IWorkbench currentWorkbench, IStructuredSelection structuredSelection) {
+		this.workbench = currentWorkbench;
+		this.selection = structuredSelection;
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement, java.lang.String, java.lang.Object)
+	 * 
+	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
+	 *      java.lang.String, java.lang.Object)
 	 */
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
 			throws CoreException {
 		this.configElement = config;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.wizard.Wizard#canFinish()
+	 */
+	@Override
+	public boolean canFinish() {
+		if (advancedPage.isCurrentPage()) {
+			return advancedPage.isPageComplete();
+		}
+		return simplePage.isPageComplete();
 	}
 }

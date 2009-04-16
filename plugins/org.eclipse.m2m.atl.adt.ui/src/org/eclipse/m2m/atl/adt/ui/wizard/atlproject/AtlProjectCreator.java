@@ -35,13 +35,9 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
  * The ATL project creation wizard.
  * 
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class AtlProjectCreator extends Wizard implements INewWizard, IExecutableExtension {
-
-	/**
-	 * Default prefix of the new module.
-	 */
-	public static final String PROJECT_NAME_PREFIX = "org.eclipse.m2m.atl."; //$NON-NLS-1$
 
 	private WizardNewProjectCreationPage page;
 
@@ -64,7 +60,6 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 	@Override
 	public void addPages() {
 		page = new WizardNewProjectCreationPage(Messages.getString("AtlProjectCreator.Page.Name")); //$NON-NLS-1$
-		page.setInitialProjectName(PROJECT_NAME_PREFIX + "sample"); //$NON-NLS-1$
 		page.setTitle(Messages.getString("AtlProjectCreator.Title")); //$NON-NLS-1$
 		page.setDescription(Messages.getString("AtlProjectCreator.Page.Description")); //$NON-NLS-1$
 		page.setImageDescriptor(AtlUIPlugin.getImageDescriptor("ATLWizard.png")); //$NON-NLS-1$
