@@ -24,4 +24,18 @@
           value="true">
     </persistent>
  </extension>
+    <extension
+          point="org.eclipse.m2m.atl.core.injector">
+       <injector
+             class="org.eclipse.m2m.atl.engine.tcs.ATLTCSWrapper"
+             name="ATL">
+       </injector>
+    </extension>
+    <extension
+          point="org.eclipse.m2m.atl.core.extractor">
+       <extractor
+             class="org.eclipse.m2m.atl.engine.tcs.ATLTCSWrapper"
+             name="ATL">
+       </extractor>
+    </extension>
 </plugin>
