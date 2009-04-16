@@ -5,7 +5,7 @@
      <extension
          point="org.eclipse.ui.editors">
       <editor
-            icon="icons/atl_logo.gif"
+            icon="icons/atl_file.gif"
             class="org.eclipse.m2m.atl.adt.ui.editor.AtlEditor"
             default="true"
             name="ATL Editor"
