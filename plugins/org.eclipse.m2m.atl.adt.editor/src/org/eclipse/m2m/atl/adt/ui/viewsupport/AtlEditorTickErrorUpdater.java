@@ -27,11 +27,11 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 
 	private AtlEditor atlEditor;
 
-	private static final String ATL_EDITOR_ERROR = "atl_logo_error.gif"; //$NON-NLS-1$
+	private static final String ATL_EDITOR_ERROR = "atl_file_error.gif"; //$NON-NLS-1$
 
-	private static final String ATL_EDITOR_WARNING = "atl_logo_warning.gif"; //$NON-NLS-1$
+	private static final String ATL_EDITOR_WARNING = "atl_file_warning.gif"; //$NON-NLS-1$
 
-	private static final String ATL_EDITOR = "atl_logo.gif"; //$NON-NLS-1$
+	private static final String ATL_EDITOR = "atl_file.gif"; //$NON-NLS-1$
 
 	private Map imageCache = new HashMap();
 
