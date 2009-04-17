@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.Messages;
@@ -93,6 +94,19 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.wizard.Wizard#getNextPage(org.eclipse.jface.wizard.IWizardPage)
+	 */
+	@Override
+	public IWizardPage getNextPage(IWizardPage page) {
+		if (page instanceof WizardNewFileCreationPage) {
+			advancedPage.setModuleName(getModuleNameFromFile());
+		}
+		return super.getNextPage(page);
+	}
+
+	/**
 	 * This method creates an ATL project in the workspace with : the ATL transformation file the toString
 	 * file (if the project needs it) the toString query file (if the project needs it).
 	 */
@@ -105,7 +119,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 				fileContent = AtlFileScreen.MODULE + " " + unitName + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
 				String in = advancedPage.getParameter(AtlFileScreen.IN);
 				String out = advancedPage.getParameter(AtlFileScreen.OUT);
-				if (in != null && out != null) {
+				if (!(in.equals("") || out.equals(""))) { //$NON-NLS-1$ //$NON-NLS-2$
 					fileContent += "create " + advancedPage.getParameter(AtlFileScreen.OUT); //$NON-NLS-1$
 					fileContent += " from " + advancedPage.getParameter(AtlFileScreen.IN) + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
 				}
@@ -116,9 +130,24 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 			} else if (unitType.equals(AtlFileScreen.LIBRARY)) {
 				fileContent = AtlFileScreen.LIBRARY + " " + unitName + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
+		} else {
+			fileContent = "module" + getModuleNameFromFile() + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		createFile(fileContent);
 
+	}
+
+	/**
+	 * Returns the default module name.
+	 * 
+	 * @return the default module name
+	 */
+	public String getModuleNameFromFile() {
+		String fileName = simplePage.getFileName();
+		if (fileName.endsWith(".atl")) { //$NON-NLS-1$
+			fileName = fileName.substring(0, fileName.length() - 4);
+		}
+		return fileName;
 	}
 
 	/**

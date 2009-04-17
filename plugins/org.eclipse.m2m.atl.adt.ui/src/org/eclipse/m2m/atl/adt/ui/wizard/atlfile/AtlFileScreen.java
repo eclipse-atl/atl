@@ -123,7 +123,7 @@ public class AtlFileScreen extends WizardPage {
 		layout.numColumns = 3;
 
 		groupHead.setLayout(layout);
-		groupHead.setText("HEAD"); //$NON-NLS-1$
+		groupHead.setText(Messages.getString("AtlFileScreen.ATLHeader")); //$NON-NLS-1$
 		groupHead.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		new Label(groupHead, SWT.NULL).setText(Messages.getString("AtlFileScreen.MODULE_NAME")); //$NON-NLS-1$
@@ -155,7 +155,7 @@ public class AtlFileScreen extends WizardPage {
 
 		groupIn.setLayout(layout);
 		groupIn.setLayoutData(new GridData(GridData.FILL_BOTH));
-		groupIn.setText("IN"); //$NON-NLS-1$
+		groupIn.setText(Messages.getString("AtlFileScreen.InputModels")); //$NON-NLS-1$
 
 		new Label(groupIn, SWT.NULL).setText("Model"); //$NON-NLS-1$
 		final Text inM1 = new Text(groupIn, SWT.BORDER);
@@ -166,7 +166,7 @@ public class AtlFileScreen extends WizardPage {
 		inM2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final Button buttonIn = new Button(groupIn, SWT.PUSH);
-		buttonIn.setText("ADD"); //$NON-NLS-1$
+		buttonIn.setText(Messages.getString("AtlFileScreen.AddModel")); //$NON-NLS-1$
 		buttonIn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		tableIn = new Table(groupIn, SWT.NULL);
@@ -199,7 +199,7 @@ public class AtlFileScreen extends WizardPage {
 
 		groupOut.setLayout(layout);
 		groupOut.setLayoutData(new GridData(GridData.FILL_BOTH));
-		groupOut.setText("OUT"); //$NON-NLS-1$
+		groupOut.setText(Messages.getString("AtlFileScreen.OutputModels")); //$NON-NLS-1$
 
 		new Label(groupOut, SWT.NULL).setText("Model"); //$NON-NLS-1$
 		final Text outM1 = new Text(groupOut, SWT.BORDER);
@@ -210,7 +210,7 @@ public class AtlFileScreen extends WizardPage {
 		outM2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final Button buttonOut = new Button(groupOut, SWT.PUSH);
-		buttonOut.setText("ADD"); //$NON-NLS-1$
+		buttonOut.setText(Messages.getString("AtlFileScreen.AddModel")); //$NON-NLS-1$
 		buttonOut.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		tableOut = new Table(groupOut, SWT.NULL);
@@ -243,14 +243,14 @@ public class AtlFileScreen extends WizardPage {
 
 		groupLib.setLayout(layout);
 		groupLib.setLayoutData(new GridData(GridData.FILL_BOTH));
-		groupLib.setText("LIB"); //$NON-NLS-1$
+		groupLib.setText(Messages.getString("AtlFileScreen.ATLLibrary")); //$NON-NLS-1$
 
-		new Label(groupLib, SWT.NULL).setText("LIB"); //$NON-NLS-1$
+		new Label(groupLib, SWT.NULL).setText(Messages.getString("AtlFileScreen.ATLLibraryName")); //$NON-NLS-1$
 		final Text textLib = new Text(groupLib, SWT.BORDER);
 		textLib.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final Button buttonLib = new Button(groupLib, SWT.PUSH);
-		buttonLib.setText("ADD"); //$NON-NLS-1$
+		buttonLib.setText(Messages.getString("AtlFileScreen.AddLibrary")); //$NON-NLS-1$
 		buttonLib.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		tableLib = new Table(groupLib, SWT.NULL);
@@ -261,7 +261,7 @@ public class AtlFileScreen extends WizardPage {
 		tableLib.setHeaderVisible(true);
 
 		tc = new TableColumn(tableLib, SWT.CENTER);
-		tc.setText("LIB"); //$NON-NLS-1$
+		tc.setText(Messages.getString("AtlFileScreen.ATLLibrary")); //$NON-NLS-1$
 		tc.setWidth(500);
 		tc.setAlignment(SWT.CENTER);
 
@@ -363,6 +363,16 @@ public class AtlFileScreen extends WizardPage {
 	}
 
 	/**
+	 * Initialize the page from previous informations, if no module name has been specified.
+	 * 
+	 * @param name
+	 *            the default module name
+	 */
+	public void setModuleName(String name) {
+		textName.setText(name);
+	}
+
+	/**
 	 * Returns the value of the given parameter name.
 	 * 
 	 * @param parameter
@@ -410,7 +420,20 @@ public class AtlFileScreen extends WizardPage {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
+	 * @see org.eclipse.jface.wizard.WizardPage#isPageComplete()
+	 */
+	@Override
+	public boolean isPageComplete() {
+		if (!textName.getText().equals("")) { //$NON-NLS-1$
+			return true;
+		}
+		return super.isPageComplete();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.jface.wizard.WizardPage#isCurrentPage()
 	 */
 	@Override
