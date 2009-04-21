@@ -68,6 +68,22 @@ public final class AtlParser implements IInjector, IExtractor {
 		return defaultInstance;
 	}
 
+	public ModelFactory getModelFactory() {
+		return modelFactory;
+	}
+
+	public IModel getAtlTcsModel() {
+		return atlTcsModel;
+	}
+
+	public IReferenceModel getProblemMetamodel() {
+		return problemMetamodel;
+	}
+
+	public IReferenceModel getAtlMetamodel() {
+		return atlMetamodel;
+	}
+
 	static {
 		modelFactory = new EMFModelFactory();
 		try {
