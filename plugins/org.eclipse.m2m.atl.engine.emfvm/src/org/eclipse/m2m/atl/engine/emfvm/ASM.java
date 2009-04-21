@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -35,6 +36,7 @@ import org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ASMModule;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.LibExtension;
+import org.eclipse.m2m.atl.engine.emfvm.lib.OclType;
 
 /**
  * The ASM Class, which manages an ASM program.
@@ -148,8 +150,26 @@ public class ASM {
 			extension.apply(execEnv, options);
 		}
 
+		addAllTypesExtensions(options);
+
 		ASMModule asmModule = new ASMModule();
+
+		List<Object> localVars = null;
+		if ("true".equals(options.get("compilation"))) { //$NON-NLS-1$ //$NON-NLS-2$
+			localVars = new ArrayList<Object>();
+			localVars.add(asmModule);
+			for (Iterator<String> i = mainOperation.getParameters().iterator(); i.hasNext();) {
+				String pname = i.next();
+				pname = mainOperation.resolveVariableName(Integer.parseInt(pname), 0);
+				localVars.add(options.get(pname));
+			}
+		}
+
 		StackFrame frame = new StackFrame(execEnv, asmModule, mainOperation);
+
+		if (localVars != null) {
+			frame.setLocalVars(localVars.toArray());			
+		}
 
 		for (Iterator<ASM> i = libraries.values().iterator(); i.hasNext();) {
 			ASM library = i.next();
@@ -285,6 +305,34 @@ public class ASM {
 		}
 		return res;
 
+	}
+
+	@SuppressWarnings("unchecked")
+	private void addAllTypesExtensions(Map<String, Object> options) {
+		Map<String, Class<?>> ext = (Map<String, Class<?>>)options.get("typeextensions"); //$NON-NLS-1$
+		if (ext != null) {
+			for (Iterator<Entry<String, Class<?>>> iterator = ext.entrySet().iterator(); iterator.hasNext();) {
+				Entry<String, Class<?>> entry = iterator.next();
+				OclType.addSimpleType(entry.getKey(), entry.getValue());
+			}
+		}
+
+		try {
+			// Extension point
+			final IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(
+					"org.eclipse.m2m.atl.engine.emfvm.typeextension") //$NON-NLS-1$
+					.getExtensions();
+			for (int i = 0; i < extensions.length; i++) {
+				final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
+				for (int j = 0; j < configElements.length; j++) {
+					String typeName = configElements[j].getAttribute("name"); //$NON-NLS-1$
+					Class<?> typeClass = configElements[j].createExecutableExtension("class").getClass(); //$NON-NLS-1$
+					OclType.addSimpleType(typeName, typeClass);
+				}
+			}
+		} catch (Throwable exception) {
+			// Assume that it's not available.
+		}
 	}
 
 	// read until c, including c

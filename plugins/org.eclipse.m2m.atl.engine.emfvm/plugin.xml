@@ -3,6 +3,7 @@
 <plugin>
    <extension-point id="org.eclipse.m2m.atl.engine.emfvm.adapter" name="ModelAdapter" schema="schema/org.eclipse.m2m.atl.engine.emfvm.adapter.exsd"/>
    <extension-point id="org.eclipse.m2m.atl.engine.emfvm.libextension" name="LibExtension" schema="schema/org.eclipse.m2m.atl.engine.emfvm.libextension.exsd"/>
+   <extension-point id="org.eclipse.m2m.atl.engine.emfvm.typeextension" name="TypeExtension" schema="schema/org.eclipse.m2m.atl.engine.emfvm.typeextension.exsd"/>
    <extension
          point="org.eclipse.m2m.atl.engine.emfvm.adapter">
       <modeladapter

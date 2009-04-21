@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.23 2009/03/04 16:03:43 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.24 2009/04/21 14:07:04 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -87,6 +87,10 @@ public class ASMOperation extends Operation {
 	@Override
 	public int getMaxLocals() {
 		return maxLocals;
+	}
+
+	public List<String> getParameters() {
+		return parameters;
 	}
 
 	public void setContext(String context) {

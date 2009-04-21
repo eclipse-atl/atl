@@ -194,4 +194,18 @@ public abstract class OclType {
 	public static Class<? extends Object> getNativeClassfromOclTypeName(String typeName) {
 		return nativeClasses.get(typeName);
 	}
+
+	/**
+	 * Registers a simple type.
+	 * 
+	 * @param typeName
+	 *            the type name
+	 * @param typeClass
+	 *            the type class
+	 */
+	public static void addSimpleType(String typeName, Class<?> typeClass) {
+		oclTypes.put(typeClass, new OclSimpleType(typeName));
+		nativeClasses.put(typeName, typeClass);
+		supertypes.put(typeClass, Arrays.asList(new Class<?>[] {Object.class}));
+	}
 }
