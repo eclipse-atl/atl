@@ -37,7 +37,17 @@ public class EMFVMLauncher implements ILauncher {
 		return LAUNCHER_NAME;
 	}
 
-	private void addModel(IModel model, String name, String referenceModelName) {
+	/**
+	 * Adds any model to the local map.
+	 * 
+	 * @param model
+	 *            the {@link IModel}
+	 * @param name
+	 *            the model name
+	 * @param referenceModelName
+	 *            the model reference model name
+	 */
+	protected void addModel(IModel model, String name, String referenceModelName) {
 		if (models.containsKey(name)) {
 			ATLLogger.warning(Messages.getString("EMFVMLauncher.MODEL_EVER_REGISTERED", name)); //$NON-NLS-1$
 		} else {
@@ -122,7 +132,22 @@ public class EMFVMLauncher implements ILauncher {
 		return launch(mode, monitor, options, mainModule, superimpose);
 	}
 
-	private Object launch(final String mode, final IProgressMonitor monitor,
+	/**
+	 * Launches the transformation with preloaded modules.
+	 * 
+	 * @param mode
+	 *            the launching mode
+	 * @param monitor
+	 *            the progress monitor
+	 * @param options
+	 *            vm options
+	 * @param mainModule
+	 *            the main module
+	 * @param superimpose
+	 *            the superimposed modules
+	 * @return the transformation return result
+	 */
+	protected Object launch(final String mode, final IProgressMonitor monitor,
 			final Map<String, Object> options, ASM mainModule, List<ASM> superimpose) {
 		IModelAdapter modelAdapter;
 		if ("true".equals(options.get("supportUML2Stereotypes"))) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -143,7 +168,14 @@ public class EMFVMLauncher implements ILauncher {
 		return new ASMXMLReader().read(inputStream);
 	}
 
-	private ASM getASMFromObject(Object module) {
+	/**
+	 * Load a module if necessary.
+	 * 
+	 * @param module
+	 *            the given {@link ASM} or {@link InputStream}.
+	 * @return the {@link ASM}
+	 */
+	protected ASM getASMFromObject(Object module) {
 		if (module instanceof InputStream) {
 			return (ASM)loadModule((InputStream)module);
 		} else if (module instanceof ASM) {
