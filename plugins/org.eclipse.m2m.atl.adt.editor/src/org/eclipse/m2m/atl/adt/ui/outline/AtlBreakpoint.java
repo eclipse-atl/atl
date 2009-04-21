@@ -32,14 +32,23 @@ public class AtlBreakpoint extends LineBreakpoint {
 
 	private static final String ATL_BREAKPOINT_MARKER = "org.eclipse.m2m.atl.adt.editor.atlBreakpointMarker"; //$NON-NLS-1$
 
+	public AtlBreakpoint() {
+		super();
+	}
+
 	/**
 	 * Creates a breakpoint.
 	 * 
-	 * @param resource the resource to mark
-	 * @param location the breakpoint location
-	 * @param lineNumber the line number
-	 * @param charStart the start index
-	 * @param charEnd the end index
+	 * @param resource
+	 *            the resource to mark
+	 * @param location
+	 *            the breakpoint location
+	 * @param lineNumber
+	 *            the line number
+	 * @param charStart
+	 *            the start index
+	 * @param charEnd
+	 *            the end index
 	 * @throws DebugException
 	 */
 	public AtlBreakpoint(final IResource resource, final String location, final int lineNumber,
@@ -89,7 +98,7 @@ public class AtlBreakpoint extends LineBreakpoint {
 	 * @see org.eclipse.debug.core.model.IBreakpoint#getModelIdentifier()
 	 */
 	public String getModelIdentifier() {
-		return "org.eclipse.m2m.atl.adt.debug";
+		return "org.eclipse.m2m.atl.adt.editor"; //$NON-NLS-1$
 	}
 
 	/**
