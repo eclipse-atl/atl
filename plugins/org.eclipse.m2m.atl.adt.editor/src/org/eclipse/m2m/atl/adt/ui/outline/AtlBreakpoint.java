@@ -30,7 +30,7 @@ import org.eclipse.m2m.atl.common.ATLLogger;
  */
 public class AtlBreakpoint extends LineBreakpoint {
 
-	private static final String ATL_BREAKPOINT_MARKER = "org.eclipse.m2m.atl.adt.debug.atlBreakpointMarker"; //$NON-NLS-1$
+	private static final String ATL_BREAKPOINT_MARKER = "org.eclipse.m2m.atl.adt.editor.atlBreakpointMarker"; //$NON-NLS-1$
 
 	/**
 	 * Creates a breakpoint.
