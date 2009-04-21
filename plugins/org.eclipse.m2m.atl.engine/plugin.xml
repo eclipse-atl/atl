@@ -27,15 +27,29 @@
     <extension
           point="org.eclipse.m2m.atl.core.injector">
        <injector
-             class="org.eclipse.m2m.atl.engine.tcs.ATLTCSWrapper"
+             class="org.eclipse.m2m.atl.engine.parser.AtlParser"
              name="ATL">
        </injector>
     </extension>
     <extension
           point="org.eclipse.m2m.atl.core.extractor">
        <extractor
-             class="org.eclipse.m2m.atl.engine.tcs.ATLTCSWrapper"
+             class="org.eclipse.m2m.atl.engine.parser.AtlParser"
              name="ATL">
        </extractor>
+    </extension>
+    <extension
+          point="org.eclipse.m2m.atl.engine.emfvm.typeextension">
+       <typeextension
+             class="org.eclipse.m2m.atl.engine.asm.ASMEmitter"
+             name="ASMEmitter">
+       </typeextension>
+    </extension>
+    <extension
+          point="org.eclipse.m2m.atl.engine.emfvm.libextension">
+       <libextension
+             class="org.eclipse.m2m.atl.engine.asm.lib.ASMString"
+             name="ASMString">
+       </libextension>
     </extension>
 </plugin>

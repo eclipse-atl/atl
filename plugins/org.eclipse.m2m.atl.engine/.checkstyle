@@ -6,4 +6,7 @@
     <fileset name="tous" enabled="true" check-config-name="ATL" local="true">
         <file-match-pattern match-pattern="." include-pattern="true"/>
     </fileset>
+    <filter name="FilesFromPackage" enabled="true">
+        <filter-data value="src/org/eclipse/m2m/atl/engine/asm"/>
+    </filter>
 </fileset-config>

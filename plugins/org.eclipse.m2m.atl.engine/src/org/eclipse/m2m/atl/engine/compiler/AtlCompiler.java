@@ -58,7 +58,7 @@ public final class AtlCompiler {
 	 *            name of the compiler to search for
 	 * @return the compiler which was found
 	 */
-	private static AtlStandaloneCompiler getCompiler(String compilerName) {
+	public static AtlStandaloneCompiler getCompiler(String compilerName) {
 		AtlStandaloneCompiler ret = (AtlStandaloneCompiler)compilers.get(compilerName);
 		if (ret == null) {
 			if ("atl2006".equals(compilerName)) { //$NON-NLS-1$

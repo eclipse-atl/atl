@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.engine.compiler.AtlCompiler;
 
 /**
@@ -271,9 +272,9 @@ public final class AtlSourceManager {
 		}
 
 		try {
-			model = AtlParser.getDefault().parse(new ByteArrayInputStream(text.getBytes()));			
-		} catch (IOException e) {
-			//fail silently
+			model = AtlParser.getDefault().parse(new ByteArrayInputStream(text.getBytes()));
+		} catch (ATLCoreException e) {
+			// fail silently
 		}
 
 		if (model == null) {
@@ -296,7 +297,7 @@ public final class AtlSourceManager {
 					inputModels.put(eGet(me, "name"), eGet(mm, "name")); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
-			
+
 			// output models computation
 			EList outModelsList = (EList)eGet(model, "outModels"); //$NON-NLS-1$
 			if (outModelsList != null) {
@@ -448,9 +449,11 @@ public final class AtlSourceManager {
 	 * @return the feature value
 	 */
 	private static Object eGet(EObject self, String featureName) {
-		EStructuralFeature feature = self.eClass().getEStructuralFeature(featureName);
-		if (feature != null) {
-			return self.eGet(feature);
+		if (self != null) {
+			EStructuralFeature feature = self.eClass().getEStructuralFeature(featureName);
+			if (feature != null) {
+				return self.eGet(feature);
+			}
 		}
 		return null;
 	}

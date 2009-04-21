@@ -31,9 +31,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.common.AtlNbCharFile;
-import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
+import org.eclipse.m2m.atl.core.IModel;
 
 /**
  * The MarkerMaker class.
@@ -168,7 +166,7 @@ public class MarkerMaker {
 	 * @return The number of errors (Problems with severity #error).
 	 * @throws CoreException
 	 */
-	public int applyMarkers(IFile file, ASMModel pbs) throws CoreException {
+	public int applyMarkers(IFile file, IModel pbs) throws CoreException {
 		return applyMarkers(file, pbs, -1);
 	}
 
@@ -184,16 +182,17 @@ public class MarkerMaker {
 	 * @return The number of errors (Problems with severity #error).
 	 * @throws CoreException
 	 */
-	private int applyMarkers(IFile file, ASMModel pbs, int tabWidth) throws CoreException {
+	private int applyMarkers(IFile file, IModel pbs, int tabWidth) throws CoreException {
 		int nbErrors = 0;
 
 		Collection pbsc = pbs.getElementsByType("Problem"); //$NON-NLS-1$
 		EObject[] pbsa = new EObject[pbsc.size()];
 		int k = 0;
 		for (Iterator i = pbsc.iterator(); i.hasNext();) {
-			ASMEMFModelElement ame = (ASMEMFModelElement)i.next();
-			pbsa[k] = ame.getObject();
-			if ("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) { //$NON-NLS-1$//$NON-NLS-2$
+			EObject ame = (EObject)i.next();
+			pbsa[k] = ame;
+			EStructuralFeature severityFeature = ame.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
+			if ("error".equals(((EEnumLiteral)ame.eGet(severityFeature)).getName())) { //$NON-NLS-1$
 				nbErrors++;
 			}
 			k++;

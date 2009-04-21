@@ -16,18 +16,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
 
+import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModelElement;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.m2m.atl.common.ATLExecutionException;
+import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.core.ATLCoreException;
+import org.eclipse.m2m.atl.core.IModel;
+import org.eclipse.m2m.atl.core.launch.ILauncher;
+import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.engine.ProblemConverter;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
-import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMEnumLiteral;
-import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 
 /**
  * Default implementation of methods necessary for all ATL compilers. Attention: This class MUST NOT reference
@@ -39,10 +43,21 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  */
 public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
+	private static ILauncher launcher;
+
+	static {
+		try {
+			launcher = CoreService.getLauncher("EMF-specific VM"); //$NON-NLS-1$		
+		} catch (ATLCoreException e) {
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compile(java.io.InputStream, java.lang.String)
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compile(java.io.InputStream,
+	 *      java.lang.String)
 	 */
 	public final CompileTimeError[] compile(InputStream in, String outputFileName) {
 		EObject[] eObjects = internalCompile(in, outputFileName);
@@ -60,7 +75,8 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(java.io.InputStream, java.lang.String)
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(java.io.InputStream,
+	 *      java.lang.String)
 	 */
 	public EObject[] compileWithProblemModel(InputStream in, String outputFileName) {
 		return internalCompile(in, outputFileName);
@@ -80,10 +96,11 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	 */
 	protected abstract URL getCodegeneratorURL();
 
-	private Object[] getProblems(ASMModel problems, EObject[] prev) {
+	private Object[] getProblems(IModel problems, EObject[] prev) {
 		Object[] ret = new Object[2];
 		EObject[] pbsa = null;
-		Collection pbs = problems.getElementsByType("Problem"); //$NON-NLS-1$
+		Collection pbs = problems.getElementsByType(problems.getReferenceModel().getMetaElementByName(
+				"Problem")); //$NON-NLS-1$
 
 		int nbErrors = 0;
 		if (pbs != null) {
@@ -91,9 +108,10 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 			System.arraycopy(prev, 0, pbsa, 0, prev.length);
 			int k = prev.length;
 			for (Iterator i = pbs.iterator(); i.hasNext();) {
-				ASMEMFModelElement ame = (ASMEMFModelElement)i.next();
-				pbsa[k++] = ame.getObject();
-				if ("error".equals(((ASMEnumLiteral)ame.get(null, "severity")).getName())) { //$NON-NLS-1$//$NON-NLS-2$
+				EObject ame = (EObject)i.next();
+				pbsa[k++] = ame;
+				EStructuralFeature severityFeature = ame.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
+				if ("error".equals(((EEnumLiteral)ame.eGet(severityFeature)).getName())) { //$NON-NLS-1$
 					nbErrors++;
 				}
 			}
@@ -114,62 +132,72 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	 *            The name of the file to which the ATL compiled program will be saved.
 	 * @return A List of EObject instance of Problem.
 	 */
-	private EObject[] internalCompile(InputStream in, String outputFileName) {
+	public EObject[] internalCompile(InputStream in, String outputFileName) {
 		EObject[] ret = null;
-		ASMModel[] parsed = null;
+		IModel[] parsed = null;
 		// Parsing + Semantic Analysis
 		try {
 			parsed = AtlParser.getDefault().parseToModelWithProblems(in, true);
-		} catch (IOException e) {
-			//fail silently
+		} catch (ATLCoreException e) {
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
-		ASMModel atlmodel = parsed[0];
-		ASMModel problems = parsed[1];
+		IModel atlmodel = parsed[0];
+		IModel problems = parsed[1];
 
 		Object[] a = getProblems(problems, new EObject[0]);
 		int nbErrors = ((Integer)a[0]).intValue();
 		ret = (EObject[])a[1];
 
 		if (nbErrors == 0) {
-			Map models = new HashMap();
-			models.put("MOF", atlmodel.getModelLoader().getMOF()); //$NON-NLS-1$
-			models.put("ATL", atlmodel.getMetamodel()); //$NON-NLS-1$
-			models.put("IN", atlmodel); //$NON-NLS-1$
-			models.put("Problem", problems.getMetamodel()); //$NON-NLS-1$
-			models.put("OUT", problems); //$NON-NLS-1$
+			try {
+				problems = problems.getModelFactory().newModel(problems.getReferenceModel());
+			} catch (ATLCoreException e) {
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			}
+			launcher.initialize(null);
+			launcher.addInModel(atlmodel, "IN", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
+			launcher.addOutModel(problems, "OUT", "Problem"); //$NON-NLS-1$ //$NON-NLS-2$
+			Map params = new HashMap();
+			params.put("compilation", "true"); //$NON-NLS-1$//$NON-NLS-2$
+			try {
 
-			Map params = Collections.EMPTY_MAP;
+				launcher.launch(ILauncher.RUN_MODE, null, params, new Object[] {launcher
+						.loadModule(getSemanticAnalyzerURL().openStream()),});
 
-			Map libs = Collections.EMPTY_MAP;
-
-			AtlLauncher.getDefault().launch(getSemanticAnalyzerURL(), libs, models, params,
-					Collections.EMPTY_LIST, Collections.EMPTY_MAP);
-
+			} catch (IOException e) {
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			} catch (ATLExecutionException e) {
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			}
 			a = getProblems(problems, ret);
 			nbErrors = ((Integer)a[0]).intValue();
 			ret = (EObject[])a[1];
 		}
 
 		if (nbErrors == 0) {
-			// Generating code
-			Map models = new HashMap();
-			models.put("MOF", atlmodel.getModelLoader().getMOF()); //$NON-NLS-1$
-			models.put("ATL", atlmodel.getMetamodel()); //$NON-NLS-1$
-			models.put("IN", atlmodel); //$NON-NLS-1$
-			models.put("Problem", problems.getMetamodel()); //$NON-NLS-1$
-			models.put("OUT", problems); //$NON-NLS-1$
+			launcher.initialize(null);
+			launcher.addInModel(atlmodel, "IN", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
+			launcher.addOutModel(problems, "OUT", "Problem"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			Map params = new HashMap();
-			params.put("debug", "false"); //$NON-NLS-1$//$NON-NLS-2$
+			params.put("compilation", "true"); //$NON-NLS-1$//$NON-NLS-2$
+			params.put("debug", "false"); //$NON-NLS-1$//$NON-NLS-2$			
 			params.put("WriteTo", outputFileName); //$NON-NLS-1$
 
-			Map libs = new HashMap();
-			libs.put("typeencoding", AtlDefaultCompiler.class.getResource("resources/typeencoding.asm")); //$NON-NLS-1$//$NON-NLS-2$
-			libs.put("strings", AtlDefaultCompiler.class.getResource("resources/strings.asm")); //$NON-NLS-1$//$NON-NLS-2$
+			try {
+				launcher.addLibrary("typeencoding", launcher.loadModule(AtlDefaultCompiler.class.getResource(//$NON-NLS-1$
+						"resources/typeencoding.asm").openStream())); //$NON-NLS-1$
+				launcher.addLibrary("strings", launcher.loadModule(AtlDefaultCompiler.class.getResource(//$NON-NLS-1$
+						"resources/strings.asm").openStream())); //$NON-NLS-1$
 
-			AtlLauncher.getDefault().launch(getCodegeneratorURL(), libs, models, params,
-					Collections.EMPTY_LIST, Collections.EMPTY_MAP);
+				launcher.launch(ILauncher.RUN_MODE, null, params, new Object[] {launcher
+						.loadModule(getCodegeneratorURL().openStream()),});
 
+			} catch (IOException e) {
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			} catch (ATLExecutionException e) {
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			}
 			a = getProblems(problems, ret);
 			nbErrors = ((Integer)a[0]).intValue();
 			ret = (EObject[])a[1];
