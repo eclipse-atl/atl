@@ -53,7 +53,7 @@ public class TestNonRegressionParser extends TestNonRegression {
 		try {
 			EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));
 			ModelUtils.save(result, "file:/" + transfoPath + ".xmi"); //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (IOException e) {
+		} catch (Exception e) {
 			fail("Failed to parse " + transfoPath); //$NON-NLS-1$
 		}
 

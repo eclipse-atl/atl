@@ -12,7 +12,6 @@ package org.eclipse.m2m.atl.tests.util;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
@@ -46,12 +45,12 @@ public final class InitParserData {
 					initSnapshots(directories[i]);
 				}
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private static void initSnapshots(File directory) throws IOException {
+	private static void initSnapshots(File directory) throws Exception {
 		if (FileUtils.listDirectories(directory).length != 0) {
 			for (int i = 0; i < FileUtils.listDirectories(directory).length; i++) {
 				initSnapshots(FileUtils.listDirectories(directory)[i]);
@@ -61,7 +60,7 @@ public final class InitParserData {
 		}
 	}
 
-	private static void initTest(File directory) throws IOException {
+	private static void initTest(File directory) throws Exception {
 		final String transfoPath = directory.toString().replaceAll("expected", "inputs") + "/" + directory.getName() + ".atl"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		final String xmiTransfoPath = directory.toString() + "/" + directory.getName() + ".atl.xmi"; //$NON-NLS-1$ //$NON-NLS-2$
 		if (new File(xmiTransfoPath).exists()) {
