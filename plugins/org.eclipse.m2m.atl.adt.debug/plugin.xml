@@ -2,24 +2,7 @@
 <?eclipse version="3.2"?>
 <plugin>
 
-   <extension
-         id="atlBreakpointMarker"
-         point="org.eclipse.core.resources.markers">
-      <super
-            type="org.eclipse.debug.core.breakpointMarker">
-      </super>
-      <persistent
-            value="true">
-      </persistent>
-   </extension>
-   <extension
-         point="org.eclipse.debug.core.breakpoints">
-      <breakpoint
-            markerType="org.eclipse.m2m.atl.adt.debug.atlBreakpointMarker"
-            class="org.eclipse.m2m.atl.adt.ui.outline.AtlBreakpoint"
-            id="atlBreakpoint">
-      </breakpoint>
-   </extension>
+
 <!-- extension point : expression-->
 	<extension point="org.eclipse.debug.core.watchExpressionDelegates">
 		<watchExpressionDelegate
