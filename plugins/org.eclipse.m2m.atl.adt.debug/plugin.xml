@@ -16,7 +16,7 @@
          point="org.eclipse.debug.core.breakpoints">
       <breakpoint
             markerType="org.eclipse.m2m.atl.adt.debug.atlBreakpointMarker"
-            class="org.eclipse.m2m.atl.adt.debug.core.AtlBreakpoint"
+            class="org.eclipse.m2m.atl.adt.ui.outline.AtlBreakpoint"
             id="atlBreakpoint">
       </breakpoint>
    </extension>
