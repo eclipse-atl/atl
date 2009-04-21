@@ -206,4 +206,56 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 		return ret;
 	}
 
+	/**
+	 * Compiles an ATL model.
+	 * 
+	 * @param atlmodel
+	 *            The atl Model
+	 * @param outputFileName
+	 *            The name of the file to which the ATL compiled program will be saved.
+	 * @return A List of EObject instance of Problem.
+	 */
+	public EObject[] internalCompile(IModel atlmodel, String outputFileName) throws ATLCoreException,
+			IOException, ATLExecutionException {
+		IModel problems = AtlParser.getDefault().getModelFactory().newModel(
+				AtlParser.getDefault().getProblemMetamodel());
+		launcher.initialize(null);
+		launcher.addInModel(atlmodel, "IN", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
+		launcher.addOutModel(problems, "OUT", "Problem"); //$NON-NLS-1$ //$NON-NLS-2$
+		Map params = new HashMap();
+		params.put("compilation", "true"); //$NON-NLS-1$//$NON-NLS-2$
+
+		launcher.launch(ILauncher.RUN_MODE, null, params, new Object[] {launcher
+				.loadModule(getSemanticAnalyzerURL().openStream()),});
+
+		Object[] a = getProblems(problems, new EObject[0]);
+		int nbErrors = ((Integer)a[0]).intValue();
+		EObject[] ret = (EObject[])a[1];
+
+		if (nbErrors == 0) {
+			launcher.initialize(null);
+			launcher.addInModel(atlmodel, "IN", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
+			launcher.addOutModel(problems, "OUT", "Problem"); //$NON-NLS-1$ //$NON-NLS-2$
+
+			params = new HashMap();
+			params.put("compilation", "true"); //$NON-NLS-1$//$NON-NLS-2$
+			params.put("debug", "false"); //$NON-NLS-1$//$NON-NLS-2$			
+			params.put("WriteTo", outputFileName); //$NON-NLS-1$
+
+			launcher.addLibrary("typeencoding", launcher.loadModule(AtlDefaultCompiler.class.getResource(//$NON-NLS-1$
+					"resources/typeencoding.asm").openStream())); //$NON-NLS-1$
+			launcher.addLibrary("strings", launcher.loadModule(AtlDefaultCompiler.class.getResource(//$NON-NLS-1$
+					"resources/strings.asm").openStream())); //$NON-NLS-1$
+
+			launcher.launch(ILauncher.RUN_MODE, null, params, new Object[] {launcher
+					.loadModule(getCodegeneratorURL().openStream()),});
+
+			a = getProblems(problems, ret);
+			nbErrors = ((Integer)a[0]).intValue();
+			ret = (EObject[])a[1];
+		}
+
+		return ret;
+	}
+
 }
