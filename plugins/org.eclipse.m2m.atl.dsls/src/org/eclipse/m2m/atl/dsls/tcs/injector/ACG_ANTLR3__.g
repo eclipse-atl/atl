@@ -3,16 +3,16 @@ lexer grammar ACG_ANTLR3;
 
 	private void newline() {}
 
-	public org.eclipse.gmt.tcs.injector.TCSRuntime ei = null;
+	public org.eclipse.m2m.atl.dsls.tcs.injector.TCSRuntime ei = null;
 
 	public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
 		ei.reportError((Exception)e);
 	}
 
 	public Token emit() {
-		org.eclipse.gmt.tcs.injector.wrappers.antlr3.ANTLR3LocationToken ret = null;
+		org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken ret = null;
 
-		ret = new org.eclipse.gmt.tcs.injector.wrappers.antlr3.ANTLR3LocationToken(input, type, channel, tokenStartCharIndex, getCharIndex()-1);
+		ret = new org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken(input, type, channel, tokenStartCharIndex, getCharIndex()-1);
 		ret.setLine(tokenStartLine);
 		ret.setText(text);
 	  	ret.setCharPositionInLine(tokenStartCharPositionInLine);
@@ -24,7 +24,7 @@ lexer grammar ACG_ANTLR3;
 	}
 
 }
-@header {package org.eclipse.gmt.tcs.injector;}
+@header {package org.eclipse.m2m.atl.dsls.tcs.injector;}
 
 T42 : 'acg' ;
 T43 : 'startsWith' ;

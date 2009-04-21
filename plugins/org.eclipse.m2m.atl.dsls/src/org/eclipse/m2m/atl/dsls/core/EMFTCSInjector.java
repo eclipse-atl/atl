@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -27,19 +28,49 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EcoreFactoryImpl;
-import org.eclipse.gmt.tcs.injector.ModelAdapter;
-import org.eclipse.gmt.tcs.injector.ParserLauncher;
-import org.eclipse.gmt.tcs.injector.TCSInjector;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.emf.EMFModel;
+import org.eclipse.m2m.atl.dsls.tcs.injector.ModelAdapter;
+import org.eclipse.m2m.atl.dsls.tcs.injector.ParserLauncher;
 
 /**
  * A wrapper which allow to create {@link IModel} from text with TCS.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public class EMFTCSInjector extends TCSInjector {
+public class EMFTCSInjector {
+
+	private static Map parameterTypes = new HashMap();
+
+	static {
+		parameterTypes.put("name", "String"); // required
+		parameterTypes.put("keepNL", "String"); // optional, default = false
+		parameterTypes.put("keepLocation", "String"); // optional, default = true
+		parameterTypes.put("keepComments", "String"); // optional, default = true
+		parameterTypes.put("tabSize", "String"); // optional, default = 8
+		parameterTypes.put("parserGenerator", "String");// optional, default = "antlr3"
+		parameterTypes.put("hyperlinks", "Map"); // optional, default = null
+		parameterTypes.put("trace", "Map"); // optional, default = null
+		parameterTypes.put("locationByElement", "Map"); // optional, default = null
+		parameterTypes.put("problems", "Model:Problem");// optional, default = null
+
+		// Useful when the lexer and/or parser cannot be resolved from here
+		parameterTypes.put("lexerClass", "Class"); // optional, default = null
+		parameterTypes.put("parserClass", "Class"); // optional, default = null
+	}
+
+	public Map getParameterTypes() {
+		return parameterTypes;
+	}
+
+	public String getPrefix() {
+		return "ebnf2";
+	}
+
+	private ModelAdapter problemsModelAdapter;
+
+	private ModelAdapter targetModelAdapter;
 
 	public EMFTCSInjector() {
 		super();

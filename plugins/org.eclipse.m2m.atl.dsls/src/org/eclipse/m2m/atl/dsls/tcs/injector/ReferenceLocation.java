@@ -8,9 +8,9 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: ReferenceLocation.java,v 1.1 2009/03/04 16:06:00 wpiers Exp $
+ * $Id: ReferenceLocation.java,v 1.1 2009/04/21 14:12:26 wpiers Exp $
  */
-package org.eclipse.gmt.tcs.injector;
+package org.eclipse.m2m.atl.dsls.tcs.injector;
 
 /**
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>

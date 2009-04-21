@@ -8,9 +8,9 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: ANTLR3LocationToken.java,v 1.1 2009/03/04 16:06:01 wpiers Exp $
+ * $Id: ANTLR3LocationToken.java,v 1.1 2009/04/21 14:12:27 wpiers Exp $
  */
-package org.eclipse.gmt.tcs.injector.wrappers.antlr3;
+package org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3;
 
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonToken;

@@ -8,9 +8,9 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: PrettyPrinter.java,v 1.1 2009/03/04 16:06:00 wpiers Exp $
+ * $Id: PrettyPrinter.java,v 1.1 2009/04/21 14:12:26 wpiers Exp $
  */
-package org.eclipse.gmt.tcs.extractor;
+package org.eclipse.m2m.atl.dsls.tcs.extractor;
 
 import java.io.OutputStream;
 import java.text.DecimalFormat;

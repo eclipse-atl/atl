@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.dsls.core;
 
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -19,19 +20,47 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.gmt.tcs.extractor.ModelAdapter;
-import org.eclipse.gmt.tcs.extractor.PrettyPrinter;
-import org.eclipse.gmt.tcs.extractor.TCSExtractor;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.emf.EMFModel;
 import org.eclipse.m2m.atl.core.emf.EMFReferenceModel;
+import org.eclipse.m2m.atl.dsls.tcs.extractor.ModelAdapter;
+import org.eclipse.m2m.atl.dsls.tcs.extractor.PrettyPrinter;
 
 /**
  * A wrapper which allow to generate text from {@link IModel} with TCS.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public class EMFTCSExtractor extends TCSExtractor {
+public class EMFTCSExtractor {
+
+	private static Map parameterTypes = new HashMap();
+
+	static {
+		parameterTypes.put("format", "Model:TCS"); // required
+		parameterTypes.put("indentString", "String"); // optional, default = "  "
+		parameterTypes.put("standardSeparator", "String"); // optional, default = " "
+		parameterTypes.put("kwCheckIgnoreCase", "String"); // optional, default = false
+		parameterTypes.put("identEsc", "String"); // optional, default = "\"", has priority over the two
+													// others below
+		parameterTypes.put("identEscStart", "String"); // optional, default = "\""
+		parameterTypes.put("identEscEnd", "String"); // optional, default = "\""
+		parameterTypes.put("stringDelim", "String"); // optional, default = "\'"
+		parameterTypes.put("debug", "String"); // optional, default = false
+		parameterTypes.put("debugws", "String"); // optional, default = false
+		parameterTypes.put("serializeComments", "String"); // optional, default = true
+		parameterTypes.put("usePrimitiveTemplates", "String"); // optional, default = false
+		parameterTypes.put("decimalFormat", "String"); // optional, default = "0.##############"
+		parameterTypes.put("stream", "TCSExtractorStream");// optional, default = new
+															// TCSExtractorPrintStream(target);
+	}
+
+	public Map getParameterTypes() {
+		return parameterTypes;
+	}
+
+	public String getPrefix() {
+		return "ebnf";
+	}
 
 	public EMFTCSExtractor() {
 		super();

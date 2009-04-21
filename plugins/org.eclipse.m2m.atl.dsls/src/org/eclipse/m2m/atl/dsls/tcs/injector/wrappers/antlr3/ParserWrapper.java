@@ -8,9 +8,9 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: ParserWrapper.java,v 1.1 2009/03/04 16:06:01 wpiers Exp $
+ * $Id: ParserWrapper.java,v 1.1 2009/04/21 14:12:27 wpiers Exp $
  */
-package org.eclipse.gmt.tcs.injector.wrappers.antlr3;
+package org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,13 +31,13 @@ import org.antlr.runtime.Parser;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
-import org.eclipse.gmt.tcs.injector.TCSClassLoader;
+import org.eclipse.m2m.atl.dsls.tcs.injector.TCSClassLoader;
 
 /**
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
  */
-public class ParserWrapper extends org.eclipse.gmt.tcs.injector.wrappers.ParserWrapper {
+public class ParserWrapper extends org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.ParserWrapper {
 	
 	private Parser parser;
 	private Lexer lexer;
@@ -58,7 +58,6 @@ public class ParserWrapper extends org.eclipse.gmt.tcs.injector.wrappers.ParserW
 				try {
 					lexerClass = cl.loadClass(pack + name + "_ANTLR3Lexer");
 				} catch (ClassNotFoundException e) {
-					//throw new IllegalArgumentException("Unable to locate lexer class with name " + name, e);
 					throw new IllegalArgumentException("Unable to locate lexer class with name " + name);
 				}
 			}

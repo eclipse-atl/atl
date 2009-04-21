@@ -8,9 +8,9 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: ParserLauncher.java,v 1.3 2009/03/16 09:05:52 wpiers Exp $
+ * $Id: ParserLauncher.java,v 1.1 2009/04/21 14:12:27 wpiers Exp $
  */
-package org.eclipse.gmt.tcs.injector;
+package org.eclipse.m2m.atl.dsls.tcs.injector;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,8 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.gmt.tcs.injector.TCSRuntime.RefSetting;
-import org.eclipse.gmt.tcs.injector.wrappers.ParserWrapper;
+import org.eclipse.m2m.atl.dsls.tcs.injector.TCSRuntime.RefSetting;
+import org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.ParserWrapper;
 
 /**
  * 
@@ -47,7 +47,7 @@ public class ParserLauncher {
 		String parserGeneratorClassName = (String)arguments.get("parserGenerator");
 		if(parserGeneratorClassName != null) {
 			try {
-				parserWrapper = (ParserWrapper)Class.forName("org.eclipse.gmt.tcs.injector.wrappers." + parserGeneratorClassName + ".ParserWrapper", true, Thread.currentThread().getContextClassLoader()).newInstance();
+				parserWrapper = (ParserWrapper)Class.forName("org.eclipse.m2m.atl.dsls.tcs.injector.wrappers." + parserGeneratorClassName + ".ParserWrapper", true, Thread.currentThread().getContextClassLoader()).newInstance();
 			} catch (InstantiationException e) {
 				//throw new IllegalArgumentException("Unable to instanciate parser generator with name " + parserGeneratorClassName, e);
 				throw new IllegalArgumentException("Unable to instanciate parser generator with name " + parserGeneratorClassName);
@@ -60,7 +60,7 @@ public class ParserLauncher {
 			}
 		} else {
 			// default parser generator
-			parserWrapper = new org.eclipse.gmt.tcs.injector.wrappers.antlr3.ParserWrapper();
+			parserWrapper = new org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ParserWrapper();
 		}
 		
 		String nameAndProductionRule = (String)arguments.get("name");

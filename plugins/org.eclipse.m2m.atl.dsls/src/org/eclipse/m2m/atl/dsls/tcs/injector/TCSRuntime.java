@@ -8,9 +8,9 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: TCSRuntime.java,v 1.1 2009/03/04 16:06:00 wpiers Exp $
+ * $Id: TCSRuntime.java,v 1.1 2009/04/21 14:12:26 wpiers Exp $
  */
-package org.eclipse.gmt.tcs.injector;
+package org.eclipse.m2m.atl.dsls.tcs.injector;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import org.eclipse.gmt.tcs.injector.wrappers.ParserWrapper;
+import org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.ParserWrapper;
 
 /**
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>

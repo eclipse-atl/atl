@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008 INRIA.
+ * Copyright (c) 2007 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,21 +8,20 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: CompletionInformation.java,v 1.1 2009/03/04 16:06:00 wpiers Exp $
+ * $Id: TCSExtractionException.java,v 1.1 2009/04/21 14:12:26 wpiers Exp $
  */
-package org.eclipse.gmt.tcs.injector;
-
-import java.util.List;
+package org.eclipse.m2m.atl.dsls.tcs.extractor;
 
 /**
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  *
  */
-public interface CompletionInformation {
+public class TCSExtractionException extends RuntimeException {
+	
+	private static final long serialVersionUID = 8291141709543223208L;
 
-	public int getOffset();
-	public List getProposals();
-	public void setPrefix(String prefix);
-	public String getPrefix();
+	public TCSExtractionException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
 }

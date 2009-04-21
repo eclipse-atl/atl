@@ -10,7 +10,7 @@
  *
  */
 // $ANTLR 3.0.1 D:\\dev\\workspaces\\3.3.2\\TCS\\ATL\\Syntax\\ATL_ANTLR3.g 2009-03-04 15:45:49
-package org.eclipse.gmt.tcs.injector;
+package org.eclipse.m2m.atl.dsls.tcs.injector;
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -120,16 +120,16 @@ public class ATL_ANTLR3Lexer extends Lexer {
     
     	private void newline() {}
     
-    	public org.eclipse.gmt.tcs.injector.TCSRuntime ei = null;
+    	public org.eclipse.m2m.atl.dsls.tcs.injector.TCSRuntime ei = null;
     
     	public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
     		ei.reportError((Exception)e);
     	}
     
     	public Token emit() {
-    		org.eclipse.gmt.tcs.injector.wrappers.antlr3.ANTLR3LocationToken ret = null;
+    		org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken ret = null;
     
-    		ret = new org.eclipse.gmt.tcs.injector.wrappers.antlr3.ANTLR3LocationToken(input, type, channel, tokenStartCharIndex, getCharIndex()-1);
+    		ret = new org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken(input, type, channel, tokenStartCharIndex, getCharIndex()-1);
     		ret.setLine(tokenStartLine);
     		ret.setText(text);
     	  	ret.setCharPositionInLine(tokenStartCharPositionInLine);
