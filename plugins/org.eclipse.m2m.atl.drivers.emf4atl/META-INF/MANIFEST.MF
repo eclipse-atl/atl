@@ -5,7 +5,9 @@ Bundle-SymbolicName: org.eclipse.m2m.atl.drivers.emf4atl;singleton:=true
 Bundle-Version: 3.0.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Export-Package: org.eclipse.m2m.atl.drivers.emf4atl
+Export-Package: org.eclipse.m2m.atl.drivers.emf4atl,
+ org.eclipse.m2m.atl.drivers.emf4atl.tcs.extractor,
+ org.eclipse.m2m.atl.drivers.emf4atl.tcs.injector
 Bundle-ClassPath: .
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2m.atl.dsls;visibility:=reexport,
