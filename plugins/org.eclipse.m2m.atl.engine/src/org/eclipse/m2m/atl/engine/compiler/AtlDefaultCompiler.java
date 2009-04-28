@@ -158,7 +158,6 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 			launcher.addInModel(atlmodel, "IN", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
 			launcher.addOutModel(problems, "OUT", "Problem"); //$NON-NLS-1$ //$NON-NLS-2$
 			Map params = new HashMap();
-			params.put("compilation", "true"); //$NON-NLS-1$//$NON-NLS-2$
 			try {
 
 				launcher.launch(ILauncher.RUN_MODE, null, params, new Object[] {launcher
@@ -180,7 +179,6 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 			launcher.addOutModel(problems, "OUT", "Problem"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			Map params = new HashMap();
-			params.put("compilation", "true"); //$NON-NLS-1$//$NON-NLS-2$
 			params.put("debug", "false"); //$NON-NLS-1$//$NON-NLS-2$			
 			params.put("WriteTo", outputFileName); //$NON-NLS-1$
 
