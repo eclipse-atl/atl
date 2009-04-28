@@ -40,15 +40,15 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 		AtlUIPlugin.getDefault().getProblemMarkerManager().addListener(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see IProblemChangedListener#problemsChanged(IResource[], boolean)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.adt.ui.viewsupport.IProblemChangedListener#problemsChanged(org.eclipse.core.resources.IResource[], boolean)
 	 */
 	public void problemsChanged(IResource[] changedResources, boolean isMarkerChange) {
 		// IFileEditorInput input= (IFileEditorInput) atlEditor.getEditorInput();
 		IResource resource = atlEditor.getUnderlyingResource();
-		if (resource != null) {
+		if (resource != null && resource.isAccessible()) {
 			for (int i = 0; i < changedResources.length; i++) {
 				if (changedResources[i].equals(resource)) {
 					updateEditorImage(resource);
