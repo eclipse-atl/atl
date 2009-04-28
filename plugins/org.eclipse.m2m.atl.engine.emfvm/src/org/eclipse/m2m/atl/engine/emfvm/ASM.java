@@ -155,7 +155,7 @@ public class ASM {
 		ASMModule asmModule = new ASMModule();
 
 		List<Object> localVars = null;
-		if ("true".equals(options.get("compilation"))) { //$NON-NLS-1$ //$NON-NLS-2$
+		if (!mainOperation.getParameters().isEmpty()) {
 			localVars = new ArrayList<Object>();
 			localVars.add(asmModule);
 			for (Iterator<String> i = mainOperation.getParameters().iterator(); i.hasNext();) {
