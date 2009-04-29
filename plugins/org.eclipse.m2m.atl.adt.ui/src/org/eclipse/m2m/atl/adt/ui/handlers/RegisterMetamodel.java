@@ -27,7 +27,10 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.m2m.atl.adt.ui.Messages;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
@@ -37,6 +40,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
  */
 public class RegisterMetamodel extends AbstractHandler {
 
+	private Shell shell;
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -44,6 +49,7 @@ public class RegisterMetamodel extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection iss = (IStructuredSelection)HandlerUtil.getCurrentSelection(event);
+		this.shell = HandlerUtil.getActiveShell(event);
 		IFile currentFile = (IFile)iss.getFirstElement();
 		String artifactUri = currentFile.getLocation().toString();
 		init(artifactUri);
@@ -67,7 +73,7 @@ public class RegisterMetamodel extends AbstractHandler {
 		try {
 			mmExtent.load(new FileInputStream(metamodelURL), Collections.EMPTY_MAP);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			MessageDialog.openError(shell, Messages.getString("RegisterMetamodel.REGISTER_FAIL"), e.getMessage()); //$NON-NLS-1$
 		}
 		for (Iterator<EObject> it = getElementsByType(mmExtent, "EPackage").iterator(); it.hasNext();) { //$NON-NLS-1$
 			EPackage p = (EPackage)it.next();
@@ -102,5 +108,4 @@ public class RegisterMetamodel extends AbstractHandler {
 			}
 		}
 	}
-
 }

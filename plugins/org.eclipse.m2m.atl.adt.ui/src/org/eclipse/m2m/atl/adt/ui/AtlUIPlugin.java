@@ -27,6 +27,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AtlUIPlugin extends AbstractUIPlugin {
+	/** The plugin id. */
+	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.adt.ui"; //$NON-NLS-1$
 
 	/** The shared instance. */
 	private static AtlUIPlugin plugin;
@@ -100,7 +102,7 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 			if (descriptor != null) {
 				result = descriptor.createImage();
 				path2image.put(path, result);
-			}			
+			}
 		}
 		if (result != null) {
 			if (result.isDisposed()) {

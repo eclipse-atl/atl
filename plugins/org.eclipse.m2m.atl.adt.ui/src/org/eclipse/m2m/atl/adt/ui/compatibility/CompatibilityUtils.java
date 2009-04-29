@@ -38,6 +38,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.m2m.atl.adt.ui.Messages;
 import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.core.ui.launch.ATLLaunchConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -64,9 +65,6 @@ public final class CompatibilityUtils {
 
 	/** The old atl config id. */
 	public static final String OLD_CONFIG_ID = "org.atl.eclipse.adt.launching.atlTransformation"; //$NON-NLS-1$
-
-	/** The new atl config id. */
-	public static final String NEW_CONFIG_ID = "org.eclipse.m2m.atl.adt.launching.atlTransformation"; //$NON-NLS-1$
 
 	private CompatibilityUtils() {
 		super();
@@ -197,7 +195,7 @@ public final class CompatibilityUtils {
 
 					Element root = (Element)document.getFirstChild();
 					if (root.getAttribute("type").equals(CompatibilityUtils.OLD_CONFIG_ID)) { //$NON-NLS-1$
-						root.setAttribute("type", CompatibilityUtils.NEW_CONFIG_ID); //$NON-NLS-1$
+						root.setAttribute("type", ATLLaunchConstants.LAUNCH_CONFIGURATION_TYPE); //$NON-NLS-1$
 						monitor
 								.subTask(Messages.getString("CompatibilityUtils.8") + conf.getName()); //$NON-NLS-1$
 					}

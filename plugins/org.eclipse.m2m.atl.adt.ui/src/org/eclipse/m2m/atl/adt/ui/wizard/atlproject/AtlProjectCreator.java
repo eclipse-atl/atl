@@ -20,6 +20,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.m2m.atl.adt.AtlNature;
@@ -96,8 +97,9 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 
 			addNature(modelProject, AtlNature.ATL_NATURE_ID);
 			BasicNewProjectResourceWizard.updatePerspective(configElement);
-		} catch (CoreException ce) {
-			System.err.println(ce);
+		} catch (CoreException e) {
+			MessageDialog.openError(getShell(), "Error", e.getMessage()); //$NON-NLS-1$
+			return false;
 		}
 
 		return true;

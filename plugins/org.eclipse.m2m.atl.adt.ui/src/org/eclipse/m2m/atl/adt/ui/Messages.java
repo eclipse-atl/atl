@@ -58,7 +58,7 @@ public final class Messages {
 	 * @return formatted {@link String}.
 	 * @see MessageFormat#format(String, Object[])
 	 */
-	public static String getString(String key, Object[] arguments) {
+	public static String getString(String key, Object... arguments) {
 		if (arguments == null) {
 			return getString(key);
 		}
