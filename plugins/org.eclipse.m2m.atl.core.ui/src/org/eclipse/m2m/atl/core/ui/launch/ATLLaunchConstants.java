@@ -19,12 +19,15 @@ import org.eclipse.m2m.atl.core.ui.Messages;
  */
 public interface ATLLaunchConstants {
 
+	/** ATL launch type. */
+	String LAUNCH_CONFIGURATION_TYPE = "org.eclipse.m2m.atl.adt.launching.atlTransformation"; //$NON-NLS-1$
+
 	/** Regular VM name, for launch compatibility adaptations. */
 	String REGULAR_VM_NAME = "Regular VM (with debugger)"; //$NON-NLS-1$
 
 	/** EMF VM name, for default values. */
 	String EMF_VM_NAME = "EMF-specific VM"; //$NON-NLS-1$
-	
+
 	/** Default model handler name. */
 	String DEFAULT_MODEL_HANDLER_NAME = "EMF"; //$NON-NLS-1$
 
@@ -42,13 +45,13 @@ public interface ATLLaunchConstants {
 
 	/** Ordered output models list. */
 	String ORDERED_OUTPUT = "OrderedOutput"; //$NON-NLS-1$
-	
+
 	/** Input models. */
 	String INPUT = "Input"; //$NON-NLS-1$
 
 	/** Ordered input models list. */
 	String ORDERED_INPUT = "OrderedInput"; //$NON-NLS-1$
-	
+
 	/** Null parameter. */
 	String NULL_PARAMETER = "<null>"; //$NON-NLS-1$
 
@@ -105,7 +108,7 @@ public interface ATLLaunchConstants {
 
 	/** Delete icon path. */
 	String DELETE_ICON_PATH = "delete_obj.gif"; //$NON-NLS-1$
-	
+
 	/** ATL extensions. */
 	String[] ATL_EXTENSIONS = new String[] {"atl", "acg"}; //$NON-NLS-1$ //$NON-NLS-2$
 
