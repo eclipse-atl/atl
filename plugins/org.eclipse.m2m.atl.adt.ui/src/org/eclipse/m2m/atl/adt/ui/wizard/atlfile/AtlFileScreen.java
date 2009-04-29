@@ -182,6 +182,7 @@ public class AtlFileScreen extends WizardPage {
 				boolean isLibrary = comboType.getText().equals(TYPE_LIBRARY);
 				launchLabel.setEnabled(!isLibrary);
 				launchButton.setEnabled(!isLibrary);
+				launchButton.setSelection(!isLibrary);
 				checkValid();
 			}
 		});
