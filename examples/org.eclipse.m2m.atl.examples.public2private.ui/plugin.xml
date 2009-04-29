@@ -10,7 +10,7 @@
                class="org.eclipse.m2m.atl.examples.public2private.ui.PrivatizeAction"
                enablesFor="*"
                id="org.eclipse.m2m.atl.examples.public2privateAction"
-               icon="icons/atllogo_icon.gif"
+               icon="icons/atl_logo.gif"
                label="Privatize public fields">
          </action>
       </objectContribution>
