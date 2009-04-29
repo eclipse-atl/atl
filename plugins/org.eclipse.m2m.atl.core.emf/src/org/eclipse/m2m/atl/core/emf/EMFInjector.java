@@ -66,7 +66,8 @@ public class EMFInjector implements IInjector {
 				inject((EMFModel)targetModel, mainResource);
 				// Catching Exception to prevent EMF DiagnosticWrappedExceptions
 			} catch (Throwable e) {
-				throw new ATLCoreException(e.getMessage(), e);
+				throw new ATLCoreException(Messages.getString(
+						"EMFInjector.LOADING_ERROR", source, e.getMessage()), e); //$NON-NLS-1$ 
 			}
 		} else {
 			throw new ATLCoreException(Messages.getString("EMFInjector.NO_RESOURCE")); //$NON-NLS-1$
