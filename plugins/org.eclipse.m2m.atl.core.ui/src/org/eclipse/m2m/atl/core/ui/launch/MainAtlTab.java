@@ -48,6 +48,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.ui.ATLCoreUIPlugin;
 import org.eclipse.m2m.atl.core.ui.Messages;
@@ -738,8 +739,10 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(ATLLaunchConstants.ATL_COMPILER, atlcompiler);
 		if (isRefining) {
 			// refining mode workaround
-			configuration.setAttribute(ATLLaunchConstants.ORDERED_INPUT, new ArrayList<String>(savedInput.keySet()));
-			configuration.setAttribute(ATLLaunchConstants.ORDERED_OUTPUT, new ArrayList<String>(savedOutput.keySet()));
+			configuration.setAttribute(ATLLaunchConstants.ORDERED_INPUT, new ArrayList<String>(savedInput
+					.keySet()));
+			configuration.setAttribute(ATLLaunchConstants.ORDERED_OUTPUT, new ArrayList<String>(savedOutput
+					.keySet()));
 		}
 	}
 
@@ -749,7 +752,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getName()
 	 */
 	public String getName() {
-		return ATLLaunchConstants.MAIN_ATL_TAB_NAME;
+		return Messages.getString("ATLLaunchConstants.ATLCONFIGURATION"); //$NON-NLS-1$
 	}
 
 	/**

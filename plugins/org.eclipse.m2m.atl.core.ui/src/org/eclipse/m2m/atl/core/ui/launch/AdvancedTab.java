@@ -32,6 +32,7 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.core.ui.ATLCoreUIPlugin;
@@ -249,13 +250,15 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private void buildCheckButtons() {
-		Map<String, String> options = baseOptions;
+		Map<String, String> options = new HashMap<String, String>();
+		options.putAll(baseOptions);
 		options.putAll(CoreService.getLauncherOptions(atlVMs.getItem(atlVMs.getSelectionIndex())));
 		for (Iterator<Map.Entry<String, String>> iterator = options.entrySet().iterator(); iterator.hasNext();) {
 			Map.Entry<String, String> option = iterator.next();
 			final Button newCheckButton = new Button(groupOthersInformation, SWT.CHECK);
 			newCheckButton.setLayoutData(new GridData(GridData.FILL_BOTH));
 			newCheckButton.setText(option.getValue());
+			newCheckButton.setData(baseOptionsDefaultValues.get(option.getKey()));
 			newCheckButton.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -279,7 +282,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	}
 
 	public String getName() {
-		return ATLLaunchConstants.ADVANCED_TAB_NAME;
+		return Messages.getString("ATLLaunchConstants.ADVANCED"); //$NON-NLS-1$
 	}
 
 	/**

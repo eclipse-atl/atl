@@ -31,6 +31,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
@@ -107,11 +108,13 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 		// ATL modules
 		IFile currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(fileName));
-		String extension = currentAtlFile.getFileExtension().toLowerCase();
-		String currentAsmPath = currentAtlFile.getFullPath().toString().substring(0,
-				currentAtlFile.getFullPath().toString().length() - extension.length())
-				+ "asm"; //$NON-NLS-1$
-		currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(currentAsmPath));
+		String currentExtension = currentAtlFile.getFileExtension().toLowerCase();
+		if (currentExtension.equals("atl")) { //$NON-NLS-1$
+			String currentAsmPath = currentAtlFile.getFullPath().toString().substring(0,
+					currentAtlFile.getFullPath().toString().length() - currentExtension.length())
+					+ "asm"; //$NON-NLS-1$
+			currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(currentAsmPath));
+		}
 		InputStream asmInputStream = currentAtlFile.getContents();
 		InputStream[] modules = new InputStream[superimps.size() + 1];
 		modules[0] = asmInputStream;
@@ -207,7 +210,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 		} catch (ATLCoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		} catch (ATLExecutionException e) {
+		} catch (ATLExecutionException e) {			
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} finally {
 			monitor.done();
