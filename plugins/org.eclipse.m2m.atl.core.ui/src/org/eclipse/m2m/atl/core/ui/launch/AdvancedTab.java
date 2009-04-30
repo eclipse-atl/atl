@@ -88,7 +88,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	private Map<String, Button> buttonArray = new HashMap<String, Button>();;
 
 	private Map<String, String> baseOptions = new HashMap<String, String>();
-	
+
 	private Map<String, String> baseOptionsDefaultValues = new HashMap<String, String>();
 
 	{
@@ -454,6 +454,8 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * Display a message box with the text in parameter.
 	 * 
+	 * @param shell
+	 *            shell
 	 * @param textToDisplay
 	 *            the message
 	 */
