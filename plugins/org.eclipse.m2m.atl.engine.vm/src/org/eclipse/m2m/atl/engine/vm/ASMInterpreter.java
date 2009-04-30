@@ -41,20 +41,20 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
  * an injector to be used. * ModelSpec The specification of a model in the form <model-name> :
  * <metamodel-name>. For each model and metamodel specified in a ModelSpec there must be a specification of
  * how to load it (except for MOF). This specification is performed by specifying an additional command-line
- * argument. The name of this argument is the name of the model or metamodel and its value is a ModelLocation. *
- * ModelPath <model-name>=<path-name> Command-line parameters: * ASM : File('.asm') * copy : Boolean *
+ * argument. The name of this argument is the name of the model or metamodel and its value is a ModelLocation.
+ * * ModelPath <model-name>=<path-name> Command-line parameters: * ASM : File('.asm') * copy : Boolean *
  * source-models : List(ModelSpec) * target-models : List(ModelSpec) * step : Boolean * NetworkDebugger :
  * Boolean * testReserialization : Boolean when true, the ASM file is serialized in XML, text and binary *
  * reserialize : List(ModelPath) Specifies a list of models to serialize at the end of the execution of the
  * program. This is especially usefull to reserialize source models that have been modified during the
- * execution of the program (in-place transformations). * plugins : List(File('.jar')) Specifies * ModelLoader :
- * Enumeration('EMF', 'MDR') Operation signature encoding: Type Encoding Sample Type Sample Type encoded
- * Object J Void V Integer I Boolean B String S Double D EnumLiteral Z ATL context Module A ModelElement M<meta-model-name>!<element-name>;
- * XML!Node MXML!Node; Model L Sequence(<type>) Q<type> Sequence(String) QS Bag(<type>) G<type>
- * Collection(<type>) C<type> Set(<type>) E<type> OrderedSet(<type>) O<type> Native type N<name>;
- * TransientLink NTransientLink; Tuple(name1:<type1>, T<type1>name1; Tuple(n:String,v:Integer) TSn;Iv;;
- * name2:<type2>) <type2>name2;; Tuple(m:XML!Node,b:Boolean) TMXML!Node;m;Bb;; (attribute order is not
- * relevant: TIa;Ib;; and TIb;Ia;; denote the same TupleType) Sample method signature encodings: context
+ * execution of the program (in-place transformations). * plugins : List(File('.jar')) Specifies * ModelLoader
+ * : Enumeration('EMF', 'MDR') Operation signature encoding: Type Encoding Sample Type Sample Type encoded
+ * Object J Void V Integer I Boolean B String S Double D EnumLiteral Z ATL context Module A ModelElement
+ * M<meta-model-name>!<element-name>; XML!Node MXML!Node; Model L Sequence(<type>) Q<type> Sequence(String) QS
+ * Bag(<type>) G<type> Collection(<type>) C<type> Set(<type>) E<type> OrderedSet(<type>) O<type> Native type
+ * N<name>; TransientLink NTransientLink; Tuple(name1:<type1>, T<type1>name1; Tuple(n:String,v:Integer)
+ * TSn;Iv;; name2:<type2>) <type2>name2;; Tuple(m:XML!Node,b:Boolean) TMXML!Node;m;Bb;; (attribute order is
+ * not relevant: TIa;Ib;; and TIb;Ia;; denote the same TupleType) Sample method signature encodings: context
  * XML!Element def: getAttrVal(name : String) : String MXML!Element;.getAttrVal(S):S context String def:
  * toBoolean() : Boolean S.toBoolean():B context String def: toIntegerFromRoman() : Integer
  * S.toIntegerFromRoman():I
@@ -213,34 +213,27 @@ public class ASMInterpreter {
 
 		long end = new Date().getTime();
 		ATLLogger.info("Overall execution took " + ((end - start) / 1000.) + "s.");
-		ATLLogger.info("Program execution (exclusing model handler startup, program reading, xmi reading and writing) took "
+		ATLLogger
+				.info("Program execution (exclusing model handler startup, program reading, xmi reading and writing) took "
 						+ ((endProgram - startProgram) / 1000.) + "s.");
 	}
 
 	public ASMInterpreter(ASM asm, ASMModule asmModule, ASMExecEnv env, Map params) {
 		List args = new ArrayList();
-
-		try {
-
-			ASMOperation op = asm.getOperation("main");
-			args.add(asmModule); // self
-			for (Iterator i = op.getParameters().iterator(); i.hasNext();) {
-				ASMParameter p = (ASMParameter)i.next();
-				String pname = p.getName();
-				pname = op.resolveVariableName(Integer.parseInt(pname), 0);
-				String svalue = (String)params.get(pname);
-				ASMOclAny value = new ASMOclUndefined();
-				if (svalue != null) {
-					value = new ASMString(svalue);
-				}
-				args.add(value);
+		ASMOperation op = asm.getOperation("main");
+		args.add(asmModule); // self
+		for (Iterator i = op.getParameters().iterator(); i.hasNext();) {
+			ASMParameter p = (ASMParameter)i.next();
+			String pname = p.getName();
+			pname = op.resolveVariableName(Integer.parseInt(pname), 0);
+			String svalue = (String)params.get(pname);
+			ASMOclAny value = new ASMOclUndefined();
+			if (svalue != null) {
+				value = new ASMString(svalue);
 			}
-			returnValue = op.exec(ASMStackFrame.rootFrame(env, op, args));
-			env.terminated();
-
-		} catch (Exception e) {
-			ATLLogger.log(Level.SEVERE, e.getMessage(), e);
+			args.add(value);
 		}
+		returnValue = op.exec(ASMStackFrame.rootFrame(env, op, args));
 	}
 
 	public ASMOclAny getReturnValue() {
@@ -306,8 +299,8 @@ public class ASMInterpreter {
 	 * env.getModel(mAndMm[1]); if(mm == null) { String url = (String)params.get(mAndMm[1]);
 	 * System.out.println("Loading meta-model " + mAndMm[1] + " from \"" + url + "\".");
 	 * env.addModel(ASMMDRModel.loadASMMDRModel(mAndMm[1], (ASMMDRModel)env.getModel("MOF"), url)); // TODO:
-	 * use Hash for meta-models too } if(isTarget) { System.out.println("Creating model " + mAndMm[0] + " : " +
-	 * mAndMm[1]); env.addModel(ASMHashModel.newASMHashModel(mAndMm[0], env.getModel(mAndMm[1]))); } else {
+	 * use Hash for meta-models too } if(isTarget) { System.out.println("Creating model " + mAndMm[0] + " : "
+	 * + mAndMm[1]); env.addModel(ASMHashModel.newASMHashModel(mAndMm[0], env.getModel(mAndMm[1]))); } else {
 	 * String url = (String)params.get(mAndMm[0]); System.out.println("Loading model " + mAndMm[0] + " : " +
 	 * mAndMm[1] + " from \"" + url + "\"."); env.addModel(ASMHashModel.loadASMHashModel(mAndMm[0],
 	 * env.getModel(mAndMm[1]), (String)params.get(mAndMm[0]))); } } }
