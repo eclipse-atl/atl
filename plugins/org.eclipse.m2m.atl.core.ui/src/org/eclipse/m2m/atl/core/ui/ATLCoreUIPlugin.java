@@ -25,11 +25,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.IConsoleManager;
-import org.eclipse.ui.console.MessageConsole;
-import org.eclipse.ui.console.MessageConsoleStream;
+import org.eclipse.ui.console.IOConsoleOutputStream;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -42,7 +38,7 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	/** The shared instance. */
 	private static ATLCoreUIPlugin plugin;
 
-	private static MessageConsole console;
+	private static ATLConsole console;
 
 	private static Handler[] handlers = new Handler[3];
 
@@ -118,10 +114,10 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	 * Starts the ATL Console.
 	 */
 	public static void startConsole() {
-		console = findConsole("ATL"); //$NON-NLS-1$
-		MessageConsoleStream infoStream = console.newMessageStream();
-		MessageConsoleStream warningStream = console.newMessageStream();
-		MessageConsoleStream errorStream = console.newMessageStream();
+		console = ATLConsole.findConsole();
+		IOConsoleOutputStream infoStream = console.newOutputStream();
+		IOConsoleOutputStream warningStream = console.newOutputStream();
+		IOConsoleOutputStream errorStream = console.newOutputStream();
 
 		infoStream.setColor(new Color(Display.getCurrent(), new RGB(0, 0, 255)));
 		warningStream.setColor(new Color(Display.getCurrent(), new RGB(250, 100, 0)));
@@ -159,27 +155,6 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 		}
 	}
 
-	private static MessageConsole findConsole(String name) {
-		IConsoleManager consoleMgr = ConsolePlugin.getDefault().getConsoleManager();
-		IConsole[] existing = consoleMgr.getConsoles();
-		for (int i = 0; i < existing.length; i++) {
-			if (name.equals(existing[i].getName())) {
-				return (MessageConsole)existing[i];
-			}
-		}
-		// no console found, so create a new one
-		String pluginDir = getDefault().getBundle().getEntry("/").toString(); //$NON-NLS-1$
-		ImageDescriptor imageDescriptor = null;
-		try {
-			imageDescriptor = ImageDescriptor.createFromURL(new URL(pluginDir + "icons/atl_logo.gif")); //$NON-NLS-1$
-		} catch (MalformedURLException mfe) {
-			imageDescriptor = ImageDescriptor.getMissingImageDescriptor();
-		}
-		MessageConsole myConsole = new MessageConsole(name, imageDescriptor);
-		consoleMgr.addConsoles(new IConsole[] {myConsole});
-		return myConsole;
-	}
-	
 	/**
 	 * Returns the image descriptor with the given relative path.
 	 * 

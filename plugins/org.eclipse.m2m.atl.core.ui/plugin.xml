@@ -26,5 +26,17 @@
             id="org.eclipse.m2m.atl.core.ui.atlTransformationImage">
       </launchConfigurationTypeImage>
    </extension>
-
+   <extension
+         point="org.eclipse.ui.console.consolePatternMatchListeners">
+      <consolePatternMatchListener
+            class="org.eclipse.m2m.atl.core.ui.ATLConsoleTracker"
+            id="org.eclipse.m2m.atl.core.ui.ATLConsoleTracker"
+            regex="\(\S*atl\S*\)">
+         <enablement>
+            <test
+                  property="org.eclipse.ui.console.consoleTypeTest"
+                  value="atlConsole">
+            </test></enablement>
+      </consolePatternMatchListener>
+   </extension>
 </plugin>
