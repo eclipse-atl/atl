@@ -69,7 +69,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
@@ -873,6 +872,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 					getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 			elementTreeSelectionDialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
 			elementTreeSelectionDialog.setMessage(Messages.getString("MainAtlTab.SELECT_FILE")); //$NON-NLS-1$
+			elementTreeSelectionDialog.setTitle(Messages.getString("MainAtlTab.SELECT_FILE")); //$NON-NLS-1$
 			elementTreeSelectionDialog.setAllowMultiple(false);
 			elementTreeSelectionDialog.setDoubleClickSelects(true);
 			elementTreeSelectionDialog.addFilter(new ViewerFilter() {
@@ -941,7 +941,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		return false;
 	}
 
-	private Map<String, Object> buildMetamodelsControls(Group parent, final String metamodelName,
+	private Map<String, Object> buildMetamodelsControls(final Group parent, final String metamodelName,
 			final int type, boolean removable) {
 		Map<String, Object> thisGroupWidgets = new HashMap<String, Object>();
 
@@ -1057,7 +1057,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		browseEMFRegistry.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
-				DialogUriSelection launcher = new DialogUriSelection(new Shell());
+				DialogUriSelection launcher = new DialogUriSelection(parent.getShell());
 				launcher.create();
 				if (launcher.open() == Dialog.OK) {
 					metamodelLocation.setText("uri:" + launcher.getUriSelected()); //$NON-NLS-1$

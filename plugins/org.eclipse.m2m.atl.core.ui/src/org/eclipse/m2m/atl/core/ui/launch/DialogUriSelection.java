@@ -48,6 +48,7 @@ public class DialogUriSelection extends SelectionStatusDialog {
 		super(parent);
 		setStatusLineAboveButtons(true);
 		setShellStyle(SWT.CLOSE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM | SWT.RESIZE);
+		setTitle(Messages.getString("DialogUriSelection.SELECT_URI")); //$NON-NLS-1$
 	}
 
 	/**

@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.ui.launch;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,6 +49,8 @@ import org.eclipse.m2m.atl.core.ui.Messages;
  */
 public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
 
+	private Map<String, IFile> moduleFilesByModuleName;
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -56,6 +60,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	@SuppressWarnings("unchecked")
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
+		moduleFilesByModuleName = new HashMap<String, IFile>();
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
@@ -115,6 +120,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 					+ "asm"; //$NON-NLS-1$
 			currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(currentAsmPath));
 		}
+
+		moduleFilesByModuleName.put(computeModuleName(currentAtlFile), currentAtlFile);
+
 		InputStream asmInputStream = currentAtlFile.getContents();
 		InputStream[] modules = new InputStream[superimps.size() + 1];
 		modules[0] = asmInputStream;
@@ -122,6 +130,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			String moduleFileName = superimps.get(i - 1);
 			IFile moduleFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
 					Path.fromOSString(moduleFileName));
+			moduleFilesByModuleName.put(computeModuleName(moduleFile), moduleFile);
 			modules[i] = moduleFile.getContents();
 		}
 
@@ -131,6 +140,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			String libName = i.next();
 			IFile libFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
 					Path.fromOSString(libs.get(libName)));
+			moduleFilesByModuleName.put(libName, libFile);
 			libraries.put(libName, libFile.getContents());
 		}
 
@@ -210,12 +220,55 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 		} catch (ATLCoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		} catch (ATLExecutionException e) {			
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		} catch (ATLExecutionException e) {
+			String message = e.getLocalizedMessage();
+			if (e.getModuleName() != null) {
+				String path = getFilePathFromModuleName(e.getModuleName());
+				if (path != null) {
+					message += " (" + path + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			}
+			ATLLogger.log(Level.SEVERE, message, e);
 		} finally {
 			monitor.done();
 		}
+	}
 
+	private String getFilePathFromModuleName(String moduleName) {
+		IFile file = moduleFilesByModuleName.get(moduleName);
+		if (file != null) {
+			String ext = file.getFileExtension().toLowerCase();
+			if (ext.equals("asm")) { //$NON-NLS-1$
+				String path = file.getFullPath().toString().substring(0,
+						file.getFullPath().toString().length() - ext.length())
+						+ "atl"; //$NON-NLS-1$
+				file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
+			}
+			if (file.isAccessible()) {
+				return file.getFullPath().toString();
+			}
+		}
+		return null;
+	}
+
+	private static String computeModuleName(IFile file) {
+		String res = file.getName();
+		try {
+			InputStreamReader streamReader = new InputStreamReader(file.getContents());
+			BufferedReader buffer = new BufferedReader(streamReader);
+			String line = ""; //$NON-NLS-1$
+			while (null != (line = buffer.readLine())) {
+				if (line.contains("<constant value=")) { //$NON-NLS-1$
+					res = line.split("\\\"")[1]; //$NON-NLS-1$
+					buffer.close();
+					streamReader.close();
+					break;
+				}
+			}
+		} catch (Throwable e) {
+			// DO NOTHING
+		}
+		return res;
 	}
 
 	/**

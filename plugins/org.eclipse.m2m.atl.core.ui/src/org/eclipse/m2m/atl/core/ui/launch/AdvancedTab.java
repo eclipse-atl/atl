@@ -385,7 +385,8 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		ElementTreeSelectionDialog elementTreeSelectionDialog = new ElementTreeSelectionDialog(getShell(),
 				new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 		elementTreeSelectionDialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-		elementTreeSelectionDialog.setMessage(Messages.getString("AdvancedTab.CHOOSE") + type); //$NON-NLS-1$
+		elementTreeSelectionDialog.setMessage(Messages.getString("AdvancedTab.CHOOSE")); //$NON-NLS-1$
+		elementTreeSelectionDialog.setTitle(Messages.getString("AdvancedTab.CHOOSE")); //$NON-NLS-1$
 		elementTreeSelectionDialog.setAllowMultiple(false);
 		elementTreeSelectionDialog.setDoubleClickSelects(true);
 		elementTreeSelectionDialog.addFilter(new ViewerFilter() {
@@ -440,7 +441,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	private void removePath(Table table) {
 		int index = table.getSelectionIndex();
 		if (index == -1) {
-			messageBox(Messages.getString("AdvancedTab.CHOOSEENTRY")); //$NON-NLS-1$
+			messageBox(container.getShell(), Messages.getString("AdvancedTab.CHOOSEENTRY")); //$NON-NLS-1$
 			return;
 		}
 		table.remove(index);
@@ -456,8 +457,8 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	 * @param textToDisplay
 	 *            the message
 	 */
-	public static void messageBox(String textToDisplay) {
-		MessageBox msgBox = new MessageBox(new Shell(), SWT.APPLICATION_MODAL | SWT.OK);
+	public static void messageBox(Shell shell, String textToDisplay) {
+		MessageBox msgBox = new MessageBox(shell, SWT.APPLICATION_MODAL | SWT.OK);
 		msgBox.setText(Messages.getString("AdvancedTab.ERROR")); //$NON-NLS-1$
 		msgBox.setMessage(textToDisplay);
 		msgBox.open();
