@@ -100,5 +100,13 @@ public abstract class AbstractStackFrame {
 	public ExecEnv getExecEnv() {
 		return execEnv;
 	}
+	
+	public Operation getOperation() {
+		return operation;
+	}
+
+	public AbstractStackFrame getCaller() {
+		return caller;
+	}
 
 }

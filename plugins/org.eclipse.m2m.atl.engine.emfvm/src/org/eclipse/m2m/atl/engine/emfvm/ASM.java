@@ -235,6 +235,10 @@ public class ASM {
 		}
 	}
 
+	public String getName() {
+		return name;
+	}
+
 	@SuppressWarnings("unchecked")
 	private List<LibExtension> getAllExtensions(Map<String, Object> options) {
 		List<LibExtension> res = new ArrayList<LibExtension>();

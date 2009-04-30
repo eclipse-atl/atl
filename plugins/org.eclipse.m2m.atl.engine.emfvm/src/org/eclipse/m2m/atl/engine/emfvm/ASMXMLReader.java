@@ -105,7 +105,7 @@ public class ASMXMLReader extends DefaultHandler {
 		} else if (qName.equals("field")) { //$NON-NLS-1$
 			ret.addField(resolve(attrs.get("name")), resolve(attrs.get("type"))); //$NON-NLS-1$ //$NON-NLS-2$
 		} else if (qName.equals("operation")) { //$NON-NLS-1$
-			currentOperation = new ASMOperation(resolve(attrs.get("name"))); //$NON-NLS-1$
+			currentOperation = new ASMOperation(ret, resolve(attrs.get("name"))); //$NON-NLS-1$
 			bytecodes = new ArrayList<Bytecode>();
 		} else if (qName.equals("context")) { //$NON-NLS-1$
 			currentOperation.setContext(resolve(attrs.get("type"))); //$NON-NLS-1$

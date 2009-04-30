@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 
 import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame;
+import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
 
 /**
  * Exceptions thrown by the VM.
@@ -90,6 +91,33 @@ public class VMException extends ATLExecutionException {
 			s.println("Java Stack:"); //$NON-NLS-1$
 			// Java stack trace :
 			super.printStackTrace(s);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.common.ATLExecutionException#getModuleName()
+	 */
+	@Override
+	public String getModuleName() {
+		ASMOperation operation = getASMOperation(frame);
+		if (operation != null) {
+			return operation.getAsm().getName();
+		}
+		return null;
+	}
+
+	private static ASMOperation getASMOperation(AbstractStackFrame frame) {
+		if (frame == null) {
+			return null;
+		} else {
+			Operation operation = frame.getOperation();
+			if (operation instanceof ASMOperation) {
+				return (ASMOperation)operation;
+			} else {
+				return getASMOperation(frame.getCaller());
+			}
 		}
 	}
 }

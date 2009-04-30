@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.24 2009/04/21 14:07:04 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.25 2009/04/30 17:41:06 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -68,15 +68,20 @@ public class ASMOperation extends Operation {
 
 	private List<LocalVariableEntry> localVariableTable = new ArrayList<LocalVariableEntry>();
 
+	private ASM asm;
+
 	/**
 	 * ASMOperation constructor.
 	 * 
+	 * @param asm
+	 *            the parent asm
 	 * @param name
 	 *            operation name
 	 */
-	public ASMOperation(String name) {
+	public ASMOperation(ASM asm, String name) {
 		super(1); // maxLocals will be computed later in setBytecodes()
 		this.name = name;
+		this.asm = asm;
 	}
 
 	/**
@@ -610,6 +615,10 @@ public class ASMOperation extends Operation {
 	@Override
 	public Object exec(AbstractStackFrame frame) {
 		return exec(frame, null);
+	}
+
+	public ASM getAsm() {
+		return asm;
 	}
 
 	private static Class<?>[] getTypesOf(Object[] arguments) {
