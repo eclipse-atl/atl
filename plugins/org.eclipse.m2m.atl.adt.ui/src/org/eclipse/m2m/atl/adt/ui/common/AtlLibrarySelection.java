@@ -8,10 +8,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.m2m.atl.adt.ui.wizard.atlfile;
+package org.eclipse.m2m.atl.adt.ui.common;
 
 import java.util.Arrays;
-import java.util.Set;
+import java.util.Map;
 
 import org.eclipse.m2m.atl.adt.ui.Messages;
 import org.eclipse.swt.SWT;
@@ -37,18 +37,21 @@ public class AtlLibrarySelection extends AbstractAtlSelection {
 
 	private Text libraryNameText;
 
+	private Map<String, String> librariesFromParent;
+
 	/**
 	 * Constructor.
 	 * 
-	 * @param parentScreen
-	 *            the parent screen
 	 * @param parent
 	 *            the parent shell
 	 * @param title
 	 *            the title
+	 * @param libraries
+	 *            libraries from parent
 	 */
-	public AtlLibrarySelection(AtlFileScreen parentScreen, Shell parent, String title) {
-		super(parentScreen, parent, title);
+	public AtlLibrarySelection(Shell parent, String title, Map<String, String> libraries) {
+		super(parent, title);
+		this.librariesFromParent = libraries;
 	}
 
 	/**
@@ -99,12 +102,12 @@ public class AtlLibrarySelection extends AbstractAtlSelection {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.adt.ui.wizard.atlfile.AbstractAtlSelection#create()
+	 * @see org.eclipse.m2m.atl.adt.ui.common.AbstractAtlSelection#create()
 	 */
 	@Override
 	public void create() {
 		super.create();
-		libraryNameText.setText(getDefaultName(DEFAULT_NAME, getExistingLibraries()));
+		libraryNameText.setText(getDefaultName(DEFAULT_NAME, librariesFromParent.keySet()));
 		libraryNameText.selectAll();
 	}
 
@@ -122,14 +125,10 @@ public class AtlLibrarySelection extends AbstractAtlSelection {
 			return Messages.getString("AtlLibrarySelection.SET_NAME"); //$NON-NLS-1$
 		} else if (!text.matches(NAMING_REGEX)) {
 			return Messages.getString("AtlLibrarySelection.INVALID_NAME"); //$NON-NLS-1$
-		} else if (getExistingLibraries().contains(text)) {
+		} else if (librariesFromParent.containsKey(text)) {
 			return Messages.getString("AtlLibrarySelection.LIBRARY_EXISTS"); //$NON-NLS-1$
 		}
 		return null;
-	}
-
-	private Set<String> getExistingLibraries() {
-		return parentScreen.getLibraries().keySet();
 	}
 
 }

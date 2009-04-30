@@ -8,10 +8,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.m2m.atl.adt.ui.wizard.atlfile;
+package org.eclipse.m2m.atl.adt.ui.common;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.presentation.EcoreActionBarContributor.ExtendedLoadResourceAction.ExtendedLoadResourceDialog;
@@ -45,27 +46,41 @@ public class AtlModelSelection extends AbstractAtlSelection {
 
 	private String defaultModelName;
 
+	private Map<String, String> inputFromParent;
+
+	private Map<String, String> outputFromParent;
+
+	private Map<String, String> pathsFromParent;
+
 	/**
 	 * Constructor.
 	 * 
-	 * @param parentScreen
-	 *            the parent screen
 	 * @param parent
 	 *            the parent shell
 	 * @param title
 	 *            the title
 	 * @param defaultModelName
 	 *            the default model name
+	 * @param input
+	 *            input from parent
+	 * @param output
+	 *            output from parent
+	 * @param paths
+	 *            paths from parent
 	 */
-	public AtlModelSelection(AtlFileScreen parentScreen, Shell parent, String title, String defaultModelName) {
-		super(parentScreen, parent, title);
+	public AtlModelSelection(Shell parent, String title, String defaultModelName, Map<String, String> input,
+			Map<String, String> output, Map<String, String> paths) {
+		super(parent, title);
 		this.defaultModelName = defaultModelName;
+		this.inputFromParent = input;
+		this.outputFromParent = output;
+		this.pathsFromParent = paths;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.adt.ui.wizard.atlfile.AbstractAtlSelection#create()
+	 * @see org.eclipse.m2m.atl.adt.ui.common.AbstractAtlSelection#create()
 	 */
 	@Override
 	public void create() {
@@ -79,15 +94,15 @@ public class AtlModelSelection extends AbstractAtlSelection {
 
 	private Set<String> getExistingModels() {
 		Set<String> res = new HashSet<String>();
-		res.addAll(parentScreen.getInput().keySet());
-		res.addAll(parentScreen.getOutput().keySet());
+		res.addAll(inputFromParent.keySet());
+		res.addAll(outputFromParent.keySet());
 		return res;
 	}
 
 	private Set<String> getExistingMetamodels() {
 		Set<String> res = new HashSet<String>();
-		res.addAll(parentScreen.getInput().values());
-		res.addAll(parentScreen.getOutput().values());
+		res.addAll(inputFromParent.values());
+		res.addAll(outputFromParent.values());
 		return res;
 	}
 
@@ -161,7 +176,7 @@ public class AtlModelSelection extends AbstractAtlSelection {
 		} else if (getExistingModels().contains(modelNameText.getText())) {
 			nok(Messages.getString("AtlModelSelection.MODEL_EXISTS")); //$NON-NLS-1$
 		} else if (getExistingMetamodels().contains(metamodelNameText.getText())) {
-			loadResourceBox.setText(parentScreen.getPaths().get(metamodelNameText.getText()));
+			loadResourceBox.setText(pathsFromParent.get(metamodelNameText.getText()));
 			warn(Messages.getString("AtlModelSelection.METAMODEL_EXISTS")); //$NON-NLS-1$
 		} else {
 			ok();

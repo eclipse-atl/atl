@@ -8,11 +8,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.m2m.atl.adt.ui.wizard.atlfile;
+package org.eclipse.m2m.atl.adt.ui.common;
 
 import java.util.Collection;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.swt.SWT;
@@ -28,23 +29,18 @@ public abstract class AbstractAtlSelection extends SelectionStatusDialog {
 
 	protected static final String NAMING_REGEX = "[a-zA-Z0-9]+"; //$NON-NLS-1$
 
-	protected AtlFileScreen parentScreen;
-
 	private IStatus status;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param parentScreen
-	 *            the parent screen
 	 * @param parent
 	 *            the parent shell
 	 * @param title
 	 *            the title
 	 */
-	public AbstractAtlSelection(AtlFileScreen parentScreen, Shell parent, String title) {
+	public AbstractAtlSelection(Shell parent, String title) {
 		super(parent);
-		this.parentScreen = parentScreen;
 		setTitle(title);
 		setStatusLineAboveButtons(true);
 		setShellStyle(SWT.CLOSE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM | SWT.RESIZE);
@@ -71,9 +67,13 @@ public abstract class AbstractAtlSelection extends SelectionStatusDialog {
 	 *            the message
 	 */
 	protected void nok(String message) {
-		status = new Status(IStatus.ERROR, AtlUIPlugin.PLUGIN_ID, IStatus.ERROR, message, null);
-		updateStatus(status);
+		if (Platform.isRunning()) {
+
+			status = new Status(IStatus.ERROR, AtlUIPlugin.PLUGIN_ID, IStatus.ERROR, message, null);
+			updateStatus(status);
+		}
 		getOkButton().setEnabled(false);
+
 	}
 
 	/**

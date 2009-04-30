@@ -21,6 +21,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.Messages;
+import org.eclipse.m2m.atl.adt.ui.common.AbstractAtlSelection;
+import org.eclipse.m2m.atl.adt.ui.common.AtlLibrarySelection;
+import org.eclipse.m2m.atl.adt.ui.common.AtlModelSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -147,20 +150,24 @@ public class AtlFileScreen extends WizardPage {
 
 		// Input / Output models
 		data = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
-		inputList = createSubControl(container, Messages.getString("AtlFileScreen.InputModels"), //$NON-NLS-1$ 
-				new AtlModelSelection(this, container.getShell(), Messages
-						.getString("AtlFileScreen.InputModelCreation"), "IN"), data, input); //$NON-NLS-1$ //$NON-NLS-2$ 
-		outputList = createSubControl(container, Messages.getString("AtlFileScreen.OutputModels"),//$NON-NLS-1$ 
-				new AtlModelSelection(this, container.getShell(), Messages
-						.getString("AtlFileScreen.OutputModelCreation"), "OUT"), data, output); //$NON-NLS-1$ //$NON-NLS-2$ 
+		inputList = createSubControl(
+				container,
+				Messages.getString("AtlFileScreen.InputModels"), //$NON-NLS-1$ 
+				new AtlModelSelection(container.getShell(), Messages
+						.getString("AtlFileScreen.InputModelCreation"), "IN", input, output, paths), data, input); //$NON-NLS-1$ //$NON-NLS-2$ 
+		outputList = createSubControl(
+				container,
+				Messages.getString("AtlFileScreen.OutputModels"),//$NON-NLS-1$ 
+				new AtlModelSelection(container.getShell(), Messages
+						.getString("AtlFileScreen.OutputModelCreation"), "OUT", input, output, paths), data, output); //$NON-NLS-1$ //$NON-NLS-2$ 
 		addSeparator(container);
 
 		// Libraries
 		data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
 		data.heightHint = 40;
 		libList = createSubControl(container, Messages.getString("AtlFileScreen.ATLLibrary"),//$NON-NLS-1$
-				new AtlLibrarySelection(this, container.getShell(), Messages
-						.getString("AtlFileScreen.ATLLibraryCreation")), data, libraries); //$NON-NLS-1$ 
+				new AtlLibrarySelection(container.getShell(), Messages
+						.getString("AtlFileScreen.ATLLibraryCreation"), libraries), data, libraries); //$NON-NLS-1$ 
 
 		addSeparator(container);
 
