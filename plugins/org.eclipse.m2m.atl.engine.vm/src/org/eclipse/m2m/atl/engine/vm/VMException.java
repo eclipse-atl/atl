@@ -70,4 +70,30 @@ public class VMException extends ATLExecutionException {
 			super.printStackTrace(s);
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.common.ATLExecutionException#getModuleName()
+	 */
+	public String getModuleName() {
+		ASMOperation operation = getASMOperation(frame);
+		if (operation != null) {
+			return operation.getASM().getName();
+		}
+		return null;
+	}
+
+	private static ASMOperation getASMOperation(StackFrame frame) {
+		if (frame == null) {
+			return null;
+		} else {
+			Operation operation = frame.getOperation();
+			if (operation instanceof ASMOperation) {
+				return (ASMOperation)operation;
+			} else {
+				return getASMOperation(frame.getParent());
+			}
+		}
+	}
 }
