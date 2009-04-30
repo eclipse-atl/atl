@@ -19,10 +19,10 @@ import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.emfvm.ASMOperation;
 import org.eclipse.m2m.atl.engine.emfvm.StackFrame;
+import org.eclipse.m2m.atl.engine.emfvm.VMException;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Tuple;
 
@@ -127,7 +127,7 @@ public class SOTSExpression2 {
 							}
 							Operation oper = frame.getExecEnv().getOperation(type, t.value);
 
-							if (oper != null) {								
+							if (oper != null) {
 								Object v = null;
 								StackFrame calleeFrame = (StackFrame)frame.newFrame(oper);
 								Object[] arguments = calleeFrame.getLocalVars();
@@ -139,7 +139,8 @@ public class SOTSExpression2 {
 								}
 								col.add(v);
 							} else {
-								throw new ATLExecutionException("Could not find operation " + t.value + " on " + o);
+								throw new VMException(frame, "Could not find operation " + t.value + " on "
+										+ o);
 							}
 
 						}
