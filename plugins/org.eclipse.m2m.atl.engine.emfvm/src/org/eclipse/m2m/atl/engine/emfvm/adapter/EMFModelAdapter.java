@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EClassImpl;
@@ -544,14 +545,19 @@ public class EMFModelAdapter implements IModelAdapter {
 							Object v = i.next();
 							oldCol.add(eenum.getEEnumLiteralByLiteral(v.toString()).getInstance());
 						}
-					} else if (allowInterModelReferences) {
-						oldCol.addAll((Collection<?>)settableValue);
-					} else { // !allowIntermodelReferences
+					} else {
 						for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
 							Object v = i.next();
 							if (v instanceof EObject) {
 								if (execEnv.getModelOf(eo) == execEnv.getModelOf(v)) {
 									oldCol.add(v);
+								} else if (allowInterModelReferences && feature instanceof EReference) {
+									EReference ref = (EReference)feature;
+									if (!ref.isContainer() && !ref.isContainment()) {
+										oldCol.add(v);
+									} else {
+										// containment references cannot span across models
+									}
 								}
 							} else {
 								oldCol.add(v);
