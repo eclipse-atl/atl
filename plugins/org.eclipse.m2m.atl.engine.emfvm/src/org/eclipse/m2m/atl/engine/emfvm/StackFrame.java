@@ -96,12 +96,6 @@ public class StackFrame extends AbstractStackFrame {
 	@Override
 	public String toString() {
 		StringBuffer ret = new StringBuffer();
-
-		if (caller != null) {
-			ret.append(caller.toString());
-			ret.append('\n');
-		}
-
 		if (operation instanceof ASMOperation) {
 			ret.append(((ASMOperation)operation).getName());
 			if (operation instanceof ASMOperation) {
@@ -130,6 +124,10 @@ public class StackFrame extends AbstractStackFrame {
 			}
 		} else {
 			ret.append("<native>"); //$NON-NLS-1$
+		}
+		if (caller != null) {
+			ret.append('\n');
+			ret.append(caller.toString());
 		}
 		return ret.toString();
 	}
