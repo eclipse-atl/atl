@@ -25,7 +25,6 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlRunTarget;
-import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
@@ -42,6 +41,7 @@ import org.eclipse.m2m.atl.engine.vm.AtlSuperimposeModule;
 import org.eclipse.m2m.atl.engine.vm.Debugger;
 import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
 import org.eclipse.m2m.atl.engine.vm.SimpleDebugger;
+import org.eclipse.m2m.atl.engine.vm.VMException;
 import org.eclipse.m2m.atl.engine.vm.AtlSuperimposeModule.AtlSuperimposeModuleException;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
@@ -195,7 +195,7 @@ public class RegularVMLauncher implements ILauncher {
 				}
 			}
 		} catch (DebugException e) {
-			throw new ATLExecutionException(e.getLocalizedMessage(), e);
+			throw new VMException(null, e.getLocalizedMessage(), e);
 		}
 		return null;
 	}
@@ -238,7 +238,7 @@ public class RegularVMLauncher implements ILauncher {
 				env.registerOperations(module);
 			}
 		} catch (AtlSuperimposeModuleException e) {
-			throw new ATLExecutionException(e.getLocalizedMessage(), e);
+			throw new VMException(null, e.getLocalizedMessage(), e);
 		}
 
 		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
