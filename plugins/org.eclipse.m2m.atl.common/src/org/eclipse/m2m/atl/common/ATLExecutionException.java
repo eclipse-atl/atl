@@ -15,7 +15,7 @@ package org.eclipse.m2m.atl.common;
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public class ATLExecutionException extends RuntimeException {
+public abstract class ATLExecutionException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
