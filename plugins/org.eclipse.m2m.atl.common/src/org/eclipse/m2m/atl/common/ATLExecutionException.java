@@ -41,4 +41,11 @@ public abstract class ATLExecutionException extends RuntimeException {
 		super(message, cause);
 	}
 
+	/**
+	 * Returns the name of the module where the error occurred.
+	 * 
+	 * @return the name of the module where the error occurred
+	 */
+	public abstract String getModuleName();
+
 }
