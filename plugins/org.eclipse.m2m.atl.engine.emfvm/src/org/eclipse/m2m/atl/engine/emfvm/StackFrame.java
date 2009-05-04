@@ -31,7 +31,6 @@ public class StackFrame extends AbstractStackFrame {
 	 * @param execEnv
 	 *            the execution environment
 	 * @param asmModule
-	 * 
 	 *            the transformation module
 	 * @param operation
 	 *            the main operation
@@ -97,18 +96,23 @@ public class StackFrame extends AbstractStackFrame {
 	public String toString() {
 		StringBuffer ret = new StringBuffer();
 		if (operation instanceof ASMOperation) {
+			ret.append("at "); //$NON-NLS-1$
 			ret.append(((ASMOperation)operation).getName());
 			if (operation instanceof ASMOperation) {
-				ret.append(": "); //$NON-NLS-1$
-				ASMOperation ao = (ASMOperation)operation;
+				ret.append("("); //$NON-NLS-1$
+				ret.append(((ASMOperation)operation).getAsm().getName() + ".atl"); //$NON-NLS-1$
+
 				String location = getLocation();
 				if (location != null) {
-					ret.append(location);
-					ret.append(' ');
+					if (location.matches("[0-9]*:[0-9]*-[0-9]*:[0-9]*#[0-9]*")) { //$NON-NLS-1$
+						int lineNumber = new Integer(location.split("-")[0].split(":")[0]).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
+						ret.append(":" + lineNumber); //$NON-NLS-1$
+					}
 				}
-
+				ret.append(")"); //$NON-NLS-1$
 				ret.append("\n\tlocal variables: "); //$NON-NLS-1$
 				boolean first = true;
+				ASMOperation ao = (ASMOperation)operation;
 				for (int i = 0; i < ao.getMaxLocals(); i++) {
 					String varName = ao.resolveVariableName(i, pc);
 					if (varName != null) {
