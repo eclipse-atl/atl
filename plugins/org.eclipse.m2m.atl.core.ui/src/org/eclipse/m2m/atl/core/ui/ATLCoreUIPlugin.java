@@ -156,6 +156,15 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	}
 
 	/**
+	 * Clears the ATL Console.
+	 */
+	public static void clearConsole() {
+		if (console != null) {
+			console.clearConsole();
+		}
+	}
+
+	/**
 	 * Returns the image descriptor with the given relative path.
 	 * 
 	 * @param name

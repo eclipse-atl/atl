@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -69,6 +70,9 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	/** Sets generated files as derived. */
 	public static final String OPTION_DERIVED = "OPTION_DERIVED"; //$NON-NLS-1$
 
+	/** Clears console after each launch. */
+	public static final String OPTION_CLEAR = "OPTION_CLEAR"; //$NON-NLS-1$
+
 	static final String SUPERIMPOSE = "SUPERIMPOSE"; //$NON-NLS-1$
 
 	private Composite container;
@@ -87,13 +91,15 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 
 	private Map<String, Button> buttonArray = new HashMap<String, Button>();;
 
-	private Map<String, String> baseOptions = new HashMap<String, String>();
+	private Map<String, String> baseOptions = new LinkedHashMap<String, String>();
 
-	private Map<String, String> baseOptionsDefaultValues = new HashMap<String, String>();
+	private Map<String, String> defaultValues = new HashMap<String, String>();
 
 	{
 		baseOptions.put(OPTION_DERIVED, "Set generated files as derived"); //$NON-NLS-1$
-		baseOptionsDefaultValues.put(OPTION_DERIVED, "true"); //$NON-NLS-1$
+		baseOptions.put(OPTION_CLEAR, "Clear console before launch"); //$NON-NLS-1$
+		defaultValues.put(OPTION_DERIVED, "true"); //$NON-NLS-1$
+		defaultValues.put(OPTION_CLEAR, "false"); //$NON-NLS-1$
 	}
 
 	/**
@@ -191,15 +197,12 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		atlVMs.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 		atlVMs.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				clearCheckButtons();
 				buildCheckButtons();
 				container.layout();
 				updateLaunchConfigurationDialog();
 			}
 		});
 		groupATLVMs.setLayout(new GridLayout(2, false));
-
-		buildCheckButtons();
 
 		groupLayout = new GridLayout();
 		groupLayout.numColumns = 1;
@@ -241,16 +244,13 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		}
 		return options;
 	}
-
-	private void clearCheckButtons() {
+	
+	private void buildCheckButtons() {
 		for (Iterator<Button> iterator = buttonArray.values().iterator(); iterator.hasNext();) {
 			iterator.next().dispose();
 		}
 		buttonArray = new HashMap<String, Button>();
-	}
-
-	private void buildCheckButtons() {
-		Map<String, String> options = new HashMap<String, String>();
+		Map<String, String> options = new LinkedHashMap<String, String>();
 		options.putAll(baseOptions);
 		options.putAll(CoreService.getLauncherOptions(atlVMs.getItem(atlVMs.getSelectionIndex())));
 		for (Iterator<Map.Entry<String, String>> iterator = options.entrySet().iterator(); iterator.hasNext();) {
@@ -258,7 +258,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 			final Button newCheckButton = new Button(groupOthersInformation, SWT.CHECK);
 			newCheckButton.setLayoutData(new GridData(GridData.FILL_BOTH));
 			newCheckButton.setText(option.getValue());
-			newCheckButton.setData(baseOptionsDefaultValues.get(option.getKey()));
+			newCheckButton.setSelection(getDefaultValue(option.getKey()));
 			newCheckButton.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -269,16 +269,12 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private void initCheckButtons(ILaunchConfiguration configuration) throws CoreException {
-		Map<String, String> optionsValues = baseOptionsDefaultValues;
-		optionsValues.putAll(configuration.getAttribute(ATLLaunchConstants.OPTIONS, Collections
-				.<String, String> emptyMap()));
-		for (Iterator<String> it = buttonArray.keySet().iterator(); it.hasNext();) {
-			String currentButtonName = it.next();
-			Button currentButton = buttonArray.get(currentButtonName);
-			currentButton.setSelection(new Boolean(optionsValues.get(currentButtonName)).booleanValue());
+	private boolean getDefaultValue(String key) {
+		String value = defaultValues.get(key);
+		if (value != null) {
+			return new Boolean(value).booleanValue();
 		}
+		return false;
 	}
 
 	public String getName() {
@@ -290,6 +286,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	 * 
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#initializeFrom(org.eclipse.debug.core.ILaunchConfiguration)
 	 */
+	@SuppressWarnings("unchecked")
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
 			List<?> superimpose = configuration.getAttribute(ATLLaunchConstants.SUPERIMPOSE,
@@ -311,7 +308,9 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 
-			initCheckButtons(configuration);
+			defaultValues.putAll(configuration.getAttribute(ATLLaunchConstants.OPTIONS, Collections
+					.<String, String> emptyMap()));
+			buildCheckButtons();
 		} catch (CoreException e) {
 			tableSuperimpose.removeAll();
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -333,8 +332,9 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+		defaultValues = getCheckButtonsValues();
 		configuration.setAttribute(ATLLaunchConstants.SUPERIMPOSE, createSuperimposedList());
-		configuration.setAttribute(ATLLaunchConstants.OPTIONS, getCheckButtonsValues());
+		configuration.setAttribute(ATLLaunchConstants.OPTIONS, defaultValues);
 		configuration.setAttribute(ATLLaunchConstants.ATL_VM, atlVMs.getItem(atlVMs.getSelectionIndex()));
 	}
 

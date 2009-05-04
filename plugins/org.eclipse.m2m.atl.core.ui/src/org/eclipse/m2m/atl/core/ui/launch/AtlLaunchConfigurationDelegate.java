@@ -39,6 +39,7 @@ import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.core.service.LauncherService;
+import org.eclipse.m2m.atl.core.ui.ATLCoreUIPlugin;
 import org.eclipse.m2m.atl.core.ui.Messages;
 
 /**
@@ -95,6 +96,12 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				Collections.EMPTY_MAP);
 		options.put(ATLLaunchConstants.OPTION_MODEL_HANDLER, modelHandlers);
 
+		
+		Object clearConsole = options.get(AdvancedTab.OPTION_CLEAR);
+		if (clearConsole != null && "true".equals(clearConsole)) { //$NON-NLS-1$
+			ATLCoreUIPlugin.clearConsole();
+		}
+		
 		ILauncher launcher = null;
 		try {
 			// API extensions management
