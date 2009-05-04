@@ -11,17 +11,13 @@
 package org.eclipse.m2m.atl.core.ui;
 
 import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.ui.console.FileLink;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.core.ui.launch.AtlLaunchConfigurationDelegate;
 import org.eclipse.ui.console.IPatternMatchListenerDelegate;
 import org.eclipse.ui.console.PatternMatchEvent;
 import org.eclipse.ui.console.TextConsole;
@@ -32,8 +28,6 @@ import org.eclipse.ui.console.TextConsole;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class ATLConsoleTracker implements IPatternMatchListenerDelegate {
-
-	private static Pattern pattern = Pattern.compile("[0-9]*:[0-9]*-[0-9]*:[0-9]*"); //$NON-NLS-1$
 
 	TextConsole console;
 
@@ -66,18 +60,21 @@ public class ATLConsoleTracker implements IPatternMatchListenerDelegate {
 			int offset = event.getOffset() + 1;
 			int length = event.getLength() - 2;
 			IDocument document = console.getDocument();
-			String fileName = document.get(offset, length);
-			String trace = document.get(offset, document.getLength() - offset);
-			IPath path = Path.fromOSString(fileName);
-			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
-			if (file.isAccessible()) {
-				int lineNumber = -1;
-				Matcher matcher = pattern.matcher(trace);
-				if (matcher.find()) {
-					String location = matcher.group();
-					lineNumber = new Integer(location.split("-")[0].split(":")[0]).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
+			String info = document.get(offset, length);
+
+			String moduleName = ""; //$NON-NLS-1$
+			if (info.contains(".atl")) { //$NON-NLS-1$
+				moduleName = info.split(".atl")[0]; //$NON-NLS-1$
+			}
+			int lineNumber = -1;
+			if (info.contains(":")) { //$NON-NLS-1$
+				lineNumber = new Integer(info.split(":")[1]).intValue(); //$NON-NLS-1$
+			}
+			IFile file = AtlLaunchConfigurationDelegate.getFileFromModuleName(moduleName);
+			if (file != null) {
+				if (file.isAccessible()) {
+					console.addHyperlink(new FileLink(file, null, -1, -1, lineNumber), offset, length);
 				}
-				console.addHyperlink(new FileLink(file, null, -1, -1, lineNumber), offset, length);
 			}
 		} catch (BadLocationException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);

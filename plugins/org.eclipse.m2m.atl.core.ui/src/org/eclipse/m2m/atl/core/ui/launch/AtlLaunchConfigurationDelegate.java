@@ -49,7 +49,7 @@ import org.eclipse.m2m.atl.core.ui.Messages;
  */
 public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
 
-	private Map<String, IFile> moduleFilesByModuleName;
+	private static Map<String, IFile> moduleFilesByModuleName;
 
 	/**
 	 * {@inheritDoc}
@@ -60,6 +60,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 	@SuppressWarnings("unchecked")
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
+
 		moduleFilesByModuleName = new HashMap<String, IFile>();
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
@@ -121,7 +122,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(currentAsmPath));
 		}
 
-		moduleFilesByModuleName.put(computeModuleName(currentAtlFile), currentAtlFile);
+		addLaunchedModule(currentAtlFile);
 
 		InputStream asmInputStream = currentAtlFile.getContents();
 		InputStream[] modules = new InputStream[superimps.size() + 1];
@@ -130,7 +131,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			String moduleFileName = superimps.get(i - 1);
 			IFile moduleFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
 					Path.fromOSString(moduleFileName));
-			moduleFilesByModuleName.put(computeModuleName(moduleFile), moduleFile);
+			addLaunchedModule(moduleFile);
 			modules[i] = moduleFile.getContents();
 		}
 
@@ -140,7 +141,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			String libName = i.next();
 			IFile libFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
 					Path.fromOSString(libs.get(libName)));
-			moduleFilesByModuleName.put(libName, libFile);
+			addLaunchedModule(libFile);
 			libraries.put(libName, libFile.getContents());
 		}
 
@@ -221,32 +222,38 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		} catch (ATLCoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (ATLExecutionException e) {
-			String message = e.getLocalizedMessage();
-			if (e.getModuleName() != null) {
-				String path = getFilePathFromModuleName(e.getModuleName());
-				if (path != null) {
-					message += " (" + path + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-				}
-			}
-			ATLLogger.log(Level.SEVERE, message, e);
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} finally {
 			monitor.done();
 		}
 	}
 
-	private String getFilePathFromModuleName(String moduleName) {
-		IFile file = moduleFilesByModuleName.get(moduleName);
-		if (file != null) {
-			String ext = file.getFileExtension().toLowerCase();
+	private static void addLaunchedModule(IFile file) {
+		IFile atlFile = file;
+		if (atlFile != null) {
+			String ext = atlFile.getFileExtension().toLowerCase();
 			if (ext.equals("asm")) { //$NON-NLS-1$
-				String path = file.getFullPath().toString().substring(0,
-						file.getFullPath().toString().length() - ext.length())
+				String path = atlFile.getFullPath().toString().substring(0,
+						atlFile.getFullPath().toString().length() - ext.length())
 						+ "atl"; //$NON-NLS-1$
-				file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
+				atlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
 			}
-			if (file.isAccessible()) {
-				return file.getFullPath().toString();
+			if (atlFile.isAccessible()) {
+				moduleFilesByModuleName.put(computeModuleName(file), atlFile);
 			}
+		}
+	}
+
+	/**
+	 * Returns the file matching the given module name.
+	 * 
+	 * @param moduleName
+	 *            the module name
+	 * @return the file
+	 */
+	public static IFile getFileFromModuleName(String moduleName) {
+		if (moduleFilesByModuleName != null) {
+			return moduleFilesByModuleName.get(moduleName);
 		}
 		return null;
 	}
