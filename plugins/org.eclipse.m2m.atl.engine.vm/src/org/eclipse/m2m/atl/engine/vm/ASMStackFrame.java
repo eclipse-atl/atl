@@ -72,15 +72,22 @@ public class ASMStackFrame extends StackFrame {
 		StringBuffer ret = new StringBuffer();
 
 		ASMOperation op = (ASMOperation)getOperation();
+		ret.append("at ");
 		ret.append(getOperation());
-		ret.append("#");
-		ret.append(location);
-		ret.append(" ");
-		ret.append(op.resolveLineNumber(location));
+		ret.append("("); //$NON-NLS-1$
+		ret.append(op.getASM().getName() + ".atl"); //$NON-NLS-1$
+		String location = op.resolveLineNumber(getLocation());
+		if (location != null) {
+			if (location.matches("[0-9]*:[0-9]*-[0-9]*:[0-9]*#[0-9]*")) { //$NON-NLS-1$
+				int lineNumber = new Integer(location.split("-")[0].split(":")[0]).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
+				ret.append(":" + lineNumber); //$NON-NLS-1$
+			}
+		}
+		ret.append(")"); //$NON-NLS-1$
 		ret.append("\n\tlocal variables = {");
 		for(Iterator i = localVariables.keySet().iterator() ; i.hasNext() ; ) {
 			String key = (String)i.next();
-			ret.append(op.resolveVariableName(Integer.parseInt(key), location));
+			ret.append(op.resolveVariableName(Integer.parseInt(key), getLocation()));
 			ret.append("=");
 			ret.append(localVariables.get(key));
 			if(i.hasNext())
