@@ -65,7 +65,6 @@ public class VMException extends ATLExecutionException {
 	@Override
 	public void printStackTrace(PrintStream s) {
 		if (frame != null) {
-			//s.println("ATL VM Stack:"); //$NON-NLS-1$
 			s.println(frame);
 		}
 		if (getCause() != null) {
@@ -83,7 +82,6 @@ public class VMException extends ATLExecutionException {
 	@Override
 	public void printStackTrace(PrintWriter s) {
 		if (frame != null) {
-			//s.println("ATL VM Stack:"); //$NON-NLS-1$
 			s.println(frame);
 		}
 		if (getCause() != null) {

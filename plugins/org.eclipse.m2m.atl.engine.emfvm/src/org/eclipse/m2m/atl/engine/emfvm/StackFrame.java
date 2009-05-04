@@ -122,7 +122,7 @@ public class StackFrame extends AbstractStackFrame {
 						first = false;
 						ret.append(varName);
 						ret.append('=');
-						ret.append(localVars[i]);
+						ret.append(getExecEnv().toPrettyPrintedString(localVars[i]));
 					}
 				}
 			}
