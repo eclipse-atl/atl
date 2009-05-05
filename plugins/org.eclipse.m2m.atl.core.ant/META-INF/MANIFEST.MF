@@ -10,3 +10,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2m.atl.core,
  org.eclipse.m2m.atl.common
 Bundle-Vendor: %providerName
+Export-Package: org.eclipse.m2m.atl.core.ant,
+ org.eclipse.m2m.atl.core.ant.tasks,
+ org.eclipse.m2m.atl.core.ant.tasks.nested
