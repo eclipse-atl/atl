@@ -179,6 +179,8 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 					if (path.startsWith("platform:/resource")) { //$NON-NLS-1$
 						path = path.replaceFirst("platform:/resource", ""); //$NON-NLS-1$ //$NON-NLS-2$
 						tag = "-- @path "; //$NON-NLS-1$
+					} if (path.startsWith("file:/")) { //$NON-NLS-1$
+						tag = "-- @path "; //$NON-NLS-1$
 					} else {
 						tag = "-- @nsURI "; //$NON-NLS-1$
 					}
