@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -31,6 +32,7 @@ import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.engine.ProblemConverter;
+import org.eclipse.m2m.atl.engine.asm.ASMEmitter;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
@@ -158,6 +160,11 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 			launcher.addInModel(atlmodel, "IN", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
 			launcher.addOutModel(problems, "OUT", "Problem"); //$NON-NLS-1$ //$NON-NLS-2$
 			Map params = new HashMap();
+			if (!Platform.isRunning()) {
+				Map typeextensions = new HashMap();
+				typeextensions.put("ASMEmitter", ASMEmitter.class); //$NON-NLS-1$
+				params.put("typeextensions", typeextensions); //$NON-NLS-1$
+			}
 			try {
 
 				launcher.launch(ILauncher.RUN_MODE, null, params, new Object[] {launcher
@@ -181,7 +188,11 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 			Map params = new HashMap();
 			params.put("debug", "false"); //$NON-NLS-1$//$NON-NLS-2$			
 			params.put("WriteTo", outputFileName); //$NON-NLS-1$
-
+			if (!Platform.isRunning()) {
+				Map typeextensions = new HashMap();
+				typeextensions.put("ASMEmitter", ASMEmitter.class); //$NON-NLS-1$
+				params.put("typeextensions", typeextensions); //$NON-NLS-1$
+			}
 			try {
 				launcher.addLibrary("typeencoding", launcher.loadModule(AtlDefaultCompiler.class.getResource(//$NON-NLS-1$
 						"resources/typeencoding.asm").openStream())); //$NON-NLS-1$
