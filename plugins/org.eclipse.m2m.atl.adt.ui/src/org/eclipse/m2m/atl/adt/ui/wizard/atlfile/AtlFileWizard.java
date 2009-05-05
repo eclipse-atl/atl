@@ -179,7 +179,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 					if (path.startsWith("platform:/resource")) { //$NON-NLS-1$
 						path = path.replaceFirst("platform:/resource", ""); //$NON-NLS-1$ //$NON-NLS-2$
 						tag = "-- @path "; //$NON-NLS-1$
-					} if (path.startsWith("file:/")) { //$NON-NLS-1$
+					} else if (path.startsWith("file:/") || path.startsWith("platform:/plugin")) { //$NON-NLS-1$ //$NON-NLS-2$
 						tag = "-- @path "; //$NON-NLS-1$
 					} else {
 						tag = "-- @nsURI "; //$NON-NLS-1$
@@ -248,7 +248,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 				ILaunchConfigurationType type = manager
 						.getLaunchConfigurationType(ATLLaunchConstants.LAUNCH_CONFIGURATION_TYPE);
 				ILaunchConfigurationWorkingCopy editableConfiguration = type.newInstance(null, name);
-				
+
 				editableConfiguration.setAttribute(ATLLaunchConstants.ATL_FILE_NAME, file.getFullPath()
 						.toString());
 				editableConfiguration.setAttribute(ATLLaunchConstants.IS_REFINING, advancedPage.getUnitType()
@@ -256,8 +256,9 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 				editableConfiguration.setAttribute(ATLLaunchConstants.INPUT, advancedPage.getInput());
 				editableConfiguration.setAttribute(ATLLaunchConstants.OUTPUT, advancedPage.getOutput());
 				editableConfiguration.setAttribute(ATLLaunchConstants.LIBS, advancedPage.getLibraries());
-				editableConfiguration.setAttribute(ATLLaunchConstants.PATH, convertPaths(advancedPage.getPaths()));
-				
+				editableConfiguration.setAttribute(ATLLaunchConstants.PATH, convertPaths(advancedPage
+						.getPaths()));
+
 				editableConfiguration.doSave();
 			}
 		}
@@ -333,7 +334,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 		}
 		return simplePage.isPageComplete();
 	}
-	
+
 	/**
 	 * Convert model map paths.
 	 * 
