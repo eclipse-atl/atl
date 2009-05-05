@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.25 2009/04/30 17:41:06 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.26 2009/05/05 09:41:19 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -360,6 +360,11 @@ public class ASMOperation extends Operation {
 						if (operation != null) {
 							StackFrame calleeFrame = (StackFrame)frame.newFrame(operation);
 							Object[] arguments = calleeFrame.getLocalVars();
+
+							if (nbCalleeArgs >= 1 && arguments.length < nbCalleeArgs + 1) {
+								throw new VMException(frame, Messages.getString(
+										"ASMOperation.WRONGNUMBERARGS", bytecode.getOperand())); //$NON-NLS-1$
+							}
 
 							boolean first = true;
 							for (int i = nbCalleeArgs; i >= 1; i--) {
