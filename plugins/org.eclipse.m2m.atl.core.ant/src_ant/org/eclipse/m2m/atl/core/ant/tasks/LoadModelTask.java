@@ -48,6 +48,8 @@ public class LoadModelTask extends AbstractAtlTask {
 
 	protected String nsUri;
 
+	protected String uri;
+	
 	private List<Injector> injectors = new ArrayList<Injector>();
 
 	public void setName(String name) {
@@ -72,6 +74,10 @@ public class LoadModelTask extends AbstractAtlTask {
 
 	public void setNsUri(String nsUri) {
 		this.nsUri = nsUri;
+	}
+	
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	/**
@@ -153,6 +159,8 @@ public class LoadModelTask extends AbstractAtlTask {
 			return "file:/" + path.toString(); //$NON-NLS-1$
 		} else if (nsUri != null) {
 			return nsUri;
+		} else if (uri != null) {
+			return uri;
 		} else {
 			error(Messages.getString("LoadModelTask.UNSPECIFIED_SOURCE")); //$NON-NLS-1$
 		}

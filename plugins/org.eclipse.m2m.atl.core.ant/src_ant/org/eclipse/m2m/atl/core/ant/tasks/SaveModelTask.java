@@ -45,6 +45,8 @@ public class SaveModelTask extends AbstractAtlTask {
 
 	protected File path;
 
+	protected String uri;
+
 	protected String factory;
 
 	private List<Extractor> extractors = new ArrayList<Extractor>();
@@ -63,6 +65,10 @@ public class SaveModelTask extends AbstractAtlTask {
 
 	public void setPath(File path) {
 		this.path = path;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	public String getFactory() {
@@ -143,6 +149,8 @@ public class SaveModelTask extends AbstractAtlTask {
 		if (path != null) {
 			if (path.toString().startsWith("platform:")) { //$NON-NLS-1$
 				return path.toString();
+			} else if (uri != null) {
+				return uri;
 			}
 			return "file:/" + path.toString(); //$NON-NLS-1$
 		} else {
