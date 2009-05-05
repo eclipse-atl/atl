@@ -250,7 +250,7 @@ public final class AtlSourceManager {
 					path = path.trim();
 					Resource resource = null;
 					try {
-						if (path.startsWith("file:/")) { //$NON-NLS-1$
+						if (path.startsWith("file:/") || path.startsWith("platform:/plugin")) { //$NON-NLS-1$ //$NON-NLS-2$
 							resource = load(URI.createURI(path, true), RESOURCE_SET);
 						} else {
 							resource = load(URI.createPlatformResourceURI(path, true), RESOURCE_SET);
