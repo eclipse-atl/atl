@@ -250,7 +250,11 @@ public final class AtlSourceManager {
 					path = path.trim();
 					Resource resource = null;
 					try {
-						resource = load(URI.createPlatformResourceURI(path, true), RESOURCE_SET);
+						if (path.startsWith("file:/")) { //$NON-NLS-1$
+							resource = load(URI.createURI(path, true), RESOURCE_SET);
+						} else {
+							resource = load(URI.createPlatformResourceURI(path, true), RESOURCE_SET);
+						}
 					} catch (IOException e) {
 						// TODO apply marker on the file
 						// Exceptions are detected by the compiler
