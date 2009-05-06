@@ -170,8 +170,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 
 	private String atlcompiler;
 
-	private String currentAtlPath;
-
 	private ILaunchConfiguration launchConfiguration;
 
 	/**
@@ -197,9 +195,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		atlPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		atlPathText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (!atlPathText.getText().equals(currentAtlPath)) {
-					rebuild();
-				}
+				rebuild();
 			}
 		});
 
@@ -618,7 +614,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		scrollContainer.setMinSize(rootContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		scrollContainer.layout();
 
-		canSave();
 		updateLaunchConfigurationDialog();
 	}
 
@@ -645,8 +640,9 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			launcherNameFromAdvancedTab = configuration.getAttribute(ATLLaunchConstants.ATL_VM,
 					ATLLaunchConstants.EMF_VM_NAME);
 
-			atlPathText.setText(fileName);
-			currentAtlPath = fileName;
+			if (!fileName.equals(atlPathText.getText())) {
+				atlPathText.setText(fileName);				
+			}
 		} catch (CoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
@@ -757,10 +753,10 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#canSave()
+	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#isValid(org.eclipse.debug.core.ILaunchConfiguration)
 	 */
 	@Override
-	public boolean canSave() {
+	public boolean isValid(ILaunchConfiguration launchConfig) {
 		if (atlPathText.getText().equals("")) { //$NON-NLS-1$
 			this.setErrorMessage(Messages.getString("MainAtlTab.GIVETRANSFORMATIONNAME")); //$NON-NLS-1$
 			return false;
@@ -774,15 +770,13 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			Button isMetametamodel = (Button)widgets.get("isMetametamodel"); //$NON-NLS-1$
 			if ((metamodelLocation.getText().length() == 0) && (!isMetametamodel.getSelection())) {
 				this.setErrorMessage(Messages.getString("MainAtlTab.GIVEPATHFOR") + mName); //$NON-NLS-1$
-				// return false;
+				return false;
 			}
 		}
 
-		canSaveGroupWidgets(sourceModelsGroupWidgets);
-		canSaveGroupWidgets(targetModelsGroupWidgets);
-		canSaveGroupWidgets(librariesGroupWidgets);
-		return true;
-
+		this.setErrorMessage(null);
+		return canSaveGroupWidgets(sourceModelsGroupWidgets) && canSaveGroupWidgets(targetModelsGroupWidgets)
+				&& canSaveGroupWidgets(librariesGroupWidgets) && super.isValid(launchConfig);
 	}
 
 	/**

@@ -39,4 +39,39 @@
             </test></enablement>
       </consolePatternMatchListener>
    </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.eclipse.m2m.atl.core.ui.launch.ATLLaunchShortcut"
+            description="Launches a local ATL transformation"
+            icon="icons/atl_logo.gif"
+            id="org.eclipse.m2m.atl.core.ui.atlLaunchShortcut"
+            label="ATL transformation"
+            modes="run, debug">
+         <description
+               description="Runs a local ATL transformation"
+               mode="run">
+         </description>
+                  <description
+               description="Debugs a local ATL transformation"
+               mode="debug">
+         </description>
+           <contextualLaunch>
+  <enablement>
+    <with variable="selection">
+       <count
+             value="1">
+       </count>
+       <iterate>
+          <test
+                property="org.eclipse.debug.ui.matchesPattern"
+                value="*.atl">
+          </test></iterate>
+     </with>
+  </enablement>
+  </contextualLaunch>
+      </shortcut>
+      
+   </extension>
+   
 </plugin>

@@ -31,7 +31,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
@@ -48,7 +48,7 @@ import org.eclipse.m2m.atl.core.ui.Messages;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
-public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
+public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
 
 	private static Map<String, IFile> moduleFilesByModuleName;
 
@@ -96,12 +96,11 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				Collections.EMPTY_MAP);
 		options.put(ATLLaunchConstants.OPTION_MODEL_HANDLER, modelHandlers);
 
-		
 		Object clearConsole = options.get(AdvancedTab.OPTION_CLEAR);
 		if (clearConsole != null && "true".equals(clearConsole)) { //$NON-NLS-1$
 			ATLCoreUIPlugin.clearConsole();
 		}
-		
+
 		ILauncher launcher = null;
 		try {
 			// API extensions management
@@ -129,7 +128,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(currentAsmPath));
 		}
 
-		addLaunchedModule(currentAtlFile);
+		if (!addLaunchedModule(currentAtlFile)) {
+			return;
+		}
 
 		InputStream asmInputStream = currentAtlFile.getContents();
 		InputStream[] modules = new InputStream[superimps.size() + 1];
@@ -138,7 +139,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			String moduleFileName = superimps.get(i - 1);
 			IFile moduleFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
 					Path.fromOSString(moduleFileName));
-			addLaunchedModule(moduleFile);
+			if (!addLaunchedModule(moduleFile)) {
+				return;
+			}
 			modules[i] = moduleFile.getContents();
 		}
 
@@ -148,7 +151,9 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 			String libName = i.next();
 			IFile libFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
 					Path.fromOSString(libs.get(libName)));
-			addLaunchedModule(libFile);
+			if (!addLaunchedModule(libFile)) {
+				return;
+			}
 			libraries.put(libName, libFile.getContents());
 		}
 
@@ -228,6 +233,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 
 		} catch (ATLCoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			return;
 		} catch (ATLExecutionException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} finally {
@@ -235,7 +241,12 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 		}
 	}
 
-	private static void addLaunchedModule(IFile file) {
+	private static boolean addLaunchedModule(IFile file) {
+		if (!file.exists()) {
+			ATLLogger.severe(Messages.getString(
+					"AtlLaunchConfigurationDelegate.FILE_NOT_EXIST", file.getFullPath())); //$NON-NLS-1$
+			return false;
+		}
 		IFile atlFile = file;
 		if (atlFile != null) {
 			String ext = atlFile.getFileExtension().toLowerCase();
@@ -249,6 +260,7 @@ public class AtlLaunchConfigurationDelegate implements ILaunchConfigurationDeleg
 				moduleFilesByModuleName.put(computeModuleName(file), atlFile);
 			}
 		}
+		return true;
 	}
 
 	/**

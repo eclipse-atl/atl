@@ -25,6 +25,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.console.IOConsoleOutputStream;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -179,5 +180,9 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 		} catch (MalformedURLException mfe) {
 			return ImageDescriptor.getMissingImageDescriptor();
 		}
+	}
+	
+	public Shell getShell() {
+		return getWorkbench().getActiveWorkbenchWindow().getShell();
 	}
 }
