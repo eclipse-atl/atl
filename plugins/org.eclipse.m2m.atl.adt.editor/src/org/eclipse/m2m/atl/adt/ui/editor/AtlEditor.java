@@ -12,6 +12,8 @@ package org.eclipse.m2m.atl.adt.ui.editor;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.logging.Level;
@@ -47,7 +49,13 @@ import org.eclipse.jface.text.link.LinkedPosition;
 import org.eclipse.jface.text.link.LinkedPositionGroup;
 import org.eclipse.jface.text.link.LinkedModeUI.ExitFlags;
 import org.eclipse.jface.text.link.LinkedModeUI.IExitPolicy;
+import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.text.source.IVerticalRuler;
+import org.eclipse.jface.text.source.projection.ProjectionAnnotation;
+import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
+import org.eclipse.jface.text.source.projection.ProjectionSupport;
+import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
@@ -101,6 +109,8 @@ import org.eclipse.ui.views.properties.PropertySheetPage;
  * declared here.
  */
 public class AtlEditor extends TextEditor {
+
+	private ProjectionSupport projectionSupport;
 
 	/** The editor's bracket matcher. */
 	protected AtlPairMatcher bracketMatcher = new AtlPairMatcher(IAtlLexems.BRACKETS);
@@ -748,7 +758,7 @@ public class AtlEditor extends TextEditor {
 
 	private void configureTabConverter() {
 		if (fTabConverter != null) {
-			//IDocumentProvider provider = getDocumentProvider();
+			// IDocumentProvider provider = getDocumentProvider();
 			// TODO create line tracket method from the compulation unit document provider
 			// fTabConverter.setLineTracker((IDocumentProvider)
 			// provider.createLineTracker(getEditorInput()));
@@ -835,6 +845,40 @@ public class AtlEditor extends TextEditor {
 		ISourceViewer sourceViewer = getSourceViewer();
 		if (sourceViewer instanceof ITextViewerExtension)
 			((ITextViewerExtension)sourceViewer).prependVerifyKeyListener(fBracketInserter);
+
+		ProjectionViewer viewer = (ProjectionViewer)getSourceViewer();
+
+		projectionSupport = new ProjectionSupport(viewer, getAnnotationAccess(), getSharedColors());
+		projectionSupport.install();
+
+		// turn projection mode on
+		viewer.doOperation(ProjectionViewer.TOGGLE);
+
+		annotationModel = viewer.getProjectionAnnotationModel();
+	}
+
+	private Annotation[] oldAnnotations;
+
+	private ProjectionAnnotationModel annotationModel;
+
+	public void updateFoldingStructure(List positions) {
+		Annotation[] annotations = new Annotation[positions.size()];
+
+		// this will hold the new annotations along
+		// with their corresponding positions
+		HashMap newAnnotations = new HashMap();
+
+		for (int i = 0; i < positions.size(); i++) {
+			ProjectionAnnotation annotation = new ProjectionAnnotation();
+
+			newAnnotations.put(annotation, positions.get(i));
+
+			annotations[i] = annotation;
+		}
+
+		annotationModel.modifyAnnotations(oldAnnotations, newAnnotations, null);
+
+		oldAnnotations = annotations;
 	}
 
 	/**
@@ -1282,4 +1326,20 @@ public class AtlEditor extends TextEditor {
 	public AtlContentOutlinePage getOutlinePage() {
 		return outlinePage;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createSourceViewer(org.eclipse.swt.widgets.Composite,
+	 *      org.eclipse.jface.text.source.IVerticalRuler, int)
+	 */
+	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
+		ISourceViewer viewer = new ProjectionViewer(parent, ruler, getOverviewRuler(),
+				isOverviewRulerVisible(), styles);
+
+		// ensure decoration support has been created and configured.
+		getSourceViewerDecorationSupport(viewer);
+		return viewer;
+	}
+
 }

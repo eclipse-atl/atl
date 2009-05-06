@@ -12,11 +12,14 @@ package org.eclipse.m2m.atl.adt.ui.outline;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.ui.IDebugUIConstants;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
@@ -25,6 +28,8 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.Position;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -151,7 +156,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	private EObject selectedEo;
 
 	/** The ATL editor associated with this outline. */
-	private ITextEditor textEditor;
+	private AtlEditor textEditor;
 
 	/**
 	 * @param textEditor
@@ -161,7 +166,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	public AtlContentOutlinePage(ITextEditor textEditor, IEditorInput editorInput,
 			IDocumentProvider documentProvider) {
 		super();
-		this.textEditor = textEditor;
+		this.textEditor = (AtlEditor)textEditor;
 		this.editorInput = editorInput;
 	}
 
@@ -438,15 +443,15 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	private void initAtlNbCharFile(String content) {
 		help = new AtlNbCharFile(toInputStream(content));
 		((DefaultSorter)defaultSorter).setHelp(help);
-		((AtlEditor)textEditor).setHelp(help);
+		textEditor.setHelp(help);
 	}
 
 	/**
 	 * Sets the Unit of the input of the tree Viewer.
 	 */
 	public void setUnit() {
-		EObject eo = ((AtlEditor)textEditor).getSourceManager().getModel();
-		String newContent = ((AtlEditor)textEditor).getDocumentProviderContent();
+		EObject eo = textEditor.getSourceManager().getModel();
+		String newContent = textEditor.getDocumentProviderContent();
 		if (eo != null) {
 			root.setUnit(eo);
 			if (!inputSet) {
@@ -457,6 +462,42 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 			treeViewer.refresh(root);
 			treeViewer.expandToLevel(2);
 		}
+		List positions = getFoldingPositions(eo);
+		textEditor.updateFoldingStructure(positions);
+	}
+
+	private static final String[] FOLDING_TYPES = new String[] {"MatchedRule", //$NON-NLS-1$
+			"LazyMatchedRule", //$NON-NLS-1$
+			"CalledRule", //$NON-NLS-1$
+			"Helper", //$NON-NLS-1$
+			"Attribute", //$NON-NLS-1$
+			"InPattern", //$NON-NLS-1$
+			"OutPattern", //$NON-NLS-1$
+			"ActionBlock", //$NON-NLS-1$
+			"RuleVariableDeclaration"}; //$NON-NLS-1$
+
+	private List getFoldingPositions(EObject eo) {
+		IDocument document = textEditor.getViewer().getDocument();
+		List res = new ArrayList();
+		try {
+			TreeIterator iterator = eo.eAllContents();
+			while (iterator.hasNext()) {
+				EObject object = (EObject)iterator.next();
+				for (int i = 0; i < FOLDING_TYPES.length; i++) {
+					if (object.eClass().getName().equals(FOLDING_TYPES[i])) {
+						int[] pos = getPos(object);
+						int length = pos[1] - pos[0];
+						if (document.getNumberOfLines(pos[0], length) > 2) {
+							res.add(new Position(pos[0], length));
+						}
+						break;
+					}
+				}
+			}
+		} catch (Throwable e) {
+			// do nothing
+		}
+		return res;
 	}
 
 	/**
