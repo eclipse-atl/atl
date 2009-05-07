@@ -117,7 +117,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * 
 	 * @see AtlNbCharFile
 	 */
-	private AtlNbCharFile help;
+	private static AtlNbCharFile help;
 
 	/** Filter enabling filtering the display of the tree viewer. */
 	private ViewerFilter helperFilter;
@@ -426,12 +426,11 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * @return return an array with two value. first value : index of start char second value : index of end
 	 *         char
 	 */
-	private int[] getPos(EObject eo) {
+	public static int[] getPos(EObject eo) {
 		String location = (String)eo.eGet(AtlEMFConstants.sfLocation);
 		if (location == null) {
 			return null;
 		}
-
 		int[] pos = help.getIndexChar(location);
 		return pos;
 	}
@@ -463,7 +462,8 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 			treeViewer.expandToLevel(2);
 		}
 		List positions = getFoldingPositions(eo);
-		textEditor.updateFoldingStructure(positions);
+		// deactivated folding
+		//textEditor.updateFoldingStructure(positions);
 	}
 
 	private static final String[] FOLDING_TYPES = new String[] {"MatchedRule", //$NON-NLS-1$
