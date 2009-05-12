@@ -12,10 +12,12 @@ package org.eclipse.m2m.atl.adt.ui.editor;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Stack;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.eclipse.core.resources.IFile;
@@ -52,7 +54,6 @@ import org.eclipse.jface.text.link.LinkedModeUI.IExitPolicy;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
-import org.eclipse.jface.text.source.projection.ProjectionAnnotation;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
@@ -857,28 +858,32 @@ public class AtlEditor extends TextEditor {
 		annotationModel = viewer.getProjectionAnnotationModel();
 	}
 
-	private Annotation[] oldAnnotations;
-
 	private ProjectionAnnotationModel annotationModel;
 
-	public void updateFoldingStructure(List positions) {
-		Annotation[] annotations = new Annotation[positions.size()];
-
-		// this will hold the new annotations along
-		// with their corresponding positions
-		HashMap newAnnotations = new HashMap();
-
-		for (int i = 0; i < positions.size(); i++) {
-			ProjectionAnnotation annotation = new ProjectionAnnotation();
-
-			newAnnotations.put(annotation, positions.get(i));
-
-			annotations[i] = annotation;
+	/**
+	 * Updates the folding structure of the template. This will be called from the Atl template reconciler in
+	 * order to allow the folding of blocks to the user.
+	 * 
+	 * @param addedAnnotations
+	 *            These annotations have been added since the last reconciling operation.
+	 * @param deletedAnnotations
+	 *            This list represents the annotations that were deleted since we last reconciled.
+	 * @param modifiedAnnotations
+	 *            These annotations have seen their positions updated.
+	 */
+	public void updateFoldingStructure(Map addedAnnotations, List deletedAnnotations, Map modifiedAnnotations) {
+		Annotation[] deleted = new Annotation[deletedAnnotations.size()];
+		for (int i = 0; i < deletedAnnotations.size(); i++) {
+			deleted[i] = (Annotation)deletedAnnotations.get(i);
 		}
-
-		annotationModel.modifyAnnotations(oldAnnotations, newAnnotations, null);
-
-		oldAnnotations = annotations;
+		if (annotationModel != null) {
+			annotationModel.modifyAnnotations(deleted, addedAnnotations, null);
+			for (Iterator iterator = modifiedAnnotations.entrySet().iterator(); iterator.hasNext();) {
+				Entry entry = (Entry)iterator.next();
+				annotationModel.modifyAnnotationPosition((Annotation)entry.getKey(), (Position)entry
+						.getValue());
+			}
+		}
 	}
 
 	/**
@@ -916,6 +921,10 @@ public class AtlEditor extends TextEditor {
 		if (outlinePage != null) {
 			outlinePage.setUnit();
 		}
+	}
+
+	public AtlPairMatcher getBracketMatcher() {
+		return bracketMatcher;
 	}
 
 	public AtlSourceManager getSourceManager() {

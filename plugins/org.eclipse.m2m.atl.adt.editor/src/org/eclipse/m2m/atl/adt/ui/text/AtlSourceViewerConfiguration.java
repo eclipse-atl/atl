@@ -21,24 +21,27 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
+import org.eclipse.jface.text.reconciler.IReconciler;
+import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
+import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlAutoIndentStrategy;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCodeScanner;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionProcessor;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlStringAutoIndentStrategy;
+import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
  * This class bundles the whole configuration space of a source viewer. Instances of this class are passed to
  * the configure method of ISourceViewer.
  */
-public class AtlSourceViewerConfiguration extends SourceViewerConfiguration {
+public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration {
 
 	private IContentAssistProcessor fProcessor;
 
@@ -62,6 +65,7 @@ public class AtlSourceViewerConfiguration extends SourceViewerConfiguration {
 		fTextTools = tools;
 		fTextEditor = editor;
 		fProcessor = new AtlCompletionProcessor(getEditor());
+		fPreferenceStore = tools.getPreferenceStore();
 	}
 
 	/**
@@ -289,6 +293,15 @@ public class AtlSourceViewerConfiguration extends SourceViewerConfiguration {
 
 	public IContentAssistProcessor getFProcessor() {
 		return fProcessor;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getReconciler(org.eclipse.jface.text.source.ISourceViewer)
+	 */
+	public IReconciler getReconciler(ISourceViewer sourceViewer) {
+		return new MonoReconciler(new AtlReconcilingStrategy((AtlEditor)fTextEditor), false);
 	}
 
 }
