@@ -232,7 +232,11 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 		launcher.addInModel(atlmodel, "IN", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
 		launcher.addOutModel(problems, "OUT", "Problem"); //$NON-NLS-1$ //$NON-NLS-2$
 		Map params = new HashMap();
-		params.put("compilation", "true"); //$NON-NLS-1$//$NON-NLS-2$
+		if (!Platform.isRunning()) {
+			Map typeextensions = new HashMap();
+			typeextensions.put("ASMEmitter", ASMEmitter.class); //$NON-NLS-1$
+			params.put("typeextensions", typeextensions); //$NON-NLS-1$
+		}
 
 		launcher.launch(ILauncher.RUN_MODE, null, params, new Object[] {launcher
 				.loadModule(getSemanticAnalyzerURL().openStream()),});
@@ -247,10 +251,13 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 			launcher.addOutModel(problems, "OUT", "Problem"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			params = new HashMap();
-			params.put("compilation", "true"); //$NON-NLS-1$//$NON-NLS-2$
 			params.put("debug", "false"); //$NON-NLS-1$//$NON-NLS-2$			
 			params.put("WriteTo", outputFileName); //$NON-NLS-1$
-
+			if (!Platform.isRunning()) {
+				Map typeextensions = new HashMap();
+				typeextensions.put("ASMEmitter", ASMEmitter.class); //$NON-NLS-1$
+				params.put("typeextensions", typeextensions); //$NON-NLS-1$
+			}
 			launcher.addLibrary("typeencoding", launcher.loadModule(AtlDefaultCompiler.class.getResource(//$NON-NLS-1$
 					"resources/typeencoding.asm").openStream())); //$NON-NLS-1$
 			launcher.addLibrary("strings", launcher.loadModule(AtlDefaultCompiler.class.getResource(//$NON-NLS-1$
@@ -266,5 +273,4 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
 		return ret;
 	}
-
 }
