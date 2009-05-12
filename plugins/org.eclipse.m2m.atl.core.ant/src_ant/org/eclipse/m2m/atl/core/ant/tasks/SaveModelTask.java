@@ -116,7 +116,8 @@ public class SaveModelTask extends AbstractAtlTask {
 				extractorInstance = CoreService.getExtractor(extractor);
 			}
 		} catch (ATLCoreException e) {
-			error(Messages.getString("SaveModelTask.UNABLE_TO_LOAD_EXTRACTOR"), e); //$NON-NLS-1$
+			error(
+					Messages.getString("SaveModelTask.UNABLE_TO_LOAD_EXTRACTOR", extractors.get(0).getName()), e); //$NON-NLS-1$
 		}
 
 		IModel targetModel = (IModel)getProject().getReference(model);

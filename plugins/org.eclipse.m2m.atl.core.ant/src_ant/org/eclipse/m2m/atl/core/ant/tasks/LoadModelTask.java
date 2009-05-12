@@ -49,7 +49,7 @@ public class LoadModelTask extends AbstractAtlTask {
 	protected String nsUri;
 
 	protected String uri;
-	
+
 	private List<Injector> injectors = new ArrayList<Injector>();
 
 	public void setName(String name) {
@@ -75,7 +75,7 @@ public class LoadModelTask extends AbstractAtlTask {
 	public void setNsUri(String nsUri) {
 		this.nsUri = nsUri;
 	}
-	
+
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
@@ -118,7 +118,7 @@ public class LoadModelTask extends AbstractAtlTask {
 				injectorInstance = CoreService.getInjector(injector);
 			}
 		} catch (ATLCoreException e) {
-			error(e.getMessage(), e);
+			error(Messages.getString("LoadModelTask.UNABLE_TO_LOAD_INJECTOR", injectors.get(0).getName()), e); //$NON-NLS-1$
 		}
 
 		IModel sourceModel = (IModel)getProject().getReference(name);
