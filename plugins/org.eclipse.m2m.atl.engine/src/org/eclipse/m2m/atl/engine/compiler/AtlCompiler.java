@@ -14,6 +14,7 @@ package org.eclipse.m2m.atl.engine.compiler;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -149,6 +150,32 @@ public final class AtlCompiler {
 		newIn.reset();
 
 		ret = getCompiler(atlcompiler).compileWithProblemModel(newIn, outputFileName);
+		return ret;
+	}
+
+	/**
+	 * Standalone compilation, to an outputStream.
+	 * 
+	 * @param in
+	 *            The InputStream to get atl source from.
+	 * @param outputStream
+	 *            The output file name
+	 * @return the problems which occurred during compilation
+	 */
+	public static EObject[] compile(InputStream in, OutputStream outputStream) throws IOException {
+		EObject[] ret = null;
+		String atlcompiler = null;
+		InputStream newIn = in;
+		// The BufferedInputStream is required to reset the stream before actually compiling
+		newIn = new BufferedInputStream(newIn, MAX_LINE_LENGTH);
+		newIn.mark(MAX_LINE_LENGTH);
+		byte[] buffer = new byte[MAX_LINE_LENGTH];
+		newIn.read(buffer);
+		atlcompiler = AtlSourceManager.getCompilerName(AtlSourceManager.getTaggedInformations(buffer,
+				AtlSourceManager.COMPILER_TAG));
+		newIn.reset();
+
+		ret = getCompiler(atlcompiler).compileWithProblemModel(newIn, outputStream);
 		return ret;
 	}
 

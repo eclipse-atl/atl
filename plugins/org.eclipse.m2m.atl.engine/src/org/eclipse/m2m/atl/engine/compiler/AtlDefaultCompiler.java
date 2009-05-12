@@ -14,6 +14,7 @@ package org.eclipse.m2m.atl.engine.compiler;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,9 +31,9 @@ import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
-import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.engine.ProblemConverter;
 import org.eclipse.m2m.atl.engine.asm.ASMEmitter;
+import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
@@ -45,14 +46,12 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
  */
 public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
+	private static OutputStream asmOutputStream;
+
 	private static ILauncher launcher;
 
 	static {
-		try {
-			launcher = CoreService.getLauncher("EMF-specific VM"); //$NON-NLS-1$		
-		} catch (ATLCoreException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
+		launcher = new EMFVMLauncher();
 	}
 
 	/**
@@ -82,6 +81,17 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	 */
 	public EObject[] compileWithProblemModel(InputStream in, String outputFileName) {
 		return internalCompile(in, outputFileName);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(java.io.InputStream,
+	 *      java.io.OutputStream)
+	 */
+	public EObject[] compileWithProblemModel(InputStream in, OutputStream outputStream) {
+		asmOutputStream = outputStream;
+		return internalCompile(in, ASMEmitter.DIRECT_COMPILATION);
 	}
 
 	/**
@@ -273,4 +283,14 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 
 		return ret;
 	}
+
+	/**
+	 * Allow to write the compilation result on an {@link OutputStream}.
+	 * 
+	 * @return returns the OutputStream previously set by the internalCompile method
+	 */
+	public static OutputStream getCompilationOutputStream() {
+		return asmOutputStream;
+	}
+
 }

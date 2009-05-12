@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.engine.compiler;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -41,4 +42,15 @@ public interface AtlStandaloneCompiler {
 	 * @return array of compiletime errors as EObjects (0 length if no errors)
 	 */
 	EObject[] compileWithProblemModel(InputStream in, String outputFileName);
+
+	/**
+	 * Compiles an ATL script and returns easily accessible error messages.
+	 * 
+	 * @param in
+	 *            The InputStream to get atl source from.
+	 * @param outputStream
+	 *            the compilation ASM output stream
+	 * @return array of compiletime errors as EObjects (0 length if no errors)
+	 */
+	EObject[] compileWithProblemModel(InputStream in, OutputStream outputStream);
 }
