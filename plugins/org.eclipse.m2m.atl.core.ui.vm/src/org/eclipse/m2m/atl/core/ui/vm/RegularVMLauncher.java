@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
@@ -25,6 +26,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.adt.debug.core.AtlRunTarget;
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
@@ -158,15 +160,21 @@ public class RegularVMLauncher implements ILauncher {
 			 * If the mode chosen was Debug, an ATLDebugTarget was created
 			 */
 			if (mode.equals(ILaunchManager.DEBUG_MODE)) {
+				String portOption = launchParam.getLaunchConfiguration().getAttribute(
+						ATLLaunchConstants.PORT, Integer.valueOf(ATLLaunchConstants.DEFAULT_PORT).toString());
+				if (portOption.equals("")) { //$NON-NLS-1$
+					portOption = Integer.valueOf(ATLLaunchConstants.DEFAULT_PORT).toString();
+				}
 				if (launchParam != null) {
 					// link between the debug target and the source locator
 					launchParam.setSourceLocator(new AtlSourceLocator());
 					mTarget = new AtlDebugTarget(launchParam);
 				}
+				final int port = new Integer(portOption).intValue();
 				Thread th = new Thread() {
 					@Override
 					public void run() {
-						launch(new NetworkDebugger(6060, true), options, modules);
+						launch(new NetworkDebugger(port, true), options, modules);
 					}
 				};
 				th.start();
@@ -195,6 +203,8 @@ public class RegularVMLauncher implements ILauncher {
 				}
 			}
 		} catch (DebugException e) {
+			throw new VMException(null, e.getLocalizedMessage(), e);
+		} catch (CoreException e) {
 			throw new VMException(null, e.getLocalizedMessage(), e);
 		}
 		return null;
