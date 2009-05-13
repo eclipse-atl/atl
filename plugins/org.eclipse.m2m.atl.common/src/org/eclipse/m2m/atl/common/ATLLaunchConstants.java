@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.common;
 
-
 /**
  * This interface contains the common constants used for launch ATL transformations in the Eclipse UI.
  * 
@@ -62,6 +61,9 @@ public interface ATLLaunchConstants {
 
 	/** Debug port. */
 	String PORT = "Port"; //$NON-NLS-1$
+
+	/** Default debug port. */
+	int DEFAULT_PORT = 6060;
 
 	/** Libraries map. */
 	String LIBS = "Libs"; //$NON-NLS-1$
