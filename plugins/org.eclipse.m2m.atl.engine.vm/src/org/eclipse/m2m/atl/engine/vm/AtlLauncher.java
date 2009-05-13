@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.AtlSuperimposeModule.AtlSuperimposeModuleException;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -119,7 +120,7 @@ public final class AtlLauncher {
 	 * @return the launch result
 	 */
 	public Object debug(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose, Map options) {
-		return launch(asmurl, libraries, models, asmParams, superimpose, options, new NetworkDebugger(6060,
+		return launch(asmurl, libraries, models, asmParams, superimpose, options, new NetworkDebugger(ATLLaunchConstants.DEFAULT_PORT,
 				true));
 	}
 

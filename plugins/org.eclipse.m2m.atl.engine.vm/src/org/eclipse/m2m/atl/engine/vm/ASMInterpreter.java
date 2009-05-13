@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
@@ -128,7 +129,7 @@ public class ASMInterpreter {
 		Debugger debugger = null;
 
 		if ("true".equals(params.get("NetworkDebugger"))) {
-			debugger = new NetworkDebugger(6060, true);
+			debugger = new NetworkDebugger(ATLLaunchConstants.DEFAULT_PORT, true);
 		} else {
 			debugger = new SimpleDebugger(step, stepops, deepstepops, nostepops, deepnostepops,
 					showStackTrace, showSummary, profile, true);
