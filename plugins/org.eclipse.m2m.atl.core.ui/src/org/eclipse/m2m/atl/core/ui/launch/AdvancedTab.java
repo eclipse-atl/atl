@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -56,6 +57,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
@@ -67,6 +69,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AdvancedTab extends AbstractLaunchConfigurationTab {
+
 	/** Sets generated files as derived. */
 	public static final String OPTION_DERIVED = "OPTION_DERIVED"; //$NON-NLS-1$
 
@@ -88,6 +91,8 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	private Group groupOthersInformation;
 
 	private Combo atlVMs;
+
+	private Text debuggerPortText;
 
 	private Map<String, Button> buttonArray = new HashMap<String, Button>();;
 
@@ -179,14 +184,12 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		gd.verticalSpan = 3;
 		tableSuperimpose.setLayoutData(gd);
 
-		/** ***************************************** */
-
 		/*****************************************************************************************************
 		 * Components of group3
 		 ****************************************************************************************************/
 
 		groupOthersInformation.setText(Messages.getString("MainAtlTab.OTHERSPARAMETERS")); //$NON-NLS-1$
-
+		
 		Composite groupATLVMs = new Composite(groupOthersInformation, SWT.SHADOW_NONE);
 		Label atlVMLabel = new Label(groupATLVMs, SWT.NULL);
 		atlVMLabel.setText(Messages.getString("AdvancedTab.ATLVM")); //$NON-NLS-1$
@@ -202,8 +205,20 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 				updateLaunchConfigurationDialog();
 			}
 		});
+		if (isDebug()) {			
+			Label debuggerPortLabel = new Label(groupATLVMs, SWT.NULL);
+			debuggerPortLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+			debuggerPortLabel.setText(Messages.getString("AdvancedTab.DEBUGGER_PORT")); //$NON-NLS-1$
+			debuggerPortText = new Text(groupATLVMs, SWT.BORDER);
+			debuggerPortText.setLayoutData(new GridData(GridData.BEGINNING));
+			debuggerPortText.addModifyListener(new ModifyListener() {
+				public void modifyText(ModifyEvent e) {
+					updateLaunchConfigurationDialog();
+				}
+			});
+		}
 		groupATLVMs.setLayout(new GridLayout(2, false));
-
+		
 		groupLayout = new GridLayout();
 		groupLayout.numColumns = 1;
 		groupLayout.makeColumnsEqualWidth = true;
@@ -244,7 +259,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		}
 		return options;
 	}
-	
+
 	private void buildCheckButtons() {
 		for (Iterator<Button> iterator = buttonArray.values().iterator(); iterator.hasNext();) {
 			iterator.next().dispose();
@@ -299,6 +314,12 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 				item.setText(mName);
 			}
 
+			if (isDebug()) {
+				String port = configuration.getAttribute(ATLLaunchConstants.PORT, Integer.valueOf(
+						ATLLaunchConstants.DEFAULT_PORT).toString());
+				debuggerPortText.setText(port);
+			}
+
 			for (int item = 0; item < atlVMs.getItems().length; item++) {
 				if (atlVMs.getItem(item)
 						.equals(
@@ -336,6 +357,9 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(ATLLaunchConstants.SUPERIMPOSE, createSuperimposedList());
 		configuration.setAttribute(ATLLaunchConstants.OPTIONS, defaultValues);
 		configuration.setAttribute(ATLLaunchConstants.ATL_VM, atlVMs.getItem(atlVMs.getSelectionIndex()));
+		if (isDebug()) {
+			configuration.setAttribute(ATLLaunchConstants.PORT, debuggerPortText.getText());
+		}
 	}
 
 	/**
@@ -353,6 +377,15 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	 */
 	@Override
 	public boolean canSave() {
+		if (isDebug()) {
+			String port = debuggerPortText.getText();
+			try {
+				Integer.valueOf(port);
+			} catch (NumberFormatException e) {
+				this.setErrorMessage(Messages.getString("AdvancedTab.DEBUG_PORT")); //$NON-NLS-1$
+				return false;
+			}
+		}
 		if (tableSuperimpose.getItemCount() != 0) {
 			for (int i = 0; i < tableSuperimpose.getItemCount(); i++) {
 				if (tableSuperimpose.getItem(i).getText().equals("")) { //$NON-NLS-1$
@@ -464,5 +497,9 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		msgBox.setText(Messages.getString("AdvancedTab.ERROR")); //$NON-NLS-1$
 		msgBox.setMessage(textToDisplay);
 		msgBox.open();
+	}
+
+	private boolean isDebug() {
+		return getLaunchConfigurationDialog().getMode().equals(ILaunchManager.DEBUG_MODE);
 	}
 }
