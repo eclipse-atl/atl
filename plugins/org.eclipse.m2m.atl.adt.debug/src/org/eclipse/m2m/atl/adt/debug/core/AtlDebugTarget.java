@@ -174,11 +174,11 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 				try {
 					try {
 						port = launch.getLaunchConfiguration().getAttribute(ATLLaunchConstants.PORT,
-								AtlDebugModelConstants.PORT);
+								new Integer(ATLLaunchConstants.DEFAULT_PORT).toString());
 						host = launch.getLaunchConfiguration().getAttribute(ATLLaunchConstants.HOST,
 								AtlDebugModelConstants.HOST);
 						if (port.equals("")) { //$NON-NLS-1$
-							port = AtlDebugModelConstants.PORT;
+							port = new Integer(ATLLaunchConstants.DEFAULT_PORT).toString();
 						}
 						if (host.equals("")) { //$NON-NLS-1$
 							host = AtlDebugModelConstants.HOST;

@@ -19,9 +19,6 @@ import org.eclipse.m2m.atl.adt.debug.Messages;
  */
 public final class AtlDebugModelConstants {
 
-	/** Port number. */
-	public static final String PORT = "6060"; //$NON-NLS-1$
-
 	/** Host name. */
 	public static final String HOST = "localhost"; //$NON-NLS-1$
 
