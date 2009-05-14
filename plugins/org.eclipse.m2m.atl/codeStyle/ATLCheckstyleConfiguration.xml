@@ -190,6 +190,7 @@
             <property name="ignoreSetter" value="true"/>
         </module>
         <module name="IllegalCatch">
+            <property name="severity" value="ignore"/>
             <property name="illegalClassNames" value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException, java.lang.Error"/>
         </module>
         <module name="IllegalThrows">
