@@ -39,6 +39,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -1234,19 +1235,35 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 
 	@SuppressWarnings("unchecked")
 	private void getModelsFromATLFile(IFile file) {
+		IFile atlFile = null;
+		String extension = file.getFileExtension().toLowerCase();
+		if (extension.equals("asm")) { //$NON-NLS-1$
+			String atlPath = file.getFullPath().toString().substring(0,
+					file.getFullPath().toString().length() - extension.length())
+					+ "atl"; //$NON-NLS-1$
+			atlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(atlPath));
+		} else if (extension.equals("atl")) { //$NON-NLS-1$
+			atlFile = file;
+		} else {
+			return;
+		}
+		if (!atlFile.isAccessible()) {
+			return;
+		}
+		
 		AtlSourceManager sourceManager;
-		if (asmFileCache.containsKey(file)) {
-			sourceManager = asmFileCache.get(file);
+		if (asmFileCache.containsKey(atlFile)) {
+			sourceManager = asmFileCache.get(atlFile);
 		} else {
 			sourceManager = new AtlSourceManager();
 			try {
-				sourceManager.updateDataSource(file.getContents());
+				sourceManager.updateDataSource(atlFile.getContents());
 			} catch (CoreException e) {
 				return;
 			} catch (IOException e) {
 				return;
 			}
-			asmFileCache.put(file, sourceManager);
+			asmFileCache.put(atlFile, sourceManager);
 		}
 
 		atlcompiler = sourceManager.getAtlCompiler();
