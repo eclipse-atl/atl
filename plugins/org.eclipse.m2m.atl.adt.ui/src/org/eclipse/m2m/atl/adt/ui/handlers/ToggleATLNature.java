@@ -59,7 +59,7 @@ public class ToggleATLNature extends AbstractHandler {
 	 * Toggles atl nature on a project.
 	 * 
 	 * @param project
-	 *            to have sample nature added or removed
+	 *            to have atl nature added or removed
 	 */
 	private void toggleNature(IProject project) throws ExecutionException {
 		try {
