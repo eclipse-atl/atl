@@ -11,7 +11,6 @@
 package org.eclipse.m2m.atl.adt.ui.handlers;
 
 import java.util.Iterator;
-import java.util.logging.Level;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -23,7 +22,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.m2m.atl.adt.AtlNature;
-import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
@@ -61,9 +59,9 @@ public class ToggleATLNature extends AbstractHandler {
 	 * Toggles atl nature on a project.
 	 * 
 	 * @param project
-	 *            to have atl nature added or removed
+	 *            to have sample nature added or removed
 	 */
-	private void toggleNature(IProject project) {
+	private void toggleNature(IProject project) throws ExecutionException {
 		try {
 			IProjectDescription description = project.getDescription();
 			String[] natures = description.getNatureIds();
@@ -87,7 +85,7 @@ public class ToggleATLNature extends AbstractHandler {
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
 		} catch (CoreException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			throw new ExecutionException(e.getLocalizedMessage());
 		}
 	}
 
