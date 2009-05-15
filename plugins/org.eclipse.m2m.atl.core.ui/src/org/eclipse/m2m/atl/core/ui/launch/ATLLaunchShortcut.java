@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.ui.launch;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.core.ui.ATLCoreUIPlugin;
 import org.eclipse.m2m.atl.core.ui.Messages;
+import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
@@ -80,8 +82,15 @@ public class ATLLaunchShortcut implements ILaunchShortcut {
 					getConfigurationType());
 			for (ILaunchConfiguration launchConfiguration : configurations) {
 				String moduleName = launchConfiguration.getAttribute(ATLLaunchConstants.ATL_FILE_NAME, ""); //$NON-NLS-1$
-				if (file.getFullPath().toString().equals(moduleName)) {
-					availableConfigurations.add(launchConfiguration);
+				if (moduleName.endsWith(".atl")) { //$NON-NLS-1$
+					if (file.getFullPath().toString().equals(moduleName)) {
+						availableConfigurations.add(launchConfiguration);
+					}					
+				} else if (moduleName.endsWith(".asm")) { //$NON-NLS-1$
+					moduleName = moduleName.substring(0, moduleName.length() - 4) + ".atl"; //$NON-NLS-1$
+					if (file.getFullPath().toString().equals(moduleName)) {
+						availableConfigurations.add(launchConfiguration);
+					}
 				}
 			}
 			if (availableConfigurations.size() == 1) {
@@ -93,15 +102,31 @@ public class ATLLaunchShortcut implements ILaunchShortcut {
 					DebugUITools.launch(configuration, mode);
 				}
 				return;
-			} else {
-				ILaunchConfiguration configuration = createConfiguration(file);
+			} else if (isLaunchable(file)) {
+				ILaunchConfigurationWorkingCopy configuration = createConfiguration(file);
 				ILaunchGroup group = DebugUITools.getLaunchGroup(configuration, mode);
-				DebugUITools.openLaunchConfigurationDialog(ATLCoreUIPlugin.getDefault().getShell(),
-						configuration, group.getIdentifier(), Status.OK_STATUS);
+				if (DebugUITools.openLaunchConfigurationDialog(ATLCoreUIPlugin.getDefault().getShell(),
+						configuration, group.getIdentifier(), Status.OK_STATUS) != Window.CANCEL) {
+					configuration.doSave();
+				}
 			}
 		} catch (CoreException e) {
-			MessageDialog.openError(ATLCoreUIPlugin.getDefault().getShell(), Messages.getString("ATLLaunchShortcut.LAUNCH_ERROR"), e.getMessage()); //$NON-NLS-1$
+			MessageDialog.openError(ATLCoreUIPlugin.getDefault().getShell(), Messages
+					.getString("ATLLaunchShortcut.LAUNCH_ERROR"), e.getMessage()); //$NON-NLS-1$
 		}
+	}
+
+	private boolean isLaunchable(IFile file) throws CoreException {
+		try {
+			AtlSourceManager sourceManager = new AtlSourceManager();
+			sourceManager.updateDataSource(file.getContents());
+			int atlFileType = sourceManager.getATLFileType();
+			return atlFileType == AtlSourceManager.ATL_FILE_TYPE_MODULE
+					|| atlFileType == AtlSourceManager.ATL_FILE_TYPE_QUERY;
+		} catch (IOException e) {
+			// do nothing
+		}
+		return false;
 	}
 
 	/**
@@ -116,7 +141,8 @@ public class ATLLaunchShortcut implements ILaunchShortcut {
 	 */
 	protected ILaunchConfiguration chooseConfiguration(List<ILaunchConfiguration> configList) {
 		IDebugModelPresentation labelProvider = DebugUITools.newDebugModelPresentation();
-		ElementListSelectionDialog dialog = new ElementListSelectionDialog(ATLCoreUIPlugin.getDefault().getShell(), labelProvider);
+		ElementListSelectionDialog dialog = new ElementListSelectionDialog(ATLCoreUIPlugin.getDefault()
+				.getShell(), labelProvider);
 		dialog.setElements(configList.toArray());
 		dialog.setTitle(Messages.getString("ATLLaunchShortcut.SELECT_TRANSFO")); //$NON-NLS-1$
 		dialog.setMessage(Messages.getString("ATLLaunchShortcut.SELECT_EXISTING")); //$NON-NLS-1$
@@ -129,12 +155,12 @@ public class ATLLaunchShortcut implements ILaunchShortcut {
 		return null;
 	}
 
-	private ILaunchConfiguration createConfiguration(IFile file) throws CoreException {
+	private ILaunchConfigurationWorkingCopy createConfiguration(IFile file) throws CoreException {
 		String name = getLaunchManager().generateUniqueLaunchConfigurationNameFrom(
 				getModuleNameFromFile(file));
 		ILaunchConfigurationWorkingCopy wc = getConfigurationType().newInstance(null, name);
 		wc.setAttribute(ATLLaunchConstants.ATL_FILE_NAME, file.getFullPath().toString());
-		return wc.doSave();
+		return wc;
 	}
 
 	/**
