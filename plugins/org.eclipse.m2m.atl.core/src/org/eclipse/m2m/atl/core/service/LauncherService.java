@@ -270,6 +270,9 @@ public final class LauncherService {
 
 		if (referenceModel == null) {
 			String referenceModelPath = paths.get(referenceModelName);
+			if (referenceModelPath == null) {
+				throw new ATLCoreException("You must specify a path for " + referenceModelName); //$NON-NLS-1$
+			}
 			if (referenceModelPath.startsWith("#")) { //$NON-NLS-1$
 				referenceModel = modelFactory.getMetametamodel();
 			} else {
@@ -285,6 +288,9 @@ public final class LauncherService {
 		}
 
 		String modelPath = paths.get(modelName);
+		if (modelPath == null) {
+			throw new ATLCoreException("You must specify a path for " + modelName); //$NON-NLS-1$
+		}
 		if (modelPath.startsWith("#")) { //$NON-NLS-1$
 			return modelFactory.getMetametamodel();
 		} else {
