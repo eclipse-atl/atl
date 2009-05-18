@@ -56,6 +56,8 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
  */
 public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExtension {
 
+	private static final String DEFAULT_VM_NAME = ATLLaunchConstants.EMF_VM_NAME;
+
 	private IConfigurationElement configElement;
 
 	private WizardNewFileCreationPage simplePage;
@@ -248,7 +250,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 				ILaunchConfigurationType type = manager
 						.getLaunchConfigurationType(ATLLaunchConstants.LAUNCH_CONFIGURATION_TYPE);
 				ILaunchConfigurationWorkingCopy editableConfiguration = type.newInstance(null, name);
-
+				editableConfiguration.setAttribute(ATLLaunchConstants.ATL_VM, DEFAULT_VM_NAME);
 				editableConfiguration.setAttribute(ATLLaunchConstants.ATL_FILE_NAME, file.getFullPath()
 						.toString());
 				editableConfiguration.setAttribute(ATLLaunchConstants.IS_REFINING, advancedPage.getUnitType()
