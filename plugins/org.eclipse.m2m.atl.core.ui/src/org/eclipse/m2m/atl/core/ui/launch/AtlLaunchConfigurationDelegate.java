@@ -232,7 +232,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 			}
 
 		} catch (ATLCoreException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			ATLLogger.severe(e.getMessage());
 			return;
 		} catch (ATLExecutionException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
