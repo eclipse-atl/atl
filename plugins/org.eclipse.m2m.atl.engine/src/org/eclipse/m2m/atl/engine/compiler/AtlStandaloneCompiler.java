@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.core.IModel;
 
 /**
  * Eclipse-independent interface for ATL compilers.
@@ -53,4 +54,26 @@ public interface AtlStandaloneCompiler {
 	 * @return array of compiletime errors as EObjects (0 length if no errors)
 	 */
 	EObject[] compileWithProblemModel(InputStream in, OutputStream outputStream);
+	
+	/**
+	 * Compiles an ATL script and returns easily accessible error messages.
+	 * 
+	 * @param atlModel
+	 *            The atlModel.
+	 * @param outputStream
+	 *            the compilation ASM output stream
+	 * @return array of compiletime errors as EObjects (0 length if no errors)
+	 */
+	EObject[] compileWithProblemModel(IModel atlModel, OutputStream outputStream);
+	
+	/**
+	 * Compiles an ATL script and returns easily accessible error messages.
+	 * 
+	 * @param atlModel
+	 *            The atlModel.
+	 * @param outputFileName
+	 *            Name of the file to which the ATL compiled program will be saved.
+	 * @return array of compiletime errors as EObjects (0 length if no errors)
+	 */
+	EObject[] compileWithProblemModel(IModel atlModel, String outputFileName);
 }

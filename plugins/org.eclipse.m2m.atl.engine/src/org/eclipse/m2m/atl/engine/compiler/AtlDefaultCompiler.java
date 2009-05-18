@@ -95,6 +95,37 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(org.eclipse.m2m.atl.core.IModel,
+	 *      java.lang.String)
+	 */
+	public EObject[] compileWithProblemModel(IModel atlModel, String outputFileName) {
+		try {
+			return internalCompile(atlModel, outputFileName);
+		} catch (Exception e) {
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(org.eclipse.m2m.atl.core.IModel,
+	 *      java.io.OutputStream)
+	 */
+	public EObject[] compileWithProblemModel(IModel atlModel, OutputStream outputStream) {
+		try {
+			asmOutputStream = outputStream;
+			return internalCompile(atlModel, ASMEmitter.DIRECT_COMPILATION);
+		} catch (Exception e) {
+			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
+		return null;
+	}
+
+	/**
 	 * Returns the ATL WFR URL (whatever that may be); to be implemented by concrete subclass.
 	 * 
 	 * @return the URL
