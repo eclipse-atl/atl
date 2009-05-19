@@ -66,11 +66,14 @@ public class AtlLabelProvider extends LabelProvider {
 
 			public String getText(EObject helper) {
 				EObject featureDef = (EObject)helper.eGet(AtlEMFConstants.sfHelperDefinition);
-				EObject feature = (EObject)featureDef.eGet(sfFeature);
-				if (feature == null) {
-					return null;
+				if (featureDef != null) {
+					EObject feature = (EObject)featureDef.eGet(sfFeature);
+					if (feature == null) {
+						return null;
+					}
+					return (String)feature.eGet(feature.eClass().getEStructuralFeature("name")); //$NON-NLS-1$
 				}
-				return (String)feature.eGet(feature.eClass().getEStructuralFeature("name")); //$NON-NLS-1$
+				return null;
 			}
 		});
 
@@ -143,8 +146,7 @@ public class AtlLabelProvider extends LabelProvider {
 					.getEClassifier("LazyMatchedRule"); //$NON-NLS-1$
 			AtlEMFConstants.clCalledRule = (EClass)AtlEMFConstants.pkAtl.getEClassifier("CalledRule"); //$NON-NLS-1$
 			AtlEMFConstants.clHelper = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Helper"); //$NON-NLS-1$
-			AtlEMFConstants.sfHelperDefinition = AtlEMFConstants.clHelper
-					.getEStructuralFeature("definition"); //$NON-NLS-1$
+			AtlEMFConstants.sfHelperDefinition = AtlEMFConstants.clHelper.getEStructuralFeature("definition"); //$NON-NLS-1$
 			AtlEMFConstants.clLibraryRef = (EClass)AtlEMFConstants.pkAtl.getEClassifier("LibraryRef"); //$NON-NLS-1$
 			AtlEMFConstants.clUnit = (EClass)AtlEMFConstants.pkAtl.getEClassifier("Unit"); //$NON-NLS-1$
 			AtlEMFConstants.clPatternElement = (EClass)AtlEMFConstants.pkAtl.getEClassifier("PatternElement"); //$NON-NLS-1$
@@ -262,7 +264,7 @@ public class AtlLabelProvider extends LabelProvider {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
 	 */
 	public String getText(Object element) {
