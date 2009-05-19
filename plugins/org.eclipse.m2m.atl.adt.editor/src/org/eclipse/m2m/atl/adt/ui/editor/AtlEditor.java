@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Stack;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.eclipse.core.resources.IFile;
@@ -872,17 +871,17 @@ public class AtlEditor extends TextEditor {
 	 *            These annotations have seen their positions updated.
 	 */
 	public void updateFoldingStructure(Map addedAnnotations, List deletedAnnotations, Map modifiedAnnotations) {
-		Annotation[] deleted = new Annotation[deletedAnnotations.size()];
+		Annotation[] deleted = new Annotation[deletedAnnotations.size() + modifiedAnnotations.size()];
 		for (int i = 0; i < deletedAnnotations.size(); i++) {
 			deleted[i] = (Annotation)deletedAnnotations.get(i);
 		}
+		final Iterator modifiedIterator = modifiedAnnotations.keySet().iterator();
+		for (int i = deletedAnnotations.size(); i < deleted.length; i++) {
+			deleted[i] = (Annotation)modifiedIterator.next();
+		}
+		addedAnnotations.putAll(modifiedAnnotations);
 		if (annotationModel != null) {
 			annotationModel.modifyAnnotations(deleted, addedAnnotations, null);
-			for (Iterator iterator = modifiedAnnotations.entrySet().iterator(); iterator.hasNext();) {
-				Entry entry = (Entry)iterator.next();
-				annotationModel.modifyAnnotationPosition((Annotation)entry.getKey(), (Position)entry
-						.getValue());
-			}
 		}
 	}
 
