@@ -62,7 +62,9 @@ public class AtlPerspective implements IPerspectiveFactory {
 
 		// place navigator to the left (of editor area)
 		IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, (float)0.25, editorArea); //$NON-NLS-1$
-		left.addView(IPageLayout.ID_PROJECT_EXPLORER);
+		
+		//fix: IPageLayout.ID_PROJECT_EXPLORER missing in eclipse < 3.5
+		left.addView("org.eclipse.ui.navigator.ProjectExplorer"); //$NON-NLS-1$
 
 		// problem view at the bottom (of editor area)
 		IFolderLayout bottom = layout.createFolder("bottom", IPageLayout.BOTTOM, (float)0.75, editorArea); //$NON-NLS-1$
