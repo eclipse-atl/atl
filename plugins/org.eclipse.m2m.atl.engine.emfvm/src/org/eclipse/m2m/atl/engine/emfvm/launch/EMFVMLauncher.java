@@ -25,8 +25,10 @@ import org.eclipse.m2m.atl.engine.emfvm.adapter.UML2ModelAdapter;
  */
 public class EMFVMLauncher implements ILauncher {
 
+	/** The {@link ILauncher} extension name. */
 	public static final String LAUNCHER_NAME = "EMF-specific VM"; //$NON-NLS-1$
 
+	/** The Default model factory name to use. */
 	public static final String MODEL_FACTORY_NAME = "EMF"; //$NON-NLS-1$
 
 	protected Map<String, IModel> models;
