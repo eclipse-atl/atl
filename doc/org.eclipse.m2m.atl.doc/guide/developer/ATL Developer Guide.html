@@ -14,7 +14,7 @@
 				<td style="width: 20%" align="left"></td>
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right">
-					<a href="ATL-Plugins.html" title="ATL Plugins">
+					<a href="ATL-Architecture.html" title="ATL Architecture">
 						<img alt="Next" border="0" src="images/images/next.gif"/>
 					</a>
 				</td>
@@ -22,20 +22,162 @@
 			<tr>
 				<td style="width: 20%" align="left" valign="top"></td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">ATL Plugins</td>
+				<td style="width: 20%" align="right" valign="top">ATL Architecture</td>
 			</tr>
 		</table><hr/>
 		<p>
 			<a href="http://wiki.eclipse.org/ATL/Category:ATL" title="Category:ATL">Category:ATL</a>
+			This documentation aims at contributing to improve the comprehension of the ATL source code.
 		</p>
-		<h1 id="Introduction">Introduction</h1>
-		<p>This documentation aims at contributing to the comprehension of the ATL source code.</p><hr/>
+		<h1 id="ATL_Source_Code">ATL Source Code</h1>
+		<h2 id="Plug-ins_organization">Plug-ins organization</h2>
+		<p>Below is the list of the 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/?root=Modeling_Project">ATL plugins</a>:
+		</p>
+		<ul>
+			<li>
+				<b>ATL Core</b>: provides APIs to launch and extend ATL
+				<ul>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.common/?root=Modeling_Project">org.eclipse.m2m.atl.common</a>: provide common utilities
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core/?root=Modeling_Project">org.eclipse.m2m.atl.core</a>: defines the 
+						<a href="ATL-Architecture.html#Core">ATL Core API</a> (launching, model handling)
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.emf/?root=Modeling_Project">org.eclipse.m2m.atl.core.emf</a>: EMF implementation of the Core API
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ui.vm/?root=Modeling_Project">org.eclipse.m2m.atl.core.ui.vm</a>: defines a wrapper which allow to launch the ATL Regular VM using the Core API
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ant/?root=Modeling_Project">org.eclipse.m2m.atl.core.ant</a>: provides the ATL ant tasks, based on the Core API
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>ADT</b> 
+				<b>
+					<i>(ATL Development Tools)</i>
+				</b>: Eclipse integration plugins:
+				<ul>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ui/?root=Modeling_Project">org.eclipse.m2m.atl.core.ui</a>: provides the ATL launch configuration, based on the Core API
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.adt/?root=Modeling_Project">org.eclipse.m2m.atl.adt</a>: provides ATL nature and builder
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.adt.ui/?root=Modeling_Project">org.eclipse.m2m.atl.adt.ui</a>: provides ATL perspective and wizards (new file, new project)
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.adt.debug/?root=Modeling_Project">org.eclipse.m2m.atl.adt.debug</a>: the ATL Regular VM debugger
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.adt.editor/?root=Modeling_Project">org.eclipse.m2m.atl.adt.editor</a>: the ATL textual editor
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>ATL Parser and Compiler</b>:
+				<ul>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.dsls/?root=Modeling_Project">org.eclipse.m2m.atl.dsls</a>: provides the syntaxic/semantic definition of ATL and ACG
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.engine/?root=Modeling_Project">org.eclipse.m2m.atl.engine</a>: provides ATL compiling and parsing utilities
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>ATL Virtual Machines</b>: 
+				<ul>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.engine.emfvm/?root=Modeling_Project">org.eclipse.m2m.atl.engine.emfvm</a>: the ATL EMF-specific VM
+					</li>
+					<li>
+						<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.engine.vm/?root=Modeling_Project">org.eclipse.m2m.atl.engine.vm</a>: the ATL Regular VM, using model handlers:
+						<ul>
+							<li>
+								<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.drivers.emf4atl/?root=Modeling_Project">org.eclipse.m2m.atl.drivers.emf4atl</a>: the ATL Regular VM model handler for EMF
+							</li>
+							<li>
+								<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.drivers.uml24atl/?root=Modeling_Project">org.eclipse.m2m.atl.drivers.uml24atl</a>: the ATL Regular VM model handler for UML2
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h2 id="External_dependencies">External dependencies</h2>
+		<p>Historically, ATL imports two libraries : ANTLR version 2 and MDR. Those libraries are not authorized in Eclipse because of their non-compliance with the Eclipse IP policy. Consequently, ATL imposes users to download those libraries by themselves and install them into Eclipse plugin folder.</p>
+		<p>Today, ATL dependencies have been strongly reduced : ATL only needs ANTLR-runtime (version 3) library, which is compliant with the Eclipse IP policy and included into ATL source code. The MDR library is only necessary for the MDR Model Handler. According to the fact that most of people uses EMF Model Handler (which seems to be more powerful), MDR Model Handler has been separated into a single feature, which is not natively required for ATL.</p>
+		<p>
+			<a href="http://wiki.eclipse.org/TCS">TCS (Textual Concrete Syntax)</a>, a tool for parsing and extraction, is used to generate some ATL components (e.g. ATL-Parser). Unlike ATL, TCS uses both ANTLR library, in version 2 and newly in version 3. TCS is available on 
+			<a href="http://www.eclipse.org/gmt/">GMT</a>. ATL doesn't have any dependency with TCS. Specific injectors depend on ANTLR too.
+		</p>
+		<h2 id="Install_ATL_from_CVS">Install ATL from CVS</h2>
+		<h3 id="Import_team_project_set">Import team project set</h3>
+		<p>ATL provides team project sets in order to simplify access to the source code. You have to download an atl.psf file on your local disk, and then you can import projects in Eclipse using : 
+			<i>File->Import->Team->Team Project Set</i>
+		</p>
+		<h4 id="Anonymous_access">Anonymous access</h4>
+		<p>Anonymous access use pserver to connect on CVS. 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl.releng/psf/anonymous/?root=Modeling_Project">Here</a> are the two psf files.
+		</p>
+		<h4 id="Commiter_access">Commiter access</h4>
+		<p>Commiter access use extssh to connect on CVS. 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl.releng/psf/commiter/?root=Modeling_Project">Here</a> are the two psf files.
+		</p>
+		<h4 id="ANTLR_installation">ANTLR installation</h4>
+		<p>Note that the download of this plugin is embedded into atl.psf files. So, if you followed the previous instructions, you don't need to read the next steps.
+			In Eclipse, antlr is managed by the 
+			<a href="http://www.eclipse.org/orbit/">Orbit</a> project. To checkout this plugin, follow those steps :
+		</p>
+		<ul>
+			<li>Open an anonymous/commiter CVS connection to <code>dev.eclipse.org</code>, repository <code>/cvsroot/tools</code></li>
+			<li>Right-click on the repository location, then choose 
+				<i>Refresh branches</i>
+			</li>
+			<li>In the wizard, check the <code>org.eclipse.orbit</code> project</li>
+			<li>In the branches, select the one named <code>v3_0_0</code></li>
+			<li>Checkout <code>org.antlr.runtime</code></li>
+		</ul>
+		<h4 id="MDR_installation_.28Regular_VM_only.29">MDR installation (Regular VM only)</h4>
+		<p>In each psf/ subdirectory there are two .psf files :</p>
+		<ul>
+			<li>atl.psf</li>
+			<li>mdr4atl.psf</li>
+		</ul>
+		<p>The last one provides a project set which only contains the mdr4atl driver, you can use it as for atl.psf.</p>
+		<p>Now, you need to go to the Plug-in perspective. Some external libraries are required for the plug-in org.eclipse.m2m.atl.drivers.mdr4atl but not available on the CVS repository. You need to download the jar files into the lib/ directory of this project.</p>
+		<p>Download mdr-standalone.zip from 
+			<a href="http://mdr.netbeans.org/download/">http://mdr.netbeans.org/download/</a> and put the included jar files into lib/ of plugin org.eclipse.m2m.atl.drivers.mdr4atl.
+		</p>
+		<p>Note that mdr-standalone.zip is updated more often on the MDR website than in our development source. As a consequence, bugs may appear when using the last-in-date mdr-standalone version of MDR.</p>
+		<p>When you have finished this operation, there is normally no error left.</p>
+		<p>WARNING: The MDR model handler is no more maintained, so it may need to be fixed.</p>
+		<h4 id="Testing">Testing</h4>
+		<p>ATL is ready to be tested. There are two ways to use it:</p>
+		<ul>
+			<li>In the "Plug-in Development perspective", you can launch a Run-time workbench (Click on Run -> Run as -> Run-time workbench).</li>
+			<li>You can install ATL in your copy of Eclipse. Go in the Plug-in perspective and select all the plug-in projects. In the context menu choose Export -> Deployable Plug-ins and Fragments.</li>
+		</ul>
+		<p>In the screen Export Plug-ins and Fragments, check if all the projects are selected and choose the output folder.</p>
+		<p>Now you need to close Eclipse. Enter the "eclipse" directory (which contains plug-ins and features directories) then copy the created Jar files into the "plugins" directory. After that you can restart Eclipse.</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left"></td>
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right">
-					<a href="ATL-Plugins.html" title="ATL Plugins">
+					<a href="ATL-Architecture.html" title="ATL Architecture">
 						<img alt="Next" border="0" src="images/images/next.gif"/>
 					</a>
 				</td>
@@ -43,7 +185,7 @@
 			<tr>
 				<td style="width: 20%" align="left" valign="top"></td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">ATL Plugins</td>
+				<td style="width: 20%" align="right" valign="top">ATL Architecture</td>
 			</tr>
 		</table>
 	</body>

@@ -4,15 +4,6 @@
 	<topic href="guide/user/Installation.html" label="Installation">
 		<topic href="guide/user/Installation.html#Prerequisites" label="Prerequisites"></topic>
 		<topic href="guide/user/Installation.html#Install_ATL" label="Install ATL"></topic>
-		<topic href="guide/user/Installation.html#Install_ATL_from_CVS" label="Install ATL from CVS">
-			<topic href="guide/user/Installation.html#Import_team_project_set" label="Import team project set">
-				<topic href="guide/user/Installation.html#Anonymous_access" label="Anonymous access"></topic>
-				<topic href="guide/user/Installation.html#Commiter_access" label="Commiter access"></topic>
-				<topic href="guide/user/Installation.html#ANTLR_installation" label="ANTLR installation"></topic>
-				<topic href="guide/user/Installation.html#MDR_installation" label="MDR installation"></topic>
-				<topic href="guide/user/Installation.html#Testing" label="Testing"></topic>
-			</topic>
-		</topic>
 	</topic>
 	<topic href="guide/user/Overview-of-the-Atlas-Transformation-Language.html" label="Overview of the Atlas Transformation Language">
 		<topic href="guide/user/Overview-of-the-Atlas-Transformation-Language.html#Examples_metamodels" label="Examples metamodels">

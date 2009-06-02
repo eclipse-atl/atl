@@ -80,55 +80,9 @@
 			<li>access ATL examples</li>
 			<li>access to the source code of installed ATL plugins</li>
 		</ul>
-		<h2 id="Install_ATL_from_CVS">Install ATL from CVS</h2>
-		<h3 id="Import_team_project_set">Import team project set</h3>
-		<p>ATL provides team project sets in order to simplify access to the source code. You have to download an atl.psf file on your local disk, and then you can import projects in Eclipse using : 
-			<i>File->Import->Team->Team Project Set</i>
-		</p>
-		<h4 id="Anonymous_access">Anonymous access</h4>
-		<p>Anonymous access use pserver to connect on CVS. 
-			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl.releng/psf/anonymous/?root=Modeling_Project">Here</a> are the two psf files.
-		</p>
-		<h4 id="Commiter_access">Commiter access</h4>
-		<p>Commiter access use extssh to connect on CVS. 
-			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl.releng/psf/commiter/?root=Modeling_Project">Here</a> are the two psf files.
-		</p>
-		<h4 id="ANTLR_installation">ANTLR installation</h4>
-		<p>Note that the download of this plugin is embedded into atl.psf files. So, if you followed the previous instructions, you don't need to read the next steps.
-			In Eclipse, antlr is managed by the 
-			<a href="http://www.eclipse.org/orbit/">Orbit</a> project. To checkout this plugin, follow those steps :
-		</p>
-		<ul>
-			<li>Open an anonymous/commiter CVS connection to <code>dev.eclipse.org</code>, repository <code>/cvsroot/tools</code></li>
-			<li>Right-click on the repository location, then choose 
-				<i>Refresh branches</i>
-			</li>
-			<li>In the wizard, check the <code>org.eclipse.orbit</code> project</li>
-			<li>In the branches, select the one named <code>v3_0_0</code></li>
-			<li>Checkout <code>org.antlr.runtime</code></li>
-		</ul>
-		<h4 id="MDR_installation">MDR installation</h4>
-		<p>In each psf/ subdirectory there are two .psf files :</p>
-		<ul>
-			<li>atl.psf</li>
-			<li>mdr4atl.psf</li>
-		</ul>
-		<p>The last one provides a project set which only contains the mdr4atl driver, you can use it as for atl.psf.</p>
-		<p>Now, you need to go to the Plug-in perspective. Some external libraries are required for the plug-in org.eclipse.m2m.atl.drivers.mdr4atl but not available on the CVS repository (a README file is available in this plug-in). You need to download the jar files into the lib/ directory of this project.</p>
-		<p>Download mdr-standalone.zip from 
-			<a href="http://mdr.netbeans.org/download/">http://mdr.netbeans.org/download/</a> and put the included jar files into lib/ of plugin org.eclipse.m2m.atl.drivers.mdr4atl.
-		</p>
-		<p>Note that mdr-standalone.zip is updated more often on the MDR website than in our development source. As a consequence, bugs may appear when using the last-in-date mdr-standalone version of MDR.</p>
-		<p>When you have finished this operation, there is normally no error left.</p>
-		<p>WARNING: The MDR model handler is no more maintained, so it may need to be fixed.</p>
-		<h4 id="Testing">Testing</h4>
-		<p>ATL is ready to be tested. There are two ways to use it:</p>
-		<ul>
-			<li>In the "Plug-in Development perspective", you can launch a Run-time workbench (Click on Run -> Run as -> Run-time workbench).</li>
-			<li>You can install ATL in your copy of Eclipse. Go in the Plug-in perspective and select all the plug-in projects. In the context menu choose Export -> Deployable Plug-ins and Fragments.</li>
-		</ul>
-		<p>In the screen Export Plug-ins and Fragments, check if all the projects are selected and choose the output folder.</p>
-		<p>Now you need to close Eclipse. Enter the "eclipse" directory (which contains plug-ins and features directories) then copy the created Jar files into the "plugins" directory. After that you can restart Eclipse.</p><hr/>
+		<p>To install ATL from CVS, please refer to the 
+			<a href="http://wiki.eclipse.org/ATL/Developer_Guide#Install_ATL_from_CVS">Developer Guide</a>.
+		</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">

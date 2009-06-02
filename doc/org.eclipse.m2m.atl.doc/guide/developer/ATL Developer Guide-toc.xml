@@ -1,38 +1,38 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <toc topic="guide/developer/ATL Developer Guide.html" label="ATL Developer Guide">
-	<topic href="guide/developer/ATL Developer Guide.html" label="Introduction"></topic>
-	<topic href="guide/developer/ATL-Plugins.html" label="ATL Plugins">
-		<topic href="guide/developer/ATL-Plugins.html#Overview" label="Overview"></topic>
-		<topic href="guide/developer/ATL-Plugins.html#External_dependencies" label="External dependencies">
-			<topic href="guide/developer/ATL-Plugins.html#ATL" label="ATL"></topic>
-			<topic href="guide/developer/ATL-Plugins.html#Other_tools" label="Other tools"></topic>
+	<topic href="guide/developer/ATL Developer Guide.html" label="ATL Source Code">
+		<topic href="guide/developer/ATL Developer Guide.html#Plug-ins_organization" label="Plug-ins organization"></topic>
+		<topic href="guide/developer/ATL Developer Guide.html#External_dependencies" label="External dependencies"></topic>
+		<topic href="guide/developer/ATL Developer Guide.html#Install_ATL_from_CVS" label="Install ATL from CVS">
+			<topic href="guide/developer/ATL Developer Guide.html#Import_team_project_set" label="Import team project set">
+				<topic href="guide/developer/ATL Developer Guide.html#Anonymous_access" label="Anonymous access"></topic>
+				<topic href="guide/developer/ATL Developer Guide.html#Commiter_access" label="Commiter access"></topic>
+				<topic href="guide/developer/ATL Developer Guide.html#ANTLR_installation" label="ANTLR installation"></topic>
+				<topic href="guide/developer/ATL Developer Guide.html#MDR_installation_.28Regular_VM_only.29" label="MDR installation (Regular VM only)"></topic>
+				<topic href="guide/developer/ATL Developer Guide.html#Testing" label="Testing"></topic>
+			</topic>
 		</topic>
 	</topic>
-	<topic href="guide/developer/ATL-Language.html" label="ATL Language">
-		<topic href="guide/developer/ATL-Language.html#Overview_2" label="Overview"></topic>
-		<topic href="guide/developer/ATL-Language.html#Parsing_and_Compilation" label="Parsing and Compilation"></topic>
-		<topic href="guide/developer/ATL-Language.html#Debugger" label="Debugger">
-			<topic href="guide/developer/ATL-Language.html#SimpleDebugger" label="SimpleDebugger"></topic>
-			<topic href="guide/developer/ATL-Language.html#NetworkDebugger" label="NetworkDebugger"></topic>
+	<topic href="guide/developer/ATL-Architecture.html" label="ATL Architecture">
+		<topic href="guide/developer/ATL-Architecture.html#Core" label="Core">
+			<topic href="guide/developer/ATL-Architecture.html#Services" label="Services">
+				<topic href="guide/developer/ATL-Architecture.html#CoreService" label="CoreService"></topic>
+				<topic href="guide/developer/ATL-Architecture.html#LauncherService" label="LauncherService"></topic>
+			</topic>
+			<topic href="guide/developer/ATL-Architecture.html#EMF_interactions" label="EMF interactions"></topic>
 		</topic>
-	</topic>
-	<topic href="guide/developer/ATL-Core-API.html" label="ATL Core API">
-		<topic href="guide/developer/ATL-Core-API.html#EMFInjector_.2F_EMFExtractor_usage" label="EMFInjector / EMFExtractor usage"></topic>
-	</topic>
-	<topic href="guide/developer/ACG-ATL-VM-Code-Generator-.html" label="ACG (ATL VM Code Generator)">
-		<topic href="guide/developer/ACG-ATL-VM-Code-Generator-.html#Description" label="Description"></topic>
-		<topic href="guide/developer/ACG-ATL-VM-Code-Generator-.html#ACG_in_AMMA_platform" label="ACG in AMMA platform"></topic>
-	</topic>
-	<topic href="guide/developer/ATL-VM.html" label="ATL VM">
-		<topic href="guide/developer/ATL-VM.html#Launching" label="Launching"></topic>
-		<topic href="guide/developer/ATL-VM.html#Execution" label="Execution"></topic>
-		<topic href="guide/developer/ATL-VM.html#Native_Library" label="Native Library"></topic>
-		<topic href="guide/developer/ATL-VM.html#Model_Handlers" label="Model Handlers"></topic>
-	</topic>
-	<topic href="guide/developer/ASM-format.html" label="ASM format">
-		<topic href="guide/developer/ASM-format.html#Description_2" label="Description"></topic>
-		<topic href="guide/developer/ASM-format.html#Serialization" label="Serialization"></topic>
-		<topic href="guide/developer/ASM-format.html#Instructions" label="Instructions"></topic>
+		<topic href="guide/developer/ATL-Architecture.html#ATL_Virtual_Machine" label="ATL Virtual Machine">
+			<topic href="guide/developer/ATL-Architecture.html#Regular_VM" label="Regular VM"></topic>
+			<topic href="guide/developer/ATL-Architecture.html#EMF-specific_VM" label="EMF-specific VM"></topic>
+			<topic href="guide/developer/ATL-Architecture.html#ASM_format" label="ASM format">
+				<topic href="guide/developer/ATL-Architecture.html#Serialization" label="Serialization"></topic>
+				<topic href="guide/developer/ATL-Architecture.html#Instructions" label="Instructions"></topic>
+			</topic>
+		</topic>
+		<topic href="guide/developer/ATL-Architecture.html#Parser" label="Parser"></topic>
+		<topic href="guide/developer/ATL-Architecture.html#Compiler" label="Compiler">
+			<topic href="guide/developer/ATL-Architecture.html#ACG_.28ATL_VM_Code_Generator.29" label="ACG (ATL VM Code Generator)"></topic>
+		</topic>
 	</topic>
 	<topic href="guide/developer/Updating-This-Document.html" label="Updating This Document"></topic>
 </toc>

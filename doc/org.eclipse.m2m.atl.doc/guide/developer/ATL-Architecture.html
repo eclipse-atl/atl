@@ -1,0 +1,245 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>ATL Developer Guide - ATL Architecture</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">ATL Architecture</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="ATL Developer Guide.html" title="ATL Source Code">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">ATL Source Code</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="ATL_Architecture">ATL Architecture</h1>
+		<p>The ATL architecture consists on:</p>
+		<ul>
+			<li>a 
+				<a href="ATL-Architecture.html#Core">Core</a>, which describes ATL concepts in an abstract way
+			</li>
+			<li>a 
+				<a href="ATL-Architecture.html#Parser">Parser</a> and a 
+				<a href="ATL-Architecture.html#Compiler">Compiler</a>
+			</li>
+			<li>
+				<a href="ATL-Architecture.html#ATL_Virtual_Machine">Virtual Machines</a>, allowing to execute transformations
+			</li>
+			<li>an IDE: editor, debugger, perspective, all based on previous components</li>
+		</ul>
+		<p>The following schema describes ATL components and their role during the execution of a transformation.</p>
+		<p>
+			<img border="0" src="images/ATL_compilation_process.JPG"/>
+		</p>
+		<p>ATL VM is intercalated between the ATL compiler and the used frameworks (EMF, MDR), allowing modularity. Consequently, changes on ATL Language only involve ATL compiler.</p>
+		<h2 id="Core">Core</h2>
+		<p>This schema describes the ATL Core and how it interacts with tools like LaunchConfigurations, Ant tasks. </p>
+		<p>
+			<img border="0" src="images/ATL_Core_Architecture.png"/>
+		</p>
+		<ul>
+			<li>An 
+				<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core/src/org/eclipse/m2m/atl/core/IModel.java?root=Modeling_Project&amp;view=markup">IModel</a> is an adapted representation of a model, suitable for ATL transformations. It provides methods to lookup elements, create new ones, etc...
+			</li>
+			<li>The 
+				<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core/src/org/eclipse/m2m/atl/core/IReferenceModel.java?root=Modeling_Project&amp;view=markup">IReferenceModel</a> interface extends the IModel one, and is a specific version of an IModel which symbolizes metamodels. It defines metamodel-specific operations which are useful for ATL transformations
+			</li>
+			<li>The 
+				<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core/src/org/eclipse/m2m/atl/core/ModelFactory.java?root=Modeling_Project&amp;view=markup">ModelFactory</a> is dedicated for model and reference model creation
+			</li>
+			<li>The 
+				<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core/src/org/eclipse/m2m/atl/core/IInjector.java?root=Modeling_Project&amp;view=markup">IInjector</a>, 
+				<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core/src/org/eclipse/m2m/atl/core/IExtractor.java?root=Modeling_Project&amp;view=markup">IExtractor</a> interfaces provide a way to load and save models previously created by the modelFactory
+			</li>
+			<li>The 
+				<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core/src/org/eclipse/m2m/atl/core/launch/ILauncher.java?root=Modeling_Project&amp;view=markup">ILauncher</a> interface is dedicated to be implemented by ATL virtual machines: it defines methods to parametrize and launch a transformation
+			</li>
+		</ul>
+		<h3 id="Services">Services</h3>
+		<p>To simplify the use of ATL Core and reduce code duplication, two services are provided: 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core/src/org/eclipse/m2m/atl/core/service/CoreService.java?root=Modeling_Project&amp;view=markup">CoreService</a> and 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core/src/org/eclipse/m2m/atl/core/service/LauncherService.java?root=Modeling_Project&amp;view=log">LauncherService</a>.
+		</p>
+		<h4 id="CoreService">CoreService</h4>
+		<p>This utility class provide a way to lookup into eclipse extensions, or an internal storage, for Core implementations. Those implementations can be registered into the CoreService for a standalone use. For instance, here we register the extensions needed to launch a transformation using EMF-specific VM, in standalone:</p>
+		<pre>CoreService.registerLauncher(new EMFVMLauncher());
+CoreService.registerFactory("EMF", EMFModelFactory.class); 
+CoreService.registerExtractor("EMF", new EMFExtractor());
+CoreService.registerInjector("EMF", new EMFInjector()); 
+</pre>
+		<h4 id="LauncherService">LauncherService</h4>
+		<p>The launcher service allow to launch a transformation from a set of parameters like maps of path and maps of model names: this is strongly related to launch configurations and ant tasks as it allows to launch the transformation on any virtual machine. </p>
+		<h3 id="EMF_interactions">EMF interactions</h3>
+		<p>The main implementation of the ATL Core is the EMF one, which is used by ATL itself for parsing and compilation. It is defined under the 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.emf/?root=Modeling_Project">org.eclipse.m2m.atl.core.emf</a> plugin.
+		</p>
+		<p>Here is an explanation about the use ATL EMF-specific injector/extractor. For both, we use the EMF notation to select Resources:</p>
+		<table border="1">
+			<tr>
+				<th>Resource Type</th>
+				<th>ATL EMF API Syntax</th>
+				<th>Example</th>
+			</tr>
+			<tr>
+				<th>File system Resource</th>
+				<td>file:/&lt;path></td>
+				<td>file:/D:/eclipse/workspace/mmproject/sample_metamodel.ecore</td>
+			</tr>
+			<tr>
+				<th>EMF uri</th>
+				<td>&lt;uri></td>
+				<td>
+					<a href="http://www.eclipse.org/uml2/2.1.0/UML">http://www.eclipse.org/uml2/2.1.0/UML</a>
+				</td>
+			</tr>
+			<tr>
+				<th>pathmap</th>
+				<td>pathmap:&lt;path></td>
+				<td>pathmap://PROFILE/sample_profile.uml#_0</td>
+			</tr>
+			<tr>
+				<th>Workspace Resource</th>
+				<td>platform:/resource/&lt;path></td>
+				<td>platform:/resource/mmproject/sample_metamodel.ecore</td>
+			</tr>
+			<tr>
+				<th>Plug-in Resource</th>
+				<td>platform:/plugin/&lt;path></td>
+				<td>platform:/plugin/mmproject/sample_metamodel.ecore</td>
+			</tr>
+		</table>
+		<p>Here is an example of usage:</p>
+		<pre>ModelFactory factory = CoreService.createModelFactory("EMF");
+IReferenceModel umlMetamodel = factory.newReferenceModel();
+injector.inject(umlMetamodel, "http://www.eclipse.org/uml2/2.1.0/UML");
+</pre>
+		<p>According to the previous table, you can use another notation to load the model:</p>
+		<pre>injector.inject(sampleMetamodel, "file:/D:/eclipse/workspace/mmproject/sample_metamodel.ecore");
+</pre>
+		<h2 id="ATL_Virtual_Machine">ATL Virtual Machine</h2>
+		<p>The ATL VM is a 
+			<a href="ATL-Architecture.html#ASM_format">byte code</a> interpreter which manages OCL and ATL types hierarchy. A complete ATL VM specification is available : 
+			<a href="http://www.eclipse.org/m2m/atl/doc/ATL_VMSpecification%5Bv00.01%5D.pdf">ATL_VMSpecification</a>. This specification consists on a precise description of the ATL VM functionalities, but doesn't describe the implementation. The intent is to allow any developer to create an ATL VM in any language.
+			The 
+			<a href="http://wiki.eclipse.org/ATL_Standard_Library">Native Library</a> (org.eclipse.m2m.atl.engine.vm.nativelib package) gathers all basic type definitions used by the ATL VM : OCL types and ATL specific types. Both are defined at the same level, and use reflexion.
+			OCL appears at several levels in the ATL architecture :
+		</p>
+		<ul>
+			<li>nativelib implementation</li>
+			<li>OCL package in the ATL, ACG and TCS metamodels</li>
+		</ul>
+		<p>The following schema shows the ATL VM working:</p>
+		<p>
+			<img border="0" src="images/ATL_ASMInterpreter.JPG"/>
+		</p>
+		<p>During ATL VM initialization, every operations are registered into a Map. The ExecEnv Class contains the virtual execution environment. It deals with the operation map which registers all operations used by the transformation. It contains every information used by a given execution, like models,  and is recreated for each execution. Operations are executed sequentially, into frames, according to their type. For instance, in ATL, a call of the append() method is directly mapped to a call to the corresponding method in the ASMSequence class.</p>
+		<p>The Frame stores and throws all error messages. The ASMStackFrame is dedicated to ASM methods, when the StackFrame is dedicated to native methods.
+			Execution errors come from ATL VM when the method Frame.printstacktrace is called.</p>
+		<p>At this time there are two implementations of the ATL VM.</p>
+		<h3 id="Regular_VM">Regular VM</h3>
+		<p>The Regular VM is the first version of the ATL Virtual Machine. The implementation is abstracted from the used model management framework, using model handlers. Model Handlers consists on an abstraction layer dedicated to model access. This access is implemented by two classes : ASMModel et ASMModelElement.</p>
+		<p>ATL contains three plugins drivers corresponding to different Model Handlers : EMF, MDR, UML2. Each plugin implements those abstract classes :</p>
+		<ul>
+			<li>AtlModelHandler : implementation of the basic tasks "newModel", "saveModel", "loadModel"</li>
+			<li>ASMModel : getElementsByType implementation, framework oriented "newModelElement" method, etc...</li>
+			<li>ASMModelElement : "allInstances" implementation, etc...</li>
+		</ul>
+		<p>Input and output models are loaded using the same API and are differenciated with an "isTarget" property. That API implements the "getMetaElementsByName" method which correspond to the "findme" ASM instruction.</p>
+		<p>This VM implementation is still used in ATL, because it is strongly linked to several parts (now only the ATL Debugger). But the Regular VM has a lot of performance issues, especially because of the model handler architecture.</p>
+		<h3 id="EMF-specific_VM">EMF-specific VM</h3>
+		<p>The EMF-specific VM is a redefinition of the Regular one, which resolves a lot of performance issues by avoiding EObjects wrapping. Its API allow to consider EMF Resources directly as models, without complex loading as done previously in the Regular VM.</p>
+		<h3 id="ASM_format">ASM format</h3>
+		<p>ASM language is a kind of assembly language, adapted to model handling. The low level of ASM allows modularity facilities, with the intent to provide easier model management possibilities.
+			The current file format for ASM is XML. Thus it allows not to care about any syntax and to only focus on bytecode.
+			An ASM file only contains names and string constants. No Ecore reference is present. Those are resolved by launch configurations and AMMA Megamodel, with a name binding.</p>
+		<h4 id="Serialization">Serialization</h4>
+		<p>ASM transformations are serialized in a way to increase performance and preempt further serializations like binary files.
+			The ASMXMLWriter class is an ASM extractor used to save ASM into a file. Serialization computes the constant pool, which factorizes constants, values and method calls by generating an ordered constants list at the top of the ASM file.
+			ASMWriter is the parent abstract class which allows a binary implementation of ASM injection and extraction.</p>
+		<h4 id="Instructions">Instructions</h4>
+		<p>All instructions are explained into ATL VM specification. Here are details about some of them:</p>
+		<ul>
+			<li>The getasm instruction retrieves the ATL Context Module, i.e. The "thisModule" equivalent for ATL.</li>
+			<li>N symbolizes a native type, ATL specific</li>
+			<li>TransientLink are traceability links</li>
+			<li>all functions like "getLinkBySourceElement" are implemented in the nativelib</li>
+			<li>Object creation :
+				<ul>
+					<li>The "new" instruction takes two parameters : the metamodel name and the classifier type. Then it creates an element of this type in the output model (only one is allowed). The parameters are not available in the bytecode because they are pushed on the stack before calling instruction.</li>
+					<li>We can notice that ATL allows only one output model, but the ATL VM could be extended two allow many others.</li>
+					<li>A delete instruction could be implemented in the ATL VM</li>
+					<li>ATL provides the newInstance method which is directly mapped to the Model Handler method. This method doesn't generates a new because the call is dynamic. The main advantage is that the newInstance is directly applied to the class and do not use the ATL VM stack for that (otherwise it should store the class element).</li>
+				</ul>
+			</li>
+		</ul>
+		<h2 id="Parser">Parser</h2>
+		<p>ATL parsing is done using a parser defined in TCS, which outputs an ATL model conforming to the ATL metamodel. Then, an ATL-WFR transformation (interpreted by the engine) generates a problem model. This model produces errors interpreted by the editor and translated into markers, visible on the ATL file on each compilation.</p>
+		<p>To manually parse (or extract) ATL files, see the 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.engine/src/org/eclipse/m2m/atl/engine/parser/AtlParser.java?root=Modeling_Project&amp;view=markup">ATLParser</a> class.
+		</p>
+		<p>Note that as ATL parser implements IInjector and IExtractor interfaces, it can be use in ant tasks to parse or extract atl files (just specify "ATL" as injector/extractor name).</p>
+		<h2 id="Compiler">Compiler</h2>
+		<p>Two versions of the ATL compiler are available : 2004 and 
+			<a href="http://wiki.eclipse.org/ATL_2006">2006</a>.
+			The 2006 version of ATL compiler uses 
+			<a href="ATL-Architecture.html#ACG_.28ATL_VM_Code_Generator.29">ACG</a>. The 2004 version uses ATP, the historical ACG predecessor.
+		</p>
+		<p>To manually compile ATL files, see the 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.engine/src/org/eclipse/m2m/atl/engine/compiler/AtlDefaultCompiler.java?root=Modeling_Project&amp;view=markup">AtlDefaultCompiler</a> class.
+		</p>
+		<h3 id="ACG_.28ATL_VM_Code_Generator.29">ACG (ATL VM Code Generator)</h3>
+		<p>ACG is a compiler-oriented DSL, which intends to make easier to create a compiler targeting the 
+			<a href="ATL-Architecture.html#ATL_Virtual_Machine">ATL VM</a>. A compiler described with ACG generates ASM files and contains a description of ASM instructions to generate for each type of input elements, coming from a compiled file. Therefore the input of this kind of compiler is a model describing the content of a compiled file (for instance, an ATL file).
+		</p>
+		<p>An ACG file, when compiled, looks through the input model using a visitor design pattern.
+			ACG is bootstrapped : an ACG.acg file exists and describes the ACG compiler. Since an ACG file describes precisely ASM instructions, the ACG.acg file is rather trivial.</p>
+		<p>A complete ACG documentation is available 
+			<a href="http://wiki.eclipse.org/ACG">here</a>.
+		</p>
+		<p>The following schema places ACG in the AMMA platform.</p>
+		<p>
+			<img border="0" src="images/AMMA_bootstrap.JPG"/>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="ATL Developer Guide.html" title="ATL Source Code">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="ATL Developer Guide.html" title="ATL Developer Guide">
+						<img alt="ATL Developer Guide" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">ATL Source Code</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>
