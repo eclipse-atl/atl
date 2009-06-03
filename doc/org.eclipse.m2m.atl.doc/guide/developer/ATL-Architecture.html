@@ -133,6 +133,17 @@ injector.inject(umlMetamodel, "http://www.eclipse.org/uml2/2.1.0/UML");
 		<p>According to the previous table, you can use another notation to load the model:</p>
 		<pre>injector.inject(sampleMetamodel, "file:/D:/eclipse/workspace/mmproject/sample_metamodel.ecore");
 </pre>
+		<h3 id="Examples_of_use">Examples of use</h3>
+		<ul>
+			<li>The 
+				<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ui/src/org/eclipse/m2m/atl/core/ui/launch/AtlLaunchConfigurationDelegate.java?root=Modeling_Project&amp;view=markup">ATL launch configuration delegate</a> and the 
+				<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/tests/org.eclipse.m2m.atl.tests/src/org/eclipse/m2m/atl/tests/unit/TestNonRegressionTransfo.java?root=Modeling_Project&amp;view=markup">ATL non-regression test</a> are examples of launching using the 
+				<a href="ATL-Architecture.html#LauncherService">Launcher Service</a>.
+			</li>
+			<li>The public2private example (
+				<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/examples/org.eclipse.m2m.atl.examples.public2private.ui/src/org/eclipse/m2m/atl/examples/public2private/ui/PrivatizeAction.java?root=Modeling_Project&amp;view=markup">UI part</a>) shows how to directly use the Core
+			</li>
+		</ul>
 		<h2 id="ATL_Virtual_Machine">ATL Virtual Machine</h2>
 		<p>The ATL VM is a 
 			<a href="ATL-Architecture.html#ASM_format">byte code</a> interpreter which manages OCL and ATL types hierarchy. A complete ATL VM specification is available : 

@@ -249,8 +249,7 @@ create OUT : AnyMM from IN : UML;
 		</ul>
 		<h3 id="Module_superimposition">Module superimposition</h3>
 		<h4 id="Description">Description</h4>
-		<p>While 
-			<a href="http://wiki.eclipse.org/ATL/ATL" title="ATL">ATL</a> transformation modules and queries are normally run by themselves, that is one transformation module or query at a time, it is also possible to superimpose several transformation modules on top of eachother. The end result is a transformation module that contains the union of all transformation rules and all helpers, where it is possible for a transformation module to override rules and helpers from the transformation modules underneath. Below is an example of a typical use case for superimposition: the transformation rules of the UML2Copy 
+		<p>While ATL transformation modules and queries are normally run by themselves, that is one transformation module or query at a time, it is also possible to superimpose several transformation modules on top of eachother. The end result is a transformation module that contains the union of all transformation rules and all helpers, where it is possible for a transformation module to override rules and helpers from the transformation modules underneath. Below is an example of a typical use case for superimposition: the transformation rules of the UML2Copy 
 			<a href="http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-transformations/UML2Copy.atl?view=markup">http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-transformations/UML2Copy.atl?view=markup</a> module are reused and overridden where necessary by the UML2Profiles 
 			<a href="http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-transformations/UML2Profiles.atl?view=markup">http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-transformations/UML2Profiles.atl?view=markup</a> module.
 		</p>
@@ -264,9 +263,6 @@ create OUT : AnyMM from IN : UML;
 		<p>To achieve this, the UML2Profiles module is superimposed on the UML2Copy module. It overrides the "Model" rule, which copies each "uml::Model" instance, by a version that checks that the profile we want to apply has already been applied. It also introduces a new rule "ModelProfile", which checks that the profile we want to apply has not been applied and then applies the profile. The resulting transformation contains all rules from the above figure that have not been striked through. </p>
 		<p>Note that superimposition is a load-time construct: there is no real transformation module that represents the result of superimposing several modules on top of eachother. Instead, several modules are simply loaded on top of eachother, overriding existing rules and adding new rules.</p>
 		<h4 id="Usage_2">Usage</h4>
-		<p>
-			<i>TODO: update with ATL 3.0 ant tasks</i>
-		</p>
 		<p>ATL Superimposition is configured in the Eclipse "Run..." dialog, in the Advanced tab to be exact. You can also use Superimposition from AM3 Ant scripts. An example Ant script can be found 
 			<a href="http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-instantmessenger-model/outmodels/common/build.xml?rev=5633&amp;view=markup">here</a> (see the "profiles" macro).
 		</p>
@@ -282,31 +278,368 @@ create OUT : AnyMM from IN : UML;
 			<i>Run</i> window, to select the created transformation in the ATL Transformation folder (on the left column) and click on the Run button.
 			The other option for running an existing ATL launch configuration is to define shortcuts for this configuration. This could be achieved from the Common tab of the ATL run launch configuration by selecting the Run option within the Display in favourites menu section.
 		</p>
-		<h3 id="ATL_ant_tasks">ATL ant tasks</h3>
-		<p>
-			<i>TODO: write ATL ant tasks documentation</i>
+		<h2 id="ATL_ant_tasks">ATL ant tasks</h2>
+		<p>This section describes the 
+			<a href="http://en.wikipedia.org/wiki/Apache_Ant">ant</a> tasks provided by the 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ant/?root=Modeling_Project">org.eclipse.m2m.atl.core.ant</a> plugin of ATL.
+			Documentation for the standard ant tasks can be found in the 
+			<a href="http://ant.apache.org/manual/">ant manual</a>.
 		</p>
-		<p>
-			<b>Sample build.xml, launches public2private example:</b>
+		<p>Additional tasks are available from 
+			<a href="http://ant-contrib.sourceforge.net/">ant-contrib</a> and documented in its 
+			<a href="http://ant-contrib.sourceforge.net/ant-contrib/manual/tasks/index.html">manual</a>.
+			Using ant-contrib requires 
+			<a href="http://ant-contrib.sourceforge.net/ant-contrib/manual/#install">installing it</a>.
 		</p>
-		<p>To launch this file, you must use a specific ant configuration:
-
-			<i>right-click->Run as->Ant Build...</i> then set:
+		<p>ATL ant tasks are useful to:</p>
+		<ul>
+			<li>chain transformations</li>
+			<li>integrate ATL into an existing suite of tools</li>
+			<li>access accurate transformations parameters (injectors, extractors, model factories)</li>
+		</ul>
+		<h3 id="Task_atl.loadModel">Task atl.loadModel</h3>
+		<p>This task (implemented in class 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ant/src_ant/org/eclipse/m2m/atl/core/ant/tasks/LoadModelTask.java?root=Modeling_Project&amp;view=markup">LoadModelTask</a>) is used to load a model with injectors. This model may be a terminal model or a metamodel. MOF special name is contextually the metametamodel.
 		</p>
+		<h4 id="Parameters_specified_as_attributes">Parameters specified as attributes</h4>
+		<p>The atl.loadModel can have the following parameters:</p>
+		<table border="1">
+			<tr>
+				<th>Attribute</th>
+				<th>Description</th>
+				<th>Required</th>
+				<th>Default value</th>
+			</tr>
+			<tr>
+				<td>name</td>
+				<td>The name of the model in the Ant project.</td>
+				<td>Yes</td>
+				<td>None</td>
+			</tr>
+			<tr>
+				<td>metamodel</td>
+				<td>The name of the metamodel. This name must be equal to a previous model name loaded by atl.loadModel or to metametamodel special name %.... If this name equals MOF, the metametamodel is taken.</td>
+				<td>Yes</td>
+				<td>None</td>
+			</tr>
+			<tr>
+				<td>path</td>
+				<td>The path to the file of the model to load. It can be relative to the current directory (the one containing the Ant file). If absolute, the â€˜/â€™ root directory is the current workspace.</td>
+				<td>Yes (only one of path and nsUri)</td>
+				<td>None</td>
+			</tr>
+			<tr>
+				<td>nsURI</td>
+				<td>The namespace URI of a metamodel to load from the EMF package registry.</td>
+				<td>None</td>
+			</tr>
+			<tr>
+				<td>modelHandler</td>
+				<td>The model handler name to use for loading the model (EMF, UML2 or any other installed one). This parameter is only used by the Regular-VM</td>
+				<td>No</td>
+				<td>EMF</td>
+			</tr>
+			<tr>
+				<td>factory</td>
+				<td>The model factory name to use for loading the model. This parameter is only used by the EMF-specific VM</td>
+				<td>No</td>
+				<td>EMF</td>
+			</tr>
+		</table>
+		<h4 id="Parameters_specified_as_nested_elements">Parameters specified as nested elements</h4>
+		<p>Sometimes, it is interesting to be able to load a model through an injector which extends the 
+			<a href="http://wiki.eclipse.org/ATL/Developer_Guide#Core">ATL Core</a>. You need to use the injector name you specified when defining it. This sample shows how to load an ATL file as an ATL model:
+		</p>
+		<pre>&lt;!-- load ATL metamodel -->
+&lt;atl.loadModel modelHandler="EMF" name="ATL" metamodel="MOF" path="metamodels/ATL.ecore" />
+</pre>
+		<pre>&lt;atl.loadModel name="myATL" metamodel="ATL" path="inputs/MySample.atl">
+ &lt;injector name="ATL" />
+&lt;/atl.loadModel>
+</pre>
+		<h4 id="Examples_4">Examples</h4>
+		<p>Loading of a metamodel with EMF (and Ecore as metametamodel):</p>
+		<pre>&lt;atl.loadModel modelHandler="EMF" name="News" metamodel="MOF" path="metamodel/News.ecore" />
+</pre>
+		<p>Equivalent to</p>
+		<pre>&lt;atl.loadModel modelHandler="EMF" name="News" metamodel="%EMF" path="metamodels/News.ecore" />
+</pre>
+		<p>Loading of a terminal model conforming to the previously loaded metamodel:</p>
+		<pre>&lt;atl.loadModel modelHandler="EMF" name="SampleNews" metamodel="News" path="models/MyInput-News.xmi" />
+</pre>
+		<h3 id="Task_atl.saveModel">Task atl.saveModel</h3>
+		<p>This task (implemented in class 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ant/src_ant/org/eclipse/m2m/atl/core/ant/tasks/SaveModelTask.java?root=Modeling_Project&amp;view=markup">SaveModelTask</a>) is used to save a model, optionally with extractors. It is possible to save any model: terminal models, metamodels or metametamodels.
+		</p>
+		<p>The atl.saveModel can have the following parameters:</p>
+		<table border="1">
+			<tr>
+				<th>Attribute</th>
+				<th>Description</th>
+				<th>Required</th>
+				<th>Default value</th>
+			</tr>
+			<tr>
+				<td>model</td>
+				<td>The name of the model in the Ant project.</td>
+				<td>Yes</td>
+				<td>None</td>
+			</tr>
+			<tr>
+				<td>path</td>
+				<td>The path to the file of the model to save. It can be relative to the current directory (the one containing the Ant file). If absolute, the â€˜/â€™ root directory is the current workspace.</td>
+				<td>Yes</td>
+				<td>None</td>
+			</tr>
+			<tr>
+				<td>derived</td>
+				<td>Sets saved file to "derived"</td>
+				<td>No</td>
+				<td>true</td>
+			</tr>
+			<tr>
+				<td>factory</td>
+				<td>The model factory name to use for saving the model. This parameter is only used by the EMF-specific VM</td>
+				<td>No</td>
+				<td>EMF</td>
+			</tr>
+		</table>
+		<p>Saving of the previously loaded News metamodel:</p>
+		<pre>&lt;atl.saveModel model="News" path="outputs/NewsMM.ecore" />
+</pre>
+		<p>You can see that the model attribute is the same as the name attribute of the previous atl.loadModel tasks. Once they are loaded, models are identified by this attribute name. Thus, you should avoid giving the same name for two different models. Each time it occurs, your previous model is overwritten.</p>
+		<p>Sometimes, it is interesting to save a model with an extractor. For instance, if you have a model conforming to ATL (i.e. a model of an ATL source code), it can be interesting to use the ATL extractor to save it as a .atl file:</p>
+		<pre>&lt;atl.saveModel model="myATL" path="outputs/SavingMySample.atl">
+ &lt;extractor name="atl"/>
+&lt;/atl.saveModel>
+</pre>
+		<h3 id="Task_atl.launch">Task atl.launch</h3>
+		<p>The purpose of this task (implemented in class 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ant/src_ant/org/eclipse/m2m/atl/core/ant/tasks/ATLModelTransformationTask.java?root=Modeling_Project&amp;view=markup">ATLModelTransformationTask</a>) is to execute an ATL transformation. The models used by a transformation are referenced by their name as defined at with the 
+			<a href="http://wiki.eclipse.org/ATL/Task_atl.loadModel" title="Task atl.loadModel">atl.loadModel</a> task (name attribute).
+		</p>
+		<h4 id="Parameters_specified_as_attributes_2">Parameters specified as attributes</h4>
+		<table border="1">
+			<tr>
+				<th>Attribute</th>
+				<th>Description</th>
+				<th>Required</th>
+				<th>Default value</th>
+			</tr>
+			<tr>
+				<td>path</td>
+				<td>Path of ATL transformation to run</td>
+				<td>Yes</td>
+				<td>None</td>
+			</tr>
+			<tr>
+				<td>refining</td>
+				<td>Boolean value that determines whether or not the transformation is a refining one</td>
+				<td>No</td>
+				<td>false</td>
+			</tr>
+		</table>
+		<p>Within this task, you have to bind every model from the header of your ATL module. There is three kinds of nested parameters: </p>
 		<ul>
 			<li>
-				<i>JRE->Run in same JRE as the workspace</i>
+				<b>inmodel</b> for source models
 			</li>
 			<li>
-				<i>Refresh->the entire workspace</i>  
+				<b>outmodel</b> for target models 
+			</li>
+			<li>
+				<b>inoutmodel</b> for source/target models (refining mode)
+			</li>
+			<li>
+				<b>library</b> for helpers library
 			</li>
 		</ul>
+		<p>For instance, if you have this module header:</p>
+		<pre>module Families2Persons;
+create OUT : Persons from IN : Families;
+uses myLib;
+</pre>
+		<p>You have to create one inModel parameters (for IN, Families and Persons), one outModel (for OUT) and one library (for myLib). For instance, completing the previous sample of atl.atl task:</p>
+		<pre>&lt;atl.launch path="ATLFiles/MyTransformation.atl">
+ &lt;inmodel name="IN" model="..."/>			
+ &lt;outmodel name="OUT" model="..." metamodel="Persons"/>
+ &lt;library name="strings" path="lib/mylib.atl" />
+&lt;/atl.launch>
+</pre>
+		<p>Each parameter has a name that MUST be exactly the same as in the module header (case sensitive). For inmodel parameters, model attribute refers to a name of a previously loaded model with atl.loadModel for instance. The attribute model of outmodel do NOT refer a loaded model as it has not been yet created. The value of this attribute should be used latter as an identifier for the atl.saveModel task.</p>
+		<p>Every attributes for each nested parameters are summed here:</p>
+		<h4 id="Parameters_specified_as_nested_elements_2">Parameters specified as nested elements</h4>
+		<h5 id="inmodel">inmodel</h5>
+		<table border="1">
+			<tr>
+				<th>Attribute</th>
+				<th>Description</th>
+				<th>Required</th>
+			</tr>
+			<tr>
+				<td>name</td>
+				<td>The name of the model in ATL module header.</td>
+				<td>Yes</td>
+			</tr>
+			<tr>
+				<td>model</td>
+				<td>The name of a model previously loaded.</td>
+				<td>Yes</td>
+			</tr>
+		</table>
+		<h5 id="outmodel">outmodel</h5>
+		<table border="1">
+			<tr>
+				<th>Attribute</th>
+				<th>Description</th>
+				<th>Required</th>
+			</tr>
+			<tr>
+				<td>name</td>
+				<td>The name of the model in ATL module header.</td>
+				<td>Yes</td>
+			</tr>
+			<tr>
+				<td>model</td>
+				<td>The name of a model previously loaded.</td>
+				<td>Yes</td>
+			</tr>
+			<tr>
+				<td>metamodel</td>
+				<td>The name of the metamodel of the current model as it has been specified when loading</td>
+				<td>Yes</td>
+			</tr>
+			<tr>
+				<td>path</td>
+				<td>Name of the output file (mainly needed for filename extension and EMF uses this to determine the correct factory).</td>
+				<td>No</td>
+			</tr>
+			<tr>
+				<td>modelHandler</td>
+				<td>The model handler name to use for creating the model (EMF, UML2 or any other installed one). This parameter is only used by the Regular-VM</td>
+				<td>No</td>
+				<td>EMF</td>
+			</tr>
+			<tr>
+				<td>factory</td>
+				<td>The model factory name to use for creating the model. This parameter is only used by the EMF-specific VM</td>
+				<td>No</td>
+				<td>EMF</td>
+			</tr>
+		</table>
+		<h5 id="superimpose">superimpose</h5>
+		<table border="1">
+			<tr>
+				<th>Attribute</th>
+				<th>Description</th>
+				<th>Required</th>
+			</tr>
+			<tr>
+				<td>path</td>
+				<td>The path of the ATL module to superimpose.</td>
+				<td>Yes</td>
+			</tr>
+		</table>
+		<h5 id="library">library</h5>
+		<table border="1">
+			<tr>
+				<th>Attribute</th>
+				<th>Description</th>
+				<th>Required</th>
+			</tr>
+			<tr>
+				<td>name</td>
+				<td>The name of the library in ATL module header.</td>
+				<td>Yes</td>
+			</tr>
+			<tr>
+				<td>path</td>
+				<td>The path to the ATL library file.</td>
+				<td>Yes</td>
+			</tr>
+		</table>
+		<h5 id="option">option</h5>
+		<table border="1">
+			<tr>
+				<th>Attribute</th>
+				<th>Description</th>
+				<th>Required</th>
+			</tr>
+			<tr>
+				<td>name</td>
+				<td>The option name.</td>
+				<td>Yes</td>
+			</tr>
+			<tr>
+				<td>value</td>
+				<td>The value of the option of which the name is specified in the name attribute.</td>
+				<td>Yes</td>
+			</tr>
+		</table>
+		<p>Options are passed to the ATL Virtual Machine. Available options are defined:</p>
+		<ul>
+			<li>
+				<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ui.vm/plugin.xml?root=Modeling_Project&amp;view=markup">here</a> for the Regular-VM
+			</li>
+			<li>
+				<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.engine.emfvm/plugin.xml?root=Modeling_Project&amp;view=markup">here</a> for the EMF-specific VM
+			</li>
+		</ul>
+		<p>(see options into the org.eclipse.m2m.atl.core.launcher extension)</p>
+		<h4 id="Launcher_configuration">Launcher configuration</h4>
+		<p>To choose the launcher you want to use (i.e. EMF-specific VM or Regular VM) you have to specify it as a property in the ant project. EMF-specific VM is selected by default. For instance, to use Regular VM instead:</p>
+		<pre>&lt;?xml version="1.0"?>
+&lt;project name="test.types" default="run" basedir=".">
+    &lt;property name="atl.launcher" value="Regular VM (with debugger)"/>
+    ...
+&lt;/project>
+</pre>
+		<h4 id="Making_ATL_transformations_chains_without_intermediate_serialization">Making ATL transformations chains without intermediate serialization</h4>
+		<p>Suppose you have two transformations A2B and B2C to chain. A2B transforms a model conforming to A to a model conforming to B. B2C transforms a model conforming to B to a model conforming to C. We want to only serialized the model conforming to C but no the intermediate model conforming to B. The solution is that it can be passed directly as an input to the B2C transformation like this:</p>
+		<p>Loading metamodels:</p>
+		<pre>&lt;atl.loadModel metamodel="%EMF" name="A" path="..."/> 
+&lt;atl.loadModel metamodel="%EMF" name="B" path="..."/>
+&lt;atl.loadModel metamodel="%EMF" name="C" path="..."/>
+</pre>
+		<p>Loading source model:</p>
+		<pre>&lt;atl.loadModel metamodel="A" name="myModel-A" path="..."/> &amp;lt;!-- "-A" is here not to forget that myModel is conforming to metamodel "A", but you can give any name -->
+</pre>
+		<p>First transformation:</p>
+		<pre>&lt;atl.launch path="...">
+ &amp;lt;!--
+ the header of the executed transformation is:
+ module myModule1;
+ create TargetM : TargetMM from SourceM : SourceMM;
+ -->
+ &lt;inmodel name="SourceM" model="myModel-A"/>			
+ &lt;outmodel name="'''TargetM'''" model="'''myModel-B'''" metamodel="B"/>
+&lt;/atl.launch >
+</pre>
+		<p>Second transformation:</p>
+		<pre>&lt;atl.launch path="...">
+ &amp;lt;!--
+ the header of the executed transformation is:
+ module myModule2;
+ create TargetM : TargetMM from SourceM : SourceMM;
+ -->
+ &lt;inmodel name="'''SourceM'''" model="'''myModel-B'''"/>			
+ &lt;outmodel name="TargetM" model="myModel-C" metamodel="C"/>
+&lt;/atl.launch >
+</pre>
+		<p>Note that myModel-B is available to the second transformation as if it has been loaded by an atl.loadModel call. </p>
+		<p>Serializing the output of the second transformation only (model myModel-C)</p>
+		<pre>&lt;atl.saveModel model="myModel-C" path="..." />
+</pre>
+		<h4 id="Examples_5">Examples</h4>
+		<p>Refining transformation (fully available 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/examples/org.eclipse.m2m.atl.examples.public2private/?root=Modeling_Project">here</a>), launched on EMF-specific VM:
+		</p>
 		<pre>&lt;?xml version="1.0"?>
 &lt;project name="Public2Private" default="run" basedir=".">
 	&lt;property name="samplePath" value="../model/sample.uml" />
 </pre>
 		<pre>	&lt;target name="run">
-		&lt;atl.loadModel name="UML" metamodel="MOF" nsURI="http://www.eclipse.org/uml2/2.1.0/UML" />
+		&lt;atl.loadModel name="UML" metamodel="MOF" nsUri="http://www.eclipse.org/uml2/2.1.0/UML" />
 		&lt;atl.loadModel name="sample" metamodel="UML" path="${samplePath}" />
 </pre>
 		<pre>		&lt;atl.launch path="../transformation/public2private.asm" refining="true">
@@ -315,9 +648,60 @@ create OUT : AnyMM from IN : UML;
 </pre>
 		<pre>		&lt;atl.saveModel model="sample" path="${samplePath}" />
 	&lt;/target>
+&lt;/project>
 </pre>
-		<pre>&lt;/project>
+		<h3 id="Mapping_with_AM3_ant_tasks">Mapping with AM3 ant tasks</h3>
+		<p>Ant tasks have been added to ATL to provide the same support as the 
+			<a href="http://wiki.eclipse.org/AM3_Ant_Tasks">AM3 ant tasks</a>, adapted to the ATL3.0.x APIs. Here is a list of mappings and changes between AM3 and ATL tasks:
+		</p>
+		<ul>
+			<li>
+				<a href="http://wiki.eclipse.org/AM3_Ant_Tasks#Task_am3.loadModel">am3.loadModel</a> -> 
+				<a href="The-ATL-Tools.html#Task_atl.loadModel">atl.loadModel</a>
+			</li>
+			<li>
+				<a href="http://wiki.eclipse.org/AM3_Ant_Tasks#Task_am3.saveModel">am3.saveModel</a> -> 
+				<a href="The-ATL-Tools.html#Task_atl.saveModel">atl.saveModel</a>
+			</li>
+			<li>
+				<a href="http://wiki.eclipse.org/AM3_Ant_Tasks#Task_am3.atl">am3.atl</a> -> 
+				<a href="The-ATL-Tools.html#Task_atl.launch">atl.launch</a>
+				<ul>
+					<li>allowInterModelReferences parameter doesn't exist anymore, it must be passed as an option:</li>
+				</ul>
+			</li>
+		</ul>
+		<pre>&lt;atl.launch path="test.asm">
+    &lt;option name="allowInterModelReferences" value="true"/>
+    &lt;inmodel model="sample" name="IN" />
+    ...
+&lt;/atl.launch>
 </pre>
+		<ul>
+			<li>
+				<ul>
+					<li>in the atl.launch task, you don't need to add metamodels as input models (there will be ignored)</li>
+				</ul>
+			</li>
+			<li>
+				<a href="http://wiki.eclipse.org/AM3_Ant_Tasks#Task_am3.query">am3.query</a> -> not available. You can run queries using atl.launch task
+			</li>
+		</ul>
+		<p>NOTE: AM3 injector/extractors like XML, KM3 are not embedded into ATL</p>
+		<h3 id="Launching_an_Ant_file_with_ATL_tasks_in_an_Eclipse_workbench">Launching an Ant file with ATL tasks in an Eclipse workbench</h3>
+		<p>Once you have defined your Ant file, right click on the file:</p>
+		<ul>
+			<li>Select Run As > Ant Buildâ€¦</li>
+		</ul>
+		<ul>
+			<li>Go to the JRE tab</li>
+		</ul>
+		<ul>
+			<li>Select "Run in the same JRE as the workspace"</li>
+		</ul>
+		<p>
+			<img border="0" src="images/AM3AntTasks_JreTab.jpg"/>
+		</p>
 		<h2 id="Debugging_ATL">Debugging ATL</h2>
 		<p>This section aims to introduce the debugging facilities provided by the ATL IDE. The ATL development environment therefore offers ATL developers a dedicated ATL Debug perspective. This perspective provides developers with the most common debugging facilities, including step-by-step transformation execution, running a transformation to the next breakpoint, display of the variables content, etc. Moreover, the ATL IDE enables developers to know, at any time, the ATL instructions currently being executed by highlighting the corresponding code in the ATL Editor.</p>
 		<p>The ATL debugging operations are available from the ATL Debug perspective. As for a Java program, debugging an ATL transformation implies to execute this transformation in debug mode. This supposes developers to create an ATL debug launch configuration for the transformation. The debug execution mode, along with its associated debugging actions, is triggered by the execution of this debug launch configuration.</p>
