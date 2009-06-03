@@ -176,9 +176,7 @@ create OUT : Publication from IN : Book;
 		</p>
 		<p>
 			<b>Lazy rules</b>.
-		</p>
-		<p>
-			<i>TODO: write lazy rules documentation overview</i>
+			Lazy rules are like matched rules, but are only applied when called by another rule
 		</p>
 		<p>
 			<b>Called rules</b>. The called rules provide ATL developers with convenient imperative programming facilities. Called rules can be seen as a particular type of helpers: they have to be explicitly called to be executed and they can accept parameters. However, as opposed to helpers, called rules can generate target model elements as matched rules do. A called rule has to be called from an imperative code section, either from a match rule or another called rule.
@@ -241,9 +239,8 @@ create OUT : Publication from IN : Book;
 			The imperative code section that can be specified in the scope of a matched rule is executed once the rule initialization step has completed. This imperative code can trigger the execution of some of the called rules that have been defined in the scope of the ATL module.
 		</p>
 		<h4 id="Refining_mode_execution_semantics">Refining mode execution semantics</h4>
-		<p>
-			<i>TODO: update with the current refining mode execution semantics</i>
-		</p>
+		<p>ATL'2006 compiler implements an in-place version of the refiï¿½ning mode. This means that no copying occurs, and that changes are directly applied
+			on the source model.</p>
 		<h2 id="ATL_Query">ATL Query</h2>
 		<p>An ATL query consists in a model to 
 			<a href="The-ATL-Language.html#Primitive_data_types">primitive type</a> value transformation. An ATL query can be viewed as an operation that computes a primitive value from a set of source models. The most common use of ATL queries is the generation of a textual output (encoded into a string value) from a set of source models. However, ATL queries are not limited to the computation of string values and can also return a numerical or a boolean value.

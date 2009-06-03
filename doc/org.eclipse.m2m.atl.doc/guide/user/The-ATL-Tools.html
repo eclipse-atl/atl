@@ -182,16 +182,13 @@ create OUT : AnyMM from IN : UML;
 			<i>New->ATL File</i> entry in the contextual menu. Note that is command is also available from the File menu of the Eclipse menu bar. This command triggers the apparition the ATL File Wizard window:
 		</p>
 		<p>
-			<i>TODO: update with the ATL 3.0 file wizard</i>
+			<img border="0" src="images/ATL_new_file2.PNG"/>
 		</p>
-		<p>The ATL File Wizard makes it possible to specify the name of the file to be created, the type of the ATL unit that will be contained by the file (an ATL module, query or library), the name of the source and target model and metamodel variables as well as the name of the libraries that will be required for the ATL program to run. From these data, the wizard generates the ATL file with the 
+		<p>The ATL File Wizard makes it possible to specify the name of the module to be created, the type of the ATL unit that will be contained by the file (an ATL module, query or library), the name of the source and target model and metamodel variables as well as the name of the libraries that will be required for the ATL program to run. From these data, the wizard generates the ATL file with the 
 			<a href="Overview-of-the-Atlas-Transformation-Language.html#Header_section">header section</a> that corresponds to the provided information.
 		</p>
-		<p>The ATL wizard window is organized into four sections: HEAD, IN, OUT and LIB. The HEAD section aims to specify the name of the ATL file, the project it is attached to and its type. The project the ATL transformation is attached to can be selected among the list of existing projects in the Navigator view. The name of the file is not restricted. However, it is strongly advised to give ATL files relevant names. A good naming convention is to name ATL files with the name of the source metamodel, followed by the character "2", followed by the name of the target metamodel. The ATL file will be created with the .atl extension in the root folder of the selected project. As a last point, the developer has to select the type of ATL file to be generated among module (for a classical transformation), query and library. Note that, depending on the selected type of ATL unit, the remaining parts of the ATL File Wizard can be totally or partially disabled.</p>
-		<p>The IN and OUT sections of the wizard window respectively enable to specify the name of the variables associated with the source and target models and metamodels. In each section, the name of the model and the name of the metamodel this model conforms to have to be respectively entered in the Model and the Metamodel fields. A couple defined by this mean is validated with the Add button. The wizard makes it possible to define multiple source and target models/metamodels. Developers must take care, when specifying the name of the model/metamodel variables to give each of them a unique name.</p>
-		<p>Finally, the LIB section of the window makes it possible to specify the name of the libraries that will be required for executing the ATL program. A distinct 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Import_section">use</a> instruction will be included into the generated ATL file for each specified library.
-		</p>
+		<p>You can optionally set the metamodels URIs or paths in order to directly activate content assist into the generated file.</p>
+		<p>The "Generate configuration" checkbox generates a launch configuration where you just need to set model paths (and missing metamodels paths).</p>
 		<h4 id="Creating_an_ATL_file_from_scratch">Creating an ATL file from scratch</h4>
 		<p>It is possible, for ATL developers, to edit their ATL files from scratch by themselves. To this end, the first step is to create an empty generic file. The naming of the file to be created should follow the conventions proposed in the previous section. Moreover, the file must here be explicitly associated with the 
 			<i>.atl</i> extension.
@@ -206,12 +203,19 @@ create OUT : AnyMM from IN : UML;
 		<h3 id="Setting_up_an_ATL_run_launch_configuration">Setting up an ATL run launch configuration</h3>
 		<p>Executing an ATL transformation first requires setting up a transformation launch configuration. An ATL launch configuration aims to resume all the information that is required to execute an ATL transformation. This information includes the paths of the file involved in the transformation (e.g. the ATL file, but also the model, metamodel and library files).</p>
 		<h4 id="The_ATL_Configuration_tab">The ATL Configuration tab</h4>
+		<p>The ATL configuration tab allow to specify the paths and URIs of the launch configuration. Fields are precomputed from the specified ATL module, but new ones can be added using the "Modify" section.</p>
 		<p>
-			<i>TODO: update with the ATL 3.0 configuration tab</i>
+			<img border="0" src="images/ATL_launch1.PNG"/>
 		</p>
 		<h4 id="The_Advanced_tab">The Advanced tab</h4>
+		<p>The Advanced tab allow to configure:</p>
+		<ul>
+			<li>module superimposition, by adding superimposed module using Add/Remove buttons</li>
+			<li>the transformation launcher (the ATL Virtual Machine)</li>
+			<li>the launcher parameters. This part is computed for each launcher, as they don't provide same options</li>
+		</ul>
 		<p>
-			<i>TODO: update with the ATL 3.0 advanced configuration tab</i>
+			<img border="0" src="images/ATL_launch2.PNG"/>
 		</p>
 		<h4 id="The_Common_tab">The Common tab</h4>
 		<p>The Common tab offers the ATL developer to configure the execution environment of the designed transformation. The Common tab is divided in four blocks: 
@@ -221,7 +225,7 @@ create OUT : AnyMM from IN : UML;
 			<i>Standard Input and Output</i>. Here is a screenshot of the Common tab of the run ATL launch configuration wizard.
 		</p>
 		<p>
-			<img border="0" src="images/ATL_common_launch.png"/>
+			<img border="0" src="images/ATL_launch3.PNG"/>
 		</p>
 		<ul>
 			<li>The 
@@ -269,10 +273,7 @@ create OUT : AnyMM from IN : UML;
 		<p>See also the 
 			<a href="http://wiki.eclipse.org/ATL/ATL_FAQ#What.27s_this_ATL_feature_called_.22superimposition.22.3F" title="ATL FAQ#What.27s_this_ATL_feature_called_.22superimposition.22.3F">ATL FAQ entry on Superimposition</a>.
 		</p>
-		<p>
-			<i>TODO: update with ATL 3.0 launch configuration</i>
-		</p>
-		<p>Note: when adding superimposed modules in the Advanced tab, they override the "main" module specified in the ATL Main Configuration Tab.</p>
+		<p>NOTE: when adding superimposed modules in the Advanced tab, they override the "main" module specified in the ATL Main Configuration Tab.</p>
 		<h3 id="Running_an_ATL_launch_configuration">Running an ATL launch configuration</h3>
 		<p>Once the launch configuration of a transformation has been correctly fulfilled, it can be run as many times as needed without requiring any change to the configuration. In order to the run a designed ATL transformation, the developer just has to go back to the configuration 
 			<i>Run</i> window, to select the created transformation in the ATL Transformation folder (on the left column) and click on the Run button.
