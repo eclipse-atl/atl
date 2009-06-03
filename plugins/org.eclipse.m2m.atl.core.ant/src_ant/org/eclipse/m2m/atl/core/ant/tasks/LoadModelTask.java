@@ -127,15 +127,16 @@ public class LoadModelTask extends AbstractAtlTask {
 				if (modelHandler == null) {
 					modelHandler = DEFAULT_MODEL_HANDLER;
 				}
-				if (source.startsWith("#")) { //$NON-NLS-1$
+				if (source.startsWith("%")) { //$NON-NLS-1$
 					sourceModel = factoryInstance.getMetametamodel();
+					getProject().addReference(name, sourceModel);
 				} else {
 					if (metamodel.equals("MOF") || metamodel.startsWith("%")) { //$NON-NLS-1$ //$NON-NLS-2$
 						Map<String, Object> referenceModelOptions = new HashMap<String, Object>();
 						referenceModelOptions.put(OPTION_MODEL_HANDLER, modelHandler);
 						referenceModelOptions.put(OPTION_MODEL_NAME, name);
 						referenceModelOptions.put(OPTION_MODEL_PATH, source);
-						sourceModel = newReferenceModel(factoryInstance, name, referenceModelOptions);
+						sourceModel = newReferenceModel(factoryInstance, name, referenceModelOptions);						
 					} else {
 						Map<String, Object> modelOptions = new HashMap<String, Object>();
 						modelOptions.put(OPTION_MODEL_NAME, name);
