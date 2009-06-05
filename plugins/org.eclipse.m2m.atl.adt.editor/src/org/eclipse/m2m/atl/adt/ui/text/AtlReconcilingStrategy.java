@@ -153,6 +153,9 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 			while (!eof) {
 				offset++;
 				if (RULE_BLOCK_START.equals(document.get(startOffset, RULE_BLOCK_START.length()))) {
+
+					// Rule detected: computing rule scope using brackets
+
 					eof = seekChars(new char[] {'{',});
 					offset++;
 					IRegion region = editor.getBracketMatcher().match(document, offset);
@@ -165,8 +168,19 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 						}
 					}
 				} else if (HELPER_BLOCK_START.equals(document.get(startOffset, HELPER_BLOCK_START.length()))) {
-					eof = seekChars(new char[] {';',});
-					eof = seekChars(new char[] {'\n',});
+					offset++;
+
+					// Helper detected, looking for helper end: new rule, new helper or eof
+
+					eof = seekChars(new char[] {RULE_BLOCK_START.charAt(0), HELPER_BLOCK_START.charAt(0),});
+					while (!(eof
+							|| RULE_BLOCK_START.equals(document.get(offset, RULE_BLOCK_START.length())) || HELPER_BLOCK_START
+							.equals(document.get(offset, HELPER_BLOCK_START.length())))) {
+						offset++;
+						eof = seekChars(new char[] {RULE_BLOCK_START.charAt(0), HELPER_BLOCK_START.charAt(0),});
+					}
+					 eof = backwardSeekChars(new char[] {';',}, startOffset);
+					 eof = seekChars(new char[] {'\n',});
 					final int endOffset = offset + 1;
 					if (document.getNumberOfLines(startOffset, endOffset - startOffset) > 2) {
 						createOrUpdateAnnotation(startOffset, (endOffset) - startOffset, false);
@@ -190,6 +204,17 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 		int c = reader.read();
 		offset = reader.getOffset();
 		while (c != AtlCodeReader.EOF && !contains(startChars, document.getChar(offset))) {
+			c = reader.read();
+			offset = reader.getOffset();
+		}
+		return c == AtlCodeReader.EOF;
+	}
+
+	private boolean backwardSeekChars(char[] startChars, int start) throws BadLocationException, IOException {
+		reader.configureBackwardReader(document, offset, true, true);
+		int c = reader.read();
+		offset = reader.getOffset();
+		while (offset > start && c != AtlCodeReader.EOF && !contains(startChars, document.getChar(offset))) {
 			c = reader.read();
 			offset = reader.getOffset();
 		}
