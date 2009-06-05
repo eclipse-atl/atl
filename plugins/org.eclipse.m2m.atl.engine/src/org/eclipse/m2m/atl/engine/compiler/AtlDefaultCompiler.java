@@ -222,6 +222,11 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 		}
 
 		if (nbErrors == 0) {
+			try {
+				problems = problems.getModelFactory().newModel(problems.getReferenceModel());
+			} catch (ATLCoreException e) {
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			}
 			launcher.initialize(null);
 			launcher.addInModel(atlmodel, "IN", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
 			launcher.addOutModel(problems, "OUT", "Problem"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -287,6 +292,7 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 		EObject[] ret = (EObject[])a[1];
 
 		if (nbErrors == 0) {
+			problems = problems.getModelFactory().newModel(problems.getReferenceModel());
 			launcher.initialize(null);
 			launcher.addInModel(atlmodel, "IN", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
 			launcher.addOutModel(problems, "OUT", "Problem"); //$NON-NLS-1$ //$NON-NLS-2$
