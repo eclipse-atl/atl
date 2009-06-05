@@ -55,9 +55,8 @@ public class MarkerMaker {
 	}
 
 	/**
-	 * creates a problem marker from an Eobject. This EObject contain the required information.
+	 * creates a problem marker from an EObject. This EObject contain the required information.
 	 * 
-	 * @see org.eclipse.m2m.atl.engine.compiler.resources#Problem
 	 * @param res
 	 *            the resource associated to the created marker
 	 * @param problem
