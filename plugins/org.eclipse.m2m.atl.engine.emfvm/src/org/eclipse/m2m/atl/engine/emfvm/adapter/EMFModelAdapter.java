@@ -521,11 +521,17 @@ public class EMFModelAdapter implements IModelAdapter {
 					"EMFModelAdapter.FEATURE_NOT_EXISTS", name, eo.eClass().getName())); //$NON-NLS-1$
 		}
 
-		// makes it possible to use an integer to set a floating point property
 		if (settableValue instanceof Integer) {
 			String targetType = feature.getEType().getInstanceClassName();
-			if ("java.lang.Double".equals(targetType) || "java.lang.Float".equals(targetType)) { //$NON-NLS-1$ //$NON-NLS-2$
+			if ("java.lang.Double".equals(targetType) || "double".equals(targetType)) { //$NON-NLS-1$ //$NON-NLS-2$
 				settableValue = new Double(((Integer)value).doubleValue());
+			} else if ("java.lang.Float".equals(targetType) || "float".equals(targetType)) { //$NON-NLS-1$ //$NON-NLS-2$
+				settableValue = new Float(((Integer)value).floatValue());
+			}
+		} else if (settableValue instanceof Double) {
+			String targetType = feature.getEType().getInstanceClassName();
+			if ("java.lang.Float".equals(targetType) || "float".equals(targetType)) {  //$NON-NLS-1$//$NON-NLS-2$
+				settableValue = new Float(((Double)value).floatValue());
 			}
 		}
 
@@ -665,7 +671,7 @@ public class EMFModelAdapter implements IModelAdapter {
 			throw new VMException(null, Messages.getString(
 					"EMFModelAdapter.INVOKE_OPERATION_ERROR", method.getName(), self), toReport); //$NON-NLS-1$
 		}
-		return res;
+		return res == null && method.getReturnType() != void.class ? OclUndefined.SINGLETON : res;
 	}
 
 	/**
