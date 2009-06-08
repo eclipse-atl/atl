@@ -83,7 +83,6 @@ public class StackFrame extends AbstractStackFrame {
 			ret = ""; //$NON-NLS-1$
 		}
 		ret += "#" + pc; //$NON-NLS-1$
-
 		return ret;
 	}
 
@@ -98,32 +97,29 @@ public class StackFrame extends AbstractStackFrame {
 		if (operation instanceof ASMOperation) {
 			ret.append("at "); //$NON-NLS-1$
 			ret.append(((ASMOperation)operation).getName());
-			if (operation instanceof ASMOperation) {
-				ret.append("("); //$NON-NLS-1$
-				ret.append(((ASMOperation)operation).getAsm().getName() + ".atl"); //$NON-NLS-1$
+			ret.append('(');
+			ret.append(((ASMOperation)operation).getAsm().getName() + ".atl"); //$NON-NLS-1$
 
-				String location = getLocation();
-				if (location != null) {
+			String location = getLocation();
+			if (location != null) {
 					if (location.matches("[0-9]*:[0-9]*-[0-9]*:[0-9]*#[0-9]*")) { //$NON-NLS-1$
-						int lineNumber = new Integer(location.split("-")[0].split(":")[0]).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
-						ret.append(":" + lineNumber); //$NON-NLS-1$
-					}
+						ret.append('[' + location.split("#")[0] + ']'); //$NON-NLS-1$
 				}
-				ret.append(")"); //$NON-NLS-1$
-				ret.append("\n\tlocal variables: "); //$NON-NLS-1$
-				boolean first = true;
-				ASMOperation ao = (ASMOperation)operation;
-				for (int i = 0; i < ao.getMaxLocals(); i++) {
-					String varName = ao.resolveVariableName(i, pc);
-					if (varName != null) {
-						if (!first) {
-							ret.append(", "); //$NON-NLS-1$
-						}
-						first = false;
-						ret.append(varName);
-						ret.append('=');
-						ret.append(getExecEnv().toPrettyPrintedString(localVars[i]));
+			}
+			ret.append(')');
+			ret.append("\n\tlocal variables: "); //$NON-NLS-1$
+			boolean first = true;
+			ASMOperation ao = (ASMOperation)operation;
+			for (int i = 0; i < ao.getMaxLocals(); i++) {
+				String varName = ao.resolveVariableName(i, pc);
+				if (varName != null) {
+					if (!first) {
+						ret.append(", "); //$NON-NLS-1$
 					}
+					first = false;
+					ret.append(varName);
+					ret.append('=');
+					ret.append(getExecEnv().toPrettyPrintedString(localVars[i]));
 				}
 			}
 		} else {
