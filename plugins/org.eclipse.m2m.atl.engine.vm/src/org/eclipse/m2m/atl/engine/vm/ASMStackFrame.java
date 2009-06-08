@@ -33,14 +33,14 @@ public class ASMStackFrame extends StackFrame {
 		localVariables = new HashMap();
 		Iterator j = args.iterator();
 		localVariables.put("0", j.next());
-		for(Iterator i = operation.getParameters().iterator() ; i.hasNext() ; ) {
+		for (Iterator i = operation.getParameters().iterator(); i.hasNext();) {
 			ASMParameter p = (ASMParameter)i.next();
-			if(!j.hasNext()) {
+			if (!j.hasNext()) {
 				printStackTrace("Too few arguments");
 			}
 			localVariables.put(p.getName(), j.next());
 		}
-		if(j.hasNext()) {
+		if (j.hasNext()) {
 			printStackTrace("Too many arguments");
 		}
 		localStack = new Stack();
@@ -62,7 +62,7 @@ public class ASMStackFrame extends StackFrame {
 
 		getExecEnv().pop();
 
-		if(!empty())
+		if (!empty())
 			ret = pop();
 
 		return ret;
@@ -72,25 +72,24 @@ public class ASMStackFrame extends StackFrame {
 		StringBuffer ret = new StringBuffer();
 
 		ASMOperation op = (ASMOperation)getOperation();
-		ret.append("at ");
+		ret.append("at "); //$NON-NLS-1$
 		ret.append(getOperation());
-		ret.append("("); //$NON-NLS-1$
+		ret.append('(');
 		ret.append(op.getASM().getName() + ".atl"); //$NON-NLS-1$
 		String location = op.resolveLineNumber(getLocation());
 		if (location != null) {
-			if (location.matches("[0-9]*:[0-9]*-[0-9]*:[0-9]*#[0-9]*")) { //$NON-NLS-1$
-				int lineNumber = new Integer(location.split("-")[0].split(":")[0]).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
-				ret.append(":" + lineNumber); //$NON-NLS-1$
+			if (location.matches("[0-9]*:[0-9]*-[0-9]*:[0-9]*")) { //$NON-NLS-1$
+				ret.append('[' + location + ']'); //$NON-NLS-1$
 			}
 		}
 		ret.append(")"); //$NON-NLS-1$
 		ret.append("\n\tlocal variables = {");
-		for(Iterator i = localVariables.keySet().iterator() ; i.hasNext() ; ) {
+		for (Iterator i = localVariables.keySet().iterator(); i.hasNext();) {
 			String key = (String)i.next();
 			ret.append(op.resolveVariableName(Integer.parseInt(key), getLocation()));
 			ret.append("=");
 			ret.append(localVariables.get(key));
-			if(i.hasNext())
+			if (i.hasNext())
 				ret.append(", ");
 		}
 		ret.append("}\n\tlocal stack = ");
@@ -168,13 +167,14 @@ public class ASMStackFrame extends StackFrame {
 	public String resolveVariableName(int slot) {
 		return ((ASMOperation)getOperation()).resolveVariableName(slot, location);
 	}
-	
+
 	public String getSourceLocation() {
 		return ((ASMOperation)getOperation()).resolveLineNumber(location);
 	}
 
 	private Map localVariables;
+
 	private Stack localStack;
+
 	private int location;
 }
-
