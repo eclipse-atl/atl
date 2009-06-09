@@ -97,10 +97,12 @@ public class EMFExtractor implements IExtractor {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.io.OutputStream, java.util.Map)
+	 * 
+	 * @see org.eclipse.m2m.atl.core.IExtractor#extract(org.eclipse.m2m.atl.core.IModel, java.io.OutputStream,
+	 *      java.util.Map)
 	 */
-	public void extract(IModel sourceModel, OutputStream target, Map<String, Object> options) throws ATLCoreException {
+	public void extract(IModel sourceModel, OutputStream target, Map<String, Object> options)
+			throws ATLCoreException {
 		Map<String, Object> extractOptions = new HashMap<String, Object>();
 		extractOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1"); //$NON-NLS-1$
 		extractOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
@@ -108,7 +110,12 @@ public class EMFExtractor implements IExtractor {
 			extractOptions.putAll(options);
 		}
 		try {
-			((EMFModel)sourceModel).getResource().save(target, extractOptions);
+			if (((EMFModel)sourceModel).getResource() != null) {
+				((EMFModel)sourceModel).getResource().save(target, extractOptions);
+			} else {
+				throw new ATLCoreException(Messages.getString(
+						"EMFExtractor.NO_RESOURCE", "OutputStream")); //$NON-NLS-1$ //$NON-NLS-2$
+			}
 		} catch (IOException e) {
 			throw new ATLCoreException(e.getMessage(), e);
 		}

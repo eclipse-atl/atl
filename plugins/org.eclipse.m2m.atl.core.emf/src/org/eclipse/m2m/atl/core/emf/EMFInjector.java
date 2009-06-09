@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
+import org.eclipse.m2m.atl.core.IReferenceModel;
 
 /**
  * The EMF implementation of the {@link IInjector} interface.
@@ -63,7 +64,7 @@ public class EMFInjector implements IInjector {
 				} else {
 					mainResource = resourceSet.getResource(URI.createURI(path), loadOnDemand);
 				}
-				inject((EMFModel)targetModel, mainResource);
+				inject(targetModel, mainResource);
 				// Catching Exception to prevent EMF DiagnosticWrappedExceptions
 			} catch (Throwable e) {
 				throw new ATLCoreException(Messages.getString(
@@ -99,7 +100,7 @@ public class EMFInjector implements IInjector {
 		} catch (IOException e) {
 			throw new ATLCoreException(e.getMessage(), e);
 		}
-		inject((EMFModel)targetModel, mainResource);
+		inject(targetModel, mainResource);
 
 	}
 
@@ -111,9 +112,9 @@ public class EMFInjector implements IInjector {
 	 * @param mainResource
 	 *            the main Resource
 	 */
-	public void inject(EMFModel targetModel, Resource mainResource) {
-		targetModel.setResource(mainResource);
-		if (targetModel instanceof EMFReferenceModel) {
+	public void inject(IModel targetModel, Resource mainResource) {
+		((EMFModel)targetModel).setResource(mainResource);
+		if (targetModel instanceof IReferenceModel) {
 			((EMFReferenceModel)targetModel).register();
 		}
 	}
