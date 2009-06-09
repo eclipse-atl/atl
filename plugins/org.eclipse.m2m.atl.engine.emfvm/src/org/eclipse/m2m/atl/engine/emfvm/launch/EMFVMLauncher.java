@@ -67,6 +67,7 @@ public class EMFVMLauncher implements ILauncher {
 	 *      java.lang.String, java.lang.String)
 	 */
 	public void addInModel(IModel model, String name, String referenceModelName) {
+		model.setIsTarget(false);
 		addModel(model, name, referenceModelName);
 	}
 
