@@ -235,6 +235,7 @@ public class ASMInterpreter {
 			args.add(value);
 		}
 		returnValue = op.exec(ASMStackFrame.rootFrame(env, op, args));
+		env.terminated();
 	}
 
 	public ASMOclAny getReturnValue() {
