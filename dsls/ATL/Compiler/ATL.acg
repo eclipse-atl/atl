@@ -1431,13 +1431,16 @@ acg ATL startsWith Unit {
 	code OperationCallExp | self.source isa SuperExp {
 		load 'self'
 		analyze self.arguments
-		supercall 'J.' + self.operationName + '(' + self.arguments->collect(e | 'J').prepend('').sum() + '):J'
+		supercall self.operationSignature
 	}
+
+	attribute OperationCallExp::operationSignature =
+		'J.' + self.operationName + '(' + self.arguments->collect(e | 'J').prepend('').sum() + '):J';
 
 	code OperationCallExp {
 		analyze self.source
 		analyze self.arguments
-		call 'J.' + self.operationName + '(' + self.arguments->collect(e | 'J').prepend('').sum() + '):J'
+		call self.operationSignature
 	}
 
 	code NavigationOrAttributeCallExp {
@@ -1832,7 +1835,15 @@ acg ATL startsWith Unit {
 		report error 'only variables or navigations are allowed on the left of a binding statement'
 	}
 
-	-- TODO: pop value if any?
+	-- TODO:
+	--	- calling OperationCallExp in a special mode would not prevent its location to be written in the line number table
+	--	- compiler calls to operations having no return value should also be changed into pcall
+	code ExpressionStat | self.expression isa OperationCallExp {
+		analyze self.expression.source
+		analyze self.expression.arguments
+		pcall self.expression.operationSignature
+	}
+
 	code ExpressionStat {
 		analyze self.expression
 	}
