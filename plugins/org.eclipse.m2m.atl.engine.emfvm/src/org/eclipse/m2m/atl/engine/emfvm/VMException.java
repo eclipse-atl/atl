@@ -71,6 +71,8 @@ public class VMException extends ATLExecutionException {
 			s.println("Java Stack:"); //$NON-NLS-1$
 			// Java stack trace :
 			super.printStackTrace(s);
+		} else {
+			s.println(getMessage());
 		}
 	}
 
@@ -88,6 +90,8 @@ public class VMException extends ATLExecutionException {
 			s.println("Java Stack:"); //$NON-NLS-1$
 			// Java stack trace :
 			super.printStackTrace(s);
+		} else {
+			s.println(getMessage());
 		}
 	}
 
