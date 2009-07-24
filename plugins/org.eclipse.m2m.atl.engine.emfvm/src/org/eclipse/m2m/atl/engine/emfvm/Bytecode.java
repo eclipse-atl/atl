@@ -84,6 +84,9 @@ public class Bytecode {
 	/** Deletes an element. */
 	public static final int DELETE = 21;
 
+	/** Call a procedure (i.e., an operation with no returned value). */
+	public static final int PCALL = 22;
+
 	/** List of codes. */
 	public static final String[] OPCODENAMES = {"push", //$NON-NLS-1$
 			"pushi", //$NON-NLS-1$
@@ -107,6 +110,7 @@ public class Bytecode {
 			"findme", //$NON-NLS-1$
 			"dup_x1", //$NON-NLS-1$
 			"delete", //$NON-NLS-1$
+			"pcall", //$NON-NLS-1$
 	};
 
 	/** current code. */
@@ -205,6 +209,10 @@ public class Bytecode {
 			this.opcode = GOTO;
 			this.operand = operand; // for toString
 			this.value = Integer.parseInt(operand);
+		} else if (opcode.equals("pcall")) { //$NON-NLS-1$
+			this.opcode = PCALL;
+			this.operand = getOpName(operand);
+			this.value = getNbArgs(operand);
 		} else {
 			throw new VMException(null,Messages.getString(
 					"ByteCode.UNSUPPORTEDOPCODEWARGS", opcode)); //$NON-NLS-1$

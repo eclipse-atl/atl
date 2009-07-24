@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.26 2009/05/05 09:41:19 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.27 2009/07/24 14:05:44 fjouault Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -345,6 +345,7 @@ public class ASMOperation extends Operation {
 						stack[fp++] = Boolean.FALSE;
 						break;
 					case Bytecode.CALL:
+					case Bytecode.PCALL:
 						Object self = stack[fp - bytecode.getValue() - 1];
 						if (debug) {
 							log.append("\tCalling "); //$NON-NLS-1$
@@ -422,8 +423,22 @@ public class ASMOperation extends Operation {
 							s = execEnv.getModelAdapter().invoke(m, self, arguments);
 						}
 
-						if (s != null) {
-							stack[fp++] = s;
+						switch(bytecode.getOpcode()) {
+							case Bytecode.CALL:
+								if (s == null) {
+									// TODO: throw new VMException(frame, "Operation " + bytecode.getOperand() + "did not return a value.");
+									// Throwing an exception here leverages the distinction between call/pcall to report better error messages.
+									// However, this would break backward compatibility. In the future, an option, or versionning of .asm files
+									// could make it safe to enable this exception.
+									// Moreover, it would then be possible to compute the exact operand stack size that must be allocated, which
+									// would likely increase performance of the virtual machine.
+								} else {
+									stack[fp++] = s;
+								}
+								break;
+							case Bytecode.PCALL:
+								// ignore returned value if any
+								break;
 						}
 						break;
 					case Bytecode.LOAD:
