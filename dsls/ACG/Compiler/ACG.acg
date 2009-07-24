@@ -511,6 +511,14 @@ acg ACG startsWith ACG {
 		call 'J.emit(SS):V'
 	}
 
+	code PCallStat {
+		getasm
+		get 'asmEmitter'
+		push 'pcall'
+		analyze self.operand
+		call 'J.emit(SS):V'
+	}
+
 	code SuperCallStat {
 		getasm
 		get 'asmEmitter'

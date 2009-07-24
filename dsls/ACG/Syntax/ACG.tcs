@@ -233,6 +233,10 @@ syntax ACG {
 		:	"call" operand
 		;
 
+	template PCallStat
+		:	"pcall" operand
+		;
+
 	template SuperCallStat
 		:	"supercall" operand
 		;

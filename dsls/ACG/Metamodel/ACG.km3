@@ -166,6 +166,8 @@ package ACG {
 
 	class CallStat extends EmitWithOperandStat {}
 
+	class PCallStat extends EmitWithOperandStat {}
+
 	class SuperCallStat extends EmitWithOperandStat {}
 
 	class GetStat extends EmitWithOperandStat {}
