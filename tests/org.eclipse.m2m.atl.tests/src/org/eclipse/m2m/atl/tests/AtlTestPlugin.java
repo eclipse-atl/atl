@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.tests;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
@@ -100,7 +101,12 @@ public class AtlTestPlugin extends Plugin {
 					throw new RuntimeException(e);
 				}
 			} else {
-				baseDirectory = new File(AtlTestPlugin.class.getResource("/").getPath()).getParentFile().getParent(); //$NON-NLS-1$
+				try {
+					baseDirectory = new File(AtlTestPlugin.class.getResource("/").toURI()).getParentFile().getParent();
+				} catch (URISyntaxException e) {
+					// TODO: improve handling of exception
+					e.printStackTrace();
+				}
 			}
 		}
 		return baseDirectory;
