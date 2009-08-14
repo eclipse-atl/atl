@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: EMFModelAdapter.java,v 1.3.2.1 2009/02/13 12:35:04 dwagelaar Exp $
+ * $Id: EMFModelAdapter.java,v 1.3.2.1.2.1 2009/08/14 10:59:46 dwagelaar Exp $
  */
 package org.eclipse.m2m.atl.engine.emfvm.emf;
 
@@ -50,6 +50,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.OclUndefined;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.lib.StackFrame;
+import org.eclipse.m2m.atl.engine.emfvm.lib.VMException;
 
 /**
  * The model adapter dedicated to EMF.
@@ -437,6 +438,9 @@ public class EMFModelAdapter implements ModelAdapter {
 			ret = ((EMFModel)getModelOf(eo)).getResource().getURIFragment(eo);
 		} else {
 			EStructuralFeature sf = ec.getEStructuralFeature(name);
+			if (sf == null) {
+				throw new VMException(frame, "structural feature \"" + name + "\" cannot be found on " + modelElement);
+			}
 			Object val = eo.eGet(sf);
 			if (val == null) {
 				val = OclUndefined.SINGLETON;
