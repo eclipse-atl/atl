@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.10.4.1 2009/03/13 15:38:50 dwagelaar Exp $
+ * $Id: ASMOperation.java,v 1.10.4.2 2009/08/18 07:32:52 dwagelaar Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -366,6 +366,9 @@ public class ASMOperation extends Operation {
 							log.append(".");
 							log.append(bytecode.getOperand());
 							log.append("(");
+						}
+						if (self == null) {
+							throw new VMException(frame, "Trying to call \"" + bytecode.getOperand() + "\" on null");
 						}
 						Object type = execEnv.getModelAdapter().getType(self);
 						int nbCalleeArgs = bytecode.getValue();
