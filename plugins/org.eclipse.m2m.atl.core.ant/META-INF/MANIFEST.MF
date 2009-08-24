@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: ATL Ant tasks
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.m2m.atl.core.ant;singleton:=true
 Bundle-Version: 3.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.ant,
  org.eclipse.m2m.atl.core,
  org.eclipse.m2m.atl.common
-Bundle-Vendor: Eclipse Modeling Project
+Bundle-Vendor: %providerName
 Export-Package: org.eclipse.m2m.atl.core.ant,
  org.eclipse.m2m.atl.core.ant.tasks,
  org.eclipse.m2m.atl.core.ant.tasks.nested
+Bundle-Localization: plugin
