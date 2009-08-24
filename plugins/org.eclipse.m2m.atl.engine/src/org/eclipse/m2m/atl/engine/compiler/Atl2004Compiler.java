@@ -21,12 +21,20 @@ import java.net.URL;
  */
 public class Atl2004Compiler extends AtlDefaultCompiler {
 
-	// @Override
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlDefaultCompiler#getSemanticAnalyzerURL()
+	 */
 	protected URL getSemanticAnalyzerURL() {
 		return Atl2004Compiler.class.getResource("resources/ATL-WFR.asm"); //$NON-NLS-1$
 	}
 
-	// @Override
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlDefaultCompiler#getCodegeneratorURL()
+	 */
 	protected URL getCodegeneratorURL() {
 		return Atl2004Compiler.class.getResource("resources/ATLToASMCompiler.asm"); //$NON-NLS-1$
 	}
