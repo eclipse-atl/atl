@@ -108,7 +108,7 @@ public class ASMOperation {
 
 		int index = label.getIndex();
 		if (index != -1) {
-			instruction.setOperand("" + index);
+			instruction.setOperand("" + index); //$NON-NLS-1$
 		} else {
 			label.addInstruction(instruction);
 		}
@@ -155,7 +155,7 @@ public class ASMOperation {
 
 		public void setIndex(int index) {
 			this.index = index;
-			String id = "" + index;
+			String id = "" + index; //$NON-NLS-1$
 			for (Iterator i = instr.iterator(); i.hasNext();) {
 				((ASMInstructionWithOperand)i.next()).setOperand(id);
 			}
@@ -183,16 +183,16 @@ public class ASMOperation {
 	 */
 	public String toString() {
 		StringBuffer ret = new StringBuffer(context);
-		ret.append(".");
+		ret.append("."); //$NON-NLS-1$
 		ret.append(name);
-		ret.append("(");
+		ret.append("("); //$NON-NLS-1$
 		for (Iterator i = parameters.iterator(); i.hasNext();) {
 			ret.append(i.next());
 			if (i.hasNext()) {
-				ret.append(", ");
+				ret.append(", "); //$NON-NLS-1$
 			}
 		}
-		ret.append(") : ??");
+		ret.append(") : ??"); //$NON-NLS-1$
 
 		return ret.toString();
 	}
@@ -200,8 +200,8 @@ public class ASMOperation {
 	private static int getNbArgs(String s) {
 		int ret = 0;
 
-		s = pattern1.matcher(s).replaceFirst("");
-		while (!s.startsWith(")") && s.length() > 0) {
+		s = pattern1.matcher(s).replaceFirst(""); //$NON-NLS-1$
+		while (!s.startsWith(")") && s.length() > 0) { //$NON-NLS-1$
 			ret++;
 			s = removeFirst(s);
 		}
@@ -210,16 +210,16 @@ public class ASMOperation {
 	}
 
 	private static String removeFirst(String s) {
-		if (s.startsWith("T")) {
+		if (s.startsWith("T")) { //$NON-NLS-1$
 			s = s.substring(1);
-			while (!s.startsWith(";")) {
+			while (!s.startsWith(";")) { //$NON-NLS-1$
 				s = removeFirst(s);
 			}
 			s = s.substring(1);
 		} else if (pattern2.matcher(s).matches()) {
 			s = removeFirst(s.substring(1));
 		} else {
-			s = simple.matcher(s).replaceFirst("");
+			s = simple.matcher(s).replaceFirst(""); //$NON-NLS-1$
 		}
 
 		return s;

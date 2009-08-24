@@ -88,11 +88,11 @@ public class ASMEmitter {
 	 */
 	public void finishOperation() {
 		if (currentOperation != null) {
-			currentOperation.endLocalVariableEntry("self");
+			currentOperation.endLocalVariableEntry("self"); //$NON-NLS-1$
 			for (Iterator i = currentOperation.getParameters().iterator(); i.hasNext();) {
 				ASMParameter p = (ASMParameter)i.next();
 				int slot = currentOperation.endLocalVariableEntry(p.getName());
-				p.setName("" + slot);
+				p.setName("" + slot); //$NON-NLS-1$
 			}
 			currentOperation = null;
 		}
@@ -102,7 +102,7 @@ public class ASMEmitter {
 		finishOperation();
 		currentOperation = new ASMOperation(asm, name);
 		asm.addOperation(currentOperation);
-		currentOperation.beginLocalVariableEntry("self", "self");
+		currentOperation.beginLocalVariableEntry("self", "self"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void addOperationWithoutLVE(String name) {
@@ -148,18 +148,18 @@ public class ASMEmitter {
 	}
 
 	public void emitSimple(String mnemonic) {
-		if (!mnemonic.equals("nop")) {
+		if (!mnemonic.equals("nop")) { //$NON-NLS-1$
 			currentOperation.addInstruction(new ASMInstruction(mnemonic));
 		}
 	}
 
 	public void emit(String mnemonic, String param) {
-		if (mnemonic.equals("nop")) {
-		} else if (mnemonic.equals("if") || mnemonic.equals("goto")) {
+		if (mnemonic.equals("nop")) { //$NON-NLS-1$
+		} else if (mnemonic.equals("if") || mnemonic.equals("goto")) { //$NON-NLS-1$ //$NON-NLS-2$
 			currentOperation.addLabeledInstruction(new ASMInstructionWithOperand(mnemonic, null), param);
-		} else if (mnemonic.equals("label")) {
+		} else if (mnemonic.equals("label")) { //$NON-NLS-1$
 			currentOperation.addLabel(param);
-		} else if (mnemonic.equals("store") || mnemonic.equals("load")) {
+		} else if (mnemonic.equals("store") || mnemonic.equals("load")) { //$NON-NLS-1$ //$NON-NLS-2$
 			currentOperation.addVariableInstruction(new ASMInstructionWithOperand(mnemonic, null), param);
 		} else {
 			currentOperation.addInstruction(new ASMInstructionWithOperand(mnemonic, param));
@@ -167,7 +167,7 @@ public class ASMEmitter {
 	}
 
 	public void emitWithoutLabel(String mnemonic, String param) {
-		if (!mnemonic.equals("nop")) {
+		if (!mnemonic.equals("nop")) { //$NON-NLS-1$
 			currentOperation.addInstruction(new ASMInstructionWithOperand(mnemonic, param));
 		}
 	}

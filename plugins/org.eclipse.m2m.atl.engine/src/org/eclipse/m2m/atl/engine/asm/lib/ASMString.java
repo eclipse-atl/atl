@@ -16,6 +16,11 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.Tuple;
 
 public class ASMString implements LibExtension {
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.LibExtension#apply(org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv, java.util.Map)
+	 */
 	public void apply(ExecEnv execEnv, Map options) {
 		execEnv.registerOperation(String.class, createEvalSOTS(), "evalSOTS");
 		execEnv.registerOperation(String.class, createEvalSOTSBrackets(), "evalSOTSBrackets");

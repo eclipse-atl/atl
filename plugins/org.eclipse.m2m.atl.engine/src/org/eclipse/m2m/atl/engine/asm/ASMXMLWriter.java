@@ -55,24 +55,24 @@ public class ASMXMLWriter extends ASMWriter {
 
 	private void printASM(ASM asm) {
 		String name = asm.getName();
-		println("<?xml version = '1.0' encoding = 'ISO-8859-1' ?>");
-		println("<asm name=\"" + getCPIndex(name) + "\">", "<!-- " + name + " -->");
-		println("\t<cp>");
+		println("<?xml version = '1.0' encoding = 'ISO-8859-1' ?>"); //$NON-NLS-1$
+		println("<asm name=\"" + getCPIndex(name) + "\">", "<!-- " + name + " -->"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		println("\t<cp>"); //$NON-NLS-1$
 		int k = 0;
 		for (Iterator i = getConstantPool().iterator(); i.hasNext();) {
 			String s = (String)i.next();
-			s = s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"",
-					"&quot;").replaceAll("\n", "&#10;").replaceAll("\r", "&#13;").replaceAll("\t", "&#9;");
-			println("\t\t<constant value=\"" + s + "\"/>", "<!-- " + k++ + " -->");
+			s = s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+					"&quot;").replaceAll("\n", "&#10;").replaceAll("\r", "&#13;").replaceAll("\t", "&#9;"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+			println("\t\t<constant value=\"" + s + "\"/>", "<!-- " + k++ + " -->"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		}
-		println("\t</cp>");
+		println("\t</cp>"); //$NON-NLS-1$
 		for (Iterator i = asm.getFields().iterator(); i.hasNext();) {
 			printField((ASMField)i.next());
 		}
 		for (Iterator i = asm.getOperations().iterator(); i.hasNext();) {
 			printOperation((ASMOperation)i.next());
 		}
-		println("</asm>");
+		println("</asm>"); //$NON-NLS-1$
 
 	}
 
@@ -80,24 +80,24 @@ public class ASMXMLWriter extends ASMWriter {
 		if (dummy) {
 			// do nothing
 		} else if (debug) {
-			String tabs = "";
-			switch ((8 * 8 - s.replaceAll("\t", "        ").length() - 1) / 8) {
+			String tabs = ""; //$NON-NLS-1$
+			switch ((8 * 8 - s.replaceAll("\t", "        ").length() - 1) / 8) { //$NON-NLS-1$ //$NON-NLS-2$
 				case 8:
-					tabs += "\t";
+					tabs += "\t"; //$NON-NLS-1$
 				case 7:
-					tabs += "\t";
+					tabs += "\t"; //$NON-NLS-1$
 				case 6:
-					tabs += "\t";
+					tabs += "\t"; //$NON-NLS-1$
 				case 5:
-					tabs += "\t";
+					tabs += "\t"; //$NON-NLS-1$
 				case 4:
-					tabs += "\t";
+					tabs += "\t"; //$NON-NLS-1$
 				case 3:
-					tabs += "\t";
+					tabs += "\t"; //$NON-NLS-1$
 				case 2:
-					tabs += "\t";
+					tabs += "\t"; //$NON-NLS-1$
 				case 1:
-					tabs += "\t";
+					tabs += "\t"; //$NON-NLS-1$
 				default:
 					break;
 			}
@@ -116,43 +116,43 @@ public class ASMXMLWriter extends ASMWriter {
 	private void printField(ASMField f) {
 		String name = f.getName();
 		String type = f.getType();
-		println("\t<field name=\"" + getCPIndex(name) + "\" type=\"" + getCPIndex(type) + "\"/>", "<!-- "
-				+ name + " : " + type + " -->");
+		println("\t<field name=\"" + getCPIndex(name) + "\" type=\"" + getCPIndex(type) + "\"/>", "<!-- " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				+ name + " : " + type + " -->"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private void printOperation(ASMOperation op) {
 		String name = op.getName();
 		String context = op.getContextSignature();
-		println("\t<operation name=\"" + getCPIndex(name) + "\">", "<!-- " + name + " -->");
-		println("\t\t<context type=\"" + getCPIndex(context) + "\"/>", "<!-- " + context + " -->");
-		println("\t\t<parameters>");
+		println("\t<operation name=\"" + getCPIndex(name) + "\">", "<!-- " + name + " -->"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		println("\t\t<context type=\"" + getCPIndex(context) + "\"/>", "<!-- " + context + " -->"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		println("\t\t<parameters>"); //$NON-NLS-1$
 		for (Iterator i = op.getParameters().iterator(); i.hasNext();) {
 			printParameter((ASMParameter)i.next());
 		}
-		println("\t\t</parameters>");
-		println("\t\t<code>");
+		println("\t\t</parameters>"); //$NON-NLS-1$
+		println("\t\t<code>"); //$NON-NLS-1$
 		for (Iterator i = op.getInstructions().iterator(); i.hasNext();) {
 			printInstruction((ASMInstruction)i.next());
 		}
-		println("\t\t</code>");
-		println("\t\t<linenumbertable>");
+		println("\t\t</code>"); //$NON-NLS-1$
+		println("\t\t<linenumbertable>"); //$NON-NLS-1$
 		for (Iterator i = op.getLineNumberTable().iterator(); i.hasNext();) {
 			printLineNumberEntry((ASMOperation.LineNumberEntry)i.next());
 		}
-		println("\t\t</linenumbertable>");
-		println("\t\t<localvariabletable>");
+		println("\t\t</linenumbertable>"); //$NON-NLS-1$
+		println("\t\t<localvariabletable>"); //$NON-NLS-1$
 		for (Iterator i = op.getLocalVariableTable().iterator(); i.hasNext();) {
 			printLocalVariableEntry((ASMOperation.LocalVariableEntry)i.next());
 		}
-		println("\t\t</localvariabletable>");
-		println("\t</operation>");
+		println("\t\t</localvariabletable>"); //$NON-NLS-1$
+		println("\t</operation>"); //$NON-NLS-1$
 	}
 
 	private void printParameter(ASMParameter param) {
 		String name = param.getName();
 		String type = param.getType();
-		println("\t\t\t<parameter name=\"" + getCPIndex(name) + "\" type=\"" + getCPIndex(type) + "\"/>",
-				"<!-- " + name + " : " + type + " -->");
+		println("\t\t\t<parameter name=\"" + getCPIndex(name) + "\" type=\"" + getCPIndex(type) + "\"/>", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"<!-- " + name + " : " + type + " -->"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	private void printInstruction(ASMInstruction instr) {
@@ -162,20 +162,20 @@ public class ASMXMLWriter extends ASMWriter {
 			// if(mn.equals("if") || mn.equals("goto")) {
 			// println("\t\t\t<" + instr.getMnemonic() + " arg=\"" + operand + "\"/>");
 			// } else {
-			println("\t\t\t<" + mn + " arg=\"" + getCPIndex(operand) + "\"/>", "<!-- " + operand + " -->");
+			println("\t\t\t<" + mn + " arg=\"" + getCPIndex(operand) + "\"/>", "<!-- " + operand + " -->"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			// }
 		} else {
-			println("\t\t\t<" + instr.getMnemonic() + "/>");
+			println("\t\t\t<" + instr.getMnemonic() + "/>"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
 	private void printLineNumberEntry(ASMOperation.LineNumberEntry lne) {
-		println("\t\t\t<lne id=\"" + getCPIndex(lne.id) + "\" begin=\"" + lne.begin + "\" end=\"" + lne.end
-				+ "\"/>", "<!-- " + lne.id + " -->");
+		println("\t\t\t<lne id=\"" + getCPIndex(lne.id) + "\" begin=\"" + lne.begin + "\" end=\"" + lne.end //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				+ "\"/>", "<!-- " + lne.id + " -->"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	private void printLocalVariableEntry(ASMOperation.LocalVariableEntry lve) {
-		println("\t\t\t<lve slot=\"" + lve.slot + "\" name=\"" + getCPIndex(lve.name) + "\" begin=\""
-				+ lve.begin + "\" end=\"" + lve.end + "\"/>", "<!-- " + lve.name + " -->");
+		println("\t\t\t<lve slot=\"" + lve.slot + "\" name=\"" + getCPIndex(lve.name) + "\" begin=\"" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				+ lve.begin + "\" end=\"" + lve.end + "\"/>", "<!-- " + lve.name + " -->"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 }
