@@ -22,6 +22,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.ide,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.m2m.atl.core.ui,
- org.eclipse.m2m.atl.adt.editor;bundle-version="3.0.0"
+ org.eclipse.m2m.atl.adt.editor
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
