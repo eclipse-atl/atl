@@ -75,7 +75,7 @@
             class="org.eclipse.m2m.atl.adt.ui.wizard.atlfile.AtlFileWizard"
             preferredPerspectives="org.eclipse.m2m.atl.adt.ui.atlPerspective"
             finalPerspective="org.eclipse.m2m.atl.adt.ui.atlPerspective"
-            project="true"
+            project="false"
             id="atlFileWizard">
          <description>
             Create an ATL transformation file
