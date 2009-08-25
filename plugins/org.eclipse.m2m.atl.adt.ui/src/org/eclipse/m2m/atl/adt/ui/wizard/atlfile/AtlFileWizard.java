@@ -170,7 +170,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	 */
 	private void buildFile(IFile file) throws IOException, CoreException {
 		StringBuffer fileContent = new StringBuffer();
-		if (advancedPage.isCurrentPage()) {
+		if (getContainer().getCurrentPage() == advancedPage) {
 			// Completion helpers
 			Map<String, String> paths = advancedPage.getPaths();
 			if (!paths.isEmpty()) {
@@ -202,7 +202,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 			fileContent.append(unitType + " " + unitName + ";\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
-		if (advancedPage.isCurrentPage()) {
+		if (getContainer().getCurrentPage() == advancedPage) {
 			// Module header
 			if (unitType.equals(AtlFileScreen.TYPE_MODULE)
 					|| unitType.equals(AtlFileScreen.TYPE_REFINING_MODULE)) {
@@ -242,7 +242,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	}
 
 	private void buildConfiguration(IFile file) throws CoreException {
-		if (advancedPage.isCurrentPage()) {
+		if (getContainer().getCurrentPage() ==  advancedPage) {
 			if (advancedPage.generateLaunchConfig()) {
 				ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 				String unitName = advancedPage.getUnitName();
@@ -331,7 +331,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 	 */
 	@Override
 	public boolean canFinish() {
-		if (advancedPage.isCurrentPage()) {
+		if (getContainer().getCurrentPage() == advancedPage) {
 			return advancedPage.isPageComplete();
 		}
 		return simplePage.isPageComplete();

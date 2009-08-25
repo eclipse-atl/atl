@@ -377,16 +377,6 @@ public class AtlFileScreen extends WizardPage {
 		setPageComplete(checkUnitName() && checkModelsConsistancy());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.jface.wizard.WizardPage#isCurrentPage()
-	 */
-	@Override
-	protected boolean isCurrentPage() {
-		return super.isCurrentPage();
-	}
-
 	private boolean checkUnitName() {
 		if (textName.getText() == null || !textName.getText().matches(NAMING_REGEX)) {
 			setErrorMessage(Messages.getString("AtlFileWizard.NAMING_ISSUE", comboType.getText())); //$NON-NLS-1$
