@@ -35,30 +35,146 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclUndefined;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 
 /**
- * This Java class interprets ATL Stack Machine. Command-line Parameters are in the form <name>=<value>. In
- * the following descriptions, parameters are typed. * Boolean If the string value is "true" then the argument
- * will be true, false otherwise. * List<T> A List of T is a coma-separated list of T. * ModelLocation The
- * specification of the location of a model. The path to its serialized form. A ModelLocation can also specify
- * an injector to be used. * ModelSpec The specification of a model in the form <model-name> :
- * <metamodel-name>. For each model and metamodel specified in a ModelSpec there must be a specification of
- * how to load it (except for MOF). This specification is performed by specifying an additional command-line
- * argument. The name of this argument is the name of the model or metamodel and its value is a ModelLocation.
- * * ModelPath <model-name>=<path-name> Command-line parameters: * ASM : File('.asm') * copy : Boolean *
- * source-models : List(ModelSpec) * target-models : List(ModelSpec) * step : Boolean * NetworkDebugger :
- * Boolean * testReserialization : Boolean when true, the ASM file is serialized in XML, text and binary *
- * reserialize : List(ModelPath) Specifies a list of models to serialize at the end of the execution of the
- * program. This is especially usefull to reserialize source models that have been modified during the
- * execution of the program (in-place transformations). * plugins : List(File('.jar')) Specifies * ModelLoader
- * : Enumeration('EMF', 'MDR') Operation signature encoding: Type Encoding Sample Type Sample Type encoded
- * Object J Void V Integer I Boolean B String S Double D EnumLiteral Z ATL context Module A ModelElement
- * M<meta-model-name>!<element-name>; XML!Node MXML!Node; Model L Sequence(<type>) Q<type> Sequence(String) QS
- * Bag(<type>) G<type> Collection(<type>) C<type> Set(<type>) E<type> OrderedSet(<type>) O<type> Native type
- * N<name>; TransientLink NTransientLink; Tuple(name1:<type1>, T<type1>name1; Tuple(n:String,v:Integer)
- * TSn;Iv;; name2:<type2>) <type2>name2;; Tuple(m:XML!Node,b:Boolean) TMXML!Node;m;Bb;; (attribute order is
- * not relevant: TIa;Ib;; and TIb;Ia;; denote the same TupleType) Sample method signature encodings: context
- * XML!Element def: getAttrVal(name : String) : String MXML!Element;.getAttrVal(S):S context String def:
- * toBoolean() : Boolean S.toBoolean():B context String def: toIntegerFromRoman() : Integer
- * S.toIntegerFromRoman():I
+ * This Java class interprets ATL Stack Machine. Command-line Parameters are in the form
+ * <code>name=value</code>. In the following descriptions, parameters are typed.
+ * <ul>
+ * <li><b>Boolean</b> If the string value is "true" then the argument will be true, false otherwise.</li>
+ * <li><b>List&ltT&gt</b> A List of T is a coma-separated list of T.</li>
+ * <li><b>ModelLocation</b> The specification of the location of a model. The path to its serialized form. A
+ * ModelLocation can also specify an injector to be used.</li>
+ * <li><b>ModelSpec</b> The specification of a model in the form <code>model-name : metamodel-name</code>. For
+ * each model and metamodel specified in a ModelSpec there must be a specification of how to load it (except
+ * for MOF). This specification is performed by specifying an additional command-line argument. The name of
+ * this argument is the name of the model or metamodel and its value is a ModelLocation.</li>
+ * <li><b>ModelPath</b> <code>model-name=path-name</code></li>
+ * </ul>
+ * Command-line parameters:
+ * <ul>
+ * <li>ASM : File('.asm')</li>
+ * <li>copy : Boolean</li>
+ * <li>source-models : List(ModelSpec)</li>
+ * <li>target-models : List(ModelSpec)</li>
+ * <li>step : Boolean</li>
+ * <li>NetworkDebugger : Boolean</li>
+ * <li>testReserialization : Boolean when true, the ASM file is serialized in XML, text and binary</li>
+ * <li>reserialize : List(ModelPath) Specifies a list of models to serialize at the end of the execution of
+ * the program. This is especially usefull to reserialize source models that have been modified during the
+ * execution of the program (in-place transformations).</li>
+ * <li>plugins : List(File('.jar'))</li>
+ * <li>ModelLoader : Enumeration('EMF', 'MDR')</li>
+ * </ul>
+ * <table border="1">
+ * <caption>Operation signature encoding</caption>
+ * <tr>
+ * <th>Type</th>
+ * <th>Encoding</th>
+ * <th>Sample Type</th>
+ * <th>Sample Type encoded</th>
+ * </tr>
+ * <tr>
+ * <td>Object</td>
+ * <td>J</td>
+ * </tr>
+ * <tr>
+ * <td>Void</td>
+ * <td>V</td>
+ * </tr>
+ * <tr>
+ * <td>Integer</td>
+ * <td>I</td>
+ * </tr>
+ * <tr>
+ * <td>Boolean</td>
+ * <td>B</td>
+ * </tr>
+ * <tr>
+ * <td>String</td>
+ * <td>S</td>
+ * </tr>
+ * <tr>
+ * <td>Double</td>
+ * <td>D</td>
+ * </tr>
+ * <tr>
+ * <td>EnumLiteral</td>
+ * <td>Z</td>
+ * </tr>
+ * <tr>
+ * <td>ATL context Module</td>
+ * <td>A</td>
+ * </tr>
+ * <tr>
+ * <td>ModelElement</td>
+ * <td>M&ltmeta-model-name&gt!&ltelement-name&gt;</td>
+ * <td>XML!Node</td>
+ * <td>MXML!Node;</td>
+ * </tr>
+ * <tr>
+ * <td>Model</td>
+ * <td>L</td>
+ * </tr>
+ * <tr>
+ * <td>Sequence(&lttype&gt)</td>
+ * <td>Q&lttype&gt</td>
+ * <td>Sequence(String)</td>
+ * <td>QS</td>
+ * </tr>
+ * <tr>
+ * <td>Bag(&lttype&gt)</td>
+ * <td>G&lttype&gt</td>
+ * </tr>
+ * <tr>
+ * <td>Collection(&lttype&gt)</td>
+ * <td>C&lttype&gt</td>
+ * </tr>
+ * <tr>
+ * <td>Set(&lttype&gt)</td>
+ * <td>E&lttype&gt</td>
+ * </tr>
+ * <tr>
+ * <td>OrderedSet(&lttype&gt)</td>
+ * <td>O&lttype&gt</td>
+ * </tr>
+ * <tr>
+ * <td>Native type</td>
+ * <td>N&ltname&gt</td>
+ * <td>TransientLink</td>
+ * <td>NTransientLink;</td>
+ * </tr>
+ * <tr>
+ * <td>Tuple(name1:&lttype1&gt,name2:&lttype2&gt)</td>
+ * <td>T&lttype1&gtname1;&lttype2&gt>name2;;</td>
+ * <td>Tuple(n:String,v:Integer)</td>
+ * <td>TSn;Iv;;</td>
+ * </tr>
+ * <tr>
+ * <td></td>
+ * <td></td>
+ * <td>Tuple(m:XML!Node,b:Boolean)</td>
+ * <td>TMXML!Node;m;Bb;;</td>
+ * </tr>
+ * </table>
+ * <i>Note: in Tuples, attribute order is not relevant: TIa;Ib;; and TIb;Ia;; denote the same TupleType</i> <br>
+ * <br>
+ * <table border="1">
+ * <caption>Sample method signature encodings</caption>
+ * <tr>
+ * <th>Signature</th>
+ * <th>Encoding</th>
+ * </tr>
+ * <tr>
+ * <td>context XML!Element def: getAttrVal(name : String) : String</td>
+ * <td>MXML!Element;.getAttrVal(S):S</td>
+ * </tr>
+ * <tr>
+ * <td>context String def: toBoolean() : Boolean</td>
+ * <td>S.toBoolean():B</td>
+ * </tr>
+ * <tr>
+ * <td>context String def: toIntegerFromRoman() : Integer</td>
+ * <td>S.toIntegerFromRoman():I</td>
+ * </tr>
+ * </table>
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
