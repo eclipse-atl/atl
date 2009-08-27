@@ -970,6 +970,40 @@ public class ExecEnv {
 				return ret;
 			}
 		});
+		operationsByName.put("indexOf", new Operation(2) { //$NON-NLS-1$
+			@Override
+			public Object exec(StackFrame frame) {
+				Object[] localVars = frame.localVars;
+				LinkedHashSet s = (LinkedHashSet)localVars[0];
+				int idx = 0;
+				for (Iterator iterator = s.iterator(); iterator.hasNext();) {
+					idx++;
+					if (iterator.next().equals(localVars[1])) {
+						return idx;
+					}
+				}
+				return 0;
+			}
+		});
+		operationsByName.put("subOrderedSet", new Operation(3) { //$NON-NLS-1$
+			@Override
+			public Object exec(StackFrame frame) {
+				Object[] localVars = frame.localVars;
+				LinkedHashSet ret = new LinkedHashSet();
+				LinkedHashSet s = (LinkedHashSet)localVars[0];
+				int deb = ((Integer)localVars[1]).intValue();
+				int end = ((Integer)localVars[2]).intValue();
+				int idx = 0;
+				for (Iterator iterator = s.iterator(); iterator.hasNext();) {
+					idx++;
+					Object tmp = iterator.next();
+					if (deb <= idx && idx <= end) {
+						ret.add(tmp);
+					}
+				}
+				return ret;
+			}
+		});
 		operationsByName.put("including", new Operation(2) {
 			public Object exec(StackFrame frame) {
 				Object localVars[] = frame.localVars;
