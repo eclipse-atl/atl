@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -223,6 +224,8 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 			Object o = contents.next();
 			if (o instanceof EClass) {
 				addReferencedResourcesFor((EClass)o, new HashSet<EClass>());
+			} else if (o instanceof EGenericType && ((EGenericType)o).getEClassifier() instanceof EClass) {
+				addReferencedResourcesFor((EClass)((EGenericType)o).getEClassifier(), new HashSet<EClass>());
 			}
 		}
 		getReferencedResources().remove(resource);
