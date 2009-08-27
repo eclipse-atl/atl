@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.43 2009/08/27 09:28:23 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.44 2009/08/27 10:03:28 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -1363,7 +1363,7 @@ public class ExecEnv {
 					}
 				});
 		// fix 214871:
-		// TODO better to fix it into debugger
+		// TODO better to fix it into compiler
 		operationsByName.put("getNamedTargetFromSource", new Operation(3) { //$NON-NLS-1$
 					@Override
 					public Object exec(AbstractStackFrame frame) {
