@@ -3,7 +3,7 @@
 <plugin
    id="org.eclipse.m2m.atl.drivers.mdr4atl"
    name="MDR4ATL Plug-in"
-   version="2.0.2.qualifier"
+   version="2.0.3.qualifier"
    provider-name="Eclipse.org">
    <runtime>
       <library name="org.eclipse.m2m.atl.drivers.mdr4atl.jar">
