@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.42 2009/07/29 14:05:25 fjouault Exp $
+ * $Id: ExecEnv.java,v 1.43 2009/08/27 09:28:23 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -720,6 +720,40 @@ public class ExecEnv {
 						return ret;
 					}
 				});
+		operationsByName.put("indexOf", new Operation(2) { //$NON-NLS-1$
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						LinkedHashSet<?> s = (LinkedHashSet<?>)localVars[0];
+						int idx = 0;
+						for (Iterator<?> iterator = s.iterator(); iterator.hasNext();) {
+							idx++;
+							if (iterator.next().equals(localVars[1])) {
+								return idx;
+							}
+						}
+						return 0;
+					}
+				});
+		operationsByName.put("subOrderedSet", new Operation(3) { //$NON-NLS-1$
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						LinkedHashSet<Object> ret = new LinkedHashSet<Object>();
+						LinkedHashSet<?> s = (LinkedHashSet<?>)localVars[0];
+						int deb = ((Integer)localVars[1]).intValue();
+						int end = ((Integer)localVars[2]).intValue();
+						int idx = 0;
+						for (Iterator<?> iterator = s.iterator(); iterator.hasNext();) {
+							idx++;
+							Object tmp = iterator.next();
+							if (deb <= idx && idx <= end) {
+								ret.add(tmp);
+							}
+						}
+						return ret;
+					}
+				});
 		operationsByName.put("including", new Operation(2) { //$NON-NLS-1$
 					@Override
 					public Object exec(AbstractStackFrame frame) {
@@ -1294,6 +1328,8 @@ public class ExecEnv {
 						return Boolean.FALSE;
 					}
 				});
+		// TODO implement missing refInvokeOperation
+		// TODO implement missing output
 		// TODO add to doc
 		operationsByName.put("debug", new Operation(2) { //$NON-NLS-1$
 					@Override
@@ -1324,6 +1360,14 @@ public class ExecEnv {
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						return Boolean.TRUE;
+					}
+				});
+		// fix 214871:
+		// TODO better to fix it into debugger
+		operationsByName.put("getNamedTargetFromSource", new Operation(3) { //$NON-NLS-1$
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						return OclUndefined.SINGLETON;
 					}
 				});
 		// OclType
