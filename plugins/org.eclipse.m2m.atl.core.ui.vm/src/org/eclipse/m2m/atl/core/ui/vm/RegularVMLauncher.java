@@ -68,14 +68,7 @@ public class RegularVMLauncher implements ILauncher {
 		return LAUNCHER_NAME;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addInModel(org.eclipse.m2m.atl.core.IModel,
-	 *      java.lang.String, java.lang.String)
-	 */
-	public void addInModel(IModel model, String name, String referenceModelName) {
-		setCheckSameModel(model);
+	private void addModel(IModel model, String name, String referenceModelName) {
 		if (models.containsKey(name)) {
 			ATLLogger.warning(Messages.getString(
 					"RegularVMLauncher.MODEL_EVER_REGISTERED", new Object[] {name})); //$NON-NLS-1$
@@ -85,6 +78,18 @@ public class RegularVMLauncher implements ILauncher {
 		if (!models.containsKey(referenceModelName)) {
 			models.put(referenceModelName, model.getReferenceModel());
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addInModel(org.eclipse.m2m.atl.core.IModel,
+	 *      java.lang.String, java.lang.String)
+	 */
+	public void addInModel(IModel model, String name, String referenceModelName) {
+		setCheckSameModel(model);
+		model.setIsTarget(false);
+		addModel(model, name, referenceModelName);
 	}
 
 	/**
@@ -96,7 +101,7 @@ public class RegularVMLauncher implements ILauncher {
 	public void addInOutModel(IModel model, String name, String referenceModelName) {
 		setCheckSameModel(model);
 		model.setIsTarget(true);
-		addInModel(model, name, referenceModelName);
+		addModel(model, name, referenceModelName);
 	}
 
 	/**
@@ -108,7 +113,7 @@ public class RegularVMLauncher implements ILauncher {
 	public void addOutModel(IModel model, String name, String referenceModelName) {
 		setCheckSameModel(model);
 		model.setIsTarget(true);
-		addInModel(model, name, referenceModelName);
+		addModel(model, name, referenceModelName);
 	}
 
 	/**
