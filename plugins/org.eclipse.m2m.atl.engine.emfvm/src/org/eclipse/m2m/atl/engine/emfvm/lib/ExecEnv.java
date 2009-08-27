@@ -971,7 +971,6 @@ public class ExecEnv {
 			}
 		});
 		operationsByName.put("indexOf", new Operation(2) { //$NON-NLS-1$
-			@Override
 			public Object exec(StackFrame frame) {
 				Object[] localVars = frame.localVars;
 				LinkedHashSet s = (LinkedHashSet)localVars[0];
@@ -979,14 +978,13 @@ public class ExecEnv {
 				for (Iterator iterator = s.iterator(); iterator.hasNext();) {
 					idx++;
 					if (iterator.next().equals(localVars[1])) {
-						return idx;
+						return new Integer(idx);
 					}
 				}
-				return 0;
+				return new Integer(0);
 			}
 		});
 		operationsByName.put("subOrderedSet", new Operation(3) { //$NON-NLS-1$
-			@Override
 			public Object exec(StackFrame frame) {
 				Object[] localVars = frame.localVars;
 				LinkedHashSet ret = new LinkedHashSet();
