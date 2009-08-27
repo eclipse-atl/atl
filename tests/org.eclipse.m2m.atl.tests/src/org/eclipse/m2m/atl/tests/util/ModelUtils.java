@@ -22,12 +22,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.compare.diff.metamodel.ComparisonResourceSnapshot;
 import org.eclipse.emf.compare.diff.metamodel.DiffFactory;
 import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
 import org.eclipse.emf.compare.diff.metamodel.DiffModel;
-import org.eclipse.emf.compare.diff.metamodel.ModelInputSnapshot;
 import org.eclipse.emf.compare.diff.service.DiffService;
-import org.eclipse.emf.compare.match.api.MatchOptions;
 import org.eclipse.emf.compare.match.metamodel.MatchModel;
 import org.eclipse.emf.compare.match.service.MatchService;
 import org.eclipse.emf.ecore.EObject;
@@ -41,7 +40,6 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
-import org.eclipse.m2m.atl.tests.AtlTestsMessages;
 
 /**
  * Utility class for models.
@@ -206,31 +204,40 @@ public final class ModelUtils {
 	 * Compare two ecore files as models.
 	 * 
 	 * @param leftUri
+	 *            the left file uri
 	 * @param rightUri
+	 *            the right file uri
+	 * @param ignoreIds
+	 *            if <code>true</code>, ignore xmi ids
+	 * @param delete
+	 *            if <code>true</code>, delete the right file after comparison
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public static void compareModels(File leftUri, File rightUri, boolean ignoreIds, boolean delete) throws Exception {
+	public static void compareModels(File leftUri, File rightUri, boolean ignoreIds, boolean delete)
+			throws IOException, InterruptedException {
 		Resource leftModel = load(leftUri, AtlTestPlugin.getDefault().getResourceSet());
 		Resource rightModel = load(rightUri,AtlTestPlugin.getDefault().getResourceSet());
 
 		Map options = new HashMap();
 		if (ignoreIds) {
-			options.put(MatchOptions.OPTION_IGNORE_XMI_ID, Boolean.TRUE);	
+			options.put("match.ignore.xmi.id", Boolean.TRUE); //$NON-NLS-1$
 		}
 		final MatchModel inputMatch = MatchService.doResourceMatch(leftModel, rightModel, options);
 		final DiffModel inputDiff = DiffService.doDiff(inputMatch);
 
-		if (((DiffGroup) inputDiff.getOwnedElements().get(0)).getSubchanges() != 0){
-			ModelInputSnapshot snapshot = DiffFactory.eINSTANCE.createModelInputSnapshot();
+		if (((DiffGroup)inputDiff.getOwnedElements().get(0)).getSubchanges() != 0) {
+			ComparisonResourceSnapshot snapshot = DiffFactory.eINSTANCE.createComparisonResourceSnapshot();
 			snapshot.setDiff(inputDiff);
 			snapshot.setMatch(inputMatch);
-			ModelUtils.save(snapshot, "file:/"+leftUri.toString()+".emfdiff"); //$NON-NLS-1$ //$NON-NLS-2$
-			throw new Exception(AtlTestsMessages.getString("AtlTestPlugin.DIFFFAIL")); //$NON-NLS-1$
+			ModelUtils.save(snapshot, "file:/" + leftUri.toString() + ".emfdiff"); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new RuntimeException("There are differences between models " + leftUri + " and " + rightUri); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (delete) {
 			leftUri.delete();
 		}
 	}
+	
+	
 
 }
