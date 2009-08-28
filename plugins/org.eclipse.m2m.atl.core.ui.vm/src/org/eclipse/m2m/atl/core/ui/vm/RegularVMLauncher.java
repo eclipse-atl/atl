@@ -211,6 +211,10 @@ public class RegularVMLauncher implements ILauncher {
 			throw new VMException(null, e.getLocalizedMessage(), e);
 		} catch (CoreException e) {
 			throw new VMException(null, e.getLocalizedMessage(), e);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			throw new VMException(null, e.getLocalizedMessage(), e);
+		} catch (IllegalArgumentException e) {
+			throw new VMException(null, e.getLocalizedMessage(), e);
 		}
 		return null;
 	}
