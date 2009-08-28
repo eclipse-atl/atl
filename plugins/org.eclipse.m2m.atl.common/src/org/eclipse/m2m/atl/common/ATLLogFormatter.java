@@ -39,14 +39,12 @@ public class ATLLogFormatter extends Formatter {
 	 */
 	public String format(LogRecord record) {
 		StringBuffer line = new StringBuffer();
-		//line.append(record.getLevel().getLocalizedName());
-		//line.append(": "); //$NON-NLS-1$
-		line.append(record.getMessage());
-		line.append('\n');
 		if (record.getThrown() != null) {
 			StringWriter writer = new StringWriter();
 			record.getThrown().printStackTrace(new PrintWriter(writer, true));
 			line.append(writer.toString());
+		} else {
+			line.append(record.getMessage() + '\n');			
 		}
 		return line.toString();
 	}
