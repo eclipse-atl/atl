@@ -95,7 +95,7 @@ public class StackFrame extends AbstractStackFrame {
 	public String toString() {
 		StringBuffer ret = new StringBuffer();
 		if (operation instanceof ASMOperation) {
-			ret.append("at "); //$NON-NLS-1$
+			ret.append("\tat "); //$NON-NLS-1$
 			ret.append(((ASMOperation)operation).getName());
 			ret.append('(');
 			ret.append(((ASMOperation)operation).getAsm().getName() + ".atl"); //$NON-NLS-1$
@@ -107,7 +107,7 @@ public class StackFrame extends AbstractStackFrame {
 				}
 			}
 			ret.append(')');
-			ret.append("\n\tlocal variables: "); //$NON-NLS-1$
+			ret.append("\n\t\tlocal variables: "); //$NON-NLS-1$
 			boolean first = true;
 			ASMOperation ao = (ASMOperation)operation;
 			for (int i = 0; i < ao.getMaxLocals(); i++) {
