@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.27 2009/07/24 14:05:44 fjouault Exp $
+ * $Id: ASMOperation.java,v 1.28 2009/08/28 08:19:10 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -620,6 +620,12 @@ public class ASMOperation extends Operation {
 			((StackFrame)frame).setPc(pc - 1);
 			throw new VMException(frame, e.getLocalizedMessage(), e);
 		} catch (IllegalAccessException e) {
+			((StackFrame)frame).setPc(pc - 1);
+			throw new VMException(frame, e.getLocalizedMessage(), e);
+		} catch (IllegalArgumentException e) {
+			((StackFrame)frame).setPc(pc - 1);
+			throw new VMException(frame, e.getLocalizedMessage(), e);
+		} catch (ArrayIndexOutOfBoundsException e) {
 			((StackFrame)frame).setPc(pc - 1);
 			throw new VMException(frame, e.getLocalizedMessage(), e);
 		}
