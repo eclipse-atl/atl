@@ -47,13 +47,17 @@ public class VMException extends ATLExecutionException {
 	 * @see java.lang.Throwable#printStackTrace(java.io.PrintStream)
 	 */
 	public void printStackTrace(PrintStream s) {
-		//s.println("ATL VM Stack:");
-		s.println(frame);
-		if (getCause() != null) {
-			s.println("Java Stack:");
-			// Java stack trace :
-			super.printStackTrace(s);
-		}
+        synchronized (s) {
+            s.println(this);
+    		if (frame != null) {
+    			s.println(frame);
+    		}
+    		if (getCause() != null) {
+    			s.println("Java Stack:"); //$NON-NLS-1$
+    			// Java stack trace :
+    			super.printStackTrace(s);
+    		}
+        }
 	}
 
 	/**
@@ -62,13 +66,17 @@ public class VMException extends ATLExecutionException {
 	 * @see java.lang.Throwable#printStackTrace(java.io.PrintWriter)
 	 */
 	public void printStackTrace(PrintWriter s) {
-		//s.println("ATL VM Stack:");
-		s.println(frame);
-		if (getCause() != null) {
-			s.println("Java Stack:");
-			// Java stack trace :
-			super.printStackTrace(s);
-		}
+        synchronized (s) {
+            s.println(this);
+    		if (frame != null) {
+    			s.println(frame);
+    		}
+    		if (getCause() != null) {
+    			s.println("Java Stack:"); //$NON-NLS-1$
+    			// Java stack trace :
+    			super.printStackTrace(s);
+    		}
+        }
 	}
 
 }
