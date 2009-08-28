@@ -72,7 +72,7 @@ public class ASMStackFrame extends StackFrame {
 		StringBuffer ret = new StringBuffer();
 
 		ASMOperation op = (ASMOperation)getOperation();
-		ret.append("at "); //$NON-NLS-1$
+		ret.append("\tat "); //$NON-NLS-1$
 		ret.append(getOperation());
 		ret.append('(');
 		ret.append(op.getASM().getName() + ".atl"); //$NON-NLS-1$
@@ -83,7 +83,7 @@ public class ASMStackFrame extends StackFrame {
 			}
 		}
 		ret.append(")"); //$NON-NLS-1$
-		ret.append("\n\tlocal variables = {");
+		ret.append("\n\t\tlocal variables = {");
 		for (Iterator i = localVariables.keySet().iterator(); i.hasNext();) {
 			String key = (String)i.next();
 			ret.append(op.resolveVariableName(Integer.parseInt(key), getLocation()));
@@ -92,7 +92,7 @@ public class ASMStackFrame extends StackFrame {
 			if (i.hasNext())
 				ret.append(", ");
 		}
-		ret.append("}\n\tlocal stack = ");
+		ret.append("}\n\t\tlocal stack = ");
 		ret.append(localStack);
 
 		return ret.toString();
