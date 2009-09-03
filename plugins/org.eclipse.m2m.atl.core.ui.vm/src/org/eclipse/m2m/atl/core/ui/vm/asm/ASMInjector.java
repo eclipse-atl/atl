@@ -87,19 +87,12 @@ public class ASMInjector implements IInjector {
 				// nothing to do, ever loaded in newModel
 				return;
 			} else if (ml instanceof EMFModelLoader) {
-				if (source.startsWith("platform:/resource")) { //$NON-NLS-1$
+				if (source.startsWith("pathmap:")) { //$NON-NLS-1$
 					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
-							.getReferenceModel()).getAsmModel(), URI.createPlatformResourceURI(source
-							.substring(18), false));
-				} else if (source.startsWith("file:/")) { //$NON-NLS-1$
-					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
-							.getReferenceModel()).getAsmModel(), URI.createFileURI(source.substring(6)));
-				} else if (source.startsWith("pathmap:")) { //$NON-NLS-1$
-					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper
-							.getReferenceModel()).getAsmModel(), URI.createURI(source, true));
+							.getReferenceModel()).getAsmModel(), URI.createURI(source).trimFragment());
 				} else {
-					asmModel = ml.loadModel(modelName, ((ASMModelWrapper)modelWrapper.getReferenceModel())
-							.getAsmModel(), "uri:" + source); //$NON-NLS-1$
+					asmModel = ((EMFModelLoader)ml).loadModel(modelName, ((ASMModelWrapper)modelWrapper.getReferenceModel())
+							.getAsmModel(), URI.createURI(source));
 				}
 			} else {
 				asmModel = ml.loadModel(modelName, ((ASMModelWrapper)modelWrapper.getReferenceModel())
