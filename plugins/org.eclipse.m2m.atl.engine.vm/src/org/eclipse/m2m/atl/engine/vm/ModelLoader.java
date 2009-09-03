@@ -228,6 +228,8 @@ public abstract class ModelLoader {
 			realSave(model, url);
 		} else if (ss[0].equals("file")) {
 			realSave(model, href);
+		} else if (ss[0].equals("platform")) {
+			realSave(model, href);
 		} else {
 			extract(model, ss[0], (ss.length == 3) ? ss[1] : null, ss[ss.length - 1], null);
 		}
