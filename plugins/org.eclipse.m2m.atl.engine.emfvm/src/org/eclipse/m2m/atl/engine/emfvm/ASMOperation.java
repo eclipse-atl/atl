@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.28 2009/08/28 08:19:10 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.29 2009/09/04 13:36:57 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -438,6 +438,8 @@ public class ASMOperation extends Operation {
 								break;
 							case Bytecode.PCALL:
 								// ignore returned value if any
+								break;
+							default:
 								break;
 						}
 						break;
