@@ -166,21 +166,20 @@ public abstract class OclType {
 	 * @return the ocl type
 	 */
 	public static OclType getOclTypeFromObject(Object cl) {
-		OclType res = null;
-		if (cl instanceof Collection) {
-			if (cl instanceof List) {
-				return SEQUENCE;
-			} else if (cl instanceof Set) {
-				return SET;
+		OclType res = oclTypes.get(cl.getClass());
+		if (res == null) {
+			if (cl instanceof Collection) {
+				if (cl instanceof List) {
+					return SEQUENCE;
+				} else if (cl instanceof Set) {
+					return SET;
+				} else {
+					return BAG;
+				}
 			} else {
-				return BAG;
-			}
-		} else {
-			res = oclTypes.get(cl.getClass());
-			if (res == null) {
-				res = OCL_ANY;
-			}
-		}
+				res = OCL_ANY;	
+			}			
+		}		
 		return res;
 	}
 
