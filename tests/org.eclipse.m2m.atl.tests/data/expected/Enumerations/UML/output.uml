@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML">
+  <uml:Class xmi:id="_WBnW8JvDEd6dOZ6XW4q2Vg" name="a1" visibility="protected"/>
+  <uml:Class xmi:id="_WBnW8ZvDEd6dOZ6XW4q2Vg" name="a1" visibility="protected"/>
+  <uml:Class xmi:id="_WBnW8pvDEd6dOZ6XW4q2Vg" name="a2" visibility="private"/>
+  <uml:Class xmi:id="_WBnW85vDEd6dOZ6XW4q2Vg" name="a3" visibility="private"/>
+  <uml:Class xmi:id="_WBnW9JvDEd6dOZ6XW4q2Vg" name="b1"/>
+  <uml:Class xmi:id="_WBnW9ZvDEd6dOZ6XW4q2Vg" name="b1"/>
+  <uml:Class xmi:id="_WBnW9pvDEd6dOZ6XW4q2Vg" name="b2" visibility="private"/>
+  <uml:Class xmi:id="_WBnW95vDEd6dOZ6XW4q2Vg" name="b3" visibility="private"/>
+</xmi:XMI>

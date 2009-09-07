@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<MM:Container xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:MM="MM" xsi:schemaLocation="MM MM.ecore">
+  <elements name="e1"/>
+  <elements a="literal" name="e2"/>
+  <elements a="in" name="e3"/>
+  <elements a="inout" name="e4"/>
+  <elements xsi:type="MM:ESub" name="esub"/>
+</MM:Container>
