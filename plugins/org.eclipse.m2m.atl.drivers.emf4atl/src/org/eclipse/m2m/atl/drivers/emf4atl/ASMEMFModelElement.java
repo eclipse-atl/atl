@@ -30,6 +30,7 @@ import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -269,6 +270,9 @@ public class ASMEMFModelElement extends ASMModelElement {
 
 		if (value instanceof ASMString) {
 			ret = ((ASMString)value).getSymbol();
+			if (feature != null && feature.getEType() instanceof EEnum) {
+				ret = getEENumLiteral((EEnum)feature.getEType(), ((ASMString)value).getSymbol()).getInstance();
+			}
 		} else if (value instanceof ASMBoolean) {
 			ret = new Boolean(((ASMBoolean)value).getSymbol());
 		} else if (value instanceof ASMReal) {
@@ -293,8 +297,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 			String name = ((ASMEnumLiteral)value).getName();
 			EClassifier type = ((EClass)((ASMEMFModelElement)getMetaobject()).object).getEStructuralFeature(
 					propName).getEType();
-			//ret = ((EEnum)type).getEEnumLiteral(name).getInstance();
-			ret = ((EEnum)type).getEEnumLiteralByLiteral(name).getInstance();
+			ret = getEENumLiteral((EEnum)type, (name)).getInstance();
 		} else if (value instanceof ASMTuple) {
 			Object f = asm2EMF(frame, ((ASMTuple)value).get(frame, "eStructuralFeature"), propName, feature);
 			if (f instanceof EStructuralFeature) {
@@ -379,36 +382,36 @@ public class ASMEMFModelElement extends ASMModelElement {
 
 		return ret;
 	}
-    
-    /**
-     * Reports msg through frame if not null, RuntimeException otherwise.
-     * 
-     * @param msg
-     * @param frame
-     * @param e
-     */
-    private void error(String msg, StackFrame frame, Exception e) {
+
+	/**
+	 * Reports msg through frame if not null, RuntimeException otherwise.
+	 * 
+	 * @param msg
+	 * @param frame
+	 * @param e
+	 */
+	private void error(String msg, StackFrame frame, Exception e) {
 		if (frame == null) {
 			throw new RuntimeException(msg, e);
 		} else {
 			frame.printStackTrace(msg, e);
 		}
-    }
-    
-    /**
-     * Reports msg through frame if not null, RuntimeException otherwise.
-     * 
-     * @param msg
-     * @param frame
-     */
-    private void error(String msg, StackFrame frame) {
+	}
+
+	/**
+	 * Reports msg through frame if not null, RuntimeException otherwise.
+	 * 
+	 * @param msg
+	 * @param frame
+	 */
+	private void error(String msg, StackFrame frame) {
 		if (frame == null) {
 			throw new RuntimeException(msg);
 		} else {
 			frame.printStackTrace(msg);
 		}
-    }
-    
+	}
+
 	/**
 	 * Returns the corresponding ASMModelElement, taking into account the model in which the element should
 	 * reside. Uses this model as a proxy if no other model contains the given value.
@@ -439,6 +442,23 @@ public class ASMEMFModelElement extends ASMModelElement {
 		}
 		// Use this model as proxy
 		return model.getASMModelElement(value);
+	}
+
+	/**
+	 * Returns the literal matching the given name or literal.
+	 * 
+	 * @param eEnum
+	 *            the enumeration
+	 * @param id
+	 *            the name or the literal
+	 * @return the literal
+	 */
+	public static EEnumLiteral getEENumLiteral(EEnum eEnum, String id) {
+		EEnumLiteral ret = eEnum.getEEnumLiteralByLiteral(id);
+		if (ret == null) {
+			ret = eEnum.getEEnumLiteral(id);
+		}
+		return ret;
 	}
 
 	/**
