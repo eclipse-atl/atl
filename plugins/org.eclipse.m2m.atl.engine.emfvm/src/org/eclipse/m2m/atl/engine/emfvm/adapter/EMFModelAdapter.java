@@ -104,6 +104,24 @@ public class EMFModelAdapter implements IModelAdapter {
 		return ret;
 	}
 
+// fix 255613
+	/**
+	 * Returns the literal matching the given name or literal.
+	 * 
+	 * @param eEnum
+	 *            the enumeration
+	 * @param id
+	 *            the name or the literal
+	 * @return the literal
+	 */
+	public static EEnumLiteral getEENumLiteral(EEnum eEnum, String id) {
+		EEnumLiteral ret = eEnum.getEEnumLiteralByLiteral(id);
+		if (ret == null) {
+			ret = eEnum.getEEnumLiteral(id);
+		}
+		return ret;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -549,7 +567,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						EEnum eenum = (EEnum)type;
 						for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
 							Object v = i.next();
-							oldCol.add(eenum.getEEnumLiteralByLiteral(v.toString()).getInstance());
+							oldCol.add(getEENumLiteral(eenum, v.toString()).getInstance());
 						}
 					} else {
 						for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
@@ -573,7 +591,7 @@ public class EMFModelAdapter implements IModelAdapter {
 				} else {
 					if (targetIsEnum) {
 						EEnum eenum = (EEnum)type;
-						oldCol.add(eenum.getEEnumLiteralByLiteral(settableValue.toString()).getInstance());
+						oldCol.add(getEENumLiteral(eenum, settableValue.toString()).getInstance());
 					} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
 						oldCol.add(settableValue);
 					} else { // (!allowIntermodelReferences) && (value instanceof EObject)
@@ -595,7 +613,7 @@ public class EMFModelAdapter implements IModelAdapter {
 				if (targetIsEnum) {
 					EEnum eenum = (EEnum)type;
 					if (settableValue != null) {
-						EEnumLiteral literal = eenum.getEEnumLiteral(settableValue.toString());
+						EEnumLiteral literal = getEENumLiteral(eenum, settableValue.toString());
 						if (literal != null) {
 							eo.eSet(feature, literal.getInstance());
 						} else {
