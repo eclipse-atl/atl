@@ -105,6 +105,23 @@ public class EMFModelAdapter implements IModelAdapter {
 	}
 
 	/**
+	 * Returns the literal matching the given name or literal.
+	 * 
+	 * @param eEnum
+	 *            the enumeration
+	 * @param id
+	 *            the name or the literal
+	 * @return the literal
+	 */
+	public static EEnumLiteral getEENumLiteral(EEnum eEnum, String id) {
+		EEnumLiteral ret = eEnum.getEEnumLiteralByLiteral(id);
+		if (ret == null) {
+			ret = eEnum.getEEnumLiteral(id);
+		}
+		return ret;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#getSupertypes(java.lang.Object)
@@ -435,6 +452,16 @@ public class EMFModelAdapter implements IModelAdapter {
 						return new Boolean(((EClass)localVars[1]).isSuperTypeOf((EClass)localVars[0]));
 					}
 				});
+//		// EEnumLiteral
+//		operationsByName = new HashMap<String, Operation>();
+//		vmTypeOperations.put(EcorePackage.eINSTANCE.getEEnumLiteral(), operationsByName);
+//		operationsByName.put("toString", new Operation(1) { //$NON-NLS-1$
+//					@Override
+//					public Object exec(AbstractStackFrame frame) {
+//						Object[] localVars = frame.getLocalVars();
+//						return localVars[0].toString();
+//					}
+//				});
 	}
 
 	/**
@@ -530,7 +557,7 @@ public class EMFModelAdapter implements IModelAdapter {
 			}
 		} else if (settableValue instanceof Double) {
 			String targetType = feature.getEType().getInstanceClassName();
-			if ("java.lang.Float".equals(targetType) || "float".equals(targetType)) {  //$NON-NLS-1$//$NON-NLS-2$
+			if ("java.lang.Float".equals(targetType) || "float".equals(targetType)) { //$NON-NLS-1$//$NON-NLS-2$
 				settableValue = new Float(((Double)value).floatValue());
 			}
 		}
@@ -549,7 +576,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						EEnum eenum = (EEnum)type;
 						for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
 							Object v = i.next();
-							oldCol.add(eenum.getEEnumLiteralByLiteral(v.toString()).getInstance());
+							oldCol.add(getEENumLiteral(eenum, v.toString()).getInstance());
 						}
 					} else {
 						for (Iterator<?> i = ((Collection<?>)settableValue).iterator(); i.hasNext();) {
@@ -573,7 +600,7 @@ public class EMFModelAdapter implements IModelAdapter {
 				} else {
 					if (targetIsEnum) {
 						EEnum eenum = (EEnum)type;
-						oldCol.add(eenum.getEEnumLiteralByLiteral(settableValue.toString()).getInstance());
+						oldCol.add(getEENumLiteral(eenum, settableValue.toString()).getInstance());
 					} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
 						oldCol.add(settableValue);
 					} else { // (!allowIntermodelReferences) && (value instanceof EObject)
@@ -595,7 +622,7 @@ public class EMFModelAdapter implements IModelAdapter {
 				if (targetIsEnum) {
 					EEnum eenum = (EEnum)type;
 					if (settableValue != null) {
-						EEnumLiteral literal = eenum.getEEnumLiteral(settableValue.toString());
+						EEnumLiteral literal = getEENumLiteral(eenum, settableValue.toString());
 						if (literal != null) {
 							eo.eSet(feature, literal.getInstance());
 						} else {
