@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="MM"
+    nsURI="MM" nsPrefix="MM">
+  <eClassifiers xsi:type="ecore:EClass" name="E">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="a" eType="#//e"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="e">
+    <eLiterals name="literal" literal="literal"/>
+    <eLiterals name="literal_name" value="1" literal="literal"/>
+    <eLiterals name="in" value="2" literal="in"/>
+    <eLiterals name="in out" value="3" literal="inout"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ESub" eSuperTypes="#//E"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Container">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" lowerBound="1"
+        upperBound="-1" eType="#//E" containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,52 @@
+-- @path MM=/enumerations/Ecore/MM.ecore
+
+module sample;
+create OUT : MM from IN : MM;
+	
+rule E {
+	from 
+		input : MM!E (input.oclIsTypeOf(MM!E))
+	to  
+	-- from input model
+		output1 : MM!E (
+			name <- input.name,
+			a <- input.a
+	),
+	-- from input model, as String
+		output2 : MM!E (
+			name <- input.name,
+			a <- input.a.toString()
+	)
+}
+
+rule ESub {
+	from 
+		input : MM!ESub
+	to  
+	-- hardcoded
+		output1 : MM!E (
+			name <- input.name + '1',
+			a <- #literal
+		),
+		output2 : MM!E (
+			name <- input.name + '2',
+			a <- #literal_name
+		),
+		output3 : MM!E (
+			name <- input.name + '3',
+			a <- #"in"
+		),	
+		output4 : MM!E (
+			name <- input.name + '4',
+			a <- #inout
+		),
+		-- hardcoded, from a String
+		output5 : MM!E (
+			name <- input.name + '5',
+			a <- 'literal_name'
+		),
+		output6 : MM!E (
+			name <- input.name + '6',
+			a <- 'in out'
+		)	
+}

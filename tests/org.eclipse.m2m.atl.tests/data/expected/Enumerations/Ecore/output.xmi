@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:MM="MM">
+  <MM:E name="e1"/>
+  <MM:E name="e1"/>
+  <MM:E name="e2"/>
+  <MM:E name="e2"/>
+  <MM:E a="in" name="e3"/>
+  <MM:E a="in" name="e3"/>
+  <MM:E a="inout" name="e4"/>
+  <MM:E a="inout" name="e4"/>
+  <MM:E name="esub1"/>
+  <MM:E a="literal" name="esub2"/>
+  <MM:E a="in" name="esub3"/>
+  <MM:E a="inout" name="esub4"/>
+  <MM:E a="literal" name="esub5"/>
+  <MM:E a="inout" name="esub6"/>
+</xmi:XMI>
