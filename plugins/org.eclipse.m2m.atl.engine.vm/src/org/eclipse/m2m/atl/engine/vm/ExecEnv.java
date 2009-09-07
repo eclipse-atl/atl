@@ -73,7 +73,6 @@ public class ExecEnv {
 			while (lines.hasMoreTokens()) {
 				ATLLogger.severe(lines.nextToken());
 			}
-//			System.out.println(i.next());
 		}
 	}
 
