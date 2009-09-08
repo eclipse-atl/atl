@@ -39,7 +39,7 @@ import org.eclipse.m2m.atl.core.ModelFactory;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
-public final class EMFModelFactory extends ModelFactory {
+public class EMFModelFactory extends ModelFactory {
 
 	/** The model factory name which is also the extractor/injector name. */
 	public static final String MODEL_FACTORY_NAME = "EMF"; //$NON-NLS-1$
