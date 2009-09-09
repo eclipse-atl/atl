@@ -43,10 +43,10 @@ public class TestVMStandalone extends TestNonRegressionVM {
 		setPropertiesPath("/org.eclipse.m2m.atl.tests.standalone/tests.properties"); //$NON-NLS-1$
 
 		AtlModelHandler.registerDefaultHandler("EMF", new AtlEMFModelHandler()); //$NON-NLS-1$
-		CoreService.registerLauncher(new RegularVMLauncher());
+		CoreService.registerLauncher("Regular VM (with debugger)", RegularVMLauncher.class); //$NON-NLS-1$
 		CoreService.registerFactory("ASM", ASMFactory.class); //$NON-NLS-1$
-		CoreService.registerExtractor("ASM", new ASMExtractor()); //$NON-NLS-1$
-		CoreService.registerInjector("ASM", new ASMInjector()); //$NON-NLS-1$
+		CoreService.registerExtractor("ASM", ASMExtractor.class); //$NON-NLS-1$
+		CoreService.registerInjector("ASM", ASMInjector.class); //$NON-NLS-1$
 
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				new UMLResourceFactoryImpl());

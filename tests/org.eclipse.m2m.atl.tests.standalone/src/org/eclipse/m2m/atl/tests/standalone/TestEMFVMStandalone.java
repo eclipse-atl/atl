@@ -40,10 +40,10 @@ public class TestEMFVMStandalone extends TestNonRegressionEMFVM {
 		super.setUp();
 		setPropertiesPath("/org.eclipse.m2m.atl.tests.standalone/tests.properties"); //$NON-NLS-1$
 
-		CoreService.registerLauncher(new EMFVMLauncher());
+		CoreService.registerLauncher("EMF-specific VM", EMFVMLauncher.class); //$NON-NLS-1$
 		CoreService.registerFactory("EMF", EMFModelFactory.class); //$NON-NLS-1$
-		CoreService.registerExtractor("EMF", new EMFExtractor()); //$NON-NLS-1$
-		CoreService.registerInjector("EMF", new EMFInjector()); //$NON-NLS-1$
+		CoreService.registerExtractor("EMF", EMFExtractor.class); //$NON-NLS-1$
+		CoreService.registerInjector("EMF", EMFInjector.class); //$NON-NLS-1$
 
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				new UMLResourceFactoryImpl());
