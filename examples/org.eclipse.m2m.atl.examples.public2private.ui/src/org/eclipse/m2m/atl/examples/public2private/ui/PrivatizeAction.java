@@ -99,7 +99,7 @@ public class PrivatizeAction implements IObjectActionDelegate {
 
 	private void privatize(IFile file) throws Exception {
 		// Defaults
-		ModelFactory factory = CoreService.createModelFactory("EMF"); //$NON-NLS-1$
+		ModelFactory factory = CoreService.getModelFactory("EMF"); //$NON-NLS-1$
 
 		// Metamodels
 		umlMetamodel = factory.newReferenceModel();
