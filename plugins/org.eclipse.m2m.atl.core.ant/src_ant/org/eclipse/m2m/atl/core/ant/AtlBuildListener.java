@@ -80,7 +80,7 @@ public class AtlBuildListener implements BuildListener {
 		ModelFactory res = modelFactories.get(factoryName);
 		if (res == null) {
 			try {
-				res = CoreService.createModelFactory(factoryName);
+				res = CoreService.getModelFactory(factoryName);
 			} catch (ATLCoreException e) {
 				throw new BuildException(Messages.getString("AtlBuildListener.UNABLE_TO_LOAD_FACTORY"), e); //$NON-NLS-1$
 			}
