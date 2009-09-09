@@ -48,22 +48,16 @@ public final class CoreService {
 
 	private static final String MODELS_EXTENSION_POINT = "org.eclipse.m2m.atl.core.model"; //$NON-NLS-1$
 
-	private static Map<String, Object> launcherRegistry = new HashMap<String, Object>();
+	private static Map<String, Class<? extends ILauncher>> launcherRegistry = new HashMap<String, Class<? extends ILauncher>>();
 
-	private static Map<String, Object> injectorRegistry = new HashMap<String, Object>();
+	private static Map<String, Class<? extends IInjector>> injectorRegistry = new HashMap<String, Class<? extends IInjector>>();
 
-	private static Map<String, Object> extractorRegistry = new HashMap<String, Object>();
+	private static Map<String, Class<? extends IExtractor>> extractorRegistry = new HashMap<String, Class<? extends IExtractor>>();
 
-	private static Map<String, Class<?>> factoryRegistry = new HashMap<String, Class<?>>();
+	private static Map<String, Class<? extends ModelFactory>> factoryRegistry = new HashMap<String, Class<? extends ModelFactory>>();
 
 	private CoreService() {
 		super();
-	}
-
-	private static void register(Map<String, Object> registry, String extensionName, Object value) {
-		if (!registry.containsKey(extensionName)) {
-			registry.put(extensionName, value);
-		}
 	}
 
 	/**
@@ -71,9 +65,22 @@ public final class CoreService {
 	 * 
 	 * @param launcher
 	 *            the launcher
+	 * @deprecated Use {@link #registerLauncher(String, Class)} instead.
 	 */
 	public static void registerLauncher(ILauncher launcher) {
-		register(launcherRegistry, launcher.getName(), launcher);
+		registerLauncher(launcher.getName(), launcher.getClass());
+	}
+
+	/**
+	 * Registers a launcher in the launcherRegistry.
+	 * 
+	 * @param launcherName
+	 *            the launcher name
+	 * @param launcherClass
+	 *            the launcher class
+	 */
+	public static void registerLauncher(String launcherName, Class<? extends ILauncher> launcherClass) {
+		launcherRegistry.put(launcherName, launcherClass);
 	}
 
 	/**
@@ -83,9 +90,22 @@ public final class CoreService {
 	 *            the injector name
 	 * @param injector
 	 *            the injector
+	 * @deprecated Use {@link #registerInjector(String, Class)} instead.
 	 */
 	public static void registerInjector(String name, IInjector injector) {
-		register(injectorRegistry, name, injector);
+		registerInjector(name, injector.getClass());
+	}
+
+	/**
+	 * Registers an injector in the injectorRegistry.
+	 * 
+	 * @param injectorName
+	 *            the injector name
+	 * @param injectorClass
+	 *            the injector class
+	 */
+	public static void registerInjector(String injectorName, Class<? extends IInjector> injectorClass) {
+		injectorRegistry.put(injectorName, injectorClass);
 	}
 
 	/**
@@ -95,9 +115,22 @@ public final class CoreService {
 	 *            the extractor name
 	 * @param extractor
 	 *            the extractor
+	 * @deprecated Use {@link #registerExtractor(String, Class)} instead.
 	 */
 	public static void registerExtractor(String name, IExtractor extractor) {
-		register(extractorRegistry, name, extractor);
+		registerExtractor(name, extractor.getClass());
+	}
+
+	/**
+	 * Registers an extractor in the extractorRegistry.
+	 * 
+	 * @param extractorName
+	 *            the extractor name
+	 * @param extractorClass
+	 *            the extractor class
+	 */
+	public static void registerExtractor(String extractorName, Class<? extends IExtractor> extractorClass) {
+		extractorRegistry.put(extractorName, extractorClass);
 	}
 
 	/**
@@ -108,10 +141,20 @@ public final class CoreService {
 	 * @param factoryClass
 	 *            the factory class
 	 */
-	public static void registerFactory(String name, Class<?> factoryClass) {
-		if (!factoryRegistry.containsKey(name)) {
-			factoryRegistry.put(name, factoryClass);
-		}
+	public static void registerFactory(String name, Class<? extends ModelFactory> factoryClass) {
+		factoryRegistry.put(name, factoryClass);
+	}
+
+	/**
+	 * Creates a new {@link ModelFactory} with the given name.
+	 * 
+	 * @param name
+	 *            the factory name
+	 * @return the new ModelFactory
+	 * @deprecated Use {@link #getModelFactory(String)} instead.
+	 */
+	public static ModelFactory createModelFactory(String name) throws ATLCoreException {
+		return getModelFactory(name);
 	}
 
 	/**
@@ -121,57 +164,26 @@ public final class CoreService {
 	 *            the factory name
 	 * @return the new ModelFactory
 	 */
-	public static ModelFactory createModelFactory(String name) throws ATLCoreException {
+	public static ModelFactory getModelFactory(String name) throws ATLCoreException {
 		if (factoryRegistry.containsKey(name)) {
 			try {
-				return (ModelFactory)factoryRegistry.get(name).newInstance();	
+				return factoryRegistry.get(name).newInstance();
 			} catch (IllegalAccessException e) {
 				throw new ATLCoreException(e.getMessage(), e);
 			} catch (InstantiationException e) {
 				throw new ATLCoreException(e.getMessage(), e);
-			}			
+			}
 		} else {
-			return (ModelFactory)getExtensionClass(MODELS_EXTENSION_POINT, "modelFactory", name); //$NON-NLS-1$
-		}
-	}
-
-	private static Object getExtensionClass(String extensionId, String executableExtensionName,
-			String extensionName, Map<String, Object> registry) throws ATLCoreException {
-		if (registry.containsKey(extensionName)) {
-			return registry.get(extensionName);
-		} else {
-			Object executable = getExtensionClass(extensionId, executableExtensionName, extensionName);
-			if (executable != null) {
-				registry.put(extensionName, executable);
-				return executable;
+			ModelFactory factory = (ModelFactory)getExtensionClass(MODELS_EXTENSION_POINT,
+					"modelFactory", name); //$NON-NLS-1$
+			if (factory != null) {
+				factoryRegistry.put(name, factory.getClass());
+				return factory;
 			} else {
-				throw new ATLCoreException(extensionId + " " + extensionName //$NON-NLS-1$
+				throw new ATLCoreException(MODELS_EXTENSION_POINT + " " + name //$NON-NLS-1$
 						+ " not found, check the spelling or register it manually"); //$NON-NLS-1$
 			}
 		}
-	}
-
-	private static Object getExtensionClass(String extensionId, String executableExtensionName,
-			String extensionName) throws ATLCoreException {
-		if (Platform.isRunning()) {
-			final IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(extensionId)
-					.getExtensions();
-			for (int i = 0; i < extensions.length; i++) {
-				final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
-				for (int j = 0; j < configElements.length; j++) {
-					if (configElements[j].getAttribute("name").equals(extensionName)) { //$NON-NLS-1$
-						Object executable;
-						try {
-							executable = configElements[j].createExecutableExtension(executableExtensionName);
-						} catch (CoreException e) {
-							throw new ATLCoreException(e.getMessage(), e);
-						}
-						return executable;
-					}
-				}
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -183,7 +195,24 @@ public final class CoreService {
 	 * @throws ATLCoreException
 	 */
 	public static ILauncher getLauncher(String name) throws ATLCoreException {
-		return (ILauncher)getExtensionClass(LAUNCHERS_EXTENSION_POINT, "class", name, launcherRegistry); //$NON-NLS-1$
+		if (launcherRegistry.containsKey(name)) {
+			try {
+				return launcherRegistry.get(name).newInstance();
+			} catch (IllegalAccessException e) {
+				throw new ATLCoreException(e.getMessage(), e);
+			} catch (InstantiationException e) {
+				throw new ATLCoreException(e.getMessage(), e);
+			}
+		} else {
+			ILauncher launcher = (ILauncher)getExtensionClass(LAUNCHERS_EXTENSION_POINT, "class", name); //$NON-NLS-1$
+			if (launcher != null) {
+				launcherRegistry.put(name, launcher.getClass());
+				return launcher;
+			} else {
+				throw new ATLCoreException(LAUNCHERS_EXTENSION_POINT + " " + name //$NON-NLS-1$
+						+ " not found, check the spelling or register it manually"); //$NON-NLS-1$
+			}
+		}
 	}
 
 	/**
@@ -195,7 +224,24 @@ public final class CoreService {
 	 * @throws ATLCoreException
 	 */
 	public static IInjector getInjector(String name) throws ATLCoreException {
-		return (IInjector)getExtensionClass(INJECTORS_EXTENSION_POINT, "class", name, injectorRegistry); //$NON-NLS-1$
+		if (injectorRegistry.containsKey(name)) {
+			try {
+				return injectorRegistry.get(name).newInstance();
+			} catch (IllegalAccessException e) {
+				throw new ATLCoreException(e.getMessage(), e);
+			} catch (InstantiationException e) {
+				throw new ATLCoreException(e.getMessage(), e);
+			}
+		} else {
+			IInjector injector = (IInjector)getExtensionClass(INJECTORS_EXTENSION_POINT, "class", name); //$NON-NLS-1$
+			if (injector != null) {
+				injectorRegistry.put(name, injector.getClass());
+				return injector;
+			} else {
+				throw new ATLCoreException(INJECTORS_EXTENSION_POINT + " " + name //$NON-NLS-1$
+						+ " not found, check the spelling or register it manually"); //$NON-NLS-1$
+			}
+		}
 	}
 
 	/**
@@ -207,7 +253,46 @@ public final class CoreService {
 	 * @throws ATLCoreException
 	 */
 	public static IExtractor getExtractor(String name) throws ATLCoreException {
-		return (IExtractor)getExtensionClass(EXTRACTORS_EXTENSION_POINT, "class", name, extractorRegistry); //$NON-NLS-1$
+		if (extractorRegistry.containsKey(name)) {
+			try {
+				return extractorRegistry.get(name).newInstance();
+			} catch (IllegalAccessException e) {
+				throw new ATLCoreException(e.getMessage(), e);
+			} catch (InstantiationException e) {
+				throw new ATLCoreException(e.getMessage(), e);
+			}
+		} else {
+			IExtractor extractor = (IExtractor)getExtensionClass(EXTRACTORS_EXTENSION_POINT, "class", name); //$NON-NLS-1$
+			if (extractor != null) {
+				extractorRegistry.put(name, extractor.getClass());
+				return extractor;
+			} else {
+				throw new ATLCoreException(EXTRACTORS_EXTENSION_POINT + " " + name //$NON-NLS-1$
+						+ " not found, check the spelling or register it manually"); //$NON-NLS-1$
+			}
+		}
+	}
+
+	private static Object getExtensionClass(String extensionId, String executableExtensionName,
+			String extensionName) throws ATLCoreException {
+		Object executable = null;
+		if (Platform.isRunning()) {
+			final IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(extensionId)
+					.getExtensions();
+			for (int i = 0; i < extensions.length; i++) {
+				final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
+				for (int j = 0; j < configElements.length; j++) {
+					if (configElements[j].getAttribute("name").equals(extensionName)) { //$NON-NLS-1$
+						try {
+							executable = configElements[j].createExecutableExtension(executableExtensionName);
+						} catch (CoreException e) {
+							throw new ATLCoreException(e.getMessage(), e);
+						}
+					}
+				}
+			}
+		}
+		return executable;
 	}
 
 	private static String[] getExtensionsNames(String extensionId) {

@@ -79,7 +79,7 @@ public final class LauncherService {
 		IExtractor extractor = null;
 		IInjector injector = null;
 
-		defaultFactory = CoreService.createModelFactory(launcher.getDefaultModelFactoryName());
+		defaultFactory = CoreService.getModelFactory(launcher.getDefaultModelFactoryName());
 		extractor = CoreService.getExtractor(defaultFactory.getDefaultExtractorName());
 		injector = CoreService.getInjector(defaultFactory.getDefaultInjectorName());
 
