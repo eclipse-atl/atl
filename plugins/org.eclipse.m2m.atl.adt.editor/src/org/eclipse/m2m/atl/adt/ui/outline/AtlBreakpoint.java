@@ -98,7 +98,7 @@ public class AtlBreakpoint extends LineBreakpoint {
 	 * @see org.eclipse.debug.core.model.IBreakpoint#getModelIdentifier()
 	 */
 	public String getModelIdentifier() {
-		return "org.eclipse.m2m.atl.adt.editor"; //$NON-NLS-1$
+		return "org.eclipse.m2m.atl.adt.debug"; //$NON-NLS-1$
 	}
 
 	/**
