@@ -297,7 +297,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 			String name = ((ASMEnumLiteral)value).getName();
 			EClassifier type = ((EClass)((ASMEMFModelElement)getMetaobject()).object).getEStructuralFeature(
 					propName).getEType();
-			ret = getEENumLiteral((EEnum)type, (name)).getInstance();
+			ret = getEENumLiteral((EEnum)type, name).getInstance();
 		} else if (value instanceof ASMTuple) {
 			Object f = asm2EMF(frame, ((ASMTuple)value).get(frame, "eStructuralFeature"), propName, feature);
 			if (f instanceof EStructuralFeature) {
