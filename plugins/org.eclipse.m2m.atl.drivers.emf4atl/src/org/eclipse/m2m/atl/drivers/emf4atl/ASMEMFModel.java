@@ -332,14 +332,14 @@ public class ASMEMFModel extends ASMModel {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public boolean equals(Object o) {
-		return (o instanceof ASMEMFModel) && (((ASMEMFModel)o).extent == extent);
-	}
+//	/**
+//	 * {@inheritDoc}
+//	 * 
+//	 * @see java.lang.Object#equals(java.lang.Object)
+//	 */
+//	public boolean equals(Object o) {
+//		return (o instanceof ASMEMFModel) && (((ASMEMFModel)o).extent == extent);
+//	}
 
 	/**
 	 * {@inheritDoc}
