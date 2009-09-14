@@ -9,7 +9,7 @@
  *     INRIA - initial API and implementation
  *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: EMFModel.java,v 1.11 2009/09/08 15:40:30 wpiers Exp $
+ * $Id: EMFModel.java,v 1.12 2009/09/14 14:06:37 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -41,13 +41,13 @@ public class EMFModel implements IModel {
 	/** The metamodel. */
 	protected EMFReferenceModel referenceModel;
 
+	protected Map<EClass, Set<EObject>> elementsByType = new HashMap<EClass, Set<EObject>>();
+
 	private Resource resource;
 
 	private EMFModelFactory modelFactory;
 
 	private boolean isTarget;
-
-	protected Map<EClass, Set<EObject>> elementsByType = new HashMap<EClass, Set<EObject>>();
 
 	/** The real factory, which initializes the {@link Resource} with the correct format. */
 	private Resource.Factory emfResourceFactory;
