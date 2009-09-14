@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.26.2.1 2009/08/28 08:20:28 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.26.2.2 2009/09/14 14:22:23 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -509,7 +509,7 @@ public class ASMOperation extends Operation {
 							}
 						} else {
 							Object ec = ExecEnv.findMetaElement(frame, mname, me);
-							stack[fp++] = execEnv.newElement(frame, ec);
+							stack[fp++] = execEnv.newElement(frame, ec, mname.toString());
 						}
 						break;
 					case Bytecode.FINDME:

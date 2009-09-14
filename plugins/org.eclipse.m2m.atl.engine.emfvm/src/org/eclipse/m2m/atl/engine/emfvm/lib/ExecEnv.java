@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.41.2.2 2009/09/07 15:54:30 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.41.2.3 2009/09/14 14:22:23 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -2047,6 +2047,37 @@ public class ExecEnv {
 			if (model.getReferenceModel().isModelOf(ec)) {
 				s = model.newElement(ec);
 				break;
+			}
+		}
+		if (s == null) {
+			throw new VMException(frame, Messages
+					.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
+		}
+		return s;
+	}
+
+	/**
+	 * Creates a new element in the given frame.
+	 * 
+	 * @param frame
+	 *            the frame context
+	 * @param ec
+	 *            the element type
+	 * @param metamodelName
+	 *            the metamodel name
+	 * @return the new element
+	 */
+	public Object newElement(AbstractStackFrame frame, Object ec, String metamodelName) {
+		Object s = null;
+		IReferenceModel metamodel = (IReferenceModel)getModel(metamodelName);
+		if (metamodel != null) {
+			for (Iterator<IModel> i = getModels(); i.hasNext();) {
+				IModel model = i.next();
+				if (model.getReferenceModel().equals(metamodel) && model.isTarget()
+						&& model.getReferenceModel().isModelOf(ec)) {
+					s = model.newElement(ec);
+					break;
+				}
 			}
 		}
 		if (s == null) {
