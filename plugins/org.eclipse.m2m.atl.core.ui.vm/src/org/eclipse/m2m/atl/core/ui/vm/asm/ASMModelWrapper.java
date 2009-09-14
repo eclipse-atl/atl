@@ -28,6 +28,8 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
  */
 public class ASMModelWrapper implements IModel, IReferenceModel {
 
+	private String asmModelName;
+	
 	private ASMModel asmModel;
 
 	private ASMModelWrapper referenceModel;
@@ -57,6 +59,7 @@ public class ASMModelWrapper implements IModel, IReferenceModel {
 		this.referenceModel = referenceModel;
 		this.modelFactory = modelFactory;
 		this.modelLoader = modelLoader;
+		this.asmModelName = modelName;
 		if (newModel) {
 			String newPath;
 			if (path == null) {
@@ -141,11 +144,7 @@ public class ASMModelWrapper implements IModel, IReferenceModel {
 	 * @return the inner model name or {@literal &lt;unnamed&gt;}.
 	 */
 	public String getName() {
-		final ASMModel am = getAsmModel();
-		if (am != null) {
-			return am.getName();
-		}
-		return "<unnamed>"; //$NON-NLS-1$
+		return asmModelName;
 	}
 
 	/**
