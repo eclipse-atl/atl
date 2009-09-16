@@ -61,7 +61,6 @@ public class ASMHashModelElement extends ASMModelElement {
 
 	private void realSet(StackFrame frame, ASMModelElement feature, String name, ASMOclAny value) {
 		int upper = ((ASMInteger)feature.get(frame, "multiplicity").get(frame, "upper")).getSymbol();
-//System.out.println("Setting " + feature + "[" + upper + "] to " + value + " on " + this + " : " + this.getMetaobject());
 		if(upper == 1) {
 			slots.put(name, value);
 		} else {

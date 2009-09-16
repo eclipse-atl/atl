@@ -48,13 +48,11 @@ public class SOTSExpression2 {
 
 		if (debug)
 			ATLLogger.info("Trying to execute " + exp);
-		// if(debug) System.out.println("Trying to execute " + exp);
 
 		ASMOclAny ret = exp(frame, args);
 
 		if (debug)
 			ATLLogger.info("\treturn value = " + ret);
-		// if(debug) System.out.println("\treturn value = " + ret);
 
 		return ret;
 	}
@@ -89,7 +87,6 @@ public class SOTSExpression2 {
 				}
 			} else {
 				ATLLogger.severe("Could not add type " + ASMOclAny.oclType(frame, ret) + ".");
-				// System.out.println("ERROR: could not add type " + ASMOclAny.oclType(frame, ret) + ".");
 			}
 		} else {
 			unread(t);
@@ -111,9 +108,7 @@ public class SOTSExpression2 {
 			if (debug)
 				ATLLogger.info("\tcontext = " + ret
 						+ ((ret != null) ? " : " + ASMOclAny.oclType(frame, ret) : ""));
-			// if(debug) System.out.println("\tcontext = " + ret + ((ret != null) ? " : " +
-			// ASMOclAny.oclType(frame, ret) : ""));
-
+			
 			t = next();
 			ASMModelElement ame = null;
 			ASMSequence col = null;
@@ -238,7 +233,6 @@ public class SOTSExpression2 {
 
 		if (debug)
 			ATLLogger.info("\tpartial return value = " + ret);
-		// if(debug) System.out.println("\tpartial return value = " + ret);
 
 		return ret;
 	}
@@ -272,8 +266,6 @@ public class SOTSExpression2 {
 
 	private void error(Token t) throws IOException {
 		throw new IOException("ERROR: unexpected " + t);
-		// System.out.println("ERROR: unexpected " + t);
-		// new Exception().printStackTrace();
 	}
 
 	private Token match(int type) throws IOException {
@@ -435,7 +427,6 @@ public class SOTSExpression2 {
 				break;
 			default:
 				ATLLogger.severe("ERROR: unexpected char \'" + (char)c + "\'.");
-				// System.out.println("ERROR: unexpected char \'" + (char)c + "\'.");
 				ret = next(); // trying to recover
 				break;
 		}
