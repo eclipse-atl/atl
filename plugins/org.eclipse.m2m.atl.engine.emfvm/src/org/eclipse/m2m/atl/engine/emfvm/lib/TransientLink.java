@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.engine.emfvm.lib;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -75,5 +76,44 @@ public class TransientLink {
 
 	public void setVariables(Map<Object,Object> variables) {
 		this.variables = variables;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuffer ret = new StringBuffer("TransientLink {"); //$NON-NLS-1$
+
+		ret.append("rule = "); //$NON-NLS-1$
+		ret.append(rule);
+
+		ret.append(", sourceElements = {"); //$NON-NLS-1$
+		appendMap(sourceElements, ret);
+		ret.append('}');
+
+		ret.append(", targetElements = {"); //$NON-NLS-1$
+		appendMap(targetElements, ret);
+		ret.append('}');
+
+		ret.append(", variables = {"); //$NON-NLS-1$
+		appendMap(variables, ret);
+		ret.append('}');
+
+		ret.append('}');
+
+		return ret.toString();
+	}
+	
+	private void appendMap(Map<?,?> map, StringBuffer ret) {
+		for(Iterator<?> i = map.keySet().iterator() ; i.hasNext() ; ) {
+			Object name = i.next();
+			ret.append(name);
+			ret.append(" = "); //$NON-NLS-1$
+			ret.append(map.get(name));
+			if(i.hasNext()) ret.append(", "); //$NON-NLS-1$
+		}
 	}
 }
