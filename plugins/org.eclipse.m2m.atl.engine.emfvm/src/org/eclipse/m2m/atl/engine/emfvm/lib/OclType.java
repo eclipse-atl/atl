@@ -168,10 +168,10 @@ public abstract class OclType {
 	public static OclType getOclTypeFromObject(Object cl) {
 		OclType res = oclTypes.get(cl.getClass());
 		if (res == null) {
-			if (cl instanceof Collection) {
-				if (cl instanceof List) {
+			if (cl instanceof Collection<?>) {
+				if (cl instanceof List<?>) {
 					return SEQUENCE;
-				} else if (cl instanceof Set) {
+				} else if (cl instanceof Set<?>) {
 					return SET;
 				} else {
 					return BAG;
