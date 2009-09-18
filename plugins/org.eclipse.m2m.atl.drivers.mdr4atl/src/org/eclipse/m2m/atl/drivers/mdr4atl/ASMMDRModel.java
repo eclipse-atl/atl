@@ -222,22 +222,16 @@ public class ASMMDRModel extends ASMModel {
 						}
 					}
 				}
-				// if(!((Boolean)ae1.refGetValue("isNavigable")).booleanValue()) {
 
 				if (debug)
 					ATLLogger.info("\tAdding acquaintance \"" + name1 + "\" to " + type2);
-				// if(debug) System.out.println("\tAdding acquaintance \"" + name1 + "\" to " + type2);
 
 				type2.addAcquaintance(name1, asso, ae1, true);
-				// }
-				// if(!((Boolean)ae2.refGetValue("isNavigable")).booleanValue()) {
 
 				if (debug)
 					ATLLogger.info("\tAdding acquaintance \"" + name2 + "\" to " + type1);
-				// if(debug) System.out.println("\tAdding acquaintance \"" + name2 + "\" to " + type1);
 
 				type1.addAcquaintance(name2, asso, ae2, false);
-				// }
 			}
 		}
 	}

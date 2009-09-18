@@ -214,33 +214,31 @@ public class ASMMDRModelElement extends ASMModelElement {
 		Set ret = new HashSet();
 
 		if (debug)
-			System.out.println(self + ".allInstancesFrom("
+			ATLLogger.info(self + ".allInstancesFrom("
 					+ ((sourceModelName == null) ? "null" : "\"" + sourceModelName + "\"") + ")");
 		if (self.object.refMetaObject().refIsInstanceOf(getClassifier(), true)) {
 			for (Iterator i = frame.getModels().keySet().iterator(); i.hasNext();) {
 				String mname = (String)i.next();
 				if (debug)
-					System.out.println("\ttrying: " + mname);
+					ATLLogger.info("\ttrying: " + mname);
 				if ((sourceModelName != null) && !mname.equals(sourceModelName.getSymbol()))
 					continue;
 				ASMModel am = (ASMModel)frame.getModels().get(mname);
-				if (debug)
-					System.out.println("\t\tfound: " + am.getName());
-				if (debug)
-					System.out.println("\t\tam.getMetamodel() = " + am.getMetamodel().hashCode());
-				if (debug)
-					System.out.println("\t\tself.getModel() = " + self.getModel().hashCode());
-				if (debug)
-					System.out.println("\t\tam.getMetamodel().equals(self.getModel()) = "
+				if (debug) {
+					ATLLogger.info("\t\tfound: " + am.getName());
+					ATLLogger.info("\t\tam.getMetamodel() = " + am.getMetamodel().hashCode());
+					ATLLogger.info("\t\tself.getModel() = " + self.getModel().hashCode());
+					ATLLogger.info("\t\tam.getMetamodel().equals(self.getModel()) = "
 							+ am.getMetamodel().equals(self.getModel()));
+				}
 				if (!am.getMetamodel().equals(self.getModel()))
 					continue;
 				if (debug)
-					System.out.println("\t\t\tsearching on: " + am.getName());
+					ATLLogger.info("\t\t\tsearching on: " + am.getName());
 				Set elems = am.getElementsByType(self);
 				ret.addAll(elems);
 				if (debug)
-					System.out.println("\t\t\t\tfound: " + elems);
+					ATLLogger.info("\t\t\t\tfound: " + elems);
 			}
 		}
 
