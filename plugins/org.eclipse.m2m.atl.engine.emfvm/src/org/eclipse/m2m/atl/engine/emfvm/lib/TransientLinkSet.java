@@ -134,4 +134,22 @@ public class TransientLinkSet {
 		}
 		return ret;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuffer ret = new StringBuffer("TransientLinkSet {"); //$NON-NLS-1$
+		for (Iterator<TransientLink> i = linksBySourceElement.values().iterator(); i.hasNext();) {
+			ret.append(i.next());
+			if (i.hasNext()) {
+				ret.append(", "); //$NON-NLS-1$
+			}
+		}
+		ret.append('}');
+		return ret.toString();
+	}
 }
