@@ -18,29 +18,43 @@ package org.eclipse.m2m.atl.engine.vm;
 public interface Debugger {
 
 	/**
+	 * Enters the frame.
+	 * 
 	 * @param frame
+	 *            the frame to enter in
 	 */
 	void enter(StackFrame frame);
 
 	/**
+	 * Leaves the frame.
+	 * 
 	 * @param frame
+	 *            the frame to leave
 	 */
 	void leave(StackFrame frame);
 
 	/**
+	 * Steps into the frame.
+	 * 
 	 * @param frame
+	 *            the frame to step
 	 */
 	void step(ASMStackFrame frame);
 
 	/**
-	 * 
+	 * Terminates the execution.
 	 */
 	void terminated();
 
 	/**
+	 * Throws an error.
+	 * 
 	 * @param frame
+	 *            the current frame
 	 * @param msg
+	 *            the error message
 	 * @param e
+	 *            the exception
 	 */
 	void error(StackFrame frame, String msg, Exception e);
 }
