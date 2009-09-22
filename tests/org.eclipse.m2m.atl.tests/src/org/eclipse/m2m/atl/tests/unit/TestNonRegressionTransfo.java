@@ -199,7 +199,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		info("total time : " + totalTime + "s (pure execution: " + executionTotalTime + "s"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		info("total time : " + totalTime + "s (pure execution: " + executionTotalTime + "s)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		results.write("\t<test name=\"TOTAL\" time=\"" + totalTime + "\"/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		results.write("</vm>\n"); //$NON-NLS-1$
 		results.close();
