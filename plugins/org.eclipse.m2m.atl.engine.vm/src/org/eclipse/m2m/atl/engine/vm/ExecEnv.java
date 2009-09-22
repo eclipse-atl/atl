@@ -28,7 +28,11 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 public class ExecEnv {
 
 	public ExecEnv(Debugger debugger) {
-		this.debugger = debugger;
+		if (debugger == null) {
+			this.debugger = new DummyDebugger();
+		} else {
+			this.debugger = debugger;
+		}
 	}
 
 	public boolean empty() {
@@ -51,9 +55,10 @@ public class ExecEnv {
 		models.put(model.getName(), model);
 	}
 
-	/** To add a model with a name different in this ASMExecEnv than it actually is. 
-	 * This is necessary for composite transformations in which the in model of transformation
-	 * may not bear the same name as the out model of the preceding transformation.
+	/**
+	 * To add a model with a name different in this ASMExecEnv than it actually is. This is necessary for
+	 * composite transformations in which the in model of transformation may not bear the same name as the out
+	 * model of the preceding transformation.
 	 */
 	public void addModel(String name, ASMModel model) {
 		models.put(name, model);
@@ -68,7 +73,7 @@ public class ExecEnv {
 	}
 
 	public void printStackTrace() {
-		for(Iterator i = frames.iterator() ; i.hasNext() ; ) {
+		for (Iterator i = frames.iterator(); i.hasNext();) {
 			StringTokenizer lines = new StringTokenizer(i.next().toString(), "\n");
 			while (lines.hasMoreTokens()) {
 				ATLLogger.severe(lines.nextToken());
@@ -87,19 +92,22 @@ public class ExecEnv {
 	public Stack getStack() {
 		return frames;
 	}
-	
+
 	public boolean checkPermission(String permission) {
 		return permissions.contains(permission);
 	}
-	
+
 	public void addPermission(String permission) {
 		permissions.add(permission);
 	}
 
 	private Set permissions = new HashSet();
+
 	private Stack frames = new Stack();
+
 	private Map models = new HashMap();
+
 	protected Map globalVariables = new HashMap();
+
 	private Debugger debugger;
 }
-
