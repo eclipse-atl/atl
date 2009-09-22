@@ -256,11 +256,9 @@ public class ASMExecEnv extends ExecEnv {
 
 		if (debug)
 			ATLLogger.info(this + "@" + this.hashCode() + ".getOperation(" + name + ")");
-		// if(debug) System.out.println(this + "@" + this.hashCode() + ".getOperation(" + name + ")");
 		if (ret == null) {
 			if (debug)
 				ATLLogger.info("looking in super of this for operation " + name);
-			// if(debug) System.out.println("looking in super of this for operation " + name);
 			for (Iterator i = type.getSupertypes().iterator(); i.hasNext() && (ret == null);) {
 				ASMOclType st = (ASMOclType)i.next();
 				ret = getOperation(st, name);
@@ -394,7 +392,7 @@ public class ASMExecEnv extends ExecEnv {
 					helperValues.put(name, ret);
 			} else {
 				ret = new ASMOclUndefined(); // this is a weaving helper for which the value has not been set
-												// yet
+				// yet
 			}
 		}
 
