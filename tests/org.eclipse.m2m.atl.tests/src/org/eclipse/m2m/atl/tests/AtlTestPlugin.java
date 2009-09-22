@@ -102,7 +102,7 @@ public class AtlTestPlugin extends Plugin {
 				}
 			} else {
 				try {
-					baseDirectory = new File(AtlTestPlugin.class.getResource("/").toURI()).getParentFile().getParent();
+					baseDirectory = new File(AtlTestPlugin.class.getResource("/").toURI()).getParentFile().getParent(); //$NON-NLS-1$
 				} catch (URISyntaxException e) {
 					// TODO: improve handling of exception
 					e.printStackTrace();
