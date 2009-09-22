@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/MultipleOutputs/MultipleOutputs.atl"/>
+<stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
+<stringAttribute key="ATL_COMPILER" value="atl2006"/>
+<booleanAttribute key="IS_REFINING" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="IN" value="UML"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="UML_OUT1" value="EMF"/>
+<mapEntry key="UML_OUT2" value="EMF"/>
+<mapEntry key="UML" value="EMF"/>
+<mapEntry key="UML_OUT3" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="UML_OUT1" value="METAMODELOUTPUT"/>
+<mapEntry key="UML_OUT2" value="METAMODELOUTPUT"/>
+<mapEntry key="IN" value="MODELINPUT"/>
+<mapEntry key="OUT1" value="MODELOUTPUT"/>
+<mapEntry key="UML" value="METAMODELINPUT"/>
+<mapEntry key="OUT3" value="MODELOUTPUT"/>
+<mapEntry key="UML_OUT3" value="METAMODELOUTPUT"/>
+<mapEntry key="OUT2" value="MODELOUTPUT"/>
+</mapAttribute>
+<mapAttribute key="Options">
+<mapEntry key="continueAfterError" value="false"/>
+<mapEntry key="OPTION_PROFILE" value="false"/>
+<mapEntry key="disableAttributeHelperCache" value="false"/>
+<mapEntry key="showSummary" value="false"/>
+<mapEntry key="printExecutionTime" value="false"/>
+<mapEntry key="OPTION_CLEAR" value="false"/>
+<mapEntry key="OPTION_DERIVED" value="true"/>
+<mapEntry key="allowInterModelReferences" value="false"/>
+<mapEntry key="disassemblyMode" value="false"/>
+<mapEntry key="step" value="false"/>
+<mapEntry key="profile" value="false"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT1" value="UML_OUT1"/>
+<mapEntry key="OUT2" value="UML_OUT2"/>
+<mapEntry key="OUT3" value="UML_OUT3"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="UML_OUT1" value="uri:http://www.eclipse.org/uml2/2.1.0/UML"/>
+<mapEntry key="UML_OUT2" value="uri:http://www.eclipse.org/uml2/2.1.0/UML"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs//MultipleOutputs/input.uml"/>
+<mapEntry key="OUT1" value="/org.eclipse.m2m.atl.tests/data/inputs//MultipleOutputs/output1.uml"/>
+<mapEntry key="UML" value="uri:http://www.eclipse.org/uml2/2.1.0/UML"/>
+<mapEntry key="OUT3" value="/org.eclipse.m2m.atl.tests/data/inputs//MultipleOutputs/output3.uml"/>
+<mapEntry key="OUT2" value="/org.eclipse.m2m.atl.tests/data/inputs//MultipleOutputs/output2.uml"/>
+<mapEntry key="UML_OUT3" value="uri:http://www.eclipse.org/uml2/2.1.0/UML"/>
+</mapAttribute>
+<listAttribute key="Superimpose"/>
+</launchConfiguration>
