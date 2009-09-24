@@ -77,7 +77,7 @@ public abstract class AbstractAtlSelection extends SelectionStatusDialog {
 	}
 
 	/**
-	 * Updates the status to {@link IStatus.OK}.
+	 * Updates the status to OK.
 	 */
 	protected void ok() {
 		status = new Status(IStatus.OK, AtlUIPlugin.PLUGIN_ID, IStatus.OK, "", //$NON-NLS-1$
