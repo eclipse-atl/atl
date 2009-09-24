@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: TCSRuntime.java,v 1.1 2009/04/21 14:12:26 wpiers Exp $
+ * $Id: TCSRuntime.java,v 1.2 2009/09/24 08:19:06 wpiers Exp $
  */
 package org.eclipse.m2m.atl.dsls.tcs.injector;
 
@@ -308,7 +308,6 @@ public class TCSRuntime {
 		/**
 		 * @param valueTypeName
 		 * @param keyName
-		 * @param keyVal
 		 */
 		public Map getElementByVal(String valueTypeName, String keyName) {
 			String key = "__" + valueTypeName + "_" + keyName;

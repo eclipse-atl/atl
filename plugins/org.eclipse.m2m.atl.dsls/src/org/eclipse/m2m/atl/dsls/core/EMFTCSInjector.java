@@ -68,9 +68,9 @@ public class EMFTCSInjector {
 		return "ebnf2";
 	}
 
-	private ModelAdapter problemsModelAdapter;
+	protected ModelAdapter problemsModelAdapter;
 
-	private ModelAdapter targetModelAdapter;
+	protected ModelAdapter targetModelAdapter;
 
 	public EMFTCSInjector() {
 		super();
