@@ -398,6 +398,7 @@ public class ASMString extends ASMOclAny {
 	 *            The absolute or relative path to a file.
 	 * @return The file in the workspace, or the file in the filesystem if the workspace is not available.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 * @see {@link org.eclipse.core.resources.ResourcesPlugin}
 	 */
 	public static File getFile(String path) {
 		try {
@@ -412,6 +413,7 @@ public class ASMString extends ASMOclAny {
 			path = wsfile.getClass().getMethod("getLocation", emptyClassArray).invoke(wsfile,
 					emptyObjectArray).toString();
 		} catch (Throwable e) {
+			ATLLogger.log(Level.INFO, "Could not find workspace root; falling back to native java.io.File path resolution", e);
 			// fall back to native java.io.File path resolution
 		}
 		return new File(path);
