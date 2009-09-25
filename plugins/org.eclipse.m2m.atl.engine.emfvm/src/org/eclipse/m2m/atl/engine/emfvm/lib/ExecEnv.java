@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.45 2009/09/07 15:54:41 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.46 2009/09/25 08:39:09 dwagelaar Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -2141,6 +2142,7 @@ public class ExecEnv {
 	 *            the absolute or relative path to a file.
 	 * @return the file in the workspace, or the file in the filesystem if the workspace is not available.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 * @see {@link org.eclipse.core.resources.ResourcesPlugin}
 	 */
 	private static File getFile(String path) {
 		String newPath = path;
@@ -2155,12 +2157,16 @@ public class ExecEnv {
 			newPath = wsfile.getClass().getMethod("getLocation", emptyClassArray).invoke(wsfile, //$NON-NLS-1$
 					emptyObjectArray).toString();
 		} catch (ClassNotFoundException e) {
+			ATLLogger.log(Level.INFO, "Could not find workspace root; falling back to native java.io.File path resolution", e);
 			// fall back to native java.io.File path resolution
 		} catch (NoSuchMethodException e) {
+			ATLLogger.log(Level.INFO, "Could not find workspace root; falling back to native java.io.File path resolution", e);
 			// fall back to native java.io.File path resolution
 		} catch (InvocationTargetException e) {
+			ATLLogger.log(Level.INFO, "Could not find workspace root; falling back to native java.io.File path resolution", e);
 			// fall back to native java.io.File path resolution
 		} catch (IllegalAccessException e) {
+			ATLLogger.log(Level.INFO, "Could not find workspace root; falling back to native java.io.File path resolution", e);
 			// fall back to native java.io.File path resolution
 		}
 		return new File(newPath);
