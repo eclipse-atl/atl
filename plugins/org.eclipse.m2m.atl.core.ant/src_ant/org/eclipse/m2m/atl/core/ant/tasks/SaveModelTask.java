@@ -96,7 +96,8 @@ public class SaveModelTask extends AbstractAtlTask {
 	 */
 	@Override
 	public void execute() throws BuildException {
-		log(Messages.getString("SaveModelTask.MSG", model, path)); //$NON-NLS-1$
+		String convertedPath = convertTarget();
+		log(Messages.getString("SaveModelTask.MSG", model, convertedPath)); //$NON-NLS-1$
 
 		IExtractor extractorInstance = null;
 		Map<String, Object> extractorParams = Collections.<String, Object> emptyMap();
@@ -126,9 +127,8 @@ public class SaveModelTask extends AbstractAtlTask {
 		}
 
 		try {
-			String convertedPath = convertTarget();
 			extractorInstance.extract(targetModel, convertedPath, extractorParams);
-			if (Platform.isRunning()) {
+			if (Platform.isRunning() && path != null) {
 				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
 						new Path(path.getPath()));
 				file.getParent().refreshLocal(IResource.DEPTH_ONE, null);
@@ -148,12 +148,9 @@ public class SaveModelTask extends AbstractAtlTask {
 
 	private String convertTarget() {
 		if (path != null) {
-			if (path.toString().startsWith("platform:")) { //$NON-NLS-1$
-				return path.toString();
-			} else if (uri != null) {
-				return uri;
-			}
 			return "file:/" + path.toString(); //$NON-NLS-1$
+		} else if (uri != null) {
+			return uri;
 		} else {
 			error(Messages.getString("SaveModelTask.UNSPECIFIED_TARGET")); //$NON-NLS-1$
 		}
