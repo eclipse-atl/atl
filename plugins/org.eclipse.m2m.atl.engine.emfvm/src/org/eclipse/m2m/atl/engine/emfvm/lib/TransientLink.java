@@ -108,12 +108,14 @@ public class TransientLink {
 	}
 	
 	private void appendMap(Map<?,?> map, StringBuffer ret) {
-		for(Iterator<?> i = map.keySet().iterator() ; i.hasNext() ; ) {
+		for (Iterator<?> i = map.keySet().iterator(); i.hasNext(); ) {
 			Object name = i.next();
 			ret.append(name);
 			ret.append(" = "); //$NON-NLS-1$
 			ret.append(map.get(name));
-			if(i.hasNext()) ret.append(", "); //$NON-NLS-1$
+			if (i.hasNext()) {
+				ret.append(", "); //$NON-NLS-1$
+			}
 		}
 	}
 }
