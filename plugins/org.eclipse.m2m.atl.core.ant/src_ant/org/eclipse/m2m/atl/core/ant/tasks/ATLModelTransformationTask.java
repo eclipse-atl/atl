@@ -191,7 +191,7 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 		}
 
 		InputStream[] moduleInputStreams = new InputStream[superimposeModules.size() + 1];
-		int i = 0;
+		int i = 1;
 		moduleInputStreams[0] = getInputStreamFromPath(asmPath);
 		for (Superimpose superimposedModule : superimposeModules) {
 			moduleInputStreams[i++] = getInputStreamFromPath(superimposedModule.getPath());
