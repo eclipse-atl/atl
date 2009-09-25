@@ -532,6 +532,7 @@ public class EMFModelAdapter implements IModelAdapter {
 
 		if ("__xmiID__".equals(name)) { //$NON-NLS-1$
 			setID(eo, value);
+			return;
 		}
 
 		final EStructuralFeature feature = eo.eClass().getEStructuralFeature(name);
