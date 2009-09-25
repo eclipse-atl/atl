@@ -685,6 +685,9 @@ public class ASMEMFModelElement extends ASMModelElement {
 		}
 		for (Iterator i = frame.getModels().keySet().iterator(); i.hasNext();) {
 			String mname = (String)i.next();
+			if (mname == null) {
+				continue;
+			}
 
 			if (debug) {
 				ATLLogger.info("\ttrying: " + mname);
