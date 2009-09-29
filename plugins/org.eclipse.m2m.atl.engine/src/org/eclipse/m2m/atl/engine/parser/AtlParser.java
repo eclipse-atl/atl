@@ -182,7 +182,7 @@ public final class AtlParser implements IInjector, IExtractor {
 		final Map params = new HashMap();
 		params.put("format", atlTcsModel); //$NON-NLS-1$
 		params.put("indentString", " "); //$NON-NLS-1$ //$NON-NLS-2$
-		params.put("identEsc", "'"); //$NON-NLS-1$ //$NON-NLS-2$
+		params.put("identEsc", "\""); //$NON-NLS-1$ //$NON-NLS-2$
 		params.put("stringDelim", "'"); //$NON-NLS-1$//$NON-NLS-2$
 		params.put("serializeComments", "true"); //$NON-NLS-1$//$NON-NLS-2$
 		if (options != null) {
