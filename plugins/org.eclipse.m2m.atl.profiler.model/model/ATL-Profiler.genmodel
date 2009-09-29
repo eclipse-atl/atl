@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.m2m.atl.profiler.model/src"
+    editDirectory="/org.eclipse.m2m.atl.profiler.model/src" modelPluginID="org.eclipse.m2m.atl.profiler.model"
+    modelName="ATL-Profiler" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
+    copyrightFields="false">
+  <foreignModel>ATL-Profiler.ecore</foreignModel>
+  <genPackages prefix="Model" basePackage="org.eclipse.m2m.atl.profiler" disposableProviderFactory="true"
+      ecorePackage="ATL-Profiler.ecore#/">
+    <genClasses ecoreClass="ATL-Profiler.ecore#//Instruction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ATL-Profiler.ecore#//Instruction/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ATL-Profiler.ecore#//Instruction/instructionID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ATL-Profiler.ecore#//Instruction/launchedTime"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ATL-Profiler.ecore#//Instruction/locatedElementRef"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ATL-Profiler.ecore#//Instruction/stackFrames"/>
+    </genClasses>
+    <genClasses ecoreClass="ATL-Profiler.ecore#//Operation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ATL-Profiler.ecore#//Operation/endTime"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ATL-Profiler.ecore#//Operation/executedInstructions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ATL-Profiler.ecore#//Operation/instructions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ATL-Profiler.ecore#//Operation/moduleElementRef"/>
+    </genClasses>
+    <genClasses ecoreClass="ATL-Profiler.ecore#//ATLProfilingModel"/>
+  </genPackages>
+</genmodel:GenModel>

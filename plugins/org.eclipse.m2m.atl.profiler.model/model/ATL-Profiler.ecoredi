@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diagrams:Diagrams xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.topcased.org/DI/1.0" xmlns:diagrams="http://www.topcased.org/Diagrams/1.0" xmi:id="_SM5ukN_CEdycYuO2jZyd9w" activeDiagram="_SM5ukd_CEdycYuO2jZyd9w">
+  <model href="ATL-Profiler.ecore#/"/>
+  <diagrams xmi:id="_SM5ukd_CEdycYuO2jZyd9w" position="0,0" size="100,100" name="No name" viewport="0,274">
+    <property xmi:id="_SNLbYN_CEdycYuO2jZyd9w" key="pageFormatName" value="A3"/>
+    <property xmi:id="_SNLbYd_CEdycYuO2jZyd9w" key="diagramWidth" value="1188"/>
+    <property xmi:id="_SNLbYt_CEdycYuO2jZyd9w" key="diagramHeight" value="1680"/>
+    <property xmi:id="_SNLbY9_CEdycYuO2jZyd9w" key="pageMarginName" value="Small Margin"/>
+    <property xmi:id="_SNLbZN_CEdycYuO2jZyd9w" key="diagramTopMargin" value="20"/>
+    <property xmi:id="_SNLbZd_CEdycYuO2jZyd9w" key="diagramBottomMargin" value="20"/>
+    <property xmi:id="_SNLbZt_CEdycYuO2jZyd9w" key="diagramLeftMargin" value="20"/>
+    <property xmi:id="_SNLbZ9_CEdycYuO2jZyd9w" key="diagramRightMargin" value="20"/>
+    <property xmi:id="_SNLbaN_CEdycYuO2jZyd9w" key="orientation" value="portrait"/>
+    <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SM5ukt_CEdycYuO2jZyd9w" presentation="org.topcased.modeler.ecore.ediagram">
+      <element href="ATL-Profiler.ecore#/"/>
+    </semanticModel>
+    <contained xsi:type="di:GraphNode" xmi:id="_SPtK8N_CEdycYuO2jZyd9w" position="145,390" size="248,-1">
+      <anchorage xmi:id="_SQGMgd_CEdycYuO2jZyd9w" graphEdge="_SQHaoN_CEdycYuO2jZyd9w _SQIBsN_CEdycYuO2jZyd9w _faK9sOBdEdykEIWcK3x5tA _5J8nIOEkEdyaOYFsWW01Zg _u3LhYOElEdyaOYFsWW01Zg"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SPtyAN_CEdycYuO2jZyd9w" presentation="default">
+        <element href="ATL-Profiler.ecore#//ProfilingInstruction"/>
+      </semanticModel>
+      <contained xsi:type="di:GraphNode" xmi:id="_SPtyAd_CEdycYuO2jZyd9w">
+        <property xmi:id="_SPtyAt_CEdycYuO2jZyd9w" key="eStructuralFeatureID" value="21"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SPtyA9_CEdycYuO2jZyd9w" presentation="default">
+          <element href="ATL-Profiler.ecore#//ProfilingInstruction"/>
+        </semanticModel>
+        <contained xsi:type="di:GraphNode" xmi:id="_SPuZFN_CEdycYuO2jZyd9w" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SPuZFd_CEdycYuO2jZyd9w" presentation="default">
+            <element href="ATL-Profiler.ecore#//ProfilingInstruction/launchedTime"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_1kmAMOBXEdykEIWcK3x5tA" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_1kmAMeBXEdykEIWcK3x5tA" presentation="default">
+            <element href="ATL-Profiler.ecore#//ProfilingInstruction/stackFrames"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_CWrxoOBjEdykEIWcK3x5tA" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_CWrxoeBjEdykEIWcK3x5tA" presentation="default">
+            <element href="ATL-Profiler.ecore#//ProfilingInstruction/instructionID"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_Q2iP4OEzEdyaOYFsWW01Zg" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_Q2iP4eEzEdyaOYFsWW01Zg" presentation="default">
+            <element href="ATL-Profiler.ecore#//ProfilingInstruction/content"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_5JglcOYKEdyfw_J0KU0G-Q" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_5JglceYKEdyfw_J0KU0G-Q" presentation="default">
+            <element href="ATL-Profiler.ecore#//ProfilingInstruction/launchedMemoryUsage"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_6I2GsACREd2gm-JibagKWA" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_6I2GsQCREd2gm-JibagKWA" presentation="default">
+            <element href="ATL-Profiler.ecore#//ProfilingInstruction/hasError"/>
+          </semanticModel>
+        </contained>
+      </contained>
+      <contained xsi:type="di:GraphNode" xmi:id="_SPtyBN_CEdycYuO2jZyd9w">
+        <property xmi:id="_SPtyBd_CEdycYuO2jZyd9w" key="eStructuralFeatureID" value="11"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SPtyBt_CEdycYuO2jZyd9w" presentation="default">
+          <element href="ATL-Profiler.ecore#//ProfilingInstruction"/>
+        </semanticModel>
+      </contained>
+    </contained>
+    <contained xsi:type="di:GraphNode" xmi:id="_SPvnMN_CEdycYuO2jZyd9w" position="329,181" size="249,-1">
+      <anchorage xmi:id="_SQGMgN_CEdycYuO2jZyd9w" graphEdge="_SQHaoN_CEdycYuO2jZyd9w _SQIBsN_CEdycYuO2jZyd9w _SQKd8N_CEdycYuO2jZyd9w _faK9sOBdEdykEIWcK3x5tA _ZT8-EOwpEdyp9KNGo78r5A _DIMOMAC8Ed2FE9XRJs2lSw"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SPvnMd_CEdycYuO2jZyd9w" presentation="default">
+        <element href="ATL-Profiler.ecore#//ProfilingOperation"/>
+      </semanticModel>
+      <contained xsi:type="di:GraphNode" xmi:id="_SPvnMt_CEdycYuO2jZyd9w">
+        <property xmi:id="_SPvnM9_CEdycYuO2jZyd9w" key="eStructuralFeatureID" value="21"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SPvnNN_CEdycYuO2jZyd9w" presentation="default">
+          <element href="ATL-Profiler.ecore#//ProfilingOperation"/>
+        </semanticModel>
+        <contained xsi:type="di:GraphNode" xmi:id="_SPw1UN_CEdycYuO2jZyd9w" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SPw1Ud_CEdycYuO2jZyd9w" presentation="default">
+            <element href="ATL-Profiler.ecore#//ProfilingOperation/endTime"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_SPw1Ut_CEdycYuO2jZyd9w" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SPw1U9_CEdycYuO2jZyd9w" presentation="default">
+            <element href="ATL-Profiler.ecore#//ProfilingOperation/totalExecutedInstructions"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_8QBDYOYKEdyfw_J0KU0G-Q" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_8QBDYeYKEdyfw_J0KU0G-Q" presentation="default">
+            <element href="ATL-Profiler.ecore#//ProfilingOperation/endMemoryUsage"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_w7n8kPBTEdyP49C2RRLufA" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_w7n8kfBTEdyP49C2RRLufA" presentation="default">
+            <element href="ATL-Profiler.ecore#//ProfilingOperation/maxMemoryUsage"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_QDeJwPHSEdy61aO2GWyrrQ" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_QDeJwfHSEdy61aO2GWyrrQ" presentation="default">
+            <element href="ATL-Profiler.ecore#//ProfilingOperation/matchingOperation"/>
+          </semanticModel>
+        </contained>
+      </contained>
+      <contained xsi:type="di:GraphNode" xmi:id="_SPvnNd_CEdycYuO2jZyd9w">
+        <property xmi:id="_SPvnNt_CEdycYuO2jZyd9w" key="eStructuralFeatureID" value="11"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SPwOQN_CEdycYuO2jZyd9w" presentation="default">
+          <element href="ATL-Profiler.ecore#//ProfilingOperation"/>
+        </semanticModel>
+      </contained>
+    </contained>
+    <contained xsi:type="di:GraphNode" xmi:id="_SPyDcN_CEdycYuO2jZyd9w" position="35,69" size="172,-1">
+      <anchorage xmi:id="_SQJ24N_CEdycYuO2jZyd9w" graphEdge="_SQKd8N_CEdycYuO2jZyd9w"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SPyDcd_CEdycYuO2jZyd9w" presentation="default">
+        <element href="ATL-Profiler.ecore#//ProfilingModel"/>
+      </semanticModel>
+      <contained xsi:type="di:GraphNode" xmi:id="_SPyDct_CEdycYuO2jZyd9w">
+        <property xmi:id="_SPyDc9_CEdycYuO2jZyd9w" key="eStructuralFeatureID" value="21"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SPyDdN_CEdycYuO2jZyd9w" presentation="default">
+          <element href="ATL-Profiler.ecore#//ProfilingModel"/>
+        </semanticModel>
+        <contained xsi:type="di:GraphNode" xmi:id="_V1bUIOElEdyaOYFsWW01Zg" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_V1bUIeElEdyaOYFsWW01Zg" presentation="default">
+            <element href="ATL-Profiler.ecore#//ProfilingModel/modelName"/>
+          </semanticModel>
+        </contained>
+      </contained>
+      <contained xsi:type="di:GraphNode" xmi:id="_SPyDdd_CEdycYuO2jZyd9w">
+        <property xmi:id="_SPyDdt_CEdycYuO2jZyd9w" key="eStructuralFeatureID" value="11"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SPyDd9_CEdycYuO2jZyd9w" presentation="default">
+          <element href="ATL-Profiler.ecore#//ProfilingModel"/>
+        </semanticModel>
+      </contained>
+    </contained>
+    <contained xsi:type="di:GraphEdge" xmi:id="_SQHaoN_CEdycYuO2jZyd9w" anchor="_SQGMgN_CEdycYuO2jZyd9w _SQGMgd_CEdycYuO2jZyd9w">
+      <property xmi:id="_XZfIMN_CEdycYuO2jZyd9w" key="router" value="Rectilinear"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SQHaod_CEdycYuO2jZyd9w" presentation="default">
+        <element href="ATL-Profiler.ecore#//ProfilingOperation/executionInstructions"/>
+      </semanticModel>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_SQHaot_CEdycYuO2jZyd9w" id="nameLabel" uDistance="66" vDistance="-54"/>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_SQHao9_CEdycYuO2jZyd9w" id="cardinalityLabel" uDistance="6" vDistance="-6"/>
+      <waypoints>[-4, 173, 180, -45]</waypoints>
+    </contained>
+    <contained xsi:type="di:GraphEdge" xmi:id="_SQIBsN_CEdycYuO2jZyd9w" anchor="_SQGMgN_CEdycYuO2jZyd9w _SQGMgd_CEdycYuO2jZyd9w">
+      <property xmi:id="_elOWIN_CEdycYuO2jZyd9w" key="router" value="Rectilinear"/>
+      <semanticModel xsi:type="di:SimpleSemanticModelElement" xmi:id="_SQIBsd_CEdycYuO2jZyd9w" presentation="default" typeInfo="Inheritance"/>
+    </contained>
+    <contained xsi:type="di:GraphEdge" xmi:id="_SQKd8N_CEdycYuO2jZyd9w" anchor="_SQJ24N_CEdycYuO2jZyd9w _SQGMgN_CEdycYuO2jZyd9w">
+      <semanticModel xsi:type="di:SimpleSemanticModelElement" xmi:id="_SQKd8d_CEdycYuO2jZyd9w" presentation="default" typeInfo="Inheritance"/>
+      <waypoints>[0, -108, 13, 139]</waypoints>
+      <waypoints>[-13, -108, 0, 139]</waypoints>
+    </contained>
+    <contained xsi:type="di:GraphEdge" xmi:id="_faK9sOBdEdykEIWcK3x5tA" anchor="_SQGMgd_CEdycYuO2jZyd9w _SQGMgN_CEdycYuO2jZyd9w">
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_faK9seBdEdykEIWcK3x5tA" presentation="default">
+        <element href="ATL-Profiler.ecore#//ProfilingInstruction/parentOperation"/>
+      </semanticModel>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_faK9suBdEdykEIWcK3x5tA" id="nameLabel" uDistance="69" vDistance="17"/>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_faK9s-BdEdykEIWcK3x5tA" id="cardinalityLabel" uDistance="20" vDistance="-20"/>
+      <waypoints>[0, -219, -184, 0]</waypoints>
+    </contained>
+    <contained xsi:type="di:GraphNode" xmi:id="_rAxF8eEkEdyaOYFsWW01Zg" position="683,628" size="150,-1">
+      <anchorage xmi:id="_47NAgOEkEdyaOYFsWW01Zg" graphEdge="_Nn3c0OElEdyaOYFsWW01Zg"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_rAxF8uEkEdyaOYFsWW01Zg" presentation="default">
+        <element href="ATL-Profiler.ecore#//ATLOperation"/>
+      </semanticModel>
+      <contained xsi:type="di:GraphNode" xmi:id="_rAxF8-EkEdyaOYFsWW01Zg">
+        <property xmi:id="_rAxF9OEkEdyaOYFsWW01Zg" key="eStructuralFeatureID" value="21"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_rAxF9eEkEdyaOYFsWW01Zg" presentation="default">
+          <element href="ATL-Profiler.ecore#//ATLOperation"/>
+        </semanticModel>
+        <contained xsi:type="di:GraphNode" xmi:id="_OaSYQOElEdyaOYFsWW01Zg" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_OaSYQeElEdyaOYFsWW01Zg" presentation="default">
+            <element href="ATL-Profiler.ecore#//ATLOperation/calls"/>
+          </semanticModel>
+        </contained>
+      </contained>
+      <contained xsi:type="di:GraphNode" xmi:id="_rAxF9uEkEdyaOYFsWW01Zg">
+        <property xmi:id="_rAxF9-EkEdyaOYFsWW01Zg" key="eStructuralFeatureID" value="11"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_rAxF-OEkEdyaOYFsWW01Zg" presentation="default">
+          <element href="ATL-Profiler.ecore#//ATLOperation"/>
+        </semanticModel>
+      </contained>
+    </contained>
+    <contained xsi:type="di:GraphNode" xmi:id="_xaCVIOEkEdyaOYFsWW01Zg" position="194,608" size="240,-1">
+      <anchorage xmi:id="_5J7ZAOEkEdyaOYFsWW01Zg" graphEdge="_5J8nIOEkEdyaOYFsWW01Zg _Nn3c0OElEdyaOYFsWW01Zg _u3LhYOElEdyaOYFsWW01Zg"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_xaCVIeEkEdyaOYFsWW01Zg" presentation="default">
+        <element href="ATL-Profiler.ecore#//ATLInstruction"/>
+      </semanticModel>
+      <contained xsi:type="di:GraphNode" xmi:id="_xaCVIuEkEdyaOYFsWW01Zg">
+        <property xmi:id="_xaCVI-EkEdyaOYFsWW01Zg" key="eStructuralFeatureID" value="21"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_xaCVJOEkEdyaOYFsWW01Zg" presentation="default">
+          <element href="ATL-Profiler.ecore#//ATLInstruction"/>
+        </semanticModel>
+        <contained xsi:type="di:GraphNode" xmi:id="_GWSsoOElEdyaOYFsWW01Zg" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_GWSsoeElEdyaOYFsWW01Zg" presentation="default">
+            <element href="ATL-Profiler.ecore#//ATLInstruction/ATLElementRef"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_I_N2sOElEdyaOYFsWW01Zg" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_I_N2seElEdyaOYFsWW01Zg" presentation="default">
+            <element href="ATL-Profiler.ecore#//ATLInstruction/name"/>
+          </semanticModel>
+        </contained>
+      </contained>
+      <contained xsi:type="di:GraphNode" xmi:id="_xaCVJeEkEdyaOYFsWW01Zg">
+        <property xmi:id="_xaCVJuEkEdyaOYFsWW01Zg" key="eStructuralFeatureID" value="11"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_xaCVJ-EkEdyaOYFsWW01Zg" presentation="default">
+          <element href="ATL-Profiler.ecore#//ATLInstruction"/>
+        </semanticModel>
+      </contained>
+    </contained>
+    <contained xsi:type="di:GraphEdge" xmi:id="_5J8nIOEkEdyaOYFsWW01Zg" anchor="_SQGMgd_CEdycYuO2jZyd9w _5J7ZAOEkEdyaOYFsWW01Zg">
+      <property xmi:id="_9TebcOxgEdy7esj7O05FPQ" key="router" value="Rectilinear"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_5J8nIeEkEdyaOYFsWW01Zg" presentation="default">
+        <element href="ATL-Profiler.ecore#//ProfilingInstruction/atlInstruction"/>
+      </semanticModel>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_5J8nIuEkEdyaOYFsWW01Zg" id="nameLabel" uDistance="19" vDistance="22"/>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_5J8nI-EkEdyaOYFsWW01Zg" id="cardinalityLabel" uDistance="20" vDistance="-20"/>
+    </contained>
+    <contained xsi:type="di:GraphEdge" xmi:id="_Nn3c0OElEdyaOYFsWW01Zg" anchor="_47NAgOEkEdyaOYFsWW01Zg _5J7ZAOEkEdyaOYFsWW01Zg">
+      <property xmi:id="_enXD0OElEdyaOYFsWW01Zg" key="router" value="Rectilinear"/>
+      <semanticModel xsi:type="di:SimpleSemanticModelElement" xmi:id="_Nn3c0eElEdyaOYFsWW01Zg" presentation="default" typeInfo="Inheritance"/>
+    </contained>
+    <contained xsi:type="di:GraphEdge" xmi:id="_u3LhYOElEdyaOYFsWW01Zg" anchor="_5J7ZAOEkEdyaOYFsWW01Zg _SQGMgd_CEdycYuO2jZyd9w">
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_u3LhYeElEdyaOYFsWW01Zg" presentation="default">
+        <element href="ATL-Profiler.ecore#//ATLInstruction/profilingInstructions"/>
+      </semanticModel>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_u3LhYuElEdyaOYFsWW01Zg" id="nameLabel" uDistance="64" vDistance="19"/>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_u3LhY-ElEdyaOYFsWW01Zg" id="cardinalityLabel" uDistance="8" vDistance="10"/>
+      <waypoints>[135, -18, 180, 162]</waypoints>
+      <waypoints>[135, -130, 180, 50]</waypoints>
+      <waypoints>[115, -138, 160, 42]</waypoints>
+    </contained>
+    <contained xsi:type="di:GraphNode" xmi:id="_XxohoOwnEdyp9KNGo78r5A" position="750,218" size="150,-1">
+      <anchorage xmi:id="_ZT7v8OwpEdyp9KNGo78r5A" graphEdge="_ZT8-EOwpEdyp9KNGo78r5A"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_XxohoewnEdyp9KNGo78r5A" presentation="default">
+        <element href="ATL-Profiler.ecore#//Context"/>
+      </semanticModel>
+      <contained xsi:type="di:GraphNode" xmi:id="_XxohouwnEdyp9KNGo78r5A">
+        <property xmi:id="_Xxoho-wnEdyp9KNGo78r5A" key="eStructuralFeatureID" value="21"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_XxohpOwnEdyp9KNGo78r5A" presentation="default">
+          <element href="ATL-Profiler.ecore#//Context"/>
+        </semanticModel>
+        <contained xsi:type="di:GraphNode" xmi:id="_cnwjEuwnEdyp9KNGo78r5A" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_cnwjE-wnEdyp9KNGo78r5A" presentation="default">
+            <element href="ATL-Profiler.ecore#//Context/content"/>
+          </semanticModel>
+        </contained>
+      </contained>
+      <contained xsi:type="di:GraphNode" xmi:id="_XxohpewnEdyp9KNGo78r5A">
+        <property xmi:id="_XxohpuwnEdyp9KNGo78r5A" key="eStructuralFeatureID" value="11"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_Xxohp-wnEdyp9KNGo78r5A" presentation="default">
+          <element href="ATL-Profiler.ecore#//Context"/>
+        </semanticModel>
+      </contained>
+    </contained>
+    <contained xsi:type="di:GraphEdge" xmi:id="_ZT8-EOwpEdyp9KNGo78r5A" anchor="_SQGMgN_CEdycYuO2jZyd9w _ZT7v8OwpEdyp9KNGo78r5A">
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_ZT8-EewpEdyp9KNGo78r5A" presentation="default">
+        <element href="ATL-Profiler.ecore#//ProfilingOperation/context"/>
+      </semanticModel>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_ZT8-EuwpEdyp9KNGo78r5A" id="nameLabel" uDistance="20" vDistance="20"/>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_ZT8-E-wpEdyp9KNGo78r5A" id="cardinalityLabel" uDistance="20" vDistance="-20"/>
+    </contained>
+    <contained xsi:type="di:GraphNode" xmi:id="_nHYLcACSEd2gm-JibagKWA" position="749,282" size="150,-1">
+      <anchorage xmi:id="_DIJx8AC8Ed2FE9XRJs2lSw" graphEdge="_DIMOMAC8Ed2FE9XRJs2lSw"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_nHYygACSEd2gm-JibagKWA" presentation="default">
+        <element href="ATL-Profiler.ecore#//ExecutionError"/>
+      </semanticModel>
+      <contained xsi:type="di:GraphNode" xmi:id="_nHYygQCSEd2gm-JibagKWA">
+        <property xmi:id="_nHYyggCSEd2gm-JibagKWA" key="eStructuralFeatureID" value="21"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_nHYygwCSEd2gm-JibagKWA" presentation="default">
+          <element href="ATL-Profiler.ecore#//ExecutionError"/>
+        </semanticModel>
+        <contained xsi:type="di:GraphNode" xmi:id="_yHYtgACYEd269d5NeVQFDA" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_yHYtgQCYEd269d5NeVQFDA" presentation="default">
+            <element href="ATL-Profiler.ecore#//ExecutionError/message"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_PqK3IACzEd28yI3ict0gbQ" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_PqK3IQCzEd28yI3ict0gbQ" presentation="default">
+            <element href="ATL-Profiler.ecore#//ExecutionError/error"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_SUWlcACzEd28yI3ict0gbQ" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_SUWlcQCzEd28yI3ict0gbQ" presentation="default">
+            <element href="ATL-Profiler.ecore#//ExecutionError/frames"/>
+          </semanticModel>
+        </contained>
+      </contained>
+      <contained xsi:type="di:GraphNode" xmi:id="_nHYyhACSEd2gm-JibagKWA">
+        <property xmi:id="_nHYyhQCSEd2gm-JibagKWA" key="eStructuralFeatureID" value="11"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_nHYyhgCSEd2gm-JibagKWA" presentation="default">
+          <element href="ATL-Profiler.ecore#//ExecutionError"/>
+        </semanticModel>
+      </contained>
+    </contained>
+    <contained xsi:type="di:GraphEdge" xmi:id="_DIMOMAC8Ed2FE9XRJs2lSw" anchor="_SQGMgN_CEdycYuO2jZyd9w _DIJx8AC8Ed2FE9XRJs2lSw">
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_DIMOMQC8Ed2FE9XRJs2lSw" presentation="default">
+        <element href="ATL-Profiler.ecore#//ProfilingOperation/executionErrors"/>
+      </semanticModel>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_DIMOMgC8Ed2FE9XRJs2lSw" id="nameLabel" uDistance="20" vDistance="20"/>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_DIMOMwC8Ed2FE9XRJs2lSw" id="cardinalityLabel" uDistance="25" vDistance="-9"/>
+      <waypoints>[139, 82, -232, 0]</waypoints>
+    </contained>
+  </diagrams>
+</diagrams:Diagrams>
