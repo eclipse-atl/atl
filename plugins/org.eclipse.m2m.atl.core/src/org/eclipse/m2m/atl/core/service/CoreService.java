@@ -197,21 +197,22 @@ public final class CoreService {
 	 * @throws ATLCoreException
 	 */
 	public static ILauncher getLauncher(String name) throws ATLCoreException {
-		if (launcherRegistry.containsKey(name)) {
+		String realName = getCompatibleLauncherName(name);
+		if (launcherRegistry.containsKey(realName)) {
 			try {
-				return launcherRegistry.get(name).newInstance();
+				return launcherRegistry.get(realName).newInstance();
 			} catch (IllegalAccessException e) {
 				throw new ATLCoreException(e.getMessage(), e);
 			} catch (InstantiationException e) {
 				throw new ATLCoreException(e.getMessage(), e);
 			}
 		} else {
-			ILauncher launcher = (ILauncher)getExtensionClass(LAUNCHERS_EXTENSION_POINT, "class", name); //$NON-NLS-1$
+			ILauncher launcher = (ILauncher)getExtensionClass(LAUNCHERS_EXTENSION_POINT, "class", realName); //$NON-NLS-1$
 			if (launcher != null) {
-				launcherRegistry.put(name, launcher.getClass());
+				launcherRegistry.put(realName, launcher.getClass());
 				return launcher;
 			} else {
-				throw new ATLCoreException(LAUNCHERS_EXTENSION_POINT + " " + name //$NON-NLS-1$
+				throw new ATLCoreException(LAUNCHERS_EXTENSION_POINT + " " + realName //$NON-NLS-1$
 						+ " not found, check the spelling or register it manually"); //$NON-NLS-1$
 			}
 		}
@@ -379,4 +380,17 @@ public final class CoreService {
 		return null;
 	}
 
+	/**
+	 * Converts the old Regular-VM name.
+	 * 
+	 * @param name
+	 *            the launcher name
+	 * @return the converted name
+	 */
+	public static String getCompatibleLauncherName(String name) {
+		if (name.equals("Regular VM (with debugger)")) { //$NON-NLS-1$
+			return "Regular VM"; //$NON-NLS-1$
+		}
+		return name;
+	}
 }
