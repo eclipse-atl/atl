@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.29 2009/09/04 13:36:57 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.30 2009/09/29 12:52:49 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -52,8 +52,6 @@ public class ASMOperation extends Operation {
 	 */
 	private static WeakHashMap<Class<?>, Map<String, Method>> methodCache = new WeakHashMap<Class<?>, Map<String, Method>>();
 
-	private String name;
-
 	private String context;
 
 	private List<String> parameters = new ArrayList<String>();
@@ -79,8 +77,7 @@ public class ASMOperation extends Operation {
 	 *            operation name
 	 */
 	public ASMOperation(ASM asm, String name) {
-		super(1); // maxLocals will be computed later in setBytecodes()
-		this.name = name;
+		super(1, name); // maxLocals will be computed later in setBytecodes()
 		this.asm = asm;
 	}
 
@@ -137,12 +134,11 @@ public class ASMOperation extends Operation {
 	}
 
 	/**
-	 * Returns the line at the specified number.
-	 * 
-	 * @param l
-	 *            the line number
-	 * @return the line at the specified number
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#resolveLineNumber(int)
 	 */
+	@Override
 	public String resolveLineNumber(int l) {
 		String ret = null;
 
@@ -196,25 +192,19 @@ public class ASMOperation extends Operation {
 	}
 
 	/**
-	 * Resolves a variable name by its slot number and its index.
-	 * 
-	 * @param slot
-	 *            the slot number
-	 * @param l
-	 *            the variable index
-	 * @return the variable name
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#resolveVariableName(int, int)
 	 */
+	@Override
 	public String resolveVariableName(int slot, int l) {
 		String ret = null;
-
 		for (Iterator<LocalVariableEntry> i = localVariableTable.iterator(); i.hasNext() & (ret == null);) {
 			LocalVariableEntry lve = i.next();
-
 			if ((slot == lve.slot) && (l >= lve.begin) && (l <= lve.end)) {
 				ret = lve.name;
 			}
 		}
-
 		return ret;
 	}
 
@@ -261,7 +251,7 @@ public class ASMOperation extends Operation {
 			Bytecode bytecode = bytecodes[i];
 			if (bytecode.getOpcode() == Bytecode.ITERATE) {
 				bytecode.setValue2(stack.size());
-				stack.push(new Integer(i));
+				stack.push(Integer.valueOf(i));
 				if (bytecode.getValue2() > nbNestedIterates) {
 					nbNestedIterates = bytecode.getValue2();
 				}
@@ -292,6 +282,12 @@ public class ASMOperation extends Operation {
 		return bytecodes;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#getName()
+	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -328,6 +324,8 @@ public class ASMOperation extends Operation {
 		try {
 			while (pc < nbBytecodes) {
 				Bytecode bytecode = bytecodes[pc++];
+				((StackFrame)frame).setPc(pc - 1);
+				execEnv.stepTools(frame);
 				execEnv.incNbExecutedBytecodes();
 				if (debug) {
 					ATLLogger.info(name + ":" + (pc - 1) + "\t" + bytecode); //$NON-NLS-1$ //$NON-NLS-2$
@@ -385,9 +383,11 @@ public class ASMOperation extends Operation {
 							--fp; // pop self, that we already retrieved earlier to get the operation
 							arguments[0] = self;
 							if (operation instanceof ASMOperation) {
-								s = ((ASMOperation)operation).exec(calleeFrame, monitor);
+								s = ((ASMOperation)operation).exec(calleeFrame.enter(), monitor);
+								calleeFrame.leave();
 							} else {
-								s = operation.exec(calleeFrame);
+								s = operation.exec(calleeFrame.enter());
+								calleeFrame.leave();
 							}
 						} else {
 							Assert.isTrue(bytecode.getOperand() instanceof String);
@@ -455,7 +455,7 @@ public class ASMOperation extends Operation {
 						if (s instanceof HasFields) {
 							((HasFields)s).set(frame, bytecode.getOperand(), value);
 						} else {
-							if (value instanceof Collection) {
+							if (value instanceof Collection<?>) {
 								Collection<?> c = (Collection<?>)value;
 								// TODO collections of collections have to be managed
 								boolean temp = true;
@@ -526,7 +526,7 @@ public class ASMOperation extends Operation {
 							}
 						} else {
 							Object ec = ExecEnv.findMetaElement(frame, mname, me);
-							stack[fp++] = execEnv.newElement(frame, ec);
+							stack[fp++] = execEnv.newElement(frame, ec, mname.toString());
 						}
 						break;
 					case Bytecode.FINDME:
@@ -584,7 +584,7 @@ public class ASMOperation extends Operation {
 								frame,
 								Messages
 										.getString(
-												"ASMOperation.UNKNOWNBYTECODE", new Object[] {new Integer(bytecode.getOpcode())})); //$NON-NLS-1$
+												"ASMOperation.UNKNOWNBYTECODE", new Object[] {Integer.valueOf(bytecode.getOpcode())})); //$NON-NLS-1$
 				}
 
 				if (debug) {
@@ -645,7 +645,7 @@ public class ASMOperation extends Operation {
 		return exec(frame, null);
 	}
 
-	public ASM getAsm() {
+	public ASM getASM() {
 		return asm;
 	}
 

@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.46 2009/09/25 08:39:09 dwagelaar Exp $
+ * $Id: ExecEnv.java,v 1.47 2009/09/29 12:52:49 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -21,7 +21,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.ref.SoftReference;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,10 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
@@ -45,6 +41,7 @@ import org.eclipse.m2m.atl.engine.emfvm.Messages;
 import org.eclipse.m2m.atl.engine.emfvm.StackFrame;
 import org.eclipse.m2m.atl.engine.emfvm.VMException;
 import org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter;
+import org.eclipse.m2m.atl.engine.emfvm.launch.ITool;
 
 /**
  * Execution environment.
@@ -67,7 +64,7 @@ public class ExecEnv {
 		// Real
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(Double.class, operationsByName);
-		operationsByName.put("/", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "/") { //$NON-NLS-1$
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -75,7 +72,7 @@ public class ExecEnv {
 								/ ((Number)localVars[1]).doubleValue());
 					}
 				});
-		operationsByName.put("*", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "*") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -83,7 +80,7 @@ public class ExecEnv {
 								* ((Number)localVars[1]).doubleValue());
 					}
 				});
-		operationsByName.put("-", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "-") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -91,7 +88,7 @@ public class ExecEnv {
 								- ((Number)localVars[1]).doubleValue());
 					}
 				});
-		operationsByName.put("+", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "+") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -99,75 +96,75 @@ public class ExecEnv {
 								+ ((Number)localVars[1]).doubleValue());
 					}
 				});
-		operationsByName.put("<", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "<") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Number)localVars[0]).doubleValue() < ((Number)localVars[1])
+						return Boolean.valueOf(((Number)localVars[0]).doubleValue() < ((Number)localVars[1])
 								.doubleValue());
 					}
 				});
-		operationsByName.put("<=", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "<=") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Number)localVars[0]).doubleValue() <= ((Number)localVars[1])
+						return Boolean.valueOf(((Number)localVars[0]).doubleValue() <= ((Number)localVars[1])
 								.doubleValue());
 					}
 				});
-		operationsByName.put(">", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, ">") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Number)localVars[0]).doubleValue() > ((Number)localVars[1])
+						return Boolean.valueOf(((Number)localVars[0]).doubleValue() > ((Number)localVars[1])
 								.doubleValue());
 					}
 				});
-		operationsByName.put(">=", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, ">=") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Number)localVars[0]).doubleValue() >= ((Number)localVars[1])
+						return Boolean.valueOf(((Number)localVars[0]).doubleValue() >= ((Number)localVars[1])
 								.doubleValue());
 					}
 				});
-		operationsByName.put("=", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "=") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Number)localVars[0]).doubleValue() == ((Number)localVars[1])
+						return Boolean.valueOf(((Number)localVars[0]).doubleValue() == ((Number)localVars[1])
 								.doubleValue());
 					}
 				});
-		operationsByName.put("toString", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toString") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return localVars[0].toString();
 					}
 				});
-		operationsByName.put("abs", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "abs") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Double(Math.abs(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("round", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "round") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Integer((int)Math.round(((Number)localVars[0]).doubleValue()));
+						return Integer.valueOf((int)Math.round(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("floor", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "floor") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Integer((int)Math.floor(((Number)localVars[0]).doubleValue()));
+						return Integer.valueOf((int)Math.floor(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("max", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "max") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -175,7 +172,7 @@ public class ExecEnv {
 								((Number)localVars[1]).doubleValue()));
 					}
 				});
-		operationsByName.put("min", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "min") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -183,77 +180,77 @@ public class ExecEnv {
 								((Number)localVars[1]).doubleValue()));
 					}
 				});
-		operationsByName.put("acos", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "acos") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Double(Math.acos(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("asin", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "asin") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Double(Math.asin(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("atan", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "atan") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Double(Math.atan(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("cos", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "cos") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Double(Math.cos(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("sin", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "sin") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Double(Math.sin(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("tan", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "tan") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Double(Math.tan(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("toDegrees", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toDegrees") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Double(Math.toDegrees(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("toRadians", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toRadians") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Double(Math.toRadians(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("exp", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "exp") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Double(Math.exp(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("log", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "log") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Double(Math.log(((Number)localVars[0]).doubleValue()));
 					}
 				});
-		operationsByName.put("sqrt", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "sqrt") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -263,12 +260,12 @@ public class ExecEnv {
 		// Integer
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(Integer.class, operationsByName);
-		operationsByName.put("*", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "*") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return new Integer(((Integer)localVars[0]).intValue()
+							return Integer.valueOf(((Integer)localVars[0]).intValue()
 									* ((Integer)localVars[1]).intValue());
 						} else {
 							return new Double(((Number)localVars[0]).doubleValue()
@@ -276,12 +273,12 @@ public class ExecEnv {
 						}
 					}
 				});
-		operationsByName.put("-", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "-") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return new Integer(((Integer)localVars[0]).intValue()
+							return Integer.valueOf(((Integer)localVars[0]).intValue()
 									- ((Integer)localVars[1]).intValue());
 						} else {
 							return new Double(((Number)localVars[0]).doubleValue()
@@ -289,12 +286,12 @@ public class ExecEnv {
 						}
 					}
 				});
-		operationsByName.put("+", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "+") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return new Integer(((Integer)localVars[0]).intValue()
+							return Integer.valueOf(((Integer)localVars[0]).intValue()
 									+ ((Integer)localVars[1]).intValue());
 						} else {
 							return new Double(((Number)localVars[0]).doubleValue()
@@ -302,23 +299,23 @@ public class ExecEnv {
 						}
 					}
 				});
-		operationsByName.put("div", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "div") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Integer(((Integer)localVars[0]).intValue()
+						return Integer.valueOf(((Integer)localVars[0]).intValue()
 								/ ((Integer)localVars[1]).intValue());
 					}
 				});
-		operationsByName.put("mod", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "mod") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Integer(((Integer)localVars[0]).intValue()
+						return Integer.valueOf(((Integer)localVars[0]).intValue()
 								% ((Integer)localVars[1]).intValue());
 					}
 				});
-		operationsByName.put("/", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "/") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -326,109 +323,122 @@ public class ExecEnv {
 								/ ((Number)localVars[1]).doubleValue());
 					}
 				});
-		operationsByName.put("<", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "<") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return new Boolean(((Integer)localVars[0]).intValue() < ((Integer)localVars[1])
-									.intValue());
+							return Boolean
+									.valueOf(((Integer)localVars[0]).intValue() < ((Integer)localVars[1])
+											.intValue());
 						} else {
-							return new Boolean(((Number)localVars[0]).doubleValue() < ((Number)localVars[1])
-									.doubleValue());
+							return Boolean
+									.valueOf(((Number)localVars[0]).doubleValue() < ((Number)localVars[1])
+											.doubleValue());
 						}
 					}
 				});
-		operationsByName.put("<=", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "<=") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return new Boolean(((Integer)localVars[0]).intValue() <= ((Integer)localVars[1])
-									.intValue());
+							return Boolean
+									.valueOf(((Integer)localVars[0]).intValue() <= ((Integer)localVars[1])
+											.intValue());
 						} else {
-							return new Boolean(((Number)localVars[0]).doubleValue() <= ((Number)localVars[1])
-									.doubleValue());
+							return Boolean
+									.valueOf(((Number)localVars[0]).doubleValue() <= ((Number)localVars[1])
+											.doubleValue());
 						}
 					}
 				});
-		operationsByName.put(">", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, ">") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return new Boolean(((Integer)localVars[0]).intValue() > ((Integer)localVars[1])
-									.intValue());
+							return Boolean
+									.valueOf(((Integer)localVars[0]).intValue() > ((Integer)localVars[1])
+											.intValue());
 						} else {
-							return new Boolean(((Number)localVars[0]).doubleValue() > ((Number)localVars[1])
-									.doubleValue());
+							return Boolean
+									.valueOf(((Number)localVars[0]).doubleValue() > ((Number)localVars[1])
+											.doubleValue());
 						}
 					}
 				});
-		operationsByName.put(">=", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, ">=") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return new Boolean(((Integer)localVars[0]).intValue() >= ((Integer)localVars[1])
-									.intValue());
+							return Boolean
+									.valueOf(((Integer)localVars[0]).intValue() >= ((Integer)localVars[1])
+											.intValue());
 						} else {
-							return new Boolean(((Number)localVars[0]).doubleValue() >= ((Number)localVars[1])
-									.doubleValue());
+							return Boolean
+									.valueOf(((Number)localVars[0]).doubleValue() >= ((Number)localVars[1])
+											.doubleValue());
 						}
 					}
 				});
-		operationsByName.put("=", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "=") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return new Boolean(((Integer)localVars[0]).intValue() == ((Integer)localVars[1])
-									.intValue());
+							return Boolean
+									.valueOf(((Integer)localVars[0]).intValue() == ((Integer)localVars[1])
+											.intValue());
 						} else {
-							return new Boolean(((Number)localVars[0]).doubleValue() == ((Number)localVars[1])
-									.doubleValue());
+							return Boolean
+									.valueOf(((Number)localVars[0]).doubleValue() == ((Number)localVars[1])
+											.doubleValue());
 						}
 					}
 				});
-		operationsByName.put("max", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "max") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Integer(Math.max(((Integer)localVars[0]).intValue(),
-								((Number)localVars[1]).intValue())).intValue();
+						// TODO check Integer return
+						return Integer.valueOf(Math.max(((Integer)localVars[0]).intValue(),
+								((Number)localVars[1]).intValue()));
 					}
 				});
-		operationsByName.put("abs", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "abs") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Integer(Math.abs(((Integer)localVars[0]).intValue())).intValue();
+						// TODO check Integer return
+						return Integer.valueOf(Math.abs(((Integer)localVars[0]).intValue()));
 					}
 				});
-		operationsByName.put("min", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "min") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Integer(Math.min(((Integer)localVars[0]).intValue(),
-								((Number)localVars[1]).intValue())).intValue();
+						// TODO check Integer return
+						return Integer.valueOf(Math.min(((Integer)localVars[0]).intValue(),
+								((Number)localVars[1]).intValue()));
 					}
 				});
-		operationsByName.put("toString", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toString") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return localVars[0].toString();
 					}
 				});
-		operationsByName.put("toHexString", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toHexString") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return Integer.toHexString(((Integer)localVars[0]).intValue());
 					}
 				});
-		operationsByName.put("toBinaryString", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toBinaryString") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -438,49 +448,50 @@ public class ExecEnv {
 		// Boolean
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(Boolean.class, operationsByName);
-		operationsByName.put("not", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "not") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(!((Boolean)localVars[0]).booleanValue());
+						return Boolean.valueOf(!((Boolean)localVars[0]).booleanValue());
 					}
 				});
-		operationsByName.put("and", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "and") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Boolean)localVars[0]).booleanValue()
+						return Boolean.valueOf(((Boolean)localVars[0]).booleanValue()
 								&& ((Boolean)localVars[1]).booleanValue());
 					}
 				});
-		operationsByName.put("or", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "or") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Boolean)localVars[0]).booleanValue()
+						return Boolean.valueOf(((Boolean)localVars[0]).booleanValue()
 								|| ((Boolean)localVars[1]).booleanValue());
 					}
 				});
-		operationsByName.put("xor", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "xor") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Boolean)localVars[0]).booleanValue()
+						return Boolean.valueOf(((Boolean)localVars[0]).booleanValue()
 								^ ((Boolean)localVars[1]).booleanValue());
 					}
 				});
-		operationsByName.put("implies", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "implies") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Boolean)localVars[0]).booleanValue() ? ((Boolean)localVars[1])
-								.booleanValue() : true);
+						return Boolean
+								.valueOf(((Boolean)localVars[0]).booleanValue() ? ((Boolean)localVars[1])
+										.booleanValue() : true);
 					}
 				});
 		// Sequence
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(ArrayList.class, operationsByName);
-		operationsByName.put("insertAt", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "insertAt") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -490,7 +501,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("at", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "at") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -498,7 +509,7 @@ public class ExecEnv {
 						return ((List<?>)localVars[0]).get(index - 1);
 					}
 				});
-		operationsByName.put("subSequence", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "subSequence") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -511,14 +522,14 @@ public class ExecEnv {
 						}
 					}
 				});
-		operationsByName.put("indexOf", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "indexOf") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Integer(((List<?>)localVars[0]).indexOf(localVars[1]) + 1);
+						return Integer.valueOf(((List<?>)localVars[0]).indexOf(localVars[1]) + 1);
 					}
 				});
-		operationsByName.put("prepend", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "prepend") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -527,7 +538,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("including", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "including") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -536,7 +547,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("excluding", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "excluding") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -545,7 +556,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("append", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "append") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -554,7 +565,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("union", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "union") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -563,14 +574,14 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("asSequence", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "asSequence") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return localVars[0];
 					}
 				});
-		operationsByName.put("first", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "first") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -582,7 +593,7 @@ public class ExecEnv {
 						}
 					}
 				});
-		operationsByName.put("last", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "last") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -594,7 +605,7 @@ public class ExecEnv {
 						}
 					}
 				});
-		operationsByName.put("flatten", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "flatten") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -607,13 +618,13 @@ public class ExecEnv {
 							containsCollection = false;
 							for (Iterator<Object> iterator = base.iterator(); iterator.hasNext();) {
 								Object object = iterator.next();
-								if (object instanceof Collection) {
+								if (object instanceof Collection<?>) {
 									Collection<?> subCollection = (Collection<?>)object;
 									ret.addAll(subCollection);
 									Iterator<?> iterator2 = subCollection.iterator();
 									while (!containsCollection && iterator2.hasNext()) {
 										Object subCollectionObject = iterator2.next();
-										if (subCollectionObject instanceof Collection) {
+										if (subCollectionObject instanceof Collection<?>) {
 											containsCollection = true;
 										}
 									}
@@ -628,7 +639,7 @@ public class ExecEnv {
 		// Bag
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(Bag.class, operationsByName);
-		operationsByName.put("including", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "including") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -637,7 +648,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("excluding", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "excluding") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -646,14 +657,14 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("asBag", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "asBag") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return localVars[0];
 					}
 				});
-		operationsByName.put("flatten", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "flatten") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -666,13 +677,13 @@ public class ExecEnv {
 							containsCollection = false;
 							for (Iterator<Object> iterator = base.iterator(); iterator.hasNext();) {
 								Object object = iterator.next();
-								if (object instanceof Collection) {
+								if (object instanceof Collection<?>) {
 									Collection<?> subCollection = (Collection<?>)object;
 									ret.addAll(subCollection);
 									Iterator<?> iterator2 = subCollection.iterator();
 									while (!containsCollection && iterator2.hasNext()) {
 										Object subCollectionObject = iterator2.next();
-										if (subCollectionObject instanceof Collection) {
+										if (subCollectionObject instanceof Collection<?>) {
 											containsCollection = true;
 										}
 									}
@@ -687,7 +698,7 @@ public class ExecEnv {
 		// OrderedSet
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(LinkedHashSet.class, operationsByName);
-		operationsByName.put("insertAt", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "insertAt") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -704,7 +715,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("prepend", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "prepend") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -721,7 +732,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("indexOf", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "indexOf") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -736,7 +747,7 @@ public class ExecEnv {
 						return 0;
 					}
 				});
-		operationsByName.put("subOrderedSet", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "subOrderedSet") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -755,7 +766,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("including", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "including") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -764,7 +775,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("excluding", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "excluding") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -773,7 +784,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("append", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "append") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -782,21 +793,21 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("asOrderedSet", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "asOrderedSet") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return localVars[0];
 					}
 				});
-		operationsByName.put("first", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "first") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return ((LinkedHashSet<?>)localVars[0]).iterator().next();
 					}
 				});
-		operationsByName.put("last", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "last") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -809,15 +820,16 @@ public class ExecEnv {
 					}
 				});
 		// optimized version
-		operationsByName.put("count", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "count") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						Object o = localVars[1];
-						return ((HashSet<?>)localVars[0]).contains(o) ? new Integer(1) : new Integer(0);
+						return ((HashSet<?>)localVars[0]).contains(o) ? Integer.valueOf(1) : Integer
+								.valueOf(0);
 					}
 				});
-		operationsByName.put("union", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "union") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -826,7 +838,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("flatten", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "flatten") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -839,13 +851,13 @@ public class ExecEnv {
 							containsCollection = false;
 							for (Iterator<Object> iterator = base.iterator(); iterator.hasNext();) {
 								Object object = iterator.next();
-								if (object instanceof Collection) {
+								if (object instanceof Collection<?>) {
 									Collection<?> subCollection = (Collection<?>)object;
 									ret.addAll(subCollection);
 									Iterator<?> iterator2 = subCollection.iterator();
 									while (!containsCollection && iterator2.hasNext()) {
 										Object subCollectionObject = iterator2.next();
-										if (subCollectionObject instanceof Collection) {
+										if (subCollectionObject instanceof Collection<?>) {
 											containsCollection = true;
 										}
 									}
@@ -860,7 +872,7 @@ public class ExecEnv {
 		// Set
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(HashSet.class, operationsByName);
-		operationsByName.put("including", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "including") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -869,7 +881,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("excluding", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "excluding") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -878,7 +890,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("intersection", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "intersection") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -887,7 +899,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("-", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "-") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -896,7 +908,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("symetricDifference", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "symetricDifference") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -908,14 +920,14 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("asSet", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "asSet") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return localVars[0];
 					}
 				});
-		operationsByName.put("flatten", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "flatten") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -928,13 +940,13 @@ public class ExecEnv {
 							containsCollection = false;
 							for (Iterator<Object> iterator = base.iterator(); iterator.hasNext();) {
 								Object object = iterator.next();
-								if (object instanceof Collection) {
+								if (object instanceof Collection<?>) {
 									Collection<?> subCollection = (Collection<?>)object;
 									ret.addAll(subCollection);
 									Iterator<?> iterator2 = subCollection.iterator();
 									while (!containsCollection && iterator2.hasNext()) {
 										Object subCollectionObject = iterator2.next();
-										if (subCollectionObject instanceof Collection) {
+										if (subCollectionObject instanceof Collection<?>) {
 											containsCollection = true;
 										}
 									}
@@ -947,15 +959,16 @@ public class ExecEnv {
 					}
 				});
 		// optimized version
-		operationsByName.put("count", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "count") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						Object o = localVars[1];
-						return ((HashSet<?>)localVars[0]).contains(o) ? new Integer(1) : new Integer(0);
+						return ((HashSet<?>)localVars[0]).contains(o) ? Integer.valueOf(1) : Integer
+								.valueOf(0);
 					}
 				});
-		operationsByName.put("union", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "union") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -967,14 +980,14 @@ public class ExecEnv {
 		// Collection
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(Collection.class, operationsByName);
-		operationsByName.put("size", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "size") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Integer(((Collection<?>)localVars[0]).size());
+						return Integer.valueOf(((Collection<?>)localVars[0]).size());
 					}
 				});
-		operationsByName.put("sum", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "sum") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -996,27 +1009,28 @@ public class ExecEnv {
 								AbstractStackFrame callee = frame.newFrame(operation);
 								callee.localVars[0] = ret;
 								callee.localVars[1] = i.next();
-								ret = operation.exec(callee);
+								ret = operation.exec(callee.enter());
+								callee.leave();
 							}
 							return ret;
 						}
 					}
 				});
-		operationsByName.put("includes", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "includes") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Collection<?>)localVars[0]).contains(localVars[1]));
+						return Boolean.valueOf(((Collection<?>)localVars[0]).contains(localVars[1]));
 					}
 				});
-		operationsByName.put("excludes", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "excludes") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(!((Collection<?>)localVars[0]).contains(localVars[1]));
+						return Boolean.valueOf(!((Collection<?>)localVars[0]).contains(localVars[1]));
 					}
 				});
-		operationsByName.put("count", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "count") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1027,18 +1041,18 @@ public class ExecEnv {
 								ret++;
 							}
 						}
-						return new Integer(ret);
+						return Integer.valueOf(ret);
 					}
 				});
-		operationsByName.put("includesAll", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "includesAll") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(!((Collection<?>)localVars[0])
+						return Boolean.valueOf(!((Collection<?>)localVars[0])
 								.containsAll((Collection<?>)localVars[1]));
 					}
 				});
-		operationsByName.put("excludesAll", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "excludesAll") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1047,31 +1061,31 @@ public class ExecEnv {
 						for (Iterator<?> i = ((Collection<?>)localVars[1]).iterator(); i.hasNext();) {
 							ret = ret && !s.contains(i.next());
 						}
-						return new Boolean(ret);
+						return Boolean.valueOf(ret);
 					}
 				});
-		operationsByName.put("isEmpty", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "isEmpty") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Collection<?>)localVars[0]).isEmpty());
+						return Boolean.valueOf(((Collection<?>)localVars[0]).isEmpty());
 					}
 				});
-		operationsByName.put("notEmpty", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "notEmpty") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(!((Collection<?>)localVars[0]).isEmpty());
+						return Boolean.valueOf(!((Collection<?>)localVars[0]).isEmpty());
 					}
 				});
-		operationsByName.put("asSequence", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "asSequence") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new ArrayList<Object>((Collection<?>)localVars[0]);
 					}
 				});
-		operationsByName.put("asSet", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "asSet") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1079,14 +1093,14 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("asBag", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "asBag") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Bag((Collection<?>)localVars[0]);
 					}
 				});
-		operationsByName.put("asOrderedSet", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "asOrderedSet") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1096,28 +1110,28 @@ public class ExecEnv {
 		// String
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(String.class, operationsByName);
-		operationsByName.put("size", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "size") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Integer(((String)localVars[0]).length());
+						return Integer.valueOf(((String)localVars[0]).length());
 					}
 				});
-		operationsByName.put("toString", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toString") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return localVars[0];
 					}
 				});
-		operationsByName.put("regexReplaceAll", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "regexReplaceAll") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return ((String)localVars[0]).replaceAll((String)localVars[1], (String)localVars[2]);
 					}
 				});
-		operationsByName.put("replaceAll", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "replaceAll") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1125,7 +1139,7 @@ public class ExecEnv {
 								((String)localVars[2]).charAt(0));
 					}
 				});
-		operationsByName.put("split", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "split") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1133,35 +1147,35 @@ public class ExecEnv {
 								.split((String)localVars[1])));
 					}
 				});
-		operationsByName.put("toInteger", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toInteger") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return Integer.valueOf((String)localVars[0]);
 					}
 				});
-		operationsByName.put("toReal", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toReal") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return Double.valueOf((String)localVars[0]);
 					}
 				});
-		operationsByName.put("toUpper", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toUpper") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return ((String)localVars[0]).toUpperCase();
 					}
 				});
-		operationsByName.put("toLower", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toLower") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return ((String)localVars[0]).toLowerCase();
 					}
 				});
-		operationsByName.put("toSequence", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toSequence") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1173,14 +1187,14 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("startsWith", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "startsWith") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((String)localVars[0]).startsWith((String)localVars[1]));
+						return Boolean.valueOf(((String)localVars[0]).startsWith((String)localVars[1]));
 					}
 				});
-		operationsByName.put("substring", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "substring") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1188,85 +1202,77 @@ public class ExecEnv {
 								((Number)localVars[2]).intValue());
 					}
 				});
-		operationsByName.put("indexOf", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "indexOf") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Integer(((String)localVars[0]).indexOf((String)localVars[1]));
+						return Integer.valueOf(((String)localVars[0]).indexOf((String)localVars[1]));
 					}
 				});
-		operationsByName.put("lastIndexOf", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "lastIndexOf") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Integer(((String)localVars[0]).lastIndexOf((String)localVars[1]));
+						return Integer.valueOf(((String)localVars[0]).lastIndexOf((String)localVars[1]));
 					}
 				});
-		operationsByName.put("endsWith", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "endsWith") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((String)localVars[0]).endsWith((String)localVars[1]));
+						return Boolean.valueOf(((String)localVars[0]).endsWith((String)localVars[1]));
 					}
 				});
-		operationsByName.put("+", new Operation(2) { //$NON-NLS-1$
-					@Override
-					public Object exec(AbstractStackFrame frame) {
-						Object[] localVars = frame.localVars;
-						return (String)localVars[0] + localVars[1];
-					}
-				});
-		operationsByName.put("concat", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "+") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return (String)localVars[0] + localVars[1];
 					}
 				});
-		operationsByName.put("<", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "concat") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((String)localVars[0]).compareTo((String)localVars[1]) < 0);
+						return (String)localVars[0] + localVars[1];
 					}
 				});
-		operationsByName.put("<=", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "<") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((String)localVars[0]).compareTo((String)localVars[1]) <= 0);
+						return Boolean.valueOf(((String)localVars[0]).compareTo((String)localVars[1]) < 0);
 					}
 				});
-		operationsByName.put(">", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "<=") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((String)localVars[0]).compareTo((String)localVars[1]) > 0);
+						return Boolean.valueOf(((String)localVars[0]).compareTo((String)localVars[1]) <= 0);
 					}
 				});
-		operationsByName.put(">=", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, ">") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((String)localVars[0]).compareTo((String)localVars[1]) >= 0);
+						return Boolean.valueOf(((String)localVars[0]).compareTo((String)localVars[1]) > 0);
 					}
 				});
-		operationsByName.put("=", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, ">=") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((String)localVars[0]).equals(localVars[1]));
+						return Boolean.valueOf(((String)localVars[0]).compareTo((String)localVars[1]) >= 0);
 					}
 				});
-		operationsByName.put("writeTo", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "=") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(writeToWithCharset(frame, (String)localVars[0],
-								(String)localVars[1], null));
+						return Boolean.valueOf(((String)localVars[0]).equals(localVars[1]));
 					}
 				});
-		operationsByName.put("println", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "println") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1274,25 +1280,33 @@ public class ExecEnv {
 						return null;
 					}
 				});
-		operationsByName.put("writeToWithCharset", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "writeTo") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(writeToWithCharset(frame, (String)localVars[0],
+						return Boolean.valueOf(writeToWithCharset(frame, (String)localVars[0],
+								(String)localVars[1], null));
+					}
+				});
+		registerOperation(operationsByName, new Operation(3, "writeToWithCharset") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return Boolean.valueOf(writeToWithCharset(frame, (String)localVars[0],
 								(String)localVars[1], (String)localVars[2]));
 					}
 				});
 		// Tuple
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(Tuple.class, operationsByName);
-		operationsByName.put("=", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "=") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Tuple)localVars[0]).equals(localVars[1]));
+						return Boolean.valueOf(((Tuple)localVars[0]).equals(localVars[1]));
 					}
 				});
-		operationsByName.put("asMap", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "asMap") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1302,7 +1316,7 @@ public class ExecEnv {
 		// EnumLiteral
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(EnumLiteral.class, operationsByName);
-		operationsByName.put("toString", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toString") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1312,28 +1326,28 @@ public class ExecEnv {
 		// OclAny
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(Object.class, operationsByName);
-		operationsByName.put("toString", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "toString") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return toPrettyPrintedString(localVars[0]);
 					}
 				});
-		operationsByName.put("=", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "=") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(localVars[0].equals(localVars[1]));
+						return Boolean.valueOf(localVars[0].equals(localVars[1]));
 					}
 				});
-		operationsByName.put("<>", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "<>") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(!localVars[0].equals(localVars[1]));
+						return Boolean.valueOf(!localVars[0].equals(localVars[1]));
 					}
 				});
-		operationsByName.put("oclIsUndefined", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "oclIsUndefined") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						return Boolean.FALSE;
@@ -1342,7 +1356,7 @@ public class ExecEnv {
 		// TODO implement missing refInvokeOperation
 		// TODO implement missing output
 		// TODO add to doc
-		operationsByName.put("debug", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "debug") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1354,7 +1368,7 @@ public class ExecEnv {
 						return localVars[0];
 					}
 				});
-		operationsByName.put("registerWeavingHelper", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "registerWeavingHelper") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1367,7 +1381,7 @@ public class ExecEnv {
 		// OclUndefined
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(OclUndefined.class, operationsByName);
-		operationsByName.put("oclIsUndefined", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "oclIsUndefined") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						return Boolean.TRUE;
@@ -1375,7 +1389,7 @@ public class ExecEnv {
 				});
 		// fix 214871:
 		// TODO better to fix it into compiler
-		operationsByName.put("getNamedTargetFromSource", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "getNamedTargetFromSource") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						return OclUndefined.SINGLETON;
@@ -1384,7 +1398,7 @@ public class ExecEnv {
 		// OclType
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(OclType.class, operationsByName);
-		operationsByName.put("setName", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "setName") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1392,18 +1406,18 @@ public class ExecEnv {
 						return null;
 					}
 				});
-		operationsByName.put("conformsTo", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "conformsTo") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((OclType)localVars[0]).conformsTo((OclType)localVars[1]));
+						return Boolean.valueOf(((OclType)localVars[0]).conformsTo((OclType)localVars[1]));
 					}
 				});
 
 		// OclParametrizedType
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(OclParametrizedType.class, operationsByName);
-		operationsByName.put("setElementType", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "setElementType") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1414,7 +1428,7 @@ public class ExecEnv {
 		// Class
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(Class.class, operationsByName);
-		operationsByName.put("registerHelperAttribute", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "registerHelperAttribute") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1424,17 +1438,18 @@ public class ExecEnv {
 						return null;
 					}
 				});
-		operationsByName.put("conformsTo", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "conformsTo") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return new Boolean(((Class<?>)localVars[1]).isAssignableFrom((Class<?>)localVars[0]));
+						return Boolean.valueOf(((Class<?>)localVars[1])
+								.isAssignableFrom((Class<?>)localVars[0]));
 					}
 				});
 		// TransientLink
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(TransientLink.class, operationsByName);
-		operationsByName.put("setRule", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "setRule") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1442,7 +1457,7 @@ public class ExecEnv {
 						return null;
 					}
 				});
-		operationsByName.put("addSourceElement", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "addSourceElement") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1450,7 +1465,7 @@ public class ExecEnv {
 						return null;
 					}
 				});
-		operationsByName.put("addTargetElement", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "addTargetElement") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1460,14 +1475,14 @@ public class ExecEnv {
 						return null;
 					}
 				});
-		operationsByName.put("getSourceElement", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "getSourceElement") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return ((TransientLink)localVars[0]).getSourceElements().get(localVars[1]);
 					}
 				});
-		operationsByName.put("getTargetElement", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "getTargetElement") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1478,7 +1493,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("getTargetFromSource", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "getTargetFromSource") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1489,7 +1504,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("getNamedTargetFromSource", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "getNamedTargetFromSource") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1500,7 +1515,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("addVariable", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "addVariable") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1508,7 +1523,7 @@ public class ExecEnv {
 						return null;
 					}
 				});
-		operationsByName.put("getVariable", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "getVariable") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1518,7 +1533,7 @@ public class ExecEnv {
 		// TransientLinkSet
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(TransientLinkSet.class, operationsByName);
-		operationsByName.put("addLink", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "addLink") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1528,7 +1543,7 @@ public class ExecEnv {
 						return null;
 					}
 				});
-		operationsByName.put("addLink2", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "addLink2") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1539,14 +1554,14 @@ public class ExecEnv {
 						return null;
 					}
 				});
-		operationsByName.put("getLinksByRule", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "getLinksByRule") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return ((TransientLinkSet)localVars[0]).getLinksByRule(localVars[1]);
 					}
 				});
-		operationsByName.put("getLinkBySourceElement", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "getLinkBySourceElement") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1559,7 +1574,8 @@ public class ExecEnv {
 						}
 					}
 				});
-		operationsByName.put("getLinkByRuleAndSourceElement", new Operation(3) { //$NON-NLS-1$
+		operationsByName.put(
+				"getLinkByRuleAndSourceElement", new Operation(3, "getLinkByRuleAndSourceElement") { //$NON-NLS-1$ //$NON-NLS-2$
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1575,7 +1591,7 @@ public class ExecEnv {
 		// Map
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(HashMap.class, operationsByName);
-		operationsByName.put("get", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "get") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1586,7 +1602,7 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("including", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "including") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1595,21 +1611,21 @@ public class ExecEnv {
 						return ret;
 					}
 				});
-		operationsByName.put("getKeys", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "getKeys") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new HashSet<Object>(((Map<?, ?>)localVars[0]).keySet());
 					}
 				});
-		operationsByName.put("getValues", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "getValues") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						return new Bag(((Map<?, ?>)localVars[0]).values());
 					}
 				});
-		operationsByName.put("union", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "union") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
@@ -1639,7 +1655,7 @@ public class ExecEnv {
 
 	private Map<IModel, String> nameByModel;
 
-	private Operation noInitializer = new Operation(0) {
+	private Operation noInitializer = new Operation(0, "noInitializer") { //$NON-NLS-1$
 		@Override
 		public Object exec(AbstractStackFrame frame) {
 			return null;
@@ -1652,19 +1668,72 @@ public class ExecEnv {
 	/** Debug mode. */
 	private boolean step;
 
+	private ITool[] tools;
+
 	/**
 	 * Creates a new execenv parametrized by models.
 	 * 
 	 * @param models
 	 *            the models map
+	 * @param tools
+	 *            the execution tools
 	 */
-	public ExecEnv(Map<String, IModel> models) {
+	public ExecEnv(Map<String, IModel> models, ITool[] tools) {
 		this.modelsByName = models;
+		this.tools = tools;
+		if (tools == null) {
+			this.tools = new ITool[] {};
+		}
 		nameByModel = new HashMap<IModel, String>();
 		for (Iterator<String> i = modelsByName.keySet().iterator(); i.hasNext();) {
 			String name = i.next();
 			IModel model = modelsByName.get(name);
 			nameByModel.put(model, name);
+		}
+	}
+
+	/**
+	 * Steps the tools.
+	 * 
+	 * @param frame
+	 *            the frame
+	 */
+	public void stepTools(AbstractStackFrame frame) {
+		for (int i = 0; i < tools.length; i++) {
+			tools[i].step(frame);
+		}
+	}
+
+	/**
+	 * Enters the tools.
+	 * 
+	 * @param frame
+	 *            the frame
+	 */
+	public void enterTools(AbstractStackFrame frame) {
+		for (int i = 0; i < tools.length; i++) {
+			tools[i].enter(frame);
+		}
+	}
+
+	/**
+	 * Leaves the tools.
+	 * 
+	 * @param frame
+	 *            the frame
+	 */
+	public void leaveTools(AbstractStackFrame frame) {
+		for (int i = 0; i < tools.length; i++) {
+			tools[i].leave(frame);
+		}
+	}
+
+	/**
+	 * Terminates the tools.
+	 */
+	public void terminateTools() {
+		for (int i = 0; i < tools.length; i++) {
+			tools[i].terminated();
 		}
 	}
 
@@ -1688,6 +1757,9 @@ public class ExecEnv {
 	 * @return the model containing the element
 	 */
 	public String getModelNameOf(Object element) {
+		if (modelAdapter.isMetametaElement(element)) {
+			return "MOF"; //$NON-NLS-1$
+		}
 		return nameByModel.get(getModelOf(element));
 	}
 
@@ -1851,7 +1923,8 @@ public class ExecEnv {
 				AbstractStackFrame calleeFrame = frame.newFrame(o);
 				Object[] arguments = calleeFrame.localVars;
 				arguments[0] = element;
-				ret = o.exec(calleeFrame);
+				ret = o.exec(calleeFrame.enter());
+				calleeFrame.leave();
 				if (cacheAttributeHelperResults) {
 					helperValues.put(name, new SoftReference<Object>(ret));
 				}
@@ -1872,9 +1945,26 @@ public class ExecEnv {
 	 *            the operation
 	 * @param name
 	 *            the operation name
+	 * @deprecated use {@link #registerOperation(Object, Operation)} instead
 	 */
 	public void registerOperation(Object type, Operation oper, String name) {
 		getOperations(type, true).put(name, oper);
+	}
+
+	/**
+	 * Registers operation for a given type.
+	 * 
+	 * @param type
+	 *            the type
+	 * @param oper
+	 *            the operation
+	 */
+	public void registerOperation(Object type, Operation oper) {
+		registerOperation(getOperations(type, true), oper);
+	}
+
+	private void registerOperation(Map<String, Operation> map, Operation oper) {
+		map.put(oper.getName(), oper);
 	}
 
 	private Map<String, Operation> getOperations(Object type, boolean createIfMissing) {
@@ -2068,6 +2158,37 @@ public class ExecEnv {
 	}
 
 	/**
+	 * Creates a new element in the given frame.
+	 * 
+	 * @param frame
+	 *            the frame context
+	 * @param ec
+	 *            the element type
+	 * @param metamodelName
+	 *            the metamodel name
+	 * @return the new element
+	 */
+	public Object newElement(AbstractStackFrame frame, Object ec, String metamodelName) {
+		Object s = null;
+		IReferenceModel metamodel = (IReferenceModel)getModel(metamodelName);
+		if (metamodel != null) {
+			for (Iterator<IModel> i = getModels(); i.hasNext();) {
+				IModel model = i.next();
+				if (model.getReferenceModel().equals(metamodel) && model.isTarget()
+						&& model.getReferenceModel().isModelOf(ec)) {
+					s = model.newElement(ec);
+					break;
+				}
+			}
+		}
+		if (s == null) {
+			throw new VMException(frame, Messages
+					.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
+		}
+		return s;
+	}
+
+	/**
 	 * Creates a new element in the given frame and the given model.
 	 * 
 	 * @param frame
@@ -2116,7 +2237,7 @@ public class ExecEnv {
 			String charset) throws VMException {
 		boolean ret = false;
 		try {
-			File file = getFile(fileName);
+			File file = new File(fileName);
 			if (file.getParentFile() != null) {
 				file.getParentFile().mkdirs();
 			}
@@ -2133,43 +2254,6 @@ public class ExecEnv {
 			throw new VMException(frame, ioe.getLocalizedMessage(), ioe);
 		}
 		return ret;
-	}
-
-	/**
-	 * Returns the file in the workspace, or the file in the filesystem if the workspace is not available.
-	 * 
-	 * @param path
-	 *            the absolute or relative path to a file.
-	 * @return the file in the workspace, or the file in the filesystem if the workspace is not available.
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 * @see {@link org.eclipse.core.resources.ResourcesPlugin}
-	 */
-	private static File getFile(String path) {
-		String newPath = path;
-		try {
-			Class<?>[] emptyClassArray = new Class[] {};
-			Object[] emptyObjectArray = new Object[] {};
-			Class<?> rp = Class.forName("org.eclipse.core.resources.ResourcesPlugin"); //$NON-NLS-1$
-			Object ws = rp.getMethod("getWorkspace", emptyClassArray).invoke(null, emptyObjectArray); //$NON-NLS-1$
-			Object root = ws.getClass().getMethod("getRoot", emptyClassArray).invoke(ws, emptyObjectArray); //$NON-NLS-1$
-			Object wsfile = root.getClass().getMethod("getFile", new Class[] {IPath.class}).invoke(root, //$NON-NLS-1$
-					new Object[] {new Path(path)});
-			newPath = wsfile.getClass().getMethod("getLocation", emptyClassArray).invoke(wsfile, //$NON-NLS-1$
-					emptyObjectArray).toString();
-		} catch (ClassNotFoundException e) {
-			ATLLogger.log(Level.INFO, "Could not find workspace root; falling back to native java.io.File path resolution", e);
-			// fall back to native java.io.File path resolution
-		} catch (NoSuchMethodException e) {
-			ATLLogger.log(Level.INFO, "Could not find workspace root; falling back to native java.io.File path resolution", e);
-			// fall back to native java.io.File path resolution
-		} catch (InvocationTargetException e) {
-			ATLLogger.log(Level.INFO, "Could not find workspace root; falling back to native java.io.File path resolution", e);
-			// fall back to native java.io.File path resolution
-		} catch (IllegalAccessException e) {
-			ATLLogger.log(Level.INFO, "Could not find workspace root; falling back to native java.io.File path resolution", e);
-			// fall back to native java.io.File path resolution
-		}
-		return new File(newPath);
 	}
 
 	public Map<String, IModel> getModelsByName() {
@@ -2271,6 +2355,7 @@ public class ExecEnv {
 	 * Ends the execution.
 	 */
 	public void terminated() {
+		terminateTools();
 		// saving persistent weaving helpers
 		for (Iterator<Entry<Object, Map<String, String>>> i = weavingHelperToPersistToByType.entrySet()
 				.iterator(); i.hasNext();) {

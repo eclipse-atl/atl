@@ -15,25 +15,6 @@
             name="UML2 Model Adapter">
       </modeladapter>
    </extension>
-   <extension
-         point="org.eclipse.m2m.atl.core.launcher">
-      <launcher
-            class="org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher"
-            name="EMF-specific VM">          
-         <option
-               description="Run mode only: print execution times to console"
-               name="printExecutionTime"></option>
-         <option
-               description="Allow inter-model references"
-               name="allowInterModelReferences"></option>
-         <option
-               description="Run mode only: print execution information to console for each executed bytecode (very verbose!)"
-               name="step"></option>
-         <option
-               description="Support UML2 stereotypes"
-               name="supportUML2Stereotypes"></option>
-      </launcher>
-   </extension>
 
 
 </plugin>

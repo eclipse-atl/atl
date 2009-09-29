@@ -10,24 +10,32 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The abstract Operation class.
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public abstract class Operation {
 
 	protected int maxLocals;
+
+	protected String name;
 
 	/**
 	 * Creates a new operation.
 	 * 
 	 * @param maxLocals
 	 *            max locals
+	 * @param name
+	 *            the operation name
 	 */
-	public Operation(int maxLocals) {
+	public Operation(int maxLocals, String name) {
 		this.maxLocals = maxLocals;
+		this.name = name;
 	}
 
 	/**
@@ -41,6 +49,38 @@ public abstract class Operation {
 
 	public int getMaxLocals() {
 		return maxLocals;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public List<?> getInstructions() {
+		return Collections.EMPTY_LIST;
+	}
+
+	/**
+	 * Returns the line at the specified number.
+	 * 
+	 * @param l
+	 *            the line number
+	 * @return the line at the specified number
+	 */
+	public String resolveLineNumber(int l) {
+		return null;
+	}
+
+	/**
+	 * Resolves a variable name by its slot number and its index.
+	 * 
+	 * @param slot
+	 *            the slot number
+	 * @param l
+	 *            the variable index
+	 * @return the variable name
+	 */
+	public String resolveVariableName(int slot, int l) {
+		return null;
 	}
 
 }

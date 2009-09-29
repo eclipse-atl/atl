@@ -17,10 +17,29 @@ import java.util.Map;
  * The ASM Module, which symbolizes an ATL transformation.
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class ASMModule implements HasFields {
 
 	private Map<Object, Object> fields = new HashMap<Object, Object>();
+
+	private String moduleName;
+
+	/**
+	 * Creates a new ASMModule with the given name.
+	 * 
+	 * @param name
+	 *            the module name
+	 */
+	public ASMModule(String name) {
+		this.moduleName = name;
+	}
+
+	/**
+	 * Creates a new ASMModule.
+	 */
+	public ASMModule() {
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -49,6 +68,18 @@ public class ASMModule implements HasFields {
 	 */
 	@Override
 	public String toString() {
+		if (moduleName != null) {
+			return moduleName + " : ASMModule"; //$NON-NLS-1$
+		}
 		return "thisModule"; //$NON-NLS-1$
+	}
+
+	/**
+	 * Returns the map of the fields.
+	 * 
+	 * @return the map of the fields
+	 */
+	public Map<Object, Object> asMap() {
+		return fields;
 	}
 }

@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: IModelAdapter.java,v 1.7 2009/04/08 12:18:14 wpiers Exp $
+ * $Id: IModelAdapter.java,v 1.8 2009/09/29 12:52:49 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.adapter;
@@ -184,4 +184,13 @@ public interface IModelAdapter {
 	 * @return <code>true</code> if the given object is managed by the current model adapter
 	 */
 	boolean isModelElement(Object o);
+
+	/**
+	 * Returns <code>true</code> if the given element is managed by the metametamodel of the current model adapter.
+	 * 
+	 * @param element
+	 *            the given element
+	 * @return <code>true</code> if the given element is managed by the metametamodel of the current model adapter
+	 */
+	boolean isMetametaElement(Object element);
 }

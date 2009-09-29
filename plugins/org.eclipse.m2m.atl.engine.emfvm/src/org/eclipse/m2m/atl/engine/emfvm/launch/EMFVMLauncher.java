@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *     Dennis Wagelaar (Vrije Universiteit Brussel)
+ *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.launch;
 
 import java.io.InputStream;
@@ -124,42 +135,37 @@ public class EMFVMLauncher implements ILauncher {
 	 */
 	public Object launch(final String mode, final IProgressMonitor monitor,
 			final Map<String, Object> options, final Object... modules) {
-		if (!mode.equals(ILauncher.RUN_MODE)) {
-			ATLLogger.warning("mode " + mode + " unsupported for EMFVM, running launch instead"); //$NON-NLS-1$//$NON-NLS-2$
-		}
-		List<ASM> superimpose = new ArrayList<ASM>();
-		ASM mainModule = getASMFromObject(modules[0]);
-		for (int i = 1; i < modules.length; i++) {
-			superimpose.add(getASMFromObject(modules[i]));
-		}
-		return launch(mode, monitor, options, mainModule, superimpose);
+		return internalLaunch(null, monitor, options, modules);
 	}
 
 	/**
 	 * Launches the transformation with preloaded modules.
 	 * 
-	 * @param mode
-	 *            the launching mode
+	 * @param tools
+	 *            the execution tools
 	 * @param monitor
-	 *            the progress monitor
+	 *            the progression monitor
 	 * @param options
-	 *            vm options
-	 * @param mainModule
-	 *            the main module
-	 * @param superimpose
-	 *            the superimposed modules
-	 * @return the transformation return result
+	 *            the launching options
+	 * @param modules
+	 *            the transformation modules
+	 * @return the execution result
 	 */
-	protected Object launch(final String mode, final IProgressMonitor monitor,
-			final Map<String, Object> options, ASM mainModule, List<ASM> superimpose) {
+	protected Object internalLaunch(ITool[] tools, final IProgressMonitor monitor,
+			final Map<String, Object> options, Object... modules) {
+		List<ASM> superimpose = new ArrayList<ASM>();
+		ASM mainModule = getASMFromObject(modules[0]);
+		for (int i = 1; i < modules.length; i++) {
+			superimpose.add(getASMFromObject(modules[i]));
+		}
 		IModelAdapter modelAdapter;
 		if ("true".equals(options.get("supportUML2Stereotypes"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			modelAdapter = new UML2ModelAdapter();
 		} else {
 			modelAdapter = new EMFModelAdapter();
 		}
-		modelAdapter.setAllowInterModelReferences("true".equals(options.get("allowInterModelReferences"))); //$NON-NLS-1$ //$NON-NLS-2$
-		return mainModule.run(models, libraries, superimpose, options, monitor, modelAdapter);
+		modelAdapter.setAllowInterModelReferences("true".equals(options.get("allowInterModelReferences"))); //$NON-NLS-1$ //$NON-NLS-2$	
+		return mainModule.run(tools, models, libraries, superimpose, options, monitor, modelAdapter);
 	}
 
 	/**
@@ -213,5 +219,13 @@ public class EMFVMLauncher implements ILauncher {
 	public String getDefaultModelFactoryName() {
 		return MODEL_FACTORY_NAME;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getModes()
+	 */
+	public String[] getModes() {
+		return new String[]{RUN_MODE,};
+	}
 }

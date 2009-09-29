@@ -19,6 +19,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
  * The Stack Frame implementation.
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class StackFrame extends AbstractStackFrame {
 
@@ -76,7 +77,7 @@ public class StackFrame extends AbstractStackFrame {
 	 * 
 	 * @return the current location
 	 */
-	protected String getLocation() {
+	protected String getStringLocation() {
 		String ret = ((ASMOperation)operation).resolveLineNumber(pc);
 
 		if (ret == null) {
@@ -84,6 +85,27 @@ public class StackFrame extends AbstractStackFrame {
 		}
 		ret += "#" + pc; //$NON-NLS-1$
 		return ret;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame#getLocation()
+	 */
+	@Override
+	public int getLocation() {
+		return pc;
+	}
+
+	/**
+	 * Returns the variable name at the given slot.
+	 * 
+	 * @param slot
+	 *            the slot
+	 * @return the variable name at the given slot
+	 */
+	public String resolveVariableName(int slot) {
+		return getOperation().resolveVariableName(slot, pc);
 	}
 
 	/**
@@ -98,12 +120,12 @@ public class StackFrame extends AbstractStackFrame {
 			ret.append("\tat "); //$NON-NLS-1$
 			ret.append(((ASMOperation)operation).getName());
 			ret.append('(');
-			ret.append(((ASMOperation)operation).getAsm().getName() + ".atl"); //$NON-NLS-1$
+			ret.append(((ASMOperation)operation).getASM().getName() + ".atl"); //$NON-NLS-1$
 
-			String location = getLocation();
+			String location = getStringLocation();
 			if (location != null) {
-					if (location.matches("[0-9]*:[0-9]*-[0-9]*:[0-9]*#[0-9]*")) { //$NON-NLS-1$
-						ret.append('[' + location.split("#")[0] + ']'); //$NON-NLS-1$
+				if (location.matches("[0-9]*:[0-9]*-[0-9]*:[0-9]*#[0-9]*")) { //$NON-NLS-1$
+					ret.append('[' + location.split("#")[0] + ']'); //$NON-NLS-1$
 				}
 			}
 			ret.append(')');

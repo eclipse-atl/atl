@@ -10,14 +10,18 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Abstract Stack Frame definition.
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public abstract class AbstractStackFrame {
-
-	// public static final int MAX_VARS = 100;
 
 	/** The execution environment. */
 	protected ExecEnv execEnv;
@@ -65,7 +69,7 @@ public abstract class AbstractStackFrame {
 		}
 		localVars = new Object[frameOperation.getMaxLocals()];
 	}
-		
+
 	/**
 	 * Creates an empty StackFrame which refers to its {@link ExecEnv}.
 	 * 
@@ -100,7 +104,7 @@ public abstract class AbstractStackFrame {
 	public ExecEnv getExecEnv() {
 		return execEnv;
 	}
-	
+
 	public Operation getOperation() {
 		return operation;
 	}
@@ -109,4 +113,84 @@ public abstract class AbstractStackFrame {
 		return caller;
 	}
 
+	/**
+	 * Returns the local variables map.
+	 * 
+	 * @return the local variables map
+	 */
+	public Map<String, Object> getLocalVariables() {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		for (int i = 0; i < operation.getMaxLocals(); i++) {
+			if (localVars[i] != null) {
+				ret.put(Integer.valueOf(i).toString(), localVars[i]);
+			}
+		}
+		return ret;
+	}
+
+	/**
+	 * Makes the tool enter the frame.
+	 * 
+	 * @return self
+	 */
+	public AbstractStackFrame enter() {
+		execEnv.enterTools(this);
+		return this;
+	}
+
+	/**
+	 * Makes the tool leave the frame.
+	 */
+	public void leave() {
+		execEnv.leaveTools(this);
+	}
+
+	/**
+	 * Gets a list of the stacks.
+	 * 
+	 * @return the Stack list
+	 */
+	public StackSequence getStack() {
+		StackSequence res = new StackSequence();
+		AbstractStackFrame tmp = this;
+		while (tmp != null) {
+			res.add(tmp);
+			tmp = tmp.caller;
+		}
+		Collections.reverse(res);
+		return res;
+	}
+
+	public String getSourceLocation() {
+		return getOperation().resolveLineNumber(getLocation());
+	}
+
+	public String getOpName() {
+		return operation.getName();
+	}
+
+	/**
+	 * A Sequence of {@link AbstractStackFrame}.
+	 */
+	public class StackSequence extends ArrayList<AbstractStackFrame> {
+
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * Returns the stack frame at the given index.
+		 * @param index the index
+		 * @return the stack frame
+		 */
+		public AbstractStackFrame at(int index) {
+			return this.get(index - 1);
+		}
+
+	}
+
+	/**
+	 * Returns the current location.
+	 * 
+	 * @return the current location
+	 */
+	public abstract int getLocation();
 }

@@ -26,7 +26,7 @@ import java.util.Map.Entry;
  */
 public class Bag implements Collection<Object> {
 
-	private static final Integer ONE = new Integer(1);
+	private static final Integer ONE = Integer.valueOf(1);
 
 	/**
 	 * An internal map storing objects and the number of their occurrences.
@@ -63,7 +63,7 @@ public class Bag implements Collection<Object> {
 			Integer val = map.get(arg0);
 			int prev = val.intValue();
 			int cur = prev + 1;
-			map.put(arg0, new Integer(cur));
+			map.put(arg0, Integer.valueOf(cur));
 		}
 		return true;
 	}
@@ -136,7 +136,7 @@ public class Bag implements Collection<Object> {
 		int prev = val.intValue();
 		int cur = prev - 1;
 		if (cur >= 1) {
-			map.put(arg0, new Integer(cur));
+			map.put(arg0, Integer.valueOf(cur));
 		} else {
 			map.remove(arg0);
 		}

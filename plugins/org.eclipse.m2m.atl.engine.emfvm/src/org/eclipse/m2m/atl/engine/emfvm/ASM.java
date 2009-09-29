@@ -33,7 +33,9 @@ import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.engine.emfvm.AtlSuperimposeModule.AtlSuperimposeModuleException;
 import org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter;
+import org.eclipse.m2m.atl.engine.emfvm.launch.ITool;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ASMModule;
+import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.LibExtension;
 import org.eclipse.m2m.atl.engine.emfvm.lib.OclType;
@@ -118,6 +120,8 @@ public class ASM {
 	/**
 	 * Launches the ASM.
 	 * 
+	 * @param tools
+	 *            the execution tools
 	 * @param models
 	 *            the model map
 	 * @param libraries
@@ -132,14 +136,14 @@ public class ASM {
 	 *            the {@link IModelAdapter} to use
 	 * @return the execution result
 	 */
-	public Object run(Map<String, IModel> models, Map<String, ASM> libraries, List<ASM> superimpose,
+	public Object run(ITool[] tools, Map<String, IModel> models, Map<String, ASM> libraries, List<ASM> superimpose,
 			Map<String, Object> options, IProgressMonitor monitor, IModelAdapter modelAdapter) {
 		Object ret = null;
 
 		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
 		long startTime = System.currentTimeMillis();
 
-		ExecEnv execEnv = new ExecEnv(models);
+		ExecEnv execEnv = new ExecEnv(models, tools);
 		execEnv.init(modelAdapter);
 
 		if ("true".equals(options.get("step"))) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -152,7 +156,7 @@ public class ASM {
 
 		addAllTypesExtensions(options);
 
-		ASMModule asmModule = new ASMModule();
+		ASMModule asmModule = new ASMModule(getName());
 
 		List<Object> localVars = null;
 		if (!mainOperation.getParameters().isEmpty()) {
@@ -168,14 +172,16 @@ public class ASM {
 		StackFrame frame = new StackFrame(execEnv, asmModule, mainOperation);
 
 		if (localVars != null) {
-			frame.setLocalVars(localVars.toArray());			
+			frame.setLocalVars(localVars.toArray());
 		}
 
 		for (Iterator<ASM> i = libraries.values().iterator(); i.hasNext();) {
 			ASM library = i.next();
 			registerOperations(execEnv, library.getOperations());
 			if (library.mainOperation != null) {
-				library.mainOperation.exec(new StackFrame(execEnv, asmModule, library.mainOperation));
+				AbstractStackFrame rootFrame = new StackFrame(execEnv, asmModule, library.mainOperation);
+				library.mainOperation.exec(rootFrame.enter());
+				rootFrame.leave();
 			}
 		}
 
@@ -194,8 +200,8 @@ public class ASM {
 			registerOperations(execEnv, module.getOperations());
 		}
 
-		ret = mainOperation.exec(frame, monitor);
-
+		ret = mainOperation.exec(frame.enter(), monitor);
+		frame.leave();
 		execEnv.terminated();
 		long endTime = System.currentTimeMillis();
 		if (printExecutionTime) {
@@ -227,7 +233,7 @@ public class ASM {
 			} else {
 				try {
 					Object type = parseType(execEnv, new StringCharacterIterator(signature));
-					execEnv.registerOperation(type, op, op.getName());
+					execEnv.registerOperation(type, op);
 				} catch (SignatureParsingException spe) {
 					throw new VMException(null, spe.getLocalizedMessage(), spe);
 				}
@@ -358,7 +364,7 @@ public class ASM {
 			throw new SignatureParsingException(
 					Messages
 							.getString(
-									"ASM.PARSINGERROR", new Character(c), new Character(ci.current()), new Integer(ci.getIndex()))); //$NON-NLS-1$
+									"ASM.PARSINGERROR", new Character(c), new Character(ci.current()), Integer.valueOf(ci.getIndex()))); //$NON-NLS-1$
 		}
 		ci.next();
 	}
@@ -369,7 +375,7 @@ public class ASM {
 
 		if (ci.next() != CharacterIterator.DONE) {
 			throw new SignatureParsingException(Messages.getString(
-					"ASM.SIGNATUREPARSINGERROR", new Integer(ci.getIndex()))); //$NON-NLS-1$
+					"ASM.SIGNATUREPARSINGERROR", Integer.valueOf(ci.getIndex()))); //$NON-NLS-1$
 		}
 
 		return ret;
@@ -453,7 +459,7 @@ public class ASM {
 			// break;
 			case CharacterIterator.DONE:
 				throw new SignatureParsingException(Messages.getString(
-						"ASM.SIGNATUREPARSINGERROR", new Object[] {new Integer(ci.getIndex())})); //$NON-NLS-1$
+						"ASM.SIGNATUREPARSINGERROR", new Object[] {Integer.valueOf(ci.getIndex())})); //$NON-NLS-1$
 			default:
 				throw new SignatureParsingException(Messages.getString(
 						"ASM.UNKNOWTYPECODE", new Object[] {new Character(ci.current())})); //$NON-NLS-1$

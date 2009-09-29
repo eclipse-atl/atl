@@ -172,7 +172,7 @@ public class ASMXMLReader extends DefaultHandler {
 				null,
 				Messages
 						.getString(
-								"ASMXMLReader.PARSINGERROR", new Integer(e.getLineNumber()), new Integer(e.getColumnNumber()), e.getMessage())); //$NON-NLS-1$
+								"ASMXMLReader.PARSINGERROR", Integer.valueOf(e.getLineNumber()), Integer.valueOf(e.getColumnNumber()), e.getMessage())); //$NON-NLS-1$
 	}
 
 	/**
@@ -185,7 +185,7 @@ public class ASMXMLReader extends DefaultHandler {
 		throw new ASMXMLReaderException(
 				Messages
 						.getString(
-								"ASMXMLReader.PARSINGERROR", new Integer(e.getLineNumber()), new Integer(e.getColumnNumber()), e.getLocalizedMessage()), e.getPublicId(), e.getSystemId(), e //$NON-NLS-1$
+								"ASMXMLReader.PARSINGERROR", Integer.valueOf(e.getLineNumber()), new Integer(e.getColumnNumber()), e.getLocalizedMessage()), e.getPublicId(), e.getSystemId(), e //$NON-NLS-1$
 						.getLineNumber(), e.getColumnNumber(), e);
 	}
 

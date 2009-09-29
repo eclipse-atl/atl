@@ -43,7 +43,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
-import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.core.emf.EMFModel;
 import org.eclipse.m2m.atl.engine.emfvm.Messages;
 import org.eclipse.m2m.atl.engine.emfvm.VMException;
@@ -170,7 +169,7 @@ public class EMFModelAdapter implements IModelAdapter {
 	public Object getType(Object value) {
 		if (value instanceof EObject) {
 			return ((EObject)value).eClass();
-		} else if (value instanceof EList) {
+		} else if (value instanceof EList<?>) {
 			return ArrayList.class;
 		} else {
 			return value.getClass();
@@ -209,21 +208,8 @@ public class EMFModelAdapter implements IModelAdapter {
 			}
 			out.print('!');
 			out.print(getNameOf(eo));
-			out.print(':');
-			if (model != null) {
-				final IReferenceModel mModel = model.getReferenceModel();
-				out.print(execEnv.getNameOf(mModel));
-				out.print('!');
-				String name = eo.eClass().getName();
-				if (name == null) {
-					name = "<unnamed>"; //$NON-NLS-1$
-				}
-				out.print(name);
-			} else {
-				prettyPrint(execEnv, out, eo.eClass());
-			}
 			return true;
-		} else if (value instanceof EList) {
+		} else if (value instanceof EList<?>) {
 			out.print("Sequence {"); //$NON-NLS-1$
 			execEnv.prettyPrintCollection(out, (EList<?>)value);
 			return true;
@@ -241,6 +227,10 @@ public class EMFModelAdapter implements IModelAdapter {
 		vmSupertypes.put(EClassImpl.class, Arrays.asList(new Class<?>[] {EObjectImpl.class}));
 		// is necessary ? vmSupertypes.put(EObjectImpl.class, Arrays.asList(new Class[] {Object.class}));
 	}
+	
+	private void registerOperation(Map<String, Operation> map, Operation oper) {
+		map.put(oper.getName(), oper);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -250,7 +240,7 @@ public class EMFModelAdapter implements IModelAdapter {
 	public void registerVMTypeOperations(Map<Object, Map<String, Operation>> vmTypeOperations) {
 		// Object
 		Map<String, Operation> operationsByName = vmTypeOperations.get(Object.class);
-		operationsByName.put("=", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "=") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -261,12 +251,12 @@ public class EMFModelAdapter implements IModelAdapter {
 						 * comparison against EMF Enumerators.
 						 */
 						if (localVars[0] instanceof Enumerator) {
-							return new Boolean(localVars[1].equals(localVars[0]));
+							return Boolean.valueOf(localVars[1].equals(localVars[0]));
 						}
-						return new Boolean(localVars[0].equals(localVars[1]));
+						return Boolean.valueOf(localVars[0].equals(localVars[1]));
 					}
 				});
-		operationsByName.put("refGetValue", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "refGetValue") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -278,7 +268,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						}
 					}
 				});
-		operationsByName.put("refSetValue", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "refSetValue") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -292,7 +282,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		// TODO document
-		operationsByName.put("refUnSetValue", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "refUnSetValue") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -302,7 +292,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						return localVars[0];
 					}
 				});
-		operationsByName.put("oclType", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "oclType") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -312,20 +302,20 @@ public class EMFModelAdapter implements IModelAdapter {
 						return OclType.getOclTypeFromObject(localVars[0]);
 					}
 				});
-		operationsByName.put("oclIsTypeOf", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "oclIsTypeOf") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
-						if (localVars[1] instanceof Class) {
-							return new Boolean(localVars[1].equals(localVars[0].getClass()));
+						if (localVars[1] instanceof Class<?>) {
+							return Boolean.valueOf(localVars[1].equals(localVars[0].getClass()));
 						} else if (localVars[1] instanceof EClass) {
 							if (localVars[0] instanceof EObject) {
-								return new Boolean(localVars[1].equals(((EObject)localVars[0]).eClass()));
+								return Boolean.valueOf(localVars[1].equals(((EObject)localVars[0]).eClass()));
 							} else {
 								return Boolean.FALSE;
 							}
 						} else if (localVars[1] instanceof OclType) {
-							return new Boolean(((OclType)localVars[1]).equals(OclType
+							return Boolean.valueOf(((OclType)localVars[1]).equals(OclType
 									.getOclTypeFromObject(localVars[0])));
 						} else {
 							throw new VMException(frame, Messages.getString(
@@ -333,24 +323,24 @@ public class EMFModelAdapter implements IModelAdapter {
 						}
 					}
 				});
-		operationsByName.put("oclIsKindOf", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "oclIsKindOf") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
-						if (localVars[1] instanceof Class) {
-							return new Boolean(((Class<?>)localVars[1]).isInstance(localVars[0]));
+						if (localVars[1] instanceof Class<?>) {
+							return Boolean.valueOf(((Class<?>)localVars[1]).isInstance(localVars[0]));
 						} else if (localVars[1] instanceof EClass) {
-							return new Boolean(((EClass)localVars[1]).isInstance(localVars[0]));
+							return Boolean.valueOf(((EClass)localVars[1]).isInstance(localVars[0]));
 						} else if (localVars[1] instanceof OclType) {
 							OclType selfType = OclType.getOclTypeFromObject(localVars[0]);
-							return new Boolean(selfType.conformsTo((OclType)localVars[1]));
+							return Boolean.valueOf(selfType.conformsTo((OclType)localVars[1]));
 						} else {
 							throw new VMException(frame, Messages.getString(
 									"EMFModelAdapter.UNHANDLEDTYPE", localVars[1])); //$NON-NLS-1$
 						}
 					}
 				});
-		operationsByName.put("refImmediateComposite", new Operation(1) { //$NON-NLS-1$ 
+		registerOperation(operationsByName, new Operation(1, "refImmediateComposite") { //$NON-NLS-1$ 
 					@Override
 					// TODO: should only exist on EObject
 					public Object exec(AbstractStackFrame frame) {
@@ -370,7 +360,7 @@ public class EMFModelAdapter implements IModelAdapter {
 		// EClass
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(EcorePackage.eINSTANCE.getEClass(), operationsByName);
-		operationsByName.put("allInstancesFrom", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "allInstancesFrom") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -382,7 +372,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						return model.getElementsByType(localVars[0]);
 					}
 				});
-		operationsByName.put("allInstances", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1,"allInstances") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -405,7 +395,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						return ret;
 					}
 				});
-		operationsByName.put("registerHelperAttribute", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "registerHelperAttribute") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -415,7 +405,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						return null;
 					}
 				});
-		operationsByName.put("newInstance", new Operation(1) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(1, "newInstance") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -423,7 +413,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						return frame.getExecEnv().newElement(frame, ec);
 					}
 				});
-		operationsByName.put("newInstanceIn", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2, "newInstanceIn") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -432,7 +422,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						return frame.getExecEnv().newElementIn(frame, ec, modelName);
 					}
 				});
-		operationsByName.put("getInstanceById", new Operation(3) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(3, "getInstanceById") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						final Object[] localVars = frame.getLocalVars();
@@ -445,23 +435,13 @@ public class EMFModelAdapter implements IModelAdapter {
 						return ret;
 					}
 				});
-		operationsByName.put("conformsTo", new Operation(2) { //$NON-NLS-1$
+		registerOperation(operationsByName, new Operation(2,"conformsTo") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
-						return new Boolean(((EClass)localVars[1]).isSuperTypeOf((EClass)localVars[0]));
+						return Boolean.valueOf(((EClass)localVars[1]).isSuperTypeOf((EClass)localVars[0]));
 					}
 				});
-//		// EEnumLiteral
-//		operationsByName = new HashMap<String, Operation>();
-//		vmTypeOperations.put(EcorePackage.eINSTANCE.getEEnumLiteral(), operationsByName);
-//		operationsByName.put("toString", new Operation(1) { //$NON-NLS-1$
-//					@Override
-//					public Object exec(AbstractStackFrame frame) {
-//						Object[] localVars = frame.getLocalVars();
-//						return localVars[0].toString();
-//					}
-//				});
 	}
 
 	/**
@@ -472,7 +452,9 @@ public class EMFModelAdapter implements IModelAdapter {
 	 */
 	public Object get(AbstractStackFrame frame, Object modelElement, String name) {
 		Object ret = null;
-
+		if (modelElement instanceof Collection<?>) {
+			throw new VMException(frame, Messages.getString("EMFModelAdapter.GET_ON_COLLECTION")); //$NON-NLS-1$		
+		}
 		if (modelElement == null || modelElement.equals(OclUndefined.SINGLETON)) {
 			throw new VMException(frame, Messages.getString("EMFModelAdapter.GET_PROBLEM", name)); //$NON-NLS-1$
 		} else {
@@ -494,7 +476,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					val = OclUndefined.SINGLETON;
 				} else if (val instanceof Enumerator) {
 					val = new EnumLiteral(val.toString());
-				} else if (val instanceof Collection) {
+				} else if (val instanceof Collection<?>) {
 					if (sf.getEType() instanceof EEnum) {
 						Collection<Object> c = new ArrayList<Object>();
 						for (Iterator<?> i = ((Collection<?>)val).iterator(); i.hasNext();) {
@@ -522,7 +504,6 @@ public class EMFModelAdapter implements IModelAdapter {
 	 */
 	@SuppressWarnings("unchecked")
 	public void set(AbstractStackFrame frame, Object modelElement, String name, Object value) {
-
 		Object settableValue = value;
 		if (settableValue == null || value.equals(OclUndefined.SINGLETON)) {
 			return;
@@ -558,7 +539,7 @@ public class EMFModelAdapter implements IModelAdapter {
 			}
 		} else if (settableValue instanceof Double) {
 			String targetType = feature.getEType().getInstanceClassName();
-			if ("java.lang.Float".equals(targetType) || "float".equals(targetType)) { //$NON-NLS-1$//$NON-NLS-2$
+			if ("java.lang.Float".equals(targetType) || "float".equals(targetType)) {  //$NON-NLS-1$//$NON-NLS-2$
 				settableValue = new Float(((Double)value).floatValue());
 			}
 		}
@@ -643,12 +624,9 @@ public class EMFModelAdapter implements IModelAdapter {
 				}
 			}
 
-		} catch (ClassCastException e) {
-			throw new VMException(frame, e.getMessage(), e);
-		} catch (ArrayStoreException e) {
+		} catch (Throwable e) {
 			throw new VMException(frame, e.getMessage(), e);
 		}
-
 	}
 
 	/**
@@ -753,6 +731,18 @@ public class EMFModelAdapter implements IModelAdapter {
 	 */
 	public boolean isModelElement(Object o) {
 		return o instanceof EObject;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#isMetametaElement(java.lang.Object)
+	 */
+	public boolean isMetametaElement(Object element) {
+		if (element instanceof EObject) {	
+			return ((EObject)element).eClass().equals(element);
+		}
+		return false;
 	}
 
 }
