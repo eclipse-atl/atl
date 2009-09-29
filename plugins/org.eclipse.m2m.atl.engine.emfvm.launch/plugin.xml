@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.m2m.atl.core.launcher">
+      <launcher
+            class="org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMUILauncher"
+            name="EMF-specific VM">          
+         <option
+               description="Run mode only: print execution times to console"
+               name="printExecutionTime"></option>
+         <option
+               description="Allow inter-model references"
+               name="allowInterModelReferences"></option>
+         <option
+               description="Run mode only: print execution information to console for each executed bytecode (very verbose!)"
+               name="step"></option>
+         <option
+               description="Support UML2 stereotypes"
+               name="supportUML2Stereotypes"></option>
+         <option
+               description="Disassembly mode"
+               name="disassemblyMode">
+         </option>
+      </launcher>
+   </extension>
+</plugin>
