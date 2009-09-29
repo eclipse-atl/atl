@@ -21,7 +21,12 @@ import java.util.logging.Level;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.model.IBreakpoint;
+import org.eclipse.debug.core.model.ILineBreakpoint;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -35,6 +40,7 @@ import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.ILineTracker;
 import org.eclipse.jface.text.IPositionUpdater;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.ITextViewerExtension;
 import org.eclipse.jface.text.ITextViewerExtension5;
 import org.eclipse.jface.text.ITypedRegion;
@@ -78,6 +84,8 @@ import org.eclipse.m2m.atl.adt.ui.text.IAtlPartitions;
 import org.eclipse.m2m.atl.adt.ui.viewsupport.AtlEditorTickErrorUpdater;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.common.AtlNbCharFile;
+import org.eclipse.m2m.atl.debug.core.AtlBreakpoint;
+import org.eclipse.m2m.atl.debug.core.AtlDebugModelConstants;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -376,7 +384,7 @@ public class AtlEditor extends TextEditor {
 		}
 	}
 
-	private static class BracketLevel {
+	protected static class BracketLevel {
 		Position fFirstPosition;
 
 		int fLength;
@@ -410,7 +418,7 @@ public class AtlEditor extends TextEditor {
 	 * 
 	 * @since 3.0
 	 */
-	private static class ExclusivePositionUpdater implements IPositionUpdater {
+	protected static class ExclusivePositionUpdater implements IPositionUpdater {
 
 		/** The position category. */
 		private final String fCategory;
@@ -1348,6 +1356,89 @@ public class AtlEditor extends TextEditor {
 		// ensure decoration support has been created and configured.
 		getSourceViewerDecorationSupport(viewer);
 		return viewer;
+	}
+
+	public void toggleLineBreakpoints(ISelection selection) throws CoreException {
+		IResource resource = (IResource)getEditorInput().getAdapter(IResource.class);
+		ITextSelection textSelection = (ITextSelection)selection;
+		int lineNumber = textSelection.getStartLine();
+		int offset = textSelection.getOffset();
+		if (offset == -1) {
+			return;
+		}
+		EObject element = getDebugElement(lineNumber);
+		if (element != null) {
+			String location = (String)element.eGet(AtlEMFConstants.sfLocation);
+			int[] pos = help.getIndexChar(location);
+			int charStart = pos[0];
+			int charEnd = pos[1];
+			int elementLineNumber = Integer.parseInt(location.split("-")[0].split(":")[0]); //$NON-NLS-1$ //$NON-NLS-2$
+
+			IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(
+					AtlDebugModelConstants.ATL_DEBUG_MODEL_ID);
+			for (int i = 0; i < breakpoints.length; i++) {
+				IBreakpoint breakpoint = breakpoints[i];
+				if (resource.equals(breakpoint.getMarker().getResource())) {
+					int bLineNumber = ((ILineBreakpoint)breakpoint).getLineNumber();
+					int bCharStart = ((ILineBreakpoint)breakpoint).getCharStart();
+					int bCharEnd = ((ILineBreakpoint)breakpoint).getCharEnd();
+					if (bLineNumber == elementLineNumber || bCharStart == charStart
+							|| (charStart <= bCharStart && charEnd >= bCharEnd)) {
+						// remove
+						breakpoint.delete();
+						return;
+					}
+				}
+			}
+			// new AtlBreakpoint(resource, location, lineNumber + 1, offset, offset + length);
+			new AtlBreakpoint(resource, location, elementLineNumber, charStart, charEnd);
+		}
+	}
+
+	public void toggleLineBreakpoints(EObject element) throws CoreException {
+		IResource resource = (IResource)getEditorInput().getAdapter(IResource.class);
+		if (element != null) {
+			String location = (String)element.eGet(AtlEMFConstants.sfLocation);
+			int[] pos = help.getIndexChar(location);
+			int charStart = pos[0];
+			int charEnd = pos[1];
+			int elementLineNumber = Integer.parseInt(location.split("-")[0].split(":")[0]); //$NON-NLS-1$ //$NON-NLS-2$
+
+			IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(
+					AtlDebugModelConstants.ATL_DEBUG_MODEL_ID);
+			for (int i = 0; i < breakpoints.length; i++) {
+				IBreakpoint breakpoint = breakpoints[i];
+				if (resource.equals(breakpoint.getMarker().getResource())) {
+					int bLineNumber = ((ILineBreakpoint)breakpoint).getLineNumber();
+					int bCharStart = ((ILineBreakpoint)breakpoint).getCharStart();
+					int bCharEnd = ((ILineBreakpoint)breakpoint).getCharEnd();
+					if (bLineNumber == elementLineNumber || bCharStart == charStart
+							|| (charStart <= bCharStart && charEnd >= bCharEnd)) {
+						// remove
+						breakpoint.delete();
+						return;
+					}
+				}
+			}
+			// new AtlBreakpoint(resource, location, lineNumber + 1, offset, offset + length);
+			new AtlBreakpoint(resource, location, elementLineNumber, charStart, charEnd);
+		}
+	}
+
+	public EObject getDebugElement(int lineNumber) {
+		EObject res = null;
+		if (sourceManager.getModel() != null) {
+			TreeIterator ti = sourceManager.getModel().eAllContents();
+			while (ti.hasNext()) {
+				EObject object = (EObject)ti.next();
+				String location = (String)object.eGet(AtlEMFConstants.sfLocation);
+				int elementLineNumber = Integer.parseInt(location.split("-")[0].split(":")[0]); //$NON-NLS-1$ //$NON-NLS-2$
+				if (elementLineNumber == lineNumber + 1) {
+					res = object;
+				}
+			}
+		}
+		return res;
 	}
 
 }

@@ -24,7 +24,6 @@ public class AtlEditorActionContributor extends TextEditorActionContributor {
 	 * @see org.eclipse.ui.editors.text.TextEditorActionContributor#setActiveEditor(org.eclipse.ui.IEditorPart)
 	 */
 	public void setActiveEditor(IEditorPart part) {
-		// TODO Auto-generated method stub
 		super.setActiveEditor(part);
 		ITextEditor textEditor = part instanceof ITextEditor ? (ITextEditor)part : null;
 
@@ -32,6 +31,7 @@ public class AtlEditorActionContributor extends TextEditorActionContributor {
 		IActionBars bars = getActionBars();
 		bars.setGlobalActionHandler(IAtlActionConstants.INDENT, getAction(textEditor,
 				"org.eclipse.m2m.atl.adt.ui.actions.indentAction")); //$NON-NLS-1$
+		
 	}
 
 }

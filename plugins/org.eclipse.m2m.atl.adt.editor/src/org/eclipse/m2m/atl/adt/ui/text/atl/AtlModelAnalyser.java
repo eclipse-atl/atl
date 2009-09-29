@@ -17,6 +17,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.m2m.atl.common.ATLLogger;
 
 /**
@@ -117,6 +118,36 @@ public class AtlModelAnalyser {
 			while (ti.hasNext()) {
 				EObject object = (EObject)ti.next();
 				int[] elementOffsets = fHelper.getElementOffsets(object, modelOffset);
+				if (elementOffsets != null) {
+					if (elementOffsets[0] <= offset && elementOffsets[1] >= offset) {
+						if (elementOffsets[0] > maxDebOffset) {
+							maxDebOffset = elementOffsets[0];
+							res = object;
+						}
+					}
+				}
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Search the precise element of the given offset.
+	 * 
+	 * @param offset
+	 *            the given offset
+	 * @return the element
+	 * @throws BadLocationException
+	 */
+	public static EObject getLocatedElement(IDocument document, EObject emfRoot, int offset)
+			throws BadLocationException {
+		EObject res = null;
+		if (emfRoot != null) {
+			TreeIterator ti = emfRoot.eResource().getAllContents();
+			int maxDebOffset = -1;
+			while (ti.hasNext()) {
+				EObject object = (EObject)ti.next();
+				int[] elementOffsets = AtlCompletionHelper.getElementOffsets(document, object, 0);
 				if (elementOffsets != null) {
 					if (elementOffsets[0] <= offset && elementOffsets[1] >= offset) {
 						if (elementOffsets[0] > maxDebOffset) {

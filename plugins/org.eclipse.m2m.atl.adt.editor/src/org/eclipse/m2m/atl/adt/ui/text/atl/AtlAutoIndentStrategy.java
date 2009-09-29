@@ -185,11 +185,12 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 	 * @return the indented string buffer
 	 */
 	protected String createIndent(int indents) {
-		String res = new String();
+		String res = ""; //$NON-NLS-1$
 		String indent = createIndent();
 
 		for (int i = 0; i < indents; ++i) {
-			res.concat(indent);
+			// TODO test indentation
+			res = res.concat(indent);
 		}
 
 		return res;

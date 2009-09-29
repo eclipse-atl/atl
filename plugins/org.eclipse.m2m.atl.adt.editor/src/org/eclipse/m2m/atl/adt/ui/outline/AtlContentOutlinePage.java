@@ -12,14 +12,9 @@ package org.eclipse.m2m.atl.adt.ui.outline;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.debug.core.DebugException;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
@@ -28,8 +23,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.Position;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -37,12 +30,10 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
-import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.common.AtlNbCharFile;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -102,9 +93,6 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * equals to -1 in the debug perspective and 1 in the others. TODO put in a preference page
 	 */
 	private int depth = 1;
-
-	/** The editorInput of the textEditor. */
-	private IEditorInput editorInput;
 
 	/**
 	 * <p>
@@ -167,28 +155,6 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 			IDocumentProvider documentProvider) {
 		super();
 		this.textEditor = (AtlEditor)textEditor;
-		this.editorInput = editorInput;
-	}
-
-	/**
-	 * Adds a breakpoint to current selected element of the tree viewer.
-	 */
-	private void addBreakpoint() {
-		IStructuredSelection is = (IStructuredSelection)treeViewer.getSelection();
-		EObject element = (EObject)is.getFirstElement();
-		String location = (String)element.eGet(AtlEMFConstants.sfLocation);
-		int[] pos = help.getIndexChar(location);
-		int charStart = pos[0];
-		int charEnd = pos[1];
-
-		IFileEditorInput ifei = (IFileEditorInput)editorInput;
-		IResource ifile = ifei.getFile();
-		int lineNumber = Integer.parseInt(location.split("-")[0].split(":")[0]); //$NON-NLS-1$ //$NON-NLS-2$
-		try {
-			new AtlBreakpoint(ifile, location, lineNumber, charStart, charEnd);
-		} catch (DebugException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
 	}
 
 	/**
@@ -226,7 +192,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * Creates the actions that will be used in the toolbar of the view and in the context menu of the tree
 	 * viewer.
 	 */
-	public void createActions() {
+	private void createActions() {
 		cutAction = new Action("Cut") { //$NON-NLS-1$
 			public void run() {
 
@@ -248,11 +214,18 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		};
 		pasteAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("paste.gif")); //$NON-NLS-1$
 
-		addBreakPointAction = new Action("Add breakpoint") { //$NON-NLS-1$
+		addBreakPointAction = new Action("Toggle breakpoint") { //$NON-NLS-1$
 			public void run() {
-				addBreakpoint();
+				IStructuredSelection is = (IStructuredSelection)treeViewer.getSelection();
+				EObject element = (EObject)is.getFirstElement();
+				try {
+					textEditor.toggleLineBreakpoints(element);
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
 			}
 		};
+		addBreakPointAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("brkp_obj.gif")); //$NON-NLS-1$
 
 		refreshItemAction = new Action("Refresh") { //$NON-NLS-1$
 			public void run() {
@@ -426,7 +399,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * @return return an array with two value. first value : index of start char second value : index of end
 	 *         char
 	 */
-	public static int[] getPos(EObject eo) {
+	private static int[] getPos(EObject eo) {
 		String location = (String)eo.eGet(AtlEMFConstants.sfLocation);
 		if (location == null) {
 			return null;
@@ -461,43 +434,6 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 			treeViewer.refresh(root);
 			treeViewer.expandToLevel(2);
 		}
-		List positions = getFoldingPositions(eo);
-		// deactivated folding
-		//textEditor.updateFoldingStructure(positions);
-	}
-
-	private static final String[] FOLDING_TYPES = new String[] {"MatchedRule", //$NON-NLS-1$
-			"LazyMatchedRule", //$NON-NLS-1$
-			"CalledRule", //$NON-NLS-1$
-			"Helper", //$NON-NLS-1$
-			"Attribute", //$NON-NLS-1$
-			"InPattern", //$NON-NLS-1$
-			"OutPattern", //$NON-NLS-1$
-			"ActionBlock", //$NON-NLS-1$
-			"RuleVariableDeclaration"}; //$NON-NLS-1$
-
-	private List getFoldingPositions(EObject eo) {
-		IDocument document = textEditor.getViewer().getDocument();
-		List res = new ArrayList();
-		try {
-			TreeIterator iterator = eo.eAllContents();
-			while (iterator.hasNext()) {
-				EObject object = (EObject)iterator.next();
-				for (int i = 0; i < FOLDING_TYPES.length; i++) {
-					if (object.eClass().getName().equals(FOLDING_TYPES[i])) {
-						int[] pos = getPos(object);
-						int length = pos[1] - pos[0];
-						if (document.getNumberOfLines(pos[0], length) > 2) {
-							res.add(new Position(pos[0], length));
-						}
-						break;
-					}
-				}
-			}
-		} catch (Throwable e) {
-			// do nothing
-		}
-		return res;
 	}
 
 	/**
@@ -550,7 +486,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		int[] pos = getPos(element);
 		if (pos != null) {
 			if (pos[1] - pos[0] > 0) {
-				textEditor.setHighlightRange(pos[0], pos[1] - pos[0], false);				
+				textEditor.setHighlightRange(pos[0], pos[1] - pos[0], false);
 			}
 		}
 		treeViewer.setSelection(new StructuredSelection(element), true);
@@ -605,7 +541,4 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		}
 	}
 
-	public EObject getModel() {
-		return root.getUnit();
-	}
 }

@@ -93,6 +93,19 @@ public class AtlCompletionHelper {
 	 * @throws BadLocationException
 	 */
 	public int[] getElementOffsets(EObject element, int baseOffset) throws BadLocationException {
+		return getElementOffsets(document, element, baseOffset);
+	}
+
+	/**
+	 * Compute the right offset from an element, according to the base offset of the model.
+	 * 
+	 * @param document the document
+	 * @param element the given element
+	 * @param baseOffset the base offset
+	 * @return [deboffset, endoffset]
+	 * @throws BadLocationException
+	 */
+	public static int[] getElementOffsets(IDocument document, EObject element, int baseOffset) throws BadLocationException {
 		Object loc = AtlCompletionDataSource.eGet(element, "location"); //$NON-NLS-1$
 		if (loc != null) {
 			String location = loc.toString();
@@ -110,7 +123,7 @@ public class AtlCompletionHelper {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Extracts the prefix of the last typed characters.
 	 * 
