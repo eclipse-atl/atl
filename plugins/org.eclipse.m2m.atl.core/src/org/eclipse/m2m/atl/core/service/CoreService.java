@@ -11,6 +11,8 @@
 package org.eclipse.m2m.atl.core.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -316,7 +318,9 @@ public final class CoreService {
 	 * @return the available launchers names
 	 */
 	public static String[] getLaunchersNames() {
-		return getExtensionsNames(LAUNCHERS_EXTENSION_POINT);
+		List<String> launcherNames = Arrays.asList(getExtensionsNames(LAUNCHERS_EXTENSION_POINT));
+		Collections.sort(launcherNames);
+		return (String[])launcherNames.toArray();
 	}
 
 	/**

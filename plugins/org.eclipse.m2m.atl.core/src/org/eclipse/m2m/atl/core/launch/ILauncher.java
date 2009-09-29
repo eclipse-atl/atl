@@ -34,11 +34,6 @@ public interface ILauncher {
 	String DEBUG_MODE = "debug"; //$NON-NLS-1$
 
 	/**
-	 * A launch in a special profile mode (value <code>"profile"</code>).
-	 */
-	String PROFILE_MODE = "profile"; //$NON-NLS-1$	
-
-	/**
 	 * Returns the {@link ILauncher} name.
 	 * 
 	 * @return the {@link ILauncher} name
@@ -117,7 +112,7 @@ public interface ILauncher {
 	 * @return the transformation return result
 	 */
 	Object launch(String mode, IProgressMonitor monitor, Map<String, Object> options, Object... modules);
-   
+
 	/**
 	 * Loads a transformation module from an {@link InputStream}.
 	 * 
@@ -151,5 +146,12 @@ public interface ILauncher {
 	 * @return the default ModelFactory name
 	 */
 	String getDefaultModelFactoryName();
+
+	/**
+	 * Returns the supported modes.
+	 * 
+	 * @return the supported modes
+	 */
+	String[] getModes();
 
 }
