@@ -74,6 +74,7 @@ public class ASMStackFrame extends StackFrame {
 		ASMOperation op = (ASMOperation)getOperation();
 		ret.append("\tat "); //$NON-NLS-1$
 		ret.append(getOperation());
+		ret.append("#" + getLocation()); //$NON-NLS-1$
 		ret.append('(');
 		ret.append(op.getASM().getName() + ".atl"); //$NON-NLS-1$
 		String location = op.resolveLineNumber(getLocation());
