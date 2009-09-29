@@ -119,6 +119,7 @@ public class StackFrame extends AbstractStackFrame {
 		if (operation instanceof ASMOperation) {
 			ret.append("\tat "); //$NON-NLS-1$
 			ret.append(((ASMOperation)operation).getName());
+			ret.append("#" + getLocation()); //$NON-NLS-1$
 			ret.append('(');
 			ret.append(((ASMOperation)operation).getASM().getName() + ".atl"); //$NON-NLS-1$
 
