@@ -240,4 +240,8 @@ litigation.
          id="org.eclipse.m2m.atl.examples"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.m2m.atl.profiler"
+         version="0.0.0"/>
+
 </feature>
