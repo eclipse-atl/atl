@@ -20,6 +20,7 @@ import java.util.Iterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.engine.Messages;
 import org.eclipse.m2m.atl.engine.emfvm.ASMOperation;
 import org.eclipse.m2m.atl.engine.emfvm.StackFrame;
 import org.eclipse.m2m.atl.engine.emfvm.VMException;
@@ -76,7 +77,7 @@ public class SOTSExpression2 {
 			} else if (ret instanceof String) {
 				ret = ((String)ret) + right.toString();
 			} else {
-				ATLLogger.severe("Could not add type " + ret.getClass() + ".");
+				ATLLogger.severe(Messages.getString("SOTSExpression2_TYPE", new Object[] {ret.getClass(),})); //$NON-NLS-1$
 			}
 		} else {
 			unread(t);
@@ -139,8 +140,8 @@ public class SOTSExpression2 {
 								}
 								col.add(v);
 							} else {
-								throw new VMException(frame, "Could not find operation " + t.value + " on "
-										+ o);
+								throw new VMException(frame, Messages.getString("SOTSExpression2_OPERATION", //$NON-NLS-1$
+										new Object[] {t.value, o,}));
 							}
 
 						}
@@ -178,7 +179,7 @@ public class SOTSExpression2 {
 						match(Token.EXCL);
 						String mename = match(Token.IDENT).value;
 						match(Token.RPAREN);
-						String expectedTypeName = mname + "!" + mename;
+						String expectedTypeName = mname + "!" + mename; //$NON-NLS-1$
 						for (Iterator i = ((ArrayList)ret).iterator(); i.hasNext();) {
 							ame = (EObject)i.next();
 							String typeName = ame.eClass().getName();
@@ -249,7 +250,7 @@ public class SOTSExpression2 {
 	}
 
 	private void error(Token t) throws IOException {
-		throw new IOException("ERROR: unexpected " + t);
+		throw new IOException(Messages.getString("SOTSExpression2_UNEXPECTED", new Object[] {t,})); //$NON-NLS-1$
 	}
 
 	private Token match(int type) throws IOException {
@@ -267,7 +268,7 @@ public class SOTSExpression2 {
 
 	private Token next() throws IOException {
 		Token ret = null;
-		String value = "";
+		String value = ""; //$NON-NLS-1$
 
 		if (readAhead != null) {
 			Token tmp = readAhead;
@@ -289,34 +290,34 @@ public class SOTSExpression2 {
 				ret = next();
 				break;
 			case -1:
-				ret = new Token(Token.EOF, "<EOF>");
+				ret = new Token(Token.EOF, "<EOF>"); //$NON-NLS-1$
 				break;
 			case '.':
-				ret = new Token(Token.DOT, ".");
+				ret = new Token(Token.DOT, "."); //$NON-NLS-1$
 				break;
 			case ',':
-				ret = new Token(Token.COMA, ",");
+				ret = new Token(Token.COMA, ","); //$NON-NLS-1$
 				break;
 			case '!':
-				ret = new Token(Token.EXCL, "!");
+				ret = new Token(Token.EXCL, "!"); //$NON-NLS-1$
 				break;
 			case '=':
-				ret = new Token(Token.EQ, "=");
+				ret = new Token(Token.EQ, "="); //$NON-NLS-1$
 				break;
 			case '+':
-				ret = new Token(Token.PLUS, "+");
+				ret = new Token(Token.PLUS, "+"); //$NON-NLS-1$
 				break;
 			case '[':
-				ret = new Token(Token.LSQUARE, "[");
+				ret = new Token(Token.LSQUARE, "["); //$NON-NLS-1$
 				break;
 			case ']':
-				ret = new Token(Token.RSQUARE, "]");
+				ret = new Token(Token.RSQUARE, "]"); //$NON-NLS-1$
 				break;
 			case '(':
-				ret = new Token(Token.LPAREN, "(");
+				ret = new Token(Token.LPAREN, "("); //$NON-NLS-1$
 				break;
 			case ')':
-				ret = new Token(Token.RPAREN, ")");
+				ret = new Token(Token.RPAREN, ")"); //$NON-NLS-1$
 				break;
 			case '0':
 			case '1':
@@ -400,7 +401,7 @@ public class SOTSExpression2 {
 				} while (((c >= '0') && (c <= '9')) || ((c >= 'A') && (c <= 'Z'))
 						|| ((c >= 'a') && (c <= 'z')) || (c == '_'));
 				in.reset();
-				if (value.equals("ISA")) {
+				if (value.equals("ISA")) { //$NON-NLS-1$
 					ret = new Token(Token.ISA, value);
 				} else {
 					ret = new Token(Token.IDENT, value);
@@ -410,15 +411,16 @@ public class SOTSExpression2 {
 				ret = next(); // ignore '$'
 				break;
 			default:
-				ATLLogger.severe("ERROR: unexpected char \'" + (char)c + "\'.");
+				ATLLogger.severe(Messages.getString(
+						"SOTSExpression2_UNEXPECTED_CHAR", new Object[] {new Character((char)c),})); //$NON-NLS-1$
 				break;
 		}
 
 		return ret;
 	}
 
-	private static String[] tokenNames = {"EOF", "DOT", "COMA", "EXCL", "EQ", "PLUS", "LSQUARE", "RSQUARE",
-			"LPAREN", "RPAREN", "INT", "STRING", "IDENT", "ISA"};
+	private static String[] tokenNames = {"EOF", "DOT", "COMA", "EXCL", "EQ", "PLUS", "LSQUARE", "RSQUARE", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+			"LPAREN", "RPAREN", "INT", "STRING", "IDENT", "ISA"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
 	private class Token {
 		public static final int EOF = 0;
@@ -455,7 +457,7 @@ public class SOTSExpression2 {
 		}
 
 		public String toString() {
-			return tokenNames[type] + ":" + value;
+			return tokenNames[type] + ":" + value; //$NON-NLS-1$
 		}
 
 		public int type;
@@ -463,7 +465,7 @@ public class SOTSExpression2 {
 		public String value;
 	}
 
-	private String exp;
+	protected String exp;
 
 	private Reader in;
 

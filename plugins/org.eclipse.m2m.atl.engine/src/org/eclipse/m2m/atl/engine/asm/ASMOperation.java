@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.engine.Messages;
 
 /**
  * The line number table contains a list of IDs (startLine:startColumn-endLine:endColumn) of source elements
@@ -132,14 +133,15 @@ public class ASMOperation {
 	public void addVariableInstruction(ASMInstructionWithOperand instruction, String varId) {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.get(varId);
 		if (lve == null) {
-			ATLLogger.severe("No slot reserved for variable: " + varId + " used at " + lastLNE + ".");
+			ATLLogger.severe(Messages.getString(
+					"ASMOperation_NO_SLOT_RESERVED", new Object[] {varId, lastLNE,})); //$NON-NLS-1$ 
 		} else {
-			instruction.setOperand("" + lve.slot);
+			instruction.setOperand("" + lve.slot); //$NON-NLS-1$
 			instructions.add(instruction);
 		}
 	}
 
-	private class Label {
+	protected class Label {
 
 		public Label(String name) {
 			this.name = name;
@@ -173,7 +175,7 @@ public class ASMOperation {
 	}
 
 	public String getSignature() {
-		return "<TODO>";
+		return "<TODO>"; //$NON-NLS-1$
 	}
 
 	/**
@@ -197,7 +199,7 @@ public class ASMOperation {
 		return ret.toString();
 	}
 
-	private static int getNbArgs(String s) {
+	protected static int getNbArgs(String s) {
 		int ret = 0;
 
 		s = pattern1.matcher(s).replaceFirst(""); //$NON-NLS-1$
@@ -225,8 +227,8 @@ public class ASMOperation {
 		return s;
 	}
 
-	private static String getOpName(String s) {
-		return s.substring(s.indexOf(".") + 1, s.indexOf("("));
+	protected static String getOpName(String s) {
+		return s.substring(s.indexOf(".") + 1, s.indexOf("(")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	// END SIGNATURE TOOLS
@@ -281,7 +283,7 @@ public class ASMOperation {
 	public int beginLocalVariableEntry(String id, String name) {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.get(id);
 		if (lve != null) {
-			throw new Error("variable id already in use: " + id);
+			throw new Error(Messages.getString("ASMOperation_USED_VARIABLE", new Object[] {id,})); //$NON-NLS-1$
 		}
 		int slot = reserveSlot();
 		localVariableEntries.put(id, new LocalVariableEntry(slot, name, instructions.size(), -1));
@@ -291,7 +293,7 @@ public class ASMOperation {
 	public int endLocalVariableEntry(String id) {
 		LocalVariableEntry lve = (LocalVariableEntry)localVariableEntries.remove(id);
 		if (lve == null) {
-			ATLLogger.severe("Variable id not defined: " + id);
+			ATLLogger.severe(Messages.getString("ASMOperation_UNDEFINED_VARIABLE", new Object[] {id,})); //$NON-NLS-1$
 			return -1;
 		} else {
 			lve.end = instructions.size() - 1;
