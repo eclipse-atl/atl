@@ -20,18 +20,15 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.model.IDebugTarget;
-import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
-import org.eclipse.m2m.atl.adt.debug.core.AtlRunTarget;
 import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.core.ui.vm.asm.ASMFactory;
 import org.eclipse.m2m.atl.core.ui.vm.asm.ASMModelWrapper;
+import org.eclipse.m2m.atl.core.ui.vm.debug.NetworkDebugger;
 import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
@@ -41,7 +38,6 @@ import org.eclipse.m2m.atl.engine.vm.ASMStackFrame;
 import org.eclipse.m2m.atl.engine.vm.ASMXMLReader;
 import org.eclipse.m2m.atl.engine.vm.AtlSuperimposeModule;
 import org.eclipse.m2m.atl.engine.vm.Debugger;
-import org.eclipse.m2m.atl.engine.vm.NetworkDebugger;
 import org.eclipse.m2m.atl.engine.vm.SimpleDebugger;
 import org.eclipse.m2m.atl.engine.vm.VMException;
 import org.eclipse.m2m.atl.engine.vm.AtlSuperimposeModule.AtlSuperimposeModuleException;
@@ -56,7 +52,8 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
  */
 public class RegularVMLauncher implements ILauncher {
 
-	private static final String LAUNCHER_NAME = "Regular VM (with debugger)"; //$NON-NLS-1$
+	/** The {@link ILauncher} extension name. */
+	private static final String LAUNCHER_NAME = "Regular VM"; //$NON-NLS-1$
 
 	private Map<String, IModel> models;
 
@@ -79,7 +76,7 @@ public class RegularVMLauncher implements ILauncher {
 			models.put(referenceModelName, model.getReferenceModel());
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -158,43 +155,12 @@ public class RegularVMLauncher implements ILauncher {
 	 */
 	public Object launch(final String mode, final IProgressMonitor monitor,
 			final Map<String, Object> options, final Object... modules) {
-		IDebugTarget mTarget = null;
-		ILaunch launchParam = (ILaunch)options.get("launch"); //$NON-NLS-1$
 		try {
-			/*
-			 * If the mode chosen was Debug, an ATLDebugTarget was created
-			 */
 			if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-				String portOption = launchParam.getLaunchConfiguration().getAttribute(
-						ATLLaunchConstants.PORT, Integer.valueOf(ATLLaunchConstants.DEFAULT_PORT).toString());
-				if (portOption.equals("")) { //$NON-NLS-1$
-					portOption = Integer.valueOf(ATLLaunchConstants.DEFAULT_PORT).toString();
-				}
-				if (launchParam != null) {
-					// link between the debug target and the source locator
-					launchParam.setSourceLocator(new AtlSourceLocator());
-					mTarget = new AtlDebugTarget(launchParam);
-				}
-				final int port = new Integer(portOption).intValue();
-				Thread th = new Thread() {
-					@Override
-					public void run() {
-						launch(new NetworkDebugger(port, true), options, modules);
-					}
-				};
-				th.start();
-				if (launchParam != null) {
-					((AtlDebugTarget)mTarget).start();
-					launchParam.addDebugTarget(mTarget);
-				}
+				return internalLaunch(
+						new NetworkDebugger(getPort((ILaunch)options.get("launch")), true), options, modules); //$NON-NLS-1$
 			} else {
-				if (launchParam != null) {
-					// Run mode
-					launchParam.setSourceLocator(new AtlSourceLocator());
-					mTarget = new AtlRunTarget(launchParam);
-					launchParam.addDebugTarget(mTarget);
-				}
-				launch(new SimpleDebugger(/* step = */"true".equals(options.get("step")), //$NON-NLS-1$ //$NON-NLS-2$
+				return internalLaunch(new SimpleDebugger(/* step = */"true".equals(options.get("step")), //$NON-NLS-1$ //$NON-NLS-2$
 						/* stepops = */Collections.EMPTY_LIST,
 						/* deepstepops = */Collections.EMPTY_LIST,
 						/* nostepops = */Collections.EMPTY_LIST,
@@ -203,23 +169,44 @@ public class RegularVMLauncher implements ILauncher {
 						"true".equals(options.get("profile")), //$NON-NLS-1$ //$NON-NLS-2$
 						"true".equals(options.get("continueAfterError")) //$NON-NLS-1$ //$NON-NLS-2$
 						), options, modules);
-				if (launchParam != null) {
-					mTarget.terminate();
-				}
 			}
-		} catch (DebugException e) {
-			throw new VMException(null, e.getLocalizedMessage(), e);
-		} catch (CoreException e) {
-			throw new VMException(null, e.getLocalizedMessage(), e);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			throw new VMException(null, e.getLocalizedMessage(), e);
 		} catch (IllegalArgumentException e) {
 			throw new VMException(null, e.getLocalizedMessage(), e);
+		} catch (CoreException e) {
+			throw new VMException(null, e.getLocalizedMessage(), e);
+		} catch (AtlSuperimposeModuleException e) {
+			throw new VMException(null, e.getLocalizedMessage(), e);
 		}
-		return null;
 	}
 
-	private Object launch(Debugger debugger, Map<String, Object> options, Object[] modules) {
+	private int getPort(ILaunch launch) throws CoreException {
+		String portOption = ""; //$NON-NLS-1$
+		if (launch != null) {
+			portOption = launch.getLaunchConfiguration().getAttribute(ATLLaunchConstants.PORT,
+					Integer.valueOf(ATLLaunchConstants.DEFAULT_PORT).toString());
+		}
+		if (portOption.equals("")) { //$NON-NLS-1$
+			portOption = Integer.valueOf(ATLLaunchConstants.DEFAULT_PORT).toString();
+		}
+		return new Integer(portOption).intValue();
+	}
+
+	/**
+	 * Launches the transformation using the specified debugger.
+	 * 
+	 * @param debugger
+	 *            the debugger
+	 * @param options
+	 *            the launch options
+	 * @param modules
+	 *            the transformation modules
+	 * @return the transformation return value
+	 * @throws AtlSuperimposeModuleException
+	 */
+	protected Object internalLaunch(Debugger debugger, Map<String, Object> options, Object[] modules)
+			throws AtlSuperimposeModuleException {
 		Object ret = null;
 		ASM asm = getASMFromObject(modules[0]);
 		ASMModule asmModule = new ASMModule(asm);
@@ -249,15 +236,11 @@ public class RegularVMLauncher implements ILauncher {
 		// Register module operations AFTER lib operations to avoid overwriting 'main'
 		env.registerOperations(asm);
 
-		try {
-			for (int i = 1; i < modules.length; i++) {
-				ASM module = getASMFromObject(modules[i]);
-				AtlSuperimposeModule ami = new AtlSuperimposeModule(env, module);
-				ami.adaptModuleOperations();
-				env.registerOperations(module);
-			}
-		} catch (AtlSuperimposeModuleException e) {
-			throw new VMException(null, e.getLocalizedMessage(), e);
+		for (int i = 1; i < modules.length; i++) {
+			ASM module = getASMFromObject(modules[i]);
+			AtlSuperimposeModule ami = new AtlSuperimposeModule(env, module);
+			ami.adaptModuleOperations();
+			env.registerOperations(module);
 		}
 
 		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -316,4 +299,15 @@ public class RegularVMLauncher implements ILauncher {
 			((ASMEMFModel)asmModel).setCheckSameModel(checkSameModel);
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getModes()
+	 */
+	public String[] getModes() {
+		return new String[]{RUN_MODE, DEBUG_MODE,};
+	}
+	
+	
 }

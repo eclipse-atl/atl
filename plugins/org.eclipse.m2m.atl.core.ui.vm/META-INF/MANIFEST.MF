@@ -6,13 +6,15 @@ Bundle-Version: 3.1.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.core.ui.vm,
- org.eclipse.m2m.atl.core.ui.vm.asm
+ org.eclipse.m2m.atl.core.ui.vm.asm,
+ org.eclipse.m2m.atl.core.ui.vm.debug
 Bundle-ClassPath: .
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.core,
  org.eclipse.m2m.atl.common,
  org.eclipse.m2m.atl.core,
  org.eclipse.m2m.atl.drivers.emf4atl,
- org.eclipse.m2m.atl.adt.debug
+ org.eclipse.m2m.atl.adt.debug,
+ org.eclipse.m2m.atl.debug.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
