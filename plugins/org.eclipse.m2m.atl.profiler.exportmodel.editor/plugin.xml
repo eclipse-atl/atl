@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.1 2009/09/29 12:42:06 wpiers Exp $
+-->
+
+<plugin>
+
+
+  <extension
+    point = "org.eclipse.ui.newWizards">
+    <category
+      id = "org.eclipse.emf.ecore.Wizard.category.ID"
+      name="%_UI_Wizard_category">
+    </category>
+    <wizard
+      id = "org.eclipse.m2m.atl.profiler.exportmodel.presentation.ExportmodelModelWizardID"
+      name = "%_UI_ExportmodelModelWizard_label"
+      class = "org.eclipse.m2m.atl.profiler.exportmodel.presentation.ExportmodelModelWizard"
+      category = "org.eclipse.emf.ecore.Wizard.category.ID"
+      icon = "icons/full/obj16/ExportmodelModelFile.gif">
+      <description>%_UI_ExportmodelModelWizard_description</description>
+      <selection class = "org.eclipse.core.resources.IResource" />
+    </wizard>
+  </extension>
+
+  <extension point = "org.eclipse.ui.editors">
+    <editor
+        id = "org.eclipse.m2m.atl.profiler.exportmodel.presentation.ExportmodelEditorID"
+        name = "%_UI_ExportmodelEditor_label"
+        icon = "icons/full/obj16/ExportmodelModelFile.gif"
+        extensions = "exportmodel"
+        class = "org.eclipse.m2m.atl.profiler.exportmodel.presentation.ExportmodelEditor" 
+        contributorClass="org.eclipse.m2m.atl.profiler.exportmodel.presentation.ExportmodelActionBarContributor" >
+    </editor>
+  </extension>    
+</plugin>
