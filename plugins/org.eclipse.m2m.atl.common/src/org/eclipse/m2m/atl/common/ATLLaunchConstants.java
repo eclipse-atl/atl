@@ -21,7 +21,7 @@ public interface ATLLaunchConstants {
 	String LAUNCH_CONFIGURATION_TYPE = "org.eclipse.m2m.atl.adt.launching.atlTransformation"; //$NON-NLS-1$
 
 	/** Regular VM name, for launch compatibility adaptations. */
-	String REGULAR_VM_NAME = "Regular VM (with debugger)"; //$NON-NLS-1$
+	String REGULAR_VM_NAME = "Regular VM"; //$NON-NLS-1$
 
 	/** EMF VM name, for default values. */
 	String EMF_VM_NAME = "EMF-specific VM"; //$NON-NLS-1$
@@ -106,5 +106,8 @@ public interface ATLLaunchConstants {
 
 	/** ATL extensions. */
 	String[] ATL_EXTENSIONS = new String[] {"atl", "acg"}; //$NON-NLS-1$ //$NON-NLS-2$
+
+	/** The ATL file. */
+	String OPTION_ATL_FILE_PATH = "ATL_FILE"; //$NON-NLS-1$
 
 }
