@@ -72,8 +72,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 			monitor = new NullProgressMonitor();
 		}
 
-		String launcherName = getCompatibleLauncherName(configuration.getAttribute(ATLLaunchConstants.ATL_VM,
-				"")); //$NON-NLS-1$		
+		String launcherName = configuration.getAttribute(ATLLaunchConstants.ATL_VM, ""); //$NON-NLS-1$		
 		String atlCompiler = configuration.getAttribute(ATLLaunchConstants.ATL_COMPILER, ""); //$NON-NLS-1$
 		boolean isRefining = configuration.getAttribute(ATLLaunchConstants.IS_REFINING, false);
 
@@ -245,7 +244,8 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 			final Map<String, InputStream> libraries, ILaunch launchParam, final InputStream... modules) {
 		final String realMode;
 		if (!Arrays.asList(launcher.getModes()).contains(mode)) {
-			ATLLogger.info(Messages.getString("AtlLaunchConfigurationDelegate.UNSUPPORTED_MODE", mode, launcher.getName())); //$NON-NLS-1$
+			ATLLogger.info(Messages.getString(
+					"AtlLaunchConfigurationDelegate.UNSUPPORTED_MODE", mode, launcher.getName())); //$NON-NLS-1$
 			realMode = ILauncher.RUN_MODE;
 		} else {
 			realMode = mode;
@@ -419,20 +419,6 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
-	}
-
-	/**
-	 * Converts the old Regular-VM name.
-	 * 
-	 * @param name
-	 *            the launcher name
-	 * @return the converted name
-	 */
-	public static String getCompatibleLauncherName(String name) {
-		if (name.equals("Regular VM (with debugger)")) { //$NON-NLS-1$
-			return "Regular VM"; //$NON-NLS-1$
-		}
-		return name;
 	}
 
 }
