@@ -2,13 +2,6 @@
 <?eclipse version="3.2"?>
 <plugin>
 
-
-<!-- extension point : expression-->
-	<extension point="org.eclipse.debug.core.watchExpressionDelegates">
-		<watchExpressionDelegate
-			debugModel="org.eclipse.m2m.atl.adt.debug"
-			delegateClass="org.eclipse.m2m.atl.adt.debug.core.AtlWatchExpressionDelegate"/>
-	</extension>
 <!-- extension point : launch method is contained in this class-->
 <!-- extension point : screen configuration for launching ATL transformation-->
 <!-- extension point : debug model presentation-->
@@ -49,9 +42,32 @@
    <extension
          point="org.eclipse.ui.editors.documentProviders">
       <provider
-            class="org.eclipse.m2m.atl.adt.debug.core.DisassemblyDocumentProvider"
+            class="org.eclipse.m2m.atl.adt.debug.ui.DisassemblyDocumentProvider"
             inputTypes="org.eclipse.m2m.atl.adt.debug.ui.AtlDebugModelPresentation$DisassemblyEditorInput"
             id="org.eclipse.m2m.atl.adt.debug.provider1"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            class="org.eclipse.m2m.atl.adt.debug.ui.AtlBreakpointAdapterFactory"
+            adaptableType="org.eclipse.m2m.atl.adt.ui.editor.AtlEditor">
+			<adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+      </factory>
+   </extension>   
+
+<extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="org.eclipse.m2m.atl.adt.editor.AtlEditor"
+            id="atl.rulerActions">
+         <action
+               label="Toggle ATL Breakpoint"
+               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+               style="push"
+               actionID="RulerDoubleClick"
+               id="org.eclipse.m2m.atl.adt.debug.actions.doubleClickBreakpointAction"/>
+      </editorContribution>
    </extension>
 
 </plugin>

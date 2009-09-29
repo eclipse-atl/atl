@@ -13,9 +13,9 @@ package org.eclipse.m2m.atl.adt.debug.ui;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.m2m.atl.adt.debug.core.AtlDebugTarget;
-import org.eclipse.m2m.atl.adt.debug.core.AtlStackFrame;
-import org.eclipse.m2m.atl.adt.debug.core.AtlThread;
+import org.eclipse.m2m.atl.debug.core.AtlDebugTarget;
+import org.eclipse.m2m.atl.debug.core.AtlStackFrame;
+import org.eclipse.m2m.atl.debug.core.AtlThread;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 

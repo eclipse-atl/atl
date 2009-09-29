@@ -8,7 +8,7 @@
  * Contributors:
  *    Frederic Jouault (INRIA) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.m2m.atl.adt.debug.core;
+package org.eclipse.m2m.atl.adt.debug.ui;
 
 import java.util.HashMap;
 import java.util.Map;
