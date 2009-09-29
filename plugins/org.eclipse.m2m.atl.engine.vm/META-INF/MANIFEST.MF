@@ -11,11 +11,10 @@ Export-Package: org.eclipse.m2m.atl.engine.extractors,
  org.eclipse.m2m.atl.engine.injectors,
  org.eclipse.m2m.atl.engine.injectors.xml,
  org.eclipse.m2m.atl.engine.vm,
- org.eclipse.m2m.atl.engine.vm.adwp,
  org.eclipse.m2m.atl.engine.vm.nativelib
 Bundle-ClassPath: .
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.m2m.atl.common,
- org.eclipse.core.resources
+Require-Bundle: org.eclipse.core.resources;resolution:=optional,
+ org.eclipse.core.runtime,
+ org.eclipse.m2m.atl.common
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

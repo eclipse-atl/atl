@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModule;
@@ -242,14 +241,8 @@ public class ASMInterpreter {
 		}
 		// END TEST ASM RESERIALIZATION
 
-		Debugger debugger = null;
-
-		if ("true".equals(params.get("NetworkDebugger"))) {
-			debugger = new NetworkDebugger(ATLLaunchConstants.DEFAULT_PORT, true);
-		} else {
-			debugger = new SimpleDebugger(step, stepops, deepstepops, nostepops, deepnostepops,
+		Debugger debugger = new SimpleDebugger(step, stepops, deepstepops, nostepops, deepnostepops,
 					showStackTrace, showSummary, profile, true);
-		}
 		ASMExecEnv env = new ASMExecEnv(asmModule, debugger, !"false".equals(params.get("cache")));
 		env.addModel(ml.getMOF());
 		String ATL = (String)params.get("ATL");

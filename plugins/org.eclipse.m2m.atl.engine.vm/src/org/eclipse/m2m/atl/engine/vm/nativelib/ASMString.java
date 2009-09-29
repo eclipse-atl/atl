@@ -398,7 +398,6 @@ public class ASMString extends ASMOclAny {
 	 *            The absolute or relative path to a file.
 	 * @return The file in the workspace, or the file in the filesystem if the workspace is not available.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 * @see {@link org.eclipse.core.resources.ResourcesPlugin}
 	 */
 	public static File getFile(String path) {
 		try {

@@ -248,7 +248,7 @@ public class SimpleDebugger implements Debugger {
 	/** Profiling information about operation calls. */
 	private Map operationCalls = new HashMap();
 
-	private class OperationCall implements Comparable {
+	protected class OperationCall implements Comparable {
 		public OperationCall(Operation op) {
 			this.op = op;
 		}

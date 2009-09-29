@@ -115,7 +115,7 @@ public class ASMOperation extends Operation {
 		}
 	}
 
-	private class Label {
+	protected class Label {
 
 		public Label(String name) {
 			this.name = name;

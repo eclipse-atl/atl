@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
@@ -41,7 +40,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ACTInterpreter {
-	
+
 	public ACTInterpreter(PluginClassLoader pcl, ModelLoader ml, ASMModelElement root, Map params, Map models)
 			throws Exception {
 		ACT act = new ACT();
@@ -59,7 +58,7 @@ public class ACTInterpreter {
 		} catch (Exception e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
-	
+
 		for (Iterator i = act.file_s.iterator(); i.hasNext();) {
 			File_ file = (File_)i.next();
 			String filehref = (String)params.get(file.name);
@@ -73,7 +72,7 @@ public class ACTInterpreter {
 			}
 			parameters.put(file.name, filehref);
 		}
-	
+
 		for (Iterator i = act.models.iterator(); i.hasNext();) {
 			Model model = (Model)i.next();
 			if (model instanceof InModel) {
@@ -95,7 +94,7 @@ public class ACTInterpreter {
 				}
 			}
 		}
-	
+
 		for (Iterator i = act.operations.iterator(); i.hasNext();) {
 			Operation op = (Operation)i.next();
 			if (op instanceof Import) {
@@ -112,14 +111,15 @@ public class ACTInterpreter {
 			} else if (op instanceof Query) {
 				ATLLogger.info("Querying...");
 				Query q = (Query)op;
-	
+
 				ASM asm = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(q.asm,
 						parameters))));
 				ASMModule asmModule = new ASMModule(asm);
-	
+
 				Debugger debugger = null;
 				if ("network".equals(q.debug)) {
-					debugger = new NetworkDebugger(ATLLaunchConstants.DEFAULT_PORT, true);
+					throw new VMException(null, "unsupported debug", null);
+					// tool = new NetworkDebugger(ATLLaunchConstants.DEFAULT_PORT, true);
 				} else {
 					boolean step = false;
 					if ("step".equals(q.debug)) {
@@ -134,10 +134,10 @@ public class ACTInterpreter {
 					/* showStackTrace = */true);
 				}
 				ASMExecEnv env = new ASMExecEnv(asmModule, debugger);
-	
+
 				env.addModel((ASMModel)models.get("MOF"));
 				env.addModel((ASMModel)models.get("ATL"));
-	
+
 				for (Iterator j = q.models.iterator(); j.hasNext();) {
 					Model l = (Model)j.next();
 					if ((l instanceof InoutModel) || (l instanceof InModel)) {
@@ -162,23 +162,23 @@ public class ACTInterpreter {
 						ATLLogger.warning(l + " not dealt with yet.");
 					}
 				}
-	
+
 				env.registerOperations(asm);
 				for (Iterator j = q.librarys.iterator(); j.hasNext();) {
 					Library l = (Library)j.next();
-	
+
 					ATLLogger.info("Loading library " + l.name + " from " + l.href + ".");
 					ASM lib = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(
 							l.href, parameters))));
 					env.registerOperations(lib);
 				}
-	
+
 				Map asmParams = new HashMap();
 				for (Iterator j = q.withParams.iterator(); j.hasNext();) {
 					WithParam l = (WithParam)j.next();
 					asmParams.put(l.name, expand(l.value, params));
 				}
-	
+
 				ASMInterpreter ai = new ASMInterpreter(asm, asmModule, env, asmParams);
 				Object value = ai.getReturnValue();
 				if (q.writeTo != null) {
@@ -204,10 +204,11 @@ public class ACTInterpreter {
 				ASM asm = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(tr.asm,
 						parameters))));
 				ASMModule asmModule = new ASMModule(asm);
-	
+
 				Debugger debugger = null;
 				if ("network".equals(tr.debug)) {
-					debugger = new NetworkDebugger(ATLLaunchConstants.DEFAULT_PORT, true);
+					throw new VMException(null, "unsupported debug", null);
+					// tool = new NetworkDebugger(ATLLaunchConstants.DEFAULT_PORT, true);
 				} else {
 					boolean step = false;
 					if ("step".equals(tr.debug)) {
@@ -224,7 +225,7 @@ public class ACTInterpreter {
 				ASMExecEnv env = new ASMExecEnv(asmModule, debugger);
 				env.addModel((ASMModel)models.get("MOF"));
 				env.addModel((ASMModel)models.get("ATL"));
-	
+
 				for (Iterator j = tr.models.iterator(); j.hasNext();) {
 					Model l = (Model)j.next();
 					if ((l instanceof InoutModel) || (l instanceof InModel)) {
@@ -249,27 +250,27 @@ public class ACTInterpreter {
 						ATLLogger.warning(l + " not dealt with yet.");
 					}
 				}
-	
+
 				env.registerOperations(asm);
 				for (Iterator j = tr.librarys.iterator(); j.hasNext();) {
 					Library l = (Library)j.next();
-	
+
 					ATLLogger.info("Loading library " + l.name + " from " + l.href + ".");
 					ASM lib = new ASMXMLReader().read(new BufferedInputStream(new FileInputStream(expand(
 							l.href, parameters))));
 					env.registerOperations(lib);
 				}
-	
+
 				Map asmParams = new HashMap();
 				for (Iterator j = tr.withParams.iterator(); j.hasNext();) {
 					WithParam l = (WithParam)j.next();
 					asmParams.put(l.name, expand(l.value, params));
 				}
-	
+
 				new ASMInterpreter(asm, asmModule, env, asmParams);
 			}
 		}
-	
+
 		for (Iterator i = act.models.iterator(); i.hasNext();) {
 			Model model = (Model)i.next();
 			if (model instanceof OutModel) {
@@ -489,7 +490,7 @@ public class ACTInterpreter {
 		return ret.toString();
 	}
 
-	private class ACT {
+	protected class ACT {
 		public String name;
 
 		public List plugins = new ArrayList();
@@ -503,21 +504,21 @@ public class ACTInterpreter {
 		public List operations = new ArrayList();
 	}
 
-	private class Plugin {
+	protected class Plugin {
 		public Plugin() {
 		}
 
 		public String href;
 	}
 
-	private abstract class File_ {
+	protected abstract class File_ {
 		public File_() {
 		}
 
 		public String name;
 	}
 
-	private class InFile extends File_ {
+	protected class InFile extends File_ {
 		public InFile() {
 		}
 	}
@@ -526,7 +527,7 @@ public class ACTInterpreter {
 	// public OutFile() {}
 	// }
 
-	private class WithParam {
+	protected class WithParam {
 		public WithParam() {
 		}
 
@@ -545,22 +546,22 @@ public class ACTInterpreter {
 		public String metaModel;
 	}
 
-	private class InModel extends Model {
+	protected class InModel extends Model {
 		public InModel() {
 		}
 	}
 
-	private class OutModel extends Model {
+	protected class OutModel extends Model {
 		public OutModel() {
 		}
 	}
 
-	private class InoutModel extends Model {
+	protected class InoutModel extends Model {
 		public InoutModel() {
 		}
 	}
 
-	private class Library {
+	protected class Library {
 		public Library() {
 		}
 
@@ -573,7 +574,7 @@ public class ACTInterpreter {
 
 	}
 
-	private class Transform extends Operation {
+	protected class Transform extends Operation {
 		public Transform() {
 		}
 
@@ -588,7 +589,7 @@ public class ACTInterpreter {
 		public List withParams = new ArrayList();
 	}
 
-	private class Query extends Operation {
+	protected class Query extends Operation {
 		public Query() {
 		}
 
@@ -607,7 +608,7 @@ public class ACTInterpreter {
 		public List withParams = new ArrayList();
 	}
 
-	private class Import extends Operation {
+	protected class Import extends Operation {
 		public Import() {
 		}
 

@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.AtlSuperimposeModule.AtlSuperimposeModuleException;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -100,28 +99,6 @@ public final class AtlLauncher {
 				"true".equals(options.get("profile")), //$NON-NLS-1$ //$NON-NLS-2$
 				"true".equals(options.get("continueAfterError")) //$NON-NLS-1$ //$NON-NLS-2$
 				));
-	}
-
-	/**
-	 * New launch method. Not backward compatible with previous versions of ATL.
-	 * 
-	 * @param asmurl
-	 *            URL to the .asm transformation module
-	 * @param libraries
-	 *            Map of library names mapped to URLs of their .asm files
-	 * @param models
-	 *            Map of model names mapped to (input and output) ASMModels
-	 * @param asmParams
-	 *            Voodoo parameters - always use Collections.EMPTY_MAP
-	 * @param superimpose
-	 *            List of URLs to superimposed .asm transformation modules
-	 * @param options
-	 *            the options map
-	 * @return the launch result
-	 */
-	public Object debug(URL asmurl, Map libraries, Map models, Map asmParams, List superimpose, Map options) {
-		return launch(asmurl, libraries, models, asmParams, superimpose, options, new NetworkDebugger(ATLLaunchConstants.DEFAULT_PORT,
-				true));
 	}
 
 	/**
@@ -238,7 +215,8 @@ public final class AtlLauncher {
 		long startTime = System.currentTimeMillis();
 		ASMInterpreter ai = new ASMInterpreter(asm, asmModule, env, asmParams);
 		long endTime = System.currentTimeMillis();
-		if (printExecutionTime && !(debugger instanceof NetworkDebugger)) {
+		
+		if (printExecutionTime && debugger instanceof SimpleDebugger) {
 			ATLLogger.info(asm.getName() + " executed in " + ((endTime - startTime) / 1000.) + "s."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
