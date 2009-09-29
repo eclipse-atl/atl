@@ -192,9 +192,6 @@ public class EMFModelFactory extends ModelFactory {
 		} catch (IOException e) {
 			throw new ATLCoreException(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND", name), e); //$NON-NLS-1$
 		}
-		if (builtin == null) {
-			throw new ATLCoreException(Messages.getString("EMFModelFactory.BUILT_IN_NOT_FOUND", name)); //$NON-NLS-1$
-		}
 		model.setResource(builtin);
 		model.register();
 		return model;
