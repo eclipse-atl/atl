@@ -303,7 +303,7 @@ endif
 		<ul>
 			<li>comparison operators: &lt;, >, =>, =&lt;;</li>
 			<li>binary operators: *, +, -, /, 
-				<i>div(), max(), min()</i>;
+				<i>max(), min()</i>;
 			</li>
 			<li>unary operator: 
 				<i>abs()</i>.
@@ -315,7 +315,7 @@ endif
 		<p>OCL also defines some operations that are specific to the integer and the real data types:</p>
 		<ul>
 			<li>integer operation: 
-				<i>mod()</i>;
+				<i>div(), mod()</i>;
 			</li>
 			<li>real operations: 
 				<i>floor(), round()</i>.
@@ -656,7 +656,22 @@ endif
 			</li>
 		</ul>
 		<h4 id="Bag_data_type_operations">Bag data type operations</h4>
-		<p>The bag operations defined by the OCL specification are not available with the current ATL implementation.</p>
+		<ul>
+			<li>
+				<i>including(o : oclAny)</i> returns a copy of 
+				<i>self</i> with the element 
+				<i>o'' added at the end of the ordered set if it does not already appear in ''self</i>;
+			</li>
+			<li>
+				<i>excluding(o : oclAny)</i> returns a copy of 
+				<i>self</i> with the 
+				<i>o</i> removed.
+			</li>
+			<li>
+				<i>flatten()</i> returns a sequence directly containing the children of the nested subordinate collections contained by 
+				<i>self</i>;
+			</li>
+		</ul>
 		<h4 id="Iterating_over_collections">Iterating over collections</h4>
 		<p>The OCL specification defines a number of iterative operations, also called iterative expressions, on the collection types. The main difference between a classical operation and an iterative expression on a collection is that the iterator accepts an expression as parameter, whereas operations only deal with data. The definition of an iterative expression includes:</p>
 		<ul>

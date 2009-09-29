@@ -35,5 +35,6 @@
 			<topic href="guide/developer/ATL-Architecture.html#ACG_.28ATL_VM_Code_Generator.29" label="ACG (ATL VM Code Generator)"></topic>
 		</topic>
 	</topic>
+	<topic href="guide/developer/ATL-Bugzilla.html" label="ATL Bugzilla"></topic>
 	<topic href="guide/developer/Updating-This-Document.html" label="Updating This Document"></topic>
 </toc>
