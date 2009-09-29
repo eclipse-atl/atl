@@ -189,7 +189,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		 ****************************************************************************************************/
 
 		groupOthersInformation.setText(Messages.getString("MainAtlTab.OTHERSPARAMETERS")); //$NON-NLS-1$
-		
+
 		Composite groupATLVMs = new Composite(groupOthersInformation, SWT.SHADOW_NONE);
 		Label atlVMLabel = new Label(groupATLVMs, SWT.NULL);
 		atlVMLabel.setText(Messages.getString("AdvancedTab.ATLVM")); //$NON-NLS-1$
@@ -205,7 +205,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 				updateLaunchConfigurationDialog();
 			}
 		});
-		if (isDebug()) {			
+		if (isDebug()) {
 			Label debuggerPortLabel = new Label(groupATLVMs, SWT.NULL);
 			debuggerPortLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 			debuggerPortLabel.setText(Messages.getString("AdvancedTab.DEBUGGER_PORT")); //$NON-NLS-1$
@@ -218,7 +218,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 			});
 		}
 		groupATLVMs.setLayout(new GridLayout(2, false));
-		
+
 		groupLayout = new GridLayout();
 		groupLayout.numColumns = 1;
 		groupLayout.makeColumnsEqualWidth = true;
@@ -254,7 +254,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		Map<String, String> options = new HashMap<String, String>();
 		for (Iterator<String> iterator = buttonArray.keySet().iterator(); iterator.hasNext();) {
 			String optionId = iterator.next();
-			String optionValue = new Boolean(buttonArray.get(optionId).getSelection()).toString();
+			String optionValue = Boolean.valueOf(buttonArray.get(optionId).getSelection()).toString();
 			options.put(optionId, optionValue);
 		}
 		return options;
@@ -287,7 +287,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	private boolean getDefaultValue(String key) {
 		String value = defaultValues.get(key);
 		if (value != null) {
-			return new Boolean(value).booleanValue();
+			return Boolean.valueOf(value).booleanValue();
 		}
 		return false;
 	}
@@ -321,10 +321,9 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 			}
 
 			for (int item = 0; item < atlVMs.getItems().length; item++) {
-				if (atlVMs.getItem(item)
-						.equals(
-								configuration.getAttribute(ATLLaunchConstants.ATL_VM,
-										ATLLaunchConstants.EMF_VM_NAME))) {
+				if (atlVMs.getItem(item).equals(
+						AtlLaunchConfigurationDelegate.getCompatibleLauncherName(configuration.getAttribute(ATLLaunchConstants.ATL_VM,
+								ATLLaunchConstants.EMF_VM_NAME)))) {
 					atlVMs.select(item);
 				}
 			}

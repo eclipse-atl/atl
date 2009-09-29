@@ -642,7 +642,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 					ATLLaunchConstants.EMF_VM_NAME);
 
 			if (!fileName.equals(atlPathText.getText())) {
-				atlPathText.setText(fileName);				
+				atlPathText.setText(fileName);
 			}
 		} catch (CoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -982,7 +982,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		boolean modelHandlersEnabled = launcherNameFromAdvancedTab.equals(ATLLaunchConstants.REGULAR_VM_NAME);
+		boolean modelHandlersEnabled = modelHandlersEnabled(launcherNameFromAdvancedTab);
 
 		modelHandlerLabel.setVisible(modelHandlersEnabled);
 		modelHandlers.setVisible(modelHandlersEnabled);
@@ -1088,6 +1088,10 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		}
 
 		return thisGroupWidgets;
+	}
+
+	private boolean modelHandlersEnabled(String launcherName) {
+		return launcherName.startsWith(ATLLaunchConstants.REGULAR_VM_NAME);
 	}
 
 	private Map<String, Object> buildModelsAndLibrariesControls(Group parent, final String modelName,
@@ -1250,7 +1254,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		if (!atlFile.isAccessible()) {
 			return;
 		}
-		
+
 		AtlSourceManager sourceManager;
 		if (asmFileCache.containsKey(atlFile)) {
 			sourceManager = asmFileCache.get(atlFile);

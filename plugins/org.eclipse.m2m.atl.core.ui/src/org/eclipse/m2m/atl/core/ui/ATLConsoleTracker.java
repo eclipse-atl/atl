@@ -86,7 +86,7 @@ public class ATLConsoleTracker implements IPatternMatchListenerDelegate {
 					}
 				}
 			}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			// do nothing, do not display link
 		}
 	}

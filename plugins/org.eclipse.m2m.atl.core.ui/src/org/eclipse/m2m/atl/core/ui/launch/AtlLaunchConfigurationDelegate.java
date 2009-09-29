@@ -29,8 +29,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.common.ATLLaunchConstants;
@@ -41,6 +43,9 @@ import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.core.service.LauncherService;
 import org.eclipse.m2m.atl.core.ui.ATLCoreUIPlugin;
 import org.eclipse.m2m.atl.core.ui.Messages;
+import org.eclipse.m2m.atl.debug.core.AtlDebugTarget;
+import org.eclipse.m2m.atl.debug.core.AtlRunTarget;
+import org.eclipse.m2m.atl.debug.core.AtlSourceLocator;
 
 /**
  * The method "launch" is launched when you click on the button "Run" or "Debug".
@@ -67,13 +72,14 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 			monitor = new NullProgressMonitor();
 		}
 
-		String launcherName = configuration.getAttribute(ATLLaunchConstants.ATL_VM, ""); //$NON-NLS-1$		
+		String launcherName = getCompatibleLauncherName(configuration.getAttribute(ATLLaunchConstants.ATL_VM,
+				"")); //$NON-NLS-1$		
 		String atlCompiler = configuration.getAttribute(ATLLaunchConstants.ATL_COMPILER, ""); //$NON-NLS-1$
 		boolean isRefining = configuration.getAttribute(ATLLaunchConstants.IS_REFINING, false);
 
 		Map<String, Object> options = new HashMap<String, Object>();
 		boolean isRefiningTraceMode = "atl2006".equals(atlCompiler) && isRefining; //$NON-NLS-1$
-		options.put("isRefiningTraceMode", new Boolean(isRefiningTraceMode).toString()); //$NON-NLS-1$
+		options.put("isRefiningTraceMode", Boolean.valueOf(isRefiningTraceMode).toString()); //$NON-NLS-1$
 		options.put("launch", launch); //$NON-NLS-1$
 		options.put("monitor", monitor); //$NON-NLS-1$
 
@@ -122,6 +128,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 		IFile currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(fileName));
 		String currentExtension = currentAtlFile.getFileExtension().toLowerCase();
 		if (currentExtension.equals("atl")) { //$NON-NLS-1$
+			options.put(ATLLaunchConstants.OPTION_ATL_FILE_PATH, fileName);
 			String currentAsmPath = currentAtlFile.getFullPath().toString().substring(0,
 					currentAtlFile.getFullPath().toString().length() - currentExtension.length())
 					+ "asm"; //$NON-NLS-1$
@@ -162,83 +169,140 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 			return;
 		}
 
-		try {
-			if (isRefiningTraceMode) {
-				/*
-				 * TODO: improve ATL header syntax to recognize inout models. Apply those changes to launch
-				 * config. Current workaround: refined models list must match output models list to be saved,
-				 * with respect to the declaration order.
-				 */
-				Iterator<String> sourceIterator = sourceModels.keySet().iterator();
-				Iterator<String> targetIterator = targetModels.keySet().iterator();
+		if (isRefiningTraceMode) {
+			/*
+			 * TODO: improve ATL header syntax to recognize inout models. Apply those changes to launch
+			 * config. Current workaround: refined models list must match output models list to be saved, with
+			 * respect to the declaration order.
+			 */
+			Iterator<String> sourceIterator = sourceModels.keySet().iterator();
+			Iterator<String> targetIterator = targetModels.keySet().iterator();
 
-				List<String> orderedInput = configuration.getAttribute(ATLLaunchConstants.ORDERED_INPUT,
-						Collections.EMPTY_LIST);
-				if (!orderedInput.isEmpty()) {
-					sourceIterator = orderedInput.iterator();
-				}
+			List<String> orderedInput = configuration.getAttribute(ATLLaunchConstants.ORDERED_INPUT,
+					Collections.EMPTY_LIST);
+			if (!orderedInput.isEmpty()) {
+				sourceIterator = orderedInput.iterator();
+			}
 
-				List<String> orderedOutput = configuration.getAttribute(ATLLaunchConstants.ORDERED_OUTPUT,
-						Collections.EMPTY_LIST);
-				if (!orderedOutput.isEmpty()) {
-					targetIterator = orderedOutput.iterator();
-				}
+			List<String> orderedOutput = configuration.getAttribute(ATLLaunchConstants.ORDERED_OUTPUT,
+					Collections.EMPTY_LIST);
+			if (!orderedOutput.isEmpty()) {
+				targetIterator = orderedOutput.iterator();
+			}
 
-				Map<String, String> newTargetModels = new HashMap<String, String>();
-				newTargetModels.putAll(targetModels);
-				List<String> targetToRemove = new ArrayList<String>();
+			Map<String, String> newTargetModels = new HashMap<String, String>();
+			newTargetModels.putAll(targetModels);
+			List<String> targetToRemove = new ArrayList<String>();
 
-				while (sourceIterator.hasNext()) {
-					String sourceModelName = sourceIterator.next();
-					String sourceMetamodelName = sourceModels.get(sourceModelName);
+			while (sourceIterator.hasNext()) {
+				String sourceModelName = sourceIterator.next();
+				String sourceMetamodelName = sourceModels.get(sourceModelName);
 
-					// Lookup for a matching target model (same metamodel)
-					while (targetIterator.hasNext()) {
-						String targetModelName = targetIterator.next();
-						String targetMetamodelName = targetModels.get(targetModelName);
+				// Lookup for a matching target model (same metamodel)
+				while (targetIterator.hasNext()) {
+					String targetModelName = targetIterator.next();
+					String targetMetamodelName = targetModels.get(targetModelName);
 
-						// Ignore previously used target models
-						if (targetMetamodelName.equals(sourceMetamodelName)
-								&& !targetToRemove.contains(targetModelName)) {
-							String targetModelPath = modelPaths.get(targetModelName);
+					// Ignore previously used target models
+					if (targetMetamodelName.equals(sourceMetamodelName)
+							&& !targetToRemove.contains(targetModelName)) {
+						String targetModelPath = modelPaths.get(targetModelName);
 
-							// Compute the inout model path (for extraction)
-							String refinedModelPathName = LauncherService
-									.getRefinedModelName(sourceModelName);
-							modelPaths.put(refinedModelPathName, targetModelPath);
-							targetToRemove.add(targetModelName);
-							break;
-						}
+						// Compute the inout model path (for extraction)
+						String refinedModelPathName = LauncherService.getRefinedModelName(sourceModelName);
+						modelPaths.put(refinedModelPathName, targetModelPath);
+						targetToRemove.add(targetModelName);
+						break;
 					}
 				}
-
-				for (String key : targetToRemove) {
-					newTargetModels.remove(key);
-				}
-
-				LauncherService.launch(mode, monitor, launcher, Collections.EMPTY_MAP, sourceModels,
-						newTargetModels, modelPaths, options, libraries, modules);
-			} else {
-				LauncherService.launch(mode, monitor, launcher, sourceModels, Collections.EMPTY_MAP,
-						targetModels, modelPaths, options, libraries, modules);
 			}
 
-			if ("true".equals(options.get(AdvancedTab.OPTION_DERIVED.toString()))) { //$NON-NLS-1$
-				// Set generated files as derived
-				for (String targetModel : targetModels.keySet()) {
-					String path = launchConfigModelPaths.get(targetModel);
-					setDerived(path);
-				}
+			for (String key : targetToRemove) {
+				newTargetModels.remove(key);
 			}
 
-		} catch (ATLCoreException e) {
-			ATLLogger.severe(e.getMessage());
-			return;
-		} catch (ATLExecutionException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		} finally {
-			monitor.done();
+			launchOrDebug(mode, monitor, launcher, Collections.EMPTY_MAP, sourceModels, newTargetModels,
+					modelPaths, options, libraries, launch, modules);
+		} else {
+			launchOrDebug(mode, monitor, launcher, sourceModels, Collections.EMPTY_MAP, targetModels,
+					modelPaths, options, libraries, launch, modules);
 		}
+
+		if ("true".equals(options.get(AdvancedTab.OPTION_DERIVED.toString()))) { //$NON-NLS-1$
+			// Set generated files as derived
+			for (String targetModel : targetModels.keySet()) {
+				String path = launchConfigModelPaths.get(targetModel);
+				setDerived(path);
+			}
+		}
+
+	}
+
+	private static Object launchOrDebug(final String mode, final IProgressMonitor monitor,
+			final ILauncher launcher, final Map<String, String> sourceModels,
+			final Map<String, String> sourceTargetModels, final Map<String, String> targetModels,
+			final Map<String, String> modelPaths, final Map<String, Object> options,
+			final Map<String, InputStream> libraries, ILaunch launchParam, final InputStream... modules) {
+		final String realMode;
+		if (!Arrays.asList(launcher.getModes()).contains(mode)) {
+			ATLLogger.info(Messages.getString("AtlLaunchConfigurationDelegate.UNSUPPORTED_MODE", mode, launcher.getName())); //$NON-NLS-1$
+			realMode = ILauncher.RUN_MODE;
+		} else {
+			realMode = mode;
+		}
+		/*
+		 * If the mode chosen was Debug, an ATLDebugTarget was created
+		 */
+		if (realMode.equals(ILaunchManager.DEBUG_MODE)) {
+			launchParam.setSourceLocator(new AtlSourceLocator());
+			final AtlDebugTarget mTarget = new AtlDebugTarget(launchParam);
+			Thread th = new Thread() {
+				@Override
+				public void run() {
+					try {
+						LauncherService.launch(realMode, monitor, launcher, sourceModels, sourceTargetModels,
+								targetModels, modelPaths, options, libraries, modules);
+						// mTarget.terminate();
+						// } catch (DebugException e) {
+						// ATLLogger.severe(e.getMessage());
+					} catch (ATLCoreException e) {
+						ATLLogger.severe(e.getMessage());
+						return;
+					} catch (ATLExecutionException e) {
+						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+					} finally {
+						monitor.done();
+					}
+				}
+			};
+			th.start();
+
+			mTarget.start();
+			launchParam.addDebugTarget(mTarget);
+
+		} else {
+
+			// Run mode
+			launchParam.setSourceLocator(new AtlSourceLocator());
+			AtlRunTarget mTarget = new AtlRunTarget(launchParam);
+			launchParam.addDebugTarget(mTarget);
+			try {
+				LauncherService.launch(realMode, monitor, launcher, sourceModels, sourceTargetModels,
+						targetModels, modelPaths, options, libraries, modules);
+				mTarget.terminate();
+			} catch (ATLCoreException e) {
+				ATLLogger.severe(e.getMessage());
+				return null;
+			} catch (DebugException e) {
+				ATLLogger.severe(e.getMessage());
+				return null;
+			} catch (ATLExecutionException e) {
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			} finally {
+				monitor.done();
+			}
+		}
+		return null;
 	}
 
 	private static boolean addLaunchedModule(IFile file) {
@@ -248,17 +312,15 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 			return false;
 		}
 		IFile atlFile = file;
-		if (atlFile != null) {
-			String ext = atlFile.getFileExtension().toLowerCase();
-			if (ext.equals("asm")) { //$NON-NLS-1$
-				String path = atlFile.getFullPath().toString().substring(0,
-						atlFile.getFullPath().toString().length() - ext.length())
-						+ "atl"; //$NON-NLS-1$
-				atlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
-			}
-			if (atlFile.isAccessible()) {
-				moduleFilesByModuleName.put(computeModuleName(file), atlFile);
-			}
+		String ext = atlFile.getFileExtension().toLowerCase();
+		if (ext.equals("asm")) { //$NON-NLS-1$
+			String path = atlFile.getFullPath().toString().substring(0,
+					atlFile.getFullPath().toString().length() - ext.length())
+					+ "atl"; //$NON-NLS-1$
+			atlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
+		}
+		if (atlFile.isAccessible()) {
+			moduleFilesByModuleName.put(computeModuleName(file), atlFile);
 		}
 		return true;
 	}
@@ -288,9 +350,11 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 					res = line.split("\\\"")[1]; //$NON-NLS-1$
 					buffer.close();
 					streamReader.close();
-					break;
+					return res;
 				}
 			}
+			buffer.close();
+			streamReader.close();
 		} catch (Throwable e) {
 			// DO NOTHING
 		}
@@ -355,6 +419,20 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
+	}
+
+	/**
+	 * Converts the old Regular-VM name.
+	 * 
+	 * @param name
+	 *            the launcher name
+	 * @return the converted name
+	 */
+	public static String getCompatibleLauncherName(String name) {
+		if (name.equals("Regular VM (with debugger)")) { //$NON-NLS-1$
+			return "Regular VM"; //$NON-NLS-1$
+		}
+		return name;
 	}
 
 }
