@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.m2m.atl.debug.core;singleton:=true
+Bundle-Version: 3.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.eclipse.debug.core;visibility:=reexport,
+ org.eclipse.core.runtime,
+ org.eclipse.m2m.atl.common,
+ org.eclipse.m2m.atl.core;visibility:=reexport
+Export-Package: org.eclipse.m2m.atl.debug.core,
+ org.eclipse.m2m.atl.debug.core.adwp
+Bundle-Activator: org.eclipse.m2m.atl.debug.core.AtlCoreDebugPlugin
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
+Bundle-Vendor: %providerName
