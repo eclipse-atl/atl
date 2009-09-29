@@ -217,7 +217,7 @@ public final class ServiceTransformationUtil {
 			final ModelLoader ml = amh.createModelLoader();
 			ASMModel tcs = loadModel(
 					"TCS", ml.getMOF(), ml, "resources/TCS.ecore", null, false, false, //$NON-NLS-1$ //$NON-NLS-2$
-					"org.eclipse.m2m.atl.service.core"); //$NON-NLS-3$
+					"org.eclipse.m2m.atl.service.core");  //$NON-NLS-1$
 
 			Map tempParam = new HashMap();
 
@@ -292,7 +292,7 @@ public final class ServiceTransformationUtil {
 
 			final AtlModelHandler amh = AtlModelHandler.getHandler(metamodel);
 			final ModelLoader ml = amh.createModelLoader();
-			final ASMModel model = ml.newModel(name, "model.xmi", metamodel);
+			final ASMModel model = ml.newModel(name, "model.xmi", metamodel); //$NON-NLS-1$
 			final TCSInjector inj = new TCSInjector();
 
 			final ClassLoader oldCl = Thread.currentThread().getContextClassLoader();
@@ -303,9 +303,9 @@ public final class ServiceTransformationUtil {
 					.loadClass2("org.eclipse.gmt.tcs.injector." + metamodelName + "Parser", true); //$NON-NLS-1$ //$NON-NLS-2$
 
 			Map injParams = new HashMap();
-			injParams.put("name", metamodelName);
-			injParams.put("lexerClass", lexer);
-			injParams.put("parserClass", parser);
+			injParams.put("name", metamodelName); //$NON-NLS-1$
+			injParams.put("lexerClass", lexer); //$NON-NLS-1$
+			injParams.put("parserClass", parser); //$NON-NLS-1$
 			inj.inject(model, in, injParams);
 			in.close();
 

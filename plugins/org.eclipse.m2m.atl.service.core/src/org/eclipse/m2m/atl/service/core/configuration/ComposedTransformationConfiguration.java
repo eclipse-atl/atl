@@ -93,7 +93,7 @@ public class ComposedTransformationConfiguration extends TransformationConfigura
 		} else {
 			try {
 				models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), ml, path,
-						null, false, pluginId)); //$NON-NLS-1$
+						null, false, pluginId));
 			} catch (ServiceException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

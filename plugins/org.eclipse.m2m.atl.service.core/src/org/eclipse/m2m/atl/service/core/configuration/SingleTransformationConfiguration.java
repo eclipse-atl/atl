@@ -78,7 +78,7 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 				transformation.addInNotPreloadedList(name);
 			} else {
 				models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), ml, path, null,
-						false, pluginId)); //$NON-NLS-1$
+						false, pluginId)); 
 			}
 			transformation.addInModel(name, name);
 		} catch (ServiceException e) {
@@ -104,7 +104,7 @@ public class SingleTransformationConfiguration extends TransformationConfigurati
 	 */
 	public void addOutModel(String name, String fileName, String metamodel, ModelLoader ml) {
 		// TODO
-		models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), ml, fileName)); //$NON-NLS-1$
+		models.put(name, new Model(name, ((Model)models.get(metamodel)).getAsmModel(), ml, fileName)); 
 		transformation.addOutModel(name, name, metamodel);
 	}
 

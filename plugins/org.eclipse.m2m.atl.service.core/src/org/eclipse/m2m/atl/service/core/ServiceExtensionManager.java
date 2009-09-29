@@ -234,12 +234,12 @@ public final class ServiceExtensionManager {
 			ASMModel aslMM = ServiceTransformationUtil
 					.loadModel(
 							"ASL", ml.getMOF(), ml, "resources/ASL/ASL.ecore", "", false, false, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-							"org.eclipse.m2m.atl.service.core"); //$NON-NLS-4$
+							"org.eclipse.m2m.atl.service.core");  //$NON-NLS-1$
 			ASMModel sample = ServiceTransformationUtil
 					.ebnfInjection(
 							"sample-ASL", aslPath, aslMM, new HashMap(), //$NON-NLS-1$
-							"resources/ASL/ASL-importer.jar", "ASL", //$NON-NLS-2$ //$NON-NLS-3$
-							"org.eclipse.m2m.atl.service.core"); //$NON-NLS-4$
+							"resources/ASL/ASL-importer.jar", "ASL",  //$NON-NLS-1$//$NON-NLS-2$ 
+							"org.eclipse.m2m.atl.service.core");  //$NON-NLS-1$
 			Set modelElements = sample.getElementsByType("ASL"); //$NON-NLS-1$
 			for (Iterator it = modelElements.iterator(); it.hasNext();) {
 				ASMModelElement me = (ASMModelElement)it.next();

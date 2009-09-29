@@ -201,8 +201,8 @@ public class Model {
 							path,
 							asmMetamodel,
 							this.injector.params,
-							(String)this.injector.params.get("parserPath"), 
-							asmMetamodel.getName(), pluginId); //$NON-NLS-1$
+							(String)this.injector.params.get("parserPath"),  //$NON-NLS-1$
+							asmMetamodel.getName(), pluginId); 
 		}
 	}
 
