@@ -46,22 +46,17 @@ public class EMFExtractor implements IExtractor {
 	public void extract(IModel sourceModel, String target, Map<String, Object> options)
 			throws ATLCoreException {
 		if (target != null) {
-			if (((EMFModel)sourceModel).getResource() != null) {
-				recreateResourceIfNeeded((EMFModel)sourceModel, URI.createURI(target));
-				Map<String, Object> extractOptions = new HashMap<String, Object>();
-				extractOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1"); //$NON-NLS-1$
-				extractOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
-				if (options != null) {
-					extractOptions.putAll(options);
-				}
-				try {
-					((EMFModel)sourceModel).getResource().save(extractOptions);
-				} catch (IOException e) {
-					throw new ATLCoreException(e.getMessage(), e);
-				}
-			} else {
-				throw new ATLCoreException(Messages.getString(
-						"EMFExtractor.NO_RESOURCE", new Object[] {target})); //$NON-NLS-1$
+			recreateResourceIfNeeded((EMFModel)sourceModel, URI.createURI(target));
+			Map<String, Object> extractOptions = new HashMap<String, Object>();
+			extractOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1"); //$NON-NLS-1$
+			extractOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
+			if (options != null) {
+				extractOptions.putAll(options);
+			}
+			try {
+				((EMFModel)sourceModel).getResource().save(extractOptions);
+			} catch (IOException e) {
+				throw new ATLCoreException(e.getMessage(), e);
 			}
 		} else {
 			throw new ATLCoreException(Messages.getString("EMFExtractor.NO_PATH")); //$NON-NLS-1$
@@ -103,6 +98,11 @@ public class EMFExtractor implements IExtractor {
 	 */
 	public void extract(IModel sourceModel, OutputStream target, Map<String, Object> options)
 			throws ATLCoreException {
+		if (((EMFModel)sourceModel).getResource() == null) {
+			((EMFModel)sourceModel).setResource(((EMFModel)sourceModel).getModelFactory().getResourceSet()
+					.createResource(URI.createURI("tmp"))); //$NON-NLS-1$
+			return;
+		}
 		Map<String, Object> extractOptions = new HashMap<String, Object>();
 		extractOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1"); //$NON-NLS-1$
 		extractOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
@@ -110,12 +110,7 @@ public class EMFExtractor implements IExtractor {
 			extractOptions.putAll(options);
 		}
 		try {
-			if (((EMFModel)sourceModel).getResource() != null) {
-				((EMFModel)sourceModel).getResource().save(target, extractOptions);
-			} else {
-				throw new ATLCoreException(Messages.getString(
-						"EMFExtractor.NO_RESOURCE", "OutputStream")); //$NON-NLS-1$ //$NON-NLS-2$
-			}
+			((EMFModel)sourceModel).getResource().save(target, extractOptions);
 		} catch (IOException e) {
 			throw new ATLCoreException(e.getMessage(), e);
 		}
@@ -130,6 +125,10 @@ public class EMFExtractor implements IExtractor {
 	 *            the target {@link URI} with the correct extension
 	 */
 	protected static void recreateResourceIfNeeded(EMFModel model, URI uri) {
+		if (model.getResource() == null) {
+			model.setResource(model.getModelFactory().getResourceSet().createResource(uri));
+			return;
+		}
 		if (model.getEmfResourceFactory() == null) {
 			// recreates the resource only if no correct factory has been initialized
 			ResourceSet resourceSet = model.getModelFactory().getResourceSet();
