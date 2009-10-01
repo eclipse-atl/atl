@@ -62,12 +62,26 @@
             targetID="org.eclipse.m2m.atl.adt.editor.AtlEditor"
             id="atl.rulerActions">
          <action
-               label="Toggle ATL Breakpoint"
-               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
-               style="push"
                actionID="RulerDoubleClick"
-               id="org.eclipse.m2m.atl.adt.debug.actions.doubleClickBreakpointAction"/>
+               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+               icon="icons/breakpoint.gif"
+               id="org.eclipse.m2m.atl.adt.debug.actions.doubleClickBreakpointAction"
+               label="Toggle ATL Breakpoint"
+               style="push"/>
       </editorContribution>
    </extension>
-
+  <extension
+         point="org.eclipse.ui.popupMenus">
+      <viewerContribution
+            targetID="org.eclipse.m2m.atl.adt.editor.AtlEditor.RulerContext"
+            id="org.eclipse.m2m.atl.adt.editor.actions">
+         <action
+               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+               icon="icons/breakpoint.gif"
+               id="org.eclipse.m2m.atl.adt.debug.actions.doubleClickBreakpointAction"
+               label="Toggle ATL Breakpoint"
+               menubarPath="additions">
+         </action>
+      </viewerContribution>
+   </extension>
 </plugin>
