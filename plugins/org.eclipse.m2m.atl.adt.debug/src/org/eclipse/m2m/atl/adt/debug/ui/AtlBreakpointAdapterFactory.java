@@ -16,9 +16,9 @@ import org.eclipse.debug.ui.actions.IToggleBreakpointsTarget;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
- * Creates a toggle breakpoint adapter factory. This factory is used to create a new Acceleo breakpoint.
+ * Creates a toggle breakpoint adapter factory. This factory is used to create a new ATL breakpoint.
  * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class AtlBreakpointAdapterFactory implements IAdapterFactory {
 

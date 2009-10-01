@@ -20,9 +20,9 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
- * Adapter to create breakpoints in Acceleo files.
+ * Adapter to create breakpoints in ATL files.
  * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class AtlBreakpointAdapter implements IToggleBreakpointsTarget {
 
@@ -58,12 +58,12 @@ public class AtlBreakpointAdapter implements IToggleBreakpointsTarget {
 	}
 
 	/**
-	 * Returns the editor being used to edit a Acceleo file, associated with the given part, or
+	 * Returns the editor being used to edit a ATL file, associated with the given part, or
 	 * <code>null</code> if none.
 	 * 
 	 * @param part
 	 *            workbench part
-	 * @return the editor being used to edit a Acceleo file, associated with the given part, or
+	 * @return the editor being used to edit a ATL file, associated with the given part, or
 	 *         <code>null</code> if none
 	 */
 	private ITextEditor getEditor(IWorkbenchPart part) {
