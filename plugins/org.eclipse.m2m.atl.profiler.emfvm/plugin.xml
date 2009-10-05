@@ -5,7 +5,9 @@
          point="org.eclipse.m2m.atl.core.launcher">
       <launcher
             class="org.eclipse.m2m.atl.profiler.emfvm.ProfilerLauncher"
-            name="EMF-specific VM Profiler">
+            mode="run"
+            name="EMF-specific VM Profiler"
+            parent="EMF-specific VM">
       </launcher>
    </extension>
 </plugin>
