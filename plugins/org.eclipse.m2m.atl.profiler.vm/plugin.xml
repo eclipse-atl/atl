@@ -5,7 +5,9 @@
          point="org.eclipse.m2m.atl.core.launcher">
       <launcher
             class="org.eclipse.m2m.atl.profiler.vm.ProfilerLauncher"
-            name="Regular VM Profiler">
+            mode="run"
+            name="Regular VM Profiler"
+            parent="Regular VM">
       </launcher>
    </extension>
 
