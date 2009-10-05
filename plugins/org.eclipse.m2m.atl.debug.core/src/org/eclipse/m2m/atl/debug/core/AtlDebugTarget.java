@@ -166,7 +166,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	 * Starts debug.
 	 */
 	public void start() {
-		ATLLogger.info(Messages.getString("AtlDebugTarget.CONNECTIONDEBUGEE")); //$NON-NLS-1$
+//		ATLLogger.info(Messages.getString("AtlDebugTarget.CONNECTIONDEBUGEE")); //$NON-NLS-1$
 		try {
 			do {
 				try {
@@ -189,13 +189,13 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException ie) {
-						ATLLogger.info(Messages.getString("AtlDebugTarget.CONNECTIONPROBLEMS")); //$NON-NLS-1$
+						ATLLogger.severe(Messages.getString("AtlDebugTarget.CONNECTIONPROBLEMS")); //$NON-NLS-1$
 					}
 				}
 			} while (socket == null);
 
 			debugger = new ADWPDebugger(socket.getInputStream(), socket.getOutputStream());
-			ATLLogger.info(Messages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
+//			ATLLogger.info(Messages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
 			state = STATE_SUSPENDED;
 			
 			threads = new AtlThread[1];
