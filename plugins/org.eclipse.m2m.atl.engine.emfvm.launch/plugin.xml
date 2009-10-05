@@ -7,19 +7,22 @@
             class="org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMUILauncher"
             name="EMF-specific VM">          
          <option
-               description="Run mode only: print execution times to console"
+               description="Print execution times to console"
+               mode="run"
                name="printExecutionTime"></option>
          <option
                description="Allow inter-model references"
                name="allowInterModelReferences"></option>
          <option
-               description="Run mode only: print execution information to console for each executed bytecode (very verbose!)"
+               description="Print execution information to console for each executed bytecode (very verbose!)"
+               mode="run"
                name="step"></option>
          <option
                description="Support UML2 stereotypes"
                name="supportUML2Stereotypes"></option>
          <option
                description="Disassembly mode"
+               mode="debug"
                name="disassemblyMode">
          </option>
       </launcher>
