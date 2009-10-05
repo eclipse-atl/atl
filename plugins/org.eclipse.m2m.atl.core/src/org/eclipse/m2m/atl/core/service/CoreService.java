@@ -11,7 +11,6 @@
 package org.eclipse.m2m.atl.core.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -299,18 +298,18 @@ public final class CoreService {
 	}
 
 	private static String[] getExtensionsNames(String extensionId) {
-		List<String> launcherNames = new ArrayList<String>();
+		List<String> names = new ArrayList<String>();
 		if (Platform.isRunning()) {
 			final IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(extensionId)
 					.getExtensions();
 			for (int i = 0; i < extensions.length; i++) {
 				final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
 				for (int j = 0; j < configElements.length; j++) {
-					launcherNames.add(configElements[j].getAttribute("name")); //$NON-NLS-1$
+					names.add(configElements[j].getAttribute("name")); //$NON-NLS-1$
 				}
 			}
 		}
-		return launcherNames.toArray(new String[] {});
+		return names.toArray(new String[] {});
 	}
 
 	/**
@@ -319,9 +318,34 @@ public final class CoreService {
 	 * @return the available launchers names
 	 */
 	public static String[] getLaunchersNames() {
-		List<String> launcherNames = Arrays.asList(getExtensionsNames(LAUNCHERS_EXTENSION_POINT));
-		Collections.sort(launcherNames);
-		return (String[])launcherNames.toArray();
+		return getLaunchersNames(null);
+	}
+
+	/**
+	 * Returns the available launchers names.
+	 * 
+	 * @param mode
+	 *            the launch mode restriction
+	 * @return the available launchers names
+	 */
+	public static String[] getLaunchersNames(String mode) {
+		List<String> names = new ArrayList<String>();
+		if (Platform.isRunning()) {
+			final IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(
+					LAUNCHERS_EXTENSION_POINT).getExtensions();
+			for (int i = 0; i < extensions.length; i++) {
+				final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
+				for (int j = 0; j < configElements.length; j++) {
+					String launcherMode = configElements[j].getAttribute("mode"); //$NON-NLS-1$
+					if (mode == null
+							|| (mode != null && (mode.equals(launcherMode) || launcherMode == null))) {
+						names.add(configElements[j].getAttribute("name").toString()); //$NON-NLS-1$
+					}					
+				}
+			}
+		}
+		Collections.<String>sort(names);
+		return names.toArray(new String[] {});
 	}
 
 	/**
@@ -359,6 +383,19 @@ public final class CoreService {
 	 * @return the options Map
 	 */
 	public static Map<String, String> getLauncherOptions(String launcherName) {
+		return getLauncherOptions(launcherName, null);
+	}
+
+	/**
+	 * Returns the options Map (id, description) for the given launcher, in the given mode.
+	 * 
+	 * @param launcherName
+	 *            the launcher name
+	 * @param mode
+	 *            the launch mode
+	 * @return the options Map
+	 */
+	public static Map<String, String> getLauncherOptions(String launcherName, String mode) {
 		if (Platform.isRunning()) {
 			final IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(
 					LAUNCHERS_EXTENSION_POINT).getExtensions();
@@ -369,8 +406,16 @@ public final class CoreService {
 						Map<String, String> optionsMap = new HashMap<String, String>();
 						IConfigurationElement[] options = configElements[j].getChildren("option"); //$NON-NLS-1$
 						for (int k = 0; k < options.length; k++) {
-							optionsMap.put(options[k].getAttribute("name"), options[k] //$NON-NLS-1$
-									.getAttribute("description")); //$NON-NLS-1$
+							String optionMode = options[k].getAttribute("mode"); //$NON-NLS-1$
+							if (mode == null
+									|| (mode != null && (mode.equals(optionMode) || optionMode == null))) {
+								optionsMap.put(options[k].getAttribute("name"), options[k] //$NON-NLS-1$
+										.getAttribute("description")); //$NON-NLS-1$
+							}
+						}
+						String parentLauncher = configElements[j].getAttribute("parent"); //$NON-NLS-1$
+						if (parentLauncher != null) {
+							optionsMap.putAll(getLauncherOptions(parentLauncher, mode));
 						}
 						return optionsMap;
 					}
