@@ -195,7 +195,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		atlVMLabel.setText(Messages.getString("AdvancedTab.ATLVM")); //$NON-NLS-1$
 		atlVMLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		atlVMs = new Combo(groupATLVMs, SWT.NULL | SWT.READ_ONLY);
-		atlVMs.setItems(CoreService.getLaunchersNames());
+		atlVMs.setItems(CoreService.getLaunchersNames(getLaunchConfigurationDialog().getMode()));
 		atlVMs.select(0);
 		atlVMs.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 		atlVMs.addModifyListener(new ModifyListener() {
@@ -267,7 +267,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		buttonArray = new HashMap<String, Button>();
 		Map<String, String> options = new LinkedHashMap<String, String>();
 		options.putAll(baseOptions);
-		options.putAll(CoreService.getLauncherOptions(atlVMs.getItem(atlVMs.getSelectionIndex())));
+		options.putAll(CoreService.getLauncherOptions(atlVMs.getItem(atlVMs.getSelectionIndex()), getLaunchConfigurationDialog().getMode()));
 		for (Iterator<Map.Entry<String, String>> iterator = options.entrySet().iterator(); iterator.hasNext();) {
 			Map.Entry<String, String> option = iterator.next();
 			final Button newCheckButton = new Button(groupOthersInformation, SWT.CHECK);
