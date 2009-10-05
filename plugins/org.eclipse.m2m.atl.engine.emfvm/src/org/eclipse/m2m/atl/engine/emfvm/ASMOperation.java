@@ -10,12 +10,13 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.30 2009/09/29 12:52:49 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.31 2009/10/05 16:42:59 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -135,7 +136,7 @@ public class ASMOperation extends Operation {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#resolveLineNumber(int)
 	 */
 	@Override
@@ -193,7 +194,7 @@ public class ASMOperation extends Operation {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#resolveVariableName(int, int)
 	 */
 	@Override
@@ -284,7 +285,7 @@ public class ASMOperation extends Operation {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#getName()
 	 */
 	@Override
@@ -423,7 +424,7 @@ public class ASMOperation extends Operation {
 							s = execEnv.getModelAdapter().invoke(m, self, arguments);
 						}
 
-						switch(bytecode.getOpcode()) {
+						switch (bytecode.getOpcode()) {
 							case Bytecode.CALL:
 								if (s == null) {
 									// TODO: throw new VMException(frame, "Operation " + bytecode.getOperand() + "did not return a value.");
@@ -768,6 +769,16 @@ public class ASMOperation extends Operation {
 		}
 		sig.append(')');
 		return sig.toString();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.Operation#getInstructions()
+	 */
+	@Override
+	public List<?> getInstructions() {
+		return Arrays.asList(bytecodes);
 	}
 
 	/**
