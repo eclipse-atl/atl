@@ -139,6 +139,8 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 
 	private Pattern moduleName = Pattern.compile("^.*/(.*)\\.a(tl|sm)$"); //$NON-NLS-1$
 
+	private boolean stopInMain;
+
 	/**
 	 * Creates an new Debug target for the given launch.
 	 * 
@@ -151,8 +153,9 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 		// DebugPlugin.getDefault().addDebugEventListener(this);
 
 		try {
-			disassemblyMode = Boolean.valueOf((String)(launch.getLaunchConfiguration().getAttribute(
-					ATLLaunchConstants.OPTIONS, Collections.EMPTY_MAP)).get("disassemblyMode")) //$NON-NLS-1$
+			disassemblyMode = Boolean.valueOf(
+					(String)(launch.getLaunchConfiguration().getAttribute(ATLLaunchConstants.OPTIONS,
+							Collections.EMPTY_MAP)).get("disassemblyMode")) //$NON-NLS-1$
 					.booleanValue();
 		} catch (CoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -162,12 +165,16 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 		this.launch = launch;
 	}
 
+	public void setStopInMain(boolean stopInMain) {
+		this.stopInMain = stopInMain;
+	}
+
 	/**
 	 * Starts debug.
 	 */
 	public void start() {
-//		ATLLogger.info(Messages.getString("AtlDebugTarget.CONNECTIONDEBUGEE")); //$NON-NLS-1$
 		try {
+			// Connection
 			do {
 				try {
 					try {
@@ -197,7 +204,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 			debugger = new ADWPDebugger(socket.getInputStream(), socket.getOutputStream());
 //			ATLLogger.info(Messages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
 			state = STATE_SUSPENDED;
-			
+
 			threads = new AtlThread[1];
 			threads[0] = new AtlThread(AtlDebugModelConstants.THREADNAME, this);
 
@@ -265,6 +272,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 							}
 						}
 						threads[0].setStackFrames(frames);
+
 						setState(AtlDebugTarget.STATE_SUSPENDED);
 						generateDebugEvent(AtlDebugTarget.SUSPEND_STEP, AtlDebugTarget.this);
 
@@ -277,11 +285,15 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 					terminate();
 				} catch (DebugException e) {
 					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-
 				}
 			}
 		};
 		th.start();
+		if (!stopInMain) {
+			setState(AtlDebugTarget.STATE_RUNNING);
+			generateDebugEvent(RESUME, this);
+			debugger.sendCommand(ADWP.CMD_CONTINUE, Arrays.asList(new Value[] {}));
+		}
 	}
 
 	/**
@@ -440,7 +452,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	 * @see org.eclipse.debug.core.model.ISuspendResume#canResume()
 	 */
 	public boolean canResume() {
-		return state != STATE_DISCONNECTED && state != STATE_RUNNING;
+		return state != STATE_DISCONNECTED && state != STATE_RUNNING && state != STATE_TERMINATED;
 	}
 
 	/**
