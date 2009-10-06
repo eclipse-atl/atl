@@ -277,6 +277,10 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 			};
 			th.start();
 
+			if (options.get(ATLLaunchConstants.STOP_IN_MAIN) != null) {
+				mTarget.setStopInMain(Boolean.valueOf(options.get(ATLLaunchConstants.STOP_IN_MAIN).toString())
+						.booleanValue());
+			}
 			mTarget.start();
 			launchParam.addDebugTarget(mTarget);
 
