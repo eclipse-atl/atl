@@ -89,6 +89,9 @@ public interface ATLLaunchConstants {
 	/** Superimposed modules. */
 	String SUPERIMPOSE = "Superimpose"; //$NON-NLS-1$
 
+	/** Stop in main option (for debug mode). */
+	String STOP_IN_MAIN = "stopInMain"; //$NON-NLS-1$
+	
 	/** Superimposed modules. */
 	String OPTIONS = "Options"; //$NON-NLS-1$
 
