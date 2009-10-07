@@ -28,6 +28,8 @@ public class OutModel {
 
 	protected String metamodel;
 
+	protected String metamodelName;
+	
 	protected String modelHandler;
 
 	protected String factory;
@@ -56,6 +58,14 @@ public class OutModel {
 
 	public void setMetamodel(String metamodel) {
 		this.metamodel = metamodel;
+	}
+
+	public String getMetamodelName() {
+		return metamodelName;
+	}
+
+	public void setMetamodelName(String metamodelName) {
+		this.metamodelName = metamodelName;
 	}
 
 	public void setModel(String model) {
