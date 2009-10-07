@@ -155,8 +155,15 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 		}
 
 		for (InModel model : inModels) {
-			launcherInstance.addInModel(getModelByName(model.getModel()), model.getName(),
-					getMetamodelName(model.getModel()));
+			if (model.getModel().startsWith("%")) { //$NON-NLS-1$
+				error(Messages.getString("ATLModelTransformationTask.CANNOT_SPECIFY_METAMETAMODEL_DIRECTLY")); //$NON-NLS-1$
+			} else {
+				String mmName = model.getMetamodelName();
+				if (mmName == null) {
+					mmName = getMetamodelName(model.getModel());
+				}
+				launcherInstance.addInModel(getModelByName(model.getModel()), model.getName(), mmName);
+			}
 		}
 		for (InModel model : inoutModels) {
 			launcherInstance.addInOutModel(getModelByName(model.getModel()), model.getName(),

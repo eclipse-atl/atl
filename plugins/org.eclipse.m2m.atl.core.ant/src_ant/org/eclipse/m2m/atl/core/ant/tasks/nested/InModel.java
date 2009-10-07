@@ -24,6 +24,8 @@ public class InModel {
 
 	protected String name;
 
+	protected String metamodelName;
+
 	public void setModel(String model) {
 		this.model = model;
 	}
@@ -40,4 +42,11 @@ public class InModel {
 		this.name = name;
 	}
 
+	public String getMetamodelName() {
+		return metamodelName;
+	}
+
+	public void setMetamodelName(String metamodelName) {
+		this.metamodelName = metamodelName;
+	}
 }
