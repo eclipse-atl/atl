@@ -15,6 +15,7 @@ package org.eclipse.m2m.atl.core.ui.launch;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -476,13 +477,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 					metamodelLocation.setText((String)savedPaths.get(modelName));
 				}
 
-				for (int item = 0; item < modelHandlers.getItems().length; item++) {
-					if (modelHandlers.getItem(item).equals(savedModelHandlers.get(modelName))) {
-						modelHandlers.select(item);
-					} else {
-						selectEMFModelHandler(modelHandlers);
-					}
-				}
+				selectModelHandler(modelHandlers, savedModelHandlers.get(modelName));
 
 			} else {
 				Map<String, Object> widgets = null;
@@ -973,7 +968,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		final Combo modelHandlers = new Combo(parent, SWT.NULL | SWT.READ_ONLY);
 		thisGroupWidgets.put("modelHandlers", modelHandlers); //$NON-NLS-1$
 		modelHandlers.setItems(getModelHandlers());
-		selectEMFModelHandler(modelHandlers);
+		selectModelHandler(modelHandlers, null);
 		modelHandlers.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
 
 		modelHandlers.addModifyListener(new ModifyListener() {
@@ -1002,7 +997,7 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		metamodelLocation.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				if (metamodelLocation.getText().startsWith("uri:")) { //$NON-NLS-1$
-					selectEMFModelHandler(modelHandlers);
+					selectModelHandler(modelHandlers, null);
 				}
 				updateLaunchConfigurationDialog();
 			}
@@ -1366,9 +1361,13 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		return mhs.toArray(new String[] {});
 	}
 
-	private void selectEMFModelHandler(Combo modelHandlers) {
+	private void selectModelHandler(Combo modelHandlers, Object modelHandlerName) {
+		String modelHandlerToSet = ATLLaunchConstants.DEFAULT_MODEL_HANDLER_NAME;
+		if (modelHandlerName != null || Arrays.asList(modelHandlers.getItems()).contains(modelHandlerName)) {
+			modelHandlerToSet = modelHandlerName.toString();
+		}
 		for (int j = 0; j < modelHandlers.getItems().length; j++) {
-			if (modelHandlers.getItems()[j].equals(ATLLaunchConstants.DEFAULT_MODEL_HANDLER_NAME)) {
+			if (modelHandlers.getItems()[j].equals(modelHandlerToSet)) {
 				modelHandlers.select(j);
 				break;
 			}
