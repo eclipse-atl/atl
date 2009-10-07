@@ -463,7 +463,9 @@ public class EMFModelAdapter implements IModelAdapter {
 	 */
 	public Object get(AbstractStackFrame frame, Object modelElement, String name) {
 		Object ret = null;
-
+		if (modelElement instanceof Collection<?>) {
+			throw new VMException(frame, Messages.getString("EMFModelAdapter.GET_ON_COLLECTION")); //$NON-NLS-1$		
+		}
 		if (modelElement == null || modelElement.equals(OclUndefined.SINGLETON)) {
 			throw new VMException(frame, Messages.getString("EMFModelAdapter.GET_PROBLEM", name)); //$NON-NLS-1$
 		} else {
@@ -537,6 +539,11 @@ public class EMFModelAdapter implements IModelAdapter {
 		if (feature == null) {
 			throw new VMException(frame, Messages.getString(
 					"EMFModelAdapter.FEATURE_NOT_EXISTS", name, eo.eClass().getName())); //$NON-NLS-1$
+		}
+		
+		if (!feature.isChangeable()) {
+			throw new VMException(frame, Messages.getString(
+					"EMFModelAdapter.FEATURE_NOT_CHANGEABLE", name)); //$NON-NLS-1$
 		}
 
 		if (settableValue instanceof Integer) {
@@ -633,9 +640,7 @@ public class EMFModelAdapter implements IModelAdapter {
 				}
 			}
 
-		} catch (ClassCastException e) {
-			throw new VMException(frame, e.getMessage(), e);
-		} catch (ArrayStoreException e) {
+		} catch (Throwable e) {
 			throw new VMException(frame, e.getMessage(), e);
 		}
 
