@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.emf.ecore.presentation.EcoreActionBarContributor.ExtendedLoadResourceAction.ExtendedLoadResourceDialog;
 import org.eclipse.m2m.atl.adt.ui.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -42,7 +41,7 @@ public class AtlModelSelection extends AbstractAtlSelection {
 
 	private Text metamodelNameText;
 
-	private AtlModelSelectionBox loadResourceBox;
+	private AtlResourceSelectionBox loadResourceBox;
 
 	private String defaultModelName;
 
@@ -156,8 +155,8 @@ public class AtlModelSelection extends AbstractAtlSelection {
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		uriSection.setLayoutData(data);
 
-		loadResourceBox = new AtlModelSelectionBox(getShell());
-		final Composite composite = (Composite)loadResourceBox.createDialogComposite(uriSection);
+		loadResourceBox = new AtlResourceSelectionBox(getShell());
+		final Composite composite = (Composite)loadResourceBox.createDialogArea(uriSection);
 		composite.getChildren()[composite.getChildren().length - 1].dispose();
 
 		composite.setLayoutData(data);
@@ -207,58 +206,6 @@ public class AtlModelSelection extends AbstractAtlSelection {
 			result = new Object[] {modelNameText.getText(), metamodelNameText.getText()};
 		}
 		setResult(Arrays.asList(result));
-	}
-
-	/**
-	 * The embedded resource dialog.
-	 */
-	private class AtlModelSelectionBox extends ExtendedLoadResourceDialog {
-
-		private Shell shell;
-
-		/**
-		 * Constructor.
-		 * 
-		 * @param arg0
-		 *            the parent shell
-		 */
-		public AtlModelSelectionBox(Shell arg0) {
-			super(arg0, null);
-			this.shell = arg0;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.jface.window.Window#getShell()
-		 */
-		@Override
-		public Shell getShell() {
-			return shell;
-		}
-
-		public Control createDialogComposite(Composite parent) {
-			return super.createDialogArea(parent);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.emf.common.ui.dialogs.ResourceDialog#getURIText()
-		 */
-		@Override
-		public String getURIText() {
-			String res = super.getURIText();
-			if (res != null && res.contains(" ")) { //$NON-NLS-1$
-				res = res.split(" ")[0]; //$NON-NLS-1$
-			}
-			return res;
-		}
-
-		public void setText(String text) {
-			uriField.setText(text);
-		}
-
 	}
 
 }
