@@ -161,7 +161,16 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				removePath(tableSuperimpose);
+				buttonRemoveSuperimpose.setEnabled(false);
 				updateLaunchConfigurationDialog();
+			}
+		});
+		buttonRemoveSuperimpose.setEnabled(false);
+		
+		tableSuperimpose.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				buttonRemoveSuperimpose.setEnabled(tableSuperimpose.getSelectionIndex() > -1);
 			}
 		});
 
