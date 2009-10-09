@@ -9,7 +9,7 @@
  *     INRIA - initial API and implementation
  *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: EMFModel.java,v 1.10 2009/03/04 16:04:13 wpiers Exp $
+ * $Id: EMFModel.java,v 1.10.2.1 2009/10/09 09:45:00 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -111,7 +111,10 @@ public class EMFModel implements IModel {
 	 */
 	public Set<EObject> getElementsByType(Object metaElement) {
 		EClass ec = (EClass)metaElement;
-		Set<EObject> ret = elementsByType.get(ec);
+		Set<EObject> ret = null;
+		if (!isTarget) {
+			ret = elementsByType.get(ec);
+		}
 		if (ret == null) {
 			ret = new LinkedHashSet<EObject>();
 			final Resource res = getResource();
@@ -123,9 +126,10 @@ public class EMFModel implements IModel {
 					}
 				}
 			}
-			elementsByType.put(ec, ret);
+			if (!isTarget) {
+				elementsByType.put(ec, ret);
+			}
 		}
-
 		return ret;
 	}
 
