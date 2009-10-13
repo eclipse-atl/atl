@@ -87,7 +87,8 @@ public class EMFTCSInjector {
 
 		EObject root = (EObject)new ParserLauncher().parse(targetModelAdapter, source, params);
 		target.commitToResource();
-		problems.commitToResource();
+		if(problems != null)
+			problems.commitToResource();
 		return root;
 	}
 
