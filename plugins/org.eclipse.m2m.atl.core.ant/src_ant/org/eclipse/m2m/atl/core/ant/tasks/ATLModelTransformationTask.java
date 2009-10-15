@@ -210,14 +210,14 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 		} catch (ATLCoreException e) {
 			error(Messages.getString("ATLModelTransformationTask.UNABLE_TO_LOAD_REFINING")); //$NON-NLS-1$
 		}
-
-		InputStream[] moduleInputStreams = new InputStream[superimposeModules.size() + 1];
-		int i = 1;
-		moduleInputStreams[0] = getInputStreamFromPath(asmPath);
-		for (Superimpose superimposedModule : superimposeModules) {
-			moduleInputStreams[i++] = getInputStreamFromPath(superimposedModule.getPath());
-		}
-
+		
+ 		InputStream[] moduleInputStreams = new InputStream[superimposeModules.size() + 1];
+ 		int i = 0;
+		moduleInputStreams[i] = getInputStreamFromPath(asmPath);		
+ 		for (Superimpose superimposedModule : superimposeModules) {
+			moduleInputStreams[++i] = getInputStreamFromPath(superimposedModule.getPath());
+ 		}
+		
 		Object transformationResult = null;
 		long startTime = System.currentTimeMillis();
 		try {
