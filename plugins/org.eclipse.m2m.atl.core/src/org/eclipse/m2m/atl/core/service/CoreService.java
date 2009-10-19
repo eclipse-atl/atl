@@ -337,14 +337,13 @@ public final class CoreService {
 				final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
 				for (int j = 0; j < configElements.length; j++) {
 					String launcherMode = configElements[j].getAttribute("mode"); //$NON-NLS-1$
-					if (mode == null
-							|| (mode != null && (mode.equals(launcherMode) || launcherMode == null))) {
+					if (mode == null || (mode != null && (mode.equals(launcherMode) || launcherMode == null))) {
 						names.add(configElements[j].getAttribute("name").toString()); //$NON-NLS-1$
-					}					
+					}
 				}
 			}
 		}
-		Collections.<String>sort(names);
+		Collections.<String> sort(names);
 		return names.toArray(new String[] {});
 	}
 
@@ -438,4 +437,19 @@ public final class CoreService {
 		}
 		return name;
 	}
+
+	/**
+	 * Tests if eclipse is running.
+	 * 
+	 * @return <code>true</code> if eclipse is running
+	 */
+	public static boolean isEclipseRunning() {
+		try {
+			return Platform.isRunning();
+		} catch (Throwable exception) {
+			// Assume that we aren't running.
+		}
+		return false;
+	}
+
 }
