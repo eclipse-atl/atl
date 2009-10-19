@@ -17,12 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.tools.ant.BuildException;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IModel;
@@ -128,19 +125,28 @@ public class SaveModelTask extends AbstractAtlTask {
 
 		try {
 			extractorInstance.extract(targetModel, convertedPath, extractorParams);
-			if (Platform.isRunning() && path != null) {
-				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
-						new Path(path.getPath()));
-				file.getParent().refreshLocal(IResource.DEPTH_ONE, null);
-				if (setSavedFilesToDerived) {
-					if (file.exists()) {
-						file.setDerived(true);
+			if (setSavedFilesToDerived && path != null && CoreService.isEclipseRunning()) {
+				try {
+					Class<?> rp = Class.forName("org.eclipse.core.resources.ResourcesPlugin"); //$NON-NLS-1$
+					Object ws = rp.getMethod("getWorkspace").invoke(null); //$NON-NLS-1$
+					Object root = ws.getClass().getMethod("getRoot").invoke(ws); //$NON-NLS-1$
+					Object wsfile = root
+							.getClass()
+							.getMethod("getFileForLocation", IPath.class).invoke(root, new Path(path.toString())); //$NON-NLS-1$
+					Object parent = wsfile.getClass().getMethod("getParent").invoke(wsfile); //$NON-NLS-1$
+					parent
+							.getClass()
+							.getMethod("refreshLocal", int.class, IProgressMonitor.class).invoke(parent, 1, null); //$NON-NLS-1$
+					boolean fileExists = new Boolean(wsfile.getClass()
+							.getMethod("exists").invoke(wsfile).toString()).booleanValue(); //$NON-NLS-1$
+					if (fileExists) {
+						wsfile.getClass().getMethod("setDerived", boolean.class).invoke(wsfile, true); //$NON-NLS-1$	
 					}
+				} catch (Throwable e) {
+					error(e.getMessage(), e);
 				}
 			}
 		} catch (ATLCoreException e) {
-			error(e.getMessage(), e);
-		} catch (CoreException e) {
 			error(e.getMessage(), e);
 		}
 		super.execute();

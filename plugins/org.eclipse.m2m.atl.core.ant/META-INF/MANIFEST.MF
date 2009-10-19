@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.eclipse.m2m.atl.core.ant;singleton:=true
 Bundle-Version: 3.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.core.resources,
  org.apache.ant,
  org.eclipse.m2m.atl.core,
  org.eclipse.m2m.atl.common
