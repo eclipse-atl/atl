@@ -89,16 +89,6 @@ public class AtlFileScreen extends WizardPage {
 	private List libList;
 
 	/**
-	 * Test.
-	 */
-	public AtlFileScreen() {
-		super(Messages.getString("AtlFileScreen.Page.Name")); //$NON-NLS-1$
-		setTitle(Messages.getString("AtlFileScreen.Title")); //$NON-NLS-1$
-		setDescription(Messages.getString("AtlFileScreen.Page.Description")); //$NON-NLS-1$
-		this.setPageComplete(false);
-	}
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param selection
