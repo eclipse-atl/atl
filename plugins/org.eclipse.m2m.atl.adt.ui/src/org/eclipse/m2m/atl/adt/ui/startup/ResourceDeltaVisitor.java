@@ -33,7 +33,7 @@ public class ResourceDeltaVisitor implements IResourceDeltaVisitor {
 	 * </p>
 	 * <p>
 	 * A file is considered to be the asm file associated to an atl file if it has the same name but the
-	 * extesnsion "asm" and is located in the same folder
+	 * extension "asm" and is located in the same folder
 	 * 
 	 * @param res
 	 *            the atl file for which to find the associated asm file
