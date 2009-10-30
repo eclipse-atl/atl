@@ -28,7 +28,6 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -39,17 +38,15 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.m2m.atl.adt.ui.common.RegisteredPackageDialog;
+import org.eclipse.m2m.atl.adt.ui.common.WorkspaceFileDialog;
 import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.ui.ATLCoreUIPlugin;
@@ -72,11 +69,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
-import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.dialogs.SaveAsDialog;
-import org.eclipse.ui.model.WorkbenchContentProvider;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 /**
  * The main ATL tab.
@@ -858,44 +851,15 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 				ret = outputPath.toString();
 			}
 		} else {
-			ElementTreeSelectionDialog elementTreeSelectionDialog = new ElementTreeSelectionDialog(
-					getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
-			elementTreeSelectionDialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-			elementTreeSelectionDialog.setMessage(Messages.getString("MainAtlTab.SELECT_FILE")); //$NON-NLS-1$
-			elementTreeSelectionDialog.setTitle(Messages.getString("MainAtlTab.SELECT_FILE")); //$NON-NLS-1$
-			elementTreeSelectionDialog.setAllowMultiple(false);
-			elementTreeSelectionDialog.setDoubleClickSelects(true);
-			elementTreeSelectionDialog.addFilter(new ViewerFilter() {
-				@Override
-				public boolean select(Viewer viewer, Object parentElement, Object element) {
-					boolean ret = false;
-					try {
-						String[] extensions = null;
-						if (type == IS_MODULE) {
-							extensions = ATLLaunchConstants.ATL_EXTENSIONS;
-						} else if (type == IS_LIBRARY) {
-							extensions = new String[] {"asm"}; //$NON-NLS-1$
-						}
-						ret = isATLResource((IResource)element, extensions);
-					} catch (CoreException e) {
-						ATLLogger.warning(e.getMessage());
-					}
-					return ret;
-				}
-			});
-			elementTreeSelectionDialog.setValidator(new ISelectionStatusValidator() {
-				public IStatus validate(Object[] selection) {
-					IStatus ret = Status.CANCEL_STATUS;
-					if (selection.length == 1) {
-						if (selection[0] instanceof IFile) {
-							ret = Status.OK_STATUS;
-						}
-					}
-					return ret;
-				}
-			});
-			elementTreeSelectionDialog.open();
-			Object result = elementTreeSelectionDialog.getFirstResult();
+			String[] extensions = null;
+			if (type == IS_MODULE) {
+				extensions = ATLLaunchConstants.ATL_EXTENSIONS;
+			} else if (type == IS_LIBRARY) {
+				extensions = new String[] {"asm"}; //$NON-NLS-1$
+			}
+			WorkspaceFileDialog dialog = new WorkspaceFileDialog(getShell(), extensions);
+			dialog.open();
+			Object result = dialog.getFirstResult();
 
 			if ((result != null) && (result instanceof IFile)) {
 				IFile currentFile = (IFile)result;
@@ -903,32 +867,6 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 			}
 		}
 		return ret;
-	}
-
-	private static boolean isATLResource(IResource resource, String[] extensions) throws CoreException {
-		if (resource instanceof IContainer) {
-			if (((IContainer)resource).isAccessible()) {
-				IResource[] members = ((IContainer)resource).members();
-				for (IResource member : members) {
-					if (isATLResource(member, extensions)) {
-						return true;
-					}
-				}
-			}
-		} else if (resource instanceof IFile) {
-			IFile currentFile = (IFile)resource;
-			if (extensions == null) {
-				return true;
-			} else if (currentFile.getFileExtension() != null) {
-				for (int i = 0; i < extensions.length; i++) {
-					String extension = extensions[i];
-					if (currentFile.getFileExtension().toUpperCase().equals(extension.toUpperCase())) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
 	}
 
 	private Map<String, Object> buildMetamodelsControls(final Group parent, final String metamodelName,
@@ -1047,10 +985,13 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		browseEMFRegistry.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
-				DialogUriSelection launcher = new DialogUriSelection(parent.getShell());
-				launcher.create();
-				if (launcher.open() == Dialog.OK) {
-					metamodelLocation.setText("uri:" + launcher.getUriSelected()); //$NON-NLS-1$
+				RegisteredPackageDialog dialog = new RegisteredPackageDialog(getShell());
+				if (dialog.open() == Dialog.OK) {
+					String text = dialog.getResultAsString();
+					if (!text.startsWith("platform:/plugin/")) { //$NON-NLS-1$
+						text = "uri:" + text; //$NON-NLS-1$
+					}
+					metamodelLocation.setText(text);
 				}
 			}
 		});

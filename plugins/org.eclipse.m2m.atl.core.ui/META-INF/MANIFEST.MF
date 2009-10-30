@@ -19,7 +19,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2m.atl.engine,
  org.eclipse.jface.text,
  org.eclipse.core.resources,
- org.eclipse.m2m.atl.debug.core
+ org.eclipse.m2m.atl.debug.core,
+ org.eclipse.m2m.atl.adt.ui
 Bundle-Activator: org.eclipse.m2m.atl.core.ui.ATLCoreUIPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

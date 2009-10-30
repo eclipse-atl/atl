@@ -19,12 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
@@ -32,8 +28,7 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.m2m.atl.adt.ui.common.WorkspaceFileDialog;
 import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.service.CoreService;
@@ -58,10 +53,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
-import org.eclipse.ui.dialogs.ISelectionStatusValidator;
-import org.eclipse.ui.model.WorkbenchContentProvider;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 /**
  * The "advanced" tab in ATL configurations.
@@ -150,7 +141,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		buttonSuperimpose.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
-				addPath(AdvancedTab.SUPERIMPOSE, tableSuperimpose);
+				addPath(tableSuperimpose);
 				updateLaunchConfigurationDialog();
 			}
 		});
@@ -166,7 +157,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		buttonRemoveSuperimpose.setEnabled(false);
-		
+
 		tableSuperimpose.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -422,51 +413,10 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	 * @param type
 	 * @param table
 	 */
-	private void addPath(final String type, Table table) {
-		ElementTreeSelectionDialog elementTreeSelectionDialog = new ElementTreeSelectionDialog(getShell(),
-				new WorkbenchLabelProvider(), new WorkbenchContentProvider());
-		elementTreeSelectionDialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-		elementTreeSelectionDialog.setMessage(Messages.getString("AdvancedTab.CHOOSE")); //$NON-NLS-1$
-		elementTreeSelectionDialog.setTitle(Messages.getString("AdvancedTab.CHOOSE")); //$NON-NLS-1$
-		elementTreeSelectionDialog.setAllowMultiple(false);
-		elementTreeSelectionDialog.setDoubleClickSelects(true);
-		elementTreeSelectionDialog.addFilter(new ViewerFilter() {
-			@Override
-			public boolean select(Viewer viewer, Object parentElement, Object element) {
-				boolean ret = false;
-
-				if (element instanceof IContainer) {
-					ret = true;
-				} else if (element instanceof IFile) {
-					IFile currentFile = (IFile)element;
-					if (currentFile.getFileExtension() == null) {
-						return false;
-					}
-					if (type == AdvancedTab.SUPERIMPOSE) {
-						ret = (currentFile.getFileExtension().toUpperCase()).equals("ASM"); //$NON-NLS-1$
-					} else {
-						ret = true;
-					}
-				}
-				return ret;
-			}
-		});
-		elementTreeSelectionDialog.setValidator(new ISelectionStatusValidator() {
-			public IStatus validate(Object[] selection) {
-				IStatus ret = Status.CANCEL_STATUS;
-
-				if (selection.length == 1) {
-					if (selection[0] instanceof IFile) { // no need to verify again extension here
-						ret = Status.OK_STATUS;
-					}
-				}
-
-				return ret;
-			}
-		});
-		elementTreeSelectionDialog.open();
-		Object result = elementTreeSelectionDialog.getFirstResult();
-
+	private void addPath(Table table) {
+		WorkspaceFileDialog dialog = new WorkspaceFileDialog(getShell(), "asm"); //$NON-NLS-1$
+		dialog.open();
+		Object result = dialog.getFirstResult();
 		if ((result != null) && (result instanceof IFile)) {
 			IFile currentFile = (IFile)result;
 			TableItem item = new TableItem(table, SWT.NONE);
