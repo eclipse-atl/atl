@@ -1,0 +1,278 @@
+<%@ jet 
+ package="org.eclipse.m2m.atl.adt.runner"
+ class = "CreateRunnableJavaWriter"
+ imports = "java.util.Iterator"
+%>
+<%
+ CreatePluginData pluginContent = (CreatePluginData) argument;
+ CreateRunnableData content = pluginContent.getRunnableData();
+%>
+/*******************************************************************************
+ * Copyright (c) 2009 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package <%=pluginContent.getBasePackage()%>;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Map.Entry;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;<%if (!content.getPackageClassNames().isEmpty()) {%>
+import org.eclipse.emf.ecore.EPackage;<%}%><%if (!content.getAllModelsNames().isEmpty()) {%>
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;<%}%>
+import org.eclipse.m2m.atl.common.ATLExecutionException;
+import org.eclipse.m2m.atl.core.ATLCoreException;<%if (!content.getModelsToSaveNames().isEmpty()) {%>
+import org.eclipse.m2m.atl.core.IExtractor;<%}%><%if (!content.getAllModelsNames().isEmpty()) {%>
+import org.eclipse.m2m.atl.core.IInjector;
+import org.eclipse.m2m.atl.core.IModel;
+import org.eclipse.m2m.atl.core.IReferenceModel;
+import org.eclipse.m2m.atl.core.ModelFactory;<%if (!content.getModelsToSaveNames().isEmpty()) {%>
+import org.eclipse.m2m.atl.core.emf.EMFExtractor;<%}%>
+import org.eclipse.m2m.atl.core.emf.EMFInjector;
+import org.eclipse.m2m.atl.core.emf.EMFModelFactory;<%}%>
+import org.eclipse.m2m.atl.core.launch.ILauncher;
+import org.eclipse.m2m.atl.core.service.CoreService;
+import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher;
+
+/**
+ * Entry point of the '<%=content.getClassShortName()%>' transformation module.
+ */
+public class <%=content.getClassShortName()%> {
+
+	/**
+	 * The property file. Stores module list, the metamodel and library locations.
+	 * @generated
+	 */
+	private Properties properties;
+	<%for (Iterator<String> i = content.getAllModelsNames().iterator(); i.hasNext(); ) { String modelName = i.next();%>
+	/**
+	 * The <%=modelName%> model.
+	 * @generated
+	 */
+	private IModel <%=modelName.toLowerCase()%>Model;	
+	<%}%><%if (content.isRefining()) {%>
+	/**
+	 * The refining trace model.
+	 * @generated
+	 */
+	private IModel refiningTraceModel;
+	<%}%>	
+	/**
+	 * The main method.
+	 * 
+	 * @param args
+	 *            are the arguments
+	 * @generated
+	 */
+	public static void main(String[] args) {
+		try {<%if (!content.getAllModelsNames().isEmpty()) {%>
+			if (args.length < <%=content.getAllModelsNames().size()%>) {
+				System.out.println("Arguments not valid : {<%for (Iterator<String> i = content.getAllModelsNames().iterator(); i.hasNext(); ) {%><%=i.next()%>_model_path<%if (i.hasNext()) {%>, <%}%><%}%>}.");
+			} else {<%if (!content.getModelsToLoadNames().isEmpty()) {%>
+				<%=content.getClassShortName()%> runner = new <%=content.getClassShortName()%>();
+				runner.loadModels(<%for (Iterator<String> i = content.getModelsToLoadNames().iterator(); i.hasNext(); ) { String modelName = i.next();%>args[<%=content.getAllModelsNames().indexOf(modelName)%>]<%if (i.hasNext()) {%>, <%}%><%}%>);<%}%><%if (content.isQuery()) {%>
+				System.out.println(runner.do<%=content.getClassShortName()%>(new NullProgressMonitor()));<%} else {%>
+				runner.do<%=content.getClassShortName()%>(new NullProgressMonitor());<%}%><%if (!content.getModelsToSaveNames().isEmpty()) {%>
+				runner.saveModels(<%for (Iterator<String> i = content.getModelsToSaveNames().iterator(); i.hasNext(); ) { String modelName = i.next();%>args[<%=content.getAllModelsNames().indexOf(modelName)%>]<%if (i.hasNext()) {%>, <%}%><%}%>);<%}%>
+			}<%} else {%>
+			System.out.println(new <%=content.getClassShortName()%>().do<%=content.getClassShortName()%>(new NullProgressMonitor()));<%}%>
+		} catch (ATLCoreException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ATLExecutionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @generated
+	 */
+	public <%=content.getClassShortName()%>() throws IOException {
+		properties = new Properties();
+		properties.load(getFileURL("<%=content.getClassShortName()%>.properties").openStream());<%for (String metamodelName : content.getAllMetamodelsNames()) {%><%String packageClassName = content.getPackageClassNames().get(metamodelName); if (!content.isMetametamodel(metamodelName) && packageClassName != null) {%>
+		EPackage.Registry.INSTANCE.put(getMetamodelUri("<%=metamodelName%>"), <%=packageClassName%>.eINSTANCE);<%}%><%}%><%if (!content.getAllModelsNames().isEmpty()) {%>
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());<%}%>
+	}<%if (!content.getModelsToLoadNames().isEmpty()) {%>
+	
+	/**
+	 * Load the input and input/output models, initialize output models.
+	 * <%for (Iterator<String> i = content.getModelsToLoadNames().iterator(); i.hasNext();) { String modelName = i.next();%>
+	 * @param <%=modelName.toLowerCase()%>ModelPath
+	 *            the <%=modelName%> model path<%}%>
+	 * @throws ATLCoreException
+	 *             if a problem occurs while loading models
+	 *
+	 * @generated
+	 */
+	public void loadModels(<%for (Iterator<String> i = content.getModelsToLoadNames().iterator(); i.hasNext(); ) {%>String <%=i.next().toLowerCase()%>ModelPath<%if (i.hasNext()) {%>, <%}%><%}%>) throws ATLCoreException {
+		ModelFactory factory = new EMFModelFactory();
+		IInjector injector = new EMFInjector();<%for (String metamodelName : content.getAllMetamodelsNames()) {%><%if (content.isMetametamodel(metamodelName)) {%>
+		IReferenceModel <%=metamodelName.toLowerCase()%>Metamodel = factory.getMetametamodel();<%} else {%>
+	 	IReferenceModel <%=metamodelName.toLowerCase()%>Metamodel = factory.newReferenceModel();
+		injector.inject(<%=metamodelName.toLowerCase()%>Metamodel, getMetamodelUri("<%=metamodelName%>"));<%}%><%}%><%for (Iterator<String> i = content.getInModels().keySet().iterator(); i.hasNext(); ) { String modelName = i.next();%>
+		this.<%=modelName.toLowerCase()%>Model = factory.newModel(<%=content.getInModels().get(modelName).toLowerCase()%>Metamodel);
+		injector.inject(<%=modelName.toLowerCase()%>Model, <%=modelName.toLowerCase()%>ModelPath);<%}%><%for (Iterator<String> i = content.getInOutModels().keySet().iterator(); i.hasNext(); ) { String modelName = i.next();%>
+		this.<%=modelName.toLowerCase()%>Model = factory.newModel(<%=content.getInOutModels().get(modelName).toLowerCase()%>Metamodel);
+		injector.inject(<%=modelName.toLowerCase()%>Model, <%=modelName.toLowerCase()%>ModelPath);<%}%><%for (Iterator<String> i = content.getOutModels().keySet().iterator(); i.hasNext(); ) { String modelName = i.next();%>
+		this.<%=modelName.toLowerCase()%>Model = factory.newModel(<%=content.getOutModels().get(modelName).toLowerCase()%>Metamodel);<%}%><%if (content.isRefining()) {%>
+		IReferenceModel refiningTraceMetamodel = factory.getBuiltInResource("RefiningTrace.ecore");
+		refiningTraceModel = factory.newModel(refiningTraceMetamodel);<%}%>
+	}<%}%><%if (!content.getModelsToSaveNames().isEmpty()) {%>
+	
+	/**
+	 * Save the output and input/output models.
+	 * <%for (Iterator<String> i = content.getModelsToSaveNames().iterator(); i.hasNext();) { String modelName = i.next();%>
+	 * @param <%=modelName.toLowerCase()%>ModelPath
+	 *            the <%=modelName%> model path<%}%>
+	 * @throws ATLCoreException
+	 *             if a problem occurs while saving models
+	 *
+	 * @generated
+	 */
+	public void saveModels(<%for (Iterator<String> i = content.getModelsToSaveNames().iterator(); i.hasNext(); ) {%>String <%=i.next().toLowerCase()%>ModelPath<%if (i.hasNext()) {%>, <%}%><%}%>) throws ATLCoreException {
+		IExtractor extractor = new EMFExtractor();<%for (Iterator<String> i = content.getModelsToSaveNames().iterator(); i.hasNext();) { String modelName = i.next();%>
+		extractor.extract(<%=modelName.toLowerCase()%>Model, <%=modelName.toLowerCase()%>ModelPath);<%}%>
+	}<%}%>
+
+	/**
+	 * Transform the models.
+	 * 
+	 * @param monitor
+	 *            the progress monitor
+	 * @throws ATLCoreException
+	 *             if an error occurs during models handling
+	 * @throws IOException
+	 *             if a module cannot be read
+	 * @throws ATLExecutionException
+	 *             if an error occurs during the execution
+	 *
+	 * @generated
+	 */
+	public Object do<%=content.getClassShortName()%>(IProgressMonitor monitor) throws ATLCoreException, IOException, ATLExecutionException {
+		ILauncher launcher = new EMFVMLauncher();
+		Map<String, Object> launcherOptions = getOptions();
+		launcher.initialize(launcherOptions);<%for (Iterator<String> i = content.getInModels().keySet().iterator(); i.hasNext(); ) { String modelName = i.next();%>
+		launcher.addInModel(<%=modelName.toLowerCase()%>Model, "<%=modelName%>", "<%=content.getInModels().get(modelName)%>");<%}%><%for (Iterator<String> i = content.getInOutModels().keySet().iterator(); i.hasNext(); ) { String modelName = i.next();%>
+		launcher.addInOutModel(<%=modelName.toLowerCase()%>Model, "<%=modelName%>", "<%=content.getInOutModels().get(modelName)%>");<%}%><%for (Iterator<String> i = content.getOutModels().keySet().iterator(); i.hasNext(); ) { String modelName = i.next();%>
+		launcher.addOutModel(<%=modelName.toLowerCase()%>Model, "<%=modelName%>", "<%=content.getOutModels().get(modelName)%>");<%}%><%if (content.isRefining()) {%>
+		launcher.addOutModel(refiningTraceModel, "refiningTrace", "RefiningTrace");<%}%><%for (String libraryName : content.getAllLibrariesNames()) {%>
+		launcher.addLibrary("<%=libraryName%>", getLibraryAsStream("<%=libraryName%>"));<%}%>
+		return launcher.launch("run", monitor, launcherOptions, (Object[]) getModulesList());
+	}
+	
+	/**
+	 * Returns an Array of the module input streams, parameterized by the
+	 * property file.
+	 * 
+	 * @return an Array of the module input streams
+	 * @throws IOException
+	 *             if a module cannot be read
+	 *
+	 * @generated
+	 */
+	protected InputStream[] getModulesList() throws IOException {
+		InputStream[] modules = null;
+		String modulesList = properties.getProperty("<%=content.getClassShortName()%>.modules");
+		if (modulesList != null) {
+			String[] moduleNames = modulesList.split(",");
+			modules = new InputStream[moduleNames.length];
+			for (int i = 0; i < moduleNames.length; i++) {
+				String asmModulePath = new Path(moduleNames[i].trim()).removeFileExtension().addFileExtension("asm").toString();
+				modules[i] = getFileURL(asmModulePath).openStream();
+			}
+		}
+		return modules;
+	}
+	
+	/**
+	 * Returns the URI of the given metamodel, parameterized from the property file.
+	 * 
+	 * @param metamodelName
+	 *            the metamodel name
+	 * @return the metamodel URI
+	 *
+	 * @generated
+	 */
+	protected String getMetamodelUri(String metamodelName) {
+		return properties.getProperty("<%=content.getClassShortName()%>.metamodels." + metamodelName);
+	}
+	
+	/**
+	 * Returns the file name of the given library, parameterized from the property file.
+	 * 
+	 * @param libraryName
+	 *            the library name
+	 * @return the library file name
+	 *
+	 * @generated
+	 */
+	protected InputStream getLibraryAsStream(String libraryName) throws IOException {
+		return getFileURL(properties.getProperty("<%=content.getClassShortName()%>.libraries." + libraryName)).openStream();
+	}
+	
+	/**
+	 * Returns the options map, parameterized from the property file.
+	 * 
+	 * @return the options map
+	 *
+	 * @generated
+	 */
+	protected Map<String, Object> getOptions() {
+		Map<String, Object> options = new HashMap<String, Object>();
+		for (Entry<Object, Object> entry : properties.entrySet()) {
+			if (entry.getKey().toString().startsWith("<%=content.getClassShortName()%>.options.")) {
+				options.put(entry.getKey().toString().replaceFirst("<%=content.getClassShortName()%>.options.", ""), 
+				entry.getValue().toString());
+			}
+		}
+		return options;
+	}
+	
+	/**
+	 * Finds the file in the plug-in. Returns the file URL.
+	 * 
+	 * @param fileName
+	 *            the file name
+	 * @return the file URL
+	 * @throws IOException
+	 *             if the file doesn't exist
+	 * 
+	 * @generated
+	 */
+	protected static URL getFileURL(String fileName) throws IOException {
+		final URL fileURL;
+		if (CoreService.isEclipseRunning()) {
+			URL resourceURL = <%=content.getClassShortName()%>.class.getResource(fileName);
+			if (resourceURL != null) {
+				fileURL = FileLocator.toFileURL(resourceURL);
+			} else {
+				fileURL = null;
+			}
+		} else {
+			fileURL = <%=content.getClassShortName()%>.class.getResource(fileName);
+		}
+		if (fileURL == null) {
+			throw new IOException("'" + fileName + "' not found");
+		} else {
+			return fileURL;
+		}
+	}
+
+}

@@ -1,0 +1,21 @@
+<%@ jet 
+ package="org.eclipse.m2m.atl.adt.runner"
+ class = "CreateModuleMANIFESTWriter"
+ imports = ""
+%>
+<%
+ CreatePluginData content = (CreatePluginData) argument;
+%>
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ATL <%=content.getProjectName()%> Transformation Runtime Plug-in
+Bundle-SymbolicName: <%=content.getProjectName()%>
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: <%=content.getProjectName()%>.Activator
+Bundle-Vendor: Eclipse Modeling Project
+Require-Bundle: org.eclipse.core.runtime, <%if (content.getRunnableData() != null) { for(String dependency : content.getRunnableData().getPluginDependencies()) {%>
+ <%=dependency%>,<%}}%>
+ org.eclipse.m2m.atl.engine.emfvm
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true

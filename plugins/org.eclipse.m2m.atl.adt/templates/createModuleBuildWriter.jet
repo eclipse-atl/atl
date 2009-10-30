@@ -1,0 +1,10 @@
+<%@ jet 
+ package="org.eclipse.m2m.atl.adt.runner"
+ class = "CreateModuleBuildWriter"
+ imports = ""
+%>
+source.. = src/
+output.. = bin/
+bin.includes = META-INF/,\
+               .
+
