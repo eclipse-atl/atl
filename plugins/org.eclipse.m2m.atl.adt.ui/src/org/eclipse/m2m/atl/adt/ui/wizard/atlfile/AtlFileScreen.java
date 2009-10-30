@@ -39,12 +39,11 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * The ATL file wizard.
+ * The ATL file wizard page.
  * 
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-
 public class AtlFileScreen extends WizardPage {
 
 	/** ATL Module name. */

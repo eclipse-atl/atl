@@ -14,13 +14,15 @@ import java.util.logging.Level;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.m2m.atl.adt.AtlNature;
@@ -30,7 +32,6 @@ import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
-import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 /**
  * The ATL project creation wizard.
@@ -40,11 +41,9 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
  */
 public class AtlProjectCreator extends Wizard implements INewWizard, IExecutableExtension {
 
-	private WizardNewProjectCreationPage page;
+	protected WizardNewProjectCreationPage page;
 
-	private IConfigurationElement configElement;
-
-	private IProject modelProject;
+	protected IConfigurationElement configElement;
 
 	/**
 	 * Constructor.
@@ -74,35 +73,37 @@ public class AtlProjectCreator extends Wizard implements INewWizard, IExecutable
 	 */
 	@Override
 	public boolean performFinish() {
-		String projectName = page.getProjectName();
-
+		IWorkspaceRunnable create = new IWorkspaceRunnable() {
+			public void run(IProgressMonitor monitor) throws CoreException {
+				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+						page.getProjectName());
+				IPath location = page.getLocationPath();
+				if (!project.exists()) {
+					IProjectDescription desc = project.getWorkspace().newProjectDescription(
+							page.getProjectName());
+					if (location != null
+							&& ResourcesPlugin.getWorkspace().getRoot().getLocation().equals(location)) {
+						location = null;
+					}
+					desc.setLocation(location);
+					project.create(desc, monitor);
+					project.open(monitor);
+				}
+				if (!project.isOpen()) {
+					project.open(monitor);
+				}				
+				addNature(project, AtlNature.ATL_NATURE_ID);
+			}
+		};
 		try {
-			// Get the worskspace container (IWorkspaceRoot)
-			IWorkspace wks = ResourcesPlugin.getWorkspace();
-			IWorkspaceRoot wksroot = wks.getRoot();
-
-			// Create a project model instance
-			modelProject = wksroot.getProject(projectName);
-			if (!modelProject.exists()) {
-				modelProject.create(null);
-			}
-
-			// open project if necessary
-			if (!modelProject.isOpen()) {
-				modelProject.open(null);
-			}
-
-			// What's this good for?!
-			// modelProject.setLocal(true, IResource.DEPTH_ZERO, null);
-
-			addNature(modelProject, AtlNature.ATL_NATURE_ID);
-			BasicNewProjectResourceWizard.updatePerspective(configElement);
+			ResourcesPlugin.getWorkspace().run(create, null);
+			return true;
 		} catch (CoreException e) {
-			MessageDialog.openError(getShell(), "Error", e.getMessage()); //$NON-NLS-1$
+			IStatus status = new Status(IStatus.ERROR, AtlUIPlugin.PLUGIN_ID, IStatus.OK, e
+					.getMessage(), e);
+			AtlUIPlugin.getDefault().getLog().log(status);
 			return false;
 		}
-
-		return true;
 	}
 
 	/**

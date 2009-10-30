@@ -42,6 +42,7 @@ public class AtlPerspective implements IPerspectiveFactory {
 	public void defineActions(IPageLayout layout) {
 		// Add "new wizards".
 		layout.addNewWizardShortcut("atlProjectWizard"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("atlPluginWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("atlFileWizard"); //$NON-NLS-1$
 
 		// Add "show views".
@@ -78,6 +79,7 @@ public class AtlPerspective implements IPerspectiveFactory {
 
 		// add shortcuts
 		layout.addNewWizardShortcut("atlProjectWizard"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("atlPluginWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("atlFileWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file"); //$NON-NLS-1$

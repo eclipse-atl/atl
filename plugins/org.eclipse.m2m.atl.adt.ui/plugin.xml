@@ -59,7 +59,7 @@
             category="atlWizard"
             class="org.eclipse.m2m.atl.adt.ui.wizard.atlproject.AtlProjectCreator"
             finalPerspective="org.eclipse.m2m.atl.adt.ui.atlPerspective"
-            icon="icons/atl_project.gif"
+            icon="icons/new_atl_project.gif"
             id="atlProjectWizard"
             name="ATL Project"
             preferredPerspectives="org.eclipse.m2m.atl.adt.ui.atlPerspective"
@@ -69,8 +69,21 @@
          </description>
       </wizard>
       <wizard
+            category="atlWizard"
+            class="org.eclipse.m2m.atl.adt.ui.wizard.atlplugin.AtlPluginCreator"
+            finalPerspective="org.eclipse.m2m.atl.adt.ui.atlPerspective"
+            icon="icons/new_atl_plugin.gif"
+            id="atlPluginWizard"
+            name="ATL Plugin"
+            preferredPerspectives="org.eclipse.m2m.atl.adt.ui.atlPerspective"
+            project="true">
+         <description>
+            Create an ATL transformation plugin, with a launcher class
+         </description>
+      </wizard>
+      <wizard
             name="ATL File"
-            icon="icons/atl_file.gif"
+            icon="icons/new_atl_file.gif"
             category="atlWizard"
             class="org.eclipse.m2m.atl.adt.ui.wizard.atlfile.AtlFileWizard"
             preferredPerspectives="org.eclipse.m2m.atl.adt.ui.atlPerspective"

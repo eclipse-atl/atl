@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -120,12 +121,15 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String name) {
-		String pluginDir = plugin.getBundle().getEntry("/").toString(); //$NON-NLS-1$
-		String iconPath = "icons/"; //$NON-NLS-1$
-		try {
-			return ImageDescriptor.createFromURL(new URL(pluginDir + iconPath + name));
-		} catch (MalformedURLException mfe) {
-			return ImageDescriptor.getMissingImageDescriptor();
+		if (Platform.isRunning()) {
+			String pluginDir = plugin.getBundle().getEntry("/").toString(); //$NON-NLS-1$
+			String iconPath = "icons/"; //$NON-NLS-1$
+			try {
+				return ImageDescriptor.createFromURL(new URL(pluginDir + iconPath + name));
+			} catch (MalformedURLException mfe) {
+				return ImageDescriptor.getMissingImageDescriptor();
+			}
 		}
+		return null;
 	}
 }
