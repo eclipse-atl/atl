@@ -74,7 +74,7 @@ public final class AtlSourceManager {
 	/** 2 : OUTPUT metamodels. */
 	public static final int FILTER_OUTPUT_METAMODELS = 2;
 
-	private static final ResourceSet RESOURCE_SET = new ResourceSetImpl();
+	private ResourceSet resourceSet;
 
 	/** The detected metamodels Map[id,List[EPackage]]. */
 	private Map metamodelsPackages;
@@ -104,6 +104,7 @@ public final class AtlSourceManager {
 	 */
 	public AtlSourceManager() {
 		super();
+		resourceSet = new ResourceSetImpl();
 	}
 
 	/**
@@ -251,9 +252,9 @@ public final class AtlSourceManager {
 					Resource resource = null;
 					try {
 						if (path.startsWith("file:/") || path.startsWith("platform:/plugin")) { //$NON-NLS-1$ //$NON-NLS-2$
-							resource = load(URI.createURI(path, true), RESOURCE_SET);
+							resource = load(URI.createURI(path, true), resourceSet);
 						} else {
-							resource = load(URI.createPlatformResourceURI(path, true), RESOURCE_SET);
+							resource = load(URI.createPlatformResourceURI(path, true), resourceSet);
 						}
 					} catch (IOException e) {
 						// TODO apply marker on the file
