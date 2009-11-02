@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.common.AtlNbCharFile;
 import org.eclipse.m2m.atl.core.IModel;
+import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
  * The MarkerMaker class.
@@ -184,7 +185,8 @@ public class MarkerMaker {
 	private int applyMarkers(IFile file, IModel pbs, int tabWidth) throws CoreException {
 		int nbErrors = 0;
 
-		Collection pbsc = pbs.getElementsByType("Problem"); //$NON-NLS-1$
+		Object problemType = AtlParser.getDefault().getProblemMetamodel().getMetaElementByName("Problem");
+		Collection pbsc = pbs.getElementsByType(problemType); //$NON-NLS-1$
 		EObject[] pbsa = new EObject[pbsc.size()];
 		int k = 0;
 		for (Iterator i = pbsc.iterator(); i.hasNext();) {
