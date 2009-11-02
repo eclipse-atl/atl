@@ -258,10 +258,7 @@ public class CreateRunnableData {
 		for (String metamodelName : getAllMetamodelsNames()) {
 			String location = locationsFromFile.get(metamodelName);
 			if (location != null) {
-				EPackage regValue = EPackage.Registry.INSTANCE.getEPackage(location);
-				if (regValue != null) {
-					metamodelLocations.put(metamodelName, location);
-				}
+				metamodelLocations.put(metamodelName, location);
 			}
 		}
 	}
