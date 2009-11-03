@@ -32,8 +32,8 @@ public class TestEMFVMStandalone extends TestNonRegressionEMFVM {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.m2m.atl.tests.standalone.unit.TestNonRegressionTransfo#setUp()
+	 *
+	 * @see org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionEMFVM#setUp()
 	 */
 	@Override
 	protected void setUp() throws Exception {

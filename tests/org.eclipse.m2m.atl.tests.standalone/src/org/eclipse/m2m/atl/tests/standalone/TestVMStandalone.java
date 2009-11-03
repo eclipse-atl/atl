@@ -35,7 +35,7 @@ public class TestVMStandalone extends TestNonRegressionVM {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.tests.standalone.unit.TestNonRegressionTransfo#setUp()
+	 * @see org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionVM#setUp()
 	 */
 	@Override
 	protected void setUp() throws Exception {
@@ -43,7 +43,7 @@ public class TestVMStandalone extends TestNonRegressionVM {
 		setPropertiesPath("/org.eclipse.m2m.atl.tests.standalone/tests.properties"); //$NON-NLS-1$
 
 		AtlModelHandler.registerDefaultHandler("EMF", new AtlEMFModelHandler()); //$NON-NLS-1$
-		CoreService.registerLauncher("Regular VM (with debugger)", RegularVMLauncher.class); //$NON-NLS-1$
+		CoreService.registerLauncher("Regular VM", RegularVMLauncher.class); //$NON-NLS-1$
 		CoreService.registerFactory("ASM", ASMFactory.class); //$NON-NLS-1$
 		CoreService.registerExtractor("ASM", ASMExtractor.class); //$NON-NLS-1$
 		CoreService.registerInjector("ASM", ASMInjector.class); //$NON-NLS-1$
