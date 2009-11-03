@@ -195,9 +195,9 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 		atlVMLabel.setText(Messages.getString("AdvancedTab.ATLVM")); //$NON-NLS-1$
 		atlVMLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		atlVMs = new Combo(groupATLVMs, SWT.NULL | SWT.READ_ONLY);
+		atlVMs.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		atlVMs.setItems(CoreService.getLaunchersNames(getLaunchConfigurationDialog().getMode()));
 		atlVMs.select(0);
-		atlVMs.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 		atlVMs.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				buildCheckButtons();
@@ -210,7 +210,7 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 			debuggerPortLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 			debuggerPortLabel.setText(Messages.getString("AdvancedTab.DEBUGGER_PORT")); //$NON-NLS-1$
 			debuggerPortText = new Text(groupATLVMs, SWT.BORDER);
-			debuggerPortText.setLayoutData(new GridData(GridData.BEGINNING));
+			debuggerPortText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			debuggerPortText.addModifyListener(new ModifyListener() {
 				public void modifyText(ModifyEvent e) {
 					updateLaunchConfigurationDialog();

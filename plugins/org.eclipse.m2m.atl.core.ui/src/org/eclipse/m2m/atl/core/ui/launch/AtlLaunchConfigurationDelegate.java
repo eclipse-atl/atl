@@ -262,9 +262,6 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 					try {
 						LauncherService.launch(realMode, monitor, launcher, sourceModels, sourceTargetModels,
 								targetModels, modelPaths, options, libraries, modules);
-						// mTarget.terminate();
-						// } catch (DebugException e) {
-						// ATLLogger.severe(e.getMessage());
 					} catch (ATLCoreException e) {
 						ATLLogger.severe(e.getMessage());
 						return;

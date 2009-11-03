@@ -9,6 +9,12 @@
             modes="run, debug"
             name="ATL Transformation">
       </launchConfigurationType>
+      <launchConfigurationType
+            delegate="org.eclipse.m2m.atl.core.ui.launch.RemoteAtlConfigurationDelegate"
+            id="org.eclipse.m2m.atl.adt.launching.remoteAtlTransformation"
+            modes="debug"
+            name="Remote ATL Transformation">
+      </launchConfigurationType>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -17,6 +23,11 @@
             id="org.eclipse.m2m.atl.core.ui.atlTransformationTabGroup"
             type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
       </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="org.eclipse.m2m.atl.core.ui.launch.RemoteAtlTabGroup"
+            id="org.eclipse.m2m.atl.core.ui.remoteAtlTransformationTabGroup"
+            type="org.eclipse.m2m.atl.adt.launching.remoteAtlTransformation">
+      </launchConfigurationTabGroup>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
@@ -24,6 +35,11 @@
             configTypeID="org.eclipse.m2m.atl.adt.launching.atlTransformation"
             icon="icons/atl_logo.gif"
             id="org.eclipse.m2m.atl.core.ui.atlTransformationImage">
+      </launchConfigurationTypeImage>
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.m2m.atl.adt.launching.remoteAtlTransformation"
+            icon="icons/atl_remote.gif"
+            id="org.eclipse.m2m.atl.core.ui.remoteAtlTransformationImage">
       </launchConfigurationTypeImage>
    </extension>
    <extension
