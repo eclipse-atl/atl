@@ -23,7 +23,7 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
  */
 public final class InitParserData {
 
-	private static final boolean UPDATE = true;
+	protected static boolean update;
 
 	/**
 	 * Utility classes don't need to (and shouldn't) be instantiated.
@@ -65,7 +65,7 @@ public final class InitParserData {
 	private static void initTest(File directory) throws Exception {
 		final String transfoPath = directory.toString().replaceAll("expected", "inputs") + "/" + directory.getName() + ".atl"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		final String xmiTransfoPath = directory.toString() + "/" + directory.getName() + ".atl.xmi"; //$NON-NLS-1$ //$NON-NLS-2$
-		if (new File(xmiTransfoPath).exists() && !UPDATE) {
+		if (new File(xmiTransfoPath).exists() && !update) {
 			return;
 		}
 		EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));

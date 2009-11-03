@@ -28,13 +28,6 @@
       <property name="plugin-name" value="${plugin-name}"/>
       <property name="classname" value="org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionEMFVM"/>
     </ant>
-  	<!-- 
-  	TODO add following tests:
-  	- emfvm
-  	- regularvm
-  	- parsing
-  	- compilation (emfvm)
-  	-->
   </target>
 
   <!-- This target holds code to cleanup the testing environment after -->
