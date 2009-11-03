@@ -263,7 +263,11 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 
 	private InputStream getInputStreamFromPath(File path) {
 		try {
-			return new FileInputStream(path);
+			String atlPath = path.toString();
+			if (atlPath.toString().endsWith(".atl")) { //$NON-NLS-1$
+				atlPath = atlPath.substring(0, atlPath.length() - 4) + ".asm"; //$NON-NLS-1$
+			}
+			return new FileInputStream(new File(atlPath));
 		} catch (IOException e) {
 			error(Messages.getString("ATLModelTransformationTask.FILE_NOT_FOUND", path), e); //$NON-NLS-1$
 		}
