@@ -45,6 +45,8 @@ import org.eclipse.m2m.atl.core.service.LauncherService;
  */
 public class ATLModelTransformationTask extends AbstractAtlTask {
 
+	protected String mode = ILauncher.RUN_MODE;
+	
 	protected boolean isRefiningTraceMode;
 
 	protected File asmPath;
@@ -60,6 +62,10 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 	protected Map<String, Object> options = new HashMap<String, Object>();
 
 	protected List<Superimpose> superimposeModules = new ArrayList<Superimpose>();
+
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
 
 	public void setRefining(boolean isRefining) {
 		this.isRefiningTraceMode = isRefining;
@@ -221,7 +227,8 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 		Object transformationResult = null;
 		long startTime = System.currentTimeMillis();
 		try {
-			transformationResult = launcherInstance.launch(ILauncher.RUN_MODE, new NullProgressMonitor(),
+			System.out.println(mode);
+			transformationResult = launcherInstance.launch(mode, new NullProgressMonitor(),
 					options, (Object[])moduleInputStreams);
 		} catch (ATLExecutionException e) {
 			error(e.getMessage(), e);
