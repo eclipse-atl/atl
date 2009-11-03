@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="Cp1252"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="5:1-124:2" name="Trace2PerformanceMetrics">
+  <commentsBefore>--@atlcompiler atl2006</commentsBefore>
+  <commentsBefore>--@author Hugo Bruneliere (Hugo.Bruneliere &lt;at> gmail.com)</commentsBefore>
   <inModels location="6:28-6:38" name="IN">
-    <metamodel href="temp#/1"/>
+    <metamodel href="new-model#/1"/>
   </inModels>
   <outModels location="6:9-6:22" name="OUT">
-    <metamodel href="temp#/0"/>
+    <metamodel href="new-model#/0"/>
   </outModels>
   <elements xsi:type="atl:Helper" location="15:1-22:4">
+    <commentsBefore>-------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- HELPERS --------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- This helper returns the list of the methods called at a given level </commentsBefore>
+    <commentsBefore>-- CONTEXT: Trace!Level</commentsBefore>
+    <commentsBefore>-- RETURN: Sequence(String)</commentsBefore>
+    <commentsAfter>-- This helper returns the overall list of the methods called</commentsAfter>
+    <commentsAfter>-- CONTEXT: Trace!Trace</commentsAfter>
+    <commentsAfter>-- RETURN: Sequence(String)</commentsAfter>
     <definition location="15:8-22:3">
       <feature xsi:type="ocl:Operation" location="15:33-22:3" name="getMethodsList">
         <returnType xsi:type="ocl:SequenceType" location="15:52-15:68">
@@ -15,7 +26,7 @@
         <body xsi:type="ocl:IterateExp" location="16:2-22:3">
           <source xsi:type="ocl:NavigationOrAttributeCallExp" location="16:2-16:12" name="calls">
             <source xsi:type="ocl:VariableExp" location="16:2-16:6">
-              <referredVariable href="temp#/2"/>
+              <referredVariable href="new-model#/3"/>
             </source>
           </source>
           <body xsi:type="ocl:IfExp" location="17:3-21:8">
@@ -52,12 +63,15 @@
       </feature>
       <context_ location="15:8-15:27">
         <context_ xsi:type="ocl:OclModelElement" location="15:16-15:27" name="Level">
-          <model href="temp#/1"/>
+          <model href="new-model#/2"/>
         </context_>
       </context_>
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="27:1-28:67">
+    <commentsBefore>-- This helper returns the overall list of the methods called</commentsBefore>
+    <commentsBefore>-- CONTEXT: Trace!Trace</commentsBefore>
+    <commentsBefore>-- RETURN: Sequence(String)</commentsBefore>
     <definition location="27:8-28:66">
       <feature xsi:type="ocl:Operation" location="27:33-28:66" name="getMethodsList">
         <returnType xsi:type="ocl:SequenceType" location="27:52-27:68">
@@ -68,7 +82,7 @@
             <source xsi:type="ocl:IteratorExp" location="28:2-28:46" name="collect">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="28:2-28:13" name="levels">
                 <source xsi:type="ocl:VariableExp" location="28:2-28:6">
-                  <referredVariable href="temp#/3"/>
+                  <referredVariable href="new-model#/5"/>
                 </source>
               </source>
               <body xsi:type="ocl:OperationCallExp" location="28:27-28:45" operationName="getMethodsList">
@@ -81,12 +95,15 @@
       </feature>
       <context_ location="27:8-27:27">
         <context_ xsi:type="ocl:OclModelElement" location="27:16-27:27" name="Trace">
-          <model href="temp#/1"/>
+          <model href="new-model#/4"/>
         </context_>
       </context_>
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="30:1-30:57">
+    <commentsAfter>-------------------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- RULES ----------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>-------------------------------------------------------------------------------</commentsAfter>
     <definition location="30:8-30:56">
       <feature xsi:type="ocl:Attribute" location="30:13-30:56" name="methodsList">
         <initExpression xsi:type="ocl:SequenceExp" location="30:46-30:56"/>
@@ -97,10 +114,13 @@
     </definition>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="37:1-88:2" name="MetricsBuilding">
+    <commentsBefore>-------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- RULES ----------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-------------------------------------------------------------------------------</commentsBefore>
     <outPattern location="46:2-55:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="47:3-49:4" varName="mDBAccesses" variableExp="//@elements.3/@actionBlock/@statements.1/@statements.1/@source/@source //@elements.3/@actionBlock/@statements.1/@statements.1/@value/@source/@source">
         <type xsi:type="ocl:OclModelElement" location="47:17-47:31" name="Metric">
-          <model href="temp#/0"/>
+          <model href="new-model#/7"/>
         </type>
         <bindings location="48:4-48:53" propertyName="name">
           <value xsi:type="ocl:StringExp" location="48:12-48:53" stringSymbol="Average number of DB accesses by method"/>
@@ -108,7 +128,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="50:3-52:4" varName="mDBRows" variableExp="//@elements.3/@actionBlock/@statements.1/@statements.2/@source/@source //@elements.3/@actionBlock/@statements.1/@statements.2/@value/@source/@source">
         <type xsi:type="ocl:OclModelElement" location="50:13-50:27" name="Metric">
-          <model href="temp#/0"/>
+          <model href="new-model#/8"/>
         </type>
         <bindings location="51:4-51:57" propertyName="name">
           <value xsi:type="ocl:StringExp" location="51:12-51:57" stringSymbol="Average number of DB rows handled by method"/>
@@ -116,7 +136,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="53:3-55:4" varName="mCPU" variableExp="//@elements.3/@actionBlock/@statements.1/@statements.3/@source/@source //@elements.3/@actionBlock/@statements.1/@statements.3/@value/@source/@source">
         <type xsi:type="ocl:OclModelElement" location="53:10-53:24" name="Metric">
-          <model href="temp#/0"/>
+          <model href="new-model#/9"/>
         </type>
         <bindings location="54:4-54:45" propertyName="name">
           <value xsi:type="ocl:StringExp" location="54:12-54:45" stringSymbol="Average CPU time used by method"/>
@@ -127,7 +147,7 @@
       <statements xsi:type="atl:BindingStat" location="57:3-57:48">
         <source xsi:type="ocl:NavigationOrAttributeCallExp" location="57:3-57:25" name="methodsList">
           <source xsi:type="ocl:VariableExp" location="57:3-57:13">
-            <referredVariable href="temp#/4"/>
+            <referredVariable href="new-model#/10"/>
           </source>
         </source>
         <value xsi:type="ocl:OperationCallExp" location="57:29-57:47" operationName="getMethodsList">
@@ -138,7 +158,7 @@
         <iterator location="58:7-58:17" varName="methodName" variableExp="//@elements.3/@actionBlock/@statements.1/@statements.0/@statements.0/@statements.0/@condition/@arguments.0 //@elements.3/@actionBlock/@statements.1/@statements.1/@value/@arguments.0/@elements.0/@arguments.0 //@elements.3/@actionBlock/@statements.1/@statements.2/@value/@arguments.0/@elements.0/@arguments.0 //@elements.3/@actionBlock/@statements.1/@statements.3/@value/@arguments.0/@elements.0/@arguments.0"/>
         <collection xsi:type="ocl:NavigationOrAttributeCallExp" location="58:21-58:43" name="methodsList">
           <source xsi:type="ocl:VariableExp" location="58:21-58:31">
-            <referredVariable href="temp#/5"/>
+            <referredVariable href="new-model#/11"/>
           </source>
         </collection>
         <statements xsi:type="atl:ForStat" location="60:4-69:5">
@@ -206,7 +226,7 @@
             <arguments xsi:type="ocl:SequenceExp" location="70:52-73:16">
               <elements xsi:type="ocl:OperationCallExp" location="71:15-72:59" operationName="CreateAverageNbOfDbAccessesMetricValue">
                 <source xsi:type="ocl:VariableExp" location="71:15-71:25">
-                  <referredVariable href="temp#/6"/>
+                  <referredVariable href="new-model#/12"/>
                 </source>
                 <arguments xsi:type="ocl:VariableExp" location="71:65-71:75" referredVariable="//@elements.3/@actionBlock/@statements.1/@iterator"/>
                 <arguments xsi:type="ocl:VariableExp" location="72:18-72:37" referredVariable="//@elements.3/@variables.1"/>
@@ -226,7 +246,7 @@
             <arguments xsi:type="ocl:SequenceExp" location="74:44-77:16">
               <elements xsi:type="ocl:OperationCallExp" location="75:15-76:55" operationName="CreateAverageNbOfDbRowsMetricValue">
                 <source xsi:type="ocl:VariableExp" location="75:15-75:25">
-                  <referredVariable href="temp#/7"/>
+                  <referredVariable href="new-model#/13"/>
                 </source>
                 <arguments xsi:type="ocl:VariableExp" location="75:61-75:71" referredVariable="//@elements.3/@actionBlock/@statements.1/@iterator"/>
                 <arguments xsi:type="ocl:VariableExp" location="76:18-76:33" referredVariable="//@elements.3/@variables.2"/>
@@ -246,7 +266,7 @@
             <arguments xsi:type="ocl:SequenceExp" location="78:38-81:16">
               <elements xsi:type="ocl:OperationCallExp" location="79:15-80:52" operationName="CreateAverageCPUTimeMetricValue">
                 <source xsi:type="ocl:VariableExp" location="79:15-79:25">
-                  <referredVariable href="temp#/8"/>
+                  <referredVariable href="new-model#/14"/>
                 </source>
                 <arguments xsi:type="ocl:VariableExp" location="79:58-79:68" referredVariable="//@elements.3/@actionBlock/@statements.1/@iterator"/>
                 <arguments xsi:type="ocl:VariableExp" location="80:18-80:30" referredVariable="//@elements.3/@variables.3"/>
@@ -292,7 +312,7 @@
     <inPattern location="38:2-39:18">
       <elements xsi:type="atl:SimpleInPatternElement" location="39:3-39:18" varName="t" variableExp="//@elements.3/@actionBlock/@statements.0/@value/@source //@elements.3/@actionBlock/@statements.1/@statements.0/@collection/@source">
         <type xsi:type="ocl:OclModelElement" location="39:7-39:18" name="Trace">
-          <model href="temp#/1"/>
+          <model href="new-model#/6"/>
         </type>
       </elements>
     </inPattern>
@@ -301,7 +321,7 @@
     <outPattern location="92:2-96:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="93:3-96:4" varName="mv" variableExp="//@elements.4/@actionBlock/@statements.0/@expression">
         <type xsi:type="ocl:OclModelElement" location="93:8-93:34" name="IntegerMetricValue">
-          <model href="temp#/0"/>
+          <model href="new-model#/15"/>
         </type>
         <bindings location="94:4-94:21" propertyName="tag">
           <value xsi:type="ocl:VariableExp" location="94:11-94:21" referredVariable="//@elements.4/@parameters.0"/>
@@ -335,7 +355,7 @@
     <outPattern location="104:2-108:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="105:3-108:4" varName="mv" variableExp="//@elements.5/@actionBlock/@statements.0/@expression">
         <type xsi:type="ocl:OclModelElement" location="105:8-105:34" name="IntegerMetricValue">
-          <model href="temp#/0"/>
+          <model href="new-model#/16"/>
         </type>
         <bindings location="106:4-106:21" propertyName="tag">
           <value xsi:type="ocl:VariableExp" location="106:11-106:21" referredVariable="//@elements.5/@parameters.0"/>
@@ -369,7 +389,7 @@
     <outPattern location="116:2-120:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="117:3-120:4" varName="mv" variableExp="//@elements.6/@actionBlock/@statements.0/@expression">
         <type xsi:type="ocl:OclModelElement" location="117:8-117:34" name="IntegerMetricValue">
-          <model href="temp#/0"/>
+          <model href="new-model#/17"/>
         </type>
         <bindings location="118:4-118:21" propertyName="tag">
           <value xsi:type="ocl:VariableExp" location="118:11-118:21" referredVariable="//@elements.6/@parameters.0"/>

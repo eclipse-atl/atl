@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
 <stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons/Families2Persons.atl"/>
-<stringAttribute key="ATL VM" value="Regular VM (with debugger)"/>
+<stringAttribute key="ATL VM" value="Regular VM"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <booleanAttribute key="ContinueAfterError" value="false"/>
 <mapAttribute key="Input">

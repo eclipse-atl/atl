@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="Cp1252"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="1:1-47:2" name="Book2Publication">
   <inModels location="2:31-2:40" name="IN">
-    <metamodel href="temp#/1"/>
+    <metamodel href="new-model#/1"/>
   </inModels>
   <outModels location="2:8-2:25" name="OUT">
-    <metamodel href="temp#/0"/>
+    <metamodel href="new-model#/0"/>
   </outModels>
   <elements xsi:type="atl:Helper" location="7:1-16:2">
+    <commentsBefore>-- getAuthors collects all Autors of a Book</commentsBefore>
+    <commentsBefore>-- the asSet operation removes all duplicates</commentsBefore>
+    <commentsAfter>-- getNbPages collects all nbPages of all chapters</commentsAfter>
+    <commentsAfter>-- and calculates the sum</commentsAfter>
     <definition location="7:8-15:15">
       <feature xsi:type="ocl:Operation" location="7:32-15:15" name="getAuthors">
         <returnType xsi:type="ocl:StringType" location="7:47-7:53"/>
         <body xsi:type="ocl:IterateExp" location="8:8-15:15">
-          <source xsi:type="ocl:CollectionOperationCallExp" location="8:8-9:17" operationName="asSet">
+          <source xsi:type="ocl:CollectionOperationCallExp" location="8:8-9:24" operationName="asOrderedSet">
             <source xsi:type="ocl:IteratorExp" location="8:8-8:44" name="collect">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="8:8-8:21" name="chapters">
                 <source xsi:type="ocl:VariableExp" location="8:8-8:12">
-                  <referredVariable href="temp#/2"/>
+                  <referredVariable href="new-model#/3"/>
                 </source>
               </source>
               <body xsi:type="ocl:NavigationOrAttributeCallExp" location="8:35-8:43" name="author">
@@ -47,12 +51,16 @@
       </feature>
       <context_ location="7:8-7:25">
         <context_ xsi:type="ocl:OclModelElement" location="7:16-7:25" name="Book">
-          <model href="temp#/1"/>
+          <model href="new-model#/2"/>
         </context_>
       </context_>
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="21:1-25:2">
+    <commentsBefore>-- getNbPages collects all nbPages of all chapters</commentsBefore>
+    <commentsBefore>-- and calculates the sum</commentsBefore>
+    <commentsAfter>-- getSumPages does the same as getNbPages,</commentsAfter>
+    <commentsAfter>-- but it uses the OCL sum operation</commentsAfter>
     <definition location="21:8-24:36">
       <feature xsi:type="ocl:Operation" location="21:32-24:36" name="getNbPages">
         <returnType xsi:type="ocl:IntegerType" location="21:47-21:54"/>
@@ -60,7 +68,7 @@
           <source xsi:type="ocl:IteratorExp" location="22:3-22:38" name="collect">
             <source xsi:type="ocl:NavigationOrAttributeCallExp" location="22:3-22:16" name="chapters">
               <source xsi:type="ocl:VariableExp" location="22:3-22:7">
-                <referredVariable href="temp#/3"/>
+                <referredVariable href="new-model#/5"/>
               </source>
             </source>
             <body xsi:type="ocl:NavigationOrAttributeCallExp" location="22:28-22:37" name="nbPages">
@@ -81,12 +89,14 @@
       </feature>
       <context_ location="21:8-21:25">
         <context_ xsi:type="ocl:OclModelElement" location="21:16-21:25" name="Book">
-          <model href="temp#/1"/>
+          <model href="new-model#/4"/>
         </context_>
       </context_>
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="30:1-32:2">
+    <commentsBefore>-- getSumPages does the same as getNbPages,</commentsBefore>
+    <commentsBefore>-- but it uses the OCL sum operation</commentsBefore>
     <definition location="30:8-31:44">
       <feature xsi:type="ocl:Operation" location="30:32-31:44" name="getSumPages">
         <returnType xsi:type="ocl:IntegerType" location="30:48-30:55"/>
@@ -94,7 +104,7 @@
           <source xsi:type="ocl:IteratorExp" location="31:3-31:38" name="collect">
             <source xsi:type="ocl:NavigationOrAttributeCallExp" location="31:3-31:16" name="chapters">
               <source xsi:type="ocl:VariableExp" location="31:3-31:7">
-                <referredVariable href="temp#/4"/>
+                <referredVariable href="new-model#/7"/>
               </source>
             </source>
             <body xsi:type="ocl:NavigationOrAttributeCallExp" location="31:28-31:37" name="nbPages">
@@ -106,7 +116,7 @@
       </feature>
       <context_ location="30:8-30:25">
         <context_ xsi:type="ocl:OclModelElement" location="30:16-30:25" name="Book">
-          <model href="temp#/1"/>
+          <model href="new-model#/6"/>
         </context_>
       </context_>
     </definition>
@@ -115,7 +125,7 @@
     <outPattern location="41:2-46:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="42:3-46:4" varName="out">
         <type xsi:type="ocl:OclModelElement" location="42:9-42:32" name="Publication">
-          <model href="temp#/0"/>
+          <model href="new-model#/9"/>
         </type>
         <bindings location="43:13-43:29" propertyName="title">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="43:22-43:29" name="title">
@@ -137,14 +147,17 @@
     <inPattern location="36:2-40:4">
       <elements xsi:type="atl:SimpleInPatternElement" location="37:3-37:16" varName="b" variableExp="//@elements.3/@inPattern/@filter/@source/@source //@elements.3/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="37:7-37:16" name="Book">
-          <model href="temp#/1"/>
+          <model href="new-model#/8"/>
         </type>
       </elements>
       <filter xsi:type="ocl:OperatorCallExp" location="38:4-38:23" operationName=">">
+        <commentsAfter>-- only Books with more than 2 pages are publications</commentsAfter>
         <source xsi:type="ocl:OperationCallExp" location="38:4-38:19" operationName="getSumPages">
           <source xsi:type="ocl:VariableExp" location="38:4-38:5" referredVariable="//@elements.3/@inPattern/@elements.0"/>
         </source>
-        <arguments xsi:type="ocl:IntegerExp" location="38:22-38:23" integerSymbol="2"/>
+        <arguments xsi:type="ocl:IntegerExp" location="38:22-38:23" integerSymbol="2">
+          <commentsAfter>-- only Books with more than 2 pages are publications</commentsAfter>
+        </arguments>
       </filter>
     </inPattern>
   </elements>

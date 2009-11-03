@@ -3,26 +3,26 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="Metrics">
   <Metric name="Average number of DB accesses by method">
+    <values xsi:type="IntegerMetricValue" tag="Cancel" value="0"/>
     <values xsi:type="IntegerMetricValue" tag="Select Order" value="3"/>
     <values xsi:type="IntegerMetricValue" tag="Delete Order" value="0"/>
     <values xsi:type="IntegerMetricValue" tag="Update Order" value="0"/>
-    <values xsi:type="IntegerMetricValue" tag="Cancel" value="0"/>
     <values xsi:type="IntegerMetricValue" tag="Validate" value="1"/>
     <values xsi:type="IntegerMetricValue" tag="Create New Order" value="0"/>
   </Metric>
   <Metric name="Average number of DB rows handled by method">
+    <values xsi:type="IntegerMetricValue" tag="Cancel" value="0"/>
     <values xsi:type="IntegerMetricValue" tag="Select Order" value="3761"/>
     <values xsi:type="IntegerMetricValue" tag="Delete Order" value="0"/>
     <values xsi:type="IntegerMetricValue" tag="Update Order" value="0"/>
-    <values xsi:type="IntegerMetricValue" tag="Cancel" value="0"/>
     <values xsi:type="IntegerMetricValue" tag="Validate" value="1115"/>
     <values xsi:type="IntegerMetricValue" tag="Create New Order" value="0"/>
   </Metric>
   <Metric name="Average CPU time used by method">
+    <values xsi:type="IntegerMetricValue" tag="Cancel" value="469"/>
     <values xsi:type="IntegerMetricValue" tag="Select Order" value="11385"/>
     <values xsi:type="IntegerMetricValue" tag="Delete Order" value="4928"/>
     <values xsi:type="IntegerMetricValue" tag="Update Order" value="11978"/>
-    <values xsi:type="IntegerMetricValue" tag="Cancel" value="469"/>
     <values xsi:type="IntegerMetricValue" tag="Validate" value="9719"/>
     <values xsi:type="IntegerMetricValue" tag="Create New Order" value="8184"/>
   </Metric>

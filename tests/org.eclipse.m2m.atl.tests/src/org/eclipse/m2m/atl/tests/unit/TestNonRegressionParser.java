@@ -34,6 +34,7 @@ public class TestNonRegressionParser extends TestNonRegression {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		setPropertiesPath("/org.eclipse.m2m.atl.tests/data/emfvm.properties"); //$NON-NLS-1$
 	}
 
 	/**

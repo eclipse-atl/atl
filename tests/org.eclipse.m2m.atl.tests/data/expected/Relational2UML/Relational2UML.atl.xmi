@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="Cp1252"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="5:1-98:2" name="Relational2UML2">
+  <commentsBefore>-- @atlcompiler atl2006</commentsBefore>
+  <commentsBefore>-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML</commentsBefore>
+  <commentsBefore>-- @path Relational=/Relational2UML2/metamodels/relational.ecore</commentsBefore>
   <inModels location="6:23-6:38" name="IN">
-    <metamodel href="temp#/1"/>
+    <metamodel href="new-model#/1"/>
   </inModels>
   <inModels location="6:40-6:49" name="PRO">
-    <metamodel href="temp#/0"/>
+    <metamodel href="new-model#/2"/>
   </inModels>
   <outModels location="6:8-6:17" name="OUT">
-    <metamodel href="temp#/0"/>
+    <metamodel href="new-model#/0"/>
   </outModels>
   <elements xsi:type="atl:Helper" location="12:1-12:60">
+    <commentsBefore>-------------------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- HELPERS --------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-------------------------------------------------------------------------------------------</commentsBefore>
     <definition location="12:8-12:59">
       <feature xsi:type="ocl:Attribute" location="12:14-12:59" name="stringType">
         <initExpression xsi:type="ocl:OclUndefinedExp" location="12:47-12:59"/>
         <type xsi:type="ocl:OclModelElement" location="12:27-12:44" name="PrimitiveType">
-          <model href="temp#/0"/>
+          <model href="new-model#/3"/>
         </type>
       </feature>
     </definition>
@@ -24,7 +30,7 @@
       <feature xsi:type="ocl:Attribute" location="13:14-13:60" name="integerType">
         <initExpression xsi:type="ocl:OclUndefinedExp" location="13:48-13:60"/>
         <type xsi:type="ocl:OclModelElement" location="13:28-13:45" name="PrimitiveType">
-          <model href="temp#/0"/>
+          <model href="new-model#/4"/>
         </type>
       </feature>
     </definition>
@@ -33,18 +39,18 @@
     <definition location="15:8-24:7">
       <feature xsi:type="ocl:Operation" location="15:40-24:7" name="computeType">
         <returnType xsi:type="ocl:OclModelElement" location="15:56-15:73" name="PrimitiveType">
-          <model href="temp#/0"/>
+          <model href="new-model#/6"/>
         </returnType>
         <body xsi:type="ocl:IfExp" location="16:2-24:7">
           <thenExpression xsi:type="ocl:NavigationOrAttributeCallExp" location="17:3-17:24" name="stringType">
             <source xsi:type="ocl:VariableExp" location="17:3-17:13">
-              <referredVariable href="temp#/3"/>
+              <referredVariable href="new-model#/8"/>
             </source>
           </thenExpression>
           <condition xsi:type="ocl:OperatorCallExp" location="16:5-16:25" operationName="=">
             <source xsi:type="ocl:NavigationOrAttributeCallExp" location="16:5-16:14" name="type">
               <source xsi:type="ocl:VariableExp" location="16:5-16:9">
-                <referredVariable href="temp#/2"/>
+                <referredVariable href="new-model#/7"/>
               </source>
             </source>
             <arguments xsi:type="ocl:EnumLiteralExp" location="16:17-16:25" name="VARCHAR"/>
@@ -52,20 +58,20 @@
           <elseExpression xsi:type="ocl:IfExp" location="19:3-23:8">
             <thenExpression xsi:type="ocl:NavigationOrAttributeCallExp" location="20:4-20:26" name="integerType">
               <source xsi:type="ocl:VariableExp" location="20:4-20:14">
-                <referredVariable href="temp#/5"/>
+                <referredVariable href="new-model#/10"/>
               </source>
             </thenExpression>
             <condition xsi:type="ocl:OperatorCallExp" location="19:6-19:26" operationName="=">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="19:6-19:15" name="type">
                 <source xsi:type="ocl:VariableExp" location="19:6-19:10">
-                  <referredVariable href="temp#/4"/>
+                  <referredVariable href="new-model#/9"/>
                 </source>
               </source>
               <arguments xsi:type="ocl:EnumLiteralExp" location="19:18-19:26" name="NUMERIC"/>
             </condition>
             <elseExpression xsi:type="ocl:NavigationOrAttributeCallExp" location="22:7-22:29" name="integerType">
               <source xsi:type="ocl:VariableExp" location="22:7-22:17">
-                <referredVariable href="temp#/6"/>
+                <referredVariable href="new-model#/11"/>
               </source>
             </elseExpression>
           </elseExpression>
@@ -73,25 +79,28 @@
       </feature>
       <context_ location="15:8-15:33">
         <context_ xsi:type="ocl:OclModelElement" location="15:16-15:33" name="Column">
-          <model href="temp#/1"/>
+          <model href="new-model#/5"/>
         </context_>
       </context_>
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="26:1-27:80">
+    <commentsAfter>-------------------------------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- RULES ----------------------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>-------------------------------------------------------------------------------------------</commentsAfter>
     <definition location="26:8-27:79">
       <feature xsi:type="ocl:Operation" location="26:14-27:79" name="getStereotype">
         <parameters location="26:28-26:41" varName="name" variableExp="//@elements.3/@definition/@feature/@body/@source/@body/@arguments.0">
           <type xsi:type="ocl:StringType" location="26:35-26:41"/>
         </parameters>
         <returnType xsi:type="ocl:OclModelElement" location="26:45-26:59" name="Stereotype">
-          <model href="temp#/0"/>
+          <model href="new-model#/12"/>
         </returnType>
         <body xsi:type="ocl:CollectionOperationCallExp" location="27:5-27:79" operationName="first">
           <source xsi:type="ocl:IteratorExp" location="27:5-27:70" name="select">
             <source xsi:type="ocl:OperationCallExp" location="27:5-27:43" operationName="allInstancesFrom">
               <source xsi:type="ocl:OclModelElement" location="27:5-27:19" name="Stereotype">
-                <model href="temp#/0"/>
+                <model href="new-model#/13"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="27:37-27:42" stringSymbol="PRO"/>
             </source>
@@ -108,10 +117,13 @@
     </definition>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="34:1-48:2" name="Column2Property">
+    <commentsBefore>-------------------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- RULES ----------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-------------------------------------------------------------------------------------------</commentsBefore>
     <outPattern location="37:2-43:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="38:3-43:4" varName="out" variableExp="//@elements.4/@actionBlock/@statements.0/@expression/@source">
         <type xsi:type="ocl:OclModelElement" location="38:9-38:21" name="Property">
-          <model href="temp#/0"/>
+          <model href="new-model#/15"/>
         </type>
         <bindings location="39:4-39:18" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="39:12-39:18" name="name">
@@ -124,9 +136,11 @@
           </value>
         </bindings>
         <bindings location="42:4-42:33" propertyName="type">
+          <commentsAfter>-- p.computeType()</commentsAfter>
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="42:12-42:33" name="stringType">
+            <commentsAfter>-- p.computeType()</commentsAfter>
             <source xsi:type="ocl:VariableExp" location="42:12-42:22">
-              <referredVariable href="temp#/7"/>
+              <referredVariable href="new-model#/16"/>
             </source>
           </value>
         </bindings>
@@ -134,11 +148,12 @@
     </outPattern>
     <actionBlock location="44:2-47:3">
       <statements xsi:type="atl:ExpressionStat" location="45:5-45:61">
+        <commentsAfter>--&#x9;   out.setValue(out.getAppliedStereotypes()->first(),'isPrimaryKey',true);</commentsAfter>
         <expression xsi:type="ocl:OperationCallExp" location="45:5-45:60" operationName="applyStereotype">
           <source xsi:type="ocl:VariableExp" location="45:5-45:8" referredVariable="//@elements.4/@outPattern/@elements.0"/>
           <arguments xsi:type="ocl:OperationCallExp" location="45:25-45:59" operationName="getStereotype">
             <source xsi:type="ocl:VariableExp" location="45:25-45:35">
-              <referredVariable href="temp#/8"/>
+              <referredVariable href="new-model#/17"/>
             </source>
             <arguments xsi:type="ocl:StringExp" location="45:50-45:58" stringSymbol="Column"/>
           </arguments>
@@ -148,7 +163,7 @@
     <inPattern location="35:2-36:24">
       <elements xsi:type="atl:SimpleInPatternElement" location="36:3-36:24" varName="p" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.4/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="36:7-36:24" name="Column">
-          <model href="temp#/1"/>
+          <model href="new-model#/14"/>
         </type>
       </elements>
     </inPattern>
@@ -157,7 +172,7 @@
     <outPattern location="54:2-64:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="55:3-58:4" varName="out" variableExp="//@elements.5/@actionBlock/@statements.2/@expression/@source //@elements.5/@actionBlock/@statements.3/@expression/@source">
         <type xsi:type="ocl:OclModelElement" location="55:9-55:18" name="Model">
-          <model href="temp#/0"/>
+          <model href="new-model#/19"/>
         </type>
         <bindings location="56:4-56:18" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="56:12-56:18" name="name">
@@ -178,7 +193,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="59:3-61:4" varName="integer" variableExp="//@elements.5/@outPattern/@elements.0/@bindings.1/@value/@source/@elements.1 //@elements.5/@actionBlock/@statements.1/@value">
         <type xsi:type="ocl:OclModelElement" location="59:13-59:30" name="PrimitiveType">
-          <model href="temp#/0"/>
+          <model href="new-model#/20"/>
         </type>
         <bindings location="60:4-60:21" propertyName="name">
           <value xsi:type="ocl:StringExp" location="60:12-60:21" stringSymbol="Integer"/>
@@ -186,7 +201,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="62:3-64:4" varName="string" variableExp="//@elements.5/@outPattern/@elements.0/@bindings.1/@value/@source/@elements.2 //@elements.5/@actionBlock/@statements.0/@value">
         <type xsi:type="ocl:OclModelElement" location="62:12-62:29" name="PrimitiveType">
-          <model href="temp#/0"/>
+          <model href="new-model#/21"/>
         </type>
         <bindings location="63:4-63:20" propertyName="name">
           <value xsi:type="ocl:StringExp" location="63:12-63:20" stringSymbol="String"/>
@@ -197,7 +212,7 @@
       <statements xsi:type="atl:BindingStat" location="66:3-66:35">
         <source xsi:type="ocl:NavigationOrAttributeCallExp" location="66:3-66:24" name="stringType">
           <source xsi:type="ocl:VariableExp" location="66:3-66:13">
-            <referredVariable href="temp#/9"/>
+            <referredVariable href="new-model#/22"/>
           </source>
         </source>
         <value xsi:type="ocl:VariableExp" location="66:28-66:34" referredVariable="//@elements.5/@outPattern/@elements.2"/>
@@ -205,7 +220,7 @@
       <statements xsi:type="atl:BindingStat" location="67:6-67:40">
         <source xsi:type="ocl:NavigationOrAttributeCallExp" location="67:6-67:28" name="integerType">
           <source xsi:type="ocl:VariableExp" location="67:6-67:16">
-            <referredVariable href="temp#/10"/>
+            <referredVariable href="new-model#/23"/>
           </source>
         </source>
         <value xsi:type="ocl:VariableExp" location="67:32-67:39" referredVariable="//@elements.5/@outPattern/@elements.1"/>
@@ -217,7 +232,7 @@
             <source xsi:type="ocl:IteratorExp" location="69:23-69:93" name="select">
               <source xsi:type="ocl:OperationCallExp" location="69:23-69:58" operationName="allInstancesFrom">
                 <source xsi:type="ocl:OclModelElement" location="69:23-69:34" name="Profile">
-                  <model href="temp#/0"/>
+                  <model href="new-model#/24"/>
                 </source>
                 <arguments xsi:type="ocl:StringExp" location="69:52-69:57" stringSymbol="PRO"/>
               </source>
@@ -237,7 +252,7 @@
           <source xsi:type="ocl:VariableExp" location="70:6-70:9" referredVariable="//@elements.5/@outPattern/@elements.0"/>
           <arguments xsi:type="ocl:OperationCallExp" location="70:26-70:62" operationName="getStereotype">
             <source xsi:type="ocl:VariableExp" location="70:26-70:36">
-              <referredVariable href="temp#/11"/>
+              <referredVariable href="new-model#/25"/>
             </source>
             <arguments xsi:type="ocl:StringExp" location="70:51-70:61" stringSymbol="Database"/>
           </arguments>
@@ -247,7 +262,7 @@
     <inPattern location="52:2-53:26">
       <elements xsi:type="atl:SimpleInPatternElement" location="53:3-53:26" varName="d" variableExp="//@elements.5/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.5/@outPattern/@elements.0/@bindings.1/@value/@source/@elements.0/@source">
         <type xsi:type="ocl:OclModelElement" location="53:7-53:26" name="Database">
-          <model href="temp#/1"/>
+          <model href="new-model#/18"/>
         </type>
       </elements>
     </inPattern>
@@ -256,7 +271,7 @@
     <outPattern location="77:2-81:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="78:3-81:4" varName="out" variableExp="//@elements.6/@actionBlock/@statements.0/@expression/@source">
         <type xsi:type="ocl:OclModelElement" location="78:9-78:18" name="Class">
-          <model href="temp#/0"/>
+          <model href="new-model#/27"/>
         </type>
         <bindings location="79:4-79:18" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="79:12-79:18" name="name">
@@ -276,7 +291,7 @@
           <source xsi:type="ocl:VariableExp" location="83:5-83:8" referredVariable="//@elements.6/@outPattern/@elements.0"/>
           <arguments xsi:type="ocl:OperationCallExp" location="83:25-83:58" operationName="getStereotype">
             <source xsi:type="ocl:VariableExp" location="83:25-83:35">
-              <referredVariable href="temp#/12"/>
+              <referredVariable href="new-model#/28"/>
             </source>
             <arguments xsi:type="ocl:StringExp" location="83:50-83:57" stringSymbol="Table"/>
           </arguments>
@@ -286,7 +301,7 @@
     <inPattern location="75:2-76:23">
       <elements xsi:type="atl:SimpleInPatternElement" location="76:3-76:23" varName="t" variableExp="//@elements.6/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.6/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="76:7-76:23" name="Table">
-          <model href="temp#/1"/>
+          <model href="new-model#/26"/>
         </type>
       </elements>
     </inPattern>
@@ -295,7 +310,7 @@
     <outPattern location="90:2-94:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="91:3-94:4" varName="out" variableExp="//@elements.7/@actionBlock/@statements.0/@expression/@source">
         <type xsi:type="ocl:OclModelElement" location="91:9-91:20" name="Package">
-          <model href="temp#/0"/>
+          <model href="new-model#/30"/>
         </type>
         <bindings location="92:4-92:18" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="92:12-92:18" name="name">
@@ -315,7 +330,7 @@
           <source xsi:type="ocl:VariableExp" location="96:4-96:7" referredVariable="//@elements.7/@outPattern/@elements.0"/>
           <arguments xsi:type="ocl:OperationCallExp" location="96:24-96:58" operationName="getStereotype">
             <source xsi:type="ocl:VariableExp" location="96:24-96:34">
-              <referredVariable href="temp#/13"/>
+              <referredVariable href="new-model#/31"/>
             </source>
             <arguments xsi:type="ocl:StringExp" location="96:49-96:57" stringSymbol="Schema"/>
           </arguments>
@@ -325,7 +340,7 @@
     <inPattern location="88:2-89:24">
       <elements xsi:type="atl:SimpleInPatternElement" location="89:3-89:24" varName="s" variableExp="//@elements.7/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.7/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="89:7-89:24" name="Schema">
-          <model href="temp#/1"/>
+          <model href="new-model#/29"/>
         </type>
       </elements>
     </inPattern>

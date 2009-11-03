@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="Cp1252"?>
+<atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="1:1-21:2" name="OverflowOperandStack">
+  <inModels location="2:23-2:31" name="IN">
+    <metamodel href="new-model#/1"/>
+  </inModels>
+  <outModels location="2:8-2:17" name="OUT">
+    <metamodel href="new-model#/0"/>
+  </outModels>
+  <elements xsi:type="atl:Helper" location="4:1-9:8">
+    <definition location="4:8-9:7">
+      <feature xsi:type="ocl:Operation" location="4:29-9:7" name="seqTo">
+        <parameters location="4:35-4:50" varName="upper" variableExp="//@elements.0/@definition/@feature/@body/@condition/@arguments.0 //@elements.0/@definition/@feature/@body/@thenExpression/@source/@arguments.0">
+          <type xsi:type="ocl:IntegerType" location="4:43-4:50"/>
+        </parameters>
+        <returnType xsi:type="ocl:SequenceType" location="4:54-4:71">
+          <elementType xsi:type="ocl:IntegerType" location="4:63-4:70"/>
+        </returnType>
+        <body xsi:type="ocl:IfExp" location="5:2-9:7">
+          <thenExpression xsi:type="ocl:CollectionOperationCallExp" location="6:3-6:41" operationName="prepend">
+            <source xsi:type="ocl:OperationCallExp" location="6:3-6:26" operationName="seqTo">
+              <source xsi:type="ocl:OperatorCallExp" location="6:4-6:12" operationName="+">
+                <source xsi:type="ocl:VariableExp" location="6:4-6:8">
+                  <referredVariable href="new-model#/3"/>
+                </source>
+                <arguments xsi:type="ocl:IntegerExp" location="6:11-6:12" integerSymbol="1"/>
+              </source>
+              <arguments xsi:type="ocl:VariableExp" location="6:20-6:25" referredVariable="//@elements.0/@definition/@feature/@parameters.0"/>
+            </source>
+            <arguments xsi:type="ocl:VariableExp" location="6:36-6:40">
+              <referredVariable href="new-model#/4"/>
+            </arguments>
+          </thenExpression>
+          <condition xsi:type="ocl:OperatorCallExp" location="5:5-5:17" operationName="&lt;">
+            <source xsi:type="ocl:VariableExp" location="5:5-5:9">
+              <referredVariable href="new-model#/2"/>
+            </source>
+            <arguments xsi:type="ocl:VariableExp" location="5:12-5:17" referredVariable="//@elements.0/@definition/@feature/@parameters.0"/>
+          </condition>
+          <elseExpression xsi:type="ocl:SequenceExp" location="8:3-8:18">
+            <elements xsi:type="ocl:VariableExp" location="8:13-8:17">
+              <referredVariable href="new-model#/5"/>
+            </elements>
+          </elseExpression>
+        </body>
+      </feature>
+      <context_ location="4:8-4:23">
+        <context_ xsi:type="ocl:IntegerType" location="4:16-4:23"/>
+      </context_>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:MatchedRule" location="11:1-21:2" name="Class">
+    <outPattern location="14:2-15:24">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="15:3-15:24" varName="container">
+        <type xsi:type="ocl:OclModelElement" location="15:15-15:24" name="Model">
+          <model href="new-model#/7"/>
+        </type>
+      </elements>
+    </outPattern>
+    <actionBlock location="16:2-20:3">
+      <statements xsi:type="atl:ForStat" location="17:3-19:4">
+        <iterator location="17:7-17:8" varName="i" variableExp="//@elements.1/@actionBlock/@statements.0/@statements.0/@expression/@source"/>
+        <collection xsi:type="ocl:OperationCallExp" location="17:12-17:26" operationName="seqTo">
+          <source xsi:type="ocl:IntegerExp" location="17:13-17:14" integerSymbol="1"/>
+          <arguments xsi:type="ocl:IntegerExp" location="17:22-17:25" integerSymbol="200"/>
+        </collection>
+        <statements xsi:type="atl:ExpressionStat" location="18:4-18:16">
+          <expression xsi:type="ocl:OperationCallExp" location="18:4-18:15" operationName="debug">
+            <source xsi:type="ocl:VariableExp" location="18:4-18:5" referredVariable="//@elements.1/@actionBlock/@statements.0/@iterator"/>
+            <arguments xsi:type="ocl:StringExp" location="18:12-18:14" stringSymbol=""/>
+          </expression>
+        </statements>
+      </statements>
+    </actionBlock>
+    <inPattern location="12:2-13:22">
+      <elements xsi:type="atl:SimpleInPatternElement" location="13:3-13:22" varName="trigger">
+        <type xsi:type="ocl:OclModelElement" location="13:13-13:22" name="Model">
+          <model href="new-model#/6"/>
+        </type>
+      </elements>
+    </inPattern>
+  </elements>
+</atl:Module>

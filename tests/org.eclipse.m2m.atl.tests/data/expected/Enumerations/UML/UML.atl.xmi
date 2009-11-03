@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="Cp1252"?>
+<atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="3:1-30:2" name="sample">
+  <commentsBefore>-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML</commentsBefore>
+  <inModels location="4:23-4:31" name="IN">
+    <metamodel href="new-model#/1"/>
+  </inModels>
+  <outModels location="4:8-4:17" name="OUT">
+    <metamodel href="new-model#/0"/>
+  </outModels>
+  <elements xsi:type="atl:MatchedRule" location="6:1-30:2" name="class">
+    <outPattern location="9:2-29:3">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="11:3-14:3" varName="output1">
+        <commentsBefore>-- from input model</commentsBefore>
+        <type xsi:type="ocl:OclModelElement" location="11:13-11:22" name="Class">
+          <model href="new-model#/3"/>
+        </type>
+        <bindings location="12:4-12:28" propertyName="name">
+          <value xsi:type="ocl:OperatorCallExp" location="12:12-12:28" operationName="+">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="12:12-12:22" name="name">
+              <source xsi:type="ocl:VariableExp" location="12:12-12:17" referredVariable="//@elements.0/@inPattern/@elements.0"/>
+            </source>
+            <arguments xsi:type="ocl:StringExp" location="12:25-12:28" stringSymbol="1"/>
+          </value>
+        </bindings>
+        <bindings location="13:4-13:34" propertyName="visibility">
+          <value xsi:type="ocl:NavigationOrAttributeCallExp" location="13:18-13:34" name="visibility">
+            <source xsi:type="ocl:VariableExp" location="13:18-13:23" referredVariable="//@elements.0/@inPattern/@elements.0"/>
+          </value>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="16:3-19:3" varName="output1_bus">
+        <commentsBefore>-- from input model, as String</commentsBefore>
+        <type xsi:type="ocl:OclModelElement" location="16:17-16:26" name="Class">
+          <model href="new-model#/4"/>
+        </type>
+        <bindings location="17:4-17:28" propertyName="name">
+          <value xsi:type="ocl:OperatorCallExp" location="17:12-17:28" operationName="+">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="17:12-17:22" name="name">
+              <source xsi:type="ocl:VariableExp" location="17:12-17:17" referredVariable="//@elements.0/@inPattern/@elements.0"/>
+            </source>
+            <arguments xsi:type="ocl:StringExp" location="17:25-17:28" stringSymbol="1"/>
+          </value>
+        </bindings>
+        <bindings location="18:4-18:45" propertyName="visibility">
+          <value xsi:type="ocl:OperationCallExp" location="18:18-18:45" operationName="toString">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="18:18-18:34" name="visibility">
+              <source xsi:type="ocl:VariableExp" location="18:18-18:23" referredVariable="//@elements.0/@inPattern/@elements.0"/>
+            </source>
+          </value>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="21:3-24:3" varName="output2">
+        <commentsBefore>-- hardcoded</commentsBefore>
+        <type xsi:type="ocl:OclModelElement" location="21:13-21:22" name="Class">
+          <model href="new-model#/5"/>
+        </type>
+        <bindings location="22:4-22:28" propertyName="name">
+          <value xsi:type="ocl:OperatorCallExp" location="22:12-22:28" operationName="+">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="22:12-22:22" name="name">
+              <source xsi:type="ocl:VariableExp" location="22:12-22:17" referredVariable="//@elements.0/@inPattern/@elements.0"/>
+            </source>
+            <arguments xsi:type="ocl:StringExp" location="22:25-22:28" stringSymbol="2"/>
+          </value>
+        </bindings>
+        <bindings location="23:4-23:26" propertyName="visibility">
+          <value xsi:type="ocl:EnumLiteralExp" location="23:18-23:26" name="private"/>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="26:3-29:3" varName="output3">
+        <commentsBefore>-- hardcoded, from a String</commentsBefore>
+        <type xsi:type="ocl:OclModelElement" location="26:13-26:22" name="Class">
+          <model href="new-model#/6"/>
+        </type>
+        <bindings location="27:4-27:28" propertyName="name">
+          <value xsi:type="ocl:OperatorCallExp" location="27:12-27:28" operationName="+">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="27:12-27:22" name="name">
+              <source xsi:type="ocl:VariableExp" location="27:12-27:17" referredVariable="//@elements.0/@inPattern/@elements.0"/>
+            </source>
+            <arguments xsi:type="ocl:StringExp" location="27:25-27:28" stringSymbol="3"/>
+          </value>
+        </bindings>
+        <bindings location="28:4-28:27" propertyName="visibility">
+          <value xsi:type="ocl:StringExp" location="28:18-28:27" stringSymbol="private"/>
+        </bindings>
+      </elements>
+    </outPattern>
+    <inPattern location="7:2-8:20">
+      <elements xsi:type="atl:SimpleInPatternElement" location="8:3-8:20" varName="input" variableExp="//@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source/@source //@elements.0/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.0/@outPattern/@elements.1/@bindings.0/@value/@source/@source //@elements.0/@outPattern/@elements.1/@bindings.1/@value/@source/@source //@elements.0/@outPattern/@elements.2/@bindings.0/@value/@source/@source //@elements.0/@outPattern/@elements.3/@bindings.0/@value/@source/@source">
+        <type xsi:type="ocl:OclModelElement" location="8:11-8:20" name="Class">
+          <model href="new-model#/2"/>
+        </type>
+      </elements>
+    </inPattern>
+  </elements>
+</atl:Module>

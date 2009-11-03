@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="Cp1252"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="1:1-352:2" name="Ant2Maven">
   <inModels location="2:63-2:71" name="IN">
-    <metamodel href="temp#/2"/>
+    <metamodel href="new-model#/2"/>
   </inModels>
   <outModels location="2:8-2:29" name="OUTMaven">
-    <metamodel href="temp#/0"/>
+    <metamodel href="new-model#/0"/>
   </outModels>
   <outModels location="2:31-2:56" name="OUTProject">
-    <metamodel href="temp#/1"/>
+    <metamodel href="new-model#/1"/>
   </outModels>
   <elements xsi:type="atl:MatchedRule" location="7:1-38:2" name="AntProject2Maven">
     <commentsBefore>-- central element : Project</commentsBefore>
@@ -17,7 +17,7 @@
       <commentsBefore>-- for MavenProject</commentsBefore>
       <elements xsi:type="atl:SimpleOutPatternElement" location="15:6-20:6" varName="mp">
         <type xsi:type="ocl:OclModelElement" location="15:11-15:31" name="Project">
-          <model href="temp#/1"/>
+          <model href="new-model#/4"/>
         </type>
         <bindings location="16:8-16:20" propertyName="id">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="16:14-16:20" name="name">
@@ -40,7 +40,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="21:5-24:6" varName="mpBuild" variableExp="//@elements.0/@outPattern/@elements.0/@bindings.3/@value">
         <type xsi:type="ocl:OclModelElement" location="21:15-21:33" name="Build">
-          <model href="temp#/1"/>
+          <model href="new-model#/5"/>
         </type>
         <bindings location="22:5-22:33" propertyName="sourceDirectory">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="22:24-22:33" name="basedir">
@@ -58,7 +58,7 @@
       <elements xsi:type="atl:SimpleOutPatternElement" location="26:4-33:7" varName="mm">
         <commentsBefore>-- for MavenMaven</commentsBefore>
         <type xsi:type="ocl:OclModelElement" location="26:9-26:27" name="Project">
-          <model href="temp#/0"/>
+          <model href="new-model#/6"/>
         </type>
         <bindings location="27:5-27:22" propertyName="xmlns">
           <value xsi:type="ocl:VariableExp" location="27:14-27:22" referredVariable="//@elements.0/@outPattern/@elements.3"/>
@@ -91,7 +91,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="34:4-37:5" varName="itsXmlns" variableExp="//@elements.0/@outPattern/@elements.2/@bindings.0/@value">
         <type xsi:type="ocl:OclModelElement" location="34:15-34:31" name="Xmlns">
-          <model href="temp#/0"/>
+          <model href="new-model#/7"/>
         </type>
         <bindings location="35:5-35:18" propertyName="name">
           <value xsi:type="ocl:StringExp" location="35:13-35:18" stringSymbol="ant"/>
@@ -105,7 +105,7 @@
       <commentsAfter>-- for MavenProject</commentsAfter>
       <elements xsi:type="atl:SimpleInPatternElement" location="8:8-8:23" varName="a" variableExp="//@elements.0/@inPattern/@filter/@condition/@source/@source //@elements.0/@inPattern/@filter/@elseExpression/@source/@source/@source //@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.0/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.0/@outPattern/@elements.0/@bindings.2/@value/@source //@elements.0/@outPattern/@elements.1/@bindings.0/@value/@source //@elements.0/@outPattern/@elements.1/@bindings.1/@value/@source/@source //@elements.0/@outPattern/@elements.2/@bindings.1/@value/@source //@elements.0/@outPattern/@elements.2/@bindings.2/@value/@source //@elements.0/@outPattern/@elements.2/@bindings.3/@value/@source //@elements.0/@outPattern/@elements.2/@bindings.4/@value/@source //@elements.0/@outPattern/@elements.2/@bindings.5/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="8:12-8:23" name="Project">
-          <model href="temp#/2"/>
+          <model href="new-model#/3"/>
         </type>
       </elements>
       <filter xsi:type="ocl:IfExp" location="9:3-12:9">
@@ -144,7 +144,7 @@
       <commentsBefore>-- for MavenProject</commentsBefore>
       <elements xsi:type="atl:SimpleOutPatternElement" location="48:6-52:6" varName="mp">
         <type xsi:type="ocl:OclModelElement" location="48:11-48:31" name="Project">
-          <model href="temp#/1"/>
+          <model href="new-model#/9"/>
         </type>
         <bindings location="49:8-49:20" propertyName="id">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="49:14-49:20" name="name">
@@ -162,7 +162,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="53:5-56:6" varName="mpBuild" variableExp="//@elements.1/@outPattern/@elements.0/@bindings.2/@value">
         <type xsi:type="ocl:OclModelElement" location="53:15-53:33" name="Build">
-          <model href="temp#/1"/>
+          <model href="new-model#/10"/>
         </type>
         <bindings location="54:5-54:33" propertyName="sourceDirectory">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="54:24-54:33" name="basedir">
@@ -180,7 +180,7 @@
       <elements xsi:type="atl:SimpleOutPatternElement" location="58:4-66:7" varName="mm">
         <commentsBefore>-- for MavenMaven</commentsBefore>
         <type xsi:type="ocl:OclModelElement" location="58:9-58:27" name="Project">
-          <model href="temp#/0"/>
+          <model href="new-model#/11"/>
         </type>
         <bindings location="59:5-59:22" propertyName="xmlns">
           <value xsi:type="ocl:VariableExp" location="59:14-59:22" referredVariable="//@elements.1/@outPattern/@elements.3"/>
@@ -217,7 +217,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="67:4-70:5" varName="itsXmlns" variableExp="//@elements.1/@outPattern/@elements.2/@bindings.0/@value">
         <type xsi:type="ocl:OclModelElement" location="67:15-67:31" name="Xmlns">
-          <model href="temp#/0"/>
+          <model href="new-model#/12"/>
         </type>
         <bindings location="68:5-68:18" propertyName="name">
           <value xsi:type="ocl:StringExp" location="68:13-68:18" stringSymbol="ant"/>
@@ -231,7 +231,7 @@
       <commentsAfter>-- for MavenProject</commentsAfter>
       <elements xsi:type="atl:SimpleInPatternElement" location="41:8-41:23" varName="a" variableExp="//@elements.1/@inPattern/@filter/@condition/@source/@source //@elements.1/@inPattern/@filter/@elseExpression/@source/@source //@elements.1/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.1/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.1/@outPattern/@elements.1/@bindings.0/@value/@source //@elements.1/@outPattern/@elements.1/@bindings.1/@value/@source/@source //@elements.1/@outPattern/@elements.2/@bindings.1/@value/@source //@elements.1/@outPattern/@elements.2/@bindings.2/@value/@source //@elements.1/@outPattern/@elements.2/@bindings.3/@value/@source //@elements.1/@outPattern/@elements.2/@bindings.4/@value/@source //@elements.1/@outPattern/@elements.2/@bindings.5/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="41:12-41:23" name="Project">
-          <model href="temp#/2"/>
+          <model href="new-model#/8"/>
         </type>
       </elements>
       <filter xsi:type="ocl:IfExp" location="42:3-45:9">
@@ -273,7 +273,7 @@
     <outPattern location="93:2-99:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="93:5-96:4" varName="mg">
         <type xsi:type="ocl:OclModelElement" location="93:10-93:25" name="Goal">
-          <model href="temp#/0"/>
+          <model href="new-model#/15"/>
         </type>
         <bindings location="94:3-94:17" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="94:11-94:17" name="name">
@@ -291,7 +291,7 @@
       </elements>
       <elements xsi:type="atl:ForEachOutPatternElement" location="97:2-99:3" varName="dependencies" variableExp="//@elements.2/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="97:26-97:47" name="AttainGoal">
-          <model href="temp#/0"/>
+          <model href="new-model#/16"/>
         </type>
         <bindings location="98:3-98:18" propertyName="attainGoal">
           <value xsi:type="ocl:VariableExp" location="98:17-98:18" referredVariable="//@elements.2/@outPattern/@elements.1/@iterator"/>
@@ -303,7 +303,7 @@
     <variables location="91:3-91:68" varName="itsDependencies" variableExp="//@elements.2/@outPattern/@elements.1/@collection">
       <type xsi:type="ocl:SequenceType" location="91:21-91:41">
         <elementType xsi:type="ocl:OclModelElement" location="91:30-91:40" name="Target">
-          <model href="temp#/2"/>
+          <model href="new-model#/14"/>
         </elementType>
       </type>
       <initExpression xsi:type="ocl:CollectionOperationCallExp" location="91:44-91:67" operationName="asSequence">
@@ -315,7 +315,7 @@
     <inPattern location="89:2-89:21">
       <elements xsi:type="atl:SimpleInPatternElement" location="89:7-89:21" varName="a" variableExp="//@elements.2/@variables.0/@initExpression/@source/@source //@elements.2/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.2/@outPattern/@elements.0/@bindings.1/@value/@elements.1/@source">
         <type xsi:type="ocl:OclModelElement" location="89:11-89:21" name="Target">
-          <model href="temp#/2"/>
+          <model href="new-model#/13"/>
         </type>
       </elements>
     </inPattern>
@@ -330,7 +330,7 @@
     <outPattern location="111:2-114:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="111:5-114:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="111:9-111:36" name="AntPropertyValue">
-          <model href="temp#/0"/>
+          <model href="new-model#/18"/>
         </type>
         <bindings location="112:3-112:17" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="112:11-112:17" name="name">
@@ -347,7 +347,7 @@
     <inPattern location="110:2-110:28">
       <elements xsi:type="atl:SimpleInPatternElement" location="110:7-110:28" varName="a" variableExp="//@elements.3/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="110:11-110:28" name="PropertyValue">
-          <model href="temp#/2"/>
+          <model href="new-model#/17"/>
         </type>
       </elements>
     </inPattern>
@@ -356,7 +356,7 @@
     <outPattern location="119:2-122:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="119:5-122:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="119:9-119:39" name="AntPropertyLocation">
-          <model href="temp#/0"/>
+          <model href="new-model#/20"/>
         </type>
         <bindings location="120:3-120:17" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="120:11-120:17" name="name">
@@ -373,7 +373,7 @@
     <inPattern location="118:2-118:31">
       <elements xsi:type="atl:SimpleInPatternElement" location="118:7-118:31" varName="a" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.4/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="118:11-118:31" name="PropertyLocation">
-          <model href="temp#/2"/>
+          <model href="new-model#/19"/>
         </type>
       </elements>
     </inPattern>
@@ -382,7 +382,7 @@
     <outPattern location="128:2-129:18">
       <elements xsi:type="atl:SimpleOutPatternElement" location="128:5-129:18" varName="m">
         <type xsi:type="ocl:OclModelElement" location="128:9-128:35" name="AntPropertyFile">
-          <model href="temp#/0"/>
+          <model href="new-model#/22"/>
         </type>
         <bindings location="129:3-129:17" propertyName="file">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="129:11-129:17" name="file">
@@ -394,7 +394,7 @@
     <inPattern location="127:2-127:27">
       <elements xsi:type="atl:SimpleInPatternElement" location="127:7-127:27" varName="a" variableExp="//@elements.5/@outPattern/@elements.0/@bindings.0/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="127:11-127:27" name="PropertyFile">
-          <model href="temp#/2"/>
+          <model href="new-model#/21"/>
         </type>
       </elements>
     </inPattern>
@@ -407,7 +407,7 @@
     <outPattern location="134:2-135:32">
       <elements xsi:type="atl:SimpleOutPatternElement" location="134:5-135:32" varName="m">
         <type xsi:type="ocl:OclModelElement" location="134:9-134:34" name="AntPropertyEnv">
-          <model href="temp#/0"/>
+          <model href="new-model#/24"/>
         </type>
         <bindings location="135:3-135:31" propertyName="environment">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="135:18-135:31" name="environment">
@@ -419,7 +419,7 @@
     <inPattern location="133:2-133:26">
       <elements xsi:type="atl:SimpleInPatternElement" location="133:7-133:26" varName="a" variableExp="//@elements.6/@outPattern/@elements.0/@bindings.0/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="133:11-133:26" name="PropertyEnv">
-          <model href="temp#/2"/>
+          <model href="new-model#/23"/>
         </type>
       </elements>
     </inPattern>
@@ -432,7 +432,7 @@
     <outPattern location="145:2-150:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="145:5-150:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="145:9-145:24" name="Java">
-          <model href="temp#/0"/>
+          <model href="new-model#/26"/>
         </type>
         <bindings location="146:3-146:27" propertyName="classname">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="146:16-146:27" name="classname">
@@ -459,7 +459,7 @@
     <inPattern location="144:2-144:19">
       <elements xsi:type="atl:SimpleInPatternElement" location="144:7-144:19" varName="a" variableExp="//@elements.7/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.7/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.7/@outPattern/@elements.0/@bindings.2/@value/@source //@elements.7/@outPattern/@elements.0/@bindings.3/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="144:11-144:19" name="Java">
-          <model href="temp#/2"/>
+          <model href="new-model#/25"/>
         </type>
       </elements>
     </inPattern>
@@ -468,7 +468,7 @@
     <outPattern location="155:2-160:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="155:5-160:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="155:9-155:25" name="Javac">
-          <model href="temp#/0"/>
+          <model href="new-model#/28"/>
         </type>
         <bindings location="156:3-156:23" propertyName="destdir">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="156:14-156:23" name="destdir">
@@ -495,7 +495,7 @@
     <inPattern location="154:2-154:20">
       <elements xsi:type="atl:SimpleInPatternElement" location="154:7-154:20" varName="a" variableExp="//@elements.8/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.8/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.8/@outPattern/@elements.0/@bindings.2/@value/@source //@elements.8/@outPattern/@elements.0/@bindings.3/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="154:11-154:20" name="Javac">
-          <model href="temp#/2"/>
+          <model href="new-model#/27"/>
         </type>
       </elements>
     </inPattern>
@@ -506,7 +506,7 @@
     <outPattern location="165:2-174:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="165:5-174:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="165:9-165:27" name="Javadoc">
-          <model href="temp#/0"/>
+          <model href="new-model#/30"/>
         </type>
         <bindings location="166:4-166:30" propertyName="sourcepath">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="166:18-166:30" name="sourcepath">
@@ -553,7 +553,7 @@
     <inPattern location="164:2-164:22">
       <elements xsi:type="atl:SimpleInPatternElement" location="164:7-164:22" varName="a" variableExp="//@elements.9/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.9/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.9/@outPattern/@elements.0/@bindings.2/@value/@source //@elements.9/@outPattern/@elements.0/@bindings.3/@value/@source //@elements.9/@outPattern/@elements.0/@bindings.4/@value/@source //@elements.9/@outPattern/@elements.0/@bindings.5/@value/@source //@elements.9/@outPattern/@elements.0/@bindings.6/@value/@source //@elements.9/@outPattern/@elements.0/@bindings.7/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="164:11-164:22" name="Javadoc">
-          <model href="temp#/2"/>
+          <model href="new-model#/29"/>
         </type>
       </elements>
     </inPattern>
@@ -566,14 +566,14 @@
     <outPattern location="181:2-181:28">
       <elements xsi:type="atl:SimpleOutPatternElement" location="181:5-181:28" varName="m">
         <type xsi:type="ocl:OclModelElement" location="181:9-181:26" name="Tstamp">
-          <model href="temp#/0"/>
+          <model href="new-model#/32"/>
         </type>
       </elements>
     </outPattern>
     <inPattern location="180:5-180:24">
       <elements xsi:type="atl:SimpleInPatternElement" location="180:10-180:24" varName="a">
         <type xsi:type="ocl:OclModelElement" location="180:14-180:24" name="Tstamp">
-          <model href="temp#/2"/>
+          <model href="new-model#/31"/>
         </type>
       </elements>
     </inPattern>
@@ -586,7 +586,7 @@
     <outPattern location="188:2-190:24">
       <elements xsi:type="atl:SimpleOutPatternElement" location="188:5-190:24" varName="m">
         <type xsi:type="ocl:OclModelElement" location="188:9-188:23" name="Jar">
-          <model href="temp#/0"/>
+          <model href="new-model#/34"/>
         </type>
         <bindings location="189:3-189:23" propertyName="jarfile">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="189:14-189:23" name="jarfile">
@@ -603,7 +603,7 @@
     <inPattern location="187:2-187:18">
       <elements xsi:type="atl:SimpleInPatternElement" location="187:7-187:18" varName="a" variableExp="//@elements.11/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.11/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="187:11-187:18" name="Jar">
-          <model href="temp#/2"/>
+          <model href="new-model#/33"/>
         </type>
       </elements>
     </inPattern>
@@ -614,7 +614,7 @@
     <outPattern location="197:2-198:16">
       <elements xsi:type="atl:SimpleOutPatternElement" location="197:5-198:16" varName="m">
         <type xsi:type="ocl:OclModelElement" location="197:9-197:25" name="Mkdir">
-          <model href="temp#/0"/>
+          <model href="new-model#/36"/>
         </type>
         <bindings location="198:3-198:15" propertyName="dir">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="198:10-198:15" name="dir">
@@ -626,7 +626,7 @@
     <inPattern location="196:2-196:20">
       <elements xsi:type="atl:SimpleInPatternElement" location="196:7-196:20" varName="a" variableExp="//@elements.12/@outPattern/@elements.0/@bindings.0/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="196:11-196:20" name="Mkdir">
-          <model href="temp#/2"/>
+          <model href="new-model#/35"/>
         </type>
       </elements>
     </inPattern>
@@ -635,7 +635,7 @@
     <outPattern location="203:2-207:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="203:5-207:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="203:9-203:24" name="Copy">
-          <model href="temp#/0"/>
+          <model href="new-model#/38"/>
         </type>
         <bindings location="204:3-204:19" propertyName="todir">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="204:12-204:19" name="todir">
@@ -657,7 +657,7 @@
     <inPattern location="202:2-202:19">
       <elements xsi:type="atl:SimpleInPatternElement" location="202:7-202:19" varName="a" variableExp="//@elements.13/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.13/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.13/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="202:11-202:19" name="Copy">
-          <model href="temp#/2"/>
+          <model href="new-model#/37"/>
         </type>
       </elements>
     </inPattern>
@@ -668,7 +668,7 @@
     <outPattern location="213:2-214:16">
       <elements xsi:type="atl:SimpleOutPatternElement" location="213:5-214:16" varName="m">
         <type xsi:type="ocl:OclModelElement" location="213:9-213:26" name="Delete">
-          <model href="temp#/0"/>
+          <model href="new-model#/40"/>
         </type>
         <bindings location="214:3-214:15" propertyName="dir">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="214:10-214:15" name="dir">
@@ -680,7 +680,7 @@
     <inPattern location="212:2-212:21">
       <elements xsi:type="atl:SimpleInPatternElement" location="212:7-212:21" varName="a" variableExp="//@elements.14/@outPattern/@elements.0/@bindings.0/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="212:11-212:21" name="Delete">
-          <model href="temp#/2"/>
+          <model href="new-model#/39"/>
         </type>
       </elements>
     </inPattern>
@@ -691,7 +691,7 @@
     <outPattern location="221:2-224:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="221:5-224:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="221:9-221:30" name="AntTaskDef">
-          <model href="temp#/0"/>
+          <model href="new-model#/42"/>
         </type>
         <bindings location="222:3-222:17" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="222:11-222:17" name="name">
@@ -708,7 +708,7 @@
     <inPattern location="220:2-220:22">
       <elements xsi:type="atl:SimpleInPatternElement" location="220:7-220:22" varName="a" variableExp="//@elements.15/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.15/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="220:11-220:22" name="TaskDef">
-          <model href="temp#/2"/>
+          <model href="new-model#/41"/>
         </type>
       </elements>
     </inPattern>
@@ -717,7 +717,7 @@
     <outPattern location="229:2-232:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="229:5-232:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="229:9-229:27" name="NewTask">
-          <model href="temp#/0"/>
+          <model href="new-model#/44"/>
         </type>
         <bindings location="230:3-230:25" propertyName="taskName">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="230:15-230:25" name="taskName">
@@ -734,7 +734,7 @@
     <inPattern location="228:2-228:22">
       <elements xsi:type="atl:SimpleInPatternElement" location="228:7-228:22" varName="a" variableExp="//@elements.16/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.16/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="228:11-228:22" name="NewTask">
-          <model href="temp#/2"/>
+          <model href="new-model#/43"/>
         </type>
       </elements>
     </inPattern>
@@ -745,7 +745,7 @@
     <outPattern location="237:2-240:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="237:5-240:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="237:9-237:28" name="Attribut">
-          <model href="temp#/0"/>
+          <model href="new-model#/46"/>
         </type>
         <bindings location="238:3-238:17" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="238:11-238:17" name="name">
@@ -762,7 +762,7 @@
     <inPattern location="236:2-236:23">
       <elements xsi:type="atl:SimpleInPatternElement" location="236:7-236:23" varName="a" variableExp="//@elements.17/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.17/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="236:11-236:23" name="Attribut">
-          <model href="temp#/2"/>
+          <model href="new-model#/45"/>
         </type>
       </elements>
     </inPattern>
@@ -773,7 +773,7 @@
     <outPattern location="247:2-253:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="247:5-253:3" varName="mm">
         <type xsi:type="ocl:OclModelElement" location="247:10-247:25" name="Path">
-          <model href="temp#/0"/>
+          <model href="new-model#/48"/>
         </type>
         <bindings location="248:3-248:13" propertyName="id">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="248:9-248:13" name="id">
@@ -805,7 +805,7 @@
     <inPattern location="246:2-246:19">
       <elements xsi:type="atl:SimpleInPatternElement" location="246:7-246:19" varName="a" variableExp="//@elements.18/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.18/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.18/@outPattern/@elements.0/@bindings.2/@value/@source //@elements.18/@outPattern/@elements.0/@bindings.3/@value/@source //@elements.18/@outPattern/@elements.0/@bindings.4/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="246:11-246:19" name="Path">
-          <model href="temp#/2"/>
+          <model href="new-model#/47"/>
         </type>
       </elements>
     </inPattern>
@@ -814,7 +814,7 @@
     <outPattern location="258:2-262:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="258:5-262:3" varName="mm">
         <type xsi:type="ocl:OclModelElement" location="258:10-258:30" name="ClassPath">
-          <model href="temp#/0"/>
+          <model href="new-model#/50"/>
         </type>
         <bindings location="259:3-259:19" propertyName="refid">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="259:12-259:19" name="refid">
@@ -836,7 +836,7 @@
     <inPattern location="257:2-257:24">
       <elements xsi:type="atl:SimpleInPatternElement" location="257:7-257:24" varName="a" variableExp="//@elements.19/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.19/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.19/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="257:11-257:24" name="ClassPath">
-          <model href="temp#/2"/>
+          <model href="new-model#/49"/>
         </type>
       </elements>
     </inPattern>
@@ -845,7 +845,7 @@
     <outPattern location="267:2-270:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="267:5-270:3" varName="mm">
         <type xsi:type="ocl:OclModelElement" location="267:10-267:32" name="PathElement">
-          <model href="temp#/0"/>
+          <model href="new-model#/52"/>
         </type>
         <bindings location="268:3-268:17" propertyName="path">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="268:11-268:17" name="path">
@@ -862,7 +862,7 @@
     <inPattern location="266:2-266:26">
       <elements xsi:type="atl:SimpleInPatternElement" location="266:7-266:26" varName="a" variableExp="//@elements.20/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.20/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="266:11-266:26" name="PathElement">
-          <model href="temp#/2"/>
+          <model href="new-model#/51"/>
         </type>
       </elements>
     </inPattern>
@@ -872,7 +872,7 @@
     <outPattern location="275:2-280:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="275:5-280:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="275:9-275:27" name="FileSet">
-          <model href="temp#/0"/>
+          <model href="new-model#/54"/>
         </type>
         <bindings location="276:3-276:15" propertyName="dir">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="276:10-276:15" name="dir">
@@ -899,7 +899,7 @@
     <inPattern location="274:2-274:22">
       <elements xsi:type="atl:SimpleInPatternElement" location="274:7-274:22" varName="a" variableExp="//@elements.21/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.21/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.21/@outPattern/@elements.0/@bindings.2/@value/@source //@elements.21/@outPattern/@elements.0/@bindings.3/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="274:11-274:22" name="FileSet">
-          <model href="temp#/2"/>
+          <model href="new-model#/53"/>
         </type>
       </elements>
     </inPattern>
@@ -909,7 +909,7 @@
     <outPattern location="286:2-291:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="286:5-291:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="286:9-286:29" name="FilterSet">
-          <model href="temp#/0"/>
+          <model href="new-model#/56"/>
         </type>
         <bindings location="287:3-287:29" propertyName="starttoken">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="287:17-287:29" name="starttoken">
@@ -936,7 +936,7 @@
     <inPattern location="285:2-285:24">
       <elements xsi:type="atl:SimpleInPatternElement" location="285:7-285:24" varName="a" variableExp="//@elements.22/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.22/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.22/@outPattern/@elements.0/@bindings.2/@value/@source //@elements.22/@outPattern/@elements.0/@bindings.3/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="285:11-285:24" name="FilterSet">
-          <model href="temp#/2"/>
+          <model href="new-model#/55"/>
         </type>
       </elements>
     </inPattern>
@@ -945,7 +945,7 @@
     <outPattern location="296:2-299:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="296:5-299:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="296:9-296:26" name="Filter">
-          <model href="temp#/0"/>
+          <model href="new-model#/58"/>
         </type>
         <bindings location="297:3-297:19" propertyName="token">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="297:12-297:19" name="token">
@@ -962,7 +962,7 @@
     <inPattern location="295:2-295:21">
       <elements xsi:type="atl:SimpleInPatternElement" location="295:7-295:21" varName="a" variableExp="//@elements.23/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.23/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="295:11-295:21" name="Filter">
-          <model href="temp#/2"/>
+          <model href="new-model#/57"/>
         </type>
       </elements>
     </inPattern>
@@ -972,7 +972,7 @@
     <outPattern location="304:2-306:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="304:5-306:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="304:9-304:31" name="FiltersFile">
-          <model href="temp#/0"/>
+          <model href="new-model#/60"/>
         </type>
         <bindings location="305:3-305:17" propertyName="file">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="305:11-305:17" name="file">
@@ -984,7 +984,7 @@
     <inPattern location="303:2-303:26">
       <elements xsi:type="atl:SimpleInPatternElement" location="303:7-303:26" varName="a" variableExp="//@elements.24/@outPattern/@elements.0/@bindings.0/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="303:11-303:26" name="FiltersFile">
-          <model href="temp#/2"/>
+          <model href="new-model#/59"/>
         </type>
       </elements>
     </inPattern>
@@ -994,7 +994,7 @@
     <outPattern location="312:2-314:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="312:5-314:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="312:9-312:30" name="PatternSet">
-          <model href="temp#/0"/>
+          <model href="new-model#/62"/>
         </type>
         <bindings location="313:3-313:29" propertyName="inexcludes">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="313:17-313:29" name="inexcludes">
@@ -1006,7 +1006,7 @@
     <inPattern location="311:2-311:25">
       <elements xsi:type="atl:SimpleInPatternElement" location="311:7-311:25" varName="a" variableExp="//@elements.25/@outPattern/@elements.0/@bindings.0/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="311:11-311:25" name="PatternSet">
-          <model href="temp#/2"/>
+          <model href="new-model#/61"/>
         </type>
       </elements>
     </inPattern>
@@ -1015,7 +1015,7 @@
     <outPattern location="320:2-324:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="320:5-324:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="320:9-320:28" name="Includes">
-          <model href="temp#/0"/>
+          <model href="new-model#/64"/>
         </type>
         <bindings location="321:3-321:17" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="321:11-321:17" name="name">
@@ -1037,7 +1037,7 @@
     <inPattern location="319:2-319:23">
       <elements xsi:type="atl:SimpleInPatternElement" location="319:7-319:23" varName="a" variableExp="//@elements.26/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.26/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.26/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="319:11-319:23" name="Includes">
-          <model href="temp#/2"/>
+          <model href="new-model#/63"/>
         </type>
       </elements>
     </inPattern>
@@ -1046,7 +1046,7 @@
     <outPattern location="329:2-333:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="329:5-333:4" varName="m">
         <type xsi:type="ocl:OclModelElement" location="329:9-329:28" name="Excludes">
-          <model href="temp#/0"/>
+          <model href="new-model#/66"/>
         </type>
         <bindings location="330:3-330:17" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="330:11-330:17" name="name">
@@ -1068,7 +1068,7 @@
     <inPattern location="328:2-328:23">
       <elements xsi:type="atl:SimpleInPatternElement" location="328:7-328:23" varName="a" variableExp="//@elements.27/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.27/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.27/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="328:11-328:23" name="Excludes">
-          <model href="temp#/2"/>
+          <model href="new-model#/65"/>
         </type>
       </elements>
     </inPattern>
@@ -1077,7 +1077,7 @@
     <outPattern location="338:2-342:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="338:5-342:3" varName="m">
         <type xsi:type="ocl:OclModelElement" location="338:9-338:32" name="IncludesFile">
-          <model href="temp#/0"/>
+          <model href="new-model#/68"/>
         </type>
         <bindings location="339:3-339:17" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="339:11-339:17" name="name">
@@ -1099,7 +1099,7 @@
     <inPattern location="337:2-337:27">
       <elements xsi:type="atl:SimpleInPatternElement" location="337:7-337:27" varName="a" variableExp="//@elements.28/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.28/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.28/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="337:11-337:27" name="IncludesFile">
-          <model href="temp#/2"/>
+          <model href="new-model#/67"/>
         </type>
       </elements>
     </inPattern>
@@ -1108,7 +1108,7 @@
     <outPattern location="347:2-351:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="347:5-351:4" varName="m">
         <type xsi:type="ocl:OclModelElement" location="347:9-347:32" name="ExcludesFile">
-          <model href="temp#/0"/>
+          <model href="new-model#/70"/>
         </type>
         <bindings location="348:3-348:17" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="348:11-348:17" name="name">
@@ -1130,7 +1130,7 @@
     <inPattern location="346:2-346:27">
       <elements xsi:type="atl:SimpleInPatternElement" location="346:7-346:27" varName="a" variableExp="//@elements.29/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.29/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.29/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="346:11-346:27" name="ExcludesFile">
-          <model href="temp#/2"/>
+          <model href="new-model#/69"/>
         </type>
       </elements>
     </inPattern>
