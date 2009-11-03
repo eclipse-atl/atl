@@ -60,10 +60,9 @@ public abstract class TestNonRegression extends TestCase {
 	public void testNonRegression() throws Exception {
 		File inputDir = new File(AtlTestPlugin.getBaseDirectory() + INPUT_PATH);
 		final File[] directories = FileUtils.listDirectories(inputDir);
-		if (directories != null) {
-			for (int i = 0; i < directories.length; i++) {
-				compareSnapshots(directories[i], true);
-			}
+		assertNotNull(directories);
+		for (int i = 0; i < directories.length; i++) {
+			compareSnapshots(directories[i], true);
 		}
 	}
 
@@ -131,8 +130,7 @@ public abstract class TestNonRegression extends TestCase {
 	protected void setPropertiesPath(String propertiesPath) {
 		this.propertiesPath = propertiesPath;
 	}
-	
-	
+
 	/**
 	 * Log a failure message.
 	 * 
@@ -146,7 +144,7 @@ public abstract class TestNonRegression extends TestCase {
 		thrown.printStackTrace();
 		fail(msg);
 	}
-	
+
 	/**
 	 * Log a message.
 	 * 
