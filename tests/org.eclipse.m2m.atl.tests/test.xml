@@ -33,6 +33,16 @@
       <property name="plugin-name" value="${plugin-name}"/>
       <property name="classname" value="org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionVM"/>
     </ant>
+    <ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
+      <property name="data-dir" value="${m2m-folder}"/>
+      <property name="plugin-name" value="${plugin-name}"/>
+      <property name="classname" value="org.eclipse.m2m.atl.tests.unit.TestNonRegressionCompiler"/>
+    </ant>
+    <ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
+      <property name="data-dir" value="${m2m-folder}"/>
+      <property name="plugin-name" value="${plugin-name}"/>
+      <property name="classname" value="org.eclipse.m2m.atl.tests.unit.TestNonRegressionParser"/>
+    </ant>
   </target>
 
   <!-- This target holds code to cleanup the testing environment after -->
