@@ -30,13 +30,13 @@
 <mapEntry key="XML1" value="XMLMaven"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="XML2" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/projectFileXML.ecore"/>
+<mapEntry key="XML2" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/projectFileXML.xmi"/>
 <mapEntry key="XMLProject" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XMLProject.ecore"/>
-<mapEntry key="XML1" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/mavenFileXML.ecore"/>
+<mapEntry key="XML1" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/mavenFileXML.xmi"/>
 <mapEntry key="MavenMaven" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/MavenMaven.ecore"/>
-<mapEntry key="InMaven" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/mavenFile.ecore"/>
+<mapEntry key="InMaven" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/mavenFile.xmi"/>
 <mapEntry key="XMLMaven" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XMLMaven.ecore"/>
-<mapEntry key="InProject" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/projectFile.ecore"/>
+<mapEntry key="InProject" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Maven2XML/projectFile.xmi"/>
 <mapEntry key="MavenProject" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/MavenProject.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>

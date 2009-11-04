@@ -12,13 +12,15 @@ package org.eclipse.m2m.atl.tests;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -38,7 +40,7 @@ public class AtlTestPlugin extends Plugin {
 	private static ResourceSet resourceSet = new ResourceSetImpl();
 
 	private static String baseDirectory;
-	
+
 	/**
 	 * Default constructor for the plugin.
 	 */
@@ -84,7 +86,7 @@ public class AtlTestPlugin extends Plugin {
 	public ResourceSet getResourceSet() {
 		return resourceSet;
 	}
-	
+
 	/**
 	 * Returns the base test data directory.
 	 * 
@@ -93,23 +95,18 @@ public class AtlTestPlugin extends Plugin {
 	public static String getBaseDirectory() {
 		if (baseDirectory == null) {
 			if (Platform.isRunning()) {
+				Bundle bundle = Platform.getBundle(PLUGIN_ID);
+				URL url = bundle.getEntry("/"); //$NON-NLS-1$
 				try {
-					baseDirectory = new File(FileLocator.toFileURL(
-							AtlTestPlugin.getDefault().getBundle().getEntry("/")).getFile()) //$NON-NLS-1$
-							.getParent();
+					baseDirectory = new File(FileLocator.toFileURL(url).getPath()).getCanonicalFile().getParent();
 				} catch (IOException e) {
-					throw new RuntimeException(e);
+					System.err.println(e);
 				}
 			} else {
-				try {
-					baseDirectory = new File(AtlTestPlugin.class.getResource("/").toURI()).getParentFile().getParent(); //$NON-NLS-1$
-				} catch (URISyntaxException e) {
-					// TODO: improve handling of exception
-					e.printStackTrace();
-				}
+				baseDirectory = new Path(AtlTestPlugin.class.getResource("/").getPath()) //$NON-NLS-1$
+						.removeLastSegments(2).toString();
 			}
 		}
 		return baseDirectory;
 	}
-
 }

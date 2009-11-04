@@ -81,7 +81,6 @@ public final class FileUtils {
 	 */
 	public static File[] listDirectories(File aDirectory) {
 		File[] directories = null;
-
 		if (aDirectory.exists() && aDirectory.isDirectory()) {
 			directories = aDirectory.listFiles(new FileFilter() {
 				public boolean accept(File file) {

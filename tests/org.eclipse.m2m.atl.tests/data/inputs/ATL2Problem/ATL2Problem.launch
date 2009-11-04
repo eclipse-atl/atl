@@ -23,8 +23,8 @@
 </mapAttribute>
 <mapAttribute key="Path">
 <mapEntry key="Problem" value="/org.eclipse.m2m.atl.tests/data/inputs/ATL2Problem/Problem.ecore"/>
-<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/ATL2Problem/ATLInput.ecore"/>
-<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/ATL2Problem/atl-problem.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/ATL2Problem/ATLInput.xmi"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/ATL2Problem/atl-problem.xmi"/>
 <mapEntry key="ATL" value="/org.eclipse.m2m.atl.tests/data/inputs/ATL2Problem/ATL-0.2.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>

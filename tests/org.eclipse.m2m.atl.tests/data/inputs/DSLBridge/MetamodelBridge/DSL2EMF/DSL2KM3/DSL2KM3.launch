@@ -22,10 +22,10 @@
 <mapEntry key="OUT" value="KM3"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/DSL2KM3/SimpleExampleMM-DSL.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/DSL2KM3/SimpleExampleMM-DSL.xmi"/>
 <mapEntry key="KM3" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/KM3.ecore"/>
 <mapEntry key="DSL" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/DSL.ecore"/>
-<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/DSL2KM3/SimpleExampleMM-KM3.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/DSL2KM3/SimpleExampleMM-KM3.xmi"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value=""/>
 <listAttribute key="Superimpose"/>

@@ -22,8 +22,8 @@
 <mapEntry key="OUT" value="Ant"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XML2Ant/build.ecore"/>
-<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XML2Ant/buildAnt.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XML2Ant/build.xmi"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XML2Ant/buildAnt.xmi"/>
 <mapEntry key="Ant" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant.ecore"/>
 <mapEntry key="XML" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XML.ecore"/>
 </mapAttribute>

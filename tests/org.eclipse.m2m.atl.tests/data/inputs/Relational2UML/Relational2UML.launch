@@ -24,7 +24,7 @@
 <mapEntry key="OUT" value="UML"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/sample-Relational.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/sample-Relational.xmi"/>
 <mapEntry key="Relational" value="/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/relational.ecore"/>
 <mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/sample-Relational.uml"/>
 <mapEntry key="PRO" value="/org.eclipse.m2m.atl.tests/profiles/relational.uml"/>

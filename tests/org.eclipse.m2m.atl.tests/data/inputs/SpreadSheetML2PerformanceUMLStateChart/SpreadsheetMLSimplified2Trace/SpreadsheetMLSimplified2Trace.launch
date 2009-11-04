@@ -23,8 +23,8 @@
 </mapAttribute>
 <mapAttribute key="Path">
 <mapEntry key="Trace" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/Trace.ecore"/>
-<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/SpreadsheetMLSimplified2Trace/TraceSamples-Excel.ecore"/>
-<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/SpreadsheetMLSimplified2Trace/TraceSamples-Trace.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/SpreadsheetMLSimplified2Trace/TraceSamples-Excel.xmi"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/SpreadsheetMLSimplified2Trace/TraceSamples-Trace.xmi"/>
 <mapEntry key="SpreadsheetMLSimplified" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/MSOfficeExcel_SpreadsheetMLSimplified.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>

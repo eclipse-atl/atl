@@ -23,7 +23,7 @@
 <mapAttribute key="Path">
 <mapEntry key="Relational" value="/org.eclipse.m2m.atl.tests/data/inputs/UML2Relational/relational.ecore"/>
 <mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/UML2Relational/sample-Relational.uml"/>
-<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/UML2Relational/sample-Relational.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/UML2Relational/sample-Relational.xmi"/>
 <mapEntry key="UML" value="uri:http://www.eclipse.org/uml2/2.1.0/UML"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="UML2Relational"/>

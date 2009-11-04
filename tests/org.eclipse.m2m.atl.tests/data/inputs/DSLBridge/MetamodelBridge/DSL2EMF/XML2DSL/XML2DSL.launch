@@ -22,9 +22,9 @@
 <mapEntry key="OUT" value="DSL"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/XML2DSL/SimpleExampleMM-XML.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/XML2DSL/SimpleExampleMM-XML.xmi"/>
 <mapEntry key="DSL" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/DSL.ecore"/>
-<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/XML2DSL/SimpleExampleMM-DSL.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/MetamodelBridge/DSL2EMF/XML2DSL/SimpleExampleMM-DSL.xmi"/>
 <mapEntry key="XML" value="/org.eclipse.m2m.atl.tests/data/inputs/DSLBridge/XML.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.vm.tests"/>

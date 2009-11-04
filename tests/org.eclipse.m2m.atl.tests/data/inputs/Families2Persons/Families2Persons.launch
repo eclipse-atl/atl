@@ -24,8 +24,8 @@
 </mapAttribute>
 <mapAttribute key="Path">
 <mapEntry key="Families" value="/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons/Families.ecore"/>
-<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons/sample-Families.ecore"/>
-<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons/sample-Persons.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons/sample-Families.xmi"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons/sample-Persons.xmi"/>
 <mapEntry key="Persons" value="/org.eclipse.m2m.atl.tests/data/inputs/Families2Persons/Persons.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.vm.tests"/>

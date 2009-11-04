@@ -26,7 +26,7 @@
 <mapEntry key="OUT" value="UML2"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="ME" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/TraceSamples-Metrics.ecore"/>
+<mapEntry key="ME" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/TraceSamples-Metrics.xmi"/>
 <mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/Order.uml"/>
 <mapEntry key="Metrics" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/Metrics.ecore"/>
 <mapEntry key="UML2" value="uri:http://www.eclipse.org/uml2/2.1.0/UML"/>

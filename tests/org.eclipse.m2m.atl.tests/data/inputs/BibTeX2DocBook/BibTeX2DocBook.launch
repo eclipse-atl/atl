@@ -22,8 +22,8 @@
 <mapEntry key="OUT" value="DocBook"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-BibTeX.ecore"/>
-<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-BibTeX.xmi"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/sample-DocBook.xmi"/>
 <mapEntry key="DocBook" value="/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/DocBook.ecore"/>
 <mapEntry key="BibTeX" value="/org.eclipse.m2m.atl.tests/data/inputs/BibTeX2DocBook/BibTeX.ecore"/>
 </mapAttribute>

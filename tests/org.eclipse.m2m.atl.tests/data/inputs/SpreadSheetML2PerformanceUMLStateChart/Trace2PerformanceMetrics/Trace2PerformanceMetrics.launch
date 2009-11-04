@@ -23,9 +23,9 @@
 </mapAttribute>
 <mapAttribute key="Path">
 <mapEntry key="Trace" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/Trace.ecore"/>
-<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/Trace2PerformanceMetrics/TraceSamples-Trace.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/Trace2PerformanceMetrics/TraceSamples-Trace.xmi"/>
 <mapEntry key="Metrics" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/Metrics.ecore"/>
-<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/Trace2PerformanceMetrics/TraceSamples-Metrics.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/Trace2PerformanceMetrics/TraceSamples-Metrics.xmi"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>
 <listAttribute key="Superimpose"/>

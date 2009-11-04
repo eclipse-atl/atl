@@ -22,9 +22,9 @@
 <mapEntry key="OUT" value="Class"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Ecore2Class/sample.ecore"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Ecore2Class/sample.xmi"/>
 <mapEntry key="Class" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Class.ecore"/>
-<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Ecore2Class/outSample.ecore"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/Class2Relational/Ecore2Class/outSample.xmi"/>
 <mapEntry key="MOF" value="#EMF"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="org.eclipse.m2m.atl.engine.emftest"/>
