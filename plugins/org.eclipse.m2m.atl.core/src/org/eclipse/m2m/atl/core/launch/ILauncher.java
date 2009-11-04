@@ -17,7 +17,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2m.atl.core.IModel;
 
 /**
- * The ILauncher interface defines a transformation launcher, and a set of associated options.
+ * The ILauncher interface defines a transformation launcher, and a set of associated options. To use all
+ * launchers in a generic way, you can use the {@link LauncherService} class.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */

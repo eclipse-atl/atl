@@ -28,6 +28,8 @@ import org.eclipse.m2m.atl.core.launch.ILauncher;
 /**
  * The LauncherService utility class provides a generic way to launch a transformation using the ATL Core API.
  * 
+ * To parameterize launch accurately, use directly the {@link ILauncher} implementations.
+ * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public final class LauncherService {
