@@ -227,7 +227,6 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 		Object transformationResult = null;
 		long startTime = System.currentTimeMillis();
 		try {
-			System.out.println(mode);
 			transformationResult = launcherInstance.launch(mode, new NullProgressMonitor(),
 					options, (Object[])moduleInputStreams);
 		} catch (ATLExecutionException e) {
