@@ -429,7 +429,7 @@ create OUT : AnyMM from IN : UML;
 			</tr>
 			<tr>
 				<td>path</td>
-				<td>Path of ATL transformation to run</td>
+				<td>Path of the compiled ATL transformation to run (.asm)</td>
 				<td>Yes</td>
 				<td>None</td>
 			</tr>
@@ -460,8 +460,8 @@ create OUT : AnyMM from IN : UML;
 create OUT : Persons from IN : Families;
 uses myLib;
 </pre>
-		<p>You have to create one inModel parameters (for IN, Families and Persons), one outModel (for OUT) and one library (for myLib). For instance, completing the previous sample of atl.atl task:</p>
-		<pre>&lt;atl.launch path="ATLFiles/MyTransformation.atl">
+		<p>You have to create one inModel parameter (for IN), one outModel (for OUT) and one library (for myLib). For instance:</p>
+		<pre>&lt;atl.launch path="ATLFiles/MyTransformation.asm">
  &lt;inmodel name="IN" model="..."/>			
  &lt;outmodel name="OUT" model="..." metamodel="Persons"/>
  &lt;library name="strings" path="lib/mylib.atl" />
