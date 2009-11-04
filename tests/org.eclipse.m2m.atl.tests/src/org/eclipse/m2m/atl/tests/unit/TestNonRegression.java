@@ -60,7 +60,7 @@ public abstract class TestNonRegression extends TestCase {
 	public void testNonRegression() throws Exception {
 		File inputDir = new File(AtlTestPlugin.getBaseDirectory() + INPUT_PATH);
 		final File[] directories = FileUtils.listDirectories(inputDir);
-		assertNotNull(directories);
+		assertNotNull("List directories: " + inputDir, directories);
 		for (int i = 0; i < directories.length; i++) {
 			compareSnapshots(directories[i], true);
 		}
