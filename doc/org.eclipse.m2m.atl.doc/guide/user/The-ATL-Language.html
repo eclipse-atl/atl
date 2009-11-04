@@ -155,6 +155,47 @@
 		<p>ATL developers may note that the operation call does not specify the matched rule from which the generated target model element comes from. However, as explained in the 
 			<a href="Overview-of-the-Atlas-Transformation-Language.html#Rules">Rules</a> section, a source model element should not be matched by more than one matched rule. As a consequence, the concerned matched rule can be derived from the specified source model element.
 		</p>
+		<p>Here is an example of resolveTemp use:</p>
+		<pre>rule AtoAnnotedB {
+	from
+		a : MMA!A
+	to
+		ann : MMB!Annotation (),
+		b : MMB!B (
+			annotation &lt;- ann
+		)
+}
+</pre>
+		<p>In this first rule, an object of type 
+			<i>A'' is transformed into two objects: a ''B</i> (the 
+			<i>b'' variable) instance annoted with an ''Annotation</i> instance (the 
+			<i>ann</i> variable).
+		</p>
+		<p>In the second rule, we want to refer to the newly created 
+			<i>B'' elements from their ''A</i> source. We assume that 
+		</p>
+		<ul>
+			<li>the 
+				<i>ARef</i> type has a reference named 
+				<i>ref</i> pointing to an 
+				<i>A</i> element 
+			</li>
+			<li>the 
+				<i>BRef</i> type has a reference named 
+				<i>ref</i> pointing to an 
+				<i>B</i> element 
+			</li>
+		</ul>
+		<pre>rule ARefToBRef {
+	from
+		aRef : MMA!ARef
+	to
+		bRef : MMB!BRef (
+			ref &lt;- thisModule.resolveTemp(aRef.ref, 'b')
+		)
+}
+</pre>
+		<p>Notice that the variable name is passed as a String to the resolveTemp method.</p>
 		<h3 id="Primitive_data_types">Primitive data types</h3>
 		<p>OCL defines four basic primitive data types:</p>
 		<ul>
@@ -2006,10 +2047,10 @@ entrypoint rule Metamodel() {
 				<th>Kind of traceability link created</th>
 			</tr>
 			<tr>
-				<td rowspan="3">standard</td>
+				<td>standard</td>
 				<td>0</td>
 				<td>1</td>
-				<td rowspan="3">default or not (using keyword nodefault)</td>
+				<td>default or not (using keyword nodefault)</td>
 			</tr>
 			<tr>
 				<td>1</td>
@@ -2020,10 +2061,10 @@ entrypoint rule Metamodel() {
 				<td>1</td>
 			</tr>
 			<tr>
-				<td rowspan="3">lazy</td>
+				<td>lazy</td>
 				<td>0</td>
 				<td>0</td>
-				<td rowspan="3">Not default</td>
+				<td>Not default</td>
 			</tr>
 			<tr>
 				<td>1</td>
@@ -2034,10 +2075,10 @@ entrypoint rule Metamodel() {
 				<td>n</td>
 			</tr>
 			<tr>
-				<td rowspan="3">unique lazy</td>
+				<td>unique lazy</td>
 				<td>0</td>
 				<td>0</td>
-				<td rowspan="3">Not default</td>
+				<td>Not default</td>
 			</tr>
 			<tr>
 				<td>1</td>
