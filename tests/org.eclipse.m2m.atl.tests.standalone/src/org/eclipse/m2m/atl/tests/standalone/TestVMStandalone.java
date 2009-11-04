@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.tests.standalone;
 
+import java.util.Properties;
+
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.m2m.atl.core.service.CoreService;
@@ -40,7 +42,9 @@ public class TestVMStandalone extends TestNonRegressionVM {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		setPropertiesPath("/org.eclipse.m2m.atl.tests.standalone/tests.properties"); //$NON-NLS-1$
+		Properties properties = new Properties();
+		properties.load(TestVMStandalone.class.getResourceAsStream("TestVMStandalone.properties")); //$NON-NLS-1$
+		setProperties(properties);
 
 		AtlModelHandler.registerDefaultHandler("EMF", new AtlEMFModelHandler()); //$NON-NLS-1$
 		CoreService.registerLauncher("Regular VM", RegularVMLauncher.class); //$NON-NLS-1$

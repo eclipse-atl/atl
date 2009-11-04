@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.tests.standalone;
 
+import java.util.Properties;
+
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.m2m.atl.core.emf.EMFExtractor;
@@ -38,7 +40,9 @@ public class TestEMFVMStandalone extends TestNonRegressionEMFVM {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		setPropertiesPath("/org.eclipse.m2m.atl.tests.standalone/tests.properties"); //$NON-NLS-1$
+		Properties properties = new Properties();
+		properties.load(TestEMFVMStandalone.class.getResourceAsStream("TestEMFVMStandalone.properties")); //$NON-NLS-1$
+		setProperties(properties);
 
 		CoreService.registerLauncher("EMF-specific VM", EMFVMLauncher.class); //$NON-NLS-1$
 		CoreService.registerFactory("EMF", EMFModelFactory.class); //$NON-NLS-1$
@@ -51,5 +55,4 @@ public class TestEMFVMStandalone extends TestNonRegressionEMFVM {
 		EPackage.Registry.INSTANCE.put("http://www.eclipse.org/uml2/2.0.0/UML", UMLPackage.eINSTANCE); //$NON-NLS-1$
 		EPackage.Registry.INSTANCE.put("http://www.eclipse.org/uml2/2.1.0/UML", UMLPackage.eINSTANCE); //$NON-NLS-1$
 	}
-
 }
