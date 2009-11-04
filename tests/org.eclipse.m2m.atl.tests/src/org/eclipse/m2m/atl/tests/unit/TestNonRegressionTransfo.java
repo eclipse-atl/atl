@@ -33,7 +33,6 @@ import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.core.service.LauncherService;
 import org.eclipse.m2m.atl.engine.compiler.AtlCompiler;
 import org.eclipse.m2m.atl.engine.compiler.CompilerNotFoundException;
-import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 import org.eclipse.m2m.atl.tests.util.LaunchParser;
 import org.eclipse.m2m.atl.tests.util.ModelUtils;
 import org.xml.sax.SAXException;
@@ -83,7 +82,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			fail("Launch configuration file " + buildURI + "not found"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		try {
-			launchParser.parseConfiguration(buildURI);
+			launchParser.parseConfiguration(baseDirectory, buildURI);
 		} catch (IOException e) {
 			fail("Error accessing launch configuration " + buildURI, e); //$NON-NLS-1$
 		} catch (ParserConfigurationException e) {
@@ -143,13 +142,13 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		} catch (Exception e) {
 			fail(directory.getName() + ": " + e.getMessage(), e); //$NON-NLS-1$
 		}
-		try {
-			results.write("\t<test name=\"" + directory.getName() + "\" directory=\"" //$NON-NLS-1$ //$NON-NLS-2$
-					+ directory.toString().substring(AtlTestPlugin.getBaseDirectory().length())
-					+ "\" time=\"" + executionTime + "\"/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (IOException e) {
-			fail("Error writing results for: " + directory.getName(), e); //$NON-NLS-1$
-		}
+		// try {
+		//			results.write("\t<test name=\"" + directory.getName() + "\" directory=\"" //$NON-NLS-1$ //$NON-NLS-2$
+		// + directory.toString().substring(AtlTestPlugin.getBaseDirectory().length())
+		//					+ "\" time=\"" + executionTime + "\"/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		// } catch (IOException e) {
+		//			fail("Error writing results for: " + directory.getName(), e); //$NON-NLS-1$
+		// }
 		info(directory.getName() + ": " + executionTime + "s (pure execution: " + pureExecutionTime + "s)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		/*

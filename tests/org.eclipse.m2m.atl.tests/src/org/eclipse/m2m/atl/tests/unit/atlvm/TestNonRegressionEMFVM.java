@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.tests.unit.atlvm;
 
+import java.util.Properties;
+
 import org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo;
 
 /**
@@ -37,7 +39,11 @@ public class TestNonRegressionEMFVM extends TestNonRegressionTransfo {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		setPropertiesPath("/org.eclipse.m2m.atl.tests/data/emfvm.properties"); //$NON-NLS-1$
+		Properties properties = new Properties();	
+		properties.load(TestNonRegressionEMFVM.class.getResourceAsStream("TestNonRegressionEMFVM.properties")); //$NON-NLS-1$
+		setProperties(properties);
 	}
 
+
+	
 }

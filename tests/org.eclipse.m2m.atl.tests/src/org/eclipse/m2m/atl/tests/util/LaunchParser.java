@@ -22,7 +22,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.m2m.atl.tests.AtlTestPlugin;
+import org.eclipse.core.runtime.Path;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -55,9 +55,12 @@ public class LaunchParser {
 
 	private Map<String, Object> options;
 
+	private File baseDirectory;
+
 	private String convertPath(String pathParam) {
 		if (!pathParam.startsWith("uri:") && !pathParam.startsWith("#")) { //$NON-NLS-1$ //$NON-NLS-2$
-			return AtlTestPlugin.getBaseDirectory() + pathParam;
+			return new Path(baseDirectory.getPath()).append(
+					new Path(pathParam).removeFirstSegments(1).toString()).toString();
 		}
 		return pathParam;
 	}
@@ -69,17 +72,19 @@ public class LaunchParser {
 	 *            the base directory path
 	 * @throws SAXException
 	 */
-	public void parseConfiguration(String launchPath) throws IOException, ParserConfigurationException,
-			SAXException {
+	public void parseConfiguration(File baseDirectory, String launchPath) throws IOException,
+			ParserConfigurationException, SAXException {
+
+		this.baseDirectory = baseDirectory;
 
 		// static variables initialization
-		libsFromConfig = new HashMap<String, URL>();
-		superimpose = new ArrayList<URL>();
-		input = new HashMap<String, String>();
-		output = new HashMap<String, String>();
-		modelHandler = new HashMap<String, String>();
-		path = new HashMap<String, String>();
-		options = new HashMap<String, Object>();
+		this.libsFromConfig = new HashMap<String, URL>();
+		this.superimpose = new ArrayList<URL>();
+		this.input = new HashMap<String, String>();
+		this.output = new HashMap<String, String>();
+		this.modelHandler = new HashMap<String, String>();
+		this.path = new HashMap<String, String>();
+		this.options = new HashMap<String, Object>();
 
 		// parsing configuration
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

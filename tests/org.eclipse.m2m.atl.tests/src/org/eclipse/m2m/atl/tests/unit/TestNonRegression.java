@@ -11,7 +11,6 @@
 package org.eclipse.m2m.atl.tests.unit;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Properties;
@@ -19,6 +18,8 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
 
@@ -30,9 +31,11 @@ import org.eclipse.m2m.atl.tests.util.FileUtils;
 public abstract class TestNonRegression extends TestCase {
 
 	/** The path for usecases. */
-	protected static final String INPUT_PATH = "/org.eclipse.m2m.atl.tests/data/inputs"; //$NON-NLS-1$
+	protected static final String INPUT_PATH = "/data/inputs/"; //$NON-NLS-1$
 
-	private String propertiesPath;
+	private Properties properties;
+
+	protected File baseDirectory;
 
 	/**
 	 * {@inheritDoc}
@@ -58,9 +61,16 @@ public abstract class TestNonRegression extends TestCase {
 	 *             Thrown if an operation has failed or been interrupted.
 	 */
 	public void testNonRegression() throws Exception {
-		File inputDir = new File(AtlTestPlugin.getBaseDirectory() + INPUT_PATH);
+		File inputDir = null;
+		if (CoreService.isEclipseRunning()) {
+			this.baseDirectory = FileLocator.getBundleFile(AtlTestPlugin.getDefault().getBundle());
+		} else {
+			this.baseDirectory = new File(AtlTestPlugin.class.getResource("").toURI()).getParentFile() //$NON-NLS-1$
+					.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
+		}
+		inputDir = new File(baseDirectory + INPUT_PATH);
 		final File[] directories = FileUtils.listDirectories(inputDir);
-		assertNotNull("List directories: " + inputDir, directories);
+		assertNotNull(directories);
 		for (int i = 0; i < directories.length; i++) {
 			compareSnapshots(directories[i], true);
 		}
@@ -75,7 +85,7 @@ public abstract class TestNonRegression extends TestCase {
 	 *             Thrown if an operation has failed or been interrupted.
 	 */
 	private void compareSnapshots(File directory, boolean useEmfCompare) throws IOException {
-		String[] testsToJump = getTestsToJump();
+		String[] testsToJump = getTestsToJump(directory);
 		if (testsToJump != null) {
 			for (int i = 0; i < testsToJump.length; i++) {
 				String testToJump = testsToJump[i];
@@ -96,19 +106,17 @@ public abstract class TestNonRegression extends TestCase {
 	/**
 	 * Parse a properties file to get the list of the tests to avoid.
 	 * 
+	 * @param directory
+	 *            the current directory
 	 * @return the list of the tests which need to be avoided
 	 * @throws IOException
 	 */
-	private String[] getTestsToJump() throws IOException {
+	private String[] getTestsToJump(File directory) throws IOException {
 		String[] res = null;
-		Properties props = new Properties();
-		if (propertiesPath == null) {
+		if (properties == null) {
 			return null;
 		}
-		File propertiesFile = new File(AtlTestPlugin.getBaseDirectory() + propertiesPath);
-		FileInputStream fis = new FileInputStream(propertiesFile);
-		props.load(fis);
-		Set<Object> testsToJump = props.keySet();
+		Set<Object> testsToJump = properties.keySet();
 		int i = 0;
 		res = new String[testsToJump.size()];
 		for (Iterator<Object> iterator = testsToJump.iterator(); iterator.hasNext();) {
@@ -127,8 +135,8 @@ public abstract class TestNonRegression extends TestCase {
 	 */
 	protected abstract void singleTest(File directory);
 
-	protected void setPropertiesPath(String propertiesPath) {
-		this.propertiesPath = propertiesPath;
+	protected void setProperties(Properties properties) {
+		this.properties = properties;
 	}
 
 	/**

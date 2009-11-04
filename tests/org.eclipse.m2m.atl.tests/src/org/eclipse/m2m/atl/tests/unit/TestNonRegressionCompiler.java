@@ -28,7 +28,6 @@ public class TestNonRegressionCompiler extends TestNonRegressionEMFVM {
 	protected void setUp() throws Exception {
 		super.setUp();
 		recompileBeforeLaunch = true;
-		setPropertiesPath("/org.eclipse.m2m.atl.tests/data/emfvm.properties"); //$NON-NLS-1$
 	}
 
 }

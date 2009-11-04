@@ -10,17 +10,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.tests;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -38,8 +30,6 @@ public class AtlTestPlugin extends Plugin {
 
 	/** the main resourceSet. */
 	private static ResourceSet resourceSet = new ResourceSetImpl();
-
-	private static String baseDirectory;
 
 	/**
 	 * Default constructor for the plugin.
@@ -85,28 +75,5 @@ public class AtlTestPlugin extends Plugin {
 	 */
 	public ResourceSet getResourceSet() {
 		return resourceSet;
-	}
-
-	/**
-	 * Returns the base test data directory.
-	 * 
-	 * @return the base test data directory
-	 */
-	public static String getBaseDirectory() {
-		if (baseDirectory == null) {
-			if (Platform.isRunning()) {
-				Bundle bundle = Platform.getBundle(PLUGIN_ID);
-				URL url = bundle.getEntry("/"); //$NON-NLS-1$
-				try {
-					baseDirectory = new File(FileLocator.toFileURL(url).getPath()).getCanonicalFile().getParent();
-				} catch (IOException e) {
-					System.err.println(e);
-				}
-			} else {
-				baseDirectory = new Path(AtlTestPlugin.class.getResource("/").getPath()) //$NON-NLS-1$
-						.removeLastSegments(2).toString();
-			}
-		}
-		return baseDirectory;
 	}
 }
