@@ -61,7 +61,8 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 
 	private static boolean showCallTree;
 
-	private static final String SHOW_EXECUTION_SUMMARY_LABEL = Messages.getString("ExecutionView_SHOW_SUMMARY"); //$NON-NLS-1$
+	private static final String SHOW_EXECUTION_SUMMARY_LABEL = Messages
+			.getString("ExecutionView_SHOW_SUMMARY"); //$NON-NLS-1$
 
 	private static final String SUMMARY_ACTION_ICON = "imperative.gif"; //$NON-NLS-1$
 
@@ -71,7 +72,8 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 
 	private static final String ATL_PROFILER_CALLS_VIEW = Messages.getString("ExecutionView_CALLS_VIEW"); //$NON-NLS-1$
 
-	private static final String ATL_PROFILER_EXECUTION_VIEW = Messages.getString("ExecutionView_EXECUTION_VIEW"); //$NON-NLS-1$
+	private static final String ATL_PROFILER_EXECUTION_VIEW = Messages
+			.getString("ExecutionView_EXECUTION_VIEW"); //$NON-NLS-1$
 
 	private static final String SWITCH_LABEL = Messages.getString("ExecutionView_SWITCH_VIEW"); //$NON-NLS-1$
 
@@ -141,10 +143,14 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 		ProfilerModelHandler modelHandler = ProfilerModelHandler.getInstance();
 		ProfilingOperation pop = modelHandler.getProfilingModel();
 		String message = ""; //$NON-NLS-1$
-		message += Messages.getString("ExecutionView_TOTAL_INSTRUCTIONS") + modelHandler.getModelTotalInstructions(); //$NON-NLS-1$
-		message += Messages.getString("ExecutionView_TOTAL_TIME") + modelHandler.getModelTotalTime() + " s"; //$NON-NLS-1$ //$NON-NLS-2$
-		double mem = (pop.getMaxMemoryUsage() - pop.getLaunchedMemoryUsage()) / 1000.0;
-		message += Messages.getString("ExecutionView_USED_MEMORY") + mem + " Kb"; //$NON-NLS-1$ //$NON-NLS-2$
+		if (pop != null) {
+			message += Messages.getString("ExecutionView_TOTAL_INSTRUCTIONS") + modelHandler.getModelTotalInstructions(); //$NON-NLS-1$
+			message += Messages.getString("ExecutionView_TOTAL_TIME") + modelHandler.getModelTotalTime() + " s"; //$NON-NLS-1$ //$NON-NLS-2$
+			double mem = (pop.getMaxMemoryUsage() - pop.getLaunchedMemoryUsage()) / 1000.0;
+			message += Messages.getString("ExecutionView_USED_MEMORY") + mem + " Kb"; //$NON-NLS-1$ //$NON-NLS-2$
+		} else {
+			message = Messages.getString("ExecutionView_NO_SUMMARY"); //$NON-NLS-1$
+		}
 		showMessage(message, SUMMARY_INFO);
 	}
 
@@ -388,8 +394,9 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.ui.ISelectionListener#selectionChanged(org.eclipse.ui.IWorkbenchPart, org.eclipse.jface.viewers.ISelection)
+	 * 
+	 * @see org.eclipse.ui.ISelectionListener#selectionChanged(org.eclipse.ui.IWorkbenchPart,
+	 *      org.eclipse.jface.viewers.ISelection)
 	 */
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		if (part instanceof ProfilingDataTableView && !ExecutionView.isShowCallTree()) {
