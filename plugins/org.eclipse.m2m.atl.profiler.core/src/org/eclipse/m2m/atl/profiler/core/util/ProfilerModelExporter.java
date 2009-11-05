@@ -45,111 +45,117 @@ public final class ProfilerModelExporter {
 	 * @throws Exception
 	 */
 	public static ExportRoot exportCurrentProfilingModel() throws Exception {
-		ExportRoot exportModel = ExportmodelFactory.eINSTANCE.createExportRoot();
+		ExportRoot exportModel = null;
 		ProfilingModel profilingModel = ProfilerModelHandler.getInstance().getProfilingModel();
 
-		Map<String, ATLOperation> atlOperationRegistry = ProfilerModelHandler.getInstance()
-				.getOperationRegistry();
+		if (profilingModel != null) {
+			exportModel = ExportmodelFactory.eINSTANCE.createExportRoot();
+			Map<String, ATLOperation> atlOperationRegistry = ProfilerModelHandler.getInstance()
+					.getOperationRegistry();
 
-		// register root node
-		final double globalTime = (profilingModel.getEndTime() - profilingModel.getLaunchedTime()) / 1000.0;
-		final long totalExecutedInstructions = profilingModel.getTotalExecutedInstructions();
+			// register root node
+			final double globalTime = (profilingModel.getEndTime() - profilingModel.getLaunchedTime()) / 1000.0;
+			final long totalExecutedInstructions = profilingModel.getTotalExecutedInstructions();
 
-		exportModel.setTotalTime(globalTime);
-		exportModel.setTotalInstructions(totalExecutedInstructions);
+			exportModel.setTotalTime(globalTime);
+			exportModel.setTotalInstructions(totalExecutedInstructions);
 
-		NumberFormat nf = DecimalFormat.getNumberInstance(Locale.ENGLISH);
-		nf.setMaximumFractionDigits(3);
+			NumberFormat nf = DecimalFormat.getNumberInstance(Locale.ENGLISH);
+			nf.setMaximumFractionDigits(3);
 
-		NumberFormat percentFormat = DecimalFormat.getPercentInstance(Locale.ENGLISH);
-		percentFormat.setMaximumFractionDigits(3);
+			NumberFormat percentFormat = DecimalFormat.getPercentInstance(Locale.ENGLISH);
+			percentFormat.setMaximumFractionDigits(3);
 
-		// foreach rule
-		for (ATLOperation atlOperation : atlOperationRegistry.values()) {
+			// foreach rule
+			for (ATLOperation atlOperation : atlOperationRegistry.values()) {
 
-			AtlOperationExport atlOperationExport = ExportmodelFactory.eINSTANCE.createAtlOperationExport();
+				AtlOperationExport atlOperationExport = ExportmodelFactory.eINSTANCE
+						.createAtlOperationExport();
 
-			double atlOpTime = 0.0;
-			long atlOpExecutedinstructions = 0;
-			long atlOpInMemory = 0;
-			long atlOpMaxMemory = 0;
-			long atlOpMaxEndMemory = 0;
+				double atlOpTime = 0.0;
+				long atlOpExecutedinstructions = 0;
+				long atlOpInMemory = 0;
+				long atlOpMaxMemory = 0;
+				long atlOpMaxEndMemory = 0;
 
-			for (ProfilingInstruction pi : atlOperation.getProfilingInstructions()) {
+				for (ProfilingInstruction pi : atlOperation.getProfilingInstructions()) {
 
-				if (pi instanceof ProfilingOperation) {
-					ProfilingOperation profilingOperation = (ProfilingOperation)pi;
+					if (pi instanceof ProfilingOperation) {
+						ProfilingOperation profilingOperation = (ProfilingOperation)pi;
 
-					ProfilingOperationExport profilingOperationExport = ExportmodelFactory.eINSTANCE
-							.createProfilingOperationExport();
-					profilingOperationExport.setName(profilingOperation.getContent());
+						ProfilingOperationExport profilingOperationExport = ExportmodelFactory.eINSTANCE
+								.createProfilingOperationExport();
+						profilingOperationExport.setName(profilingOperation.getContent());
 
-					double duration = ProfilingModelUtils.getDuration(profilingOperation);
+						double duration = ProfilingModelUtils.getDuration(profilingOperation);
 
-					profilingOperationExport.setTimExecution(duration);
-					atlOpTime += duration;
+						profilingOperationExport.setTimExecution(duration);
+						atlOpTime += duration;
 
-					double pDuration = duration / globalTime;
-					profilingOperationExport.setTotalTimeExecutionPercent(percentFormat.format(pDuration));
+						double pDuration = duration / globalTime;
+						profilingOperationExport
+								.setTotalTimeExecutionPercent(percentFormat.format(pDuration));
 
-					int profOpexecutedinstructions = profilingOperation.getTotalExecutedInstructions();
-					profilingOperationExport.setInstructions(profOpexecutedinstructions);
-					atlOpExecutedinstructions += profOpexecutedinstructions;
+						int profOpexecutedinstructions = profilingOperation.getTotalExecutedInstructions();
+						profilingOperationExport.setInstructions(profOpexecutedinstructions);
+						atlOpExecutedinstructions += profOpexecutedinstructions;
 
-					double ptotalInstructions = (double)profOpexecutedinstructions
-							/ totalExecutedInstructions;
-					profilingOperationExport.setTotalInstructionsPercent(percentFormat
-							.format(ptotalInstructions));
+						double ptotalInstructions = (double)profOpexecutedinstructions
+								/ totalExecutedInstructions;
+						profilingOperationExport.setTotalInstructionsPercent(percentFormat
+								.format(ptotalInstructions));
 
-					long launchKbytesMemUsage = ProfilingModelUtils
-							.getLaunchKbytesMemUsage(profilingOperation);
-					profilingOperationExport.setBeginMemory(launchKbytesMemUsage);
-					if (atlOpInMemory == 0) {
-						atlOpInMemory = launchKbytesMemUsage;
-					} else if (launchKbytesMemUsage < atlOpInMemory) {
-						atlOpInMemory = launchKbytesMemUsage;
+						long launchKbytesMemUsage = ProfilingModelUtils
+								.getLaunchKbytesMemUsage(profilingOperation);
+						profilingOperationExport.setBeginMemory(launchKbytesMemUsage);
+						if (atlOpInMemory == 0) {
+							atlOpInMemory = launchKbytesMemUsage;
+						} else if (launchKbytesMemUsage < atlOpInMemory) {
+							atlOpInMemory = launchKbytesMemUsage;
+						}
+
+						long maxKbytesMemUsage = ProfilingModelUtils.getMaxKbytesMemUsage(profilingOperation);
+						profilingOperationExport.setMaxMemory(maxKbytesMemUsage);
+						if (atlOpMaxMemory == 0) {
+							atlOpMaxMemory = maxKbytesMemUsage;
+						} else if (maxKbytesMemUsage < atlOpMaxMemory) {
+							atlOpMaxMemory = maxKbytesMemUsage;
+						}
+
+						long endKbytesMemUsage = ProfilingModelUtils.getEndKbytesMemUsage(profilingOperation);
+						profilingOperationExport.setEndMemory(endKbytesMemUsage);
+						if (atlOpMaxEndMemory == 0) {
+							atlOpMaxEndMemory = endKbytesMemUsage;
+						} else if (endKbytesMemUsage < atlOpMaxEndMemory) {
+							atlOpMaxEndMemory = endKbytesMemUsage;
+						}
+
+						atlOperationExport.getProfilingOperation().add(profilingOperationExport);
 					}
-
-					long maxKbytesMemUsage = ProfilingModelUtils.getMaxKbytesMemUsage(profilingOperation);
-					profilingOperationExport.setMaxMemory(maxKbytesMemUsage);
-					if (atlOpMaxMemory == 0) {
-						atlOpMaxMemory = maxKbytesMemUsage;
-					} else if (maxKbytesMemUsage < atlOpMaxMemory) {
-						atlOpMaxMemory = maxKbytesMemUsage;
-					}
-
-					long endKbytesMemUsage = ProfilingModelUtils.getEndKbytesMemUsage(profilingOperation);
-					profilingOperationExport.setEndMemory(endKbytesMemUsage);
-					if (atlOpMaxEndMemory == 0) {
-						atlOpMaxEndMemory = endKbytesMemUsage;
-					} else if (endKbytesMemUsage < atlOpMaxEndMemory) {
-						atlOpMaxEndMemory = endKbytesMemUsage;
-					}
-
-					atlOperationExport.getProfilingOperation().add(profilingOperationExport);
 				}
+
+				atlOperationExport.setName(atlOperation.getName());
+				Double dAtlOpTime = new Double(nf.format(atlOpTime));
+
+				atlOperationExport.setTimExecution(dAtlOpTime);
+				atlOperationExport.setInstructions(atlOpExecutedinstructions);
+				atlOperationExport.setBeginMemory(atlOpInMemory);
+				atlOperationExport.setMaxMemory(atlOpMaxMemory);
+				atlOperationExport.setEndMemory(atlOpMaxEndMemory);
+
+				double pAtlOpExecutedinstructions = (double)atlOpExecutedinstructions
+						/ totalExecutedInstructions;
+
+				atlOperationExport.setTotalInstructionsPercent(percentFormat
+						.format(pAtlOpExecutedinstructions));
+
+				double pAtlOpTime = atlOpTime / globalTime;
+
+				atlOperationExport.setTotalTimeExecutionPercent(percentFormat.format(pAtlOpTime));
+
+				exportModel.getOperation().add(atlOperationExport);
 			}
-
-			atlOperationExport.setName(atlOperation.getName());
-			Double dAtlOpTime = new Double(nf.format(atlOpTime));
-
-			atlOperationExport.setTimExecution(dAtlOpTime);
-			atlOperationExport.setInstructions(atlOpExecutedinstructions);
-			atlOperationExport.setBeginMemory(atlOpInMemory);
-			atlOperationExport.setMaxMemory(atlOpMaxMemory);
-			atlOperationExport.setEndMemory(atlOpMaxEndMemory);
-
-			double pAtlOpExecutedinstructions = (double)atlOpExecutedinstructions / totalExecutedInstructions;
-
-			atlOperationExport.setTotalInstructionsPercent(percentFormat.format(pAtlOpExecutedinstructions));
-
-			double pAtlOpTime = atlOpTime / globalTime;
-
-			atlOperationExport.setTotalTimeExecutionPercent(percentFormat.format(pAtlOpTime));
-
-			exportModel.getOperation().add(atlOperationExport);
 		}
-
 		return exportModel;
 	}
 
