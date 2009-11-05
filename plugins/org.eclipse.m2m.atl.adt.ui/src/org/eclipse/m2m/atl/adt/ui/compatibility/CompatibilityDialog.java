@@ -199,7 +199,7 @@ public class CompatibilityDialog extends TitleAreaDialog {
 	class ProjectLabelProvider implements ITableLabelProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
-			return AtlUIPlugin.getImage("atl_project.png"); //$NON-NLS-1$
+			return AtlUIPlugin.getImage("new_atl_project.gif"); //$NON-NLS-1$
 		}
 
 		public String getColumnText(Object element, int columnIndex) {
