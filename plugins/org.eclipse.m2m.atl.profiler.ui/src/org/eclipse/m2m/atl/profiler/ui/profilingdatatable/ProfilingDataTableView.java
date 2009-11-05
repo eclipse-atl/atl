@@ -63,30 +63,36 @@ import org.eclipse.ui.part.ViewPart;
 public class ProfilingDataTableView extends ViewPart implements Observer, ISelectionListener {
 
 	/** Instructions column name. */
-	public static final String INSTRUCTIONS_COLNAME = Messages.getString("ProfilingDataTableView_EXECUTED_INSTRUCTIONS"); //$NON-NLS-1$
+	public static final String INSTRUCTIONS_COLNAME = Messages
+			.getString("ProfilingDataTableView_EXECUTED_INSTRUCTIONS"); //$NON-NLS-1$
 
 	/** Execution time column name. */
-	public static final String TIME_EXECUTION_COLNAME = Messages.getString("ProfilingDataTableView_TIME_EXECUTION"); //$NON-NLS-1$
+	public static final String TIME_EXECUTION_COLNAME = Messages
+			.getString("ProfilingDataTableView_TIME_EXECUTION"); //$NON-NLS-1$
 
 	/** Calls column name. */
 	public static final String CALLS_COLNAME = Messages.getString("ProfilingDataTableView_CALLS"); //$NON-NLS-1$
 
 	/** Operation name column name. */
-	public static final String OPERATION_NAME_COLNAME = Messages.getString("ProfilingDataTableView_OPERATION_NAME"); //$NON-NLS-1$
+	public static final String OPERATION_NAME_COLNAME = Messages
+			.getString("ProfilingDataTableView_OPERATION_NAME"); //$NON-NLS-1$
 
 	/** In memory column name. */
 	public static final String INMEMORY_COLNAME = Messages.getString("ProfilingDataTableView_MEMORY_COL"); //$NON-NLS-1$
 
 	/** Max memory column name. */
-	public static final String MAXMEMORY_COLNAME = Messages.getString("ProfilingDataTableView_MAX_MEMORY_COL"); //$NON-NLS-1$
+	public static final String MAXMEMORY_COLNAME = Messages
+			.getString("ProfilingDataTableView_MAX_MEMORY_COL"); //$NON-NLS-1$
 
 	/** Out memory column name. */
-	public static final String OUTMEMORY_COLNAME = Messages.getString("ProfilingDataTableView_END_MEMORY_COL"); //$NON-NLS-1$
+	public static final String OUTMEMORY_COLNAME = Messages
+			.getString("ProfilingDataTableView_END_MEMORY_COL"); //$NON-NLS-1$
 
 	/** The view id. */
 	public static final String ID = "org.eclipse.m2m.atl.profiler.ui.profilingdatatable"; //$NON-NLS-1$
 
-	private static final String SHOW_PERCENTS = Messages.getString("ProfilingDataTableView_PERCENT_STATISTICS"); //$NON-NLS-1$
+	private static final String SHOW_PERCENTS = Messages
+			.getString("ProfilingDataTableView_PERCENT_STATISTICS"); //$NON-NLS-1$
 
 	private static final String EXPORT_DATA = Messages.getString("ProfilingDataTableView_XMI_EXPORT"); //$NON-NLS-1$
 
@@ -94,7 +100,8 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 
 	private static final String HIDE_NATIVE_OPERATIONS_GIF = "hideMatchedRule.gif"; //$NON-NLS-1$
 
-	private static final String SHOW_PERCENTAGES = Messages.getString("ProfilingDataTableView_HIDE_NATIVE_OPERATIONS"); //$NON-NLS-1$
+	private static final String SHOW_PERCENTAGES = Messages
+			.getString("ProfilingDataTableView_HIDE_NATIVE_OPERATIONS"); //$NON-NLS-1$
 
 	private static int instructionsColId;
 
@@ -295,23 +302,31 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 			@Override
 			public void run() {
 				String path = exportDirectorydialog.open();
-				path += "/profiler_export.xmi"; //$NON-NLS-1$
-				URI uri = URI.createFileURI(path);
-				Resource rsc = new ResourceSetImpl().createResource(uri);
-				rsc.getContents().clear();
-				ExportRoot exportModel = null;
-				try {
-					exportModel = ProfilerModelExporter.exportCurrentProfilingModel();
-				} catch (Exception e1) {
-					e1.printStackTrace();
+				if (path != null) {
+					path += "/profiler_export.xmi"; //$NON-NLS-1$
+					URI uri = URI.createFileURI(path);
+					Resource rsc = new ResourceSetImpl().createResource(uri);
+					rsc.getContents().clear();
+					ExportRoot exportModel = null;
+					try {
+						exportModel = ProfilerModelExporter.exportCurrentProfilingModel();
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					if (exportModel != null) {
+						rsc.getContents().add(exportModel);
+						try {
+							rsc.save(Collections.EMPTY_MAP);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						showMessage(
+								Messages.getString("ProfilingDataTableView_EXPORT_SUCCESSFULL") + path, Messages.getString("ProfilingDataTableView_EXPORT")); //$NON-NLS-1$ //$NON-NLS-2$
+					} else {
+						showError(
+								Messages.getString("ProfilingDataTableView_UNABLE_TO_EXPORT"), Messages.getString("ProfilingDataTableView_EXPORT")); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 				}
-				rsc.getContents().add(exportModel);
-				try {
-					rsc.save(Collections.EMPTY_MAP);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				showMessage(Messages.getString("ProfilingDataTableView_EXPORT_SUCCESSFULL") + path, Messages.getString("ProfilingDataTableView_EXPORT")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		};
 		xmiExportAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("libsreference.gif")); //$NON-NLS-1$
@@ -455,6 +470,10 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 
 	private void showMessage(String message, String title) {
 		MessageDialog.openInformation(treeViewer.getControl().getShell(), title, message);
+	}
+
+	private void showError(String message, String title) {
+		MessageDialog.openError(treeViewer.getControl().getShell(), title, message);
 	}
 
 	public static int getTotalInstructionsId() {
