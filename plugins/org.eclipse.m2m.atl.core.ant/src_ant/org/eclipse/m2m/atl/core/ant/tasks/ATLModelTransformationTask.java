@@ -235,7 +235,9 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 		long endTime = System.currentTimeMillis();
 		double executionTime = (endTime - startTime) / 1000.;
 
-		getProject().addReference(RESULT_REFERENCE, transformationResult);
+		if (transformationResult != null) {
+			getProject().addReference(RESULT_REFERENCE, transformationResult);	
+		}		
 		log(Messages.getString("ATLModelTransformationTask.EXECUTION_TIME", executionTime)); //$NON-NLS-1$
 
 		super.execute();
