@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.31 2009/10/05 16:42:59 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.32 2009/11/06 10:18:07 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -427,11 +427,15 @@ public class ASMOperation extends Operation {
 						switch (bytecode.getOpcode()) {
 							case Bytecode.CALL:
 								if (s == null) {
-									// TODO: throw new VMException(frame, "Operation " + bytecode.getOperand() + "did not return a value.");
-									// Throwing an exception here leverages the distinction between call/pcall to report better error messages.
-									// However, this would break backward compatibility. In the future, an option, or versionning of .asm files
+									// TODO: throw new VMException(frame, "Operation " + bytecode.getOperand()
+									// + "did not return a value.");
+									// Throwing an exception here leverages the distinction between call/pcall
+									// to report better error messages.
+									// However, this would break backward compatibility. In the future, an
+									// option, or versionning of .asm files
 									// could make it safe to enable this exception.
-									// Moreover, it would then be possible to compute the exact operand stack size that must be allocated, which
+									// Moreover, it would then be possible to compute the exact operand stack
+									// size that must be allocated, which
 									// would likely increase performance of the virtual machine.
 								} else {
 									stack[fp++] = s;
@@ -539,7 +543,7 @@ public class ASMOperation extends Operation {
 								stack[fp++] = c;
 							} else {
 								throw new VMException(frame, Messages.getString(
-										"ASMOperation.CANNOTFIND", new Object[] {mname, me})); //$NON-NLS-1$
+										"ASMOperation.CANNOTFIND", mname, me)); //$NON-NLS-1$
 							}
 						} else {
 							Object ec = ExecEnv.findMetaElement(frame, mname, me);
@@ -547,15 +551,20 @@ public class ASMOperation extends Operation {
 						}
 						break;
 					case Bytecode.ITERATE:
-						Collection<?> c = (Collection<?>)stack[--fp];
-						it = c.iterator();
-						if (it.hasNext()) {
-							nestedIterate[bytecode.getValue2()] = it;
-							stack[fp++] = it.next();
+						Object o = stack[--fp];
+						if (o instanceof Collection<?>) {
+							Collection<?> c = (Collection<?>)o;
+							it = c.iterator();
+							if (it.hasNext()) {
+								nestedIterate[bytecode.getValue2()] = it;
+								stack[fp++] = it.next();
+							} else {
+								pc = bytecode.getValue();
+							}
 						} else {
-							pc = bytecode.getValue();
+							throw new VMException(frame, Messages.getString("ASMOperation.CANNOT_ITERATE", //$NON-NLS-1$
+									execEnv.toPrettyPrintedString(o)));
 						}
-
 						break;
 					case Bytecode.ENDITERATE:
 						it = nestedIterate[bytecode.getValue2()];
