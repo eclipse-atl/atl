@@ -27,7 +27,7 @@ import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.text.AbstractScanner;
 import org.eclipse.m2m.atl.adt.ui.text.AtlTextTools;
 import org.eclipse.m2m.atl.adt.ui.text.AtlWordDetector;
-import org.eclipse.m2m.atl.adt.ui.text.IAtlLexems;
+import org.eclipse.m2m.atl.common.IAtlLexems;
 
 /**
  * This class controls the highlight syntaxing coloration for the ATL editor.
