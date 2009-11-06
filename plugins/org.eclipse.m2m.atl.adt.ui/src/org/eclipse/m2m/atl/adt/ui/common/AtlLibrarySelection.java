@@ -120,15 +120,14 @@ public class AtlLibrarySelection extends AbstractAtlSelection {
 		}
 	}
 
-	private String checkText(String text) {
-		if (text == null || "".equals(text)) { //$NON-NLS-1$
-			return Messages.getString("AtlLibrarySelection.SET_NAME"); //$NON-NLS-1$
-		} else if (!text.matches(NAMING_REGEX)) {
-			return Messages.getString("AtlLibrarySelection.INVALID_NAME"); //$NON-NLS-1$
-		} else if (librariesFromParent.containsKey(text)) {
-			return Messages.getString("AtlLibrarySelection.LIBRARY_EXISTS"); //$NON-NLS-1$
+	private String checkText(String libraryName) {
+		String errorMessage = checkIdentifier(libraryName);
+		if (errorMessage == null) {
+			if (librariesFromParent.containsKey(libraryName)) {
+				errorMessage = Messages.getString("AtlLibrarySelection.LIBRARY_EXISTS"); //$NON-NLS-1$
+			}
 		}
-		return null;
+		return errorMessage;
 	}
 
 }

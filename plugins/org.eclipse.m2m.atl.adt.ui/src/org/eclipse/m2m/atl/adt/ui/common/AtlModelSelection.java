@@ -164,10 +164,8 @@ public class AtlModelSelection extends AbstractAtlSelection {
 	}
 
 	private void textChanged() {
-		String modelMessage = checkText(
-				Messages.getString("AtlModelSelection.MODEL"), modelNameText.getText()); //$NON-NLS-1$
-		String metamodelMessage = checkText(
-				Messages.getString("AtlModelSelection.METAMODEL"), metamodelNameText.getText()); //$NON-NLS-1$
+		String modelMessage = checkIdentifier(modelNameText.getText());
+		String metamodelMessage = checkIdentifier(metamodelNameText.getText());
 		if (modelMessage != null) {
 			nok(modelMessage);
 		} else if (metamodelMessage != null) {
@@ -180,15 +178,6 @@ public class AtlModelSelection extends AbstractAtlSelection {
 		} else {
 			ok();
 		}
-	}
-
-	private String checkText(String type, String text) {
-		if (text == null || "".equals(text)) { //$NON-NLS-1$
-			return Messages.getString("AtlModelSelection.SET_NAME", type); //$NON-NLS-1$
-		} else if (!text.matches(NAMING_REGEX)) {
-			return Messages.getString("AtlModelSelection.INVALID_NAME", type); //$NON-NLS-1$
-		}
-		return null;
 	}
 
 	/**

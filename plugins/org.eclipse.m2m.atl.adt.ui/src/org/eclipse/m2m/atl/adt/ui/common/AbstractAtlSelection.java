@@ -16,6 +16,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
+import org.eclipse.m2m.atl.adt.ui.Messages;
+import org.eclipse.m2m.atl.common.IAtlLexems;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
@@ -117,4 +119,39 @@ public abstract class AbstractAtlSelection extends SelectionStatusDialog {
 		return res;
 	}
 
+	/**
+	 * Checks the validity of an identifier.
+	 * 
+	 * @param identifier
+	 *            the identifier to check
+	 * @return the error message if exists, else null
+	 */
+	public static String checkIdentifier(String identifier) {
+		String errorMessage = null;
+		if (identifier == null || "".equals(identifier.trim())) { //$NON-NLS-1$
+			errorMessage = Messages.getString("AbstractAtlSelection.NAMING_UNSET"); //$NON-NLS-1$
+		} else if (!identifier.matches(NAMING_REGEX)) {
+			errorMessage = Messages.getString("AbstractAtlSelection.NAMING_ISSUE", identifier); //$NON-NLS-1$
+		} else {
+			for (String s : IAtlLexems.CONSTANTS) {
+				if (s.equals(identifier)) {
+					errorMessage = Messages.getString("AbstractAtlSelection.NAMING_CONFLICT", s); //$NON-NLS-1$
+					break;
+				}
+			}
+			for (String s : IAtlLexems.KEYWORDS) {
+				if (s.equals(identifier)) {
+					errorMessage = Messages.getString("AbstractAtlSelection.NAMING_CONFLICT", s); //$NON-NLS-1$
+					break;
+				}
+			}
+			for (String s : IAtlLexems.TYPES) {
+				if (s.equals(identifier)) {
+					errorMessage = Messages.getString("AbstractAtlSelection.NAMING_CONFLICT", s); //$NON-NLS-1$
+					break;
+				}
+			}
+		}
+		return errorMessage;
+	}
 }

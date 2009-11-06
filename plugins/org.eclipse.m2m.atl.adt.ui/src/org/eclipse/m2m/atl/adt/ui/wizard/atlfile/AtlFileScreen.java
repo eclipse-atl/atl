@@ -64,8 +64,6 @@ public class AtlFileScreen extends WizardPage {
 	/** The library file type. */
 	public static final String TYPE_LIBRARY = "library"; //$NON-NLS-1$
 
-	protected static final String NAMING_REGEX = "[a-zA-Z0-9]+"; //$NON-NLS-1$
-
 	/** Paths map. */
 	private Map<String, String> paths = new HashMap<String, String>();
 
@@ -367,14 +365,11 @@ public class AtlFileScreen extends WizardPage {
 	}
 
 	private boolean checkUnitName() {
-		if (textName.getText() == null || !textName.getText().matches(NAMING_REGEX)) {
-			setErrorMessage(Messages.getString("AtlFileWizard.NAMING_ISSUE", comboType.getText())); //$NON-NLS-1$
-			return false;
-		}
-		setErrorMessage(null);
-		return true;
+		String errorMessage = AbstractAtlSelection.checkIdentifier(textName.getText());
+		setErrorMessage(errorMessage);
+		return errorMessage == null;
 	}
-
+	
 	private boolean checkModelsConsistancy() {
 		if (comboType.getText().equals(TYPE_MODULE) || comboType.getText().equals(TYPE_REFINING_MODULE)) {
 			if (input.isEmpty()) {
