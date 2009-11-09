@@ -176,10 +176,10 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	 */
 	private Map<String, EObject> initMetaElementsInAllResources() {
 		Map<String, EObject> eClassifiers = new HashMap<String, EObject>();
-		initMetaElements(eClassifiers, getResource().getContents().iterator(), null);
 		for (Resource res : getReferencedResources()) {
 			initMetaElements(eClassifiers, res.getContents().iterator(), null);
 		}
+		initMetaElements(eClassifiers, getResource().getContents().iterator(), null);
 		return eClassifiers;
 	}
 
