@@ -29,6 +29,7 @@ import org.eclipse.debug.core.model.ILineBreakpoint;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPositionCategoryException;
@@ -59,6 +60,7 @@ import org.eclipse.jface.text.link.LinkedModeUI.IExitPolicy;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
+import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
@@ -73,6 +75,7 @@ import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.actions.GotoMatchingBracketAction;
 import org.eclipse.m2m.atl.adt.ui.actions.IAtlActionConstants;
 import org.eclipse.m2m.atl.adt.ui.actions.IndentAction;
+import org.eclipse.m2m.atl.adt.ui.actions.ToggleCommentAction;
 import org.eclipse.m2m.atl.adt.ui.outline.AtlContentOutlinePage;
 import org.eclipse.m2m.atl.adt.ui.outline.AtlEMFConstants;
 import org.eclipse.m2m.atl.adt.ui.properties.AtlPropertySourceProvider;
@@ -805,8 +808,26 @@ public class AtlEditor extends TextEditor {
 		}
 
 		installContentAssistAction();
+		
+		action= new ToggleCommentAction(AtlEditorMessages.getResourceBundle(), "ToggleComment.", this); //$NON-NLS-1$
+		action.setActionDefinitionId("atlCommands.commentBlock"); //$NON-NLS-1$
+		setAction("ToggleComment", action); //$NON-NLS-1$
+		markAsStateDependentAction("ToggleComment", true); //$NON-NLS-1$
+		configureToggleCommentAction();
 	}
 
+	/**
+	 * Configures the toggle comment action
+	 */
+	private void configureToggleCommentAction() {
+		IAction action= getAction("ToggleComment"); //$NON-NLS-1$
+		if (action instanceof ToggleCommentAction) {
+			ISourceViewer sourceViewer= getSourceViewer();
+			SourceViewerConfiguration configuration= getSourceViewerConfiguration();
+			((ToggleCommentAction)action).configure(sourceViewer, configuration);
+		}
+	}
+	
 	/**
 	 * Installs an action so that the user can invoke the content assist feature by the well known combination
 	 * of key strokes.
@@ -1439,6 +1460,18 @@ public class AtlEditor extends TextEditor {
 			}
 		}
 		return res;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.editors.text.TextEditor#doSetInput(org.eclipse.ui.IEditorInput)
+	 */
+	protected void doSetInput(IEditorInput input) throws CoreException {
+		super.doSetInput(input);
+		configureToggleCommentAction();
+		if (tickErrorUpdater != null)
+			tickErrorUpdater.updateEditorImage(getUnderlyingResource());
 	}
 
 }

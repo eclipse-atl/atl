@@ -55,33 +55,6 @@
   	</decorator> 
   </extension>
   -->
-	<extension point="org.eclipse.ui.editorActions"> 
-      <editorContribution 
-         id="atlEditorContribution" 
-         targetID="org.eclipse.m2m.atl.adt.editor.AtlEditor">
-         <menu
-            id="ATLEditorMenu"
-            label="ATL Editor">
-            <groupMarker
-                  name="ATLGroup">
-            </groupMarker> 
-         </menu> 
-<!--
-            style="toggle"
-            toolbarPath="Normal/additions"
-            state="true" 
-            tooltip="Toggle Comment"
-            helpContextId="com.xyz.run_action_context" 
--->
-         <action 
-            definitionId="atlCommands.commentBlock"
-            id="org.eclipse.m2m.atl.adt.ui.CommentBlock"
-            label="Comment/Uncomment"
-            menubarPath="ATLEditorMenu/ATLGroup"
-            class="org.eclipse.m2m.atl.adt.ui.actions.ToggleCommentBlock">
-         </action> 
-      </editorContribution> 
-   </extension>
 	<extension point="org.eclipse.ui.bindings">
 		<key
 			commandId="atlCommands.commentBlock"
@@ -97,5 +70,28 @@
 			id="atlCategory"
 			name="ATL Category"/>
 	</extension>
+ <extension
+       point="org.eclipse.ui.actionSets">
+    <actionSet
+          description="%CodingActionSet.description"
+          id="org.eclipse.m2m.atl.adt.editor.CodingActionSet"
+          label="%CodingActionSet.label"
+          visible="true">
+       <menu
+             id="ATLEditorMenu"
+             label="ATL Editor">
+          <groupMarker
+                name="ATLGroup">
+          </groupMarker>
+       </menu>
+       <action
+             definitionId="atlCommands.commentBlock"
+             id="org.eclipse.m2m.atl.adt.ui.actions.ToggleComment"
+             label="Comment/Uncomment"
+             menubarPath="ATLEditorMenu/ATLGroup"
+             retarget="true">
+       </action>
+    </actionSet>
+ </extension>
 
 </plugin>

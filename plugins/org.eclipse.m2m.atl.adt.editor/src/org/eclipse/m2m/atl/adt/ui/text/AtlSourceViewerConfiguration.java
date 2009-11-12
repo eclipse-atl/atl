@@ -304,4 +304,8 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 		return new MonoReconciler(new AtlReconcilingStrategy((AtlEditor)fTextEditor), false);
 	}
 
+	public String[] getDefaultPrefixes(ISourceViewer sourceViewer, String contentType) {
+		return new String[] { "--", "" }; //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
 }
