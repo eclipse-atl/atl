@@ -69,14 +69,6 @@ public final class ToggleCommentAction extends TextEditorAction {
 		super(bundle, prefix, editor);
 	}
 
-	public boolean isEnabled() {
-		return super.isEnabled();
-	}
-
-	public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-	}
-
 	/**
 	 * Implementation of the <code>IAction</code> prototype. Checks if the selected lines are all commented or
 	 * not and uncomments/comments them respectively.
