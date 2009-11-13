@@ -40,6 +40,7 @@ public abstract class AtlOutlinePage extends Page implements IContentOutlinePage
 	/**
 	 * @see org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createControl(Composite parent) {
 		treeViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		treeViewer.setUseHashlookup(true);
@@ -48,6 +49,7 @@ public abstract class AtlOutlinePage extends Page implements IContentOutlinePage
 	/**
 	 * @see org.eclipse.ui.part.IPage#getControl()
 	 */
+	@Override
 	public Control getControl() {
 		if (treeViewer == null) {
 			return null;
@@ -60,6 +62,7 @@ public abstract class AtlOutlinePage extends Page implements IContentOutlinePage
 	 * 
 	 * @see org.eclipse.ui.part.Page#setFocus()
 	 */
+	@Override
 	public void setFocus() {
 		if (treeViewer != null) {
 			treeViewer.getControl().setFocus();
