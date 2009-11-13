@@ -30,7 +30,7 @@ import java.util.Map.Entry;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;<%if (!content.getPackageClassNames().isEmpty()) {%>
+import org.eclipse.core.runtime.Path;<%if (!pluginContent.getPackageClassNames().isEmpty()) {%>
 import org.eclipse.emf.ecore.EPackage;<%}%><%if (!content.getAllModelsNames().isEmpty()) {%>
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;<%}%>
@@ -106,7 +106,7 @@ public class <%=content.getClassShortName()%> {
 	 */
 	public <%=content.getClassShortName()%>() throws IOException {
 		properties = new Properties();
-		properties.load(getFileURL("<%=content.getClassShortName()%>.properties").openStream());<%for (String metamodelName : content.getAllMetamodelsNames()) {%><%String packageClassName = content.getPackageClassNames().get(metamodelName); if (!content.isMetametamodel(metamodelName) && packageClassName != null) {%>
+		properties.load(getFileURL("<%=content.getClassShortName()%>.properties").openStream());<%for (String metamodelName : content.getAllMetamodelsNames()) {%><%String packageClassName = pluginContent.getPackageClassNames().get(metamodelName); if (!content.isMetametamodel(metamodelName) && packageClassName != null) {%>
 		EPackage.Registry.INSTANCE.put(getMetamodelUri("<%=metamodelName%>"), <%=packageClassName%>.eINSTANCE);<%}%><%}%><%if (!content.getAllModelsNames().isEmpty()) {%>
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());<%}%>
 	}<%if (!content.getModelsToLoadNames().isEmpty()) {%>

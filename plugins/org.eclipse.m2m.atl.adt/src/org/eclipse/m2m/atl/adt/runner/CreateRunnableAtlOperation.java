@@ -71,7 +71,7 @@ public class CreateRunnableAtlOperation implements IWorkspaceRunnable {
 
 			CreateRunnableData runnableData = new CreateRunnableData();
 			runnableData.load(properties);
-			CreatePluginData pluginData = new CreatePluginData(propertyFile.getProject().getName());
+			CreatePluginData pluginData = new CreatePluginData(propertyFile.getProject().getName(), getBasePackage());
 			pluginData.setRunnableData(runnableData);
 
 			CreateRunnableJavaWriter runnableWriter = new CreateRunnableJavaWriter();

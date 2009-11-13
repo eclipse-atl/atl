@@ -27,14 +27,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 
@@ -72,10 +66,6 @@ public class CreateRunnableData {
 
 	private Set<String> libraryNames;
 
-	private List<String> pluginDependencies;
-
-	private Map<String, String> packageClassNames;
-
 	private String classShortName;
 
 	/**
@@ -96,7 +86,6 @@ public class CreateRunnableData {
 		}
 		transformationFiles = atlModules.toArray(new IFile[atlModules.size()]);
 		updateFromFiles();
-		computeMetamodelDependencies();
 	}
 
 	/**
@@ -113,7 +102,6 @@ public class CreateRunnableData {
 		libraryLocations.putAll(properties.getLibraryLocations());
 		metamodelLocations.putAll(properties.getMetamodelLocations());
 		options.putAll(properties.getOptions());
-		computeMetamodelDependencies();
 	}
 
 	/**
@@ -170,19 +158,10 @@ public class CreateRunnableData {
 		for (String metamodelName : getAllMetamodelsNames()) {
 			metamodelLocations.put(metamodelName, modelPaths.get(metamodelName));
 		}
-		computeMetamodelDependencies();
 	}
 
 	public Object getClassShortName() {
 		return classShortName;
-	}
-
-	public List<String> getPluginDependencies() {
-		return pluginDependencies;
-	}
-
-	public Map<String, String> getPackageClassNames() {
-		return packageClassNames;
 	}
 
 	private void updateFromFiles() throws IOException, CoreException {
@@ -259,54 +238,6 @@ public class CreateRunnableData {
 			String location = locationsFromFile.get(metamodelName);
 			if (location != null) {
 				metamodelLocations.put(metamodelName, location);
-			}
-		}
-	}
-
-	/**
-	 * Computes plug-in dependency with the given metamodel.
-	 * 
-	 * @param metamodel
-	 *            is the metamodel
-	 */
-	private void computeMetamodelDependencies() {
-		pluginDependencies = new ArrayList<String>();
-		packageClassNames = new HashMap<String, String>();
-		for (String metamodelName : getAllMetamodelsNames()) {
-			EPackage regValue = EPackage.Registry.INSTANCE.getEPackage(getMetamodelLocations().get(
-					metamodelName));
-			if (regValue != null) {
-				computeMetamodelDependencies(metamodelName, regValue);
-			}
-		}
-	}
-
-	/**
-	 * Computes plug-in dependency with the given metamodel.
-	 * 
-	 * @param metamodel
-	 *            is the metamodel
-	 */
-	private void computeMetamodelDependencies(String metamodelName, EPackage metamodel) {
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint extensionPoint = registry
-				.getExtensionPoint("org.eclipse.emf.ecore.generated_package"); //$NON-NLS-1$
-		if (extensionPoint != null && extensionPoint.getExtensions().length > 0) {
-			IExtension[] extensions = extensionPoint.getExtensions();
-			for (int i = 0; i < extensions.length; i++) {
-				IExtension extension = extensions[i];
-				IConfigurationElement[] members = extension.getConfigurationElements();
-				for (int j = 0; j < members.length; j++) {
-					IConfigurationElement member = members[j];
-					String mURI = member.getAttribute("uri"); //$NON-NLS-1$
-					if (mURI != null && mURI.equals(metamodel.getNsURI())) {
-						if (!pluginDependencies.contains(member.getNamespaceIdentifier())) {
-							pluginDependencies.add(member.getNamespaceIdentifier());
-						}
-						// uri can differ between versions
-						packageClassNames.put(metamodelName, member.getAttribute("class")); //$NON-NLS-1$
-					}
-				}
 			}
 		}
 	}

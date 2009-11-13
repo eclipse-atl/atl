@@ -34,11 +34,11 @@ public class CreateModuleMANIFESTWriter
     stringBuffer.append(TEXT_3);
     stringBuffer.append(content.getProjectName());
     stringBuffer.append(TEXT_4);
-    if (content.getRunnableData() != null) { for(String dependency : content.getRunnableData().getPluginDependencies()) {
+    for(String dependency : content.getPluginDependencies()) {
     stringBuffer.append(TEXT_5);
     stringBuffer.append(dependency);
     stringBuffer.append(TEXT_6);
-    }}
+    }
     stringBuffer.append(TEXT_7);
     stringBuffer.append(TEXT_8);
     return stringBuffer.toString();

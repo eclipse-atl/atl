@@ -145,7 +145,7 @@ public class CreateRunnableJavaWriter
     stringBuffer.append(TEXT_1);
     stringBuffer.append(pluginContent.getBasePackage());
     stringBuffer.append(TEXT_2);
-    if (!content.getPackageClassNames().isEmpty()) {
+    if (!pluginContent.getPackageClassNames().isEmpty()) {
     stringBuffer.append(TEXT_3);
     }
     if (!content.getAllModelsNames().isEmpty()) {
@@ -241,7 +241,7 @@ public class CreateRunnableJavaWriter
     stringBuffer.append(content.getClassShortName());
     stringBuffer.append(TEXT_45);
     for (String metamodelName : content.getAllMetamodelsNames()) {
-    String packageClassName = content.getPackageClassNames().get(metamodelName); if (!content.isMetametamodel(metamodelName) && packageClassName != null) {
+    String packageClassName = pluginContent.getPackageClassNames().get(metamodelName); if (!content.isMetametamodel(metamodelName) && packageClassName != null) {
     stringBuffer.append(TEXT_46);
     stringBuffer.append(metamodelName);
     stringBuffer.append(TEXT_47);
