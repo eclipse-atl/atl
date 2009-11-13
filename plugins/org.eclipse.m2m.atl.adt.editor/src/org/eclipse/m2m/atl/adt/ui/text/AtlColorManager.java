@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Display;
 public class AtlColorManager implements ISharedTextColors {
 
 	/**
-	 * Tells the color manager <code>autoDisposeOnDisplayDispose</code> if it will be diposed in the same
-	 * time that the display.
+	 * Tells the color manager <code>autoDisposeOnDisplayDispose</code> if it will be diposed in the same time
+	 * that the display.
 	 */
 	private boolean autoDisposeOnDisplayDispose;
 
@@ -36,8 +36,8 @@ public class AtlColorManager implements ISharedTextColors {
 	protected Map displayTable = new HashMap();
 
 	/**
-	 * <code>keyTable</code> is a hash map regrouping the string key of the color and the effective RGB
-	 * color associatede with.
+	 * <code>keyTable</code> is a hash map regrouping the string key of the color and the effective RGB color
+	 * associatede with.
 	 */
 	protected HashMap keyTable = new HashMap();
 
@@ -94,7 +94,6 @@ public class AtlColorManager implements ISharedTextColors {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.jface.text.source.ISharedTextColors#dispose()
 	 */
 	public void dispose() {
@@ -121,9 +120,9 @@ public class AtlColorManager implements ISharedTextColors {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.text.source.ISharedTextColors#getColor(org.eclipse.swt.graphics.RGB)
 	 */
 	public Color getColor(RGB rgb) {
