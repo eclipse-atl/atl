@@ -96,8 +96,8 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 	}
 
 	/**
-	 * Finds a closing parenthesis to the left of <code>position</code> in document, where that parenthesis
-	 * is only separated by whitespace from <code>position</code>. If no such parenthesis can be found,
+	 * Finds a closing parenthesis to the left of <code>position</code> in document, where that parenthesis is
+	 * only separated by whitespace from <code>position</code>. If no such parenthesis can be found,
 	 * <code>position</code> is returned.
 	 * 
 	 * @param document
@@ -198,8 +198,9 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy#customizeDocumentCommand(org.eclipse.jface.text.IDocument, org.eclipse.jface.text.DocumentCommand)
+	 * 
+	 * @see org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy#customizeDocumentCommand(org.eclipse.jface.text.IDocument,
+	 *      org.eclipse.jface.text.DocumentCommand)
 	 */
 	public void customizeDocumentCommand(IDocument document, DocumentCommand command) {
 		if (!command.doit) {
@@ -430,11 +431,8 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 			if (IAtlPartitions.DOC.equals(region.getType()))
 				start = d.getLineInformationOfOffset(region.getOffset()).getOffset();
 
-			// TODO check if the brace closes a region
-			if (getBracketCount(d, start, c.offset, true) > 0 && closeBrace()/*
-																				 * && !isClosed(d, c.offset,
-																				 * c.length)
-																				 */) {
+			if (getBracketCount(d, start, c.offset, true) > 0 && closeBrace()
+					&& !isClosed(d, c.offset, c.length)) {
 				c.caretOffset = c.offset + buf.length();
 				c.shiftsCaret = false;
 
@@ -464,6 +462,10 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 		} catch (BadLocationException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
+	}
+
+	private boolean isClosed(IDocument d, int offset, int length) {
+		return new AtlPairMatcher(IAtlLexems.BRACKETS).match(d, offset) != null;
 	}
 
 	private void smartIndentAfterOpeningBracket(IDocument document, DocumentCommand command) {
