@@ -65,16 +65,18 @@ public class AtlStringAutoIndentStrategy extends DefaultIndentLineAutoEditStrate
 		IPreferenceStore preferenceStore = AtlUIPlugin.getDefault().getPreferenceStore();
 		if (isLineDelimiter(document, command.text)) {
 			command.text = "\' +" + command.text + indentation + "\'"; //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		else if (command.text.length() > 1
+		} else if (command.text.length() > 1
 				&& preferenceStore.getBoolean(AtlPreferenceConstants.TYPING_ESCAPE_STRINGS)) {
 			command.text = getModifiedText(command.text, indentation, delimiter);
 		}
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.IAutoIndentStrategy#customizeDocumentCommand(IDocument, DocumentCommand)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy#customizeDocumentCommand(org.eclipse.jface.text.IDocument, org.eclipse.jface.text.DocumentCommand)
 	 */
+	@Override
 	public void customizeDocumentCommand(IDocument document, DocumentCommand command) {
 		try {
 			if (command.length != 0 || command.text == null)

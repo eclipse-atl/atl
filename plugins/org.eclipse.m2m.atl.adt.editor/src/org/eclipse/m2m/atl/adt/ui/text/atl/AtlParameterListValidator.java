@@ -57,8 +57,7 @@ public class AtlParameterListValidator implements IContextInformationValidator, 
 					if (considerNesting) {
 						if ('(' == curr) {
 							++nestingLevel;
-						}
-						else if (')' == curr) {
+						} else if (')' == curr) {
 							--nestingLevel;
 						}
 						if (nestingLevel != 0) {

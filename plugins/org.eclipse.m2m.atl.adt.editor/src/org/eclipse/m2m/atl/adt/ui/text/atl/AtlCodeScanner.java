@@ -53,10 +53,10 @@ public class AtlCodeScanner extends AbstractScanner {
 		public IdentifierRule(Token token) {
 			this.token = token;
 		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
+		
+		/**
+		 * {@inheritDoc}
+		 *
 		 * @see org.eclipse.jface.text.rules.IRule#evaluate(org.eclipse.jface.text.rules.ICharacterScanner)
 		 */
 		public IToken evaluate(ICharacterScanner scanner) {
@@ -103,9 +103,9 @@ public class AtlCodeScanner extends AbstractScanner {
 			this.token = token;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
+		/**
+		 * {@inheritDoc}
+		 *
 		 * @see org.eclipse.jface.text.rules.IRule#evaluate(org.eclipse.jface.text.rules.ICharacterScanner)
 		 */
 		public IToken evaluate(ICharacterScanner scanner) {
@@ -147,7 +147,9 @@ public class AtlCodeScanner extends AbstractScanner {
 			this.token = token;
 		}
 
-		/*
+		/**
+		 * {@inheritDoc}
+		 *
 		 * @see org.eclipse.jface.text.rules.IRule#evaluate(org.eclipse.jface.text.rules.ICharacterScanner)
 		 */
 		public IToken evaluate(ICharacterScanner scanner) {
@@ -191,25 +193,31 @@ public class AtlCodeScanner extends AbstractScanner {
 		super(textTools);
 	}
 
-	/*
-	 * @see AbstractScanner#adaptToPreferenceChange(PropertyChangeEvent)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.adt.ui.text.AbstractScanner#adaptToPreferenceChange(org.eclipse.jface.util.PropertyChangeEvent)
 	 */
+	@Override
 	public void adaptToPreferenceChange(PropertyChangeEvent event) {
 		if (super.affectsBehavior(event)) {
 			super.adaptToPreferenceChange(event);
 		}
 	}
 
-	/*
-	 * @see AbstractScanner#affectsBehavior(PropertyChangeEvent)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.adt.ui.text.AbstractScanner#affectsBehavior(org.eclipse.jface.util.PropertyChangeEvent)
 	 */
+	@Override
 	public boolean affectsBehavior(PropertyChangeEvent event) {
 		return super.affectsBehavior(event);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.m2m.atl.adt.ui.text.AbstractScanner#createRules()
 	 */
 	protected List createRules() {
@@ -243,11 +251,12 @@ public class AtlCodeScanner extends AbstractScanner {
 		return rules;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.m2m.atl.adt.ui.text.AbstractScanner#getPropertyNames()
 	 */
+	@Override
 	protected String[] getPropertyNames() {
 		return new String[] {AtlPreferenceConstants.SYNTAX_BRACKET, AtlPreferenceConstants.SYNTAX_CONSTANT,
 				AtlPreferenceConstants.SYNTAX_DEFAULT, AtlPreferenceConstants.SYNTAX_IDENTIFIER,

@@ -35,7 +35,8 @@ public class AtlCompletionHelper {
 	/**
 	 * Configures the IDocument for this helper.
 	 * 
-	 * @param document the current document
+	 * @param document
+	 *            the current document
 	 */
 	public void setDocument(IDocument document) {
 		this.document = document;
@@ -44,8 +45,10 @@ public class AtlCompletionHelper {
 	/**
 	 * Computes the document part to analyze, process the analysis.
 	 * 
-	 * @param offset the current offset
-	 * @param prefix the current prefix
+	 * @param offset
+	 *            the current offset
+	 * @param prefix
+	 *            the current prefix
 	 * @return an analyser which purposes contextual informations.
 	 * @throws BadLocationException
 	 */
@@ -87,8 +90,10 @@ public class AtlCompletionHelper {
 	/**
 	 * Compute the right offset from an element, according to the base offset of the model.
 	 * 
-	 * @param element the given element
-	 * @param baseOffset the base offset
+	 * @param element
+	 *            the given element
+	 * @param baseOffset
+	 *            the base offset
 	 * @return [deboffset, endoffset]
 	 * @throws BadLocationException
 	 */
@@ -99,13 +104,17 @@ public class AtlCompletionHelper {
 	/**
 	 * Compute the right offset from an element, according to the base offset of the model.
 	 * 
-	 * @param document the document
-	 * @param element the given element
-	 * @param baseOffset the base offset
+	 * @param document
+	 *            the document
+	 * @param element
+	 *            the given element
+	 * @param baseOffset
+	 *            the base offset
 	 * @return [deboffset, endoffset]
 	 * @throws BadLocationException
 	 */
-	public static int[] getElementOffsets(IDocument document, EObject element, int baseOffset) throws BadLocationException {
+	public static int[] getElementOffsets(IDocument document, EObject element, int baseOffset)
+			throws BadLocationException {
 		Object loc = AtlCompletionDataSource.eGet(element, "location"); //$NON-NLS-1$
 		if (loc != null) {
 			String location = loc.toString();
@@ -123,11 +132,12 @@ public class AtlCompletionHelper {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Extracts the prefix of the last typed characters.
 	 * 
-	 * @param offset the current offset
+	 * @param offset
+	 *            the current offset
 	 * @return the prefix of the last word
 	 */
 	public String extractPrefix(int offset) {
@@ -152,7 +162,8 @@ public class AtlCompletionHelper {
 	/**
 	 * Compute the whole line of the current offset.
 	 * 
-	 * @param offset the current offset
+	 * @param offset
+	 *            the current offset
 	 * @return the line containing the offset, ended with the offset
 	 * @throws BadLocationException
 	 */
@@ -168,7 +179,8 @@ public class AtlCompletionHelper {
 	/**
 	 * Retrieves the last typed keyword.
 	 * 
-	 * @param offset the current offset
+	 * @param offset
+	 *            the current offset
 	 * @return the last typed keyword
 	 */
 	public String getLastKeyWord(int offset) throws BadLocationException {
