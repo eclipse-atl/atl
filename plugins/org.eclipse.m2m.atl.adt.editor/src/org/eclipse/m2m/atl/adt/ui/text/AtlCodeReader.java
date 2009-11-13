@@ -35,11 +35,12 @@ public class AtlCodeReader extends SingleCharReader {
 
 	private boolean skipStrings = false;
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see java.io.Reader#close()
 	 */
+	@Override
 	public void close() throws IOException {
 		document = null;
 	}
