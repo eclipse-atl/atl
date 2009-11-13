@@ -73,6 +73,12 @@ public class RenameFrame extends Composite {
 			lNewName = new Label(canvas1, SWT.NULL);
 			tNewName = new Text(canvas1, SWT.NULL);
 			tNewName.addKeyListener(new KeyAdapter() {
+				/**
+				 * {@inheritDoc}
+				 *
+				 * @see org.eclipse.swt.events.KeyAdapter#keyPressed(org.eclipse.swt.events.KeyEvent)
+				 */
+				@Override
 				public void keyPressed(KeyEvent ke) {
 					tNewNameKeyPressed(ke);
 				}
@@ -105,6 +111,12 @@ public class RenameFrame extends Composite {
 			ok.setLayoutData(okLData);
 			ok.setText("OK"); //$NON-NLS-1$
 			ok.addSelectionListener(new SelectionAdapter() {
+				/**
+				 * {@inheritDoc}
+				 *
+				 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+				 */
+				@Override
 				public void widgetSelected(SelectionEvent evt) {
 					okWidgetSelected(evt);
 				}
@@ -142,6 +154,12 @@ public class RenameFrame extends Composite {
 			cancel.setLayoutData(button1LData);
 			cancel.setText("Cancel"); //$NON-NLS-1$
 			cancel.addSelectionListener(new SelectionAdapter() {
+				/**
+				 * {@inheritDoc}
+				 *
+				 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+				 */
+				@Override
 				public void widgetSelected(SelectionEvent evt) {
 					cancelWidgetSelected(evt);
 				}

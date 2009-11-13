@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.adt.ui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
@@ -252,7 +253,7 @@ public class AtlPreferenceConstants {
 	 * @return an array of preferences.
 	 */
 	public static AtlPreferenceStore.Key[] createStoreKeys() {
-		ArrayList storeKeys = new ArrayList();
+		List<AtlPreferenceStore.Key> storeKeys = new ArrayList<AtlPreferenceStore.Key>();
 
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, APPEARANCE_CURRENT_LINE));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, APPEARANCE_CURRENT_LINE_COLOR));

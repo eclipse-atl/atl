@@ -27,7 +27,7 @@ public class AtlElementProperties implements IPropertySource {
 	/**
 	 * Used to build the list of property descriptors property descriptor id => property display name
 	 */
-	private static Map properties = new HashMap();
+	private static Map<String, String> properties = new HashMap<String, String>();
 
 	private static final String INFO_CATEGORY = "Info"; //$NON-NLS-1$
 
@@ -48,6 +48,8 @@ public class AtlElementProperties implements IPropertySource {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getEditableValue()
 	 */
 	public Object getEditableValue() {
@@ -55,14 +57,16 @@ public class AtlElementProperties implements IPropertySource {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyDescriptors()
 	 */
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		IPropertyDescriptor[] pds = new IPropertyDescriptor[properties.size()];
 		int cpt = 0;
-		for (Iterator keys = properties.keySet().iterator(); keys.hasNext();) {
-			String propertyId = (String)keys.next();
-			String propertyDisplayName = (String)properties.get(propertyId);
+		for (Iterator<String> keys = properties.keySet().iterator(); keys.hasNext();) {
+			String propertyId = keys.next();
+			String propertyDisplayName = properties.get(propertyId);
 			PropertyDescriptor pd = new PropertyDescriptor(propertyId, propertyDisplayName);
 			pd.setCategory(INFO_CATEGORY);
 			pds[cpt++] = pd;
@@ -71,6 +75,8 @@ public class AtlElementProperties implements IPropertySource {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
 	public Object getPropertyValue(Object id) {
@@ -86,6 +92,8 @@ public class AtlElementProperties implements IPropertySource {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.views.properties.IPropertySource#isPropertySet(java.lang.Object)
 	 */
 	public boolean isPropertySet(Object id) {
@@ -93,6 +101,8 @@ public class AtlElementProperties implements IPropertySource {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.views.properties.IPropertySource#resetPropertyValue(java.lang.Object)
 	 */
 	public void resetPropertyValue(Object id) {
@@ -100,8 +110,9 @@ public class AtlElementProperties implements IPropertySource {
 	}
 
 	/**
-	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object,
-	 *      java.lang.Object)
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object, java.lang.Object)
 	 */
 	public void setPropertyValue(Object id, Object value) {
 	}

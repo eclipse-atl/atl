@@ -30,6 +30,7 @@ public class GotoMatchingBracketAction extends Action {
 	 * 
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
+	@Override
 	public void run() {
 		editor.gotoMatchingBracket();
 	}

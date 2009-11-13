@@ -202,6 +202,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 	 * @see org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy#customizeDocumentCommand(org.eclipse.jface.text.IDocument,
 	 *      org.eclipse.jface.text.DocumentCommand)
 	 */
+	@Override
 	public void customizeDocumentCommand(IDocument document, DocumentCommand command) {
 		if (!command.doit) {
 			return;

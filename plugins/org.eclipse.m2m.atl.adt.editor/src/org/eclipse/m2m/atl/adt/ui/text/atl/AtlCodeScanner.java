@@ -220,8 +220,9 @@ public class AtlCodeScanner extends AbstractScanner {
 	 *
 	 * @see org.eclipse.m2m.atl.adt.ui.text.AbstractScanner#createRules()
 	 */
-	protected List createRules() {
-		List rules = new ArrayList();
+	@Override
+	protected List<IRule> createRules() {
+		List<IRule> rules = new ArrayList<IRule>();
 
 		rules.add(new EndOfLineRule("--", getToken(AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT_COLOR))); //$NON-NLS-1$
 		rules.add(new EnumLiteralRule(getToken(AtlPreferenceConstants.SYNTAX_LITERAL_COLOR)));

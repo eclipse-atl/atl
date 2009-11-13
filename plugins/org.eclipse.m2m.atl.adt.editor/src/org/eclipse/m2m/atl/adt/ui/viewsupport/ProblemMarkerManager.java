@@ -37,9 +37,9 @@ public class ProblemMarkerManager implements IResourceChangeListener {
 	 */
 	private static class ProjectErrorVisitor implements IResourceDeltaVisitor {
 
-		private HashSet changedElements;
+		private HashSet<IResource> changedElements;
 
-		public ProjectErrorVisitor(HashSet changedElements) {
+		public ProjectErrorVisitor(HashSet<IResource> changedElements) {
 			this.changedElements = changedElements;
 		}
 
@@ -92,11 +92,13 @@ public class ProblemMarkerManager implements IResourceChangeListener {
 		fListeners = new ListenerList();
 	}
 
-	/*
-	 * @see IResourceChangeListener#resourceChanged
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
 	 */
 	public void resourceChanged(IResourceChangeEvent event) {
-		HashSet changedElements = new HashSet();
+		HashSet<IResource> changedElements = new HashSet<IResource>();
 
 		try {
 			IResourceDelta delta = event.getDelta();
@@ -107,7 +109,7 @@ public class ProblemMarkerManager implements IResourceChangeListener {
 		}
 
 		if (!changedElements.isEmpty()) {
-			IResource[] changes = (IResource[])changedElements.toArray(new IResource[changedElements.size()]);
+			IResource[] changes = changedElements.toArray(new IResource[changedElements.size()]);
 			fireChanges(changes, true);
 		}
 	}
@@ -134,6 +136,7 @@ public class ProblemMarkerManager implements IResourceChangeListener {
 
 	private void fireChanges(final IResource[] changes, final boolean isMarkerChange) {
 		Thread fireChange = new Thread() {
+			@Override
 			public void run() {
 				Object[] listeners = fListeners.getListeners();
 				for (int i = 0; i < listeners.length; i++) {

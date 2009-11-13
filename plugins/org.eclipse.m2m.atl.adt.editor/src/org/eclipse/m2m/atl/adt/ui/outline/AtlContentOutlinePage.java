@@ -194,6 +194,12 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 */
 	private void createActions() {
 		cutAction = new Action("Cut") { //$NON-NLS-1$
+			/**
+			 * {@inheritDoc}
+			 *
+			 * @see org.eclipse.jface.action.Action#run()
+			 */
+			@Override
 			public void run() {
 
 			}
@@ -201,6 +207,12 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		cutAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("cut.gif")); //$NON-NLS-1$
 
 		copyAction = new Action("Copy") { //$NON-NLS-1$
+			/**
+			 * {@inheritDoc}
+			 *
+			 * @see org.eclipse.jface.action.Action#run()
+			 */
+			@Override
 			public void run() {
 
 			}
@@ -208,6 +220,12 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		copyAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("copy.gif")); //$NON-NLS-1$
 
 		pasteAction = new Action("Paste") { //$NON-NLS-1$
+			/**
+			 * {@inheritDoc}
+			 *
+			 * @see org.eclipse.jface.action.Action#run()
+			 */
+			@Override
 			public void run() {
 
 			}
@@ -215,6 +233,12 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		pasteAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("paste.gif")); //$NON-NLS-1$
 
 		addBreakPointAction = new Action("Toggle breakpoint") { //$NON-NLS-1$
+			/**
+			 * {@inheritDoc}
+			 *
+			 * @see org.eclipse.jface.action.Action#run()
+			 */
+			@Override
 			public void run() {
 				IStructuredSelection is = (IStructuredSelection)treeViewer.getSelection();
 				EObject element = (EObject)is.getFirstElement();
@@ -228,6 +252,12 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		addBreakPointAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("brkp_obj.gif")); //$NON-NLS-1$
 
 		refreshItemAction = new Action("Refresh") { //$NON-NLS-1$
+			/**
+			 * {@inheritDoc}
+			 *
+			 * @see org.eclipse.jface.action.Action#run()
+			 */
+			@Override
 			public void run() {
 				setUnit();
 			}
@@ -236,6 +266,12 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		refreshItemAction.setToolTipText("refresh outline"); //$NON-NLS-1$
 
 		filterHelperAction = new Action("Hide Helpers", Action.AS_CHECK_BOX) { //$NON-NLS-1$
+			/**
+			 * {@inheritDoc}
+			 *
+			 * @see org.eclipse.jface.action.Action#run()
+			 */
+			@Override
 			public void run() {
 				updateFilters(filterHelperAction);
 			}
@@ -244,6 +280,12 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		filterHelperAction.setToolTipText("Hide helpers"); //$NON-NLS-1$
 
 		filterRuleAction = new Action("Hide rules", Action.AS_CHECK_BOX) { //$NON-NLS-1$
+			/**
+			 * {@inheritDoc}
+			 *
+			 * @see org.eclipse.jface.action.Action#run()
+			 */
+			@Override
 			public void run() {
 				updateFilters(filterRuleAction);
 			}
@@ -252,6 +294,12 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		filterRuleAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("hideMatchedRule.gif")); //$NON-NLS-1$
 
 		sorterAction = new Action("Alphabetical sort", Action.AS_CHECK_BOX) { //$NON-NLS-1$
+			/**
+			 * {@inheritDoc}
+			 *
+			 * @see org.eclipse.jface.action.Action#run()
+			 */
+			@Override
 			public void run() {
 				updateSorter(sorterAction);
 			}
@@ -284,6 +332,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * 
 	 * @see org.eclipse.m2m.atl.adt.ui.outline.AtlOutlinePage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createControl(Composite arg0) {
 		super.createControl(arg0);
 		root = new Root();

@@ -83,9 +83,12 @@ public class AtlHeuristicScanner implements Symbols {
 	 * @see NonAtlIdentifierPart
 	 */
 	private class NonAtlIdentifierPartDefaultPartition extends NonAtlIdentifierPart {
-		/*
-		 * @see org.eclipse.jdt.internal.ui.text.AtlHeuristicScanner.StopCondition#stop(char)
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.m2m.atl.adt.ui.text.AtlHeuristicScanner.NonAtlIdentifierPart#stop(char, int, boolean)
 		 */
+		@Override
 		public boolean stop(char ch, int position, boolean forward) {
 			return super.stop(ch, position, true) || !isDefaultPartition(position);
 		}
@@ -95,8 +98,10 @@ public class AtlHeuristicScanner implements Symbols {
 	 * Stops upon a non-whitespace (as defined by {@link Character#isWhitespace(char)}) character.
 	 */
 	private static class NonWhitespace implements StopCondition {
-		/*
-		 * @see org.eclipse.jdt.internal.ui.text.AtlHeuristicScanner.StopCondition#stop(char)
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.m2m.atl.adt.ui.text.AtlHeuristicScanner.StopCondition#stop(char, int, boolean)
 		 */
 		public boolean stop(char ch, int position, boolean forward) {
 			return !Character.isWhitespace(ch);
@@ -109,9 +114,12 @@ public class AtlHeuristicScanner implements Symbols {
 	 * @see NonWhitespace
 	 */
 	private class NonWhitespaceDefaultPartition extends NonWhitespace {
-		/*
-		 * @see org.eclipse.jdt.internal.ui.text.AtlHeuristicScanner.StopCondition#stop(char)
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.m2m.atl.adt.ui.text.AtlHeuristicScanner.NonWhitespace#stop(char, int, boolean)
 		 */
+		@Override
 		public boolean stop(char ch, int position, boolean forward) {
 			return super.stop(ch, position, true) && isDefaultPartition(position);
 		}
@@ -145,9 +153,7 @@ public class AtlHeuristicScanner implements Symbols {
 			super(chars);
 		}
 
-		/*
-		 * @see org.eclipse.jdt.internal.ui.text.AtlHeuristicScanner.StopCondition#stop(char, int)
-		 */
+		@Override
 		public boolean stop(char ch, int position, boolean forward) {
 
 			if (fDepth == 0 && super.stop(ch, position, true))

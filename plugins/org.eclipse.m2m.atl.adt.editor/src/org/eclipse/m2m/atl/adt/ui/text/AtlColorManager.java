@@ -33,16 +33,16 @@ public class AtlColorManager implements ISharedTextColors {
 	/**
 	 * <code>displayTable</code> stores a map for each display found.
 	 */
-	protected Map displayTable = new HashMap();
+	protected Map<Display, Map<RGB, Color>> displayTable = new HashMap<Display, Map<RGB, Color>>();
 
 	/**
 	 * <code>keyTable</code> is a hash map regrouping the string key of the color and the effective RGB color
-	 * associatede with.
+	 * associated with.
 	 */
-	protected HashMap keyTable = new HashMap();
+	protected HashMap<String, RGB> keyTable = new HashMap<String, RGB>();
 
 	/**
-	 * Creates a new color manager setting to auto dipose it when the display is disposed.
+	 * Creates a new color manager setting to auto dispose it when the display is disposed.
 	 */
 	public AtlColorManager() {
 		this(true);
@@ -92,8 +92,9 @@ public class AtlColorManager implements ISharedTextColors {
 		keyTable.put(key, rgb);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.text.source.ISharedTextColors#dispose()
 	 */
 	public void dispose() {
@@ -108,11 +109,11 @@ public class AtlColorManager implements ISharedTextColors {
 	 *            the display to use
 	 */
 	protected void dispose(Display display) {
-		Map colorTable = (Map)displayTable.get(display);
+		Map<RGB, Color> colorTable = displayTable.get(display);
 		if (colorTable != null) {
-			Iterator e = colorTable.values().iterator();
+			Iterator<Color> e = colorTable.values().iterator();
 			while (e.hasNext()) {
-				Color color = (Color)e.next();
+				Color color = e.next();
 				if (color != null && !color.isDisposed()) {
 					color.dispose();
 				}
@@ -130,9 +131,9 @@ public class AtlColorManager implements ISharedTextColors {
 			return null;
 
 		final Display display = Display.getCurrent();
-		Map colorTable = (Map)displayTable.get(display);
+		Map<RGB, Color> colorTable = displayTable.get(display);
 		if (colorTable == null) {
-			colorTable = new HashMap(10);
+			colorTable = new HashMap<RGB, Color>(10);
 			displayTable.put(display, colorTable);
 			if (autoDisposeOnDisplayDispose) {
 				display.disposeExec(new Runnable() {
@@ -143,7 +144,7 @@ public class AtlColorManager implements ISharedTextColors {
 			}
 		}
 
-		Color color = (Color)colorTable.get(rgb);
+		Color color = colorTable.get(rgb);
 		if (color == null) {
 			color = new Color(Display.getCurrent(), rgb);
 			colorTable.put(rgb, color);
@@ -153,7 +154,7 @@ public class AtlColorManager implements ISharedTextColors {
 	}
 
 	/**
-	 * Gets the color ressource matching the color string.
+	 * Gets the color resource matching the color string.
 	 * 
 	 * @param color
 	 *            the key string of the color
@@ -163,7 +164,7 @@ public class AtlColorManager implements ISharedTextColors {
 		if (color == null)
 			return null;
 
-		return getColor((RGB)keyTable.get(color));
+		return getColor(keyTable.get(color));
 	}
 
 	/**

@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
@@ -27,13 +26,20 @@ import org.eclipse.swt.graphics.Image;
 public class AtlLabelProvider extends LabelProvider {
 	private boolean initialized = false;
 
-	private Map readers = new HashMap();
+	private Map<EClass, Reader> readers = new HashMap<EClass, Reader>();
 
-	private Map imageCache = new HashMap();
+	private Map<ImageDescriptor, Image> imageCache = new HashMap<ImageDescriptor, Image>();
 
-	private Map classToImages = new HashMap();
+	private Map<String, String> classToImages = new HashMap<String, String>();
 
 	private Reader defaultReader = new Reader() {
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.m2m.atl.adt.ui.outline.AtlLabelProvider.Reader#getText(org.eclipse.emf.ecore.EObject)
+		 */
+		@Override
 		public String getText(EObject object) {
 			return "<default> : " + object.eClass().getName(); //$NON-NLS-1$
 		}
@@ -41,7 +47,14 @@ public class AtlLabelProvider extends LabelProvider {
 
 	private abstract class Reader {
 
-		public abstract String getText(EObject rule);
+		/**
+		 * Returns a readable String for the given object.
+		 * 
+		 * @param element
+		 *            the object to read
+		 * @return the readable String
+		 */
+		public abstract String getText(EObject element);
 	}
 
 	public AtlLabelProvider() {
@@ -52,6 +65,7 @@ public class AtlLabelProvider extends LabelProvider {
 		readers.put(AtlEMFConstants.clRule, new Reader() {
 			private EStructuralFeature name = AtlEMFConstants.clRule.getEStructuralFeature("name"); //$NON-NLS-1$
 
+			@Override
 			public String getText(EObject rule) {
 				return (String)rule.eGet(name);
 			}
@@ -64,6 +78,7 @@ public class AtlLabelProvider extends LabelProvider {
 			private EStructuralFeature sfFeature = AtlEMFConstants.clOclFeatureDefinition
 					.getEStructuralFeature("feature"); //$NON-NLS-1$
 
+			@Override
 			public String getText(EObject helper) {
 				EObject featureDef = (EObject)helper.eGet(AtlEMFConstants.sfHelperDefinition);
 				if (featureDef != null) {
@@ -80,6 +95,7 @@ public class AtlLabelProvider extends LabelProvider {
 		readers.put(AtlEMFConstants.clLibraryRef, new Reader() {
 			private EStructuralFeature sfName = AtlEMFConstants.clLibraryRef.getEStructuralFeature("name"); //$NON-NLS-1$
 
+			@Override
 			public String getText(EObject libraryRef) {
 				return (String)libraryRef.eGet(sfName);
 			}
@@ -88,6 +104,7 @@ public class AtlLabelProvider extends LabelProvider {
 		readers.put(AtlEMFConstants.clOclModel, new Reader() {
 			private EStructuralFeature sfName = AtlEMFConstants.clOclModel.getEStructuralFeature("name"); //$NON-NLS-1$
 
+			@Override
 			public String getText(EObject oclModel) {
 				return (String)oclModel.eGet(sfName);
 			}
@@ -97,6 +114,7 @@ public class AtlLabelProvider extends LabelProvider {
 			private EStructuralFeature sfVarName = AtlEMFConstants.clVariableDeclaration
 					.getEStructuralFeature("varName"); //$NON-NLS-1$
 
+			@Override
 			public String getText(EObject variableDeclaration) {
 				return (String)variableDeclaration.eGet(sfVarName);
 			}
@@ -105,6 +123,7 @@ public class AtlLabelProvider extends LabelProvider {
 		readers.put(AtlEMFConstants.clUnit, new Reader() {
 			private EStructuralFeature sfName = AtlEMFConstants.clUnit.getEStructuralFeature("name"); //$NON-NLS-1$
 
+			@Override
 			public String getText(EObject unit) {
 				return (String)unit.eGet(sfName);
 			}
@@ -114,6 +133,7 @@ public class AtlLabelProvider extends LabelProvider {
 		readers.put(AtlEMFConstants.clQuery, readers.get(AtlEMFConstants.clUnit));
 
 		readers.put(AtlEMFConstants.clVariableDeclaration, new Reader() {
+			@Override
 			public String getText(EObject rule) {
 				return (String)rule.eGet(AtlEMFConstants.sfVarName);
 			}
@@ -216,14 +236,14 @@ public class AtlLabelProvider extends LabelProvider {
 	}
 
 	/**
-	 * returns the images descriptor for an element of the ATL AST
+	 * Returns the images descriptor for an element of the ATL AST.
 	 * 
 	 * @param className
 	 *            the class name for which to find the image descriptor
 	 * @return the images descriptor for an element of the ATL AST
 	 */
 	private ImageDescriptor getImage(String className) {
-		String iconName = (String)classToImages.get(className);
+		String iconName = classToImages.get(className);
 		if (iconName != null) {
 			return AtlUIPlugin.getImageDescriptor(iconName);
 		}
@@ -232,8 +252,11 @@ public class AtlLabelProvider extends LabelProvider {
 	}
 
 	/**
-	 * @see ILabelProvider#getImage(Object)
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
 	 */
+	@Override
 	public Image getImage(Object element) {
 		Image ret = null;
 
@@ -244,7 +267,7 @@ public class AtlLabelProvider extends LabelProvider {
 			}
 			String className = ((EObject)element).eClass().getName();
 			ImageDescriptor descriptor = getImage(className);
-			ret = (Image)imageCache.get(descriptor);
+			ret = imageCache.get(descriptor);
 			if (ret == null) {
 				ret = descriptor.createImage();
 				imageCache.put(descriptor, ret);
@@ -255,7 +278,7 @@ public class AtlLabelProvider extends LabelProvider {
 
 	private Reader getReader(EObject eo) {
 		Reader ret = null;
-		ret = (Reader)readers.get(eo.eClass());
+		ret = readers.get(eo.eClass());
 		if (ret == null) {
 			ret = defaultReader;
 		}
@@ -267,6 +290,7 @@ public class AtlLabelProvider extends LabelProvider {
 	 * 
 	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
 	 */
+	@Override
 	public String getText(Object element) {
 		String ret = "default"; //$NON-NLS-1$
 		if (!(element instanceof Root)) {
@@ -279,11 +303,14 @@ public class AtlLabelProvider extends LabelProvider {
 	}
 
 	/**
-	 * @see org.eclipse.jface.viewers.LabelProvider#dispose()
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.BaseLabelProvider#dispose()
 	 */
+	@Override
 	public void dispose() {
-		for (Iterator images = imageCache.values().iterator(); images.hasNext();)
-			((Image)images.next()).dispose();
+		for (Iterator<Image> images = imageCache.values().iterator(); images.hasNext();)
+			images.next().dispose();
 		imageCache.clear();
 	}
 

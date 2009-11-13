@@ -48,7 +48,7 @@ public class AtlContentProvider implements ITreeContentProvider {
 
 		if (parentElement instanceof EObject) {
 			EObject pe = (EObject)parentElement;
-			EList children = pe.eContents();
+			EList<EObject> children = pe.eContents();
 			return children.toArray();
 		}
 

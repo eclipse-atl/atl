@@ -12,18 +12,18 @@ package org.eclipse.m2m.atl.adt.ui.text.atl;
 
 import java.util.Comparator;
 
-public class AtlCompletionProposalComparator implements Comparator {
+public class AtlCompletionProposalComparator implements Comparator<AtlCompletionProposal> {
 
 	private boolean orderAlphabetically = false;
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
-	public int compare(Object o1, Object o2) {
-		AtlCompletionProposal p1 = (AtlCompletionProposal)o1;
-		AtlCompletionProposal p2 = (AtlCompletionProposal)o2;
+	public int compare(AtlCompletionProposal o1, AtlCompletionProposal o2) {
+		AtlCompletionProposal p1 = o1;
+		AtlCompletionProposal p2 = o2;
 
 		if (!orderAlphabetically) {
 			int relevanceDif = p2.getRelevance() - p1.getRelevance();

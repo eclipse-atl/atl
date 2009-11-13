@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.adt.ui.preferences;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -51,7 +52,7 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 	 * gridData.horizontalIndent = 20; control.setLayoutData(gridData); }
 	 */
 
-	private HashMap checkBoxes = new HashMap();
+	private Map<Button, String> checkBoxes = new HashMap<Button, String>();
 
 	private SelectionListener checkBoxFieldListener = new SelectionListener() {
 		public void widgetDefaultSelected(SelectionEvent e) {
@@ -59,7 +60,7 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 
 		public void widgetSelected(SelectionEvent e) {
 			Button button = (Button)e.widget;
-			fPreferenceeStore.setValue((String)checkBoxes.get(button), button.getSelection());
+			fPreferenceeStore.setValue(checkBoxes.get(button), button.getSelection());
 		}
 	};
 
@@ -76,20 +77,20 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 	 * 
 	 * @see #createDependency(Button, String, Control)
 	 */
-	private ArrayList fMasterSlaveListeners = new ArrayList();
+	private java.util.List<SelectionListener> fMasterSlaveListeners = new ArrayList<SelectionListener>();
 
 	protected AtlPreferenceStore fPreferenceeStore;
 
 	private ModifyListener fTextFieldListener = new ModifyListener() {
 		public void modifyText(ModifyEvent e) {
 			Text text = (Text)e.widget;
-			fPreferenceeStore.setValue((String)textFields.get(text), text.getText());
+			fPreferenceeStore.setValue(textFields.get(text), text.getText());
 		}
 	};
 
 	protected String[][] textFieldModel;
 
-	private HashMap textFields = new HashMap();
+	private Map<Text, String> textFields = new HashMap<Text, String>();
 
 	/**
 	 * Creates a new preference page with a title using the <code>PreferencePage</code> constructor. Above
@@ -120,7 +121,7 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.dialogs.DialogPage#dispose()
 	 */
 	@Override
@@ -135,7 +136,7 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.preference.PreferencePage#doGetPreferenceStore()
 	 */
 	@Override
@@ -145,7 +146,7 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.preference.PreferencePage#getPreferenceStore()
 	 */
 	@Override
@@ -164,7 +165,7 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	public void init(IWorkbench workbench) {
@@ -192,9 +193,9 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 		}
 
 		// Update slaves
-		Iterator iter = fMasterSlaveListeners.iterator();
+		Iterator<SelectionListener> iter = fMasterSlaveListeners.iterator();
 		while (iter.hasNext()) {
-			SelectionListener listener = (SelectionListener)iter.next();
+			SelectionListener listener = iter.next();
 			listener.widgetSelected(null);
 		}
 	}
@@ -203,25 +204,23 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 	 * Initializes the preference page widgets with the default values.
 	 */
 	protected void initializeFieldsToDefaultValues() {
-		Iterator i;
-
 		if (checkBoxes != null) {
-			i = checkBoxes.keySet().iterator();
+			Iterator<Button> i = checkBoxes.keySet().iterator();
 			while (i.hasNext()) {
-				Button b = (Button)i.next();
-				String key = (String)checkBoxes.get(b);
+				Button b = i.next();
+				String key = checkBoxes.get(b);
 				b.setSelection(fPreferenceeStore.getDefaultBoolean(key));
-				fPreferenceeStore.setValue((String)checkBoxes.get(b), b.getSelection());
+				fPreferenceeStore.setValue(checkBoxes.get(b), b.getSelection());
 			}
 		}
 
 		if (textFields != null) {
-			i = textFields.keySet().iterator();
+			Iterator<Text> i = textFields.keySet().iterator();
 			while (i.hasNext()) {
-				Text t = (Text)i.next();
-				String key = (String)textFields.get(t);
+				Text t = i.next();
+				String key = textFields.get(t);
 				t.setText(fPreferenceeStore.getDefaultString(key));
-				fPreferenceeStore.setValue((String)textFields.get(t), t.getText());
+				fPreferenceeStore.setValue(textFields.get(t), t.getText());
 			}
 		}
 	}
@@ -230,22 +229,20 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 	 * Initializes the preference page widgets with the user values.
 	 */
 	protected void initializeFieldsToUserValues() {
-		Iterator i;
-
 		if (checkBoxes != null) {
-			i = checkBoxes.keySet().iterator();
+			Iterator<Button> i = checkBoxes.keySet().iterator();
 			while (i.hasNext()) {
-				Button b = (Button)i.next();
-				String key = (String)checkBoxes.get(b);
+				Button b = i.next();
+				String key = checkBoxes.get(b);
 				b.setSelection(fPreferenceeStore.getBoolean(key));
 			}
 		}
 
 		if (textFields != null) {
-			i = textFields.keySet().iterator();
+			Iterator<Text> i = textFields.keySet().iterator();
 			while (i.hasNext()) {
-				Text t = (Text)i.next();
-				String key = (String)textFields.get(t);
+				Text t = i.next();
+				String key = textFields.get(t);
 				t.setText(fPreferenceeStore.getString(key));
 			}
 		}
@@ -580,7 +577,7 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
 	 */
 	@Override
@@ -600,9 +597,10 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.preference.PreferencePage#performOk()
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean performOk() {
 		fPreferenceeStore.propagate();

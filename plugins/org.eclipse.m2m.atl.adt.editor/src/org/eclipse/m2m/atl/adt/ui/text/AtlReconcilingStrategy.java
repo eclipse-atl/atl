@@ -45,15 +45,15 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 	/**
 	 * This will hold the list of all annotations that have been added since the last reconciling.
 	 */
-	protected final Map addedAnnotations = new HashMap();
+	protected final Map<Annotation, Position> addedAnnotations = new HashMap<Annotation, Position>();
 
 	/** Current known positions of foldable block. */
-	protected final Map currentAnnotations = new HashMap();
+	protected final Map<Annotation, Position> currentAnnotations = new HashMap<Annotation, Position>();
 
 	/**
 	 * This will hold the list of all annotations that have been removed since the last reconciling.
 	 */
-	protected final List deletedAnnotations = new ArrayList();
+	protected final List<Annotation> deletedAnnotations = new ArrayList<Annotation>();
 
 	/** Editor this provides folding support to. */
 	protected final AtlEditor editor;
@@ -61,7 +61,7 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 	/**
 	 * This will hold the list of all annotations that have been modified since the last reconciling.
 	 */
-	protected final Map modifiedAnnotations = new HashMap();
+	protected final Map<Annotation, Position> modifiedAnnotations = new HashMap<Annotation, Position>();
 
 	/** The document we'll seek foldable blocks in. */
 	private IDocument document;
@@ -140,9 +140,9 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 		modifiedAnnotations.clear();
 		addedAnnotations.clear();
 		deletedAnnotations.addAll(currentAnnotations.keySet());
-		for (Iterator iterator = currentAnnotations.entrySet().iterator(); iterator.hasNext();) {
-			Entry entry = (Entry)iterator.next();
-			final Position position = (Position)entry.getValue();
+		for (Iterator<Entry<Annotation, Position>> iterator = currentAnnotations.entrySet().iterator(); iterator.hasNext();) {
+			Entry<Annotation, Position> entry = iterator.next();
+			final Position position = entry.getValue();
 			if (position.getOffset() + position.getLength() < offset) {
 				deletedAnnotations.remove(entry.getKey());
 			}
@@ -193,7 +193,7 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 		} catch (IOException e) {
 			// Nothing to do
 		}
-		for (Iterator iterator = deletedAnnotations.iterator(); iterator.hasNext();) {
+		for (Iterator<Annotation> iterator = deletedAnnotations.iterator(); iterator.hasNext();) {
 			currentAnnotations.remove(iterator.next());
 		}
 	}
@@ -245,13 +245,13 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 	private void createOrUpdateAnnotation(int newOffset, int newLength, boolean initiallyCollapsed)
 			throws BadLocationException {
 		boolean createAnnotation = true;
-		final Map copy = new HashMap(currentAnnotations);
+		final Map<Annotation, Position> copy = new HashMap<Annotation, Position>(currentAnnotations);
 		final String text = document.get(newOffset, newLength);
-		for (Iterator iterator = copy.entrySet().iterator(); iterator.hasNext();) {
-			Entry entry = (Entry)iterator.next();
-			if (((Annotation)entry.getKey()).getText().equals(text)) {
+		for (Iterator<Entry<Annotation, Position>> iterator = copy.entrySet().iterator(); iterator.hasNext();) {
+			Entry<Annotation, Position> entry = iterator.next();
+			if (entry.getKey().getText().equals(text)) {
 				createAnnotation = false;
-				final Position oldPosition = (Position)entry.getValue();
+				final Position oldPosition = entry.getValue();
 				if (oldPosition.getOffset() != newOffset || oldPosition.getLength() != newLength) {
 					final Position newPosition = new Position(newOffset, newLength);
 					modifiedAnnotations.put(entry.getKey(), newPosition);

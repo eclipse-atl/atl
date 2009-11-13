@@ -14,10 +14,13 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 public class HideRuleFilter extends ViewerFilter {
+
 	/**
-	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-	 *      java.lang.Object)
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
 	 */
+	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		/*
 		 * return (parentElement instanceof Root || (AtlEMFConstants.clModule.isInstance(parentElement) &&

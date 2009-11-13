@@ -19,6 +19,12 @@ public class RenameAction extends AtlAction {
 		super(is);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.adt.ui.outline.AtlAction#run()
+	 */
+	@Override
 	public void run() {
 		rf = new RenameFrame(this);
 	}

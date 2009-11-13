@@ -139,7 +139,7 @@ public class AtlEditor extends TextEditor {
 	private class BracketInserter implements VerifyKeyListener, ILinkedModeListener {
 		private final String category = toString();
 
-		private Stack fBracketLevelStack = new Stack();
+		private Stack<BracketLevel> fBracketLevelStack = new Stack<BracketLevel>();
 
 		private boolean fCloseBrackets = true;
 
@@ -191,14 +191,14 @@ public class AtlEditor extends TextEditor {
 			}
 		}
 
-		/*
-		 * @see
-		 * org.eclipse.jface.text.link.ILinkedModeListener#left(org.eclipse.jface.text.link.LinkedModeModel,
-		 * int)
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.jface.text.link.ILinkedModeListener#left(org.eclipse.jface.text.link.LinkedModeModel, int)
 		 */
 		public void left(LinkedModeModel environment, int flags) {
 
-			final BracketLevel level = (BracketLevel)fBracketLevelStack.pop();
+			final BracketLevel level = fBracketLevelStack.pop();
 
 			if (flags != ILinkedModeListener.EXTERNAL_MODIFICATION) {
 				return;
@@ -236,10 +236,10 @@ public class AtlEditor extends TextEditor {
 
 		}
 
-		/*
-		 * @see
-		 * org.eclipse.jface.text.link.ILinkedModeListener#resume(org.eclipse.jface.text.link.LinkedModeModel,
-		 * int)
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.jface.text.link.ILinkedModeListener#resume(org.eclipse.jface.text.link.LinkedModeModel, int)
 		 */
 		public void resume(LinkedModeModel environment, int flags) {
 		}
@@ -510,26 +510,26 @@ public class AtlEditor extends TextEditor {
 
 		final int fSize;
 
-		final Stack fStack;
+		final Stack<BracketLevel> fStack;
 
-		public ExitPolicy(char exitCharacter, char escapeCharacter, Stack stack) {
+		public ExitPolicy(char exitCharacter, char escapeCharacter, Stack<BracketLevel> stack) {
 			fExitCharacter = exitCharacter;
 			fEscapeCharacter = escapeCharacter;
 			fStack = stack;
 			fSize = fStack.size();
 		}
 
-		/*
-		 * @see
-		 * org.eclipse.jdt.internal.ui.text.link.LinkedPositionUI.ExitPolicy#doExit(org.eclipse.jdt.internal
-		 * .ui.text.link.LinkedPositionManager, org.eclipse.swt.events.VerifyEvent, int, int)
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.jface.text.link.LinkedModeUI.IExitPolicy#doExit(org.eclipse.jface.text.link.LinkedModeModel, org.eclipse.swt.events.VerifyEvent, int, int)
 		 */
 		public ExitFlags doExit(LinkedModeModel model, VerifyEvent event, int offset, int length) {
 
 			if (event.character == fExitCharacter) {
 
 				if (fSize == fStack.size() && !isMasked(offset)) {
-					BracketLevel level = (BracketLevel)fStack.peek();
+					BracketLevel level = fStack.peek();
 					if (level.fFirstPosition.offset > offset || level.fSecondPosition.offset < offset) {
 						return null;
 					}
@@ -905,14 +905,14 @@ public class AtlEditor extends TextEditor {
 	 * @param modifiedAnnotations
 	 *            These annotations have seen their positions updated.
 	 */
-	public void updateFoldingStructure(Map addedAnnotations, List deletedAnnotations, Map modifiedAnnotations) {
+	public void updateFoldingStructure(Map<Annotation, Position> addedAnnotations, List<Annotation> deletedAnnotations, Map<Annotation, Position> modifiedAnnotations) {
 		Annotation[] deleted = new Annotation[deletedAnnotations.size() + modifiedAnnotations.size()];
 		for (int i = 0; i < deletedAnnotations.size(); i++) {
-			deleted[i] = (Annotation)deletedAnnotations.get(i);
+			deleted[i] = deletedAnnotations.get(i);
 		}
-		final Iterator modifiedIterator = modifiedAnnotations.keySet().iterator();
+		final Iterator<Annotation> modifiedIterator = modifiedAnnotations.keySet().iterator();
 		for (int i = deletedAnnotations.size(); i < deleted.length; i++) {
-			deleted[i] = (Annotation)modifiedIterator.next();
+			deleted[i] = modifiedIterator.next();
 		}
 		addedAnnotations.putAll(modifiedAnnotations);
 		if (annotationModel != null) {
@@ -1004,6 +1004,7 @@ public class AtlEditor extends TextEditor {
 	 *
 	 * @see org.eclipse.ui.editors.text.TextEditor#getAdapter(java.lang.Class)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(Class required) {
 
@@ -1469,9 +1470,9 @@ public class AtlEditor extends TextEditor {
 	public EObject getDebugElement(int lineNumber) {
 		EObject res = null;
 		if (sourceManager.getModel() != null) {
-			TreeIterator ti = sourceManager.getModel().eAllContents();
+			TreeIterator<EObject> ti = sourceManager.getModel().eAllContents();
 			while (ti.hasNext()) {
-				EObject object = (EObject)ti.next();
+				EObject object = ti.next();
 				String location = (String)object.eGet(AtlEMFConstants.sfLocation);
 				int elementLineNumber = Integer.parseInt(location.split("-")[0].split(":")[0]); //$NON-NLS-1$ //$NON-NLS-2$
 				if (elementLineNumber == lineNumber + 1) {

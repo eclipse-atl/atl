@@ -349,6 +349,7 @@ public class IndentAction extends TextEditorAction {
 	 * 
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
+	@Override
 	public void run() {
 		// update has been called by the framework
 		if (!isEnabled() || !validateEditorInputState()) {
@@ -468,6 +469,7 @@ public class IndentAction extends TextEditorAction {
 	 * 
 	 * @see org.eclipse.ui.texteditor.TextEditorAction#update()
 	 */
+	@Override
 	public void update() {
 		super.update();
 

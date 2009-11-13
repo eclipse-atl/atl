@@ -15,7 +15,6 @@ import java.util.Vector;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
@@ -158,7 +157,7 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 	 */
 	@Override
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer, String contentType) {
-		Vector vector = new Vector();
+		Vector<String> vector = new Vector<String>();
 
 		// prefix[0] is either '\t' or ' ' x tabWidth, depending on useSpaces
 
@@ -186,7 +185,7 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 		}
 
 		vector.add(""); //$NON-NLS-1$
-		return (String[])vector.toArray(new String[vector.size()]);
+		return vector.toArray(new String[vector.size()]);
 	}
 
 	/**
