@@ -742,22 +742,23 @@ public class AtlEditor extends TextEditor {
 		sourceManager = new AtlSourceManager();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.eclipse.ui.texteditor.AbstractTextEditor#affectsTextPresentation(org.eclipse.jface.util.
-	 * PropertyChangeEvent)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#affectsTextPresentation(org.eclipse.jface.util.PropertyChangeEvent)
 	 */
+	@Override
 	protected boolean affectsTextPresentation(PropertyChangeEvent event) {
 		return ((AtlSourceViewerConfiguration)getSourceViewerConfiguration()).affectsTextPresentation(event)
 				|| super.affectsTextPresentation(event);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#configureSourceViewerDecorationSupport(org.eclipse
-	 * .ui.texteditor.SourceViewerDecorationSupport)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#configureSourceViewerDecorationSupport(org.eclipse.ui.texteditor.SourceViewerDecorationSupport)
 	 */
+	@Override
 	protected void configureSourceViewerDecorationSupport(SourceViewerDecorationSupport support) {
 		support.setCharacterPairMatcher(bracketMatcher);
 		support.setMatchingCharacterPainterPreferenceKeys(
@@ -776,10 +777,12 @@ public class AtlEditor extends TextEditor {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#createActions()
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.editors.text.TextEditor#createActions()
 	 */
+	@Override
 	protected void createActions() {
 		super.createActions();
 		Action action;
@@ -857,6 +860,7 @@ public class AtlEditor extends TextEditor {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.texteditor.ExtendedTextEditor#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		editorSelectionChangedListener = new EditorSelectionChangedListener();
@@ -926,10 +930,12 @@ public class AtlEditor extends TextEditor {
 		return page;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.texteditor.ExtendedTextEditor#dispose()
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.editors.text.TextEditor#dispose()
 	 */
+	@Override
 	public void dispose() {
 		super.dispose();
 
@@ -941,10 +947,12 @@ public class AtlEditor extends TextEditor {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#doSave(org.eclipse.core.runtime.IProgressMonitor)
 	 */
+	@Override
 	public void doSave(IProgressMonitor progressMonitor) {
 		super.doSave(progressMonitor);
 		sourceManager.updateDataSource(getDocumentProviderContent());
@@ -970,10 +978,12 @@ public class AtlEditor extends TextEditor {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#doSetSelection(org.eclipse.jface.viewers.ISelection)
 	 */
+	@Override
 	protected void doSetSelection(ISelection selection) {
 		super.doSetSelection(selection);
 		synchronizeOutlinePageSelection();
@@ -989,6 +999,12 @@ public class AtlEditor extends TextEditor {
 		return part;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.editors.text.TextEditor#getAdapter(java.lang.Class)
+	 */
+	@Override
 	public Object getAdapter(Class required) {
 
 		if (IContentOutlinePage.class.equals(required)) {
@@ -1158,11 +1174,12 @@ public class AtlEditor extends TextEditor {
 		sourceViewer.revealRange(targetOffset, selection.getLength());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.eclipse.ui.texteditor.AbstractTextEditor#handlePreferenceStoreChanged(org.eclipse.jface.util.
-	 * PropertyChangeEvent)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.editors.text.TextEditor#handlePreferenceStoreChanged(org.eclipse.jface.util.PropertyChangeEvent)
 	 */
+	@Override
 	protected void handlePreferenceStoreChanged(PropertyChangeEvent event) {
 		try {
 			ISourceViewer sourceViewer = getSourceViewer();
@@ -1217,20 +1234,23 @@ public class AtlEditor extends TextEditor {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#init(org.eclipse.ui.IEditorSite,
-	 * org.eclipse.ui.IEditorInput)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
 	 */
+	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		super.init(site, input);
 		tickErrorUpdater.updateEditorImage(getUnderlyingResource());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.texteditor.ExtendedTextEditor#initializeEditor()
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.ui.editors.text.TextEditor#initializeEditor()
 	 */
+	@Override
 	protected void initializeEditor() {
 		super.initializeEditor();
 		setSourceViewerConfiguration(new AtlSourceViewerConfiguration(
@@ -1262,11 +1282,6 @@ public class AtlEditor extends TextEditor {
 		this.help = help;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.eclipse.ui.texteditor.AbstractTextEditor#setNewPreferenceStore(org.eclipse.jface.preference.
-	 * IPreferenceStore)
-	 */
 	protected void setNewPreferenceStore(IPreferenceStore store) {
 		super.setPreferenceStore(store);
 		if (getSourceViewerConfiguration() instanceof AtlSourceViewerConfiguration)
@@ -1302,6 +1317,7 @@ public class AtlEditor extends TextEditor {
 	 * @param msg
 	 *            message to be set
 	 */
+	@Override
 	protected void setStatusLineErrorMessage(String msg) {
 		IEditorStatusLine statusLine = (IEditorStatusLine)getAdapter(IEditorStatusLine.class);
 		if (statusLine != null)
@@ -1314,6 +1330,7 @@ public class AtlEditor extends TextEditor {
 	 * @param msg
 	 *            message to be set
 	 */
+	@Override
 	protected void setStatusLineMessage(String msg) {
 		IEditorStatusLine statusLine = (IEditorStatusLine)getAdapter(IEditorStatusLine.class);
 		if (statusLine != null)
@@ -1372,6 +1389,7 @@ public class AtlEditor extends TextEditor {
 	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createSourceViewer(org.eclipse.swt.widgets.Composite,
 	 *      org.eclipse.jface.text.source.IVerticalRuler, int)
 	 */
+	@Override
 	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
 		ISourceViewer viewer = new ProjectionViewer(parent, ruler, getOverviewRuler(),
 				isOverviewRulerVisible(), styles);
@@ -1469,6 +1487,7 @@ public class AtlEditor extends TextEditor {
 	 * 
 	 * @see org.eclipse.ui.editors.text.TextEditor#doSetInput(org.eclipse.ui.IEditorInput)
 	 */
+	@Override
 	protected void doSetInput(IEditorInput input) throws CoreException {
 		super.doSetInput(input);
 		configureToggleCommentAction();
