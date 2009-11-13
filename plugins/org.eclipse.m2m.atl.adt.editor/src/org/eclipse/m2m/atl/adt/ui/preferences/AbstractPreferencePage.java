@@ -47,12 +47,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public abstract class AbstractPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
 	/*
-	private static void indent(Control control) {
-		GridData gridData = new GridData();
-		gridData.horizontalIndent = 20;
-		control.setLayoutData(gridData);
-	}
-	*/
+	 * private static void indent(Control control) { GridData gridData = new GridData();
+	 * gridData.horizontalIndent = 20; control.setLayoutData(gridData); }
+	 */
 
 	private HashMap checkBoxes = new HashMap();
 
@@ -113,29 +110,20 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 	}
 
 	/*
-	private void createDependency(final Button master, String masterKey, final Control slave) {
-		indent(slave);
-		boolean masterState = fPreferenceeStore.getBoolean(masterKey);
-		slave.setEnabled(masterState);
-		SelectionListener listener = new SelectionListener() {
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-
-			public void widgetSelected(SelectionEvent e) {
-				slave.setEnabled(master.getSelection());
-			}
-		};
-		master.addSelectionListener(listener);
-		fMasterSlaveListeners.add(listener);
-	}
-	*/
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.dialogs.IDialogPage#dispose()
+	 * private void createDependency(final Button master, String masterKey, final Control slave) {
+	 * indent(slave); boolean masterState = fPreferenceeStore.getBoolean(masterKey);
+	 * slave.setEnabled(masterState); SelectionListener listener = new SelectionListener() { public void
+	 * widgetDefaultSelected(SelectionEvent e) { } public void widgetSelected(SelectionEvent e) {
+	 * slave.setEnabled(master.getSelection()); } }; master.addSelectionListener(listener);
+	 * fMasterSlaveListeners.add(listener); }
 	 */
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.jface.dialogs.DialogPage#dispose()
+	 */
+	@Override
 	public void dispose() {
 		if (fPreferenceeStore != null) {
 			fPreferenceeStore.stop();
@@ -145,20 +133,22 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 		super.dispose();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.PreferencePage#doGetPreferenceStore()
 	 */
+	@Override
 	protected IPreferenceStore doGetPreferenceStore() {
 		return AtlUIPlugin.getDefault().getPreferenceStore();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.PreferencePage#getPreferenceStore()
 	 */
+	@Override
 	public IPreferenceStore getPreferenceStore() {
 		return AtlUIPlugin.getDefault().getPreferenceStore();
 	}
@@ -172,9 +162,9 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 		colorSelector.setColorValue(PreferenceConverter.getColor(fPreferenceeStore, key));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	public void init(IWorkbench workbench) {
@@ -588,11 +578,12 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 		return res;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
 	 */
+	@Override
 	protected void performDefaults() {
 		super.performDefaults();
 		initializeFieldsToDefaultValues();
@@ -607,11 +598,12 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.preference.IPreferencePage#performOk()
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.jface.preference.PreferencePage#performOk()
 	 */
+	@Override
 	public boolean performOk() {
 		fPreferenceeStore.propagate();
 		AtlUIPlugin.getDefault().savePluginPreferences();
