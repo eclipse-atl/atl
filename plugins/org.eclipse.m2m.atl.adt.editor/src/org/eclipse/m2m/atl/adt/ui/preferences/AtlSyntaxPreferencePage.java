@@ -79,6 +79,7 @@ public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
 	 * 
 	 * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	protected Control createContents(Composite parent) {
 		Composite control = newComposite(parent, 1);
 		Group background = newGroup(control, AtlPreferencesMessages
@@ -183,6 +184,7 @@ public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
 	 * 
 	 * @see org.eclipse.m2m.atl.adt.ui.preferences.AbstractPreferencePage#handleColorListSelection()
 	 */
+	@Override
 	protected void handleColorListSelection() {
 		String key = colorListModel[colorList.getSelectionIndex()][1];
 		colorSelector.setColorValue(PreferenceConverter.getColor(fPreferenceeStore, key
