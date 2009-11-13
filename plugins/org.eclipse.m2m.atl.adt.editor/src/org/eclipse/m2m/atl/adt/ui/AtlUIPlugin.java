@@ -78,7 +78,8 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 	/**
 	 * Returns the string from the plugin's resource bundle, or 'key' if not found.
 	 * 
-	 * @param key the default value
+	 * @param key
+	 *            the default value
 	 * @return the string from the plugin's resource bundle, or 'key' if not found
 	 */
 	public static String getResourceString(String key) {
@@ -147,17 +148,13 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 		return atlTextTools;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeDefaultPreferences(org.eclipse.jface.preference.IPreferenceStore)
 	 */
+	@Override
 	protected void initializeDefaultPreferences(IPreferenceStore store) {
-		/*
-		 * super.initializeDefaultPreferences(fPreferenceeStore);
-		 * 
-		 * @deprecated
-		 */
 		MarkerAnnotationPreferences.initializeDefaultValues(store);
 		AtlPreferenceConstants.initializeDefaultValues(store);
 	}
@@ -172,9 +169,10 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		try {
 			if (atlTextTools != null) {
