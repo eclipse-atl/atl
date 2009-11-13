@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.outline;
 
-
 public class NullEventListener implements EventListener {
 
 	private static NullEventListener instance;

@@ -805,13 +805,13 @@ public class AtlEditor extends TextEditor {
 		}
 
 		installContentAssistAction();
-		
-		action= new ToggleCommentAction(AtlEditorMessages.getResourceBundle(), "ToggleComment.", this); //$NON-NLS-1$
+
+		action = new ToggleCommentAction(AtlEditorMessages.getResourceBundle(), "ToggleComment.", this); //$NON-NLS-1$
 		action.setActionDefinitionId("atlCommands.commentBlock"); //$NON-NLS-1$
 		setAction("ToggleComment", action); //$NON-NLS-1$
 		markAsStateDependentAction("ToggleComment", true); //$NON-NLS-1$
 		configureToggleCommentAction();
-		
+
 		action = new GotoMatchingBracketAction(this);
 		action.setActionDefinitionId("atlCommands.gotoMatchingBracket"); //$NON-NLS-1$
 		setAction("GoToMatchingBracket", action); //$NON-NLS-1$
@@ -822,14 +822,14 @@ public class AtlEditor extends TextEditor {
 	 * Configures the toggle comment action
 	 */
 	private void configureToggleCommentAction() {
-		IAction action= getAction("ToggleComment"); //$NON-NLS-1$
+		IAction action = getAction("ToggleComment"); //$NON-NLS-1$
 		if (action instanceof ToggleCommentAction) {
-			ISourceViewer sourceViewer= getSourceViewer();
-			SourceViewerConfiguration configuration= getSourceViewerConfiguration();
+			ISourceViewer sourceViewer = getSourceViewer();
+			SourceViewerConfiguration configuration = getSourceViewerConfiguration();
 			((ToggleCommentAction)action).configure(sourceViewer, configuration);
 		}
 	}
-	
+
 	/**
 	 * Installs an action so that the user can invoke the content assist feature by the well known combination
 	 * of key strokes.
@@ -1466,7 +1466,7 @@ public class AtlEditor extends TextEditor {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.editors.text.TextEditor#doSetInput(org.eclipse.ui.IEditorInput)
 	 */
 	protected void doSetInput(IEditorInput input) throws CoreException {

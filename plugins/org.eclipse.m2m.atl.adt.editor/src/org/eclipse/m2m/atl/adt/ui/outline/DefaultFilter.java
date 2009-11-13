@@ -16,10 +16,12 @@ import org.eclipse.jface.viewers.ViewerFilter;
 public class DefaultFilter extends ViewerFilter {
 
 	/**
-	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object,
+	 *      java.lang.Object)
 	 */
-	public boolean select(Viewer viewer, Object parentElement, Object element) {		
+	@Override
+	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		return true;
 	}
-	
+
 }

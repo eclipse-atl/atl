@@ -68,7 +68,7 @@ public abstract class AtlOutlinePage extends Page implements IContentOutlinePage
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.viewers.IPostSelectionProvider#addPostSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
 	 */
 	public void addPostSelectionChangedListener(ISelectionChangedListener listener) {

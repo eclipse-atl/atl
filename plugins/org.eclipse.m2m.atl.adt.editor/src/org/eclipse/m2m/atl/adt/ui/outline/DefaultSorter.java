@@ -15,7 +15,7 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.m2m.atl.common.AtlNbCharFile;
 
 public class DefaultSorter extends ViewerSorter {
-	
+
 	/**
 	 * Used to compute index of start character and end character from a location String the location String
 	 * is structured as follows : <line_start>:<column_start>-<lined_End>:<column_end>
@@ -27,6 +27,7 @@ public class DefaultSorter extends ViewerSorter {
 	 * 
 	 * @see org.eclipse.jface.viewers.ViewerComparator#category(java.lang.Object)
 	 */
+	@Override
 	public int category(Object element) {
 		if (element instanceof Root) {
 			return super.category(element);

@@ -20,9 +20,10 @@ public class AtlEditorActionContributor extends TextEditorActionContributor {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.editors.text.TextEditorActionContributor#setActiveEditor(org.eclipse.ui.IEditorPart)
 	 */
+	@Override
 	public void setActiveEditor(IEditorPart part) {
 		super.setActiveEditor(part);
 		ITextEditor textEditor = part instanceof ITextEditor ? (ITextEditor)part : null;
@@ -31,8 +32,10 @@ public class AtlEditorActionContributor extends TextEditorActionContributor {
 		IActionBars bars = getActionBars();
 		bars.setGlobalActionHandler(IAtlActionConstants.INDENT, getAction(textEditor,
 				"org.eclipse.m2m.atl.adt.ui.actions.indentAction")); //$NON-NLS-1$
-		bars.setGlobalActionHandler(IAtlActionConstants.TOGGLE_COMMENT, getAction(textEditor, "ToggleComment")); //$NON-NLS-1$
-		bars.setGlobalActionHandler(IAtlActionConstants.GOTO_MATCHING_BRACKET, getAction(textEditor, "GoToMatchingBracket")); //$NON-NLS-1$
+		bars.setGlobalActionHandler(IAtlActionConstants.TOGGLE_COMMENT,
+				getAction(textEditor, "ToggleComment")); //$NON-NLS-1$
+		bars.setGlobalActionHandler(IAtlActionConstants.GOTO_MATCHING_BRACKET, getAction(textEditor,
+				"GoToMatchingBracket")); //$NON-NLS-1$
 	}
 
 }
