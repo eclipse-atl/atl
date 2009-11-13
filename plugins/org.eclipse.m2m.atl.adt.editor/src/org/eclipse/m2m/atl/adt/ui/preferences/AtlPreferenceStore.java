@@ -94,18 +94,18 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		this.store = new PreferenceStore();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#addPropertyChangeListener(org.eclipse.jface.util.IPropertyChangeListener)
 	 */
 	public void addPropertyChangeListener(IPropertyChangeListener listener) {
 		store.addPropertyChangeListener(listener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#contains(java.lang.String)
 	 */
 	public boolean contains(String name) {
@@ -127,127 +127,126 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.preference.IPreferenceStore#firePropertyChangeEvent(java.lang.String,
-	 *      java.lang.Object, java.lang.Object)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.jface.preference.IPreferenceStore#firePropertyChangeEvent(java.lang.String, java.lang.Object, java.lang.Object)
 	 */
 	public void firePropertyChangeEvent(String name, Object oldValue, Object newValue) {
 		store.firePropertyChangeEvent(name, oldValue, newValue);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getBoolean(java.lang.String)
 	 */
 	public boolean getBoolean(String name) {
 		return store.getBoolean(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDefaultBoolean(java.lang.String)
 	 */
 	public boolean getDefaultBoolean(String name) {
 		return parent.getDefaultBoolean(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDefaultDouble(java.lang.String)
 	 */
 	public double getDefaultDouble(String name) {
 		return parent.getDefaultDouble(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDefaultFloat(java.lang.String)
 	 */
 	public float getDefaultFloat(String name) {
 		return parent.getDefaultFloat(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDefaultInt(java.lang.String)
 	 */
 	public int getDefaultInt(String name) {
 		return parent.getDefaultInt(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDefaultLong(java.lang.String)
 	 */
 	public long getDefaultLong(String name) {
 		return parent.getDefaultLong(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDefaultString(java.lang.String)
 	 */
 	public String getDefaultString(String name) {
 		return parent.getDefaultString(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDouble(java.lang.String)
 	 */
 	public double getDouble(String name) {
 		return store.getDouble(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getFloat(java.lang.String)
 	 */
 	public float getFloat(String name) {
 		return store.getFloat(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getInt(java.lang.String)
 	 */
 	public int getInt(String name) {
 		return store.getInt(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getLong(java.lang.String)
 	 */
 	public long getLong(String name) {
 		return store.getLong(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getString(java.lang.String)
 	 */
 	public String getString(String name) {
 		return store.getString(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#isDefault(java.lang.String)
 	 */
 	public boolean isDefault(String name) {
@@ -263,9 +262,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#needsSaving()
 	 */
 	public boolean needsSaving() {
@@ -281,9 +280,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#putValue(java.lang.String, java.lang.String)
 	 */
 	public void putValue(String name, String value) {
@@ -291,18 +290,18 @@ public class AtlPreferenceStore implements IPreferenceStore {
 			store.putValue(name, value);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#removePropertyChangeListener(org.eclipse.jface.util.IPropertyChangeListener)
 	 */
 	public void removePropertyChangeListener(IPropertyChangeListener listener) {
 		store.removePropertyChangeListener(listener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setDefault(java.lang.String, boolean)
 	 */
 	public void setDefault(String name, boolean value) {
@@ -311,9 +310,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		needsSaving = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setDefault(java.lang.String, double)
 	 */
 	public void setDefault(String name, double value) {
@@ -322,9 +321,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		needsSaving = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setDefault(java.lang.String, float)
 	 */
 	public void setDefault(String name, float value) {
@@ -333,9 +332,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		needsSaving = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setDefault(java.lang.String, int)
 	 */
 	public void setDefault(String name, int value) {
@@ -344,9 +343,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		needsSaving = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setDefault(java.lang.String, long)
 	 */
 	public void setDefault(String name, long value) {
@@ -355,9 +354,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		needsSaving = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setDefault(java.lang.String, java.lang.String)
 	 */
 	public void setDefault(String name, String value) {
@@ -393,9 +392,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setToDefault(java.lang.String)
 	 */
 	public void setToDefault(String name) {
@@ -403,9 +402,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		needsSaving = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setValue(java.lang.String, boolean)
 	 */
 	public void setValue(String name, boolean value) {
@@ -414,9 +413,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		needsSaving = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setValue(java.lang.String, double)
 	 */
 	public void setValue(String name, double value) {
@@ -425,9 +424,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		needsSaving = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setValue(java.lang.String, float)
 	 */
 	public void setValue(String name, float value) {
@@ -436,9 +435,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		needsSaving = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setValue(java.lang.String, int)
 	 */
 	public void setValue(String name, int value) {
@@ -447,9 +446,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		needsSaving = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setValue(java.lang.String, long)
 	 */
 	public void setValue(String name, long value) {
@@ -458,9 +457,9 @@ public class AtlPreferenceStore implements IPreferenceStore {
 		needsSaving = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setValue(java.lang.String, java.lang.String)
 	 */
 	public void setValue(String name, String value) {

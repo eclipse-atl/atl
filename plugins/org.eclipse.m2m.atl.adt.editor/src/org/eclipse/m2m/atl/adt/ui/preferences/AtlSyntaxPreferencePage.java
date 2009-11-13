@@ -198,6 +198,7 @@ public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
 	 * 
 	 * @see org.eclipse.m2m.atl.adt.ui.preferences.AbstractPreferencePage#initialize()
 	 */
+	@Override
 	protected void initialize() {
 		super.initialize();
 
@@ -210,16 +211,12 @@ public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
 		backgroundColorSelector.setEnabled(!defaultValue);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.adt.ui.preferences.AbstractPreferencePage#performDefaults()
 	 */
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
-	 */
+	@Override
 	protected void performDefaults() {
 		super.performDefaults();
 

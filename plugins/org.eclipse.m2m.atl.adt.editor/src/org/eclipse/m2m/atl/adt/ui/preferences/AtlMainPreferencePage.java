@@ -15,15 +15,18 @@ import org.eclipse.swt.widgets.Control;
 
 public class AtlMainPreferencePage extends AbstractPreferencePage {
 
-    public AtlMainPreferencePage() {
-        super(AtlPreferencesMessages.getString("MainPreferencePage.description")); //$NON-NLS-1$
-    }
+	public AtlMainPreferencePage() {
+		super(AtlPreferencesMessages.getString("MainPreferencePage.description")); //$NON-NLS-1$
+	}
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
-     */
-    protected Control createContents(Composite parent) {
-        return null;
-    }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
+	 */
+	@Override
+	protected Control createContents(Composite parent) {
+		return null;
+	}
 
 }
