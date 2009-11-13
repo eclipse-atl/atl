@@ -173,14 +173,13 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 					// Helper detected, looking for helper end: new rule, new helper or eof
 
 					eof = seekChars(new char[] {RULE_BLOCK_START.charAt(0), HELPER_BLOCK_START.charAt(0),});
-					while (!(eof
-							|| RULE_BLOCK_START.equals(document.get(offset, RULE_BLOCK_START.length())) || HELPER_BLOCK_START
+					while (!(eof || RULE_BLOCK_START.equals(document.get(offset, RULE_BLOCK_START.length())) || HELPER_BLOCK_START
 							.equals(document.get(offset, HELPER_BLOCK_START.length())))) {
 						offset++;
 						eof = seekChars(new char[] {RULE_BLOCK_START.charAt(0), HELPER_BLOCK_START.charAt(0),});
 					}
-					 eof = backwardSeekChars(new char[] {';',}, startOffset);
-					 eof = seekChars(new char[] {'\n',});
+					eof = backwardSeekChars(new char[] {';',}, startOffset);
+					eof = seekChars(new char[] {'\n',});
 					final int endOffset = offset + 1;
 					if (document.getNumberOfLines(startOffset, endOffset - startOffset) > 2) {
 						createOrUpdateAnnotation(startOffset, (endOffset) - startOffset, false);

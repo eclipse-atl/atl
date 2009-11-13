@@ -60,9 +60,9 @@ public class AtlPairMatcher implements ICharacterPairMatcher {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.text.source.ICharacterPairMatcher#clear()
 	 */
 	public void clear() {
@@ -74,9 +74,9 @@ public class AtlPairMatcher implements ICharacterPairMatcher {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.text.source.ICharacterPairMatcher#dispose()
 	 */
 	public void dispose() {
@@ -85,9 +85,9 @@ public class AtlPairMatcher implements ICharacterPairMatcher {
 		reader = null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.text.source.ICharacterPairMatcher#getAnchor()
 	 */
 	public int getAnchor() {
@@ -107,9 +107,9 @@ public class AtlPairMatcher implements ICharacterPairMatcher {
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.jface.text.source.ICharacterPairMatcher#match(org.eclipse.jface.text.IDocument, int)
 	 */
 	public IRegion match(IDocument iDocument, int i) {
