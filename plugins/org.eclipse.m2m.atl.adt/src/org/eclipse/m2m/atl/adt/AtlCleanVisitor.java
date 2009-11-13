@@ -45,8 +45,7 @@ public class AtlCleanVisitor implements IResourceVisitor {
 	 * 
 	 * @param resource
 	 *            the resource for which to test whether it has an associated asm file
-	 * @return <code>true</code> if the given resource has an associated asm file <code>false</code>
-	 *         otherwise
+	 * @return <code>true</code> if the given resource has an associated asm file <code>false</code> otherwise
 	 */
 	private boolean hasAsmFile(IResource resource) {
 		return getAsmFile(resource).exists();
@@ -58,8 +57,7 @@ public class AtlCleanVisitor implements IResourceVisitor {
 	 * 
 	 * @param resource
 	 *            the resource for which to test whether it has an associated asm file
-	 * @return <code>true</code> if the given resource has an associated asm file <code>false</code>
-	 *         otherwise
+	 * @return <code>true</code> if the given resource has an associated asm file <code>false</code> otherwise
 	 */
 	private IFile getAsmFile(IResource resource) {
 		String atlFileName = resource.getName();
@@ -79,8 +77,8 @@ public class AtlCleanVisitor implements IResourceVisitor {
 				(resource instanceof IFile))
 				&& ((IFile)resource).getLocation().toFile().length() > 0 && hasAsmFile(resource)) {
 
-			monitor.subTask(Messages.getString(
-					"AtlCleanVisitor.CLEANTASK", new Object[] {resource.getName()})); //$NON-NLS-1$
+			monitor.subTask(Messages
+					.getString("AtlCleanVisitor.CLEANTASK", new Object[] {resource.getName()})); //$NON-NLS-1$
 			IFile asmFile = getAsmFile(resource);
 			try {
 				asmFile.delete(true, monitor);

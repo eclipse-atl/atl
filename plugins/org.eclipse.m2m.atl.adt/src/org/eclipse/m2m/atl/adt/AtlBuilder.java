@@ -30,15 +30,16 @@ import org.eclipse.m2m.atl.common.ATLLogger;
  */
 public class AtlBuilder extends IncrementalProjectBuilder {
 
-	/** The Atl builder id. This attribute is related to the 
-	 *	WARNING: changing this attribute 
+	/**
+	 * The Atl builder id.
 	 */
 	public static final String ATL_BUILDER_ID = "org.eclipse.m2m.atl.adt.builder.atlBuilder"; //$NON-NLS-1$
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.core.resources.IncrementalProjectBuilder#build(int, java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
+	 * 
+	 * @see org.eclipse.core.resources.IncrementalProjectBuilder#build(int, java.util.Map,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
@@ -55,13 +56,15 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 	/**
 	 * Process a full build.
 	 * 
-	 * @param monitor the progress monitor
+	 * @param monitor
+	 *            the progress monitor
 	 */
 	protected void fullBuild(IProgressMonitor monitor) {
 		try {
 			IProject p = getProject();
-			monitor.beginTask(Messages.getString(
-					"AtlBuilder.COMPILETASK", new Object[] {p.getName()}), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+			monitor
+					.beginTask(
+							Messages.getString("AtlBuilder.COMPILETASK", new Object[] {p.getName()}), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 			p.accept(new AtlBuildVisitor(monitor));
 		} catch (CoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -70,7 +73,7 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.core.resources.IncrementalProjectBuilder#clean(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
@@ -80,8 +83,9 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 			public void run(IProgressMonitor monitor) throws CoreException {
 				try {
 					IProject p = getProject();
-					monitor.beginTask(Messages.getString(
-							"AtlBuilder.CLEANTASK", new Object[] {p.getName()}), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+					monitor
+							.beginTask(
+									Messages.getString("AtlBuilder.CLEANTASK", new Object[] {p.getName()}), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 					p.accept(new AtlCleanVisitor(monitor));
 				} catch (CoreException e) {
 					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
