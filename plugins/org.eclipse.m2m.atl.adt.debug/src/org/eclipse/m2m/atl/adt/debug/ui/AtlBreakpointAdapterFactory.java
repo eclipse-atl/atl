@@ -27,6 +27,7 @@ public class AtlBreakpointAdapterFactory implements IAdapterFactory {
 	 * 
 	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object, java.lang.Class)
 	 */
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		Object adapter = null;
 		if (adaptableObject instanceof ITextEditor) {
@@ -46,6 +47,7 @@ public class AtlBreakpointAdapterFactory implements IAdapterFactory {
 	 * 
 	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
 	 */
+	@SuppressWarnings("unchecked")
 	public Class[] getAdapterList() {
 		return new Class[] {IToggleBreakpointsTarget.class};
 	}

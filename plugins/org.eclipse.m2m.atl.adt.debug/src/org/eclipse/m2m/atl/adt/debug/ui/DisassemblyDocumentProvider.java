@@ -24,7 +24,7 @@ import org.eclipse.ui.editors.text.TextFileDocumentProvider;
  */
 public class DisassemblyDocumentProvider extends TextFileDocumentProvider {
 
-	private Map ams = new HashMap();
+	private Map<Object, IAnnotationModel> ams = new HashMap<Object, IAnnotationModel>();
 
 	/**
 	 * {@inheritDoc} TODO: this is not a correct implementation. We keep references to every element, which
@@ -32,8 +32,9 @@ public class DisassemblyDocumentProvider extends TextFileDocumentProvider {
 	 * 
 	 * @see org.eclipse.ui.editors.text.TextFileDocumentProvider#getAnnotationModel(java.lang.Object)
 	 */
+	@Override
 	public IAnnotationModel getAnnotationModel(Object element) {
-		IAnnotationModel ret = (IAnnotationModel)ams.get(element);
+		IAnnotationModel ret = ams.get(element);
 
 		if (ret == null) {
 			ret = new AnnotationModel();

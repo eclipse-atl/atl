@@ -58,9 +58,9 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 
 	static final String ICON_PATH = "icons/"; //$NON-NLS-1$
 
-	private Map mapImage;
+	private Map<Integer, Image> mapImage;
 
-	private HashMap fAttributes = new HashMap(3);
+	private Map<String, Object> fAttributes = new HashMap<String, Object>(3);
 
 	/**
 	 * If the button DISPLAY VARIABLE TYPE NAMES in debugUI is pressed then the status of the variable
@@ -102,7 +102,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	}
 
 	private void initMapImage() {
-		mapImage = new HashMap();
+		mapImage = new HashMap<Integer, Image>();
 		mapImage.put(new Integer(AtlVariable.ATTRIBUTE), null);
 		mapImage.put(new Integer(AtlVariable.ELEMENT), null);
 		mapImage.put(new Integer(AtlVariable.LOCALVARIABLE), null);
@@ -116,6 +116,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	 * 
 	 * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
 	 */
+	@Override
 	public Image getImage(Object item) {
 		if (mapImage == null) {
 			initMapImage();
@@ -146,17 +147,17 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 			if (mapImage.get(new Integer(atlVar.getDescription())) == null) {
 				mapImage.put(new Integer(atlVar.getDescription()), createImage(ICON_PATH + imageName));
 			}
-			return (Image)mapImage.get(new Integer(atlVar.getDescription()));
+			return mapImage.get(new Integer(atlVar.getDescription()));
 		} else if (item instanceof AtlBreakpoint) {
 			if (mapImage.get(new Integer(BREAKPOINT)) == null) {
 				mapImage.put(new Integer(BREAKPOINT), createImage(ICON_PATH + "breakpoint.gif")); //$NON-NLS-1$
 			}
-			return (Image)mapImage.get(new Integer(BREAKPOINT));
+			return mapImage.get(new Integer(BREAKPOINT));
 		} else if (item instanceof IMarker) {
 			if (mapImage.get(new Integer(BREAKPOINT)) == null) {
 				mapImage.put(new Integer(BREAKPOINT), createImage(ICON_PATH + "breakpoint.gif")); //$NON-NLS-1$
 			}
-			return (Image)mapImage.get(new Integer(BREAKPOINT));
+			return mapImage.get(new Integer(BREAKPOINT));
 		}
 		return null;
 	}
@@ -166,6 +167,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 	 * 
 	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
 	 */
+	@Override
 	public String getText(Object item) {
 		if (item instanceof AtlDebugTarget) {
 			AtlDebugTarget target = (AtlDebugTarget)item;
