@@ -30,7 +30,8 @@ import java.util.Map.Entry;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;<%if (!pluginContent.getPackageClassNames().isEmpty()) {%>
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;<%if (!pluginContent.getPackageClassNames().isEmpty()) {%>
 import org.eclipse.emf.ecore.EPackage;<%}%><%if (!content.getAllModelsNames().isEmpty()) {%>
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;<%}%>
@@ -45,7 +46,6 @@ import org.eclipse.m2m.atl.core.emf.EMFExtractor;<%}%>
 import org.eclipse.m2m.atl.core.emf.EMFInjector;
 import org.eclipse.m2m.atl.core.emf.EMFModelFactory;<%}%>
 import org.eclipse.m2m.atl.core.launch.ILauncher;
-import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher;
 
 /**
@@ -258,7 +258,7 @@ public class <%=content.getClassShortName()%> {
 	 */
 	protected static URL getFileURL(String fileName) throws IOException {
 		final URL fileURL;
-		if (CoreService.isEclipseRunning()) {
+		if (isEclipseRunning()) {
 			URL resourceURL = <%=content.getClassShortName()%>.class.getResource(fileName);
 			if (resourceURL != null) {
 				fileURL = FileLocator.toFileURL(resourceURL);
@@ -275,4 +275,19 @@ public class <%=content.getClassShortName()%> {
 		}
 	}
 
+	/**
+	 * Tests if eclipse is running.
+	 * 
+	 * @return <code>true</code> if eclipse is running
+	 *
+	 * @generated
+	 */
+	public static boolean isEclipseRunning() {
+		try {
+			return Platform.isRunning();
+		} catch (Throwable exception) {
+			// Assume that we aren't running.
+		}
+		return false;
+	}
 }
