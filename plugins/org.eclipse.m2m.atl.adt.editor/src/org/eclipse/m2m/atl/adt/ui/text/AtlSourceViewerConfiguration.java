@@ -287,14 +287,6 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 		return new AtlAnnotationHover();
 	}
 
-	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
-		return null; // TODO
-	}
-
-	public IContentAssistProcessor getFProcessor() {
-		return fProcessor;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 * 

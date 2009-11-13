@@ -32,6 +32,7 @@ public class AtlEditorActionContributor extends TextEditorActionContributor {
 		bars.setGlobalActionHandler(IAtlActionConstants.INDENT, getAction(textEditor,
 				"org.eclipse.m2m.atl.adt.ui.actions.indentAction")); //$NON-NLS-1$
 		bars.setGlobalActionHandler(IAtlActionConstants.TOGGLE_COMMENT, getAction(textEditor, "ToggleComment")); //$NON-NLS-1$
+		bars.setGlobalActionHandler(IAtlActionConstants.GOTO_MATCHING_BRACKET, getAction(textEditor, "GoToMatchingBracket")); //$NON-NLS-1$
 	}
 
 }

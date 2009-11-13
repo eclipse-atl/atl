@@ -60,12 +60,22 @@
 			commandId="atlCommands.commentBlock"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+Shift+C"/>
+  <key
+        commandId="atlCommands.gotoMatchingBracket"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+M2+P">
+  </key>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command
 			categoryId="atlCategory"
 			id="atlCommands.commentBlock"
 			name="ATL Command Comment Block"/>
+  <command
+        categoryId="atlCategory"
+        id="atlCommands.gotoMatchingBracket"
+        name="ATL Command Go to matching bracket">
+  </command>
 		<category
 			id="atlCategory"
 			name="ATL Category"/>
@@ -88,6 +98,13 @@
              definitionId="atlCommands.commentBlock"
              id="org.eclipse.m2m.atl.adt.ui.actions.ToggleComment"
              label="Comment/Uncomment"
+             menubarPath="ATLEditorMenu/ATLGroup"
+             retarget="true">
+       </action>
+       <action
+             definitionId="atlCommands.gotoMatchingBracket"
+             id="org.eclipse.m2m.atl.adt.ui.actions.gotoMatchingBracket"
+             label="Go to matching bracket"
              menubarPath="ATLEditorMenu/ATLGroup"
              retarget="true">
        </action>

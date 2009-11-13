@@ -785,9 +785,6 @@ public class AtlEditor extends TextEditor {
 		Action action;
 		ResourceBundle resourceBundle = AtlEditorMessages.getResourceBundle();
 
-		action = new GotoMatchingBracketAction(this);
-		setAction(GotoMatchingBracketAction.ID, action);
-
 		action = new IndentAction(resourceBundle, "Indent.", this, false); //$NON-NLS-1$
 		action.setActionDefinitionId(IAtlActionConstants.INDENT);
 		setAction("Indent", action); //$NON-NLS-1$
@@ -814,6 +811,11 @@ public class AtlEditor extends TextEditor {
 		setAction("ToggleComment", action); //$NON-NLS-1$
 		markAsStateDependentAction("ToggleComment", true); //$NON-NLS-1$
 		configureToggleCommentAction();
+		
+		action = new GotoMatchingBracketAction(this);
+		action.setActionDefinitionId("atlCommands.gotoMatchingBracket"); //$NON-NLS-1$
+		setAction("GoToMatchingBracket", action); //$NON-NLS-1$
+		markAsStateDependentAction("GoToMatchingBracket", true); //$NON-NLS-1$
 	}
 
 	/**
