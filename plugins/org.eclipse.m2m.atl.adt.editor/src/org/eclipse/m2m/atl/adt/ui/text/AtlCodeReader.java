@@ -96,6 +96,7 @@ public class AtlCodeReader extends SingleCharReader {
 		}
 	}
 
+	@Override
 	public int read() throws IOException {
 		try {
 			return forward ? readForwards() : readBackwards();
