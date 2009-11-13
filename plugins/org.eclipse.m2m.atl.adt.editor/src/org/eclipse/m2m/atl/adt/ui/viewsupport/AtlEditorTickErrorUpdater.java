@@ -42,8 +42,9 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.m2m.atl.adt.ui.viewsupport.IProblemChangedListener#problemsChanged(org.eclipse.core.resources.IResource[], boolean)
+	 * 
+	 * @see org.eclipse.m2m.atl.adt.ui.viewsupport.IProblemChangedListener#problemsChanged(org.eclipse.core.resources.IResource[],
+	 *      boolean)
 	 */
 	public void problemsChanged(IResource[] changedResources, boolean isMarkerChange) {
 		// IFileEditorInput input= (IFileEditorInput) atlEditor.getEditorInput();
