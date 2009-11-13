@@ -33,7 +33,7 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 
 	private static final String ATL_EDITOR = "atl_file.gif"; //$NON-NLS-1$
 
-	private Map imageCache = new HashMap();
+	private Map<ImageDescriptor, Image> imageCache = new HashMap<ImageDescriptor, Image>();
 
 	public AtlEditorTickErrorUpdater(AtlEditor editor) {
 		atlEditor = editor;
@@ -115,7 +115,7 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 		if (imgDesc == null)
 			return null;
 
-		Image img = (Image)imageCache.get(imgDesc);
+		Image img = imageCache.get(imgDesc);
 		if (img == null) {
 			img = imgDesc.createImage();
 			imageCache.put(imgDesc, img);
@@ -135,8 +135,8 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 	}
 
 	public void dispose() {
-		for (Iterator images = imageCache.values().iterator(); images.hasNext();) {
-			((Image)images.next()).dispose();
+		for (Iterator<Image> images = imageCache.values().iterator(); images.hasNext();) {
+			images.next().dispose();
 		}
 		imageCache.clear();
 		AtlUIPlugin.getDefault().getProblemMarkerManager().removeListener(this);
