@@ -31,7 +31,7 @@ public class AtlBreakpointImageProvider implements IAnnotationImageProvider {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getManagedImage(org.eclipse.jface.text.source.Annotation)
 	 */
 	public Image getManagedImage(Annotation annotation) {
@@ -47,7 +47,7 @@ public class AtlBreakpointImageProvider implements IAnnotationImageProvider {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getImageDescriptorId(org.eclipse.jface.text.source.Annotation)
 	 */
 	public String getImageDescriptorId(Annotation annotation) {
@@ -56,7 +56,7 @@ public class AtlBreakpointImageProvider implements IAnnotationImageProvider {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.texteditor.IAnnotationImageProvider#getImageDescriptor(java.lang.String)
 	 */
 	public ImageDescriptor getImageDescriptor(String imageDescritporId) {

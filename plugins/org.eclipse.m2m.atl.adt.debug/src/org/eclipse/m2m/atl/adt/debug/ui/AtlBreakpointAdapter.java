@@ -58,13 +58,13 @@ public class AtlBreakpointAdapter implements IToggleBreakpointsTarget {
 	}
 
 	/**
-	 * Returns the editor being used to edit a ATL file, associated with the given part, or
-	 * <code>null</code> if none.
+	 * Returns the editor being used to edit a ATL file, associated with the given part, or <code>null</code>
+	 * if none.
 	 * 
 	 * @param part
 	 *            workbench part
-	 * @return the editor being used to edit a ATL file, associated with the given part, or
-	 *         <code>null</code> if none
+	 * @return the editor being used to edit a ATL file, associated with the given part, or <code>null</code>
+	 *         if none
 	 */
 	private ITextEditor getEditor(IWorkbenchPart part) {
 		if (part instanceof ITextEditor) {
