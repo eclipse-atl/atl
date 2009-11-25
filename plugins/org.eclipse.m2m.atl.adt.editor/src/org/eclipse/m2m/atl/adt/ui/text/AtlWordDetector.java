@@ -20,7 +20,7 @@ public class AtlWordDetector implements IWordDetector {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.text.rules.IWordDetector#isWordStart(char)
 	 */
 	public boolean isWordStart(char c) {
@@ -29,7 +29,7 @@ public class AtlWordDetector implements IWordDetector {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.text.rules.IWordDetector#isWordPart(char)
 	 */
 	public boolean isWordPart(char c) {
