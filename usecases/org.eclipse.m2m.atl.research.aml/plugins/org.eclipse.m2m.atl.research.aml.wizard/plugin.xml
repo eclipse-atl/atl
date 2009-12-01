@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+         <wizard
+            category="atlWizard"
+            class="org.eclipse.m2m.atl.research.aml.wizard.AmlProjectWizard"
+            hasPages="true"
+            icon="resources/logo.png"
+            id="org.eclipse.m2m.atl.research.aml.wizard.AmlProjectWizard"
+            name="AML Matching Project"
+            preferredPerspectives="org.atl.eclipse.adt.atlPerspective"
+            project="true">
+         <description>
+         	Create an AML Matching Project
+         </description>
+      </wizard>         
+   </extension>
+
+</plugin>
