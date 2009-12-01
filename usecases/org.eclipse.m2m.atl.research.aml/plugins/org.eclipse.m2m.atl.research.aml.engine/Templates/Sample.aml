@@ -1,0 +1,7 @@
+strategy ${AMLProgram} {
+
+models {} 
+
+modelsFlow {}
+
+}

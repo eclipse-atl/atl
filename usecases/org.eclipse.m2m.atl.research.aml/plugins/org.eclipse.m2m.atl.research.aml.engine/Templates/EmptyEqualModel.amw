@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ASCII"?>
+<MatchModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="mmw_match" xmlns:_1="mmw_match" name="${leftM}2${rightM}">
+	<leftM xsi:type="_1:ModelRef" xmi:id="ModelRef1" name="${leftM}" ref="${leftMPath}"/>
+	<rightM xsi:type="_1:ModelRef" xmi:id="ModelRef2" name="${rightM}" ref="${rightMPath}"/>
+</MatchModel>

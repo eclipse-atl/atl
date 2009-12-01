@@ -1,0 +1,32 @@
+<project name="AMLEngineProject" basedir="." default="deploy">
+	
+	<property name="AMLSources" value="../../runtime-workspaceEclipse3.4/AML"/>
+	
+	<target name="clean">
+		<delete dir="transformations"/>
+		<delete dir="metamodels"/>
+		<mkdir dir="transformations"/>		
+		<mkdir dir="metamodels"/>
+	</target>
+	<target name="deploy" depends="clean">
+			
+			<!--copy transformations and libraries-->
+			<copy todir="transformations">
+				<fileset dir="${AMLSources}/ATL">
+					<include name="AML*.asm"/>
+				</fileset>	
+			</copy>
+			
+			<!--copy metamodels-->
+					
+			<copy todir="metamodels">
+				<fileset dir="${AMLSources}/Metamodel">
+					<include name="*.ecore"/>
+				</fileset>	
+			</copy>
+		
+	</target>
+		
+	
+
+</project>
