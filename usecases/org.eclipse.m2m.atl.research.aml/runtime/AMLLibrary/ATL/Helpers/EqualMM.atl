@@ -1,0 +1,728 @@
+--@atlcompiler atl2006
+
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+
+library EqualMM; -- Library Template
+
+
+
+-- conceptual bindings
+
+helper context EqualMM!AddedStructuralFeature def: getParent : EqualMM!WLink =
+	self.model.equalClasses
+	->union(self.model.addedClasses)
+	->flatten()
+	->select(e | e.rightElement.structuralFeatures.includes(self.rightElement))
+	->first();
+
+helper context EqualMM!DeletedStructuralFeature def: getParent : EqualMM!WLink =
+	self.model.equalClasses
+	->union(self.model.deletedClasses)
+	->flatten()
+	->select(e | e.leftElement.structuralFeatures.includes(self.leftElement))
+	->first();
+
+helper context EqualMM!EqualStructuralFeature def: getParent : EqualMM!EqualClass =
+	self.model.equalClasses
+	->select(e | e.leftElement.structuralFeatures.includes(self.leftElement) and
+				 e.rightElement.structuralFeatures.includes(self.rightElement))
+	->first();
+
+-- complex changes involving an associated class
+
+helper context EqualMM!MovePropertyToOwned def : getParent : EqualMM!EqualClass =
+	self.getParentExtract;
+
+helper context EqualMM!MovePropertyToOwner def : getParent : EqualMM!EqualClass =
+	self.getParentInline;
+
+helper context EqualMM!ExtractClass def : getParent : EqualMM!EqualClass =
+	self.getParentExtract;
+
+helper context EqualMM!InlineClass def : getParent : EqualMM!EqualClass =
+	self.getParentInline;
+
+
+helper context EqualMM!EqualStructuralFeature def : getParentExtract : EqualMM!EqualClass =
+
+	self.model.equalClasses
+	->select (e |
+				e.leftElement = self.leftElement.owner 
+				and
+				e.rightElement.references
+						->collect(e | e.type) --->debug('eTypes')
+						->select(e | e = self.rightElement.owner)
+						->notEmpty()	
+	)
+	->first()
+	;
+
+helper context EqualMM!EqualStructuralFeature def : getParentInline : EqualMM!EqualClass =
+	self.model.equalClasses
+	->select (e |
+				e.rightElement = self.rightElement.owner 
+				and
+				e.leftElement.references
+						->collect(e | e.type)
+						->select(e | e = self.leftElement.owner)
+						->notEmpty()	
+	)
+	->first();
+
+
+
+	
+-- complex changes involving a superclass
+helper context EqualMM!PushProperty def : getParent : EqualMM!EqualClass =
+
+	self.model.equalClasses
+	->select(e |		   
+			e.leftElement.allSupertypes->collect(e | e.structuralFeatures)->flatten() --.debug('structuralFeaturesLeft') --leftProperty is contained by the superclasses of leftClass			
+		   							->includes(self.leftElement)
+		   and
+		   (e.rightElement.structuralFeatures.includes(self.rightElement)--rightProperty is contained by rightClass or by the superclasses of rightClass
+		   or
+		   e.rightElement.allSupertypes->collect(e | e.structuralFeatures)->flatten()
+		   							->includes(self.rightElement)))	
+						
+	->first()
+;
+
+helper context EqualMM!PullProperty def : getParent : EqualMM!EqualClass =
+
+	self.model.equalClasses
+	->select(e |
+			(e.leftElement.structuralFeatures.includes(self.leftElement)
+			or
+			e.leftElement.allSupertypes->collect(e | e.structuralFeatures)->flatten() 
+		   							->includes(self.leftElement))
+			and						
+		   	e.rightElement.allSupertypes->collect(e | e.structuralFeatures)->flatten() --rightProperty is contained by the superclasses of rightClass			
+		   							->includes(self.rightElement))	
+	->first()
+
+	;
+
+helper context EqualMM!ExtractSuperClass def : getParent : EqualMM!EqualClass =
+	self.model.equalClasses
+	->select(e |
+			e.leftElement.structuralFeatures.includes(self.leftElement)
+			and
+			e.rightElement.allSupertypes->collect(e | e.structuralFeatures)->flatten() 
+		   							->includes(self.rightElement))
+			->first();
+
+helper context EqualMM!FlattenProperty def : getParent : EqualMM!EqualClass =
+	self.model.equalClasses
+	->select(e |			
+			e.leftElement.allSupertypes->collect(e | e.structuralFeatures)->flatten() 
+		   							->includes(self.leftElement)
+			and
+			e.rightElement.structuralFeatures.includes(self.rightElement))
+			->first();
+			
+helper context EqualMM!AddedEnumLiteral def : getParent : OclAny =
+	self.model.equalEnumerations
+	->union(self.model.addedEnumerations)
+	->flatten()
+	->select(e | e.rightElement.literals.includes(self.rightElement))
+	->first();
+
+helper context EqualMM!DeletedEnumLiteral def : getParent : OclAny =
+	self.model.equalEnumerations
+	->union(self.model.deletedEnumerations)
+	->flatten()
+	->select(e | e.leftElement.literals.includes(self.leftElement))
+	->first();
+
+
+helper context EqualMM!MatchModel def : getCorrespondingEqualClass (class : OclAny) : EqualMM!EqualClass =
+	self.equalClasses->select (e | e.rightE.__xmiID__ = class.__xmiID__
+									or
+									e.leftE.__xmiID__ = class.__xmiID__	);
+
+
+
+--@begin Helpers required by MappingIntersection and EqualMM2INRIAAlignement
+helper context String def: refModelNameOutExt(projectName : String) : String =
+	self.refModelName(projectName).removeExt;
+
+helper context EqualMM!ModelRef def: refModelName(projectName : String) : String =
+	self.ref.refModelName(projectName);
+	
+helper context EqualMM!ModelRef def: refModelNameOutExt(projectName : String) : String =
+self.ref.refModelNameOutExt(projectName);
+
+helper def : mmExt : String = '.ecore';
+
+helper context String def: refModelName(projectName : String) : String =
+	--self.split(projectName)->last(); TODO why we get an array instead of a Sequence as indicated on the ATL reference, it seems this is a bug of the new vm;
+	self.substring((5 + projectName.size() + 8), self.size());
+--../projectName/models/mapMName	
+--/../InstanceBasedMatching/models/classDiagram.ecore
+
+helper context String def : removeExt : String =
+	self.substring(1, self.indexOf(thisModule.mmExt));
+	
+--@end Helpers required by MappingIntersection and EqualMM2INRIAAlignement	
+	
+
+helper def : uniqueEqualModel : EqualMM!MatchModel = if EqualMM!MatchModel.allInstances()->isEmpty() then
+														OclUndefined
+													 else
+													 	EqualMM!MatchModel.allInstances()->first()
+													 endif;
+
+helper def : equalModel(mName : String) : EqualMM!MatchModel = 
+		EqualMM!MatchModel.allInstancesFrom(mName)->first(); 
+
+
+helper context EqualMM!MatchModel def: mapEqualByModel : Map(String, EqualMM!Equal) =
+	self.ownedElement->iterate(e; rpm : Map(String, EqualMM!Equal) = Map{} | 
+			rpm.including(e.xmiIDs_Equal, e)		
+	);
+
+-- returns a map having a leftElement "L" as key, and a set of equalElements with left equal to "L"
+helper context EqualMM!MatchModel def: mapEqualByLeft : Map(String, Sequence(EqualMM!Equal)) =
+	self.ownedElement
+	->reject(e | e.oclIsKindOf(EqualMM!Added))
+	->iterate(e; rpm : Map(String, Sequence(EqualMM!Equal)) = Map{} | 
+		if rpm.get(e.left.getReferredElement()).oclIsUndefined() then
+			rpm.including(e.left.getReferredElement(), Sequence{e})
+		else
+			rpm.including(e.left.getReferredElement(), rpm.get(e.left.getReferredElement()).append(e))
+		endif
+	);
+
+helper context EqualMM!MatchModel def: mapEqualByRight : Map(String, Sequence(EqualMM!Equal)) =
+	self.ownedElement
+	->reject(e | e.oclIsKindOf(EqualMM!Deleted))
+	->iterate(e; rpm : Map(String, Sequence(EqualMM!Equal)) = Map{} | 
+		if rpm.get(e.right.getReferredElement()).oclIsUndefined() then
+			rpm.including(e.right.getReferredElement(), Sequence{e})
+		else
+			rpm.including(e.right.getReferredElement(), rpm.get(e.right.getReferredElement()).append(e))
+		endif
+	);
+
+-- BothMaxSim library
+
+helper context EqualMM!MatchModel def: equalMaxSimByLeft : Map(String, Sequence(EqualMM!Equal)) =
+	self.mapEqualByLeft.getKeys()->iterate(e; rpm : Map(String, Sequence(EqualMM!Equal)) = Map{} |
+			rpm.including(e, thisModule.equalMaxSim(self.mapEqualByLeft.get(e))));
+
+helper context EqualMM!MatchModel def: equalMaxSimByRight : Map(String, Sequence(EqualMM!Equal)) =
+	self.mapEqualByRight.getKeys()->iterate(e; rpm : Map(String, Sequence(EqualMM!Equal)) = Map{} |
+			rpm.including(e, thisModule.equalMaxSim(self.mapEqualByRight.get(e))));
+
+-- ThresholdMaxDelta library
+
+helper context EqualMM!MatchModel def: mapRangeByLeft : Map(String, TupleType(maxD : Real, max : Real)) =
+	self.mapEqualByLeft.getKeys()->iterate(e; rpm : Map(String, TupleType(maxD : Real, max : Real)) = Map{} |
+			rpm.including(e, 
+					Tuple{
+							maxD = thisModule.maxSim(self.mapEqualByLeft.get(e)) - 0.08,
+							max = thisModule.maxSim(self.mapEqualByLeft.get(e))
+					}));
+					
+-- FilterRepetitiveLinks Library
+-- this map was needed for matching ontologies because extracted metamodels are not well-formed
+
+helper context EqualMM!MatchModel def: mapEqualByName : Map(String, EqualMM!Equal) =
+	self.ownedElement->iterate(e; map : Map(String, EqualMM!Equal) = Map{} |
+		map.including(e.name, e)	
+		); 					
+
+
+
+
+
+
+
+helper context EqualMM!WLink def: rightE : OclAny	=
+	self.right.target;
+	
+	
+
+helper context EqualMM!WLink def: leftE : OclAny =
+	self.left.target;
+
+--TODO These helpers are used by External Transformations because they need to know the names of left and right metamodels	
+helper context EqualMM!WLink def: rightE(mName : String) : OclAny =
+	self.rightE;
+
+		
+helper context EqualMM!WLink def: leftE(mName : String) : OclAny =
+	self.leftE;
+
+	
+
+
+helper def: equalMaxSim(seq : Sequence(EqualMM!Equal)) : Sequence(EqualMM!Equal) =
+	if seq.isEmpty() then
+		OclUndefined
+	else
+		seq->select(e | e.similarity =
+						seq->reject(e | e.similarity.oclIsUndefined())->sortedBy(e | e.similarity).last().similarity)
+	endif;
+
+helper def: maxSim(seq : Sequence(EqualMM!Equal)) : Real =
+	if thisModule.equalMaxSim(seq).oclIsUndefined() then
+		0
+	else
+		thisModule.equalMaxSim(seq)->first().similarity
+	endif;
+
+-- Normalization
+-- used in method that takes only one mapping model as input
+helper context EqualMM!MatchModel def:equalModelMaxSim : Real =
+	thisModule.maxSim(self.ownedElement
+								->select(e | e.oclIsTypeOf(EqualMM!Equal))
+					);	
+
+helper def: totalSim(seq : Sequence(EqualMM!Equal)) : Real =
+	if seq.isEmpty() then
+		0
+	else
+		seq->collect(e | e.similarity)->sum()
+	endif;
+
+helper context EqualMM!Equal def: equal (equal2 : EqualMM!Equal) : Boolean =
+	   self.left.element.ref = equal2.left.element.ref
+		and
+	   self.right.element.ref = equal2.right.element.ref;
+
+helper def: leftEqual (equal1 : EqualMM!Equal, equal2 : EqualMM!Equal) : Boolean =
+	   equal1.left.element.ref = equal2.left.element.ref;
+
+helper def: rightEqual (equal1 : EqualMM!Equal, equal2 : EqualMM!Equal) : Boolean =
+	   equal1.right.element.ref = equal2.right.element.ref;
+
+helper def: leftRightEqual (equal1 : EqualMM!Equal, equal2 : EqualMM!Equal) : Boolean =
+	   equal2.left.element.ref = equal1.right.element.ref;
+
+helper def: rightLeftEqual (equal1 : EqualMM!Equal, equal2 : EqualMM!Equal) : Boolean =
+	   equal2.right.element.ref = equal1.left.element.ref;
+
+--InstancesLibrary
+
+-- returns items of sequence which are instances of self
+helper context EqualMM!Equal def: instancesEqual(sequence : Sequence(OclAny)) : Sequence(OclAny) =
+	sequence->select(e | self.isTypeOf(e));--, leftM, rightM, leftMM, rightMM
+
+-- instance should be conform to Wlink or one of its extensions	
+helper context EqualMM!Equal def: isTypeOf (instance : OclAny) : Boolean =
+	self.leftE.name = self.typeName(instance.left.getReferredElement().oclType())  
+	and
+	self.rightE.name = self.typeName(instance.right.getReferredElement().oclType());
+	     			  	 			
+helper context EqualMM!Equal def : typeName(type : OclAny) : String =
+	type.toString().substring(type.toString().indexOf('!')+2, type.toString().size());
+
+helper context EqualMM!Added def:xmiIDs_Equal : String =
+	'_' + self.right.element.ref;
+
+helper context EqualMM!Deleted def:xmiIDs_Equal : String =
+	self.left.element.ref + '_';
+
+helper context EqualMM!Association def: xmiIDs_Equal : String =
+	'_';
+
+helper context EqualMM!WLink def:xmiIDs_Equal : String =
+	if self.left.oclIsUndefined() and self.right.oclIsUndefined() then
+		'_'
+	else
+			if self.left.oclIsUndefined() then
+				'_' + self.right.element.ref					
+			else if self.right.oclIsUndefined() then 
+					self.left.element.ref + '_'
+				else if self.left.element.ref.oclIsUndefined() then
+							'_' + self.right.element.ref					
+					else if self.right.element.ref.oclIsUndefined() then 
+							self.left.element.ref + '_'
+						else
+							self.left.element.ref + '_' + self.right.element.ref
+						endif
+					endif
+				endif
+			endif
+	endif;
+
+
+helper context EqualMM!MatchModel def: isEqualTo (left : OclAny, right : OclAny) : Boolean =	
+		
+			not self.mapEqualByModel.get(left.__xmiID__ + '_' + right.__xmiID__).oclIsUndefined();
+
+
+helper def: mapEqual : Map(String, Sequence(EqualMM!Equal)) =
+	EqualMM!Equal.allInstances()->iterate(e; rpm : Map(String, Sequence(EqualMM!Equal)) = Map{} | 
+		if rpm.get(e.xmiIDs_Equal).oclIsUndefined() then
+			rpm.including(e.xmiIDs_Equal, Sequence{e})
+		else
+			rpm.including(e.xmiIDs_Equal, rpm.get(e.xmiIDs_Equal).append(e))
+		endif
+	);
+
+helper def: map : Map(String, EqualMM!Equal) =
+	EqualMM!Equal.allInstances()->iterate(e; rpm : Map(String, EqualMM!Equal) = Map{} |
+			rpm.including(e.xmiIDs_Equal, e));
+
+helper context EqualMM!ElementRef def : getModelRef (model : String) : EqualMM!ModelRef =
+	if self.modelRef.ref = thisModule.equalModel(model).leftM.ref then
+		thisModule.equalModel(model).leftM
+	else 
+		if self.modelRef.ref = thisModule.equalModel(model).rightM.ref then
+			thisModule.equalModel(model).rightM
+		else
+			OclUndefined
+	endif
+endif;
+
+
+
+-- Similarity Flooding
+
+helper context EqualMM!MatchModel def: propMap : Map(String, Sequence(EqualMM!PropagationEdge)) =	
+	self.ownedElement->iterate(e; map : OclAny = Map{} |
+		map.including(e.xmiIDs_Equal,
+					 	EqualMM!PropagationEdge.allInstances()
+							->select(f | f.incomingLink = e.xmiIDs_Equal)));
+
+	
+-- others helpers
+
+
+
+
+
+-- This table was taken from the book Ontology Matching (pag. 96)
+-- We assumed the column none represents the interval [1,1]
+helper def: multTable : Map (String, Real) =
+	Map{
+	-- row 1
+	(
+		Tuple {
+			left = Tuple {lower = '0', upper = '-1'},
+			right = Tuple {lower = '0', upper = '-1'}		
+		},
+		
+		1.0
+	),
+	
+	(
+		Tuple {
+			left = Tuple {lower = '0', upper = '-1'},
+			right = Tuple {lower = '1', upper = '-1'}		
+		},
+		
+		0.9
+	),
+	
+	(
+		Tuple {
+			left = Tuple {lower = '0', upper = '-1'},
+			right = Tuple {lower = '0', upper = '1'}		
+		},
+		
+		0.7
+	),
+	
+	(
+		Tuple {
+			left = Tuple {lower = '0', upper = '-1'},
+			right = Tuple {lower = '1', upper = '1'}		
+		},
+		
+		0.7
+	),
+	-- row 2
+	(
+		Tuple {
+			left = Tuple {lower = '1', upper = '-1'},
+			right = Tuple {lower = '0', upper = '-1'}		
+		},
+		
+		0.9
+	),
+	
+	(
+		Tuple {
+			left = Tuple {lower = '1', upper = '-1'},
+			right = Tuple {lower = '1', upper = '-1'}		
+		},
+		
+		1.0
+	),
+	
+	(
+		Tuple {
+			left = Tuple {lower = '1', upper = '-1'},
+			right = Tuple {lower = '0', upper = '1'}		
+		},
+		
+		0.7
+	),
+	
+	(
+		Tuple {
+			left = Tuple {lower = '1', upper = '-1'},
+			right = Tuple {lower = '1', upper = '1'}		
+		},
+		
+		0.7
+	),
+	
+	-- row 3
+	(
+		Tuple {
+			left = Tuple {lower = '0', upper = '1'},
+			right = Tuple {lower = '0', upper = '-1'}		
+		},
+		
+		0.7
+	),
+	
+	(
+		Tuple {
+			left = Tuple {lower = '0', upper = '1'},
+			right = Tuple {lower = '1', upper = '-1'}		
+		},
+		
+		0.7
+	),
+	
+	(
+		Tuple {
+			left = Tuple {lower = '0', upper = '1'},
+			right = Tuple {lower = '0', upper = '1'}		
+		},
+		
+		1.0
+	),
+	
+	(
+		Tuple {
+			left = Tuple {lower = '0', upper = '1'},
+			right = Tuple {lower = '1', upper = '1'}		
+		},
+		
+		0.8
+	),
+	
+	-- row 4
+	(
+		Tuple {
+			left = Tuple {lower = '1', upper = '1'},
+			right = Tuple {lower = '0', upper = '-1'}		
+		},
+		
+		0.7
+	),
+	
+	(
+		Tuple {
+			left = Tuple {lower = '1', upper = '1'},
+			right = Tuple {lower = '1', upper = '-1'}		
+		},
+		
+		0.7
+	),
+	
+	(
+		Tuple {
+			left = Tuple {lower = '1', upper = '1'},
+			right = Tuple {lower = '0', upper = '1'}		
+		},
+		
+		0.8
+	),
+	
+	(
+		Tuple {
+			left = Tuple {lower = '1', upper = '1'},
+			right = Tuple {lower = '1', upper = '1'}		
+		},
+		
+		1.0
+	)	
+};
+
+
+helper context EqualMM!MatchModel def: equalClasses : Sequence(EqualMM!EqualClass) =
+	self.ownedElement->select(e | e.oclIsKindOf(EqualMM!EqualClass));
+	
+helper context EqualMM!MatchModel def: equalEnumerations : Sequence(EqualMM!EqualClass) =
+	self.ownedElement->select(e | e.oclIsKindOf(EqualMM!EqualEnumeration));
+	
+helper context EqualMM!MatchModel def: addedClasses : Sequence(EqualMM!AddedClass) =
+	self.ownedElement->select(e | e.oclIsTypeOf(EqualMM!AddedClass));
+
+helper context EqualMM!MatchModel def: deletedClasses : Sequence(EqualMM!DeletedClass) =
+	self.ownedElement->select(e | e.oclIsTypeOf(EqualMM!DeletedClass));
+	
+helper context EqualMM!MatchModel def: addedEnumerations : Sequence(EqualMM!AddedEnumeration) =
+	self.ownedElement->select(e | e.oclIsTypeOf(EqualMM!AddedEnumeration));
+
+helper context EqualMM!MatchModel def: deletedEnumerations : Sequence(EqualMM!DeletedEnumeration) =
+	self.ownedElement->select(e | e.oclIsTypeOf(EqualMM!DeletedEnumeration));
+
+
+helper context EqualMM!WLinkEnd def: target : OclAny =
+	self.getReferredElement();
+	
+helper context EqualMM!EqualAttribute def : primitiveTypesConvertionOperation : OclAny =
+	 	if self.left.target.type.name = 'EString' then 
+			if self.right.target.type.name = 'EInteger' then 
+				'toInteger'
+			else
+				if self.right.target.type.name = 'EDouble' then
+					'toReal'
+				else
+					OclUndefined
+				endif
+			endif
+		else
+			OclUndefined
+		endif;
+
+
+
+helper context EqualMM!EqualStructuralFeature def : typeRestricted : Boolean =
+	
+		if self.leftE.isAttribute and not self.leftE.type.isEnumeration then
+			if self.leftE.type.name = self.rightE.type.name then
+				false
+			else
+				true
+			endif
+		else 			
+			 --self.leftE.oclIsTypeOf(EqualMM!EqualReference)
+				if	self.model.isEqualTo(self.leftE.type, self.rightE.type) then
+							false
+						else
+							if self.leftE.isReference then
+								if self.leftE.type.supertypes
+									->select(e | self.model.isEqualTo(e, self.rightE.type))
+									->notEmpty() then
+									false
+								else
+									true
+								endif
+							else
+								true
+							endif
+				endif
+		endif;
+	
+helper context EqualMM!Equal def: linkingEnumeration : Boolean =
+	self.leftE.isEnumeration
+	and
+	self.rightE.isEnumeration;
+
+helper context EqualMM!Equal def: linkingEnumLiteral : Boolean =
+	self.leftE.isEnumLiteral
+	and
+	self.rightE.isEnumLiteral;
+
+helper context EqualMM!Equal def: linkingDataType : Boolean =
+	self.leftE.isDataType
+	and
+	self.rightE.isDataType;
+
+helper context EqualMM!Equal def: linkingClass : Boolean =
+	self.leftE.isClass
+	and
+	self.rightE.isClass;
+
+helper context EqualMM!Equal def: linkingReference : Boolean =
+	self.leftE.isReference
+	and
+	self.rightE.isReference;
+
+helper context EqualMM!Equal def: linkingAttribute : Boolean =
+	self.leftE.isAttribute
+	and
+	self.rightE.isAttribute;
+
+helper context EqualMM!Equal def: linkingStrFeature : Boolean =
+	self.leftE.isStructuralFeature
+	and
+	self.rightE.isStructuralFeature;
+
+-- added
+
+helper context EqualMM!Added def: linkingEnumeration : Boolean =
+	self.rightE.isEnumeration;
+
+helper context EqualMM!Added def: linkingEnumLiteral : Boolean =
+	self.rightE.isEnumLiteral;
+
+helper context EqualMM!Added def: linkingClass : Boolean =
+	self.rightE.isClass;
+
+helper context EqualMM!Added def: linkingReference : Boolean =
+	self.rightE.isReference;
+
+helper context EqualMM!Added def: linkingAttribute : Boolean =
+	self.rightE.isAttribute;
+
+helper context EqualMM!Added def: linkingDataType : Boolean =
+	self.rightE.isDataType;
+
+
+helper context EqualMM!Added def: linkingStrFeature : Boolean =
+	self.rightE.isStructuralFeature;
+
+
+
+-- deleted
+
+helper context EqualMM!Deleted def: linkingEnumeration : Boolean =
+	self.leftE.isEnumeration;
+
+helper context EqualMM!Deleted def: linkingEnumLiteral : Boolean =
+	self.leftE.isEnumLiteral;
+
+helper context EqualMM!Deleted def: linkingClass : Boolean =
+	self.leftE.isClass;
+
+helper context EqualMM!Deleted def: linkingReference : Boolean =
+	self.leftE.isReference;
+
+helper context EqualMM!Deleted def: linkingAttribute : Boolean =
+	self.leftE.isAttribute;
+
+helper context EqualMM!Deleted def: linkingStrFeature : Boolean =
+	self.leftE.isStructuralFeature;
+
+helper context EqualMM!Deleted def: linkingDataType : Boolean =
+	self.leftE.isDataType;
+	
+	
+-- helpers required creation methods
+
+helper context String def: leftName_rightName(right : String) : String =	 
+	if self.oclIsUndefined() and right.oclIsUndefined() then
+		'_'
+	else
+			if self.oclIsUndefined() then
+				'_' + right
+			else
+				if right.oclIsUndefined() then
+					self + '_'
+				else
+					self + '_' + right
+				endif
+			endif
+	endif;
+	

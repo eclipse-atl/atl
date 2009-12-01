@@ -1,0 +1,36 @@
+--@atlcompiler atl2006
+
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+
+library Metametamodel;
+
+
+-- helpers required aggregation methods and HOT
+
+helper def: fullName (element : OclAny) : String =
+		if element.name.oclIsUndefined() then
+			''
+		else		
+			if element.refImmediateComposite().oclIsUndefined() then
+				element.name + '::' + element.oclType()
+			else
+				element.refImmediateComposite().fullName + '::' + element.name + '::' + element.oclType().name				
+			endif
+
+	endif;
+	
+helper def: allSupertypes (class : OclAny) : OrderedSet(OclAny) =
+	class.supertypes->iterate(e; acc : OrderedSet(OclAny) = OrderedSet {} |
+		acc->including(e)->union(e.allSupertypes)
+		->reject(e | e.name.oclIsUndefined()) --TODO the metamodel merger sometimes does not merge classes correctly
+	);	

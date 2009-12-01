@@ -1,0 +1,367 @@
+-- @atlcompiler atl2006
+
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+
+module HOT_ConceptualLink;
+create OUT : ATL from IN1 : EqualMM, left : Metametamodel, right : Metametamodel;
+
+uses Metametamodel;
+uses SuitableMetametamodel;
+uses EqualMM;
+
+
+
+helper context EqualMM!EqualStructuralFeature def: isConceptualBinding : Boolean =
+	self.oclIsTypeOf(EqualMM!ExtractClass) or
+	self.oclIsTypeOf(EqualMM!InlineClass) or
+	self.oclIsTypeOf(EqualMM!RestrictTypeAttribute) or
+	self.oclIsTypeOf(EqualMM!RestrictTypeReference) or
+	self.oclIsTypeOf(EqualMM!RestrictMultiplicityReference) or
+	self.oclIsTypeOf(EqualMM!MovePropertyToOwned) or 
+	self.oclIsTypeOf(EqualMM!MovePropertyToOwner);	
+
+
+
+helper context EqualMM!EqualStructuralFeature def: getClone : Equal!EqualStructuralFeature =
+	if thisModule.mapEqual.get(self.xmiIDs_Equal).oclIsUndefined() then
+		OclUndefined
+		else
+--			if thisModule.map.get(self.xmiIDs_Equal).parent.oclIsUndefined() then
+--				OclUndefined
+--			else
+				thisModule.mapEqual.get(self.xmiIDs_Equal)->reject(e | e = self)->first()
+--			endif
+		endif;
+	
+helper context EqualMM!Equal def: isMultiValued (sF : OclAny): Boolean =
+	sF.upper > 1 or sF.upper = -1 or sF.upper.oclIsUndefined();
+	
+
+
+rule EqualStructuralFeature2Binding {
+	from
+		s : EqualMM!EqualStructuralFeature (
+			not s.parent.oclIsUndefined()
+			and
+			not s.isConceptualBinding
+		)
+	to
+		t : ATL!Binding (
+			propertyName <- s.right.target.name,
+			value <- value
+		),
+		value : ATL!NavigationOrAttributeCallExp (
+			source <- v,
+			name <- s.left.target.name
+		),
+		v : ATL!VariableExp (
+			referredVariable <- s.refImmediateComposite().left
+		)
+}
+
+abstract rule RestrictTypeAttribute {
+	from 
+		s : EqualMM!RestrictTypeAttribute 
+	to
+		t : ATL!Binding (
+			propertyName <- s.right.target.name
+		)
+}
+
+rule RestrictPrimitivtypeAttribute extends RestrictTypeAttribute {
+	from 
+		s : EqualMM!RestrictTypeAttribute (
+			if s.primitivtypesConvertionOperation.oclIsUndefined() then
+				false
+			else
+				true
+			endif
+		)
+	to
+		t : ATL!Binding (
+			value <- value
+		),
+		
+		value : ATL!OperationCallExp (
+			source <- v,
+			name <- s.primitivtypesConvertionOperation
+		),
+		v : ATL!VariableExp (
+			referredVariable <- s.refImmediateComposite().left
+		)
+}
+
+rule MovePropertyToOwner_InlineClass2Binding {
+	from
+		s : EqualMM!EqualStructuralFeature
+		(
+			s.oclIsTypeOf(EqualMM!MovePropertyToOwner)
+			or
+			s.oclIsTypeOf(EqualMM!InlineClass)
+		)
+	to
+		t : ATL!Binding (
+			propertyName <- s.right.target.name,
+			value <- oc2
+		),
+			oc2 : ATL!NavigationOrAttributeCallExp (
+				source <- oc,
+				name <- s.left.target.name				
+			),
+				oc : ATL!NavigationOrAttributeCallExp (
+					source <- ocVE,
+					name <- s.associatedReference.name				
+				),
+					ocVE : ATL!VariableExp (
+						referredVariable <- s.refImmediateComposite().left
+					)
+			
+		
+}
+
+-- @begin Reference pair to Class
+rule MovePropertyToOwned_ExtractClass2Binding {
+	from
+		s : EqualMM!EqualStructuralFeature 
+		(
+			s.oclIsTypeOf(EqualMM!MovePropertyToOwned)
+			or
+			s.oclIsTypeOf(EqualMM!ExtractClass)
+		)
+	to
+		t : ATL!Binding (
+			propertyName <- s.associatedReference.name,
+			value <- oc
+		),
+		oc : ATL!OperationCallExp (
+			source <- tmv,
+			operationName <- s.right.target.refImmediateComposite().name,	-- TODO: navigate using Association?
+			arguments <- Sequence {tp1v, tp2v}
+		),
+			tmv : ATL!VariableExp (
+				referredVariable <- tm
+			),
+				tm : ATL!VariableDeclaration (
+					varName <- 'thisModule'
+				),
+--			tuple : ATL!TupleExp (
+--				tuplePart <- Sequence {tp1, tp2}
+--			),
+--				tp1 : ATL!TuplePart (
+--					varName <- s.refImmediateComposite().left.target.name,	-- TODO: navigate using Association?
+--					initExpression <- tp1v
+--				),
+					tp1v : ATL!VariableExp (
+						referredVariable <- s.refImmediateComposite().left
+					),
+--				tp2 : ATL!TuplePart (
+--					varName <- s.left.target.type.name,	-- TODO: navigate using Association?
+--					initExpression <- tp2v
+--				),
+					tp2v : ATL!NavigationOrAttributeCallExp (
+						source <- tp2vv,
+						name <- s.left.target.name
+					),
+						tp2vv : ATL!VariableExp (
+							referredVariable <- s.refImmediateComposite().left
+						)
+}
+
+
+
+rule MovePropertyToOwner_InlineClass2Binding_MultiValued extends MovePropertyToOwner_InlineClass2Binding {
+	from
+		s : EqualMM!EqualStructuralFeature (
+			s.isMultiValued(s.right.target)		-- TODO: get this information from weaving model?
+		)
+	to
+		t : ATL!Binding (
+			value <- collect
+		),
+		collect : ATL!IteratorExp (
+			source <- oc,
+			name <- 'collect',
+			iterators <- Sequence {collecti},
+			body <- oc2
+		),
+			collecti : ATL!Iterator (
+				varName <- 'e'
+			), 
+--		tp2 : ATL!TuplePart (
+--			varName <- s.left.target.type.name,	-- TODO: navigate using Association?
+--			initExpression <- collectv
+--		),
+		oc2 : ATL!NavigationOrAttributeCallExp (
+			source <- collectv,
+			name <- s.left.target.name
+		),
+			collectv : ATL!VariableExp (
+				referredVariable <- collecti
+			)
+}
+
+
+
+rule MovePropertyToOwned_ExtractClass2Binding_MultiValued extends MovePropertyToOwned_ExtractClass2Binding {
+	from
+		s : EqualMM!EqualStructuralFeature (
+			s.isMultiValued(s.left.target)		-- TODO: get this information from weaving model?
+		)
+	using{
+			assRef : EqualMM!AddedAssociationReference = s.getAddedReferenceAssociation;
+			collectPar1 : Metametamodel!EClass = assRef.ends.first().left.target.owner;
+			--collectPar2 : Metametamodel!EClass = assRef.first().left.target.type;
+		}
+	to
+		t : ATL!Binding (
+			value <- collect
+		),
+		collect : ATL!IteratorExp (
+			source <- tp2v,
+			name <- 'collect',
+			iterators <- Sequence {collecti},
+			body <- oc
+		),
+			collecti : ATL!Iterator (
+				varName <- 'e'
+			), 
+--		tp2 : ATL!TuplePart (
+--			varName <- s.left.target.type.name,	-- TODO: navigate using Association?
+--			initExpression <- collectv
+--		),
+		oc : ATL!OperationCallExp (
+			arguments <- if s.leftE.owner = collectPar1 then							
+							Sequence {tp1v, collectv}
+						 else 
+							Sequence {collectv, tp1v}
+						endif
+		),
+			collectv : ATL!VariableExp (
+				referredVariable <- collecti
+			)
+}
+
+
+
+
+helper context EqualMM!EqualStructuralFeature def : getAddedReferenceAssociation : EqualMM!AddedReferenceAssociation =
+	EqualMM!AddedReferenceAssociation->allInstances()
+									->select(e | e.hasRelatedLinkTo(self))
+									->first();
+
+helper context EqualMM!AddedReferenceAssociation def : hasRelatedLinkTo (equalSF : EqualMM!EqualStructuralFeature) : Boolean =
+	self.associationEnd->collect(e | e.relatedLink)
+							->reject(e | e.linksClass)
+							->select(e | e.equal(equalSF))
+							->notEmpty();
+
+helper context EqualMM!WLink def : linksClass : Boolean =
+	self.oclIsKindOf(EqualMM!AddedClass) or self.oclIsKindOf(EqualMM!EqualClass);
+
+helper context EqualMM!Association def: newClass : EqualMM!RightElement =
+	self.associationEnd->collect(e | e.relatedLink)
+					->reject(e | e.oclIsUndefined())
+					->any(e | e.linksClass).right;
+
+helper context EqualMM!Association def: ends : EqualMM!EqualStructuralFeature =
+	self.associationEnd	
+	->collect(e |
+		e.relatedLink
+	)
+	->reject(e | e.oclIsUndefined())
+	->select(e |
+		not e.linksClass) --returns equalStructuralFeatures of Association
+	->collect(e | e.getClone) --look for clone, i.e., equivalent equal values inside MatchModel
+							 -- which are well-structured
+	->reject(e | e.oclIsUndefined());
+
+rule Association2LazyMatchedRule {
+	from
+		s : EqualMM!AddedReferenceAssociation (
+			s.ends->notEmpty()	
+		)
+	using {
+			ends : Sequence(EqualMM!EqualStructuralFeatures) = s.ends;
+			newClass :  EqualMM!RightElement = s.newClass;
+			iPFirst : EqualMM!EqualStructuralFeature = ends.first(); -- the first one is enough to get the input patterns of the lazy rule 
+		}
+	to
+		t : ATL!LazyMatchedRule (
+			isUnique <- true,
+			isAbstract <- false,
+			isRefining <- false,
+			name <- newClass.target.name, --s.left.name + '2' + s.right.name,
+			inPattern <- sp,
+			outPattern <- tp,
+			superRule <- OclUndefined,
+			"module" <- s.model 
+		),
+		sp : ATL!InPattern (
+			elements <-  
+							Sequence{
+								thisModule.AssociationElement2SourcePatternElement(iPFirst.left.target.owner, iPFirst.left.element),
+								thisModule.AssociationElement2SourcePatternElement(iPFirst.left.target.type, iPFirst.left.element)
+							}
+			
+		),
+		tp : ATL!OutPattern (
+			elements <- Sequence {sop}
+		),
+		
+		sop : ATL!SimpleOutPatternElement (
+			type <- type,
+			bindings <- ends->collect(e | thisModule.NewClassEqualStructuralFeature2Binding(e)),
+			varName <- 't'
+		),
+		type : ATL!OclModelElement (
+			name <- newClass.target.name,
+			model <- newClass.element.modelRef
+		)
+		
+}
+
+
+lazy rule NewClassEqualStructuralFeature2Binding {
+	from
+		s : EqualMM!EqualStructuralFeature
+		
+	to	
+		t : ATL!Binding (
+			propertyName <- s.right.target.name,
+			value <- varExp
+		),
+		
+		varExp : ATL!VariableExp (
+			referredVariable <- thisModule.AssociationElement2SourcePatternElement(s.left.target.type, s.left.element)	
+		)
+}
+	
+
+lazy rule AssociationElement2SourcePatternElement {
+	from
+		s : Metametamodel!EClass,
+		mr : EqualMM!Element		
+	to
+		t : ATL!SimpleInPatternElement (
+			type <- type,
+			varName <- s.name --.firstToLower
+		),
+		type : ATL!OclModelElement (
+			name <- s.name
+			,
+			model <- mr.modelRef
+		)
+}
+
+
+-- @end Reference pair to Class

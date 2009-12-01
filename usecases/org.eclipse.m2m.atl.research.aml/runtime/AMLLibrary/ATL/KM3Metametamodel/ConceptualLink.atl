@@ -1,0 +1,899 @@
+-- @atlcompiler atl2006
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+module ConceptualLink;
+create OUT : EqualMM from IN : EqualMM, m1 : Metametamodel, m2 : Metametamodel;
+
+uses EqualMM;
+
+uses Metametamodel;
+
+uses SuitableMetametamodel; -- This transformation retypes the links conform to EqualAttribute with conceptual types
+-- This is necesarry because the adaptation transformation rules are special
+-- This transformation retypes the links conform to EqualAttribute with conceptual types
+-- This is necesarry because the adaptation transformation rules are special
+helper def: methodName : String =
+ 'Conceptual Link';
+
+helper context String def: rightClassByName : OclAny =
+ thisModule.allClasses('m2')->select(e |
+  e.name = self
+ )->first();
+
+helper context EqualMM!WLink def: rightElement : OclAny =
+ self.rightE('m2');
+
+helper context EqualMM!WLink def: leftElement : OclAny =
+ self.leftE('m1'); -- returns references point in to self
+-- returns references point in to self
+helper context String def: allReferences(ref : OclAny) : Sequence(OclAny) =
+ -- self.references --outgoingReferences of self
+ --	->union(
+ -- self.references --outgoingReferences of self
+ --	->union(
+ -- self.references --outgoingReferences of self
+ --	->union(
+ -- self.references --outgoingReferences of self
+ --	->union(
+ -- self.references --outgoingReferences of self
+ --	->union(
+ -- self.references --outgoingReferences of self
+ --	->union(
+ -- self.references --outgoingReferences of self
+ --	->union(
+ thisModule.allClasses(self)->reject(e |
+  e = ref.owner
+ )->collect(e |
+  e.references
+ )->flatten()->select(e |
+  e.type = ref.owner
+ )->reject(e |
+  e.opposite = ref
+ ) --			)
+ --ingoingReferences of self
+ --	->flatten()
+ --			)
+--ingoingReferences of self
+--	->flatten()
+--			)
+--ingoingReferences of self
+--	->flatten()
+;
+
+helper context EqualMM!EqualStructuralFeature def: allLeftReferences : Sequence(OclAny) =
+ 'm1'.allReferences(self.leftElement);
+
+helper context EqualMM!EqualStructuralFeature def: allRightReferences : Sequence(OclAny) =
+ 'm2'.allReferences(self.rightElement); --self.allReferences('m2', ref);
+--the right containing class has a reference with the same type of the left containing class 
+--self.allReferences('m2', ref);
+--the right containing class has a reference with the same type of the left containing class 
+helper context EqualMM!EqualStructuralFeature def: rightAssociatedClassReference : Metametamodel!EReference =
+ self.allRightReferences->select(e |
+  self.model.isEqualTo(self.leftElement.owner, e.owner)
+ )->first(); -- TODO: if size() = 2 then CHOICE
+-- TODO: if size() = 2 then CHOICE
+helper context EqualMM!EqualStructuralFeature def: leftAssociatedClassReference : Metametamodel!EReference =
+ self.allLeftReferences->select(e |
+  self.model.isEqualTo(e.owner, self.rightElement.owner)
+ )->first(); -- TODO: if size() = 2 then CHOICE
+-- TODO: if size() = 2 then CHOICE
+helper context EqualMM!EqualClass def: introducedSuperclasses : Sequence(String) =
+ self.rightElement.allSupertypes->collect(e |
+  e.name
+ )->flatten()->asSet() - self.leftElement.allSupertypes->collect(e |
+  e.name
+ )->flatten()->asSet(); -- we only consider already existent superclasses because new superclasses are addressed by IntroduceRestrictedProperty
+-- we only consider already existent superclasses because new superclasses are addressed by IntroduceRestrictedProperty
+helper context EqualMM!EqualClass def: oldSuperClasses : Sequence(OclAny) =
+ self.introducedSuperclasses->collect(e |
+  e.rightClassByName
+ )->flatten()->reject(e |
+  self.model.addedClassRefElement->includes(e)
+ );
+
+helper context EqualMM!EqualClass def: restrictedAttributeSuperclass : Sequence(OclAny) =
+ self.oldSuperClasses->collect(e |
+  e.attributes
+ )->flatten()->select(e |
+  self.defaultValueNeeded(e)
+ );
+
+helper context EqualMM!EqualClass def: restrictedMultReferenceSuperclass : Sequence(OclAny) =
+ self.oldSuperClasses->collect(e |
+  e.references
+ )->flatten()->select(e |
+  self.multiplicityRestricted(e)
+ );
+
+helper context EqualMM!WLink def: multiplicityRestricted(ref : OclAny) : Boolean =
+ ref.lower > 0;
+
+helper context EqualMM!WLink def: defaultValueNeeded(ref : OclAny) : Boolean =
+ not ref.defaultValue.oclIsUndefined();
+
+helper context EqualMM!MatchModel def: addedClassRefElement : Sequence(OclAny) =
+ self.addedClasses->collect(e |
+  e.rightE
+ );
+
+helper context EqualMM!MatchModel def: deletedClassRefElement : Sequence(OclAny) =
+ self.deletedClasses->collect(e |
+  e.leftE
+ ); -- message conceptual changes
+-- message conceptual changes
+helper context EqualMM!EqualStructuralFeature def: getUserMsg : String =
+ if self.typeRestricted then
+  'It is necessary to check out the overlapping among these properties'
+ else
+  ''
+ endif;
+
+helper context EqualMM!EqualStructuralFeature def: isMovePropertytoClassOwner : Boolean =
+ not self.leftAssociatedClassReference.oclIsUndefined() and self.model.deletedClassRefElement->excludes(self.leftElement.owner);
+
+helper context EqualMM!EqualStructuralFeature def: isMovePropertytoClassOwned : Boolean =
+ not self.rightAssociatedClassReference.oclIsUndefined() and self.model.addedClassRefElement->excludes(self.rightElement.owner);
+
+helper context EqualMM!EqualStructuralFeature def: isInlineClass : Boolean =
+ not self.leftAssociatedClassReference.oclIsUndefined() and self.model.deletedClassRefElement->includes(self.leftElement.owner);
+
+rule IntroduceRestrictedReference extends Added {
+ from
+  l : EqualMM!AddedReference
+  (
+   l.multiplicityRestricted(l.rightElement)
+  )
+ to
+  alink : EqualMM!IntroduceRestrictedProperty (
+   description <- 'Introduced the reference ' + l.rightElement.name + ' requiring default value, mutiplicity ' + l.rightElement.lower.toString(),
+   userAssistance <- 'It is needed to provide default values to this reference'
+  )
+}
+
+rule IntroduceRestrictedAttribute extends Added {
+ from
+  l : EqualMM!AddedAttribute
+  (
+   l.defaultValueNeeded(l.rightElement)
+  )
+ to
+  alink : EqualMM!IntroduceRestrictedProperty (
+   description <- 'Introduced the attribute ' + l.rightElement.name + 'requiring default value',
+   userAssistance <- 'It is needed to provide a default value to this attribute'
+  )
+}
+
+rule PushProperty extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualStructuralFeature
+  (
+   l.rightElement.owner.allSupertypes --.debug('supertypes')
+   ->select(e |
+    l.model.isEqualTo(l.leftElement.owner, e)
+   ) --.debug('isEqualTo')
+   ->notEmpty() and l.model.deletedClassRefElement->excludes(l.leftElement.owner)
+  )
+ to
+  alink : EqualMM!PushProperty (
+   userAssistance <- l.getUserMsg
+  )
+}
+
+rule FlattenProperty extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualStructuralFeature
+  (
+   l.rightElement.owner.allSupertypes->select(e |
+    l.model.isEqualTo(l.leftElement.owner, e)
+   )->notEmpty() and l.model.deletedClassRefElement->includes(l.leftElement.owner)
+  )
+ to
+  alink : EqualMM!FlattenProperty
+}
+
+rule PullProperty extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualStructuralFeature
+  (
+   l.leftElement.owner.allSupertypes->select(e |
+    l.model.isEqualTo(e, l.rightElement.owner)
+   )->notEmpty() and l.model.addedClassRefElement->excludes(l.rightElement.owner)
+  )
+ to
+  alink : EqualMM!PullProperty (
+   userAssistance <- l.getUserMsg
+  )
+}
+
+rule ExtractSuperclass extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualStructuralFeature
+  (
+   l.leftElement.owner.allSupertypes->select(e |
+    l.model.isEqualTo(e, l.rightElement.owner)
+   )->notEmpty() and l.model.addedClassRefElement->includes(l.rightElement.owner)
+  )
+ to
+  alink : EqualMM!ExtractSuperClass
+}
+
+rule MovePropertytoClassOwned extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualStructuralFeature
+  (
+   l.isMovePropertytoClassOwned
+  )
+ to
+  alink : EqualMM!MovePropertyToOwned (
+   associatedReference <- arE
+  ),
+  arE : EqualMM!RightElement (
+   name <- l.rightAssociatedClassReference.name,
+   element <- arER
+  ),
+  arER : EqualMM!ElementRef (
+   modelRef <- l.right.element.modelRef,
+   ref <- l.rightAssociatedClassReference.__xmiID__
+  )
+}
+
+rule MovePropertytoClassOwner extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualStructuralFeature
+  (
+   l.isMovePropertytoClassOwner
+  )
+ to
+  alink : EqualMM!MovePropertyToOwner (
+   userAssistance <- l.getUserMsg,
+   associatedReference <- arE
+  ),
+  arE : EqualMM!LeftElement (
+   name <- l.leftAssociatedClassReference.name,
+   element <- arER
+  ),
+  arER : EqualMM!ElementRef (
+   modelRef <- l.left.element.modelRef,
+   ref <- l.leftAssociatedClassReference.__xmiID__
+  )
+}
+
+helper context EqualMM!EqualStructuralFeature def: isExtractClass : Boolean =
+ not self.rightAssociatedClassReference.oclIsUndefined() and self.model.addedClassRefElement->includes(self.rightElement.owner);
+
+rule ExtractClass extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualStructuralFeature
+  (
+   l.isExtractClass
+  )
+ to
+  alink : EqualMM!ExtractClass (
+   associatedReference <- arE,
+   userAssistance <- l.getUserMsg
+  ),
+  arE : EqualMM!RightElement (
+   name <- l.rightAssociatedClassReference.name,
+   element <- arER
+  ),
+  arER : EqualMM!ElementRef (
+   modelRef <- l.right.element.modelRef,
+   ref <- l.rightAssociatedClassReference.__xmiID__
+  )
+}
+
+rule InlineClass extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualStructuralFeature
+  (
+   l.isInlineClass
+  )
+ to
+  alink : EqualMM!InlineClass (
+   associatedReference <- arE,
+   userAssistance <- l.getUserMsg
+  ),
+  arE : EqualMM!LeftElement (
+   name <- l.leftAssociatedClassReference.name,
+   element <- arER
+  ),
+  arER : EqualMM!ElementRef (
+   modelRef <- l.left.element.modelRef,
+   ref <- l.leftAssociatedClassReference.__xmiID__
+  )
+}
+
+rule RestrictMultiplicityReference extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualReference
+  (
+   l.leftElement.lower = 0 and l.rightElement.lower = 1 or l.leftElement.upper = - 1 and l.rightElement.upper = 1
+  )
+ to
+  alink : EqualMM!RestrictMultiplicityReference (
+   description <- 'Restricted lower or upper of reference',
+   userAssistance <- 'Restricting lower requires new values ' + 'Restricting upper requires the selection of certain values'
+  )
+}
+
+rule RestrictTypeAttribute extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualAttribute
+  (
+   --	 		if l.name='isGround_isGround' then
+   --				thisModule.map.debug('map').get(l.leftElement.type.xmiID_ModelElement(l.rightElement.type).debug('xmiID')).oclIsUndefined()
+   --				else
+   --					false
+   --					endif
+   --	 		if l.name='isGround_isGround' then
+   --				thisModule.map.debug('map').get(l.leftElement.type.xmiID_ModelElement(l.rightElement.type).debug('xmiID')).oclIsUndefined()
+   --				else
+   --					false
+   --					endif
+   l.typeRestricted
+  )
+ to
+  alink : EqualMM!RestrictTypeAttribute (
+   description <- 'Restricted type of attribute from ' + l.leftElement.type.name + ' to ' + l.rightElement.type.name,
+   userAssistance <- if l.primitiveTypesConvertionOperation.oclIsUndefined() then
+    'An adaptation operation is needed'
+   else
+    ''
+   endif
+  )
+}
+
+rule RestrictTypeReference extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualReference
+  (
+   l.typeRestricted
+  )
+ to
+  alink : EqualMM!RestrictTypeReference (
+   description <- 'Restricted type of reference. It may concern the supertypes of the reference type',
+   userAssistance <- 'It is necessary to figure out the overlapping among types, and to develop the corresponding adaptation code'
+  )
+}
+
+rule IntroduceSuperclass extends EqualClass {
+ from
+  l : EqualMM!EqualClass
+  (
+   l.restrictedAttributeSuperclass->notEmpty() or l.restrictedMultReferenceSuperclass->notEmpty()
+  )
+ to
+  alink : EqualMM!IntroduceSuperClassWithRestrictedProperty (
+   description <- 'The class ' + l.leftElement.name + ' got superclasses ' + l.oldSuperClasses->collect(e |
+    e.name
+   ).toString() + ' ' + 'having the following restricted properties ' + l.restrictedAttributeSuperclass->collect(e |
+    e.name
+   ).toString() + ' ' + l.restrictedMultReferenceSuperclass->collect(e |
+    e.name
+   ).toString(),
+   userAssistance <- 'It is needed to provide default values for these properties'
+  )
+} --rule ExtractRefAddedClass extends AddedClass {
+--	from 
+--		l : EqualMM!AddedClass (
+--				l.linkedReferences.notEmpty()
+--		)
+--	to
+--		alink : EqualMM!AddedClass,
+--		assLink : EqualMM!AddedReferenceAssociation (
+--			model <- l.model,
+--			associationEnd <- l.linkedReferences->collect(e | thisModule.EqualStructuralFeatureAssociationEnd(e)) 
+--												-> union (Sequence{assEnd})
+--		),		
+--		assEnd : EqualMM!AssociationEnd (
+--			name <- l.name,
+--			relatedLink <- alink	
+--		)		
+--}
+--rule ExtractRefAddedClass extends AddedClass {
+--	from 
+--		l : EqualMM!AddedClass (
+--				l.linkedReferences.notEmpty()
+--		)
+--	to
+--		alink : EqualMM!AddedClass,
+--		assLink : EqualMM!AddedReferenceAssociation (
+--			model <- l.model,
+--			associationEnd <- l.linkedReferences->collect(e | thisModule.EqualStructuralFeatureAssociationEnd(e)) 
+--												-> union (Sequence{assEnd})
+--		),		
+--		assEnd : EqualMM!AssociationEnd (
+--			name <- l.name,
+--			relatedLink <- alink	
+--		)		
+--}
+helper context EqualMM!WLink def: linkedReferences(class : OclAny) : Sequence(EqualMM!EqualReference) =
+ EqualMM!EqualStructuralFeature.allInstancesFrom('IN')->select(e |
+  class.structuralFeatures.includes(e.rightElement)
+ )->select(e |
+  e.isExtractClass or e.isMovePropertytoClassOwned
+ );
+
+abstract rule AddedReferenceAssociation extends WLink {
+ from
+  l : EqualMM!WLink
+  (
+   if l.oclIsTypeOf(EqualMM!EqualClass) or l.oclIsTypeOf(EqualMM!AddedClass) then
+    l.linkedReferences(l.rightElement).notEmpty()
+   else
+    false
+   endif
+  )
+ to
+  alink : EqualMM!WLink,
+  assLink : EqualMM!AddedReferenceAssociation (
+   model <- l.model,
+   associationEnd <- l.linkedReferences(l.rightElement)->collect(e |
+    thisModule.EqualStructuralFeatureAssociationEnd(e)
+   )->union(Sequence {assEnd})
+  ),
+  assEnd : EqualMM!AssociationEnd (
+   name <- l.name,
+   relatedLink <- l
+  )
+}
+
+rule EqualClass_AddedReferenceAssociation extends AddedReferenceAssociation {
+ from
+  l : EqualMM!EqualClass
+ to
+  alink : EqualMM!EqualClass (
+   --			name <- l.name,
+   --			model <- l.model,
+   left <- leftE,
+   right <- rightE,
+   --			,
+   --			child <- l.child,
+   similarity <- l.similarity
+  ),
+  leftE : EqualMM!LeftElement (
+   name <- l.left.name,
+   element <- l.left.element
+  ),
+  rightE : EqualMM!RightElement (
+   name <- l.right.name,
+   element <- l.right.element
+  )
+}
+
+rule AddedClass__AddedReferenceAssociation extends AddedReferenceAssociation {
+ from
+  l : EqualMM!AddedClass
+ to
+  alink : EqualMM!AddedClass (
+   --			name <- l.name,
+   --			model <- l.model,
+   right <- rightE --			,
+   --			child <- l.child
+   --			,
+   --			child <- l.child
+   
+  ),
+  rightE : EqualMM!RightElement (
+   name <- l.right.name,
+   element <- l.right.element
+  )
+} --rule InlineRefAddedClass extends DeletedClass {
+--	from 
+--		l : EqualMM!DeletedClass (
+--				l.linkedReferences.notEmpty()
+--		)
+--	to
+--		alink : EqualMM!DeletedClass,
+--		assLink : EqualMM!DeletedReferenceAssociation (
+--			model <- l.model,
+--			associationEnd <- l.linkedReferences->collect(e | thisModule.EqualStructuralFeatureAssociationEnd(e)) 
+--												-> union (Sequence{assEnd})
+--		),		
+--		assEnd : EqualMM!AssociationEnd (
+--			name <- l.name,
+--			relatedLink <- alink	
+--		)		
+--}
+--rule InlineRefAddedClass extends DeletedClass {
+--	from 
+--		l : EqualMM!DeletedClass (
+--				l.linkedReferences.notEmpty()
+--		)
+--	to
+--		alink : EqualMM!DeletedClass,
+--		assLink : EqualMM!DeletedReferenceAssociation (
+--			model <- l.model,
+--			associationEnd <- l.linkedReferences->collect(e | thisModule.EqualStructuralFeatureAssociationEnd(e)) 
+--												-> union (Sequence{assEnd})
+--		),		
+--		assEnd : EqualMM!AssociationEnd (
+--			name <- l.name,
+--			relatedLink <- alink	
+--		)		
+--}
+lazy rule EqualStructuralFeatureAssociationEnd {
+ from
+  l : EqualMM!EqualStructuralFeature
+ to
+  alink : EqualMM!AssociationEnd (
+   name <- l.name,
+   relatedLink <- l
+  )
+}
+
+abstract rule Equal extends WLink {
+ from
+  l : EqualMM!Equal
+ to
+  alink : EqualMM!Equal (
+   --			name <- l.name,
+   --			model <- l.model,
+   left <- leftE,
+   right <- rightE,
+   similarity <- l.similarity --			,
+   --			child <- l.child,
+   --			similarity <- l.similarity	
+   --			,
+   --			child <- l.child,
+   --			similarity <- l.similarity	
+   
+  ),
+  leftE : EqualMM!LeftElement (
+   name <- l.left.name,
+   element <- l.left.element
+  ),
+  rightE : EqualMM!RightElement (
+   name <- l.right.name,
+   element <- l.right.element
+  )
+} --rule Renaming extends Equal {
+--	from 
+--		l : EqualMM!Equal (
+--			if l.leftElement.name = l.rightElement.name then
+--				false
+--			else
+--				true
+--			endif
+--		)
+--	to
+--		alink : EqualMM!Renaming
+--}
+--
+--rule EqualClassRenaming extends Renaming {
+--	from
+--		l : EqualMM!EqualClass
+--	to
+--		alink : EqualMM!Renaming(
+--			description <- 'The class ' + l.leftElement.fullName + ' is renamed to ' + l.rightElement.fullName
+--		)
+--}
+--
+--abstract rule EqualStructuralFeatureRenaming extends Renaming {
+--	from
+--		l : EqualMM!EqualStructuralFeature
+--	to
+--		alink : EqualMM!Renaming
+--}
+--
+--rule EqualAttributeRenaming extends EqualStructuralFeatureRenaming {
+--	from
+--		l : EqualMM!EqualAttribute
+--	to
+--		alink : EqualMM!Renaming(
+--			description <- 'The attribute ' + l.leftElement.fullName + ' is renamed to ' + l.rightElement.fullName
+--		)
+--}
+--
+--rule EqualReferenceRenaming extends EqualStructuralFeatureRenaming {
+--	from
+--		l : EqualMM!EqualReference
+--	to
+--		alink : EqualMM!Renaming(
+--			description <- 'The reference ' + l.leftElement.fullName + ' is renamed to ' + l.rightElement.fullName
+--		)
+--}
+--
+--rule EqualEnumRenaming extends Renaming {
+--	from 
+--		l : EqualMM!EqualEnumeration
+--	to
+--		alink : EqualMM!Renaming (
+--			description <- 'The enumeration ' + l.leftElement.fullName + ' is renamed to ' + l.rightElement.fullName
+--			
+--		)
+--}
+--
+--rule EqualEnumLiteralRenaming extends Renaming {
+--	from 
+--		l : EqualMM!EqualEnumLiteral
+--	to
+--		alink : EqualMM!Renaming (
+--			description <- 'The enum literal ' + l.leftElement.fullName + ' is renamed to ' + l.rightElement.fullName,
+--			userAssistance <- 'If an attribute uses the enumeration containing this enum literal then it is necessary to develop a convertion operation'
+--		)
+--}
+--rule Renaming extends Equal {
+--	from 
+--		l : EqualMM!Equal (
+--			if l.leftElement.name = l.rightElement.name then
+--				false
+--			else
+--				true
+--			endif
+--		)
+--	to
+--		alink : EqualMM!Renaming
+--}
+--
+--rule EqualClassRenaming extends Renaming {
+--	from
+--		l : EqualMM!EqualClass
+--	to
+--		alink : EqualMM!Renaming(
+--			description <- 'The class ' + l.leftElement.fullName + ' is renamed to ' + l.rightElement.fullName
+--		)
+--}
+--
+--abstract rule EqualStructuralFeatureRenaming extends Renaming {
+--	from
+--		l : EqualMM!EqualStructuralFeature
+--	to
+--		alink : EqualMM!Renaming
+--}
+--
+--rule EqualAttributeRenaming extends EqualStructuralFeatureRenaming {
+--	from
+--		l : EqualMM!EqualAttribute
+--	to
+--		alink : EqualMM!Renaming(
+--			description <- 'The attribute ' + l.leftElement.fullName + ' is renamed to ' + l.rightElement.fullName
+--		)
+--}
+--
+--rule EqualReferenceRenaming extends EqualStructuralFeatureRenaming {
+--	from
+--		l : EqualMM!EqualReference
+--	to
+--		alink : EqualMM!Renaming(
+--			description <- 'The reference ' + l.leftElement.fullName + ' is renamed to ' + l.rightElement.fullName
+--		)
+--}
+--
+--rule EqualEnumRenaming extends Renaming {
+--	from 
+--		l : EqualMM!EqualEnumeration
+--	to
+--		alink : EqualMM!Renaming (
+--			description <- 'The enumeration ' + l.leftElement.fullName + ' is renamed to ' + l.rightElement.fullName
+--			
+--		)
+--}
+--
+--rule EqualEnumLiteralRenaming extends Renaming {
+--	from 
+--		l : EqualMM!EqualEnumLiteral
+--	to
+--		alink : EqualMM!Renaming (
+--			description <- 'The enum literal ' + l.leftElement.fullName + ' is renamed to ' + l.rightElement.fullName,
+--			userAssistance <- 'If an attribute uses the enumeration containing this enum literal then it is necessary to develop a convertion operation'
+--		)
+--}
+abstract rule WLink {
+ from
+  l : EqualMM!WLink
+ to
+  alink : EqualMM!WLink (
+   name <- l.name,
+   model <- l.model,
+   child <- l.child --			,
+   --			similarity <- l.similarity
+   --			,
+   --			similarity <- l.similarity
+   
+  )
+}
+
+rule EqualClass extends Equal {
+ from
+  l : EqualMM!EqualClass
+ to
+  alink : EqualMM!EqualClass
+}
+
+abstract rule EqualStructuralFeature extends Equal {
+ from
+  l : EqualMM!EqualStructuralFeature
+ to
+  alink : EqualMM!EqualStructuralFeature
+}
+
+rule EqualAttribute extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualAttribute
+ to
+  alink : EqualMM!EqualAttribute
+}
+
+rule EqualReference extends EqualStructuralFeature {
+ from
+  l : EqualMM!EqualReference
+ to
+  alink : EqualMM!EqualReference
+}
+
+rule EqualEnumeration extends Equal {
+ from
+  l : EqualMM!EqualEnumeration
+ to
+  alink : EqualMM!EqualEnumeration
+}
+
+rule EqualEnumLiteral extends Equal {
+ from
+  l : EqualMM!EqualEnumLiteral
+ to
+  alink : EqualMM!EqualEnumLiteral
+}
+
+abstract rule Added extends WLink {
+ from
+  l : EqualMM!Added
+ to
+  alink : EqualMM!Added (
+   --			name <- l.name,
+   --			model <- l.model,
+   right <- rightE --			,
+   --			child <- l.child
+   --			,
+   --			child <- l.child
+   
+  ),
+  rightE : EqualMM!RightElement (
+   name <- l.right.name,
+   element <- l.right.element
+  )
+}
+
+rule AddedClass extends Added {
+ from
+  l : EqualMM!AddedClass
+ to
+  alink : EqualMM!AddedClass
+}
+
+rule AddedReference extends Added {
+ from
+  l : EqualMM!AddedReference
+ to
+  alink : EqualMM!AddedReference
+}
+
+rule AddedAttribute extends Added {
+ from
+  l : EqualMM!AddedAttribute
+ to
+  alink : EqualMM!AddedAttribute
+}
+
+rule AddedEnumLiteral extends Added {
+ from
+  l : EqualMM!AddedEnumLiteral
+ to
+  alink : EqualMM!AddedEnumLiteral
+}
+
+rule AddedEnumeration extends Added {
+ from
+  l : EqualMM!AddedEnumeration
+ to
+  alink : EqualMM!AddedEnumeration
+}
+
+abstract rule Deleted extends WLink {
+ from
+  l : EqualMM!Deleted
+ to
+  alink : EqualMM!Deleted (
+   --			name <- l.name,
+   --			model <- l.model,
+   left <- leftE --			,
+   --			child <- l.child
+   --			,
+   --			child <- l.child
+   
+  ),
+  leftE : EqualMM!LeftElement (
+   name <- l.left.name,
+   element <- l.left.element
+  )
+}
+
+rule DeletedClass extends Deleted {
+ from
+  l : EqualMM!DeletedClass
+ to
+  alink : EqualMM!DeletedClass
+}
+
+rule DeletedAttribute extends Deleted {
+ from
+  l : EqualMM!DeletedAttribute
+ to
+  alink : EqualMM!DeletedAttribute
+}
+
+rule DeletedReference extends Deleted {
+ from
+  l : EqualMM!DeletedReference
+ to
+  alink : EqualMM!DeletedReference
+}
+
+rule DeletedEnumLiteral extends Deleted {
+ from
+  l : EqualMM!DeletedEnumLiteral
+ to
+  alink : EqualMM!DeletedEnumLiteral
+}
+
+rule DeletedEnumeration extends Deleted {
+ from
+  l : EqualMM!DeletedEnumeration
+ to
+  alink : EqualMM!DeletedEnumeration
+}
+
+rule ElementRefs {
+ from
+  mmw : EqualMM!ElementRef
+ to
+  out : EqualMM!ElementRef (
+   name <- mmw.name,
+   ref <- mmw.ref,
+   modelRef <- mmw.modelRef
+  )
+}
+
+rule matchmodel {
+ from
+  mmw : EqualMM!MatchModel
+ to
+  model : EqualMM!MatchModel (
+   name <- mmw.name,
+   leftM <- mmw.leftM,
+   rightM <- mmw.rightM,
+   methods <- mmw.methods->union(Sequence {method})
+  ),
+  method : EqualMM!Method (
+   name <- thisModule.methodName
+  )
+}
+
+rule method {
+ from
+  mmw : EqualMM!Method
+ to
+  method : EqualMM!Method (
+   name <- mmw.name
+  )
+}
+
+rule modelref {
+ from
+  mmw : EqualMM!ModelRef
+ to
+  out : EqualMM!ModelRef (
+   name <- mmw.name,
+   ref <- mmw.ref
+  )
+}

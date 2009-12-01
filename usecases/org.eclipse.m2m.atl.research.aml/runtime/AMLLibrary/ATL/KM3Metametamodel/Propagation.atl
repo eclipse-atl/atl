@@ -1,0 +1,123 @@
+-- @atlcompiler atl2006
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+module PropagationEcore;
+create OUT : EqualMM from IN : EqualMM, m1 : Metametamodel, m2 : Metametamodel;
+
+uses Metametamodel;
+
+uses SuitableMetametamodel;
+
+uses EqualMM;
+
+helper def: methodName : String =
+ 'Propagation';
+
+helper context EqualMM!Equal def: isAssocClass(l : EqualMM!Equal) : Boolean =
+ self.associatedClasses(self.leftE).includes(l.leftE) and self.associatedClasses(self.rightE).includes(l.rightE);
+
+helper context EqualMM!Equal def: associatedClasses(class : OclAny) : Sequence(OclAny) =
+ class.references->collect(r |
+  r.type
+ )->flatten();
+
+helper context EqualMM!Equal def: isClassOf(l : EqualMM!Equal) : Boolean =
+ if self.leftE.attributes.includes(l.leftE) and self.rightE.attributes.includes(l.rightE) then
+  true
+ else
+  if self.leftE.references.includes(l.leftE) and self.rightE.references.includes(l.rightE) then
+   true
+  else
+   false
+  endif
+ endif;
+
+helper context EqualMM!Equal def: isSubtypeOf(l : EqualMM!Equal) : Boolean =
+ self.leftE.supertypes.includes(l.leftE) and self.rightE.supertypes.includes(l.rightE);
+
+helper context EqualMM!Equal def: numOutEdges : Integer =
+ EqualMM!Equal.allInstances()->select(e |
+  e.linkingClass
+ )->union(EqualMM!Equal.allInstances()->select(e |
+  e.linkingStrFeature
+ ))->select(e |
+  self.isSubtypeOf(e) or self.isClassOf(e) or self.isAssocClass(e)
+ )->size();
+
+helper def: mapNumOutEdges : Map(EqualMM!Equal, Integer) =
+ EqualMM!Equal.allInstances()->select(e |
+  e.linkingClass
+ )->iterate(e; map : Map(EqualMM!Equal, Integer) = Map {} |
+  map.including(e, e.numOutEdges)
+ );
+
+rule matchmodel {
+ from
+  mmw : EqualMM!MatchModel
+ to
+  model : EqualMM!MatchModel (
+   name <- mmw.name,
+   leftM <- mmw.leftM,
+   rightM <- mmw.rightM,
+   --methods <- mmw.methods->union(Sequence{method}),
+   ownedElement <- --mmw.ownedElement->union(
+   --mmw.ownedElement->union(
+   --mmw.ownedElement->union(
+   EqualMM!Equal.allInstances()->iterate(d; acc : OclAny = Sequence {} |
+    --acc->union(
+    --acc->union(
+    --acc->union(
+    EqualMM!Equal.allInstances()->iterate(l; acc : OclAny = Sequence {} |
+     --acc->union(
+     if d.linkingClass and l.linkingStrFeature then
+      if d.isClassOf(l) then
+       acc->append(thisModule.Propagation(d, l, 1 / thisModule.mapNumOutEdges.get(d))) --d.numOutEdgesStrFeature('left', 'right') + d.numOutEdgesSupertype('left', 'right')
+       ->append(thisModule.Propagation(l, d, 1))
+      else
+       acc
+      endif
+     else
+      if d.linkingClass and l.linkingClass then
+       if d.isSubtypeOf(l) then
+        acc->append(thisModule.Propagation(d, l, 1 / thisModule.mapNumOutEdges.get(d)))->append(thisModule.Propagation(l, d, 1))
+       else
+        if d.isAssocClass(l) then
+         acc->append(thisModule.Propagation(d, l, 1 / thisModule.mapNumOutEdges.get(d)))->append(thisModule.Propagation(l, d, 1))
+        else
+         acc
+        endif
+       endif
+      else
+       acc
+      endif
+     endif --))
+     
+    )
+   )
+  ) --)
+  ,
+  method : EqualMM!Method (
+   name <- thisModule.methodName
+  )
+}
+
+rule Propagation(out : EqualMM!Equal, inL : EqualMM!Equal, coeff : Real) {
+ to
+  alink : EqualMM!PropagationEdge (
+   name <- out.name + '_' + inL.name,
+   outgoingLink <- out.xmiIDs_Equal,
+   incomingLink <- inL.xmiIDs_Equal,
+   propagation <- coeff
+  )
+ do {
+  alink;
+ }
+}

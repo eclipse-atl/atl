@@ -1,0 +1,486 @@
+-- @atlcompiler atl2006
+
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+
+-- Having EqualStructuralFeatures outside the root is normal
+-- The reason is that there is not EqualClass containing
+-- those EqualStructuralFeature
+module Rewriting; -- Module Template
+create OUT : EqualMM from IN : EqualMM, m1 : Metametamodel, m2 : Metametamodel;
+
+uses EqualMM;
+uses Metametamodel;
+uses SuitableMetametamodel;
+
+helper def: methodName : String = 'Rewriting';
+helper def : equalModel : EqualMM!MatchModel = OclUndefined;
+
+helper context EqualMM!WLink def: rightElement : OclAny = 
+	self.rightE;
+	
+helper context EqualMM!WLink def: leftElement : OclAny = 
+	self.leftE;
+	
+
+
+helper def: addedClasses : Sequence (OclAny) =
+	EqualMM!AddedClass.allInstances()->collect(e | e.rightElement)->flatten();
+
+helper def: deletedClasses : Sequence (OclAny) =
+	EqualMM!DeletedClass.allInstances()->collect(e | e.leftElement)->flatten();
+	
+
+	
+helper context EqualMM!EqualStructuralFeature def : getDescMsg(parent:EqualMM!EqualClass) : EqualMM!EqualStructuralFeature =
+	if parent.oclIsUndefined() then
+		''
+		else 
+			self.getVDescMsg(parent)
+		endif;
+
+helper context EqualMM!MovePropertyToOwner def: getVDescMsg(parent:EqualMM!EqualClass ) : String =
+	self.leftElement.name + ' is moved along the relation ' +
+							self.associatedReference.name + ' from the class ' + 
+							self.leftElement.owner.name + ' to the class ' +
+							self.rightElement.owner.name;	
+
+helper context EqualMM!ExtractClass def: getVDescMsg( parent:EqualMM!EqualClass) : String =
+	self.leftElement.name + ' is extracted from the class ' +							 
+							self.leftElement.owner.name + ' to the new class ' +
+							self.rightElement.owner.name;
+	
+helper context EqualMM!InlineClass def: getVDescMsg( parent:EqualMM!EqualClass) : String =
+	self.leftElement.name + ' is moved along the relation ' +
+							self.associatedReference.name + ' from the deleted class ' + 
+							self.leftElement.owner.name + ' to the class ' +
+							self.rightElement.owner.name;
+		
+helper context EqualMM!PushProperty	def: getVDescMsg( parent:EqualMM!EqualClass) : String =
+		self.leftElement.name + ' is eliminated from the superclass ' + 
+							self.leftElement.owner.name + ' and introduced to the subclass ' +
+							parent.rightElement.name;
+		
+helper context EqualMM!PullProperty	def: getVDescMsg( parent:EqualMM!EqualClass) : String =
+	self.leftElement.name + ' is pulled into the superclass ' +
+							parent.rightElement.name;	
+	
+rule matchmodel {
+	from
+		mmw: EqualMM!MatchModel 
+	to
+		model : EqualMM!MatchModel (
+			name <- mmw.name,
+			leftM <- mmw.leftM,
+			rightM <- mmw.rightM,
+			methods <- mmw.methods->union(Sequence{method})
+		),
+		method : EqualMM!Method (
+			name <- thisModule.methodName
+		)
+		do {
+			thisModule.equalModel <- model;
+		}
+}
+
+rule method {
+	from
+		mmw : EqualMM!Method
+	to 
+		method : EqualMM!Method (
+			name <- mmw.name			
+		)
+}
+
+rule modelref {
+	from
+		mmw : EqualMM!ModelRef
+	to
+		out : EqualMM!ModelRef (
+			name <- mmw.name,
+			ref <- mmw.ref
+		)
+}
+
+abstract rule Link {
+	from 
+		l : EqualMM!WLink
+	to
+		alink : EqualMM!WLink(
+			name <- l.name,
+			description <- l.description,
+			userAssistance <- l.userAssistance
+		)
+}
+
+abstract rule Equal extends Link {
+	from 
+		l : EqualMM!Equal
+	to
+		alink : EqualMM!Equal(
+			left <- thisModule.leftElement(l.left),
+			right <- thisModule.rightElement(l.right),			
+			similarity <- l.similarity	
+		)
+}
+
+abstract rule Added extends Link {
+	from
+		l : EqualMM!Added
+	to
+		alink : EqualMM!Added (
+			right <- thisModule.rightElement(l.right)
+		)
+}
+
+abstract rule Deleted extends Link {
+	from
+		l : EqualMM!Deleted
+	to
+		alink : EqualMM!Deleted (
+			left <- thisModule.leftElement(l.left)
+		)
+}
+	
+rule EqualClass extends Equal {
+	from
+		l : EqualMM!EqualClass
+	to
+		alink : EqualMM!EqualClass (			
+			model <- l.model
+		)
+}
+
+rule IntroduceSuperClassWithRestrictedProperty extends EqualClass {
+	from
+		l : EqualMM!IntroduceSuperClassWithRestrictedProperty
+	to
+		alink : EqualMM!IntroduceSuperClassWithRestrictedProperty
+}
+
+rule EqualStructuralFeature extends Equal {
+	from
+		l : EqualMM!EqualStructuralFeature
+	using {
+			parent : EqualMM!EqualClass = l.getParent; 
+		}
+	to
+		alink : EqualMM!EqualStructuralFeature (
+			
+			parent <- parent
+			
+--			model <- OclUndefined	-- prevent ESFs from attaching to the model because EC will claim them
+		-- does not work now because of bug in emfvm: null values are set
+		)
+}
+
+rule EqualReference extends EqualStructuralFeature {
+	from
+		l : EqualMM!EqualReference
+	to
+		alink : EqualMM!EqualReference 
+}
+
+rule EqualAttribute extends EqualStructuralFeature {
+	from
+		l : EqualMM!EqualAttribute
+	to
+		alink : EqualMM!EqualAttribute
+}
+
+rule MovePropertyToOwner extends EqualStructuralFeature {
+	from
+		l : EqualMM!MovePropertyToOwner
+	to
+		alink : EqualMM!MovePropertyToOwner (
+			associatedReference <- thisModule.rightElement(l.associatedReference)
+			,
+			description <- l.getDescMsg(parent)
+		)
+}
+
+rule MovePropertyToOwned extends EqualStructuralFeature {
+	from
+		l : EqualMM!MovePropertyToOwned
+	to
+		alink : EqualMM!MovePropertyToOwned (
+			associatedReference <- thisModule.leftElement(l.associatedReference)						
+		)
+}
+
+rule ExtractClass extends EqualStructuralFeature {
+	from
+		l : EqualMM!ExtractClass
+	to
+		alink : EqualMM!ExtractClass (
+			associatedReference <- thisModule.rightElement(l.associatedReference)
+			,
+			description <- l.getDescMsg(parent)	
+		)
+}
+
+rule InlineClass extends EqualStructuralFeature {
+	from
+		l : EqualMM!InlineClass
+	to
+		alink : EqualMM!InlineClass (
+			associatedReference <- thisModule.leftElement(l.associatedReference)
+			,
+			description <- l.getDescMsg(parent)
+		)
+}
+
+rule PushProperty extends EqualStructuralFeature {
+	from
+		l : EqualMM!PushProperty
+	to
+		alink : EqualMM!PushProperty (
+			description <- l.getDescMsg(parent)
+		)
+}
+
+rule PullProperty extends EqualStructuralFeature {
+	from
+		l : EqualMM!PullProperty
+	to
+		alink : EqualMM!PullProperty (
+			description <- l.getDescMsg(parent)
+		)
+}
+
+rule FlattenProperty extends EqualStructuralFeature {
+	from
+		l : EqualMM!FlattenProperty
+	to
+		alink : EqualMM!FlattenProperty
+}
+
+rule ExtractSuperClass extends EqualStructuralFeature {
+	from
+		l : EqualMM!ExtractSuperClass
+	to
+		alink : EqualMM!ExtractSuperClass
+}
+
+rule RestrictTypeReference extends EqualReference {
+	from 
+		l : EqualMM!RestrictTypeReference
+	to
+		alink : EqualMM!RestrictTypeReference	(
+			description <- l.description	
+		)
+}
+
+rule RestrictTypeAttribute extends EqualAttribute {
+	from 
+		l : EqualMM!RestrictTypeAttribute
+	to
+		alink : EqualMM!RestrictTypeAttribute	(
+			description <- l.description	
+		)
+}
+
+rule RestrictMultiplicityReference extends EqualReference {
+	from 
+		l : EqualMM!RestrictMultiplicityReference
+	to
+		alink : EqualMM!RestrictMultiplicityReference	(
+			description <- l.description	
+		)
+}
+
+
+rule AddedClass extends Added {
+	from
+		l : EqualMM!AddedClass
+	to
+		alink : EqualMM!AddedClass (			
+			model <- l.model
+		)			
+}
+
+abstract rule AddedStructuralFeature extends Added {
+	from
+		l : EqualMM!AddedStructuralFeature
+	to
+		alink : EqualMM!AddedStructuralFeature (
+			parent <- l.getParent
+		)	
+}
+
+rule AddedReference extends AddedStructuralFeature {
+	from
+		l : EqualMM!AddedReference
+	to
+		alink : EqualMM!AddedReference
+}
+
+rule AddedAttribute extends AddedStructuralFeature {
+	from
+		l : EqualMM!AddedAttribute
+	to
+		alink : EqualMM!AddedAttribute(
+			
+		)
+}
+
+rule AddedEnumLiteral extends Added {
+	from
+		l : EqualMM!AddedEnumLiteral
+	to
+		alink : EqualMM!AddedEnumLiteral(
+			parent <- l.getParent
+		)
+}
+
+rule AddedEnumeration extends Added {
+	from
+		l : EqualMM!AddedEnumeration
+	to
+		alink : EqualMM!AddedEnumeration (
+			model <- l.model
+		)
+}
+
+rule IntroducedRestrictedAttribute extends AddedAttribute {
+	from l : EqualMM!IntroduceRestrictedProperty
+	
+	to
+		alink: EqualMM!IntroduceRestrictedProperty(
+			description <- l.description	
+		)		
+}
+
+rule DeletedClass extends Deleted {
+	from
+		l : EqualMM!DeletedClass		
+	to
+		alink : EqualMM!DeletedClass (			
+			model <- l.model
+		)			
+}
+
+abstract rule DeletedStructuralFeature extends Deleted {
+	from
+		l : EqualMM!DeletedStructuralFeature
+	to
+		alink : EqualMM!DeletedStructuralFeature (
+			parent <- l.getParent
+		)	
+}
+
+rule DeletedAttribute extends DeletedStructuralFeature {
+	from
+		l : EqualMM!DeletedAttribute
+	to
+		alink : EqualMM!DeletedAttribute
+}
+
+rule DeletedReference extends DeletedStructuralFeature {
+	from
+		l : EqualMM!DeletedReference
+	to
+		alink : EqualMM!DeletedReference
+}
+
+rule DeletedEnumeration extends Deleted {
+	from
+		l : EqualMM!DeletedEnumeration
+	to
+		alink : EqualMM!DeletedEnumeration (
+			model <- l.model
+		)
+}
+
+--rule DeletedEnumLiteral extends Deleted {
+--	from
+--		l : EqualMM!DeletedEnumLiteral
+--	to
+--		alink : EqualMM!DeletedEnumLiteral(
+--			parent <- l.getParent
+--		)
+--}
+
+
+
+lazy rule leftElement {
+	from
+		mmw : EqualMM!LeftElement
+	to
+		out : EqualMM!LeftElement (
+			name <- mmw.name,
+			element <- thisModule.leftElementRefs(mmw.element)
+		)
+}
+
+lazy rule rightElement {
+	from
+		mmw : EqualMM!RightElement
+	to
+		out : EqualMM!RightElement (
+			name <- mmw.name,
+			element <- thisModule.rightElementRefs(mmw.element)
+		)
+}
+
+rule AddedReferenceAssociation {
+	from
+		mmw : EqualMM!AddedReferenceAssociation
+	to
+		out : EqualMM!AddedReferenceAssociation (
+			model <- mmw.model,
+			associationEnd <- mmw.associationEnd
+		)
+}
+
+--rule DeletedReferenceAssociation {
+--	from
+--		mmw : EqualMM!DeletedReferenceAssociation
+--	to
+--		out : EqualMM!DeletedReferenceAssociation (
+--			model <- mmw.model,
+--			associationEnd <- mmw.associationEnd
+--		)
+--}
+
+rule AssociationEnd {
+	from
+		mmw : EqualMM!AssociationEnd
+	to
+		out : EqualMM!AssociationEnd (
+			name <- mmw.name,
+			relatedLink <- mmw.relatedLink	
+		)
+}
+
+lazy rule leftElementRefs {
+	from
+		mmw : EqualMM!ElementRef 		
+	to
+		out : EqualMM!ElementRef (
+			name <- mmw.name,
+			ref <- mmw.ref,
+			modelRef <- thisModule.equalModel.leftM			
+		)
+}
+
+lazy rule rightElementRefs {
+	from
+		mmw : EqualMM!ElementRef 		
+	to
+		out : EqualMM!ElementRef (
+			name <- mmw.name,
+			ref <- mmw.ref,
+			modelRef <- thisModule.equalModel.rightM			
+		)
+}
+

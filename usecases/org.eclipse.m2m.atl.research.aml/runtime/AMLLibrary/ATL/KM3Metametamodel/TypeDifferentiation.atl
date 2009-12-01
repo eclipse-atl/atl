@@ -1,0 +1,284 @@
+-- @atlcompiler atl2006
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+module TypeDifferentiation;
+create OUT : EqualMM from IN1 : EqualMM, m1 : Metametamodel, m2 : Metametamodel;
+
+uses EqualMM;
+
+uses Metametamodel;
+
+abstract rule Equal {
+ from
+  s : EqualMM!Equal
+ to
+  t : EqualMM!Equal (
+   name <- s.name,
+   model <- s.model,
+   right <- thisModule.rightElement(s.right),
+   left <- thisModule.leftElement(s.left),
+   similarity <- s.similarity
+  )
+}
+
+rule EqualClass extends Equal {
+ from
+  s : EqualMM!Equal
+  (
+   s.linkingClass
+  )
+ to
+  t : EqualMM!EqualClass
+}
+
+rule EqualReference extends Equal {
+ from
+  s : EqualMM!Equal
+  (
+   s.linkingReference
+  )
+ to
+  t : EqualMM!EqualReference
+}
+
+rule EqualAttribute extends Equal {
+ from
+  s : EqualMM!Equal
+  (
+   s.linkingAttribute
+  )
+ to
+  t : EqualMM!EqualAttribute
+}
+
+rule EqualEnumeration extends Equal {
+ from
+  s : EqualMM!Equal
+  (
+   s.linkingEnumeration
+  )
+ to
+  t : EqualMM!EqualEnumeration
+}
+
+rule EqualEnumLiteral extends Equal {
+ from
+  s : EqualMM!Equal
+  (
+   s.linkingEnumLiteral
+  )
+ to
+  t : EqualMM!EqualEnumLiteral
+}
+
+rule EqualDataType extends Equal {
+ from
+  s : EqualMM!Equal
+  (
+   s.linkingDataType
+  )
+ to
+  t : EqualMM!EqualDataType
+}
+
+abstract rule Added {
+ from
+  s : EqualMM!Added
+ to
+  t : EqualMM!Added (
+   name <- s.name,
+   model <- s.model,
+   right <- thisModule.rightElement(s.right)
+  )
+}
+
+rule AddedClass extends Added {
+ from
+  s : EqualMM!Added
+  (
+   s.linkingClass
+  )
+ to
+  t : EqualMM!AddedClass
+}
+
+rule AddedAttribute extends Added {
+ from
+  s : EqualMM!Added
+  (
+   s.linkingAttribute
+  )
+ to
+  t : EqualMM!AddedAttribute
+}
+
+rule AddedReference extends Added {
+ from
+  s : EqualMM!Added
+  (
+   s.linkingReference
+  )
+ to
+  t : EqualMM!AddedReference
+}
+
+rule AddedEnumeration extends Added {
+ from
+  s : EqualMM!Added
+  (
+   s.linkingEnumeration
+  )
+ to
+  t : EqualMM!AddedEnumeration
+}
+
+rule AddedEnumLiteral extends Added {
+ from
+  s : EqualMM!Added
+  (
+   s.linkingEnumLiteral
+  )
+ to
+  t : EqualMM!AddedEnumLiteral
+}
+
+rule AddedDataType extends Added {
+ from
+  s : EqualMM!Added
+  (
+   s.linkingDataType
+  )
+ to
+  t : EqualMM!AddedDataType
+}
+
+abstract rule Deleted {
+ from
+  s : EqualMM!Deleted
+ to
+  t : EqualMM!Deleted (
+   name <- s.name,
+   model <- s.model,
+   left <- thisModule.leftElement(s.left)
+  )
+}
+
+rule DeletedClass extends Deleted {
+ from
+  s : EqualMM!Deleted
+  (
+   s.linkingClass
+  )
+ to
+  t : EqualMM!DeletedClass
+}
+
+rule DeletedAttribute extends Deleted {
+ from
+  s : EqualMM!Deleted
+  (
+   s.linkingAttribute
+  )
+ to
+  t : EqualMM!DeletedAttribute
+}
+
+rule DeletedReference extends Deleted {
+ from
+  s : EqualMM!Deleted
+  (
+   s.linkingReference
+  )
+ to
+  t : EqualMM!DeletedReference
+}
+
+rule DeletedEnumeration extends Deleted {
+ from
+  s : EqualMM!Deleted
+  (
+   s.linkingEnumeration
+  )
+ to
+  t : EqualMM!DeletedEnumeration
+}
+
+rule DeletedEnumLiteral extends Deleted {
+ from
+  s : EqualMM!Deleted
+  (
+   s.linkingEnumLiteral
+  )
+ to
+  t : EqualMM!DeletedEnumLiteral
+}
+
+rule DeletedDataType extends Deleted {
+ from
+  s : EqualMM!Deleted
+  (
+   s.linkingDataType
+  )
+ to
+  t : EqualMM!DeletedDataType
+}
+
+rule matchModel {
+ from
+  mmw : EqualMM!MatchModel
+ to
+  out : EqualMM!MatchModel (
+   name <- mmw.name,
+   leftM <- mmw.leftM,
+   rightM <- mmw.rightM
+  )
+}
+
+rule modelRef {
+ from
+  mmw : EqualMM!ModelRef
+ to
+  out : EqualMM!ModelRef (
+   name <- mmw.name,
+   ref <- mmw.ref
+  )
+}
+
+lazy rule leftElement {
+ from
+  mmw : EqualMM!LeftElement
+ to
+  out : EqualMM!LeftElement (
+   name <- mmw.name,
+   element <- thisModule.ElementRef(mmw)
+  )
+}
+
+lazy rule rightElement {
+ from
+  mmw : EqualMM!RightElement
+ to
+  out : EqualMM!RightElement (
+   name <- mmw.name,
+   element <- thisModule.ElementRef(mmw)
+  )
+}
+
+lazy rule ElementRef {
+ from
+  mmw : EqualMM!Element
+ to
+  out : EqualMM!ElementRef (
+   name <- mmw.element.name,
+   ref <- mmw.element.ref,
+   modelRef <- mmw.element.modelRef
+  )
+}

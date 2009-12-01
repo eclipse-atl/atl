@@ -1,0 +1,172 @@
+-- @atlcompiler atl2006
+
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+
+module Differentiation; -- Module Template
+create OUT : EqualMM from IN1 : EqualMM, m1 : Metametamodel, m2 : Metametamodel;
+
+uses Metametamodel;
+uses SuitableMetametamodel;
+uses EqualMM;
+
+
+helper context EqualMM!MatchModel def: rightIsNotLinked (element : OclAny) : Boolean =
+	self.mapEqualByRight.get(element).oclIsUndefined();
+	
+
+helper context EqualMM!MatchModel def: leftIsNotLinked (element : OclAny) : Boolean =
+	self.mapEqualByLeft.get(element).oclIsUndefined();
+
+-- These conditions validate that the modelElement is well-structured 
+helper context EqualMM!MatchModel def : isEcoreClass (element:OclAny) : Boolean =
+	if element.isClass then
+		if element.refImmediateComposite().isPackage then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+helper context EqualMM!MatchModel def : isEcoreStructuralFeature (element:OclAny) : Boolean =
+	if element.isStructuralFeature then
+			if element.refImmediateComposite().isClass then		
+				true
+			else
+				false
+			endif
+	else
+		false
+	endif; 
+
+
+helper context EqualMM!MatchModel def : isDiffModelElement (element : OclAny) : Boolean =
+	self.isEcoreClass(element) or self.isEcoreStructuralFeature(element) or element.isEnumeration or element.isEnumLiteral or element.isDataType;
+	
+rule Equal {
+	from
+		s : EqualMM!Equal
+	to
+		t : EqualMM!Equal(
+			name <- s.name, 
+			model <- s.model,
+			right <- thisModule.rightElement(s.right),
+			left <- thisModule.leftElement(s.left),
+			similarity <- s.similarity
+		)
+}
+
+rule Added {
+	from
+		r : Metametamodel!EModelElement in m2 (
+			if thisModule.uniqueEqualModel.isDiffModelElement(r) then 
+				thisModule.uniqueEqualModel.rightIsNotLinked(r)
+			else
+				false
+			endif
+		)
+	to
+		alink : EqualMM!Added (
+			name <- r.name, 
+			model <- thisModule.uniqueEqualModel,
+			right <- rightE		
+		),
+		rightE : EqualMM!RightElement (			
+			element <- rightERef
+		),
+		rightERef : EqualMM!ElementRef (			
+			ref <- r.__xmiID__,
+			modelRef <- thisModule.uniqueEqualModel.rightM
+		)	
+}
+
+rule Deleted {
+	from
+		l : Metametamodel!EModelElement in m1 (
+			if thisModule.uniqueEqualModel.isDiffModelElement(l) then
+				thisModule.uniqueEqualModel.leftIsNotLinked(l)
+			else
+				false
+			endif
+		)
+	to
+		alink : EqualMM!Deleted (
+			name <- l.name, 
+			model <- thisModule.uniqueEqualModel,
+			left <- leftE		
+		),
+		leftE : EqualMM!LeftElement (			
+			element <- leftERef
+		),
+		leftERef : EqualMM!ElementRef (			
+			ref <- l.__xmiID__,
+			modelRef <- thisModule.uniqueEqualModel.leftM
+		)	
+}
+
+
+
+-- copied rules
+
+rule matchModel {
+  from
+    mmw : EqualMM!MatchModel 
+  to
+    out : EqualMM!MatchModel (
+      name <- mmw.name,
+      leftM <- mmw.leftM,
+      rightM <- mmw.rightM
+    )
+}
+
+rule modelRef {
+  from
+    mmw : EqualMM!ModelRef 
+  to
+    out : EqualMM!ModelRef (
+      name <- mmw.name,
+      ref <- mmw.ref
+    )
+}
+
+lazy rule leftElement {
+  from
+    mmw : EqualMM!LeftElement 
+  to
+    out : EqualMM!LeftElement (
+      name <- mmw.name,
+      element <- thisModule.ElementRef(mmw)
+    )
+}
+
+lazy rule rightElement {
+  from
+    mmw : EqualMM!RightElement 
+  to
+    out : EqualMM!RightElement (
+      name <- mmw.name,
+      element <- thisModule.ElementRef(mmw)
+    )
+}
+
+lazy rule ElementRef {
+  from
+    mmw : EqualMM!Element
+  to
+    out : EqualMM!ElementRef (
+      name <- mmw.element.name,
+      ref <- mmw.element.ref,
+      modelRef <- mmw.element.modelRef
+    )
+}

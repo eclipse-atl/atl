@@ -1,0 +1,157 @@
+-- @atlcompiler atl2006
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+module HOT_match;
+create OUT : ATL from IN1 : EqualMM, left : Metametamodel, right : Metametamodel;
+
+uses Metametamodel;
+uses SuitableMetametamodel;
+uses EqualMM;
+
+helper context EqualMM!ModelRef def: modelName : String =
+	if self.refImmediateComposite().leftM = self then
+		'left'
+	else -- self.refImmediateComposite().rightM = self
+		'right'
+	endif;
+
+
+rule MatchModel2Module {
+	from 
+		s : EqualMM!MatchModel
+	to
+		t : ATL!Module (
+			commentsBefore <- Set {'-- @atlcompiler atl2006'},
+			name <- if s.name.oclIsUndefined() then 'test' else s.name endif,
+			isRefining <- false,
+			inModels <- sourceModel,
+			outModels <- targetModel
+			--,	
+			--elements <- s.ownedElement
+		),
+		sourceModel : ATL!OclModel (
+			name <- 'IN',
+			metamodel <- s.leftM
+		),
+		targetModel : ATL!OclModel (
+			name <- 'OUT',
+			metamodel <- s.rightM
+		)
+}
+
+rule ModelRef2OclModel {
+	from
+		s : EqualMM!ModelRef
+	to
+		t : ATL!OclModel (
+			name <- s.modelName + s.modelName.getPackageModel->any(e |
+				e.name <> 'PrimitiveTypes'
+			).name
+		)
+}
+
+rule EqualClass2MatchedRule {
+	from
+		s : EqualMM!EqualClass 
+		(
+			not (s.name = '_') --this corresponds to classes without names
+			and
+			not s.right.target.isAbstract
+		)
+	to
+		t : ATL!MatchedRule (
+			isAbstract <- false,
+			isRefining <- false,
+			name <- s.name,
+			superRule <- OclUndefined,
+			inPattern <- sp,
+			outPattern <- tp,
+			"module" <- s.model
+		),
+		sp : ATL!InPattern (
+			elements <- Sequence {s.left},
+			filter <- typeTest
+		),
+			typeTest : ATL!OperationCallExp (
+				source <- v,
+				operationName <- 'oclIsTypeOf',
+				arguments <- Sequence {typeToTest}
+			),
+				v : ATL!VariableExp (
+					referredVariable <- s.left
+				),
+				typeToTest : ATL!OclModelElement (
+					name <- s.left.target.name,
+					model <- s.left.element.modelRef
+				),
+		tp : ATL!OutPattern (
+			elements <- Sequence {s.right}
+		)
+}
+
+abstract rule Element2PatternElement {
+	from
+		s : EqualMM!Element (
+			s.refImmediateComposite().oclIsKindOf(EqualMM!EqualClass) or
+			s.refImmediateComposite().oclIsKindOf(EqualMM!AddedClass)
+		)
+	to
+		t : ATL!PatternElement (
+			type <- type
+		),
+		type : ATL!OclModelElement (
+			name <- s.target.name,
+			model <- s.element.modelRef
+		)
+}
+
+rule LeftElement2SourcePatternElement extends Element2PatternElement {
+	from
+		s : EqualMM!LeftElement
+	to
+		t : ATL!SimpleInPatternElement (
+			varName <- 's'
+		)
+}
+
+rule RightElement2TargetPatternElement extends Element2PatternElement {
+	from
+		s : EqualMM!RightElement
+	to
+		t : ATL!SimpleOutPatternElement (
+			varName <- 't',
+			bindings <- s.refImmediateComposite().child
+		)
+}
+
+rule EqualStructuralFeature2Binding {
+	from
+		s : EqualMM!EqualStructuralFeature (
+			not s.parent.oclIsUndefined()
+--			and
+--			not s.isConceptualBinding
+		)
+	to
+		t : ATL!Binding (
+			propertyName <- s.right.target.name,
+			value <- value
+		),
+		value : ATL!NavigationOrAttributeCallExp (
+			source <- v,
+			name <- s.left.target.name
+		),
+		v : ATL!VariableExp (
+			referredVariable <- s.refImmediateComposite().left
+		)
+}
+
+

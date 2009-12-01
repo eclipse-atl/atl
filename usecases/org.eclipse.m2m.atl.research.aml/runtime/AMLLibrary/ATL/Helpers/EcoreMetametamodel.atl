@@ -1,0 +1,103 @@
+--@atlcompiler atl2006
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+
+library EcoreMetametamodel; -- Library Template
+
+uses Metametamodel;
+
+helper def: fullNameMap(model : String) : Map(String, OclAny) =
+	Metametamodel!EModelElement.allInstancesFrom(model)
+		->iterate(e; rpm : Map(String, OclAny) = Map {} |
+	    rpm.including(e.fullName, e)
+	);
+
+helper context String def : getPackageModel : OclAny =
+	Metametamodel!EPackage.allInstancesFrom(self);
+
+helper context Metametamodel!EClass def:attributes : OclAny=
+	self.eAttributes;
+
+helper context Metametamodel!EClass def:references : OclAny =
+	self.eReferences;
+
+helper context Metametamodel!EReference def: type : OclAny =
+	self.eReferenceType;
+
+helper def: allClasses (model : String) : Metametamodel!EClass =
+	Metametamodel!EClass.allInstancesFrom(model);
+
+helper context Metametamodel!EModelElement def: fullName : String =
+	thisModule.fullName(self);
+
+helper context Metametamodel!EStructuralFeature def : owner : OclAny =
+	self.eContainingClass;
+	
+helper context Metametamodel!EAnnotation def: fullName : String =	
+	'';
+helper context Metametamodel!EClass def : isAbstract : OclAny =
+	self."abstract";
+
+helper context Metametamodel!EReference def: opposite : OclAny =
+	self.eOpposite;
+
+helper context Metametamodel!ETypedElement def: lower : OclAny =
+	self.lowerBound;
+
+helper context Metametamodel!ETypedElement def: upper : OclAny =
+	self.upperBound;
+
+helper context Metametamodel!EModelElement def: leftName_rightName(right : Metametamodel!EModelElement) : String =
+	self.name.leftName_rightName(right.name);
+	
+helper context Metametamodel!EClass def: allSupertypes : OrderedSet(Metametamodel!EClass) =
+	thisModule.allSupertypes(self);
+	
+helper context Metametamodel!EClass def : supertypes : OclAny =
+	self.eAllSuperTypes;	
+	
+helper context Metametamodel!EClass def:structuralFeatures : OclAny =
+	self.eReferences.append(self.eAttributes)->flatten();
+	
+helper context Metametamodel!EEnum def:literals : OclAny =
+	self.eLiterals;
+	
+helper context Metametamodel!ETypedElement def: type : OclAny =
+	self.eType;
+	
+helper context Metametamodel!EModelElement def: isReference : Boolean =
+	self.oclIsTypeOf(Metametamodel!EReference);
+	
+helper context Metametamodel!EModelElement def: isEnumeration : Boolean =
+	self.oclIsTypeOf(Metametamodel!EEnum);	
+	
+helper context 	Metametamodel!EModelElement def: isAttribute : Boolean =
+	self.oclIsTypeOf(Metametamodel!EAttribute);	
+	
+helper context 	Metametamodel!EModelElement def: isDataType : Boolean =
+	self.oclIsTypeOf(Metametamodel!EDataType);	
+		
+helper context 	Metametamodel!EModelElement def: isEnumLiteral : Boolean =
+	self.oclIsTypeOf(Metametamodel!EEnumLiteral);	
+
+helper context 	Metametamodel!EModelElement def: isClass : Boolean =
+	self.oclIsTypeOf(Metametamodel!EClass);	
+
+helper context 	Metametamodel!EModelElement def: isStructuralFeature : Boolean =
+	self.oclIsKindOf(Metametamodel!EStructuralFeature);
+	
+helper context 	Metametamodel!EModelElement def: isAnnotation : Boolean =
+	self.oclIsTypeOf(Metametamodel!EAnnotation);			
+	
+helper context 	Metametamodel!EModelElement def: isPackage : Boolean =
+	self.oclIsTypeOf(Metametamodel!EPackage);	
+	

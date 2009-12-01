@@ -1,0 +1,68 @@
+--@atlcompiler atl2006
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+
+library KM3Metametamodel; -- Library Template
+
+uses Metametamodel;
+
+helper def: fullNameMap(model : String) : Map(String, OclAny) =
+	Metametamodel!ModelElement.allInstancesFrom(model)
+		->iterate(e; rpm : Map(String, OclAny) = Map {} |
+	    rpm.including(e.fullName, e)
+	);
+
+helper context String def : getPackageModel : OclAny =
+	Metametamodel!Package.allInstancesFrom(self);
+
+helper def: allClasses (model : String) : Metametamodel!Class =
+	Metametamodel!Class.allInstancesFrom(model);
+
+helper context Metametamodel!ModelElement def: fullName : String =
+	thisModule.fullName(self);
+
+helper context Metametamodel!ModelElement def: leftName_rightName(right : Metametamodel!ModelElement) : String =
+	self.name.leftName_rightName(right.name);
+	
+helper context Metametamodel!Class def: allSupertypes : OrderedSet(Metametamodel!Class) =
+	thisModule.allSupertypes(self);
+
+helper context Metametamodel!Class def: attributes : OclAny =
+	self.structuralFeatures->select(e | e.isAttribute);
+
+helper context Metametamodel!Class def: references : OclAny =
+	self.structuralFeatures->select(e | e.isReference);
+
+helper context Metametamodel!ModelElement def: isReference : Boolean =
+	self.oclIsTypeOf(Metametamodel!Reference);
+	
+helper context Metametamodel!ModelElement def: isEnumeration : Boolean =
+	self.oclIsTypeOf(Metametamodel!Enumeration);	
+	
+helper context 	Metametamodel!ModelElement def: isAttribute : Boolean =
+	self.oclIsTypeOf(Metametamodel!Attribute);	
+	
+helper context 	Metametamodel!ModelElement def: isDataType : Boolean =
+	self.oclIsTypeOf(Metametamodel!DataType);	
+		
+helper context 	Metametamodel!ModelElement def: isEnumLiteral : Boolean =
+	self.oclIsTypeOf(Metametamodel!EnumLiteral);	
+
+helper context 	Metametamodel!ModelElement def: isClass : Boolean =
+	self.oclIsTypeOf(Metametamodel!Class);	
+
+helper context 	Metametamodel!ModelElement def: isStructuralFeature : Boolean =
+	self.oclIsKindOf(Metametamodel!StructuralFeature);
+	
+helper context 	Metametamodel!ModelElement def: isPackage : Boolean =
+	self.oclIsTypeOf(Metametamodel!Package);	
+	
