@@ -1,0 +1,261 @@
+--@atlcompiler atl2006
+
+-- ******************************************************************************
+-- Copyright (c) 2007, 2008 INRIA. 
+-- All rights reserved. This program and the accompanying materials 
+-- are made available under the terms of the Eclipse Public License v1.0 
+-- which accompanies this distribution, and is available at
+-- http://www.eclipse.org/legal/epl-v10.html
+-- 
+-- Contributors: 
+-- 	INRIA - Initial implementation
+--  
+-- ******************************************************************************
+
+--@author Hugo Bruneliere (Hugo.Bruneliere <at> gmail.com)
+
+module AntScript2XML; 
+create OUT : XML from IN : AntScripts;
+
+
+-------------------------------------------------------------------------------
+-- HELPERS --------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+-- concatene a list of String
+-- the elements are separated by a comma
+helper def: concat(list : Sequence(String)) : String =
+	list -> asOrderedSet() -> iterate(element ;acc : String = '' |
+								acc +
+									if acc = ''
+									then element
+									else ',' + element
+								endif);
+
+
+
+-------------------------------------------------------------------------------
+-- RULES ----------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+
+rule Project2Root {
+	from p : AntScripts!Project
+	to r : XML!Root(
+		name <- 'project',
+		children <- Sequence { 	itsName,
+								if p.defaultTarget.oclIsUndefined() then
+									OclUndefined
+								else
+									thisModule.CreateDefaultTargetAttribute(p.defaultTarget)
+								endif,
+								p.properties->collect(pr | thisModule.Property2XMLElement(pr)),
+								p.targets->collect(ta | thisModule.Target2XMLElement(ta))
+							}
+	),
+	itsName : XML!Attribute(
+		name <- 'name',
+		value <- p.name
+	)
+}
+
+
+lazy rule CreateDefaultTargetAttribute {
+	from t : AntScripts!Target
+	to dta : XML!Attribute(
+		name <- 'default',
+		value <- t.name
+	)
+}
+
+
+lazy rule Property2XMLElement {
+	from p : AntScripts!Property
+	to ep : XML!Element(
+		name <- 'property',
+		children <- Sequence{
+							if p.name.oclIsUndefined() then
+								OclUndefined
+							else
+								thisModule.CreateNameAttribute(p)
+							endif,
+							if p.value.oclIsUndefined() then
+								OclUndefined
+							else
+								thisModule.CreateValueAttribute(p)
+							endif,
+							if p.location.oclIsUndefined() then
+								OclUndefined
+							else
+								thisModule.CreateLocationAttribute(p)
+							endif,
+							if p.refid.oclIsUndefined() then
+								OclUndefined
+							else
+								thisModule.CreateRefidAttribute(p)
+							endif,
+							if p.resource.oclIsUndefined() then
+								OclUndefined
+							else
+								thisModule.CreateResourceAttribute(p)
+							endif,
+							if p.file.oclIsUndefined() then
+								OclUndefined
+							else
+								thisModule.CreateFileAttribute(p)
+							endif,
+							if p.url.oclIsUndefined() then
+								OclUndefined
+							else
+								thisModule.CreateUrlAttribute(p)
+							endif,
+							if p.environment.oclIsUndefined() then
+								OclUndefined
+							else
+								thisModule.CreateEnvironmentAttribute(p)
+							endif,
+							if p.classpath.oclIsUndefined() then
+								OclUndefined
+							else
+								thisModule.CreateClasspathAttribute(p)
+							endif,
+							if p.classpathref.oclIsUndefined() then
+								OclUndefined
+							else
+								thisModule.CreateClasspathrefAttribute(p)
+							endif,
+							if p.prefix.oclIsUndefined() then
+								OclUndefined
+							else
+								thisModule.CreatePrefixAttribute(p)
+							endif
+							}
+	)
+}
+lazy rule CreateNameAttribute {
+	from p : AntScripts!Property
+	to dta : XML!Attribute(
+		name <- 'name',
+		value <- p.name
+	)
+}
+lazy rule CreateValueAttribute {
+	from p : AntScripts!Property
+	to dta : XML!Attribute(
+		name <- 'value',
+		value <- p.value
+	)
+}
+lazy rule CreateLocationAttribute {
+	from p : AntScripts!Property
+	to dta : XML!Attribute(
+		name <- 'location',
+		value <- p.location
+	)
+}
+lazy rule CreateRefidAttribute {
+	from p : AntScripts!Property
+	to dta : XML!Attribute(
+		name <- 'refid',
+		value <- p.refid
+	)
+}
+lazy rule CreateResourceAttribute {
+	from p : AntScripts!Property
+	to dta : XML!Attribute(
+		name <- 'resource',
+		value <- p.resource
+	)
+}
+lazy rule CreateFileAttribute {
+	from p : AntScripts!Property
+	to dta : XML!Attribute(
+		name <- 'file',
+		value <- p.file
+	)
+}
+lazy rule CreateUrlAttribute {
+	from p : AntScripts!Property
+	to dta : XML!Attribute(
+		name <- 'url',
+		value <- p.url
+	)
+}
+lazy rule CreateEnvironmentAttribute {
+	from p : AntScripts!Property
+	to dta : XML!Attribute(
+		name <- 'environment',
+		value <- p.environment
+	)
+}
+lazy rule CreateClasspathAttribute {
+	from p : AntScripts!Property
+	to dta : XML!Attribute(
+		name <- 'classpath',
+		value <- p.classpath
+	)
+}
+lazy rule CreateClasspathrefAttribute {
+	from p : AntScripts!Property
+	to dta : XML!Attribute(
+		name <- 'classpathref',
+		value <- p.classpathref
+	)
+}
+lazy rule CreatePrefixAttribute {
+	from p : AntScripts!Property
+	to dta : XML!Attribute(
+		name <- 'prefix',
+		value <- p.prefix
+	)
+}
+
+
+lazy rule Target2XMLElement {
+	from t : AntScripts!Target
+	to et : XML!Element(
+		name <- 'target',
+		children <- Sequence{ 	itsName,
+								if t.depends->isEmpty() then
+									OclUndefined
+								else
+									thisModule.CreateDependsAttribute(t)
+								endif,
+								t.tasks->collect(ta | thisModule.TaskElement2XMLElement(ta)) 
+							}
+	),
+	itsName : XML!Attribute(
+		name <- 'name',
+		value <- t.name
+	)
+}
+
+
+lazy rule CreateDependsAttribute {
+	from t : AntScripts!Target
+	to dta : XML!Attribute(
+		name <- 'depends',
+		value <- thisModule.concat( t.depends->collect(t | t.name) )
+	)
+}
+
+
+lazy rule TaskElement2XMLElement {
+	from t : AntScripts!TaskElement
+	to et : XML!Element(
+		name <- t.name,
+		children <- Sequence{
+							t.attributes->collect(a | thisModule.Attribute2XMLAttribute(a)),
+							t.elements->collect(e | thisModule.TaskElement2XMLElement(e))
+							}
+	)
+}
+
+
+lazy rule Attribute2XMLAttribute {
+	from a : AntScripts!Attribute
+	to xa : XML!Attribute(
+		name <- a.name,
+		value <- a.value
+	)
+}

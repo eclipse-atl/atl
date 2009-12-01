@@ -1,0 +1,142 @@
+--@atlcompiler atl2006
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+
+module MatchingMetrics; -- Module Template
+create OUT : Table from IN : Table, Expected : EqualMM, Obtained : EqualMM;
+
+uses EqualMM;
+
+helper def : obtainedMappingSource : String = 'Obtained'.getRealEqualModelName();
+helper def : expMappingSource : String = 'Expected'.getRealEqualModelName();
+
+helper def : mapExpected : Map(String, EqualMM!Equal) =
+	EqualMM!MatchModel->allInstancesFrom('Expected')->first().mapEqualByModel.debug('mapExpected');
+
+helper def : mapObtained : Map(String, EqualMM!Equal) =
+	EqualMM!MatchModel->allInstancesFrom('Obtained')->first().mapEqualByModel.debug('mapObtained');
+
+helper def: correctFound : Integer =
+	thisModule.mapExpected.getKeys()->asSet()
+	->intersection(thisModule.mapObtained.getKeys()->asSet())
+	->size();
+
+helper def: totalFound : Integer  =
+	thisModule.mapObtained.getKeys()->size();
+
+helper def: totalCorrect : Integer  =
+	thisModule.mapExpected.getKeys()->size();
+
+helper def : appliedMethods : String =
+	EqualMM!MatchModel->allInstancesFrom('Obtained')->first().methods->iterate(e; cad : String = '' |
+		cad + ' ' + e.name		
+	);
+
+helper def: precision : Real =
+	(thisModule.correctFound / thisModule.totalFound);
+
+helper def: recall : Real =
+	(thisModule.correctFound / thisModule.totalCorrect);
+
+helper def: fscore : Real =
+	(2 * thisModule.recall * thisModule.precision) / (thisModule.recall + thisModule.precision);
+
+helper def: overall : Real =
+	thisModule.recall * (2 - (1/thisModule.precision));
+	
+
+helper context Real def : normM : String =
+	((self * 100).round() / 100).toString().replaceAll('.', ',');
+
+
+helper context Table!Row def : isTargetRow : Boolean =
+	self.cells->at(1).content = thisModule.expMappingSource and
+	self.cells->at(2).content = thisModule.obtainedMappingSource;  
+
+
+rule Table2Table {
+	from
+		s1 : Table!Table 		
+	to
+		t : Table!Table (
+			rows <- if s1.rows.isEmpty() then
+						Sequence{thisModule.newRow('Expected Equal Model', 'Obtained Equal Model', 'Precision', 'Recall', 'Overall', 'Fscore' ),
+								 thisModule.newRow(	
+								 		thisModule.expMappingSource,
+										thisModule.obtainedMappingSource,
+										thisModule.precision.normM,
+										thisModule.recall.normM,
+										thisModule.overall.normM,
+										thisModule.fscore.normM)}
+					else
+						s1.rows.debug('row')
+								->reject(e | e.isTargetRow).debug('filter')
+								->collect(e | thisModule.Row2Row(e))
+								->append(thisModule.newRow(
+										thisModule.expMappingSource,
+										thisModule.obtainedMappingSource,
+										thisModule.precision.normM,
+										thisModule.recall.normM,
+										thisModule.overall.normM,
+										thisModule.fscore.normM))
+					endif
+								
+		)		
+}
+
+rule newRow (strA : String, expModelNameA : String, precisionA : String, recallA : String, overallA : String, fscoreA : String) {
+	to 
+		newRow : Table!Row (
+			cells <- Sequence{str, expModelName, precision, recall, overall, fscore}	
+		),
+		str : Table!Cell (
+			content <- strA	
+		),	
+		expModelName : Table!Cell (
+			content <- expModelNameA	
+		),
+		precision : Table!Cell (
+			content <- precisionA
+		),
+		recall : Table!Cell (
+			content <- recallA	
+		),
+		overall : Table!Cell (
+			content <- overallA
+		),
+		fscore : Table!Cell (
+			content <- fscoreA	
+		)	
+	do {
+		newRow;
+	}		
+}
+
+lazy rule Row2Row {
+	from
+		s : Table!Row
+	to
+		t : Table!Row (
+				cells <- s.cells
+							->collect(e|thisModule.Cell2Cell(e))
+		)
+}
+
+lazy rule Cell2Cell {
+	from
+		s : Table!Cell
+	to
+		t : Table!Cell (
+			content <- s.content	
+		)
+}
+
