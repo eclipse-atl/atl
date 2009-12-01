@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<PetriNet:Net xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:PetriNet="PetriNetV0">
+  <place dst="//@transition.0"/>
+  <place src="//@transition.0" dst="//@transition.1"/>
+  <place src="//@transition.0" dst="//@transition.1"/>
+  <place src="//@transition.1"/>
+  <transition src="//@place.0" dst="//@place.1 //@place.2"/>
+  <transition src="//@place.1 //@place.2" dst="//@place.3"/>
+</PetriNet:Net>

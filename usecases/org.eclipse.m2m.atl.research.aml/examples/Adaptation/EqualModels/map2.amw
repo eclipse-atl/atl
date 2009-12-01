@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<MatchModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="mmw_match" name="m12m2">
+  <leftM xsi:type="ModelRef" xmi:id="ModelRef1" name="m1" ref="\Adaptation\Models\GWPNV0.ecore"/>
+  <rightM xsi:type="ModelRef" xmi:id="ModelRef2" name="m2" ref="\Adaptation\Models\GWPNV2.ecore"/>
+</MatchModel>

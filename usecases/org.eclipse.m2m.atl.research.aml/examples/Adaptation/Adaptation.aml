@@ -1,0 +1,168 @@
+strategy Adaptation {
+
+uses Rewriting[IN:EqualModel(m1:Metametamodel, m2:Metametamodel)]()
+
+uses TypeDifferentiation[IN1:EqualModel(m1:Metametamodel, m2:Metametamodel)]()
+
+uses Differentiation[IN1:EqualModel(m1:Metametamodel, m2:Metametamodel)]()
+
+uses FlattenFeatures[IN : EqualModel(m1:Metametamodel, m2:Metametamodel)]()
+
+uses Propagation[IN : EqualModel(m1:Metametamodel, m2:Metametamodel)]()
+
+uses ConceptualLink[IN:EqualModel(m1:Metametamodel, m2:Metametamodel)]()
+
+
+sim Name ()
+{
+	is if thisLeft.name = thisRight.name then
+		1.0
+	   else
+			0	
+		endif		
+}
+
+create TypeClass () {	
+	when
+		 thisLeft.isClass and
+		 thisRight.isClass 
+} 
+
+create TypeStrF () {
+	when 
+		 	thisLeft.isStrFeature and
+		 	thisRight.isStrFeature
+}
+
+create TypeAttribute () {
+	when 
+		 	thisLeft.isAttribute and
+		 	thisRight.isAttribute
+}
+
+create TypeReference () {
+	when 
+		 	thisLeft.isReference and
+		 	thisRight.isReference
+}
+
+create TypeEnumeration () {
+	when 
+		 	thisLeft.isEnumeration and
+		 	thisRight.isEnumeration
+}
+
+create TypeEnumLiteral () {
+	when 
+		 	thisLeft.isEnumLiteral and
+		 	thisRight.isEnumLiteral
+}
+
+
+
+
+sim SF (prop : EqualModel(m1:Metametamodel, m2:Metametamodel))  {
+	using {
+		propEdges : Sequence(OclAny) = thisEqualModel.propMap.get(thisEqual.xmiIDs_Equal); 
+	}
+
+	is 
+
+		if propEdges.isEmpty() then
+				thisSim
+			else
+			   thisSim
+				+				 
+				propEdges
+					->collect(e | e.propagation * thisModule.mapEqual.get(e.outgoingLink)->first().similarity)
+					->sum()
+		endif							
+
+}
+
+
+
+sim ClassMappingByData (mapModel : WeavingModel(Trace)(leftModel : m1,rightModel : m2))
+{
+    using {
+        mappingsModel : Trace!Link = Trace!Link.allInstancesFrom('mapModel');
+    }
+    is if thisInstances(mappingsModel)->notEmpty() then 
+    	1
+		else
+		 0
+		endif
+}
+
+
+sim Normalization ()
+{
+	is thisSim / thisEqualModel.equalModelMaxSim
+}
+-- Delta 0.001, 0.002, 0.004, 0.006, 0.008, and 0.01 
+-- Do (page 114) indicates the best delta is 0.008 and the best threshold is 0.5
+sel ThresholdMaxDelta ()
+	 
+{
+	when thisSim > 0.5 
+		 and
+		 (thisSim >= thisEqualModel.mapRangeByLeft.get(thisLeft).maxD 
+		 	and thisSim <= thisEqualModel.mapRangeByLeft.get(thisLeft).max)
+}
+
+sel ThresholdBySample()
+	 
+{
+	when thisSim = 1 
+}
+
+sel BothMaxSim () 
+	
+{
+	when thisEqualModel.equalMaxSimByLeft.get(thisLeft).includes(thisEqual) 
+		 and
+		 thisEqualModel.equalMaxSimByRight.get(thisRight).includes(thisEqual)	
+}
+
+aggr WeightedAverage () {
+	is Summation(thisSim * thisWeight)
+}
+
+aggr Merge () {
+	is thisSim
+}
+
+models {
+	
+	map2 : EqualModel(m1:"%EMF", m2:"%EMF")
+		
+	
+}
+
+modelsFlow {
+
+	tp = TypeClass[map2]	
+    typeRef = TypeReference[map2]
+	typeAtt = TypeAttribute[map2]
+
+	merged = Merge[1.0:tp, 1.0:typeRef, 1.0:typeAtt]
+	
+	nam = Name[merged]
+	
+	filtered = ThresholdMaxDelta[nam]
+	prop = Propagation[filtered]
+	sf = SF[filtered](prop)
+	norm = Normalization[sf]
+	
+	tmpresult = WeightedAverage[0.5 : norm, 0.5:nam]
+ 	
+ 	result = BothMaxSim[tmpresult]
+
+	diff = Differentiation[result]
+    td = TypeDifferentiation[diff]   
+    cl = ConceptualLink[td] 
+    rw = Rewriting[cl]      
+ 	flatt = FlattenFeatures[rw]	
+}
+
+}

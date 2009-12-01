@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:PetriNet="PetriNetV2">
+  <PetriNet:Net>
+    <place out="/1"/>
+    <place out="/3" in2="/2"/>
+    <place out="/5" in2="/4"/>
+    <place in2="/6"/>
+    <transition in2="/1" out="/2 /4"/>
+    <transition in2="/3 /5" out="/6"/>
+  </PetriNet:Net>
+  <PetriNet:PTArc dst="/0/@transition.0" src="/0/@place.0"/>
+  <PetriNet:TPArc src="/0/@transition.0" dst="/0/@place.1"/>
+  <PetriNet:PTArc dst="/0/@transition.1" src="/0/@place.1"/>
+  <PetriNet:TPArc src="/0/@transition.0" dst="/0/@place.2"/>
+  <PetriNet:PTArc dst="/0/@transition.1" src="/0/@place.2"/>
+  <PetriNet:TPArc src="/0/@transition.1" dst="/0/@place.3"/>
+</xmi:XMI>
