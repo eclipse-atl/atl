@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="AmlBuilder"
+         name="Aml Project Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="org.eclipse.m2m.atl.research.aml.builder.AmlBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="AmlNature"
+         name="Aml Project Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.eclipse.m2m.atl.research.aml.builder.AmlNature">
+         </run>
+      </runtime>
+      <requires-nature id="org.eclipse.m2m.atl.adt.builder.atlNature"/>      
+      <builder
+            id="org.eclipse.m2m.atl.research.aml.builder.AmlBuilder">
+      </builder>
+   </extension>
+    
+   <extension
+         id="amlProblem"
+         name="AML Problem"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+	
+</plugin>
