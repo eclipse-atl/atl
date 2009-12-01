@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter = "*.amw"
+            id="org.eclipse.m2m.atl.research.aml.actions.contribution1">
+         <menu
+               label="AML"
+               path="additions"
+               id="org.eclipse.m2m.atl.research.aml.actions.menu1">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               label="Generate properties file"
+               class="org.eclipse.m2m.atl.research.aml.actions.popup.actions.ActionGeneratePropFile"
+               menubarPath="org.eclipse.m2m.atl.research.aml.actions.menu1/group1"
+               enablesFor="1"
+               id="org.eclipse.m2m.atl.research.aml.actions.ActionGeneratePropFile">
+         </action>
+         <action
+               label="Generate empty equal model"
+               class="org.eclipse.m2m.atl.research.aml.actions.popup.actions.ActionGenerateEmptyEqualModel"
+               menubarPath="org.eclipse.m2m.atl.research.aml.actions.menu1/group1"
+               enablesFor="1"
+               id="org.eclipse.m2m.atl.research.aml.actions.ActionGenerateEmptyEqualModel">
+         </action>
+         <!-- HOTs can be launched from generated ant script
+         <action
+               label="Execute HOT"
+               class="org.eclipse.m2m.atl.research.aml.actions.popup.actions.ActionExecuteHOT"
+               menubarPath="org.eclipse.m2m.atl.research.aml.actions.menu1/group1"
+               enablesFor="1"
+               id="org.eclipse.m2m.atl.research.aml.actions.ActionExecuteHOT">
+         </action>
+         -->
+         <action
+               label="Compute matching metrics"
+               class="org.eclipse.m2m.atl.research.aml.actions.popup.actions.ActionComputeMatchingMetrics"
+               menubarPath="org.eclipse.m2m.atl.research.aml.actions.menu1/group1"
+               enablesFor="2"
+               id="org.eclipse.m2m.atl.research.aml.actions.ActionComputeMatchingMetrics">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>

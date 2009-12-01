@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.m2m.atl.research.aml.actions; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.eclipse.m2m.atl.research.aml.actions.AmlActionActivator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.m2m.atl.research.aml.engine,
+ org.eclipse.m2m.atl.research.aml.utils,
+ org.eclipse.gmt.weaver
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: %providerName
