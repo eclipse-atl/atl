@@ -1,0 +1,237 @@
+package mwcore {
+	abstract class WElement {
+		attribute name : String;
+		attribute description : String;
+		reference model : WModel oppositeOf ownedElement;
+	}
+
+	abstract class WModel extends WElement {
+		reference ownedElement[*] ordered container : WElement oppositeOf model;
+		reference wovenModel[1-*] container : WModelRef;
+	}
+
+	abstract class WRef extends WElement {
+		attribute ref : String;
+	}
+
+	abstract class WModelRef extends WRef {
+		reference ownedElementRef[*] container : WElementRef oppositeOf modelRef;
+	}
+
+	abstract class WElementRef extends WRef {
+		reference modelRef : WModelRef oppositeOf ownedElementRef;
+	}
+
+	abstract class WAssociation extends WElement {
+		reference associationEnd[1-*] container : WAssociationEnd oppositeOf association;
+	}
+
+	abstract class WAssociationEnd extends WElement {
+		reference association : WAssociation oppositeOf associationEnd;
+		reference relatedLink : WLink;
+	}
+
+	abstract class WLink extends WElement {
+		reference child[*] ordered container : WLink oppositeOf parent;
+		reference parent : WLink oppositeOf child;
+		reference end[1-*] container : WLinkEnd oppositeOf link;
+	}
+
+	abstract class WLinkEnd extends WElement {
+		reference link : WLink oppositeOf end;
+		reference element : WElementRef;
+	}
+}
+
+package mmw_match {
+
+	class MatchModel extends WModel {
+		reference leftM container : WModelRef;
+		reference rightM container : WModelRef;
+		reference methods[*] container : Method;
+	}
+
+	class Method {
+		attribute name : String;
+	}
+
+	class Element extends ReferredElement {
+		reference child[*] container : WLink;
+		reference referredClass container : ReferredElement;
+	}
+
+	abstract class ReferredElement extends WLinkEnd {
+		
+	}
+
+	class LeftElement extends Element {
+		
+	}
+
+	class RightElement extends Element {
+		
+	}
+
+	class Equal extends WLink {
+		attribute similarity : Double;
+		reference left container : ReferredElement;
+		reference right container : ReferredElement;
+		attribute userAssistance : String;
+	}
+	
+	class EqualClass extends Equal {
+	
+	}
+	
+	abstract class EqualStructuralFeature extends Equal {
+	
+	}
+	
+	class EqualEnumeration extends Equal {}
+	
+	class EqualEnumLiteral extends Equal {}
+	
+	class EqualDataType extends Equal {}
+	
+	class EqualAttribute extends EqualStructuralFeature {
+	
+	}
+	
+	class EqualReference extends EqualStructuralFeature {
+	
+	}
+	
+	
+	
+	class ModelRef extends WModelRef {}
+	
+	class ElementRef extends WElementRef {}
+	
+	class Association extends WAssociation {
+		
+	}
+
+	class AssociationEnd extends WAssociationEnd {
+		
+	}
+
+}
+
+package mmw_diff {
+	
+	class Added extends WLink {
+		attribute userAssistance : String;
+		reference right container : ReferredElement;
+	}
+	class AddedStructuralFeature extends Added {}
+	class AddedAttribute extends AddedStructuralFeature {}
+	
+	class AddedReference extends AddedStructuralFeature {}
+	
+	class AddedClass extends Added {}
+	
+	class AddedDataType extends Added {}
+	
+	class AddedEnumeration extends Added {}
+	
+	class AddedEnumLiteral extends Added {}
+	
+	class Deleted extends WLink {
+		attribute userAssistance : String;
+		reference left container : ReferredElement;
+	}
+	
+	class DeletedStructuralFeature extends Deleted {}
+	
+	class DeletedAttribute extends DeletedStructuralFeature {}
+	
+	class DeletedReference extends DeletedStructuralFeature {}
+	
+	class DeletedClass extends Deleted {}
+	
+	class DeletedDataType extends Deleted{}
+	class DeletedEnumLiteral extends Deleted {}
+	
+	class DeletedEnumeration extends Deleted {}
+
+	
+}
+
+package mmw_conceptual_evolution {
+
+	class Renaming extends Equal {}
+	
+	--class Retyped extends Equal {}
+	
+	class MovePropertyToOwned extends EqualStructuralFeature {
+		reference associatedReference container : LeftElement;
+	}
+	-- move a property to the owner of a reference
+	class MovePropertyToOwner extends EqualStructuralFeature {
+		reference associatedReference container : RightElement;
+	}	
+	
+	class InlineClass extends EqualStructuralFeature {
+		reference associatedReference container : LeftElement;
+	}
+	
+	class ExtractClass extends EqualStructuralFeature {
+		reference associatedReference container : RightElement;
+	}
+	
+	class ExtractSuperClass extends EqualStructuralFeature {}
+	
+	class FlattenProperty extends EqualStructuralFeature {}
+	
+	class PushProperty extends EqualStructuralFeature {}
+	
+	class PullProperty extends EqualStructuralFeature {}
+	 	
+	class IntroduceRestrictedProperty extends AddedStructuralFeature {
+		
+	}
+	
+		
+	class RestrictTypeAttribute extends EqualAttribute {
+		
+	}
+	
+	class RestrictTypeReference extends EqualReference {
+		
+	}
+	
+	class RestrictMultiplicityReference extends EqualReference {
+		
+	}
+	
+	class IntroduceSuperClassWithRestrictedProperty extends EqualClass {}
+	
+	class AddedReferenceAssociation extends Association {
+	
+	}
+	
+	class DeletedReferenceAssociation extends Association {
+	
+	}
+
+}
+
+package mmw_propagation {
+
+	class PropagationEdge extends WAssociation {
+		attribute incomingLink : String;
+		attribute outgoingLink : String;
+		attribute propagation : Double;
+	}
+}
+
+package PrimitiveTypes {
+
+	datatype Boolean;
+
+	datatype Integer;
+		
+	datatype Double;
+	
+	datatype String;
+}

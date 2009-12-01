@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: AML
+Bundle-SymbolicName: AML
+Bundle-Version: 1.0.0
+Bundle-Localization: plugin
+Bundle-ClassPath: .
+Require-Bundle: org.eclipse.m2m.atl.engine.emfvm,org.eclipse.emf.ecore,org.eclipse.m2m.atl.core, org.eclipse.emf.ecore
+

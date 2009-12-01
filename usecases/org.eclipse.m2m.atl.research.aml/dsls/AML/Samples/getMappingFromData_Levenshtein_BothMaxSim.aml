@@ -1,0 +1,178 @@
+-- Matching between Ecore metamodels
+strategy getMappingFromData_Levenshtein_BothMaxSim {
+
+uses Rewriting[IN:EqualModel(m1:Metametamodel, m2:Metametamodel)]()
+
+uses TypeDifferentiation[IN1:EqualModel(m1:Metametamodel, m2:Metametamodel)]()
+
+uses Differentiation[IN1:EqualModel(m1:Metametamodel, m2:Metametamodel)]()
+
+uses FlattenFeatures[IN : EqualModel(m1:Metametamodel, m2:Metametamodel)]()
+
+uses PropagationEcore[IN : EqualModel(m1:Metametamodel, m2:Metametamodel)]()
+
+uses ConceptualLink[IN:EqualModel(m1:Metametamodel, m2:Metametamodel)]()
+
+
+sim Levenshtein () 
+ATLLibraries {(name = 'Strings', path = 'ATL/Strings')}	
+JavaLibraries {(name = 'match.Similarity', path = '../../../AML/lib/simmetrics.jar')} 
+{
+	is thisLeft.name.simStrings(thisRight.name)				
+}
+
+create TypeClass () {	
+	when
+		 thisLeft.isClass and
+		 thisRight.isClass 
+} 
+
+create TypeStrF () {
+	when 
+		 	thisLeft.isStrFeature and
+		 	thisRight.isStrFeature
+}
+
+create TypeAttribute () {
+	when 
+		 	thisLeft.isAttribute and
+		 	thisRight.isAttribute
+}
+
+create TypeReference () {
+	when 
+		 	thisLeft.isReference and
+		 	thisRight.isReference
+}
+
+create TypeEnumeration () {
+	when 
+		 	thisLeft.isEnumeration and
+		 	thisRight.isEnumeration
+}
+
+create TypeEnumLiteral () {
+	when 
+		 	thisLeft.isEnumLiteral and
+		 	thisRight.isEnumLiteral
+}
+
+
+
+
+sim SF (prop : EqualModel(m1:Metametamodel, m2:Metametamodel))  {
+	using {
+		propEdges : Sequence(EqualMM!PropagationEdge) = thisEqualModel.propMap.get(thisEqual.xmiIDs_Equal); 
+	}
+
+	is 
+
+		if propEdges.isEmpty() then
+				thisSim
+			else
+			   thisSim
+				+				 
+				propEdges
+					->collect(e | e.propagation * thisModule.mapEqual.get(e.outgoingLink)->first().similarity)
+					->sum()
+		endif							
+
+}
+
+
+
+sim ClassMappingByData (mapModel : WeavingModel(Trace)(leftModel : m1,rightModel : m2))
+{
+    using {
+        mappingsModel : Trace!Link = Trace!Link.allInstancesFrom('mapModel');
+    }
+    is if thisInstances(mappingsModel)->notEmpty() then 
+    	1
+		else
+		 0
+		endif
+}
+
+
+sim Normalization ()
+{
+	is thisSim / thisEqualModel.equalModelMaxSim
+}
+-- Delta 0.001, 0.002, 0.004, 0.006, 0.008, and 0.01 
+-- Do (page 114) indicates the best delta is 0.008 and the best threshold is 0.5
+sel ThresholdMaxDelta ()
+	 
+{
+	when thisSim > 0.5 
+		 and
+		 (thisSim >= thisEqualModel.mapRangeByLeft.get(thisLeft).maxD 
+		 	and thisSim <= thisEqualModel.mapRangeByLeft.get(thisLeft).max)
+}
+
+sel ThresholdBySample()
+	 
+{
+	when thisSim = 1 
+}
+
+sel BothMaxSim () 
+	
+{
+	when thisEqualModel.equalMaxSimByLeft.get(thisLeft).includes(thisEqual) 
+		 and
+		 thisEqualModel.equalMaxSimByRight.get(thisRight).includes(thisEqual)	
+}
+
+aggr WeightedAverage () {
+	is Summation(thisSim * thisWeight)
+}
+
+aggr Merge () {
+	is thisSim
+}
+
+models {
+	
+	map2 : EqualModel(m1:"%EMF", m2:"%EMF")	
+	test : WeavingModel(Trace)(leftModelAux : m1,rightModelAux : m2)
+	
+}
+
+modelsFlow {
+
+	tp = TypeClass[map2]	
+    typeRef = TypeReference[map2]
+	typeAtt = TypeAttribute[map2]
+	typeEnum = TypeEnumeration[map2]
+	typeEnumLiteral = TypeEnumLiteral[map2]
+
+	merged = Merge[1.0:tp, 1.0:typeRef, 1.0:typeAtt, 1.0:typeEnum, 1.0:typeEnumLiteral]
+	
+	lev = Levenshtein[merged]
+	filtered = ThresholdMaxDelta[lev]
+
+	prop = PropagationEcore[filtered]
+	sf = SF[filtered](prop)
+	norm = Normalization[sf]
+	
+	cmbd = ClassMappingByData[tp](test)
+	res = ThresholdBySample[cmbd]
+	
+ 	tmpresult = WeightedAverage[0.5:norm, 0.5:lev]
+ 	
+ 	mg = ThresholdMaxDelta[tmpresult]
+ 	
+ 	wa = WeightedAverage[0.5:mg, 0.5:res]
+ 	
+	result = BothMaxSim[wa]
+
+	
+	diff = Differentiation[result]
+    td = TypeDifferentiation[diff]   
+    cl = ConceptualLink[td] 
+    rw = Rewriting[cl]      
+ 	flatt = FlattenFeatures[rw]
+	
+}
+
+}

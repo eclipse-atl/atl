@@ -1,0 +1,919 @@
+--@atlcompiler atl2006
+
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+
+
+module AML2AntScripts; -- Module Template
+create OUT : AntScripts from IN : AML;
+
+uses AMLLibrary;
+
+helper def: nsuri : String = 'nsuri';
+helper def: path : String = 'path';
+helper def : textAtlExtension : String = '.atl';
+helper def : atlExtension : String = '.asm';
+helper context String def : propertyFilePath : String = self + '.properties';
+helper context String def: genATLPath() : String = 'ATL/' + self + thisModule.atlExtension;
+helper def: minMetamodelDir : String = 'Metamodels/';
+helper def: mappingDir : String = 'EqualModels/';
+helper def: matchingModelsDir : String = 'Models/';
+
+-- a project containing resources required by the generated Ant script
+helper def: amlResourceProject : String = 'AMLLibrary/ATL';
+
+helper def: mainHot : String = 'HOT_match';
+
+helper def: ATLMetamodelName : String = 'ATL';
+
+helper context String def: minMetamodelsPath() : String = thisModule.minMetamodelDir + self + '.ecore';
+helper context String def: metamodelsPath() : String = thisModule.matchingModelsDir + '${' + self + '}'; --'${' + self + '}';
+helper context String def: modelsPath() : String = thisModule.matchingModelsDir + '${' + self + '}'; 
+helper context String def: inMappingModelsPath() : String = thisModule.mappingDir + '${' + self + '}';
+helper context String def: outMappingModelsPath() : String = thisModule.mappingDir + self + '.amw';
+helper context String def: ATLPath : String = self + thisModule.atlExtension;
+helper context String def: javaPath : String = self; 
+helper context String def: AMLHelperPath : String = '../' + thisModule.amlResourceProject + '/Helpers/' + self + thisModule.atlExtension;
+helper context String def: AMLLibraryPath(metametamodel : String) : String = '../' + thisModule.amlResourceProject + '/' + metametamodel + '/' + self + thisModule.atlExtension;
+helper context String def: HOTLibraryPath : String = '../' + thisModule.amlResourceProject + '/HOT/' + self + thisModule.atlExtension;
+
+helper def: vm() : String = 'EMF-specific VM'; --
+
+helper def: modelHandler : String = '%EMF';
+--helper def: amwModelHandler : String = 'AMW';
+
+
+helper def: loadModels : AntScripts!Target = OclUndefined;
+helper def: loadMetamodels : AntScripts!Target = OclUndefined;
+helper def: project : AntScripts!Project = OclUndefined;
+
+helper context AML!Method def: concJavaLibraryNames : String =
+	self.javaLibraries->iterate(e; javaLibName : String = '' |
+		e.name + ',' + javaLibName
+	);
+
+helper context AML!Method def: concJavaLibraryPaths : String =
+	self.javaLibraries->iterate(e; javaLibPath : String = '' |
+		e.path + ',' + javaLibPath
+	);
+
+helper context AML!MappingModelRefExp def: getMethodCall : AML!ModelFlowExpression =
+		AML!MethodCall.allInstances()
+		->select(e | self.referredMappingModel = e.outMappingModel)->first();
+
+helper context AML!ModelRefExp def: getMethodCall : AML!ModelFlowExpression =
+		AML!MethodCall.allInstances()
+		->select(e | self.referredModel = e.outMappingModel)->first();
+
+helper context AML!LocatedElement def : referencedMethodCall : AML!MethodCall =
+				if self.oclIsTypeOf(AML!MethodCall) then
+					self
+				else
+					if self.oclIsTypeOf(AML!WeightedModelExp) then
+						self.modelFlowExp.referencedMethodCall
+					else
+							if self.oclIsTypeOf(AML!MappingModelRefExp) then
+									if self.referredMappingModel.leftModel.oclIsUndefined() and
+										self.referredMappingModel.rightModel.oclIsUndefined() then
+										self.getMethodCall.referencedMethodCall
+									else	
+										OclUndefined
+									endif									
+							else
+								if self.oclIsTypeOf(AML!ModelRefExp) then
+									if self.referredModel.oclIsTypeOf(AML!MappingModel) then
+										if self.referredModel.leftModel.oclIsUndefined() and
+										self.referredModel.rightModel.oclIsUndefined() then
+											self.getMethodCall.referencedMethodCall
+										else
+											OclUndefined
+										endif
+									else	
+										OclUndefined
+									endif
+								else
+									OclUndefined
+								endif
+							endif
+					endif
+				endif;
+
+
+-- calculates the dependent method calls 
+helper context AML!MethodCall def : methodCallArgs : Sequence(AML!MethodCall) =
+	self.inMappingModel
+	->union(self.arguments)
+	->collect(e | e.referencedMethodCall)->reject(e | e.oclIsUndefined());
+
+-- lists of all inMappings and arguments with type MappingModelRefExp
+helper context AML!ModelsFlowsBlock def : seqInMappingAndArgs : Sequence(AML!MappingModelRefExp) =
+	self.modelsFlows
+	->iterate(e; seq : Sequence(OclAny) = Sequence{} |
+		seq.append(
+				e.inMappingModel
+					->union(e.arguments)
+					->select(e | e.oclIsTypeOf(AML!MappingModelRefExp))
+					)
+	)->flatten();
+
+-- verifies if a mapping model is used as input of a method call
+helper context AML!ModelsFlowsBlock def : isRefOutMappingModel (metCall : AML!MethodCall) : Boolean =
+		self.seqInMappingAndArgs
+		->select(e | e.referredMappingModel = metCall.outMappingModel)
+		->size() > 0;
+
+helper context AML!ModelsFlowsBlock def : terminalMethodCalls : Sequence(AML!MethodCall) =
+	self.modelsFlows->select(e | not self.isRefOutMappingModel(e));
+
+helper context AML!MethodCall def: ID : String =
+thisModule.idTargets.get(self);
+
+-- @begin modelFlowExpName
+
+helper context AML!MappingModelRefExp def : modelFlowExpName : String =
+	self.referredMappingModel.name;
+
+helper context AML!MethodCall def : modelFlowExpName : String =
+	self.method.name;
+
+helper context AML!WeightedModelExp def : modelFlowExpName : String =
+	self.modelFlowExp.modelFlowExpName;
+
+helper context AML!Model def : modelFlowExpName : String =
+	self.name;
+
+helper context AML!ModelRefExp def : modelFlowExpName : String =
+	self.referredModel.modelFlowExpName;
+
+-- @end modelFlowExpName
+
+-- This helper creates a list of tuples each tuple associates arguments of an external method definition and
+-- arguments of external method call. This is necessary because the input models of external transformations may not have
+-- the same names of input models specified in the method call
+-- OclAny is used because the arguments and inMappingModel of MethodCall do not refer to the same class  
+helper context AML!MethodCall def : extMethModelsAsTuples : Sequence(TupleType(model : AML!Model, arg : OclAny)) =
+	self.inMappingModel
+	->union(self.arguments)
+	->iterate(e; 
+		acc : TupleType(ret : Sequence(TupleType(model : AML!Model, arg : OclAny)), index : Integer) =
+		Tuple {ret = Sequence{}, index = 1} |
+			Tuple {
+					ret = acc.ret.including(
+						Tuple {
+							model = self.method.arguments.at(acc.index),
+							arg = e
+						}),
+					index = acc.index + 1
+			}
+		).ret;
+
+-- select the mapping models in the extMethModelsAsTuples sequence
+helper context AML!MethodCall def : extMethMappingModelsAsTuples : Sequence(TupleType(model : AML!Model, arg : OclAny)) =
+	self.extMethModelsAsTuples->select(e | e.model.oclIsTypeOf(AML!MappingModel));
+
+-- select the weaving models in the extMethModelsAsTuples sequence
+helper context AML!MethodCall def : extMethWeavingModelsAsTuples : Sequence(TupleType(model : AML!Model, arg : OclAny)) =
+	self.extMethModelsAsTuples->select(e | e.model.oclIsTypeOf(AML!WeavingModel));
+
+	
+helper context AML!MethodCall def : methArgsAsTuples : Sequence(TupleType(methDefModel : AML!Model, arg : OclAny)) =
+	self.flatArgs(self.method.matcher)->iterate(e; 
+		acc : TupleType(ret : Sequence(TupleType(methDefModel : AML!Model, arg : AML!Model)), index : Integer) =
+		Tuple {ret = Sequence{}, index = 1} |
+			Tuple {
+					ret = acc.ret.including(
+						Tuple {
+							methDefModel = --if self.method.flatArgs.oclIsTypeOf('Sequence) then
+												self.method.flatArgs(self.method.matcher).at(acc.index)
+										--	else
+--												self.method.flatArgs
+--											endif
+											,
+							arg = e
+						}),
+					index = acc.index + 1
+			}
+		).ret;
+
+helper context AML!MethodCall def : methInMappingModelAsTuples : Sequence(OclAny) =
+	self.flatInMappingModel->iterate(e; 
+		acc : TupleType(ret : Sequence(OclAny), index : Integer) =
+		Tuple {ret = Sequence{}, index = 1} |
+			Tuple {
+					ret = acc.ret.including(
+						Tuple {
+							methDefModel = if self.method.flatInMappingModel.notEmpty() then
+												self.method.flatInMappingModel.at(acc.index)
+											else
+												OclUndefined
+											endif,
+							arg = e
+						}),
+					index = acc.index + 1
+			}
+		).ret;
+
+
+
+
+helper context AML!Method def: inputModelAsArgs : Sequence(AML!InputModel) =
+	self.arguments->select(e | e.oclIsTypeOf(AML!InputModel));
+
+
+rule ModelFlowBlock {
+	from
+		tm : AML!Matcher
+	using {
+			modelTuple : TupleType(leftModel:AML!InputModel, rightModel:AML!InputModel) = tm.emptyMapLastMethodCall ();	
+			lastM : AML!MethodCall = tm.lastModelFlowDecl();
+			outputModelName : String = lastM.outputModelName;
+			superImposingHots : Sequence(String) = tm.getSuperImposingHots();
+		}
+	to
+		t : AntScripts!Project (
+			name <- tm.name,
+			properties <- propertyFile,
+			targets <- Sequence{loadMetamodels, loadModels, hot},
+			defaultTarget <- lastM
+		),
+		propertyFile : AntScripts!Property (
+			file <- tm.name.propertyFilePath
+		),
+		-- load metametamodel of metamodels used by the last MethodCall
+		loadMetamodels : AntScripts!Target(
+			name <- 'loadMetamodels',
+			tasks <- if tm.metametamodel() = thisModule.Ecore() then
+								thisModule.createLoadModel(thisModule.equalMetamodelName, thisModule.modelHandler, thisModule.equalMetamodelName.minMetamodelsPath(), thisModule.path)						
+						else 
+							Sequence {
+								thisModule.createLoadModel(thisModule.metametamodelName, thisModule.modelHandler, 'KM3'.minMetamodelsPath(), thisModule.path ),	
+								thisModule.createLoadModel(thisModule.equalMetamodelName, thisModule.modelHandler, thisModule.equalMetamodelName.minMetamodelsPath(), thisModule.path)						
+							}
+							
+							endif
+		),
+		
+		loadModels : AntScripts!Target(
+			name <- 'loadModels',
+			depends <- Sequence{loadMetamodels},
+			tasks <-
+					-- load each input model referenced by a mapping model
+					tm.mappedModels->collect(c | c.im)->collect(e | thisModule.Model(e))
+					-- load additional input and mapping models  
+					-> union (tm.modelsBlock.models->collect(e | thisModule.Model(e)))
+		),
+		
+		hot : AntScripts!Target (
+			name <- 'HOT',
+			depends <- lastM,
+			tasks <- Sequence{
+							thisModule.createLoadModel(thisModule.ATLMetamodelName, thisModule.modelHandler, thisModule.ATLMetamodelName.minMetamodelsPath(), thisModule.path ),
+							hotAtlLaunch,
+							thisModule.SaveAtlModel('output', outputModelName.outMappingModelsPath() + thisModule.textAtlExtension)
+					}
+		),
+		
+		hotAtlLaunch : AntScripts!Task (
+			name <- 'atl.launch',
+			attributes <- Sequence{aTPath},
+			elements <- Sequence{thisModule.CorrespondingModelName('left', modelTuple.leftModel),
+								thisModule.CorrespondingModelName('right', modelTuple.rightModel),
+								thisModule.createInModelTP('IN1', outputModelName),
+								thisModule.createLibraryTP(thisModule.metametamodelName, thisModule.metametamodelName),
+								thisModule.createLibraryTP(thisModule.metametamodelLibName, thisModule.mapMetametamodelName.get(tm.metametamodel()).displayedName),
+								 thisModule.createLibraryTP(thisModule.equalMetamodelName, thisModule.equalMetamodelName),
+								 thisModule.ExtensionJavaLibraryRef(lastM),
+								 thisModule.ExtraClasspathJavaLibraryRef(lastM),
+							     thisModule.createUserDirOp(lastM),
+								 amwMapOption,
+								 thisModule.createOutModel('OUT', 'output', 'ATL')
+						}
+						->union(if superImposingHots.oclIsUndefined() then
+									OclUndefined
+								else
+									
+									superImposingHots->collect(e | thisModule.createSuperImpose(e))->flatten()
+								endif	
+									)
+						->reject(e | e.oclIsUndefined())			
+		),
+		
+		
+		aTPath : AntScripts!Attribute (
+			name <- 'path',
+			value <- thisModule.mainHot.HOTLibraryPath
+		),
+		
+		
+		amwMapOption : AntScripts!TaskParameter (
+			name <- 'option',	
+			attributes <- Sequence{oudName, oudValue}
+		),
+			oudName : AntScripts!Attribute (
+				name <- 'name',
+				value <- 'amwModelMappings' 
+			),
+			oudValue : AntScripts!Attribute (
+				name <- 'value',
+				value <- modelTuple.leftModel.name + '=left,' + modelTuple.rightModel.name + '=right'
+			)	
+			
+		
+			
+	do {
+		thisModule.project <- t;
+		thisModule.loadModels <- loadModels;
+		thisModule.loadMetamodels <- loadMetamodels;
+		
+	}
+}
+
+lazy rule createSuperImpose {
+	from
+		superImpHot : String
+	to 
+		superImpose : AntScripts!TaskParameter (
+			name <- 'superimpose',
+			attributes <- superIPath
+		),
+			superIPath : AntScripts!Attribute (
+				name <- 'path',
+				value <- superImpHot.HOTLibraryPath			
+			)		
+}
+
+rule createLoadModel (mName : String, mmName : String, path : String, typePath : String) {
+	to
+		t : AntScripts!Task (
+			
+			name <- 'atl.loadModel',
+			attributes <- Sequence{modelName, modelMetamodel, modelPath}
+		),
+		modelName : AntScripts!Attribute (
+			name <- 'name',
+			value <- mName 
+		),
+		modelMetamodel : AntScripts!Attribute (			
+			name <- 'metamodel',
+			value <- mmName
+		),
+		modelPath : AntScripts!Attribute ( -- this version only deal with paths and not with nsURI...
+			name <- typePath,
+			value <- path
+		)
+	do {
+		t;
+	}
+}
+
+lazy abstract rule ModelFlowExp {
+	
+	from
+		tm : AML!ModelFlowExpression
+	to
+		sm : AntScripts!TaskParameter (
+			name <- 'inModel',
+			attributes <- Sequence{aName,aModel}
+		),
+		aName : AntScripts!Attribute (
+			name <- 'name'
+		),
+		aModel : AntScripts!Attribute (
+			name <- 'model'
+		)
+}
+
+lazy rule MappingModelRefExp extends ModelFlowExp {
+	from
+		tm : AML!MappingModelRefExp
+	to
+		sm : AntScripts!TaskParameter,
+		aName : AntScripts!Attribute (
+			value <- tm.modelFlowExpName
+		),
+		aModel : AntScripts!Attribute (
+			value <- tm.modelFlowExpName
+		)
+}
+
+lazy rule MethodCallExp extends ModelFlowExp {
+	from
+		tm : AML!MethodCall
+	to
+		sm : AntScripts!TaskParameter,
+		aName : AntScripts!Attribute (
+			value <- tm.modelFlowExpName
+		),
+		aModel : AntScripts!Attribute (
+			value <- tm.modelFlowExpName
+		)
+}
+
+lazy rule WeightedModelExp extends ModelFlowExp {
+	from
+		tm : AML!WeightedModelExp
+	to
+		sm : AntScripts!TaskParameter,
+		aName : AntScripts!Attribute (
+			value <- tm.modelFlowExpName
+		),
+		aModel : AntScripts!Attribute (
+			value <- tm.modelFlowExpName
+		)
+}
+
+lazy rule InputModelLazy {
+	from
+		tm : AML!InputModel
+	to
+		sm : AntScripts!TaskParameter (
+			name <- 'inModel',
+			attributes <- Sequence{aName,aModel}
+		),
+		aName : AntScripts!Attribute (
+			name <- 'name',
+			value <- tm.modelFlowExpName
+		),
+		aModel : AntScripts!Attribute (
+			name <- 'model',
+			value <- tm.modelFlowExpName
+		)
+}
+
+helper context AML!LocatedElement def : needsMetamodelNameAtt : Boolean =			
+			if self.oclIsTypeOf(AML!InputModel) then 
+				if self.referenceModel.name = thisModule.Ecore() then 
+					true
+				else
+					false
+				endif
+			else
+			  	false
+			endif;
+
+lazy rule CorrespondingModelName {
+	from
+		name : String,
+		--methDefModel : AML!Model,
+		arg : AML!LocatedElement
+	to
+		sm : AntScripts!TaskParameter (
+			name <- 'inModel',
+			attributes <- if arg.needsMetamodelNameAtt then
+							Sequence{aName,aModel, aMMName}
+							
+							-- if methDefModel.referenceModel.name = thisModule.Ecore then
+						  	else
+						  	Sequence{aName,aModel}	
+						  	endif
+		),
+		aName : AntScripts!Attribute (
+			name <- 'name',
+			value <- name
+		),
+		aModel : AntScripts!Attribute (
+			name <- 'model',
+			value <- arg.modelFlowExpName
+		),
+		aMMName : AntScripts!Attribute (
+			name <- 'metamodelName',
+			value <- thisModule.metametamodelName
+		)
+}
+
+
+lazy abstract rule Model {
+	from
+		tm : AML!Model 
+--		(
+--			tm.refImmediateComposite().oclIsKindOf(AML!ModelsBlock)
+--		)
+	to
+		t : AntScripts!Task (		
+			name <- 'atl.loadModel',
+			attributes <- Sequence{modelName, modelMetamodel, modelPath},
+			target <- thisModule.loadModels
+		),
+		modelName : AntScripts!Attribute (
+			name <- 'name',
+			value <- tm.modelFlowExpName
+		),
+		modelMetamodel : AntScripts!Attribute (
+			name <- 'metamodel'			
+		),
+		modelPath : AntScripts!Attribute ( -- this version only deal with paths and not with nsURI...
+			name <- 'path'
+		)
+}
+
+lazy rule InputModel extends Model {
+	from
+		
+		tm : AML!InputModel 
+	to		
+		t : AntScripts!Task,		
+		modelMetamodel : AntScripts!Attribute (
+			value <- tm.referenceModel.defRefModel.model
+--			if tm.isMappedModel then
+--						thisModule.metametamodelName
+--					 else
+--						tm.referenceModel.name
+--					 endif	
+		),
+		modelPath : AntScripts!Attribute ( 
+			value <- --if tm.isMappedModel then 
+						tm.modelFlowExpName.modelsPath()
+					 --else
+					 --	tm.modelFlowExpName.addModelsPath()
+					--endif
+		)
+}
+
+lazy rule EqualModel extends Model {
+	from
+		tm : AML!MappingModel 
+	to
+		t : AntScripts!Task,
+		modelMetamodel : AntScripts!Attribute (
+			value <- 'EqualMM'
+		),
+		modelPath : AntScripts!Attribute ( 
+			value <- tm.modelFlowExpName.inMappingModelsPath()
+		)
+}
+
+lazy rule WeavingModel extends Model {
+	from
+		tm : AML!WeavingModel 
+	to
+		t : AntScripts!Task,
+		modelMetamodel : AntScripts!Attribute (
+			value <- 
+--			if tm.isMappedModel then
+--						thisModule.metametamodelName
+--					 else
+						tm.referenceModel.name
+--					 endif	
+		),
+		modelPath : AntScripts!Attribute ( 
+			value <- tm.modelFlowExpName.modelsPath()
+		)
+}
+
+lazy rule SaveModel {
+	from
+		tm : String,
+		path : String
+	to
+		saveTask : AntScripts!Task (
+			name <- 'atl.saveModel',
+			attributes <- Sequence{modelName, modelPath}
+		),
+				
+		modelName : AntScripts!Attribute (
+			name <- 'model',
+			value <- tm	
+		),		
+		modelPath : AntScripts!Attribute (
+			name <- 'path',
+			value <- path	
+		)
+}
+
+lazy rule SaveAtlModel  {--extends SaveModel
+	from
+		tm : String,
+		path : String
+	to
+		saveTask : AntScripts!Task (
+			elements <- extParTask,
+			name <- 'atl.saveModel',
+			attributes <- Sequence{modelName, modelPath}
+		
+		),
+		
+		extParTask : AntScripts!TaskParameter (
+			name <- 'extractor',
+			attributes <- namePar
+		),
+			namePar : AntScripts!Attribute (
+				name <- 'name',
+				value <- 'ATL'
+			),
+		modelName : AntScripts!Attribute (
+			name <- 'model',
+			value <- tm	
+		),		
+		modelPath : AntScripts!Attribute (
+			name <- 'path',
+			value <- path	
+		)
+			
+	
+}
+
+lazy rule ReferenceModelInModel {
+	from
+		tm : AML!ReferenceModel 
+	to
+	
+		sm : AntScripts!TaskParameter (
+			name <- 'inModel',
+			attributes <- Sequence{aName,aModel}
+		),
+		aName : AntScripts!Attribute (
+			name <- 'name',
+			value <- tm.defRefModel.name
+		),
+		aModel : AntScripts!Attribute (
+			name <- 'model',
+			value <- tm.defRefModel.model
+		)
+}
+
+
+rule ReferenceModel {
+	from
+		m : AML!Matcher,
+		tm : AML!ReferenceModel (
+			tm.isLoadable(m)
+		)		
+	to
+		loadMetamodel : AntScripts!Task (
+			name <- 'atl.loadModel',
+			attributes <- Sequence{mmName,mmMetamodel,mmPath},
+			elements <- Sequence{},
+			target <- thisModule.loadMetamodels
+		),
+		mmName : AntScripts!Attribute (
+			name <- 'name',
+			value <- tm.name
+		),
+		mmMetamodel : AntScripts!Attribute (
+			name <- 'metamodel',
+			value <- thisModule.modelHandler
+		),
+		mmPath : AntScripts!Attribute ( -- this version only deal with paths and not with nsURI...
+			name <- 'path',
+			value <- tm.name.metamodelsPath()
+		)
+	
+}
+
+helper context AML!MethodCall def : outputModelName : String =
+	
+	if self.outMappingModel.oclIsUndefined() then
+														self.method.name
+													else
+														self.outMappingModel.name
+													endif;
+	
+rule MethodCall { 
+	from 
+		tm : AML!MethodCall 
+	
+	to					
+		target : AntScripts!Target (
+			name <- tm.method.name + tm.ID,
+			depends <- if tm.method.matcher.lastModelFlowDecl() = tm then
+						Sequence{thisModule.loadModels}
+							->union(tm.methodCallArgs)
+							->union(tm.method.matcher.modelsFlowsBlock.terminalMethodCalls->reject(e | e = tm))
+						else
+							tm.methodCallArgs
+						endif,
+			project <- thisModule.project,
+			tasks <- if tm.outMappingModel.oclIsUndefined() then
+						Sequence{t}
+					 else					 	
+						Sequence{t, thisModule.SaveModel(tm.outMappingModel.modelFlowExpName, tm.outMappingModel.modelFlowExpName.outMappingModelsPath())}
+					 endif
+		),
+	
+		t :	AntScripts!Task (
+			name <- 'atl.launch',
+			attributes <- Sequence{aTPath}, --, aTVm
+			
+			elements <- -- TODO validate that there are not repetitive inModels 
+						Sequence{--thisModule.createInModelTP(thisModule.metametamodelName),
+								 --thisModule.createInModelTP(thisModule.equalMetamodelName),
+								 thisModule.createLibraryTP(thisModule.metametamodelName, thisModule.metametamodelName),
+	thisModule.createLibraryTP(thisModule.metametamodelLibName, thisModule.mapMetametamodelName.get(tm.method.matcher.metametamodel()).displayedName),
+								 thisModule.createLibraryTP(thisModule.equalMetamodelName, thisModule.equalMetamodelName),
+								 thisModule.createOutModel(tm.outputModelName, tm.outputModelName, thisModule.equalMetamodelName)}
+						
+			
+			
+							-- Create an inModel for each argument model
+							-> union (tm.methArgsAsTuples->collect(e | thisModule.CorrespondingModelName(e.methDefModel.modelFlowExpName, e.arg)))
+							
+							
+							--@begin deprecated
+							-- Ant tasks of ATL 3.0 do not require inModel referring to metamodels
+							-- Create an inModel for each reference model of arg model
+							---> union(tm.methodCallArgRefModels.getValues()->collect(e | thisModule.ReferenceModelInModel(e)))
+							---> union(tm.methodCallInMappingModelRefModels.getValues()->collect(e | thisModule.ReferenceModelInModel(e)))
+							--@end deprecated
+							
+							-- Create an inModel for each inMappingModel model
+							-> union (tm.methInMappingModelAsTuples->collect(e | if e.methDefModel.oclIsUndefined() then
+																					thisModule.CorrespondingModelName(e.arg.modelFlowExpName, e.arg)
+																				else
+																					thisModule.CorrespondingModelName(e.methDefModel.modelFlowExpName, e.arg)
+																				endif))
+																				
+														
+							-- ATL libraries and Java extensions
+							-> union (tm.method.ATLLibraries->collect(e | thisModule.ATLLibraryRef(e)))
+							-> append (thisModule.ExtensionJavaLibraryRef(tm))
+							-> append (thisModule.ExtraClasspathJavaLibraryRef(tm))
+							-> append (thisModule.createUserDirOp(tm))
+							
+							,
+			target <- target
+		),
+							
+		aTPath : AntScripts!Attribute (
+			name <- 'path',
+			value <- (tm.method.name + tm.ID).genATLPath()
+		)
+		
+-- deprecated ATL 3.0		
+--		aTVm : AntScripts!Attribute (
+--			name <- 'vm',
+--			value <- thisModule.vm()
+--		),
+		
+		
+		
+}
+
+lazy rule createOutModel {
+	from
+		name : String,
+		model : String,
+		metamodel : String
+	to
+		tp : AntScripts!TaskParameter (
+			name <- 'outModel',
+			attributes <- Sequence{tpName, tpModel, aMetamodel}
+		),
+		tpName : AntScripts!Attribute (
+			name <- 'name',
+			value <- name
+		),
+		tpModel : AntScripts!Attribute (
+			name <- 'model',
+			value <- model
+		),
+		aMetamodel : AntScripts!Attribute (
+			name <- 'metamodel',
+			value <- metamodel
+		)
+-- required ATL 3.0
+		
+}
+
+lazy rule createUserDirOp {
+	from
+		s : AML!MethodCall
+	to
+		oUserDir : AntScripts!TaskParameter (
+			name <- 'option',	
+			attributes <- Sequence{oudName, oudValue}
+		),
+			oudName : AntScripts!Attribute (
+				name <- 'name',
+				value <- 'user.dir' 
+			),
+			oudValue : AntScripts!Attribute (
+				name <- 'value',
+				value <- '${basedir}'
+			)		
+}
+
+
+rule ExternalMethod extends MethodCall {
+	from
+		tm : AML!MethodCall (
+			tm.method.oclIsTypeOf(AML!ExternalMethod)	
+		)
+	to
+		target : AntScripts!Target,			
+		aTPath : AntScripts!Attribute (
+			value <- if tm.method.AMLLibrary.oclIsUndefined() then
+						tm.method.name.AMLLibraryPath(thisModule.mapMetametamodelName.get(tm.method.matcher.metametamodel()).displayedName)
+					 else
+						tm.method.AMLLibrary.path.ATLPath
+					endif
+		)
+}
+
+lazy rule ATLLibraryRef {
+	from
+		s : AML!ATLLibraryRef
+	to
+		sm : AntScripts!TaskParameter(
+			name <- 'library',
+			attributes <- Sequence{aName, aPath}
+		),
+		aName : AntScripts!Attribute (
+			name <- 'name',
+			value <- s.name
+		),
+		aPath : AntScripts!Attribute (
+			name <- 'path',
+			value <- s.path.ATLPath
+		)
+}
+
+lazy rule ExtensionJavaLibraryRef {
+	from
+		m : AML!MethodCall
+	to
+		sm1 : AntScripts!TaskParameter(
+			name <- 'option',
+			attributes <- Sequence{extensions, extensionsName}
+		),
+		extensions : AntScripts!Attribute (
+			name <- 'name',
+			value <- 'extensions'
+		),
+		extensionsName : AntScripts!Attribute (
+			name <- 'value',
+			value <- 'match.AmwModelHandler' -- TODO we suppose the method getReferredElement exists in the AmwModelHandler  
+					 + ',' + 
+					 m.method.concJavaLibraryNames 
+		)
+		
+		
+}
+
+lazy rule ExtraClasspathJavaLibraryRef {
+	from
+		m : AML!MethodCall
+	to		
+		sm2 : AntScripts!TaskParameter(
+			name <- 'option',
+			attributes <- Sequence{extClasspath, extClasspathName}
+		),
+		extClasspath : AntScripts!Attribute (
+			name <- 'name',
+			value <- 'extraClasspath'
+		),
+		extClasspathName : AntScripts!Attribute (
+			name <- 'value',
+			value <- '../AMLLibrary/bin/' 					
+					 + ',' + 
+					 m.method.concJavaLibraryPaths
+		)
+}
+
+rule createLibraryTP(libraryName : String, path : String) {
+	to
+		sm : AntScripts!TaskParameter(
+			name <- 'library',
+			attributes <- Sequence{aName,aPath}
+		),
+		aName : AntScripts!Attribute (
+			name <- 'name',
+			value <- libraryName
+		),
+		aPath : AntScripts!Attribute (
+			name <- 'path',
+			value <- path.AMLHelperPath
+		)
+		do {
+			sm;
+		}
+}
+
+rule createInModelTP(name : String, model : String) {
+	to
+		sm : AntScripts!TaskParameter (
+			name <- 'inModel',
+			attributes <- Sequence{aName,aModel}
+		),
+		aName : AntScripts!Attribute (
+			name <- 'name',
+			value <- name
+		),
+		aModel : AntScripts!Attribute (
+			name <- 'model',
+			value <- model
+		)
+	do {
+		sm;
+	}
+}
+
+

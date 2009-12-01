@@ -1,0 +1,41 @@
+-- @name		ParameterMM
+-- @version		1.0
+-- @authors		Kelly Garcés
+-- @date		2008/09/03
+-- @description	This metamodel describes a list of parameters
+
+package ParameterMM {
+
+	class ParameterList {
+		reference parameters[*] container : Parameter oppositeOf list; 	
+	}
+	
+	abstract class Parameter {
+		reference list : ParameterList oppositeOf parameters;
+		attribute name : String;		
+	} 
+	
+	abstract class NumericParameter extends Parameter {}
+
+	class RealParameter extends NumericParameter {
+		attribute value : Double;
+	}
+
+	class IntegerParameter extends NumericParameter {
+		attribute value : Integer;
+	}
+	
+	class StringParameter extends Parameter {
+		attribute value : String;
+	}
+
+}
+
+-- @nsURI http://www.eclipse.org/gmt/2005/PrimitiveTypes
+-- @nsPrefix ptypes
+package PrimitiveTypes {
+	datatype Boolean;
+	datatype Double;
+	datatype Integer;
+	datatype String;
+}

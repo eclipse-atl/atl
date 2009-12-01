@@ -1,0 +1,2522 @@
+--@atlcompiler atl2006
+
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+
+module AML2ATL; -- Module Template
+create OUT : ATL from IN : AML;
+
+uses AMLLibrary;
+
+
+helper context AML!LocatedElement def: summationContainer : AML!SummationExp =
+	if self.refImmediateComposite().oclIsUndefined() or 
+		self.refImmediateComposite().oclIsTypeOf(AML!SummationExp) then
+				self.refImmediateComposite()
+			else
+				self.refImmediateComposite().summationContainer
+			endif;
+
+helper context AML!LocatedElement def: isSummationContainer : Boolean =
+	if self.summationContainer.oclIsUndefined() then
+		false
+	else
+		true			
+	endif;
+
+helper def: seqAsTuples (seq : OrderedSet(OclAny)) : OrderedSet(TupleType(first : OclAny, second : OclAny)) =
+	if seq.isEmpty() then
+			OrderedSet{}
+			else					
+				if seq.size() = 1 then
+					OrderedSet{Tuple {first = seq->at(1), 
+							second = OclUndefined}}
+				else
+					if seq.size() = 2 then
+						OrderedSet{Tuple {first = seq->at(1), 
+							   second = seq->at(2)}}
+					else
+						OrderedSet{Tuple {first = seq->at(1), 
+							  second = seq->at(2)}}
+								->including(thisModule.seqAsTuples(seq.excluding(seq.at(1)).excluding(seq.at(2))))
+					endif
+			endif
+		endif;
+								
+helper def : seqAsTuplesFlatten (seq : OrderedSet(OclAny)) : OrderedSet(TupleType (first : OclAny, second : OclAny)) =
+	thisModule.seqAsTuples(seq)->flatten();
+								
+-- this method takes all the arguments corresponding to equal models and arranges them in pairs
+helper context AML!MethodCall def : inputEqualModelTuples : OrderedSet(TupleType(first : AML!ModelFlowExpression, second : AML!ModelFlowExpression)) =
+	self.equalModelArgs->iterate(e; acc : OclAny = Tuple {previous = OclUndefined, ret = OrderedSet {}} |
+		Tuple {
+			previous = e,
+			ret =
+				if acc.previous.oclIsUndefined() then
+					acc.ret
+				else
+					acc.ret->including(Tuple {first = acc.previous, second = e})
+				endif
+		}
+	).ret;
+
+
+helper context AML!MethodCall def : asTuples : OrderedSet(TupleType (first : AML!ModelFlowExpression, second : AML!ModelFlowExpression)) =
+	thisModule.seqAsTuplesFlatten(self.equalModelArgs);
+
+
+-- extracts NavExp with source ThisNodeExp and contained by a method self
+helper context AML!MethodCall def : methodThisNodeExp : OrderedSet(AML!NavigationOrAttributeCallExp) =
+	AML!NavigationOrAttributeCallExp.allInstances()
+	->select(e | if e.source.oclIsKindOf(AML!ThisNodeExp) then
+					--if e.inPatternSimRVDContainer().oclIsTypeOf(AML!InPattern) then
+						if e.inPatternSimRVDContainer().method = self.method then
+							true
+						else
+						 	 false
+						endif								
+					--else
+						--false
+					--endif
+				  else
+				  	false
+				  endif);
+
+helper context AML!MethodCall def : navExpThisNodeAsTuples : OrderedSet(TupleType (first : AML!NavigationOrAttributeCallExp, second : AML!NavigationOrAttributeCallExp)) =
+	thisModule.seqAsTuplesFlatten(self.methodThisNodeExp);
+
+-- defines SIP type of creation matching strategies 
+helper def : mapCreationSIPType : Map(String, String) =
+	Map {
+		(thisModule.KM3(), 'ModelElement'),
+		(thisModule.Ecore(), 'EModelElement')
+	}
+;
+
+rule InputModel {
+	from
+		m : AML!MethodCall,
+		tm : AML!InputModel 
+		(
+			m.method.arguments.includes(tm)			
+		)
+	to
+		sm : ATL!OclModel (
+			name <- tm.name,
+			metamodel <- Tuple{tm=m, s=tm.referenceModel}	
+		)
+}
+
+rule MappingModel {
+	from
+		m : AML!MethodCall,
+		tm : AML!MappingModel
+		(
+			m.method.arguments.includes(tm)			
+		)
+	to
+		sm : ATL!OclModel (
+			name <- tm.name,
+			metamodel <- equalMetamodel
+		),
+		equalMetamodel : ATL!OclModel (
+			name <- thisModule.equalMetamodelName
+		)
+}
+
+rule WeavingModel {
+	from
+		m : AML!MethodCall,
+		tm : AML!WeavingModel
+		(
+			m.method.arguments.includes(tm)			
+		)
+	to
+		sm : ATL!OclModel (
+			name <- tm.name,
+			metamodel <- Tuple {tm = m, s= tm.referenceModel}
+		)
+}
+
+unique 
+lazy abstract rule ModelFlowExpSIP {	
+	from
+		tm : AML!ModelFlowExpression
+	to
+		equalSIP : ATL!SimpleInPatternElement (
+			models <- OrderedSet {thisModule.ModelFlowExpModel(tm)},
+			type <- thisEqualType
+		),
+		thisEqualType : ATL!OclModelElement (			
+			model <- thisModule.ModelFlowExpModel_equalMetamodel(tm),
+			name <- 'Equal'
+		)
+		
+}
+
+lazy rule ModelFlowExpModel_equalMetamodel {	
+	from
+		tm : AML!ModelFlowExpression
+	to
+		equalMetamodel : ATL!OclModel (
+			name <- thisModule.equalMetamodelName
+		)
+}
+
+unique 
+lazy rule MappingModelSIP extends ModelFlowExpSIP {
+	from
+		tm : AML!MappingModelRefExp
+	to
+		equalSIP : ATL!SimpleInPatternElement (		
+			varName <- tm.referredMappingModel.name + 'Var'
+		)
+}
+
+unique 
+lazy rule MethodCallExpSIP extends ModelFlowExpSIP {
+	from
+		tm : AML!MethodCall
+	to
+		equalSIP : ATL!SimpleInPatternElement (			
+			varName <- tm.method.name + 'Var'
+		)
+}
+
+unique
+lazy rule WeightedModelExpSIP extends ModelFlowExpSIP {
+	from
+		tm : AML!WeightedModelExp
+	to
+		equalSIP : ATL!SimpleInPatternElement (			
+			varName <- tm.modelFlowName() + 'Var'
+		)
+}
+
+unique 
+lazy abstract rule ModelFlowExpModel {	
+	from
+		tm : AML!ModelFlowExpression
+	to
+		equalModel : ATL!OclModel(
+			metamodel <- equalMetamodel
+		),
+		equalMetamodel : ATL!OclModel (
+			name <- thisModule.equalMetamodelName
+		)
+}
+
+unique 
+lazy rule MappingModelExp extends ModelFlowExpModel {
+	from
+		tm : AML!MappingModelRefExp
+	to		
+		equalModel : ATL!OclModel(
+			name <- tm.referredMappingModel.name --+ 'Equal'  
+		)
+}
+
+unique
+lazy rule MethodCallExpModel extends ModelFlowExpModel {
+	from
+		tm : AML!MethodCall
+	to
+		equalModel : ATL!OclModel(
+			name <- tm.method.name --+ 'Equal'  
+		)
+}
+
+unique 
+lazy rule WeightedModelExpSIP extends ModelFlowExpModel {
+	from
+		tm : AML!WeightedModelExp
+	to
+		equalModel : ATL!OclModel(
+			name <- tm.modelFlowName()
+		)
+}
+
+rule LibraryRef {
+	from
+		m : AML!MethodCall,
+		s : AML!ATLLibraryRef (
+			m.method = s.method	
+		)
+	to
+		t : ATL!LibraryRef (
+			name <- s.name
+			--,
+			--unit <- m
+		)
+}
+
+lazy rule ModelFromRef {
+	from
+		tm : AML!MethodCall,
+		s : AML!InputModel
+	to		
+		
+		leftModel : ATL!OclModel (
+			name <- s.name,
+			metamodel <- thisModule.ReferenceModelOfInputModel(tm, s.referenceModel)
+		)
+}
+
+lazy rule ReferenceModelOfInputModel {
+	from
+		tm : AML!MethodCall,
+		s : AML!ReferenceModel
+	to		
+		
+		leftModel : ATL!OclModel (
+			name <- s.defRefModel.name
+		)	
+}
+
+rule MethodCall { 
+	from 
+		tm : AML!MethodCall 
+		(
+			not	tm.method.inPattern.oclIsUndefined()			
+		)
+	to		
+		m : ATL!Module (
+			commentsBefore <- Set {'-- @atlcompiler atl2006'},
+			name <- tm.method.name + tm.ID, -- Ask how to get only the class name
+			isRefining <- false,
+			inModels <- tm.method.arguments->collect(e | Tuple{m=tm, tm=e})
+							-- add ModelRef of weaving models
+							-> union (tm.methodWovenModels->collect(e | thisModule.ModelFromRef(tm, e)))
+							
+							-> union (tm.mappingModelAsArguments->collect(e | thisModule.ModelFromRef(tm, tm.method.matcher.mapMappingRefModel().get(e).leftModel)))
+							-> union (tm.mappingModelAsArguments->collect(e | thisModule.ModelFromRef(tm, tm.method.matcher.mapMappingRefModel().get(e).rightModel)))
+							
+							-> union (tm.equalModelArgs->collect(e | thisModule.ModelFlowExpModel(e)))
+							-> union (tm.equalModelArgs->collect(e | thisModule.ModelFromRef(tm, tm.method.matcher.mapMappingRefModel().get(e).leftModel)))
+							-> union (tm.equalModelArgs->collect(e | thisModule.ModelFromRef(tm, tm.method.matcher.mapMappingRefModel().get(e).rightModel)))
+							, 
+			outModels <- OrderedSet{outModel},
+			elements <- OrderedSet{t2, matchModelMR, modelRefMR, leftElementMR, rightElementMR, ElementRefMR},  
+			libraries <- OrderedSet{equalLibrary, mmmLibrary, custom_mmmLibrary}
+									->union(tm.method.ATLLibraries->collect(e | Tuple{m = tm, s = e}))
+		),
+		
+		outModel : ATL!OclModel (
+			name <- tm.method.name + 'Equal',
+			metamodel <- equalMetamodel
+		), 
+		
+		equalMetamodel : ATL!OclModel (
+			name <- thisModule.equalMetamodelName
+		),
+		
+		metametamodel : ATL!OclModel (
+			name <- thisModule.metametamodelName
+		),
+		
+		-- libraries
+		equalLibrary : ATL!LibraryRef(
+			name <- thisModule.equalMetamodelName
+		),
+		mmmLibrary : ATL!LibraryRef(
+			name <- thisModule.metametamodelName
+		),
+		custom_mmmLibrary : ATL!LibraryRef(
+			name <- thisModule.metametamodelLibName --thisModule.mapMetametamodelName.get(tm.method.matcher.metametamodel()).displayedName
+		),
+						
+		-- main matched rule 
+		t2 : ATL!MatchedRule (
+			isAbstract <- false,
+			isRefining <- false,
+			name <- tm.method.oclType().name + tm.method.name,
+			superRule <- OclUndefined,
+			inPattern <- inPattern,
+			outPattern <- outPattern,			
+			variables <- tm.method.variables->collect(e | Tuple{m=tm, s=e}) --TODO the variables can have primitypes types
+		),
+		
+		inPattern : ATL!InPattern (
+			elements <- tm.equalModelArgs->collect(e | thisModule.ModelFlowExpSIP(e))
+						->union (tm.method.inPattern.elements->collect(e | Tuple{m=tm, s=e})),
+			filter <- 		-- inPattern or simExp includes thisNodeExp and then it is necessary add a condition
+							-- validating nodesByName is not OclUndefined
+--							if tm.navExpThisNodeAsTuples.notEmpty() then
+--								thisModule.createCondition(tm)
+--							else
+								if tm.method.inPattern.filter.oclIsUndefined() then
+									OclUndefined
+								else
+									Tuple {m = tm, s = tm.method.inPattern.filter}
+								endif
+--							endif
+		),
+			
+		outPattern : ATL!OutPattern (
+			elements <- OrderedSet {sop}
+		),
+		sop : ATL!SimpleOutPatternElement (
+			varName <- 'e',
+			type <- equalType,
+			bindings <- OrderedSet{eName, eLeftB, eRightB, eSimB, eModelB} --,eNameB,
+		),
+		equalType : ATL!OclModelElement (
+			model <- equalMetamodel,
+			name <- 'Equal'
+		),
+
+		eModelB : ATL!Binding (
+			propertyName <- 'model',--We need to create a entrypoint rule creating the model containing equal elements
+			value <- eModelBValue
+		),
+		eModelBValue : ATL!OperationCallExp (
+			operationName <- 'equalModel',
+			source <- eModelBVE,
+			arguments <- modelNameSE
+		),
+			eModelBVE : ATL!VariableExp (
+				referredVariable <- thisModuleVar	
+			),
+				thisModuleVar : ATL!VariableDeclaration (
+					varName <- 'thisModule'	
+				),		
+				
+				modelNameSE :  ATL!StringExp(
+					stringSymbol <- thisModule.ModelFlowExpSIP(tm.equalModelArgs.first()).models->first().name 	
+				),
+
+		eLeftB : ATL!Binding (
+			propertyName <- 'left'
+			,
+			value <- eLeftBValue
+		),
+		eLeftBValue : ATL!NavigationOrAttributeCallExp (
+			name <- 'left',
+			source <- eLeftBVE
+		),
+		eLeftBVE : ATL!VariableExp (
+			referredVariable <- thisModule.ModelFlowExpSIP(tm.equalModelArgs.first())
+		),		
+		eRightB : ATL!Binding (
+			propertyName <- 'right',
+			value <- eRightBValue
+		)
+		,
+		eRightBValue : ATL!NavigationOrAttributeCallExp (
+			name <- 'right',
+			source <- eRightBVE
+		),
+		eRightBVE : ATL!VariableExp (
+			referredVariable <- thisModule.ModelFlowExpSIP(tm.equalModelArgs.first())	
+		),	
+		eSimB : ATL!Binding (
+			propertyName <- 'similarity'
+		),
+		eName : ATL!Binding (
+			propertyName <- 'name',
+			value <- eNameNA
+		),
+			eNameNA : ATL!NavigationOrAttributeCallExp (
+				name <- 'name',
+				source <- eNameBVE
+			),
+				eNameBVE : ATL!VariableExp (
+					referredVariable <- thisModule.ModelFlowExpSIP(tm.equalModelArgs.first())	
+				),
+							
+		-- complementary matched rules	
+		
+		-- ojo falta colocarle un outputpattern que referencia a method, ver transfo Propagation linea 100
+		matchModelMR : ATL!MatchedRule (
+			name <- 'matchModel',
+			inPattern <- matchModelMRInPattern,
+			outPattern <- matchModelMROutPattern
+		),
+			matchModelMRInPattern : ATL!InPattern (
+				elements <- OrderedSet{matchModelMRSimpleInPattern}	
+			),
+				matchModelMRSimpleInPattern : ATL!SimpleInPatternElement (
+					varName <- 'mmw',
+					type <- matchModelMRSimpleInPatternType,
+					models <- if tm.equalModelArgs.notEmpty() then					
+								OrderedSet {thisModule.ModelFlowExpModel(tm.equalModelArgs->first())}
+							  else
+									OrderedSet{}
+							  endif
+			),
+					matchModelMRSimpleInPatternType : ATL!OclModelElement (
+						name <- 'MatchModel',
+						model <- equalMetamodel
+					),
+			matchModelMROutPattern : ATL!OutPattern (
+					elements <- OrderedSet{matchModelMRSimpleOutPattern}
+			),
+				matchModelMRSimpleOutPattern : ATL!SimpleOutPatternElement (
+						varName <- 'out',
+						type <- matchModelMRSimpleOutPatternType,
+						bindings <- OrderedSet {matchModelBName, matchModelBleftM, matchModelBrightM}		
+				),
+					matchModelMRSimpleOutPatternType : ATL!OclModelElement (
+							name <- 'MatchModel',
+							model <- equalMetamodel
+					),
+					matchModelBName : ATL!Binding (
+						propertyName <- 'name',
+						value <- matchModelBNameV
+					),
+						matchModelBNameV : ATL!NavigationOrAttributeCallExp (
+							name <- 'name',
+							source <- matchModelBNameVarExp
+						),						
+							matchModelBNameVarExp : ATL!VariableExp (
+								referredVariable <- matchModelMRSimpleInPattern	
+							),
+					matchModelBleftM : ATL!Binding (
+						propertyName <- 'leftM',
+						value <- matchModelBleftMV
+					),
+						matchModelBleftMV : ATL!NavigationOrAttributeCallExp (
+							name <- 'leftM',
+							source <- matchModelBleftMVarExp
+						),
+							matchModelBleftMVarExp : ATL!VariableExp (
+								referredVariable <- matchModelMRSimpleInPattern	
+							),						
+					matchModelBrightM : ATL!Binding (
+						propertyName <- 'rightM',
+						value <- matchModelBrightMV
+					),
+						matchModelBrightMV : ATL!NavigationOrAttributeCallExp (
+							name <- 'rightM',
+							source <- matchModelBrightMVarExp
+						),
+							matchModelBrightMVarExp : ATL!VariableExp (
+								referredVariable <- matchModelMRSimpleInPattern	
+						),		
+					
+		modelRefMR : ATL!MatchedRule (
+			name <- 'modelRef',
+			inPattern <- modelRefMRInPattern,
+			outPattern <- modelRefMROutPattern
+		),
+			modelRefMRInPattern : ATL!InPattern (
+				elements <- OrderedSet{modelRefMRSimpleInPattern}	
+			),
+				modelRefMRSimpleInPattern : ATL!SimpleInPatternElement (
+					varName <- 'mmw',
+					type <- modelRefMRSimpleInPatternType,
+					models <- if tm.equalModelArgs.notEmpty() then					
+								OrderedSet {thisModule.ModelFlowExpModel(tm.equalModelArgs->first())}
+							  else
+									OrderedSet{}
+							  endif
+			),
+					modelRefMRSimpleInPatternType : ATL!OclModelElement (
+						name <- 'ModelRef',
+						model <- equalMetamodel
+					),
+			modelRefMROutPattern : ATL!OutPattern (
+					elements <- OrderedSet{modelRefMRSimpleOutPattern}
+			),
+				modelRefMRSimpleOutPattern : ATL!SimpleOutPatternElement (
+						varName <- 'out',
+						type <- modelRefMRSimpleOutPatternType,
+						bindings <- OrderedSet {modelRefBName, modelRefBRef}		
+				),
+					modelRefMRSimpleOutPatternType : ATL!OclModelElement (
+							name <- 'ModelRef',
+							model <- equalMetamodel
+					),
+					modelRefBName : ATL!Binding (
+						propertyName <- 'name',
+						value <- modelRefBNameV
+					),
+					modelRefBNameV : ATL!NavigationOrAttributeCallExp (
+						name <- 'name',
+						source <- modelRefBNameVarExp
+					),						
+						modelRefBNameVarExp : ATL!VariableExp (
+							referredVariable <- modelRefMRSimpleInPattern	
+						),
+					modelRefBRef : ATL!Binding (
+						propertyName <- 'ref',
+						value <- modelRefBRefV
+					),
+					modelRefBRefV : ATL!NavigationOrAttributeCallExp (
+						name <- 'ref',
+						source <- modelRefBRefVarExp
+					),
+						modelRefBRefVarExp : ATL!VariableExp (
+							referredVariable <- modelRefMRSimpleInPattern	
+						),
+					
+					
+		leftElementMR : ATL!MatchedRule (
+			name <- 'leftElement',
+			inPattern <- leftElementMRInPattern,
+			outPattern <- leftElementMROutPattern
+		),
+			leftElementMRInPattern : ATL!InPattern (
+				elements <- OrderedSet{leftElementMRSimpleInPattern}	
+			),
+				leftElementMRSimpleInPattern : ATL!SimpleInPatternElement (
+					varName <- 'mmw',
+					type <- leftElementMRSimpleInPatternType,
+					models <- if tm.equalModelArgs.notEmpty() then					
+								OrderedSet {thisModule.ModelFlowExpModel(tm.equalModelArgs->first())}
+							  else
+									OrderedSet{}
+							  endif
+				),
+					leftElementMRSimpleInPatternType : ATL!OclModelElement (
+						name <- 'LeftElement',
+						model <- equalMetamodel
+					),
+			leftElementMROutPattern : ATL!OutPattern (
+					elements <- OrderedSet{leftElementMRSimpleOutPattern}
+			),
+				leftElementMRSimpleOutPattern : ATL!SimpleOutPatternElement (
+						varName <- 'out',
+						type <- leftElementMRSimpleOutPatternType,
+						bindings <- OrderedSet {leftElementBName, leftElementBElement}		
+				),
+					leftElementMRSimpleOutPatternType : ATL!OclModelElement (
+							name <- 'LeftElement',
+							model <- equalMetamodel
+					),
+					leftElementBName : ATL!Binding (
+						propertyName <- 'name',
+						value <- leftElementBNameV
+					),
+					leftElementBNameV : ATL!NavigationOrAttributeCallExp (
+						name <- 'name',
+						source <- leftElementBNameVarExp
+					),
+						leftElementBNameVarExp : ATL!VariableExp (
+							referredVariable <- leftElementMRSimpleInPattern	
+						),
+					leftElementBElement : ATL!Binding (
+						propertyName <- 'element',
+						value <- leftElementBElementV
+					),
+					leftElementBElementV : ATL!NavigationOrAttributeCallExp (
+						name <- 'element',
+						source <- leftElementBElementVarExp
+					),
+						leftElementBElementVarExp : ATL!VariableExp (
+							referredVariable <- leftElementMRSimpleInPattern	
+						)
+						,
+					
+		rightElementMR : ATL!MatchedRule (
+			name <- 'rightElement',
+			inPattern <- rightElementMRInPattern,
+			outPattern <- rightElementMROutPattern
+		),
+			rightElementMRInPattern : ATL!InPattern (
+				elements <- OrderedSet{rightElementMRSimpleInPattern}	
+			),
+				rightElementMRSimpleInPattern : ATL!SimpleInPatternElement (
+					varName <- 'mmw',
+					type <- rightElementMRSimpleInPatternType,
+					models <- if tm.equalModelArgs.notEmpty() then					
+								OrderedSet {thisModule.ModelFlowExpModel(tm.equalModelArgs->first())}
+							  else
+									OrderedSet{}
+							  endif
+				),
+					rightElementMRSimpleInPatternType : ATL!OclModelElement (
+						name <- 'RightElement',
+						model <- equalMetamodel
+					),
+			rightElementMROutPattern : ATL!OutPattern (
+					elements <- OrderedSet{rightElementMRSimpleOutPattern}
+			),
+				rightElementMRSimpleOutPattern : ATL!SimpleOutPatternElement (
+						varName <- 'out',
+						type <- rightElementMRSimpleOutPatternType,
+						bindings <- OrderedSet {rightElementBName, rightElementBElement}		
+				),
+					rightElementMRSimpleOutPatternType : ATL!OclModelElement (
+							name <- 'RightElement',
+							model <- equalMetamodel
+					),
+					rightElementBName : ATL!Binding (
+						propertyName <- 'name',
+						value <- rightElementBNameV
+					),
+					rightElementBNameV : ATL!NavigationOrAttributeCallExp (
+						name <- 'name',
+						source <- rightElementBNameVarExp
+					),
+						rightElementBNameVarExp : ATL!VariableExp (
+							referredVariable <- rightElementMRSimpleInPattern	
+						),
+					rightElementBElement : ATL!Binding (
+						propertyName <- 'element',
+						value <- rightElementBElementV
+					),
+					rightElementBElementV : ATL!NavigationOrAttributeCallExp (
+						name <- 'element',
+						source <- rightElementBElementVarExp
+					),
+						rightElementBElementVarExp : ATL!VariableExp (
+							referredVariable <- rightElementMRSimpleInPattern	
+						),
+					
+		ElementRefMR : ATL!MatchedRule (
+			name <- 'ElementRef',
+			inPattern <- ElementRefMRInPattern,
+			outPattern <- ElementRefMROutPattern
+		),
+			ElementRefMRInPattern : ATL!InPattern (
+				elements <- OrderedSet{ElementRefMRSimpleInPattern}	
+			),
+				ElementRefMRSimpleInPattern : ATL!SimpleInPatternElement (
+					varName <- 'mmw',
+					type <- ElementRefMRSimpleInPatternType,
+					models <- if tm.equalModelArgs.notEmpty() then					
+								OrderedSet {thisModule.ModelFlowExpModel(tm.equalModelArgs->first())}
+							  else
+									OrderedSet{}
+							  endif
+				),
+					ElementRefMRSimpleInPatternType : ATL!OclModelElement (
+						name <- 'ElementRef',
+						model <- equalMetamodel
+					),
+			ElementRefMROutPattern : ATL!OutPattern (
+					elements <- OrderedSet{ElementRefMRSimpleOutPattern}
+			),
+				ElementRefMRSimpleOutPattern : ATL!SimpleOutPatternElement (
+						varName <- 'out',
+						type <- ElementRefMRSimpleOutPatternType,
+						bindings <- OrderedSet {ElementRefBName, ElementRefBElement, ElementRefBModelRef}		
+				),
+					ElementRefMRSimpleOutPatternType : ATL!OclModelElement (
+							name <- 'ElementRef',
+							model <- equalMetamodel
+					),
+					ElementRefBName : ATL!Binding (
+						propertyName <- 'name',
+						value <- ElementRefBNameV
+					),
+					ElementRefBNameV : ATL!NavigationOrAttributeCallExp (
+						name <- 'name',
+						source <- ElementRefBNameVarExp
+					),
+						ElementRefBNameVarExp : ATL!VariableExp (
+							referredVariable <- ElementRefMRSimpleInPattern	
+						),
+					ElementRefBElement : ATL!Binding (
+						propertyName <- 'ref',
+						value <- ElementRefBElementV
+					),
+					ElementRefBElementV : ATL!NavigationOrAttributeCallExp (
+						name <- 'ref',
+						source <- ElementRefBElementVarExp
+					),
+						ElementRefBElementVarExp : ATL!VariableExp (
+							referredVariable <- ElementRefMRSimpleInPattern	
+						),
+					ElementRefBModelRef : ATL!Binding (
+						propertyName <- 'modelRef',
+						value <- ElementRefBModelRefV
+					),
+					ElementRefBModelRefV : ATL!NavigationOrAttributeCallExp (
+						name <- 'modelRef',
+						source <- ElementRefBModelRefVarExp
+					),
+						ElementRefBModelRefVarExp : ATL!VariableExp (
+							referredVariable <- ElementRefMRSimpleInPattern	
+						)
+}
+
+lazy rule createCondition {
+	from
+		tm : AML!MethodCall
+	using {
+		seq : OrderedSet(TupleType (first : AML!NavigationOrAttributeCallExp, second : AML!NavigationOrAttributeCallExp)) =
+			tm.navExpThisNodeAsTuples;
+	}
+	to
+		t : ATL!IfExp (
+			condition <- if seq.size() = 1 then
+							thisModule.operationCall3(tm, seq.first().first, seq.first().second)
+						 else
+							thisModule.operatorCall3(tm, seq)
+						 endif,
+			thenExpression <- thenExpression,
+			elseExpression <- if tm.method.inPattern.filter.oclIsUndefined() then
+									thisModule.trueExp(tm)
+							  else
+									Tuple {m = tm, s = tm.method.inPattern.filter}
+							  endif 
+		),
+		thenExpression : ATL!BooleanExp(
+			booleanSymbol <- false 	
+		)		
+}
+
+rule ReferenceModel2OclModel {
+	from
+		tm : AML!MethodCall,
+		s : AML!ReferenceModel
+	to
+		t : ATL!OclModel (
+			name <- s.name,
+			elements <- s.elements->collect(e | Tuple{m = tm, s = e})
+			--,
+			--model <- s.models
+		)
+}
+
+
+
+rule AggrEqual extends MethodCall { -- TODO implements the merging operator. We have already  implemented a merging version by using the aggr operator, howver this could not work when the mapping models to merge contain a common mapping, this would be stored once instead of twice
+	from 
+		tm : AML!MethodCall (
+			tm.method.oclIsTypeOf(AML!AggrEqual)	
+		)	
+	using {
+			equalInPattern2 : ATL!SimpleInPatternElement = thisModule.ModelFlowExpSIP(tm.equalModelArgs.first());
+		}
+	to
+		m : ATL!Module(
+			elements <-	 OrderedSet{t2, matchModelMR, modelRefMR, leftElementMR, rightElementMR, ElementRefMR, helperMapWeights}
+		),
+		inPattern : ATL!InPattern (
+			elements <- OrderedSet{equalInPattern},
+			filter <- filterAggr	
+		),
+		
+			equalInPattern : ATL!SimpleInPatternElement (
+				varName <- equalInPattern2.varName,
+				type <- equalInPatternType
+			),
+				equalInPatternType : ATL!OclModelElement (
+					name <- 'Equal',
+					model <- equalMetamodel
+				),
+			
+			filterAggr : ATL!OperatorCallExp (
+				operationName <- '=',
+				source <- oGet,
+				arguments <- equalIPVE
+			),
+				equalIPVE : ATL!VariableExp (
+					referredVariable <- equalInPattern
+				),
+				oGet : ATL!OperationCallExp (
+					operationName <- 'get',
+					source <- navMap,
+					arguments <- navXMIID 
+				),
+					navMap : ATL!NavigationOrAttributeCallExp (
+						name <- 'map',
+						source <- navMapVE
+					),
+						navMapVE : ATL!VariableExp (
+							referredVariable <- thisModuleVar	
+						),
+					navXMIID : ATL!NavigationOrAttributeCallExp (
+						name <- 'xmiIDs_Equal',
+						source <- navXMIIDVE
+					),
+						navXMIIDVE : ATL!VariableExp (
+							referredVariable <- equalInPattern	
+						),
+						
+		-- name, left and right taken from equalVar 
+		
+		eNameBVE : ATL!VariableExp (
+			referredVariable <- equalInPattern	
+		),
+		
+		eLeftBVE : ATL!VariableExp (
+			referredVariable <- equalInPattern
+		),
+		
+		eRightBVE : ATL!VariableExp (
+			referredVariable <- equalInPattern
+		),		
+			
+		-- Calling lazy rules to initialize left and right
+		eLeftB : ATL!Binding (
+			value <- eLeftBValueOC
+		),
+		eLeftBValueOC : ATL!OperationCallExp (
+			operationName <- 'leftElement',
+			source <- eLeftBValueOCVar,
+			arguments <- eLeftBValue
+		),
+		eLeftBValueOCVar : ATL!VariableExp (
+			referredVariable <- thisModuleVar	
+		),		
+		
+		eRightB : ATL!Binding (
+			value <- eRightBValueOC
+		),
+		eRightBValueOC : ATL!OperationCallExp (
+			operationName <- 'rightElement',
+			source <- eRightBValueOCVar,
+			arguments <- eRightBValue
+		),
+		eRightBValueOCVar : ATL!VariableExp (
+			referredVariable <- thisModuleVar	
+		),
+		
+		leftElementMR : ATL!LazyMatchedRule,
+			leftElementMRSimpleInPattern : ATL!SimpleInPatternElement (					
+					models <- OrderedSet{}
+				),
+				-- calling the lazy rule ElementRef
+			leftElementBElement : ATL!Binding (
+						value <- leftElementBElementV2
+					),
+					leftElementBElementV2 : ATL!OperationCallExp (
+						operationName <- 'ElementRef',
+						source <- leftElementBElementV2VE,
+						arguments <- leftElementBElementV
+					),
+						leftElementBElementV2VE : ATL!VariableExp (
+							referredVariable <- thisModuleVar	
+						),	
+		rightElementMR : ATL!LazyMatchedRule,
+			rightElementMRSimpleInPattern : ATL!SimpleInPatternElement (					
+					models <- OrderedSet{}
+				),
+				-- calling the lazy rule ElementRef
+			rightElementBElement : ATL!Binding (
+						value <- rightElementBElementV2
+					),
+					rightElementBElementV2 : ATL!OperationCallExp (
+						operationName <- 'ElementRef',
+						source <- rightElementBElementV2VE,
+						arguments <- rightElementBElementV
+					),
+						rightElementBElementV2VE : ATL!VariableExp (
+							referredVariable <- thisModuleVar	
+						),
+		
+		-- ElementRef is a lazy rule
+		ElementRefMR : ATL!LazyMatchedRule,
+		ElementRefMRSimpleInPattern : ATL!SimpleInPatternElement (
+					models <- OrderedSet{}
+				),
+				
+				-- calling a helper that links the ElementRef to the correct ModelRef
+				
+				ElementRefBModelRef : ATL!Binding (						
+						value <- ElementRefBModelRefV2
+					),
+					ElementRefBModelRefV2 : ATL!OperationCallExp (
+							source <- ElementRefBModelRefVarExp2, 
+							operationName <- 'getModelRef',
+							arguments <- getModelRefArgs
+					),
+						getModelRefArgs : ATL!StringExp (
+							stringSymbol <- thisModule.ModelFlowExpSIP(tm.equalModelArgs.first()).models->first().name  
+						),
+						ElementRefBModelRefVarExp2 : ATL!VariableExp (
+							referredVariable <- ElementRefMRSimpleInPattern	
+						),
+		
+		eSimB : ATL!Binding (
+			value <- Tuple{m=tm, s=tm.method.sim.value}					
+		),
+		
+		helperMapWeights : ATL!Helper (
+			definition <- definition
+		),		
+			definition : ATL!OclFeatureDefinition (
+				feature <- feature
+			),			
+				feature : ATL!Operation (
+					name <- 'modelWeight',
+					returnType <- returnType,
+					body <- body
+				),				
+					returnType : ATL!MapType (
+						valueType <- realType,
+						keyType <- matchModelType
+					),
+						matchModelType : ATL!OclModelElement(
+							name <- 'MatchModel',
+							model <- equalMetamodel 
+						),
+						realType : ATL!RealType(),
+					body : ATL!MapExp (
+						elements <- tm.equalModelArgs->collect(e | thisModule.createEntryMap(e))
+					)
+--					do {
+--						inPattern.elements.first().models <- OclUndefined;
+--					}
+					
+}
+
+rule summation {
+	from
+		m : AML!MethodCall,
+		s : AML!SummationExp
+--		(
+--			s.inPatternSimRVDContainer() = m.method	
+--		)	
+	to
+		t : ATL!NavigationOrAttributeCallExp (
+			name <- 'sum',
+			source <- equalVar
+		),
+			equalVar : ATL!VariableExp (
+				referredVariable <- thisModule.ModelFlowExpSIP(m.equalModelArgs.first())	
+			), 
+		"helper" : ATL!Helper (
+			definition <- definition,
+			module <- m-- thisModule.resolveTemp(m, 'm') -- 'm' by module
+		),
+			definition : ATL!OclFeatureDefinition(
+				feature <- feature,
+				context_ <- context_
+			),
+			
+				feature : ATL!Attribute(
+					name <- 'sum',
+					initExpression <- initExpression,
+					type <- featureType
+				),
+					initExpression : ATL!IterateExp (
+						source <- oGet,
+						body <- body,
+						result <- result,
+						iterators <- iteratorE						
+					),
+						selfVar : ATL!VariableDeclaration (
+							varName <- 'self'	
+						),
+						oGet : ATL!OperationCallExp (
+							operationName <- 'get',
+							source <- navMap,
+							arguments <- navXMIID 
+						),
+							navMap : ATL!NavigationOrAttributeCallExp (
+								name <- 'mapEqual',
+								source <- navMapVE
+							),
+								navMapVE : ATL!VariableExp (
+									referredVariable <- thisModuleVar
+								),
+									thisModuleVar : ATL!VariableDeclaration (
+										varName <- 'thisModule'	
+									),
+							navXMIID : ATL!NavigationOrAttributeCallExp (
+								name <- 'xmiIDs_Equal',
+								source <- navXMIIDVE
+							),
+								navXMIIDVE : ATL!VariableExp (
+									referredVariable <- selfVar	
+								),
+						body : ATL!OperatorCallExp (
+							operationName <- '+',
+							source <- resultVarExp,
+							arguments <- Tuple{m = m, s=s.sumExpression}
+						),
+							resultVarExp : ATL!VariableExp (
+							referredVariable <- result	
+							),
+						iteratorE : ATL!Iterator (
+							varName <- 'e'
+							
+						),						
+						result : ATL!VariableDeclaration (
+							varName <- 'acc',
+							type <- type,
+							initExpression <- accInitExpression
+						),
+							type : ATL!RealType,
+							accInitExpression : ATL!IntegerExp (
+								integerSymbol <- 0	
+							),
+						featureType : ATL!RealType,
+						context_ : ATL!OclContextDefinition (
+							context_ <- oclContext	
+						),
+							oclContext : ATL!OclModelElement (
+								name <- 'Equal',
+								model <- equalMetamodel
+							),
+								equalMetamodel : ATL!OclModel (
+									name <- thisModule.equalMetamodelName
+								)
+				
+}
+
+lazy rule createEntryMap {
+	from
+		wE : AML!WeightedModelExp
+	to 
+	
+		t : ATL!MapElement (
+			key <- key,	
+			value <- value
+		),
+		
+		key : ATL!OperationCallExp(
+			operationName <- 'equalModel',
+			source <- modelVarExp,
+			arguments <- modelName
+		),
+			modelVarExp : ATL!VariableExp (
+				referredVariable <- varThisModule	
+			),
+				varThisModule : ATL!VariableDeclaration (
+					varName <- 'thisModule'	
+				),
+		
+			modelName : ATL!StringExp (
+				stringSymbol <- wE.modelFlowName()
+			),
+		
+		value : ATL!RealExp(
+			realSymbol <- wE.weight
+		)
+}
+
+rule operatorCall (tuples : OrderedSet(TupleType(first : AML!ModelFlowExpression, second : AML!ModelFlowExpression))) {
+	using {
+		tuple : TupleType(first : AML!ModelFlowExpression, second : AML!ModelFlowExpression) = tuples.first();
+		tuplesNext : OrderedSet(TupleType(first : AML!ModelFlowExpression, second : AML!ModelFlowExpression)) 
+					= tuples.excluding(tuple);
+	}
+	
+	to
+		t : ATL!OperatorCallExp (
+			operationName <- 'and',
+			source <- if tuplesNext.size() > 1 then
+						thisModule.operatorCall(tuplesNext)
+						else
+							thisModule.operationCall(tuplesNext.first().first, tuplesNext.first().second)
+						endif,
+			arguments <- thisModule.operationCall(tuple.first, tuple.second)
+		)	
+	do {
+		t;
+	}
+}
+
+rule operatorCall2 (oclExp : AML!OclExpression, tuples : OrderedSet(TupleType(first : AML!ModelFlowExpression, second : AML!ModelFlowExpression))) {
+	using {
+		tuple : TupleType(first : AML!ModelFlowExpression, second : AML!ModelFlowExpression) = tuples.first();
+		tuplesNext : OrderedSet(TupleType(first : AML!ModelFlowExpression, second : AML!ModelFlowExpression)) 
+					= tuples.excluding(tuple);
+	}
+	
+	to
+		t : ATL!OperatorCallExp (
+			operationName <- '+',
+			source <- if tuplesNext.size() > 1 then
+						thisModule.operatorCall2(oclExp, tuplesNext)
+						else
+							thisModule.operationCall2(oclExp, tuplesNext.first().first, tuplesNext.first().second)
+						endif,
+			arguments <- thisModule.operationCall2(oclExp, tuple.first, tuple.second)
+		)	
+	do {
+		t;
+	}
+}
+
+rule operatorCall3 (methodCall : AML!MethodCall, tuples : OrderedSet(TupleType(first : AML!NavigationOrAttributeCallExp, second : AML!NavigationOrAttributeCallExp))) {
+	using {
+		tuple : TupleType(first : AML!NavigationOrAttributeCallExp, second : AML!NavigationOrAttributeCallExp) = tuples.first();
+		tuplesNext : OrderedSet(TupleType(first : AML!NavigationOrAttributeCallExp, second : AML!NavigationOrAttributeCallExp)) 
+					= tuples.excluding(tuple);
+	}
+	to
+		t : ATL!OperatorCallExp (
+			operationName <- 'or',
+			source <- if tuplesNext.size() > 1 then
+						thisModule.operatorCall3(methodCall, tuplesNext)
+						else
+							thisModule.operationCall3(methodCall, tuplesNext.first().first, tuplesNext.first().second)
+						endif,
+			arguments <- thisModule.operationCall3(methodCall, tuple.first, tuple.second)
+		)	
+	do {
+		t;
+	}
+	
+}
+
+lazy rule simNavigationEqualElement {
+	from
+		m : AML!ModelFlowExpression
+	to
+		nav : ATL!NavigationOrAttributeCallExp (
+			name <- 'similarity',
+			source <- variableExp
+		),
+		variableExp : ATL!VariableExp (
+			referredVariable <- thisModule.ModelFlowExpSIP(m)
+		) 
+}
+
+lazy rule operationCall {
+	from
+		m1 : AML!ModelFlowExpression,
+		m2 : AML!ModelFlowExpression
+	to
+		operationEqual : ATL!OperationCallExp (
+			operationName <- 'equal',
+			source <- varExp,
+			arguments <- OrderedSet {varExpThisEqual1, varExpThisEqual2}
+		),		
+		varExp : ATL!VariableExp(
+			referredVariable <- thisModuleVar	
+		),
+		thisModuleVar : ATL!VariableDeclaration (
+			varName <- 'thisModule'	
+		),
+		varExpThisEqual1 : ATL!VariableExp(
+			referredVariable <- thisModule.ModelFlowExpSIP(m1) 
+		),
+		varExpThisEqual2 : ATL!VariableExp(
+			referredVariable <- thisModule.ModelFlowExpSIP(m2)
+		)
+}
+
+lazy rule operationCall2 {
+	from
+		o : AML!OclExpression,
+		m1 : AML!ModelFlowExpression,
+		m2 : AML!ModelFlowExpression
+	to
+		operationEqual : ATL!OperationCallExp (
+			operationName <- '+',
+			source <- thisModule.OclExpressionAggr(m1, o),
+			arguments <- if m2.oclIsUndefined() then
+							thisModule.zeroExpression(o)
+						 else
+						 	OrderedSet {thisModule.OclExpressionAggr(m2, o)}
+						 endif
+		)
+}
+
+lazy rule zeroExpression {
+	from
+		o : AML!OclExpression
+	to
+	zero : ATL!RealExp (
+			realSymbol <- 0			
+		)
+}
+
+lazy rule operationCall3 {
+	from
+		m : AML!MethodCall,
+		s1 : AML!NavigationOrAttributeCallExp,
+		s2 : AML!NavigationOrAttributeCallExp
+	to
+		operatorOr : ATL!OperatorCallExp (
+			operationName <- 'or',
+			source <- thisModule.createNodesByNameCall(m, s1),
+			arguments <- if s2.oclIsUndefined() then
+							thisModule.trueExp(m)
+						 else			
+							thisModule.createNodesByNameCall(m, s2)
+						 endif
+		)
+}
+
+lazy rule trueExp {
+	from
+	  m : AML!MethodCall
+	to
+	  trueExp : ATL!BooleanExp (
+	  	booleanSymbol <- true	
+	  )	  
+}
+
+lazy rule createNodesByNameCall {
+	from
+		m : AML!MethodCall,
+		s : AML!NavigationOrAttributeCallExp
+	to
+		oclUndExp : ATL!OperationCallExp(
+			operationName <- 'oclIsUndefined',
+			source <- thisNode
+		),	
+			thisNode : ATL!OperationCallExp (
+				operationName <- 'nodesByName',
+				source <- if m.method.oclIsTypeOf(AML!CreateEqual) then						
+							thisModule.createVar(m, s)
+						  else
+						  	thisModule.createVar2(m,s)
+						  endif,
+				arguments <- OrderedSet{arguments}
+			),		
+				arguments : ATL!StringExp (
+					stringSymbol <- s.name			
+				)
+}
+
+
+rule SimEqual extends MethodCall {
+	from
+		tm : AML!MethodCall (tm.method.oclIsTypeOf(AML!SimEqual))
+--	using {
+--			methodAsArg : AML!MethodCall = tm.inputModelArgumentMethod().debug('Method');
+--		}
+	to
+		m : ATL!Module,
+		thisModuleVar : ATL!VariableDeclaration,
+				 
+		eLeftB : ATL!Binding (
+			value <- eLeftBValueOC
+		),
+		eLeftBValueOC : ATL!OperationCallExp (
+			operationName <- 'leftElement',
+			source <- eLeftBValueOCVar,
+			arguments <- eLeftBValue
+		),
+		eLeftBValueOCVar : ATL!VariableExp (
+			referredVariable <- thisModuleVar	
+		),		
+		
+		eRightB : ATL!Binding (
+			value <- eRightBValueOC
+		),
+		eRightBValueOC : ATL!OperationCallExp (
+			operationName <- 'rightElement',
+			source <- eRightBValueOCVar,
+			arguments <- eRightBValue
+		),
+		eRightBValueOCVar : ATL!VariableExp (
+			referredVariable <- thisModuleVar	
+		),
+		
+		leftElementMR : ATL!LazyMatchedRule,
+		rightElementMR : ATL!LazyMatchedRule,
+		eSimB : ATL!Binding (
+			value <- Tuple {m = tm, s = tm.method.sim.value}
+		)
+}
+
+rule SelEqual extends MethodCall {
+	from
+		tm : AML!MethodCall (tm.method.oclIsTypeOf(AML!SelEqual))
+	to
+		m : ATL!Module,
+		
+		thisModuleVar : ATL!VariableDeclaration,
+				 
+		eLeftB : ATL!Binding (
+			value <- eLeftBValueOC
+		),
+		eLeftBValueOC : ATL!OperationCallExp (
+			operationName <- 'leftElement',
+			source <- eLeftBValueOCVar,
+			arguments <- eLeftBValue
+		),
+		eLeftBValueOCVar : ATL!VariableExp (
+			referredVariable <- thisModuleVar	
+		),		
+		
+		eRightB : ATL!Binding (
+			value <- eRightBValueOC
+		),
+		eRightBValueOC : ATL!OperationCallExp (
+			operationName <- 'rightElement',
+			source <- eRightBValueOCVar,
+			arguments <- eRightBValue
+		),
+		eRightBValueOCVar : ATL!VariableExp (
+			referredVariable <- thisModuleVar	
+		),
+		
+		leftElementMR : ATL!LazyMatchedRule,
+		rightElementMR : ATL!LazyMatchedRule,
+		inPattern : ATL!InPattern,
+		eSimB : ATL!Binding (
+			value <- eSimBValue
+		),
+		eSimBValue : ATL!NavigationOrAttributeCallExp (
+			name <- 'similarity',
+			source <- eSimBVE
+		),
+		eSimBVE : ATL!VariableExp (
+			referredVariable <- thisModule.ModelFlowExpSIP(tm.equalModelArgs.first()) --inPattern.elements.first()	
+		)
+}
+
+rule ThisModel {
+	from
+		m : AML!MethodCall,
+		s : AML!ThisEqualModelExp 
+--		(
+--			
+--			s.inPatternSimRVDContainer() = m.method
+--			
+--				
+--		)
+	to
+		navThisModel : ATL!NavigationOrAttributeCallExp (
+			name <- 'model',
+			source <- varThisEqual
+		),
+		varThisEqual : ATL!VariableExp(
+			referredVariable <- thisModule.ModelFlowExpSIP(m.equalModelArgs.first())	
+		)
+}
+
+rule CreateEqual extends MethodCall {
+	from
+		tm : AML!MethodCall (
+			tm.method.oclIsTypeOf(AML!CreateEqual)	
+		)
+	
+	to	
+		m : ATL!Module, 
+
+		
+		inPattern : ATL!InPattern(
+			elements <- OrderedSet{leftNode, rightNode} 
+						-> union (tm.method.inPattern.elements->collect(e | Tuple{m=tm, s=e}))
+		),
+			leftNode : ATL!SimpleInPatternElement (				
+				models <- tm.equalModelArgs->collect(e | thisModule.ModelFromRef(tm, tm.method.matcher.mapMappingRefModel().get(e).leftModel)),
+				varName <- 'left',				
+				type <- leftNodeT				
+			),
+				leftNodeT : ATL!OclModelElement (
+
+					name <- thisModule.mapCreationSIPType.get(tm.method.matcher.metametamodel()),
+					model <- metametamodel
+				),
+			rightNode : ATL!SimpleInPatternElement (
+				models <- tm.equalModelArgs->collect(e | thisModule.ModelFromRef(tm, tm.method.matcher.mapMappingRefModel().get(e).rightModel)),
+				varName <- 'right',
+				type <- rightNodeT				
+			),
+				rightNodeT : ATL!OclModelElement (
+					
+					name <- thisModule.mapCreationSIPType.get(tm.method.matcher.metametamodel()),
+					model <- metametamodel
+				),
+				
+		-- modifying name, left and right of Equal
+		
+				
+		eLeftB : ATL!Binding (
+			propertyName <- 'left',
+			value <- eLeftBVarExp
+		),
+		eLeftBVarExp : ATL!VariableExp (
+			referredVariable <- eLeftBOP
+		),
+			
+		eRightB : ATL!Binding (
+			propertyName <- 'right',
+			value <- eRightBVarExp
+		),
+		eRightBVarExp : ATL!VariableExp (
+			referredVariable <- eRightBOP
+		),		
+						
+		eName : ATL!Binding (			
+			value <- eNameOC
+		),
+		
+			eNameOC : ATL!OperationCallExp (
+				operationName <- 'leftName_rightName',
+				source <- leftNodeVE,
+				arguments <- rightNodeVE
+				),
+					leftNodeVE : ATL!VariableExp (
+						referredVariable <- leftNode	
+					),
+					
+					rightNodeVE : ATL!VariableExp (
+						referredVariable <- rightNode	
+					),	
+						
+		-- creating the rest of SOPs
+		
+		eLeftB : ATL!Binding (			
+			value <- eLeftBValue
+		),
+		eLeftBVE : ATL!VariableExp (
+			referredVariable <- eLeftBOP			
+		),
+		eLeftBOP : ATL!SimpleOutPatternElement (
+			outPattern <- outPattern,
+			varName <- 	'eLeft',
+			type <- eLeftEType,
+			bindings <- OrderedSet{eLeftElementB}
+		),
+		eLeftEType : ATL!OclModelElement (
+			name <- 'LeftElement',
+			model <- equalMetamodel
+		),
+		eLeftElementB : ATL!Binding (
+			propertyName <- 'element',
+			value <- eLeftElementBValue
+		),
+		eLeftElementBValue : ATL!VariableExp (
+			referredVariable <- eLeftRef	
+		),
+		eLeftRef : ATL!SimpleOutPatternElement (
+			outPattern <- outPattern,
+			varName <- 	'eLeftRef',
+			type <- eLeftRType,
+			bindings <- OrderedSet {eLeftRefB, eLeftModelRefB}
+		),
+		eLeftRType : ATL!OclModelElement (
+			model <- equalMetamodel,
+			name <- 'ElementRef'
+			--,
+			--model <- targetModel
+		),		
+		eLeftRefB : ATL!Binding(
+			propertyName <- 'ref',
+			value <- eLeftRefBValue
+		),
+			eLeftRefBValue : ATL!NavigationOrAttributeCallExp(
+				name <- '__xmiID__',
+				source <- eLeftRefBVar
+			),
+				eLeftRefBVar : ATL!VariableExp(
+					referredVariable <- leftNode
+				),
+
+		eLeftModelRefB : ATL!Binding (
+			propertyName <- 'modelRef',
+			value <- eLeftModelRefBN
+		),
+			
+			eLeftModelRefBN : ATL!NavigationOrAttributeCallExp (
+				name <- 'leftM',
+				source <- eLeftModelRefBOC
+			),
+				eLeftModelRefBOC : ATL!OperationCallExp (
+				operationName <- 'equalModel',
+				source <- eLeftModelRefBVE,
+				arguments <- eLeftModelRefBVESE
+				),
+					eLeftModelRefBVE : ATL!VariableExp (
+						referredVariable <- thisModuleVar	
+					),
+					
+					eLeftModelRefBVESE : ATL!StringExp (
+						stringSymbol <- thisModule.ModelFlowExpModel(tm.equalModelArgs->first()).name	
+					),
+		
+		eRightB : ATL!Binding (
+			value <- eRightBValue					
+		),
+		eRightBVE : ATL!VariableExp (
+			referredVariable <- eRightBOP
+		),
+		eRightBOP : ATL!SimpleOutPatternElement (
+			outPattern <- outPattern,
+			varName <- 	'eRight',
+			type <- eRightEType,
+			bindings <- OrderedSet{eRightElementB}
+		),
+		eRightEType : ATL!OclModelElement (
+			name <- 'RightElement',
+			model <- equalMetamodel
+		),
+		eRightElementB : ATL!Binding (
+			propertyName <- 'element',
+			value <- eRightElementBValue
+		),
+		eRightElementBValue : ATL!VariableExp (
+			referredVariable <- eRightRef	
+		),
+		eRightRef : ATL!SimpleOutPatternElement (
+			outPattern <- outPattern,
+			varName <- 	'eRightRef',
+			type <- eRightRType,
+			bindings <- OrderedSet {eRightRefB, erightModelRefB} 
+		),
+		eRightRType : ATL!OclModelElement (
+			name <- 'ElementRef',
+			model <- equalMetamodel
+		),		
+		eRightRefB : ATL!Binding(
+			propertyName <- 'ref',
+			value <- eRightRefBValue
+		),
+		eRightRefBValue : ATL!NavigationOrAttributeCallExp(
+			name <- '__xmiID__',
+			source <- eRightRefBVar
+		),
+		eRightRefBVar : ATL!VariableExp(
+			referredVariable <- rightNode	
+		),
+				
+		erightModelRefB : ATL!Binding (
+			propertyName <- 'modelRef',
+			value <- erightModelRefBN
+		),
+			
+			erightModelRefBN : ATL!NavigationOrAttributeCallExp (
+				name <- 'rightM',
+				source <- erightModelRefBOC
+			),
+				erightModelRefBOC : ATL!OperationCallExp (
+					operationName <- 'equalModel',
+					source <- erightModelRefBVE,
+					arguments <- eRightModelRefBVESE
+				),
+				erightModelRefBVE : ATL!VariableExp (
+					referredVariable <- thisModuleVar	
+				),
+					eRightModelRefBVESE : ATL!StringExp (
+						stringSymbol <- thisModule.ModelFlowExpModel(tm.equalModelArgs->first()).name	
+					),		
+		
+		eSimB : ATL!Binding (
+			value <- eSimBValue	
+		),		
+		eSimBValue : ATL!RealExp (
+			realSymbol <- 0	
+		)
+}
+
+
+rule UserEqual extends MethodCall {
+	from
+		tm : AML!MethodCall (tm.method.oclIsTypeOf(AML!UserEqual))
+	to 
+		m : ATL!Module,
+		
+		t2 : ATL!MatchedRule (
+			outPattern <- tm.outPattern--Tuple{m=tm, s=tm.outPattern}
+		)
+}
+
+rule VariableDeclaration {
+	from
+		m : AML!MethodCall,
+		s : AML!VariableDeclaration 	
+--		(
+--			s.inPatternSimRVDContainer() = m.method	
+--		)
+	to
+		t : ATL!VariableDeclaration (
+			varName <- s.varName,
+			type <- if s.type.oclIsUndefined() then
+						OclUndefined
+					else
+						Tuple{m=m, s=s.type}
+					endif,
+			initExpression <- if s.initExpression.oclIsUndefined() then
+								s.initExpression
+							  else
+								Tuple{m = m, s=s.initExpression}
+							  endif
+			
+		)
+}
+
+rule RuleVariableDeclaration extends VariableDeclaration {
+	from
+		m : AML!MethodCall,
+	 	s : AML!RuleVariableDeclaration 
+--		(
+--			s.refImmediateComposite() = m.method	
+--		)
+	to
+		t : ATL!RuleVariableDeclaration 		
+}
+
+rule SimpleInPattern extends VariableDeclaration {
+	from
+		m : AML!MethodCall,
+		s : AML!SimpleInPatternElement
+--		(
+--				
+--		)
+	to
+		t : ATL!SimpleInPatternElement (			
+			varName <- s.varName + 'Var',
+			
+			models <- s.models->collect(e | Tuple{m=m , tm=e})
+		)	
+}
+
+rule OutPattern {
+	from
+		m : AML!MethodCall,
+		s : AML!OutPattern
+	to
+		t : ATL!OutPattern (
+			elements <- s.elements->collect(e | Tuple{m=m,s=e}) 	
+		)
+}
+
+rule SimpleOutPatternElement extends VariableDeclaration {
+	from
+		m : AML!MethodCall,
+		s : AML!SimpleOutPatternElement
+--		(
+--			s.inPatternSimRVDContainer() = m.method	
+--		)
+	to
+		t : ATL!SimpleOutPatternElement (
+			bindings <- s.bindings->collect(e | Tuple{m=m,s=e}) 	
+		)
+}
+
+rule Binding {
+	from
+		m : AML!MethodCall,
+		s : AML!Binding
+	to
+		t : ATL!Binding (
+			value <- s.value,
+			propertyName <- s.propertyName			
+		)
+}
+
+rule EnumLiteralExp extends OclExpression {
+	from 
+		m : AML!MethodCall,
+		s : AML!EnumLiteralExp
+	to
+		t : ATL!EnumLiteralExp (
+			name <- s.name	
+		)
+}
+
+rule LetExp extends OclExpression {
+	from 
+		m : AML!MethodCall,
+		s : AML!LetExp
+	to
+		t : ATL!LetExp (
+			variable <- Tuple {m=m, s=s.variable},	
+			"in" <- Tuple {m=m, s=s."in"}
+		)
+}
+
+abstract rule PropertyCallExp extends OclExpression {
+	from
+	 	m : AML!MethodCall,
+		s : AML!PropertyCallExp 
+--		(
+--			s.inPatternSimRVDContainer() = m.method
+----			and
+----		    not s.summationContainer
+--		)
+	to
+		t : ATL!PropertyCallExp (
+			source <- Tuple {m = m, s = s.source}
+		)
+}
+
+abstract rule LoopExp extends PropertyCallExp {
+	from
+		m : AML!MethodCall,
+		s : AML!LoopExp
+	to
+		t : ATL!LoopExp(
+			body <- Tuple{m=m,s=s.body},
+			iterators <- s.iterators->collect(e | Tuple{m=m, s=e})
+		)
+}
+
+rule OperationCallExp extends PropertyCallExp {
+	from
+		m : AML!MethodCall,
+		s : AML!OperationCallExp
+	to
+		t : ATL!OperationCallExp(
+			operationName <- s.operationName,
+			arguments <- s.arguments->collect(e | Tuple {m = m, s = e})
+		) 
+}
+
+rule OperatorCallExp extends OperationCallExp {
+	from 
+		m : AML!MethodCall,
+		s : AML!OperatorCallExp
+	to
+		t : ATL!OperatorCallExp	
+}
+
+rule CollectionOpCallExp extends OperationCallExp {
+	from
+		m : AML!MethodCall,
+		s : AML!CollectionOperationCallExp
+	to
+		t : ATL!CollectionOperationCallExp
+}
+
+lazy abstract rule OclExpressionAggr {
+	from 
+		m : AML!ModelFlowExpression,
+		s : AML!OclExpression 
+	to
+		t : ATL!OclExpression 
+}
+
+lazy rule PropertyCallAggr extends OclExpressionAggr {
+	from
+	 	m : AML!ModelFlowExpression,
+		s : AML!PropertyCallExp 
+	to
+		t : ATL!PropertyCallExp (
+			source <- thisModule.OclExpressionAggr(m, s.source)
+		)
+}
+
+lazy rule NavigationOrAttrAggr extends PropertyCallAggr {
+	from
+	 	m : AML!ModelFlowExpression,
+		s : AML!NavigationOrAttributeCallExp 
+	to
+		t : ATL!NavigationOrAttributeCallExp (
+			name <- s.name 
+		)
+}
+
+lazy rule OperationCallAggr extends PropertyCallAggr {
+	from
+		m : AML!ModelFlowExpression,
+		s : AML!OperationCallExp
+	to
+		t : ATL!OperationCallExp (
+			operationName <- s.operationName,
+			arguments <- s.arguments->collect(e | thisModule.OclExpressionAggr(m, e))
+		)
+}
+
+lazy rule VariableExpAggr extends OclExpressionAggr {
+	from
+		m : AML!ModelFlowExpression,
+		s : AML!VariableExp
+	to
+		t : ATL!VariableExp (
+			referredVariable <- thisModule.OclExpressionAggr(s.referredVariable)	
+		)
+}
+
+lazy rule VariableDeclarationAggr extends OclExpressionAggr {
+	from
+		m : AML!ModelFlowExpression,
+		s : AML!VariableDeclaration
+	to 
+		t : ATL!VariableDeclaration (
+			varName <- s.varName,
+			type <- s.type,
+			initExpression <- thisModule.OclExpressionAggr(s.initExpression)	
+		)
+}
+
+
+
+abstract rule ThisNodeExp {
+	from
+		m : AML!MethodCall,
+		s : AML!ThisNodeExp 
+--		(
+--			s.inPatternSimRVDContainer() = m.method	
+--		)
+		
+	to
+		t : ATL!OclExpression 
+}
+
+rule ThisNodeExp_Creation extends ThisNodeExp {
+	from
+		m : AML!MethodCall,
+		s : AML!ThisNodeExp (
+			m.method.oclIsTypeOf(AML!CreateEqual)	
+		)
+		
+	to
+		t : ATL!VariableExp(
+			referredVariable <- if s.oclIsTypeOf(AML!ThisRightExp) then
+									thisModule.resolveTemp(m, 'rightNode')
+								else
+									thisModule.resolveTemp(m, 'leftNode')
+								endif
+		)
+}
+
+rule ThisNodeExp_NotCreation extends ThisNodeExp {
+	from
+		m : AML!MethodCall,
+		s : AML!ThisNodeExp 		
+	to
+		t : ATL!NavigationOrAttributeCallExp (	
+			name <- if s.oclIsTypeOf(AML!ThisLeftExp) then				
+								'leftE'
+							 else
+								 'rightE'
+							 endif,
+			source <- equalE
+--			,
+--			arguments <- OrderedSet{modelName}
+		)
+		,
+			equalE : ATL!VariableExp (
+				referredVariable <- thisModule.ModelFlowExpSIP(m.equalModelArgs->first())	
+			)
+
+}
+
+
+rule NavigationOrAttributeCallExp extends PropertyCallExp { 
+	from
+		m : AML!MethodCall,
+		s : AML!NavigationOrAttributeCallExp 
+	to
+		t : ATL!NavigationOrAttributeCallExp (
+			
+			name <- s.name
+		)
+}
+
+
+
+
+
+lazy rule createVar {
+	from		
+		m : AML!MethodCall,
+		s : AML!PropertyCallExp 
+	to
+		t : ATL!VariableExp(
+			referredVariable <- if s.source.oclIsTypeOf(AML!ThisRightExp) then
+									thisModule.resolveTemp(m, 'rightNode')
+								else
+									thisModule.resolveTemp(m, 'leftNode')
+								endif
+		)
+}
+
+lazy rule createVar2 {
+	from
+		m : AML!MethodCall,
+		s : AML!PropertyCallExp
+	to
+		refElement : ATL!OperationCallExp (	
+			operationName <- if s.source.oclIsTypeOf(AML!ThisLeftExp) then				
+								'leftE'
+							 else
+								 'rightE'
+							 endif,
+			source <- equalE,
+			arguments <- OrderedSet{modelName}
+		),
+			equalE : ATL!VariableExp (
+				referredVariable <- thisModule.ModelFlowExpSIP(m.equalModelArgs->first())	
+			),			
+			modelName : ATL!StringExp (
+				stringSymbol <- if s.source.oclIsTypeOf(AML!ThisLeftExp) then				
+									m.method.matcher.mapMappingRefModel().get(m.equalModelArgs->first()).leftModel.name
+								else
+								 	m.method.matcher.mapMappingRefModel().get(m.equalModelArgs->first()).rightModel.name
+								endif
+			)
+}
+
+rule IterateExp extends LoopExp {
+	from 
+		m : AML!MethodCall,
+		s : AML!IterateExp
+	to
+		t : ATL!IterateExp (
+			result <- if s.result.oclIsUndefined() then
+							OclUndefined
+						else
+							Tuple{m=m, s=s.result}
+						endif
+		)
+	}
+
+
+rule IteratorExp extends LoopExp {
+	from
+		m : AML!MethodCall,
+		s : AML!IteratorExp 
+--		(
+--			s.inPatternSimRVDContainer() = m.method		
+--		)
+	to
+		t : ATL!IteratorExp (
+				name <- s.name
+--				,
+--				source <- Tuple {m = m, s = s.source},
+--				body <- Tuple {m = m, s = s.body},
+--				iterators <- s.iterators->collect(e | Tuple {m = m, s = e})
+			)
+}
+
+rule Iterator extends VariableDeclaration { 
+	from
+		m : AML!MethodCall,
+		s : AML!Iterator 
+--		(
+--			s.inPatternSimRVDContainer() = m.method	
+--		)
+	to
+		t : ATL!Iterator (
+				varName <- s.varName,
+				variableExp <- Tuple {m = m, s = s.variableExp.first()}				
+			)
+}
+
+rule VariableExp extends OclExpression {
+	from
+		m : AML!MethodCall,
+		s : AML!VariableExp 
+--		(
+--			s.inPatternSimRVDContainer() = m.method		
+--		)
+	to
+		t : ATL!VariableExp (
+			referredVariable <- Tuple{m=m, s=s.referredVariable}			
+		)
+}
+
+
+rule ThisWeightAggr {
+	from
+		m : AML!MethodCall,
+		s : AML!ThisWeightExp 
+--		(
+--			s.inPatternSimRVDContainer() = m.method	
+--		) 
+	to
+		t : ATL!OperationCallExp (
+			operationName <- 'get',
+			source <- source,
+			arguments <- OrderedSet{argument}
+		),
+			source : ATL!OperationCallExp (
+				operationName <- 'modelWeight',
+				source <- modelVarExp				
+			),
+			modelVarExp : ATL!VariableExp (
+				referredVariable <- varThisModule	
+			),
+				varThisModule : ATL!VariableDeclaration (
+					varName <- 'thisModule'	
+				),
+			argument : ATL!NavigationOrAttributeCallExp (
+					name <- 'model',
+					source <- modelVarExp2
+			),
+			modelVarExp2: ATL!VariableExp (
+				referredVariable <- thisModule.resolveTemp(Tuple{m=m, s=s.summationContainer}, 'iteratorE') 
+			)
+
+}
+
+
+
+rule ThisEqualExp {
+	from
+		m : AML!MethodCall,
+		s : AML!ThisEqualExp 
+--		(
+--			s.inPatternSimRVDContainer() = m.method		
+--		) 
+	to
+		t : ATL!VariableExp (
+			referredVariable <- m.equalModelArgs->collect(e | thisModule.ModelFlowExpSIP(e))->first()	
+		)
+}
+
+rule ThisInstancesExp {
+	from
+		m : AML!MethodCall,
+		s : AML!ThisInstancesExp 
+--		(
+--			s.inPatternSimRVDContainer() = m.method		
+--		) 
+	to
+		t : ATL!OperationCallExp (
+			operationName <- 'instancesEqual',
+			source <- varExp,
+			arguments <- Tuple {m = m, s = s.instancesOp} --OrderedSet{modelName, lMName, rMName, lMMName, rMMName}
+		)
+		,
+			varExp : ATL!VariableExp (
+				referredVariable <- m.equalModelArgs->collect(e | thisModule.ModelFlowExpSIP(e))->first()	
+			)
+		
+}
+
+lazy rule ThisSimExpAggr extends OclExpressionAggr { --extends ThisEqualExp {
+	from
+		m : AML!ModelFlowExpression,
+		s : AML!ThisSimExp 
+	to
+		t : ATL!NavigationOrAttributeCallExp (
+			name <- 'similarity',
+			source <- var
+		),		
+		var : ATL!VariableExp (
+			referredVariable <- thisModule.ModelFlowExpSIP(m) 
+		)
+		
+
+}
+
+abstract rule ThisSimExp { 
+	from
+		m : AML!MethodCall,
+		s : AML!ThisSimExp 
+--		(
+--			s.inPatternSimRVDContainer() = m.method	
+--		)
+	to
+		t : ATL!NavigationOrAttributeCallExp (
+			name <- 'similarity',
+			source <- var
+		),		
+		var : ATL!VariableExp
+}
+ 
+rule ThisSimExp_summationContainer extends ThisSimExp { 
+	from
+		m : AML!MethodCall,
+		s : AML!ThisSimExp (
+			s.isSummationContainer
+		)
+	to
+		t : ATL!NavigationOrAttributeCallExp,		
+		var : ATL!VariableExp (
+			referredVariable <- thisModule.resolveTemp(Tuple{m=m, s=s.summationContainer}, 'iteratorE') 
+		)	
+}
+
+rule ThisSimExp_notSummationContainer extends ThisSimExp { 
+	from
+		m : AML!MethodCall,
+		s : AML!ThisSimExp
+	to
+		t : ATL!NavigationOrAttributeCallExp,		
+		var : ATL!VariableExp (
+			referredVariable <- thisModule.ModelFlowExpSIP(m.equalModelArgs.first()) 
+		)	
+}
+
+abstract rule PrimitiveExp extends OclExpression {
+	from
+	 	m : AML!MethodCall,
+		s : AML!PrimitiveExp 
+--		(
+--			s.inPatternSimRVDContainer() = m.method	
+--		)
+	to
+		t : ATL!PrimitiveExp	
+}
+
+rule StringExp extends PrimitiveExp {
+	from
+		m : AML!MethodCall,
+		s : AML!StringExp
+	to
+		t : ATL!StringExp (
+			stringSymbol <- s.stringSymbol	
+		)	
+}
+
+abstract rule NumericExp extends PrimitiveExp {
+	from
+	 	m : AML!MethodCall,
+		s : AML!NumericExp 
+	to
+		t : ATL!NumericExp 
+}
+
+rule RealExp extends NumericExp {
+	from
+		m : AML!MethodCall,
+		s : AML!RealExp
+	to
+		t : ATL!RealExp (
+			realSymbol <- s.realSymbol			
+		)
+}
+
+rule IntegerExp extends NumericExp {
+	from
+		m : AML!MethodCall,
+		s : AML!IntegerExp
+	to
+		t : ATL!IntegerExp (
+			integerSymbol <- s.integerSymbol			
+		)
+}
+
+abstract rule Primitive extends "OclType" {
+	from
+		m : AML!MethodCall,
+		s : AML!Primitive
+	to
+		t : ATL!Primitive
+}
+
+abstract rule NumericType extends Primitive {
+	from
+		m : AML!MethodCall,
+		s : AML!NumericType
+	to
+		t : ATL!NumericType (
+			name <- s.name			
+		)
+}
+
+rule StringType extends Primitive {
+	from
+		m : AML!MethodCall,
+		s : AML!StringType
+	to
+		t : ATL!StringType
+}
+
+rule BooleanType extends Primitive {
+	from
+		m : AML!MethodCall,
+		s : AML!BooleanType
+	to
+		t : ATL!BooleanType
+}
+rule IntegerType extends NumericType {
+	from
+		m : AML!MethodCall,
+		s : AML!IntegerType
+	to
+		t : ATL!IntegerType
+}
+
+rule RealType extends NumericType {
+	from
+		m : AML!MethodCall,
+		s : AML!RealType
+	to
+		t : ATL!RealType
+}
+
+abstract rule "OclType" extends OclExpression {
+	from
+		m : AML!MethodCall,
+		s : AML!"OclType"
+	to
+		t : ATL!"OclType" (
+			name <- s.name	
+		)
+}
+
+rule OclAnyType extends "OclType" {
+	from
+		m : AML!MethodCall,
+		s : AML!OclAnyType
+	to
+		t : ATL!OclAnyType
+}
+
+rule OrderedSetType extends CollectionType {
+	from
+		m : AML!MethodCall,
+		s : AML!OrderedSetType
+	to
+		t : ATL!OrderedSetType 
+}
+
+rule SequenceType extends CollectionType {
+	from
+		m : AML!MethodCall,
+		s : AML!SequenceType
+	to
+		t : ATL!SequenceType 
+}
+
+rule SetType extends CollectionType {
+	from
+		m : AML!MethodCall,
+		s : AML!SetType
+	to
+		t : ATL!SetType 
+}
+
+rule BagType extends CollectionType {
+	from
+		m : AML!MethodCall,
+		s : AML!BagType
+	to
+		t : ATL!BagType 
+}
+
+rule OrderedSetType extends CollectionType {
+	from
+		m : AML!MethodCall,
+		s : AML!OrderedSetType
+	to
+		t : ATL!OrderedSetType 
+}
+
+rule BooleanExp extends PrimitiveExp {
+	from
+		m : AML!MethodCall,
+		s : AML!BooleanExp
+	to
+		t : ATL!BooleanExp (
+			booleanSymbol <- s.booleanSymbol	
+		)
+}
+
+rule IfExp {
+	from
+		m : AML!MethodCall,
+		s : AML!IfExp
+--		(
+--			s.inPatternSimRVDContainer() = m.method	
+--		)		
+	to
+		t : ATL!IfExp (
+			thenExpression <- Tuple {m = m, s = s.thenExpression},
+			condition <- Tuple {m = m, s = s.condition},
+			elseExpression <- Tuple {m = m, s = s.elseExpression}
+		)
+}
+
+abstract rule OclExpression {
+	from
+		m : AML!MethodCall,
+		s : AML!OclExpression 
+--		(
+--			s.inPatternSimRVDContainer() = m.method
+--		)
+	to
+		t : ATL!OclExpression
+		
+}
+
+rule MapExp extends OclExpression {
+	from
+		m : AML!MethodCall,
+		s: AML!MapExp
+	to
+		t : ATL!MapExp (
+			elements <- s.elements->collect(e | Tuple{m=m, s=e})	
+		)
+}
+
+rule MapElement {
+	from
+		m : AML!MethodCall,
+		s : AML!MapElement
+	to
+		t : ATL!MapElement (
+			key <- s.key,
+			value <- s.value
+		)
+}
+
+rule OclUndefinedExp extends OclExpression {
+	from
+		m : AML!MethodCall,
+		s : AML!OclUndefinedExp 
+--		(
+--			s.inPatternSimRVDContainer() = m.method
+--		)
+	to
+		t : ATL!OclUndefinedExp
+	 
+	
+}
+
+abstract rule CollectionType extends "OclType" {
+	from 
+		m : AML!MethodCall,
+		s : AML!CollectionType
+	to
+		t : ATL!CollectionType(
+			elementType <- Tuple{m=m, s=s.elementType}	
+		)		
+}
+
+rule BagType extends CollectionType {
+	from 
+		m : AML!MethodCall,
+		s : AML!BagType
+	to
+		t : ATL!BagType
+}
+
+rule OrderedSetType extends CollectionType {
+	from 
+		m : AML!MethodCall,
+		s : AML!OrderedSetType
+	to
+		t : ATL!OrderedSetType
+}
+
+rule SetType extends CollectionType {
+	from 
+		m : AML!MethodCall,
+		s : AML!SetType
+	to
+		t : ATL!SetType
+}
+
+rule OrderedSetType extends CollectionType {
+	from 
+		m : AML!MethodCall,
+		s : AML!OrderedSetType
+	to
+		t : ATL!OrderedSetType
+}
+
+rule "TupleType" extends "OclType" {
+	from 
+		m : AML!MethodCall,
+		s : AML!"TupleType"
+	to
+		t : ATL!"TupleType"(
+			attributes <- s.attributes->collect(e | Tuple{m=m, s=e})
+		)
+}
+
+rule TupleTypeAttribute {
+	from
+		m : AML!MethodCall,
+		s : AML!TupleTypeAttribute
+	to
+		t : ATL!TupleTypeAttribute(
+			type <- Tuple{m=m, s=s.type},
+			name <- s.name
+		)	
+}
+
+rule MapType extends "OclType" {
+	from 
+		m : AML!MethodCall,
+		s : AML!MapType
+	to
+		t : ATL!MapType(
+			valueType <- Tuple{m=m, s=s.valueType},
+			keyType <- Tuple{m=m, s=s.keyType}
+		)
+}
+
+abstract rule CollectionExp extends "OclExpression" {
+	from 
+		m : AML!MethodCall,
+		s : AML!CollectionExp
+	to
+		t : ATL!CollectionExp(
+			elements <- s.elements -> collect(e | Tuple{m=m, s=e})	
+		)		
+}
+
+rule BagExp extends CollectionExp {
+	from 
+		m : AML!MethodCall,
+		s : AML!BagExp
+	to
+		t : ATL!BagExp
+}
+
+rule OrderedSetExp extends CollectionExp {
+	from 
+		m : AML!MethodCall,
+		s : AML!OrderedSetExp
+	to
+		t : ATL!OrderedSetExp
+}
+
+rule SequenceExp extends CollectionExp {
+	from 
+		m : AML!MethodCall,
+		s : AML!SequenceExp
+	to
+		t : ATL!SequenceExp
+}
+
+rule SetExp extends CollectionExp {
+	from 
+		m : AML!MethodCall,
+		s : AML!SetExp
+	to
+		t : ATL!SetExp
+}
+
+rule OrderedSetExp extends CollectionExp {
+	from 
+		m : AML!MethodCall,
+		s : AML!OrderedSetExp
+	to
+		t : ATL!OrderedSetExp
+}
+
+rule "TupleExp" extends "OclExpression" {
+	from 
+		m : AML!MethodCall,
+		s : AML!"TupleExp"
+	to
+		t : ATL!"TupleExp" (
+			tuplePart <- s.tuplePart->collect(e | Tuple{m=m, s=e})		
+		)
+}	
+
+rule TuplePart extends VariableDeclaration {	
+	from 
+		m : AML!MethodCall,
+		s : AML!"TuplePart"
+	to
+		t : ATL!"TuplePart"
+}
+
+rule MetaElement {
+	from
+		m : AML!MethodCall,
+		s : AML!MetaElement
+--		(
+--			s.inPatternSimRVDContainer() = m.method	
+--		)		
+	to
+		t : ATL!OclModelElement (
+			name <- s.name
+			--,
+			--model <- Tuple{tm = m, s = s.referenceModel}
+		)	
+}
+
+rule ThisModule {
+	from
+		m : AML!MethodCall,
+		s : AML!ThisModuleExp
+--		(
+--			s.inPatternSimRVDContainer() = m.method	
+--		)		
+	to
+		t : ATL!VariableExp (
+			referredVariable <- var 	
+		),
+			
+		var : ATL!VariableDeclaration (
+			varName <- 'thisModule'	
+		)
+}
+
+
+
+

@@ -1,0 +1,733 @@
+-- @name		AML
+-- @version		1.0
+-- @authors		garces
+-- @date		2008/08/03
+-- @description	${description}
+
+-- The different sections of a TCS model have been enclosed between BEGIN and END
+-- comments below. Additional information is provided below each BEGIN comment.
+-- The main sections of interest are "Class templates", and
+-- "Operator table" (the latter only for DSLs using operators).
+syntax AML {
+
+-- BEGIN Primitive templates
+-- Specifies representation of primitive types.
+-- Only needs modification when default lexer is not satisfactory.
+-- Generally modified along with the lexer.
+	primitiveTemplate identifier for String default using NAME:
+		value = "%token%";
+
+	primitiveTemplate identifierOrKeyword for String using NAME orKeyword:
+		value = "%token%";
+
+	primitiveTemplate stringSymbol for String using STRING:
+		value = "ei.unescapeString(%token%, 1)",
+		serializer="'\'' + %value%.toCString() + '\''";
+
+	primitiveTemplate integerSymbol for Integer default using INT:
+		value = "Integer.valueOf(%token%)";
+
+	primitiveTemplate floatSymbol for Double default using FLOAT:
+		value = "Double.valueOf(%token%)";
+-- END Primitive templates
+
+-- BEGIN Class templates
+-- Specifies representation of classes.
+-- This is the main section to work on.
+
+	template Matcher main context
+		: "strategy" name "{"
+			[
+				matchers
+				methods	
+				(isDefined(modelsBlock)? [modelsBlock])
+				(isDefined(modelsFlowsBlock)? [modelsFlowsBlock])			
+			]				
+		  "}"		
+		;
+		
+	template ModelsBlock
+		: "models" "{" [
+			models
+		  ] "}"
+		;
+		
+	template ModelsFlowsBlock
+		: "modelsFlow" "{" [
+			modelsFlows
+		  ] "}"
+		;
+	
+	template ModelFlowExpression abstract;
+
+	
+	template WeightedModelExp
+		: weight ":" modelFlowExp;
+
+
+	template MethodCall
+		: (isDefined(outMappingModel) ? [outMappingModel "="])
+		   method{refersTo = name, lookIn = #all} 
+		   "[" inMappingModel{separator = ","} "]" 
+		  (isDefined(arguments) ? "(" arguments{separator = ","} ")" )
+		;
+		
+		
+	template ModelRefExp 
+		:	referredModel{refersTo = name} 
+		;
+	
+	template MappingModelRefExp 
+		:	referredMappingModel{refersTo = name}
+		;
+		
+	template MElement abstract;
+	
+		
+	template Method abstract addToContext;
+			
+	template CreateEqual context
+		: 	"create" name "(" arguments{separator = ","} ")"
+			(isDefined(ATLLibraries) ? "ATLLibraries" "{" [ATLLibraries {separator = ","} ] "}")
+			(isDefined(javaLibraries) ? "JavaLibraries" "{" [javaLibraries {separator = ","} ] "}")
+			"{" [
+				--equalInPattern
+				inPattern --TODO include variables into inPattern, this was necessary in ThresholdMaxDelta
+				(isDefined(variables) ?
+						"using" "{" [
+							variables
+						] "}"
+				)
+			] "}"
+		;	
+			
+	template SimEqual context
+		: 	"sim" name "(" arguments{separator = ","} ")"
+			(isDefined(ATLLibraries) ? "ATLLibraries" "{" [ATLLibraries {separator = ","} ] "}")
+			(isDefined(javaLibraries) ? "JavaLibraries" "{" [javaLibraries {separator = ","} ] "}")			
+			"{" [
+				inPattern
+				(isDefined(variables) ?
+						"using" "{" [
+							variables
+						] "}"
+				)
+				sim 
+			] "}"
+		;
+		
+	template AggrEqual context
+		: 	"aggr" name "(" arguments{separator = ","} ")"
+			(isDefined(ATLLibraries) ? "ATLLibraries" "{" [ATLLibraries {separator = ","} ] "}")
+			(isDefined(javaLibraries) ? "JavaLibraries" "{" [javaLibraries {separator = ","} ] "}")			
+			"{" [
+				inPattern 				
+				(isDefined(variables) ?
+						"using" "{" [
+							variables
+						] "}"
+				)
+				sim
+			] "}"
+		;
+		
+	template SelEqual context
+		: 	"sel" name "(" arguments{separator = ","} ")"
+			(isDefined(ATLLibraries) ? "ATLLibraries" "{" [ATLLibraries {separator = ","} ] "}")
+			(isDefined(javaLibraries) ? "JavaLibraries" "{" [javaLibraries {separator = ","} ] "}")
+			"{" [
+				inPattern
+				(isDefined(variables) ?
+						"using" "{" [
+							variables
+						] "}"
+				)				
+			] "}"
+		;
+	
+--	template UserEqual context
+--		: 	"user" name "(" arguments{separator = ","} ")"
+--			(isDefined(libraries) ? "uses" [libraries {separator = ","} ])
+--			"{" [
+--				inPattern
+--				(isDefined(variables) ?
+--						"using" "{" [
+--							variables
+--						] "}"
+--				)
+--				outPattern				
+--			] "}"
+--		;
+		
+	template ExternalMethod context
+		: "uses" name "[" inMappingModel{separator = ","} "]" "(" arguments{separator = ","} ")"
+		  --(isDefined(AMLLibrary) ? "AMLLibrary" "{" [AMLLibrary] "}")
+		  (isDefined(ATLLibraries) ? "ATLLibraries" "{" [ATLLibraries {separator = ","} ] "}")
+		  (isDefined(javaLibraries) ? "JavaLibraries" "{" [javaLibraries {separator = ","} ] "}")					
+		;
+				
+	template InPattern
+		: (isDefined(elements) ?
+					"from" [
+						elements{separator = ","}
+					] 
+			)		
+		  (isDefined(filter) ? 				
+					"when"	[ 
+						filter
+					 ]
+			 )			
+		;
+	
+	template EqualInPattern
+		: "leftType" ":" leftElement
+		  "rightType" ":" rightElement		
+		;
+		  
+	template InPatternElement abstract addToContext;
+
+	template SimpleInPatternElement
+		:	varName ":" type
+			(isDefined(models) ? "in" models{separator = ",", refersTo = name, lookIn = #all})
+		;
+		
+	template Sim
+		:	"is" 'value' -- this binding correspond to attribute similarity of Equal element
+		;
+	
+	template OutPattern
+		:	"to" [ elements{separator = ","} ] {endNL = false}
+		;
+
+	template OutPatternElement abstract addToContext;
+
+	template SimpleOutPatternElement
+		:	varName ":" type
+			(isDefined(model) ? "in" model{separator = ",", refersTo = name, lookIn = #all})
+			(isDefined(sourceElement) ? "mapsTo" sourceElement{refersTo = varName})
+			(isDefined(bindings) ?
+				<space> "(" [
+					bindings{separator = ","}
+				] ")"
+			)
+		;
+	
+	template Binding
+		:	propertyName{as = identifierOrKeyword} "<-" 'value'
+		;
+	
+	template RuleVariableDeclaration addToContext
+		:	varName ":" type "=" initExpression ";"
+		;
+
+-- @begin Models
+	template Model abstract;
+	
+	template InputModel addToContext
+		: name ":" referenceModel{refersTo = name, lookIn = #all, autoCreate = ifmissing}; --, , , createIn = '#context'.referenceModels}
+		
+	template MappingModel addToContext
+		: name 
+			(isDefined(leftModel) and isDefined(rightModel)?
+			 ":" "EqualModel" "(" leftModel "," rightModel ")"
+			 )
+		;
+		
+	template WeavingModel addToContext
+		: name 
+			":" "WeavingModel" 
+			"(" referenceModel ")" 
+			"(" wovenModels {separator = ","} ")"; 	
+		
+--	template OutputModel addToContext
+--		: name ;	
+--	
+--	template RightModel addToContext
+--		: "rightModel" ":" name;
+--		
+--	template LeftModel addToContext
+--		: "leftModel" ":" name;
+		
+	template ReferenceModel 
+		:	name{autoCreate = ifmissing, createIn = '#context'.referenceModels}
+		;
+
+	template MetaElement
+		:	referenceModel{refersTo = name, lookIn = #all, autoCreate = ifmissing} "!" name
+		;
+		
+	template EqualMetaElement
+		: name
+		;
+			
+-- @end Models
+
+-- @begin OCL
+	template OclExpression abstract operatored;
+
+	template ThisModuleExp
+		:	"thisModule"
+		;
+	
+	template ThisNodeExp abstract;
+	
+	template ThisRightExp
+		: "thisRight"
+		;
+	
+	template ThisLeftExp
+		: "thisLeft"
+		;
+		
+	template ThisEqualExp
+		: 	"thisEqual"
+		;
+		
+	template ThisWeightExp
+		: 	"thisWeight"
+		;	
+		
+    template ThisSimExp
+		: 	"thisSim"
+		;
+		
+	template ThisInstancesExp 
+		: "thisInstances" "(" instancesOp ")"
+		;
+	
+	template SummationExp
+		: "Summation" "(" sumExpression ")"
+		;
+		
+		
+	template ThisEqualModelExp
+		: "thisEqualModel"
+		;
+		
+	template LibraryRef abstract ;
+	
+	template ATLLibraryRef 
+		: "(" "name" "=" name{as = stringSymbol} "," "path" "=" path{as = stringSymbol} ")"
+		;
+		
+	template JavaLibraryRef
+		: "(" "name" "=" name{as = stringSymbol} "," "path" "=" path{as = stringSymbol} ")"
+		; 
+	
+	template AMLLibraryRef
+		: "(" "name" "=" name{as = stringSymbol} "," "path" "=" path{as = stringSymbol} ")"
+		; 
+		
+	template MatcherRef
+		: "imports" name ";"
+		;
+		
+	template VariableExp(disambiguate = "NAME ~(EXCL)")
+		:	referredVariable{refersTo = varName}
+		;
+
+	template SuperExp
+		:	"super"
+		;
+
+-- @begin operatored
+	operatorTemplate IteratorExp(operators = opRarrow, source = 'source', disambiguate = "NAME LPAREN NAME (PIPE | ((COMA NAME)+ PIPE))") context
+		:	name "(" iterators{separator = ","} "|" [
+				body
+			] ")"
+		;
+
+	operatorTemplate IterateExp(operators = opRarrow, source = 'source') context
+		:	"iterate" "(" iterators{separator = ","} ";" result "|" [
+				body
+			] ")"
+		;
+
+	operatorTemplate CollectionOperationCallExp(operators = opRarrow, source = 'source')
+			-- operationName cannot be {as = identifierOrKeyword} because of ->iterate
+		:	operationName "(" arguments{separator = ","} ")"
+		;
+
+
+	operatorTemplate OperationCallExp(operators = opPoint, source = 'source', disambiguate = "NAME LPAREN")
+		:	operationName{as = identifierOrKeyword} "(" arguments{separator = ","} ")"
+		;
+
+	operatorTemplate NavigationOrAttributeCallExp(operators = opPoint, source = 'source')
+		:	name{as = identifierOrKeyword}
+		;
+
+	operatorTemplate OperatorCallExp(operators =
+			opNot opMinus1
+			opStar opSlash opDiv opMod
+			opPlus opMinus2
+			opEq opGt opLt opGe opLe opNe
+			opAnd opOr opXor opImplies
+		, source = 'source', storeOpTo = operationName, storeRightTo = arguments);
+-- @end operatored
+
+	template Iterator addToContext
+		:	varName
+		;
+
+-- @begin values
+	template OclUndefinedExp
+		:	"OclUndefined"
+		;
+
+	template PrimitiveExp abstract;
+	
+	template NumericExp abstract;
+
+	template BooleanExp
+		:	(booleanSymbol ? "true" : "false")
+		;
+
+	template IntegerExp
+		:	integerSymbol
+		;
+
+	template RealExp
+		:	realSymbol
+		;
+
+	template StringExp
+		:	stringSymbol{as = stringSymbol}
+		;
+-- @end values
+
+	template IfExp
+		:	"if" condition "then" [
+				thenExpression
+			] "else" [
+				elseExpression
+			] "endif"
+		;
+
+	template LetExp context nonPrimary
+		:	"let" variable "in"
+			[ in ] {indentIncr = 0, endNL = false}
+		;
+
+	template VariableDeclaration addToContext
+		:	varName ":" type "=" initExpression
+		;
+
+
+	template EnumLiteralExp
+		:	"#" name
+		;
+
+-- @begin CollectionExps
+	template CollectionExp abstract;
+
+	template BagExp
+		:	"Bag" "{" elements{separator = ","} "}"
+		;
+
+	template SetExp
+		:	"Set" "{" elements{separator = ","} "}"
+		;
+
+	template OrderedSetExp
+		:	"OrderedSet" "{" elements{separator = ","} "}"
+		;
+
+	template SequenceExp
+		:	"Sequence" "{" elements{separator = ","} "}"
+		;
+-- @end CollectionExps
+
+	template MapExp
+		:	"Map" "{" elements{separator = ","} "}"
+		;
+
+	template MapElement
+		:	"(" key "," 'value' ")"
+		;
+
+	template TupleExp
+		:	"Tuple" "{" tuplePart{separator= ","} "}"
+		;
+
+	template TuplePart
+		:	varName{as = identifierOrKeyword} (isDefined(type) ? ":" type) "=" initExpression
+		;
+
+
+-- @begin OclType
+	template OclType abstract
+		:	"OclType"
+		;
+
+	template OclAnyType --abstract
+		:	"OclAny"
+		;
+
+	template TupleType
+		:	"TupleType" "(" attributes{separator = ","} ")"
+		;
+
+	template TupleTypeAttribute
+		:	name ":" type
+		;
+
+	template MapType
+		:	"Map" "(" keyType "," valueType ")"
+		;
+
+	template Primitive abstract;
+
+	template NumericType abstract;
+
+	template IntegerType
+		:	"Integer"
+		;
+
+	template RealType
+		:	"Real"
+		;
+
+	template BooleanType
+		:	"Boolean"
+		;
+
+	template StringType
+		:	"String"
+		;
+
+	template CollectionType abstract
+		:	"Collection" "(" elementType ")"
+		;
+
+	template BagType
+		:	"Bag" "(" elementType ")"
+		;
+
+	template SetType
+		:	"Set" "(" elementType ")"
+		;
+
+	template OrderedSetType
+		:	"OrderedSet" "(" elementType ")"
+		;
+
+	template SequenceType
+		:	"Sequence" "(" elementType ")"
+		;
+	
+		
+-- END Class templates
+
+-- BEGIN Special symbols
+-- Possible modifications:
+--	- Addition of new symbols.
+--	- Modification of spaces information.
+--	- Removal of unused symbols so that using these symbols results in lexical
+--	error rather than parsing error.
+	symbols {
+		lsquare		= "[";
+		rsquare		= "]"	: rightSpace;
+		excl		= "!";
+		coma		= ","	: leftNone, rightSpace;
+		lparen		= "(";
+		rparen		= ")"	: leftNone, rightSpace;
+		lcurly		= "{"	: leftSpace;
+		rcurly		= "}"	: leftNone, rightSpace;
+		semi		= ";"	: leftNone, rightSpace;
+		colon		= ":"	: leftSpace, rightSpace;
+		pipe		= "|"	: leftSpace, rightSpace;
+		sharp		= "#"	: leftSpace;
+		qmark		= "?";
+		coloncolon	= "::"	: leftNone, rightNone;
+
+		-- operator symbols
+		point		= "."	: leftNone;
+		rarrow		= "->"	: leftNone;
+		minus		= "-"	: leftSpace, rightSpace;
+		star		= "*"	: leftSpace, rightSpace;
+		slash		= "/"	: leftSpace, rightSpace;
+		plus		= "+"	: leftSpace, rightSpace;
+		eq			= "="	: leftSpace, rightSpace;
+		gt			= ">"	: leftSpace, rightSpace;
+		lt			= "<"	: leftSpace, rightSpace;
+		ge			= ">="	: leftSpace, rightSpace;
+		le			= "<="	: leftSpace, rightSpace;
+		ne			= "<>"	: leftSpace, rightSpace;
+		larrow		= "<-"	: leftSpace, rightSpace;
+	}
+	
+		operators {
+		priority 0 {	-- 0 is highest
+			opPoint = point, 2;
+			opRarrow = rarrow, 2;
+		}
+
+		priority 1 {
+			opNot = "not", 1;		-- no corresponding symbol => symbol is the keyword defined by the quoted string (which is also the name)
+			opMinus1 = minus, 1;
+		}
+
+		priority 2 {
+			opStar = star, 2;
+			opSlash = slash, 2;
+			opDiv = "div", 2;
+			opMod = "mod", 2;
+		}
+
+		priority 3 {
+			opPlus = plus, 2;
+			opMinus2 = minus, 2;
+		}
+
+		priority 4 {
+			opEq = eq, 2;
+			opGt = gt, 2;
+			opLt = lt, 2;
+			opGe = ge, 2;
+			opLe = le, 2;
+			opNe = ne, 2;
+		}
+
+		priority 5 {
+			opAnd = "and", 2;
+			opOr = "or", 2;
+			opXor = "xor", 2;
+			opImplies = "implies", 2;
+		}
+	}
+	
+	
+	
+-- END Special symbols
+
+-- BEGIN Operator table
+
+	
+-- Defines all operators with their priority, arity, and associativity.
+-- All defined operators must be used in operator templates.
+
+-- Specify operator table(s) here if necessary.
+
+-- END Operator table
+
+
+-- BEGIN Lexer
+-- Specifies the lexical entities.
+-- Only needs modification when default lexer is not satisfactory.
+-- Generally modified along with Primitive templates.
+	token COMMENT	: endOfLine(start = "--");
+	token STRING	: multiLine(start = "\'", end = "\'", esc = "\\");
+
+	lexer = "
+%options testLiterals = false;
+
+NL
+	:	(	'\\r' '\\n'
+		|	'\\n' '\\r'	//Improbable
+		|	'\\r'
+		|	'\\n'
+		)
+	{newline();}
+	;
+
+WS
+	:	(	' '
+		|	'\\t'
+		)
+	;
+
+%protected
+DIGIT
+	:	'0'..'9'
+	;
+
+%protected
+ALPHA
+	:	'a'..'z'
+	|	'A'..'Z'
+	|	'_'
+	//For Unicode compatibility (from 0000 to 00ff)
+	|	'\\u00C0' .. '\\u00D6'
+	|	'\\u00D8' .. '\\u00F6'
+	|	'\\u00F8' .. '\\u00FF'
+	;
+
+%protected
+SNAME
+%v2	options {
+%v2		testLiterals = true;
+%v2	}
+	:	(ALPHA) (ALPHA | DIGIT)*
+;
+
+NAME
+	:	(
+%v3			SNAME
+%v2			s:SNAME {if(s.getType() != SNAME) $setType(s.getType());}
+		|	'\"'!
+			(	ESC
+			|	'\\n' {newline();}
+			|	~('\\\\'|'\\\"'|'\\n')
+			)*
+			'\"'!
+%v3			{setText(ei.unescapeString(getText(), 1));}
+		)
+	;
+
+INT
+	:	(DIGIT)+
+%v2		(('.' DIGIT)=> '.' (DIGIT)+ {$setType(FLOAT);})?
+	;
+
+%v3	FLOAT	:	DIGIT+ '.' DIGIT*	;
+
+%protected
+ESC
+	:	'\\\\'!
+		(	'n' %v2{%setText(\"\\n\");}
+		|	'r' %v2{%setText(\"\\r\");}
+		|	't' %v2{%setText(\"\\t\");}
+		|	'b' %v2{%setText(\"\\b\");}
+		|	'f' %v2{%setText(\"\\f\");}
+		|	'\"' %v2{%setText(\"\\\"\");}
+		|	'\\'' %v2{%setText(\"\\'\");}
+		|	'\\\\' %v2{%setText(\"\\\\\");}
+		|	(
+				('0'..'3')
+				(
+%v2					options {
+%v2						warnWhenFollowAmbig = false;
+%v2					}
+				:	('0'..'7')
+					(
+%v2						options {
+%v2							warnWhenFollowAmbig = false;
+%v2						}
+					:	'0'..'7'
+					)?
+				)?
+			|	('4'..'7')
+				(
+%v2					options {
+%v2						warnWhenFollowAmbig = false;
+%v2					}
+				:	('0'..'7')
+				)?
+			)
+				{
+%v2					String s = %getText;
+%v2					int i;
+%v2					int ret = 0;
+%v2					String ans;
+%v2					for (i=0; i<s.length(); ++i)
+%v2						ret = ret*8 + s.charAt(i) - '0';
+%v2					ans = String.valueOf((char) ret);
+%v2					%setText(ans);
+				}
+		)
+	;
+	";
+-- END Lexer
+
+}

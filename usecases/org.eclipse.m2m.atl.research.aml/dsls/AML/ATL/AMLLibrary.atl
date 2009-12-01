@@ -1,0 +1,392 @@
+--@atlcompiler atl2006
+--/*******************************************************************************
+-- * Copyright (c) 2009 Ecole des Mines de Nantes.
+
+-- * All rights reserved. This program and the accompanying materials
+-- * are made available under the terms of the Eclipse Public License v1.0
+-- * which accompanies this distribution, and is available at
+-- * http://www.eclipse.org/legal/epl-v10.html
+-- *
+-- * Contributors:
+-- *    Kelly Garces - initial implementation and/or initial documentation
+-- *******************************************************************************/ 
+
+library AMLLibrary; -- Library Template
+
+helper def : uniqueMatcher : String = AML!Matcher.allInstances().first();
+
+helper context AML!Matcher def: mapMappingRefModel() : Map(OclAny, OclAny) =
+	self.mappingModelsBlock()
+	->union(self.modelsFlowsBlock.modelsFlows->collect(e | e.outMappingModel))
+	->union(self.modelsFlowsBlock.modelsFlows->collect(e | e.inMappingModel))	
+	->union(self.modelsFlowsBlock.modelsFlows->collect(e | e.arguments))	
+	->flatten()
+	->reject(e | e.oclIsUndefined())
+	->iterate(e; rpm : Map(OclAny, OclAny) = Map {} |
+		if self.emptyMappingModel(e).oclIsUndefined() then
+			rpm
+		else
+	    rpm.including(e, Tuple{leftModel = self.emptyMappingModel(e).leftModel, 
+	    					   rightModel = self.emptyMappingModel(e).rightModel
+	    			 	} 
+	    			)
+		endif);
+
+-- it is useful for discovering if a strategy refines an initial mapping model
+helper context AML!Matcher def: initialMappingModels : Sequence(OclAny) =
+	self.modelsFlowsBlock.modelsFlows->collect(e | e.arguments)
+									->flatten()
+									->iterate(e; seq : Sequence(OclAny) = Sequence{} |
+										if 	e.referredModel.oclIsTypeOf(AML!MappingModel) then
+											if e.referredModel.leftModel.oclIsUndefined() then
+												seq
+											else
+												if e.referredModel.leftModel.name
+													=
+													self.emptyMapLastMethodCall().leftModel.name
+													and
+													e.referredModel.rightModel.name
+													=
+													self.emptyMapLastMethodCall().rightModel.name  then													
+														seq.including(e)											
+												else
+													seq		
+												endif
+											endif
+										else
+											seq
+										endif
+	);
+
+helper context AML!Matcher def: modelsLinkingInstances : Sequence(OclAny) =
+	self.modelsFlowsBlock.modelsFlows->collect(e | e.arguments)
+									->flatten()
+									->iterate(e; seq : Sequence(OclAny) = Sequence{} |
+										if 	e.linksInstances(self) then
+												seq.including(e)
+										else
+											seq
+										endif);
+											
+
+helper context AML!MappingModel def: linksInstances(m:AML!Matcher) : Boolean =	
+		  self.leftModel.referenceModel.name
+			=
+		   m.emptyMapLastMethodCall().leftModel.name
+			and
+		   self.rightModel.referenceModel.name
+		   =
+		   m.emptyMapLastMethodCall().rightModel.name;
+
+helper context AML!WeavingModel def: linksInstances(m:AML!Matcher) : Boolean =
+	if self.wovenModels.size() = 2 then
+		  self.wovenModels->first().referenceModel.name
+			=
+		   m.emptyMapLastMethodCall().leftModel.name
+			and
+		   self.wovenModels->last().referenceModel.name
+		   =
+		   m.emptyMapLastMethodCall().rightModel.name
+	else
+		false
+	endif;
+	
+
+--helper context AML!Matcher def: iInstanceMappingModels : 
+
+helper context AML!Matcher def: mappingModelsBlock() : Sequence(AML!MappingModel) =
+	self.modelsBlock.models->select(e | e.oclIsTypeOf(AML!MappingModel));
+
+helper context AML!Matcher def: weavingModelsBlock : Sequence(AML!WeavingModel) =
+	self.modelsBlock.models->select(e | e.oclIsTypeOf(AML!WeavingModel));
+
+-- look for a mapping model among the input and intermediate mapping models
+helper context AML!Matcher def : findMappingModelByName(name : String) : Sequence(AML!MappingModel) =
+	self.mapMappingRefModel().getKeys()->collect(e | self.emptyMappingModel(e))
+									 ->select(e | e.name = name);
+
+helper context AML!WeightedModelExp def : modelFlowName() : String =
+	if self.modelFlowExp.oclIsTypeOf(AML!MappingModelRefExp) then
+							self.modelFlowExp.referredMappingModel.name
+						else
+								self.modelFlowExp.method.name
+						endif;
+
+
+helper def : equalMetamodelName : String = 'EqualMM';
+helper def: metametamodelLibName : String = 'SuitableMetametamodel';
+
+helper def : KM3() : String = 'KM3';
+helper def : Ecore() : String = '%EMF';
+
+helper def : metametamodelName : String = 'Metametamodel';
+
+helper context AML!ReferenceModel def : isEqualMetamodel : Boolean =
+	self.name = thisModule.equalMetamodelName;
+
+helper context AML!ReferenceModel def : isMetametamodel : Boolean =
+	self.name = thisModule.KM3() or
+	self.name = thisModule.Ecore();
+
+helper context AML!MethodCall def : equalModelArgs : Sequence(AML!ModelFlowExpression) =
+	self.inMappingModel;
+	
+
+helper def: idTargets : Map(AML!MethodCall, String) =
+AML!MethodCall.allInstances()->iterate(e; acc : TupleType(ret : Map(AML!MethodCall, String), index : Integer) =
+		Tuple {ret = Map {}, index = 0} |
+			Tuple {
+					ret = acc.ret.including(e, acc.index.toString()),
+					index = acc.index + 1
+			}
+		).ret;
+
+helper context AML!MethodCall def: ID : String =
+thisModule.idTargets.get(self);
+
+helper context AML!MethodCall def: mappingModelAsArguments : Sequence(AML!ModelRefExp) =
+	self.arguments->select(e | e.referredModel.oclIsTypeOf(AML!MappingModel));
+
+helper context AML!Method def: weavingModelAsArguments : Sequence(AML!ModelRefExp) =
+	self.arguments->select(e | e.oclIsTypeOf(AML!WeavingModel));
+
+helper context AML!MethodCall def: methodWovenModels : Sequence(AML!InputModel) =
+	self.method.weavingModelAsArguments->collect(e | e.wovenModels)->flatten();
+
+-- getInMappingModel()
+
+helper context AML!ModelRefExp def: getInMappingModel(m : AML!Matcher) : AML!ModelFlowExpression =
+		m.modelsFlowsBlock.modelsFlows
+		->select(e | self.referredModel = e.outMappingModel)->first().inMappingModel->first();
+
+helper context AML!MappingModelRefExp def: getInMappingModel(m : AML!Matcher) : AML!ModelFlowExpression =
+		m.modelsFlowsBlock.modelsFlows
+		->select(e | self.referredMappingModel = e.outMappingModel)->first().inMappingModel->first();
+
+helper context AML!MappingModel def: getInMappingModel(m : AML!Matcher) : AML!ModelFlowExpression =
+		m.modelsFlowsBlock.modelsFlows --AML!MethodCall.allInstances()
+		->select(e | e.outMappingModel = self)->first().inMappingModel->first();
+
+helper context AML!Matcher def: emptyMappingModel (exp : OclAny) : AML!MappingModel =
+	-- input and intermediate mapping model 
+	if exp.oclIsTypeOf(AML!MappingModel) then
+		if exp.leftModel.oclIsUndefined() and exp.rightModel.oclIsUndefined() then
+			self.emptyMappingModel(exp.getInMappingModel(self)) -- look for the method call generating the model and then take inMappingModel
+		else
+			exp
+		endif
+	else
+		-- mapping model taken as argument in method call
+		if exp.oclIsTypeOf(AML!ModelRefExp) then
+			if exp.referredModel.oclIsTypeOf(AML!MappingModel) then
+			-- generated during the process 
+				if exp.referredModel.leftModel.oclIsUndefined() and exp.referredModel.rightModel.oclIsUndefined() then
+					self.emptyMappingModel(exp.getInMappingModel(self)) -- look for the method call generating the model and then take inMappingModel
+				else
+					exp.referredModel -- provided as input
+				endif
+			else
+				OclUndefined
+			endif
+		else
+			-- mapping model taken as inMappingModel in method call
+			if exp.oclIsTypeOf(AML!MappingModelRefExp) then
+					-- generated during the process
+					if exp.referredMappingModel.leftModel.oclIsUndefined() and exp.referredMappingModel.rightModel.oclIsUndefined() then
+						self.emptyMappingModel(exp.getInMappingModel(self)) -- look for the method call generating the model and then take inMappingModel
+					else
+						exp.referredMappingModel -- provided as input
+					endif
+			else
+					-- using a method call 
+					if exp.oclIsTypeOf(AML!MethodCall) then
+						self.emptyMappingModel(exp.inMappingModel->first())
+					else
+						if exp.oclIsTypeOf(AML!WeightedModelExp) then
+							self.emptyMappingModel(exp.modelFlowExp) -- use the modelFlowExp which it could be a method call or a mappingModelRef
+						else
+							OclUndefined
+						endif
+					endif
+			endif
+		endif
+	endif;
+
+-- a sequence of all arguments of method calls, note that they are of type InputModel and WeavingModel
+helper def : methodCallRefModelSeq : Sequence(OclAny) =
+	AML!MethodCall.allInstances()->collect(e | e.arguments)->flatten()->collect(e | e.referredModel)
+								->select(e | e.oclIsTypeOf(AML!InputModel) or e.oclIsTypeOf(AML!WeavingModel));
+
+
+helper context AML!ReferenceModel def : isWeavingOrInputRefModel : Boolean =
+	thisModule.methodCallRefModelSeq->collect(e | e.referenceModel)->select(e | e = self)->notEmpty();
+
+
+
+
+
+helper context AML!Matcher def: leftMMappingModel(name:String) : String =
+		self.mappingModelByName(name).leftModel.name;
+
+helper context AML!Matcher def: rightMMappingModel(name:String) : String =
+		self.mappingModelByName(name).rightModel.name;
+
+helper context AML!Matcher def: leftMMMappingModel(name:String) : String =
+		self.mappingModelByName(name).leftModel.referenceModel.name;
+
+helper context AML!Matcher def: rightMMMappingModel(name:String) : String =
+		self.mappingModelByName(name).rightModel.referenceModel.name;
+
+helper context AML!Matcher def : mappingModelByName (name : String) : TupleType(leftModel : OclAny, rightModel : OclAny) =
+	self.mapMappingRefModel().get(self.findMappingModelByName(name)->first());	
+
+helper context AML!Matcher def : lastModelFlowDecl() : AML!MethodCall =
+	if self.modelsFlowsBlock.modelsFlows->isEmpty() then
+		OclUndefined
+		else
+			self.modelsFlowsBlock.modelsFlows->asSequence()->last()
+		endif;
+
+helper context AML!Matcher def : emptyMapLastMethodCall () : TupleType(leftModel:AML!InputModel, rightModel:AML!InputModel) =
+	self.mapMappingRefModel().get(self.lastModelFlowDecl().inMappingModel->first());
+
+helper context AML!Matcher def : getMetametamodel() : String =
+					if self.emptyMapLastMethodCall().leftModel.referenceModel.name 
+					   =
+					   self.emptyMapLastMethodCall().rightModel.referenceModel.name then
+						if self.emptyMapLastMethodCall().leftModel.referenceModel.name = thisModule.KM3() then
+							thisModule.KM3()
+						else 
+							if self.emptyMapLastMethodCall().leftModel.referenceModel.name = thisModule.Ecore() then 
+								thisModule.Ecore()
+							else
+								OclUndefined.debug('ERROR: The current AML version only supports matching between KM3 or Ecore models')
+							endif
+						endif
+					else
+						OclUndefined.debug('ERROR: The matching  metametamodels have to be equal, i.e., KM3 or Ecore')
+					endif;	
+	
+helper context AML!Matcher def : metametamodel() : String = 
+--										if self.lastModelFlowDecl.oclIsUndefined() then
+--											OclUndefined
+--										else		
+											self.getMetametamodel();
+--										endif;
+
+-- defines metametamodel name 
+helper def : mapMetametamodelName : Map(String, OclAny) =
+	Map {
+		(thisModule.KM3() , Tuple{name = thisModule.metametamodelName, model = thisModule.metametamodelName, displayedName = thisModule.KM3() + thisModule.metametamodelName}),
+		(thisModule.Ecore(), Tuple{name = thisModule.metametamodelName, model = thisModule.Ecore(), displayedName = 'Ecore' + thisModule.metametamodelName})
+	}
+;
+
+helper context AML!ReferenceModel def : defRefModel : TupleType(name : String, model : String) =
+	if thisModule.mapMetametamodelName.get(self.name).oclIsUndefined() then
+		Tuple{name = self.name, model = self.name}
+	 else
+		thisModule.mapMetametamodelName.get(self.name)
+	 endif;
+
+helper context AML!MethodCall def :  flatInMappingModel : Sequence(OclAny) =
+	self.inMappingModel->iterate(e; seq : Sequence(AML!Model) = Sequence{} |
+			seq.append(e.flatArgs(self.method.matcher))
+	)->flatten();
+
+helper context AML!Method def :  flatInMappingModel : Sequence(AML!Model) =
+	self.inMappingModel->iterate(e; seq : Sequence(AML!Model) = Sequence{} |
+			seq.append(e.flatArgs(self.matcher))
+	)->flatten();
+
+helper context AML!MethodCall def :  flatArgs (m : AML!Matcher) : Sequence(AML!Model) =
+	self.arguments->iterate(e; seq : Sequence(AML!Model) = Sequence{} |
+			seq.append(e.referredModel.flatArgs(m))
+	)->flatten();
+
+helper context AML!Method def :  flatArgs (m : AML!Matcher) : Sequence(AML!Model) =
+	self.arguments->iterate(e; seq : Sequence(AML!Model) = Sequence{} |
+			seq.append(e.flatArgs(m))
+	)->flatten();
+
+helper context AML!ModelFlowExpression def : flatArgs (m : AML!Matcher) : Sequence(OclAny) =
+	Sequence{self}.append(m.mapMappingRefModel().get(self).leftModel)
+						.append(m.mapMappingRefModel().get(self).rightModel);
+
+helper context AML!InputModel def : flatArgs (m : AML!Matcher) : Sequence(AML!Model) =
+	Sequence{self};
+
+helper context AML!MappingModel def : flatArgs (m : AML!Matcher) : Sequence(AML!Model) =
+	Sequence{self, 
+				if self.leftModel.oclIsUndefined() then
+					m.mapMappingRefModel().get(self).leftModel
+				else
+					self.leftModel
+				endif,
+				if self.rightModel.oclIsUndefined() then
+					m.mapMappingRefModel().get(self).rightModel
+				else
+					self.rightModel
+				endif};
+
+	
+helper context AML!WeavingModel def :  flatArgs (m : AML!Matcher) : Sequence(AML!Model) =
+	Sequence{self}->union(self.wovenModels)->flatten();
+
+
+	 
+helper context AML!Matcher def: mappedModels : Sequence(TupleType(name : String,im : AML!InputModel)) =
+		-- mapping models
+		self.mappingModelsBlock()
+			->collect(e | e.leftModel)
+			->union(self.mappingModelsBlock()
+						->collect(e | e.rightModel))
+		-- weaving models
+			->union (self.weavingModelsBlock
+						->collect(e | e.wovenModels)
+						->flatten())
+							->iterate(e; rpm : Sequence(TupleType(name : String,im : AML!InputModel)) = Sequence{} |
+								if e.existsIn(rpm) then
+									rpm
+								else
+									rpm.append(Tuple{name = e.name, im = e})
+								endif
+								);
+
+helper def : mapReferenceModels (refModels : OrderedSet(AML!ReferenceModel)) : Map(String, AML!ReferenceModel) =
+	refModels->iterate(e; map : Map(String, AML!ReferenceModel) = Map{} |
+		map.including(e.name, e)	
+	);
+	
+-- this relies on model typing, i.e., metamodels of method call args are supposed to be equal to
+-- metamodels of method args
+helper context AML!MethodCall def : methodCallArgRefModels : Map(String, AML!ReferenceModel) =
+	thisModule.mapReferenceModels(self.flatArgs(self.method.matcher)->collect(e |  if e.referenceModel.oclIsUndefined() then
+																			OclUndefined
+																	  else
+																			e.referenceModel
+																	  endif)
+												->reject(e | e.oclIsUndefined()));
+
+
+helper def : allReferenceModels : Map(String, AML!ReferenceModel) =
+	thisModule.mapReferenceModels(AML!MethodCall->allInstances()->collect(e | e.methodCallArgRefModels.getValues())->flatten());
+
+helper context AML!ReferenceModel def : isNotMappedModel (m : AML!Matcher) : Boolean =
+	m.mappedModels->collect(c | c.im)
+		->select(e | e.name = self.name)->size() <= 0;
+								
+helper context AML!ReferenceModel def : isLoadable (m : AML!Matcher) : Boolean =
+			-- this map filters reference model with the same name
+			thisModule.allReferenceModels.get(self.name) = self
+			and			
+			-- This verifies if self have been linked by a mapping model
+			self.isNotMappedModel(m)
+			and			
+			-- the referenceModel should not be the EqualMM or Metametamodel because it is already loaded
+			not (self.isEqualMetamodel or self.isMetametamodel); 
+			
+helper context AML!InputModel def : existsIn (seq : Sequence(TupleType(name : String,im : AML!InputModel))) : Boolean =
+	seq->select(e | e.name = self.name)->notEmpty();
+			
+			

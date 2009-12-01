@@ -1,0 +1,51 @@
+check IN : AML;
+
+constraint WeightedModelExpTakesNoWeightedModelExpAsArgument on AML!WeightedModelExp:
+		not self.modelFlowExp.oclIsTypeOf(AML!WeightedModelExp)
+	report
+		error 'a weight expression cannot take another weight expression as argument';
+
+constraint AggrMethodCallTakesNoModelFlowExpDiffToWeightedModelExp on AML!MethodCall:
+	    self.method.oclIsTypeOf(AML!AggrEqual) implies
+	    self.inMappingModel->select(e | e.oclIsTypeOf(AML!WeightedModelExp))->size() = self.inMappingModel->size()
+   report
+	   	error 'mapping expression list of an aggregation method cannot contain any expression different to weight expression';
+	   	
+constraint NoAggrMethodCallTakesNoSetOfModelFlowExpression on AML!MethodCall:
+		(not self.method.oclIsTypeOf(AML!AggrEqual)) implies
+	   	self.inMappingModel->size() = 1
+  report
+  		error 'creation, sim, or sel method call cannot take more than a mapping expression enclosed in []';
+  		
+helper context AML!LocatedElement def: inPatternSimRVDContainer() : AML!LocatedElement =
+	if self.refImmediateComposite().oclIsTypeOf(AML!InPattern) or 
+		self.refImmediateComposite().oclIsTypeOf(AML!Sim) or
+		self.refImmediateComposite().oclIsTypeOf(AML!RuleVariableDeclaration) or		
+		self.refImmediateComposite().oclIsTypeOf(AML!OutPattern) then
+			self.refImmediateComposite()
+		else
+			self.refImmediateComposite().inPatternSimRVDContainer()
+		endif;
+
+constraint ThisWeightExpHasNoAggrMethodAsContext on AML!ThisWeightExp:
+		self.inPatternSimRVDContainer().method.oclIsTypeOf(AML!AggrEqual)
+	report
+		error 'a thisWeight expression cannot be on the context of a create, sim or sel method';
+  			
+	   
+	   
+		
+--constraint WeightAdditionInAggrMethodCallIsNotLessOrMoreToOne on AML!MethodCall:
+--	    self.method.oclIsTypeOf(AML!AggrEqual) implies
+--		self.inMappingModel->select(e | e.oclIsTypeOf(AML!WeightedModelExp))
+--						   ->collect(e | e.weight)->sum() = 1.0
+--	report
+--		error 'addition of weights of an aggregation method call cannot be less or more than 1';
+
+
+		-- TODO List of constraints to be added
+		-- How to verify if the number of parameters of a method call correspond to the method declaration
+		-- and the type
+		
+		
+		

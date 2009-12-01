@@ -1,0 +1,69 @@
+package AntScripts {
+
+	abstract class NamedElement {
+		attribute name : String;
+	}
+
+	abstract class DescribableElement {
+		attribute description[0-1] : String;
+	}
+
+	abstract class CommentableElement {
+		attribute comment[0-1] : String;
+	}
+	
+	abstract class NestedElement {
+		reference target : NestedElement oppositeOf tasks;
+		reference tasks[*] ordered container : NestedElement oppositeOf target;
+	}
+
+	class Project extends NamedElement, DescribableElement, CommentableElement {
+		reference properties[*] ordered container : Property;
+		reference targets[*] ordered container : Target oppositeOf project;
+		reference defaultTarget[0-1] : Target;
+	}
+
+	class Property {
+		attribute name[0-1] : String;
+		attribute value[0-1] : String;
+		attribute location[0-1] : String;
+		attribute refid[0-1] : String;
+		attribute resource[0-1] : String;
+		attribute file[0-1] : String;
+		attribute url[0-1] : String;
+		attribute environment[0-1] : String;
+		attribute classpath[0-1] : String;
+		attribute classpathref[0-1] : String;
+		attribute prefix[0-1] : String;
+	}
+
+	class Target extends NamedElement, DescribableElement, CommentableElement, NestedElement {
+		attribute if[0-1] : String;
+		attribute unless[0-1] : String;		
+		reference depends[*] ordered : Target;
+		reference project : Project oppositeOf targets;
+	}
+	
+
+	abstract class TaskElement extends NamedElement, CommentableElement, NestedElement {		
+		reference attributes[*] ordered container : Attribute;
+		reference elements[*] ordered container : TaskElement;		
+	}
+
+	class Attribute extends NamedElement {
+		attribute value : String;
+	}
+
+	class Task extends TaskElement {
+		
+	}
+
+	class TaskParameter extends TaskElement {
+		
+	}
+}
+
+package PrimitiveTypes {
+
+	datatype String;
+}
