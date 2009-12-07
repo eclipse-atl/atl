@@ -30,22 +30,6 @@
                enablesFor="1"
                id="org.eclipse.m2m.atl.research.aml.actions.ActionGenerateEmptyEqualModel">
          </action>
-         <!-- HOTs can be launched from generated ant script
-         <action
-               label="Execute HOT"
-               class="org.eclipse.m2m.atl.research.aml.actions.popup.actions.ActionExecuteHOT"
-               menubarPath="org.eclipse.m2m.atl.research.aml.actions.menu1/group1"
-               enablesFor="1"
-               id="org.eclipse.m2m.atl.research.aml.actions.ActionExecuteHOT">
-         </action>
-         -->
-         <action
-               label="Compute matching metrics"
-               class="org.eclipse.m2m.atl.research.aml.actions.popup.actions.ActionComputeMatchingMetrics"
-               menubarPath="org.eclipse.m2m.atl.research.aml.actions.menu1/group1"
-               enablesFor="2"
-               id="org.eclipse.m2m.atl.research.aml.actions.ActionComputeMatchingMetrics">
-         </action>
       </objectContribution>
    </extension>
 
