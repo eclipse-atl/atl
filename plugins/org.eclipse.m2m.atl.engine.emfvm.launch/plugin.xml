@@ -18,7 +18,7 @@
                mode="run"
                name="step"></option>
          <option
-               description="Support UML2 stereotypes"
+               description="Support UML2 stereotypes application"
                name="supportUML2Stereotypes"></option>
          <option
                description="Disassembly mode"
