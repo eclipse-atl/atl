@@ -103,6 +103,7 @@ public class EMFModelAdapter implements IModelAdapter {
 		return ret;
 	}
 
+	// fix 255613
 	/**
 	 * Returns the literal matching the given name or literal.
 	 * 
@@ -227,7 +228,7 @@ public class EMFModelAdapter implements IModelAdapter {
 		vmSupertypes.put(EClassImpl.class, Arrays.asList(new Class<?>[] {EObjectImpl.class}));
 		// is necessary ? vmSupertypes.put(EObjectImpl.class, Arrays.asList(new Class[] {Object.class}));
 	}
-	
+
 	private void registerOperation(Map<String, Operation> map, Operation oper) {
 		map.put(oper.getName(), oper);
 	}
@@ -372,7 +373,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						return model.getElementsByType(localVars[0]);
 					}
 				});
-		registerOperation(operationsByName, new Operation(1,"allInstances") { //$NON-NLS-1$ 
+		registerOperation(operationsByName, new Operation(1, "allInstances") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -435,7 +436,7 @@ public class EMFModelAdapter implements IModelAdapter {
 						return ret;
 					}
 				});
-		registerOperation(operationsByName, new Operation(2,"conformsTo") { //$NON-NLS-1$ 
+		registerOperation(operationsByName, new Operation(2, "conformsTo") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
@@ -530,6 +531,10 @@ public class EMFModelAdapter implements IModelAdapter {
 					"EMFModelAdapter.FEATURE_NOT_EXISTS", name, eo.eClass().getName())); //$NON-NLS-1$
 		}
 
+		if (!feature.isChangeable()) {
+			throw new VMException(frame, Messages.getString("EMFModelAdapter.FEATURE_NOT_CHANGEABLE", name)); //$NON-NLS-1$
+		}
+
 		if (settableValue instanceof Integer) {
 			String targetType = feature.getEType().getInstanceClassName();
 			if ("java.lang.Double".equals(targetType) || "double".equals(targetType)) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -539,7 +544,7 @@ public class EMFModelAdapter implements IModelAdapter {
 			}
 		} else if (settableValue instanceof Double) {
 			String targetType = feature.getEType().getInstanceClassName();
-			if ("java.lang.Float".equals(targetType) || "float".equals(targetType)) {  //$NON-NLS-1$//$NON-NLS-2$
+			if ("java.lang.Float".equals(targetType) || "float".equals(targetType)) { //$NON-NLS-1$//$NON-NLS-2$
 				settableValue = new Float(((Double)value).floatValue());
 			}
 		}
@@ -623,10 +628,10 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				}
 			}
-
 		} catch (Throwable e) {
 			throw new VMException(frame, e.getMessage(), e);
 		}
+
 	}
 
 	/**
@@ -735,11 +740,11 @@ public class EMFModelAdapter implements IModelAdapter {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#isMetametaElement(java.lang.Object)
 	 */
 	public boolean isMetametaElement(Object element) {
-		if (element instanceof EObject) {	
+		if (element instanceof EObject) {
 			return ((EObject)element).eClass().equals(element);
 		}
 		return false;
