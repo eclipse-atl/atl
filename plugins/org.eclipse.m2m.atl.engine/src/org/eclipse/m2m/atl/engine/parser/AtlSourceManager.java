@@ -284,54 +284,55 @@ public final class AtlSourceManager {
 			// fail silently
 		}
 
-		if (model.eClass().getName().equals("Module")) { //$NON-NLS-1$
-			atlFileType = ATL_FILE_TYPE_MODULE;
-			isRefining = ((Boolean)eGet(model, "isRefining")).booleanValue(); //$NON-NLS-1$
+		if (model != null) {
+			if (model.eClass().getName().equals("Module")) { //$NON-NLS-1$
+				atlFileType = ATL_FILE_TYPE_MODULE;
+				isRefining = ((Boolean)eGet(model, "isRefining")).booleanValue(); //$NON-NLS-1$
 
-			// input models computation
-			EList inModelsList = (EList)eGet(model, "inModels"); //$NON-NLS-1$
+				// input models computation
+				EList inModelsList = (EList)eGet(model, "inModels"); //$NON-NLS-1$
 
-			if (inModelsList != null) {
-				for (Iterator iterator = inModelsList.iterator(); iterator.hasNext();) {
-					EObject me = (EObject)iterator.next();
-					EObject mm = (EObject)eGet(me, "metamodel"); //$NON-NLS-1$			
-					inputModels.put(eGet(me, "name"), eGet(mm, "name")); //$NON-NLS-1$ //$NON-NLS-2$
+				if (inModelsList != null) {
+					for (Iterator iterator = inModelsList.iterator(); iterator.hasNext();) {
+						EObject me = (EObject)iterator.next();
+						EObject mm = (EObject)eGet(me, "metamodel"); //$NON-NLS-1$			
+						inputModels.put(eGet(me, "name"), eGet(mm, "name")); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 				}
+
+				// output models computation
+				EList outModelsList = (EList)eGet(model, "outModels"); //$NON-NLS-1$
+				if (outModelsList != null) {
+					for (Iterator iterator = outModelsList.iterator(); iterator.hasNext();) {
+						EObject me = (EObject)iterator.next();
+						EObject mm = (EObject)eGet(me, "metamodel"); //$NON-NLS-1$
+						outputModels.put(eGet(me, "name"), eGet(mm, "name")); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+				}
+
+			} else if (model.eClass().getName().equals("Query")) { //$NON-NLS-1$
+				atlFileType = ATL_FILE_TYPE_QUERY;
+				for (Iterator iterator = model.eResource().getAllContents(); iterator.hasNext();) {
+					EObject eo = (EObject)iterator.next();
+					if (eo.eClass().getName().equals("OclModel")) { //$NON-NLS-1$
+						String metamodelName = (String)eGet(eo, "name"); //$NON-NLS-1$
+						inputModels.put("IN", metamodelName); //$NON-NLS-1$
+						break;
+					}
+				}
+			} else if (model.eClass().getName().equals("Library")) { //$NON-NLS-1$
+				atlFileType = ATL_FILE_TYPE_LIBRARY;
 			}
 
-			// output models computation
-			EList outModelsList = (EList)eGet(model, "outModels"); //$NON-NLS-1$
-			if (outModelsList != null) {
-				for (Iterator iterator = outModelsList.iterator(); iterator.hasNext();) {
-					EObject me = (EObject)iterator.next();
-					EObject mm = (EObject)eGet(me, "metamodel"); //$NON-NLS-1$
-					outputModels.put(eGet(me, "name"), eGet(mm, "name")); //$NON-NLS-1$ //$NON-NLS-2$
+			// libraries computation
+			EList librariesList = (EList)eGet(model, "libraries"); //$NON-NLS-1$
+			if (librariesList != null) {
+				for (Iterator iterator = librariesList.iterator(); iterator.hasNext();) {
+					EObject lib = (EObject)iterator.next();
+					librariesImports.add(eGet(lib, "name")); //$NON-NLS-1$
 				}
 			}
-
-		} else if (model.eClass().getName().equals("Query")) { //$NON-NLS-1$
-			atlFileType = ATL_FILE_TYPE_QUERY;
-			for (Iterator iterator = model.eResource().getAllContents(); iterator.hasNext();) {
-				EObject eo = (EObject)iterator.next();
-				if (eo.eClass().getName().equals("OclModel")) { //$NON-NLS-1$
-					String metamodelName = (String)eGet(eo, "name"); //$NON-NLS-1$
-					inputModels.put("IN", metamodelName); //$NON-NLS-1$
-					break;
-				}
-			}
-		} else if (model.eClass().getName().equals("Library")) { //$NON-NLS-1$
-			atlFileType = ATL_FILE_TYPE_LIBRARY;
 		}
-
-		// libraries computation
-		EList librariesList = (EList)eGet(model, "libraries"); //$NON-NLS-1$
-		if (librariesList != null) {
-			for (Iterator iterator = librariesList.iterator(); iterator.hasNext();) {
-				EObject lib = (EObject)iterator.next();
-				librariesImports.add(eGet(lib, "name")); //$NON-NLS-1$
-			}
-		}
-
 		initialized = true;
 	}
 
