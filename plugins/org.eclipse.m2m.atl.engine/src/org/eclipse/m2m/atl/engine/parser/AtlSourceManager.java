@@ -77,15 +77,15 @@ public final class AtlSourceManager {
 	private ResourceSet resourceSet;
 
 	/** The detected metamodels Map[id,List[EPackage]]. */
-	private Map metamodelsPackages;
+	private Map metamodelsPackages = new HashMap();
 
 	/** Input models / metamodels names Map. */
-	private Map inputModels;
+	private Map inputModels = new LinkedHashMap();
 
 	/** Output models / metamodels names Map. */
-	private Map outputModels;
+	private Map outputModels = new LinkedHashMap();
 
-	private List librariesImports;
+	private List librariesImports = new ArrayList();
 
 	private int atlFileType;
 
@@ -97,7 +97,7 @@ public final class AtlSourceManager {
 
 	private EObject model;
 
-	private Map metamodelLocations;
+	private Map metamodelLocations = new HashMap();
 
 	/**
 	 * Creates an atl source manager.
@@ -168,9 +168,6 @@ public final class AtlSourceManager {
 	 * @return the map of searched metamodels
 	 */
 	public Map getMetamodelPackages(int filter) {
-		if (inputModels == null && outputModels == null) {
-			return metamodelsPackages;
-		}
 		switch (filter) {
 			case FILTER_INPUT_METAMODELS:
 				Map inputres = new HashMap();
@@ -210,11 +207,6 @@ public final class AtlSourceManager {
 	 * @throws IOException
 	 */
 	private void parseMetamodels(String text) {
-		metamodelsPackages = new HashMap();
-		metamodelLocations = new HashMap();
-		inputModels = new LinkedHashMap();
-		outputModels = new LinkedHashMap();
-		librariesImports = new ArrayList();
 
 		List compilers = getTaggedInformations(text.getBytes(), COMPILER_TAG);
 		atlCompiler = getCompilerName(compilers);
@@ -233,8 +225,13 @@ public final class AtlSourceManager {
 					if (regValue != null) {
 						ArrayList list = new ArrayList();
 						list.add(regValue);
-						metamodelsPackages.put(name, list);
 						metamodelLocations.put(name, "uri:" + uri); //$NON-NLS-1$
+						for (Iterator subIterator = regValue.getESubpackages().iterator(); subIterator
+								.hasNext();) {
+							EPackage subPackage = (EPackage)subIterator.next();
+							list.add(subPackage);
+						}
+						metamodelsPackages.put(name, list);
 					}
 				}
 			}
@@ -267,6 +264,11 @@ public final class AtlSourceManager {
 							Object object = it.next();
 							if (object instanceof EPackage) {
 								list.add(object);
+								for (Iterator subIterator = ((EPackage)object).getESubpackages().iterator(); subIterator
+										.hasNext();) {
+									EPackage subPackage = (EPackage)subIterator.next();
+									list.add(subPackage);
+								}
 							}
 						}
 						metamodelsPackages.put(name, list);
@@ -280,12 +282,6 @@ public final class AtlSourceManager {
 			model = AtlParser.getDefault().parse(new ByteArrayInputStream(text.getBytes()));
 		} catch (ATLCoreException e) {
 			// fail silently
-		}
-
-		if (model == null) {
-			inputModels = null;
-			outputModels = null;
-			return;
 		}
 
 		if (model.eClass().getName().equals("Module")) { //$NON-NLS-1$
@@ -315,7 +311,6 @@ public final class AtlSourceManager {
 
 		} else if (model.eClass().getName().equals("Query")) { //$NON-NLS-1$
 			atlFileType = ATL_FILE_TYPE_QUERY;
-			outputModels = null;
 			for (Iterator iterator = model.eResource().getAllContents(); iterator.hasNext();) {
 				EObject eo = (EObject)iterator.next();
 				if (eo.eClass().getName().equals("OclModel")) { //$NON-NLS-1$
