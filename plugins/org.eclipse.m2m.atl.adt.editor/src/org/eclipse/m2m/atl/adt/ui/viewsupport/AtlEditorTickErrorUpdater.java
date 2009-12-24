@@ -23,9 +23,12 @@ import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * The ATL editor markers updater.
+ * 
+ * @author <a href="mailto:tarik.idrissi@laposte.net">Tarik Idrissi</a>
+ */
 public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
-
-	private AtlEditor atlEditor;
 
 	private static final String ATL_EDITOR_ERROR = "atl_file_error.gif"; //$NON-NLS-1$
 
@@ -33,8 +36,16 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 
 	private static final String ATL_EDITOR = "atl_file.gif"; //$NON-NLS-1$
 
+	private AtlEditor atlEditor;
+
 	private Map<ImageDescriptor, Image> imageCache = new HashMap<ImageDescriptor, Image>();
 
+	/**
+	 * Creates an updater for the given editor.
+	 * 
+	 * @param editor
+	 *            the atl editor
+	 */
 	public AtlEditorTickErrorUpdater(AtlEditor editor) {
 		atlEditor = editor;
 		AtlUIPlugin.getDefault().getProblemMarkerManager().addListener(this);
@@ -59,7 +70,7 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 	}
 
 	/**
-	 * computes the highest severity flag for a given <code>IResource</code>
+	 * Computes the highest severity flag for a given <code>IResource</code>.
 	 * 
 	 * @param res
 	 *            the <code>Resource</code> for which to compute the most high severity
@@ -84,6 +95,12 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 		return severity;
 	}
 
+	/**
+	 * Updates the editor tab image.
+	 * 
+	 * @param res
+	 *            the current resource
+	 */
 	public void updateEditorImage(IResource res) {
 		if (res == null) {
 			return;
@@ -134,6 +151,9 @@ public class AtlEditorTickErrorUpdater implements IProblemChangedListener {
 		}
 	}
 
+	/**
+	 * Dispose the image.
+	 */
 	public void dispose() {
 		for (Iterator<Image> images = imageCache.values().iterator(); images.hasNext();) {
 			images.next().dispose();

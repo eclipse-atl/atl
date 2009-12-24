@@ -88,23 +88,20 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getAutoEditStrategies(org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
+	 * 
+	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getAutoEditStrategies(org.eclipse.jface.text.source.ISourceViewer,
+	 *      java.lang.String)
 	 */
 	@Override
 	public IAutoEditStrategy[] getAutoEditStrategies(ISourceViewer sourceViewer, String contentType) {
 		if (IAtlPartitions.STRING.equals(contentType)) {
 			return new IAutoEditStrategy[] {new AtlStringAutoIndentStrategy(
-					getConfiguredDocumentPartitioning(sourceViewer))};
+					getConfiguredDocumentPartitioning(sourceViewer)),};
 		} else {
 			return new IAutoEditStrategy[] {new AtlAutoIndentStrategy(
-					getConfiguredDocumentPartitioning(sourceViewer))};
+					getConfiguredDocumentPartitioning(sourceViewer)),};
 		}
 	}
-
-	// private Color getColor(IPreferenceStore store, String key, AtlColorManager manager) {
-	// return manager.getColor(PreferenceConverter.getColor(store, key));
-	// }
 
 	/**
 	 * Gets the color manager stored in the text tools.
@@ -117,7 +114,7 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getContentAssistant(org.eclipse.jface.text.source.ISourceViewer)
 	 */
 	@Override
@@ -141,6 +138,10 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 		return assistant;
 	}
 
+	public IContentAssistProcessor getCompletionProcessor() {
+		return fProcessor;
+	}
+
 	/**
 	 * Returns the editor in which the configured viewer(s) will reside.
 	 * 
@@ -152,8 +153,9 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getIndentPrefixes(org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
+	 * 
+	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getIndentPrefixes(org.eclipse.jface.text.source.ISourceViewer,
+	 *      java.lang.String)
 	 */
 	@Override
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer, String contentType) {
@@ -199,7 +201,7 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getPresentationReconciler(org.eclipse.jface.text.source.ISourceViewer)
 	 */
 	@Override
@@ -286,7 +288,7 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getAnnotationHover(org.eclipse.jface.text.source.ISourceViewer)
 	 */
 	@Override
@@ -306,12 +308,23 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getDefaultPrefixes(org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
+	 * 
+	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getDefaultPrefixes(org.eclipse.jface.text.source.ISourceViewer,
+	 *      java.lang.String)
 	 */
 	@Override
 	public String[] getDefaultPrefixes(ISourceViewer sourceViewer, String contentType) {
 		return new String[] {"--", ""}; //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	public void setCompletionProcessor(IContentAssistProcessor processor) {
+		this.fProcessor = processor;
+		getContentAssistant(((AtlEditor)getEditor()).getViewer());
+	}
+
+	public void resetCompletionProcessor() {
+		this.fProcessor = new AtlCompletionProcessor(getEditor());
+		getContentAssistant(((AtlEditor)getEditor()).getViewer());
 	}
 
 }

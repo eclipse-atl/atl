@@ -52,6 +52,18 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 	 * gridData.horizontalIndent = 20; control.setLayoutData(gridData); }
 	 */
 
+	protected String[][] checkBoxModel;
+
+	protected List colorList;
+
+	protected String[][] colorListModel;
+
+	protected ColorSelector colorSelector;
+
+	protected AtlPreferenceStore fPreferenceeStore;
+
+	protected String[][] textFieldModel;
+
 	private Map<Button, String> checkBoxes = new HashMap<Button, String>();
 
 	private SelectionListener checkBoxFieldListener = new SelectionListener() {
@@ -64,14 +76,6 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 		}
 	};
 
-	protected String[][] checkBoxModel;
-
-	protected List colorList;
-
-	protected String[][] colorListModel;
-
-	protected ColorSelector colorSelector;
-
 	/**
 	 * List of master/slave listeners when there's a dependency.
 	 * 
@@ -79,16 +83,12 @@ public abstract class AbstractPreferencePage extends PreferencePage implements I
 	 */
 	private java.util.List<SelectionListener> fMasterSlaveListeners = new ArrayList<SelectionListener>();
 
-	protected AtlPreferenceStore fPreferenceeStore;
-
 	private ModifyListener fTextFieldListener = new ModifyListener() {
 		public void modifyText(ModifyEvent e) {
 			Text text = (Text)e.widget;
 			fPreferenceeStore.setValue(textFields.get(text), text.getText());
 		}
 	};
-
-	protected String[][] textFieldModel;
 
 	private Map<Text, String> textFields = new HashMap<Text, String>();
 

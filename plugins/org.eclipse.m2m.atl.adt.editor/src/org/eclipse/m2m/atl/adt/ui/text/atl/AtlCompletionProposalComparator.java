@@ -12,13 +12,16 @@ package org.eclipse.m2m.atl.adt.ui.text.atl;
 
 import java.util.Comparator;
 
+/**
+ * The completion proposals comparator.
+ */
 public class AtlCompletionProposalComparator implements Comparator<AtlCompletionProposal> {
 
-	private boolean orderAlphabetically = false;
+	private boolean orderAlphabetically;
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
 	public int compare(AtlCompletionProposal o1, AtlCompletionProposal o2) {

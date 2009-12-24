@@ -14,7 +14,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
 /**
- * This class should be extended
+ * This class should be extended.
+ * 
  */
 public abstract class AtlAction {
 	protected ISelection theSelection;
@@ -26,7 +27,7 @@ public abstract class AtlAction {
 	public abstract void run();
 
 	/**
-	 * returns the element to rename
+	 * Returns the element to rename.
 	 * 
 	 * @return the element to rename
 	 */
@@ -34,7 +35,6 @@ public abstract class AtlAction {
 		if (theSelection instanceof IStructuredSelection) {
 			return ((IStructuredSelection)theSelection).getFirstElement();
 		}
-		// else if (theSelection instanceof ITextSelection)
 		return null;
 	}
 }

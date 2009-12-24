@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+
+<!-- CONTEXT: query_context -->
+<template name="%pattern.collect.name" description="%pattern.collect.desc" 
+	context="query_context" 
+	id="pattern.query.collect" 
+	enabled="true"
+	autoinsert="false">collect(${iterator} | ${navigation_expression})</template>
+
+<template name="%pattern.select.name" description="%pattern.select.desc" 
+	context="query_context" 
+	id="pattern.query.select" 
+	enabled="true"
+	autoinsert="false">select(${iterator} | ${boolean_expression})</template>
+
+<template name="%pattern.reject.name" description="%pattern.reject.desc" 
+	context="query_context" 
+	id="pattern.query.reject" 
+	enabled="true"
+	autoinsert="false">reject(${iterator} | ${boolean_expression})</template>
+
+<!-- CONTEXT: rule_context -->
+<template name="%pattern.collect.name" description="%pattern.collect.desc" 
+	context="rule_context" 
+	id="pattern.rule.collect" 
+	enabled="true"
+	autoinsert="false">collect(${iterator} | ${navigation_expression})</template>
+
+<template name="%pattern.select.name" description="%pattern.select.desc" 
+	context="rule_context" 
+	id="pattern.rule.select" 
+	enabled="true"
+	autoinsert="false">select(${iterator} | ${boolean_expression})</template>
+
+<template name="%pattern.reject.name" description="%pattern.reject.desc" 
+	context="rule_context" 
+	id="pattern.rule.reject" 
+	enabled="true"
+	autoinsert="false">reject(${iterator} | ${boolean_expression})</template>
+	
+<!-- CONTEXT: helper_context -->
+<template name="%pattern.collect.name" description="%pattern.collect.desc" 
+	context="helper_context" 
+	id="pattern.helper.collect" 
+	enabled="true"
+	autoinsert="false">collect(${iterator} | ${navigation_expression})</template>
+
+<template name="%pattern.select.name" description="%pattern.select.desc" 
+	context="helper_context" 
+	id="pattern.helper.select" 
+	enabled="true"
+	autoinsert="false">select(${iterator} | ${boolean_expression})</template>
+
+<template name="%pattern.reject.name" description="%pattern.reject.desc" 
+	context="helper_context" 
+	id="pattern.helper.reject" 
+	enabled="true"
+	autoinsert="false">reject(${iterator} | ${boolean_expression})</template>
+	
+</templates>

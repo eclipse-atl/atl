@@ -110,5 +110,58 @@
        </action>
     </actionSet>
  </extension>
-
+ <extension
+       point="org.eclipse.ui.editors.templates">
+    <contextTypeRegistry
+          id="org.eclipse.m2m.atl.adt.editor.AtlEditor">
+    </contextTypeRegistry>
+    <include
+          file="templates/structure.xml"
+          translations="templates/structure.properties">
+    </include>
+    <include
+          file="templates/patterns.xml"
+          translations="templates/patterns.properties">
+    </include>
+    <include
+          file="templates/iterators.xml"
+          translations="templates/iterators.properties">
+    </include>
+    <contextType
+          class="org.eclipse.m2m.atl.adt.ui.text.atl.AtlContextType"
+          id="atl_context"
+          name="ATL"
+          registryId="org.eclipse.m2m.atl.adt.editor.AtlEditor">
+    </contextType>
+    <contextType
+          class="org.eclipse.m2m.atl.adt.ui.text.atl.AtlContextType"
+          id="module_context"
+          name="ATL"
+          registryId="org.eclipse.m2m.atl.adt.editor.AtlEditor">
+    </contextType>
+    <contextType
+          class="org.eclipse.m2m.atl.adt.ui.text.atl.AtlContextType"
+          id="query_context"
+          name="ATL"
+          registryId="org.eclipse.m2m.atl.adt.editor.AtlEditor">
+    </contextType>
+    <contextType
+          class="org.eclipse.m2m.atl.adt.ui.text.atl.AtlContextType"
+          id="library_context"
+          name="ATL"
+          registryId="org.eclipse.m2m.atl.adt.editor.AtlEditor">
+    </contextType>
+    <contextType
+          class="org.eclipse.m2m.atl.adt.ui.text.atl.AtlContextType"
+          id="rule_context"
+          name="ATL"
+          registryId="org.eclipse.m2m.atl.adt.editor.AtlEditor">
+    </contextType>
+    <contextType
+          class="org.eclipse.m2m.atl.adt.ui.text.atl.AtlContextType"
+          id="helper_context"
+          name="ATL"
+          registryId="org.eclipse.m2m.atl.adt.editor.AtlEditor">
+    </contextType>
+ </extension>
 </plugin>

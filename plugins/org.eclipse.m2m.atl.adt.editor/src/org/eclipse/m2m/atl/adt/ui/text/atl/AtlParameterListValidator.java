@@ -22,6 +22,10 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 
+/**
+ * A validator for the parameters.
+ */
+// TODO check current usage
 public class AtlParameterListValidator implements IContextInformationValidator, IContextInformationPresenter {
 
 	private int fCurrentParameter;

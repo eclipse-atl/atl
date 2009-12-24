@@ -10,15 +10,15 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text.atl;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
+import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.adt.ui.text.atl.types.AtlTypesProcessor;
 
 /**
  * Atl model analyser, used to get information from an incomplete ATL model.
@@ -27,45 +27,23 @@ import org.eclipse.m2m.atl.common.ATLLogger;
  */
 public class AtlModelAnalyser {
 
-	/** context types. */
-	public static final int NULL_CONTEXT = 0;
-
-	/** ATL module. */
-	public static final int MODULE_CONTEXT = 1;
-
-	/** Helper. */
-	public static final int HELPER_CONTEXT = 2;
-
-	/** Rule. */
-	public static final int RULE_CONTEXT = 3;
-
-	/** From section. */
-	public static final int FROM_CONTEXT = 4;
-
-	/** To section. */
-	public static final int TO_CONTEXT = 5;
-
-	/** Do section. */
-	public static final int DO_CONTEXT = 6;
-
-	/** Using section. */
-	public static final int USING_CONTEXT = 7;
-
-	/** detached types considered as "normal". */
-	private static final String[] NORMAL_TYPES = {"OclModel", "Helper", //$NON-NLS-1$ //$NON-NLS-2$
-			"Module", "MatchedRule", "CalledRule", "Rule", "LazyRule",}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-
 	/** completion helper used to find located elements. */
 	private AtlCompletionHelper fHelper;
 
 	/** code model root (EMF object). */
-	private EObject emfRoot;
+	private EObject root;
 
-	/** base offset of the model in the document. */
+	private String lastKeyword;
+
+	 private String fileContext;
+
+	private EObject locatedElement;
+
+	private String context;
+
 	private int modelOffset;
 
-	/** user offset in the document. */
-	private int context;
+	private List<EObject> lostElements;
 
 	/**
 	 * Creates an analyser for ATL models.
@@ -80,49 +58,87 @@ public class AtlModelAnalyser {
 	 *            the last detected keyword
 	 * @param userOffset
 	 *            the user current offset
+	 * @param fileContext
+	 *            the main context of the file
 	 */
 	public AtlModelAnalyser(AtlCompletionHelper fHelper, EObject emfRoot, int modelOffset,
-			String lastKeyword, int userOffset) {
+			String lastKeyword, int userOffset, String fileContext) throws BadLocationException {
 		this.fHelper = fHelper;
+		this.root = emfRoot;
+		this.lastKeyword = lastKeyword;
+		this.fileContext = fileContext;
 		this.modelOffset = modelOffset;
-		this.emfRoot = emfRoot;
-		try {
-			this.context = getContext(lastKeyword, userOffset);
-		} catch (BadLocationException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		this.locatedElement = fHelper.getLocatedElement(emfRoot, userOffset, modelOffset);
+		computeLostElements();
+		computeContext();
+	}
+
+	private void computeLostElements() {
+		lostElements = new ArrayList<EObject>();
+		if (root != null) {
+			for (EObject element : root.eResource().getContents()) {
+				if (AtlCompletionHelper.getLocation(element) == null) {
+					lostElements.add(element);
+				}
+			}
 		}
 	}
 
-	/**
-	 * Search the root element of the model.
-	 * 
-	 * @return the element
-	 */
-	public EObject getRootElement() {
-		return emfRoot;
+	private void computeContext() {
+		if (lastKeyword != null) {
+			if (lastKeyword.equalsIgnoreCase("helper") && (locatedElement != null || getLostTypesNames().contains("Helper"))) { //$NON-NLS-1$ //$NON-NLS-2$
+				context = AtlContextType.HELPER_CONTEXT_ID;
+			} else if (lastKeyword.equalsIgnoreCase("rule")) { //$NON-NLS-1$
+				context = AtlContextType.RULE_CONTEXT_ID;
+			} else if (lastKeyword.equalsIgnoreCase("from") && root != null) { //$NON-NLS-1$
+				context = AtlContextType.RULE_CONTEXT_ID;
+			} else if ((lastKeyword.equalsIgnoreCase("to") || lastKeyword.equalsIgnoreCase("do")) //$NON-NLS-1$//$NON-NLS-2$
+					&& (locatedElement != null || (getLostTypesNames().contains("MatchedRule") //$NON-NLS-1$
+							|| getLostTypesNames().contains("CalledRule") || getLostTypesNames().contains(//$NON-NLS-1$
+							"LazyMatchedRule")))) { //$NON-NLS-1$
+				context = AtlContextType.RULE_CONTEXT_ID;
+			} else if (lastKeyword.equalsIgnoreCase("using")) { //$NON-NLS-1$
+				context = AtlContextType.RULE_CONTEXT_ID;
+			} else {
+				context = fileContext;
+			}
+		} else {
+			context = AtlContextType.ATL_CONTEXT_ID;
+		}
+	}
+
+	public String getContext() {
+		return context;
 	}
 
 	/**
-	 * Search the nearest element of the given offset.
+	 * Search the parent element of the given element, if present.
 	 * 
-	 * @param offset
-	 *            the given offset
-	 * @return the element
+	 * @param element
+	 *            the element
+	 * @return the parent element
 	 * @throws BadLocationException
 	 */
-	public EObject getLocatedElement(int offset) throws BadLocationException {
+	public EObject getContainer(EObject element) throws BadLocationException {
 		EObject res = null;
-		if (emfRoot != null) {
-			TreeIterator ti = emfRoot.eResource().getAllContents();
-			int maxDebOffset = -1;
-			while (ti.hasNext()) {
-				EObject object = (EObject)ti.next();
-				int[] elementOffsets = fHelper.getElementOffsets(object, modelOffset);
-				if (elementOffsets != null) {
-					if (elementOffsets[0] <= offset && elementOffsets[1] >= offset) {
-						if (elementOffsets[0] > maxDebOffset) {
-							maxDebOffset = elementOffsets[0];
-							res = object;
+		if (element.eContainer() != null) {
+			res = element.eContainer();
+		} else if (root != null) {
+			int[] elementOffsets = fHelper.getElementOffsets(element, modelOffset);
+			if (elementOffsets != null) {
+				TreeIterator<EObject> ti = root.eResource().getAllContents();
+				int maxDebOffset = -1;
+				while (ti.hasNext()) {
+					EObject tmp = ti.next();
+					int[] tmpOffsets = fHelper.getElementOffsets(tmp, modelOffset);
+					if (tmpOffsets != null) {
+						if (tmpOffsets[0] <= elementOffsets[0] && tmpOffsets[1] >= elementOffsets[1]) {
+							if (tmpOffsets[0] > maxDebOffset) {
+								maxDebOffset = tmpOffsets[0];
+								if (!element.equals(tmp)) {
+									res = tmp;
+								}
+							}
 						}
 					}
 				}
@@ -132,27 +148,30 @@ public class AtlModelAnalyser {
 	}
 
 	/**
-	 * Search the precise element of the given offset.
+	 * Computes the previous element in the model.
 	 * 
-	 * @param offset
-	 *            the given offset
-	 * @return the element
+	 * @param element
+	 *            the current element
+	 * @return the previous element
 	 * @throws BadLocationException
 	 */
-	public static EObject getLocatedElement(IDocument document, EObject emfRoot, int offset)
-			throws BadLocationException {
+	public EObject getPreviousElement(EObject element) throws BadLocationException {
 		EObject res = null;
-		if (emfRoot != null) {
-			TreeIterator ti = emfRoot.eResource().getAllContents();
-			int maxDebOffset = -1;
-			while (ti.hasNext()) {
-				EObject object = (EObject)ti.next();
-				int[] elementOffsets = AtlCompletionHelper.getElementOffsets(document, object, 0);
-				if (elementOffsets != null) {
-					if (elementOffsets[0] <= offset && elementOffsets[1] >= offset) {
-						if (elementOffsets[0] > maxDebOffset) {
-							maxDebOffset = elementOffsets[0];
-							res = object;
+		if (root != null) {
+			int[] elementOffsets = fHelper.getElementOffsets(element, modelOffset);
+			if (elementOffsets != null) {
+				TreeIterator<EObject> ti = root.eResource().getAllContents();
+				int maxEndOffset = -1;
+				while (ti.hasNext()) {
+					EObject tmp = ti.next();
+					if (!tmp.equals(element)) {
+						int[] tmpOffsets = fHelper.getElementOffsets(tmp, modelOffset);
+						if (tmpOffsets != null && tmpOffsets[1] <= elementOffsets[0]
+								&& tmpOffsets[1] > maxEndOffset) {
+							maxEndOffset = tmpOffsets[1];
+							if (!element.equals(tmp)) {
+								res = tmp;
+							}
 						}
 					}
 				}
@@ -161,26 +180,100 @@ public class AtlModelAnalyser {
 		return res;
 	}
 
+	public EObject getRoot() {
+		return root;
+	}
+
+	public EObject getLocatedElement() {
+		return locatedElement;
+	}
+
 	/**
-	 * Looks for a specific type in the anormal root types.
+	 * Returns the list of the lost types names. A type is "lost" when it has no container and no location.
 	 * 
-	 * @param type
-	 *            the name of the searched type
-	 * @return the corresponding EMF object if present
+	 * @return the list of the lost types names
 	 */
-	public EObject getLostType(String type) {
-		if (emfRoot != null) {
-			EList ti = emfRoot.eResource().getContents();
-			for (Iterator iterator = ti.iterator(); iterator.hasNext();) {
-				EObject object = (EObject)iterator.next();
-				String currentType = object.eClass().getName();
-				boolean isnormal = false;
-				for (int i = 0; i < NORMAL_TYPES.length; i++) {
-					isnormal = isnormal || NORMAL_TYPES[i].equals(currentType);
-				}
-				if (!isnormal) {
-					if (type.equals(currentType)) {
-						return object;
+	public List<String> getLostTypesNames() {
+		List<String> res = new ArrayList<String>();
+		for (EObject element : lostElements) {
+			res.add(element.eClass().getName());
+		}
+		return res;
+	}
+
+	/**
+	 * Returns the list of the lost types having the given type.
+	 * 
+	 * @param typeName
+	 *            the type name
+	 * @return the list of the lost types
+	 */
+	public List<EObject> getLostElementsByType(String typeName) {
+		List<EObject> res = new ArrayList<EObject>();
+		for (EObject element : lostElements) {
+			if (element.eClass().getName().equalsIgnoreCase(typeName)) {
+				res.add(element);
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Returns the last lost types having the given type.
+	 * 
+	 * @param typeName
+	 *            the type name
+	 * @return the lost types
+	 */
+	public EObject getLastLostElementByType(String typeName) {
+		List<EObject> found = getLostElementsByType(typeName);
+		if (!found.isEmpty()) {
+			return found.get(found.size() - 1);
+		}
+		return null;
+	}
+
+	/**
+	 * Debugging utility (for a developer purpose).
+	 */
+	public void displayModel() {
+		if (root != null) {
+			try {
+				root.eResource().save(System.err, null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.err.println("no model to display"); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Returns the text associated to the given located element.
+	 * 
+	 * @param locatedElement
+	 *            the element
+	 * @return the text associated to the given located element
+	 * @throws BadLocationException
+	 */
+	public String getText(EObject locatedElement) throws BadLocationException {
+		return fHelper.getText(locatedElement, modelOffset);
+	}
+
+	/**
+	 * Return the variable having the given name.
+	 * 
+	 * @param name
+	 *            the variable name
+	 * @return the variable object (in the ATL model)
+	 */
+	public EObject getVariableDeclaration(String name) {
+		if (root != null) {
+			for (Iterator<EObject> iterator = root.eResource().getAllContents(); iterator.hasNext();) {
+				EObject element = iterator.next();
+				if (AtlTypesProcessor.oclIsKindOf(element, "VariableDeclaration")) { //$NON-NLS-1$
+					if (name.equals(AtlTypesProcessor.eGet(element, "varName"))) { //$NON-NLS-1$
+						return element;
 					}
 				}
 			}
@@ -188,74 +281,4 @@ public class AtlModelAnalyser {
 		return null;
 	}
 
-	public int getContext() {
-		return context;
-	}
-
-	private int getContext(String keyword, int offset) throws BadLocationException {
-		if (keyword == null) {
-			return AtlModelAnalyser.NULL_CONTEXT;
-		}
-		if (keyword.equalsIgnoreCase("module")) { //$NON-NLS-1$
-			return AtlModelAnalyser.MODULE_CONTEXT;
-		}
-		if (keyword.equalsIgnoreCase("helper")) { //$NON-NLS-1$
-			if (getLocatedElement(offset) == null) {
-				return AtlModelAnalyser.MODULE_CONTEXT;
-			}
-			return AtlModelAnalyser.HELPER_CONTEXT;
-		}
-		if (keyword.equalsIgnoreCase("rule")) { //$NON-NLS-1$
-			return AtlModelAnalyser.RULE_CONTEXT;
-		}
-		if (keyword.equalsIgnoreCase("from")) { //$NON-NLS-1$
-			if (emfRoot == null) {
-				return AtlModelAnalyser.MODULE_CONTEXT;
-			}
-			return AtlModelAnalyser.FROM_CONTEXT;
-		}
-		if (keyword.equalsIgnoreCase("to")) { //$NON-NLS-1$
-			return AtlModelAnalyser.TO_CONTEXT;
-		}
-		if (keyword.equalsIgnoreCase("do")) { //$NON-NLS-1$
-			if (getLocatedElement(offset) == null) {
-				return AtlModelAnalyser.MODULE_CONTEXT;
-			}
-			return AtlModelAnalyser.DO_CONTEXT;
-		}
-		if (keyword.equalsIgnoreCase("using")) { //$NON-NLS-1$
-			return AtlModelAnalyser.USING_CONTEXT;
-		}
-		return AtlModelAnalyser.NULL_CONTEXT;
-	}
-
-	/**
-	 * Returns the context name by id.
-	 * 
-	 * @param id
-	 *            the given id
-	 * @return the context name
-	 */
-	public static String getContextName(int id) {
-		switch (id) {
-			case NULL_CONTEXT:
-				return "NULL_CONTEXT"; //$NON-NLS-1$
-			case MODULE_CONTEXT:
-				return "MODULE_CONTEXT"; //$NON-NLS-1$
-			case HELPER_CONTEXT:
-				return "HELPER_CONTEXT"; //$NON-NLS-1$
-			case RULE_CONTEXT:
-				return "RULE_CONTEXT"; //$NON-NLS-1$
-			case FROM_CONTEXT:
-				return "FROM_CONTEXT"; //$NON-NLS-1$
-			case TO_CONTEXT:
-				return "TO_CONTEXT"; //$NON-NLS-1$
-			case DO_CONTEXT:
-				return "DO_CONTEXT"; //$NON-NLS-1$
-			case USING_CONTEXT:
-				return "USING_CONTEXT"; //$NON-NLS-1$
-			default:
-				return "NULL_CONTEXT"; //$NON-NLS-1$
-		}
-	}
 }

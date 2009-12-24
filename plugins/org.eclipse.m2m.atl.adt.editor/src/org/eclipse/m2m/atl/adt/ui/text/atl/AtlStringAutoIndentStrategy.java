@@ -89,6 +89,7 @@ public class AtlStringAutoIndentStrategy extends DefaultIndentLineAutoEditStrate
 			}
 
 		} catch (BadLocationException e) {
+			// do nothing
 		}
 	}
 

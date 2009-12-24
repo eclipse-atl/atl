@@ -55,11 +55,106 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.texteditor.link.EditorLinkedModeUI;
 
+/**
+ * The ATL completion proposal definition.
+ */
 public class AtlCompletionProposal implements ICompletionProposalExtension, ICompletionProposalExtension2, ICompletionProposalExtension3, ICompletionProposal, Comparable<AtlCompletionProposal> {
 
-	public int compareTo(AtlCompletionProposal arg0) {
-		AtlCompletionProposal comp = arg0;
-		return fReplacementString.compareTo(comp.getReplacementString());
+	protected ITextViewer fTextViewer;
+
+	protected boolean fToggleEating;
+
+	private IContextInformation fContextInformation;
+
+	private int fContextInformationPosition;
+
+	private int fCursorPosition;
+
+	private String fDisplayString;
+
+	private Image fImage;
+
+	private int fRelevance;
+
+	private StyleRange fRememberedStyleRange;
+
+	private int fReplacementLength;
+
+	private int fReplacementOffset;
+
+	private String fReplacementString;
+
+	private char[] fTriggerCharacters;
+
+	private String additionalProposalInfo;
+
+	/**
+	 * Creates a new completion proposal. All fields are initialized based on the provided information.
+	 * 
+	 * @param replacementString
+	 *            the actual string to be inserted into the document
+	 * @param replacementOffset
+	 *            the offset of the text to be replaced
+	 * @param replacementLength
+	 *            the length of the text to be replaced
+	 * @param image
+	 *            the image to display for this proposal
+	 * @param displayString
+	 *            the string to be displayed for the proposal If set to <code>null</code>, the replacement
+	 *            string will be taken as display string.
+	 * @param relevance
+	 *            the relevance of the proposal
+	 * @param additionalProposalInfo
+	 *            the additional informations
+	 */
+	public AtlCompletionProposal(String replacementString, int replacementOffset, int replacementLength,
+			Image image, String displayString, int relevance, String additionalProposalInfo) {
+		this(replacementString, replacementOffset, replacementLength, image, displayString, relevance, null,
+				additionalProposalInfo);
+	}
+
+	/**
+	 * Creates a new completion proposal. All fields are initialized based on the provided information.
+	 * 
+	 * @param replacementString
+	 *            the actual string to be inserted into the document
+	 * @param replacementOffset
+	 *            the offset of the text to be replaced
+	 * @param replacementLength
+	 *            the length of the text to be replaced
+	 * @param image
+	 *            the image to display for this proposal
+	 * @param displayString
+	 *            the string to be displayed for the proposal
+	 * @param viewer
+	 *            the text viewer for which this proposal is computed, may be <code>null</code> If set to
+	 *            <code>null</code>, the replacement string will be taken as display string.
+	 * @param relevance
+	 *            the relevance of the proposal
+	 * @param additionalProposalInfo
+	 *            the additional informations
+	 */
+	public AtlCompletionProposal(String replacementString, int replacementOffset, int replacementLength,
+			Image image, String displayString, int relevance, ITextViewer viewer,
+			String additionalProposalInfo) {
+		Assert.isNotNull(replacementString);
+		Assert.isTrue(replacementOffset >= 0);
+		Assert.isTrue(replacementLength >= 0);
+
+		fReplacementString = replacementString;
+		fReplacementOffset = replacementOffset;
+		fReplacementLength = replacementLength;
+		fImage = image;
+		fDisplayString = displayString != null ? displayString : replacementString;
+		fRelevance = relevance;
+		fTextViewer = viewer;
+
+		fCursorPosition = replacementString.length();
+
+		fContextInformation = null;
+		fContextInformationPosition = -1;
+		fTriggerCharacters = null;
+		this.additionalProposalInfo = additionalProposalInfo;
 	}
 
 	protected static class ExitPolicy implements IExitPolicy {
@@ -172,95 +267,6 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 		 * .CODEASSIST_INSERT_COMPLETION);
 		 */
 		return true;
-	}
-
-	private IContextInformation fContextInformation;
-
-	private int fContextInformationPosition;
-
-	private int fCursorPosition;
-
-	private String fDisplayString;
-
-	private Image fImage;
-
-	private int fRelevance;
-
-	private StyleRange fRememberedStyleRange;
-
-	private int fReplacementLength;
-
-	private int fReplacementOffset;
-
-	private String fReplacementString;
-
-	protected ITextViewer fTextViewer;
-
-	protected boolean fToggleEating;
-
-	private char[] fTriggerCharacters;
-
-	private String additionalProposalInfo;
-
-	/**
-	 * Creates a new completion proposal. All fields are initialized based on the provided information.
-	 * 
-	 * @param replacementString
-	 *            the actual string to be inserted into the document
-	 * @param replacementOffset
-	 *            the offset of the text to be replaced
-	 * @param replacementLength
-	 *            the length of the text to be replaced
-	 * @param image
-	 *            the image to display for this proposal
-	 * @param displayString
-	 *            the string to be displayed for the proposal If set to <code>null</code>, the replacement
-	 *            string will be taken as display string.
-	 */
-	public AtlCompletionProposal(String replacementString, int replacementOffset, int replacementLength,
-			Image image, String displayString, int relevance, String additionalProposalInfo) {
-		this(replacementString, replacementOffset, replacementLength, image, displayString, relevance, null,
-				additionalProposalInfo);
-	}
-
-	/**
-	 * Creates a new completion proposal. All fields are initialized based on the provided information.
-	 * 
-	 * @param replacementString
-	 *            the actual string to be inserted into the document
-	 * @param replacementOffset
-	 *            the offset of the text to be replaced
-	 * @param replacementLength
-	 *            the length of the text to be replaced
-	 * @param image
-	 *            the image to display for this proposal
-	 * @param displayString
-	 *            the string to be displayed for the proposal
-	 * @param viewer
-	 *            the text viewer for which this proposal is computed, may be <code>null</code> If set to
-	 *            <code>null</code>, the replacement string will be taken as display string.
-	 */
-	public AtlCompletionProposal(String replacementString, int replacementOffset, int replacementLength,
-			Image image, String displayString, int relevance, ITextViewer viewer,
-			String additionalProposalInfo) {
-		Assert.isNotNull(replacementString);
-		Assert.isTrue(replacementOffset >= 0);
-		Assert.isTrue(replacementLength >= 0);
-
-		fReplacementString = replacementString;
-		fReplacementOffset = replacementOffset;
-		fReplacementLength = replacementLength;
-		fImage = image;
-		fDisplayString = displayString != null ? displayString : replacementString;
-		fRelevance = relevance;
-		fTextViewer = viewer;
-
-		fCursorPosition = replacementString.length();
-
-		fContextInformation = null;
-		fContextInformationPosition = -1;
-		fTriggerCharacters = null;
-		this.additionalProposalInfo = additionalProposalInfo;
 	}
 
 	/*
@@ -383,6 +389,11 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 
 		apply(document, trigger, offset);
 		fToggleEating = false;
+	}
+
+	public int compareTo(AtlCompletionProposal arg0) {
+		AtlCompletionProposal comp = arg0;
+		return fReplacementString.compareTo(comp.getReplacementString());
 	}
 
 	/*
@@ -648,13 +659,16 @@ public class AtlCompletionProposal implements ICompletionProposalExtension, ICom
 				return word.substring(0, length).equalsIgnoreCase(start);
 			}
 		} catch (BadLocationException x) {
+			// do nothing
 		}
 
 		return false;
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension2#unselected(ITextViewer)
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension2#unselected(org.eclipse.jface.text.ITextViewer)
 	 */
 	public void unselected(ITextViewer viewer) {
 		repairPresentation(viewer);

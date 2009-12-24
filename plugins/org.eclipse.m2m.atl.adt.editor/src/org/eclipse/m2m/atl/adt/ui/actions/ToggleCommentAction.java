@@ -137,7 +137,8 @@ public final class ToggleCommentAction extends TextEditorAction {
 
 			int lineCount = 0;
 			int[] lines = new int[regions.length * 2]; // [startline, endline, startline, endline, ...]
-			for (int i = 0, j = 0; i < regions.length; i++, j += 2) {
+			int j = 0;
+			for (int i = 0; i < regions.length; i++, j += 2) {
 				// start line of region
 				lines[j] = getFirstCompleteLineOfRegion(regions[i], document);
 				// end line of region
@@ -145,12 +146,13 @@ public final class ToggleCommentAction extends TextEditorAction {
 				int offset = regions[i].getOffset() + length;
 				if (length > 0)
 					offset--;
-				lines[j + 1] = (lines[j] == -1 ? -1 : document.getLineOfOffset(offset));
+				lines[j + 1] = lines[j] == -1 ? -1 : document.getLineOfOffset(offset);
 				lineCount += lines[j + 1] - lines[j] + 1;
 			}
 
+			j = 0;
 			// Perform the check
-			for (int i = 0, j = 0; i < regions.length; i++, j += 2) {
+			for (int i = 0; i < regions.length; i++, j += 2) {
 				String[] prefixes = fPrefixesMap.get(regions[i].getType());
 				if (prefixes != null && prefixes.length > 0 && lines[j] >= 0 && lines[j + 1] >= 0)
 					if (!isBlockCommented(lines[j], lines[j + 1], prefixes, document))
@@ -211,7 +213,7 @@ public final class ToggleCommentAction extends TextEditorAction {
 				return startLine;
 
 			offset = document.getLineOffset(startLine + 1);
-			return (offset > region.getOffset() + region.getLength() ? -1 : startLine + 1);
+			return offset > region.getOffset() + region.getLength() ? -1 : startLine + 1;
 
 		} catch (BadLocationException x) {
 			// should not happen
@@ -285,9 +287,9 @@ public final class ToggleCommentAction extends TextEditorAction {
 		if (fOperationTarget == null && editor != null)
 			fOperationTarget = (ITextOperationTarget)editor.getAdapter(ITextOperationTarget.class);
 
-		boolean isEnabled = (fOperationTarget != null
-				&& fOperationTarget.canDoOperation(ITextOperationTarget.PREFIX) && fOperationTarget
-				.canDoOperation(ITextOperationTarget.STRIP_PREFIX));
+		boolean isEnabled = fOperationTarget != null
+				&& fOperationTarget.canDoOperation(ITextOperationTarget.PREFIX)
+				&& fOperationTarget.canDoOperation(ITextOperationTarget.STRIP_PREFIX);
 		setEnabled(isEnabled);
 	}
 

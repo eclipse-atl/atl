@@ -38,9 +38,9 @@ import org.eclipse.swt.widgets.Display;
  */
 public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReconcilingStrategyExtension {
 
-	private final String RULE_BLOCK_START = "rule"; //$NON-NLS-1$
+	private static final String RULE_BLOCK_START = "rule"; //$NON-NLS-1$
 
-	private final String HELPER_BLOCK_START = "helper"; //$NON-NLS-1$
+	private static final String HELPER_BLOCK_START = "helper"; //$NON-NLS-1$
 
 	/**
 	 * This will hold the list of all annotations that have been added since the last reconciling.
@@ -68,6 +68,8 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 
 	/** Current offset. */
 	private int offset;
+
+	private AtlCodeReader reader = new AtlCodeReader();
 
 	/**
 	 * Instantiates the reconciling strategy for a given editor.
@@ -129,8 +131,6 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 		// none
 	}
 
-	private AtlCodeReader reader = new AtlCodeReader();
-
 	/**
 	 * This will compute the current block positions. The offset at which computations start is determined by
 	 * {@link #offset}.
@@ -140,7 +140,8 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 		modifiedAnnotations.clear();
 		addedAnnotations.clear();
 		deletedAnnotations.addAll(currentAnnotations.keySet());
-		for (Iterator<Entry<Annotation, Position>> iterator = currentAnnotations.entrySet().iterator(); iterator.hasNext();) {
+		for (Iterator<Entry<Annotation, Position>> iterator = currentAnnotations.entrySet().iterator(); iterator
+				.hasNext();) {
 			Entry<Annotation, Position> entry = iterator.next();
 			final Position position = entry.getValue();
 			if (position.getOffset() + position.getLength() < offset) {
@@ -164,7 +165,7 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 						eof = seekChars(new char[] {'\n',});
 						final int endOffset = offset + 1;
 						if (document.getNumberOfLines(startOffset, endOffset - startOffset) > 2) {
-							createOrUpdateAnnotation(startOffset, (endOffset) - startOffset, false);
+							createOrUpdateAnnotation(startOffset, endOffset - startOffset, false);
 						}
 					}
 				} else if (HELPER_BLOCK_START.equals(document.get(startOffset, HELPER_BLOCK_START.length()))) {
@@ -182,7 +183,7 @@ public final class AtlReconcilingStrategy implements IReconcilingStrategy, IReco
 					eof = seekChars(new char[] {'\n',});
 					final int endOffset = offset + 1;
 					if (document.getNumberOfLines(startOffset, endOffset - startOffset) > 2) {
-						createOrUpdateAnnotation(startOffset, (endOffset) - startOffset, false);
+						createOrUpdateAnnotation(startOffset, endOffset - startOffset, false);
 					}
 				}
 				eof = seekChars(new char[] {RULE_BLOCK_START.charAt(0), HELPER_BLOCK_START.charAt(0),});

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+
+<!-- CONTEXT: atl_context -->
+<template name="%pattern.module.name" description="%pattern.module.desc" 
+	context="atl_context" 
+	id="pattern.atl.module" 
+	enabled="true">module ${name};
+create ${out_model} from ${in_model};
+</template>
+
+<template name="%pattern.library.name" description="%pattern.library.desc" 
+	context="atl_context" 
+	id="pattern.atl.library" 
+	enabled="true">library ${name} = OclUndefined;
+</template>
+
+<template name="%pattern.query.name" description="%pattern.query.desc" 
+	context="atl_context" 
+	id="pattern.atl.query" 
+	enabled="true">query ${name} = OclUndefined;
+</template>
+
+<!-- CONTEXT: module_context -->
+<template name="%pattern.rule.name" description="%pattern.rule.desc" 
+	context="module_context" 
+	id="pattern.module.rule" 
+	enabled="true">rule ${name} {
+	from
+		${input_name} : ${input_element}
+	to 
+		${output_name} : ${output_element} (
+			${cursor}
+		)
+}</template>
+
+<template name="%pattern.called_rule.name" description="%pattern.called_rule.desc" 
+	context="module_context" 
+	id="pattern.module.called_rule" 
+	enabled="true">rule ${name}() {
+	to 
+		${output_name} : ${output_element} (
+			${cursor}
+		)
+	do {
+		${output_name};
+	}
+}</template>
+
+<template name="%pattern.helper.name" description="%pattern.helper.desc" 
+	context="module_context" 
+	id="pattern.module.helper" 
+	enabled="true">helper def : ${name}() : OclAny = OclUndefined;
+</template>
+
+<template name="%pattern.attribute.name" description="%pattern.attribute.desc" 
+	context="module_context" 
+	id="pattern.module.attribute" 
+	enabled="true">helper def : ${name} : OclAny = OclUndefined;
+</template>
+
+<!-- CONTEXT: query_context -->
+<template name="%pattern.helper.name" description="%pattern.helper.desc" 
+	context="query_context" 
+	id="pattern.query.helper" 
+	enabled="true">helper def : ${name}() : OclAny = OclUndefined;
+</template>
+
+<template name="%pattern.attribute.name" description="%pattern.attribute.desc" 
+	context="query_context" 
+	id="pattern.query.attribute" 
+	enabled="true">helper def : ${name} : OclAny = OclUndefined;
+</template>
+
+<!-- CONTEXT: library_context -->
+<template name="%pattern.helper.name" description="%pattern.helper.desc" 
+	context="library_context" 
+	id="pattern.library.helper" 
+	enabled="true">helper def : ${name}() : OclAny = OclUndefined;
+</template>
+
+<template name="%pattern.attribute.name" description="%pattern.attribute.desc" 
+	context="library_context" 
+	id="pattern.library.attribute" 
+	enabled="true">helper def : ${name} : OclAny = OclUndefined;
+</template>
+
+<!-- CONTEXT: rule_context -->
+<template name="%pattern.using.name" description="%pattern.using.desc" 
+	context="rule_context" 
+	id="pattern.rule.using" 
+	enabled="true"
+	autoinsert="false">using {
+	${cursor}
+}</template>
+
+<template name="%pattern.do.name" description="%pattern.do.desc" 
+	context="rule_context" 
+	id="pattern.rule.do" 
+	enabled="true"
+	autoinsert="false">do {
+	${cursor}
+}</template>
+
+</templates>

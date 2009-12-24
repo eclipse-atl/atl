@@ -42,6 +42,17 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 	private String fPartitioning;
 
 	/**
+	 * Creates a new ATL auto indent strategy for the given document fPartitioning.
+	 * 
+	 * @param partitioning
+	 *            the document fPartitioning
+	 */
+	public AtlAutoIndentStrategy(String partitioning) {
+		super();
+		this.fPartitioning = partitioning;
+	}
+
+	/**
 	 * Computes an insert position for an opening brace if <code>offset</code> maps to a position in
 	 * <code>document</code> with a expression in parenthesis that will take a block after the closing
 	 * parenthesis.
@@ -131,17 +142,6 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 		return System.getProperty("line.separator"); //$NON-NLS-1$
 	}
 
-	/**
-	 * Creates a new ATL auto indent strategy for the given document fPartitioning.
-	 * 
-	 * @param partitioning
-	 *            the document fPartitioning
-	 */
-	public AtlAutoIndentStrategy(String partitioning) {
-		super();
-		this.fPartitioning = partitioning;
-	}
-
 	private void clearCachedValues() {
 		fCloseBrace = AtlUIPlugin.getDefault().getPreferenceStore().getBoolean(
 				AtlPreferenceConstants.TYPING_CLOSE_BRACES);
@@ -167,6 +167,8 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 	}
 
 	/**
+	 * Returns a string buffer containing one indent.
+	 * 
 	 * @return a string buffer containing one indent
 	 */
 	protected String createIndent() {
@@ -291,7 +293,10 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 	// }
 	// return 0;
 	// }
+
 	/**
+	 * Returns the String at line with the leading whitespace removed.
+	 * 
 	 * @param document
 	 *            the document being parsed
 	 * @param line

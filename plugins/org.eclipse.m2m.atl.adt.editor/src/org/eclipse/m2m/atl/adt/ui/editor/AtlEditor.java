@@ -28,6 +28,7 @@ import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.ILineBreakpoint;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -83,6 +84,7 @@ import org.eclipse.m2m.atl.adt.ui.text.AtlContentAssistPreference;
 import org.eclipse.m2m.atl.adt.ui.text.AtlPairMatcher;
 import org.eclipse.m2m.atl.adt.ui.text.AtlSourceViewerConfiguration;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlPartitions;
+import org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType;
 import org.eclipse.m2m.atl.adt.ui.viewsupport.AtlEditorTickErrorUpdater;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.common.AtlNbCharFile;
@@ -193,8 +195,9 @@ public class AtlEditor extends TextEditor {
 
 		/**
 		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.jface.text.link.ILinkedModeListener#left(org.eclipse.jface.text.link.LinkedModeModel, int)
+		 * 
+		 * @see org.eclipse.jface.text.link.ILinkedModeListener#left(org.eclipse.jface.text.link.LinkedModeModel,
+		 *      int)
 		 */
 		public void left(LinkedModeModel environment, int flags) {
 
@@ -238,8 +241,9 @@ public class AtlEditor extends TextEditor {
 
 		/**
 		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.jface.text.link.ILinkedModeListener#resume(org.eclipse.jface.text.link.LinkedModeModel, int)
+		 * 
+		 * @see org.eclipse.jface.text.link.ILinkedModeListener#resume(org.eclipse.jface.text.link.LinkedModeModel,
+		 *      int)
 		 */
 		public void resume(LinkedModeModel environment, int flags) {
 		}
@@ -521,8 +525,9 @@ public class AtlEditor extends TextEditor {
 
 		/**
 		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.jface.text.link.LinkedModeUI.IExitPolicy#doExit(org.eclipse.jface.text.link.LinkedModeModel, org.eclipse.swt.events.VerifyEvent, int, int)
+		 * 
+		 * @see org.eclipse.jface.text.link.LinkedModeUI.IExitPolicy#doExit(org.eclipse.jface.text.link.LinkedModeModel,
+		 *      org.eclipse.swt.events.VerifyEvent, int, int)
 		 */
 		public ExitFlags doExit(LinkedModeModel model, VerifyEvent event, int offset, int length) {
 
@@ -742,9 +747,13 @@ public class AtlEditor extends TextEditor {
 		sourceManager = new AtlSourceManager();
 	}
 
+	public AtlSourceViewerConfiguration getSourceViewerConf() {
+		return (AtlSourceViewerConfiguration)getSourceViewerConfiguration();
+	}
+
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#affectsTextPresentation(org.eclipse.jface.util.PropertyChangeEvent)
 	 */
 	@Override
@@ -755,7 +764,7 @@ public class AtlEditor extends TextEditor {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#configureSourceViewerDecorationSupport(org.eclipse.ui.texteditor.SourceViewerDecorationSupport)
 	 */
 	@Override
@@ -779,7 +788,7 @@ public class AtlEditor extends TextEditor {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.editors.text.TextEditor#createActions()
 	 */
 	@Override
@@ -905,7 +914,8 @@ public class AtlEditor extends TextEditor {
 	 * @param modifiedAnnotations
 	 *            These annotations have seen their positions updated.
 	 */
-	public void updateFoldingStructure(Map<Annotation, Position> addedAnnotations, List<Annotation> deletedAnnotations, Map<Annotation, Position> modifiedAnnotations) {
+	public void updateFoldingStructure(Map<Annotation, Position> addedAnnotations,
+			List<Annotation> deletedAnnotations, Map<Annotation, Position> modifiedAnnotations) {
 		Annotation[] deleted = new Annotation[deletedAnnotations.size() + modifiedAnnotations.size()];
 		for (int i = 0; i < deletedAnnotations.size(); i++) {
 			deleted[i] = deletedAnnotations.get(i);
@@ -932,7 +942,7 @@ public class AtlEditor extends TextEditor {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.editors.text.TextEditor#dispose()
 	 */
 	@Override
@@ -949,7 +959,7 @@ public class AtlEditor extends TextEditor {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#doSave(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
@@ -980,7 +990,7 @@ public class AtlEditor extends TextEditor {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#doSetSelection(org.eclipse.jface.viewers.ISelection)
 	 */
 	@Override
@@ -1001,7 +1011,7 @@ public class AtlEditor extends TextEditor {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.editors.text.TextEditor#getAdapter(java.lang.Class)
 	 */
 	@SuppressWarnings("unchecked")
@@ -1177,7 +1187,7 @@ public class AtlEditor extends TextEditor {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.editors.text.TextEditor#handlePreferenceStoreChanged(org.eclipse.jface.util.PropertyChangeEvent)
 	 */
 	@Override
@@ -1237,8 +1247,9 @@ public class AtlEditor extends TextEditor {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
+	 * 
+	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#init(org.eclipse.ui.IEditorSite,
+	 *      org.eclipse.ui.IEditorInput)
 	 */
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
@@ -1248,7 +1259,7 @@ public class AtlEditor extends TextEditor {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.ui.editors.text.TextEditor#initializeEditor()
 	 */
 	@Override
@@ -1473,10 +1484,13 @@ public class AtlEditor extends TextEditor {
 			TreeIterator<EObject> ti = sourceManager.getModel().eAllContents();
 			while (ti.hasNext()) {
 				EObject object = ti.next();
-				String location = (String)object.eGet(AtlEMFConstants.sfLocation);
-				int elementLineNumber = Integer.parseInt(location.split("-")[0].split(":")[0]); //$NON-NLS-1$ //$NON-NLS-2$
-				if (elementLineNumber == lineNumber + 1) {
-					res = object;
+				EStructuralFeature feature = object.eClass().getEStructuralFeature("location"); //$NON-NLS-1$
+				if (feature != null) {
+					String location = (String)object.eGet(feature);
+					int elementLineNumber = Integer.parseInt(location.split("-")[0].split(":")[0]); //$NON-NLS-1$ //$NON-NLS-2$
+					if (elementLineNumber == lineNumber + 1) {
+						res = object;
+					}
 				}
 			}
 		}

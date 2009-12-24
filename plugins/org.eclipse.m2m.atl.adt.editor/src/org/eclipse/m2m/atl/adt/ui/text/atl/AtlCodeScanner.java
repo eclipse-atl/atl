@@ -53,10 +53,10 @@ public class AtlCodeScanner extends AbstractScanner {
 		public IdentifierRule(Token token) {
 			this.token = token;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
-		 *
+		 * 
 		 * @see org.eclipse.jface.text.rules.IRule#evaluate(org.eclipse.jface.text.rules.ICharacterScanner)
 		 */
 		public IToken evaluate(ICharacterScanner scanner) {
@@ -90,7 +90,7 @@ public class AtlCodeScanner extends AbstractScanner {
 	 */
 	public class EnumLiteralRule implements IRule {
 
-		/** Token to return for this rule */
+		/** Token to return for this rule. */
 		private final IToken token;
 
 		/**
@@ -105,7 +105,7 @@ public class AtlCodeScanner extends AbstractScanner {
 
 		/**
 		 * {@inheritDoc}
-		 *
+		 * 
 		 * @see org.eclipse.jface.text.rules.IRule#evaluate(org.eclipse.jface.text.rules.ICharacterScanner)
 		 */
 		public IToken evaluate(ICharacterScanner scanner) {
@@ -130,15 +130,17 @@ public class AtlCodeScanner extends AbstractScanner {
 	 */
 	protected class SymbolRule implements IRule {
 
-		/** Token to return for this rule */
+		/** Token to return for this rule. */
 		private final IToken token;
 
-		/** The associated list with this tule */
+		/** The associated list with this rule. */
 		private final String[] list;
 
 		/**
 		 * Creates a new operator rule.
 		 * 
+		 * @param list
+		 *            the symbols
 		 * @param token
 		 *            the token associated with this rule
 		 */
@@ -149,7 +151,7 @@ public class AtlCodeScanner extends AbstractScanner {
 
 		/**
 		 * {@inheritDoc}
-		 *
+		 * 
 		 * @see org.eclipse.jface.text.rules.IRule#evaluate(org.eclipse.jface.text.rules.ICharacterScanner)
 		 */
 		public IToken evaluate(ICharacterScanner scanner) {
@@ -195,7 +197,7 @@ public class AtlCodeScanner extends AbstractScanner {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.adt.ui.text.AbstractScanner#adaptToPreferenceChange(org.eclipse.jface.util.PropertyChangeEvent)
 	 */
 	@Override
@@ -207,7 +209,7 @@ public class AtlCodeScanner extends AbstractScanner {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.adt.ui.text.AbstractScanner#affectsBehavior(org.eclipse.jface.util.PropertyChangeEvent)
 	 */
 	@Override
@@ -217,7 +219,7 @@ public class AtlCodeScanner extends AbstractScanner {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.adt.ui.text.AbstractScanner#createRules()
 	 */
 	@Override
@@ -254,7 +256,7 @@ public class AtlCodeScanner extends AbstractScanner {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.adt.ui.text.AbstractScanner#getPropertyNames()
 	 */
 	@Override
@@ -264,7 +266,7 @@ public class AtlCodeScanner extends AbstractScanner {
 				AtlPreferenceConstants.SYNTAX_KEYWORD, AtlPreferenceConstants.SYNTAX_LITERAL,
 				AtlPreferenceConstants.SYNTAX_NUMBER, AtlPreferenceConstants.SYNTAX_OPERATOR,
 				AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT, AtlPreferenceConstants.SYNTAX_STRING,
-				AtlPreferenceConstants.SYNTAX_SYMBOL, AtlPreferenceConstants.SYNTAX_TYPE};
+				AtlPreferenceConstants.SYNTAX_SYMBOL, AtlPreferenceConstants.SYNTAX_TYPE,};
 	}
 
 }
