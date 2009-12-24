@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
 <stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/OverflowOperandStack/OverflowOperandStack.atl"/>
 <stringAttribute key="ATL VM" value="Regular VM"/>
+<stringAttribute key="ATL_COMPILER" value="atl2006"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
+<booleanAttribute key="IS_REFINING" value="false"/>
 <mapAttribute key="Input">
 <mapEntry key="IN" value="UML"/>
 </mapAttribute>
@@ -12,17 +14,28 @@
 <mapEntry key="UML" value="EMF"/>
 </mapAttribute>
 <mapAttribute key="ModelType">
-<mapEntry key="IN" value="MODELINPUT"/>
 <mapEntry key="OUT" value="MODELOUTPUT"/>
 <mapEntry key="UML" value="METAMODELOUTPUT"/>
+<mapEntry key="IN" value="MODELINPUT"/>
+</mapAttribute>
+<mapAttribute key="Options">
+<mapEntry key="OPTION_CLEAR" value="false"/>
+<mapEntry key="printExecutionTime" value="false"/>
+<mapEntry key="disableAttributeHelperCache" value="false"/>
+<mapEntry key="OPTION_DERIVED" value="true"/>
+<mapEntry key="allowInterModelReferences" value="false"/>
+<mapEntry key="continueAfterError" value="false"/>
+<mapEntry key="showSummary" value="false"/>
+<mapEntry key="step" value="false"/>
+<mapEntry key="profile" value="false"/>
 </mapAttribute>
 <mapAttribute key="Output">
 <mapEntry key="OUT" value="UML"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/OverflowOperandStack/TestEntry.uml"/>
 <mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/OverflowOperandStack/Results.uml"/>
 <mapEntry key="UML" value="uri:http://www.eclipse.org/uml2/2.1.0/UML"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/OverflowOperandStack/TestEntry.uml"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="Collections"/>
 <listAttribute key="Superimpose"/>

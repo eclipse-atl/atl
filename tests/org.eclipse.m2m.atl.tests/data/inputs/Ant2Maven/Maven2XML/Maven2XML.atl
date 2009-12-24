@@ -1,3 +1,8 @@
+-- @path XMLMaven=/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XMLMaven.ecore
+-- @path XMLProject=/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XMLProject.ecore
+-- @path MavenProject=/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/MavenProject.ecore 
+-- @path MavenMaven=/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/MavenMaven.ecore
+
 module Maven2XML;
 create  XML1 : XMLMaven  , XML2 : XMLProject 
 			from InMaven : MavenMaven, InProject : MavenProject;
@@ -9,11 +14,11 @@ create  XML1 : XMLMaven  , XML2 : XMLProject
 -- the same value that given in parameter
 helper def:getXmlnsAux(name: String): String =
 	MavenMaven!Xmlns.allInstances() ->
-		select(e|e.value=name)->first().name;
+		select(e|e.value=name)-> first().name;
 
 -- helper getXmlns : returns the prefix corresponding to name
 helper def:getXmlns(name: String): String =
-	let completeValue: String = thisModule.getXmlnsAux(name)in
+	let completeValue: String = thisModule.getXmlnsAux(name)in 
 	if completeValue.size()>0
 		then completeValue+':'
 		else ''
@@ -26,7 +31,7 @@ rule MavenMavenProject2XMLMavenRoot{
 	from i : MavenMaven!Project
 	to o : XMLMaven!Root(
 		name <- 'project',
-		children <- Sequence {i.xmlns,goalDefault,
+		children <- Sequence { i.xmlns, goalDefault,
 								i.path,i.properties,i.taskdefs,
 								i.prePostGoals,i.goals}
 	),

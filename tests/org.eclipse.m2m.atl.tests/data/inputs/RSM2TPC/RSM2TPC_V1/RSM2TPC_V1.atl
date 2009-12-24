@@ -1,3 +1,6 @@
+-- @path Di=/org.eclipse.m2m.atl.tests/data/inputs/RSM2TPC/Topcased.ecore
+-- @path Emx=/org.eclipse.m2m.atl.tests/data/inputs/RSM2TPC/RSM.ecore
+
 --@atlcompiler atl2006
 module EMX2DI;
 create OUT : Di  from IN : Emx;
@@ -6,7 +9,7 @@ create OUT : Di  from IN : Emx;
 -- The current state of this transformation takes into account the following kind of UML2 diagrams :
 -- 1) Class Diagram
 -- 2) UseCase Diagram
-
+   
 -- ===== HELPERS OPERATIONS ===== --
 helper def : allNodes : Set(Emx!Node) = Emx!Node.allInstances();
 

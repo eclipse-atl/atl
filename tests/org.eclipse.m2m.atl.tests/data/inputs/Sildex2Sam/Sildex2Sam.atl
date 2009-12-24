@@ -1,3 +1,6 @@
+-- @path SAM=/org.eclipse.m2m.atl.tests/data/inputs/Sildex2Sam/SAM.ecore
+-- @path Sildex=/org.eclipse.m2m.atl.tests/data/inputs/Sildex2Sam/Sildex.ecore
+
 --@atlcompiler atl2006
 module Sild2Sam;
 create OUT : SAM from IN : Sildex;

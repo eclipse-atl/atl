@@ -1,3 +1,7 @@
+-- @path Ant=/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant.ecore
+-- @path MavenProject=/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/MavenProject.ecore 
+-- @path MavenMaven=/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/MavenMaven.ecore
+
 module Ant2Maven;
 create OUTMaven : MavenMaven ,OUTProject : MavenProject  from IN : Ant;
 

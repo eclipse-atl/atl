@@ -7,6 +7,9 @@
 -- @see http://www.dcs.kcl.ac.uk/staff/kcl/tcat.pdf   
 -- @see section 1.6, page 5
 -- @see author of article : K. Lano
+-- @nsURI UML2=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML2Target=http://www.eclipse.org/uml2/2.1.0/UML
+-- @path XML=/org.eclipse.m2m.atl.tests/data/inputs/AssertionModification/XML.ecore
 
 module AssertionModification; -- Module Template
 create OUT : UML2Target from IN : UML2, Lib : XML;

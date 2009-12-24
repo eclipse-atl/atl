@@ -1,6 +1,6 @@
 -- @atlcompiler atl2006
 -- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
--- @path Relational=/Relational2UML2/metamodels/relational.ecore
+-- @path Relational=/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/relational.ecore
 
 module Relational2UML2;
 create OUT : UML from IN : Relational, PRO : UML;
@@ -31,6 +31,7 @@ helper def : getStereotype(name : String) : UML!Stereotype =
 -------------------------------------------------------------------------------------------
 
 
+
 rule Column2Property {
 	from
 		p : Relational!Column
@@ -44,6 +45,7 @@ rule Column2Property {
 	do {
 	   out.applyStereotype(thisModule.getStereotype('Column'));
 --	   out.setValue(out.getAppliedStereotypes()->first(),'isPrimaryKey',true);
+
 	}
 }
 
@@ -68,9 +70,43 @@ rule Database2Model {
 
 	    out.applyProfile(UML!Profile.allInstancesFrom('PRO')->select(p | p.name = 'relational')->first());
 	    out.applyStereotype(thisModule.getStereotype('Database'));	
+	    
+	    Sequence{1,2,3} -> includesAll(Sequence{1,2,3}) ->  debug('true');
+	    Sequence{1,2,3} -> includesAll(Sequence{1,2,4}) ->  debug('false');
+	    
+--	    '10'.Trim2Integer().debug('10');
+--'    -130'.Trim2Integer().debug('    -130');
+--'  2 5 '.Trim2Integer().debug('  2 5 ');
+--'2 5'.toInteger().debug('2 5');
 	}
 }
 
+helper context String def: Trim2Integer(): Integer = 
+	let s:String = self.trim() in
+	let ss:Sequence(String) = s->toSequence() in
+	let ints:Sequence(String) = '0123456789'->toSequence() in
+	
+	if ss.first() = '-' 
+	
+	then
+    	let sp:Sequence(String) = ss->excluding('-') in
+	    if ints->includesAll(sp)	
+		then
+			0-(sp->iterate(i;acc:String=''| acc+i).toInteger())      
+		else 
+			OclUndefined 
+		endif
+		
+    else
+	    if ints->includesAll(ss).debug('')                   
+		then
+			s.toInteger()
+		else 
+			OclUndefined 
+		endif
+		
+    endif;
+                
 rule Table2Class {
 	from
 		t : Relational!Table
