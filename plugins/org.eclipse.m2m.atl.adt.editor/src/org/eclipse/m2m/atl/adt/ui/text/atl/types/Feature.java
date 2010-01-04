@@ -137,7 +137,7 @@ public class Feature implements Comparable<Feature> {
 	 */
 	public OclAnyType getType() {
 		if (many) {
-			// TODO keep synchronization with VM's behaviors
+			// Keep in synchronization with VM's behaviors
 			// if (ordered) {
 			return new SequenceType(type);
 			// } else {
