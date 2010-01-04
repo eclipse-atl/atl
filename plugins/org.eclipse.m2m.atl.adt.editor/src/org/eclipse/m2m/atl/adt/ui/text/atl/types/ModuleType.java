@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.adt.ui.text.atl.types;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -53,7 +54,12 @@ public class ModuleType extends UnitType {
 		if (operations == null) {
 			operations = new ArrayList<Operation>() {
 				{
-					add(new Operation("resolveTemp", getInstance(), null) { //$NON-NLS-1$
+					add(new Operation("resolveTemp", getInstance(), null, new HashMap<String, OclAnyType>() { //$NON-NLS-1$
+								{
+									put("var", OclAnyType.getInstance()); //$NON-NLS-1$
+									put("target_pattern_name", StringType.getInstance()); //$NON-NLS-1$
+								}
+							}) {
 						/**
 						 * {@inheritDoc}
 						 * 
