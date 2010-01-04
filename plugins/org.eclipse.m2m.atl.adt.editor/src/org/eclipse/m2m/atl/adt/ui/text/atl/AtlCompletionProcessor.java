@@ -42,6 +42,7 @@ import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.jface.text.templates.TemplateException;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
+import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.AtlTypesProcessor;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.CollectionType;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.Feature;
@@ -442,6 +443,20 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 						} else {
 							// TODO manage distinct...foreach
 						}
+					} else {
+
+						String templateName = AtlEditorMessages
+								.getString("AtlCompletionProcessor.OUTPUT_PATTERN_NAME"); //$NON-NLS-1$
+						String pattern = "${variable} : ${type} (\n\t\t${cursor}\t\n)"; //$NON-NLS-1$
+						String description = AtlEditorMessages
+								.getString("AtlCompletionProcessor.OUTPUT_PATTERN_DESCRIPTION"); //$NON-NLS-1$
+
+						String information = "variable : type (\n\t\t\t\n)"; //$NON-NLS-1$
+						Template template = new Template(templateName.toString(), description,
+								currentAnalyser.getContext(), pattern.toString(), false);
+
+						res.add(convertToProposal(template, prefix, offset, AtlUIPlugin.getDefault()
+								.getImage("$nl$/icons/templateprop_co.gif"), true, information)); //$NON-NLS-1$
 					}
 				} else if (AtlTypesProcessor.oclIsKindOf(locatedElement, "VariableExp") //$NON-NLS-1$
 						|| AtlTypesProcessor.oclIsKindOf(locatedElement, "VariableDeclaration")) { //$NON-NLS-1$
