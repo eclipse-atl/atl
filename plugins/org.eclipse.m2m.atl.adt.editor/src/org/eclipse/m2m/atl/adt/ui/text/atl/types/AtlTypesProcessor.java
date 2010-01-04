@@ -307,8 +307,11 @@ public class AtlTypesProcessor {
 		List<EObject> declarations = new ArrayList<EObject>();
 		if (getUnit() != null) {
 			if (oclIsKindOf(analyser.getRoot(), "Rule")) { //$NON-NLS-1$
-				// TODO fix parameters
-				//declarations.addAll(analyser.getLostElementsByType("Parameter")); //$NON-NLS-1$
+				Collection<EObject> parameterDeclarations = (Collection<EObject>)eGet(analyser.getRoot(),
+						"parameters"); //$NON-NLS-1$
+				if (parameterDeclarations != null) {
+					declarations.addAll(parameterDeclarations);
+				}
 				EObject inPattern = (EObject)eGet(analyser.getRoot(), "inPattern"); //$NON-NLS-1$
 				if (inPattern == null) {
 					inPattern = analyser.getLastLostElementByType("InPattern"); //$NON-NLS-1$
@@ -319,8 +322,12 @@ public class AtlTypesProcessor {
 						declarations.addAll(inElements);
 					}
 				}
-				// TODO fix using
-				declarations.addAll(analyser.getLostElementsByType("RuleVariableDeclaration")); //$NON-NLS-1$
+
+				Collection<EObject> variableDeclarations = (Collection<EObject>)eGet(analyser.getRoot(),
+						"variables"); //$NON-NLS-1$
+				if (variableDeclarations != null) {
+					declarations.addAll(variableDeclarations);
+				}
 				EObject outPattern = (EObject)eGet(analyser.getRoot(), "outPattern"); //$NON-NLS-1$
 				if (outPattern == null) {
 					outPattern = analyser.getLastLostElementByType("OutPattern"); //$NON-NLS-1$
@@ -541,8 +548,9 @@ public class AtlTypesProcessor {
 				boolean check = true;
 				int index = 0;
 				for (OclAnyType oclAnyType : operation.getParameters().values()) {
-					check = check && parameters != null && parameters.length > index
-							&& parameters[index].equals(oclAnyType);
+					check = check && parameters != null && parameters.length > index;
+					// TODO check parameters type / supertypes
+					// && parameters[index].equals(oclAnyType);
 					index++;
 				}
 				if (check) {
