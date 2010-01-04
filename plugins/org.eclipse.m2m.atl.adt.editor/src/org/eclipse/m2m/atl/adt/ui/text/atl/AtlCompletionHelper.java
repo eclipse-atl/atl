@@ -78,8 +78,8 @@ public class AtlCompletionHelper {
 			text += "'"; //$NON-NLS-1$
 		}
 
-		if ("do".equals(getLastKeyWord(offset - prefix.length()))) {
-			text += ";";
+		if ("do".equals(getLastKeyWord(offset - prefix.length()))) { //$NON-NLS-1$
+			text += ";"; //$NON-NLS-1$
 		}
 
 		// if no context available, don't process parsing
