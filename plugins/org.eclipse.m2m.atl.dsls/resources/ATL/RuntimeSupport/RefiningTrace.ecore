@@ -14,6 +14,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Slot">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" unique="false" lowerBound="1" eType="/1/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAssignment" ordered="false" unique="false" lowerBound="1" eType="/1/Boolean"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="value" ordered="false" lowerBound="1" eType="/0/Value" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Value" abstract="true"/>

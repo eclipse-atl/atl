@@ -86,6 +86,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="value" ordered="false" lowerBound="1" eType="/1/OclExpression" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="outPatternElement" ordered="false" lowerBound="1" eType="/0/OutPatternElement" eOpposite="/0/OutPatternElement/bindings"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyName" ordered="false" unique="false" lowerBound="1" eType="/2/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAssignment" ordered="false" unique="false" lowerBound="1" eType="/2/Boolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="RuleVariableDeclaration" eSuperTypes="/1/VariableDeclaration">
       <eStructuralFeatures xsi:type="ecore:EReference" name="rule" ordered="false" lowerBound="1" eType="/0/Rule" eOpposite="/0/Rule/variables"/>
@@ -292,10 +293,10 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="model" ordered="false" upperBound="-1" eType="/1/OclModel" eOpposite="/1/OclModel/metamodel"/>
     </eClassifiers>
   </ecore:EPackage>
-  <ecore:EPackage name="PrimitiveTypes" nsURI="http://www.eclipse.org/gmt/2005/PrimitiveTypes" nsPrefix="ptypes">
-    <eClassifiers xsi:type="ecore:EDataType" name="Boolean"/>
-    <eClassifiers xsi:type="ecore:EDataType" name="Double"/>
-    <eClassifiers xsi:type="ecore:EDataType" name="Integer"/>
-    <eClassifiers xsi:type="ecore:EDataType" name="String"/>
+  <ecore:EPackage name="PrimitiveTypes" nsURI="http://www.eclipse.org/gmt/2005/ATL-PrimitiveTypes" nsPrefix="ptypes">
+    <eClassifiers xsi:type="ecore:EDataType" name="Boolean" instanceClassName="boolean"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="Double" instanceClassName="double"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="Integer" instanceClassName="int"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="String" instanceClassName="java.lang.String"/>
   </ecore:EPackage>
 </xmi:XMI>
