@@ -187,11 +187,15 @@ acg ATL startsWith Unit {
 					name 'setProperty' {
 				param 'propertyName' : 'S'
 				param 'value' : 'J'
+				param 'isAssignment' : 'B'
 	
 				load 'self'
 				push 'Slot'
 				push 'RefiningTrace'
 				new
+				dup
+				load 'isAssignment'
+				set 'isAssignment'
 				dup
 				load 'propertyName'
 				set 'name'		-- traceElement, slot
@@ -253,6 +257,17 @@ acg ATL startsWith Unit {
 						get 'slots'
 						iterate
 											-- element, slot
+							dup
+							get 'isAssignment'	-- sourceElement, slot, isAssignment
+							call 'B.not():B'
+							if noAssign
+												-- sourceElement, slot
+								dup_x1			-- slot, sourceElement, slot
+								get 'name'		-- slot, sourceElement, name
+								call 'J.refUnSetValue(S):J'	-- slot, sourceElement
+								swap			-- sourceElement, slot
+						  noAssign:
+											-- sourceElement, slot
 							dup
 							get 'name'		-- sourceElement, slot, name
 							swap			-- sourceElement, name, slot
@@ -908,6 +923,10 @@ acg ATL startsWith Unit {
 
 	code Binding {
 		dup
+		if(self.isAssignment) {
+			push self.propertyName
+			call 'J.refUnSetValue(S):J'
+		}
 		getasm
 		analyze self.value
 		call 'A.__resolve__(J):J'
@@ -922,7 +941,12 @@ acg ATL startsWith Unit {
 		call 'A.__resolve__(J):J'
 
 				-- traceElement, propertyName, value
-		call 'MRefiningTrace!Element;.setProperty(SJ):V'
+		if(self.isAssignment) {
+			pusht
+		} else {
+			pushf
+		}
+		call 'MRefiningTrace!Element;.setProperty(SJB):V'
 	}
 -- @end SimpleOutPatternElement
 

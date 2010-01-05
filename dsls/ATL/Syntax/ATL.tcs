@@ -189,7 +189,8 @@ syntax ATL(k = 0) {
 		;
 
 	template Binding
-		:	propertyName{as = identifierOrKeyword} "<-" 'value'
+		:	propertyName{as = identifierOrKeyword}
+			(isAssignment ? "<:=" : "<-") 'value'
 		;
 -- @end OutPattern
 
@@ -480,6 +481,7 @@ syntax ATL(k = 0) {
 		le			= "<="	: leftSpace, rightSpace;
 		ne			= "<>"	: leftSpace, rightSpace;
 		larrow		= "<-"	: leftSpace, rightSpace;
+		assignarrow	= "<:="	: leftSpace, rightSpace;
 	}
 
 	operators {

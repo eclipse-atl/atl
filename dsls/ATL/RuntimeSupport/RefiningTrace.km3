@@ -25,6 +25,7 @@ package RefiningTrace {
 	
 	class Slot {
 		attribute name : String;
+		attribute isAssignment : Boolean;
 		reference value container : Value;
 	}
 	

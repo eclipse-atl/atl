@@ -124,6 +124,7 @@ package ATL {
 		reference value container : OclExpression;
 		reference outPatternElement : OutPatternElement oppositeOf bindings;
 		attribute propertyName : String;
+		attribute isAssignment : Boolean;
 	}
 
 	class RuleVariableDeclaration extends VariableDeclaration {
