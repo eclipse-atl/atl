@@ -185,7 +185,8 @@
             <property name="severity" value="ignore"/>
         </module>
         <module name="HiddenField">
-            <property name="severity" value="error"/>
+            <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity" value="error"/>
+            <property name="severity" value="ignore"/>
             <property name="ignoreConstructorParameter" value="true"/>
             <property name="ignoreSetter" value="true"/>
         </module>
@@ -330,7 +331,8 @@
             <property name="format" value="[^a-zA-Z0-9_!:;,\.\+\(\)/\\\]\[{}\-\*&lt;&gt;%@\&amp; \|\t\n&quot;' =$#\r\?éèàê\^]"/>
         </module>
         <module name="NeedBraces">
-            <property name="severity" value="error"/>
+            <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity" value="error"/>
+            <property name="severity" value="ignore"/>
         </module>
         <module name="AvoidInlineConditionals">
             <property name="severity" value="ignore"/>
