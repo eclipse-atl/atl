@@ -106,6 +106,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="BindingStat" eSuperTypes="/0/Statement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="source" ordered="false" lowerBound="1" eType="/1/OclExpression" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyName" ordered="false" unique="false" lowerBound="1" eType="/2/String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAssignment" ordered="false" unique="false" lowerBound="1" eType="/2/Boolean"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="value" ordered="false" lowerBound="1" eType="/1/OclExpression" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IfStat" eSuperTypes="/0/Statement">

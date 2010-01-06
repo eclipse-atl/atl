@@ -9,7 +9,7 @@
  *     INRIA - initial API and implementation
  *
  */
-// $ANTLR 3.0.1 ATL_ANTLR3.g 2010-01-05 17:17:13
+// $ANTLR 3.0.1 ATL_ANTLR3.g 2010-01-06 13:02:43
 package org.eclipse.m2m.atl.dsls.tcs.injector;
 
 import org.antlr.runtime.*;
