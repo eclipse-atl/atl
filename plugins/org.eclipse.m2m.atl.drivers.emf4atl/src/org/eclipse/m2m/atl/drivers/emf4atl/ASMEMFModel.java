@@ -49,7 +49,7 @@ public class ASMEMFModel extends ASMModel {
 
 	// instance counter for memory leak testing
 	private static int instanceCount;
-	
+
 	/** These meta model definition shall be redefined in all sub-classes of ASMEMFModel. */
 	protected Resource extent;
 
@@ -98,8 +98,7 @@ public class ASMEMFModel extends ASMModel {
 	 */
 	public static ASMModel getMOF() {
 		if (mofmm == null) {
-			mofmm = new ASMEMFModel("MOF", EcorePackage.eINSTANCE.eResource(),
-					null, false, null);
+			mofmm = new ASMEMFModel("MOF", EcorePackage.eINSTANCE.eResource(), null, false, null);
 		}
 		return mofmm;
 	}
@@ -112,7 +111,7 @@ public class ASMEMFModel extends ASMModel {
 	 * @return the {@link ASMModelElement}
 	 */
 	public synchronized ASMModelElement getASMModelElement(EObject object) {
-		//TODO reinstate double checked locking with final field when switching to Java 5
+		// TODO reinstate double checked locking with final field when switching to Java 5
 		ASMModelElement ret = (ASMModelElement)modelElements.get(object);
 		if (ret == null) {
 			ret = new ASMEMFModelElement(modelElements, this, object);
@@ -128,7 +127,7 @@ public class ASMEMFModel extends ASMModel {
 	 * @return the classifier with the given name
 	 */
 	private synchronized ASMModelElement getClassifier(String name) {
-		//TODO reinstate double checked locking with final field when switching to Java 5
+		// TODO reinstate double checked locking with final field when switching to Java 5
 		if (classifiers == null) {
 			classifiers = initClassifiersInAllExtents();
 		}
@@ -207,8 +206,7 @@ public class ASMEMFModel extends ASMModel {
 	}
 
 	/**
-	 * Returns The set of ASMModelElements that are instances of type
-	 * and are contained in this model.
+	 * Returns The set of ASMModelElements that are instances of type and are contained in this model.
 	 * 
 	 * @param type
 	 *            The type of element to search for.
@@ -223,8 +221,8 @@ public class ASMEMFModel extends ASMModel {
 	}
 
 	/**
-	 * Returns The set of ASMModelElements that are instances of type
-	 * and are contained in this model or any referenced meta-model.
+	 * Returns The set of ASMModelElements that are instances of type and are contained in this model or any
+	 * referenced meta-model.
 	 * 
 	 * @param typeName
 	 *            The type of element to search for.
@@ -236,8 +234,8 @@ public class ASMEMFModel extends ASMModel {
 	}
 
 	/**
-	 * Returns The set of ASMModelElements that are instances of type
-	 * and are contained in this model or any referenced meta-model.
+	 * Returns The set of ASMModelElements that are instances of type and are contained in this model or any
+	 * referenced meta-model.
 	 * 
 	 * @param type
 	 *            The type of element to search for.
@@ -332,18 +330,18 @@ public class ASMEMFModel extends ASMModel {
 		}
 	}
 
-//	/**
-//	 * {@inheritDoc}
-//	 * 
-//	 * @see java.lang.Object#equals(java.lang.Object)
-//	 */
-//	public boolean equals(Object o) {
-//		return (o instanceof ASMEMFModel) && (((ASMEMFModel)o).extent == extent);
-//	}
+	// /**
+	// * {@inheritDoc}
+	// *
+	// * @see java.lang.Object#equals(java.lang.Object)
+	// */
+	// public boolean equals(Object o) {
+	// return (o instanceof ASMEMFModel) && (((ASMEMFModel)o).extent == extent);
+	// }
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
@@ -420,10 +418,12 @@ public class ASMEMFModel extends ASMModel {
 		while (eAtts.hasNext()) {
 			EAttribute eAtt = (EAttribute)eAtts.next();
 			EClassifier eType = eAtt.getEType();
-			if (eType.eResource() != null) {
-				referencedExtents.add(eType.eResource());
-			} else {
-				ATLLogger.warning("Resource for " + eType.toString() + " is null; cannot be referenced");
+			if (eType != null) {
+				if (eType.eResource() != null) {
+					referencedExtents.add(eType.eResource());
+				} else {
+					ATLLogger.warning("Resource for " + eType.toString() + " is null; cannot be referenced");
+				}
 			}
 		}
 		Iterator eSupers = eClass.getESuperTypes().iterator();
@@ -446,7 +446,7 @@ public class ASMEMFModel extends ASMModel {
 	public Set getReferencedExtents() {
 		return referencedExtents;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
