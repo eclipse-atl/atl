@@ -13,9 +13,11 @@ package org.eclipse.m2m.atl.tests.unit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
+import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionEMFVM;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
 import org.eclipse.m2m.atl.tests.util.ModelUtils;
 
@@ -34,6 +36,9 @@ public class TestNonRegressionParser extends TestNonRegression {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		Properties properties = new Properties();	
+		properties.load(TestNonRegressionParser.class.getResourceAsStream("TestNonRegressionParser.properties")); //$NON-NLS-1$
+		setProperties(properties);
 	}
 
 	/**
