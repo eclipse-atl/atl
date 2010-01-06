@@ -204,7 +204,7 @@ syntax ATL(k = 0) {
 	template Statement abstract;
 
 	template BindingStat
-		:	'source' "<-" 'value' ";"
+		:	'source' (isAssignment ? "<:=" : "<-") 'value' ";"
 		;
 
 	template ExpressionStat (disambiguate = "oclExpression SEMI")

@@ -1842,6 +1842,10 @@ acg ATL startsWith Unit {
 
 	code BindingStat | self.source isa NavigationOrAttributeCallExp {
 		analyze self.source.source
+		if(self.isAssignment) {
+			push self.source.name
+			call 'J.refUnSetValue(S):J'
+		}
 		analyze self.value
 		set self.source.name
 	}

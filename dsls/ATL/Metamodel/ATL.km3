@@ -151,6 +151,7 @@ package ATL {
 	class BindingStat extends Statement {
 		reference source container : OclExpression;
 		attribute propertyName : String;
+		attribute isAssignment : Boolean;
 		reference value container : OclExpression;
 	}
 
