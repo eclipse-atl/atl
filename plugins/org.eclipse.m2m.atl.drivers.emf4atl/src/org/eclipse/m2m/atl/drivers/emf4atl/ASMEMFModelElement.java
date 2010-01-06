@@ -272,7 +272,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 		if (value instanceof ASMString) {
 			ret = ((ASMString)value).getSymbol();
 			if (feature != null && feature.getEType() instanceof EEnum) {
-				ret = getEENumLiteral((EEnum)feature.getEType(), ((ASMString)value).getSymbol()).getInstance();
+				ret = getEENumLiteral((EEnum)feature.getEType(), ((ASMString)value).getSymbol())
+						.getInstance();
 			}
 		} else if (value instanceof ASMBoolean) {
 			ret = new Boolean(((ASMBoolean)value).getSymbol());
@@ -512,6 +513,50 @@ public class ASMEMFModelElement extends ASMModelElement {
 						}
 					}
 				}
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny#unset(org.eclipse.m2m.atl.engine.vm.StackFrame,
+	 *      java.lang.String)
+	 */
+	public void unset(StackFrame frame, String name) {
+		final boolean debug = false;
+
+		if (debug) {
+			ATLLogger.info("Unsetting: " + this + " : " + getType() + "." + name);
+		}
+
+		EStructuralFeature feature = object.eClass().getEStructuralFeature(name);
+
+		if ("__xmiID__".equals(name)) {
+			// WARNING: Allowed manual setting of XMI ID for the current model element
+			// This operation is advised against but seems necessary of some special case
+			Resource r = ((ASMEMFModel)getModel()).getExtent();
+			ATLLogger.warning("Manual unsetting of " + this + ":" + getType() + " XMI ID.");
+			((XMLResource)r).setID(object, null);
+			return;
+		}
+		if (frame != null) {
+			ASMExecEnv execEnv = (ASMExecEnv)frame.getExecEnv();
+			if (execEnv.isWeavingHelper(getMetaobject(), name)) {
+				// TODO unset helper value
+				return;
+			}
+		}
+		if (feature == null) {
+			throw new VMException(frame, "Feature " + name + " does not exist on " + getType(), null);
+		} else {
+			if (!feature.isChangeable()) {
+				throw new VMException(frame, "Feature " + name + " is not changeable", null);
+			}
+			try {
+				object.eUnset(feature);
+			} catch (Exception e) {
+				throw new VMException(frame, "Cannot unset feature " + getType() + "." + name, e);
 			}
 		}
 	}
