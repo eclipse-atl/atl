@@ -57,6 +57,10 @@ public class LaunchParser {
 
 	private File baseDirectory;
 
+	private List<String> orderedInput;
+
+	private List<String> orderedOutput;
+
 	private String convertPath(String pathParam) {
 		if (!pathParam.startsWith("uri:") && !pathParam.startsWith("#")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return new Path(baseDirectory.getPath()).append(
@@ -82,6 +86,8 @@ public class LaunchParser {
 		this.superimpose = new ArrayList<URL>();
 		this.input = new HashMap<String, String>();
 		this.output = new HashMap<String, String>();
+		this.orderedInput = new ArrayList<String>();
+		this.orderedOutput = new ArrayList<String>();
 		this.modelHandler = new HashMap<String, String>();
 		this.path = new HashMap<String, String>();
 		this.options = new HashMap<String, Object>();
@@ -114,6 +120,24 @@ public class LaunchParser {
 							Element entry = (Element)nodeEntry;
 							URL moduleUrl = new URL("file:" + convertPath(entry.getAttribute("value"))); //$NON-NLS-1$ //$NON-NLS-2$
 							superimpose.add(moduleUrl);
+						}
+					}
+				} else if (key.equals("OrderedInput")) { //$NON-NLS-1$
+					NodeList entriesList = element.getChildNodes();
+					for (int j = 0; j < entriesList.getLength(); j++) {
+						Node nodeEntry = entriesList.item(j);
+						if (nodeEntry instanceof Element) {
+							Element entry = (Element)nodeEntry;
+							orderedInput.add(entry.getAttribute("value")); //$NON-NLS-1$
+						}
+					}
+				} else if (key.equals("OrderedOutput")) { //$NON-NLS-1$
+					NodeList entriesList = element.getChildNodes();
+					for (int j = 0; j < entriesList.getLength(); j++) {
+						Node nodeEntry = entriesList.item(j);
+						if (nodeEntry instanceof Element) {
+							Element entry = (Element)nodeEntry;
+							orderedOutput.add(entry.getAttribute("value")); //$NON-NLS-1$
 						}
 					}
 				} else if (key.equals("Libs")) { //$NON-NLS-1$
@@ -207,6 +231,14 @@ public class LaunchParser {
 
 	public void setAsmUrl(URL asmUrl) {
 		this.asmUrl = asmUrl;
+	}
+
+	public List<String> getOrderedInput() {
+		return orderedInput;
+	}
+
+	public List<String> getOrderedOutput() {
+		return orderedOutput;
 	}
 
 }

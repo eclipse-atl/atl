@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,6 +28,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.core.service.CoreService;
@@ -222,6 +224,14 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		List<URL> superimps = launchParser.getSuperimpose();
 		Map<String, Object> options = launchParser.getOptions();
 
+		// WARNING only atl2006 compiler refining mode is supported
+		boolean isRefiningTraceMode = false;
+		Object refiningOption = options.get(ATLLaunchConstants.IS_REFINING);
+		if (refiningOption != null) {
+			isRefiningTraceMode = new Boolean(refiningOption.toString());
+		}
+		options.put("isRefiningTraceMode", new Boolean(isRefiningTraceMode).toString()); //$NON-NLS-1$
+
 		Map<String, String> modelHandlers = launchParser.getModelHandler();
 		options.put("modelHandlers", modelHandlers); //$NON-NLS-1$
 
@@ -245,14 +255,72 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			String libName = i.next();
 			libraries.put(libName, libs.get(libName).openStream());
 		}
+
 		long startTime = System.currentTimeMillis();
-		try {
-			LauncherService.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), launcher, sourceModels,
-					Collections.<String, String> emptyMap(), targetModels, convertPaths(modelPaths), options,
-					libraries, modules);
-		} catch (ATLExecutionException e) {
-			fail(asmURL.toString(), e);
+
+		if (isRefiningTraceMode) {
+			Iterator<String> sourceIterator = sourceModels.keySet().iterator();
+			Iterator<String> targetIterator = targetModels.keySet().iterator();
+
+			List<String> orderedInput = launchParser.getOrderedInput();
+			if (!orderedInput.isEmpty()) {
+				sourceIterator = orderedInput.iterator();
+			}
+
+			List<String> orderedOutput = launchParser.getOrderedOutput();
+			if (!orderedOutput.isEmpty()) {
+				targetIterator = orderedOutput.iterator();
+			}
+
+			Map<String, String> newTargetModels = new HashMap<String, String>();
+			newTargetModels.putAll(targetModels);
+			List<String> targetToRemove = new ArrayList<String>();
+
+			while (sourceIterator.hasNext()) {
+				String sourceModelName = sourceIterator.next();
+				String sourceMetamodelName = sourceModels.get(sourceModelName);
+
+				// Lookup for a matching target model (same metamodel)
+				while (targetIterator.hasNext()) {
+					String targetModelName = targetIterator.next();
+					String targetMetamodelName = targetModels.get(targetModelName);
+
+					// Ignore previously used target models
+					if (targetMetamodelName.equals(sourceMetamodelName)
+							&& !targetToRemove.contains(targetModelName)) {
+						String targetModelPath = modelPaths.get(targetModelName);
+
+						// Compute the inout model path (for extraction)
+						String refinedModelPathName = LauncherService.getRefinedModelName(sourceModelName);
+						modelPaths.put(refinedModelPathName, targetModelPath);
+						targetToRemove.add(targetModelName);
+						break;
+					}
+				}
+			}
+
+			for (String key : targetToRemove) {
+				newTargetModels.remove(key);
+			}
+
+			try {
+				LauncherService.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), launcher, Collections
+						.<String, String> emptyMap(), sourceModels, newTargetModels,
+						convertPaths(modelPaths), options, libraries, modules);
+			} catch (ATLExecutionException e) {
+				fail(asmURL.toString(), e);
+			}
+
+		} else {
+			try {
+				LauncherService.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), launcher, sourceModels,
+						Collections.<String, String> emptyMap(), targetModels, convertPaths(modelPaths),
+						options, libraries, modules);
+			} catch (ATLExecutionException e) {
+				fail(asmURL.toString(), e);
+			}
 		}
+
 		long endTime = System.currentTimeMillis();
 
 		return (endTime - startTime) / 1000.;
