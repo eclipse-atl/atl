@@ -64,6 +64,16 @@ public class ASMModule implements HasFields {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.HasFields#unset(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame,
+	 *      java.lang.Object)
+	 */
+	public void unset(AbstractStackFrame frame, Object name) {
+		fields.remove(name);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

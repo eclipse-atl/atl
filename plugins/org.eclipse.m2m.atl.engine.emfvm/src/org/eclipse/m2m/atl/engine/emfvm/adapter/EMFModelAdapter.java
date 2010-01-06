@@ -289,6 +289,8 @@ public class EMFModelAdapter implements IModelAdapter {
 						Object[] localVars = frame.getLocalVars();
 						if (localVars[0] instanceof EObject) {
 							EMFModelAdapter.this.unSet(frame, (EObject)localVars[0], (String)localVars[1]);
+						} else {
+							((HasFields)localVars[0]).unset(frame, localVars[1]);
 						}
 						return localVars[0];
 					}

@@ -80,9 +80,18 @@ public class EnumLiteral implements HasFields {
 				this.name = (String)value;
 			}
 		} else {
-			throw new VMException(frame, Messages.getString(
-					"EnumLiteral.ASSIGNMENTERROR", value, literalName)); //$NON-NLS-1$
+			throw new VMException(frame, Messages
+					.getString("EnumLiteral.ASSIGNMENTERROR", value, literalName)); //$NON-NLS-1$
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.emfvm.lib.HasFields#unset(org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame, java.lang.Object)
+	 */
+	public void unset(AbstractStackFrame frame, Object name) {
+		// TODO implement unset
 	}
 
 	/**

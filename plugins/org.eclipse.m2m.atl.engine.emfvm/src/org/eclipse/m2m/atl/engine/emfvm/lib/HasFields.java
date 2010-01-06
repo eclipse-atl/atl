@@ -30,6 +30,16 @@ public interface HasFields {
 	void set(AbstractStackFrame frame, Object name, Object value);
 
 	/**
+	 * Unsets a value to the object.
+	 * 
+	 * @param frame
+	 *            the frame context
+	 * @param name
+	 *            the value name
+	 */
+	void unset(AbstractStackFrame frame, Object name);
+
+	/**
 	 * Gets a value.
 	 * 
 	 * @param frame
