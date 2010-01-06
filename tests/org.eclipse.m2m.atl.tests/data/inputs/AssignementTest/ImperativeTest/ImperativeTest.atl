@@ -29,8 +29,8 @@ rule Working {
 			eStructuralFeatures <- eClass.eStructuralFeatures
 		)
 	do {
---		modified.name <:= OclUndefined;
---		modified.eStructuralFeatures <:= Sequence{};
+		modified.name <:= OclUndefined;
+		modified.eStructuralFeatures <:= Sequence{};
 	}
 }
 

@@ -1,59 +1,60 @@
 <?xml version="1.0" encoding="Cp1252"?>
-<atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="1:1-42:2" name="FlattenTest">
-  <inModels location="2:23-2:31" name="IN">
+<atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="3:1-44:2" name="FlattenTest">
+  <commentsBefore>-- @nsURI UML=http://www.eclipse.org/uml2/3.0.0/UML</commentsBefore>
+  <inModels location="4:23-4:31" name="IN">
     <metamodel href="new-model#/1"/>
   </inModels>
-  <outModels location="2:8-2:17" name="OUT">
+  <outModels location="4:8-4:17" name="OUT">
     <metamodel href="new-model#/0"/>
   </outModels>
-  <elements xsi:type="atl:Helper" location="4:1-5:74">
-    <definition location="4:8-5:73">
-      <feature xsi:type="ocl:Attribute" location="4:14-5:73" name="testSequence">
-        <initExpression xsi:type="ocl:SequenceExp" location="5:2-5:73">
-          <elements xsi:type="ocl:IntegerExp" location="5:11-5:12" integerSymbol="1"/>
-          <elements xsi:type="ocl:SequenceExp" location="5:13-5:72">
-            <elements xsi:type="ocl:IntegerExp" location="5:22-5:23" integerSymbol="1"/>
-            <elements xsi:type="ocl:SequenceExp" location="5:24-5:71">
-              <elements xsi:type="ocl:IntegerExp" location="5:33-5:34" integerSymbol="2"/>
-              <elements xsi:type="ocl:SequenceExp" location="5:35-5:70">
-                <elements xsi:type="ocl:IntegerExp" location="5:44-5:45" integerSymbol="2"/>
-                <elements xsi:type="ocl:SequenceExp" location="5:46-5:69">
-                  <elements xsi:type="ocl:IntegerExp" location="5:55-5:56" integerSymbol="3"/>
-                  <elements xsi:type="ocl:SequenceExp" location="5:57-5:68">
-                    <elements xsi:type="ocl:IntegerExp" location="5:66-5:67" integerSymbol="3"/>
+  <elements xsi:type="atl:Helper" location="6:1-7:74">
+    <definition location="6:8-7:73">
+      <feature xsi:type="ocl:Attribute" location="6:14-7:73" name="testSequence">
+        <initExpression xsi:type="ocl:SequenceExp" location="7:2-7:73">
+          <elements xsi:type="ocl:IntegerExp" location="7:11-7:12" integerSymbol="1"/>
+          <elements xsi:type="ocl:SequenceExp" location="7:13-7:72">
+            <elements xsi:type="ocl:IntegerExp" location="7:22-7:23" integerSymbol="1"/>
+            <elements xsi:type="ocl:SequenceExp" location="7:24-7:71">
+              <elements xsi:type="ocl:IntegerExp" location="7:33-7:34" integerSymbol="2"/>
+              <elements xsi:type="ocl:SequenceExp" location="7:35-7:70">
+                <elements xsi:type="ocl:IntegerExp" location="7:44-7:45" integerSymbol="2"/>
+                <elements xsi:type="ocl:SequenceExp" location="7:46-7:69">
+                  <elements xsi:type="ocl:IntegerExp" location="7:55-7:56" integerSymbol="3"/>
+                  <elements xsi:type="ocl:SequenceExp" location="7:57-7:68">
+                    <elements xsi:type="ocl:IntegerExp" location="7:66-7:67" integerSymbol="3"/>
                   </elements>
                 </elements>
               </elements>
             </elements>
           </elements>
         </initExpression>
-        <type xsi:type="ocl:SequenceType" location="4:29-4:46">
-          <elementType xsi:type="ocl:IntegerType" location="4:38-4:45"/>
+        <type xsi:type="ocl:SequenceType" location="6:29-6:46">
+          <elementType xsi:type="ocl:IntegerType" location="6:38-6:45"/>
         </type>
       </feature>
     </definition>
   </elements>
-  <elements xsi:type="atl:Helper" location="7:1-8:65">
-    <definition location="7:8-8:64">
-      <feature xsi:type="ocl:Attribute" location="7:14-8:64" name="testBag">
-        <initExpression xsi:type="ocl:BagExp" location="8:2-8:64">
-          <elements xsi:type="ocl:IntegerExp" location="8:6-8:7" integerSymbol="1"/>
-          <elements xsi:type="ocl:BagExp" location="8:8-8:63">
-            <elements xsi:type="ocl:IntegerExp" location="8:12-8:13" integerSymbol="2"/>
-            <elements xsi:type="ocl:BagExp" location="8:14-8:62">
-              <elements xsi:type="ocl:IntegerExp" location="8:18-8:19" integerSymbol="3"/>
-              <elements xsi:type="ocl:BagExp" location="8:20-8:61">
-                <elements xsi:type="ocl:IntegerExp" location="8:24-8:25" integerSymbol="4"/>
-                <elements xsi:type="ocl:BagExp" location="8:26-8:60">
-                  <elements xsi:type="ocl:IntegerExp" location="8:30-8:31" integerSymbol="5"/>
-                  <elements xsi:type="ocl:BagExp" location="8:32-8:59">
-                    <elements xsi:type="ocl:IntegerExp" location="8:36-8:37" integerSymbol="6"/>
-                    <elements xsi:type="ocl:BagExp" location="8:38-8:58">
-                      <elements xsi:type="ocl:IntegerExp" location="8:42-8:43" integerSymbol="7"/>
-                      <elements xsi:type="ocl:BagExp" location="8:44-8:57">
-                        <elements xsi:type="ocl:IntegerExp" location="8:48-8:49" integerSymbol="8"/>
-                        <elements xsi:type="ocl:BagExp" location="8:50-8:56">
-                          <elements xsi:type="ocl:IntegerExp" location="8:54-8:55" integerSymbol="9"/>
+  <elements xsi:type="atl:Helper" location="9:1-10:65">
+    <definition location="9:8-10:64">
+      <feature xsi:type="ocl:Attribute" location="9:14-10:64" name="testBag">
+        <initExpression xsi:type="ocl:BagExp" location="10:2-10:64">
+          <elements xsi:type="ocl:IntegerExp" location="10:6-10:7" integerSymbol="1"/>
+          <elements xsi:type="ocl:BagExp" location="10:8-10:63">
+            <elements xsi:type="ocl:IntegerExp" location="10:12-10:13" integerSymbol="2"/>
+            <elements xsi:type="ocl:BagExp" location="10:14-10:62">
+              <elements xsi:type="ocl:IntegerExp" location="10:18-10:19" integerSymbol="3"/>
+              <elements xsi:type="ocl:BagExp" location="10:20-10:61">
+                <elements xsi:type="ocl:IntegerExp" location="10:24-10:25" integerSymbol="4"/>
+                <elements xsi:type="ocl:BagExp" location="10:26-10:60">
+                  <elements xsi:type="ocl:IntegerExp" location="10:30-10:31" integerSymbol="5"/>
+                  <elements xsi:type="ocl:BagExp" location="10:32-10:59">
+                    <elements xsi:type="ocl:IntegerExp" location="10:36-10:37" integerSymbol="6"/>
+                    <elements xsi:type="ocl:BagExp" location="10:38-10:58">
+                      <elements xsi:type="ocl:IntegerExp" location="10:42-10:43" integerSymbol="7"/>
+                      <elements xsi:type="ocl:BagExp" location="10:44-10:57">
+                        <elements xsi:type="ocl:IntegerExp" location="10:48-10:49" integerSymbol="8"/>
+                        <elements xsi:type="ocl:BagExp" location="10:50-10:56">
+                          <elements xsi:type="ocl:IntegerExp" location="10:54-10:55" integerSymbol="9"/>
                         </elements>
                       </elements>
                     </elements>
@@ -63,93 +64,93 @@
             </elements>
           </elements>
         </initExpression>
-        <type xsi:type="ocl:BagType" location="7:24-7:36">
-          <elementType xsi:type="ocl:IntegerType" location="7:28-7:35"/>
+        <type xsi:type="ocl:BagType" location="9:24-9:36">
+          <elementType xsi:type="ocl:IntegerType" location="9:28-9:35"/>
         </type>
       </feature>
     </definition>
   </elements>
-  <elements xsi:type="atl:Helper" location="10:1-11:44">
-    <definition location="10:8-11:43">
-      <feature xsi:type="ocl:Attribute" location="10:14-11:43" name="testSet">
-        <initExpression xsi:type="ocl:SetExp" location="11:2-11:43">
-          <elements xsi:type="ocl:IntegerExp" location="11:6-11:7" integerSymbol="1"/>
-          <elements xsi:type="ocl:SetExp" location="11:8-11:42">
-            <elements xsi:type="ocl:IntegerExp" location="11:12-11:13" integerSymbol="1"/>
-            <elements xsi:type="ocl:SetExp" location="11:14-11:41">
-              <elements xsi:type="ocl:IntegerExp" location="11:18-11:19" integerSymbol="2"/>
-              <elements xsi:type="ocl:SetExp" location="11:20-11:40">
-                <elements xsi:type="ocl:IntegerExp" location="11:24-11:25" integerSymbol="2"/>
-                <elements xsi:type="ocl:SetExp" location="11:26-11:39">
-                  <elements xsi:type="ocl:IntegerExp" location="11:30-11:31" integerSymbol="3"/>
-                  <elements xsi:type="ocl:SetExp" location="11:32-11:38">
-                    <elements xsi:type="ocl:IntegerExp" location="11:36-11:37" integerSymbol="3"/>
+  <elements xsi:type="atl:Helper" location="12:1-13:44">
+    <definition location="12:8-13:43">
+      <feature xsi:type="ocl:Attribute" location="12:14-13:43" name="testSet">
+        <initExpression xsi:type="ocl:SetExp" location="13:2-13:43">
+          <elements xsi:type="ocl:IntegerExp" location="13:6-13:7" integerSymbol="1"/>
+          <elements xsi:type="ocl:SetExp" location="13:8-13:42">
+            <elements xsi:type="ocl:IntegerExp" location="13:12-13:13" integerSymbol="1"/>
+            <elements xsi:type="ocl:SetExp" location="13:14-13:41">
+              <elements xsi:type="ocl:IntegerExp" location="13:18-13:19" integerSymbol="2"/>
+              <elements xsi:type="ocl:SetExp" location="13:20-13:40">
+                <elements xsi:type="ocl:IntegerExp" location="13:24-13:25" integerSymbol="2"/>
+                <elements xsi:type="ocl:SetExp" location="13:26-13:39">
+                  <elements xsi:type="ocl:IntegerExp" location="13:30-13:31" integerSymbol="3"/>
+                  <elements xsi:type="ocl:SetExp" location="13:32-13:38">
+                    <elements xsi:type="ocl:IntegerExp" location="13:36-13:37" integerSymbol="3"/>
                   </elements>
                 </elements>
               </elements>
             </elements>
           </elements>
         </initExpression>
-        <type xsi:type="ocl:SetType" location="10:24-10:36">
-          <elementType xsi:type="ocl:IntegerType" location="10:28-10:35"/>
+        <type xsi:type="ocl:SetType" location="12:24-12:36">
+          <elementType xsi:type="ocl:IntegerType" location="12:28-12:35"/>
         </type>
       </feature>
     </definition>
   </elements>
-  <elements xsi:type="atl:Helper" location="13:1-14:86">
-    <definition location="13:8-14:85">
-      <feature xsi:type="ocl:Attribute" location="13:14-14:85" name="testOrderedSet">
-        <initExpression xsi:type="ocl:OrderedSetExp" location="14:2-14:85">
-          <elements xsi:type="ocl:IntegerExp" location="14:13-14:14" integerSymbol="1"/>
-          <elements xsi:type="ocl:OrderedSetExp" location="14:15-14:84">
-            <elements xsi:type="ocl:IntegerExp" location="14:26-14:27" integerSymbol="1"/>
-            <elements xsi:type="ocl:OrderedSetExp" location="14:28-14:83">
-              <elements xsi:type="ocl:IntegerExp" location="14:39-14:40" integerSymbol="2"/>
-              <elements xsi:type="ocl:OrderedSetExp" location="14:41-14:82">
-                <elements xsi:type="ocl:IntegerExp" location="14:52-14:53" integerSymbol="2"/>
-                <elements xsi:type="ocl:OrderedSetExp" location="14:54-14:81">
-                  <elements xsi:type="ocl:IntegerExp" location="14:65-14:66" integerSymbol="3"/>
-                  <elements xsi:type="ocl:OrderedSetExp" location="14:67-14:80">
-                    <elements xsi:type="ocl:IntegerExp" location="14:78-14:79" integerSymbol="3"/>
+  <elements xsi:type="atl:Helper" location="15:1-16:86">
+    <definition location="15:8-16:85">
+      <feature xsi:type="ocl:Attribute" location="15:14-16:85" name="testOrderedSet">
+        <initExpression xsi:type="ocl:OrderedSetExp" location="16:2-16:85">
+          <elements xsi:type="ocl:IntegerExp" location="16:13-16:14" integerSymbol="1"/>
+          <elements xsi:type="ocl:OrderedSetExp" location="16:15-16:84">
+            <elements xsi:type="ocl:IntegerExp" location="16:26-16:27" integerSymbol="1"/>
+            <elements xsi:type="ocl:OrderedSetExp" location="16:28-16:83">
+              <elements xsi:type="ocl:IntegerExp" location="16:39-16:40" integerSymbol="2"/>
+              <elements xsi:type="ocl:OrderedSetExp" location="16:41-16:82">
+                <elements xsi:type="ocl:IntegerExp" location="16:52-16:53" integerSymbol="2"/>
+                <elements xsi:type="ocl:OrderedSetExp" location="16:54-16:81">
+                  <elements xsi:type="ocl:IntegerExp" location="16:65-16:66" integerSymbol="3"/>
+                  <elements xsi:type="ocl:OrderedSetExp" location="16:67-16:80">
+                    <elements xsi:type="ocl:IntegerExp" location="16:78-16:79" integerSymbol="3"/>
                   </elements>
                 </elements>
               </elements>
             </elements>
           </elements>
         </initExpression>
-        <type xsi:type="ocl:OrderedSetType" location="13:31-13:50">
-          <elementType xsi:type="ocl:IntegerType" location="13:42-13:49"/>
+        <type xsi:type="ocl:OrderedSetType" location="15:31-15:50">
+          <elementType xsi:type="ocl:IntegerType" location="15:42-15:49"/>
         </type>
       </feature>
     </definition>
   </elements>
-  <elements xsi:type="atl:MatchedRule" location="16:1-42:2" name="Class">
-    <outPattern location="20:2-41:4">
-      <elements xsi:type="atl:SimpleOutPatternElement" location="21:3-29:4" varName="container">
-        <type xsi:type="ocl:OclModelElement" location="21:15-21:24" name="Model">
+  <elements xsi:type="atl:MatchedRule" location="18:1-44:2" name="Class">
+    <outPattern location="22:2-43:4">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="23:3-31:4" varName="container">
+        <type xsi:type="ocl:OclModelElement" location="23:15-23:24" name="Model">
           <model href="new-model#/3"/>
         </type>
-        <bindings location="22:4-22:27" propertyName="name">
-          <value xsi:type="ocl:StringExp" location="22:12-22:27" stringSymbol="tests results"/>
+        <bindings location="24:4-24:27" propertyName="name">
+          <value xsi:type="ocl:StringExp" location="24:12-24:27" stringSymbol="tests results"/>
         </bindings>
-        <bindings location="23:4-28:5" propertyName="packagedElement">
-          <value xsi:type="ocl:SequenceExp" location="23:23-28:5">
-            <elements xsi:type="ocl:VariableExp" location="24:5-24:22" referredVariable="//@elements.4/@outPattern/@elements.1"/>
-            <elements xsi:type="ocl:VariableExp" location="25:5-25:17" referredVariable="//@elements.4/@outPattern/@elements.2"/>
-            <elements xsi:type="ocl:VariableExp" location="26:5-26:17" referredVariable="//@elements.4/@outPattern/@elements.3"/>
-            <elements xsi:type="ocl:VariableExp" location="27:5-27:24" referredVariable="//@elements.4/@outPattern/@elements.4"/>
+        <bindings location="25:4-30:5" propertyName="packagedElement">
+          <value xsi:type="ocl:SequenceExp" location="25:23-30:5">
+            <elements xsi:type="ocl:VariableExp" location="26:5-26:22" referredVariable="//@elements.4/@outPattern/@elements.1"/>
+            <elements xsi:type="ocl:VariableExp" location="27:5-27:17" referredVariable="//@elements.4/@outPattern/@elements.2"/>
+            <elements xsi:type="ocl:VariableExp" location="28:5-28:17" referredVariable="//@elements.4/@outPattern/@elements.3"/>
+            <elements xsi:type="ocl:VariableExp" location="29:5-29:24" referredVariable="//@elements.4/@outPattern/@elements.4"/>
           </value>
         </bindings>
       </elements>
-      <elements xsi:type="atl:SimpleOutPatternElement" location="30:3-32:4" varName="testSequenceClass" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
-        <type xsi:type="ocl:OclModelElement" location="30:23-30:32" name="Class">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="32:3-34:4" varName="testSequenceClass" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
+        <type xsi:type="ocl:OclModelElement" location="32:23-32:32" name="Class">
           <model href="new-model#/4"/>
         </type>
-        <bindings location="31:4-31:62" propertyName="name">
-          <value xsi:type="ocl:CollectionOperationCallExp" location="31:12-31:62" operationName="toString">
-            <source xsi:type="ocl:CollectionOperationCallExp" location="31:12-31:48" operationName="flatten">
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="31:12-31:35" name="testSequence">
-                <source xsi:type="ocl:VariableExp" location="31:12-31:22">
+        <bindings location="33:4-33:62" propertyName="name">
+          <value xsi:type="ocl:CollectionOperationCallExp" location="33:12-33:62" operationName="toString">
+            <source xsi:type="ocl:CollectionOperationCallExp" location="33:12-33:48" operationName="flatten">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="33:12-33:35" name="testSequence">
+                <source xsi:type="ocl:VariableExp" location="33:12-33:22">
                   <referredVariable href="new-model#/5"/>
                 </source>
               </source>
@@ -157,20 +158,20 @@
           </value>
         </bindings>
       </elements>
-      <elements xsi:type="atl:SimpleOutPatternElement" location="33:3-35:4" varName="testBagClass" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.1">
-        <type xsi:type="ocl:OclModelElement" location="33:18-33:27" name="Class">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="35:3-37:4" varName="testBagClass" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.1">
+        <type xsi:type="ocl:OclModelElement" location="35:18-35:27" name="Class">
           <model href="new-model#/6"/>
         </type>
       </elements>
-      <elements xsi:type="atl:SimpleOutPatternElement" location="36:3-38:4" varName="testSetClass" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.2">
-        <type xsi:type="ocl:OclModelElement" location="36:18-36:27" name="Class">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="38:3-40:4" varName="testSetClass" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.2">
+        <type xsi:type="ocl:OclModelElement" location="38:18-38:27" name="Class">
           <model href="new-model#/7"/>
         </type>
-        <bindings location="37:4-37:57" propertyName="name">
-          <value xsi:type="ocl:CollectionOperationCallExp" location="37:12-37:57" operationName="toString">
-            <source xsi:type="ocl:CollectionOperationCallExp" location="37:12-37:43" operationName="flatten">
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="37:12-37:30" name="testSet">
-                <source xsi:type="ocl:VariableExp" location="37:12-37:22">
+        <bindings location="39:4-39:57" propertyName="name">
+          <value xsi:type="ocl:CollectionOperationCallExp" location="39:12-39:57" operationName="toString">
+            <source xsi:type="ocl:CollectionOperationCallExp" location="39:12-39:43" operationName="flatten">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="39:12-39:30" name="testSet">
+                <source xsi:type="ocl:VariableExp" location="39:12-39:22">
                   <referredVariable href="new-model#/8"/>
                 </source>
               </source>
@@ -178,15 +179,15 @@
           </value>
         </bindings>
       </elements>
-      <elements xsi:type="atl:SimpleOutPatternElement" location="39:3-41:4" varName="testOrderedSetClass" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.3">
-        <type xsi:type="ocl:OclModelElement" location="39:25-39:34" name="Class">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="41:3-43:4" varName="testOrderedSetClass" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.3">
+        <type xsi:type="ocl:OclModelElement" location="41:25-41:34" name="Class">
           <model href="new-model#/9"/>
         </type>
-        <bindings location="40:4-40:64" propertyName="name">
-          <value xsi:type="ocl:CollectionOperationCallExp" location="40:12-40:64" operationName="toString">
-            <source xsi:type="ocl:CollectionOperationCallExp" location="40:12-40:50" operationName="flatten">
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="40:12-40:37" name="testOrderedSet">
-                <source xsi:type="ocl:VariableExp" location="40:12-40:22">
+        <bindings location="42:4-42:64" propertyName="name">
+          <value xsi:type="ocl:CollectionOperationCallExp" location="42:12-42:64" operationName="toString">
+            <source xsi:type="ocl:CollectionOperationCallExp" location="42:12-42:50" operationName="flatten">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="42:12-42:37" name="testOrderedSet">
+                <source xsi:type="ocl:VariableExp" location="42:12-42:22">
                   <referredVariable href="new-model#/10"/>
                 </source>
               </source>
@@ -195,9 +196,9 @@
         </bindings>
       </elements>
     </outPattern>
-    <inPattern location="17:2-18:22">
-      <elements xsi:type="atl:SimpleInPatternElement" location="18:3-18:22" varName="trigger">
-        <type xsi:type="ocl:OclModelElement" location="18:13-18:22" name="Model">
+    <inPattern location="19:2-20:22">
+      <elements xsi:type="atl:SimpleInPatternElement" location="20:3-20:22" varName="trigger">
+        <type xsi:type="ocl:OclModelElement" location="20:13-20:22" name="Model">
           <model href="new-model#/2"/>
         </type>
       </elements>
