@@ -3499,10 +3499,8 @@
 		<constant value="1840:3-1840:26"/>
 		<constant value="MATL!BindingStat;"/>
 		<constant value="23"/>
+		<constant value="51"/>
 		<constant value="VariableExp"/>
-		<constant value="63"/>
-		<constant value="66"/>
-		<constant value="90"/>
 		<constant value="106"/>
 		<constant value="only variables or navigations are allowed on the left of a binding statement"/>
 		<constant value="1843:21-1843:25"/>
@@ -3512,71 +3510,80 @@
 		<constant value="1844:11-1844:22"/>
 		<constant value="1844:11-1844:29"/>
 		<constant value="1844:3-1844:29"/>
-		<constant value="1845:11-1845:15"/>
-		<constant value="1845:11-1845:21"/>
-		<constant value="1845:3-1845:21"/>
-		<constant value="1846:7-1846:11"/>
-		<constant value="1846:7-1846:18"/>
-		<constant value="1846:7-1846:23"/>
-		<constant value="1846:3-1846:23"/>
-		<constant value="1849:21-1849:25"/>
-		<constant value="1849:21-1849:32"/>
-		<constant value="1849:21-1849:48"/>
-		<constant value="1850:11-1850:15"/>
-		<constant value="1850:11-1850:21"/>
-		<constant value="1850:3-1850:21"/>
-		<constant value="1851:6-1851:10"/>
-		<constant value="1851:6-1851:17"/>
-		<constant value="1851:6-1851:34"/>
-		<constant value="1851:6-1851:48"/>
-		<constant value="1854:10-1854:14"/>
-		<constant value="1854:10-1854:21"/>
-		<constant value="1854:10-1854:38"/>
-		<constant value="1854:4-1854:38"/>
-		<constant value="1852:10-1852:14"/>
-		<constant value="1852:10-1852:21"/>
-		<constant value="1852:10-1852:38"/>
-		<constant value="1852:10-1852:46"/>
-		<constant value="1852:4-1852:46"/>
-		<constant value="1851:3-1855:4"/>
-		<constant value="1859:16-1859:94"/>
-		<constant value="1859:3-1859:94"/>
+		<constant value="1845:6-1845:10"/>
+		<constant value="1845:6-1845:23"/>
+		<constant value="1846:9-1846:13"/>
+		<constant value="1846:9-1846:20"/>
+		<constant value="1846:9-1846:25"/>
+		<constant value="1846:4-1846:25"/>
+		<constant value="1847:9-1847:31"/>
+		<constant value="1847:4-1847:31"/>
+		<constant value="1845:3-1848:4"/>
+		<constant value="1849:11-1849:15"/>
+		<constant value="1849:11-1849:21"/>
+		<constant value="1849:3-1849:21"/>
+		<constant value="1850:7-1850:11"/>
+		<constant value="1850:7-1850:18"/>
+		<constant value="1850:7-1850:23"/>
+		<constant value="1850:3-1850:23"/>
+		<constant value="1853:21-1853:25"/>
+		<constant value="1853:21-1853:32"/>
+		<constant value="1853:21-1853:48"/>
+		<constant value="1854:11-1854:15"/>
+		<constant value="1854:11-1854:21"/>
+		<constant value="1854:3-1854:21"/>
+		<constant value="1855:6-1855:10"/>
+		<constant value="1855:6-1855:17"/>
+		<constant value="1855:6-1855:34"/>
+		<constant value="1855:6-1855:48"/>
+		<constant value="1858:10-1858:14"/>
+		<constant value="1858:10-1858:21"/>
+		<constant value="1858:10-1858:38"/>
+		<constant value="1858:4-1858:38"/>
+		<constant value="1856:10-1856:14"/>
+		<constant value="1856:10-1856:21"/>
+		<constant value="1856:10-1856:38"/>
+		<constant value="1856:10-1856:46"/>
+		<constant value="1856:4-1856:46"/>
+		<constant value="1855:3-1859:4"/>
+		<constant value="1863:16-1863:94"/>
+		<constant value="1863:3-1863:94"/>
 		<constant value="MATL!ExpressionStat;"/>
 		<constant value="expression"/>
-		<constant value="1872:11-1872:15"/>
-		<constant value="1872:11-1872:26"/>
-		<constant value="1872:3-1872:26"/>
-		<constant value="MATL!IfStat;"/>
-		<constant value="1880:6-1880:10"/>
-		<constant value="elseStatements"/>
-		<constant value="1882:6-1882:10"/>
-		<constant value="thenStatements"/>
 		<constant value="1876:11-1876:15"/>
-		<constant value="1876:11-1876:25"/>
-		<constant value="1876:3-1876:25"/>
-		<constant value="1877:3-1877:9"/>
-		<constant value="1878:12-1878:16"/>
-		<constant value="1878:12-1878:31"/>
-		<constant value="1878:4-1878:31"/>
-		<constant value="1879:4-1879:12"/>
-		<constant value="1881:12-1881:16"/>
-		<constant value="1881:12-1881:31"/>
-		<constant value="1881:4-1881:31"/>
+		<constant value="1876:11-1876:26"/>
+		<constant value="1876:3-1876:26"/>
+		<constant value="MATL!IfStat;"/>
+		<constant value="1884:6-1884:10"/>
+		<constant value="elseStatements"/>
+		<constant value="1886:6-1886:10"/>
+		<constant value="thenStatements"/>
+		<constant value="1880:11-1880:15"/>
+		<constant value="1880:11-1880:25"/>
+		<constant value="1880:3-1880:25"/>
+		<constant value="1881:3-1881:9"/>
+		<constant value="1882:12-1882:16"/>
+		<constant value="1882:12-1882:31"/>
+		<constant value="1882:4-1882:31"/>
+		<constant value="1883:4-1883:12"/>
+		<constant value="1885:12-1885:16"/>
+		<constant value="1885:12-1885:31"/>
+		<constant value="1885:4-1885:31"/>
 		<constant value="MATL!ForStat;"/>
-		<constant value="1886:11-1886:15"/>
-		<constant value="1886:11-1886:26"/>
-		<constant value="1886:3-1886:26"/>
-		<constant value="1887:3-1887:10"/>
-		<constant value="1888:13-1888:17"/>
-		<constant value="1888:13-1888:26"/>
-		<constant value="1888:33-1888:37"/>
-		<constant value="1888:33-1888:46"/>
-		<constant value="1888:33-1888:54"/>
-		<constant value="1889:13-1889:17"/>
-		<constant value="1889:13-1889:28"/>
-		<constant value="1889:5-1889:28"/>
-		<constant value="1888:4-1890:5"/>
-		<constant value="1891:3-1891:13"/>
+		<constant value="1890:11-1890:15"/>
+		<constant value="1890:11-1890:26"/>
+		<constant value="1890:3-1890:26"/>
+		<constant value="1891:3-1891:10"/>
+		<constant value="1892:13-1892:17"/>
+		<constant value="1892:13-1892:26"/>
+		<constant value="1892:33-1892:37"/>
+		<constant value="1892:33-1892:46"/>
+		<constant value="1892:33-1892:54"/>
+		<constant value="1893:13-1893:17"/>
+		<constant value="1893:13-1893:28"/>
+		<constant value="1893:5-1893:28"/>
+		<constant value="1892:4-1894:5"/>
+		<constant value="1895:3-1895:13"/>
 	</cp>
 	<field name="1" type="2"/>
 	<field name="3" type="2"/>
@@ -16306,7 +16313,7 @@
 			<findme/>
 			<call arg="172"/>
 			<call arg="149"/>
-			<if arg="1887"/>
+			<if arg="1040"/>
 			<load arg="33"/>
 			<get arg="1695"/>
 			<get arg="1695"/>
@@ -16321,14 +16328,30 @@
 			<call arg="28"/>
 			<enditerate/>
 			<load arg="33"/>
+			<get arg="252"/>
+			<call arg="149"/>
+			<if arg="1589"/>
+			<getasm/>
+			<get arg="1"/>
+			<push arg="156"/>
+			<load arg="33"/>
+			<get arg="1695"/>
+			<get arg="35"/>
+			<call arg="157"/>
+			<getasm/>
+			<get arg="1"/>
+			<push arg="160"/>
+			<push arg="272"/>
+			<call arg="157"/>
+			<load arg="33"/>
 			<get arg="197"/>
 			<dup/>
 			<getasm/>
 			<get arg="3"/>
 			<call arg="172"/>
-			<if arg="2629"/>
+			<if arg="3498"/>
 			<call arg="28"/>
-			<goto arg="960"/>
+			<goto arg="1812"/>
 			<iterate/>
 			<call arg="28"/>
 			<enditerate/>
@@ -16339,24 +16362,24 @@
 			<get arg="1695"/>
 			<get arg="35"/>
 			<call arg="157"/>
-			<goto arg="1697"/>
+			<goto arg="1498"/>
 			<load arg="33"/>
 			<get arg="1695"/>
-			<push arg="3498"/>
+			<push arg="3499"/>
 			<push arg="17"/>
 			<findme/>
 			<call arg="172"/>
 			<call arg="149"/>
-			<if arg="2861"/>
+			<if arg="3425"/>
 			<load arg="33"/>
 			<get arg="197"/>
 			<dup/>
 			<getasm/>
 			<get arg="3"/>
 			<call arg="172"/>
-			<if arg="3499"/>
+			<if arg="2682"/>
 			<call arg="28"/>
-			<goto arg="3500"/>
+			<goto arg="2683"/>
 			<iterate/>
 			<call arg="28"/>
 			<enditerate/>
@@ -16367,7 +16390,7 @@
 			<push arg="17"/>
 			<findme/>
 			<call arg="172"/>
-			<if arg="3501"/>
+			<if arg="3500"/>
 			<getasm/>
 			<get arg="1"/>
 			<push arg="221"/>
@@ -16379,11 +16402,11 @@
 			<push arg="10"/>
 			<findme/>
 			<call arg="172"/>
-			<if arg="2265"/>
+			<if arg="1944"/>
 			<get arg="202"/>
 			<call arg="157"/>
 			<getasm/>
-			<goto arg="3502"/>
+			<goto arg="1425"/>
 			<getasm/>
 			<get arg="1"/>
 			<push arg="221"/>
@@ -16396,11 +16419,11 @@
 			<push arg="10"/>
 			<findme/>
 			<call arg="172"/>
-			<if arg="2860"/>
+			<if arg="1949"/>
 			<get arg="202"/>
 			<call arg="157"/>
 			<getasm/>
-			<goto arg="1697"/>
+			<goto arg="1498"/>
 			<push arg="1128"/>
 			<push arg="1128"/>
 			<new/>
@@ -16413,7 +16436,7 @@
 			<set arg="35"/>
 			<set arg="1130"/>
 			<dup/>
-			<push arg="3503"/>
+			<push arg="3501"/>
 			<set arg="1132"/>
 			<load arg="33"/>
 			<get arg="38"/>
@@ -16425,49 +16448,58 @@
 			<call arg="1701"/>
 		</code>
 		<linenumbertable>
-			<lne id="3504" begin="5" end="5"/>
-			<lne id="3505" begin="5" end="6"/>
-			<lne id="3506" begin="5" end="10"/>
-			<lne id="3507" begin="13" end="13"/>
-			<lne id="3508" begin="13" end="14"/>
-			<lne id="3509" begin="13" end="15"/>
-			<lne id="3510" begin="13" end="25"/>
-			<lne id="3511" begin="26" end="26"/>
-			<lne id="3512" begin="26" end="27"/>
-			<lne id="3513" begin="26" end="37"/>
-			<lne id="3514" begin="41" end="41"/>
-			<lne id="3515" begin="41" end="42"/>
-			<lne id="3516" begin="41" end="43"/>
-			<lne id="3517" begin="38" end="44"/>
-			<lne id="3518" begin="46" end="46"/>
-			<lne id="3519" begin="46" end="47"/>
-			<lne id="3520" begin="46" end="51"/>
-			<lne id="3521" begin="54" end="54"/>
-			<lne id="3522" begin="54" end="55"/>
-			<lne id="3523" begin="54" end="65"/>
-			<lne id="3524" begin="66" end="66"/>
-			<lne id="3525" begin="66" end="67"/>
-			<lne id="3526" begin="66" end="68"/>
-			<lne id="3527" begin="66" end="72"/>
-			<lne id="3528" begin="77" end="77"/>
-			<lne id="3529" begin="77" end="78"/>
-			<lne id="3530" begin="77" end="79"/>
-			<lne id="3531" begin="74" end="88"/>
-			<lne id="3532" begin="93" end="93"/>
-			<lne id="3533" begin="93" end="94"/>
-			<lne id="3534" begin="93" end="95"/>
-			<lne id="3535" begin="93" end="96"/>
-			<lne id="3536" begin="90" end="105"/>
-			<lne id="3537" begin="66" end="105"/>
-			<lne id="3538" begin="119" end="119"/>
-			<lne id="3539" begin="107" end="123"/>
+			<lne id="3502" begin="5" end="5"/>
+			<lne id="3503" begin="5" end="6"/>
+			<lne id="3504" begin="5" end="10"/>
+			<lne id="3505" begin="13" end="13"/>
+			<lne id="3506" begin="13" end="14"/>
+			<lne id="3507" begin="13" end="15"/>
+			<lne id="3508" begin="13" end="25"/>
+			<lne id="3509" begin="26" end="26"/>
+			<lne id="3510" begin="26" end="27"/>
+			<lne id="3511" begin="33" end="33"/>
+			<lne id="3512" begin="33" end="34"/>
+			<lne id="3513" begin="33" end="35"/>
+			<lne id="3514" begin="30" end="36"/>
+			<lne id="3515" begin="40" end="40"/>
+			<lne id="3516" begin="37" end="41"/>
+			<lne id="3517" begin="26" end="41"/>
+			<lne id="3518" begin="42" end="42"/>
+			<lne id="3519" begin="42" end="43"/>
+			<lne id="3520" begin="42" end="53"/>
+			<lne id="3521" begin="57" end="57"/>
+			<lne id="3522" begin="57" end="58"/>
+			<lne id="3523" begin="57" end="59"/>
+			<lne id="3524" begin="54" end="60"/>
+			<lne id="3525" begin="62" end="62"/>
+			<lne id="3526" begin="62" end="63"/>
+			<lne id="3527" begin="62" end="67"/>
+			<lne id="3528" begin="70" end="70"/>
+			<lne id="3529" begin="70" end="71"/>
+			<lne id="3530" begin="70" end="81"/>
+			<lne id="3531" begin="82" end="82"/>
+			<lne id="3532" begin="82" end="83"/>
+			<lne id="3533" begin="82" end="84"/>
+			<lne id="3534" begin="82" end="88"/>
+			<lne id="3535" begin="93" end="93"/>
+			<lne id="3536" begin="93" end="94"/>
+			<lne id="3537" begin="93" end="95"/>
+			<lne id="3538" begin="90" end="104"/>
+			<lne id="3539" begin="109" end="109"/>
+			<lne id="3540" begin="109" end="110"/>
+			<lne id="3541" begin="109" end="111"/>
+			<lne id="3542" begin="109" end="112"/>
+			<lne id="3543" begin="106" end="121"/>
+			<lne id="3544" begin="82" end="121"/>
+			<lne id="3545" begin="135" end="135"/>
+			<lne id="3546" begin="123" end="139"/>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="0" name="29" begin="0" end="128"/>
+			<lve slot="0" name="29" begin="0" end="144"/>
 		</localvariabletable>
 	</operation>
 	<operation name="31">
-		<context type="3540"/>
+		<context type="3547"/>
 		<parameters>
 		</parameters>
 		<code>
@@ -16477,7 +16509,7 @@
 			<get arg="38"/>
 			<call arg="1686"/>
 			<load arg="33"/>
-			<get arg="3541"/>
+			<get arg="3548"/>
 			<dup/>
 			<getasm/>
 			<get arg="3"/>
@@ -16495,16 +16527,16 @@
 			<call arg="1701"/>
 		</code>
 		<linenumbertable>
-			<lne id="3542" begin="5" end="5"/>
-			<lne id="3543" begin="5" end="6"/>
-			<lne id="3544" begin="5" end="16"/>
+			<lne id="3549" begin="5" end="5"/>
+			<lne id="3550" begin="5" end="6"/>
+			<lne id="3551" begin="5" end="16"/>
 		</linenumbertable>
 		<localvariabletable>
 			<lve slot="0" name="29" begin="0" end="21"/>
 		</localvariabletable>
 	</operation>
 	<operation name="31">
-		<context type="3545"/>
+		<context type="3552"/>
 		<parameters>
 		</parameters>
 		<code>
@@ -16530,11 +16562,11 @@
 			<push arg="204"/>
 			<load arg="33"/>
 			<get arg="38"/>
-			<push arg="3546"/>
+			<push arg="3553"/>
 			<call arg="36"/>
 			<call arg="157"/>
 			<load arg="33"/>
-			<get arg="3547"/>
+			<get arg="3554"/>
 			<dup/>
 			<getasm/>
 			<get arg="3"/>
@@ -16550,7 +16582,7 @@
 			<push arg="212"/>
 			<load arg="33"/>
 			<get arg="38"/>
-			<push arg="3548"/>
+			<push arg="3555"/>
 			<call arg="36"/>
 			<call arg="157"/>
 			<getasm/>
@@ -16558,11 +16590,11 @@
 			<push arg="214"/>
 			<load arg="33"/>
 			<get arg="38"/>
-			<push arg="3546"/>
+			<push arg="3553"/>
 			<call arg="36"/>
 			<call arg="157"/>
 			<load arg="33"/>
-			<get arg="3549"/>
+			<get arg="3556"/>
 			<dup/>
 			<getasm/>
 			<get arg="3"/>
@@ -16578,7 +16610,7 @@
 			<push arg="214"/>
 			<load arg="33"/>
 			<get arg="38"/>
-			<push arg="3548"/>
+			<push arg="3555"/>
 			<call arg="36"/>
 			<call arg="157"/>
 			<getasm/>
@@ -16588,26 +16620,26 @@
 			<call arg="1701"/>
 		</code>
 		<linenumbertable>
-			<lne id="3550" begin="5" end="5"/>
-			<lne id="3551" begin="5" end="6"/>
-			<lne id="3552" begin="5" end="16"/>
-			<lne id="3553" begin="17" end="24"/>
-			<lne id="3554" begin="25" end="25"/>
-			<lne id="3555" begin="25" end="26"/>
-			<lne id="3556" begin="25" end="36"/>
-			<lne id="3557" begin="37" end="44"/>
-			<lne id="3546" begin="45" end="52"/>
-			<lne id="3558" begin="53" end="53"/>
-			<lne id="3559" begin="53" end="54"/>
-			<lne id="3560" begin="53" end="64"/>
-			<lne id="3548" begin="65" end="72"/>
+			<lne id="3557" begin="5" end="5"/>
+			<lne id="3558" begin="5" end="6"/>
+			<lne id="3559" begin="5" end="16"/>
+			<lne id="3560" begin="17" end="24"/>
+			<lne id="3561" begin="25" end="25"/>
+			<lne id="3562" begin="25" end="26"/>
+			<lne id="3563" begin="25" end="36"/>
+			<lne id="3564" begin="37" end="44"/>
+			<lne id="3553" begin="45" end="52"/>
+			<lne id="3565" begin="53" end="53"/>
+			<lne id="3566" begin="53" end="54"/>
+			<lne id="3567" begin="53" end="64"/>
+			<lne id="3555" begin="65" end="72"/>
 		</linenumbertable>
 		<localvariabletable>
 			<lve slot="0" name="29" begin="0" end="77"/>
 		</localvariabletable>
 	</operation>
 	<operation name="31">
-		<context type="3561"/>
+		<context type="3568"/>
 		<parameters>
 		</parameters>
 		<code>
@@ -16677,24 +16709,24 @@
 			<call arg="1701"/>
 		</code>
 		<linenumbertable>
-			<lne id="3562" begin="5" end="5"/>
-			<lne id="3563" begin="5" end="6"/>
-			<lne id="3564" begin="5" end="16"/>
-			<lne id="3565" begin="17" end="20"/>
-			<lne id="3566" begin="23" end="23"/>
-			<lne id="3567" begin="23" end="24"/>
-			<lne id="3568" begin="26" end="26"/>
-			<lne id="3569" begin="26" end="27"/>
-			<lne id="3570" begin="26" end="28"/>
-			<lne id="3566" begin="33" end="33"/>
-			<lne id="3567" begin="33" end="34"/>
-			<lne id="3571" begin="37" end="37"/>
-			<lne id="3572" begin="37" end="38"/>
-			<lne id="3573" begin="37" end="48"/>
-			<lne id="3566" begin="51" end="51"/>
-			<lne id="3567" begin="51" end="52"/>
-			<lne id="3574" begin="21" end="54"/>
-			<lne id="3575" begin="55" end="58"/>
+			<lne id="3569" begin="5" end="5"/>
+			<lne id="3570" begin="5" end="6"/>
+			<lne id="3571" begin="5" end="16"/>
+			<lne id="3572" begin="17" end="20"/>
+			<lne id="3573" begin="23" end="23"/>
+			<lne id="3574" begin="23" end="24"/>
+			<lne id="3575" begin="26" end="26"/>
+			<lne id="3576" begin="26" end="27"/>
+			<lne id="3577" begin="26" end="28"/>
+			<lne id="3573" begin="33" end="33"/>
+			<lne id="3574" begin="33" end="34"/>
+			<lne id="3578" begin="37" end="37"/>
+			<lne id="3579" begin="37" end="38"/>
+			<lne id="3580" begin="37" end="48"/>
+			<lne id="3573" begin="51" end="51"/>
+			<lne id="3574" begin="51" end="52"/>
+			<lne id="3581" begin="21" end="54"/>
+			<lne id="3582" begin="55" end="58"/>
 		</linenumbertable>
 		<localvariabletable>
 			<lve slot="0" name="29" begin="0" end="63"/>
