@@ -14,10 +14,11 @@ import java.util.Iterator;
 
 import org.eclipse.m2m.atl.engine.vm.StackFrame;
 
-/** An ASMModelElement represents a model element.
- * There is no separate class for special model elements such as metamodel
- * elements. Therefore, some operations of ASMModelElement are only valid
- * for metamodel ASMModelElements.
+/**
+ * An ASMModelElement represents a model element. There is no separate class for special model elements such
+ * as metamodel elements. Therefore, some operations of ASMModelElement are only valid for metamodel
+ * ASMModelElements.
+ * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public abstract class ASMModelElement extends ASMOclType {
@@ -32,13 +33,15 @@ public abstract class ASMModelElement extends ASMOclType {
 	public abstract ASMOclAny get(StackFrame frame, String name);
 
 	public void set(StackFrame frame, String name, ASMOclAny value) {
-		if(value instanceof ASMOclUndefined) return;
-		if(name.equals("name") && (value instanceof ASMString)) this.name = ((ASMString)value).getSymbol();
+		if (value instanceof ASMOclUndefined)
+			return;
+		if (name.equals("name") && (value instanceof ASMString))
+			this.name = ((ASMString)value).getSymbol();
 		// the rest is up to the subclass' implementation
 	}
 
 	public String toString() {
-		return  model.getName() + "!" + name;
+		return model.getName() + "!" + name;
 	}
 
 	public void setMetaobject(ASMModelElement metaobject) {
@@ -81,7 +84,8 @@ public abstract class ASMModelElement extends ASMOclType {
 
 	/**
 	 * @param frame
-	 * @param self The meta-class to instantiate
+	 * @param self
+	 *            The meta-class to instantiate
 	 * @return A new instance of self, if a suitable target model is found, null otherwise
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
@@ -97,7 +101,8 @@ public abstract class ASMModelElement extends ASMOclType {
 	}
 
 	private ASMModel model;
+
 	private ASMModelElement metaobject;
+
 	private String name;
 }
-

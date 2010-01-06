@@ -142,6 +142,10 @@ public class ASMOclAny extends ASMNativeObject {
 		frame.printStackTrace("Set unsupported on OclAny");
 	}
 
+	public void unset(StackFrame frame, String symbol) {
+		frame.printStackTrace("Unset unsupported on OclAny");
+	}
+
 	public ASMOclAny refImmediateComposite() {
 		return new ASMOclUndefined();
 	}
@@ -182,6 +186,11 @@ public class ASMOclAny extends ASMNativeObject {
 		return self;
 	}
 
+	public static ASMOclAny refUnSetValue(StackFrame frame, ASMOclAny self, ASMString name) {
+		self.unset(frame, name.getSymbol());
+		return self;
+	}
+	
 	public static ASMOclAny refGetValue(StackFrame frame, ASMOclAny self, ASMString name) {
 		return self.get(frame, name.getSymbol());
 	}

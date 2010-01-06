@@ -43,6 +43,15 @@ public class ASMModule extends ASMOclAny {
 		fields.put(name, value);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny#unset(org.eclipse.m2m.atl.engine.vm.StackFrame, java.lang.String)
+	 */
+	public void unset(StackFrame frame, String name) {
+		fields.remove(name);
+	}
+	
 	public String toString() {
 		return asm.getName() + " : ASMModule";
 	}

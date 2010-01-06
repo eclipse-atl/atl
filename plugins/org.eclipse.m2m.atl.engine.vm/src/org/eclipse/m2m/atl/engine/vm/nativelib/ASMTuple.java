@@ -85,6 +85,21 @@ public class ASMTuple extends ASMOclAny {
 		}
 		setType(new ASMTupleType(attrs));
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny#unset(org.eclipse.m2m.atl.engine.vm.StackFrame, java.lang.String)
+	 */
+	public void unset(StackFrame frame, String name) {
+		s.remove(new ASMString(name));
+		Map attrs = new HashMap();
+		for(Iterator i = s.keySet().iterator() ; i.hasNext() ; ) {
+			ASMString n = (ASMString)i.next();
+			attrs.put(n.getSymbol(), ASMOclAny.myType);		// TODO: correct type
+		}
+		setType(new ASMTupleType(attrs));
+	}
 
 	public Map getMap() {
 		return s;

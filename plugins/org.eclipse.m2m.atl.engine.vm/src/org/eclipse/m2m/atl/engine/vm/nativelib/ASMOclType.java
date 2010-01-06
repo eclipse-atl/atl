@@ -112,6 +112,11 @@ public abstract class ASMOclType extends ASMOclAny {
 
 	public abstract String getName();
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny#get(org.eclipse.m2m.atl.engine.vm.StackFrame, java.lang.String)
+	 */
 	public ASMOclAny get(StackFrame frame, String name) {
 		ASMOclAny ret = null;
 

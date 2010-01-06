@@ -58,6 +58,16 @@ public class ASMHashModelElement extends ASMModelElement {
 			}
 		}
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny#unset(org.eclipse.m2m.atl.engine.vm.StackFrame, java.lang.String)
+	 */
+	public void unset(StackFrame frame, String name) {
+		// TODO implement method
+		super.unset(frame, name);
+	}
 
 	private void realSet(StackFrame frame, ASMModelElement feature, String name, ASMOclAny value) {
 		int upper = ((ASMInteger)feature.get(frame, "multiplicity").get(frame, "upper")).getSymbol();
