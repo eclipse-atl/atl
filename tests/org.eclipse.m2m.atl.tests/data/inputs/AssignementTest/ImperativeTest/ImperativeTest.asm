@@ -136,15 +136,23 @@
 		<constant value="EPackage"/>
 		<constant value="pack"/>
 		<constant value="50:10-50:24"/>
-		<constant value="50:3-53:4"/>
+		<constant value="50:3-55:4"/>
 		<constant value="__applyPackagesMapping"/>
+		<constant value="nsPrefix"/>
+		<constant value="nsURI"/>
 		<constant value="eClassifiers"/>
 		<constant value="51:12-51:16"/>
 		<constant value="51:12-51:21"/>
 		<constant value="51:4-51:21"/>
-		<constant value="52:20-52:24"/>
-		<constant value="52:20-52:37"/>
-		<constant value="52:4-52:37"/>
+		<constant value="52:16-52:20"/>
+		<constant value="52:16-52:29"/>
+		<constant value="52:4-52:29"/>
+		<constant value="53:13-53:17"/>
+		<constant value="53:13-53:23"/>
+		<constant value="53:4-53:23"/>
+		<constant value="54:20-54:24"/>
+		<constant value="54:20-54:37"/>
+		<constant value="54:4-54:37"/>
 	</cp>
 	<field name="1" type="2"/>
 	<field name="3" type="4"/>
@@ -722,22 +730,40 @@
 			<get arg="137"/>
 			<call arg="30"/>
 			<set arg="137"/>
+			<dup/>
+			<getasm/>
+			<load arg="29"/>
+			<get arg="138"/>
+			<call arg="30"/>
+			<set arg="138"/>
+			<dup/>
+			<getasm/>
+			<load arg="29"/>
+			<get arg="139"/>
+			<call arg="30"/>
+			<set arg="139"/>
 			<pop/>
 		</code>
 		<linenumbertable>
-			<lne id="138" begin="11" end="11"/>
-			<lne id="139" begin="11" end="12"/>
-			<lne id="140" begin="9" end="14"/>
-			<lne id="141" begin="17" end="17"/>
-			<lne id="142" begin="17" end="18"/>
-			<lne id="143" begin="15" end="20"/>
-			<lne id="135" begin="8" end="21"/>
+			<lne id="140" begin="11" end="11"/>
+			<lne id="141" begin="11" end="12"/>
+			<lne id="142" begin="9" end="14"/>
+			<lne id="143" begin="17" end="17"/>
+			<lne id="144" begin="17" end="18"/>
+			<lne id="145" begin="15" end="20"/>
+			<lne id="146" begin="23" end="23"/>
+			<lne id="147" begin="23" end="24"/>
+			<lne id="148" begin="21" end="26"/>
+			<lne id="149" begin="29" end="29"/>
+			<lne id="150" begin="29" end="30"/>
+			<lne id="151" begin="27" end="32"/>
+			<lne id="135" begin="8" end="33"/>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="3" name="124" begin="7" end="21"/>
-			<lve slot="2" name="133" begin="3" end="21"/>
-			<lve slot="0" name="17" begin="0" end="21"/>
-			<lve slot="1" name="95" begin="0" end="21"/>
+			<lve slot="3" name="124" begin="7" end="33"/>
+			<lve slot="2" name="133" begin="3" end="33"/>
+			<lve slot="0" name="17" begin="0" end="33"/>
+			<lve slot="1" name="95" begin="0" end="33"/>
 		</localvariabletable>
 	</operation>
 </asm>

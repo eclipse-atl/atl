@@ -49,6 +49,8 @@ rule PackagesMapping {
 	to 
 		copy : Ecore!EPackage (
 			name <- pack.name,
+			nsPrefix <- pack.nsPrefix,
+			nsURI <- pack.nsURI,
 			eClassifiers <- pack.eClassifiers			
 		)
 }
