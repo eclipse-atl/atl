@@ -24,67 +24,67 @@ lexer grammar ATL_ANTLR3;
 	}
 
 }
-@header {packageorg.eclipse.m2m.atl.dsls.tcs.injector;}
+@header {package org.eclipse.m2m.atl.dsls.tcs.injector;}
 
-T42 : 'module' ;
-T43 : 'create' ;
-T44 : 'refining' ;
-T45 : 'from' ;
-T46 : 'library' ;
-T47 : 'query' ;
-T48 : 'uses' ;
-T49 : 'helper' ;
-T50 : 'def' ;
-T51 : 'context' ;
-T52 : 'nodefault' ;
-T53 : 'abstract' ;
-T54 : 'rule' ;
-T55 : 'extends' ;
-T56 : 'using' ;
-T57 : 'unique' ;
-T58 : 'lazy' ;
-T59 : 'entrypoint' ;
-T60 : 'endpoint' ;
-T61 : 'in' ;
-T62 : 'to' ;
-T63 : 'mapsTo' ;
-T64 : 'distinct' ;
-T65 : 'foreach' ;
-T66 : 'do' ;
-T67 : 'if' ;
-T68 : 'else' ;
-T69 : 'for' ;
-T70 : 'iterate' ;
-T71 : 'OclUndefined' ;
-T72 : 'true' ;
-T73 : 'false' ;
-T74 : 'then' ;
-T75 : 'endif' ;
-T76 : 'super' ;
-T77 : 'let' ;
-T78 : 'Bag' ;
-T79 : 'Set' ;
-T80 : 'OrderedSet' ;
-T81 : 'Sequence' ;
-T82 : 'Map' ;
-T83 : 'Tuple' ;
-T84 : 'OclType' ;
-T85 : 'OclAny' ;
-T86 : 'TupleType' ;
-T87 : 'Integer' ;
-T88 : 'Real' ;
-T89 : 'Boolean' ;
-T90 : 'String' ;
-T91 : 'Collection' ;
-T92 : 'not' ;
-T93 : 'div' ;
-T94 : 'mod' ;
-T95 : 'and' ;
-T96 : 'or' ;
-T97 : 'xor' ;
-T98 : 'implies' ;
+T43 : 'module' ;
+T44 : 'create' ;
+T45 : 'refining' ;
+T46 : 'from' ;
+T47 : 'library' ;
+T48 : 'query' ;
+T49 : 'uses' ;
+T50 : 'helper' ;
+T51 : 'def' ;
+T52 : 'context' ;
+T53 : 'nodefault' ;
+T54 : 'abstract' ;
+T55 : 'rule' ;
+T56 : 'extends' ;
+T57 : 'using' ;
+T58 : 'unique' ;
+T59 : 'lazy' ;
+T60 : 'entrypoint' ;
+T61 : 'endpoint' ;
+T62 : 'in' ;
+T63 : 'to' ;
+T64 : 'mapsTo' ;
+T65 : 'distinct' ;
+T66 : 'foreach' ;
+T67 : 'do' ;
+T68 : 'if' ;
+T69 : 'else' ;
+T70 : 'for' ;
+T71 : 'iterate' ;
+T72 : 'OclUndefined' ;
+T73 : 'true' ;
+T74 : 'false' ;
+T75 : 'then' ;
+T76 : 'endif' ;
+T77 : 'super' ;
+T78 : 'let' ;
+T79 : 'Bag' ;
+T80 : 'Set' ;
+T81 : 'OrderedSet' ;
+T82 : 'Sequence' ;
+T83 : 'Map' ;
+T84 : 'Tuple' ;
+T85 : 'OclType' ;
+T86 : 'OclAny' ;
+T87 : 'TupleType' ;
+T88 : 'Integer' ;
+T89 : 'Real' ;
+T90 : 'Boolean' ;
+T91 : 'String' ;
+T92 : 'Collection' ;
+T93 : 'not' ;
+T94 : 'div' ;
+T95 : 'mod' ;
+T96 : 'and' ;
+T97 : 'or' ;
+T98 : 'xor' ;
+T99 : 'implies' ;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1078
+// $ANTLR src "ATL_ANTLR3.g" 1078
 NL
 	:	(	'\r' '\n'
 		|	'\n' '\r'	//Improbable
@@ -94,20 +94,20 @@ NL
 	{newline();}
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1087
+// $ANTLR src "ATL_ANTLR3.g" 1087
 WS
 	:	(	' '
 		|	'\t'
 		)
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1093
+// $ANTLR src "ATL_ANTLR3.g" 1093
 fragment
 DIGIT
 	:	'0'..'9'
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1098
+// $ANTLR src "ATL_ANTLR3.g" 1098
 fragment
 ALPHA
 	:	'a'..'z'
@@ -119,7 +119,7 @@ ALPHA
 	|	'\u00F8' .. '\u00FF'
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1109
+// $ANTLR src "ATL_ANTLR3.g" 1109
 fragment
 SNAME
 //	options {
@@ -130,7 +130,7 @@ SNAME
 	:	(ALPHA) (ALPHA | DIGIT)*
 ;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1119
+// $ANTLR src "ATL_ANTLR3.g" 1119
 NAME
 	:	(
 			SNAME
@@ -145,16 +145,16 @@ NAME
 		)
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1133
+// $ANTLR src "ATL_ANTLR3.g" 1133
 INT
 	:	(DIGIT)+
 //		(('.' DIGIT)=> '.' (DIGIT)+ {$setType(FLOAT);})?
 	;
 
-	// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1138
+	// $ANTLR src "ATL_ANTLR3.g" 1138
 FLOAT	:	DIGIT+ (('.' DIGIT)=>'.' DIGIT+)?	;	// cannot accept DIGIT '.' because it would conflict with Navigation
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1140
+// $ANTLR src "ATL_ANTLR3.g" 1140
 fragment
 ESC
 	:	'\\'!
@@ -202,7 +202,7 @@ ESC
 	;
 	
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1187
+// $ANTLR src "ATL_ANTLR3.g" 1187
 LSQUARE @init {}
 	:	'['
         {
@@ -211,7 +211,7 @@ LSQUARE @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1195
+// $ANTLR src "ATL_ANTLR3.g" 1195
 RSQUARE @init {}
 	:	']'
         {
@@ -220,7 +220,7 @@ RSQUARE @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1203
+// $ANTLR src "ATL_ANTLR3.g" 1203
 EXCL @init {}
 	:	'!'
         {
@@ -229,7 +229,7 @@ EXCL @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1211
+// $ANTLR src "ATL_ANTLR3.g" 1211
 COMA @init {}
 	:	','
         {
@@ -238,7 +238,7 @@ COMA @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1219
+// $ANTLR src "ATL_ANTLR3.g" 1219
 LPAREN @init {}
 	:	'('
         {
@@ -247,7 +247,7 @@ LPAREN @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1227
+// $ANTLR src "ATL_ANTLR3.g" 1227
 RPAREN @init {}
 	:	')'
         {
@@ -256,7 +256,7 @@ RPAREN @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1235
+// $ANTLR src "ATL_ANTLR3.g" 1235
 LCURLY @init {}
 	:	'{'
         {
@@ -265,7 +265,7 @@ LCURLY @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1243
+// $ANTLR src "ATL_ANTLR3.g" 1243
 RCURLY @init {}
 	:	'}'
         {
@@ -274,7 +274,7 @@ RCURLY @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1251
+// $ANTLR src "ATL_ANTLR3.g" 1251
 SEMI @init {}
 	:	';'
         {
@@ -283,7 +283,7 @@ SEMI @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1259
+// $ANTLR src "ATL_ANTLR3.g" 1259
 COLON @init {}
 	:	':'
         {
@@ -292,7 +292,7 @@ COLON @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1267
+// $ANTLR src "ATL_ANTLR3.g" 1267
 PIPE @init {}
 	:	'|'
         {
@@ -301,7 +301,7 @@ PIPE @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1275
+// $ANTLR src "ATL_ANTLR3.g" 1275
 SHARP @init {}
 	:	'#'
         {
@@ -310,7 +310,7 @@ SHARP @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1283
+// $ANTLR src "ATL_ANTLR3.g" 1283
 QMARK @init {}
 	:	'?'
         {
@@ -319,7 +319,7 @@ QMARK @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1291
+// $ANTLR src "ATL_ANTLR3.g" 1291
 AROBAS @init {}
 	:	'@'
         {
@@ -328,7 +328,7 @@ AROBAS @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1299
+// $ANTLR src "ATL_ANTLR3.g" 1299
 POINT @init {}
 	:	'.'
         {
@@ -337,7 +337,7 @@ POINT @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1307
+// $ANTLR src "ATL_ANTLR3.g" 1307
 RARROW @init {}
 	:	'->'
         {
@@ -346,7 +346,7 @@ RARROW @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1315
+// $ANTLR src "ATL_ANTLR3.g" 1315
 MINUS @init {}
 	:	'-'
         {
@@ -355,7 +355,7 @@ MINUS @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1323
+// $ANTLR src "ATL_ANTLR3.g" 1323
 STAR @init {}
 	:	'*'
         {
@@ -364,7 +364,7 @@ STAR @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1331
+// $ANTLR src "ATL_ANTLR3.g" 1331
 SLASH @init {}
 	:	'/'
         {
@@ -373,7 +373,7 @@ SLASH @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1339
+// $ANTLR src "ATL_ANTLR3.g" 1339
 PLUS @init {}
 	:	'+'
         {
@@ -382,7 +382,7 @@ PLUS @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1347
+// $ANTLR src "ATL_ANTLR3.g" 1347
 EQ @init {}
 	:	'='
         {
@@ -391,7 +391,7 @@ EQ @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1355
+// $ANTLR src "ATL_ANTLR3.g" 1355
 GT @init {}
 	:	'>'
         {
@@ -400,7 +400,7 @@ GT @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1363
+// $ANTLR src "ATL_ANTLR3.g" 1363
 LT @init {}
 	:	'<'
         {
@@ -409,7 +409,7 @@ LT @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1371
+// $ANTLR src "ATL_ANTLR3.g" 1371
 GE @init {}
 	:	'>='
         {
@@ -418,7 +418,7 @@ GE @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1379
+// $ANTLR src "ATL_ANTLR3.g" 1379
 LE @init {}
 	:	'<='
         {
@@ -427,7 +427,7 @@ LE @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1387
+// $ANTLR src "ATL_ANTLR3.g" 1387
 NE @init {}
 	:	'<>'
         {
@@ -436,7 +436,7 @@ NE @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1395
+// $ANTLR src "ATL_ANTLR3.g" 1395
 LARROW @init {}
 	:	'<-'
         {
@@ -445,7 +445,16 @@ LARROW @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1403
+// $ANTLR src "ATL_ANTLR3.g" 1403
+ASSIGNARROW @init {}
+	:	'<:='
+        {
+            
+        }
+
+	;
+
+// $ANTLR src "ATL_ANTLR3.g" 1411
 COMMENT @init {}
 	:	(('--' (~('\r'| '\n'))*))
         {
@@ -454,7 +463,7 @@ COMMENT @init {}
 
 	;
 
-// $ANTLR src "D:\dev\workspaces\3.3.2\TCS\ATL\Syntax\ATL_ANTLR3.g" 1411
+// $ANTLR src "ATL_ANTLR3.g" 1419
 STRING @init {}
 	:	(('\'' (options {greedy = false;} : (('\\'! ~ '\n')| '\n'| ~('\\'| '\n')))* '\''))
         {
