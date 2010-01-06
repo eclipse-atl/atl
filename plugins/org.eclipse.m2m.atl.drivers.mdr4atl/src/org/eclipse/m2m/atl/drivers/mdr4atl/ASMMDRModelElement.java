@@ -172,7 +172,7 @@ public class ASMMDRModelElement extends ASMModelElement {
 	public static ASMModelElement getElementsBy(StackFrame frame, ASMMDRModelElement self,
 			ASMString propName, ASMOclAny value) {
 		return (ASMModelElement)getMap(frame, self, propName).get(value); // TODO : return collection if
-																			// several
+		// several
 	}
 
 	public static ASMModelElement getElementBy(StackFrame frame, ASMMDRModelElement self, ASMString propName,
@@ -391,6 +391,17 @@ public class ASMMDRModelElement extends ASMModelElement {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny#unset(org.eclipse.m2m.atl.engine.vm.StackFrame,
+	 *      java.lang.String)
+	 */
+	public void unset(StackFrame frame, String name) {
+		// TODO implement method
+		super.unset(frame, name);
+	}
+
 	private Object asm2Java(StackFrame frame, ASMModel model, ASMOclAny asmValue, String propertyName) {
 		Object ret = null;
 
@@ -419,11 +430,11 @@ public class ASMMDRModelElement extends ASMModelElement {
 			ASMMDRModelElement type = (ASMMDRModelElement)lookupElementExtended(frame,
 					(ASMMDRModelElement)getMetaobject(), new ASMString(propertyName)).get(frame, "type");
 			if (((ASMString)type.getMetaobject().get(frame, "name")).getSymbol().equals("EnumerationType")) { // already
-																												// checked
-																												// by
-																												// semantic
-																												// analysis
-																												// ?
+				// checked
+				// by
+				// semantic
+				// analysis
+				// ?
 				RefObject typeObject = type.getObject();
 				RefObject typeObjectPackage = (RefObject)typeObject.refImmediateComposite();
 				RefPackage pack = ((ASMMDRModel)model).getPackage();
@@ -451,11 +462,11 @@ public class ASMMDRModelElement extends ASMModelElement {
 		ASMMDRModelElement type = (ASMMDRModelElement)lookupElementExtended(frame, contextType,
 				new ASMString(propertyName)).get(frame, "type");
 		if (((ASMString)type.getMetaobject().get(frame, "name")).getSymbol().equals("StructureType")) { // already
-																										// checked
-																										// by
-																										// semantic
-																										// analysis
-																										// ?
+			// checked
+			// by
+			// semantic
+			// analysis
+			// ?
 			List args = new ArrayList();
 			for (Iterator i = ((ASMCollection)type.get(frame, "contents")).iterator(); i.hasNext();) {
 				ASMModelElement ame = (ASMModelElement)i.next();
@@ -558,7 +569,6 @@ public class ASMMDRModelElement extends ASMModelElement {
 	private static RefObject getClassifier() {
 		return ((ASMMDRModelElement)ASMMDRModel.getMOF().findModelElement("Classifier")).object;
 	}
-
 
 	public void addAcquaintance(String name, ASMModelElement asso, ASMModelElement ae, boolean isFirst) {
 		acquaintances.put(name, new Object[] {ae, new Boolean(isFirst)});
