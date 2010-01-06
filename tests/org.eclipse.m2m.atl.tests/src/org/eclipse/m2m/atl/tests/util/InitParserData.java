@@ -65,6 +65,9 @@ public final class InitParserData {
 	private static void initTest(File directory) throws Exception {
 		final String transfoPath = directory.toString().replaceAll("expected", "inputs") + "/" + directory.getName() + ".atl"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		final String xmiTransfoPath = directory.toString() + "/" + directory.getName() + ".atl.xmi"; //$NON-NLS-1$ //$NON-NLS-2$
+		if (!new File(transfoPath).exists()) {
+			return;
+		}
 		if (new File(xmiTransfoPath).exists() && !update) {
 			return;
 		}
