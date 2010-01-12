@@ -42,6 +42,8 @@ public class Feature implements Comparable<Feature> {
 
 	private String oppositeName;
 
+	private EObject declaration;
+
 	/**
 	 * Creates a new feature using the given parameters.
 	 * 
@@ -60,7 +62,7 @@ public class Feature implements Comparable<Feature> {
 	 * @param upper
 	 *            the feature upper bound
 	 */
-	public Feature(String name, OclAnyType contextType, OclAnyType type, boolean ordered, boolean container,
+	public Feature(EObject declaration, String name, OclAnyType contextType, OclAnyType type, boolean ordered, boolean container,
 			int lower, int upper) {
 		super();
 		this.name = name;
@@ -71,6 +73,7 @@ public class Feature implements Comparable<Feature> {
 		this.upper = upper;
 		this.container = container;
 		this.many = upper > 1 || upper == -1;
+		this.declaration = declaration;
 		if (isMany()) {
 			this.imagePath = "$nl$/icons/model_reference.gif"; //$NON-NLS-1$
 		} else {
@@ -95,6 +98,7 @@ public class Feature implements Comparable<Feature> {
 		this.lower = feature.getLowerBound();
 		this.upper = feature.getUpperBound();
 		this.container = false;
+		this.declaration = feature;
 		if (feature instanceof EReference) {
 			this.container = ((EReference)feature).isContainment();
 			EReference opposite = ((EReference)feature).getEOpposite();
@@ -145,6 +149,10 @@ public class Feature implements Comparable<Feature> {
 			// }
 		}
 		return type;
+	}
+
+	public EObject getDeclaration() {
+		return declaration;
 	}
 
 	public OclAnyType getContextType() {
@@ -212,7 +220,7 @@ public class Feature implements Comparable<Feature> {
 			if (type instanceof CollectionType) {
 				upper = -1;
 			}
-			Feature res = new Feature(featureName, context, type, ordered, false, 1, upper);
+			Feature res = new Feature(attribute, featureName, context, type, ordered, false, 1, upper);
 			res.setImagePath("$nl$/icons/helper.gif"); //$NON-NLS-1$
 			return res;
 		}

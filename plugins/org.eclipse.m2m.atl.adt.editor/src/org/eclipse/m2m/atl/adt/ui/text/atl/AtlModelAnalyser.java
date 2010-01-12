@@ -12,13 +12,11 @@ package org.eclipse.m2m.atl.adt.ui.text.atl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.m2m.atl.adt.ui.text.atl.types.AtlTypesProcessor;
 
 /**
  * Atl model analyser, used to get information from an incomplete ATL model.
@@ -27,50 +25,35 @@ import org.eclipse.m2m.atl.adt.ui.text.atl.types.AtlTypesProcessor;
  */
 public class AtlModelAnalyser {
 
-	/** completion helper used to find located elements. */
-	private AtlCompletionHelper fHelper;
-
 	/** code model root (EMF object). */
 	private EObject root;
 
-	private String lastKeyword;
-
-	 private String fileContext;
-
-	private EObject locatedElement;
-
-	private String context;
+	private String fileContext;
 
 	private int modelOffset;
 
 	private List<EObject> lostElements;
 
+	private AtlCompletionHelper fHelper;
+
 	/**
 	 * Creates an analyser for ATL models.
 	 * 
-	 * @param fHelper
+	 * @param helper
 	 *            the completion helper
 	 * @param emfRoot
 	 *            the model root
 	 * @param modelOffset
 	 *            the model offset
-	 * @param lastKeyword
-	 *            the last detected keyword
-	 * @param userOffset
-	 *            the user current offset
 	 * @param fileContext
 	 *            the main context of the file
 	 */
-	public AtlModelAnalyser(AtlCompletionHelper fHelper, EObject emfRoot, int modelOffset,
-			String lastKeyword, int userOffset, String fileContext) throws BadLocationException {
-		this.fHelper = fHelper;
+	public AtlModelAnalyser(AtlCompletionHelper helper, EObject emfRoot, int modelOffset, String fileContext) {
+		this.fHelper = helper;
 		this.root = emfRoot;
-		this.lastKeyword = lastKeyword;
 		this.fileContext = fileContext;
 		this.modelOffset = modelOffset;
-		this.locatedElement = fHelper.getLocatedElement(emfRoot, userOffset, modelOffset);
 		computeLostElements();
-		computeContext();
 	}
 
 	private void computeLostElements() {
@@ -84,7 +67,18 @@ public class AtlModelAnalyser {
 		}
 	}
 
-	private void computeContext() {
+	/**
+	 * Compute the context of the given offset.
+	 * 
+	 * @param offset
+	 *            the current offset
+	 * @return the context
+	 * @throws BadLocationException
+	 */
+	public String getContext(int offset) throws BadLocationException {
+		String context = AtlContextType.ATL_CONTEXT_ID;
+		EObject locatedElement = getLocatedElement(offset);
+		String lastKeyword = fHelper.getLastKeyWord(offset);
 		if (lastKeyword != null) {
 			if (lastKeyword.equalsIgnoreCase("helper") && (locatedElement != null || getLostTypesNames().contains("Helper"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				context = AtlContextType.HELPER_CONTEXT_ID;
@@ -105,9 +99,6 @@ public class AtlModelAnalyser {
 		} else {
 			context = AtlContextType.ATL_CONTEXT_ID;
 		}
-	}
-
-	public String getContext() {
 		return context;
 	}
 
@@ -180,12 +171,16 @@ public class AtlModelAnalyser {
 		return res;
 	}
 
-	public EObject getRoot() {
-		return root;
-	}
-
-	public EObject getLocatedElement() {
-		return locatedElement;
+	/**
+	 * Returns the element available at the given offset
+	 * 
+	 * @param offset
+	 *            the current offset
+	 * @return the model element
+	 * @throws BadLocationException
+	 */
+	public EObject getLocatedElement(int offset) throws BadLocationException {
+		return fHelper.getLocatedElement(root, offset, modelOffset);
 	}
 
 	/**
@@ -260,25 +255,16 @@ public class AtlModelAnalyser {
 		return fHelper.getText(locatedElement, modelOffset);
 	}
 
-	/**
-	 * Return the variable having the given name.
-	 * 
-	 * @param name
-	 *            the variable name
-	 * @return the variable object (in the ATL model)
-	 */
-	public EObject getVariableDeclaration(String name) {
-		if (root != null) {
-			for (Iterator<EObject> iterator = root.eResource().getAllContents(); iterator.hasNext();) {
-				EObject element = iterator.next();
-				if (AtlTypesProcessor.oclIsKindOf(element, "VariableDeclaration")) { //$NON-NLS-1$
-					if (name.equals(AtlTypesProcessor.eGet(element, "varName"))) { //$NON-NLS-1$
-						return element;
-					}
-				}
-			}
-		}
-		return null;
+	public int getModelOffset() {
+		return modelOffset;
+	}
+
+	public EObject getRoot() {
+		return root;
+	}
+
+	public AtlCompletionHelper getHelper() {
+		return fHelper;
 	}
 
 }

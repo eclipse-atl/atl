@@ -70,6 +70,15 @@ public class AtlCompletionDataSource {
 	 * @return the current file context
 	 */
 	public String getATLFileContext() {
+		return getATLFileContext(manager);
+	}
+
+	/**
+	 * Returns the current file context.
+	 * 
+	 * @return the current file context
+	 */
+	public static String getATLFileContext(AtlSourceManager manager) {
 		String context = AtlContextType.ATL_CONTEXT_ID;
 		if (manager != null) {
 			int type = manager.getATLFileType();

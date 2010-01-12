@@ -57,13 +57,21 @@
   -->
 	<extension point="org.eclipse.ui.bindings">
 		<key
-			commandId="atlCommands.commentBlock"
-			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			sequence="Ctrl+Shift+C"/>
+        commandId="atlCommands.commentBlock"
+        contextId="org.eclipse.m2m.atl.adt.editor"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="Ctrl+Shift+C"/>
   <key
         commandId="atlCommands.gotoMatchingBracket"
+        contextId="org.eclipse.m2m.atl.adt.editor"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M1+M2+P">
+  </key>
+  <key
+        commandId="atlCommands.openDeclaration"
+        contextId="org.eclipse.m2m.atl.adt.editor"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F3">
   </key>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
@@ -75,6 +83,11 @@
         categoryId="atlCategory"
         id="atlCommands.gotoMatchingBracket"
         name="ATL Command Go to matching bracket">
+  </command>
+  <command
+        categoryId="atlCategory"
+        id="atlCommands.openDeclaration"
+        name="ATL Open Declaration">
   </command>
 		<category
 			id="atlCategory"
@@ -89,7 +102,7 @@
           visible="true">
        <menu
              id="ATLEditorMenu"
-             label="ATL Editor">
+             label="%ATLEditorMenu.label">
           <groupMarker
                 name="ATLGroup">
           </groupMarker>
@@ -97,16 +110,26 @@
        <action
              definitionId="atlCommands.commentBlock"
              id="org.eclipse.m2m.atl.adt.ui.actions.ToggleComment"
-             label="Comment/Uncomment"
+             label="%CommentAction.label"
              menubarPath="ATLEditorMenu/ATLGroup"
              retarget="true">
        </action>
        <action
              definitionId="atlCommands.gotoMatchingBracket"
              id="org.eclipse.m2m.atl.adt.ui.actions.gotoMatchingBracket"
-             label="Go to matching bracket"
+             label="%GoToMatchingBracketAction.label"
              menubarPath="ATLEditorMenu/ATLGroup"
              retarget="true">
+       </action>
+       <action
+             allowLabelUpdate="true"
+             class="org.eclipse.m2m.atl.adt.ui.actions.OpenDeclarationAction"
+             definitionId="atlCommands.openDeclaration"
+             enablesFor="*"
+             id="org.eclipse.m2m.atl.adt.ui.actions.OpenDeclaration"
+             label="%OpenDeclarationAction.label"
+             menubarPath="ATLEditorMenu/ATLGroup"
+             retarget="false">
        </action>
     </actionSet>
  </extension>
@@ -164,4 +187,34 @@
           registryId="org.eclipse.m2m.atl.adt.editor.AtlEditor">
     </contextType>
  </extension>
+ 
+ 	<extension
+          point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
+       <hyperlinkDetector
+             activate="true"
+             class="org.eclipse.m2m.atl.adt.ui.text.AtlElementHyperlinkDetector"
+             id="org.eclipse.m2m.atl.adt.editor.openDeclarationHyperlink"
+             name="Atl Open Declaration"
+             targetId="org.eclipse.m2m.atl.adt.editor.AtlEditorSource">
+       </hyperlinkDetector>
+    </extension>
+    
+    <extension
+          point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
+       <target
+             id="org.eclipse.m2m.atl.adt.editor.AtlEditorSource"
+             name="Atl Editor">
+          <context
+                type="org.eclipse.m2m.atl.adt.ui.editor.AtlEditor">
+          </context>
+       </target>
+    </extension>
+    <extension
+          point="org.eclipse.ui.contexts">
+       <context
+             id="org.eclipse.m2m.atl.adt.editor"
+             name="ATL editing context"
+             parentId="org.eclipse.ui.textEditorScope">
+       </context>
+    </extension>
 </plugin>

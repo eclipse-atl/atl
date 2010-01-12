@@ -28,7 +28,7 @@ import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
+import org.eclipse.m2m.atl.adt.ui.editor.Messages;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -95,7 +95,7 @@ public final class ToggleCommentAction extends TextEditorAction {
 		if (!fOperationTarget.canDoOperation(operationCode)) {
 			if (shell != null)
 				MessageDialog.openError(shell,
-						AtlEditorMessages.getString("ToggleCommentAction.error_title"), AtlEditorMessages //$NON-NLS-1$
+						Messages.getString("ToggleCommentAction.error_title"), Messages //$NON-NLS-1$
 								.getString("ToggleCommentAction.error_message")); //$NON-NLS-1$
 			return;
 		}

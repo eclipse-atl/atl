@@ -120,8 +120,8 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	/** The perspective listener for the current page. */
 	private PerspectiveListener perspectiveListener;
 
-//	/* Actions that will be used in the toolBar and menu bar */
-//	private Action refreshItemAction;
+	// /* Actions that will be used in the toolBar and menu bar */
+	// private Action refreshItemAction;
 
 	private Action filterHelperAction;
 
@@ -196,7 +196,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		cutAction = new Action("Cut") { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 *
+			 * 
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -209,7 +209,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		copyAction = new Action("Copy") { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 *
+			 * 
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -222,7 +222,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		pasteAction = new Action("Paste") { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 *
+			 * 
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -235,7 +235,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		addBreakPointAction = new Action("Toggle breakpoint") { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 *
+			 * 
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -251,24 +251,24 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		};
 		addBreakPointAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("brkp_obj.gif")); //$NON-NLS-1$
 
-//		refreshItemAction = new Action("Refresh") { //$NON-NLS-1$
-//			/**
-//			 * {@inheritDoc}
-//			 *
-//			 * @see org.eclipse.jface.action.Action#run()
-//			 */
-//			@Override
-//			public void run() {
-//				setUnit();
-//			}
-//		};
-//		refreshItemAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("refresh.gif")); //$NON-NLS-1$
-//		refreshItemAction.setToolTipText("refresh outline"); //$NON-NLS-1$
+		//		refreshItemAction = new Action("Refresh") { //$NON-NLS-1$
+		// /**
+		// * {@inheritDoc}
+		// *
+		// * @see org.eclipse.jface.action.Action#run()
+		// */
+		// @Override
+		// public void run() {
+		// setUnit();
+		// }
+		// };
+		//		refreshItemAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("refresh.gif")); //$NON-NLS-1$
+		//		refreshItemAction.setToolTipText("refresh outline"); //$NON-NLS-1$
 
 		filterHelperAction = new Action("Hide Helpers", Action.AS_CHECK_BOX) { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 *
+			 * 
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -282,7 +282,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		filterRuleAction = new Action("Hide rules", Action.AS_CHECK_BOX) { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 *
+			 * 
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -296,7 +296,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		sorterAction = new Action("Alphabetical sort", Action.AS_CHECK_BOX) { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 *
+			 * 
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -375,7 +375,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 */
 	private void createMenu() {
 		IMenuManager mgr = getSite().getActionBars().getMenuManager();
-//		mgr.add(refreshItemAction);
+		// mgr.add(refreshItemAction);
 		mgr.add(filterHelperAction);
 		mgr.add(filterRuleAction);
 		mgr.add(sorterAction);
@@ -387,7 +387,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 */
 	private void createToolbar() {
 		IToolBarManager mgr = getSite().getActionBars().getToolBarManager();
-//		mgr.add(refreshItemAction);
+		// mgr.add(refreshItemAction);
 		mgr.add(filterHelperAction);
 		mgr.add(filterRuleAction);
 		mgr.add(sorterAction);

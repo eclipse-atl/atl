@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
-import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
 import org.eclipse.swt.graphics.Image;
 
 public class AtlLabelProvider extends LabelProvider {
@@ -36,7 +35,7 @@ public class AtlLabelProvider extends LabelProvider {
 
 		/**
 		 * {@inheritDoc}
-		 *
+		 * 
 		 * @see org.eclipse.m2m.atl.adt.ui.outline.AtlLabelProvider.Reader#getText(org.eclipse.emf.ecore.EObject)
 		 */
 		@Override
@@ -315,8 +314,7 @@ public class AtlLabelProvider extends LabelProvider {
 	}
 
 	protected RuntimeException unknownElement(Object element) {
-		return new RuntimeException(
-				AtlEditorMessages.getString("AtlLabelProvider.0") + element.getClass().getName()); //$NON-NLS-1$
+		return new RuntimeException(element.getClass().getName());
 	}
 
 }

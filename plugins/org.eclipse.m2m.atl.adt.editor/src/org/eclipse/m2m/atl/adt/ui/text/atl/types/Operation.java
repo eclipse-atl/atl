@@ -52,7 +52,7 @@ public class Operation extends Feature {
 	 *            the operation parameter types map
 	 */
 	public Operation(String name, OclAnyType contextType, OclAnyType type, Map<String, OclAnyType> parameters) {
-		super(name, contextType, type, false, false, 1, 1);
+		super(null, name, contextType, type, false, false, 1, 1);
 		this.parameters = parameters;
 		setImagePath("$nl$/icons/operation.gif"); //$NON-NLS-1$
 	}
@@ -68,7 +68,42 @@ public class Operation extends Feature {
 	 *            the operation type
 	 */
 	public Operation(String name, OclAnyType contextType, OclAnyType type) {
-		super(name, contextType, type, false, false, 1, 1);
+		super(null, name, contextType, type, false, false, 1, 1);
+		this.parameters = Collections.emptyMap();
+		setImagePath("$nl$/icons/operation.gif"); //$NON-NLS-1$
+	}
+
+	/**
+	 * Creates a new Operation.
+	 * 
+	 * @param name
+	 *            the operation name
+	 * @param contextType
+	 *            type the operation context type
+	 * @param type
+	 *            the operation type
+	 * @param parameters
+	 *            the operation parameter types map
+	 */
+	public Operation(EObject declaration, String name, OclAnyType contextType, OclAnyType type,
+			Map<String, OclAnyType> parameters) {
+		super(declaration, name, contextType, type, false, false, 1, 1);
+		this.parameters = parameters;
+		setImagePath("$nl$/icons/operation.gif"); //$NON-NLS-1$
+	}
+
+	/**
+	 * Creates a new Operation without parameters.
+	 * 
+	 * @param name
+	 *            the operation name
+	 * @param contextType
+	 *            the operation context type
+	 * @param type
+	 *            the operation type
+	 */
+	public Operation(EObject declaration, String name, OclAnyType contextType, OclAnyType type) {
+		super(declaration, name, contextType, type, false, false, 1, 1);
 		this.parameters = Collections.emptyMap();
 		setImagePath("$nl$/icons/operation.gif"); //$NON-NLS-1$
 	}
@@ -82,9 +117,9 @@ public class Operation extends Feature {
 	 *            the metamodel name
 	 */
 	public Operation(EOperation operation, String metamodelName) {
-		super(operation.getName(), ModelElementType.create(operation.getEContainingClass(), metamodelName),
-				ModelElementType.create(operation.getEType(), metamodelName), operation.isOrdered(), false,
-				operation.getLowerBound(), operation.getUpperBound());
+		super(operation, operation.getName(), ModelElementType.create(operation.getEContainingClass(),
+				metamodelName), ModelElementType.create(operation.getEType(), metamodelName), operation
+				.isOrdered(), false, operation.getLowerBound(), operation.getUpperBound());
 		this.parameters = new HashMap<String, OclAnyType>();
 		for (EParameter eParameter : operation.getEParameters()) {
 			this.parameters.put(eParameter.getName().toLowerCase(), ModelElementType.create(eParameter
@@ -208,7 +243,7 @@ public class Operation extends Feature {
 					parameters.put(parameterName, parameterType);
 				}
 			}
-			Operation operation = new Operation(ruleName, context, OclAnyType.getInstance(), parameters);
+			Operation operation = new Operation(rule, ruleName, context, OclAnyType.getInstance(), parameters);
 			operation.setImagePath("$nl$/icons/operation.gif"); //$NON-NLS-1$
 			return operation;
 		}
@@ -280,7 +315,7 @@ public class Operation extends Feature {
 			}
 			EObject helperType = (EObject)AtlTypesProcessor.eGet(helper, "returnType"); //$NON-NLS-1$
 			OclAnyType type = OclAnyType.create(manager, helperType);
-			Operation operation = new Operation(helperName, context, type, parameters);
+			Operation operation = new Operation(helper, helperName, context, type, parameters);
 			operation.setImagePath("$nl$/icons/helper.gif"); //$NON-NLS-1$
 			return operation;
 		}

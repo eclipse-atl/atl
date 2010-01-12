@@ -84,7 +84,10 @@ import org.eclipse.m2m.atl.adt.ui.text.AtlContentAssistPreference;
 import org.eclipse.m2m.atl.adt.ui.text.AtlPairMatcher;
 import org.eclipse.m2m.atl.adt.ui.text.AtlSourceViewerConfiguration;
 import org.eclipse.m2m.atl.adt.ui.text.IAtlPartitions;
-import org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType;
+import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionDataSource;
+import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionHelper;
+import org.eclipse.m2m.atl.adt.ui.text.atl.AtlModelAnalyser;
+import org.eclipse.m2m.atl.adt.ui.text.atl.LastSaveComparator;
 import org.eclipse.m2m.atl.adt.ui.viewsupport.AtlEditorTickErrorUpdater;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.common.AtlNbCharFile;
@@ -137,6 +140,10 @@ public class AtlEditor extends TextEditor {
 	private TabConverter fTabConverter;
 
 	private AtlSourceManager sourceManager;
+
+	private AtlModelAnalyser analyser;
+
+	private LastSaveComparator comparator;
 
 	private class BracketInserter implements VerifyKeyListener, ILinkedModeListener {
 		private final String category = toString();
@@ -745,10 +752,7 @@ public class AtlEditor extends TextEditor {
 		setPreferenceStore(AtlUIPlugin.getDefault().getPreferenceStore());
 		tickErrorUpdater = new AtlEditorTickErrorUpdater(this);
 		sourceManager = new AtlSourceManager();
-	}
-
-	public AtlSourceViewerConfiguration getSourceViewerConf() {
-		return (AtlSourceViewerConfiguration)getSourceViewerConfiguration();
+		comparator = new LastSaveComparator(this);
 	}
 
 	/**
@@ -795,7 +799,7 @@ public class AtlEditor extends TextEditor {
 	protected void createActions() {
 		super.createActions();
 		Action action;
-		ResourceBundle resourceBundle = AtlEditorMessages.getResourceBundle();
+		ResourceBundle resourceBundle = Messages.getResourceBundle();
 
 		action = new IndentAction(resourceBundle, "Indent.", this, false); //$NON-NLS-1$
 		action.setActionDefinitionId(IAtlActionConstants.INDENT);
@@ -805,7 +809,7 @@ public class AtlEditor extends TextEditor {
 		// TODO workbench help action
 		// WorkbenchHelp.setHelp(action, IJavaHelpContextIds.INDENT_ACTION);
 
-		action = new IndentAction(AtlEditorMessages.getResourceBundle(), "Indent.", this, true); //$NON-NLS-1$
+		action = new IndentAction(Messages.getResourceBundle(), "Indent.", this, true); //$NON-NLS-1$
 		setAction("IndentOnTab", action); //$NON-NLS-1$
 		markAsStateDependentAction("IndentOnTab", true); //$NON-NLS-1$
 		markAsSelectionDependentAction("IndentOnTab", true); //$NON-NLS-1$
@@ -818,7 +822,7 @@ public class AtlEditor extends TextEditor {
 
 		installContentAssistAction();
 
-		action = new ToggleCommentAction(AtlEditorMessages.getResourceBundle(), "ToggleComment.", this); //$NON-NLS-1$
+		action = new ToggleCommentAction(Messages.getResourceBundle(), "ToggleComment.", this); //$NON-NLS-1$
 		action.setActionDefinitionId("atlCommands.commentBlock"); //$NON-NLS-1$
 		setAction("ToggleComment", action); //$NON-NLS-1$
 		markAsStateDependentAction("ToggleComment", true); //$NON-NLS-1$
@@ -850,7 +854,7 @@ public class AtlEditor extends TextEditor {
 	 * @see "http://wiki.eclipse.org/FAQ_How_do_I_add_Content_Assist_to_my_editor%3F"
 	 */
 	private void installContentAssistAction() {
-		ResourceBundle resourceBundle = AtlEditorMessages.getResourceBundle();
+		ResourceBundle resourceBundle = Messages.getResourceBundle();
 		Action action = new ContentAssistAction(resourceBundle, "ContentAssistProposal.", this); //$NON-NLS-1$
 		String id = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
 		action.setActionDefinitionId(id);
@@ -966,6 +970,9 @@ public class AtlEditor extends TextEditor {
 	public void doSave(IProgressMonitor progressMonitor) {
 		super.doSave(progressMonitor);
 		sourceManager.updateDataSource(getDocumentProviderContent());
+		analyser = new AtlModelAnalyser(new AtlCompletionHelper(getDocumentProviderContent()), sourceManager
+				.getModel(), 0, AtlCompletionDataSource.getATLFileContext(sourceManager));
+		comparator.markAsSave();
 		if (outlinePage != null) {
 			outlinePage.setUnit();
 		}
@@ -973,13 +980,6 @@ public class AtlEditor extends TextEditor {
 
 	public AtlPairMatcher getBracketMatcher() {
 		return bracketMatcher;
-	}
-
-	public AtlSourceManager getSourceManager() {
-		if (!sourceManager.initialized()) {
-			sourceManager.updateDataSource(getDocumentProviderContent());
-		}
-		return sourceManager;
 	}
 
 	protected void doSelectionChanged(SelectionChangedEvent event) {
@@ -1131,8 +1131,7 @@ public class AtlEditor extends TextEditor {
 
 		int selectionLength = Math.abs(selection.getLength());
 		if (selectionLength > 1) {
-			setStatusLineErrorMessage(AtlEditorMessages
-					.getString("GotoMatchingBracket.error.invalidSelection")); //$NON-NLS-1$
+			setStatusLineErrorMessage(Messages.getString("GotoMatchingBracket.error.invalidSelection")); //$NON-NLS-1$
 			sourceViewer.getTextWidget().getDisplay().beep();
 			return;
 		}
@@ -1143,8 +1142,7 @@ public class AtlEditor extends TextEditor {
 
 		IRegion region = bracketMatcher.match(document, sourceCaretOffset);
 		if (region == null) {
-			setStatusLineErrorMessage(AtlEditorMessages
-					.getString("GotoMatchingBracket.error.noMatchingBracket")); //$NON-NLS-1$
+			setStatusLineErrorMessage(Messages.getString("GotoMatchingBracket.error.noMatchingBracket")); //$NON-NLS-1$
 			sourceViewer.getTextWidget().getDisplay().beep();
 			return;
 		}
@@ -1171,7 +1169,7 @@ public class AtlEditor extends TextEditor {
 		}
 
 		if (!visible) {
-			setStatusLineErrorMessage(AtlEditorMessages
+			setStatusLineErrorMessage(Messages
 					.getString("GotoMatchingBracket.error.bracketOutsideSelectedElement")); //$NON-NLS-1$
 			sourceViewer.getTextWidget().getDisplay().beep();
 			return;
@@ -1506,8 +1504,39 @@ public class AtlEditor extends TextEditor {
 	protected void doSetInput(IEditorInput input) throws CoreException {
 		super.doSetInput(input);
 		configureToggleCommentAction();
-		if (tickErrorUpdater != null)
+		if (tickErrorUpdater != null) {
 			tickErrorUpdater.updateEditorImage(getUnderlyingResource());
+		}
+		sourceManager.updateDataSource(getDocumentProviderContent());
+		analyser = new AtlModelAnalyser(new AtlCompletionHelper(getDocumentProviderContent()), sourceManager
+				.getModel(), 0, AtlCompletionDataSource.getATLFileContext(sourceManager));
+		comparator.markAsSave();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#initializeKeyBindingScopes()
+	 */
+	@Override
+	protected void initializeKeyBindingScopes() {
+		setKeyBindingScopes(new String[] {"org.eclipse.m2m.atl.adt.editor"}); //$NON-NLS-1$
+	}
+
+	public LastSaveComparator getComparator() {
+		return comparator;
+	}
+
+	public AtlSourceViewerConfiguration getSourceViewerConf() {
+		return (AtlSourceViewerConfiguration)getSourceViewerConfiguration();
+	}
+
+	public AtlSourceManager getSourceManager() {
+		return sourceManager;
+	}
+
+	public AtlModelAnalyser getModelAnalyser() {
+		return analyser;
 	}
 
 }

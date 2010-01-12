@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text;
 
+import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -309,22 +310,24 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getHyperlinkDetectorTargets(org.eclipse.jface.text.source.ISourceViewer)
+	 */
+	@Override
+	protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
+		Map targets = super.getHyperlinkDetectorTargets(sourceViewer);
+		targets.put("org.eclipse.m2m.atl.adt.editor.AtlEditorSource", fTextEditor); //$NON-NLS-1$
+		return targets;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getDefaultPrefixes(org.eclipse.jface.text.source.ISourceViewer,
 	 *      java.lang.String)
 	 */
 	@Override
 	public String[] getDefaultPrefixes(ISourceViewer sourceViewer, String contentType) {
 		return new String[] {"--", ""}; //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	public void setCompletionProcessor(IContentAssistProcessor processor) {
-		this.fProcessor = processor;
-		getContentAssistant(((AtlEditor)getEditor()).getViewer());
-	}
-
-	public void resetCompletionProcessor() {
-		this.fProcessor = new AtlCompletionProcessor(getEditor());
-		getContentAssistant(((AtlEditor)getEditor()).getViewer());
 	}
 
 }

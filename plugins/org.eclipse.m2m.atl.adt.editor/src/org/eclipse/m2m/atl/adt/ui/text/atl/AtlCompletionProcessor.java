@@ -42,7 +42,7 @@ import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.jface.text.templates.TemplateException;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
-import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
+import org.eclipse.m2m.atl.adt.ui.editor.Messages;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.AtlTypesProcessor;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.CollectionType;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.Feature;
@@ -71,8 +71,6 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 
 	private static final String COMPILER_TAG_REGEX = "^\\p{Space}*--\\p{Space}*@" + AtlSourceManager.COMPILER_TAG + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
 
-	private AtlCompletionHelper fHelper;
-
 	private AtlCompletionProposalComparator fComparator;
 
 	private AtlParameterListValidator fValidator;
@@ -92,6 +90,8 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 
 	private AtlSourceManager manager;
 
+	private String atlContext;
+
 	/**
 	 * Constructor.
 	 * 
@@ -101,7 +101,6 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 	public AtlCompletionProcessor(IEditorPart editor) {
 		fEditor = (AtlEditor)editor;
 		fComparator = new AtlCompletionProposalComparator();
-		fHelper = new AtlCompletionHelper();
 		typeProcessor = new AtlTypesProcessor();
 	}
 
@@ -115,7 +114,6 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		manager = new AtlSourceManager();
 		manager.updateDataSource(document.get());
 		fComparator = new AtlCompletionProposalComparator();
-		fHelper = new AtlCompletionHelper();
 		typeProcessor = new AtlTypesProcessor();
 	}
 
@@ -190,12 +188,21 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		this.document = document;
 		String prefix = extractPrefix(document, offset);
 		AtlCompletionDataSource datasource = new AtlCompletionDataSource(getSourceManager());
-		AtlModelAnalyser currentAnalyser = fHelper.computeContext(document, offset, prefix, datasource
+
+		AtlModelAnalyser currentAnalyser = null;
+		// if (fEditor.isDirty()) {
+		currentAnalyser = new AtlCompletionHelper(document.get()).computeModelAnalyser(offset, prefix, datasource
 				.getATLFileContext());
+		// } else {
+		// currentAnalyser = fEditor.getModelAnalyser();
+		// }
 		typeProcessor.update(currentAnalyser, manager);
 		List<ICompletionProposal> listProposals = new ArrayList<ICompletionProposal>();
-		String line = fHelper.getCurrentLine(offset);
-		if (AtlContextType.ATL_CONTEXT_ID.equals(currentAnalyser.getContext())) {
+		String line = getCurrentLine(offset);
+
+		atlContext = currentAnalyser.getContext(offset);
+
+		if (AtlContextType.ATL_CONTEXT_ID.equals(atlContext)) {
 			listProposals.addAll(getTagProposals(offset, line, prefix, datasource));
 		} else {
 			if (line.indexOf("--") == -1) { //$NON-NLS-1$
@@ -214,6 +221,23 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		}
 
 		return proposals;
+	}
+
+	/**
+	 * Compute the whole line of the current offset.
+	 * 
+	 * @param offset
+	 *            the current offset
+	 * @return the line containing the offset, ended with the offset
+	 * @throws BadLocationException
+	 */
+	public String getCurrentLine(int offset) throws BadLocationException {
+		if (offset >= 0) {
+			int lineNumber = document.getLineOfOffset(offset);
+			int lineOffset = document.getLineOffset(lineNumber);
+			return document.get(lineOffset, offset - lineOffset);
+		}
+		return null;
 	}
 
 	/**
@@ -328,7 +352,7 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 	 */
 	@Override
 	protected TemplateContextType getContextType(ITextViewer viewer, IRegion region) {
-		return AtlEditorUI.getDefault().getContextTypeRegistry().getContextType(typeProcessor.getContextId());
+		return AtlEditorUI.getDefault().getContextTypeRegistry().getContextType(atlContext);
 	}
 
 	/**
@@ -352,7 +376,7 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		return extractPrefix(viewer.getDocument(), offset);
 	}
 
-	private String extractPrefix(IDocument document, int offset) {
+	public static String extractPrefix(IDocument document, int offset) {
 		int i = offset;
 		if (document != null) {
 			if (i > document.getLength()) {
@@ -378,7 +402,7 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 			AtlCompletionDataSource datasource, AtlModelAnalyser currentAnalyser) throws BadLocationException {
 
 		List<ICompletionProposal> res = new ArrayList<ICompletionProposal>();
-		EObject locatedElement = currentAnalyser.getLocatedElement();
+		EObject locatedElement = currentAnalyser.getLocatedElement(offset);
 		if (locatedElement != null) {
 
 			EObject container = currentAnalyser.getContainer(locatedElement);
@@ -393,7 +417,7 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 					 * Classifiers proposals.
 					 */
 
-					if (currentAnalyser.getContext().equals(AtlContextType.RULE_CONTEXT_ID)) {
+					if (atlContext.equals(AtlContextType.RULE_CONTEXT_ID)) {
 						if (AtlTypesProcessor.oclIsKindOf(container, "InPatternElement") || AtlTypesProcessor.oclIsKindOf(container, "InPattern")) { //$NON-NLS-1$ //$NON-NLS-2$
 							res.addAll(createTypeProposals(prefix, offset, datasource
 									.getClassifiers(AtlSourceManager.FILTER_INPUT_METAMODELS)));
@@ -408,7 +432,7 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 											.getAtlPrimitiveTypes()));
 							res.addAll(createComplexTypeProposals(prefix, offset, currentAnalyser));
 						}
-					} else if (currentAnalyser.getContext().equals(AtlContextType.HELPER_CONTEXT_ID)) {
+					} else if (atlContext.equals(AtlContextType.HELPER_CONTEXT_ID)) {
 						// could be restricted to input meta elements
 						res.addAll(createTypeProposals(prefix, offset, datasource
 								.getClassifiers(AtlSourceManager.FILTER_ALL_METAMODELS)));
@@ -418,7 +442,7 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 						AtlTypesProcessor.oclIsKindOf(container, "OclFeatureDefinition"))) { //$NON-NLS-1$
 							res.addAll(createComplexTypeProposals(prefix, offset, currentAnalyser));
 						}
-					} else if (currentAnalyser.getContext().equals(AtlContextType.QUERY_CONTEXT_ID)) {
+					} else if (atlContext.equals(AtlContextType.QUERY_CONTEXT_ID)) {
 						// could be restricted to input meta elements
 						res.addAll(createTypeProposals(prefix, offset, datasource
 								.getClassifiers(AtlSourceManager.FILTER_ALL_METAMODELS)));
@@ -445,15 +469,15 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 						}
 					} else {
 
-						String templateName = AtlEditorMessages
+						String templateName = Messages
 								.getString("AtlCompletionProcessor.OUTPUT_PATTERN_NAME"); //$NON-NLS-1$
 						String pattern = "${variable} : ${type} (\n\t\t${cursor}\t\n)"; //$NON-NLS-1$
-						String description = AtlEditorMessages
+						String description = Messages
 								.getString("AtlCompletionProcessor.OUTPUT_PATTERN_DESCRIPTION"); //$NON-NLS-1$
 
 						String information = "variable : type (\n\t\t\t\n)"; //$NON-NLS-1$
-						Template template = new Template(templateName.toString(), description,
-								currentAnalyser.getContext(), pattern.toString(), false);
+						Template template = new Template(templateName.toString(), description, atlContext,
+								pattern.toString(), false);
 
 						res.add(convertToProposal(template, prefix, offset, AtlUIPlugin.getDefault()
 								.getImage("$nl$/icons/templateprop_co.gif"), true, information)); //$NON-NLS-1$
@@ -833,8 +857,8 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		if (operation.getContextType() != null) {
 			description = operation.getContextType().toString();
 		}
-		Template template = new Template(templateName.toString(), description, analyser.getContext(), pattern
-				.toString(), false);
+		Template template = new Template(templateName.toString(), description, atlContext,
+				pattern.toString(), false);
 
 		return convertToProposal(template, prefix, offset, AtlUIPlugin.getDefault().getImage(
 				operation.getImagePath()), true, operation.getInformation(context));
@@ -930,8 +954,8 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		templateName.append(')');
 		pattern.append(')');
 
-		Template template = new Template(templateName.toString(), typeName + " declaration", analyser //$NON-NLS-1$
-				.getContext(), pattern.toString(), false);
+		Template template = new Template(templateName.toString(), typeName + " declaration", atlContext, //$NON-NLS-1$
+				pattern.toString(), false);
 
 		return convertToProposal(template, prefix, offset, null, true, null);
 	}

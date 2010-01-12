@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
@@ -35,10 +36,18 @@ public class AtlCompletionHelper {
 	private IDocument document;
 
 	/**
+	 * Creates a new helper initialized with the given text.
+	 * 
+	 * @param text
+	 *            the text
+	 */
+	public AtlCompletionHelper(String text) {
+		this.document = new Document(text);
+	}
+
+	/**
 	 * Computes the document part to analyze, process the analysis.
 	 * 
-	 * @param document
-	 *            the current document
 	 * @param offset
 	 *            the current offset
 	 * @param prefix
@@ -48,9 +57,8 @@ public class AtlCompletionHelper {
 	 * @return an analyser which provides contextual informations
 	 * @throws BadLocationException
 	 */
-	public AtlModelAnalyser computeContext(IDocument document, int offset, String prefix, String fileContext)
+	public AtlModelAnalyser computeModelAnalyser(int offset, String prefix, String fileContext)
 			throws BadLocationException {
-		this.document = document;
 		// parsed zone computation
 		int begin;
 		int[] lastParsingKeyWordLocation = getLastKeyWordLocation(offset - prefix.length(), PARSING_KEYWORDS);
@@ -78,35 +86,21 @@ public class AtlCompletionHelper {
 			text += "'"; //$NON-NLS-1$
 		}
 
-		if ("do".equals(getLastKeyWord(offset - prefix.length()))) { //$NON-NLS-1$
+		String lastKeyword = getLastKeyWord(offset - prefix.length());
+
+		if ("do".equals(lastKeyword)) { //$NON-NLS-1$
 			text += ";"; //$NON-NLS-1$
 		}
 
 		// if no context available, don't process parsing
 		if (lastParsingKeyWord == null) {
-			return new AtlModelAnalyser(this, null, begin, getLastKeyWord(offset - prefix.length()), offset,
-					fileContext);
+			return new AtlModelAnalyser(this, null, begin, fileContext);
 		}
 
 		// code fragment parsing
 		EObject[] ret = AtlParser.getDefault().parseExpression(text, lastParsingKeyWord);
-		AtlModelAnalyser res = new AtlModelAnalyser(this, ret[0], begin, getLastKeyWord(offset
-				- prefix.length()), offset, fileContext);
+		AtlModelAnalyser res = new AtlModelAnalyser(this, ret[0], begin, fileContext);
 		return res;
-	}
-
-	/**
-	 * Compute the right offset from an element, according to the base offset of the model.
-	 * 
-	 * @param element
-	 *            the given element
-	 * @param baseOffset
-	 *            the base offset
-	 * @return [deboffset, endoffset]
-	 * @throws BadLocationException
-	 */
-	public int[] getElementOffsets(EObject element, int baseOffset) throws BadLocationException {
-		return getElementOffsets(document, element, baseOffset);
 	}
 
 	/**
@@ -130,8 +124,6 @@ public class AtlCompletionHelper {
 	/**
 	 * Compute the right offset from an element, according to the base offset of the model.
 	 * 
-	 * @param document
-	 *            the document
 	 * @param element
 	 *            the given element
 	 * @param baseOffset
@@ -139,8 +131,7 @@ public class AtlCompletionHelper {
 	 * @return [deboffset, endoffset]
 	 * @throws BadLocationException
 	 */
-	public static int[] getElementOffsets(IDocument document, EObject element, int baseOffset)
-			throws BadLocationException {
+	public int[] getElementOffsets(EObject element, int baseOffset) throws BadLocationException {
 		String location = getLocation(element);
 		if (location != null) {
 			location = location.replaceAll("'", ""); //$NON-NLS-1$ //$NON-NLS-2$
@@ -159,7 +150,7 @@ public class AtlCompletionHelper {
 
 		// compute location from sub elements
 		for (EObject subElement : element.eContents()) {
-			int[] subLocation = getElementOffsets(document, subElement, baseOffset);
+			int[] subLocation = getElementOffsets(subElement, baseOffset);
 			if (subLocation != null) {
 				if (res != null) {
 					if (subLocation[0] < res[0]) {
@@ -187,23 +178,6 @@ public class AtlCompletionHelper {
 		EStructuralFeature feature = element.eClass().getEStructuralFeature("location"); //$NON-NLS-1$
 		if (feature != null) {
 			return (String)element.eGet(feature);
-		}
-		return null;
-	}
-
-	/**
-	 * Compute the whole line of the current offset.
-	 * 
-	 * @param offset
-	 *            the current offset
-	 * @return the line containing the offset, ended with the offset
-	 * @throws BadLocationException
-	 */
-	public String getCurrentLine(int offset) throws BadLocationException {
-		if (offset >= 0) {
-			int lineNumber = document.getLineOfOffset(offset);
-			int lineOffset = document.getLineOffset(lineNumber);
-			return document.get(lineOffset, offset - lineOffset);
 		}
 		return null;
 	}
@@ -246,39 +220,6 @@ public class AtlCompletionHelper {
 				if (elementOffsets != null) {
 					if (elementOffsets[0] <= offset && elementOffsets[1] >= offset) {
 						if (elementOffsets[0] >= maxDebOffset) {
-							maxDebOffset = elementOffsets[0];
-							res = object;
-						}
-					}
-				}
-			}
-		}
-		return res;
-	}
-
-	/**
-	 * Search the nearest element of the given offset.
-	 * 
-	 * @param root
-	 *            the model root
-	 * @param offset
-	 *            the given offset
-	 * @param modelOffset
-	 *            the root model offset in the document
-	 * @return the element
-	 * @throws BadLocationException
-	 */
-	public EObject getLastElement(EObject root, int offset, int modelOffset) throws BadLocationException {
-		EObject res = null;
-		if (root != null) {
-			TreeIterator<EObject> ti = root.eResource().getAllContents();
-			int maxDebOffset = -1;
-			while (ti.hasNext()) {
-				EObject object = ti.next();
-				int[] elementOffsets = getElementOffsets(object, modelOffset);
-				if (elementOffsets != null) {
-					if (elementOffsets[0] <= offset) {
-						if (elementOffsets[0] > maxDebOffset) {
 							maxDebOffset = elementOffsets[0];
 							res = object;
 						}

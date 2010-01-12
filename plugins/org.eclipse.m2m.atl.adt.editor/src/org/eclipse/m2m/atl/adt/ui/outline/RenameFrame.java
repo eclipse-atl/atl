@@ -12,7 +12,7 @@ package org.eclipse.m2m.atl.adt.ui.outline;
 
 import java.util.logging.Level;
 
-import org.eclipse.m2m.atl.adt.ui.editor.AtlEditorMessages;
+import org.eclipse.m2m.atl.adt.ui.editor.Messages;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -211,7 +211,7 @@ public class RenameFrame extends Composite {
 	protected void confirmRename() {
 		if (tNewName.getText().equals("")) { //$NON-NLS-1$
 			MessageBox msg = new MessageBox(this.getShell(), SWT.ICON_ERROR);
-			msg.setMessage(AtlEditorMessages.getString("RenameFrame.0")); //$NON-NLS-1$
+			msg.setMessage(Messages.getString("RenameFrame.0")); //$NON-NLS-1$
 			msg.open();
 			return;
 		}
