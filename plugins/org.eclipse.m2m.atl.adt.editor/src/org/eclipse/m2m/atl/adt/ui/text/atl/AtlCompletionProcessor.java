@@ -191,8 +191,8 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 
 		AtlModelAnalyser currentAnalyser = null;
 		// if (fEditor.isDirty()) {
-		currentAnalyser = new AtlCompletionHelper(document.get()).computeModelAnalyser(offset, prefix, datasource
-				.getATLFileContext());
+		currentAnalyser = new AtlCompletionHelper(document.get()).computeModelAnalyser(offset, prefix,
+				datasource.getATLFileContext());
 		// } else {
 		// currentAnalyser = fEditor.getModelAnalyser();
 		// }
@@ -746,6 +746,7 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 				res.add(proposal);
 			}
 		}
+		Collections.sort(res);
 		return res;
 	}
 

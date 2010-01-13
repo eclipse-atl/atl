@@ -76,12 +76,12 @@ public class ModuleType extends UnitType {
 			};
 		}
 		res.addAll(operations);
-		res.addAll(getRules());
+		res.addAll(getRulesAsOperations());
 		return res;
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<Operation> getRules() {
+	private List<Operation> getRulesAsOperations() {
 		List<Operation> res = new ArrayList<Operation>();
 		if (manager.getModel() != null) {
 			EList<EObject> helpersAndRules = (EList<EObject>)AtlTypesProcessor.eGet(manager.getModel(),
@@ -102,6 +102,31 @@ public class ModuleType extends UnitType {
 			}
 		}
 		return res;
+	}
+
+	/**
+	 * Returns the rule with the given name if present.
+	 * 
+	 * @param ruleName
+	 *            the rule name
+	 * @return the rule with the given name if present
+	 */
+	@SuppressWarnings("unchecked")
+	public EObject getRule(String ruleName) {
+		if (manager.getModel() != null) {
+			EList<EObject> helpersAndRules = (EList<EObject>)AtlTypesProcessor.eGet(manager.getModel(),
+					"elements"); //$NON-NLS-1$
+			for (Iterator<EObject> iterator = helpersAndRules.iterator(); iterator.hasNext();) {
+				EObject element = iterator.next();
+				if (AtlTypesProcessor.oclIsKindOf(element, "Rule")) { //$NON-NLS-1$
+					String name = (String)AtlTypesProcessor.eGet(element, "name"); //$NON-NLS-1$
+					if (ruleName.equals(name)) {
+						return element;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	/**

@@ -464,8 +464,7 @@ public class AtlTypesProcessor {
 		List<EObject> declarations = new ArrayList<EObject>();
 		if (getUnit() != null) {
 			if (oclIsKindOf(root, "Rule")) { //$NON-NLS-1$
-				Collection<EObject> parameterDeclarations = (Collection<EObject>)eGet(analyser.getRoot(),
-						"parameters"); //$NON-NLS-1$
+				Collection<EObject> parameterDeclarations = (Collection<EObject>)eGet(root, "parameters"); //$NON-NLS-1$
 				if (parameterDeclarations != null) {
 					declarations.addAll(parameterDeclarations);
 				}
@@ -494,6 +493,44 @@ public class AtlTypesProcessor {
 						declarations.addAll(outElements);
 					}
 				}
+
+				// Saved model lookup
+
+				String ruleName = (String)eGet(root, "name"); //$NON-NLS-1$
+				UnitType unit = getUnit();
+				if (unit instanceof ModuleType) {
+					ModuleType module = (ModuleType)unit;
+					EObject savedRule = module.getRule(ruleName);
+					if (savedRule != null) {
+						Collection<EObject> savedParameterDeclarations = (Collection<EObject>)eGet(savedRule,
+								"parameters"); //$NON-NLS-1$
+						if (savedParameterDeclarations != null) {
+							declarations.addAll(savedParameterDeclarations);
+						}
+						EObject savedInPattern = (EObject)eGet(savedRule, "inPattern"); //$NON-NLS-1$
+						if (savedInPattern != null) {
+							Collection<EObject> savedInElements = (Collection<EObject>)eGet(savedInPattern,
+									"elements"); //$NON-NLS-1$
+							if (savedInElements != null) {
+								declarations.addAll(savedInElements);
+							}
+						}
+						Collection<EObject> savedVariableDeclarations = (Collection<EObject>)eGet(savedRule,
+								"variables"); //$NON-NLS-1$
+						if (savedVariableDeclarations != null) {
+							declarations.addAll(savedVariableDeclarations);
+						}
+						EObject savedOutPattern = (EObject)eGet(savedRule, "outPattern"); //$NON-NLS-1$
+						if (savedOutPattern != null) {
+							Collection<EObject> savedOutElements = (Collection<EObject>)eGet(savedOutPattern,
+									"elements"); //$NON-NLS-1$
+							if (savedOutElements != null) {
+								declarations.addAll(savedOutElements);
+							}
+						}
+					}
+				}
+
 			} else if (oclIsKindOf(root, "Helper")) { //$NON-NLS-1$
 				EObject definition = (EObject)eGet(root, "definition"); //$NON-NLS-1$
 				if (definition != null) {
