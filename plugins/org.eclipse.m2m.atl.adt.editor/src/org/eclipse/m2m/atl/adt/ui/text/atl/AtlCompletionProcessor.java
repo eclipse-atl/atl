@@ -506,10 +506,10 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 						res.addAll(createFeatureProposals(prefix, offset, type.getFeatures()));
 						res.addAll(createFeatureProposals(prefix, offset, typeProcessor.getUnit()
 								.getAttributes(type)));
-						res.addAll(createOperationProposals(prefix, offset, type, type.getOperations(),
-								currentAnalyser));
 						res.addAll(createOperationProposals(prefix, offset, type, typeProcessor.getUnit()
 								.getHelpers(type), currentAnalyser));
+						res.addAll(createOperationProposals(prefix, offset, type, type.getOperations(),
+								currentAnalyser));
 
 					} else {
 						// no source found

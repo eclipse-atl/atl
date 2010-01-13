@@ -239,7 +239,15 @@ public class AtlCompletionHelper {
 				if (!isAtlIdentifierPart(ch)) {
 					for (String keyword : keywords) {
 						if (word.toString().equals(keyword)) {
-							return new int[] {i, keyword.length()};
+							int lineNumber = document.getLineOfOffset(i);
+							int lineOffset = document.getLineOffset(lineNumber);
+							String line = document.get(lineOffset, i - lineOffset);
+							if (line.indexOf("--") > -1) { //$NON-NLS-1$
+								i = document.get().lastIndexOf("--", i); //$NON-NLS-1$
+								word = new StringBuffer();
+							} else {
+								return new int[] {i, keyword.length()};
+							}
 						}
 					}
 					word = new StringBuffer();

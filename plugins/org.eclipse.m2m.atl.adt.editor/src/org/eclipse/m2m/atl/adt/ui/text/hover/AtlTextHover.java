@@ -13,15 +13,15 @@ package org.eclipse.m2m.atl.adt.ui.text.hover;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.m2m.atl.adt.ui.text.atl.types.AtlTypesProcessor;
+import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 
 public class AtlTextHover implements ITextHover {
 
-	private AtlTypesProcessor typesProcessor;
+	private AtlEditor editor;
 
-	public AtlTextHover() {
+	public AtlTextHover(AtlEditor editor) {
 		super();
-		typesProcessor = new AtlTypesProcessor();
+		this.editor = editor;
 	}
 
 	/**
@@ -30,7 +30,7 @@ public class AtlTextHover implements ITextHover {
 	 * @see org.eclipse.jface.text.ITextHover#getHoverInfo(org.eclipse.jface.text.ITextViewer,
 	 *      org.eclipse.jface.text.IRegion)
 	 */
-	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {	
+	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
 		return null;
 	}
 

@@ -329,5 +329,15 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 	public String[] getDefaultPrefixes(ISourceViewer sourceViewer, String contentType) {
 		return new String[] {"--", ""}; //$NON-NLS-1$ //$NON-NLS-2$
 	}
+	
+//	/**
+//	 * {@inheritDoc}
+//	 *
+//	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getTextHover(org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
+//	 */
+//	@Override
+//	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
+//		return new AtlTextHover((AtlEditor)fTextEditor);
+//	}
 
 }
