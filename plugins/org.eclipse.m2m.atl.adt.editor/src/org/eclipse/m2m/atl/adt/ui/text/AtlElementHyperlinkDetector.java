@@ -15,7 +15,6 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
@@ -42,7 +41,7 @@ public class AtlElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		if (region == null || !(textEditor instanceof AtlEditor))
 			return null;
 		IDocument document = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());
-		IRegion wordRegion = findWord(document, region.getOffset());
+		IRegion wordRegion = OpenDeclarationUtils.findWord(document, region.getOffset());
 		if (wordRegion == null || wordRegion.getLength() == 0) {
 			return null;
 		}
@@ -57,57 +56,6 @@ public class AtlElementHyperlinkDetector extends AbstractHyperlinkDetector {
 			return null;
 		}
 		return null;
-	}
-
-	private static IRegion findWord(IDocument document, int offset) {
-		int start = -2;
-		int end = -1;
-		try {
-			int pos = offset;
-			char c;
-			while (pos >= 0) {
-				c = document.getChar(pos);
-				if (!isAtlIdentifierPart(c)) {
-					break;
-				}
-				--pos;
-			}
-			start = pos;
-			pos = offset;
-			int length = document.getLength();
-
-			while (pos < length) {
-				c = document.getChar(pos);
-				if (!isAtlIdentifierPart(c)) {
-					break;
-				}
-				++pos;
-			}
-			end = pos;
-		} catch (BadLocationException x) {
-		}
-		if (start >= -1 && end > -1) {
-			if (start == offset && end == offset)
-				return new Region(offset, 0);
-			else if (start == offset)
-				return new Region(start, end - start);
-			else
-				return new Region(start + 1, end - start - 1);
-		}
-		return null;
-	}
-
-	/**
-	 * Checks whether the given char is an ATL identifier part or not.
-	 * 
-	 * @param ch
-	 *            the char
-	 * @return <code>true</code> if the given char is an ATL identifier part
-	 */
-	private static boolean isAtlIdentifierPart(char ch) {
-		return !Character.isWhitespace(ch) && ch != '.' && ch != '(' && ch != ')' && ch != '{' && ch != '}'
-				&& ch != '.' && ch != ';' && ch != ',' && ch != ':' && ch != '|' && ch != '+' && ch != '-'
-				&& ch != '<' && ch != '=' && ch != '>' && ch != '*' && ch != '/' && ch != '!';
 	}
 
 	/**

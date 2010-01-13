@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text.hover;
 
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
+import org.eclipse.m2m.atl.adt.ui.text.atl.OpenDeclarationUtils;
+import org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType;
 
 public class AtlTextHover implements ITextHover {
 
@@ -31,6 +34,15 @@ public class AtlTextHover implements ITextHover {
 	 *      org.eclipse.jface.text.IRegion)
 	 */
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
+		try {
+			OclAnyType type = OpenDeclarationUtils.getType(editor, hoverRegion.getOffset(), hoverRegion
+					.getLength());
+			if (!type.equals(OclAnyType.getInstance())) {
+				return type.toString();
+			}
+		} catch (BadLocationException e) {
+			return null;
+		}
 		return null;
 	}
 
@@ -40,7 +52,7 @@ public class AtlTextHover implements ITextHover {
 	 * @see org.eclipse.jface.text.ITextHover#getHoverRegion(org.eclipse.jface.text.ITextViewer, int)
 	 */
 	public IRegion getHoverRegion(ITextViewer textViewer, int offset) {
-		return null;
+		return OpenDeclarationUtils.findWord(textViewer.getDocument(), offset);
 	}
 
 }

@@ -16,6 +16,7 @@ import java.util.Vector;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
@@ -34,6 +35,7 @@ import org.eclipse.m2m.atl.adt.ui.text.atl.AtlAutoIndentStrategy;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCodeScanner;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionProcessor;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlStringAutoIndentStrategy;
+import org.eclipse.m2m.atl.adt.ui.text.hover.AtlTextHover;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 import org.eclipse.ui.texteditor.ITextEditor;
 
@@ -330,14 +332,15 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 		return new String[] {"--", ""}; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
-//	/**
-//	 * {@inheritDoc}
-//	 *
-//	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getTextHover(org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
-//	 */
-//	@Override
-//	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
-//		return new AtlTextHover((AtlEditor)fTextEditor);
-//	}
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getTextHover(org.eclipse.jface.text.source.ISourceViewer,
+	 *      java.lang.String)
+	 */
+	@Override
+	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
+		return new AtlTextHover((AtlEditor)fTextEditor);
+	}
 
 }

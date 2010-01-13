@@ -34,10 +34,14 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.AtlTypesProcessor;
+import org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorPart;
@@ -54,6 +58,39 @@ import org.osgi.framework.Bundle;
  */
 public class OpenDeclarationUtils {
 
+	/**
+	 * Retrieves the declaration of the element at the given offset if exists.
+	 * 
+	 * @param editor
+	 *            the current editor
+	 * @param offset
+	 *            the given offset
+	 * @param length
+	 *            the region length (after offset, unused)
+	 * @return the declaration if exists
+	 * @throws BadLocationException
+	 */
+	public static OclAnyType getType(AtlEditor editor, int offset, int length)
+			throws BadLocationException {
+		int savedOffset = offset;
+		if (editor.isDirty()) {
+			int[] savePosition = editor.getComparator().current2savePosition(
+					new int[] {offset, offset + length,});
+			if (savePosition != null) {
+				savedOffset = savePosition[0];
+			}
+		}
+		AtlSourceManager manager = editor.getSourceManager();
+		AtlModelAnalyser analyser = editor.getModelAnalyser();
+		EObject locatedElement = analyser.getLocatedElement(savedOffset);
+		if (locatedElement != null) {
+			AtlTypesProcessor processor = new AtlTypesProcessor();
+			processor.update(analyser, manager);
+			return processor.getType(locatedElement);
+		}
+		return null;
+	}
+	
 	/**
 	 * Retrieves the declaration of the element at the given offset if exists.
 	 * 
@@ -364,4 +401,63 @@ public class OpenDeclarationUtils {
 		return absoluteFile;
 	}
 
+	/**
+	 * The region of the found word.
+	 * 
+	 * @param document
+	 *            the current document
+	 * @param offset
+	 *            the given offset
+	 * @return the region of the word at the given offset
+	 */
+	public static IRegion findWord(IDocument document, int offset) {
+		int start = -2;
+		int end = -1;
+		try {
+			int pos = offset;
+			char c;
+			while (pos >= 0) {
+				c = document.getChar(pos);
+				if (!isAtlIdentifierPart(c)) {
+					break;
+				}
+				--pos;
+			}
+			start = pos;
+			pos = offset;
+			int length = document.getLength();
+
+			while (pos < length) {
+				c = document.getChar(pos);
+				if (!isAtlIdentifierPart(c)) {
+					break;
+				}
+				++pos;
+			}
+			end = pos;
+		} catch (BadLocationException x) {
+		}
+		if (start >= -1 && end > -1) {
+			if (start == offset && end == offset)
+				return new Region(offset, 0);
+			else if (start == offset)
+				return new Region(start, end - start);
+			else
+				return new Region(start + 1, end - start - 1);
+		}
+		return null;
+	}
+
+	/**
+	 * Checks whether the given char is an ATL identifier part or not.
+	 * 
+	 * @param ch
+	 *            the char
+	 * @return <code>true</code> if the given char is an ATL identifier part
+	 */
+	private static boolean isAtlIdentifierPart(char ch) {
+		return !Character.isWhitespace(ch) && ch != '.' && ch != '(' && ch != ')' && ch != '{' && ch != '}'
+				&& ch != '.' && ch != ';' && ch != ',' && ch != ':' && ch != '|' && ch != '+' && ch != '-'
+				&& ch != '<' && ch != '=' && ch != '>' && ch != '*' && ch != '/' && ch != '!';
+	}
 }
