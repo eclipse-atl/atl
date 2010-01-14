@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.m2m.atl.adt.ui.text.atl.types.AtlTypesProcessor;
 
 /**
  * Atl model analyser, used to get information from an incomplete ATL model.
@@ -169,6 +170,27 @@ public class AtlModelAnalyser {
 			}
 		}
 		return res;
+	}
+
+	/**
+	 * Computes the previous element in the model.
+	 * 
+	 * @param element
+	 *            the current element
+	 * @param type
+	 *            the previous element type
+	 * @return the previous element
+	 * @throws BadLocationException
+	 */
+	public EObject getPreviousElement(EObject element, String type) throws BadLocationException {
+		EObject previous = getPreviousElement(element);
+		if (previous == null) {
+			return null;
+		} else if (AtlTypesProcessor.oclIsKindOf(previous, type)) {
+			return previous;
+		} else {
+			return getPreviousElement(previous, type);
+		}
 	}
 
 	/**

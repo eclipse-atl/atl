@@ -262,11 +262,11 @@ public class AtlTypesProcessor {
 			return getType(referredVariable);
 		}
 
-		EObject previous = analyser.getPreviousElement(element);
-		if (oclIsKindOf(previous, "Iterator")) { //$NON-NLS-1$
-			String varName = (String)eGet(previous, "varName"); //$NON-NLS-1$
+		EObject previousIterator = analyser.getPreviousElement(element, "Iterator"); //$NON-NLS-1$
+		if (previousIterator != null) {
+			String varName = (String)eGet(previousIterator, "varName"); //$NON-NLS-1$
 			if (name.equals(varName)) {
-				return getType(previous);
+				return getType(previousIterator);
 			}
 		}
 		return OclAnyType.getInstance();

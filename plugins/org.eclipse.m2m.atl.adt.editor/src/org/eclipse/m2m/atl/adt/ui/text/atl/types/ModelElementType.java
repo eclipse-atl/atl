@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
@@ -118,7 +119,9 @@ public class ModelElementType extends OclAnyType {
 	 */
 	public static OclAnyType create(EClassifier classifier, String metamodelName) {
 		if (classifier != null) {
-			if (classifier instanceof EDataType) {
+			if (classifier instanceof EEnum) {
+				return new ModelElementType(new OclType(metamodelName, classifier));
+			} else if (classifier instanceof EDataType) {
 				return create((EDataType)classifier);
 			} else {
 				return new ModelElementType(new OclType(metamodelName, classifier));
