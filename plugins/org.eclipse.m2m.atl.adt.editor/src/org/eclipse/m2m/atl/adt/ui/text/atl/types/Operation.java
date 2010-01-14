@@ -217,6 +217,13 @@ public class Operation extends Feature {
 		String info = getMessage(key);
 		if (info != null && !info.trim().equals("")) { //$NON-NLS-1$
 			return info;
+		} else {
+			for (OclAnyType supertype : context.getSupertypes()) {
+				info = getDocumentation(supertype, parameters);
+				if (info != null) {
+					return info;
+				}
+			}
 		}
 		return null;
 	}
