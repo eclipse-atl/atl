@@ -206,7 +206,7 @@ public class Operation extends Feature {
 	 *            the operation parameter types
 	 * @return the information or null if not found
 	 */
-	public String getInformation(OclAnyType context, Object... parameters) {
+	public String getDocumentation(OclAnyType context, Object... parameters) {
 		String key = ""; //$NON-NLS-1$
 		if (context instanceof CollectionType) {
 			key = ((CollectionType)context).getCollectionType() + '.';
@@ -219,6 +219,30 @@ public class Operation extends Feature {
 			return info;
 		}
 		return null;
+	}
+
+	/**
+	 * Returns a description of the operation for the given context.
+	 * 
+	 * @return a description of the operation for the given context
+	 */
+	public String getInformation(OclAnyType context) {
+		StringBuffer information = new StringBuffer();
+		information.append(getName());
+		information.append('(');
+		for (Iterator<Entry<String, OclAnyType>> iterator = getParameters().entrySet().iterator(); iterator
+				.hasNext();) {
+			Entry<String, OclAnyType> parameter = iterator.next();
+			information.append(parameter.getKey() + " : " + parameter.getValue()); //$NON-NLS-1$
+			if (iterator.hasNext()) {
+				information.append(", "); //$NON-NLS-1$
+			}
+		}
+		information.append(')');
+		if (getType(context) != null) {
+			information.append(" : " + getType(context)); //$NON-NLS-1$
+		}
+		return information.toString();
 	}
 
 	private static String getMessage(String key) {

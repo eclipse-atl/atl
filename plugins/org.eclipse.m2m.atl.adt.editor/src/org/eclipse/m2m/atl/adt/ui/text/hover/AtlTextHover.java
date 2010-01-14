@@ -16,7 +16,6 @@ import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.adt.ui.text.atl.OpenDeclarationUtils;
-import org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType;
 
 public class AtlTextHover implements ITextHover {
 
@@ -35,15 +34,11 @@ public class AtlTextHover implements ITextHover {
 	 */
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
 		try {
-			OclAnyType type = OpenDeclarationUtils.getType(editor, hoverRegion.getOffset(), hoverRegion
+			return OpenDeclarationUtils.getInformation(editor, hoverRegion.getOffset(), hoverRegion
 					.getLength());
-			if (!type.equals(OclAnyType.getInstance())) {
-				return type.toString();
-			}
 		} catch (BadLocationException e) {
 			return null;
 		}
-		return null;
 	}
 
 	/**

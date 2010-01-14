@@ -62,7 +62,7 @@ public class AtlTypesProcessor {
 		if (oclIsKindOf(element, "OclModelElement")) { //$NON-NLS-1$
 			res = OclAnyType.create(manager, element).getOclType();
 		} else if (oclIsKindOf(element, "Binding")) { //$NON-NLS-1$
-			res = getBindingType(element);
+			res = getBindingFeature(element).getType();
 		} else if (oclIsKindOf(element, "StringExp")) { //$NON-NLS-1$
 			res = StringType.getInstance();
 		} else if (oclIsKindOf(element, "IntegerExp")) { //$NON-NLS-1$
@@ -86,7 +86,10 @@ public class AtlTypesProcessor {
 		} else if (oclIsKindOf(element, "VariableExp")) { //$NON-NLS-1$
 			res = getVariableExpType(element);
 		} else if (oclIsKindOf(element, "NavigationOrAttributeCallExp")) { //$NON-NLS-1$
-			res = getNavigationOrAttributeCallExpType(element);
+			Feature feature = getFeature(element);
+			if (feature != null) {
+				res = feature.getType();
+			}
 		} else if (oclIsKindOf(element, "OperatorCallExp")) { //$NON-NLS-1$
 			res = getOperatorCallExpType(element);
 		} else if (oclIsKindOf(element, "OperationCallExp")) { //$NON-NLS-1$
@@ -97,10 +100,45 @@ public class AtlTypesProcessor {
 			res = getIteratorType(element);
 		} else if (oclIsKindOf(element, "VariableDeclaration")) { //$NON-NLS-1$
 			res = getVariableDeclarationType(element);
-		} else {
-			System.err.println(element.eClass().getName());
 		}
 		return res;
+	}
+
+	/**
+	 * Returns a description of the given element.
+	 * 
+	 * @param locatedElement
+	 *            the element
+	 * @return the description
+	 * @throws BadLocationException
+	 */
+	public String getInformation(EObject locatedElement) throws BadLocationException {
+		if (oclIsKindOf(locatedElement, "OclModelElement")) { //$NON-NLS-1$
+			OclAnyType type = OclAnyType.create(manager, locatedElement);
+			if (type instanceof ModelElementType) {
+				return ((ModelElementType)type).getInformation();
+			}
+		} else if (oclIsKindOf(locatedElement, "Binding")) { //$NON-NLS-1$
+			Feature feature = getBindingFeature(locatedElement);
+			if (feature != null) {
+				return feature.getInformation();
+			}
+		} else if (oclIsKindOf(locatedElement, "VariableExp")) { //$NON-NLS-1$
+			String code = analyser.getText(locatedElement);
+			String name = analyzeVariableExp(code)[0];
+			return name + " : " + getType(locatedElement); //$NON-NLS-1$
+		} else if (oclIsKindOf(locatedElement, "NavigationOrAttributeCallExp")) { //$NON-NLS-1$
+			Feature feature = getFeature(locatedElement);
+			if (feature != null) {
+				return feature.getInformation();
+			}
+		} else if (oclIsKindOf(locatedElement, "OperationCallExp")) { //$NON-NLS-1$
+			return getOperationCallExpInformation(locatedElement);
+		} else if (oclIsKindOf(locatedElement, "VariableDeclaration")) { //$NON-NLS-1$
+			String name = (String)eGet(locatedElement, "varName"); //$NON-NLS-1$
+			return name + " : " + getType(locatedElement); //$NON-NLS-1$
+		}
+		return null;
 	}
 
 	/**
@@ -118,9 +156,12 @@ public class AtlTypesProcessor {
 		} else if (oclIsKindOf(element, "OclModelElement")) { //$NON-NLS-1$
 			res = OclAnyType.create(manager, element).getOclType().getClassifier();
 		} else if (oclIsKindOf(element, "Binding")) { //$NON-NLS-1$
-			res = getBindingDeclaration(element);
+			res = getBindingFeature(element).getDeclaration();
 		} else if (oclIsKindOf(element, "NavigationOrAttributeCallExp")) { //$NON-NLS-1$
-			res = getNavigationOrAttributeCallExpDeclaration(element);
+			Feature feature = getFeature(element);
+			if (feature != null) {
+				res = feature.getDeclaration();
+			}
 		} else if (oclIsKindOf(element, "OperationCallExp")) { //$NON-NLS-1$
 			res = getOperationCallExpDeclaration(element);
 		} else if (oclIsKindOf(element, "VariableDeclaration")) { //$NON-NLS-1$
@@ -239,74 +280,32 @@ public class AtlTypesProcessor {
 		return OclAnyType.getInstance();
 	}
 
-	private EObject getNavigationOrAttributeCallExpDeclaration(EObject element) throws BadLocationException {
-		String navigation = (String)eGet(element, "name"); //$NON-NLS-1$
-		if (navigation != null) {
-			EObject source = (EObject)eGet(element, "source"); //$NON-NLS-1$
-			if (source != null) {
-				OclAnyType sourceType = getType(source);
-				if (!sourceType.equals(OclAnyType.getInstance())) {
-					Feature feature = getFeature(sourceType, getUnit(), navigation);
-					if (feature != null) {
-						return feature.getDeclaration();
-					}
-				}
-			}
-		}
-		return null;
-	}
-
-	private OclAnyType getBindingType(EObject element) throws BadLocationException {
+	private Feature getBindingFeature(EObject element) throws BadLocationException {
 		String navigation = (String)eGet(element, "propertyName"); //$NON-NLS-1$
 		if (navigation != null) {
 			EObject source = (EObject)eGet(element, "outPatternElement"); //$NON-NLS-1$
 			if (source != null) {
 				OclAnyType sourceType = getType(source);
 				if (!sourceType.equals(OclAnyType.getInstance())) {
-					Feature feature = getFeature(sourceType, getUnit(), navigation);
-					if (feature != null) {
-						return feature.getType();
-					}
+					return getFeature(sourceType, getUnit(), navigation);
 				}
 			}
 		}
 		return null;
 	}
 
-	private EObject getBindingDeclaration(EObject element) throws BadLocationException {
-		String navigation = (String)eGet(element, "propertyName"); //$NON-NLS-1$
-		if (navigation != null) {
-			EObject source = (EObject)eGet(element, "outPatternElement"); //$NON-NLS-1$
-			if (source != null) {
-				OclAnyType sourceType = getType(source);
-				if (!sourceType.equals(OclAnyType.getInstance())) {
-					Feature feature = getFeature(sourceType, getUnit(), navigation);
-					if (feature != null) {
-						return feature.getDeclaration();
-					}
-				}
-			}
-		}
-		return null;
-	}
-
-	private OclAnyType getNavigationOrAttributeCallExpType(EObject element) throws BadLocationException {
+	private Feature getFeature(EObject element) throws BadLocationException {
 		String navigation = (String)eGet(element, "name"); //$NON-NLS-1$
 		if (navigation != null) {
 			EObject source = (EObject)eGet(element, "source"); //$NON-NLS-1$
 			if (source != null) {
 				OclAnyType sourceType = getType(source);
 				if (!sourceType.equals(OclAnyType.getInstance())) {
-					Feature feature = getFeature(sourceType, getUnit(), navigation);
-					if (feature != null) {
-						return feature.getType();
-					} else {
-						return OclAnyType.getInstance();
-					}
+					return getFeature(sourceType, getUnit(), navigation);
 				}
 			}
 		}
-		return OclAnyType.getInstance();
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -333,6 +332,36 @@ public class AtlTypesProcessor {
 				if (operation != null) {
 					// TODO add arguments values
 					return operation.getDeclaration();
+				}
+			}
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	private String getOperationCallExpInformation(EObject element) throws BadLocationException {
+		String operationName = (String)eGet(element, "operationName"); //$NON-NLS-1$
+		EObject source = (EObject)eGet(element, "source"); //$NON-NLS-1$
+		if (source != null) {
+			OclAnyType sourceType = getType(source);
+			if (sourceType != null) {
+				List<OclAnyType> argumentTypes = new ArrayList<OclAnyType>();
+				Collection<EObject> arguments = (Collection<EObject>)eGet(element, "arguments"); //$NON-NLS-1$
+				if (arguments != null) {
+					for (EObject eObject : arguments) {
+						argumentTypes.add(getType(eObject));
+					}
+				}
+				Operation operation = null;
+				if (argumentTypes.isEmpty()) {
+					operation = getOperation(sourceType, getUnit(), operationName);
+				} else {
+					operation = getOperation(sourceType, getUnit(), operationName, argumentTypes
+							.toArray(new OclAnyType[argumentTypes.size()]));
+				}
+				if (operation != null) {
+					// TODO add arguments values
+					return operation.getInformation(sourceType);
 				}
 			}
 		}

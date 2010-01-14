@@ -62,8 +62,8 @@ public class Feature implements Comparable<Feature> {
 	 * @param upper
 	 *            the feature upper bound
 	 */
-	public Feature(EObject declaration, String name, OclAnyType contextType, OclAnyType type, boolean ordered, boolean container,
-			int lower, int upper) {
+	public Feature(EObject declaration, String name, OclAnyType contextType, OclAnyType type,
+			boolean ordered, boolean container, int lower, int upper) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -244,6 +244,48 @@ public class Feature implements Comparable<Feature> {
 	 */
 	public int compareTo(Feature o) {
 		return toString().compareTo(o.toString());
+	}
+
+	/**
+	 * Returns a description of the feature.
+	 * 
+	 * @return a description of the feature
+	 */
+	public String getInformation() {
+		StringBuffer information = new StringBuffer();
+		information.append(getName());
+		information.append(" : "); //$NON-NLS-1$
+
+		if (isMany()) {
+			OclAnyType type = getType();
+			if (type instanceof CollectionType) {
+				information.append(((CollectionType)type).getParameterType());
+			} else {
+				// should not happen
+				information.append(getType());
+			}
+			information.append(' ');
+			if (isContainer()) {
+				information.append('[');
+			} else {
+				information.append('{');
+			}
+			information.append(getLowerBound());
+			information.append(".."); //$NON-NLS-1$
+			if (getUpperBound() == -1) {
+				information.append('*');
+			} else {
+				information.append(getUpperBound());
+			}
+			if (isContainer()) {
+				information.append(']');
+			} else {
+				information.append('}');
+			}
+		} else {
+			information.append(getType());
+		}
+		return information.toString();
 	}
 
 }

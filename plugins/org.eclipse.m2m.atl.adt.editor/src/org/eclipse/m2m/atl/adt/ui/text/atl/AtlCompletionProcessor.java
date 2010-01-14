@@ -44,7 +44,6 @@ import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.adt.ui.editor.Messages;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.AtlTypesProcessor;
-import org.eclipse.m2m.atl.adt.ui.text.atl.types.CollectionType;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.Feature;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.ModelElementType;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType;
@@ -767,40 +766,7 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 	private AtlCompletionProposal createFeatureProposal(String prefix, int offset, Feature feature) {
 		String replacementString = feature.getName();
 		if (startsWithIgnoreCase(prefix, replacementString) && !prefix.equals(replacementString)) {
-			StringBuffer displayString = new StringBuffer();
-			displayString.append(feature.getName());
-			displayString.append(" : "); //$NON-NLS-1$
-
-			if (feature.isMany()) {
-				OclAnyType type = feature.getType();
-				if (type instanceof CollectionType) {
-					displayString.append(((CollectionType)type).getParameterType());
-				} else {
-					// should not happen
-					displayString.append(feature.getType());
-				}
-				displayString.append(' ');
-				if (feature.isContainer()) {
-					displayString.append('[');
-				} else {
-					displayString.append('{');
-				}
-				displayString.append(feature.getLowerBound());
-				displayString.append(".."); //$NON-NLS-1$
-				if (feature.getUpperBound() == -1) {
-					displayString.append('*');
-				} else {
-					displayString.append(feature.getUpperBound());
-				}
-				if (feature.isContainer()) {
-					displayString.append(']');
-				} else {
-					displayString.append('}');
-				}
-			} else {
-				displayString.append(feature.getType());
-			}
-
+			String displayString = feature.getInformation();
 			StringBuffer additionalProposalInfo = new StringBuffer(displayString);
 			additionalProposalInfo.append(" - "); //$NON-NLS-1$
 			additionalProposalInfo.append(feature.getContextType());
@@ -829,27 +795,19 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 
 	private AtlTemplateProposal createOperationProposal(String prefix, int offset, OclAnyType context,
 			Operation operation, AtlModelAnalyser analyser) {
-
-		StringBuffer templateName = new StringBuffer();
 		StringBuffer pattern = new StringBuffer();
-		templateName.append(operation.getName());
 		pattern.append(operation.getName());
-		templateName.append('(');
 		pattern.append('(');
 		for (Iterator<Entry<String, OclAnyType>> iterator = operation.getParameters().entrySet().iterator(); iterator
 				.hasNext();) {
 			Entry<String, OclAnyType> parameter = iterator.next();
-			templateName.append(parameter.getKey() + " : " + parameter.getValue()); //$NON-NLS-1$
 			pattern.append("${" + parameter.getKey() + '}'); //$NON-NLS-1$
 			if (iterator.hasNext()) {
-				templateName.append(", "); //$NON-NLS-1$
 				pattern.append(", "); //$NON-NLS-1$
 			}
 		}
-		templateName.append(')');
 		pattern.append(')');
 		if (operation.getType(context) != null) {
-			templateName.append(" : " + operation.getType(context)); //$NON-NLS-1$
 		}
 		// already done by Template description :
 		// templateName.append(" - "); //$NON-NLS-1$
@@ -858,11 +816,11 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		if (operation.getContextType() != null) {
 			description = operation.getContextType().toString();
 		}
-		Template template = new Template(templateName.toString(), description, atlContext,
-				pattern.toString(), false);
+		Template template = new Template(operation.getInformation(context), description, atlContext, pattern
+				.toString(), false);
 
 		return convertToProposal(template, prefix, offset, AtlUIPlugin.getDefault().getImage(
-				operation.getImagePath()), true, operation.getInformation(context));
+				operation.getImagePath()), true, operation.getDocumentation(context));
 	}
 
 	private AtlCompletionProposal createTypeProposal(String prefix, int offset, String metamodelName,
@@ -872,25 +830,8 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 			String replacementString = metamodelName + "!" + meType.getOclType().getClassifier().getName(); //$NON-NLS-1$
 			if (startsWithIgnoreCase(prefix, replacementString) && !prefix.equals(replacementString)) {
 				Image image = AtlUIPlugin.getDefault().getImage("$nl$/icons/model_class.gif"); //$NON-NLS-1$
-				StringBuffer additionalProposalInfo = new StringBuffer();
-				if (meType.isAbstract()) {
-					additionalProposalInfo.append("abstract "); //$NON-NLS-1$
-				}
-				additionalProposalInfo.append("class "); //$NON-NLS-1$
-				additionalProposalInfo.append(meType.getOclType().getClassifier().getName());
-				boolean first = true;
-				for (int i = 0; i < meType.getSupertypes().length; i++) {
-					OclAnyType st = meType.getSupertypes()[i];
-					if (first) {
-						additionalProposalInfo.append(" extends\n\t"); //$NON-NLS-1$
-						first = false;
-					} else {
-						additionalProposalInfo.append(",\n\t"); //$NON-NLS-1$
-					}
-					additionalProposalInfo.append(st);
-				}
 				return new AtlCompletionProposal(replacementString, offset - prefix.length(),
-						replacementString.length(), image, replacementString, 0, additionalProposalInfo
+						replacementString.length(), image, replacementString, 0, meType.getInformation()
 								.toString());
 			}
 		} else {

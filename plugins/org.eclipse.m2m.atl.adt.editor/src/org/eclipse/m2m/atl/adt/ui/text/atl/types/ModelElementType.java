@@ -157,4 +157,32 @@ public class ModelElementType extends OclAnyType {
 		}
 		return OclAnyType.getInstance();
 	}
+
+	/**
+	 * Returns a description of the model element.
+	 * 
+	 * @return a description of the model element
+	 */
+	public String getInformation() {
+		StringBuffer information = new StringBuffer();
+		if (isAbstract()) {
+			information.append("abstract "); //$NON-NLS-1$
+		}
+		information.append("class "); //$NON-NLS-1$
+		information.append(getOclType().getClassifier().getName());
+		boolean first = true;
+		for (int i = 0; i < getSupertypes().length; i++) {
+			OclAnyType st = getSupertypes()[i];
+			if (!OclAnyType.getInstance().equals(st)) {
+				if (first) {
+					information.append(" extends\n\t"); //$NON-NLS-1$
+					first = false;
+				} else {
+					information.append(",\n\t"); //$NON-NLS-1$
+				}
+				information.append(st);
+			}
+		}
+		return information.toString();
+	}
 }

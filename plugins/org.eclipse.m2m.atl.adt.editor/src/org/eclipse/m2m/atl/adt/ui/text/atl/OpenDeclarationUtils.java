@@ -70,8 +70,7 @@ public class OpenDeclarationUtils {
 	 * @return the declaration if exists
 	 * @throws BadLocationException
 	 */
-	public static OclAnyType getType(AtlEditor editor, int offset, int length)
-			throws BadLocationException {
+	public static OclAnyType getType(AtlEditor editor, int offset, int length) throws BadLocationException {
 		int savedOffset = offset;
 		if (editor.isDirty()) {
 			int[] savePosition = editor.getComparator().current2savePosition(
@@ -90,7 +89,39 @@ public class OpenDeclarationUtils {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Returns a description of the element available at the given offset.
+	 * 
+	 * @param editor
+	 *            the current editor
+	 * @param offset
+	 *            the given offset
+	 * @param length
+	 *            the region length (after offset, unused)
+	 * @return a description of the element available at the given offset
+	 * @throws BadLocationException
+	 */
+	public static String getInformation(AtlEditor editor, int offset, int length) throws BadLocationException {
+		int savedOffset = offset;
+		if (editor.isDirty()) {
+			int[] savePosition = editor.getComparator().current2savePosition(
+					new int[] {offset, offset + length,});
+			if (savePosition != null) {
+				savedOffset = savePosition[0];
+			}
+		}
+		AtlSourceManager manager = editor.getSourceManager();
+		AtlModelAnalyser analyser = editor.getModelAnalyser();
+		EObject locatedElement = analyser.getLocatedElement(savedOffset);
+		if (locatedElement != null) {
+			AtlTypesProcessor processor = new AtlTypesProcessor();
+			processor.update(analyser, manager);
+			return processor.getInformation(locatedElement);
+		}
+		return null;
+	}
+
 	/**
 	 * Retrieves the declaration of the element at the given offset if exists.
 	 * 
