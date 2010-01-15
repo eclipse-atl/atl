@@ -42,9 +42,8 @@ import org.eclipse.m2m.atl.core.IReferenceModel;
  */
 public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 
-
 	private Map<String, EObject> metaElementByName = Collections.emptyMap();
-	
+
 	private Set<Resource> referencedResources = new HashSet<Resource>();
 
 	private Map<EClass, Set<EObject>> allElementsByType = new HashMap<EClass, Set<EObject>>();
@@ -85,13 +84,12 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 	}
 
 	/**
-	 * Returns a {@link Set} of the elements matching the given type,
-	 * including elements in {@link #getReferencedResources()}.
+	 * Returns a {@link Set} of the elements matching the given type, including elements in
+	 * {@link #getReferencedResources()}.
 	 * 
 	 * @param metaElement
 	 *            a metatype
 	 * @return a {@link Set} of the elements matching the given type
-	 * 
 	 * @see org.eclipse.m2m.atl.core.IModel#getElementsByType(java.lang.Object)
 	 */
 	public Set<EObject> getAllElementsByType(EClass metaElement) {
@@ -133,20 +131,22 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 				.hasNext();) {
 			EDataType dt = (EDataType)i.next();
 			String tname = dt.getName();
-			String icn = null;
-			if (tname.equals("Boolean")) { //$NON-NLS-1$
-				icn = "boolean"; //$NON-NLS-1$
-			} else if (tname.equals("Double") || tname.equals("Real")) { //$NON-NLS-1$ //$NON-NLS-2$
-				icn = "java.lang.Double"; //$NON-NLS-1$
-			} else if (tname.equals("Float")) { //$NON-NLS-1$
-				icn = "java.lang.Float"; //$NON-NLS-1$
-			} else if (tname.equals("Integer")) { //$NON-NLS-1$
-				icn = "java.lang.Integer"; //$NON-NLS-1$
-			} else if (tname.equals("String")) { //$NON-NLS-1$
-				icn = "java.lang.String"; //$NON-NLS-1$
-			}
-			if (icn != null) {
-				dt.setInstanceClassName(icn);
+			String icn = dt.getInstanceClassName();
+			if (icn == null) {
+				if (tname.equals("Boolean")) { //$NON-NLS-1$
+					icn = "boolean"; //$NON-NLS-1$
+				} else if (tname.equals("Double") || tname.equals("Real")) { //$NON-NLS-1$ //$NON-NLS-2$
+					icn = "java.lang.Double"; //$NON-NLS-1$
+				} else if (tname.equals("Float")) { //$NON-NLS-1$
+					icn = "java.lang.Float"; //$NON-NLS-1$
+				} else if (tname.equals("Integer")) { //$NON-NLS-1$
+					icn = "java.lang.Integer"; //$NON-NLS-1$
+				} else if (tname.equals("String")) { //$NON-NLS-1$
+					icn = "java.lang.String"; //$NON-NLS-1$
+				}
+				if (icn != null) {
+					dt.setInstanceClassName(icn);
+				}
 			}
 		}
 	}
@@ -279,7 +279,7 @@ public class EMFReferenceModel extends EMFModel implements IReferenceModel {
 
 	/**
 	 * Returns the referencedResources.
-	 *
+	 * 
 	 * @return the referencedResources
 	 */
 	public Set<Resource> getReferencedResources() {
