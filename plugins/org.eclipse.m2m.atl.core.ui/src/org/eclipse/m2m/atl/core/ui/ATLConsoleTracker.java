@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.core.ui;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.debug.internal.ui.views.console.ProcessConsole;
 import org.eclipse.debug.ui.console.FileLink;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.m2m.atl.common.AtlNbCharFile;
@@ -24,6 +25,7 @@ import org.eclipse.ui.console.TextConsole;
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
+@SuppressWarnings("restriction")
 public class ATLConsoleTracker implements IPatternMatchListenerDelegate {
 
 	private static final String ATL_EDITOR_ID = "org.eclipse.m2m.atl.adt.editor.AtlEditor"; //$NON-NLS-1$
@@ -35,9 +37,8 @@ public class ATLConsoleTracker implements IPatternMatchListenerDelegate {
 	 * 
 	 * @see org.eclipse.ui.console.IPatternMatchListenerDelegate#connect(org.eclipse.ui.console.TextConsole)
 	 */
-	public void connect(TextConsole atlConsole) {
-		this.console = atlConsole;
-
+	public void connect(TextConsole console) {
+		this.console = console;
 	}
 
 	/**
@@ -64,7 +65,7 @@ public class ATLConsoleTracker implements IPatternMatchListenerDelegate {
 			String moduleName = ""; //$NON-NLS-1$
 			if (info.contains(".atl")) { //$NON-NLS-1$
 				moduleName = info.split(".atl")[0]; //$NON-NLS-1$
-				IFile file = AtlLaunchConfigurationDelegate.getFileFromModuleName(moduleName);
+				IFile file = getFileFromModuleName(moduleName, event);
 				if (file != null) {
 					if (file.isAccessible()) {
 						int lineNumber = -1;
@@ -91,4 +92,14 @@ public class ATLConsoleTracker implements IPatternMatchListenerDelegate {
 		}
 	}
 
+	private static IFile getFileFromModuleName(String moduleName, PatternMatchEvent event) {
+		if (event.getSource() instanceof ProcessConsole) {
+			// ant file
+			// TODO implement an IFile resolver to display hyperlinks
+			return null;
+		} else {
+			// launch configuration
+			return AtlLaunchConfigurationDelegate.getFileFromModuleName(moduleName);
+		}
+	}
 }

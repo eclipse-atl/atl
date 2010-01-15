@@ -49,10 +49,16 @@
             id="org.eclipse.m2m.atl.core.ui.ATLConsoleTracker"
             regex="\(\S*atl\S*\)">
          <enablement>
-            <test
-                  property="org.eclipse.ui.console.consoleTypeTest"
-                  value="atlConsole">
-            </test></enablement>
+            <or>
+               <test
+                     property="org.eclipse.ui.console.consoleTypeTest"
+                     value="atlConsole">
+               </test>
+               <test
+                     property="org.eclipse.debug.ui.processTypeTest"
+                     value="org.eclipse.ant.ui.antProcess">
+               </test>
+            </or></enablement>
       </consolePatternMatchListener>
    </extension>
    <extension
