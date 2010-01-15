@@ -73,7 +73,8 @@ public class RegisterMetamodel extends AbstractHandler {
 		try {
 			mmExtent.load(new FileInputStream(metamodelURL), Collections.EMPTY_MAP);
 		} catch (IOException e) {
-			MessageDialog.openError(shell, Messages.getString("RegisterMetamodel.REGISTER_FAIL"), e.getMessage()); //$NON-NLS-1$
+			MessageDialog.openError(shell,
+					Messages.getString("RegisterMetamodel.REGISTER_FAIL"), e.getMessage()); //$NON-NLS-1$
 		}
 		for (Iterator<EObject> it = getElementsByType(mmExtent, "EPackage").iterator(); it.hasNext();) { //$NON-NLS-1$
 			EPackage p = (EPackage)it.next();
@@ -87,24 +88,26 @@ public class RegisterMetamodel extends AbstractHandler {
 
 		for (Iterator<EObject> it = getElementsByType(mmExtent, "EDataType").iterator(); it.hasNext();) { //$NON-NLS-1$
 			EObject eo = it.next();
-			EStructuralFeature sf;
-			sf = eo.eClass().getEStructuralFeature("name"); //$NON-NLS-1$
+			EStructuralFeature sf = eo.eClass().getEStructuralFeature("name"); //$NON-NLS-1$
+			EStructuralFeature isf = eo.eClass().getEStructuralFeature("instanceClassName"); //$NON-NLS-1$
 			String tname = (String)eo.eGet(sf);
-			String icn = null;
-			if (tname.equals("Boolean")) { //$NON-NLS-1$
-				icn = "boolean"; //$NON-NLS-1$
-			} else if (tname.equals("Double") || tname.equals("Real")) { //$NON-NLS-1$ //$NON-NLS-2$
-				icn = "java.lang.Double"; //$NON-NLS-1$
-			} else if (tname.equals("Float")) { //$NON-NLS-1$
-				icn = "java.lang.Float"; //$NON-NLS-1$
-			} else if (tname.equals("Integer")) { //$NON-NLS-1$
-				icn = "java.lang.Integer"; //$NON-NLS-1$
-			} else if (tname.equals("String")) { //$NON-NLS-1$
-				icn = "java.lang.String"; //$NON-NLS-1$
-			}
-			if (icn != null) {
-				sf = eo.eClass().getEStructuralFeature("instanceClassName"); //$NON-NLS-1$
-				eo.eSet(sf, icn);
+			String icn = (String)eo.eGet(isf);
+			if (icn == null) {
+				if (tname.equals("Boolean")) { //$NON-NLS-1$
+					icn = "boolean"; //$NON-NLS-1$
+				} else if (tname.equals("Double") || tname.equals("Real")) { //$NON-NLS-1$ //$NON-NLS-2$
+					icn = "java.lang.Double"; //$NON-NLS-1$
+				} else if (tname.equals("Float")) { //$NON-NLS-1$
+					icn = "java.lang.Float"; //$NON-NLS-1$
+				} else if (tname.equals("Integer")) { //$NON-NLS-1$
+					icn = "java.lang.Integer"; //$NON-NLS-1$
+				} else if (tname.equals("String")) { //$NON-NLS-1$
+					icn = "java.lang.String"; //$NON-NLS-1$
+				}
+				if (icn != null) {
+					sf = eo.eClass().getEStructuralFeature("instanceClassName"); //$NON-NLS-1$
+					eo.eSet(sf, icn);
+				}
 			}
 		}
 	}
