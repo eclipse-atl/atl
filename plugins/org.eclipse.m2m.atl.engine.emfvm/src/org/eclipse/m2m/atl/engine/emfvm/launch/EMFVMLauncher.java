@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
+import org.eclipse.m2m.atl.core.service.LauncherService;
 import org.eclipse.m2m.atl.engine.emfvm.ASM;
 import org.eclipse.m2m.atl.engine.emfvm.ASMXMLReader;
 import org.eclipse.m2m.atl.engine.emfvm.Messages;
@@ -159,12 +160,13 @@ public class EMFVMLauncher implements ILauncher {
 			superimpose.add(getASMFromObject(modules[i]));
 		}
 		IModelAdapter modelAdapter;
-		if ("true".equals(options.get("supportUML2Stereotypes"))) { //$NON-NLS-1$ //$NON-NLS-2$
+		if (LauncherService.getBooleanOption(options.get("supportUML2Stereotypes"), false)) { //$NON-NLS-1$ 
 			modelAdapter = new UML2ModelAdapter();
 		} else {
 			modelAdapter = new EMFModelAdapter();
 		}
-		modelAdapter.setAllowInterModelReferences("true".equals(options.get("allowInterModelReferences"))); //$NON-NLS-1$ //$NON-NLS-2$	
+		modelAdapter.setAllowInterModelReferences(LauncherService.getBooleanOption(options
+				.get("allowInterModelReferences"), false)); //$NON-NLS-1$ 	
 		return mainModule.run(tools, models, libraries, superimpose, options, monitor, modelAdapter);
 	}
 
@@ -219,13 +221,13 @@ public class EMFVMLauncher implements ILauncher {
 	public String getDefaultModelFactoryName() {
 		return MODEL_FACTORY_NAME;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getModes()
 	 */
 	public String[] getModes() {
-		return new String[]{RUN_MODE,};
+		return new String[] {RUN_MODE,};
 	}
 }
