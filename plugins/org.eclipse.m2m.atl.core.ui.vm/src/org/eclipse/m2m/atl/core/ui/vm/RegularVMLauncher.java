@@ -26,6 +26,7 @@ import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
+import org.eclipse.m2m.atl.core.service.LauncherService;
 import org.eclipse.m2m.atl.core.ui.vm.asm.ASMFactory;
 import org.eclipse.m2m.atl.core.ui.vm.asm.ASMModelWrapper;
 import org.eclipse.m2m.atl.core.ui.vm.debug.NetworkDebugger;
@@ -135,7 +136,7 @@ public class RegularVMLauncher implements ILauncher {
 	public void initialize(Map<String, Object> options) {
 		models = new HashMap<String, IModel>();
 		libraries = new HashMap<String, ASM>();
-		checkSameModel = "false".equals(options.get("allowInterModelReferences")); //$NON-NLS-1$ //$NON-NLS-2$
+		checkSameModel = LauncherService.getBooleanOption(options.get("allowInterModelReferences"), true); //$NON-NLS-1$
 	}
 
 	/**
@@ -160,14 +161,16 @@ public class RegularVMLauncher implements ILauncher {
 				return internalLaunch(
 						new NetworkDebugger(getPort((ILaunch)options.get("launch")), true), options, modules); //$NON-NLS-1$
 			} else {
-				return internalLaunch(new SimpleDebugger(/* step = */"true".equals(options.get("step")), //$NON-NLS-1$ //$NON-NLS-2$
+				return internalLaunch(new SimpleDebugger(/* step = */LauncherService.getBooleanOption(options
+						.get("step"), false), //$NON-NLS-1$ 
 						/* stepops = */Collections.EMPTY_LIST,
 						/* deepstepops = */Collections.EMPTY_LIST,
 						/* nostepops = */Collections.EMPTY_LIST,
 						/* deepnostepops = */Collections.EMPTY_LIST,
-						/* showStackTrace = */true, "true".equals(options.get("showSummary")), //$NON-NLS-1$ //$NON-NLS-2$
-						"true".equals(options.get("profile")), //$NON-NLS-1$ //$NON-NLS-2$
-						"true".equals(options.get("continueAfterError")) //$NON-NLS-1$ //$NON-NLS-2$
+						/* showStackTrace = */true, LauncherService.getBooleanOption(options
+								.get("showSummary"), false), //$NON-NLS-1$
+						LauncherService.getBooleanOption(options.get("profile"), false), //$NON-NLS-1$ 
+						LauncherService.getBooleanOption(options.get("continueAfterError"), false)//$NON-NLS-1$ 
 						), options, modules);
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -211,8 +214,8 @@ public class RegularVMLauncher implements ILauncher {
 		ASM asm = getASMFromObject(modules[0]);
 		ASMModule asmModule = new ASMModule(asm);
 
-		ASMExecEnv env = new ASMExecEnv(asmModule, debugger,
-				!"true".equals(options.get("disableAttributeHelperCache"))); //$NON-NLS-1$ //$NON-NLS-2$
+		ASMExecEnv env = new ASMExecEnv(asmModule, debugger, !LauncherService.getBooleanOption(options
+				.get("disableAttributeHelperCache"), false)); //$NON-NLS-1$ 
 		env.addPermission("file.read"); //$NON-NLS-1$
 		env.addPermission("file.write"); //$NON-NLS-1$
 
@@ -243,7 +246,8 @@ public class RegularVMLauncher implements ILauncher {
 			env.registerOperations(module);
 		}
 
-		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
+		boolean printExecutionTime = LauncherService.getBooleanOption(
+				options.get("printExecutionTime"), false); //$NON-NLS-1$ 
 
 		long startTime = System.currentTimeMillis();
 		ASMInterpreter ai = new ASMInterpreter(asm, asmModule, env, options);
@@ -302,12 +306,11 @@ public class RegularVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getModes()
 	 */
 	public String[] getModes() {
-		return new String[]{RUN_MODE, DEBUG_MODE,};
+		return new String[] {RUN_MODE, DEBUG_MODE,};
 	}
-	
-	
+
 }
