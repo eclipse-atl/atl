@@ -403,20 +403,23 @@ public class EMFModelLoader extends ModelLoader {
 			for (Iterator i = model.getAllElementsByType("EDataType").iterator(); i.hasNext();) {
 				ASMEMFModelElement ame = (ASMEMFModelElement)i.next();
 				String tname = ((ASMString)ame.get(null, "name")).getSymbol();
-				String icn = null;
-				if (tname.equals("Boolean")) {
-					icn = "boolean"; // "java.lang.Boolean";
-				} else if (tname.equals("Double") || tname.equals("Real")) {
-					icn = "java.lang.Double";
-				} else if (tname.equals("Float")) {
-					icn = "java.lang.Float";
-				} else if (tname.equals("Integer")) {
-					icn = "java.lang.Integer";
-				} else if (tname.equals("String")) {
-					icn = "java.lang.String";
-				}
-				if (icn != null) {
-					ame.set(null, "instanceClassName", new ASMString(icn));
+				Object icnObject = ame.get(null, "instanceClassName");
+				if (!(icnObject instanceof ASMString)) {
+					String icn = null;
+					if (tname.equals("Boolean")) {
+						icn = "boolean"; // "java.lang.Boolean";
+					} else if (tname.equals("Double") || tname.equals("Real")) {
+						icn = "java.lang.Double";
+					} else if (tname.equals("Float")) {
+						icn = "java.lang.Float";
+					} else if (tname.equals("Integer")) {
+						icn = "java.lang.Integer";
+					} else if (tname.equals("String")) {
+						icn = "java.lang.String";
+					}
+					if (icn != null) {
+						ame.set(null, "instanceClassName", new ASMString(icn));
+					}
 				}
 			}
 		}
