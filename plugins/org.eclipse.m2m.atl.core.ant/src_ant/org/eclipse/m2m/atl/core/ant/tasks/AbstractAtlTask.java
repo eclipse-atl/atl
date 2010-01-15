@@ -93,6 +93,7 @@ public class AbstractAtlTask extends Task {
 	 *            the thrown exception
 	 */
 	protected void error(String msg, Throwable e) {
+		e.printStackTrace();
 		throw new BuildException(msg, e);
 	}
 
@@ -103,7 +104,7 @@ public class AbstractAtlTask extends Task {
 	 *            the error message
 	 */
 	protected void error(String msg) {
-		error(msg, null);
+		throw new BuildException(msg);
 	}
 
 	/**
