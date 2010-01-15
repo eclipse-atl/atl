@@ -78,7 +78,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 
 		Map<String, Object> options = new HashMap<String, Object>();
 		boolean isRefiningTraceMode = "atl2006".equals(atlCompiler) && isRefining; //$NON-NLS-1$
-		options.put("isRefiningTraceMode", Boolean.valueOf(isRefiningTraceMode).toString()); //$NON-NLS-1$
+		options.put("isRefiningTraceMode", isRefiningTraceMode); //$NON-NLS-1$
 		options.put("launch", launch); //$NON-NLS-1$
 		options.put("monitor", monitor); //$NON-NLS-1$
 
@@ -101,8 +101,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 				Collections.EMPTY_MAP);
 		options.put(ATLLaunchConstants.OPTION_MODEL_HANDLER, modelHandlers);
 
-		Object clearConsole = options.get(AdvancedTab.OPTION_CLEAR);
-		if (clearConsole != null && "true".equals(clearConsole)) { //$NON-NLS-1$
+		if (LauncherService.getBooleanOption(options.get(AdvancedTab.OPTION_CLEAR), false)) {
 			ATLCoreUIPlugin.clearConsole();
 		}
 
@@ -227,7 +226,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 					modelPaths, options, libraries, launch, modules);
 		}
 
-		if ("true".equals(options.get(AdvancedTab.OPTION_DERIVED.toString()))) { //$NON-NLS-1$
+		if (LauncherService.getBooleanOption(options.get(AdvancedTab.OPTION_DERIVED), false)) {
 			// Set generated files as derived
 			for (String targetModel : targetModels.keySet()) {
 				String path = launchConfigModelPaths.get(targetModel);
@@ -274,10 +273,8 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 			};
 			th.start();
 
-			if (options.get(ATLLaunchConstants.STOP_IN_MAIN) != null) {
-				mTarget.setStopInMain(Boolean.valueOf(options.get(ATLLaunchConstants.STOP_IN_MAIN).toString())
-						.booleanValue());
-			}
+			mTarget.setStopInMain(LauncherService.getBooleanOption(options
+					.get(ATLLaunchConstants.STOP_IN_MAIN), false));
 			mTarget.start();
 			launchParam.addDebugTarget(mTarget);
 
