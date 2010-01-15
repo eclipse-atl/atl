@@ -27,7 +27,6 @@ import org.eclipse.m2m.atl.core.launch.ILauncher;
 
 /**
  * The LauncherService utility class provides a generic way to launch a transformation using the ATL Core API.
- * 
  * To parameterize launch accurately, use directly the {@link ILauncher} implementations.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
@@ -76,7 +75,7 @@ public final class LauncherService {
 			InputStream... modules) throws ATLCoreException {
 		launcher.initialize(options);
 		Map<String, String> modelHandlers = (Map<String, String>)options.get("modelHandlers"); //$NON-NLS-1$
-		boolean isRefiningTraceMode = "true".equals(options.get("isRefiningTraceMode")); //$NON-NLS-1$//$NON-NLS-2$
+		boolean isRefiningTraceMode = getBooleanOption(options.get("isRefiningTraceMode"), false); //$NON-NLS-1$
 		ModelFactory defaultFactory = null;
 		IExtractor extractor = null;
 		IInjector injector = null;
@@ -195,7 +194,7 @@ public final class LauncherService {
 
 		launcher.initialize(options);
 		Map<String, String> modelHandlers = (Map<String, String>)options.get("modelHandlers"); //$NON-NLS-1$
-		boolean isRefiningTraceMode = "true".equals(options.get("isRefiningTraceMode")); //$NON-NLS-1$//$NON-NLS-2$
+		boolean isRefiningTraceMode = getBooleanOption(options.get("isRefiningTraceMode"), false); //$NON-NLS-1$
 
 		// REFINING TRACE MODE SUPPORT {
 		if (isRefiningTraceMode) {
@@ -317,6 +316,25 @@ public final class LauncherService {
 	 */
 	public static String getRefinedModelName(String modelName) {
 		return "REFINED#" + modelName; //$NON-NLS-1$
+	}
+
+	/**
+	 * Returns the boolean value of the given input, or the defaultValue if null.
+	 * 
+	 * @param value
+	 *            the input value
+	 * @param defaultValue
+	 *            the default boolean value to return in case of null
+	 * @return the boolean value of the given input, or the defaultValue if null
+	 */
+	public static boolean getBooleanOption(Object value, boolean defaultValue) {
+		boolean res = defaultValue;
+		if (value instanceof String) {
+			res = Boolean.valueOf((String)value);
+		} else if (value instanceof Boolean) {
+			res = ((Boolean)value).booleanValue();
+		}
+		return res;
 	}
 
 }
