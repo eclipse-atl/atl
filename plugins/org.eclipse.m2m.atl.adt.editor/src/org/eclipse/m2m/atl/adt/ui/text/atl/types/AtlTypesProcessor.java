@@ -62,7 +62,10 @@ public class AtlTypesProcessor {
 		if (oclIsKindOf(element, "OclModelElement")) { //$NON-NLS-1$
 			res = OclAnyType.create(manager, element).getOclType();
 		} else if (oclIsKindOf(element, "Binding")) { //$NON-NLS-1$
-			res = getBindingFeature(element).getType();
+			Feature feature = getBindingFeature(element);
+			if (feature != null) {
+				res = feature.getType();
+			}
 		} else if (oclIsKindOf(element, "StringExp")) { //$NON-NLS-1$
 			res = StringType.getInstance();
 		} else if (oclIsKindOf(element, "IntegerExp")) { //$NON-NLS-1$
@@ -156,7 +159,10 @@ public class AtlTypesProcessor {
 		} else if (oclIsKindOf(element, "OclModelElement")) { //$NON-NLS-1$
 			res = OclAnyType.create(manager, element).getOclType().getClassifier();
 		} else if (oclIsKindOf(element, "Binding")) { //$NON-NLS-1$
-			res = getBindingFeature(element).getDeclaration();
+			Feature feature = getBindingFeature(element);
+			if (feature != null) {
+				res = feature.getDeclaration();
+			}
 		} else if (oclIsKindOf(element, "NavigationOrAttributeCallExp")) { //$NON-NLS-1$
 			Feature feature = getFeature(element);
 			if (feature != null) {
