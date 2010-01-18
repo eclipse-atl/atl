@@ -578,8 +578,16 @@ public class EMFModelAdapter implements IModelAdapter {
 									if (!ref.isContainer() && !ref.isContainment()) {
 										oldCol.add(v);
 									} else {
-										// containment references cannot span across models
+										ATLLogger
+												.warning(Messages
+														.getString(
+																"EMFModelAdapter.CONTAINMENT_ERROR", new Object[] {settableValue, name})); //$NON-NLS-1$
 									}
+								} else {
+									ATLLogger
+											.warning(Messages
+													.getString(
+															"EMFModelAdapter.NON_ALLOWED_REFERENCE", new Object[] {settableValue, name})); //$NON-NLS-1$
 								}
 							} else {
 								oldCol.add(v);
@@ -590,12 +598,15 @@ public class EMFModelAdapter implements IModelAdapter {
 					if (targetIsEnum) {
 						EEnum eenum = (EEnum)type;
 						oldCol.add(getEENumLiteral(eenum, settableValue.toString()).getInstance());
-					} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
+					} else if (!(settableValue instanceof EObject)) {
 						oldCol.add(settableValue);
-					} else { // (!allowIntermodelReferences) && (value instanceof EObject)
-						if (execEnv.getModelOf(eo) == execEnv.getModelOf(settableValue)) {
-							oldCol.add(settableValue);
-						}
+					} else if (execEnv.getModelOf(eo) == execEnv.getModelOf(settableValue)) {
+						oldCol.add(settableValue);
+					} else if (allowInterModelReferences) {
+						oldCol.add(settableValue);
+					} else {
+						ATLLogger.warning(Messages.getString(
+								"EMFModelAdapter.NON_ALLOWED_REFERENCE", new Object[] {settableValue, name})); //$NON-NLS-1$
 					}
 				}
 			} else {
@@ -622,12 +633,15 @@ public class EMFModelAdapter implements IModelAdapter {
 													"EMFModelAdapter.LITERALERROR", new Object[] {settableValue, eenum.getName()})); //$NON-NLS-1$
 						}
 					}
-				} else if (allowInterModelReferences || !(settableValue instanceof EObject)) {
+				} else if (!(settableValue instanceof EObject)) {
 					eo.eSet(feature, settableValue);
-				} else { // (!allowIntermodelReferences) && (value intanceof EObject)
-					if (execEnv.getModelOf(eo) == execEnv.getModelOf(settableValue)) {
-						eo.eSet(feature, settableValue);
-					}
+				} else if (execEnv.getModelOf(eo) == execEnv.getModelOf(settableValue)) {
+					eo.eSet(feature, settableValue);
+				} else if (allowInterModelReferences) {
+					eo.eSet(feature, settableValue);
+				} else {
+					ATLLogger.warning(Messages.getString(
+							"EMFModelAdapter.NON_ALLOWED_REFERENCE", new Object[] {settableValue, name})); //$NON-NLS-1$
 				}
 			}
 		} catch (Throwable e) {
