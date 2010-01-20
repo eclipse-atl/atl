@@ -175,6 +175,10 @@ public class ASMEmitter {
 	public ASM getASM() {
 		return asm;
 	}
+	
+	public void setVersion(String version) {
+		asm.setVersion(version);
+	}
 
 	/**
 	 * Writes the {@link ASM} to a file.

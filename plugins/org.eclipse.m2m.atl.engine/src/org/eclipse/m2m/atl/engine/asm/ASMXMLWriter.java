@@ -21,7 +21,7 @@ import java.util.Iterator;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class ASMXMLWriter extends ASMWriter {
-
+	
 	private PrintWriter out;
 
 	private boolean debug;
@@ -56,7 +56,7 @@ public class ASMXMLWriter extends ASMWriter {
 	private void printASM(ASM asm) {
 		String name = asm.getName();
 		println("<?xml version = '1.0' encoding = 'ISO-8859-1' ?>"); //$NON-NLS-1$
-		println("<asm name=\"" + getCPIndex(name) + "\">", "<!-- " + name + " -->"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		println("<asm version=\"" + asm.getVersion() + "\" name=\"" + getCPIndex(name) + "\">", "<!-- " + name + " -->"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		println("\t<cp>"); //$NON-NLS-1$
 		int k = 0;
 		for (Iterator i = getConstantPool().iterator(); i.hasNext();) {

@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
+
 /**
  * This class represents a transformation module, which can have fields.
  * 
@@ -25,6 +27,8 @@ import java.util.Map;
 public class ASM {
 
 	private String name;
+
+	private String version = ATLLaunchConstants.DEFAULT_COMPILER_VERSION;
 
 	private List fields = new ArrayList();
 
@@ -110,5 +114,13 @@ public class ASM {
 
 	public List getOperations() {
 		return operations;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getVersion() {
+		return version;
 	}
 }
