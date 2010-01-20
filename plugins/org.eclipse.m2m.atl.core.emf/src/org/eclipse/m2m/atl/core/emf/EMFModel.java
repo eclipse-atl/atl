@@ -9,7 +9,7 @@
  *     INRIA - initial API and implementation
  *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: EMFModel.java,v 1.13 2009/10/09 09:45:02 wpiers Exp $
+ * $Id: EMFModel.java,v 1.14 2010/01/20 13:10:56 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -48,9 +48,6 @@ public class EMFModel implements IModel {
 	private EMFModelFactory modelFactory;
 
 	private boolean isTarget;
-
-	/** The real factory, which initializes the {@link Resource} with the correct format. */
-	private Resource.Factory emfResourceFactory;
 	
 	/**
 	 * Creates a new {@link EMFModel} conforming to the given {@link EMFReferenceModel}.
@@ -73,11 +70,7 @@ public class EMFModel implements IModel {
 	public Object newElement(Object metaElement) {
 		Resource mainResource = getResource();
 		if (mainResource == null) {
-			if (emfResourceFactory != null) {
-				mainResource = emfResourceFactory.createResource(URI.createURI("new-model")); //$NON-NLS-1$				
-			} else {
-				mainResource = modelFactory.getResourceSet().createResource(URI.createURI("new-model")); //$NON-NLS-1$
-			}
+			mainResource = modelFactory.getResourceSet().createResource(URI.createURI("new-model")); //$NON-NLS-1$
 			setResource(mainResource);
 		}
 		EClass ec = (EClass)metaElement;
@@ -85,14 +78,6 @@ public class EMFModel implements IModel {
 		ret = ec.getEPackage().getEFactoryInstance().create(ec);
 		mainResource.getContents().add(ret);
 		return ret;
-	}
-
-	public Resource.Factory getEmfResourceFactory() {
-		return emfResourceFactory;
-	}
-
-	public void setEmfResourceFactory(Resource.Factory factory) {
-		this.emfResourceFactory = factory;
 	}
 
 	/**

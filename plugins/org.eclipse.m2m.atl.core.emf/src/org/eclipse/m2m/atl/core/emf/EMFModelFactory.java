@@ -22,7 +22,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.Resource.Factory;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
@@ -113,16 +112,7 @@ public class EMFModelFactory extends ModelFactory {
 	 */
 	@Override
 	public IModel newModel(IReferenceModel referenceModel, Map<String, Object> options) {
-		IModel model = newModel(referenceModel);
-		String uri = (String)options.get(OPTION_URI);
-		// String contentType = (String)options.get(OPTION_CONTENT_TYPE);
-		if (uri != null) {
-			// @since 2.4: causes compatibility issues
-			// Factory factory = resourceSet.getResourceFactoryRegistry().getFactory(uri, contentType);
-			Factory factory = resourceSet.getResourceFactoryRegistry().getFactory(URI.createURI(uri));
-			((EMFModel)model).setEmfResourceFactory(factory);
-		}
-		return model;
+		return newModel(referenceModel);
 	}
 
 	/**
@@ -136,7 +126,7 @@ public class EMFModelFactory extends ModelFactory {
 	}
 
 	/**
-	 * Creates a new {@link EMFModel} using the given uri, which specifies the correct {@link Factory}.
+	 * Creates a new {@link EMFModel} using the given uri.
 	 * 
 	 * @param referenceModel
 	 *            the {@link IReferenceModel}
