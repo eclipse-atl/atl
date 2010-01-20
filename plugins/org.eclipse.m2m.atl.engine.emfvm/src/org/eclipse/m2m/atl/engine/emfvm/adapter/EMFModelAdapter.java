@@ -173,9 +173,10 @@ public class EMFModelAdapter implements IModelAdapter {
 			return ((EObject)value).eClass();
 		} else if (value instanceof EList) {
 			return ArrayList.class;
-		} else {
+		} else if (value != null) {
 			return value.getClass();
 		}
+		return null;
 	}
 
 	/**
@@ -468,7 +469,7 @@ public class EMFModelAdapter implements IModelAdapter {
 		}
 		if (modelElement == null || modelElement.equals(OclUndefined.SINGLETON)) {
 			throw new VMException(frame, Messages.getString("EMFModelAdapter.GET_PROBLEM", name)); //$NON-NLS-1$
-		} else {
+		} else if (modelElement instanceof EObject) {
 			EObject eo = (EObject)modelElement;
 			EClass ec = eo.eClass();
 
@@ -499,6 +500,8 @@ public class EMFModelAdapter implements IModelAdapter {
 				}
 				ret = val;
 			}
+		} else {
+			throw new VMException(frame, Messages.getString("EMFModelAdapter.GET_ON_OBJECT", modelElement.getClass().getName())); //$NON-NLS-1$		
 		}
 		return ret;
 	}
