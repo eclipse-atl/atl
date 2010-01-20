@@ -17,6 +17,9 @@ package org.eclipse.m2m.atl.common;
  */
 public interface ATLLaunchConstants {
 
+	/** The ATL default compiler version. */
+	String DEFAULT_COMPILER_VERSION = "1.0"; //$NON-NLS-1$
+	
 	/** ATL launch type. */
 	String LAUNCH_CONFIGURATION_TYPE = "org.eclipse.m2m.atl.adt.launching.atlTransformation"; //$NON-NLS-1$
 
