@@ -126,7 +126,7 @@ public class OclAnyType {
 								}
 							}));
 
-					add(new Operation("refUnSetValue", getInstance(), null, //$NON-NLS-1$
+					add(new Operation("refUnsetValue", getInstance(), null, //$NON-NLS-1$
 							new LinkedHashMap<String, OclAnyType>() {
 								{
 									put("name", StringType.getInstance()); //$NON-NLS-1$
