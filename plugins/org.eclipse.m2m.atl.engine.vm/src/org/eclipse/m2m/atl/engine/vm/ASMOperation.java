@@ -230,7 +230,7 @@ public class ASMOperation extends Operation {
 					// }
 					// }
 				}
-			} else if (mn == "call") {
+			} else if (mn == "call" || mn == "pcall") {
 				int nb = getNbArgs(ops);
 				String opName = getOpName(ops);
 				ArrayList arguments = new ArrayList();
@@ -238,9 +238,13 @@ public class ASMOperation extends Operation {
 					arguments.add(0, frame.pop());
 				ASMOclAny o = frame.pop(); // self
 				ASMOclAny ret = o.invoke(frame, opName, arguments);
-
-				if (ret != null) {
-					frame.push(ret);
+				if (mn == "call") {
+					if (ret != null) {
+						frame.push(ret);
+					} else {
+						// TODO reactivate error
+						// throw new VMException(frame, "Operation call did not return a value.", null);
+					}
 				}
 			} else if (mn.equals("supercall")) {
 				int nb = getNbArgs(ops);
