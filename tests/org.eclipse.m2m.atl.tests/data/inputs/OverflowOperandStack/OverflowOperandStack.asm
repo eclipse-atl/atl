@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'ISO-8859-1' ?>
-<asm name="0">
+<asm version="1.0" name="0">
 	<cp>
 		<constant value="OverflowOperandStack"/>
 		<constant value="links"/>
@@ -88,7 +88,7 @@
 		<constant value="NTransientLink;.getSourceElement(S):J"/>
 		<constant value="NTransientLink;.getTargetElement(S):J"/>
 		<constant value="3"/>
-		<constant value="200"/>
+		<constant value="849"/>
 		<constant value="4"/>
 		<constant value=""/>
 		<constant value="J.debug(J):J"/>
@@ -97,7 +97,6 @@
 		<constant value="17:12-17:26"/>
 		<constant value="18:4-18:5"/>
 		<constant value="18:12-18:14"/>
-		<constant value="18:4-18:15"/>
 		<constant value="18:4-18:16"/>
 		<constant value="17:3-19:4"/>
 		<constant value="16:2-20:3"/>
@@ -358,7 +357,7 @@
 			<store arg="88"/>
 			<load arg="88"/>
 			<push arg="89"/>
-			<call arg="90"/>
+			<pcall arg="90"/>
 			<enditerate/>
 		</code>
 		<linenumbertable>
@@ -369,16 +368,15 @@
 			<lne id="94" begin="15" end="15"/>
 			<lne id="95" begin="16" end="16"/>
 			<lne id="96" begin="15" end="17"/>
-			<lne id="97" begin="15" end="17"/>
+			<lne id="97" begin="10" end="18"/>
 			<lne id="98" begin="10" end="18"/>
-			<lne id="99" begin="10" end="18"/>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="4" name="100" begin="14" end="17"/>
+			<lve slot="4" name="99" begin="14" end="17"/>
 			<lve slot="3" name="77" begin="7" end="18"/>
 			<lve slot="2" name="75" begin="3" end="18"/>
 			<lve slot="0" name="17" begin="0" end="18"/>
-			<lve slot="1" name="101" begin="0" end="18"/>
+			<lve slot="1" name="100" begin="0" end="18"/>
 		</localvariabletable>
 	</operation>
 </asm>

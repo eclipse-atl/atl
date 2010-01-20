@@ -14,7 +14,7 @@ rule Class {
 	to 
 		container : UML!Model
 	do {
-		for(i in (1).seqTo(200)) {
+		for(i in (1).seqTo(100)) {
 			i.debug('');
 		}
 	}
