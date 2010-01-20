@@ -264,7 +264,7 @@ acg ATL startsWith Unit {
 												-- sourceElement, slot
 								dup_x1			-- slot, sourceElement, slot
 								get 'name'		-- slot, sourceElement, name
-								call 'J.refUnSetValue(S):J'	-- slot, sourceElement
+								call 'J.refUnsetValue(S):J'	-- slot, sourceElement
 								swap			-- sourceElement, slot
 						  noAssign:
 											-- sourceElement, slot
@@ -925,7 +925,7 @@ acg ATL startsWith Unit {
 		dup
 		if(self.isAssignment) {
 			push self.propertyName
-			call 'J.refUnSetValue(S):J'
+			call 'J.refUnsetValue(S):J'
 		}
 		getasm
 		analyze self.value
@@ -1844,7 +1844,7 @@ acg ATL startsWith Unit {
 		analyze self.source.source
 		if(self.isAssignment) {
 			push self.source.name
-			call 'J.refUnSetValue(S):J'
+			call 'J.refUnsetValue(S):J'
 		}
 		analyze self.value
 		set self.source.name
