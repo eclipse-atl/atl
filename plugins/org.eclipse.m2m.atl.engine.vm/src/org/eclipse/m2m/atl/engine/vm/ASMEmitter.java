@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.logging.Level;
 
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclSimpleType;
@@ -154,4 +155,14 @@ public class ASMEmitter extends ASMOclAny {
 	private ASMOperation currentOperation;
 
 	private ASM asm;
+
+	private String version = ATLLaunchConstants.DEFAULT_COMPILER_VERSION;
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 }

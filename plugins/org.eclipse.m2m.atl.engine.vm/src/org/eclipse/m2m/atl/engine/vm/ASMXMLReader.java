@@ -74,6 +74,10 @@ public class ASMXMLReader extends DefaultHandler {
 
 		if (qName.equals("asm")) {
 			asmNameIndex = attrs.get("name");
+			Object version = attrs.get("version"); //$NON-NLS-1$
+			if (version != null) {
+				asme.setVersion(version.toString());				
+			}
 		} else if (qName.equals("cp")) {
 			// nothing to do
 		} else if (qName.equals("constant")) {

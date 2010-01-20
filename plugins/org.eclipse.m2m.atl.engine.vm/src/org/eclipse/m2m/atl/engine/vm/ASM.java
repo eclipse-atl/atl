@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclSimpleType;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclType;
@@ -70,10 +71,20 @@ public class ASM extends ASMOclAny {
 		return operations;
 	}
 
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
 	private String name;
+	private String version = ATLLaunchConstants.DEFAULT_COMPILER_VERSION;
 	private List fields = new ArrayList();
 	private Map fieldsMap = new HashMap();
 	private List operations = new ArrayList();
 	private Map operationsMap = new HashMap();
+
 }
 
