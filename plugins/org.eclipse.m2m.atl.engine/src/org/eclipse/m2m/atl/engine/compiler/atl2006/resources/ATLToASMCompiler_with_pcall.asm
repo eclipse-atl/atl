@@ -273,7 +273,7 @@
 		<constant value="metamodel"/>
 		<constant value="250:8-250:13"/>
 		<constant value="269:9-269:18"/>
-		<constant value="J.refUnSetValue(S):J"/>
+		<constant value="J.refUnsetValue(S):J"/>
 		<constant value="J.__fromValue():J"/>
 		<constant value="J.refSetValue(SJ):J"/>
 		<constant value="__collectionToValue"/>
