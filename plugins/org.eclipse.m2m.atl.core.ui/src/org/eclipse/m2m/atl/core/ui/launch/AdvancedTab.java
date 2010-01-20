@@ -66,7 +66,10 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 
 	/** Clears console after each launch. */
 	public static final String OPTION_CLEAR = "OPTION_CLEAR"; //$NON-NLS-1$
-
+	
+	/** Automatically detect content types for extraction. */
+	public static final String OPTION_CONTENT_TYPE = "OPTION_CONTENT_TYPE"; //$NON-NLS-1$
+	
 	static final String SUPERIMPOSE = "SUPERIMPOSE"; //$NON-NLS-1$
 
 	private Composite container;
@@ -94,8 +97,10 @@ public class AdvancedTab extends AbstractLaunchConfigurationTab {
 	{
 		baseOptions.put(OPTION_DERIVED, "Set generated files as derived"); //$NON-NLS-1$
 		baseOptions.put(OPTION_CLEAR, "Clear console before launch"); //$NON-NLS-1$
+		baseOptions.put(OPTION_CONTENT_TYPE, "Output model content types detection"); //$NON-NLS-1$
 		defaultValues.put(OPTION_DERIVED, "true"); //$NON-NLS-1$
 		defaultValues.put(OPTION_CLEAR, "false"); //$NON-NLS-1$
+		defaultValues.put(OPTION_CONTENT_TYPE, "false"); //$NON-NLS-1$
 	}
 
 	/**
