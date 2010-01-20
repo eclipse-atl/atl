@@ -186,7 +186,7 @@ public class ASMOclAny extends ASMNativeObject {
 		return self;
 	}
 
-	public static ASMOclAny refUnSetValue(StackFrame frame, ASMOclAny self, ASMString name) {
+	public static ASMOclAny refUnsetValue(StackFrame frame, ASMOclAny self, ASMString name) {
 		self.unset(frame, name.getSymbol());
 		return self;
 	}
