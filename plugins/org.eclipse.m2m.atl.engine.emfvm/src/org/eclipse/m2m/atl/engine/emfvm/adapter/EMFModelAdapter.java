@@ -283,7 +283,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					}
 				});
 		// TODO document
-		registerOperation(operationsByName, new Operation(3, "refUnSetValue") { //$NON-NLS-1$ 
+		registerOperation(operationsByName, new Operation(3, "refUnsetValue") { //$NON-NLS-1$ 
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
