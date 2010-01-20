@@ -1,3 +1,6 @@
+-- @nsURI MOF=http://www.eclipse.org/emf/2002/Ecore
+-- @nsURI Class=http://www.eclipse.org/uml2/2.1.0/UML
+
 module Ecore2Class;
 create OUT : Class from IN : MOF;
 
