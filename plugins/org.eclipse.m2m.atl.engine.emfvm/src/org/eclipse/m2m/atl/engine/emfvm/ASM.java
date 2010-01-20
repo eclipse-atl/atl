@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
@@ -49,6 +50,8 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.OclType;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class ASM {
+
+	private String version = ATLLaunchConstants.DEFAULT_COMPILER_VERSION;
 
 	private String name;
 
@@ -468,6 +471,14 @@ public class ASM {
 		return ret;
 	}
 
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
 	/**
 	 * Exception dedicated to signature parsing issues.
 	 */
@@ -479,4 +490,5 @@ public class ASM {
 			super(msg);
 		}
 	}
+
 }

@@ -34,7 +34,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class ASMXMLReader extends DefaultHandler {
 
 	private Object asmNameIndex;
-
+	
 	private List<String> cp = new ArrayList<String>();
 
 	private boolean inCode;
@@ -98,6 +98,10 @@ public class ASMXMLReader extends DefaultHandler {
 
 		if (qName.equals("asm")) { //$NON-NLS-1$
 			asmNameIndex = attrs.get("name"); //$NON-NLS-1$
+			Object version = attrs.get("version"); //$NON-NLS-1$
+			if (version != null) {
+				ret.setVersion(version.toString());				
+			}
 		} else if (qName.equals("cp")) { //$NON-NLS-1$
 			// nothing to do
 		} else if (qName.equals("constant")) { //$NON-NLS-1$
