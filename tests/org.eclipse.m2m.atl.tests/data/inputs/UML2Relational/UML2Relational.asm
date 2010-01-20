@@ -59,7 +59,7 @@
 		<constant value="Property2ForeignKey"/>
 		<constant value="A.__applyProperty2ForeignKey(NTransientLink;):V"/>
 		<constant value="hasStereotype"/>
-		<constant value="MUML!uml::Element;"/>
+		<constant value="MUML!Element;"/>
 		<constant value="0"/>
 		<constant value="J.getAppliedStereotypes():J"/>
 		<constant value="CJ.including(J):CJ"/>
@@ -74,7 +74,7 @@
 		<constant value="st"/>
 		<constant value="stereotype"/>
 		<constant value="computeType"/>
-		<constant value="MUML!uml::Type;"/>
+		<constant value="MUML!Type;"/>
 		<constant value="String"/>
 		<constant value="J.=(J):J"/>
 		<constant value="24"/>
@@ -97,7 +97,7 @@
 		<constant value="17:31-17:39"/>
 		<constant value="17:2-20:7"/>
 		<constant value="__matchModel2Database"/>
-		<constant value="uml::Model"/>
+		<constant value="Model"/>
 		<constant value="UML"/>
 		<constant value="IN"/>
 		<constant value="MMOF!Classifier;.allInstancesFrom(S):QJ"/>
@@ -125,7 +125,7 @@
 		<constant value="3"/>
 		<constant value="packagedElement"/>
 		<constant value="4"/>
-		<constant value="uml::Package"/>
+		<constant value="Package"/>
 		<constant value="J.oclIsTypeOf(J):J"/>
 		<constant value="Schema"/>
 		<constant value="J.and(J):J"/>
@@ -137,14 +137,14 @@
 		<constant value="34:20-34:21"/>
 		<constant value="34:20-34:37"/>
 		<constant value="34:52-34:53"/>
-		<constant value="34:66-34:84"/>
-		<constant value="34:52-34:85"/>
-		<constant value="34:90-34:91"/>
-		<constant value="34:106-34:114"/>
-		<constant value="34:90-34:115"/>
-		<constant value="34:52-34:115"/>
-		<constant value="34:20-34:116"/>
-		<constant value="34:4-34:116"/>
+		<constant value="34:66-34:77"/>
+		<constant value="34:52-34:78"/>
+		<constant value="34:83-34:84"/>
+		<constant value="34:99-34:107"/>
+		<constant value="34:83-34:108"/>
+		<constant value="34:52-34:108"/>
+		<constant value="34:20-34:109"/>
+		<constant value="34:4-34:109"/>
 		<constant value="link"/>
 		<constant value="__matchPackage2Schema"/>
 		<constant value="p"/>
@@ -154,7 +154,7 @@
 		<constant value="44:9-44:26"/>
 		<constant value="44:3-47:4"/>
 		<constant value="__applyPackage2Schema"/>
-		<constant value="uml::Class"/>
+		<constant value="Class"/>
 		<constant value="Table"/>
 		<constant value="ownedTables"/>
 		<constant value="45:12-45:13"/>
@@ -163,14 +163,14 @@
 		<constant value="46:20-46:21"/>
 		<constant value="46:20-46:37"/>
 		<constant value="46:52-46:53"/>
-		<constant value="46:66-46:82"/>
-		<constant value="46:52-46:83"/>
-		<constant value="46:88-46:89"/>
-		<constant value="46:104-46:111"/>
-		<constant value="46:88-46:112"/>
-		<constant value="46:52-46:112"/>
-		<constant value="46:20-46:113"/>
-		<constant value="46:4-46:113"/>
+		<constant value="46:66-46:75"/>
+		<constant value="46:52-46:76"/>
+		<constant value="46:81-46:82"/>
+		<constant value="46:97-46:104"/>
+		<constant value="46:81-46:105"/>
+		<constant value="46:52-46:105"/>
+		<constant value="46:20-46:106"/>
+		<constant value="46:4-46:106"/>
 		<constant value="__matchClass2Table"/>
 		<constant value="c"/>
 		<constant value="53:5-53:6"/>
@@ -182,7 +182,7 @@
 		<constant value="attribute"/>
 		<constant value="Column"/>
 		<constant value="type"/>
-		<constant value="uml::PrimitiveType"/>
+		<constant value="PrimitiveType"/>
 		<constant value="J.oclIsKindOf(J):J"/>
 		<constant value="38"/>
 		<constant value="ownedColumns"/>
@@ -199,11 +199,11 @@
 		<constant value="59:8-59:33"/>
 		<constant value="60:8-60:9"/>
 		<constant value="60:8-60:14"/>
-		<constant value="60:27-60:51"/>
-		<constant value="60:8-60:52"/>
-		<constant value="59:8-60:52"/>
-		<constant value="58:20-60:53"/>
-		<constant value="58:4-60:53"/>
+		<constant value="60:27-60:44"/>
+		<constant value="60:8-60:45"/>
+		<constant value="59:8-60:45"/>
+		<constant value="58:20-60:46"/>
+		<constant value="58:4-60:46"/>
 		<constant value="61:24-61:25"/>
 		<constant value="61:24-61:35"/>
 		<constant value="62:8-62:9"/>
@@ -211,34 +211,35 @@
 		<constant value="62:8-62:33"/>
 		<constant value="63:12-63:13"/>
 		<constant value="63:12-63:18"/>
-		<constant value="63:31-63:55"/>
-		<constant value="63:12-63:56"/>
-		<constant value="63:8-63:56"/>
-		<constant value="62:8-63:56"/>
-		<constant value="61:24-63:57"/>
-		<constant value="61:4-63:57"/>
+		<constant value="63:31-63:48"/>
+		<constant value="63:12-63:49"/>
+		<constant value="63:8-63:49"/>
+		<constant value="62:8-63:49"/>
+		<constant value="61:24-63:50"/>
+		<constant value="61:4-63:50"/>
 		<constant value="__matchProperty2Column"/>
-		<constant value="uml::Property"/>
+		<constant value="Property"/>
 		<constant value="39"/>
 		<constant value="70:5-70:6"/>
 		<constant value="70:21-70:29"/>
 		<constant value="70:5-70:30"/>
 		<constant value="71:5-71:6"/>
 		<constant value="71:5-71:11"/>
-		<constant value="71:24-71:48"/>
-		<constant value="71:5-71:49"/>
-		<constant value="70:5-71:49"/>
+		<constant value="71:24-71:41"/>
+		<constant value="71:5-71:42"/>
+		<constant value="70:5-71:42"/>
 		<constant value="74:9-74:26"/>
 		<constant value="74:3-79:4"/>
 		<constant value="__applyProperty2Column"/>
+		<constant value="aggregation"/>
 		<constant value="J.computeType():J"/>
 		<constant value="isUnique"/>
 		<constant value="J.first():J"/>
 		<constant value="isPrimaryKey"/>
 		<constant value="J.getValue(JJ):J"/>
 		<constant value="75:12-75:13"/>
-		<constant value="75:12-75:18"/>
-		<constant value="75:4-75:18"/>
+		<constant value="75:12-75:25"/>
+		<constant value="75:4-75:25"/>
 		<constant value="76:12-76:13"/>
 		<constant value="76:12-76:18"/>
 		<constant value="76:12-76:32"/>
@@ -261,10 +262,10 @@
 		<constant value="85:5-85:30"/>
 		<constant value="86:9-86:10"/>
 		<constant value="86:9-86:15"/>
-		<constant value="86:28-86:52"/>
-		<constant value="86:9-86:53"/>
-		<constant value="86:5-86:53"/>
-		<constant value="85:5-86:53"/>
+		<constant value="86:28-86:45"/>
+		<constant value="86:9-86:46"/>
+		<constant value="86:5-86:46"/>
+		<constant value="85:5-86:46"/>
 		<constant value="89:9-89:30"/>
 		<constant value="89:3-92:4"/>
 		<constant value="__applyProperty2ForeignKey"/>
@@ -1058,52 +1059,52 @@
 			<dup/>
 			<getasm/>
 			<load arg="29"/>
-			<get arg="38"/>
+			<get arg="230"/>
 			<call arg="30"/>
 			<set arg="38"/>
 			<dup/>
 			<getasm/>
 			<load arg="29"/>
 			<get arg="180"/>
-			<call arg="230"/>
+			<call arg="231"/>
 			<call arg="30"/>
 			<set arg="180"/>
 			<dup/>
 			<getasm/>
 			<load arg="29"/>
-			<get arg="231"/>
+			<get arg="232"/>
 			<call arg="30"/>
-			<set arg="231"/>
+			<set arg="232"/>
 			<dup/>
 			<getasm/>
 			<load arg="29"/>
 			<load arg="29"/>
 			<call arg="60"/>
-			<call arg="232"/>
-			<push arg="233"/>
-			<call arg="234"/>
+			<call arg="233"/>
+			<push arg="234"/>
+			<call arg="235"/>
 			<call arg="30"/>
-			<set arg="233"/>
+			<set arg="234"/>
 			<pop/>
 		</code>
 		<linenumbertable>
-			<lne id="235" begin="11" end="11"/>
-			<lne id="236" begin="11" end="12"/>
-			<lne id="237" begin="9" end="14"/>
-			<lne id="238" begin="17" end="17"/>
-			<lne id="239" begin="17" end="18"/>
-			<lne id="240" begin="17" end="19"/>
-			<lne id="241" begin="15" end="21"/>
-			<lne id="242" begin="24" end="24"/>
-			<lne id="243" begin="24" end="25"/>
-			<lne id="244" begin="22" end="27"/>
-			<lne id="245" begin="30" end="30"/>
-			<lne id="246" begin="31" end="31"/>
-			<lne id="247" begin="31" end="32"/>
-			<lne id="248" begin="31" end="33"/>
-			<lne id="249" begin="34" end="34"/>
-			<lne id="250" begin="30" end="35"/>
-			<lne id="251" begin="28" end="37"/>
+			<lne id="236" begin="11" end="11"/>
+			<lne id="237" begin="11" end="12"/>
+			<lne id="238" begin="9" end="14"/>
+			<lne id="239" begin="17" end="17"/>
+			<lne id="240" begin="17" end="18"/>
+			<lne id="241" begin="17" end="19"/>
+			<lne id="242" begin="15" end="21"/>
+			<lne id="243" begin="24" end="24"/>
+			<lne id="244" begin="24" end="25"/>
+			<lne id="245" begin="22" end="27"/>
+			<lne id="246" begin="30" end="30"/>
+			<lne id="247" begin="31" end="31"/>
+			<lne id="248" begin="31" end="32"/>
+			<lne id="249" begin="31" end="33"/>
+			<lne id="250" begin="34" end="34"/>
+			<lne id="251" begin="30" end="35"/>
+			<lne id="252" begin="28" end="37"/>
 			<lne id="228" begin="8" end="38"/>
 		</linenumbertable>
 		<localvariabletable>
@@ -1113,7 +1114,7 @@
 			<lve slot="1" name="144" begin="0" end="38"/>
 		</localvariabletable>
 	</operation>
-	<operation name="252">
+	<operation name="253">
 		<context type="6"/>
 		<parameters>
 		</parameters>
@@ -1137,7 +1138,7 @@
 			<call arg="185"/>
 			<call arg="127"/>
 			<call arg="102"/>
-			<if arg="253"/>
+			<if arg="254"/>
 			<getasm/>
 			<get arg="1"/>
 			<push arg="104"/>
@@ -1152,7 +1153,7 @@
 			<call arg="107"/>
 			<dup/>
 			<push arg="108"/>
-			<push arg="254"/>
+			<push arg="255"/>
 			<push arg="109"/>
 			<new/>
 			<call arg="110"/>
@@ -1161,24 +1162,24 @@
 			<enditerate/>
 		</code>
 		<linenumbertable>
-			<lne id="255" begin="7" end="7"/>
-			<lne id="256" begin="8" end="8"/>
-			<lne id="257" begin="7" end="9"/>
-			<lne id="258" begin="10" end="10"/>
-			<lne id="259" begin="10" end="11"/>
-			<lne id="260" begin="12" end="14"/>
-			<lne id="261" begin="10" end="15"/>
-			<lne id="262" begin="10" end="16"/>
-			<lne id="263" begin="7" end="17"/>
-			<lne id="264" begin="34" end="36"/>
-			<lne id="265" begin="32" end="37"/>
+			<lne id="256" begin="7" end="7"/>
+			<lne id="257" begin="8" end="8"/>
+			<lne id="258" begin="7" end="9"/>
+			<lne id="259" begin="10" end="10"/>
+			<lne id="260" begin="10" end="11"/>
+			<lne id="261" begin="12" end="14"/>
+			<lne id="262" begin="10" end="15"/>
+			<lne id="263" begin="10" end="16"/>
+			<lne id="264" begin="7" end="17"/>
+			<lne id="265" begin="34" end="36"/>
+			<lne id="266" begin="32" end="37"/>
 		</linenumbertable>
 		<localvariabletable>
 			<lve slot="1" name="146" begin="6" end="39"/>
 			<lve slot="0" name="17" begin="0" end="40"/>
 		</localvariabletable>
 	</operation>
-	<operation name="266">
+	<operation name="267">
 		<context type="6"/>
 		<parameters>
 			<parameter name="19" type="118"/>
@@ -1204,17 +1205,17 @@
 			<load arg="29"/>
 			<get arg="180"/>
 			<call arg="30"/>
-			<set arg="267"/>
+			<set arg="268"/>
 			<pop/>
 		</code>
 		<linenumbertable>
-			<lne id="268" begin="11" end="11"/>
-			<lne id="269" begin="11" end="12"/>
-			<lne id="270" begin="9" end="14"/>
-			<lne id="271" begin="17" end="17"/>
-			<lne id="272" begin="17" end="18"/>
-			<lne id="273" begin="15" end="20"/>
-			<lne id="265" begin="8" end="21"/>
+			<lne id="269" begin="11" end="11"/>
+			<lne id="270" begin="11" end="12"/>
+			<lne id="271" begin="9" end="14"/>
+			<lne id="272" begin="17" end="17"/>
+			<lne id="273" begin="17" end="18"/>
+			<lne id="274" begin="15" end="20"/>
+			<lne id="266" begin="8" end="21"/>
 		</linenumbertable>
 		<localvariabletable>
 			<lve slot="3" name="108" begin="7" end="21"/>
