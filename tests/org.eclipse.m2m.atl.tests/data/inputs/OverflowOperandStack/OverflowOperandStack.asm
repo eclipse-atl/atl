@@ -88,7 +88,7 @@
 		<constant value="NTransientLink;.getSourceElement(S):J"/>
 		<constant value="NTransientLink;.getTargetElement(S):J"/>
 		<constant value="3"/>
-		<constant value="849"/>
+		<constant value="100"/>
 		<constant value="4"/>
 		<constant value=""/>
 		<constant value="J.debug(J):J"/>

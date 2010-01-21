@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'ISO-8859-1' ?>
-<asm name="0">
+<asm version="1.0" name="0">
 	<cp>
 		<constant value="Families2Persons"/>
 		<constant value="links"/>
