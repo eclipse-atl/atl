@@ -85,6 +85,8 @@ public class AtlModelAnalyser {
 				context = AtlContextType.HELPER_CONTEXT_ID;
 			} else if (lastKeyword.equalsIgnoreCase("rule")) { //$NON-NLS-1$
 				context = AtlContextType.RULE_CONTEXT_ID;
+			} else if (lastKeyword.equalsIgnoreCase("query")) { //$NON-NLS-1$
+				context = AtlContextType.QUERY_CONTEXT_ID;
 			} else if (lastKeyword.equalsIgnoreCase("from") && root != null) { //$NON-NLS-1$
 				context = AtlContextType.RULE_CONTEXT_ID;
 			} else if ((lastKeyword.equalsIgnoreCase("to") || lastKeyword.equalsIgnoreCase("do")) //$NON-NLS-1$//$NON-NLS-2$

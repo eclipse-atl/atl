@@ -63,7 +63,7 @@ public class AtlCompletionHelper {
 		int begin;
 		int[] lastParsingKeyWordLocation = getLastKeyWordLocation(offset - prefix.length(), PARSING_KEYWORDS);
 		String lastParsingKeyWord = null;
-		if (lastParsingKeyWordLocation[0] > 0) {
+		if (lastParsingKeyWordLocation[0] > -1) {
 			// take the line from beginning
 			int lineNumber = document.getLineOfOffset(lastParsingKeyWordLocation[0]);
 			begin = document.getLineOffset(lineNumber);
@@ -99,8 +99,7 @@ public class AtlCompletionHelper {
 
 		// code fragment parsing
 		EObject[] ret = AtlParser.getDefault().parseExpression(text, lastParsingKeyWord);
-		AtlModelAnalyser res = new AtlModelAnalyser(this, ret[0], begin, fileContext);
-		return res;
+		return new AtlModelAnalyser(this, ret[0], begin, fileContext);
 	}
 
 	/**
@@ -191,7 +190,7 @@ public class AtlCompletionHelper {
 	 */
 	public String getLastKeyWord(int offset) throws BadLocationException {
 		int[] location = getLastKeyWordLocation(offset, HIGH_LEVEL_KEYWORDS);
-		if (location[0] > 0) {
+		if (location[0] > -1) {
 			return document.get(location[0], location[1]);
 		}
 		return null;
@@ -234,9 +233,8 @@ public class AtlCompletionHelper {
 		int i = offset;
 		if (document != null && i <= document.getLength()) {
 			StringBuffer word = new StringBuffer();
-			while (i > 0) {
-				char ch = document.getChar(i - 1);
-				if (!isAtlIdentifierPart(ch)) {
+			while (i > -1) {
+				if (i == 0 || !isAtlIdentifierPart(document.getChar(i - 1))) {
 					for (String keyword : keywords) {
 						if (word.toString().equals(keyword)) {
 							int lineNumber = document.getLineOfOffset(i);
@@ -252,7 +250,7 @@ public class AtlCompletionHelper {
 					}
 					word = new StringBuffer();
 				} else {
-					word.insert(0, ch);
+					word.insert(0, document.getChar(i - 1));
 				}
 				i--;
 			}
