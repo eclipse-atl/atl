@@ -80,7 +80,7 @@
 		<constant value="metamodel"/>
 		<constant value="21"/>
 		<constant value="36"/>
-		<constant value="J.refUnSetValue(S):J"/>
+		<constant value="J.refUnsetValue(S):J"/>
 		<constant value="J.__fromValue():J"/>
 		<constant value="J.refSetValue(SJ):J"/>
 		<constant value="__collectionToValue"/>
