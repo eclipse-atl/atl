@@ -223,15 +223,8 @@ public final class AtlSourceManager {
 					// EPackage registration
 					EPackage regValue = EPackage.Registry.INSTANCE.getEPackage(uri);
 					if (regValue != null) {
-						ArrayList list = new ArrayList();
-						list.add(regValue);
 						metamodelLocations.put(name, "uri:" + uri); //$NON-NLS-1$
-						for (Iterator subIterator = regValue.getESubpackages().iterator(); subIterator
-								.hasNext();) {
-							EPackage subPackage = (EPackage)subIterator.next();
-							list.add(subPackage);
-						}
-						metamodelsPackages.put(name, list);
+						metamodelsPackages.put(name, getAllPackages(regValue));
 					}
 				}
 			}
@@ -263,16 +256,12 @@ public final class AtlSourceManager {
 						for (Iterator it = resource.getContents().iterator(); it.hasNext();) {
 							Object object = it.next();
 							if (object instanceof EPackage) {
-								list.add(object);
-								for (Iterator subIterator = ((EPackage)object).getESubpackages().iterator(); subIterator
-										.hasNext();) {
-									EPackage subPackage = (EPackage)subIterator.next();
-									list.add(subPackage);
-								}
+								list.addAll(getAllPackages((EPackage)object));
 							}
 						}
-						metamodelsPackages.put(name, list);
+						
 						metamodelLocations.put(name, path);
+						metamodelsPackages.put(name, list);
 					}
 				}
 			}
@@ -334,6 +323,16 @@ public final class AtlSourceManager {
 			}
 		}
 		initialized = true;
+	}
+
+	private static List getAllPackages(EPackage pack) {
+		List res = new ArrayList();
+		res.add(pack);
+		for (Iterator subIterator = pack.getESubpackages().iterator(); subIterator.hasNext();) {
+			EPackage subPackage = (EPackage)subIterator.next();
+			res.addAll(getAllPackages(subPackage));
+		}
+		return res;
 	}
 
 	public String getAtlCompiler() {
