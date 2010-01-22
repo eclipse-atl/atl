@@ -158,7 +158,7 @@ public class ASMOclAny extends ASMNativeObject {
 	public ASMOclAny getHelper(StackFrame frame, String name) {
 		return ((ASMExecEnv)frame.getExecEnv()).getHelperValue(frame, this, name);
 	}
-
+	
 	// Native Operations below
 
 	public static ASMBoolean oclIsUndefined(StackFrame frame, ASMOclAny self) {
@@ -259,6 +259,10 @@ public class ASMOclAny extends ASMNativeObject {
 			ATLLogger.info(msg.getSymbol());
 		}
 		return self;
+	}
+
+	public static ASMOclAny getNamedTargetFromSource(StackFrame frame, ASMOclAny self, ASMOclAny sourceElement, ASMString name) {
+		return new ASMOclUndefined();
 	}
 
 	private ASMOclType type;
