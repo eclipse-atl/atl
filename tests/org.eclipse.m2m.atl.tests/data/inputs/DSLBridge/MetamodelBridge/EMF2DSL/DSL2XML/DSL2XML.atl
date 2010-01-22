@@ -1154,7 +1154,7 @@ rule RelationshipHasSuper {
 	----------------------------------
 	-- Inheritance Complete Diagram --
 	----------------------------------
-		DiagtreeExp : XML!Element (
+		DiagtreeExp2 : XML!Element (
 			name <- 'treeExpression',
 			value <- '',
 			parent <- thisModule.resolveTemp(e.domainModel,'Diagexp'),
