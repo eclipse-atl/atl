@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'ISO-8859-1' ?>
-<asm version = "null" name="0">
+<asm version="1.0" name="0">
 	<cp>
 		<constant value="TestAllInstancesCache"/>
 		<constant value="links"/>
@@ -65,10 +65,8 @@
 		<constant value="10:37-10:77"/>
 		<constant value="10:37-10:88"/>
 		<constant value="10:25-10:88"/>
-		<constant value="10:2-10:89"/>
 		<constant value="10:2-10:90"/>
 		<constant value="11:2-11:11"/>
-		<constant value="11:2-11:25"/>
 		<constant value="11:2-11:26"/>
 		<constant value="12:2-12:4"/>
 		<constant value="12:17-12:23"/>
@@ -79,7 +77,6 @@
 		<constant value="12:36-12:76"/>
 		<constant value="12:36-12:87"/>
 		<constant value="12:25-12:87"/>
-		<constant value="12:2-12:88"/>
 		<constant value="12:2-12:89"/>
 		<constant value="9:1-13:2"/>
 		<constant value="p1"/>
@@ -246,11 +243,11 @@
 			<call arg="49"/>
 			<call arg="50"/>
 			<call arg="51"/>
-			<call arg="52"/>
+			<pcall arg="52"/>
 			<push arg="46"/>
 			<push arg="44"/>
 			<findme/>
-			<call arg="53"/>
+			<pcall arg="53"/>
 			<load arg="30"/>
 			<push arg="39"/>
 			<push arg="54"/>
@@ -262,7 +259,7 @@
 			<call arg="49"/>
 			<call arg="50"/>
 			<call arg="51"/>
-			<call arg="52"/>
+			<pcall arg="52"/>
 		</code>
 		<linenumbertable>
 			<lne id="55" begin="12" end="12"/>
@@ -275,26 +272,23 @@
 			<lne id="62" begin="15" end="21"/>
 			<lne id="63" begin="14" end="22"/>
 			<lne id="64" begin="12" end="23"/>
-			<lne id="65" begin="12" end="23"/>
-			<lne id="66" begin="24" end="26"/>
-			<lne id="67" begin="24" end="27"/>
-			<lne id="68" begin="24" end="27"/>
-			<lne id="69" begin="28" end="28"/>
-			<lne id="70" begin="29" end="29"/>
-			<lne id="71" begin="30" end="30"/>
-			<lne id="72" begin="31" end="33"/>
-			<lne id="73" begin="34" end="34"/>
-			<lne id="74" begin="31" end="35"/>
-			<lne id="75" begin="31" end="36"/>
-			<lne id="76" begin="31" end="37"/>
-			<lne id="77" begin="30" end="38"/>
-			<lne id="78" begin="28" end="39"/>
-			<lne id="79" begin="28" end="39"/>
-			<lne id="80" begin="12" end="39"/>
+			<lne id="65" begin="24" end="26"/>
+			<lne id="66" begin="24" end="27"/>
+			<lne id="67" begin="28" end="28"/>
+			<lne id="68" begin="29" end="29"/>
+			<lne id="69" begin="30" end="30"/>
+			<lne id="70" begin="31" end="33"/>
+			<lne id="71" begin="34" end="34"/>
+			<lne id="72" begin="31" end="35"/>
+			<lne id="73" begin="31" end="36"/>
+			<lne id="74" begin="31" end="37"/>
+			<lne id="75" begin="30" end="38"/>
+			<lne id="76" begin="28" end="39"/>
+			<lne id="77" begin="12" end="39"/>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="1" name="81" begin="3" end="39"/>
-			<lve slot="2" name="82" begin="7" end="39"/>
+			<lve slot="1" name="78" begin="3" end="39"/>
+			<lve slot="2" name="79" begin="7" end="39"/>
 			<lve slot="0" name="18" begin="0" end="39"/>
 		</localvariabletable>
 	</operation>
