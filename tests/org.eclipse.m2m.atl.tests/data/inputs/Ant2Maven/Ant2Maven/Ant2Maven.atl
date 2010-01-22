@@ -7,7 +7,7 @@ create OUTMaven : MavenMaven ,OUTProject : MavenProject  from IN : Ant;
 
 -- central element : Project
 -- two files to create : MavenMaven (representing maven.xml)
---						and MavenProject (representing project.xml)
+--				 	and MavenProject (representing project.xml)
 rule AntProject2Maven{
 		from a : Ant!Project(
 		if a.description.oclIsUndefined() 
