@@ -384,7 +384,7 @@ helper context ATL!OclExpression def: getRootComposite() : ATL!Element =
 -- The VariableExps that have not been previously declared in an ATL file are
 -- associated with a new VariableDeclaration without any composite in the
 -- correspoding ATL model.
-rule FreeVariableIsSelfOrThisModule {
+nodefault rule FreeVariableIsSelfOrThisModule {
 	from
 		s : ATL!VariableDeclaration (
 			s.refImmediateComposite().oclIsUndefined() and
@@ -407,7 +407,7 @@ rule FreeVariableIsSelfOrThisModule {
 -- Rule 'ModelNameIsUnique'
 -- This rule generates an 'error' Problem when there exists models that have
 -- the same name that the checked model.
-rule ModelNameIsUnique {
+nodefault rule ModelNameIsUnique {
 	from
 		s : ATL!OclModel (
 			thisModule.allModels->exists(e | e.name = s.name and e <> s)
@@ -423,7 +423,7 @@ rule ModelNameIsUnique {
 -- Rule 'RuleNameIsUnique'
 -- This rule generates an 'error' Problem when there exists rules that have
 -- the same name that the checked rule.
-rule RuleNameIsUnique {
+nodefault rule RuleNameIsUnique {
 	from
 		s : ATL!Rule (
 			thisModule.allRules->exists(e | e.name = s.name and e <> s)
@@ -441,7 +441,7 @@ rule RuleNameIsUnique {
 -- the same signature that the checked helper.
 -- Note that in current implementation, the helper signature corresponds to the
 -- name and the context of the helper.
-rule HelperSignatureIsUnique {
+nodefault rule HelperSignatureIsUnique {
 	from
 		s : ATL!Helper (
 			thisModule.allHelpers
@@ -505,7 +505,7 @@ rule HelperSignatureIsUnique {
 -- This rule generates an 'error' Problem when there exists, in a same rule,
 -- some named elements (InPatternElement/OutPatternElement/
 -- RuleVariableDeclaration) that have the same name that the checked pattern.
-rule PatternNameIsUniqueInRule {
+nodefault rule PatternNameIsUniqueInRule {
 	from
 		s : ATL!PatternElement (
 			s."rule".namedElements
@@ -526,7 +526,7 @@ rule PatternNameIsUniqueInRule {
 -- some named elements (InPatternElement/OutPatternElement/
 -- RuleVariableDeclaration) that have the same name that the checked rule
 -- variable declaration.
-rule VariableNameIsUniqueInRule {
+nodefault rule VariableNameIsUniqueInRule {
 	from
 		s : ATL!RuleVariableDeclaration (
 			s."rule".namedElements
@@ -547,7 +547,7 @@ rule VariableNameIsUniqueInRule {
 -- collection type as context.
 -- Note that this problem is due to the limitations of the current
 -- implementation
-rule NoHelperWithCollectionAsContext {
+nodefault rule NoHelperWithCollectionAsContext {
 	from
 		s : ATL!Helper (
 			if s.definition.context_.oclIsUndefined()
@@ -576,7 +576,7 @@ rule NoHelperWithCollectionAsContext {
 -- composite since the input ATL model may already include a 'self' and a
 -- 'thisModule' VD without any immediate composite that correspond to the
 -- global declarations of the 'self' and 'thisModule' variables.
-rule NoSelfOrThisModuleVariableDeclaration {
+nodefault rule NoSelfOrThisModuleVariableDeclaration {
 	from
 		s : ATL!VariableDeclaration (
 			not s.refImmediateComposite().oclIsUndefined() and
@@ -594,7 +594,7 @@ rule NoSelfOrThisModuleVariableDeclaration {
 -- Rule 'NoSelfVariableInRule'
 -- This rule generates an 'error' Problem for each 'self' variable expression
 -- that is contained by a rule element.
-rule NoSelfVariableInRule {
+nodefault rule NoSelfVariableInRule {
 	from
 		s : ATL!VariableExp (
 --			s.referredVariable.varName = 'self' and 
@@ -628,7 +628,7 @@ rule NoSelfVariableInRule {
 -- Rule 'NoResolveTempInSourcePattern'
 -- This rule generates an 'error' Problem for each call of the
 -- 'thisModule.resolveTemp()' operation within a source pattern of a rule.
-rule NoResolveTempInSourcePattern {
+nodefault rule NoResolveTempInSourcePattern {
 	from
 		s : ATL!OperationCallExp (
 			s.operationName = 'resolveTemp' and
@@ -661,7 +661,7 @@ rule NoResolveTempInSourcePattern {
 -- Rule 'NoResolveTempInModuleAttribute'
 -- This rule generates an 'error' Problem for each call of the
 -- 'thisModule.resolveTemp()' operation within a model attribute.
-rule NoResolveTempInModuleAttribute {
+nodefault rule NoResolveTempInModuleAttribute {
 	from
 		s : ATL!OperationCallExp (
 			s.operationName = 'resolveTemp' and
@@ -694,7 +694,7 @@ rule NoResolveTempInModuleAttribute {
 -- Rule 'ProhibitedMultiIteratorCollectionOperation'
 -- This rule generates an 'error' Problem for each IteratorExp of the
 -- singleIteratorExps set that is associated with several Iterators.
-rule ProhibitedMultiIteratorCollectionOperation {
+nodefault rule ProhibitedMultiIteratorCollectionOperation {
 	from
 		s : ATL!IteratorExp (
 			thisModule.singleIteratorExps->exists(e | s.name = e) and
@@ -714,7 +714,7 @@ rule ProhibitedMultiIteratorCollectionOperation {
 -- This rule generates an 'error' Problem for each IteratorExp of the
 -- multiIteratorExps set that is associated with several Iterators.
 -- Note that this problem is due to limitations of the current implementation.
-rule UnsupportedMultiIteratorCollectionOperation {
+nodefault rule UnsupportedMultiIteratorCollectionOperation {
 	from
 		s : ATL!IteratorExp (
 			thisModule.multiIteratorExps->exists(e | s.name = e) and
@@ -733,7 +733,7 @@ rule UnsupportedMultiIteratorCollectionOperation {
 -- Rule 'ParameterNameIsUniqueInOperation'
 -- This rule generates an 'error' Problem for each parameter for which there
 -- exists another parameter of the same name in the operation declaration.
-rule ParameterNameIsUniqueInOperation {
+nodefault rule ParameterNameIsUniqueInOperation {
 	from
 		s : ATL!Parameter (
 			if not s.operation.oclIsUndefined() then
@@ -758,7 +758,7 @@ rule ParameterNameIsUniqueInOperation {
 -- This rule generates an 'error' Problem for each Iterator declaration for
 -- which there exists either another Iterator or a result variable declaration
 -- (for Iterate loop only) of the same name within the same loop definition.
-rule VariableNameIsUniqueInLoop {
+nodefault rule VariableNameIsUniqueInLoop {
 	from
 		s : ATL!Iterator (
 			if not s.loopExpr.oclIsUndefined() then
@@ -787,7 +787,7 @@ rule VariableNameIsUniqueInLoop {
 -- This rule generates an 'error' Problem for each 'result' variable
 -- declaration of an IterateExp for which there exists an Iterator variable of
 -- the same name in the Iterate loop definition.
-rule ResultNameIsUniqueInIterate {
+nodefault rule ResultNameIsUniqueInIterate {
 	from
 		s : ATL!VariableDeclaration (
 			if s.baseExp.oclIsUndefined()
@@ -813,7 +813,7 @@ rule ResultNameIsUniqueInIterate {
 -- for which there exists another variable declaration of the same name in the
 -- same namespace (except multiple intances of an Iterator name in a same loop
 -- which handle 'error' Problems).
-rule VariableNameIsUniqueInContainer {
+nodefault rule VariableNameIsUniqueInContainer {
 	from
 		s : ATL!VariableDeclaration (
 			s.getDeclarations()->exists(e | s.varName = e.varName and s <> e)
