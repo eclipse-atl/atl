@@ -136,7 +136,7 @@ public class RegularVMLauncher implements ILauncher {
 	public void initialize(Map<String, Object> options) {
 		models = new HashMap<String, IModel>();
 		libraries = new HashMap<String, ASM>();
-		checkSameModel = LauncherService.getBooleanOption(options.get("allowInterModelReferences"), true); //$NON-NLS-1$
+		checkSameModel = !LauncherService.getBooleanOption(options.get("allowInterModelReferences"), false); //$NON-NLS-1$
 	}
 
 	/**
