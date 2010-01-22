@@ -103,7 +103,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 	 */
 	public boolean visit(IResource resource) throws CoreException {
 		String extension = resource.getFileExtension();
-		if (("atl".equals(extension) && !resource.isDerived() && (resource instanceof IFile)) && ((IFile)resource).getLocation().toFile().length() > 0//$NON-NLS-1$
+		if (("atl".equals(extension) && (resource instanceof IFile)) && ((IFile)resource).getLocation().toFile().length() > 0//$NON-NLS-1$
 				&& (!hasAsmFile(resource) || hasChanged(resource))) {
 			String inName = resource.getName();
 			monitor.subTask(Messages.getString("AtlBuildVisitor.COMPILETASK", new Object[] {inName})); //$NON-NLS-1$
