@@ -216,7 +216,8 @@ public class AtlPluginCreator extends Wizard implements INewWizard, IExecutableE
 	public void convert(IProject project, CreatePluginData pluginData, IProgressMonitor monitor) {
 		CreateModuleActivatorWriter activatorWriter = new CreateModuleActivatorWriter();
 		String text = activatorWriter.generate(pluginData);
-		IPath file = new Path("/src/" + pluginData.getProjectName().replaceAll("\\.", "/") + "/Activator.java"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		IPath file = new Path(
+				"/src/" + pluginData.getProjectName().replaceAll("\\.", "/") + "/Activator.java"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		createFile(project, file, text, monitor);
 		CreateModuleBuildWriter buildWriter = new CreateModuleBuildWriter();
 		text = buildWriter.generate(pluginData);
@@ -256,18 +257,18 @@ public class AtlPluginCreator extends Wizard implements INewWizard, IExecutableE
 			// ATL files copy
 			for (int i = 0; i < runnableData.getTransformationFiles().length; i++) {
 				IFile transfoFile = runnableData.getTransformationFiles()[i];
-				copyFile(
+				copyAtlFile(
 						project,
 						transfoFile,
 						new Path(
 								"/src/"	+ project.getName().replaceAll("\\.", "/") + "/files/" + transfoFile.getName()), monitor); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			}
-			
+
 			// ATL libraries copy
 			for (String libraryName : runnableData.getAllLibrariesNames()) {
 				IFile libraryFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
 						new Path(runnableData.getLibraryLocations().get(libraryName)));
-				copyFile(
+				copyAtlFile(
 						project,
 						libraryFile,
 						new Path(
@@ -323,6 +324,32 @@ public class AtlPluginCreator extends Wizard implements INewWizard, IExecutableE
 			IStatus status = new Status(IStatus.ERROR, AtlUIPlugin.PLUGIN_ID, IStatus.OK, e.getMessage(), e);
 			AtlUIPlugin.getDefault().getLog().log(status);
 		}
+	}
+
+	/**
+	 * Copies an ATL file: in case of a .asm, attempt to copy the .atl instead if present.
+	 * 
+	 * @param project
+	 *            the current project
+	 * @param fileToCopy
+	 *            is the file
+	 * @param targetDirRelativePath
+	 *            is the path of the copy
+	 * @param monitor
+	 *            is the monitor
+	 */
+	public static void copyAtlFile(IProject project, IFile fileToCopy, IPath targetDirRelativePath,
+			IProgressMonitor monitor) {
+		if ("asm".equals(fileToCopy.getFileExtension())) { //$NON-NLS-1$
+			IFile atlFile = fileToCopy.getProject().getParent().getFile(
+					fileToCopy.getFullPath().removeFileExtension().addFileExtension(
+							"atl")); //$NON-NLS-1$
+			if (atlFile.isAccessible()) {
+				copyFile(project, atlFile, targetDirRelativePath, monitor);
+				return;
+			}
+		}
+		copyFile(project, fileToCopy, targetDirRelativePath, monitor);
 	}
 
 	/**
