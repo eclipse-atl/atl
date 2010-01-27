@@ -6,11 +6,22 @@
 <%
  CreateRunnableData content = (CreateRunnableData) argument;
 %>
-<%=content.getClassShortName()%>.modules=<%for (int i = 0; i < content.getTransformationFiles().length; i++) {%><%=content.getTransformationFiles()[i].getName()%><%if (i < content.getTransformationFiles().length -1 ) {%>,<%}%><%}%>
+# ==============================================================================
+# <%=content.getClassShortName()%> properties
+# ==============================================================================
+
+# ATL modules: if several, by order of superimposition (the latter ones overrides the former ones)
+<%=content.getClassShortName()%>.modules = <%for (int i = 0; i < content.getTransformationFiles().length; i++) {%><%=content.getTransformationFiles()[i].getName()%><%if (i < content.getTransformationFiles().length -1 ) {%>,<%}%><%}%>
+
+# Metamodels paths or nsUris
 <%for (String metamodelName : content.getAllMetamodelsNames()) { String location = content.getMetamodelLocations().get(metamodelName); %>
-<%=content.getClassShortName()%>.metamodels.<%=metamodelName%>=<%if (location != null) {%><%=location%><%}%><%}%>
+<%=content.getClassShortName()%>.metamodels.<%=metamodelName%> = <%if (location != null) {%><%=location%><%}%><%}%>
+
+# Libraries paths
 <%for (String libraryName : content.getAllLibrariesNames()) { String location = content.getLibraryLocations().get(libraryName); %>
-<%=content.getClassShortName()%>.libraries.<%=libraryName%>=<%if (location != null) {%><%=new Path(location).lastSegment()%><%}%><%}%>
+<%=content.getClassShortName()%>.libraries.<%=libraryName%> = <%if (location != null) {%><%=new Path(location).lastSegment()%><%}%><%}%>
+
+# ATL Launching options
 <%for (Entry<String, String> entry : content.getOptions().entrySet()) {%>
-<%=content.getClassShortName()%>.options.<%=entry.getKey()%>=<%=entry.getValue()%><%}%>
+<%=content.getClassShortName()%>.options.<%=entry.getKey()%> = <%=entry.getValue()%><%}%>
 
