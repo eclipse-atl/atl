@@ -39,11 +39,14 @@ helper def: allModels : Sequence(ATL!OclModel) =
 	let atlModule : ATL!Module =
 		ATL!Module.allInstances()->asSequence()->first()
 	in
+		if not atlModule.oclIsUndefined() then
 	Sequence{
 		atlModule.inModels,
 		atlModule.outModels
-	}->flatten();
-
+	}->flatten()
+		else
+			ATL!OclModel.allInstances() -> asSet()
+		endif;
 
 -- This helper computes the Query element that corresponds to the input ATL
 -- Unit. If the input ATL Unit corresponds to a Module (eg a transformation),
