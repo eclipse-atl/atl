@@ -344,7 +344,7 @@ public class AtlPluginCreator extends Wizard implements INewWizard, IExecutableE
 			IFile atlFile = fileToCopy.getProject().getParent().getFile(
 					fileToCopy.getFullPath().removeFileExtension().addFileExtension(
 							"atl")); //$NON-NLS-1$
-			if (atlFile.isAccessible()) {
+			if (atlFile != null && atlFile.isAccessible()) {
 				copyFile(project, atlFile, targetDirRelativePath, monitor);
 				return;
 			}
