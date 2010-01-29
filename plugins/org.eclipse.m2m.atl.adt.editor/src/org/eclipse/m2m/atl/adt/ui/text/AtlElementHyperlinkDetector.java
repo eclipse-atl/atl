@@ -20,6 +20,8 @@ import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.adt.ui.editor.Messages;
 import org.eclipse.m2m.atl.adt.ui.text.atl.OpenDeclarationUtils;
+import org.eclipse.m2m.atl.adt.ui.text.atl.types.Feature;
+import org.eclipse.m2m.atl.adt.ui.text.atl.types.UnitType;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
@@ -46,7 +48,7 @@ public class AtlElementHyperlinkDetector extends AbstractHyperlinkDetector {
 			return null;
 		}
 		try {
-			EObject declaration = OpenDeclarationUtils.getDeclaration((AtlEditor)textEditor, wordRegion
+			Object declaration = OpenDeclarationUtils.getDeclaration((AtlEditor)textEditor, wordRegion
 					.getOffset(), wordRegion.getLength());
 			if (declaration != null) {
 				return new IHyperlink[] {new AtlElementHyperlink((AtlEditor)textEditor, wordRegion,
@@ -73,6 +75,8 @@ public class AtlElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		/** Editor on which this link appears. */
 		private final AtlEditor sourceEditor;
 
+		private final UnitType unit;
+
 		/**
 		 * Instantiates an ATL hyperlink given the editor it appears on, the text region it spans to, and the
 		 * link's target.
@@ -84,10 +88,20 @@ public class AtlElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		 * @param linkTarget
 		 *            Target of the hyperlink.
 		 */
-		public AtlElementHyperlink(AtlEditor editor, IRegion region, EObject linkTarget) {
-			sourceEditor = editor;
-			hyperLinkRegion = region;
-			target = linkTarget;
+		public AtlElementHyperlink(AtlEditor editor, IRegion region, Object linkTarget) {
+			this.sourceEditor = editor;
+			this.hyperLinkRegion = region;
+			if (linkTarget instanceof EObject) {
+				this.unit = null;
+				this.target = (EObject)linkTarget;
+			} else if (linkTarget instanceof Feature) {
+				Feature feature = (Feature)linkTarget;
+				this.unit = feature.getUnit();
+				this.target = feature.getDeclaration();
+			} else {
+				this.unit = null;
+				this.target = null;
+			}
 		}
 
 		/**
@@ -124,7 +138,7 @@ public class AtlElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		 */
 		public void open() {
 			try {
-				OpenDeclarationUtils.openDeclaration(target, sourceEditor);
+				OpenDeclarationUtils.openDeclaration(unit, target, sourceEditor);
 			} catch (BadLocationException e) {
 				// do nothing
 			}

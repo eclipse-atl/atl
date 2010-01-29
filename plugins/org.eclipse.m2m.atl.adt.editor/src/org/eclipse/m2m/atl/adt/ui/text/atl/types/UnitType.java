@@ -10,14 +10,21 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text.atl.types;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 
@@ -29,24 +36,35 @@ import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 @SuppressWarnings("serial")
 public abstract class UnitType extends OclAnyType {
 
-	protected AtlSourceManager manager;
+	protected AtlSourceManager sourceManager;
+
+	private IFile file;
 
 	private Map<OclAnyType, Set<Operation>> helpers;
 
 	private Map<OclAnyType, Set<Feature>> attributes;
 
+	private List<LibraryType> libraries = new ArrayList<LibraryType>();
+
 	/**
-	 * Creates a new Module from the given source manager.
+	 * Creates a new ATL Unit from the given source manager.
 	 * 
+	 * @param file
+	 *            the unit file
 	 * @param manager
 	 *            the source manager
 	 * @param unitType
 	 *            the unit type
 	 */
-	public UnitType(AtlSourceManager manager, OclType unitType) {
+	public UnitType(IFile file, AtlSourceManager manager, OclType unitType) {
 		super(unitType);
-		this.manager = manager;
+		this.file = file;
+		this.sourceManager = manager;
 		init();
+	}
+
+	public IFile getFile() {
+		return file;
 	}
 
 	/**
@@ -85,8 +103,38 @@ public abstract class UnitType extends OclAnyType {
 	/**
 	 * Initializes the helpers and attributes.
 	 */
+	@SuppressWarnings("unchecked")
 	protected void init() {
-		if (manager != null && manager.getModel() != null) {
+		if (sourceManager != null && sourceManager.getModel() != null) {
+			// libraries
+			Collection<EObject> librariesObjects = (Collection<EObject>)AtlTypesProcessor.eGet(sourceManager
+					.getModel(), "libraries"); //$NON-NLS-1$;
+			for (EObject libraryObject : librariesObjects) {
+				String libraryName = (String)AtlTypesProcessor.eGet(libraryObject, "name"); //$NON-NLS-1$
+				if (libraryName != null && sourceManager.getLibraryLocations().get(libraryName) != null) {
+					String location = (String)sourceManager.getLibraryLocations().get(libraryName);
+					AtlSourceManager libraryManager = new AtlSourceManager();
+					IFile file = (IFile)ResourcesPlugin.getWorkspace().getRoot().findMember(
+							new Path(location));
+					if (file != null && file.isAccessible()) {
+						if ("asm".equals(file.getFileExtension())) { //$NON-NLS-1$
+							file = file.getProject().getParent().getFile(
+									file.getFullPath().removeFileExtension().addFileExtension("atl")); //$NON-NLS-1$
+						}
+						if (file != null && file.isAccessible()) {
+							try {
+								libraryManager.updateDataSource(file.getContents());
+								libraries.add(new LibraryType(file, libraryManager));
+							} catch (IOException e) {
+								// do nothing
+							} catch (CoreException e) {
+								// do nothing
+							}
+						}
+					}
+				}
+			}
+
 			Collection<EObject> helpers = getHelpersObjects();
 			if (helpers != null) {
 				for (Iterator<EObject> iterator = helpers.iterator(); iterator.hasNext();) {
@@ -98,16 +146,16 @@ public abstract class UnitType extends OclAnyType {
 							OclAnyType type = OclAnyType.getInstance();
 							if (context != null) {
 								EObject contextType = (EObject)AtlTypesProcessor.eGet(context, "context_"); //$NON-NLS-1$
-								type = OclAnyType.create(manager, contextType);
+								type = OclAnyType.create(sourceManager, contextType);
 							} else {
 								type = this;
 							}
 							EObject f = (EObject)AtlTypesProcessor.eGet(definition, "feature"); //$NON-NLS-1$
 							if (f != null) {
 								if (f.eClass().getName().equals("Attribute")) { //$NON-NLS-1$
-									addAttribute(type, Feature.createFromAttribute(manager, f, type));
+									addAttribute(type, Feature.createFromAttribute(this, f, type));
 								} else if (f.eClass().getName().equals("Operation")) { //$NON-NLS-1$
-									addHelper(type, Operation.createFromHelper(manager, f, type));
+									addHelper(type, Operation.createFromHelper(this, f, type));
 								}
 							}
 						}
@@ -142,6 +190,9 @@ public abstract class UnitType extends OclAnyType {
 	 */
 	public Set<Feature> getAttributes(OclAnyType type) {
 		Set<Feature> res = new LinkedHashSet<Feature>();
+		for (LibraryType library : libraries) {
+			res.addAll(library.getAttributes(type));
+		}
 		if (attributes != null) {
 			if (attributes.get(type) != null) {
 				res.addAll(attributes.get(type));
@@ -162,6 +213,9 @@ public abstract class UnitType extends OclAnyType {
 	 */
 	public Set<Operation> getHelpers(OclAnyType type) {
 		Set<Operation> res = new LinkedHashSet<Operation>();
+		for (LibraryType library : libraries) {
+			res.addAll(library.getHelpers(type));
+		}
 		if (helpers != null) {
 			if (helpers.get(type) != null) {
 				res.addAll(helpers.get(type));
@@ -171,6 +225,36 @@ public abstract class UnitType extends OclAnyType {
 			}
 		}
 		return res;
+	}
+
+	public AtlSourceManager getSourceManager() {
+		return sourceManager;
+	}
+
+	/**
+	 * Returns the atl unit type.
+	 * 
+	 * @param file
+	 *            the unit file
+	 * @param manager
+	 *            the unit source manager
+	 * @return the atl unit type
+	 */
+	public static UnitType create(IFile file, AtlSourceManager manager) {
+		if (file != null && manager != null) {
+			switch (manager.getATLFileType()) {
+				case AtlSourceManager.ATL_FILE_TYPE_MODULE:
+					return new ModuleType(file, manager);
+				case AtlSourceManager.ATL_FILE_TYPE_LIBRARY:
+					return new LibraryType(file, manager);
+				case AtlSourceManager.ATL_FILE_TYPE_QUERY:
+					return new QueryType(file, manager);
+				default:
+					break;
+			}
+		}
+		// Dummy instance
+		return new ModuleType(null, null);
 	}
 
 }

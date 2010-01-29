@@ -80,7 +80,7 @@ public class ModelElementType extends OclAnyType {
 		List<Feature> features = new ArrayList<Feature>();
 		if (oclType.getClassifier() != null && oclType.getClassifier() instanceof EClass) {
 			for (EStructuralFeature eFeature : ((EClass)oclType.getClassifier()).getEAllStructuralFeatures()) {
-				features.add(new Feature(eFeature, oclType.getMetamodelName()));
+				features.add(new Feature(null, eFeature, oclType.getMetamodelName()));
 			}
 		}
 		Collections.sort(features);

@@ -13,7 +13,6 @@ package org.eclipse.m2m.atl.adt.ui.text.atl.types;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 
 /**
  * The Feature wrapper.
@@ -23,6 +22,8 @@ import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 public class Feature implements Comparable<Feature> {
 
 	protected String name;
+
+	private UnitType unit;
 
 	private OclAnyType contextType;
 
@@ -47,6 +48,10 @@ public class Feature implements Comparable<Feature> {
 	/**
 	 * Creates a new feature using the given parameters.
 	 * 
+	 * @param unit
+	 *            the atl unit containing the declaration
+	 * @param declaration
+	 *            the feature declaration
 	 * @param name
 	 *            the feature name
 	 * @param contextType
@@ -62,7 +67,7 @@ public class Feature implements Comparable<Feature> {
 	 * @param upper
 	 *            the feature upper bound
 	 */
-	public Feature(EObject declaration, String name, OclAnyType contextType, OclAnyType type,
+	public Feature(UnitType unit, EObject declaration, String name, OclAnyType contextType, OclAnyType type,
 			boolean ordered, boolean container, int lower, int upper) {
 		super();
 		this.name = name;
@@ -74,6 +79,7 @@ public class Feature implements Comparable<Feature> {
 		this.container = container;
 		this.many = upper > 1 || upper == -1;
 		this.declaration = declaration;
+		this.unit = unit;
 		if (isMany()) {
 			this.imagePath = "$nl$/icons/model_reference.gif"; //$NON-NLS-1$
 		} else {
@@ -84,12 +90,14 @@ public class Feature implements Comparable<Feature> {
 	/**
 	 * Creates a new feature from an EMF one.
 	 * 
+	 * @param unit
+	 *            the atl unit containing the declaration
 	 * @param feature
 	 *            the EMF feature
 	 * @param metamodelName
 	 *            the metamodel name
 	 */
-	public Feature(EStructuralFeature feature, String metamodelName) {
+	public Feature(UnitType unit, EStructuralFeature feature, String metamodelName) {
 		super();
 		this.name = feature.getName();
 		this.type = ModelElementType.create(feature.getEType(), metamodelName);
@@ -202,29 +210,33 @@ public class Feature implements Comparable<Feature> {
 	/**
 	 * Utility method to initialize a Feature from an ATL model attribute helper.
 	 * 
-	 * @param manager
-	 *            the source manager, used to map the type
+	 * @param unit
+	 *            the atl unit containing the declaration
 	 * @param attribute
 	 *            the attribute helper model element
 	 * @param context
 	 *            the attribute context type
 	 * @return the Feature
 	 */
-	public static Feature createFromAttribute(AtlSourceManager manager, EObject attribute, OclAnyType context) {
+	public static Feature createFromAttribute(UnitType unit, EObject attribute, OclAnyType context) {
 		String featureName = (String)AtlTypesProcessor.eGet(attribute, "name"); //$NON-NLS-1$
 		EObject featureType = (EObject)AtlTypesProcessor.eGet(attribute, "type"); //$NON-NLS-1$
-		OclAnyType type = OclAnyType.create(manager, featureType);
+		OclAnyType type = OclAnyType.create(unit.getSourceManager(), featureType);
 		if (featureName != null) {
 			boolean ordered = type instanceof SequenceType || type instanceof OrderedSetType;
 			int upper = 1;
 			if (type instanceof CollectionType) {
 				upper = -1;
 			}
-			Feature res = new Feature(attribute, featureName, context, type, ordered, false, 1, upper);
+			Feature res = new Feature(unit, attribute, featureName, context, type, ordered, false, 1, upper);
 			res.setImagePath("$nl$/icons/helper.gif"); //$NON-NLS-1$
 			return res;
 		}
 		return null;
+	}
+
+	public UnitType getUnit() {
+		return unit;
 	}
 
 	/**

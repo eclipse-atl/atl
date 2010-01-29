@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
@@ -28,19 +29,18 @@ import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 @SuppressWarnings("serial")
 public class ModuleType extends UnitType {
 
-	/** The singleton instance. */
-	private static ModuleType instance;
-
 	private static List<Operation> operations;
 
 	/**
 	 * Creates a new module from the given source manager.
 	 * 
+	 * @param file
+	 *            the file containing the declaration
 	 * @param manager
 	 *            the source manager
 	 */
-	public ModuleType(AtlSourceManager manager) {
-		super(manager, new OclType("Module")); //$NON-NLS-1$
+	public ModuleType(IFile file, AtlSourceManager manager) {
+		super(file, manager, new OclType("Module")); //$NON-NLS-1$
 	}
 
 	/**
@@ -50,11 +50,12 @@ public class ModuleType extends UnitType {
 	 */
 	@Override
 	protected List<Operation> getTypeOperations() {
+		final ModuleType moduleType = this;
 		List<Operation> res = new ArrayList<Operation>();
 		if (operations == null) {
 			operations = new ArrayList<Operation>() {
 				{
-					add(new Operation("resolveTemp", getInstance(), null, new HashMap<String, OclAnyType>() { //$NON-NLS-1$
+					add(new Operation("resolveTemp", moduleType, null, new HashMap<String, OclAnyType>() { //$NON-NLS-1$
 								{
 									put("var", OclAnyType.getInstance()); //$NON-NLS-1$
 									put("target_pattern_name", StringType.getInstance()); //$NON-NLS-1$
@@ -83,18 +84,18 @@ public class ModuleType extends UnitType {
 	@SuppressWarnings("unchecked")
 	private List<Operation> getRulesAsOperations() {
 		List<Operation> res = new ArrayList<Operation>();
-		if (manager.getModel() != null) {
-			EList<EObject> helpersAndRules = (EList<EObject>)AtlTypesProcessor.eGet(manager.getModel(),
+		if (sourceManager.getModel() != null) {
+			EList<EObject> helpersAndRules = (EList<EObject>)AtlTypesProcessor.eGet(sourceManager.getModel(),
 					"elements"); //$NON-NLS-1$
 			for (Iterator<EObject> iterator = helpersAndRules.iterator(); iterator.hasNext();) {
 				EObject element = iterator.next();
 				if (AtlTypesProcessor.oclIsKindOf(element, "LazyMatchedRule")) { //$NON-NLS-1$
-					Operation ruleOperation = Operation.createFromLazyRule(manager, element, this);
+					Operation ruleOperation = Operation.createFromLazyRule(this, element, this);
 					if (ruleOperation != null) {
 						res.add(ruleOperation);
 					}
 				} else if (AtlTypesProcessor.oclIsKindOf(element, "CalledRule")) { //$NON-NLS-1$
-					Operation ruleOperation = Operation.createFromCalledRule(manager, element, this);
+					Operation ruleOperation = Operation.createFromCalledRule(this, element, this);
 					if (ruleOperation != null) {
 						res.add(ruleOperation);
 					}
@@ -113,8 +114,8 @@ public class ModuleType extends UnitType {
 	 */
 	@SuppressWarnings("unchecked")
 	public EObject getRule(String ruleName) {
-		if (manager.getModel() != null) {
-			EList<EObject> helpersAndRules = (EList<EObject>)AtlTypesProcessor.eGet(manager.getModel(),
+		if (sourceManager.getModel() != null) {
+			EList<EObject> helpersAndRules = (EList<EObject>)AtlTypesProcessor.eGet(sourceManager.getModel(),
 					"elements"); //$NON-NLS-1$
 			for (Iterator<EObject> iterator = helpersAndRules.iterator(); iterator.hasNext();) {
 				EObject element = iterator.next();
@@ -137,18 +138,6 @@ public class ModuleType extends UnitType {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Collection<EObject> getHelpersObjects() {
-		return (Collection<EObject>)AtlTypesProcessor.eGet(manager.getModel(), "elements"); //$NON-NLS-1$;
-	}
-
-	/**
-	 * Returns the default Collection type singleton.
-	 * 
-	 * @return the default Collection type singleton
-	 */
-	public static ModuleType getInstance() {
-		if (instance == null) {
-			instance = new ModuleType(null);
-		}
-		return instance;
+		return (Collection<EObject>)AtlTypesProcessor.eGet(sourceManager.getModel(), "elements"); //$NON-NLS-1$;
 	}
 }

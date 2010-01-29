@@ -52,6 +52,7 @@ import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
 
 /**
  * The completion processor, provides content assist.
@@ -195,7 +196,8 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		// } else {
 		// currentAnalyser = fEditor.getModelAnalyser();
 		// }
-		typeProcessor.update(currentAnalyser, manager);
+		IFileEditorInput editorInput = (IFileEditorInput)fEditor.getEditorInput();
+		typeProcessor.update(editorInput.getFile(), currentAnalyser, manager);
 		List<ICompletionProposal> listProposals = new ArrayList<ICompletionProposal>();
 		String line = getCurrentLine(offset);
 
@@ -375,6 +377,15 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		return extractPrefix(viewer.getDocument(), offset);
 	}
 
+	/**
+	 * Extracts the prefix at the given offset in the given document.
+	 * 
+	 * @param document
+	 *            the document
+	 * @param offset
+	 *            the given offset
+	 * @return the prefix
+	 */
 	public static String extractPrefix(IDocument document, int offset) {
 		int i = offset;
 		if (document != null) {
@@ -477,9 +488,12 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 						String information = "variable : type (\n\t\t\t\n)"; //$NON-NLS-1$
 						Template template = new Template(templateName.toString(), description, atlContext,
 								pattern.toString(), false);
-
-						res.add(convertToProposal(template, prefix, offset, AtlUIPlugin.getDefault()
-								.getImage("$nl$/icons/templateprop_co.gif"), true, information)); //$NON-NLS-1$
+						ICompletionProposal proposal = convertToProposal(template, prefix, offset,
+								AtlUIPlugin.getDefault().getImage("$nl$/icons/templateprop_co.gif"), true, //$NON-NLS-1$
+								information);
+						if (proposal != null) {
+							res.add(proposal);
+						}
 					}
 				} else if (AtlTypesProcessor.oclIsKindOf(locatedElement, "VariableExp") //$NON-NLS-1$
 						|| AtlTypesProcessor.oclIsKindOf(locatedElement, "VariableDeclaration")) { //$NON-NLS-1$
@@ -668,9 +682,11 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 
 			String pathTemplate = "-- @" + AtlSourceManager.PATH_TAG; //$NON-NLS-1$
 			String uriTemplate = "-- @" + AtlSourceManager.URI_TAG; //$NON-NLS-1$
+			String libTemplate = "-- @" + AtlSourceManager.LIB_TAG; //$NON-NLS-1$
 			String compilerTemplate = "-- @" + AtlSourceManager.COMPILER_TAG; //$NON-NLS-1$
 			return createProposalsFromList(line, offset, new String[] {pathTemplate, uriTemplate,
-					compilerTemplate,}, AtlUIPlugin.getDefault().getImage("$nl$/icons/EAnnotation.gif")); //$NON-NLS-1$
+					libTemplate, compilerTemplate,}, AtlUIPlugin.getDefault().getImage(
+					"$nl$/icons/EAnnotation.gif")); //$NON-NLS-1$
 		}
 		return Collections.emptyList();
 	}
@@ -808,6 +824,7 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		}
 		pattern.append(')');
 		if (operation.getType(context) != null) {
+			// nothing
 		}
 		// already done by Template description :
 		// templateName.append(" - "); //$NON-NLS-1$

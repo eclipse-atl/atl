@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.adt.ui.text.atl.types;
 
 import java.util.Collection;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 
@@ -25,11 +26,13 @@ public class QueryType extends UnitType {
 	/**
 	 * Creates a new query from the given source manager.
 	 * 
+	 * @param file
+	 *            the query file
 	 * @param manager
 	 *            the source manager
 	 */
-	public QueryType(AtlSourceManager manager) {
-		super(manager, new OclType("Query")); //$NON-NLS-1$
+	public QueryType(IFile file, AtlSourceManager manager) {
+		super(file, manager, new OclType("Query")); //$NON-NLS-1$
 	}
 
 	/**
@@ -40,6 +43,6 @@ public class QueryType extends UnitType {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Collection<EObject> getHelpersObjects() {
-		return (Collection<EObject>)AtlTypesProcessor.eGet(manager.getModel(), "helpers"); //$NON-NLS-1$;
+		return (Collection<EObject>)AtlTypesProcessor.eGet(sourceManager.getModel(), "helpers"); //$NON-NLS-1$;
 	}
 }

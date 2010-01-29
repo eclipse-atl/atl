@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -32,21 +33,23 @@ import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
  */
 public class AtlTypesProcessor {
 
-	private AtlSourceManager manager;
+	private UnitType unit;
 
 	private AtlModelAnalyser analyser;
 
 	/**
 	 * Updates the type processor.
 	 * 
+	 * @param file
+	 *            the file containing the current unit
 	 * @param analyser
 	 *            the current model analyser (local code analysis)
 	 * @param manager
 	 *            the current source manager (entire code file repository)
 	 */
-	public void update(AtlModelAnalyser analyser, AtlSourceManager manager) {
+	public void update(IFile file, AtlModelAnalyser analyser, AtlSourceManager manager) {
 		this.analyser = analyser;
-		this.manager = manager;
+		unit = UnitType.create(file, manager);
 	}
 
 	/**
@@ -60,7 +63,7 @@ public class AtlTypesProcessor {
 	public OclAnyType getType(EObject element) throws BadLocationException {
 		OclAnyType res = OclAnyType.getInstance();
 		if (oclIsKindOf(element, "OclModelElement")) { //$NON-NLS-1$
-			res = OclAnyType.create(manager, element).getOclType();
+			res = OclAnyType.create(unit.getSourceManager(), element).getOclType();
 		} else if (oclIsKindOf(element, "Binding")) { //$NON-NLS-1$
 			Feature feature = getBindingFeature(element);
 			if (feature != null) {
@@ -117,7 +120,7 @@ public class AtlTypesProcessor {
 	 */
 	public String getInformation(EObject locatedElement) throws BadLocationException {
 		if (oclIsKindOf(locatedElement, "OclModelElement")) { //$NON-NLS-1$
-			OclAnyType type = OclAnyType.create(manager, locatedElement);
+			OclAnyType type = OclAnyType.create(unit.getSourceManager(), locatedElement);
 			if (type instanceof ModelElementType) {
 				return ((ModelElementType)type).getInformation();
 			}
@@ -152,22 +155,16 @@ public class AtlTypesProcessor {
 	 * @return Returns the type of the given element.
 	 * @throws BadLocationException
 	 */
-	public EObject getDeclaration(EObject element) throws BadLocationException {
-		EObject res = null;
+	public Object getDeclaration(EObject element) throws BadLocationException {
+		Object res = null;
 		if (oclIsKindOf(element, "VariableExp")) { //$NON-NLS-1$
 			res = getVariableExpDeclaration(element);
 		} else if (oclIsKindOf(element, "OclModelElement")) { //$NON-NLS-1$
-			res = OclAnyType.create(manager, element).getOclType().getClassifier();
+			res = OclAnyType.create(unit.getSourceManager(), element).getOclType().getClassifier();
 		} else if (oclIsKindOf(element, "Binding")) { //$NON-NLS-1$
-			Feature feature = getBindingFeature(element);
-			if (feature != null) {
-				res = feature.getDeclaration();
-			}
+			res = getBindingFeature(element);
 		} else if (oclIsKindOf(element, "NavigationOrAttributeCallExp")) { //$NON-NLS-1$
-			Feature feature = getFeature(element);
-			if (feature != null) {
-				res = feature.getDeclaration();
-			}
+			res = getFeature(element);
 		} else if (oclIsKindOf(element, "OperationCallExp")) { //$NON-NLS-1$
 			res = getOperationCallExpDeclaration(element);
 		} else if (oclIsKindOf(element, "VariableDeclaration")) { //$NON-NLS-1$
@@ -178,27 +175,6 @@ public class AtlTypesProcessor {
 			// TODO retrieve declaration in metamodel
 		}
 		return res;
-	}
-
-	/**
-	 * Returns the current atl unit type.
-	 * 
-	 * @return the current atl unit type
-	 */
-	public UnitType getUnit() {
-		if (manager != null) {
-			switch (manager.getATLFileType()) {
-				case AtlSourceManager.ATL_FILE_TYPE_MODULE:
-					return new ModuleType(manager);
-				case AtlSourceManager.ATL_FILE_TYPE_LIBRARY:
-					return new LibraryType(manager);
-				case AtlSourceManager.ATL_FILE_TYPE_QUERY:
-					return new QueryType(manager);
-				default:
-					break;
-			}
-		}
-		return new ModuleType(null);
 	}
 
 	/**
@@ -221,10 +197,10 @@ public class AtlTypesProcessor {
 	}
 
 	@SuppressWarnings("unchecked")
-	private EObject getMetamodelDeclaration(EObject element) {
+	private Object getMetamodelDeclaration(EObject element) {
 		EObject res = null;
 		String name = (String)eGet(element, "name"); //$NON-NLS-1$
-		Collection<EObject> inModels = (Collection<EObject>)eGet(manager.getModel(), "inModels"); //$NON-NLS-1$;
+		Collection<EObject> inModels = (Collection<EObject>)eGet(unit.getSourceManager().getModel(), "inModels"); //$NON-NLS-1$;
 		if (inModels != null) {
 			for (EObject model : inModels) {
 				EObject metamodel = (EObject)eGet(model, "metamodel"); //$NON-NLS-1$
@@ -234,7 +210,8 @@ public class AtlTypesProcessor {
 			}
 		}
 		if (res == null) {
-			Collection<EObject> outModels = (Collection<EObject>)eGet(manager.getModel(), "outModels"); //$NON-NLS-1$;
+			Collection<EObject> outModels = (Collection<EObject>)eGet(unit.getSourceManager().getModel(),
+					"outModels"); //$NON-NLS-1$;
 			if (outModels != null) {
 				for (EObject model : outModels) {
 					EObject metamodel = (EObject)eGet(model, "metamodel"); //$NON-NLS-1$
@@ -247,7 +224,7 @@ public class AtlTypesProcessor {
 		return res;
 	}
 
-	private EObject getVariableExpDeclaration(EObject element) {
+	private Object getVariableExpDeclaration(EObject element) {
 		EObject referredVariable = (EObject)eGet(element, "referredVariable"); //$NON-NLS-1$
 		if (referredVariable != null) {
 			return referredVariable;
@@ -281,7 +258,7 @@ public class AtlTypesProcessor {
 	private OclAnyType getVariableDeclarationType(EObject element) {
 		EObject atlType = (EObject)eGet(element, "type"); //$NON-NLS-1$
 		if (atlType != null) {
-			return OclAnyType.create(manager, atlType);
+			return OclAnyType.create(unit.getSourceManager(), atlType);
 		}
 		return OclAnyType.getInstance();
 	}
@@ -293,7 +270,7 @@ public class AtlTypesProcessor {
 			if (source != null) {
 				OclAnyType sourceType = getType(source);
 				if (!sourceType.equals(OclAnyType.getInstance())) {
-					return getFeature(sourceType, getUnit(), navigation);
+					return getFeature(sourceType, unit, navigation);
 				}
 			}
 		}
@@ -307,7 +284,7 @@ public class AtlTypesProcessor {
 			if (source != null) {
 				OclAnyType sourceType = getType(source);
 				if (!sourceType.equals(OclAnyType.getInstance())) {
-					return getFeature(sourceType, getUnit(), navigation);
+					return getFeature(sourceType, unit, navigation);
 				}
 			}
 		}
@@ -315,7 +292,7 @@ public class AtlTypesProcessor {
 	}
 
 	@SuppressWarnings("unchecked")
-	private EObject getOperationCallExpDeclaration(EObject element) throws BadLocationException {
+	private Object getOperationCallExpDeclaration(EObject element) throws BadLocationException {
 		String operationName = (String)eGet(element, "operationName"); //$NON-NLS-1$
 		EObject source = (EObject)eGet(element, "source"); //$NON-NLS-1$
 		if (source != null) {
@@ -328,16 +305,11 @@ public class AtlTypesProcessor {
 						argumentTypes.add(getType(eObject));
 					}
 				}
-				Operation operation = null;
 				if (argumentTypes.isEmpty()) {
-					operation = getOperation(sourceType, getUnit(), operationName);
+					return getOperation(sourceType, unit, operationName);
 				} else {
-					operation = getOperation(sourceType, getUnit(), operationName, argumentTypes
+					return getOperation(sourceType, unit, operationName, argumentTypes
 							.toArray(new OclAnyType[argumentTypes.size()]));
-				}
-				if (operation != null) {
-					// TODO add arguments values
-					return operation.getDeclaration();
 				}
 			}
 		}
@@ -360,9 +332,9 @@ public class AtlTypesProcessor {
 				}
 				Operation operation = null;
 				if (argumentTypes.isEmpty()) {
-					operation = getOperation(sourceType, getUnit(), operationName);
+					operation = getOperation(sourceType, unit, operationName);
 				} else {
-					operation = getOperation(sourceType, getUnit(), operationName, argumentTypes
+					operation = getOperation(sourceType, unit, operationName, argumentTypes
 							.toArray(new OclAnyType[argumentTypes.size()]));
 				}
 				if (operation != null) {
@@ -390,9 +362,9 @@ public class AtlTypesProcessor {
 				}
 				Operation operation = null;
 				if (argumentTypes.isEmpty()) {
-					operation = getOperation(sourceType, getUnit(), operationName);
+					operation = getOperation(sourceType, unit, operationName);
 				} else {
-					operation = getOperation(sourceType, getUnit(), operationName, argumentTypes
+					operation = getOperation(sourceType, unit, operationName, argumentTypes
 							.toArray(new OclAnyType[argumentTypes.size()]));
 				}
 				if (operation != null) {
@@ -514,11 +486,11 @@ public class AtlTypesProcessor {
 	private Map<String, OclAnyType> getRootVariables(EObject element) throws BadLocationException {
 		EObject root = getRoot(element);
 		Map<String, OclAnyType> variables = new HashMap<String, OclAnyType>();
-		if (manager.getATLFileType() == AtlSourceManager.ATL_FILE_TYPE_MODULE) {
-			variables.put("thisModule", getUnit()); //$NON-NLS-1$
+		if (unit.getSourceManager().getATLFileType() == AtlSourceManager.ATL_FILE_TYPE_MODULE) {
+			variables.put("thisModule", unit); //$NON-NLS-1$
 		}
 		List<EObject> declarations = new ArrayList<EObject>();
-		if (getUnit() != null) {
+		if (unit != null) {
 			if (oclIsKindOf(root, "Rule")) { //$NON-NLS-1$
 				Collection<EObject> parameterDeclarations = (Collection<EObject>)eGet(root, "parameters"); //$NON-NLS-1$
 				if (parameterDeclarations != null) {
@@ -553,7 +525,6 @@ public class AtlTypesProcessor {
 				// Saved model lookup
 
 				String ruleName = (String)eGet(root, "name"); //$NON-NLS-1$
-				UnitType unit = getUnit();
 				if (unit instanceof ModuleType) {
 					ModuleType module = (ModuleType)unit;
 					EObject savedRule = module.getRule(ruleName);
@@ -602,7 +573,7 @@ public class AtlTypesProcessor {
 					if (context != null) {
 						EObject contextDefinition = (EObject)eGet(context, "context_"); //$NON-NLS-1$
 						if (contextDefinition != null) {
-							variables.put("self", OclAnyType.create(manager, contextDefinition)); //$NON-NLS-1$
+							variables.put("self", OclAnyType.create(unit.getSourceManager(), contextDefinition)); //$NON-NLS-1$
 						}
 					}
 				}
@@ -611,7 +582,7 @@ public class AtlTypesProcessor {
 		for (EObject eObject : declarations) {
 			String variableName = eGet(eObject, "varName").toString(); //$NON-NLS-1$
 			EObject variableType = (EObject)eGet(eObject, "type"); //$NON-NLS-1$			
-			OclAnyType type = OclAnyType.create(manager, variableType);
+			OclAnyType type = OclAnyType.create(unit.getSourceManager(), variableType);
 			variables.put(variableName, type);
 		}
 		return variables;
@@ -625,7 +596,7 @@ public class AtlTypesProcessor {
 			if (declaration != null) {
 				String variableName = eGet(declaration, "varName").toString(); //$NON-NLS-1$
 				EObject variableType = (EObject)eGet(declaration, "type"); //$NON-NLS-1$
-				OclAnyType type = OclAnyType.create(manager, variableType);
+				OclAnyType type = OclAnyType.create(unit.getSourceManager(), variableType);
 				variables.put(variableName, type);
 			}
 		} else if (oclIsKindOf(element, "IteratorExp")) { //$NON-NLS-1$
@@ -636,7 +607,7 @@ public class AtlTypesProcessor {
 					EObject variableType = (EObject)eGet(declaration, "type"); //$NON-NLS-1$
 					OclAnyType type = null;
 					if (variableType != null) {
-						type = OclAnyType.create(manager, variableType);
+						type = OclAnyType.create(unit.getSourceManager(), variableType);
 					} else {
 						type = getType(declaration);
 					}
@@ -649,7 +620,7 @@ public class AtlTypesProcessor {
 				for (EObject eObject : inElements) {
 					String variableName = eGet(eObject, "varName").toString(); //$NON-NLS-1$
 					EObject variableType = (EObject)eGet(eObject, "type"); //$NON-NLS-1$			
-					OclAnyType type = OclAnyType.create(manager, variableType);
+					OclAnyType type = OclAnyType.create(unit.getSourceManager(), variableType);
 					variables.put(variableName, type);
 				}
 			}
@@ -657,6 +628,10 @@ public class AtlTypesProcessor {
 			// TODO manage other local variables
 		}
 		return variables;
+	}
+
+	public UnitType getUnit() {
+		return unit;
 	}
 
 	private static String[] analyzeVariableExp(String code) {
@@ -788,4 +763,5 @@ public class AtlTypesProcessor {
 		}
 		return res;
 	}
+
 }

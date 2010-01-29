@@ -18,6 +18,7 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.adt.ui.text.atl.OpenDeclarationUtils;
+import org.eclipse.m2m.atl.adt.ui.text.atl.types.Feature;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -64,11 +65,15 @@ public class OpenDeclarationAction extends Action implements IWorkbenchWindowAct
 				ITextSelection selection = (ITextSelection)textEditor.getSelectionProvider().getSelection();
 				if (selection != null) {
 					try {
-						EObject locatedElement = OpenDeclarationUtils.getDeclaration(textEditor, selection
+						Object declaration = OpenDeclarationUtils.getDeclaration(textEditor, selection
 								.getOffset(), selection.getLength());
-
-						if (locatedElement != null) {
-							OpenDeclarationUtils.openDeclaration(locatedElement, textEditor);
+						if (declaration != null) {
+							if (declaration instanceof EObject) {
+								OpenDeclarationUtils.openDeclaration(null, (EObject)declaration, textEditor);
+							} else if (declaration instanceof Feature) {
+								OpenDeclarationUtils.openDeclaration(((Feature)declaration).getUnit(),
+										((Feature)declaration).getDeclaration(), textEditor);
+							}
 						}
 					} catch (BadLocationException e) {
 						// continue

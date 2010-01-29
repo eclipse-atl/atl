@@ -42,13 +42,16 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.AtlTypesProcessor;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType;
+import org.eclipse.m2m.atl.adt.ui.text.atl.types.UnitType;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.FileEditorInput;
 import org.osgi.framework.Bundle;
 
 /**
@@ -56,7 +59,11 @@ import org.osgi.framework.Bundle;
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public class OpenDeclarationUtils {
+public final class OpenDeclarationUtils {
+
+	private OpenDeclarationUtils() {
+		// prevents instantiation
+	}
 
 	/**
 	 * Retrieves the declaration of the element at the given offset if exists.
@@ -83,8 +90,9 @@ public class OpenDeclarationUtils {
 		AtlModelAnalyser analyser = editor.getModelAnalyser();
 		EObject locatedElement = analyser.getLocatedElement(savedOffset);
 		if (locatedElement != null) {
+			IFileEditorInput editorInput = (IFileEditorInput)editor.getEditorInput();
 			AtlTypesProcessor processor = new AtlTypesProcessor();
-			processor.update(analyser, manager);
+			processor.update(editorInput.getFile(), analyser, manager);
 			return processor.getType(locatedElement);
 		}
 		return null;
@@ -115,8 +123,9 @@ public class OpenDeclarationUtils {
 		AtlModelAnalyser analyser = editor.getModelAnalyser();
 		EObject locatedElement = analyser.getLocatedElement(savedOffset);
 		if (locatedElement != null) {
+			IFileEditorInput editorInput = (IFileEditorInput)editor.getEditorInput();
 			AtlTypesProcessor processor = new AtlTypesProcessor();
-			processor.update(analyser, manager);
+			processor.update(editorInput.getFile(), analyser, manager);
 			return processor.getInformation(locatedElement);
 		}
 		return null;
@@ -134,8 +143,7 @@ public class OpenDeclarationUtils {
 	 * @return the declaration if exists
 	 * @throws BadLocationException
 	 */
-	public static EObject getDeclaration(AtlEditor editor, int offset, int length)
-			throws BadLocationException {
+	public static Object getDeclaration(AtlEditor editor, int offset, int length) throws BadLocationException {
 		int savedOffset = offset;
 		if (editor.isDirty()) {
 			int[] savePosition = editor.getComparator().current2savePosition(
@@ -148,8 +156,9 @@ public class OpenDeclarationUtils {
 		AtlModelAnalyser analyser = editor.getModelAnalyser();
 		EObject locatedElement = analyser.getLocatedElement(savedOffset);
 		if (locatedElement != null) {
+			IFileEditorInput editorInput = (IFileEditorInput)editor.getEditorInput();
 			AtlTypesProcessor processor = new AtlTypesProcessor();
-			processor.update(analyser, manager);
+			processor.update(editorInput.getFile(), analyser, manager);
 			return processor.getDeclaration(locatedElement);
 		}
 		return null;
@@ -159,24 +168,47 @@ public class OpenDeclarationUtils {
 	 * Opens the declaration of the given object. Support boths meta-elements: open the declaration inside of
 	 * the metamodel; and ATL model elements.
 	 * 
+	 * @param unit
+	 *            the atl unit containing the declaration
 	 * @param target
 	 *            the target {@link EObject}
 	 * @param editor
 	 *            the editor
 	 * @throws BadLocationException
 	 */
-	public static void openDeclaration(EObject target, AtlEditor editor) throws BadLocationException {
+	public static void openDeclaration(UnitType unit, EObject target, AtlEditor editor)
+			throws BadLocationException {
 		if (target instanceof EClassifier || target instanceof EStructuralFeature
 				|| target instanceof EOperation) {
 			showEObject(editor.getSite().getPage(), target.eResource().getURI(), target);
 		} else {
-			int[] location = editor.getModelAnalyser().getHelper().getElementOffsets(target, 0);
-			if (location != null) {
-				if (!editor.isDirty()) {
-					editor.selectAndReveal(location[0], location[1] - location[0]);
-				} else {
-					int[] newLocation = editor.getComparator().save2currentPosition(location);
-					editor.selectAndReveal(newLocation[0], newLocation[1] - newLocation[0]);
+			IEditorPart targetEditor = null;
+			if (unit != null && unit.getFile() != null
+					&& !unit.getFile().equals(((IFileEditorInput)editor.getEditorInput()).getFile())) {
+				IWorkbenchPage page = editor.getSite().getPage();
+				IEditorDescriptor editorDescriptor = page.getWorkbenchWindow().getWorkbench()
+						.getEditorRegistry().findEditor("org.eclipse.m2m.atl.adt.editor.AtlEditor"); //$NON-NLS-1$
+				if (editorDescriptor != null) {
+					try {
+						targetEditor = page.openEditor(new FileEditorInput(unit.getFile()), editorDescriptor
+								.getId());
+					} catch (PartInitException e) {
+						// Do nothing
+					}
+				}
+			} else {
+				targetEditor = editor;
+			}
+			if (targetEditor instanceof AtlEditor) {
+				AtlEditor atlEditor = (AtlEditor)targetEditor;
+				int[] location = atlEditor.getModelAnalyser().getHelper().getElementOffsets(target, 0);
+				if (location != null) {
+					if (!atlEditor.isDirty()) {
+						atlEditor.selectAndReveal(location[0], location[1] - location[0]);
+					} else {
+						int[] newLocation = atlEditor.getComparator().save2currentPosition(location);
+						atlEditor.selectAndReveal(newLocation[0], newLocation[1] - newLocation[0]);
+					}
 				}
 			}
 		}
@@ -467,6 +499,7 @@ public class OpenDeclarationUtils {
 			}
 			end = pos;
 		} catch (BadLocationException x) {
+			// do nothing
 		}
 		if (start >= -1 && end > -1) {
 			if (start == offset && end == offset)
@@ -491,4 +524,5 @@ public class OpenDeclarationUtils {
 				&& ch != '.' && ch != ';' && ch != ',' && ch != ':' && ch != '|' && ch != '+' && ch != '-'
 				&& ch != '<' && ch != '=' && ch != '>' && ch != '*' && ch != '/' && ch != '!';
 	}
+
 }

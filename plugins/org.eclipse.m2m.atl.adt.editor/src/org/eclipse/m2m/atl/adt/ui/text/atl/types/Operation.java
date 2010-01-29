@@ -22,7 +22,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EParameter;
-import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 
 /**
  * The Operation wrapper.
@@ -52,7 +51,7 @@ public class Operation extends Feature {
 	 *            the operation parameter types map
 	 */
 	public Operation(String name, OclAnyType contextType, OclAnyType type, Map<String, OclAnyType> parameters) {
-		super(null, name, contextType, type, false, false, 1, 1);
+		super(null, null, name, contextType, type, false, false, 1, 1);
 		this.parameters = parameters;
 		setImagePath("$nl$/icons/operation.gif"); //$NON-NLS-1$
 	}
@@ -68,7 +67,7 @@ public class Operation extends Feature {
 	 *            the operation type
 	 */
 	public Operation(String name, OclAnyType contextType, OclAnyType type) {
-		super(null, name, contextType, type, false, false, 1, 1);
+		super(null, null, name, contextType, type, false, false, 1, 1);
 		this.parameters = Collections.emptyMap();
 		setImagePath("$nl$/icons/operation.gif"); //$NON-NLS-1$
 	}
@@ -76,6 +75,10 @@ public class Operation extends Feature {
 	/**
 	 * Creates a new Operation.
 	 * 
+	 * @param unit
+	 *            the atl unit containing the declaration
+	 * @param declaration
+	 *            the element declaration
 	 * @param name
 	 *            the operation name
 	 * @param contextType
@@ -85,9 +88,9 @@ public class Operation extends Feature {
 	 * @param parameters
 	 *            the operation parameter types map
 	 */
-	public Operation(EObject declaration, String name, OclAnyType contextType, OclAnyType type,
-			Map<String, OclAnyType> parameters) {
-		super(declaration, name, contextType, type, false, false, 1, 1);
+	public Operation(UnitType unit, EObject declaration, String name, OclAnyType contextType,
+			OclAnyType type, Map<String, OclAnyType> parameters) {
+		super(unit, declaration, name, contextType, type, false, false, 1, 1);
 		this.parameters = parameters;
 		setImagePath("$nl$/icons/operation.gif"); //$NON-NLS-1$
 	}
@@ -95,6 +98,10 @@ public class Operation extends Feature {
 	/**
 	 * Creates a new Operation without parameters.
 	 * 
+	 * @param unit
+	 *            the atl unit containing the declaration
+	 * @param declaration
+	 *            the element declaration
 	 * @param name
 	 *            the operation name
 	 * @param contextType
@@ -102,8 +109,8 @@ public class Operation extends Feature {
 	 * @param type
 	 *            the operation type
 	 */
-	public Operation(EObject declaration, String name, OclAnyType contextType, OclAnyType type) {
-		super(declaration, name, contextType, type, false, false, 1, 1);
+	public Operation(UnitType unit, EObject declaration, String name, OclAnyType contextType, OclAnyType type) {
+		super(unit, declaration, name, contextType, type, false, false, 1, 1);
 		this.parameters = Collections.emptyMap();
 		setImagePath("$nl$/icons/operation.gif"); //$NON-NLS-1$
 	}
@@ -117,7 +124,7 @@ public class Operation extends Feature {
 	 *            the metamodel name
 	 */
 	public Operation(EOperation operation, String metamodelName) {
-		super(operation, operation.getName(), ModelElementType.create(operation.getEContainingClass(),
+		super(null, operation, operation.getName(), ModelElementType.create(operation.getEContainingClass(),
 				metamodelName), ModelElementType.create(operation.getEType(), metamodelName), operation
 				.isOrdered(), false, operation.getLowerBound(), operation.getUpperBound());
 		this.parameters = new HashMap<String, OclAnyType>();
@@ -231,6 +238,8 @@ public class Operation extends Feature {
 	/**
 	 * Returns a description of the operation for the given context.
 	 * 
+	 * @param context
+	 *            the current context
 	 * @return a description of the operation for the given context
 	 */
 	public String getInformation(OclAnyType context) {
@@ -261,7 +270,7 @@ public class Operation extends Feature {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static Operation createFromRule(AtlSourceManager manager, EObject rule, OclAnyType context) {
+	private static Operation createFromRule(UnitType unit, EObject rule, OclAnyType context) {
 		String ruleName = (String)AtlTypesProcessor.eGet(rule, "name"); //$NON-NLS-1$
 		if (ruleName != null) {
 			Map<String, OclAnyType> parameters = new HashMap<String, OclAnyType>();
@@ -270,11 +279,12 @@ public class Operation extends Feature {
 				for (EObject eObject : parameterObjects) {
 					String parameterName = (String)AtlTypesProcessor.eGet(eObject, "varName"); //$NON-NLS-1$
 					EObject parameterTypeObject = (EObject)AtlTypesProcessor.eGet(eObject, "type"); //$NON-NLS-1$
-					OclAnyType parameterType = OclAnyType.create(manager, parameterTypeObject);
+					OclAnyType parameterType = OclAnyType.create(unit.getSourceManager(), parameterTypeObject);
 					parameters.put(parameterName, parameterType);
 				}
 			}
-			Operation operation = new Operation(rule, ruleName, context, OclAnyType.getInstance(), parameters);
+			Operation operation = new Operation(unit, rule, ruleName, context, OclAnyType.getInstance(),
+					parameters);
 			operation.setImagePath("$nl$/icons/operation.gif"); //$NON-NLS-1$
 			return operation;
 		}
@@ -284,16 +294,16 @@ public class Operation extends Feature {
 	/**
 	 * Utility method to initialize an Operation Feature from an ATL model called rule.
 	 * 
-	 * @param manager
-	 *            the source manager, used to map the return type
+	 * @param unit
+	 *            the atl unit containing the declaration
 	 * @param rule
 	 *            the rule model element
 	 * @param context
 	 *            the operation context type
 	 * @return the Operation
 	 */
-	public static Operation createFromCalledRule(AtlSourceManager manager, EObject rule, OclAnyType context) {
-		Operation operation = createFromRule(manager, rule, context);
+	public static Operation createFromCalledRule(UnitType unit, EObject rule, OclAnyType context) {
+		Operation operation = createFromRule(unit, rule, context);
 		if (operation != null) {
 			operation.setImagePath("$nl$/icons/matchedRule.gif"); //$NON-NLS-1$
 		}
@@ -303,16 +313,16 @@ public class Operation extends Feature {
 	/**
 	 * Utility method to initialize an Operation Feature from an ATL model lazy rule.
 	 * 
-	 * @param manager
-	 *            the source manager, used to map the return type
+	 * @param unit
+	 *            the atl unit containing the declaration
 	 * @param rule
 	 *            the rule model element
 	 * @param context
 	 *            the operation context type
 	 * @return the Operation
 	 */
-	public static Operation createFromLazyRule(AtlSourceManager manager, EObject rule, OclAnyType context) {
-		Operation operation = createFromRule(manager, rule, context);
+	public static Operation createFromLazyRule(UnitType unit, EObject rule, OclAnyType context) {
+		Operation operation = createFromRule(unit, rule, context);
 		if (operation != null) {
 			operation.setImagePath("$nl$/icons/lazyRule.gif"); //$NON-NLS-1$
 		}
@@ -322,8 +332,8 @@ public class Operation extends Feature {
 	/**
 	 * Utility method to initialize an Operation Feature from an ATL model helper.
 	 * 
-	 * @param manager
-	 *            the source manager, used to map the return type
+	 * @param unit
+	 *            the atl unit containing the declaration
 	 * @param helper
 	 *            the helper model element
 	 * @param context
@@ -331,7 +341,7 @@ public class Operation extends Feature {
 	 * @return the Operation
 	 */
 	@SuppressWarnings("unchecked")
-	public static Operation createFromHelper(AtlSourceManager manager, EObject helper, OclAnyType context) {
+	public static Operation createFromHelper(UnitType unit, EObject helper, OclAnyType context) {
 		String helperName = (String)AtlTypesProcessor.eGet(helper, "name"); //$NON-NLS-1$
 		if (helperName != null) {
 			Map<String, OclAnyType> parameters = new HashMap<String, OclAnyType>();
@@ -340,13 +350,13 @@ public class Operation extends Feature {
 				for (EObject eObject : parameterObjects) {
 					String parameterName = (String)AtlTypesProcessor.eGet(eObject, "varName"); //$NON-NLS-1$
 					EObject parameterTypeObject = (EObject)AtlTypesProcessor.eGet(eObject, "type"); //$NON-NLS-1$
-					OclAnyType parameterType = OclAnyType.create(manager, parameterTypeObject);
+					OclAnyType parameterType = OclAnyType.create(unit.getSourceManager(), parameterTypeObject);
 					parameters.put(parameterName, parameterType);
 				}
 			}
 			EObject helperType = (EObject)AtlTypesProcessor.eGet(helper, "returnType"); //$NON-NLS-1$
-			OclAnyType type = OclAnyType.create(manager, helperType);
-			Operation operation = new Operation(helper, helperName, context, type, parameters);
+			OclAnyType type = OclAnyType.create(unit.getSourceManager(), helperType);
+			Operation operation = new Operation(unit, helper, helperName, context, type, parameters);
 			operation.setImagePath("$nl$/icons/helper.gif"); //$NON-NLS-1$
 			return operation;
 		}
