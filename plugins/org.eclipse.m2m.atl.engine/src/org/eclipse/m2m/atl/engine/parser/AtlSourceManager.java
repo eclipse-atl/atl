@@ -51,6 +51,9 @@ public final class AtlSourceManager {
 	/** PATH tag value. */
 	public static final String PATH_TAG = "path"; //$NON-NLS-1$
 
+	/** LIB tag value. */
+	public static final String LIB_TAG = "lib"; //$NON-NLS-1$
+
 	// ATL File Type:
 	/** Undefined. */
 	public static final int ATL_FILE_TYPE_UNDEFINED = 0;
@@ -98,6 +101,8 @@ public final class AtlSourceManager {
 	private EObject model;
 
 	private Map metamodelLocations = new HashMap();
+
+	private Map libraryLocations = new HashMap();
 
 	/**
 	 * Creates an atl source manager.
@@ -259,10 +264,24 @@ public final class AtlSourceManager {
 								list.addAll(getAllPackages((EPackage)object));
 							}
 						}
-						
+
 						metamodelLocations.put(name, path);
 						metamodelsPackages.put(name, list);
 					}
+				}
+			}
+		}
+
+		List libraries = getTaggedInformations(text.getBytes(), LIB_TAG);
+
+		for (Iterator iterator = libraries.iterator(); iterator.hasNext();) {
+			String line = (String)iterator.next();
+			if (line.split("=").length == 2) { //$NON-NLS-1$
+				String name = line.split("=")[0].trim(); //$NON-NLS-1$
+				String library = line.split("=")[1].trim(); //$NON-NLS-1$
+				if (library != null && library.length() > 0) {
+					library = library.trim();
+					libraryLocations.put(name, library);
 				}
 			}
 		}
@@ -341,6 +360,10 @@ public final class AtlSourceManager {
 
 	public Map getMetamodelLocations() {
 		return metamodelLocations;
+	}
+
+	public Map getLibraryLocations() {
+		return libraryLocations;
 	}
 
 	/**
