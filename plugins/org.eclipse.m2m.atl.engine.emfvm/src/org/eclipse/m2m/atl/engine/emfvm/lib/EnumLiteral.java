@@ -116,7 +116,9 @@ public class EnumLiteral implements HasFields {
 	public boolean equals(Object arg) {
 		boolean ret = false;
 		if (arg instanceof EnumLiteral) {
-			ret = this.name.equals(arg.toString());
+			if (this.name != null) {
+				ret = this.name.equals(arg.toString());				
+			}
 		}
 		return ret;
 	}
