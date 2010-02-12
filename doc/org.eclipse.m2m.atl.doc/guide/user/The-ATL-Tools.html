@@ -98,7 +98,7 @@
 		<p>The Error Log view aims to display and log the Eclipse general errors. It is of no particular use for ATL developers, as ATL errors are displayed in the Console view.</p>
 		<h4 id="Console">Console</h4>
 		<p>The Console view displays the messages that may be written from the ATL code, using for instance the string operation 
-			<a href="The-ATL-Language.html#String_data_type_operations">''println()''</a>. It also displays the error messages that may be raised by the execution of incorrect ATL programs. Note that these displayed error messages may provide useful information while trying to identify errors within faulty ATL transformations.
+			<a href="The-ATL-Language.html#String_data_type_operations" title="ATL/User_Guide_-_The_ATL_Language#String_data_type_operations">''println()''</a>. It also displays the error messages that may be raised by the execution of incorrect ATL programs. Note that these displayed error messages may provide useful information while trying to identify errors within faulty ATL transformations.
 		</p>
 		<h3 id="ATL_Debug_perspective">ATL Debug perspective</h3>
 		<p>The ATL Debug perspective is dedicated to the debugging of ATL transformations. It provides ATL developers with the usual set of debugging facilities:</p>
@@ -185,7 +185,7 @@ create OUT : AnyMM from IN : UML;
 			<img border="0" src="images/ATL_new_file2.PNG"/>
 		</p>
 		<p>The ATL File Wizard makes it possible to specify the name of the module to be created, the type of the ATL unit that will be contained by the file (an ATL module, query or library), the name of the source and target model and metamodel variables as well as the name of the libraries that will be required for the ATL program to run. From these data, the wizard generates the ATL file with the 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Header_section">header section</a> that corresponds to the provided information.
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Header_section" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Header_section">header section</a> that corresponds to the provided information.
 		</p>
 		<p>You can optionally set the metamodels URIs or paths in order to directly activate content assist into the generated file.</p>
 		<p>The "Generate configuration" checkbox generates a launch configuration where you just need to set model paths (and missing metamodels paths).</p>
@@ -194,7 +194,7 @@ create OUT : AnyMM from IN : UML;
 			<i>.atl</i> extension.
 		</p>
 		<p>Once the ATL file has been created, the developer has to manually edit the 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Header_section">header section</a> of the ATL file. Note that the constraints on the naming of the declared model and metamodel variables still have to be respected when editing an ATL header from scratch.
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Header_section" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Header_section">header section</a> of the ATL file. Note that the constraints on the naming of the declared model and metamodel variables still have to be respected when editing an ATL header from scratch.
 		</p>
 		<h3 id="Compiling_an_ATL_file">Compiling an ATL file</h3>
 		<p>The compilation of an ATL file corresponds to the update of its associated ASM file. This compilation can only be performed if the considered ATL program is syntactically correct. In the scope of the ATL IDE, the compilation policy is based on the default Eclipse compilation policy: compilation is automatically performed in the background when an edited ATL file is saved 
@@ -271,7 +271,7 @@ create OUT : AnyMM from IN : UML;
 			<a href="http://ssel.vub.ac.be/viewcvs/viewcvs.py/UML2CaseStudies/uml2cs-instantmessenger-model/outmodels/common/build.xml?rev=5633&amp;view=markup">here</a> (see the "profiles" macro).
 		</p>
 		<p>See also the 
-			<a href="http://wiki.eclipse.org/ATL/ATL_FAQ#What.27s_this_ATL_feature_called_.22superimposition.22.3F" title="ATL FAQ#What.27s_this_ATL_feature_called_.22superimposition.22.3F">ATL FAQ entry on Superimposition</a>.
+			<a href="http://wiki.eclipse.org/ATL_FAQ#What.27s_this_ATL_feature_called_.22superimposition.22.3F" title="ATL FAQ#What.27s_this_ATL_feature_called_.22superimposition.22.3F">ATL FAQ entry on Superimposition</a>.
 		</p>
 		<p>NOTE: when adding superimposed modules in the Advanced tab, they override the "main" module specified in the ATL Main Configuration Tab.</p>
 		<h3 id="Running_an_ATL_launch_configuration">Running an ATL launch configuration</h3>
@@ -326,7 +326,7 @@ create OUT : AnyMM from IN : UML;
 			<tr>
 				<td>path</td>
 				<td>The path to the file of the model to load. It can be relative to the current directory (the one containing the Ant file). If absolute, the '/' root directory is the current workspace.</td>
-				<td colspan="2">Yes (only one of path and nsUri)</td>
+				<td rowspan="2">Yes (only one of path and nsUri)</td>
 				<td>None</td>
 			</tr>
 			<tr>
@@ -411,13 +411,13 @@ create OUT : AnyMM from IN : UML;
 		<p>You can see that the model attribute is the same as the name attribute of the previous atl.loadModel tasks. Once they are loaded, models are identified by this attribute name. Thus, you should avoid giving the same name for two different models. Each time it occurs, your previous model is overwritten.</p>
 		<p>Sometimes, it is interesting to save a model with an extractor. For instance, if you have a model conforming to ATL (i.e. a model of an ATL source code), it can be interesting to use the ATL extractor to save it as a .atl file:</p>
 		<pre>&lt;atl.saveModel model="myATL" path="outputs/SavingMySample.atl">
- &lt;extractor name="atl"/>
+ &lt;extractor name="ATL"/>
 &lt;/atl.saveModel>
 </pre>
 		<h3 id="Task_atl.launch">Task atl.launch</h3>
 		<p>The purpose of this task (implemented in class 
 			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl/plugins/org.eclipse.m2m.atl.core.ant/src_ant/org/eclipse/m2m/atl/core/ant/tasks/ATLModelTransformationTask.java?root=Modeling_Project&amp;view=markup">ATLModelTransformationTask</a>) is to execute an ATL transformation. The models used by a transformation are referenced by their name as defined at with the 
-			<a href="http://wiki.eclipse.org/ATL/Task_atl.loadModel" title="Task atl.loadModel">atl.loadModel</a> task (name attribute).
+			<a href="The-ATL-Tools.html#Task_atl.loadModel">atl.loadModel</a> task (name attribute).
 		</p>
 		<h4 id="Parameters_specified_as_attributes_2">Parameters specified as attributes</h4>
 		<table border="1">
@@ -789,7 +789,7 @@ uses myLib;
 		<p>In the scope of the ATL Debug perspective, the Variables view aims to provide developers with a convenient mean to observe the content of the ATL variables during the execution of a transformation. For this purpose, the Variables view displays all the variables that are visible from the current execution context. Note that the variable self is defined whatever the considered execution context.</p>
 		<p>In the context of a helper, visible variables correspond to the helper arguments, the local variables introduced by means of the let instruction and the iterator variables that are used in the scope of the collection iterative expressions. The variable self here corresponds to the element in which the context is declared. Except for arguments, the set of visible variables is similar in the scope of an ATL attribute.</p>
 		<p>During the 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Default_mode_execution_semantics">matching phase</a> of a transformation execution, the variables visible in the context of a matched rule include the source pattern element variable along with the variables and iterators that may be declared in the scope of the source pattern element expression. During the initialization phase, this set of visible variables changes to the rule local variables declared in the rule using section, the source and target pattern element variables and the variables/iterators declared within the executed expressions.
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Default_mode_execution_semantics" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Default_mode_execution_semantics">matching phase</a> of a transformation execution, the variables visible in the context of a matched rule include the source pattern element variable along with the variables and iterators that may be declared in the scope of the source pattern element expression. During the initialization phase, this set of visible variables changes to the rule local variables declared in the rule using section, the source and target pattern element variables and the variables/iterators declared within the executed expressions.
 		</p>
 		<p>
 			<img border="0" src="images/ATL_navigate_debug_variables.png"/>
@@ -804,6 +804,21 @@ uses myLib;
 			<i>p'' corresponds to the target pattern model element that is currently initialized. Note that, at this stage, since the execution of the surname binding is not completed, the only initialized property of this variable is ''name</i>. The variable 
 			<i>self</i> here points to the ATL module. Finally, the variable link appearing during the transformation initialization phase corresponds to an ATL engine internal variable and could be ignored by the developers.
 			Although not illustrated in the considered example, the Variables view enables to navigate the content of collection variables. It also makes it possible to navigate the source and, at some point, the target model elements using the references defined by these elements.
+		</p>
+		<p><div style="display:none">= See Also =
+</div>
+<div style="display:none">			* 
+			<a href="ATL%20User%20Guide.html#Introduction" title="ATL/User_Guide_-_Introduction">Introduction</a>
+</div>
+<div style="display:none">			* 
+			<a href="Installation.html#Installation" title="ATL/User_Guide_-_Installation">Installation</a>
+</div>
+<div style="display:none">			* 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Overview_of_the_Atlas_Transformation_Language" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language">Overview of the Atlas Transformation Language</a>
+</div>
+<div style="display:none">			* 
+			<a href="The-ATL-Language.html#The_ATL_Language" title="ATL/User_Guide_-_The_ATL_Language">The ATL Language</a>
+</div>
 		</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>

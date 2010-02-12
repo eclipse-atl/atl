@@ -31,7 +31,7 @@
 		</table><hr/>
 		<h1 id="The_ATL_Language">The ATL Language</h1>
 		<p>This section is dedicated to the description of the ATL language. As introduced in 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Overview_of_the_Atlas_Transformation_Language">Overview of the Atlas Transformation Language</a>, the language enables to define three kinds of ATL units: the ATL transformation modules, the ATL queries and the ATL libraries. According to their type, these different kinds of units may be composed of a combination of ATL helpers, attributes, matched and called rules. This section aims to detail the syntax of these different ATL elements. For this purpose, the ATL language is based on 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Overview_of_the_Atlas_Transformation_Language" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language">Overview of the Atlas Transformation Language</a>, the language enables to define three kinds of ATL units: the ATL transformation modules, the ATL queries and the ATL libraries. According to their type, these different kinds of units may be composed of a combination of ATL helpers, attributes, matched and called rules. This section aims to detail the syntax of these different ATL elements. For this purpose, the ATL language is based on 
 			<a href="http://www.omg.org/docs/ptc/03-10-14.pdf">OMG OCL (Object Constraint Language) norm</a> for both its data types and its declarative expressions.
 			There exist a few differences between the OCL definition and the current ATL implementation. They will be specified in this section by specific remarks.
 		</p>
@@ -140,7 +140,7 @@
 		<p>Note that, as it is defined in the scope of the ATL module, this operation must be called from the variable 
 			<i>thisModule</i>. The 
 			<i>resolveTemp</i> operation must not be called before the completion of the 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Module_execution_semantics">matching phase</a>. This means that the operation can be called from:
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Module_execution_semantics" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Module_execution_semantics">matching phase</a>. This means that the operation can be called from:
 		</p>
 		<ul>
 			<li>the 
@@ -153,7 +153,7 @@
 			</li>
 		</ul>
 		<p>ATL developers may note that the operation call does not specify the matched rule from which the generated target model element comes from. However, as explained in the 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Rules">Rules</a> section, a source model element should not be matched by more than one matched rule. As a consequence, the concerned matched rule can be derived from the specified source model element.
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Rules" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Rules">Rules</a> section, a source model element should not be matched by more than one matched rule. As a consequence, the concerned matched rule can be derived from the specified source model element.
 		</p>
 		<p>Here is an example of resolveTemp use:</p>
 		<pre>rule AtoAnnotedB {
@@ -335,7 +335,7 @@ endif
 			<li>
 				<i>println()</i> writes the 
 				<i>self</i> string onto the default output, that is the 
-				<a href="The-ATL-Tools.html#Console">Eclipse console</a>.
+				<a href="The-ATL-Tools.html#Console" title="ATL/User_Guide_-_The_ATL_Tools#Console">Eclipse console</a>.
 			</li>
 		</ul>
 		<p>Note that these two functions are provided as temporary solutions as the ATL toolkit does still not provide any integrated solution for the redirection of the result of ATL queries. They are likely to be removed from future releases of the ATL tool suite.</p>
@@ -920,7 +920,7 @@ endif
 		<pre>TupleType(var_name1 : var_type1, ..., var_nameN : var_typeN)
 </pre>
 		<p>Note that the order in which the different parts are declared is not significant. As an example, it is possible to consider the declaration of a tuple type associating an Author model element from the 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Author_metamodel">MMAuthor metamodel</a> with a couple of strings encoding the title of a book and the name of the editor of this book:
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Author_metamodel" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Author_metamodel">MMAuthor metamodel</a> with a couple of strings encoding the title of a book and the name of the editor of this book:
 		</p>
 		<pre>TupleType(a : MMAuthor!Author, title : String, editor : String)
 </pre>
@@ -999,7 +999,7 @@ Tuple{title = 'ATL Manual', a = anAuthor, editor = 'ATL Eds.'}
 		</p>
 		<p>A model element has a number of features that can be either attributes or references. Both are accessed through the dot notation 
 			<i>self.feature</i>. Thus, in the context of the 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Author_metamodel">MMAuthor metamodel</a>, the expression 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Author_metamodel" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Author_metamodel">MMAuthor metamodel</a>, the expression 
 			<i>anAuthor.name</i> enables to access to the attribute 
 			<i>name</i> of the instance 
 			<i>anAuthor</i> of the Author class.
@@ -1147,7 +1147,7 @@ in let y : Real = 2 in x/y
 </pre>
 		<p>An OCL variable is visible from is declaration to the end of the OCL expression it belongs to. Note that, although it is not advised, OCL allows developers to declare several variables of the same name within a single expression. In such a case, the lastly declared variable will hide the other variables having the same name.</p>
 		<p>The "let" expressions also prove to be very useful at the 
-			<a href="The-ATL-Tools.html#Debugging_ATL">debugging</a> stage. Indeed, the ATL development tools integrate debugging facilities that enable, among other things, to consult the value of the declared variables during the execution of an ATL program. In many cases, it proves to be useful to also be able to consult the value returned by a complex OCL expression. This could be achieved with few modification of the OCL code by declaring an OCL variable initialized with the complex expression to be checked. By this means, the value computed by the expression will be stored in an OCL variable, and thus be available for visualization during the debugging of the ATL program.
+			<a href="The-ATL-Tools.html#Debugging_ATL" title="ATL/User_Guide_-_The_ATL_Tools#Debugging_ATL">debugging</a> stage. Indeed, the ATL development tools integrate debugging facilities that enable, among other things, to consult the value of the declared variables during the execution of an ATL program. In many cases, it proves to be useful to also be able to consult the value returned by a complex OCL expression. This could be achieved with few modification of the OCL code by declaring an OCL variable initialized with the complex expression to be checked. By this means, the value computed by the expression will be stored in an OCL variable, and thus be available for visualization during the debugging of the ATL program.
 		</p>
 		<p>In order to illustrate this point, consider the following expression:</p>
 		<pre>aSequence->first().square()
@@ -1216,7 +1216,7 @@ endif
 		<h2 id="ATL_Helpers">ATL Helpers</h2>
 		<p>ATL enables developers to define methods within the different kinds of ATL units. In the ATL context, these methods are called helpers. They make it possible to define factorized ATL code that can then be called from different points of an ATL program.
 			There exist two different, although very similar from their syntax, kinds of helpers: the functional and the attribute helpers. Both kinds of helpers must be defined in the context of a given data type. However, compared to an attribute helper, which is commonly referred to as an attribute, a functional helper, referred to as a helper, can accept parameters. This difference implies some differences in the 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Module_execution_semantics">execution semantics</a> of both helper kinds.
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Module_execution_semantics" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Module_execution_semantics">execution semantics</a> of both helper kinds.
 		</p>
 		<h3 id="Helpers_2">Helpers</h3>
 		<p>ATL helpers can be viewed as the ATL equivalent to methods. They make it possible to define factorized ATL code that can be called from different points of an ATL transformation.
@@ -1262,7 +1262,7 @@ helper context B def: test() : Integer = super.test() + 1;
 		<pre>helper [context context_type]? def : attribute_name : return_type = exp;
 </pre>
 		<p>As for a helper, the context definition can be omitted in the declaration of an attribute. In this case, the attribute will be associated with the ATL module context. The following attribute, which is related to the 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Person_metamodel">MMPerson metamodel</a>, can be considered as an example:
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Person_metamodel" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Person_metamodel">MMPerson metamodel</a>, can be considered as an example:
 		</p>
 		<pre>helper def : getYoungest : MMPerson!Person =
 	let allPersons : Sequence(MMPerson!Person) =
@@ -1401,7 +1401,7 @@ else
 			<i>statements</i> contained by the "for" statement will be executed.
 		</p>
 		<p>The following example, also related to the 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Person_metamodel">MMPerson metamodel</a> illustrates the use of the "for" imperative statement:
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Person_metamodel" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Person_metamodel">MMPerson metamodel</a> illustrates the use of the "for" imperative statement:
 		</p>
 		<pre>for(p in MMPerson!Person.allInstances()) {
 	if(p.gender = #male)
@@ -1510,7 +1510,7 @@ using {
 		</p>
 		<p>As an example, it is possible to consider the following ATL rule, which is defined in the context of the Biblio metamodel defined on the 
 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Biblio_metamodel">Biblio metamodel</a>:
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Biblio_metamodel" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Biblio_metamodel">Biblio metamodel</a>:
 		</p>
 		<pre>rule Journal2Book {
 	from
@@ -1719,7 +1719,7 @@ to
 		</p>
 		<p>The imperative block provides a convenient way to simply assign a unique id to each of the generated model elements. The following example, related to the 
 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Biblio_metamodel">Biblio metamodel</a>, illustrates this point:
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Biblio_metamodel" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Biblio metamodel">Biblio metamodel</a>, illustrates this point:
 		</p>
 		<pre>helper def : id : Integer = 0;
 ...
@@ -1760,6 +1760,7 @@ rule Journal2Book {
      t : metamodel!Node (
        name &lt;- s.toString(),
        edges &lt;- thisModule.getCross(s)
+     )
  }
 </pre>
 		<p>If we want to call lazy rule multiple times:</p>
@@ -1770,6 +1771,7 @@ rule Journal2Book {
      t : metamodel!Node (
        name &lt;- s.toString(),
        edges &lt;- ecore!EClass.allInstancesFrom('yourmodel')->collect(e | thisModule.getCross(e))
+     )
   }
 </pre>
 		<h4 id="Unique_Lazy_Rules">Unique Lazy Rules</h4>
@@ -1810,7 +1812,7 @@ rule Journal2Book {
 		<p>A called rule is identified by its name (
 			<i>rule_name</i>). A called rule name has to be unique within an ATL transformation, and must not collide with a helper name. Moreover, a called rule cannot be called "main". A called rule can optionally be declared as the transformation 
 			<i>entrypoint</i>. An ATL transformation can include one entrypoint called rule. Compared to the other called rules, the entrypoint called rule does not need to be explicitly called: it is implicitly invoked at the beginning of the transformation execution, once the 
-			<a href="Overview-of-the-Atlas-Transformation-Language.html#Default_mode_execution_semantics">module initialization phase</a> has completed.
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Default_mode_execution_semantics" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Default_mode_execution_semantics">module initialization phase</a> has completed.
 		</p>
 		<p>A called rule can accept parameters. They have to be specified in the same way they are for 
 			<a href="The-ATL-Language.html#Helpers_2">helpers</a>. It is composed of three optional sections: the 
@@ -2047,10 +2049,10 @@ entrypoint rule Metamodel() {
 				<th>Kind of traceability link created</th>
 			</tr>
 			<tr>
-				<td>standard</td>
+				<td rowspan="3">standard</td>
 				<td>0</td>
 				<td>1</td>
-				<td>default or not (using keyword nodefault)</td>
+				<td rowspan="3">default or not (using keyword nodefault)</td>
 			</tr>
 			<tr>
 				<td>1</td>
@@ -2061,10 +2063,10 @@ entrypoint rule Metamodel() {
 				<td>1</td>
 			</tr>
 			<tr>
-				<td>lazy</td>
+				<td rowspan="3">lazy</td>
 				<td>0</td>
 				<td>0</td>
-				<td>Not default</td>
+				<td rowspan="3">Not default</td>
 			</tr>
 			<tr>
 				<td>1</td>
@@ -2075,10 +2077,10 @@ entrypoint rule Metamodel() {
 				<td>n</td>
 			</tr>
 			<tr>
-				<td>unique lazy</td>
+				<td rowspan="3">unique lazy</td>
 				<td>0</td>
 				<td>0</td>
-				<td>Not default</td>
+				<td rowspan="3">Not default</td>
 			</tr>
 			<tr>
 				<td>1</td>
@@ -2154,6 +2156,21 @@ entrypoint rule Metamodel() {
 </pre>
 		<p>The OCL function 
 			<i>oclIsTypeOf</i> here tests whether the input model element is an instance of the metamodel element passed as parameter.
+		</p>
+		<p><div style="display:none">= See Also =
+</div>
+<div style="display:none">			* 
+			<a href="ATL%20User%20Guide.html#Introduction" title="ATL/User_Guide_-_Introduction">Introduction</a>
+</div>
+<div style="display:none">			* 
+			<a href="Installation.html#Installation" title="ATL/User_Guide_-_Installation">Installation</a>
+</div>
+<div style="display:none">			* 
+			<a href="Overview-of-the-Atlas-Transformation-Language.html#Overview_of_the_Atlas_Transformation_Language" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language">Overview of the Atlas Transformation Language</a>
+</div>
+<div style="display:none">			* 
+			<a href="The-ATL-Tools.html#The_ATL_Tools" title="ATL/User_Guide_-_The_ATL_Tools">The ATL Tools</a>
+</div>
 		</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
