@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
-
 /**
  * Defines the ATL VM bytecodes.
  * 
@@ -128,6 +127,8 @@ public class Bytecode {
 	/** - nesting level of iterate & enditerate. */
 	private int value2;
 
+	private String completeOperand;
+
 	/**
 	 * Bytecode constructor, for bytecodes which needs an operand.
 	 * 
@@ -160,8 +161,7 @@ public class Bytecode {
 		} else if (opcode.equals("delete")) { //$NON-NLS-1$
 			this.opcode = DELETE;
 		} else {
-			throw new VMException(null,Messages.getString(
-					"ByteCode.UNSUPPORTEDOPCODEWOARGS", opcode)); //$NON-NLS-1$
+			throw new VMException(null, Messages.getString("ByteCode.UNSUPPORTEDOPCODEWOARGS", opcode)); //$NON-NLS-1$
 		}
 	}
 
@@ -185,6 +185,7 @@ public class Bytecode {
 			this.operand = Double.valueOf(operand);
 		} else if (opcode.equals("call")) { //$NON-NLS-1$
 			this.opcode = CALL;
+			this.completeOperand = operand;
 			this.operand = getOpName(operand);
 			this.value = getNbArgs(operand);
 		} else if (opcode.equals("load")) { //$NON-NLS-1$
@@ -211,11 +212,11 @@ public class Bytecode {
 			this.value = Integer.parseInt(operand);
 		} else if (opcode.equals("pcall")) { //$NON-NLS-1$
 			this.opcode = PCALL;
+			this.completeOperand = operand;
 			this.operand = getOpName(operand);
 			this.value = getNbArgs(operand);
 		} else {
-			throw new VMException(null,Messages.getString(
-					"ByteCode.UNSUPPORTEDOPCODEWARGS", opcode)); //$NON-NLS-1$
+			throw new VMException(null, Messages.getString("ByteCode.UNSUPPORTEDOPCODEWARGS", opcode)); //$NON-NLS-1$
 		}
 	}
 
@@ -226,7 +227,8 @@ public class Bytecode {
 	 */
 	@Override
 	public String toString() {
-		return OPCODENAMES[opcode] + ((operand != null) ? " " + operand : ""); //$NON-NLS-1$ //$NON-NLS-2$
+		return OPCODENAMES[opcode]
+				+ ((completeOperand != null) ? " " + completeOperand : ((operand != null) ? " " + operand : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	// BEGIN SIGNATURE TOOLS
