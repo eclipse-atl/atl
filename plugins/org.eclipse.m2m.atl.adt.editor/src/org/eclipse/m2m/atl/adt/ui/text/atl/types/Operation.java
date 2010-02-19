@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text.atl.types;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,6 +30,7 @@ import org.eclipse.emf.ecore.EParameter;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class Operation extends Feature {
+	private static final String DOCUMENTATION_COMMENTS_PREFIX = "---"; //$NON-NLS-1$
 
 	/** Full qualified path to the properties file in which to seek the keys. */
 	private static final String BUNDLE_NAME = "org.eclipse.m2m.atl.adt.ui.text.atl.types.description"; //$NON-NLS-1$
@@ -37,6 +39,8 @@ public class Operation extends Feature {
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
 	private Map<String, OclAnyType> parameters;
+
+	private String documentation;
 
 	/**
 	 * Creates a new Operation.
@@ -214,25 +218,31 @@ public class Operation extends Feature {
 	 * @return the information or null if not found
 	 */
 	public String getDocumentation(OclAnyType context, Object... parameters) {
-		String key = ""; //$NON-NLS-1$
-		if (context instanceof CollectionType) {
-			key = ((CollectionType)context).getCollectionType() + '.';
-		} else if (context != null) {
-			key = context.toString() + '.';
+		if (documentation == null) {
+			String key = ""; //$NON-NLS-1$
+			if (context instanceof CollectionType) {
+				key = ((CollectionType)context).getCollectionType() + '.';
+			} else if (context != null) {
+				key = context.toString() + '.';
+			}
+			key += name;
+			documentation = getMessage(key);
 		}
-		key += name;
-		String info = getMessage(key);
-		if (info != null && !info.trim().equals("")) { //$NON-NLS-1$
-			return info;
+		if (documentation != null && !documentation.trim().equals("")) { //$NON-NLS-1$
+			return documentation;
 		} else {
 			for (OclAnyType supertype : context.getSupertypes()) {
-				info = getDocumentation(supertype, parameters);
-				if (info != null) {
-					return info;
+				documentation = getDocumentation(supertype, parameters);
+				if (documentation != null) {
+					return documentation;
 				}
 			}
 		}
 		return null;
+	}
+
+	public void setDocumentation(String documentation) {
+		this.documentation = documentation;
 	}
 
 	/**
@@ -279,13 +289,18 @@ public class Operation extends Feature {
 				for (EObject eObject : parameterObjects) {
 					String parameterName = (String)AtlTypesProcessor.eGet(eObject, "varName"); //$NON-NLS-1$
 					EObject parameterTypeObject = (EObject)AtlTypesProcessor.eGet(eObject, "type"); //$NON-NLS-1$
-					OclAnyType parameterType = OclAnyType.create(unit.getSourceManager(), parameterTypeObject);
+					OclAnyType parameterType = OclAnyType
+							.create(unit.getSourceManager(), parameterTypeObject);
 					parameters.put(parameterName, parameterType);
 				}
 			}
 			Operation operation = new Operation(unit, rule, ruleName, context, OclAnyType.getInstance(),
 					parameters);
 			operation.setImagePath("$nl$/icons/operation.gif"); //$NON-NLS-1$
+			String doc = getDocumentation(rule);
+			if (doc != null && doc.length() > 0) {
+				operation.setDocumentation(doc);
+			}
 			return operation;
 		}
 		return null;
@@ -350,7 +365,8 @@ public class Operation extends Feature {
 				for (EObject eObject : parameterObjects) {
 					String parameterName = (String)AtlTypesProcessor.eGet(eObject, "varName"); //$NON-NLS-1$
 					EObject parameterTypeObject = (EObject)AtlTypesProcessor.eGet(eObject, "type"); //$NON-NLS-1$
-					OclAnyType parameterType = OclAnyType.create(unit.getSourceManager(), parameterTypeObject);
+					OclAnyType parameterType = OclAnyType
+							.create(unit.getSourceManager(), parameterTypeObject);
 					parameters.put(parameterName, parameterType);
 				}
 			}
@@ -358,8 +374,31 @@ public class Operation extends Feature {
 			OclAnyType type = OclAnyType.create(unit.getSourceManager(), helperType);
 			Operation operation = new Operation(unit, helper, helperName, context, type, parameters);
 			operation.setImagePath("$nl$/icons/helper.gif"); //$NON-NLS-1$
+
+			EObject container = helper.eContainer();
+			if (container != null) {
+				container = container.eContainer();
+				if (container != null) {
+					String doc = getDocumentation(container);
+					if (doc != null && doc.length() > 0) {
+						operation.setDocumentation(doc);
+					}
+				}
+			}
 			return operation;
 		}
 		return null;
+	}
+
+	private static String getDocumentation(EObject element) {
+		Collection<?> comments = (Collection<?>)AtlTypesProcessor.eGet(element, "commentsBefore"); //$NON-NLS-1$
+		StringBuffer buf = new StringBuffer();
+		for (Object line : comments) {
+			if (line.toString().startsWith(DOCUMENTATION_COMMENTS_PREFIX)) {
+				buf.append(line.toString().replaceFirst(DOCUMENTATION_COMMENTS_PREFIX, "")); //$NON-NLS-1$
+				buf.append('\n');
+			}
+		}
+		return buf.toString().trim();
 	}
 }
