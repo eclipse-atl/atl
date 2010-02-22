@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/Families2Persons/Families2Persons.atl"/>
+<stringAttribute key="ATL VM" value="EMF-specific VM"/>
+<stringAttribute key="ATL_COMPILER" value="atl2006"/>
+<booleanAttribute key="IS_REFINING" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="IN" value="Families"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="Families" value="EMF"/>
+<mapEntry key="Persons" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="Families" value="METAMODELINPUT"/>
+<mapEntry key="IN" value="MODELINPUT"/>
+<mapEntry key="OUT" value="MODELOUTPUT"/>
+<mapEntry key="Persons" value="METAMODELOUTPUT"/>
+</mapAttribute>
+<mapAttribute key="Options">
+<mapEntry key="supportUML2Stereotypes" value="false"/>
+<mapEntry key="printExecutionTime" value="false"/>
+<mapEntry key="OPTION_CLEAR" value="false"/>
+<mapEntry key="OPTION_CONTENT_TYPE" value="false"/>
+<mapEntry key="OPTION_DERIVED" value="true"/>
+<mapEntry key="allowInterModelReferences" value="false"/>
+<mapEntry key="step" value="false"/>
+</mapAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT" value="Persons"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="Families" value="/Families2Persons/Families.ecore"/>
+<mapEntry key="IN" value="/Families2Persons/sample-Families.xmi"/>
+<mapEntry key="OUT" value="/Families2Persons/sample-Persons.xmi"/>
+<mapEntry key="Persons" value="/Families2Persons/Persons.ecore"/>
+</mapAttribute>
+<listAttribute key="Superimpose"/>
+</launchConfiguration>

@@ -1,6 +1,8 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <toc topic="guide/user/ATL User Guide.html" label="ATL User Guide">
-	<topic href="guide/user/ATL User Guide.html" label="Introduction"></topic>
+	<topic href="guide/user/ATL User Guide.html" label="Introduction">
+		<topic href="guide/user/ATL User Guide.html#Contents" label="Contents"></topic>
+	</topic>
 	<topic href="guide/user/Installation.html" label="Installation">
 		<topic href="guide/user/Installation.html#Prerequisites" label="Prerequisites"></topic>
 		<topic href="guide/user/Installation.html#Install_ATL" label="Install ATL"></topic>
@@ -63,7 +65,9 @@
 				<topic href="guide/user/The-ATL-Language.html#Examples_3" label="Examples"></topic>
 			</topic>
 		</topic>
-		<topic href="guide/user/The-ATL-Language.html#ATL_Comments" label="ATL Comments"></topic>
+		<topic href="guide/user/The-ATL-Language.html#ATL_Comments" label="ATL Comments">
+			<topic href="guide/user/The-ATL-Language.html#Since_ATL_3.1" label="Since ATL 3.1"></topic>
+		</topic>
 		<topic href="guide/user/The-ATL-Language.html#OCL_Declarative_Expressions" label="OCL Declarative Expressions">
 			<topic href="guide/user/The-ATL-Language.html#If_expression" label="If expression"></topic>
 			<topic href="guide/user/The-ATL-Language.html#Let_expression" label="Let expression"></topic>
@@ -121,9 +125,8 @@
 		<topic href="guide/user/The-ATL-Tools.html#Programming_ATL" label="Programming ATL">
 			<topic href="guide/user/The-ATL-Tools.html#Creating_an_ATL_project" label="Creating an ATL project"></topic>
 			<topic href="guide/user/The-ATL-Tools.html#Content_assist" label="Content assist">
-				<topic href="guide/user/The-ATL-Tools.html#Completion_on_helpers" label="Completion on helpers"></topic>
-				<topic href="guide/user/The-ATL-Tools.html#Completion_on_rules" label="Completion on rules"></topic>
 				<topic href="guide/user/The-ATL-Tools.html#Usage" label="Usage"></topic>
+				<topic href="guide/user/The-ATL-Tools.html#Since_ATL_3.1_2" label="Since ATL 3.1"></topic>
 			</topic>
 			<topic href="guide/user/The-ATL-Tools.html#Creating_an_ATL_file" label="Creating an ATL file">
 				<topic href="guide/user/The-ATL-Tools.html#The_ATL_File_Wizard" label="The ATL File Wizard"></topic>

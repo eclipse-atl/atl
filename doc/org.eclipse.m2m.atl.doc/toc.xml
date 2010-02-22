@@ -11,11 +11,13 @@
      <topic href="guide/developer/ATL Developer Guide.html" label="Developer Guide">
       <link toc="guide/developer/ATL Developer Guide-toc.xml"/>
    </topic>
-     <topic label="Reference">
-        <link toc="topics_Reference.xml"/>
-     </topic>
+   <topic href="guide/tutorials/ATL Tutorials.html" label="Tutorials">
+      <link toc="guide/tutorials/ATL Tutorials-toc.xml"/>
+   </topic>
+   <topic label="Reference">
+      <link toc="topics_Reference.xml"/>
+   </topic>
 	<topic label="Online Docs">		
-		<topic label="ATL pdf documentation" href="http://www.eclipse.org/m2m/atl/doc/" />
 		<topic label="ATL wiki" href="http://wiki.eclipse.org/index.php/ATL" />
 		<topic label="ATL basic examples" href="http://www.eclipse.org/m2m/atl/basicExamples_Patterns/" />
 		<topic label="ATL use cases" href="http://www.eclipse.org/m2m/atl/usecases/" />

@@ -38,7 +38,7 @@
 			<a href="http://www.omg.org/docs/ad/02-04-10.pdf">QVT RFP</a>, ATL mainly focuses on the model to model transformations. Such model operations can be specified by means of ATL 
 			<i>modules</i>. Besides modules, the ATL transformation language also enables developers to create model to primitive data type programs. These units are called ATL 
 			<i>queries</i>. The aim of a query is to compute a 
-			<a href="The-ATL-Language.html#Primitive_data_types" title="ATL/User_Guide_-_The_ATL_Language#Primitive_data_types">primitive</a> value, such as a string or an integer, from source models. Finally, the ATL language also offers the possibility to develop independent ATL 
+			<a href="The-ATL-Language.html#Primitive_data_types" title="ATL/___ATLPAGENAME____-_The_ATL_Language#Primitive_data_types">primitive</a> value, such as a string or an integer, from source models. Finally, the ATL language also offers the possibility to develop independent ATL 
 			<i>libraries</i> that can be imported from the different types of ATL units, including libraries themselves. This provides a convenient way to factorize ATL code that is used in multiple ATL units. Note that the three ATL unit kinds same the share 
 			<i>.atl</i> extension.
 		</p>
@@ -70,7 +70,7 @@
 			<li>A set of rules that defines the way target models are generated from source ones.</li>
 		</ul>
 		<p>Helpers and rules do not belong to specific sections in an ATL transformation. They may be declared in any order with respect to certain conditions (see 
-			<a href="The-ATL-Language.html#ATL_Helpers" title="ATL/User_Guide_-_The_ATL_Language#ATL_Helpers">ATL Helpers</a> section for further details). These four distinct element types are now detailed in the following subsections.
+			<a href="The-ATL-Language.html#ATL_Helpers" title="ATL/___ATLPAGENAME____-_The_ATL_Language#ATL_Helpers">ATL Helpers</a> section for further details). These four distinct element types are now detailed in the following subsections.
 		</p>
 		<h4 id="Header_section">Header section</h4>
 		<p>The header section defines the name of the transformation module and the name of the variables corresponding to the source and target models. It also encodes the execution mode of the module. The syntax for the header section is defined as follows:</p>
@@ -113,7 +113,7 @@ create OUT : Publication from IN : Book;
 			<li>an optional set of parameters, in which a parameter is identified by a couple (parameter name, parameter type).</li>
 		</ul>
 		<p>As an example, it is possible to consider a helper that returns the maximum of two integer values: the contextual integer and an additional integer value which is passed as parameter. The declaration of such a helper will look like (detail of the helper code is not interesting at this stage, please refer to 
-			<a href="The-ATL-Language.html#ATL_Helpers" title="ATL/User_Guide_-_The_ATL_Language#ATL Helpers">ATL Helpers</a> section for further details):
+			<a href="The-ATL-Language.html#ATL_Helpers" title="ATL/___ATLPAGENAME____-_The_ATL_Language#ATL Helpers">ATL Helpers</a> section for further details):
 		</p>
 		<pre>helper context Integer def : max(x : Integer) : Integer = ...;
 </pre>
@@ -124,7 +124,7 @@ create OUT : Publication from IN : Book;
 		<pre>helper def : max(x1 : Integer, x2 : Integer) : Integer = ...;
 </pre>
 		<p>Note that several helpers may have the same name in a single transformation. However, helpers with a same name must have distinct signatures to be distinguishable by the ATL engine (see 
-			<a href="The-ATL-Language.html#ATL_Helpers" title="ATL/User_Guide_-_The_ATL_Language#ATL Helpers">ATL Helpers</a> section for further details).
+			<a href="The-ATL-Language.html#ATL_Helpers" title="ATL/___ATLPAGENAME____-_The_ATL_Language#ATL Helpers">ATL Helpers</a> section for further details).
 			The ATL language also makes it possible to define attributes. An attribute helper is a specific kind of helper that accepts no parameters, and that is defined either in the context of the ATL module or of a model element. In the remaining of the present document, the term 
 			<i>attribute</i> will be specifically used to refer to attribute helpers, whereas the generic term of 
 			<i>helper</i> will refer to a functional helper.
@@ -149,7 +149,7 @@ create OUT : Publication from IN : Book;
 			<i>using</i>. It enables to locally declare and initialize a number of local variables (that will only be visible in the scope of the current rule).
 			The source pattern of a matched rule is defined after the keyword 
 			<i>from</i>. It enables to specify a model element variable that corresponds to the type of source elements the rule has to match. This type corresponds to an entity of a source metamodel of the transformation. This means that the rule will generate target elements for each source model element that conforms to this matching type. In many cases, the developer will be interested in matching only a subset of the source elements that conform to the matching type. This is simply achieved by specifying an optional condition (expressed as an ATL expression, see 
-			<a href="The-ATL-Language.html#OCL_Declarative_Expressions" title="ATL/User_Guide_-_The_ATL_Language#OCL_Declarative_Expressions">OCL Declarative Expressions</a> section for further details) within the rule source pattern. By this mean, the rule will only generate target elements for the source model elements that both conform to the matching type and verify the specified condition.
+			<a href="The-ATL-Language.html#OCL_Declarative_Expressions" title="ATL/___ATLPAGENAME____-_The_ATL_Language#OCL_Declarative_Expressions">OCL Declarative Expressions</a> section for further details) within the rule source pattern. By this mean, the rule will only generate target elements for the source model elements that both conform to the matching type and verify the specified condition.
 		</p>
 		<p>The target pattern of a matched rule is introduced by the keyword 
 			<i>to</i>. It aims to specify the elements to be generated when the source pattern of the rule is matched, and how these generated elements are initialized. Thus, the target pattern of a matched rule specifies a distinct target pattern element for each target model element the rule has to generate when its source pattern is matched. A target pattern element corresponds to a model element variable declaration associated with its corresponding set of initialization bindings. This model element variable declaration has to correspond to an entity of the target metamodels of the transformation.
@@ -231,11 +231,11 @@ create OUT : Publication from IN : Book;
 			<li>a target model elements initialization phase.</li>
 		</ul>
 		<p>The module initialization step corresponds to the first phase of the execution of an ATL module. In this phase, the attributes defined in the context of the transformation module are initialized. Note that the initialization of these module attributes may make use of attributes that are defined in the context of source model elements. This implies these new attributes to be also initialized during the module initialization phase. If an entry point 
-			<a href="The-ATL-Language.html#Called_Rules" title="ATL/User_Guide_-_The_ATL_Language#Called Rules">called rule</a> has been defined in the scope of the ATL module, the code of this rule (including target model elements generation) is executed after the initialization of the ATL module attributes.
+			<a href="The-ATL-Language.html#Called_Rules" title="ATL/___ATLPAGENAME____-_The_ATL_Language#Called Rules">called rule</a> has been defined in the scope of the ATL module, the code of this rule (including target model elements generation) is executed after the initialization of the ATL module attributes.
 		</p>
 		<p>During the source model elements matching phase, the matching condition of the declared matched rules are tested with the model elements of the module source models. When the matching condition of a matched rule is fulfilled, the ATL engine allocates the set of target model elements that correspond to the target pattern elements declared in the rule. Note that, at this stage, the target model elements are simply allocated: they are initialized during the target model elements initialization phase.</p>
 		<p>The last phase of the execution of an ATL module corresponds to the initialization of the target model elements that have been generated during the previous step. At this stage, each allocated target model element is initialized by executing the code of the bindings that are associated with the target pattern element the element comes from. Note that this phase allows invocations of the 
-			<a href="The-ATL-Language.html#The_ATL_Module_data_type" title="ATL/User_Guide_-_The_ATL_Language#The_ATL_Module_data_type">resolveTemp()</a> operation that is defined in the context of the ATL module.
+			<a href="The-ATL-Language.html#The_ATL_Module_data_type" title="ATL/___ATLPAGENAME____-_The_ATL_Language#The_ATL_Module_data_type">resolveTemp()</a> operation that is defined in the context of the ATL module.
 			The imperative code section that can be specified in the scope of a matched rule is executed once the rule initialization step has completed. This imperative code can trigger the execution of some of the called rules that have been defined in the scope of the ATL module.
 		</p>
 		<h4 id="Refining_mode_execution_semantics">Refining mode execution semantics</h4>
@@ -243,7 +243,7 @@ create OUT : Publication from IN : Book;
 			on the source model.</p>
 		<h2 id="ATL_Query">ATL Query</h2>
 		<p>An ATL query consists in a model to 
-			<a href="The-ATL-Language.html#Primitive_data_types" title="ATL/User_Guide_-_The_ATL_Language#Primitive data types">primitive type</a> value transformation. An ATL query can be viewed as an operation that computes a primitive value from a set of source models. The most common use of ATL queries is the generation of a textual output (encoded into a string value) from a set of source models. However, ATL queries are not limited to the computation of string values and can also return a numerical or a boolean value.
+			<a href="The-ATL-Language.html#Primitive_data_types" title="ATL/___ATLPAGENAME____-_The_ATL_Language#Primitive data types">primitive type</a> value transformation. An ATL query can be viewed as an operation that computes a primitive value from a set of source models. The most common use of ATL queries is the generation of a textual output (encoded into a string value) from a set of source models. However, ATL queries are not limited to the computation of string values and can also return a numerical or a boolean value.
 		</p>
 		<p>The following subsections respectively describe the structure and the execution semantics of an ATL query.</p>
 		<h3 id="Structure_of_an_ATL_query">Structure of an ATL query</h3>
@@ -270,16 +270,16 @@ create OUT : Publication from IN : Book;
 		<p><div style="display:none">= See Also =
 </div>
 <div style="display:none">			* 
-			<a href="ATL%20User%20Guide.html#Introduction" title="ATL/User_Guide_-_Introduction">Introduction</a>
+			<a href="ATL%20User%20Guide.html#Introduction" title="ATL/___ATLPAGENAME____-_Introduction">Introduction</a>
 </div>
 <div style="display:none">			* 
-			<a href="Installation.html#Installation" title="ATL/User_Guide_-_Installation">Installation</a>
+			<a href="Installation.html#Installation" title="ATL/___ATLPAGENAME____-_Installation">Installation</a>
 </div>
 <div style="display:none">			* 
-			<a href="The-ATL-Language.html#The_ATL_Language" title="ATL/User_Guide_-_The_ATL_Language">The ATL Language</a>
+			<a href="The-ATL-Language.html#The_ATL_Language" title="ATL/___ATLPAGENAME____-_The_ATL_Language">The ATL Language</a>
 </div>
 <div style="display:none">			* 
-			<a href="The-ATL-Tools.html#The_ATL_Tools" title="ATL/User_Guide_-_The_ATL_Tools">The ATL Tools</a>
+			<a href="The-ATL-Tools.html#The_ATL_Tools" title="ATL/___ATLPAGENAME____-_The_ATL_Tools">The ATL Tools</a>
 </div>
 		</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">

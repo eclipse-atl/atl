@@ -20,6 +20,10 @@
           file="guide/developer/ATL Developer Guide-toc.xml"
           primary="false">
     </toc>
+    <toc
+          file="guide/tutorials/ATL Tutorials-toc.xml"
+          primary="false">
+    </toc>
   </extension>
 
   <!-- ====================================================================== -->

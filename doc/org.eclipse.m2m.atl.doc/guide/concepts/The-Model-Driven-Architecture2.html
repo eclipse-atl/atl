@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>ATL Concepts - The Model-Driven Architecture</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">The Model-Driven Architecture</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Introduction.html" title="Introduction">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Model-Transformation2.html" title="Model Transformation">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Introduction</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Model Transformation</td>
+			</tr>
+		</table><hr/>
+		<h1 id="The_Model-Driven_Architecture_2">The Model-Driven Architecture</h1>
+		<p>Models constitute the basic pieces of the model-driven architecture. Indeed, in the field of model-driven engineering, a model is defined according to the semantics of a model of models, also called a 
+			<i>metamodel</i>. A model that respects the semantics defined by a metamodel is said to 
+			<i>conform</i> to this metamodel. As an example, 
+			<a href="The-Model-Driven-Architecture.html#Figure_1._Conformance_relation">Figure 1</a> illustrates the conformance relation between a Petri net model and the Petri Nets metamodel.
+		</p>
+		<h4 id="Figure_1._Conformance_relation_2">Figure 1. Conformance relation</h4>
+		<p>
+			<img border="0" src="images/Petri_Net_Conformance.png"/>
+		</p>
+		<h4 id="Figure_2._Meta_relations_2">Figure 2. Meta relations</h4>
+		<p>
+			<img border="0" src="images/Petri_Net_Meta.png"/>
+		</p>
+		<h4 id="Figure_3._The_model-driven_architecture_2">Figure 3. The model-driven architecture</h4>
+		<p>
+			<img border="0" src="images/MD_Architecture.png"/>
+		</p>
+		<p>As every model, the described Petri net model is composed of a number of distinct model elements. In the context of a Petri net, these model elements correspond to the places, the transitions and the arcs that compose the model. These different elements, as well as the way they are related, are defined in the scope of the Petri net metamodel. In the same way a model conforms to its metamodel, there exists a relation between the elements of a model and those of its metamodel. This relation, called 
+			<i>meta</i>, associates each element of a model with the metamodel element it instantiates. 
+			<a href="The-Model-Driven-Architecture.html#Figure_2._Meta_relations">Figure 2</a> illustrates some of the existing meta relations between elements of the Petri net model and those of the Petri net metamodel.
+		</p>
+		<p>At this stage, it must be recalled that, before being a metamodel, a metamodel is a model. This implies for it to conform to its own metamodel. To this end, the model-driven architecture defines a third modelling level which corresponds to the 
+			<i>metametamodel</i>, as illustrated in 
+			<a href="The-Model-Driven-Architecture.html#Figure_3._The_model-driven_architecture">Figure 3</a>.
+		</p>
+		<p>A metametamodel aims to introduce the semantics that are required to specify metamodels. As a model with its metamodel, a metamodel conforms to the metametamodel. Note that a metametamodel is usually self-defined, which means that it can be specified by means of its own semantics. In such a case, a metametamodel conforms to itself.</p>
+		<p>Several metametamodel technologies are available. The ATL transformation engine currently provides support for two of these existing technologies: the Meta Object Facilities (
+			<a href="http://www.omg.org/docs/formal/02-04-03.pdf">MOF 1.4</a>) defined by the OMG and the Ecore metametamodel (Budinsky, F., Steinberg, D., Ellersick, R., Grose, T. Eclipse Modeling Framework, Chapter 5 "Ecore Modeling Concepts". Addison Wesley Professional. ISBN: 0131425420, 2004) defined by the 
+			<a href="http://wiki.eclipse.org/EMF">Eclipse Modeling Framework (EMF)</a>. This means that ATL is able to handle metamodels that have been specified according to either the MOF or the Ecore semantics.
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Introduction.html" title="Introduction">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="ATL Concepts.html" title="ATL Concepts">
+						<img alt="ATL Concepts" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Model-Transformation2.html" title="Model Transformation">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Introduction</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Model Transformation</td>
+			</tr>
+		</table>
+	</body>
+</html>
