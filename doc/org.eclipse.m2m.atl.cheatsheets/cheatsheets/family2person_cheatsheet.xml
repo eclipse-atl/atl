@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="A simple transformation with ATL: Family2Person">
+   <intro
+         href="/org.eclipse.m2m.atl.doc/guide/tutorials/Create-a-simple-ATL-transformation.html">
+      <description>
+         This cheat sheet shows you how to create your first simple transformation with ATL, through a well-known basic example: <b>Families2Persons</b>.<br/>
+<br/>
+This cheat sheet is also described as a tutorial with images for each step on the ATL wiki pages at: <b>http://wiki.eclipse.org/ATL/Tutorials</b> ("Create a simple ATL transformation"), and in the eclipse help contents, via <b>Help &gt; Help Contents</b> and then find <b>ATL guide &gt; Tutorials</b>.<br/>
+<br/>
+If you need help, click the (?) to the top right. A help will also be available at steps having this (?) on the right of  their title.<br/>
+<br/>
+The objectives of this cheat sheet are to perform a transformation from a list of <b>families</b> to a list of <b>persons</b>.<br/>
+<br/>
+On one side (the source), we have a list of <b>families</b>. Each family has a last name, and contains a father, a mother and a number of sons and daughters (0, 1 or more) all with a first name.<br/>
+We want to transform this list into a new list of <b>persons</b> (the target), this means that each member of the family will be a person, without differentiate parents from children, and with no link between the members of a same family (except a part of their name). In the end, we must only have a person with its full name (first name &amp; last name), male or female.
+      </description>
+   </intro>
+   <item
+         href="/org.eclipse.m2m.atl.doc/guide/tutorials/Create-a-simple-ATL-transformation.html?path=5_3_1_2#Create_a_new_ATL_project"
+         title="Creating a new ATL project">
+      <description>
+         After the theory, let&apos;s start creating the project.<br/>
+<br/>
+To create a new ATL project, you need to go to <b>File &gt; New &gt; Other... </b> and then select <b>ATL &gt; ATL Project...</b>. Then, click the <b>Next &gt;</b> button.<br/>
+Type a name for the project (say &quot;Families2Persons&quot; for our example). The project should now appear on your projects list.<br/>
+<br/>
+<b>Note:</b> the help button (?) may also guide you through the creation of new ATL files and shows you screenshots of what you should see during the next steps.
+      </description>
+      <command
+            required="false"
+            serialization="org.eclipse.ui.newWizard(newWizardId=atlProjectWizard)"/>
+   </item>
+   <item
+         href="/org.eclipse.m2m.atl.doc/guide/tutorials/Create-a-simple-ATL-transformation.html?path=5_3_1_0_0#The_Families"
+         skip="false"
+         title="The metamodels">
+      <description>
+         Now that our project is ready to use, we can fill it. Our first files are the representation of a family and a person, that is to say how we want to symbolize then (like a map symbolize the real world). This is called a <b>metamodel</b>, and it corresponds to an Ecore file.<br/>
+<br/>
+These Ecore files (Families.ecore and Persons.ecore) are available on the tutorial in the eclipse help contents with the details of its creation. You can create them by yourself by creating a new Ecore Model file via <b>New &gt; File &gt; Other...</b> and <b>Eclipse Modeling Framework &gt; Ecore Model</b>.<br/>
+<br/>
+<b>Note</b>: remember that you can use the (?) button to get more details on each step.
+      </description>
+      <command
+            required="false"
+            serialization="org.eclipse.ui.newWizard(newWizardId=org.eclipse.emf.ecore.presentation.EcoreModelWizardID)"/>
+   </item>
+   <item
+         href="/org.eclipse.m2m.atl.doc/guide/tutorials/Create-a-simple-ATL-transformation.html?path=5_3_1_4#The_ATL_transformation_code"
+         skip="false"
+         title="The ATL transformation code">
+      <description>
+         Now that we have represented what we have (Families, the <b>source</b>) and what we want to obtain (Persons, the <b>target</b>), we can concentrate on the core of the transformation: the ATL code. This code is going to match a part of the source with a part of the target.<br/>
+<br/>
+What we want in our example, is to take each <b>member</b> of each <b>family</b>, and transform him into a <b>person</b>. That implies melting his first and last name to have a full name, defining whether it&apos;s a man or a woman, and copy these pieces of information into a <b>Person</b> object.<br/>
+<br/>
+We first need a file to put this code into. So create a new ATL file, by going to <b>File &gt; New &gt; Other...</b>, and then <b>ATL &gt; ATL File</b>. Name it &quot;Families2Persons.atl&quot; for instance, don&apos;t forget to select your project, and then click <b>Finish</b>. If you are asked to open the ATL perspective, click <b>Yes</b>.<br/>
+<br/>
+The code of this file, which is quite lengthy, can be found in the eclipse help contents ATL tutorial.
+      </description>
+   </item>
+   <item
+         href="/org.eclipse.m2m.atl.doc/guide/tutorials/Create-a-simple-ATL-transformation.html?path=5_3_1_5#The_sample_families_model_file"
+         skip="false"
+         title="The sample families model file">
+      <description>
+         The transformation is ready to be used, we just need a sample model to run it on. First create a file in your project in which we will put the code of the model. Go to <b>File &gt; New &gt; File</b>, name it sample-Families.xmi for instance and open it with a text editor. Here is some code sample:<br/>
+<b>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</b><br/>
+<b>&lt;xmi:XMI xmi:version=&quot;2.0&quot; xmlns:xmi=&quot;http://www.omg.org/XMI&quot; xmlns=&quot;Families&quot;&gt;</b><br/>
+  <b>&lt;Family lastName=&quot;March&quot;&gt;</b><br/>
+    <b>&lt;father firstName=&quot;Jim&quot;/&gt;</b><br/>
+    <b>&lt;mother firstName=&quot;Cindy&quot;/&gt;</b><br/>
+    <b>&lt;sons firstName=&quot;Brandon&quot;/&gt;</b><br/>
+    <b>&lt;daughters firstName=&quot;Brenda&quot;/&gt;</b><br/>
+  <b>&lt;/Family&gt;</b><br/>
+  <b>&lt;Family lastName=&quot;Sailor&quot;&gt;</b><br/>
+    <b>&lt;father firstName=&quot;Peter&quot;/&gt;</b><br/>
+    <b>&lt;mother firstName=&quot;Jackie&quot;/&gt;</b><br/>
+    <b>&lt;sons firstName=&quot;David&quot;/&gt;</b><br/>
+    <b>&lt;sons firstName=&quot;Dylan&quot;/&gt;</b><br/>
+    <b>&lt;daughters firstName=&quot;Kelly&quot;/&gt;</b><br/>
+  <b>&lt;/Family&gt;</b><br/>
+<b>&lt;/xmi:XMI&gt;</b><br/>
+<br/>
+The entire file is also available for download in the eclipse help contents ATL tutorial.
+      </description>
+   </item>
+   <item
+         href="/org.eclipse.m2m.atl.doc/guide/tutorials/Create-a-simple-ATL-transformation.html?path=5_3_1_6#The_launch_configuration"
+         skip="false" 
+         title="The launch configuration">
+      <description>
+         We have everything we need to make the transformation, but there is one more step before we launch it, at least the first time: we have to configure the launching.<br/>
+<br/>
+When you are in the ATL file (Families2Persons.atl), click on <b>Run &gt; Run</b> (or Ctrl+F11), a dialog opens. Several pieces of information are already filled in: the ATL module (our transformation file, <b>Families2Persons.atl</b>), the metamodels (<b>Families.ecore</b> and <b>Persons.ecore</b>), but we need to complete the page.<br/>
+<br/>
+The <b>Source Models (IN:, conforms to Families)</b> part is the model we want to transform, that is to say our sample-Families.xmi; browse the workspace to add it.<br/>
+The <b>Target Models (Out:, conforms to Persons)</b> part is the model to be generated; browse the workspace to find your project and enter a name for the file.<br/>
+<br/>
+A useful option can be found in the <b>Common</b> tab of the page: we can save our configuration so that ATL can find it the next time we would want to run it or if the project is exported. If you check <b>Shared file</b> and browse within your project, you can save this configuration in a file (&quot;Families2Persons.launch&quot; for example).
+      </description>
+   </item>
+   <item
+         href="/org.eclipse.m2m.atl.doc/guide/tutorials/Create-a-simple-ATL-transformation.html?path=5_3_1_7#Running_the_transformation"
+         skip="false" 
+         title="Running the transformation">
+      <description>
+         At last we can run the transformation by clicking <b>Run</b> on the configuration page. A file is then generated, named <b>sample-Persons.xmi</b>, and containing the list of your family members transformed into persons.<br/>
+<br/>
+Here is what you should get if you open it with a text editor:<br/>
+<b>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</b><br/>
+<b>&lt;xmi:XMI xmi:version=&quot;2.0&quot; xmlns:xmi=&quot;http://www.omg.org/XMI&quot; xmlns=&quot;Persons&quot;&gt;</b><br/>
+  <b>&lt;Male fullName=&quot;Jim March&quot;/&gt;</b><br/>
+  <b>&lt;Male fullName=&quot;Brandon March&quot;/&gt;</b><br/>
+  <b>&lt;Male fullName=&quot;Peter Sailor&quot;/&gt;</b><br/>
+  <b>&lt;Male fullName=&quot;David Sailor&quot;/&gt;</b><br/>
+  <b>&lt;Male fullName=&quot;Dylan Sailor&quot;/&gt;</b><br/>
+  <b>&lt;Female fullName=&quot;Cindy March&quot;/&gt;</b><br/>
+  <b>&lt;Female fullName=&quot;Brenda March&quot;/&gt;</b><br/>
+  <b>&lt;Female fullName=&quot;Jackie Sailor&quot;/&gt;</b><br/>
+  <b>&lt;Female fullName=&quot;Kelly Sailor&quot;/&gt;</b><br/>
+<b>&lt;/xmi:XMI&gt;</b><br/>
+<br/>
+Again, this entire file is also available for download in the eclipse help contents ATL tutorial.<br/>
+<br/>
+This is the end of this basic example. Further documentation, examples, and help can be found on the ATL website: http://www.eclipse.org/m2m/atl/.
+      </description>
+      <onCompletion>Congratulations, you manage to do your first transformation with ATL!</onCompletion>
+   </item>
+</cheatsheet>

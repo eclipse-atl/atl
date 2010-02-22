@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.cheatsheets.cheatSheetContent">
+      <category
+            id="org.eclipse.m2m.atl.cheatsheets.category"
+            name="ATL Development">
+      </category>
+      <cheatsheet
+            category="org.eclipse.m2m.atl.cheatsheets.category"
+            composite="false"
+            contentFile="$nl$/cheatsheets/family2person_cheatsheet.xml"
+            id="org.eclipse.m2m.atl.cheatsheets.cheatsheet214478892"
+            name="Create a simple ATL transformation">
+         <description>
+            This cheat sheet shows you how to create your first simple transformation with ATL, through a well-known basic example: Family2Person.
+         </description>
+      </cheatsheet>
+   </extension>
+
+</plugin>
