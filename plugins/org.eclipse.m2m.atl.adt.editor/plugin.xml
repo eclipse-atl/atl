@@ -8,7 +8,6 @@
             class="org.eclipse.m2m.atl.adt.ui.editor.AtlEditor"
             default="true"
             name="ATL Editor"
-            contributorClass="org.eclipse.m2m.atl.adt.ui.editor.AtlEditorActionContributor"
             id="org.eclipse.m2m.atl.adt.editor.AtlEditor"
             extensions="atl">
       </editor>
@@ -94,46 +93,6 @@
 			name="ATL Category"/>
 	</extension>
  <extension
-       point="org.eclipse.ui.actionSets">
-    <actionSet
-          description="%CodingActionSet.description"
-          id="org.eclipse.m2m.atl.adt.editor.CodingActionSet"
-          label="%CodingActionSet.label"
-          visible="true">
-       <menu
-             id="ATLEditorMenu"
-             label="%ATLEditorMenu.label">
-          <groupMarker
-                name="ATLGroup">
-          </groupMarker>
-       </menu>
-       <action
-             definitionId="atlCommands.commentBlock"
-             id="org.eclipse.m2m.atl.adt.ui.actions.ToggleComment"
-             label="%CommentAction.label"
-             menubarPath="ATLEditorMenu/ATLGroup"
-             retarget="true">
-       </action>
-       <action
-             definitionId="atlCommands.gotoMatchingBracket"
-             id="org.eclipse.m2m.atl.adt.ui.actions.gotoMatchingBracket"
-             label="%GoToMatchingBracketAction.label"
-             menubarPath="ATLEditorMenu/ATLGroup"
-             retarget="true">
-       </action>
-       <action
-             allowLabelUpdate="true"
-             class="org.eclipse.m2m.atl.adt.ui.actions.OpenDeclarationAction"
-             definitionId="atlCommands.openDeclaration"
-             enablesFor="*"
-             id="org.eclipse.m2m.atl.adt.ui.actions.OpenDeclaration"
-             label="%OpenDeclarationAction.label"
-             menubarPath="ATLEditorMenu/ATLGroup"
-             retarget="false">
-       </action>
-    </actionSet>
- </extension>
- <extension
        point="org.eclipse.ui.editors.templates">
     <contextTypeRegistry
           id="org.eclipse.m2m.atl.adt.editor.AtlEditor">
@@ -216,5 +175,40 @@
              name="ATL editing context"
              parentId="org.eclipse.ui.textEditorScope">
        </context>
+    </extension>          
+    <extension
+          point="org.eclipse.ui.editorActions">
+       <editorContribution
+             id="org.eclipse.m2m.atl.adt.editor.Coding"
+             targetID="org.eclipse.m2m.atl.adt.editor.AtlEditor">
+          <menu
+                id="ATLEditorMenu"
+                label="%ATLEditorMenu.label">
+             <groupMarker
+                   name="ATLGroup">
+             </groupMarker>
+          </menu>
+          <action
+                class="org.eclipse.m2m.atl.adt.ui.actions.ToggleCommentAction"
+                definitionId="atlCommands.commentBlock"
+                id="org.eclipse.m2m.atl.adt.ui.actions.ToggleComment"
+                label="%CommentAction.label"
+                menubarPath="ATLEditorMenu/ATLGroup">
+          </action>
+          <action
+                class="org.eclipse.m2m.atl.adt.ui.actions.GotoMatchingBracketAction"
+                definitionId="atlCommands.gotoMatchingBracket"
+                id="org.eclipse.m2m.atl.adt.ui.actions.gotoMatchingBracket"
+                label="%GoToMatchingBracketAction.label"
+                menubarPath="ATLEditorMenu/ATLGroup">
+          </action>
+          <action
+                class="org.eclipse.m2m.atl.adt.ui.actions.OpenDeclarationAction"
+                definitionId="atlCommands.openDeclaration"
+                id="org.eclipse.m2m.atl.adt.ui.actions.OpenDeclaration"
+                label="%OpenDeclarationAction.label"
+                menubarPath="ATLEditorMenu/ATLGroup">
+          </action>
+       </editorContribution>
     </extension>
 </plugin>

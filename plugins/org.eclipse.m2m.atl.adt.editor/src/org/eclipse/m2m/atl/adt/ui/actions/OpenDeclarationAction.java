@@ -19,6 +19,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.adt.ui.text.atl.OpenDeclarationUtils;
 import org.eclipse.m2m.atl.adt.ui.text.atl.types.Feature;
+import org.eclipse.ui.IEditorActionDelegate;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -30,7 +32,7 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-public class OpenDeclarationAction extends Action implements IWorkbenchWindowActionDelegate, IObjectActionDelegate {
+public class OpenDeclarationAction extends Action implements IWorkbenchWindowActionDelegate, IObjectActionDelegate, IEditorActionDelegate {
 
 	/**
 	 * The action id
@@ -83,12 +85,30 @@ public class OpenDeclarationAction extends Action implements IWorkbenchWindowAct
 		}
 	}
 
-	/* (non-Javadoc) */
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
+	 *      org.eclipse.jface.viewers.ISelection)
+	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 	}
 
-	/* (non-Javadoc) */
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
+	 *      org.eclipse.ui.IWorkbenchPart)
+	 */
 	public void setActivePart(IAction action, IWorkbenchPart part) {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.IEditorActionDelegate#setActiveEditor(org.eclipse.jface.action.IAction,
+	 *      org.eclipse.ui.IEditorPart)
+	 */
+	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
+	}
 }

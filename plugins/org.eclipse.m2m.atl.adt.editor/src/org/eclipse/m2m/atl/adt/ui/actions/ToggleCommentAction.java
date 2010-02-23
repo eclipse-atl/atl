@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -28,10 +29,13 @@ import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.adt.ui.editor.Messages;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorActionDelegate;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.ResourceAction;
 import org.eclipse.ui.texteditor.TextEditorAction;
@@ -41,7 +45,7 @@ import org.eclipse.ui.texteditor.TextEditorAction;
  * 
  * @since 3.0
  */
-public final class ToggleCommentAction extends TextEditorAction {
+public final class ToggleCommentAction extends TextEditorAction implements IEditorActionDelegate {
 
 	/** The text operation target */
 	private ITextOperationTarget fOperationTarget;
@@ -335,5 +339,28 @@ public final class ToggleCommentAction extends TextEditorAction {
 		}
 		fDocumentPartitioning = configuration.getConfiguredDocumentPartitioning(sourceViewer);
 		fPrefixesMap = prefixesMap;
+	}
+
+	/*
+	 * IEditorActionDelegate
+	 */
+
+	public ToggleCommentAction() {
+		super(Messages.getResourceBundle(), "ToggleComment.", null); //$NON-NLS-1$
+	}
+
+	public void run(IAction action) {
+		run();
+	}
+
+	public void selectionChanged(IAction action, ISelection selection) {
+	}
+
+	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
+		if (targetEditor instanceof AtlEditor) {
+			setEditor((AtlEditor)targetEditor);
+			update();
+			configure(((AtlEditor)targetEditor).getViewer(), ((AtlEditor)targetEditor).getSourceViewerConf());
+		}
 	}
 }
