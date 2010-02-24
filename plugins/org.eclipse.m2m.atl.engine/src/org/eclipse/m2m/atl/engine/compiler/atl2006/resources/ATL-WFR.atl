@@ -1,3 +1,6 @@
+-- @path ATL=/org.eclipse.m2m.atl.common/src/org/eclipse/m2m/atl/common/resources/ATL.ecore
+-- @path Problem=/org.eclipse.m2m.atl.common/bin/org/eclipse/m2m/atl/common/resources/Problem.ecore
+
 module ATL_WFR;
 create OUT : Problem from IN : ATL;
 
@@ -14,7 +17,6 @@ helper def: singleIteratorExps : Set(String) =
 		'isUnique', 'any', 'one', 'collect', 'select',
 		'reject', 'collectNested', 'sortedBy'
 	};
-
 
 -- This helper provides a set containing the name of the IteratorExp elements
 -- for which several Iterators may be declared according to the OCL spec.
@@ -448,19 +450,48 @@ nodefault rule HelperSignatureIsUnique {
 	from
 		s : ATL!Helper (
 			thisModule.allHelpers
-				->exists(e |
-					e <> s and
-					s.definition.feature.name = e.definition.feature.name and
+				->exists(e | e <> s 
+					and
+					-- name check
+					s.definition.feature.name = e.definition.feature.name 
+					
+					and
+					-- context check
 					(
 					 if not s.definition.context_.oclIsUndefined()
 					 then
 					 	if not e.definition.context_.oclIsUndefined()
 					 	then
-						if not s.definition.context_.context_.name.oclIsUndefined()
+							if not s.definition.context_.context_.name.oclIsUndefined()
 							then
-							if not e.definition.context_.context_.name.oclIsUndefined()
+								if not e.definition.context_.context_.name.oclIsUndefined()
 								then
-									s.definition.context_.context_.name = e.definition.context_.context_.name
+									s.definition.context_.context_.name = e.definition.context_.context_.name 					
+									and
+									if s.definition.feature.oclIsTypeOf(ATL!Operation) and e.definition.feature.oclIsTypeOf(ATL!Operation)
+									then
+										-- parameters check
+										if not s.definition.feature.parameters.oclIsUndefined()
+										then
+											if not e.definition.feature.parameters.oclIsUndefined()
+											then
+												if s.definition.feature.parameters.size() = e.definition.feature.parameters.size()
+												then
+												   s.definition.feature.parameters -> collect(param | param.type.oclType()) -> flatten() -> includesAll(
+												   e.definition.feature.parameters -> collect(param | param.type.oclType()) -> flatten()
+												   )
+												else
+													false
+												endif
+											else
+												false
+											endif
+										else
+											false
+										endif
+									else
+										false
+									endif
 								else
 									false
 								endif
@@ -474,6 +505,7 @@ nodefault rule HelperSignatureIsUnique {
 					 	e.definition.context_.oclIsUndefined()
 					 endif
 					 )
+				
 				)
 		)
 	to
