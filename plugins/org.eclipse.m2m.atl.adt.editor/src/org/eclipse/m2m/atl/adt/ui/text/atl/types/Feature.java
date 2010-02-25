@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text.atl.types;
 
+import java.util.Collection;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -20,6 +22,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class Feature implements Comparable<Feature> {
+	private static final String DOCUMENTATION_COMMENTS_PREFIX = "---"; //$NON-NLS-1$
 
 	protected String name;
 
@@ -44,6 +47,8 @@ public class Feature implements Comparable<Feature> {
 	private String oppositeName;
 
 	private EObject declaration;
+
+	protected String documentation;
 
 	/**
 	 * Creates a new feature using the given parameters.
@@ -228,9 +233,21 @@ public class Feature implements Comparable<Feature> {
 			if (type instanceof CollectionType) {
 				upper = -1;
 			}
-			Feature res = new Feature(unit, attribute, featureName, context, type, ordered, false, 1, upper);
-			res.setImagePath("$nl$/icons/helper.gif"); //$NON-NLS-1$
-			return res;
+			Feature feature = new Feature(unit, attribute, featureName, context, type, ordered, false, 1,
+					upper);
+			feature.setImagePath("$nl$/icons/helper.gif"); //$NON-NLS-1$
+
+			EObject container = attribute.eContainer();
+			if (container != null) {
+				container = container.eContainer();
+				if (container != null) {
+					String doc = getDocumentation(container);
+					if (doc != null && doc.length() > 0) {
+						feature.setDocumentation(doc);
+					}
+				}
+			}
+			return feature;
 		}
 		return null;
 	}
@@ -300,4 +317,42 @@ public class Feature implements Comparable<Feature> {
 		return information.toString();
 	}
 
+	/**
+	 * Returns the information related to the operation, or null if not found.
+	 * 
+	 * @param context
+	 *            the context type
+	 * @param parameters
+	 *            the operation parameter types
+	 * @return the information or null if not found
+	 */
+	public String getDocumentation() {
+		if (documentation != null && !documentation.trim().equals("")) { //$NON-NLS-1$
+			return documentation;
+		}
+		return getInformation() + " - " + getContextType(); //$NON-NLS-1$
+	}
+
+	public void setDocumentation(String documentation) {
+		this.documentation = documentation;
+	}
+
+	/**
+	 * Retrieves the comments associated with the given element.
+	 * 
+	 * @param element
+	 *            the given ATL element
+	 * @return the comments
+	 */
+	protected static String getDocumentation(EObject element) {
+		Collection<?> comments = (Collection<?>)AtlTypesProcessor.eGet(element, "commentsBefore"); //$NON-NLS-1$
+		StringBuffer buf = new StringBuffer();
+		for (Object line : comments) {
+			if (line.toString().startsWith(DOCUMENTATION_COMMENTS_PREFIX)) {
+				buf.append(line.toString().replaceFirst(DOCUMENTATION_COMMENTS_PREFIX, "")); //$NON-NLS-1$
+				buf.append('\n');
+			}
+		}
+		return buf.toString().trim();
+	}
 }

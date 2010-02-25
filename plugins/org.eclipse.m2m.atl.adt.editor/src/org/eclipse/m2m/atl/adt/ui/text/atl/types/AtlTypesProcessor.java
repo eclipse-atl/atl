@@ -136,6 +136,10 @@ public class AtlTypesProcessor {
 		} else if (oclIsKindOf(locatedElement, "NavigationOrAttributeCallExp")) { //$NON-NLS-1$
 			Feature feature = getFeature(locatedElement);
 			if (feature != null) {
+				String atlDoc = feature.getDocumentation();
+				if (atlDoc != null) {
+					return atlDoc;
+				}
 				return feature.getInformation();
 			}
 		} else if (oclIsKindOf(locatedElement, "OperationCallExp")) { //$NON-NLS-1$
@@ -200,7 +204,8 @@ public class AtlTypesProcessor {
 	private Object getMetamodelDeclaration(EObject element) {
 		EObject res = null;
 		String name = (String)eGet(element, "name"); //$NON-NLS-1$
-		Collection<EObject> inModels = (Collection<EObject>)eGet(unit.getSourceManager().getModel(), "inModels"); //$NON-NLS-1$;
+		Collection<EObject> inModels = (Collection<EObject>)eGet(unit.getSourceManager().getModel(),
+				"inModels"); //$NON-NLS-1$;
 		if (inModels != null) {
 			for (EObject model : inModels) {
 				EObject metamodel = (EObject)eGet(model, "metamodel"); //$NON-NLS-1$
@@ -338,6 +343,10 @@ public class AtlTypesProcessor {
 							.toArray(new OclAnyType[argumentTypes.size()]));
 				}
 				if (operation != null) {
+					String atlDoc = operation.getDocumentation();
+					if (atlDoc != null) {
+						return atlDoc;
+					}
 					// TODO add arguments values
 					return operation.getInformation(sourceType);
 				}
@@ -573,7 +582,8 @@ public class AtlTypesProcessor {
 					if (context != null) {
 						EObject contextDefinition = (EObject)eGet(context, "context_"); //$NON-NLS-1$
 						if (contextDefinition != null) {
-							variables.put("self", OclAnyType.create(unit.getSourceManager(), contextDefinition)); //$NON-NLS-1$
+							variables.put(
+									"self", OclAnyType.create(unit.getSourceManager(), contextDefinition)); //$NON-NLS-1$
 						}
 					}
 				}

@@ -783,12 +783,9 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		String replacementString = feature.getName();
 		if (startsWithIgnoreCase(prefix, replacementString) && !prefix.equals(replacementString)) {
 			String displayString = feature.getInformation();
-			StringBuffer additionalProposalInfo = new StringBuffer(displayString);
-			additionalProposalInfo.append(" - "); //$NON-NLS-1$
-			additionalProposalInfo.append(feature.getContextType());
 			AtlCompletionProposal proposal = new AtlCompletionProposal(replacementString, offset
 					- prefix.length(), replacementString.length(), AtlUIPlugin.getDefault().getImage(
-					feature.getImagePath()), displayString.toString(), 0, additionalProposalInfo.toString());
+					feature.getImagePath()), displayString.toString(), 0, feature.getDocumentation());
 			return proposal;
 		}
 		return null;
