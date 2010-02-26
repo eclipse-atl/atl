@@ -16,7 +16,7 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  * 
- * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class Family2PersonCheatsheet extends AbstractUIPlugin {
 
@@ -32,8 +32,9 @@ public class Family2PersonCheatsheet extends AbstractUIPlugin {
 	public Family2PersonCheatsheet() {
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
@@ -41,8 +42,9 @@ public class Family2PersonCheatsheet extends AbstractUIPlugin {
 		plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
