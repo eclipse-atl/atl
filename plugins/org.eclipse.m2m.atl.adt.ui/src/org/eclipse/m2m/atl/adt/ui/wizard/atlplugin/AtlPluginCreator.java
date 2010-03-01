@@ -155,9 +155,7 @@ public class AtlPluginCreator extends Wizard implements INewWizard, IExecutableE
 		IWorkspaceRunnable create = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
 				CreatePluginData pluginData = new CreatePluginData(newProjectPage.getProjectName());
-				if (getContainer().getCurrentPage().equals(parametersPage)) {
-					pluginData.setRunnableData(parametersPage.getRunnableData());
-				}
+				pluginData.setRunnableData(parametersPage.getRunnableData());
 
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
 						newProjectPage.getProjectName());
@@ -342,8 +340,7 @@ public class AtlPluginCreator extends Wizard implements INewWizard, IExecutableE
 			IProgressMonitor monitor) {
 		if ("asm".equals(fileToCopy.getFileExtension())) { //$NON-NLS-1$
 			IFile atlFile = fileToCopy.getProject().getParent().getFile(
-					fileToCopy.getFullPath().removeFileExtension().addFileExtension(
-							"atl")); //$NON-NLS-1$
+					fileToCopy.getFullPath().removeFileExtension().addFileExtension("atl")); //$NON-NLS-1$
 			if (atlFile != null && atlFile.isAccessible()) {
 				copyFile(project, atlFile, targetDirRelativePath, monitor);
 				return;
