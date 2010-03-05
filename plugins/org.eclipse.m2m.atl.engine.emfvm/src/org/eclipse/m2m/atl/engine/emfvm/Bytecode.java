@@ -41,7 +41,7 @@ public class Bytecode {
 	/** Store value into local variable. */
 	public static final int STORE = 7;
 
-	/** Call a method. */
+	/** Creates a new element. */
 	public static final int NEW = 8;
 
 	/** Delimitate the beginning of iteration on collection elements. */
@@ -85,7 +85,10 @@ public class Bytecode {
 
 	/** Call a procedure (i.e., an operation with no returned value). */
 	public static final int PCALL = 22;
-
+	
+	/** Creates a new element in the specified model. */
+	public static final int NEWIN = 23;
+	
 	/** List of codes. */
 	public static final String[] OPCODENAMES = {"push", //$NON-NLS-1$
 			"pushi", //$NON-NLS-1$
@@ -110,6 +113,7 @@ public class Bytecode {
 			"dup_x1", //$NON-NLS-1$
 			"delete", //$NON-NLS-1$
 			"pcall", //$NON-NLS-1$
+			"newin", //$NON-NLS-1$
 	};
 
 	/** current code. */
@@ -142,6 +146,8 @@ public class Bytecode {
 			this.opcode = PUSHF;
 		} else if (opcode.equals("new")) { //$NON-NLS-1$
 			this.opcode = NEW;
+		} else if (opcode.equals("newin")) { //$NON-NLS-1$
+			this.opcode = NEWIN;
 		} else if (opcode.equals("iterate")) { //$NON-NLS-1$
 			this.opcode = ITERATE;
 		} else if (opcode.equals("enditerate")) { //$NON-NLS-1$
