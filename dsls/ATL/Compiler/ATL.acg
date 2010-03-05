@@ -825,7 +825,14 @@ acg ATL startsWith Unit {
 			push self.type.model.name
 			set 'metamodel'
 		} else {
-			analyze self.type mode create
+			push self.type.name
+			push self.type.model.name
+			if (not self.model.oclIsUndefined()) {
+				push self.model.name
+				newin
+			} else {
+				new
+			}
 		}
 					-- transientLink, varName, element
 		foreach(rb in self.reverseBindings) {
@@ -848,13 +855,6 @@ acg ATL startsWith Unit {
 		}
 		call 'NTransientLink;.addTargetElement(SJ):V'
 	}
-
-		-- Not in refining mode (see previous rule)
-		code OclModelElement mode create {
-			push self.name
-			push self.model.name
-			new
-		}
 
 	-- TODO: removal, change...
 	code SimpleOutPatternElement mode matchFirstRefining {
@@ -969,6 +969,7 @@ acg ATL startsWith Unit {
 				pop
 				push self.type.name
 				push self.type.model.name
+				-- NOTE: foreach patterns syntax can't handle output model specification, so "newin" instructions are not generated here
 				new
 				call 'CJ.including(J):CJ'
 			enditerate
@@ -1149,7 +1150,12 @@ acg ATL startsWith Unit {
 	
 				push ope.type.name
 				push ope.type.model.name
-				new
+				if (not ope.model.oclIsUndefined()) {
+					push ope.model.name
+					newin
+				} else {
+					new
+				}
 				dup
 				variable ope.actualDeclaration() named ope.varName {
 					call 'NTransientLink;.addTargetElement(SJ):V'
@@ -1815,7 +1821,12 @@ acg ATL startsWith Unit {
 						foreach(ope in self.ruleOutPatternElements()) {
 							push ope.type.name
 							push ope.type.model.name
-							new
+							if (not ope.model.oclIsUndefined()) {
+								push ope.model.name
+								newin
+							} else {
+								new
+							}
 							variable ope named ope.varName {
 							[
 								foreach(ope in self.ruleOutPatternElements()) {
