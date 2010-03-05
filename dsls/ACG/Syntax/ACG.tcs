@@ -165,6 +165,10 @@ syntax ACG {
 	template NewStat
 		:	"new"
 		;
+		
+	template NewinStat
+		:	"newin"
+		;
 
 	template DupStat
 		:	"dup"

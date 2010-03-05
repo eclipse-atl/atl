@@ -364,6 +364,13 @@ acg ACG startsWith ACG {
 					-- what is important is that it is unique, name cannot be guarranteed to be unique
 	}
 
+	code NewinStat {
+		getasm
+		get 'asmEmitter'
+		push 'newin'
+		call 'J.emitSimple(S):V'
+	}
+
 	code NewStat {
 		getasm
 		get 'asmEmitter'

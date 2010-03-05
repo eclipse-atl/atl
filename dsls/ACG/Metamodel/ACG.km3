@@ -128,6 +128,8 @@ package ACG {
 	}
 
 	class NewStat extends EmitStat {}
+	
+	class NewinStat extends EmitStat {}
 
 	class DupStat extends EmitStat {}
 
