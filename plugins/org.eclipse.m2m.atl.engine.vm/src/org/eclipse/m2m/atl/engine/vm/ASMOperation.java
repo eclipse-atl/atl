@@ -230,6 +230,16 @@ public class ASMOperation extends Operation {
 					// }
 					// }
 				}
+			} else if (mn == "newin") {
+				String modelname = ((ASMString)frame.pop()).getSymbol();
+				String me = ((ASMString)frame.pop()).getSymbol();
+				for (Iterator j = frame.getExecEnv().getModels().values().iterator(); j.hasNext();) {
+					ASMModel model = (ASMModel)j.next();
+					if (model.getName().equals(modelname) && model.isTarget()) {
+						frame.push(model.newModelElement(frame, me));
+						break;
+					}
+				}				
 			} else if (mn == "call" || mn == "pcall") {
 				int nb = getNbArgs(ops);
 				String opName = getOpName(ops);
