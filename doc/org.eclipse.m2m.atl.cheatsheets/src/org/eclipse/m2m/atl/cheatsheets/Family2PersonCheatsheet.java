@@ -14,20 +14,20 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class Family2PersonCheatsheet extends AbstractUIPlugin {
 
-	// The plug-in ID
+	/** The plug-in ID. */
 	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.cheatsheets"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Family2PersonCheatsheet plugin;
 	
 	/**
-	 * The constructor
+	 * The constructor.
 	 */
 	public Family2PersonCheatsheet() {
 	}
@@ -53,7 +53,7 @@ public class Family2PersonCheatsheet extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the shared instance
+	 * Returns the shared instance.
 	 *
 	 * @return the shared instance
 	 */
