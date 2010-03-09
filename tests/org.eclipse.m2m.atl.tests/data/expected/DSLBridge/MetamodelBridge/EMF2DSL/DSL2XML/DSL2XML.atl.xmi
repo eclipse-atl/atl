@@ -75,7 +75,7 @@
     <commentsAfter>-- RETURN:  String</commentsAfter>
     <definition location="27:8-27:32">
       <feature xsi:type="ocl:Attribute" location="27:13-27:32" name="curId">
-        <initExpression xsi:type="ocl:IntegerExp" location="27:31-27:32" integerSymbol="0"/>
+        <initExpression xsi:type="ocl:IntegerExp" location="27:31-27:32"/>
         <type xsi:type="ocl:IntegerType" location="27:21-27:28"/>
       </feature>
     </definition>
@@ -5861,11 +5861,11 @@
           </value>
         </bindings>
       </elements>
-      <elements xsi:type="atl:SimpleOutPatternElement" location="1157:3-1165:4" varName="DiagtreeExp">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="1157:3-1165:4" varName="DiagtreeExp2">
         <commentsBefore>----------------------------------</commentsBefore>
         <commentsBefore>-- Inheritance Complete Diagram --</commentsBefore>
         <commentsBefore>----------------------------------</commentsBefore>
-        <type xsi:type="ocl:OclModelElement" location="1157:17-1157:28" name="Element">
+        <type xsi:type="ocl:OclModelElement" location="1157:18-1157:29" name="Element">
           <model href="new-model#/421"/>
         </type>
         <bindings location="1158:4-1158:28" propertyName="name">

@@ -277,37 +277,37 @@
         </statements>
         <statements xsi:type="atl:BindingStat" location="82:4-82:29">
           <source xsi:type="ocl:VariableExp" location="82:4-82:23" referredVariable="//@elements.3/@variables.0"/>
-          <value xsi:type="ocl:IntegerExp" location="82:27-82:28" integerSymbol="0"/>
+          <value xsi:type="ocl:IntegerExp" location="82:27-82:28"/>
         </statements>
         <statements xsi:type="atl:BindingStat" location="83:4-83:29">
           <source xsi:type="ocl:VariableExp" location="83:4-83:23" referredVariable="//@elements.3/@variables.1"/>
-          <value xsi:type="ocl:IntegerExp" location="83:27-83:28" integerSymbol="0"/>
+          <value xsi:type="ocl:IntegerExp" location="83:27-83:28"/>
         </statements>
         <statements xsi:type="atl:BindingStat" location="84:4-84:25">
           <source xsi:type="ocl:VariableExp" location="84:4-84:19" referredVariable="//@elements.3/@variables.2"/>
-          <value xsi:type="ocl:IntegerExp" location="84:23-84:24" integerSymbol="0"/>
+          <value xsi:type="ocl:IntegerExp" location="84:23-84:24"/>
         </statements>
         <statements xsi:type="atl:BindingStat" location="85:4-85:22">
           <source xsi:type="ocl:VariableExp" location="85:4-85:16" referredVariable="//@elements.3/@variables.3"/>
-          <value xsi:type="ocl:IntegerExp" location="85:20-85:21" integerSymbol="0"/>
+          <value xsi:type="ocl:IntegerExp" location="85:20-85:21"/>
         </statements>
       </statements>
     </actionBlock>
     <variables location="41:3-41:37" varName="totalNbOfMethodCall" variableExp="//@elements.3/@actionBlock/@statements.1/@statements.0/@statements.0/@statements.0/@thenStatements.0/@source //@elements.3/@actionBlock/@statements.1/@statements.0/@statements.0/@statements.0/@thenStatements.0/@value/@source //@elements.3/@actionBlock/@statements.1/@statements.1/@value/@arguments.0/@elements.0/@arguments.2 //@elements.3/@actionBlock/@statements.1/@statements.2/@value/@arguments.0/@elements.0/@arguments.2 //@elements.3/@actionBlock/@statements.1/@statements.3/@value/@arguments.0/@elements.0/@arguments.2 //@elements.3/@actionBlock/@statements.1/@statements.4/@source">
       <type xsi:type="ocl:IntegerType" location="41:25-41:32"/>
-      <initExpression xsi:type="ocl:IntegerExp" location="41:35-41:36" integerSymbol="0"/>
+      <initExpression xsi:type="ocl:IntegerExp" location="41:35-41:36"/>
     </variables>
     <variables location="42:3-42:37" varName="totalNbOfDBAccesses" variableExp="//@elements.3/@actionBlock/@statements.1/@statements.0/@statements.0/@statements.0/@thenStatements.1/@source //@elements.3/@actionBlock/@statements.1/@statements.0/@statements.0/@statements.0/@thenStatements.1/@value/@source //@elements.3/@actionBlock/@statements.1/@statements.1/@value/@arguments.0/@elements.0/@arguments.1 //@elements.3/@actionBlock/@statements.1/@statements.5/@source">
       <type xsi:type="ocl:IntegerType" location="42:25-42:32"/>
-      <initExpression xsi:type="ocl:IntegerExp" location="42:35-42:36" integerSymbol="0"/>
+      <initExpression xsi:type="ocl:IntegerExp" location="42:35-42:36"/>
     </variables>
     <variables location="43:3-43:33" varName="totalNbOfDBRows" variableExp="//@elements.3/@actionBlock/@statements.1/@statements.0/@statements.0/@statements.0/@thenStatements.2/@source //@elements.3/@actionBlock/@statements.1/@statements.0/@statements.0/@statements.0/@thenStatements.2/@value/@source //@elements.3/@actionBlock/@statements.1/@statements.2/@value/@arguments.0/@elements.0/@arguments.1 //@elements.3/@actionBlock/@statements.1/@statements.6/@source">
       <type xsi:type="ocl:IntegerType" location="43:21-43:28"/>
-      <initExpression xsi:type="ocl:IntegerExp" location="43:31-43:32" integerSymbol="0"/>
+      <initExpression xsi:type="ocl:IntegerExp" location="43:31-43:32"/>
     </variables>
     <variables location="44:3-44:30" varName="totalCPUTime" variableExp="//@elements.3/@actionBlock/@statements.1/@statements.0/@statements.0/@statements.0/@thenStatements.3/@source //@elements.3/@actionBlock/@statements.1/@statements.0/@statements.0/@statements.0/@thenStatements.3/@value/@source //@elements.3/@actionBlock/@statements.1/@statements.3/@value/@arguments.0/@elements.0/@arguments.1 //@elements.3/@actionBlock/@statements.1/@statements.7/@source">
       <type xsi:type="ocl:IntegerType" location="44:18-44:25"/>
-      <initExpression xsi:type="ocl:IntegerExp" location="44:28-44:29" integerSymbol="0"/>
+      <initExpression xsi:type="ocl:IntegerExp" location="44:28-44:29"/>
     </variables>
     <inPattern location="38:2-39:18">
       <elements xsi:type="atl:SimpleInPatternElement" location="39:3-39:18" varName="t" variableExp="//@elements.3/@actionBlock/@statements.0/@value/@source //@elements.3/@actionBlock/@statements.1/@statements.0/@collection/@source">

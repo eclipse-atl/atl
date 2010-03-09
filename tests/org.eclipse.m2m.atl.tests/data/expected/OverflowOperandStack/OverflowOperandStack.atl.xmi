@@ -61,7 +61,7 @@
         <iterator location="17:7-17:8" varName="i" variableExp="//@elements.1/@actionBlock/@statements.0/@statements.0/@expression/@source"/>
         <collection xsi:type="ocl:OperationCallExp" location="17:12-17:26" operationName="seqTo">
           <source xsi:type="ocl:IntegerExp" location="17:13-17:14" integerSymbol="1"/>
-          <arguments xsi:type="ocl:IntegerExp" location="17:22-17:25" integerSymbol="200"/>
+          <arguments xsi:type="ocl:IntegerExp" location="17:22-17:25" integerSymbol="100"/>
         </collection>
         <statements xsi:type="atl:ExpressionStat" location="18:4-18:16">
           <expression xsi:type="ocl:OperationCallExp" location="18:4-18:15" operationName="debug">

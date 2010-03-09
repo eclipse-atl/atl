@@ -74,14 +74,14 @@
       <feature xsi:type="ocl:Operation" location="18:28-36:15" name="toInteger">
         <returnType xsi:type="ocl:IntegerType" location="18:42-18:49"/>
         <body xsi:type="ocl:IfExp" location="19:2-36:15">
-          <thenExpression xsi:type="ocl:IntegerExp" location="20:8-20:9" integerSymbol="0"/>
+          <thenExpression xsi:type="ocl:IntegerExp" location="20:8-20:9"/>
           <condition xsi:type="ocl:OperatorCallExp" location="19:5-19:20" operationName="=">
             <source xsi:type="ocl:OperationCallExp" location="19:5-19:16" operationName="size">
               <source xsi:type="ocl:VariableExp" location="19:5-19:9">
                 <referredVariable href="new-model#/2"/>
               </source>
             </source>
-            <arguments xsi:type="ocl:IntegerExp" location="19:19-19:20" integerSymbol="0"/>
+            <arguments xsi:type="ocl:IntegerExp" location="19:19-19:20"/>
           </condition>
           <elseExpression xsi:type="ocl:IfExp" location="21:8-36:9">
             <thenExpression xsi:type="ocl:IfExp" location="22:9-33:34">
@@ -156,7 +156,7 @@
                                 </source>
                                 <arguments xsi:type="ocl:StringExp" location="31:20-31:23" stringSymbol="9"/>
                               </condition>
-                              <elseExpression xsi:type="ocl:IntegerExp" location="32:10-32:11" integerSymbol="0"/>
+                              <elseExpression xsi:type="ocl:IntegerExp" location="32:10-32:11"/>
                             </elseExpression>
                           </elseExpression>
                         </elseExpression>
@@ -237,7 +237,7 @@
                 <referredVariable href="new-model#/18"/>
               </source>
             </source>
-            <arguments xsi:type="ocl:IntegerExp" location="40:19-40:20" integerSymbol="0"/>
+            <arguments xsi:type="ocl:IntegerExp" location="40:19-40:20"/>
           </condition>
           <elseExpression xsi:type="ocl:IfExp" location="42:3-45:8">
             <thenExpression xsi:type="ocl:IntegerExp" location="42:38-42:39" integerSymbol="1"/>
@@ -291,7 +291,7 @@
                 <referredVariable href="new-model#/22"/>
               </source>
             </source>
-            <arguments xsi:type="ocl:IntegerExp" location="50:19-50:20" integerSymbol="0"/>
+            <arguments xsi:type="ocl:IntegerExp" location="50:19-50:20"/>
           </condition>
           <elseExpression xsi:type="ocl:IfExp" location="51:7-54:13">
             <thenExpression xsi:type="ocl:OperationCallExp" location="51:41-51:77" operationName="trim">
@@ -1828,7 +1828,7 @@
                 <iterators location="182:61-182:62" varName="r" variableExp="//@elements.32/@definition/@feature/@body/@body/@source/@source/@body/@source/@source"/>
               </source>
             </source>
-            <arguments xsi:type="ocl:IntegerExp" location="182:89-182:90" integerSymbol="0"/>
+            <arguments xsi:type="ocl:IntegerExp" location="182:89-182:90"/>
           </body>
           <iterators location="182:39-182:40" varName="m" variableExp="//@elements.32/@definition/@feature/@body/@body/@source/@source/@source/@source"/>
         </body>
@@ -2260,7 +2260,7 @@
               </source>
             </source>
           </condition>
-          <elseExpression xsi:type="ocl:IntegerExp" location="245:8-245:9" integerSymbol="0"/>
+          <elseExpression xsi:type="ocl:IntegerExp" location="245:8-245:9"/>
         </body>
       </feature>
       <context_ location="242:8-242:33">

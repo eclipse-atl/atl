@@ -15,7 +15,7 @@
   <elements xsi:type="atl:MatchedRule" location="11:1-42:2" name="AntProject2Maven">
     <commentsBefore>-- central element : Project</commentsBefore>
     <commentsBefore>-- two files to create : MavenMaven (representing maven.xml)</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and MavenProject (representing project.xml)</commentsBefore>
+    <commentsBefore>--&#x9;&#x9;&#x9;&#x9; &#x9;and MavenProject (representing project.xml)</commentsBefore>
     <outPattern location="19:3-41:5">
       <commentsBefore>-- for MavenProject</commentsBefore>
       <elements xsi:type="atl:SimpleOutPatternElement" location="19:6-24:6" varName="mp">

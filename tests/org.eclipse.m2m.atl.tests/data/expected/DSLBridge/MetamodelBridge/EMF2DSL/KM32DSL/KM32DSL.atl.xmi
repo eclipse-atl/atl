@@ -16,7 +16,7 @@
     <commentsBefore>-- RETURN:  Integer</commentsBefore>
     <definition location="13:8-13:32">
       <feature xsi:type="ocl:Attribute" location="13:13-13:32" name="curId">
-        <initExpression xsi:type="ocl:IntegerExp" location="13:31-13:32" integerSymbol="0"/>
+        <initExpression xsi:type="ocl:IntegerExp" location="13:31-13:32"/>
         <type xsi:type="ocl:IntegerType" location="13:21-13:28"/>
       </feature>
     </definition>
@@ -27,7 +27,7 @@
     <commentsAfter>-- RETURN:  Integer</commentsAfter>
     <definition location="14:8-14:32">
       <feature xsi:type="ocl:Attribute" location="14:13-14:32" name="diff1">
-        <initExpression xsi:type="ocl:IntegerExp" location="14:31-14:32" integerSymbol="0"/>
+        <initExpression xsi:type="ocl:IntegerExp" location="14:31-14:32"/>
         <type xsi:type="ocl:IntegerType" location="14:21-14:28"/>
       </feature>
     </definition>
@@ -64,7 +64,7 @@
     <commentsAfter>-- RETURN:  Integer</commentsAfter>
     <definition location="22:8-22:32">
       <feature xsi:type="ocl:Attribute" location="22:13-22:32" name="diff2">
-        <initExpression xsi:type="ocl:IntegerExp" location="22:31-22:32" integerSymbol="0"/>
+        <initExpression xsi:type="ocl:IntegerExp" location="22:31-22:32"/>
         <type xsi:type="ocl:IntegerType" location="22:21-22:28"/>
       </feature>
     </definition>
@@ -535,7 +535,7 @@
                 <referredVariable href="new-model#/33"/>
               </source>
             </source>
-            <arguments xsi:type="ocl:IntegerExp" location="131:12-131:13" integerSymbol="0"/>
+            <arguments xsi:type="ocl:IntegerExp" location="131:12-131:13"/>
           </source>
           <arguments xsi:type="ocl:OperatorCallExp" location="131:18-131:34" operationName="=">
             <source xsi:type="ocl:NavigationOrAttributeCallExp" location="131:18-131:28" name="upper">
@@ -544,7 +544,7 @@
               </source>
             </source>
             <arguments xsi:type="ocl:OperatorCallExp" location="131:30-131:33" operationName="-">
-              <source xsi:type="ocl:IntegerExp" location="131:30-131:31" integerSymbol="0"/>
+              <source xsi:type="ocl:IntegerExp" location="131:30-131:31"/>
               <arguments xsi:type="ocl:IntegerExp" location="131:32-131:33" integerSymbol="1"/>
             </arguments>
           </arguments>
@@ -1036,13 +1036,13 @@
         </bindings>
         <bindings location="243:4-243:51" propertyName="max">
           <value xsi:type="ocl:IfExp" location="243:9-243:51">
-            <thenExpression xsi:type="ocl:IntegerExp" location="243:31-243:32" integerSymbol="0"/>
+            <thenExpression xsi:type="ocl:IntegerExp" location="243:31-243:32"/>
             <condition xsi:type="ocl:OperatorCallExp" location="243:12-243:25" operationName="=">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="243:12-243:19" name="upper">
                 <source xsi:type="ocl:VariableExp" location="243:12-243:13" referredVariable="//@elements.20/@inPattern/@elements.0"/>
               </source>
               <arguments xsi:type="ocl:OperatorCallExp" location="243:21-243:24" operationName="-">
-                <source xsi:type="ocl:IntegerExp" location="243:21-243:22" integerSymbol="0"/>
+                <source xsi:type="ocl:IntegerExp" location="243:21-243:22"/>
                 <arguments xsi:type="ocl:IntegerExp" location="243:23-243:24" integerSymbol="1"/>
               </arguments>
             </condition>
@@ -1112,7 +1112,7 @@
         </bindings>
         <bindings location="257:4-257:69" propertyName="max">
           <value xsi:type="ocl:IfExp" location="257:9-257:69">
-            <thenExpression xsi:type="ocl:IntegerExp" location="257:40-257:41" integerSymbol="0"/>
+            <thenExpression xsi:type="ocl:IntegerExp" location="257:40-257:41"/>
             <condition xsi:type="ocl:OperatorCallExp" location="257:12-257:34" operationName="=">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="257:12-257:28" name="upper">
                 <source xsi:type="ocl:NavigationOrAttributeCallExp" location="257:12-257:22" name="opposite">
@@ -1120,7 +1120,7 @@
                 </source>
               </source>
               <arguments xsi:type="ocl:OperatorCallExp" location="257:30-257:33" operationName="-">
-                <source xsi:type="ocl:IntegerExp" location="257:30-257:31" integerSymbol="0"/>
+                <source xsi:type="ocl:IntegerExp" location="257:30-257:31"/>
                 <arguments xsi:type="ocl:IntegerExp" location="257:32-257:33" integerSymbol="1"/>
               </arguments>
             </condition>
@@ -1311,13 +1311,13 @@
         </bindings>
         <bindings location="304:4-304:51" propertyName="max">
           <value xsi:type="ocl:IfExp" location="304:9-304:51">
-            <thenExpression xsi:type="ocl:IntegerExp" location="304:31-304:32" integerSymbol="0"/>
+            <thenExpression xsi:type="ocl:IntegerExp" location="304:31-304:32"/>
             <condition xsi:type="ocl:OperatorCallExp" location="304:12-304:25" operationName="=">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="304:12-304:19" name="upper">
                 <source xsi:type="ocl:VariableExp" location="304:12-304:13" referredVariable="//@elements.21/@inPattern/@elements.0"/>
               </source>
               <arguments xsi:type="ocl:OperatorCallExp" location="304:21-304:24" operationName="-">
-                <source xsi:type="ocl:IntegerExp" location="304:21-304:22" integerSymbol="0"/>
+                <source xsi:type="ocl:IntegerExp" location="304:21-304:22"/>
                 <arguments xsi:type="ocl:IntegerExp" location="304:23-304:24" integerSymbol="1"/>
               </arguments>
             </condition>
@@ -1545,7 +1545,7 @@
           </value>
         </bindings>
         <bindings location="363:3-363:11" propertyName="value">
-          <value xsi:type="ocl:IntegerExp" location="363:10-363:11" integerSymbol="0"/>
+          <value xsi:type="ocl:IntegerExp" location="363:10-363:11"/>
         </bindings>
       </elements>
     </outPattern>

@@ -496,14 +496,14 @@
         <bindings location="134:4-134:45" propertyName="upper">
           <value xsi:type="ocl:IfExp" location="134:13-134:45">
             <thenExpression xsi:type="ocl:OperatorCallExp" location="134:29-134:32" operationName="-">
-              <source xsi:type="ocl:IntegerExp" location="134:29-134:30" integerSymbol="0"/>
+              <source xsi:type="ocl:IntegerExp" location="134:29-134:30"/>
               <arguments xsi:type="ocl:IntegerExp" location="134:31-134:32" integerSymbol="1"/>
             </thenExpression>
             <condition xsi:type="ocl:OperatorCallExp" location="134:16-134:23" operationName="=">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="134:16-134:21" name="max">
                 <source xsi:type="ocl:VariableExp" location="134:16-134:17" referredVariable="//@elements.6/@inPattern/@elements.0"/>
               </source>
-              <arguments xsi:type="ocl:IntegerExp" location="134:22-134:23" integerSymbol="0"/>
+              <arguments xsi:type="ocl:IntegerExp" location="134:22-134:23"/>
             </condition>
             <elseExpression xsi:type="ocl:IntegerExp" location="134:38-134:39" integerSymbol="1"/>
           </value>
@@ -596,14 +596,14 @@
         <bindings location="161:4-162:25" propertyName="upper">
           <value xsi:type="ocl:IfExp" location="161:13-162:25">
             <thenExpression xsi:type="ocl:OperatorCallExp" location="162:9-162:12" operationName="-">
-              <source xsi:type="ocl:IntegerExp" location="162:9-162:10" integerSymbol="0"/>
+              <source xsi:type="ocl:IntegerExp" location="162:9-162:10"/>
               <arguments xsi:type="ocl:IntegerExp" location="162:11-162:12" integerSymbol="1"/>
             </thenExpression>
             <condition xsi:type="ocl:OperatorCallExp" location="161:16-161:23" operationName="=">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="161:16-161:21" name="max">
                 <source xsi:type="ocl:VariableExp" location="161:16-161:17" referredVariable="//@elements.7/@inPattern/@elements.0"/>
               </source>
-              <arguments xsi:type="ocl:IntegerExp" location="161:22-161:23" integerSymbol="0"/>
+              <arguments xsi:type="ocl:IntegerExp" location="161:22-161:23"/>
             </condition>
             <elseExpression xsi:type="ocl:IntegerExp" location="162:18-162:19" integerSymbol="1"/>
           </value>
@@ -652,14 +652,14 @@
         <bindings location="173:4-173:56" propertyName="upper">
           <value xsi:type="ocl:IfExp" location="173:13-173:56">
             <thenExpression xsi:type="ocl:OperatorCallExp" location="173:40-173:43" operationName="-">
-              <source xsi:type="ocl:IntegerExp" location="173:40-173:41" integerSymbol="0"/>
+              <source xsi:type="ocl:IntegerExp" location="173:40-173:41"/>
               <arguments xsi:type="ocl:IntegerExp" location="173:42-173:43" integerSymbol="1"/>
             </thenExpression>
             <condition xsi:type="ocl:OperatorCallExp" location="173:16-173:34" operationName="=">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="173:16-173:32" name="max">
                 <source xsi:type="ocl:VariableExp" location="173:16-173:28" referredVariable="//@elements.7/@variables.0"/>
               </source>
-              <arguments xsi:type="ocl:IntegerExp" location="173:33-173:34" integerSymbol="0"/>
+              <arguments xsi:type="ocl:IntegerExp" location="173:33-173:34"/>
             </condition>
             <elseExpression xsi:type="ocl:IntegerExp" location="173:49-173:50" integerSymbol="1"/>
           </value>

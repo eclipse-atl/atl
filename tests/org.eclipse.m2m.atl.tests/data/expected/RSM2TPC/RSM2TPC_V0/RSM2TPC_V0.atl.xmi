@@ -3896,7 +3896,7 @@
               </source>
               <arguments xsi:type="ocl:StringExp" location="918:18-918:21" stringSymbol="$"/>
             </source>
-            <arguments xsi:type="ocl:IntegerExp" location="918:25-918:26" integerSymbol="0"/>
+            <arguments xsi:type="ocl:IntegerExp" location="918:25-918:26"/>
           </condition>
           <elseExpression xsi:type="ocl:CollectionOperationCallExp" location="920:7-921:146" operationName="union">
             <source xsi:type="ocl:OperationCallExp" location="920:7-920:70" operationName="getWaypoints">
@@ -3971,7 +3971,7 @@
               </source>
               <arguments xsi:type="ocl:StringExp" location="926:18-926:21" stringSymbol="["/>
             </source>
-            <arguments xsi:type="ocl:IntegerExp" location="926:25-926:26" integerSymbol="0"/>
+            <arguments xsi:type="ocl:IntegerExp" location="926:25-926:26"/>
           </condition>
           <elseExpression xsi:type="ocl:OperationCallExp" location="928:8-928:84" operationName="withoutLeftSquareBrackets">
             <source xsi:type="ocl:OperationCallExp" location="928:8-928:56" operationName="substring">
@@ -4018,7 +4018,7 @@
               </source>
               <arguments xsi:type="ocl:StringExp" location="933:18-933:21" stringSymbol="]"/>
             </source>
-            <arguments xsi:type="ocl:IntegerExp" location="933:25-933:26" integerSymbol="0"/>
+            <arguments xsi:type="ocl:IntegerExp" location="933:25-933:26"/>
           </condition>
           <elseExpression xsi:type="ocl:OperationCallExp" location="935:8-935:73" operationName="withoutRightSquareBrackets">
             <source xsi:type="ocl:OperationCallExp" location="935:8-935:44" operationName="substring">
@@ -4060,7 +4060,7 @@
               </source>
               <arguments xsi:type="ocl:StringExp" location="940:18-940:21" stringSymbol=","/>
             </source>
-            <arguments xsi:type="ocl:IntegerExp" location="940:25-940:26" integerSymbol="0"/>
+            <arguments xsi:type="ocl:IntegerExp" location="940:25-940:26"/>
           </condition>
           <elseExpression xsi:type="ocl:OperatorCallExp" location="942:8-942:128" operationName="+">
             <source xsi:type="ocl:OperatorCallExp" location="942:8-942:62" operationName="+">

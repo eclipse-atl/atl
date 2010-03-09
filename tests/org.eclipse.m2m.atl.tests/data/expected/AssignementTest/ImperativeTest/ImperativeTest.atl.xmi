@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="Cp1252"?>
-<atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="3:1-54:2" name="ImperativeTest">
+<atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="3:1-56:2" name="ImperativeTest">
   <commentsBefore>-- @nsURI Ecore=http://www.eclipse.org/emf/2002/Ecore</commentsBefore>
   <inModels location="4:25-4:35" name="IN">
     <metamodel href="new-model#/1"/>
@@ -55,7 +55,7 @@
   </elements>
   <elements xsi:type="atl:MatchedRule" location="22:1-35:2" name="Working">
     <outPattern location="25:2-30:4">
-      <elements xsi:type="atl:SimpleOutPatternElement" location="26:3-30:4" varName="modified">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="26:3-30:4" varName="modified" variableExp="//@elements.1/@actionBlock/@statements.0/@source/@source //@elements.1/@actionBlock/@statements.1/@source/@source">
         <type xsi:type="ocl:OclModelElement" location="26:14-26:26" name="EClass">
           <model href="new-model#/5"/>
         </type>
@@ -74,7 +74,20 @@
         </bindings>
       </elements>
     </outPattern>
-    <actionBlock location="31:2-34:3"/>
+    <actionBlock location="31:2-34:3">
+      <statements xsi:type="atl:BindingStat" location="32:3-32:34" isAssignment="true">
+        <source xsi:type="ocl:NavigationOrAttributeCallExp" location="32:3-32:16" name="name">
+          <source xsi:type="ocl:VariableExp" location="32:3-32:11" referredVariable="//@elements.1/@outPattern/@elements.0"/>
+        </source>
+        <value xsi:type="ocl:OclUndefinedExp" location="32:21-32:33"/>
+      </statements>
+      <statements xsi:type="atl:BindingStat" location="33:3-33:47" isAssignment="true">
+        <source xsi:type="ocl:NavigationOrAttributeCallExp" location="33:3-33:31" name="eStructuralFeatures">
+          <source xsi:type="ocl:VariableExp" location="33:3-33:11" referredVariable="//@elements.1/@outPattern/@elements.0"/>
+        </source>
+        <value xsi:type="ocl:SequenceExp" location="33:36-33:46"/>
+      </statements>
+    </actionBlock>
     <inPattern location="23:2-24:46">
       <elements xsi:type="atl:SimpleInPatternElement" location="24:3-24:24" varName="eClass" variableExp="//@elements.1/@inPattern/@filter/@source/@source //@elements.1/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.1/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="24:12-24:24" name="EClass">
@@ -109,9 +122,9 @@
       </elements>
     </inPattern>
   </elements>
-  <elements xsi:type="atl:MatchedRule" location="46:1-54:2" name="PackagesMapping">
-    <outPattern location="49:2-53:4">
-      <elements xsi:type="atl:SimpleOutPatternElement" location="50:3-53:4" varName="copy">
+  <elements xsi:type="atl:MatchedRule" location="46:1-56:2" name="PackagesMapping">
+    <outPattern location="49:2-55:4">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="50:3-55:4" varName="copy">
         <type xsi:type="ocl:OclModelElement" location="50:10-50:24" name="EPackage">
           <model href="new-model#/9"/>
         </type>
@@ -120,15 +133,25 @@
             <source xsi:type="ocl:VariableExp" location="51:12-51:16" referredVariable="//@elements.3/@inPattern/@elements.0"/>
           </value>
         </bindings>
-        <bindings location="52:4-52:37" propertyName="eClassifiers">
-          <value xsi:type="ocl:NavigationOrAttributeCallExp" location="52:20-52:37" name="eClassifiers">
-            <source xsi:type="ocl:VariableExp" location="52:20-52:24" referredVariable="//@elements.3/@inPattern/@elements.0"/>
+        <bindings location="52:4-52:29" propertyName="nsPrefix">
+          <value xsi:type="ocl:NavigationOrAttributeCallExp" location="52:16-52:29" name="nsPrefix">
+            <source xsi:type="ocl:VariableExp" location="52:16-52:20" referredVariable="//@elements.3/@inPattern/@elements.0"/>
+          </value>
+        </bindings>
+        <bindings location="53:4-53:23" propertyName="nsURI">
+          <value xsi:type="ocl:NavigationOrAttributeCallExp" location="53:13-53:23" name="nsURI">
+            <source xsi:type="ocl:VariableExp" location="53:13-53:17" referredVariable="//@elements.3/@inPattern/@elements.0"/>
+          </value>
+        </bindings>
+        <bindings location="54:4-54:37" propertyName="eClassifiers">
+          <value xsi:type="ocl:NavigationOrAttributeCallExp" location="54:20-54:37" name="eClassifiers">
+            <source xsi:type="ocl:VariableExp" location="54:20-54:24" referredVariable="//@elements.3/@inPattern/@elements.0"/>
           </value>
         </bindings>
       </elements>
     </outPattern>
     <inPattern location="47:2-48:24">
-      <elements xsi:type="atl:SimpleInPatternElement" location="48:3-48:24" varName="pack" variableExp="//@elements.3/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.1/@value/@source">
+      <elements xsi:type="atl:SimpleInPatternElement" location="48:3-48:24" varName="pack" variableExp="//@elements.3/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.2/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.3/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="48:10-48:24" name="EPackage">
           <model href="new-model#/8"/>
         </type>

@@ -27,7 +27,7 @@
             <source xsi:type="ocl:OperationCallExp" location="11:5-11:22" operationName="size">
               <source xsi:type="ocl:VariableExp" location="11:5-11:15" referredVariable="//@elements.0/@definition/@feature/@parameters.0"/>
             </source>
-            <arguments xsi:type="ocl:IntegerExp" location="11:23-11:24" integerSymbol="0"/>
+            <arguments xsi:type="ocl:IntegerExp" location="11:23-11:24"/>
           </condition>
           <elseExpression xsi:type="ocl:OperationCallExp" location="13:8-13:56" operationName="getListAux">
             <source xsi:type="ocl:VariableExp" location="13:8-13:18">

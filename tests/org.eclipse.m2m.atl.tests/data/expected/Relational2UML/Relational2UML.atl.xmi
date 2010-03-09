@@ -349,7 +349,7 @@
                   </variable>
                   <in_ xsi:type="ocl:IfExp" location="93:6-98:8">
                     <thenExpression xsi:type="ocl:OperatorCallExp" location="95:4-95:55" operationName="-">
-                      <source xsi:type="ocl:IntegerExp" location="95:4-95:5" integerSymbol="0"/>
+                      <source xsi:type="ocl:IntegerExp" location="95:4-95:5"/>
                       <arguments xsi:type="ocl:OperationCallExp" location="95:7-95:54" operationName="toInteger">
                         <source xsi:type="ocl:IterateExp" location="95:7-95:42">
                           <source xsi:type="ocl:VariableExp" location="95:7-95:9" referredVariable="//@elements.6/@definition/@feature/@body/@in_/@in_/@in_/@thenExpression/@variable"/>

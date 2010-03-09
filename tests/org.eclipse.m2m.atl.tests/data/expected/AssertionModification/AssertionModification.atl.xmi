@@ -23,8 +23,8 @@
     <metamodel href="new-model#/0"/>
   </outModels>
   <elements xsi:type="atl:Helper" location="19:1-22:40">
-    <commentsBefore>-- @comment this helper returns the first attribute named &quot;name&quot;</commentsBefore>
-    <commentsAfter>-- @comment this helper returns the value of the first attribute named &quot;name&quot;</commentsAfter>
+    <commentsBefore>--- this helper returns the first attribute named &quot;name&quot;</commentsBefore>
+    <commentsAfter>--- this helper returns the value of the first attribute named &quot;name&quot;</commentsAfter>
     <definition location="19:8-22:39">
       <feature xsi:type="ocl:Operation" location="19:34-22:39" name="getAttr">
         <parameters location="19:42-19:55" varName="name" variableExp="//@elements.0/@definition/@feature/@body/@source/@body/@arguments.0">
@@ -67,8 +67,8 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="25:1-26:28">
-    <commentsBefore>-- @comment this helper returns the value of the first attribute named &quot;name&quot;</commentsBefore>
-    <commentsAfter>-- @comment this helper returns the set of childs for a given type</commentsAfter>
+    <commentsBefore>--- this helper returns the value of the first attribute named &quot;name&quot;</commentsBefore>
+    <commentsAfter>--- this helper returns the set of childs for a given type</commentsAfter>
     <definition location="25:8-26:27">
       <feature xsi:type="ocl:Operation" location="25:34-26:27" name="getAttrVal">
         <parameters location="25:45-25:58" varName="name" variableExp="//@elements.1/@definition/@feature/@body/@source/@arguments.0">
@@ -92,8 +92,8 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="29:1-32:60">
-    <commentsBefore>-- @comment this helper returns the set of childs for a given type</commentsBefore>
-    <commentsAfter>-- @comment this helper returns the new assertion contained by the library</commentsAfter>
+    <commentsBefore>--- this helper returns the set of childs for a given type</commentsBefore>
+    <commentsAfter>--- this helper returns the new assertion contained by the library</commentsAfter>
     <definition location="29:8-32:59">
       <feature xsi:type="ocl:Operation" location="30:7-32:59" name="getChildren">
         <parameters location="30:19-30:32" varName="type" variableExp="//@elements.2/@definition/@feature/@body/@source/@body/@arguments.0">
@@ -137,8 +137,8 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="35:1-46:3">
-    <commentsBefore>-- @comment this helper returns the new assertion contained by the library</commentsBefore>
-    <commentsAfter>-- @comment this helper is called by the helper searchInLib for the constraint is on a class</commentsAfter>
+    <commentsBefore>--- this helper returns the new assertion contained by the library</commentsBefore>
+    <commentsAfter>--- @comment this helper is called by the helper searchInLib for the constraint is on a class</commentsAfter>
     <definition location="35:8-45:7">
       <feature xsi:type="ocl:Attribute" location="35:37-45:7" name="searchInLib">
         <initExpression xsi:type="ocl:IfExp" location="36:2-45:7">
@@ -203,7 +203,7 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="49:1-66:3">
-    <commentsBefore>-- @comment this helper is called by the helper searchInLib for the constraint is on a class</commentsBefore>
+    <commentsBefore>--- @comment this helper is called by the helper searchInLib for the constraint is on a class</commentsBefore>
     <commentsAfter>-- @comment this helper is called by the helper searchInLib for the constraint is on an association</commentsAfter>
     <definition location="49:8-65:7">
       <feature xsi:type="ocl:Operation" location="49:37-65:7" name="ClassExistInLib">

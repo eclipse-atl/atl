@@ -233,7 +233,7 @@
                       <source xsi:type="ocl:VariableExp" location="45:7-45:8" referredVariable="//@elements.3/@definition/@feature/@body/@variable/@initExpression/@iterators.0"/>
                     </source>
                   </source>
-                  <arguments xsi:type="ocl:IntegerExp" location="45:34-45:35" integerSymbol="0"/>
+                  <arguments xsi:type="ocl:IntegerExp" location="45:34-45:35"/>
                 </condition>
                 <elseExpression xsi:type="ocl:VariableExp" location="47:8-47:11" referredVariable="//@elements.3/@definition/@feature/@body/@variable/@initExpression/@result"/>
               </body>
@@ -341,7 +341,7 @@
                       <source xsi:type="ocl:VariableExp" location="63:64-63:65" referredVariable="//@elements.5/@definition/@feature/@body/@variable/@initExpression/@source/@iterators.0"/>
                     </source>
                   </source>
-                  <arguments xsi:type="ocl:IntegerExp" location="63:84-63:85" integerSymbol="0"/>
+                  <arguments xsi:type="ocl:IntegerExp" location="63:84-63:85"/>
                 </body>
                 <iterators location="63:60-63:61" varName="e" variableExp="//@elements.5/@definition/@feature/@body/@variable/@initExpression/@source/@body/@source/@source/@source"/>
               </source>
@@ -702,7 +702,7 @@
               <source xsi:type="ocl:VariableExp" location="143:4-143:5" referredVariable="//@elements.10/@inPattern/@elements.0"/>
             </source>
           </source>
-          <arguments xsi:type="ocl:IntegerExp" location="143:22-143:23" integerSymbol="0"/>
+          <arguments xsi:type="ocl:IntegerExp" location="143:22-143:23"/>
         </source>
         <arguments xsi:type="ocl:OperatorCallExp" location="143:27-143:46" operationName=">">
           <source xsi:type="ocl:NavigationOrAttributeCallExp" location="143:27-143:42" name="max">

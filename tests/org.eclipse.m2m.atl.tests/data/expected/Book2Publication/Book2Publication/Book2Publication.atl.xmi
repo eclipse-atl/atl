@@ -83,7 +83,7 @@
           <iterators location="23:15-23:20" varName="pages" variableExp="//@elements.1/@definition/@feature/@body/@body/@arguments.0"/>
           <result location="23:22-23:39" varName="acc" variableExp="//@elements.1/@definition/@feature/@body/@body/@source">
             <type xsi:type="ocl:IntegerType" location="23:28-23:35"/>
-            <initExpression xsi:type="ocl:IntegerExp" location="23:38-23:39" integerSymbol="0"/>
+            <initExpression xsi:type="ocl:IntegerExp" location="23:38-23:39"/>
           </result>
         </body>
       </feature>
