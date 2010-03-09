@@ -71,7 +71,6 @@
 		<constant value="MMOF!Classifier;.allInstancesFrom(S):QJ"/>
 		<constant value="in_liste"/>
 		<constant value="liste"/>
-		<constant value="20:11-20:31"/>
 		<constant value="20:3-22:3"/>
 		<constant value="__applyListe"/>
 		<constant value="NTransientLink;"/>
@@ -341,29 +340,28 @@
 			<enditerate/>
 		</code>
 		<linenumbertable>
-			<lne id="70" begin="21" end="23"/>
-			<lne id="71" begin="19" end="24"/>
+			<lne id="70" begin="19" end="24"/>
 		</linenumbertable>
 		<localvariabletable>
 			<lve slot="1" name="68" begin="6" end="26"/>
 			<lve slot="0" name="21" begin="0" end="27"/>
 		</localvariabletable>
 	</operation>
-	<operation name="72">
+	<operation name="71">
 		<context type="7"/>
 		<parameters>
-			<parameter name="23" type="73"/>
+			<parameter name="23" type="72"/>
 		</parameters>
 		<code>
 			<load arg="23"/>
 			<push arg="68"/>
-			<call arg="74"/>
+			<call arg="73"/>
 			<store arg="32"/>
 			<load arg="23"/>
 			<push arg="69"/>
-			<call arg="75"/>
-			<store arg="76"/>
-			<load arg="76"/>
+			<call arg="74"/>
+			<store arg="75"/>
+			<load arg="75"/>
 			<dup/>
 			<getasm/>
 			<push arg="15"/>
@@ -373,35 +371,35 @@
 			<push arg="58"/>
 			<findme/>
 			<push arg="66"/>
-			<call arg="77"/>
+			<call arg="76"/>
 			<iterate/>
-			<store arg="78"/>
+			<store arg="77"/>
 			<getasm/>
-			<load arg="78"/>
+			<load arg="77"/>
+			<call arg="78"/>
 			<call arg="79"/>
-			<call arg="80"/>
 			<enditerate/>
 			<call arg="33"/>
-			<set arg="81"/>
+			<set arg="80"/>
 			<pop/>
 		</code>
 		<linenumbertable>
-			<lne id="82" begin="14" end="16"/>
-			<lne id="83" begin="17" end="17"/>
-			<lne id="84" begin="14" end="18"/>
-			<lne id="85" begin="21" end="21"/>
-			<lne id="86" begin="22" end="22"/>
-			<lne id="87" begin="21" end="23"/>
-			<lne id="88" begin="11" end="25"/>
-			<lne id="89" begin="9" end="27"/>
-			<lne id="71" begin="8" end="28"/>
+			<lne id="81" begin="14" end="16"/>
+			<lne id="82" begin="17" end="17"/>
+			<lne id="83" begin="14" end="18"/>
+			<lne id="84" begin="21" end="21"/>
+			<lne id="85" begin="22" end="22"/>
+			<lne id="86" begin="21" end="23"/>
+			<lne id="87" begin="11" end="25"/>
+			<lne id="88" begin="9" end="27"/>
+			<lne id="70" begin="8" end="28"/>
 		</linenumbertable>
 		<localvariabletable>
 			<lve slot="4" name="36" begin="20" end="24"/>
 			<lve slot="3" name="69" begin="7" end="28"/>
 			<lve slot="2" name="68" begin="3" end="28"/>
 			<lve slot="0" name="21" begin="0" end="28"/>
-			<lve slot="1" name="90" begin="0" end="28"/>
+			<lve slot="1" name="89" begin="0" end="28"/>
 		</localvariabletable>
 	</operation>
 </asm>

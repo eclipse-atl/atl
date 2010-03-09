@@ -10,6 +10,11 @@ create OUT : Relational from IN : UML;
 -- HELPERS --------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 
+
+
+
+
+-- truc
 helper context UML!Element def: hasStereotype(stereotype : String) : Boolean =
 	self.getAppliedStereotypes() -> collect(st | st.name) -> includes(stereotype);
 	
@@ -22,14 +27,21 @@ helper context UML!Type def: computeType() : Relational!Type =
 -------------------------------------------------------------------------------------------
 -- RULES ----------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
- 
+
 rule Model2Database {
 	from
 		m : UML!Model (
 				m.hasStereotype('Database')
 			)
+						using {
+	a: Real = 0;
+}
 	to
 		out : Relational!Database (
+			name <- m.name,
+			ownedSchemas <- m.packagedElement -> select(e | e.oclIsTypeOf(UML!Package) and e.hasStereotype('Schema'))
+		),
+		out1 : Relational!Database (
 			name <- m.name,
 			ownedSchemas <- m.packagedElement -> select(e | e.oclIsTypeOf(UML!Package) and e.hasStereotype('Schema'))
 		)
@@ -72,10 +84,11 @@ rule Property2Column {
 			)
 	to
 		out : Relational!Column (
-			name <- p.aggregation,
+			name <- p.name,
 			type <- p.type.computeType(),
 			isUnique <- p.isUnique,
-			isPrimaryKey <- p.getValue(p.getAppliedStereotypes().first(),'isPrimaryKey')
+--			isPrimaryKey <- p.getValue(p.getAppliedStereotypes().first(),'isPrimaryKey')
+isPrimaryKey <- p.getValue(OclUndefined,'isPrimaryKey')
 		)
 }
 

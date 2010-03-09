@@ -1,0 +1,23 @@
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML_OUT_1=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML_OUT_2=http://www.eclipse.org/uml2/2.1.0/UML
+
+module TestReferences;
+create OUT : UML_OUT_1 , OUT2 : UML_OUT_2 from IN : UML;
+
+rule model {
+	from
+		model : UML!Model
+	to 
+		container1 : UML_OUT_1!Model (
+			packagedElement <- Sequence{out1}  
+		),
+		out1 : UML_OUT_1!Class (), 
+		
+		container2 : UML_OUT_2!Model (
+			packagedElement <- Sequence{out2}
+		),
+		out2 : UML_OUT_2!Class (
+			superClass <- out1
+		)
+}

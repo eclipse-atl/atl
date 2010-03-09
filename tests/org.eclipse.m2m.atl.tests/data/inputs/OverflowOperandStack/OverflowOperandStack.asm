@@ -81,7 +81,6 @@
 		<constant value="container"/>
 		<constant value="NTransientLink;.addTargetElement(SJ):V"/>
 		<constant value="NTransientLinkSet;.addLink2(NTransientLink;B):V"/>
-		<constant value="15:15-15:24"/>
 		<constant value="15:3-15:24"/>
 		<constant value="__applyClass"/>
 		<constant value="NTransientLink;"/>
@@ -326,57 +325,56 @@
 			<enditerate/>
 		</code>
 		<linenumbertable>
-			<lne id="80" begin="21" end="23"/>
-			<lne id="81" begin="19" end="24"/>
+			<lne id="80" begin="19" end="24"/>
 		</linenumbertable>
 		<localvariabletable>
 			<lve slot="1" name="75" begin="6" end="26"/>
 			<lve slot="0" name="17" begin="0" end="27"/>
 		</localvariabletable>
 	</operation>
-	<operation name="82">
+	<operation name="81">
 		<context type="6"/>
 		<parameters>
-			<parameter name="19" type="83"/>
+			<parameter name="19" type="82"/>
 		</parameters>
 		<code>
 			<load arg="19"/>
 			<push arg="75"/>
-			<call arg="84"/>
+			<call arg="83"/>
 			<store arg="29"/>
 			<load arg="19"/>
 			<push arg="77"/>
-			<call arg="85"/>
-			<store arg="86"/>
-			<load arg="86"/>
+			<call arg="84"/>
+			<store arg="85"/>
+			<load arg="85"/>
 			<pop/>
 			<pushi arg="19"/>
-			<pushi arg="87"/>
+			<pushi arg="86"/>
 			<call arg="52"/>
 			<iterate/>
-			<store arg="88"/>
-			<load arg="88"/>
-			<push arg="89"/>
-			<pcall arg="90"/>
+			<store arg="87"/>
+			<load arg="87"/>
+			<push arg="88"/>
+			<pcall arg="89"/>
 			<enditerate/>
 		</code>
 		<linenumbertable>
-			<lne id="81" begin="8" end="9"/>
-			<lne id="91" begin="10" end="10"/>
-			<lne id="92" begin="11" end="11"/>
-			<lne id="93" begin="10" end="12"/>
-			<lne id="94" begin="15" end="15"/>
-			<lne id="95" begin="16" end="16"/>
-			<lne id="96" begin="15" end="17"/>
+			<lne id="80" begin="8" end="9"/>
+			<lne id="90" begin="10" end="10"/>
+			<lne id="91" begin="11" end="11"/>
+			<lne id="92" begin="10" end="12"/>
+			<lne id="93" begin="15" end="15"/>
+			<lne id="94" begin="16" end="16"/>
+			<lne id="95" begin="15" end="17"/>
+			<lne id="96" begin="10" end="18"/>
 			<lne id="97" begin="10" end="18"/>
-			<lne id="98" begin="10" end="18"/>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="4" name="99" begin="14" end="17"/>
+			<lve slot="4" name="98" begin="14" end="17"/>
 			<lve slot="3" name="77" begin="7" end="18"/>
 			<lve slot="2" name="75" begin="3" end="18"/>
 			<lve slot="0" name="17" begin="0" end="18"/>
-			<lve slot="1" name="100" begin="0" end="18"/>
+			<lve slot="1" name="99" begin="0" end="18"/>
 		</localvariabletable>
 	</operation>
 </asm>

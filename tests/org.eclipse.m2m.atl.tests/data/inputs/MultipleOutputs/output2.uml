@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML">
+  <uml:Class xmi:id="_f6a2QCtZEd-ev_6YkpZeIg" name="Class1_output2_a"/>
+  <uml:Class xmi:id="_f6a2QStZEd-ev_6YkpZeIg" name="Class1_output2_b"/>
+  <uml:Class xmi:id="_f6a2QitZEd-ev_6YkpZeIg" name="Class2_output2_a"/>
+  <uml:Class xmi:id="_f6a2QytZEd-ev_6YkpZeIg" name="Class2_output2_b"/>
+</xmi:XMI>

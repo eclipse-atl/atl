@@ -1,5 +1,5 @@
 -- @atlcompiler atl2006
--- $Id: UML2Copy.atl,v 1.1 2007/11/30 13:39:33 wpiers Exp $
+-- $Id: UML2Copy.atl,v 1.2 2010/03/09 09:55:37 wpiers Exp $
 -- Copies UML2 models
 module UML2Copy;
 
@@ -14,17 +14,7 @@ helper def : inElements : Set(UML2!"ecore::EObject") = UML2!"ecore::EObject"->al
 
 rule DurationInterval {
     from s : UML2!"uml::DurationInterval" (thisModule.inElements->includes(s))
-    to t : UML2!"uml::DurationInterval" mapsTo s (
-        name <- s.name,
-        visibility <- s.visibility,
-        eAnnotations <- s.eAnnotations,
-        ownedComment <- s.ownedComment,
-        clientDependency <- s.clientDependency,
-        nameExpression <- s.nameExpression,
-        templateParameter <- s.templateParameter,
-        type <- s.type,
-        min <- s.min,
-        max <- s.max)
+    to t : UML2!"uml::DurationInterval" mapsTo s
 }
 
 rule Deployment {

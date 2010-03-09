@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
 <stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant2Maven/Ant2Maven.atl"/>
-<stringAttribute key="ATL VM" value="Regular VM"/>
+<stringAttribute key="ATL VM" value="EMF-specific VM"/>
+<stringAttribute key="ATL_COMPILER" value="atl2006"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
+<booleanAttribute key="IS_REFINING" value="false"/>
 <mapAttribute key="Input">
 <mapEntry key="IN" value="Ant"/>
 </mapAttribute>
@@ -21,15 +23,24 @@
 <mapEntry key="Ant" value="METAMODELINPUT"/>
 <mapEntry key="MavenProject" value="METAMODELOUTPUT"/>
 </mapAttribute>
+<mapAttribute key="Options">
+<mapEntry key="supportUML2Stereotypes" value="false"/>
+<mapEntry key="printExecutionTime" value="false"/>
+<mapEntry key="OPTION_CLEAR" value="false"/>
+<mapEntry key="OPTION_CONTENT_TYPE" value="false"/>
+<mapEntry key="OPTION_DERIVED" value="true"/>
+<mapEntry key="allowInterModelReferences" value="false"/>
+<mapEntry key="step" value="false"/>
+</mapAttribute>
 <mapAttribute key="Output">
-<mapEntry key="OUTProject" value="MavenProject"/>
 <mapEntry key="OUTMaven" value="MavenMaven"/>
+<mapEntry key="OUTProject" value="MavenProject"/>
 </mapAttribute>
 <mapAttribute key="Path">
 <mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant2Maven/buildAnt.xmi"/>
 <mapEntry key="MavenMaven" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/MavenMaven.ecore"/>
-<mapEntry key="OUTMaven" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant2Maven/mavenFile.xmi"/>
 <mapEntry key="OUTProject" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant2Maven/projectFile.xmi"/>
+<mapEntry key="OUTMaven" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant2Maven/mavenFile.xmi"/>
 <mapEntry key="Ant" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/Ant.ecore"/>
 <mapEntry key="MavenProject" value="/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/MavenProject.ecore"/>
 </mapAttribute>

@@ -15,23 +15,23 @@ module AssertionModification; -- Module Template
 create OUT : UML2Target from IN : UML2, Lib : XML;
 
 
--- @comment this helper returns the first attribute named "name"
+--- this helper returns the first attribute named "name"
 helper context XML!Element def : getAttr(name : String) : XML!Attribute =
   self.children->
     select (c|c.oclIsTypeOf(XML!Attribute))->
       select(c|c.name = name)->first();
 
--- @comment this helper returns the value of the first attribute named "name"
+--- this helper returns the value of the first attribute named "name"
 helper context XML!Element def : getAttrVal(name : String) : String =
   self.getAttr(name).value;
 
--- @comment this helper returns the set of childs for a given type
+--- this helper returns the set of childs for a given type
 helper context XML!Element
 def : getChildren(type : OclAny, name : String) : Sequence(XML!Node) =
   self.children->
     select(e|e.oclIsKindOf(type))->select(e|e.name = name);
 
--- @comment this helper returns the new assertion contained by the library
+--- this helper returns the new assertion contained by the library
 helper context UML2!Constraint def: searchInLib : String =
 	if self.owner.oclIsTypeOf(UML2!Class)
 	then self.ClassExistInLib()
@@ -45,7 +45,7 @@ helper context UML2!Constraint def: searchInLib : String =
 	endif
 	;
 
--- @comment this helper is called by the helper searchInLib for the constraint is on a class
+--- @comment this helper is called by the helper searchInLib for the constraint is on a class
 helper context UML2!Constraint def: ClassExistInLib() : String =
 	if XML!Element.allInstances()->select(c|c.name='class')->
 		select(c|c.getAttr('package').value = self.owner.package.name 

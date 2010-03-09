@@ -29,7 +29,7 @@
 <mapEntry key="ME" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/TraceSamples-Metrics.xmi"/>
 <mapEntry key="IN" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/Order.uml"/>
 <mapEntry key="Metrics" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/Metrics.ecore"/>
-<mapEntry key="UML2" value="uri:http://www.eclipse.org/uml2/2.1.0/UML"/>
+<mapEntry key="UML2" value="uri:http://www.eclipse.org/uml2/3.0.0/UML"/>
 <mapEntry key="OUT" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/PerformanceAnnotatedStateChart-UML.uml"/>
 <mapEntry key="PRO" value="/org.eclipse.m2m.atl.tests/data/inputs/SpreadSheetML2PerformanceUMLStateChart/UMLStateChart2PerformanceAnnotatedUMLStateChart/Performance.profile.uml"/>
 </mapAttribute>
