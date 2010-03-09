@@ -92,14 +92,14 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		} catch (SAXException e) {
 			fail("Error parsing launch configuration " + buildURI, e); //$NON-NLS-1$
 		}
-
+		
+		String outName = ""; //$NON-NLS-1$
 		if (recompileBeforeLaunch) {
 			/*
 			 * COMPILER LAUNCH
 			 */
 			URL atlUrl = launchParser.getAtlUrl();
 			String atlFilePath = atlUrl.getFile();
-			String outName = ""; //$NON-NLS-1$
 			InputStream is = null;
 
 			try {
@@ -191,6 +191,11 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		}
 		totalTime += executionTime;
 		executionTotalTime += pureExecutionTime;
+		
+		if (recompileBeforeLaunch && !applyCompilation) {
+			File tempAsm = new File(outName);
+			tempAsm.delete();
+		}
 	}
 
 	/**
