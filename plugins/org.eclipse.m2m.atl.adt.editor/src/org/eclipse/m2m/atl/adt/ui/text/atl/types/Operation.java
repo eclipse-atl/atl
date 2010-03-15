@@ -278,7 +278,8 @@ public class Operation extends Feature {
 	@SuppressWarnings("unchecked")
 	private static Operation createFromRule(UnitType unit, EObject rule, OclAnyType context) {
 		String ruleName = (String)AtlTypesProcessor.eGet(rule, "name"); //$NON-NLS-1$
-		if (ruleName != null) {
+		boolean isAbstract = Boolean.valueOf(AtlTypesProcessor.eGet(rule, "isAbstract").toString()).booleanValue(); //$NON-NLS-1$
+		if (!isAbstract && ruleName != null) {
 			Map<String, OclAnyType> parameters = new HashMap<String, OclAnyType>();
 			EList<EObject> parameterObjects = (EList<EObject>)AtlTypesProcessor.eGet(rule, "parameters"); //$NON-NLS-1$
 			if (parameterObjects != null) {
