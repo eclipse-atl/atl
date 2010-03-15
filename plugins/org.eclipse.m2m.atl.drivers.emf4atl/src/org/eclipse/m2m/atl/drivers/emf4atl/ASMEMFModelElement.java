@@ -494,9 +494,11 @@ public class ASMEMFModelElement extends ASMModelElement {
 						}
 					}
 				} else {
-					Object val = asm2EMF(frame, value, name, feature);
-					l.add(val);
-					checkContainment(feature, val);
+					if (!isNotAssignable(feature, value)) {
+						Object val = asm2EMF(frame, value, name, feature);
+						l.add(val);
+						checkContainment(feature, val);
+					}
 				}
 			} else {
 				if (isNotAssignable(feature, value)) {
