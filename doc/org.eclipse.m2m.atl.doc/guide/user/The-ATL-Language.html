@@ -66,7 +66,7 @@
 				<i>oclIsUndefined()</i> returns a boolean value stating whether self is undefined;
 			</li>
 			<li>
-				<i>oclIsKindOf(t : oclType)</i> returns a boolean value stating whether self is an either an instance of t or of one of its subtypes;
+				<i>oclIsKindOf(t : oclType)</i> returns a boolean value stating whether self is either an instance of t or of one of its subtypes;
 			</li>
 			<li>
 				<i>oclIsTypeOf(t : oclType)</i> returns a boolean value stating whether self is an instance of t.
@@ -798,7 +798,7 @@ endif
 			<i>iterate()</i> expression corresponds to the value of the accumulator variable once the last iteration has been performed.
 			An iterative expression is defined with the following syntax:
 		</p>
-		<pre>source->iterate(iterator, variable_declaration = init_exp |
+		<pre>source->iterate(iterator; variable_declaration = init_exp |
 	body
 )
 </pre>
@@ -875,9 +875,9 @@ endif
 					<li>evaluates to <code>Set{1, 2, 3}</code></li>
 				</ul>
 			</li>
-			<li>collecting the names of all MOF classes: <code>MOF!Class.allInstances()->collect(e | e.name)</code>
+			<li>collecting the names of all MOF classes: <code>MOF!Class.allInstances()->collect(e | e.name)</code></li>
+			<li>checking whether all the numbers in a sequence are greater than 2: <code>Sequence{12, 13, 12}->forAll(i | i > 2)</code>
 				<ul>
-					<li>checking whether all the numbers in a sequence are greater than 2: <code>Sequence{12, 13, 12}->forAll(i | i > 2)</code></li>
 					<li>evalutes to <code>true</code></li>
 				</ul>
 			</li>
