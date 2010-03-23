@@ -82,7 +82,8 @@ public class Feature implements Comparable<Feature> {
 		this.lower = lower;
 		this.upper = upper;
 		this.container = container;
-		this.many = upper > 1 || upper == -1;
+//		this.many = upper > 1 || upper == -1;
+		this.many = false; // the complete type is already defined by the helper declaration
 		this.declaration = declaration;
 		this.unit = unit;
 		if (isMany()) {
