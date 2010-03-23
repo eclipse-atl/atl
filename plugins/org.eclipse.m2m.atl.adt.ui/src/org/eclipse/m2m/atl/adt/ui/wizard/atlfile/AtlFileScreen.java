@@ -137,12 +137,12 @@ public class AtlFileScreen extends WizardPage {
 
 		// Input / Output models
 		data = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
-		inputList = createSubControl(
+		inputList = createModelControl(
 				container,
 				Messages.getString("AtlFileScreen.InputModels"), //$NON-NLS-1$ 
 				new AtlModelSelection(container.getShell(), Messages
 						.getString("AtlFileScreen.InputModelCreation"), "IN", input, output, paths), data, input); //$NON-NLS-1$ //$NON-NLS-2$ 
-		outputList = createSubControl(
+		outputList = createModelControl(
 				container,
 				Messages.getString("AtlFileScreen.OutputModels"),//$NON-NLS-1$ 
 				new AtlModelSelection(container.getShell(), Messages
@@ -152,9 +152,8 @@ public class AtlFileScreen extends WizardPage {
 		// Libraries
 		data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
 		data.heightHint = 40;
-		libList = createSubControl(container, Messages.getString("AtlFileScreen.ATLLibrary"),//$NON-NLS-1$
-				new AtlLibrarySelection(container.getShell(), Messages
-						.getString("AtlFileScreen.ATLLibraryCreation"), libraries), data, libraries); //$NON-NLS-1$ 
+		libList = createLibControl(container, new AtlLibrarySelection(container.getShell(), Messages
+				.getString("AtlFileScreen.ATLLibraryCreation"), libraries), data); //$NON-NLS-1$ 
 
 		addSeparator(container);
 
@@ -202,7 +201,7 @@ public class AtlFileScreen extends WizardPage {
 		separator.setLayoutData(data);
 	}
 
-	private List createSubControl(final Composite parent, final String entryLabel,
+	private List createModelControl(final Composite parent, final String entryLabel,
 			final AbstractAtlSelection dialog, GridData listLayoutData, final Map<String, String> dataMap) {
 		final Label typeLabel = new Label(parent, SWT.NONE);
 		GridData data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
@@ -239,9 +238,15 @@ public class AtlFileScreen extends WizardPage {
 			public void widgetSelected(SelectionEvent evt) {
 				dialog.create();
 				if (dialog.open() == Dialog.OK) {
-					addResult(dataMap, dialog.getResult());
-					updateLists();
+					Object[] result = dialog.getResult();
+					if (result.length == 3) {
+						paths.put(result[1].toString(), result[2].toString());
+						dataMap.put(result[0].toString(), result[1].toString());
+					} else if (result.length == 2) {
+						dataMap.put(result[0].toString(), result[1].toString());
+					}
 				}
+				updateLists();
 			}
 		});
 
@@ -257,7 +262,96 @@ public class AtlFileScreen extends WizardPage {
 				int[] indices = list.getSelectionIndices();
 				for (int i = 0; i < indices.length; i++) {
 					int j = indices[i];
-					dataMap.remove(getEntryNameFromItem(list.getItem(j)));
+					Object key = getEntryNameFromItem(list.getItem(j));
+					paths.remove(dataMap.get(key));
+					dataMap.remove(key);
+				}
+				updateLists();
+				removeIn.setEnabled(list.getSelection().length > 0);
+			}
+		});
+
+		list.addSelectionListener(new SelectionAdapter() {
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				removeIn.setEnabled(list.getSelection().length > 0);
+			}
+		});
+
+		comboType.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				boolean hasModels = comboType.getText().equals(TYPE_MODULE)
+						|| comboType.getText().equals(TYPE_REFINING_MODULE);
+				typeLabel.setEnabled(hasModels);
+				list.setEnabled(hasModels);
+				addIn.setEnabled(hasModels);
+				removeIn.setEnabled(hasModels && list.getSelection().length > 0);
+				checkValid();
+			}
+		});
+		return list;
+	}
+
+	private List createLibControl(final Composite parent, final AbstractAtlSelection dialog,
+			GridData listLayoutData) {
+		final Label typeLabel = new Label(parent, SWT.NONE);
+		GridData data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+		data.verticalIndent = 5;
+		typeLabel.setLayoutData(data);
+		typeLabel.setText(Messages.getString("AtlFileScreen.ATLLibrary")); //$NON-NLS-1$
+
+		final List list = new List(parent, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
+		listLayoutData.verticalIndent = 5;
+		list.setLayoutData(listLayoutData);
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.verticalSpacing = 15;
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		composite.setLayout(layout);
+		data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+		data.verticalIndent = 5;
+		composite.setLayoutData(data);
+
+		final Button addIn = createButton(composite, Messages.getString("AtlFileScreen.Add")); //$NON-NLS-1$
+		final Button removeIn = createButton(composite, Messages.getString("AtlFileScreen.Remove")); //$NON-NLS-1$
+
+		removeIn.setEnabled(false);
+
+		addIn.addSelectionListener(new SelectionAdapter() {
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent evt) {
+				dialog.create();
+				if (dialog.open() == Dialog.OK) {
+					libraries.put(dialog.getResult().toString(), ""); //$NON-NLS-1$
+					updateLists();
+				}
+			}
+		});
+
+		removeIn.addSelectionListener(new SelectionAdapter() {
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent evt) {
+				int[] indices = list.getSelectionIndices();
+				for (int i = 0; i < indices.length; i++) {
+					int j = indices[i];
+					libraries.remove(getEntryNameFromItem(list.getItem(j)));
 				}
 				updateLists();
 				removeIn.setEnabled(list.getSelection().length > 0);
@@ -334,21 +428,6 @@ public class AtlFileScreen extends WizardPage {
 		return button;
 	}
 
-	private void addResult(Map<String, String> dataMap, Object[] result) {
-		switch (result.length) {
-			case 1: // library
-				dataMap.put(result[0].toString(), ""); //$NON-NLS-1$
-				return;
-			case 3: // model, with metamodel location
-				paths.put(result[1].toString(), result[2].toString());
-			case 2: // model
-				dataMap.put(result[0].toString(), result[1].toString());
-				return;
-			default:
-				return;
-		}
-	}
-
 	/**
 	 * Initialize the page from previous informations, if no module name has been specified.
 	 * 
@@ -369,7 +448,7 @@ public class AtlFileScreen extends WizardPage {
 		setErrorMessage(errorMessage);
 		return errorMessage == null;
 	}
-	
+
 	private boolean checkModelsConsistancy() {
 		if (comboType.getText().equals(TYPE_MODULE) || comboType.getText().equals(TYPE_REFINING_MODULE)) {
 			if (input.isEmpty()) {
