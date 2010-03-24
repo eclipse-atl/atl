@@ -10,7 +10,7 @@
  *    Obeo - bag implementation
  *    Obeo - metamodel method support
  *    
- * $Id: ASMOperation.java,v 1.34 2010/03/05 15:42:22 wpiers Exp $
+ * $Id: ASMOperation.java,v 1.35 2010/03/24 09:17:03 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm;
 
@@ -31,6 +31,7 @@ import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.HasFields;
+import org.eclipse.m2m.atl.engine.emfvm.lib.OclSimpleType;
 import org.eclipse.m2m.atl.engine.emfvm.lib.OclType;
 import org.eclipse.m2m.atl.engine.emfvm.lib.OclUndefined;
 import org.eclipse.m2m.atl.engine.emfvm.lib.Operation;
@@ -482,6 +483,8 @@ public class ASMOperation extends Operation {
 							stack[fp++] = execEnv.getHelperValue(frame, type, s, propName);
 						} else if (s instanceof HasFields) {
 							stack[fp++] = ((HasFields)s).get(frame, propName);
+						} else if (s instanceof OclSimpleType && propName.equals("name")) { //$NON-NLS-1$
+							stack[fp++] = ((OclSimpleType)s).getName();
 						} else {
 							stack[fp++] = execEnv.getModelAdapter().get(frame, s, propName);
 						}

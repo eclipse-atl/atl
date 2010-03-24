@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,6 +33,8 @@ public class TransientLinkSet {
 	private Map<String, List<TransientLink>> linksByRule = new HashMap<String, List<TransientLink>>();
 
 	private Map<Object, TransientLink> linksBySourceElement = new HashMap<Object, TransientLink>();
+
+	private Map<Object, TransientLink> linksByTargetElement = new HashMap<Object, TransientLink>();
 
 	private Map<String, Map<Object, TransientLink>> linksBySourceElementByRule = new HashMap<String, Map<Object, TransientLink>>();
 
@@ -87,7 +90,16 @@ public class TransientLinkSet {
 			linksBySourceElement.put(se, tl);
 		}
 
-		// TODO: links by target element?
+		for (Iterator<Object> i = tl.getTargetElements().values().iterator(); i.hasNext();) {
+			Object o = i.next();
+			if (o instanceof Collection<?>) {
+				for (Iterator<?> j = ((Collection<?>)o).iterator(); j.hasNext();) {
+					linksByTargetElement.put(j.next(), tl);
+				}
+			} else {
+				linksByTargetElement.put(o, tl);
+			}
+		}
 	}
 
 	/**
@@ -114,6 +126,18 @@ public class TransientLinkSet {
 	 */
 	public TransientLink getLinkBySourceElement(Object sourceElement) {
 		TransientLink ret = linksBySourceElement.get(sourceElement);
+		return ret;
+	}
+
+	/**
+	 * Retrieve a link by the given source element.
+	 * 
+	 * @param sourceElement
+	 *            the source element
+	 * @return the link
+	 */
+	public TransientLink getLinkByTargetElement(Object sourceElement) {
+		TransientLink ret = linksByTargetElement.get(sourceElement);
 		return ret;
 	}
 
