@@ -361,6 +361,39 @@ public class EMFModelAdapter implements IModelAdapter {
 						}
 					}
 				});
+		registerOperation(operationsByName, new Operation(3, "refInvokeOperation") { //$NON-NLS-1$ 
+			@Override
+			// TODO: should only exist on EObject
+			public Object exec(AbstractStackFrame frame) {
+				Object[] localVars = frame.getLocalVars();
+				// verify the parameters
+				if (localVars[0] instanceof EObject
+						&& localVars[1] instanceof String
+						&& localVars[2] instanceof ArrayList<?>) {
+					EObject eo = (EObject)localVars[0];
+					String name = (String)localVars[1];
+					ArrayList<?> parameters = (ArrayList<?>)localVars[2];
+					Method method = null;
+					// find the operation if it exists
+					for (Method m : eo.getClass().getMethods()) {
+						if (m.getName().equals(name)) {
+							method = m;
+							break;
+						}
+					}
+					if (method == null) {
+						throw new VMException(frame, Messages
+								.getString("EMFModelAdapter.OPERATIONNOTFOUND", name, eo.eClass().getName())); //$NON-NLS-1$ 
+
+					} else {
+						return invoke(method, eo, parameters.toArray());
+					}
+				} else {
+					throw new VMException(frame, Messages
+							.getString("EMFModelAdapter.REFINVOKEOPERATION")); //$NON-NLS-1$ 
+				}
+			}
+		});
 		// EClass
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(EcorePackage.eINSTANCE.getEClass(), operationsByName);
