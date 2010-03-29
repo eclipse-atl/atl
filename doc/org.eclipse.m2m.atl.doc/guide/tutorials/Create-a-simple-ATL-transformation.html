@@ -198,38 +198,49 @@
 		</p>
 		<p>Now we have to make the links between the family and the members. In this purpose, you have to create children of the Family of the type 
 			<b>EReference</b>. Name these references "father", "mother", "sons" and "daughters". They will have the EType 
-			<b>Member</b>. About the multiplicity, we have on father and mother for one family (so upper and lower bounds set to 1), but we can have as many sons and daughters as we want, even 0 (so lower bound set to 0, and upper bound set to -1, which means *).
+			<b>Member</b>. About the multiplicity, we have on father and mother for one family (so upper and lower bounds set to 1), but we can have as many sons and daughters as we want, even 0 (so lower bound set to 0, and upper bound set to -1, which means *). And at last, put their 
+			<i>Containment</i> property to 
+			<b>true</b> so that they can contain members.
 		</p>
 		<p>Once these attributes are created and configured, we do the same for the Member class. It also needs references towards the Family class. Just add 4 EReferences to the Member class: "familyFather", "familyMother", "familySon" and "familyDaughter" with EType 
-			<b>Family</b>. This time, each reference should have its multiplicity set to 0..1 (it is by default), because a member is either a father, or a mother, or a son, or a daughter, so the reference that is defined for a member shows its role in the family.
+			<b>Family</b>. This time, each reference should have its multiplicity set to 0..1 (it is by default), because a member is either a father, or a mother, or a son, or a daughter, so the reference that is defined for a member shows its role in the family. Then, in order to tell which member refer to which family member, set their EOpposite field to their reference in the Family class (for example, 
+			<b>familyFather</b> refers to the 
+			<b>father</b> reference of the Family class).
 		</p>
 		<p>
 			<a href="src/Families.ecore" title="src/Families.ecore">Families.ecore</a> 
 		</p>
-		<pre>&lt;?xml version="1.0" encoding="UTF-8"?>
-&lt;ecore:EPackage xmi:version="2.0"
-		xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="Families">
-	&lt;eClassifiers xsi:type="ecore:EClass" name="Family">
-		&lt;eStructuralFeatures xsi:type="ecore:EAttribute" name="lastName" lowerBound="1"
-				eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-		&lt;eStructuralFeatures xsi:type="ecore:EReference" name="father" lowerBound="1"
-				eType="#//Member"/>
-		&lt;eStructuralFeatures xsi:type="ecore:EReference" name="mother" lowerBound="1"
-				eType="#//Member"/>
-		&lt;eStructuralFeatures xsi:type="ecore:EReference" name="sons" upperBound="-1" eType="#//Member"/>
-		&lt;eStructuralFeatures xsi:type="ecore:EReference" name="daughters" upperBound="-1"
-				eType="#//Member"/>
-	&lt;/eClassifiers>
-	&lt;eClassifiers xsi:type="ecore:EClass" name="Member">
-		&lt;eStructuralFeatures xsi:type="ecore:EAttribute" name="firstName" lowerBound="1"
-				eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-		&lt;eStructuralFeatures xsi:type="ecore:EReference" name="familyFather" eType="#//Family"/>
-		&lt;eStructuralFeatures xsi:type="ecore:EReference" name="familyMother" eType="#//Family"/>
-		&lt;eStructuralFeatures xsi:type="ecore:EReference" name="familySon" eType="#//Family"/>
-		&lt;eStructuralFeatures xsi:type="ecore:EReference" name="familyDaughter" eType="#//Family"/>
-	&lt;/eClassifiers>
-&lt;/ecore:EPackage>
+		<pre>&lt;?xml version="1.0" encoding="ISO-8859-1"?>
+&lt;xmi:XMI xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore">
+  &lt;ecore:EPackage name="Families">
+    &lt;eClassifiers xsi:type="ecore:EClass" name="Family">
+      &lt;eStructuralFeatures xsi:type="ecore:EAttribute" name="lastName" ordered="false"
+          unique="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      &lt;eStructuralFeatures xsi:type="ecore:EReference" name="father" ordered="false"
+          lowerBound="1" eType="#/0/Member" containment="true" eOpposite="#/0/Member/familyFather"/>
+      &lt;eStructuralFeatures xsi:type="ecore:EReference" name="mother" ordered="false"
+          lowerBound="1" eType="#/0/Member" containment="true" eOpposite="#/0/Member/familyMother"/>
+      &lt;eStructuralFeatures xsi:type="ecore:EReference" name="sons" ordered="false"
+          upperBound="-1" eType="#/0/Member" containment="true" eOpposite="#/0/Member/familySon"/>
+      &lt;eStructuralFeatures xsi:type="ecore:EReference" name="daughters" ordered="false"
+          upperBound="-1" eType="#/0/Member" containment="true" eOpposite="#/0/Member/familyDaughter"/>
+    &lt;/eClassifiers>
+    &lt;eClassifiers xsi:type="ecore:EClass" name="Member">
+      &lt;eStructuralFeatures xsi:type="ecore:EAttribute" name="firstName" ordered="false"
+          unique="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      &lt;eStructuralFeatures xsi:type="ecore:EReference" name="familyFather" ordered="false"
+          eType="#/0/Family" eOpposite="#/0/Family/father"/>
+      &lt;eStructuralFeatures xsi:type="ecore:EReference" name="familyMother" ordered="false"
+          eType="#/0/Family" eOpposite="#/0/Family/mother"/>
+      &lt;eStructuralFeatures xsi:type="ecore:EReference" name="familySon" ordered="false"
+          eType="#/0/Family" eOpposite="#/0/Family/sons"/>
+      &lt;eStructuralFeatures xsi:type="ecore:EReference" name="familyDaughter" ordered="false"
+          eType="#/0/Family" eOpposite="#/0/Family/daughters"/>
+    &lt;/eClassifiers>
+  &lt;/ecore:EPackage>
+&lt;/xmi:XMI>
 </pre>
 		<p>
 			<img border="0" src="images/FamiliesEcore_step5.jpg"/>
@@ -246,17 +257,19 @@
 		<p>
 			<a href="src/Persons.ecore" title="src/Persons.ecore">Persons.ecore</a> 
 		</p>
-		<pre>&lt;?xml version="1.0" encoding="UTF-8"?>
-&lt;ecore:EPackage xmi:version="2.0"
-		xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="Persons">
-	&lt;eClassifiers xsi:type="ecore:EClass" name="Person">
-		&lt;eStructuralFeatures xsi:type="ecore:EAttribute" name="fullName" lowerBound="1"
-				eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-	&lt;/eClassifiers>
-	&lt;eClassifiers xsi:type="ecore:EClass" name="Male" eSuperTypes="#//Person"/>
-	&lt;eClassifiers xsi:type="ecore:EClass" name="Female" eSuperTypes="#//Person"/>
-&lt;/ecore:EPackage>
+		<pre>&lt;?xml version="1.0" encoding="ISO-8859-1"?>
+&lt;xmi:XMI xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore">
+  &lt;ecore:EPackage name="Persons">
+    &lt;eClassifiers xsi:type="ecore:EClass" name="Person" abstract="true">
+      &lt;eStructuralFeatures xsi:type="ecore:EAttribute" name="fullName" ordered="false"
+          unique="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    &lt;/eClassifiers>
+    &lt;eClassifiers xsi:type="ecore:EClass" name="Male" eSuperTypes="#/0/Person"/>
+    &lt;eClassifiers xsi:type="ecore:EClass" name="Female" eSuperTypes="#/0/Person"/>
+  &lt;/ecore:EPackage>
+&lt;/xmi:XMI>
 </pre>
 		<p>
 			<img border="0" src="images/PersonsEcore.jpg"/>

@@ -52,8 +52,8 @@
 			<i>self</i>.
 		</p>
 		<p>The ATL implementation provides an additional operation that enables to get all the instances of a given type that belong to a given metamodel. Thus, the 
-			<i>allInstancesFrom(metamodel : String)</i> operation returns a set containing the instances of type self that are defined within the model namely identified by 
-			<i>metamodel</i>.
+			<i>allInstancesFrom(model : String)</i> operation returns a set containing the instances of type self that are defined within the model namely identified by 
+			<i>model</i>.
 		</p>
 		<h3 id="OclAny_operations">OclAny operations</h3>
 		<p>This section describes a set of operations that are common to all existing data types. The syntax used to call an operation from a variable in ATL follows the classical dot notation:</p>
@@ -790,7 +790,7 @@ endif
 </pre>
 		<p>The ATL language introduces another constraint compared to the OCL specification. The specification indeed allows declaring multiple iterators in the scope of the 
 			<i>exists()</i> and the 
-			<i>forAll()</i> iterative expressions. This feature is not supported by the current ATL implementation, in which the number of iterator is limited to one, whatever the considered iterative expression.
+			<i>forAll()</i> iterative expressions.
 		</p>
 		<p>Besides these predefined iterative operations, OCL specifies a more generic collection iterator, named 
 			<i>iterate()</i>. This iterative expression has an iterator, an accumulator and a body. The accumulator corresponds to an initialized variable declaration. The body of an 
@@ -2157,7 +2157,7 @@ entrypoint rule Metamodel() {
 		<p>This section provides the list of the ATL reserved keywords. These keywords cannot be used to name variables in any context of an ATL unit (either a module, a query or a library). It is possible to distinguish three kinds of keywords: the constant keywords, the language keywords and the type keywords:</p>
 		<ul>
 			<li>Constant keywords: true, false;</li>
-			<li>Type keywords: Bag, Set, OrderedSet, Sequence, Tuple, Integer, Real, Boolean, String, TupleType;</li>
+			<li>Type keywords: Bag, Set, OrderedSet, Sequence, Tuple, Integer, Real, Boolean, String, TupleType, Map;</li>
 			<li>Language keywords: not, and, or, xor, implies, module, create, from, uses, helper, def, context, rule, using, derived, to, mapsTo, distinct, foreach, in, do, if, then, else, endif, let, library, query, for, div, refining, entrypoint.</li>
 		</ul>
 		<p>Note that the use of the string "main", which does not belong to the set of language keywords, is restricted. "main" cannot be used to identify (e.g. to name) neither a called rule, nor a helper or an attribute that is defined in the context of the ATL module.</p>
