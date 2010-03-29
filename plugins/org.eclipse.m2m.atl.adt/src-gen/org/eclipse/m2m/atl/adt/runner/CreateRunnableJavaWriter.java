@@ -14,7 +14,7 @@ public class CreateRunnableJavaWriter
   }
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
-  protected final String TEXT_1 = "/*******************************************************************************" + NL + " * Copyright (c) 2009 Obeo." + NL + " * All rights reserved. This program and the accompanying materials" + NL + " * are made available under the terms of the Eclipse Public License v1.0" + NL + " * which accompanies this distribution, and is available at" + NL + " * http://www.eclipse.org/legal/epl-v10.html" + NL + " * " + NL + " * Contributors:" + NL + " *     Obeo - initial API and implementation" + NL + " *******************************************************************************/" + NL + "package ";
+  protected final String TEXT_1 = "/*******************************************************************************" + NL + " * Copyright (c) 2010 Obeo." + NL + " * All rights reserved. This program and the accompanying materials" + NL + " * are made available under the terms of the Eclipse Public License v1.0" + NL + " * which accompanies this distribution, and is available at" + NL + " * http://www.eclipse.org/legal/epl-v10.html" + NL + " * " + NL + " * Contributors:" + NL + " *     Obeo - initial API and implementation" + NL + " *******************************************************************************/" + NL + "package ";
   protected final String TEXT_2 = ";" + NL + "" + NL + "import java.io.IOException;" + NL + "import java.io.InputStream;" + NL + "import java.net.URL;" + NL + "import java.util.HashMap;" + NL + "import java.util.Map;" + NL + "import java.util.Properties;" + NL + "import java.util.Map.Entry;" + NL + "" + NL + "import org.eclipse.core.runtime.FileLocator;" + NL + "import org.eclipse.core.runtime.IProgressMonitor;" + NL + "import org.eclipse.core.runtime.NullProgressMonitor;" + NL + "import org.eclipse.core.runtime.Path;" + NL + "import org.eclipse.core.runtime.Platform;";
   protected final String TEXT_3 = NL + "import org.eclipse.emf.ecore.EPackage;";
   protected final String TEXT_4 = NL + "import org.eclipse.emf.ecore.resource.Resource;" + NL + "import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;";
@@ -27,9 +27,9 @@ public class CreateRunnableJavaWriter
   protected final String TEXT_11 = "' transformation module." + NL + " */" + NL + "public class ";
   protected final String TEXT_12 = " {" + NL + "" + NL + "\t/**" + NL + "\t * The property file. Stores module list, the metamodel and library locations." + NL + "\t * @generated" + NL + "\t */" + NL + "\tprivate Properties properties;" + NL + "\t";
   protected final String TEXT_13 = NL + "\t/**" + NL + "\t * The ";
-  protected final String TEXT_14 = " model." + NL + "\t * @generated" + NL + "\t */" + NL + "\tprivate IModel ";
+  protected final String TEXT_14 = " model." + NL + "\t * @generated" + NL + "\t */" + NL + "\tprotected IModel ";
   protected final String TEXT_15 = "Model;\t" + NL + "\t";
-  protected final String TEXT_16 = NL + "\t/**" + NL + "\t * The refining trace model." + NL + "\t * @generated" + NL + "\t */" + NL + "\tprivate IModel refiningTraceModel;" + NL + "\t";
+  protected final String TEXT_16 = NL + "\t/**" + NL + "\t * The refining trace model." + NL + "\t * @generated" + NL + "\t */" + NL + "\tprotected IModel refiningTraceModel;" + NL + "\t";
   protected final String TEXT_17 = "\t" + NL + "\t/**" + NL + "\t * The main method." + NL + "\t * " + NL + "\t * @param args" + NL + "\t *            are the arguments" + NL + "\t * @generated" + NL + "\t */" + NL + "\tpublic static void main(String[] args) {" + NL + "\t\ttry {";
   protected final String TEXT_18 = NL + "\t\t\tif (args.length < ";
   protected final String TEXT_19 = ") {" + NL + "\t\t\t\tSystem.out.println(\"Arguments not valid : {";
