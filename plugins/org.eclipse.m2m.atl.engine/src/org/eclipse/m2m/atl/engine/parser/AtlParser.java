@@ -115,6 +115,7 @@ public final class AtlParser implements IInjector, IExtractor {
 	 */
 	public IModel[] inject(InputStream source, Map options) throws ATLCoreException {
 		IModel targetModel = modelFactory.newModel(atlMetamodel);
+		targetModel.setIsTarget(true);
 		final Map params = new HashMap();
 		params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
 		params.put("problems", modelFactory.newModel(problemMetamodel)); //$NON-NLS-1$
@@ -122,6 +123,7 @@ public final class AtlParser implements IInjector, IExtractor {
 			params.putAll(options);
 		}
 		inject(targetModel, source, params);
+		targetModel.setIsTarget(false);
 		return new IModel[] {targetModel, (IModel)params.get("problems")}; //$NON-NLS-1$
 	}
 
