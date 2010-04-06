@@ -50,9 +50,16 @@ public class AtlElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		try {
 			Object declaration = OpenDeclarationUtils.getDeclaration((AtlEditor)textEditor, wordRegion
 					.getOffset(), wordRegion.getLength());
-			if (declaration != null) {
-				return new IHyperlink[] {new AtlElementHyperlink((AtlEditor)textEditor, wordRegion,
-						declaration),};
+			if (declaration instanceof EObject) {
+				return new IHyperlink[] {new AtlElementHyperlink((AtlEditor)textEditor, null, wordRegion,
+						(EObject)declaration),};
+			} else if (declaration instanceof Feature) {
+				Feature feature = (Feature)declaration;
+				if (feature.getDeclaration() != null) {
+					return new IHyperlink[] {new AtlElementHyperlink((AtlEditor)textEditor,
+							feature.getUnit(), wordRegion, feature.getDeclaration()),};
+				}
+
 			}
 		} catch (BadLocationException e) {
 			return null;
@@ -88,20 +95,11 @@ public class AtlElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		 * @param linkTarget
 		 *            Target of the hyperlink.
 		 */
-		public AtlElementHyperlink(AtlEditor editor, IRegion region, Object linkTarget) {
+		public AtlElementHyperlink(AtlEditor editor, UnitType unit, IRegion region, EObject linkTarget) {
 			this.sourceEditor = editor;
 			this.hyperLinkRegion = region;
-			if (linkTarget instanceof EObject) {
-				this.unit = null;
-				this.target = (EObject)linkTarget;
-			} else if (linkTarget instanceof Feature) {
-				Feature feature = (Feature)linkTarget;
-				this.unit = feature.getUnit();
-				this.target = feature.getDeclaration();
-			} else {
-				this.unit = null;
-				this.target = null;
-			}
+			this.target = linkTarget;
+			this.unit = unit;
 		}
 
 		/**
@@ -137,10 +135,12 @@ public class AtlElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		 * @see org.eclipse.jface.text.hyperlink.IHyperlink#open()
 		 */
 		public void open() {
-			try {
-				OpenDeclarationUtils.openDeclaration(unit, target, sourceEditor);
-			} catch (BadLocationException e) {
-				// do nothing
+			if (target != null) {
+				try {
+					OpenDeclarationUtils.openDeclaration(unit, target, sourceEditor);
+				} catch (BadLocationException e) {
+					// do nothing
+				}
 			}
 		}
 	}
