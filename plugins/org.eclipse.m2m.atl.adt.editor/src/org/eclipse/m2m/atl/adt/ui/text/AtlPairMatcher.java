@@ -94,7 +94,7 @@ public class AtlPairMatcher implements ICharacterPairMatcher {
 		return anchor;
 	}
 
-	public char getMathingPair(char singleton) {
+	public char getMatchingPair(char singleton) {
 		for (int i = 0; i < pairs.length; ++i) {
 			if (singleton == pairs[i]) {
 				if (i % 2 == 0) {

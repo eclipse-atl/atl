@@ -227,7 +227,7 @@ public class AtlAutoIndentStrategy extends DefaultIndentLineAutoEditStrategy {
 
 	private int findMatchingOpenBracket(IDocument document, int cursorAt, char closingPeer) {
 		AtlPairMatcher bracketsMatcher = new AtlPairMatcher(IAtlLexems.BRACKETS);
-		char openingPeer = bracketsMatcher.getMathingPair(closingPeer);
+		char openingPeer = bracketsMatcher.getMatchingPair(closingPeer);
 
 		try {
 			return document.getLineOfOffset(bracketsMatcher.searchForOpeningPeer(cursorAt, openingPeer,

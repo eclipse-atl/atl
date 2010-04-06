@@ -16,6 +16,7 @@ import java.util.Vector;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
@@ -341,6 +342,17 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 	@Override
 	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
 		return new AtlTextHover((AtlEditor)fTextEditor);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.editors.text.SourceViewerConfiguration#getDoubleClickStrategy(org.eclipse.jface.text.source.ISourceViewer,
+	 *      java.lang.String)
+	 */
+	@Override
+	public ITextDoubleClickStrategy getDoubleClickStrategy(ISourceViewer sourceViewer, String contentType) {
+		return new AtlTextDoubleClickStrategy();
 	}
 
 }
