@@ -35,6 +35,15 @@ public interface IAtlLexems {
 
 	/** Types. */
 	String[] TYPES = {
-			"Bag", "Set", "OrderedSet", "Sequence", "Tuple", "Integer", "Real", "Boolean", "String", "TupleType",}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+			"Bag", "Set", "OrderedSet", "Sequence", "Tuple", "Integer", "Real", "Boolean", "String", "TupleType", "Map", "Collection", "OclAny",}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
+
+	/** Abstract types. */
+	String[] ABSTRACT_TYPES = {"Collection", "OclAny",}; //$NON-NLS-1$ //$NON-NLS-2$
+
+	/** Special comments. */
+	String[] SPECIAL_COMMENTS = {"-- @path", "-- @nsURI", "-- @lib", "-- @atlcompiler",}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+	/** Context keywords. */
+	String[] CONTEXT_KEYWORDS = {"self", "thisModule",}; //$NON-NLS-1$ //$NON-NLS-2$
 
 }
