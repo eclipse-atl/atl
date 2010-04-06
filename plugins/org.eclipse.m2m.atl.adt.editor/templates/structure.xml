@@ -13,7 +13,7 @@ create ${out_model} from ${in_model};
 <template name="%pattern.library.name" description="%pattern.library.desc" 
 	context="atl_context" 
 	id="pattern.atl.library" 
-	enabled="true">library ${name} = OclUndefined;
+	enabled="true">library ${name};
 </template>
 
 <template name="%pattern.query.name" description="%pattern.query.desc" 
