@@ -12,17 +12,23 @@ package org.eclipse.m2m.atl.adt.ui.editor;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Stack;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.ILineBreakpoint;
@@ -38,11 +44,15 @@ import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension;
+import org.eclipse.jface.text.IDocumentExtension4;
 import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.ILineTracker;
 import org.eclipse.jface.text.IPositionUpdater;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.ISelectionValidator;
+import org.eclipse.jface.text.ISynchronizable;
 import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.ITextViewerExtension;
 import org.eclipse.jface.text.ITextViewerExtension5;
 import org.eclipse.jface.text.ITypedRegion;
@@ -59,6 +69,8 @@ import org.eclipse.jface.text.link.LinkedPositionGroup;
 import org.eclipse.jface.text.link.LinkedModeUI.ExitFlags;
 import org.eclipse.jface.text.link.LinkedModeUI.IExitPolicy;
 import org.eclipse.jface.text.source.Annotation;
+import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
@@ -76,6 +88,7 @@ import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.actions.IAtlActionConstants;
 import org.eclipse.m2m.atl.adt.ui.actions.IndentAction;
 import org.eclipse.m2m.atl.adt.ui.actions.ToggleCommentAction;
+import org.eclipse.m2m.atl.adt.ui.editor.IOccurrencesFinder.OccurrenceLocation;
 import org.eclipse.m2m.atl.adt.ui.outline.AtlContentOutlinePage;
 import org.eclipse.m2m.atl.adt.ui.outline.AtlEMFConstants;
 import org.eclipse.m2m.atl.adt.ui.properties.AtlPropertySourceProvider;
@@ -87,6 +100,7 @@ import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionDataSource;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlCompletionHelper;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlModelAnalyser;
 import org.eclipse.m2m.atl.adt.ui.text.atl.LastSaveComparator;
+import org.eclipse.m2m.atl.adt.ui.text.atl.OpenDeclarationUtils;
 import org.eclipse.m2m.atl.adt.ui.viewsupport.AtlEditorTickErrorUpdater;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.common.AtlNbCharFile;
@@ -110,6 +124,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ContentAssistAction;
+import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.IEditorStatusLine;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
@@ -423,7 +438,206 @@ public class AtlEditor extends TextEditor {
 		 */
 		public void selectionChanged(SelectionChangedEvent event) {
 			synchronizeOutlinePageSelection();
+			updateOccurrenceAnnotations((ITextSelection)event.getSelection());
 		}
+	}
+
+	private Annotation[] fOccurrenceAnnotations = null;
+
+	private ISelection fForcedMarkOccurrencesSelection;
+
+	private OccurrencesFinderJob fOccurrencesFinderJob;
+
+	private long fMarkOccurrenceModificationStamp = IDocumentExtension4.UNKNOWN_MODIFICATION_STAMP;
+
+	private IRegion fMarkOccurrenceTargetRegion;
+
+	/**
+	 * Compute the whole line of the current offset.
+	 * 
+	 * @param document
+	 *            the current document
+	 * @param offset
+	 *            the current offset
+	 * @return the line containing the offset, ended with the offset
+	 */
+	public static String getCurrentLine(IDocument document, int offset) {
+		try {
+			if (offset >= 0) {
+				int lineNumber = document.getLineOfOffset(offset);
+				int lineOffset = document.getLineOffset(lineNumber);
+				return document.get(lineOffset, offset - lineOffset);
+			}
+			return null;
+		} catch (BadLocationException ble) {
+			return null;
+		}
+	}
+
+	/**
+	 * Updates occurrences annotations.
+	 * 
+	 * @param selection
+	 *            the text selection
+	 */
+	public void updateOccurrenceAnnotations(ITextSelection selection) {
+		IDocument document = getSourceViewer().getDocument();
+		if (document == null)
+			return;
+		boolean hasChanged = false;
+		if (document instanceof IDocumentExtension4) {
+			int offset = selection.getOffset();
+			String currentLine = getCurrentLine(document, offset);
+			if (currentLine != null && currentLine.contains("--")) //$NON-NLS-1$
+				return;
+			long currentModificationStamp = ((IDocumentExtension4)document).getModificationStamp();
+			IRegion markOccurrenceTargetRegion = fMarkOccurrenceTargetRegion;
+			hasChanged = currentModificationStamp != fMarkOccurrenceModificationStamp;
+			if (markOccurrenceTargetRegion != null && !hasChanged) {
+				if (markOccurrenceTargetRegion.getOffset() <= offset
+						&& offset <= markOccurrenceTargetRegion.getOffset()
+								+ markOccurrenceTargetRegion.getLength())
+					return;
+			}
+			fMarkOccurrenceTargetRegion = OpenDeclarationUtils.findWord(document, offset);
+			if (fMarkOccurrenceTargetRegion == null || fMarkOccurrenceTargetRegion.getLength() <= 0)
+				return;
+			fMarkOccurrenceModificationStamp = currentModificationStamp;
+		}
+		AtlOccurrencesFinder finder = new AtlOccurrencesFinder(this, document);
+		OccurrenceLocation[] locations = null;
+		if (finder.initialize(fMarkOccurrenceTargetRegion) == null) {
+			locations = finder.getOccurrences();
+		}
+		fOccurrencesFinderJob = new OccurrencesFinderJob(document, locations, selection);
+		fOccurrencesFinderJob.run(new NullProgressMonitor());
+	}
+
+	/**
+	 * Finds and marks occurrence annotations.
+	 * 
+	 * @since 3.0
+	 */
+	class OccurrencesFinderJob extends Job {
+
+		private final IDocument fDocument;
+
+		private final ISelection fSelection;
+
+		private final ISelectionValidator fPostSelectionValidator;
+
+		private boolean fCanceled = false;
+
+		private final OccurrenceLocation[] fLocations;
+
+		public OccurrencesFinderJob(IDocument document, OccurrenceLocation[] locations, ISelection selection) {
+			super(""); //$NON-NLS-1$
+			fDocument = document;
+			fSelection = selection;
+			fLocations = locations;
+
+			if (getSelectionProvider() instanceof ISelectionValidator)
+				fPostSelectionValidator = (ISelectionValidator)getSelectionProvider();
+			else
+				fPostSelectionValidator = null;
+		}
+
+		// cannot use cancel() because it is declared final
+		void doCancel() {
+			fCanceled = true;
+			cancel();
+		}
+
+		private boolean isCanceled(IProgressMonitor progressMonitor) {
+			return fCanceled
+					|| progressMonitor.isCanceled()
+					|| fPostSelectionValidator != null
+					&& !(fPostSelectionValidator.isValid(fSelection) || fForcedMarkOccurrencesSelection == fSelection)
+					|| LinkedModeModel.hasInstalledModel(fDocument);
+		}
+
+		/*
+		 * @see Job#run(org.eclipse.core.runtime.IProgressMonitor)
+		 */
+		public IStatus run(IProgressMonitor progressMonitor) {
+			if (fLocations == null || fLocations.length <= 0)
+				return null;
+			if (isCanceled(progressMonitor))
+				return Status.CANCEL_STATUS;
+
+			ITextViewer textViewer = getViewer();
+			if (textViewer == null)
+				return Status.CANCEL_STATUS;
+
+			IDocument document = textViewer.getDocument();
+			if (document == null)
+				return Status.CANCEL_STATUS;
+
+			IDocumentProvider documentProvider = getDocumentProvider();
+			if (documentProvider == null)
+				return Status.CANCEL_STATUS;
+
+			IAnnotationModel annotationModel = documentProvider.getAnnotationModel(getEditorInput());
+			if (annotationModel == null)
+				return Status.CANCEL_STATUS;
+
+			// Add occurrence annotations
+			int length = fLocations.length;
+			Map<Annotation, Position> annotationMap = new HashMap<Annotation, Position>(length);
+			for (int i = 0; i < length; i++) {
+
+				if (isCanceled(progressMonitor))
+					return Status.CANCEL_STATUS;
+
+				OccurrenceLocation location = fLocations[i];
+				Position position = new Position(location.getOffset(), location.getLength());
+
+				String description = location.getDescription();
+				String annotationType = (location.getFlags() == IOccurrencesFinder.F_WRITE_OCCURRENCE) ? "org.eclipse.jdt.ui.occurrences.write" : "org.eclipse.jdt.ui.occurrences"; //$NON-NLS-1$ //$NON-NLS-2$
+
+				annotationMap.put(new Annotation(annotationType, false, description), position);
+			}
+
+			if (isCanceled(progressMonitor))
+				return Status.CANCEL_STATUS;
+
+			synchronized (getLockObject(annotationModel)) {
+				if (annotationModel instanceof IAnnotationModelExtension) {
+					((IAnnotationModelExtension)annotationModel).replaceAnnotations(fOccurrenceAnnotations,
+							annotationMap);
+				} else {
+					// removeOccurrenceAnnotations();
+					Iterator<Entry<Annotation, Position>> iter = annotationMap.entrySet().iterator();
+					while (iter.hasNext()) {
+						Map.Entry<Annotation, Position> mapEntry = (Map.Entry<Annotation, Position>)iter
+								.next();
+						annotationModel.addAnnotation((Annotation)mapEntry.getKey(), (Position)mapEntry
+								.getValue());
+					}
+				}
+				fOccurrenceAnnotations = (Annotation[])annotationMap.keySet().toArray(
+						new Annotation[annotationMap.keySet().size()]);
+			}
+
+			return Status.OK_STATUS;
+		}
+	}
+
+	/**
+	 * Returns the lock object for the given annotation model.
+	 * 
+	 * @param annotationModel
+	 *            the annotation model
+	 * @return the annotation model's lock object
+	 * @since 3.0
+	 */
+	private Object getLockObject(IAnnotationModel annotationModel) {
+		if (annotationModel instanceof ISynchronizable) {
+			Object lock = ((ISynchronizable)annotationModel).getLockObject();
+			if (lock != null)
+				return lock;
+		}
+		return annotationModel;
 	}
 
 	/**
@@ -827,10 +1041,10 @@ public class AtlEditor extends TextEditor {
 		markAsStateDependentAction("ToggleComment", true); //$NON-NLS-1$
 		configureToggleCommentAction();
 
-//		action = new GotoMatchingBracketAction(this);
-//		action.setActionDefinitionId("atlCommands.gotoMatchingBracket"); //$NON-NLS-1$
-//		setAction("GoToMatchingBracket", action); //$NON-NLS-1$
-//		markAsStateDependentAction("GoToMatchingBracket", true); //$NON-NLS-1$
+		// action = new GotoMatchingBracketAction(this);
+		//		action.setActionDefinitionId("atlCommands.gotoMatchingBracket"); //$NON-NLS-1$
+		//		setAction("GoToMatchingBracket", action); //$NON-NLS-1$
+		//		markAsStateDependentAction("GoToMatchingBracket", true); //$NON-NLS-1$
 	}
 
 	/**
