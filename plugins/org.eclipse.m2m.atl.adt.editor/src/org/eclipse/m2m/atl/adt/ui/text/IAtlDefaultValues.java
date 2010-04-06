@@ -123,6 +123,18 @@ public interface IAtlDefaultValues {
 
 	boolean SYNTAX_KEYWORD_ITALIC = false;
 
+	boolean SYNTAX_BOLD_KEYWORD_BOLD = true;
+
+	RGB SYNTAX_BOLD_KEYWORD_COLOR = new RGB(0, 0, 0);
+
+	boolean SYNTAX_BOLD_KEYWORD_ITALIC = true;
+
+	boolean SYNTAX_CONTEXT_KEYWORD_BOLD = true;
+
+	RGB SYNTAX_CONTEXT_KEYWORD_COLOR = new RGB(129, 46, 156);
+
+	boolean SYNTAX_CONTEXT_KEYWORD_ITALIC = false;
+
 	boolean SYNTAX_LITERAL_BOLD = false;
 
 	RGB SYNTAX_LITERAL_COLOR = new RGB(42, 0, 255);
@@ -147,6 +159,12 @@ public interface IAtlDefaultValues {
 
 	boolean SYNTAX_SINGLE_LINE_COMMENT_ITALIC = false;
 
+	boolean SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD = false;
+
+	RGB SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR = new RGB(63, 95, 191);
+
+	boolean SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_ITALIC = false;
+
 	boolean SYNTAX_STRING_BOLD = false;
 
 	RGB SYNTAX_STRING_COLOR = new RGB(42, 0, 255);
@@ -164,6 +182,12 @@ public interface IAtlDefaultValues {
 	RGB SYNTAX_TYPE_COLOR = new RGB(0, 192, 0);
 
 	boolean SYNTAX_TYPE_ITALIC = false;
+
+	boolean SYNTAX_ABSTRACT_TYPE_BOLD = false;
+
+	RGB SYNTAX_ABSTRACT_TYPE_COLOR = new RGB(0, 192, 0);
+
+	boolean SYNTAX_ABSTRACT_TYPE_ITALIC = true;
 
 	boolean TYPING_CLOSE_BRACES = true;
 

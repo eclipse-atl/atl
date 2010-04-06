@@ -87,6 +87,30 @@ public class AtlCodeReader extends SingleCharReader {
 		}
 	}
 
+	/**
+	 * Determines whether the line of the current offset is a comment line (that is to say a line starting with '--', ignoring tabulations).
+	 * It should be called only once by line for better efficiency, when detecting a new line for example.
+	 * 
+	 * @return true if the line of the current offset is a comment line, false also.
+	 * @throws BadLocationException
+	 */
+	private boolean isCommentLine() throws BadLocationException {
+		int i=0;
+		while(document.getChar(document.getLineOffset(document.getLineOfOffset(offset))+(i)) == '\t') {
+			i++;
+		}
+		char firstLineChar = document.getChar(document.getLineOffset(document.getLineOfOffset(offset))+i);
+		char secondLineChar = document.getChar(document.getLineOffset(document.getLineOfOffset(offset))+i+1);
+		if(firstLineChar == '-' && secondLineChar == '-') {
+			return true;
+		}
+		return false;
+	}
+
+	private void gotoStartOfLine() throws BadLocationException {
+		offset = document.getLineOffset(document.getLineOfOffset(offset) - 1);
+	}
+
 	private void gotoStartOfString() throws BadLocationException {
 		while (0 < --offset) {
 			char current = document.getChar(offset);
@@ -109,6 +133,13 @@ public class AtlCodeReader extends SingleCharReader {
 		while (0 < offset) {
 			char current = document.getChar(--offset);
 			switch (current) {
+				case '\n': // If we detect a new line
+					if(skipComments && isCommentLine()) {
+						// Skip the line if it is a comment one.
+						gotoStartOfLine();
+						continue;
+					}
+					break;
 				case '\'':
 					if (skipStrings) {
 						gotoStartOfString();

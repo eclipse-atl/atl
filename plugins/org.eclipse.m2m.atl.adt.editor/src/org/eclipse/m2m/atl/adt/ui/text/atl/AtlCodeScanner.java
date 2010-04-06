@@ -226,6 +226,13 @@ public class AtlCodeScanner extends AbstractScanner {
 	protected List<IRule> createRules() {
 		List<IRule> rules = new ArrayList<IRule>();
 
+		//rules.add(new SpecialCommentTagRule(getToken(AtlPreferenceConstants.SYNTAX_CONSTANT_COLOR)));
+		/*for(int i = 0; i < IAtlLexems.SPECIAL_COMMENTS.length; ++i) {
+			rules.add(new EndOfLineRule(IAtlLexems.SPECIAL_COMMENTS[i], getToken(AtlPreferenceConstants.SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR))); //$NON-NLS-1$
+			// TODO improve this rule. At the moment, it only works if there is one and only one space between '--' and '@tag'
+		}*/
+		// TODO a rule for @path, @nsURI, @lib and @atlcompiler to be bold and lighter (RGB: 127, 159, 191) than the rest of the special comment line (like @ tags for javadoc)
+		rules.add(new EndOfLineRule("---", getToken(AtlPreferenceConstants.SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR))); //$NON-NLS-1$
 		rules.add(new EndOfLineRule("--", getToken(AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT_COLOR))); //$NON-NLS-1$
 		rules.add(new EnumLiteralRule(getToken(AtlPreferenceConstants.SYNTAX_LITERAL_COLOR)));
 		rules.add(new MultiLineRule("'", "'", getToken(AtlPreferenceConstants.SYNTAX_STRING_COLOR), '\\')); //$NON-NLS-1$ //$NON-NLS-2$
@@ -244,6 +251,10 @@ public class AtlCodeScanner extends AbstractScanner {
 			wordRule.addWord(IAtlLexems.KEYWORDS[i], getToken(AtlPreferenceConstants.SYNTAX_KEYWORD_COLOR));
 		for (int i = 0; i < IAtlLexems.TYPES.length; ++i)
 			wordRule.addWord(IAtlLexems.TYPES[i], getToken(AtlPreferenceConstants.SYNTAX_TYPE_COLOR));
+		for (int i = 0; i < IAtlLexems.ABSTRACT_TYPES.length; ++i) // special for abstract type (italic)
+			wordRule.addWord(IAtlLexems.ABSTRACT_TYPES[i], getToken(AtlPreferenceConstants.SYNTAX_ABSTRACT_TYPE_COLOR));
+		for (int i = 0; i < IAtlLexems.CONTEXT_KEYWORDS.length; ++i)
+			wordRule.addWord(IAtlLexems.CONTEXT_KEYWORDS[i], getToken(AtlPreferenceConstants.SYNTAX_CONTEXT_KEYWORD_COLOR));
 		rules.add(wordRule);
 
 		// TODO identifiers rule not well done
@@ -263,10 +274,11 @@ public class AtlCodeScanner extends AbstractScanner {
 	protected String[] getPropertyNames() {
 		return new String[] {AtlPreferenceConstants.SYNTAX_BRACKET, AtlPreferenceConstants.SYNTAX_CONSTANT,
 				AtlPreferenceConstants.SYNTAX_DEFAULT, AtlPreferenceConstants.SYNTAX_IDENTIFIER,
-				AtlPreferenceConstants.SYNTAX_KEYWORD, AtlPreferenceConstants.SYNTAX_LITERAL,
-				AtlPreferenceConstants.SYNTAX_NUMBER, AtlPreferenceConstants.SYNTAX_OPERATOR,
-				AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT, AtlPreferenceConstants.SYNTAX_STRING,
-				AtlPreferenceConstants.SYNTAX_SYMBOL, AtlPreferenceConstants.SYNTAX_TYPE,};
+				AtlPreferenceConstants.SYNTAX_KEYWORD, AtlPreferenceConstants.SYNTAX_BOLD_KEYWORD, AtlPreferenceConstants.SYNTAX_CONTEXT_KEYWORD,
+				AtlPreferenceConstants.SYNTAX_LITERAL, AtlPreferenceConstants.SYNTAX_NUMBER,
+				AtlPreferenceConstants.SYNTAX_OPERATOR, AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT,
+				AtlPreferenceConstants.SYNTAX_SINGLE_LINE_SPECIAL_COMMENT, AtlPreferenceConstants.SYNTAX_STRING,
+				AtlPreferenceConstants.SYNTAX_SYMBOL, AtlPreferenceConstants.SYNTAX_TYPE, AtlPreferenceConstants.SYNTAX_ABSTRACT_TYPE,};
 	}
 
 }

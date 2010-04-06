@@ -163,6 +163,22 @@ public class AtlPreferenceConstants {
 
 	public static final String SYNTAX_KEYWORD_ITALIC = SYNTAX_KEYWORD + ITALIC_SUFFIX;
 
+	public static final String SYNTAX_BOLD_KEYWORD = SYNTAX + ".BoldKeyword"; //$NON-NLS-1$
+
+	public static final String SYNTAX_BOLD_KEYWORD_BOLD = SYNTAX_BOLD_KEYWORD + BOLD_SUFFIX;
+
+	public static final String SYNTAX_BOLD_KEYWORD_COLOR = SYNTAX_BOLD_KEYWORD + COLOR_SUFFIX;
+
+	public static final String SYNTAX_BOLD_KEYWORD_ITALIC = SYNTAX_BOLD_KEYWORD + ITALIC_SUFFIX;
+
+	public static final String SYNTAX_CONTEXT_KEYWORD = SYNTAX + ".ContextKeyword"; //$NON-NLS-1$
+
+	public static final String SYNTAX_CONTEXT_KEYWORD_BOLD = SYNTAX_CONTEXT_KEYWORD + BOLD_SUFFIX;
+
+	public static final String SYNTAX_CONTEXT_KEYWORD_COLOR = SYNTAX_CONTEXT_KEYWORD + COLOR_SUFFIX;
+
+	public static final String SYNTAX_CONTEXT_KEYWORD_ITALIC = SYNTAX_CONTEXT_KEYWORD + ITALIC_SUFFIX;
+
 	public static final String SYNTAX_LITERAL = SYNTAX + ".Literal"; //$NON-NLS-1$
 
 	public static final String SYNTAX_LITERAL_BOLD = SYNTAX_LITERAL + BOLD_SUFFIX;
@@ -195,6 +211,14 @@ public class AtlPreferenceConstants {
 
 	public static final String SYNTAX_SINGLE_LINE_COMMENT_ITALIC = SYNTAX_SINGLE_LINE_COMMENT + ITALIC_SUFFIX;
 
+	public static final String SYNTAX_SINGLE_LINE_SPECIAL_COMMENT = SYNTAX + ".SingleLineSpecialComment"; //$NON-NLS-1$
+
+	public static final String SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD = SYNTAX_SINGLE_LINE_SPECIAL_COMMENT + BOLD_SUFFIX;
+
+	public static final String SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR = SYNTAX_SINGLE_LINE_SPECIAL_COMMENT + COLOR_SUFFIX;
+
+	public static final String SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_ITALIC = SYNTAX_SINGLE_LINE_SPECIAL_COMMENT + ITALIC_SUFFIX;
+
 	public static final String SYNTAX_STRING = SYNTAX + ".String"; //$NON-NLS-1$
 
 	public static final String SYNTAX_STRING_BOLD = SYNTAX_STRING + BOLD_SUFFIX;
@@ -218,6 +242,14 @@ public class AtlPreferenceConstants {
 	public static final String SYNTAX_TYPE_COLOR = SYNTAX_TYPE + COLOR_SUFFIX;
 
 	public static final String SYNTAX_TYPE_ITALIC = SYNTAX_TYPE + ITALIC_SUFFIX;
+
+	public static final String SYNTAX_ABSTRACT_TYPE = SYNTAX + ".AbstractType"; //$NON-NLS-1$
+
+	public static final String SYNTAX_ABSTRACT_TYPE_BOLD = SYNTAX_ABSTRACT_TYPE + BOLD_SUFFIX;
+
+	public static final String SYNTAX_ABSTRACT_TYPE_COLOR = SYNTAX_ABSTRACT_TYPE + COLOR_SUFFIX;
+
+	public static final String SYNTAX_ABSTRACT_TYPE_ITALIC = SYNTAX_ABSTRACT_TYPE + ITALIC_SUFFIX;
 
 	public static final String TYPING = PREFIX + ".Typing"; //$NON-NLS-1$
 
@@ -323,6 +355,12 @@ public class AtlPreferenceConstants {
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_KEYWORD_BOLD));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, SYNTAX_KEYWORD_COLOR));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_KEYWORD_ITALIC));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_BOLD_KEYWORD_BOLD));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, SYNTAX_BOLD_KEYWORD_COLOR));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_BOLD_KEYWORD_ITALIC));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_CONTEXT_KEYWORD_BOLD));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, SYNTAX_CONTEXT_KEYWORD_COLOR));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_CONTEXT_KEYWORD_ITALIC));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_LITERAL_BOLD));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, SYNTAX_LITERAL_COLOR));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_LITERAL_ITALIC));
@@ -338,6 +376,12 @@ public class AtlPreferenceConstants {
 				.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, SYNTAX_SINGLE_LINE_COMMENT_COLOR));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN,
 				SYNTAX_SINGLE_LINE_COMMENT_ITALIC));
+		storeKeys
+			.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD));
+		storeKeys
+			.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN,
+					SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_ITALIC));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_STRING_BOLD));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, SYNTAX_STRING_COLOR));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_STRING_ITALIC));
@@ -347,6 +391,9 @@ public class AtlPreferenceConstants {
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_TYPE_BOLD));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, SYNTAX_TYPE_COLOR));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_TYPE_ITALIC));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_ABSTRACT_TYPE_BOLD));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, SYNTAX_ABSTRACT_TYPE_COLOR));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_ABSTRACT_TYPE_ITALIC));
 
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, TYPING_CLOSE_BRACES));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, TYPING_CLOSE_BRACKETS));
@@ -446,6 +493,12 @@ public class AtlPreferenceConstants {
 		store.setDefault(SYNTAX_KEYWORD_BOLD, IAtlDefaultValues.SYNTAX_KEYWORD_BOLD);
 		PreferenceConverter.setDefault(store, SYNTAX_KEYWORD_COLOR, IAtlDefaultValues.SYNTAX_KEYWORD_COLOR);
 		store.setDefault(SYNTAX_KEYWORD_ITALIC, IAtlDefaultValues.SYNTAX_KEYWORD_ITALIC);
+		store.setDefault(SYNTAX_BOLD_KEYWORD_BOLD, IAtlDefaultValues.SYNTAX_BOLD_KEYWORD_BOLD);
+		PreferenceConverter.setDefault(store, SYNTAX_BOLD_KEYWORD_COLOR, IAtlDefaultValues.SYNTAX_BOLD_KEYWORD_COLOR);
+		store.setDefault(SYNTAX_BOLD_KEYWORD_ITALIC, IAtlDefaultValues.SYNTAX_BOLD_KEYWORD_ITALIC);
+		store.setDefault(SYNTAX_CONTEXT_KEYWORD_BOLD, IAtlDefaultValues.SYNTAX_CONTEXT_KEYWORD_BOLD);
+		PreferenceConverter.setDefault(store, SYNTAX_CONTEXT_KEYWORD_COLOR, IAtlDefaultValues.SYNTAX_CONTEXT_KEYWORD_COLOR);
+		store.setDefault(SYNTAX_CONTEXT_KEYWORD_ITALIC, IAtlDefaultValues.SYNTAX_CONTEXT_KEYWORD_ITALIC);
 		store.setDefault(SYNTAX_LITERAL_BOLD, IAtlDefaultValues.SYNTAX_LITERAL_BOLD);
 		PreferenceConverter.setDefault(store, SYNTAX_LITERAL_COLOR, IAtlDefaultValues.SYNTAX_LITERAL_COLOR);
 		store.setDefault(SYNTAX_LITERAL_ITALIC, IAtlDefaultValues.SYNTAX_LITERAL_ITALIC);
@@ -460,6 +513,11 @@ public class AtlPreferenceConstants {
 				IAtlDefaultValues.SYNTAX_SINGLE_LINE_COMMENT_COLOR);
 		store.setDefault(SYNTAX_SINGLE_LINE_COMMENT_ITALIC,
 				IAtlDefaultValues.SYNTAX_SINGLE_LINE_COMMENT_ITALIC);
+		store.setDefault(SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD, IAtlDefaultValues.SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD);
+		PreferenceConverter.setDefault(store, SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR,
+				IAtlDefaultValues.SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR);
+		store.setDefault(SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_ITALIC,
+				IAtlDefaultValues.SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_ITALIC);
 		store.setDefault(SYNTAX_STRING_BOLD, IAtlDefaultValues.SYNTAX_STRING_BOLD);
 		PreferenceConverter.setDefault(store, SYNTAX_STRING_COLOR, IAtlDefaultValues.SYNTAX_STRING_COLOR);
 		store.setDefault(SYNTAX_STRING_ITALIC, IAtlDefaultValues.SYNTAX_STRING_ITALIC);
@@ -469,6 +527,9 @@ public class AtlPreferenceConstants {
 		store.setDefault(SYNTAX_TYPE_BOLD, IAtlDefaultValues.SYNTAX_TYPE_BOLD);
 		PreferenceConverter.setDefault(store, SYNTAX_TYPE_COLOR, IAtlDefaultValues.SYNTAX_TYPE_COLOR);
 		store.setDefault(SYNTAX_TYPE_ITALIC, IAtlDefaultValues.SYNTAX_TYPE_ITALIC);
+		store.setDefault(SYNTAX_ABSTRACT_TYPE_BOLD, IAtlDefaultValues.SYNTAX_ABSTRACT_TYPE_BOLD);
+		PreferenceConverter.setDefault(store, SYNTAX_ABSTRACT_TYPE_COLOR, IAtlDefaultValues.SYNTAX_ABSTRACT_TYPE_COLOR);
+		store.setDefault(SYNTAX_ABSTRACT_TYPE_ITALIC, IAtlDefaultValues.SYNTAX_ABSTRACT_TYPE_ITALIC);
 
 		store.setDefault(TYPING_CLOSE_BRACES, IAtlDefaultValues.TYPING_CLOSE_BRACES);
 		store.setDefault(TYPING_CLOSE_BRACKETS, IAtlDefaultValues.TYPING_CLOSE_BRACKETS);
