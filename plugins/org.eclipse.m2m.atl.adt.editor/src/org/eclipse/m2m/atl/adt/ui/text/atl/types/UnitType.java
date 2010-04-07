@@ -237,8 +237,10 @@ public abstract class UnitType extends OclAnyType {
 
 	public Set<Operation> getAllHelpers() {
 		Set<Operation> res = new LinkedHashSet<Operation>();
-		for(Collection<Operation> helpersByType : helpers.values())
-			res.addAll(helpersByType);
+		if (helpers != null) {
+			for(Collection<Operation> helpersByType : helpers.values())
+				res.addAll(helpersByType);
+		}
 		return res;
 	}
 

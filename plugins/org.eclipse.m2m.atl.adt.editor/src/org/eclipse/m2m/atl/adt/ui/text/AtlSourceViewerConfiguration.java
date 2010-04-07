@@ -137,8 +137,16 @@ public class AtlSourceViewerConfiguration extends TextSourceViewerConfiguration 
 
 		AtlContentAssistPreference.configure(assistant, store);
 		assistant.setContextInformationPopupOrientation(ContentAssistant.CONTEXT_INFO_ABOVE);
+		assistant.setProposalPopupOrientation(IContentAssistant.PROPOSAL_OVERLAY);
 		assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
+		//assistant.enableAutoInsert(true);
+		//assistant.enableAutoActivation(true);
+		//assistant.setAutoActivationDelay(1);
+		assistant.setRepeatedInvocationMode(true);
+		assistant.setStatusLineVisible(true);
+		//assistant.setShowEmptyList(true);
 
+		assistant.addCompletionListener((AtlCompletionProcessor)fProcessor);
 		return assistant;
 	}
 
