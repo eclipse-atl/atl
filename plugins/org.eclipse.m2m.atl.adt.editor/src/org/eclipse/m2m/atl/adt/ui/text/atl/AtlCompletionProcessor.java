@@ -880,7 +880,11 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		if (mapProposal != null) {
 			res.add(mapProposal);
 		}
-		// TODO Tuple type proposal
+		AtlTemplateProposal tupleProposal = createComplexTypeProposal(prefix, offset, analyser,
+				"TupleType", "var1: Type1", "var2: Type2"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (tupleProposal != null) {
+			res.add(tupleProposal);
+		}
 		return res;
 	}
 
@@ -894,8 +898,18 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		pattern.append('(');
 		for (int i = 0; i < parameters.length; i++) {
 			String parameter = parameters[i];
-			templateName.append(parameter);
-			pattern.append("${" + parameter + '}'); //$NON-NLS-1$
+			if (parameter.contains(": ")) {
+				String[] params = parameter.split("\\: ");
+				templateName.append(params[0]);
+				pattern.append("${" + params[0] + '}'); //$NON-NLS-1$
+				templateName.append(": "); //$NON-NLS-1$
+				pattern.append(": "); //$NON-NLS-1$
+				templateName.append(params[1]);
+				pattern.append("${" + params[1] + '}'); //$NON-NLS-1$
+			} else {
+				templateName.append(parameter);
+				pattern.append("${" + parameter + '}'); //$NON-NLS-1$
+			}
 			if (i < parameters.length - 1) {
 				templateName.append(", "); //$NON-NLS-1$
 				pattern.append(", "); //$NON-NLS-1$

@@ -19,6 +19,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -275,7 +276,17 @@ public class OclAnyType {
 				OclAnyType value = create(manager, valueType);
 				res = new MapType(key, value);
 			} else if (atlTypeName.equals("TupleType")) { //$NON-NLS-1$
-				// TODO tuple implementation
+				EList<EObject> attributesMap = (EList<EObject>)AtlTypesProcessor.eGet(atlType, "attributes"); //$NON-NLS-1$
+				HashMap<String, OclAnyType> attributes = new HashMap<String, OclAnyType>();
+				HashMap<String, EObject> eAttributes = new HashMap<String, EObject>();
+				for(EObject o : attributesMap) {
+					EObject type = (EObject)AtlTypesProcessor.eGet(o, "type");
+					String name = (String)AtlTypesProcessor.eGet(o, "name");
+					OclAnyType t = create(manager, type);
+					attributes.put(name, t);
+					eAttributes.put(name, type);
+				}
+				res = new TupleType(attributes, eAttributes);
 			}
 		}
 		return res;

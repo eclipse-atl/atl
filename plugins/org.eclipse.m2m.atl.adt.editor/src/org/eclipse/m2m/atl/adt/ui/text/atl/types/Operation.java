@@ -220,6 +220,8 @@ public class Operation extends Feature {
 				key = ((CollectionType)context).getCollectionType() + '.';
 			} else if (context instanceof MapType) {
 				key = "Map.";
+			} else if (context instanceof TupleType) {
+				key = "Tuple.";
 			} else if (context != null) {
 				key = context.toString() + '.';
 			}
