@@ -40,6 +40,7 @@ import org.eclipse.m2m.atl.engine.emfvm.lib.AbstractStackFrame;
 import org.eclipse.m2m.atl.engine.emfvm.lib.ExecEnv;
 import org.eclipse.m2m.atl.engine.emfvm.lib.LibExtension;
 import org.eclipse.m2m.atl.engine.emfvm.lib.OclType;
+import org.eclipse.m2m.atl.engine.emfvm.lib.Tuple;
 
 /**
  * The ASM Class, which manages an ASM program.
@@ -395,17 +396,13 @@ public class ASM {
 			// //ASMOclType elementType = parseTypeInternal(ci);
 			// read(ci, ';');
 			// break;
-			// case 'T': // Tuple
-			// ci.next();
-			// Map attrs = new HashMap();
-			// while(ci.current() != ';') {
-			// ASMOclType attrType = parseTypeInternal(ci);
-			// String attrName = readUntil(ci, ';');
-			// //attrs.put(attrName, attrType); //TO DO: correct type
-			// attrs.put(attrName, ASMOclAny.myType);
-			// }
-			// ret = new ASMTupleType(attrs);
-			// break;
+			case 'T': // Tuple
+				ci.next();
+				while(ci.current() != ';') {
+					readUntil(ci, ';');
+				}
+				ret = Tuple.class;
+				break;
 			case 'M': // Metamodel Class
 				ci.next();
 				String mname = readUntil(ci, '!');
