@@ -207,8 +207,10 @@ public abstract class UnitType extends OclAnyType {
 
 	public Set<Feature> getAllAttributes() {
 		Set<Feature> res = new LinkedHashSet<Feature>();
-		for(Collection<Feature> features : attributes.values())
-			res.addAll(features);
+		if(attributes != null) {
+			for(Collection<Feature> features : attributes.values())
+				res.addAll(features);
+		}
 		return res;
 	}
 
