@@ -841,6 +841,10 @@ public class AtlTypesProcessor {
 		if (module != null) {
 			allFeatures.addAll(module.getAttributes(context));
 		}
+		if(context instanceof ModuleType ||
+				context instanceof OclAnyType) {
+			allFeatures.addAll(module.getAllAttributes());
+		}
 		for (Feature feature : allFeatures) {
 			if (feature.getName().equals(featureName)) {
 				return feature;
@@ -869,6 +873,10 @@ public class AtlTypesProcessor {
 		allOperations.addAll(context.getOperations());
 		if (module != null) {
 			allOperations.addAll(module.getHelpers(context));
+		}
+		if(context instanceof ModuleType ||
+				context instanceof OclAnyType) {
+			allOperations.addAll(module.getAllHelpers());
 		}
 		for (Operation operation : allOperations) {
 			if (operation.getName().equals(operationName)) {

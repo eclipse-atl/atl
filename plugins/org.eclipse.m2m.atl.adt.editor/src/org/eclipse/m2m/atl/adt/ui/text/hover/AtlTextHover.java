@@ -11,7 +11,6 @@
 package org.eclipse.m2m.atl.adt.ui.text.hover;
 
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
@@ -35,7 +34,7 @@ public class AtlTextHover implements ITextHover {
 	 */
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
 		String line = AtlEditor.getCurrentLine(textViewer.getDocument(), hoverRegion.getOffset());
-		if(line.contains("--"))
+		if(line.contains("--")) //$NON-NLS-1$
 			return null;
 		try {
 			return OpenDeclarationUtils.getInformation(editor, hoverRegion.getOffset(), hoverRegion
