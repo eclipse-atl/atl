@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Obeo.
+ * Copyright (c) 2009, 2010 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
  * The ATL OclAny type.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 @SuppressWarnings("serial")
 public class OclAnyType {
@@ -81,7 +82,7 @@ public class OclAnyType {
 	}
 
 	/**
-	 * Return the local type operations. Subclasses may override this method to add theyre own operation to
+	 * Return the local type operations. Subclasses may override this method to add their own operation to
 	 * the supertypes's ones.
 	 * 
 	 * @return the operations
@@ -147,6 +148,13 @@ public class OclAnyType {
 					});
 
 					add(new Operation("refImmediateComposite", getInstance(), getInstance())); //$NON-NLS-1$
+					add(new Operation(
+							"refInvokeOperation", getInstance(), getInstance(), new LinkedHashMap<String, OclAnyType>() { //$NON-NLS-1$
+								{
+									put("opName", StringType.getInstance()); //$NON-NLS-1$
+									put("args", SequenceType.getInstance()); //$NON-NLS-1$
+								}
+							}));
 
 				}
 			};
@@ -209,6 +217,7 @@ public class OclAnyType {
 	 *            the atl object
 	 * @return the type
 	 */
+	@SuppressWarnings("unchecked")
 	public static OclAnyType create(AtlSourceManager manager, EObject atlType) {
 		OclAnyType res = getInstance();
 		if (atlType != null) {
@@ -280,8 +289,8 @@ public class OclAnyType {
 				HashMap<String, OclAnyType> attributes = new HashMap<String, OclAnyType>();
 				HashMap<String, EObject> eAttributes = new HashMap<String, EObject>();
 				for(EObject o : attributesMap) {
-					EObject type = (EObject)AtlTypesProcessor.eGet(o, "type");
-					String name = (String)AtlTypesProcessor.eGet(o, "name");
+					EObject type = (EObject)AtlTypesProcessor.eGet(o, "type"); //$NON-NLS-1$
+					String name = (String)AtlTypesProcessor.eGet(o, "name"); //$NON-NLS-1$
 					OclAnyType t = create(manager, type);
 					attributes.put(name, t);
 					eAttributes.put(name, type);

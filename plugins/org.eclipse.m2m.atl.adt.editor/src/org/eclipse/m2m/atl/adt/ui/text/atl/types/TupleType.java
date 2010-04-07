@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Obeo.
+ * Copyright (c) 2009, 2010 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,8 @@ import org.eclipse.emf.ecore.EObject;
  * The ATL Tuple type.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
-// TODO implement type
 @SuppressWarnings("serial")
 public final class TupleType extends OclAnyType {
 
@@ -31,10 +31,6 @@ public final class TupleType extends OclAnyType {
 	/** The parameters of the tuple. */
 	protected Map<String, OclAnyType> attributes;
 	protected Map<String, EObject> eAttributes;
-
-	static {
-		// TODO asMap() implementation
-	}
 
 	public TupleType(Map<String, OclAnyType> attributes, Map<String, EObject> eAttributes) {
 		super(new OclType(computeName(attributes)));
@@ -45,7 +41,7 @@ public final class TupleType extends OclAnyType {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType#getSupertypes()
+	 * @see org.eclipse.org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType#getSupertypes()
 	 */
 	@Override
 	public OclAnyType[] getSupertypes() {
@@ -55,7 +51,7 @@ public final class TupleType extends OclAnyType {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType#getOclType()
+	 * @see org.eclipse.org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType#getOclType()
 	 */
 	@Override
 	public OclType getOclType() {
@@ -65,11 +61,10 @@ public final class TupleType extends OclAnyType {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType#getFeatures()
+	 * @see org.eclipse.org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType#getFeatures()
 	 */
 	@Override
 	public List<Feature> getFeatures() {
-		// TODO check direct access to Tuple attributes implementation
 		List<Feature> features = new ArrayList<Feature>();
 		for(String key : this.attributes.keySet()) {
 			//features.add(new Feature(null, this.eAttributes.get(key).eContainingFeature(), this.attributes.get(key).getOclType().getMetamodelName()));
@@ -82,7 +77,7 @@ public final class TupleType extends OclAnyType {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType#getTypeOperations()
+	 * @see org.eclipse.org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType#getTypeOperations()
 	 */
 	@Override
 	protected List<Operation> getTypeOperations() {
@@ -111,10 +106,9 @@ public final class TupleType extends OclAnyType {
 		buffer.append("Tuple"); //$NON-NLS-1$
 		buffer.append('(');
 		for(String key : attributes.keySet()) {
-			buffer.append(key + ": " + attributes.get(key).toString() + ", ");
+			buffer.append(key + ": " + attributes.get(key).toString() + ", "); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		buffer.setLength(buffer.length()-2);
-		// TODO check display parameters
 		buffer.append(')');
 		return buffer.toString();
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Obeo.
+ * Copyright (c) 2009, 2010 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.List;
  * The ATL Map type.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 @SuppressWarnings("serial")
 public class MapType extends OclAnyType {
@@ -28,13 +29,6 @@ public class MapType extends OclAnyType {
 
 	private OclAnyType valueType;
 
-	// static {
-	// operations = new HashSet<Operation>() {
-	// {
-	// }
-	// };
-	// }
-
 	/**
 	 * Creates a new Map type with the given key and value types.
 	 * 
@@ -44,7 +38,7 @@ public class MapType extends OclAnyType {
 	 *            the value type
 	 */
 	public MapType(OclAnyType keyType, OclAnyType valueType) {
-		super(new OclType(computeName(keyType, valueType))); //$NON-NLS-1$
+		super(new OclType(computeName(keyType, valueType)));
 		this.keyType = keyType;
 		this.valueType = valueType;
 	}
@@ -60,7 +54,7 @@ public class MapType extends OclAnyType {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType#getTypeOperations()
+	 * @see org.eclipse.org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType#getTypeOperations()
 	 */
 	@Override
 	protected List<Operation> getTypeOperations() {
@@ -123,7 +117,7 @@ public class MapType extends OclAnyType {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType#getSupertypes()
+	 * @see org.eclipse.org.eclipse.m2m.atl.adt.ui.text.atl.types.OclAnyType#getSupertypes()
 	 */
 	@Override
 	public OclAnyType[] getSupertypes() {

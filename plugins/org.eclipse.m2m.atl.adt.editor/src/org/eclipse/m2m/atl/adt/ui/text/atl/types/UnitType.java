@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Obeo.
+ * Copyright (c) 2009, 2010 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
  * The ATL Module type.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 @SuppressWarnings("serial")
 public abstract class UnitType extends OclAnyType {
@@ -204,6 +205,13 @@ public abstract class UnitType extends OclAnyType {
 		return res;
 	}
 
+	public Set<Feature> getAllAttributes() {
+		Set<Feature> res = new LinkedHashSet<Feature>();
+		for(Collection<Feature> features : attributes.values())
+			res.addAll(features);
+		return res;
+	}
+
 	/**
 	 * Returns all the registered helpers for the given type.
 	 * 
@@ -224,6 +232,13 @@ public abstract class UnitType extends OclAnyType {
 				res.addAll(getHelpers(supertype));
 			}
 		}
+		return res;
+	}
+
+	public Set<Operation> getAllHelpers() {
+		Set<Operation> res = new LinkedHashSet<Operation>();
+		for(Collection<Operation> helpersByType : helpers.values())
+			res.addAll(helpersByType);
 		return res;
 	}
 

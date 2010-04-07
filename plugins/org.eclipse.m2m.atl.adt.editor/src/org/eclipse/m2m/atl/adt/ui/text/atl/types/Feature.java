@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Obeo.
+ * Copyright (c) 2009, 2010 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * The Feature wrapper.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 public class Feature implements Comparable<Feature> {
 	private static final String DOCUMENTATION_COMMENTS_PREFIX = "---"; //$NON-NLS-1$
@@ -315,6 +316,7 @@ public class Feature implements Comparable<Feature> {
 		} else {
 			information.append(getType());
 		}
+		information.append(" - " + getContextType()); //$NON-NLS-1$
 		return information.toString();
 	}
 
@@ -328,10 +330,13 @@ public class Feature implements Comparable<Feature> {
 	 * @return the information or null if not found
 	 */
 	public String getDocumentation() {
+		StringBuffer doc = new StringBuffer();
+		doc.append(getName() + ": " + getType()); //$NON-NLS-1$
 		if (documentation != null && !documentation.trim().equals("")) { //$NON-NLS-1$
-			return documentation;
+			doc.append("\n\n" + documentation); //$NON-NLS-1$
 		}
-		return getInformation() + " - " + getContextType(); //$NON-NLS-1$
+		return doc.toString();
+		//return getInformation();
 	}
 
 	public void setDocumentation(String documentation) {

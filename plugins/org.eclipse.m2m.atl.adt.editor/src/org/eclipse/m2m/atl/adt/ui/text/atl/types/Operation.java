@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Obeo.
+ * Copyright (c) 2009, 2010 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.adt.ui.text.atl.types;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -27,6 +28,7 @@ import org.eclipse.emf.ecore.EParameter;
  * The Operation wrapper.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 public class Operation extends Feature {
 
@@ -127,7 +129,7 @@ public class Operation extends Feature {
 		super(null, operation, operation.getName(), ModelElementType.create(operation.getEContainingClass(),
 				metamodelName), ModelElementType.create(operation.getEType(), metamodelName), operation
 				.isOrdered(), false, operation.getLowerBound(), operation.getUpperBound());
-		this.parameters = new HashMap<String, OclAnyType>();
+		this.parameters = new LinkedHashMap<String, OclAnyType>();
 		for (EParameter eParameter : operation.getEParameters()) {
 			this.parameters.put(eParameter.getName().toLowerCase(), ModelElementType.create(eParameter
 					.getEType(), metamodelName));
@@ -219,9 +221,9 @@ public class Operation extends Feature {
 			if (context instanceof CollectionType) {
 				key = ((CollectionType)context).getCollectionType() + '.';
 			} else if (context instanceof MapType) {
-				key = "Map.";
+				key = "Map."; //$NON-NLS-1$
 			} else if (context instanceof TupleType) {
-				key = "Tuple.";
+				key = "Tuple."; //$NON-NLS-1$
 			} else if (context != null) {
 				key = context.toString() + '.';
 			}
@@ -364,7 +366,7 @@ public class Operation extends Feature {
 	public static Operation createFromHelper(UnitType unit, EObject helper, OclAnyType context) {
 		String helperName = (String)AtlTypesProcessor.eGet(helper, "name"); //$NON-NLS-1$
 		if (helperName != null) {
-			Map<String, OclAnyType> parameters = new HashMap<String, OclAnyType>();
+			Map<String, OclAnyType> parameters = new LinkedHashMap<String, OclAnyType>();
 			EList<EObject> parameterObjects = (EList<EObject>)AtlTypesProcessor.eGet(helper, "parameters"); //$NON-NLS-1$
 			if (parameterObjects != null) {
 				for (EObject eObject : parameterObjects) {
