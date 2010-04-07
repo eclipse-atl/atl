@@ -28,6 +28,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * This will allow us to plug the CTRL+click "open declaration" into Atl editors.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 public class AtlElementHyperlinkDetector extends AbstractHyperlinkDetector {
 
@@ -48,7 +49,7 @@ public class AtlElementHyperlinkDetector extends AbstractHyperlinkDetector {
 			return null;
 		}
 		String currentLine = AtlEditor.getCurrentLine(document, wordRegion.getOffset());
-		if(currentLine == null || currentLine.contains("--"))
+		if(currentLine == null || currentLine.contains("--")) //$NON-NLS-1$
 			return null;
 		try {
 			Object declaration = OpenDeclarationUtils.getDeclaration((AtlEditor)textEditor, wordRegion

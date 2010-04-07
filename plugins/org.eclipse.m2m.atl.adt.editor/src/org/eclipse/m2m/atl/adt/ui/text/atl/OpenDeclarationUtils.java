@@ -165,7 +165,7 @@ public final class OpenDeclarationUtils {
 	}
 
 	/**
-	 * Opens the declaration of the given object. Support boths meta-elements: open the declaration inside of
+	 * Opens the declaration of the given object. Support both meta-elements: open the declaration inside of
 	 * the metamodel; and ATL model elements.
 	 * 
 	 * @param unit
