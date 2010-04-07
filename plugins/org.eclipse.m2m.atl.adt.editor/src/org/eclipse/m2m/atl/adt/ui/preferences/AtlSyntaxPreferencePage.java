@@ -56,6 +56,10 @@ public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
 				{
 						AtlPreferencesMessages.getString("SyntaxPreferencePage.keywords"), AtlPreferenceConstants.SYNTAX_KEYWORD}, //$NON-NLS-1$
 				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.boldKeywords"), AtlPreferenceConstants.SYNTAX_BOLD_KEYWORD}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.contextKeywords"), AtlPreferenceConstants.SYNTAX_CONTEXT_KEYWORD}, //$NON-NLS-1$
+				{
 						AtlPreferencesMessages.getString("SyntaxPreferencePage.literals"), AtlPreferenceConstants.SYNTAX_LITERAL}, //$NON-NLS-1$
 				{
 						AtlPreferencesMessages.getString("SyntaxPreferencePage.numbers"), AtlPreferenceConstants.SYNTAX_NUMBER}, //$NON-NLS-1$
@@ -66,11 +70,15 @@ public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
 				{
 						AtlPreferencesMessages.getString("SyntaxPreferencePage.singleLineComments"), AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT}, //$NON-NLS-1$
 				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.singleLineSpecialComments"), AtlPreferenceConstants.SYNTAX_SINGLE_LINE_SPECIAL_COMMENT}, //$NON-NLS-1$
+				{
 						AtlPreferencesMessages.getString("SyntaxPreferencePage.strings"), AtlPreferenceConstants.SYNTAX_STRING}, //$NON-NLS-1$
 				{
 						AtlPreferencesMessages.getString("SyntaxPreferencePage.symbols"), AtlPreferenceConstants.SYNTAX_SYMBOL}, //$NON-NLS-1$
 				{
 						AtlPreferencesMessages.getString("SyntaxPreferencePage.types"), AtlPreferenceConstants.SYNTAX_TYPE}, //$NON-NLS-1$
+				{
+						AtlPreferencesMessages.getString("SyntaxPreferencePage.abstractTypes"), AtlPreferenceConstants.SYNTAX_ABSTRACT_TYPE}, //$NON-NLS-1$
 		};
 	}
 
