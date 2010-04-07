@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.text.atl.types;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,7 +19,7 @@ import java.util.List;
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
-// TODO implement MapType
+@SuppressWarnings("serial")
 public class MapType extends OclAnyType {
 
 	private static List<Operation> operations;
@@ -31,11 +33,6 @@ public class MapType extends OclAnyType {
 	// {
 	// }
 	// };
-	// // TODO implement get => value
-	// // TODO implement including => self
-	// // TODO implement union => self
-	// // TODO implement getKeys => Set(key)
-	// // TODO implement getValues() => Bag(value)
 	// }
 
 	/**
@@ -47,7 +44,7 @@ public class MapType extends OclAnyType {
 	 *            the value type
 	 */
 	public MapType(OclAnyType keyType, OclAnyType valueType) {
-		super(new OclType(computeName("Map"))); //$NON-NLS-1$
+		super(new OclType(computeName(keyType, valueType))); //$NON-NLS-1$
 		this.keyType = keyType;
 		this.valueType = valueType;
 	}
@@ -67,6 +64,59 @@ public class MapType extends OclAnyType {
 	 */
 	@Override
 	protected List<Operation> getTypeOperations() {
+		if (operations == null) {
+			operations = new ArrayList<Operation>() {
+				{
+					add(new Operation("get", getInstance(), null, //$NON-NLS-1$
+							new HashMap<String, OclAnyType>() {
+						{
+							put("key", OclAnyType.getInstance()); //$NON-NLS-1$
+						}
+					}) {
+						@Override
+						public OclAnyType getType(OclAnyType context, Object... parameters) {
+							if (context instanceof MapType) {
+								return ((MapType)context).getValueType();
+							}
+							return null;
+						}
+					});
+					add(new Operation("including", getInstance(), null, //$NON-NLS-1$
+							new HashMap<String, OclAnyType>() {
+								{
+									put("key", OclAnyType.getInstance()); //$NON-NLS-1$
+									put("val", OclAnyType.getInstance()); //$NON-NLS-1$
+								}
+							}
+					));
+					add(new Operation("union", getInstance(), null, //$NON-NLS-1$
+							new HashMap<String, OclAnyType>() {
+								{
+									put("m", MapType.getInstance()); //$NON-NLS-1$
+								}
+							}
+					));
+					add(new Operation("getKeys", getInstance(), null) { //$NON-NLS-1$
+						@Override
+						public OclAnyType getType(OclAnyType context, Object... parameters) {
+							if (context instanceof MapType) {
+								return SetType.getInstance();
+							}
+							return null;
+						}
+					});
+					add(new Operation("getValues", getInstance(), null) { //$NON-NLS-1$
+						@Override
+						public OclAnyType getType(OclAnyType context, Object... parameters) {
+							if (context instanceof MapType) {
+								return BagType.getInstance();
+							}
+							return null;
+						}
+					});
+				}
+			};
+		}
 		return operations;
 	}
 
@@ -80,13 +130,13 @@ public class MapType extends OclAnyType {
 		return new OclAnyType[] {OclAnyType.getInstance()};
 	}
 
-	private static String computeName(String collectionType) {
+	private static String computeName(OclAnyType keyType, OclAnyType valueType) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("Map"); //$NON-NLS-1$
 		buffer.append('(');
-		// buffer.append(keyType.toString());
-		//		buffer.append(", "); //$NON-NLS-1$
-		// buffer.append(valueType.toString());
+		buffer.append(keyType.toString());
+		buffer.append(", "); //$NON-NLS-1$
+		buffer.append(valueType.toString());
 		buffer.append(')');
 		return buffer.toString();
 	}

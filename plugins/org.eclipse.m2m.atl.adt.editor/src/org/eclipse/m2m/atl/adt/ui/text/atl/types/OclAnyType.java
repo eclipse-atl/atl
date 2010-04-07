@@ -269,7 +269,11 @@ public class OclAnyType {
 				OclAnyType parameter = create(manager, parameterType);
 				res = new OrderedSetType(parameter);
 			} else if (atlTypeName.equals("MapType")) { //$NON-NLS-1$
-				// TODO map implementation
+				EObject keyType = (EObject)AtlTypesProcessor.eGet(atlType, "keyType"); //$NON-NLS-1$
+				EObject valueType = (EObject)AtlTypesProcessor.eGet(atlType, "valueType"); //$NON-NLS-1$
+				OclAnyType key = create(manager, keyType);
+				OclAnyType value = create(manager, valueType);
+				res = new MapType(key, value);
 			} else if (atlTypeName.equals("TupleType")) { //$NON-NLS-1$
 				// TODO tuple implementation
 			}

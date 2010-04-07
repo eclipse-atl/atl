@@ -218,6 +218,8 @@ public class Operation extends Feature {
 			String key = ""; //$NON-NLS-1$
 			if (context instanceof CollectionType) {
 				key = ((CollectionType)context).getCollectionType() + '.';
+			} else if (context instanceof MapType) {
+				key = "Map.";
 			} else if (context != null) {
 				key = context.toString() + '.';
 			}

@@ -875,7 +875,11 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		if (orderedSetProposal != null) {
 			res.add(orderedSetProposal);
 		}
-		// TODO Map type proposal
+		AtlTemplateProposal mapProposal = createComplexTypeProposal(prefix, offset, analyser,
+				"Map", "OclAny", "OclAny"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (mapProposal != null) {
+			res.add(mapProposal);
+		}
 		// TODO Tuple type proposal
 		return res;
 	}

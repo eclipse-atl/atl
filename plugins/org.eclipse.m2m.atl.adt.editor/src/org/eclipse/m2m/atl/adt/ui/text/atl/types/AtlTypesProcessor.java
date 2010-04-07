@@ -89,6 +89,9 @@ public class AtlTypesProcessor {
 		} else if (oclIsKindOf(element, "OrderedSetExp")) { //$NON-NLS-1$
 			// TODO get accurate type
 			res = OrderedSetType.getInstance();
+		} else if (oclIsKindOf(element, "MapExp")) { //$NON-NLS-1$
+			// TODO get accurate type
+			res = MapType.getInstance();
 		} else if (oclIsKindOf(element, "VariableExp")) { //$NON-NLS-1$
 			res = getVariableExpType(element);
 		} else if (oclIsKindOf(element, "NavigationOrAttributeCallExp")) { //$NON-NLS-1$
