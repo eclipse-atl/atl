@@ -21,6 +21,50 @@
 	enabled="true"
 	autoinsert="false">reject(${iterator} | ${boolean_expression})</template>
 
+<template name="%pattern.iterate.name" description="%pattern.iterate.desc" 
+	context="query_context" 
+	id="pattern.query.iterate" 
+	enabled="true"
+	autoinsert="false">iterate(${iterator}; ${var_name}: ${var_type} = ${init_exp} |
+	${body}
+)</template>
+
+<template name="%pattern.exists.name" description="%pattern.exists.desc" 
+	context="query_context" 
+	id="pattern.query.exists" 
+	enabled="true"
+	autoinsert="false">exists(${var} | ${body})</template>
+
+<template name="%pattern.forall.name" description="%pattern.forall.desc" 
+	context="query_context" 
+	id="pattern.query.forall" 
+	enabled="true"
+	autoinsert="false">forAll(${var} | ${body})</template>
+
+<template name="%pattern.isunique.name" description="%pattern.isunique.desc" 
+	context="query_context" 
+	id="pattern.query.isunique" 
+	enabled="true"
+	autoinsert="false">isUnique(${var} | ${body})</template>
+
+<template name="%pattern.any.name" description="%pattern.any.desc" 
+	context="query_context" 
+	id="pattern.query.any" 
+	enabled="true"
+	autoinsert="false">any(${var} | ${body})</template>
+
+<template name="%pattern.one.name" description="%pattern.one.desc" 
+	context="query_context" 
+	id="pattern.query.one" 
+	enabled="true"
+	autoinsert="false">one(${var} | ${body})</template>
+
+<template name="%pattern.sortedby.name" description="%pattern.sortedby.desc" 
+	context="query_context" 
+	id="pattern.query.sortedby" 
+	enabled="true"
+	autoinsert="false">sortedBy(${var} | ${body})</template>
+
 <!-- CONTEXT: rule_context -->
 <template name="%pattern.collect.name" description="%pattern.collect.desc" 
 	context="rule_context" 
@@ -39,7 +83,51 @@
 	id="pattern.rule.reject" 
 	enabled="true"
 	autoinsert="false">reject(${iterator} | ${boolean_expression})</template>
-	
+
+<template name="%pattern.iterate.name" description="%pattern.iterate.desc" 
+	context="rule_context" 
+	id="pattern.rule.iterate" 
+	enabled="true"
+	autoinsert="false">iterate(${iterator}; ${var_name}: ${var_type} = ${init_exp} |
+	${body}
+)</template>
+
+<template name="%pattern.exists.name" description="%pattern.exists.desc" 
+	context="rule_context" 
+	id="pattern.rule.exists" 
+	enabled="true"
+	autoinsert="false">exists(${var} | ${body})</template>
+
+<template name="%pattern.forall.name" description="%pattern.forall.desc" 
+	context="rule_context" 
+	id="pattern.rule.forall" 
+	enabled="true"
+	autoinsert="false">forAll(${var} | ${body})</template>
+
+<template name="%pattern.isunique.name" description="%pattern.isunique.desc" 
+	context="rule_context" 
+	id="pattern.rule.isunique" 
+	enabled="true"
+	autoinsert="false">isUnique(${var} | ${body})</template>
+
+<template name="%pattern.any.name" description="%pattern.any.desc" 
+	context="rule_context" 
+	id="pattern.rule.any" 
+	enabled="true"
+	autoinsert="false">any(${var} | ${body})</template>
+
+<template name="%pattern.one.name" description="%pattern.one.desc" 
+	context="rule_context" 
+	id="pattern.rule.one" 
+	enabled="true"
+	autoinsert="false">one(${var} | ${body})</template>
+
+<template name="%pattern.sortedby.name" description="%pattern.sortedby.desc" 
+	context="rule_context" 
+	id="pattern.rule.sortedby" 
+	enabled="true"
+	autoinsert="false">sortedBy(${var} | ${body})</template>
+
 <!-- CONTEXT: helper_context -->
 <template name="%pattern.collect.name" description="%pattern.collect.desc" 
 	context="helper_context" 
@@ -58,5 +146,49 @@
 	id="pattern.helper.reject" 
 	enabled="true"
 	autoinsert="false">reject(${iterator} | ${boolean_expression})</template>
-	
+
+<template name="%pattern.iterate.name" description="%pattern.iterate.desc" 
+	context="helper_context" 
+	id="pattern.helper.iterate" 
+	enabled="true"
+	autoinsert="false">iterate(${iterator}; ${var_name}: ${var_type} = ${init_exp} |
+	${body}
+)</template>
+
+<template name="%pattern.exists.name" description="%pattern.exists.desc" 
+	context="helper_context" 
+	id="pattern.helper.exists" 
+	enabled="true"
+	autoinsert="false">exists(${var} | ${body})</template>
+
+<template name="%pattern.forall.name" description="%pattern.forall.desc" 
+	context="helper_context" 
+	id="pattern.helper.forall" 
+	enabled="true"
+	autoinsert="false">forAll(${var} | ${body})</template>
+
+<template name="%pattern.isunique.name" description="%pattern.isunique.desc" 
+	context="helper_context" 
+	id="pattern.helper.isunique" 
+	enabled="true"
+	autoinsert="false">isUnique(${var} | ${body})</template>
+
+<template name="%pattern.any.name" description="%pattern.any.desc" 
+	context="helper_context" 
+	id="pattern.helper.any" 
+	enabled="true"
+	autoinsert="false">any(${var} | ${body})</template>
+
+<template name="%pattern.one.name" description="%pattern.one.desc" 
+	context="helper_context" 
+	id="pattern.helper.one" 
+	enabled="true"
+	autoinsert="false">one(${var} | ${body})</template>
+
+<template name="%pattern.sortedby.name" description="%pattern.sortedby.desc" 
+	context="helper_context" 
+	id="pattern.helper.sortedby" 
+	enabled="true"
+	autoinsert="false">sortedBy(${var} | ${body})</template>
+
 </templates>

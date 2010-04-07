@@ -3,9 +3,96 @@
 <templates>
 
 <!-- CONTEXT: query_context -->
+<template name="%pattern.let.name" description="%pattern.let.desc" 
+	context="query_context" 
+	id="pattern.query.let" 
+	enabled="true"
+	autoinsert="false">let ${var_name} : ${var_type} = ${var_init_exp} in ${exp}</template>
+
+<template name="%pattern.if_dec.name" description="%pattern.if_dec.desc" 
+	context="query_context" 
+	id="pattern.query.if_dec" 
+	enabled="true"
+	autoinsert="false">if ${cond} then ${then_statements} else ${else_statements} endif</template>
+
+<template name="%pattern.if_imp.name" description="%pattern.if_imp.desc" 
+	context="query_context" 
+	id="pattern.query.if_imp" 
+	enabled="true"
+	autoinsert="false">if (${cond}) {
+	${then_statements}
+} else {
+	${else_statements}
+}</template>
+
+<template name="%pattern.for.name" description="%pattern.for.desc" 
+	context="query_context" 
+	id="pattern.query.for" 
+	enabled="true"
+	autoinsert="false">for (${iterator} in ${collection}) {
+	${statements}
+}</template>
 
 <!-- CONTEXT: rule_context -->
+<template name="%pattern.let.name" description="%pattern.let.desc" 
+	context="rule_context" 
+	id="pattern.rule.let" 
+	enabled="true"
+	autoinsert="false">let ${var_name} : ${var_type} = ${var_init_exp} in ${exp}</template>
+
+<template name="%pattern.if_dec.name" description="%pattern.if_dec.desc" 
+	context="rule_context" 
+	id="pattern.rule.if_dec" 
+	enabled="true"
+	autoinsert="false">if ${cond} then ${then_statements} else ${else_statements} endif</template>
+
+<template name="%pattern.if_imp.name" description="%pattern.if_imp.desc" 
+	context="rule_context" 
+	id="pattern.rule.if_imp" 
+	enabled="true"
+	autoinsert="false">if (${cond}) {
+	${then_statements}
+} else {
+	${else_statements}
+}</template>
+
+<template name="%pattern.for.name" description="%pattern.for.desc" 
+	context="rule_context" 
+	id="pattern.rule.for" 
+	enabled="true"
+	autoinsert="false">for (${iterator} in ${collection}) {
+	${statements}
+}</template>
 
 <!-- CONTEXT: helper_context -->
+<template name="%pattern.let.name" description="%pattern.let.desc" 
+	context="helper_context" 
+	id="pattern.helper.let" 
+	enabled="true"
+	autoinsert="false">let ${var_name} : ${var_type} = ${var_init_exp} in ${exp}</template>
+
+<template name="%pattern.if_dec.name" description="%pattern.if_dec.desc" 
+	context="helper_context" 
+	id="pattern.helper.if_dec" 
+	enabled="true"
+	autoinsert="false">if ${cond} then ${then_statements} else ${else_statements} endif</template>
+
+<template name="%pattern.if_imp.name" description="%pattern.if_imp.desc" 
+	context="helper_context" 
+	id="pattern.helper.if_imp" 
+	enabled="true"
+	autoinsert="false">if (${cond}) {
+	${then_statements}
+} else {
+	${else_statements}
+}</template>
+
+<template name="%pattern.for.name" description="%pattern.for.desc" 
+	context="helper_context" 
+	id="pattern.helper.for" 
+	enabled="true"
+	autoinsert="false">for (${iterator} in ${collection}) {
+	${statements}
+}</template>
 
 </templates>
