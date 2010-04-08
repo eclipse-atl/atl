@@ -228,6 +228,8 @@ public class AtlOccurrencesFinder implements IOccurrencesFinder {
 			return null;
 		String text = analyser.getHelper().getText(element, 0);
 		int[] offsets = analyser.getHelper().getElementOffsets(element, 0);
+		if(offsets == null)
+			return null;
 		int offset = offsets[0];
 		if (oclIsKindOf(element, "IteratorExp") || //$NON-NLS-1$
 				oclIsKindOf(element, "NavigationOrAttributeCallExp") || //$NON-NLS-1$
