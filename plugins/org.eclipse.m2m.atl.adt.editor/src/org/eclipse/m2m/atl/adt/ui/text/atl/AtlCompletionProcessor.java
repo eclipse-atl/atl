@@ -75,9 +75,6 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 			"reject", "iterate", "let", "exists", "forAll", "isUnique", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 			"any", "one", "sortedBy", "if", "for",}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
-	
-	
-
 	private static final HashMap<String, String[]> PREFIX_KEYWORDS_NAMES = new HashMap<String, String[]>() {
 		{
 			this.put(AtlContextType.RULE_CONTEXT_ID, new String[] {"true", "false", "not", "and", "or", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -85,7 +82,7 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 					"then", "else", "endif", "let", "for", "div", "refining", "entrypoint", "endpoint", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
 					"extends", "unique", "lazy", "super",}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			this.put(AtlContextType.HELPER_CONTEXT_ID, new String[] {"def", "context", "using", "distinct", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-					"foreach", "do", "if", "then", "else", "endif", "let", "in", "for",});  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+					"foreach", "do", "if", "then", "else", "endif", "let", "in", "for",}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
 			this.put(AtlContextType.QUERY_CONTEXT_ID, new String[] {
 					"let", "in", "do", "for", "if", "then", "else", "endif",}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 			this.put(AtlContextType.MODULE_CONTEXT_ID, new String[] {
@@ -134,11 +131,13 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 	 * The value says the position compared with the others panels.
 	 */
 	private static final int DEFAULT_PROPOSALS = 0;
+
 	/**
 	 * The template proposals panel, shows only the available templates for a given prefix.<br />
 	 * The value says the position compared with the others panels.
 	 */
 	private static final int TEMPLATE_PROPOSALS = 1;
+
 	/**
 	 * The global proposals panel, shows all the helpers only on variables of type <code>OclAnyType</code>.<br />
 	 * The value says the position compared with the others panels.
@@ -218,13 +217,13 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		try {
 			ITextSelection selection = (ITextSelection)refViewer.getSelectionProvider().getSelection();
 			int offset = selection.getOffset() + selection.getLength();
-			if(proposalMode == DEFAULT_PROPOSALS) {
+			if (proposalMode == DEFAULT_PROPOSALS) {
 				fContentAssistant.setStatusMessage("Default proposals"); //$NON-NLS-1$
 				fContentAssistant.setEmptyMessage("No default proposals"); //$NON-NLS-1$
 			} else if (proposalMode == GLOBAL_PROPOSALS) {
 				fContentAssistant.setStatusMessage("Global proposals"); //$NON-NLS-1$
 				fContentAssistant.setEmptyMessage("No global proposals"); //$NON-NLS-1$
-			} else if(proposalMode == TEMPLATE_PROPOSALS) {
+			} else if (proposalMode == TEMPLATE_PROPOSALS) {
 				fContentAssistant.setStatusMessage("Template proposals"); //$NON-NLS-1$
 				fContentAssistant.setEmptyMessage("No template proposals"); //$NON-NLS-1$
 			}
@@ -233,7 +232,7 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			return null;
 		} finally {
-			proposalMode = (proposalMode+1)%3;
+			proposalMode = (proposalMode + 1) % 3;
 		}
 	}
 
@@ -271,19 +270,18 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		atlContext = currentAnalyser.getContext(offset);
 
 		if (AtlContextType.ATL_CONTEXT_ID.equals(atlContext)) {
-			if(proposalMode == DEFAULT_PROPOSALS)
+			if (proposalMode == DEFAULT_PROPOSALS)
 				listProposals.addAll(getTagProposals(offset, line, prefix, datasource));
 		} else {
 			if (line.indexOf("--") == -1) { //$NON-NLS-1$
-				if(proposalMode == DEFAULT_PROPOSALS)
+				if (proposalMode == DEFAULT_PROPOSALS)
 					listProposals.addAll(getAtlModelProposals(prefix, offset, datasource, currentAnalyser));
-				else if(proposalMode == GLOBAL_PROPOSALS)
+				else if (proposalMode == GLOBAL_PROPOSALS)
 					listProposals.addAll(getGlobalProposals(prefix, offset, datasource, currentAnalyser));
 			}
 		}
 		if (line.indexOf("--") == -1) { //$NON-NLS-1$
-			if(proposalMode == DEFAULT_PROPOSALS ||
-					proposalMode == TEMPLATE_PROPOSALS)
+			if (proposalMode == DEFAULT_PROPOSALS || proposalMode == TEMPLATE_PROPOSALS)
 				listProposals.addAll(getInstalledTemplates(prefix, offset));
 		}
 
@@ -466,12 +464,17 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 
 	/**
 	 * Computes the global proposals, that will be shown only on variables of type <code>OclAnyType</code>.<br/>
-	 * The global proposals gather the helpers (attributes or not) of every types. It can be used to show the operations of the <code>OclAnyType</code>.
+	 * The global proposals gather the helpers (attributes or not) of every types. It can be used to show the
+	 * operations of the <code>OclAnyType</code>.
 	 * 
-	 * @param prefix the current prefix
-	 * @param offset the current offset
-	 * @param datasource the current datasource
-	 * @param currentAnalyser the current analyser
+	 * @param prefix
+	 *            the current prefix
+	 * @param offset
+	 *            the current offset
+	 * @param datasource
+	 *            the current datasource
+	 * @param currentAnalyser
+	 *            the current analyser
 	 * @return the list of global proposals (helpers of every types).
 	 * @throws BadLocationException
 	 */
@@ -483,15 +486,16 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 			EObject source = (EObject)AtlTypesProcessor.eGet(locatedElement, "source"); //$NON-NLS-1$
 			if (source != null) {
 				OclAnyType type = typeProcessor.getType(source);
-				if(type.getClass().equals(OclAnyType.class) ||
-						type.getClass().equals(ModuleType.class)) {
+				if (type.getClass().equals(OclAnyType.class) || type.getClass().equals(ModuleType.class)) {
 					res.addAll(createFeatureProposals(prefix, offset, typeProcessor.getUnit()
 							.getAllAttributes()));
 					res.addAll(createOperationProposals(prefix, offset, type, typeProcessor.getUnit()
 							.getAllHelpers(), currentAnalyser));
 					// The line below adds all the OclType operations to the global proposals
-					/*res.addAll(createOperationProposals(prefix, offset, type, OclAnyType.getInstance().getOperations(),
-							currentAnalyser));*/
+					/*
+					 * res.addAll(createOperationProposals(prefix, offset, type,
+					 * OclAnyType.getInstance().getOperations(), currentAnalyser));
+					 */
 				}
 			}
 		}
@@ -509,118 +513,118 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 		if (locatedElement != null) {
 
 			EObject container = currentAnalyser.getContainer(locatedElement);
-			if (container != null) {
 
-				if (AtlTypesProcessor.oclIsKindOf(locatedElement, "OclModel") || //$NON-NLS-1$
-						AtlTypesProcessor.oclIsKindOf(locatedElement, "OclModelElement") //$NON-NLS-1$
-						|| AtlTypesProcessor.oclIsKindOf(locatedElement, "OclFeatureDefinition") //$NON-NLS-1$
-						|| AtlTypesProcessor.oclIsKindOf(locatedElement, "OclType")) { //$NON-NLS-1$
+			if (AtlTypesProcessor.oclIsKindOf(locatedElement, "OclModel") || //$NON-NLS-1$
+					AtlTypesProcessor.oclIsKindOf(locatedElement, "OclModelElement") //$NON-NLS-1$
+					|| AtlTypesProcessor.oclIsKindOf(locatedElement, "OclFeatureDefinition") //$NON-NLS-1$
+					|| AtlTypesProcessor.oclIsKindOf(locatedElement, "OclType")) { //$NON-NLS-1$
 
-					/*
-					 * Classifiers proposals.
-					 */
+				/*
+				 * Classifiers proposals.
+				 */
 
-					if (atlContext.equals(AtlContextType.RULE_CONTEXT_ID)) {
-						if (AtlTypesProcessor.oclIsKindOf(container, "InPatternElement") || AtlTypesProcessor.oclIsKindOf(container, "InPattern")) { //$NON-NLS-1$ //$NON-NLS-2$
-							res.addAll(createTypeProposals(prefix, offset, datasource
-									.getClassifiers(AtlSourceManager.FILTER_INPUT_METAMODELS)));
-						} else if (AtlTypesProcessor.oclIsKindOf(container, "OutPatternElement")) { //$NON-NLS-1$
-							res.addAll(createTypeProposals(prefix, offset, datasource
-									.getClassifiers(AtlSourceManager.FILTER_OUTPUT_METAMODELS)));
-						} else {
-							res.addAll(createTypeProposals(prefix, offset, datasource
-									.getClassifiers(AtlSourceManager.FILTER_ALL_METAMODELS)));
-							res.addAll(createTypeProposals(prefix, offset, datasource.getAtlPrimitiveTypes()));
-							res.addAll(createComplexTypeProposals(prefix, offset, currentAnalyser));
-						}
-					} else if (atlContext.equals(AtlContextType.HELPER_CONTEXT_ID)) {
-						// could be restricted to input meta elements
+				if (atlContext.equals(AtlContextType.RULE_CONTEXT_ID)) {
+					if (container != null
+							&& (AtlTypesProcessor.oclIsKindOf(container, "InPatternElement") || AtlTypesProcessor.oclIsKindOf(container, "InPattern"))) { //$NON-NLS-1$ //$NON-NLS-2$
+						res.addAll(createTypeProposals(prefix, offset, datasource
+								.getClassifiers(AtlSourceManager.FILTER_INPUT_METAMODELS)));
+					} else if (container != null
+							&& AtlTypesProcessor.oclIsKindOf(container, "OutPatternElement")) { //$NON-NLS-1$
+						res.addAll(createTypeProposals(prefix, offset, datasource
+								.getClassifiers(AtlSourceManager.FILTER_OUTPUT_METAMODELS)));
+					} else {
 						res.addAll(createTypeProposals(prefix, offset, datasource
 								.getClassifiers(AtlSourceManager.FILTER_ALL_METAMODELS)));
 						res.addAll(createTypeProposals(prefix, offset, datasource.getAtlPrimitiveTypes()));
-
-						if (!(AtlTypesProcessor.oclIsKindOf(container, "OclContextDefinition") || //$NON-NLS-1$
-						AtlTypesProcessor.oclIsKindOf(container, "OclFeatureDefinition"))) { //$NON-NLS-1$
-							res.addAll(createComplexTypeProposals(prefix, offset, currentAnalyser));
-						}
-					} else if (atlContext.equals(AtlContextType.QUERY_CONTEXT_ID)) {
-						// could be restricted to input meta elements
-						res.addAll(createTypeProposals(prefix, offset, datasource
-								.getClassifiers(AtlSourceManager.FILTER_ALL_METAMODELS)));
-						res.addAll(createTypeProposals(prefix, offset, datasource.getAtlPrimitiveTypes()));
+						res.addAll(createComplexTypeProposals(prefix, offset, currentAnalyser));
 					}
-				} else if (AtlTypesProcessor.oclIsKindOf(locatedElement, "OutPattern")) { //$NON-NLS-1$
+				} else if (atlContext.equals(AtlContextType.HELPER_CONTEXT_ID)) {
+					// could be restricted to input meta elements
+					res.addAll(createTypeProposals(prefix, offset, datasource
+							.getClassifiers(AtlSourceManager.FILTER_ALL_METAMODELS)));
+					res.addAll(createTypeProposals(prefix, offset, datasource.getAtlPrimitiveTypes()));
 
-					/*
-					 * Bindings proposals.
-					 */
+					if (container != null
+							&& (!(AtlTypesProcessor.oclIsKindOf(container, "OclContextDefinition") || //$NON-NLS-1$
+							AtlTypesProcessor.oclIsKindOf(container, "OclFeatureDefinition")))) { //$NON-NLS-1$
+						res.addAll(createComplexTypeProposals(prefix, offset, currentAnalyser));
+					}
+				} else if (atlContext.equals(AtlContextType.QUERY_CONTEXT_ID)) {
+					// could be restricted to input meta elements
+					res.addAll(createTypeProposals(prefix, offset, datasource
+							.getClassifiers(AtlSourceManager.FILTER_ALL_METAMODELS)));
+					res.addAll(createTypeProposals(prefix, offset, datasource.getAtlPrimitiveTypes()));
+				}
+			} else if (AtlTypesProcessor.oclIsKindOf(locatedElement, "OutPattern")) { //$NON-NLS-1$
 
-					if (currentAnalyser.getLostTypesNames().contains("Binding")) { //$NON-NLS-1$
-						EObject simpleOutPatternElement = currentAnalyser
-								.getLastLostElementByType("SimpleOutPatternElement"); //$NON-NLS-1$
-						if (simpleOutPatternElement != null) {
-							EObject oclModelElement = (EObject)AtlTypesProcessor.eGet(
-									simpleOutPatternElement, "type"); //$NON-NLS-1$
-							if (oclModelElement != null) {
-								OclAnyType type = OclAnyType.create(getSourceManager(), oclModelElement);
-								res.addAll(createBindingProposals(prefix, offset, type.getFeatures()));
-							}
-						} else {
-							// TODO manage distinct...foreach
+				/*
+				 * Bindings proposals.
+				 */
+
+				if (currentAnalyser.getLostTypesNames().contains("Binding")) { //$NON-NLS-1$
+					EObject simpleOutPatternElement = currentAnalyser
+							.getLastLostElementByType("SimpleOutPatternElement"); //$NON-NLS-1$
+					if (simpleOutPatternElement != null) {
+						EObject oclModelElement = (EObject)AtlTypesProcessor.eGet(simpleOutPatternElement,
+								"type"); //$NON-NLS-1$
+						if (oclModelElement != null) {
+							OclAnyType type = OclAnyType.create(getSourceManager(), oclModelElement);
+							res.addAll(createBindingProposals(prefix, offset, type.getFeatures()));
 						}
 					} else {
-
-						String templateName = Messages
-								.getString("AtlCompletionProcessor.OUTPUT_PATTERN_NAME"); //$NON-NLS-1$
-						String pattern = "${variable} : ${type} (\n\t\t${cursor}\t\n)"; //$NON-NLS-1$
-						String description = Messages
-								.getString("AtlCompletionProcessor.OUTPUT_PATTERN_DESCRIPTION"); //$NON-NLS-1$
-
-						String information = "variable : type (\n\t\t\t\n)"; //$NON-NLS-1$
-						Template template = new Template(templateName.toString(), description, atlContext,
-								pattern.toString(), false);
-						ICompletionProposal proposal = convertToProposal(template, prefix, offset,
-								AtlUIPlugin.getDefault().getImage("$nl$/icons/templateprop_co.gif"), true, //$NON-NLS-1$
-								information);
-						if (proposal != null) {
-							res.add(proposal);
-						}
-					}
-				} else if (AtlTypesProcessor.oclIsKindOf(locatedElement, "VariableExp") //$NON-NLS-1$
-						|| AtlTypesProcessor.oclIsKindOf(locatedElement, "VariableDeclaration")) { //$NON-NLS-1$
-
-					/*
-					 * Variables proposals.
-					 */
-
-					res.addAll(createVariablesProposals(prefix, offset, typeProcessor
-							.getVariables(locatedElement)));
-
-				} else if (AtlTypesProcessor.oclIsKindOf(locatedElement, "NavigationOrAttributeCallExp") //$NON-NLS-1$
-						|| AtlTypesProcessor.oclIsKindOf(locatedElement, "CollectionOperationCallExp")) { //$NON-NLS-1$
-
-					/*
-					 * Navigation proposals.
-					 */
-
-					EObject source = (EObject)AtlTypesProcessor.eGet(locatedElement, "source"); //$NON-NLS-1$
-					if (source != null) {
-						OclAnyType type = typeProcessor.getType(source);
-
-						res.addAll(createFeatureProposals(prefix, offset, type.getFeatures()));
-						res.addAll(createFeatureProposals(prefix, offset, typeProcessor.getUnit()
-								.getAttributes(type)));
-						res.addAll(createOperationProposals(prefix, offset, type, typeProcessor.getUnit()
-								.getHelpers(type), currentAnalyser));
-						res.addAll(createOperationProposals(prefix, offset, type, type.getOperations(),
-								currentAnalyser));
-
-					} else {
-						// no source found
+						// TODO manage distinct...foreach
 					}
 				} else {
-					// unrecognized located element
+
+					String templateName = Messages.getString("AtlCompletionProcessor.OUTPUT_PATTERN_NAME"); //$NON-NLS-1$
+					String pattern = "${variable} : ${type} (\n\t\t${cursor}\t\n)"; //$NON-NLS-1$
+					String description = Messages
+							.getString("AtlCompletionProcessor.OUTPUT_PATTERN_DESCRIPTION"); //$NON-NLS-1$
+
+					String information = "variable : type (\n\t\t\t\n)"; //$NON-NLS-1$
+					Template template = new Template(templateName.toString(), description, atlContext,
+							pattern.toString(), false);
+					ICompletionProposal proposal = convertToProposal(template, prefix, offset, AtlUIPlugin
+							.getDefault().getImage("$nl$/icons/templateprop_co.gif"), true, //$NON-NLS-1$
+							information);
+					if (proposal != null) {
+						res.add(proposal);
+					}
 				}
+			} else if (AtlTypesProcessor.oclIsKindOf(locatedElement, "VariableExp") //$NON-NLS-1$
+					|| AtlTypesProcessor.oclIsKindOf(locatedElement, "VariableDeclaration")) { //$NON-NLS-1$
+
+				/*
+				 * Variables proposals.
+				 */
+
+				res.addAll(createVariablesProposals(prefix, offset, typeProcessor
+						.getVariables(locatedElement)));
+
+			} else if (AtlTypesProcessor.oclIsKindOf(locatedElement, "NavigationOrAttributeCallExp") //$NON-NLS-1$
+					|| AtlTypesProcessor.oclIsKindOf(locatedElement, "CollectionOperationCallExp")) { //$NON-NLS-1$
+
+				/*
+				 * Navigation proposals.
+				 */
+
+				EObject source = (EObject)AtlTypesProcessor.eGet(locatedElement, "source"); //$NON-NLS-1$
+				if (source != null) {
+					OclAnyType type = typeProcessor.getType(source);
+
+					res.addAll(createFeatureProposals(prefix, offset, type.getFeatures()));
+					res.addAll(createFeatureProposals(prefix, offset, typeProcessor.getUnit().getAttributes(
+							type)));
+					res.addAll(createOperationProposals(prefix, offset, type, typeProcessor.getUnit()
+							.getHelpers(type), currentAnalyser));
+					res.addAll(createOperationProposals(prefix, offset, type, type.getOperations(),
+							currentAnalyser));
+
+				} else {
+					// no source found
+				}
+			} else {
+				// unrecognized located element
 			}
 		} else {
 			// no located element found
@@ -650,8 +654,8 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 				if (!needPrefix(template)
 						|| (needPrefix(template) && !"".equals(prefix) && template.getPattern().startsWith(//$NON-NLS-1$
 								prefix))) {
-					matches.add(new AtlInstalledTemplateProposal(template, context, (IRegion)region, getImage(template), getRelevance(template,
-							prefix), template.getDescription()));
+					matches.add(new AtlInstalledTemplateProposal(template, context, (IRegion)region,
+							getImage(template), getRelevance(template, prefix), template.getDescription()));
 				}
 			}
 		}
