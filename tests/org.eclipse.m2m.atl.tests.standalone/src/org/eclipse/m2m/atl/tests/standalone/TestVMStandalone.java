@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.tests.standalone;
 import java.util.Properties;
 
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.core.ui.vm.RegularVMLauncher;
@@ -54,6 +55,7 @@ public class TestVMStandalone extends TestNonRegressionVM {
 
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				new UMLResourceFactoryImpl());
+		EPackage.Registry.INSTANCE.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 		EPackage.Registry.INSTANCE.put(UMLResource.UML_METAMODEL_URI, UMLPackage.eINSTANCE);
 		EPackage.Registry.INSTANCE.put("http://www.eclipse.org/uml2/2.0.0/UML", UMLPackage.eINSTANCE); //$NON-NLS-1$
 		EPackage.Registry.INSTANCE.put("http://www.eclipse.org/uml2/2.1.0/UML", UMLPackage.eINSTANCE); //$NON-NLS-1$
