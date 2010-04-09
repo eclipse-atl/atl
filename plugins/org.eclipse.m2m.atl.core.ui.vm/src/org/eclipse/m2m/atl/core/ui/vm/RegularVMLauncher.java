@@ -69,7 +69,7 @@ public class RegularVMLauncher implements ILauncher {
 	private void addModel(IModel model, String name, String referenceModelName) {
 		if (models.containsKey(name)) {
 			ATLLogger.warning(Messages.getString(
-					"RegularVMLauncher.MODEL_EVER_REGISTERED", new Object[] {name})); //$NON-NLS-1$
+					"RegularVMLauncher.MODEL_REGISTERED", new Object[] {name})); //$NON-NLS-1$
 		} else {
 			models.put(name, model);
 		}
@@ -122,7 +122,7 @@ public class RegularVMLauncher implements ILauncher {
 	public void addLibrary(String name, Object library) {
 		if (libraries.containsKey(name)) {
 			ATLLogger.warning(Messages.getString(
-					"RegularVMLauncher.LIBRARY_EVER_REGISTERED", new Object[] {name})); //$NON-NLS-1$
+					"RegularVMLauncher.LIBRARY_REGISTERED", new Object[] {name})); //$NON-NLS-1$
 		} else {
 			libraries.put(name, getASMFromObject(library));
 		}

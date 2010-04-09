@@ -84,7 +84,7 @@ public class ASMInjector implements IInjector {
 			ASMModel asmModel = null;
 
 			if (source.startsWith("#")) { //$NON-NLS-1$
-				// nothing to do, ever loaded in newModel
+				// nothing to do, already loaded in newModel
 				return;
 			} else if (ml instanceof EMFModelLoader) {
 				if (source.startsWith("pathmap:")) { //$NON-NLS-1$
