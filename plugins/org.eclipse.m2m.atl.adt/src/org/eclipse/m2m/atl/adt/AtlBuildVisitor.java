@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.adt.runner.ATLProperties;
@@ -102,6 +103,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
 	public boolean visit(IResource resource) throws CoreException {
+
 		String extension = resource.getFileExtension();
 		if (("atl".equals(extension) && (resource instanceof IFile)) && ((IFile)resource).getLocation().toFile().length() > 0//$NON-NLS-1$
 				&& (!hasAsmFile(resource) || hasChanged(resource))) {
@@ -115,16 +117,18 @@ public class AtlBuildVisitor implements IResourceVisitor {
 				markerMaker.resetPbmMarkers(resource, pbms);
 				IFile asmFile = getAsmFile(resource);
 				if (asmFile.exists()) {
-					asmFile.setDerived(true);
+					asmFile.setDerived(true, new NullProgressMonitor());
 				}
 				is.close();
 				if (pbms.length == 0) {
 					for (IFile propertyFile : getRelatedPropertyFiles((IFile)resource)) {
-						IFile javaFile = propertyFile.getParent().getFile(
-								new Path(propertyFile.getName()).removeFileExtension().addFileExtension(
-										"java")); //$NON-NLS-1$
-						CreateRunnableAtlOperation op = new CreateRunnableAtlOperation(propertyFile, javaFile);
-						op.run(monitor);
+						if (!propertyFile.isDerived()) {					
+							IFile javaFile = propertyFile.getParent().getFile(
+									new Path(propertyFile.getName()).removeFileExtension().addFileExtension(
+											"java")); //$NON-NLS-1$
+							CreateRunnableAtlOperation op = new CreateRunnableAtlOperation(propertyFile, javaFile);
+							op.run(monitor);
+						}
 					}
 				}
 			} catch (CompilerNotFoundException cnfee) {

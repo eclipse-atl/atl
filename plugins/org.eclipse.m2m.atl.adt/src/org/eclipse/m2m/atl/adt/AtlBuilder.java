@@ -41,8 +41,8 @@ public class AtlBuilder extends IncrementalProjectBuilder {
 	 * @see org.eclipse.core.resources.IncrementalProjectBuilder#build(int, java.util.Map,
 	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
-	@SuppressWarnings("unchecked")
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {
 		IWorkspaceRunnable wr = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {

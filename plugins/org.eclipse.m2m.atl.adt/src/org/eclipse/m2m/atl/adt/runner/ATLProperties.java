@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.adt.runner;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +59,9 @@ public class ATLProperties extends Properties {
 	public ATLProperties(IFile file) throws IOException, CoreException {
 		super();
 		this.file = file;
-		load(file.getContents());
+		InputStream is = file.getContents();
+		load(is);
+		is.close();
 		this.name = file.getFullPath().removeFileExtension().lastSegment();
 	}
 
@@ -88,16 +91,17 @@ public class ATLProperties extends Properties {
 		String modulesList = getProperty(name + '.' + MODULES_ID);
 		if (modulesList != null) {
 			moduleFileNames = modulesList.split(","); //$NON-NLS-1$
-		}
-		List<IFile> atlModules = new ArrayList<IFile>();
-		for (String moduleFileName : moduleFileNames) {
-			IResource member = file.getParent().findMember(moduleFileName.trim());
-			if (member != null) {
-				IFile moduleFile = CreateRunnableData.getFile(member.getFullPath().toString());
-				atlModules.add(moduleFile);
+			List<IFile> atlModules = new ArrayList<IFile>();
+			for (String moduleFileName : moduleFileNames) {
+				IResource member = file.getParent().findMember(moduleFileName.trim());
+				if (member != null) {
+					IFile moduleFile = CreateRunnableData.getFile(member.getFullPath().toString());
+					atlModules.add(moduleFile);
+				}
 			}
+			return atlModules.toArray(new IFile[atlModules.size()]);
 		}
-		return atlModules.toArray(new IFile[atlModules.size()]);
+		return null;
 	}
 
 	private Map<String, String> getMapFromProperties(String prefix) {
