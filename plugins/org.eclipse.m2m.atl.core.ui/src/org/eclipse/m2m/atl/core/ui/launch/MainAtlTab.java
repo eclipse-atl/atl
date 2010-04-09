@@ -721,13 +721,10 @@ public class MainAtlTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(ATLLaunchConstants.MODEL_TYPE, savedType);
 		configuration.setAttribute(ATLLaunchConstants.IS_REFINING, isRefining);
 		configuration.setAttribute(ATLLaunchConstants.ATL_COMPILER, atlcompiler);
-		if (isRefining) {
-			// refining mode workaround
-			configuration.setAttribute(ATLLaunchConstants.ORDERED_INPUT, new ArrayList<String>(savedInput
-					.keySet()));
-			configuration.setAttribute(ATLLaunchConstants.ORDERED_OUTPUT, new ArrayList<String>(savedOutput
-					.keySet()));
-		}
+		configuration.setAttribute(ATLLaunchConstants.ORDERED_INPUT, new ArrayList<String>(savedInput
+				.keySet()));
+		configuration.setAttribute(ATLLaunchConstants.ORDERED_OUTPUT, new ArrayList<String>(savedOutput
+				.keySet()));
 	}
 
 	/**

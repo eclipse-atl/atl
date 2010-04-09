@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -85,9 +86,9 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 		// Launch configuration analysis
 		String fileName = configuration.getAttribute(ATLLaunchConstants.ATL_FILE_NAME,
 				ATLLaunchConstants.NULL_PARAMETER);
-		Map<String, String> sourceModels = configuration.getAttribute(ATLLaunchConstants.INPUT,
+		Map<String, String> unsortedSourceModels = configuration.getAttribute(ATLLaunchConstants.INPUT,
 				Collections.EMPTY_MAP);
-		Map<String, String> targetModels = configuration.getAttribute(ATLLaunchConstants.OUTPUT,
+		Map<String, String> unsortedTargetModels = configuration.getAttribute(ATLLaunchConstants.OUTPUT,
 				Collections.EMPTY_MAP);
 		Map<String, String> launchConfigModelPaths = configuration.getAttribute(ATLLaunchConstants.PATH,
 				Collections.EMPTY_MAP);
@@ -166,7 +167,21 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 		if (monitor.isCanceled()) {
 			return;
 		}
+		
+		Map<String, String> sourceModels = unsortedSourceModels;
+		List<String> orderedInput = configuration.getAttribute(ATLLaunchConstants.ORDERED_INPUT,
+				Collections.EMPTY_LIST);
+		if (!orderedInput.isEmpty()) {
+			sourceModels = sort(unsortedSourceModels, orderedInput);
+		}
 
+		Map<String, String> targetModels = unsortedTargetModels;
+		List<String> orderedOutput = configuration.getAttribute(ATLLaunchConstants.ORDERED_OUTPUT,
+				Collections.EMPTY_LIST);
+		if (!orderedOutput.isEmpty()) {
+			targetModels = sort(unsortedTargetModels, orderedOutput);
+		}
+		
 		if (isRefiningTraceMode) {
 			/*
 			 * TODO: improve ATL header syntax to recognize inout models. Apply those changes to launch
@@ -176,17 +191,6 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 			Iterator<String> sourceIterator = sourceModels.keySet().iterator();
 			Iterator<String> targetIterator = targetModels.keySet().iterator();
 
-			List<String> orderedInput = configuration.getAttribute(ATLLaunchConstants.ORDERED_INPUT,
-					Collections.EMPTY_LIST);
-			if (!orderedInput.isEmpty()) {
-				sourceIterator = orderedInput.iterator();
-			}
-
-			List<String> orderedOutput = configuration.getAttribute(ATLLaunchConstants.ORDERED_OUTPUT,
-					Collections.EMPTY_LIST);
-			if (!orderedOutput.isEmpty()) {
-				targetIterator = orderedOutput.iterator();
-			}
 
 			Map<String, String> newTargetModels = new HashMap<String, String>();
 			newTargetModels.putAll(targetModels);
@@ -303,6 +307,14 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 		return null;
 	}
 
+	private static Map<String,String> sort(Map<String,String> mapToSort, List<String> orderedKeys) {
+		Map<String, String> res = new LinkedHashMap<String, String>();
+		for (String key : orderedKeys) {
+			res.put(key, mapToSort.get(key));
+		}		
+		return res;
+	}
+	
 	private static boolean addLaunchedModule(IFile file) {
 		if (!file.exists()) {
 			ATLLogger.severe(Messages.getString(
