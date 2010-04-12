@@ -80,17 +80,13 @@ public class AtlTypesProcessor {
 		} else if (oclIsKindOf(element, "BooleanExp")) { //$NON-NLS-1$
 			res = BooleanType.getInstance();
 		} else if (oclIsKindOf(element, "SequenceExp")) { //$NON-NLS-1$
-			// TODO get accurate type
-			res = SequenceType.getInstance();
+			res = new SequenceType(getCollectionExpType(element));
 		} else if (oclIsKindOf(element, "BagExp")) { //$NON-NLS-1$
-			// TODO get accurate type
-			res = BagType.getInstance();
+			res = new BagType(getCollectionExpType(element));
 		} else if (oclIsKindOf(element, "SetExp")) { //$NON-NLS-1$
-			// TODO get accurate type
-			res = SetType.getInstance();
+			res = new SetType(getCollectionExpType(element));
 		} else if (oclIsKindOf(element, "OrderedSetExp")) { //$NON-NLS-1$
-			// TODO get accurate type
-			res = OrderedSetType.getInstance();
+			res = new OrderedSetType(getCollectionExpType(element));
 		} else if (oclIsKindOf(element, "MapExp")) { //$NON-NLS-1$
 			// TODO get accurate type
 			res = MapType.getInstance();
@@ -186,13 +182,13 @@ public class AtlTypesProcessor {
 	public static String cutString(String s) {
 		StringBuffer sb = new StringBuffer(s);
 		int frameLength = 55;
-		for(int i=0;i<(sb.length()/frameLength);i++) {
-			int end = ((i+1)*frameLength)+i;
-			if(end > sb.length())
+		for (int i = 0; i < (sb.length() / frameLength); i++) {
+			int end = ((i + 1) * frameLength) + i;
+			if (end > sb.length())
 				end = sb.length();
 			int offset = sb.substring(0, end).lastIndexOf(' ');
-			if(offset != -1)
-				sb.replace(offset, offset+1, "\n"); //$NON-NLS-1$
+			if (offset != -1)
+				sb.replace(offset, offset + 1, "\n"); //$NON-NLS-1$
 		}
 		return sb.toString();
 	}
@@ -408,25 +404,25 @@ public class AtlTypesProcessor {
 	private String getOperationInformation(EObject element) throws BadLocationException {
 		String name = (String)eGet(element, "name"); //$NON-NLS-1$
 		Collection<EObject> arguments = (Collection<EObject>)eGet(element, "parameters"); //$NON-NLS-1$
-		int i=0;
+		int i = 0;
 		name += "("; //$NON-NLS-1$
 		if (arguments != null) {
 			for (EObject eObject : arguments) {
 				String argName = (String)eGet(eObject, "varName"); //$NON-NLS-1$
 				name += argName + " : " + getType(eObject); //$NON-NLS-1$
-				if(++i < arguments.size())
-					 name += ", "; //$NON-NLS-1$
+				if (++i < arguments.size())
+					name += ", "; //$NON-NLS-1$
 			}
 		}
 		name += ")"; //$NON-NLS-1$
 		EObject returnType = (EObject)eGet(element, "returnType"); //$NON-NLS-1$
-		OclType oclType =  OclAnyType.create(unit.getSourceManager(), returnType).getOclType();
+		OclType oclType = OclAnyType.create(unit.getSourceManager(), returnType).getOclType();
 		name += " : " + oclType; //$NON-NLS-1$
 		EObject eContainer = element.eContainer();
-		if(eContainer == null)
+		if (eContainer == null)
 			return name;
 		eContainer = eContainer.eContainer();
-		if(eContainer == null)
+		if (eContainer == null)
 			return name;
 		return name + "\n\n" + Operation.getDocumentation(eContainer); //$NON-NLS-1$
 	}
@@ -435,14 +431,14 @@ public class AtlTypesProcessor {
 		String name = (String)eGet(element, "name"); //$NON-NLS-1$
 		EObject eContainer = element.eContainer();
 		EObject type = (EObject)eGet(element, "type"); //$NON-NLS-1$
-		OclType oclType =  OclAnyType.create(unit.getSourceManager(), type).getOclType();
+		OclType oclType = OclAnyType.create(unit.getSourceManager(), type).getOclType();
 		name += " : " + oclType; //$NON-NLS-1$
-		if(eContainer == null)
+		if (eContainer == null)
 			return name;
 		eContainer = eContainer.eContainer();
-		if(eContainer == null)
+		if (eContainer == null)
 			return name;
-		return  name + "\n\n" + Feature.getDocumentation(eContainer); //$NON-NLS-1$
+		return name + "\n\n" + Feature.getDocumentation(eContainer); //$NON-NLS-1$
 	}
 
 	@SuppressWarnings("unchecked")
@@ -560,7 +556,7 @@ public class AtlTypesProcessor {
 		return OclAnyType.getInstance();
 	}
 
-	/*private OclAnyType getCollectionExpType(EObject element) throws BadLocationException {
+	private OclAnyType getCollectionExpType(EObject element) throws BadLocationException {
 		Collection<EObject> elements = (Collection<EObject>)eGet(element, "elements"); //$NON-NLS-1$
 		if (elements != null) {
 			OclAnyType tmp = null;
@@ -577,7 +573,7 @@ public class AtlTypesProcessor {
 			}
 		}
 		return OclAnyType.getInstance();
-	}*/
+	}
 
 	/**
 	 * Compute the "root" element: a module, a rule or an helper.
@@ -746,8 +742,28 @@ public class AtlTypesProcessor {
 					variables.put(variableName, type);
 				}
 			}
-		} else {
-			// TODO manage other local variables
+		} else if (oclIsKindOf(element, "IterateExp")) {//$NON-NLS-1$
+			Collection<EObject> iterators = (Collection<EObject>)eGet(element, "iterators"); //$NON-NLS-1$
+			if (iterators != null) {
+				for (EObject declaration : iterators) {
+					String variableName = eGet(declaration, "varName").toString(); //$NON-NLS-1$
+					EObject variableType = (EObject)eGet(declaration, "type"); //$NON-NLS-1$
+					OclAnyType type = null;
+					if (variableType != null) {
+						type = OclAnyType.create(unit.getSourceManager(), variableType);
+					} else {
+						type = getType(declaration);
+					}
+					variables.put(variableName, type);
+				}
+			}
+			EObject result = (EObject)eGet(element, "result"); //$NON-NLS-1$
+			if (result != null) {
+				String variableName = eGet(result, "varName").toString(); //$NON-NLS-1$
+				EObject variableType = (EObject)eGet(result, "type"); //$NON-NLS-1$			
+				OclAnyType type = OclAnyType.create(unit.getSourceManager(), variableType);
+				variables.put(variableName, type);
+			}
 		}
 		return variables;
 	}
@@ -815,7 +831,7 @@ public class AtlTypesProcessor {
 	 * @return the feature value
 	 */
 	public static Object eGet(EObject self, String featureName) {
-		if(self == null)
+		if (self == null)
 			return null;
 		EStructuralFeature feature = self.eClass().getEStructuralFeature(featureName);
 		if (feature != null) {
