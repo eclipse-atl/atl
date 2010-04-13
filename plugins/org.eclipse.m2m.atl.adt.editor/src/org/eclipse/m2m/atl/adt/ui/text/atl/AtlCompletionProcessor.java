@@ -159,19 +159,6 @@ public class AtlCompletionProcessor extends TemplateCompletionProcessor implemen
 	}
 
 	/**
-	 * Creates a new completion processor only based on an {@link IDocument}.
-	 * 
-	 * @param document
-	 *            the document
-	 */
-	public AtlCompletionProcessor(IDocument document) {
-		manager = new AtlSourceManager();
-		manager.updateDataSource(document.get());
-		fComparator = new AtlCompletionProposalComparator();
-		typeProcessor = new AtlTypesProcessor();
-	}
-
-	/**
 	 * Returns the source manager, which contains the main ATL file model.
 	 * 
 	 * @return the source manager
