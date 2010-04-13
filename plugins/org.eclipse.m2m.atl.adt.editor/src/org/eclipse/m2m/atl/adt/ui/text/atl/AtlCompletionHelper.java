@@ -144,26 +144,7 @@ public class AtlCompletionHelper {
 			int endOffset = document.getLineOffset(endLine - 1) + endColumn - 1;
 			return new int[] {debOffset, endOffset};
 		}
-
-		int[] res = null;
-
-		// compute location from sub elements
-		for (EObject subElement : element.eContents()) {
-			int[] subLocation = getElementOffsets(subElement, baseOffset);
-			if (subLocation != null) {
-				if (res != null) {
-					if (subLocation[0] < res[0]) {
-						res[0] = subLocation[0];
-					}
-					if (subLocation[1] > res[1]) {
-						res[1] = subLocation[1];
-					}
-				} else {
-					res = subLocation;
-				}
-			}
-		}
-		return res;
+		return null;
 	}
 
 	/**

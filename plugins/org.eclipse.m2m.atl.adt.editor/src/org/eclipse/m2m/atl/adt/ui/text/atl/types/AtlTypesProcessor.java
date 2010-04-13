@@ -234,10 +234,8 @@ public class AtlTypesProcessor {
 	public Map<String, OclAnyType> getVariables(EObject element) throws BadLocationException {
 		Map<String, OclAnyType> variables = new HashMap<String, OclAnyType>();
 		variables.putAll(getRootVariables(element));
-		EObject tmp = element;
-		while (tmp != null) {
-			variables.putAll(getLocalVariableDeclarations(tmp));
-			tmp = analyser.getContainer(tmp);
+		for (EObject container : analyser.getContainers(element)) {
+			variables.putAll(getLocalVariableDeclarations(container));
 		}
 		return variables;
 	}
@@ -581,13 +579,11 @@ public class AtlTypesProcessor {
 	 * @throws BadLocationException
 	 */
 	private EObject getRoot(EObject element) throws BadLocationException {
-		EObject tmp = element;
 		// rule / helper lookup
-		while (tmp != null) {
-			if (oclIsKindOf(tmp, "Rule") || oclIsKindOf(tmp, "Helper")) { //$NON-NLS-1$ //$NON-NLS-2$
-				return tmp;
+		for (EObject container : analyser.getContainers(element)) {
+			if (oclIsKindOf(container, "Rule") || oclIsKindOf(container, "Helper") || oclIsKindOf(container, "Unit")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				return container;
 			}
-			tmp = analyser.getContainer(tmp);
 		}
 		return analyser.getRoot();
 	}
@@ -857,8 +853,7 @@ public class AtlTypesProcessor {
 		if (module != null) {
 			allFeatures.addAll(module.getAttributes(context));
 		}
-		if(context instanceof ModuleType ||
-				context instanceof OclAnyType) {
+		if (context instanceof ModuleType || context instanceof OclAnyType) {
 			allFeatures.addAll(module.getAllAttributes());
 		}
 		for (Feature feature : allFeatures) {
@@ -890,8 +885,7 @@ public class AtlTypesProcessor {
 		if (module != null) {
 			allOperations.addAll(module.getHelpers(context));
 		}
-		if(context instanceof ModuleType ||
-				context instanceof OclAnyType) {
+		if (context instanceof ModuleType || context instanceof OclAnyType) {
 			allOperations.addAll(module.getAllHelpers());
 		}
 		for (Operation operation : allOperations) {

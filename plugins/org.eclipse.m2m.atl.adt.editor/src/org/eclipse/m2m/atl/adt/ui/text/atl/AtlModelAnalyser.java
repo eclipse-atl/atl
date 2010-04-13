@@ -106,6 +106,26 @@ public class AtlModelAnalyser {
 	}
 
 	/**
+	 * Computes an ordered list of containers of the given element.
+	 * 
+	 * @param element
+	 *            the element
+	 * @return the list of containers
+	 * @throws BadLocationException
+	 */
+	public List<EObject> getContainers(EObject element) throws BadLocationException {
+		List<EObject> res = new ArrayList<EObject>();
+		EObject tmp = element;
+		while (tmp != null) {
+			tmp = getContainer(tmp);
+			if (!res.contains(tmp)) {
+				res.add(tmp);
+			}
+		}
+		return res;
+	}
+
+	/**
 	 * Search the parent element of the given element, if present.
 	 * 
 	 * @param element
@@ -124,17 +144,59 @@ public class AtlModelAnalyser {
 				int maxDebOffset = -1;
 				while (ti.hasNext()) {
 					EObject tmp = ti.next();
-					int[] tmpOffsets = fHelper.getElementOffsets(tmp, modelOffset);
-					if (tmpOffsets != null) {
-						if (tmpOffsets[0] <= elementOffsets[0] && tmpOffsets[1] >= elementOffsets[1]) {
-							if (tmpOffsets[0] > maxDebOffset) {
-								maxDebOffset = tmpOffsets[0];
-								if (!element.equals(tmp)) {
-									res = tmp;
+					if (!element.equals(tmp)) {
+						int[] tmpOffsets = fHelper.getElementOffsets(tmp, modelOffset);
+						if (tmpOffsets != null) {
+							if (tmpOffsets[0] <= elementOffsets[0]
+									&& tmpOffsets[1] >= elementOffsets[1]
+									&& !((tmpOffsets[0] == elementOffsets[0]) && (tmpOffsets[1] == elementOffsets[1]))) {
+								if (tmpOffsets[0] > maxDebOffset) {
+									maxDebOffset = tmpOffsets[0];
+									if (!element.equals(tmp)) {
+										res = tmp;
+									}
 								}
 							}
 						}
 					}
+				}
+			} else {
+				if (AtlTypesProcessor.oclIsKindOf(element, "SimpleOutPatternElement") //$NON-NLS-1$
+						|| AtlTypesProcessor.oclIsKindOf(element, "InPattern")) { //$NON-NLS-1$
+					res = root;
+				} else if (AtlTypesProcessor.oclIsKindOf(element, "IfExp") //$NON-NLS-1$
+						|| AtlTypesProcessor.oclIsKindOf(element, "IteratorExp") //$NON-NLS-1$
+						|| AtlTypesProcessor.oclIsKindOf(element, "CollectionExp")) { //$NON-NLS-1$
+					// use of the parsing order
+					// TODO improve the parser or implement a dedicated parser
+					res = getPreviouslyParsedElement(element);
+				}
+				// Helper, Query, Rules ignored
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Computes the previous element in the model.
+	 * 
+	 * @param element
+	 *            the current element
+	 * @return the previous element
+	 * @throws BadLocationException
+	 */
+	public EObject getPreviouslyParsedElement(EObject element) throws BadLocationException {
+		EObject res = null;
+		if (root != null) {
+			TreeIterator<EObject> ti = root.eResource().getAllContents();
+			EObject last = root;
+			while (ti.hasNext()) {
+				EObject tmp = ti.next();
+				if (element.equals(tmp)) {
+					res = last;
+					break;
+				} else {
+					last = tmp;
 				}
 			}
 		}
