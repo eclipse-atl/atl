@@ -117,7 +117,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 				markerMaker.resetPbmMarkers(resource, pbms);
 				IFile asmFile = getAsmFile(resource);
 				if (asmFile.exists()) {
-					asmFile.setDerived(true, new NullProgressMonitor());
+					asmFile.setDerived(true);
 				}
 				is.close();
 				if (pbms.length == 0) {
