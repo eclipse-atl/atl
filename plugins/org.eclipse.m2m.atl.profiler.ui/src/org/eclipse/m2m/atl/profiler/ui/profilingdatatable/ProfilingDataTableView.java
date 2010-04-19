@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Arnaud Giuliani - initial API and implementation
+ *    Obeo - icons modifications
  *******************************************************************************/
 package org.eclipse.m2m.atl.profiler.ui.profilingdatatable;
 
@@ -30,7 +31,6 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerComparator;
-import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.profiler.core.ATLModelHandler;
 import org.eclipse.m2m.atl.profiler.core.ATLProfiler;
 import org.eclipse.m2m.atl.profiler.core.ProfilerModelHandler;
@@ -39,6 +39,7 @@ import org.eclipse.m2m.atl.profiler.exportmodel.ExportRoot;
 import org.eclipse.m2m.atl.profiler.model.ProfilingOperation;
 import org.eclipse.m2m.atl.profiler.model.provider.ModelItemProviderAdapterFactory;
 import org.eclipse.m2m.atl.profiler.ui.Messages;
+import org.eclipse.m2m.atl.profiler.ui.activators.ExecutionViewerActivator;
 import org.eclipse.m2m.atl.profiler.ui.executionviewer.view.ExecutionView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -59,6 +60,7 @@ import org.eclipse.ui.part.ViewPart;
  * The data table view.
  * 
  * @author <a href="mailto:arnaud.giuliani@c-s.fr">Arnaud Giuliani</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 public class ProfilingDataTableView extends ViewPart implements Observer, ISelectionListener {
 
@@ -96,9 +98,11 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 
 	private static final String EXPORT_DATA = Messages.getString("ProfilingDataTableView_XMI_EXPORT"); //$NON-NLS-1$
 
-	private static final String SHOW_PERCENTS_GIF = "iterator.gif"; //$NON-NLS-1$
+	private static final String SHOW_PERCENTS_GIF = "percentsStatistics.gif"; //$NON-NLS-1$
+	
+	private static final String SAVE_GIF = "save.gif"; //$NON-NLS-1$
 
-	private static final String HIDE_NATIVE_OPERATIONS_GIF = "hideMatchedRule.gif"; //$NON-NLS-1$
+	private static final String HIDE_NATIVE_OPERATIONS_GIF = "hideNativeOperations.gif"; //$NON-NLS-1$
 
 	private static final String SHOW_PERCENTAGES = Messages
 			.getString("ProfilingDataTableView_HIDE_NATIVE_OPERATIONS"); //$NON-NLS-1$
@@ -277,7 +281,7 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 				updateFilters(hideNativeOperationsAction);
 			}
 		};
-		hideNativeOperationsAction.setImageDescriptor(AtlUIPlugin
+		hideNativeOperationsAction.setImageDescriptor(ExecutionViewerActivator
 				.getImageDescriptor(HIDE_NATIVE_OPERATIONS_GIF));
 
 		showPercentsAction = new Action(SHOW_PERCENTS, Action.AS_CHECK_BOX) {
@@ -296,7 +300,7 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 
 			}
 		};
-		showPercentsAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor(SHOW_PERCENTS_GIF));
+		showPercentsAction.setImageDescriptor(ExecutionViewerActivator.getImageDescriptor(SHOW_PERCENTS_GIF));
 
 		xmiExportAction = new Action(EXPORT_DATA) {
 			@Override
@@ -329,7 +333,7 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 				}
 			}
 		};
-		xmiExportAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("libsreference.gif")); //$NON-NLS-1$
+		xmiExportAction.setImageDescriptor(ExecutionViewerActivator.getImageDescriptor(SAVE_GIF));
 
 		doubleClickAction = new Action() {
 			@Override

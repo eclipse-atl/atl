@@ -8,8 +8,12 @@
  *
  * Contributors:
  *    Arnaud Giuliani - initial API and implementation
+ *    Obeo - getImageDescriptor method, for icons directory
  *******************************************************************************/
 package org.eclipse.m2m.atl.profiler.ui.activators;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -19,6 +23,7 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle.
  * 
  * @author <a href="mailto:arnaud.giuliani@c-s.fr">Arnaud Giuliani</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 public class ExecutionViewerActivator extends AbstractUIPlugin {
 
@@ -73,6 +78,13 @@ public class ExecutionViewerActivator extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+		ExecutionViewerActivator uiPlugin = ExecutionViewerActivator.getDefault();
+		String pluginDir = uiPlugin.getBundle().getEntry("/").toString(); //$NON-NLS-1$
+		String iconPath = "icons/"; //$NON-NLS-1$
+		try {
+			return ImageDescriptor.createFromURL(new URL(pluginDir + iconPath + path));
+		} catch (MalformedURLException mfe) {
+			return ImageDescriptor.getMissingImageDescriptor();
+		}
 	}
 }

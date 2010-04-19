@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Arnaud Giuliani - initial API and implementation
+ *    Obeo - icons modifications
  *******************************************************************************/
 package org.eclipse.m2m.atl.profiler.ui.executionviewer.view;
 
@@ -19,13 +20,13 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.profiler.core.ATLModelHandler;
 import org.eclipse.m2m.atl.profiler.core.ATLProfiler;
 import org.eclipse.m2m.atl.profiler.core.ProfilerModelHandler;
@@ -34,6 +35,7 @@ import org.eclipse.m2m.atl.profiler.model.ExecutionError;
 import org.eclipse.m2m.atl.profiler.model.ProfilingOperation;
 import org.eclipse.m2m.atl.profiler.model.provider.ModelItemProviderAdapterFactory;
 import org.eclipse.m2m.atl.profiler.ui.Messages;
+import org.eclipse.m2m.atl.profiler.ui.activators.ExecutionViewerActivator;
 import org.eclipse.m2m.atl.profiler.ui.profilingdatatable.ProfilingDataTableView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -49,6 +51,7 @@ import org.eclipse.ui.part.ViewPart;
  * The execution view.
  * 
  * @author <a href="mailto:arnaud.giuliani@c-s.fr">Arnaud Giuliani</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 public class ExecutionView extends ViewPart implements Observer, ISelectionListener {
 
@@ -64,11 +67,17 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 	private static final String SHOW_EXECUTION_SUMMARY_LABEL = Messages
 			.getString("ExecutionView_SHOW_SUMMARY"); //$NON-NLS-1$
 
-	private static final String SUMMARY_ACTION_ICON = "imperative.gif"; //$NON-NLS-1$
+	private static final String SUMMARY_ACTION_ICON = "summaryAction.gif"; //$NON-NLS-1$
+
+	private static final String SHOW_RESOLVE_CONTEXT_ICON = "showResolveContext.gif"; //$NON-NLS-1$
+
+	private static final String EXECUTION_VIEW_ICON = "executionView.gif"; //$NON-NLS-1$
+
+	private static final String CALL_VIEW_ICON = "callView.gif"; //$NON-NLS-1$
 
 	private static final String ATL_PROFILER_QUICK_INFO = Messages.getString("ExecutionView_QUICK_INFO"); //$NON-NLS-1$
 
-	private static final String SWITCH_ICON = "lazyRule.gif"; //$NON-NLS-1$
+	private static final String SWITCH_ICON = "switch.gif"; //$NON-NLS-1$
 
 	private static final String ATL_PROFILER_CALLS_VIEW = Messages.getString("ExecutionView_CALLS_VIEW"); //$NON-NLS-1$
 
@@ -210,7 +219,7 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 					updateFilters(hideSimpleInstructionsAction);
 				}
 			};
-			hideSimpleInstructionsAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor(HIDE_HELPER_ICON));
+			hideSimpleInstructionsAction.setImageDescriptor(ExecutionViewerActivator.getImageDescriptor(HIDE_HELPER_ICON));
 		}
 
 		switchToCallTreeAction = new Action(SWITCH_LABEL, Action.AS_CHECK_BOX) {
@@ -232,6 +241,8 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 					summaryInfoAction.setEnabled(true);
 
 					updateViewName(ATL_PROFILER_EXECUTION_VIEW);
+					updateViewIcon(ExecutionViewerActivator.getImageDescriptor(EXECUTION_VIEW_ICON));
+					
 				} else {
 					showCallTree = true;
 					callsViewProviders();
@@ -243,12 +254,13 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 					summaryInfoAction.setEnabled(false);
 
 					updateViewName(ATL_PROFILER_CALLS_VIEW);
+					updateViewIcon(ExecutionViewerActivator.getImageDescriptor(CALL_VIEW_ICON));
 				}
 
 				treeViewer.refresh();
 			}
 		};
-		switchToCallTreeAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor(SWITCH_ICON));
+		switchToCallTreeAction.setImageDescriptor(ExecutionViewerActivator.getImageDescriptor(SWITCH_ICON));
 
 		doubleClickAction = new Action() {
 			@Override
@@ -269,7 +281,7 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 				showQuickSummary();
 			}
 		};
-		summaryInfoAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor(SUMMARY_ACTION_ICON));
+		summaryInfoAction.setImageDescriptor(ExecutionViewerActivator.getImageDescriptor(SUMMARY_ACTION_ICON));
 
 		putResolveContextInLabelAction = new Action("Show __resolve__ context in label", Action.AS_CHECK_BOX) { //$NON-NLS-1$
 			/**
@@ -287,7 +299,7 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 				treeViewer.refresh();
 			}
 		};
-		putResolveContextInLabelAction.setImageDescriptor(AtlUIPlugin.getImageDescriptor("oclModel.gif")); //$NON-NLS-1$
+		putResolveContextInLabelAction.setImageDescriptor(ExecutionViewerActivator.getImageDescriptor(SHOW_RESOLVE_CONTEXT_ICON));
 	}
 
 	private void showQuickInfo(ProfilingOperation pop) {
@@ -347,6 +359,10 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 
 	private void updateViewName(String name) {
 		this.setPartName(name);
+	}
+
+	private void updateViewIcon(ImageDescriptor image) {
+		this.setTitleImage(image.createImage());
 	}
 
 	private void updateFilters(Action updateFiltersAction) {

@@ -10,7 +10,7 @@
       </category>
       <view
             name="ATL Profiler - Execution View"
-            icon="icons/executionview.gif"
+            icon="icons/executionView.gif"
             category="org.eclipse.m2m.atl.profiler.ui.executionviewer"
             class="org.eclipse.m2m.atl.profiler.ui.executionviewer.view.ExecutionView"
             id="org.eclipse.m2m.atl.profiler.ui.executionviewer.view.ExecutionView">
@@ -18,7 +18,7 @@
       <view
             category="org.eclipse.m2m.atl.profiler.ui.executionviewer"
             class="org.eclipse.m2m.atl.profiler.ui.profilingdatatable.ProfilingDataTableView"
-            icon="icons/executionview.gif"
+            icon="icons/ruleView.gif"
             id="org.eclipse.m2m.atl.profiler.ui.profilingdatatable.ProfilingDataTableView"
             name="ATL Profiler - Rules View">
       </view>
