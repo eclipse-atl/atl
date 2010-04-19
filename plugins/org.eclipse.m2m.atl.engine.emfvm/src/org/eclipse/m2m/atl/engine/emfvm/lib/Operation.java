@@ -39,6 +39,22 @@ public abstract class Operation {
 	}
 
 	/**
+	 * Creates a new operation.
+	 * 
+	 * @param maxLocals
+	 *            max locals
+	 * @deprecated use {@link #Operation(int, String)} instead
+	 */
+	public Operation(int maxLocals) {
+		this.maxLocals = maxLocals;
+		this.name = "<unnamed>"; //$NON-NLS-1$
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
 	 * Executes an operation.
 	 * 
 	 * @param frame
