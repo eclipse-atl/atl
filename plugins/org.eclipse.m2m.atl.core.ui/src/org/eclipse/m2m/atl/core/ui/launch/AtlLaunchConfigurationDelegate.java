@@ -64,7 +64,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 	private static Map<String, IFile> moduleFilesByModuleName;
 
 	private static final String[] PROFILER_VM_IDS = new String[] {
-			"EMF-specific VM Profiler", "Regular VM Profiler"}; //$NON-NLS-1$ //$NON-NLS-2$
+			"EMF-specific VM Profiler", "Regular VM Profiler",}; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * {@inheritDoc}
@@ -468,7 +468,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 								Messages.getString("AtlLaunchConfigurationDelegate.PROFILER_WINDOW_TITLE"), null, Messages.getString("AtlLaunchConfigurationDelegate.PROFILER_WINDOW_MSG"), //$NON-NLS-1$ //$NON-NLS-2$
 								MessageDialog.QUESTION,
 								new String[] {
-										Messages.getString("AtlLaunchConfigurationDelegate.PROFILER_WINDOW_YES"), Messages.getString("AtlLaunchConfigurationDelegate.PROFILER_WINDOW_NO")}, 0); //$NON-NLS-1$ //$NON-NLS-2$
+										Messages.getString("AtlLaunchConfigurationDelegate.PROFILER_WINDOW_YES"), Messages.getString("AtlLaunchConfigurationDelegate.PROFILER_WINDOW_NO"),}, 0); //$NON-NLS-1$ //$NON-NLS-2$
 						// TODO keep user's answer in preferences (add "Always" and "Never" buttons)
 						int result = dialog.open();
 						if (result == 1)
