@@ -304,13 +304,13 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 			@Override
 			public void run() {
 				if (showPercents) {
-					showPercents = true;
+					showPercents = false;
 					// get total time & total instructions
 					totalTime = ProfilerModelHandler.getInstance().getModelTotalTime();
 					totalInstructions = ProfilerModelHandler.getInstance().getModelTotalInstructions();
 
 				} else {
-					showPercents = false;
+					showPercents = true;
 				}
 				treeViewer.refresh();
 
