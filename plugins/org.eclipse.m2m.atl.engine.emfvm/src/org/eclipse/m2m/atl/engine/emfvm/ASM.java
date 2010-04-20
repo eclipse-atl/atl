@@ -140,8 +140,9 @@ public class ASM {
 	 *            the {@link IModelAdapter} to use
 	 * @return the execution result
 	 */
-	public Object run(ITool[] tools, Map<String, IModel> models, Map<String, ASM> libraries, List<ASM> superimpose,
-			Map<String, Object> options, IProgressMonitor monitor, IModelAdapter modelAdapter) {
+	public Object run(ITool[] tools, Map<String, IModel> models, Map<String, ASM> libraries,
+			List<ASM> superimpose, Map<String, Object> options, IProgressMonitor monitor,
+			IModelAdapter modelAdapter) {
 		Object ret = null;
 
 		boolean printExecutionTime = "true".equals(options.get("printExecutionTime")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -366,9 +367,8 @@ public class ASM {
 	private static void read(CharacterIterator ci, char c) throws SignatureParsingException {
 		if (ci.current() != c) {
 			throw new SignatureParsingException(
-					Messages
-							.getString(
-									"ASM.PARSINGERROR", new Character(c), new Character(ci.current()), Integer.valueOf(ci.getIndex()))); //$NON-NLS-1$
+					Messages.getString(
+							"ASM.PARSINGERROR", new Character(c), new Character(ci.current()), Integer.valueOf(ci.getIndex()))); //$NON-NLS-1$
 		}
 		ci.next();
 	}
@@ -398,7 +398,7 @@ public class ASM {
 			// break;
 			case 'T': // Tuple
 				ci.next();
-				while(ci.current() != ';') {
+				while (ci.current() != ';') {
 					readUntil(ci, ';');
 				}
 				ret = Tuple.class;
