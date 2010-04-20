@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.m2m.atl.common.ATLLogger;
@@ -162,10 +163,15 @@ public class ASMString implements LibExtension {
 	private static File getFile(String path) {
 		String newPath = path;
 		if (Platform.isRunning()) {
-			newPath = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path)).getLocation().toString();
+			IPath location = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path)).getLocation();
+			if (location != null) {
+				newPath = location.toString();
+			} else {
+				ATLLogger
+						.info(Messages.getString("ASMString_WORKSPACE_FILE_NOT_FOUND", new Object[] {path,})); //$NON-NLS-1$
+			}
 		} else {
-			ATLLogger
-					.info(Messages.getString("ASMString_WORKSPACE_NOT_FOUND")); //$NON-NLS-1$
+			ATLLogger.info(Messages.getString("ASMString_WORKSPACE_NOT_FOUND")); //$NON-NLS-1$
 		}
 		return new File(newPath);
 	}
