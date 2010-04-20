@@ -445,7 +445,7 @@ public class ASMString extends ASMOclAny {
 				path = tmp.toString();
 			} else {
 				ATLLogger
-						.info("Could not a workspace location for "
+						.info("Could not find a workspace location for "
 								+ path
 								+ " ; falling back to native java.io.File path resolution");
 			}
