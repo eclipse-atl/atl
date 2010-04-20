@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    Arnaud Giuliani - initial API and implementation
- *    Obeo - icons modifications
+ *    Obeo - icons modifications, observer deletion
  *******************************************************************************/
 package org.eclipse.m2m.atl.profiler.ui.executionviewer.view;
 
@@ -116,6 +116,16 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+	 */
+	public void dispose() {
+		super.dispose();
+		ATLProfiler.getInstance().deleteObserver(this);
+	}
+
+	/**
 	 * {@inheritDoc} This is a callback that will allow us to create the treeViewer and initialize it.
 	 * 
 	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
@@ -219,7 +229,8 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 					updateFilters(hideSimpleInstructionsAction);
 				}
 			};
-			hideSimpleInstructionsAction.setImageDescriptor(ExecutionViewerActivator.getImageDescriptor(HIDE_HELPER_ICON));
+			hideSimpleInstructionsAction.setImageDescriptor(ExecutionViewerActivator
+					.getImageDescriptor(HIDE_HELPER_ICON));
 		}
 
 		switchToCallTreeAction = new Action(SWITCH_LABEL, Action.AS_CHECK_BOX) {
@@ -242,7 +253,7 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 
 					updateViewName(ATL_PROFILER_EXECUTION_VIEW);
 					updateViewIcon(ExecutionViewerActivator.getImageDescriptor(EXECUTION_VIEW_ICON));
-					
+
 				} else {
 					showCallTree = true;
 					callsViewProviders();
@@ -281,7 +292,8 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 				showQuickSummary();
 			}
 		};
-		summaryInfoAction.setImageDescriptor(ExecutionViewerActivator.getImageDescriptor(SUMMARY_ACTION_ICON));
+		summaryInfoAction
+				.setImageDescriptor(ExecutionViewerActivator.getImageDescriptor(SUMMARY_ACTION_ICON));
 
 		putResolveContextInLabelAction = new Action("Show __resolve__ context in label", Action.AS_CHECK_BOX) { //$NON-NLS-1$
 			/**
@@ -299,7 +311,8 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 				treeViewer.refresh();
 			}
 		};
-		putResolveContextInLabelAction.setImageDescriptor(ExecutionViewerActivator.getImageDescriptor(SHOW_RESOLVE_CONTEXT_ICON));
+		putResolveContextInLabelAction.setImageDescriptor(ExecutionViewerActivator
+				.getImageDescriptor(SHOW_RESOLVE_CONTEXT_ICON));
 	}
 
 	private void showQuickInfo(ProfilingOperation pop) {

@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    Arnaud Giuliani - initial API and implementation
- *    Obeo - icons modifications
+ *    Obeo - icons modifications, observer deletion
  *******************************************************************************/
 package org.eclipse.m2m.atl.profiler.ui.profilingdatatable;
 
@@ -99,7 +99,7 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 	private static final String EXPORT_DATA = Messages.getString("ProfilingDataTableView_XMI_EXPORT"); //$NON-NLS-1$
 
 	private static final String SHOW_PERCENTS_GIF = "percentsStatistics.gif"; //$NON-NLS-1$
-	
+
 	private static final String SAVE_GIF = "save.gif"; //$NON-NLS-1$
 
 	private static final String HIDE_NATIVE_OPERATIONS_GIF = "hideNativeOperations.gif"; //$NON-NLS-1$
@@ -155,6 +155,16 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+	 */
+	public void dispose() {
+		super.dispose();
+		ATLProfiler.getInstance().deleteObserver(this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
@@ -184,20 +194,22 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 		Tree tree = treeViewer.getTree();
 		addColumnSelectionListener(operationNameColId, tree, new NameComparator(), new NameComparator(false));
 		addColumnSelectionListener(timeExecutionColId, tree, new TimeComparator(), new TimeComparator(false));
-		addColumnSelectionListener(instructionsColId, tree, new TotalInstructionComparator(), new TotalInstructionComparator(false));
+		addColumnSelectionListener(instructionsColId, tree, new TotalInstructionComparator(),
+				new TotalInstructionComparator(false));
 		addColumnSelectionListener(callsColId, tree, new CallsComparator(), new CallsComparator(false));
 		addColumnSelectionListener(inMemoryColId, tree, new MemoryComparator(
-				MemoryComparator.ColumnType.InMem), new MemoryComparator(
-						MemoryComparator.ColumnType.InMem, false));
+				MemoryComparator.ColumnType.InMem), new MemoryComparator(MemoryComparator.ColumnType.InMem,
+				false));
 		addColumnSelectionListener(maxMemoryColId, tree, new MemoryComparator(
-				MemoryComparator.ColumnType.MaxMem), new MemoryComparator(
-						MemoryComparator.ColumnType.MaxMem, false));
+				MemoryComparator.ColumnType.MaxMem), new MemoryComparator(MemoryComparator.ColumnType.MaxMem,
+				false));
 		addColumnSelectionListener(outMemoryColId, tree, new MemoryComparator(
-				MemoryComparator.ColumnType.OutMem), new MemoryComparator(
-						MemoryComparator.ColumnType.OutMem, false));
+				MemoryComparator.ColumnType.OutMem), new MemoryComparator(MemoryComparator.ColumnType.OutMem,
+				false));
 	}
 
-	private void addColumnSelectionListener(final int colId, final Tree tree, final ViewerComparator wc, final ViewerComparator descWc) {
+	private void addColumnSelectionListener(final int colId, final Tree tree, final ViewerComparator wc,
+			final ViewerComparator descWc) {
 		tree.getColumn(colId).addSelectionListener(new SelectionAdapter() {
 			private int direction;
 
