@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Arnaud Giuliani - initial API and implementation
+ *    Obeo - tree sorting correction
  *******************************************************************************/
 package org.eclipse.m2m.atl.profiler.ui.profilingdatatable;
 
@@ -21,10 +22,12 @@ import org.eclipse.m2m.atl.profiler.model.ProfilingOperation;
  * A comparator for memory.
  * 
  * @author <a href="mailto:arnaud.giuliani@c-s.fr">Arnaud Giuliani</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 public class MemoryComparator extends ViewerComparator {
 
 	private ColumnType col;
+	private boolean asc;
 
 	/**
 	 * Creates a new memory comparator.
@@ -35,6 +38,20 @@ public class MemoryComparator extends ViewerComparator {
 	public MemoryComparator(ColumnType c) {
 		super();
 		col = c;
+		this.asc = true;
+	}
+
+	/**
+	 * Creates a new memory comparator.
+	 * 
+	 * @param c
+	 *            the column type
+	 * @param asc for ascendant or descendant sorting
+	 */
+	public MemoryComparator(ColumnType c, boolean asc) {
+		super();
+		col = c;
+		this.asc = asc;
 	}
 
 	/**
@@ -105,7 +122,10 @@ public class MemoryComparator extends ViewerComparator {
 				iop2 = pop2.getEndMemoryUsage();
 			}
 		}
-		return (int)(iop1 - iop2);
+		if (asc)
+			return (int)(iop1 - iop2);
+		else
+			return (int)(iop2 - iop1);
 	}
 
 	public ColumnType getCol() {

@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Arnaud Giuliani - initial API and implementation
+ *    Obeo - tree sorting correction
  *******************************************************************************/
 package org.eclipse.m2m.atl.profiler.ui.profilingdatatable;
 
@@ -18,9 +19,29 @@ import org.eclipse.jface.viewers.ViewerComparator;
  * A comparator for names.
  * 
  * @author <a href="mailto:arnaud.giuliani@c-s.fr">Arnaud Giuliani</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 public class NameComparator extends ViewerComparator {
-	
+
+	private boolean asc;
+
+	/**
+	 * Default constructor, for ascendant sorting.
+	 */
+	public NameComparator() {
+		super();
+		this.asc = true;
+	}
+
+	/**
+	 * Constructor for ascendant or descendant sorting.
+	 * @param asc for ascendant or descendant sorting.
+	 */
+	public NameComparator(boolean asc) {
+		super();
+		this.asc = asc;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 *
@@ -28,6 +49,10 @@ public class NameComparator extends ViewerComparator {
 	 */
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
-		return super.compare(viewer, e1, e2);
+		if (asc)
+			return super.compare(viewer, e1, e2);
+		else
+			return super.compare(viewer, e2, e1);
 	}
+
 }

@@ -182,19 +182,22 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 	private void makeListeners() {
 		// TreeTable listeners
 		Tree tree = treeViewer.getTree();
-		addColumnSelectionListener(operationNameColId, tree, new NameComparator());
-		addColumnSelectionListener(timeExecutionColId, tree, new TimeComparator());
-		addColumnSelectionListener(instructionsColId, tree, new TotalInstructionComparator());
-		addColumnSelectionListener(callsColId, tree, new CallsComparator());
+		addColumnSelectionListener(operationNameColId, tree, new NameComparator(), new NameComparator(false));
+		addColumnSelectionListener(timeExecutionColId, tree, new TimeComparator(), new TimeComparator(false));
+		addColumnSelectionListener(instructionsColId, tree, new TotalInstructionComparator(), new TotalInstructionComparator(false));
+		addColumnSelectionListener(callsColId, tree, new CallsComparator(), new CallsComparator(false));
 		addColumnSelectionListener(inMemoryColId, tree, new MemoryComparator(
-				MemoryComparator.ColumnType.InMem));
+				MemoryComparator.ColumnType.InMem), new MemoryComparator(
+						MemoryComparator.ColumnType.InMem, false));
 		addColumnSelectionListener(maxMemoryColId, tree, new MemoryComparator(
-				MemoryComparator.ColumnType.MaxMem));
+				MemoryComparator.ColumnType.MaxMem), new MemoryComparator(
+						MemoryComparator.ColumnType.MaxMem, false));
 		addColumnSelectionListener(outMemoryColId, tree, new MemoryComparator(
-				MemoryComparator.ColumnType.OutMem));
+				MemoryComparator.ColumnType.OutMem), new MemoryComparator(
+						MemoryComparator.ColumnType.OutMem, false));
 	}
 
-	private void addColumnSelectionListener(final int colId, final Tree tree, final ViewerComparator wc) {
+	private void addColumnSelectionListener(final int colId, final Tree tree, final ViewerComparator wc, final ViewerComparator descWc) {
 		tree.getColumn(colId).addSelectionListener(new SelectionAdapter() {
 			private int direction;
 
@@ -203,7 +206,7 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 				if (direction == SWT.None) {
 					setupColumnSorting(colId, SWT.UP, tree, wc);
 				} else if (direction == SWT.UP) {
-					setupColumnSorting(colId, SWT.DOWN, tree, wc);
+					setupColumnSorting(colId, SWT.DOWN, tree, descWc);
 				} else {
 					setupColumnSorting(colId, SWT.None, tree, null);
 				}

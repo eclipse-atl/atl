@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Arnaud Giuliani - initial API and implementation
+ *    Obeo - tree sorting correction
  *******************************************************************************/
 package org.eclipse.m2m.atl.profiler.ui.profilingdatatable;
 
@@ -21,8 +22,29 @@ import org.eclipse.m2m.atl.profiler.model.ProfilingOperation;
  * A comparator for times.
  * 
  * @author <a href="mailto:arnaud.giuliani@c-s.fr">Arnaud Giuliani</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 public class TimeComparator extends ViewerComparator {
+
+	private boolean asc;
+
+	/**
+	 * Default constructor, for ascendant sorting.
+	 */
+	public TimeComparator() {
+		super();
+		this.asc = true;
+	}
+
+	/**
+	 * Constructor for ascendant or descendant sorting.
+	 * @param asc for ascendant or descendant sorting.
+	 */
+	public TimeComparator(boolean asc) {
+		super();
+		this.asc = asc;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -38,6 +60,8 @@ public class TimeComparator extends ViewerComparator {
 			double t1 = ProfilingModelUtils.getTotalTime(op1.getProfilingInstructions());
 			double t2 = ProfilingModelUtils.getTotalTime(op2.getProfilingInstructions());
 			double res = t1 - t2;
+			if (!asc)
+				res = t2 - t1;
 
 			if (res > 0.0) {
 				return 1;
@@ -54,6 +78,8 @@ public class TimeComparator extends ViewerComparator {
 			double t1 = pop1.getEndTime() - pop1.getLaunchedTime();
 			double t2 = pop2.getEndTime() - pop2.getLaunchedTime();
 			double res = t1 - t2;
+			if (!asc)
+				res = t2 - t1;
 
 			if (res > 0.0) {
 				return 1;
