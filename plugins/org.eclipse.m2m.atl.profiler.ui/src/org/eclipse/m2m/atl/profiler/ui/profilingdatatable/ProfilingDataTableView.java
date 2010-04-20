@@ -150,6 +150,7 @@ public class ProfilingDataTableView extends ViewPart implements Observer, ISelec
 	 */
 	public ProfilingDataTableView() {
 		ATLProfiler.getInstance().addObserver(this);
+		ProfilingDataTableView.showPercents = false;
 	}
 
 	/**

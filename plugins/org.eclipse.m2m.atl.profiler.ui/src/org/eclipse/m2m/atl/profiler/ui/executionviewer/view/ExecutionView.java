@@ -90,7 +90,7 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 
 	private static final String HIDE_ASM_INSTRUCTIONS = Messages.getString("ExecutionView_HIDE_ASM"); //$NON-NLS-1$
 
-	private static boolean showResolvContextInlabel = true;
+	private static boolean showResolvContextInlabel;
 
 	private TreeViewer treeViewer;
 
@@ -113,6 +113,7 @@ public class ExecutionView extends ViewPart implements Observer, ISelectionListe
 	 */
 	public ExecutionView() {
 		ATLProfiler.getInstance().addObserver(this);
+		ExecutionView.showResolvContextInlabel = true;
 	}
 
 	/**
