@@ -33,7 +33,8 @@ import org.eclipse.m2m.atl.engine.vm.StackFrame;
  */
 public class ASMString extends ASMOclAny {
 
-	public static ASMOclType myType = new ASMOclSimpleType("String", getOclAnyType());
+	public static ASMOclType myType = new ASMOclSimpleType("String",
+			getOclAnyType());
 
 	public ASMString(String s) {
 		super(myType);
@@ -49,7 +50,7 @@ public class ASMString extends ASMOclAny {
 	}
 
 	public boolean equals(Object o) {
-		return (o instanceof ASMString) && (((ASMString)o).s.equals(s));
+		return (o instanceof ASMString) && (((ASMString) o).s.equals(s));
 	}
 
 	public int hashCode() {
@@ -105,8 +106,10 @@ public class ASMString extends ASMOclAny {
 		return new ASMString(self.s + o.s);
 	}
 
-	public static ASMString substring(StackFrame frame, ASMString self, ASMInteger start, ASMInteger end) {
-		return new ASMString(self.s.substring(start.getSymbol() - 1, end.getSymbol()));
+	public static ASMString substring(StackFrame frame, ASMString self,
+			ASMInteger start, ASMInteger end) {
+		return new ASMString(self.s.substring(start.getSymbol() - 1, end
+				.getSymbol()));
 	}
 
 	public static ASMInteger toInteger(StackFrame frame, ASMString self) {
@@ -117,7 +120,8 @@ public class ASMString extends ASMOclAny {
 		return new ASMReal(Double.parseDouble(self.s));
 	}
 
-	public static ASMBoolean toBoolean(StackFrame frame, ASMString self) throws Exception {
+	public static ASMBoolean toBoolean(StackFrame frame, ASMString self)
+			throws Exception {
 		// return new ASMBoolean(Boolean.parseBoolean(self.s.toLowerCase()));
 		String s = self.s.toLowerCase();
 		if (s.equals("true") || s.equals("yes"))
@@ -129,17 +133,19 @@ public class ASMString extends ASMOclAny {
 					+ ", the value is different from true/false or yes/no");
 	}
 
-	public static ASMBoolean operatorEQ(StackFrame frame, ASMString self, ASMOclAny o) {
+	public static ASMBoolean operatorEQ(StackFrame frame, ASMString self,
+			ASMOclAny o) {
 		if (o instanceof ASMString) {
-			return new ASMBoolean(self.s.equals(((ASMString)o).s));
+			return new ASMBoolean(self.s.equals(((ASMString) o).s));
 		} else {
 			return new ASMBoolean(false);
 		}
 	}
 
-	public static ASMBoolean operatorNE(StackFrame frame, ASMString self, ASMOclAny o) {
+	public static ASMBoolean operatorNE(StackFrame frame, ASMString self,
+			ASMOclAny o) {
 		if (o instanceof ASMString) {
-			return new ASMBoolean(!self.s.equals(((ASMString)o).s));
+			return new ASMBoolean(!self.s.equals(((ASMString) o).s));
 		} else {
 			return new ASMBoolean(true);
 		}
@@ -157,24 +163,29 @@ public class ASMString extends ASMOclAny {
 	}
 
 	// Ordering Operations (using lexicographic order)
-	public static ASMBoolean operatorLT(StackFrame frame, ASMString self, ASMString o) {
+	public static ASMBoolean operatorLT(StackFrame frame, ASMString self,
+			ASMString o) {
 		return new ASMBoolean(self.s.compareTo(o.s) < 0);
 	}
 
-	public static ASMBoolean operatorLE(StackFrame frame, ASMString self, ASMString o) {
+	public static ASMBoolean operatorLE(StackFrame frame, ASMString self,
+			ASMString o) {
 		return new ASMBoolean(self.s.compareTo(o.s) <= 0);
 	}
 
-	public static ASMBoolean operatorGT(StackFrame frame, ASMString self, ASMString o) {
+	public static ASMBoolean operatorGT(StackFrame frame, ASMString self,
+			ASMString o) {
 		return new ASMBoolean(self.s.compareTo(o.s) > 0);
 	}
 
-	public static ASMBoolean operatorGE(StackFrame frame, ASMString self, ASMString o) {
+	public static ASMBoolean operatorGE(StackFrame frame, ASMString self,
+			ASMString o) {
 		return new ASMBoolean(self.s.compareTo(o.s) >= 0);
 	}
 
 	// Misc Operations
-	public static ASMString operatorPlus(StackFrame frame, ASMString self, ASMString o) {
+	public static ASMString operatorPlus(StackFrame frame, ASMString self,
+			ASMString o) {
 		return new ASMString(self.s + o.s);
 	}
 
@@ -194,27 +205,33 @@ public class ASMString extends ASMOclAny {
 		return new ASMString(self.s.trim());
 	}
 
-	public static ASMBoolean startsWith(StackFrame frame, ASMString self, ASMString o) {
+	public static ASMBoolean startsWith(StackFrame frame, ASMString self,
+			ASMString o) {
 		return new ASMBoolean(self.s.startsWith(o.s));
 	}
 
-	public static ASMBoolean endsWith(StackFrame frame, ASMString self, ASMString o) {
+	public static ASMBoolean endsWith(StackFrame frame, ASMString self,
+			ASMString o) {
 		return new ASMBoolean(self.s.endsWith(o.s));
 	}
 
-	public static ASMInteger indexOf(StackFrame frame, ASMString self, ASMString o) {
+	public static ASMInteger indexOf(StackFrame frame, ASMString self,
+			ASMString o) {
 		return new ASMInteger(self.s.indexOf(o.s));
 	}
 
-	public static ASMInteger lastIndexOf(StackFrame frame, ASMString self, ASMString o) {
+	public static ASMInteger lastIndexOf(StackFrame frame, ASMString self,
+			ASMString o) {
 		return new ASMInteger(self.s.lastIndexOf(o.s));
 	}
 
-	public static ASMString regexReplaceAll(StackFrame frame, ASMString self, ASMString a, ASMString b) {
+	public static ASMString regexReplaceAll(StackFrame frame, ASMString self,
+			ASMString a, ASMString b) {
 		return new ASMString(self.s.replaceAll(a.s, b.s));
 	}
 
-	public static ASMSequence split(StackFrame frame, ASMString self, ASMString a) {
+	public static ASMSequence split(StackFrame frame, ASMString self,
+			ASMString a) {
 		ASMSequence ret = new ASMSequence();
 
 		String[] s = self.s.split(a.s);
@@ -225,7 +242,8 @@ public class ASMString extends ASMOclAny {
 		return ret;
 	}
 
-	public static ASMString replaceAll(StackFrame frame, ASMString self, ASMString a, ASMString b) {
+	public static ASMString replaceAll(StackFrame frame, ASMString self,
+			ASMString a, ASMString b) {
 		return new ASMString(self.s.replace(a.s.charAt(0), b.s.charAt(0)));
 	}
 
@@ -258,12 +276,13 @@ public class ASMString extends ASMOclAny {
 	}
 
 	// File output
-	public static ASMBoolean writeTo(StackFrame frame, ASMString self, ASMString fileName) {
+	public static ASMBoolean writeTo(StackFrame frame, ASMString self,
+			ASMString fileName) {
 		return writeToWithCharset(frame, self, fileName, null);
 	}
 
-	public static ASMBoolean writeToWithCharset(StackFrame frame, ASMString self, ASMString fileName,
-			ASMString charset) {
+	public static ASMBoolean writeToWithCharset(StackFrame frame,
+			ASMString self, ASMString fileName, ASMString charset) {
 		ASMBoolean ret = new ASMBoolean(false);
 
 		if (frame.getExecEnv().checkPermission("file.write")) {
@@ -273,9 +292,11 @@ public class ASMString extends ASMOclAny {
 					file.getParentFile().mkdirs();
 				PrintStream out = null;
 				if (charset == null) {
-					out = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), true);
+					out = new PrintStream(new BufferedOutputStream(
+							new FileOutputStream(file)), true);
 				} else {
-					out = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), true, charset
+					out = new PrintStream(new BufferedOutputStream(
+							new FileOutputStream(file)), true, charset
 							.getSymbol());
 				}
 				out.print(self.s);
@@ -299,8 +320,8 @@ public class ASMString extends ASMOclAny {
 		return self;
 	}
 
-	public static ASMOclAny inject(StackFrame frame, ASMString self, ASMString targetModelName,
-			ASMString kind, ASMString params) {
+	public static ASMOclAny inject(StackFrame frame, ASMString self,
+			ASMString targetModelName, ASMString kind, ASMString params) {
 		ASMOclAny ret = null;
 
 		ASMModel tgt = frame.getExecEnv().getModel(targetModelName.getSymbol());
@@ -308,8 +329,8 @@ public class ASMString extends ASMOclAny {
 			frame.printStackTrace("Could not find model " + targetModelName);
 		} else {
 			ModelLoader ml = tgt.getModelLoader();
-			ret = ml.inject(tgt, kind.getSymbol(), params.getSymbol(), null, new ByteArrayInputStream(self.s
-					.getBytes()));
+			ret = ml.inject(tgt, kind.getSymbol(), params.getSymbol(), null,
+					new ByteArrayInputStream(self.s.getBytes()));
 		}
 		if (ret == null)
 			ret = new ASMOclUndefined();
@@ -318,7 +339,8 @@ public class ASMString extends ASMOclAny {
 	}
 
 	// Below: ATL Compiler specific operations.
-	public static ASMOclAny evalSOTS(StackFrame frame, ASMString self, ASMTuple args) { // TODO: en asm ou ocl
+	public static ASMOclAny evalSOTS(StackFrame frame, ASMString self,
+			ASMTuple args) { // TODO: en asm ou ocl
 		ASMOclAny ret = new ASMOclUndefined();
 		try {
 			ret = new SOTSExpression2(self.s).exec(frame, args);
@@ -328,7 +350,8 @@ public class ASMString extends ASMOclAny {
 		return ret;
 	}
 
-	public static ASMOclAny evalSOTSBrackets(StackFrame frame, ASMString self, ASMTuple args) { // TODO: en
+	public static ASMOclAny evalSOTSBrackets(StackFrame frame, ASMString self,
+			ASMTuple args) { // TODO: en
 		// asm ou ocl
 
 		boolean debug = false;
@@ -346,36 +369,38 @@ public class ASMString extends ASMOclAny {
 			do {
 				c = in.read();
 				switch (c) {
-					case -1:
-						done = true;
-						break;
-					case '{':
-						StringBuffer exp = new StringBuffer();
-						while ((c = in.read()) != '}') {
-							exp.append((char)c);
-						}
+				case -1:
+					done = true;
+					break;
+				case '{':
+					StringBuffer exp = new StringBuffer();
+					while ((c = in.read()) != '}') {
+						exp.append((char) c);
+					}
 
-						if (debug) {
-							ATLLogger.info("\tEvaluating : " + exp);
-						}
-						ASMOclAny result = new SOTSExpression2(exp.toString()).exec(frame, args);
+					if (debug) {
+						ATLLogger.info("\tEvaluating : " + exp);
+					}
+					ASMOclAny result = new SOTSExpression2(exp.toString())
+							.exec(frame, args);
 
-						if (debug) {
-							ATLLogger.info("\t\t=>" + result);
-						}
+					if (debug) {
+						ATLLogger.info("\t\t=>" + result);
+					}
 
-						if (result instanceof ASMCollection) {
-							result = (ASMOclAny)((ASMCollection)result).iterator().next();
-						}
-						if (result instanceof ASMString) {
-							ret.append(((ASMString)result).s);
-						} else {
-							ret.append(result.toString());
-						}
-						break;
-					default:
-						ret.append((char)c);
-						break;
+					if (result instanceof ASMCollection) {
+						result = (ASMOclAny) ((ASMCollection) result)
+								.iterator().next();
+					}
+					if (result instanceof ASMString) {
+						ret.append(((ASMString) result).s);
+					} else {
+						ret.append(result.toString());
+					}
+					break;
+				default:
+					ret.append((char) c);
+					break;
 				}
 			} while (!done);
 		} catch (Exception e) {
@@ -396,23 +421,40 @@ public class ASMString extends ASMOclAny {
 	/**
 	 * @param path
 	 *            The absolute or relative path to a file.
-	 * @return The file in the workspace, or the file in the filesystem if the workspace is not available.
+	 * @return The file in the workspace, or the file in the filesystem if the
+	 *         workspace is not available.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static File getFile(String path) {
 		try {
 			Class[] emptyClassArray = new Class[] {};
 			Object[] emptyObjectArray = new Object[] {};
-			Class rp = Class.forName("org.eclipse.core.resources.ResourcesPlugin");
-			Object ws = rp.getMethod("getWorkspace", emptyClassArray).invoke(null, emptyObjectArray);
-			Object root = ws.getClass().getMethod("getRoot", emptyClassArray).invoke(ws, emptyObjectArray);
+			Class rp = Class
+					.forName("org.eclipse.core.resources.ResourcesPlugin");
+			Object ws = rp.getMethod("getWorkspace", emptyClassArray).invoke(
+					null, emptyObjectArray);
+			Object root = ws.getClass().getMethod("getRoot", emptyClassArray)
+					.invoke(ws, emptyObjectArray);
 			Path wspath = new Path(path);
-			Object wsfile = root.getClass().getMethod("getFile", new Class[] {IPath.class}).invoke(root,
-					new Object[] {wspath});
-			path = wsfile.getClass().getMethod("getLocation", emptyClassArray).invoke(wsfile,
-					emptyObjectArray).toString();
+			Object wsfile = root.getClass().getMethod("getFile",
+					new Class[] { IPath.class }).invoke(root,
+					new Object[] { wspath });
+			Object tmp = wsfile.getClass().getMethod("getLocation",
+					emptyClassArray).invoke(wsfile, emptyObjectArray);
+			if (tmp != null) {
+				path = tmp.toString();
+			} else {
+				ATLLogger
+						.info("Could not a workspace location for "
+								+ path
+								+ " ; falling back to native java.io.File path resolution");
+			}
 		} catch (Throwable e) {
-			ATLLogger.log(Level.INFO, "Could not find workspace root; falling back to native java.io.File path resolution", e);
+			ATLLogger
+					.log(
+							Level.INFO,
+							"Could not find workspace root; falling back to native java.io.File path resolution",
+							e);
 			// fall back to native java.io.File path resolution
 		}
 		return new File(path);
