@@ -62,7 +62,9 @@ import org.eclipse.ui.PlatformUI;
 public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
 
 	private static Map<String, IFile> moduleFilesByModuleName;
-	private static final String[] PROFILER_VM_IDS = new String[] { "EMF-specific VM Profiler", "Regular VM Profiler" }; //$NON-NLS-1$ //$NON-NLS-2$
+
+	private static final String[] PROFILER_VM_IDS = new String[] {
+			"EMF-specific VM Profiler", "Regular VM Profiler"}; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * {@inheritDoc}
@@ -174,7 +176,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 		if (monitor.isCanceled()) {
 			return;
 		}
-		
+
 		Map<String, String> sourceModels = unsortedSourceModels;
 		List<String> orderedInput = configuration.getAttribute(ATLLaunchConstants.ORDERED_INPUT,
 				Collections.EMPTY_LIST);
@@ -188,7 +190,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 		if (!orderedOutput.isEmpty()) {
 			targetModels = sort(unsortedTargetModels, orderedOutput);
 		}
-		
+
 		if (isRefiningTraceMode) {
 			/*
 			 * TODO: improve ATL header syntax to recognize inout models. Apply those changes to launch
@@ -197,7 +199,6 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 			 */
 			Iterator<String> sourceIterator = sourceModels.keySet().iterator();
 			Iterator<String> targetIterator = targetModels.keySet().iterator();
-
 
 			Map<String, String> newTargetModels = new HashMap<String, String>();
 			newTargetModels.putAll(targetModels);
@@ -314,14 +315,14 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 		return null;
 	}
 
-	private static Map<String,String> sort(Map<String,String> mapToSort, List<String> orderedKeys) {
+	private static Map<String, String> sort(Map<String, String> mapToSort, List<String> orderedKeys) {
 		Map<String, String> res = new LinkedHashMap<String, String>();
 		for (String key : orderedKeys) {
 			res.put(key, mapToSort.get(key));
-		}		
+		}
 		return res;
 	}
-	
+
 	private static boolean addLaunchedModule(IFile file) {
 		if (!file.exists()) {
 			ATLLogger.severe(Messages.getString(
@@ -440,11 +441,13 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 
 	/**
 	 * Shows the profiler views for a profiler VM.
-	 * @param launcherName the launcher name (the VM id)
+	 * 
+	 * @param launcherName
+	 *            the launcher name (the VM id)
 	 */
 	private void showViewsForProfiler(String launcherName) {
 		boolean isProfilerVm = false;
-		// The launcher name tells us if this is a profiler VM 
+		// The launcher name tells us if this is a profiler VM
 		for (String profilerVMId : PROFILER_VM_IDS) {
 			if (launcherName.equals(profilerVMId))
 				isProfilerVm = true;
@@ -458,12 +461,14 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 				String rulesViewId = "org.eclipse.m2m.atl.profiler.ui.profilingdatatable.ProfilingDataTableView"; //$NON-NLS-1$
 				String executionViewId = "org.eclipse.m2m.atl.profiler.ui.executionviewer.view.ExecutionView"; //$NON-NLS-1$
 				if (window != null) {
-					if (window.getActivePage().findView(rulesViewId) == null ||
-							window.getActivePage().findView(executionViewId) == null) {
+					if (window.getActivePage().findView(rulesViewId) == null
+							|| window.getActivePage().findView(executionViewId) == null) {
 						MessageDialog dialog = new MessageDialog(
-							      null, "Open profiler views?", null, "Do you want to open profiler views?", //$NON-NLS-1$ //$NON-NLS-2$
-							      MessageDialog.QUESTION,
-							      new String[] {"Yes", "No"}, 0); //$NON-NLS-1$ //$NON-NLS-2$
+								null,
+								Messages.getString("AtlLaunchConfigurationDelegate.PROFILER_WINDOW_TITLE"), null, Messages.getString("AtlLaunchConfigurationDelegate.PROFILER_WINDOW_MSG"), //$NON-NLS-1$ //$NON-NLS-2$
+								MessageDialog.QUESTION,
+								new String[] {
+										Messages.getString("AtlLaunchConfigurationDelegate.PROFILER_WINDOW_YES"), Messages.getString("AtlLaunchConfigurationDelegate.PROFILER_WINDOW_NO")}, 0); //$NON-NLS-1$ //$NON-NLS-2$
 						// TODO keep user's answer in preferences (add "Always" and "Never" buttons)
 						int result = dialog.open();
 						if (result == 1)
