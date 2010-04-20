@@ -35,6 +35,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
@@ -47,16 +48,21 @@ import org.eclipse.m2m.atl.core.ui.Messages;
 import org.eclipse.m2m.atl.debug.core.AtlDebugTarget;
 import org.eclipse.m2m.atl.debug.core.AtlRunTarget;
 import org.eclipse.m2m.atl.debug.core.AtlSourceLocator;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * The method "launch" is launched when you click on the button "Run" or "Debug".
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ * @author <a href="mailto:thierry.fortin@obeo.fr">Thierry Fortin</a>
  */
 public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
 
 	private static Map<String, IFile> moduleFilesByModuleName;
+	private static final String[] PROFILER_VM_IDS = new String[] { "EMF-specific VM Profiler", "Regular VM Profiler" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * {@inheritDoc}
@@ -108,6 +114,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 
 		ILauncher launcher = null;
 		try {
+			showViewsForProfiler(launcherName);
 			// API extensions management
 			launcher = CoreService.getLauncher(launcherName);
 		} catch (ATLCoreException e) {
@@ -429,6 +436,55 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
+	}
+
+	/**
+	 * Shows the profiler views for a profiler VM.
+	 * @param launcherName the launcher name (the VM id)
+	 */
+	private void showViewsForProfiler(String launcherName) {
+		boolean isProfilerVm = false;
+		// The launcher name tells us if this is a profiler VM 
+		for (String profilerVMId : PROFILER_VM_IDS) {
+			if (launcherName.equals(profilerVMId))
+				isProfilerVm = true;
+		}
+		if (!isProfilerVm)
+			return;
+		// We show the profiler views
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+			public void run() {
+				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+				String rulesViewId = "org.eclipse.m2m.atl.profiler.ui.profilingdatatable.ProfilingDataTableView"; //$NON-NLS-1$
+				String executionViewId = "org.eclipse.m2m.atl.profiler.ui.executionviewer.view.ExecutionView"; //$NON-NLS-1$
+				if (window != null) {
+					if (window.getActivePage().findView(rulesViewId) == null ||
+							window.getActivePage().findView(executionViewId) == null) {
+						MessageDialog dialog = new MessageDialog(
+							      null, "Open profiler views?", null, "Do you want to open profiler views?", //$NON-NLS-1$ //$NON-NLS-2$
+							      MessageDialog.QUESTION,
+							      new String[] {"Yes", "No"}, 0); //$NON-NLS-1$ //$NON-NLS-2$
+						// TODO keep user's answer in preferences (add "Always" and "Never" buttons)
+						int result = dialog.open();
+						if (result == 1)
+							return;
+					}
+					try {
+						if (window.getActivePage().findView(rulesViewId) == null)
+							window.getActivePage().showView(rulesViewId);
+					} catch (PartInitException e1) {
+						// The view is not found
+					}
+					try {
+						if (window.getActivePage().findView(executionViewId) == null)
+							window.getActivePage().showView(executionViewId);
+					} catch (PartInitException e1) {
+						// The view is not found
+					}
+				}
+			}
+		});
+		return;
 	}
 
 }
