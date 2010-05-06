@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Obeo - Ant tooling
+ *     Vrije Universiteit Brussel - Bugfixes
  *******************************************************************************/
 package org.eclipse.m2m.atl.core.ant.tasks;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +44,7 @@ import org.eclipse.m2m.atl.core.service.LauncherService;
  * Launches an ATL transformation, using the launcher specified as property in the ant project.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ATLModelTransformationTask extends AbstractAtlTask {
 
@@ -253,10 +256,13 @@ public class ATLModelTransformationTask extends AbstractAtlTask {
 
 	private String getMetamodelName(String modelName) {
 		IReferenceModel res = getModelByName(modelName).getReferenceModel();
-		for (Iterator<?> iterator = getProject().getReferences().entrySet().iterator(); iterator.hasNext();) {
-			Entry<?, ?> entry = (Entry<?, ?>)iterator.next();
-			if (entry.getValue().equals(res)) {
-				return (String)entry.getKey();
+		final Hashtable<?, ?> references = getProject().getReferences();
+		synchronized (references) {
+			for (Iterator<?> iterator = references.entrySet().iterator(); iterator.hasNext();) {
+				Entry<?, ?> entry = (Entry<?, ?>)iterator.next();
+				if (entry.getValue().equals(res)) {
+					return (String)entry.getKey();
+				}
 			}
 		}
 		return null;
