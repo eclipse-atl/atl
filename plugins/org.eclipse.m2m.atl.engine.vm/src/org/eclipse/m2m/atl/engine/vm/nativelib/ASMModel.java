@@ -32,6 +32,8 @@ public abstract class ASMModel extends ASMOclAny {
 
 	private ModelLoader ml;
 	
+	private boolean checkSameModel = true;
+
 	public ModelLoader getModelLoader() {
 		return ml;
 	}
@@ -95,6 +97,25 @@ public abstract class ASMModel extends ASMOclAny {
 
 	public void setIsTarget(boolean isTarget) {
 		this.isTarget = isTarget;
+	}
+
+	/**
+	 * Returns whether this model allows references to other models (inter-model references).
+	 * 
+	 * @return Whether this model allows references to other models (inter-model references).
+	 */
+	public boolean isCheckSameModel() {
+		return checkSameModel;
+	}
+
+	/**
+	 * Sets whether this model allows references to other models (inter-model references).
+	 * 
+	 * @param checkSameModel
+	 *            whether this model allows references to other models (inter-model references).
+	 */
+	public void setCheckSameModel(boolean checkSameModel) {
+		this.checkSameModel = checkSameModel;
 	}
 
 	//TODO why re-implement get/set?
