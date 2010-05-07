@@ -114,6 +114,9 @@ public class ASMInjector implements IInjector {
 			File f = new File(usedFilePath.substring(6));
 			return new FileInputStream(f);
 		} else {
+			if (usedFilePath.startsWith("platform:/resource/")) { //$NON-NLS-1$
+				usedFilePath = usedFilePath.substring(19);
+			}
 			IWorkspaceRoot iwr = ResourcesPlugin.getWorkspace().getRoot();
 			usedFilePath = usedFilePath.replace('#', '/');
 			return iwr.getFile(new Path(usedFilePath)).getContents();
