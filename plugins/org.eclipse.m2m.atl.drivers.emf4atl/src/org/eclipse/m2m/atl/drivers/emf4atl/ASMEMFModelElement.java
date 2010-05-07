@@ -576,7 +576,7 @@ public class ASMEMFModelElement extends ASMModelElement {
 	private boolean isNotAssignable(EStructuralFeature feature, ASMOclAny value) {
 		if ((value instanceof ASMModelElement) && (((ASMModelElement)value).getModel() != getModel())) {
 			// assigning a model element that resides in a different model isn't always allowed
-			if (((ASMEMFModel)getModel()).isCheckSameModel()) {
+			if (getModel().isCheckSameModel()) {
 				// cross-model references are explicitly disallowed
 				return true;
 			} else if (feature instanceof EReference) {

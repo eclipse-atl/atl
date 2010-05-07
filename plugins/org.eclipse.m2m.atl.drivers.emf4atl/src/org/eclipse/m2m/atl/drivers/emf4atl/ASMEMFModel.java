@@ -62,8 +62,6 @@ public class ASMEMFModel extends ASMModel {
 	/** Lookup table of {@link ASMModelElement} by {@link EObject}. */
 	protected Map modelElements = new HashMap();
 
-	private boolean checkSameModel = true;
-
 	private Map classifiers;
 
 	/**
@@ -346,25 +344,6 @@ public class ASMEMFModel extends ASMModel {
 	 */
 	public int hashCode() {
 		return extent.hashCode();
-	}
-
-	/**
-	 * Returns whether this model allows references to other models (inter-model references).
-	 * 
-	 * @return Whether this model allows references to other models (inter-model references).
-	 */
-	public boolean isCheckSameModel() {
-		return checkSameModel;
-	}
-
-	/**
-	 * Sets whether this model allows references to other models (inter-model references).
-	 * 
-	 * @param checkSameModel
-	 *            whether this model allows references to other models (inter-model references).
-	 */
-	public void setCheckSameModel(boolean checkSameModel) {
-		this.checkSameModel = checkSameModel;
 	}
 
 	/**
