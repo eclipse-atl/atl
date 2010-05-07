@@ -30,7 +30,6 @@ import org.eclipse.m2m.atl.core.service.LauncherService;
 import org.eclipse.m2m.atl.core.ui.vm.asm.ASMFactory;
 import org.eclipse.m2m.atl.core.ui.vm.asm.ASMModelWrapper;
 import org.eclipse.m2m.atl.core.ui.vm.debug.NetworkDebugger;
-import org.eclipse.m2m.atl.drivers.emf4atl.ASMEMFModel;
 import org.eclipse.m2m.atl.engine.vm.ASM;
 import org.eclipse.m2m.atl.engine.vm.ASMExecEnv;
 import org.eclipse.m2m.atl.engine.vm.ASMInterpreter;
@@ -300,7 +299,7 @@ public class RegularVMLauncher implements ILauncher {
 	private void setCheckSameModel(IModel model) {
 		if (model instanceof ASMModelWrapper) {
 			ASMModel asmModel = ((ASMModelWrapper)model).getAsmModel();
-			((ASMEMFModel)asmModel).setCheckSameModel(checkSameModel);
+			asmModel.setCheckSameModel(checkSameModel);
 		}
 	}
 
