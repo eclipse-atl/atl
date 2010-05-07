@@ -585,11 +585,12 @@ NAME
 	;
 
 INT
-	:	(DIGIT)+
-%v2		(('.' DIGIT)=> '.' (DIGIT)+ {$setType(FLOAT);})?
-	;
-
-%v3	FLOAT	:	DIGIT+ (('.' DIGIT)=>'.' DIGIT+)?	;	// cannot accept DIGIT '.' because it would conflict with Navigation
+       :       (DIGIT)+
+       			// cannot accept DIGIT '.' because it would conflict with Navigation
+%v2             (('.' DIGIT)=> '.' (DIGIT)+ {$setType(FLOAT);})?
+%v3             (|{ ((input.LA(2) >= '0') && (input.LA(2) <= '9')) }? => '.' DIGIT+ {$type = FLOAT;})
+       ;
+%v3 fragment FLOAT:;
 
 %protected
 ESC
