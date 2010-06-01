@@ -279,6 +279,8 @@ public class AtlOccurrencesFinder implements IOccurrencesFinder {
 			}
 			if (subName != null && subName.equals(name)) {
 				varRegion = getRegionFromElement(obj);
+				if(varRegion == null)
+					return;
 				if (oclIsKindOf(obj, declarationType)) {
 					fResult.add(new OccurrenceLocation(varRegion.getOffset(), varRegion.getLength(),
 							F_WRITE_OCCURRENCE, "Declaration of " + displayType + " '" + name + "'")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -307,6 +309,8 @@ public class AtlOccurrencesFinder implements IOccurrencesFinder {
 			String subName = analyser.getHelper().getText(obj, 0);
 			if (subName != null && subName.equals(name)) {
 				varRegion = getRegionFromElement(obj);
+				if(varRegion == null)
+					return;
 				fResult.add(new OccurrenceLocation(varRegion.getOffset(), varRegion.getLength(),
 						F_EXCEPTION_DECLARATION, "Occurrence of type '" + name + "'")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
@@ -442,6 +446,8 @@ public class AtlOccurrencesFinder implements IOccurrencesFinder {
 		IRegion varRegion = null;
 		for (EObject model : analyser.getRoot().eResource().getContents()) {
 			varRegion = getRegionFromElement(model);
+			if(varRegion == null)
+				return;
 			if (oclIsKindOf(model, "OclModel")) { //$NON-NLS-1$
 				String subName = (String)eGet(model, "name"); //$NON-NLS-1$
 				if (subName.equals(name)) {
