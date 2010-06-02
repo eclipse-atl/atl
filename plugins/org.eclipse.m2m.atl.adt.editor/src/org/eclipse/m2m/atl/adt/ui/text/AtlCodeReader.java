@@ -108,7 +108,7 @@ public class AtlCodeReader extends SingleCharReader {
 	}
 
 	private void gotoStartOfLine() throws BadLocationException {
-		offset = document.getLineOffset(document.getLineOfOffset(offset) - 1);
+		offset = document.getLineOffset(document.getLineOfOffset(offset));
 	}
 
 	private void gotoStartOfString() throws BadLocationException {
