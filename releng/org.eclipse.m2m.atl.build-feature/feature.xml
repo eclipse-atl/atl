@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.m2m.atl.build"
+      label="ATL Build Site"
+      version="3.1.0.qualifier"
+      provider-name="%providerName"
+      image="eclipse_update_120.jpg">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
+   </url>
+
+   <includes
+         id="org.eclipse.m2m.atl.sdk"
+         version="0.0.0"/>
+
+</feature>

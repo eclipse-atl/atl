@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:cspecExtension xmlns:com="http://www.eclipse.org/buckminster/Common-1.0" xmlns:cs="http://www.eclipse.org/buckminster/CSpec-1.0">
+	<cs:dependencies>
+		<cs:dependency name="org.eclipse.m2m.atl.releng.buckminster" componentType="buckminster" />
+		<cs:dependency name="org.eclipse.m2m.atl.tests" componentType="eclipse.feature" />
+	</cs:dependencies>
+
+	<cs:actions>
+		<cs:private name="site.tp" actor="ant">
+			<cs:actorProperties>
+				<cs:property key="buildFile" value="packaging.ant" />
+				<cs:property key="targets" value="create.target.platform.metadata" />
+			</cs:actorProperties>
+			<cs:products alias="output" base="${buckminster.output}/site.tp/" />
+		</cs:private>
+
+		<cs:public name="package.m2m-atl-Update" actor="ant">
+			<cs:actorProperties>
+				<cs:property key="buildFile" value="packaging.ant" />
+				<cs:property key="targets" value="package.site" />
+			</cs:actorProperties>
+			<cs:properties>
+				<cs:property key="package.name" value="m2m-atl-Update" />
+			</cs:properties>
+			<cs:prerequisites>
+				<cs:attribute name="site.p2" alias="repository" />
+			</cs:prerequisites>
+			<cs:products alias="output" base="${buckminster.output}/zips/" />
+		</cs:public>
+
+		<cs:public name="package.m2m-atl-SDK" actor="ant">
+			<cs:actorProperties>
+				<cs:property key="buildFile" value="packaging.ant" />
+				<cs:property key="targets" value="package.ius" />
+			</cs:actorProperties>
+			<cs:properties>
+				<cs:property key="content.ius" value="org.eclipse.m2m.atl.sdk.feature.group" />
+				<cs:property key="target.platform.ius" value="org.antlr.runtime" />
+				<cs:property key="package.name" value="m2m-atl-SDK" />
+			</cs:properties>
+			<cs:prerequisites>
+				<cs:attribute name="site.p2" alias="repository" />
+				<cs:attribute name="site.tp" alias="target.platform.repository" />
+			</cs:prerequisites>
+			<cs:products alias="output" base="${buckminster.output}/zips/" />
+		</cs:public>
+
+		<cs:public name="package.m2m-atl-runtime" actor="ant">
+			<cs:actorProperties>
+				<cs:property key="buildFile" value="packaging.ant" />
+				<cs:property key="targets" value="package.ius" />
+			</cs:actorProperties>
+			<cs:properties>
+				<cs:property key="content.ius" value="org.eclipse.m2m.atl.feature.group,org.eclipse.m2m.atl.profiler.feature.group" />
+				<cs:property key="target.platform.ius" value="org.antlr.runtime" />
+				<cs:property key="package.name" value="m2m-atl-runtime" />
+			</cs:properties>
+			<cs:prerequisites>
+				<cs:attribute name="site.p2" alias="repository" />
+				<cs:attribute name="site.tp" alias="target.platform.repository" />
+			</cs:prerequisites>
+			<cs:products alias="output" base="${buckminster.output}/zips/" />
+		</cs:public>
+
+		<cs:public name="package.m2m-atl-examples" actor="ant">
+			<cs:actorProperties>
+				<cs:property key="buildFile" value="packaging.ant" />
+				<cs:property key="targets" value="package.ius" />
+			</cs:actorProperties>
+			<cs:properties>
+				<cs:property key="content.ius" value="org.eclipse.m2m.atl.examples.feature.group" />
+				<cs:property key="package.name" value="m2m-atl-examples" />
+			</cs:properties>
+			<cs:prerequisites>
+				<cs:attribute name="site.p2" alias="repository" />
+				<cs:attribute name="site.tp" alias="target.platform.repository" />
+			</cs:prerequisites>
+			<cs:products alias="output" base="${buckminster.output}/zips/" />
+		</cs:public>
+
+		<cs:public name="tag" actor="buckminster.tag">
+			<cs:actorProperties>
+				<cs:property key="tag" value="build_${build.id}" />
+				<cs:property key="exclude.0" value="^org\.eclipse\.test$" />
+				<cs:property key="exclude.1" value="^org\.eclipse\.ant\.optional\.junit$" />
+			</cs:actorProperties>
+		</cs:public>
+	</cs:actions>
+
+	<cs:groups>
+		<cs:public name="build">
+			<cs:attribute name="package.m2m-atl-Update" />
+			<cs:attribute name="package.m2m-atl-SDK" />
+			<cs:attribute name="package.m2m-atl-runtime" />
+			<cs:attribute name="package.m2m-atl-examples" />
+		</cs:public>
+	</cs:groups>
+</cs:cspecExtension>
