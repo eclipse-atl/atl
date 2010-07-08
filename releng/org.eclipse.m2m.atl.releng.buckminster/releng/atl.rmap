@@ -61,13 +61,13 @@
 
 	<searchPath name="releng">
 		<provider componentTypes="buckminster" readerType="cvs" source="true" mutable="false">
-			<uri format="{0}/org.eclipse.m2m/org.eclipse.m2m.atl/releng/{1}">
+			<uri format="{0},org.eclipse.m2m/org.eclipse.m2m.atl/releng/{1}">
 				<bc:propertyRef key="source.repository.location" />
 				<bc:propertyRef key="buckminster.component" />
 			</uri>
 		</provider>
 		<provider componentTypes="eclipse.feature" readerType="cvs" source="true" mutable="false">
-			<uri format="{0}/org.eclipse.m2m/org.eclipse.m2m.atl/releng/{1}-feature">
+			<uri format="{0},org.eclipse.m2m/org.eclipse.m2m.atl/releng/{1}-feature">
 				<bc:propertyRef key="source.repository.location" />
 				<bc:propertyRef key="buckminster.component" />
 			</uri>
