@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.m2m.atl.drivers.mdr4atl"
       label="Driver MDR4ATL Feature"
-      version="3.1.0.qualifier"
+      version="3.1.1.qualifier"
       provider-name="Eclipse Modeling Project">
 
    <description url="http://www.eclipse.org/m2m/atl/">
@@ -20,7 +20,9 @@
  */
    </copyright>
 
-  <license url="%licenseURL">%license</license>
+   <license url="%licenseURL">
+      %license
+   </license>
 
    <url>
       <update label="ATL Updates" url="http://download.eclipse.org/modeling/m2m/updates/"/>
