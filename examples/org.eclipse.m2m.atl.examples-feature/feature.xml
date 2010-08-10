@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.m2m.atl.examples"
       label="%featureName"
-      version="3.1.0.qualifier"
+      version="3.1.1.qualifier"
       provider-name="%providerName">
 
    <description>
@@ -20,7 +20,9 @@
  */
    </copyright>
 
-   <license url="%licenseURL">%license</license>
+   <license url="%licenseURL">
+      %license
+   </license>
 
    <url>
       <update label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
