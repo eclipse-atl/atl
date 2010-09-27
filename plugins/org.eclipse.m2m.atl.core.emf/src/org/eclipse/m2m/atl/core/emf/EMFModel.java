@@ -9,7 +9,7 @@
  *     INRIA - initial API and implementation
  *     Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: EMFModel.java,v 1.14 2010/01/20 13:10:56 wpiers Exp $
+ * $Id: EMFModel.java,v 1.15 2010/09/27 07:07:51 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.core.emf;
@@ -71,6 +71,9 @@ public class EMFModel implements IModel {
 		Resource mainResource = getResource();
 		if (mainResource == null) {
 			mainResource = modelFactory.getResourceSet().createResource(URI.createURI("new-model")); //$NON-NLS-1$
+			// TODO [Resource.Factory issues] use the correct factory
+			// MAIN ISSUE HERE...
+			// resource must be created within the model creation
 			setResource(mainResource);
 		}
 		EClass ec = (EClass)metaElement;

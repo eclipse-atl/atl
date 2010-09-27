@@ -110,6 +110,7 @@ public class EMFExtractor implements IExtractor {
 			throws ATLCoreException {
 		if (((EMFModel)sourceModel).getResource() == null) {
 			// creates a mock resource
+			// TODO [Resource.Factory issues] use the correct factory
 			((EMFModel)sourceModel).setResource(((EMFModel)sourceModel).getModelFactory().getResourceSet()
 					.createResource(URI.createURI("tmp"))); //$NON-NLS-1$
 			return;

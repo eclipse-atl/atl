@@ -94,6 +94,7 @@ public class EMFInjector implements IInjector {
 			throws ATLCoreException {
 		Resource mainResource = null;
 		ResourceSet resourceSet = ((EMFModelFactory)targetModel.getModelFactory()).getResourceSet();
+		// TODO [Resource.Factory issues] use the correct factory
 		mainResource = resourceSet.createResource(URI.createURI("new-model")); //$NON-NLS-1$
 		try {
 			mainResource.load(source, options);
