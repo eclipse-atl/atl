@@ -40,15 +40,15 @@ acg ATL startsWith Unit {
 			new
 			dup
 			push 'Collection'
-			call 'J.setName(S):V'
+			pcall 'J.setName(S):V'
 			dup
 			push 'OclSimpleType'
 			push '#native'
 			new
 			dup
 			push 'OclAny'
-			call 'J.setName(S):V'
-			call 'J.setElementType(J):V'
+			pcall 'J.setName(S):V'
+			pcall 'J.setElementType(J):V'
 			set 'col'
 
 			if(self.isRefining) {
@@ -65,7 +65,7 @@ acg ATL startsWith Unit {
 				findme
 				push 'sourceElement'
 				push 'persistedSourceElement'
-				call 'J.registerWeavingHelper(SS):V'
+				pcall 'J.registerWeavingHelper(SS):V'
 			}
 
 			analyze self.elements->select(e | e isa Helper) mode register
@@ -79,24 +79,24 @@ acg ATL startsWith Unit {
 			let ep = self.elements->select(e | e isa CalledRule)->select(e | e.isEntrypoint).first() {
 				if(not ep.oclIsUndefined()) {
 					getasm
-					call 'A.' + ep.name + '():V'
+					pcall 'A.' + ep.name + '():V'
 				}
 			}
 
 			getasm
-			call 'A.__matcher__():V'
+			pcall 'A.__matcher__():V'
 			getasm
-			call 'A.__exec__():V'
+			pcall 'A.__exec__():V'
 
 			if(self.isRefining) {
 				getasm
-				call 'A.__applyRefiningTrace__():V'
+				pcall 'A.__applyRefiningTrace__():V'
 			}
 
 			let ep = self.elements->select(e | e isa CalledRule)->select(e | e.isEndpoint).first() {
 				if(not ep.oclIsUndefined()) {
 					getasm
-					call 'A.' + ep.name + '():V'
+					pcall 'A.' + ep.name + '():V'
 				}
 			}
 		}
@@ -161,7 +161,7 @@ acg ATL startsWith Unit {
 				name '__matcher__' {
 			foreach(r in self.elements->select(e | (e isa MatchedRule) and (not (e isa LazyMatchedRule)))->select(e | e.superRule.oclIsUndefined())) {
 				getasm
-				call 'A.__match' + r.name + '():V'
+				pcall 'A.__match' + r.name + '():V'
 			}
 		}
 		operation
@@ -176,7 +176,7 @@ acg ATL startsWith Unit {
 					variable self named 'e' {
 						getasm
 						load self
-						call 'A.__apply' + r.name + '(NTransientLink;):V'
+						pcall 'A.__apply' + r.name + '(NTransientLink;):V'
 					}
 				enditerate
 			}
@@ -527,7 +527,7 @@ acg ATL startsWith Unit {
 		analyze self.definition.context_.context_
 		push self.name
 		push '__init' + self.name
-		call 'J.registerHelperAttribute(SS):V'
+		pcall 'J.registerHelperAttribute(SS):V'
 	}
 
 	Attribute {
@@ -722,13 +722,13 @@ acg ATL startsWith Unit {
 
 		dup
 		push self.name
-		call 'NTransientLink;.setRule(MATL!Rule;):V'
+		pcall 'NTransientLink;.setRule(MATL!Rule;):V'
 
 		foreach(ipe in self.inPattern.elements) {
 			dup
 			push ipe.varName
 			load ipe.actualDeclaration()
-			call 'NTransientLink;.addSourceElement(SJ):V'
+			pcall 'NTransientLink;.addSourceElement(SJ):V'
 		}
 
 		foreach(v in self.mostConcreteVariables()) {
@@ -737,7 +737,7 @@ acg ATL startsWith Unit {
 			analyze v.initExpression
 			dup
 			variable v named v.varName {
-				call 'NTransientLink;.addVariable(SJ):V'
+				pcall 'NTransientLink;.addVariable(SJ):V'
 			[
 				let opes = self.mostConcreteOutPatternElements() {
 					if(self.module.isRefining) {
@@ -756,7 +756,7 @@ acg ATL startsWith Unit {
 		} else {
 			pusht
 		}
-		call 'NTransientLinkSet;.addLink2(NTransientLink;B):V'
+		pcall 'NTransientLinkSet;.addLink2(NTransientLink;B):V'
 	}
 
 	MatchedRule mode apply | self.isAbstract {
@@ -844,7 +844,7 @@ acg ATL startsWith Unit {
 					swap						-- transientLink, varName, traceElement, valueTraceElement, traceElement
 					push rb.name	-- transientLink, varName, traceElement, valueTraceElement, traceElement, propertyName
 					swap			-- transientLink, varName, traceElement, valueTraceElement, propertyName, traceElement
-					call 'MRefiningTrace!Element;.setProperty(SJ):V'
+					pcall 'MRefiningTrace!Element;.setProperty(SJ):V'
 				} else {
 					swap			-- transientLink, varName, element, value, element
 					set rb.name		-- transientLink, varName, element
@@ -853,7 +853,7 @@ acg ATL startsWith Unit {
 				report error 'only navigations are allowed in reversebindings' 
 			}
 		}
-		call 'NTransientLink;.addTargetElement(SJ):V'
+		pcall 'NTransientLink;.addTargetElement(SJ):V'
 	}
 
 	-- TODO: removal, change...
@@ -874,7 +874,7 @@ acg ATL startsWith Unit {
 		load self.outPattern.rule.inPatternElements().first()
 		set 'sourceElement'
 
-		call 'NTransientLink;.addTargetElement(SJ):V'
+		pcall 'NTransientLink;.addTargetElement(SJ):V'
 	}
 
 	function MatchedRule::getBindings(varName, ret) =
@@ -946,7 +946,7 @@ acg ATL startsWith Unit {
 		} else {
 			pushf
 		}
-		call 'MRefiningTrace!Element;.setProperty(SJB):V'
+		pcall 'MRefiningTrace!Element;.setProperty(SJB):V'
 	}
 -- @end SimpleOutPatternElement
 
@@ -973,7 +973,7 @@ acg ATL startsWith Unit {
 				new
 				call 'CJ.including(J):CJ'
 			enditerate
-			call 'NTransientLink;.addTargetElement(SJ):V'
+			pcall 'NTransientLink;.addTargetElement(SJ):V'
 		}
 	}
 
@@ -1076,13 +1076,13 @@ acg ATL startsWith Unit {
 	
 				dup
 				push self.name
-				call 'NTransientLink;.setRule(MATL!Rule;):V'
+				pcall 'NTransientLink;.setRule(MATL!Rule;):V'
 	
 				foreach(ipe in self.inPattern.elements) {
 					dup
 					push ipe.varName
 					load ipe.varName
-					call 'NTransientLink;.addSourceElement(SJ):V'
+					pcall 'NTransientLink;.addSourceElement(SJ):V'
 				}
 	
 				analyze self mode checkSubRules
@@ -1158,10 +1158,10 @@ acg ATL startsWith Unit {
 				}
 				dup
 				variable ope.actualDeclaration() named ope.varName {
-					call 'NTransientLink;.addTargetElement(SJ):V'
+					pcall 'NTransientLink;.addTargetElement(SJ):V'
 				[
 					pushf
-					call 'NTransientLinkSet;.addLink2(NTransientLink;B):V'
+					pcall 'NTransientLinkSet;.addLink2(NTransientLink;B):V'
 	
 					analyze self.mostConcreteOutPatternElements() mode apply
 	
@@ -1335,7 +1335,7 @@ acg ATL startsWith Unit {
 		push 'OclAny'
 		push '#native'
 		findme
-		call 'J.addAttribute(SJ):V'
+		pcall 'J.addAttribute(SJ):V'
 	}
 
 -- @begin Parameterized Types
@@ -1345,10 +1345,10 @@ acg ATL startsWith Unit {
 		new
 		dup
 		push 'Collection'
-		call 'J.setName(S):V'
+		pcall 'J.setName(S):V'
 		dup
 		analyze self.elementType
-		call 'J.setElementType(J):V'
+		pcall 'J.setElementType(J):V'
 	}
 
 	code SequenceType {
@@ -1357,10 +1357,10 @@ acg ATL startsWith Unit {
 		new
 		dup
 		push 'Sequence'
-		call 'J.setName(S):V'
+		pcall 'J.setName(S):V'
 		dup
 		analyze self.elementType
-		call 'J.setElementType(J):V'
+		pcall 'J.setElementType(J):V'
 	}
 
 	code SetType {
@@ -1369,10 +1369,10 @@ acg ATL startsWith Unit {
 		new
 		dup
 		push 'Set'
-		call 'J.setName(S):V'
+		pcall 'J.setName(S):V'
 		dup
 		analyze self.elementType
-		call 'J.setElementType(J):V'
+		pcall 'J.setElementType(J):V'
 	}
 
 	code OrderedSetType {
@@ -1381,10 +1381,10 @@ acg ATL startsWith Unit {
 		new
 		dup
 		push 'OrderedSet'
-		call 'J.setName(S):V'
+		pcall 'J.setName(S):V'
 		dup
 		analyze self.elementType
-		call 'J.setElementType(J):V'
+		pcall 'J.setElementType(J):V'
 	}
 
 	code BagType {
@@ -1393,10 +1393,10 @@ acg ATL startsWith Unit {
 		new
 		dup
 		push 'Bag'
-		call 'J.setName(S):V'
+		pcall 'J.setName(S):V'
 		dup
 		analyze self.elementType
-		call 'J.setElementType(J):V'
+		pcall 'J.setElementType(J):V'
 	}
 -- @end Parameterized Types
 -- @end Types
