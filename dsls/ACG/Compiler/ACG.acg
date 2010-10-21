@@ -38,15 +38,15 @@ acg ACG startsWith ACG {
 			new
 			dup
 			push 'Collection'
-			call 'J.setName(S):V'
+			pcall 'J.setName(S):V'
 			dup
 			push 'OclSimpleType'
 			push '#native'
 			new
 			dup
 			push 'OclAny'
-			call 'J.setName(S):V'
-			call 'J.setElementType(J):V'
+			pcall 'J.setName(S):V'
+			pcall 'J.setElementType(J):V'
 			set 'col'
 			
 			foreach(a in self.elements->select(e | e isa Attribute)) {
@@ -55,7 +55,7 @@ acg ACG startsWith ACG {
 				findme
 				push a.name
 				push '__init' + a.name
-				call 'J.registerHelperAttribute(SS):V'
+				pcall 'J.registerHelperAttribute(SS):V'
 			}
 
 			push self.startsWith
@@ -64,7 +64,7 @@ acg ACG startsWith ACG {
 			call 'MMOF!Classifier;.allInstances():QJ'
 			call 'QJ.asSequence():QJ'
 			call 'QJ.first():J'
-			call 'J.process():V'
+			pcall 'J.process():V'
 		}
 
 		operation
@@ -118,7 +118,7 @@ acg ACG startsWith ACG {
 			set 'asmEmitter'
 			get 'asmEmitter'
 			analyze self.name
-			call 'J.newASM(S):V'
+			pcall 'J.newASM(S):V'
 
 			analyze self.statements
 
@@ -126,7 +126,7 @@ acg ACG startsWith ACG {
 			get 'asmEmitter'
 			getasm
 			get 'fileName'
-			call 'J.dumpASM(S):V'
+			pcall 'J.dumpASM(S):V'
 		}
 	}
 
@@ -174,7 +174,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		load 'self'
 		get 'location'
-		call 'J.beginLineNumberEntry(S):V'
+		pcall 'J.beginLineNumberEntry(S):V'
 	}
 
 	CodeNode mode tail {
@@ -182,7 +182,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		load 'self'
 		get 'location'
-		call 'J.endLineNumberEntry(S):V'
+		pcall 'J.endLineNumberEntry(S):V'
 	}
 
 	SimpleNode mode head {}
@@ -227,21 +227,21 @@ acg ACG startsWith ACG {
 		analyze self.definition
 		get '__xmiID__'
 		analyze self.name
-		call 'J.beginLocalVariableEntry(SS):V'
+		pcall 'J.beginLocalVariableEntry(SS):V'
 
 		getasm
 		get 'asmEmitter'
 		push 'store'
 		analyze self.definition
 		get '__xmiID__'
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 		analyze self.statements
 
 		getasm
 		get 'asmEmitter'
 		analyze self.definition
 		get '__xmiID__'
-		call 'J.endLocalVariableEntry(S):V'
+		pcall 'J.endLocalVariableEntry(S):V'
 	}
 
 	code LetStat {
@@ -256,9 +256,9 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		dup
 		analyze self.name
-		call 'J.addOperation(S):V'
+		pcall 'J.addOperation(S):V'
 		analyze self.context
-		call 'J.setContext(S):V'
+		pcall 'J.setContext(S):V'
 
 		analyze self.statements
 	}
@@ -288,12 +288,12 @@ acg ACG startsWith ACG {
 		get 'col'
 		call 'J.oclIsKindOf(J):B'
 		if thn
-			call 'J.process' + self.suffix() + '():V'
+			pcall 'J.process' + self.suffix() + '():V'
 			analyze self.statements
 			goto eoi
 	    thn:
 			iterate
-				call 'J.process' + self.suffix() + '():V'
+				pcall 'J.process' + self.suffix() + '():V'
 				analyze self.statements
 			enditerate
 	    eoi:
@@ -328,7 +328,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		analyze self.name
 		analyze self.type
-		call 'J.addField(SS):V'
+		pcall 'J.addField(SS):V'
 	}
 
 	code ParamStat {
@@ -336,7 +336,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		analyze self.name
 		analyze self.type
-		call 'J.addParameter(SS):V'
+		pcall 'J.addParameter(SS):V'
 	}
 
 -- @begin EmitStats
@@ -345,7 +345,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		push 'label'
 		analyze self mode id
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 	}
 
 	-- TODO: there is a problem here, when a label is in a loop, because the same "location" may be used
@@ -368,84 +368,84 @@ acg ACG startsWith ACG {
 		getasm
 		get 'asmEmitter'
 		push 'newin'
-		call 'J.emitSimple(S):V'
+		pcall 'J.emitSimple(S):V'
 	}
 
 	code NewStat {
 		getasm
 		get 'asmEmitter'
 		push 'new'
-		call 'J.emitSimple(S):V'
+		pcall 'J.emitSimple(S):V'
 	}
 
 	code DupStat {
 		getasm
 		get 'asmEmitter'
 		push 'dup'
-		call 'J.emitSimple(S):V'
+		pcall 'J.emitSimple(S):V'
 	}
 
 	code DupX1Stat {
 		getasm
 		get 'asmEmitter'
 		push 'dup_x1'
-		call 'J.emitSimple(S):V'
+		pcall 'J.emitSimple(S):V'
 	}
 
 	code PopStat {
 		getasm
 		get 'asmEmitter'
 		push 'pop'
-		call 'J.emitSimple(S):V'
+		pcall 'J.emitSimple(S):V'
 	}
 
 	code SwapStat {
 		getasm
 		get 'asmEmitter'
 		push 'swap'
-		call 'J.emitSimple(S):V'
+		pcall 'J.emitSimple(S):V'
 	}
 
 	code IterateStat {
 		getasm
 		get 'asmEmitter'
 		push 'iterate'
-		call 'J.emitSimple(S):V'
+		pcall 'J.emitSimple(S):V'
 	}
 
 	code EndIterateStat {
 		getasm
 		get 'asmEmitter'
 		push 'enditerate'
-		call 'J.emitSimple(S):V'
+		pcall 'J.emitSimple(S):V'
 	}
 
 	code GetAsmStat {
 		getasm
 		get 'asmEmitter'
 		push 'getasm'
-		call 'J.emitSimple(S):V'
+		pcall 'J.emitSimple(S):V'
 	}
 
 	code FindMEStat {
 		getasm
 		get 'asmEmitter'
 		push 'findme'
-		call 'J.emitSimple(S):V'
+		pcall 'J.emitSimple(S):V'
 	}
 
 	code PushTStat {
 		getasm
 		get 'asmEmitter'
 		push 'pusht'
-		call 'J.emitSimple(S):V'
+		pcall 'J.emitSimple(S):V'
 	}
 
 	code PushFStat {
 		getasm
 		get 'asmEmitter'
 		push 'pushf'
-		call 'J.emitSimple(S):V'
+		pcall 'J.emitSimple(S):V'
 	}
 
 -- @begin EmitWithOperandStats
@@ -454,7 +454,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		push 'push'
 		analyze self.operand
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 	}
 
 	code PushIStat {
@@ -463,7 +463,7 @@ acg ACG startsWith ACG {
 		push 'pushi'
 		analyze self.operand
 		call 'J.toString():S'
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 	}
 
 	code PushDStat {
@@ -472,7 +472,7 @@ acg ACG startsWith ACG {
 		push 'pushd'
 		analyze self.operand
 		call 'J.toString():S'
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 	}
 
 	code LoadStat {
@@ -489,7 +489,7 @@ acg ACG startsWith ACG {
 		if thn
 		get '__xmiID__'
 	    thn:
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 	}
 
 	code StoreStat {
@@ -506,8 +506,7 @@ acg ACG startsWith ACG {
 		if thn
 		get '__xmiID__'
 	    thn:
-		call 'J.emit(SS):V'
-		getasm
+		pcall 'J.emit(SS):V'
 	}
 
 	code CallStat {
@@ -515,7 +514,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		push 'call'
 		analyze self.operand
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 	}
 
 	code PCallStat {
@@ -523,7 +522,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		push 'pcall'
 		analyze self.operand
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 	}
 
 	code SuperCallStat {
@@ -531,7 +530,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		push 'supercall'
 		analyze self.operand
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 	}
 
 	code GetStat {
@@ -539,7 +538,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		push 'get'
 		analyze self.operand
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 	}
 
 	code SetStat {
@@ -547,7 +546,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		push 'set'
 		analyze self.operand
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 	}
 -- @end EmitWithOperandStats
 
@@ -557,7 +556,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		push 'if'
 		analyze self.label mode id
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 	}
 
 	code GotoStat {
@@ -565,7 +564,7 @@ acg ACG startsWith ACG {
 		get 'asmEmitter'
 		push 'goto'
 		analyze self.label mode id
-		call 'J.emit(SS):V'
+		pcall 'J.emit(SS):V'
 	}
 -- @end EmitWithLabelRefStats
 -- @end EmitStats
