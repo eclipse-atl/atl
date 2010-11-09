@@ -22,9 +22,10 @@
 
    <license url="%licenseURL">%license</license>
 
-   <url>
-      <update label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
-   </url>
+<url>
+	<update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
+	<discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
+</url>
 
    <requires>
       <import plugin="org.eclipse.m2m.atl.engine.vm"/>
