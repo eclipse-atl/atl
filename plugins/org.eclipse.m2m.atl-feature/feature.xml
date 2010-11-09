@@ -24,8 +24,9 @@ v1.0
 
    <license url="%licenseURL">%license</license>
 
-   <url>
-      <update label="%updateSiteName" url="http://download.eclipse.org/modeling/m2m/updates/"/>
+	<url>
+      <update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
+      <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
    </url>
 
    <requires>
