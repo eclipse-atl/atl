@@ -9,6 +9,11 @@
       ATL Engine
    </description>
 
+<url>
+	<update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
+	<discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
+</url>
+
    <copyright url="http://www.eclipse.org/legal/epl-v10.html">
       /*  
 * Copyright (c) 2004, INRIA.
