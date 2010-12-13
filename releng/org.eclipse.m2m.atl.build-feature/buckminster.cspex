@@ -20,6 +20,8 @@
 				<cs:property key="targets" value="package.site" />
 			</cs:actorProperties>
 			<cs:properties>
+				<cs:property key="content.ius" value="org.eclipse.m2m.atl.sdk.feature.group" />
+				<cs:property key="target.platform.ius" value="org.antlr.runtime" />
 				<cs:property key="package.name" value="m2m-atl-Update" />
 			</cs:properties>
 			<cs:prerequisites>
