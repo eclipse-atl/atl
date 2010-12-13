@@ -12,6 +12,9 @@
    <feature id="org.eclipse.m2m.atl.sdk" version="0.0.0">
       <category name="atl"/>
    </feature>
+   <feature id="org.eclipse.m2m.atl.tests" version="0.0.0">
+      <category name="atl"/>
+   </feature>
    <feature id="org.eclipse.m2m.atl" version="0.0.0">
       <category name="atl"/>
    </feature>
