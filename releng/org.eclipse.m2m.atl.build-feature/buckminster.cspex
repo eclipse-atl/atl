@@ -2,7 +2,7 @@
 <cs:cspecExtension xmlns:com="http://www.eclipse.org/buckminster/Common-1.0" xmlns:cs="http://www.eclipse.org/buckminster/CSpec-1.0">
 	<cs:dependencies>
 		<cs:dependency name="org.eclipse.m2m.atl.releng.buckminster" componentType="buckminster" />
-		<!--<cs:dependency name="org.eclipse.m2m.atl.tests" componentType="eclipse.feature" />-->
+		<cs:dependency name="org.eclipse.m2m.atl.tests" componentType="eclipse.feature" />
 	</cs:dependencies>
 
 	<cs:actions>
@@ -20,8 +20,6 @@
 				<cs:property key="targets" value="package.site" />
 			</cs:actorProperties>
 			<cs:properties>
-				<cs:property key="content.ius" value="org.eclipse.m2m.atl.sdk.feature.group" />
-				<cs:property key="target.platform.ius" value="org.antlr.runtime" />
 				<cs:property key="package.name" value="m2m-atl-Update" />
 			</cs:properties>
 			<cs:prerequisites>
@@ -80,13 +78,6 @@
 			<cs:products alias="output" base="${buckminster.output}/zips/" />
 		</cs:public>
 
-		<cs:public name="tag" actor="buckminster.tag">
-			<cs:actorProperties>
-				<cs:property key="tag" value="build_${build.id}" />
-				<cs:property key="exclude.0" value="^org\.eclipse\.test$" />
-				<cs:property key="exclude.1" value="^org\.eclipse\.ant\.optional\.junit$" />
-			</cs:actorProperties>
-		</cs:public>
 	</cs:actions>
 
 	<cs:groups>
@@ -97,4 +88,5 @@
 			<cs:attribute name="package.m2m-atl-examples" />
 		</cs:public>
 	</cs:groups>
+
 </cs:cspecExtension>
