@@ -14,9 +14,6 @@
    <topic href="guide/tutorials/ATL Tutorials.html" label="Tutorials">
       <link toc="guide/tutorials/ATL Tutorials-toc.xml"/>
    </topic>
-   <topic label="Reference">
-      <link toc="topics_Reference.xml"/>
-   </topic>
 	<topic label="Online Docs">		
 		<topic label="ATL wiki" href="http://wiki.eclipse.org/index.php/ATL" />
 		<topic label="ATL basic examples" href="http://www.eclipse.org/m2m/atl/basicExamples_Patterns/" />
