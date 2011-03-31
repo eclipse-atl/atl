@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="ITM">
+  <IterateTestClass result="eight is positive - minus one is negative - two 1 is positive - two 2 is positive - minus three is negative - " resultSum="8"/>
+  <ExistsTestClass resultTrue="true"/>
+  <ForAllTestClass resultTrue="true"/>
+  <IsUniqueTestClass resultTrue="true"/>
+  <AnyTestClass resultNotNull="Tuple {b = 'eight', a = 8}" resultNull="OclUndefined"/>
+  <OneTestClass resultTrue="true"/>
+  <CollectTestClass resultTrue="true"/>
+  <SelectTestClass resultNotNull="Sequence {Tuple {b = 'two 1', a = 2}, Tuple {b = 'two 2', a = 2}}" resultNull="Sequence {}"/>
+  <RejectTestClass resultNotNull="Sequence {Tuple {b = 'eight', a = 8}, Tuple {b = 'minus one', a = -1}, Tuple {b = 'two 1', a = 2}, Tuple {b = 'two 2', a = 2}, Tuple {b = 'minus three', a = -3}}" resultNull="Sequence {}"/>
+  <SortedByTestClass resultByString="Sequence {Tuple {b = 'eight', a = 8}, Tuple {b = 'minus one', a = -1}, Tuple {b = 'minus three', a = -3}, Tuple {b = 'two 1', a = 2}, Tuple {b = 'two 2', a = 2}}" resultByInt="Sequence {Tuple {b = 'minus three', a = -3}, Tuple {b = 'minus one', a = -1}, Tuple {b = 'two 1', a = 2}, Tuple {b = 'two 2', a = 2}, Tuple {b = 'eight', a = 8}}"/>
+</xmi:XMI>

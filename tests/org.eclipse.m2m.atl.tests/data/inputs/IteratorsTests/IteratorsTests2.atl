@@ -4,18 +4,12 @@
 module IteratorsTests;
 create OUT : ITM from IN : UML;
 
---- This is a test helper
 helper def : sequenceTest : Sequence(TupleType(a : Integer, b : String)) =
 	Sequence{Tuple{a : Integer = 8, b : String = 'eight'},
 		Tuple{a : Integer = -1, b : String = 'minus one'},
 		Tuple{a : Integer = 2, b : String = 'two 1'},
 		Tuple{a : Integer = 2, b : String = 'two 2'},
 		Tuple{a : Integer = -3, b : String = 'minus three'}};
-
---- This is another test helper, with parameters
-helper def : rtest(t1 : String, t2 : Integer) : OclAny =
-	t1 = 'Test' and
-	t2 = 5;
 
 rule IteratorsTests {
 	from
@@ -24,7 +18,7 @@ rule IteratorsTests {
 		iterateTest : ITM!IterateTestClass (
 			resultSum <- thisModule.sequenceTest -> iterate(i; var : Integer = 0 |
 				var + i.a
-			), -- This first iteration sums all the integer values of the tuples of the sequence
+			), -- This first iteration sum all the integer values of the tuples of the sequence
 			result <- thisModule.sequenceTest -> iterate(i; var : String = '' |
 				if i.a > 0 then
 					var + i.b + ' is positive - '
@@ -35,27 +29,14 @@ rule IteratorsTests {
 		),
 		existsTest : ITM!ExistsTestClass (
 			resultTrue <- thisModule.sequenceTest -> exists(i | i.a < 0),
-			resultFalse <- thisModule.rtest('un', 1),
-				-- This one returns true if the sequence contains at least one tuple in
+				-- This one returns true if the sequence contains at least on tuple in
 				-- which the 'a' parameter is negative (in our case, it does)
 			resultFalse <- thisModule.sequenceTest -> exists(i | i.a > 15)
-				-- This one returns true if the sequence contains at least one tuple in
+				-- This one returns true if the sequence contains at least on tuple in
 				-- which the 'a' parameter is greater than 15 (in our case, it doesn't)
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
 		),
 		forAllTest : ITM!ForAllTestClass (
 			resultFalse <- thisModule.sequenceTest -> forAll(i | i.a > 0),
-			resultTrue <- thisModule.rtest('un', 1),
 				-- This one returns true if every tuple of the sequence has it 'a'
 				-- parameter positive (in our case, it doesn't)
 			resultTrue <- thisModule.sequenceTest -> forAll(i | i.a >= -3)
@@ -71,7 +52,7 @@ rule IteratorsTests {
 				-- (in our case, they are all differents)
 		),
 		anyTest : ITM!AnyTestClass (
-			resultNull <- thisModule.sequenceTest -> any(i | i.a = -5) -> toString() -> toString(),
+			resultNull <- thisModule.sequenceTest -> any(i | i.a = -5) -> toString(),
 				-- This one returns one tuple for which the 'a' parameter equals -5
 				-- (in our case, none)
 			resultNotNull <- thisModule.sequenceTest -> any(i | i.a > 1) -> toString()
@@ -95,7 +76,7 @@ rule IteratorsTests {
 				-- equals 2 (in our case, it does)
 		),
 		selectTest : ITM!SelectTestClass (
-			resultNull <- thisModule.sequenceTest -> select(i | i.a = 3) -> flatten() -> toString() -> toString(),
+			resultNull <- thisModule.sequenceTest -> select(i | i.a = 3) -> flatten() -> toString(),
 				-- This one returns a sequence containing the tuples for which the 'a' parameter equals 3
 				-- (in our case, there is not, so it returns a empty sequence)
 			resultNotNull <- thisModule.sequenceTest -> select(i | i.a = 2) -> flatten() -> toString()

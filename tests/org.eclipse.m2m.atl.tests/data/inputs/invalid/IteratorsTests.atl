@@ -17,9 +17,6 @@ helper def : rtest(t1 : String, t2 : Integer) : OclAny =
 	t1 = 'Test' and
 	t2 = 5;
 
-rule IteratorsTests {
-	from
-		input : UML!Model
 	to
 		iterateTest : ITM!IterateTestClass (
 			resultSum <- thisModule.sequenceTest -> iterate(i; var : Integer = 0 |

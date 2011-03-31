@@ -12,7 +12,6 @@ package org.eclipse.m2m.atl.tests.unit;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Properties;
 
 import org.eclipse.emf.ecore.EObject;
@@ -52,30 +51,20 @@ public class TestNonRegressionParser extends TestNonRegression {
 				"inputs", "expected")); //$NON-NLS-1$//$NON-NLS-2$
 		final String transfoPath = directory + File.separator
 				+ directory.getName() + ".atl"; //$NON-NLS-1$
-		final String outputPath = directory + File.separator
-				+ directory.getName() + ".atl.xmi"; //$NON-NLS-1$
 		final String expectedPath = expectedDir + File.separator
 				+ directory.getName() + ".atl.xmi"; //$NON-NLS-1$
 		if (!new File(transfoPath).exists()) {
-			//	fail("ATL file " + transfoPath + " does not exist"); //$NON-NLS-1$ //$NON-NLS-2$
+			info("ATL file " + transfoPath + " does not exist. Skipped"); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		try {
 			EObject result = AtlParser.getDefault().parse(
 					new FileInputStream(transfoPath));
-			ModelUtils.save(result, "file:/" + transfoPath + ".xmi"); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(transfoPath, FileUtils.readFileAsString(new File(
+					expectedPath)), ModelUtils.serialize(result));
 		} catch (Exception e) {
 			fail("Failed to parse " + transfoPath); //$NON-NLS-1$
 		}
-
-		try {
-			FileUtils.compareFiles(new File(outputPath),
-					new File(expectedPath), true);
-		} catch (IOException e) {
-			fail(e.getMessage(), e);
-		}
-
-		info(directory.getName() + " parsed successfully"); //$NON-NLS-1$ 
 	}
 
 }

@@ -1,0 +1,19 @@
+module template;
+create OUT : MM1 from IN : MM;
+
+uses LIB;
+
+rule name {
+	from
+		input_name : input_element
+	to 
+		output_name : output_element (
+			
+		)
+}
+
+helper def : name() : OclAny = OclUndefined;
+
+helper def : name : OclAny = OclUndefined;
+
+

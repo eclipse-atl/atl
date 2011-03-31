@@ -1,0 +1,100 @@
+-- @path Relational=/org.eclipse.m2m.atl.tests/data/inputs/UML2Relational/relational.ecore
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+
+module Class2Relational;
+create OUT: Relational from IN: UML;
+
+-------------------------------------------------------------------------------------------
+-- HELPERS
+		-- --------------------------------------------------------------------------------
+--- 
+-------------------------------------------------------------------------------------------
+
+helper context UML!Element def: hasStereotype(stereotype: String): Boolean =
+	self.getAppliedStereotypes() -> collect(st | st.name) -> includes(stereotype);
+
+helper context UML!Type def: computeType(): Relational!Type =
+	if self.name = 'String' then #VARCHAR else 
+		if self.name = 'Integer' then #NUMERIC else 
+			#NUMERIC endif
+	endif;
+
+-------------------------------------------------------------------------------------------
+-- RULES
+		-- ---------------------------------------------------------------------------------
+--- -
+-------------------------------------------------------------------------------------------
+rule Model2Database {
+	from
+		m: UML!Model (
+			m.hasStereotype('Database')
+		)
+	to
+		out: Relational!Database (
+			name <- m.name,
+			ownedSchemas <- m.packagedElement -> select(e | e.oclIsTypeOf(UML!Package)
+					and e.hasStereotype('Schema'))
+		),
+		out1: Relational!Database (
+			name <- m.name,
+			ownedSchemas <- m.packagedElement -> select(e | e.oclIsTypeOf(UML!Package)
+					and e.hasStereotype('Schema'))
+		)
+}
+
+rule Package2Schema {
+	from
+		p: UML!Package (
+			p.hasStereotype('Schema')
+		)
+	to
+		out: Relational!Schema (
+			name <- p.name,
+			ownedTables <- p.packagedElement -> select(e | e.oclIsTypeOf(UML!Class) and e.
+					hasStereotype('Table'))
+		)
+}
+
+rule Class2Table {
+	from
+		c: UML!Class (
+			c.hasStereotype('Table')
+		)
+	to
+		out: Relational!Table (
+			name <- c.name,
+			ownedColumns <- c.attribute -> select(p | p.hasStereotype('Column') and p.
+					type.oclIsKindOf(UML!PrimitiveType)),
+			ownedForeignKeys <- c.attribute -> select(p | p.hasStereotype('Column') and
+					not p.type.oclIsKindOf(UML!PrimitiveType))
+		)
+}
+
+rule Property2Column {
+	from
+		p: UML!Property (
+			p.hasStereotype('Column') and p.type.oclIsKindOf(UML!PrimitiveType)
+		)
+	to
+		out: Relational!Column (
+			name <- p.name,
+			type <- p.type.computeType(),
+			isUnique <- p.isUnique,
+			--			isPrimaryKey <-
+					-- p.getValue(p.getAppliedStereotypes().first(),'isPrimaryKey')
+			isPrimaryKey <- p.getValue(OclUndefined, 'isPrimaryKey')
+		)
+}
+
+rule Property2ForeignKey {
+	from
+		p: UML!Property (
+			p.hasStereotype('Column') and not p.type.oclIsKindOf(UML!PrimitiveType)
+		)
+	to
+		out: Relational!ForeignKey (
+			name <- p.name,
+			sourceTable <- p.type
+		)
+}

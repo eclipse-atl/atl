@@ -1,0 +1,123 @@
+-- @atlcompiler atl2006
+-- @author Hugo Bruneliere (Hugo.Bruneliere <at> gmail.com)
+
+
+module Trace2PerformanceMetrics;
+create OUT: Metrics from IN: Trace;
+
+-------------------------------------------------------------------------------
+-- HELPERS --------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+-- This helper returns the list of the methods called at a given level 
+-- CONTEXT: Trace!Level
+-- RETURN: Sequence(String)
+helper context Trace!Level def: getMethodsList(): Sequence(String) =
+	self.calls -> iterate(call; list: Sequence(String) = Sequence{} | if call.methodName
+			<> 'Total DB-Ops' and list -> excludes(call.methodName) then
+			list -> append(call.methodName)
+		else
+			list
+		endif);
+
+-- This helper returns the overall list of the methods called
+-- CONTEXT: Trace!Trace
+-- RETURN: Sequence(String)
+helper context Trace!Trace def: getMethodsList(): Sequence(String) =
+	self.levels -> collect(l | l.getMethodsList()) -> flatten() -> asSet();
+
+helper def: methodsList: Sequence(String) =
+	Sequence{};
+
+-------------------------------------------------------------------------------
+-- RULES ----------------------------------------------------------------------
+-------------------------------------------------------------------------------
+rule MetricsBuilding {
+	from
+		t: Trace!Trace
+	using {
+		totalNbOfMethodCall: Integer = 0;
+		totalNbOfDBAccesses: Integer = 0;
+		totalNbOfDBRows: Integer = 0;
+		totalCPUTime: Integer = 0;
+	}
+	to
+		mDBAccesses: Metrics!Metric (
+			name <- 'Average number of DB accesses by method'
+		),
+		mDBRows: Metrics!Metric (
+			name <- 'Average number of DB rows handled by method'
+		),
+		mCPU: Metrics!Metric (
+			name <- 'Average CPU time used by method'
+		)
+	do {
+		thisModule.methodsList <- t.getMethodsList();
+		for(methodName in thisModule.methodsList) {
+			
+			for(level in t.levels) {
+				for(call in level.calls) {
+					if(call.methodName = methodName) {
+						totalNbOfMethodCall <- totalNbOfMethodCall + 1;
+						totalNbOfDBAccesses <- totalNbOfDBAccesses + call.
+								DBAccessesNumber;
+						totalNbOfDBRows <- totalNbOfDBRows + call.DBRowsNumber;
+						totalCPUTime <- totalCPUTime + call.CPUTime;
+					}
+				}
+			}
+			mDBAccesses.values <- mDBAccesses.values -> union(Sequence{thisModule.
+					CreateAverageNbOfDbAccessesMetricValue(methodName,
+					totalNbOfDBAccesses, totalNbOfMethodCall)});
+			mDBRows.values <- mDBRows.values -> union(Sequence{thisModule.
+					CreateAverageNbOfDbRowsMetricValue(methodName, totalNbOfDBRows,
+					totalNbOfMethodCall)});
+			mCPU.values <- mCPU.values -> union(Sequence{thisModule.
+					CreateAverageCPUTimeMetricValue(methodName, totalCPUTime,
+					totalNbOfMethodCall)});
+			totalNbOfMethodCall <- 0;
+			totalNbOfDBAccesses <- 0;
+			totalNbOfDBRows <- 0;
+			totalCPUTime <- 0;
+		}
+	}
+}
+
+rule CreateAverageNbOfDbAccessesMetricValue(methodName: String, 
+											totalNbOfDbAccesses: Integer,
+													totalNbOfMethodCalls: Integer) {
+	to
+		mv: Metrics!IntegerMetricValue (
+			tag <- methodName,
+			value <- (totalNbOfDbAccesses / totalNbOfMethodCalls).round()
+		)
+	do {
+		mv; 
+	}
+}
+
+rule CreateAverageNbOfDbRowsMetricValue(methodName: String, 
+											totalNbOfDbRows: Integer,
+													totalNbOfMethodCalls: Integer) {
+	to
+		mv: Metrics!IntegerMetricValue (
+			tag <- methodName,
+			value <- (totalNbOfDbRows / totalNbOfMethodCalls).round()
+		)
+	do {
+		mv; 
+	}
+}
+
+rule CreateAverageCPUTimeMetricValue(methodName: String, 
+											totalCPUTime: Integer, totalNbOfMethodCalls:
+													Integer) {
+	to
+		mv: Metrics!IntegerMetricValue (
+			tag <- methodName,
+			value <- (totalCPUTime / totalNbOfMethodCalls).round()
+		)
+	do {
+		mv; 
+	}
+}

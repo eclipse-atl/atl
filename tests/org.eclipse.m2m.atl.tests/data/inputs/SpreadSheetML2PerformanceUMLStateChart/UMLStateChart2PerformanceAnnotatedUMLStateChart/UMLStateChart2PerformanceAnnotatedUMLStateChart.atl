@@ -1,5 +1,4 @@
 -- @atlcompiler atl2006
-
 -- @author Hugo Bruneliere (Hugo.Bruneliere <at> gmail.com)
 
 module UMLStateChart2PerformanceAnnotatedUMLStateChart;

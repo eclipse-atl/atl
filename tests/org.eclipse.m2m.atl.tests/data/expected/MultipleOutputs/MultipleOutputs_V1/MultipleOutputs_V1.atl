@@ -1,0 +1,26 @@
+module sample;
+create OUT1: UML, OUT2: UML, OUT3: UML from IN: UML;
+
+rule test {
+	from
+		input: UML!Class
+	to
+		output1_a: UML!Class in OUT1 (
+			name <- input.name + '_output1_a'
+		),
+		output1_b: UML!Class in OUT1 (
+			name <- input.name + '_output1_b'
+		),
+		output2_a: UML!Class in OUT2 (
+			name <- input.name + '_output2_a'
+		),
+		output2_b: UML!Class in OUT2 (
+			name <- input.name + '_output2_b'
+		),
+		output3_a: UML!Class in OUT3 (
+			name <- input.name + '_output3_a'
+		),
+		output3_b: UML!Class in OUT3 (
+			name <- input.name + '_output3_b'
+		)
+}

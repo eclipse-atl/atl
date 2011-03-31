@@ -1,0 +1,31 @@
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+
+module sample;
+create OUT: UML from IN: UML;
+
+rule class {
+	from
+		input: UML!Class
+	to
+		-- from input model
+		output1: UML!Class (
+			name <- input.name + '1',
+			visibility <- input.visibility
+		),
+		-- from input model, as String
+		output1_bus: UML!Class (
+			name <- input.name + '1',
+			visibility <- input.visibility.toString()
+		),
+		-- hardcoded
+		output2: UML!Class (
+			name <- input.name + '2',
+			visibility <- #private
+		),
+		-- hardcoded, from a String
+		output3: UML!Class (
+			name <- input.name + '3',
+			visibility <- 'private'
+		)
+}

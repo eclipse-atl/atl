@@ -1,0 +1,1015 @@
+-- @atlcompiler atl2006
+
+
+module EMX2DI;
+create OUT: Di from IN: Emx;
+
+-- This file describes transformation from a RSM format (file with a EMX extension) to a
+		-- DI format supported by the Topcased UML2 editor
+-- The UML diagrams handle are :
+-- 1) Class Diagram
+-- 2) UseCase Diagram
+
+-- ***** COMMON ATTRIBUTES -- STATIC HELPERS (computed one time) *****
+helper def: allPackages: Set(Emx!Package) =
+	Emx!Package.allInstances();
+
+helper def: allDiagrams: Set(Emx!Diagram) =
+	Emx!Diagram.allInstances();
+
+helper def: allNodes: Set(Emx!Node) =
+	Emx!Node.allInstances();
+
+helper def: allInterfaces: Set(Emx!Interface) =
+	Emx!Interface.allInstances();
+
+helper def: allClasses: Set(Emx!Class) =
+	Emx!Class.allInstances();
+
+-- ***** COMMON PART *****
+-- This part covers common transformations such as Model, Diagram, Comment, Note, Comment
+		-- and Note associations.
+-- Processing of type Model
+rule umlDiagrams {
+	from
+		emx: Emx!Model
+	to
+		di: Di!Diagrams (
+			model <- mo,
+			diagrams <- thisModule.allDiagrams -> asSequence()
+		),
+		mo: Di!Element (
+			href <- emx.idelement
+		)
+}
+
+-- Ignore others kinds of diagram and in particular Collaboration of Communication Type
+helper context Emx!Diagram def: isValidDiagram(): Boolean =
+	self.type = 'Usecase' or self.type = 'Class';
+
+-- Processing of type Diagram
+rule umlDiagram {
+	from
+		emx: Emx!Diagram (
+			emx.isValidDiagram()
+		)
+	to
+		di: Di!Diagram (
+			position <- '0,0',
+			size <- '100,100',
+			name <- emx.name,
+			viewport <- '0,0',
+			property <- Sequence{prop0,
+						prop1,
+						prop2,
+						prop3,
+						prop4,
+						prop5,
+						prop6,
+						prop7,
+						prop8,
+						prop9},
+			semanticModel <- sem,
+			contained <- Sequence{emx.children,
+						emx.edges}
+		),
+		sem: Di!EMFSemanticModelBridge (
+			presentation <- emx.getPresentationType(),
+			element <- ref
+		),
+		ref: Di!Element (
+			href <- emx.getPackageParent()
+		),
+		prop0: Di!Property (
+			key <- 'org.topcased.modeler.di.typeName',
+			value <- emx.getDiagramTypeName()
+		),
+		prop1: Di!Property (
+			key <- 'pageFormatName',
+			value <- 'A4'
+		),
+		prop2: Di!Property (
+			key <- 'diagramWidth',
+			value <- '1188' --'840'
+			
+		),
+		prop3: Di!Property (
+			key <- 'diagramHeight',
+			value <- '840' --'1188'
+			
+		),
+		prop4: Di!Property (
+			key <- 'pageMarginName',
+			value <- 'Small Margin'
+		),
+		prop5: Di!Property (
+			key <- 'diagramTopMargin',
+			value <- '20'
+		),
+		prop6: Di!Property (
+			key <- 'diagramBottomMargin',
+			value <- '20'
+		),
+		prop7: Di!Property (
+			key <- 'diagramLeftMargin',
+			value <- '20'
+		),
+		prop8: Di!Property (
+			key <- 'diagramRightMargin',
+			value <- '20'
+		),
+		prop9: Di!Property (
+			key <- 'orientation',
+			value <- 'portrait' -- ne pas mettre 'paysage' ou 'landscape' sinon
+					-- comportement non attendu
+			
+		)
+}
+
+-- Process for type Comment
+rule umlComment {
+	from
+		emx: Emx!Node (
+			emx.isTypeComment()
+		)
+	to
+		di: Di!GraphNode (
+			position <- (emx.layoutConstraint.x * 0.031496).floor().toString() + ',' +
+					(emx.layoutConstraint.y * 0.031496).floor().toString(),
+			size <- (emx.layoutConstraint.width * 0.031496).floor().toString() + ',' +
+					(emx.layoutConstraint.height * 0.031496).floor().toString(),
+			anchorage <- graphConn,
+			semanticModel <- sem
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.element.idelement
+		),
+		graphConn: Di!GraphConnector (
+		)
+}
+
+-- Process for type Association of Comment
+rule umlCommentAssociation {
+	from
+		emx: Emx!Edge (
+			emx.isCommentAssociation() and not emx.source.oclIsUndefined() and not emx.
+					target.oclIsUndefined()
+		)
+	to
+		di: Di!GraphEdge (
+			anchor <- Sequence{thisModule.resolveTemp(emx.source, 'graphConn'),
+						thisModule.resolveTemp(emx.target, 'graphConn')},
+			semanticModel <- sem --waypoints <- emx.isValidBendpoint()
+			
+		),
+		sem: Di!SimpleSemanticModelElement (
+			typeInfo <- 'CommentLink EditPolicy'
+		)
+}
+
+-- Enables to get the type name of the current diagram
+helper context Emx!Diagram def: getDiagramTypeName(): String =
+	if self.type = 'Usecase' then
+		'UseCase Diagram'
+	else
+		if self.type = 'Class' then
+			'Class Diagram'
+		else
+			'Unknown format Diagram'
+		endif
+	endif;
+
+-- Enables to get the type of the current diagram
+helper context Emx!Diagram def: getPresentationType(): String =
+	if self.type = 'Usecase' then
+		'org.topcased.modeler.uml.usecasediagram'
+	else
+		if self.type = 'Class' then
+			'org.topcased.modeler.uml.classdiagram'
+		else
+			''
+		endif
+	endif;
+
+-- Enables to get the reference of the package which contains the processed diagram
+helper context Emx!Diagram def: getPackageParent(): String =
+	let selectedPackages: Set(Emx!Node) =
+		thisModule.allPackages -> select(d | d.eAnnotations -> select(e | e.contents ->
+				includes(self)) -> notEmpty())
+	in
+		if selectedPackages -> notEmpty() then
+			selectedPackages -> first().idelement
+		else
+			self.idelement
+		endif;
+
+-- Tests if a Node is a Comment
+helper context Emx!Node def: isTypeComment(): Boolean =
+	self.element.oclIsTypeOf(Emx!Comment) and self.type = '';
+
+-- Tests if the current Edge is a comment association
+helper context Emx!Edge def: isCommentAssociation(): Boolean =
+	if self.type = 'Reference' then
+		true
+	else
+		false
+	endif;
+
+-- Gets the diagram according to a graphical node
+helper context Emx!Node def: getDiagram(): Emx!Diagram =
+	thisModule.allDiagrams -> select(diag | diag.children -> select(node | node.children
+			-> select(subnode | subnode.children -> includes(self)) -> notEmpty()) ->
+			notEmpty()) -> flatten() -> asSequence() -> first();
+
+-- Gives the diagram type which the Node belongs to.
+-- For a given Node, this helper finds the corresponding Diagram and returns the String
+		-- representing the type.
+helper context Emx!Node def: getDiagramType(): String =
+	let selectedDiagrams: Set(Emx!Diagram) =
+		thisModule.allDiagrams -> select(d | d.children -> includes(self))
+	in
+		if self.type = '' then
+			if selectedDiagrams -> notEmpty() then
+				if not selectedDiagrams -> first().type.oclIsUndefined()
+				    	then selectedDiagrams->first().type
+						else ''
+					 endif
+			else
+				''
+			endif
+		else
+			''
+		endif;
+
+-- Gets the corresponding diagram according to a graphical edge
+helper context Emx!Edge def: getDiagram(): Emx!Diagram =
+	thisModule.allDiagrams -> select(d | d.edges -> includes(self)) -> asSequence() ->
+			first();
+
+-- Gives the diagram type which the current Edge belongs to
+helper context Emx!Edge def: getDiagramType(): String =
+	self.getDiagram().type;
+
+-- ***** CLASS DIAGRAM SECTION *****
+-- This section covers the transformations for : Class, Interface, DataType, Feature,
+		-- Operation, ClassInstance, Package and the possible associations.
+-- Process for type Class or Interface or DataType
+rule umlClassDiagramElement1 {
+	from
+		emx: Emx!Node (
+			if emx.isClassDiagramElement() then
+			emx.element.hasNoFeature()
+		else
+			false
+		endif
+		)
+	to
+		di: Di!GraphNode (
+			position <- (emx.layoutConstraint.x * 0.031496).floor().toString() + ',' +
+					(emx.layoutConstraint.y * 0.031496).floor().toString(),
+			size <- (emx.layoutConstraint.width * 0.031496).floor().toString() + ',' +
+					(emx.layoutConstraint.height * 0.031496).floor().toString(),
+			anchorage <- graphConn,
+			semanticModel <- sem,
+			contained <- Sequence{feat1,
+						feat2}
+		),
+		graphConn: Di!GraphConnector (
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.element.idelement
+		),
+		feat1: Di!GraphNode (
+			property <- propFeat1,
+			semanticModel <- semFeat1
+		),
+		propFeat1: Di!Property (
+			key <- 'eStructuralFeatureID',
+			value <- emx.element.getAttributeFeatureValue()
+		),
+		semFeat1: Di!EMFSemanticModelBridge (
+			element <- refFeat1,
+			presentation <- 'default'
+		),
+		refFeat1: Di!Element (
+			href <- emx.element.idelement
+		),
+		feat2: Di!GraphNode (
+			property <- propFeat2,
+			semanticModel <- semFeat2
+		),
+		propFeat2: Di!Property (
+			key <- 'eStructuralFeatureID',
+			value <- emx.element.getOperationFeatureValue()
+		),
+		semFeat2: Di!EMFSemanticModelBridge (
+			element <- refFeat2,
+			presentation <- 'default'
+		),
+		refFeat2: Di!Element (
+			href <- emx.element.idelement
+		)
+}
+
+rule umlClassDiagramElement2 {
+	from
+		emx: Emx!Node (
+			if emx.isClassDiagramElement() then
+			not emx.element.hasNoAttribute() and emx.element.hasNoOperation()
+		else
+			false
+		endif
+		)
+	to
+		di: Di!GraphNode (
+			position <- (emx.layoutConstraint.x * 0.031496).floor().toString() + ',' +
+					(emx.layoutConstraint.y * 0.031496).floor().toString(),
+			size <- (emx.layoutConstraint.width * 0.031496).floor().toString() + ',' +
+					(emx.layoutConstraint.height * 0.031496).floor().toString(),
+			anchorage <- graphConn,
+			semanticModel <- sem,
+			contained <- Sequence{feat1,
+						feat2}
+		),
+		graphConn: Di!GraphConnector (
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.element.idelement
+		),
+		feat1: Di!GraphNode (
+			property <- propFeat1,
+			semanticModel <- semFeat1,
+			contained <- Sequence{emx.element.ownedAttribute}
+		),
+		propFeat1: Di!Property (
+			key <- 'eStructuralFeatureID',
+			value <- emx.element.getAttributeFeatureValue()
+		),
+		semFeat1: Di!EMFSemanticModelBridge (
+			element <- refFeat1,
+			presentation <- 'default'
+		),
+		refFeat1: Di!Element (
+			href <- emx.element.idelement
+		),
+		feat2: Di!GraphNode (
+			property <- propFeat2,
+			semanticModel <- semFeat2
+		),
+		propFeat2: Di!Property (
+			key <- 'eStructuralFeatureID',
+			value <- emx.element.getOperationFeatureValue()
+		),
+		semFeat2: Di!EMFSemanticModelBridge (
+			element <- refFeat2,
+			presentation <- 'default'
+		),
+		refFeat2: Di!Element (
+			href <- emx.element.idelement
+		)
+}
+
+rule umlClassDiagramElement3 {
+	from
+		emx: Emx!Node (
+			if emx.isClassDiagramElement() then
+			not emx.element.hasNoOperation() and emx.element.hasNoAttribute()
+		else
+			false
+		endif
+		)
+	to
+		di: Di!GraphNode (
+			position <- (emx.layoutConstraint.x * 0.031496).floor().toString() + ',' +
+					(emx.layoutConstraint.y * 0.031496).floor().toString(),
+			size <- (emx.layoutConstraint.width * 0.031496).floor().toString() + ',' +
+					(emx.layoutConstraint.height * 0.031496).floor().toString(),
+			anchorage <- graphConn,
+			semanticModel <- sem,
+			contained <- Sequence{feat1,
+						feat2}
+		),
+		graphConn: Di!GraphConnector (
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.element.idelement
+		),
+		feat1: Di!GraphNode (
+			property <- propFeat1,
+			semanticModel <- semFeat1
+		),
+		propFeat1: Di!Property (
+			key <- 'eStructuralFeatureID',
+			value <- emx.element.getAttributeFeatureValue()
+		),
+		semFeat1: Di!EMFSemanticModelBridge (
+			element <- refFeat1,
+			presentation <- 'default'
+		),
+		refFeat1: Di!Element (
+			href <- emx.element.idelement
+		),
+		feat2: Di!GraphNode (
+			property <- propFeat2,
+			semanticModel <- semFeat2,
+			contained <- Sequence{emx.element.ownedOperation}
+		),
+		propFeat2: Di!Property (
+			key <- 'eStructuralFeatureID',
+			value <- emx.element.getOperationFeatureValue()
+		),
+		semFeat2: Di!EMFSemanticModelBridge (
+			element <- refFeat2,
+			presentation <- 'default'
+		),
+		refFeat2: Di!Element (
+			href <- emx.element.idelement
+		)
+}
+
+rule umlClassDiagramElement4 {
+	from
+		emx: Emx!Node (
+			if emx.isClassDiagramElement() then
+			not emx.element.hasNoAttribute() and not emx.element.hasNoOperation()
+		else
+			false
+		endif
+		)
+	to
+		di: Di!GraphNode (
+			position <- (emx.layoutConstraint.x * 0.031496).floor().toString() + ',' +
+					(emx.layoutConstraint.y * 0.031496).floor().toString(),
+			size <- (emx.layoutConstraint.width * 0.031496).floor().toString() + ',' +
+					(emx.layoutConstraint.height * 0.031496).floor().toString(),
+			anchorage <- graphConn,
+			semanticModel <- sem,
+			contained <- Sequence{feat1,
+						feat2}
+		),
+		graphConn: Di!GraphConnector (
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.element.idelement
+		),
+		feat1: Di!GraphNode (
+			property <- propFeat1,
+			semanticModel <- semFeat1,
+			contained <- Sequence{emx.element.ownedAttribute}
+		),
+		propFeat1: Di!Property (
+			key <- 'eStructuralFeatureID',
+			value <- emx.element.getAttributeFeatureValue()
+		),
+		semFeat1: Di!EMFSemanticModelBridge (
+			element <- refFeat1,
+			presentation <- 'default'
+		),
+		refFeat1: Di!Element (
+			href <- emx.element.idelement
+		),
+		feat2: Di!GraphNode (
+			property <- propFeat2,
+			semanticModel <- semFeat2,
+			contained <- Sequence{emx.element.ownedOperation}
+		),
+		propFeat2: Di!Property (
+			key <- 'eStructuralFeatureID',
+			value <- emx.element.getOperationFeatureValue()
+		),
+		semFeat2: Di!EMFSemanticModelBridge (
+			element <- refFeat2,
+			presentation <- 'default'
+		),
+		refFeat2: Di!Element (
+			href <- emx.element.idelement
+		)
+}
+
+-- Process for type Package and InstanceClass
+rule umlPackageOrInstanceClass {
+	from
+		emx: Emx!Node (
+			emx.isTypePackage() or emx.isTypeInstanceSpecification()
+		)
+	to
+		di: Di!GraphNode (
+			position <- (emx.layoutConstraint.x * 0.031496).floor().toString() + ',' +
+					(emx.layoutConstraint.y * 0.031496).floor().toString(),
+			size <- (emx.layoutConstraint.width * 0.031496).floor().toString() + ',' +
+					(emx.layoutConstraint.height * 0.031496).floor().toString(),
+			anchorage <- graphConn,
+			semanticModel <- sem,
+			contained <- Sequence{emx.element.packagedElement}
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.element.idelement
+		),
+		graphConn: Di!GraphConnector (
+		)
+}
+
+-- Process for attributes and operations of a class or an interface
+rule umlFeatureAndOperation {
+	from
+		emx: Emx!Feature (
+			emx.isNotAssociation() and emx.belongsToDrawableClassifier(emx.getParent())
+		)
+	to
+		di: Di!GraphNode (
+			position <- '100,100',
+			size <- '-1,-1',
+			semanticModel <- sem
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.idelement
+		)
+}
+
+-- Processing of Implementation, Dependency and Generalization associations for class
+		-- diagram
+rule umlClassDiagramSpecialAssociation {
+	from
+		emx: Emx!Edge (
+			emx.isComplexClassDiagramAssociation() and emx.isValidSourceAndTarget()
+		)
+	to
+		di: Di!GraphEdge (
+			semanticModel <- sem,
+			anchor <- Sequence{thisModule.resolveTemp(emx.source, 'graphConn'),
+						thisModule.resolveTemp(emx.target, 'graphConn')} --waypoints <-
+								-- emx.isValidBendpoint()
+			
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.element.idelement
+		)
+}
+
+-- Processing of 'basic' associations between the different class diagram objects
+rule umlClassDiagramBasicAssociation {
+	from
+		emx: Emx!Edge (
+			emx.isBasicClassDiagramAssociation() and emx.isValidSourceAndTarget()
+		)
+	to
+		di: Di!GraphEdge (
+			semanticModel <- sem,
+			anchor <- Sequence{thisModule.resolveTemp(emx.source, 'graphConn'),
+						thisModule.resolveTemp(emx.target, 'graphConn')},
+			contained <- Sequence{edge1,
+						edge2,
+						edge3,
+						edge4,
+						edge5,
+						edge6} --waypoints <- emx.isValidBendpoint()
+			
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.element.idelement
+		),
+		edge1: Di!EdgeObjectUV (
+			id <- 'srcNameEdgeObject',
+			uDistance <- 10,
+			vDistance <- 10
+		),
+		edge2: Di!EdgeObjectUV (
+			id <- 'srcCountEdgeObject',
+			uDistance <- 10,
+			vDistance <- '-10'.toInteger()
+		),
+		edge3: Di!EdgeObjectUV (
+			id <- 'targetNameEdgeObject',
+			uDistance <- 10,
+			vDistance <- 10
+		),
+		edge4: Di!EdgeObjectUV (
+			id <- 'targetCountEdgeObject',
+			uDistance <- 10,
+			vDistance <- '-10'.toInteger()
+		),
+		edge5: Di!EdgeObjectOffset (
+			id <- 'middleNameEdgeObject'
+		),
+		edge6: Di!EdgeObjectOffset (
+			id <- 'stereotypeEdgeObject',
+			offset <- '0,-10'
+		)
+}
+
+---- *** DEFINITION OF CLASS DIAGRAM HELPERS ***
+-- Test if the bendpoints are defined or not
+helper context Emx!Edge def: isValidBendpoint(): Sequence(String) =
+	if self.bendpoints.oclIsUndefined() then
+		Sequence{}
+	else
+		if self.bendpoints.points.oclIsUndefined() then
+			Sequence{}
+		else
+			self.bendpoints.points.getWaypoints()
+		endif
+	endif;
+
+-- Tests if the element belongs to a Class diagram
+helper context Emx!Node def: isClassDiagramElement(): Boolean =
+	if self.type = '' then
+		if self.isTypeClass() or self.isTypeInterface() or self.isDataType() then
+			self.getDiagramType() = 'Class'
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+-- Tests if the Node is a Class
+helper context Emx!Node def: isTypeClass(): Boolean =
+	self.element.oclIsTypeOf(Emx!Class);
+
+-- Tests if the Node is an Interface
+helper context Emx!Node def: isTypeInterface(): Boolean =
+	self.element.oclIsTypeOf(Emx!Interface);
+
+-- Test if the Node is a DataType
+helper context Emx!Node def: isDataType(): Boolean =
+	self.element.oclIsKindOf(Emx!DataType);
+
+-- Test if the Node is a Package
+helper context Emx!Node def: isTypePackage(): Boolean =
+	self.element.oclIsTypeOf(Emx!Package);
+
+-- Test if the Node is an instance Specification
+helper context Emx!Node def: isTypeInstanceSpecification(): Boolean =
+	if self.element.oclIsTypeOf(Emx!InstanceSpecification) then
+		self.getDiagramType() = 'Class'
+	else
+		false
+	endif;
+
+-- Test on the kind of 'basic'association for class diagram
+helper context Emx!Edge def: isBasicClassDiagramAssociation(): Boolean =
+	if self.type = '' and self.getDiagramType() = 'Class' then
+		if self.element.oclIsTypeOf(Emx!Association) then
+			self.element.memberEnd -> size() >= 2
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+-- Test on the kind of 'extended' association for a class diagram
+helper context Emx!Edge def: isComplexClassDiagramAssociation(): Boolean =
+	if self.type = '' and self.getDiagramType() = 'Class' then
+		--if self.element.oclIsKindOf(Emx!Implementation) 
+				--then true
+				--else
+		if self.element.oclIsKindOf(Emx!Generalization) then
+			true
+		else
+			self.element.oclIsKindOf(Emx!Dependency)
+		endif --endif
+		
+	else
+		false
+	endif;
+
+-- Indicates whether the class or the interface has no operation
+helper context Emx!Classifier def: hasNoOperation(): Boolean =
+	if self.ownedOperation.oclIsUndefined() then
+		true
+	else
+		self.ownedOperation.isEmpty()
+	endif;
+
+-- Indicates whether the class or the interface has no attribute
+helper context Emx!Classifier def: hasNoAttribute(): Boolean =
+	if self.ownedAttribute.oclIsUndefined() then
+		true
+	else
+		if self.ownedAttribute.isEmpty() then
+			true
+		else
+			self.ownedAttribute -> reject(v | not v.isNotAssociation()) -> isEmpty()
+		endif
+	endif;
+
+-- Indicates whether the class or the interface has features or not
+helper context Emx!Classifier def: hasNoFeature(): Boolean =
+	self.hasNoAttribute() and self.hasNoOperation();
+
+helper context Emx!Classifier def: getAttributeFeatureValue(): String =
+	if (self.oclIsTypeOf(Emx!Interface) or self.oclIsKindOf(Emx!DataType)) then
+		'35'
+	else
+		'37'
+	endif;
+
+helper context Emx!Classifier def: getOperationFeatureValue(): String =
+	if (self.oclIsTypeOf(Emx!Interface) or self.oclIsKindOf(Emx!DataType)) then
+		'36'
+	else
+		'47'
+	endif;
+
+helper context Emx!Feature def: isNotAssociation(): Boolean =
+	if self.oclIsTypeOf(Emx!Operation) then
+		true
+	else
+		if self.oclIsKindOf(Emx!Property) then
+			if self.association.oclIsUndefined() then
+				true
+			else
+				self.association = ''
+			endif
+		else
+			false
+		endif
+	endif;
+
+helper context Emx!Feature def: belongsToDrawableClassifier(parent: Emx!Classifier):
+		Boolean =
+	if not parent.oclIsUndefined() then
+		thisModule.allNodes -> select(node | node.element = parent) -> notEmpty()
+	else
+		false
+	endif;
+
+-- Returns a reference to the parent element
+helper context Emx!Feature def: getParent(): Emx!Classifier =
+	if self.oclIsTypeOf(Emx!Operation) then
+		if self.class.oclIsUndefined() then
+			Emx!Interface.allInstances() -> select(inter | inter.ownedOperation ->
+					includes(self)) -> asSequence() -> first()
+		else
+			self.class
+		endif
+	else
+		if self.oclIsTypeOf(Emx!Property) then
+			Emx!Class.allInstances() -> select(inter | inter.ownedAttribute ->
+					includes(self)) -> union(Emx!Interface.allInstances() -> select(inter
+					| inter.ownedAttribute -> includes(self))) -> asSequence() -> first()
+		else
+			Sequence{} -> first()
+		endif
+	endif;
+
+-- ***** USECASE DIAGRAM SECTION *****
+-- This section covers the transformations for : Actor, Usecase and associations like
+		-- implement, extend, include, generalization...
+-- For the moment, the bendpoints are not handled.
+-- Process for type Actor or UseCase
+rule umlUsecaseElement {
+	from
+		emx: Emx!Node (
+			emx.isUseCaseElement()
+		)
+	to
+		di: Di!GraphNode (
+			position <- (emx.layoutConstraint.x * 0.04752).floor().toString() + ',' +
+					(emx.layoutConstraint.y * 0.056).floor().toString(),
+			size <- '-1,80',
+			anchorage <- graphConn,
+			semanticModel <- sem
+		),
+		graphConn: Di!GraphConnector (
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.element.idelement
+		)
+}
+
+-- Processing of 'basic' usecase Association
+rule umlBasicUsecaseAssociation {
+	from
+		emx: Emx!Edge (
+			emx.isBasicUsecaseAssociation() and emx.isValidSourceAndTarget()
+		)
+	to
+		di: Di!GraphEdge (
+			semanticModel <- sem,
+			anchor <- Sequence{thisModule.resolveTemp(emx.source, 'graphConn'),
+						thisModule.resolveTemp(emx.target, 'graphConn')} --waypoints <-
+								-- emx.bendpoints.points.getWaypoints()
+			
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.element.idelement
+		)
+}
+
+-- Processing of 'include' associations for usecase
+rule umlIncludeUsecaseAssociation {
+	from
+		emx: Emx!Edge (
+			emx.isIncludeUsecaseAssociation() and not emx.source.oclIsUndefined() and not
+					emx.target.oclIsUndefined()
+		)
+	to
+		di: Di!GraphEdge (
+			semanticModel <- sem,
+			anchor <- Sequence{thisModule.resolveTemp(emx.source, 'graphConn'),
+						thisModule.resolveTemp(emx.target, 'graphConn')},
+			contained <- Sequence{edge} --waypoints <-
+					-- emx.bendpoints.points.getWaypoints()
+			
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.element.idelement
+		),
+		edge: Di!EdgeObjectOffset (
+			id <- 'nameEdgeObject'
+		)
+}
+
+-- Processing of 'extend' associations for usecase
+rule umlExtendUsecaseAssociation {
+	from
+		emx: Emx!Edge (
+			emx.isExtendUsecaseAssociation() and not emx.source.oclIsUndefined() and not
+					emx.target.oclIsUndefined()
+		)
+	to
+		di: Di!GraphEdge (
+			semanticModel <- sem,
+			anchor <- Sequence{thisModule.resolveTemp(emx.source, 'graphConn'),
+						thisModule.resolveTemp(emx.target, 'graphConn')},
+			contained <- Sequence{edge1,
+						edge2} --waypoints <- emx.bendpoints.points.getWaypoints()
+			
+		),
+		sem: Di!EMFSemanticModelBridge (
+			element <- ref,
+			presentation <- 'default'
+		),
+		ref: Di!Element (
+			href <- emx.element.idelement
+		),
+		edge1: Di!EdgeObjectOffset (
+			id <- 'nameEdgeObject'
+		),
+		edge2: Di!EdgeObjectUV (
+			id <- 'extensionEdgeObject'
+		)
+}
+
+-- Tests if the element belongs to a UseCase diagam
+helper context Emx!Node def: isUseCaseElement(): Boolean =
+	if self.isActor() or self.isUseCase() then
+		self.getDiagramType() = 'Usecase'
+	else
+		false
+	endif;
+
+-- Tests if the current element is a UseCase element
+helper context Emx!Node def: isUseCase(): Boolean =
+	self.element.oclIsTypeOf(Emx!UseCase);
+
+-- Tests if the current element is an Actor element
+helper context Emx!Node def: isActor(): Boolean =
+	self.element.oclIsTypeOf(Emx!Actor);
+
+-- Test the standard association for usecase
+helper context Emx!Edge def: isBasicUsecaseAssociation(): Boolean =
+	if self.element.oclIsTypeOf(Emx!Association) or self.element.
+			oclIsTypeOf(Emx!Generalization) then
+		self.getDiagramType() = 'Usecase'
+	else
+		false
+	endif;
+
+-- Test the extend association for a usecase diagram
+helper context Emx!Edge def: isExtendUsecaseAssociation(): Boolean =
+	if self.element.oclIsTypeOf(Emx!Extend) then
+		self.getDiagramType() = 'Usecase'
+	else
+		false
+	endif;
+
+-- Test the include association for a usecase diagram
+helper context Emx!Edge def: isIncludeUsecaseAssociation(): Boolean =
+	if self.element.oclIsTypeOf(Emx!Include) then
+		self.getDiagramType() = 'Usecase'
+	else
+		false
+	endif;
+
+-- Test on the source and the target of a special assocaition of a class diagram
+helper context Emx!Edge def: isValidSourceAndTarget(): Boolean =
+	if not self.source.oclIsUndefined() and not self.target.oclIsUndefined() then
+		if self.getDiagramType() = 'Usecase' then
+			(self.source.element.oclIsTypeOf(Emx!Actor) or self.source.element.
+					oclIsTypeOf(Emx!UseCase)) and (self.target.element.
+					oclIsTypeOf(Emx!Actor) or self.target.element.
+					oclIsTypeOf(Emx!UseCase))
+		else
+			if self.getDiagramType() = 'Class' then
+				not self.source.element.oclIsTypeOf(Emx!Actor) and not self.target.
+						element.oclIsTypeOf(Emx!Actor)
+			else
+				false
+			endif
+		endif
+	else
+		false
+	endif;
+
+--***** HELPERS FOR PROCESSING BENDPOINTS
+		-- *******************************************************************************************
+		-- *
+-- It is possible to use a linear router by default
+-- For example, the associated code in ATL is :
+--
+
+--		prop : Di!Property(
+--			key <- 'router',
+--			value <- 'Rectilinear'
+--		),
+-- Converts and divides the string by the ratio
+helper context String def: divPoint(): String =
+	(self.toReal() * 0.031496).floor().toString();
+
+-- Splits the string according to $ character
+helper context String def: getWaypoints(): Sequence(String) =
+	if self.indexOf('$') < 0 then
+		Sequence{'[' + self.withoutLeftSquareBrackets().withoutRightSquareBrackets().
+				withoutComma() + ']'}
+	else
+		self.substring(self.indexOf('$') + 2, self.size()).getWaypoints() ->
+				union(Sequence{'[' + self.substring(1, self.indexOf('$')).
+				withoutLeftSquareBrackets().withoutRightSquareBrackets().withoutComma() +
+				']'})
+	endif;
+
+-- Removes the left square brackets
+helper context String def: withoutLeftSquareBrackets(): String =
+	if self.indexOf('[') < 0
+		then self
+		else self.substring(self.indexOf('[') + 2, self.size()).
+				withoutLeftSquareBrackets()
+	endif;
+
+-- Removes the right square brackets
+helper context String def: withoutRightSquareBrackets(): String =
+	if self.indexOf(']') < 0
+		then self
+		else self.substring(1, self.indexOf(']')).withoutRightSquareBrackets()
+	endif;
+
+-- Split the string according to comma characters
+helper context String def: withoutComma(): String =
+	if self.indexOf(',') < 0 then
+		self.divPoint()
+	else
+		self.substring(1, self.indexOf(',')).divPoint() + ', ' + self.substring(self.
+				indexOf(',') + 3, self.size()).withoutComma()
+	endif;
+----*************************************************************************************************************************************

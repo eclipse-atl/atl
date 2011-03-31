@@ -1,0 +1,110 @@
+-- @atlcompiler atl2006
+-- @author Hugo Bruneliere (Hugo.Bruneliere <at> gmail.com)
+
+
+module UMLStateChart2PerformanceAnnotatedUMLStateChart;
+create OUT: UML2 from IN: UML2, PRO: UML2, ME: Metrics;
+
+-------------------------------------------------------------------------------
+-- HELPERS --------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+helper def: isStereotypeNeeded(operationName: String): Boolean =
+	Metrics!MetricValue.allInstances() -> select(v | v.tag = operationName) -> notEmpty();
+
+helper def: getNbDBAccess(operationName: String): Integer =
+	Metrics!Metric.allInstances() -> select(m | m.name = 'Average number of DB accesses'
+			+ ' by method') -> first().values -> select(v | v.tag = operationName) ->
+			first().value;
+
+helper def: getNbDBRows(operationName: String): Integer =
+	Metrics!Metric.allInstances() -> select(m | m.name = 'Average number of DB rows'
+			+ ' handled by method') -> first().values -> select(v | v.tag =
+			operationName) -> first().value;
+
+helper def: getCPUTime(operationName: String): Real =
+	Metrics!Metric.allInstances() -> select(m | m.name = 'Average CPU time used by'
+			+ ' method') -> first().values -> select(v | v.tag = operationName) ->
+			first().value;
+
+helper def: servicePerformanceStereotype: UML2!Stereotype =
+	OclUndefined;
+
+-------------------------------------------------------------------------------
+-- RULES ----------------------------------------------------------------------
+-------------------------------------------------------------------------------
+rule Model {
+	from
+		s: UML2!"uml::Model" (
+			thisModule.inElements -> includes(s)
+		)
+	to
+		t: UML2!"uml::Model" mapsTo s (
+			name <- s.name,
+			visibility <- s.visibility,
+			viewpoint <- s.viewpoint,
+			eAnnotations <- s.eAnnotations,
+			ownedComment <- s.ownedComment,
+			clientDependency <- s.clientDependency,
+			nameExpression <- s.nameExpression,
+			elementImport <- s.elementImport,
+			packageImport <- s.packageImport,
+			ownedRule <- s.ownedRule,
+			templateParameter <- s.templateParameter,
+			templateBinding <- s.templateBinding,
+			ownedTemplateSignature <- s.ownedTemplateSignature,
+			packageMerge <- s.packageMerge,
+			packagedElement <- s.packagedElement,
+			profileApplication <- s.profileApplication
+		)
+	do {
+		t.applyProfile(UML2!Profile.allInstancesFrom('PRO') -> select(p | p.name =
+				'Performance') -> first());
+		thisModule.servicePerformanceStereotype <- 
+			UML2!Profile.allInstancesFrom('PRO') -> select(p | p.name = 'Performance') ->
+					first().ownedStereotype -> select(s | s.name = 'ServicePerformance')
+					-> first();
+	}
+}
+
+rule CallOperationAction {
+	from
+		s: UML2!"uml::CallOperationAction" (
+			thisModule.inElements -> includes(s)
+		)
+	to
+		t: UML2!"uml::CallOperationAction" mapsTo s (
+			name <- s.name,
+			visibility <- s.visibility,
+			isLeaf <- s.isLeaf,
+			isSynchronous <- s.isSynchronous,
+			eAnnotations <- s.eAnnotations,
+			ownedComment <- s.ownedComment,
+			clientDependency <- s.clientDependency,
+			nameExpression <- s.nameExpression,
+			outgoing <- s.outgoing,
+			incoming <- s.incoming,
+			inPartition <- s.inPartition,
+			inInterruptibleRegion <- s.inInterruptibleRegion,
+			redefinedNode <- s.redefinedNode,
+			handler <- s.handler,
+			localPrecondition <- s.localPrecondition,
+			localPostcondition <- s.localPostcondition,
+			argument <- s.argument,
+			onPort <- s.onPort,
+			result <- s.result,
+			operation <- s.operation,
+			target <- s.target
+		)
+	do {
+		if( thisModule.isStereotypeNeeded(s.name) ) {
+			t.applyStereotype(thisModule.servicePerformanceStereotype);
+			t.setValue(thisModule.servicePerformanceStereotype, 'DBAccess', thisModule.
+					getNbDBAccess(s.name));
+			t.setValue(thisModule.servicePerformanceStereotype, 'DBRows', thisModule.
+					getNbDBRows(s.name));
+			t.setValue(thisModule.servicePerformanceStereotype, 'CPUTime', thisModule.
+					getCPUTime(s.name));
+		}
+	}
+}

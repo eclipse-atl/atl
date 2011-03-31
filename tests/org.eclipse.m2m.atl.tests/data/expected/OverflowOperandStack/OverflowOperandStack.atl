@@ -1,0 +1,21 @@
+module OverflowOperandStack;
+create OUT: UML from IN: UML;
+
+helper context Integer def: seqTo(upper: Integer): Sequence(Integer) =
+	if self < upper then
+		(self + 1).seqTo(upper) -> prepend(self)
+	else
+		Sequence{self}
+	endif;
+
+rule Class {
+	from
+		trigger: UML!Model
+	to
+		container: UML!Model
+	do {
+		for(i in (1).seqTo(100)) {
+			i.debug('');
+		}
+	}
+}

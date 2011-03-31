@@ -38,23 +38,6 @@ public abstract class TestNonRegression extends TestCase {
 	protected File baseDirectory;
 
 	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		String name = this.getClass().getName();
-		info(name);
-		String line = ""; //$NON-NLS-1$
-		for (int i = 0; i < name.length(); i++) {
-			line += "="; //$NON-NLS-1$
-		}
-		info(line);
-	}
-
-	/**
 	 * Compare the expected models (in the expected directories) with the result of the transformation.
 	 * 
 	 * @throws Exception
@@ -84,7 +67,7 @@ public abstract class TestNonRegression extends TestCase {
 	 * @throws Exception
 	 *             Thrown if an operation has failed or been interrupted.
 	 */
-	private void compareSnapshots(File directory, boolean useEmfCompare) throws IOException {
+	protected void compareSnapshots(File directory, boolean useEmfCompare) throws IOException {
 		String[] testsToJump = getTestsToJump(directory);
 		if (testsToJump != null) {
 			for (int i = 0; i < testsToJump.length; i++) {

@@ -1,0 +1,114 @@
+-- @atlcompiler atl2006
+-- @author Hugo Bruneliere (Hugo.Bruneliere <at> gmail.com)
+
+
+module SpreadsheetMLSimplified2Trace;-- Module Template
+create OUT: Trace from IN: SpreadsheetMLSimplified;
+
+-------------------------------------------------------------------------------
+-- HELPERS --------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+-- This helper indicates if a given row is the beginning of a trace level description
+-- CONTEXT: SpreadsheetMLSimplified!Row
+-- RETURN: Boolean
+helper context SpreadsheetMLSimplified!Row def: isALevelDescriptionBeginning: Boolean =
+	let data: SpreadsheetMLSimplified!Data =
+		self.r_cells -> at(1).c_data
+	in
+		if not data.oclIsUndefined() then
+			if data.value.oclIsTypeOf(SpreadsheetMLSimplified!StringValue) then
+				if data.value.value = 'Index' then
+					true
+				else
+					false
+				endif
+			else
+				false
+			endif
+		else
+			false
+		endif;
+
+-- This helper returns the index of the last row before the next level
+-- CONTEXT: SpreadsheetMLSimplified!Row
+-- RETURN: Integer
+helper context SpreadsheetMLSimplified!Row def: getIndexOfLastRowBeforeNextLevel: Integer
+		=
+	let rows: Sequence(SpreadsheetMLSimplified!Row) =
+		self.r_table.t_rows -> select(row | row.isALevelDescriptionBeginning)
+	in
+		if rows -> indexOf(self) <> rows -> size() then
+			self.r_table.t_rows -> indexOf(rows -> at(rows -> indexOf(self) + 1)) - 1
+		else
+			self.r_table.t_rows -> indexOf(self.r_table.t_rows -> at(self.r_table.t_rows
+					-> size()))
+		endif;
+
+-- This global variable indicates the index of the current level
+helper def: currentLevelIndex: Integer =
+	1;
+
+-------------------------------------------------------------------------------
+-- RULES ----------------------------------------------------------------------
+-------------------------------------------------------------------------------
+rule Worksheet2Trace {
+	from
+		ew: SpreadsheetMLSimplified!Worksheet
+	to
+		t: Trace!Trace (
+			name <- ew.name,
+			levels <- ew.ws_table.t_rows -> select(row | row.
+					isALevelDescriptionBeginning) -> collect(row | thisModule.
+					CreateLevel(row))
+		)
+}
+
+lazy rule CreateLevel {
+	from
+		er: SpreadsheetMLSimplified!Row
+	to
+		l: Trace!Level (
+			calls <- er.r_table.t_rows -> subSequence(er.r_table.t_rows -> indexOf(er) +
+					1, er.getIndexOfLastRowBeforeNextLevel) -> collect(r | thisModule.
+					CreateCall(r))
+		)
+	do {
+		thisModule.currentLevelIndex <- er.r_table.t_rows -> select(row | row.
+				isALevelDescriptionBeginning) -> indexOf(er) + 1;
+	}
+}
+
+lazy rule CreateCall {
+	from
+		er: SpreadsheetMLSimplified!Row
+	using {
+		nodeName: String = er.r_cells -> at(thisModule.currentLevelIndex + 1).c_data.
+				value.value;
+	}
+	to
+		c: Trace!Call (
+			indexes <- er.r_cells -> subSequence(1, thisModule.currentLevelIndex) ->
+					collect(cell | thisModule.CreateIndex(cell)),
+			methodName <- nodeName,
+			DBAccessesNumber <- er.r_cells -> at(thisModule.currentLevelIndex + 2).c_data.
+					value.value.round(),
+			DBRowsNumber <- er.r_cells -> at(thisModule.currentLevelIndex + 3).c_data.
+					value.value.round(),
+			CPUTime <- if nodeName <> 'Total DB-Ops' then
+					er.r_cells -> at(thisModule.currentLevelIndex + 4).c_data.value.value.
+							round()
+				else
+					OclUndefined
+				endif
+		)
+}
+
+lazy rule CreateIndex {
+	from
+		ec: SpreadsheetMLSimplified!Cell
+	to
+		i: Trace!Index (
+			value <- ec.c_data.value.value.round()
+		)
+}

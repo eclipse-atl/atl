@@ -1,0 +1,92 @@
+-- @nsURI UML=http://www.eclipse.org/uml2/3.0.0/UML
+-- @nsURI MM=http://www.test.fr/bla/0.0.0/MM
+-- @atlcompiler atl2006
+
+
+module SimpleTest;
+create OUT: UML, OUT2: UML, OUT3m: UML, OUT4: UML from IN: UML,             IN2: UML,
+		IN3: UML
+
+			
+         --- This is simple test helper
+helper def: simpleHelper: String =
+	let truc: Boolean =
+		'bla' and true
+	in
+		if true then
+			true
+		else
+			false
+		endif and true and true;
+
+--- This is simple test helper, with parameters
+------[NOCUT] this is a none wrapped special comment line with a long comment to show that it is not wrapped
+helper def: -- bla bla
+simpleParametersHelper(t1: String, t2: Integer, t3: Integer): -- truc
+	Sequence(TupleType(a: Integer, b: String)) =
+	-- test
+	let truc2: String =
+		'bla'
+	in
+		t1 <= 'Tes$t' and --bla
+			t2 = 5 / 1 -- truc
+; -- test
+
+--- This is simple test helper, with parameters and a context
+--- bla bla
+helper context String def: simpleContextHelper(t1: String, t2: Integer): OclAny =
+	t1 = 'Test --test bla bla blaq bla dfzel afze rafrze afvdsq' and t2 = 5 + 1; -- This
+			-- is a test '{6}' quite important in this helper
+
+-- bla
+--- Test
+rule SimpleRule {
+	from
+		input: UML!Model in IN (
+			input.name = 'name'
+		)
+	using {
+		test: UML!Model = UML!Model.allInstances() -> first();
+		test2: UML!Model = UML!Model.allInstances() -> first();
+	}
+	to
+		output: UML!Model (
+			--blabla
+			name <- thisModule.simpleHelper -> indexOf('s', '') -> toString() + 'M odel)
+			
+			
+			Test' -> exists(i | i.a > 15 - 4) -> iterate(i; var: Integer = 0 | var + i.a
+					and Sequence{'Bonjour le monde',
+							'comment ça va ?'})
+		),
+		-- test
+		output2: UML!Model (
+			name <- 'name'
+		)
+	do {
+		for(name in Sequence{}) {
+			
+		}
+	}
+}
+
+entrypoint rule MyEntryRule(t: String, t2: Integer) {
+	using {
+		test: UML!Model = UML!Model.allInstances() -> first();
+	}
+	to
+		output: UML!Model (
+			name <- 'test',
+			name <- 'test2'
+		)
+}
+
+lazy rule SimpleLazyRule {
+	from
+		input2: UML!Model
+	to
+		output: UML!Model (
+			name <- 'test',
+			name <- 'test2'
+		)
+}

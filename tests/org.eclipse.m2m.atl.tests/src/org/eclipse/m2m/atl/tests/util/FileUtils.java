@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.tests.util;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -31,49 +31,24 @@ public final class FileUtils {
 	}
 
 	/**
-	 * Compare bytes of two files.
+	 * Reads the content of a file.
 	 * 
-	 * @param left
-	 *            the left file
-	 * @param right
-	 *            the right file
-	 * @param delete
-	 *            if <code>true</code>, delete the right file after comparison
-	 * @throws IOException
+	 * @param filePath
+	 *            the file path
+	 * @return the file content
+	 * @throws java.io.IOException
 	 */
-	public static void compareFiles(File left, File right, boolean delete) throws IOException {
-		if (left.length() != right.length()) {
-			throw new RuntimeException("There are differences between files " + left + " and " + right); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		FileInputStream lin = new FileInputStream(left);
-		FileInputStream rin = new FileInputStream(right);
-		try {
-			byte[] lbuffer = new byte[4096];
-			byte[] rbuffer = new byte[lbuffer.length];
-			for (int lcount = 0; (lcount = lin.read(lbuffer)) > 0;) {
-				int bytesRead = 0;
-				for (int rcount = 0; (rcount = rin.read(rbuffer, bytesRead, lcount - bytesRead)) > 0;) {
-					bytesRead += rcount;
-				}
-				for (int byteIndex = 0; byteIndex < lcount; byteIndex++) {
-					if (lbuffer[byteIndex] != rbuffer[byteIndex]) {
-						throw new RuntimeException(
-								"There are differences between files " + left + " and " + right); //$NON-NLS-1$ //$NON-NLS-2$
-					}
-				}
-			}
-		} finally {
-			lin.close();
-			rin.close();
-		}
-		if (delete) {
-			left.delete();
-		}
+	public static String readFileAsString(File file) throws java.io.IOException {
+		byte[] buffer = new byte[(int) file.length()];
+		BufferedInputStream f = new BufferedInputStream(new FileInputStream(
+				file));
+		f.read(buffer);
+		return new String(buffer);
 	}
 
 	/**
-	 * Lists all subdirectories contained within a given folder, with the exception of directories starting
-	 * with a "." or directories named "CVS".
+	 * Lists all subdirectories contained within a given folder, with the
+	 * exception of directories starting with a "." or directories named "CVS".
 	 * 
 	 * @param aDirectory
 	 *            Directory from which we need to list subfolders.
@@ -84,7 +59,8 @@ public final class FileUtils {
 		if (aDirectory.exists() && aDirectory.isDirectory()) {
 			directories = aDirectory.listFiles(new FileFilter() {
 				public boolean accept(File file) {
-					return file.isDirectory() && !file.getName().startsWith(".") //$NON-NLS-1$
+					return file.isDirectory()
+							&& !file.getName().startsWith(".") //$NON-NLS-1$
 							&& !file.getName().equals("CVS"); //$NON-NLS-1$
 				}
 			});

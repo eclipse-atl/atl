@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL">
+  <atl:Module location="7:1-91:2" name="SimpleTest">
+    <commentsBefore>--    @nsURI UML=http://www.eclipse.org/uml2/3.0.0/UML</commentsBefore>
+    <inModels location="19:10-20:9" name="IN" metamodel="/5"/>
+    <inModels location="20:15-20:22" name="IN2" metamodel="/6"/>
+    <inModels location="20:23-20:30" name="IN3" metamodel="/7"/>
+    <outModels location="13:8-13:22" name="OUT" metamodel="/1"/>
+    <outModels location="16:1-16:16" name="OUT2" metamodel="/2"/>
+    <outModels location="16:21-16:39" name="OUT3" metamodel="/3"/>
+    <outModels location="16:41-16:53" name="OUT4" metamodel="/4"/>
+    <elements xsi:type="atl:Helper" location="26:1-34:3">
+      <commentsBefore>---     This is simple test helper</commentsBefore>
+      <commentsAfter>---     This is simple test helper, with parameters</commentsAfter>
+      <definition location="26:16-32:6">
+        <feature xsi:type="ocl:Attribute" location="26:22-32:6" name="simpleHelper">
+          <initExpression xsi:type="ocl:BooleanExp" location="32:2-32:6" booleanSymbol="true"/>
+          <type xsi:type="ocl:OclAnyType" location="26:41-26:47"/>
+        </feature>
+      </definition>
+    </elements>
+    <elements xsi:type="atl:Helper" location="40:1-44:7">
+      <commentsBefore>---     This is simple test helper, with parameters</commentsBefore>
+      <commentsAfter>--test</commentsAfter>
+      <commentsAfter>---             This is simple test helper, with parameters and a context</commentsAfter>
+      <commentsAfter>---    bla bla</commentsAfter>
+      <definition location="40:16-44:6">
+        <feature xsi:type="ocl:Operation" location="40:22-44:6" name="simpleParametersHelper">
+          <parameters location="40:50-40:61" varName="t1" variableExp="/0/@elements.1/@definition/@feature/@body/@source/@source">
+            <type xsi:type="ocl:StringType" location="40:55-40:61"/>
+          </parameters>
+          <parameters location="40:63-40:75" varName="t2" variableExp="/0/@elements.1/@definition/@feature/@body/@arguments.0/@source">
+            <type xsi:type="ocl:IntegerType" location="40:68-40:75"/>
+          </parameters>
+          <returnType xsi:type="ocl:SequenceType" location="40:79-40:140">
+            <elementType xsi:type="ocl:TupleType" location="40:94-40:136">
+              <attributes location="40:108-40:119" name="a">
+                <type xsi:type="ocl:IntegerType" location="40:112-40:119"/>
+              </attributes>
+              <attributes location="40:123-40:133" name="b">
+                <type xsi:type="ocl:StringType" location="40:127-40:133"/>
+              </attributes>
+            </elementType>
+          </returnType>
+          <body xsi:type="ocl:OperatorCallExp" location="41:2-44:6" operationName="and">
+            <source xsi:type="ocl:OperatorCallExp" location="41:2-42:10" operationName="=">
+              <source xsi:type="ocl:VariableExp" location="41:2-41:4" referredVariable="/0/@elements.1/@definition/@feature/@parameters.0"/>
+              <arguments xsi:type="ocl:StringExp" location="42:4-42:10" stringSymbol="Test"/>
+            </source>
+            <arguments xsi:type="ocl:OperatorCallExp" location="43:3-44:6" operationName="=">
+              <source xsi:type="ocl:VariableExp" location="43:3-43:5" referredVariable="/0/@elements.1/@definition/@feature/@parameters.1"/>
+              <arguments xsi:type="ocl:OperatorCallExp" location="44:3-44:6" operationName="+">
+                <source xsi:type="ocl:IntegerExp" location="44:3-44:4" integerSymbol="5"/>
+                <arguments xsi:type="ocl:IntegerExp" location="44:5-44:6" integerSymbol="1"/>
+              </arguments>
+            </arguments>
+          </body>
+        </feature>
+      </definition>
+    </elements>
+    <elements xsi:type="atl:Helper" location="55:1-62:7">
+      <commentsBefore>--test</commentsBefore>
+      <commentsBefore>---             This is simple test helper, with parameters and a context</commentsBefore>
+      <commentsBefore>---    bla bla</commentsBefore>
+      <commentsAfter>--    This is a test</commentsAfter>
+      <commentsAfter>-- bla</commentsAfter>
+      <commentsAfter>--- Test</commentsAfter>
+      <definition location="59:1-62:6">
+        <feature xsi:type="ocl:Operation" location="59:40-62:6" name="simpleContextHelper">
+          <parameters location="59:62-59:73" varName="t1" variableExp="/0/@elements.2/@definition/@feature/@body/@source/@source">
+            <type xsi:type="ocl:StringType" location="59:67-59:73"/>
+          </parameters>
+          <parameters location="59:78-59:90" varName="t2" variableExp="/0/@elements.2/@definition/@feature/@body/@arguments.0/@source">
+            <type xsi:type="ocl:IntegerType" location="59:83-59:90"/>
+          </parameters>
+          <returnType xsi:type="ocl:OclAnyType" location="59:98-59:104"/>
+          <body xsi:type="ocl:OperatorCallExp" location="60:2-62:6" operationName="and">
+            <source xsi:type="ocl:OperatorCallExp" location="60:2-61:10" operationName="=">
+              <source xsi:type="ocl:VariableExp" location="60:2-60:4" referredVariable="/0/@elements.2/@definition/@feature/@parameters.0"/>
+              <arguments xsi:type="ocl:StringExp" location="61:4-61:10" stringSymbol="Test"/>
+            </source>
+            <arguments xsi:type="ocl:OperatorCallExp" location="61:22-62:6" operationName="=">
+              <source xsi:type="ocl:VariableExp" location="61:22-61:24" referredVariable="/0/@elements.2/@definition/@feature/@parameters.1"/>
+              <arguments xsi:type="ocl:OperatorCallExp" location="62:3-62:6" operationName="+">
+                <source xsi:type="ocl:IntegerExp" location="62:3-62:4" integerSymbol="5"/>
+                <arguments xsi:type="ocl:IntegerExp" location="62:5-62:6" integerSymbol="1"/>
+              </arguments>
+            </arguments>
+          </body>
+        </feature>
+        <context_ location="59:1-59:22">
+          <context_ xsi:type="ocl:StringType" location="59:16-59:22"/>
+        </context_>
+      </definition>
+    </elements>
+    <elements xsi:type="atl:MatchedRule" location="68:1-91:2" name="SimpleRule">
+      <commentsBefore>--    This is a test</commentsBefore>
+      <commentsBefore>-- bla</commentsBefore>
+      <commentsBefore>--- Test</commentsBefore>
+      <outPattern location="77:2-87:4">
+        <elements xsi:type="atl:SimpleOutPatternElement" location="78:3-87:4" varName="output">
+          <type xsi:type="ocl:OclModelElement" location="78:12-78:21" name="Model" model="/9"/>
+          <bindings location="81:4-84:9" propertyName="name">
+            <value xsi:type="ocl:StringExp" location="81:26-84:9" stringSymbol="M odel)&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Test"/>
+          </bindings>
+        </elements>
+      </outPattern>
+      <inPattern location="75:2-76:26">
+        <elements xsi:type="atl:SimpleInPatternElement" location="76:3-76:26" varName="input" models="/0/@inModels.0">
+          <type xsi:type="ocl:OclModelElement" location="76:11-76:20" name="Model" model="/8"/>
+        </elements>
+      </inPattern>
+    </elements>
+  </atl:Module>
+  <ocl:OclModel location="13:19-13:22" name="UML" model="/0/@outModels.0"/>
+  <ocl:OclModel location="16:13-16:16" name="UML" model="/0/@outModels.1"/>
+  <ocl:OclModel location="16:36-16:39" name="UML" model="/0/@outModels.2"/>
+  <ocl:OclModel location="16:50-16:53" name="UML" model="/0/@outModels.3"/>
+  <ocl:OclModel location="20:6-20:9" name="UML" model="/0/@inModels.0"/>
+  <ocl:OclModel location="20:19-20:22" name="UML" model="/0/@inModels.1"/>
+  <ocl:OclModel location="20:27-20:30" name="UML" model="/0/@inModels.2"/>
+  <ocl:OclModel location="76:11-76:14" name="UML" elements="/0/@elements.3/@inPattern/@elements.0/@type"/>
+  <ocl:OclModel location="78:12-78:15" name="UML" elements="/0/@elements.3/@outPattern/@elements.0/@type"/>
+</xmi:XMI>

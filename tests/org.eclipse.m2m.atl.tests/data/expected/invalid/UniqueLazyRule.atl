@@ -1,0 +1,22 @@
+module atl;
+create OUT: UniqueLazyRule from IN: UniqueLazyRule;
+
+helper def: root: UniqueLazyRule!Liste =
+	OclUndefined;
+
+unique lazy rule Object {	
+	from
+		in_object: UniqueLazyRule!Object
+	to
+		object: UniqueLazyRule!Object (
+			name <- in_object.name
+		)
+		
+}
+
+rule Liste {
+	from
+		in_liste: UniqueLazyRule!Liste
+	to
+		
+}

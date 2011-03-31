@@ -49,7 +49,6 @@ public class AllTests extends TestCase implements IApplication {
 		final TestSuite suite = new TestSuite("ATL test suite"); //$NON-NLS-1$	
 		suite.addTestSuite(TestNonRegressionEMFVM.class);
 		suite.addTestSuite(TestNonRegressionVM.class);
-		// suite.addTestSuite(TestNonRegressionParser.class);
 		suite.addTestSuite(TestNonRegressionCompiler.class);
 		return suite;
 	}
@@ -61,7 +60,8 @@ public class AllTests extends TestCase implements IApplication {
 	 */
 	public Object start(IApplicationContext context) throws Exception {
 		TestRunner.run(suite());
-		return Arrays.asList(new String[] {"Please see raw test suite output for details."}); //$NON-NLS-1$
+		return Arrays
+				.asList(new String[] { "Please see raw test suite output for details." }); //$NON-NLS-1$
 	}
 
 	/**

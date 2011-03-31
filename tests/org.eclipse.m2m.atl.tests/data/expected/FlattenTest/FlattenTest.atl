@@ -1,0 +1,65 @@
+-- @nsURI UML=http://www.eclipse.org/uml2/3.0.0/UML
+
+
+module FlattenTest;
+create OUT: UML from IN: UML;
+
+helper def: testSequence: Sequence(Integer) =
+	Sequence{1,
+			Sequence{1,
+				Sequence{2,
+					Sequence{2,
+						Sequence{3,
+							Sequence{3}}}}}};
+
+helper def: testBag: Bag(Integer) =
+	Bag{1,
+			Bag{2,
+				Bag{3,
+					Bag{4,
+						Bag{5,
+							Bag{6,
+								Bag{7,
+									Bag{8,
+										Bag{9}}}}}}}}};
+
+helper def: testSet: Set(Integer) =
+	Set{1,
+			Set{1,
+				Set{2,
+					Set{2,
+						Set{3,
+							Set{3}}}}}};
+
+helper def: testOrderedSet: OrderedSet(Integer) =
+	OrderedSet{1,
+			OrderedSet{1,
+				OrderedSet{2,
+					OrderedSet{2,
+						OrderedSet{3,
+							OrderedSet{3}}}}}};
+
+rule Class {
+	from
+		trigger: UML!Model
+	to
+		container: UML!Model (
+			name <- 'tests results',
+			packagedElement <- Sequence{testSequenceClass,
+						testBagClass,
+						testSetClass,
+						testOrderedSetClass}
+		),
+		testSequenceClass: UML!Class (
+			name <- thisModule.testSequence -> flatten() -> toString()
+		),
+		testBagClass: UML!Class (
+			--name <- thisModule.testBag -> flatten() -> toString()
+		),
+		testSetClass: UML!Class (
+			name <- thisModule.testSet -> flatten() -> toString()
+		),
+		testOrderedSetClass: UML!Class (
+			name <- thisModule.testOrderedSet -> flatten() -> toString()
+		)
+}

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<atl:Query xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="3:1-7:7" name="test">
+  <commentsBefore>-- @path ITM=/org.eclipse.m2m.atl.tests/data/inputs/IteratorsTests/IteratorsTestsModel.ecore</commentsBefore>
+  <body xsi:type="ocl:BooleanExp" location="7:2-7:6" booleanSymbol="true"/>
+</atl:Query>

@@ -1,0 +1,56 @@
+-- @nsURI Ecore=http://www.eclipse.org/emf/2002/Ecore
+
+
+module ImperativeTest;
+create OUT: Ecore from IN: Ecore;
+
+rule NotWorking {
+	from
+		eClass: Ecore!EClass (
+			eClass.abstract
+		)
+	to
+		modified: Ecore!EClass (
+			abstract <- true,
+			name <- eClass.name,
+			name <- OclUndefined,
+			eStructuralFeatures <- eClass.eStructuralFeatures,
+			eStructuralFeatures <- Sequence{}
+		)
+}
+
+rule Working {
+	from
+		eClass: Ecore!EClass (
+			not eClass.abstract
+		)
+	to
+		modified: Ecore!EClass (
+			abstract <- false,
+			name <- eClass.name,
+			name <:= OclUndefined,
+			eStructuralFeatures <- eClass.eStructuralFeatures,
+			eStructuralFeatures <:= Sequence{}
+		)
+}
+
+rule PackagesMapping {
+	from
+		pack: Ecore!EPackage
+	to
+		copy: Ecore!EPackage (
+			name <- pack.name,
+			nsPrefix <- pack.nsPrefix,
+			nsURI <- pack.nsURI,
+			eClassifiers <- pack.eClassifiers
+		)
+}
+
+rule AttributesMapping {
+	from
+		attr: Ecore!EAttribute
+	to
+		copy: Ecore!EAttribute (
+			name <- attr.name
+		)
+}

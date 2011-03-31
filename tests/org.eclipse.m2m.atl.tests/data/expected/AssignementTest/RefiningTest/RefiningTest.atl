@@ -1,0 +1,29 @@
+-- @nsURI Ecore=http://www.eclipse.org/emf/2002/Ecore
+
+
+module RefiningTest;
+create OUT: Ecore refining IN: Ecore;
+
+rule NotWorking {
+	from
+		eClass: Ecore!EClass (
+			eClass.abstract
+		)
+	to
+		modified: Ecore!EClass (
+			name <- OclUndefined,
+			eStructuralFeatures <- Sequence{}
+		)
+}
+
+rule Working {
+	from
+		eClass: Ecore!EClass (
+			not eClass.abstract
+		)
+	to
+		modified: Ecore!EClass (
+			name <:= OclUndefined,
+			eStructuralFeatures <:= Sequence{}
+		)
+}
