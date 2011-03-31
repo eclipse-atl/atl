@@ -41,7 +41,8 @@ public class AtlElementHyperlinkDetector extends AbstractHyperlinkDetector {
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region,
 			boolean canShowMultipleHyperlinks) {
 		ITextEditor textEditor = (ITextEditor)getAdapter(ITextEditor.class);
-		if (region == null || !(textEditor instanceof AtlEditor))
+		if (region == null || !(textEditor instanceof AtlEditor) ||
+				textEditor.getEditorInput() == null)
 			return null;
 		IDocument document = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());
 		IRegion wordRegion = OpenDeclarationUtils.findWord(document, region.getOffset());

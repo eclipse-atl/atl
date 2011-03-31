@@ -28,6 +28,7 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
  * <code>createStoreKeys()</code> method.
  * 
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class AtlPreferenceConstants {
 
@@ -104,6 +105,81 @@ public class AtlPreferenceConstants {
 	public static final String CODEASSIST_REPLACEMENT_FOREGROUND = CODEASSIST + "ReplacementForeground"; //$NON-NLS-1$
 
 	public static final String CODEASSIST_SHOW_VISIBLE_PROPOSALS = CODEASSIST + ".ShowVisibleProposals"; //$NON-NLS-1$
+
+	/* Code Formatter constants begin */
+	public static final String CODEFORMATTER = PREFIX + ".CodeFormatter"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_LINES_BETWEEN = CODEFORMATTER + ".LinesBetween"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_LINE_MAX_LENGTH = CODEFORMATTER + ".LineMaxLength"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_INSIDE_BRACES = CODEFORMATTER + ".SpacesInsideBraces"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_OUTSIDE_BRACES = CODEFORMATTER + ".SpacesOutsideBraces"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_BEFORE_ARROWS = CODEFORMATTER + ".SpacesBeforeArrows"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_AFTER_ARROWS = CODEFORMATTER + ".SpacesAfterArrows"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_BEFORE_SEMI = CODEFORMATTER + ".SpacesBeforeSemi"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_AFTER_SEMI = CODEFORMATTER + ".SpacesAfterSemi"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_BEFORE_COMA = CODEFORMATTER + ".SpacesBeforeComa"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_AFTER_COMA = CODEFORMATTER + ".SpacesAfterComa"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_BEFORE_COLON = CODEFORMATTER + ".SpacesBeforeColon"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_AFTER_COLON = CODEFORMATTER + ".SpacesAfterColon"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_BEFORE_POINT = CODEFORMATTER + ".SpacesBeforePoint"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_AFTER_POINT = CODEFORMATTER + ".SpacesAfterPoint"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_BEFORE_OPERATOR = CODEFORMATTER + ".SpacesBeforeOperator"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_AFTER_OPERATOR = CODEFORMATTER + ".SpacesAfterOperator"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_BEFORE_EQUAL = CODEFORMATTER + ".SpacesBeforeEqual"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_AFTER_EQUAL = CODEFORMATTER + ".SpacesAfterEqual"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_BEFORE_PIPE = CODEFORMATTER + ".SpacesBeforePipe"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_AFTER_PIPE = CODEFORMATTER + ".SpacesAfterPipe"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_BEFORE_EXCLAMATION = CODEFORMATTER
+			+ ".SpacesBeforeExclamation"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_AFTER_EXCLAMATION = CODEFORMATTER
+			+ ".SpacesAfterExclamation"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_BEFORE_RULE_BRACE = CODEFORMATTER
+			+ ".SpacesBeforeRuleBrace"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_BEFORE_ENDING_SEMI = CODEFORMATTER
+			+ ".SpacesBeforeEndingSemi"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_CUT_AFTER_POINT = CODEFORMATTER + ".CutAfterPoint"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_AFTER_COMMENT = CODEFORMATTER + ".SpacesAfterComment"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_OUTSIDE_COLLECTION_BRACE = CODEFORMATTER
+			+ ".SpacesOutsideCollectionBrace"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_SPACES_INSIDE_COLLECTION_BRACE = CODEFORMATTER
+			+ ".SpacesInsideCollectionBrace"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_LINES_AFTER_MODULE = CODEFORMATTER + ".LinesAfterModule"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_LINES_AFTER_CREATE_FROM = CODEFORMATTER
+			+ ".LinesAfterCreateFrom"; //$NON-NLS-1$
+
+	public static final String CODEFORMATTER_LINES_AFTER_SPECIAL_TAGS = CODEFORMATTER
+			+ ".LinesAfterSpecialTags"; //$NON-NLS-1$
+
+	/* Code Formatter constants end */
 
 	public static final String EDITOR = PREFIX + ".Editor"; //$NON-NLS-1$
 
@@ -213,11 +289,14 @@ public class AtlPreferenceConstants {
 
 	public static final String SYNTAX_SINGLE_LINE_SPECIAL_COMMENT = SYNTAX + ".SingleLineSpecialComment"; //$NON-NLS-1$
 
-	public static final String SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD = SYNTAX_SINGLE_LINE_SPECIAL_COMMENT + BOLD_SUFFIX;
+	public static final String SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD = SYNTAX_SINGLE_LINE_SPECIAL_COMMENT
+			+ BOLD_SUFFIX;
 
-	public static final String SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR = SYNTAX_SINGLE_LINE_SPECIAL_COMMENT + COLOR_SUFFIX;
+	public static final String SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR = SYNTAX_SINGLE_LINE_SPECIAL_COMMENT
+			+ COLOR_SUFFIX;
 
-	public static final String SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_ITALIC = SYNTAX_SINGLE_LINE_SPECIAL_COMMENT + ITALIC_SUFFIX;
+	public static final String SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_ITALIC = SYNTAX_SINGLE_LINE_SPECIAL_COMMENT
+			+ ITALIC_SUFFIX;
 
 	public static final String SYNTAX_STRING = SYNTAX + ".String"; //$NON-NLS-1$
 
@@ -332,6 +411,51 @@ public class AtlPreferenceConstants {
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN,
 				CODEASSIST_SHOW_VISIBLE_PROPOSALS));
 
+		/* Code Formatter begin */
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_LINES_BETWEEN));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_LINE_MAX_LENGTH));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_INSIDE_BRACES));
+		storeKeys
+				.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_OUTSIDE_BRACES));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_BEFORE_ARROWS));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_AFTER_ARROWS));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_BEFORE_SEMI));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_AFTER_SEMI));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_BEFORE_COMA));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_AFTER_COMA));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_BEFORE_COLON));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_AFTER_COLON));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_BEFORE_POINT));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_AFTER_POINT));
+		storeKeys
+				.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_BEFORE_OPERATOR));
+		storeKeys
+				.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_AFTER_OPERATOR));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_BEFORE_EQUAL));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_AFTER_EQUAL));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_BEFORE_PIPE));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_AFTER_PIPE));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT,
+				CODEFORMATTER_SPACES_BEFORE_EXCLAMATION));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT,
+				CODEFORMATTER_SPACES_AFTER_EXCLAMATION));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT,
+				CODEFORMATTER_SPACES_BEFORE_RULE_BRACE));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT,
+				CODEFORMATTER_SPACES_BEFORE_ENDING_SEMI));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, CODEFORMATTER_CUT_AFTER_POINT));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_SPACES_AFTER_COMMENT));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT,
+				CODEFORMATTER_SPACES_OUTSIDE_COLLECTION_BRACE));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT,
+				CODEFORMATTER_SPACES_INSIDE_COLLECTION_BRACE));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_LINES_AFTER_MODULE));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT,
+				CODEFORMATTER_LINES_AFTER_CREATE_FROM));
+		// storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT,
+		// CODEFORMATTER_LINES_AFTER_SPECIAL_TAGS));
+		/* Code Formatter end */
+
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, EDITOR_BACKGROUND_COLOR));
 		storeKeys
 				.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, EDITOR_BACKGROUND_COLOR_DEFAULT));
@@ -376,12 +500,12 @@ public class AtlPreferenceConstants {
 				.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, SYNTAX_SINGLE_LINE_COMMENT_COLOR));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN,
 				SYNTAX_SINGLE_LINE_COMMENT_ITALIC));
-		storeKeys
-			.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD));
-		storeKeys
-			.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN,
-					SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_ITALIC));
+				SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING,
+				SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN,
+				SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_ITALIC));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_STRING_BOLD));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, SYNTAX_STRING_COLOR));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.BOOLEAN, SYNTAX_STRING_ITALIC));
@@ -449,9 +573,7 @@ public class AtlPreferenceConstants {
 		store.setDefault(APPEARANCE_TAB_WIDTH, IAtlDefaultValues.APPEARANCE_TAB_WIDTH);
 
 		store.setDefault(CODEASSIST_AUTOACTIVATION_DELAY, IAtlDefaultValues.CODEASSIST_AUTOACTIVATION_DELAY);
-		store
-				.setDefault(CODEASSIST_AUTOACTIVATION_ENABLE,
-						IAtlDefaultValues.CODEASSIST_AUTOACTIVATION_ENABLE);
+		store.setDefault(CODEASSIST_AUTOACTIVATION_ENABLE, IAtlDefaultValues.CODEASSIST_AUTOACTIVATION_ENABLE);
 		store.setDefault(CODEASSIST_AUTOACTIVATION_TRIGGERS,
 				IAtlDefaultValues.CODEASSIST_AUTOACTIVATION_TRIGGERS);
 		store.setDefault(CODEASSIST_AUTOINSERT, IAtlDefaultValues.CODEASSIST_AUTOINSERT);
@@ -472,6 +594,58 @@ public class AtlPreferenceConstants {
 				IAtlDefaultValues.CODEASSIST_REPLACEMENT_FOREGROUND_COLOR);
 		store.setDefault(CODEASSIST_SHOW_VISIBLE_PROPOSALS,
 				IAtlDefaultValues.CODEASSIST_SHOW_VISIBLE_PROPOSALS);
+
+		/* Code Formatter begin */
+		store.setDefault(CODEFORMATTER_LINES_BETWEEN, IAtlDefaultValues.CODEFORMATTER_LINES_BETWEEN);
+		store.setDefault(CODEFORMATTER_LINE_MAX_LENGTH, IAtlDefaultValues.CODEFORMATTER_LINE_MAX_LENGTH);
+		store.setDefault(CODEFORMATTER_SPACES_INSIDE_BRACES,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_INSIDE_BRACES);
+		store.setDefault(CODEFORMATTER_SPACES_OUTSIDE_BRACES,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_OUTSIDE_BRACES);
+		store.setDefault(CODEFORMATTER_SPACES_BEFORE_ARROWS,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_BEFORE_ARROWS);
+		store.setDefault(CODEFORMATTER_SPACES_AFTER_ARROWS,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_AFTER_ARROWS);
+		store.setDefault(CODEFORMATTER_SPACES_BEFORE_SEMI, IAtlDefaultValues.CODEFORMATTER_SPACES_BEFORE_SEMI);
+		store.setDefault(CODEFORMATTER_SPACES_AFTER_SEMI, IAtlDefaultValues.CODEFORMATTER_SPACES_AFTER_SEMI);
+		store.setDefault(CODEFORMATTER_SPACES_BEFORE_COMA, IAtlDefaultValues.CODEFORMATTER_SPACES_BEFORE_COMA);
+		store.setDefault(CODEFORMATTER_SPACES_AFTER_COMA, IAtlDefaultValues.CODEFORMATTER_SPACES_AFTER_COMA);
+		store.setDefault(CODEFORMATTER_SPACES_BEFORE_COLON,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_BEFORE_COLON);
+		store.setDefault(CODEFORMATTER_SPACES_AFTER_COLON, IAtlDefaultValues.CODEFORMATTER_SPACES_AFTER_COLON);
+		store.setDefault(CODEFORMATTER_SPACES_BEFORE_POINT,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_BEFORE_POINT);
+		store.setDefault(CODEFORMATTER_SPACES_AFTER_POINT, IAtlDefaultValues.CODEFORMATTER_SPACES_AFTER_POINT);
+		store.setDefault(CODEFORMATTER_SPACES_BEFORE_OPERATOR,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_BEFORE_OPERATOR);
+		store.setDefault(CODEFORMATTER_SPACES_AFTER_OPERATOR,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_AFTER_OPERATOR);
+		store.setDefault(CODEFORMATTER_SPACES_BEFORE_EQUAL,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_BEFORE_EQUAL);
+		store.setDefault(CODEFORMATTER_SPACES_AFTER_EQUAL, IAtlDefaultValues.CODEFORMATTER_SPACES_AFTER_EQUAL);
+		store.setDefault(CODEFORMATTER_SPACES_BEFORE_PIPE, IAtlDefaultValues.CODEFORMATTER_SPACES_BEFORE_PIPE);
+		store.setDefault(CODEFORMATTER_SPACES_AFTER_PIPE, IAtlDefaultValues.CODEFORMATTER_SPACES_AFTER_PIPE);
+		store.setDefault(CODEFORMATTER_SPACES_BEFORE_EXCLAMATION,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_BEFORE_EXCLAMATION);
+		store.setDefault(CODEFORMATTER_SPACES_AFTER_EXCLAMATION,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_AFTER_EXCLAMATION);
+		store.setDefault(CODEFORMATTER_SPACES_BEFORE_RULE_BRACE,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_BEFORE_RULE_BRACE);
+		store.setDefault(CODEFORMATTER_SPACES_BEFORE_ENDING_SEMI,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_BEFORE_ENDING_SEMI);
+		store.setDefault(CODEFORMATTER_CUT_AFTER_POINT, IAtlDefaultValues.CODEFORMATTER_CUT_AFTER_POINT);
+		store.setDefault(CODEFORMATTER_SPACES_AFTER_COMMENT,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_AFTER_COMMENT);
+		store.setDefault(CODEFORMATTER_SPACES_OUTSIDE_COLLECTION_BRACE,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_OUTSIDE_COLLECTION_BRACE);
+		store.setDefault(CODEFORMATTER_SPACES_INSIDE_COLLECTION_BRACE,
+				IAtlDefaultValues.CODEFORMATTER_SPACES_INSIDE_COLLECTION_BRACE);
+		store.setDefault(CODEFORMATTER_LINES_AFTER_MODULE, IAtlDefaultValues.CODEFORMATTER_LINES_AFTER_MODULE);
+		store.setDefault(CODEFORMATTER_LINES_AFTER_CREATE_FROM,
+				IAtlDefaultValues.CODEFORMATTER_LINES_AFTER_CREATE_FROM);
+		// store.setDefault(CODEFORMATTER_LINES_AFTER_SPECIAL_TAGS,
+		// IAtlDefaultValues.CODEFORMATTER_LINES_AFTER_SPECIAL_TAGS);
+		/* Code Formatter end */
 
 		store.setDefault(EDITOR_BACKGROUND_COLOR_DEFAULT, IAtlDefaultValues.EDITOR_BACKGROUND_COLOR_DEFAULT);
 		store.setDefault(EDITOR_FOREGROUND_COLOR_DEFAULT, IAtlDefaultValues.EDITOR_FOREGROUND_COLOR_DEFAULT);
@@ -494,10 +668,12 @@ public class AtlPreferenceConstants {
 		PreferenceConverter.setDefault(store, SYNTAX_KEYWORD_COLOR, IAtlDefaultValues.SYNTAX_KEYWORD_COLOR);
 		store.setDefault(SYNTAX_KEYWORD_ITALIC, IAtlDefaultValues.SYNTAX_KEYWORD_ITALIC);
 		store.setDefault(SYNTAX_BOLD_KEYWORD_BOLD, IAtlDefaultValues.SYNTAX_BOLD_KEYWORD_BOLD);
-		PreferenceConverter.setDefault(store, SYNTAX_BOLD_KEYWORD_COLOR, IAtlDefaultValues.SYNTAX_BOLD_KEYWORD_COLOR);
+		PreferenceConverter.setDefault(store, SYNTAX_BOLD_KEYWORD_COLOR,
+				IAtlDefaultValues.SYNTAX_BOLD_KEYWORD_COLOR);
 		store.setDefault(SYNTAX_BOLD_KEYWORD_ITALIC, IAtlDefaultValues.SYNTAX_BOLD_KEYWORD_ITALIC);
 		store.setDefault(SYNTAX_CONTEXT_KEYWORD_BOLD, IAtlDefaultValues.SYNTAX_CONTEXT_KEYWORD_BOLD);
-		PreferenceConverter.setDefault(store, SYNTAX_CONTEXT_KEYWORD_COLOR, IAtlDefaultValues.SYNTAX_CONTEXT_KEYWORD_COLOR);
+		PreferenceConverter.setDefault(store, SYNTAX_CONTEXT_KEYWORD_COLOR,
+				IAtlDefaultValues.SYNTAX_CONTEXT_KEYWORD_COLOR);
 		store.setDefault(SYNTAX_CONTEXT_KEYWORD_ITALIC, IAtlDefaultValues.SYNTAX_CONTEXT_KEYWORD_ITALIC);
 		store.setDefault(SYNTAX_LITERAL_BOLD, IAtlDefaultValues.SYNTAX_LITERAL_BOLD);
 		PreferenceConverter.setDefault(store, SYNTAX_LITERAL_COLOR, IAtlDefaultValues.SYNTAX_LITERAL_COLOR);
@@ -513,7 +689,8 @@ public class AtlPreferenceConstants {
 				IAtlDefaultValues.SYNTAX_SINGLE_LINE_COMMENT_COLOR);
 		store.setDefault(SYNTAX_SINGLE_LINE_COMMENT_ITALIC,
 				IAtlDefaultValues.SYNTAX_SINGLE_LINE_COMMENT_ITALIC);
-		store.setDefault(SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD, IAtlDefaultValues.SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD);
+		store.setDefault(SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD,
+				IAtlDefaultValues.SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_BOLD);
 		PreferenceConverter.setDefault(store, SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR,
 				IAtlDefaultValues.SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR);
 		store.setDefault(SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_ITALIC,
@@ -528,7 +705,8 @@ public class AtlPreferenceConstants {
 		PreferenceConverter.setDefault(store, SYNTAX_TYPE_COLOR, IAtlDefaultValues.SYNTAX_TYPE_COLOR);
 		store.setDefault(SYNTAX_TYPE_ITALIC, IAtlDefaultValues.SYNTAX_TYPE_ITALIC);
 		store.setDefault(SYNTAX_ABSTRACT_TYPE_BOLD, IAtlDefaultValues.SYNTAX_ABSTRACT_TYPE_BOLD);
-		PreferenceConverter.setDefault(store, SYNTAX_ABSTRACT_TYPE_COLOR, IAtlDefaultValues.SYNTAX_ABSTRACT_TYPE_COLOR);
+		PreferenceConverter.setDefault(store, SYNTAX_ABSTRACT_TYPE_COLOR,
+				IAtlDefaultValues.SYNTAX_ABSTRACT_TYPE_COLOR);
 		store.setDefault(SYNTAX_ABSTRACT_TYPE_ITALIC, IAtlDefaultValues.SYNTAX_ABSTRACT_TYPE_ITALIC);
 
 		store.setDefault(TYPING_CLOSE_BRACES, IAtlDefaultValues.TYPING_CLOSE_BRACES);

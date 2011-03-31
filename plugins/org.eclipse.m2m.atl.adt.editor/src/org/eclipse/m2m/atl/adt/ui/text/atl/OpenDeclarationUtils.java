@@ -121,6 +121,8 @@ public final class OpenDeclarationUtils {
 		}
 		AtlSourceManager manager = editor.getSourceManager();
 		AtlModelAnalyser analyser = editor.getModelAnalyser();
+		if(analyser == null)
+			return null;
 		EObject locatedElement = analyser.getLocatedElement(savedOffset);
 		if (locatedElement != null) {
 			IFileEditorInput editorInput = (IFileEditorInput)editor.getEditorInput();

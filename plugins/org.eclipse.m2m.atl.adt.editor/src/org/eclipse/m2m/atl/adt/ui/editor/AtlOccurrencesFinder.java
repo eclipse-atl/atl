@@ -181,8 +181,6 @@ public class AtlOccurrencesFinder implements IOccurrencesFinder {
 	 * @return the feature value
 	 */
 	public static Object eGet(EObject self, String featureName) {
-		if (self == null)
-			return null;
 		EStructuralFeature feature = self.eClass().getEStructuralFeature(featureName);
 		if (feature != null) {
 			return self.eGet(feature);
@@ -329,7 +327,6 @@ public class AtlOccurrencesFinder implements IOccurrencesFinder {
 	private void variableExpSearch(EObject element) throws BadLocationException {
 		EObject referredVariable = (EObject)eGet(element, "referredVariable"); //$NON-NLS-1$
 		String name = (String)eGet(referredVariable, "varName"); //$NON-NLS-1$
-		if (referredVariable == null) return;
 		IRegion varRegion = getRegionFromElement(referredVariable);
 		fResult.add(new OccurrenceLocation(varRegion.getOffset(), varRegion.getLength(), F_WRITE_OCCURRENCE,
 				"Declaration of variable '" + name + "'")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -446,7 +443,7 @@ public class AtlOccurrencesFinder implements IOccurrencesFinder {
 		IRegion varRegion = null;
 		for (EObject model : analyser.getRoot().eResource().getContents()) {
 			varRegion = getRegionFromElement(model);
-			if(varRegion == null)
+			if (varRegion == null)
 				return;
 			if (oclIsKindOf(model, "OclModel")) { //$NON-NLS-1$
 				String subName = (String)eGet(model, "name"); //$NON-NLS-1$

@@ -85,6 +85,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
+import org.eclipse.m2m.atl.adt.ui.actions.FormatCodeAction;
 import org.eclipse.m2m.atl.adt.ui.actions.IAtlActionConstants;
 import org.eclipse.m2m.atl.adt.ui.actions.IndentAction;
 import org.eclipse.m2m.atl.adt.ui.actions.ToggleCommentAction;
@@ -1040,6 +1041,11 @@ public class AtlEditor extends TextEditor {
 		setAction("ToggleComment", action); //$NON-NLS-1$
 		markAsStateDependentAction("ToggleComment", true); //$NON-NLS-1$
 		configureToggleCommentAction();
+
+		action = new FormatCodeAction(Messages.getResourceBundle(), "FormatCode.", this); //$NON-NLS-1$
+		action.setActionDefinitionId("atlCommands.formatCode"); //$NON-NLS-1$
+		setAction("FormatCode", action); //$NON-NLS-1$
+		markAsStateDependentAction("FormatCode", true); //$NON-NLS-1$
 
 		// action = new GotoMatchingBracketAction(this);
 		//		action.setActionDefinitionId("atlCommands.gotoMatchingBracket"); //$NON-NLS-1$

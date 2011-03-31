@@ -28,6 +28,12 @@ public interface IAtlActionConstants {
 	String TOGGLE_COMMENT = "org.eclipse.m2m.atl.adt.ui.actions.ToggleComment"; //$NON-NLS-1$
 
 	/**
+	 * Source menu: name of Format Code action (value
+	 * <code>"org.eclipse.m2m.atl.adt.ui.actions.FormatCode"</code>).
+	 */
+	String FORMAT_CODE = "org.eclipse.m2m.atl.adt.ui.actions.FormatCode"; //$NON-NLS-1$
+
+	/**
 	 * Source menu: name of standard go to matching bracket action (value
 	 * <code>"org.eclipse.m2m.atl.adt.ui.actions.gotoMatchingBracket"</code>).
 	 */

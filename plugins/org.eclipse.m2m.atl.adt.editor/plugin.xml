@@ -39,6 +39,12 @@
             category="org.eclipse.m2m.atl.adt.editor.preferences.AtlEditorPreferencePage"
             class="org.eclipse.m2m.atl.adt.ui.preferences.AtlTypingPreferencePage"
             id="org.eclipse.m2m.atl.adt.editor.preferences.AtlTypingPreferencePage"/>
+      <page
+            category="org.eclipse.m2m.atl.adt.editor.preferences.AtlEditorPreferencePage"
+            class="org.eclipse.m2m.atl.adt.ui.preferences.AtlCodeFormatterPropertyPage"
+            id="org.eclipse.m2m.atl.adt.editor.preferences.AtlCodeFormatterPreferencePage"
+            name="Code Formatter">
+      </page>
    </extension>
    <!-- TODO improve decorator
    <extension point="org.eclipse.ui.decorators">
@@ -73,6 +79,12 @@
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="F3">
   </key>
+  <key
+        commandId="atlCommands.formatCode"
+        contextId="org.eclipse.m2m.atl.adt.editor"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+M2+F">
+  </key>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command
@@ -92,6 +104,11 @@
 		<category
 			id="atlCategory"
 			name="ATL Category"/>
+  <command
+        categoryId="atlCategory"
+        id="atlCommands.formatCode"
+        name="ATL Code Formatter Command">
+  </command>
 	</extension>
  <extension
        point="org.eclipse.ui.editors.templates">
@@ -210,6 +227,39 @@
                 label="%OpenDeclarationAction.label"
                 menubarPath="ATLEditorMenu/ATLGroup">
           </action>
+          <action
+                class="org.eclipse.m2m.atl.adt.ui.actions.FormatCodeAction"
+                definitionId="atlCommands.formatCode"
+                id="org.eclipse.m2m.atl.adt.ui.actions.FormatCode"
+                label="%FormatAction.label"
+                menubarPath="ATLEditorMenu/ATLGroup">
+          </action>
        </editorContribution>
+    </extension>
+    <extension
+          point="org.eclipse.ui.propertyPages">
+       <page
+             class="org.eclipse.m2m.atl.adt.ui.preferences.AtlMainPropertyPage"
+             id="org.eclipse.m2m.atl.adt.editor.preferences.AtlPropertyPage"
+             name="ATL">
+       </page>
+       <page
+             category="org.eclipse.m2m.atl.adt.editor.preferences.AtlPropertyPage"
+             class="org.eclipse.m2m.atl.adt.ui.preferences.AtlEditorPropertyPage"
+             id="org.eclipse.m2m.atl.adt.editor.preferences.AtlEditorPropertyPage"
+             name="Editor">
+       </page>
+       <page
+             category="org.eclipse.m2m.atl.adt.editor.preferences.AtlEditorPropertyPage"
+             class="org.eclipse.m2m.atl.adt.ui.preferences.AtlTypingPreferencePage"
+             id="org.eclipse.m2m.atl.adt.editor.preferences.AtlTypingPropertyPage"
+             name="Typing">
+       </page>
+       <page
+             category="org.eclipse.m2m.atl.adt.editor.preferences.AtlEditorPropertyPage"
+             class="org.eclipse.m2m.atl.adt.ui.preferences.AtlCodeFormatterPropertyPage"
+             id="org.eclipse.m2m.atl.adt.editor.preferences.AtlCodeFormatterPropertyPage"
+             name="Code Formatter">
+       </page>
     </extension>
 </plugin>
