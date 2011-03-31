@@ -334,7 +334,7 @@ public class AtlFileScreen extends WizardPage {
 			public void widgetSelected(SelectionEvent evt) {
 				dialog.create();
 				if (dialog.open() == Dialog.OK) {
-					libraries.put(dialog.getResult().toString(), ""); //$NON-NLS-1$
+					libraries.put(dialog.getFirstResult().toString(), ""); //$NON-NLS-1$
 					updateLists();
 				}
 			}
