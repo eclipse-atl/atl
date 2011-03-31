@@ -121,11 +121,12 @@ public class AtlBuildVisitor implements IResourceVisitor {
 				is.close();
 				if (pbms.length == 0) {
 					for (IFile propertyFile : getRelatedPropertyFiles((IFile)resource)) {
-						if (!propertyFile.isDerived()) {					
+						if (!propertyFile.isDerived()) {
 							IFile javaFile = propertyFile.getParent().getFile(
 									new Path(propertyFile.getName()).removeFileExtension().addFileExtension(
 											"java")); //$NON-NLS-1$
-							CreateRunnableAtlOperation op = new CreateRunnableAtlOperation(propertyFile, javaFile);
+							CreateRunnableAtlOperation op = new CreateRunnableAtlOperation(propertyFile,
+									javaFile);
 							op.run(monitor);
 						}
 					}
@@ -149,7 +150,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 		for (IFile propertyFile : getAllPropertyFiles(atlFile.getParent())) {
 			ATLProperties properties = new ATLProperties(propertyFile);
 			IFile[] modules = properties.getTransformationFiles();
-			if (Arrays.asList(modules).contains(atlFile)) {
+			if (modules != null && Arrays.asList(modules).contains(atlFile)) {
 				res.add(propertyFile);
 			}
 		}
