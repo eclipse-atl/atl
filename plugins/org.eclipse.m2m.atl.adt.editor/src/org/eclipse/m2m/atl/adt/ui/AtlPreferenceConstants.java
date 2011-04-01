@@ -452,8 +452,8 @@ public class AtlPreferenceConstants {
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT, CODEFORMATTER_LINES_AFTER_MODULE));
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT,
 				CODEFORMATTER_LINES_AFTER_CREATE_FROM));
-		// storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT,
-		// CODEFORMATTER_LINES_AFTER_SPECIAL_TAGS));
+		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.INT,
+				CODEFORMATTER_LINES_AFTER_SPECIAL_TAGS));
 		/* Code Formatter end */
 
 		storeKeys.add(new AtlPreferenceStore.Key(AtlPreferenceStore.STRING, EDITOR_BACKGROUND_COLOR));
@@ -643,8 +643,8 @@ public class AtlPreferenceConstants {
 		store.setDefault(CODEFORMATTER_LINES_AFTER_MODULE, IAtlDefaultValues.CODEFORMATTER_LINES_AFTER_MODULE);
 		store.setDefault(CODEFORMATTER_LINES_AFTER_CREATE_FROM,
 				IAtlDefaultValues.CODEFORMATTER_LINES_AFTER_CREATE_FROM);
-		// store.setDefault(CODEFORMATTER_LINES_AFTER_SPECIAL_TAGS,
-		// IAtlDefaultValues.CODEFORMATTER_LINES_AFTER_SPECIAL_TAGS);
+		store.setDefault(CODEFORMATTER_LINES_AFTER_SPECIAL_TAGS,
+				IAtlDefaultValues.CODEFORMATTER_LINES_AFTER_SPECIAL_TAGS);
 		/* Code Formatter end */
 
 		store.setDefault(EDITOR_BACKGROUND_COLOR_DEFAULT, IAtlDefaultValues.EDITOR_BACKGROUND_COLOR_DEFAULT);
