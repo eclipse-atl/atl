@@ -42,12 +42,14 @@
 				<exclude name="*.checkstyle" />
 			</zipfileset>			
 		</zip>
+		<!--
 		<zip destfile="${dest.dir}/${public2private.cmd.project}.zip">
 			<zipfileset dir="${plugins.base.dir}/${public2private.cmd.project}">
 				<exclude name="lib/*.jar" />
 				<exclude name="*.checkstyle" />
 			</zipfileset>
 		</zip>
+		-->
 	</target>
 	
 	<target name="update" depends="buildZips">
