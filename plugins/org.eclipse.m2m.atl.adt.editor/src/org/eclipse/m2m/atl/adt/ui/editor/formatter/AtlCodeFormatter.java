@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.adt.ui.editor.formatter.objects.CodeFragment;
@@ -76,6 +77,9 @@ public class AtlCodeFormatter {
 	 */
 	public void format(AtlEditor editor) throws BadLocationException {
 		// Try to simulate a save action, the model is updated (unless an error is detected)
+
+		ISelection selection = editor.getSelectionProvider().getSelection();
+
 		editor.getSourceManager().updateDataSource(editor.getViewer().getDocument().get());
 		this.modelAnalyser = new AtlModelAnalyser(
 				new AtlCompletionHelper(editor.getDocumentProviderContent()), editor.getSourceManager()
@@ -84,6 +88,9 @@ public class AtlCodeFormatter {
 		applyProfileToEditor(editor);
 
 		format(editor.getViewer().getDocument());
+
+		editor.getSelectionProvider().setSelection(selection);
+
 	}
 
 	public void format(IDocument document, Map<String, String> options, AtlModelAnalyser modelAnalyser)
