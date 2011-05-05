@@ -3,16 +3,16 @@ lexer grammar ATL_ANTLR3;
 
 	private void newline() {}
 
-	public org.eclipse.m2m.atl.dsls.tcs.injector.TCSRuntime ei = null;
+	public org.eclipse.gmt.tcs.injector.TCSRuntime ei = null;
 
 	public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
 		ei.reportError((Exception)e);
 	}
 
 	public Token emit() {
-		org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken ret = null;
+		org.eclipse.gmt.tcs.injector.wrappers.antlr3.ANTLR3LocationToken ret = null;
 
-		ret = new org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken(input, type, channel, tokenStartCharIndex, getCharIndex()-1);
+		ret = new org.eclipse.gmt.tcs.injector.wrappers.antlr3.ANTLR3LocationToken(input, type, channel, tokenStartCharIndex, getCharIndex()-1);
 		ret.setLine(tokenStartLine);
 		ret.setText(text);
 	  	ret.setCharPositionInLine(tokenStartCharPositionInLine);
@@ -24,7 +24,7 @@ lexer grammar ATL_ANTLR3;
 	}
 
 }
-@header {package org.eclipse.m2m.atl.dsls.tcs.injector;}
+@header {package org.eclipse.gmt.tcs.injector;}
 
 T43 : 'module' ;
 T44 : 'create' ;
@@ -50,41 +50,42 @@ T63 : 'to' ;
 T64 : 'mapsTo' ;
 T65 : 'distinct' ;
 T66 : 'foreach' ;
-T67 : 'do' ;
-T68 : 'if' ;
-T69 : 'else' ;
-T70 : 'for' ;
-T71 : 'iterate' ;
-T72 : 'OclUndefined' ;
-T73 : 'true' ;
-T74 : 'false' ;
-T75 : 'then' ;
-T76 : 'endif' ;
-T77 : 'super' ;
-T78 : 'let' ;
-T79 : 'Bag' ;
-T80 : 'Set' ;
-T81 : 'OrderedSet' ;
-T82 : 'Sequence' ;
-T83 : 'Map' ;
-T84 : 'Tuple' ;
-T85 : 'OclType' ;
-T86 : 'OclAny' ;
-T87 : 'TupleType' ;
-T88 : 'Integer' ;
-T89 : 'Real' ;
-T90 : 'Boolean' ;
-T91 : 'String' ;
-T92 : 'Collection' ;
-T93 : 'not' ;
-T94 : 'div' ;
-T95 : 'mod' ;
-T96 : 'and' ;
-T97 : 'or' ;
-T98 : 'xor' ;
-T99 : 'implies' ;
+T67 : 'drop' ;
+T68 : 'do' ;
+T69 : 'if' ;
+T70 : 'else' ;
+T71 : 'for' ;
+T72 : 'iterate' ;
+T73 : 'OclUndefined' ;
+T74 : 'true' ;
+T75 : 'false' ;
+T76 : 'then' ;
+T77 : 'endif' ;
+T78 : 'super' ;
+T79 : 'let' ;
+T80 : 'Bag' ;
+T81 : 'Set' ;
+T82 : 'OrderedSet' ;
+T83 : 'Sequence' ;
+T84 : 'Map' ;
+T85 : 'Tuple' ;
+T86 : 'OclType' ;
+T87 : 'OclAny' ;
+T88 : 'TupleType' ;
+T89 : 'Integer' ;
+T90 : 'Real' ;
+T91 : 'Boolean' ;
+T92 : 'String' ;
+T93 : 'Collection' ;
+T94 : 'not' ;
+T95 : 'div' ;
+T96 : 'mod' ;
+T97 : 'and' ;
+T98 : 'or' ;
+T99 : 'xor' ;
+T100 : 'implies' ;
 
-// $ANTLR src "ATL_ANTLR3.g" 1078
+// $ANTLR src "ATL_ANTLR3.g" 1089
 NL
 	:	(	'\r' '\n'
 		|	'\n' '\r'	//Improbable
@@ -94,20 +95,20 @@ NL
 	{newline();}
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1087
+// $ANTLR src "ATL_ANTLR3.g" 1098
 WS
 	:	(	' '
 		|	'\t'
 		)
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1093
+// $ANTLR src "ATL_ANTLR3.g" 1104
 fragment
 DIGIT
 	:	'0'..'9'
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1098
+// $ANTLR src "ATL_ANTLR3.g" 1109
 fragment
 ALPHA
 	:	'a'..'z'
@@ -119,7 +120,7 @@ ALPHA
 	|	'\u00F8' .. '\u00FF'
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1109
+// $ANTLR src "ATL_ANTLR3.g" 1120
 fragment
 SNAME
 //	options {
@@ -130,7 +131,7 @@ SNAME
 	:	(ALPHA) (ALPHA | DIGIT)*
 ;
 
-// $ANTLR src "ATL_ANTLR3.g" 1119
+// $ANTLR src "ATL_ANTLR3.g" 1130
 NAME
 	:	(
 			SNAME
@@ -145,16 +146,17 @@ NAME
 		)
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1133
+// $ANTLR src "ATL_ANTLR3.g" 1144
 INT
-	:	(DIGIT)+
-//		(('.' DIGIT)=> '.' (DIGIT)+ {$setType(FLOAT);})?
-	;
+       :       (DIGIT)+
+       			// cannot accept DIGIT '.' because it would conflict with Navigation
+//             (('.' DIGIT)=> '.' (DIGIT)+ {$setType(FLOAT);})?
+             (|{ ((input.LA(2) >= '0') && (input.LA(2) <= '9')) }? => '.' DIGIT+ {$type = FLOAT;})
+       ;
+ // $ANTLR src "ATL_ANTLR3.g" 1150
+fragment FLOAT:;
 
-	// $ANTLR src "ATL_ANTLR3.g" 1138
-FLOAT	:	DIGIT+ (('.' DIGIT)=>'.' DIGIT+)?	;	// cannot accept DIGIT '.' because it would conflict with Navigation
-
-// $ANTLR src "ATL_ANTLR3.g" 1140
+// $ANTLR src "ATL_ANTLR3.g" 1152
 fragment
 ESC
 	:	'\\'!
@@ -202,7 +204,7 @@ ESC
 	;
 	
 
-// $ANTLR src "ATL_ANTLR3.g" 1187
+// $ANTLR src "ATL_ANTLR3.g" 1199
 LSQUARE @init {}
 	:	'['
         {
@@ -211,7 +213,7 @@ LSQUARE @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1195
+// $ANTLR src "ATL_ANTLR3.g" 1207
 RSQUARE @init {}
 	:	']'
         {
@@ -220,7 +222,7 @@ RSQUARE @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1203
+// $ANTLR src "ATL_ANTLR3.g" 1215
 EXCL @init {}
 	:	'!'
         {
@@ -229,7 +231,7 @@ EXCL @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1211
+// $ANTLR src "ATL_ANTLR3.g" 1223
 COMA @init {}
 	:	','
         {
@@ -238,7 +240,7 @@ COMA @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1219
+// $ANTLR src "ATL_ANTLR3.g" 1231
 LPAREN @init {}
 	:	'('
         {
@@ -247,7 +249,7 @@ LPAREN @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1227
+// $ANTLR src "ATL_ANTLR3.g" 1239
 RPAREN @init {}
 	:	')'
         {
@@ -256,7 +258,7 @@ RPAREN @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1235
+// $ANTLR src "ATL_ANTLR3.g" 1247
 LCURLY @init {}
 	:	'{'
         {
@@ -265,7 +267,7 @@ LCURLY @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1243
+// $ANTLR src "ATL_ANTLR3.g" 1255
 RCURLY @init {}
 	:	'}'
         {
@@ -274,7 +276,7 @@ RCURLY @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1251
+// $ANTLR src "ATL_ANTLR3.g" 1263
 SEMI @init {}
 	:	';'
         {
@@ -283,7 +285,7 @@ SEMI @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1259
+// $ANTLR src "ATL_ANTLR3.g" 1271
 COLON @init {}
 	:	':'
         {
@@ -292,7 +294,7 @@ COLON @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1267
+// $ANTLR src "ATL_ANTLR3.g" 1279
 PIPE @init {}
 	:	'|'
         {
@@ -301,7 +303,7 @@ PIPE @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1275
+// $ANTLR src "ATL_ANTLR3.g" 1287
 SHARP @init {}
 	:	'#'
         {
@@ -310,7 +312,7 @@ SHARP @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1283
+// $ANTLR src "ATL_ANTLR3.g" 1295
 QMARK @init {}
 	:	'?'
         {
@@ -319,7 +321,7 @@ QMARK @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1291
+// $ANTLR src "ATL_ANTLR3.g" 1303
 AROBAS @init {}
 	:	'@'
         {
@@ -328,7 +330,7 @@ AROBAS @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1299
+// $ANTLR src "ATL_ANTLR3.g" 1311
 POINT @init {}
 	:	'.'
         {
@@ -337,7 +339,7 @@ POINT @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1307
+// $ANTLR src "ATL_ANTLR3.g" 1319
 RARROW @init {}
 	:	'->'
         {
@@ -346,7 +348,7 @@ RARROW @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1315
+// $ANTLR src "ATL_ANTLR3.g" 1327
 MINUS @init {}
 	:	'-'
         {
@@ -355,7 +357,7 @@ MINUS @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1323
+// $ANTLR src "ATL_ANTLR3.g" 1335
 STAR @init {}
 	:	'*'
         {
@@ -364,7 +366,7 @@ STAR @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1331
+// $ANTLR src "ATL_ANTLR3.g" 1343
 SLASH @init {}
 	:	'/'
         {
@@ -373,7 +375,7 @@ SLASH @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1339
+// $ANTLR src "ATL_ANTLR3.g" 1351
 PLUS @init {}
 	:	'+'
         {
@@ -382,7 +384,7 @@ PLUS @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1347
+// $ANTLR src "ATL_ANTLR3.g" 1359
 EQ @init {}
 	:	'='
         {
@@ -391,7 +393,7 @@ EQ @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1355
+// $ANTLR src "ATL_ANTLR3.g" 1367
 GT @init {}
 	:	'>'
         {
@@ -400,7 +402,7 @@ GT @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1363
+// $ANTLR src "ATL_ANTLR3.g" 1375
 LT @init {}
 	:	'<'
         {
@@ -409,7 +411,7 @@ LT @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1371
+// $ANTLR src "ATL_ANTLR3.g" 1383
 GE @init {}
 	:	'>='
         {
@@ -418,7 +420,7 @@ GE @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1379
+// $ANTLR src "ATL_ANTLR3.g" 1391
 LE @init {}
 	:	'<='
         {
@@ -427,7 +429,7 @@ LE @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1387
+// $ANTLR src "ATL_ANTLR3.g" 1399
 NE @init {}
 	:	'<>'
         {
@@ -436,7 +438,7 @@ NE @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1395
+// $ANTLR src "ATL_ANTLR3.g" 1407
 LARROW @init {}
 	:	'<-'
         {
@@ -445,7 +447,7 @@ LARROW @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1403
+// $ANTLR src "ATL_ANTLR3.g" 1415
 ASSIGNARROW @init {}
 	:	'<:='
         {
@@ -454,7 +456,7 @@ ASSIGNARROW @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1411
+// $ANTLR src "ATL_ANTLR3.g" 1423
 COMMENT @init {}
 	:	(('--' (~('\r'| '\n'))*))
         {
@@ -463,7 +465,7 @@ COMMENT @init {}
 
 	;
 
-// $ANTLR src "ATL_ANTLR3.g" 1419
+// $ANTLR src "ATL_ANTLR3.g" 1431
 STRING @init {}
 	:	(('\'' (options {greedy = false;} : (('\\'! ~ '\n')| '\n'| ~('\\'| '\n')))* '\''))
         {

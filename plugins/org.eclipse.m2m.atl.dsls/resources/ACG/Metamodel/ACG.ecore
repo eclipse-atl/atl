@@ -89,6 +89,8 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="id" ordered="false" eType="/0/Expression" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="NewStat" eSuperTypes="/0/EmitStat"/>
+    <eClassifiers xsi:type="ecore:EClass" name="NewinStat" eSuperTypes="/0/EmitStat"/>
+    <eClassifiers xsi:type="ecore:EClass" name="DeleteStat" eSuperTypes="/0/EmitStat"/>
     <eClassifiers xsi:type="ecore:EClass" name="DupStat" eSuperTypes="/0/EmitStat"/>
     <eClassifiers xsi:type="ecore:EClass" name="DupX1Stat" eSuperTypes="/0/EmitStat"/>
     <eClassifiers xsi:type="ecore:EClass" name="PopStat" eSuperTypes="/0/EmitStat"/>
@@ -108,6 +110,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="LoadStat" eSuperTypes="/0/EmitWithOperandStat"/>
     <eClassifiers xsi:type="ecore:EClass" name="StoreStat" eSuperTypes="/0/EmitWithOperandStat"/>
     <eClassifiers xsi:type="ecore:EClass" name="CallStat" eSuperTypes="/0/EmitWithOperandStat"/>
+    <eClassifiers xsi:type="ecore:EClass" name="PCallStat" eSuperTypes="/0/EmitWithOperandStat"/>
     <eClassifiers xsi:type="ecore:EClass" name="SuperCallStat" eSuperTypes="/0/EmitWithOperandStat"/>
     <eClassifiers xsi:type="ecore:EClass" name="GetStat" eSuperTypes="/0/EmitWithOperandStat"/>
     <eClassifiers xsi:type="ecore:EClass" name="SetStat" eSuperTypes="/0/EmitWithOperandStat"/>

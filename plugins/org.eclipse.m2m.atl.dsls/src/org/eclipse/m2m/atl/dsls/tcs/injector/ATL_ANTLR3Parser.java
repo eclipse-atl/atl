@@ -9,7 +9,7 @@
  *     INRIA - initial API and implementation
  *
  */
-// $ANTLR 3.0.1 ATL_ANTLR3.g 2010-01-06 13:02:31
+// $ANTLR 3.0.1 ATL_ANTLR3.g 2011-05-04 14:11:57
 package org.eclipse.m2m.atl.dsls.tcs.injector;
 
 import org.antlr.runtime.*;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.HashMap;
 public class ATL_ANTLR3Parser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "NAME", "STRING", "INT", "FLOAT", "SEMI", "COMA", "EQ", "COLON", "LPAREN", "RPAREN", "LCURLY", "RCURLY", "RARROW", "ASSIGNARROW", "LARROW", "EXCL", "PIPE", "SHARP", "POINT", "MINUS", "STAR", "SLASH", "PLUS", "GT", "LT", "GE", "LE", "NE", "NL", "WS", "DIGIT", "ALPHA", "SNAME", "ESC", "LSQUARE", "RSQUARE", "QMARK", "AROBAS", "COMMENT", "'module'", "'create'", "'refining'", "'from'", "'library'", "'query'", "'uses'", "'helper'", "'def'", "'context'", "'nodefault'", "'abstract'", "'rule'", "'extends'", "'using'", "'unique'", "'lazy'", "'entrypoint'", "'endpoint'", "'in'", "'to'", "'mapsTo'", "'distinct'", "'foreach'", "'do'", "'if'", "'else'", "'for'", "'iterate'", "'OclUndefined'", "'true'", "'false'", "'then'", "'endif'", "'super'", "'let'", "'Bag'", "'Set'", "'OrderedSet'", "'Sequence'", "'Map'", "'Tuple'", "'OclType'", "'OclAny'", "'TupleType'", "'Integer'", "'Real'", "'Boolean'", "'String'", "'Collection'", "'not'", "'div'", "'mod'", "'and'", "'or'", "'xor'", "'implies'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "NAME", "STRING", "INT", "FLOAT", "SEMI", "COMA", "EQ", "COLON", "LPAREN", "RPAREN", "LCURLY", "RCURLY", "RARROW", "ASSIGNARROW", "LARROW", "EXCL", "PIPE", "SHARP", "POINT", "MINUS", "STAR", "SLASH", "PLUS", "GT", "LT", "GE", "LE", "NE", "NL", "WS", "DIGIT", "ALPHA", "SNAME", "ESC", "LSQUARE", "RSQUARE", "QMARK", "AROBAS", "COMMENT", "'module'", "'create'", "'refining'", "'from'", "'library'", "'query'", "'uses'", "'helper'", "'def'", "'context'", "'nodefault'", "'abstract'", "'rule'", "'extends'", "'using'", "'unique'", "'lazy'", "'entrypoint'", "'endpoint'", "'in'", "'to'", "'mapsTo'", "'distinct'", "'foreach'", "'drop'", "'do'", "'if'", "'else'", "'for'", "'iterate'", "'OclUndefined'", "'true'", "'false'", "'then'", "'endif'", "'super'", "'let'", "'Bag'", "'Set'", "'OrderedSet'", "'Sequence'", "'Map'", "'Tuple'", "'OclType'", "'OclAny'", "'TupleType'", "'Integer'", "'Real'", "'Boolean'", "'String'", "'Collection'", "'not'", "'div'", "'mod'", "'and'", "'or'", "'xor'", "'implies'"
     };
     public static final int GE=29;
     public static final int LT=28;
@@ -65,7 +65,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
         public ATL_ANTLR3Parser(TokenStream input) {
             super(input);
-            ruleMemo = new HashMap[314+1];
+            ruleMemo = new HashMap[318+1];
          }
         
 
@@ -195,7 +195,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start identifierOrKeyword
-    // ATL_ANTLR3.g:79:1: identifierOrKeyword returns [Object ret2] : (ast= NAME | 'module' | 'create' | 'refining' | 'from' | 'library' | 'query' | 'uses' | 'helper' | 'def' | 'context' | 'nodefault' | 'abstract' | 'rule' | 'extends' | 'using' | 'unique' | 'lazy' | 'entrypoint' | 'endpoint' | 'in' | 'to' | 'mapsTo' | 'distinct' | 'foreach' | 'do' | 'if' | 'else' | 'for' | 'iterate' | 'OclUndefined' | 'true' | 'false' | 'then' | 'endif' | 'super' | 'let' | 'Bag' | 'Set' | 'OrderedSet' | 'Sequence' | 'Map' | 'Tuple' | 'OclType' | 'OclAny' | 'TupleType' | 'Integer' | 'Real' | 'Boolean' | 'String' | 'Collection' | 'not' | 'div' | 'mod' | 'and' | 'or' | 'xor' | 'implies' ) ;
+    // ATL_ANTLR3.g:79:1: identifierOrKeyword returns [Object ret2] : (ast= NAME | 'module' | 'create' | 'refining' | 'from' | 'library' | 'query' | 'uses' | 'helper' | 'def' | 'context' | 'nodefault' | 'abstract' | 'rule' | 'extends' | 'using' | 'unique' | 'lazy' | 'entrypoint' | 'endpoint' | 'in' | 'to' | 'mapsTo' | 'distinct' | 'foreach' | 'drop' | 'do' | 'if' | 'else' | 'for' | 'iterate' | 'OclUndefined' | 'true' | 'false' | 'then' | 'endif' | 'super' | 'let' | 'Bag' | 'Set' | 'OrderedSet' | 'Sequence' | 'Map' | 'Tuple' | 'OclType' | 'OclAny' | 'TupleType' | 'Integer' | 'Real' | 'Boolean' | 'String' | 'Collection' | 'not' | 'div' | 'mod' | 'and' | 'or' | 'xor' | 'implies' ) ;
     public final Object identifierOrKeyword() throws RecognitionException {
         Object ret2 = null;
 
@@ -203,11 +203,11 @@ public class ATL_ANTLR3Parser extends Parser {
 
         java.lang.Object ret=null;
         try {
-            // ATL_ANTLR3.g:80:2: ( (ast= NAME | 'module' | 'create' | 'refining' | 'from' | 'library' | 'query' | 'uses' | 'helper' | 'def' | 'context' | 'nodefault' | 'abstract' | 'rule' | 'extends' | 'using' | 'unique' | 'lazy' | 'entrypoint' | 'endpoint' | 'in' | 'to' | 'mapsTo' | 'distinct' | 'foreach' | 'do' | 'if' | 'else' | 'for' | 'iterate' | 'OclUndefined' | 'true' | 'false' | 'then' | 'endif' | 'super' | 'let' | 'Bag' | 'Set' | 'OrderedSet' | 'Sequence' | 'Map' | 'Tuple' | 'OclType' | 'OclAny' | 'TupleType' | 'Integer' | 'Real' | 'Boolean' | 'String' | 'Collection' | 'not' | 'div' | 'mod' | 'and' | 'or' | 'xor' | 'implies' ) )
-            // ATL_ANTLR3.g:80:4: (ast= NAME | 'module' | 'create' | 'refining' | 'from' | 'library' | 'query' | 'uses' | 'helper' | 'def' | 'context' | 'nodefault' | 'abstract' | 'rule' | 'extends' | 'using' | 'unique' | 'lazy' | 'entrypoint' | 'endpoint' | 'in' | 'to' | 'mapsTo' | 'distinct' | 'foreach' | 'do' | 'if' | 'else' | 'for' | 'iterate' | 'OclUndefined' | 'true' | 'false' | 'then' | 'endif' | 'super' | 'let' | 'Bag' | 'Set' | 'OrderedSet' | 'Sequence' | 'Map' | 'Tuple' | 'OclType' | 'OclAny' | 'TupleType' | 'Integer' | 'Real' | 'Boolean' | 'String' | 'Collection' | 'not' | 'div' | 'mod' | 'and' | 'or' | 'xor' | 'implies' )
+            // ATL_ANTLR3.g:80:2: ( (ast= NAME | 'module' | 'create' | 'refining' | 'from' | 'library' | 'query' | 'uses' | 'helper' | 'def' | 'context' | 'nodefault' | 'abstract' | 'rule' | 'extends' | 'using' | 'unique' | 'lazy' | 'entrypoint' | 'endpoint' | 'in' | 'to' | 'mapsTo' | 'distinct' | 'foreach' | 'drop' | 'do' | 'if' | 'else' | 'for' | 'iterate' | 'OclUndefined' | 'true' | 'false' | 'then' | 'endif' | 'super' | 'let' | 'Bag' | 'Set' | 'OrderedSet' | 'Sequence' | 'Map' | 'Tuple' | 'OclType' | 'OclAny' | 'TupleType' | 'Integer' | 'Real' | 'Boolean' | 'String' | 'Collection' | 'not' | 'div' | 'mod' | 'and' | 'or' | 'xor' | 'implies' ) )
+            // ATL_ANTLR3.g:80:4: (ast= NAME | 'module' | 'create' | 'refining' | 'from' | 'library' | 'query' | 'uses' | 'helper' | 'def' | 'context' | 'nodefault' | 'abstract' | 'rule' | 'extends' | 'using' | 'unique' | 'lazy' | 'entrypoint' | 'endpoint' | 'in' | 'to' | 'mapsTo' | 'distinct' | 'foreach' | 'drop' | 'do' | 'if' | 'else' | 'for' | 'iterate' | 'OclUndefined' | 'true' | 'false' | 'then' | 'endif' | 'super' | 'let' | 'Bag' | 'Set' | 'OrderedSet' | 'Sequence' | 'Map' | 'Tuple' | 'OclType' | 'OclAny' | 'TupleType' | 'Integer' | 'Real' | 'Boolean' | 'String' | 'Collection' | 'not' | 'div' | 'mod' | 'and' | 'or' | 'xor' | 'implies' )
             {
-            // ATL_ANTLR3.g:80:4: (ast= NAME | 'module' | 'create' | 'refining' | 'from' | 'library' | 'query' | 'uses' | 'helper' | 'def' | 'context' | 'nodefault' | 'abstract' | 'rule' | 'extends' | 'using' | 'unique' | 'lazy' | 'entrypoint' | 'endpoint' | 'in' | 'to' | 'mapsTo' | 'distinct' | 'foreach' | 'do' | 'if' | 'else' | 'for' | 'iterate' | 'OclUndefined' | 'true' | 'false' | 'then' | 'endif' | 'super' | 'let' | 'Bag' | 'Set' | 'OrderedSet' | 'Sequence' | 'Map' | 'Tuple' | 'OclType' | 'OclAny' | 'TupleType' | 'Integer' | 'Real' | 'Boolean' | 'String' | 'Collection' | 'not' | 'div' | 'mod' | 'and' | 'or' | 'xor' | 'implies' )
-            int alt1=58;
+            // ATL_ANTLR3.g:80:4: (ast= NAME | 'module' | 'create' | 'refining' | 'from' | 'library' | 'query' | 'uses' | 'helper' | 'def' | 'context' | 'nodefault' | 'abstract' | 'rule' | 'extends' | 'using' | 'unique' | 'lazy' | 'entrypoint' | 'endpoint' | 'in' | 'to' | 'mapsTo' | 'distinct' | 'foreach' | 'drop' | 'do' | 'if' | 'else' | 'for' | 'iterate' | 'OclUndefined' | 'true' | 'false' | 'then' | 'endif' | 'super' | 'let' | 'Bag' | 'Set' | 'OrderedSet' | 'Sequence' | 'Map' | 'Tuple' | 'OclType' | 'OclAny' | 'TupleType' | 'Integer' | 'Real' | 'Boolean' | 'String' | 'Collection' | 'not' | 'div' | 'mod' | 'and' | 'or' | 'xor' | 'implies' )
+            int alt1=59;
             switch ( input.LA(1) ) {
             case NAME:
                 {
@@ -499,10 +499,15 @@ public class ATL_ANTLR3Parser extends Parser {
                 alt1=58;
                 }
                 break;
+            case 100:
+                {
+                alt1=59;
+                }
+                break;
             default:
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("80:4: (ast= NAME | 'module' | 'create' | 'refining' | 'from' | 'library' | 'query' | 'uses' | 'helper' | 'def' | 'context' | 'nodefault' | 'abstract' | 'rule' | 'extends' | 'using' | 'unique' | 'lazy' | 'entrypoint' | 'endpoint' | 'in' | 'to' | 'mapsTo' | 'distinct' | 'foreach' | 'do' | 'if' | 'else' | 'for' | 'iterate' | 'OclUndefined' | 'true' | 'false' | 'then' | 'endif' | 'super' | 'let' | 'Bag' | 'Set' | 'OrderedSet' | 'Sequence' | 'Map' | 'Tuple' | 'OclType' | 'OclAny' | 'TupleType' | 'Integer' | 'Real' | 'Boolean' | 'String' | 'Collection' | 'not' | 'div' | 'mod' | 'and' | 'or' | 'xor' | 'implies' )", 1, 0, input);
+                    new NoViableAltException("80:4: (ast= NAME | 'module' | 'create' | 'refining' | 'from' | 'library' | 'query' | 'uses' | 'helper' | 'def' | 'context' | 'nodefault' | 'abstract' | 'rule' | 'extends' | 'using' | 'unique' | 'lazy' | 'entrypoint' | 'endpoint' | 'in' | 'to' | 'mapsTo' | 'distinct' | 'foreach' | 'drop' | 'do' | 'if' | 'else' | 'for' | 'iterate' | 'OclUndefined' | 'true' | 'false' | 'then' | 'endif' | 'super' | 'let' | 'Bag' | 'Set' | 'OrderedSet' | 'Sequence' | 'Map' | 'Tuple' | 'OclType' | 'OclAny' | 'TupleType' | 'Integer' | 'Real' | 'Boolean' | 'String' | 'Collection' | 'not' | 'div' | 'mod' | 'and' | 'or' | 'xor' | 'implies' )", 1, 0, input);
 
                 throw nvae;
             }
@@ -760,329 +765,339 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 26 :
-                    // ATL_ANTLR3.g:80:732: 'do'
+                    // ATL_ANTLR3.g:80:732: 'drop'
                     {
                     match(input,67,FOLLOW_67_in_identifierOrKeyword257); if (failed) return ret2;
+                    if ( backtracking==0 ) {
+                      ret = "drop";
+                    }
+
+                    }
+                    break;
+                case 27 :
+                    // ATL_ANTLR3.g:80:756: 'do'
+                    {
+                    match(input,68,FOLLOW_68_in_identifierOrKeyword262); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "do";
                     }
 
                     }
                     break;
-                case 27 :
-                    // ATL_ANTLR3.g:80:752: 'if'
+                case 28 :
+                    // ATL_ANTLR3.g:80:776: 'if'
                     {
-                    match(input,68,FOLLOW_68_in_identifierOrKeyword262); if (failed) return ret2;
+                    match(input,69,FOLLOW_69_in_identifierOrKeyword267); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "if";
                     }
 
                     }
                     break;
-                case 28 :
-                    // ATL_ANTLR3.g:80:772: 'else'
+                case 29 :
+                    // ATL_ANTLR3.g:80:796: 'else'
                     {
-                    match(input,69,FOLLOW_69_in_identifierOrKeyword267); if (failed) return ret2;
+                    match(input,70,FOLLOW_70_in_identifierOrKeyword272); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "else";
                     }
 
                     }
                     break;
-                case 29 :
-                    // ATL_ANTLR3.g:80:796: 'for'
+                case 30 :
+                    // ATL_ANTLR3.g:80:820: 'for'
                     {
-                    match(input,70,FOLLOW_70_in_identifierOrKeyword272); if (failed) return ret2;
+                    match(input,71,FOLLOW_71_in_identifierOrKeyword277); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "for";
                     }
 
                     }
                     break;
-                case 30 :
-                    // ATL_ANTLR3.g:80:818: 'iterate'
+                case 31 :
+                    // ATL_ANTLR3.g:80:842: 'iterate'
                     {
-                    match(input,71,FOLLOW_71_in_identifierOrKeyword277); if (failed) return ret2;
+                    match(input,72,FOLLOW_72_in_identifierOrKeyword282); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "iterate";
                     }
 
                     }
                     break;
-                case 31 :
-                    // ATL_ANTLR3.g:80:848: 'OclUndefined'
+                case 32 :
+                    // ATL_ANTLR3.g:80:872: 'OclUndefined'
                     {
-                    match(input,72,FOLLOW_72_in_identifierOrKeyword282); if (failed) return ret2;
+                    match(input,73,FOLLOW_73_in_identifierOrKeyword287); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "OclUndefined";
                     }
 
                     }
                     break;
-                case 32 :
-                    // ATL_ANTLR3.g:80:888: 'true'
+                case 33 :
+                    // ATL_ANTLR3.g:80:912: 'true'
                     {
-                    match(input,73,FOLLOW_73_in_identifierOrKeyword287); if (failed) return ret2;
+                    match(input,74,FOLLOW_74_in_identifierOrKeyword292); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "true";
                     }
 
                     }
                     break;
-                case 33 :
-                    // ATL_ANTLR3.g:80:912: 'false'
+                case 34 :
+                    // ATL_ANTLR3.g:80:936: 'false'
                     {
-                    match(input,74,FOLLOW_74_in_identifierOrKeyword292); if (failed) return ret2;
+                    match(input,75,FOLLOW_75_in_identifierOrKeyword297); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "false";
                     }
 
                     }
                     break;
-                case 34 :
-                    // ATL_ANTLR3.g:80:938: 'then'
+                case 35 :
+                    // ATL_ANTLR3.g:80:962: 'then'
                     {
-                    match(input,75,FOLLOW_75_in_identifierOrKeyword297); if (failed) return ret2;
+                    match(input,76,FOLLOW_76_in_identifierOrKeyword302); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "then";
                     }
 
                     }
                     break;
-                case 35 :
-                    // ATL_ANTLR3.g:80:962: 'endif'
+                case 36 :
+                    // ATL_ANTLR3.g:80:986: 'endif'
                     {
-                    match(input,76,FOLLOW_76_in_identifierOrKeyword302); if (failed) return ret2;
+                    match(input,77,FOLLOW_77_in_identifierOrKeyword307); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "endif";
                     }
 
                     }
                     break;
-                case 36 :
-                    // ATL_ANTLR3.g:80:988: 'super'
+                case 37 :
+                    // ATL_ANTLR3.g:80:1012: 'super'
                     {
-                    match(input,77,FOLLOW_77_in_identifierOrKeyword307); if (failed) return ret2;
+                    match(input,78,FOLLOW_78_in_identifierOrKeyword312); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "super";
                     }
 
                     }
                     break;
-                case 37 :
-                    // ATL_ANTLR3.g:80:1014: 'let'
+                case 38 :
+                    // ATL_ANTLR3.g:80:1038: 'let'
                     {
-                    match(input,78,FOLLOW_78_in_identifierOrKeyword312); if (failed) return ret2;
+                    match(input,79,FOLLOW_79_in_identifierOrKeyword317); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "let";
                     }
 
                     }
                     break;
-                case 38 :
-                    // ATL_ANTLR3.g:80:1036: 'Bag'
+                case 39 :
+                    // ATL_ANTLR3.g:80:1060: 'Bag'
                     {
-                    match(input,79,FOLLOW_79_in_identifierOrKeyword317); if (failed) return ret2;
+                    match(input,80,FOLLOW_80_in_identifierOrKeyword322); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "Bag";
                     }
 
                     }
                     break;
-                case 39 :
-                    // ATL_ANTLR3.g:80:1058: 'Set'
+                case 40 :
+                    // ATL_ANTLR3.g:80:1082: 'Set'
                     {
-                    match(input,80,FOLLOW_80_in_identifierOrKeyword322); if (failed) return ret2;
+                    match(input,81,FOLLOW_81_in_identifierOrKeyword327); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "Set";
                     }
 
                     }
                     break;
-                case 40 :
-                    // ATL_ANTLR3.g:80:1080: 'OrderedSet'
+                case 41 :
+                    // ATL_ANTLR3.g:80:1104: 'OrderedSet'
                     {
-                    match(input,81,FOLLOW_81_in_identifierOrKeyword327); if (failed) return ret2;
+                    match(input,82,FOLLOW_82_in_identifierOrKeyword332); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "OrderedSet";
                     }
 
                     }
                     break;
-                case 41 :
-                    // ATL_ANTLR3.g:80:1116: 'Sequence'
+                case 42 :
+                    // ATL_ANTLR3.g:80:1140: 'Sequence'
                     {
-                    match(input,82,FOLLOW_82_in_identifierOrKeyword332); if (failed) return ret2;
+                    match(input,83,FOLLOW_83_in_identifierOrKeyword337); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "Sequence";
                     }
 
                     }
                     break;
-                case 42 :
-                    // ATL_ANTLR3.g:80:1148: 'Map'
+                case 43 :
+                    // ATL_ANTLR3.g:80:1172: 'Map'
                     {
-                    match(input,83,FOLLOW_83_in_identifierOrKeyword337); if (failed) return ret2;
+                    match(input,84,FOLLOW_84_in_identifierOrKeyword342); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "Map";
                     }
 
                     }
                     break;
-                case 43 :
-                    // ATL_ANTLR3.g:80:1170: 'Tuple'
+                case 44 :
+                    // ATL_ANTLR3.g:80:1194: 'Tuple'
                     {
-                    match(input,84,FOLLOW_84_in_identifierOrKeyword342); if (failed) return ret2;
+                    match(input,85,FOLLOW_85_in_identifierOrKeyword347); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "Tuple";
                     }
 
                     }
                     break;
-                case 44 :
-                    // ATL_ANTLR3.g:80:1196: 'OclType'
+                case 45 :
+                    // ATL_ANTLR3.g:80:1220: 'OclType'
                     {
-                    match(input,85,FOLLOW_85_in_identifierOrKeyword347); if (failed) return ret2;
+                    match(input,86,FOLLOW_86_in_identifierOrKeyword352); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "OclType";
                     }
 
                     }
                     break;
-                case 45 :
-                    // ATL_ANTLR3.g:80:1226: 'OclAny'
+                case 46 :
+                    // ATL_ANTLR3.g:80:1250: 'OclAny'
                     {
-                    match(input,86,FOLLOW_86_in_identifierOrKeyword352); if (failed) return ret2;
+                    match(input,87,FOLLOW_87_in_identifierOrKeyword357); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "OclAny";
                     }
 
                     }
                     break;
-                case 46 :
-                    // ATL_ANTLR3.g:80:1254: 'TupleType'
+                case 47 :
+                    // ATL_ANTLR3.g:80:1278: 'TupleType'
                     {
-                    match(input,87,FOLLOW_87_in_identifierOrKeyword357); if (failed) return ret2;
+                    match(input,88,FOLLOW_88_in_identifierOrKeyword362); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "TupleType";
                     }
 
                     }
                     break;
-                case 47 :
-                    // ATL_ANTLR3.g:80:1288: 'Integer'
+                case 48 :
+                    // ATL_ANTLR3.g:80:1312: 'Integer'
                     {
-                    match(input,88,FOLLOW_88_in_identifierOrKeyword362); if (failed) return ret2;
+                    match(input,89,FOLLOW_89_in_identifierOrKeyword367); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "Integer";
                     }
 
                     }
                     break;
-                case 48 :
-                    // ATL_ANTLR3.g:80:1318: 'Real'
+                case 49 :
+                    // ATL_ANTLR3.g:80:1342: 'Real'
                     {
-                    match(input,89,FOLLOW_89_in_identifierOrKeyword367); if (failed) return ret2;
+                    match(input,90,FOLLOW_90_in_identifierOrKeyword372); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "Real";
                     }
 
                     }
                     break;
-                case 49 :
-                    // ATL_ANTLR3.g:80:1342: 'Boolean'
+                case 50 :
+                    // ATL_ANTLR3.g:80:1366: 'Boolean'
                     {
-                    match(input,90,FOLLOW_90_in_identifierOrKeyword372); if (failed) return ret2;
+                    match(input,91,FOLLOW_91_in_identifierOrKeyword377); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "Boolean";
                     }
 
                     }
                     break;
-                case 50 :
-                    // ATL_ANTLR3.g:80:1372: 'String'
+                case 51 :
+                    // ATL_ANTLR3.g:80:1396: 'String'
                     {
-                    match(input,91,FOLLOW_91_in_identifierOrKeyword377); if (failed) return ret2;
+                    match(input,92,FOLLOW_92_in_identifierOrKeyword382); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "String";
                     }
 
                     }
                     break;
-                case 51 :
-                    // ATL_ANTLR3.g:80:1400: 'Collection'
+                case 52 :
+                    // ATL_ANTLR3.g:80:1424: 'Collection'
                     {
-                    match(input,92,FOLLOW_92_in_identifierOrKeyword382); if (failed) return ret2;
+                    match(input,93,FOLLOW_93_in_identifierOrKeyword387); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "Collection";
                     }
 
                     }
                     break;
-                case 52 :
-                    // ATL_ANTLR3.g:80:1436: 'not'
+                case 53 :
+                    // ATL_ANTLR3.g:80:1460: 'not'
                     {
-                    match(input,93,FOLLOW_93_in_identifierOrKeyword387); if (failed) return ret2;
+                    match(input,94,FOLLOW_94_in_identifierOrKeyword392); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "not";
                     }
 
                     }
                     break;
-                case 53 :
-                    // ATL_ANTLR3.g:80:1458: 'div'
+                case 54 :
+                    // ATL_ANTLR3.g:80:1482: 'div'
                     {
-                    match(input,94,FOLLOW_94_in_identifierOrKeyword392); if (failed) return ret2;
+                    match(input,95,FOLLOW_95_in_identifierOrKeyword397); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "div";
                     }
 
                     }
                     break;
-                case 54 :
-                    // ATL_ANTLR3.g:80:1480: 'mod'
+                case 55 :
+                    // ATL_ANTLR3.g:80:1504: 'mod'
                     {
-                    match(input,95,FOLLOW_95_in_identifierOrKeyword397); if (failed) return ret2;
+                    match(input,96,FOLLOW_96_in_identifierOrKeyword402); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "mod";
                     }
 
                     }
                     break;
-                case 55 :
-                    // ATL_ANTLR3.g:80:1502: 'and'
+                case 56 :
+                    // ATL_ANTLR3.g:80:1526: 'and'
                     {
-                    match(input,96,FOLLOW_96_in_identifierOrKeyword402); if (failed) return ret2;
+                    match(input,97,FOLLOW_97_in_identifierOrKeyword407); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "and";
                     }
 
                     }
                     break;
-                case 56 :
-                    // ATL_ANTLR3.g:80:1524: 'or'
+                case 57 :
+                    // ATL_ANTLR3.g:80:1548: 'or'
                     {
-                    match(input,97,FOLLOW_97_in_identifierOrKeyword407); if (failed) return ret2;
+                    match(input,98,FOLLOW_98_in_identifierOrKeyword412); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "or";
                     }
 
                     }
                     break;
-                case 57 :
-                    // ATL_ANTLR3.g:80:1544: 'xor'
+                case 58 :
+                    // ATL_ANTLR3.g:80:1568: 'xor'
                     {
-                    match(input,98,FOLLOW_98_in_identifierOrKeyword412); if (failed) return ret2;
+                    match(input,99,FOLLOW_99_in_identifierOrKeyword417); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "xor";
                     }
 
                     }
                     break;
-                case 58 :
-                    // ATL_ANTLR3.g:80:1566: 'implies'
+                case 59 :
+                    // ATL_ANTLR3.g:80:1590: 'implies'
                     {
-                    match(input,99,FOLLOW_99_in_identifierOrKeyword417); if (failed) return ret2;
+                    match(input,100,FOLLOW_100_in_identifierOrKeyword422); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ret = "implies";
                     }
@@ -1125,7 +1140,7 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:88:4: ast= STRING
             {
             ast=(Token)input.LT(1);
-            match(input,STRING,FOLLOW_STRING_in_stringSymbol452); if (failed) return ret2;
+            match(input,STRING,FOLLOW_STRING_in_stringSymbol457); if (failed) return ret2;
             if ( backtracking==0 ) {
               ret = ei.unescapeString(ast.getText(), 1); ei.setToken((Object)ast);
             }
@@ -1162,7 +1177,7 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:96:4: ast= INT
             {
             ast=(Token)input.LT(1);
-            match(input,INT,FOLLOW_INT_in_integerSymbol486); if (failed) return ret2;
+            match(input,INT,FOLLOW_INT_in_integerSymbol491); if (failed) return ret2;
             if ( backtracking==0 ) {
               ret = Integer.valueOf(ast.getText()); ei.setToken((Object)ast);
             }
@@ -1199,7 +1214,7 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:104:4: ast= FLOAT
             {
             ast=(Token)input.LT(1);
-            match(input,FLOAT,FOLLOW_FLOAT_in_floatSymbol520); if (failed) return ret2;
+            match(input,FLOAT,FOLLOW_FLOAT_in_floatSymbol525); if (failed) return ret2;
             if ( backtracking==0 ) {
               ret = Double.valueOf(ast.getText()); ei.setToken((Object)ast);
             }
@@ -1268,7 +1283,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 case 1 :
                     // ATL_ANTLR3.g:112:6: ret= module
                     {
-                    pushFollow(FOLLOW_module_in_unit556);
+                    pushFollow(FOLLOW_module_in_unit561);
                     ret=module();
                     _fsp--;
                     if (failed) return ret2;
@@ -1278,7 +1293,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 case 2 :
                     // ATL_ANTLR3.g:112:18: ret= library
                     {
-                    pushFollow(FOLLOW_library_in_unit561);
+                    pushFollow(FOLLOW_library_in_unit566);
                     ret=library();
                     _fsp--;
                     if (failed) return ret2;
@@ -1288,7 +1303,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 case 3 :
                     // ATL_ANTLR3.g:112:31: ret= query
                     {
-                    pushFollow(FOLLOW_query_in_unit566);
+                    pushFollow(FOLLOW_query_in_unit571);
                     ret=query();
                     _fsp--;
                     if (failed) return ret2;
@@ -1338,23 +1353,23 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:121:4: ( 'module' temp= identifier SEMI 'create' ( (temp= oclModel ( ( ( COMA ) temp= oclModel ) )* ) ) ( ( 'refining' ) | ( 'from' ) ) ( (temp= oclModel ( ( ( COMA ) temp= oclModel ) )* ) ) SEMI ( ( ( (temp= libraryRef ( (temp= libraryRef ) )* ) )? ( (temp= moduleElement ( (temp= moduleElement ) )* ) )? ) ) )
             // ATL_ANTLR3.g:121:5: 'module' temp= identifier SEMI 'create' ( (temp= oclModel ( ( ( COMA ) temp= oclModel ) )* ) ) ( ( 'refining' ) | ( 'from' ) ) ( (temp= oclModel ( ( ( COMA ) temp= oclModel ) )* ) ) SEMI ( ( ( (temp= libraryRef ( (temp= libraryRef ) )* ) )? ( (temp= moduleElement ( (temp= moduleElement ) )* ) )? ) )
             {
-            match(input,43,FOLLOW_43_in_module599); if (failed) return ret2;
-            pushFollow(FOLLOW_identifier_in_module603);
+            match(input,43,FOLLOW_43_in_module604); if (failed) return ret2;
+            pushFollow(FOLLOW_identifier_in_module608);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "name", temp);
             }
-            match(input,SEMI,FOLLOW_SEMI_in_module607); if (failed) return ret2;
-            match(input,44,FOLLOW_44_in_module609); if (failed) return ret2;
+            match(input,SEMI,FOLLOW_SEMI_in_module612); if (failed) return ret2;
+            match(input,44,FOLLOW_44_in_module614); if (failed) return ret2;
             // ATL_ANTLR3.g:121:73: ( (temp= oclModel ( ( ( COMA ) temp= oclModel ) )* ) )
             // ATL_ANTLR3.g:121:74: (temp= oclModel ( ( ( COMA ) temp= oclModel ) )* )
             {
             // ATL_ANTLR3.g:121:74: (temp= oclModel ( ( ( COMA ) temp= oclModel ) )* )
             // ATL_ANTLR3.g:121:75: temp= oclModel ( ( ( COMA ) temp= oclModel ) )*
             {
-            pushFollow(FOLLOW_oclModel_in_module615);
+            pushFollow(FOLLOW_oclModel_in_module620);
             temp=oclModel();
             _fsp--;
             if (failed) return ret2;
@@ -1382,11 +1397,11 @@ public class ATL_ANTLR3Parser extends Parser {
             	    // ATL_ANTLR3.g:121:125: ( COMA )
             	    // ATL_ANTLR3.g:121:126: COMA
             	    {
-            	    match(input,COMA,FOLLOW_COMA_in_module622); if (failed) return ret2;
+            	    match(input,COMA,FOLLOW_COMA_in_module627); if (failed) return ret2;
 
             	    }
 
-            	    pushFollow(FOLLOW_oclModel_in_module627);
+            	    pushFollow(FOLLOW_oclModel_in_module632);
             	    temp=oclModel();
             	    _fsp--;
             	    if (failed) return ret2;
@@ -1435,7 +1450,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:121:186: ( 'refining' )
                     // ATL_ANTLR3.g:121:187: 'refining'
                     {
-                    match(input,45,FOLLOW_45_in_module638); if (failed) return ret2;
+                    match(input,45,FOLLOW_45_in_module643); if (failed) return ret2;
 
                     }
 
@@ -1451,7 +1466,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:121:253: ( 'from' )
                     // ATL_ANTLR3.g:121:254: 'from'
                     {
-                    match(input,46,FOLLOW_46_in_module645); if (failed) return ret2;
+                    match(input,46,FOLLOW_46_in_module650); if (failed) return ret2;
 
                     }
 
@@ -1470,7 +1485,7 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:121:318: (temp= oclModel ( ( ( COMA ) temp= oclModel ) )* )
             // ATL_ANTLR3.g:121:319: temp= oclModel ( ( ( COMA ) temp= oclModel ) )*
             {
-            pushFollow(FOLLOW_oclModel_in_module655);
+            pushFollow(FOLLOW_oclModel_in_module660);
             temp=oclModel();
             _fsp--;
             if (failed) return ret2;
@@ -1498,11 +1513,11 @@ public class ATL_ANTLR3Parser extends Parser {
             	    // ATL_ANTLR3.g:121:368: ( COMA )
             	    // ATL_ANTLR3.g:121:369: COMA
             	    {
-            	    match(input,COMA,FOLLOW_COMA_in_module662); if (failed) return ret2;
+            	    match(input,COMA,FOLLOW_COMA_in_module667); if (failed) return ret2;
 
             	    }
 
-            	    pushFollow(FOLLOW_oclModel_in_module667);
+            	    pushFollow(FOLLOW_oclModel_in_module672);
             	    temp=oclModel();
             	    _fsp--;
             	    if (failed) return ret2;
@@ -1527,7 +1542,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,SEMI,FOLLOW_SEMI_in_module676); if (failed) return ret2;
+            match(input,SEMI,FOLLOW_SEMI_in_module681); if (failed) return ret2;
             // ATL_ANTLR3.g:121:432: ( ( ( (temp= libraryRef ( (temp= libraryRef ) )* ) )? ( (temp= moduleElement ( (temp= moduleElement ) )* ) )? ) )
             // ATL_ANTLR3.g:121:433: ( ( (temp= libraryRef ( (temp= libraryRef ) )* ) )? ( (temp= moduleElement ( (temp= moduleElement ) )* ) )? )
             {
@@ -1548,7 +1563,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:121:435: (temp= libraryRef ( (temp= libraryRef ) )* )
                     // ATL_ANTLR3.g:121:436: temp= libraryRef ( (temp= libraryRef ) )*
                     {
-                    pushFollow(FOLLOW_libraryRef_in_module684);
+                    pushFollow(FOLLOW_libraryRef_in_module689);
                     temp=libraryRef();
                     _fsp--;
                     if (failed) return ret2;
@@ -1573,7 +1588,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    // ATL_ANTLR3.g:121:487: (temp= libraryRef )
                     	    // ATL_ANTLR3.g:121:488: temp= libraryRef
                     	    {
-                    	    pushFollow(FOLLOW_libraryRef_in_module692);
+                    	    pushFollow(FOLLOW_libraryRef_in_module697);
                     	    temp=libraryRef();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -1615,7 +1630,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:121:545: (temp= moduleElement ( (temp= moduleElement ) )* )
                     // ATL_ANTLR3.g:121:546: temp= moduleElement ( (temp= moduleElement ) )*
                     {
-                    pushFollow(FOLLOW_moduleElement_in_module706);
+                    pushFollow(FOLLOW_moduleElement_in_module711);
                     temp=moduleElement();
                     _fsp--;
                     if (failed) return ret2;
@@ -1640,7 +1655,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    // ATL_ANTLR3.g:121:599: (temp= moduleElement )
                     	    // ATL_ANTLR3.g:121:600: temp= moduleElement
                     	    {
-                    	    pushFollow(FOLLOW_moduleElement_in_module714);
+                    	    pushFollow(FOLLOW_moduleElement_in_module719);
                     	    temp=moduleElement();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -1716,15 +1731,15 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:132:4: ( 'library' temp= identifier SEMI ( ( ( (temp= libraryRef ( (temp= libraryRef ) )* ) )? ( (temp= helper ( (temp= helper ) )* ) )? ) ) )
             // ATL_ANTLR3.g:132:5: 'library' temp= identifier SEMI ( ( ( (temp= libraryRef ( (temp= libraryRef ) )* ) )? ( (temp= helper ( (temp= helper ) )* ) )? ) )
             {
-            match(input,47,FOLLOW_47_in_library756); if (failed) return ret2;
-            pushFollow(FOLLOW_identifier_in_library760);
+            match(input,47,FOLLOW_47_in_library761); if (failed) return ret2;
+            pushFollow(FOLLOW_identifier_in_library765);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "name", temp);
             }
-            match(input,SEMI,FOLLOW_SEMI_in_library764); if (failed) return ret2;
+            match(input,SEMI,FOLLOW_SEMI_in_library769); if (failed) return ret2;
             // ATL_ANTLR3.g:132:65: ( ( ( (temp= libraryRef ( (temp= libraryRef ) )* ) )? ( (temp= helper ( (temp= helper ) )* ) )? ) )
             // ATL_ANTLR3.g:132:66: ( ( (temp= libraryRef ( (temp= libraryRef ) )* ) )? ( (temp= helper ( (temp= helper ) )* ) )? )
             {
@@ -1745,7 +1760,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:132:68: (temp= libraryRef ( (temp= libraryRef ) )* )
                     // ATL_ANTLR3.g:132:69: temp= libraryRef ( (temp= libraryRef ) )*
                     {
-                    pushFollow(FOLLOW_libraryRef_in_library772);
+                    pushFollow(FOLLOW_libraryRef_in_library777);
                     temp=libraryRef();
                     _fsp--;
                     if (failed) return ret2;
@@ -1770,7 +1785,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    // ATL_ANTLR3.g:132:120: (temp= libraryRef )
                     	    // ATL_ANTLR3.g:132:121: temp= libraryRef
                     	    {
-                    	    pushFollow(FOLLOW_libraryRef_in_library780);
+                    	    pushFollow(FOLLOW_libraryRef_in_library785);
                     	    temp=libraryRef();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -1812,7 +1827,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:132:178: (temp= helper ( (temp= helper ) )* )
                     // ATL_ANTLR3.g:132:179: temp= helper ( (temp= helper ) )*
                     {
-                    pushFollow(FOLLOW_helper_in_library794);
+                    pushFollow(FOLLOW_helper_in_library799);
                     temp=helper();
                     _fsp--;
                     if (failed) return ret2;
@@ -1837,7 +1852,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    // ATL_ANTLR3.g:132:224: (temp= helper )
                     	    // ATL_ANTLR3.g:132:225: temp= helper
                     	    {
-                    	    pushFollow(FOLLOW_helper_in_library802);
+                    	    pushFollow(FOLLOW_helper_in_library807);
                     	    temp=helper();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -1913,23 +1928,23 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:143:4: ( 'query' temp= identifier EQ temp= oclExpression SEMI ( ( ( (temp= libraryRef ( (temp= libraryRef ) )* ) )? ( (temp= helper ( (temp= helper ) )* ) )? ) ) )
             // ATL_ANTLR3.g:143:5: 'query' temp= identifier EQ temp= oclExpression SEMI ( ( ( (temp= libraryRef ( (temp= libraryRef ) )* ) )? ( (temp= helper ( (temp= helper ) )* ) )? ) )
             {
-            match(input,48,FOLLOW_48_in_query844); if (failed) return ret2;
-            pushFollow(FOLLOW_identifier_in_query848);
+            match(input,48,FOLLOW_48_in_query849); if (failed) return ret2;
+            pushFollow(FOLLOW_identifier_in_query853);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "name", temp);
             }
-            match(input,EQ,FOLLOW_EQ_in_query852); if (failed) return ret2;
-            pushFollow(FOLLOW_oclExpression_in_query856);
+            match(input,EQ,FOLLOW_EQ_in_query857); if (failed) return ret2;
+            pushFollow(FOLLOW_oclExpression_in_query861);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "body", temp);
             }
-            match(input,SEMI,FOLLOW_SEMI_in_query860); if (failed) return ret2;
+            match(input,SEMI,FOLLOW_SEMI_in_query865); if (failed) return ret2;
             // ATL_ANTLR3.g:143:114: ( ( ( (temp= libraryRef ( (temp= libraryRef ) )* ) )? ( (temp= helper ( (temp= helper ) )* ) )? ) )
             // ATL_ANTLR3.g:143:115: ( ( (temp= libraryRef ( (temp= libraryRef ) )* ) )? ( (temp= helper ( (temp= helper ) )* ) )? )
             {
@@ -1950,7 +1965,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:143:117: (temp= libraryRef ( (temp= libraryRef ) )* )
                     // ATL_ANTLR3.g:143:118: temp= libraryRef ( (temp= libraryRef ) )*
                     {
-                    pushFollow(FOLLOW_libraryRef_in_query868);
+                    pushFollow(FOLLOW_libraryRef_in_query873);
                     temp=libraryRef();
                     _fsp--;
                     if (failed) return ret2;
@@ -1975,7 +1990,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    // ATL_ANTLR3.g:143:169: (temp= libraryRef )
                     	    // ATL_ANTLR3.g:143:170: temp= libraryRef
                     	    {
-                    	    pushFollow(FOLLOW_libraryRef_in_query876);
+                    	    pushFollow(FOLLOW_libraryRef_in_query881);
                     	    temp=libraryRef();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -2017,7 +2032,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:143:227: (temp= helper ( (temp= helper ) )* )
                     // ATL_ANTLR3.g:143:228: temp= helper ( (temp= helper ) )*
                     {
-                    pushFollow(FOLLOW_helper_in_query890);
+                    pushFollow(FOLLOW_helper_in_query895);
                     temp=helper();
                     _fsp--;
                     if (failed) return ret2;
@@ -2042,7 +2057,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    // ATL_ANTLR3.g:143:273: (temp= helper )
                     	    // ATL_ANTLR3.g:143:274: temp= helper
                     	    {
-                    	    pushFollow(FOLLOW_helper_in_query898);
+                    	    pushFollow(FOLLOW_helper_in_query903);
                     	    temp=helper();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -2118,15 +2133,15 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:154:4: ( 'uses' temp= identifier SEMI )
             // ATL_ANTLR3.g:154:5: 'uses' temp= identifier SEMI
             {
-            match(input,49,FOLLOW_49_in_libraryRef940); if (failed) return ret2;
-            pushFollow(FOLLOW_identifier_in_libraryRef944);
+            match(input,49,FOLLOW_49_in_libraryRef945); if (failed) return ret2;
+            pushFollow(FOLLOW_identifier_in_libraryRef949);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "name", temp);
             }
-            match(input,SEMI,FOLLOW_SEMI_in_libraryRef948); if (failed) return ret2;
+            match(input,SEMI,FOLLOW_SEMI_in_libraryRef953); if (failed) return ret2;
 
             }
 
@@ -2189,7 +2204,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 case 1 :
                     // ATL_ANTLR3.g:165:6: ret= helper
                     {
-                    pushFollow(FOLLOW_helper_in_moduleElement983);
+                    pushFollow(FOLLOW_helper_in_moduleElement988);
                     ret=helper();
                     _fsp--;
                     if (failed) return ret2;
@@ -2199,7 +2214,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 case 2 :
                     // ATL_ANTLR3.g:165:18: ret= rule
                     {
-                    pushFollow(FOLLOW_rule_in_moduleElement988);
+                    pushFollow(FOLLOW_rule_in_moduleElement993);
                     ret=rule();
                     _fsp--;
                     if (failed) return ret2;
@@ -2249,15 +2264,15 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:174:4: ( 'helper' temp= oclFeatureDefinition SEMI )
             // ATL_ANTLR3.g:174:5: 'helper' temp= oclFeatureDefinition SEMI
             {
-            match(input,50,FOLLOW_50_in_helper1021); if (failed) return ret2;
-            pushFollow(FOLLOW_oclFeatureDefinition_in_helper1025);
+            match(input,50,FOLLOW_50_in_helper1026); if (failed) return ret2;
+            pushFollow(FOLLOW_oclFeatureDefinition_in_helper1030);
             temp=oclFeatureDefinition();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "definition", temp);
             }
-            match(input,SEMI,FOLLOW_SEMI_in_helper1029); if (failed) return ret2;
+            match(input,SEMI,FOLLOW_SEMI_in_helper1034); if (failed) return ret2;
 
             }
 
@@ -2324,7 +2339,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:185:6: (temp= oclContextDefinition )
                     // ATL_ANTLR3.g:185:7: temp= oclContextDefinition
                     {
-                    pushFollow(FOLLOW_oclContextDefinition_in_oclFeatureDefinition1065);
+                    pushFollow(FOLLOW_oclContextDefinition_in_oclFeatureDefinition1070);
                     temp=oclContextDefinition();
                     _fsp--;
                     if (failed) return ret2;
@@ -2355,9 +2370,9 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,51,FOLLOW_51_in_oclFeatureDefinition1079); if (failed) return ret2;
-            match(input,COLON,FOLLOW_COLON_in_oclFeatureDefinition1081); if (failed) return ret2;
-            pushFollow(FOLLOW_oclFeature_in_oclFeatureDefinition1085);
+            match(input,51,FOLLOW_51_in_oclFeatureDefinition1084); if (failed) return ret2;
+            match(input,COLON,FOLLOW_COLON_in_oclFeatureDefinition1086); if (failed) return ret2;
+            pushFollow(FOLLOW_oclFeature_in_oclFeatureDefinition1090);
             temp=oclFeature();
             _fsp--;
             if (failed) return ret2;
@@ -2406,8 +2421,8 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:196:4: ( 'context' temp= oclType )
             // ATL_ANTLR3.g:196:5: 'context' temp= oclType
             {
-            match(input,52,FOLLOW_52_in_oclContextDefinition1119); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_oclContextDefinition1123);
+            match(input,52,FOLLOW_52_in_oclContextDefinition1124); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_oclContextDefinition1128);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
@@ -2487,7 +2502,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 case 1 :
                     // ATL_ANTLR3.g:207:6: ret= operation
                     {
-                    pushFollow(FOLLOW_operation_in_oclFeature1160);
+                    pushFollow(FOLLOW_operation_in_oclFeature1165);
                     ret=operation();
                     _fsp--;
                     if (failed) return ret2;
@@ -2497,7 +2512,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 case 2 :
                     // ATL_ANTLR3.g:207:21: ret= attribute
                     {
-                    pushFollow(FOLLOW_attribute_in_oclFeature1165);
+                    pushFollow(FOLLOW_attribute_in_oclFeature1170);
                     ret=attribute();
                     _fsp--;
                     if (failed) return ret2;
@@ -2547,14 +2562,14 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:216:4: (temp= identifier LPAREN ( (temp= parameter ( ( ( COMA ) temp= parameter ) )* ) )? RPAREN COLON temp= oclType EQ ( (temp= oclExpression ) ) )
             // ATL_ANTLR3.g:216:5: temp= identifier LPAREN ( (temp= parameter ( ( ( COMA ) temp= parameter ) )* ) )? RPAREN COLON temp= oclType EQ ( (temp= oclExpression ) )
             {
-            pushFollow(FOLLOW_identifier_in_operation1200);
+            pushFollow(FOLLOW_identifier_in_operation1205);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "name", temp);
             }
-            match(input,LPAREN,FOLLOW_LPAREN_in_operation1204); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_operation1209); if (failed) return ret2;
             // ATL_ANTLR3.g:216:57: ( (temp= parameter ( ( ( COMA ) temp= parameter ) )* ) )?
             int alt22=2;
             int LA22_0 = input.LA(1);
@@ -2569,7 +2584,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:216:58: (temp= parameter ( ( ( COMA ) temp= parameter ) )* )
                     // ATL_ANTLR3.g:216:59: temp= parameter ( ( ( COMA ) temp= parameter ) )*
                     {
-                    pushFollow(FOLLOW_parameter_in_operation1210);
+                    pushFollow(FOLLOW_parameter_in_operation1215);
                     temp=parameter();
                     _fsp--;
                     if (failed) return ret2;
@@ -2597,11 +2612,11 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    // ATL_ANTLR3.g:216:111: ( COMA )
                     	    // ATL_ANTLR3.g:216:112: COMA
                     	    {
-                    	    match(input,COMA,FOLLOW_COMA_in_operation1217); if (failed) return ret2;
+                    	    match(input,COMA,FOLLOW_COMA_in_operation1222); if (failed) return ret2;
 
                     	    }
 
-                    	    pushFollow(FOLLOW_parameter_in_operation1222);
+                    	    pushFollow(FOLLOW_parameter_in_operation1227);
                     	    temp=parameter();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -2629,23 +2644,23 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_operation1232); if (failed) return ret2;
-            match(input,COLON,FOLLOW_COLON_in_operation1234); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_operation1238);
+            match(input,RPAREN,FOLLOW_RPAREN_in_operation1237); if (failed) return ret2;
+            match(input,COLON,FOLLOW_COLON_in_operation1239); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_operation1243);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "returnType", temp);
             }
-            match(input,EQ,FOLLOW_EQ_in_operation1242); if (failed) return ret2;
+            match(input,EQ,FOLLOW_EQ_in_operation1247); if (failed) return ret2;
             // ATL_ANTLR3.g:216:238: ( (temp= oclExpression ) )
             // ATL_ANTLR3.g:216:239: (temp= oclExpression )
             {
             // ATL_ANTLR3.g:216:239: (temp= oclExpression )
             // ATL_ANTLR3.g:216:240: temp= oclExpression
             {
-            pushFollow(FOLLOW_oclExpression_in_operation1248);
+            pushFollow(FOLLOW_oclExpression_in_operation1253);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
@@ -2700,15 +2715,15 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:227:4: (temp= identifier COLON temp= oclType )
             // ATL_ANTLR3.g:227:5: temp= identifier COLON temp= oclType
             {
-            pushFollow(FOLLOW_identifier_in_parameter1286);
+            pushFollow(FOLLOW_identifier_in_parameter1291);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "varName", temp);
             }
-            match(input,COLON,FOLLOW_COLON_in_parameter1290); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_parameter1294);
+            match(input,COLON,FOLLOW_COLON_in_parameter1295); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_parameter1299);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
@@ -2757,29 +2772,29 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:238:4: (temp= identifier COLON temp= oclType EQ ( (temp= oclExpression ) ) )
             // ATL_ANTLR3.g:238:5: temp= identifier COLON temp= oclType EQ ( (temp= oclExpression ) )
             {
-            pushFollow(FOLLOW_identifier_in_attribute1330);
+            pushFollow(FOLLOW_identifier_in_attribute1335);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "name", temp);
             }
-            match(input,COLON,FOLLOW_COLON_in_attribute1334); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_attribute1338);
+            match(input,COLON,FOLLOW_COLON_in_attribute1339); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_attribute1343);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "type", temp);
             }
-            match(input,EQ,FOLLOW_EQ_in_attribute1342); if (failed) return ret2;
+            match(input,EQ,FOLLOW_EQ_in_attribute1347); if (failed) return ret2;
             // ATL_ANTLR3.g:238:101: ( (temp= oclExpression ) )
             // ATL_ANTLR3.g:238:102: (temp= oclExpression )
             {
             // ATL_ANTLR3.g:238:102: (temp= oclExpression )
             // ATL_ANTLR3.g:238:103: temp= oclExpression
             {
-            pushFollow(FOLLOW_oclExpression_in_attribute1348);
+            pushFollow(FOLLOW_oclExpression_in_attribute1353);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
@@ -2893,7 +2908,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 case 1 :
                     // ATL_ANTLR3.g:249:6: ret= calledRule
                     {
-                    pushFollow(FOLLOW_calledRule_in_rule1387);
+                    pushFollow(FOLLOW_calledRule_in_rule1392);
                     ret=calledRule();
                     _fsp--;
                     if (failed) return ret2;
@@ -2903,7 +2918,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 case 2 :
                     // ATL_ANTLR3.g:249:22: ret= matchedRule
                     {
-                    pushFollow(FOLLOW_matchedRule_in_rule1392);
+                    pushFollow(FOLLOW_matchedRule_in_rule1397);
                     ret=matchedRule();
                     _fsp--;
                     if (failed) return ret2;
@@ -2973,7 +2988,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 case 1 :
                     // ATL_ANTLR3.g:258:6: ret= lazyMatchedRule
                     {
-                    pushFollow(FOLLOW_lazyMatchedRule_in_matchedRule1428);
+                    pushFollow(FOLLOW_lazyMatchedRule_in_matchedRule1433);
                     ret=lazyMatchedRule();
                     _fsp--;
                     if (failed) return ret2;
@@ -2983,7 +2998,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 case 2 :
                     // ATL_ANTLR3.g:258:27: ret= matchedRule_abstractContents
                     {
-                    pushFollow(FOLLOW_matchedRule_abstractContents_in_matchedRule1433);
+                    pushFollow(FOLLOW_matchedRule_abstractContents_in_matchedRule1438);
                     ret=matchedRule_abstractContents();
                     _fsp--;
                     if (failed) return ret2;
@@ -3057,7 +3072,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:267:6: ( 'unique' )
                     // ATL_ANTLR3.g:267:7: 'unique'
                     {
-                    match(input,58,FOLLOW_58_in_lazyMatchedRule1468); if (failed) return ret2;
+                    match(input,58,FOLLOW_58_in_lazyMatchedRule1473); if (failed) return ret2;
 
                     }
 
@@ -3084,7 +3099,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,59,FOLLOW_59_in_lazyMatchedRule1480); if (failed) return ret2;
+            match(input,59,FOLLOW_59_in_lazyMatchedRule1485); if (failed) return ret2;
             // ATL_ANTLR3.g:267:132: ( ( 'abstract' ) | () )
             int alt26=2;
             int LA26_0 = input.LA(1);
@@ -3109,7 +3124,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:267:133: ( 'abstract' )
                     // ATL_ANTLR3.g:267:134: 'abstract'
                     {
-                    match(input,54,FOLLOW_54_in_lazyMatchedRule1484); if (failed) return ret2;
+                    match(input,54,FOLLOW_54_in_lazyMatchedRule1489); if (failed) return ret2;
 
                     }
 
@@ -3160,7 +3175,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:267:259: ( 'refining' )
                     // ATL_ANTLR3.g:267:260: 'refining'
                     {
-                    match(input,45,FOLLOW_45_in_lazyMatchedRule1498); if (failed) return ret2;
+                    match(input,45,FOLLOW_45_in_lazyMatchedRule1503); if (failed) return ret2;
 
                     }
 
@@ -3187,8 +3202,8 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,55,FOLLOW_55_in_lazyMatchedRule1510); if (failed) return ret2;
-            pushFollow(FOLLOW_identifier_in_lazyMatchedRule1514);
+            match(input,55,FOLLOW_55_in_lazyMatchedRule1515); if (failed) return ret2;
+            pushFollow(FOLLOW_identifier_in_lazyMatchedRule1519);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
@@ -3219,8 +3234,8 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:267:437: ( 'extends' temp= identifier )
                     // ATL_ANTLR3.g:267:438: 'extends' temp= identifier
                     {
-                    match(input,56,FOLLOW_56_in_lazyMatchedRule1520); if (failed) return ret2;
-                    pushFollow(FOLLOW_identifier_in_lazyMatchedRule1524);
+                    match(input,56,FOLLOW_56_in_lazyMatchedRule1525); if (failed) return ret2;
+                    pushFollow(FOLLOW_identifier_in_lazyMatchedRule1529);
                     temp=identifier();
                     _fsp--;
                     if (failed) return ret2;
@@ -3251,14 +3266,14 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,LCURLY,FOLLOW_LCURLY_in_lazyMatchedRule1538); if (failed) return ret2;
+            match(input,LCURLY,FOLLOW_LCURLY_in_lazyMatchedRule1543); if (failed) return ret2;
             // ATL_ANTLR3.g:267:576: ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) )
             // ATL_ANTLR3.g:267:577: (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) )
             {
             // ATL_ANTLR3.g:267:577: (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) )
             // ATL_ANTLR3.g:267:578: temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () )
             {
-            pushFollow(FOLLOW_inPattern_in_lazyMatchedRule1544);
+            pushFollow(FOLLOW_inPattern_in_lazyMatchedRule1549);
             temp=inPattern();
             _fsp--;
             if (failed) return ret2;
@@ -3272,7 +3287,7 @@ public class ATL_ANTLR3Parser extends Parser {
             if ( (LA31_0==57) ) {
                 alt31=1;
             }
-            else if ( (LA31_0==RCURLY||LA31_0==63||LA31_0==67) ) {
+            else if ( (LA31_0==RCURLY||LA31_0==63||LA31_0==68) ) {
                 alt31=2;
             }
             else {
@@ -3289,8 +3304,8 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:267:628: ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY )
                     // ATL_ANTLR3.g:267:629: 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY
                     {
-                    match(input,57,FOLLOW_57_in_lazyMatchedRule1550); if (failed) return ret2;
-                    match(input,LCURLY,FOLLOW_LCURLY_in_lazyMatchedRule1552); if (failed) return ret2;
+                    match(input,57,FOLLOW_57_in_lazyMatchedRule1555); if (failed) return ret2;
+                    match(input,LCURLY,FOLLOW_LCURLY_in_lazyMatchedRule1557); if (failed) return ret2;
                     // ATL_ANTLR3.g:267:644: ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) )
                     // ATL_ANTLR3.g:267:645: ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? )
                     {
@@ -3311,7 +3326,7 @@ public class ATL_ANTLR3Parser extends Parser {
                             // ATL_ANTLR3.g:267:647: (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* )
                             // ATL_ANTLR3.g:267:648: temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )*
                             {
-                            pushFollow(FOLLOW_ruleVariableDeclaration_in_lazyMatchedRule1560);
+                            pushFollow(FOLLOW_ruleVariableDeclaration_in_lazyMatchedRule1565);
                             temp=ruleVariableDeclaration();
                             _fsp--;
                             if (failed) return ret2;
@@ -3336,7 +3351,7 @@ public class ATL_ANTLR3Parser extends Parser {
                             	    // ATL_ANTLR3.g:267:712: (temp= ruleVariableDeclaration )
                             	    // ATL_ANTLR3.g:267:713: temp= ruleVariableDeclaration
                             	    {
-                            	    pushFollow(FOLLOW_ruleVariableDeclaration_in_lazyMatchedRule1568);
+                            	    pushFollow(FOLLOW_ruleVariableDeclaration_in_lazyMatchedRule1573);
                             	    temp=ruleVariableDeclaration();
                             	    _fsp--;
                             	    if (failed) return ret2;
@@ -3370,7 +3385,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
                     }
 
-                    match(input,RCURLY,FOLLOW_RCURLY_in_lazyMatchedRule1580); if (failed) return ret2;
+                    match(input,RCURLY,FOLLOW_RCURLY_in_lazyMatchedRule1585); if (failed) return ret2;
 
                     }
 
@@ -3402,7 +3417,7 @@ public class ATL_ANTLR3Parser extends Parser {
             if ( (LA32_0==63) ) {
                 alt32=1;
             }
-            else if ( (LA32_0==RCURLY||LA32_0==67) ) {
+            else if ( (LA32_0==RCURLY||LA32_0==68) ) {
                 alt32=2;
             }
             else {
@@ -3419,7 +3434,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:267:804: (temp= outPattern )
                     // ATL_ANTLR3.g:267:805: temp= outPattern
                     {
-                    pushFollow(FOLLOW_outPattern_in_lazyMatchedRule1596);
+                    pushFollow(FOLLOW_outPattern_in_lazyMatchedRule1601);
                     temp=outPattern();
                     _fsp--;
                     if (failed) return ret2;
@@ -3454,7 +3469,7 @@ public class ATL_ANTLR3Parser extends Parser {
             int alt33=2;
             int LA33_0 = input.LA(1);
 
-            if ( (LA33_0==67) ) {
+            if ( (LA33_0==68) ) {
                 alt33=1;
             }
             else if ( (LA33_0==RCURLY) ) {
@@ -3474,7 +3489,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:267:869: (temp= actionBlock )
                     // ATL_ANTLR3.g:267:870: temp= actionBlock
                     {
-                    pushFollow(FOLLOW_actionBlock_in_lazyMatchedRule1614);
+                    pushFollow(FOLLOW_actionBlock_in_lazyMatchedRule1619);
                     temp=actionBlock();
                     _fsp--;
                     if (failed) return ret2;
@@ -3511,7 +3526,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RCURLY,FOLLOW_RCURLY_in_lazyMatchedRule1630); if (failed) return ret2;
+            match(input,RCURLY,FOLLOW_RCURLY_in_lazyMatchedRule1635); if (failed) return ret2;
 
             }
 
@@ -3554,30 +3569,30 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:278:4: (temp= identifier COLON temp= oclType EQ temp= oclExpression SEMI )
             // ATL_ANTLR3.g:278:5: temp= identifier COLON temp= oclType EQ temp= oclExpression SEMI
             {
-            pushFollow(FOLLOW_identifier_in_ruleVariableDeclaration1664);
+            pushFollow(FOLLOW_identifier_in_ruleVariableDeclaration1669);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "varName", temp);
             }
-            match(input,COLON,FOLLOW_COLON_in_ruleVariableDeclaration1668); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_ruleVariableDeclaration1672);
+            match(input,COLON,FOLLOW_COLON_in_ruleVariableDeclaration1673); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_ruleVariableDeclaration1677);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "type", temp);
             }
-            match(input,EQ,FOLLOW_EQ_in_ruleVariableDeclaration1676); if (failed) return ret2;
-            pushFollow(FOLLOW_oclExpression_in_ruleVariableDeclaration1680);
+            match(input,EQ,FOLLOW_EQ_in_ruleVariableDeclaration1681); if (failed) return ret2;
+            pushFollow(FOLLOW_oclExpression_in_ruleVariableDeclaration1685);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "initExpression", temp);
             }
-            match(input,SEMI,FOLLOW_SEMI_in_ruleVariableDeclaration1684); if (failed) return ret2;
+            match(input,SEMI,FOLLOW_SEMI_in_ruleVariableDeclaration1689); if (failed) return ret2;
 
             }
 
@@ -3644,7 +3659,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:289:6: ( 'entrypoint' )
                     // ATL_ANTLR3.g:289:7: 'entrypoint'
                     {
-                    match(input,60,FOLLOW_60_in_calledRule1718); if (failed) return ret2;
+                    match(input,60,FOLLOW_60_in_calledRule1723); if (failed) return ret2;
 
                     }
 
@@ -3695,7 +3710,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:289:138: ( 'endpoint' )
                     // ATL_ANTLR3.g:289:139: 'endpoint'
                     {
-                    match(input,61,FOLLOW_61_in_calledRule1732); if (failed) return ret2;
+                    match(input,61,FOLLOW_61_in_calledRule1737); if (failed) return ret2;
 
                     }
 
@@ -3722,15 +3737,15 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,55,FOLLOW_55_in_calledRule1744); if (failed) return ret2;
-            pushFollow(FOLLOW_identifier_in_calledRule1748);
+            match(input,55,FOLLOW_55_in_calledRule1749); if (failed) return ret2;
+            pushFollow(FOLLOW_identifier_in_calledRule1753);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "name", temp);
             }
-            match(input,LPAREN,FOLLOW_LPAREN_in_calledRule1752); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_calledRule1757); if (failed) return ret2;
             // ATL_ANTLR3.g:289:322: ( (temp= parameter ( ( ( COMA ) temp= parameter ) )* ) )?
             int alt37=2;
             int LA37_0 = input.LA(1);
@@ -3745,7 +3760,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:289:323: (temp= parameter ( ( ( COMA ) temp= parameter ) )* )
                     // ATL_ANTLR3.g:289:324: temp= parameter ( ( ( COMA ) temp= parameter ) )*
                     {
-                    pushFollow(FOLLOW_parameter_in_calledRule1758);
+                    pushFollow(FOLLOW_parameter_in_calledRule1763);
                     temp=parameter();
                     _fsp--;
                     if (failed) return ret2;
@@ -3773,11 +3788,11 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    // ATL_ANTLR3.g:289:376: ( COMA )
                     	    // ATL_ANTLR3.g:289:377: COMA
                     	    {
-                    	    match(input,COMA,FOLLOW_COMA_in_calledRule1765); if (failed) return ret2;
+                    	    match(input,COMA,FOLLOW_COMA_in_calledRule1770); if (failed) return ret2;
 
                     	    }
 
-                    	    pushFollow(FOLLOW_parameter_in_calledRule1770);
+                    	    pushFollow(FOLLOW_parameter_in_calledRule1775);
                     	    temp=parameter();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -3805,8 +3820,8 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_calledRule1780); if (failed) return ret2;
-            match(input,LCURLY,FOLLOW_LCURLY_in_calledRule1782); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_calledRule1785); if (failed) return ret2;
+            match(input,LCURLY,FOLLOW_LCURLY_in_calledRule1787); if (failed) return ret2;
             // ATL_ANTLR3.g:289:453: ( ( ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) )
             // ATL_ANTLR3.g:289:454: ( ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) )
             {
@@ -3820,7 +3835,7 @@ public class ATL_ANTLR3Parser extends Parser {
             if ( (LA40_0==57) ) {
                 alt40=1;
             }
-            else if ( (LA40_0==RCURLY||LA40_0==63||LA40_0==67) ) {
+            else if ( (LA40_0==RCURLY||LA40_0==63||LA40_0==68) ) {
                 alt40=2;
             }
             else {
@@ -3837,8 +3852,8 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:289:456: ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY )
                     // ATL_ANTLR3.g:289:457: 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY
                     {
-                    match(input,57,FOLLOW_57_in_calledRule1788); if (failed) return ret2;
-                    match(input,LCURLY,FOLLOW_LCURLY_in_calledRule1790); if (failed) return ret2;
+                    match(input,57,FOLLOW_57_in_calledRule1793); if (failed) return ret2;
+                    match(input,LCURLY,FOLLOW_LCURLY_in_calledRule1795); if (failed) return ret2;
                     // ATL_ANTLR3.g:289:472: ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) )
                     // ATL_ANTLR3.g:289:473: ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? )
                     {
@@ -3859,7 +3874,7 @@ public class ATL_ANTLR3Parser extends Parser {
                             // ATL_ANTLR3.g:289:475: (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* )
                             // ATL_ANTLR3.g:289:476: temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )*
                             {
-                            pushFollow(FOLLOW_ruleVariableDeclaration_in_calledRule1798);
+                            pushFollow(FOLLOW_ruleVariableDeclaration_in_calledRule1803);
                             temp=ruleVariableDeclaration();
                             _fsp--;
                             if (failed) return ret2;
@@ -3884,7 +3899,7 @@ public class ATL_ANTLR3Parser extends Parser {
                             	    // ATL_ANTLR3.g:289:540: (temp= ruleVariableDeclaration )
                             	    // ATL_ANTLR3.g:289:541: temp= ruleVariableDeclaration
                             	    {
-                            	    pushFollow(FOLLOW_ruleVariableDeclaration_in_calledRule1806);
+                            	    pushFollow(FOLLOW_ruleVariableDeclaration_in_calledRule1811);
                             	    temp=ruleVariableDeclaration();
                             	    _fsp--;
                             	    if (failed) return ret2;
@@ -3918,7 +3933,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
                     }
 
-                    match(input,RCURLY,FOLLOW_RCURLY_in_calledRule1818); if (failed) return ret2;
+                    match(input,RCURLY,FOLLOW_RCURLY_in_calledRule1823); if (failed) return ret2;
 
                     }
 
@@ -3950,7 +3965,7 @@ public class ATL_ANTLR3Parser extends Parser {
             if ( (LA41_0==63) ) {
                 alt41=1;
             }
-            else if ( (LA41_0==RCURLY||LA41_0==67) ) {
+            else if ( (LA41_0==RCURLY||LA41_0==68) ) {
                 alt41=2;
             }
             else {
@@ -3967,7 +3982,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:289:632: (temp= outPattern )
                     // ATL_ANTLR3.g:289:633: temp= outPattern
                     {
-                    pushFollow(FOLLOW_outPattern_in_calledRule1834);
+                    pushFollow(FOLLOW_outPattern_in_calledRule1839);
                     temp=outPattern();
                     _fsp--;
                     if (failed) return ret2;
@@ -4002,7 +4017,7 @@ public class ATL_ANTLR3Parser extends Parser {
             int alt42=2;
             int LA42_0 = input.LA(1);
 
-            if ( (LA42_0==67) ) {
+            if ( (LA42_0==68) ) {
                 alt42=1;
             }
             else if ( (LA42_0==RCURLY) ) {
@@ -4022,7 +4037,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:289:697: (temp= actionBlock )
                     // ATL_ANTLR3.g:289:698: temp= actionBlock
                     {
-                    pushFollow(FOLLOW_actionBlock_in_calledRule1852);
+                    pushFollow(FOLLOW_actionBlock_in_calledRule1857);
                     temp=actionBlock();
                     _fsp--;
                     if (failed) return ret2;
@@ -4059,7 +4074,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RCURLY,FOLLOW_RCURLY_in_calledRule1868); if (failed) return ret2;
+            match(input,RCURLY,FOLLOW_RCURLY_in_calledRule1873); if (failed) return ret2;
 
             }
 
@@ -4102,7 +4117,7 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:300:4: ( 'from' ( ( ( (temp= inPatternElement ( ( ( COMA ) temp= inPatternElement ) )* ) ) ( ( LPAREN ( (temp= oclExpression ) ) RPAREN ) | () ) ) ) )
             // ATL_ANTLR3.g:300:5: 'from' ( ( ( (temp= inPatternElement ( ( ( COMA ) temp= inPatternElement ) )* ) ) ( ( LPAREN ( (temp= oclExpression ) ) RPAREN ) | () ) ) )
             {
-            match(input,46,FOLLOW_46_in_inPattern1900); if (failed) return ret2;
+            match(input,46,FOLLOW_46_in_inPattern1905); if (failed) return ret2;
             // ATL_ANTLR3.g:300:12: ( ( ( (temp= inPatternElement ( ( ( COMA ) temp= inPatternElement ) )* ) ) ( ( LPAREN ( (temp= oclExpression ) ) RPAREN ) | () ) ) )
             // ATL_ANTLR3.g:300:13: ( ( (temp= inPatternElement ( ( ( COMA ) temp= inPatternElement ) )* ) ) ( ( LPAREN ( (temp= oclExpression ) ) RPAREN ) | () ) )
             {
@@ -4115,7 +4130,7 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:300:15: (temp= inPatternElement ( ( ( COMA ) temp= inPatternElement ) )* )
             // ATL_ANTLR3.g:300:16: temp= inPatternElement ( ( ( COMA ) temp= inPatternElement ) )*
             {
-            pushFollow(FOLLOW_inPatternElement_in_inPattern1908);
+            pushFollow(FOLLOW_inPatternElement_in_inPattern1913);
             temp=inPatternElement();
             _fsp--;
             if (failed) return ret2;
@@ -4143,11 +4158,11 @@ public class ATL_ANTLR3Parser extends Parser {
             	    // ATL_ANTLR3.g:300:73: ( COMA )
             	    // ATL_ANTLR3.g:300:74: COMA
             	    {
-            	    match(input,COMA,FOLLOW_COMA_in_inPattern1915); if (failed) return ret2;
+            	    match(input,COMA,FOLLOW_COMA_in_inPattern1920); if (failed) return ret2;
 
             	    }
 
-            	    pushFollow(FOLLOW_inPatternElement_in_inPattern1920);
+            	    pushFollow(FOLLOW_inPatternElement_in_inPattern1925);
             	    temp=inPatternElement();
             	    _fsp--;
             	    if (failed) return ret2;
@@ -4179,7 +4194,7 @@ public class ATL_ANTLR3Parser extends Parser {
             if ( (LA44_0==LPAREN) ) {
                 alt44=1;
             }
-            else if ( (LA44_0==RCURLY||LA44_0==57||LA44_0==63||LA44_0==67) ) {
+            else if ( (LA44_0==RCURLY||LA44_0==57||LA44_0==63||LA44_0==68) ) {
                 alt44=2;
             }
             else {
@@ -4196,14 +4211,14 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:300:141: ( LPAREN ( (temp= oclExpression ) ) RPAREN )
                     // ATL_ANTLR3.g:300:142: LPAREN ( (temp= oclExpression ) ) RPAREN
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_inPattern1931); if (failed) return ret2;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_inPattern1936); if (failed) return ret2;
                     // ATL_ANTLR3.g:300:149: ( (temp= oclExpression ) )
                     // ATL_ANTLR3.g:300:150: (temp= oclExpression )
                     {
                     // ATL_ANTLR3.g:300:150: (temp= oclExpression )
                     // ATL_ANTLR3.g:300:151: temp= oclExpression
                     {
-                    pushFollow(FOLLOW_oclExpression_in_inPattern1937);
+                    pushFollow(FOLLOW_oclExpression_in_inPattern1942);
                     temp=oclExpression();
                     _fsp--;
                     if (failed) return ret2;
@@ -4216,7 +4231,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
                     }
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_inPattern1943); if (failed) return ret2;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_inPattern1948); if (failed) return ret2;
 
                     }
 
@@ -4288,7 +4303,7 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:311:4: (ret= simpleInPatternElement )
             // ATL_ANTLR3.g:311:5: ret= simpleInPatternElement
             {
-            pushFollow(FOLLOW_simpleInPatternElement_in_inPatternElement1989);
+            pushFollow(FOLLOW_simpleInPatternElement_in_inPatternElement1994);
             ret=simpleInPatternElement();
             _fsp--;
             if (failed) return ret2;
@@ -4332,15 +4347,15 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:320:4: (temp= identifier COLON temp= oclType ( ( 'in' ( (temp= identifier ( ( ( COMA ) temp= identifier ) )* ) )? ) | () ) )
             // ATL_ANTLR3.g:320:5: temp= identifier COLON temp= oclType ( ( 'in' ( (temp= identifier ( ( ( COMA ) temp= identifier ) )* ) )? ) | () )
             {
-            pushFollow(FOLLOW_identifier_in_simpleInPatternElement2023);
+            pushFollow(FOLLOW_identifier_in_simpleInPatternElement2028);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "varName", temp);
             }
-            match(input,COLON,FOLLOW_COLON_in_simpleInPatternElement2027); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_simpleInPatternElement2031);
+            match(input,COLON,FOLLOW_COLON_in_simpleInPatternElement2032); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_simpleInPatternElement2036);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
@@ -4354,7 +4369,7 @@ public class ATL_ANTLR3Parser extends Parser {
             if ( (LA47_0==62) ) {
                 alt47=1;
             }
-            else if ( (LA47_0==EOF||LA47_0==COMA||LA47_0==LPAREN||LA47_0==RCURLY||LA47_0==57||LA47_0==63||LA47_0==67) ) {
+            else if ( (LA47_0==EOF||LA47_0==COMA||LA47_0==LPAREN||LA47_0==RCURLY||LA47_0==57||LA47_0==63||LA47_0==68) ) {
                 alt47=2;
             }
             else {
@@ -4371,7 +4386,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:320:102: ( 'in' ( (temp= identifier ( ( ( COMA ) temp= identifier ) )* ) )? )
                     // ATL_ANTLR3.g:320:103: 'in' ( (temp= identifier ( ( ( COMA ) temp= identifier ) )* ) )?
                     {
-                    match(input,62,FOLLOW_62_in_simpleInPatternElement2037); if (failed) return ret2;
+                    match(input,62,FOLLOW_62_in_simpleInPatternElement2042); if (failed) return ret2;
                     // ATL_ANTLR3.g:320:108: ( (temp= identifier ( ( ( COMA ) temp= identifier ) )* ) )?
                     int alt46=2;
                     int LA46_0 = input.LA(1);
@@ -4386,7 +4401,7 @@ public class ATL_ANTLR3Parser extends Parser {
                             // ATL_ANTLR3.g:320:109: (temp= identifier ( ( ( COMA ) temp= identifier ) )* )
                             // ATL_ANTLR3.g:320:110: temp= identifier ( ( ( COMA ) temp= identifier ) )*
                             {
-                            pushFollow(FOLLOW_identifier_in_simpleInPatternElement2043);
+                            pushFollow(FOLLOW_identifier_in_simpleInPatternElement2048);
                             temp=identifier();
                             _fsp--;
                             if (failed) return ret2;
@@ -4405,7 +4420,7 @@ public class ATL_ANTLR3Parser extends Parser {
                                     if ( (LA45_1==NAME) ) {
                                         int LA45_3 = input.LA(3);
 
-                                        if ( (LA45_3==EOF||LA45_3==COMA||LA45_3==LPAREN||LA45_3==RCURLY||LA45_3==57||LA45_3==63||LA45_3==67) ) {
+                                        if ( (LA45_3==EOF||LA45_3==COMA||LA45_3==LPAREN||LA45_3==RCURLY||LA45_3==57||LA45_3==63||LA45_3==68) ) {
                                             alt45=1;
                                         }
 
@@ -4426,11 +4441,11 @@ public class ATL_ANTLR3Parser extends Parser {
                             	    // ATL_ANTLR3.g:320:218: ( COMA )
                             	    // ATL_ANTLR3.g:320:219: COMA
                             	    {
-                            	    match(input,COMA,FOLLOW_COMA_in_simpleInPatternElement2050); if (failed) return ret2;
+                            	    match(input,COMA,FOLLOW_COMA_in_simpleInPatternElement2055); if (failed) return ret2;
 
                             	    }
 
-                            	    pushFollow(FOLLOW_identifier_in_simpleInPatternElement2055);
+                            	    pushFollow(FOLLOW_identifier_in_simpleInPatternElement2060);
                             	    temp=identifier();
                             	    _fsp--;
                             	    if (failed) return ret2;
@@ -4509,7 +4524,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start outPattern
-    // ATL_ANTLR3.g:330:1: outPattern returns [Object ret2] : ( 'to' ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) ) ) ;
+    // ATL_ANTLR3.g:330:1: outPattern returns [Object ret2] : ( 'to' ( (temp= dropPattern ) | () ) ( ( ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) | () ) ) ) ) ;
     public final Object outPattern() throws RecognitionException {
         Object ret2 = null;
 
@@ -4518,79 +4533,182 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("OutPattern", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:331:2: ( ( 'to' ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) ) ) )
-            // ATL_ANTLR3.g:331:4: ( 'to' ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) ) )
+            // ATL_ANTLR3.g:331:2: ( ( 'to' ( (temp= dropPattern ) | () ) ( ( ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) | () ) ) ) ) )
+            // ATL_ANTLR3.g:331:4: ( 'to' ( (temp= dropPattern ) | () ) ( ( ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) | () ) ) ) )
             {
-            // ATL_ANTLR3.g:331:4: ( 'to' ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) ) )
-            // ATL_ANTLR3.g:331:5: 'to' ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) )
+            // ATL_ANTLR3.g:331:4: ( 'to' ( (temp= dropPattern ) | () ) ( ( ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) | () ) ) ) )
+            // ATL_ANTLR3.g:331:5: 'to' ( (temp= dropPattern ) | () ) ( ( ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) | () ) ) )
             {
-            match(input,63,FOLLOW_63_in_outPattern2105); if (failed) return ret2;
-            // ATL_ANTLR3.g:331:10: ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) )
-            // ATL_ANTLR3.g:331:11: ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) )
-            {
-            // ATL_ANTLR3.g:331:11: ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) )
-            // ATL_ANTLR3.g:331:12: ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) )
-            {
-            // ATL_ANTLR3.g:331:12: ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) )
-            // ATL_ANTLR3.g:331:13: (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* )
-            {
-            // ATL_ANTLR3.g:331:13: (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* )
-            // ATL_ANTLR3.g:331:14: temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )*
-            {
-            pushFollow(FOLLOW_outPatternElement_in_outPattern2113);
-            temp=outPatternElement();
-            _fsp--;
-            if (failed) return ret2;
-            if ( backtracking==0 ) {
-              ei.set(ret, "elements", temp);
+            match(input,63,FOLLOW_63_in_outPattern2110); if (failed) return ret2;
+            // ATL_ANTLR3.g:331:10: ( (temp= dropPattern ) | () )
+            int alt48=2;
+            int LA48_0 = input.LA(1);
+
+            if ( (LA48_0==67) ) {
+                alt48=1;
             }
-            // ATL_ANTLR3.g:331:70: ( ( ( COMA ) temp= outPatternElement ) )*
-            loop48:
-            do {
-                int alt48=2;
-                int LA48_0 = input.LA(1);
+            else if ( (LA48_0==EOF||LA48_0==NAME||LA48_0==RCURLY||LA48_0==68) ) {
+                alt48=2;
+            }
+            else {
+                if (backtracking>0) {failed=true; return ret2;}
+                NoViableAltException nvae =
+                    new NoViableAltException("331:10: ( (temp= dropPattern ) | () )", 48, 0, input);
 
-                if ( (LA48_0==COMA) ) {
-                    alt48=1;
-                }
+                throw nvae;
+            }
+            switch (alt48) {
+                case 1 :
+                    // ATL_ANTLR3.g:331:11: (temp= dropPattern )
+                    {
+                    // ATL_ANTLR3.g:331:11: (temp= dropPattern )
+                    // ATL_ANTLR3.g:331:12: temp= dropPattern
+                    {
+                    pushFollow(FOLLOW_dropPattern_in_outPattern2116);
+                    temp=dropPattern();
+                    _fsp--;
+                    if (failed) return ret2;
+                    if ( backtracking==0 ) {
+                      ei.set(ret, "dropPattern", temp);
+                    }
 
+                    }
 
-                switch (alt48) {
-            	case 1 :
-            	    // ATL_ANTLR3.g:331:71: ( ( COMA ) temp= outPatternElement )
-            	    {
-            	    // ATL_ANTLR3.g:331:71: ( ( COMA ) temp= outPatternElement )
-            	    // ATL_ANTLR3.g:331:72: ( COMA ) temp= outPatternElement
-            	    {
-            	    // ATL_ANTLR3.g:331:72: ( COMA )
-            	    // ATL_ANTLR3.g:331:73: COMA
-            	    {
-            	    match(input,COMA,FOLLOW_COMA_in_outPattern2120); if (failed) return ret2;
+                    if ( backtracking==0 ) {
+                    }
 
-            	    }
+                    }
+                    break;
+                case 2 :
+                    // ATL_ANTLR3.g:331:70: ()
+                    {
+                    // ATL_ANTLR3.g:331:70: ()
+                    // ATL_ANTLR3.g:331:71: 
+                    {
+                    }
 
-            	    pushFollow(FOLLOW_outPatternElement_in_outPattern2125);
-            	    temp=outPatternElement();
-            	    _fsp--;
-            	    if (failed) return ret2;
-            	    if ( backtracking==0 ) {
-            	      ei.set(ret, "elements", temp);
-            	    }
+                    if ( backtracking==0 ) {
+                    }
 
-            	    }
-
-
-            	    }
-            	    break;
-
-            	default :
-            	    break loop48;
-                }
-            } while (true);
-
+                    }
+                    break;
 
             }
 
+            // ATL_ANTLR3.g:331:77: ( ( ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) | () ) ) )
+            // ATL_ANTLR3.g:331:78: ( ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) | () ) )
+            {
+            // ATL_ANTLR3.g:331:78: ( ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) | () ) )
+            // ATL_ANTLR3.g:331:79: ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) | () )
+            {
+            // ATL_ANTLR3.g:331:79: ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) | () )
+            int alt50=2;
+            int LA50_0 = input.LA(1);
+
+            if ( (LA50_0==NAME) ) {
+                alt50=1;
+            }
+            else if ( (LA50_0==EOF||LA50_0==RCURLY||LA50_0==68) ) {
+                alt50=2;
+            }
+            else {
+                if (backtracking>0) {failed=true; return ret2;}
+                NoViableAltException nvae =
+                    new NoViableAltException("331:79: ( ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) ) | () )", 50, 0, input);
+
+                throw nvae;
+            }
+            switch (alt50) {
+                case 1 :
+                    // ATL_ANTLR3.g:331:80: ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) )
+                    {
+                    // ATL_ANTLR3.g:331:80: ( ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) ) )
+                    // ATL_ANTLR3.g:331:81: ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) )
+                    {
+                    // ATL_ANTLR3.g:331:81: ( (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* ) )
+                    // ATL_ANTLR3.g:331:82: (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* )
+                    {
+                    // ATL_ANTLR3.g:331:82: (temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )* )
+                    // ATL_ANTLR3.g:331:83: temp= outPatternElement ( ( ( COMA ) temp= outPatternElement ) )*
+                    {
+                    pushFollow(FOLLOW_outPatternElement_in_outPattern2138);
+                    temp=outPatternElement();
+                    _fsp--;
+                    if (failed) return ret2;
+                    if ( backtracking==0 ) {
+                      ei.set(ret, "elements", temp);
+                    }
+                    // ATL_ANTLR3.g:331:139: ( ( ( COMA ) temp= outPatternElement ) )*
+                    loop49:
+                    do {
+                        int alt49=2;
+                        int LA49_0 = input.LA(1);
+
+                        if ( (LA49_0==COMA) ) {
+                            alt49=1;
+                        }
+
+
+                        switch (alt49) {
+                    	case 1 :
+                    	    // ATL_ANTLR3.g:331:140: ( ( COMA ) temp= outPatternElement )
+                    	    {
+                    	    // ATL_ANTLR3.g:331:140: ( ( COMA ) temp= outPatternElement )
+                    	    // ATL_ANTLR3.g:331:141: ( COMA ) temp= outPatternElement
+                    	    {
+                    	    // ATL_ANTLR3.g:331:141: ( COMA )
+                    	    // ATL_ANTLR3.g:331:142: COMA
+                    	    {
+                    	    match(input,COMA,FOLLOW_COMA_in_outPattern2145); if (failed) return ret2;
+
+                    	    }
+
+                    	    pushFollow(FOLLOW_outPatternElement_in_outPattern2150);
+                    	    temp=outPatternElement();
+                    	    _fsp--;
+                    	    if (failed) return ret2;
+                    	    if ( backtracking==0 ) {
+                    	      ei.set(ret, "elements", temp);
+                    	    }
+
+                    	    }
+
+
+                    	    }
+                    	    break;
+
+                    	default :
+                    	    break loop49;
+                        }
+                    } while (true);
+
+
+                    }
+
+
+                    }
+
+
+                    }
+
+                    if ( backtracking==0 ) {
+                    }
+
+                    }
+                    break;
+                case 2 :
+                    // ATL_ANTLR3.g:331:214: ()
+                    {
+                    // ATL_ANTLR3.g:331:214: ()
+                    // ATL_ANTLR3.g:331:215: 
+                    {
+                    }
+
+                    if ( backtracking==0 ) {
+                    }
+
+                    }
+                    break;
 
             }
 
@@ -4642,25 +4760,25 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:342:5: (ret= simpleOutPatternElement | ret= forEachOutPatternElement )
             {
             // ATL_ANTLR3.g:342:5: (ret= simpleOutPatternElement | ret= forEachOutPatternElement )
-            int alt49=2;
-            int LA49_0 = input.LA(1);
+            int alt51=2;
+            int LA51_0 = input.LA(1);
 
-            if ( (LA49_0==NAME) ) {
-                int LA49_1 = input.LA(2);
+            if ( (LA51_0==NAME) ) {
+                int LA51_1 = input.LA(2);
 
-                if ( (LA49_1==COLON) ) {
-                    int LA49_2 = input.LA(3);
+                if ( (LA51_1==COLON) ) {
+                    int LA51_2 = input.LA(3);
 
-                    if ( (LA49_2==65) ) {
-                        alt49=2;
+                    if ( (LA51_2==65) ) {
+                        alt51=2;
                     }
-                    else if ( (LA49_2==NAME||(LA49_2>=79 && LA49_2<=83)||(LA49_2>=85 && LA49_2<=92)) ) {
-                        alt49=1;
+                    else if ( (LA51_2==NAME||(LA51_2>=80 && LA51_2<=84)||(LA51_2>=86 && LA51_2<=93)) ) {
+                        alt51=1;
                     }
                     else {
                         if (backtracking>0) {failed=true; return ret2;}
                         NoViableAltException nvae =
-                            new NoViableAltException("342:5: (ret= simpleOutPatternElement | ret= forEachOutPatternElement )", 49, 2, input);
+                            new NoViableAltException("342:5: (ret= simpleOutPatternElement | ret= forEachOutPatternElement )", 51, 2, input);
 
                         throw nvae;
                     }
@@ -4668,7 +4786,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("342:5: (ret= simpleOutPatternElement | ret= forEachOutPatternElement )", 49, 1, input);
+                        new NoViableAltException("342:5: (ret= simpleOutPatternElement | ret= forEachOutPatternElement )", 51, 1, input);
 
                     throw nvae;
                 }
@@ -4676,15 +4794,15 @@ public class ATL_ANTLR3Parser extends Parser {
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("342:5: (ret= simpleOutPatternElement | ret= forEachOutPatternElement )", 49, 0, input);
+                    new NoViableAltException("342:5: (ret= simpleOutPatternElement | ret= forEachOutPatternElement )", 51, 0, input);
 
                 throw nvae;
             }
-            switch (alt49) {
+            switch (alt51) {
                 case 1 :
                     // ATL_ANTLR3.g:342:6: ret= simpleOutPatternElement
                     {
-                    pushFollow(FOLLOW_simpleOutPatternElement_in_outPatternElement2169);
+                    pushFollow(FOLLOW_simpleOutPatternElement_in_outPatternElement2204);
                     ret=simpleOutPatternElement();
                     _fsp--;
                     if (failed) return ret2;
@@ -4694,7 +4812,7 @@ public class ATL_ANTLR3Parser extends Parser {
                 case 2 :
                     // ATL_ANTLR3.g:342:35: ret= forEachOutPatternElement
                     {
-                    pushFollow(FOLLOW_forEachOutPatternElement_in_outPatternElement2174);
+                    pushFollow(FOLLOW_forEachOutPatternElement_in_outPatternElement2209);
                     ret=forEachOutPatternElement();
                     _fsp--;
                     if (failed) return ret2;
@@ -4744,15 +4862,15 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:351:4: (temp= identifier COLON temp= oclType ( ( 'in' temp= identifier ) | () ) ( ( 'mapsTo' temp= identifier ) | () ) ( ( RARROW LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) | () ) ( ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN ) | () ) )
             // ATL_ANTLR3.g:351:5: temp= identifier COLON temp= oclType ( ( 'in' temp= identifier ) | () ) ( ( 'mapsTo' temp= identifier ) | () ) ( ( RARROW LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) | () ) ( ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN ) | () )
             {
-            pushFollow(FOLLOW_identifier_in_simpleOutPatternElement2209);
+            pushFollow(FOLLOW_identifier_in_simpleOutPatternElement2244);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "varName", temp);
             }
-            match(input,COLON,FOLLOW_COLON_in_simpleOutPatternElement2213); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_simpleOutPatternElement2217);
+            match(input,COLON,FOLLOW_COLON_in_simpleOutPatternElement2248); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_simpleOutPatternElement2252);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
@@ -4760,31 +4878,31 @@ public class ATL_ANTLR3Parser extends Parser {
               ei.set(ret, "type", temp);
             }
             // ATL_ANTLR3.g:351:101: ( ( 'in' temp= identifier ) | () )
-            int alt50=2;
-            int LA50_0 = input.LA(1);
+            int alt52=2;
+            int LA52_0 = input.LA(1);
 
-            if ( (LA50_0==62) ) {
-                alt50=1;
+            if ( (LA52_0==62) ) {
+                alt52=1;
             }
-            else if ( (LA50_0==EOF||LA50_0==COMA||LA50_0==LPAREN||(LA50_0>=RCURLY && LA50_0<=RARROW)||LA50_0==64||LA50_0==67) ) {
-                alt50=2;
+            else if ( (LA52_0==EOF||LA52_0==COMA||LA52_0==LPAREN||(LA52_0>=RCURLY && LA52_0<=RARROW)||LA52_0==64||LA52_0==68) ) {
+                alt52=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("351:101: ( ( 'in' temp= identifier ) | () )", 50, 0, input);
+                    new NoViableAltException("351:101: ( ( 'in' temp= identifier ) | () )", 52, 0, input);
 
                 throw nvae;
             }
-            switch (alt50) {
+            switch (alt52) {
                 case 1 :
                     // ATL_ANTLR3.g:351:102: ( 'in' temp= identifier )
                     {
                     // ATL_ANTLR3.g:351:102: ( 'in' temp= identifier )
                     // ATL_ANTLR3.g:351:103: 'in' temp= identifier
                     {
-                    match(input,62,FOLLOW_62_in_simpleOutPatternElement2223); if (failed) return ret2;
-                    pushFollow(FOLLOW_identifier_in_simpleOutPatternElement2227);
+                    match(input,62,FOLLOW_62_in_simpleOutPatternElement2258); if (failed) return ret2;
+                    pushFollow(FOLLOW_identifier_in_simpleOutPatternElement2262);
                     temp=identifier();
                     _fsp--;
                     if (failed) return ret2;
@@ -4816,31 +4934,31 @@ public class ATL_ANTLR3Parser extends Parser {
             }
 
             // ATL_ANTLR3.g:351:225: ( ( 'mapsTo' temp= identifier ) | () )
-            int alt51=2;
-            int LA51_0 = input.LA(1);
+            int alt53=2;
+            int LA53_0 = input.LA(1);
 
-            if ( (LA51_0==64) ) {
-                alt51=1;
+            if ( (LA53_0==64) ) {
+                alt53=1;
             }
-            else if ( (LA51_0==EOF||LA51_0==COMA||LA51_0==LPAREN||(LA51_0>=RCURLY && LA51_0<=RARROW)||LA51_0==67) ) {
-                alt51=2;
+            else if ( (LA53_0==EOF||LA53_0==COMA||LA53_0==LPAREN||(LA53_0>=RCURLY && LA53_0<=RARROW)||LA53_0==68) ) {
+                alt53=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("351:225: ( ( 'mapsTo' temp= identifier ) | () )", 51, 0, input);
+                    new NoViableAltException("351:225: ( ( 'mapsTo' temp= identifier ) | () )", 53, 0, input);
 
                 throw nvae;
             }
-            switch (alt51) {
+            switch (alt53) {
                 case 1 :
                     // ATL_ANTLR3.g:351:226: ( 'mapsTo' temp= identifier )
                     {
                     // ATL_ANTLR3.g:351:226: ( 'mapsTo' temp= identifier )
                     // ATL_ANTLR3.g:351:227: 'mapsTo' temp= identifier
                     {
-                    match(input,64,FOLLOW_64_in_simpleOutPatternElement2243); if (failed) return ret2;
-                    pushFollow(FOLLOW_identifier_in_simpleOutPatternElement2247);
+                    match(input,64,FOLLOW_64_in_simpleOutPatternElement2278); if (failed) return ret2;
+                    pushFollow(FOLLOW_identifier_in_simpleOutPatternElement2282);
                     temp=identifier();
                     _fsp--;
                     if (failed) return ret2;
@@ -4872,46 +4990,46 @@ public class ATL_ANTLR3Parser extends Parser {
             }
 
             // ATL_ANTLR3.g:351:370: ( ( RARROW LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) | () )
-            int alt54=2;
-            int LA54_0 = input.LA(1);
+            int alt56=2;
+            int LA56_0 = input.LA(1);
 
-            if ( (LA54_0==RARROW) ) {
-                alt54=1;
+            if ( (LA56_0==RARROW) ) {
+                alt56=1;
             }
-            else if ( (LA54_0==EOF||LA54_0==COMA||LA54_0==LPAREN||LA54_0==RCURLY||LA54_0==67) ) {
-                alt54=2;
+            else if ( (LA56_0==EOF||LA56_0==COMA||LA56_0==LPAREN||LA56_0==RCURLY||LA56_0==68) ) {
+                alt56=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("351:370: ( ( RARROW LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) | () )", 54, 0, input);
+                    new NoViableAltException("351:370: ( ( RARROW LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) | () )", 56, 0, input);
 
                 throw nvae;
             }
-            switch (alt54) {
+            switch (alt56) {
                 case 1 :
                     // ATL_ANTLR3.g:351:371: ( RARROW LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN )
                     {
                     // ATL_ANTLR3.g:351:371: ( RARROW LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN )
                     // ATL_ANTLR3.g:351:372: RARROW LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN
                     {
-                    match(input,RARROW,FOLLOW_RARROW_in_simpleOutPatternElement2263); if (failed) return ret2;
-                    match(input,LPAREN,FOLLOW_LPAREN_in_simpleOutPatternElement2265); if (failed) return ret2;
+                    match(input,RARROW,FOLLOW_RARROW_in_simpleOutPatternElement2298); if (failed) return ret2;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_simpleOutPatternElement2300); if (failed) return ret2;
                     // ATL_ANTLR3.g:351:386: ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )?
-                    int alt53=2;
-                    int LA53_0 = input.LA(1);
+                    int alt55=2;
+                    int LA55_0 = input.LA(1);
 
-                    if ( ((LA53_0>=NAME && LA53_0<=FLOAT)||LA53_0==LPAREN||LA53_0==SHARP||LA53_0==MINUS||LA53_0==68||(LA53_0>=72 && LA53_0<=74)||(LA53_0>=77 && LA53_0<=93)) ) {
-                        alt53=1;
+                    if ( ((LA55_0>=NAME && LA55_0<=FLOAT)||LA55_0==LPAREN||LA55_0==SHARP||LA55_0==MINUS||LA55_0==69||(LA55_0>=73 && LA55_0<=75)||(LA55_0>=78 && LA55_0<=94)) ) {
+                        alt55=1;
                     }
-                    switch (alt53) {
+                    switch (alt55) {
                         case 1 :
                             // ATL_ANTLR3.g:351:387: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
                             {
                             // ATL_ANTLR3.g:351:387: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
                             // ATL_ANTLR3.g:351:388: temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )*
                             {
-                            pushFollow(FOLLOW_oclExpression_in_simpleOutPatternElement2271);
+                            pushFollow(FOLLOW_oclExpression_in_simpleOutPatternElement2306);
                             temp=oclExpression();
                             _fsp--;
                             if (failed) return ret2;
@@ -4919,17 +5037,17 @@ public class ATL_ANTLR3Parser extends Parser {
                               ei.set(ret, "reverseBindings", temp);
                             }
                             // ATL_ANTLR3.g:351:447: ( ( ( COMA ) temp= oclExpression ) )*
-                            loop52:
+                            loop54:
                             do {
-                                int alt52=2;
-                                int LA52_0 = input.LA(1);
+                                int alt54=2;
+                                int LA54_0 = input.LA(1);
 
-                                if ( (LA52_0==COMA) ) {
-                                    alt52=1;
+                                if ( (LA54_0==COMA) ) {
+                                    alt54=1;
                                 }
 
 
-                                switch (alt52) {
+                                switch (alt54) {
                             	case 1 :
                             	    // ATL_ANTLR3.g:351:448: ( ( COMA ) temp= oclExpression )
                             	    {
@@ -4939,11 +5057,11 @@ public class ATL_ANTLR3Parser extends Parser {
                             	    // ATL_ANTLR3.g:351:449: ( COMA )
                             	    // ATL_ANTLR3.g:351:450: COMA
                             	    {
-                            	    match(input,COMA,FOLLOW_COMA_in_simpleOutPatternElement2278); if (failed) return ret2;
+                            	    match(input,COMA,FOLLOW_COMA_in_simpleOutPatternElement2313); if (failed) return ret2;
 
                             	    }
 
-                            	    pushFollow(FOLLOW_oclExpression_in_simpleOutPatternElement2283);
+                            	    pushFollow(FOLLOW_oclExpression_in_simpleOutPatternElement2318);
                             	    temp=oclExpression();
                             	    _fsp--;
                             	    if (failed) return ret2;
@@ -4958,7 +5076,7 @@ public class ATL_ANTLR3Parser extends Parser {
                             	    break;
 
                             	default :
-                            	    break loop52;
+                            	    break loop54;
                                 }
                             } while (true);
 
@@ -4971,7 +5089,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
                     }
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_simpleOutPatternElement2293); if (failed) return ret2;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_simpleOutPatternElement2328); if (failed) return ret2;
 
                     }
 
@@ -4997,30 +5115,30 @@ public class ATL_ANTLR3Parser extends Parser {
             }
 
             // ATL_ANTLR3.g:351:540: ( ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN ) | () )
-            int alt57=2;
-            int LA57_0 = input.LA(1);
+            int alt59=2;
+            int LA59_0 = input.LA(1);
 
-            if ( (LA57_0==LPAREN) ) {
-                alt57=1;
+            if ( (LA59_0==LPAREN) ) {
+                alt59=1;
             }
-            else if ( (LA57_0==EOF||LA57_0==COMA||LA57_0==RCURLY||LA57_0==67) ) {
-                alt57=2;
+            else if ( (LA59_0==EOF||LA59_0==COMA||LA59_0==RCURLY||LA59_0==68) ) {
+                alt59=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("351:540: ( ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN ) | () )", 57, 0, input);
+                    new NoViableAltException("351:540: ( ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN ) | () )", 59, 0, input);
 
                 throw nvae;
             }
-            switch (alt57) {
+            switch (alt59) {
                 case 1 :
                     // ATL_ANTLR3.g:351:541: ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN )
                     {
                     // ATL_ANTLR3.g:351:541: ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN )
                     // ATL_ANTLR3.g:351:542: LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_simpleOutPatternElement2307); if (failed) return ret2;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_simpleOutPatternElement2342); if (failed) return ret2;
                     // ATL_ANTLR3.g:351:549: ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) )
                     // ATL_ANTLR3.g:351:550: ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? )
                     {
@@ -5028,20 +5146,20 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:351:551: ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )?
                     {
                     // ATL_ANTLR3.g:351:551: ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )?
-                    int alt56=2;
-                    int LA56_0 = input.LA(1);
+                    int alt58=2;
+                    int LA58_0 = input.LA(1);
 
-                    if ( (LA56_0==NAME||(LA56_0>=43 && LA56_0<=99)) ) {
-                        alt56=1;
+                    if ( (LA58_0==NAME||(LA58_0>=43 && LA58_0<=100)) ) {
+                        alt58=1;
                     }
-                    switch (alt56) {
+                    switch (alt58) {
                         case 1 :
                             // ATL_ANTLR3.g:351:552: (temp= binding ( ( ( COMA ) temp= binding ) )* )
                             {
                             // ATL_ANTLR3.g:351:552: (temp= binding ( ( ( COMA ) temp= binding ) )* )
                             // ATL_ANTLR3.g:351:553: temp= binding ( ( ( COMA ) temp= binding ) )*
                             {
-                            pushFollow(FOLLOW_binding_in_simpleOutPatternElement2315);
+                            pushFollow(FOLLOW_binding_in_simpleOutPatternElement2350);
                             temp=binding();
                             _fsp--;
                             if (failed) return ret2;
@@ -5049,17 +5167,17 @@ public class ATL_ANTLR3Parser extends Parser {
                               ei.set(ret, "bindings", temp);
                             }
                             // ATL_ANTLR3.g:351:599: ( ( ( COMA ) temp= binding ) )*
-                            loop55:
+                            loop57:
                             do {
-                                int alt55=2;
-                                int LA55_0 = input.LA(1);
+                                int alt57=2;
+                                int LA57_0 = input.LA(1);
 
-                                if ( (LA55_0==COMA) ) {
-                                    alt55=1;
+                                if ( (LA57_0==COMA) ) {
+                                    alt57=1;
                                 }
 
 
-                                switch (alt55) {
+                                switch (alt57) {
                             	case 1 :
                             	    // ATL_ANTLR3.g:351:600: ( ( COMA ) temp= binding )
                             	    {
@@ -5069,11 +5187,11 @@ public class ATL_ANTLR3Parser extends Parser {
                             	    // ATL_ANTLR3.g:351:601: ( COMA )
                             	    // ATL_ANTLR3.g:351:602: COMA
                             	    {
-                            	    match(input,COMA,FOLLOW_COMA_in_simpleOutPatternElement2322); if (failed) return ret2;
+                            	    match(input,COMA,FOLLOW_COMA_in_simpleOutPatternElement2357); if (failed) return ret2;
 
                             	    }
 
-                            	    pushFollow(FOLLOW_binding_in_simpleOutPatternElement2327);
+                            	    pushFollow(FOLLOW_binding_in_simpleOutPatternElement2362);
                             	    temp=binding();
                             	    _fsp--;
                             	    if (failed) return ret2;
@@ -5088,7 +5206,7 @@ public class ATL_ANTLR3Parser extends Parser {
                             	    break;
 
                             	default :
-                            	    break loop55;
+                            	    break loop57;
                                 }
                             } while (true);
 
@@ -5107,7 +5225,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
                     }
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_simpleOutPatternElement2339); if (failed) return ret2;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_simpleOutPatternElement2374); if (failed) return ret2;
 
                     }
 
@@ -5174,66 +5292,66 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:362:4: (temp= identifier COLON 'distinct' temp= oclType 'foreach' LPAREN temp= iterator 'in' temp= oclExpression RPAREN ( ( 'mapsTo' temp= identifier ) | () ) ( ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN ) | () ) )
             // ATL_ANTLR3.g:362:5: temp= identifier COLON 'distinct' temp= oclType 'foreach' LPAREN temp= iterator 'in' temp= oclExpression RPAREN ( ( 'mapsTo' temp= identifier ) | () ) ( ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN ) | () )
             {
-            pushFollow(FOLLOW_identifier_in_forEachOutPatternElement2383);
+            pushFollow(FOLLOW_identifier_in_forEachOutPatternElement2418);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "varName", temp);
             }
-            match(input,COLON,FOLLOW_COLON_in_forEachOutPatternElement2387); if (failed) return ret2;
-            match(input,65,FOLLOW_65_in_forEachOutPatternElement2389); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_forEachOutPatternElement2393);
+            match(input,COLON,FOLLOW_COLON_in_forEachOutPatternElement2422); if (failed) return ret2;
+            match(input,65,FOLLOW_65_in_forEachOutPatternElement2424); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_forEachOutPatternElement2428);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "type", temp);
             }
-            match(input,66,FOLLOW_66_in_forEachOutPatternElement2397); if (failed) return ret2;
-            match(input,LPAREN,FOLLOW_LPAREN_in_forEachOutPatternElement2399); if (failed) return ret2;
-            pushFollow(FOLLOW_iterator_in_forEachOutPatternElement2403);
+            match(input,66,FOLLOW_66_in_forEachOutPatternElement2432); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_forEachOutPatternElement2434); if (failed) return ret2;
+            pushFollow(FOLLOW_iterator_in_forEachOutPatternElement2438);
             temp=iterator();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "iterator", temp);
             }
-            match(input,62,FOLLOW_62_in_forEachOutPatternElement2407); if (failed) return ret2;
-            pushFollow(FOLLOW_oclExpression_in_forEachOutPatternElement2411);
+            match(input,62,FOLLOW_62_in_forEachOutPatternElement2442); if (failed) return ret2;
+            pushFollow(FOLLOW_oclExpression_in_forEachOutPatternElement2446);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "collection", temp);
             }
-            match(input,RPAREN,FOLLOW_RPAREN_in_forEachOutPatternElement2415); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_forEachOutPatternElement2450); if (failed) return ret2;
             // ATL_ANTLR3.g:362:242: ( ( 'mapsTo' temp= identifier ) | () )
-            int alt58=2;
-            int LA58_0 = input.LA(1);
+            int alt60=2;
+            int LA60_0 = input.LA(1);
 
-            if ( (LA58_0==64) ) {
-                alt58=1;
+            if ( (LA60_0==64) ) {
+                alt60=1;
             }
-            else if ( (LA58_0==EOF||LA58_0==COMA||LA58_0==LPAREN||LA58_0==RCURLY||LA58_0==67) ) {
-                alt58=2;
+            else if ( (LA60_0==EOF||LA60_0==COMA||LA60_0==LPAREN||LA60_0==RCURLY||LA60_0==68) ) {
+                alt60=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("362:242: ( ( 'mapsTo' temp= identifier ) | () )", 58, 0, input);
+                    new NoViableAltException("362:242: ( ( 'mapsTo' temp= identifier ) | () )", 60, 0, input);
 
                 throw nvae;
             }
-            switch (alt58) {
+            switch (alt60) {
                 case 1 :
                     // ATL_ANTLR3.g:362:243: ( 'mapsTo' temp= identifier )
                     {
                     // ATL_ANTLR3.g:362:243: ( 'mapsTo' temp= identifier )
                     // ATL_ANTLR3.g:362:244: 'mapsTo' temp= identifier
                     {
-                    match(input,64,FOLLOW_64_in_forEachOutPatternElement2419); if (failed) return ret2;
-                    pushFollow(FOLLOW_identifier_in_forEachOutPatternElement2423);
+                    match(input,64,FOLLOW_64_in_forEachOutPatternElement2454); if (failed) return ret2;
+                    pushFollow(FOLLOW_identifier_in_forEachOutPatternElement2458);
                     temp=identifier();
                     _fsp--;
                     if (failed) return ret2;
@@ -5265,30 +5383,30 @@ public class ATL_ANTLR3Parser extends Parser {
             }
 
             // ATL_ANTLR3.g:362:387: ( ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN ) | () )
-            int alt61=2;
-            int LA61_0 = input.LA(1);
+            int alt63=2;
+            int LA63_0 = input.LA(1);
 
-            if ( (LA61_0==LPAREN) ) {
-                alt61=1;
+            if ( (LA63_0==LPAREN) ) {
+                alt63=1;
             }
-            else if ( (LA61_0==EOF||LA61_0==COMA||LA61_0==RCURLY||LA61_0==67) ) {
-                alt61=2;
+            else if ( (LA63_0==EOF||LA63_0==COMA||LA63_0==RCURLY||LA63_0==68) ) {
+                alt63=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("362:387: ( ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN ) | () )", 61, 0, input);
+                    new NoViableAltException("362:387: ( ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN ) | () )", 63, 0, input);
 
                 throw nvae;
             }
-            switch (alt61) {
+            switch (alt63) {
                 case 1 :
                     // ATL_ANTLR3.g:362:388: ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN )
                     {
                     // ATL_ANTLR3.g:362:388: ( LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN )
                     // ATL_ANTLR3.g:362:389: LPAREN ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) ) RPAREN
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_forEachOutPatternElement2439); if (failed) return ret2;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_forEachOutPatternElement2474); if (failed) return ret2;
                     // ATL_ANTLR3.g:362:396: ( ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? ) )
                     // ATL_ANTLR3.g:362:397: ( ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )? )
                     {
@@ -5296,20 +5414,20 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:362:398: ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )?
                     {
                     // ATL_ANTLR3.g:362:398: ( (temp= binding ( ( ( COMA ) temp= binding ) )* ) )?
-                    int alt60=2;
-                    int LA60_0 = input.LA(1);
+                    int alt62=2;
+                    int LA62_0 = input.LA(1);
 
-                    if ( (LA60_0==NAME||(LA60_0>=43 && LA60_0<=99)) ) {
-                        alt60=1;
+                    if ( (LA62_0==NAME||(LA62_0>=43 && LA62_0<=100)) ) {
+                        alt62=1;
                     }
-                    switch (alt60) {
+                    switch (alt62) {
                         case 1 :
                             // ATL_ANTLR3.g:362:399: (temp= binding ( ( ( COMA ) temp= binding ) )* )
                             {
                             // ATL_ANTLR3.g:362:399: (temp= binding ( ( ( COMA ) temp= binding ) )* )
                             // ATL_ANTLR3.g:362:400: temp= binding ( ( ( COMA ) temp= binding ) )*
                             {
-                            pushFollow(FOLLOW_binding_in_forEachOutPatternElement2447);
+                            pushFollow(FOLLOW_binding_in_forEachOutPatternElement2482);
                             temp=binding();
                             _fsp--;
                             if (failed) return ret2;
@@ -5317,17 +5435,17 @@ public class ATL_ANTLR3Parser extends Parser {
                               ei.set(ret, "bindings", temp);
                             }
                             // ATL_ANTLR3.g:362:446: ( ( ( COMA ) temp= binding ) )*
-                            loop59:
+                            loop61:
                             do {
-                                int alt59=2;
-                                int LA59_0 = input.LA(1);
+                                int alt61=2;
+                                int LA61_0 = input.LA(1);
 
-                                if ( (LA59_0==COMA) ) {
-                                    alt59=1;
+                                if ( (LA61_0==COMA) ) {
+                                    alt61=1;
                                 }
 
 
-                                switch (alt59) {
+                                switch (alt61) {
                             	case 1 :
                             	    // ATL_ANTLR3.g:362:447: ( ( COMA ) temp= binding )
                             	    {
@@ -5337,11 +5455,11 @@ public class ATL_ANTLR3Parser extends Parser {
                             	    // ATL_ANTLR3.g:362:448: ( COMA )
                             	    // ATL_ANTLR3.g:362:449: COMA
                             	    {
-                            	    match(input,COMA,FOLLOW_COMA_in_forEachOutPatternElement2454); if (failed) return ret2;
+                            	    match(input,COMA,FOLLOW_COMA_in_forEachOutPatternElement2489); if (failed) return ret2;
 
                             	    }
 
-                            	    pushFollow(FOLLOW_binding_in_forEachOutPatternElement2459);
+                            	    pushFollow(FOLLOW_binding_in_forEachOutPatternElement2494);
                             	    temp=binding();
                             	    _fsp--;
                             	    if (failed) return ret2;
@@ -5356,7 +5474,7 @@ public class ATL_ANTLR3Parser extends Parser {
                             	    break;
 
                             	default :
-                            	    break loop59;
+                            	    break loop61;
                                 }
                             } while (true);
 
@@ -5375,7 +5493,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
                     }
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_forEachOutPatternElement2471); if (failed) return ret2;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_forEachOutPatternElement2506); if (failed) return ret2;
 
                     }
 
@@ -5442,7 +5560,7 @@ public class ATL_ANTLR3Parser extends Parser {
             // ATL_ANTLR3.g:373:4: (temp= identifierOrKeyword ( ( ASSIGNARROW ) | ( LARROW ) ) temp= oclExpression )
             // ATL_ANTLR3.g:373:5: temp= identifierOrKeyword ( ( ASSIGNARROW ) | ( LARROW ) ) temp= oclExpression
             {
-            pushFollow(FOLLOW_identifierOrKeyword_in_binding2515);
+            pushFollow(FOLLOW_identifierOrKeyword_in_binding2550);
             temp=identifierOrKeyword();
             _fsp--;
             if (failed) return ret2;
@@ -5450,30 +5568,30 @@ public class ATL_ANTLR3Parser extends Parser {
               ei.set(ret, "propertyName", temp);
             }
             // ATL_ANTLR3.g:373:67: ( ( ASSIGNARROW ) | ( LARROW ) )
-            int alt62=2;
-            int LA62_0 = input.LA(1);
+            int alt64=2;
+            int LA64_0 = input.LA(1);
 
-            if ( (LA62_0==ASSIGNARROW) ) {
-                alt62=1;
+            if ( (LA64_0==ASSIGNARROW) ) {
+                alt64=1;
             }
-            else if ( (LA62_0==LARROW) ) {
-                alt62=2;
+            else if ( (LA64_0==LARROW) ) {
+                alt64=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("373:67: ( ( ASSIGNARROW ) | ( LARROW ) )", 62, 0, input);
+                    new NoViableAltException("373:67: ( ( ASSIGNARROW ) | ( LARROW ) )", 64, 0, input);
 
                 throw nvae;
             }
-            switch (alt62) {
+            switch (alt64) {
                 case 1 :
                     // ATL_ANTLR3.g:373:68: ( ASSIGNARROW )
                     {
                     // ATL_ANTLR3.g:373:68: ( ASSIGNARROW )
                     // ATL_ANTLR3.g:373:69: ASSIGNARROW
                     {
-                    match(input,ASSIGNARROW,FOLLOW_ASSIGNARROW_in_binding2521); if (failed) return ret2;
+                    match(input,ASSIGNARROW,FOLLOW_ASSIGNARROW_in_binding2556); if (failed) return ret2;
 
                     }
 
@@ -5489,7 +5607,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:373:138: ( LARROW )
                     // ATL_ANTLR3.g:373:139: LARROW
                     {
-                    match(input,LARROW,FOLLOW_LARROW_in_binding2528); if (failed) return ret2;
+                    match(input,LARROW,FOLLOW_LARROW_in_binding2563); if (failed) return ret2;
 
                     }
 
@@ -5502,7 +5620,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            pushFollow(FOLLOW_oclExpression_in_binding2536);
+            pushFollow(FOLLOW_oclExpression_in_binding2571);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
@@ -5535,8 +5653,48 @@ public class ATL_ANTLR3Parser extends Parser {
     // $ANTLR end binding
 
 
+    // $ANTLR start dropPattern
+    // ATL_ANTLR3.g:383:1: dropPattern returns [Object ret2] : ( 'drop' ) ;
+    public final Object dropPattern() throws RecognitionException {
+        Object ret2 = null;
+
+        Object ret=(backtracking==0) ? ei.create("DropPattern", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
+        try {
+            // ATL_ANTLR3.g:384:2: ( ( 'drop' ) )
+            // ATL_ANTLR3.g:384:4: ( 'drop' )
+            {
+            // ATL_ANTLR3.g:384:4: ( 'drop' )
+            // ATL_ANTLR3.g:384:5: 'drop'
+            {
+            match(input,67,FOLLOW_67_in_dropPattern2605); if (failed) return ret2;
+
+            }
+
+            if ( backtracking==0 ) {
+
+                          ei.leaveContext(false);
+                          if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
+              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
+                          ret2=ret;
+                      
+            }
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        return ret2;
+    }
+    // $ANTLR end dropPattern
+
+
     // $ANTLR start actionBlock
-    // ATL_ANTLR3.g:383:1: actionBlock returns [Object ret2] : ( 'do' LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ;
+    // ATL_ANTLR3.g:394:1: actionBlock returns [Object ret2] : ( 'do' LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ;
     public final Object actionBlock() throws RecognitionException {
         Object ret2 = null;
 
@@ -5545,60 +5703,60 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("ActionBlock", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:384:2: ( ( 'do' LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )
-            // ATL_ANTLR3.g:384:4: ( 'do' LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
+            // ATL_ANTLR3.g:395:2: ( ( 'do' LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )
+            // ATL_ANTLR3.g:395:4: ( 'do' LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
             {
-            // ATL_ANTLR3.g:384:4: ( 'do' LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
-            // ATL_ANTLR3.g:384:5: 'do' LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY
+            // ATL_ANTLR3.g:395:4: ( 'do' LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
+            // ATL_ANTLR3.g:395:5: 'do' LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY
             {
-            match(input,67,FOLLOW_67_in_actionBlock2570); if (failed) return ret2;
-            match(input,LCURLY,FOLLOW_LCURLY_in_actionBlock2572); if (failed) return ret2;
-            // ATL_ANTLR3.g:384:17: ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) )
-            // ATL_ANTLR3.g:384:18: ( ( (temp= statement ( (temp= statement ) )* ) )? )
+            match(input,68,FOLLOW_68_in_actionBlock2637); if (failed) return ret2;
+            match(input,LCURLY,FOLLOW_LCURLY_in_actionBlock2639); if (failed) return ret2;
+            // ATL_ANTLR3.g:395:17: ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) )
+            // ATL_ANTLR3.g:395:18: ( ( (temp= statement ( (temp= statement ) )* ) )? )
             {
-            // ATL_ANTLR3.g:384:18: ( ( (temp= statement ( (temp= statement ) )* ) )? )
-            // ATL_ANTLR3.g:384:19: ( (temp= statement ( (temp= statement ) )* ) )?
+            // ATL_ANTLR3.g:395:18: ( ( (temp= statement ( (temp= statement ) )* ) )? )
+            // ATL_ANTLR3.g:395:19: ( (temp= statement ( (temp= statement ) )* ) )?
             {
-            // ATL_ANTLR3.g:384:19: ( (temp= statement ( (temp= statement ) )* ) )?
-            int alt64=2;
-            int LA64_0 = input.LA(1);
+            // ATL_ANTLR3.g:395:19: ( (temp= statement ( (temp= statement ) )* ) )?
+            int alt66=2;
+            int LA66_0 = input.LA(1);
 
-            if ( ((LA64_0>=NAME && LA64_0<=FLOAT)||LA64_0==LPAREN||LA64_0==SHARP||LA64_0==MINUS||LA64_0==68||LA64_0==70||(LA64_0>=72 && LA64_0<=74)||(LA64_0>=77 && LA64_0<=93)) ) {
-                alt64=1;
+            if ( ((LA66_0>=NAME && LA66_0<=FLOAT)||LA66_0==LPAREN||LA66_0==SHARP||LA66_0==MINUS||LA66_0==69||LA66_0==71||(LA66_0>=73 && LA66_0<=75)||(LA66_0>=78 && LA66_0<=94)) ) {
+                alt66=1;
             }
-            switch (alt64) {
+            switch (alt66) {
                 case 1 :
-                    // ATL_ANTLR3.g:384:20: (temp= statement ( (temp= statement ) )* )
+                    // ATL_ANTLR3.g:395:20: (temp= statement ( (temp= statement ) )* )
                     {
-                    // ATL_ANTLR3.g:384:20: (temp= statement ( (temp= statement ) )* )
-                    // ATL_ANTLR3.g:384:21: temp= statement ( (temp= statement ) )*
+                    // ATL_ANTLR3.g:395:20: (temp= statement ( (temp= statement ) )* )
+                    // ATL_ANTLR3.g:395:21: temp= statement ( (temp= statement ) )*
                     {
-                    pushFollow(FOLLOW_statement_in_actionBlock2580);
+                    pushFollow(FOLLOW_statement_in_actionBlock2647);
                     temp=statement();
                     _fsp--;
                     if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ei.set(ret, "statements", temp);
                     }
-                    // ATL_ANTLR3.g:384:71: ( (temp= statement ) )*
-                    loop63:
+                    // ATL_ANTLR3.g:395:71: ( (temp= statement ) )*
+                    loop65:
                     do {
-                        int alt63=2;
-                        int LA63_0 = input.LA(1);
+                        int alt65=2;
+                        int LA65_0 = input.LA(1);
 
-                        if ( ((LA63_0>=NAME && LA63_0<=FLOAT)||LA63_0==LPAREN||LA63_0==SHARP||LA63_0==MINUS||LA63_0==68||LA63_0==70||(LA63_0>=72 && LA63_0<=74)||(LA63_0>=77 && LA63_0<=93)) ) {
-                            alt63=1;
+                        if ( ((LA65_0>=NAME && LA65_0<=FLOAT)||LA65_0==LPAREN||LA65_0==SHARP||LA65_0==MINUS||LA65_0==69||LA65_0==71||(LA65_0>=73 && LA65_0<=75)||(LA65_0>=78 && LA65_0<=94)) ) {
+                            alt65=1;
                         }
 
 
-                        switch (alt63) {
+                        switch (alt65) {
                     	case 1 :
-                    	    // ATL_ANTLR3.g:384:72: (temp= statement )
+                    	    // ATL_ANTLR3.g:395:72: (temp= statement )
                     	    {
-                    	    // ATL_ANTLR3.g:384:72: (temp= statement )
-                    	    // ATL_ANTLR3.g:384:73: temp= statement
+                    	    // ATL_ANTLR3.g:395:72: (temp= statement )
+                    	    // ATL_ANTLR3.g:395:73: temp= statement
                     	    {
-                    	    pushFollow(FOLLOW_statement_in_actionBlock2588);
+                    	    pushFollow(FOLLOW_statement_in_actionBlock2655);
                     	    temp=statement();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -5613,7 +5771,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop63;
+                    	    break loop65;
                         }
                     } while (true);
 
@@ -5632,7 +5790,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RCURLY,FOLLOW_RCURLY_in_actionBlock2600); if (failed) return ret2;
+            match(input,RCURLY,FOLLOW_RCURLY_in_actionBlock2667); if (failed) return ret2;
 
             }
 
@@ -5660,7 +5818,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start statement
-    // ATL_ANTLR3.g:394:1: statement returns [Object ret2] : ( (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat ) ) ;
+    // ATL_ANTLR3.g:405:1: statement returns [Object ret2] : ( (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat ) ) ;
     public final Object statement() throws RecognitionException {
         Object ret2 = null;
 
@@ -5668,51 +5826,51 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
         try {
-            // ATL_ANTLR3.g:395:2: ( ( (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat ) ) )
-            // ATL_ANTLR3.g:395:4: ( (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat ) )
+            // ATL_ANTLR3.g:406:2: ( ( (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat ) ) )
+            // ATL_ANTLR3.g:406:4: ( (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat ) )
             {
-            // ATL_ANTLR3.g:395:4: ( (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat ) )
-            // ATL_ANTLR3.g:395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )
+            // ATL_ANTLR3.g:406:4: ( (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat ) )
+            // ATL_ANTLR3.g:406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )
             {
-            // ATL_ANTLR3.g:395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )
-            int alt65=4;
+            // ATL_ANTLR3.g:406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )
+            int alt67=4;
             switch ( input.LA(1) ) {
-            case 68:
+            case 69:
                 {
-                int LA65_1 = input.LA(2);
+                int LA67_1 = input.LA(2);
 
-                if ( (synpred122()) ) {
-                    alt65=1;
+                if ( (synpred125()) ) {
+                    alt67=1;
                 }
-                else if ( (synpred123()) ) {
-                    alt65=2;
+                else if ( (synpred126()) ) {
+                    alt67=2;
                 }
-                else if ( (synpred124()) ) {
-                    alt65=3;
+                else if ( (synpred127()) ) {
+                    alt67=3;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 1, input);
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 1, input);
 
                     throw nvae;
                 }
                 }
                 break;
-            case 93:
+            case 94:
                 {
-                int LA65_2 = input.LA(2);
+                int LA67_2 = input.LA(2);
 
-                if ( (synpred123()) ) {
-                    alt65=2;
+                if ( (synpred126()) ) {
+                    alt67=2;
                 }
-                else if ( (synpred124()) ) {
-                    alt65=3;
+                else if ( (synpred127()) ) {
+                    alt67=3;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 2, input);
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 2, input);
 
                     throw nvae;
                 }
@@ -5720,18 +5878,18 @@ public class ATL_ANTLR3Parser extends Parser {
                 break;
             case MINUS:
                 {
-                int LA65_3 = input.LA(2);
+                int LA67_3 = input.LA(2);
 
-                if ( (synpred123()) ) {
-                    alt65=2;
+                if ( (synpred126()) ) {
+                    alt67=2;
                 }
-                else if ( (synpred124()) ) {
-                    alt65=3;
+                else if ( (synpred127()) ) {
+                    alt67=3;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 3, input);
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 3, input);
 
                     throw nvae;
                 }
@@ -5739,18 +5897,18 @@ public class ATL_ANTLR3Parser extends Parser {
                 break;
             case LPAREN:
                 {
-                int LA65_4 = input.LA(2);
+                int LA67_4 = input.LA(2);
 
-                if ( (synpred123()) ) {
-                    alt65=2;
+                if ( (synpred126()) ) {
+                    alt67=2;
                 }
-                else if ( (synpred124()) ) {
-                    alt65=3;
+                else if ( (synpred127()) ) {
+                    alt67=3;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 4, input);
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 4, input);
 
                     throw nvae;
                 }
@@ -5758,75 +5916,18 @@ public class ATL_ANTLR3Parser extends Parser {
                 break;
             case NAME:
                 {
-                int LA65_5 = input.LA(2);
+                int LA67_5 = input.LA(2);
 
-                if ( (synpred123()) ) {
-                    alt65=2;
+                if ( (synpred126()) ) {
+                    alt67=2;
                 }
-                else if ( (synpred124()) ) {
-                    alt65=3;
+                else if ( (synpred127()) ) {
+                    alt67=3;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 5, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 72:
-                {
-                int LA65_6 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 6, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case INT:
-                {
-                int LA65_7 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 7, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case FLOAT:
-                {
-                int LA65_8 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 8, input);
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 5, input);
 
                     throw nvae;
                 }
@@ -5834,18 +5935,56 @@ public class ATL_ANTLR3Parser extends Parser {
                 break;
             case 73:
                 {
-                int LA65_9 = input.LA(2);
+                int LA67_6 = input.LA(2);
 
-                if ( (synpred123()) ) {
-                    alt65=2;
+                if ( (synpred126()) ) {
+                    alt67=2;
                 }
-                else if ( (synpred124()) ) {
-                    alt65=3;
+                else if ( (synpred127()) ) {
+                    alt67=3;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 9, input);
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 6, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case INT:
+                {
+                int LA67_7 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 7, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case FLOAT:
+                {
+                int LA67_8 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 8, input);
 
                     throw nvae;
                 }
@@ -5853,18 +5992,37 @@ public class ATL_ANTLR3Parser extends Parser {
                 break;
             case 74:
                 {
-                int LA65_10 = input.LA(2);
+                int LA67_9 = input.LA(2);
 
-                if ( (synpred123()) ) {
-                    alt65=2;
+                if ( (synpred126()) ) {
+                    alt67=2;
                 }
-                else if ( (synpred124()) ) {
-                    alt65=3;
+                else if ( (synpred127()) ) {
+                    alt67=3;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 10, input);
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 9, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 75:
+                {
+                int LA67_10 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 10, input);
 
                     throw nvae;
                 }
@@ -5872,322 +6030,18 @@ public class ATL_ANTLR3Parser extends Parser {
                 break;
             case STRING:
                 {
-                int LA65_11 = input.LA(2);
+                int LA67_11 = input.LA(2);
 
-                if ( (synpred123()) ) {
-                    alt65=2;
+                if ( (synpred126()) ) {
+                    alt67=2;
                 }
-                else if ( (synpred124()) ) {
-                    alt65=3;
+                else if ( (synpred127()) ) {
+                    alt67=3;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 11, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 77:
-                {
-                int LA65_12 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 12, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case SHARP:
-                {
-                int LA65_13 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 13, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 79:
-                {
-                int LA65_14 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 14, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 80:
-                {
-                int LA65_15 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 15, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 81:
-                {
-                int LA65_16 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 16, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 82:
-                {
-                int LA65_17 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 17, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 83:
-                {
-                int LA65_18 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 18, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 84:
-                {
-                int LA65_19 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 19, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 86:
-                {
-                int LA65_20 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 20, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 87:
-                {
-                int LA65_21 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 21, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 88:
-                {
-                int LA65_22 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 22, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 89:
-                {
-                int LA65_23 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 23, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 90:
-                {
-                int LA65_24 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 24, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 91:
-                {
-                int LA65_25 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 25, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 92:
-                {
-                int LA65_26 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 26, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            case 85:
-                {
-                int LA65_27 = input.LA(2);
-
-                if ( (synpred123()) ) {
-                    alt65=2;
-                }
-                else if ( (synpred124()) ) {
-                    alt65=3;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 27, input);
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 11, input);
 
                     throw nvae;
                 }
@@ -6195,41 +6049,345 @@ public class ATL_ANTLR3Parser extends Parser {
                 break;
             case 78:
                 {
-                int LA65_28 = input.LA(2);
+                int LA67_12 = input.LA(2);
 
-                if ( (synpred123()) ) {
-                    alt65=2;
+                if ( (synpred126()) ) {
+                    alt67=2;
                 }
-                else if ( (synpred124()) ) {
-                    alt65=3;
+                else if ( (synpred127()) ) {
+                    alt67=3;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 28, input);
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 12, input);
 
                     throw nvae;
                 }
                 }
                 break;
-            case 70:
+            case SHARP:
                 {
-                alt65=4;
+                int LA67_13 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 13, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 80:
+                {
+                int LA67_14 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 14, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 81:
+                {
+                int LA67_15 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 15, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 82:
+                {
+                int LA67_16 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 16, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 83:
+                {
+                int LA67_17 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 17, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 84:
+                {
+                int LA67_18 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 18, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 85:
+                {
+                int LA67_19 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 19, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 87:
+                {
+                int LA67_20 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 20, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 88:
+                {
+                int LA67_21 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 21, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 89:
+                {
+                int LA67_22 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 22, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 90:
+                {
+                int LA67_23 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 23, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 91:
+                {
+                int LA67_24 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 24, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 92:
+                {
+                int LA67_25 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 25, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 93:
+                {
+                int LA67_26 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 26, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 86:
+                {
+                int LA67_27 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 27, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 79:
+                {
+                int LA67_28 = input.LA(2);
+
+                if ( (synpred126()) ) {
+                    alt67=2;
+                }
+                else if ( (synpred127()) ) {
+                    alt67=3;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 28, input);
+
+                    throw nvae;
+                }
+                }
+                break;
+            case 71:
+                {
+                alt67=4;
                 }
                 break;
             default:
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("395:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 65, 0, input);
+                    new NoViableAltException("406:5: (ret= ifStat | ret= expressionStat | ret= bindingStat | ret= forStat )", 67, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt65) {
+            switch (alt67) {
                 case 1 :
-                    // ATL_ANTLR3.g:395:6: ret= ifStat
+                    // ATL_ANTLR3.g:406:6: ret= ifStat
                     {
-                    pushFollow(FOLLOW_ifStat_in_statement2635);
+                    pushFollow(FOLLOW_ifStat_in_statement2702);
                     ret=ifStat();
                     _fsp--;
                     if (failed) return ret2;
@@ -6237,9 +6395,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:395:18: ret= expressionStat
+                    // ATL_ANTLR3.g:406:18: ret= expressionStat
                     {
-                    pushFollow(FOLLOW_expressionStat_in_statement2640);
+                    pushFollow(FOLLOW_expressionStat_in_statement2707);
                     ret=expressionStat();
                     _fsp--;
                     if (failed) return ret2;
@@ -6247,9 +6405,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // ATL_ANTLR3.g:395:38: ret= bindingStat
+                    // ATL_ANTLR3.g:406:38: ret= bindingStat
                     {
-                    pushFollow(FOLLOW_bindingStat_in_statement2645);
+                    pushFollow(FOLLOW_bindingStat_in_statement2712);
                     ret=bindingStat();
                     _fsp--;
                     if (failed) return ret2;
@@ -6257,9 +6415,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 4 :
-                    // ATL_ANTLR3.g:395:55: ret= forStat
+                    // ATL_ANTLR3.g:406:55: ret= forStat
                     {
-                    pushFollow(FOLLOW_forStat_in_statement2650);
+                    pushFollow(FOLLOW_forStat_in_statement2717);
                     ret=forStat();
                     _fsp--;
                     if (failed) return ret2;
@@ -6294,7 +6452,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start bindingStat
-    // ATL_ANTLR3.g:403:1: bindingStat returns [Object ret2] : (temp= oclExpression ( ( ASSIGNARROW ) | ( LARROW ) ) temp= oclExpression SEMI ) ;
+    // ATL_ANTLR3.g:414:1: bindingStat returns [Object ret2] : (temp= oclExpression ( ( ASSIGNARROW ) | ( LARROW ) ) temp= oclExpression SEMI ) ;
     public final Object bindingStat() throws RecognitionException {
         Object ret2 = null;
 
@@ -6303,44 +6461,44 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("BindingStat", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:404:2: ( (temp= oclExpression ( ( ASSIGNARROW ) | ( LARROW ) ) temp= oclExpression SEMI ) )
-            // ATL_ANTLR3.g:404:4: (temp= oclExpression ( ( ASSIGNARROW ) | ( LARROW ) ) temp= oclExpression SEMI )
+            // ATL_ANTLR3.g:415:2: ( (temp= oclExpression ( ( ASSIGNARROW ) | ( LARROW ) ) temp= oclExpression SEMI ) )
+            // ATL_ANTLR3.g:415:4: (temp= oclExpression ( ( ASSIGNARROW ) | ( LARROW ) ) temp= oclExpression SEMI )
             {
-            // ATL_ANTLR3.g:404:4: (temp= oclExpression ( ( ASSIGNARROW ) | ( LARROW ) ) temp= oclExpression SEMI )
-            // ATL_ANTLR3.g:404:5: temp= oclExpression ( ( ASSIGNARROW ) | ( LARROW ) ) temp= oclExpression SEMI
+            // ATL_ANTLR3.g:415:4: (temp= oclExpression ( ( ASSIGNARROW ) | ( LARROW ) ) temp= oclExpression SEMI )
+            // ATL_ANTLR3.g:415:5: temp= oclExpression ( ( ASSIGNARROW ) | ( LARROW ) ) temp= oclExpression SEMI
             {
-            pushFollow(FOLLOW_oclExpression_in_bindingStat2685);
+            pushFollow(FOLLOW_oclExpression_in_bindingStat2752);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "source", temp);
             }
-            // ATL_ANTLR3.g:404:55: ( ( ASSIGNARROW ) | ( LARROW ) )
-            int alt66=2;
-            int LA66_0 = input.LA(1);
+            // ATL_ANTLR3.g:415:55: ( ( ASSIGNARROW ) | ( LARROW ) )
+            int alt68=2;
+            int LA68_0 = input.LA(1);
 
-            if ( (LA66_0==ASSIGNARROW) ) {
-                alt66=1;
+            if ( (LA68_0==ASSIGNARROW) ) {
+                alt68=1;
             }
-            else if ( (LA66_0==LARROW) ) {
-                alt66=2;
+            else if ( (LA68_0==LARROW) ) {
+                alt68=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("404:55: ( ( ASSIGNARROW ) | ( LARROW ) )", 66, 0, input);
+                    new NoViableAltException("415:55: ( ( ASSIGNARROW ) | ( LARROW ) )", 68, 0, input);
 
                 throw nvae;
             }
-            switch (alt66) {
+            switch (alt68) {
                 case 1 :
-                    // ATL_ANTLR3.g:404:56: ( ASSIGNARROW )
+                    // ATL_ANTLR3.g:415:56: ( ASSIGNARROW )
                     {
-                    // ATL_ANTLR3.g:404:56: ( ASSIGNARROW )
-                    // ATL_ANTLR3.g:404:57: ASSIGNARROW
+                    // ATL_ANTLR3.g:415:56: ( ASSIGNARROW )
+                    // ATL_ANTLR3.g:415:57: ASSIGNARROW
                     {
-                    match(input,ASSIGNARROW,FOLLOW_ASSIGNARROW_in_bindingStat2691); if (failed) return ret2;
+                    match(input,ASSIGNARROW,FOLLOW_ASSIGNARROW_in_bindingStat2758); if (failed) return ret2;
 
                     }
 
@@ -6351,12 +6509,12 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:404:126: ( LARROW )
+                    // ATL_ANTLR3.g:415:126: ( LARROW )
                     {
-                    // ATL_ANTLR3.g:404:126: ( LARROW )
-                    // ATL_ANTLR3.g:404:127: LARROW
+                    // ATL_ANTLR3.g:415:126: ( LARROW )
+                    // ATL_ANTLR3.g:415:127: LARROW
                     {
-                    match(input,LARROW,FOLLOW_LARROW_in_bindingStat2698); if (failed) return ret2;
+                    match(input,LARROW,FOLLOW_LARROW_in_bindingStat2765); if (failed) return ret2;
 
                     }
 
@@ -6369,14 +6527,14 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            pushFollow(FOLLOW_oclExpression_in_bindingStat2706);
+            pushFollow(FOLLOW_oclExpression_in_bindingStat2773);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "value", temp);
             }
-            match(input,SEMI,FOLLOW_SEMI_in_bindingStat2710); if (failed) return ret2;
+            match(input,SEMI,FOLLOW_SEMI_in_bindingStat2777); if (failed) return ret2;
 
             }
 
@@ -6404,7 +6562,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start expressionStat
-    // ATL_ANTLR3.g:414:1: expressionStat returns [Object ret2] : (temp= oclExpression SEMI ) ;
+    // ATL_ANTLR3.g:425:1: expressionStat returns [Object ret2] : (temp= oclExpression SEMI ) ;
     public final Object expressionStat() throws RecognitionException {
         Object ret2 = null;
 
@@ -6413,20 +6571,20 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("ExpressionStat", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:415:2: ( (temp= oclExpression SEMI ) )
-            // ATL_ANTLR3.g:415:4: (temp= oclExpression SEMI )
+            // ATL_ANTLR3.g:426:2: ( (temp= oclExpression SEMI ) )
+            // ATL_ANTLR3.g:426:4: (temp= oclExpression SEMI )
             {
-            // ATL_ANTLR3.g:415:4: (temp= oclExpression SEMI )
-            // ATL_ANTLR3.g:415:5: temp= oclExpression SEMI
+            // ATL_ANTLR3.g:426:4: (temp= oclExpression SEMI )
+            // ATL_ANTLR3.g:426:5: temp= oclExpression SEMI
             {
-            pushFollow(FOLLOW_oclExpression_in_expressionStat2744);
+            pushFollow(FOLLOW_oclExpression_in_expressionStat2811);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "expression", temp);
             }
-            match(input,SEMI,FOLLOW_SEMI_in_expressionStat2748); if (failed) return ret2;
+            match(input,SEMI,FOLLOW_SEMI_in_expressionStat2815); if (failed) return ret2;
 
             }
 
@@ -6454,7 +6612,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start ifStat
-    // ATL_ANTLR3.g:425:1: ifStat returns [Object ret2] : ( 'if' LPAREN temp= oclExpression RPAREN ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () ) ) ;
+    // ATL_ANTLR3.g:436:1: ifStat returns [Object ret2] : ( 'if' LPAREN temp= oclExpression RPAREN ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () ) ) ;
     public final Object ifStat() throws RecognitionException {
         Object ret2 = null;
 
@@ -6463,53 +6621,53 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("IfStat", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:426:2: ( ( 'if' LPAREN temp= oclExpression RPAREN ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () ) ) )
-            // ATL_ANTLR3.g:426:4: ( 'if' LPAREN temp= oclExpression RPAREN ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () ) )
+            // ATL_ANTLR3.g:437:2: ( ( 'if' LPAREN temp= oclExpression RPAREN ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () ) ) )
+            // ATL_ANTLR3.g:437:4: ( 'if' LPAREN temp= oclExpression RPAREN ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () ) )
             {
-            // ATL_ANTLR3.g:426:4: ( 'if' LPAREN temp= oclExpression RPAREN ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () ) )
-            // ATL_ANTLR3.g:426:5: 'if' LPAREN temp= oclExpression RPAREN ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () )
+            // ATL_ANTLR3.g:437:4: ( 'if' LPAREN temp= oclExpression RPAREN ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () ) )
+            // ATL_ANTLR3.g:437:5: 'if' LPAREN temp= oclExpression RPAREN ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () )
             {
-            match(input,68,FOLLOW_68_in_ifStat2780); if (failed) return ret2;
-            match(input,LPAREN,FOLLOW_LPAREN_in_ifStat2782); if (failed) return ret2;
-            pushFollow(FOLLOW_oclExpression_in_ifStat2786);
+            match(input,69,FOLLOW_69_in_ifStat2847); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_ifStat2849); if (failed) return ret2;
+            pushFollow(FOLLOW_oclExpression_in_ifStat2853);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "condition", temp);
             }
-            match(input,RPAREN,FOLLOW_RPAREN_in_ifStat2790); if (failed) return ret2;
-            // ATL_ANTLR3.g:426:77: ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )
-            int alt69=2;
-            int LA69_0 = input.LA(1);
+            match(input,RPAREN,FOLLOW_RPAREN_in_ifStat2857); if (failed) return ret2;
+            // ATL_ANTLR3.g:437:77: ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )
+            int alt71=2;
+            int LA71_0 = input.LA(1);
 
-            if ( ((LA69_0>=NAME && LA69_0<=FLOAT)||LA69_0==LPAREN||LA69_0==SHARP||LA69_0==MINUS||LA69_0==68||LA69_0==70||(LA69_0>=72 && LA69_0<=74)||(LA69_0>=77 && LA69_0<=93)) ) {
-                alt69=1;
+            if ( ((LA71_0>=NAME && LA71_0<=FLOAT)||LA71_0==LPAREN||LA71_0==SHARP||LA71_0==MINUS||LA71_0==69||LA71_0==71||(LA71_0>=73 && LA71_0<=75)||(LA71_0>=78 && LA71_0<=94)) ) {
+                alt71=1;
             }
-            else if ( (LA69_0==LCURLY) ) {
-                alt69=2;
+            else if ( (LA71_0==LCURLY) ) {
+                alt71=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("426:77: ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )", 69, 0, input);
+                    new NoViableAltException("437:77: ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )", 71, 0, input);
 
                 throw nvae;
             }
-            switch (alt69) {
+            switch (alt71) {
                 case 1 :
-                    // ATL_ANTLR3.g:426:78: ( ( (temp= statement ) ) )
+                    // ATL_ANTLR3.g:437:78: ( ( (temp= statement ) ) )
                     {
-                    // ATL_ANTLR3.g:426:78: ( ( (temp= statement ) ) )
-                    // ATL_ANTLR3.g:426:79: ( (temp= statement ) )
+                    // ATL_ANTLR3.g:437:78: ( ( (temp= statement ) ) )
+                    // ATL_ANTLR3.g:437:79: ( (temp= statement ) )
                     {
-                    // ATL_ANTLR3.g:426:79: ( (temp= statement ) )
-                    // ATL_ANTLR3.g:426:80: (temp= statement )
+                    // ATL_ANTLR3.g:437:79: ( (temp= statement ) )
+                    // ATL_ANTLR3.g:437:80: (temp= statement )
                     {
-                    // ATL_ANTLR3.g:426:80: (temp= statement )
-                    // ATL_ANTLR3.g:426:81: temp= statement
+                    // ATL_ANTLR3.g:437:80: (temp= statement )
+                    // ATL_ANTLR3.g:437:81: temp= statement
                     {
-                    pushFollow(FOLLOW_statement_in_ifStat2798);
+                    pushFollow(FOLLOW_statement_in_ifStat2865);
                     temp=statement();
                     _fsp--;
                     if (failed) return ret2;
@@ -6531,58 +6689,58 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:426:142: ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
+                    // ATL_ANTLR3.g:437:142: ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
                     {
-                    // ATL_ANTLR3.g:426:142: ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
-                    // ATL_ANTLR3.g:426:143: LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY
+                    // ATL_ANTLR3.g:437:142: ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
+                    // ATL_ANTLR3.g:437:143: LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY
                     {
-                    match(input,LCURLY,FOLLOW_LCURLY_in_ifStat2809); if (failed) return ret2;
-                    // ATL_ANTLR3.g:426:150: ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) )
-                    // ATL_ANTLR3.g:426:151: ( ( (temp= statement ( (temp= statement ) )* ) )? )
+                    match(input,LCURLY,FOLLOW_LCURLY_in_ifStat2876); if (failed) return ret2;
+                    // ATL_ANTLR3.g:437:150: ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) )
+                    // ATL_ANTLR3.g:437:151: ( ( (temp= statement ( (temp= statement ) )* ) )? )
                     {
-                    // ATL_ANTLR3.g:426:151: ( ( (temp= statement ( (temp= statement ) )* ) )? )
-                    // ATL_ANTLR3.g:426:152: ( (temp= statement ( (temp= statement ) )* ) )?
+                    // ATL_ANTLR3.g:437:151: ( ( (temp= statement ( (temp= statement ) )* ) )? )
+                    // ATL_ANTLR3.g:437:152: ( (temp= statement ( (temp= statement ) )* ) )?
                     {
-                    // ATL_ANTLR3.g:426:152: ( (temp= statement ( (temp= statement ) )* ) )?
-                    int alt68=2;
-                    int LA68_0 = input.LA(1);
+                    // ATL_ANTLR3.g:437:152: ( (temp= statement ( (temp= statement ) )* ) )?
+                    int alt70=2;
+                    int LA70_0 = input.LA(1);
 
-                    if ( ((LA68_0>=NAME && LA68_0<=FLOAT)||LA68_0==LPAREN||LA68_0==SHARP||LA68_0==MINUS||LA68_0==68||LA68_0==70||(LA68_0>=72 && LA68_0<=74)||(LA68_0>=77 && LA68_0<=93)) ) {
-                        alt68=1;
+                    if ( ((LA70_0>=NAME && LA70_0<=FLOAT)||LA70_0==LPAREN||LA70_0==SHARP||LA70_0==MINUS||LA70_0==69||LA70_0==71||(LA70_0>=73 && LA70_0<=75)||(LA70_0>=78 && LA70_0<=94)) ) {
+                        alt70=1;
                     }
-                    switch (alt68) {
+                    switch (alt70) {
                         case 1 :
-                            // ATL_ANTLR3.g:426:153: (temp= statement ( (temp= statement ) )* )
+                            // ATL_ANTLR3.g:437:153: (temp= statement ( (temp= statement ) )* )
                             {
-                            // ATL_ANTLR3.g:426:153: (temp= statement ( (temp= statement ) )* )
-                            // ATL_ANTLR3.g:426:154: temp= statement ( (temp= statement ) )*
+                            // ATL_ANTLR3.g:437:153: (temp= statement ( (temp= statement ) )* )
+                            // ATL_ANTLR3.g:437:154: temp= statement ( (temp= statement ) )*
                             {
-                            pushFollow(FOLLOW_statement_in_ifStat2817);
+                            pushFollow(FOLLOW_statement_in_ifStat2884);
                             temp=statement();
                             _fsp--;
                             if (failed) return ret2;
                             if ( backtracking==0 ) {
                               ei.set(ret, "thenStatements", temp);
                             }
-                            // ATL_ANTLR3.g:426:208: ( (temp= statement ) )*
-                            loop67:
+                            // ATL_ANTLR3.g:437:208: ( (temp= statement ) )*
+                            loop69:
                             do {
-                                int alt67=2;
-                                int LA67_0 = input.LA(1);
+                                int alt69=2;
+                                int LA69_0 = input.LA(1);
 
-                                if ( ((LA67_0>=NAME && LA67_0<=FLOAT)||LA67_0==LPAREN||LA67_0==SHARP||LA67_0==MINUS||LA67_0==68||LA67_0==70||(LA67_0>=72 && LA67_0<=74)||(LA67_0>=77 && LA67_0<=93)) ) {
-                                    alt67=1;
+                                if ( ((LA69_0>=NAME && LA69_0<=FLOAT)||LA69_0==LPAREN||LA69_0==SHARP||LA69_0==MINUS||LA69_0==69||LA69_0==71||(LA69_0>=73 && LA69_0<=75)||(LA69_0>=78 && LA69_0<=94)) ) {
+                                    alt69=1;
                                 }
 
 
-                                switch (alt67) {
+                                switch (alt69) {
                             	case 1 :
-                            	    // ATL_ANTLR3.g:426:209: (temp= statement )
+                            	    // ATL_ANTLR3.g:437:209: (temp= statement )
                             	    {
-                            	    // ATL_ANTLR3.g:426:209: (temp= statement )
-                            	    // ATL_ANTLR3.g:426:210: temp= statement
+                            	    // ATL_ANTLR3.g:437:209: (temp= statement )
+                            	    // ATL_ANTLR3.g:437:210: temp= statement
                             	    {
-                            	    pushFollow(FOLLOW_statement_in_ifStat2825);
+                            	    pushFollow(FOLLOW_statement_in_ifStat2892);
                             	    temp=statement();
                             	    _fsp--;
                             	    if (failed) return ret2;
@@ -6597,7 +6755,7 @@ public class ATL_ANTLR3Parser extends Parser {
                             	    break;
 
                             	default :
-                            	    break loop67;
+                            	    break loop69;
                                 }
                             } while (true);
 
@@ -6616,7 +6774,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
                     }
 
-                    match(input,RCURLY,FOLLOW_RCURLY_in_ifStat2837); if (failed) return ret2;
+                    match(input,RCURLY,FOLLOW_RCURLY_in_ifStat2904); if (failed) return ret2;
 
                     }
 
@@ -6628,77 +6786,76 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            // ATL_ANTLR3.g:426:284: ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () )
-            int alt73=2;
-            int LA73_0 = input.LA(1);
+            // ATL_ANTLR3.g:437:284: ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () )
+            int alt75=2;
+            int LA75_0 = input.LA(1);
 
-            if ( (LA73_0==69) ) {
-                int LA73_1 = input.LA(2);
+            if ( (LA75_0==70) ) {
+                int LA75_1 = input.LA(2);
 
-                if ( (synpred132()) ) {
-                    alt73=1;
+                if ( (synpred135()) ) {
+                    alt75=1;
                 }
                 else if ( (true) ) {
-                    alt73=2;
+                    alt75=2;
                 }
-                // TODO keep in sync to avoid compilation warnings
-//                else {
-//                    if (backtracking>0) {failed=true; return ret2;}
-//                    NoViableAltException nvae =
-//                        new NoViableAltException("426:284: ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () )", 73, 1, input);
-//
-//                    throw nvae;
-//                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("437:284: ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () )", 75, 1, input);
+
+                    throw nvae;
+                }
             }
-            else if ( (LA73_0==EOF||(LA73_0>=NAME && LA73_0<=FLOAT)||LA73_0==LPAREN||LA73_0==RCURLY||LA73_0==SHARP||LA73_0==MINUS||LA73_0==68||LA73_0==70||(LA73_0>=72 && LA73_0<=74)||(LA73_0>=77 && LA73_0<=93)) ) {
-                alt73=2;
+            else if ( (LA75_0==EOF||(LA75_0>=NAME && LA75_0<=FLOAT)||LA75_0==LPAREN||LA75_0==RCURLY||LA75_0==SHARP||LA75_0==MINUS||LA75_0==69||LA75_0==71||(LA75_0>=73 && LA75_0<=75)||(LA75_0>=78 && LA75_0<=94)) ) {
+                alt75=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("426:284: ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () )", 73, 0, input);
+                    new NoViableAltException("437:284: ( ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) ) | () )", 75, 0, input);
 
                 throw nvae;
             }
-            switch (alt73) {
+            switch (alt75) {
                 case 1 :
-                    // ATL_ANTLR3.g:426:285: ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) )
+                    // ATL_ANTLR3.g:437:285: ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) )
                     {
-                    // ATL_ANTLR3.g:426:285: ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) )
-                    // ATL_ANTLR3.g:426:286: 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )
+                    // ATL_ANTLR3.g:437:285: ( 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ) )
+                    // ATL_ANTLR3.g:437:286: 'else' ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )
                     {
-                    match(input,69,FOLLOW_69_in_ifStat2845); if (failed) return ret2;
-                    // ATL_ANTLR3.g:426:293: ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )
-                    int alt72=2;
-                    int LA72_0 = input.LA(1);
+                    match(input,70,FOLLOW_70_in_ifStat2912); if (failed) return ret2;
+                    // ATL_ANTLR3.g:437:293: ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )
+                    int alt74=2;
+                    int LA74_0 = input.LA(1);
 
-                    if ( ((LA72_0>=NAME && LA72_0<=FLOAT)||LA72_0==LPAREN||LA72_0==SHARP||LA72_0==MINUS||LA72_0==68||LA72_0==70||(LA72_0>=72 && LA72_0<=74)||(LA72_0>=77 && LA72_0<=93)) ) {
-                        alt72=1;
+                    if ( ((LA74_0>=NAME && LA74_0<=FLOAT)||LA74_0==LPAREN||LA74_0==SHARP||LA74_0==MINUS||LA74_0==69||LA74_0==71||(LA74_0>=73 && LA74_0<=75)||(LA74_0>=78 && LA74_0<=94)) ) {
+                        alt74=1;
                     }
-                    else if ( (LA72_0==LCURLY) ) {
-                        alt72=2;
+                    else if ( (LA74_0==LCURLY) ) {
+                        alt74=2;
                     }
                     else {
                         if (backtracking>0) {failed=true; return ret2;}
                         NoViableAltException nvae =
-                            new NoViableAltException("426:293: ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )", 72, 0, input);
+                            new NoViableAltException("437:293: ( ( ( (temp= statement ) ) ) | ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )", 74, 0, input);
 
                         throw nvae;
                     }
-                    switch (alt72) {
+                    switch (alt74) {
                         case 1 :
-                            // ATL_ANTLR3.g:426:294: ( ( (temp= statement ) ) )
+                            // ATL_ANTLR3.g:437:294: ( ( (temp= statement ) ) )
                             {
-                            // ATL_ANTLR3.g:426:294: ( ( (temp= statement ) ) )
-                            // ATL_ANTLR3.g:426:295: ( (temp= statement ) )
+                            // ATL_ANTLR3.g:437:294: ( ( (temp= statement ) ) )
+                            // ATL_ANTLR3.g:437:295: ( (temp= statement ) )
                             {
-                            // ATL_ANTLR3.g:426:295: ( (temp= statement ) )
-                            // ATL_ANTLR3.g:426:296: (temp= statement )
+                            // ATL_ANTLR3.g:437:295: ( (temp= statement ) )
+                            // ATL_ANTLR3.g:437:296: (temp= statement )
                             {
-                            // ATL_ANTLR3.g:426:296: (temp= statement )
-                            // ATL_ANTLR3.g:426:297: temp= statement
+                            // ATL_ANTLR3.g:437:296: (temp= statement )
+                            // ATL_ANTLR3.g:437:297: temp= statement
                             {
-                            pushFollow(FOLLOW_statement_in_ifStat2853);
+                            pushFollow(FOLLOW_statement_in_ifStat2920);
                             temp=statement();
                             _fsp--;
                             if (failed) return ret2;
@@ -6720,58 +6877,58 @@ public class ATL_ANTLR3Parser extends Parser {
                             }
                             break;
                         case 2 :
-                            // ATL_ANTLR3.g:426:358: ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
+                            // ATL_ANTLR3.g:437:358: ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
                             {
-                            // ATL_ANTLR3.g:426:358: ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
-                            // ATL_ANTLR3.g:426:359: LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY
+                            // ATL_ANTLR3.g:437:358: ( LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
+                            // ATL_ANTLR3.g:437:359: LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY
                             {
-                            match(input,LCURLY,FOLLOW_LCURLY_in_ifStat2864); if (failed) return ret2;
-                            // ATL_ANTLR3.g:426:366: ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) )
-                            // ATL_ANTLR3.g:426:367: ( ( (temp= statement ( (temp= statement ) )* ) )? )
+                            match(input,LCURLY,FOLLOW_LCURLY_in_ifStat2931); if (failed) return ret2;
+                            // ATL_ANTLR3.g:437:366: ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) )
+                            // ATL_ANTLR3.g:437:367: ( ( (temp= statement ( (temp= statement ) )* ) )? )
                             {
-                            // ATL_ANTLR3.g:426:367: ( ( (temp= statement ( (temp= statement ) )* ) )? )
-                            // ATL_ANTLR3.g:426:368: ( (temp= statement ( (temp= statement ) )* ) )?
+                            // ATL_ANTLR3.g:437:367: ( ( (temp= statement ( (temp= statement ) )* ) )? )
+                            // ATL_ANTLR3.g:437:368: ( (temp= statement ( (temp= statement ) )* ) )?
                             {
-                            // ATL_ANTLR3.g:426:368: ( (temp= statement ( (temp= statement ) )* ) )?
-                            int alt71=2;
-                            int LA71_0 = input.LA(1);
+                            // ATL_ANTLR3.g:437:368: ( (temp= statement ( (temp= statement ) )* ) )?
+                            int alt73=2;
+                            int LA73_0 = input.LA(1);
 
-                            if ( ((LA71_0>=NAME && LA71_0<=FLOAT)||LA71_0==LPAREN||LA71_0==SHARP||LA71_0==MINUS||LA71_0==68||LA71_0==70||(LA71_0>=72 && LA71_0<=74)||(LA71_0>=77 && LA71_0<=93)) ) {
-                                alt71=1;
+                            if ( ((LA73_0>=NAME && LA73_0<=FLOAT)||LA73_0==LPAREN||LA73_0==SHARP||LA73_0==MINUS||LA73_0==69||LA73_0==71||(LA73_0>=73 && LA73_0<=75)||(LA73_0>=78 && LA73_0<=94)) ) {
+                                alt73=1;
                             }
-                            switch (alt71) {
+                            switch (alt73) {
                                 case 1 :
-                                    // ATL_ANTLR3.g:426:369: (temp= statement ( (temp= statement ) )* )
+                                    // ATL_ANTLR3.g:437:369: (temp= statement ( (temp= statement ) )* )
                                     {
-                                    // ATL_ANTLR3.g:426:369: (temp= statement ( (temp= statement ) )* )
-                                    // ATL_ANTLR3.g:426:370: temp= statement ( (temp= statement ) )*
+                                    // ATL_ANTLR3.g:437:369: (temp= statement ( (temp= statement ) )* )
+                                    // ATL_ANTLR3.g:437:370: temp= statement ( (temp= statement ) )*
                                     {
-                                    pushFollow(FOLLOW_statement_in_ifStat2872);
+                                    pushFollow(FOLLOW_statement_in_ifStat2939);
                                     temp=statement();
                                     _fsp--;
                                     if (failed) return ret2;
                                     if ( backtracking==0 ) {
                                       ei.set(ret, "elseStatements", temp);
                                     }
-                                    // ATL_ANTLR3.g:426:424: ( (temp= statement ) )*
-                                    loop70:
+                                    // ATL_ANTLR3.g:437:424: ( (temp= statement ) )*
+                                    loop72:
                                     do {
-                                        int alt70=2;
-                                        int LA70_0 = input.LA(1);
+                                        int alt72=2;
+                                        int LA72_0 = input.LA(1);
 
-                                        if ( ((LA70_0>=NAME && LA70_0<=FLOAT)||LA70_0==LPAREN||LA70_0==SHARP||LA70_0==MINUS||LA70_0==68||LA70_0==70||(LA70_0>=72 && LA70_0<=74)||(LA70_0>=77 && LA70_0<=93)) ) {
-                                            alt70=1;
+                                        if ( ((LA72_0>=NAME && LA72_0<=FLOAT)||LA72_0==LPAREN||LA72_0==SHARP||LA72_0==MINUS||LA72_0==69||LA72_0==71||(LA72_0>=73 && LA72_0<=75)||(LA72_0>=78 && LA72_0<=94)) ) {
+                                            alt72=1;
                                         }
 
 
-                                        switch (alt70) {
+                                        switch (alt72) {
                                     	case 1 :
-                                    	    // ATL_ANTLR3.g:426:425: (temp= statement )
+                                    	    // ATL_ANTLR3.g:437:425: (temp= statement )
                                     	    {
-                                    	    // ATL_ANTLR3.g:426:425: (temp= statement )
-                                    	    // ATL_ANTLR3.g:426:426: temp= statement
+                                    	    // ATL_ANTLR3.g:437:425: (temp= statement )
+                                    	    // ATL_ANTLR3.g:437:426: temp= statement
                                     	    {
-                                    	    pushFollow(FOLLOW_statement_in_ifStat2880);
+                                    	    pushFollow(FOLLOW_statement_in_ifStat2947);
                                     	    temp=statement();
                                     	    _fsp--;
                                     	    if (failed) return ret2;
@@ -6786,7 +6943,7 @@ public class ATL_ANTLR3Parser extends Parser {
                                     	    break;
 
                                     	default :
-                                    	    break loop70;
+                                    	    break loop72;
                                         }
                                     } while (true);
 
@@ -6805,7 +6962,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
                             }
 
-                            match(input,RCURLY,FOLLOW_RCURLY_in_ifStat2892); if (failed) return ret2;
+                            match(input,RCURLY,FOLLOW_RCURLY_in_ifStat2959); if (failed) return ret2;
 
                             }
 
@@ -6826,10 +6983,10 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:426:505: ()
+                    // ATL_ANTLR3.g:437:505: ()
                     {
-                    // ATL_ANTLR3.g:426:505: ()
-                    // ATL_ANTLR3.g:426:506: 
+                    // ATL_ANTLR3.g:437:505: ()
+                    // ATL_ANTLR3.g:437:506: 
                     {
                     }
 
@@ -6868,7 +7025,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start forStat
-    // ATL_ANTLR3.g:436:1: forStat returns [Object ret2] : ( 'for' LPAREN temp= iterator 'in' temp= oclExpression RPAREN LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ;
+    // ATL_ANTLR3.g:447:1: forStat returns [Object ret2] : ( 'for' LPAREN temp= iterator 'in' temp= oclExpression RPAREN LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) ;
     public final Object forStat() throws RecognitionException {
         Object ret2 = null;
 
@@ -6877,77 +7034,77 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("ForStat", true, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:437:2: ( ( 'for' LPAREN temp= iterator 'in' temp= oclExpression RPAREN LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )
-            // ATL_ANTLR3.g:437:4: ( 'for' LPAREN temp= iterator 'in' temp= oclExpression RPAREN LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
+            // ATL_ANTLR3.g:448:2: ( ( 'for' LPAREN temp= iterator 'in' temp= oclExpression RPAREN LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY ) )
+            // ATL_ANTLR3.g:448:4: ( 'for' LPAREN temp= iterator 'in' temp= oclExpression RPAREN LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
             {
-            // ATL_ANTLR3.g:437:4: ( 'for' LPAREN temp= iterator 'in' temp= oclExpression RPAREN LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
-            // ATL_ANTLR3.g:437:5: 'for' LPAREN temp= iterator 'in' temp= oclExpression RPAREN LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY
+            // ATL_ANTLR3.g:448:4: ( 'for' LPAREN temp= iterator 'in' temp= oclExpression RPAREN LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY )
+            // ATL_ANTLR3.g:448:5: 'for' LPAREN temp= iterator 'in' temp= oclExpression RPAREN LCURLY ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) ) RCURLY
             {
-            match(input,70,FOLLOW_70_in_forStat2938); if (failed) return ret2;
-            match(input,LPAREN,FOLLOW_LPAREN_in_forStat2940); if (failed) return ret2;
-            pushFollow(FOLLOW_iterator_in_forStat2944);
+            match(input,71,FOLLOW_71_in_forStat3005); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_forStat3007); if (failed) return ret2;
+            pushFollow(FOLLOW_iterator_in_forStat3011);
             temp=iterator();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "iterator", temp);
             }
-            match(input,62,FOLLOW_62_in_forStat2948); if (failed) return ret2;
-            pushFollow(FOLLOW_oclExpression_in_forStat2952);
+            match(input,62,FOLLOW_62_in_forStat3015); if (failed) return ret2;
+            pushFollow(FOLLOW_oclExpression_in_forStat3019);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "collection", temp);
             }
-            match(input,RPAREN,FOLLOW_RPAREN_in_forStat2956); if (failed) return ret2;
-            match(input,LCURLY,FOLLOW_LCURLY_in_forStat2958); if (failed) return ret2;
-            // ATL_ANTLR3.g:437:138: ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) )
-            // ATL_ANTLR3.g:437:139: ( ( (temp= statement ( (temp= statement ) )* ) )? )
+            match(input,RPAREN,FOLLOW_RPAREN_in_forStat3023); if (failed) return ret2;
+            match(input,LCURLY,FOLLOW_LCURLY_in_forStat3025); if (failed) return ret2;
+            // ATL_ANTLR3.g:448:138: ( ( ( (temp= statement ( (temp= statement ) )* ) )? ) )
+            // ATL_ANTLR3.g:448:139: ( ( (temp= statement ( (temp= statement ) )* ) )? )
             {
-            // ATL_ANTLR3.g:437:139: ( ( (temp= statement ( (temp= statement ) )* ) )? )
-            // ATL_ANTLR3.g:437:140: ( (temp= statement ( (temp= statement ) )* ) )?
+            // ATL_ANTLR3.g:448:139: ( ( (temp= statement ( (temp= statement ) )* ) )? )
+            // ATL_ANTLR3.g:448:140: ( (temp= statement ( (temp= statement ) )* ) )?
             {
-            // ATL_ANTLR3.g:437:140: ( (temp= statement ( (temp= statement ) )* ) )?
-            int alt75=2;
-            int LA75_0 = input.LA(1);
+            // ATL_ANTLR3.g:448:140: ( (temp= statement ( (temp= statement ) )* ) )?
+            int alt77=2;
+            int LA77_0 = input.LA(1);
 
-            if ( ((LA75_0>=NAME && LA75_0<=FLOAT)||LA75_0==LPAREN||LA75_0==SHARP||LA75_0==MINUS||LA75_0==68||LA75_0==70||(LA75_0>=72 && LA75_0<=74)||(LA75_0>=77 && LA75_0<=93)) ) {
-                alt75=1;
+            if ( ((LA77_0>=NAME && LA77_0<=FLOAT)||LA77_0==LPAREN||LA77_0==SHARP||LA77_0==MINUS||LA77_0==69||LA77_0==71||(LA77_0>=73 && LA77_0<=75)||(LA77_0>=78 && LA77_0<=94)) ) {
+                alt77=1;
             }
-            switch (alt75) {
+            switch (alt77) {
                 case 1 :
-                    // ATL_ANTLR3.g:437:141: (temp= statement ( (temp= statement ) )* )
+                    // ATL_ANTLR3.g:448:141: (temp= statement ( (temp= statement ) )* )
                     {
-                    // ATL_ANTLR3.g:437:141: (temp= statement ( (temp= statement ) )* )
-                    // ATL_ANTLR3.g:437:142: temp= statement ( (temp= statement ) )*
+                    // ATL_ANTLR3.g:448:141: (temp= statement ( (temp= statement ) )* )
+                    // ATL_ANTLR3.g:448:142: temp= statement ( (temp= statement ) )*
                     {
-                    pushFollow(FOLLOW_statement_in_forStat2966);
+                    pushFollow(FOLLOW_statement_in_forStat3033);
                     temp=statement();
                     _fsp--;
                     if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ei.set(ret, "statements", temp);
                     }
-                    // ATL_ANTLR3.g:437:192: ( (temp= statement ) )*
-                    loop74:
+                    // ATL_ANTLR3.g:448:192: ( (temp= statement ) )*
+                    loop76:
                     do {
-                        int alt74=2;
-                        int LA74_0 = input.LA(1);
+                        int alt76=2;
+                        int LA76_0 = input.LA(1);
 
-                        if ( ((LA74_0>=NAME && LA74_0<=FLOAT)||LA74_0==LPAREN||LA74_0==SHARP||LA74_0==MINUS||LA74_0==68||LA74_0==70||(LA74_0>=72 && LA74_0<=74)||(LA74_0>=77 && LA74_0<=93)) ) {
-                            alt74=1;
+                        if ( ((LA76_0>=NAME && LA76_0<=FLOAT)||LA76_0==LPAREN||LA76_0==SHARP||LA76_0==MINUS||LA76_0==69||LA76_0==71||(LA76_0>=73 && LA76_0<=75)||(LA76_0>=78 && LA76_0<=94)) ) {
+                            alt76=1;
                         }
 
 
-                        switch (alt74) {
+                        switch (alt76) {
                     	case 1 :
-                    	    // ATL_ANTLR3.g:437:193: (temp= statement )
+                    	    // ATL_ANTLR3.g:448:193: (temp= statement )
                     	    {
-                    	    // ATL_ANTLR3.g:437:193: (temp= statement )
-                    	    // ATL_ANTLR3.g:437:194: temp= statement
+                    	    // ATL_ANTLR3.g:448:193: (temp= statement )
+                    	    // ATL_ANTLR3.g:448:194: temp= statement
                     	    {
-                    	    pushFollow(FOLLOW_statement_in_forStat2974);
+                    	    pushFollow(FOLLOW_statement_in_forStat3041);
                     	    temp=statement();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -6962,7 +7119,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop74;
+                    	    break loop76;
                         }
                     } while (true);
 
@@ -6981,7 +7138,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RCURLY,FOLLOW_RCURLY_in_forStat2986); if (failed) return ret2;
+            match(input,RCURLY,FOLLOW_RCURLY_in_forStat3053); if (failed) return ret2;
 
             }
 
@@ -7009,7 +7166,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start oclModel
-    // ATL_ANTLR3.g:447:1: oclModel returns [Object ret2] : (temp= identifier COLON temp= identifier ) ;
+    // ATL_ANTLR3.g:458:1: oclModel returns [Object ret2] : (temp= identifier COLON temp= identifier ) ;
     public final Object oclModel() throws RecognitionException {
         Object ret2 = null;
 
@@ -7018,21 +7175,21 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("OclModel", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:448:2: ( (temp= identifier COLON temp= identifier ) )
-            // ATL_ANTLR3.g:448:4: (temp= identifier COLON temp= identifier )
+            // ATL_ANTLR3.g:459:2: ( (temp= identifier COLON temp= identifier ) )
+            // ATL_ANTLR3.g:459:4: (temp= identifier COLON temp= identifier )
             {
-            // ATL_ANTLR3.g:448:4: (temp= identifier COLON temp= identifier )
-            // ATL_ANTLR3.g:448:5: temp= identifier COLON temp= identifier
+            // ATL_ANTLR3.g:459:4: (temp= identifier COLON temp= identifier )
+            // ATL_ANTLR3.g:459:5: temp= identifier COLON temp= identifier
             {
-            pushFollow(FOLLOW_identifier_in_oclModel3020);
+            pushFollow(FOLLOW_identifier_in_oclModel3087);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "name", temp);
             }
-            match(input,COLON,FOLLOW_COLON_in_oclModel3024); if (failed) return ret2;
-            pushFollow(FOLLOW_identifier_in_oclModel3028);
+            match(input,COLON,FOLLOW_COLON_in_oclModel3091); if (failed) return ret2;
+            pushFollow(FOLLOW_identifier_in_oclModel3095);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
@@ -7066,7 +7223,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start oclModelElement
-    // ATL_ANTLR3.g:458:1: oclModelElement returns [Object ret2] : (temp= identifier EXCL temp= identifier ) ;
+    // ATL_ANTLR3.g:469:1: oclModelElement returns [Object ret2] : (temp= identifier EXCL temp= identifier ) ;
     public final Object oclModelElement() throws RecognitionException {
         Object ret2 = null;
 
@@ -7075,21 +7232,21 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("OclModelElement", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:459:2: ( (temp= identifier EXCL temp= identifier ) )
-            // ATL_ANTLR3.g:459:4: (temp= identifier EXCL temp= identifier )
+            // ATL_ANTLR3.g:470:2: ( (temp= identifier EXCL temp= identifier ) )
+            // ATL_ANTLR3.g:470:4: (temp= identifier EXCL temp= identifier )
             {
-            // ATL_ANTLR3.g:459:4: (temp= identifier EXCL temp= identifier )
-            // ATL_ANTLR3.g:459:5: temp= identifier EXCL temp= identifier
+            // ATL_ANTLR3.g:470:4: (temp= identifier EXCL temp= identifier )
+            // ATL_ANTLR3.g:470:5: temp= identifier EXCL temp= identifier
             {
-            pushFollow(FOLLOW_identifier_in_oclModelElement3064);
+            pushFollow(FOLLOW_identifier_in_oclModelElement3131);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.setRef(ret, "model", "OclModel", "name", temp, "#all", "ifmissing", null, false, null);
             }
-            match(input,EXCL,FOLLOW_EXCL_in_oclModelElement3068); if (failed) return ret2;
-            pushFollow(FOLLOW_identifier_in_oclModelElement3072);
+            match(input,EXCL,FOLLOW_EXCL_in_oclModelElement3135); if (failed) return ret2;
+            pushFollow(FOLLOW_identifier_in_oclModelElement3139);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
@@ -7123,7 +7280,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start oclExpression
-    // ATL_ANTLR3.g:469:1: oclExpression returns [Object ret2] : (ret= priority_5 | ret= letExp ) ;
+    // ATL_ANTLR3.g:480:1: oclExpression returns [Object ret2] : (ret= priority_5 | ret= letExp ) ;
     public final Object oclExpression() throws RecognitionException {
         Object ret2 = null;
 
@@ -7131,31 +7288,31 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
         try {
-            // ATL_ANTLR3.g:470:2: ( (ret= priority_5 | ret= letExp ) )
-            // ATL_ANTLR3.g:470:4: (ret= priority_5 | ret= letExp )
+            // ATL_ANTLR3.g:481:2: ( (ret= priority_5 | ret= letExp ) )
+            // ATL_ANTLR3.g:481:4: (ret= priority_5 | ret= letExp )
             {
-            // ATL_ANTLR3.g:470:4: (ret= priority_5 | ret= letExp )
-            int alt76=2;
-            int LA76_0 = input.LA(1);
+            // ATL_ANTLR3.g:481:4: (ret= priority_5 | ret= letExp )
+            int alt78=2;
+            int LA78_0 = input.LA(1);
 
-            if ( ((LA76_0>=NAME && LA76_0<=FLOAT)||LA76_0==LPAREN||LA76_0==SHARP||LA76_0==MINUS||LA76_0==68||(LA76_0>=72 && LA76_0<=74)||LA76_0==77||(LA76_0>=79 && LA76_0<=93)) ) {
-                alt76=1;
+            if ( ((LA78_0>=NAME && LA78_0<=FLOAT)||LA78_0==LPAREN||LA78_0==SHARP||LA78_0==MINUS||LA78_0==69||(LA78_0>=73 && LA78_0<=75)||LA78_0==78||(LA78_0>=80 && LA78_0<=94)) ) {
+                alt78=1;
             }
-            else if ( (LA76_0==78) ) {
-                alt76=2;
+            else if ( (LA78_0==79) ) {
+                alt78=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("470:4: (ret= priority_5 | ret= letExp )", 76, 0, input);
+                    new NoViableAltException("481:4: (ret= priority_5 | ret= letExp )", 78, 0, input);
 
                 throw nvae;
             }
-            switch (alt76) {
+            switch (alt78) {
                 case 1 :
-                    // ATL_ANTLR3.g:470:5: ret= priority_5
+                    // ATL_ANTLR3.g:481:5: ret= priority_5
                     {
-                    pushFollow(FOLLOW_priority_5_in_oclExpression3108);
+                    pushFollow(FOLLOW_priority_5_in_oclExpression3175);
                     ret=priority_5();
                     _fsp--;
                     if (failed) return ret2;
@@ -7163,9 +7320,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:470:21: ret= letExp
+                    // ATL_ANTLR3.g:481:21: ret= letExp
                     {
-                    pushFollow(FOLLOW_letExp_in_oclExpression3113);
+                    pushFollow(FOLLOW_letExp_in_oclExpression3180);
                     ret=letExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -7196,7 +7353,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start iteratorExp
-    // ATL_ANTLR3.g:477:1: iteratorExp[java.lang.String opName, Object left, org.antlr.runtime.Token firstToken] returns [Object ret2] : (temp= identifier LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) PIPE ( (temp= oclExpression ) ) RPAREN ) ;
+    // ATL_ANTLR3.g:488:1: iteratorExp[java.lang.String opName, Object left, org.antlr.runtime.Token firstToken] returns [Object ret2] : (temp= identifier LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) PIPE ( (temp= oclExpression ) ) RPAREN ) ;
     public final Object iteratorExp(java.lang.String opName, Object left, org.antlr.runtime.Token firstToken) throws RecognitionException {
         Object ret2 = null;
 
@@ -7205,59 +7362,59 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("IteratorExp", true, false) : null;
         try {
-            // ATL_ANTLR3.g:478:2: ( (temp= identifier LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) PIPE ( (temp= oclExpression ) ) RPAREN ) )
-            // ATL_ANTLR3.g:478:4: (temp= identifier LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) PIPE ( (temp= oclExpression ) ) RPAREN )
+            // ATL_ANTLR3.g:489:2: ( (temp= identifier LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) PIPE ( (temp= oclExpression ) ) RPAREN ) )
+            // ATL_ANTLR3.g:489:4: (temp= identifier LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) PIPE ( (temp= oclExpression ) ) RPAREN )
             {
-            // ATL_ANTLR3.g:478:4: (temp= identifier LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) PIPE ( (temp= oclExpression ) ) RPAREN )
-            // ATL_ANTLR3.g:478:5: temp= identifier LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) PIPE ( (temp= oclExpression ) ) RPAREN
+            // ATL_ANTLR3.g:489:4: (temp= identifier LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) PIPE ( (temp= oclExpression ) ) RPAREN )
+            // ATL_ANTLR3.g:489:5: temp= identifier LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) PIPE ( (temp= oclExpression ) ) RPAREN
             {
-            pushFollow(FOLLOW_identifier_in_iteratorExp3148);
+            pushFollow(FOLLOW_identifier_in_iteratorExp3215);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "name", temp);
             }
-            match(input,LPAREN,FOLLOW_LPAREN_in_iteratorExp3152); if (failed) return ret2;
-            // ATL_ANTLR3.g:478:57: ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) )
-            // ATL_ANTLR3.g:478:58: (temp= iterator ( ( ( COMA ) temp= iterator ) )* )
+            match(input,LPAREN,FOLLOW_LPAREN_in_iteratorExp3219); if (failed) return ret2;
+            // ATL_ANTLR3.g:489:57: ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) )
+            // ATL_ANTLR3.g:489:58: (temp= iterator ( ( ( COMA ) temp= iterator ) )* )
             {
-            // ATL_ANTLR3.g:478:58: (temp= iterator ( ( ( COMA ) temp= iterator ) )* )
-            // ATL_ANTLR3.g:478:59: temp= iterator ( ( ( COMA ) temp= iterator ) )*
+            // ATL_ANTLR3.g:489:58: (temp= iterator ( ( ( COMA ) temp= iterator ) )* )
+            // ATL_ANTLR3.g:489:59: temp= iterator ( ( ( COMA ) temp= iterator ) )*
             {
-            pushFollow(FOLLOW_iterator_in_iteratorExp3158);
+            pushFollow(FOLLOW_iterator_in_iteratorExp3225);
             temp=iterator();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "iterators", temp);
             }
-            // ATL_ANTLR3.g:478:107: ( ( ( COMA ) temp= iterator ) )*
-            loop77:
+            // ATL_ANTLR3.g:489:107: ( ( ( COMA ) temp= iterator ) )*
+            loop79:
             do {
-                int alt77=2;
-                int LA77_0 = input.LA(1);
+                int alt79=2;
+                int LA79_0 = input.LA(1);
 
-                if ( (LA77_0==COMA) ) {
-                    alt77=1;
+                if ( (LA79_0==COMA) ) {
+                    alt79=1;
                 }
 
 
-                switch (alt77) {
+                switch (alt79) {
             	case 1 :
-            	    // ATL_ANTLR3.g:478:108: ( ( COMA ) temp= iterator )
+            	    // ATL_ANTLR3.g:489:108: ( ( COMA ) temp= iterator )
             	    {
-            	    // ATL_ANTLR3.g:478:108: ( ( COMA ) temp= iterator )
-            	    // ATL_ANTLR3.g:478:109: ( COMA ) temp= iterator
+            	    // ATL_ANTLR3.g:489:108: ( ( COMA ) temp= iterator )
+            	    // ATL_ANTLR3.g:489:109: ( COMA ) temp= iterator
             	    {
-            	    // ATL_ANTLR3.g:478:109: ( COMA )
-            	    // ATL_ANTLR3.g:478:110: COMA
+            	    // ATL_ANTLR3.g:489:109: ( COMA )
+            	    // ATL_ANTLR3.g:489:110: COMA
             	    {
-            	    match(input,COMA,FOLLOW_COMA_in_iteratorExp3165); if (failed) return ret2;
+            	    match(input,COMA,FOLLOW_COMA_in_iteratorExp3232); if (failed) return ret2;
 
             	    }
 
-            	    pushFollow(FOLLOW_iterator_in_iteratorExp3170);
+            	    pushFollow(FOLLOW_iterator_in_iteratorExp3237);
             	    temp=iterator();
             	    _fsp--;
             	    if (failed) return ret2;
@@ -7272,7 +7429,7 @@ public class ATL_ANTLR3Parser extends Parser {
             	    break;
 
             	default :
-            	    break loop77;
+            	    break loop79;
                 }
             } while (true);
 
@@ -7282,14 +7439,14 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,PIPE,FOLLOW_PIPE_in_iteratorExp3179); if (failed) return ret2;
-            // ATL_ANTLR3.g:478:174: ( (temp= oclExpression ) )
-            // ATL_ANTLR3.g:478:175: (temp= oclExpression )
+            match(input,PIPE,FOLLOW_PIPE_in_iteratorExp3246); if (failed) return ret2;
+            // ATL_ANTLR3.g:489:174: ( (temp= oclExpression ) )
+            // ATL_ANTLR3.g:489:175: (temp= oclExpression )
             {
-            // ATL_ANTLR3.g:478:175: (temp= oclExpression )
-            // ATL_ANTLR3.g:478:176: temp= oclExpression
+            // ATL_ANTLR3.g:489:175: (temp= oclExpression )
+            // ATL_ANTLR3.g:489:176: temp= oclExpression
             {
-            pushFollow(FOLLOW_oclExpression_in_iteratorExp3185);
+            pushFollow(FOLLOW_oclExpression_in_iteratorExp3252);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
@@ -7302,7 +7459,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_iteratorExp3191); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_iteratorExp3258); if (failed) return ret2;
 
             }
 
@@ -7332,7 +7489,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start iterateExp
-    // ATL_ANTLR3.g:490:1: iterateExp[java.lang.String opName, Object left, org.antlr.runtime.Token firstToken] returns [Object ret2] : ( 'iterate' LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) SEMI temp= variableDeclaration PIPE ( (temp= oclExpression ) ) RPAREN ) ;
+    // ATL_ANTLR3.g:501:1: iterateExp[java.lang.String opName, Object left, org.antlr.runtime.Token firstToken] returns [Object ret2] : ( 'iterate' LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) SEMI temp= variableDeclaration PIPE ( (temp= oclExpression ) ) RPAREN ) ;
     public final Object iterateExp(java.lang.String opName, Object left, org.antlr.runtime.Token firstToken) throws RecognitionException {
         Object ret2 = null;
 
@@ -7341,53 +7498,53 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("IterateExp", true, false) : null;
         try {
-            // ATL_ANTLR3.g:491:2: ( ( 'iterate' LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) SEMI temp= variableDeclaration PIPE ( (temp= oclExpression ) ) RPAREN ) )
-            // ATL_ANTLR3.g:491:4: ( 'iterate' LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) SEMI temp= variableDeclaration PIPE ( (temp= oclExpression ) ) RPAREN )
+            // ATL_ANTLR3.g:502:2: ( ( 'iterate' LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) SEMI temp= variableDeclaration PIPE ( (temp= oclExpression ) ) RPAREN ) )
+            // ATL_ANTLR3.g:502:4: ( 'iterate' LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) SEMI temp= variableDeclaration PIPE ( (temp= oclExpression ) ) RPAREN )
             {
-            // ATL_ANTLR3.g:491:4: ( 'iterate' LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) SEMI temp= variableDeclaration PIPE ( (temp= oclExpression ) ) RPAREN )
-            // ATL_ANTLR3.g:491:5: 'iterate' LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) SEMI temp= variableDeclaration PIPE ( (temp= oclExpression ) ) RPAREN
+            // ATL_ANTLR3.g:502:4: ( 'iterate' LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) SEMI temp= variableDeclaration PIPE ( (temp= oclExpression ) ) RPAREN )
+            // ATL_ANTLR3.g:502:5: 'iterate' LPAREN ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) ) SEMI temp= variableDeclaration PIPE ( (temp= oclExpression ) ) RPAREN
             {
-            match(input,71,FOLLOW_71_in_iterateExp3224); if (failed) return ret2;
-            match(input,LPAREN,FOLLOW_LPAREN_in_iterateExp3226); if (failed) return ret2;
-            // ATL_ANTLR3.g:491:22: ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) )
-            // ATL_ANTLR3.g:491:23: (temp= iterator ( ( ( COMA ) temp= iterator ) )* )
+            match(input,72,FOLLOW_72_in_iterateExp3291); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_iterateExp3293); if (failed) return ret2;
+            // ATL_ANTLR3.g:502:22: ( (temp= iterator ( ( ( COMA ) temp= iterator ) )* ) )
+            // ATL_ANTLR3.g:502:23: (temp= iterator ( ( ( COMA ) temp= iterator ) )* )
             {
-            // ATL_ANTLR3.g:491:23: (temp= iterator ( ( ( COMA ) temp= iterator ) )* )
-            // ATL_ANTLR3.g:491:24: temp= iterator ( ( ( COMA ) temp= iterator ) )*
+            // ATL_ANTLR3.g:502:23: (temp= iterator ( ( ( COMA ) temp= iterator ) )* )
+            // ATL_ANTLR3.g:502:24: temp= iterator ( ( ( COMA ) temp= iterator ) )*
             {
-            pushFollow(FOLLOW_iterator_in_iterateExp3232);
+            pushFollow(FOLLOW_iterator_in_iterateExp3299);
             temp=iterator();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "iterators", temp);
             }
-            // ATL_ANTLR3.g:491:72: ( ( ( COMA ) temp= iterator ) )*
-            loop78:
+            // ATL_ANTLR3.g:502:72: ( ( ( COMA ) temp= iterator ) )*
+            loop80:
             do {
-                int alt78=2;
-                int LA78_0 = input.LA(1);
+                int alt80=2;
+                int LA80_0 = input.LA(1);
 
-                if ( (LA78_0==COMA) ) {
-                    alt78=1;
+                if ( (LA80_0==COMA) ) {
+                    alt80=1;
                 }
 
 
-                switch (alt78) {
+                switch (alt80) {
             	case 1 :
-            	    // ATL_ANTLR3.g:491:73: ( ( COMA ) temp= iterator )
+            	    // ATL_ANTLR3.g:502:73: ( ( COMA ) temp= iterator )
             	    {
-            	    // ATL_ANTLR3.g:491:73: ( ( COMA ) temp= iterator )
-            	    // ATL_ANTLR3.g:491:74: ( COMA ) temp= iterator
+            	    // ATL_ANTLR3.g:502:73: ( ( COMA ) temp= iterator )
+            	    // ATL_ANTLR3.g:502:74: ( COMA ) temp= iterator
             	    {
-            	    // ATL_ANTLR3.g:491:74: ( COMA )
-            	    // ATL_ANTLR3.g:491:75: COMA
+            	    // ATL_ANTLR3.g:502:74: ( COMA )
+            	    // ATL_ANTLR3.g:502:75: COMA
             	    {
-            	    match(input,COMA,FOLLOW_COMA_in_iterateExp3239); if (failed) return ret2;
+            	    match(input,COMA,FOLLOW_COMA_in_iterateExp3306); if (failed) return ret2;
 
             	    }
 
-            	    pushFollow(FOLLOW_iterator_in_iterateExp3244);
+            	    pushFollow(FOLLOW_iterator_in_iterateExp3311);
             	    temp=iterator();
             	    _fsp--;
             	    if (failed) return ret2;
@@ -7402,7 +7559,7 @@ public class ATL_ANTLR3Parser extends Parser {
             	    break;
 
             	default :
-            	    break loop78;
+            	    break loop80;
                 }
             } while (true);
 
@@ -7412,22 +7569,22 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,SEMI,FOLLOW_SEMI_in_iterateExp3253); if (failed) return ret2;
-            pushFollow(FOLLOW_variableDeclaration_in_iterateExp3257);
+            match(input,SEMI,FOLLOW_SEMI_in_iterateExp3320); if (failed) return ret2;
+            pushFollow(FOLLOW_variableDeclaration_in_iterateExp3324);
             temp=variableDeclaration();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "result", temp);
             }
-            match(input,PIPE,FOLLOW_PIPE_in_iterateExp3261); if (failed) return ret2;
-            // ATL_ANTLR3.g:491:200: ( (temp= oclExpression ) )
-            // ATL_ANTLR3.g:491:201: (temp= oclExpression )
+            match(input,PIPE,FOLLOW_PIPE_in_iterateExp3328); if (failed) return ret2;
+            // ATL_ANTLR3.g:502:200: ( (temp= oclExpression ) )
+            // ATL_ANTLR3.g:502:201: (temp= oclExpression )
             {
-            // ATL_ANTLR3.g:491:201: (temp= oclExpression )
-            // ATL_ANTLR3.g:491:202: temp= oclExpression
+            // ATL_ANTLR3.g:502:201: (temp= oclExpression )
+            // ATL_ANTLR3.g:502:202: temp= oclExpression
             {
-            pushFollow(FOLLOW_oclExpression_in_iterateExp3267);
+            pushFollow(FOLLOW_oclExpression_in_iterateExp3334);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
@@ -7440,7 +7597,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_iterateExp3273); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_iterateExp3340); if (failed) return ret2;
 
             }
 
@@ -7470,7 +7627,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start collectionOperationCallExp
-    // ATL_ANTLR3.g:503:1: collectionOperationCallExp[java.lang.String opName, Object left, org.antlr.runtime.Token firstToken] returns [Object ret2] : (temp= identifier LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) ;
+    // ATL_ANTLR3.g:514:1: collectionOperationCallExp[java.lang.String opName, Object left, org.antlr.runtime.Token firstToken] returns [Object ret2] : (temp= identifier LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) ;
     public final Object collectionOperationCallExp(java.lang.String opName, Object left, org.antlr.runtime.Token firstToken) throws RecognitionException {
         Object ret2 = null;
 
@@ -7479,67 +7636,67 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("CollectionOperationCallExp", false, false) : null;
         try {
-            // ATL_ANTLR3.g:504:2: ( (temp= identifier LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) )
-            // ATL_ANTLR3.g:504:4: (temp= identifier LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN )
+            // ATL_ANTLR3.g:515:2: ( (temp= identifier LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) )
+            // ATL_ANTLR3.g:515:4: (temp= identifier LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN )
             {
-            // ATL_ANTLR3.g:504:4: (temp= identifier LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN )
-            // ATL_ANTLR3.g:504:5: temp= identifier LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN
+            // ATL_ANTLR3.g:515:4: (temp= identifier LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN )
+            // ATL_ANTLR3.g:515:5: temp= identifier LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN
             {
-            pushFollow(FOLLOW_identifier_in_collectionOperationCallExp3308);
+            pushFollow(FOLLOW_identifier_in_collectionOperationCallExp3375);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "operationName", temp);
             }
-            match(input,LPAREN,FOLLOW_LPAREN_in_collectionOperationCallExp3312); if (failed) return ret2;
-            // ATL_ANTLR3.g:504:66: ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )?
-            int alt80=2;
-            int LA80_0 = input.LA(1);
+            match(input,LPAREN,FOLLOW_LPAREN_in_collectionOperationCallExp3379); if (failed) return ret2;
+            // ATL_ANTLR3.g:515:66: ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )?
+            int alt82=2;
+            int LA82_0 = input.LA(1);
 
-            if ( ((LA80_0>=NAME && LA80_0<=FLOAT)||LA80_0==LPAREN||LA80_0==SHARP||LA80_0==MINUS||LA80_0==68||(LA80_0>=72 && LA80_0<=74)||(LA80_0>=77 && LA80_0<=93)) ) {
-                alt80=1;
+            if ( ((LA82_0>=NAME && LA82_0<=FLOAT)||LA82_0==LPAREN||LA82_0==SHARP||LA82_0==MINUS||LA82_0==69||(LA82_0>=73 && LA82_0<=75)||(LA82_0>=78 && LA82_0<=94)) ) {
+                alt82=1;
             }
-            switch (alt80) {
+            switch (alt82) {
                 case 1 :
-                    // ATL_ANTLR3.g:504:67: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
+                    // ATL_ANTLR3.g:515:67: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
                     {
-                    // ATL_ANTLR3.g:504:67: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
-                    // ATL_ANTLR3.g:504:68: temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )*
+                    // ATL_ANTLR3.g:515:67: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
+                    // ATL_ANTLR3.g:515:68: temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )*
                     {
-                    pushFollow(FOLLOW_oclExpression_in_collectionOperationCallExp3318);
+                    pushFollow(FOLLOW_oclExpression_in_collectionOperationCallExp3385);
                     temp=oclExpression();
                     _fsp--;
                     if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ei.set(ret, "arguments", temp);
                     }
-                    // ATL_ANTLR3.g:504:121: ( ( ( COMA ) temp= oclExpression ) )*
-                    loop79:
+                    // ATL_ANTLR3.g:515:121: ( ( ( COMA ) temp= oclExpression ) )*
+                    loop81:
                     do {
-                        int alt79=2;
-                        int LA79_0 = input.LA(1);
+                        int alt81=2;
+                        int LA81_0 = input.LA(1);
 
-                        if ( (LA79_0==COMA) ) {
-                            alt79=1;
+                        if ( (LA81_0==COMA) ) {
+                            alt81=1;
                         }
 
 
-                        switch (alt79) {
+                        switch (alt81) {
                     	case 1 :
-                    	    // ATL_ANTLR3.g:504:122: ( ( COMA ) temp= oclExpression )
+                    	    // ATL_ANTLR3.g:515:122: ( ( COMA ) temp= oclExpression )
                     	    {
-                    	    // ATL_ANTLR3.g:504:122: ( ( COMA ) temp= oclExpression )
-                    	    // ATL_ANTLR3.g:504:123: ( COMA ) temp= oclExpression
+                    	    // ATL_ANTLR3.g:515:122: ( ( COMA ) temp= oclExpression )
+                    	    // ATL_ANTLR3.g:515:123: ( COMA ) temp= oclExpression
                     	    {
-                    	    // ATL_ANTLR3.g:504:123: ( COMA )
-                    	    // ATL_ANTLR3.g:504:124: COMA
+                    	    // ATL_ANTLR3.g:515:123: ( COMA )
+                    	    // ATL_ANTLR3.g:515:124: COMA
                     	    {
-                    	    match(input,COMA,FOLLOW_COMA_in_collectionOperationCallExp3325); if (failed) return ret2;
+                    	    match(input,COMA,FOLLOW_COMA_in_collectionOperationCallExp3392); if (failed) return ret2;
 
                     	    }
 
-                    	    pushFollow(FOLLOW_oclExpression_in_collectionOperationCallExp3330);
+                    	    pushFollow(FOLLOW_oclExpression_in_collectionOperationCallExp3397);
                     	    temp=oclExpression();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -7554,7 +7711,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop79;
+                    	    break loop81;
                         }
                     } while (true);
 
@@ -7567,7 +7724,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_collectionOperationCallExp3340); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_collectionOperationCallExp3407); if (failed) return ret2;
 
             }
 
@@ -7597,7 +7754,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start operationCallExp
-    // ATL_ANTLR3.g:516:1: operationCallExp[java.lang.String opName, Object left, org.antlr.runtime.Token firstToken] returns [Object ret2] : (temp= identifierOrKeyword LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) ;
+    // ATL_ANTLR3.g:527:1: operationCallExp[java.lang.String opName, Object left, org.antlr.runtime.Token firstToken] returns [Object ret2] : (temp= identifierOrKeyword LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) ;
     public final Object operationCallExp(java.lang.String opName, Object left, org.antlr.runtime.Token firstToken) throws RecognitionException {
         Object ret2 = null;
 
@@ -7606,67 +7763,67 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("OperationCallExp", false, false) : null;
         try {
-            // ATL_ANTLR3.g:517:2: ( (temp= identifierOrKeyword LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) )
-            // ATL_ANTLR3.g:517:4: (temp= identifierOrKeyword LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN )
+            // ATL_ANTLR3.g:528:2: ( (temp= identifierOrKeyword LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN ) )
+            // ATL_ANTLR3.g:528:4: (temp= identifierOrKeyword LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN )
             {
-            // ATL_ANTLR3.g:517:4: (temp= identifierOrKeyword LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN )
-            // ATL_ANTLR3.g:517:5: temp= identifierOrKeyword LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN
+            // ATL_ANTLR3.g:528:4: (temp= identifierOrKeyword LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN )
+            // ATL_ANTLR3.g:528:5: temp= identifierOrKeyword LPAREN ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RPAREN
             {
-            pushFollow(FOLLOW_identifierOrKeyword_in_operationCallExp3375);
+            pushFollow(FOLLOW_identifierOrKeyword_in_operationCallExp3442);
             temp=identifierOrKeyword();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "operationName", temp);
             }
-            match(input,LPAREN,FOLLOW_LPAREN_in_operationCallExp3379); if (failed) return ret2;
-            // ATL_ANTLR3.g:517:75: ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )?
-            int alt82=2;
-            int LA82_0 = input.LA(1);
+            match(input,LPAREN,FOLLOW_LPAREN_in_operationCallExp3446); if (failed) return ret2;
+            // ATL_ANTLR3.g:528:75: ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )?
+            int alt84=2;
+            int LA84_0 = input.LA(1);
 
-            if ( ((LA82_0>=NAME && LA82_0<=FLOAT)||LA82_0==LPAREN||LA82_0==SHARP||LA82_0==MINUS||LA82_0==68||(LA82_0>=72 && LA82_0<=74)||(LA82_0>=77 && LA82_0<=93)) ) {
-                alt82=1;
+            if ( ((LA84_0>=NAME && LA84_0<=FLOAT)||LA84_0==LPAREN||LA84_0==SHARP||LA84_0==MINUS||LA84_0==69||(LA84_0>=73 && LA84_0<=75)||(LA84_0>=78 && LA84_0<=94)) ) {
+                alt84=1;
             }
-            switch (alt82) {
+            switch (alt84) {
                 case 1 :
-                    // ATL_ANTLR3.g:517:76: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
+                    // ATL_ANTLR3.g:528:76: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
                     {
-                    // ATL_ANTLR3.g:517:76: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
-                    // ATL_ANTLR3.g:517:77: temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )*
+                    // ATL_ANTLR3.g:528:76: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
+                    // ATL_ANTLR3.g:528:77: temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )*
                     {
-                    pushFollow(FOLLOW_oclExpression_in_operationCallExp3385);
+                    pushFollow(FOLLOW_oclExpression_in_operationCallExp3452);
                     temp=oclExpression();
                     _fsp--;
                     if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ei.set(ret, "arguments", temp);
                     }
-                    // ATL_ANTLR3.g:517:130: ( ( ( COMA ) temp= oclExpression ) )*
-                    loop81:
+                    // ATL_ANTLR3.g:528:130: ( ( ( COMA ) temp= oclExpression ) )*
+                    loop83:
                     do {
-                        int alt81=2;
-                        int LA81_0 = input.LA(1);
+                        int alt83=2;
+                        int LA83_0 = input.LA(1);
 
-                        if ( (LA81_0==COMA) ) {
-                            alt81=1;
+                        if ( (LA83_0==COMA) ) {
+                            alt83=1;
                         }
 
 
-                        switch (alt81) {
+                        switch (alt83) {
                     	case 1 :
-                    	    // ATL_ANTLR3.g:517:131: ( ( COMA ) temp= oclExpression )
+                    	    // ATL_ANTLR3.g:528:131: ( ( COMA ) temp= oclExpression )
                     	    {
-                    	    // ATL_ANTLR3.g:517:131: ( ( COMA ) temp= oclExpression )
-                    	    // ATL_ANTLR3.g:517:132: ( COMA ) temp= oclExpression
+                    	    // ATL_ANTLR3.g:528:131: ( ( COMA ) temp= oclExpression )
+                    	    // ATL_ANTLR3.g:528:132: ( COMA ) temp= oclExpression
                     	    {
-                    	    // ATL_ANTLR3.g:517:132: ( COMA )
-                    	    // ATL_ANTLR3.g:517:133: COMA
+                    	    // ATL_ANTLR3.g:528:132: ( COMA )
+                    	    // ATL_ANTLR3.g:528:133: COMA
                     	    {
-                    	    match(input,COMA,FOLLOW_COMA_in_operationCallExp3392); if (failed) return ret2;
+                    	    match(input,COMA,FOLLOW_COMA_in_operationCallExp3459); if (failed) return ret2;
 
                     	    }
 
-                    	    pushFollow(FOLLOW_oclExpression_in_operationCallExp3397);
+                    	    pushFollow(FOLLOW_oclExpression_in_operationCallExp3464);
                     	    temp=oclExpression();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -7681,7 +7838,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop81;
+                    	    break loop83;
                         }
                     } while (true);
 
@@ -7694,7 +7851,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_operationCallExp3407); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_operationCallExp3474); if (failed) return ret2;
 
             }
 
@@ -7724,7 +7881,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start navigationOrAttributeCallExp
-    // ATL_ANTLR3.g:529:1: navigationOrAttributeCallExp[java.lang.String opName, Object left, org.antlr.runtime.Token firstToken] returns [Object ret2] : (temp= identifierOrKeyword ) ;
+    // ATL_ANTLR3.g:540:1: navigationOrAttributeCallExp[java.lang.String opName, Object left, org.antlr.runtime.Token firstToken] returns [Object ret2] : (temp= identifierOrKeyword ) ;
     public final Object navigationOrAttributeCallExp(java.lang.String opName, Object left, org.antlr.runtime.Token firstToken) throws RecognitionException {
         Object ret2 = null;
 
@@ -7733,13 +7890,13 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("NavigationOrAttributeCallExp", false, false) : null;
         try {
-            // ATL_ANTLR3.g:530:2: ( (temp= identifierOrKeyword ) )
-            // ATL_ANTLR3.g:530:4: (temp= identifierOrKeyword )
+            // ATL_ANTLR3.g:541:2: ( (temp= identifierOrKeyword ) )
+            // ATL_ANTLR3.g:541:4: (temp= identifierOrKeyword )
             {
-            // ATL_ANTLR3.g:530:4: (temp= identifierOrKeyword )
-            // ATL_ANTLR3.g:530:5: temp= identifierOrKeyword
+            // ATL_ANTLR3.g:541:4: (temp= identifierOrKeyword )
+            // ATL_ANTLR3.g:541:5: temp= identifierOrKeyword
             {
-            pushFollow(FOLLOW_identifierOrKeyword_in_navigationOrAttributeCallExp3442);
+            pushFollow(FOLLOW_identifierOrKeyword_in_navigationOrAttributeCallExp3509);
             temp=identifierOrKeyword();
             _fsp--;
             if (failed) return ret2;
@@ -7775,14 +7932,14 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start operatorCallExp
-    // ATL_ANTLR3.g:542:1: operatorCallExp[java.lang.String opName, Object left, org.antlr.runtime.Token firstToken] returns [Object ret2] : ;
+    // ATL_ANTLR3.g:553:1: operatorCallExp[java.lang.String opName, Object left, org.antlr.runtime.Token firstToken] returns [Object ret2] : ;
     public final Object operatorCallExp(java.lang.String opName, Object left, org.antlr.runtime.Token firstToken) throws RecognitionException {
         Object ret2 = null;
 
         Object ret=(backtracking==0) ? ei.create("OperatorCallExp", false, false) : null;
         try {
-            // ATL_ANTLR3.g:543:2: ()
-            // ATL_ANTLR3.g:544:9: 
+            // ATL_ANTLR3.g:554:2: ()
+            // ATL_ANTLR3.g:555:9: 
             {
             if ( backtracking==0 ) {
 
@@ -7805,7 +7962,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start iterator
-    // ATL_ANTLR3.g:554:1: iterator returns [Object ret2] : (temp= identifier ) ;
+    // ATL_ANTLR3.g:565:1: iterator returns [Object ret2] : (temp= identifier ) ;
     public final Object iterator() throws RecognitionException {
         Object ret2 = null;
 
@@ -7814,13 +7971,13 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("Iterator", false, true) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:555:2: ( (temp= identifier ) )
-            // ATL_ANTLR3.g:555:4: (temp= identifier )
+            // ATL_ANTLR3.g:566:2: ( (temp= identifier ) )
+            // ATL_ANTLR3.g:566:4: (temp= identifier )
             {
-            // ATL_ANTLR3.g:555:4: (temp= identifier )
-            // ATL_ANTLR3.g:555:5: temp= identifier
+            // ATL_ANTLR3.g:566:4: (temp= identifier )
+            // ATL_ANTLR3.g:566:5: temp= identifier
             {
-            pushFollow(FOLLOW_identifier_in_iterator3507);
+            pushFollow(FOLLOW_identifier_in_iterator3574);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
@@ -7854,19 +8011,19 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start oclUndefinedExp
-    // ATL_ANTLR3.g:565:1: oclUndefinedExp returns [Object ret2] : ( 'OclUndefined' ) ;
+    // ATL_ANTLR3.g:576:1: oclUndefinedExp returns [Object ret2] : ( 'OclUndefined' ) ;
     public final Object oclUndefinedExp() throws RecognitionException {
         Object ret2 = null;
 
         Object ret=(backtracking==0) ? ei.create("OclUndefinedExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:566:2: ( ( 'OclUndefined' ) )
-            // ATL_ANTLR3.g:566:4: ( 'OclUndefined' )
+            // ATL_ANTLR3.g:577:2: ( ( 'OclUndefined' ) )
+            // ATL_ANTLR3.g:577:4: ( 'OclUndefined' )
             {
-            // ATL_ANTLR3.g:566:4: ( 'OclUndefined' )
-            // ATL_ANTLR3.g:566:5: 'OclUndefined'
+            // ATL_ANTLR3.g:577:4: ( 'OclUndefined' )
+            // ATL_ANTLR3.g:577:5: 'OclUndefined'
             {
-            match(input,72,FOLLOW_72_in_oclUndefinedExp3541); if (failed) return ret2;
+            match(input,73,FOLLOW_73_in_oclUndefinedExp3608); if (failed) return ret2;
 
             }
 
@@ -7894,7 +8051,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start primitiveExp
-    // ATL_ANTLR3.g:576:1: primitiveExp returns [Object ret2] : ( (ret= numericExp | ret= booleanExp | ret= stringExp ) ) ;
+    // ATL_ANTLR3.g:587:1: primitiveExp returns [Object ret2] : ( (ret= numericExp | ret= booleanExp | ret= stringExp ) ) ;
     public final Object primitiveExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -7902,45 +8059,45 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
         try {
-            // ATL_ANTLR3.g:577:2: ( ( (ret= numericExp | ret= booleanExp | ret= stringExp ) ) )
-            // ATL_ANTLR3.g:577:4: ( (ret= numericExp | ret= booleanExp | ret= stringExp ) )
+            // ATL_ANTLR3.g:588:2: ( ( (ret= numericExp | ret= booleanExp | ret= stringExp ) ) )
+            // ATL_ANTLR3.g:588:4: ( (ret= numericExp | ret= booleanExp | ret= stringExp ) )
             {
-            // ATL_ANTLR3.g:577:4: ( (ret= numericExp | ret= booleanExp | ret= stringExp ) )
-            // ATL_ANTLR3.g:577:5: (ret= numericExp | ret= booleanExp | ret= stringExp )
+            // ATL_ANTLR3.g:588:4: ( (ret= numericExp | ret= booleanExp | ret= stringExp ) )
+            // ATL_ANTLR3.g:588:5: (ret= numericExp | ret= booleanExp | ret= stringExp )
             {
-            // ATL_ANTLR3.g:577:5: (ret= numericExp | ret= booleanExp | ret= stringExp )
-            int alt83=3;
+            // ATL_ANTLR3.g:588:5: (ret= numericExp | ret= booleanExp | ret= stringExp )
+            int alt85=3;
             switch ( input.LA(1) ) {
             case INT:
             case FLOAT:
                 {
-                alt83=1;
+                alt85=1;
                 }
                 break;
-            case 73:
             case 74:
+            case 75:
                 {
-                alt83=2;
+                alt85=2;
                 }
                 break;
             case STRING:
                 {
-                alt83=3;
+                alt85=3;
                 }
                 break;
             default:
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("577:5: (ret= numericExp | ret= booleanExp | ret= stringExp )", 83, 0, input);
+                    new NoViableAltException("588:5: (ret= numericExp | ret= booleanExp | ret= stringExp )", 85, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt83) {
+            switch (alt85) {
                 case 1 :
-                    // ATL_ANTLR3.g:577:6: ret= numericExp
+                    // ATL_ANTLR3.g:588:6: ret= numericExp
                     {
-                    pushFollow(FOLLOW_numericExp_in_primitiveExp3576);
+                    pushFollow(FOLLOW_numericExp_in_primitiveExp3643);
                     ret=numericExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -7948,9 +8105,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:577:22: ret= booleanExp
+                    // ATL_ANTLR3.g:588:22: ret= booleanExp
                     {
-                    pushFollow(FOLLOW_booleanExp_in_primitiveExp3581);
+                    pushFollow(FOLLOW_booleanExp_in_primitiveExp3648);
                     ret=booleanExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -7958,9 +8115,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // ATL_ANTLR3.g:577:38: ret= stringExp
+                    // ATL_ANTLR3.g:588:38: ret= stringExp
                     {
-                    pushFollow(FOLLOW_stringExp_in_primitiveExp3586);
+                    pushFollow(FOLLOW_stringExp_in_primitiveExp3653);
                     ret=stringExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -7995,7 +8152,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start numericExp
-    // ATL_ANTLR3.g:585:1: numericExp returns [Object ret2] : ( (ret= integerExp | ret= realExp ) ) ;
+    // ATL_ANTLR3.g:596:1: numericExp returns [Object ret2] : ( (ret= integerExp | ret= realExp ) ) ;
     public final Object numericExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -8003,34 +8160,34 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
         try {
-            // ATL_ANTLR3.g:586:2: ( ( (ret= integerExp | ret= realExp ) ) )
-            // ATL_ANTLR3.g:586:4: ( (ret= integerExp | ret= realExp ) )
+            // ATL_ANTLR3.g:597:2: ( ( (ret= integerExp | ret= realExp ) ) )
+            // ATL_ANTLR3.g:597:4: ( (ret= integerExp | ret= realExp ) )
             {
-            // ATL_ANTLR3.g:586:4: ( (ret= integerExp | ret= realExp ) )
-            // ATL_ANTLR3.g:586:5: (ret= integerExp | ret= realExp )
+            // ATL_ANTLR3.g:597:4: ( (ret= integerExp | ret= realExp ) )
+            // ATL_ANTLR3.g:597:5: (ret= integerExp | ret= realExp )
             {
-            // ATL_ANTLR3.g:586:5: (ret= integerExp | ret= realExp )
-            int alt84=2;
-            int LA84_0 = input.LA(1);
+            // ATL_ANTLR3.g:597:5: (ret= integerExp | ret= realExp )
+            int alt86=2;
+            int LA86_0 = input.LA(1);
 
-            if ( (LA84_0==INT) ) {
-                alt84=1;
+            if ( (LA86_0==INT) ) {
+                alt86=1;
             }
-            else if ( (LA84_0==FLOAT) ) {
-                alt84=2;
+            else if ( (LA86_0==FLOAT) ) {
+                alt86=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("586:5: (ret= integerExp | ret= realExp )", 84, 0, input);
+                    new NoViableAltException("597:5: (ret= integerExp | ret= realExp )", 86, 0, input);
 
                 throw nvae;
             }
-            switch (alt84) {
+            switch (alt86) {
                 case 1 :
-                    // ATL_ANTLR3.g:586:6: ret= integerExp
+                    // ATL_ANTLR3.g:597:6: ret= integerExp
                     {
-                    pushFollow(FOLLOW_integerExp_in_numericExp3622);
+                    pushFollow(FOLLOW_integerExp_in_numericExp3689);
                     ret=integerExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -8038,9 +8195,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:586:22: ret= realExp
+                    // ATL_ANTLR3.g:597:22: ret= realExp
                     {
-                    pushFollow(FOLLOW_realExp_in_numericExp3627);
+                    pushFollow(FOLLOW_realExp_in_numericExp3694);
                     ret=realExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -8075,43 +8232,43 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start booleanExp
-    // ATL_ANTLR3.g:594:1: booleanExp returns [Object ret2] : ( ( ( 'true' ) | ( 'false' ) ) ) ;
+    // ATL_ANTLR3.g:605:1: booleanExp returns [Object ret2] : ( ( ( 'true' ) | ( 'false' ) ) ) ;
     public final Object booleanExp() throws RecognitionException {
         Object ret2 = null;
 
         Object ret=(backtracking==0) ? ei.create("BooleanExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:595:2: ( ( ( ( 'true' ) | ( 'false' ) ) ) )
-            // ATL_ANTLR3.g:595:4: ( ( ( 'true' ) | ( 'false' ) ) )
+            // ATL_ANTLR3.g:606:2: ( ( ( ( 'true' ) | ( 'false' ) ) ) )
+            // ATL_ANTLR3.g:606:4: ( ( ( 'true' ) | ( 'false' ) ) )
             {
-            // ATL_ANTLR3.g:595:4: ( ( ( 'true' ) | ( 'false' ) ) )
-            // ATL_ANTLR3.g:595:5: ( ( 'true' ) | ( 'false' ) )
+            // ATL_ANTLR3.g:606:4: ( ( ( 'true' ) | ( 'false' ) ) )
+            // ATL_ANTLR3.g:606:5: ( ( 'true' ) | ( 'false' ) )
             {
-            // ATL_ANTLR3.g:595:5: ( ( 'true' ) | ( 'false' ) )
-            int alt85=2;
-            int LA85_0 = input.LA(1);
+            // ATL_ANTLR3.g:606:5: ( ( 'true' ) | ( 'false' ) )
+            int alt87=2;
+            int LA87_0 = input.LA(1);
 
-            if ( (LA85_0==73) ) {
-                alt85=1;
+            if ( (LA87_0==74) ) {
+                alt87=1;
             }
-            else if ( (LA85_0==74) ) {
-                alt85=2;
+            else if ( (LA87_0==75) ) {
+                alt87=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("595:5: ( ( 'true' ) | ( 'false' ) )", 85, 0, input);
+                    new NoViableAltException("606:5: ( ( 'true' ) | ( 'false' ) )", 87, 0, input);
 
                 throw nvae;
             }
-            switch (alt85) {
+            switch (alt87) {
                 case 1 :
-                    // ATL_ANTLR3.g:595:6: ( 'true' )
+                    // ATL_ANTLR3.g:606:6: ( 'true' )
                     {
-                    // ATL_ANTLR3.g:595:6: ( 'true' )
-                    // ATL_ANTLR3.g:595:7: 'true'
+                    // ATL_ANTLR3.g:606:6: ( 'true' )
+                    // ATL_ANTLR3.g:606:7: 'true'
                     {
-                    match(input,73,FOLLOW_73_in_booleanExp3662); if (failed) return ret2;
+                    match(input,74,FOLLOW_74_in_booleanExp3729); if (failed) return ret2;
 
                     }
 
@@ -8122,12 +8279,12 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:595:72: ( 'false' )
+                    // ATL_ANTLR3.g:606:72: ( 'false' )
                     {
-                    // ATL_ANTLR3.g:595:72: ( 'false' )
-                    // ATL_ANTLR3.g:595:73: 'false'
+                    // ATL_ANTLR3.g:606:72: ( 'false' )
+                    // ATL_ANTLR3.g:606:73: 'false'
                     {
-                    match(input,74,FOLLOW_74_in_booleanExp3669); if (failed) return ret2;
+                    match(input,75,FOLLOW_75_in_booleanExp3736); if (failed) return ret2;
 
                     }
 
@@ -8167,7 +8324,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start integerExp
-    // ATL_ANTLR3.g:605:1: integerExp returns [Object ret2] : (temp= integerSymbol ) ;
+    // ATL_ANTLR3.g:616:1: integerExp returns [Object ret2] : (temp= integerSymbol ) ;
     public final Object integerExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -8176,13 +8333,13 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("IntegerExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:606:2: ( (temp= integerSymbol ) )
-            // ATL_ANTLR3.g:606:4: (temp= integerSymbol )
+            // ATL_ANTLR3.g:617:2: ( (temp= integerSymbol ) )
+            // ATL_ANTLR3.g:617:4: (temp= integerSymbol )
             {
-            // ATL_ANTLR3.g:606:4: (temp= integerSymbol )
-            // ATL_ANTLR3.g:606:5: temp= integerSymbol
+            // ATL_ANTLR3.g:617:4: (temp= integerSymbol )
+            // ATL_ANTLR3.g:617:5: temp= integerSymbol
             {
-            pushFollow(FOLLOW_integerSymbol_in_integerExp3707);
+            pushFollow(FOLLOW_integerSymbol_in_integerExp3774);
             temp=integerSymbol();
             _fsp--;
             if (failed) return ret2;
@@ -8216,7 +8373,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start realExp
-    // ATL_ANTLR3.g:616:1: realExp returns [Object ret2] : (temp= floatSymbol ) ;
+    // ATL_ANTLR3.g:627:1: realExp returns [Object ret2] : (temp= floatSymbol ) ;
     public final Object realExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -8225,13 +8382,13 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("RealExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:617:2: ( (temp= floatSymbol ) )
-            // ATL_ANTLR3.g:617:4: (temp= floatSymbol )
+            // ATL_ANTLR3.g:628:2: ( (temp= floatSymbol ) )
+            // ATL_ANTLR3.g:628:4: (temp= floatSymbol )
             {
-            // ATL_ANTLR3.g:617:4: (temp= floatSymbol )
-            // ATL_ANTLR3.g:617:5: temp= floatSymbol
+            // ATL_ANTLR3.g:628:4: (temp= floatSymbol )
+            // ATL_ANTLR3.g:628:5: temp= floatSymbol
             {
-            pushFollow(FOLLOW_floatSymbol_in_realExp3743);
+            pushFollow(FOLLOW_floatSymbol_in_realExp3810);
             temp=floatSymbol();
             _fsp--;
             if (failed) return ret2;
@@ -8265,7 +8422,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start stringExp
-    // ATL_ANTLR3.g:627:1: stringExp returns [Object ret2] : (temp= stringSymbol ) ;
+    // ATL_ANTLR3.g:638:1: stringExp returns [Object ret2] : (temp= stringSymbol ) ;
     public final Object stringExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -8274,13 +8431,13 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("StringExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:628:2: ( (temp= stringSymbol ) )
-            // ATL_ANTLR3.g:628:4: (temp= stringSymbol )
+            // ATL_ANTLR3.g:639:2: ( (temp= stringSymbol ) )
+            // ATL_ANTLR3.g:639:4: (temp= stringSymbol )
             {
-            // ATL_ANTLR3.g:628:4: (temp= stringSymbol )
-            // ATL_ANTLR3.g:628:5: temp= stringSymbol
+            // ATL_ANTLR3.g:639:4: (temp= stringSymbol )
+            // ATL_ANTLR3.g:639:5: temp= stringSymbol
             {
-            pushFollow(FOLLOW_stringSymbol_in_stringExp3779);
+            pushFollow(FOLLOW_stringSymbol_in_stringExp3846);
             temp=stringSymbol();
             _fsp--;
             if (failed) return ret2;
@@ -8314,7 +8471,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start ifExp
-    // ATL_ANTLR3.g:638:1: ifExp returns [Object ret2] : ( 'if' temp= oclExpression 'then' ( (temp= oclExpression ) ) 'else' ( (temp= oclExpression ) ) 'endif' ) ;
+    // ATL_ANTLR3.g:649:1: ifExp returns [Object ret2] : ( 'if' temp= oclExpression 'then' ( (temp= oclExpression ) ) 'else' ( (temp= oclExpression ) ) 'endif' ) ;
     public final Object ifExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -8323,28 +8480,28 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("IfExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:639:2: ( ( 'if' temp= oclExpression 'then' ( (temp= oclExpression ) ) 'else' ( (temp= oclExpression ) ) 'endif' ) )
-            // ATL_ANTLR3.g:639:4: ( 'if' temp= oclExpression 'then' ( (temp= oclExpression ) ) 'else' ( (temp= oclExpression ) ) 'endif' )
+            // ATL_ANTLR3.g:650:2: ( ( 'if' temp= oclExpression 'then' ( (temp= oclExpression ) ) 'else' ( (temp= oclExpression ) ) 'endif' ) )
+            // ATL_ANTLR3.g:650:4: ( 'if' temp= oclExpression 'then' ( (temp= oclExpression ) ) 'else' ( (temp= oclExpression ) ) 'endif' )
             {
-            // ATL_ANTLR3.g:639:4: ( 'if' temp= oclExpression 'then' ( (temp= oclExpression ) ) 'else' ( (temp= oclExpression ) ) 'endif' )
-            // ATL_ANTLR3.g:639:5: 'if' temp= oclExpression 'then' ( (temp= oclExpression ) ) 'else' ( (temp= oclExpression ) ) 'endif'
+            // ATL_ANTLR3.g:650:4: ( 'if' temp= oclExpression 'then' ( (temp= oclExpression ) ) 'else' ( (temp= oclExpression ) ) 'endif' )
+            // ATL_ANTLR3.g:650:5: 'if' temp= oclExpression 'then' ( (temp= oclExpression ) ) 'else' ( (temp= oclExpression ) ) 'endif'
             {
-            match(input,68,FOLLOW_68_in_ifExp3813); if (failed) return ret2;
-            pushFollow(FOLLOW_oclExpression_in_ifExp3817);
+            match(input,69,FOLLOW_69_in_ifExp3880); if (failed) return ret2;
+            pushFollow(FOLLOW_oclExpression_in_ifExp3884);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "condition", temp);
             }
-            match(input,75,FOLLOW_75_in_ifExp3821); if (failed) return ret2;
-            // ATL_ANTLR3.g:639:70: ( (temp= oclExpression ) )
-            // ATL_ANTLR3.g:639:71: (temp= oclExpression )
+            match(input,76,FOLLOW_76_in_ifExp3888); if (failed) return ret2;
+            // ATL_ANTLR3.g:650:70: ( (temp= oclExpression ) )
+            // ATL_ANTLR3.g:650:71: (temp= oclExpression )
             {
-            // ATL_ANTLR3.g:639:71: (temp= oclExpression )
-            // ATL_ANTLR3.g:639:72: temp= oclExpression
+            // ATL_ANTLR3.g:650:71: (temp= oclExpression )
+            // ATL_ANTLR3.g:650:72: temp= oclExpression
             {
-            pushFollow(FOLLOW_oclExpression_in_ifExp3827);
+            pushFollow(FOLLOW_oclExpression_in_ifExp3894);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
@@ -8357,14 +8514,14 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,69,FOLLOW_69_in_ifExp3833); if (failed) return ret2;
-            // ATL_ANTLR3.g:639:139: ( (temp= oclExpression ) )
-            // ATL_ANTLR3.g:639:140: (temp= oclExpression )
+            match(input,70,FOLLOW_70_in_ifExp3900); if (failed) return ret2;
+            // ATL_ANTLR3.g:650:139: ( (temp= oclExpression ) )
+            // ATL_ANTLR3.g:650:140: (temp= oclExpression )
             {
-            // ATL_ANTLR3.g:639:140: (temp= oclExpression )
-            // ATL_ANTLR3.g:639:141: temp= oclExpression
+            // ATL_ANTLR3.g:650:140: (temp= oclExpression )
+            // ATL_ANTLR3.g:650:141: temp= oclExpression
             {
-            pushFollow(FOLLOW_oclExpression_in_ifExp3839);
+            pushFollow(FOLLOW_oclExpression_in_ifExp3906);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
@@ -8377,7 +8534,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,76,FOLLOW_76_in_ifExp3845); if (failed) return ret2;
+            match(input,77,FOLLOW_77_in_ifExp3912); if (failed) return ret2;
 
             }
 
@@ -8405,7 +8562,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start variableExp
-    // ATL_ANTLR3.g:649:1: variableExp returns [Object ret2] : (temp= identifier ) ;
+    // ATL_ANTLR3.g:660:1: variableExp returns [Object ret2] : (temp= identifier ) ;
     public final Object variableExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -8414,13 +8571,13 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("VariableExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:650:2: ( (temp= identifier ) )
-            // ATL_ANTLR3.g:650:4: (temp= identifier )
+            // ATL_ANTLR3.g:661:2: ( (temp= identifier ) )
+            // ATL_ANTLR3.g:661:4: (temp= identifier )
             {
-            // ATL_ANTLR3.g:650:4: (temp= identifier )
-            // ATL_ANTLR3.g:650:5: temp= identifier
+            // ATL_ANTLR3.g:661:4: (temp= identifier )
+            // ATL_ANTLR3.g:661:5: temp= identifier
             {
-            pushFollow(FOLLOW_identifier_in_variableExp3879);
+            pushFollow(FOLLOW_identifier_in_variableExp3946);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
@@ -8454,19 +8611,19 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start superExp
-    // ATL_ANTLR3.g:660:1: superExp returns [Object ret2] : ( 'super' ) ;
+    // ATL_ANTLR3.g:671:1: superExp returns [Object ret2] : ( 'super' ) ;
     public final Object superExp() throws RecognitionException {
         Object ret2 = null;
 
         Object ret=(backtracking==0) ? ei.create("SuperExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:661:2: ( ( 'super' ) )
-            // ATL_ANTLR3.g:661:4: ( 'super' )
+            // ATL_ANTLR3.g:672:2: ( ( 'super' ) )
+            // ATL_ANTLR3.g:672:4: ( 'super' )
             {
-            // ATL_ANTLR3.g:661:4: ( 'super' )
-            // ATL_ANTLR3.g:661:5: 'super'
+            // ATL_ANTLR3.g:672:4: ( 'super' )
+            // ATL_ANTLR3.g:672:5: 'super'
             {
-            match(input,77,FOLLOW_77_in_superExp3913); if (failed) return ret2;
+            match(input,78,FOLLOW_78_in_superExp3980); if (failed) return ret2;
 
             }
 
@@ -8494,7 +8651,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start letExp
-    // ATL_ANTLR3.g:671:1: letExp returns [Object ret2] : ( 'let' temp= variableDeclaration 'in' ( (temp= oclExpression ) ) ) ;
+    // ATL_ANTLR3.g:682:1: letExp returns [Object ret2] : ( 'let' temp= variableDeclaration 'in' ( (temp= oclExpression ) ) ) ;
     public final Object letExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -8503,28 +8660,28 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("LetExp", true, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:672:2: ( ( 'let' temp= variableDeclaration 'in' ( (temp= oclExpression ) ) ) )
-            // ATL_ANTLR3.g:672:4: ( 'let' temp= variableDeclaration 'in' ( (temp= oclExpression ) ) )
+            // ATL_ANTLR3.g:683:2: ( ( 'let' temp= variableDeclaration 'in' ( (temp= oclExpression ) ) ) )
+            // ATL_ANTLR3.g:683:4: ( 'let' temp= variableDeclaration 'in' ( (temp= oclExpression ) ) )
             {
-            // ATL_ANTLR3.g:672:4: ( 'let' temp= variableDeclaration 'in' ( (temp= oclExpression ) ) )
-            // ATL_ANTLR3.g:672:5: 'let' temp= variableDeclaration 'in' ( (temp= oclExpression ) )
+            // ATL_ANTLR3.g:683:4: ( 'let' temp= variableDeclaration 'in' ( (temp= oclExpression ) ) )
+            // ATL_ANTLR3.g:683:5: 'let' temp= variableDeclaration 'in' ( (temp= oclExpression ) )
             {
-            match(input,78,FOLLOW_78_in_letExp3945); if (failed) return ret2;
-            pushFollow(FOLLOW_variableDeclaration_in_letExp3949);
+            match(input,79,FOLLOW_79_in_letExp4012); if (failed) return ret2;
+            pushFollow(FOLLOW_variableDeclaration_in_letExp4016);
             temp=variableDeclaration();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "variable", temp);
             }
-            match(input,62,FOLLOW_62_in_letExp3953); if (failed) return ret2;
-            // ATL_ANTLR3.g:672:74: ( (temp= oclExpression ) )
-            // ATL_ANTLR3.g:672:75: (temp= oclExpression )
+            match(input,62,FOLLOW_62_in_letExp4020); if (failed) return ret2;
+            // ATL_ANTLR3.g:683:74: ( (temp= oclExpression ) )
+            // ATL_ANTLR3.g:683:75: (temp= oclExpression )
             {
-            // ATL_ANTLR3.g:672:75: (temp= oclExpression )
-            // ATL_ANTLR3.g:672:76: temp= oclExpression
+            // ATL_ANTLR3.g:683:75: (temp= oclExpression )
+            // ATL_ANTLR3.g:683:76: temp= oclExpression
             {
-            pushFollow(FOLLOW_oclExpression_in_letExp3959);
+            pushFollow(FOLLOW_oclExpression_in_letExp4026);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
@@ -8564,7 +8721,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start variableDeclaration
-    // ATL_ANTLR3.g:682:1: variableDeclaration returns [Object ret2] : (temp= identifier COLON temp= oclType EQ temp= oclExpression ) ;
+    // ATL_ANTLR3.g:693:1: variableDeclaration returns [Object ret2] : (temp= identifier COLON temp= oclType EQ temp= oclExpression ) ;
     public final Object variableDeclaration() throws RecognitionException {
         Object ret2 = null;
 
@@ -8573,29 +8730,29 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("VariableDeclaration", false, true) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:683:2: ( (temp= identifier COLON temp= oclType EQ temp= oclExpression ) )
-            // ATL_ANTLR3.g:683:4: (temp= identifier COLON temp= oclType EQ temp= oclExpression )
+            // ATL_ANTLR3.g:694:2: ( (temp= identifier COLON temp= oclType EQ temp= oclExpression ) )
+            // ATL_ANTLR3.g:694:4: (temp= identifier COLON temp= oclType EQ temp= oclExpression )
             {
-            // ATL_ANTLR3.g:683:4: (temp= identifier COLON temp= oclType EQ temp= oclExpression )
-            // ATL_ANTLR3.g:683:5: temp= identifier COLON temp= oclType EQ temp= oclExpression
+            // ATL_ANTLR3.g:694:4: (temp= identifier COLON temp= oclType EQ temp= oclExpression )
+            // ATL_ANTLR3.g:694:5: temp= identifier COLON temp= oclType EQ temp= oclExpression
             {
-            pushFollow(FOLLOW_identifier_in_variableDeclaration3997);
+            pushFollow(FOLLOW_identifier_in_variableDeclaration4064);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "varName", temp);
             }
-            match(input,COLON,FOLLOW_COLON_in_variableDeclaration4001); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_variableDeclaration4005);
+            match(input,COLON,FOLLOW_COLON_in_variableDeclaration4068); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_variableDeclaration4072);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "type", temp);
             }
-            match(input,EQ,FOLLOW_EQ_in_variableDeclaration4009); if (failed) return ret2;
-            pushFollow(FOLLOW_oclExpression_in_variableDeclaration4013);
+            match(input,EQ,FOLLOW_EQ_in_variableDeclaration4076); if (failed) return ret2;
+            pushFollow(FOLLOW_oclExpression_in_variableDeclaration4080);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
@@ -8629,7 +8786,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start enumLiteralExp
-    // ATL_ANTLR3.g:693:1: enumLiteralExp returns [Object ret2] : ( SHARP temp= identifier ) ;
+    // ATL_ANTLR3.g:704:1: enumLiteralExp returns [Object ret2] : ( SHARP temp= identifier ) ;
     public final Object enumLiteralExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -8638,14 +8795,14 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("EnumLiteralExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:694:2: ( ( SHARP temp= identifier ) )
-            // ATL_ANTLR3.g:694:4: ( SHARP temp= identifier )
+            // ATL_ANTLR3.g:705:2: ( ( SHARP temp= identifier ) )
+            // ATL_ANTLR3.g:705:4: ( SHARP temp= identifier )
             {
-            // ATL_ANTLR3.g:694:4: ( SHARP temp= identifier )
-            // ATL_ANTLR3.g:694:5: SHARP temp= identifier
+            // ATL_ANTLR3.g:705:4: ( SHARP temp= identifier )
+            // ATL_ANTLR3.g:705:5: SHARP temp= identifier
             {
-            match(input,SHARP,FOLLOW_SHARP_in_enumLiteralExp4047); if (failed) return ret2;
-            pushFollow(FOLLOW_identifier_in_enumLiteralExp4051);
+            match(input,SHARP,FOLLOW_SHARP_in_enumLiteralExp4114); if (failed) return ret2;
+            pushFollow(FOLLOW_identifier_in_enumLiteralExp4118);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
@@ -8679,7 +8836,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start collectionExp
-    // ATL_ANTLR3.g:704:1: collectionExp returns [Object ret2] : ( (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp ) ) ;
+    // ATL_ANTLR3.g:715:1: collectionExp returns [Object ret2] : ( (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp ) ) ;
     public final Object collectionExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -8687,48 +8844,48 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
         try {
-            // ATL_ANTLR3.g:705:2: ( ( (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp ) ) )
-            // ATL_ANTLR3.g:705:4: ( (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp ) )
+            // ATL_ANTLR3.g:716:2: ( ( (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp ) ) )
+            // ATL_ANTLR3.g:716:4: ( (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp ) )
             {
-            // ATL_ANTLR3.g:705:4: ( (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp ) )
-            // ATL_ANTLR3.g:705:5: (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp )
+            // ATL_ANTLR3.g:716:4: ( (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp ) )
+            // ATL_ANTLR3.g:716:5: (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp )
             {
-            // ATL_ANTLR3.g:705:5: (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp )
-            int alt86=4;
+            // ATL_ANTLR3.g:716:5: (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp )
+            int alt88=4;
             switch ( input.LA(1) ) {
-            case 79:
-                {
-                alt86=1;
-                }
-                break;
             case 80:
                 {
-                alt86=2;
+                alt88=1;
                 }
                 break;
             case 81:
                 {
-                alt86=3;
+                alt88=2;
                 }
                 break;
             case 82:
                 {
-                alt86=4;
+                alt88=3;
+                }
+                break;
+            case 83:
+                {
+                alt88=4;
                 }
                 break;
             default:
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("705:5: (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp )", 86, 0, input);
+                    new NoViableAltException("716:5: (ret= bagExp | ret= setExp | ret= orderedSetExp | ret= sequenceExp )", 88, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt86) {
+            switch (alt88) {
                 case 1 :
-                    // ATL_ANTLR3.g:705:6: ret= bagExp
+                    // ATL_ANTLR3.g:716:6: ret= bagExp
                     {
-                    pushFollow(FOLLOW_bagExp_in_collectionExp4088);
+                    pushFollow(FOLLOW_bagExp_in_collectionExp4155);
                     ret=bagExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -8736,9 +8893,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:705:18: ret= setExp
+                    // ATL_ANTLR3.g:716:18: ret= setExp
                     {
-                    pushFollow(FOLLOW_setExp_in_collectionExp4093);
+                    pushFollow(FOLLOW_setExp_in_collectionExp4160);
                     ret=setExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -8746,9 +8903,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // ATL_ANTLR3.g:705:30: ret= orderedSetExp
+                    // ATL_ANTLR3.g:716:30: ret= orderedSetExp
                     {
-                    pushFollow(FOLLOW_orderedSetExp_in_collectionExp4098);
+                    pushFollow(FOLLOW_orderedSetExp_in_collectionExp4165);
                     ret=orderedSetExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -8756,9 +8913,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 4 :
-                    // ATL_ANTLR3.g:705:49: ret= sequenceExp
+                    // ATL_ANTLR3.g:716:49: ret= sequenceExp
                     {
-                    pushFollow(FOLLOW_sequenceExp_in_collectionExp4103);
+                    pushFollow(FOLLOW_sequenceExp_in_collectionExp4170);
                     ret=sequenceExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -8793,7 +8950,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start bagExp
-    // ATL_ANTLR3.g:713:1: bagExp returns [Object ret2] : ( 'Bag' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) ;
+    // ATL_ANTLR3.g:724:1: bagExp returns [Object ret2] : ( 'Bag' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) ;
     public final Object bagExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -8802,138 +8959,19 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("BagExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:714:2: ( ( 'Bag' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) )
-            // ATL_ANTLR3.g:714:4: ( 'Bag' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
+            // ATL_ANTLR3.g:725:2: ( ( 'Bag' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) )
+            // ATL_ANTLR3.g:725:4: ( 'Bag' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
             {
-            // ATL_ANTLR3.g:714:4: ( 'Bag' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
-            // ATL_ANTLR3.g:714:5: 'Bag' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY
+            // ATL_ANTLR3.g:725:4: ( 'Bag' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
+            // ATL_ANTLR3.g:725:5: 'Bag' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY
             {
-            match(input,79,FOLLOW_79_in_bagExp4136); if (failed) return ret2;
-            match(input,LCURLY,FOLLOW_LCURLY_in_bagExp4138); if (failed) return ret2;
-            // ATL_ANTLR3.g:714:18: ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )?
-            int alt88=2;
-            int LA88_0 = input.LA(1);
-
-            if ( ((LA88_0>=NAME && LA88_0<=FLOAT)||LA88_0==LPAREN||LA88_0==SHARP||LA88_0==MINUS||LA88_0==68||(LA88_0>=72 && LA88_0<=74)||(LA88_0>=77 && LA88_0<=93)) ) {
-                alt88=1;
-            }
-            switch (alt88) {
-                case 1 :
-                    // ATL_ANTLR3.g:714:19: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
-                    {
-                    // ATL_ANTLR3.g:714:19: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
-                    // ATL_ANTLR3.g:714:20: temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )*
-                    {
-                    pushFollow(FOLLOW_oclExpression_in_bagExp4144);
-                    temp=oclExpression();
-                    _fsp--;
-                    if (failed) return ret2;
-                    if ( backtracking==0 ) {
-                      ei.set(ret, "elements", temp);
-                    }
-                    // ATL_ANTLR3.g:714:72: ( ( ( COMA ) temp= oclExpression ) )*
-                    loop87:
-                    do {
-                        int alt87=2;
-                        int LA87_0 = input.LA(1);
-
-                        if ( (LA87_0==COMA) ) {
-                            alt87=1;
-                        }
-
-
-                        switch (alt87) {
-                    	case 1 :
-                    	    // ATL_ANTLR3.g:714:73: ( ( COMA ) temp= oclExpression )
-                    	    {
-                    	    // ATL_ANTLR3.g:714:73: ( ( COMA ) temp= oclExpression )
-                    	    // ATL_ANTLR3.g:714:74: ( COMA ) temp= oclExpression
-                    	    {
-                    	    // ATL_ANTLR3.g:714:74: ( COMA )
-                    	    // ATL_ANTLR3.g:714:75: COMA
-                    	    {
-                    	    match(input,COMA,FOLLOW_COMA_in_bagExp4151); if (failed) return ret2;
-
-                    	    }
-
-                    	    pushFollow(FOLLOW_oclExpression_in_bagExp4156);
-                    	    temp=oclExpression();
-                    	    _fsp--;
-                    	    if (failed) return ret2;
-                    	    if ( backtracking==0 ) {
-                    	      ei.set(ret, "elements", temp);
-                    	    }
-
-                    	    }
-
-
-                    	    }
-                    	    break;
-
-                    	default :
-                    	    break loop87;
-                        }
-                    } while (true);
-
-
-                    }
-
-
-                    }
-                    break;
-
-            }
-
-            match(input,RCURLY,FOLLOW_RCURLY_in_bagExp4166); if (failed) return ret2;
-
-            }
-
-            if ( backtracking==0 ) {
-
-                          ei.leaveContext(false);
-                          if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
-              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
-                          ret2=ret;
-                      
-            }
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-        }
-        return ret2;
-    }
-    // $ANTLR end bagExp
-
-
-    // $ANTLR start setExp
-    // ATL_ANTLR3.g:724:1: setExp returns [Object ret2] : ( 'Set' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) ;
-    public final Object setExp() throws RecognitionException {
-        Object ret2 = null;
-
-        Object temp = null;
-
-
-        Object ret=(backtracking==0) ? ei.create("SetExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
-        try {
-            // ATL_ANTLR3.g:725:2: ( ( 'Set' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) )
-            // ATL_ANTLR3.g:725:4: ( 'Set' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
-            {
-            // ATL_ANTLR3.g:725:4: ( 'Set' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
-            // ATL_ANTLR3.g:725:5: 'Set' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY
-            {
-            match(input,80,FOLLOW_80_in_setExp4198); if (failed) return ret2;
-            match(input,LCURLY,FOLLOW_LCURLY_in_setExp4200); if (failed) return ret2;
+            match(input,80,FOLLOW_80_in_bagExp4203); if (failed) return ret2;
+            match(input,LCURLY,FOLLOW_LCURLY_in_bagExp4205); if (failed) return ret2;
             // ATL_ANTLR3.g:725:18: ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )?
             int alt90=2;
             int LA90_0 = input.LA(1);
 
-            if ( ((LA90_0>=NAME && LA90_0<=FLOAT)||LA90_0==LPAREN||LA90_0==SHARP||LA90_0==MINUS||LA90_0==68||(LA90_0>=72 && LA90_0<=74)||(LA90_0>=77 && LA90_0<=93)) ) {
+            if ( ((LA90_0>=NAME && LA90_0<=FLOAT)||LA90_0==LPAREN||LA90_0==SHARP||LA90_0==MINUS||LA90_0==69||(LA90_0>=73 && LA90_0<=75)||(LA90_0>=78 && LA90_0<=94)) ) {
                 alt90=1;
             }
             switch (alt90) {
@@ -8943,7 +8981,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     // ATL_ANTLR3.g:725:19: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
                     // ATL_ANTLR3.g:725:20: temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )*
                     {
-                    pushFollow(FOLLOW_oclExpression_in_setExp4206);
+                    pushFollow(FOLLOW_oclExpression_in_bagExp4211);
                     temp=oclExpression();
                     _fsp--;
                     if (failed) return ret2;
@@ -8971,11 +9009,11 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    // ATL_ANTLR3.g:725:74: ( COMA )
                     	    // ATL_ANTLR3.g:725:75: COMA
                     	    {
-                    	    match(input,COMA,FOLLOW_COMA_in_setExp4213); if (failed) return ret2;
+                    	    match(input,COMA,FOLLOW_COMA_in_bagExp4218); if (failed) return ret2;
 
                     	    }
 
-                    	    pushFollow(FOLLOW_oclExpression_in_setExp4218);
+                    	    pushFollow(FOLLOW_oclExpression_in_bagExp4223);
                     	    temp=oclExpression();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -9003,7 +9041,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RCURLY,FOLLOW_RCURLY_in_setExp4228); if (failed) return ret2;
+            match(input,RCURLY,FOLLOW_RCURLY_in_bagExp4233); if (failed) return ret2;
 
             }
 
@@ -9027,49 +9065,49 @@ public class ATL_ANTLR3Parser extends Parser {
         }
         return ret2;
     }
-    // $ANTLR end setExp
+    // $ANTLR end bagExp
 
 
-    // $ANTLR start orderedSetExp
-    // ATL_ANTLR3.g:735:1: orderedSetExp returns [Object ret2] : ( 'OrderedSet' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) ;
-    public final Object orderedSetExp() throws RecognitionException {
+    // $ANTLR start setExp
+    // ATL_ANTLR3.g:735:1: setExp returns [Object ret2] : ( 'Set' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) ;
+    public final Object setExp() throws RecognitionException {
         Object ret2 = null;
 
         Object temp = null;
 
 
-        Object ret=(backtracking==0) ? ei.create("OrderedSetExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
+        Object ret=(backtracking==0) ? ei.create("SetExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:736:2: ( ( 'OrderedSet' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) )
-            // ATL_ANTLR3.g:736:4: ( 'OrderedSet' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
+            // ATL_ANTLR3.g:736:2: ( ( 'Set' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) )
+            // ATL_ANTLR3.g:736:4: ( 'Set' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
             {
-            // ATL_ANTLR3.g:736:4: ( 'OrderedSet' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
-            // ATL_ANTLR3.g:736:5: 'OrderedSet' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY
+            // ATL_ANTLR3.g:736:4: ( 'Set' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
+            // ATL_ANTLR3.g:736:5: 'Set' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY
             {
-            match(input,81,FOLLOW_81_in_orderedSetExp4260); if (failed) return ret2;
-            match(input,LCURLY,FOLLOW_LCURLY_in_orderedSetExp4262); if (failed) return ret2;
-            // ATL_ANTLR3.g:736:25: ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )?
+            match(input,81,FOLLOW_81_in_setExp4265); if (failed) return ret2;
+            match(input,LCURLY,FOLLOW_LCURLY_in_setExp4267); if (failed) return ret2;
+            // ATL_ANTLR3.g:736:18: ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )?
             int alt92=2;
             int LA92_0 = input.LA(1);
 
-            if ( ((LA92_0>=NAME && LA92_0<=FLOAT)||LA92_0==LPAREN||LA92_0==SHARP||LA92_0==MINUS||LA92_0==68||(LA92_0>=72 && LA92_0<=74)||(LA92_0>=77 && LA92_0<=93)) ) {
+            if ( ((LA92_0>=NAME && LA92_0<=FLOAT)||LA92_0==LPAREN||LA92_0==SHARP||LA92_0==MINUS||LA92_0==69||(LA92_0>=73 && LA92_0<=75)||(LA92_0>=78 && LA92_0<=94)) ) {
                 alt92=1;
             }
             switch (alt92) {
                 case 1 :
-                    // ATL_ANTLR3.g:736:26: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
+                    // ATL_ANTLR3.g:736:19: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
                     {
-                    // ATL_ANTLR3.g:736:26: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
-                    // ATL_ANTLR3.g:736:27: temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )*
+                    // ATL_ANTLR3.g:736:19: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
+                    // ATL_ANTLR3.g:736:20: temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )*
                     {
-                    pushFollow(FOLLOW_oclExpression_in_orderedSetExp4268);
+                    pushFollow(FOLLOW_oclExpression_in_setExp4273);
                     temp=oclExpression();
                     _fsp--;
                     if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ei.set(ret, "elements", temp);
                     }
-                    // ATL_ANTLR3.g:736:79: ( ( ( COMA ) temp= oclExpression ) )*
+                    // ATL_ANTLR3.g:736:72: ( ( ( COMA ) temp= oclExpression ) )*
                     loop91:
                     do {
                         int alt91=2;
@@ -9082,19 +9120,19 @@ public class ATL_ANTLR3Parser extends Parser {
 
                         switch (alt91) {
                     	case 1 :
-                    	    // ATL_ANTLR3.g:736:80: ( ( COMA ) temp= oclExpression )
+                    	    // ATL_ANTLR3.g:736:73: ( ( COMA ) temp= oclExpression )
                     	    {
-                    	    // ATL_ANTLR3.g:736:80: ( ( COMA ) temp= oclExpression )
-                    	    // ATL_ANTLR3.g:736:81: ( COMA ) temp= oclExpression
+                    	    // ATL_ANTLR3.g:736:73: ( ( COMA ) temp= oclExpression )
+                    	    // ATL_ANTLR3.g:736:74: ( COMA ) temp= oclExpression
                     	    {
-                    	    // ATL_ANTLR3.g:736:81: ( COMA )
-                    	    // ATL_ANTLR3.g:736:82: COMA
+                    	    // ATL_ANTLR3.g:736:74: ( COMA )
+                    	    // ATL_ANTLR3.g:736:75: COMA
                     	    {
-                    	    match(input,COMA,FOLLOW_COMA_in_orderedSetExp4275); if (failed) return ret2;
+                    	    match(input,COMA,FOLLOW_COMA_in_setExp4280); if (failed) return ret2;
 
                     	    }
 
-                    	    pushFollow(FOLLOW_oclExpression_in_orderedSetExp4280);
+                    	    pushFollow(FOLLOW_oclExpression_in_setExp4285);
                     	    temp=oclExpression();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -9122,7 +9160,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RCURLY,FOLLOW_RCURLY_in_orderedSetExp4290); if (failed) return ret2;
+            match(input,RCURLY,FOLLOW_RCURLY_in_setExp4295); if (failed) return ret2;
 
             }
 
@@ -9146,49 +9184,49 @@ public class ATL_ANTLR3Parser extends Parser {
         }
         return ret2;
     }
-    // $ANTLR end orderedSetExp
+    // $ANTLR end setExp
 
 
-    // $ANTLR start sequenceExp
-    // ATL_ANTLR3.g:746:1: sequenceExp returns [Object ret2] : ( 'Sequence' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) ;
-    public final Object sequenceExp() throws RecognitionException {
+    // $ANTLR start orderedSetExp
+    // ATL_ANTLR3.g:746:1: orderedSetExp returns [Object ret2] : ( 'OrderedSet' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) ;
+    public final Object orderedSetExp() throws RecognitionException {
         Object ret2 = null;
 
         Object temp = null;
 
 
-        Object ret=(backtracking==0) ? ei.create("SequenceExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
+        Object ret=(backtracking==0) ? ei.create("OrderedSetExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:747:2: ( ( 'Sequence' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) )
-            // ATL_ANTLR3.g:747:4: ( 'Sequence' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
+            // ATL_ANTLR3.g:747:2: ( ( 'OrderedSet' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) )
+            // ATL_ANTLR3.g:747:4: ( 'OrderedSet' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
             {
-            // ATL_ANTLR3.g:747:4: ( 'Sequence' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
-            // ATL_ANTLR3.g:747:5: 'Sequence' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY
+            // ATL_ANTLR3.g:747:4: ( 'OrderedSet' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
+            // ATL_ANTLR3.g:747:5: 'OrderedSet' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY
             {
-            match(input,82,FOLLOW_82_in_sequenceExp4322); if (failed) return ret2;
-            match(input,LCURLY,FOLLOW_LCURLY_in_sequenceExp4324); if (failed) return ret2;
-            // ATL_ANTLR3.g:747:23: ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )?
+            match(input,82,FOLLOW_82_in_orderedSetExp4327); if (failed) return ret2;
+            match(input,LCURLY,FOLLOW_LCURLY_in_orderedSetExp4329); if (failed) return ret2;
+            // ATL_ANTLR3.g:747:25: ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )?
             int alt94=2;
             int LA94_0 = input.LA(1);
 
-            if ( ((LA94_0>=NAME && LA94_0<=FLOAT)||LA94_0==LPAREN||LA94_0==SHARP||LA94_0==MINUS||LA94_0==68||(LA94_0>=72 && LA94_0<=74)||(LA94_0>=77 && LA94_0<=93)) ) {
+            if ( ((LA94_0>=NAME && LA94_0<=FLOAT)||LA94_0==LPAREN||LA94_0==SHARP||LA94_0==MINUS||LA94_0==69||(LA94_0>=73 && LA94_0<=75)||(LA94_0>=78 && LA94_0<=94)) ) {
                 alt94=1;
             }
             switch (alt94) {
                 case 1 :
-                    // ATL_ANTLR3.g:747:24: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
+                    // ATL_ANTLR3.g:747:26: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
                     {
-                    // ATL_ANTLR3.g:747:24: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
-                    // ATL_ANTLR3.g:747:25: temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )*
+                    // ATL_ANTLR3.g:747:26: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
+                    // ATL_ANTLR3.g:747:27: temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )*
                     {
-                    pushFollow(FOLLOW_oclExpression_in_sequenceExp4330);
+                    pushFollow(FOLLOW_oclExpression_in_orderedSetExp4335);
                     temp=oclExpression();
                     _fsp--;
                     if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ei.set(ret, "elements", temp);
                     }
-                    // ATL_ANTLR3.g:747:77: ( ( ( COMA ) temp= oclExpression ) )*
+                    // ATL_ANTLR3.g:747:79: ( ( ( COMA ) temp= oclExpression ) )*
                     loop93:
                     do {
                         int alt93=2;
@@ -9201,19 +9239,19 @@ public class ATL_ANTLR3Parser extends Parser {
 
                         switch (alt93) {
                     	case 1 :
-                    	    // ATL_ANTLR3.g:747:78: ( ( COMA ) temp= oclExpression )
+                    	    // ATL_ANTLR3.g:747:80: ( ( COMA ) temp= oclExpression )
                     	    {
-                    	    // ATL_ANTLR3.g:747:78: ( ( COMA ) temp= oclExpression )
-                    	    // ATL_ANTLR3.g:747:79: ( COMA ) temp= oclExpression
+                    	    // ATL_ANTLR3.g:747:80: ( ( COMA ) temp= oclExpression )
+                    	    // ATL_ANTLR3.g:747:81: ( COMA ) temp= oclExpression
                     	    {
-                    	    // ATL_ANTLR3.g:747:79: ( COMA )
-                    	    // ATL_ANTLR3.g:747:80: COMA
+                    	    // ATL_ANTLR3.g:747:81: ( COMA )
+                    	    // ATL_ANTLR3.g:747:82: COMA
                     	    {
-                    	    match(input,COMA,FOLLOW_COMA_in_sequenceExp4337); if (failed) return ret2;
+                    	    match(input,COMA,FOLLOW_COMA_in_orderedSetExp4342); if (failed) return ret2;
 
                     	    }
 
-                    	    pushFollow(FOLLOW_oclExpression_in_sequenceExp4342);
+                    	    pushFollow(FOLLOW_oclExpression_in_orderedSetExp4347);
                     	    temp=oclExpression();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -9241,7 +9279,126 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RCURLY,FOLLOW_RCURLY_in_sequenceExp4352); if (failed) return ret2;
+            match(input,RCURLY,FOLLOW_RCURLY_in_orderedSetExp4357); if (failed) return ret2;
+
+            }
+
+            if ( backtracking==0 ) {
+
+                          ei.leaveContext(false);
+                          if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
+              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
+                          ret2=ret;
+                      
+            }
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        return ret2;
+    }
+    // $ANTLR end orderedSetExp
+
+
+    // $ANTLR start sequenceExp
+    // ATL_ANTLR3.g:757:1: sequenceExp returns [Object ret2] : ( 'Sequence' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) ;
+    public final Object sequenceExp() throws RecognitionException {
+        Object ret2 = null;
+
+        Object temp = null;
+
+
+        Object ret=(backtracking==0) ? ei.create("SequenceExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
+        try {
+            // ATL_ANTLR3.g:758:2: ( ( 'Sequence' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY ) )
+            // ATL_ANTLR3.g:758:4: ( 'Sequence' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
+            {
+            // ATL_ANTLR3.g:758:4: ( 'Sequence' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY )
+            // ATL_ANTLR3.g:758:5: 'Sequence' LCURLY ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )? RCURLY
+            {
+            match(input,83,FOLLOW_83_in_sequenceExp4389); if (failed) return ret2;
+            match(input,LCURLY,FOLLOW_LCURLY_in_sequenceExp4391); if (failed) return ret2;
+            // ATL_ANTLR3.g:758:23: ( (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* ) )?
+            int alt96=2;
+            int LA96_0 = input.LA(1);
+
+            if ( ((LA96_0>=NAME && LA96_0<=FLOAT)||LA96_0==LPAREN||LA96_0==SHARP||LA96_0==MINUS||LA96_0==69||(LA96_0>=73 && LA96_0<=75)||(LA96_0>=78 && LA96_0<=94)) ) {
+                alt96=1;
+            }
+            switch (alt96) {
+                case 1 :
+                    // ATL_ANTLR3.g:758:24: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
+                    {
+                    // ATL_ANTLR3.g:758:24: (temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )* )
+                    // ATL_ANTLR3.g:758:25: temp= oclExpression ( ( ( COMA ) temp= oclExpression ) )*
+                    {
+                    pushFollow(FOLLOW_oclExpression_in_sequenceExp4397);
+                    temp=oclExpression();
+                    _fsp--;
+                    if (failed) return ret2;
+                    if ( backtracking==0 ) {
+                      ei.set(ret, "elements", temp);
+                    }
+                    // ATL_ANTLR3.g:758:77: ( ( ( COMA ) temp= oclExpression ) )*
+                    loop95:
+                    do {
+                        int alt95=2;
+                        int LA95_0 = input.LA(1);
+
+                        if ( (LA95_0==COMA) ) {
+                            alt95=1;
+                        }
+
+
+                        switch (alt95) {
+                    	case 1 :
+                    	    // ATL_ANTLR3.g:758:78: ( ( COMA ) temp= oclExpression )
+                    	    {
+                    	    // ATL_ANTLR3.g:758:78: ( ( COMA ) temp= oclExpression )
+                    	    // ATL_ANTLR3.g:758:79: ( COMA ) temp= oclExpression
+                    	    {
+                    	    // ATL_ANTLR3.g:758:79: ( COMA )
+                    	    // ATL_ANTLR3.g:758:80: COMA
+                    	    {
+                    	    match(input,COMA,FOLLOW_COMA_in_sequenceExp4404); if (failed) return ret2;
+
+                    	    }
+
+                    	    pushFollow(FOLLOW_oclExpression_in_sequenceExp4409);
+                    	    temp=oclExpression();
+                    	    _fsp--;
+                    	    if (failed) return ret2;
+                    	    if ( backtracking==0 ) {
+                    	      ei.set(ret, "elements", temp);
+                    	    }
+
+                    	    }
+
+
+                    	    }
+                    	    break;
+
+                    	default :
+                    	    break loop95;
+                        }
+                    } while (true);
+
+
+                    }
+
+
+                    }
+                    break;
+
+            }
+
+            match(input,RCURLY,FOLLOW_RCURLY_in_sequenceExp4419); if (failed) return ret2;
 
             }
 
@@ -9269,7 +9426,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start mapExp
-    // ATL_ANTLR3.g:757:1: mapExp returns [Object ret2] : ( 'Map' LCURLY ( (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* ) )? RCURLY ) ;
+    // ATL_ANTLR3.g:768:1: mapExp returns [Object ret2] : ( 'Map' LCURLY ( (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* ) )? RCURLY ) ;
     public final Object mapExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -9278,61 +9435,61 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("MapExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:758:2: ( ( 'Map' LCURLY ( (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* ) )? RCURLY ) )
-            // ATL_ANTLR3.g:758:4: ( 'Map' LCURLY ( (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* ) )? RCURLY )
+            // ATL_ANTLR3.g:769:2: ( ( 'Map' LCURLY ( (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* ) )? RCURLY ) )
+            // ATL_ANTLR3.g:769:4: ( 'Map' LCURLY ( (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* ) )? RCURLY )
             {
-            // ATL_ANTLR3.g:758:4: ( 'Map' LCURLY ( (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* ) )? RCURLY )
-            // ATL_ANTLR3.g:758:5: 'Map' LCURLY ( (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* ) )? RCURLY
+            // ATL_ANTLR3.g:769:4: ( 'Map' LCURLY ( (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* ) )? RCURLY )
+            // ATL_ANTLR3.g:769:5: 'Map' LCURLY ( (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* ) )? RCURLY
             {
-            match(input,83,FOLLOW_83_in_mapExp4384); if (failed) return ret2;
-            match(input,LCURLY,FOLLOW_LCURLY_in_mapExp4386); if (failed) return ret2;
-            // ATL_ANTLR3.g:758:18: ( (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* ) )?
-            int alt96=2;
-            int LA96_0 = input.LA(1);
+            match(input,84,FOLLOW_84_in_mapExp4451); if (failed) return ret2;
+            match(input,LCURLY,FOLLOW_LCURLY_in_mapExp4453); if (failed) return ret2;
+            // ATL_ANTLR3.g:769:18: ( (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* ) )?
+            int alt98=2;
+            int LA98_0 = input.LA(1);
 
-            if ( (LA96_0==LPAREN) ) {
-                alt96=1;
+            if ( (LA98_0==LPAREN) ) {
+                alt98=1;
             }
-            switch (alt96) {
+            switch (alt98) {
                 case 1 :
-                    // ATL_ANTLR3.g:758:19: (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* )
+                    // ATL_ANTLR3.g:769:19: (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* )
                     {
-                    // ATL_ANTLR3.g:758:19: (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* )
-                    // ATL_ANTLR3.g:758:20: temp= mapElement ( ( ( COMA ) temp= mapElement ) )*
+                    // ATL_ANTLR3.g:769:19: (temp= mapElement ( ( ( COMA ) temp= mapElement ) )* )
+                    // ATL_ANTLR3.g:769:20: temp= mapElement ( ( ( COMA ) temp= mapElement ) )*
                     {
-                    pushFollow(FOLLOW_mapElement_in_mapExp4392);
+                    pushFollow(FOLLOW_mapElement_in_mapExp4459);
                     temp=mapElement();
                     _fsp--;
                     if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ei.set(ret, "elements", temp);
                     }
-                    // ATL_ANTLR3.g:758:69: ( ( ( COMA ) temp= mapElement ) )*
-                    loop95:
+                    // ATL_ANTLR3.g:769:69: ( ( ( COMA ) temp= mapElement ) )*
+                    loop97:
                     do {
-                        int alt95=2;
-                        int LA95_0 = input.LA(1);
+                        int alt97=2;
+                        int LA97_0 = input.LA(1);
 
-                        if ( (LA95_0==COMA) ) {
-                            alt95=1;
+                        if ( (LA97_0==COMA) ) {
+                            alt97=1;
                         }
 
 
-                        switch (alt95) {
+                        switch (alt97) {
                     	case 1 :
-                    	    // ATL_ANTLR3.g:758:70: ( ( COMA ) temp= mapElement )
+                    	    // ATL_ANTLR3.g:769:70: ( ( COMA ) temp= mapElement )
                     	    {
-                    	    // ATL_ANTLR3.g:758:70: ( ( COMA ) temp= mapElement )
-                    	    // ATL_ANTLR3.g:758:71: ( COMA ) temp= mapElement
+                    	    // ATL_ANTLR3.g:769:70: ( ( COMA ) temp= mapElement )
+                    	    // ATL_ANTLR3.g:769:71: ( COMA ) temp= mapElement
                     	    {
-                    	    // ATL_ANTLR3.g:758:71: ( COMA )
-                    	    // ATL_ANTLR3.g:758:72: COMA
+                    	    // ATL_ANTLR3.g:769:71: ( COMA )
+                    	    // ATL_ANTLR3.g:769:72: COMA
                     	    {
-                    	    match(input,COMA,FOLLOW_COMA_in_mapExp4399); if (failed) return ret2;
+                    	    match(input,COMA,FOLLOW_COMA_in_mapExp4466); if (failed) return ret2;
 
                     	    }
 
-                    	    pushFollow(FOLLOW_mapElement_in_mapExp4404);
+                    	    pushFollow(FOLLOW_mapElement_in_mapExp4471);
                     	    temp=mapElement();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -9347,7 +9504,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop95;
+                    	    break loop97;
                         }
                     } while (true);
 
@@ -9360,7 +9517,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RCURLY,FOLLOW_RCURLY_in_mapExp4414); if (failed) return ret2;
+            match(input,RCURLY,FOLLOW_RCURLY_in_mapExp4481); if (failed) return ret2;
 
             }
 
@@ -9388,7 +9545,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start mapElement
-    // ATL_ANTLR3.g:768:1: mapElement returns [Object ret2] : ( LPAREN temp= oclExpression COMA temp= oclExpression RPAREN ) ;
+    // ATL_ANTLR3.g:779:1: mapElement returns [Object ret2] : ( LPAREN temp= oclExpression COMA temp= oclExpression RPAREN ) ;
     public final Object mapElement() throws RecognitionException {
         Object ret2 = null;
 
@@ -9397,29 +9554,29 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("MapElement", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:769:2: ( ( LPAREN temp= oclExpression COMA temp= oclExpression RPAREN ) )
-            // ATL_ANTLR3.g:769:4: ( LPAREN temp= oclExpression COMA temp= oclExpression RPAREN )
+            // ATL_ANTLR3.g:780:2: ( ( LPAREN temp= oclExpression COMA temp= oclExpression RPAREN ) )
+            // ATL_ANTLR3.g:780:4: ( LPAREN temp= oclExpression COMA temp= oclExpression RPAREN )
             {
-            // ATL_ANTLR3.g:769:4: ( LPAREN temp= oclExpression COMA temp= oclExpression RPAREN )
-            // ATL_ANTLR3.g:769:5: LPAREN temp= oclExpression COMA temp= oclExpression RPAREN
+            // ATL_ANTLR3.g:780:4: ( LPAREN temp= oclExpression COMA temp= oclExpression RPAREN )
+            // ATL_ANTLR3.g:780:5: LPAREN temp= oclExpression COMA temp= oclExpression RPAREN
             {
-            match(input,LPAREN,FOLLOW_LPAREN_in_mapElement4446); if (failed) return ret2;
-            pushFollow(FOLLOW_oclExpression_in_mapElement4450);
+            match(input,LPAREN,FOLLOW_LPAREN_in_mapElement4513); if (failed) return ret2;
+            pushFollow(FOLLOW_oclExpression_in_mapElement4517);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "key", temp);
             }
-            match(input,COMA,FOLLOW_COMA_in_mapElement4454); if (failed) return ret2;
-            pushFollow(FOLLOW_oclExpression_in_mapElement4458);
+            match(input,COMA,FOLLOW_COMA_in_mapElement4521); if (failed) return ret2;
+            pushFollow(FOLLOW_oclExpression_in_mapElement4525);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "value", temp);
             }
-            match(input,RPAREN,FOLLOW_RPAREN_in_mapElement4462); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_mapElement4529); if (failed) return ret2;
 
             }
 
@@ -9447,7 +9604,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start tupleExp
-    // ATL_ANTLR3.g:779:1: tupleExp returns [Object ret2] : ( 'Tuple' LCURLY ( (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* ) )? RCURLY ) ;
+    // ATL_ANTLR3.g:790:1: tupleExp returns [Object ret2] : ( 'Tuple' LCURLY ( (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* ) )? RCURLY ) ;
     public final Object tupleExp() throws RecognitionException {
         Object ret2 = null;
 
@@ -9456,61 +9613,61 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("TupleExp", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:780:2: ( ( 'Tuple' LCURLY ( (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* ) )? RCURLY ) )
-            // ATL_ANTLR3.g:780:4: ( 'Tuple' LCURLY ( (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* ) )? RCURLY )
+            // ATL_ANTLR3.g:791:2: ( ( 'Tuple' LCURLY ( (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* ) )? RCURLY ) )
+            // ATL_ANTLR3.g:791:4: ( 'Tuple' LCURLY ( (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* ) )? RCURLY )
             {
-            // ATL_ANTLR3.g:780:4: ( 'Tuple' LCURLY ( (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* ) )? RCURLY )
-            // ATL_ANTLR3.g:780:5: 'Tuple' LCURLY ( (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* ) )? RCURLY
+            // ATL_ANTLR3.g:791:4: ( 'Tuple' LCURLY ( (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* ) )? RCURLY )
+            // ATL_ANTLR3.g:791:5: 'Tuple' LCURLY ( (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* ) )? RCURLY
             {
-            match(input,84,FOLLOW_84_in_tupleExp4494); if (failed) return ret2;
-            match(input,LCURLY,FOLLOW_LCURLY_in_tupleExp4496); if (failed) return ret2;
-            // ATL_ANTLR3.g:780:20: ( (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* ) )?
-            int alt98=2;
-            int LA98_0 = input.LA(1);
+            match(input,85,FOLLOW_85_in_tupleExp4561); if (failed) return ret2;
+            match(input,LCURLY,FOLLOW_LCURLY_in_tupleExp4563); if (failed) return ret2;
+            // ATL_ANTLR3.g:791:20: ( (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* ) )?
+            int alt100=2;
+            int LA100_0 = input.LA(1);
 
-            if ( (LA98_0==NAME||(LA98_0>=43 && LA98_0<=99)) ) {
-                alt98=1;
+            if ( (LA100_0==NAME||(LA100_0>=43 && LA100_0<=100)) ) {
+                alt100=1;
             }
-            switch (alt98) {
+            switch (alt100) {
                 case 1 :
-                    // ATL_ANTLR3.g:780:21: (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* )
+                    // ATL_ANTLR3.g:791:21: (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* )
                     {
-                    // ATL_ANTLR3.g:780:21: (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* )
-                    // ATL_ANTLR3.g:780:22: temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )*
+                    // ATL_ANTLR3.g:791:21: (temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )* )
+                    // ATL_ANTLR3.g:791:22: temp= tuplePart ( ( ( COMA ) temp= tuplePart ) )*
                     {
-                    pushFollow(FOLLOW_tuplePart_in_tupleExp4502);
+                    pushFollow(FOLLOW_tuplePart_in_tupleExp4569);
                     temp=tuplePart();
                     _fsp--;
                     if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ei.set(ret, "tuplePart", temp);
                     }
-                    // ATL_ANTLR3.g:780:71: ( ( ( COMA ) temp= tuplePart ) )*
-                    loop97:
+                    // ATL_ANTLR3.g:791:71: ( ( ( COMA ) temp= tuplePart ) )*
+                    loop99:
                     do {
-                        int alt97=2;
-                        int LA97_0 = input.LA(1);
+                        int alt99=2;
+                        int LA99_0 = input.LA(1);
 
-                        if ( (LA97_0==COMA) ) {
-                            alt97=1;
+                        if ( (LA99_0==COMA) ) {
+                            alt99=1;
                         }
 
 
-                        switch (alt97) {
+                        switch (alt99) {
                     	case 1 :
-                    	    // ATL_ANTLR3.g:780:72: ( ( COMA ) temp= tuplePart )
+                    	    // ATL_ANTLR3.g:791:72: ( ( COMA ) temp= tuplePart )
                     	    {
-                    	    // ATL_ANTLR3.g:780:72: ( ( COMA ) temp= tuplePart )
-                    	    // ATL_ANTLR3.g:780:73: ( COMA ) temp= tuplePart
+                    	    // ATL_ANTLR3.g:791:72: ( ( COMA ) temp= tuplePart )
+                    	    // ATL_ANTLR3.g:791:73: ( COMA ) temp= tuplePart
                     	    {
-                    	    // ATL_ANTLR3.g:780:73: ( COMA )
-                    	    // ATL_ANTLR3.g:780:74: COMA
+                    	    // ATL_ANTLR3.g:791:73: ( COMA )
+                    	    // ATL_ANTLR3.g:791:74: COMA
                     	    {
-                    	    match(input,COMA,FOLLOW_COMA_in_tupleExp4509); if (failed) return ret2;
+                    	    match(input,COMA,FOLLOW_COMA_in_tupleExp4576); if (failed) return ret2;
 
                     	    }
 
-                    	    pushFollow(FOLLOW_tuplePart_in_tupleExp4514);
+                    	    pushFollow(FOLLOW_tuplePart_in_tupleExp4581);
                     	    temp=tuplePart();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -9525,7 +9682,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop97;
+                    	    break loop99;
                         }
                     } while (true);
 
@@ -9538,7 +9695,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RCURLY,FOLLOW_RCURLY_in_tupleExp4524); if (failed) return ret2;
+            match(input,RCURLY,FOLLOW_RCURLY_in_tupleExp4591); if (failed) return ret2;
 
             }
 
@@ -9566,7 +9723,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start tuplePart
-    // ATL_ANTLR3.g:790:1: tuplePart returns [Object ret2] : (temp= identifierOrKeyword ( ( COLON temp= oclType ) | () ) EQ temp= oclExpression ) ;
+    // ATL_ANTLR3.g:801:1: tuplePart returns [Object ret2] : (temp= identifierOrKeyword ( ( COLON temp= oclType ) | () ) EQ temp= oclExpression ) ;
     public final Object tuplePart() throws RecognitionException {
         Object ret2 = null;
 
@@ -9575,45 +9732,45 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("TuplePart", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:791:2: ( (temp= identifierOrKeyword ( ( COLON temp= oclType ) | () ) EQ temp= oclExpression ) )
-            // ATL_ANTLR3.g:791:4: (temp= identifierOrKeyword ( ( COLON temp= oclType ) | () ) EQ temp= oclExpression )
+            // ATL_ANTLR3.g:802:2: ( (temp= identifierOrKeyword ( ( COLON temp= oclType ) | () ) EQ temp= oclExpression ) )
+            // ATL_ANTLR3.g:802:4: (temp= identifierOrKeyword ( ( COLON temp= oclType ) | () ) EQ temp= oclExpression )
             {
-            // ATL_ANTLR3.g:791:4: (temp= identifierOrKeyword ( ( COLON temp= oclType ) | () ) EQ temp= oclExpression )
-            // ATL_ANTLR3.g:791:5: temp= identifierOrKeyword ( ( COLON temp= oclType ) | () ) EQ temp= oclExpression
+            // ATL_ANTLR3.g:802:4: (temp= identifierOrKeyword ( ( COLON temp= oclType ) | () ) EQ temp= oclExpression )
+            // ATL_ANTLR3.g:802:5: temp= identifierOrKeyword ( ( COLON temp= oclType ) | () ) EQ temp= oclExpression
             {
-            pushFollow(FOLLOW_identifierOrKeyword_in_tuplePart4558);
+            pushFollow(FOLLOW_identifierOrKeyword_in_tuplePart4625);
             temp=identifierOrKeyword();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "varName", temp);
             }
-            // ATL_ANTLR3.g:791:62: ( ( COLON temp= oclType ) | () )
-            int alt99=2;
-            int LA99_0 = input.LA(1);
+            // ATL_ANTLR3.g:802:62: ( ( COLON temp= oclType ) | () )
+            int alt101=2;
+            int LA101_0 = input.LA(1);
 
-            if ( (LA99_0==COLON) ) {
-                alt99=1;
+            if ( (LA101_0==COLON) ) {
+                alt101=1;
             }
-            else if ( (LA99_0==EQ) ) {
-                alt99=2;
+            else if ( (LA101_0==EQ) ) {
+                alt101=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("791:62: ( ( COLON temp= oclType ) | () )", 99, 0, input);
+                    new NoViableAltException("802:62: ( ( COLON temp= oclType ) | () )", 101, 0, input);
 
                 throw nvae;
             }
-            switch (alt99) {
+            switch (alt101) {
                 case 1 :
-                    // ATL_ANTLR3.g:791:63: ( COLON temp= oclType )
+                    // ATL_ANTLR3.g:802:63: ( COLON temp= oclType )
                     {
-                    // ATL_ANTLR3.g:791:63: ( COLON temp= oclType )
-                    // ATL_ANTLR3.g:791:64: COLON temp= oclType
+                    // ATL_ANTLR3.g:802:63: ( COLON temp= oclType )
+                    // ATL_ANTLR3.g:802:64: COLON temp= oclType
                     {
-                    match(input,COLON,FOLLOW_COLON_in_tuplePart4564); if (failed) return ret2;
-                    pushFollow(FOLLOW_oclType_in_tuplePart4568);
+                    match(input,COLON,FOLLOW_COLON_in_tuplePart4631); if (failed) return ret2;
+                    pushFollow(FOLLOW_oclType_in_tuplePart4635);
                     temp=oclType();
                     _fsp--;
                     if (failed) return ret2;
@@ -9629,10 +9786,10 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:791:117: ()
+                    // ATL_ANTLR3.g:802:117: ()
                     {
-                    // ATL_ANTLR3.g:791:117: ()
-                    // ATL_ANTLR3.g:791:118: 
+                    // ATL_ANTLR3.g:802:117: ()
+                    // ATL_ANTLR3.g:802:118: 
                     {
                     }
 
@@ -9644,8 +9801,8 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,EQ,FOLLOW_EQ_in_tuplePart4582); if (failed) return ret2;
-            pushFollow(FOLLOW_oclExpression_in_tuplePart4586);
+            match(input,EQ,FOLLOW_EQ_in_tuplePart4649); if (failed) return ret2;
+            pushFollow(FOLLOW_oclExpression_in_tuplePart4653);
             temp=oclExpression();
             _fsp--;
             if (failed) return ret2;
@@ -9679,7 +9836,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start oclType
-    // ATL_ANTLR3.g:801:1: oclType returns [Object ret2] : ( (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents ) ) ;
+    // ATL_ANTLR3.g:812:1: oclType returns [Object ret2] : ( (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents ) ) ;
     public final Object oclType() throws RecognitionException {
         Object ret2 = null;
 
@@ -9687,70 +9844,70 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
         try {
-            // ATL_ANTLR3.g:802:2: ( ( (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents ) ) )
-            // ATL_ANTLR3.g:802:4: ( (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents ) )
+            // ATL_ANTLR3.g:813:2: ( ( (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents ) ) )
+            // ATL_ANTLR3.g:813:4: ( (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents ) )
             {
-            // ATL_ANTLR3.g:802:4: ( (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents ) )
-            // ATL_ANTLR3.g:802:5: (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents )
+            // ATL_ANTLR3.g:813:4: ( (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents ) )
+            // ATL_ANTLR3.g:813:5: (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents )
             {
-            // ATL_ANTLR3.g:802:5: (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents )
-            int alt100=7;
+            // ATL_ANTLR3.g:813:5: (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents )
+            int alt102=7;
             switch ( input.LA(1) ) {
             case NAME:
                 {
-                alt100=1;
-                }
-                break;
-            case 86:
-                {
-                alt100=2;
+                alt102=1;
                 }
                 break;
             case 87:
                 {
-                alt100=3;
-                }
-                break;
-            case 83:
-                {
-                alt100=4;
+                alt102=2;
                 }
                 break;
             case 88:
+                {
+                alt102=3;
+                }
+                break;
+            case 84:
+                {
+                alt102=4;
+                }
+                break;
             case 89:
             case 90:
             case 91:
+            case 92:
                 {
-                alt100=5;
+                alt102=5;
                 }
                 break;
-            case 79:
             case 80:
             case 81:
             case 82:
-            case 92:
+            case 83:
+            case 93:
                 {
-                alt100=6;
+                alt102=6;
                 }
                 break;
-            case 85:
+            case 86:
                 {
-                alt100=7;
+                alt102=7;
                 }
                 break;
             default:
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("802:5: (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents )", 100, 0, input);
+                    new NoViableAltException("813:5: (ret= oclModelElement | ret= oclAnyType | ret= tupleType | ret= mapType | ret= primitive | ret= collectionType | ret= oclType_abstractContents )", 102, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt100) {
+            switch (alt102) {
                 case 1 :
-                    // ATL_ANTLR3.g:802:6: ret= oclModelElement
+                    // ATL_ANTLR3.g:813:6: ret= oclModelElement
                     {
-                    pushFollow(FOLLOW_oclModelElement_in_oclType4623);
+                    pushFollow(FOLLOW_oclModelElement_in_oclType4690);
                     ret=oclModelElement();
                     _fsp--;
                     if (failed) return ret2;
@@ -9758,9 +9915,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:802:27: ret= oclAnyType
+                    // ATL_ANTLR3.g:813:27: ret= oclAnyType
                     {
-                    pushFollow(FOLLOW_oclAnyType_in_oclType4628);
+                    pushFollow(FOLLOW_oclAnyType_in_oclType4695);
                     ret=oclAnyType();
                     _fsp--;
                     if (failed) return ret2;
@@ -9768,9 +9925,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // ATL_ANTLR3.g:802:43: ret= tupleType
+                    // ATL_ANTLR3.g:813:43: ret= tupleType
                     {
-                    pushFollow(FOLLOW_tupleType_in_oclType4633);
+                    pushFollow(FOLLOW_tupleType_in_oclType4700);
                     ret=tupleType();
                     _fsp--;
                     if (failed) return ret2;
@@ -9778,9 +9935,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 4 :
-                    // ATL_ANTLR3.g:802:58: ret= mapType
+                    // ATL_ANTLR3.g:813:58: ret= mapType
                     {
-                    pushFollow(FOLLOW_mapType_in_oclType4638);
+                    pushFollow(FOLLOW_mapType_in_oclType4705);
                     ret=mapType();
                     _fsp--;
                     if (failed) return ret2;
@@ -9788,9 +9945,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 5 :
-                    // ATL_ANTLR3.g:802:71: ret= primitive
+                    // ATL_ANTLR3.g:813:71: ret= primitive
                     {
-                    pushFollow(FOLLOW_primitive_in_oclType4643);
+                    pushFollow(FOLLOW_primitive_in_oclType4710);
                     ret=primitive();
                     _fsp--;
                     if (failed) return ret2;
@@ -9798,9 +9955,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 6 :
-                    // ATL_ANTLR3.g:802:86: ret= collectionType
+                    // ATL_ANTLR3.g:813:86: ret= collectionType
                     {
-                    pushFollow(FOLLOW_collectionType_in_oclType4648);
+                    pushFollow(FOLLOW_collectionType_in_oclType4715);
                     ret=collectionType();
                     _fsp--;
                     if (failed) return ret2;
@@ -9808,9 +9965,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 7 :
-                    // ATL_ANTLR3.g:802:106: ret= oclType_abstractContents
+                    // ATL_ANTLR3.g:813:106: ret= oclType_abstractContents
                     {
-                    pushFollow(FOLLOW_oclType_abstractContents_in_oclType4653);
+                    pushFollow(FOLLOW_oclType_abstractContents_in_oclType4720);
                     ret=oclType_abstractContents();
                     _fsp--;
                     if (failed) return ret2;
@@ -9845,19 +10002,19 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start oclAnyType
-    // ATL_ANTLR3.g:810:1: oclAnyType returns [Object ret2] : ( 'OclAny' ) ;
+    // ATL_ANTLR3.g:821:1: oclAnyType returns [Object ret2] : ( 'OclAny' ) ;
     public final Object oclAnyType() throws RecognitionException {
         Object ret2 = null;
 
         Object ret=(backtracking==0) ? ei.create("OclAnyType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:811:2: ( ( 'OclAny' ) )
-            // ATL_ANTLR3.g:811:4: ( 'OclAny' )
+            // ATL_ANTLR3.g:822:2: ( ( 'OclAny' ) )
+            // ATL_ANTLR3.g:822:4: ( 'OclAny' )
             {
-            // ATL_ANTLR3.g:811:4: ( 'OclAny' )
-            // ATL_ANTLR3.g:811:5: 'OclAny'
+            // ATL_ANTLR3.g:822:4: ( 'OclAny' )
+            // ATL_ANTLR3.g:822:5: 'OclAny'
             {
-            match(input,86,FOLLOW_86_in_oclAnyType4686); if (failed) return ret2;
+            match(input,87,FOLLOW_87_in_oclAnyType4753); if (failed) return ret2;
 
             }
 
@@ -9885,7 +10042,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start tupleType
-    // ATL_ANTLR3.g:821:1: tupleType returns [Object ret2] : ( 'TupleType' LPAREN ( (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* ) )? RPAREN ) ;
+    // ATL_ANTLR3.g:832:1: tupleType returns [Object ret2] : ( 'TupleType' LPAREN ( (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* ) )? RPAREN ) ;
     public final Object tupleType() throws RecognitionException {
         Object ret2 = null;
 
@@ -9894,61 +10051,61 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("TupleType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:822:2: ( ( 'TupleType' LPAREN ( (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* ) )? RPAREN ) )
-            // ATL_ANTLR3.g:822:4: ( 'TupleType' LPAREN ( (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* ) )? RPAREN )
+            // ATL_ANTLR3.g:833:2: ( ( 'TupleType' LPAREN ( (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* ) )? RPAREN ) )
+            // ATL_ANTLR3.g:833:4: ( 'TupleType' LPAREN ( (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* ) )? RPAREN )
             {
-            // ATL_ANTLR3.g:822:4: ( 'TupleType' LPAREN ( (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* ) )? RPAREN )
-            // ATL_ANTLR3.g:822:5: 'TupleType' LPAREN ( (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* ) )? RPAREN
+            // ATL_ANTLR3.g:833:4: ( 'TupleType' LPAREN ( (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* ) )? RPAREN )
+            // ATL_ANTLR3.g:833:5: 'TupleType' LPAREN ( (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* ) )? RPAREN
             {
-            match(input,87,FOLLOW_87_in_tupleType4718); if (failed) return ret2;
-            match(input,LPAREN,FOLLOW_LPAREN_in_tupleType4720); if (failed) return ret2;
-            // ATL_ANTLR3.g:822:24: ( (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* ) )?
-            int alt102=2;
-            int LA102_0 = input.LA(1);
+            match(input,88,FOLLOW_88_in_tupleType4785); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_tupleType4787); if (failed) return ret2;
+            // ATL_ANTLR3.g:833:24: ( (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* ) )?
+            int alt104=2;
+            int LA104_0 = input.LA(1);
 
-            if ( (LA102_0==NAME) ) {
-                alt102=1;
+            if ( (LA104_0==NAME) ) {
+                alt104=1;
             }
-            switch (alt102) {
+            switch (alt104) {
                 case 1 :
-                    // ATL_ANTLR3.g:822:25: (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* )
+                    // ATL_ANTLR3.g:833:25: (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* )
                     {
-                    // ATL_ANTLR3.g:822:25: (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* )
-                    // ATL_ANTLR3.g:822:26: temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )*
+                    // ATL_ANTLR3.g:833:25: (temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )* )
+                    // ATL_ANTLR3.g:833:26: temp= tupleTypeAttribute ( ( ( COMA ) temp= tupleTypeAttribute ) )*
                     {
-                    pushFollow(FOLLOW_tupleTypeAttribute_in_tupleType4726);
+                    pushFollow(FOLLOW_tupleTypeAttribute_in_tupleType4793);
                     temp=tupleTypeAttribute();
                     _fsp--;
                     if (failed) return ret2;
                     if ( backtracking==0 ) {
                       ei.set(ret, "attributes", temp);
                     }
-                    // ATL_ANTLR3.g:822:85: ( ( ( COMA ) temp= tupleTypeAttribute ) )*
-                    loop101:
+                    // ATL_ANTLR3.g:833:85: ( ( ( COMA ) temp= tupleTypeAttribute ) )*
+                    loop103:
                     do {
-                        int alt101=2;
-                        int LA101_0 = input.LA(1);
+                        int alt103=2;
+                        int LA103_0 = input.LA(1);
 
-                        if ( (LA101_0==COMA) ) {
-                            alt101=1;
+                        if ( (LA103_0==COMA) ) {
+                            alt103=1;
                         }
 
 
-                        switch (alt101) {
+                        switch (alt103) {
                     	case 1 :
-                    	    // ATL_ANTLR3.g:822:86: ( ( COMA ) temp= tupleTypeAttribute )
+                    	    // ATL_ANTLR3.g:833:86: ( ( COMA ) temp= tupleTypeAttribute )
                     	    {
-                    	    // ATL_ANTLR3.g:822:86: ( ( COMA ) temp= tupleTypeAttribute )
-                    	    // ATL_ANTLR3.g:822:87: ( COMA ) temp= tupleTypeAttribute
+                    	    // ATL_ANTLR3.g:833:86: ( ( COMA ) temp= tupleTypeAttribute )
+                    	    // ATL_ANTLR3.g:833:87: ( COMA ) temp= tupleTypeAttribute
                     	    {
-                    	    // ATL_ANTLR3.g:822:87: ( COMA )
-                    	    // ATL_ANTLR3.g:822:88: COMA
+                    	    // ATL_ANTLR3.g:833:87: ( COMA )
+                    	    // ATL_ANTLR3.g:833:88: COMA
                     	    {
-                    	    match(input,COMA,FOLLOW_COMA_in_tupleType4733); if (failed) return ret2;
+                    	    match(input,COMA,FOLLOW_COMA_in_tupleType4800); if (failed) return ret2;
 
                     	    }
 
-                    	    pushFollow(FOLLOW_tupleTypeAttribute_in_tupleType4738);
+                    	    pushFollow(FOLLOW_tupleTypeAttribute_in_tupleType4805);
                     	    temp=tupleTypeAttribute();
                     	    _fsp--;
                     	    if (failed) return ret2;
@@ -9963,7 +10120,7 @@ public class ATL_ANTLR3Parser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop101;
+                    	    break loop103;
                         }
                     } while (true);
 
@@ -9976,7 +10133,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_tupleType4748); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_tupleType4815); if (failed) return ret2;
 
             }
 
@@ -10004,7 +10161,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start tupleTypeAttribute
-    // ATL_ANTLR3.g:832:1: tupleTypeAttribute returns [Object ret2] : (temp= identifier COLON temp= oclType ) ;
+    // ATL_ANTLR3.g:843:1: tupleTypeAttribute returns [Object ret2] : (temp= identifier COLON temp= oclType ) ;
     public final Object tupleTypeAttribute() throws RecognitionException {
         Object ret2 = null;
 
@@ -10013,21 +10170,21 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("TupleTypeAttribute", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:833:2: ( (temp= identifier COLON temp= oclType ) )
-            // ATL_ANTLR3.g:833:4: (temp= identifier COLON temp= oclType )
+            // ATL_ANTLR3.g:844:2: ( (temp= identifier COLON temp= oclType ) )
+            // ATL_ANTLR3.g:844:4: (temp= identifier COLON temp= oclType )
             {
-            // ATL_ANTLR3.g:833:4: (temp= identifier COLON temp= oclType )
-            // ATL_ANTLR3.g:833:5: temp= identifier COLON temp= oclType
+            // ATL_ANTLR3.g:844:4: (temp= identifier COLON temp= oclType )
+            // ATL_ANTLR3.g:844:5: temp= identifier COLON temp= oclType
             {
-            pushFollow(FOLLOW_identifier_in_tupleTypeAttribute4782);
+            pushFollow(FOLLOW_identifier_in_tupleTypeAttribute4849);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "name", temp);
             }
-            match(input,COLON,FOLLOW_COLON_in_tupleTypeAttribute4786); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_tupleTypeAttribute4790);
+            match(input,COLON,FOLLOW_COLON_in_tupleTypeAttribute4853); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_tupleTypeAttribute4857);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
@@ -10061,7 +10218,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start mapType
-    // ATL_ANTLR3.g:843:1: mapType returns [Object ret2] : ( 'Map' LPAREN temp= oclType COMA temp= oclType RPAREN ) ;
+    // ATL_ANTLR3.g:854:1: mapType returns [Object ret2] : ( 'Map' LPAREN temp= oclType COMA temp= oclType RPAREN ) ;
     public final Object mapType() throws RecognitionException {
         Object ret2 = null;
 
@@ -10070,30 +10227,30 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("MapType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:844:2: ( ( 'Map' LPAREN temp= oclType COMA temp= oclType RPAREN ) )
-            // ATL_ANTLR3.g:844:4: ( 'Map' LPAREN temp= oclType COMA temp= oclType RPAREN )
+            // ATL_ANTLR3.g:855:2: ( ( 'Map' LPAREN temp= oclType COMA temp= oclType RPAREN ) )
+            // ATL_ANTLR3.g:855:4: ( 'Map' LPAREN temp= oclType COMA temp= oclType RPAREN )
             {
-            // ATL_ANTLR3.g:844:4: ( 'Map' LPAREN temp= oclType COMA temp= oclType RPAREN )
-            // ATL_ANTLR3.g:844:5: 'Map' LPAREN temp= oclType COMA temp= oclType RPAREN
+            // ATL_ANTLR3.g:855:4: ( 'Map' LPAREN temp= oclType COMA temp= oclType RPAREN )
+            // ATL_ANTLR3.g:855:5: 'Map' LPAREN temp= oclType COMA temp= oclType RPAREN
             {
-            match(input,83,FOLLOW_83_in_mapType4824); if (failed) return ret2;
-            match(input,LPAREN,FOLLOW_LPAREN_in_mapType4826); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_mapType4830);
+            match(input,84,FOLLOW_84_in_mapType4891); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_mapType4893); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_mapType4897);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "keyType", temp);
             }
-            match(input,COMA,FOLLOW_COMA_in_mapType4834); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_mapType4838);
+            match(input,COMA,FOLLOW_COMA_in_mapType4901); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_mapType4905);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "valueType", temp);
             }
-            match(input,RPAREN,FOLLOW_RPAREN_in_mapType4842); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_mapType4909); if (failed) return ret2;
 
             }
 
@@ -10121,7 +10278,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start primitive
-    // ATL_ANTLR3.g:854:1: primitive returns [Object ret2] : ( (ret= numericType | ret= booleanType | ret= stringType ) ) ;
+    // ATL_ANTLR3.g:865:1: primitive returns [Object ret2] : ( (ret= numericType | ret= booleanType | ret= stringType ) ) ;
     public final Object primitive() throws RecognitionException {
         Object ret2 = null;
 
@@ -10129,44 +10286,44 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
         try {
-            // ATL_ANTLR3.g:855:2: ( ( (ret= numericType | ret= booleanType | ret= stringType ) ) )
-            // ATL_ANTLR3.g:855:4: ( (ret= numericType | ret= booleanType | ret= stringType ) )
+            // ATL_ANTLR3.g:866:2: ( ( (ret= numericType | ret= booleanType | ret= stringType ) ) )
+            // ATL_ANTLR3.g:866:4: ( (ret= numericType | ret= booleanType | ret= stringType ) )
             {
-            // ATL_ANTLR3.g:855:4: ( (ret= numericType | ret= booleanType | ret= stringType ) )
-            // ATL_ANTLR3.g:855:5: (ret= numericType | ret= booleanType | ret= stringType )
+            // ATL_ANTLR3.g:866:4: ( (ret= numericType | ret= booleanType | ret= stringType ) )
+            // ATL_ANTLR3.g:866:5: (ret= numericType | ret= booleanType | ret= stringType )
             {
-            // ATL_ANTLR3.g:855:5: (ret= numericType | ret= booleanType | ret= stringType )
-            int alt103=3;
+            // ATL_ANTLR3.g:866:5: (ret= numericType | ret= booleanType | ret= stringType )
+            int alt105=3;
             switch ( input.LA(1) ) {
-            case 88:
             case 89:
-                {
-                alt103=1;
-                }
-                break;
             case 90:
                 {
-                alt103=2;
+                alt105=1;
                 }
                 break;
             case 91:
                 {
-                alt103=3;
+                alt105=2;
+                }
+                break;
+            case 92:
+                {
+                alt105=3;
                 }
                 break;
             default:
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("855:5: (ret= numericType | ret= booleanType | ret= stringType )", 103, 0, input);
+                    new NoViableAltException("866:5: (ret= numericType | ret= booleanType | ret= stringType )", 105, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt103) {
+            switch (alt105) {
                 case 1 :
-                    // ATL_ANTLR3.g:855:6: ret= numericType
+                    // ATL_ANTLR3.g:866:6: ret= numericType
                     {
-                    pushFollow(FOLLOW_numericType_in_primitive4877);
+                    pushFollow(FOLLOW_numericType_in_primitive4944);
                     ret=numericType();
                     _fsp--;
                     if (failed) return ret2;
@@ -10174,9 +10331,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:855:23: ret= booleanType
+                    // ATL_ANTLR3.g:866:23: ret= booleanType
                     {
-                    pushFollow(FOLLOW_booleanType_in_primitive4882);
+                    pushFollow(FOLLOW_booleanType_in_primitive4949);
                     ret=booleanType();
                     _fsp--;
                     if (failed) return ret2;
@@ -10184,9 +10341,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // ATL_ANTLR3.g:855:40: ret= stringType
+                    // ATL_ANTLR3.g:866:40: ret= stringType
                     {
-                    pushFollow(FOLLOW_stringType_in_primitive4887);
+                    pushFollow(FOLLOW_stringType_in_primitive4954);
                     ret=stringType();
                     _fsp--;
                     if (failed) return ret2;
@@ -10221,7 +10378,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start numericType
-    // ATL_ANTLR3.g:863:1: numericType returns [Object ret2] : ( (ret= integerType | ret= realType ) ) ;
+    // ATL_ANTLR3.g:874:1: numericType returns [Object ret2] : ( (ret= integerType | ret= realType ) ) ;
     public final Object numericType() throws RecognitionException {
         Object ret2 = null;
 
@@ -10229,34 +10386,34 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
         try {
-            // ATL_ANTLR3.g:864:2: ( ( (ret= integerType | ret= realType ) ) )
-            // ATL_ANTLR3.g:864:4: ( (ret= integerType | ret= realType ) )
+            // ATL_ANTLR3.g:875:2: ( ( (ret= integerType | ret= realType ) ) )
+            // ATL_ANTLR3.g:875:4: ( (ret= integerType | ret= realType ) )
             {
-            // ATL_ANTLR3.g:864:4: ( (ret= integerType | ret= realType ) )
-            // ATL_ANTLR3.g:864:5: (ret= integerType | ret= realType )
+            // ATL_ANTLR3.g:875:4: ( (ret= integerType | ret= realType ) )
+            // ATL_ANTLR3.g:875:5: (ret= integerType | ret= realType )
             {
-            // ATL_ANTLR3.g:864:5: (ret= integerType | ret= realType )
-            int alt104=2;
-            int LA104_0 = input.LA(1);
+            // ATL_ANTLR3.g:875:5: (ret= integerType | ret= realType )
+            int alt106=2;
+            int LA106_0 = input.LA(1);
 
-            if ( (LA104_0==88) ) {
-                alt104=1;
+            if ( (LA106_0==89) ) {
+                alt106=1;
             }
-            else if ( (LA104_0==89) ) {
-                alt104=2;
+            else if ( (LA106_0==90) ) {
+                alt106=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("864:5: (ret= integerType | ret= realType )", 104, 0, input);
+                    new NoViableAltException("875:5: (ret= integerType | ret= realType )", 106, 0, input);
 
                 throw nvae;
             }
-            switch (alt104) {
+            switch (alt106) {
                 case 1 :
-                    // ATL_ANTLR3.g:864:6: ret= integerType
+                    // ATL_ANTLR3.g:875:6: ret= integerType
                     {
-                    pushFollow(FOLLOW_integerType_in_numericType4923);
+                    pushFollow(FOLLOW_integerType_in_numericType4990);
                     ret=integerType();
                     _fsp--;
                     if (failed) return ret2;
@@ -10264,9 +10421,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:864:23: ret= realType
+                    // ATL_ANTLR3.g:875:23: ret= realType
                     {
-                    pushFollow(FOLLOW_realType_in_numericType4928);
+                    pushFollow(FOLLOW_realType_in_numericType4995);
                     ret=realType();
                     _fsp--;
                     if (failed) return ret2;
@@ -10301,19 +10458,19 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start integerType
-    // ATL_ANTLR3.g:872:1: integerType returns [Object ret2] : ( 'Integer' ) ;
+    // ATL_ANTLR3.g:883:1: integerType returns [Object ret2] : ( 'Integer' ) ;
     public final Object integerType() throws RecognitionException {
         Object ret2 = null;
 
         Object ret=(backtracking==0) ? ei.create("IntegerType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:873:2: ( ( 'Integer' ) )
-            // ATL_ANTLR3.g:873:4: ( 'Integer' )
+            // ATL_ANTLR3.g:884:2: ( ( 'Integer' ) )
+            // ATL_ANTLR3.g:884:4: ( 'Integer' )
             {
-            // ATL_ANTLR3.g:873:4: ( 'Integer' )
-            // ATL_ANTLR3.g:873:5: 'Integer'
+            // ATL_ANTLR3.g:884:4: ( 'Integer' )
+            // ATL_ANTLR3.g:884:5: 'Integer'
             {
-            match(input,88,FOLLOW_88_in_integerType4961); if (failed) return ret2;
+            match(input,89,FOLLOW_89_in_integerType5028); if (failed) return ret2;
 
             }
 
@@ -10341,19 +10498,19 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start realType
-    // ATL_ANTLR3.g:883:1: realType returns [Object ret2] : ( 'Real' ) ;
+    // ATL_ANTLR3.g:894:1: realType returns [Object ret2] : ( 'Real' ) ;
     public final Object realType() throws RecognitionException {
         Object ret2 = null;
 
         Object ret=(backtracking==0) ? ei.create("RealType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:884:2: ( ( 'Real' ) )
-            // ATL_ANTLR3.g:884:4: ( 'Real' )
+            // ATL_ANTLR3.g:895:2: ( ( 'Real' ) )
+            // ATL_ANTLR3.g:895:4: ( 'Real' )
             {
-            // ATL_ANTLR3.g:884:4: ( 'Real' )
-            // ATL_ANTLR3.g:884:5: 'Real'
+            // ATL_ANTLR3.g:895:4: ( 'Real' )
+            // ATL_ANTLR3.g:895:5: 'Real'
             {
-            match(input,89,FOLLOW_89_in_realType4993); if (failed) return ret2;
+            match(input,90,FOLLOW_90_in_realType5060); if (failed) return ret2;
 
             }
 
@@ -10381,19 +10538,19 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start booleanType
-    // ATL_ANTLR3.g:894:1: booleanType returns [Object ret2] : ( 'Boolean' ) ;
+    // ATL_ANTLR3.g:905:1: booleanType returns [Object ret2] : ( 'Boolean' ) ;
     public final Object booleanType() throws RecognitionException {
         Object ret2 = null;
 
         Object ret=(backtracking==0) ? ei.create("BooleanType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:895:2: ( ( 'Boolean' ) )
-            // ATL_ANTLR3.g:895:4: ( 'Boolean' )
+            // ATL_ANTLR3.g:906:2: ( ( 'Boolean' ) )
+            // ATL_ANTLR3.g:906:4: ( 'Boolean' )
             {
-            // ATL_ANTLR3.g:895:4: ( 'Boolean' )
-            // ATL_ANTLR3.g:895:5: 'Boolean'
+            // ATL_ANTLR3.g:906:4: ( 'Boolean' )
+            // ATL_ANTLR3.g:906:5: 'Boolean'
             {
-            match(input,90,FOLLOW_90_in_booleanType5025); if (failed) return ret2;
+            match(input,91,FOLLOW_91_in_booleanType5092); if (failed) return ret2;
 
             }
 
@@ -10421,19 +10578,19 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start stringType
-    // ATL_ANTLR3.g:905:1: stringType returns [Object ret2] : ( 'String' ) ;
+    // ATL_ANTLR3.g:916:1: stringType returns [Object ret2] : ( 'String' ) ;
     public final Object stringType() throws RecognitionException {
         Object ret2 = null;
 
         Object ret=(backtracking==0) ? ei.create("StringType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:906:2: ( ( 'String' ) )
-            // ATL_ANTLR3.g:906:4: ( 'String' )
+            // ATL_ANTLR3.g:917:2: ( ( 'String' ) )
+            // ATL_ANTLR3.g:917:4: ( 'String' )
             {
-            // ATL_ANTLR3.g:906:4: ( 'String' )
-            // ATL_ANTLR3.g:906:5: 'String'
+            // ATL_ANTLR3.g:917:4: ( 'String' )
+            // ATL_ANTLR3.g:917:5: 'String'
             {
-            match(input,91,FOLLOW_91_in_stringType5057); if (failed) return ret2;
+            match(input,92,FOLLOW_92_in_stringType5124); if (failed) return ret2;
 
             }
 
@@ -10461,7 +10618,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start collectionType
-    // ATL_ANTLR3.g:916:1: collectionType returns [Object ret2] : ( (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents ) ) ;
+    // ATL_ANTLR3.g:927:1: collectionType returns [Object ret2] : ( (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents ) ) ;
     public final Object collectionType() throws RecognitionException {
         Object ret2 = null;
 
@@ -10469,53 +10626,53 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
         try {
-            // ATL_ANTLR3.g:917:2: ( ( (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents ) ) )
-            // ATL_ANTLR3.g:917:4: ( (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents ) )
+            // ATL_ANTLR3.g:928:2: ( ( (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents ) ) )
+            // ATL_ANTLR3.g:928:4: ( (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents ) )
             {
-            // ATL_ANTLR3.g:917:4: ( (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents ) )
-            // ATL_ANTLR3.g:917:5: (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents )
+            // ATL_ANTLR3.g:928:4: ( (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents ) )
+            // ATL_ANTLR3.g:928:5: (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents )
             {
-            // ATL_ANTLR3.g:917:5: (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents )
-            int alt105=5;
+            // ATL_ANTLR3.g:928:5: (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents )
+            int alt107=5;
             switch ( input.LA(1) ) {
-            case 79:
-                {
-                alt105=1;
-                }
-                break;
             case 80:
                 {
-                alt105=2;
+                alt107=1;
                 }
                 break;
             case 81:
                 {
-                alt105=3;
+                alt107=2;
                 }
                 break;
             case 82:
                 {
-                alt105=4;
+                alt107=3;
                 }
                 break;
-            case 92:
+            case 83:
                 {
-                alt105=5;
+                alt107=4;
+                }
+                break;
+            case 93:
+                {
+                alt107=5;
                 }
                 break;
             default:
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("917:5: (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents )", 105, 0, input);
+                    new NoViableAltException("928:5: (ret= bagType | ret= setType | ret= orderedSetType | ret= sequenceType | ret= collectionType_abstractContents )", 107, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt105) {
+            switch (alt107) {
                 case 1 :
-                    // ATL_ANTLR3.g:917:6: ret= bagType
+                    // ATL_ANTLR3.g:928:6: ret= bagType
                     {
-                    pushFollow(FOLLOW_bagType_in_collectionType5092);
+                    pushFollow(FOLLOW_bagType_in_collectionType5159);
                     ret=bagType();
                     _fsp--;
                     if (failed) return ret2;
@@ -10523,9 +10680,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:917:19: ret= setType
+                    // ATL_ANTLR3.g:928:19: ret= setType
                     {
-                    pushFollow(FOLLOW_setType_in_collectionType5097);
+                    pushFollow(FOLLOW_setType_in_collectionType5164);
                     ret=setType();
                     _fsp--;
                     if (failed) return ret2;
@@ -10533,9 +10690,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // ATL_ANTLR3.g:917:32: ret= orderedSetType
+                    // ATL_ANTLR3.g:928:32: ret= orderedSetType
                     {
-                    pushFollow(FOLLOW_orderedSetType_in_collectionType5102);
+                    pushFollow(FOLLOW_orderedSetType_in_collectionType5169);
                     ret=orderedSetType();
                     _fsp--;
                     if (failed) return ret2;
@@ -10543,9 +10700,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 4 :
-                    // ATL_ANTLR3.g:917:52: ret= sequenceType
+                    // ATL_ANTLR3.g:928:52: ret= sequenceType
                     {
-                    pushFollow(FOLLOW_sequenceType_in_collectionType5107);
+                    pushFollow(FOLLOW_sequenceType_in_collectionType5174);
                     ret=sequenceType();
                     _fsp--;
                     if (failed) return ret2;
@@ -10553,9 +10710,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 5 :
-                    // ATL_ANTLR3.g:917:70: ret= collectionType_abstractContents
+                    // ATL_ANTLR3.g:928:70: ret= collectionType_abstractContents
                     {
-                    pushFollow(FOLLOW_collectionType_abstractContents_in_collectionType5112);
+                    pushFollow(FOLLOW_collectionType_abstractContents_in_collectionType5179);
                     ret=collectionType_abstractContents();
                     _fsp--;
                     if (failed) return ret2;
@@ -10590,7 +10747,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start bagType
-    // ATL_ANTLR3.g:925:1: bagType returns [Object ret2] : ( 'Bag' LPAREN temp= oclType RPAREN ) ;
+    // ATL_ANTLR3.g:936:1: bagType returns [Object ret2] : ( 'Bag' LPAREN temp= oclType RPAREN ) ;
     public final Object bagType() throws RecognitionException {
         Object ret2 = null;
 
@@ -10599,22 +10756,22 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("BagType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:926:2: ( ( 'Bag' LPAREN temp= oclType RPAREN ) )
-            // ATL_ANTLR3.g:926:4: ( 'Bag' LPAREN temp= oclType RPAREN )
+            // ATL_ANTLR3.g:937:2: ( ( 'Bag' LPAREN temp= oclType RPAREN ) )
+            // ATL_ANTLR3.g:937:4: ( 'Bag' LPAREN temp= oclType RPAREN )
             {
-            // ATL_ANTLR3.g:926:4: ( 'Bag' LPAREN temp= oclType RPAREN )
-            // ATL_ANTLR3.g:926:5: 'Bag' LPAREN temp= oclType RPAREN
+            // ATL_ANTLR3.g:937:4: ( 'Bag' LPAREN temp= oclType RPAREN )
+            // ATL_ANTLR3.g:937:5: 'Bag' LPAREN temp= oclType RPAREN
             {
-            match(input,79,FOLLOW_79_in_bagType5145); if (failed) return ret2;
-            match(input,LPAREN,FOLLOW_LPAREN_in_bagType5147); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_bagType5151);
+            match(input,80,FOLLOW_80_in_bagType5212); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_bagType5214); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_bagType5218);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "elementType", temp);
             }
-            match(input,RPAREN,FOLLOW_RPAREN_in_bagType5155); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_bagType5222); if (failed) return ret2;
 
             }
 
@@ -10642,7 +10799,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start setType
-    // ATL_ANTLR3.g:936:1: setType returns [Object ret2] : ( 'Set' LPAREN temp= oclType RPAREN ) ;
+    // ATL_ANTLR3.g:947:1: setType returns [Object ret2] : ( 'Set' LPAREN temp= oclType RPAREN ) ;
     public final Object setType() throws RecognitionException {
         Object ret2 = null;
 
@@ -10651,22 +10808,22 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("SetType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:937:2: ( ( 'Set' LPAREN temp= oclType RPAREN ) )
-            // ATL_ANTLR3.g:937:4: ( 'Set' LPAREN temp= oclType RPAREN )
+            // ATL_ANTLR3.g:948:2: ( ( 'Set' LPAREN temp= oclType RPAREN ) )
+            // ATL_ANTLR3.g:948:4: ( 'Set' LPAREN temp= oclType RPAREN )
             {
-            // ATL_ANTLR3.g:937:4: ( 'Set' LPAREN temp= oclType RPAREN )
-            // ATL_ANTLR3.g:937:5: 'Set' LPAREN temp= oclType RPAREN
+            // ATL_ANTLR3.g:948:4: ( 'Set' LPAREN temp= oclType RPAREN )
+            // ATL_ANTLR3.g:948:5: 'Set' LPAREN temp= oclType RPAREN
             {
-            match(input,80,FOLLOW_80_in_setType5187); if (failed) return ret2;
-            match(input,LPAREN,FOLLOW_LPAREN_in_setType5189); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_setType5193);
+            match(input,81,FOLLOW_81_in_setType5254); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_setType5256); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_setType5260);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "elementType", temp);
             }
-            match(input,RPAREN,FOLLOW_RPAREN_in_setType5197); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_setType5264); if (failed) return ret2;
 
             }
 
@@ -10694,7 +10851,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start orderedSetType
-    // ATL_ANTLR3.g:947:1: orderedSetType returns [Object ret2] : ( 'OrderedSet' LPAREN temp= oclType RPAREN ) ;
+    // ATL_ANTLR3.g:958:1: orderedSetType returns [Object ret2] : ( 'OrderedSet' LPAREN temp= oclType RPAREN ) ;
     public final Object orderedSetType() throws RecognitionException {
         Object ret2 = null;
 
@@ -10703,22 +10860,22 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("OrderedSetType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:948:2: ( ( 'OrderedSet' LPAREN temp= oclType RPAREN ) )
-            // ATL_ANTLR3.g:948:4: ( 'OrderedSet' LPAREN temp= oclType RPAREN )
+            // ATL_ANTLR3.g:959:2: ( ( 'OrderedSet' LPAREN temp= oclType RPAREN ) )
+            // ATL_ANTLR3.g:959:4: ( 'OrderedSet' LPAREN temp= oclType RPAREN )
             {
-            // ATL_ANTLR3.g:948:4: ( 'OrderedSet' LPAREN temp= oclType RPAREN )
-            // ATL_ANTLR3.g:948:5: 'OrderedSet' LPAREN temp= oclType RPAREN
+            // ATL_ANTLR3.g:959:4: ( 'OrderedSet' LPAREN temp= oclType RPAREN )
+            // ATL_ANTLR3.g:959:5: 'OrderedSet' LPAREN temp= oclType RPAREN
             {
-            match(input,81,FOLLOW_81_in_orderedSetType5229); if (failed) return ret2;
-            match(input,LPAREN,FOLLOW_LPAREN_in_orderedSetType5231); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_orderedSetType5235);
+            match(input,82,FOLLOW_82_in_orderedSetType5296); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_orderedSetType5298); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_orderedSetType5302);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "elementType", temp);
             }
-            match(input,RPAREN,FOLLOW_RPAREN_in_orderedSetType5239); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_orderedSetType5306); if (failed) return ret2;
 
             }
 
@@ -10746,7 +10903,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start sequenceType
-    // ATL_ANTLR3.g:958:1: sequenceType returns [Object ret2] : ( 'Sequence' LPAREN temp= oclType RPAREN ) ;
+    // ATL_ANTLR3.g:969:1: sequenceType returns [Object ret2] : ( 'Sequence' LPAREN temp= oclType RPAREN ) ;
     public final Object sequenceType() throws RecognitionException {
         Object ret2 = null;
 
@@ -10755,22 +10912,22 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("SequenceType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:959:2: ( ( 'Sequence' LPAREN temp= oclType RPAREN ) )
-            // ATL_ANTLR3.g:959:4: ( 'Sequence' LPAREN temp= oclType RPAREN )
+            // ATL_ANTLR3.g:970:2: ( ( 'Sequence' LPAREN temp= oclType RPAREN ) )
+            // ATL_ANTLR3.g:970:4: ( 'Sequence' LPAREN temp= oclType RPAREN )
             {
-            // ATL_ANTLR3.g:959:4: ( 'Sequence' LPAREN temp= oclType RPAREN )
-            // ATL_ANTLR3.g:959:5: 'Sequence' LPAREN temp= oclType RPAREN
+            // ATL_ANTLR3.g:970:4: ( 'Sequence' LPAREN temp= oclType RPAREN )
+            // ATL_ANTLR3.g:970:5: 'Sequence' LPAREN temp= oclType RPAREN
             {
-            match(input,82,FOLLOW_82_in_sequenceType5271); if (failed) return ret2;
-            match(input,LPAREN,FOLLOW_LPAREN_in_sequenceType5273); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_sequenceType5277);
+            match(input,83,FOLLOW_83_in_sequenceType5338); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_sequenceType5340); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_sequenceType5344);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "elementType", temp);
             }
-            match(input,RPAREN,FOLLOW_RPAREN_in_sequenceType5281); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_sequenceType5348); if (failed) return ret2;
 
             }
 
@@ -10798,7 +10955,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start priority_0
-    // ATL_ANTLR3.g:969:1: priority_0 returns [Object ret2] : (ret= primary_oclExpression ( ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) ) )* ) ;
+    // ATL_ANTLR3.g:980:1: priority_0 returns [Object ret2] : (ret= primary_oclExpression ( ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) ) )* ) ;
     public final Object priority_0() throws RecognitionException {
         Object ret2 = null;
 
@@ -10807,76 +10964,76 @@ public class ATL_ANTLR3Parser extends Parser {
 
         java.lang.String opName=null; org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:970:2: ( (ret= primary_oclExpression ( ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) ) )* ) )
-            // ATL_ANTLR3.g:970:4: (ret= primary_oclExpression ( ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) ) )* )
+            // ATL_ANTLR3.g:981:2: ( (ret= primary_oclExpression ( ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) ) )* ) )
+            // ATL_ANTLR3.g:981:4: (ret= primary_oclExpression ( ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) ) )* )
             {
-            // ATL_ANTLR3.g:970:4: (ret= primary_oclExpression ( ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) ) )* )
-            // ATL_ANTLR3.g:970:5: ret= primary_oclExpression ( ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) ) )*
+            // ATL_ANTLR3.g:981:4: (ret= primary_oclExpression ( ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) ) )* )
+            // ATL_ANTLR3.g:981:5: ret= primary_oclExpression ( ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) ) )*
             {
-            pushFollow(FOLLOW_primary_oclExpression_in_priority_05315);
+            pushFollow(FOLLOW_primary_oclExpression_in_priority_05382);
             ret=primary_oclExpression();
             _fsp--;
             if (failed) return ret2;
-            // ATL_ANTLR3.g:970:31: ( ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) ) )*
-            loop109:
+            // ATL_ANTLR3.g:981:31: ( ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) ) )*
+            loop111:
             do {
-                int alt109=2;
-                int LA109_0 = input.LA(1);
+                int alt111=2;
+                int LA111_0 = input.LA(1);
 
-                if ( (LA109_0==RARROW||LA109_0==POINT) ) {
-                    alt109=1;
+                if ( (LA111_0==RARROW||LA111_0==POINT) ) {
+                    alt111=1;
                 }
 
 
-                switch (alt109) {
+                switch (alt111) {
             	case 1 :
-            	    // ATL_ANTLR3.g:970:32: ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) )
+            	    // ATL_ANTLR3.g:981:32: ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) )
             	    {
-            	    // ATL_ANTLR3.g:970:32: ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) )
-            	    int alt108=2;
-            	    int LA108_0 = input.LA(1);
+            	    // ATL_ANTLR3.g:981:32: ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) )
+            	    int alt110=2;
+            	    int LA110_0 = input.LA(1);
 
-            	    if ( (LA108_0==POINT) ) {
-            	        alt108=1;
+            	    if ( (LA110_0==POINT) ) {
+            	        alt110=1;
             	    }
-            	    else if ( (LA108_0==RARROW) ) {
-            	        alt108=2;
+            	    else if ( (LA110_0==RARROW) ) {
+            	        alt110=2;
             	    }
             	    else {
             	        if (backtracking>0) {failed=true; return ret2;}
             	        NoViableAltException nvae =
-            	            new NoViableAltException("970:32: ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) )", 108, 0, input);
+            	            new NoViableAltException("981:32: ( ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) ) | ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) ) )", 110, 0, input);
 
             	        throw nvae;
             	    }
-            	    switch (alt108) {
+            	    switch (alt110) {
             	        case 1 :
-            	            // ATL_ANTLR3.g:970:33: ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) )
+            	            // ATL_ANTLR3.g:981:33: ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) )
             	            {
-            	            // ATL_ANTLR3.g:970:33: ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) )
-            	            // ATL_ANTLR3.g:970:34: POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )
+            	            // ATL_ANTLR3.g:981:33: ( POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] ) )
+            	            // ATL_ANTLR3.g:981:34: POINT (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )
             	            {
-            	            match(input,POINT,FOLLOW_POINT_in_priority_05320); if (failed) return ret2;
+            	            match(input,POINT,FOLLOW_POINT_in_priority_05387); if (failed) return ret2;
             	            if ( backtracking==0 ) {
             	              opName = ".";
             	            }
-            	            // ATL_ANTLR3.g:970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )
-            	            int alt106=2;
+            	            // ATL_ANTLR3.g:981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )
+            	            int alt108=2;
             	            switch ( input.LA(1) ) {
             	            case NAME:
             	                {
-            	                int LA106_1 = input.LA(2);
+            	                int LA108_1 = input.LA(2);
 
-            	                if ( (LA106_1==EOF||(LA106_1>=SEMI && LA106_1<=EQ)||LA106_1==RPAREN||(LA106_1>=RCURLY && LA106_1<=LARROW)||LA106_1==PIPE||(LA106_1>=POINT && LA106_1<=NE)||LA106_1==62||LA106_1==69||(LA106_1>=75 && LA106_1<=76)||(LA106_1>=94 && LA106_1<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_1==EOF||(LA108_1>=SEMI && LA108_1<=EQ)||LA108_1==RPAREN||(LA108_1>=RCURLY && LA108_1<=LARROW)||LA108_1==PIPE||(LA108_1>=POINT && LA108_1<=NE)||LA108_1==62||LA108_1==70||(LA108_1>=76 && LA108_1<=77)||(LA108_1>=95 && LA108_1<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_1==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_1==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 1, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 1, input);
 
             	                    throw nvae;
             	                }
@@ -10884,18 +11041,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 43:
             	                {
-            	                int LA106_2 = input.LA(2);
+            	                int LA108_2 = input.LA(2);
 
-            	                if ( (LA106_2==EOF||(LA106_2>=SEMI && LA106_2<=EQ)||LA106_2==RPAREN||(LA106_2>=RCURLY && LA106_2<=LARROW)||LA106_2==PIPE||(LA106_2>=POINT && LA106_2<=NE)||LA106_2==62||LA106_2==69||(LA106_2>=75 && LA106_2<=76)||(LA106_2>=94 && LA106_2<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_2==EOF||(LA108_2>=SEMI && LA108_2<=EQ)||LA108_2==RPAREN||(LA108_2>=RCURLY && LA108_2<=LARROW)||LA108_2==PIPE||(LA108_2>=POINT && LA108_2<=NE)||LA108_2==62||LA108_2==70||(LA108_2>=76 && LA108_2<=77)||(LA108_2>=95 && LA108_2<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_2==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_2==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 2, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 2, input);
 
             	                    throw nvae;
             	                }
@@ -10903,18 +11060,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 44:
             	                {
-            	                int LA106_3 = input.LA(2);
+            	                int LA108_3 = input.LA(2);
 
-            	                if ( (LA106_3==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_3==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_3==EOF||(LA106_3>=SEMI && LA106_3<=EQ)||LA106_3==RPAREN||(LA106_3>=RCURLY && LA106_3<=LARROW)||LA106_3==PIPE||(LA106_3>=POINT && LA106_3<=NE)||LA106_3==62||LA106_3==69||(LA106_3>=75 && LA106_3<=76)||(LA106_3>=94 && LA106_3<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_3==EOF||(LA108_3>=SEMI && LA108_3<=EQ)||LA108_3==RPAREN||(LA108_3>=RCURLY && LA108_3<=LARROW)||LA108_3==PIPE||(LA108_3>=POINT && LA108_3<=NE)||LA108_3==62||LA108_3==70||(LA108_3>=76 && LA108_3<=77)||(LA108_3>=95 && LA108_3<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 3, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 3, input);
 
             	                    throw nvae;
             	                }
@@ -10922,18 +11079,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 45:
             	                {
-            	                int LA106_4 = input.LA(2);
+            	                int LA108_4 = input.LA(2);
 
-            	                if ( (LA106_4==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_4==EOF||(LA108_4>=SEMI && LA108_4<=EQ)||LA108_4==RPAREN||(LA108_4>=RCURLY && LA108_4<=LARROW)||LA108_4==PIPE||(LA108_4>=POINT && LA108_4<=NE)||LA108_4==62||LA108_4==70||(LA108_4>=76 && LA108_4<=77)||(LA108_4>=95 && LA108_4<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_4==EOF||(LA106_4>=SEMI && LA106_4<=EQ)||LA106_4==RPAREN||(LA106_4>=RCURLY && LA106_4<=LARROW)||LA106_4==PIPE||(LA106_4>=POINT && LA106_4<=NE)||LA106_4==62||LA106_4==69||(LA106_4>=75 && LA106_4<=76)||(LA106_4>=94 && LA106_4<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_4==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 4, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 4, input);
 
             	                    throw nvae;
             	                }
@@ -10941,18 +11098,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 46:
             	                {
-            	                int LA106_5 = input.LA(2);
+            	                int LA108_5 = input.LA(2);
 
-            	                if ( (LA106_5==EOF||(LA106_5>=SEMI && LA106_5<=EQ)||LA106_5==RPAREN||(LA106_5>=RCURLY && LA106_5<=LARROW)||LA106_5==PIPE||(LA106_5>=POINT && LA106_5<=NE)||LA106_5==62||LA106_5==69||(LA106_5>=75 && LA106_5<=76)||(LA106_5>=94 && LA106_5<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_5==EOF||(LA108_5>=SEMI && LA108_5<=EQ)||LA108_5==RPAREN||(LA108_5>=RCURLY && LA108_5<=LARROW)||LA108_5==PIPE||(LA108_5>=POINT && LA108_5<=NE)||LA108_5==62||LA108_5==70||(LA108_5>=76 && LA108_5<=77)||(LA108_5>=95 && LA108_5<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_5==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_5==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 5, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 5, input);
 
             	                    throw nvae;
             	                }
@@ -10960,18 +11117,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 47:
             	                {
-            	                int LA106_6 = input.LA(2);
+            	                int LA108_6 = input.LA(2);
 
-            	                if ( (LA106_6==EOF||(LA106_6>=SEMI && LA106_6<=EQ)||LA106_6==RPAREN||(LA106_6>=RCURLY && LA106_6<=LARROW)||LA106_6==PIPE||(LA106_6>=POINT && LA106_6<=NE)||LA106_6==62||LA106_6==69||(LA106_6>=75 && LA106_6<=76)||(LA106_6>=94 && LA106_6<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_6==EOF||(LA108_6>=SEMI && LA108_6<=EQ)||LA108_6==RPAREN||(LA108_6>=RCURLY && LA108_6<=LARROW)||LA108_6==PIPE||(LA108_6>=POINT && LA108_6<=NE)||LA108_6==62||LA108_6==70||(LA108_6>=76 && LA108_6<=77)||(LA108_6>=95 && LA108_6<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_6==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_6==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 6, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 6, input);
 
             	                    throw nvae;
             	                }
@@ -10979,18 +11136,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 48:
             	                {
-            	                int LA106_7 = input.LA(2);
+            	                int LA108_7 = input.LA(2);
 
-            	                if ( (LA106_7==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_7==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_7==EOF||(LA106_7>=SEMI && LA106_7<=EQ)||LA106_7==RPAREN||(LA106_7>=RCURLY && LA106_7<=LARROW)||LA106_7==PIPE||(LA106_7>=POINT && LA106_7<=NE)||LA106_7==62||LA106_7==69||(LA106_7>=75 && LA106_7<=76)||(LA106_7>=94 && LA106_7<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_7==EOF||(LA108_7>=SEMI && LA108_7<=EQ)||LA108_7==RPAREN||(LA108_7>=RCURLY && LA108_7<=LARROW)||LA108_7==PIPE||(LA108_7>=POINT && LA108_7<=NE)||LA108_7==62||LA108_7==70||(LA108_7>=76 && LA108_7<=77)||(LA108_7>=95 && LA108_7<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 7, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 7, input);
 
             	                    throw nvae;
             	                }
@@ -10998,18 +11155,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 49:
             	                {
-            	                int LA106_8 = input.LA(2);
+            	                int LA108_8 = input.LA(2);
 
-            	                if ( (LA106_8==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_8==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_8==EOF||(LA106_8>=SEMI && LA106_8<=EQ)||LA106_8==RPAREN||(LA106_8>=RCURLY && LA106_8<=LARROW)||LA106_8==PIPE||(LA106_8>=POINT && LA106_8<=NE)||LA106_8==62||LA106_8==69||(LA106_8>=75 && LA106_8<=76)||(LA106_8>=94 && LA106_8<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_8==EOF||(LA108_8>=SEMI && LA108_8<=EQ)||LA108_8==RPAREN||(LA108_8>=RCURLY && LA108_8<=LARROW)||LA108_8==PIPE||(LA108_8>=POINT && LA108_8<=NE)||LA108_8==62||LA108_8==70||(LA108_8>=76 && LA108_8<=77)||(LA108_8>=95 && LA108_8<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 8, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 8, input);
 
             	                    throw nvae;
             	                }
@@ -11017,18 +11174,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 50:
             	                {
-            	                int LA106_9 = input.LA(2);
+            	                int LA108_9 = input.LA(2);
 
-            	                if ( (LA106_9==EOF||(LA106_9>=SEMI && LA106_9<=EQ)||LA106_9==RPAREN||(LA106_9>=RCURLY && LA106_9<=LARROW)||LA106_9==PIPE||(LA106_9>=POINT && LA106_9<=NE)||LA106_9==62||LA106_9==69||(LA106_9>=75 && LA106_9<=76)||(LA106_9>=94 && LA106_9<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_9==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_9==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_9==EOF||(LA108_9>=SEMI && LA108_9<=EQ)||LA108_9==RPAREN||(LA108_9>=RCURLY && LA108_9<=LARROW)||LA108_9==PIPE||(LA108_9>=POINT && LA108_9<=NE)||LA108_9==62||LA108_9==70||(LA108_9>=76 && LA108_9<=77)||(LA108_9>=95 && LA108_9<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 9, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 9, input);
 
             	                    throw nvae;
             	                }
@@ -11036,18 +11193,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 51:
             	                {
-            	                int LA106_10 = input.LA(2);
+            	                int LA108_10 = input.LA(2);
 
-            	                if ( (LA106_10==EOF||(LA106_10>=SEMI && LA106_10<=EQ)||LA106_10==RPAREN||(LA106_10>=RCURLY && LA106_10<=LARROW)||LA106_10==PIPE||(LA106_10>=POINT && LA106_10<=NE)||LA106_10==62||LA106_10==69||(LA106_10>=75 && LA106_10<=76)||(LA106_10>=94 && LA106_10<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_10==EOF||(LA108_10>=SEMI && LA108_10<=EQ)||LA108_10==RPAREN||(LA108_10>=RCURLY && LA108_10<=LARROW)||LA108_10==PIPE||(LA108_10>=POINT && LA108_10<=NE)||LA108_10==62||LA108_10==70||(LA108_10>=76 && LA108_10<=77)||(LA108_10>=95 && LA108_10<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_10==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_10==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 10, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 10, input);
 
             	                    throw nvae;
             	                }
@@ -11055,18 +11212,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 52:
             	                {
-            	                int LA106_11 = input.LA(2);
+            	                int LA108_11 = input.LA(2);
 
-            	                if ( (LA106_11==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_11==EOF||(LA108_11>=SEMI && LA108_11<=EQ)||LA108_11==RPAREN||(LA108_11>=RCURLY && LA108_11<=LARROW)||LA108_11==PIPE||(LA108_11>=POINT && LA108_11<=NE)||LA108_11==62||LA108_11==70||(LA108_11>=76 && LA108_11<=77)||(LA108_11>=95 && LA108_11<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_11==EOF||(LA106_11>=SEMI && LA106_11<=EQ)||LA106_11==RPAREN||(LA106_11>=RCURLY && LA106_11<=LARROW)||LA106_11==PIPE||(LA106_11>=POINT && LA106_11<=NE)||LA106_11==62||LA106_11==69||(LA106_11>=75 && LA106_11<=76)||(LA106_11>=94 && LA106_11<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_11==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 11, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 11, input);
 
             	                    throw nvae;
             	                }
@@ -11074,18 +11231,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 53:
             	                {
-            	                int LA106_12 = input.LA(2);
+            	                int LA108_12 = input.LA(2);
 
-            	                if ( (LA106_12==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_12==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_12==EOF||(LA106_12>=SEMI && LA106_12<=EQ)||LA106_12==RPAREN||(LA106_12>=RCURLY && LA106_12<=LARROW)||LA106_12==PIPE||(LA106_12>=POINT && LA106_12<=NE)||LA106_12==62||LA106_12==69||(LA106_12>=75 && LA106_12<=76)||(LA106_12>=94 && LA106_12<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_12==EOF||(LA108_12>=SEMI && LA108_12<=EQ)||LA108_12==RPAREN||(LA108_12>=RCURLY && LA108_12<=LARROW)||LA108_12==PIPE||(LA108_12>=POINT && LA108_12<=NE)||LA108_12==62||LA108_12==70||(LA108_12>=76 && LA108_12<=77)||(LA108_12>=95 && LA108_12<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 12, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 12, input);
 
             	                    throw nvae;
             	                }
@@ -11093,18 +11250,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 54:
             	                {
-            	                int LA106_13 = input.LA(2);
+            	                int LA108_13 = input.LA(2);
 
-            	                if ( (LA106_13==EOF||(LA106_13>=SEMI && LA106_13<=EQ)||LA106_13==RPAREN||(LA106_13>=RCURLY && LA106_13<=LARROW)||LA106_13==PIPE||(LA106_13>=POINT && LA106_13<=NE)||LA106_13==62||LA106_13==69||(LA106_13>=75 && LA106_13<=76)||(LA106_13>=94 && LA106_13<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_13==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_13==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_13==EOF||(LA108_13>=SEMI && LA108_13<=EQ)||LA108_13==RPAREN||(LA108_13>=RCURLY && LA108_13<=LARROW)||LA108_13==PIPE||(LA108_13>=POINT && LA108_13<=NE)||LA108_13==62||LA108_13==70||(LA108_13>=76 && LA108_13<=77)||(LA108_13>=95 && LA108_13<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 13, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 13, input);
 
             	                    throw nvae;
             	                }
@@ -11112,18 +11269,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 55:
             	                {
-            	                int LA106_14 = input.LA(2);
+            	                int LA108_14 = input.LA(2);
 
-            	                if ( (LA106_14==EOF||(LA106_14>=SEMI && LA106_14<=EQ)||LA106_14==RPAREN||(LA106_14>=RCURLY && LA106_14<=LARROW)||LA106_14==PIPE||(LA106_14>=POINT && LA106_14<=NE)||LA106_14==62||LA106_14==69||(LA106_14>=75 && LA106_14<=76)||(LA106_14>=94 && LA106_14<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_14==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_14==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_14==EOF||(LA108_14>=SEMI && LA108_14<=EQ)||LA108_14==RPAREN||(LA108_14>=RCURLY && LA108_14<=LARROW)||LA108_14==PIPE||(LA108_14>=POINT && LA108_14<=NE)||LA108_14==62||LA108_14==70||(LA108_14>=76 && LA108_14<=77)||(LA108_14>=95 && LA108_14<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 14, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 14, input);
 
             	                    throw nvae;
             	                }
@@ -11131,18 +11288,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 56:
             	                {
-            	                int LA106_15 = input.LA(2);
+            	                int LA108_15 = input.LA(2);
 
-            	                if ( (LA106_15==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_15==EOF||(LA108_15>=SEMI && LA108_15<=EQ)||LA108_15==RPAREN||(LA108_15>=RCURLY && LA108_15<=LARROW)||LA108_15==PIPE||(LA108_15>=POINT && LA108_15<=NE)||LA108_15==62||LA108_15==70||(LA108_15>=76 && LA108_15<=77)||(LA108_15>=95 && LA108_15<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_15==EOF||(LA106_15>=SEMI && LA106_15<=EQ)||LA106_15==RPAREN||(LA106_15>=RCURLY && LA106_15<=LARROW)||LA106_15==PIPE||(LA106_15>=POINT && LA106_15<=NE)||LA106_15==62||LA106_15==69||(LA106_15>=75 && LA106_15<=76)||(LA106_15>=94 && LA106_15<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_15==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 15, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 15, input);
 
             	                    throw nvae;
             	                }
@@ -11150,18 +11307,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 57:
             	                {
-            	                int LA106_16 = input.LA(2);
+            	                int LA108_16 = input.LA(2);
 
-            	                if ( (LA106_16==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_16==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_16==EOF||(LA106_16>=SEMI && LA106_16<=EQ)||LA106_16==RPAREN||(LA106_16>=RCURLY && LA106_16<=LARROW)||LA106_16==PIPE||(LA106_16>=POINT && LA106_16<=NE)||LA106_16==62||LA106_16==69||(LA106_16>=75 && LA106_16<=76)||(LA106_16>=94 && LA106_16<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_16==EOF||(LA108_16>=SEMI && LA108_16<=EQ)||LA108_16==RPAREN||(LA108_16>=RCURLY && LA108_16<=LARROW)||LA108_16==PIPE||(LA108_16>=POINT && LA108_16<=NE)||LA108_16==62||LA108_16==70||(LA108_16>=76 && LA108_16<=77)||(LA108_16>=95 && LA108_16<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 16, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 16, input);
 
             	                    throw nvae;
             	                }
@@ -11169,18 +11326,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 58:
             	                {
-            	                int LA106_17 = input.LA(2);
+            	                int LA108_17 = input.LA(2);
 
-            	                if ( (LA106_17==EOF||(LA106_17>=SEMI && LA106_17<=EQ)||LA106_17==RPAREN||(LA106_17>=RCURLY && LA106_17<=LARROW)||LA106_17==PIPE||(LA106_17>=POINT && LA106_17<=NE)||LA106_17==62||LA106_17==69||(LA106_17>=75 && LA106_17<=76)||(LA106_17>=94 && LA106_17<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_17==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_17==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_17==EOF||(LA108_17>=SEMI && LA108_17<=EQ)||LA108_17==RPAREN||(LA108_17>=RCURLY && LA108_17<=LARROW)||LA108_17==PIPE||(LA108_17>=POINT && LA108_17<=NE)||LA108_17==62||LA108_17==70||(LA108_17>=76 && LA108_17<=77)||(LA108_17>=95 && LA108_17<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 17, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 17, input);
 
             	                    throw nvae;
             	                }
@@ -11188,18 +11345,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 59:
             	                {
-            	                int LA106_18 = input.LA(2);
+            	                int LA108_18 = input.LA(2);
 
-            	                if ( (LA106_18==EOF||(LA106_18>=SEMI && LA106_18<=EQ)||LA106_18==RPAREN||(LA106_18>=RCURLY && LA106_18<=LARROW)||LA106_18==PIPE||(LA106_18>=POINT && LA106_18<=NE)||LA106_18==62||LA106_18==69||(LA106_18>=75 && LA106_18<=76)||(LA106_18>=94 && LA106_18<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_18==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_18==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_18==EOF||(LA108_18>=SEMI && LA108_18<=EQ)||LA108_18==RPAREN||(LA108_18>=RCURLY && LA108_18<=LARROW)||LA108_18==PIPE||(LA108_18>=POINT && LA108_18<=NE)||LA108_18==62||LA108_18==70||(LA108_18>=76 && LA108_18<=77)||(LA108_18>=95 && LA108_18<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 18, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 18, input);
 
             	                    throw nvae;
             	                }
@@ -11207,18 +11364,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 60:
             	                {
-            	                int LA106_19 = input.LA(2);
+            	                int LA108_19 = input.LA(2);
 
-            	                if ( (LA106_19==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_19==EOF||(LA108_19>=SEMI && LA108_19<=EQ)||LA108_19==RPAREN||(LA108_19>=RCURLY && LA108_19<=LARROW)||LA108_19==PIPE||(LA108_19>=POINT && LA108_19<=NE)||LA108_19==62||LA108_19==70||(LA108_19>=76 && LA108_19<=77)||(LA108_19>=95 && LA108_19<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_19==EOF||(LA106_19>=SEMI && LA106_19<=EQ)||LA106_19==RPAREN||(LA106_19>=RCURLY && LA106_19<=LARROW)||LA106_19==PIPE||(LA106_19>=POINT && LA106_19<=NE)||LA106_19==62||LA106_19==69||(LA106_19>=75 && LA106_19<=76)||(LA106_19>=94 && LA106_19<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_19==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 19, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 19, input);
 
             	                    throw nvae;
             	                }
@@ -11226,18 +11383,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 61:
             	                {
-            	                int LA106_20 = input.LA(2);
+            	                int LA108_20 = input.LA(2);
 
-            	                if ( (LA106_20==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_20==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_20==EOF||(LA106_20>=SEMI && LA106_20<=EQ)||LA106_20==RPAREN||(LA106_20>=RCURLY && LA106_20<=LARROW)||LA106_20==PIPE||(LA106_20>=POINT && LA106_20<=NE)||LA106_20==62||LA106_20==69||(LA106_20>=75 && LA106_20<=76)||(LA106_20>=94 && LA106_20<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_20==EOF||(LA108_20>=SEMI && LA108_20<=EQ)||LA108_20==RPAREN||(LA108_20>=RCURLY && LA108_20<=LARROW)||LA108_20==PIPE||(LA108_20>=POINT && LA108_20<=NE)||LA108_20==62||LA108_20==70||(LA108_20>=76 && LA108_20<=77)||(LA108_20>=95 && LA108_20<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 20, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 20, input);
 
             	                    throw nvae;
             	                }
@@ -11245,18 +11402,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 62:
             	                {
-            	                int LA106_21 = input.LA(2);
+            	                int LA108_21 = input.LA(2);
 
-            	                if ( (LA106_21==EOF||(LA106_21>=SEMI && LA106_21<=EQ)||LA106_21==RPAREN||(LA106_21>=RCURLY && LA106_21<=LARROW)||LA106_21==PIPE||(LA106_21>=POINT && LA106_21<=NE)||LA106_21==62||LA106_21==69||(LA106_21>=75 && LA106_21<=76)||(LA106_21>=94 && LA106_21<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_21==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_21==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_21==EOF||(LA108_21>=SEMI && LA108_21<=EQ)||LA108_21==RPAREN||(LA108_21>=RCURLY && LA108_21<=LARROW)||LA108_21==PIPE||(LA108_21>=POINT && LA108_21<=NE)||LA108_21==62||LA108_21==70||(LA108_21>=76 && LA108_21<=77)||(LA108_21>=95 && LA108_21<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 21, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 21, input);
 
             	                    throw nvae;
             	                }
@@ -11264,18 +11421,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 63:
             	                {
-            	                int LA106_22 = input.LA(2);
+            	                int LA108_22 = input.LA(2);
 
-            	                if ( (LA106_22==EOF||(LA106_22>=SEMI && LA106_22<=EQ)||LA106_22==RPAREN||(LA106_22>=RCURLY && LA106_22<=LARROW)||LA106_22==PIPE||(LA106_22>=POINT && LA106_22<=NE)||LA106_22==62||LA106_22==69||(LA106_22>=75 && LA106_22<=76)||(LA106_22>=94 && LA106_22<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_22==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_22==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_22==EOF||(LA108_22>=SEMI && LA108_22<=EQ)||LA108_22==RPAREN||(LA108_22>=RCURLY && LA108_22<=LARROW)||LA108_22==PIPE||(LA108_22>=POINT && LA108_22<=NE)||LA108_22==62||LA108_22==70||(LA108_22>=76 && LA108_22<=77)||(LA108_22>=95 && LA108_22<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 22, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 22, input);
 
             	                    throw nvae;
             	                }
@@ -11283,18 +11440,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 64:
             	                {
-            	                int LA106_23 = input.LA(2);
+            	                int LA108_23 = input.LA(2);
 
-            	                if ( (LA106_23==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_23==EOF||(LA108_23>=SEMI && LA108_23<=EQ)||LA108_23==RPAREN||(LA108_23>=RCURLY && LA108_23<=LARROW)||LA108_23==PIPE||(LA108_23>=POINT && LA108_23<=NE)||LA108_23==62||LA108_23==70||(LA108_23>=76 && LA108_23<=77)||(LA108_23>=95 && LA108_23<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_23==EOF||(LA106_23>=SEMI && LA106_23<=EQ)||LA106_23==RPAREN||(LA106_23>=RCURLY && LA106_23<=LARROW)||LA106_23==PIPE||(LA106_23>=POINT && LA106_23<=NE)||LA106_23==62||LA106_23==69||(LA106_23>=75 && LA106_23<=76)||(LA106_23>=94 && LA106_23<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_23==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 23, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 23, input);
 
             	                    throw nvae;
             	                }
@@ -11302,18 +11459,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 65:
             	                {
-            	                int LA106_24 = input.LA(2);
+            	                int LA108_24 = input.LA(2);
 
-            	                if ( (LA106_24==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_24==EOF||(LA108_24>=SEMI && LA108_24<=EQ)||LA108_24==RPAREN||(LA108_24>=RCURLY && LA108_24<=LARROW)||LA108_24==PIPE||(LA108_24>=POINT && LA108_24<=NE)||LA108_24==62||LA108_24==70||(LA108_24>=76 && LA108_24<=77)||(LA108_24>=95 && LA108_24<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_24==EOF||(LA106_24>=SEMI && LA106_24<=EQ)||LA106_24==RPAREN||(LA106_24>=RCURLY && LA106_24<=LARROW)||LA106_24==PIPE||(LA106_24>=POINT && LA106_24<=NE)||LA106_24==62||LA106_24==69||(LA106_24>=75 && LA106_24<=76)||(LA106_24>=94 && LA106_24<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_24==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 24, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 24, input);
 
             	                    throw nvae;
             	                }
@@ -11321,18 +11478,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 66:
             	                {
-            	                int LA106_25 = input.LA(2);
+            	                int LA108_25 = input.LA(2);
 
-            	                if ( (LA106_25==EOF||(LA106_25>=SEMI && LA106_25<=EQ)||LA106_25==RPAREN||(LA106_25>=RCURLY && LA106_25<=LARROW)||LA106_25==PIPE||(LA106_25>=POINT && LA106_25<=NE)||LA106_25==62||LA106_25==69||(LA106_25>=75 && LA106_25<=76)||(LA106_25>=94 && LA106_25<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_25==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_25==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_25==EOF||(LA108_25>=SEMI && LA108_25<=EQ)||LA108_25==RPAREN||(LA108_25>=RCURLY && LA108_25<=LARROW)||LA108_25==PIPE||(LA108_25>=POINT && LA108_25<=NE)||LA108_25==62||LA108_25==70||(LA108_25>=76 && LA108_25<=77)||(LA108_25>=95 && LA108_25<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 25, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 25, input);
 
             	                    throw nvae;
             	                }
@@ -11340,18 +11497,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 67:
             	                {
-            	                int LA106_26 = input.LA(2);
+            	                int LA108_26 = input.LA(2);
 
-            	                if ( (LA106_26==EOF||(LA106_26>=SEMI && LA106_26<=EQ)||LA106_26==RPAREN||(LA106_26>=RCURLY && LA106_26<=LARROW)||LA106_26==PIPE||(LA106_26>=POINT && LA106_26<=NE)||LA106_26==62||LA106_26==69||(LA106_26>=75 && LA106_26<=76)||(LA106_26>=94 && LA106_26<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_26==EOF||(LA108_26>=SEMI && LA108_26<=EQ)||LA108_26==RPAREN||(LA108_26>=RCURLY && LA108_26<=LARROW)||LA108_26==PIPE||(LA108_26>=POINT && LA108_26<=NE)||LA108_26==62||LA108_26==70||(LA108_26>=76 && LA108_26<=77)||(LA108_26>=95 && LA108_26<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_26==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_26==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 26, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 26, input);
 
             	                    throw nvae;
             	                }
@@ -11359,18 +11516,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 68:
             	                {
-            	                int LA106_27 = input.LA(2);
+            	                int LA108_27 = input.LA(2);
 
-            	                if ( (LA106_27==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_27==EOF||(LA108_27>=SEMI && LA108_27<=EQ)||LA108_27==RPAREN||(LA108_27>=RCURLY && LA108_27<=LARROW)||LA108_27==PIPE||(LA108_27>=POINT && LA108_27<=NE)||LA108_27==62||LA108_27==70||(LA108_27>=76 && LA108_27<=77)||(LA108_27>=95 && LA108_27<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_27==EOF||(LA106_27>=SEMI && LA106_27<=EQ)||LA106_27==RPAREN||(LA106_27>=RCURLY && LA106_27<=LARROW)||LA106_27==PIPE||(LA106_27>=POINT && LA106_27<=NE)||LA106_27==62||LA106_27==69||(LA106_27>=75 && LA106_27<=76)||(LA106_27>=94 && LA106_27<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_27==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 27, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 27, input);
 
             	                    throw nvae;
             	                }
@@ -11378,18 +11535,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 69:
             	                {
-            	                int LA106_28 = input.LA(2);
+            	                int LA108_28 = input.LA(2);
 
-            	                if ( (LA106_28==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_28==EOF||(LA108_28>=SEMI && LA108_28<=EQ)||LA108_28==RPAREN||(LA108_28>=RCURLY && LA108_28<=LARROW)||LA108_28==PIPE||(LA108_28>=POINT && LA108_28<=NE)||LA108_28==62||LA108_28==70||(LA108_28>=76 && LA108_28<=77)||(LA108_28>=95 && LA108_28<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_28==EOF||(LA106_28>=SEMI && LA106_28<=EQ)||LA106_28==RPAREN||(LA106_28>=RCURLY && LA106_28<=LARROW)||LA106_28==PIPE||(LA106_28>=POINT && LA106_28<=NE)||LA106_28==62||LA106_28==69||(LA106_28>=75 && LA106_28<=76)||(LA106_28>=94 && LA106_28<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_28==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 28, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 28, input);
 
             	                    throw nvae;
             	                }
@@ -11397,18 +11554,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 70:
             	                {
-            	                int LA106_29 = input.LA(2);
+            	                int LA108_29 = input.LA(2);
 
-            	                if ( (LA106_29==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_29==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_29==EOF||(LA106_29>=SEMI && LA106_29<=EQ)||LA106_29==RPAREN||(LA106_29>=RCURLY && LA106_29<=LARROW)||LA106_29==PIPE||(LA106_29>=POINT && LA106_29<=NE)||LA106_29==62||LA106_29==69||(LA106_29>=75 && LA106_29<=76)||(LA106_29>=94 && LA106_29<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_29==EOF||(LA108_29>=SEMI && LA108_29<=EQ)||LA108_29==RPAREN||(LA108_29>=RCURLY && LA108_29<=LARROW)||LA108_29==PIPE||(LA108_29>=POINT && LA108_29<=NE)||LA108_29==62||LA108_29==70||(LA108_29>=76 && LA108_29<=77)||(LA108_29>=95 && LA108_29<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 29, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 29, input);
 
             	                    throw nvae;
             	                }
@@ -11416,18 +11573,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 71:
             	                {
-            	                int LA106_30 = input.LA(2);
+            	                int LA108_30 = input.LA(2);
 
-            	                if ( (LA106_30==EOF||(LA106_30>=SEMI && LA106_30<=EQ)||LA106_30==RPAREN||(LA106_30>=RCURLY && LA106_30<=LARROW)||LA106_30==PIPE||(LA106_30>=POINT && LA106_30<=NE)||LA106_30==62||LA106_30==69||(LA106_30>=75 && LA106_30<=76)||(LA106_30>=94 && LA106_30<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_30==EOF||(LA108_30>=SEMI && LA108_30<=EQ)||LA108_30==RPAREN||(LA108_30>=RCURLY && LA108_30<=LARROW)||LA108_30==PIPE||(LA108_30>=POINT && LA108_30<=NE)||LA108_30==62||LA108_30==70||(LA108_30>=76 && LA108_30<=77)||(LA108_30>=95 && LA108_30<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_30==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_30==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 30, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 30, input);
 
             	                    throw nvae;
             	                }
@@ -11435,18 +11592,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 72:
             	                {
-            	                int LA106_31 = input.LA(2);
+            	                int LA108_31 = input.LA(2);
 
-            	                if ( (LA106_31==EOF||(LA106_31>=SEMI && LA106_31<=EQ)||LA106_31==RPAREN||(LA106_31>=RCURLY && LA106_31<=LARROW)||LA106_31==PIPE||(LA106_31>=POINT && LA106_31<=NE)||LA106_31==62||LA106_31==69||(LA106_31>=75 && LA106_31<=76)||(LA106_31>=94 && LA106_31<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_31==EOF||(LA108_31>=SEMI && LA108_31<=EQ)||LA108_31==RPAREN||(LA108_31>=RCURLY && LA108_31<=LARROW)||LA108_31==PIPE||(LA108_31>=POINT && LA108_31<=NE)||LA108_31==62||LA108_31==70||(LA108_31>=76 && LA108_31<=77)||(LA108_31>=95 && LA108_31<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_31==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_31==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 31, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 31, input);
 
             	                    throw nvae;
             	                }
@@ -11454,18 +11611,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 73:
             	                {
-            	                int LA106_32 = input.LA(2);
+            	                int LA108_32 = input.LA(2);
 
-            	                if ( (LA106_32==EOF||(LA106_32>=SEMI && LA106_32<=EQ)||LA106_32==RPAREN||(LA106_32>=RCURLY && LA106_32<=LARROW)||LA106_32==PIPE||(LA106_32>=POINT && LA106_32<=NE)||LA106_32==62||LA106_32==69||(LA106_32>=75 && LA106_32<=76)||(LA106_32>=94 && LA106_32<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_32==EOF||(LA108_32>=SEMI && LA108_32<=EQ)||LA108_32==RPAREN||(LA108_32>=RCURLY && LA108_32<=LARROW)||LA108_32==PIPE||(LA108_32>=POINT && LA108_32<=NE)||LA108_32==62||LA108_32==70||(LA108_32>=76 && LA108_32<=77)||(LA108_32>=95 && LA108_32<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_32==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_32==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 32, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 32, input);
 
             	                    throw nvae;
             	                }
@@ -11473,18 +11630,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 74:
             	                {
-            	                int LA106_33 = input.LA(2);
+            	                int LA108_33 = input.LA(2);
 
-            	                if ( (LA106_33==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_33==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_33==EOF||(LA106_33>=SEMI && LA106_33<=EQ)||LA106_33==RPAREN||(LA106_33>=RCURLY && LA106_33<=LARROW)||LA106_33==PIPE||(LA106_33>=POINT && LA106_33<=NE)||LA106_33==62||LA106_33==69||(LA106_33>=75 && LA106_33<=76)||(LA106_33>=94 && LA106_33<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_33==EOF||(LA108_33>=SEMI && LA108_33<=EQ)||LA108_33==RPAREN||(LA108_33>=RCURLY && LA108_33<=LARROW)||LA108_33==PIPE||(LA108_33>=POINT && LA108_33<=NE)||LA108_33==62||LA108_33==70||(LA108_33>=76 && LA108_33<=77)||(LA108_33>=95 && LA108_33<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 33, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 33, input);
 
             	                    throw nvae;
             	                }
@@ -11492,18 +11649,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 75:
             	                {
-            	                int LA106_34 = input.LA(2);
+            	                int LA108_34 = input.LA(2);
 
-            	                if ( (LA106_34==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_34==EOF||(LA108_34>=SEMI && LA108_34<=EQ)||LA108_34==RPAREN||(LA108_34>=RCURLY && LA108_34<=LARROW)||LA108_34==PIPE||(LA108_34>=POINT && LA108_34<=NE)||LA108_34==62||LA108_34==70||(LA108_34>=76 && LA108_34<=77)||(LA108_34>=95 && LA108_34<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_34==EOF||(LA106_34>=SEMI && LA106_34<=EQ)||LA106_34==RPAREN||(LA106_34>=RCURLY && LA106_34<=LARROW)||LA106_34==PIPE||(LA106_34>=POINT && LA106_34<=NE)||LA106_34==62||LA106_34==69||(LA106_34>=75 && LA106_34<=76)||(LA106_34>=94 && LA106_34<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_34==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 34, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 34, input);
 
             	                    throw nvae;
             	                }
@@ -11511,18 +11668,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 76:
             	                {
-            	                int LA106_35 = input.LA(2);
+            	                int LA108_35 = input.LA(2);
 
-            	                if ( (LA106_35==EOF||(LA106_35>=SEMI && LA106_35<=EQ)||LA106_35==RPAREN||(LA106_35>=RCURLY && LA106_35<=LARROW)||LA106_35==PIPE||(LA106_35>=POINT && LA106_35<=NE)||LA106_35==62||LA106_35==69||(LA106_35>=75 && LA106_35<=76)||(LA106_35>=94 && LA106_35<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_35==EOF||(LA108_35>=SEMI && LA108_35<=EQ)||LA108_35==RPAREN||(LA108_35>=RCURLY && LA108_35<=LARROW)||LA108_35==PIPE||(LA108_35>=POINT && LA108_35<=NE)||LA108_35==62||LA108_35==70||(LA108_35>=76 && LA108_35<=77)||(LA108_35>=95 && LA108_35<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_35==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_35==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 35, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 35, input);
 
             	                    throw nvae;
             	                }
@@ -11530,18 +11687,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 77:
             	                {
-            	                int LA106_36 = input.LA(2);
+            	                int LA108_36 = input.LA(2);
 
-            	                if ( (LA106_36==EOF||(LA106_36>=SEMI && LA106_36<=EQ)||LA106_36==RPAREN||(LA106_36>=RCURLY && LA106_36<=LARROW)||LA106_36==PIPE||(LA106_36>=POINT && LA106_36<=NE)||LA106_36==62||LA106_36==69||(LA106_36>=75 && LA106_36<=76)||(LA106_36>=94 && LA106_36<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_36==EOF||(LA108_36>=SEMI && LA108_36<=EQ)||LA108_36==RPAREN||(LA108_36>=RCURLY && LA108_36<=LARROW)||LA108_36==PIPE||(LA108_36>=POINT && LA108_36<=NE)||LA108_36==62||LA108_36==70||(LA108_36>=76 && LA108_36<=77)||(LA108_36>=95 && LA108_36<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_36==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_36==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 36, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 36, input);
 
             	                    throw nvae;
             	                }
@@ -11549,18 +11706,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 78:
             	                {
-            	                int LA106_37 = input.LA(2);
+            	                int LA108_37 = input.LA(2);
 
-            	                if ( (LA106_37==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_37==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_37==EOF||(LA106_37>=SEMI && LA106_37<=EQ)||LA106_37==RPAREN||(LA106_37>=RCURLY && LA106_37<=LARROW)||LA106_37==PIPE||(LA106_37>=POINT && LA106_37<=NE)||LA106_37==62||LA106_37==69||(LA106_37>=75 && LA106_37<=76)||(LA106_37>=94 && LA106_37<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_37==EOF||(LA108_37>=SEMI && LA108_37<=EQ)||LA108_37==RPAREN||(LA108_37>=RCURLY && LA108_37<=LARROW)||LA108_37==PIPE||(LA108_37>=POINT && LA108_37<=NE)||LA108_37==62||LA108_37==70||(LA108_37>=76 && LA108_37<=77)||(LA108_37>=95 && LA108_37<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 37, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 37, input);
 
             	                    throw nvae;
             	                }
@@ -11568,18 +11725,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 79:
             	                {
-            	                int LA106_38 = input.LA(2);
+            	                int LA108_38 = input.LA(2);
 
-            	                if ( (LA106_38==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_38==EOF||(LA108_38>=SEMI && LA108_38<=EQ)||LA108_38==RPAREN||(LA108_38>=RCURLY && LA108_38<=LARROW)||LA108_38==PIPE||(LA108_38>=POINT && LA108_38<=NE)||LA108_38==62||LA108_38==70||(LA108_38>=76 && LA108_38<=77)||(LA108_38>=95 && LA108_38<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_38==EOF||(LA106_38>=SEMI && LA106_38<=EQ)||LA106_38==RPAREN||(LA106_38>=RCURLY && LA106_38<=LARROW)||LA106_38==PIPE||(LA106_38>=POINT && LA106_38<=NE)||LA106_38==62||LA106_38==69||(LA106_38>=75 && LA106_38<=76)||(LA106_38>=94 && LA106_38<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_38==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 38, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 38, input);
 
             	                    throw nvae;
             	                }
@@ -11587,18 +11744,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 80:
             	                {
-            	                int LA106_39 = input.LA(2);
+            	                int LA108_39 = input.LA(2);
 
-            	                if ( (LA106_39==EOF||(LA106_39>=SEMI && LA106_39<=EQ)||LA106_39==RPAREN||(LA106_39>=RCURLY && LA106_39<=LARROW)||LA106_39==PIPE||(LA106_39>=POINT && LA106_39<=NE)||LA106_39==62||LA106_39==69||(LA106_39>=75 && LA106_39<=76)||(LA106_39>=94 && LA106_39<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_39==EOF||(LA108_39>=SEMI && LA108_39<=EQ)||LA108_39==RPAREN||(LA108_39>=RCURLY && LA108_39<=LARROW)||LA108_39==PIPE||(LA108_39>=POINT && LA108_39<=NE)||LA108_39==62||LA108_39==70||(LA108_39>=76 && LA108_39<=77)||(LA108_39>=95 && LA108_39<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_39==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_39==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 39, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 39, input);
 
             	                    throw nvae;
             	                }
@@ -11606,18 +11763,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 81:
             	                {
-            	                int LA106_40 = input.LA(2);
+            	                int LA108_40 = input.LA(2);
 
-            	                if ( (LA106_40==EOF||(LA106_40>=SEMI && LA106_40<=EQ)||LA106_40==RPAREN||(LA106_40>=RCURLY && LA106_40<=LARROW)||LA106_40==PIPE||(LA106_40>=POINT && LA106_40<=NE)||LA106_40==62||LA106_40==69||(LA106_40>=75 && LA106_40<=76)||(LA106_40>=94 && LA106_40<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_40==EOF||(LA108_40>=SEMI && LA108_40<=EQ)||LA108_40==RPAREN||(LA108_40>=RCURLY && LA108_40<=LARROW)||LA108_40==PIPE||(LA108_40>=POINT && LA108_40<=NE)||LA108_40==62||LA108_40==70||(LA108_40>=76 && LA108_40<=77)||(LA108_40>=95 && LA108_40<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_40==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_40==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 40, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 40, input);
 
             	                    throw nvae;
             	                }
@@ -11625,18 +11782,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 82:
             	                {
-            	                int LA106_41 = input.LA(2);
+            	                int LA108_41 = input.LA(2);
 
-            	                if ( (LA106_41==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_41==EOF||(LA108_41>=SEMI && LA108_41<=EQ)||LA108_41==RPAREN||(LA108_41>=RCURLY && LA108_41<=LARROW)||LA108_41==PIPE||(LA108_41>=POINT && LA108_41<=NE)||LA108_41==62||LA108_41==70||(LA108_41>=76 && LA108_41<=77)||(LA108_41>=95 && LA108_41<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_41==EOF||(LA106_41>=SEMI && LA106_41<=EQ)||LA106_41==RPAREN||(LA106_41>=RCURLY && LA106_41<=LARROW)||LA106_41==PIPE||(LA106_41>=POINT && LA106_41<=NE)||LA106_41==62||LA106_41==69||(LA106_41>=75 && LA106_41<=76)||(LA106_41>=94 && LA106_41<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_41==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 41, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 41, input);
 
             	                    throw nvae;
             	                }
@@ -11644,18 +11801,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 83:
             	                {
-            	                int LA106_42 = input.LA(2);
+            	                int LA108_42 = input.LA(2);
 
-            	                if ( (LA106_42==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_42==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_42==EOF||(LA106_42>=SEMI && LA106_42<=EQ)||LA106_42==RPAREN||(LA106_42>=RCURLY && LA106_42<=LARROW)||LA106_42==PIPE||(LA106_42>=POINT && LA106_42<=NE)||LA106_42==62||LA106_42==69||(LA106_42>=75 && LA106_42<=76)||(LA106_42>=94 && LA106_42<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_42==EOF||(LA108_42>=SEMI && LA108_42<=EQ)||LA108_42==RPAREN||(LA108_42>=RCURLY && LA108_42<=LARROW)||LA108_42==PIPE||(LA108_42>=POINT && LA108_42<=NE)||LA108_42==62||LA108_42==70||(LA108_42>=76 && LA108_42<=77)||(LA108_42>=95 && LA108_42<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 42, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 42, input);
 
             	                    throw nvae;
             	                }
@@ -11663,18 +11820,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 84:
             	                {
-            	                int LA106_43 = input.LA(2);
+            	                int LA108_43 = input.LA(2);
 
-            	                if ( (LA106_43==EOF||(LA106_43>=SEMI && LA106_43<=EQ)||LA106_43==RPAREN||(LA106_43>=RCURLY && LA106_43<=LARROW)||LA106_43==PIPE||(LA106_43>=POINT && LA106_43<=NE)||LA106_43==62||LA106_43==69||(LA106_43>=75 && LA106_43<=76)||(LA106_43>=94 && LA106_43<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_43==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_43==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_43==EOF||(LA108_43>=SEMI && LA108_43<=EQ)||LA108_43==RPAREN||(LA108_43>=RCURLY && LA108_43<=LARROW)||LA108_43==PIPE||(LA108_43>=POINT && LA108_43<=NE)||LA108_43==62||LA108_43==70||(LA108_43>=76 && LA108_43<=77)||(LA108_43>=95 && LA108_43<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 43, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 43, input);
 
             	                    throw nvae;
             	                }
@@ -11682,18 +11839,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 85:
             	                {
-            	                int LA106_44 = input.LA(2);
+            	                int LA108_44 = input.LA(2);
 
-            	                if ( (LA106_44==EOF||(LA106_44>=SEMI && LA106_44<=EQ)||LA106_44==RPAREN||(LA106_44>=RCURLY && LA106_44<=LARROW)||LA106_44==PIPE||(LA106_44>=POINT && LA106_44<=NE)||LA106_44==62||LA106_44==69||(LA106_44>=75 && LA106_44<=76)||(LA106_44>=94 && LA106_44<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_44==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_44==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_44==EOF||(LA108_44>=SEMI && LA108_44<=EQ)||LA108_44==RPAREN||(LA108_44>=RCURLY && LA108_44<=LARROW)||LA108_44==PIPE||(LA108_44>=POINT && LA108_44<=NE)||LA108_44==62||LA108_44==70||(LA108_44>=76 && LA108_44<=77)||(LA108_44>=95 && LA108_44<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 44, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 44, input);
 
             	                    throw nvae;
             	                }
@@ -11701,18 +11858,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 86:
             	                {
-            	                int LA106_45 = input.LA(2);
+            	                int LA108_45 = input.LA(2);
 
-            	                if ( (LA106_45==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_45==EOF||(LA108_45>=SEMI && LA108_45<=EQ)||LA108_45==RPAREN||(LA108_45>=RCURLY && LA108_45<=LARROW)||LA108_45==PIPE||(LA108_45>=POINT && LA108_45<=NE)||LA108_45==62||LA108_45==70||(LA108_45>=76 && LA108_45<=77)||(LA108_45>=95 && LA108_45<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_45==EOF||(LA106_45>=SEMI && LA106_45<=EQ)||LA106_45==RPAREN||(LA106_45>=RCURLY && LA106_45<=LARROW)||LA106_45==PIPE||(LA106_45>=POINT && LA106_45<=NE)||LA106_45==62||LA106_45==69||(LA106_45>=75 && LA106_45<=76)||(LA106_45>=94 && LA106_45<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_45==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 45, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 45, input);
 
             	                    throw nvae;
             	                }
@@ -11720,18 +11877,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 87:
             	                {
-            	                int LA106_46 = input.LA(2);
+            	                int LA108_46 = input.LA(2);
 
-            	                if ( (LA106_46==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_46==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_46==EOF||(LA106_46>=SEMI && LA106_46<=EQ)||LA106_46==RPAREN||(LA106_46>=RCURLY && LA106_46<=LARROW)||LA106_46==PIPE||(LA106_46>=POINT && LA106_46<=NE)||LA106_46==62||LA106_46==69||(LA106_46>=75 && LA106_46<=76)||(LA106_46>=94 && LA106_46<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_46==EOF||(LA108_46>=SEMI && LA108_46<=EQ)||LA108_46==RPAREN||(LA108_46>=RCURLY && LA108_46<=LARROW)||LA108_46==PIPE||(LA108_46>=POINT && LA108_46<=NE)||LA108_46==62||LA108_46==70||(LA108_46>=76 && LA108_46<=77)||(LA108_46>=95 && LA108_46<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 46, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 46, input);
 
             	                    throw nvae;
             	                }
@@ -11739,18 +11896,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 88:
             	                {
-            	                int LA106_47 = input.LA(2);
+            	                int LA108_47 = input.LA(2);
 
-            	                if ( (LA106_47==EOF||(LA106_47>=SEMI && LA106_47<=EQ)||LA106_47==RPAREN||(LA106_47>=RCURLY && LA106_47<=LARROW)||LA106_47==PIPE||(LA106_47>=POINT && LA106_47<=NE)||LA106_47==62||LA106_47==69||(LA106_47>=75 && LA106_47<=76)||(LA106_47>=94 && LA106_47<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_47==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_47==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_47==EOF||(LA108_47>=SEMI && LA108_47<=EQ)||LA108_47==RPAREN||(LA108_47>=RCURLY && LA108_47<=LARROW)||LA108_47==PIPE||(LA108_47>=POINT && LA108_47<=NE)||LA108_47==62||LA108_47==70||(LA108_47>=76 && LA108_47<=77)||(LA108_47>=95 && LA108_47<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 47, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 47, input);
 
             	                    throw nvae;
             	                }
@@ -11758,18 +11915,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 89:
             	                {
-            	                int LA106_48 = input.LA(2);
+            	                int LA108_48 = input.LA(2);
 
-            	                if ( (LA106_48==EOF||(LA106_48>=SEMI && LA106_48<=EQ)||LA106_48==RPAREN||(LA106_48>=RCURLY && LA106_48<=LARROW)||LA106_48==PIPE||(LA106_48>=POINT && LA106_48<=NE)||LA106_48==62||LA106_48==69||(LA106_48>=75 && LA106_48<=76)||(LA106_48>=94 && LA106_48<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_48==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_48==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_48==EOF||(LA108_48>=SEMI && LA108_48<=EQ)||LA108_48==RPAREN||(LA108_48>=RCURLY && LA108_48<=LARROW)||LA108_48==PIPE||(LA108_48>=POINT && LA108_48<=NE)||LA108_48==62||LA108_48==70||(LA108_48>=76 && LA108_48<=77)||(LA108_48>=95 && LA108_48<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 48, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 48, input);
 
             	                    throw nvae;
             	                }
@@ -11777,18 +11934,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 90:
             	                {
-            	                int LA106_49 = input.LA(2);
+            	                int LA108_49 = input.LA(2);
 
-            	                if ( (LA106_49==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_49==EOF||(LA108_49>=SEMI && LA108_49<=EQ)||LA108_49==RPAREN||(LA108_49>=RCURLY && LA108_49<=LARROW)||LA108_49==PIPE||(LA108_49>=POINT && LA108_49<=NE)||LA108_49==62||LA108_49==70||(LA108_49>=76 && LA108_49<=77)||(LA108_49>=95 && LA108_49<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_49==EOF||(LA106_49>=SEMI && LA106_49<=EQ)||LA106_49==RPAREN||(LA106_49>=RCURLY && LA106_49<=LARROW)||LA106_49==PIPE||(LA106_49>=POINT && LA106_49<=NE)||LA106_49==62||LA106_49==69||(LA106_49>=75 && LA106_49<=76)||(LA106_49>=94 && LA106_49<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_49==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 49, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 49, input);
 
             	                    throw nvae;
             	                }
@@ -11796,18 +11953,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 91:
             	                {
-            	                int LA106_50 = input.LA(2);
+            	                int LA108_50 = input.LA(2);
 
-            	                if ( (LA106_50==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_50==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_50==EOF||(LA106_50>=SEMI && LA106_50<=EQ)||LA106_50==RPAREN||(LA106_50>=RCURLY && LA106_50<=LARROW)||LA106_50==PIPE||(LA106_50>=POINT && LA106_50<=NE)||LA106_50==62||LA106_50==69||(LA106_50>=75 && LA106_50<=76)||(LA106_50>=94 && LA106_50<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_50==EOF||(LA108_50>=SEMI && LA108_50<=EQ)||LA108_50==RPAREN||(LA108_50>=RCURLY && LA108_50<=LARROW)||LA108_50==PIPE||(LA108_50>=POINT && LA108_50<=NE)||LA108_50==62||LA108_50==70||(LA108_50>=76 && LA108_50<=77)||(LA108_50>=95 && LA108_50<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 50, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 50, input);
 
             	                    throw nvae;
             	                }
@@ -11815,18 +11972,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 92:
             	                {
-            	                int LA106_51 = input.LA(2);
+            	                int LA108_51 = input.LA(2);
 
-            	                if ( (LA106_51==EOF||(LA106_51>=SEMI && LA106_51<=EQ)||LA106_51==RPAREN||(LA106_51>=RCURLY && LA106_51<=LARROW)||LA106_51==PIPE||(LA106_51>=POINT && LA106_51<=NE)||LA106_51==62||LA106_51==69||(LA106_51>=75 && LA106_51<=76)||(LA106_51>=94 && LA106_51<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_51==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_51==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_51==EOF||(LA108_51>=SEMI && LA108_51<=EQ)||LA108_51==RPAREN||(LA108_51>=RCURLY && LA108_51<=LARROW)||LA108_51==PIPE||(LA108_51>=POINT && LA108_51<=NE)||LA108_51==62||LA108_51==70||(LA108_51>=76 && LA108_51<=77)||(LA108_51>=95 && LA108_51<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 51, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 51, input);
 
             	                    throw nvae;
             	                }
@@ -11834,18 +11991,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 93:
             	                {
-            	                int LA106_52 = input.LA(2);
+            	                int LA108_52 = input.LA(2);
 
-            	                if ( (LA106_52==EOF||(LA106_52>=SEMI && LA106_52<=EQ)||LA106_52==RPAREN||(LA106_52>=RCURLY && LA106_52<=LARROW)||LA106_52==PIPE||(LA106_52>=POINT && LA106_52<=NE)||LA106_52==62||LA106_52==69||(LA106_52>=75 && LA106_52<=76)||(LA106_52>=94 && LA106_52<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_52==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_52==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_52==EOF||(LA108_52>=SEMI && LA108_52<=EQ)||LA108_52==RPAREN||(LA108_52>=RCURLY && LA108_52<=LARROW)||LA108_52==PIPE||(LA108_52>=POINT && LA108_52<=NE)||LA108_52==62||LA108_52==70||(LA108_52>=76 && LA108_52<=77)||(LA108_52>=95 && LA108_52<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 52, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 52, input);
 
             	                    throw nvae;
             	                }
@@ -11853,18 +12010,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 94:
             	                {
-            	                int LA106_53 = input.LA(2);
+            	                int LA108_53 = input.LA(2);
 
-            	                if ( (LA106_53==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_53==EOF||(LA108_53>=SEMI && LA108_53<=EQ)||LA108_53==RPAREN||(LA108_53>=RCURLY && LA108_53<=LARROW)||LA108_53==PIPE||(LA108_53>=POINT && LA108_53<=NE)||LA108_53==62||LA108_53==70||(LA108_53>=76 && LA108_53<=77)||(LA108_53>=95 && LA108_53<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_53==EOF||(LA106_53>=SEMI && LA106_53<=EQ)||LA106_53==RPAREN||(LA106_53>=RCURLY && LA106_53<=LARROW)||LA106_53==PIPE||(LA106_53>=POINT && LA106_53<=NE)||LA106_53==62||LA106_53==69||(LA106_53>=75 && LA106_53<=76)||(LA106_53>=94 && LA106_53<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_53==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 53, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 53, input);
 
             	                    throw nvae;
             	                }
@@ -11872,18 +12029,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 95:
             	                {
-            	                int LA106_54 = input.LA(2);
+            	                int LA108_54 = input.LA(2);
 
-            	                if ( (LA106_54==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_54==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_54==EOF||(LA106_54>=SEMI && LA106_54<=EQ)||LA106_54==RPAREN||(LA106_54>=RCURLY && LA106_54<=LARROW)||LA106_54==PIPE||(LA106_54>=POINT && LA106_54<=NE)||LA106_54==62||LA106_54==69||(LA106_54>=75 && LA106_54<=76)||(LA106_54>=94 && LA106_54<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_54==EOF||(LA108_54>=SEMI && LA108_54<=EQ)||LA108_54==RPAREN||(LA108_54>=RCURLY && LA108_54<=LARROW)||LA108_54==PIPE||(LA108_54>=POINT && LA108_54<=NE)||LA108_54==62||LA108_54==70||(LA108_54>=76 && LA108_54<=77)||(LA108_54>=95 && LA108_54<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 54, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 54, input);
 
             	                    throw nvae;
             	                }
@@ -11891,18 +12048,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 96:
             	                {
-            	                int LA106_55 = input.LA(2);
+            	                int LA108_55 = input.LA(2);
 
-            	                if ( (LA106_55==EOF||(LA106_55>=SEMI && LA106_55<=EQ)||LA106_55==RPAREN||(LA106_55>=RCURLY && LA106_55<=LARROW)||LA106_55==PIPE||(LA106_55>=POINT && LA106_55<=NE)||LA106_55==62||LA106_55==69||(LA106_55>=75 && LA106_55<=76)||(LA106_55>=94 && LA106_55<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_55==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_55==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_55==EOF||(LA108_55>=SEMI && LA108_55<=EQ)||LA108_55==RPAREN||(LA108_55>=RCURLY && LA108_55<=LARROW)||LA108_55==PIPE||(LA108_55>=POINT && LA108_55<=NE)||LA108_55==62||LA108_55==70||(LA108_55>=76 && LA108_55<=77)||(LA108_55>=95 && LA108_55<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 55, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 55, input);
 
             	                    throw nvae;
             	                }
@@ -11910,18 +12067,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 97:
             	                {
-            	                int LA106_56 = input.LA(2);
+            	                int LA108_56 = input.LA(2);
 
-            	                if ( (LA106_56==EOF||(LA106_56>=SEMI && LA106_56<=EQ)||LA106_56==RPAREN||(LA106_56>=RCURLY && LA106_56<=LARROW)||LA106_56==PIPE||(LA106_56>=POINT && LA106_56<=NE)||LA106_56==62||LA106_56==69||(LA106_56>=75 && LA106_56<=76)||(LA106_56>=94 && LA106_56<=99)) ) {
-            	                    alt106=2;
+            	                if ( (LA108_56==LPAREN) ) {
+            	                    alt108=1;
             	                }
-            	                else if ( (LA106_56==LPAREN) ) {
-            	                    alt106=1;
+            	                else if ( (LA108_56==EOF||(LA108_56>=SEMI && LA108_56<=EQ)||LA108_56==RPAREN||(LA108_56>=RCURLY && LA108_56<=LARROW)||LA108_56==PIPE||(LA108_56>=POINT && LA108_56<=NE)||LA108_56==62||LA108_56==70||(LA108_56>=76 && LA108_56<=77)||(LA108_56>=95 && LA108_56<=100)) ) {
+            	                    alt108=2;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 56, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 56, input);
 
             	                    throw nvae;
             	                }
@@ -11929,18 +12086,18 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 98:
             	                {
-            	                int LA106_57 = input.LA(2);
+            	                int LA108_57 = input.LA(2);
 
-            	                if ( (LA106_57==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_57==EOF||(LA108_57>=SEMI && LA108_57<=EQ)||LA108_57==RPAREN||(LA108_57>=RCURLY && LA108_57<=LARROW)||LA108_57==PIPE||(LA108_57>=POINT && LA108_57<=NE)||LA108_57==62||LA108_57==70||(LA108_57>=76 && LA108_57<=77)||(LA108_57>=95 && LA108_57<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_57==EOF||(LA106_57>=SEMI && LA106_57<=EQ)||LA106_57==RPAREN||(LA106_57>=RCURLY && LA106_57<=LARROW)||LA106_57==PIPE||(LA106_57>=POINT && LA106_57<=NE)||LA106_57==62||LA106_57==69||(LA106_57>=75 && LA106_57<=76)||(LA106_57>=94 && LA106_57<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_57==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 57, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 57, input);
 
             	                    throw nvae;
             	                }
@@ -11948,18 +12105,37 @@ public class ATL_ANTLR3Parser extends Parser {
             	                break;
             	            case 99:
             	                {
-            	                int LA106_58 = input.LA(2);
+            	                int LA108_58 = input.LA(2);
 
-            	                if ( (LA106_58==LPAREN) ) {
-            	                    alt106=1;
+            	                if ( (LA108_58==EOF||(LA108_58>=SEMI && LA108_58<=EQ)||LA108_58==RPAREN||(LA108_58>=RCURLY && LA108_58<=LARROW)||LA108_58==PIPE||(LA108_58>=POINT && LA108_58<=NE)||LA108_58==62||LA108_58==70||(LA108_58>=76 && LA108_58<=77)||(LA108_58>=95 && LA108_58<=100)) ) {
+            	                    alt108=2;
             	                }
-            	                else if ( (LA106_58==EOF||(LA106_58>=SEMI && LA106_58<=EQ)||LA106_58==RPAREN||(LA106_58>=RCURLY && LA106_58<=LARROW)||LA106_58==PIPE||(LA106_58>=POINT && LA106_58<=NE)||LA106_58==62||LA106_58==69||(LA106_58>=75 && LA106_58<=76)||(LA106_58>=94 && LA106_58<=99)) ) {
-            	                    alt106=2;
+            	                else if ( (LA108_58==LPAREN) ) {
+            	                    alt108=1;
             	                }
             	                else {
             	                    if (backtracking>0) {failed=true; return ret2;}
             	                    NoViableAltException nvae =
-            	                        new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 58, input);
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 58, input);
+
+            	                    throw nvae;
+            	                }
+            	                }
+            	                break;
+            	            case 100:
+            	                {
+            	                int LA108_59 = input.LA(2);
+
+            	                if ( (LA108_59==LPAREN) ) {
+            	                    alt108=1;
+            	                }
+            	                else if ( (LA108_59==EOF||(LA108_59>=SEMI && LA108_59<=EQ)||LA108_59==RPAREN||(LA108_59>=RCURLY && LA108_59<=LARROW)||LA108_59==PIPE||(LA108_59>=POINT && LA108_59<=NE)||LA108_59==62||LA108_59==70||(LA108_59>=76 && LA108_59<=77)||(LA108_59>=95 && LA108_59<=100)) ) {
+            	                    alt108=2;
+            	                }
+            	                else {
+            	                    if (backtracking>0) {failed=true; return ret2;}
+            	                    NoViableAltException nvae =
+            	                        new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 59, input);
 
             	                    throw nvae;
             	                }
@@ -11968,16 +12144,16 @@ public class ATL_ANTLR3Parser extends Parser {
             	            default:
             	                if (backtracking>0) {failed=true; return ret2;}
             	                NoViableAltException nvae =
-            	                    new NoViableAltException("970:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 106, 0, input);
+            	                    new NoViableAltException("981:56: (ret= operationCallExp[opName, ret, firstToken] | ret= navigationOrAttributeCallExp[opName, ret, firstToken] )", 108, 0, input);
 
             	                throw nvae;
             	            }
 
-            	            switch (alt106) {
+            	            switch (alt108) {
             	                case 1 :
-            	                    // ATL_ANTLR3.g:970:57: ret= operationCallExp[opName, ret, firstToken]
+            	                    // ATL_ANTLR3.g:981:57: ret= operationCallExp[opName, ret, firstToken]
             	                    {
-            	                    pushFollow(FOLLOW_operationCallExp_in_priority_05327);
+            	                    pushFollow(FOLLOW_operationCallExp_in_priority_05394);
             	                    ret=operationCallExp(opName,  ret,  firstToken);
             	                    _fsp--;
             	                    if (failed) return ret2;
@@ -11985,9 +12161,9 @@ public class ATL_ANTLR3Parser extends Parser {
             	                    }
             	                    break;
             	                case 2 :
-            	                    // ATL_ANTLR3.g:970:105: ret= navigationOrAttributeCallExp[opName, ret, firstToken]
+            	                    // ATL_ANTLR3.g:981:105: ret= navigationOrAttributeCallExp[opName, ret, firstToken]
             	                    {
-            	                    pushFollow(FOLLOW_navigationOrAttributeCallExp_in_priority_05334);
+            	                    pushFollow(FOLLOW_navigationOrAttributeCallExp_in_priority_05401);
             	                    ret=navigationOrAttributeCallExp(opName,  ret,  firstToken);
             	                    _fsp--;
             	                    if (failed) return ret2;
@@ -12004,23 +12180,23 @@ public class ATL_ANTLR3Parser extends Parser {
             	            }
             	            break;
             	        case 2 :
-            	            // ATL_ANTLR3.g:970:167: ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) )
+            	            // ATL_ANTLR3.g:981:167: ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) )
             	            {
-            	            // ATL_ANTLR3.g:970:167: ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) )
-            	            // ATL_ANTLR3.g:970:168: RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] )
+            	            // ATL_ANTLR3.g:981:167: ( RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] ) )
+            	            // ATL_ANTLR3.g:981:168: RARROW (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] )
             	            {
-            	            match(input,RARROW,FOLLOW_RARROW_in_priority_05342); if (failed) return ret2;
+            	            match(input,RARROW,FOLLOW_RARROW_in_priority_05409); if (failed) return ret2;
             	            if ( backtracking==0 ) {
             	              opName = "->";
             	            }
-            	            // ATL_ANTLR3.g:970:192: (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] )
-            	            int alt107=3;
-            	            alt107 = dfa107.predict(input);
-            	            switch (alt107) {
+            	            // ATL_ANTLR3.g:981:192: (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] )
+            	            int alt109=3;
+            	            alt109 = dfa109.predict(input);
+            	            switch (alt109) {
             	                case 1 :
-            	                    // ATL_ANTLR3.g:970:193: ret= iteratorExp[opName, ret, firstToken]
+            	                    // ATL_ANTLR3.g:981:193: ret= iteratorExp[opName, ret, firstToken]
             	                    {
-            	                    pushFollow(FOLLOW_iteratorExp_in_priority_05349);
+            	                    pushFollow(FOLLOW_iteratorExp_in_priority_05416);
             	                    ret=iteratorExp(opName,  ret,  firstToken);
             	                    _fsp--;
             	                    if (failed) return ret2;
@@ -12028,9 +12204,9 @@ public class ATL_ANTLR3Parser extends Parser {
             	                    }
             	                    break;
             	                case 2 :
-            	                    // ATL_ANTLR3.g:970:236: ret= iterateExp[opName, ret, firstToken]
+            	                    // ATL_ANTLR3.g:981:236: ret= iterateExp[opName, ret, firstToken]
             	                    {
-            	                    pushFollow(FOLLOW_iterateExp_in_priority_05356);
+            	                    pushFollow(FOLLOW_iterateExp_in_priority_05423);
             	                    ret=iterateExp(opName,  ret,  firstToken);
             	                    _fsp--;
             	                    if (failed) return ret2;
@@ -12038,9 +12214,9 @@ public class ATL_ANTLR3Parser extends Parser {
             	                    }
             	                    break;
             	                case 3 :
-            	                    // ATL_ANTLR3.g:970:278: ret= collectionOperationCallExp[opName, ret, firstToken]
+            	                    // ATL_ANTLR3.g:981:278: ret= collectionOperationCallExp[opName, ret, firstToken]
             	                    {
-            	                    pushFollow(FOLLOW_collectionOperationCallExp_in_priority_05363);
+            	                    pushFollow(FOLLOW_collectionOperationCallExp_in_priority_05430);
             	                    ret=collectionOperationCallExp(opName,  ret,  firstToken);
             	                    _fsp--;
             	                    if (failed) return ret2;
@@ -12064,7 +12240,7 @@ public class ATL_ANTLR3Parser extends Parser {
             	    break;
 
             	default :
-            	    break loop109;
+            	    break loop111;
                 }
             } while (true);
 
@@ -12092,7 +12268,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start priority_1
-    // ATL_ANTLR3.g:977:1: priority_1 returns [Object ret2] : ( ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | (ret= priority_0 ) ) ;
+    // ATL_ANTLR3.g:988:1: priority_1 returns [Object ret2] : ( ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | (ret= priority_0 ) ) ;
     public final Object priority_1() throws RecognitionException {
         Object ret2 = null;
 
@@ -12103,20 +12279,20 @@ public class ATL_ANTLR3Parser extends Parser {
 
         java.lang.String opName=null; org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:978:2: ( ( ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | (ret= priority_0 ) ) )
-            // ATL_ANTLR3.g:978:4: ( ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | (ret= priority_0 ) )
+            // ATL_ANTLR3.g:989:2: ( ( ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | (ret= priority_0 ) ) )
+            // ATL_ANTLR3.g:989:4: ( ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | (ret= priority_0 ) )
             {
-            // ATL_ANTLR3.g:978:4: ( ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | (ret= priority_0 ) )
-            int alt110=3;
+            // ATL_ANTLR3.g:989:4: ( ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | (ret= priority_0 ) )
+            int alt112=3;
             switch ( input.LA(1) ) {
-            case 93:
+            case 94:
                 {
-                alt110=1;
+                alt112=1;
                 }
                 break;
             case MINUS:
                 {
-                alt110=2;
+                alt112=2;
                 }
                 break;
             case NAME:
@@ -12125,12 +12301,11 @@ public class ATL_ANTLR3Parser extends Parser {
             case FLOAT:
             case LPAREN:
             case SHARP:
-            case 68:
-            case 72:
+            case 69:
             case 73:
             case 74:
-            case 77:
-            case 79:
+            case 75:
+            case 78:
             case 80:
             case 81:
             case 82:
@@ -12144,37 +12319,38 @@ public class ATL_ANTLR3Parser extends Parser {
             case 90:
             case 91:
             case 92:
+            case 93:
                 {
-                alt110=3;
+                alt112=3;
                 }
                 break;
             default:
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("978:4: ( ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | (ret= priority_0 ) )", 110, 0, input);
+                    new NoViableAltException("989:4: ( ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) ) | (ret= priority_0 ) )", 112, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt110) {
+            switch (alt112) {
                 case 1 :
-                    // ATL_ANTLR3.g:978:5: ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) )
+                    // ATL_ANTLR3.g:989:5: ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) )
                     {
-                    // ATL_ANTLR3.g:978:5: ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) )
-                    // ATL_ANTLR3.g:978:6: 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 )
+                    // ATL_ANTLR3.g:989:5: ( 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) )
+                    // ATL_ANTLR3.g:989:6: 'not' (ret= operatorCallExp[opName, right, firstToken] right= priority_0 )
                     {
-                    match(input,93,FOLLOW_93_in_priority_15403); if (failed) return ret2;
+                    match(input,94,FOLLOW_94_in_priority_15470); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       opName = "not";
                     }
-                    // ATL_ANTLR3.g:978:30: (ret= operatorCallExp[opName, right, firstToken] right= priority_0 )
-                    // ATL_ANTLR3.g:978:31: ret= operatorCallExp[opName, right, firstToken] right= priority_0
+                    // ATL_ANTLR3.g:989:30: (ret= operatorCallExp[opName, right, firstToken] right= priority_0 )
+                    // ATL_ANTLR3.g:989:31: ret= operatorCallExp[opName, right, firstToken] right= priority_0
                     {
-                    pushFollow(FOLLOW_operatorCallExp_in_priority_15410);
+                    pushFollow(FOLLOW_operatorCallExp_in_priority_15477);
                     ret=operatorCallExp(opName,  right,  firstToken);
                     _fsp--;
                     if (failed) return ret2;
-                    pushFollow(FOLLOW_priority_0_in_priority_15415);
+                    pushFollow(FOLLOW_priority_0_in_priority_15482);
                     right=priority_0();
                     _fsp--;
                     if (failed) return ret2;
@@ -12192,23 +12368,23 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:979:71: ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) )
+                    // ATL_ANTLR3.g:990:71: ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) )
                     {
-                    // ATL_ANTLR3.g:979:71: ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) )
-                    // ATL_ANTLR3.g:979:72: MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 )
+                    // ATL_ANTLR3.g:990:71: ( MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 ) )
+                    // ATL_ANTLR3.g:990:72: MINUS (ret= operatorCallExp[opName, right, firstToken] right= priority_0 )
                     {
-                    match(input,MINUS,FOLLOW_MINUS_in_priority_15423); if (failed) return ret2;
+                    match(input,MINUS,FOLLOW_MINUS_in_priority_15490); if (failed) return ret2;
                     if ( backtracking==0 ) {
                       opName = "-";
                     }
-                    // ATL_ANTLR3.g:979:94: (ret= operatorCallExp[opName, right, firstToken] right= priority_0 )
-                    // ATL_ANTLR3.g:979:95: ret= operatorCallExp[opName, right, firstToken] right= priority_0
+                    // ATL_ANTLR3.g:990:94: (ret= operatorCallExp[opName, right, firstToken] right= priority_0 )
+                    // ATL_ANTLR3.g:990:95: ret= operatorCallExp[opName, right, firstToken] right= priority_0
                     {
-                    pushFollow(FOLLOW_operatorCallExp_in_priority_15430);
+                    pushFollow(FOLLOW_operatorCallExp_in_priority_15497);
                     ret=operatorCallExp(opName,  right,  firstToken);
                     _fsp--;
                     if (failed) return ret2;
-                    pushFollow(FOLLOW_priority_0_in_priority_15435);
+                    pushFollow(FOLLOW_priority_0_in_priority_15502);
                     right=priority_0();
                     _fsp--;
                     if (failed) return ret2;
@@ -12226,12 +12402,12 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // ATL_ANTLR3.g:980:71: (ret= priority_0 )
+                    // ATL_ANTLR3.g:991:71: (ret= priority_0 )
                     {
-                    // ATL_ANTLR3.g:980:71: (ret= priority_0 )
-                    // ATL_ANTLR3.g:980:72: ret= priority_0
+                    // ATL_ANTLR3.g:991:71: (ret= priority_0 )
+                    // ATL_ANTLR3.g:991:72: ret= priority_0
                     {
-                    pushFollow(FOLLOW_priority_0_in_priority_15445);
+                    pushFollow(FOLLOW_priority_0_in_priority_15512);
                     ret=priority_0();
                     _fsp--;
                     if (failed) return ret2;
@@ -12265,7 +12441,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start priority_2
-    // ATL_ANTLR3.g:987:1: priority_2 returns [Object ret2] : (ret= priority_1 ( ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) ) )* ) ;
+    // ATL_ANTLR3.g:998:1: priority_2 returns [Object ret2] : (ret= priority_1 ( ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) ) )* ) ;
     public final Object priority_2() throws RecognitionException {
         Object ret2 = null;
 
@@ -12276,81 +12452,81 @@ public class ATL_ANTLR3Parser extends Parser {
 
         java.lang.String opName=null; org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:988:2: ( (ret= priority_1 ( ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) ) )* ) )
-            // ATL_ANTLR3.g:988:4: (ret= priority_1 ( ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) ) )* )
+            // ATL_ANTLR3.g:999:2: ( (ret= priority_1 ( ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) ) )* ) )
+            // ATL_ANTLR3.g:999:4: (ret= priority_1 ( ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) ) )* )
             {
-            // ATL_ANTLR3.g:988:4: (ret= priority_1 ( ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) ) )* )
-            // ATL_ANTLR3.g:988:5: ret= priority_1 ( ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) ) )*
+            // ATL_ANTLR3.g:999:4: (ret= priority_1 ( ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) ) )* )
+            // ATL_ANTLR3.g:999:5: ret= priority_1 ( ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) ) )*
             {
-            pushFollow(FOLLOW_priority_1_in_priority_25480);
+            pushFollow(FOLLOW_priority_1_in_priority_25547);
             ret=priority_1();
             _fsp--;
             if (failed) return ret2;
-            // ATL_ANTLR3.g:988:20: ( ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) ) )*
-            loop112:
+            // ATL_ANTLR3.g:999:20: ( ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) ) )*
+            loop114:
             do {
-                int alt112=2;
-                int LA112_0 = input.LA(1);
+                int alt114=2;
+                int LA114_0 = input.LA(1);
 
-                if ( ((LA112_0>=STAR && LA112_0<=SLASH)||(LA112_0>=94 && LA112_0<=95)) ) {
-                    alt112=1;
+                if ( ((LA114_0>=STAR && LA114_0<=SLASH)||(LA114_0>=95 && LA114_0<=96)) ) {
+                    alt114=1;
                 }
 
 
-                switch (alt112) {
+                switch (alt114) {
             	case 1 :
-            	    // ATL_ANTLR3.g:988:21: ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) )
+            	    // ATL_ANTLR3.g:999:21: ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) )
             	    {
-            	    // ATL_ANTLR3.g:988:21: ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) )
-            	    int alt111=4;
+            	    // ATL_ANTLR3.g:999:21: ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) )
+            	    int alt113=4;
             	    switch ( input.LA(1) ) {
             	    case STAR:
             	        {
-            	        alt111=1;
+            	        alt113=1;
             	        }
             	        break;
             	    case SLASH:
             	        {
-            	        alt111=2;
-            	        }
-            	        break;
-            	    case 94:
-            	        {
-            	        alt111=3;
+            	        alt113=2;
             	        }
             	        break;
             	    case 95:
             	        {
-            	        alt111=4;
+            	        alt113=3;
+            	        }
+            	        break;
+            	    case 96:
+            	        {
+            	        alt113=4;
             	        }
             	        break;
             	    default:
             	        if (backtracking>0) {failed=true; return ret2;}
             	        NoViableAltException nvae =
-            	            new NoViableAltException("988:21: ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) )", 111, 0, input);
+            	            new NoViableAltException("999:21: ( ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) | ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) ) )", 113, 0, input);
 
             	        throw nvae;
             	    }
 
-            	    switch (alt111) {
+            	    switch (alt113) {
             	        case 1 :
-            	            // ATL_ANTLR3.g:988:22: ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
+            	            // ATL_ANTLR3.g:999:22: ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
             	            {
-            	            // ATL_ANTLR3.g:988:22: ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
-            	            // ATL_ANTLR3.g:988:23: STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
+            	            // ATL_ANTLR3.g:999:22: ( STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
+            	            // ATL_ANTLR3.g:999:23: STAR (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
             	            {
-            	            match(input,STAR,FOLLOW_STAR_in_priority_25485); if (failed) return ret2;
+            	            match(input,STAR,FOLLOW_STAR_in_priority_25552); if (failed) return ret2;
             	            if ( backtracking==0 ) {
             	              opName = "*";
             	            }
-            	            // ATL_ANTLR3.g:988:44: (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
-            	            // ATL_ANTLR3.g:988:45: ret= operatorCallExp[opName, ret, firstToken] right= priority_1
+            	            // ATL_ANTLR3.g:999:44: (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
+            	            // ATL_ANTLR3.g:999:45: ret= operatorCallExp[opName, ret, firstToken] right= priority_1
             	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_25492);
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_25559);
             	            ret=operatorCallExp(opName,  ret,  firstToken);
             	            _fsp--;
             	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_1_in_priority_25497);
+            	            pushFollow(FOLLOW_priority_1_in_priority_25564);
             	            right=priority_1();
             	            _fsp--;
             	            if (failed) return ret2;
@@ -12368,23 +12544,23 @@ public class ATL_ANTLR3Parser extends Parser {
             	            }
             	            break;
             	        case 2 :
-            	            // ATL_ANTLR3.g:989:71: ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
+            	            // ATL_ANTLR3.g:1000:71: ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
             	            {
-            	            // ATL_ANTLR3.g:989:71: ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
-            	            // ATL_ANTLR3.g:989:72: SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
+            	            // ATL_ANTLR3.g:1000:71: ( SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
+            	            // ATL_ANTLR3.g:1000:72: SLASH (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
             	            {
-            	            match(input,SLASH,FOLLOW_SLASH_in_priority_25505); if (failed) return ret2;
+            	            match(input,SLASH,FOLLOW_SLASH_in_priority_25572); if (failed) return ret2;
             	            if ( backtracking==0 ) {
             	              opName = "/";
             	            }
-            	            // ATL_ANTLR3.g:989:94: (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
-            	            // ATL_ANTLR3.g:989:95: ret= operatorCallExp[opName, ret, firstToken] right= priority_1
+            	            // ATL_ANTLR3.g:1000:94: (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
+            	            // ATL_ANTLR3.g:1000:95: ret= operatorCallExp[opName, ret, firstToken] right= priority_1
             	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_25512);
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_25579);
             	            ret=operatorCallExp(opName,  ret,  firstToken);
             	            _fsp--;
             	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_1_in_priority_25517);
+            	            pushFollow(FOLLOW_priority_1_in_priority_25584);
             	            right=priority_1();
             	            _fsp--;
             	            if (failed) return ret2;
@@ -12402,23 +12578,23 @@ public class ATL_ANTLR3Parser extends Parser {
             	            }
             	            break;
             	        case 3 :
-            	            // ATL_ANTLR3.g:990:71: ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
+            	            // ATL_ANTLR3.g:1001:71: ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
             	            {
-            	            // ATL_ANTLR3.g:990:71: ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
-            	            // ATL_ANTLR3.g:990:72: 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
+            	            // ATL_ANTLR3.g:1001:71: ( 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
+            	            // ATL_ANTLR3.g:1001:72: 'div' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
             	            {
-            	            match(input,94,FOLLOW_94_in_priority_25525); if (failed) return ret2;
+            	            match(input,95,FOLLOW_95_in_priority_25592); if (failed) return ret2;
             	            if ( backtracking==0 ) {
             	              opName = "div";
             	            }
-            	            // ATL_ANTLR3.g:990:96: (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
-            	            // ATL_ANTLR3.g:990:97: ret= operatorCallExp[opName, ret, firstToken] right= priority_1
+            	            // ATL_ANTLR3.g:1001:96: (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
+            	            // ATL_ANTLR3.g:1001:97: ret= operatorCallExp[opName, ret, firstToken] right= priority_1
             	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_25532);
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_25599);
             	            ret=operatorCallExp(opName,  ret,  firstToken);
             	            _fsp--;
             	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_1_in_priority_25537);
+            	            pushFollow(FOLLOW_priority_1_in_priority_25604);
             	            right=priority_1();
             	            _fsp--;
             	            if (failed) return ret2;
@@ -12436,182 +12612,24 @@ public class ATL_ANTLR3Parser extends Parser {
             	            }
             	            break;
             	        case 4 :
-            	            // ATL_ANTLR3.g:991:71: ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
+            	            // ATL_ANTLR3.g:1002:71: ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
             	            {
-            	            // ATL_ANTLR3.g:991:71: ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
-            	            // ATL_ANTLR3.g:991:72: 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
+            	            // ATL_ANTLR3.g:1002:71: ( 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 ) )
+            	            // ATL_ANTLR3.g:1002:72: 'mod' (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
             	            {
-            	            match(input,95,FOLLOW_95_in_priority_25545); if (failed) return ret2;
+            	            match(input,96,FOLLOW_96_in_priority_25612); if (failed) return ret2;
             	            if ( backtracking==0 ) {
             	              opName = "mod";
             	            }
-            	            // ATL_ANTLR3.g:991:96: (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
-            	            // ATL_ANTLR3.g:991:97: ret= operatorCallExp[opName, ret, firstToken] right= priority_1
+            	            // ATL_ANTLR3.g:1002:96: (ret= operatorCallExp[opName, ret, firstToken] right= priority_1 )
+            	            // ATL_ANTLR3.g:1002:97: ret= operatorCallExp[opName, ret, firstToken] right= priority_1
             	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_25552);
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_25619);
             	            ret=operatorCallExp(opName,  ret,  firstToken);
             	            _fsp--;
             	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_1_in_priority_25557);
+            	            pushFollow(FOLLOW_priority_1_in_priority_25624);
             	            right=priority_1();
-            	            _fsp--;
-            	            if (failed) return ret2;
-            	            if ( backtracking==0 ) {
-            	              ei.set(ret, "arguments", right);if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
-            	              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
-            	            }
-
-            	            }
-
-
-            	            }
-
-
-            	            }
-            	            break;
-
-            	    }
-
-
-            	    }
-            	    break;
-
-            	default :
-            	    break loop112;
-                }
-            } while (true);
-
-
-            }
-
-            if ( backtracking==0 ) {
-
-                          ret2=ret;
-                      
-            }
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-        }
-        return ret2;
-    }
-    // $ANTLR end priority_2
-
-
-    // $ANTLR start priority_3
-    // ATL_ANTLR3.g:999:1: priority_3 returns [Object ret2] : (ret= priority_2 ( ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) ) )* ) ;
-    public final Object priority_3() throws RecognitionException {
-        Object ret2 = null;
-
-        Object ret = null;
-
-        Object right = null;
-
-
-        java.lang.String opName=null; org.antlr.runtime.Token firstToken=input.LT(1);
-        try {
-            // ATL_ANTLR3.g:1000:2: ( (ret= priority_2 ( ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) ) )* ) )
-            // ATL_ANTLR3.g:1000:4: (ret= priority_2 ( ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) ) )* )
-            {
-            // ATL_ANTLR3.g:1000:4: (ret= priority_2 ( ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) ) )* )
-            // ATL_ANTLR3.g:1000:5: ret= priority_2 ( ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) ) )*
-            {
-            pushFollow(FOLLOW_priority_2_in_priority_35598);
-            ret=priority_2();
-            _fsp--;
-            if (failed) return ret2;
-            // ATL_ANTLR3.g:1000:20: ( ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) ) )*
-            loop114:
-            do {
-                int alt114=2;
-                int LA114_0 = input.LA(1);
-
-                if ( (LA114_0==MINUS||LA114_0==PLUS) ) {
-                    alt114=1;
-                }
-
-
-                switch (alt114) {
-            	case 1 :
-            	    // ATL_ANTLR3.g:1000:21: ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) )
-            	    {
-            	    // ATL_ANTLR3.g:1000:21: ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) )
-            	    int alt113=2;
-            	    int LA113_0 = input.LA(1);
-
-            	    if ( (LA113_0==PLUS) ) {
-            	        alt113=1;
-            	    }
-            	    else if ( (LA113_0==MINUS) ) {
-            	        alt113=2;
-            	    }
-            	    else {
-            	        if (backtracking>0) {failed=true; return ret2;}
-            	        NoViableAltException nvae =
-            	            new NoViableAltException("1000:21: ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) )", 113, 0, input);
-
-            	        throw nvae;
-            	    }
-            	    switch (alt113) {
-            	        case 1 :
-            	            // ATL_ANTLR3.g:1000:22: ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) )
-            	            {
-            	            // ATL_ANTLR3.g:1000:22: ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) )
-            	            // ATL_ANTLR3.g:1000:23: PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 )
-            	            {
-            	            match(input,PLUS,FOLLOW_PLUS_in_priority_35603); if (failed) return ret2;
-            	            if ( backtracking==0 ) {
-            	              opName = "+";
-            	            }
-            	            // ATL_ANTLR3.g:1000:44: (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 )
-            	            // ATL_ANTLR3.g:1000:45: ret= operatorCallExp[opName, ret, firstToken] right= priority_2
-            	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_35610);
-            	            ret=operatorCallExp(opName,  ret,  firstToken);
-            	            _fsp--;
-            	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_2_in_priority_35615);
-            	            right=priority_2();
-            	            _fsp--;
-            	            if (failed) return ret2;
-            	            if ( backtracking==0 ) {
-            	              ei.set(ret, "arguments", right);if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
-            	              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
-            	            }
-
-            	            }
-
-
-            	            }
-
-
-            	            }
-            	            break;
-            	        case 2 :
-            	            // ATL_ANTLR3.g:1001:71: ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) )
-            	            {
-            	            // ATL_ANTLR3.g:1001:71: ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) )
-            	            // ATL_ANTLR3.g:1001:72: MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 )
-            	            {
-            	            match(input,MINUS,FOLLOW_MINUS_in_priority_35623); if (failed) return ret2;
-            	            if ( backtracking==0 ) {
-            	              opName = "-";
-            	            }
-            	            // ATL_ANTLR3.g:1001:94: (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 )
-            	            // ATL_ANTLR3.g:1001:95: ret= operatorCallExp[opName, ret, firstToken] right= priority_2
-            	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_35630);
-            	            ret=operatorCallExp(opName,  ret,  firstToken);
-            	            _fsp--;
-            	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_2_in_priority_35635);
-            	            right=priority_2();
             	            _fsp--;
             	            if (failed) return ret2;
             	            if ( backtracking==0 ) {
@@ -12659,12 +12677,12 @@ public class ATL_ANTLR3Parser extends Parser {
         }
         return ret2;
     }
-    // $ANTLR end priority_3
+    // $ANTLR end priority_2
 
 
-    // $ANTLR start priority_4
-    // ATL_ANTLR3.g:1009:1: priority_4 returns [Object ret2] : (ret= priority_3 ( ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) ) )* ) ;
-    public final Object priority_4() throws RecognitionException {
+    // $ANTLR start priority_3
+    // ATL_ANTLR3.g:1010:1: priority_3 returns [Object ret2] : (ret= priority_2 ( ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) ) )* ) ;
+    public final Object priority_3() throws RecognitionException {
         Object ret2 = null;
 
         Object ret = null;
@@ -12674,92 +12692,68 @@ public class ATL_ANTLR3Parser extends Parser {
 
         java.lang.String opName=null; org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:1010:2: ( (ret= priority_3 ( ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) ) )* ) )
-            // ATL_ANTLR3.g:1010:4: (ret= priority_3 ( ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) ) )* )
+            // ATL_ANTLR3.g:1011:2: ( (ret= priority_2 ( ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) ) )* ) )
+            // ATL_ANTLR3.g:1011:4: (ret= priority_2 ( ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) ) )* )
             {
-            // ATL_ANTLR3.g:1010:4: (ret= priority_3 ( ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) ) )* )
-            // ATL_ANTLR3.g:1010:5: ret= priority_3 ( ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) ) )*
+            // ATL_ANTLR3.g:1011:4: (ret= priority_2 ( ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) ) )* )
+            // ATL_ANTLR3.g:1011:5: ret= priority_2 ( ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) ) )*
             {
-            pushFollow(FOLLOW_priority_3_in_priority_45676);
-            ret=priority_3();
+            pushFollow(FOLLOW_priority_2_in_priority_35665);
+            ret=priority_2();
             _fsp--;
             if (failed) return ret2;
-            // ATL_ANTLR3.g:1010:20: ( ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) ) )*
+            // ATL_ANTLR3.g:1011:20: ( ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) ) )*
             loop116:
             do {
                 int alt116=2;
                 int LA116_0 = input.LA(1);
 
-                if ( (LA116_0==EQ||(LA116_0>=GT && LA116_0<=NE)) ) {
+                if ( (LA116_0==MINUS||LA116_0==PLUS) ) {
                     alt116=1;
                 }
 
 
                 switch (alt116) {
             	case 1 :
-            	    // ATL_ANTLR3.g:1010:21: ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) )
+            	    // ATL_ANTLR3.g:1011:21: ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) )
             	    {
-            	    // ATL_ANTLR3.g:1010:21: ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) )
-            	    int alt115=6;
-            	    switch ( input.LA(1) ) {
-            	    case EQ:
-            	        {
+            	    // ATL_ANTLR3.g:1011:21: ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) )
+            	    int alt115=2;
+            	    int LA115_0 = input.LA(1);
+
+            	    if ( (LA115_0==PLUS) ) {
             	        alt115=1;
-            	        }
-            	        break;
-            	    case GT:
-            	        {
+            	    }
+            	    else if ( (LA115_0==MINUS) ) {
             	        alt115=2;
-            	        }
-            	        break;
-            	    case LT:
-            	        {
-            	        alt115=3;
-            	        }
-            	        break;
-            	    case GE:
-            	        {
-            	        alt115=4;
-            	        }
-            	        break;
-            	    case LE:
-            	        {
-            	        alt115=5;
-            	        }
-            	        break;
-            	    case NE:
-            	        {
-            	        alt115=6;
-            	        }
-            	        break;
-            	    default:
+            	    }
+            	    else {
             	        if (backtracking>0) {failed=true; return ret2;}
             	        NoViableAltException nvae =
-            	            new NoViableAltException("1010:21: ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) )", 115, 0, input);
+            	            new NoViableAltException("1011:21: ( ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) | ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) ) )", 115, 0, input);
 
             	        throw nvae;
             	    }
-
             	    switch (alt115) {
             	        case 1 :
-            	            // ATL_ANTLR3.g:1010:22: ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
+            	            // ATL_ANTLR3.g:1011:22: ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) )
             	            {
-            	            // ATL_ANTLR3.g:1010:22: ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
-            	            // ATL_ANTLR3.g:1010:23: EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
+            	            // ATL_ANTLR3.g:1011:22: ( PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) )
+            	            // ATL_ANTLR3.g:1011:23: PLUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 )
             	            {
-            	            match(input,EQ,FOLLOW_EQ_in_priority_45681); if (failed) return ret2;
+            	            match(input,PLUS,FOLLOW_PLUS_in_priority_35670); if (failed) return ret2;
             	            if ( backtracking==0 ) {
-            	              opName = "=";
+            	              opName = "+";
             	            }
-            	            // ATL_ANTLR3.g:1010:42: (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
-            	            // ATL_ANTLR3.g:1010:43: ret= operatorCallExp[opName, ret, firstToken] right= priority_3
+            	            // ATL_ANTLR3.g:1011:44: (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 )
+            	            // ATL_ANTLR3.g:1011:45: ret= operatorCallExp[opName, ret, firstToken] right= priority_2
             	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_45688);
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_35677);
             	            ret=operatorCallExp(opName,  ret,  firstToken);
             	            _fsp--;
             	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_3_in_priority_45693);
-            	            right=priority_3();
+            	            pushFollow(FOLLOW_priority_2_in_priority_35682);
+            	            right=priority_2();
             	            _fsp--;
             	            if (failed) return ret2;
             	            if ( backtracking==0 ) {
@@ -12776,160 +12770,24 @@ public class ATL_ANTLR3Parser extends Parser {
             	            }
             	            break;
             	        case 2 :
-            	            // ATL_ANTLR3.g:1011:71: ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
+            	            // ATL_ANTLR3.g:1012:71: ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) )
             	            {
-            	            // ATL_ANTLR3.g:1011:71: ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
-            	            // ATL_ANTLR3.g:1011:72: GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
+            	            // ATL_ANTLR3.g:1012:71: ( MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 ) )
+            	            // ATL_ANTLR3.g:1012:72: MINUS (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 )
             	            {
-            	            match(input,GT,FOLLOW_GT_in_priority_45701); if (failed) return ret2;
+            	            match(input,MINUS,FOLLOW_MINUS_in_priority_35690); if (failed) return ret2;
             	            if ( backtracking==0 ) {
-            	              opName = ">";
+            	              opName = "-";
             	            }
-            	            // ATL_ANTLR3.g:1011:91: (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
-            	            // ATL_ANTLR3.g:1011:92: ret= operatorCallExp[opName, ret, firstToken] right= priority_3
+            	            // ATL_ANTLR3.g:1012:94: (ret= operatorCallExp[opName, ret, firstToken] right= priority_2 )
+            	            // ATL_ANTLR3.g:1012:95: ret= operatorCallExp[opName, ret, firstToken] right= priority_2
             	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_45708);
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_35697);
             	            ret=operatorCallExp(opName,  ret,  firstToken);
             	            _fsp--;
             	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_3_in_priority_45713);
-            	            right=priority_3();
-            	            _fsp--;
-            	            if (failed) return ret2;
-            	            if ( backtracking==0 ) {
-            	              ei.set(ret, "arguments", right);if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
-            	              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
-            	            }
-
-            	            }
-
-
-            	            }
-
-
-            	            }
-            	            break;
-            	        case 3 :
-            	            // ATL_ANTLR3.g:1012:71: ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
-            	            {
-            	            // ATL_ANTLR3.g:1012:71: ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
-            	            // ATL_ANTLR3.g:1012:72: LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
-            	            {
-            	            match(input,LT,FOLLOW_LT_in_priority_45721); if (failed) return ret2;
-            	            if ( backtracking==0 ) {
-            	              opName = "<";
-            	            }
-            	            // ATL_ANTLR3.g:1012:91: (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
-            	            // ATL_ANTLR3.g:1012:92: ret= operatorCallExp[opName, ret, firstToken] right= priority_3
-            	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_45728);
-            	            ret=operatorCallExp(opName,  ret,  firstToken);
-            	            _fsp--;
-            	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_3_in_priority_45733);
-            	            right=priority_3();
-            	            _fsp--;
-            	            if (failed) return ret2;
-            	            if ( backtracking==0 ) {
-            	              ei.set(ret, "arguments", right);if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
-            	              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
-            	            }
-
-            	            }
-
-
-            	            }
-
-
-            	            }
-            	            break;
-            	        case 4 :
-            	            // ATL_ANTLR3.g:1013:71: ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
-            	            {
-            	            // ATL_ANTLR3.g:1013:71: ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
-            	            // ATL_ANTLR3.g:1013:72: GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
-            	            {
-            	            match(input,GE,FOLLOW_GE_in_priority_45741); if (failed) return ret2;
-            	            if ( backtracking==0 ) {
-            	              opName = ">=";
-            	            }
-            	            // ATL_ANTLR3.g:1013:92: (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
-            	            // ATL_ANTLR3.g:1013:93: ret= operatorCallExp[opName, ret, firstToken] right= priority_3
-            	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_45748);
-            	            ret=operatorCallExp(opName,  ret,  firstToken);
-            	            _fsp--;
-            	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_3_in_priority_45753);
-            	            right=priority_3();
-            	            _fsp--;
-            	            if (failed) return ret2;
-            	            if ( backtracking==0 ) {
-            	              ei.set(ret, "arguments", right);if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
-            	              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
-            	            }
-
-            	            }
-
-
-            	            }
-
-
-            	            }
-            	            break;
-            	        case 5 :
-            	            // ATL_ANTLR3.g:1014:71: ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
-            	            {
-            	            // ATL_ANTLR3.g:1014:71: ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
-            	            // ATL_ANTLR3.g:1014:72: LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
-            	            {
-            	            match(input,LE,FOLLOW_LE_in_priority_45761); if (failed) return ret2;
-            	            if ( backtracking==0 ) {
-            	              opName = "<=";
-            	            }
-            	            // ATL_ANTLR3.g:1014:92: (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
-            	            // ATL_ANTLR3.g:1014:93: ret= operatorCallExp[opName, ret, firstToken] right= priority_3
-            	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_45768);
-            	            ret=operatorCallExp(opName,  ret,  firstToken);
-            	            _fsp--;
-            	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_3_in_priority_45773);
-            	            right=priority_3();
-            	            _fsp--;
-            	            if (failed) return ret2;
-            	            if ( backtracking==0 ) {
-            	              ei.set(ret, "arguments", right);if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
-            	              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
-            	            }
-
-            	            }
-
-
-            	            }
-
-
-            	            }
-            	            break;
-            	        case 6 :
-            	            // ATL_ANTLR3.g:1015:71: ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
-            	            {
-            	            // ATL_ANTLR3.g:1015:71: ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
-            	            // ATL_ANTLR3.g:1015:72: NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
-            	            {
-            	            match(input,NE,FOLLOW_NE_in_priority_45781); if (failed) return ret2;
-            	            if ( backtracking==0 ) {
-            	              opName = "<>";
-            	            }
-            	            // ATL_ANTLR3.g:1015:92: (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
-            	            // ATL_ANTLR3.g:1015:93: ret= operatorCallExp[opName, ret, firstToken] right= priority_3
-            	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_45788);
-            	            ret=operatorCallExp(opName,  ret,  firstToken);
-            	            _fsp--;
-            	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_3_in_priority_45793);
-            	            right=priority_3();
+            	            pushFollow(FOLLOW_priority_2_in_priority_35702);
+            	            right=priority_2();
             	            _fsp--;
             	            if (failed) return ret2;
             	            if ( backtracking==0 ) {
@@ -12977,12 +12835,12 @@ public class ATL_ANTLR3Parser extends Parser {
         }
         return ret2;
     }
-    // $ANTLR end priority_4
+    // $ANTLR end priority_3
 
 
-    // $ANTLR start priority_5
-    // ATL_ANTLR3.g:1023:1: priority_5 returns [Object ret2] : (ret= priority_4 ( ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) ) )* ) ;
-    public final Object priority_5() throws RecognitionException {
+    // $ANTLR start priority_4
+    // ATL_ANTLR3.g:1020:1: priority_4 returns [Object ret2] : (ret= priority_3 ( ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) ) )* ) ;
+    public final Object priority_4() throws RecognitionException {
         Object ret2 = null;
 
         Object ret = null;
@@ -12992,82 +12850,92 @@ public class ATL_ANTLR3Parser extends Parser {
 
         java.lang.String opName=null; org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:1024:2: ( (ret= priority_4 ( ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) ) )* ) )
-            // ATL_ANTLR3.g:1024:4: (ret= priority_4 ( ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) ) )* )
+            // ATL_ANTLR3.g:1021:2: ( (ret= priority_3 ( ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) ) )* ) )
+            // ATL_ANTLR3.g:1021:4: (ret= priority_3 ( ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) ) )* )
             {
-            // ATL_ANTLR3.g:1024:4: (ret= priority_4 ( ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) ) )* )
-            // ATL_ANTLR3.g:1024:5: ret= priority_4 ( ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) ) )*
+            // ATL_ANTLR3.g:1021:4: (ret= priority_3 ( ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) ) )* )
+            // ATL_ANTLR3.g:1021:5: ret= priority_3 ( ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) ) )*
             {
-            pushFollow(FOLLOW_priority_4_in_priority_55834);
-            ret=priority_4();
+            pushFollow(FOLLOW_priority_3_in_priority_45743);
+            ret=priority_3();
             _fsp--;
             if (failed) return ret2;
-            // ATL_ANTLR3.g:1024:20: ( ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) ) )*
+            // ATL_ANTLR3.g:1021:20: ( ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) ) )*
             loop118:
             do {
                 int alt118=2;
                 int LA118_0 = input.LA(1);
 
-                if ( ((LA118_0>=96 && LA118_0<=99)) ) {
+                if ( (LA118_0==EQ||(LA118_0>=GT && LA118_0<=NE)) ) {
                     alt118=1;
                 }
 
 
                 switch (alt118) {
             	case 1 :
-            	    // ATL_ANTLR3.g:1024:21: ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) )
+            	    // ATL_ANTLR3.g:1021:21: ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) )
             	    {
-            	    // ATL_ANTLR3.g:1024:21: ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) )
-            	    int alt117=4;
+            	    // ATL_ANTLR3.g:1021:21: ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) )
+            	    int alt117=6;
             	    switch ( input.LA(1) ) {
-            	    case 96:
+            	    case EQ:
             	        {
             	        alt117=1;
             	        }
             	        break;
-            	    case 97:
+            	    case GT:
             	        {
             	        alt117=2;
             	        }
             	        break;
-            	    case 98:
+            	    case LT:
             	        {
             	        alt117=3;
             	        }
             	        break;
-            	    case 99:
+            	    case GE:
             	        {
             	        alt117=4;
+            	        }
+            	        break;
+            	    case LE:
+            	        {
+            	        alt117=5;
+            	        }
+            	        break;
+            	    case NE:
+            	        {
+            	        alt117=6;
             	        }
             	        break;
             	    default:
             	        if (backtracking>0) {failed=true; return ret2;}
             	        NoViableAltException nvae =
-            	            new NoViableAltException("1024:21: ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) )", 117, 0, input);
+            	            new NoViableAltException("1021:21: ( ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) | ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) ) )", 117, 0, input);
 
             	        throw nvae;
             	    }
 
             	    switch (alt117) {
             	        case 1 :
-            	            // ATL_ANTLR3.g:1024:22: ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
+            	            // ATL_ANTLR3.g:1021:22: ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
             	            {
-            	            // ATL_ANTLR3.g:1024:22: ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
-            	            // ATL_ANTLR3.g:1024:23: 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
+            	            // ATL_ANTLR3.g:1021:22: ( EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
+            	            // ATL_ANTLR3.g:1021:23: EQ (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
             	            {
-            	            match(input,96,FOLLOW_96_in_priority_55839); if (failed) return ret2;
+            	            match(input,EQ,FOLLOW_EQ_in_priority_45748); if (failed) return ret2;
             	            if ( backtracking==0 ) {
-            	              opName = "and";
+            	              opName = "=";
             	            }
-            	            // ATL_ANTLR3.g:1024:47: (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
-            	            // ATL_ANTLR3.g:1024:48: ret= operatorCallExp[opName, ret, firstToken] right= priority_4
+            	            // ATL_ANTLR3.g:1021:42: (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
+            	            // ATL_ANTLR3.g:1021:43: ret= operatorCallExp[opName, ret, firstToken] right= priority_3
             	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_55846);
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_45755);
             	            ret=operatorCallExp(opName,  ret,  firstToken);
             	            _fsp--;
             	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_4_in_priority_55851);
-            	            right=priority_4();
+            	            pushFollow(FOLLOW_priority_3_in_priority_45760);
+            	            right=priority_3();
             	            _fsp--;
             	            if (failed) return ret2;
             	            if ( backtracking==0 ) {
@@ -13084,24 +12952,24 @@ public class ATL_ANTLR3Parser extends Parser {
             	            }
             	            break;
             	        case 2 :
-            	            // ATL_ANTLR3.g:1025:71: ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
+            	            // ATL_ANTLR3.g:1022:71: ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
             	            {
-            	            // ATL_ANTLR3.g:1025:71: ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
-            	            // ATL_ANTLR3.g:1025:72: 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
+            	            // ATL_ANTLR3.g:1022:71: ( GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
+            	            // ATL_ANTLR3.g:1022:72: GT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
             	            {
-            	            match(input,97,FOLLOW_97_in_priority_55859); if (failed) return ret2;
+            	            match(input,GT,FOLLOW_GT_in_priority_45768); if (failed) return ret2;
             	            if ( backtracking==0 ) {
-            	              opName = "or";
+            	              opName = ">";
             	            }
-            	            // ATL_ANTLR3.g:1025:94: (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
-            	            // ATL_ANTLR3.g:1025:95: ret= operatorCallExp[opName, ret, firstToken] right= priority_4
+            	            // ATL_ANTLR3.g:1022:91: (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
+            	            // ATL_ANTLR3.g:1022:92: ret= operatorCallExp[opName, ret, firstToken] right= priority_3
             	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_55866);
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_45775);
             	            ret=operatorCallExp(opName,  ret,  firstToken);
             	            _fsp--;
             	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_4_in_priority_55871);
-            	            right=priority_4();
+            	            pushFollow(FOLLOW_priority_3_in_priority_45780);
+            	            right=priority_3();
             	            _fsp--;
             	            if (failed) return ret2;
             	            if ( backtracking==0 ) {
@@ -13118,24 +12986,24 @@ public class ATL_ANTLR3Parser extends Parser {
             	            }
             	            break;
             	        case 3 :
-            	            // ATL_ANTLR3.g:1026:71: ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
+            	            // ATL_ANTLR3.g:1023:71: ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
             	            {
-            	            // ATL_ANTLR3.g:1026:71: ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
-            	            // ATL_ANTLR3.g:1026:72: 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
+            	            // ATL_ANTLR3.g:1023:71: ( LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
+            	            // ATL_ANTLR3.g:1023:72: LT (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
             	            {
-            	            match(input,98,FOLLOW_98_in_priority_55879); if (failed) return ret2;
+            	            match(input,LT,FOLLOW_LT_in_priority_45788); if (failed) return ret2;
             	            if ( backtracking==0 ) {
-            	              opName = "xor";
+            	              opName = "<";
             	            }
-            	            // ATL_ANTLR3.g:1026:96: (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
-            	            // ATL_ANTLR3.g:1026:97: ret= operatorCallExp[opName, ret, firstToken] right= priority_4
+            	            // ATL_ANTLR3.g:1023:91: (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
+            	            // ATL_ANTLR3.g:1023:92: ret= operatorCallExp[opName, ret, firstToken] right= priority_3
             	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_55886);
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_45795);
             	            ret=operatorCallExp(opName,  ret,  firstToken);
             	            _fsp--;
             	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_4_in_priority_55891);
-            	            right=priority_4();
+            	            pushFollow(FOLLOW_priority_3_in_priority_45800);
+            	            right=priority_3();
             	            _fsp--;
             	            if (failed) return ret2;
             	            if ( backtracking==0 ) {
@@ -13152,24 +13020,92 @@ public class ATL_ANTLR3Parser extends Parser {
             	            }
             	            break;
             	        case 4 :
-            	            // ATL_ANTLR3.g:1027:71: ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
+            	            // ATL_ANTLR3.g:1024:71: ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
             	            {
-            	            // ATL_ANTLR3.g:1027:71: ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
-            	            // ATL_ANTLR3.g:1027:72: 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
+            	            // ATL_ANTLR3.g:1024:71: ( GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
+            	            // ATL_ANTLR3.g:1024:72: GE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
             	            {
-            	            match(input,99,FOLLOW_99_in_priority_55899); if (failed) return ret2;
+            	            match(input,GE,FOLLOW_GE_in_priority_45808); if (failed) return ret2;
             	            if ( backtracking==0 ) {
-            	              opName = "implies";
+            	              opName = ">=";
             	            }
-            	            // ATL_ANTLR3.g:1027:104: (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
-            	            // ATL_ANTLR3.g:1027:105: ret= operatorCallExp[opName, ret, firstToken] right= priority_4
+            	            // ATL_ANTLR3.g:1024:92: (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
+            	            // ATL_ANTLR3.g:1024:93: ret= operatorCallExp[opName, ret, firstToken] right= priority_3
             	            {
-            	            pushFollow(FOLLOW_operatorCallExp_in_priority_55906);
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_45815);
             	            ret=operatorCallExp(opName,  ret,  firstToken);
             	            _fsp--;
             	            if (failed) return ret2;
-            	            pushFollow(FOLLOW_priority_4_in_priority_55911);
-            	            right=priority_4();
+            	            pushFollow(FOLLOW_priority_3_in_priority_45820);
+            	            right=priority_3();
+            	            _fsp--;
+            	            if (failed) return ret2;
+            	            if ( backtracking==0 ) {
+            	              ei.set(ret, "arguments", right);if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
+            	              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
+            	            }
+
+            	            }
+
+
+            	            }
+
+
+            	            }
+            	            break;
+            	        case 5 :
+            	            // ATL_ANTLR3.g:1025:71: ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
+            	            {
+            	            // ATL_ANTLR3.g:1025:71: ( LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
+            	            // ATL_ANTLR3.g:1025:72: LE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
+            	            {
+            	            match(input,LE,FOLLOW_LE_in_priority_45828); if (failed) return ret2;
+            	            if ( backtracking==0 ) {
+            	              opName = "<=";
+            	            }
+            	            // ATL_ANTLR3.g:1025:92: (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
+            	            // ATL_ANTLR3.g:1025:93: ret= operatorCallExp[opName, ret, firstToken] right= priority_3
+            	            {
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_45835);
+            	            ret=operatorCallExp(opName,  ret,  firstToken);
+            	            _fsp--;
+            	            if (failed) return ret2;
+            	            pushFollow(FOLLOW_priority_3_in_priority_45840);
+            	            right=priority_3();
+            	            _fsp--;
+            	            if (failed) return ret2;
+            	            if ( backtracking==0 ) {
+            	              ei.set(ret, "arguments", right);if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
+            	              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
+            	            }
+
+            	            }
+
+
+            	            }
+
+
+            	            }
+            	            break;
+            	        case 6 :
+            	            // ATL_ANTLR3.g:1026:71: ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
+            	            {
+            	            // ATL_ANTLR3.g:1026:71: ( NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 ) )
+            	            // ATL_ANTLR3.g:1026:72: NE (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
+            	            {
+            	            match(input,NE,FOLLOW_NE_in_priority_45848); if (failed) return ret2;
+            	            if ( backtracking==0 ) {
+            	              opName = "<>";
+            	            }
+            	            // ATL_ANTLR3.g:1026:92: (ret= operatorCallExp[opName, ret, firstToken] right= priority_3 )
+            	            // ATL_ANTLR3.g:1026:93: ret= operatorCallExp[opName, ret, firstToken] right= priority_3
+            	            {
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_45855);
+            	            ret=operatorCallExp(opName,  ret,  firstToken);
+            	            _fsp--;
+            	            if (failed) return ret2;
+            	            pushFollow(FOLLOW_priority_3_in_priority_45860);
+            	            right=priority_3();
             	            _fsp--;
             	            if (failed) return ret2;
             	            if ( backtracking==0 ) {
@@ -13217,11 +13153,251 @@ public class ATL_ANTLR3Parser extends Parser {
         }
         return ret2;
     }
+    // $ANTLR end priority_4
+
+
+    // $ANTLR start priority_5
+    // ATL_ANTLR3.g:1034:1: priority_5 returns [Object ret2] : (ret= priority_4 ( ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) ) )* ) ;
+    public final Object priority_5() throws RecognitionException {
+        Object ret2 = null;
+
+        Object ret = null;
+
+        Object right = null;
+
+
+        java.lang.String opName=null; org.antlr.runtime.Token firstToken=input.LT(1);
+        try {
+            // ATL_ANTLR3.g:1035:2: ( (ret= priority_4 ( ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) ) )* ) )
+            // ATL_ANTLR3.g:1035:4: (ret= priority_4 ( ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) ) )* )
+            {
+            // ATL_ANTLR3.g:1035:4: (ret= priority_4 ( ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) ) )* )
+            // ATL_ANTLR3.g:1035:5: ret= priority_4 ( ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) ) )*
+            {
+            pushFollow(FOLLOW_priority_4_in_priority_55901);
+            ret=priority_4();
+            _fsp--;
+            if (failed) return ret2;
+            // ATL_ANTLR3.g:1035:20: ( ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) ) )*
+            loop120:
+            do {
+                int alt120=2;
+                int LA120_0 = input.LA(1);
+
+                if ( ((LA120_0>=97 && LA120_0<=100)) ) {
+                    alt120=1;
+                }
+
+
+                switch (alt120) {
+            	case 1 :
+            	    // ATL_ANTLR3.g:1035:21: ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) )
+            	    {
+            	    // ATL_ANTLR3.g:1035:21: ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) )
+            	    int alt119=4;
+            	    switch ( input.LA(1) ) {
+            	    case 97:
+            	        {
+            	        alt119=1;
+            	        }
+            	        break;
+            	    case 98:
+            	        {
+            	        alt119=2;
+            	        }
+            	        break;
+            	    case 99:
+            	        {
+            	        alt119=3;
+            	        }
+            	        break;
+            	    case 100:
+            	        {
+            	        alt119=4;
+            	        }
+            	        break;
+            	    default:
+            	        if (backtracking>0) {failed=true; return ret2;}
+            	        NoViableAltException nvae =
+            	            new NoViableAltException("1035:21: ( ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) | ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) ) )", 119, 0, input);
+
+            	        throw nvae;
+            	    }
+
+            	    switch (alt119) {
+            	        case 1 :
+            	            // ATL_ANTLR3.g:1035:22: ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
+            	            {
+            	            // ATL_ANTLR3.g:1035:22: ( 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
+            	            // ATL_ANTLR3.g:1035:23: 'and' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
+            	            {
+            	            match(input,97,FOLLOW_97_in_priority_55906); if (failed) return ret2;
+            	            if ( backtracking==0 ) {
+            	              opName = "and";
+            	            }
+            	            // ATL_ANTLR3.g:1035:47: (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
+            	            // ATL_ANTLR3.g:1035:48: ret= operatorCallExp[opName, ret, firstToken] right= priority_4
+            	            {
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_55913);
+            	            ret=operatorCallExp(opName,  ret,  firstToken);
+            	            _fsp--;
+            	            if (failed) return ret2;
+            	            pushFollow(FOLLOW_priority_4_in_priority_55918);
+            	            right=priority_4();
+            	            _fsp--;
+            	            if (failed) return ret2;
+            	            if ( backtracking==0 ) {
+            	              ei.set(ret, "arguments", right);if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
+            	              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
+            	            }
+
+            	            }
+
+
+            	            }
+
+
+            	            }
+            	            break;
+            	        case 2 :
+            	            // ATL_ANTLR3.g:1036:71: ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
+            	            {
+            	            // ATL_ANTLR3.g:1036:71: ( 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
+            	            // ATL_ANTLR3.g:1036:72: 'or' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
+            	            {
+            	            match(input,98,FOLLOW_98_in_priority_55926); if (failed) return ret2;
+            	            if ( backtracking==0 ) {
+            	              opName = "or";
+            	            }
+            	            // ATL_ANTLR3.g:1036:94: (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
+            	            // ATL_ANTLR3.g:1036:95: ret= operatorCallExp[opName, ret, firstToken] right= priority_4
+            	            {
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_55933);
+            	            ret=operatorCallExp(opName,  ret,  firstToken);
+            	            _fsp--;
+            	            if (failed) return ret2;
+            	            pushFollow(FOLLOW_priority_4_in_priority_55938);
+            	            right=priority_4();
+            	            _fsp--;
+            	            if (failed) return ret2;
+            	            if ( backtracking==0 ) {
+            	              ei.set(ret, "arguments", right);if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
+            	              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
+            	            }
+
+            	            }
+
+
+            	            }
+
+
+            	            }
+            	            break;
+            	        case 3 :
+            	            // ATL_ANTLR3.g:1037:71: ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
+            	            {
+            	            // ATL_ANTLR3.g:1037:71: ( 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
+            	            // ATL_ANTLR3.g:1037:72: 'xor' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
+            	            {
+            	            match(input,99,FOLLOW_99_in_priority_55946); if (failed) return ret2;
+            	            if ( backtracking==0 ) {
+            	              opName = "xor";
+            	            }
+            	            // ATL_ANTLR3.g:1037:96: (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
+            	            // ATL_ANTLR3.g:1037:97: ret= operatorCallExp[opName, ret, firstToken] right= priority_4
+            	            {
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_55953);
+            	            ret=operatorCallExp(opName,  ret,  firstToken);
+            	            _fsp--;
+            	            if (failed) return ret2;
+            	            pushFollow(FOLLOW_priority_4_in_priority_55958);
+            	            right=priority_4();
+            	            _fsp--;
+            	            if (failed) return ret2;
+            	            if ( backtracking==0 ) {
+            	              ei.set(ret, "arguments", right);if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
+            	              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
+            	            }
+
+            	            }
+
+
+            	            }
+
+
+            	            }
+            	            break;
+            	        case 4 :
+            	            // ATL_ANTLR3.g:1038:71: ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
+            	            {
+            	            // ATL_ANTLR3.g:1038:71: ( 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 ) )
+            	            // ATL_ANTLR3.g:1038:72: 'implies' (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
+            	            {
+            	            match(input,100,FOLLOW_100_in_priority_55966); if (failed) return ret2;
+            	            if ( backtracking==0 ) {
+            	              opName = "implies";
+            	            }
+            	            // ATL_ANTLR3.g:1038:104: (ret= operatorCallExp[opName, ret, firstToken] right= priority_4 )
+            	            // ATL_ANTLR3.g:1038:105: ret= operatorCallExp[opName, ret, firstToken] right= priority_4
+            	            {
+            	            pushFollow(FOLLOW_operatorCallExp_in_priority_55973);
+            	            ret=operatorCallExp(opName,  ret,  firstToken);
+            	            _fsp--;
+            	            if (failed) return ret2;
+            	            pushFollow(FOLLOW_priority_4_in_priority_55978);
+            	            right=priority_4();
+            	            _fsp--;
+            	            if (failed) return ret2;
+            	            if ( backtracking==0 ) {
+            	              ei.set(ret, "arguments", right);if(input.LT(-1) != null) ei.setLocation(ret, firstToken.getLine() + ":" + (firstToken.getCharPositionInLine() + 1) + "-" + ((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndLine() + ":" + (((org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ANTLR3LocationToken)input.LT(-1)).getEndColumn() + 1));ei.setCommentsBefore(ret, new Object[] {input, firstToken});
+            	              	   ei.setCommentsAfter(ret, new Object[] {input, input.LT(-1)});
+            	            }
+
+            	            }
+
+
+            	            }
+
+
+            	            }
+            	            break;
+
+            	    }
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop120;
+                }
+            } while (true);
+
+
+            }
+
+            if ( backtracking==0 ) {
+
+                          ret2=ret;
+                      
+            }
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        return ret2;
+    }
     // $ANTLR end priority_5
 
 
     // $ANTLR start matchedRule_abstractContents
-    // ATL_ANTLR3.g:1035:1: matchedRule_abstractContents returns [Object ret2] : ( ( ( 'nodefault' ) | () ) ( ( 'abstract' ) | () ) ( ( 'refining' ) | () ) 'rule' temp= identifier ( ( 'extends' temp= identifier ) | () ) LCURLY ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) ) RCURLY ) ;
+    // ATL_ANTLR3.g:1046:1: matchedRule_abstractContents returns [Object ret2] : ( ( ( 'nodefault' ) | () ) ( ( 'abstract' ) | () ) ( ( 'refining' ) | () ) 'rule' temp= identifier ( ( 'extends' temp= identifier ) | () ) LCURLY ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) ) RCURLY ) ;
     public final Object matchedRule_abstractContents() throws RecognitionException {
         Object ret2 = null;
 
@@ -13230,37 +13406,37 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("MatchedRule", true, true) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:1036:2: ( ( ( ( 'nodefault' ) | () ) ( ( 'abstract' ) | () ) ( ( 'refining' ) | () ) 'rule' temp= identifier ( ( 'extends' temp= identifier ) | () ) LCURLY ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) ) RCURLY ) )
-            // ATL_ANTLR3.g:1036:4: ( ( ( 'nodefault' ) | () ) ( ( 'abstract' ) | () ) ( ( 'refining' ) | () ) 'rule' temp= identifier ( ( 'extends' temp= identifier ) | () ) LCURLY ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) ) RCURLY )
+            // ATL_ANTLR3.g:1047:2: ( ( ( ( 'nodefault' ) | () ) ( ( 'abstract' ) | () ) ( ( 'refining' ) | () ) 'rule' temp= identifier ( ( 'extends' temp= identifier ) | () ) LCURLY ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) ) RCURLY ) )
+            // ATL_ANTLR3.g:1047:4: ( ( ( 'nodefault' ) | () ) ( ( 'abstract' ) | () ) ( ( 'refining' ) | () ) 'rule' temp= identifier ( ( 'extends' temp= identifier ) | () ) LCURLY ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) ) RCURLY )
             {
-            // ATL_ANTLR3.g:1036:4: ( ( ( 'nodefault' ) | () ) ( ( 'abstract' ) | () ) ( ( 'refining' ) | () ) 'rule' temp= identifier ( ( 'extends' temp= identifier ) | () ) LCURLY ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) ) RCURLY )
-            // ATL_ANTLR3.g:1036:5: ( ( 'nodefault' ) | () ) ( ( 'abstract' ) | () ) ( ( 'refining' ) | () ) 'rule' temp= identifier ( ( 'extends' temp= identifier ) | () ) LCURLY ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) ) RCURLY
+            // ATL_ANTLR3.g:1047:4: ( ( ( 'nodefault' ) | () ) ( ( 'abstract' ) | () ) ( ( 'refining' ) | () ) 'rule' temp= identifier ( ( 'extends' temp= identifier ) | () ) LCURLY ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) ) RCURLY )
+            // ATL_ANTLR3.g:1047:5: ( ( 'nodefault' ) | () ) ( ( 'abstract' ) | () ) ( ( 'refining' ) | () ) 'rule' temp= identifier ( ( 'extends' temp= identifier ) | () ) LCURLY ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) ) RCURLY
             {
-            // ATL_ANTLR3.g:1036:5: ( ( 'nodefault' ) | () )
-            int alt119=2;
-            int LA119_0 = input.LA(1);
+            // ATL_ANTLR3.g:1047:5: ( ( 'nodefault' ) | () )
+            int alt121=2;
+            int LA121_0 = input.LA(1);
 
-            if ( (LA119_0==53) ) {
-                alt119=1;
+            if ( (LA121_0==53) ) {
+                alt121=1;
             }
-            else if ( (LA119_0==45||(LA119_0>=54 && LA119_0<=55)) ) {
-                alt119=2;
+            else if ( (LA121_0==45||(LA121_0>=54 && LA121_0<=55)) ) {
+                alt121=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("1036:5: ( ( 'nodefault' ) | () )", 119, 0, input);
+                    new NoViableAltException("1047:5: ( ( 'nodefault' ) | () )", 121, 0, input);
 
                 throw nvae;
             }
-            switch (alt119) {
+            switch (alt121) {
                 case 1 :
-                    // ATL_ANTLR3.g:1036:6: ( 'nodefault' )
+                    // ATL_ANTLR3.g:1047:6: ( 'nodefault' )
                     {
-                    // ATL_ANTLR3.g:1036:6: ( 'nodefault' )
-                    // ATL_ANTLR3.g:1036:7: 'nodefault'
+                    // ATL_ANTLR3.g:1047:6: ( 'nodefault' )
+                    // ATL_ANTLR3.g:1047:7: 'nodefault'
                     {
-                    match(input,53,FOLLOW_53_in_matchedRule_abstractContents5952); if (failed) return ret2;
+                    match(input,53,FOLLOW_53_in_matchedRule_abstractContents6019); if (failed) return ret2;
 
                     }
 
@@ -13271,10 +13447,10 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:1036:75: ()
+                    // ATL_ANTLR3.g:1047:75: ()
                     {
-                    // ATL_ANTLR3.g:1036:75: ()
-                    // ATL_ANTLR3.g:1036:76: 
+                    // ATL_ANTLR3.g:1047:75: ()
+                    // ATL_ANTLR3.g:1047:76: 
                     {
                     }
 
@@ -13287,31 +13463,31 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            // ATL_ANTLR3.g:1036:134: ( ( 'abstract' ) | () )
-            int alt120=2;
-            int LA120_0 = input.LA(1);
+            // ATL_ANTLR3.g:1047:134: ( ( 'abstract' ) | () )
+            int alt122=2;
+            int LA122_0 = input.LA(1);
 
-            if ( (LA120_0==54) ) {
-                alt120=1;
+            if ( (LA122_0==54) ) {
+                alt122=1;
             }
-            else if ( (LA120_0==45||LA120_0==55) ) {
-                alt120=2;
+            else if ( (LA122_0==45||LA122_0==55) ) {
+                alt122=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("1036:134: ( ( 'abstract' ) | () )", 120, 0, input);
+                    new NoViableAltException("1047:134: ( ( 'abstract' ) | () )", 122, 0, input);
 
                 throw nvae;
             }
-            switch (alt120) {
+            switch (alt122) {
                 case 1 :
-                    // ATL_ANTLR3.g:1036:135: ( 'abstract' )
+                    // ATL_ANTLR3.g:1047:135: ( 'abstract' )
                     {
-                    // ATL_ANTLR3.g:1036:135: ( 'abstract' )
-                    // ATL_ANTLR3.g:1036:136: 'abstract'
+                    // ATL_ANTLR3.g:1047:135: ( 'abstract' )
+                    // ATL_ANTLR3.g:1047:136: 'abstract'
                     {
-                    match(input,54,FOLLOW_54_in_matchedRule_abstractContents5966); if (failed) return ret2;
+                    match(input,54,FOLLOW_54_in_matchedRule_abstractContents6033); if (failed) return ret2;
 
                     }
 
@@ -13322,10 +13498,10 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:1036:202: ()
+                    // ATL_ANTLR3.g:1047:202: ()
                     {
-                    // ATL_ANTLR3.g:1036:202: ()
-                    // ATL_ANTLR3.g:1036:203: 
+                    // ATL_ANTLR3.g:1047:202: ()
+                    // ATL_ANTLR3.g:1047:203: 
                     {
                     }
 
@@ -13338,31 +13514,31 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            // ATL_ANTLR3.g:1036:260: ( ( 'refining' ) | () )
-            int alt121=2;
-            int LA121_0 = input.LA(1);
+            // ATL_ANTLR3.g:1047:260: ( ( 'refining' ) | () )
+            int alt123=2;
+            int LA123_0 = input.LA(1);
 
-            if ( (LA121_0==45) ) {
-                alt121=1;
+            if ( (LA123_0==45) ) {
+                alt123=1;
             }
-            else if ( (LA121_0==55) ) {
-                alt121=2;
+            else if ( (LA123_0==55) ) {
+                alt123=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("1036:260: ( ( 'refining' ) | () )", 121, 0, input);
+                    new NoViableAltException("1047:260: ( ( 'refining' ) | () )", 123, 0, input);
 
                 throw nvae;
             }
-            switch (alt121) {
+            switch (alt123) {
                 case 1 :
-                    // ATL_ANTLR3.g:1036:261: ( 'refining' )
+                    // ATL_ANTLR3.g:1047:261: ( 'refining' )
                     {
-                    // ATL_ANTLR3.g:1036:261: ( 'refining' )
-                    // ATL_ANTLR3.g:1036:262: 'refining'
+                    // ATL_ANTLR3.g:1047:261: ( 'refining' )
+                    // ATL_ANTLR3.g:1047:262: 'refining'
                     {
-                    match(input,45,FOLLOW_45_in_matchedRule_abstractContents5980); if (failed) return ret2;
+                    match(input,45,FOLLOW_45_in_matchedRule_abstractContents6047); if (failed) return ret2;
 
                     }
 
@@ -13373,10 +13549,10 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:1036:328: ()
+                    // ATL_ANTLR3.g:1047:328: ()
                     {
-                    // ATL_ANTLR3.g:1036:328: ()
-                    // ATL_ANTLR3.g:1036:329: 
+                    // ATL_ANTLR3.g:1047:328: ()
+                    // ATL_ANTLR3.g:1047:329: 
                     {
                     }
 
@@ -13389,40 +13565,40 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,55,FOLLOW_55_in_matchedRule_abstractContents5992); if (failed) return ret2;
-            pushFollow(FOLLOW_identifier_in_matchedRule_abstractContents5996);
+            match(input,55,FOLLOW_55_in_matchedRule_abstractContents6059); if (failed) return ret2;
+            pushFollow(FOLLOW_identifier_in_matchedRule_abstractContents6063);
             temp=identifier();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "name", temp);
             }
-            // ATL_ANTLR3.g:1036:438: ( ( 'extends' temp= identifier ) | () )
-            int alt122=2;
-            int LA122_0 = input.LA(1);
+            // ATL_ANTLR3.g:1047:438: ( ( 'extends' temp= identifier ) | () )
+            int alt124=2;
+            int LA124_0 = input.LA(1);
 
-            if ( (LA122_0==56) ) {
-                alt122=1;
+            if ( (LA124_0==56) ) {
+                alt124=1;
             }
-            else if ( (LA122_0==LCURLY) ) {
-                alt122=2;
+            else if ( (LA124_0==LCURLY) ) {
+                alt124=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("1036:438: ( ( 'extends' temp= identifier ) | () )", 122, 0, input);
+                    new NoViableAltException("1047:438: ( ( 'extends' temp= identifier ) | () )", 124, 0, input);
 
                 throw nvae;
             }
-            switch (alt122) {
+            switch (alt124) {
                 case 1 :
-                    // ATL_ANTLR3.g:1036:439: ( 'extends' temp= identifier )
+                    // ATL_ANTLR3.g:1047:439: ( 'extends' temp= identifier )
                     {
-                    // ATL_ANTLR3.g:1036:439: ( 'extends' temp= identifier )
-                    // ATL_ANTLR3.g:1036:440: 'extends' temp= identifier
+                    // ATL_ANTLR3.g:1047:439: ( 'extends' temp= identifier )
+                    // ATL_ANTLR3.g:1047:440: 'extends' temp= identifier
                     {
-                    match(input,56,FOLLOW_56_in_matchedRule_abstractContents6002); if (failed) return ret2;
-                    pushFollow(FOLLOW_identifier_in_matchedRule_abstractContents6006);
+                    match(input,56,FOLLOW_56_in_matchedRule_abstractContents6069); if (failed) return ret2;
+                    pushFollow(FOLLOW_identifier_in_matchedRule_abstractContents6073);
                     temp=identifier();
                     _fsp--;
                     if (failed) return ret2;
@@ -13438,10 +13614,10 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:1036:564: ()
+                    // ATL_ANTLR3.g:1047:564: ()
                     {
-                    // ATL_ANTLR3.g:1036:564: ()
-                    // ATL_ANTLR3.g:1036:565: 
+                    // ATL_ANTLR3.g:1047:564: ()
+                    // ATL_ANTLR3.g:1047:565: 
                     {
                     }
 
@@ -13453,92 +13629,92 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,LCURLY,FOLLOW_LCURLY_in_matchedRule_abstractContents6020); if (failed) return ret2;
-            // ATL_ANTLR3.g:1036:578: ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) )
-            // ATL_ANTLR3.g:1036:579: (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) )
+            match(input,LCURLY,FOLLOW_LCURLY_in_matchedRule_abstractContents6087); if (failed) return ret2;
+            // ATL_ANTLR3.g:1047:578: ( (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) ) )
+            // ATL_ANTLR3.g:1047:579: (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) )
             {
-            // ATL_ANTLR3.g:1036:579: (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) )
-            // ATL_ANTLR3.g:1036:580: temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () )
+            // ATL_ANTLR3.g:1047:579: (temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () ) )
+            // ATL_ANTLR3.g:1047:580: temp= inPattern ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () ) ( (temp= outPattern ) | () ) ( (temp= actionBlock ) | () )
             {
-            pushFollow(FOLLOW_inPattern_in_matchedRule_abstractContents6026);
+            pushFollow(FOLLOW_inPattern_in_matchedRule_abstractContents6093);
             temp=inPattern();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "inPattern", temp);
             }
-            // ATL_ANTLR3.g:1036:629: ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () )
-            int alt125=2;
-            int LA125_0 = input.LA(1);
+            // ATL_ANTLR3.g:1047:629: ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () )
+            int alt127=2;
+            int LA127_0 = input.LA(1);
 
-            if ( (LA125_0==57) ) {
-                alt125=1;
+            if ( (LA127_0==57) ) {
+                alt127=1;
             }
-            else if ( (LA125_0==RCURLY||LA125_0==63||LA125_0==67) ) {
-                alt125=2;
+            else if ( (LA127_0==RCURLY||LA127_0==63||LA127_0==68) ) {
+                alt127=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("1036:629: ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () )", 125, 0, input);
+                    new NoViableAltException("1047:629: ( ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY ) | () )", 127, 0, input);
 
                 throw nvae;
             }
-            switch (alt125) {
+            switch (alt127) {
                 case 1 :
-                    // ATL_ANTLR3.g:1036:630: ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY )
+                    // ATL_ANTLR3.g:1047:630: ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY )
                     {
-                    // ATL_ANTLR3.g:1036:630: ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY )
-                    // ATL_ANTLR3.g:1036:631: 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY
+                    // ATL_ANTLR3.g:1047:630: ( 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY )
+                    // ATL_ANTLR3.g:1047:631: 'using' LCURLY ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) ) RCURLY
                     {
-                    match(input,57,FOLLOW_57_in_matchedRule_abstractContents6032); if (failed) return ret2;
-                    match(input,LCURLY,FOLLOW_LCURLY_in_matchedRule_abstractContents6034); if (failed) return ret2;
-                    // ATL_ANTLR3.g:1036:646: ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) )
-                    // ATL_ANTLR3.g:1036:647: ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? )
+                    match(input,57,FOLLOW_57_in_matchedRule_abstractContents6099); if (failed) return ret2;
+                    match(input,LCURLY,FOLLOW_LCURLY_in_matchedRule_abstractContents6101); if (failed) return ret2;
+                    // ATL_ANTLR3.g:1047:646: ( ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? ) )
+                    // ATL_ANTLR3.g:1047:647: ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? )
                     {
-                    // ATL_ANTLR3.g:1036:647: ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? )
-                    // ATL_ANTLR3.g:1036:648: ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )?
+                    // ATL_ANTLR3.g:1047:647: ( ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )? )
+                    // ATL_ANTLR3.g:1047:648: ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )?
                     {
-                    // ATL_ANTLR3.g:1036:648: ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )?
-                    int alt124=2;
-                    int LA124_0 = input.LA(1);
+                    // ATL_ANTLR3.g:1047:648: ( (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* ) )?
+                    int alt126=2;
+                    int LA126_0 = input.LA(1);
 
-                    if ( (LA124_0==NAME) ) {
-                        alt124=1;
+                    if ( (LA126_0==NAME) ) {
+                        alt126=1;
                     }
-                    switch (alt124) {
+                    switch (alt126) {
                         case 1 :
-                            // ATL_ANTLR3.g:1036:649: (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* )
+                            // ATL_ANTLR3.g:1047:649: (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* )
                             {
-                            // ATL_ANTLR3.g:1036:649: (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* )
-                            // ATL_ANTLR3.g:1036:650: temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )*
+                            // ATL_ANTLR3.g:1047:649: (temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )* )
+                            // ATL_ANTLR3.g:1047:650: temp= ruleVariableDeclaration ( (temp= ruleVariableDeclaration ) )*
                             {
-                            pushFollow(FOLLOW_ruleVariableDeclaration_in_matchedRule_abstractContents6042);
+                            pushFollow(FOLLOW_ruleVariableDeclaration_in_matchedRule_abstractContents6109);
                             temp=ruleVariableDeclaration();
                             _fsp--;
                             if (failed) return ret2;
                             if ( backtracking==0 ) {
                               ei.set(ret, "variables", temp);
                             }
-                            // ATL_ANTLR3.g:1036:713: ( (temp= ruleVariableDeclaration ) )*
-                            loop123:
+                            // ATL_ANTLR3.g:1047:713: ( (temp= ruleVariableDeclaration ) )*
+                            loop125:
                             do {
-                                int alt123=2;
-                                int LA123_0 = input.LA(1);
+                                int alt125=2;
+                                int LA125_0 = input.LA(1);
 
-                                if ( (LA123_0==NAME) ) {
-                                    alt123=1;
+                                if ( (LA125_0==NAME) ) {
+                                    alt125=1;
                                 }
 
 
-                                switch (alt123) {
+                                switch (alt125) {
                             	case 1 :
-                            	    // ATL_ANTLR3.g:1036:714: (temp= ruleVariableDeclaration )
+                            	    // ATL_ANTLR3.g:1047:714: (temp= ruleVariableDeclaration )
                             	    {
-                            	    // ATL_ANTLR3.g:1036:714: (temp= ruleVariableDeclaration )
-                            	    // ATL_ANTLR3.g:1036:715: temp= ruleVariableDeclaration
+                            	    // ATL_ANTLR3.g:1047:714: (temp= ruleVariableDeclaration )
+                            	    // ATL_ANTLR3.g:1047:715: temp= ruleVariableDeclaration
                             	    {
-                            	    pushFollow(FOLLOW_ruleVariableDeclaration_in_matchedRule_abstractContents6050);
+                            	    pushFollow(FOLLOW_ruleVariableDeclaration_in_matchedRule_abstractContents6117);
                             	    temp=ruleVariableDeclaration();
                             	    _fsp--;
                             	    if (failed) return ret2;
@@ -13553,7 +13729,7 @@ public class ATL_ANTLR3Parser extends Parser {
                             	    break;
 
                             	default :
-                            	    break loop123;
+                            	    break loop125;
                                 }
                             } while (true);
 
@@ -13572,7 +13748,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
                     }
 
-                    match(input,RCURLY,FOLLOW_RCURLY_in_matchedRule_abstractContents6062); if (failed) return ret2;
+                    match(input,RCURLY,FOLLOW_RCURLY_in_matchedRule_abstractContents6129); if (failed) return ret2;
 
                     }
 
@@ -13582,10 +13758,10 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:1036:798: ()
+                    // ATL_ANTLR3.g:1047:798: ()
                     {
-                    // ATL_ANTLR3.g:1036:798: ()
-                    // ATL_ANTLR3.g:1036:799: 
+                    // ATL_ANTLR3.g:1047:798: ()
+                    // ATL_ANTLR3.g:1047:799: 
                     {
                     }
 
@@ -13597,31 +13773,31 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            // ATL_ANTLR3.g:1036:805: ( (temp= outPattern ) | () )
-            int alt126=2;
-            int LA126_0 = input.LA(1);
+            // ATL_ANTLR3.g:1047:805: ( (temp= outPattern ) | () )
+            int alt128=2;
+            int LA128_0 = input.LA(1);
 
-            if ( (LA126_0==63) ) {
-                alt126=1;
+            if ( (LA128_0==63) ) {
+                alt128=1;
             }
-            else if ( (LA126_0==RCURLY||LA126_0==67) ) {
-                alt126=2;
+            else if ( (LA128_0==RCURLY||LA128_0==68) ) {
+                alt128=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("1036:805: ( (temp= outPattern ) | () )", 126, 0, input);
+                    new NoViableAltException("1047:805: ( (temp= outPattern ) | () )", 128, 0, input);
 
                 throw nvae;
             }
-            switch (alt126) {
+            switch (alt128) {
                 case 1 :
-                    // ATL_ANTLR3.g:1036:806: (temp= outPattern )
+                    // ATL_ANTLR3.g:1047:806: (temp= outPattern )
                     {
-                    // ATL_ANTLR3.g:1036:806: (temp= outPattern )
-                    // ATL_ANTLR3.g:1036:807: temp= outPattern
+                    // ATL_ANTLR3.g:1047:806: (temp= outPattern )
+                    // ATL_ANTLR3.g:1047:807: temp= outPattern
                     {
-                    pushFollow(FOLLOW_outPattern_in_matchedRule_abstractContents6078);
+                    pushFollow(FOLLOW_outPattern_in_matchedRule_abstractContents6145);
                     temp=outPattern();
                     _fsp--;
                     if (failed) return ret2;
@@ -13637,10 +13813,10 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:1036:863: ()
+                    // ATL_ANTLR3.g:1047:863: ()
                     {
-                    // ATL_ANTLR3.g:1036:863: ()
-                    // ATL_ANTLR3.g:1036:864: 
+                    // ATL_ANTLR3.g:1047:863: ()
+                    // ATL_ANTLR3.g:1047:864: 
                     {
                     }
 
@@ -13652,31 +13828,31 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            // ATL_ANTLR3.g:1036:870: ( (temp= actionBlock ) | () )
-            int alt127=2;
-            int LA127_0 = input.LA(1);
+            // ATL_ANTLR3.g:1047:870: ( (temp= actionBlock ) | () )
+            int alt129=2;
+            int LA129_0 = input.LA(1);
 
-            if ( (LA127_0==67) ) {
-                alt127=1;
+            if ( (LA129_0==68) ) {
+                alt129=1;
             }
-            else if ( (LA127_0==RCURLY) ) {
-                alt127=2;
+            else if ( (LA129_0==RCURLY) ) {
+                alt129=2;
             }
             else {
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("1036:870: ( (temp= actionBlock ) | () )", 127, 0, input);
+                    new NoViableAltException("1047:870: ( (temp= actionBlock ) | () )", 129, 0, input);
 
                 throw nvae;
             }
-            switch (alt127) {
+            switch (alt129) {
                 case 1 :
-                    // ATL_ANTLR3.g:1036:871: (temp= actionBlock )
+                    // ATL_ANTLR3.g:1047:871: (temp= actionBlock )
                     {
-                    // ATL_ANTLR3.g:1036:871: (temp= actionBlock )
-                    // ATL_ANTLR3.g:1036:872: temp= actionBlock
+                    // ATL_ANTLR3.g:1047:871: (temp= actionBlock )
+                    // ATL_ANTLR3.g:1047:872: temp= actionBlock
                     {
-                    pushFollow(FOLLOW_actionBlock_in_matchedRule_abstractContents6096);
+                    pushFollow(FOLLOW_actionBlock_in_matchedRule_abstractContents6163);
                     temp=actionBlock();
                     _fsp--;
                     if (failed) return ret2;
@@ -13692,10 +13868,10 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:1036:930: ()
+                    // ATL_ANTLR3.g:1047:930: ()
                     {
-                    // ATL_ANTLR3.g:1036:930: ()
-                    // ATL_ANTLR3.g:1036:931: 
+                    // ATL_ANTLR3.g:1047:930: ()
+                    // ATL_ANTLR3.g:1047:931: 
                     {
                     }
 
@@ -13713,7 +13889,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
             }
 
-            match(input,RCURLY,FOLLOW_RCURLY_in_matchedRule_abstractContents6112); if (failed) return ret2;
+            match(input,RCURLY,FOLLOW_RCURLY_in_matchedRule_abstractContents6179); if (failed) return ret2;
 
             }
 
@@ -13741,19 +13917,19 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start oclType_abstractContents
-    // ATL_ANTLR3.g:1046:1: oclType_abstractContents returns [Object ret2] : ( 'OclType' ) ;
+    // ATL_ANTLR3.g:1057:1: oclType_abstractContents returns [Object ret2] : ( 'OclType' ) ;
     public final Object oclType_abstractContents() throws RecognitionException {
         Object ret2 = null;
 
         Object ret=(backtracking==0) ? ei.create("OclType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:1047:2: ( ( 'OclType' ) )
-            // ATL_ANTLR3.g:1047:4: ( 'OclType' )
+            // ATL_ANTLR3.g:1058:2: ( ( 'OclType' ) )
+            // ATL_ANTLR3.g:1058:4: ( 'OclType' )
             {
-            // ATL_ANTLR3.g:1047:4: ( 'OclType' )
-            // ATL_ANTLR3.g:1047:5: 'OclType'
+            // ATL_ANTLR3.g:1058:4: ( 'OclType' )
+            // ATL_ANTLR3.g:1058:5: 'OclType'
             {
-            match(input,85,FOLLOW_85_in_oclType_abstractContents6144); if (failed) return ret2;
+            match(input,86,FOLLOW_86_in_oclType_abstractContents6211); if (failed) return ret2;
 
             }
 
@@ -13781,7 +13957,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start collectionType_abstractContents
-    // ATL_ANTLR3.g:1057:1: collectionType_abstractContents returns [Object ret2] : ( 'Collection' LPAREN temp= oclType RPAREN ) ;
+    // ATL_ANTLR3.g:1068:1: collectionType_abstractContents returns [Object ret2] : ( 'Collection' LPAREN temp= oclType RPAREN ) ;
     public final Object collectionType_abstractContents() throws RecognitionException {
         Object ret2 = null;
 
@@ -13790,22 +13966,22 @@ public class ATL_ANTLR3Parser extends Parser {
 
         Object ret=(backtracking==0) ? ei.create("CollectionType", false, false) : null;org.antlr.runtime.Token firstToken=input.LT(1);
         try {
-            // ATL_ANTLR3.g:1058:2: ( ( 'Collection' LPAREN temp= oclType RPAREN ) )
-            // ATL_ANTLR3.g:1058:4: ( 'Collection' LPAREN temp= oclType RPAREN )
+            // ATL_ANTLR3.g:1069:2: ( ( 'Collection' LPAREN temp= oclType RPAREN ) )
+            // ATL_ANTLR3.g:1069:4: ( 'Collection' LPAREN temp= oclType RPAREN )
             {
-            // ATL_ANTLR3.g:1058:4: ( 'Collection' LPAREN temp= oclType RPAREN )
-            // ATL_ANTLR3.g:1058:5: 'Collection' LPAREN temp= oclType RPAREN
+            // ATL_ANTLR3.g:1069:4: ( 'Collection' LPAREN temp= oclType RPAREN )
+            // ATL_ANTLR3.g:1069:5: 'Collection' LPAREN temp= oclType RPAREN
             {
-            match(input,92,FOLLOW_92_in_collectionType_abstractContents6176); if (failed) return ret2;
-            match(input,LPAREN,FOLLOW_LPAREN_in_collectionType_abstractContents6178); if (failed) return ret2;
-            pushFollow(FOLLOW_oclType_in_collectionType_abstractContents6182);
+            match(input,93,FOLLOW_93_in_collectionType_abstractContents6243); if (failed) return ret2;
+            match(input,LPAREN,FOLLOW_LPAREN_in_collectionType_abstractContents6245); if (failed) return ret2;
+            pushFollow(FOLLOW_oclType_in_collectionType_abstractContents6249);
             temp=oclType();
             _fsp--;
             if (failed) return ret2;
             if ( backtracking==0 ) {
               ei.set(ret, "elementType", temp);
             }
-            match(input,RPAREN,FOLLOW_RPAREN_in_collectionType_abstractContents6186); if (failed) return ret2;
+            match(input,RPAREN,FOLLOW_RPAREN_in_collectionType_abstractContents6253); if (failed) return ret2;
 
             }
 
@@ -13833,7 +14009,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
     // $ANTLR start primary_oclExpression
-    // ATL_ANTLR3.g:1068:1: primary_oclExpression returns [Object ret2] : ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType ) ;
+    // ATL_ANTLR3.g:1079:1: primary_oclExpression returns [Object ret2] : ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType ) ;
     public final Object primary_oclExpression() throws RecognitionException {
         Object ret2 = null;
 
@@ -13841,98 +14017,79 @@ public class ATL_ANTLR3Parser extends Parser {
 
 
         try {
-            // ATL_ANTLR3.g:1069:2: ( ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType ) )
-            // ATL_ANTLR3.g:1069:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )
+            // ATL_ANTLR3.g:1080:2: ( ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType ) )
+            // ATL_ANTLR3.g:1080:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )
             {
-            // ATL_ANTLR3.g:1069:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )
-            int alt128=11;
+            // ATL_ANTLR3.g:1080:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )
+            int alt130=11;
             switch ( input.LA(1) ) {
             case LPAREN:
                 {
-                alt128=1;
+                alt130=1;
                 }
                 break;
             case NAME:
                 {
-                int LA128_2 = input.LA(2);
+                int LA130_2 = input.LA(2);
 
-                if ( (LA128_2==EXCL) ) {
-                    alt128=11;
+                if ( (LA130_2==EOF||(LA130_2>=SEMI && LA130_2<=EQ)||LA130_2==RPAREN||(LA130_2>=RCURLY && LA130_2<=LARROW)||LA130_2==PIPE||(LA130_2>=POINT && LA130_2<=NE)||LA130_2==62||LA130_2==70||(LA130_2>=76 && LA130_2<=77)||(LA130_2>=95 && LA130_2<=100)) ) {
+                    alt130=2;
                 }
-                else if ( (LA128_2==EOF||(LA128_2>=SEMI && LA128_2<=EQ)||LA128_2==RPAREN||(LA128_2>=RCURLY && LA128_2<=LARROW)||LA128_2==PIPE||(LA128_2>=POINT && LA128_2<=NE)||LA128_2==62||LA128_2==69||(LA128_2>=75 && LA128_2<=76)||(LA128_2>=94 && LA128_2<=99)) ) {
-                    alt128=2;
+                else if ( (LA130_2==EXCL) ) {
+                    alt130=11;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("1069:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 128, 2, input);
+                        new NoViableAltException("1080:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 130, 2, input);
 
                     throw nvae;
                 }
                 }
                 break;
-            case 72:
+            case 73:
                 {
-                alt128=3;
+                alt130=3;
                 }
                 break;
             case STRING:
             case INT:
             case FLOAT:
-            case 73:
             case 74:
+            case 75:
                 {
-                alt128=4;
+                alt130=4;
                 }
                 break;
-            case 68:
+            case 69:
                 {
-                alt128=5;
+                alt130=5;
                 }
                 break;
-            case 77:
+            case 78:
                 {
-                alt128=6;
+                alt130=6;
                 }
                 break;
             case SHARP:
                 {
-                alt128=7;
-                }
-                break;
-            case 79:
-                {
-                int LA128_8 = input.LA(2);
-
-                if ( (LA128_8==LCURLY) ) {
-                    alt128=8;
-                }
-                else if ( (LA128_8==LPAREN) ) {
-                    alt128=11;
-                }
-                else {
-                    if (backtracking>0) {failed=true; return ret2;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("1069:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 128, 8, input);
-
-                    throw nvae;
-                }
+                alt130=7;
                 }
                 break;
             case 80:
                 {
-                int LA128_9 = input.LA(2);
+                int LA130_8 = input.LA(2);
 
-                if ( (LA128_9==LCURLY) ) {
-                    alt128=8;
+                if ( (LA130_8==LCURLY) ) {
+                    alt130=8;
                 }
-                else if ( (LA128_9==LPAREN) ) {
-                    alt128=11;
+                else if ( (LA130_8==LPAREN) ) {
+                    alt130=11;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("1069:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 128, 9, input);
+                        new NoViableAltException("1080:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 130, 8, input);
 
                     throw nvae;
                 }
@@ -13940,18 +14097,18 @@ public class ATL_ANTLR3Parser extends Parser {
                 break;
             case 81:
                 {
-                int LA128_10 = input.LA(2);
+                int LA130_9 = input.LA(2);
 
-                if ( (LA128_10==LCURLY) ) {
-                    alt128=8;
+                if ( (LA130_9==LPAREN) ) {
+                    alt130=11;
                 }
-                else if ( (LA128_10==LPAREN) ) {
-                    alt128=11;
+                else if ( (LA130_9==LCURLY) ) {
+                    alt130=8;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("1069:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 128, 10, input);
+                        new NoViableAltException("1080:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 130, 9, input);
 
                     throw nvae;
                 }
@@ -13959,18 +14116,18 @@ public class ATL_ANTLR3Parser extends Parser {
                 break;
             case 82:
                 {
-                int LA128_11 = input.LA(2);
+                int LA130_10 = input.LA(2);
 
-                if ( (LA128_11==LCURLY) ) {
-                    alt128=8;
+                if ( (LA130_10==LCURLY) ) {
+                    alt130=8;
                 }
-                else if ( (LA128_11==LPAREN) ) {
-                    alt128=11;
+                else if ( (LA130_10==LPAREN) ) {
+                    alt130=11;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("1069:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 128, 11, input);
+                        new NoViableAltException("1080:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 130, 10, input);
 
                     throw nvae;
                 }
@@ -13978,18 +14135,18 @@ public class ATL_ANTLR3Parser extends Parser {
                 break;
             case 83:
                 {
-                int LA128_12 = input.LA(2);
+                int LA130_11 = input.LA(2);
 
-                if ( (LA128_12==LPAREN) ) {
-                    alt128=11;
+                if ( (LA130_11==LPAREN) ) {
+                    alt130=11;
                 }
-                else if ( (LA128_12==LCURLY) ) {
-                    alt128=9;
+                else if ( (LA130_11==LCURLY) ) {
+                    alt130=8;
                 }
                 else {
                     if (backtracking>0) {failed=true; return ret2;}
                     NoViableAltException nvae =
-                        new NoViableAltException("1069:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 128, 12, input);
+                        new NoViableAltException("1080:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 130, 11, input);
 
                     throw nvae;
                 }
@@ -13997,10 +14154,28 @@ public class ATL_ANTLR3Parser extends Parser {
                 break;
             case 84:
                 {
-                alt128=10;
+                int LA130_12 = input.LA(2);
+
+                if ( (LA130_12==LCURLY) ) {
+                    alt130=9;
+                }
+                else if ( (LA130_12==LPAREN) ) {
+                    alt130=11;
+                }
+                else {
+                    if (backtracking>0) {failed=true; return ret2;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("1080:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 130, 12, input);
+
+                    throw nvae;
+                }
                 }
                 break;
             case 85:
+                {
+                alt130=10;
+                }
+                break;
             case 86:
             case 87:
             case 88:
@@ -14008,31 +14183,32 @@ public class ATL_ANTLR3Parser extends Parser {
             case 90:
             case 91:
             case 92:
+            case 93:
                 {
-                alt128=11;
+                alt130=11;
                 }
                 break;
             default:
                 if (backtracking>0) {failed=true; return ret2;}
                 NoViableAltException nvae =
-                    new NoViableAltException("1069:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 128, 0, input);
+                    new NoViableAltException("1080:4: ( ( LPAREN ret= oclExpression RPAREN ) | ret= variableExp | ret= oclUndefinedExp | ret= primitiveExp | ret= ifExp | ret= superExp | ret= enumLiteralExp | ret= collectionExp | ret= mapExp | ret= tupleExp | ret= oclType )", 130, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt128) {
+            switch (alt130) {
                 case 1 :
-                    // ATL_ANTLR3.g:1069:5: ( LPAREN ret= oclExpression RPAREN )
+                    // ATL_ANTLR3.g:1080:5: ( LPAREN ret= oclExpression RPAREN )
                     {
-                    // ATL_ANTLR3.g:1069:5: ( LPAREN ret= oclExpression RPAREN )
-                    // ATL_ANTLR3.g:1069:6: LPAREN ret= oclExpression RPAREN
+                    // ATL_ANTLR3.g:1080:5: ( LPAREN ret= oclExpression RPAREN )
+                    // ATL_ANTLR3.g:1080:6: LPAREN ret= oclExpression RPAREN
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_primary_oclExpression6219); if (failed) return ret2;
-                    pushFollow(FOLLOW_oclExpression_in_primary_oclExpression6223);
+                    match(input,LPAREN,FOLLOW_LPAREN_in_primary_oclExpression6286); if (failed) return ret2;
+                    pushFollow(FOLLOW_oclExpression_in_primary_oclExpression6290);
                     ret=oclExpression();
                     _fsp--;
                     if (failed) return ret2;
-                    match(input,RPAREN,FOLLOW_RPAREN_in_primary_oclExpression6225); if (failed) return ret2;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_primary_oclExpression6292); if (failed) return ret2;
 
                     }
 
@@ -14040,9 +14216,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // ATL_ANTLR3.g:1069:40: ret= variableExp
+                    // ATL_ANTLR3.g:1080:40: ret= variableExp
                     {
-                    pushFollow(FOLLOW_variableExp_in_primary_oclExpression6231);
+                    pushFollow(FOLLOW_variableExp_in_primary_oclExpression6298);
                     ret=variableExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -14050,9 +14226,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // ATL_ANTLR3.g:1069:57: ret= oclUndefinedExp
+                    // ATL_ANTLR3.g:1080:57: ret= oclUndefinedExp
                     {
-                    pushFollow(FOLLOW_oclUndefinedExp_in_primary_oclExpression6236);
+                    pushFollow(FOLLOW_oclUndefinedExp_in_primary_oclExpression6303);
                     ret=oclUndefinedExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -14060,9 +14236,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 4 :
-                    // ATL_ANTLR3.g:1069:78: ret= primitiveExp
+                    // ATL_ANTLR3.g:1080:78: ret= primitiveExp
                     {
-                    pushFollow(FOLLOW_primitiveExp_in_primary_oclExpression6241);
+                    pushFollow(FOLLOW_primitiveExp_in_primary_oclExpression6308);
                     ret=primitiveExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -14070,9 +14246,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 5 :
-                    // ATL_ANTLR3.g:1069:96: ret= ifExp
+                    // ATL_ANTLR3.g:1080:96: ret= ifExp
                     {
-                    pushFollow(FOLLOW_ifExp_in_primary_oclExpression6246);
+                    pushFollow(FOLLOW_ifExp_in_primary_oclExpression6313);
                     ret=ifExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -14080,9 +14256,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 6 :
-                    // ATL_ANTLR3.g:1069:107: ret= superExp
+                    // ATL_ANTLR3.g:1080:107: ret= superExp
                     {
-                    pushFollow(FOLLOW_superExp_in_primary_oclExpression6251);
+                    pushFollow(FOLLOW_superExp_in_primary_oclExpression6318);
                     ret=superExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -14090,9 +14266,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 7 :
-                    // ATL_ANTLR3.g:1069:121: ret= enumLiteralExp
+                    // ATL_ANTLR3.g:1080:121: ret= enumLiteralExp
                     {
-                    pushFollow(FOLLOW_enumLiteralExp_in_primary_oclExpression6256);
+                    pushFollow(FOLLOW_enumLiteralExp_in_primary_oclExpression6323);
                     ret=enumLiteralExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -14100,9 +14276,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 8 :
-                    // ATL_ANTLR3.g:1069:141: ret= collectionExp
+                    // ATL_ANTLR3.g:1080:141: ret= collectionExp
                     {
-                    pushFollow(FOLLOW_collectionExp_in_primary_oclExpression6261);
+                    pushFollow(FOLLOW_collectionExp_in_primary_oclExpression6328);
                     ret=collectionExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -14110,9 +14286,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 9 :
-                    // ATL_ANTLR3.g:1069:160: ret= mapExp
+                    // ATL_ANTLR3.g:1080:160: ret= mapExp
                     {
-                    pushFollow(FOLLOW_mapExp_in_primary_oclExpression6266);
+                    pushFollow(FOLLOW_mapExp_in_primary_oclExpression6333);
                     ret=mapExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -14120,9 +14296,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 10 :
-                    // ATL_ANTLR3.g:1069:172: ret= tupleExp
+                    // ATL_ANTLR3.g:1080:172: ret= tupleExp
                     {
-                    pushFollow(FOLLOW_tupleExp_in_primary_oclExpression6271);
+                    pushFollow(FOLLOW_tupleExp_in_primary_oclExpression6338);
                     ret=tupleExp();
                     _fsp--;
                     if (failed) return ret2;
@@ -14130,9 +14306,9 @@ public class ATL_ANTLR3Parser extends Parser {
                     }
                     break;
                 case 11 :
-                    // ATL_ANTLR3.g:1069:186: ret= oclType
+                    // ATL_ANTLR3.g:1080:186: ret= oclType
                     {
-                    pushFollow(FOLLOW_oclType_in_primary_oclExpression6276);
+                    pushFollow(FOLLOW_oclType_in_primary_oclExpression6343);
                     ret=oclType();
                     _fsp--;
                     if (failed) return ret2;
@@ -14161,88 +14337,88 @@ public class ATL_ANTLR3Parser extends Parser {
     }
     // $ANTLR end primary_oclExpression
 
-    // $ANTLR start synpred122
-    public final void synpred122_fragment() throws RecognitionException {   
-        // ATL_ANTLR3.g:395:6: ( ifStat )
-        // ATL_ANTLR3.g:395:6: ifStat
+    // $ANTLR start synpred125
+    public final void synpred125_fragment() throws RecognitionException {   
+        // ATL_ANTLR3.g:406:6: ( ifStat )
+        // ATL_ANTLR3.g:406:6: ifStat
         {
-        pushFollow(FOLLOW_ifStat_in_synpred1222635);
+        pushFollow(FOLLOW_ifStat_in_synpred1252702);
         ifStat();
         _fsp--;
         if (failed) return ;
 
         }
     }
-    // $ANTLR end synpred122
+    // $ANTLR end synpred125
 
-    // $ANTLR start synpred123
-    public final void synpred123_fragment() throws RecognitionException {   
-        // ATL_ANTLR3.g:395:18: ( expressionStat )
-        // ATL_ANTLR3.g:395:18: expressionStat
+    // $ANTLR start synpred126
+    public final void synpred126_fragment() throws RecognitionException {   
+        // ATL_ANTLR3.g:406:18: ( expressionStat )
+        // ATL_ANTLR3.g:406:18: expressionStat
         {
-        pushFollow(FOLLOW_expressionStat_in_synpred1232640);
+        pushFollow(FOLLOW_expressionStat_in_synpred1262707);
         expressionStat();
         _fsp--;
         if (failed) return ;
 
         }
     }
-    // $ANTLR end synpred123
+    // $ANTLR end synpred126
 
-    // $ANTLR start synpred124
-    public final void synpred124_fragment() throws RecognitionException {   
-        // ATL_ANTLR3.g:395:38: ( bindingStat )
-        // ATL_ANTLR3.g:395:38: bindingStat
+    // $ANTLR start synpred127
+    public final void synpred127_fragment() throws RecognitionException {   
+        // ATL_ANTLR3.g:406:38: ( bindingStat )
+        // ATL_ANTLR3.g:406:38: bindingStat
         {
-        pushFollow(FOLLOW_bindingStat_in_synpred1242645);
+        pushFollow(FOLLOW_bindingStat_in_synpred1272712);
         bindingStat();
         _fsp--;
         if (failed) return ;
 
         }
     }
-    // $ANTLR end synpred124
+    // $ANTLR end synpred127
 
-    // $ANTLR start synpred132
-    public final void synpred132_fragment() throws RecognitionException {   
-        // ATL_ANTLR3.g:426:285: ( ( 'else' ( ( ( ( statement ) ) ) | ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY ) ) ) )
-        // ATL_ANTLR3.g:426:285: ( 'else' ( ( ( ( statement ) ) ) | ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY ) ) )
+    // $ANTLR start synpred135
+    public final void synpred135_fragment() throws RecognitionException {   
+        // ATL_ANTLR3.g:437:285: ( ( 'else' ( ( ( ( statement ) ) ) | ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY ) ) ) )
+        // ATL_ANTLR3.g:437:285: ( 'else' ( ( ( ( statement ) ) ) | ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY ) ) )
         {
-        // ATL_ANTLR3.g:426:285: ( 'else' ( ( ( ( statement ) ) ) | ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY ) ) )
-        // ATL_ANTLR3.g:426:286: 'else' ( ( ( ( statement ) ) ) | ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY ) )
+        // ATL_ANTLR3.g:437:285: ( 'else' ( ( ( ( statement ) ) ) | ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY ) ) )
+        // ATL_ANTLR3.g:437:286: 'else' ( ( ( ( statement ) ) ) | ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY ) )
         {
-        match(input,69,FOLLOW_69_in_synpred1322845); if (failed) return ;
-        // ATL_ANTLR3.g:426:293: ( ( ( ( statement ) ) ) | ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY ) )
-        int alt160=2;
-        int LA160_0 = input.LA(1);
+        match(input,70,FOLLOW_70_in_synpred1352912); if (failed) return ;
+        // ATL_ANTLR3.g:437:293: ( ( ( ( statement ) ) ) | ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY ) )
+        int alt163=2;
+        int LA163_0 = input.LA(1);
 
-        if ( ((LA160_0>=NAME && LA160_0<=FLOAT)||LA160_0==LPAREN||LA160_0==SHARP||LA160_0==MINUS||LA160_0==68||LA160_0==70||(LA160_0>=72 && LA160_0<=74)||(LA160_0>=77 && LA160_0<=93)) ) {
-            alt160=1;
+        if ( ((LA163_0>=NAME && LA163_0<=FLOAT)||LA163_0==LPAREN||LA163_0==SHARP||LA163_0==MINUS||LA163_0==69||LA163_0==71||(LA163_0>=73 && LA163_0<=75)||(LA163_0>=78 && LA163_0<=94)) ) {
+            alt163=1;
         }
-        else if ( (LA160_0==LCURLY) ) {
-            alt160=2;
+        else if ( (LA163_0==LCURLY) ) {
+            alt163=2;
         }
         else {
             if (backtracking>0) {failed=true; return ;}
             NoViableAltException nvae =
-                new NoViableAltException("426:293: ( ( ( ( statement ) ) ) | ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY ) )", 160, 0, input);
+                new NoViableAltException("437:293: ( ( ( ( statement ) ) ) | ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY ) )", 163, 0, input);
 
             throw nvae;
         }
-        switch (alt160) {
+        switch (alt163) {
             case 1 :
-                // ATL_ANTLR3.g:426:294: ( ( ( statement ) ) )
+                // ATL_ANTLR3.g:437:294: ( ( ( statement ) ) )
                 {
-                // ATL_ANTLR3.g:426:294: ( ( ( statement ) ) )
-                // ATL_ANTLR3.g:426:295: ( ( statement ) )
+                // ATL_ANTLR3.g:437:294: ( ( ( statement ) ) )
+                // ATL_ANTLR3.g:437:295: ( ( statement ) )
                 {
-                // ATL_ANTLR3.g:426:295: ( ( statement ) )
-                // ATL_ANTLR3.g:426:296: ( statement )
+                // ATL_ANTLR3.g:437:295: ( ( statement ) )
+                // ATL_ANTLR3.g:437:296: ( statement )
                 {
-                // ATL_ANTLR3.g:426:296: ( statement )
-                // ATL_ANTLR3.g:426:297: statement
+                // ATL_ANTLR3.g:437:296: ( statement )
+                // ATL_ANTLR3.g:437:297: statement
                 {
-                pushFollow(FOLLOW_statement_in_synpred1322853);
+                pushFollow(FOLLOW_statement_in_synpred1352920);
                 statement();
                 _fsp--;
                 if (failed) return ;
@@ -14259,55 +14435,55 @@ public class ATL_ANTLR3Parser extends Parser {
                 }
                 break;
             case 2 :
-                // ATL_ANTLR3.g:426:358: ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY )
+                // ATL_ANTLR3.g:437:358: ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY )
                 {
-                // ATL_ANTLR3.g:426:358: ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY )
-                // ATL_ANTLR3.g:426:359: LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY
+                // ATL_ANTLR3.g:437:358: ( LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY )
+                // ATL_ANTLR3.g:437:359: LCURLY ( ( ( ( statement ( ( statement ) )* ) )? ) ) RCURLY
                 {
-                match(input,LCURLY,FOLLOW_LCURLY_in_synpred1322864); if (failed) return ;
-                // ATL_ANTLR3.g:426:366: ( ( ( ( statement ( ( statement ) )* ) )? ) )
-                // ATL_ANTLR3.g:426:367: ( ( ( statement ( ( statement ) )* ) )? )
+                match(input,LCURLY,FOLLOW_LCURLY_in_synpred1352931); if (failed) return ;
+                // ATL_ANTLR3.g:437:366: ( ( ( ( statement ( ( statement ) )* ) )? ) )
+                // ATL_ANTLR3.g:437:367: ( ( ( statement ( ( statement ) )* ) )? )
                 {
-                // ATL_ANTLR3.g:426:367: ( ( ( statement ( ( statement ) )* ) )? )
-                // ATL_ANTLR3.g:426:368: ( ( statement ( ( statement ) )* ) )?
+                // ATL_ANTLR3.g:437:367: ( ( ( statement ( ( statement ) )* ) )? )
+                // ATL_ANTLR3.g:437:368: ( ( statement ( ( statement ) )* ) )?
                 {
-                // ATL_ANTLR3.g:426:368: ( ( statement ( ( statement ) )* ) )?
-                int alt159=2;
-                int LA159_0 = input.LA(1);
+                // ATL_ANTLR3.g:437:368: ( ( statement ( ( statement ) )* ) )?
+                int alt162=2;
+                int LA162_0 = input.LA(1);
 
-                if ( ((LA159_0>=NAME && LA159_0<=FLOAT)||LA159_0==LPAREN||LA159_0==SHARP||LA159_0==MINUS||LA159_0==68||LA159_0==70||(LA159_0>=72 && LA159_0<=74)||(LA159_0>=77 && LA159_0<=93)) ) {
-                    alt159=1;
+                if ( ((LA162_0>=NAME && LA162_0<=FLOAT)||LA162_0==LPAREN||LA162_0==SHARP||LA162_0==MINUS||LA162_0==69||LA162_0==71||(LA162_0>=73 && LA162_0<=75)||(LA162_0>=78 && LA162_0<=94)) ) {
+                    alt162=1;
                 }
-                switch (alt159) {
+                switch (alt162) {
                     case 1 :
-                        // ATL_ANTLR3.g:426:369: ( statement ( ( statement ) )* )
+                        // ATL_ANTLR3.g:437:369: ( statement ( ( statement ) )* )
                         {
-                        // ATL_ANTLR3.g:426:369: ( statement ( ( statement ) )* )
-                        // ATL_ANTLR3.g:426:370: statement ( ( statement ) )*
+                        // ATL_ANTLR3.g:437:369: ( statement ( ( statement ) )* )
+                        // ATL_ANTLR3.g:437:370: statement ( ( statement ) )*
                         {
-                        pushFollow(FOLLOW_statement_in_synpred1322872);
+                        pushFollow(FOLLOW_statement_in_synpred1352939);
                         statement();
                         _fsp--;
                         if (failed) return ;
-                        // ATL_ANTLR3.g:426:424: ( ( statement ) )*
-                        loop158:
+                        // ATL_ANTLR3.g:437:424: ( ( statement ) )*
+                        loop161:
                         do {
-                            int alt158=2;
-                            int LA158_0 = input.LA(1);
+                            int alt161=2;
+                            int LA161_0 = input.LA(1);
 
-                            if ( ((LA158_0>=NAME && LA158_0<=FLOAT)||LA158_0==LPAREN||LA158_0==SHARP||LA158_0==MINUS||LA158_0==68||LA158_0==70||(LA158_0>=72 && LA158_0<=74)||(LA158_0>=77 && LA158_0<=93)) ) {
-                                alt158=1;
+                            if ( ((LA161_0>=NAME && LA161_0<=FLOAT)||LA161_0==LPAREN||LA161_0==SHARP||LA161_0==MINUS||LA161_0==69||LA161_0==71||(LA161_0>=73 && LA161_0<=75)||(LA161_0>=78 && LA161_0<=94)) ) {
+                                alt161=1;
                             }
 
 
-                            switch (alt158) {
+                            switch (alt161) {
                         	case 1 :
-                        	    // ATL_ANTLR3.g:426:425: ( statement )
+                        	    // ATL_ANTLR3.g:437:425: ( statement )
                         	    {
-                        	    // ATL_ANTLR3.g:426:425: ( statement )
-                        	    // ATL_ANTLR3.g:426:426: statement
+                        	    // ATL_ANTLR3.g:437:425: ( statement )
+                        	    // ATL_ANTLR3.g:437:426: statement
                         	    {
-                        	    pushFollow(FOLLOW_statement_in_synpred1322880);
+                        	    pushFollow(FOLLOW_statement_in_synpred1352947);
                         	    statement();
                         	    _fsp--;
                         	    if (failed) return ;
@@ -14319,7 +14495,7 @@ public class ATL_ANTLR3Parser extends Parser {
                         	    break;
 
                         	default :
-                        	    break loop158;
+                        	    break loop161;
                             }
                         } while (true);
 
@@ -14338,7 +14514,7 @@ public class ATL_ANTLR3Parser extends Parser {
 
                 }
 
-                match(input,RCURLY,FOLLOW_RCURLY_in_synpred1322892); if (failed) return ;
+                match(input,RCURLY,FOLLOW_RCURLY_in_synpred1352959); if (failed) return ;
 
                 }
 
@@ -14354,13 +14530,13 @@ public class ATL_ANTLR3Parser extends Parser {
 
         }
     }
-    // $ANTLR end synpred132
+    // $ANTLR end synpred135
 
-    public final boolean synpred122() {
+    public final boolean synpred135() {
         backtracking++;
         int start = input.mark();
         try {
-            synpred122_fragment(); // can never throw exception
+            synpred135_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -14370,11 +14546,11 @@ public class ATL_ANTLR3Parser extends Parser {
         failed=false;
         return success;
     }
-    public final boolean synpred123() {
+    public final boolean synpred126() {
         backtracking++;
         int start = input.mark();
         try {
-            synpred123_fragment(); // can never throw exception
+            synpred126_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -14384,11 +14560,11 @@ public class ATL_ANTLR3Parser extends Parser {
         failed=false;
         return success;
     }
-    public final boolean synpred124() {
+    public final boolean synpred127() {
         backtracking++;
         int start = input.mark();
         try {
-            synpred124_fragment(); // can never throw exception
+            synpred127_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -14398,11 +14574,11 @@ public class ATL_ANTLR3Parser extends Parser {
         failed=false;
         return success;
     }
-    public final boolean synpred132() {
+    public final boolean synpred125() {
         backtracking++;
         int start = input.mark();
         try {
-            synpred132_fragment(); // can never throw exception
+            synpred125_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -14414,66 +14590,66 @@ public class ATL_ANTLR3Parser extends Parser {
     }
 
 
-    protected DFA107 dfa107 = new DFA107(this);
-    static final String DFA107_eotS =
+    protected DFA109 dfa109 = new DFA109(this);
+    static final String DFA109_eotS =
         "\11\uffff";
-    static final String DFA107_eofS =
+    static final String DFA109_eofS =
         "\11\uffff";
-    static final String DFA107_minS =
-        "\1\4\1\14\1\uffff\1\4\1\11\1\uffff\1\4\1\uffff\1\11";
-    static final String DFA107_maxS =
-        "\1\107\1\14\1\uffff\1\135\1\143\1\uffff\1\135\1\uffff\1\143";
-    static final String DFA107_acceptS =
-        "\2\uffff\1\2\2\uffff\1\3\1\uffff\1\1\1\uffff";
-    static final String DFA107_specialS =
+    static final String DFA109_minS =
+        "\1\4\1\14\1\uffff\1\4\1\uffff\1\11\1\4\1\uffff\1\11";
+    static final String DFA109_maxS =
+        "\1\110\1\14\1\uffff\1\136\1\uffff\1\144\1\136\1\uffff\1\144";
+    static final String DFA109_acceptS =
+        "\2\uffff\1\2\1\uffff\1\3\2\uffff\1\1\1\uffff";
+    static final String DFA109_specialS =
         "\11\uffff}>";
-    static final String[] DFA107_transitionS = {
-            "\1\1\102\uffff\1\2",
+    static final String[] DFA109_transitionS = {
+            "\1\1\103\uffff\1\2",
             "\1\3",
             "",
-            "\1\4\3\5\4\uffff\2\5\7\uffff\1\5\1\uffff\1\5\54\uffff\1\5\3"+
-            "\uffff\3\5\2\uffff\21\5",
-            "\1\6\1\5\2\uffff\1\5\2\uffff\1\5\2\uffff\1\5\1\7\1\uffff\12"+
-            "\5\76\uffff\6\5",
+            "\1\5\3\4\4\uffff\2\4\7\uffff\1\4\1\uffff\1\4\55\uffff\1\4\3"+
+            "\uffff\3\4\2\uffff\21\4",
             "",
-            "\1\10\3\5\4\uffff\1\5\10\uffff\1\5\1\uffff\1\5\54\uffff\1\5"+
-            "\3\uffff\3\5\2\uffff\21\5",
+            "\1\6\1\4\2\uffff\1\4\2\uffff\1\4\2\uffff\1\4\1\7\1\uffff\12"+
+            "\4\77\uffff\6\4",
+            "\1\10\3\4\4\uffff\1\4\10\uffff\1\4\1\uffff\1\4\55\uffff\1\4"+
+            "\3\uffff\3\4\2\uffff\21\4",
             "",
-            "\1\6\1\5\2\uffff\1\5\2\uffff\1\5\2\uffff\1\5\1\7\1\uffff\12"+
-            "\5\76\uffff\6\5"
+            "\1\6\1\4\2\uffff\1\4\2\uffff\1\4\2\uffff\1\4\1\7\1\uffff\12"+
+            "\4\77\uffff\6\4"
     };
 
-    static final short[] DFA107_eot = DFA.unpackEncodedString(DFA107_eotS);
-    static final short[] DFA107_eof = DFA.unpackEncodedString(DFA107_eofS);
-    static final char[] DFA107_min = DFA.unpackEncodedStringToUnsignedChars(DFA107_minS);
-    static final char[] DFA107_max = DFA.unpackEncodedStringToUnsignedChars(DFA107_maxS);
-    static final short[] DFA107_accept = DFA.unpackEncodedString(DFA107_acceptS);
-    static final short[] DFA107_special = DFA.unpackEncodedString(DFA107_specialS);
-    static final short[][] DFA107_transition;
+    static final short[] DFA109_eot = DFA.unpackEncodedString(DFA109_eotS);
+    static final short[] DFA109_eof = DFA.unpackEncodedString(DFA109_eofS);
+    static final char[] DFA109_min = DFA.unpackEncodedStringToUnsignedChars(DFA109_minS);
+    static final char[] DFA109_max = DFA.unpackEncodedStringToUnsignedChars(DFA109_maxS);
+    static final short[] DFA109_accept = DFA.unpackEncodedString(DFA109_acceptS);
+    static final short[] DFA109_special = DFA.unpackEncodedString(DFA109_specialS);
+    static final short[][] DFA109_transition;
 
     static {
-        int numStates = DFA107_transitionS.length;
-        DFA107_transition = new short[numStates][];
+        int numStates = DFA109_transitionS.length;
+        DFA109_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA107_transition[i] = DFA.unpackEncodedString(DFA107_transitionS[i]);
+            DFA109_transition[i] = DFA.unpackEncodedString(DFA109_transitionS[i]);
         }
     }
 
-    class DFA107 extends DFA {
+    class DFA109 extends DFA {
 
-        public DFA107(BaseRecognizer recognizer) {
+        public DFA109(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 107;
-            this.eot = DFA107_eot;
-            this.eof = DFA107_eof;
-            this.min = DFA107_min;
-            this.max = DFA107_max;
-            this.accept = DFA107_accept;
-            this.special = DFA107_special;
-            this.transition = DFA107_transition;
+            this.decisionNumber = 109;
+            this.eot = DFA109_eot;
+            this.eof = DFA109_eof;
+            this.min = DFA109_min;
+            this.max = DFA109_max;
+            this.accept = DFA109_accept;
+            this.special = DFA109_special;
+            this.transition = DFA109_transition;
         }
         public String getDescription() {
-            return "970:192: (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] )";
+            return "981:192: (ret= iteratorExp[opName, ret, firstToken] | ret= iterateExp[opName, ret, firstToken] | ret= collectionOperationCallExp[opName, ret, firstToken] )";
         }
     }
  
@@ -14539,510 +14715,513 @@ public class ATL_ANTLR3Parser extends Parser {
     public static final BitSet FOLLOW_97_in_identifierOrKeyword407 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_98_in_identifierOrKeyword412 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_99_in_identifierOrKeyword417 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_STRING_in_stringSymbol452 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_INT_in_integerSymbol486 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FLOAT_in_floatSymbol520 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_module_in_unit556 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_library_in_unit561 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_query_in_unit566 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_43_in_module599 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_module603 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_SEMI_in_module607 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_44_in_module609 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_oclModel_in_module615 = new BitSet(new long[]{0x0000600000000200L});
-    public static final BitSet FOLLOW_COMA_in_module622 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_oclModel_in_module627 = new BitSet(new long[]{0x0000600000000200L});
-    public static final BitSet FOLLOW_45_in_module638 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_46_in_module645 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_oclModel_in_module655 = new BitSet(new long[]{0x0000000000000300L});
-    public static final BitSet FOLLOW_COMA_in_module662 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_oclModel_in_module667 = new BitSet(new long[]{0x0000000000000300L});
-    public static final BitSet FOLLOW_SEMI_in_module676 = new BitSet(new long[]{0x3CE6200000000002L});
-    public static final BitSet FOLLOW_libraryRef_in_module684 = new BitSet(new long[]{0x3CE6200000000002L});
-    public static final BitSet FOLLOW_libraryRef_in_module692 = new BitSet(new long[]{0x3CE6200000000002L});
-    public static final BitSet FOLLOW_moduleElement_in_module706 = new BitSet(new long[]{0x3CE4200000000002L});
-    public static final BitSet FOLLOW_moduleElement_in_module714 = new BitSet(new long[]{0x3CE4200000000002L});
-    public static final BitSet FOLLOW_47_in_library756 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_library760 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_SEMI_in_library764 = new BitSet(new long[]{0x0006000000000002L});
-    public static final BitSet FOLLOW_libraryRef_in_library772 = new BitSet(new long[]{0x0006000000000002L});
-    public static final BitSet FOLLOW_libraryRef_in_library780 = new BitSet(new long[]{0x0006000000000002L});
-    public static final BitSet FOLLOW_helper_in_library794 = new BitSet(new long[]{0x0004000000000002L});
-    public static final BitSet FOLLOW_helper_in_library802 = new BitSet(new long[]{0x0004000000000002L});
-    public static final BitSet FOLLOW_48_in_query844 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_query848 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_EQ_in_query852 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_query856 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_SEMI_in_query860 = new BitSet(new long[]{0x0006000000000002L});
-    public static final BitSet FOLLOW_libraryRef_in_query868 = new BitSet(new long[]{0x0006000000000002L});
-    public static final BitSet FOLLOW_libraryRef_in_query876 = new BitSet(new long[]{0x0006000000000002L});
-    public static final BitSet FOLLOW_helper_in_query890 = new BitSet(new long[]{0x0004000000000002L});
-    public static final BitSet FOLLOW_helper_in_query898 = new BitSet(new long[]{0x0004000000000002L});
-    public static final BitSet FOLLOW_49_in_libraryRef940 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_libraryRef944 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_SEMI_in_libraryRef948 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_helper_in_moduleElement983 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule_in_moduleElement988 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_50_in_helper1021 = new BitSet(new long[]{0x0018000000000000L});
-    public static final BitSet FOLLOW_oclFeatureDefinition_in_helper1025 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_SEMI_in_helper1029 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_oclContextDefinition_in_oclFeatureDefinition1065 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_oclFeatureDefinition1079 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_oclFeatureDefinition1081 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_oclFeature_in_oclFeatureDefinition1085 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_52_in_oclContextDefinition1119 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_oclContextDefinition1123 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_operation_in_oclFeature1160 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_attribute_in_oclFeature1165 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_operation1200 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_operation1204 = new BitSet(new long[]{0x0000000000002010L});
-    public static final BitSet FOLLOW_parameter_in_operation1210 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_COMA_in_operation1217 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_parameter_in_operation1222 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_RPAREN_in_operation1232 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_operation1234 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_operation1238 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_EQ_in_operation1242 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_operation1248 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_parameter1286 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_parameter1290 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_parameter1294 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_attribute1330 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_attribute1334 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_attribute1338 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_EQ_in_attribute1342 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_attribute1348 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_calledRule_in_rule1387 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_matchedRule_in_rule1392 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_lazyMatchedRule_in_matchedRule1428 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_matchedRule_abstractContents_in_matchedRule1433 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_58_in_lazyMatchedRule1468 = new BitSet(new long[]{0x0800000000000000L});
-    public static final BitSet FOLLOW_59_in_lazyMatchedRule1480 = new BitSet(new long[]{0x00C0200000000000L});
-    public static final BitSet FOLLOW_54_in_lazyMatchedRule1484 = new BitSet(new long[]{0x0080200000000000L});
-    public static final BitSet FOLLOW_45_in_lazyMatchedRule1498 = new BitSet(new long[]{0x0080000000000000L});
-    public static final BitSet FOLLOW_55_in_lazyMatchedRule1510 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_lazyMatchedRule1514 = new BitSet(new long[]{0x0100000000004000L});
-    public static final BitSet FOLLOW_56_in_lazyMatchedRule1520 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_lazyMatchedRule1524 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_lazyMatchedRule1538 = new BitSet(new long[]{0x0000400000000000L});
-    public static final BitSet FOLLOW_inPattern_in_lazyMatchedRule1544 = new BitSet(new long[]{0x8200000000008000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_57_in_lazyMatchedRule1550 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_lazyMatchedRule1552 = new BitSet(new long[]{0x0000000000008010L});
-    public static final BitSet FOLLOW_ruleVariableDeclaration_in_lazyMatchedRule1560 = new BitSet(new long[]{0x0000000000008010L});
-    public static final BitSet FOLLOW_ruleVariableDeclaration_in_lazyMatchedRule1568 = new BitSet(new long[]{0x0000000000008010L});
-    public static final BitSet FOLLOW_RCURLY_in_lazyMatchedRule1580 = new BitSet(new long[]{0x8000000000008000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_outPattern_in_lazyMatchedRule1596 = new BitSet(new long[]{0x0000000000008000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_actionBlock_in_lazyMatchedRule1614 = new BitSet(new long[]{0x0000000000008000L});
-    public static final BitSet FOLLOW_RCURLY_in_lazyMatchedRule1630 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_ruleVariableDeclaration1664 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_ruleVariableDeclaration1668 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_ruleVariableDeclaration1672 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_EQ_in_ruleVariableDeclaration1676 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_ruleVariableDeclaration1680 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_SEMI_in_ruleVariableDeclaration1684 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_60_in_calledRule1718 = new BitSet(new long[]{0x2080000000000000L});
-    public static final BitSet FOLLOW_61_in_calledRule1732 = new BitSet(new long[]{0x0080000000000000L});
-    public static final BitSet FOLLOW_55_in_calledRule1744 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_calledRule1748 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_calledRule1752 = new BitSet(new long[]{0x0000000000002010L});
-    public static final BitSet FOLLOW_parameter_in_calledRule1758 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_COMA_in_calledRule1765 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_parameter_in_calledRule1770 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_RPAREN_in_calledRule1780 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_calledRule1782 = new BitSet(new long[]{0x8200000000008000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_57_in_calledRule1788 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_calledRule1790 = new BitSet(new long[]{0x0000000000008010L});
-    public static final BitSet FOLLOW_ruleVariableDeclaration_in_calledRule1798 = new BitSet(new long[]{0x0000000000008010L});
-    public static final BitSet FOLLOW_ruleVariableDeclaration_in_calledRule1806 = new BitSet(new long[]{0x0000000000008010L});
-    public static final BitSet FOLLOW_RCURLY_in_calledRule1818 = new BitSet(new long[]{0x8000000000008000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_outPattern_in_calledRule1834 = new BitSet(new long[]{0x0000000000008000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_actionBlock_in_calledRule1852 = new BitSet(new long[]{0x0000000000008000L});
-    public static final BitSet FOLLOW_RCURLY_in_calledRule1868 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_46_in_inPattern1900 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_inPatternElement_in_inPattern1908 = new BitSet(new long[]{0x0000000000001202L});
-    public static final BitSet FOLLOW_COMA_in_inPattern1915 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_inPatternElement_in_inPattern1920 = new BitSet(new long[]{0x0000000000001202L});
-    public static final BitSet FOLLOW_LPAREN_in_inPattern1931 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_inPattern1937 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_inPattern1943 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_simpleInPatternElement_in_inPatternElement1989 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_simpleInPatternElement2023 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_simpleInPatternElement2027 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_simpleInPatternElement2031 = new BitSet(new long[]{0x4000000000000002L});
-    public static final BitSet FOLLOW_62_in_simpleInPatternElement2037 = new BitSet(new long[]{0x0000000000000012L});
-    public static final BitSet FOLLOW_identifier_in_simpleInPatternElement2043 = new BitSet(new long[]{0x0000000000000202L});
-    public static final BitSet FOLLOW_COMA_in_simpleInPatternElement2050 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_simpleInPatternElement2055 = new BitSet(new long[]{0x0000000000000202L});
-    public static final BitSet FOLLOW_63_in_outPattern2105 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_outPatternElement_in_outPattern2113 = new BitSet(new long[]{0x0000000000000202L});
-    public static final BitSet FOLLOW_COMA_in_outPattern2120 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_outPatternElement_in_outPattern2125 = new BitSet(new long[]{0x0000000000000202L});
-    public static final BitSet FOLLOW_simpleOutPatternElement_in_outPatternElement2169 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_forEachOutPatternElement_in_outPatternElement2174 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_simpleOutPatternElement2209 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_simpleOutPatternElement2213 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_simpleOutPatternElement2217 = new BitSet(new long[]{0x4000000000011002L,0x0000000000000001L});
-    public static final BitSet FOLLOW_62_in_simpleOutPatternElement2223 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_simpleOutPatternElement2227 = new BitSet(new long[]{0x0000000000011002L,0x0000000000000001L});
-    public static final BitSet FOLLOW_64_in_simpleOutPatternElement2243 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_simpleOutPatternElement2247 = new BitSet(new long[]{0x0000000000011002L});
-    public static final BitSet FOLLOW_RARROW_in_simpleOutPatternElement2263 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_simpleOutPatternElement2265 = new BitSet(new long[]{0x0000000000A030F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_simpleOutPatternElement2271 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_COMA_in_simpleOutPatternElement2278 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_simpleOutPatternElement2283 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_RPAREN_in_simpleOutPatternElement2293 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_LPAREN_in_simpleOutPatternElement2307 = new BitSet(new long[]{0xFFFFF80000002010L,0x0000000FFFFFFFFFL});
-    public static final BitSet FOLLOW_binding_in_simpleOutPatternElement2315 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_COMA_in_simpleOutPatternElement2322 = new BitSet(new long[]{0xFFFFF80000000010L,0x0000000FFFFFFFFFL});
-    public static final BitSet FOLLOW_binding_in_simpleOutPatternElement2327 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_RPAREN_in_simpleOutPatternElement2339 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_forEachOutPatternElement2383 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_forEachOutPatternElement2387 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_65_in_forEachOutPatternElement2389 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_forEachOutPatternElement2393 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_66_in_forEachOutPatternElement2397 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_forEachOutPatternElement2399 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_iterator_in_forEachOutPatternElement2403 = new BitSet(new long[]{0x4000000000000000L});
-    public static final BitSet FOLLOW_62_in_forEachOutPatternElement2407 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_forEachOutPatternElement2411 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_forEachOutPatternElement2415 = new BitSet(new long[]{0x0000000000001002L,0x0000000000000001L});
-    public static final BitSet FOLLOW_64_in_forEachOutPatternElement2419 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_forEachOutPatternElement2423 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_LPAREN_in_forEachOutPatternElement2439 = new BitSet(new long[]{0xFFFFF80000002010L,0x0000000FFFFFFFFFL});
-    public static final BitSet FOLLOW_binding_in_forEachOutPatternElement2447 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_COMA_in_forEachOutPatternElement2454 = new BitSet(new long[]{0xFFFFF80000000010L,0x0000000FFFFFFFFFL});
-    public static final BitSet FOLLOW_binding_in_forEachOutPatternElement2459 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_RPAREN_in_forEachOutPatternElement2471 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifierOrKeyword_in_binding2515 = new BitSet(new long[]{0x0000000000060000L});
-    public static final BitSet FOLLOW_ASSIGNARROW_in_binding2521 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_LARROW_in_binding2528 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_binding2536 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_67_in_actionBlock2570 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_actionBlock2572 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_actionBlock2580 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_actionBlock2588 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_RCURLY_in_actionBlock2600 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ifStat_in_statement2635 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expressionStat_in_statement2640 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_bindingStat_in_statement2645 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_forStat_in_statement2650 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_oclExpression_in_bindingStat2685 = new BitSet(new long[]{0x0000000000060000L});
-    public static final BitSet FOLLOW_ASSIGNARROW_in_bindingStat2691 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_LARROW_in_bindingStat2698 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_bindingStat2706 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_SEMI_in_bindingStat2710 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_oclExpression_in_expressionStat2744 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_SEMI_in_expressionStat2748 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_68_in_ifStat2780 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_ifStat2782 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_ifStat2786 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_ifStat2790 = new BitSet(new long[]{0x0000000000A050F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_ifStat2798 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000020L});
-    public static final BitSet FOLLOW_LCURLY_in_ifStat2809 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_ifStat2817 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_ifStat2825 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_RCURLY_in_ifStat2837 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000020L});
-    public static final BitSet FOLLOW_69_in_ifStat2845 = new BitSet(new long[]{0x0000000000A050F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_ifStat2853 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LCURLY_in_ifStat2864 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_ifStat2872 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_ifStat2880 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_RCURLY_in_ifStat2892 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_70_in_forStat2938 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_forStat2940 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_iterator_in_forStat2944 = new BitSet(new long[]{0x4000000000000000L});
-    public static final BitSet FOLLOW_62_in_forStat2948 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_forStat2952 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_forStat2956 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_forStat2958 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_forStat2966 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_forStat2974 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_RCURLY_in_forStat2986 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_oclModel3020 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_oclModel3024 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_oclModel3028 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_oclModelElement3064 = new BitSet(new long[]{0x0000000000080000L});
-    public static final BitSet FOLLOW_EXCL_in_oclModelElement3068 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_oclModelElement3072 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_priority_5_in_oclExpression3108 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_letExp_in_oclExpression3113 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_iteratorExp3148 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_iteratorExp3152 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_iterator_in_iteratorExp3158 = new BitSet(new long[]{0x0000000000100200L});
-    public static final BitSet FOLLOW_COMA_in_iteratorExp3165 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_iterator_in_iteratorExp3170 = new BitSet(new long[]{0x0000000000100200L});
-    public static final BitSet FOLLOW_PIPE_in_iteratorExp3179 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_iteratorExp3185 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_iteratorExp3191 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_71_in_iterateExp3224 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_iterateExp3226 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_iterator_in_iterateExp3232 = new BitSet(new long[]{0x0000000000000300L});
-    public static final BitSet FOLLOW_COMA_in_iterateExp3239 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_iterator_in_iterateExp3244 = new BitSet(new long[]{0x0000000000000300L});
-    public static final BitSet FOLLOW_SEMI_in_iterateExp3253 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_variableDeclaration_in_iterateExp3257 = new BitSet(new long[]{0x0000000000100000L});
-    public static final BitSet FOLLOW_PIPE_in_iterateExp3261 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_iterateExp3267 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_iterateExp3273 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_collectionOperationCallExp3308 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_collectionOperationCallExp3312 = new BitSet(new long[]{0x0000000000A030F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_collectionOperationCallExp3318 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_COMA_in_collectionOperationCallExp3325 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_collectionOperationCallExp3330 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_RPAREN_in_collectionOperationCallExp3340 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifierOrKeyword_in_operationCallExp3375 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_operationCallExp3379 = new BitSet(new long[]{0x0000000000A030F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_operationCallExp3385 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_COMA_in_operationCallExp3392 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_operationCallExp3397 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_RPAREN_in_operationCallExp3407 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifierOrKeyword_in_navigationOrAttributeCallExp3442 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_iterator3507 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_72_in_oclUndefinedExp3541 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_numericExp_in_primitiveExp3576 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_booleanExp_in_primitiveExp3581 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_stringExp_in_primitiveExp3586 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_integerExp_in_numericExp3622 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_realExp_in_numericExp3627 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_73_in_booleanExp3662 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_74_in_booleanExp3669 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_integerSymbol_in_integerExp3707 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_floatSymbol_in_realExp3743 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_stringSymbol_in_stringExp3779 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_68_in_ifExp3813 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_ifExp3817 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_75_in_ifExp3821 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_ifExp3827 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000020L});
-    public static final BitSet FOLLOW_69_in_ifExp3833 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_ifExp3839 = new BitSet(new long[]{0x0000000000000000L,0x0000000000001000L});
-    public static final BitSet FOLLOW_76_in_ifExp3845 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_variableExp3879 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_77_in_superExp3913 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_78_in_letExp3945 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_variableDeclaration_in_letExp3949 = new BitSet(new long[]{0x4000000000000000L});
-    public static final BitSet FOLLOW_62_in_letExp3953 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_letExp3959 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_variableDeclaration3997 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_variableDeclaration4001 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_variableDeclaration4005 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_EQ_in_variableDeclaration4009 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_variableDeclaration4013 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SHARP_in_enumLiteralExp4047 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_enumLiteralExp4051 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_bagExp_in_collectionExp4088 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_setExp_in_collectionExp4093 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_orderedSetExp_in_collectionExp4098 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_sequenceExp_in_collectionExp4103 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_79_in_bagExp4136 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_bagExp4138 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_bagExp4144 = new BitSet(new long[]{0x0000000000008200L});
-    public static final BitSet FOLLOW_COMA_in_bagExp4151 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_bagExp4156 = new BitSet(new long[]{0x0000000000008200L});
-    public static final BitSet FOLLOW_RCURLY_in_bagExp4166 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_80_in_setExp4198 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_setExp4200 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_setExp4206 = new BitSet(new long[]{0x0000000000008200L});
-    public static final BitSet FOLLOW_COMA_in_setExp4213 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_setExp4218 = new BitSet(new long[]{0x0000000000008200L});
-    public static final BitSet FOLLOW_RCURLY_in_setExp4228 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_81_in_orderedSetExp4260 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_orderedSetExp4262 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_orderedSetExp4268 = new BitSet(new long[]{0x0000000000008200L});
-    public static final BitSet FOLLOW_COMA_in_orderedSetExp4275 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_orderedSetExp4280 = new BitSet(new long[]{0x0000000000008200L});
-    public static final BitSet FOLLOW_RCURLY_in_orderedSetExp4290 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_82_in_sequenceExp4322 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_sequenceExp4324 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_sequenceExp4330 = new BitSet(new long[]{0x0000000000008200L});
-    public static final BitSet FOLLOW_COMA_in_sequenceExp4337 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_sequenceExp4342 = new BitSet(new long[]{0x0000000000008200L});
-    public static final BitSet FOLLOW_RCURLY_in_sequenceExp4352 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_83_in_mapExp4384 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_mapExp4386 = new BitSet(new long[]{0x0000000000009000L});
-    public static final BitSet FOLLOW_mapElement_in_mapExp4392 = new BitSet(new long[]{0x0000000000008200L});
-    public static final BitSet FOLLOW_COMA_in_mapExp4399 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_mapElement_in_mapExp4404 = new BitSet(new long[]{0x0000000000008200L});
-    public static final BitSet FOLLOW_RCURLY_in_mapExp4414 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_mapElement4446 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_mapElement4450 = new BitSet(new long[]{0x0000000000000200L});
-    public static final BitSet FOLLOW_COMA_in_mapElement4454 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_mapElement4458 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_mapElement4462 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_84_in_tupleExp4494 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_tupleExp4496 = new BitSet(new long[]{0xFFFFF80000008010L,0x0000000FFFFFFFFFL});
-    public static final BitSet FOLLOW_tuplePart_in_tupleExp4502 = new BitSet(new long[]{0x0000000000008200L});
-    public static final BitSet FOLLOW_COMA_in_tupleExp4509 = new BitSet(new long[]{0xFFFFF80000000010L,0x0000000FFFFFFFFFL});
-    public static final BitSet FOLLOW_tuplePart_in_tupleExp4514 = new BitSet(new long[]{0x0000000000008200L});
-    public static final BitSet FOLLOW_RCURLY_in_tupleExp4524 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifierOrKeyword_in_tuplePart4558 = new BitSet(new long[]{0x0000000000000C00L});
-    public static final BitSet FOLLOW_COLON_in_tuplePart4564 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_tuplePart4568 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_EQ_in_tuplePart4582 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_tuplePart4586 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_oclModelElement_in_oclType4623 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_oclAnyType_in_oclType4628 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_tupleType_in_oclType4633 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_mapType_in_oclType4638 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primitive_in_oclType4643 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_collectionType_in_oclType4648 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_oclType_abstractContents_in_oclType4653 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_86_in_oclAnyType4686 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_87_in_tupleType4718 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_tupleType4720 = new BitSet(new long[]{0x0000000000002010L});
-    public static final BitSet FOLLOW_tupleTypeAttribute_in_tupleType4726 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_COMA_in_tupleType4733 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_tupleTypeAttribute_in_tupleType4738 = new BitSet(new long[]{0x0000000000002200L});
-    public static final BitSet FOLLOW_RPAREN_in_tupleType4748 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifier_in_tupleTypeAttribute4782 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_tupleTypeAttribute4786 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_tupleTypeAttribute4790 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_83_in_mapType4824 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_mapType4826 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_mapType4830 = new BitSet(new long[]{0x0000000000000200L});
-    public static final BitSet FOLLOW_COMA_in_mapType4834 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_mapType4838 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_mapType4842 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_numericType_in_primitive4877 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_booleanType_in_primitive4882 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_stringType_in_primitive4887 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_integerType_in_numericType4923 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_realType_in_numericType4928 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_88_in_integerType4961 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_89_in_realType4993 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_90_in_booleanType5025 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_91_in_stringType5057 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_bagType_in_collectionType5092 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_setType_in_collectionType5097 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_orderedSetType_in_collectionType5102 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_sequenceType_in_collectionType5107 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_collectionType_abstractContents_in_collectionType5112 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_79_in_bagType5145 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_bagType5147 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_bagType5151 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_bagType5155 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_80_in_setType5187 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_setType5189 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_setType5193 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_setType5197 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_81_in_orderedSetType5229 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_orderedSetType5231 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_orderedSetType5235 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_orderedSetType5239 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_82_in_sequenceType5271 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_sequenceType5273 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_sequenceType5277 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_sequenceType5281 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primary_oclExpression_in_priority_05315 = new BitSet(new long[]{0x0000000000410002L});
-    public static final BitSet FOLLOW_POINT_in_priority_05320 = new BitSet(new long[]{0xFFFFF80000000010L,0x0000000FFFFFFFFFL});
-    public static final BitSet FOLLOW_operationCallExp_in_priority_05327 = new BitSet(new long[]{0x0000000000410002L});
-    public static final BitSet FOLLOW_navigationOrAttributeCallExp_in_priority_05334 = new BitSet(new long[]{0x0000000000410002L});
-    public static final BitSet FOLLOW_RARROW_in_priority_05342 = new BitSet(new long[]{0x0000000000000010L,0x0000000000000080L});
-    public static final BitSet FOLLOW_iteratorExp_in_priority_05349 = new BitSet(new long[]{0x0000000000410002L});
-    public static final BitSet FOLLOW_iterateExp_in_priority_05356 = new BitSet(new long[]{0x0000000000410002L});
-    public static final BitSet FOLLOW_collectionOperationCallExp_in_priority_05363 = new BitSet(new long[]{0x0000000000410002L});
-    public static final BitSet FOLLOW_93_in_priority_15403 = new BitSet(new long[]{0x00000000002010F0L,0x000000001FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_15410 = new BitSet(new long[]{0x00000000002010F0L,0x000000001FFFA710L});
-    public static final BitSet FOLLOW_priority_0_in_priority_15415 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MINUS_in_priority_15423 = new BitSet(new long[]{0x00000000002010F0L,0x000000001FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_15430 = new BitSet(new long[]{0x00000000002010F0L,0x000000001FFFA710L});
-    public static final BitSet FOLLOW_priority_0_in_priority_15435 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_priority_0_in_priority_15445 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_priority_1_in_priority_25480 = new BitSet(new long[]{0x0000000003000002L,0x00000000C0000000L});
-    public static final BitSet FOLLOW_STAR_in_priority_25485 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_25492 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_1_in_priority_25497 = new BitSet(new long[]{0x0000000003000002L,0x00000000C0000000L});
-    public static final BitSet FOLLOW_SLASH_in_priority_25505 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_25512 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_1_in_priority_25517 = new BitSet(new long[]{0x0000000003000002L,0x00000000C0000000L});
-    public static final BitSet FOLLOW_94_in_priority_25525 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_25532 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_1_in_priority_25537 = new BitSet(new long[]{0x0000000003000002L,0x00000000C0000000L});
-    public static final BitSet FOLLOW_95_in_priority_25545 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_25552 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_1_in_priority_25557 = new BitSet(new long[]{0x0000000003000002L,0x00000000C0000000L});
-    public static final BitSet FOLLOW_priority_2_in_priority_35598 = new BitSet(new long[]{0x0000000004800002L});
-    public static final BitSet FOLLOW_PLUS_in_priority_35603 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_35610 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_2_in_priority_35615 = new BitSet(new long[]{0x0000000004800002L});
-    public static final BitSet FOLLOW_MINUS_in_priority_35623 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_35630 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_2_in_priority_35635 = new BitSet(new long[]{0x0000000004800002L});
-    public static final BitSet FOLLOW_priority_3_in_priority_45676 = new BitSet(new long[]{0x00000000F8000402L});
-    public static final BitSet FOLLOW_EQ_in_priority_45681 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_45688 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_3_in_priority_45693 = new BitSet(new long[]{0x00000000F8000402L});
-    public static final BitSet FOLLOW_GT_in_priority_45701 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_45708 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_3_in_priority_45713 = new BitSet(new long[]{0x00000000F8000402L});
-    public static final BitSet FOLLOW_LT_in_priority_45721 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_45728 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_3_in_priority_45733 = new BitSet(new long[]{0x00000000F8000402L});
-    public static final BitSet FOLLOW_GE_in_priority_45741 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_45748 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_3_in_priority_45753 = new BitSet(new long[]{0x00000000F8000402L});
-    public static final BitSet FOLLOW_LE_in_priority_45761 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_45768 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_3_in_priority_45773 = new BitSet(new long[]{0x00000000F8000402L});
-    public static final BitSet FOLLOW_NE_in_priority_45781 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_45788 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_3_in_priority_45793 = new BitSet(new long[]{0x00000000F8000402L});
-    public static final BitSet FOLLOW_priority_4_in_priority_55834 = new BitSet(new long[]{0x0000000000000002L,0x0000000F00000000L});
-    public static final BitSet FOLLOW_96_in_priority_55839 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_55846 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_4_in_priority_55851 = new BitSet(new long[]{0x0000000000000002L,0x0000000F00000000L});
-    public static final BitSet FOLLOW_97_in_priority_55859 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_55866 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_4_in_priority_55871 = new BitSet(new long[]{0x0000000000000002L,0x0000000F00000000L});
-    public static final BitSet FOLLOW_98_in_priority_55879 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_55886 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_4_in_priority_55891 = new BitSet(new long[]{0x0000000000000002L,0x0000000F00000000L});
-    public static final BitSet FOLLOW_99_in_priority_55899 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_operatorCallExp_in_priority_55906 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFA710L});
-    public static final BitSet FOLLOW_priority_4_in_priority_55911 = new BitSet(new long[]{0x0000000000000002L,0x0000000F00000000L});
-    public static final BitSet FOLLOW_53_in_matchedRule_abstractContents5952 = new BitSet(new long[]{0x00C0200000000000L});
-    public static final BitSet FOLLOW_54_in_matchedRule_abstractContents5966 = new BitSet(new long[]{0x0080200000000000L});
-    public static final BitSet FOLLOW_45_in_matchedRule_abstractContents5980 = new BitSet(new long[]{0x0080000000000000L});
-    public static final BitSet FOLLOW_55_in_matchedRule_abstractContents5992 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_matchedRule_abstractContents5996 = new BitSet(new long[]{0x0100000000004000L});
-    public static final BitSet FOLLOW_56_in_matchedRule_abstractContents6002 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_identifier_in_matchedRule_abstractContents6006 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_matchedRule_abstractContents6020 = new BitSet(new long[]{0x0000400000000000L});
-    public static final BitSet FOLLOW_inPattern_in_matchedRule_abstractContents6026 = new BitSet(new long[]{0x8200000000008000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_57_in_matchedRule_abstractContents6032 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_LCURLY_in_matchedRule_abstractContents6034 = new BitSet(new long[]{0x0000000000008010L});
-    public static final BitSet FOLLOW_ruleVariableDeclaration_in_matchedRule_abstractContents6042 = new BitSet(new long[]{0x0000000000008010L});
-    public static final BitSet FOLLOW_ruleVariableDeclaration_in_matchedRule_abstractContents6050 = new BitSet(new long[]{0x0000000000008010L});
-    public static final BitSet FOLLOW_RCURLY_in_matchedRule_abstractContents6062 = new BitSet(new long[]{0x8000000000008000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_outPattern_in_matchedRule_abstractContents6078 = new BitSet(new long[]{0x0000000000008000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_actionBlock_in_matchedRule_abstractContents6096 = new BitSet(new long[]{0x0000000000008000L});
-    public static final BitSet FOLLOW_RCURLY_in_matchedRule_abstractContents6112 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_85_in_oclType_abstractContents6144 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_92_in_collectionType_abstractContents6176 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_LPAREN_in_collectionType_abstractContents6178 = new BitSet(new long[]{0x0000000000000010L,0x000000001FEF8000L});
-    public static final BitSet FOLLOW_oclType_in_collectionType_abstractContents6182 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_collectionType_abstractContents6186 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_primary_oclExpression6219 = new BitSet(new long[]{0x0000000000A010F0L,0x000000003FFFE710L});
-    public static final BitSet FOLLOW_oclExpression_in_primary_oclExpression6223 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_RPAREN_in_primary_oclExpression6225 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableExp_in_primary_oclExpression6231 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_oclUndefinedExp_in_primary_oclExpression6236 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primitiveExp_in_primary_oclExpression6241 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ifExp_in_primary_oclExpression6246 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_superExp_in_primary_oclExpression6251 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enumLiteralExp_in_primary_oclExpression6256 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_collectionExp_in_primary_oclExpression6261 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_mapExp_in_primary_oclExpression6266 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_tupleExp_in_primary_oclExpression6271 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_oclType_in_primary_oclExpression6276 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ifStat_in_synpred1222635 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expressionStat_in_synpred1232640 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_bindingStat_in_synpred1242645 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_69_in_synpred1322845 = new BitSet(new long[]{0x0000000000A050F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_synpred1322853 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LCURLY_in_synpred1322864 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_synpred1322872 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_statement_in_synpred1322880 = new BitSet(new long[]{0x0000000000A090F0L,0x000000003FFFE750L});
-    public static final BitSet FOLLOW_RCURLY_in_synpred1322892 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_100_in_identifierOrKeyword422 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_STRING_in_stringSymbol457 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_INT_in_integerSymbol491 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FLOAT_in_floatSymbol525 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_module_in_unit561 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_library_in_unit566 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_query_in_unit571 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_43_in_module604 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_module608 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_SEMI_in_module612 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_44_in_module614 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_oclModel_in_module620 = new BitSet(new long[]{0x0000600000000200L});
+    public static final BitSet FOLLOW_COMA_in_module627 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_oclModel_in_module632 = new BitSet(new long[]{0x0000600000000200L});
+    public static final BitSet FOLLOW_45_in_module643 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_46_in_module650 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_oclModel_in_module660 = new BitSet(new long[]{0x0000000000000300L});
+    public static final BitSet FOLLOW_COMA_in_module667 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_oclModel_in_module672 = new BitSet(new long[]{0x0000000000000300L});
+    public static final BitSet FOLLOW_SEMI_in_module681 = new BitSet(new long[]{0x3CE6200000000002L});
+    public static final BitSet FOLLOW_libraryRef_in_module689 = new BitSet(new long[]{0x3CE6200000000002L});
+    public static final BitSet FOLLOW_libraryRef_in_module697 = new BitSet(new long[]{0x3CE6200000000002L});
+    public static final BitSet FOLLOW_moduleElement_in_module711 = new BitSet(new long[]{0x3CE4200000000002L});
+    public static final BitSet FOLLOW_moduleElement_in_module719 = new BitSet(new long[]{0x3CE4200000000002L});
+    public static final BitSet FOLLOW_47_in_library761 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_library765 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_SEMI_in_library769 = new BitSet(new long[]{0x0006000000000002L});
+    public static final BitSet FOLLOW_libraryRef_in_library777 = new BitSet(new long[]{0x0006000000000002L});
+    public static final BitSet FOLLOW_libraryRef_in_library785 = new BitSet(new long[]{0x0006000000000002L});
+    public static final BitSet FOLLOW_helper_in_library799 = new BitSet(new long[]{0x0004000000000002L});
+    public static final BitSet FOLLOW_helper_in_library807 = new BitSet(new long[]{0x0004000000000002L});
+    public static final BitSet FOLLOW_48_in_query849 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_query853 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_EQ_in_query857 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_query861 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_SEMI_in_query865 = new BitSet(new long[]{0x0006000000000002L});
+    public static final BitSet FOLLOW_libraryRef_in_query873 = new BitSet(new long[]{0x0006000000000002L});
+    public static final BitSet FOLLOW_libraryRef_in_query881 = new BitSet(new long[]{0x0006000000000002L});
+    public static final BitSet FOLLOW_helper_in_query895 = new BitSet(new long[]{0x0004000000000002L});
+    public static final BitSet FOLLOW_helper_in_query903 = new BitSet(new long[]{0x0004000000000002L});
+    public static final BitSet FOLLOW_49_in_libraryRef945 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_libraryRef949 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_SEMI_in_libraryRef953 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_helper_in_moduleElement988 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule_in_moduleElement993 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_50_in_helper1026 = new BitSet(new long[]{0x0018000000000000L});
+    public static final BitSet FOLLOW_oclFeatureDefinition_in_helper1030 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_SEMI_in_helper1034 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_oclContextDefinition_in_oclFeatureDefinition1070 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_51_in_oclFeatureDefinition1084 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_oclFeatureDefinition1086 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_oclFeature_in_oclFeatureDefinition1090 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_52_in_oclContextDefinition1124 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_oclContextDefinition1128 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_operation_in_oclFeature1165 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_attribute_in_oclFeature1170 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_operation1205 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_operation1209 = new BitSet(new long[]{0x0000000000002010L});
+    public static final BitSet FOLLOW_parameter_in_operation1215 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_COMA_in_operation1222 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_parameter_in_operation1227 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_RPAREN_in_operation1237 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_operation1239 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_operation1243 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_EQ_in_operation1247 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_operation1253 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_parameter1291 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_parameter1295 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_parameter1299 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_attribute1335 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_attribute1339 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_attribute1343 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_EQ_in_attribute1347 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_attribute1353 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_calledRule_in_rule1392 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_matchedRule_in_rule1397 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_lazyMatchedRule_in_matchedRule1433 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_matchedRule_abstractContents_in_matchedRule1438 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_58_in_lazyMatchedRule1473 = new BitSet(new long[]{0x0800000000000000L});
+    public static final BitSet FOLLOW_59_in_lazyMatchedRule1485 = new BitSet(new long[]{0x00C0200000000000L});
+    public static final BitSet FOLLOW_54_in_lazyMatchedRule1489 = new BitSet(new long[]{0x0080200000000000L});
+    public static final BitSet FOLLOW_45_in_lazyMatchedRule1503 = new BitSet(new long[]{0x0080000000000000L});
+    public static final BitSet FOLLOW_55_in_lazyMatchedRule1515 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_lazyMatchedRule1519 = new BitSet(new long[]{0x0100000000004000L});
+    public static final BitSet FOLLOW_56_in_lazyMatchedRule1525 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_lazyMatchedRule1529 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_lazyMatchedRule1543 = new BitSet(new long[]{0x0000400000000000L});
+    public static final BitSet FOLLOW_inPattern_in_lazyMatchedRule1549 = new BitSet(new long[]{0x8200000000008000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_57_in_lazyMatchedRule1555 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_lazyMatchedRule1557 = new BitSet(new long[]{0x0000000000008010L});
+    public static final BitSet FOLLOW_ruleVariableDeclaration_in_lazyMatchedRule1565 = new BitSet(new long[]{0x0000000000008010L});
+    public static final BitSet FOLLOW_ruleVariableDeclaration_in_lazyMatchedRule1573 = new BitSet(new long[]{0x0000000000008010L});
+    public static final BitSet FOLLOW_RCURLY_in_lazyMatchedRule1585 = new BitSet(new long[]{0x8000000000008000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_outPattern_in_lazyMatchedRule1601 = new BitSet(new long[]{0x0000000000008000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_actionBlock_in_lazyMatchedRule1619 = new BitSet(new long[]{0x0000000000008000L});
+    public static final BitSet FOLLOW_RCURLY_in_lazyMatchedRule1635 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_ruleVariableDeclaration1669 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_ruleVariableDeclaration1673 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_ruleVariableDeclaration1677 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_EQ_in_ruleVariableDeclaration1681 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_ruleVariableDeclaration1685 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_SEMI_in_ruleVariableDeclaration1689 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_60_in_calledRule1723 = new BitSet(new long[]{0x2080000000000000L});
+    public static final BitSet FOLLOW_61_in_calledRule1737 = new BitSet(new long[]{0x0080000000000000L});
+    public static final BitSet FOLLOW_55_in_calledRule1749 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_calledRule1753 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_calledRule1757 = new BitSet(new long[]{0x0000000000002010L});
+    public static final BitSet FOLLOW_parameter_in_calledRule1763 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_COMA_in_calledRule1770 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_parameter_in_calledRule1775 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_RPAREN_in_calledRule1785 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_calledRule1787 = new BitSet(new long[]{0x8200000000008000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_57_in_calledRule1793 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_calledRule1795 = new BitSet(new long[]{0x0000000000008010L});
+    public static final BitSet FOLLOW_ruleVariableDeclaration_in_calledRule1803 = new BitSet(new long[]{0x0000000000008010L});
+    public static final BitSet FOLLOW_ruleVariableDeclaration_in_calledRule1811 = new BitSet(new long[]{0x0000000000008010L});
+    public static final BitSet FOLLOW_RCURLY_in_calledRule1823 = new BitSet(new long[]{0x8000000000008000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_outPattern_in_calledRule1839 = new BitSet(new long[]{0x0000000000008000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_actionBlock_in_calledRule1857 = new BitSet(new long[]{0x0000000000008000L});
+    public static final BitSet FOLLOW_RCURLY_in_calledRule1873 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_46_in_inPattern1905 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_inPatternElement_in_inPattern1913 = new BitSet(new long[]{0x0000000000001202L});
+    public static final BitSet FOLLOW_COMA_in_inPattern1920 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_inPatternElement_in_inPattern1925 = new BitSet(new long[]{0x0000000000001202L});
+    public static final BitSet FOLLOW_LPAREN_in_inPattern1936 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_inPattern1942 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_inPattern1948 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_simpleInPatternElement_in_inPatternElement1994 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_simpleInPatternElement2028 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_simpleInPatternElement2032 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_simpleInPatternElement2036 = new BitSet(new long[]{0x4000000000000002L});
+    public static final BitSet FOLLOW_62_in_simpleInPatternElement2042 = new BitSet(new long[]{0x0000000000000012L});
+    public static final BitSet FOLLOW_identifier_in_simpleInPatternElement2048 = new BitSet(new long[]{0x0000000000000202L});
+    public static final BitSet FOLLOW_COMA_in_simpleInPatternElement2055 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_simpleInPatternElement2060 = new BitSet(new long[]{0x0000000000000202L});
+    public static final BitSet FOLLOW_63_in_outPattern2110 = new BitSet(new long[]{0x0000000000000012L,0x0000000000000008L});
+    public static final BitSet FOLLOW_dropPattern_in_outPattern2116 = new BitSet(new long[]{0x0000000000000012L});
+    public static final BitSet FOLLOW_outPatternElement_in_outPattern2138 = new BitSet(new long[]{0x0000000000000202L});
+    public static final BitSet FOLLOW_COMA_in_outPattern2145 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_outPatternElement_in_outPattern2150 = new BitSet(new long[]{0x0000000000000202L});
+    public static final BitSet FOLLOW_simpleOutPatternElement_in_outPatternElement2204 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_forEachOutPatternElement_in_outPatternElement2209 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_simpleOutPatternElement2244 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_simpleOutPatternElement2248 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_simpleOutPatternElement2252 = new BitSet(new long[]{0x4000000000011002L,0x0000000000000001L});
+    public static final BitSet FOLLOW_62_in_simpleOutPatternElement2258 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_simpleOutPatternElement2262 = new BitSet(new long[]{0x0000000000011002L,0x0000000000000001L});
+    public static final BitSet FOLLOW_64_in_simpleOutPatternElement2278 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_simpleOutPatternElement2282 = new BitSet(new long[]{0x0000000000011002L});
+    public static final BitSet FOLLOW_RARROW_in_simpleOutPatternElement2298 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_simpleOutPatternElement2300 = new BitSet(new long[]{0x0000000000A030F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_simpleOutPatternElement2306 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_COMA_in_simpleOutPatternElement2313 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_simpleOutPatternElement2318 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_RPAREN_in_simpleOutPatternElement2328 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_LPAREN_in_simpleOutPatternElement2342 = new BitSet(new long[]{0xFFFFF80000002010L,0x0000001FFFFFFFFFL});
+    public static final BitSet FOLLOW_binding_in_simpleOutPatternElement2350 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_COMA_in_simpleOutPatternElement2357 = new BitSet(new long[]{0xFFFFF80000000010L,0x0000001FFFFFFFFFL});
+    public static final BitSet FOLLOW_binding_in_simpleOutPatternElement2362 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_RPAREN_in_simpleOutPatternElement2374 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_forEachOutPatternElement2418 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_forEachOutPatternElement2422 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_65_in_forEachOutPatternElement2424 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_forEachOutPatternElement2428 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_66_in_forEachOutPatternElement2432 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_forEachOutPatternElement2434 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_iterator_in_forEachOutPatternElement2438 = new BitSet(new long[]{0x4000000000000000L});
+    public static final BitSet FOLLOW_62_in_forEachOutPatternElement2442 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_forEachOutPatternElement2446 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_forEachOutPatternElement2450 = new BitSet(new long[]{0x0000000000001002L,0x0000000000000001L});
+    public static final BitSet FOLLOW_64_in_forEachOutPatternElement2454 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_forEachOutPatternElement2458 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_LPAREN_in_forEachOutPatternElement2474 = new BitSet(new long[]{0xFFFFF80000002010L,0x0000001FFFFFFFFFL});
+    public static final BitSet FOLLOW_binding_in_forEachOutPatternElement2482 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_COMA_in_forEachOutPatternElement2489 = new BitSet(new long[]{0xFFFFF80000000010L,0x0000001FFFFFFFFFL});
+    public static final BitSet FOLLOW_binding_in_forEachOutPatternElement2494 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_RPAREN_in_forEachOutPatternElement2506 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifierOrKeyword_in_binding2550 = new BitSet(new long[]{0x0000000000060000L});
+    public static final BitSet FOLLOW_ASSIGNARROW_in_binding2556 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_LARROW_in_binding2563 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_binding2571 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_67_in_dropPattern2605 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_68_in_actionBlock2637 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_actionBlock2639 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_actionBlock2647 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_actionBlock2655 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_RCURLY_in_actionBlock2667 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ifStat_in_statement2702 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expressionStat_in_statement2707 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_bindingStat_in_statement2712 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_forStat_in_statement2717 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_oclExpression_in_bindingStat2752 = new BitSet(new long[]{0x0000000000060000L});
+    public static final BitSet FOLLOW_ASSIGNARROW_in_bindingStat2758 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_LARROW_in_bindingStat2765 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_bindingStat2773 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_SEMI_in_bindingStat2777 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_oclExpression_in_expressionStat2811 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_SEMI_in_expressionStat2815 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_69_in_ifStat2847 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_ifStat2849 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_ifStat2853 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_ifStat2857 = new BitSet(new long[]{0x0000000000A050F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_ifStat2865 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LCURLY_in_ifStat2876 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_ifStat2884 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_ifStat2892 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_RCURLY_in_ifStat2904 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_70_in_ifStat2912 = new BitSet(new long[]{0x0000000000A050F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_ifStat2920 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LCURLY_in_ifStat2931 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_ifStat2939 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_ifStat2947 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_RCURLY_in_ifStat2959 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_71_in_forStat3005 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_forStat3007 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_iterator_in_forStat3011 = new BitSet(new long[]{0x4000000000000000L});
+    public static final BitSet FOLLOW_62_in_forStat3015 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_forStat3019 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_forStat3023 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_forStat3025 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_forStat3033 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_forStat3041 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_RCURLY_in_forStat3053 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_oclModel3087 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_oclModel3091 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_oclModel3095 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_oclModelElement3131 = new BitSet(new long[]{0x0000000000080000L});
+    public static final BitSet FOLLOW_EXCL_in_oclModelElement3135 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_oclModelElement3139 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_priority_5_in_oclExpression3175 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_letExp_in_oclExpression3180 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_iteratorExp3215 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_iteratorExp3219 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_iterator_in_iteratorExp3225 = new BitSet(new long[]{0x0000000000100200L});
+    public static final BitSet FOLLOW_COMA_in_iteratorExp3232 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_iterator_in_iteratorExp3237 = new BitSet(new long[]{0x0000000000100200L});
+    public static final BitSet FOLLOW_PIPE_in_iteratorExp3246 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_iteratorExp3252 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_iteratorExp3258 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_72_in_iterateExp3291 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_iterateExp3293 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_iterator_in_iterateExp3299 = new BitSet(new long[]{0x0000000000000300L});
+    public static final BitSet FOLLOW_COMA_in_iterateExp3306 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_iterator_in_iterateExp3311 = new BitSet(new long[]{0x0000000000000300L});
+    public static final BitSet FOLLOW_SEMI_in_iterateExp3320 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_variableDeclaration_in_iterateExp3324 = new BitSet(new long[]{0x0000000000100000L});
+    public static final BitSet FOLLOW_PIPE_in_iterateExp3328 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_iterateExp3334 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_iterateExp3340 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_collectionOperationCallExp3375 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_collectionOperationCallExp3379 = new BitSet(new long[]{0x0000000000A030F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_collectionOperationCallExp3385 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_COMA_in_collectionOperationCallExp3392 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_collectionOperationCallExp3397 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_RPAREN_in_collectionOperationCallExp3407 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifierOrKeyword_in_operationCallExp3442 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_operationCallExp3446 = new BitSet(new long[]{0x0000000000A030F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_operationCallExp3452 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_COMA_in_operationCallExp3459 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_operationCallExp3464 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_RPAREN_in_operationCallExp3474 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifierOrKeyword_in_navigationOrAttributeCallExp3509 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_iterator3574 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_73_in_oclUndefinedExp3608 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_numericExp_in_primitiveExp3643 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_booleanExp_in_primitiveExp3648 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_stringExp_in_primitiveExp3653 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_integerExp_in_numericExp3689 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_realExp_in_numericExp3694 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_74_in_booleanExp3729 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_75_in_booleanExp3736 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_integerSymbol_in_integerExp3774 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_floatSymbol_in_realExp3810 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_stringSymbol_in_stringExp3846 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_69_in_ifExp3880 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_ifExp3884 = new BitSet(new long[]{0x0000000000000000L,0x0000000000001000L});
+    public static final BitSet FOLLOW_76_in_ifExp3888 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_ifExp3894 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_70_in_ifExp3900 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_ifExp3906 = new BitSet(new long[]{0x0000000000000000L,0x0000000000002000L});
+    public static final BitSet FOLLOW_77_in_ifExp3912 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_variableExp3946 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_78_in_superExp3980 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_79_in_letExp4012 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_variableDeclaration_in_letExp4016 = new BitSet(new long[]{0x4000000000000000L});
+    public static final BitSet FOLLOW_62_in_letExp4020 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_letExp4026 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_variableDeclaration4064 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_variableDeclaration4068 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_variableDeclaration4072 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_EQ_in_variableDeclaration4076 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_variableDeclaration4080 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SHARP_in_enumLiteralExp4114 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_enumLiteralExp4118 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_bagExp_in_collectionExp4155 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_setExp_in_collectionExp4160 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_orderedSetExp_in_collectionExp4165 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_sequenceExp_in_collectionExp4170 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_80_in_bagExp4203 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_bagExp4205 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_bagExp4211 = new BitSet(new long[]{0x0000000000008200L});
+    public static final BitSet FOLLOW_COMA_in_bagExp4218 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_bagExp4223 = new BitSet(new long[]{0x0000000000008200L});
+    public static final BitSet FOLLOW_RCURLY_in_bagExp4233 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_81_in_setExp4265 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_setExp4267 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_setExp4273 = new BitSet(new long[]{0x0000000000008200L});
+    public static final BitSet FOLLOW_COMA_in_setExp4280 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_setExp4285 = new BitSet(new long[]{0x0000000000008200L});
+    public static final BitSet FOLLOW_RCURLY_in_setExp4295 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_82_in_orderedSetExp4327 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_orderedSetExp4329 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_orderedSetExp4335 = new BitSet(new long[]{0x0000000000008200L});
+    public static final BitSet FOLLOW_COMA_in_orderedSetExp4342 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_orderedSetExp4347 = new BitSet(new long[]{0x0000000000008200L});
+    public static final BitSet FOLLOW_RCURLY_in_orderedSetExp4357 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_83_in_sequenceExp4389 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_sequenceExp4391 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_sequenceExp4397 = new BitSet(new long[]{0x0000000000008200L});
+    public static final BitSet FOLLOW_COMA_in_sequenceExp4404 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_sequenceExp4409 = new BitSet(new long[]{0x0000000000008200L});
+    public static final BitSet FOLLOW_RCURLY_in_sequenceExp4419 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_84_in_mapExp4451 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_mapExp4453 = new BitSet(new long[]{0x0000000000009000L});
+    public static final BitSet FOLLOW_mapElement_in_mapExp4459 = new BitSet(new long[]{0x0000000000008200L});
+    public static final BitSet FOLLOW_COMA_in_mapExp4466 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_mapElement_in_mapExp4471 = new BitSet(new long[]{0x0000000000008200L});
+    public static final BitSet FOLLOW_RCURLY_in_mapExp4481 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_mapElement4513 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_mapElement4517 = new BitSet(new long[]{0x0000000000000200L});
+    public static final BitSet FOLLOW_COMA_in_mapElement4521 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_mapElement4525 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_mapElement4529 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_85_in_tupleExp4561 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_tupleExp4563 = new BitSet(new long[]{0xFFFFF80000008010L,0x0000001FFFFFFFFFL});
+    public static final BitSet FOLLOW_tuplePart_in_tupleExp4569 = new BitSet(new long[]{0x0000000000008200L});
+    public static final BitSet FOLLOW_COMA_in_tupleExp4576 = new BitSet(new long[]{0xFFFFF80000000010L,0x0000001FFFFFFFFFL});
+    public static final BitSet FOLLOW_tuplePart_in_tupleExp4581 = new BitSet(new long[]{0x0000000000008200L});
+    public static final BitSet FOLLOW_RCURLY_in_tupleExp4591 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifierOrKeyword_in_tuplePart4625 = new BitSet(new long[]{0x0000000000000C00L});
+    public static final BitSet FOLLOW_COLON_in_tuplePart4631 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_tuplePart4635 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_EQ_in_tuplePart4649 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_tuplePart4653 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_oclModelElement_in_oclType4690 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_oclAnyType_in_oclType4695 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_tupleType_in_oclType4700 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_mapType_in_oclType4705 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primitive_in_oclType4710 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_collectionType_in_oclType4715 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_oclType_abstractContents_in_oclType4720 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_87_in_oclAnyType4753 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_88_in_tupleType4785 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_tupleType4787 = new BitSet(new long[]{0x0000000000002010L});
+    public static final BitSet FOLLOW_tupleTypeAttribute_in_tupleType4793 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_COMA_in_tupleType4800 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_tupleTypeAttribute_in_tupleType4805 = new BitSet(new long[]{0x0000000000002200L});
+    public static final BitSet FOLLOW_RPAREN_in_tupleType4815 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifier_in_tupleTypeAttribute4849 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_tupleTypeAttribute4853 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_tupleTypeAttribute4857 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_84_in_mapType4891 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_mapType4893 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_mapType4897 = new BitSet(new long[]{0x0000000000000200L});
+    public static final BitSet FOLLOW_COMA_in_mapType4901 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_mapType4905 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_mapType4909 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_numericType_in_primitive4944 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_booleanType_in_primitive4949 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_stringType_in_primitive4954 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_integerType_in_numericType4990 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_realType_in_numericType4995 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_89_in_integerType5028 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_90_in_realType5060 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_91_in_booleanType5092 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_92_in_stringType5124 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_bagType_in_collectionType5159 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_setType_in_collectionType5164 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_orderedSetType_in_collectionType5169 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_sequenceType_in_collectionType5174 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_collectionType_abstractContents_in_collectionType5179 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_80_in_bagType5212 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_bagType5214 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_bagType5218 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_bagType5222 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_81_in_setType5254 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_setType5256 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_setType5260 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_setType5264 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_82_in_orderedSetType5296 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_orderedSetType5298 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_orderedSetType5302 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_orderedSetType5306 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_83_in_sequenceType5338 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_sequenceType5340 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_sequenceType5344 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_sequenceType5348 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primary_oclExpression_in_priority_05382 = new BitSet(new long[]{0x0000000000410002L});
+    public static final BitSet FOLLOW_POINT_in_priority_05387 = new BitSet(new long[]{0xFFFFF80000000010L,0x0000001FFFFFFFFFL});
+    public static final BitSet FOLLOW_operationCallExp_in_priority_05394 = new BitSet(new long[]{0x0000000000410002L});
+    public static final BitSet FOLLOW_navigationOrAttributeCallExp_in_priority_05401 = new BitSet(new long[]{0x0000000000410002L});
+    public static final BitSet FOLLOW_RARROW_in_priority_05409 = new BitSet(new long[]{0x0000000000000010L,0x0000000000000100L});
+    public static final BitSet FOLLOW_iteratorExp_in_priority_05416 = new BitSet(new long[]{0x0000000000410002L});
+    public static final BitSet FOLLOW_iterateExp_in_priority_05423 = new BitSet(new long[]{0x0000000000410002L});
+    public static final BitSet FOLLOW_collectionOperationCallExp_in_priority_05430 = new BitSet(new long[]{0x0000000000410002L});
+    public static final BitSet FOLLOW_94_in_priority_15470 = new BitSet(new long[]{0x00000000002010F0L,0x000000003FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_15477 = new BitSet(new long[]{0x00000000002010F0L,0x000000003FFF4E20L});
+    public static final BitSet FOLLOW_priority_0_in_priority_15482 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MINUS_in_priority_15490 = new BitSet(new long[]{0x00000000002010F0L,0x000000003FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_15497 = new BitSet(new long[]{0x00000000002010F0L,0x000000003FFF4E20L});
+    public static final BitSet FOLLOW_priority_0_in_priority_15502 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_priority_0_in_priority_15512 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_priority_1_in_priority_25547 = new BitSet(new long[]{0x0000000003000002L,0x0000000180000000L});
+    public static final BitSet FOLLOW_STAR_in_priority_25552 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_25559 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_1_in_priority_25564 = new BitSet(new long[]{0x0000000003000002L,0x0000000180000000L});
+    public static final BitSet FOLLOW_SLASH_in_priority_25572 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_25579 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_1_in_priority_25584 = new BitSet(new long[]{0x0000000003000002L,0x0000000180000000L});
+    public static final BitSet FOLLOW_95_in_priority_25592 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_25599 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_1_in_priority_25604 = new BitSet(new long[]{0x0000000003000002L,0x0000000180000000L});
+    public static final BitSet FOLLOW_96_in_priority_25612 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_25619 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_1_in_priority_25624 = new BitSet(new long[]{0x0000000003000002L,0x0000000180000000L});
+    public static final BitSet FOLLOW_priority_2_in_priority_35665 = new BitSet(new long[]{0x0000000004800002L});
+    public static final BitSet FOLLOW_PLUS_in_priority_35670 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_35677 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_2_in_priority_35682 = new BitSet(new long[]{0x0000000004800002L});
+    public static final BitSet FOLLOW_MINUS_in_priority_35690 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_35697 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_2_in_priority_35702 = new BitSet(new long[]{0x0000000004800002L});
+    public static final BitSet FOLLOW_priority_3_in_priority_45743 = new BitSet(new long[]{0x00000000F8000402L});
+    public static final BitSet FOLLOW_EQ_in_priority_45748 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_45755 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_3_in_priority_45760 = new BitSet(new long[]{0x00000000F8000402L});
+    public static final BitSet FOLLOW_GT_in_priority_45768 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_45775 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_3_in_priority_45780 = new BitSet(new long[]{0x00000000F8000402L});
+    public static final BitSet FOLLOW_LT_in_priority_45788 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_45795 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_3_in_priority_45800 = new BitSet(new long[]{0x00000000F8000402L});
+    public static final BitSet FOLLOW_GE_in_priority_45808 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_45815 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_3_in_priority_45820 = new BitSet(new long[]{0x00000000F8000402L});
+    public static final BitSet FOLLOW_LE_in_priority_45828 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_45835 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_3_in_priority_45840 = new BitSet(new long[]{0x00000000F8000402L});
+    public static final BitSet FOLLOW_NE_in_priority_45848 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_45855 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_3_in_priority_45860 = new BitSet(new long[]{0x00000000F8000402L});
+    public static final BitSet FOLLOW_priority_4_in_priority_55901 = new BitSet(new long[]{0x0000000000000002L,0x0000001E00000000L});
+    public static final BitSet FOLLOW_97_in_priority_55906 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_55913 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_4_in_priority_55918 = new BitSet(new long[]{0x0000000000000002L,0x0000001E00000000L});
+    public static final BitSet FOLLOW_98_in_priority_55926 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_55933 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_4_in_priority_55938 = new BitSet(new long[]{0x0000000000000002L,0x0000001E00000000L});
+    public static final BitSet FOLLOW_99_in_priority_55946 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_55953 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_4_in_priority_55958 = new BitSet(new long[]{0x0000000000000002L,0x0000001E00000000L});
+    public static final BitSet FOLLOW_100_in_priority_55966 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_operatorCallExp_in_priority_55973 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFF4E20L});
+    public static final BitSet FOLLOW_priority_4_in_priority_55978 = new BitSet(new long[]{0x0000000000000002L,0x0000001E00000000L});
+    public static final BitSet FOLLOW_53_in_matchedRule_abstractContents6019 = new BitSet(new long[]{0x00C0200000000000L});
+    public static final BitSet FOLLOW_54_in_matchedRule_abstractContents6033 = new BitSet(new long[]{0x0080200000000000L});
+    public static final BitSet FOLLOW_45_in_matchedRule_abstractContents6047 = new BitSet(new long[]{0x0080000000000000L});
+    public static final BitSet FOLLOW_55_in_matchedRule_abstractContents6059 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_matchedRule_abstractContents6063 = new BitSet(new long[]{0x0100000000004000L});
+    public static final BitSet FOLLOW_56_in_matchedRule_abstractContents6069 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_identifier_in_matchedRule_abstractContents6073 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_matchedRule_abstractContents6087 = new BitSet(new long[]{0x0000400000000000L});
+    public static final BitSet FOLLOW_inPattern_in_matchedRule_abstractContents6093 = new BitSet(new long[]{0x8200000000008000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_57_in_matchedRule_abstractContents6099 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_LCURLY_in_matchedRule_abstractContents6101 = new BitSet(new long[]{0x0000000000008010L});
+    public static final BitSet FOLLOW_ruleVariableDeclaration_in_matchedRule_abstractContents6109 = new BitSet(new long[]{0x0000000000008010L});
+    public static final BitSet FOLLOW_ruleVariableDeclaration_in_matchedRule_abstractContents6117 = new BitSet(new long[]{0x0000000000008010L});
+    public static final BitSet FOLLOW_RCURLY_in_matchedRule_abstractContents6129 = new BitSet(new long[]{0x8000000000008000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_outPattern_in_matchedRule_abstractContents6145 = new BitSet(new long[]{0x0000000000008000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_actionBlock_in_matchedRule_abstractContents6163 = new BitSet(new long[]{0x0000000000008000L});
+    public static final BitSet FOLLOW_RCURLY_in_matchedRule_abstractContents6179 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_86_in_oclType_abstractContents6211 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_93_in_collectionType_abstractContents6243 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_LPAREN_in_collectionType_abstractContents6245 = new BitSet(new long[]{0x0000000000000010L,0x000000003FDF0000L});
+    public static final BitSet FOLLOW_oclType_in_collectionType_abstractContents6249 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_collectionType_abstractContents6253 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_primary_oclExpression6286 = new BitSet(new long[]{0x0000000000A010F0L,0x000000007FFFCE20L});
+    public static final BitSet FOLLOW_oclExpression_in_primary_oclExpression6290 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_RPAREN_in_primary_oclExpression6292 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableExp_in_primary_oclExpression6298 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_oclUndefinedExp_in_primary_oclExpression6303 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primitiveExp_in_primary_oclExpression6308 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ifExp_in_primary_oclExpression6313 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_superExp_in_primary_oclExpression6318 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_enumLiteralExp_in_primary_oclExpression6323 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_collectionExp_in_primary_oclExpression6328 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_mapExp_in_primary_oclExpression6333 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_tupleExp_in_primary_oclExpression6338 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_oclType_in_primary_oclExpression6343 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ifStat_in_synpred1252702 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expressionStat_in_synpred1262707 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_bindingStat_in_synpred1272712 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_70_in_synpred1352912 = new BitSet(new long[]{0x0000000000A050F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_synpred1352920 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LCURLY_in_synpred1352931 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_synpred1352939 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_statement_in_synpred1352947 = new BitSet(new long[]{0x0000000000A090F0L,0x000000007FFFCEA0L});
+    public static final BitSet FOLLOW_RCURLY_in_synpred1352959 = new BitSet(new long[]{0x0000000000000002L});
 
 }

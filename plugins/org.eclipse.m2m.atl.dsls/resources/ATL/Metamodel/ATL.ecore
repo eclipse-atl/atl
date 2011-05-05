@@ -60,7 +60,11 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="OutPattern" eSuperTypes="/0/LocatedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="rule" ordered="false" lowerBound="1" eType="/0/Rule" eOpposite="/0/Rule/outPattern"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dropPattern" ordered="false" eType="/0/DropPattern" containment="true" eOpposite="/0/DropPattern/outPattern"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="elements" lowerBound="1" upperBound="-1" eType="/0/OutPatternElement" containment="true" eOpposite="/0/OutPatternElement/outPattern"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DropPattern" eSuperTypes="/0/LocatedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="outPattern" ordered="false" lowerBound="1" eType="/0/OutPattern" eOpposite="/0/OutPattern/dropPattern"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="PatternElement" abstract="true" eSuperTypes="/1/VariableDeclaration"/>
     <eClassifiers xsi:type="ecore:EClass" name="InPatternElement" abstract="true" eSuperTypes="/0/PatternElement">
