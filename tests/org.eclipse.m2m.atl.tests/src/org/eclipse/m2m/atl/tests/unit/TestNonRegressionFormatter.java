@@ -47,6 +47,8 @@ public class TestNonRegressionFormatter extends TestNonRegression {
 			result = new AtlCodeFormatter().format(new FileInputStream(input));
 			if (expected.exists()) {
 				String expectedResult = FileUtils.readFileAsString(expected);
+				expectedResult = expectedResult.replaceAll("\r\n","\n");
+				result = result.replaceAll("\r\n","\n");
 				assertEquals(input.getName(), expectedResult, result);
 			} else {
 				FileWriter fw = new FileWriter(expected);
