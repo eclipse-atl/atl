@@ -24,7 +24,7 @@
         </module>
         <module name="JavadocType">
             <property name="severity" value="error"/>
-            <property name="authorFormat" value="&lt;a\shref=\&quot;mailto:[a-z.-]+@[a-z.-]+\.[a-z]{2,4}\&quot;&gt;[A-Z][a-z]+(\s[A-Z][a-z]+)*&lt;/a&gt;"/>
+            <property name="authorFormat" value="&lt;a\shref=\&quot;mailto:[_aA-zZ.-]+@[a-z.-]+\.[a-z]{2,4}\&quot;&gt;[A-Z][a-z]+(\s[A-Z][a-z]+)*&lt;/a&gt;"/>
         </module>
         <module name="JavadocVariable">
             <property name="severity" value="error"/>
