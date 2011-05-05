@@ -12,10 +12,9 @@ package org.eclipse.m2m.atl.tests.unit;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.FileWriter;
 import java.util.Properties;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
@@ -56,13 +55,15 @@ public class TestNonRegressionParser extends TestNonRegression {
 			info("ATL file " + transfoPath + " does not exist. Skipped"); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
-		if (!new File(expectedPath).exists()) {
-			info("ATL Model file " + expectedPath + " does not exist. Skipped"); //$NON-NLS-1$ //$NON-NLS-2$
-			return;
-		}
 		try {
 			EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));
-			assertEquals(FileUtils.readFileAsString(new File(expectedPath)), ModelUtils.serialize(result));
+			if (new File(expectedPath).exists()) {
+				assertEquals(FileUtils.readFileAsString(new File(expectedPath)), ModelUtils.serialize(result));
+			} else {
+				FileWriter fw = new FileWriter(expectedPath);
+				fw.write(ModelUtils.serialize(result));
+				fw.close();
+			}
 		} catch (Exception e) {
 			fail("Failed to parse " + transfoPath + ": " + e); //$NON-NLS-1$
 		}

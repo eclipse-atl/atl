@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SampleUml:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SampleUml="http://SampleUml" xmi:id="_cb5ZULmVEd--9rhQq18ntA" name="Root">
+  <ownedElements xsi:type="SampleUml:Class" xmi:id="_ehB50LmVEd--9rhQq18ntA" name="C1">
+    <attributes xmi:id="_9b1lILmVEd--9rhQq18ntA" name="name" multivalued="true" owner="_ehB50LmVEd--9rhQq18ntA"/>
+    <operations xmi:id="_--89sLmVEd--9rhQq18ntA" name="getName"/>
+    <relations xmi:id="_gQ1_sLmXEd--9rhQq18ntA" name="c2s" owner="_gs3fQLmVEd--9rhQq18ntA" target="_gs3fQLmVEd--9rhQq18ntA"/>
+  </ownedElements>
+  <ownedElements xsi:type="SampleUml:DataType" xmi:id="_feIbQLmVEd--9rhQq18ntA" name="DT1"/>
+  <ownedElements xsi:type="SampleUml:Class" xmi:id="_gs3fQLmVEd--9rhQq18ntA" name="C2">
+    <attributes xmi:id="_CALTALmWEd--9rhQq18ntA" name="id" owner="_gs3fQLmVEd--9rhQq18ntA"/>
+    <operations xmi:id="_EAWbALmWEd--9rhQq18ntA" name="getId"/>
+  </ownedElements>
+</SampleUml:Package>

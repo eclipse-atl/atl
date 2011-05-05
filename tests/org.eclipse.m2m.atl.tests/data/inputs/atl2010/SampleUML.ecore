@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore">
+  <ecore:EPackage name="SampleUml" nsURI="http://SampleUml" nsPrefix="SampleUml">
+    <eClassifiers xsi:type="ecore:EClass" name="IdentifiedElement" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+          unique="false" lowerBound="1" eType="#/1/String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Package" eSuperTypes="#/0/IdentifiedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedElements" ordered="false"
+          upperBound="-1" eType="#/0/Classifier" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Classifier" abstract="true" eSuperTypes="#/0/IdentifiedElement"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Class" eSuperTypes="#/0/Classifier">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
+          eType="#/0/Property" containment="true" eOpposite="#/0/Property/owner"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
+          eType="#/0/Operation" containment="true" eOpposite="#/0/Operation/owner"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
+          eType="#/0/Relation" containment="true" eOpposite="#/0/Relation/owner"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="StructuralFeature" abstract="true"
+        eSuperTypes="#/0/IdentifiedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#/0/Classifier"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="multivalued" ordered="false"
+          unique="false" lowerBound="1" eType="#/1/Boolean"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Relation" eSuperTypes="#/0/StructuralFeature">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="owner" ordered="false"
+          lowerBound="1" eType="#/0/Class" eOpposite="#/0/Class/relations"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="target" ordered="false"
+          lowerBound="1" eType="#/0/Class"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Property" eSuperTypes="#/0/StructuralFeature">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="owner" ordered="false"
+          lowerBound="1" eType="#/0/Class" eOpposite="#/0/Class/attributes"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Operation" eSuperTypes="#/0/IdentifiedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="owner" ordered="false"
+          lowerBound="1" eType="#/0/Class" eOpposite="#/0/Class/operations"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DataType" eSuperTypes="#/0/Classifier"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="PrimitiveTypes" nsURI="http://PrimitiveTypes" nsPrefix="PrimitiveTypes">
+    <eClassifiers xsi:type="ecore:EDataType" name="Boolean"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="Integer"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="String"/>
+  </ecore:EPackage>
+</xmi:XMI>

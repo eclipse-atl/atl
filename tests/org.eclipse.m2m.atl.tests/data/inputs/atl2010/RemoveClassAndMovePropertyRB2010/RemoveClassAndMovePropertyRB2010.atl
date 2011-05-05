@@ -1,0 +1,28 @@
+-- @atlcompiler atl2010
+
+module RemoveClassAndMovePropertyRB2010;
+create OUT : SampleUML refining IN : SampleUML;
+
+rule RemoveClass {
+	from
+		s: SampleUML!Class (s.name = 'C1')
+	to
+		drop
+}
+
+--rule MoveProperty {
+--	from 
+--		s: SampleUML!Property (s.refImmediateComposite().name = 'C1')
+--	to
+--		t1: SampleUML!Property,
+--		t2: SampleUML!Property -> (SampleUML!Class.allInstances()->select(e | e.name = 'C2')->first().attributes)(
+--			name <- 'newProperty'		
+--		)
+--}
+
+rule MoveProperty {
+	from 
+		s: SampleUML!Property (s.refImmediateComposite().name = 'C1')
+	to
+		t1: SampleUML!Property -> (SampleUML!Class.allInstances()->select(e | e.name = 'C2')->first().attributes)
+}

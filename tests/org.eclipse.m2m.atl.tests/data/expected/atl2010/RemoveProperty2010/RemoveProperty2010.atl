@@ -1,0 +1,12 @@
+-- @atlcompiler atl2010
+
+
+module RemoveProperty2010;
+create OUT: SampleUML refining IN: SampleUML;
+
+rule RemoveProperty {
+	from
+		s: SampleUML!Property
+	to
+		
+}

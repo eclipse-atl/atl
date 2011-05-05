@@ -1,0 +1,11 @@
+-- @atlcompiler atl2010
+
+module RemoveClass2010;
+create OUT : SampleUML refining IN : SampleUML;
+
+rule RemoveClass {
+	from
+		s: SampleUML!Class
+	to
+		drop
+}

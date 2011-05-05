@@ -1,0 +1,14 @@
+-- @atlcompiler atl2010
+
+
+module RemoveClassAndCreate2010;
+create OUT: SampleUML refining IN: SampleUML;
+
+rule RemoveClassAndCreate {
+	from
+		s: SampleUML!Class
+	to
+		t: SampleUML!Class (
+			name <- s.name + 'c3'
+		)
+}

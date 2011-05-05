@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SampleUml="http://SampleUml">
+  <SampleUml:Package xmi:id="_cb5ZULmVEd--9rhQq18ntA" name="Root">
+    <ownedElements xsi:type="SampleUml:DataType" xmi:id="_feIbQLmVEd--9rhQq18ntA" name="DT1"/>
+  </SampleUml:Package>
+  <SampleUml:Class xmi:id="_e1HeAQLUEeC6SospJOQGMA" name="C1c3"/>
+  <SampleUml:Class xmi:id="_e1NkoALUEeC6SospJOQGMA" name="C2c3"/>
+</xmi:XMI>
