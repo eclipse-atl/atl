@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Cp1252"?>
+<?xml version="1.0" encoding="ASCII"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="6:1-437:2" name="Maven2XML">
   <commentsBefore>-- @path XMLMaven=/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XMLMaven.ecore</commentsBefore>
   <commentsBefore>-- @path XMLProject=/org.eclipse.m2m.atl.tests/data/inputs/Ant2Maven/XMLProject.ecore</commentsBefore>
@@ -33,7 +33,7 @@
             <source xsi:type="ocl:IteratorExp" location="16:2-17:25" name="select">
               <source xsi:type="ocl:OperationCallExp" location="16:2-16:33" operationName="allInstances">
                 <source xsi:type="ocl:OclModelElement" location="16:2-16:18" name="Xmlns">
-                  <model href="new-model#/4"/>
+                  <model href="new-model#/2"/>
                 </source>
               </source>
               <body xsi:type="ocl:OperatorCallExp" location="17:12-17:24" operationName="=">
@@ -64,7 +64,7 @@
             <type xsi:type="ocl:StringType" location="21:21-21:27"/>
             <initExpression xsi:type="ocl:OperationCallExp" location="21:30-21:58" operationName="getXmlnsAux">
               <source xsi:type="ocl:VariableExp" location="21:30-21:40">
-                <referredVariable href="new-model#/5"/>
+                <referredVariable href="new-model#/4"/>
               </source>
               <arguments xsi:type="ocl:VariableExp" location="21:53-21:57" referredVariable="//@elements.1/@definition/@feature/@parameters.0"/>
             </initExpression>
@@ -92,7 +92,7 @@
     <outPattern location="32:2-41:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="32:5-37:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="32:9-32:22" name="Root">
-          <model href="new-model#/7"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="33:3-33:20" propertyName="name">
           <value xsi:type="ocl:StringExp" location="33:11-33:20" stringSymbol="project"/>
@@ -123,7 +123,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="38:2-41:3" varName="goalDefault" variableExp="//@elements.2/@outPattern/@elements.0/@bindings.1/@value/@elements.1">
         <type xsi:type="ocl:OclModelElement" location="38:16-38:34" name="Attribute">
-          <model href="new-model#/8"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="39:3-39:20" propertyName="name">
           <value xsi:type="ocl:StringExp" location="39:11-39:20" stringSymbol="default"/>
@@ -140,7 +140,7 @@
     <inPattern location="31:2-31:29">
       <elements xsi:type="atl:SimpleInPatternElement" location="31:7-31:29" varName="i" variableExp="//@elements.2/@outPattern/@elements.0/@bindings.1/@value/@elements.0/@source //@elements.2/@outPattern/@elements.0/@bindings.1/@value/@elements.2/@source //@elements.2/@outPattern/@elements.0/@bindings.1/@value/@elements.3/@source //@elements.2/@outPattern/@elements.0/@bindings.1/@value/@elements.4/@source //@elements.2/@outPattern/@elements.0/@bindings.1/@value/@elements.5/@source //@elements.2/@outPattern/@elements.0/@bindings.1/@value/@elements.6/@source //@elements.2/@outPattern/@elements.1/@bindings.1/@value/@source/@source">
         <type xsi:type="ocl:OclModelElement" location="31:11-31:29" name="Project">
-          <model href="new-model#/6"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -151,7 +151,7 @@
     <outPattern location="48:2-51:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="48:5-51:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="48:7-48:25" name="Attribute">
-          <model href="new-model#/10"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="49:3-49:26" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="49:11-49:26" operationName="+">
@@ -171,7 +171,7 @@
     <inPattern location="47:2-47:27">
       <elements xsi:type="atl:SimpleInPatternElement" location="47:7-47:27" varName="i" variableExp="//@elements.3/@outPattern/@elements.0/@bindings.0/@value/@arguments.0/@source //@elements.3/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="47:11-47:27" name="Xmlns">
-          <model href="new-model#/9"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -182,13 +182,13 @@
     <outPattern location="58:2-69:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="58:5-61:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="58:9-58:25" name="Element">
-          <model href="new-model#/12"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="59:3-59:54" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="59:11-59:54" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="59:11-59:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="59:11-59:21">
-                <referredVariable href="new-model#/13"/>
+                <referredVariable href="new-model#/5"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="59:31-59:42" stringSymbol="jelly:ant"/>
             </source>
@@ -204,7 +204,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="62:2-65:3" varName="propertyName2" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="62:18-62:36" name="Attribute">
-          <model href="new-model#/14"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="63:3-63:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="63:11-63:17" stringSymbol="name"/>
@@ -217,7 +217,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="66:2-69:3" varName="propertyValue" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.1">
         <type xsi:type="ocl:OclModelElement" location="66:18-66:36" name="Attribute">
-          <model href="new-model#/15"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="67:3-67:18" propertyName="name">
           <value xsi:type="ocl:StringExp" location="67:11-67:18" stringSymbol="value"/>
@@ -232,7 +232,7 @@
     <inPattern location="57:2-57:38">
       <elements xsi:type="atl:SimpleInPatternElement" location="57:7-57:38" varName="i" variableExp="//@elements.4/@outPattern/@elements.1/@bindings.1/@value/@source //@elements.4/@outPattern/@elements.2/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="57:11-57:38" name="AntPropertyValue">
-          <model href="new-model#/11"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -241,13 +241,13 @@
     <outPattern location="73:2-84:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="73:5-76:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="73:9-73:25" name="Element">
-          <model href="new-model#/17"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="74:3-74:54" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="74:11-74:54" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="74:11-74:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="74:11-74:21">
-                <referredVariable href="new-model#/18"/>
+                <referredVariable href="new-model#/6"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="74:31-74:42" stringSymbol="jelly:ant"/>
             </source>
@@ -263,7 +263,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="77:2-80:3" varName="propertyName2" variableExp="//@elements.5/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="77:18-77:36" name="Attribute">
-          <model href="new-model#/19"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="78:3-78:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="78:11-78:17" stringSymbol="name"/>
@@ -276,7 +276,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="81:2-84:3" varName="propertyLocation" variableExp="//@elements.5/@outPattern/@elements.0/@bindings.1/@value/@elements.1">
         <type xsi:type="ocl:OclModelElement" location="81:21-81:39" name="Attribute">
-          <model href="new-model#/20"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="82:3-82:21" propertyName="name">
           <value xsi:type="ocl:StringExp" location="82:11-82:21" stringSymbol="location"/>
@@ -291,7 +291,7 @@
     <inPattern location="72:2-72:41">
       <elements xsi:type="atl:SimpleInPatternElement" location="72:7-72:41" varName="i" variableExp="//@elements.5/@outPattern/@elements.1/@bindings.1/@value/@source //@elements.5/@outPattern/@elements.2/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="72:11-72:41" name="AntPropertyLocation">
-          <model href="new-model#/16"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -300,13 +300,13 @@
     <outPattern location="89:2-96:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="89:5-92:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="89:9-89:25" name="Element">
-          <model href="new-model#/22"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="90:3-90:54" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="90:11-90:54" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="90:11-90:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="90:11-90:21">
-                <referredVariable href="new-model#/23"/>
+                <referredVariable href="new-model#/7"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="90:31-90:42" stringSymbol="jelly:ant"/>
             </source>
@@ -319,7 +319,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="93:2-96:3" varName="nameFile" variableExp="//@elements.6/@outPattern/@elements.0/@bindings.1/@value">
         <type xsi:type="ocl:OclModelElement" location="93:13-93:31" name="Attribute">
-          <model href="new-model#/24"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="94:3-94:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="94:11-94:17" stringSymbol="file"/>
@@ -334,7 +334,7 @@
     <inPattern location="88:2-88:37">
       <elements xsi:type="atl:SimpleInPatternElement" location="88:7-88:37" varName="i" variableExp="//@elements.6/@outPattern/@elements.1/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="88:11-88:37" name="AntPropertyFile">
-          <model href="new-model#/21"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -345,13 +345,13 @@
     <outPattern location="101:2-108:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="101:5-104:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="101:9-101:25" name="Element">
-          <model href="new-model#/26"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="102:3-102:54" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="102:11-102:54" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="102:11-102:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="102:11-102:21">
-                <referredVariable href="new-model#/27"/>
+                <referredVariable href="new-model#/8"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="102:31-102:42" stringSymbol="jelly:ant"/>
             </source>
@@ -364,7 +364,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="105:2-108:3" varName="environmentName" variableExp="//@elements.7/@outPattern/@elements.0/@bindings.1/@value">
         <type xsi:type="ocl:OclModelElement" location="105:20-105:38" name="Attribute">
-          <model href="new-model#/28"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="106:3-106:24" propertyName="name">
           <value xsi:type="ocl:StringExp" location="106:11-106:24" stringSymbol="environment"/>
@@ -379,7 +379,7 @@
     <inPattern location="100:2-100:36">
       <elements xsi:type="atl:SimpleInPatternElement" location="100:7-100:36" varName="i" variableExp="//@elements.7/@outPattern/@elements.1/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="100:11-100:36" name="AntPropertyEnv">
-          <model href="new-model#/25"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -390,7 +390,7 @@
     <outPattern location="115:2-122:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="115:5-118:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="115:9-115:25" name="Element">
-          <model href="new-model#/30"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="116:3-116:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="116:11-116:17" stringSymbol="goal"/>
@@ -406,7 +406,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="119:2-122:3" varName="nameAttribute" variableExp="//@elements.8/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="119:18-119:36" name="Attribute">
-          <model href="new-model#/31"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="120:3-120:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="120:11-120:17" stringSymbol="name"/>
@@ -421,7 +421,7 @@
     <inPattern location="114:2-114:26">
       <elements xsi:type="atl:SimpleInPatternElement" location="114:7-114:26" varName="i" variableExp="//@elements.8/@outPattern/@elements.0/@bindings.1/@value/@elements.1/@source //@elements.8/@outPattern/@elements.1/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="114:11-114:26" name="Goal">
-          <model href="new-model#/29"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -430,7 +430,7 @@
     <outPattern location="127:2-134:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="127:5-130:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="127:9-127:25" name="Element">
-          <model href="new-model#/33"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="128:3-128:23" propertyName="name">
           <value xsi:type="ocl:StringExp" location="128:11-128:23" stringSymbol="attainGoal"/>
@@ -441,7 +441,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="131:2-134:3" varName="attainGoalAttribute" variableExp="//@elements.9/@outPattern/@elements.0/@bindings.1/@value">
         <type xsi:type="ocl:OclModelElement" location="131:24-131:42" name="Attribute">
-          <model href="new-model#/34"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="132:3-132:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="132:11-132:17" stringSymbol="name"/>
@@ -458,7 +458,7 @@
     <inPattern location="126:2-126:32">
       <elements xsi:type="atl:SimpleInPatternElement" location="126:7-126:32" varName="i" variableExp="//@elements.9/@outPattern/@elements.1/@bindings.1/@value/@source/@source">
         <type xsi:type="ocl:OclModelElement" location="126:11-126:32" name="AttainGoal">
-          <model href="new-model#/32"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -467,7 +467,7 @@
     <outPattern location="140:2-147:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="140:5-143:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="140:9-140:25" name="Element">
-          <model href="new-model#/36"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="141:3-141:20" propertyName="name">
           <value xsi:type="ocl:StringExp" location="141:11-141:20" stringSymbol="preGoal"/>
@@ -483,7 +483,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="144:2-147:3" varName="nameAttribute" variableExp="//@elements.10/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="144:18-144:36" name="Attribute">
-          <model href="new-model#/37"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="145:3-145:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="145:11-145:17" stringSymbol="name"/>
@@ -500,7 +500,7 @@
     <inPattern location="139:2-139:29">
       <elements xsi:type="atl:SimpleInPatternElement" location="139:7-139:29" varName="i" variableExp="//@elements.10/@outPattern/@elements.0/@bindings.1/@value/@elements.1/@source //@elements.10/@outPattern/@elements.1/@bindings.1/@value/@source/@source">
         <type xsi:type="ocl:OclModelElement" location="139:11-139:29" name="PreGoal">
-          <model href="new-model#/35"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -511,7 +511,7 @@
     <outPattern location="153:2-160:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="153:5-156:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="153:9-153:25" name="Element">
-          <model href="new-model#/39"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="154:3-154:21" propertyName="name">
           <value xsi:type="ocl:StringExp" location="154:11-154:21" stringSymbol="postGoal"/>
@@ -527,7 +527,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="157:2-160:3" varName="nameAttribute" variableExp="//@elements.11/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="157:18-157:36" name="Attribute">
-          <model href="new-model#/40"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="158:3-158:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="158:11-158:17" stringSymbol="name"/>
@@ -544,7 +544,7 @@
     <inPattern location="152:2-152:30">
       <elements xsi:type="atl:SimpleInPatternElement" location="152:7-152:30" varName="i" variableExp="//@elements.11/@outPattern/@elements.0/@bindings.1/@value/@elements.1/@source //@elements.11/@outPattern/@elements.1/@bindings.1/@value/@source/@source">
         <type xsi:type="ocl:OclModelElement" location="152:11-152:30" name="PostGoal">
-          <model href="new-model#/38"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -559,13 +559,13 @@
     <outPattern location="167:2-178:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="167:5-170:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="167:9-167:25" name="Element">
-          <model href="new-model#/42"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="168:3-168:50" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="168:11-168:50" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="168:11-168:44" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="168:11-168:21">
-                <referredVariable href="new-model#/43"/>
+                <referredVariable href="new-model#/9"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="168:31-168:43" stringSymbol="jelly:core"/>
             </source>
@@ -581,7 +581,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="171:2-174:3" varName="varAttribute" variableExp="//@elements.12/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="171:17-171:35" name="Attribute">
-          <model href="new-model#/44"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="172:3-172:16" propertyName="name">
           <value xsi:type="ocl:StringExp" location="172:11-172:16" stringSymbol="var"/>
@@ -594,7 +594,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="175:2-178:3" varName="valueAttribute" variableExp="//@elements.12/@outPattern/@elements.0/@bindings.1/@value/@elements.1">
         <type xsi:type="ocl:OclModelElement" location="175:19-175:37" name="Attribute">
-          <model href="new-model#/45"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="176:3-176:18" propertyName="name">
           <value xsi:type="ocl:StringExp" location="176:11-176:18" stringSymbol="value"/>
@@ -609,7 +609,7 @@
     <inPattern location="166:2-166:28">
       <elements xsi:type="atl:SimpleInPatternElement" location="166:7-166:28" varName="i" variableExp="//@elements.12/@outPattern/@elements.1/@bindings.1/@value/@source //@elements.12/@outPattern/@elements.2/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="166:9-166:28" name="JellySet">
-          <model href="new-model#/41"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -622,13 +622,13 @@
     <outPattern location="189:2-200:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="189:5-192:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="189:9-189:25" name="Element">
-          <model href="new-model#/47"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="190:3-190:53" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="190:11-190:53" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="190:11-190:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="190:11-190:21">
-                <referredVariable href="new-model#/48"/>
+                <referredVariable href="new-model#/10"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="190:31-190:42" stringSymbol="jelly:ant"/>
             </source>
@@ -644,7 +644,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="193:2-196:3" varName="nameName" variableExp="//@elements.13/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="193:13-193:31" name="Attribute">
-          <model href="new-model#/49"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="194:3-194:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="194:11-194:17" stringSymbol="name"/>
@@ -657,7 +657,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="197:2-200:3" varName="nameClassName" variableExp="//@elements.13/@outPattern/@elements.0/@bindings.1/@value/@elements.1">
         <type xsi:type="ocl:OclModelElement" location="197:18-197:36" name="Attribute">
-          <model href="new-model#/50"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="198:3-198:22" propertyName="name">
           <value xsi:type="ocl:StringExp" location="198:11-198:22" stringSymbol="classname"/>
@@ -672,7 +672,7 @@
     <inPattern location="188:2-188:32">
       <elements xsi:type="atl:SimpleInPatternElement" location="188:7-188:32" varName="i" variableExp="//@elements.13/@outPattern/@elements.1/@bindings.1/@value/@source //@elements.13/@outPattern/@elements.2/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="188:11-188:32" name="AntTaskDef">
-          <model href="new-model#/46"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -681,7 +681,7 @@
     <outPattern location="205:2-208:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="205:5-208:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="205:9-205:25" name="Element">
-          <model href="new-model#/52"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="206:3-206:26" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="206:11-206:26" name="name">
@@ -700,7 +700,7 @@
     <inPattern location="204:2-204:29">
       <elements xsi:type="atl:SimpleInPatternElement" location="204:7-204:29" varName="i" variableExp="//@elements.14/@outPattern/@elements.0/@bindings.0/@value/@source/@source //@elements.14/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="204:11-204:29" name="NewTask">
-          <model href="new-model#/51"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -711,7 +711,7 @@
     <outPattern location="213:2-216:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="213:5-216:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="213:9-213:27" name="Attribute">
-          <model href="new-model#/54"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="214:3-214:17" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="214:11-214:17" name="name">
@@ -728,7 +728,7 @@
     <inPattern location="212:2-212:30">
       <elements xsi:type="atl:SimpleInPatternElement" location="212:7-212:30" varName="i" variableExp="//@elements.15/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.15/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="212:11-212:30" name="Attribut">
-          <model href="new-model#/53"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -739,13 +739,13 @@
     <outPattern location="224:2-226:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="224:5-226:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="224:9-224:25" name="Element">
-          <model href="new-model#/56"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="225:3-225:52" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="225:11-225:52" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="225:11-225:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="225:11-225:21">
-                <referredVariable href="new-model#/57"/>
+                <referredVariable href="new-model#/11"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="225:31-225:42" stringSymbol="jelly:ant"/>
             </source>
@@ -757,7 +757,7 @@
     <inPattern location="223:2-223:28">
       <elements xsi:type="atl:SimpleInPatternElement" location="223:7-223:28" varName="i">
         <type xsi:type="ocl:OclModelElement" location="223:11-223:28" name="Tstamp">
-          <model href="new-model#/55"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -766,13 +766,13 @@
     <outPattern location="231:2-238:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="231:5-234:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="231:9-231:25" name="Element">
-          <model href="new-model#/59"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="232:3-232:51" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="232:11-232:51" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="232:11-232:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="232:11-232:21">
-                <referredVariable href="new-model#/60"/>
+                <referredVariable href="new-model#/12"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="232:31-232:42" stringSymbol="jelly:ant"/>
             </source>
@@ -785,13 +785,13 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="235:2-238:3" varName="dirAttribute" variableExp="//@elements.17/@outPattern/@elements.0/@bindings.1/@value">
         <type xsi:type="ocl:OclModelElement" location="235:17-235:35" name="Attribute">
-          <model href="new-model#/61"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="236:3-236:49" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="236:11-236:49" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="236:11-236:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="236:11-236:21">
-                <referredVariable href="new-model#/62"/>
+                <referredVariable href="new-model#/13"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="236:31-236:42" stringSymbol="jelly:ant"/>
             </source>
@@ -808,7 +808,7 @@
     <inPattern location="230:2-230:27">
       <elements xsi:type="atl:SimpleInPatternElement" location="230:7-230:27" varName="i" variableExp="//@elements.17/@outPattern/@elements.1/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="230:11-230:27" name="Mkdir">
-          <model href="new-model#/58"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -817,13 +817,13 @@
     <outPattern location="243:2-254:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="243:5-246:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="243:9-243:25" name="Element">
-          <model href="new-model#/64"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="244:3-244:51" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="244:11-244:51" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="244:11-244:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="244:11-244:21">
-                <referredVariable href="new-model#/65"/>
+                <referredVariable href="new-model#/14"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="244:31-244:42" stringSymbol="jelly:ant"/>
             </source>
@@ -845,7 +845,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="247:2-250:3" varName="sourceDirAttribute" variableExp="//@elements.18/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="247:23-247:41" name="Attribute">
-          <model href="new-model#/66"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="248:3-248:19" propertyName="name">
           <value xsi:type="ocl:StringExp" location="248:11-248:19" stringSymbol="srcdir"/>
@@ -858,7 +858,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="251:2-254:3" varName="destDirAttribute" variableExp="//@elements.18/@outPattern/@elements.0/@bindings.1/@value/@elements.1">
         <type xsi:type="ocl:OclModelElement" location="251:21-251:39" name="Attribute">
-          <model href="new-model#/67"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="252:3-252:20" propertyName="name">
           <value xsi:type="ocl:StringExp" location="252:11-252:20" stringSymbol="destdir"/>
@@ -873,7 +873,7 @@
     <inPattern location="242:2-242:27">
       <elements xsi:type="atl:SimpleInPatternElement" location="242:7-242:27" varName="i" variableExp="//@elements.18/@outPattern/@elements.0/@bindings.1/@value/@elements.2/@source //@elements.18/@outPattern/@elements.0/@bindings.1/@value/@elements.3/@source //@elements.18/@outPattern/@elements.1/@bindings.1/@value/@source //@elements.18/@outPattern/@elements.2/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="242:11-242:27" name="Javac">
-          <model href="new-model#/63"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -884,13 +884,13 @@
     <outPattern location="259:2-266:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="259:5-262:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="259:9-259:25" name="Element">
-          <model href="new-model#/69"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="260:3-260:50" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="260:11-260:50" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="260:11-260:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="260:11-260:21">
-                <referredVariable href="new-model#/70"/>
+                <referredVariable href="new-model#/15"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="260:31-260:42" stringSymbol="jelly:ant"/>
             </source>
@@ -908,7 +908,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="263:2-266:3" varName="toDirAttribute" variableExp="//@elements.19/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="263:19-263:37" name="Attribute">
-          <model href="new-model#/71"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="264:3-264:18" propertyName="name">
           <value xsi:type="ocl:StringExp" location="264:11-264:18" stringSymbol="todir"/>
@@ -923,7 +923,7 @@
     <inPattern location="258:2-258:26">
       <elements xsi:type="atl:SimpleInPatternElement" location="258:7-258:26" varName="i" variableExp="//@elements.19/@outPattern/@elements.0/@bindings.1/@value/@elements.1/@source //@elements.19/@outPattern/@elements.1/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="258:11-258:26" name="Copy">
-          <model href="new-model#/68"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -934,13 +934,13 @@
     <outPattern location="275:2-282:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="275:5-278:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="275:9-275:25" name="Element">
-          <model href="new-model#/73"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="276:3-276:50" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="276:11-276:50" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="276:11-276:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="276:11-276:21">
-                <referredVariable href="new-model#/74"/>
+                <referredVariable href="new-model#/16"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="276:31-276:42" stringSymbol="jelly:ant"/>
             </source>
@@ -958,7 +958,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="279:2-282:3" varName="idAttribute" variableExp="//@elements.20/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="279:16-279:34" name="Attribute">
-          <model href="new-model#/75"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="280:3-280:15" propertyName="name">
           <value xsi:type="ocl:StringExp" location="280:11-280:15" stringSymbol="id"/>
@@ -973,7 +973,7 @@
     <inPattern location="274:2-274:26">
       <elements xsi:type="atl:SimpleInPatternElement" location="274:7-274:26" varName="i" variableExp="//@elements.20/@outPattern/@elements.0/@bindings.1/@value/@elements.1/@source //@elements.20/@outPattern/@elements.1/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="274:11-274:26" name="Path">
-          <model href="new-model#/72"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -982,13 +982,13 @@
     <outPattern location="287:2-293:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="287:5-289:30" varName="o">
         <type xsi:type="ocl:OclModelElement" location="287:9-287:25" name="Element">
-          <model href="new-model#/77"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="288:3-288:55" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="288:11-288:55" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="288:11-288:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="288:11-288:21">
-                <referredVariable href="new-model#/78"/>
+                <referredVariable href="new-model#/17"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="288:31-288:42" stringSymbol="jelly:ant"/>
             </source>
@@ -1001,7 +1001,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="290:2-293:3" varName="refidAttribute" variableExp="//@elements.21/@outPattern/@elements.0/@bindings.1/@value">
         <type xsi:type="ocl:OclModelElement" location="290:19-290:37" name="Attribute">
-          <model href="new-model#/79"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="291:3-291:18" propertyName="name">
           <value xsi:type="ocl:StringExp" location="291:11-291:18" stringSymbol="refid"/>
@@ -1016,7 +1016,7 @@
     <inPattern location="286:2-286:31">
       <elements xsi:type="atl:SimpleInPatternElement" location="286:7-286:31" varName="i" variableExp="//@elements.21/@outPattern/@elements.1/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="286:11-286:31" name="ClassPath">
-          <model href="new-model#/76"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -1025,13 +1025,13 @@
     <outPattern location="298:2-305:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="298:5-301:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="298:9-298:25" name="Element">
-          <model href="new-model#/81"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="299:3-299:53" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="299:11-299:53" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="299:11-299:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="299:11-299:21">
-                <referredVariable href="new-model#/82"/>
+                <referredVariable href="new-model#/18"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="299:31-299:42" stringSymbol="jelly:ant"/>
             </source>
@@ -1055,7 +1055,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="302:2-305:3" varName="dirAttribute" variableExp="//@elements.22/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="302:17-302:35" name="Attribute">
-          <model href="new-model#/83"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="303:3-303:16" propertyName="name">
           <value xsi:type="ocl:StringExp" location="303:11-303:16" stringSymbol="dir"/>
@@ -1070,7 +1070,7 @@
     <inPattern location="297:2-297:29">
       <elements xsi:type="atl:SimpleInPatternElement" location="297:7-297:29" varName="i" variableExp="//@elements.22/@outPattern/@elements.0/@bindings.1/@value/@elements.1/@source //@elements.22/@outPattern/@elements.0/@bindings.1/@value/@elements.2/@source //@elements.22/@outPattern/@elements.0/@bindings.1/@value/@elements.3/@source //@elements.22/@outPattern/@elements.1/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="297:11-297:29" name="FileSet">
-          <model href="new-model#/80"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -1079,13 +1079,13 @@
     <outPattern location="310:2-312:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="310:5-312:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="310:9-310:25" name="Element">
-          <model href="new-model#/85"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="311:3-311:57" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="311:11-311:57" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="311:11-311:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="311:11-311:21">
-                <referredVariable href="new-model#/86"/>
+                <referredVariable href="new-model#/19"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="311:31-311:42" stringSymbol="jelly:ant"/>
             </source>
@@ -1097,7 +1097,7 @@
     <inPattern location="309:2-309:33">
       <elements xsi:type="atl:SimpleInPatternElement" location="309:7-309:33" varName="i">
         <type xsi:type="ocl:OclModelElement" location="309:11-309:33" name="PathElement">
-          <model href="new-model#/84"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -1106,13 +1106,13 @@
     <outPattern location="317:2-320:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="317:5-320:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="317:9-317:25" name="Element">
-          <model href="new-model#/88"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="318:3-318:56" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="318:11-318:56" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="318:11-318:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="318:11-318:21">
-                <referredVariable href="new-model#/89"/>
+                <referredVariable href="new-model#/20"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="318:31-318:42" stringSymbol="jelly:ant"/>
             </source>
@@ -1129,7 +1129,7 @@
     <inPattern location="316:2-316:32">
       <elements xsi:type="atl:SimpleInPatternElement" location="316:7-316:32" varName="i" variableExp="//@elements.24/@outPattern/@elements.0/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="316:11-316:32" name="PatternSet">
-          <model href="new-model#/87"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -1138,13 +1138,13 @@
     <outPattern location="325:2-332:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="325:5-328:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="325:9-325:25" name="Element">
-          <model href="new-model#/91"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="326:3-326:53" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="326:11-326:53" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="326:11-326:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="326:11-326:21">
-                <referredVariable href="new-model#/92"/>
+                <referredVariable href="new-model#/21"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="326:31-326:42" stringSymbol="jelly:ant"/>
             </source>
@@ -1157,7 +1157,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="329:2-332:3" varName="nameAttribute" variableExp="//@elements.25/@outPattern/@elements.0/@bindings.1/@value">
         <type xsi:type="ocl:OclModelElement" location="329:18-329:36" name="Attribute">
-          <model href="new-model#/93"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="330:3-330:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="330:11-330:17" stringSymbol="name"/>
@@ -1172,7 +1172,7 @@
     <inPattern location="324:2-324:30">
       <elements xsi:type="atl:SimpleInPatternElement" location="324:7-324:30" varName="i" variableExp="//@elements.25/@outPattern/@elements.1/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="324:11-324:30" name="Includes">
-          <model href="new-model#/90"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -1185,13 +1185,13 @@
     <outPattern location="337:2-344:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="337:5-340:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="337:9-337:25" name="Element">
-          <model href="new-model#/95"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="338:3-338:53" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="338:11-338:53" operationName="+">
             <source xsi:type="ocl:OperationCallExp" location="338:11-338:43" operationName="getXmlns">
               <source xsi:type="ocl:VariableExp" location="338:11-338:21">
-                <referredVariable href="new-model#/96"/>
+                <referredVariable href="new-model#/22"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="338:31-338:42" stringSymbol="jelly:ant"/>
             </source>
@@ -1204,7 +1204,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="341:2-344:3" varName="nameAttribute" variableExp="//@elements.26/@outPattern/@elements.0/@bindings.1/@value">
         <type xsi:type="ocl:OclModelElement" location="341:18-341:36" name="Attribute">
-          <model href="new-model#/97"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="342:3-342:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="342:11-342:17" stringSymbol="name"/>
@@ -1219,7 +1219,7 @@
     <inPattern location="336:2-336:30">
       <elements xsi:type="atl:SimpleInPatternElement" location="336:7-336:30" varName="i" variableExp="//@elements.26/@outPattern/@elements.1/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="336:11-336:30" name="Excludes">
-          <model href="new-model#/94"/>
+          <model href="new-model#/2"/>
         </type>
       </elements>
     </inPattern>
@@ -1232,7 +1232,7 @@
     <outPattern location="361:2-379:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="361:5-364:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="361:9-361:24" name="Root">
-          <model href="new-model#/99"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="362:3-362:20" propertyName="name">
           <value xsi:type="ocl:StringExp" location="362:11-362:20" stringSymbol="project"/>
@@ -1250,7 +1250,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="365:3-368:3" varName="idAttribute" variableExp="//@elements.27/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="365:17-365:37" name="Attribute">
-          <model href="new-model#/100"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="366:3-366:15" propertyName="name">
           <value xsi:type="ocl:StringExp" location="366:11-366:15" stringSymbol="id"/>
@@ -1263,7 +1263,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="369:3-372:3" varName="nameAttribute" variableExp="//@elements.27/@outPattern/@elements.0/@bindings.1/@value/@elements.1">
         <type xsi:type="ocl:OclModelElement" location="369:19-369:39" name="Attribute">
-          <model href="new-model#/101"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="370:3-370:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="370:11-370:17" stringSymbol="name"/>
@@ -1276,7 +1276,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="373:2-376:3" varName="descriptionElement" variableExp="//@elements.27/@outPattern/@elements.0/@bindings.1/@value/@elements.2">
         <type xsi:type="ocl:OclModelElement" location="373:23-373:41" name="Element">
-          <model href="new-model#/102"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="374:3-374:24" propertyName="name">
           <value xsi:type="ocl:StringExp" location="374:11-374:24" stringSymbol="description"/>
@@ -1287,7 +1287,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="377:2-379:3" varName="descriptionText" variableExp="//@elements.27/@outPattern/@elements.3/@bindings.1/@value">
         <type xsi:type="ocl:OclModelElement" location="377:20-377:35" name="Text">
-          <model href="new-model#/103"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="378:3-378:25" propertyName="value">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="378:12-378:25" name="description">
@@ -1299,7 +1299,7 @@
     <inPattern location="355:2-360:3">
       <elements xsi:type="atl:SimpleInPatternElement" location="355:7-355:31" varName="i" variableExp="//@elements.27/@inPattern/@filter/@condition/@source/@source //@elements.27/@inPattern/@filter/@elseExpression/@source/@source/@source //@elements.27/@outPattern/@elements.0/@bindings.1/@value/@elements.3/@source //@elements.27/@outPattern/@elements.1/@bindings.1/@value/@source //@elements.27/@outPattern/@elements.2/@bindings.1/@value/@source //@elements.27/@outPattern/@elements.4/@bindings.0/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="355:11-355:31" name="Project">
-          <model href="new-model#/98"/>
+          <model href="new-model#/3"/>
         </type>
       </elements>
       <filter xsi:type="ocl:IfExp" location="356:3-359:9">
@@ -1324,7 +1324,7 @@
     <outPattern location="389:2-400:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="389:5-392:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="389:9-389:24" name="Root">
-          <model href="new-model#/105"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="390:3-390:20" propertyName="name">
           <value xsi:type="ocl:StringExp" location="390:11-390:20" stringSymbol="project"/>
@@ -1341,7 +1341,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="393:3-396:3" varName="idAttribute" variableExp="//@elements.28/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="393:17-393:37" name="Attribute">
-          <model href="new-model#/106"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="394:3-394:15" propertyName="name">
           <value xsi:type="ocl:StringExp" location="394:11-394:15" stringSymbol="id"/>
@@ -1354,7 +1354,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="397:3-400:3" varName="nameAttribute" variableExp="//@elements.28/@outPattern/@elements.0/@bindings.1/@value/@elements.1">
         <type xsi:type="ocl:OclModelElement" location="397:19-397:39" name="Attribute">
-          <model href="new-model#/107"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="398:3-398:17" propertyName="name">
           <value xsi:type="ocl:StringExp" location="398:11-398:17" stringSymbol="name"/>
@@ -1369,7 +1369,7 @@
     <inPattern location="383:2-388:3">
       <elements xsi:type="atl:SimpleInPatternElement" location="383:7-383:31" varName="i" variableExp="//@elements.28/@inPattern/@filter/@condition/@source/@source //@elements.28/@inPattern/@filter/@elseExpression/@source/@source //@elements.28/@outPattern/@elements.0/@bindings.1/@value/@elements.2/@source //@elements.28/@outPattern/@elements.1/@bindings.1/@value/@source //@elements.28/@outPattern/@elements.2/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="383:11-383:31" name="Project">
-          <model href="new-model#/104"/>
+          <model href="new-model#/3"/>
         </type>
       </elements>
       <filter xsi:type="ocl:IfExp" location="384:3-387:9">
@@ -1392,7 +1392,7 @@
     <outPattern location="406:2-412:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="406:5-409:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="406:9-406:27" name="Element">
-          <model href="new-model#/109"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="407:3-407:24" propertyName="name">
           <value xsi:type="ocl:StringExp" location="407:11-407:24" stringSymbol="description"/>
@@ -1403,7 +1403,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="410:2-412:3" varName="textText" variableExp="//@elements.29/@outPattern/@elements.0/@bindings.1/@value">
         <type xsi:type="ocl:OclModelElement" location="410:13-410:28" name="Text">
-          <model href="new-model#/110"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="411:3-411:25" propertyName="value">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="411:12-411:25" name="description">
@@ -1415,7 +1415,7 @@
     <inPattern location="405:2-405:35">
       <elements xsi:type="atl:SimpleInPatternElement" location="405:7-405:35" varName="i" variableExp="//@elements.29/@outPattern/@elements.1/@bindings.0/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="405:11-405:35" name="Description">
-          <model href="new-model#/108"/>
+          <model href="new-model#/3"/>
         </type>
       </elements>
     </inPattern>
@@ -1424,7 +1424,7 @@
     <outPattern location="417:2-436:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="417:5-420:3" varName="o">
         <type xsi:type="ocl:OclModelElement" location="417:9-417:27" name="Element">
-          <model href="new-model#/112"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="418:3-418:18" propertyName="name">
           <value xsi:type="ocl:StringExp" location="418:11-418:18" stringSymbol="build"/>
@@ -1438,7 +1438,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="421:2-424:3" varName="defaultGoalElement" variableExp="//@elements.30/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="421:23-421:41" name="Element">
-          <model href="new-model#/113"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="422:3-422:24" propertyName="name">
           <value xsi:type="ocl:StringExp" location="422:11-422:24" stringSymbol="defaultGoal"/>
@@ -1449,7 +1449,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="425:2-428:3" varName="defaultGoalText" variableExp="//@elements.30/@outPattern/@elements.1/@bindings.1/@value">
         <type xsi:type="ocl:OclModelElement" location="425:20-425:35" name="Text">
-          <model href="new-model#/114"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="426:3-426:24" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="426:11-426:24" name="defaultGoal">
@@ -1464,7 +1464,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="429:2-432:3" varName="sourceDirectoryElement" variableExp="//@elements.30/@outPattern/@elements.0/@bindings.1/@value/@elements.1">
         <type xsi:type="ocl:OclModelElement" location="429:27-429:45" name="Element">
-          <model href="new-model#/115"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="430:3-430:28" propertyName="name">
           <value xsi:type="ocl:StringExp" location="430:11-430:28" stringSymbol="sourceDirectory"/>
@@ -1475,7 +1475,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="433:2-436:3" varName="sourceDirectoryText" variableExp="//@elements.30/@outPattern/@elements.3/@bindings.1/@value">
         <type xsi:type="ocl:OclModelElement" location="433:24-433:39" name="Text">
-          <model href="new-model#/116"/>
+          <model href="new-model#/1"/>
         </type>
         <bindings location="434:3-434:28" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="434:11-434:28" name="sourceDirectory">
@@ -1492,7 +1492,7 @@
     <inPattern location="416:2-416:29">
       <elements xsi:type="atl:SimpleInPatternElement" location="416:7-416:29" varName="i" variableExp="//@elements.30/@outPattern/@elements.2/@bindings.0/@value/@source //@elements.30/@outPattern/@elements.2/@bindings.1/@value/@source //@elements.30/@outPattern/@elements.4/@bindings.0/@value/@source //@elements.30/@outPattern/@elements.4/@bindings.1/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="416:11-416:29" name="Build">
-          <model href="new-model#/111"/>
+          <model href="new-model#/3"/>
         </type>
       </elements>
     </inPattern>

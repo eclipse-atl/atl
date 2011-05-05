@@ -27,6 +27,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
+import org.eclipse.emf.compare.diff.metamodel.DiffModel;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.core.ATLCoreException;
@@ -56,7 +58,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
 	private double executionTotalTime;
 
-//	private FileWriter results;
+	// private FileWriter results;
 
 	/**
 	 * {@inheritDoc}
@@ -66,9 +68,9 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-//		results = new FileWriter("results/" + getVMName() + "_results.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-//		results.write("<?xml version=\"1.0\"?>\n"); //$NON-NLS-1$
-//		results.write("<vm>\n"); //$NON-NLS-1$
+		//		results = new FileWriter("results/" + getVMName() + "_results.xml"); //$NON-NLS-1$ //$NON-NLS-2$
+		//		results.write("<?xml version=\"1.0\"?>\n"); //$NON-NLS-1$
+		//		results.write("<vm>\n"); //$NON-NLS-1$
 	}
 
 	/**
@@ -78,8 +80,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 */
 	@Override
 	protected void singleTest(File directory) {
-		final String buildURI = directory + File.separator
-				+ directory.getName() + ".launch"; //$NON-NLS-1$
+		final String buildURI = directory + File.separator + directory.getName() + ".launch"; //$NON-NLS-1$
 
 		if (!new File(buildURI).exists()) {
 			info("Launch configuration file " + buildURI + "not found. Skipped."); //$NON-NLS-1$ //$NON-NLS-2$
@@ -90,8 +91,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		} catch (IOException e) {
 			fail("Error accessing launch configuration " + buildURI, e); //$NON-NLS-1$
 		} catch (ParserConfigurationException e) {
-			fail(
-					"Error configuring launch configuration parser for:" + buildURI, e); //$NON-NLS-1$
+			fail("Error configuring launch configuration parser for:" + buildURI, e); //$NON-NLS-1$
 		} catch (SAXException e) {
 			fail("Error parsing launch configuration " + buildURI, e); //$NON-NLS-1$
 		}
@@ -107,14 +107,10 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
 			try {
 				if (applyCompilation) {
-					outName = atlFilePath.substring(0, atlFilePath
-							.lastIndexOf('.'))
-							+ ".asm"; //$NON-NLS-1$
+					outName = atlFilePath.substring(0, atlFilePath.lastIndexOf('.')) + ".asm"; //$NON-NLS-1$
 				} else {
 					try {
-						outName = atlFilePath.substring(0, atlFilePath
-								.lastIndexOf('.'))
-								+ ".temp.asm"; //$NON-NLS-1$
+						outName = atlFilePath.substring(0, atlFilePath.lastIndexOf('.')) + ".temp.asm"; //$NON-NLS-1$
 						launchParser.setAsmUrl(new URL("file:" + outName)); //$NON-NLS-1$
 					} catch (MalformedURLException e) {
 						fail("URL problem: " + atlUrl, e); //$NON-NLS-1$
@@ -159,8 +155,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		// } catch (IOException e) {
 		//			fail("Error writing results for: " + directory.getName(), e); //$NON-NLS-1$
 		// }
-		info(directory.getName()
-				+ ": " + executionTime + "s (pure execution: " + pureExecutionTime + "s)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		info(directory.getName() + ": " + executionTime + "s (pure execution: " + pureExecutionTime + "s)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		/*
 		 * RESULTS COMPARISON
@@ -191,8 +186,9 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			}
 			String expectedPath = outputPath.replaceFirst("inputs", "expected"); //$NON-NLS-1$ //$NON-NLS-2$
 			try {
-				ModelUtils.compareModels(new File(outputPath), new File(
-						expectedPath), true, true);
+				final DiffModel diff = ModelUtils.compareModels(new File(outputPath), new File(expectedPath),
+						true, true);
+				assertEquals(0, ((DiffGroup)diff.getOwnedElements().get(0)).getSubchanges());
 			} catch (IOException ex) {
 				fail(ex.getMessage());
 			} catch (InterruptedException ex) {
@@ -216,17 +212,16 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	@Override
 	protected void tearDown() throws Exception {
 		info("total time : " + totalTime + "s (pure execution: " + executionTotalTime + "s)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-//		results.write("\t<test name=\"TOTAL\" time=\"" + totalTime + "\"/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
-//		results.write("</vm>\n"); //$NON-NLS-1$
-//		results.close();
+		//		results.write("\t<test name=\"TOTAL\" time=\"" + totalTime + "\"/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		//		results.write("</vm>\n"); //$NON-NLS-1$
+		// results.close();
 		super.tearDown();
 	}
 
 	/**
 	 * Abstract method to launch a transformation.
 	 * 
-	 * @return pureExecutionTime, i.e. the execution time without loading/saving
-	 *         models
+	 * @return pureExecutionTime, i.e. the execution time without loading/saving models
 	 */
 	protected double launch() throws ATLCoreException, IOException {
 		String launcherName = getVMName();
@@ -246,8 +241,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		if (refiningOption != null) {
 			isRefiningTraceMode = new Boolean(refiningOption.toString());
 		}
-		options.put(
-				"isRefiningTraceMode", new Boolean(isRefiningTraceMode).toString()); //$NON-NLS-1$
+		options.put("isRefiningTraceMode", new Boolean(isRefiningTraceMode).toString()); //$NON-NLS-1$
 
 		Map<String, String> modelHandlers = launchParser.getModelHandler();
 		options.put("modelHandlers", modelHandlers); //$NON-NLS-1$
@@ -324,21 +318,18 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			}
 
 			try {
-				LauncherService.launch(ILauncher.RUN_MODE,
-						new NullProgressMonitor(), launcher, Collections
-								.<String, String> emptyMap(), sourceModels,
-						newTargetModels, convertPaths(modelPaths), options,
-						libraries, modules);
+				LauncherService.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), launcher,
+						Collections.<String, String> emptyMap(), sourceModels, newTargetModels,
+						convertPaths(modelPaths), options, libraries, modules);
 			} catch (ATLExecutionException e) {
 				fail(asmURL.toString(), e);
 			}
 
 		} else {
 			try {
-				LauncherService.launch(ILauncher.RUN_MODE,
-						new NullProgressMonitor(), launcher, sourceModels,
-						Collections.<String, String> emptyMap(), targetModels,
-						convertPaths(modelPaths), options, libraries, modules);
+				LauncherService.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), launcher, sourceModels,
+						Collections.<String, String> emptyMap(), targetModels, convertPaths(modelPaths),
+						options, libraries, modules);
 			} catch (ATLExecutionException e) {
 				fail(asmURL.toString(), e);
 			}
@@ -349,8 +340,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		return (endTime - startTime) / 1000.;
 	}
 
-	private static Map<String, String> sort(Map<String, String> mapToSort,
-			List<String> orderedKeys) {
+	private static Map<String, String> sort(Map<String, String> mapToSort, List<String> orderedKeys) {
 		Map<String, String> res = new LinkedHashMap<String, String>();
 		for (String key : orderedKeys) {
 			res.put(key, mapToSort.get(key));
@@ -372,11 +362,9 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	 *            the model path map
 	 * @return the converted map
 	 */
-	public static Map<String, String> convertPaths(
-			Map<String, String> modelPaths) {
+	public static Map<String, String> convertPaths(Map<String, String> modelPaths) {
 		Map<String, String> result = new HashMap<String, String>();
-		for (Iterator<String> iterator = modelPaths.keySet().iterator(); iterator
-				.hasNext();) {
+		for (Iterator<String> iterator = modelPaths.keySet().iterator(); iterator.hasNext();) {
 			String modelName = iterator.next();
 			String modelPath = modelPaths.get(modelName);
 			result.put(modelName, convertPath(modelPath));

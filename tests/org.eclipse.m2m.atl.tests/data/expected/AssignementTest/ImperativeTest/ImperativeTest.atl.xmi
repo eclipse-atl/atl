@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="Cp1252"?>
+<?xml version="1.0" encoding="ASCII"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="3:1-56:2" name="ImperativeTest">
   <commentsBefore>-- @nsURI Ecore=http://www.eclipse.org/emf/2002/Ecore</commentsBefore>
   <inModels location="4:25-4:35" name="IN">
-    <metamodel href="new-model#/1"/>
+    <metamodel href="new-model#/"/>
   </inModels>
   <outModels location="4:8-4:19" name="OUT">
-    <metamodel href="new-model#/0"/>
+    <metamodel href="new-model#/"/>
   </outModels>
   <elements xsi:type="atl:MatchedRule" location="6:1-20:2" name="NotWorking">
     <outPattern location="9:2-14:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="10:3-14:4" varName="modified" variableExp="//@elements.0/@actionBlock/@statements.0/@source/@source //@elements.0/@actionBlock/@statements.1/@source/@source">
         <type xsi:type="ocl:OclModelElement" location="10:14-10:26" name="EClass">
-          <model href="new-model#/3"/>
+          <model href="new-model#/"/>
         </type>
         <bindings location="11:4-11:20" propertyName="abstract">
           <value xsi:type="ocl:BooleanExp" location="11:16-11:20" booleanSymbol="true"/>
@@ -45,7 +45,7 @@
     <inPattern location="7:2-8:42">
       <elements xsi:type="atl:SimpleInPatternElement" location="8:3-8:24" varName="eClass" variableExp="//@elements.0/@inPattern/@filter/@source //@elements.0/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.0/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="8:12-8:24" name="EClass">
-          <model href="new-model#/2"/>
+          <model href="new-model#/"/>
         </type>
       </elements>
       <filter xsi:type="ocl:NavigationOrAttributeCallExp" location="8:26-8:41" name="abstract">
@@ -57,7 +57,7 @@
     <outPattern location="25:2-30:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="26:3-30:4" varName="modified" variableExp="//@elements.1/@actionBlock/@statements.0/@source/@source //@elements.1/@actionBlock/@statements.1/@source/@source">
         <type xsi:type="ocl:OclModelElement" location="26:14-26:26" name="EClass">
-          <model href="new-model#/5"/>
+          <model href="new-model#/"/>
         </type>
         <bindings location="27:4-27:21" propertyName="abstract">
           <value xsi:type="ocl:BooleanExp" location="27:16-27:21"/>
@@ -91,7 +91,7 @@
     <inPattern location="23:2-24:46">
       <elements xsi:type="atl:SimpleInPatternElement" location="24:3-24:24" varName="eClass" variableExp="//@elements.1/@inPattern/@filter/@source/@source //@elements.1/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.1/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="24:12-24:24" name="EClass">
-          <model href="new-model#/4"/>
+          <model href="new-model#/"/>
         </type>
       </elements>
       <filter xsi:type="ocl:OperatorCallExp" location="24:26-24:45" operationName="not">
@@ -105,7 +105,7 @@
     <outPattern location="40:2-43:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="41:3-43:4" varName="copy">
         <type xsi:type="ocl:OclModelElement" location="41:10-41:26" name="EAttribute">
-          <model href="new-model#/7"/>
+          <model href="new-model#/"/>
         </type>
         <bindings location="42:4-42:21" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="42:12-42:21" name="name">
@@ -117,7 +117,7 @@
     <inPattern location="38:2-39:26">
       <elements xsi:type="atl:SimpleInPatternElement" location="39:3-39:26" varName="attr" variableExp="//@elements.2/@outPattern/@elements.0/@bindings.0/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="39:10-39:26" name="EAttribute">
-          <model href="new-model#/6"/>
+          <model href="new-model#/"/>
         </type>
       </elements>
     </inPattern>
@@ -126,7 +126,7 @@
     <outPattern location="49:2-55:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="50:3-55:4" varName="copy">
         <type xsi:type="ocl:OclModelElement" location="50:10-50:24" name="EPackage">
-          <model href="new-model#/9"/>
+          <model href="new-model#/"/>
         </type>
         <bindings location="51:4-51:21" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="51:12-51:21" name="name">
@@ -153,7 +153,7 @@
     <inPattern location="47:2-48:24">
       <elements xsi:type="atl:SimpleInPatternElement" location="48:3-48:24" varName="pack" variableExp="//@elements.3/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.2/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.3/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="48:10-48:24" name="EPackage">
-          <model href="new-model#/8"/>
+          <model href="new-model#/"/>
         </type>
       </elements>
     </inPattern>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Cp1252"?>
+<?xml version="1.0" encoding="ASCII"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="1:1-46:2" name="Families2Persons">
   <inModels location="2:27-2:40" name="IN">
     <metamodel href="new-model#/1"/>
@@ -13,7 +13,7 @@
           <thenExpression xsi:type="ocl:NavigationOrAttributeCallExp" location="6:3-6:29" name="lastName">
             <source xsi:type="ocl:NavigationOrAttributeCallExp" location="6:3-6:20" name="familyFather">
               <source xsi:type="ocl:VariableExp" location="6:3-6:7">
-                <referredVariable href="new-model#/4"/>
+                <referredVariable href="new-model#/3"/>
               </source>
             </source>
           </thenExpression>
@@ -21,7 +21,7 @@
             <source xsi:type="ocl:OperationCallExp" location="5:9-5:43" operationName="oclIsUndefined">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="5:9-5:26" name="familyFather">
                 <source xsi:type="ocl:VariableExp" location="5:9-5:13">
-                  <referredVariable href="new-model#/3"/>
+                  <referredVariable href="new-model#/2"/>
                 </source>
               </source>
             </source>
@@ -30,7 +30,7 @@
             <thenExpression xsi:type="ocl:NavigationOrAttributeCallExp" location="9:4-9:30" name="lastName">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="9:4-9:21" name="familyMother">
                 <source xsi:type="ocl:VariableExp" location="9:4-9:8">
-                  <referredVariable href="new-model#/6"/>
+                  <referredVariable href="new-model#/5"/>
                 </source>
               </source>
             </thenExpression>
@@ -38,7 +38,7 @@
               <source xsi:type="ocl:OperationCallExp" location="8:10-8:44" operationName="oclIsUndefined">
                 <source xsi:type="ocl:NavigationOrAttributeCallExp" location="8:10-8:27" name="familyMother">
                   <source xsi:type="ocl:VariableExp" location="8:10-8:14">
-                    <referredVariable href="new-model#/5"/>
+                    <referredVariable href="new-model#/4"/>
                   </source>
                 </source>
               </source>
@@ -47,7 +47,7 @@
               <thenExpression xsi:type="ocl:NavigationOrAttributeCallExp" location="12:5-12:28" name="lastName">
                 <source xsi:type="ocl:NavigationOrAttributeCallExp" location="12:5-12:19" name="familySon">
                   <source xsi:type="ocl:VariableExp" location="12:5-12:9">
-                    <referredVariable href="new-model#/8"/>
+                    <referredVariable href="new-model#/7"/>
                   </source>
                 </source>
               </thenExpression>
@@ -55,7 +55,7 @@
                 <source xsi:type="ocl:OperationCallExp" location="11:11-11:42" operationName="oclIsUndefined">
                   <source xsi:type="ocl:NavigationOrAttributeCallExp" location="11:11-11:25" name="familySon">
                     <source xsi:type="ocl:VariableExp" location="11:11-11:15">
-                      <referredVariable href="new-model#/7"/>
+                      <referredVariable href="new-model#/6"/>
                     </source>
                   </source>
                 </source>
@@ -63,7 +63,7 @@
               <elseExpression xsi:type="ocl:NavigationOrAttributeCallExp" location="14:5-14:33" name="lastName">
                 <source xsi:type="ocl:NavigationOrAttributeCallExp" location="14:5-14:24" name="familyDaughter">
                   <source xsi:type="ocl:VariableExp" location="14:5-14:9">
-                    <referredVariable href="new-model#/9"/>
+                    <referredVariable href="new-model#/8"/>
                   </source>
                 </source>
               </elseExpression>
@@ -74,7 +74,7 @@
       </feature>
       <context_ location="4:8-4:31">
         <context_ xsi:type="ocl:OclModelElement" location="4:16-4:31" name="Member">
-          <model href="new-model#/2"/>
+          <model href="new-model#/1"/>
         </context_>
       </context_>
     </definition>
@@ -89,7 +89,7 @@
             <source xsi:type="ocl:OperationCallExp" location="20:9-20:43" operationName="oclIsUndefined">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="20:9-20:26" name="familyMother">
                 <source xsi:type="ocl:VariableExp" location="20:9-20:13">
-                  <referredVariable href="new-model#/11"/>
+                  <referredVariable href="new-model#/9"/>
                 </source>
               </source>
             </source>
@@ -100,7 +100,7 @@
               <source xsi:type="ocl:OperationCallExp" location="23:10-23:46" operationName="oclIsUndefined">
                 <source xsi:type="ocl:NavigationOrAttributeCallExp" location="23:10-23:29" name="familyDaughter">
                   <source xsi:type="ocl:VariableExp" location="23:10-23:14">
-                    <referredVariable href="new-model#/12"/>
+                    <referredVariable href="new-model#/10"/>
                   </source>
                 </source>
               </source>
@@ -111,7 +111,7 @@
       </feature>
       <context_ location="19:8-19:31">
         <context_ xsi:type="ocl:OclModelElement" location="19:16-19:31" name="Member">
-          <model href="new-model#/10"/>
+          <model href="new-model#/1"/>
         </context_>
       </context_>
     </definition>
@@ -120,7 +120,7 @@
     <outPattern location="33:2-36:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="34:3-36:4" varName="t">
         <type xsi:type="ocl:OclModelElement" location="34:7-34:19" name="Male">
-          <model href="new-model#/14"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="35:4-35:48" propertyName="fullName">
           <value xsi:type="ocl:OperatorCallExp" location="35:16-35:48" operationName="+">
@@ -140,7 +140,7 @@
     <inPattern location="31:2-32:41">
       <elements xsi:type="atl:SimpleInPatternElement" location="32:3-32:22" varName="s" variableExp="//@elements.2/@inPattern/@filter/@source/@source //@elements.2/@outPattern/@elements.0/@bindings.0/@value/@source/@source/@source //@elements.2/@outPattern/@elements.0/@bindings.0/@value/@arguments.0/@source">
         <type xsi:type="ocl:OclModelElement" location="32:7-32:22" name="Member">
-          <model href="new-model#/13"/>
+          <model href="new-model#/1"/>
         </type>
       </elements>
       <filter xsi:type="ocl:OperatorCallExp" location="32:24-32:40" operationName="not">
@@ -154,7 +154,7 @@
     <outPattern location="42:2-45:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="43:3-45:4" varName="t">
         <type xsi:type="ocl:OclModelElement" location="43:7-43:21" name="Female">
-          <model href="new-model#/16"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="44:4-44:48" propertyName="fullName">
           <value xsi:type="ocl:OperatorCallExp" location="44:16-44:48" operationName="+">
@@ -174,7 +174,7 @@
     <inPattern location="40:2-41:37">
       <elements xsi:type="atl:SimpleInPatternElement" location="41:3-41:22" varName="s" variableExp="//@elements.3/@inPattern/@filter/@source //@elements.3/@outPattern/@elements.0/@bindings.0/@value/@source/@source/@source //@elements.3/@outPattern/@elements.0/@bindings.0/@value/@arguments.0/@source">
         <type xsi:type="ocl:OclModelElement" location="41:7-41:22" name="Member">
-          <model href="new-model#/15"/>
+          <model href="new-model#/1"/>
         </type>
       </elements>
       <filter xsi:type="ocl:OperationCallExp" location="41:24-41:36" operationName="isFemale">

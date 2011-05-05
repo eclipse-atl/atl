@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="Cp1252"?>
+<?xml version="1.0" encoding="ASCII"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="1:1-25:2" name="atl">
   <inModels location="2:34-2:53" name="IN">
-    <metamodel href="new-model#/1"/>
+    <metamodel href="new-model#/0"/>
   </inModels>
   <outModels location="2:8-2:28" name="OUT">
     <metamodel href="new-model#/0"/>
@@ -11,7 +11,7 @@
       <feature xsi:type="ocl:Attribute" location="4:14-4:56" name="root">
         <initExpression xsi:type="ocl:OclUndefinedExp" location="4:44-4:56"/>
         <type xsi:type="ocl:OclModelElement" location="4:21-4:41" name="Liste">
-          <model href="new-model#/2"/>
+          <model href="new-model#/0"/>
         </type>
       </feature>
     </definition>
@@ -20,7 +20,7 @@
     <outPattern location="9:2-12:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="10:3-12:4" varName="object">
         <type xsi:type="ocl:OclModelElement" location="10:13-10:34" name="Object">
-          <model href="new-model#/4"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="11:6-11:28" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="11:14-11:28" name="name">
@@ -32,7 +32,7 @@
     <inPattern location="7:2-8:36">
       <elements xsi:type="atl:SimpleInPatternElement" location="8:3-8:36" varName="in_object" variableExp="//@elements.1/@outPattern/@elements.0/@bindings.0/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="8:15-8:36" name="Object">
-          <model href="new-model#/3"/>
+          <model href="new-model#/0"/>
         </type>
       </elements>
     </inPattern>
@@ -41,19 +41,19 @@
     <outPattern location="19:2-22:3">
       <elements xsi:type="atl:SimpleOutPatternElement" location="20:3-22:3" varName="liste">
         <type xsi:type="ocl:OclModelElement" location="20:11-20:31" name="Liste">
-          <model href="new-model#/6"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="21:4-21:95" propertyName="contents">
           <value xsi:type="ocl:IteratorExp" location="21:16-21:95" name="collect">
             <source xsi:type="ocl:OperationCallExp" location="21:16-21:60" operationName="allInstancesFrom">
               <source xsi:type="ocl:OclModelElement" location="21:16-21:37" name="Object">
-                <model href="new-model#/7"/>
+                <model href="new-model#/0"/>
               </source>
               <arguments xsi:type="ocl:StringExp" location="21:55-21:59" stringSymbol="IN"/>
             </source>
             <body xsi:type="ocl:OperationCallExp" location="21:74-21:94" operationName="Object">
               <source xsi:type="ocl:VariableExp" location="21:74-21:84">
-                <referredVariable href="new-model#/8"/>
+                <referredVariable href="new-model#/1"/>
               </source>
               <arguments xsi:type="ocl:VariableExp" location="21:92-21:93" referredVariable="//@elements.2/@outPattern/@elements.0/@bindings.0/@value/@iterators.0"/>
             </body>
@@ -65,7 +65,7 @@
     <inPattern location="17:2-18:34">
       <elements xsi:type="atl:SimpleInPatternElement" location="18:3-18:34" varName="in_liste">
         <type xsi:type="ocl:OclModelElement" location="18:14-18:34" name="Liste">
-          <model href="new-model#/5"/>
+          <model href="new-model#/0"/>
         </type>
       </elements>
     </inPattern>

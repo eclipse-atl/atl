@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Cp1252"?>
+<?xml version="1.0" encoding="ASCII"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="4:1-36:2" name="Ecore2Class">
   <commentsBefore>-- @nsURI MOF=http://www.eclipse.org/emf/2002/Ecore</commentsBefore>
   <commentsBefore>-- @nsURI Class=http://www.eclipse.org/uml2/2.1.0/UML</commentsBefore>
@@ -12,7 +12,7 @@
     <outPattern location="10:2-15:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="11:3-15:4" varName="oc">
         <type xsi:type="ocl:OclModelElement" location="11:8-11:19" name="Class">
-          <model href="new-model#/3"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="12:4-12:19" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="12:12-12:19" name="name">
@@ -34,7 +34,7 @@
     <inPattern location="8:2-9:18">
       <elements xsi:type="atl:SimpleInPatternElement" location="9:3-9:18" varName="ic" variableExp="//@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.0/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.0/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="9:8-9:18" name="EClass">
-          <model href="new-model#/2"/>
+          <model href="new-model#/1"/>
         </type>
       </elements>
     </inPattern>
@@ -43,7 +43,7 @@
     <outPattern location="21:2-26:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="22:3-26:4" varName="oa">
         <type xsi:type="ocl:OclModelElement" location="22:8-22:23" name="Attribute">
-          <model href="new-model#/5"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="23:4-23:19" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="23:12-23:19" name="name">
@@ -79,7 +79,7 @@
     <inPattern location="19:2-20:22">
       <elements xsi:type="atl:SimpleInPatternElement" location="20:3-20:22" varName="ia" variableExp="//@elements.1/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.1/@outPattern/@elements.0/@bindings.1/@value/@source/@source/@source //@elements.1/@outPattern/@elements.0/@bindings.1/@value/@arguments.0/@source/@source //@elements.1/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="20:8-20:22" name="EAttribute">
-          <model href="new-model#/4"/>
+          <model href="new-model#/1"/>
         </type>
       </elements>
     </inPattern>
@@ -88,7 +88,7 @@
     <outPattern location="32:2-35:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="33:3-35:4" varName="odt">
         <type xsi:type="ocl:OclModelElement" location="33:9-33:23" name="DataType">
-          <model href="new-model#/7"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="34:4-34:20" propertyName="name">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="34:12-34:20" name="name">
@@ -100,7 +100,7 @@
     <inPattern location="30:2-31:22">
       <elements xsi:type="atl:SimpleInPatternElement" location="31:3-31:22" varName="idt" variableExp="//@elements.2/@outPattern/@elements.0/@bindings.0/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="31:9-31:22" name="EDataType">
-          <model href="new-model#/6"/>
+          <model href="new-model#/1"/>
         </type>
       </elements>
     </inPattern>

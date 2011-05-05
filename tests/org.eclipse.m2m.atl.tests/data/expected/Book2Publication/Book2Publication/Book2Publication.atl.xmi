@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Cp1252"?>
+<?xml version="1.0" encoding="ASCII"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="1:1-47:2" name="Book2Publication">
   <inModels location="2:31-2:40" name="IN">
     <metamodel href="new-model#/1"/>
@@ -19,7 +19,7 @@
             <source xsi:type="ocl:IteratorExp" location="8:8-8:44" name="collect">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="8:8-8:21" name="chapters">
                 <source xsi:type="ocl:VariableExp" location="8:8-8:12">
-                  <referredVariable href="new-model#/3"/>
+                  <referredVariable href="new-model#/2"/>
                 </source>
               </source>
               <body xsi:type="ocl:NavigationOrAttributeCallExp" location="8:35-8:43" name="author">
@@ -51,7 +51,7 @@
       </feature>
       <context_ location="7:8-7:25">
         <context_ xsi:type="ocl:OclModelElement" location="7:16-7:25" name="Book">
-          <model href="new-model#/2"/>
+          <model href="new-model#/1"/>
         </context_>
       </context_>
     </definition>
@@ -68,7 +68,7 @@
           <source xsi:type="ocl:IteratorExp" location="22:3-22:38" name="collect">
             <source xsi:type="ocl:NavigationOrAttributeCallExp" location="22:3-22:16" name="chapters">
               <source xsi:type="ocl:VariableExp" location="22:3-22:7">
-                <referredVariable href="new-model#/5"/>
+                <referredVariable href="new-model#/3"/>
               </source>
             </source>
             <body xsi:type="ocl:NavigationOrAttributeCallExp" location="22:28-22:37" name="nbPages">
@@ -89,7 +89,7 @@
       </feature>
       <context_ location="21:8-21:25">
         <context_ xsi:type="ocl:OclModelElement" location="21:16-21:25" name="Book">
-          <model href="new-model#/4"/>
+          <model href="new-model#/1"/>
         </context_>
       </context_>
     </definition>
@@ -104,7 +104,7 @@
           <source xsi:type="ocl:IteratorExp" location="31:3-31:38" name="collect">
             <source xsi:type="ocl:NavigationOrAttributeCallExp" location="31:3-31:16" name="chapters">
               <source xsi:type="ocl:VariableExp" location="31:3-31:7">
-                <referredVariable href="new-model#/7"/>
+                <referredVariable href="new-model#/4"/>
               </source>
             </source>
             <body xsi:type="ocl:NavigationOrAttributeCallExp" location="31:28-31:37" name="nbPages">
@@ -116,7 +116,7 @@
       </feature>
       <context_ location="30:8-30:25">
         <context_ xsi:type="ocl:OclModelElement" location="30:16-30:25" name="Book">
-          <model href="new-model#/6"/>
+          <model href="new-model#/1"/>
         </context_>
       </context_>
     </definition>
@@ -125,7 +125,7 @@
     <outPattern location="41:2-46:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="42:3-46:4" varName="out">
         <type xsi:type="ocl:OclModelElement" location="42:9-42:32" name="Publication">
-          <model href="new-model#/9"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="43:13-43:29" propertyName="title">
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="43:22-43:29" name="title">
@@ -147,7 +147,7 @@
     <inPattern location="36:2-40:4">
       <elements xsi:type="atl:SimpleInPatternElement" location="37:3-37:16" varName="b" variableExp="//@elements.3/@inPattern/@filter/@source/@source //@elements.3/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.2/@value/@source">
         <type xsi:type="ocl:OclModelElement" location="37:7-37:16" name="Book">
-          <model href="new-model#/8"/>
+          <model href="new-model#/1"/>
         </type>
       </elements>
       <filter xsi:type="ocl:OperatorCallExp" location="38:4-38:23" operationName=">">

@@ -1,22 +1,22 @@
-<?xml version="1.0" encoding="Cp1252"?>
+<?xml version="1.0" encoding="ASCII"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="1:1-19:2" name="sample">
   <inModels location="7:1-7:9" name="IN">
-    <metamodel href="new-model#/3"/>
+    <metamodel href="new-model#/"/>
   </inModels>
   <outModels location="3:1-3:11" name="OUT1">
-    <metamodel href="new-model#/0"/>
+    <metamodel href="new-model#/"/>
   </outModels>
   <outModels location="4:1-4:11" name="OUT2">
-    <metamodel href="new-model#/1"/>
+    <metamodel href="new-model#/"/>
   </outModels>
   <outModels location="5:1-5:11" name="OUT3">
-    <metamodel href="new-model#/2"/>
+    <metamodel href="new-model#/"/>
   </outModels>
   <elements xsi:type="atl:MatchedRule" location="9:1-19:2" name="test">
     <outPattern location="12:2-18:68">
       <elements xsi:type="atl:SimpleOutPatternElement" location="13:3-13:68" varName="output1_a" model="//@outModels.0">
         <type xsi:type="ocl:OclModelElement" location="13:15-13:24" name="Class">
-          <model href="new-model#/5"/>
+          <model href="new-model#/"/>
         </type>
         <bindings location="13:34-13:67" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="13:42-13:67" operationName="+">
@@ -29,7 +29,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="14:3-14:68" varName="output1_b" model="//@outModels.0">
         <type xsi:type="ocl:OclModelElement" location="14:15-14:24" name="Class">
-          <model href="new-model#/6"/>
+          <model href="new-model#/"/>
         </type>
         <bindings location="14:34-14:67" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="14:42-14:67" operationName="+">
@@ -42,7 +42,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="15:3-15:68" varName="output2_a" model="//@outModels.1">
         <type xsi:type="ocl:OclModelElement" location="15:15-15:24" name="Class">
-          <model href="new-model#/7"/>
+          <model href="new-model#/"/>
         </type>
         <bindings location="15:34-15:67" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="15:42-15:67" operationName="+">
@@ -55,7 +55,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="16:3-16:68" varName="output2_b" model="//@outModels.1">
         <type xsi:type="ocl:OclModelElement" location="16:15-16:24" name="Class">
-          <model href="new-model#/8"/>
+          <model href="new-model#/"/>
         </type>
         <bindings location="16:34-16:67" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="16:42-16:67" operationName="+">
@@ -68,7 +68,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="17:3-17:68" varName="output3_a" model="//@outModels.2">
         <type xsi:type="ocl:OclModelElement" location="17:15-17:24" name="Class">
-          <model href="new-model#/9"/>
+          <model href="new-model#/"/>
         </type>
         <bindings location="17:34-17:67" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="17:42-17:67" operationName="+">
@@ -81,7 +81,7 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="18:3-18:68" varName="output3_b" model="//@outModels.2">
         <type xsi:type="ocl:OclModelElement" location="18:15-18:24" name="Class">
-          <model href="new-model#/10"/>
+          <model href="new-model#/"/>
         </type>
         <bindings location="18:34-18:67" propertyName="name">
           <value xsi:type="ocl:OperatorCallExp" location="18:42-18:67" operationName="+">
@@ -96,7 +96,7 @@
     <inPattern location="10:2-11:20">
       <elements xsi:type="atl:SimpleInPatternElement" location="11:3-11:20" varName="input" variableExp="//@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source/@source //@elements.0/@outPattern/@elements.1/@bindings.0/@value/@source/@source //@elements.0/@outPattern/@elements.2/@bindings.0/@value/@source/@source //@elements.0/@outPattern/@elements.3/@bindings.0/@value/@source/@source //@elements.0/@outPattern/@elements.4/@bindings.0/@value/@source/@source //@elements.0/@outPattern/@elements.5/@bindings.0/@value/@source/@source">
         <type xsi:type="ocl:OclModelElement" location="11:11-11:20" name="Class">
-          <model href="new-model#/4"/>
+          <model href="new-model#/"/>
         </type>
       </elements>
     </inPattern>

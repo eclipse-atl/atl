@@ -1,535 +1,625 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL">
-  <atl:Module location="4:1-100:2" name="IteratorsTests">
-    <commentsBefore>-- @nsURI UML=http://www.eclipse.org/uml2/3.0.0/UML</commentsBefore>
-    <commentsBefore>-- @path ITM=/org.eclipse.m2m.atl.tests/data/inputs/IteratorsTests/IteratorsTestsModel.ecore</commentsBefore>
-    <inModels location="5:23-5:31" name="IN" metamodel="/2"/>
-    <outModels location="5:8-5:17" name="OUT" metamodel="/1"/>
-    <elements xsi:type="atl:Helper" location="7:1-12:56">
-      <definition location="7:8-12:55">
-        <feature xsi:type="ocl:Attribute" location="7:14-12:55" name="sequenceTest">
-          <initExpression xsi:type="ocl:SequenceExp" location="8:2-12:55">
-            <elements xsi:type="ocl:TupleExp" location="8:11-8:55">
-              <tuplePart location="8:17-8:32" varName="a">
-                <type xsi:type="ocl:IntegerType" location="8:21-8:28"/>
-                <initExpression xsi:type="ocl:IntegerExp" location="8:31-8:32" integerSymbol="8"/>
-              </tuplePart>
-              <tuplePart location="8:34-8:54" varName="b">
-                <type xsi:type="ocl:StringType" location="8:38-8:44"/>
-                <initExpression xsi:type="ocl:StringExp" location="8:47-8:54" stringSymbol="eight"/>
-              </tuplePart>
-            </elements>
-            <elements xsi:type="ocl:TupleExp" location="9:3-9:52">
-              <tuplePart location="9:9-9:25" varName="a">
-                <type xsi:type="ocl:IntegerType" location="9:13-9:20"/>
-                <initExpression xsi:type="ocl:OperatorCallExp" location="9:23-9:25" operationName="-">
-                  <source xsi:type="ocl:IntegerExp" location="9:24-9:25" integerSymbol="1"/>
-                </initExpression>
-              </tuplePart>
-              <tuplePart location="9:27-9:51" varName="b">
-                <type xsi:type="ocl:StringType" location="9:31-9:37"/>
-                <initExpression xsi:type="ocl:StringExp" location="9:40-9:51" stringSymbol="minus one"/>
-              </tuplePart>
-            </elements>
-            <elements xsi:type="ocl:TupleExp" location="10:3-10:47">
-              <tuplePart location="10:9-10:24" varName="a">
-                <type xsi:type="ocl:IntegerType" location="10:13-10:20"/>
-                <initExpression xsi:type="ocl:IntegerExp" location="10:23-10:24" integerSymbol="2"/>
-              </tuplePart>
-              <tuplePart location="10:26-10:46" varName="b">
-                <type xsi:type="ocl:StringType" location="10:30-10:36"/>
-                <initExpression xsi:type="ocl:StringExp" location="10:39-10:46" stringSymbol="two 1"/>
-              </tuplePart>
-            </elements>
-            <elements xsi:type="ocl:TupleExp" location="11:3-11:47">
-              <tuplePart location="11:9-11:24" varName="a">
-                <type xsi:type="ocl:IntegerType" location="11:13-11:20"/>
-                <initExpression xsi:type="ocl:IntegerExp" location="11:23-11:24" integerSymbol="2"/>
-              </tuplePart>
-              <tuplePart location="11:26-11:46" varName="b">
-                <type xsi:type="ocl:StringType" location="11:30-11:36"/>
-                <initExpression xsi:type="ocl:StringExp" location="11:39-11:46" stringSymbol="two 2"/>
-              </tuplePart>
-            </elements>
-            <elements xsi:type="ocl:TupleExp" location="12:3-12:54">
-              <tuplePart location="12:9-12:25" varName="a">
-                <type xsi:type="ocl:IntegerType" location="12:13-12:20"/>
-                <initExpression xsi:type="ocl:OperatorCallExp" location="12:23-12:25" operationName="-">
-                  <source xsi:type="ocl:IntegerExp" location="12:24-12:25" integerSymbol="3"/>
-                </initExpression>
-              </tuplePart>
-              <tuplePart location="12:27-12:53" varName="b">
-                <type xsi:type="ocl:StringType" location="12:31-12:37"/>
-                <initExpression xsi:type="ocl:StringExp" location="12:40-12:53" stringSymbol="minus three"/>
-              </tuplePart>
-            </elements>
-          </initExpression>
-          <type xsi:type="ocl:SequenceType" location="7:29-7:73">
-            <elementType xsi:type="ocl:TupleType" location="7:38-7:72">
-              <attributes location="7:48-7:59" name="a">
-                <type xsi:type="ocl:IntegerType" location="7:52-7:59"/>
-              </attributes>
-              <attributes location="7:61-7:71" name="b">
-                <type xsi:type="ocl:StringType" location="7:65-7:71"/>
-              </attributes>
-            </elementType>
-          </type>
-        </feature>
-      </definition>
-    </elements>
-    <elements xsi:type="atl:MatchedRule" location="14:1-100:2" name="IteratorsTests">
-      <outPattern location="17:2-99:4">
-        <elements xsi:type="atl:SimpleOutPatternElement" location="18:3-29:4" varName="iterateTest">
-          <type xsi:type="ocl:OclModelElement" location="18:17-18:37" name="IterateTestClass" model="/1"/>
-          <bindings location="19:4-21:5" propertyName="resultSum">
-            <value xsi:type="ocl:IterateExp" location="19:17-21:5">
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="19:17-19:40" name="sequenceTest">
-                <source xsi:type="ocl:VariableExp" location="19:17-19:27" referredVariable="/3"/>
+<?xml version="1.0" encoding="ASCII"?>
+<atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="4:1-119:2" name="IteratorsTests">
+  <commentsBefore>-- @nsURI UML=http://www.eclipse.org/uml2/3.0.0/UML</commentsBefore>
+  <commentsBefore>-- @path ITM=/org.eclipse.m2m.atl.tests/data/inputs/IteratorsTests/IteratorsTestsModel.ecore</commentsBefore>
+  <inModels location="5:23-5:31" name="IN">
+    <metamodel href="new-model#/1"/>
+  </inModels>
+  <outModels location="5:8-5:17" name="OUT">
+    <metamodel href="new-model#/0"/>
+  </outModels>
+  <elements xsi:type="atl:Helper" location="8:1-13:56">
+    <commentsBefore>--- This is a test helper</commentsBefore>
+    <commentsAfter>--- This is another test helper, with parameters</commentsAfter>
+    <definition location="8:8-13:55">
+      <feature xsi:type="ocl:Attribute" location="8:14-13:55" name="sequenceTest">
+        <initExpression xsi:type="ocl:SequenceExp" location="9:2-13:55">
+          <elements xsi:type="ocl:TupleExp" location="9:11-9:55">
+            <tuplePart location="9:17-9:32" varName="a">
+              <type xsi:type="ocl:IntegerType" location="9:21-9:28"/>
+              <initExpression xsi:type="ocl:IntegerExp" location="9:31-9:32" integerSymbol="8"/>
+            </tuplePart>
+            <tuplePart location="9:34-9:54" varName="b">
+              <type xsi:type="ocl:StringType" location="9:38-9:44"/>
+              <initExpression xsi:type="ocl:StringExp" location="9:47-9:54" stringSymbol="eight"/>
+            </tuplePart>
+          </elements>
+          <elements xsi:type="ocl:TupleExp" location="10:3-10:52">
+            <tuplePart location="10:9-10:25" varName="a">
+              <type xsi:type="ocl:IntegerType" location="10:13-10:20"/>
+              <initExpression xsi:type="ocl:OperatorCallExp" location="10:23-10:25" operationName="-">
+                <source xsi:type="ocl:IntegerExp" location="10:24-10:25" integerSymbol="1"/>
+              </initExpression>
+            </tuplePart>
+            <tuplePart location="10:27-10:51" varName="b">
+              <type xsi:type="ocl:StringType" location="10:31-10:37"/>
+              <initExpression xsi:type="ocl:StringExp" location="10:40-10:51" stringSymbol="minus one"/>
+            </tuplePart>
+          </elements>
+          <elements xsi:type="ocl:TupleExp" location="11:3-11:47">
+            <tuplePart location="11:9-11:24" varName="a">
+              <type xsi:type="ocl:IntegerType" location="11:13-11:20"/>
+              <initExpression xsi:type="ocl:IntegerExp" location="11:23-11:24" integerSymbol="2"/>
+            </tuplePart>
+            <tuplePart location="11:26-11:46" varName="b">
+              <type xsi:type="ocl:StringType" location="11:30-11:36"/>
+              <initExpression xsi:type="ocl:StringExp" location="11:39-11:46" stringSymbol="two 1"/>
+            </tuplePart>
+          </elements>
+          <elements xsi:type="ocl:TupleExp" location="12:3-12:47">
+            <tuplePart location="12:9-12:24" varName="a">
+              <type xsi:type="ocl:IntegerType" location="12:13-12:20"/>
+              <initExpression xsi:type="ocl:IntegerExp" location="12:23-12:24" integerSymbol="2"/>
+            </tuplePart>
+            <tuplePart location="12:26-12:46" varName="b">
+              <type xsi:type="ocl:StringType" location="12:30-12:36"/>
+              <initExpression xsi:type="ocl:StringExp" location="12:39-12:46" stringSymbol="two 2"/>
+            </tuplePart>
+          </elements>
+          <elements xsi:type="ocl:TupleExp" location="13:3-13:54">
+            <tuplePart location="13:9-13:25" varName="a">
+              <type xsi:type="ocl:IntegerType" location="13:13-13:20"/>
+              <initExpression xsi:type="ocl:OperatorCallExp" location="13:23-13:25" operationName="-">
+                <source xsi:type="ocl:IntegerExp" location="13:24-13:25" integerSymbol="3"/>
+              </initExpression>
+            </tuplePart>
+            <tuplePart location="13:27-13:53" varName="b">
+              <type xsi:type="ocl:StringType" location="13:31-13:37"/>
+              <initExpression xsi:type="ocl:StringExp" location="13:40-13:53" stringSymbol="minus three"/>
+            </tuplePart>
+          </elements>
+        </initExpression>
+        <type xsi:type="ocl:SequenceType" location="8:29-8:73">
+          <elementType xsi:type="ocl:TupleType" location="8:38-8:72">
+            <attributes location="8:48-8:59" name="a">
+              <type xsi:type="ocl:IntegerType" location="8:52-8:59"/>
+            </attributes>
+            <attributes location="8:61-8:71" name="b">
+              <type xsi:type="ocl:StringType" location="8:65-8:71"/>
+            </attributes>
+          </elementType>
+        </type>
+      </feature>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:Helper" location="16:1-18:9">
+    <commentsBefore>--- This is another test helper, with parameters</commentsBefore>
+    <definition location="16:8-18:8">
+      <feature xsi:type="ocl:Operation" location="16:14-18:8" name="rtest">
+        <parameters location="16:20-16:31" varName="t1" variableExp="//@elements.1/@definition/@feature/@body/@source/@source">
+          <type xsi:type="ocl:StringType" location="16:25-16:31"/>
+        </parameters>
+        <parameters location="16:33-16:45" varName="t2" variableExp="//@elements.1/@definition/@feature/@body/@arguments.0/@source">
+          <type xsi:type="ocl:IntegerType" location="16:38-16:45"/>
+        </parameters>
+        <returnType xsi:type="ocl:OclAnyType" location="16:49-16:55"/>
+        <body xsi:type="ocl:OperatorCallExp" location="17:2-18:8" operationName="and">
+          <source xsi:type="ocl:OperatorCallExp" location="17:2-17:13" operationName="=">
+            <source xsi:type="ocl:VariableExp" location="17:2-17:4" referredVariable="//@elements.1/@definition/@feature/@parameters.0"/>
+            <arguments xsi:type="ocl:StringExp" location="17:7-17:13" stringSymbol="Test"/>
+          </source>
+          <arguments xsi:type="ocl:OperatorCallExp" location="18:2-18:8" operationName="=">
+            <source xsi:type="ocl:VariableExp" location="18:2-18:4" referredVariable="//@elements.1/@definition/@feature/@parameters.1"/>
+            <arguments xsi:type="ocl:IntegerExp" location="18:7-18:8" integerSymbol="5"/>
+          </arguments>
+        </body>
+      </feature>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:MatchedRule" location="20:1-119:2" name="IteratorsTests">
+    <outPattern location="23:2-118:4">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="24:3-35:4" varName="iterateTest">
+        <type xsi:type="ocl:OclModelElement" location="24:17-24:37" name="IterateTestClass">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="25:4-27:5" propertyName="resultSum">
+          <value xsi:type="ocl:IterateExp" location="25:17-27:5">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="25:17-25:40" name="sequenceTest">
+              <source xsi:type="ocl:VariableExp" location="25:17-25:27">
+                <referredVariable href="new-model#/2"/>
               </source>
-              <body xsi:type="ocl:OperatorCallExp" location="20:5-20:14" operationName="+">
-                <source xsi:type="ocl:VariableExp" location="20:5-20:8" referredVariable="/0/@elements.1/@outPattern/@elements.0/@bindings.0/@value/@result"/>
-                <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="20:11-20:14" name="a">
-                  <source xsi:type="ocl:VariableExp" location="20:11-20:12" referredVariable="/0/@elements.1/@outPattern/@elements.0/@bindings.0/@value/@iterators.0"/>
-                </arguments>
-              </body>
-              <iterators location="19:52-19:53" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.0/@bindings.0/@value/@body/@arguments.0/@source"/>
-              <result location="19:55-19:72" varName="var" variableExp="/0/@elements.1/@outPattern/@elements.0/@bindings.0/@value/@body/@source">
-                <type xsi:type="ocl:IntegerType" location="19:61-19:68"/>
-                <initExpression xsi:type="ocl:IntegerExp" location="19:71-19:72"/>
-              </result>
-            </value>
-          </bindings>
-          <bindings location="22:4-28:5" propertyName="result">
-            <commentsBefore>-- This first iteration sum all the integer values of the tuples of the sequence</commentsBefore>
+            </source>
+            <body xsi:type="ocl:OperatorCallExp" location="26:5-26:14" operationName="+">
+              <source xsi:type="ocl:VariableExp" location="26:5-26:8" referredVariable="//@elements.2/@outPattern/@elements.0/@bindings.0/@value/@result"/>
+              <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="26:11-26:14" name="a">
+                <source xsi:type="ocl:VariableExp" location="26:11-26:12" referredVariable="//@elements.2/@outPattern/@elements.0/@bindings.0/@value/@iterators.0"/>
+              </arguments>
+            </body>
+            <iterators location="25:52-25:53" varName="i" variableExp="//@elements.2/@outPattern/@elements.0/@bindings.0/@value/@body/@arguments.0/@source"/>
+            <result location="25:55-25:72" varName="var" variableExp="//@elements.2/@outPattern/@elements.0/@bindings.0/@value/@body/@source">
+              <type xsi:type="ocl:IntegerType" location="25:61-25:68"/>
+              <initExpression xsi:type="ocl:IntegerExp" location="25:71-25:72"/>
+            </result>
+          </value>
+        </bindings>
+        <bindings location="28:4-34:5" propertyName="result">
+          <commentsBefore>-- This first iteration sums all the integer values of the tuples of the sequence</commentsBefore>
+          <commentsAfter>-- This second iteration says whether the integer value is positive or negative for each tuple</commentsAfter>
+          <value xsi:type="ocl:IterateExp" location="28:14-34:5">
             <commentsAfter>-- This second iteration says whether the integer value is positive or negative for each tuple</commentsAfter>
-            <value xsi:type="ocl:IterateExp" location="22:14-28:5">
-              <commentsAfter>-- This second iteration says whether the integer value is positive or negative for each tuple</commentsAfter>
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="22:14-22:37" name="sequenceTest">
-                <source xsi:type="ocl:VariableExp" location="22:14-22:24" referredVariable="/4"/>
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="28:14-28:37" name="sequenceTest">
+              <source xsi:type="ocl:VariableExp" location="28:14-28:24">
+                <referredVariable href="new-model#/3"/>
               </source>
-              <body xsi:type="ocl:IfExp" location="23:5-27:10">
-                <thenExpression xsi:type="ocl:OperatorCallExp" location="24:6-24:35" operationName="+">
-                  <source xsi:type="ocl:OperatorCallExp" location="24:6-24:15" operationName="+">
-                    <source xsi:type="ocl:VariableExp" location="24:6-24:9" referredVariable="/0/@elements.1/@outPattern/@elements.0/@bindings.1/@value/@result"/>
-                    <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="24:12-24:15" name="b">
-                      <source xsi:type="ocl:VariableExp" location="24:12-24:13" referredVariable="/0/@elements.1/@outPattern/@elements.0/@bindings.1/@value/@iterators.0"/>
-                    </arguments>
-                  </source>
-                  <arguments xsi:type="ocl:StringExp" location="24:18-24:35" stringSymbol=" is positive - "/>
-                </thenExpression>
-                <condition xsi:type="ocl:OperatorCallExp" location="23:8-23:15" operationName=">">
-                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="23:8-23:11" name="a">
-                    <source xsi:type="ocl:VariableExp" location="23:8-23:9" referredVariable="/0/@elements.1/@outPattern/@elements.0/@bindings.1/@value/@iterators.0"/>
-                  </source>
-                  <arguments xsi:type="ocl:IntegerExp" location="23:14-23:15"/>
-                </condition>
-                <elseExpression xsi:type="ocl:OperatorCallExp" location="26:6-26:35" operationName="+">
-                  <source xsi:type="ocl:OperatorCallExp" location="26:6-26:15" operationName="+">
-                    <source xsi:type="ocl:VariableExp" location="26:6-26:9" referredVariable="/0/@elements.1/@outPattern/@elements.0/@bindings.1/@value/@result"/>
-                    <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="26:12-26:15" name="b">
-                      <source xsi:type="ocl:VariableExp" location="26:12-26:13" referredVariable="/0/@elements.1/@outPattern/@elements.0/@bindings.1/@value/@iterators.0"/>
-                    </arguments>
-                  </source>
-                  <arguments xsi:type="ocl:StringExp" location="26:18-26:35" stringSymbol=" is negative - "/>
-                </elseExpression>
-              </body>
-              <iterators location="22:49-22:50" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.0/@bindings.1/@value/@body/@condition/@source/@source /0/@elements.1/@outPattern/@elements.0/@bindings.1/@value/@body/@thenExpression/@source/@arguments.0/@source /0/@elements.1/@outPattern/@elements.0/@bindings.1/@value/@body/@elseExpression/@source/@arguments.0/@source"/>
-              <result location="22:52-22:69" varName="var" variableExp="/0/@elements.1/@outPattern/@elements.0/@bindings.1/@value/@body/@thenExpression/@source/@source /0/@elements.1/@outPattern/@elements.0/@bindings.1/@value/@body/@elseExpression/@source/@source">
-                <type xsi:type="ocl:StringType" location="22:58-22:64"/>
-                <initExpression xsi:type="ocl:StringExp" location="22:67-22:69" stringSymbol=""/>
-              </result>
-            </value>
-          </bindings>
-        </elements>
-        <elements xsi:type="atl:SimpleOutPatternElement" location="30:3-37:4" varName="existsTest">
-          <type xsi:type="ocl:OclModelElement" location="30:16-30:35" name="ExistsTestClass" model="/1"/>
-          <bindings location="31:4-31:64" propertyName="resultTrue">
-            <value xsi:type="ocl:IteratorExp" location="31:18-31:64" name="exists">
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="31:18-31:41" name="sequenceTest">
-                <source xsi:type="ocl:VariableExp" location="31:18-31:28" referredVariable="/5"/>
-              </source>
-              <body xsi:type="ocl:OperatorCallExp" location="31:56-31:63" operationName="&lt;">
-                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="31:56-31:59" name="a">
-                  <source xsi:type="ocl:VariableExp" location="31:56-31:57" referredVariable="/0/@elements.1/@outPattern/@elements.1/@bindings.0/@value/@iterators.0"/>
+            </source>
+            <body xsi:type="ocl:IfExp" location="29:5-33:10">
+              <thenExpression xsi:type="ocl:OperatorCallExp" location="30:6-30:35" operationName="+">
+                <source xsi:type="ocl:OperatorCallExp" location="30:6-30:15" operationName="+">
+                  <source xsi:type="ocl:VariableExp" location="30:6-30:9" referredVariable="//@elements.2/@outPattern/@elements.0/@bindings.1/@value/@result"/>
+                  <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="30:12-30:15" name="b">
+                    <source xsi:type="ocl:VariableExp" location="30:12-30:13" referredVariable="//@elements.2/@outPattern/@elements.0/@bindings.1/@value/@iterators.0"/>
+                  </arguments>
                 </source>
-                <arguments xsi:type="ocl:IntegerExp" location="31:62-31:63"/>
-              </body>
-              <iterators location="31:52-31:53" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.1/@bindings.0/@value/@body/@source/@source"/>
-            </value>
-          </bindings>
-          <bindings location="34:4-34:66" propertyName="resultFalse">
-            <commentsBefore>-- This one returns true if the sequence contains at least on tuple in</commentsBefore>
-            <commentsBefore>-- which the 'a' parameter is negative (in our case, it does)</commentsBefore>
-            <commentsAfter>-- This one returns true if the sequence contains at least on tuple in</commentsAfter>
+                <arguments xsi:type="ocl:StringExp" location="30:18-30:35" stringSymbol=" is positive - "/>
+              </thenExpression>
+              <condition xsi:type="ocl:OperatorCallExp" location="29:8-29:15" operationName=">">
+                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="29:8-29:11" name="a">
+                  <source xsi:type="ocl:VariableExp" location="29:8-29:9" referredVariable="//@elements.2/@outPattern/@elements.0/@bindings.1/@value/@iterators.0"/>
+                </source>
+                <arguments xsi:type="ocl:IntegerExp" location="29:14-29:15"/>
+              </condition>
+              <elseExpression xsi:type="ocl:OperatorCallExp" location="32:6-32:35" operationName="+">
+                <source xsi:type="ocl:OperatorCallExp" location="32:6-32:15" operationName="+">
+                  <source xsi:type="ocl:VariableExp" location="32:6-32:9" referredVariable="//@elements.2/@outPattern/@elements.0/@bindings.1/@value/@result"/>
+                  <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="32:12-32:15" name="b">
+                    <source xsi:type="ocl:VariableExp" location="32:12-32:13" referredVariable="//@elements.2/@outPattern/@elements.0/@bindings.1/@value/@iterators.0"/>
+                  </arguments>
+                </source>
+                <arguments xsi:type="ocl:StringExp" location="32:18-32:35" stringSymbol=" is negative - "/>
+              </elseExpression>
+            </body>
+            <iterators location="28:49-28:50" varName="i" variableExp="//@elements.2/@outPattern/@elements.0/@bindings.1/@value/@body/@condition/@source/@source //@elements.2/@outPattern/@elements.0/@bindings.1/@value/@body/@thenExpression/@source/@arguments.0/@source //@elements.2/@outPattern/@elements.0/@bindings.1/@value/@body/@elseExpression/@source/@arguments.0/@source"/>
+            <result location="28:52-28:69" varName="var" variableExp="//@elements.2/@outPattern/@elements.0/@bindings.1/@value/@body/@thenExpression/@source/@source //@elements.2/@outPattern/@elements.0/@bindings.1/@value/@body/@elseExpression/@source/@source">
+              <type xsi:type="ocl:StringType" location="28:58-28:64"/>
+              <initExpression xsi:type="ocl:StringExp" location="28:67-28:69" stringSymbol=""/>
+            </result>
+          </value>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="36:3-55:4" varName="existsTest">
+        <type xsi:type="ocl:OclModelElement" location="36:16-36:35" name="ExistsTestClass">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="37:4-37:64" propertyName="resultTrue">
+          <value xsi:type="ocl:IteratorExp" location="37:18-37:64" name="exists">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="37:18-37:41" name="sequenceTest">
+              <source xsi:type="ocl:VariableExp" location="37:18-37:28">
+                <referredVariable href="new-model#/4"/>
+              </source>
+            </source>
+            <body xsi:type="ocl:OperatorCallExp" location="37:56-37:63" operationName="&lt;">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="37:56-37:59" name="a">
+                <source xsi:type="ocl:VariableExp" location="37:56-37:57" referredVariable="//@elements.2/@outPattern/@elements.1/@bindings.0/@value/@iterators.0"/>
+              </source>
+              <arguments xsi:type="ocl:IntegerExp" location="37:62-37:63"/>
+            </body>
+            <iterators location="37:52-37:53" varName="i" variableExp="//@elements.2/@outPattern/@elements.1/@bindings.0/@value/@body/@source/@source"/>
+          </value>
+        </bindings>
+        <bindings location="38:4-38:44" propertyName="resultFalse">
+          <value xsi:type="ocl:OperationCallExp" location="38:19-38:44" operationName="rtest">
+            <source xsi:type="ocl:VariableExp" location="38:19-38:29">
+              <referredVariable href="new-model#/5"/>
+            </source>
+            <arguments xsi:type="ocl:StringExp" location="38:36-38:40" stringSymbol="un"/>
+            <arguments xsi:type="ocl:IntegerExp" location="38:42-38:43" integerSymbol="1"/>
+          </value>
+        </bindings>
+        <bindings location="41:4-41:66" propertyName="resultFalse">
+          <commentsBefore>-- This one returns true if the sequence contains at least one tuple in</commentsBefore>
+          <commentsBefore>-- which the 'a' parameter is negative (in our case, it does)</commentsBefore>
+          <commentsAfter>-- This one returns true if the sequence contains at least one tuple in</commentsAfter>
+          <commentsAfter>-- which the 'a' parameter is greater than 15 (in our case, it doesn't)</commentsAfter>
+          <value xsi:type="ocl:IteratorExp" location="41:19-41:66" name="exists">
+            <commentsAfter>-- This one returns true if the sequence contains at least one tuple in</commentsAfter>
             <commentsAfter>-- which the 'a' parameter is greater than 15 (in our case, it doesn't)</commentsAfter>
-            <value xsi:type="ocl:IteratorExp" location="34:19-34:66" name="exists">
-              <commentsAfter>-- This one returns true if the sequence contains at least on tuple in</commentsAfter>
-              <commentsAfter>-- which the 'a' parameter is greater than 15 (in our case, it doesn't)</commentsAfter>
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="34:19-34:42" name="sequenceTest">
-                <source xsi:type="ocl:VariableExp" location="34:19-34:29" referredVariable="/6"/>
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="41:19-41:42" name="sequenceTest">
+              <source xsi:type="ocl:VariableExp" location="41:19-41:29">
+                <referredVariable href="new-model#/6"/>
               </source>
-              <body xsi:type="ocl:OperatorCallExp" location="34:57-34:65" operationName=">">
-                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="34:57-34:60" name="a">
-                  <source xsi:type="ocl:VariableExp" location="34:57-34:58" referredVariable="/0/@elements.1/@outPattern/@elements.1/@bindings.1/@value/@iterators.0"/>
-                </source>
-                <arguments xsi:type="ocl:IntegerExp" location="34:63-34:65" integerSymbol="15"/>
-              </body>
-              <iterators location="34:53-34:54" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.1/@bindings.1/@value/@body/@source/@source"/>
-            </value>
-          </bindings>
-        </elements>
-        <elements xsi:type="atl:SimpleOutPatternElement" location="38:3-45:4" varName="forAllTest">
-          <type xsi:type="ocl:OclModelElement" location="38:16-38:35" name="ForAllTestClass" model="/1"/>
-          <bindings location="39:4-39:65" propertyName="resultFalse">
-            <value xsi:type="ocl:IteratorExp" location="39:19-39:65" name="forAll">
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="39:19-39:42" name="sequenceTest">
-                <source xsi:type="ocl:VariableExp" location="39:19-39:29" referredVariable="/7"/>
+            </source>
+            <body xsi:type="ocl:OperatorCallExp" location="41:57-41:65" operationName=">">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="41:57-41:60" name="a">
+                <source xsi:type="ocl:VariableExp" location="41:57-41:58" referredVariable="//@elements.2/@outPattern/@elements.1/@bindings.2/@value/@iterators.0"/>
               </source>
-              <body xsi:type="ocl:OperatorCallExp" location="39:57-39:64" operationName=">">
-                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="39:57-39:60" name="a">
-                  <source xsi:type="ocl:VariableExp" location="39:57-39:58" referredVariable="/0/@elements.1/@outPattern/@elements.2/@bindings.0/@value/@iterators.0"/>
-                </source>
-                <arguments xsi:type="ocl:IntegerExp" location="39:63-39:64"/>
-              </body>
-              <iterators location="39:53-39:54" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.2/@bindings.0/@value/@body/@source/@source"/>
-            </value>
-          </bindings>
-          <bindings location="42:4-42:66" propertyName="resultTrue">
-            <commentsBefore>-- This one returns true if every tuple of the sequence has it 'a'</commentsBefore>
-            <commentsBefore>-- parameter positive (in our case, it doesn't)</commentsBefore>
+              <arguments xsi:type="ocl:IntegerExp" location="41:63-41:65" integerSymbol="15"/>
+            </body>
+            <iterators location="41:53-41:54" varName="i" variableExp="//@elements.2/@outPattern/@elements.1/@bindings.2/@value/@body/@source/@source"/>
+          </value>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="56:3-64:4" varName="forAllTest">
+        <type xsi:type="ocl:OclModelElement" location="56:16-56:35" name="ForAllTestClass">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="57:4-57:65" propertyName="resultFalse">
+          <value xsi:type="ocl:IteratorExp" location="57:19-57:65" name="forAll">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="57:19-57:42" name="sequenceTest">
+              <source xsi:type="ocl:VariableExp" location="57:19-57:29">
+                <referredVariable href="new-model#/7"/>
+              </source>
+            </source>
+            <body xsi:type="ocl:OperatorCallExp" location="57:57-57:64" operationName=">">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="57:57-57:60" name="a">
+                <source xsi:type="ocl:VariableExp" location="57:57-57:58" referredVariable="//@elements.2/@outPattern/@elements.2/@bindings.0/@value/@iterators.0"/>
+              </source>
+              <arguments xsi:type="ocl:IntegerExp" location="57:63-57:64"/>
+            </body>
+            <iterators location="57:53-57:54" varName="i" variableExp="//@elements.2/@outPattern/@elements.2/@bindings.0/@value/@body/@source/@source"/>
+          </value>
+        </bindings>
+        <bindings location="58:4-58:43" propertyName="resultTrue">
+          <value xsi:type="ocl:OperationCallExp" location="58:18-58:43" operationName="rtest">
+            <source xsi:type="ocl:VariableExp" location="58:18-58:28">
+              <referredVariable href="new-model#/8"/>
+            </source>
+            <arguments xsi:type="ocl:StringExp" location="58:35-58:39" stringSymbol="un"/>
+            <arguments xsi:type="ocl:IntegerExp" location="58:41-58:42" integerSymbol="1"/>
+          </value>
+        </bindings>
+        <bindings location="61:4-61:66" propertyName="resultTrue">
+          <commentsBefore>-- This one returns true if every tuple of the sequence has it 'a'</commentsBefore>
+          <commentsBefore>-- parameter positive (in our case, it doesn't)</commentsBefore>
+          <commentsAfter>-- This one returns true if every tuple of the sequence has its 'a'</commentsAfter>
+          <commentsAfter>-- parameter greater or equal to 3 (in our case, it does)</commentsAfter>
+          <value xsi:type="ocl:IteratorExp" location="61:18-61:66" name="forAll">
             <commentsAfter>-- This one returns true if every tuple of the sequence has its 'a'</commentsAfter>
             <commentsAfter>-- parameter greater or equal to 3 (in our case, it does)</commentsAfter>
-            <value xsi:type="ocl:IteratorExp" location="42:18-42:66" name="forAll">
-              <commentsAfter>-- This one returns true if every tuple of the sequence has its 'a'</commentsAfter>
-              <commentsAfter>-- parameter greater or equal to 3 (in our case, it does)</commentsAfter>
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="42:18-42:41" name="sequenceTest">
-                <source xsi:type="ocl:VariableExp" location="42:18-42:28" referredVariable="/8"/>
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="61:18-61:41" name="sequenceTest">
+              <source xsi:type="ocl:VariableExp" location="61:18-61:28">
+                <referredVariable href="new-model#/9"/>
               </source>
-              <body xsi:type="ocl:OperatorCallExp" location="42:56-42:65" operationName=">=">
-                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="42:56-42:59" name="a">
-                  <source xsi:type="ocl:VariableExp" location="42:56-42:57" referredVariable="/0/@elements.1/@outPattern/@elements.2/@bindings.1/@value/@iterators.0"/>
-                </source>
-                <arguments xsi:type="ocl:OperatorCallExp" location="42:63-42:65" operationName="-">
-                  <source xsi:type="ocl:IntegerExp" location="42:64-42:65" integerSymbol="3"/>
-                </arguments>
-              </body>
-              <iterators location="42:52-42:53" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.2/@bindings.1/@value/@body/@source/@source"/>
-            </value>
-          </bindings>
-        </elements>
-        <elements xsi:type="atl:SimpleOutPatternElement" location="46:3-53:4" varName="isUniqueTest">
-          <type xsi:type="ocl:OclModelElement" location="46:18-46:39" name="IsUniqueTestClass" model="/1"/>
-          <bindings location="47:4-47:68" propertyName="resultFalse">
-            <value xsi:type="ocl:IteratorExp" location="47:19-47:68" name="isUnique">
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="47:19-47:42" name="sequenceTest">
-                <source xsi:type="ocl:VariableExp" location="47:19-47:29" referredVariable="/9"/>
+            </source>
+            <body xsi:type="ocl:OperatorCallExp" location="61:56-61:65" operationName=">=">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="61:56-61:59" name="a">
+                <source xsi:type="ocl:VariableExp" location="61:56-61:57" referredVariable="//@elements.2/@outPattern/@elements.2/@bindings.2/@value/@iterators.0"/>
               </source>
-              <body xsi:type="ocl:OperatorCallExp" location="47:59-47:67" operationName="=">
-                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="47:59-47:62" name="a">
-                  <source xsi:type="ocl:VariableExp" location="47:59-47:60" referredVariable="/0/@elements.1/@outPattern/@elements.3/@bindings.0/@value/@iterators.0"/>
-                </source>
-                <arguments xsi:type="ocl:IntegerExp" location="47:65-47:67" integerSymbol="10"/>
-              </body>
-              <iterators location="47:55-47:56" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.3/@bindings.0/@value/@body/@source/@source"/>
-            </value>
-          </bindings>
-          <bindings location="50:4-50:62" propertyName="resultTrue">
-            <commentsBefore>-- This one returns true if the results of each tuple's 'a' parameter</commentsBefore>
-            <commentsBefore>-- compared to 10 are all different (that's just impossible -> false)</commentsBefore>
+              <arguments xsi:type="ocl:OperatorCallExp" location="61:63-61:65" operationName="-">
+                <source xsi:type="ocl:IntegerExp" location="61:64-61:65" integerSymbol="3"/>
+              </arguments>
+            </body>
+            <iterators location="61:52-61:53" varName="i" variableExp="//@elements.2/@outPattern/@elements.2/@bindings.2/@value/@body/@source/@source"/>
+          </value>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="65:3-72:4" varName="isUniqueTest">
+        <type xsi:type="ocl:OclModelElement" location="65:18-65:39" name="IsUniqueTestClass">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="66:4-66:68" propertyName="resultFalse">
+          <value xsi:type="ocl:IteratorExp" location="66:19-66:68" name="isUnique">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="66:19-66:42" name="sequenceTest">
+              <source xsi:type="ocl:VariableExp" location="66:19-66:29">
+                <referredVariable href="new-model#/10"/>
+              </source>
+            </source>
+            <body xsi:type="ocl:OperatorCallExp" location="66:59-66:67" operationName="=">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="66:59-66:62" name="a">
+                <source xsi:type="ocl:VariableExp" location="66:59-66:60" referredVariable="//@elements.2/@outPattern/@elements.3/@bindings.0/@value/@iterators.0"/>
+              </source>
+              <arguments xsi:type="ocl:IntegerExp" location="66:65-66:67" integerSymbol="10"/>
+            </body>
+            <iterators location="66:55-66:56" varName="i" variableExp="//@elements.2/@outPattern/@elements.3/@bindings.0/@value/@body/@source/@source"/>
+          </value>
+        </bindings>
+        <bindings location="69:4-69:62" propertyName="resultTrue">
+          <commentsBefore>-- This one returns true if the results of each tuple's 'a' parameter</commentsBefore>
+          <commentsBefore>-- compared to 10 are all different (that's just impossible -> false)</commentsBefore>
+          <commentsAfter>-- This one returns true if each tuple's 'b' parameter is unique</commentsAfter>
+          <commentsAfter>-- (in our case, they are all differents)</commentsAfter>
+          <value xsi:type="ocl:IteratorExp" location="69:18-69:62" name="isUnique">
             <commentsAfter>-- This one returns true if each tuple's 'b' parameter is unique</commentsAfter>
             <commentsAfter>-- (in our case, they are all differents)</commentsAfter>
-            <value xsi:type="ocl:IteratorExp" location="50:18-50:62" name="isUnique">
-              <commentsAfter>-- This one returns true if each tuple's 'b' parameter is unique</commentsAfter>
-              <commentsAfter>-- (in our case, they are all differents)</commentsAfter>
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="50:18-50:41" name="sequenceTest">
-                <source xsi:type="ocl:VariableExp" location="50:18-50:28" referredVariable="/10"/>
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="69:18-69:41" name="sequenceTest">
+              <source xsi:type="ocl:VariableExp" location="69:18-69:28">
+                <referredVariable href="new-model#/11"/>
               </source>
-              <body xsi:type="ocl:NavigationOrAttributeCallExp" location="50:58-50:61" name="b">
-                <source xsi:type="ocl:VariableExp" location="50:58-50:59" referredVariable="/0/@elements.1/@outPattern/@elements.3/@bindings.1/@value/@iterators.0"/>
-              </body>
-              <iterators location="50:54-50:55" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.3/@bindings.1/@value/@body/@source"/>
-            </value>
-          </bindings>
-        </elements>
-        <elements xsi:type="atl:SimpleOutPatternElement" location="54:3-61:4" varName="anyTest">
-          <type xsi:type="ocl:OclModelElement" location="54:13-54:29" name="AnyTestClass" model="/1"/>
-          <bindings location="55:4-55:76" propertyName="resultNull">
-            <value xsi:type="ocl:CollectionOperationCallExp" location="55:18-55:76" operationName="toString">
-              <source xsi:type="ocl:IteratorExp" location="55:18-55:62" name="any">
-                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="55:18-55:41" name="sequenceTest">
-                  <source xsi:type="ocl:VariableExp" location="55:18-55:28" referredVariable="/11"/>
-                </source>
-                <body xsi:type="ocl:OperatorCallExp" location="55:53-55:61" operationName="=">
-                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="55:53-55:56" name="a">
-                    <source xsi:type="ocl:VariableExp" location="55:53-55:54" referredVariable="/0/@elements.1/@outPattern/@elements.4/@bindings.0/@value/@source/@iterators.0"/>
+            </source>
+            <body xsi:type="ocl:NavigationOrAttributeCallExp" location="69:58-69:61" name="b">
+              <source xsi:type="ocl:VariableExp" location="69:58-69:59" referredVariable="//@elements.2/@outPattern/@elements.3/@bindings.1/@value/@iterators.0"/>
+            </body>
+            <iterators location="69:54-69:55" varName="i" variableExp="//@elements.2/@outPattern/@elements.3/@bindings.1/@value/@body/@source"/>
+          </value>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="73:3-80:4" varName="anyTest">
+        <type xsi:type="ocl:OclModelElement" location="73:13-73:29" name="AnyTestClass">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="74:4-74:90" propertyName="resultNull">
+          <value xsi:type="ocl:CollectionOperationCallExp" location="74:18-74:90" operationName="toString">
+            <source xsi:type="ocl:CollectionOperationCallExp" location="74:18-74:76" operationName="toString">
+              <source xsi:type="ocl:IteratorExp" location="74:18-74:62" name="any">
+                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="74:18-74:41" name="sequenceTest">
+                  <source xsi:type="ocl:VariableExp" location="74:18-74:28">
+                    <referredVariable href="new-model#/12"/>
                   </source>
-                  <arguments xsi:type="ocl:OperatorCallExp" location="55:59-55:61" operationName="-">
-                    <source xsi:type="ocl:IntegerExp" location="55:60-55:61" integerSymbol="5"/>
+                </source>
+                <body xsi:type="ocl:OperatorCallExp" location="74:53-74:61" operationName="=">
+                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="74:53-74:56" name="a">
+                    <source xsi:type="ocl:VariableExp" location="74:53-74:54" referredVariable="//@elements.2/@outPattern/@elements.4/@bindings.0/@value/@source/@source/@iterators.0"/>
+                  </source>
+                  <arguments xsi:type="ocl:OperatorCallExp" location="74:59-74:61" operationName="-">
+                    <source xsi:type="ocl:IntegerExp" location="74:60-74:61" integerSymbol="5"/>
                   </arguments>
                 </body>
-                <iterators location="55:49-55:50" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.4/@bindings.0/@value/@source/@body/@source/@source"/>
+                <iterators location="74:49-74:50" varName="i" variableExp="//@elements.2/@outPattern/@elements.4/@bindings.0/@value/@source/@source/@body/@source/@source"/>
               </source>
-            </value>
-          </bindings>
-          <bindings location="58:4-58:78" propertyName="resultNotNull">
-            <commentsBefore>-- This one returns one tuple for which the 'a' parameter equals -5</commentsBefore>
-            <commentsBefore>-- (in our case, none)</commentsBefore>
+            </source>
+          </value>
+        </bindings>
+        <bindings location="77:4-77:78" propertyName="resultNotNull">
+          <commentsBefore>-- This one returns one tuple for which the 'a' parameter equals -5</commentsBefore>
+          <commentsBefore>-- (in our case, none)</commentsBefore>
+          <commentsAfter>-- This one returns one tuple for which the 'a' parameter is greater than 1</commentsAfter>
+          <commentsAfter>-- (in our case, there are three possibilities : 8 (eight), 2 (two 1) and 2 (two 2))</commentsAfter>
+          <value xsi:type="ocl:CollectionOperationCallExp" location="77:21-77:78" operationName="toString">
             <commentsAfter>-- This one returns one tuple for which the 'a' parameter is greater than 1</commentsAfter>
             <commentsAfter>-- (in our case, there are three possibilities : 8 (eight), 2 (two 1) and 2 (two 2))</commentsAfter>
-            <value xsi:type="ocl:CollectionOperationCallExp" location="58:21-58:78" operationName="toString">
-              <commentsAfter>-- This one returns one tuple for which the 'a' parameter is greater than 1</commentsAfter>
-              <commentsAfter>-- (in our case, there are three possibilities : 8 (eight), 2 (two 1) and 2 (two 2))</commentsAfter>
-              <source xsi:type="ocl:IteratorExp" location="58:21-58:64" name="any">
-                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="58:21-58:44" name="sequenceTest">
-                  <source xsi:type="ocl:VariableExp" location="58:21-58:31" referredVariable="/12"/>
+            <source xsi:type="ocl:IteratorExp" location="77:21-77:64" name="any">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="77:21-77:44" name="sequenceTest">
+                <source xsi:type="ocl:VariableExp" location="77:21-77:31">
+                  <referredVariable href="new-model#/13"/>
                 </source>
-                <body xsi:type="ocl:OperatorCallExp" location="58:56-58:63" operationName=">">
-                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="58:56-58:59" name="a">
-                    <source xsi:type="ocl:VariableExp" location="58:56-58:57" referredVariable="/0/@elements.1/@outPattern/@elements.4/@bindings.1/@value/@source/@iterators.0"/>
-                  </source>
-                  <arguments xsi:type="ocl:IntegerExp" location="58:62-58:63" integerSymbol="1"/>
-                </body>
-                <iterators location="58:52-58:53" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.4/@bindings.1/@value/@source/@body/@source/@source"/>
               </source>
-            </value>
-          </bindings>
-        </elements>
-        <elements xsi:type="atl:SimpleOutPatternElement" location="62:3-69:4" varName="oneTest">
-          <type xsi:type="ocl:OclModelElement" location="62:13-62:29" name="OneTestClass" model="/1"/>
-          <bindings location="63:4-63:61" propertyName="resultTrue">
-            <value xsi:type="ocl:IteratorExp" location="63:18-63:61" name="one">
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="63:18-63:41" name="sequenceTest">
-                <source xsi:type="ocl:VariableExp" location="63:18-63:28" referredVariable="/13"/>
-              </source>
-              <body xsi:type="ocl:OperatorCallExp" location="63:53-63:60" operationName="=">
-                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="63:53-63:56" name="a">
-                  <source xsi:type="ocl:VariableExp" location="63:53-63:54" referredVariable="/0/@elements.1/@outPattern/@elements.5/@bindings.0/@value/@iterators.0"/>
+              <body xsi:type="ocl:OperatorCallExp" location="77:56-77:63" operationName=">">
+                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="77:56-77:59" name="a">
+                  <source xsi:type="ocl:VariableExp" location="77:56-77:57" referredVariable="//@elements.2/@outPattern/@elements.4/@bindings.1/@value/@source/@iterators.0"/>
                 </source>
-                <arguments xsi:type="ocl:IntegerExp" location="63:59-63:60" integerSymbol="8"/>
+                <arguments xsi:type="ocl:IntegerExp" location="77:62-77:63" integerSymbol="1"/>
               </body>
-              <iterators location="63:49-63:50" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.5/@bindings.0/@value/@body/@source/@source"/>
-            </value>
-          </bindings>
-          <bindings location="66:4-66:62" propertyName="resultFalse">
-            <commentsBefore>-- This one returns true if there is one and only one tuple for which it's 'a' parameter</commentsBefore>
-            <commentsBefore>-- equals 8 (in our case, there is one indeed)</commentsBefore>
+              <iterators location="77:52-77:53" varName="i" variableExp="//@elements.2/@outPattern/@elements.4/@bindings.1/@value/@source/@body/@source/@source"/>
+            </source>
+          </value>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="81:3-88:4" varName="oneTest">
+        <type xsi:type="ocl:OclModelElement" location="81:13-81:29" name="OneTestClass">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="82:4-82:61" propertyName="resultTrue">
+          <value xsi:type="ocl:IteratorExp" location="82:18-82:61" name="one">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="82:18-82:41" name="sequenceTest">
+              <source xsi:type="ocl:VariableExp" location="82:18-82:28">
+                <referredVariable href="new-model#/14"/>
+              </source>
+            </source>
+            <body xsi:type="ocl:OperatorCallExp" location="82:53-82:60" operationName="=">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="82:53-82:56" name="a">
+                <source xsi:type="ocl:VariableExp" location="82:53-82:54" referredVariable="//@elements.2/@outPattern/@elements.5/@bindings.0/@value/@iterators.0"/>
+              </source>
+              <arguments xsi:type="ocl:IntegerExp" location="82:59-82:60" integerSymbol="8"/>
+            </body>
+            <iterators location="82:49-82:50" varName="i" variableExp="//@elements.2/@outPattern/@elements.5/@bindings.0/@value/@body/@source/@source"/>
+          </value>
+        </bindings>
+        <bindings location="85:4-85:62" propertyName="resultFalse">
+          <commentsBefore>-- This one returns true if there is one and only one tuple for which it's 'a' parameter</commentsBefore>
+          <commentsBefore>-- equals 8 (in our case, there is one indeed)</commentsBefore>
+          <commentsAfter>-- This one returns true if there is one and only one tuple for which it's 'a' parameter</commentsAfter>
+          <commentsAfter>-- equals 2 (in our case, there is two, so it returns false)</commentsAfter>
+          <value xsi:type="ocl:IteratorExp" location="85:19-85:62" name="one">
             <commentsAfter>-- This one returns true if there is one and only one tuple for which it's 'a' parameter</commentsAfter>
             <commentsAfter>-- equals 2 (in our case, there is two, so it returns false)</commentsAfter>
-            <value xsi:type="ocl:IteratorExp" location="66:19-66:62" name="one">
-              <commentsAfter>-- This one returns true if there is one and only one tuple for which it's 'a' parameter</commentsAfter>
-              <commentsAfter>-- equals 2 (in our case, there is two, so it returns false)</commentsAfter>
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="66:19-66:42" name="sequenceTest">
-                <source xsi:type="ocl:VariableExp" location="66:19-66:29" referredVariable="/14"/>
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="85:19-85:42" name="sequenceTest">
+              <source xsi:type="ocl:VariableExp" location="85:19-85:29">
+                <referredVariable href="new-model#/15"/>
               </source>
-              <body xsi:type="ocl:OperatorCallExp" location="66:54-66:61" operationName="=">
-                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="66:54-66:57" name="a">
-                  <source xsi:type="ocl:VariableExp" location="66:54-66:55" referredVariable="/0/@elements.1/@outPattern/@elements.5/@bindings.1/@value/@iterators.0"/>
+            </source>
+            <body xsi:type="ocl:OperatorCallExp" location="85:54-85:61" operationName="=">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="85:54-85:57" name="a">
+                <source xsi:type="ocl:VariableExp" location="85:54-85:55" referredVariable="//@elements.2/@outPattern/@elements.5/@bindings.1/@value/@iterators.0"/>
+              </source>
+              <arguments xsi:type="ocl:IntegerExp" location="85:60-85:61" integerSymbol="2"/>
+            </body>
+            <iterators location="85:50-85:51" varName="i" variableExp="//@elements.2/@outPattern/@elements.5/@bindings.1/@value/@body/@source/@source"/>
+          </value>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="89:3-96:4" varName="collectTest">
+        <type xsi:type="ocl:OclModelElement" location="89:17-89:37" name="CollectTestClass">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="90:4-90:84" propertyName="resultFalse">
+          <value xsi:type="ocl:CollectionOperationCallExp" location="90:19-90:84" operationName="includes">
+            <source xsi:type="ocl:IteratorExp" location="90:19-90:66" name="collect">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="90:19-90:42" name="sequenceTest">
+                <source xsi:type="ocl:VariableExp" location="90:19-90:29">
+                  <referredVariable href="new-model#/16"/>
                 </source>
-                <arguments xsi:type="ocl:IntegerExp" location="66:60-66:61" integerSymbol="2"/>
+              </source>
+              <body xsi:type="ocl:OperatorCallExp" location="90:58-90:65" operationName="=">
+                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="90:58-90:61" name="a">
+                  <source xsi:type="ocl:VariableExp" location="90:58-90:59" referredVariable="//@elements.2/@outPattern/@elements.6/@bindings.0/@value/@source/@iterators.0"/>
+                </source>
+                <arguments xsi:type="ocl:IntegerExp" location="90:64-90:65" integerSymbol="3"/>
               </body>
-              <iterators location="66:50-66:51" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.5/@bindings.1/@value/@body/@source/@source"/>
-            </value>
-          </bindings>
-        </elements>
-        <elements xsi:type="atl:SimpleOutPatternElement" location="70:3-77:4" varName="collectTest">
-          <type xsi:type="ocl:OclModelElement" location="70:17-70:37" name="CollectTestClass" model="/1"/>
-          <bindings location="71:4-71:84" propertyName="resultFalse">
-            <value xsi:type="ocl:CollectionOperationCallExp" location="71:19-71:84" operationName="includes">
-              <source xsi:type="ocl:IteratorExp" location="71:19-71:66" name="collect">
-                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="71:19-71:42" name="sequenceTest">
-                  <source xsi:type="ocl:VariableExp" location="71:19-71:29" referredVariable="/15"/>
-                </source>
-                <body xsi:type="ocl:OperatorCallExp" location="71:58-71:65" operationName="=">
-                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="71:58-71:61" name="a">
-                    <source xsi:type="ocl:VariableExp" location="71:58-71:59" referredVariable="/0/@elements.1/@outPattern/@elements.6/@bindings.0/@value/@source/@iterators.0"/>
-                  </source>
-                  <arguments xsi:type="ocl:IntegerExp" location="71:64-71:65" integerSymbol="3"/>
-                </body>
-                <iterators location="71:54-71:55" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.6/@bindings.0/@value/@source/@body/@source/@source"/>
-              </source>
-              <arguments xsi:type="ocl:BooleanExp" location="71:79-71:83" booleanSymbol="true"/>
-            </value>
-          </bindings>
-          <bindings location="74:4-74:83" propertyName="resultTrue">
-            <commentsBefore>-- This one returns true if the collect operation finds a tuple for which the 'a' parameter</commentsBefore>
-            <commentsBefore>-- equals 3 (that is to say if the collect operation contains a true result, in our case, it doesn't)</commentsBefore>
+              <iterators location="90:54-90:55" varName="i" variableExp="//@elements.2/@outPattern/@elements.6/@bindings.0/@value/@source/@body/@source/@source"/>
+            </source>
+            <arguments xsi:type="ocl:BooleanExp" location="90:79-90:83" booleanSymbol="true"/>
+          </value>
+        </bindings>
+        <bindings location="93:4-93:83" propertyName="resultTrue">
+          <commentsBefore>-- This one returns true if the collect operation finds a tuple for which the 'a' parameter</commentsBefore>
+          <commentsBefore>-- equals 3 (that is to say if the collect operation contains a true result, in our case, it doesn't)</commentsBefore>
+          <commentsAfter>-- This one returns true if the collect operation finds a tuple for which the 'a' parameter</commentsAfter>
+          <commentsAfter>-- equals 2 (in our case, it does)</commentsAfter>
+          <value xsi:type="ocl:CollectionOperationCallExp" location="93:18-93:83" operationName="includes">
             <commentsAfter>-- This one returns true if the collect operation finds a tuple for which the 'a' parameter</commentsAfter>
             <commentsAfter>-- equals 2 (in our case, it does)</commentsAfter>
-            <value xsi:type="ocl:CollectionOperationCallExp" location="74:18-74:83" operationName="includes">
-              <commentsAfter>-- This one returns true if the collect operation finds a tuple for which the 'a' parameter</commentsAfter>
-              <commentsAfter>-- equals 2 (in our case, it does)</commentsAfter>
-              <source xsi:type="ocl:IteratorExp" location="74:18-74:65" name="collect">
-                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="74:18-74:41" name="sequenceTest">
-                  <source xsi:type="ocl:VariableExp" location="74:18-74:28" referredVariable="/16"/>
+            <source xsi:type="ocl:IteratorExp" location="93:18-93:65" name="collect">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="93:18-93:41" name="sequenceTest">
+                <source xsi:type="ocl:VariableExp" location="93:18-93:28">
+                  <referredVariable href="new-model#/17"/>
                 </source>
-                <body xsi:type="ocl:OperatorCallExp" location="74:57-74:64" operationName="=">
-                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="74:57-74:60" name="a">
-                    <source xsi:type="ocl:VariableExp" location="74:57-74:58" referredVariable="/0/@elements.1/@outPattern/@elements.6/@bindings.1/@value/@source/@iterators.0"/>
-                  </source>
-                  <arguments xsi:type="ocl:IntegerExp" location="74:63-74:64" integerSymbol="2"/>
-                </body>
-                <iterators location="74:53-74:54" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.6/@bindings.1/@value/@source/@body/@source/@source"/>
               </source>
-              <arguments xsi:type="ocl:BooleanExp" location="74:78-74:82" booleanSymbol="true"/>
-            </value>
-          </bindings>
-        </elements>
-        <elements xsi:type="atl:SimpleOutPatternElement" location="78:3-85:4" varName="selectTest">
-          <type xsi:type="ocl:OclModelElement" location="78:16-78:35" name="SelectTestClass" model="/1"/>
-          <bindings location="79:4-79:91" propertyName="resultNull">
-            <value xsi:type="ocl:CollectionOperationCallExp" location="79:18-79:91" operationName="toString">
-              <source xsi:type="ocl:CollectionOperationCallExp" location="79:18-79:77" operationName="flatten">
-                <source xsi:type="ocl:IteratorExp" location="79:18-79:64" name="select">
-                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="79:18-79:41" name="sequenceTest">
-                    <source xsi:type="ocl:VariableExp" location="79:18-79:28" referredVariable="/17"/>
-                  </source>
-                  <body xsi:type="ocl:OperatorCallExp" location="79:56-79:63" operationName="=">
-                    <source xsi:type="ocl:NavigationOrAttributeCallExp" location="79:56-79:59" name="a">
-                      <source xsi:type="ocl:VariableExp" location="79:56-79:57" referredVariable="/0/@elements.1/@outPattern/@elements.7/@bindings.0/@value/@source/@source/@iterators.0"/>
+              <body xsi:type="ocl:OperatorCallExp" location="93:57-93:64" operationName="=">
+                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="93:57-93:60" name="a">
+                  <source xsi:type="ocl:VariableExp" location="93:57-93:58" referredVariable="//@elements.2/@outPattern/@elements.6/@bindings.1/@value/@source/@iterators.0"/>
+                </source>
+                <arguments xsi:type="ocl:IntegerExp" location="93:63-93:64" integerSymbol="2"/>
+              </body>
+              <iterators location="93:53-93:54" varName="i" variableExp="//@elements.2/@outPattern/@elements.6/@bindings.1/@value/@source/@body/@source/@source"/>
+            </source>
+            <arguments xsi:type="ocl:BooleanExp" location="93:78-93:82" booleanSymbol="true"/>
+          </value>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="97:3-104:4" varName="selectTest">
+        <type xsi:type="ocl:OclModelElement" location="97:16-97:35" name="SelectTestClass">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="98:4-98:105" propertyName="resultNull">
+          <value xsi:type="ocl:CollectionOperationCallExp" location="98:18-98:105" operationName="toString">
+            <source xsi:type="ocl:CollectionOperationCallExp" location="98:18-98:91" operationName="toString">
+              <source xsi:type="ocl:CollectionOperationCallExp" location="98:18-98:77" operationName="flatten">
+                <source xsi:type="ocl:IteratorExp" location="98:18-98:64" name="select">
+                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="98:18-98:41" name="sequenceTest">
+                    <source xsi:type="ocl:VariableExp" location="98:18-98:28">
+                      <referredVariable href="new-model#/18"/>
                     </source>
-                    <arguments xsi:type="ocl:IntegerExp" location="79:62-79:63" integerSymbol="3"/>
+                  </source>
+                  <body xsi:type="ocl:OperatorCallExp" location="98:56-98:63" operationName="=">
+                    <source xsi:type="ocl:NavigationOrAttributeCallExp" location="98:56-98:59" name="a">
+                      <source xsi:type="ocl:VariableExp" location="98:56-98:57" referredVariable="//@elements.2/@outPattern/@elements.7/@bindings.0/@value/@source/@source/@source/@iterators.0"/>
+                    </source>
+                    <arguments xsi:type="ocl:IntegerExp" location="98:62-98:63" integerSymbol="3"/>
                   </body>
-                  <iterators location="79:52-79:53" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.7/@bindings.0/@value/@source/@source/@body/@source/@source"/>
+                  <iterators location="98:52-98:53" varName="i" variableExp="//@elements.2/@outPattern/@elements.7/@bindings.0/@value/@source/@source/@source/@body/@source/@source"/>
                 </source>
               </source>
-            </value>
-          </bindings>
-          <bindings location="82:4-82:94" propertyName="resultNotNull">
-            <commentsBefore>-- This one returns a sequence containing the tuples for which the 'a' parameter equals 3</commentsBefore>
-            <commentsBefore>-- (in our case, there is not, so it returns a empty sequence)</commentsBefore>
+            </source>
+          </value>
+        </bindings>
+        <bindings location="101:4-101:94" propertyName="resultNotNull">
+          <commentsBefore>-- This one returns a sequence containing the tuples for which the 'a' parameter equals 3</commentsBefore>
+          <commentsBefore>-- (in our case, there is not, so it returns a empty sequence)</commentsBefore>
+          <commentsAfter>-- This one returns a sequence containing the tuples for which the 'a' parameter equals 2</commentsAfter>
+          <commentsAfter>-- (in our case, there are two)</commentsAfter>
+          <value xsi:type="ocl:CollectionOperationCallExp" location="101:21-101:94" operationName="toString">
             <commentsAfter>-- This one returns a sequence containing the tuples for which the 'a' parameter equals 2</commentsAfter>
             <commentsAfter>-- (in our case, there are two)</commentsAfter>
-            <value xsi:type="ocl:CollectionOperationCallExp" location="82:21-82:94" operationName="toString">
-              <commentsAfter>-- This one returns a sequence containing the tuples for which the 'a' parameter equals 2</commentsAfter>
-              <commentsAfter>-- (in our case, there are two)</commentsAfter>
-              <source xsi:type="ocl:CollectionOperationCallExp" location="82:21-82:80" operationName="flatten">
-                <source xsi:type="ocl:IteratorExp" location="82:21-82:67" name="select">
-                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="82:21-82:44" name="sequenceTest">
-                    <source xsi:type="ocl:VariableExp" location="82:21-82:31" referredVariable="/18"/>
+            <source xsi:type="ocl:CollectionOperationCallExp" location="101:21-101:80" operationName="flatten">
+              <source xsi:type="ocl:IteratorExp" location="101:21-101:67" name="select">
+                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="101:21-101:44" name="sequenceTest">
+                  <source xsi:type="ocl:VariableExp" location="101:21-101:31">
+                    <referredVariable href="new-model#/19"/>
                   </source>
-                  <body xsi:type="ocl:OperatorCallExp" location="82:59-82:66" operationName="=">
-                    <source xsi:type="ocl:NavigationOrAttributeCallExp" location="82:59-82:62" name="a">
-                      <source xsi:type="ocl:VariableExp" location="82:59-82:60" referredVariable="/0/@elements.1/@outPattern/@elements.7/@bindings.1/@value/@source/@source/@iterators.0"/>
-                    </source>
-                    <arguments xsi:type="ocl:IntegerExp" location="82:65-82:66" integerSymbol="2"/>
-                  </body>
-                  <iterators location="82:55-82:56" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.7/@bindings.1/@value/@source/@source/@body/@source/@source"/>
                 </source>
-              </source>
-            </value>
-          </bindings>
-        </elements>
-        <elements xsi:type="atl:SimpleOutPatternElement" location="86:3-93:4" varName="rejectTest">
-          <type xsi:type="ocl:OclModelElement" location="86:16-86:35" name="RejectTestClass" model="/1"/>
-          <bindings location="87:4-87:92" propertyName="resultNull">
-            <value xsi:type="ocl:CollectionOperationCallExp" location="87:18-87:92" operationName="toString">
-              <source xsi:type="ocl:CollectionOperationCallExp" location="87:18-87:78" operationName="flatten">
-                <source xsi:type="ocl:IteratorExp" location="87:18-87:65" name="reject">
-                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="87:18-87:41" name="sequenceTest">
-                    <source xsi:type="ocl:VariableExp" location="87:18-87:28" referredVariable="/19"/>
+                <body xsi:type="ocl:OperatorCallExp" location="101:59-101:66" operationName="=">
+                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="101:59-101:62" name="a">
+                    <source xsi:type="ocl:VariableExp" location="101:59-101:60" referredVariable="//@elements.2/@outPattern/@elements.7/@bindings.1/@value/@source/@source/@iterators.0"/>
                   </source>
-                  <body xsi:type="ocl:OperatorCallExp" location="87:56-87:64" operationName=">">
-                    <source xsi:type="ocl:NavigationOrAttributeCallExp" location="87:56-87:59" name="a">
-                      <source xsi:type="ocl:VariableExp" location="87:56-87:57" referredVariable="/0/@elements.1/@outPattern/@elements.8/@bindings.0/@value/@source/@source/@iterators.0"/>
-                    </source>
-                    <arguments xsi:type="ocl:OperatorCallExp" location="87:62-87:64" operationName="-">
-                      <source xsi:type="ocl:IntegerExp" location="87:63-87:64" integerSymbol="4"/>
-                    </arguments>
-                  </body>
-                  <iterators location="87:52-87:53" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.8/@bindings.0/@value/@source/@source/@body/@source/@source"/>
-                </source>
+                  <arguments xsi:type="ocl:IntegerExp" location="101:65-101:66" integerSymbol="2"/>
+                </body>
+                <iterators location="101:55-101:56" varName="i" variableExp="//@elements.2/@outPattern/@elements.7/@bindings.1/@value/@source/@source/@body/@source/@source"/>
               </source>
-            </value>
-          </bindings>
-          <bindings location="90:4-90:94" propertyName="resultNotNull">
-            <commentsBefore>-- This one returns a sequence containing the tuples for which the 'a' parameter IS NOT</commentsBefore>
-            <commentsBefore>-- greater than -4 (in our case, there is not, so it returns a empty sequence)</commentsBefore>
+            </source>
+          </value>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="105:3-112:4" varName="rejectTest">
+        <type xsi:type="ocl:OclModelElement" location="105:16-105:35" name="RejectTestClass">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="106:4-106:92" propertyName="resultNull">
+          <value xsi:type="ocl:CollectionOperationCallExp" location="106:18-106:92" operationName="toString">
+            <source xsi:type="ocl:CollectionOperationCallExp" location="106:18-106:78" operationName="flatten">
+              <source xsi:type="ocl:IteratorExp" location="106:18-106:65" name="reject">
+                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="106:18-106:41" name="sequenceTest">
+                  <source xsi:type="ocl:VariableExp" location="106:18-106:28">
+                    <referredVariable href="new-model#/20"/>
+                  </source>
+                </source>
+                <body xsi:type="ocl:OperatorCallExp" location="106:56-106:64" operationName=">">
+                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="106:56-106:59" name="a">
+                    <source xsi:type="ocl:VariableExp" location="106:56-106:57" referredVariable="//@elements.2/@outPattern/@elements.8/@bindings.0/@value/@source/@source/@iterators.0"/>
+                  </source>
+                  <arguments xsi:type="ocl:OperatorCallExp" location="106:62-106:64" operationName="-">
+                    <source xsi:type="ocl:IntegerExp" location="106:63-106:64" integerSymbol="4"/>
+                  </arguments>
+                </body>
+                <iterators location="106:52-106:53" varName="i" variableExp="//@elements.2/@outPattern/@elements.8/@bindings.0/@value/@source/@source/@body/@source/@source"/>
+              </source>
+            </source>
+          </value>
+        </bindings>
+        <bindings location="109:4-109:94" propertyName="resultNotNull">
+          <commentsBefore>-- This one returns a sequence containing the tuples for which the 'a' parameter IS NOT</commentsBefore>
+          <commentsBefore>-- greater than -4 (in our case, there is not, so it returns a empty sequence)</commentsBefore>
+          <commentsAfter>-- This one returns a sequence containing the tuples for which the 'a' parameter DOES NOT</commentsAfter>
+          <commentsAfter>-- equal 3 (in our case, every tuple matches this condition)</commentsAfter>
+          <value xsi:type="ocl:CollectionOperationCallExp" location="109:21-109:94" operationName="toString">
             <commentsAfter>-- This one returns a sequence containing the tuples for which the 'a' parameter DOES NOT</commentsAfter>
             <commentsAfter>-- equal 3 (in our case, every tuple matches this condition)</commentsAfter>
-            <value xsi:type="ocl:CollectionOperationCallExp" location="90:21-90:94" operationName="toString">
-              <commentsAfter>-- This one returns a sequence containing the tuples for which the 'a' parameter DOES NOT</commentsAfter>
-              <commentsAfter>-- equal 3 (in our case, every tuple matches this condition)</commentsAfter>
-              <source xsi:type="ocl:CollectionOperationCallExp" location="90:21-90:80" operationName="flatten">
-                <source xsi:type="ocl:IteratorExp" location="90:21-90:67" name="reject">
-                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="90:21-90:44" name="sequenceTest">
-                    <source xsi:type="ocl:VariableExp" location="90:21-90:31" referredVariable="/20"/>
+            <source xsi:type="ocl:CollectionOperationCallExp" location="109:21-109:80" operationName="flatten">
+              <source xsi:type="ocl:IteratorExp" location="109:21-109:67" name="reject">
+                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="109:21-109:44" name="sequenceTest">
+                  <source xsi:type="ocl:VariableExp" location="109:21-109:31">
+                    <referredVariable href="new-model#/21"/>
                   </source>
-                  <body xsi:type="ocl:OperatorCallExp" location="90:59-90:66" operationName="=">
-                    <source xsi:type="ocl:NavigationOrAttributeCallExp" location="90:59-90:62" name="a">
-                      <source xsi:type="ocl:VariableExp" location="90:59-90:60" referredVariable="/0/@elements.1/@outPattern/@elements.8/@bindings.1/@value/@source/@source/@iterators.0"/>
-                    </source>
-                    <arguments xsi:type="ocl:IntegerExp" location="90:65-90:66" integerSymbol="3"/>
-                  </body>
-                  <iterators location="90:55-90:56" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.8/@bindings.1/@value/@source/@source/@body/@source/@source"/>
                 </source>
-              </source>
-            </value>
-          </bindings>
-        </elements>
-        <elements xsi:type="atl:SimpleOutPatternElement" location="94:3-99:4" varName="sortedByTest">
-          <type xsi:type="ocl:OclModelElement" location="94:18-94:39" name="SortedByTestClass" model="/1"/>
-          <bindings location="95:4-95:93" propertyName="resultByString">
-            <value xsi:type="ocl:CollectionOperationCallExp" location="95:22-95:93" operationName="toString">
-              <source xsi:type="ocl:CollectionOperationCallExp" location="95:22-95:79" operationName="flatten">
-                <source xsi:type="ocl:IteratorExp" location="95:22-95:66" name="sortedBy">
-                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="95:22-95:45" name="sequenceTest">
-                    <source xsi:type="ocl:VariableExp" location="95:22-95:32" referredVariable="/21"/>
+                <body xsi:type="ocl:OperatorCallExp" location="109:59-109:66" operationName="=">
+                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="109:59-109:62" name="a">
+                    <source xsi:type="ocl:VariableExp" location="109:59-109:60" referredVariable="//@elements.2/@outPattern/@elements.8/@bindings.1/@value/@source/@source/@iterators.0"/>
                   </source>
-                  <body xsi:type="ocl:NavigationOrAttributeCallExp" location="95:62-95:65" name="b">
-                    <source xsi:type="ocl:VariableExp" location="95:62-95:63" referredVariable="/0/@elements.1/@outPattern/@elements.9/@bindings.0/@value/@source/@source/@iterators.0"/>
-                  </body>
-                  <iterators location="95:58-95:59" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.9/@bindings.0/@value/@source/@source/@body/@source"/>
-                </source>
+                  <arguments xsi:type="ocl:IntegerExp" location="109:65-109:66" integerSymbol="3"/>
+                </body>
+                <iterators location="109:55-109:56" varName="i" variableExp="//@elements.2/@outPattern/@elements.8/@bindings.1/@value/@source/@source/@body/@source/@source"/>
               </source>
-            </value>
-          </bindings>
-          <bindings location="97:4-97:90" propertyName="resultByInt">
-            <commentsBefore>-- This one returns the test sequence sorted by the 'b' parameter of the tuples</commentsBefore>
+            </source>
+          </value>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="113:3-118:4" varName="sortedByTest">
+        <type xsi:type="ocl:OclModelElement" location="113:18-113:39" name="SortedByTestClass">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="114:4-114:93" propertyName="resultByString">
+          <value xsi:type="ocl:CollectionOperationCallExp" location="114:22-114:93" operationName="toString">
+            <source xsi:type="ocl:CollectionOperationCallExp" location="114:22-114:79" operationName="flatten">
+              <source xsi:type="ocl:IteratorExp" location="114:22-114:66" name="sortedBy">
+                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="114:22-114:45" name="sequenceTest">
+                  <source xsi:type="ocl:VariableExp" location="114:22-114:32">
+                    <referredVariable href="new-model#/22"/>
+                  </source>
+                </source>
+                <body xsi:type="ocl:NavigationOrAttributeCallExp" location="114:62-114:65" name="b">
+                  <source xsi:type="ocl:VariableExp" location="114:62-114:63" referredVariable="//@elements.2/@outPattern/@elements.9/@bindings.0/@value/@source/@source/@iterators.0"/>
+                </body>
+                <iterators location="114:58-114:59" varName="i" variableExp="//@elements.2/@outPattern/@elements.9/@bindings.0/@value/@source/@source/@body/@source"/>
+              </source>
+            </source>
+          </value>
+        </bindings>
+        <bindings location="116:4-116:90" propertyName="resultByInt">
+          <commentsBefore>-- This one returns the test sequence sorted by the 'b' parameter of the tuples</commentsBefore>
+          <commentsAfter>-- This one returns the test sequence sorted by the 'a' parameter of the tuples</commentsAfter>
+          <value xsi:type="ocl:CollectionOperationCallExp" location="116:19-116:90" operationName="toString">
             <commentsAfter>-- This one returns the test sequence sorted by the 'a' parameter of the tuples</commentsAfter>
-            <value xsi:type="ocl:CollectionOperationCallExp" location="97:19-97:90" operationName="toString">
-              <commentsAfter>-- This one returns the test sequence sorted by the 'a' parameter of the tuples</commentsAfter>
-              <source xsi:type="ocl:CollectionOperationCallExp" location="97:19-97:76" operationName="flatten">
-                <source xsi:type="ocl:IteratorExp" location="97:19-97:63" name="sortedBy">
-                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="97:19-97:42" name="sequenceTest">
-                    <source xsi:type="ocl:VariableExp" location="97:19-97:29" referredVariable="/22"/>
+            <source xsi:type="ocl:CollectionOperationCallExp" location="116:19-116:76" operationName="flatten">
+              <source xsi:type="ocl:IteratorExp" location="116:19-116:63" name="sortedBy">
+                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="116:19-116:42" name="sequenceTest">
+                  <source xsi:type="ocl:VariableExp" location="116:19-116:29">
+                    <referredVariable href="new-model#/23"/>
                   </source>
-                  <body xsi:type="ocl:NavigationOrAttributeCallExp" location="97:59-97:62" name="a">
-                    <source xsi:type="ocl:VariableExp" location="97:59-97:60" referredVariable="/0/@elements.1/@outPattern/@elements.9/@bindings.1/@value/@source/@source/@iterators.0"/>
-                  </body>
-                  <iterators location="97:55-97:56" varName="i" variableExp="/0/@elements.1/@outPattern/@elements.9/@bindings.1/@value/@source/@source/@body/@source"/>
                 </source>
+                <body xsi:type="ocl:NavigationOrAttributeCallExp" location="116:59-116:62" name="a">
+                  <source xsi:type="ocl:VariableExp" location="116:59-116:60" referredVariable="//@elements.2/@outPattern/@elements.9/@bindings.1/@value/@source/@source/@iterators.0"/>
+                </body>
+                <iterators location="116:55-116:56" varName="i" variableExp="//@elements.2/@outPattern/@elements.9/@bindings.1/@value/@source/@source/@body/@source"/>
               </source>
-            </value>
-          </bindings>
-        </elements>
-      </outPattern>
-      <inPattern location="15:2-16:20">
-        <elements xsi:type="atl:SimpleInPatternElement" location="16:3-16:20" varName="input">
-          <type xsi:type="ocl:OclModelElement" location="16:11-16:20" name="Model" model="/2"/>
-        </elements>
-      </inPattern>
-    </elements>
-  </atl:Module>
-  <ocl:OclModel location="5:14-5:17" name="ITM" elements="/0/@elements.1/@outPattern/@elements.0/@type /0/@elements.1/@outPattern/@elements.1/@type /0/@elements.1/@outPattern/@elements.2/@type /0/@elements.1/@outPattern/@elements.3/@type /0/@elements.1/@outPattern/@elements.4/@type /0/@elements.1/@outPattern/@elements.5/@type /0/@elements.1/@outPattern/@elements.6/@type /0/@elements.1/@outPattern/@elements.7/@type /0/@elements.1/@outPattern/@elements.8/@type /0/@elements.1/@outPattern/@elements.9/@type" model="/0/@outModels.0"/>
-  <ocl:OclModel location="5:28-5:31" name="UML" elements="/0/@elements.1/@inPattern/@elements.0/@type" model="/0/@inModels.0"/>
-  <ocl:VariableDeclaration location="19:17-19:27" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.0/@bindings.0/@value/@source/@source"/>
-  <ocl:VariableDeclaration location="22:14-22:24" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.0/@bindings.1/@value/@source/@source"/>
-  <ocl:VariableDeclaration location="31:18-31:28" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.1/@bindings.0/@value/@source/@source"/>
-  <ocl:VariableDeclaration location="34:19-34:29" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.1/@bindings.1/@value/@source/@source"/>
-  <ocl:VariableDeclaration location="39:19-39:29" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.2/@bindings.0/@value/@source/@source"/>
-  <ocl:VariableDeclaration location="42:18-42:28" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.2/@bindings.1/@value/@source/@source"/>
-  <ocl:VariableDeclaration location="47:19-47:29" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.3/@bindings.0/@value/@source/@source"/>
-  <ocl:VariableDeclaration location="50:18-50:28" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.3/@bindings.1/@value/@source/@source"/>
-  <ocl:VariableDeclaration location="55:18-55:28" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.4/@bindings.0/@value/@source/@source/@source"/>
-  <ocl:VariableDeclaration location="58:21-58:31" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.4/@bindings.1/@value/@source/@source/@source"/>
-  <ocl:VariableDeclaration location="63:18-63:28" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.5/@bindings.0/@value/@source/@source"/>
-  <ocl:VariableDeclaration location="66:19-66:29" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.5/@bindings.1/@value/@source/@source"/>
-  <ocl:VariableDeclaration location="71:19-71:29" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.6/@bindings.0/@value/@source/@source/@source"/>
-  <ocl:VariableDeclaration location="74:18-74:28" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.6/@bindings.1/@value/@source/@source/@source"/>
-  <ocl:VariableDeclaration location="79:18-79:28" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.7/@bindings.0/@value/@source/@source/@source/@source"/>
-  <ocl:VariableDeclaration location="82:21-82:31" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.7/@bindings.1/@value/@source/@source/@source/@source"/>
-  <ocl:VariableDeclaration location="87:18-87:28" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.8/@bindings.0/@value/@source/@source/@source/@source"/>
-  <ocl:VariableDeclaration location="90:21-90:31" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.8/@bindings.1/@value/@source/@source/@source/@source"/>
-  <ocl:VariableDeclaration location="95:22-95:32" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.9/@bindings.0/@value/@source/@source/@source/@source"/>
-  <ocl:VariableDeclaration location="97:19-97:29" varName="thisModule" variableExp="/0/@elements.1/@outPattern/@elements.9/@bindings.1/@value/@source/@source/@source/@source"/>
-</xmi:XMI>
+            </source>
+          </value>
+        </bindings>
+      </elements>
+    </outPattern>
+    <inPattern location="21:2-22:20">
+      <elements xsi:type="atl:SimpleInPatternElement" location="22:3-22:20" varName="input">
+        <type xsi:type="ocl:OclModelElement" location="22:11-22:20" name="Model">
+          <model href="new-model#/1"/>
+        </type>
+      </elements>
+    </inPattern>
+  </elements>
+</atl:Module>

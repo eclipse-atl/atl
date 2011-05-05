@@ -22,9 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.compare.diff.metamodel.ComparisonResourceSnapshot;
-import org.eclipse.emf.compare.diff.metamodel.DiffFactory;
-import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
 import org.eclipse.emf.compare.diff.metamodel.DiffModel;
 import org.eclipse.emf.compare.diff.service.DiffService;
 import org.eclipse.emf.compare.match.metamodel.MatchModel;
@@ -78,11 +75,11 @@ public final class ModelUtils {
 		final Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
 		final Object resourceFactory = reg.getExtensionToFactoryMap().get(fileExtension);
 		if (resourceFactory != null) {
-			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-					resourceFactory);
+			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+					.put(fileExtension, resourceFactory);
 		} else {
-			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-					new XMIResourceFactoryImpl());
+			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+					.put(fileExtension, new XMIResourceFactoryImpl());
 		}
 
 		final Resource result = resourceSet.createResource(modelURI);
@@ -164,8 +161,8 @@ public final class ModelUtils {
 	 */
 	public static void save(EObject root, String path) throws IOException {
 		final URI modelURI = URI.createURI(path);
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
-				Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+				.put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		final Resource newModelResource = resourceSet.createResource(modelURI);
 		newModelResource.getContents().add(root);
 		final Map<String, Object> options = new HashMap<String, Object>();
@@ -207,28 +204,40 @@ public final class ModelUtils {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public static void compareModels(File leftUri, File rightUri, boolean ignoreIds, boolean delete)
+	public static DiffModel compareModels(File leftUri, File rightUri, boolean ignoreIds, boolean delete)
 			throws IOException, InterruptedException {
 		Resource leftModel = load(leftUri);
 		Resource rightModel = load(rightUri);
+		final DiffModel res = compareModels(leftModel, rightModel, ignoreIds);
+		if (delete) {
+			leftUri.delete();
+		}
+		return res;
+	}
+
+	/**
+	 * Compare two ecore files as models.
+	 * 
+	 * @param leftModel
+	 *            the left model
+	 * @param rightModel
+	 *            the right model
+	 * @param ignoreIds
+	 *            if <code>true</code>, ignore xmi ids
+	 * @param delete
+	 *            if <code>true</code>, delete the right file after comparison
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public static DiffModel compareModels(Resource leftModel, Resource rightModel, boolean ignoreIds)
+			throws IOException, InterruptedException {
 
 		Map<String, Object> options = new HashMap<String, Object>();
 		if (ignoreIds) {
 			options.put("match.ignore.xmi.id", Boolean.TRUE); //$NON-NLS-1$
 		}
 		final MatchModel inputMatch = MatchService.doResourceMatch(leftModel, rightModel, options);
-		final DiffModel inputDiff = DiffService.doDiff(inputMatch);
-
-		if (((DiffGroup)inputDiff.getOwnedElements().get(0)).getSubchanges() != 0) {
-			ComparisonResourceSnapshot snapshot = DiffFactory.eINSTANCE.createComparisonResourceSnapshot();
-			snapshot.setDiff(inputDiff);
-			snapshot.setMatch(inputMatch);
-			ModelUtils.save(snapshot, "file:/" + leftUri.toString() + ".emfdiff"); //$NON-NLS-1$ //$NON-NLS-2$
-			throw new RuntimeException("There are differences between models " + leftUri + " and " + rightUri); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		if (delete) {
-			leftUri.delete();
-		}
+		return DiffService.doDiff(inputMatch);
 	}
 
 }

@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="Cp1252"?>
+<?xml version="1.0" encoding="ASCII"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="3:1-44:2" name="FlattenTest">
   <commentsBefore>-- @nsURI UML=http://www.eclipse.org/uml2/3.0.0/UML</commentsBefore>
   <inModels location="4:23-4:31" name="IN">
-    <metamodel href="new-model#/1"/>
+    <metamodel href="new-model#/0"/>
   </inModels>
   <outModels location="4:8-4:17" name="OUT">
     <metamodel href="new-model#/0"/>
@@ -128,7 +128,7 @@
     <outPattern location="22:2-43:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="23:3-31:4" varName="container">
         <type xsi:type="ocl:OclModelElement" location="23:15-23:24" name="Model">
-          <model href="new-model#/3"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="24:4-24:27" propertyName="name">
           <value xsi:type="ocl:StringExp" location="24:12-24:27" stringSymbol="tests results"/>
@@ -144,14 +144,14 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="32:3-34:4" varName="testSequenceClass" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.0">
         <type xsi:type="ocl:OclModelElement" location="32:23-32:32" name="Class">
-          <model href="new-model#/4"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="33:4-33:62" propertyName="name">
           <value xsi:type="ocl:CollectionOperationCallExp" location="33:12-33:62" operationName="toString">
             <source xsi:type="ocl:CollectionOperationCallExp" location="33:12-33:48" operationName="flatten">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="33:12-33:35" name="testSequence">
                 <source xsi:type="ocl:VariableExp" location="33:12-33:22">
-                  <referredVariable href="new-model#/5"/>
+                  <referredVariable href="new-model#/1"/>
                 </source>
               </source>
             </source>
@@ -160,19 +160,19 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="35:3-37:4" varName="testBagClass" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.1">
         <type xsi:type="ocl:OclModelElement" location="35:18-35:27" name="Class">
-          <model href="new-model#/6"/>
+          <model href="new-model#/0"/>
         </type>
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="38:3-40:4" varName="testSetClass" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.2">
         <type xsi:type="ocl:OclModelElement" location="38:18-38:27" name="Class">
-          <model href="new-model#/7"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="39:4-39:57" propertyName="name">
           <value xsi:type="ocl:CollectionOperationCallExp" location="39:12-39:57" operationName="toString">
             <source xsi:type="ocl:CollectionOperationCallExp" location="39:12-39:43" operationName="flatten">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="39:12-39:30" name="testSet">
                 <source xsi:type="ocl:VariableExp" location="39:12-39:22">
-                  <referredVariable href="new-model#/8"/>
+                  <referredVariable href="new-model#/2"/>
                 </source>
               </source>
             </source>
@@ -181,14 +181,14 @@
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="41:3-43:4" varName="testOrderedSetClass" variableExp="//@elements.4/@outPattern/@elements.0/@bindings.1/@value/@elements.3">
         <type xsi:type="ocl:OclModelElement" location="41:25-41:34" name="Class">
-          <model href="new-model#/9"/>
+          <model href="new-model#/0"/>
         </type>
         <bindings location="42:4-42:64" propertyName="name">
           <value xsi:type="ocl:CollectionOperationCallExp" location="42:12-42:64" operationName="toString">
             <source xsi:type="ocl:CollectionOperationCallExp" location="42:12-42:50" operationName="flatten">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="42:12-42:37" name="testOrderedSet">
                 <source xsi:type="ocl:VariableExp" location="42:12-42:22">
-                  <referredVariable href="new-model#/10"/>
+                  <referredVariable href="new-model#/3"/>
                 </source>
               </source>
             </source>
@@ -199,7 +199,7 @@
     <inPattern location="19:2-20:22">
       <elements xsi:type="atl:SimpleInPatternElement" location="20:3-20:22" varName="trigger">
         <type xsi:type="ocl:OclModelElement" location="20:13-20:22" name="Model">
-          <model href="new-model#/2"/>
+          <model href="new-model#/0"/>
         </type>
       </elements>
     </inPattern>

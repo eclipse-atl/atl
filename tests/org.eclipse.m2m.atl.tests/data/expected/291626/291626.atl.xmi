@@ -1,22 +1,22 @@
-<?xml version="1.0" encoding="Cp1252"?>
+<?xml version="1.0" encoding="ASCII"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="3:1-14:2" name="TestAllInstancesCache">
   <commentsBefore>-- @nsURI UML=http://www.eclipse.org/uml2/3.0.0/UML</commentsBefore>
   <inModels location="4:23-4:31" name="IN">
-    <metamodel href="new-model#/1"/>
+    <metamodel href="new-model#/"/>
   </inModels>
   <outModels location="4:8-4:17" name="OUT">
-    <metamodel href="new-model#/0"/>
+    <metamodel href="new-model#/"/>
   </outModels>
   <elements xsi:type="atl:CalledRule" location="6:1-14:2" name="Main" isEntrypoint="true">
     <outPattern location="8:2-8:45">
       <elements xsi:type="atl:SimpleOutPatternElement" location="8:5-8:24" varName="p1" variableExp="//@elements.0/@actionBlock/@statements.0/@expression/@source">
         <type xsi:type="ocl:OclModelElement" location="8:10-8:21" name="Package">
-          <model href="new-model#/2"/>
+          <model href="new-model#/"/>
         </type>
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="8:26-8:45" varName="p2" variableExp="//@elements.0/@actionBlock/@statements.2/@expression/@source">
         <type xsi:type="ocl:OclModelElement" location="8:31-8:42" name="Package">
-          <model href="new-model#/3"/>
+          <model href="new-model#/"/>
         </type>
       </elements>
     </outPattern>
@@ -31,7 +31,7 @@
               <source xsi:type="ocl:OperationCallExp" location="10:37-10:77" operationName="size">
                 <source xsi:type="ocl:OperationCallExp" location="10:37-10:70" operationName="allInstancesFrom">
                   <source xsi:type="ocl:OclModelElement" location="10:37-10:46" name="Class">
-                    <model href="new-model#/4"/>
+                    <model href="new-model#/"/>
                   </source>
                   <arguments xsi:type="ocl:StringExp" location="10:64-10:69" stringSymbol="OUT"/>
                 </source>
@@ -43,7 +43,7 @@
       <statements xsi:type="atl:ExpressionStat" location="11:2-11:26">
         <expression xsi:type="ocl:OperationCallExp" location="11:2-11:25" operationName="newInstance">
           <source xsi:type="ocl:OclModelElement" location="11:2-11:11" name="Class">
-            <model href="new-model#/5"/>
+            <model href="new-model#/"/>
           </source>
         </expression>
       </statements>
@@ -57,7 +57,7 @@
               <source xsi:type="ocl:OperationCallExp" location="12:36-12:76" operationName="size">
                 <source xsi:type="ocl:OperationCallExp" location="12:36-12:69" operationName="allInstancesFrom">
                   <source xsi:type="ocl:OclModelElement" location="12:36-12:45" name="Class">
-                    <model href="new-model#/6"/>
+                    <model href="new-model#/"/>
                   </source>
                   <arguments xsi:type="ocl:StringExp" location="12:63-12:68" stringSymbol="OUT"/>
                 </source>

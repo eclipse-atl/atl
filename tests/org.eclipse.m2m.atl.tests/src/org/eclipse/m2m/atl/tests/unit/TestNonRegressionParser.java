@@ -12,8 +12,10 @@ package org.eclipse.m2m.atl.tests.unit;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Properties;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
@@ -47,24 +49,22 @@ public class TestNonRegressionParser extends TestNonRegression {
 	 */
 	@Override
 	protected void singleTest(File directory) {
-		final File expectedDir = new File(directory.getPath().replaceFirst(
-				"inputs", "expected")); //$NON-NLS-1$//$NON-NLS-2$
-		final String transfoPath = directory + File.separator
-				+ directory.getName() + ".atl"; //$NON-NLS-1$
-		final String expectedPath = expectedDir + File.separator
-				+ directory.getName() + ".atl.xmi"; //$NON-NLS-1$
+		final File expectedDir = new File(directory.getPath().replaceFirst("inputs", "expected")); //$NON-NLS-1$//$NON-NLS-2$
+		final String transfoPath = directory + File.separator + directory.getName() + ".atl"; //$NON-NLS-1$
+		final String expectedPath = expectedDir + File.separator + directory.getName() + ".atl.xmi"; //$NON-NLS-1$
 		if (!new File(transfoPath).exists()) {
 			info("ATL file " + transfoPath + " does not exist. Skipped"); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
+		if (!new File(expectedPath).exists()) {
+			info("ATL Model file " + expectedPath + " does not exist. Skipped"); //$NON-NLS-1$ //$NON-NLS-2$
+			return;
+		}
 		try {
-			EObject result = AtlParser.getDefault().parse(
-					new FileInputStream(transfoPath));
-			assertEquals(transfoPath, FileUtils.readFileAsString(new File(
-					expectedPath)), ModelUtils.serialize(result));
+			EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));
+			assertEquals(FileUtils.readFileAsString(new File(expectedPath)), ModelUtils.serialize(result));
 		} catch (Exception e) {
-			fail("Failed to parse " + transfoPath); //$NON-NLS-1$
+			fail("Failed to parse " + transfoPath + ": " + e); //$NON-NLS-1$
 		}
 	}
-
 }
