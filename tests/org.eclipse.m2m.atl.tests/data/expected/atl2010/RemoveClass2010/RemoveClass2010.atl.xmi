@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ASCII"?>
+<atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="3:1-11:2" name="RemoveClass2010" isRefining="true">
+  <commentsBefore>-- @atlcompiler atl2010</commentsBefore>
+  <inModels location="4:33-4:47" name="IN">
+    <metamodel href="new-model#/"/>
+  </inModels>
+  <outModels location="4:8-4:23" name="OUT">
+    <metamodel href="new-model#/"/>
+  </outModels>
+  <elements xsi:type="atl:MatchedRule" location="6:1-11:2" name="RemoveClass">
+    <outPattern location="9:2-10:7">
+      <dropPattern location="10:3-10:7"/>
+    </outPattern>
+    <inPattern location="7:2-8:21">
+      <elements xsi:type="atl:SimpleInPatternElement" location="8:3-8:21" varName="s">
+        <type xsi:type="ocl:OclModelElement" location="8:6-8:21" name="Class">
+          <model href="new-model#/"/>
+        </type>
+      </elements>
+    </inPattern>
+  </elements>
+</atl:Module>

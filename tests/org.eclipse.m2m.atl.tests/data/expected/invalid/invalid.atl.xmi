@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="ASCII"?>
+<atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="6:1-58:65" name="EMX2DI">
+  <commentsBefore>-- @path Di=/org.eclipse.m2m.atl.tests/data/inputs/RSM2TPC/Topcased.ecore</commentsBefore>
+  <commentsBefore>-- @path Emx=/org.eclipse.m2m.atl.tests/data/inputs/RSM2TPC/RSM.ecore</commentsBefore>
+  <commentsBefore>-- @atlcompiler atl2006</commentsBefore>
+  <commentsAfter>-- Processing of type Diagram</commentsAfter>
+  <inModels location="7:21-7:28" name="IN">
+    <metamodel href="new-model#/1"/>
+  </inModels>
+  <outModels location="7:8-7:15" name="OUT">
+    <metamodel href="new-model#/0"/>
+  </outModels>
+  <elements xsi:type="atl:Helper" location="17:1-18:26">
+    <commentsBefore>-- This file describes the transformation from a RSM format (file with a EMX extension)</commentsBefore>
+    <commentsBefore>-- to a DI format supported by the Topcased UML2 editor.</commentsBefore>
+    <commentsBefore>-- The current state of this transformation takes into account the following kind of UML2</commentsBefore>
+    <commentsBefore>-- diagrams :</commentsBefore>
+    <commentsBefore>-- 1) Class Diagram</commentsBefore>
+    <commentsBefore>-- 2) UseCase Diagram</commentsBefore>
+    <commentsBefore>-- ===== HELPERS OPERATIONS ===== --</commentsBefore>
+    <commentsAfter>-- ===== HELPER ATTRIBUTES ===== --</commentsAfter>
+    <definition location="17:8-18:25">
+      <feature xsi:type="ocl:Attribute" location="17:13-18:25" name="allNodes">
+        <initExpression xsi:type="ocl:OperationCallExp" location="18:2-18:25" operationName="allInstances">
+          <source xsi:type="ocl:OclModelElement" location="18:2-18:10" name="Node">
+            <model href="new-model#/1"/>
+          </source>
+        </initExpression>
+        <type xsi:type="ocl:SetType" location="17:23-17:36">
+          <elementType xsi:type="ocl:OclModelElement" location="17:27-17:35" name="Node">
+            <model href="new-model#/1"/>
+          </elementType>
+        </type>
+      </feature>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:Helper" location="21:1-22:12">
+    <commentsBefore>-- ===== HELPER ATTRIBUTES ===== --</commentsBefore>
+    <definition location="21:8-22:11">
+      <feature xsi:type="ocl:Attribute" location="21:13-22:11" name="usecase">
+        <initExpression xsi:type="ocl:StringExp" location="22:2-22:11" stringSymbol="Usecase"/>
+        <type xsi:type="ocl:StringType" location="21:22-21:28"/>
+      </feature>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:Helper" location="24:1-25:9">
+    <definition location="24:8-25:9">
+      <feature xsi:type="ocl:Attribute" location="24:13-25:9" name="class">
+        <initExpression xsi:type="ocl:StringExp" location="25:2-25:9" stringSymbol="Class"/>
+        <type xsi:type="ocl:StringType" location="24:20-24:26"/>
+      </feature>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:Helper" location="27:1-28:12">
+    <definition location="27:8-28:11">
+      <feature xsi:type="ocl:Attribute" location="27:13-28:11" name="default">
+        <initExpression xsi:type="ocl:StringExp" location="28:2-28:11" stringSymbol="default"/>
+        <type xsi:type="ocl:StringType" location="27:22-27:28"/>
+      </feature>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:Helper" location="30:1-31:25">
+    <definition location="30:8-31:24">
+      <feature xsi:type="ocl:Attribute" location="30:13-31:24" name="featureID">
+        <initExpression xsi:type="ocl:StringExp" location="31:2-31:24" stringSymbol="eStructuralFeatureID"/>
+        <type xsi:type="ocl:StringType" location="30:24-30:30"/>
+      </feature>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:Helper" location="33:1-34:19">
+    <definition location="33:8-34:18">
+      <feature xsi:type="ocl:Attribute" location="33:13-34:18" name="nameEdge">
+        <initExpression xsi:type="ocl:StringExp" location="34:2-34:18" stringSymbol="nameEdgeObject"/>
+        <type xsi:type="ocl:StringType" location="33:23-33:29"/>
+      </feature>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:Helper" location="36:1-37:24">
+    <commentsAfter>-- =====COMMON PART ===== --</commentsAfter>
+    <commentsAfter>-- This part covers common items such as Model, Diagram, Comment, Note, Comment and Note</commentsAfter>
+    <commentsAfter>-- associations.</commentsAfter>
+    <commentsAfter>-- Processing of type Model</commentsAfter>
+    <definition location="36:8-37:23">
+      <feature xsi:type="ocl:Attribute" location="36:13-37:23" name="extensionEdge">
+        <initExpression xsi:type="ocl:StringExp" location="37:2-37:23" stringSymbol="extensionEdgeObject"/>
+        <type xsi:type="ocl:StringType" location="36:28-36:34"/>
+      </feature>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:MatchedRule" location="43:1-54:2" name="umlDiagrams">
+    <commentsBefore>-- =====COMMON PART ===== --</commentsBefore>
+    <commentsBefore>-- This part covers common items such as Model, Diagram, Comment, Note, Comment and Note</commentsBefore>
+    <commentsBefore>-- associations.</commentsBefore>
+    <commentsBefore>-- Processing of type Model</commentsBefore>
+    <commentsAfter>-- Ignore others kinds of diagram and in particular Collaboration of Communication Type</commentsAfter>
+    <outPattern location="46:2-53:4">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="47:3-50:4" varName="di">
+        <type xsi:type="ocl:OclModelElement" location="47:7-47:18" name="Diagrams">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="48:4-48:15" propertyName="model">
+          <value xsi:type="ocl:VariableExp" location="48:13-48:15" referredVariable="//@elements.7/@outPattern/@elements.1"/>
+        </bindings>
+        <bindings location="49:4-49:42" propertyName="diagrams">
+          <value xsi:type="ocl:OperationCallExp" location="49:16-49:42" operationName="allInstances">
+            <source xsi:type="ocl:OclModelElement" location="49:16-49:27" name="Diagram">
+              <model href="new-model#/1"/>
+            </source>
+          </value>
+        </bindings>
+      </elements>
+      <elements xsi:type="atl:SimpleOutPatternElement" location="51:3-53:4" varName="mo" variableExp="//@elements.7/@outPattern/@elements.0/@bindings.0/@value">
+        <type xsi:type="ocl:OclModelElement" location="51:7-51:17" name="Element">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="52:4-52:25" propertyName="href">
+          <value xsi:type="ocl:NavigationOrAttributeCallExp" location="52:12-52:25" name="idelement">
+            <source xsi:type="ocl:VariableExp" location="52:12-52:15" referredVariable="//@elements.7/@inPattern/@elements.0"/>
+          </value>
+        </bindings>
+      </elements>
+    </outPattern>
+    <inPattern location="44:2-45:17">
+      <elements xsi:type="atl:SimpleInPatternElement" location="45:3-45:17" varName="emx" variableExp="//@elements.7/@outPattern/@elements.1/@bindings.0/@value/@source">
+        <type xsi:type="ocl:OclModelElement" location="45:8-45:17" name="Model">
+          <model href="new-model#/1"/>
+        </type>
+      </elements>
+    </inPattern>
+  </elements>
+  <elements xsi:type="atl:Helper" location="57:1-58:65">
+    <commentsBefore>-- Ignore others kinds of diagram and in particular Collaboration of Communication Type</commentsBefore>
+    <commentsAfter>-- Processing of type Diagram</commentsAfter>
+    <definition location="57:8-58:64">
+      <feature xsi:type="ocl:Attribute" location="57:33-58:64" name="isValidDiagram">
+        <initExpression xsi:type="ocl:OperatorCallExp" location="58:2-58:64" operationName="or">
+          <source xsi:type="ocl:OperatorCallExp" location="58:2-58:32" operationName="=">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="58:2-58:11" name="type">
+              <source xsi:type="ocl:VariableExp" location="58:2-58:6">
+                <referredVariable href="new-model#/2"/>
+              </source>
+            </source>
+            <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="58:14-58:32" name="usecase">
+              <source xsi:type="ocl:VariableExp" location="58:14-58:24">
+                <referredVariable href="new-model#/3"/>
+              </source>
+            </arguments>
+          </source>
+          <arguments xsi:type="ocl:OperatorCallExp" location="58:36-58:64" operationName="=">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="58:36-58:45" name="type">
+              <source xsi:type="ocl:VariableExp" location="58:36-58:40">
+                <referredVariable href="new-model#/4"/>
+              </source>
+            </source>
+            <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="58:48-58:64" name="class">
+              <source xsi:type="ocl:VariableExp" location="58:48-58:58">
+                <referredVariable href="new-model#/5"/>
+              </source>
+            </arguments>
+          </arguments>
+        </initExpression>
+        <type xsi:type="ocl:BooleanType" location="57:49-57:56"/>
+      </feature>
+      <context_ location="57:8-57:27">
+        <context_ xsi:type="ocl:OclModelElement" location="57:16-57:27" name="Diagram">
+          <model href="new-model#/1"/>
+        </context_>
+      </context_>
+    </definition>
+  </elements>
+</atl:Module>

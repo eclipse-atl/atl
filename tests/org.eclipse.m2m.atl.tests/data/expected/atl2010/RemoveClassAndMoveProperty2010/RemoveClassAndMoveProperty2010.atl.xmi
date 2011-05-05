@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ASCII"?>
+<atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="3:1-30:2" name="RemoveClassAndMoveProperty2010" isRefining="true">
+  <commentsBefore>-- @atlcompiler atl2010</commentsBefore>
+  <inModels location="4:33-4:47" name="IN">
+    <metamodel href="new-model#/"/>
+  </inModels>
+  <outModels location="4:8-4:23" name="OUT">
+    <metamodel href="new-model#/"/>
+  </outModels>
+  <elements xsi:type="atl:MatchedRule" location="6:1-11:2" name="RemoveClass">
+    <commentsAfter>--rule RemoveClass {</commentsAfter>
+    <commentsAfter>--&#x9;from</commentsAfter>
+    <commentsAfter>--&#x9;&#x9;s: SampleUML!Class (s.name = 'C1')</commentsAfter>
+    <commentsAfter>--&#x9;to</commentsAfter>
+    <commentsAfter>--&#x9;&#x9;drop</commentsAfter>
+    <commentsAfter>--}</commentsAfter>
+    <commentsAfter>--rule RemoveClass {</commentsAfter>
+    <commentsAfter>--&#x9;drop</commentsAfter>
+    <commentsAfter>--&#x9;&#x9;s: SampleUML!Class (s.name = 'C1')</commentsAfter>
+    <commentsAfter>--}</commentsAfter>
+    <outPattern location="9:2-10:7">
+      <dropPattern location="10:3-10:7"/>
+    </outPattern>
+    <inPattern location="7:2-8:37">
+      <elements xsi:type="atl:SimpleInPatternElement" location="8:3-8:21" varName="s" variableExp="//@elements.0/@inPattern/@filter/@source/@source">
+        <type xsi:type="ocl:OclModelElement" location="8:6-8:21" name="Class">
+          <model href="new-model#/"/>
+        </type>
+      </elements>
+      <filter xsi:type="ocl:OperatorCallExp" location="8:23-8:36" operationName="=">
+        <source xsi:type="ocl:NavigationOrAttributeCallExp" location="8:23-8:29" name="name">
+          <source xsi:type="ocl:VariableExp" location="8:23-8:24" referredVariable="//@elements.0/@inPattern/@elements.0"/>
+        </source>
+        <arguments xsi:type="ocl:StringExp" location="8:32-8:36" stringSymbol="C1"/>
+      </filter>
+    </inPattern>
+  </elements>
+  <elements xsi:type="atl:MatchedRule" location="23:1-30:2" name="MoveProperty">
+    <commentsBefore>--rule RemoveClass {</commentsBefore>
+    <commentsBefore>--&#x9;from</commentsBefore>
+    <commentsBefore>--&#x9;&#x9;s: SampleUML!Class (s.name = 'C1')</commentsBefore>
+    <commentsBefore>--&#x9;to</commentsBefore>
+    <commentsBefore>--&#x9;&#x9;drop</commentsBefore>
+    <commentsBefore>--}</commentsBefore>
+    <commentsBefore>--rule RemoveClass {</commentsBefore>
+    <commentsBefore>--&#x9;drop</commentsBefore>
+    <commentsBefore>--&#x9;&#x9;s: SampleUML!Class (s.name = 'C1')</commentsBefore>
+    <commentsBefore>--}</commentsBefore>
+    <outPattern location="26:2-29:4">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="27:3-29:4" varName="t">
+        <type xsi:type="ocl:OclModelElement" location="27:6-27:24" name="Property">
+          <model href="new-model#/"/>
+        </type>
+        <bindings location="28:4-28:79" propertyName="owner">
+          <value xsi:type="ocl:CollectionOperationCallExp" location="28:13-28:79" operationName="first">
+            <source xsi:type="ocl:IteratorExp" location="28:13-28:70" name="select">
+              <source xsi:type="ocl:OperationCallExp" location="28:13-28:43" operationName="allInstances">
+                <source xsi:type="ocl:OclModelElement" location="28:13-28:28" name="Class">
+                  <model href="new-model#/"/>
+                </source>
+              </source>
+              <body xsi:type="ocl:OperatorCallExp" location="28:56-28:69" operationName="=">
+                <source xsi:type="ocl:NavigationOrAttributeCallExp" location="28:56-28:62" name="name">
+                  <source xsi:type="ocl:VariableExp" location="28:56-28:57" referredVariable="//@elements.1/@outPattern/@elements.0/@bindings.0/@value/@source/@iterators.0"/>
+                </source>
+                <arguments xsi:type="ocl:StringExp" location="28:65-28:69" stringSymbol="C2"/>
+              </body>
+              <iterators location="28:52-28:53" varName="e" variableExp="//@elements.1/@outPattern/@elements.0/@bindings.0/@value/@source/@body/@source/@source"/>
+            </source>
+          </value>
+        </bindings>
+      </elements>
+    </outPattern>
+    <inPattern location="24:2-25:64">
+      <elements xsi:type="atl:SimpleInPatternElement" location="25:3-25:24" varName="s" variableExp="//@elements.1/@inPattern/@filter/@source/@source/@source">
+        <type xsi:type="ocl:OclModelElement" location="25:6-25:24" name="Property">
+          <model href="new-model#/"/>
+        </type>
+      </elements>
+      <filter xsi:type="ocl:OperatorCallExp" location="25:26-25:63" operationName="=">
+        <source xsi:type="ocl:NavigationOrAttributeCallExp" location="25:26-25:56" name="name">
+          <source xsi:type="ocl:OperationCallExp" location="25:26-25:51" operationName="refImmediateComposite">
+            <source xsi:type="ocl:VariableExp" location="25:26-25:27" referredVariable="//@elements.1/@inPattern/@elements.0"/>
+          </source>
+        </source>
+        <arguments xsi:type="ocl:StringExp" location="25:59-25:63" stringSymbol="C1"/>
+      </filter>
+    </inPattern>
+  </elements>
+</atl:Module>
