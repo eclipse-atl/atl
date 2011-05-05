@@ -8,7 +8,7 @@
  * Contributors:
  *     INRIA - initial API and implementation
  *
- * $Id: IModelAdapter.java,v 1.8 2009/09/29 12:52:49 wpiers Exp $
+ * $Id: IModelAdapter.java,v 1.9 2011/05/05 09:27:55 wpiers Exp $
  */
 
 package org.eclipse.m2m.atl.engine.emfvm.adapter;
@@ -165,6 +165,16 @@ public interface IModelAdapter {
 	 * @return the element id
 	 */
 	Object getID(Object element);
+	
+	/**
+	 * Checks if an elements has been deleted in refining mode and does not
+	 * belong to any resource.
+	 * 
+	 * @param element
+	 *            the element
+	 * @return ture if the element has been deleted. False otherwise.
+	 */
+	boolean isDeleted(Object element);
 
 	/**
 	 * Sets the element id.

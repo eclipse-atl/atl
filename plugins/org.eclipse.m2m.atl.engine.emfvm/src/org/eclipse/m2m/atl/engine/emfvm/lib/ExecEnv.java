@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.49 2010/03/24 10:23:58 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.50 2011/05/05 09:27:55 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -2387,7 +2387,8 @@ public class ExecEnv {
 						for (Iterator<?> k = model.getElementsByType(type).iterator(); k.hasNext();) {
 							Object ame = k.next();
 							Object value = getHelperValue(null, modelAdapter.getType(ame), ame, name);
-							modelAdapter.set(new StackFrame(this), ame, persistTo, modelAdapter.getID(value));
+							if (!modelAdapter.isDeleted(value))
+							   modelAdapter.set(new StackFrame(this), ame, persistTo, modelAdapter.getID(value));
 						}
 					}
 				}

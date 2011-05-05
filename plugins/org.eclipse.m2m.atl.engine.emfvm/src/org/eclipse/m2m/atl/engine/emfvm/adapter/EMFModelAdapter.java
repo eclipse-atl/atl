@@ -764,6 +764,21 @@ public class EMFModelAdapter implements IModelAdapter {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#isDeleted(java.lang.Object)
+	 */
+	public boolean isDeleted(Object element) {
+		if (element instanceof EObject) {
+			EObject eo = (EObject)element;
+			if (eo.eResource() == null) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.m2m.atl.engine.emfvm.adapter.IModelAdapter#setID(java.lang.Object, java.lang.Object)
 	 */
 	public void setID(Object element, Object id) {
