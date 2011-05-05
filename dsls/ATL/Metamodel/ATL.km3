@@ -85,7 +85,12 @@ package ATL {
 
 	class OutPattern extends LocatedElement {
 		reference rule : Rule oppositeOf outPattern;
+		reference dropPattern[0-1] container : DropPattern oppositeOf outPattern;
 		reference elements[1-*] ordered container : OutPatternElement oppositeOf outPattern;
+	}
+
+	class DropPattern extends LocatedElement {
+		reference outPattern : OutPattern oppositeOf dropPattern;
 	}
 
 -- @begin PatternElements

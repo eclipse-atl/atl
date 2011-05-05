@@ -161,7 +161,7 @@ syntax ATL(k = 0) {
 
 -- @begin OutPattern
 	template OutPattern
-		:	"to" [ elements{separator = ","} ] {endNL = false}
+		:	"to" (isDefined(dropPattern) ? dropPattern) [ (isDefined(elements) ? elements{separator = ","}) ] {endNL = false}
 		;
 
 	template OutPatternElement abstract addToContext;
@@ -191,6 +191,10 @@ syntax ATL(k = 0) {
 	template Binding
 		:	propertyName{as = identifierOrKeyword}
 			(isAssignment ? "<:=" : "<-") 'value'
+		;
+
+	template DropPattern
+		:	"drop" 
 		;
 -- @end OutPattern
 

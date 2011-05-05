@@ -249,6 +249,7 @@ acg ATL startsWith Unit {
 							pop
 					  next:
 				enditerate
+				dup							-- We dup refining trace to loop again and execute deletion
 				iterate
 											-- traceElement
 						dup					-- traceElement, traceElement
@@ -276,6 +277,24 @@ acg ATL startsWith Unit {
 							call 'J.refSetValue(SJ):J'
 						enditerate
 						pop
+				enditerate
+				iterate						-- Iteration to delete everything. We do another loop to be sure to do the deletion
+											-- after all the other modifications to prevent errors
+											-- traceElement
+					dup						-- traceElement, traceElement
+					get 'toDelete'			-- traceElement, boolean
+					call 'B.not():B'		-- traceElement, boolean
+					if noDelete
+						dup					-- traceElement, traceElement
+						get 'sourceElement'	-- traceElement, element
+						delete				-- traceElement
+						push 'Sequence'		
+						push '#native'
+						new
+						call 'QJ.first():J' -- traceElement, OclUndefined
+						set 'sourceElement' -- Unset sourceElement reference to avoid problems when serializing the refining trace
+					noDelete:
+					
 				enditerate
 			}
 			operation
@@ -741,14 +760,27 @@ acg ATL startsWith Unit {
 			[
 				let opes = self.mostConcreteOutPatternElements() {
 					if(self.module.isRefining) {
-						analyze opes.first() mode matchFirstRefining
-						analyze opes.subSequence(2, opes.size()) mode match
+						if (not opes.first().oclIsUndefined()){
+							-- there is no first element because the first element is going to be dropped
+							-- so no different treatment for the first element 
+							if (not self.outPattern.dropPattern.oclIsUndefined()){
+								analyze opes mode match
+							} else {
+								analyze opes.first() mode matchFirstRefining
+								analyze opes.subSequence(2, opes.size()) mode match
+							}
+							
+						}
 					} else {
 						analyze opes mode match
 					}
 				}
 			]
 			}
+		}
+
+		if (not self.outPattern.dropPattern.oclIsUndefined()){
+			analyze self.outPattern.dropPattern
 		}
 
 		if(self.isNoDefault) {
@@ -834,25 +866,7 @@ acg ATL startsWith Unit {
 				new
 			}
 		}
-					-- transientLink, varName, element
-		foreach(rb in self.reverseBindings) {
-			dup		-- transientLink, varName, element, element
-			if(rb isa NavigationOrAttributeCallExp) {
-				analyze rb.source	-- transientLink, varName, element, element, value
-				if(self.isRefiningMode) {
-					call 'J.__asElement():J'	-- transientLink, varName, traceElement, traceElement, valueTraceElement
-					swap						-- transientLink, varName, traceElement, valueTraceElement, traceElement
-					push rb.name	-- transientLink, varName, traceElement, valueTraceElement, traceElement, propertyName
-					swap			-- transientLink, varName, traceElement, valueTraceElement, propertyName, traceElement
-					pcall 'MRefiningTrace!Element;.setProperty(SJ):V'
-				} else {
-					swap			-- transientLink, varName, element, value, element
-					set rb.name		-- transientLink, varName, element
-				}
-			} else {
-				report error 'only navigations are allowed in reversebindings' 
-			}
-		}
+		analyze self mode matchReverseBindings
 		pcall 'NTransientLink;.addTargetElement(SJ):V'
 	}
 
@@ -874,7 +888,35 @@ acg ATL startsWith Unit {
 		load self.outPattern.rule.inPatternElements().first()
 		set 'sourceElement'
 
+		analyze self mode matchReverseBindings
+
 		pcall 'NTransientLink;.addTargetElement(SJ):V'
+	}
+
+	-- We create a normal template instead of a code template because this template will be
+	-- called from another code template matching the same model element. If this were
+	-- a code template an error will be raised when the vm tries to remove the entrance
+	-- for this code template (it is registered twice, but as it is a map is has no effect
+	-- so we can not remove twice)
+	SimpleOutPatternElement mode matchReverseBindings {	
+		foreach(rb in self.reverseBindings) {
+			dup		-- transientLink, varName, element, element
+			if(rb isa NavigationOrAttributeCallExp) {
+				analyze rb.source	-- transientLink, varName, element, element, value
+				if(self.isRefiningMode) {
+					call 'J.__asElement():J'	-- transientLink, varName, traceElement, traceElement, valueTraceElement
+					swap						-- transientLink, varName, traceElement, valueTraceElement, traceElement
+					push rb.name	-- transientLink, varName, traceElement, valueTraceElement, traceElement, propertyName
+					swap			-- transientLink, varName, traceElement, valueTraceElement, propertyName, traceElement
+					call 'MRefiningTrace!Element;.setProperty(SJ):V'
+				} else {
+					swap			-- transientLink, varName, element, value, element
+					set rb.name		-- transientLink, varName, element
+				}
+			} else {
+				report error 'only navigations are allowed in reversebindings' 
+			}
+		}
 	}
 
 	function MatchedRule::getBindings(varName, ret) =
@@ -1018,6 +1060,30 @@ acg ATL startsWith Unit {
 		set self.propertyName
 	}
 -- @end ForEachOutPatternElement
+
+-- @begin DropPattern
+    --
+    -- We have to set toDelete flag to true
+    --
+	code DropPattern {	
+		push 'Element'
+		push 'RefiningTrace'
+		new
+		dup
+		push self.outPattern.rule.inPatternElements().first().type.name
+		set 'type'
+		dup
+		push self.outPattern.rule.inPatternElements().first().type.model.name
+		set 'metamodel'
+		dup
+		pusht    
+		set 'toDelete'
+		load self.outPattern.rule.inPatternElements().first()
+		set 'sourceElement'
+	}
+
+-- @end DropPattern
+
 -- @end Standard Rules
 
 -- @begin Lazy Rules

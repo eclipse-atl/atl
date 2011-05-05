@@ -17,10 +17,11 @@ package RefiningTrace {
 	class Element {
 		attribute type : String;
 		attribute metamodel : String;
+		attribute toDelete : Boolean;
 		reference slots[*] ordered container : Slot;
 
 		-- The source element weaving helper may be persisted in this attribute
-		attribute persistedSourceElement[0-1] : String; 
+		attribute persistedSourceElement[0-1] : String;
 	}
 	
 	class Slot {
