@@ -378,6 +378,13 @@ acg ACG startsWith ACG {
 		pcall 'J.emitSimple(S):V'
 	}
 
+	code DeleteStat {
+		getasm
+		get 'asmEmitter'
+		push 'delete'
+		pcall 'J.emitSimple(S):V'
+	}
+
 	code DupStat {
 		getasm
 		get 'asmEmitter'

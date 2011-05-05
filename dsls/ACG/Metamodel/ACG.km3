@@ -131,6 +131,8 @@ package ACG {
 	
 	class NewinStat extends EmitStat {}
 
+	class DeleteStat extends EmitStat {}
+
 	class DupStat extends EmitStat {}
 
 	class DupX1Stat extends EmitStat {}

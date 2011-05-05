@@ -170,6 +170,10 @@ syntax ACG {
 		:	"newin"
 		;
 
+	template DeleteStat
+		:	"delete"
+		;
+
 	template DupStat
 		:	"dup"
 		;
