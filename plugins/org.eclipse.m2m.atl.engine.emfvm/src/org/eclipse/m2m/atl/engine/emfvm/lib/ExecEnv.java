@@ -10,7 +10,7 @@
  *    Obeo - bag, weaving helper implementation    
  *    Dennis Wagelaar (Vrije Universiteit Brussel)
  *
- * $Id: ExecEnv.java,v 1.50 2011/05/05 09:27:55 wpiers Exp $
+ * $Id: ExecEnv.java,v 1.51 2011/05/10 15:28:17 wpiers Exp $
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.emfvm.lib;
 
@@ -61,6 +61,202 @@ public class ExecEnv {
 	private Map<Object, Map<String, Operation>> vmTypeOperations = new HashMap<Object, Map<String, Operation>>();
 	{
 		Map<String, Operation> operationsByName;
+		// Float
+		operationsByName = new HashMap<String, Operation>();
+		vmTypeOperations.put(Float.class, operationsByName);
+		registerOperation(operationsByName, new Operation(2, "/") { //$NON-NLS-1$
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(((Number)localVars[0]).floatValue()
+								/ ((Number)localVars[1]).floatValue());
+					}
+				});
+		registerOperation(operationsByName, new Operation(2, "*") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(((Number)localVars[0]).floatValue()
+								* ((Number)localVars[1]).floatValue());
+					}
+				});
+		registerOperation(operationsByName, new Operation(2, "-") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(((Number)localVars[0]).floatValue()
+								- ((Number)localVars[1]).floatValue());
+					}
+				});
+		registerOperation(operationsByName, new Operation(2, "+") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(((Number)localVars[0]).floatValue()
+								+ ((Number)localVars[1]).floatValue());
+					}
+				});
+		registerOperation(operationsByName, new Operation(2, "<") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return Boolean.valueOf(((Number)localVars[0]).floatValue() < ((Number)localVars[1])
+								.floatValue());
+					}
+				});
+		registerOperation(operationsByName, new Operation(2, "<=") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return Boolean.valueOf(((Number)localVars[0]).floatValue() <= ((Number)localVars[1])
+								.floatValue());
+					}
+				});
+		registerOperation(operationsByName, new Operation(2, ">") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return Boolean.valueOf(((Number)localVars[0]).floatValue() > ((Number)localVars[1])
+								.floatValue());
+					}
+				});
+		registerOperation(operationsByName, new Operation(2, ">=") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return Boolean.valueOf(((Number)localVars[0]).floatValue() >= ((Number)localVars[1])
+								.floatValue());
+					}
+				});
+		registerOperation(operationsByName, new Operation(2, "=") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return Boolean.valueOf(((Number)localVars[0]).floatValue() == ((Number)localVars[1])
+								.floatValue());
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "toString") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return localVars[0].toString();
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "abs") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.abs(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "round") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return Integer.valueOf((int)Math.round(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "floor") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return Integer.valueOf((int)Math.floor(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(2, "max") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.max(((Number)localVars[0]).floatValue(),
+								((Number)localVars[1]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(2, "min") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.min(((Number)localVars[0]).floatValue(),
+								((Number)localVars[1]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "acos") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.acos(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "asin") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.asin(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "atan") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.atan(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "cos") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.cos(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "sin") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.sin(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "tan") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.tan(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "toDegrees") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.toDegrees(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "toRadians") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.toRadians(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "exp") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.exp(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "log") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.log(((Number)localVars[0]).floatValue()));
+					}
+				});
+		registerOperation(operationsByName, new Operation(1, "sqrt") { //$NON-NLS-1$ 
+					@Override
+					public Object exec(AbstractStackFrame frame) {
+						Object[] localVars = frame.localVars;
+						return new Float(Math.sqrt(((Number)localVars[0]).floatValue()));
+					}
+				});
 		// Real
 		operationsByName = new HashMap<String, Operation>();
 		vmTypeOperations.put(Double.class, operationsByName);
@@ -328,13 +524,11 @@ public class ExecEnv {
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return Boolean
-									.valueOf(((Integer)localVars[0]).intValue() < ((Integer)localVars[1])
-											.intValue());
+							return Boolean.valueOf(((Integer)localVars[0]).intValue() < ((Integer)localVars[1])
+									.intValue());
 						} else {
-							return Boolean
-									.valueOf(((Number)localVars[0]).doubleValue() < ((Number)localVars[1])
-											.doubleValue());
+							return Boolean.valueOf(((Number)localVars[0]).doubleValue() < ((Number)localVars[1])
+									.doubleValue());
 						}
 					}
 				});
@@ -343,13 +537,11 @@ public class ExecEnv {
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return Boolean
-									.valueOf(((Integer)localVars[0]).intValue() <= ((Integer)localVars[1])
-											.intValue());
+							return Boolean.valueOf(((Integer)localVars[0]).intValue() <= ((Integer)localVars[1])
+									.intValue());
 						} else {
-							return Boolean
-									.valueOf(((Number)localVars[0]).doubleValue() <= ((Number)localVars[1])
-											.doubleValue());
+							return Boolean.valueOf(((Number)localVars[0]).doubleValue() <= ((Number)localVars[1])
+									.doubleValue());
 						}
 					}
 				});
@@ -358,13 +550,11 @@ public class ExecEnv {
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return Boolean
-									.valueOf(((Integer)localVars[0]).intValue() > ((Integer)localVars[1])
-											.intValue());
+							return Boolean.valueOf(((Integer)localVars[0]).intValue() > ((Integer)localVars[1])
+									.intValue());
 						} else {
-							return Boolean
-									.valueOf(((Number)localVars[0]).doubleValue() > ((Number)localVars[1])
-											.doubleValue());
+							return Boolean.valueOf(((Number)localVars[0]).doubleValue() > ((Number)localVars[1])
+									.doubleValue());
 						}
 					}
 				});
@@ -373,13 +563,11 @@ public class ExecEnv {
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return Boolean
-									.valueOf(((Integer)localVars[0]).intValue() >= ((Integer)localVars[1])
-											.intValue());
+							return Boolean.valueOf(((Integer)localVars[0]).intValue() >= ((Integer)localVars[1])
+									.intValue());
 						} else {
-							return Boolean
-									.valueOf(((Number)localVars[0]).doubleValue() >= ((Number)localVars[1])
-											.doubleValue());
+							return Boolean.valueOf(((Number)localVars[0]).doubleValue() >= ((Number)localVars[1])
+									.doubleValue());
 						}
 					}
 				});
@@ -388,13 +576,11 @@ public class ExecEnv {
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
 						if (localVars[1] instanceof Integer) {
-							return Boolean
-									.valueOf(((Integer)localVars[0]).intValue() == ((Integer)localVars[1])
-											.intValue());
+							return Boolean.valueOf(((Integer)localVars[0]).intValue() == ((Integer)localVars[1])
+									.intValue());
 						} else {
-							return Boolean
-									.valueOf(((Number)localVars[0]).doubleValue() == ((Number)localVars[1])
-											.doubleValue());
+							return Boolean.valueOf(((Number)localVars[0]).doubleValue() == ((Number)localVars[1])
+									.doubleValue());
 						}
 					}
 				});
@@ -483,9 +669,8 @@ public class ExecEnv {
 					@Override
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.localVars;
-						return Boolean
-								.valueOf(((Boolean)localVars[0]).booleanValue() ? ((Boolean)localVars[1])
-										.booleanValue() : true);
+						return Boolean.valueOf(((Boolean)localVars[0]).booleanValue() ? ((Boolean)localVars[1])
+								.booleanValue() : true);
 					}
 				});
 		// Sequence
@@ -1001,9 +1186,8 @@ public class ExecEnv {
 							if (operation == null) {
 								throw new VMException(
 										frame,
-										Messages
-												.getString(
-														"ExecEnv.CANNOTFINDOPERATION", toPrettyPrintedString(modelAdapter.getType(ret)), "+")); //$NON-NLS-1$ //$NON-NLS-2$
+										Messages.getString(
+												"ExecEnv.CANNOTFINDOPERATION", toPrettyPrintedString(modelAdapter.getType(ret)), "+")); //$NON-NLS-1$ //$NON-NLS-2$
 							}
 							while (i.hasNext()) {
 								AbstractStackFrame callee = frame.newFrame(operation);
@@ -2150,8 +2334,8 @@ public class ExecEnv {
 			}
 		}
 		if (s == null) {
-			throw new VMException(frame, Messages
-					.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
+			throw new VMException(frame,
+					Messages.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
 		}
 		return s;
 	}
@@ -2181,8 +2365,8 @@ public class ExecEnv {
 			}
 		}
 		if (s == null) {
-			throw new VMException(frame, Messages
-					.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
+			throw new VMException(frame,
+					Messages.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
 		}
 		return s;
 	}
@@ -2211,8 +2395,8 @@ public class ExecEnv {
 			throw new VMException(frame, Messages.getString("ExecEnv.UNABLE_TO_CREATE", ec, modelName)); //$NON-NLS-1$
 		}
 		if (s == null) {
-			throw new VMException(frame, Messages
-					.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
+			throw new VMException(frame,
+					Messages.getString("ExecEnv.CANNOTCREATE", toPrettyPrintedString(ec))); //$NON-NLS-1$
 		}
 		return s;
 	}
@@ -2388,7 +2572,8 @@ public class ExecEnv {
 							Object ame = k.next();
 							Object value = getHelperValue(null, modelAdapter.getType(ame), ame, name);
 							if (!modelAdapter.isDeleted(value))
-							   modelAdapter.set(new StackFrame(this), ame, persistTo, modelAdapter.getID(value));
+								modelAdapter.set(new StackFrame(this), ame, persistTo,
+										modelAdapter.getID(value));
 						}
 					}
 				}
