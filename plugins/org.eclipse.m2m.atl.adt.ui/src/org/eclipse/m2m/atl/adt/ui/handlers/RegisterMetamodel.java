@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.ui.handlers;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -26,11 +23,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.m2m.atl.adt.ui.Messages;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
@@ -40,8 +35,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
  */
 public class RegisterMetamodel extends AbstractHandler {
 
-	private Shell shell;
-
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -49,9 +42,8 @@ public class RegisterMetamodel extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection iss = (IStructuredSelection)HandlerUtil.getCurrentSelection(event);
-		this.shell = HandlerUtil.getActiveShell(event);
 		IFile currentFile = (IFile)iss.getFirstElement();
-		String artifactUri = currentFile.getLocation().toString();
+		String artifactUri = currentFile.getFullPath().toString();
 		init(artifactUri);
 		return null;
 	}
@@ -68,22 +60,12 @@ public class RegisterMetamodel extends AbstractHandler {
 	}
 
 	private void init(String metamodelURL) {
-		Resource.Factory myEcoreFactory = new EcoreResourceFactoryImpl();
-		Resource mmExtent = myEcoreFactory.createResource(URI.createURI(metamodelURL));
-		try {
-			mmExtent.load(new FileInputStream(metamodelURL), Collections.EMPTY_MAP);
-		} catch (IOException e) {
-			MessageDialog.openError(shell,
-					Messages.getString("RegisterMetamodel.REGISTER_FAIL"), e.getMessage()); //$NON-NLS-1$
-		}
+		ResourceSet myEcoreResourceSet = new ResourceSetImpl();
+		Resource mmExtent = myEcoreResourceSet.getResource(URI.createURI(metamodelURL), true);
+		
 		for (Iterator<EObject> it = getElementsByType(mmExtent, "EPackage").iterator(); it.hasNext();) { //$NON-NLS-1$
 			EPackage p = (EPackage)it.next();
-			String nsURI = p.getNsURI();
-			if (nsURI == null) {
-				nsURI = p.getName();
-				p.setNsURI(nsURI);
-			}
-			EPackage.Registry.INSTANCE.put(nsURI, p);
+			registerPackage(p);
 		}
 
 		for (Iterator<EObject> it = getElementsByType(mmExtent, "EDataType").iterator(); it.hasNext();) { //$NON-NLS-1$
@@ -110,5 +92,21 @@ public class RegisterMetamodel extends AbstractHandler {
 				}
 			}
 		}
+	}
+	
+	private void registerPackage(EPackage p) {
+		System.out.println(p);
+		String nsURI = p.getNsURI();
+		if (nsURI == null) {
+			nsURI = p.getName();
+			p.setNsURI(nsURI);
+		}
+		EPackage.Registry.INSTANCE.put(nsURI, p);
+
+		// removed: see https://bugs.eclipse.org/bugs/show_bug.cgi?id=320378#c2 for more details
+		// // register also sub packages
+		// for (EPackage subPackage : p.getESubpackages()) {
+		// registerPackage(subPackage);
+		// }
 	}
 }
