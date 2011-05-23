@@ -173,7 +173,7 @@ injector.inject(umlMetamodel, "http://www.eclipse.org/uml2/2.1.0/UML");
 			<li>ASMModelElement : "allInstances" implementation, etc...</li>
 		</ul>
 		<p>Input and output models are loaded using the same API and are differenciated with an "isTarget" property. That API implements the "getMetaElementsByName" method which correspond to the "findme" ASM instruction.</p>
-		<p>This VM implementation is still used in ATL, because it is strongly linked to several parts (now only the ATL Debugger). But the Regular VM has a lot of performance issues, especially because of the model handler architecture.</p>
+		<p>This VM implementation is still used in ATL, because it is strongly linked to several parts. But the Regular VM has a lot of performance issues, especially because of the model handler architecture.</p>
 		<h3 id="EMF-specific_VM">EMF-specific VM</h3>
 		<p>The EMF-specific VM is a redefinition of the Regular one, which resolves a lot of performance issues by avoiding EObjects wrapping. Its API allow to consider EMF Resources directly as models, without complex loading as done previously in the Regular VM.</p>
 		<h3 id="ASM_format">ASM format</h3>
@@ -210,7 +210,7 @@ injector.inject(umlMetamodel, "http://www.eclipse.org/uml2/2.1.0/UML");
 		</p>
 		<h2 id="Compiler">Compiler</h2>
 		<p>Two versions of the ATL compiler are available : 2004 and 
-			<a href="http://wiki.eclipse.org/ATL_2006">2006</a>.
+			<a href="http://wiki.eclipse.org/ATL_2006" title="ATL_2006">2006</a>.
 			The 2006 version of ATL compiler uses 
 			<a href="ATL-Architecture.html#ACG_.28ATL_VM_Code_Generator.29">ACG</a>. The 2004 version uses ATP, the historical ACG predecessor.
 		</p>
@@ -223,8 +223,8 @@ injector.inject(umlMetamodel, "http://www.eclipse.org/uml2/2.1.0/UML");
 		</p>
 		<p>An ACG file, when compiled, looks through the input model using a visitor design pattern.
 			ACG is bootstrapped : an ACG.acg file exists and describes the ACG compiler. Since an ACG file describes precisely ASM instructions, the ACG.acg file is rather trivial.</p>
-		<p>A complete ACG documentation is available 
-			<a href="http://wiki.eclipse.org/ACG">here</a>.
+		<p>A 
+			<a href="http://wiki.eclipse.org/ACG" title="ACG">complete ACG documentation</a> is available.
 		</p>
 		<p>The following schema places ACG in the AMMA platform.</p>
 		<p>

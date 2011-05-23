@@ -102,6 +102,10 @@
 			<topic href="guide/user/The-ATL-Language.html#Rule_inheritance" label="Rule inheritance"></topic>
 			<topic href="guide/user/The-ATL-Language.html#Rules_usage" label="Rules usage"></topic>
 		</topic>
+		<topic href="guide/user/The-ATL-Language.html#ATL_Refining_Mode" label="ATL Refining Mode">
+			<topic href="guide/user/The-ATL-Language.html#Refining_Mode_support_in_previous_compilers:" label="Refining Mode support in previous compilers:"></topic>
+			<topic href="guide/user/The-ATL-Language.html#Summary_of_compiler_features" label="Summary of compiler features"></topic>
+		</topic>
 		<topic href="guide/user/The-ATL-Language.html#ATL_Queries" label="ATL Queries"></topic>
 		<topic href="guide/user/The-ATL-Language.html#ATL_Keywords" label="ATL Keywords"></topic>
 		<topic href="guide/user/The-ATL-Language.html#ATL_Tips_.26_Tricks" label="ATL Tips &amp; Tricks"></topic>

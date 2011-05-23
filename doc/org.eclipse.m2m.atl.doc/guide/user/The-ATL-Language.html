@@ -277,7 +277,7 @@ endif
 		</ul>
 		<p>Besides the OCL-defined operations, ATL implements a number of additional operations for the string data type:</p>
 		<ul>
-			<li>comparison operators: &lt;, >, =>, =&lt;;</li>
+			<li>comparison operators: &lt;, >, >=, &lt;=;</li>
 			<li>the string concatenation operator (+) can be used as a shortcut for the string 
 				<i>concat()</i> function;
 			</li>
@@ -342,7 +342,7 @@ endif
 		<h4 id="Numerical_data_type_operations">Numerical data type operations</h4>
 		<p>The following OCL operations are defined for both OCL numerical data types (integer and real):</p>
 		<ul>
-			<li>comparison operators: &lt;, >, =>, =&lt;;</li>
+			<li>comparison operators: &lt;, >, >=, &lt;=;</li>
 			<li>binary operators: *, +, -, /, 
 				<i>max(), min()</i>;
 			</li>
@@ -364,7 +364,8 @@ endif
 		</ul>
 		<p>Besides the OCL-defined operations, ATL provides a set of additional functions. The 
 			<i>toString()</i> operation, available for both the integer and real data types returns a string representing the integer/real value of 
-			<i>self</i>. There also exist a set of ATL operations specific to the real data type:
+			<i>self</i>. Both integer and real data types can be converted to a long data type by calling the 
+			<i>longValue()</i> operation. There also exist a set of ATL operations specific to the real data type:
 		</p>
 		<ul>
 			<li>
@@ -2136,6 +2137,106 @@ entrypoint rule Metamodel() {
 				</ul>
 			</li>
 		</ul>
+		<h2 id="ATL_Refining_Mode">ATL Refining Mode</h2>
+		<p>The refining execution mode has been introduced to ease the programming of refining (or refactoring) transformations. With the refining mode, ATL developers can focus on the ATL code dedicated to the generation of modified target elements. Other model elements (e.g. those that remain unchanged between the source and the target model) are implicitly processed by the ATL engine.</p>
+		<p>This mode is selected in the ATL language by simply replacing the from keyword by the refining keyword in the transformation header. Obviously, refining mode may only be used for endogenous transformations, i.e. when source and target model share the same metamodel. Listing below shows how the header of a refactoring transformation on a ClassDiagram metamodel may look like.</p>
+		<pre>module refiningSample;
+create OUT : ClassDiagram refining IN : ClassDiagram;
+</pre>
+		<p>The ATL2010 compiler implements an in-place strategy, e.g.,  the changes are directly performed on the source model without making any copy of the elements. The rules in the transformation only need to specify the values that have changed whereas all the other elements just remain untouched. The transformations in this mode are performed in two steps. In the first step, the transformation engine executes the rules which, as a result, produce a set of changes that are temporally stored. In the second step, this set changes are applied directly on the source model.</p>
+		<p>This compiler enhances the refining capabilities provided by the 2006 compiler, that also implemented an in-place strategy. First of all, it addresses the lacking of deletion support by providing the user an explicit way to specify in the transformation that a matched element has to be removed.</p>
+		<p>To support the deletion feature, some modifications have been introduced in the concrete and abstract syntax of the language to provide a new keyword: DROP. The listing below shows and ATL 2010 refining transformation that reverses the prior introduced change in attributes visibility using the new drop keyword.</p>
+		<pre>rule PrivateAttribute {
+  from
+      s : ClassDiagram!Attribute (s.isPrivate and
+          s.owner.op->exists(o|o.name = 'get' +
+          s.name.toUpperCase() and o.returnType = s.type)
+          )
+  to
+      t : ClassDiagram ! Attribute (
+          isPrivate &lt;- false
+      )
+} 
+rule DeleteOperation {
+  from
+      s : ClassDiagram!Operation (s.owner.attr
+          ->exists(a|a.name = s.name.toUpperCase().substring(3, s.name->size())
+              and a.isPrivate))
+  to
+      drop
+}
+</pre>
+		<p>From the semantic point of view, we have to note that a delete can easily generate a conflict with another modification. This happens because we chose to provide delete with a cascade-delete semantics for composition associations (i.e. the deletion of a container triggers the deletion of the contained elements). For this reason, the second step in the transformation that is in charge of applying the changes is implemented by first applying all the creation changes, then all the modification changes, and finally all the deletion changes.</p>
+		<p>Some ATL standard mode advanced features are not supported in Refining Mode. Concretely, the following elements are not supported: Action blocks, Lazy rules, multiple input elements and Iterative output patterns. Covering this advances features as well as providing new refining features (like cloning) are in the future plans.</p>
+		<h3 id="Refining_Mode_support_in_previous_compilers:">Refining Mode support in previous compilers:</h3>
+		<p>Refining transformations are implemented differently depending on the ATL compiler used for the transformation. In the following, we explain the features of the previous compilers so that ATL users can choose the refinement implementation strategy that best fits their scenario.</p>
+		<ul>
+			<li>
+				<b>ATL 2004:</b>
+			</li>
+		</ul>
+		<p>The 2004 compiler implements a copy strategy. The ATL transformation performs as if there were implicit copy rules that would match every element unmatched by explicit (i.e., programmer-written) rules. Such a copy rule creates a target element of the same type as the source element. Then, it initializes all the properties of the new element by copying the values of the properties of the source element. However, not all the elements are copied. To be copied the elements must satisfy at least one of these conditions: 1) they are matched by an explicit rule, or 2) they are contained in a copied element, or 3) they are referenced (non-containment) by a copied element.</p>
+		<p>This conditions allows the deletion of parts of the model just by removing any reference to them.</p>
+		<p>The listing below shows a refining transformation in ATL 2004 compiler that change the visibility of attributes and adds the corresponding getters.</p>
+		<pre>rule PublicAttribute {
+  from
+      s : ClassDiagram!Attribute (
+          not s.isPrivate and
+          not s.owner.op->exists(o | o.name = 'get' +
+            s.name.toUpperCase() and o.returnType = s.type)
+      )
+  to
+      t : ClassDiagram!Attribute (
+          name &lt;- s.name,
+          owner &lt;- s.owner,
+          isPrivate &lt;- true,
+          type &lt;- s.type
+      ),
+      getter : ClassDiagram!Operation (
+          name &lt;- 'get' + s.name.toUpperCase(),
+          owner &lt;- s.owner,
+          isPrivate &lt;- false,
+          returnType &lt;- s.type
+      )
+}
+</pre>
+		<ul>
+			<li>
+				<b>ATL 2006:</b>
+			</li>
+		</ul>
+		<p>Partially implements an in-place strategy. This implementation works in the same way the ATL2010 does, but does not provide support for the deletion of elements. Using reverse binding for the first output pattern element is also not supported.</p>
+		<h3 id="Summary_of_compiler_features">Summary of compiler features</h3>
+		<ul>
+			<li>The features and differences between the various ATL available compilers are summarized in the following table:</li>
+		</ul>
+		<table border="1" cellpadding="5">
+			<tr>
+				<th>Compiler</th>
+				<th>Strategy</th>
+				<th>Deletion</th>
+				<th>Supported language subset in Refining Mode</th>
+			</tr>
+			<tr>
+				<td>2004</td>
+				<td>Copy</td>
+				<td>Implicitly supported</td>
+				<td>Full support (2004 features)</td>
+			</tr>
+			<tr>
+				<td>2006</td>
+				<td>In-place</td>
+				<td>Not supported</td>
+				<td>Partial support</td>
+			</tr>
+			<tr>
+				<td>2010</td>
+				<td>In-place</td>
+				<td>Explicitly supported</td>
+				<td>Partial support</td>
+			</tr>
+		</table>
+		<p>Remember that to select between the different compilers the first line of the transformation must consist of a comment with the @atlcompiler tag followed by the name of the compiler (by example, -- @atlcompiler atl2010)</p>
 		<h2 id="ATL_Queries">ATL Queries</h2>
 		<p>Besides module units, ATL enables developers to define queries on model. A query unit accepts a number of source models and produces a single return value of any supported primitive data type. A query unit is composed a single query element along with a number of helpers and attributes that may be defined in the context of either the ATL module or any model element defined within the query source models. Note that an ATL query unit must start with the declaration of its query element. The specification of this query element has to conform to the following syntax:</p>
 		<pre>query ''query_name'' = ''exp'';
