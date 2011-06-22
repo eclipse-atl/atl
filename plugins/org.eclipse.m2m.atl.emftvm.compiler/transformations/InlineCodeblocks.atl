@@ -1,0 +1,243 @@
+-- @atlcompiler emftvm
+-- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
+-- Inlines nested code blocks
+-- $Id: InlineCodeblocks.atl,v 1.1 2011/06/22 07:08:08 dwagelaar Exp $
+module InlineCodeblocks;
+create OUT : EMFTVM from IN : EMFTVM;
+
+uses EMFTVMCopy;
+
+-- ======================================================================
+-- helpers begin
+-- ======================================================================
+
+helper context EMFTVM!CodeBlock def : isEmptyRuleCode : Boolean =
+	self.refImmediateComposite().oclIsKindOf(EMFTVM!Rule) and self.inline->isEmpty();
+
+-- isInlined
+helper context EMFTVM!CodeBlock def : isInlined : Boolean =
+	self.isEmptyRuleCode or
+	(let parent : EMFTVM!CodeBlock = self.nestedFor in
+	if parent.oclIsUndefined() then
+		false
+	else
+		parent.code->exists(i|i.oclIsKindOf(EMFTVM!Invoke_all_cbs) or
+			i.targets(self))
+	endif);
+
+-- targets
+helper context EMFTVM!Instruction def : targets(cb : EMFTVM!CodeBlock) : Boolean =
+	false;
+
+helper context EMFTVM!Invoke_cb def : targets(cb : EMFTVM!CodeBlock) : Boolean =
+	self.codeBlock = cb;
+
+-- reTarget
+helper context EMFTVM!Instruction def : reTarget : EMFTVM!Instruction =
+	self;
+
+helper context EMFTVM!Invoke_cb def : reTarget : EMFTVM!Instruction =
+	self.codeBlock.code->first().reTarget;
+
+helper context EMFTVM!Invoke_all_cbs def : reTarget : EMFTVM!Instruction =
+	let nested : Sequence(EMFTVM!CodeBlock) = self.owningBlock.nested in
+	if nested->notEmpty() then
+		let nestedTarget : EMFTVM!Instruction =
+			nested->first().code->first().reTarget
+		in
+		if nestedTarget.oclIsUndefined() then
+			self.reTargetEmpty
+		else
+			nestedTarget
+		endif
+	else
+		self.reTargetEmpty
+	endif;
+
+-- reTargetEmpty
+helper context EMFTVM!Invoke_all_cbs def : reTargetEmpty : EMFTVM!Instruction =
+	let cb : EMFTVM!CodeBlock = self.owningBlock in
+	let index : Integer = cb.code->indexOf(self) in
+	if index < cb.code->size() then
+		cb.code->at(index+1)
+	else
+		OclUndefined
+	endif;
+
+-- endRetarget
+helper context EMFTVM!Instruction def : endReTarget : EMFTVM!Instruction =
+	self;
+
+helper context EMFTVM!Invoke_cb def : endReTarget : EMFTVM!Instruction =
+	self.codeBlock.code->last().endReTarget;
+
+helper context EMFTVM!Invoke_all_cbs def : endReTarget : EMFTVM!Instruction =
+	let cb : EMFTVM!CodeBlock = self.owningBlock in
+	let nested : Sequence(EMFTVM!CodeBlock) = cb.nested in
+	if nested->notEmpty() then
+		let nestedTarget : EMFTVM!Instruction =
+			nested->last().code->last().endReTarget
+		in
+		if nestedTarget.oclIsUndefined() then
+			self.endReTargetEmpty
+		else
+			nestedTarget
+		endif
+	else
+		self.endReTargetEmpty
+	endif;
+
+-- endReTargetEmpty
+helper context EMFTVM!Invoke_all_cbs def : endReTargetEmpty : EMFTVM!Instruction =
+	let cb : EMFTVM!CodeBlock = self.owningBlock in
+	let index : Integer = cb.code->indexOf(self) in
+	if index > 1 then
+		cb.code->at(index-1)
+	else
+		OclUndefined
+	endif;
+
+-- inline
+helper context EMFTVM!CodeBlock def : inline : Sequence(EMFTVM!Instruction) =
+	self.code->iterate(i; acc : Sequence(EMFTVM!Instruction) = Sequence{} |
+		if i.oclIsKindOf(EMFTVM!Invoke_cb) then
+			acc->union(i.codeBlock.inline)
+		else if i.oclIsKindOf(EMFTVM!Invoke_all_cbs) then
+			acc->union(self.nested->collect(n|n.inline)->flatten())
+		else
+			acc->append(i)
+		endif endif
+	);
+
+-- collapseNested
+helper context EMFTVM!CodeBlock def : collapseNested : Sequence(EMFTVM!CodeBlock) =
+	self.nested->iterate(n; acc : Sequence(EMFTVM!CodeBlock) = Sequence{} |
+		if n.isInlined then
+			acc->union(n.collapseNested)
+		else
+			acc->append(n)
+		endif
+	);
+
+-- inlineNested
+helper context EMFTVM!CodeBlock def : inlinedNested : Sequence(EMFTVM!CodeBlock) =
+	self.nested->select(n|n.isInlined)->iterate(c; acc : Sequence(EMFTVM!CodeBlock) = Sequence{} |
+		acc->append(c)->union(c.inlinedNested)
+	);
+
+-- remainingInstructions
+helper context EMFTVM!LineNumber def : remainingInstructions : Sequence(EMFTVM!Instruction) =
+	self.instructions->select(i|not (i.oclIsKindOf(EMFTVM!Invoke_cb) or i.oclIsKindOf(EMFTVM!Invoke_all_cbs)));
+
+-- remainingLineNumbers
+helper context EMFTVM!CodeBlock def : remainingLineNumbers : Sequence(EMFTVM!LineNumber) =
+	self.lineNumbers->select(ln|ln.remainingInstructions->notEmpty());
+
+-- ======================================================================
+-- helpers end
+-- ======================================================================
+
+-- ======================================================================
+-- matched rules begin
+-- ======================================================================
+
+rule Invoke_cb {
+    from s : EMFTVM!"emftvm::Invoke_cb" in IN (false) -- disable
+    to t : EMFTVM!"emftvm::Invoke_cb"
+}
+
+rule Invoke_all_cbs {
+    from s : EMFTVM!"emftvm::Invoke_all_cbs" in IN (false) -- disable
+    to t : EMFTVM!"emftvm::Invoke_all_cbs"
+}
+
+rule Rule {
+    from s : EMFTVM!"emftvm::Rule" in IN
+    to t : EMFTVM!"emftvm::Rule" (
+        name <- s.name,
+        mode <- s.mode,
+        superRules <- s.superRules,
+        "abstract" <- s."abstract",
+		default <- s.default,
+		distinctElements <- s.distinctElements,
+        inputElements <- s.inputElements,
+        outputElements <- s.outputElements,
+        eSuperRules <- s.eSuperRules,
+        eSubRules <- s.eSubRules,
+        matcher <- s.matcher,
+        applier <- if s.applier.isInlined then OclUndefined else s.applier endif,
+        postApply <- s.postApply,
+        fields <- s.fields)
+}
+
+rule CodeBlock {
+	from s : EMFTVM!CodeBlock in IN (
+		not s.isInlined)
+	to t : EMFTVM!CodeBlock (
+		parentFrame <- s.parentFrame,
+		code <- s.inline,
+		nested <- s.collapseNested,
+		lineNumbers <- s.remainingLineNumbers->union(
+			s.inlinedNested->collect(cb|cb.remainingLineNumbers)->flatten()),
+		localVariables <- s.localVariables->union(
+			s.inlinedNested->collect(cb|cb.localVariables)->flatten())
+	)
+}
+
+rule LocalVariable {
+    from s : EMFTVM!"emftvm::LocalVariable" in IN (
+		not s.owningBlock.isEmptyRuleCode)
+    to t : EMFTVM!"emftvm::LocalVariable" (
+        name <- s.name,
+        type <- s.type,
+        typeModel <- s.typeModel,
+        startInstruction <- s.startInstruction.reTarget,
+        endInstruction <- s.endInstruction.endReTarget)
+}
+
+rule LineNumber {
+    from s : EMFTVM!"emftvm::LineNumber" in IN (
+		s.remainingInstructions->notEmpty())
+    to t : EMFTVM!"emftvm::LineNumber" (
+        startLine <- s.startLine,
+        startColumn <- s.startColumn,
+        endLine <- s.endLine,
+        endColumn <- s.endColumn,
+		startChar <- s.startChar,
+		endChar <- s.endChar,
+		instructions <- s.remainingInstructions)
+}
+
+rule If {
+    from s : EMFTVM!"emftvm::If" in IN
+    to t : EMFTVM!"emftvm::If" (
+        target <- s.target.reTarget)
+}
+
+rule Ifn {
+    from s : EMFTVM!"emftvm::Ifn" in IN
+    to t : EMFTVM!"emftvm::Ifn" (
+        target <- s.target.reTarget)
+}
+
+rule Goto {
+    from s : EMFTVM!"emftvm::Goto" in IN
+    to t : EMFTVM!"emftvm::Goto" (
+        target <- s.target.reTarget)
+}
+
+rule Iterate {
+    from s : EMFTVM!"emftvm::Iterate" in IN
+    to t : EMFTVM!"emftvm::Iterate" (
+        target <- s.target.endReTarget)
+}
+
+rule Enditerate {
+    from s : EMFTVM!"emftvm::Enditerate" in IN
+    to t : EMFTVM!"emftvm::Enditerate" (
+        target <- s.target.reTarget)
+}
+
+-- ======================================================================
+-- matched rules end
+-- ======================================================================

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.eclipse.m2m.atl.emftvm.compiler/transformations" default="all">
+
+	<target name="all" depends="saveModels-xmi"/>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir=".">
+	    		<exclude name="**/build.xml"/>
+	    		<exclude name="**/*.atl"/>
+	    		<exclude name="**/ATLCopy.xmi"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="loadModels">
+		<emftvm.loadModel name="ATLtoEMFTVM" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLtoEMFTVM.emftvm"/>
+	</target>
+
+	<target name="copy-xmi" depends="loadModels">
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="EMFTVMCopy">
+			<inputmodel name="ATLtoEMFTVM" as="IN"/>
+			<outputmodel name="ATLtoEMFTVM-OUT-XMI" as="OUT" wspath="${ant.project.name}/ATLtoEMFTVM.emftvm.xmi"/>
+		</emftvm.run>
+	</target>
+
+	<target name="saveModels-xmi" depends="copy-xmi">
+		<emftvm.saveModel name="ATLtoEMFTVM-OUT-XMI" derived="true"/>
+	</target>
+
+</project>

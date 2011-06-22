@@ -1,0 +1,19 @@
+-- @atlcompiler emftvm
+-- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
+-- Lists all EMFTVM!LocalVariable instances
+-- $Id: ListLocals.atl,v 1.1 2011/06/22 07:08:08 dwagelaar Exp $
+query ListLocals = EMFTVM!LocalVariable.allInstances()
+	->iterate(e; acc : String = 'Local variables:\n' |
+		acc + '\t' + (e.name + ':').tabs(3) + (e.typeModel + '!' + e.type).tabs(3) +
+		'(' + 
+				(e.startInstructionIndex.toString() + ':' + e.startInstruction.opcode).tabs(3) + 
+				'- ' + (e.endInstructionIndex.toString() + ':' + e.endInstruction.opcode) + ')\n')
+	.debug('ListLocals');
+
+helper context String def : tabs(n : Integer) : String =
+	let tabs : Integer = n - (self.size() div 8) in
+	if tabs > 0 then
+		self + '\t' + ''.tabs(tabs-1)
+	else
+		self
+	endif;

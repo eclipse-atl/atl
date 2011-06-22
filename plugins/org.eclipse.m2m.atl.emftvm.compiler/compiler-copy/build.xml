@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.eclipse.m2m.atl.emftvm.compiler/compiler-copy" default="all">
+
+	<target name="all" depends="saveModels"/>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir=".">
+	    		<exclude name="**/build.xml"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="loadModels">
+		<emftvm.loadModel name="ATLtoEMFTVM" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLtoEMFTVM.atl"/>
+		<emftvm.loadModel name="EMFTVMCopy" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/EMFTVMCopy.atl"/>
+		<emftvm.loadModel name="ATLCopy" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLCopy.atl"/>
+		<emftvm.loadModel name="InlineCodeblocks" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/InlineCodeblocks.atl"/>
+		<emftvm.loadModel name="ATLWFR" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLWFR.atl"/>
+		<emftvm.loadMetamodel name="ATL" uri="http://www.eclipse.org/gmt/2005/ATL"/>
+	</target>
+
+	<target name="run" depends="loadModels">
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="ATLCopy">
+			<metamodel name="ATL"/>
+			<inputmodel name="ATLtoEMFTVM" as="IN"/>
+			<outputmodel name="ATLtoEMFTVM-OUT" as="OUT" wspath="${ant.project.name}/ATLtoEMFTVM.xmi"/>
+			<outputmodel name="ATLtoEMFTVM-match" as="match" wspath="${ant.project.name}/ATLtoEMFTVM-match.trace"/>
+			<outputmodel name="ATLtoEMFTVM-trace" as="trace" wspath="${ant.project.name}/ATLtoEMFTVM.trace"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="ATLCopy">
+			<metamodel name="ATL"/>
+			<inputmodel name="EMFTVMCopy" as="IN"/>
+			<outputmodel name="EMFTVMCopy-OUT" as="OUT" wspath="${ant.project.name}/EMFTVMCopy.xmi"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="ATLCopy">
+			<metamodel name="ATL"/>
+			<inputmodel name="ATLCopy" as="IN"/>
+			<outputmodel name="ATLCopy-OUT" as="OUT" wspath="${ant.project.name}/ATLCopy.xmi"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="ATLCopy">
+			<metamodel name="ATL"/>
+			<inputmodel name="InlineCodeblocks" as="IN"/>
+			<outputmodel name="InlineCodeblocks-OUT" as="OUT" wspath="${ant.project.name}/InlineCodeblocks.xmi"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="ATLCopy">
+			<metamodel name="ATL"/>
+			<inputmodel name="ATLWFR" as="IN"/>
+			<outputmodel name="ATLWFR-OUT" as="OUT" wspath="${ant.project.name}/ATLWFR.xmi"/>
+		</emftvm.run>
+	</target>
+
+	<target name="saveModels" depends="run">
+		<emftvm.saveModel name="ATLtoEMFTVM-OUT" derived="true"/>
+		<emftvm.saveModel name="ATLtoEMFTVM-match" derived="true"/>
+		<emftvm.saveModel name="ATLtoEMFTVM-trace" derived="true"/>
+		<emftvm.saveModel name="EMFTVMCopy-OUT" derived="true"/>
+		<emftvm.saveModel name="ATLCopy-OUT" derived="true"/>
+		<emftvm.saveModel name="InlineCodeblocks-OUT" derived="true"/>
+		<emftvm.saveModel name="ATLWFR-OUT" derived="true"/>
+	</target>
+
+</project>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.emftvm.compiler/transformations/bootstrap/ATLtoEMFTVM.atl"/>
+<stringAttribute key="ATL VM" value="EMF-specific VM"/>
+<stringAttribute key="ATL_COMPILER" value="atl2006"/>
+<booleanAttribute key="IS_REFINING" value="false"/>
+<mapAttribute key="Input">
+<mapEntry key="IN" value="ATL"/>
+</mapAttribute>
+<mapAttribute key="Libs"/>
+<mapAttribute key="Model Handler">
+<mapEntry key="ATL" value="EMF"/>
+<mapEntry key="EMFTVM" value="EMF"/>
+<mapEntry key="Problem" value="EMF"/>
+</mapAttribute>
+<mapAttribute key="ModelType">
+<mapEntry key="ATL" value="METAMODELINPUT"/>
+<mapEntry key="EMFTVM" value="METAMODELOUTPUT"/>
+<mapEntry key="IN" value="MODELINPUT"/>
+<mapEntry key="OUT" value="MODELOUTPUT"/>
+<mapEntry key="PBS" value="MODELOUTPUT"/>
+<mapEntry key="Problem" value="METAMODELOUTPUT"/>
+</mapAttribute>
+<mapAttribute key="Options">
+<mapEntry key="OPTION_CLEAR" value="false"/>
+<mapEntry key="OPTION_CONTENT_TYPE" value="false"/>
+<mapEntry key="OPTION_DERIVED" value="true"/>
+<mapEntry key="allowInterModelReferences" value="false"/>
+<mapEntry key="printExecutionTime" value="true"/>
+<mapEntry key="step" value="false"/>
+<mapEntry key="supportUML2Stereotypes" value="false"/>
+</mapAttribute>
+<listAttribute key="OrderedInput">
+<listEntry value="IN"/>
+</listAttribute>
+<listAttribute key="OrderedOutput">
+<listEntry value="OUT"/>
+<listEntry value="PBS"/>
+</listAttribute>
+<mapAttribute key="Output">
+<mapEntry key="OUT" value="EMFTVM"/>
+<mapEntry key="PBS" value="Problem"/>
+</mapAttribute>
+<mapAttribute key="Path">
+<mapEntry key="ATL" value="/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore"/>
+<mapEntry key="EMFTVM" value="uri:http://www.eclipse.org/m2m/atl/2011/EMFTVM"/>
+<mapEntry key="IN" value="/org.eclipse.m2m.atl.emftvm.compiler/compiler-copy/EMFTVMCopy.xmi"/>
+<mapEntry key="OUT" value="/org.eclipse.m2m.atl.emftvm.compiler/transformations/EMFTVMCopy.emftvm"/>
+<mapEntry key="PBS" value="/org.eclipse.m2m.atl.emftvm.compiler/transformations/EMFTVMCopy-problems.xmi"/>
+<mapEntry key="Problem" value="/org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore"/>
+</mapAttribute>
+<listAttribute key="Superimpose"/>
+</launchConfiguration>

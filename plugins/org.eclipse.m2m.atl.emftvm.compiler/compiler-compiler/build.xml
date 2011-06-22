@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.eclipse.m2m.atl.emftvm.compiler/compiler-compiler" default="all">
+
+	<target name="all" depends="saveModels, saveModels-xmi"/>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir=".">
+	    		<exclude name="**/build.xml"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="loadModels">
+		<emftvm.loadModel name="ATLtoEMFTVM" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLtoEMFTVM.atl"/>
+		<emftvm.loadModel name="EMFTVMCopy" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/EMFTVMCopy.atl"/>
+		<emftvm.loadModel name="InlineCodeblocks" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/InlineCodeblocks.atl"/>
+		<emftvm.loadModel name="ATLWFR" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLWFR.atl"/>
+		<emftvm.loadMetamodel name="ATL" uri="http://www.eclipse.org/gmt/2005/ATL"/>
+		<emftvm.loadMetamodel name="Problem" wspath="org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore"/>
+	</target>
+
+	<target name="compile-ATLtoEMFTVM" depends="loadModels">
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="ATLtoEMFTVM">
+			<metamodel name="ATL"/>
+			<metamodel name="Problem"/>
+			<inputmodel name="ATLtoEMFTVM" as="IN"/>
+			<outputmodel name="ATLtoEMFTVM-OUT" as="OUT" wspath="${ant.project.name}/ATLtoEMFTVM-noinline.emftvm"/>
+			<outputmodel name="ATLtoEMFTVM-PBS" as="PBS" wspath="${ant.project.name}/ATLtoEMFTVM-noinline-problems.xmi"/>
+			<outputmodel name="ATLtoEMFTVM-match" as="match" wspath="${ant.project.name}/ATLtoEMFTVM-noinline-match.trace"/>
+			<outputmodel name="ATLtoEMFTVM-trace" as="trace" wspath="${ant.project.name}/ATLtoEMFTVM-noinline.trace"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="InlineCodeblocks">
+			<metamodel name="ATL"/>
+			<inputmodel name="ATLtoEMFTVM-OUT" as="IN"/>
+			<outputmodel name="ATLtoEMFTVM-INLINED" as="OUT" wspath="${ant.project.name}/ATLtoEMFTVM.emftvm"/>
+			<outputmodel name="ATLtoEMFTVM-INLINED-match" as="match" wspath="${ant.project.name}/ATLtoEMFTVM-match.trace"/>
+			<outputmodel name="ATLtoEMFTVM-INLINED-trace" as="trace" wspath="${ant.project.name}/ATLtoEMFTVM.trace"/>
+		</emftvm.run>
+	</target>
+
+	<target name="compile-EMFTVMCopy" depends="loadModels">
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="ATLtoEMFTVM">
+			<metamodel name="ATL"/>
+			<metamodel name="Problem"/>
+			<inputmodel name="EMFTVMCopy" as="IN"/>
+			<outputmodel name="EMFTVMCopy-OUT" as="OUT" wspath="${ant.project.name}/EMFTVMCopy-noinline.emftvm"/>
+			<outputmodel name="EMFTVMCopy-PBS" as="PBS" wspath="${ant.project.name}/EMFTVMCopy-noinline-problems.xmi"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="InlineCodeblocks">
+			<metamodel name="ATL"/>
+			<inputmodel name="EMFTVMCopy-OUT" as="IN"/>
+			<outputmodel name="EMFTVMCopy-INLINED" as="OUT" wspath="${ant.project.name}/EMFTVMCopy.emftvm"/>
+		</emftvm.run>
+	</target>
+
+	<target name="compile-InlineCodeblocks" depends="loadModels">
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="ATLtoEMFTVM">
+			<metamodel name="ATL"/>
+			<metamodel name="Problem"/>
+			<inputmodel name="InlineCodeblocks" as="IN"/>
+			<outputmodel name="InlineCodeblocks-OUT" as="OUT" wspath="${ant.project.name}/InlineCodeblocks-noinline.emftvm"/>
+			<outputmodel name="InlineCodeblocks-PBS" as="PBS" wspath="${ant.project.name}/InlineCodeblocks-noinline-problems.xmi"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="InlineCodeblocks">
+			<metamodel name="ATL"/>
+			<inputmodel name="InlineCodeblocks-OUT" as="IN"/>
+			<outputmodel name="InlineCodeblocks-INLINED" as="OUT" wspath="${ant.project.name}/InlineCodeblocks.emftvm"/>
+		</emftvm.run>
+	</target>
+
+	<target name="compile-ATLWFR" depends="loadModels">
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="ATLtoEMFTVM">
+			<metamodel name="ATL"/>
+			<metamodel name="Problem"/>
+			<inputmodel name="ATLWFR" as="IN"/>
+			<outputmodel name="ATLWFR-OUT" as="OUT" wspath="${ant.project.name}/ATLWFR-noinline.emftvm"/>
+			<outputmodel name="ATLWFR-PBS" as="PBS" wspath="${ant.project.name}/ATLWFR-noinline-problems.xmi"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="InlineCodeblocks">
+			<metamodel name="ATL"/>
+			<inputmodel name="ATLWFR-OUT" as="IN"/>
+			<outputmodel name="ATLWFR-INLINED" as="OUT" wspath="${ant.project.name}/ATLWFR.emftvm"/>
+		</emftvm.run>
+	</target>
+
+	<target name="saveModels" depends="compile-ATLtoEMFTVM, compile-EMFTVMCopy, compile-InlineCodeblocks, compile-ATLWFR">
+		<emftvm.saveModel name="ATLtoEMFTVM-OUT" derived="true"/>
+		<emftvm.saveModel name="ATLtoEMFTVM-PBS" derived="true"/>
+		<emftvm.saveModel name="ATLtoEMFTVM-match" derived="true"/>
+		<emftvm.saveModel name="ATLtoEMFTVM-trace" derived="true"/>
+		<emftvm.saveModel name="ATLtoEMFTVM-INLINED" derived="true"/>
+		<emftvm.saveModel name="ATLtoEMFTVM-INLINED-match" derived="true"/>
+		<emftvm.saveModel name="ATLtoEMFTVM-INLINED-trace" derived="true"/>
+		<emftvm.saveModel name="EMFTVMCopy-INLINED" derived="true"/>
+		<emftvm.saveModel name="InlineCodeblocks-INLINED" derived="true"/>
+		<emftvm.saveModel name="ATLWFR-INLINED" derived="true"/>
+	</target>
+
+	<target name="copy-xmi" depends="saveModels">
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="EMFTVMCopy">
+			<inputmodel name="ATLtoEMFTVM-OUT" as="IN"/>
+			<outputmodel name="ATLtoEMFTVM-OUT-XMI" as="OUT" wspath="${ant.project.name}/ATLtoEMFTVM-noinline.emftvm.xmi"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="EMFTVMCopy">
+			<inputmodel name="ATLtoEMFTVM-INLINED" as="IN"/>
+			<outputmodel name="ATLtoEMFTVM-INLINED-XMI" as="OUT" wspath="${ant.project.name}/ATLtoEMFTVM.emftvm.xmi"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="EMFTVMCopy">
+			<inputmodel name="EMFTVMCopy-INLINED" as="IN"/>
+			<outputmodel name="EMFTVMCopy-INLINED-XMI" as="OUT" wspath="${ant.project.name}/EMFTVMCopy.emftvm.xmi"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="EMFTVMCopy">
+			<inputmodel name="InlineCodeblocks-INLINED" as="IN"/>
+			<outputmodel name="InlineCodeblocks-INLINED-XMI" as="OUT" wspath="${ant.project.name}/InlineCodeblocks.emftvm.xmi"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="EMFTVMCopy">
+			<inputmodel name="ATLWFR-INLINED" as="IN"/>
+			<outputmodel name="ATLWFR-INLINED-XMI" as="OUT" wspath="${ant.project.name}/ATLWFR.emftvm.xmi"/>
+		</emftvm.run>
+	</target>
+
+	<target name="saveModels-xmi" depends="copy-xmi">
+		<emftvm.saveModel name="ATLtoEMFTVM-OUT-XMI" derived="true"/>
+		<emftvm.saveModel name="ATLtoEMFTVM-INLINED-XMI" derived="true"/>
+		<emftvm.saveModel name="EMFTVMCopy-INLINED-XMI" derived="true"/>
+		<emftvm.saveModel name="InlineCodeblocks-INLINED-XMI" derived="true"/>
+		<emftvm.saveModel name="ATLWFR-INLINED-XMI" derived="true"/>
+	</target>
+
+</project>
