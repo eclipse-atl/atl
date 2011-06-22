@@ -1,0 +1,22 @@
+<project name="org.eclipse.m2m.atl.emftvm.tests/test-data" default="all">
+
+	<target name="clean">
+		<delete>
+			<fileset dir=".">
+	    		<exclude name="**/build.xml"/>
+	    		<exclude name="**/*.atl"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="copy-emftvm-file">
+		<copy todir=".">
+			<fileset dir="../../org.eclipse.m2m.atl.emftvm.compiler/transformations">
+				<include name="*.emftvm"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="all" depends="copy-emftvm-file"/>
+	
+</project>
