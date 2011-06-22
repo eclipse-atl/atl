@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ (C) 2011, Vrije Universiteit Brussel
+
+ $Id: plugin.xml,v 1.1 2011/06/22 07:06:18 dwagelaar Exp $
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.eclipse.m2m.atl.emftvm.presentation.EmftvmModelWizardID"
+            name="%_UI_EmftvmModelWizard_label"
+            class="org.eclipse.m2m.atl.emftvm.presentation.EmftvmModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/EmftvmModelFile.gif">
+         <description>%_UI_EmftvmModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.eclipse.m2m.atl.emftvm.presentation.EmftvmEditorID"
+            name="%_UI_EmftvmEditor_label"
+            icon="icons/full/obj16/EmftvmModelFile.gif"
+            extensions="emftvm"
+            class="org.eclipse.m2m.atl.emftvm.presentation.EmftvmEditor"
+            contributorClass="org.eclipse.m2m.atl.emftvm.presentation.EmftvmActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
