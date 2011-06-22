@@ -55,7 +55,7 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
  * Invokes the ATL to EMFTVM compiler.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 
