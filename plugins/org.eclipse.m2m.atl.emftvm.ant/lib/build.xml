@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.eclipse.m2m.atl.emftvm.ant/lib" default="createAntJar">
+	<target name="createAntJar">
+		<jar destfile="emftvmAntTasks.jar" basedir="../bin_ant"/>
+	</target>
+</project>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ant.core.antTasks">
+      <antTask
+            class="org.eclipse.m2m.atl.emftvm.ant.LoadModelTask"
+            library="lib/emftvmAntTasks.jar"
+            name="emftvm.loadModel">
+      </antTask>
+      <antTask
+            class="org.eclipse.m2m.atl.emftvm.ant.LoadMetamodelTask"
+            library="lib/emftvmAntTasks.jar"
+            name="emftvm.loadMetamodel">
+      </antTask>
+      <antTask
+            class="org.eclipse.m2m.atl.emftvm.ant.RunTask"
+            library="lib/emftvmAntTasks.jar"
+            name="emftvm.run">
+      </antTask>
+      <antTask
+            class="org.eclipse.m2m.atl.emftvm.ant.SaveModelTask"
+            library="lib/emftvmAntTasks.jar"
+            name="emftvm.saveModel">
+      </antTask>
+   </extension>
+
+</plugin>
