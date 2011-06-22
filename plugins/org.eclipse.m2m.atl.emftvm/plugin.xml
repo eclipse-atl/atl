@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ (C) 2011, Vrije Universiteit Brussel
+
+ $Id: plugin.xml,v 1.1 2011/06/22 07:03:55 dwagelaar Exp $
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eclipse.org/m2m/atl/2011/EMFTVM"
+            class="org.eclipse.m2m.atl.emftvm.EmftvmPackage"
+            genModel="model/emftvm.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.content_parser">
+      <parser
+            class="org.eclipse.m2m.atl.emftvm.impl.resource.EMFTVMResourceFactoryImpl"
+            contentTypeIdentifier="be.ac.vub.emftvm">
+      </parser>
+   </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            file-extensions="emftvm"
+            id="org.eclipse.m2m.atl.emftvm"
+            name="ATL EMFTVM file format"
+            priority="normal">
+      </content-type>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.extension_parser">
+      <parser
+            class="org.eclipse.m2m.atl.emftvm.impl.resource.EMFTVMResourceFactoryImpl"
+            type="emftvm">
+      </parser>
+   </extension>
+
+</plugin>

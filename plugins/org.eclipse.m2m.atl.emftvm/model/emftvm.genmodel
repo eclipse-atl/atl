@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="(C) 2011 Dennis Wagelaar, Vrije Universiteit Brussel"
+    modelDirectory="/org.eclipse.m2m.atl.emftvm/src" editDirectory="/org.eclipse.m2m.atl.emftvm.edit/src"
+    editorDirectory="/org.eclipse.m2m.atl.emftvm.editor/src" modelPluginID="org.eclipse.m2m.atl.emftvm"
+    modelName="Emftvm" editPluginClass="org.eclipse.m2m.atl.emftvm.provider.EmftvmEditPlugin"
+    editorPluginClass="org.eclipse.m2m.atl.emftvm.presentation.EmftvmEditorPlugin"
+    testsDirectory="/org.eclipse.m2m.atl.emftvm.tests/src" testSuiteClass="org.eclipse.m2m.atl.emftvm.tests.EmftvmAllTests"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
+    editPluginID="org.eclipse.m2m.atl.emftvm.edit" editorPluginID="org.eclipse.m2m.atl.emftvm.editor"
+    language="" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
+  <foreignModel>emftvm.ecore</foreignModel>
+  <genPackages prefix="Emftvm" basePackage="org.eclipse.m2m.atl" disposableProviderFactory="true"
+      ecorePackage="emftvm.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="emftvm.ecore#//ModelDeclarationTag">
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ModelDeclarationTag/input"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ModelDeclarationTag/inout"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ModelDeclarationTag/output"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="emftvm.ecore#//FeatureTag">
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//FeatureTag/Field"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//FeatureTag/StaticField"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//FeatureTag/Operation"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//FeatureTag/StaticOperation"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//FeatureTag/QueryOperation"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//FeatureTag/StaticQueryOperation"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="emftvm.ecore#//Opcode">
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/PUSH"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/PUSHT"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/PUSHF"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/POP"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/LOAD"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/STORE"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/SET"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/GET"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/GET_TRANS"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/SET_STATIC"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/GET_STATIC"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/FINDTYPE"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/FINDTYPE_S"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/NEW"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/NEW_S"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/DELETE"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/DUP"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/DUP_X1"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/SWAP"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/SWAP_X1"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/IF"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/IFN"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/GOTO"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/ITERATE"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/ENDITERATE"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/INVOKE"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/INVOKE_SUPER"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/INVOKE_STATIC"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/ALLINST"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/ALLINST_IN"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/ISNULL"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/GETENVTYPE"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/NOT"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/AND"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/OR"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/XOR"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/IMPLIES"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/IFTE"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/RETURN"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/GETCB"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/INVOKE_ALL_CBS"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/INVOKE_CB"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/INVOKE_CB_S"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/MATCH"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/MATCH_S"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/ADD"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/REMOVE"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/INSERT"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="emftvm.ecore#//RuleMode">
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//RuleMode/manual"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//RuleMode/automaticSingle"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//RuleMode/automaticRecursive"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="emftvm.ecore#//ConstantTag">
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ConstantTag/String"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ConstantTag/Integer"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ConstantTag/Double"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ConstantTag/Byte"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ConstantTag/Character"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ConstantTag/Float"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ConstantTag/Short"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ConstantTag/Long"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ConstantTag/EnumLiteral"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//ConstantTag/Null"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="emftvm.ecore#//ModuleResolver"/>
+    <genDataTypes ecoreDataType="emftvm.ecore#//EnumLiteral"/>
+    <genDataTypes ecoreDataType="emftvm.ecore#//StackFrame"/>
+    <genDataTypes ecoreDataType="emftvm.ecore#//Method"/>
+    <genDataTypes ecoreDataType="emftvm.ecore#//TimingData"/>
+    <genDataTypes ecoreDataType="emftvm.ecore#//LazyCollection">
+      <genTypeParameters ecoreTypeParameter="emftvm.ecore#//LazyCollection/E"/>
+    </genDataTypes>
+    <genDataTypes ecoreDataType="emftvm.ecore#//LazyBag">
+      <genTypeParameters ecoreTypeParameter="emftvm.ecore#//LazyBag/E"/>
+    </genDataTypes>
+    <genDataTypes ecoreDataType="emftvm.ecore#//LazyList">
+      <genTypeParameters ecoreTypeParameter="emftvm.ecore#//LazyList/E"/>
+    </genDataTypes>
+    <genDataTypes ecoreDataType="emftvm.ecore#//LazyOrderedSet">
+      <genTypeParameters ecoreTypeParameter="emftvm.ecore#//LazyOrderedSet/E"/>
+    </genDataTypes>
+    <genDataTypes ecoreDataType="emftvm.ecore#//LazySet">
+      <genTypeParameters ecoreTypeParameter="emftvm.ecore#//LazySet/E"/>
+    </genDataTypes>
+    <genClasses ecoreClass="emftvm.ecore#//ExecEnv">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/metaModels"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/inputModels"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/inoutModels"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/outputModels"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/modules"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//ExecEnv/deletionQueue"/>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/loadModule">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule/resolver"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/registerFeature">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/registerFeature/feature"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/registerRule">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/registerRule/rule"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findOperation">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation/name"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation/parameterTypes"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findStaticOperation">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticOperation/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticOperation/name"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticOperation/parameterTypes"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findField">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findField/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findField/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findStaticField">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticField/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticField/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findRule">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findRule/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findType">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findType/modelName"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findType/typeName"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/run">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/run/timingData"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getRules"/>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getModelOf">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/getModelOf/object"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getModelID">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/getModelID/model"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/deleteQueue"/>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getInputModelOf">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/getInputModelOf/object"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getInoutModelOf">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/getInoutModelOf/object"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getOutputModelOf">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/getOutputModelOf/object"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Model">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Model/resource"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Model/allowInterModelReferences"/>
+      <genOperations ecoreOperation="emftvm.ecore#//Model/allInstancesOf">
+        <genParameters ecoreParameter="emftvm.ecore#//Model/allInstancesOf/type"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Model/newElement">
+        <genParameters ecoreParameter="emftvm.ecore#//Model/newElement/type"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Model/deleteElement">
+        <genParameters ecoreParameter="emftvm.ecore#//Model/deleteElement/element"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Metamodel">
+      <genOperations ecoreOperation="emftvm.ecore#//Metamodel/findType">
+        <genParameters ecoreParameter="emftvm.ecore#//Metamodel/findType/typeName"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Module">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Module/sourceName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Module/features"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Module/rules"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//Module/eImports"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Module/imports"/>
+      <genFeatures property="Readonly" children="true" createChild="true" propertyCategory=""
+          ecoreFeature="ecore:EReference emftvm.ecore#//Module/inputModels"/>
+      <genFeatures property="Readonly" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Module/inoutModels"/>
+      <genFeatures property="Readonly" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Module/outputModels"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//ModelDeclaration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ModelDeclaration/modelName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ModelDeclaration/metaModelName"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//ModelDeclaration/inputModelFor"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//ModelDeclaration/inoutModelFor"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//ModelDeclaration/outputModelFor"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="emftvm.ecore#//Feature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Feature/static"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//Feature/eContext"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//Feature/module"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute emftvm.ecore#//Feature/context"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Feature/contextModel"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Field">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Field/staticValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Field/initialiser"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//Field/rule"/>
+      <genOperations ecoreOperation="emftvm.ecore#//Field/getValue">
+        <genParameters ecoreParameter="emftvm.ecore#//Field/getValue/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Field/setValue">
+        <genParameters ecoreParameter="emftvm.ecore#//Field/setValue/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Field/setValue/value"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Field/getValue.1">
+        <genParameters ecoreParameter="emftvm.ecore#//Field/getValue.1/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Field/getValue.1/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Field/getStaticValue">
+        <genParameters ecoreParameter="emftvm.ecore#//Field/getStaticValue/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Field/clear"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Operation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Operation/parameters"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Operation/query"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Operation/body"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="emftvm.ecore#//NamedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//NamedElement/name"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Parameter">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//Parameter/operation"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="emftvm.ecore#//TypedElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//TypedElement/eType"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute emftvm.ecore#//TypedElement/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//TypedElement/typeModel"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Instruction">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//Instruction/owningBlock"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Instruction/opcode"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Instruction/stackProduction"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Instruction/stackConsumption"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//Instruction/lineNumber"/>
+      <genOperations ecoreOperation="emftvm.ecore#//Instruction/getStackLevel"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//LineNumber">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LineNumber/startLine"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LineNumber/startColumn"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LineNumber/endLine"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LineNumber/endColumn"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LineNumber/startChar"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LineNumber/endChar"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//LineNumber/owningBlock"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//LineNumber/instructions"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//LocalVariable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LocalVariable/slot"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//LocalVariable/owningBlock"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//LocalVariable/startInstruction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//LocalVariable/endInstruction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LocalVariable/startInstructionIndex"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LocalVariable/endInstructionIndex"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Rule">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/module"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/mode"/>
+      <genFeatures property="Readonly" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/inputElements"/>
+      <genFeatures property="Readonly" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/outputElements"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/eSuperRules"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/eSubRules"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/matcher"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/applier"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/postApply"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/superRules"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/abstract"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/fields"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/default"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/distinctElements"/>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/findField">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/findField/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/findField/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/findStaticField">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/findStaticField/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/findStaticField/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/registerField">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/registerField/field"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//RuleElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//RuleElement/models"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//RuleElement/eModels"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//InputRuleElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//InputRuleElement/binding"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//InputRuleElement/inputFor"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//OutputRuleElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//OutputRuleElement/mapsTo"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//OutputRuleElement/outputFor"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//CodeBlock">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//CodeBlock/maxLocals"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//CodeBlock/maxStack"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/code"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/lineNumbers"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/localVariables"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/matcherFor"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/applierFor"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/postApplyFor"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/bodyFor"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/initialiserFor"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/nested"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/nestedFor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//CodeBlock/parentFrame"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/bindingFor"/>
+      <genOperations ecoreOperation="emftvm.ecore#//CodeBlock/execute">
+        <genParameters ecoreParameter="emftvm.ecore#//CodeBlock/execute/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//CodeBlock/getStackLevel"/>
+      <genOperations ecoreOperation="emftvm.ecore#//CodeBlock/getModule"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Push" labelFeature="#//emftvm/Push/value">
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Push/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Push/stringValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Push/intValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Push/doubleValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Push/byteValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Push/charValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Push/floatValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Push/shortValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Push/longValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Push/enumValue"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Pusht"/>
+    <genClasses ecoreClass="emftvm.ecore#//Pushf"/>
+    <genClasses ecoreClass="emftvm.ecore#//Pop"/>
+    <genClasses image="false" ecoreClass="emftvm.ecore#//LocalVariableInstruction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LocalVariableInstruction/cbOffset"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LocalVariableInstruction/slot"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LocalVariableInstruction/localVariableIndex"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//LocalVariableInstruction/localVariable"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Load" labelFeature="#//emftvm/LocalVariableInstruction/slot"/>
+    <genClasses ecoreClass="emftvm.ecore#//Store" labelFeature="#//emftvm/LocalVariableInstruction/slot"/>
+    <genClasses image="false" ecoreClass="emftvm.ecore#//FieldInstruction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//FieldInstruction/fieldname"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Set"/>
+    <genClasses ecoreClass="emftvm.ecore#//Get"/>
+    <genClasses ecoreClass="emftvm.ecore#//Get_trans"/>
+    <genClasses ecoreClass="emftvm.ecore#//Set_static"/>
+    <genClasses ecoreClass="emftvm.ecore#//Get_static"/>
+    <genClasses ecoreClass="emftvm.ecore#//Findtype" labelFeature="#//emftvm/Findtype/typename">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Findtype/modelname"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Findtype/typename"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Findtype_s"/>
+    <genClasses ecoreClass="emftvm.ecore#//New">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//New/modelname"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//New_s"/>
+    <genClasses ecoreClass="emftvm.ecore#//Delete"/>
+    <genClasses ecoreClass="emftvm.ecore#//Dup"/>
+    <genClasses ecoreClass="emftvm.ecore#//Dup_x1"/>
+    <genClasses ecoreClass="emftvm.ecore#//Swap"/>
+    <genClasses ecoreClass="emftvm.ecore#//Swap_x1"/>
+    <genClasses image="false" ecoreClass="emftvm.ecore#//BranchInstruction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//BranchInstruction/offset"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//BranchInstruction/target"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//If" labelFeature="#//emftvm/BranchInstruction/offset"/>
+    <genClasses ecoreClass="emftvm.ecore#//Ifn" labelFeature="#//emftvm/BranchInstruction/offset"/>
+    <genClasses ecoreClass="emftvm.ecore#//Goto" labelFeature="#//emftvm/BranchInstruction/offset"/>
+    <genClasses ecoreClass="emftvm.ecore#//Iterate" labelFeature="#//emftvm/BranchInstruction/offset"/>
+    <genClasses ecoreClass="emftvm.ecore#//Enditerate" labelFeature="#//emftvm/BranchInstruction/offset"/>
+    <genClasses image="false" ecoreClass="emftvm.ecore#//InvokeInstruction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//InvokeInstruction/argcount"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="emftvm.ecore#//InvokeOperationInstruction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//InvokeOperationInstruction/opname"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Invoke"/>
+    <genClasses ecoreClass="emftvm.ecore#//Invoke_super"/>
+    <genClasses ecoreClass="emftvm.ecore#//Invoke_static"/>
+    <genClasses ecoreClass="emftvm.ecore#//Allinst"/>
+    <genClasses ecoreClass="emftvm.ecore#//Allinst_in"/>
+    <genClasses ecoreClass="emftvm.ecore#//Isnull"/>
+    <genClasses ecoreClass="emftvm.ecore#//Getenvtype"/>
+    <genClasses ecoreClass="emftvm.ecore#//Not"/>
+    <genClasses ecoreClass="emftvm.ecore#//And"/>
+    <genClasses ecoreClass="emftvm.ecore#//Or"/>
+    <genClasses ecoreClass="emftvm.ecore#//Xor"/>
+    <genClasses ecoreClass="emftvm.ecore#//Implies"/>
+    <genClasses ecoreClass="emftvm.ecore#//Ifte">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Ifte/thenCbIndex"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Ifte/elseCbIndex"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//Ifte/thenCb"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//Ifte/elseCb"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Return"/>
+    <genClasses image="false" ecoreClass="emftvm.ecore#//CodeBlockInstruction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//CodeBlockInstruction/cbIndex"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlockInstruction/codeBlock"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Getcb" labelFeature="#//emftvm/CodeBlockInstruction/cbIndex"/>
+    <genClasses ecoreClass="emftvm.ecore#//Invoke_all_cbs"/>
+    <genClasses ecoreClass="emftvm.ecore#//Invoke_cb" labelFeature="#//emftvm/CodeBlockInstruction/cbIndex"/>
+    <genClasses ecoreClass="emftvm.ecore#//Invoke_cb_s" labelFeature="#//emftvm/Instruction/opcode"/>
+    <genClasses ecoreClass="emftvm.ecore#//Match">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Match/rulename"/>
+    </genClasses>
+    <genClasses ecoreClass="emftvm.ecore#//Match_s"/>
+    <genClasses ecoreClass="emftvm.ecore#//Add"/>
+    <genClasses ecoreClass="emftvm.ecore#//Remove"/>
+    <genClasses ecoreClass="emftvm.ecore#//Insert"/>
+  </genPackages>
+</genmodel:GenModel>
