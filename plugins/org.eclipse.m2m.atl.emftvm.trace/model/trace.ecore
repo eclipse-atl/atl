@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="trace"
+    nsURI="http://www.eclipse.org/m2m/atl/emftvm/2011/Trace" nsPrefix="trace">
+  <eClassifiers xsi:type="ecore:EClass" name="TraceLinkSet">
+    <eOperations name="getDefaultSourceElement" eType="#//SourceElement">
+      <eParameters name="sourceElement" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
+    <eOperations name="getDefaultSourceElements" eType="#//SourceElementList">
+      <eParameters name="sourceElements">
+        <eGenericType eClassifier="#//JavaList">
+          <eTypeArguments/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="getLinksByRule" eType="#//TracedRule">
+      <eParameters name="rule" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="create" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eOperations>
+    <eOperations name="clear"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rules" upperBound="-1"
+        eType="#//TracedRule" containment="true" eOpposite="#//TracedRule/linkSet"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultSourceElements"
+        upperBound="-1" eType="#//SourceElement" eOpposite="#//SourceElement/defaultFor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultSourceElementLists"
+        upperBound="-1" eType="#//SourceElementList" containment="true" eOpposite="#//SourceElementList/defaultFor"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TracedRule">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rule" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="links" upperBound="-1"
+        eType="#//TraceLink" containment="true" eOpposite="#//TraceLink/rule"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="linkSet" eType="#//TraceLinkSet"
+        eOpposite="#//TraceLinkSet/rules"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TraceLink">
+    <eOperations name="getSourceElement" eType="#//SourceElement">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="create" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eOperations>
+    <eOperations name="getTargetElement" eType="#//TargetElement">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceElements" upperBound="-1"
+        eType="#//SourceElement" containment="true" eOpposite="#//SourceElement/sourceOf"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetElements" upperBound="-1"
+        eType="#//TargetElement" containment="true" eOpposite="#//TargetElement/targetOf"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" eType="#//TracedRule"
+        eOpposite="#//TracedRule/links"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="overridden" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        transient="true" defaultValueLiteral="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TraceElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SourceElement" eSuperTypes="#//TraceElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceOf" eType="#//TraceLink"
+        eOpposite="#//TraceLink/sourceElements"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapsTo" upperBound="-1"
+        eType="#//TargetElement" eOpposite="#//TargetElement/mapsTo"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultFor" eType="#//TraceLinkSet"
+        eOpposite="#//TraceLinkSet/defaultSourceElements"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TargetElement" eSuperTypes="#//TraceElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetOf" eType="#//TraceLink"
+        eOpposite="#//TraceLink/targetElements"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapsTo" eType="#//SourceElement"
+        eOpposite="#//SourceElement/mapsTo"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SourceElementList">
+    <eOperations name="getSourceObjects" lowerBound="2" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceElements" lowerBound="2"
+        upperBound="-1" eType="#//SourceElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultFor" eType="#//TraceLinkSet"
+        eOpposite="#//TraceLinkSet/defaultSourceElementLists"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="JavaList" instanceClassName="java.util.List">
+    <eTypeParameters name="E"/>
+  </eClassifiers>
+</ecore:EPackage>

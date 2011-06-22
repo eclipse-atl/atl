@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="(C) 2011 Dennis Wagelaar, Vrije Universiteit Brussel"
+    modelDirectory="/org.eclipse.m2m.atl.emftvm.trace/src" editDirectory="/org.eclipse.m2m.atl.emftvm.trace.edit/src"
+    editorDirectory="/org.eclipse.m2m.atl.emftvm.trace.editor/src" modelPluginID="org.eclipse.m2m.atl.emftvm.trace"
+    modelName="Trace" editPluginClass="org.eclipse.m2m.atl.emftvm.trace.provider.TraceEditPlugin"
+    editorPluginClass="org.eclipse.m2m.atl.emftvm.trace.presentation.TraceEditorPlugin"
+    testSuiteClass="org.eclipse.m2m.atl.emftvm.trace.tests.TraceAllTests" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="5.0" copyrightFields="false" editPluginID="org.eclipse.m2m.atl.emftvm.trace.edit"
+    editorPluginID="org.eclipse.m2m.atl.emftvm.trace.editor">
+  <foreignModel>trace.ecore</foreignModel>
+  <genPackages prefix="Trace" basePackage="org.eclipse.m2m.atl.emftvm" disposableProviderFactory="true"
+      ecorePackage="trace.ecore#/">
+    <genDataTypes ecoreDataType="trace.ecore#//JavaList">
+      <genTypeParameters ecoreTypeParameter="trace.ecore#//JavaList/E"/>
+    </genDataTypes>
+    <genClasses ecoreClass="trace.ecore#//TraceLinkSet">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference trace.ecore#//TraceLinkSet/rules"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//TraceLinkSet/defaultSourceElements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference trace.ecore#//TraceLinkSet/defaultSourceElementLists"/>
+      <genOperations ecoreOperation="trace.ecore#//TraceLinkSet/getDefaultSourceElement">
+        <genParameters ecoreParameter="trace.ecore#//TraceLinkSet/getDefaultSourceElement/sourceElement"/>
+      </genOperations>
+      <genOperations ecoreOperation="trace.ecore#//TraceLinkSet/getDefaultSourceElements">
+        <genParameters ecoreParameter="trace.ecore#//TraceLinkSet/getDefaultSourceElements/sourceElements"/>
+      </genOperations>
+      <genOperations ecoreOperation="trace.ecore#//TraceLinkSet/getLinksByRule">
+        <genParameters ecoreParameter="trace.ecore#//TraceLinkSet/getLinksByRule/rule"/>
+        <genParameters ecoreParameter="trace.ecore#//TraceLinkSet/getLinksByRule/create"/>
+      </genOperations>
+      <genOperations ecoreOperation="trace.ecore#//TraceLinkSet/clear"/>
+    </genClasses>
+    <genClasses ecoreClass="trace.ecore#//TracedRule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute trace.ecore#//TracedRule/rule"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference trace.ecore#//TracedRule/links"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference trace.ecore#//TracedRule/linkSet"/>
+    </genClasses>
+    <genClasses ecoreClass="trace.ecore#//TraceLink">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference trace.ecore#//TraceLink/sourceElements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference trace.ecore#//TraceLink/targetElements"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference trace.ecore#//TraceLink/rule"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute trace.ecore#//TraceLink/overridden"/>
+      <genOperations ecoreOperation="trace.ecore#//TraceLink/getSourceElement">
+        <genParameters ecoreParameter="trace.ecore#//TraceLink/getSourceElement/name"/>
+        <genParameters ecoreParameter="trace.ecore#//TraceLink/getSourceElement/create"/>
+      </genOperations>
+      <genOperations ecoreOperation="trace.ecore#//TraceLink/getTargetElement">
+        <genParameters ecoreParameter="trace.ecore#//TraceLink/getTargetElement/name"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="trace.ecore#//TraceElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute trace.ecore#//TraceElement/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//TraceElement/object"/>
+    </genClasses>
+    <genClasses ecoreClass="trace.ecore#//SourceElement">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference trace.ecore#//SourceElement/sourceOf"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//SourceElement/mapsTo"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//SourceElement/defaultFor"/>
+    </genClasses>
+    <genClasses ecoreClass="trace.ecore#//TargetElement">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference trace.ecore#//TargetElement/targetOf"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//TargetElement/mapsTo"/>
+    </genClasses>
+    <genClasses ecoreClass="trace.ecore#//SourceElementList">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//SourceElementList/sourceElements"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference trace.ecore#//SourceElementList/defaultFor"/>
+      <genOperations ecoreOperation="trace.ecore#//SourceElementList/getSourceObjects"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

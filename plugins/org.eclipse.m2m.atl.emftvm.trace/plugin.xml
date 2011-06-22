@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ (C) 2011 Dennis Wagelaar, Vrije Universiteit Brussel
+
+ $Id: plugin.xml,v 1.1 2011/06/22 07:13:10 dwagelaar Exp $
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eclipse.org/m2m/atl/emftvm/2011/Trace"
+            class="org.eclipse.m2m.atl.emftvm.trace.TracePackage"
+            genModel="model/trace.genmodel"/>
+   </extension>
+
+</plugin>
