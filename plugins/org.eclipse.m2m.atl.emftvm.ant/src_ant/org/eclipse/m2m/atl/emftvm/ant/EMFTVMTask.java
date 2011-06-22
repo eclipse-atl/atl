@@ -21,7 +21,7 @@ import org.eclipse.m2m.atl.emftvm.Model;
 
 /**
  * General superclass for EMFTVM Ant tasks.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public abstract class EMFTVMTask extends Task {
 

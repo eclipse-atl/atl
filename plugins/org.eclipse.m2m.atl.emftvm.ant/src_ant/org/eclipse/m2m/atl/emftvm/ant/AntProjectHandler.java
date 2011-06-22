@@ -19,7 +19,7 @@ import org.apache.tools.ant.Project;
 
 /**
  * Log handler for EMFTVM messages during Ant build.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class AntProjectHandler extends Handler {
 

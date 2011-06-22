@@ -21,7 +21,7 @@ import org.eclipse.m2m.atl.common.ATLLogger;
 
 /**
  * Ant build change listener for EMFTVM tasks.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class EMFTVMBuildListener implements BuildListener {
 

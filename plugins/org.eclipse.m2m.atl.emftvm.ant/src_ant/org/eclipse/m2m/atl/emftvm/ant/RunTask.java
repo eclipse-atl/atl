@@ -30,7 +30,7 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 
 /**
  * Runs a model transformation in the EMFTVM.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class RunTask extends EMFTVMTask {
 

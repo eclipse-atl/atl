@@ -27,7 +27,7 @@ import org.eclipse.m2m.atl.emftvm.Model;
 
 /**
  * Saves a {@link Model}.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class SaveModelTask extends EMFTVMTask {
 
