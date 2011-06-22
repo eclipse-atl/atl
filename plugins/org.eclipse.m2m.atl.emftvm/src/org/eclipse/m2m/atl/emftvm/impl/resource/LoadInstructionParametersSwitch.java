@@ -31,7 +31,7 @@ import org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch;
 
 /**
  * Loads {@link Instruction} parameters from a {@link DataInputStream}.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class LoadInstructionParametersSwitch extends EmftvmSwitch<Instruction> {
 

@@ -47,7 +47,7 @@ import org.eclipse.m2m.atl.emftvm.TypedElement;
 
 /**
  * EMF {@link ResourceImpl} for the EMFTVM binary module format.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class EMFTVMResourceImpl extends ResourceImpl {
 

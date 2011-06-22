@@ -28,7 +28,7 @@ import org.eclipse.m2m.atl.emftvm.CodeBlock;
 /**
  * Immutable {@link Collection} that supports lazy evaluation.
  * Based on the OCL 2.2 specification (formal/2010-02-01).
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
  * @param <E>
  */
@@ -36,7 +36,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * {@link Iterator} without {@link #remove()}.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 *
 	 * @param <E>
 	 */
@@ -53,7 +53,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * {@link ListIterator} without {@link #remove()}, {@link #add(Object)}, and {@link #set(Object)}.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 *
 	 * @param <E>
 	 */
@@ -79,7 +79,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * Abstract {@link ReadOnlyIterator} that wraps around the underlying collection.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public abstract class WrappedIterator extends ReadOnlyIterator<E> {
 
@@ -105,7 +105,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * Abstract {@link ReadOnlyListIterator} that wraps around the underlying collection.
 	 * Assumes the underlying collection is a {@link List}.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public abstract class WrappedListIterator extends ReadOnlyListIterator<E> {
 
@@ -173,7 +173,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * {@link ReadOnlyIterator} that caches values of the underlying collection.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class CachingIterator extends ReadOnlyIterator<E> {
 
@@ -221,7 +221,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * Converts an {@link Iterator} to a {@link ListIterator}.
 	 * Does not support modification of the underlying {@link LazyList}.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class IteratorToListIterator extends CachingIterator implements ListIterator<E> {
 	
@@ -298,7 +298,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * {@link ReadOnlyIterator} that removes duplicate values from the underlying collection.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class CachingSetIterator extends CachingIterator {
 	
@@ -363,7 +363,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * {@link Iterator} that appends an object to the underlying collection.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class AppendIterator extends WrappedIterator {
 
@@ -407,7 +407,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * {@link Iterator} that iterates over a subrange of the underlying {@link LazyList}'s contents.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class SubListIterator extends ReadOnlyIterator<E> {
 
@@ -447,7 +447,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * {@link Iterator} that iterates over a subrange of the underlying {@link LazyList}'s contents.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class SubListListIterator extends ReadOnlyListIterator<E> {
 	
@@ -532,7 +532,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * {@link ReadOnlyIterator} that excludes a given object.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class ExcludingIterator extends CachingIterator {
 	
@@ -602,7 +602,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * {@link ReadOnlyIterator} that returns only elements contained in both underlying collections.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class IntersectionIterator extends CachingIterator {
 	
@@ -674,7 +674,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * {@link ReadOnlyIterator} that returns elements contained in this underlying collection,
 	 * but not in the other underlying collection.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class SubtractionIterator extends CachingIterator {
 	
@@ -746,7 +746,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * {@link Iterator} that returns first the elements of the underlying
 	 * collection, then the elements of the other collection.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class UnionIterator extends WrappedIterator {
 
@@ -802,7 +802,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * {@link Iterator} that returns first the elements of the underlying
 	 * collection, then the elements of the other collection, with all
 	 * duplicates removed.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class UnionSetIterator extends CachingSetIterator {
 
@@ -893,7 +893,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * Flattens any nested {@link Iterable}s by iterating over their elements
 	 * as well.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static class FlattenIterator extends ReadOnlyIterator<Object> {
 
@@ -972,7 +972,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * Flattens any nested {@link Iterable}s by iterating over their elements
 	 * as well. Removes any duplicates from the returned elements.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static class FlattenSetIterator extends ReadOnlyIterator<Object> {
 		
@@ -1050,7 +1050,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * {@link ReadOnlyIterator} that returns the values of the underlying
 	 * collection in reverse order.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 *
 	 */
 	public class ReverseIterator extends ReadOnlyIterator<E> {
@@ -1087,7 +1087,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * {@link ReadOnlyIterator} that returns the values of the underlying
 	 * collection in reverse order.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 *
 	 */
 	public class ReverseListIterator extends ReadOnlyListIterator<E> {
@@ -1167,7 +1167,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * {@link ReadOnlyIterator} that filters elements from the underlying
 	 * collection by evaluating a condition function on them.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public abstract class FilterIterator extends CachingIterator {
 
@@ -1250,7 +1250,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * {@link FilterIterator} that selects elements from the underlying
 	 * collection by evaluation a condition function on them.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class SelectIterator extends FilterIterator {
 
@@ -1275,7 +1275,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * {@link FilterIterator} that rejects elements from the underlying
 	 * collection by evaluation a condition function on them.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class RejectIterator extends FilterIterator {
 
@@ -1301,7 +1301,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * {@link ReadOnlyIterator} that collects the results of
 	 * evaluating a function on each of the elements from the
 	 * underlying collection.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 * 
 	 * @param <T> the function return type
 	 */

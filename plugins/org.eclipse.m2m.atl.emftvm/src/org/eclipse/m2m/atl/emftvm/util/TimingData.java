@@ -13,7 +13,7 @@ package org.eclipse.m2m.atl.emftvm.util;
 
 /**
  * Records time data during the execution of the EMFTVM. 
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class TimingData {
 

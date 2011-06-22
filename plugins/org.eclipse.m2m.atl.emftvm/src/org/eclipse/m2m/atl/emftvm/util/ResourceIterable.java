@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 /**
  * Makes the contents of a {@link Resource} available as an {@link Iterable}.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ResourceIterable implements Iterable<EObject> {
 

@@ -13,7 +13,7 @@ package org.eclipse.m2m.atl.emftvm.util;
 
 /**
  * Duplicate entry in {@link TypeHashMap}.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
  */
 public class DuplicateEntryException extends RuntimeException {

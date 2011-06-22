@@ -24,7 +24,7 @@ import org.eclipse.m2m.atl.emftvm.CodeBlock;
 
 /**
  * Immutable {@link Set} and {@link List} that supports lazy evaluation.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
  * @param <E>
  */
@@ -186,7 +186,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		/**
 		 * {@link Iterator} that appends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class AppendOrderedSetIterator extends WrappedIterator {
 		
@@ -241,7 +241,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		/**
 		 * {@link Iterator} that appends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class AppendOrderedSetListIterator extends WrappedListIterator {
 		
@@ -488,7 +488,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		/**
 		 * {@link Iterator} that prepends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class PrependOrderedSetIterator extends WrappedIterator {
 		
@@ -537,7 +537,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		/**
 		 * {@link Iterator} that appends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class PrependOrderedSetListIterator extends WrappedListIterator {
 		
@@ -767,7 +767,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@link Iterator} that appends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
 		 * List index starts at 0.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class InsertAtOrderedSetIterator extends WrappedIterator {
 		
@@ -813,7 +813,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		/**
 		 * {@link Iterator} that appends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class InsertAtOrderedSetListIterator extends WrappedListIterator {
 		
@@ -1071,7 +1071,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	
 		/**
 		 * {@link Iterator} that excludes a given object.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class ExcludingOrderedSetIterator extends WrappedIterator {
 		
@@ -1155,7 +1155,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	
 		/**
 		 * {@link ListIterator} that excludes a given object.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class ExcludingOrderedSetListIterator extends WrappedListIterator {
 		

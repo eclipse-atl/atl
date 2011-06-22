@@ -16,7 +16,7 @@ import java.util.Set;
 
 /**
  * Provides extra functionality for finding supertypes of keys representing types.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
  * @param <K>
  * @param <V>

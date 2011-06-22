@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 
 /**
  * Generic enumeration literal.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public final class EnumLiteral implements Serializable {
 

@@ -23,7 +23,7 @@ import org.eclipse.m2m.atl.emftvm.CodeBlock;
 
 /**
  * Immutable {@link List} that supports lazy evaluation.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
  * @param <E> the collection element type
  */
@@ -193,7 +193,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 
 		/**
 		 * {@link ListIterator} that appends an object to the underlying collection.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class AppendListIterator extends WrappedListIterator {
 		
@@ -409,7 +409,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 
 		/**
 		 * {@link Iterator} that prepends an object to the underlying collection.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class PrependIterator extends WrappedIterator {
 		
@@ -447,7 +447,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 
 		/**
 		 * {@link ListIterator} that appends an object to the underlying collection.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class PrependListIterator extends WrappedListIterator {
 		
@@ -625,7 +625,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	/**
 	 * {@link LazyList} that inserts an element it a given index in the underlying collection.
 	 * List index starts at 0.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 *
 	 * @param <E>
 	 */
@@ -634,7 +634,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		/**
 		 * Inserts an element into the underlying collection at the given index.
 		 * List index starts at 0.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class InsertAtIterator extends WrappedIterator {
 		
@@ -672,7 +672,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		/**
 		 * Inserts an element into the underlying collection at the given index.
 		 * List index starts at 0.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class InsertAtListIterator extends WrappedListIterator {
 		
@@ -1102,7 +1102,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	/**
 	 * {@link ListIterator} that returns first the elements of the underlying
 	 * collection, then the elements of the other collection.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class UnionListIterator extends WrappedListIterator {
 

@@ -22,7 +22,7 @@ import org.eclipse.m2m.atl.emftvm.CodeBlock;
 
 /**
  * Immutable {@link Set} that supports lazy evaluation.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
  * @param <E> the collection element type
  */
@@ -67,7 +67,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		/**
 		 * {@link Iterator} that appends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class IncludingSetIterator extends WrappedIterator {
 		
@@ -200,7 +200,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	
 		/**
 		 * {@link ReadOnlyIterator} that excludes a given object.
-		 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class ExcludingSetIterator extends WrappedIterator {
 		

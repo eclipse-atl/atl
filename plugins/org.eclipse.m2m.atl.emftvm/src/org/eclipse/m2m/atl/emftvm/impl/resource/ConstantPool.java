@@ -44,13 +44,13 @@ import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
 
 /**
  * Constant pool implementation for binary EMFTVM file format.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ConstantPool {
 
 	/**
 	 * Creates constant pool entries for EMFTVM elements. 
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class CreateConstantsSwitch extends EmftvmSwitch<Object> {
 

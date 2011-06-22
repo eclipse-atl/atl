@@ -20,7 +20,7 @@ import org.eclipse.m2m.atl.emftvm.Field;
 
 /**
  * Reusable class for storage and lookup of {@link Field}s.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
  */
 public final class FieldContainer {

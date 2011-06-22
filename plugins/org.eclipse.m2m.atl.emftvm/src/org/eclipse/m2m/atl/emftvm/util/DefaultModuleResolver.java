@@ -22,7 +22,7 @@ import org.eclipse.m2m.atl.emftvm.Module;
 
 /**
  * Resolves modules based on an EMF URI prefix.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class DefaultModuleResolver implements ModuleResolver {
 

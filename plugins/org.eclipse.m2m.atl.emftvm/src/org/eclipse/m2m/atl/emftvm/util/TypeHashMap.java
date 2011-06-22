@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EClass;
 
 /**
  * {@link HashMap} implementation of {@link TypeMap}.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
  * @param <K>
  * @param <V>

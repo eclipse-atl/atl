@@ -22,7 +22,7 @@ import org.eclipse.m2m.atl.emftvm.CodeBlock;
 
 /**
  * Immutable {@link Collection} that supports lazy evaluation.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
  * @param <E>
  */
@@ -135,7 +135,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	/**
 	 * {@link ReadOnlyIterator} that returns only elements contained in both underlying collections,
 	 * where the element occurs as often as in the collection with the least occurrences of the element.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class BagIntersectionIterator extends ReadOnlyIterator<E> {
 

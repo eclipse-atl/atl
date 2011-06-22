@@ -41,7 +41,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 
 /**
  * Provides native operations on simple OCL types.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public final class OCLOperations {
 

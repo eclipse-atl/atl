@@ -18,7 +18,7 @@ import java.util.ListIterator;
 /**
  * {@link LazyList} that passes method calls through to the underlying
  * {@link List}, where possible, instead of going via {@link Iterator}s. 
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
  * @param <E>
  */

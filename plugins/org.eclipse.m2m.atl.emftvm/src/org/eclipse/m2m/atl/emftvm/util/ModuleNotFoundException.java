@@ -13,7 +13,7 @@ package org.eclipse.m2m.atl.emftvm.util;
 
 /**
  * Module not found.
- * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class ModuleNotFoundException extends RuntimeException {
 
