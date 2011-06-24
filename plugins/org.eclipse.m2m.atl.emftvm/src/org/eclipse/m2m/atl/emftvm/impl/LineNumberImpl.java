@@ -357,7 +357,6 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Instruction> getInstructions() {
 		if (instructions == null) {
 			instructions = new EObjectWithInverseResolvingEList<Instruction>(Instruction.class, this, EmftvmPackage.LINE_NUMBER__INSTRUCTIONS, EmftvmPackage.INSTRUCTION__LINE_NUMBER);
@@ -521,7 +520,6 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {

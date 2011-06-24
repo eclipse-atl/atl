@@ -306,7 +306,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<InputRuleElement> getInputElements() {
 		if (inputElements == null) {
 			inputElements = new EObjectContainmentWithInverseEList<InputRuleElement>(InputRuleElement.class, this, EmftvmPackage.RULE__INPUT_ELEMENTS, EmftvmPackage.INPUT_RULE_ELEMENT__INPUT_FOR);
@@ -319,7 +318,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<OutputRuleElement> getOutputElements() {
 		if (outputElements == null) {
 			outputElements = new EObjectContainmentWithInverseEList<OutputRuleElement>(OutputRuleElement.class, this, EmftvmPackage.RULE__OUTPUT_ELEMENTS, EmftvmPackage.OUTPUT_RULE_ELEMENT__OUTPUT_FOR);
@@ -332,7 +330,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Rule> getESuperRules() {
 		if (eSuperRules == null) {
 			eSuperRules = new EObjectWithInverseResolvingEList.ManyInverse<Rule>(Rule.class, this, EmftvmPackage.RULE__ESUPER_RULES, EmftvmPackage.RULE__ESUB_RULES);
@@ -345,7 +342,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Rule> getESubRules() {
 		if (eSubRules == null) {
 			eSubRules = new EObjectWithInverseResolvingEList.ManyInverse<Rule>(Rule.class, this, EmftvmPackage.RULE__ESUB_RULES, EmftvmPackage.RULE__ESUPER_RULES);
@@ -487,7 +483,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<String> getSuperRules() {
 		if (superRules == null) {
 			superRules = new EDataTypeUniqueEList<String>(String.class, this, EmftvmPackage.RULE__SUPER_RULES);
@@ -521,7 +516,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Field> getFields() {
 		if (fields == null) {
 			fields = new EObjectContainmentWithInverseEList<Field>(Field.class, this, EmftvmPackage.RULE__FIELDS, EmftvmPackage.FIELD__RULE);
@@ -838,7 +832,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {

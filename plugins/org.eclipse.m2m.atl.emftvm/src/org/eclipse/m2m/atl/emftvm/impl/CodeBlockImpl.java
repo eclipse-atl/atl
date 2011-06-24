@@ -456,7 +456,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Instruction> getCode() {
 		if (code == null) {
 			code = new EObjectContainmentWithInverseEList<Instruction>(Instruction.class, this, EmftvmPackage.CODE_BLOCK__CODE, EmftvmPackage.INSTRUCTION__OWNING_BLOCK);
@@ -469,7 +468,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<LineNumber> getLineNumbers() {
 		if (lineNumbers == null) {
 			lineNumbers = new EObjectContainmentWithInverseEList<LineNumber>(LineNumber.class, this, EmftvmPackage.CODE_BLOCK__LINE_NUMBERS, EmftvmPackage.LINE_NUMBER__OWNING_BLOCK);
@@ -482,7 +480,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<LocalVariable> getLocalVariables() {
 		if (localVariables == null) {
 			localVariables = new EObjectContainmentWithInverseEList<LocalVariable>(LocalVariable.class, this, EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES, EmftvmPackage.LOCAL_VARIABLE__OWNING_BLOCK);
@@ -700,7 +697,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<CodeBlock> getNested() {
 		if (nested == null) {
 			nested = new EObjectContainmentWithInverseEList<CodeBlock>(CodeBlock.class, this, EmftvmPackage.CODE_BLOCK__NESTED, EmftvmPackage.CODE_BLOCK__NESTED_FOR);
@@ -1371,7 +1367,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {

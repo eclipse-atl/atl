@@ -80,7 +80,6 @@ public abstract class RuleElementImpl extends TypedElementImpl implements RuleEl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<String> getModels() {
 		if (models == null) {
 			models = new EDataTypeUniqueEList<String>(String.class, this, EmftvmPackage.RULE_ELEMENT__MODELS);
@@ -93,7 +92,6 @@ public abstract class RuleElementImpl extends TypedElementImpl implements RuleEl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Model> getEModels() {
 		if (eModels == null) {
 			eModels = new EObjectResolvingEList<Model>(Model.class, this, EmftvmPackage.RULE_ELEMENT__EMODELS);
@@ -161,7 +159,6 @@ public abstract class RuleElementImpl extends TypedElementImpl implements RuleEl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {

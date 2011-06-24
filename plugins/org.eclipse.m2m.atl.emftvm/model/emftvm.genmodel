@@ -7,7 +7,7 @@
     modelName="Emftvm" editPluginClass="org.eclipse.m2m.atl.emftvm.provider.EmftvmEditPlugin"
     editorPluginClass="org.eclipse.m2m.atl.emftvm.presentation.EmftvmEditorPlugin"
     testsDirectory="/org.eclipse.m2m.atl.emftvm.tests/src" testSuiteClass="org.eclipse.m2m.atl.emftvm.tests.EmftvmAllTests"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false"
     editPluginID="org.eclipse.m2m.atl.emftvm.edit" editorPluginID="org.eclipse.m2m.atl.emftvm.editor"
     language="" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
   <foreignModel>emftvm.ecore</foreignModel>

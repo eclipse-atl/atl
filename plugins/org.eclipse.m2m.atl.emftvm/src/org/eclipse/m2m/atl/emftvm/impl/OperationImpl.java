@@ -105,7 +105,6 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Parameter> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentWithInverseEList<Parameter>(Parameter.class, this, EmftvmPackage.OPERATION__PARAMETERS, EmftvmPackage.PARAMETER__OPERATION);
@@ -279,7 +278,6 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {

@@ -179,7 +179,6 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Feature> getFeatures() {
 		if (features == null) {
 			features = new EObjectContainmentWithInverseEList<Feature>(Feature.class, this, EmftvmPackage.MODULE__FEATURES, EmftvmPackage.FEATURE__MODULE);
@@ -192,7 +191,6 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Rule> getRules() {
 		if (rules == null) {
 			rules = new EObjectContainmentWithInverseEList<Rule>(Rule.class, this, EmftvmPackage.MODULE__RULES, EmftvmPackage.RULE__MODULE);
@@ -205,7 +203,6 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Module> getEImports() {
 		if (eImports == null) {
 			eImports = new EObjectResolvingEList<Module>(Module.class, this, EmftvmPackage.MODULE__EIMPORTS);
@@ -218,7 +215,6 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<String> getImports() {
 		if (imports == null) {
 			imports = new EDataTypeUniqueEList<String>(String.class, this, EmftvmPackage.MODULE__IMPORTS);
@@ -231,7 +227,6 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<ModelDeclaration> getInputModels() {
 		if (inputModels == null) {
 			inputModels = new EObjectContainmentWithInverseEList<ModelDeclaration>(ModelDeclaration.class, this, EmftvmPackage.MODULE__INPUT_MODELS, EmftvmPackage.MODEL_DECLARATION__INPUT_MODEL_FOR);
@@ -244,7 +239,6 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<ModelDeclaration> getInoutModels() {
 		if (inoutModels == null) {
 			inoutModels = new EObjectContainmentWithInverseEList<ModelDeclaration>(ModelDeclaration.class, this, EmftvmPackage.MODULE__INOUT_MODELS, EmftvmPackage.MODEL_DECLARATION__INOUT_MODEL_FOR);
@@ -257,7 +251,6 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<ModelDeclaration> getOutputModels() {
 		if (outputModels == null) {
 			outputModels = new EObjectContainmentWithInverseEList<ModelDeclaration>(ModelDeclaration.class, this, EmftvmPackage.MODULE__OUTPUT_MODELS, EmftvmPackage.MODEL_DECLARATION__OUTPUT_MODEL_FOR);
@@ -423,7 +416,6 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
