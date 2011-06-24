@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.presentation;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -167,7 +166,6 @@ import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
-
 
 /**
  * This is an example of a Emftvm model editor.
@@ -1302,7 +1300,7 @@ public class EmftvmEditor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class key) {
 		if (key.equals(IContentOutlinePage.class)) {

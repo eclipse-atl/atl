@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.presentation;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -67,8 +66,6 @@ import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.ISetSelectionTarget;
-
-
 
 /**
  * This is a simple wizard for creating a new model file.
