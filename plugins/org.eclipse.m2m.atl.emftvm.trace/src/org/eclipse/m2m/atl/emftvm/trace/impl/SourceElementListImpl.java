@@ -30,7 +30,6 @@ import org.eclipse.m2m.atl.emftvm.trace.SourceElementList;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 
-
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Source Element List</b></em>'.
@@ -147,7 +146,6 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -317,8 +315,20 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 	 */
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer();
+		result.append('[');
+		boolean notFirst = false;
+		for (SourceElement se : getSourceElements()) {
+			if (notFirst) {
+				result.append(", ");
+			}
+			result.append(se.toString());
+			notFirst = true;
+		}
+		result.append(']');
+		return result.toString();
 	}
 
 } //SourceElementListImpl
