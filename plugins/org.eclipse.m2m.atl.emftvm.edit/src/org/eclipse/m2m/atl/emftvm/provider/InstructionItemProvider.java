@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -30,7 +29,6 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Instruction;
-
 
 /**
  * This is the item provider adapter for a {@link org.eclipse.m2m.atl.emftvm.Instruction} object.

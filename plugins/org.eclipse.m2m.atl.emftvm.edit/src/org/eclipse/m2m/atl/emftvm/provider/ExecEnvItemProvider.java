@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.provider;
 
-
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
