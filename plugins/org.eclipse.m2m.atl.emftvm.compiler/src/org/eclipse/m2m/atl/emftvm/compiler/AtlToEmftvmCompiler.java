@@ -59,12 +59,11 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
  */
 public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 
-	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.compiler";
-
 	protected final ResourceSet rs = new ResourceSetImpl();
 	protected final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
 	protected final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
-	protected final ModuleResolver mr = new DefaultModuleResolver("platform:/plugin/" + PLUGIN_ID + "/transformations/", rs);
+	protected final ModuleResolver mr = new DefaultModuleResolver(
+			"platform:/plugin/" + EmftvmCompilerPlugin.PLUGIN_ID + "/transformations/", rs);
 
 	/**
 	 * Creates a new {@link AtlToEmftvmCompiler}.
@@ -75,11 +74,10 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		pbmm.setResource(((EMFReferenceModel)AtlParser.getDefault().getProblemMetamodel()).getResource());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compile(java.io.InputStream, java.lang.String)
+	/**
+	 * {@inheritDoc}
 	 */
-	public CompileTimeError[] compile(InputStream in, String outputFileName) {
+	public CompileTimeError[] compile(final InputStream in, final String outputFileName) {
 		EObject[] eObjects = compileWithProblemModel(in, outputFileName);
 
 		// convert the EObjects into an easily readable form (instances of CompileTimeError).
@@ -92,13 +90,12 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(java.io.InputStream, java.lang.String)
+	/**
+	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("deprecation")
-	public EObject[] compileWithProblemModel(InputStream in,
-			String outputFileName) {
+	public EObject[] compileWithProblemModel(final InputStream in,
+			final String outputFileName) {
 		EObject[] result = new EObject[0];
 		try {
 			File asm = new File(outputFileName);
@@ -107,10 +104,10 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 			}
 			asm.createNewFile();
 			//TODO Refactor ATL's compiler framework to support multiple file extensions
-			outputFileName = outputFileName.substring(0, outputFileName.lastIndexOf('.')) + ".emftvm";
-			result = compileWithProblemModel(in, new FileOutputStream(outputFileName));
+			final String emftvmOutputFileName = outputFileName.substring(0, outputFileName.lastIndexOf('.')) + ".emftvm";
+			result = compileWithProblemModel(in, new FileOutputStream(emftvmOutputFileName));
 			final IFile[] outputFiles = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(
-					java.net.URI.create("file:/" + outputFileName));
+					java.net.URI.create("file:/" + emftvmOutputFileName));
 			for (IFile file : outputFiles) {
 				file.getParent().refreshLocal(IResource.DEPTH_ONE, null);
 				if (file.exists()) {
@@ -127,12 +124,11 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(java.io.InputStream, java.io.OutputStream)
+	/**
+	 * {@inheritDoc}
 	 */
-	public EObject[] compileWithProblemModel(InputStream in,
-			OutputStream outputStream) {
+	public EObject[] compileWithProblemModel(final InputStream in,
+			final OutputStream outputStream) {
 		final List<EObject> pbs = new ArrayList<EObject>();
 		try {
 			final IModel[] parsed = AtlParser.getDefault().parseToModelWithProblems(in, true);
@@ -152,9 +148,8 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		return pbs.toArray(new EObject[pbs.size()]);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(org.eclipse.m2m.atl.core.IModel, java.io.OutputStream)
+	/**
+	 * {@inheritDoc}
 	 */
 	public EObject[] compileWithProblemModel(IModel atlModel,
 			OutputStream outputStream) {
@@ -219,20 +214,19 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		return pbs.toArray(new EObject[pbs.size()]);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(org.eclipse.m2m.atl.core.IModel, java.lang.String)
+	/**
+	 * {@inheritDoc}
 	 */
-	public EObject[] compileWithProblemModel(IModel atlModel,
-			String outputFileName) {
+	public EObject[] compileWithProblemModel(final IModel atlModel,
+			final String outputFileName) {
 		try {
 			File asm = new File(outputFileName);
 			if (asm.exists()) {
 				asm.delete();
 			}
 			asm.createNewFile();
-			outputFileName = outputFileName.substring(0, outputFileName.lastIndexOf('.')) + ".emftvm";
-			return compileWithProblemModel(atlModel, new FileOutputStream(outputFileName));
+			final String emftvmOutputFileName = outputFileName.substring(0, outputFileName.lastIndexOf('.')) + ".emftvm";
+			return compileWithProblemModel(atlModel, new FileOutputStream(emftvmOutputFileName));
 		} catch (IOException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			EmftvmCompilerPlugin.log(e);
@@ -248,7 +242,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	 */
 	@SuppressWarnings("unchecked")
 	protected int getProblems(IModel problems, Collection<EObject> pbElements) {
-		final Collection<EObject> pbs = (Collection<EObject>) problems.getElementsByType(
+		final Collection<EObject> pbs = (Collection<EObject>)problems.getElementsByType(
 				problems.getReferenceModel().getMetaElementByName("Problem")); //$NON-NLS-1$
 
 		int nbErrors = 0;
@@ -272,8 +266,8 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	 * @return the number of error problems
 	 */
 	protected int getProblems(Model problems, Collection<EObject> pbElements) {
-		final Collection<EObject> pbs = (Collection<EObject>) problems.allInstancesOf(
-				(EClass) pbmm.findType("Problem")); //$NON-NLS-1$
+		final Collection<EObject> pbs = (Collection<EObject>)problems.allInstancesOf(
+				(EClass)pbmm.findType("Problem")); //$NON-NLS-1$
 
 		int nbErrors = 0;
 		if (pbs != null) {

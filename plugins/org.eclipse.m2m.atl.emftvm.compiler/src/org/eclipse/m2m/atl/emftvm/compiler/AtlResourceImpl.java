@@ -36,6 +36,50 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
 public class AtlResourceImpl extends ResourceImpl {
 
 	/**
+	 * {@link IOException} with nested {@link Exception}.
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	public static class ATLIOException extends IOException {
+
+		private static final long serialVersionUID = -6673120460005697460L;
+		
+		/**
+		 * Creates a new {@link ATLIOException}.
+		 */
+		public ATLIOException() {
+			super();
+		}
+
+		/**
+		 * Creates a new {@link ATLIOException}.
+		 * @param message the error message
+		 * @param cause the nested exception
+		 */
+		public ATLIOException(String message, Throwable cause) {
+			super(message);
+			initCause(cause);
+		}
+
+		/**
+		 * Creates a new {@link ATLIOException}.
+		 * @param message the error message
+		 */
+		public ATLIOException(String message) {
+			super(message);
+		}
+
+		/**
+		 * Creates a new {@link ATLIOException}.
+		 * @param cause the nested exception
+		 */
+		public ATLIOException(Throwable cause) {
+			super();
+			initCause(cause);
+		}
+
+	}
+
+	/**
 	 * Wraps an {@link EMFModel} around this resource.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
@@ -82,7 +126,7 @@ public class AtlResourceImpl extends ResourceImpl {
 			parser.inject(modelWrapper, inputStream, options);
 			registerEPackages(modelWrapper.getReferenceModel().getResource());
 		} catch (ATLCoreException e) {
-			throw new IOException(e);
+			throw new ATLIOException(e);
 		}
 	}
 
@@ -96,7 +140,7 @@ public class AtlResourceImpl extends ResourceImpl {
 		try {
 			parser.extract(modelWrapper, outputStream, options);
 		} catch (ATLCoreException e) {
-			throw new IOException(e);
+			throw new ATLIOException(e);
 		}
 	}
 

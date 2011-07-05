@@ -22,11 +22,15 @@ import org.osgi.framework.BundleContext;
  */
 public class EmftvmCompilerPlugin extends Plugin {
 
+	/**
+	 * The ATL-to-EMFTVM compiler plug-in ID.
+	 */
 	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.compiler";
 
 	private static EmftvmCompilerPlugin instance;
 
 	/**
+	 * Returns the plug-in instance.
 	 * @return the instance
 	 */
 	public static EmftvmCompilerPlugin getInstance() {
@@ -35,7 +39,7 @@ public class EmftvmCompilerPlugin extends Plugin {
 
 	/**
 	 * Logs <code>e</code> to the Eclipse log.
-	 * @param e
+	 * @param e the exception to log
 	 */
 	public static void log(final Throwable e) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, 0, e.getLocalizedMessage(), e));
@@ -43,14 +47,14 @@ public class EmftvmCompilerPlugin extends Plugin {
 
 	/**
 	 * Logs <code>status</code> to the Eclipse log.
-	 * @param status
+	 * @param status the status to log
 	 */
 	public static void log(final IStatus status) {
 		getInstance().getLog().log(status);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -58,8 +62,8 @@ public class EmftvmCompilerPlugin extends Plugin {
 		instance = this;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
