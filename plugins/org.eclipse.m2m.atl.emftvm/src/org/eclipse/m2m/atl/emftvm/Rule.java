@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.EList;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Rule</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  * <p>
@@ -370,6 +371,10 @@ public interface Rule extends NamedElement {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Finds a {@link Field} registered within this {@link Rule}.
+	 * @param context the context type of the field
+	 * @param name the operation name
+	 * @return the {@link Field} with the given properties, or <code>null</code> if none registered
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -378,6 +383,10 @@ public interface Rule extends NamedElement {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Finds a static {@link Field} registered within this {@link Rule}.
+	 * @param context the context type of the field
+	 * @param name the operation name
+	 * @return the static {@link Field} with the given properties, or <code>null</code> if none registered
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -386,6 +395,8 @@ public interface Rule extends NamedElement {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Registers a {@link Field} into this {@link Rule}.
+	 * @param field the {@link Field} to register
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated

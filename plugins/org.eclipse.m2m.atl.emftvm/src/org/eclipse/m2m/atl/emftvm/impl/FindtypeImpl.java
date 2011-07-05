@@ -24,6 +24,7 @@ import org.eclipse.m2m.atl.emftvm.Opcode;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Findtype</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -46,15 +47,6 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	 */
 	protected static final String MODELNAME_EDEFAULT = null;
 	/**
-	 * The cached value of the '{@link #getModelname() <em>Modelname</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getModelname()
-	 * @generated
-	 * @ordered
-	 */
-	protected String modelname = MODELNAME_EDEFAULT;
-	/**
 	 * The default value of the '{@link #getTypename() <em>Typename</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -63,6 +55,15 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	 * @ordered
 	 */
 	protected static final String TYPENAME_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getModelname() <em>Modelname</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getModelname()
+	 * @generated
+	 * @ordered
+	 */
+	protected String modelname = MODELNAME_EDEFAULT;
 	/**
 	 * The cached value of the '{@link #getTypename() <em>Typename</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -74,6 +75,7 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	protected String typename = TYPENAME_EDEFAULT;
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link FindtypeImpl}.
 	 * <!-- end-user-doc -->
 	 */
 	protected FindtypeImpl() {
@@ -84,6 +86,8 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -93,7 +97,8 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -102,7 +107,8 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -114,7 +120,8 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -123,7 +130,8 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -135,7 +143,8 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -151,7 +160,8 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -169,7 +179,8 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -187,7 +198,8 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -203,7 +215,8 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

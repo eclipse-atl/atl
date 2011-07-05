@@ -26,20 +26,20 @@ import org.eclipse.m2m.atl.emftvm.Field;
 public final class FieldContainer {
 
 	/**
-	 * Lookup table for fields: (name -> (context -> field))
+	 * Lookup table for fields: (name -> (context -> field)).
 	 */
 	protected final Map<String, TypeMap<Object, Field>> fields = 
 		new HashMap<String, TypeMap<Object,Field>>();
 
 	/**
-	 * Lookup table for static fields: (name -> (context -> field))
+	 * Lookup table for static fields: (name -> (context -> field)).
 	 */
 	protected final Map<String, TypeMap<Object, Field>> staticFields = 
 		new HashMap<String, TypeMap<Object,Field>>();
 
 	/**
 	 * Registers f in the corresponding lookup table.
-	 * @param f
+	 * @param f the field to register
 	 */
 	public void registerField(final Field f) {
 		f.clear();
@@ -52,7 +52,7 @@ public final class FieldContainer {
 
 	/**
 	 * Registers f in the corresponding lookup table.
-	 * @param f
+	 * @param f the field to register
 	 */
 	private static void registerFieldIn(final Field f, final Map<String, TypeMap<Object, Field>> reg) {
 		final String name = f.getName();
@@ -69,12 +69,13 @@ public final class FieldContainer {
 	}
 
 	/**
+	 * Finds the corresponding field for <pre>name</pre> and <pre>context</pre>.
 	 * @param context the context type of the field
 	 * @param name the name of the field
 	 * @return the corresponding field, or <code>null</code> if not found
 	 * @throws DuplicateEntryException if there is a field conflict
 	 */
-	public Field findField(final Object context, final String name) {
+	public Field findField(final Object context, final String name) throws DuplicateEntryException {
 		TypeMap<Object, Field> fieldreg = fields.get(name);
 		if (fieldreg != null) {
 			// First try to find with direct type
@@ -93,12 +94,13 @@ public final class FieldContainer {
 	}
 
 	/**
+	 * Finds the corresponding static field for <pre>name</pre> and <pre>context</pre>.
 	 * @param context the context type of the field
 	 * @param name the name of the field
 	 * @return the corresponding field, or <code>null</code> if not found
 	 * @throws DuplicateEntryException if there is a field conflict
 	 */
-	public Field findStaticField(Object context, String name) {
+	public Field findStaticField(Object context, String name) throws DuplicateEntryException {
 		final TypeMap<Object, Field> fieldreg = staticFields.get(name);
 		if (fieldreg != null) {
 			// Static fields must be defined in exact context type
@@ -108,8 +110,8 @@ public final class FieldContainer {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {

@@ -28,7 +28,6 @@ import org.eclipse.m2m.atl.emftvm.New;
 import org.eclipse.m2m.atl.emftvm.Push;
 import org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch;
 
-
 /**
  * Loads {@link Instruction} parameters from a {@link DataInputStream}.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
@@ -40,8 +39,8 @@ public class LoadInstructionParametersSwitch extends EmftvmSwitch<Instruction> {
 
 	/**
 	 * Creates a new {@link LoadInstructionParametersSwitch}.
-	 * @param inputStream
-	 * @param constants
+	 * @param inputStream the input stream
+	 * @param constants the constant pool
 	 */
 	public LoadInstructionParametersSwitch(DataInputStream inputStream, ConstantPool constants) {
 		super();
@@ -49,8 +48,8 @@ public class LoadInstructionParametersSwitch extends EmftvmSwitch<Instruction> {
 		this.constants = constants;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseBranchInstruction(org.eclipse.m2m.atl.emftvm.BranchInstruction)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Instruction caseBranchInstruction(BranchInstruction object) {
@@ -64,35 +63,35 @@ public class LoadInstructionParametersSwitch extends EmftvmSwitch<Instruction> {
 		return super.caseBranchInstruction(object);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseFieldInstruction(org.eclipse.m2m.atl.emftvm.FieldInstruction)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Instruction caseFieldInstruction(FieldInstruction object) {
 		try {
-			object.setFieldname((String) constants.get(inputStream.readInt()));
+			object.setFieldname((String)constants.get(inputStream.readInt()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		return super.caseFieldInstruction(object);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseFindtype(org.eclipse.m2m.atl.emftvm.Findtype)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Instruction caseFindtype(Findtype object) {
 		try {
-			object.setModelname((String) constants.get(inputStream.readInt()));
-			object.setTypename((String) constants.get(inputStream.readInt()));
+			object.setModelname((String)constants.get(inputStream.readInt()));
+			object.setTypename((String)constants.get(inputStream.readInt()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		return super.caseFindtype(object);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseInvokeInstruction(org.eclipse.m2m.atl.emftvm.InvokeInstruction)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Instruction caseInvokeInstruction(InvokeInstruction object) {
@@ -104,22 +103,21 @@ public class LoadInstructionParametersSwitch extends EmftvmSwitch<Instruction> {
 		return super.caseInvokeInstruction(object);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseInvokeOperationInstruction(org.eclipse.m2m.atl.emftvm.InvokeOperationInstruction)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Instruction caseInvokeOperationInstruction(InvokeOperationInstruction object) {
 		try {
-			object.setOpname((String) constants.get(inputStream.readInt()));
+			object.setOpname((String)constants.get(inputStream.readInt()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		return super.caseInvokeOperationInstruction(object);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseLocalVariableInstruction(org.eclipse.m2m.atl.emftvm.LocalVariableInstruction)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Instruction caseLocalVariableInstruction(
@@ -133,21 +131,21 @@ public class LoadInstructionParametersSwitch extends EmftvmSwitch<Instruction> {
 		return super.caseLocalVariableInstruction(object);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseNew(org.eclipse.m2m.atl.emftvm.New)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Instruction caseNew(New object) {
 		try {
-			object.setModelname((String) constants.get(inputStream.readInt()));
+			object.setModelname((String)constants.get(inputStream.readInt()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		return super.caseNew(object);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#casePush(org.eclipse.m2m.atl.emftvm.Push)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Instruction casePush(Push object) {
@@ -159,21 +157,21 @@ public class LoadInstructionParametersSwitch extends EmftvmSwitch<Instruction> {
 		return super.casePush(object);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseMatch(org.eclipse.m2m.atl.emftvm.Match)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Instruction caseMatch(Match object) {
 		try {
-			object.setRulename((String) constants.get(inputStream.readInt()));
+			object.setRulename((String)constants.get(inputStream.readInt()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		return super.caseMatch(object);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseCodeBlockInstruction(org.eclipse.m2m.atl.emftvm.CodeBlockInstruction)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Instruction caseCodeBlockInstruction(CodeBlockInstruction object) {
@@ -186,8 +184,8 @@ public class LoadInstructionParametersSwitch extends EmftvmSwitch<Instruction> {
 		return super.caseCodeBlockInstruction(object);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseIfte(org.eclipse.m2m.atl.emftvm.Ifte)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Instruction caseIfte(Ifte object) {

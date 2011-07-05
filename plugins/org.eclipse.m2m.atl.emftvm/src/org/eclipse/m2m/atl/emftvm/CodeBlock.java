@@ -19,6 +19,7 @@ import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Code Block</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  * <p>
@@ -394,6 +395,9 @@ public interface CodeBlock extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Executes the instructions in this {@link CodeBlock}, using the parameters stored in <pre>frame</pre>.
+	 * @param frame the {@link StackFrame} to use during execution.
+	 * @return the resulting execution value, or <code>null</code> if none.
 	 * <!-- end-user-doc -->
 	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
@@ -402,6 +406,8 @@ public interface CodeBlock extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Calculates the amount of elements on the stack after executing this {@link CodeBlock}.
+	 * @return the amount of elements on the stack after executing this {@link CodeBlock}.
 	 * <!-- end-user-doc -->
 	 * @model kind="operation"
 	 * @generated
@@ -410,6 +416,8 @@ public interface CodeBlock extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link Module} that (indirectly) contains this {@link CodeBlock}.
+	 * @return the {@link Module} that (indirectly) contains this {@link CodeBlock}.
 	 * <!-- end-user-doc -->
 	 * @model kind="operation"
 	 * @generated

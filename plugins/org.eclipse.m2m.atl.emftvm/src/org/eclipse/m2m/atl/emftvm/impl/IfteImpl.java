@@ -26,6 +26,7 @@ import org.eclipse.m2m.atl.emftvm.Opcode;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Ifte</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -50,15 +51,6 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 */
 	protected static final int THEN_CB_INDEX_EDEFAULT = -1;
 	/**
-	 * The cached value of the '{@link #getThenCbIndex() <em>Then Cb Index</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getThenCbIndex()
-	 * @generated NOT
-	 * @ordered
-	 */
-	protected int thenCbIndex = THEN_CB_INDEX_EDEFAULT;
-	/**
 	 * The default value of the '{@link #getElseCbIndex() <em>Else Cb Index</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -67,6 +59,15 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * @ordered
 	 */
 	protected static final int ELSE_CB_INDEX_EDEFAULT = -1;
+	/**
+	 * The cached value of the '{@link #getThenCbIndex() <em>Then Cb Index</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getThenCbIndex()
+	 * @generated NOT
+	 * @ordered
+	 */
+	protected int thenCbIndex = THEN_CB_INDEX_EDEFAULT;
 	/**
 	 * The cached value of the '{@link #getElseCbIndex() <em>Else Cb Index</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -94,8 +95,10 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * @ordered
 	 */
 	protected CodeBlock elseCb;
+
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link IfteImpl}.
 	 * <!-- end-user-doc -->
 	 */
 	protected IfteImpl() {
@@ -107,6 +110,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -116,7 +121,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -137,7 +143,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -152,7 +159,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -173,7 +181,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -188,7 +197,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -212,7 +222,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #getThenCb()
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -228,7 +239,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -241,7 +253,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -265,7 +278,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #getElseCb()
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -281,7 +295,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -294,7 +309,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -316,7 +332,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -340,7 +357,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -364,7 +382,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -383,8 +402,8 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 		return super.eIsSet(featureID);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {

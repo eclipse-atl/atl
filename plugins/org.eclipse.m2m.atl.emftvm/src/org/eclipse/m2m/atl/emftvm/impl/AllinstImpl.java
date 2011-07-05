@@ -20,6 +20,7 @@ import org.eclipse.m2m.atl.emftvm.Opcode;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Allinst</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
@@ -29,6 +30,7 @@ import org.eclipse.m2m.atl.emftvm.Opcode;
 public class AllinstImpl extends InstructionImpl implements Allinst {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link AllinstImpl}.
 	 * <!-- end-user-doc -->
 	 */
 	protected AllinstImpl() {
@@ -40,6 +42,8 @@ public class AllinstImpl extends InstructionImpl implements Allinst {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

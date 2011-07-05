@@ -33,6 +33,7 @@ import org.eclipse.m2m.atl.emftvm.util.ResourceIterable;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Model</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -68,8 +69,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 				super(dataSource.iterator());
 			}
 
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.CachingIterator#hasNext()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public boolean hasNext() {
@@ -93,8 +94,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 				return hasNext;
 			}
 
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.CachingIterator#next()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public EObject next() {
@@ -129,8 +130,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 			this.type = type;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<EObject> iterator() {
@@ -140,8 +141,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 			return new InstanceOfIterator();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#remove(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean remove(Object o) {
@@ -151,8 +152,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 			return super.remove(o);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#add(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean add(EObject o) {
@@ -173,15 +174,6 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 */
 	protected static final Resource RESOURCE_EDEFAULT = null;
 	/**
-	 * The cached value of the '{@link #getResource() <em>Resource</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getResource()
-	 * @generated
-	 * @ordered
-	 */
-	protected Resource resource = RESOURCE_EDEFAULT;
-	/**
 	 * The default value of the '{@link #isAllowInterModelReferences() <em>Allow Inter Model References</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -190,6 +182,15 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * @ordered
 	 */
 	protected static final boolean ALLOW_INTER_MODEL_REFERENCES_EDEFAULT = true;
+	/**
+	 * The cached value of the '{@link #getResource() <em>Resource</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getResource()
+	 * @generated
+	 * @ordered
+	 */
+	protected Resource resource = RESOURCE_EDEFAULT;
 	/**
 	 * The cached value of the '{@link #isAllowInterModelReferences() <em>Allow Inter Model References</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -206,6 +207,7 @@ public class ModelImpl extends EObjectImpl implements Model {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link ModelImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -215,6 +217,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -224,7 +228,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -233,7 +238,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -245,7 +251,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -254,7 +261,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -266,9 +274,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * @param type
-	 * @return all instances of type
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public LazyList<EObject> allInstancesOf(final EClass type) {
@@ -280,9 +287,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * @param type
-	 * @return a new instance of type
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public EObject newElement(EClass type) {
@@ -300,10 +306,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Deletes <code>element</code> from this model.
-	 * Resets allInstancesOf cache for <code>element</code>'s {@link EClass}.
-	 * @param element
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public void deleteElement(EObject element) {
@@ -326,7 +330,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -342,7 +347,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -360,7 +366,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -378,7 +385,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -394,7 +402,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */

@@ -28,106 +28,122 @@ import org.eclipse.m2m.atl.emftvm.CodeBlock;
  */
 public class LazyBag<E> extends LazyCollection<E> {
 
+	/**
+	 * {@link LazyBag} that implements the "including" operation.
+	 */
 	public static class IncludingBag<E> extends LazyBag<E> {
 
 		protected final E object;
 
+		/**
+		 * Creates a new {@link IncludingBag}.
+		 * @param object the object to include
+		 * @param dataSource the underlying collection
+		 */
 		public IncludingBag(final E object, final LazyCollection<E> dataSource) {
 			super(dataSource);
 			this.object = object;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#contains(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean contains(Object o) {
-			return (object==null ? o==null : object.equals(o)) || 
-					((Collection<E>) dataSource).contains(o);
+			return (object == null ? o == null : object.equals(o)) || 
+					((Collection<E>)dataSource).contains(o);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#count(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int count(E o) {
-			return (object==null ? o==null : object.equals(o)) ? 1 : 0 + 
-					((LazyCollection<E>) dataSource).count(o);
+			return (object == null ? o == null : object.equals(o)) ? 1 : 0 + 
+					((LazyCollection<E>)dataSource).count(o);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#isEmpty()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean isEmpty() {
 			return false;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<E> iterator() {
 			return new AppendIterator(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#size()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int size() {
-			return ((Collection<E>) dataSource).size() + 1;
+			return ((Collection<E>)dataSource).size() + 1;
 		}
 
 	}
 
+	/**
+	 * {@link LazyBag} that implements the "union" operation.
+	 */
 	public static class UnionBag<E> extends LazyBag<E> {
 
 		protected final LazyCollection<E> other;
 
+		/**
+		 * Creates a new {@link UnionBag}.
+		 * @param other the collection to union with <pre>dataSource</pre>
+		 * @param dataSource the underlying collection
+		 */
 		public UnionBag(final LazyCollection<E> other, final LazyCollection<E> dataSource) {
 			super(dataSource);
 			this.other = other;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#contains(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean contains(Object o) {
-			return ((Collection<E>) dataSource).contains(o) || other.contains(o);
+			return ((Collection<E>)dataSource).contains(o) || other.contains(o);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#count(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int count(E object) {
-			return ((LazyCollection<E>) dataSource).count(object) + other.count(object);
+			return ((LazyCollection<E>)dataSource).count(object) + other.count(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#isEmpty()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean isEmpty() {
-			return ((Collection<?>) dataSource).isEmpty() && other.isEmpty();
+			return ((Collection<?>)dataSource).isEmpty() && other.isEmpty();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<E> iterator() {
 			return new UnionIterator(other);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#size()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int size() {
-			return ((Collection<E>) dataSource).size() + other.size();
+			return ((Collection<E>)dataSource).size() + other.size();
 		}
 
 	}
@@ -143,11 +159,11 @@ public class LazyBag<E> extends LazyCollection<E> {
 		final Collection<E> s;
 		final Map<E, Integer> sOcc;
 		E next;
-		boolean nextSet = false;
+		boolean nextSet;
 
 		/**
 		 * Creates a new {@link BagIntersectionIterator} on this and <code>s</code>.
-		 * @param s
+		 * @param s the collection to intersect with this
 		 */
 		public BagIntersectionIterator(final LazyCollection<E> s) {
 			super();
@@ -166,9 +182,8 @@ public class LazyBag<E> extends LazyCollection<E> {
 			}
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
 			if (!nextSet && inner.hasNext()) {
@@ -181,9 +196,8 @@ public class LazyBag<E> extends LazyCollection<E> {
 			return sOcc.containsKey(next) && sOcc.get(next) > 0;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E next() {
 			if (!nextSet) {
@@ -210,7 +224,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 
 	/**
 	 * Creates a {@link LazyBag} around <code>dataSource</code>.
-	 * @param dataSource
+	 * @param dataSource the underlying collection
 	 */
 	public LazyBag(Iterable<E> dataSource) {
 		super(dataSource);
@@ -220,6 +234,9 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * Non-lazy operations                                                 *
 	 * *********************************************************************/
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void createCache() {
 		super.createCache();
@@ -228,8 +245,8 @@ public class LazyBag<E> extends LazyCollection<E> {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -241,7 +258,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		    return false;
 		}
         try {
-        	final LazyCollection<E> other = (LazyCollection<E>) o;
+        	final LazyCollection<E> other = (LazyCollection<E>)o;
         	final LazySet<E> keys = asSet().union(other.asSet());
             for (E e : keys) {
             	if (count(e) != other.count(e)) {
@@ -249,15 +266,15 @@ public class LazyBag<E> extends LazyCollection<E> {
             	}
             }
             return true;
-        } catch(ClassCastException unused)   {
+        } catch (ClassCastException unused) {
             return false;
-        } catch(NullPointerException unused) {
+        } catch (NullPointerException unused) {
             return false;
         }
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -277,7 +294,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	/**
 	 * Returns the union of self and <code>bag</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param bag
+	 * @param bag the collection to union with this
 	 * @return The union of self and <code>bag</code>.
 	 */
 	public LazyBag<E> union(final LazyBag<E> bag) {
@@ -287,7 +304,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	/**
 	 * Returns the union of self and <code>set</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param set
+	 * @param set the collection to union with this
 	 * @return The union of self and <code>set</code>.
 	 */
 	public LazyBag<E> union(final LazySet<E> set) {
@@ -299,7 +316,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * (i.e, the bag of all elements that are in both self and <code>s</code>,
 	 * where the element occurs as often as in the bag with the least element occurrences).
 	 * <p><i>Lazy operation.</i></p>
-	 * @param bag
+	 * @param bag the collection to intersect with this
 	 * @return The intersection of self and <code>bag</code>.
 	 */
 	public LazyBag<E> intersection(final LazyBag<E> bag) {
@@ -317,7 +334,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	/**
 	 * Returns the intersection of self and <code>set</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param set
+	 * @param set the collection to intersect with this
 	 * @return The intersection of self and <code>set</code>.
 	 */
 	public LazySet<E> intersection(final LazySet<E> set) {
@@ -336,7 +353,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	/**
 	 * Returns the bag containing all elements of self plus <code>object</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param object
+	 * @param object the object to include
 	 * @return The bag containing all elements of self plus <code>object</code>.
 	 */
 	public LazyBag<E> including(final E object) {
@@ -346,7 +363,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	/**
 	 * Returns the bag containing all elements of self apart from all occurrences of <code>object</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param object
+	 * @param object the object to exclude
 	 * @return The bag containing all elements of self apart from all occurrences of <code>object</code>.
 	 */
 	public LazyBag<E> excluding(final E object) {
@@ -442,6 +459,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * each of the elements of this collection.
 	 * @param function the return value function
 	 * @return a new lazy bag with the <code>function</code> return values.
+	 * @param <T> the element type
 	 */
 	public <T> LazyBag<T> collect(final CodeBlock function) {
 		// Parent frame may change after this method returns!

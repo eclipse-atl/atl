@@ -14,13 +14,14 @@ package org.eclipse.m2m.atl.emftvm;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Findtype s</b></em>'.
+ * A representation of the model object '<em><b>Invoke cb s</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getFindtype_s()
+ * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInvokeCbS()
  * @model
  * @generated
  */
-public interface Findtype_s extends Instruction {
-} // Findtype_s
+public interface InvokeCbS extends InvokeInstruction {
+} // Invoke_cb_s

@@ -14,37 +14,40 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
+import org.eclipse.m2m.atl.emftvm.InvokeStatic;
 import org.eclipse.m2m.atl.emftvm.Opcode;
-import org.eclipse.m2m.atl.emftvm.Set_static;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Set static</b></em>'.
+ * An implementation of the model object '<em><b>Invoke static</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class Set_staticImpl extends FieldInstructionImpl implements Set_static {
+public class InvokeStaticImpl extends InvokeOperationInstructionImpl implements InvokeStatic {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link InvokeStaticImpl}.
 	 * <!-- end-user-doc -->
 	 */
-	protected Set_staticImpl() {
+	protected InvokeStaticImpl() {
 		super();
-		opcode = Opcode.SET_STATIC;
-		stackConsumption = 2;
+		opcode = Opcode.INVOKE_STATIC;
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return EmftvmPackage.Literals.SET_STATIC;
+		return EmftvmPackage.Literals.INVOKE_STATIC;
 	}
 
-} //Set_staticImpl
+} //Invoke_staticImpl

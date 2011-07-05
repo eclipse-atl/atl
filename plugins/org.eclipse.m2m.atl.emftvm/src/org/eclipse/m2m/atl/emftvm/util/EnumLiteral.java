@@ -37,14 +37,15 @@ public final class EnumLiteral implements Serializable {
 	}
 
 	/**
+	 * Returns the literal name.
 	 * @return the name
 	 */
 	public String getName() {
 		return name;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
@@ -57,11 +58,12 @@ public final class EnumLiteral implements Serializable {
 	}
 
 	/**
-	 * @param eEnum
+	 * Returns the type-safe enumeration literal for eEnum.
+	 * @param eEnum the {@link EEnum} type
 	 * @return the type-safe enumeration literal for eEnum
 	 * @throws IllegalArgumentException if not found
 	 */
-	public Enumerator getEnumerator(final EEnum eEnum) {
+	public Enumerator getEnumerator(final EEnum eEnum) throws IllegalArgumentException {
 		final String name = getName();
 		EEnumLiteral ret = eEnum.getEEnumLiteralByLiteral(name);
 		if (ret == null) {
@@ -74,8 +76,8 @@ public final class EnumLiteral implements Serializable {
 		return ret.getInstance();
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -85,18 +87,16 @@ public final class EnumLiteral implements Serializable {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if ((obj == null) || (getClass() != obj.getClass()))
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		EnumLiteral other = (EnumLiteral) obj;
+		final EnumLiteral other = (EnumLiteral)obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;

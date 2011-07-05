@@ -30,6 +30,7 @@ import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Feature</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -55,6 +56,24 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	 */
 	protected static final boolean STATIC_EDEFAULT = false;
 	/**
+	 * The default value of the '{@link #getContext() <em>Context</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContext()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CONTEXT_EDEFAULT = null;
+	/**
+	 * The default value of the '{@link #getContextModel() <em>Context Model</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContextModel()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CONTEXT_MODEL_EDEFAULT = null;
+	/**
 	 * The cached value of the '{@link #isStatic() <em>Static</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -73,15 +92,6 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	 */
 	protected EClassifier eContext;
 	/**
-	 * The default value of the '{@link #getContext() <em>Context</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getContext()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CONTEXT_EDEFAULT = null;
-	/**
 	 * The cached value of the '{@link #getContext() <em>Context</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -91,15 +101,6 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	 */
 	protected String context = CONTEXT_EDEFAULT;
 	/**
-	 * The default value of the '{@link #getContextModel() <em>Context Model</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getContextModel()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CONTEXT_MODEL_EDEFAULT = null;
-	/**
 	 * The cached value of the '{@link #getContextModel() <em>Context Model</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -108,8 +109,10 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	 * @ordered
 	 */
 	protected String contextModel = CONTEXT_MODEL_EDEFAULT;
+
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link FeatureImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -119,6 +122,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -128,7 +133,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -137,7 +143,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -149,7 +156,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -166,7 +174,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #getEContext()
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -175,7 +184,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -187,7 +197,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -196,7 +207,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -208,7 +220,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -217,7 +230,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -229,7 +243,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -245,7 +260,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -259,7 +275,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -273,7 +290,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -296,7 +314,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -323,7 +342,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -350,7 +370,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -372,7 +393,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -382,7 +404,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setModule(Module)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -392,7 +415,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -413,7 +437,8 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */

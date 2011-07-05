@@ -31,6 +31,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Field</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -80,10 +81,14 @@ public class FieldImpl extends FeatureImpl implements Field {
 	 */
 	protected final Map<Object, Object> values = new HashMap<Object, Object>();
 
-	protected boolean staticValueInitialised = false;
+	/**
+	 * Flag that signifies whether this field's static value is initialised.
+	 */
+	protected boolean staticValueInitialised;
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link FieldImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -93,6 +98,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -102,7 +109,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -111,7 +119,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -123,7 +132,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -132,7 +142,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setInitialiser(CodeBlock)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -147,7 +158,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -166,7 +178,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -176,7 +189,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setRule(Rule)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -186,7 +200,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -207,7 +222,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Object getValue(final Object context) {
@@ -215,7 +231,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public void setValue(final Object context, final Object value) {
@@ -223,10 +240,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * @param context the field value's context
-	 * @param frame the current stack frame
-	 * @return an initialised value for context
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Object getValue(final Object context, final StackFrame frame) {
@@ -239,27 +254,28 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * Checks frame for execution loop in initialiser code block.
-	 * @param frame
+	 * Checks <pre>frame</pre> for execution loop in initialiser code block.
+	 * @param context the 'self' object of the stack frame
+	 * @param frame the stack frame to check
 	 */
-	private void checkFrame(final Object context, StackFrame frame) {
+	private void checkFrame(final Object context, final StackFrame frame) {
 		final CodeBlock initCb = getInitialiser();
-		while (frame != null) {
-			if (frame.getCodeBlock() == initCb) {
-				if (frame.getLocal(0, 0) == context) {
-					throw new VMException(frame, String.format(
+		StackFrame newFrame = frame;
+		while (newFrame != null) {
+			if (newFrame.getCodeBlock() == initCb) {
+				if (newFrame.getLocal(0, 0) == context) {
+					throw new VMException(newFrame, String.format(
 							"Infinite loop detected in field initialiser for %s.%s", 
 							context, this));
 				}
 			}
-			frame = frame.getParent();
+			newFrame = newFrame.getParent();
 		}
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * @param frame the current stack frame
-	 * @return an initialised static value
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Object getStaticValue(final StackFrame frame) {
@@ -273,7 +289,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public void clear() {
@@ -283,7 +300,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -303,7 +321,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -319,7 +338,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -333,7 +353,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -351,7 +372,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -372,7 +394,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -393,7 +416,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -411,7 +435,8 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -429,18 +454,19 @@ public class FieldImpl extends FeatureImpl implements Field {
 	}
 
 	/**
-	 * Checks frame for execution loop in initialiser code block.
-	 * @param frame
+	 * Checks frame for execution loop in a static initialiser code block.
+	 * @param frame the stack frame to check
 	 */
-	private void checkStaticFrame(StackFrame frame) {
+	private void checkStaticFrame(final StackFrame frame) {
 		final CodeBlock initCb = getInitialiser();
-		while (frame != null) {
-			if (frame.getCodeBlock() == initCb) {
-				throw new VMException(frame, String.format(
+		StackFrame newFrame = frame;
+		while (newFrame != null) {
+			if (newFrame.getCodeBlock() == initCb) {
+				throw new VMException(newFrame, String.format(
 						"Infinite loop detected in field initialiser for %s", 
 						this));
 			}
-			frame = frame.getParent();
+			newFrame = newFrame.getParent();
 		}
 	}
 

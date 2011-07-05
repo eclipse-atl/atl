@@ -20,6 +20,7 @@ import org.eclipse.m2m.atl.emftvm.Remove;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Remove</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
@@ -29,6 +30,7 @@ import org.eclipse.m2m.atl.emftvm.Remove;
 public class RemoveImpl extends FieldInstructionImpl implements Remove {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link RemoveImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -40,6 +42,8 @@ public class RemoveImpl extends FieldInstructionImpl implements Remove {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

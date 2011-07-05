@@ -14,13 +14,14 @@ package org.eclipse.m2m.atl.emftvm;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Match s</b></em>'.
+ * A representation of the model object '<em><b>Swap x1</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getMatch_s()
+ * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getSwapX1()
  * @model
  * @generated
  */
-public interface Match_s extends InvokeInstruction {
-} // Match_s
+public interface SwapX1 extends Instruction {
+} // Swap_x1

@@ -14,13 +14,15 @@ package org.eclipse.m2m.atl.emftvm;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Invoke all cbs</b></em>'.
+ * A representation of the model object '<em><b>Get static</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInvoke_all_cbs()
+ * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getGetStatic()
  * @model
  * @generated
  */
-public interface Invoke_all_cbs extends InvokeInstruction {
-} // Invoke_all_cbs
+public interface GetStatic extends FieldInstruction {
+
+} // Get_static

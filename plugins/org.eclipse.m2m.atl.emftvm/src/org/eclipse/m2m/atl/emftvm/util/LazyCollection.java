@@ -40,9 +40,10 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 *
 	 * @param <E>
 	 */
-	public static abstract class ReadOnlyIterator<E> implements Iterator<E> {
+	public abstract static class ReadOnlyIterator<E> implements Iterator<E> {
 
 		/**
+		 * Unsupported.
 		 * @throws UnsupportedOperationException
 		 */
 		public void remove() {
@@ -57,19 +58,21 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 *
 	 * @param <E>
 	 */
-	public static abstract class ReadOnlyListIterator<E> extends ReadOnlyIterator<E> implements ListIterator<E> {
+	public abstract static class ReadOnlyListIterator<E> extends ReadOnlyIterator<E> implements ListIterator<E> {
 	
 		/**
+		 * Unsupported.
 		 * @throws UnsupportedOperationException
-		 * @param object
+		 * @param o the object to add
 		 */
 		public void add(E o) {
 			throw new UnsupportedOperationException();
 		}
 	
 		/**
+		 * Unsupported.
 		 * @throws UnsupportedOperationException
-		 * @param object
+		 * @param o the object to set
 		 */
 		public void set(E o) {
 			throw new UnsupportedOperationException();
@@ -85,17 +88,15 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 		protected final Iterator<E> inner = dataSource.iterator();
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
 			return inner.hasNext();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E next() {
 			return inner.next();
@@ -116,7 +117,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		public WrappedListIterator() {
 			super();
-			this.inner = ((List<E>) dataSource).listIterator();
+			this.inner = ((List<E>)dataSource).listIterator();
 		}
 
 		/**
@@ -125,46 +126,46 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		public WrappedListIterator(final int index) {
 			super();
-			this.inner = ((List<E>) dataSource).listIterator(index);
+			this.inner = ((List<E>)dataSource).listIterator(index);
 		}
 
-		/* (non-Javadoc)
-		 * @see java.util.ListIterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
 			return inner.hasNext();
 		}
 
-		/* (non-Javadoc)
-		 * @see java.util.ListIterator#hasPrevious()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasPrevious() {
 			return inner.hasPrevious();
 		}
 
-		/* (non-Javadoc)
-		 * @see java.util.ListIterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E next() {
 			return inner.next();
 		}
 
-		/* (non-Javadoc)
-		 * @see java.util.ListIterator#nextIndex()
+		/**
+		 * {@inheritDoc}
 		 */
 		public int nextIndex() {
 			return inner.nextIndex();
 		}
 
-		/* (non-Javadoc)
-		 * @see java.util.ListIterator#previous()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E previous() {
 			return inner.previous();
 		}
 
-		/* (non-Javadoc)
-		 * @see java.util.ListIterator#previousIndex()
+		/**
+		 * {@inheritDoc}
 		 */
 		public int previousIndex() {
 			return inner.previousIndex();
@@ -178,20 +179,19 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public class CachingIterator extends ReadOnlyIterator<E> {
 
 		protected final Iterator<E> inner;
-		protected int i = 0;
+		protected int i;
 
 		/**
 		 * Creates a new {@link CachingIterator} around <code>inner</code>.
-		 * @param inner
+		 * @param inner the underlying collection iterator
 		 */
 		public CachingIterator(final Iterator<E> inner) {
 			super();
 			this.inner = inner;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
 			final boolean hasNext = i < cache.size() || (dataSource != null && inner.hasNext());
@@ -202,9 +202,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			return hasNext;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E next() {
 			final E next = inner.next();
@@ -244,54 +243,52 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		}
 	
 		/**
+		 * Unsupported.
 		 * @throws UnsupportedOperationException
-		 * @param object
+		 * @param o the object to add
 		 */
 		public void add(E o) {
 			throw new UnsupportedOperationException();
 		}
 	
 		/**
+		 * Unsupported.
 		 * @throws UnsupportedOperationException
-		 * @param object
+		 * @param o the object to set
 		 */
 		public void set(E o) {
 			throw new UnsupportedOperationException();
 		}
 	
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.ListIterator#hasPrevious()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasPrevious() {
 			return i > 0;
 		}
 	
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.ListIterator#nextIndex()
+		/**
+		 * {@inheritDoc}
 		 */
 		public int nextIndex() {
 			return i;
 		}
 	
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.ListIterator#previous()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E previous() {
 			if (i > 0) {
-				return ((List<E>) cache).get(--i);
+				return ((List<E>)cache).get(--i);
 			}
 			throw new NoSuchElementException();
 		}
 	
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.ListIterator#previousIndex()
+		/**
+		 * {@inheritDoc}
 		 */
 		public int previousIndex() {
-			return i-1;
+			return i - 1;
 		}
 	
 	}
@@ -303,16 +300,18 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public class CachingSetIterator extends CachingIterator {
 	
 		protected final Set<E> returnedValues = new HashSet<E>();
-		protected E next = null;
-		protected boolean nextSet = false;
-	
+		protected E next;
+		protected boolean nextSet;
+
+		/**
+		 * Creates a new {@link CachingSetIterator}.
+		 */
 		public CachingSetIterator() {
 			super(dataSource.iterator());
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
 			if (i < cache.size()) {
@@ -335,9 +334,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			return hasNext;
 		}
 	
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E next() {
 			if (!nextSet) {
@@ -367,7 +365,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public class AppendIterator extends WrappedIterator {
 
-		final protected E object;
+		protected final E object;
 		protected boolean beforeTail = true;
 
 		/**
@@ -379,9 +377,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			this.object = object;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedIterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean hasNext() {
@@ -389,9 +386,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			return beforeTail;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedIterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E next() {
@@ -417,8 +413,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		/**
 		 * Creates a {@link SubListIterator} for the range <code>fromIndex</code>,
 		 * including, to <code>toIndex</code>, excluding.
-		 * @param fromIndex
-		 * @param toIndex
+		 * @param fromIndex the starting index, inclusive
+		 * @param toIndex the ending index, exclusive
 		 */
 		public SubListIterator(final int fromIndex, final int toIndex) {
 			super();
@@ -427,20 +423,18 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			assert dataSource instanceof List<?>;
 		}
 	
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
 			return i <= toIndex;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E next() {
-			return ((List<E>) dataSource).get(i++);
+			return ((List<E>)dataSource).get(i++);
 		}
 	
 	}
@@ -458,12 +452,13 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		/**
 		 * Creates a {@link SubListListIterator} for the range <code>fromIndex</code>,
 		 * including, to <code>toIndex</code>, excluding.
-		 * @param fromIndex
-		 * @param toIndex
+		 * @param fromIndex the starting index. inclusive
+		 * @param toIndex the ending index, exclusive
 		 */
 		public SubListListIterator(final int fromIndex, final int toIndex) {
 			super();
-			this.fromIndex = this.i = fromIndex;
+			this.i = fromIndex;
+			this.fromIndex = fromIndex;
 			this.toIndex = toIndex;
 			assert dataSource instanceof List<?>;
 		}
@@ -471,8 +466,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		/**
 		 * Creates a {@link SubListListIterator} for the range <code>fromIndex</code>,
 		 * including, to <code>toIndex</code>, excluding.
-		 * @param fromIndex
-		 * @param toIndex
+		 * @param fromIndex the starting index, inclusive
+		 * @param toIndex the ending index, exclusive
 		 * @param index the iterator starting index.
 		 */
 		public SubListListIterator(final int fromIndex, final int toIndex, final int index) {
@@ -486,43 +481,43 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			assert dataSource instanceof List<?>;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
 			return i <= toIndex;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E next() {
-			return ((List<E>) dataSource).get(i++);
+			return ((List<E>)dataSource).get(i++);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#nextIndex()
+		/**
+		 * {@inheritDoc}
 		 */
 		public int nextIndex() {
 			return i;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#hasPrevious()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasPrevious() {
 			return i > fromIndex;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#previous()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E previous() {
-			return ((List<E>) dataSource).get(--i);
+			return ((List<E>)dataSource).get(--i);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#previousIndex()
+		/**
+		 * {@inheritDoc}
 		 */
 		public int previousIndex() {
 			return i - 1;
@@ -537,21 +532,20 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public class ExcludingIterator extends CachingIterator {
 	
 		protected final E object;
-		protected E next = null;
-		protected boolean nextSet = false;
+		protected E next;
+		protected boolean nextSet;
 	
 		/**
 		 * Creates a new {@link ExcludingIterator}, which excludes <code>object</code>.
-		 * @param object
+		 * @param object the object to exclude
 		 */
 		public ExcludingIterator(final E object) {
 			super(dataSource.iterator());
 			this.object = object;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedIterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean hasNext() {
@@ -564,10 +558,10 @@ public abstract class LazyCollection<E> implements Collection<E> {
 				next = inner.next(); // support null values for next
 				nextSet = true;
 			}
-			while (nextSet && (object==null ? next==null : object.equals(next)) && inner.hasNext()) { // inner.hasNext() is expensive
+			while (nextSet && (object == null ? next == null : object.equals(next)) && inner.hasNext()) { // inner.hasNext() is expensive
 				next = inner.next();
 			}
-			final boolean hasNext = nextSet && !(object==null ? next==null : object.equals(next));
+			final boolean hasNext = nextSet && !(object == null ? next == null : object.equals(next));
 			if (!hasNext) {
 				dataSource = null; // cache complete
 				assert i == cache.size();
@@ -575,9 +569,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			return hasNext;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedIterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E next() {
@@ -586,10 +579,10 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			} else {
 				nextSet = false;
 			}
-			while (object==null ? next==null : object.equals(next)) {
+			while (object == null ? next == null : object.equals(next)) {
 				next = inner.next();
 			}
-			assert !nextSet && !(object==null ? next==null : object.equals(next));
+			assert !nextSet && !(object == null ? next == null : object.equals(next));
 			if (++i > cache.size()) {
 				assert dataSource != null; // cache not complete
 				cache.add(next);
@@ -608,20 +601,19 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	
 		protected final Collection<E> s;
 		protected E next;
-		protected boolean nextSet = false;
+		protected boolean nextSet;
 	
 		/**
 		 * Creates a new {@link IntersectionIterator} on this and <code>s</code>.
-		 * @param s
+		 * @param s the collection to intersect with this
 		 */
 		public IntersectionIterator(final Collection<E> s) {
 			super(dataSource.iterator());
 			this.s = s;
 		}
 	
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean hasNext() {
@@ -645,9 +637,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			return hasNext;
 		}
 	
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E next() {
@@ -680,20 +671,19 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	
 		protected final Collection<E> s;
 		protected E next;
-		protected boolean nextSet = false;
+		protected boolean nextSet;
 	
 		/**
 		 * Creates a new {@link SubtractionIterator} on this and <code>s</code>.
-		 * @param s
+		 * @param s the collection to subtract from this
 		 */
 		public SubtractionIterator(final Collection<E> s) {
 			super(dataSource.iterator());
 			this.s = s;
 		}
 	
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean hasNext() {
@@ -717,9 +707,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			return hasNext;
 		}
 	
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E next() {
@@ -751,27 +740,27 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public class UnionIterator extends WrappedIterator {
 
 		protected final Iterable<E> s;
-		protected Iterator<E> added = null; // lazily instantiate this iterator
-		protected boolean innerNext = false; // cache last inner.hasNext() invocation
+		protected Iterator<E> added; // lazily instantiate this iterator
+		protected boolean innerNext; // cache last inner.hasNext() invocation
 
 		/**
 		 * Creates a new {@link UnionIterator} for the underlying
 		 * collection and <code>s</code>.
-		 * @param s
+		 * @param s the collection to union with this
 		 */
 		public UnionIterator(final Iterable<E> s) {
 			super();
 			this.s = s;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean hasNext() {
 			if (added == null) {
-				if (innerNext = inner.hasNext()) {
+				innerNext = inner.hasNext();
+				if (innerNext) {
 					return true;
 				} else {
 					added = s.iterator();
@@ -780,9 +769,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			return added.hasNext();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E next() {
@@ -807,22 +795,21 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public class UnionSetIterator extends CachingSetIterator {
 
 		protected final Iterable<E> s;
-		protected Iterator<E> added = null; // lazily instantiate this iterator
-		protected boolean innerNext = false; // cache last inner.hasNext() invocation
+		protected Iterator<E> added; // lazily instantiate this iterator
+		protected boolean innerNext; // cache last inner.hasNext() invocation
 
 		/**
 		 * Creates a new {@link UnionIterator} for the underlying
 		 * collection and <code>s</code>.
-		 * @param s
+		 * @param s the collection to union with this
 		 */
 		public UnionSetIterator(final Iterable<E> s) {
 			super();
 			this.s = s;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean hasNext() {
@@ -832,7 +819,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 				return false;
 			}
 			if (added == null) {
-				if (innerNext = inner.hasNext()) {
+				innerNext = inner.hasNext();
+				if (innerNext) {
 					return true; // inner is already a set
 				} else {
 					added = s.iterator();
@@ -849,9 +837,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			return nextSet && returnedValues.contains(next);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E next() {
@@ -898,22 +885,21 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public static class FlattenIterator extends ReadOnlyIterator<Object> {
 
 		protected final Iterator<?> inner;
-		protected Iterator<?> current = null;
+		protected Iterator<?> current;
 		protected Object next;
-		protected boolean nextSet = false;
+		protected boolean nextSet;
 
 		/**
 		 * Creates a new {@link FlattenIterator} around <code>inner</code>.
-		 * @param inner
+		 * @param inner the underlying collection
 		 */
 		public FlattenIterator(final Iterable<?> inner) {
 			super();
 			this.inner = inner.iterator();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
 			if (!nextSet) {
@@ -924,7 +910,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 					while (!nextSet && inner.hasNext()) {
 						next = inner.next();
 						if (next instanceof Iterable<?>) {
-							current = ((Iterable<?>) next).iterator();
+							current = ((Iterable<?>)next).iterator();
 							if (current.hasNext()) {
 								next = current.next();
 								nextSet = true;
@@ -938,9 +924,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			return nextSet;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		public Object next() {
 			if (!nextSet) {
@@ -950,7 +935,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 					while (!nextSet) {
 						next = inner.next();
 						if (next instanceof Iterable<?>) {
-							current = ((Iterable<?>) next).iterator();
+							current = ((Iterable<?>)next).iterator();
 							if (current.hasNext()) {
 								next = current.next();
 								nextSet = true;
@@ -977,28 +962,33 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public static class FlattenSetIterator extends ReadOnlyIterator<Object> {
 		
 		protected final LazyCollection<?>.CachingSetIterator inner;
-		protected Iterator<?> current = null;
+		protected Iterator<?> current;
 		protected Object next;
-		protected boolean nextSet = false;
+		protected boolean nextSet;
 
 		/**
 		 * Creates a new {@link FlattenSetIterator} around <code>inner</code>.
-		 * @param inner
+		 * @param inner the underlying collection
 		 */
 		public FlattenSetIterator(final LazySet<?> inner) {
 			super();
-			this.inner = (LazyCollection<?>.CachingSetIterator) inner.iterator();
+			this.inner = (LazyCollection<?>.CachingSetIterator)inner.iterator();
 		}
 
 		/**
 		 * Creates a new {@link FlattenSetIterator} around <code>inner</code>.
-		 * @param inner
+		 * @param inner the underlying collection
 		 */
 		public FlattenSetIterator(final LazyOrderedSet<?> inner) {
 			super();
-			this.inner = (LazyCollection<?>.CachingSetIterator) inner.iterator();
+			this.inner = (LazyCollection<?>.CachingSetIterator)inner.iterator();
 		}
 
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see java.util.Iterator#hasNext()
+		 */
 		public boolean hasNext() {
 			while (!nextSet || inner.returnedValues.contains(next)) {
 				if (current != null && current.hasNext()) {
@@ -1008,7 +998,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 					nextSet = false;
 					next = inner.next();
 					if (next instanceof Iterator<?>) {
-						current = (Iterator<?>) next;
+						current = (Iterator<?>)next;
 						if (current.hasNext()) {
 							next = current.next();
 							nextSet = true;
@@ -1021,6 +1011,11 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			return nextSet && !inner.returnedValues.contains(next);
 		}
 
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see java.util.Iterator#next()
+		 */
 		public Object next() {
 			while (!nextSet || inner.returnedValues.contains(next)) {
 				if (current != null && current.hasNext()) {
@@ -1030,7 +1025,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 					nextSet = false;
 					next = inner.next();
 					if (next instanceof Iterator<?>) {
-						current = (Iterator<?>) next;
+						current = (Iterator<?>)next;
 						if (current.hasNext()) {
 							next = current.next();
 							nextSet = true;
@@ -1066,20 +1061,18 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			this.index = lastIndex;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
 			return index >= 0;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E next() {
-			return ((List<E>) dataSource).get(index--);
+			return ((List<E>)dataSource).get(index--);
 		}
 		
 	}
@@ -1101,7 +1094,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		public ReverseListIterator(final int lastIndex) {
 			super();
-			this.lastIndex = this.index = lastIndex;
+			this.index = lastIndex;
+			this.lastIndex = lastIndex;
 		}
 	
 		/**
@@ -1118,45 +1112,43 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			}
 		}
 	
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
 			return index >= 0;
 		}
 	
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E next() {
-			return ((List<E>) dataSource).get(index--);
+			return ((List<E>)dataSource).get(index--);
 		}
 		
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#nextIndex()
+		/**
+		 * {@inheritDoc}
 		 */
 		public int nextIndex() {
 			return lastIndex - index;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#hasPrevious()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasPrevious() {
 			return index < lastIndex;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#previous()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E previous() {
-			return ((List<E>) dataSource).get(++index);
+			return ((List<E>)dataSource).get(++index);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#previousIndex()
+		/**
+		 * {@inheritDoc}
 		 */
 		public int previousIndex() {
 			return lastIndex - index - 1;
@@ -1173,9 +1165,9 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 		protected final CodeBlock condition;
 		protected final StackFrame parentFrame;
-		protected E next = null;
-		protected boolean nextSet = false;
-		protected boolean nextIncluded = false;
+		protected E next;
+		protected boolean nextSet;
+		protected boolean nextIncluded;
 
 		/**
 		 * Creates a {@link FilterIterator} with <code>condition</code>.
@@ -1189,14 +1181,14 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		}
 		
 		/**
+		 * Checks whether to include <pre>element</pre>.
 		 * @param element the element to filter
 		 * @return <code>true</code> iff <code>element</code> should be included in this collection
 		 */
 		protected abstract boolean include(E element);
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
 			if (i < cache.size()) {
@@ -1221,9 +1213,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			return hasNext;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		public E next() {
 			if (!nextSet) {
@@ -1263,12 +1254,12 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			super(condition, parentFrame);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.FilterIterator#include(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		protected final boolean include(E element) {
-			return (Boolean) condition.execute(parentFrame.getSubFrame(condition, new Object[]{next}));
+			return (Boolean)condition.execute(parentFrame.getSubFrame(condition, new Object[]{next}));
 		}
 	}
 
@@ -1288,12 +1279,12 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			super(condition, parentFrame);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.FilterIterator#include(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		protected final boolean include(E element) {
-			return !(Boolean) condition.execute(parentFrame.getSubFrame(condition, new Object[]{next}));
+			return !(Boolean)condition.execute(parentFrame.getSubFrame(condition, new Object[]{next}));
 		}
 	}
 
@@ -1324,21 +1315,19 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			this.parentFrame = parentFrame;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
 			return inner.hasNext();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.util.Iterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		@SuppressWarnings("unchecked")
 		public T next() {
-			return (T) function.execute(parentFrame.getSubFrame(function, new Object[]{inner.next()}));
+			return (T)function.execute(parentFrame.getSubFrame(function, new Object[]{inner.next()}));
 		}
 	}
 
@@ -1365,7 +1354,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * Creates a {@link LazyCollection} around <code>dataSource</code>.
-	 * @param dataSource
+	 * @param dataSource the underlying collection
 	 */
 	public LazyCollection(final Iterable<E> dataSource) {
 		super();
@@ -1395,6 +1384,9 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
+	 * Unsupported.
+	 * @param o the element to add
+	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
 	public boolean add(final E o) {
@@ -1402,6 +1394,9 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
+	 * Unsupported.
+	 * @param c the collection to add
+	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
 	public boolean addAll(final Collection<? extends E> c) {
@@ -1409,15 +1404,15 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
+	 * Unsupported.
 	 * @throws UnsupportedOperationException
 	 */
 	public void clear() {
 		throw new UnsupportedOperationException();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.Collection#contains(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	public boolean contains(final Object o) {
 		if (cache.contains(o)) {
@@ -1437,9 +1432,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.Collection#containsAll(java.util.Collection)
+	/**
+	 * {@inheritDoc}
 	 */
 	public boolean containsAll(final Collection<?> c) {
 		for (Object o : c) {
@@ -1451,6 +1445,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
+	 * Checks if this collection contains any of the elements in the specified collection.
 	 * @param c collection to be checked for containment in this collection.
 	 * @return <code>true</code> if this collection contains any of the elements in the specified collection.
 	 */
@@ -1463,9 +1458,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.Collection#isEmpty()
+	/**
+	 * {@inheritDoc}
 	 */
 	public boolean isEmpty() {
 		if (dataSource == null) {
@@ -1474,9 +1468,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		return cache.isEmpty() && !iterator().hasNext();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.Collection#iterator()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Iterator<E> iterator() {
 		if (dataSource == null) {
@@ -1486,6 +1479,9 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
+	 * Unsupported.
+	 * @param o the element to remove
+	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
 	public boolean remove(final Object o) {
@@ -1493,6 +1489,9 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
+	 * Unsupported.
+	 * @param c the collection to remove
+	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
 	public boolean removeAll(final Collection<?> c) {
@@ -1500,15 +1499,17 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
+	 * Unsupported.
+	 * @param c the collection to retain
+	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
 	public boolean retainAll(final Collection<?> c) {
 		throw new UnsupportedOperationException();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.Collection#size()
+	/**
+	 * {@inheritDoc}
 	 */
 	public int size() {
 		if (dataSource == null) {
@@ -1523,9 +1524,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		return size;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.Collection#toArray()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Object[] toArray() {
 		final int size = size(); // trigger cache completion (we would need the size anyway for array creation)
@@ -1540,32 +1540,32 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		return array;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.Collection#toArray(T[])
+	/**
+	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T[] toArray(T[] a) {
+	public <T> T[] toArray(final T[] a) {
 		final int size = size(); // trigger cache completion (we would need the size anyway for array length checking)
 		if (dataSource == null) {
 			return cache.toArray(a);
 		}
-	    if (a.length < size) {
-	        a = (T[])java.lang.reflect.Array.
-	        		newInstance(a.getClass().getComponentType(), size);
+		T[] r = a;
+	    if (r.length < size) {
+	        r = (T[])java.lang.reflect.Array.
+	        		newInstance(r.getClass().getComponentType(), size);
 	    }
 	    final Iterator<E> it = iterator();
 		for (int i = 0; i < size; i++) {
-	    	a[i] = (T) it.next();
+	    	r[i] = (T)it.next();
 	    }
-	    if (a.length > size) {
-	    	a[size] = null;
+	    if (r.length > size) {
+	    	r[size] = null;
 	    }
-	    return a;
+	    return r;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
@@ -1598,7 +1598,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * Returns <code>true</code> if <code>object</code> is an element of self, <code>false</code> otherwise.
-	 * @param object
+	 * @param object the object to check for
 	 * @return <code>true</code> if <code>object</code> is an element of self, <code>false</code> otherwise.
 	 */
 	public boolean includes(final E object) {
@@ -1607,7 +1607,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * Returns <code>true</code> if <code>object</code> is not an element of self, <code>false</code> otherwise.
-	 * @param object
+	 * @param object the object to check for
 	 * @return <code>true</code> if <code>object</code> is not an element of self, <code>false</code> otherwise.
 	 */
 	public boolean excludes(final E object) {
@@ -1616,7 +1616,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * Returns the number of times that <code>object</code> occurs in the collection self.
-	 * @param object
+	 * @param object the object to check for
 	 * @return The number of times that <code>object</code> occurs in the collection self.
 	 */
 	public int count(final E object) {
@@ -1635,7 +1635,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * Does self contain all the elements of <code>c2</code> ?
-	 * @param c2
+	 * @param c2 the collection to check
 	 * @return <code>true</code> iff self contains all elements of <code>c2</code>.
 	 */
 	public boolean includesAll(final Collection<E> c2) {
@@ -1644,7 +1644,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 
 	/**
 	 * Does self contain none of the elements of <code>c2</code> ?
-	 * @param c2
+	 * @param c2 the collection to check
 	 * @return <code>true</code> iff self contains no elements of <code>c2</code>.
 	 */
 	public boolean excludesAll(final Collection<E> c2) {
@@ -1673,16 +1673,16 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		boolean maxSet = false;
 		for (E e : this) {
 			if (e instanceof Integer) {
-				max = maxSet ? Math.max(max.intValue(), (Integer) e) : (Integer) e;
+				max = maxSet ? Math.max(max.intValue(), (Integer)e) : (Integer)e;
 				maxSet = true;
 			} else if (e instanceof Long) {
-				max = maxSet ? Math.max(max.longValue(), (Long) e) : (Long) e;
+				max = maxSet ? Math.max(max.longValue(), (Long)e) : (Long)e;
 				maxSet = true;
 			} else if (e instanceof Float) {
-				max = maxSet ? Math.max(max.floatValue(), (Float) e) : (Float) e;
+				max = maxSet ? Math.max(max.floatValue(), (Float)e) : (Float)e;
 				maxSet = true;
 			} else if (e instanceof Double) {
-				max = maxSet ? Math.max(max.doubleValue(), (Double) e) : (Double) e;
+				max = maxSet ? Math.max(max.doubleValue(), (Double)e) : (Double)e;
 				maxSet = true;
 			} else {
 				throw new IllegalArgumentException(String.format(
@@ -1692,7 +1692,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		if (!maxSet) {
 			throw new IllegalArgumentException("Cannot calculate the maximum of an empty collection");
 		}
-		return (E) max;
+		return (E)max;
 	}
 
 	/**
@@ -1709,16 +1709,16 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		boolean minSet = false;
 		for (E e : this) {
 			if (e instanceof Integer) {
-				min = minSet ? Math.min(min.intValue(), (Integer) e) : (Integer) e;
+				min = minSet ? Math.min(min.intValue(), (Integer)e) : (Integer)e;
 				minSet = true;
 			} else if (e instanceof Long) {
-				min = minSet ? Math.min(min.longValue(), (Long) e) : (Long) e;
+				min = minSet ? Math.min(min.longValue(), (Long)e) : (Long)e;
 				minSet = true;
 			} else if (e instanceof Float) {
-				min = minSet ? Math.min(min.floatValue(), (Float) e) : (Float) e;
+				min = minSet ? Math.min(min.floatValue(), (Float)e) : (Float)e;
 				minSet = true;
 			} else if (e instanceof Double) {
-				min = minSet ? Math.min(min.doubleValue(), (Double) e) : (Double) e;
+				min = minSet ? Math.min(min.doubleValue(), (Double)e) : (Double)e;
 				minSet = true;
 			} else {
 				throw new IllegalArgumentException(String.format(
@@ -1728,7 +1728,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		if (!minSet) {
 			throw new IllegalArgumentException("Cannot calculate the minimum of an empty collection");
 		}
-		return (E) min;
+		return (E)min;
 	}
 
 	/**
@@ -1743,19 +1743,19 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		Number sum = 0;
 		for (E e : this) {
 			if (e instanceof Integer) {
-				sum = sum.intValue() + (Integer) e;
+				sum = sum.intValue() + (Integer)e;
 			} else if (e instanceof Long) {
-				sum = sum.longValue() + (Long) e;
+				sum = sum.longValue() + (Long)e;
 			} else if (e instanceof Float) {
-				sum = sum.floatValue() + (Float) e;
+				sum = sum.floatValue() + (Float)e;
 			} else if (e instanceof Double) {
-				sum = sum.longValue() + (Double) e;
+				sum = sum.longValue() + (Double)e;
 			} else {
 				throw new IllegalArgumentException(String.format(
 						"Cannot calculate sum on %s", e));
 			}
 		}
-		return (E) sum;
+		return (E)sum;
 	}
 
 	/* *********************************************************************
@@ -1765,8 +1765,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * The cartesian product operation of <code>self</code> and <code>c2</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param <T>
-	 * @param c2
+	 * @param <T> the element type
+	 * @param c2 the other factor in the cartesian product
 	 * @return <code>self->iterate (e1; acc: Set(Tuple(first: T, second: T2)) = Set{} |<br>
 	 * c2->iterate (e2; acc2: Set(Tuple(first: T, second: T2)) = acc | <br>
 	 * acc2->including (Tuple{first = e1, second = e2}) ) )</code>
@@ -1777,8 +1777,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			public Iterator<Tuple> iterator() {
 				return new ReadOnlyIterator<Tuple>() {
 					final Iterator<E> c1it = c1.iterator();
-					E lastc1 = null;
-					boolean lastc1Set = false;
+					E lastc1;
+					boolean lastc1Set;
 					Iterator<T> c2it = c2.iterator();
 					
 					public Tuple next() {
@@ -1855,7 +1855,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * Returns the collection containing all elements of self plus <code>object</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param object
+	 * @param object the object to include
 	 * @return The collection containing all elements of self plus <code>object</code>.
 	 */
 	public abstract LazyCollection<E> including(final E object);
@@ -1865,6 +1865,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * *********************************************************************/
 
 	/**
+	 * Checks if <code>condition</code> holds for
+	 * all elements in the underlying collection.
 	 * @param condition the condition function
 	 * @return <code>true</code> iff <code>condition</code> holds for
 	 * all elements in the underlying collection.
@@ -1872,7 +1874,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public boolean forAll(final CodeBlock condition) {
 		final StackFrame frame = condition.getParentFrame();
 		for (E e : this) {
-			if (!(Boolean) condition.execute(frame.getSubFrame(condition, new Object[]{e}))) {
+			if (!(Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e}))) {
 				return false;
 			}
 		}
@@ -1880,6 +1882,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
+	 * Checks if <code>condition</code> holds for
+	 * all element pairs in the cartesian product of the underlying collection.
 	 * @param condition the condition function
 	 * @return <code>true</code> iff <code>condition</code> holds for
 	 * all element pairs in the cartesian product of the underlying collection.
@@ -1888,7 +1892,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		final StackFrame frame = condition.getParentFrame();
 		for (E e : this) {
 			for (E e2 : this) {
-				if (!(Boolean) condition.execute(frame.getSubFrame(condition, new Object[]{e, e2}))) {
+				if (!(Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e, e2}))) {
 					return false;
 				}
 			}
@@ -1897,6 +1901,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
+	 * Checks if <code>condition</code> holds for 
+	 * at least one element in the underlying collection.
 	 * @param condition the condition function
 	 * @return <code>true</code> iff <code>condition</code> holds for 
 	 * at least one element in the underlying collection.
@@ -1904,7 +1910,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public boolean exists(final CodeBlock condition) {
 		final StackFrame frame = condition.getParentFrame();
 		for (E e : this) {
-			if ((Boolean) condition.execute(frame.getSubFrame(condition, new Object[]{e}))) {
+			if ((Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e}))) {
 				return true;
 			}
 		}
@@ -1912,6 +1918,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
+	 * Checks if <code>condition</code> holds for 
+	 * at least one element pair in the cartesian product of the underlying collection.
 	 * @param condition the condition function
 	 * @return <code>true</code> iff <code>condition</code> holds for 
 	 * at least one element pair in the cartesian product of the underlying collection.
@@ -1920,7 +1928,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		final StackFrame frame = condition.getParentFrame();
 		for (E e : this) {
 			for (E e2 : this) {
-				if ((Boolean) condition.execute(frame.getSubFrame(condition, new Object[]{e, e2}))) {
+				if ((Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e, e2}))) {
 					return true;
 				}
 			}
@@ -1932,7 +1940,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * Builds an accumulated value by calling the
 	 * <code>updater</code> function for each element in the underlying collection
 	 * and the previous accumulated value.
-	 * @param <T>
+	 * @param <T> the element type
 	 * @param initialValue the initial accumulated value
 	 * @param updater the updater function
 	 * @return The accumulated value
@@ -1942,7 +1950,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		final StackFrame frame = updater.getParentFrame();
 		T acc = initialValue;
 		for (E e : this) {
-			acc = (T) updater.execute(frame.getSubFrame(updater, new Object[]{e, acc}));
+			acc = (T)updater.execute(frame.getSubFrame(updater, new Object[]{e, acc}));
 		}
 		return acc;
 	}
@@ -1950,7 +1958,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * Results in <code>true</code> if <code>body</code> evaluates to a different value for each 
 	 * element in the source collection; otherwise, result is <code>false</code>.
-	 * @param body
+	 * @param body the code to execute on each element
 	 * @return <code>true</code> if <code>body</code> evaluates to a different value for each 
 	 * element in the source collection.
 	 */
@@ -1972,14 +1980,14 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * Returns any element in the source collection for which <code>body</code> evaluates to <code>true</code>.
 	 * If there is more than one element for which <code>body</code> is <code>true</code>, one of them is returned.
 	 * There must be at least one element fulfilling <code>body</code>.
-	 * @param body
+	 * @param body the function to evaluate on each element
 	 * @return any element in the source collection for which body evaluates to <code>true</code>.
 	 * @throws NoSuchElementException if there is no element in the source collection for which <code>body</code> is <code>true</code>.
 	 */
-	public E any(final CodeBlock body) {
+	public E any(final CodeBlock body) throws NoSuchElementException {
 		final StackFrame parentFrame = body.getParentFrame();
 		for (E e : this) {
-			if ((Boolean) body.execute(parentFrame.getSubFrame(body, new Object[]{e}))) {
+			if ((Boolean)body.execute(parentFrame.getSubFrame(body, new Object[]{e}))) {
 				return e;
 			}
 		}
@@ -1989,7 +1997,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	/**
 	 * Results in <code>true</code> if there is exactly one element in the 
 	 * source collection for which <code>body</code> is <code>true</code>.
-	 * @param body
+	 * @param body the function to evaluate on each element
 	 * @return <code>true</code> if there is exactly one element in the 
 	 * source collection for which <code>body</code> is <code>true</code>.
 	 */
@@ -1997,7 +2005,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		boolean result = false;
 		final StackFrame frame = body.getParentFrame();
 		for (E e : this) {
-			if ((Boolean) body.execute(frame.getSubFrame(body, new Object[]{e}))) {
+			if ((Boolean)body.execute(frame.getSubFrame(body, new Object[]{e}))) {
 				if (result) { // only one true value allowed
 					return false;
 				}

@@ -20,6 +20,7 @@ import org.eclipse.m2m.atl.emftvm.Pushf;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Pushf</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
@@ -29,6 +30,7 @@ import org.eclipse.m2m.atl.emftvm.Pushf;
 public class PushfImpl extends InstructionImpl implements Pushf {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link PushfImpl}.
 	 * <!-- end-user-doc -->
 	 */
 	protected PushfImpl() {
@@ -39,6 +41,8 @@ public class PushfImpl extends InstructionImpl implements Pushf {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

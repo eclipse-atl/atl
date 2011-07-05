@@ -34,20 +34,19 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	 *
 	 * @param <E> the collection element type
 	 */
-	public static abstract class NonCachingSet<E> extends LazySet<E> {
+	public abstract static class NonCachingSet<E> extends LazySet<E> {
 
 		/**
 		 * Creates a {@link NonCachingSet} around <code>dataSource</code>.
-		 * @param dataSource
+		 * @param dataSource the underlying collection
 		 */
 		public NonCachingSet(final LazySet<E> dataSource) {
 			super(dataSource);
 			assert dataSource != null;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#createCache()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		protected void createCache() {
@@ -73,7 +72,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		
 			protected final E object;
 			protected boolean beforeTail = true;
-			protected boolean innerNext = false; // cache last inner.hasNext() invocation
+			protected boolean innerNext; // cache last inner.hasNext() invocation
 		
 			/**
 			 * Creates a new {@link IncludingSetIterator}.
@@ -84,28 +83,27 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 				this.object = object;
 			}
 		
-			/*
-			 * (non-Javadoc)
-			 * @see java.util.Iterator#hasNext()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public boolean hasNext() {
-				if (innerNext = inner.hasNext()) {
+				innerNext = inner.hasNext();
+				if (innerNext) {
 					return true;
 				} else if (beforeTail) {
 					if (!containsSet) {
-						containsObject = ((Collection<E>) dataSource).contains(object);
+						containsObject = ((Collection<E>)dataSource).contains(object);
 						containsSet = true;
 					}
-					assert containsSet == true;
+					assert containsSet;
 					return !containsObject;
 				}
 				return false;
 			}
 		
-			/*
-			 * (non-Javadoc)
-			 * @see java.util.Iterator#next()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public E next() {
@@ -114,10 +112,10 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 					return inner.next();
 				} else if (beforeTail) {
 					if (!containsSet) {
-						containsObject = ((Collection<E>) dataSource).contains(object);
+						containsObject = ((Collection<E>)dataSource).contains(object);
 						containsSet = true;
 					}
-					assert containsSet == true;
+					assert containsSet;
 					if (!containsObject) {
 						beforeTail = false;
 						return object;
@@ -129,63 +127,68 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 
 		protected final E object;
 		protected boolean containsObject;
-		protected boolean containsSet = false;
-	
+		protected boolean containsSet;
+
+		/**
+		 * Creates a new {@link IncludingSet}.
+		 * @param object the element to include
+		 * @param dataSource the underlying collection
+		 */
 		public IncludingSet(final E object, final LazySet<E> dataSource) {
 			super(dataSource);
 			this.object = object;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#contains(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean contains(final Object o) {
-			return (object==null ? o==null : object.equals(o)) || 
-					((Collection<E>) dataSource).contains(o);
+			return (object == null ? o == null : object.equals(o)) || 
+					((Collection<E>)dataSource).contains(o);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#count(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int count(final E o) {
-			return (object==null ? o==null : object.equals(o)) ? 1 : 
-					((LazyCollection<E>) dataSource).count(o);
+			return (object == null ? o == null : object.equals(o)) ? 1 : 
+					((LazyCollection<E>)dataSource).count(o);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#isEmpty()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean isEmpty() {
 			return false;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<E> iterator() {
 			return new IncludingSetIterator(object);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#size()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int size() {
-			final int size = ((Collection<E>) dataSource).size();
+			final int size = ((Collection<E>)dataSource).size();
 			if (!containsSet) {
-				if (((Collection<E>) dataSource).contains(object)) {
+				if (((Collection<E>)dataSource).contains(object)) {
 					containsObject = true;
 				} else {
 					containsObject = false;
 				}
 				containsSet = true;
 			}
-			assert containsSet == true;
-			return size + (containsObject == true ? 0 : 1);
+			assert containsSet;
+			return size + (containsObject ? 0 : 1);
 		}
 	
 	}
@@ -204,8 +207,8 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		 */
 		public class ExcludingSetIterator extends WrappedIterator {
 		
-			protected E next = null;
-			protected boolean nextSet = false;
+			protected E next;
+			protected boolean nextSet;
 		
 			/**
 			 * Creates a new {@link ExcludingIterator}.
@@ -214,9 +217,8 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 				super();
 			}
 		
-			/*
-			 * (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedIterator#hasNext()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public boolean hasNext() {
@@ -224,15 +226,15 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 					next = inner.next(); // support null values for next
 					nextSet = true;
 				}
-				if (nextSet && (object==null ? next==null : object.equals(next))) {
+				if (nextSet && (object == null ? next == null : object.equals(next))) {
 					containsExcluded = true;
 					containsExcludedSet = true;
 					if (inner.hasNext()) {
 						next = inner.next();
-						assert !(object==null ? next==null : object.equals(next));
+						assert !(object == null ? next == null : object.equals(next));
 					}
 				}
-				final boolean hasNext = nextSet && !(object==null ? next==null : object.equals(next));
+				final boolean hasNext = nextSet && !(object == null ? next == null : object.equals(next));
 				if (!hasNext && !containsExcludedSet) {
 					containsExcluded = false;
 					containsExcludedSet = true;
@@ -240,9 +242,8 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 				return hasNext;
 			}
 		
-			/*
-			 * (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedIterator#next()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public E next() {
@@ -251,7 +252,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 				} else {
 					nextSet = false;
 				}
-				if (object==null ? next==null : object.equals(next)) {
+				if (object == null ? next == null : object.equals(next)) {
 					containsExcluded = true;
 					containsExcludedSet = true;
 					next = inner.next();
@@ -263,7 +264,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 
 		protected final E object;
 		protected boolean containsExcluded;
-		protected boolean containsExcludedSet = false;
+		protected boolean containsExcludedSet;
 	
 		/**
 		 * Creates a new {@link ExcludingSet}.
@@ -275,51 +276,51 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 			this.object = object;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#contains(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean contains(final Object o) {
-			return !(object==null ? o==null : object.equals(o)) && 
-					((Collection<E>) dataSource).contains(o);
+			return !(object == null ? o == null : object.equals(o)) && 
+					((Collection<E>)dataSource).contains(o);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#count(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int count(final E o) {
-			return (object==null ? o==null : object.equals(o)) ? 0 : 
-					((LazyCollection<E>) dataSource).count(o);
+			return (object == null ? o == null : object.equals(o)) ? 0 : 
+					((LazyCollection<E>)dataSource).count(o);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#isEmpty()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean isEmpty() {
 			return !iterator().hasNext();
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<E> iterator() {
 			if (containsExcludedSet && !containsExcluded) {
-				return ((Collection<E>) dataSource).iterator();
+				return ((Collection<E>)dataSource).iterator();
 			}
 			return new ExcludingSetIterator();
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#size()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int size() {
-			final int size = ((Collection<E>) dataSource).size();
+			final int size = ((Collection<E>)dataSource).size();
 			if (!containsExcludedSet) {
-				containsExcluded = ((Collection<E>) dataSource).contains(object);
+				containsExcluded = ((Collection<E>)dataSource).contains(object);
 				containsExcludedSet = true;
 			}
 			return size - (containsExcluded ? 1 : 0);
@@ -336,7 +337,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 
 	/**
 	 * Creates a {@link LazySet} around <code>dataSource</code>.
-	 * @param dataSource
+	 * @param dataSource the underlying collection
 	 */
 	public LazySet(final Iterable<E> dataSource) {
 		super(dataSource);
@@ -346,6 +347,9 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	 * Non-lazy operations                                                 *
 	 * *********************************************************************/
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void createCache() {
 		super.createCache();
@@ -354,9 +358,8 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.Collection#iterator()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Iterator<E> iterator() {
@@ -366,8 +369,8 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		return new CachingSetIterator();
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(final Object o) {
@@ -378,16 +381,16 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		    return false;
 		}
         try {
-            return containsAll((Collection<?>) o);
-        } catch(ClassCastException unused)   {
+            return containsAll((Collection<?>)o);
+        } catch (ClassCastException unused) {
             return false;
-        } catch(NullPointerException unused) {
+        } catch (NullPointerException unused) {
             return false;
         }
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -403,7 +406,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	/**
 	 * Returns the number of occurrences of <code>object</code> in self.<br>
 	 * <code>post: result &lt;= 1</code>
-	 * @param o
+	 * @param o the object to count
 	 * @return The number of occurrences of <code>object</code> in self.
 	 */
 	@Override
@@ -418,7 +421,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	/**
 	 * Returns the union of self and <code>s</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param s
+	 * @param s the collection to union with self
 	 * @return The union of self and <code>s</code>.
 	 */
 	public LazySet<E> union(final LazySet<E> s) {
@@ -436,7 +439,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	/**
 	 * Returns the union of self and <code>bag</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param bag
+	 * @param bag the collection to union with self
 	 * @return The union of self and <code>bag</code>.
 	 */
 	public LazyBag<E> union(final LazyBag<E> bag) {
@@ -446,7 +449,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	/**
 	 * Returns the intersection of self and <code>s</code> (i.e, the set of all elements that are in both self and <code>s</code>).
 	 * <p><i>Lazy operation.</i></p>
-	 * @param s
+	 * @param s the collection to intersect with self
 	 * @return The intersection of self and <code>s</code> (i.e, the set of all elements that are in both self and <code>s</code>).
 	 */
 	public LazySet<E> intersection(final LazySet<E> s) {
@@ -464,7 +467,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	/**
 	 * Returns the intersection of self and <code>s</code> (i.e, the set of all elements that are in both self and <code>s</code>).
 	 * <p><i>Lazy operation.</i></p>
-	 * @param s
+	 * @param s the collection to intersect with self
 	 * @return The intersection of self and <code>s</code> (i.e, the set of all elements that are in both self and <code>s</code>).
 	 */
 	public LazySet<E> intersection(final LazyBag<E> s) {
@@ -482,7 +485,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	/**
 	 * Returns the elements of self, which are not in <code>s</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param s
+	 * @param s the collection to subtract from self
 	 * @return The elements of self, which are not in <code>s</code>.
 	 */
 	public LazySet<E> subtract(final LazySet<E> s) {
@@ -500,7 +503,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	/**
 	 * Returns the set containing all elements of self plus <code>object</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param object
+	 * @param object the object to include
 	 * @return The set containing all elements of self plus <code>object</code>
 	 */
 	public LazySet<E> including(final E object) {
@@ -510,7 +513,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	/**
 	 * Returns the set containing all elements of self without <code>object</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param object
+	 * @param object the object to exclude
 	 * @return The set containing all elements of self without <code>object</code>.
 	 */
 	public LazySet<E> excluding(final E object) {
@@ -520,7 +523,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	/**
 	 * Returns the set containing all the elements that are in self or <code>s</code>, but not in both.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param s
+	 * @param s the collection to perform the symmetric difference with
 	 * @return The set containing all the elements that are in self or <code>s</code>, but not in both.
 	 */
 	public LazySet<E> symmetricDifference(final LazySet<E> s) {
@@ -607,6 +610,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	 * each of the elements of this collection.
 	 * @param function the return value function
 	 * @return a new lazy bag with the <code>function</code> return values.
+	 * @param <T> the element type
 	 */
 	public <T> LazyBag<T> collect(final CodeBlock function) {
 		// Parent frame may change after this method returns!

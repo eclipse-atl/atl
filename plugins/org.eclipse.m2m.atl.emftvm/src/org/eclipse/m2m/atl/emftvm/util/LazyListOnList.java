@@ -11,13 +11,12 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.util;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
 /**
  * {@link LazyList} that passes method calls through to the underlying
- * {@link List}, where possible, instead of going via {@link Iterator}s. 
+ * {@link List}, where possible, instead of going via iterators. 
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
  * @param <E>
@@ -26,7 +25,7 @@ public class LazyListOnList<E> extends LazyListOnCollection<E> {
 
 	/**
 	 * Creates a new {@link LazyListOnList} around <code>dataSource</code>.
-	 * @param dataSource
+	 * @param dataSource the underlying collection
 	 */
 	public LazyListOnList(final List<E> dataSource) {
 		super(dataSource);
@@ -36,82 +35,82 @@ public class LazyListOnList<E> extends LazyListOnCollection<E> {
 	 * Non-lazy operations                                                 *
 	 * *********************************************************************/
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#get(int)
+	/**
+	 * {@inheritDoc}
 	 */
+	@Override
 	public E get(final int index) {
-		return ((List<E>) dataSource).get(index);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#indexOf(java.lang.Object)
-	 */
-	public int indexOf(final Object o) {
-		return ((List<E>) dataSource).indexOf(o);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#lastIndexOf(java.lang.Object)
-	 */
-	public int lastIndexOf(final Object o) {
-		return ((List<E>) dataSource).lastIndexOf(o);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator()
-	 */
-	public ListIterator<E> listIterator() {
-		return ((List<E>) dataSource).listIterator();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator(int)
-	 */
-	public ListIterator<E> listIterator(final int index) {
-		return ((List<E>) dataSource).listIterator(index);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#subList(int, int)
-	 */
-	public List<E> subList(final int fromIndex, final int toIndex) {
-		return ((List<E>) dataSource).subList(fromIndex, toIndex);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#toArray()
-	 */
-	public Object[] toArray() {
-		return ((List<E>) dataSource).toArray();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#toArray(T[])
-	 */
-	public <T> T[] toArray(T[] a) {
-		return ((List<E>) dataSource).toArray(a);
+		return ((List<E>)dataSource).get(index);
 	}
 
 	/**
-	 * Returns the first element in self.
-	 * @return The first element in self.
+	 * {@inheritDoc}
 	 */
+	@Override
+	public int indexOf(final Object o) {
+		return ((List<E>)dataSource).indexOf(o);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int lastIndexOf(final Object o) {
+		return ((List<E>)dataSource).lastIndexOf(o);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ListIterator<E> listIterator() {
+		return ((List<E>)dataSource).listIterator();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ListIterator<E> listIterator(final int index) {
+		return ((List<E>)dataSource).listIterator(index);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<E> subList(final int fromIndex, final int toIndex) {
+		return ((List<E>)dataSource).subList(fromIndex, toIndex);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Object[] toArray() {
+		return ((List<E>)dataSource).toArray();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public <T> T[] toArray(T[] a) {
+		return ((List<E>)dataSource).toArray(a);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public E first() {
 		return get(0);
 	}
 
 	/**
-	 * Returns the last element in self.
-	 * @return The last element in self.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public E last() {
 		return get(size() - 1);
 	}

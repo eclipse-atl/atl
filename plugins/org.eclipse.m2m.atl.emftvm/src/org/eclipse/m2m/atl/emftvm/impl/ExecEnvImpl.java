@@ -65,6 +65,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Exec Env</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -81,6 +82,16 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
  * @generated
  */
 public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
+
+	/**
+	 * The 'EMFTVM!ExecEnv' type.
+	 */
+	public static final String[] EXEC_ENV_TYPE 		= new String[]{"EMFTVM", "ExecEnv"};
+
+	/**
+	 * The 'TRACE!TraceLinkSet' type.
+	 */
+	public static final String[] TRACE_LINK_SET_TYPE = new String[]{"TRACE", "TraceLinkSet"};
 
 	/**
 	 * The cached value of the '{@link #getMetaModels() <em>Meta Models</em>}' attribute.
@@ -142,9 +153,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	protected EList<EObject> deletionQueue;
 
-	public static final String[] ExecEnvType 		= new String[]{"EMFTVM", "ExecEnv"};
-	public static final String[] TraceLinkSetType 	= new String[]{"TRACE", "TraceLinkSet"};
-
 	/**
 	 * Field storage and lookup. 
 	 */
@@ -200,6 +208,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link ExecEnvImpl}.
 	 * <!-- end-user-doc -->
 	 */
 	protected ExecEnvImpl() {
@@ -208,7 +217,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		mms.put(EcorePackage.eNAME.toUpperCase(), EMFTVMUtil.getEcoreMetamodel());
 		mms.put(EmftvmPackage.eNAME.toUpperCase(), EMFTVMUtil.getEmfTvmMetamodel());
 		mms.put(TracePackage.eNAME.toUpperCase(), EMFTVMUtil.getTraceMetamodel());
-		createField("matches", true, ExecEnvType, TraceLinkSetType, new CodeBlockImpl() {
+		createField("matches", true, EXEC_ENV_TYPE, TRACE_LINK_SET_TYPE, new CodeBlockImpl() {
 			@Override
 			public Object execute(StackFrame frame) {
 				final Map<String, Model> oms = frame.getEnv().getOutputModels();
@@ -219,7 +228,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				}
 			}
 		});
-		createField("traces", true, ExecEnvType, TraceLinkSetType, new CodeBlockImpl() {
+		createField("traces", true, EXEC_ENV_TYPE, TRACE_LINK_SET_TYPE, new CodeBlockImpl() {
 			@Override
 			public Object execute(StackFrame frame) {
 				final Map<String, Model> oms = frame.getEnv().getOutputModels();
@@ -261,6 +270,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -270,7 +281,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Map<String, Module> getModules() {
@@ -281,7 +293,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -293,7 +306,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Map<String, Metamodel> getMetaModels() {
@@ -304,7 +318,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Map<String, Model> getInputModels() {
@@ -315,7 +330,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Map<String, Model> getInoutModels() {
@@ -326,7 +342,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Map<String, Model> getOutputModels() {
@@ -341,6 +358,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * Recursively loads module into the list of modules, and registers its contents for execution.
 	 * @param resolver the module resolver
 	 * @param name the module name
+	 * @return the loaded module
 	 * <!-- end-user-doc -->
 	 */
 	public Module loadModule(final ModuleResolver resolver, final String name) {
@@ -396,10 +414,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		feature.setEType(findType(feature.getTypeModel(), feature.getType()));
 		switch (feature.eClass().getClassifierID()) {
 		case EmftvmPackage.FIELD:
-			fieldContainer.registerField((Field) feature);
+			fieldContainer.registerField((Field)feature);
 			break;
 		case EmftvmPackage.OPERATION:
-			registerOperation((Operation) feature);
+			registerOperation((Operation)feature);
 			break;
 		default:
 			throw new IllegalArgumentException(String.format("Feature of class %s not supported", feature.eClass()));
@@ -446,7 +464,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		if (argCount == 0) {
 			ctxMap.put(ctx, op);
 		} else {
-			TypeMap<Object, Object> opsMap = (TypeMap<Object, Object>) ctxMap.get(ctx);
+			TypeMap<Object, Object> opsMap = (TypeMap<Object, Object>)ctxMap.get(ctx);
 			if (opsMap == null) {
 				opsMap = new TypeHashMap<Object, Object>();
 				ctxMap.put(ctx, opsMap);
@@ -457,6 +475,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
+	 * Retrieves the registry types of the elements of <pre>eList</pre>.
 	 * @param eList
 	 * @return the registry types of elements
 	 */
@@ -483,22 +502,23 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		assert argIndex >= 0 && argIndex < argCount;
 		final Object regType = argTypes[argIndex];
 		if (argIndex < argCount - 1) {
-			TypeMap<Object, Object> nestedReg = (TypeMap<Object, Object>) reg.get(regType);
+			TypeMap<Object, Object> nestedReg = (TypeMap<Object, Object>)reg.get(regType);
 			if (nestedReg == null) {
 				nestedReg = new TypeHashMap<Object, Object>();
 				reg.put(regType, nestedReg);
 			}
-			registerOperationByArgTypes(op, nestedReg, argTypes, argIndex+1);
+			registerOperationByArgTypes(op, nestedReg, argTypes, argIndex + 1);
 		} else {
 			reg.put(regType, op);
 		}
 	}
 
 	/**
-	 * @param first
-	 * @param second
+	 * Checks whether the types of <pre>first</pre> are more specific than the types of <pre>second</pre>.
+	 * @param first the first list of parameters to compare
+	 * @param second the second list of parameters to compare
 	 * @param index the comparison index (start at 0)
-	 * @return <code>true</code> iff the types of first are more specific than the types of second
+	 * @return <code>true</code> iff the types of <pre>first</pre> are more specific than the types of <pre>second</pre>
 	 */
 	private static boolean isMoreSpecific(
 			final EList<Parameter> first, 
@@ -513,11 +533,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			return isMoreSpecific(first, second, index + 1);
 		}
 		if (f instanceof EClass && s instanceof EClass) {
-			if (((EClass) s).isSuperTypeOf((EClass) f)) {
-				return true;
-			} else {
-				return false;
-			}
+			return ((EClass)s).isSuperTypeOf((EClass)f);
 		} else {
 			final Class<?> fCls = f.getInstanceClass();
 			final Class<?> sCls = s.getInstanceClass();
@@ -527,18 +543,15 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			if (fCls == sCls && index < first.size() - 1) {
 				return isMoreSpecific(first, second, index + 1);
 			}
-			if (sCls.isAssignableFrom(fCls)) {
-				return true;
-			} else {
-				return false;
-			}
+			return sCls.isAssignableFrom(fCls);
 		}
 	}
 
 	/**
-	 * @param first
-	 * @param second
-	 * @return <code>true</code> iff the types of first are more specific than the types of second
+	 * Checks whether the types of <pre>first</pre> are more specific than the types of <pre>second</pre>.
+	 * @param first the first operation to compare
+	 * @param second the second operation to compare
+	 * @return <code>true</code> iff the types of <pre>first</pre> are more specific than the types of <pre>second</pre>
 	 */
 	private static boolean isMoreSpecific(
 			final Operation first, 
@@ -551,11 +564,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			return isMoreSpecific(first.getParameters(), second.getParameters(), 0);
 		}
 		if (f instanceof EClass && s instanceof EClass) {
-			if (((EClass) s).isSuperTypeOf((EClass) f)) {
-				return true;
-			} else {
-				return false;
-			}
+			return ((EClass) s).isSuperTypeOf((EClass)f);
 		} else {
 			final Class<?> fCls = f.getInstanceClass();
 			final Class<?> sCls = s.getInstanceClass();
@@ -565,11 +574,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			if (fCls == sCls) {
 				return isMoreSpecific(first.getParameters(), second.getParameters(), 0);
 			}
-			if (sCls.isAssignableFrom(fCls)) {
-				return true;
-			} else {
-				return false;
-			}
+			return sCls.isAssignableFrom(fCls);
 		}
 	}
 
@@ -597,9 +602,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * Resolves model and type references in re
-	 * @param re
-	 * @param models
+	 * Resolves model and type references in <pre>re</pre>.
+	 * @param re the rule element to resolve references for
+	 * @param models the map of models resolve from
 	 * @throws IllegalArgumentException when a reference cannot be resolved
 	 */
 	private void resolveRuleElement(final RuleElement re, final Map<String, Model> models) {
@@ -617,7 +622,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 	/**
 	 * Resolves the super rule references in rule.
-	 * @param rule
+	 * @param rule the rule to resolve references for
 	 */
 	private void resolveSuperRules(final Rule rule) {
 		final EList<Rule> eSuperRules = rule.getESuperRules();
@@ -635,9 +640,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * @param imported
-	 * @param module
-	 * @return <code>true</code> iff "imported" is imported by module
+	 * Checks whether <pre>imported</pre> is imported by <pre>module</pre>. 
+	 * @param imported the module to check
+	 * @param module the importing module
+	 * @return <code>true</code> iff <pre>imported</pre> is imported by <pre>module</pre>
 	 */
 	private boolean moduleIsImported(final Module imported, final Module module) {
 		if (module == imported) {
@@ -652,11 +658,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * @param context the operation context type
-	 * @param name the operation name
-	 * @param parameterTypes the operation parameter types
-	 * @return the operation compatible with the requested properties, or null
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	@SuppressWarnings("unchecked")
@@ -674,13 +677,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				if (argCount == 0) {
 
 					// First try to find with direct type
-					op = (Operation) ctxMap.get(context);
+					op = (Operation)ctxMap.get(context);
 					// Fall back to full resolving algorithm
 					if (op == null) {
 						final Object ctxKey = ctxMap.findKey(context);
 						if (ctxKey != null) {
 							// There is an operation with the given context type
-							op = (Operation) ctxMap.get(ctxKey);
+							op = (Operation)ctxMap.get(ctxKey);
 							assert op != null;
 							// Now register directly under context type
 							ctxMap.put(context, op);
@@ -690,7 +693,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				} else { //argCount > 0
 					
 					// First try to find with direct types
-					TypeMap<Object, Object> argMap = (TypeMap<Object, Object>) ctxMap.get(context);
+					TypeMap<Object, Object> argMap = (TypeMap<Object, Object>)ctxMap.get(context);
 					if (argMap != null) {
 						op = findOperationDirect(argMap, parameterTypes, 0);
 					}
@@ -701,13 +704,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 						final Set<Operation> ops = new LinkedHashSet<Operation>();
 						for (Object ctxKey : ctxKeys) {
 							// There are operations defined on the given context type
-							argMap = (TypeMap<Object, Object>) ctxMap.get(ctxKey);
+							argMap = (TypeMap<Object, Object>)ctxMap.get(ctxKey);
 							findOperations(argMap, parameterTypes, ops, 0);
 						}
 						op = findMostSpecificOperation(ops);
 						if (op != null) {
 							// Now register directly under context type
-							argMap = (TypeMap<Object, Object>) ctxMap.get(context);
+							argMap = (TypeMap<Object, Object>)ctxMap.get(context);
 							if (argMap == null) {
 								argMap = new TypeHashMap<Object, Object>();
 								ctxMap.put(context, argMap);
@@ -724,12 +727,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * @param context the operation context type
-	 * @param name the operation name
-	 * @param parameterTypes the operation parameter types
-	 * @return the operation compatible with the requested properties
-	 * @throws UnsupportedOperationException if no such operation was found
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	@SuppressWarnings("unchecked")
@@ -747,12 +746,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				if (argCount == 0) {
 
 					// Static operations must be defined in exact context type
-					op = (Operation) ctxMap.get(context);
+					op = (Operation)ctxMap.get(context);
 
 				} else { //argCount > 0
 					
 					// Static operations must be defined in exact context type
-					TypeMap<Object, Object> argMap = (TypeMap<Object, Object>) ctxMap.get(context);
+					TypeMap<Object, Object> argMap = (TypeMap<Object, Object>)ctxMap.get(context);
 					if (argMap != null) {
 						// First try to find with direct types
 						op = findOperationDirect(argMap, parameterTypes, 0);
@@ -775,6 +774,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		return op;
 	}
 
+	/**
+	 * Attempts to find an operation using direct type dispatch, ignoring any supertypes.
+	 * @param typeMap
+	 * @param parameterTypes
+	 * @param argIndex
+	 * @return the operation, or <code>null</code>
+	 */
 	@SuppressWarnings("unchecked")
 	private static Operation findOperationDirect(final TypeMap<Object, Object> typeMap, final EList<Object> parameterTypes, 
 			final int argIndex) {
@@ -783,16 +789,23 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		final Object argType = parameterTypes.get(argIndex);
 		
 		if (argIndex < argCount - 1) {
-			final TypeMap<Object, Object> nestedTypeMap = (TypeMap<Object, Object>) typeMap.get(argType);
+			final TypeMap<Object, Object> nestedTypeMap = (TypeMap<Object, Object>)typeMap.get(argType);
 			if (nestedTypeMap != null) {
-				return findOperationDirect(nestedTypeMap, parameterTypes, argIndex+1);
+				return findOperationDirect(nestedTypeMap, parameterTypes, argIndex + 1);
 			}
 			return null;
 		} else {
-			return (Operation) typeMap.get(argType);
+			return (Operation)typeMap.get(argType);
 		}
 	}
 
+	/**
+	 * Finds all operations that correspond to the given types, and adds them to <pre>ops</pre>.
+	 * @param typeMap
+	 * @param parameterTypes
+	 * @param ops
+	 * @param argIndex
+	 */
 	@SuppressWarnings("unchecked")
 	private static void findOperations(final TypeMap<Object, Object> typeMap, final EList<Object> parameterTypes, 
 			final Set<Operation> ops, final int argIndex) {
@@ -805,20 +818,21 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		if (argIndex < argCount - 1) {
 			for (Object argTypeKey : argTypeKeys) {
 				// There are operations defined on the given parameter type so far...
-				TypeMap<Object, Object> nestedTypeMap = (TypeMap<Object, Object>) typeMap.get(argTypeKey);
-				findOperations(nestedTypeMap, parameterTypes, ops, argIndex+1);
+				TypeMap<Object, Object> nestedTypeMap = (TypeMap<Object, Object>)typeMap.get(argTypeKey);
+				findOperations(nestedTypeMap, parameterTypes, ops, argIndex + 1);
 			}
 		} else {
 			for (Object argTypeKey : argTypeKeys) {
 				// There are operations defined on all given parameter types
-				ops.add((Operation) typeMap.get(argTypeKey));
+				ops.add((Operation)typeMap.get(argTypeKey));
 			}
 		}
 	}
 
 	/**
+	 * Finds the most-specific operation from <pre>ops</pre>, based on context/argument types
 	 * @param ops
-	 * @return Most-specific operation from ops, based on context/argument types
+	 * @return Most-specific operation from <pre>ops</pre>, based on context/argument types
 	 * @throws DuplicateEntryException when more than one operation was found to be most-specific
 	 */
 	private static Operation findMostSpecificOperation(final Collection<Operation> ops) {
@@ -848,11 +862,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * @param context the context type of the field
-	 * @param name the name of the field
-	 * @return the corresponding field, or <code>null</code> if not found
-	 * @throws DuplicateEntryException if there is a field conflict
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Field findField(final Object context, final String name) {
@@ -860,7 +871,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Field findStaticField(Object context, String name) {
@@ -868,8 +880,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * @return the rule with the given name, or <code>null</code>
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Rule findRule(String name) {
@@ -877,10 +889,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Executes the loaded modules.
-	 * @param timingData
-	 * @return the execution result
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Object run(final TimingData timingData) {
@@ -931,7 +941,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public LazyList<Rule> getRules() {
@@ -939,7 +950,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Model getModelOf(EObject object) {
@@ -948,7 +960,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public String getModelID(Model model) {
@@ -956,8 +969,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Deletes elements in {@link #getDeletionQueue()}.
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public void deleteQueue() {
@@ -971,7 +984,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Model getInputModelOf(EObject object) {
@@ -980,7 +994,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Model getInoutModelOf(EObject object) {
@@ -989,7 +1004,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Model getOutputModelOf(EObject object) {
@@ -998,7 +1014,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1022,7 +1039,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1039,7 +1057,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1054,7 +1073,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1078,7 +1098,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1102,11 +1123,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * @param modelName the name of the metamodel to search
-	 * @param typeName the name of the type to find
-	 * @return The EMF type with the given typeName in the metamodel with modelName
-	 * @throws IllegalArgumentException if the metamodel or type was not found
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public EClassifier findType(String modelName, String typeName) {
@@ -1116,10 +1134,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				// Wrap Java class
 				final EDataType dt = EcoreFactory.eINSTANCE.createEDataType();
 				dt.setName(typeName);
-				dt.setInstanceClass((Class<?>) type);
+				dt.setInstanceClass((Class<?>)type);
 				return dt;
 			} else if (type instanceof EClassifier) {
-				return (EClassifier) type;
+				return (EClassifier)type;
 			} else {
 				return null;
 			}

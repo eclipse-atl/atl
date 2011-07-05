@@ -55,8 +55,8 @@ import org.eclipse.m2m.atl.emftvm.Feature;
 import org.eclipse.m2m.atl.emftvm.Field;
 import org.eclipse.m2m.atl.emftvm.Findtype;
 import org.eclipse.m2m.atl.emftvm.Get;
-import org.eclipse.m2m.atl.emftvm.Get_static;
-import org.eclipse.m2m.atl.emftvm.Get_trans;
+import org.eclipse.m2m.atl.emftvm.GetStatic;
+import org.eclipse.m2m.atl.emftvm.GetTrans;
 import org.eclipse.m2m.atl.emftvm.Getcb;
 import org.eclipse.m2m.atl.emftvm.Goto;
 import org.eclipse.m2m.atl.emftvm.If;
@@ -67,17 +67,17 @@ import org.eclipse.m2m.atl.emftvm.InputRuleElement;
 import org.eclipse.m2m.atl.emftvm.Insert;
 import org.eclipse.m2m.atl.emftvm.Instruction;
 import org.eclipse.m2m.atl.emftvm.Invoke;
-import org.eclipse.m2m.atl.emftvm.Invoke_all_cbs;
-import org.eclipse.m2m.atl.emftvm.Invoke_cb;
-import org.eclipse.m2m.atl.emftvm.Invoke_cb_s;
-import org.eclipse.m2m.atl.emftvm.Invoke_static;
-import org.eclipse.m2m.atl.emftvm.Invoke_super;
+import org.eclipse.m2m.atl.emftvm.InvokeAllCbs;
+import org.eclipse.m2m.atl.emftvm.InvokeCb;
+import org.eclipse.m2m.atl.emftvm.InvokeCbS;
+import org.eclipse.m2m.atl.emftvm.InvokeStatic;
+import org.eclipse.m2m.atl.emftvm.InvokeSuper;
 import org.eclipse.m2m.atl.emftvm.Iterate;
 import org.eclipse.m2m.atl.emftvm.LineNumber;
 import org.eclipse.m2m.atl.emftvm.Load;
 import org.eclipse.m2m.atl.emftvm.LocalVariable;
 import org.eclipse.m2m.atl.emftvm.Match;
-import org.eclipse.m2m.atl.emftvm.Match_s;
+import org.eclipse.m2m.atl.emftvm.MatchS;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.New;
@@ -87,7 +87,7 @@ import org.eclipse.m2m.atl.emftvm.Push;
 import org.eclipse.m2m.atl.emftvm.Remove;
 import org.eclipse.m2m.atl.emftvm.Rule;
 import org.eclipse.m2m.atl.emftvm.Set;
-import org.eclipse.m2m.atl.emftvm.Set_static;
+import org.eclipse.m2m.atl.emftvm.SetStatic;
 import org.eclipse.m2m.atl.emftvm.Store;
 import org.eclipse.m2m.atl.emftvm.util.DuplicateEntryException;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
@@ -105,6 +105,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Code Block</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -141,16 +142,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	protected static final int MAX_LOCALS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMaxLocals() <em>Max Locals</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMaxLocals()
-	 * @generated NOT
-	 * @ordered
-	 */
-	protected int maxLocals = MAX_LOCALS_EDEFAULT;
-
-	/**
 	 * The default value of the '{@link #getMaxStack() <em>Max Stack</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -159,6 +150,27 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @ordered
 	 */
 	protected static final int MAX_STACK_EDEFAULT = -1;
+
+	/**
+	 * Cache used to store native Java methods.
+	 * 
+	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	private static final WeakHashMap<Class<?>, Map<String, Method>> METHOD_CACHE = 
+		new WeakHashMap<Class<?>, Map<String, Method>>();
+
+	/**
+	 * The cached value of the '{@link #getMaxLocals() <em>Max Locals</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMaxLocals()
+	 * @generated NOT
+	 * @ordered
+	 */
+	protected int maxLocals = MAX_LOCALS_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getMaxStack() <em>Max Stack</em>}' attribute.
@@ -249,9 +261,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				super(dataSource.iterator());
 			}
 
-			/*
-			 * (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.CachingIterator#next()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public Object next() {
@@ -268,14 +279,15 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 		/**
 		 * Creates a new {@link EnumConversionList} around <code>dataSource</code>.
-		 * @param dataSource
+		 * @param dataSource the list to wrap
 		 */
 		public EnumConversionList(List<Object> dataSource) {
 			super(dataSource);
 		}
 
 		/**
-		 * @param object
+		 * Performs the element conversion.
+		 * @param object the object to convert
 		 * @return the converted object
 		 */
 		protected final Object convert(final Object object) {
@@ -285,8 +297,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			return object;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<Object> iterator() {
@@ -296,30 +308,30 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			return new EnumConversionIterator(); // extends CachingIterator
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#size()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int size() {
 			if (dataSource == null) {
 				return cache.size();
 			}
-			return ((Collection<Object>) dataSource).size();
+			return ((Collection<Object>)dataSource).size();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#get(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object get(final int index) {
 			if (index < cache.size()) {
-				return ((List<Object>) cache).get(index);
+				return ((List<Object>)cache).get(index);
 			}
-			return convert(((List<Object>) dataSource).get(index));
+			return convert(((List<Object>)dataSource).get(index));
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#last()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object last() {
@@ -328,9 +340,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				throw new NoSuchElementException();
 			}
 			if (dataSource == null) {
-				return ((List<Object>) cache).get(size-1);
+				return ((List<Object>)cache).get(size - 1);
 			}
-			return convert(((List<Object>) dataSource).get(size-1));
+			return convert(((List<Object>)dataSource).get(size - 1));
 		}
 
 		/**
@@ -342,13 +354,13 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				for (Object o : dataSource) {
 					cache.add(convert(o));
 				}
-				assert cache.size() == ((List<?>) dataSource).size();
+				assert cache.size() == ((List<?>)dataSource).size();
 				dataSource = null;
 			}
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#createCache()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		protected void createCache() {
@@ -356,28 +368,18 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				this.cache = Collections.emptyList(); // dataSource == null; cache complete
 				this.occurrences = Collections.emptyMap();
 			} else {
-				this.cache = new ArrayList<Object>(((List<Object>) dataSource).size());
+				this.cache = new ArrayList<Object>(((List<Object>)dataSource).size());
 			}
 			assert this.cache instanceof List<?>;
 		}
 	}
 
-	/**
-	 * Cache used to store native Java methods.
-	 * 
-	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
-	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
-	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	private static final WeakHashMap<Class<?>, Map<String, Method>> methodCache = 
-		new WeakHashMap<Class<?>, Map<String, Method>>();
-
-	private boolean ruleSet = false;
+	private boolean ruleSet;
 	private Rule rule;
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link CodeBlockImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -387,6 +389,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -396,7 +400,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
@@ -412,7 +416,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -424,7 +429,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
@@ -440,7 +445,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -452,7 +458,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -464,7 +471,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -476,7 +484,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -488,7 +497,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -498,7 +508,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see CodeBlockImpl#setMatcherFor(Rule)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -508,7 +519,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -529,7 +541,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -539,7 +552,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setApplierFor(Rule)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -549,7 +563,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -570,7 +585,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -580,7 +596,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setPostApplyFor(Rule)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -590,7 +607,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -611,7 +629,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -621,7 +640,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setBodyFor(Operation)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -631,7 +651,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -652,7 +673,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -662,7 +684,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setInitialiserFor(Field)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -672,7 +695,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -693,7 +717,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -705,7 +730,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -715,7 +741,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setNestedFor(CodeBlock)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -725,7 +752,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -746,7 +774,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -755,7 +784,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -767,7 +797,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -777,7 +808,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setBindingFor(InputRuleElement)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -787,7 +819,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -808,7 +841,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Object execute(StackFrame frame) {
@@ -822,7 +856,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				Instruction instr = code.get(pc++);
 				switch (instr.getOpcode()) {
 				case PUSH:
-					frame.push(((Push) instr).getValue());
+					frame.push(((Push)instr).getValue());
 					break;
 				case PUSHT:
 					frame.push(true);
@@ -833,58 +867,49 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				case POP:
 					frame.popv();
 					break;
-				case LOAD: {
-					final Load load = (Load) instr;
-					frame.load(load.getCbOffset(), load.getSlot());
-					break; }
-				case STORE: {
-					final Store store = (Store) instr;
-					frame.store(store.getCbOffset(), store.getSlot());
-					break; }
+				case LOAD:
+					frame.load(((Load)instr).getCbOffset(), ((Load)instr).getSlot());
+					break;
+				case STORE:
+					frame.store(((Store)instr).getCbOffset(), ((Store)instr).getSlot());
+					break;
 				case SET:
-					set(((Set) instr).getFieldname(), frame);
+					set(((Set)instr).getFieldname(), frame);
 					break;
 				case GET:
 					frame.setPc(pc);
-					frame.push(get(((Get) instr).getFieldname(), frame));
+					frame.push(get(((Get)instr).getFieldname(), frame));
 					break;
 				case GET_TRANS:
 					frame.setPc(pc);
-					frame.push(getTrans(((Get_trans) instr).getFieldname(), frame));
+					frame.push(getTrans(((GetTrans)instr).getFieldname(), frame));
 					break;
 				case SET_STATIC:
-					setStatic(((Set_static) instr).getFieldname(), frame);
+					setStatic(((SetStatic)instr).getFieldname(), frame);
 					break;
 				case GET_STATIC:
 					frame.setPc(pc);
-					frame.push(getStatic(((Get_static) instr).getFieldname(), frame));
+					frame.push(getStatic(((GetStatic)instr).getFieldname(), frame));
 					break;
-				case FINDTYPE: {
-					final Findtype f = (Findtype) instr;
-					frame.push(EMFTVMUtil.findType(frame.getEnv(), f.getModelname(), f.getTypename()));
-					break; }
-				case FINDTYPE_S: {
-					final Object modelName = frame.pop();
-					final Object typeName = frame.pop();
+				case FINDTYPE: 
+					frame.push(EMFTVMUtil.findType(frame.getEnv(), ((Findtype)instr).getModelname(), ((Findtype)instr).getTypename()));
+					break;
+				case FINDTYPE_S:
 					frame.push(EMFTVMUtil.findType(
 									frame.getEnv(), 
-									(String) modelName, 
-									(String) typeName));
-					break; }
-				case NEW: {
-					final New newInstr = (New) instr;
-					final Object type = frame.pop();
-					frame.push(new_(newInstr.getModelname(), 
-									type, 
+									(String)frame.pop(), 
+									(String)frame.pop()));
+					break;
+				case NEW:
+					frame.push(newInstr(((New)instr).getModelname(), 
+									frame.pop(), 
 									frame));
-					break; }
-				case NEW_S: {
-					final Object modelName = frame.pop();
-					final Object type = frame.pop();
-					frame.push(new_((String) modelName, 
-									type,
+					break;
+				case NEW_S:
+					frame.push(newInstr((String)frame.pop(), 
+									frame.pop(),
 									frame));
-					break; }
+					break;
 				case DELETE:
 					delete(frame);
 					break;
@@ -892,72 +917,65 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					frame.dup();
 					break;
 				case DUP_X1:
-					frame.dup_x1();
+					frame.dupX1();
 					break;
 				case SWAP:
 					frame.swap();
 					break;
 				case SWAP_X1:
-					frame.swap_x1();
+					frame.swapX1();
 					break;
 				case IF:
-					if ((Boolean) frame.pop()) {
-						pc = ((If) instr).getOffset();
+					if ((Boolean)frame.pop()) {
+						pc = ((If)instr).getOffset();
 					}
 					break;
 				case IFN:
-					if (! (Boolean) frame.pop()) {
-						pc = ((Ifn) instr).getOffset();
+					if (!(Boolean)frame.pop()) {
+						pc = ((Ifn)instr).getOffset();
 					}
 					break;
 				case GOTO:
-					pc = ((Goto) instr).getOffset();
+					pc = ((Goto)instr).getOffset();
 					break;
-				case ITERATE: {
-					final Collection<?> c = (Collection<?>) frame.pop();
-					final Iterator<?> i = c.iterator();
+				case ITERATE:
+					Iterator<?> i = ((Collection<?>)frame.pop()).iterator();
 					if (i.hasNext()) {
 						frame.push(i);
 						frame.push(i.next());
 					} else {
-						pc = ((Iterate) instr).getOffset() + 1; // jump over ENDITERATE
+						pc = ((Iterate)instr).getOffset() + 1; // jump over ENDITERATE
 					}
-					break; }
-				case ENDITERATE: {
-					final Iterator<?> i = (Iterator<?>) frame.pop();
+					break;
+				case ENDITERATE:
+					i = (Iterator<?>)frame.pop();
 					if (i.hasNext()) {
 						frame.push(i);
 						frame.push(i.next());
-						pc = ((Enditerate) instr).getOffset() + 1; // jump to first loop instruction
+						pc = ((Enditerate)instr).getOffset() + 1; // jump to first loop instruction
 					}
-					break; }
-				case INVOKE: {
-					final Invoke invoke = (Invoke) instr;
+					break;
+				case INVOKE:
 					frame.setPc(pc);
-					frame.push(invoke(invoke.getOpname(), invoke.getArgcount(), frame));
-					break; }
-				case INVOKE_STATIC: {
-					final Invoke_static invokeStatic = (Invoke_static) instr;
+					frame.push(invoke(((Invoke)instr).getOpname(), ((Invoke)instr).getArgcount(), frame));
+					break;
+				case INVOKE_STATIC: 
 					frame.setPc(pc);
-					frame.push(invokeStatic(invokeStatic.getOpname(), invokeStatic.getArgcount(), frame));
-					break; }
-				case INVOKE_SUPER: {
-					final Invoke_super invokeSuper = (Invoke_super) instr;
+					frame.push(invokeStatic(((InvokeStatic)instr).getOpname(), ((InvokeStatic)instr).getArgcount(), frame));
+					break;
+				case INVOKE_SUPER: 
 					frame.setPc(pc);
-					frame.push(invokeSuper(getBodyFor(), invokeSuper.getOpname(), invokeSuper.getArgcount(), frame));
-					break; }
-				case ALLINST: {
-					final Object type = frame.pop();
+					frame.push(invokeSuper(getBodyFor(), ((InvokeSuper)instr).getOpname(), ((InvokeSuper)instr).getArgcount(), frame));
+					break;
+				case ALLINST:
 					frame.push(EMFTVMUtil.findAllInstances(frame.getEnv(),
-									(EClass) type));
-					break; }
-				case ALLINST_IN: {
-					final Object type = frame.pop();
-					final Object modelname = frame.pop();
+									(EClass)frame.pop()));
+					break;
+				case ALLINST_IN:
 					frame.push(EMFTVMUtil.findAllInstIn(frame.getEnv(), 
-									(EClass) type, 
-									modelname));
-					break; }
+									(EClass)frame.pop(), 
+									frame.pop()));
+					break;
 				case ISNULL:
 					frame.push(frame.pop() == null);
 					break;
@@ -965,87 +983,79 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					frame.push(EmftvmPackage.eINSTANCE.getExecEnv());
 					break;
 				case NOT:
-					frame.push(! (Boolean) frame.pop());
+					frame.push(!(Boolean)frame.pop());
 					break;
-				case AND: {
-					final CodeBlock cb = ((And) instr).getCodeBlock();
+				case AND:
+					CodeBlock cb = ((And)instr).getCodeBlock();
 					frame.setPc(pc);
-					frame.push((Boolean) frame.pop() && 
-								(Boolean) cb.execute(frame.getSubFrame(cb, null)));
-					break; }
-				case OR: {
-					final CodeBlock cb = ((Or) instr).getCodeBlock();
+					frame.push((Boolean)frame.pop() && 
+								(Boolean)cb.execute(frame.getSubFrame(cb, null)));
+					break;
+				case OR:
+					cb = ((Or)instr).getCodeBlock();
 					frame.setPc(pc);
-					frame.push((Boolean) frame.pop() ||
-								(Boolean) cb.execute(frame.getSubFrame(cb, null)));
-					break; }
+					frame.push((Boolean)frame.pop() ||
+								(Boolean)cb.execute(frame.getSubFrame(cb, null)));
+					break;
 				case XOR:
-					frame.push((Boolean) frame.pop() ^ (Boolean) frame.pop());
+					frame.push((Boolean)frame.pop() ^ (Boolean)frame.pop());
 					break;
-				case IMPLIES: {
-					final CodeBlock cb = ((Implies) instr).getCodeBlock();
+				case IMPLIES:
+					cb = ((Implies)instr).getCodeBlock();
 					frame.setPc(pc);
-					frame.push(!(Boolean) frame.pop() ||
-								(Boolean) cb.execute(frame.getSubFrame(cb, null)));
-					break; }
-				case IFTE: {
-					final Ifte ifte = (Ifte) instr;
-					final CodeBlock thenCb = ifte.getThenCb(); // CodeBlocks are never wrapped in LazyValues
-					final CodeBlock elseCb = ifte.getElseCb();
+					frame.push(!(Boolean)frame.pop() ||
+								(Boolean)cb.execute(frame.getSubFrame(cb, null)));
+					break;
+				case IFTE:
 					frame.setPc(pc);
-					if ((Boolean) frame.pop()) {
+					if ((Boolean)frame.pop()) {
+						final CodeBlock thenCb = ((Ifte)instr).getThenCb();
 						frame.push(thenCb.execute(frame.getSubFrame(thenCb, null)));
 					} else {
+						final CodeBlock elseCb = ((Ifte)instr).getElseCb();
 						frame.push(elseCb.execute(frame.getSubFrame(elseCb, null)));
 					}
-					break; }
+					break;
 				case RETURN:
 					break LOOP;
 				case GETCB:
-					frame.push(((Getcb) instr).getCodeBlock());
+					frame.push(((Getcb)instr).getCodeBlock());
 					break;
-				case INVOKE_ALL_CBS: {
-					final Invoke_all_cbs invoke_all_cbs = (Invoke_all_cbs) instr;
-					final Object[] args = getArguments(invoke_all_cbs.getArgcount(), frame);
+				case INVOKE_ALL_CBS:
+					Object[] args = getArguments(((InvokeAllCbs)instr).getArgcount(), frame);
 					frame.setPc(pc);
-					for (CodeBlock cb : getNested()) {
-						frame.push(cb.execute(frame.getSubFrame(cb, args)));
+					for (CodeBlock ncb : getNested()) {
+						frame.push(ncb.execute(frame.getSubFrame(ncb, args)));
 					}
-					break; }
-				case INVOKE_CB: {
-					final Invoke_cb invoke_cb = (Invoke_cb) instr;
-					final CodeBlock cb = invoke_cb.getCodeBlock();
+					break;
+				case INVOKE_CB:
+					cb = ((InvokeCb)instr).getCodeBlock();
 					frame.setPc(pc);
-					frame.push(cb.execute(frame.getSubFrame(cb, getArguments(invoke_cb.getArgcount(), frame))));
-					break; }
-				case INVOKE_CB_S: {
-					final Invoke_cb_s invoke_cb_s = (Invoke_cb_s) instr;
-					final CodeBlock cb = (CodeBlock) frame.pop();
+					frame.push(cb.execute(frame.getSubFrame(cb, getArguments(((InvokeCb)instr).getArgcount(), frame))));
+					break;
+				case INVOKE_CB_S: 
+					cb = (CodeBlock)frame.pop();
 					frame.setPc(pc);
-					frame.push(cb.execute(frame.getSubFrame(cb, getArguments(invoke_cb_s.getArgcount(), frame))));
-					break; }
-				case MATCH: {
-					final Match match = (Match) instr;
-					final Rule rule = findRule(frame.getEnv(), match);
+					frame.push(cb.execute(frame.getSubFrame(cb, getArguments(((InvokeCbS)instr).getArgcount(), frame))));
+					break;
+				case MATCH:
 					frame.setPc(pc);
-					frame.push(matchOne(frame, rule, match.getArgcount()));
-					break; }
-				case MATCH_S: {
-					final Match_s match_s = (Match_s) instr;
-					final Rule rule = (Rule) frame.pop();
+					frame.push(matchOne(frame, findRule(frame.getEnv(), (Match)instr), ((Match)instr).getArgcount()));
+					break;
+				case MATCH_S: 
 					frame.setPc(pc);
-					frame.push(matchOne(frame, rule, match_s.getArgcount()));
-					break; }
+					frame.push(matchOne(frame, (Rule)frame.pop(), ((MatchS)instr).getArgcount()));
+					break;
 				case ADD:
-					add(frame.pop(), frame.pop(), ((Add) instr).getFieldname(), 
+					add(frame.pop(), frame.pop(), ((Add)instr).getFieldname(), 
 							frame.getEnv(), -1);
 					break;
 				case REMOVE:
-					remove(((Remove) instr).getFieldname(), frame);
+					remove(((Remove)instr).getFieldname(), frame);
 					break;
 				case INSERT:
-					add(frame.pop(), frame.pop(), ((Insert) instr).getFieldname(), 
-							frame.getEnv(), (Integer) frame.pop());
+					add(frame.pop(), frame.pop(), ((Insert)instr).getFieldname(), 
+							frame.getEnv(), (Integer)frame.pop());
 					break;
 				default:
 					throw new VMException(frame, String.format("Unsupported opcode: %s", instr.getOpcode()));
@@ -1066,9 +1076,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Calculates the amount of elements on the stack after executing this code block.
-	 * @return the amount of elements on the stack after executing this code block
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public int getStackLevel() {
@@ -1076,11 +1085,12 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		if (code.isEmpty()) {
 			return 0;
 		}
-		return code.get(code.size()-1).getStackLevel();
+		return code.get(code.size() - 1).getStackLevel();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Module getModule() {
@@ -1089,19 +1099,22 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		case EmftvmPackage.FEATURE:
 		case EmftvmPackage.FIELD:
 		case EmftvmPackage.OPERATION:
-			return ((Feature) container).getModule();
+			return ((Feature)container).getModule();
 		case EmftvmPackage.RULE:
-			return ((Rule) container).getModule();
+			return ((Rule)container).getModule();
 		case EmftvmPackage.INPUT_RULE_ELEMENT:
-			return ((InputRuleElement) container).getInputFor().getModule();
+			return ((InputRuleElement)container).getInputFor().getModule();
 		case EmftvmPackage.CODE_BLOCK:
-			return ((CodeBlock) container).getModule();
+			return ((CodeBlock)container).getModule();
+		default:
+			break;
 		}
 		return null;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1150,7 +1163,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1184,7 +1198,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1210,7 +1225,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1250,7 +1266,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1309,7 +1326,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1363,7 +1381,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1403,6 +1422,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
+	 * Finds the the {@link Rule} that contains this codeblock.
 	 * @return the {@link Rule} that contains this codeblock, or <code>null</code>
 	 * if not contained by a {@link Rule}.
 	 */
@@ -1411,7 +1431,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			CodeBlock cb = this;
 			while (cb != null) {
 				if (cb.eContainer() instanceof Rule) {
-					rule = (Rule) cb.eContainer();
+					rule = (Rule)cb.eContainer();
 					break;
 				} else {
 					cb = cb.getNestedFor();
@@ -1480,7 +1500,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final Object v = frame.pop();
 
 		if (o instanceof EObject) {
-			final EObject eo = (EObject) o;
+			final EObject eo = (EObject)o;
 			final EClass type = eo.eClass();
 			final Field field = findField(env, type, propname);
 			if (field != null) {
@@ -1494,7 +1514,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			}
 			final Resource resource = eo.eResource();
 			if (EMFTVMUtil.XMI_ID_FEATURE.equals(propname) && resource instanceof XMIResource) { //$NON-NLS-1$
-				((XMIResource) resource).setID(eo, v.toString());
+				((XMIResource)resource).setID(eo, v.toString());
 				return;
 			}
 			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
@@ -1502,7 +1522,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 
 		// o is a regular Java object
-		final Class<?> type = (o==null ? Void.TYPE : o.getClass());
+		final Class<?> type = o == null ? Void.TYPE : o.getClass();
 		final Field field = findField(env, type, propname);
 		if (field != null) {
 			field.setValue(o, v);
@@ -1542,7 +1562,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 						"Cannot assign %s to multi-valued field %s::%s",
 						value, sf.getEContainingClass().getName(), sf.getName()));
 			}
-			setMany(env, eo, sf, (Collection<?>) value);
+			setMany(env, eo, sf, (Collection<?>)value);
 		} else {
 			setSingle(env, eo, sf, value, -1);
 		}
@@ -1567,24 +1587,24 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final EClassifier sfType = sf.getEType();
 		final boolean allowInterModelReferences = isAllowInterModelReferences(env, eo);
 		if (sfType instanceof EEnum) {
-			final EEnum eEnum = (EEnum) sfType;
+			final EEnum eEnum = (EEnum)sfType;
 			if (value instanceof EnumLiteral) {
-				eo.eSet(sf, ((EnumLiteral) value).getEnumerator(eEnum));
+				eo.eSet(sf, ((EnumLiteral)value).getEnumerator(eEnum));
 			} else {
 				eo.eSet(sf, value);
 			}
 		} else if (sf instanceof EReference) {
-			final EReference ref = (EReference) sf;
+			final EReference ref = (EReference)sf;
 			final boolean isContainment = ref.isContainment();
 			final boolean isContainer = ref.isContainer();
 			if (checkValue(env, eo, ref, value, allowInterModelReferences)) {
 				if (isContainment) { // Restore eResource for old value before clearing
-					final EObject oldValue = (EObject) eo.eGet(sf);
+					final EObject oldValue = (EObject)eo.eGet(sf);
 					if (oldValue != null) {
 						eo.eResource().getContents().add(oldValue);
 					}
 				} else if (isContainer) { // Restore eResource for eo before clearing
-					final EObject oldValue = (EObject) eo.eGet(sf);
+					final EObject oldValue = (EObject)eo.eGet(sf);
 					if (oldValue != null) {
 						oldValue.eResource().getContents().add(eo);
 					}
@@ -1592,14 +1612,14 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				eo.eSet(sf, value);
 				if (isContainment && value instanceof EObject) {
 					// Remove value from its resource if it is contained
-					((EObject) value).eResource().getContents().remove(value);
-					assert ((EObject) value).eContainer() == eo;
-					assert ((EObject) value).eResource() == eo.eResource();
+					((EObject)value).eResource().getContents().remove(value);
+					assert ((EObject)value).eContainer() == eo;
+					assert ((EObject)value).eResource() == eo.eResource();
 				} else if (isContainer && value instanceof EObject) {
 					// Remove eo from its resource if it is contained
 					eo.eResource().getContents().remove(eo);
 					assert eo.eContainer() == value;
-					assert ((EObject) value).eResource() == eo.eResource();
+					assert ((EObject)value).eResource() == eo.eResource();
 				}
 			}
 		} else {
@@ -1620,12 +1640,12 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	private static void setMany(final ExecEnv env, final EObject eo, 
 			final EStructuralFeature sf, final Collection<?> value) {
 		assert sf.isMany();
-		final EList<Object> values = (EList<Object>) eo.eGet(sf);
+		final EList<Object> values = (EList<Object>)eo.eGet(sf);
 		if (!values.isEmpty()) {
-			if (sf instanceof EReference && ((EReference) sf).isContainment()) {
+			if (sf instanceof EReference && ((EReference)sf).isContainment()) {
 				// Restore eResource for each value before clearing
 				final EList<EObject> resContents = eo.eResource().getContents();
-				resContents.addAll((EList<? extends EObject>) values);
+				resContents.addAll((EList<? extends EObject>)values);
 				// Adding values to the resource should have cleared values already - apparently only happens for generated metamodels
 				//assert values.isEmpty();
 			}
@@ -1643,14 +1663,17 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param index the insertion index (-1 for end)
 	 */
 	private static void addEnumValue(final EEnum eEnum, 
-			final EList<Object> values, Object v, final int index) {
+			final EList<Object> values, final Object v, final int index) {
+		final Object v2;
 		if (v instanceof EnumLiteral) {
-			v = ((EnumLiteral) v).getEnumerator(eEnum);
+			v2 = ((EnumLiteral)v).getEnumerator(eEnum);
+		} else {
+			v2 = v;
 		}
 		if (index > -1) {
-			values.add(index, v);
+			values.add(index, v2);
 		} else {
-			values.add(v);
+			values.add(v2);
 		}
 	}
 
@@ -1664,7 +1687,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	private static void removeEnumValue(final EEnum eEnum, 
 			final EList<Object> values, final Object v) {
 		if (v instanceof EnumLiteral) {
-			values.remove(((EnumLiteral) v).getEnumerator(eEnum));
+			values.remove(((EnumLiteral)v).getEnumerator(eEnum));
 		} else {
 			values.remove(v);
 		}
@@ -1693,9 +1716,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			// Adding v to values should have updated (i.e. cleared) its resource if it is contained - apparently only happens for generated metamodels
 			//assert !isContainment || (((EObject) v).eContainer() == eo && ((EObject) v).eResource() == eo.eResource());
 			if (ref.isContainment() && v instanceof EObject) {
-				((EObject) v).eResource().getContents().remove(v);
-				assert ((EObject) v).eContainer() == eo;
-				assert ((EObject) v).eResource() == eo.eResource();
+				((EObject)v).eResource().getContents().remove(v);
+				assert ((EObject)v).eContainer() == eo;
+				assert ((EObject)v).eResource() == eo.eResource();
 			}
 		}
 	}
@@ -1711,9 +1734,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	private static void removeRefValue(final EReference ref, final EObject eo,
 			final EList<Object> values, final Object v) {
 		if (values.remove(v) && ref.isContainment() && v instanceof EObject) {
-			eo.eResource().getContents().add((EObject) v);
-			assert ((EObject) v).eContainer() == null;
-			assert ((EObject) v).eResource() == eo.eResource();
+			eo.eResource().getContents().add((EObject)v);
+			assert ((EObject)v).eContainer() == null;
+			assert ((EObject)v).eResource() == eo.eResource();
 		}
 	}
 
@@ -1734,7 +1757,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		//TODO enable add on fields
 		if (o instanceof EObject) {
-			final EObject eo = (EObject) o;
+			final EObject eo = (EObject)o;
 			final EClass type = eo.eClass();
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
 			if (sf != null) {
@@ -1743,7 +1766,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			}
 			final Resource resource = eo.eResource();
 			if (EMFTVMUtil.XMI_ID_FEATURE.equals(propname) && resource instanceof XMIResource) { //$NON-NLS-1$
-				if (((XMIResource) resource).getID(eo) != null) {
+				if (((XMIResource)resource).getID(eo) != null) {
 					throw new IllegalArgumentException(String.format(
 							"Cannot add %s to field %s::%s: maximum multiplicity of 1 reached", 
 							v, EMFTVMUtil.toPrettyString(eo, env), propname));
@@ -1751,7 +1774,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				if (index > 0) {
 					throw new IndexOutOfBoundsException(String.valueOf(index));
 				}
-				((XMIResource) resource).setID(eo, v.toString());
+				((XMIResource)resource).setID(eo, v.toString());
 				return;
 			}
 			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
@@ -1781,7 +1804,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 		if (sf.isMany()) {
 			if (value instanceof Collection<?>) {
-				addMany(env, eo, sf, (Collection<?>) value, index);
+				addMany(env, eo, sf, (Collection<?>)value, index);
 			} else {
 				addMany(env, eo, sf, value, index);
 			}
@@ -1809,11 +1832,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			final EStructuralFeature sf, final Object value, final int index) {
 		assert sf.isMany();
 		final EClassifier sfType = sf.getEType();
-		final EList<Object> values = (EList<Object>) eo.eGet(sf); // All EMF collections are ELists
+		final EList<Object> values = (EList<Object>)eo.eGet(sf); // All EMF collections are ELists
 		if (sfType instanceof EEnum) {
-			addEnumValue((EEnum) sfType, values, value, index);
+			addEnumValue((EEnum)sfType, values, value, index);
 		} else if (sf instanceof EReference) {
-			final EReference ref = (EReference) sf;
+			final EReference ref = (EReference)sf;
 			addRefValue(env, ref, eo, values, value, index, 
 					isAllowInterModelReferences(env, eo));
 		} else if (index > -1) {
@@ -1837,9 +1860,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			final EStructuralFeature sf, final Collection<?> value, final int index) {
 		assert sf.isMany();
 		final EClassifier sfType = sf.getEType();
-		final EList<Object> values = (EList<Object>) eo.eGet(sf);
+		final EList<Object> values = (EList<Object>)eo.eGet(sf);
 		if (sfType instanceof EEnum) {
-			final EEnum eEnum = (EEnum) sfType;
+			final EEnum eEnum = (EEnum)sfType;
 			if (index > -1) {
 				int currentIndex = index;
 				for (Object v : value) {
@@ -1851,7 +1874,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				}
 			}
 		} else if (sf instanceof EReference) {
-			final EReference ref = (EReference) sf;
+			final EReference ref = (EReference)sf;
 			final boolean allowInterModelReferences = isAllowInterModelReferences(env, eo);
 			if (index > -1) {
 				int currentIndex = index;
@@ -1887,7 +1910,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 		//TODO enable remove on fields
 		if (o instanceof EObject) {
-			final EObject eo = (EObject) o;
+			final EObject eo = (EObject)o;
 			final EClass type = eo.eClass();
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
 			if (sf != null) {
@@ -1896,9 +1919,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			}
 			final Resource resource = eo.eResource();
 			if (EMFTVMUtil.XMI_ID_FEATURE.equals(propname) && resource instanceof XMIResource) { //$NON-NLS-1$
-				final XMIResource xmiRes = (XMIResource) resource;
+				final XMIResource xmiRes = (XMIResource)resource;
 				final Object xmiID = xmiRes.getID(eo);
-				if (xmiID==null ? v==null : xmiID.equals(v)) {
+				if (xmiID == null ? v == null : xmiID.equals(v)) {
 					xmiRes.setID(eo, null);
 				}
 				return;
@@ -1930,19 +1953,19 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final EClassifier sfType = sf.getEType();
 		if (sf.isMany()) {
 			if (value instanceof Collection<?>) {
-				removeMany(env, eo, sf, (Collection<?>) value);
+				removeMany(env, eo, sf, (Collection<?>)value);
 			} else {
 				removeMany(env, eo, sf, value);
 			}
 		} else {
 			final Object oldValue = eo.eGet(sf);
 			if (sfType instanceof EEnum && value instanceof EnumLiteral) {
-				final EEnum eEnum = (EEnum) sfType;
-				if (oldValue != null && oldValue.equals(((EnumLiteral) value).getEnumerator(eEnum))) {
+				final EEnum eEnum = (EEnum)sfType;
+				if (oldValue != null && oldValue.equals(((EnumLiteral)value).getEnumerator(eEnum))) {
 					setSingle(env, eo, sf, sf.getDefaultValue(), -1);
 				}
 			} else {
-				if (oldValue==null ? value==null : oldValue.equals(value)) {
+				if (oldValue == null ? value == null : oldValue.equals(value)) {
 					setSingle(env, eo, sf, sf.getDefaultValue(), -1);
 				}
 			}
@@ -1963,12 +1986,12 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			final EStructuralFeature sf, final Object value) {
 		assert sf.isMany();
 		final EClassifier sfType = sf.getEType();
-		final EList<Object> values = (EList<Object>) eo.eGet(sf);
+		final EList<Object> values = (EList<Object>)eo.eGet(sf);
 		if (sfType instanceof EEnum) {
-			final EEnum eEnum = (EEnum) sfType;
+			final EEnum eEnum = (EEnum)sfType;
 			removeEnumValue(eEnum, values, value);
 		} else if (sf instanceof EReference) {
-			final EReference ref = (EReference) sf;
+			final EReference ref = (EReference)sf;
 			removeRefValue(ref, eo, values, value);
 		} else {
 			values.remove(value);
@@ -1988,14 +2011,14 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			final EStructuralFeature sf, final Collection<?> value) {
 		assert sf.isMany();
 		final EClassifier sfType = sf.getEType();
-		final EList<Object> values = (EList<Object>) eo.eGet(sf);
+		final EList<Object> values = (EList<Object>)eo.eGet(sf);
 		if (sfType instanceof EEnum) {
-			final EEnum eEnum = (EEnum) sfType;
+			final EEnum eEnum = (EEnum)sfType;
 			for (Object v : value) {
 				removeEnumValue(eEnum, values, v);
 			}
 		} else if (sf instanceof EReference) {
-			final EReference ref = (EReference) sf;
+			final EReference ref = (EReference)sf;
 			for (Object v : value) {
 				removeRefValue(ref, eo, values, v);
 			}
@@ -2005,9 +2028,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * @param env
-	 * @param eo
-	 * @return <code>true</code> iff the model of eo allows inter-model references
+	 * Checks whether the model containing <pre>eo</pre> allows inter-model references.
+	 * @param env the {@link ExecEnv} in which to find the model.
+	 * @param eo the model element to find the model for.
+	 * @return <code>true</code> iff the model of <pre>eo</pre> allows inter-model references
 	 */
 	private static boolean isAllowInterModelReferences(final ExecEnv env, final EObject eo) {
 		final Model eoModel = env.getModelOf(eo);
@@ -2019,18 +2043,19 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * @param env
-	 * @param eo
-	 * @param ref
-	 * @param value
-	 * @param allowInterModelReferences
+	 * Checks whether <pre>value</pre> may be assigned to <pre>eo.ref</pre>.
+	 * @param env the current {@link ExecEnv}
+	 * @param eo the model element to assign to
+	 * @param ref the reference of the model element to assign to
+	 * @param value the value to assign
+	 * @param allowInterModelReferences whether to allow inter-model references
 	 * @return <code>true</code> iff the value may be assigned
 	 */
 	private static boolean checkValue(final ExecEnv env, final EObject eo, final EReference ref, 
 			final Object value, final boolean allowInterModelReferences) {
 		if (value instanceof EObject) {
 			assert eo.eResource() != null;
-			final EObject ev = (EObject) value;
+			final EObject ev = (EObject)value;
 			if (eo.eResource() == ev.eResource() || ev.eResource() == null) {
 				return true;
 			}
@@ -2069,7 +2094,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				if (!opposite.isMany()) {
 					// Single-valued opposites cause changes in their respective opposite,
 					// i.e. ref, which can belong to eo or another input model element.
-					final Model oppositeModel = env.getInputModelOf((EObject) ev.eGet(opposite));
+					final Model oppositeModel = env.getInputModelOf((EObject)ev.eGet(opposite));
 					if (oppositeModel != null) {
 						ATLLogger.warning(String.format(
 								"Cannot set %s::%s to %s for %s: inter-model reference with single-valued opposite causes changes in input model %s",
@@ -2102,7 +2127,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		Object o = frame.pop();
 
 		if (o instanceof EObject) {
-			final EObject eo = (EObject) o;
+			final EObject eo = (EObject)o;
 			final EClass type = eo.eClass();
 			final Field field = findField(env, type, propname);
 			if (field != null) {
@@ -2114,14 +2139,14 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			}
 			final Resource resource = eo.eResource();
 			if (EMFTVMUtil.XMI_ID_FEATURE.equals(propname) && resource instanceof XMIResource) { //$NON-NLS-1$
-				return ((XMIResource) resource).getID(eo);
+				return ((XMIResource)resource).getID(eo);
 			}
 			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
 					EMFTVMUtil.toPrettyString(type, env), propname));
 		}
 
 		// o is a regular Java object
-		final Class<?> type = (o==null ? Void.TYPE : o.getClass());
+		final Class<?> type = o == null ? Void.TYPE : o.getClass();
 		final Field field = findField(env, type, propname);
 		if (field != null) {
 			return field.getValue(o, frame);
@@ -2130,11 +2155,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			final java.lang.reflect.Field f = type.getField(propname);
 			final Object result = f.get(o);
 			if (result instanceof List<?>) {
-				return new LazyListOnList<Object>((List<Object>) result);
+				return new LazyListOnList<Object>((List<Object>)result);
 			} else if (result instanceof java.util.Set<?>) {
-				return new LazySetOnSet<Object>((java.util.Set<Object>) result);
+				return new LazySetOnSet<Object>((java.util.Set<Object>)result);
 			} else if (result instanceof Collection<?>) {
-				return new LazyBagOnCollection<Object>((Collection<Object>) result);
+				return new LazyBagOnCollection<Object>((Collection<Object>)result);
 			} else {
 				return result;
 			}
@@ -2145,10 +2170,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * @param env
-	 * @param eo
-	 * @param sf
-	 * @return the value of eo.sf.
+	 * Retrieves the value of <pre>eo.sf</pre>.
+	 * @param env the current {@link ExecEnv}
+	 * @param eo the model element to retrieve the value from
+	 * @param sf the structural feature to retrieve the value from
+	 * @return the value of <pre>eo.sf</pre>.
 	 */
 	@SuppressWarnings("unchecked")
 	private static Object get(final ExecEnv env, final EObject eo, final EStructuralFeature sf) {
@@ -2161,7 +2187,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		if (value instanceof Enumerator) {
 			return new EnumLiteral(value.toString());
 		} else if (value instanceof EList<?>) {
-			final EnumConversionList converted = new EnumConversionList((EList<Object>) value);
+			final EnumConversionList converted = new EnumConversionList((EList<Object>)value);
 			if (env.getInoutModelOf(eo) != null) {
 				//Copy list for inout models
 				converted.cache();
@@ -2186,7 +2212,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final Object o = frame.pop();
 
 		if (o instanceof EObject) {
-			final EObject eo = (EObject) o;
+			final EObject eo = (EObject)o;
 			final EClass type = eo.eClass();
 			final Field field = findField(env, type, propname);
 			if (field != null) {
@@ -2212,79 +2238,81 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * Retrieves the transitive closure of field on object and stores the value in result.
-	 * @param object
-	 * @param field
-	 * @param frame
-	 * @param result
+	 * Retrieves the transitive closure of <pre>field</pre> on <pre>object</pre>.
+	 * @param object the object on which to retrieve <pre>field</pre>
+	 * @param field the field for which to retrieve the value
+	 * @param frame the current {@link StackFrame}
+	 * @param result the intermediate list of values
 	 * @return the updated result
 	 */
 	@SuppressWarnings("unchecked")
 	private static LazyList<Object> getTrans(final Object object, final Field field, 
-			final StackFrame frame, LazyList<Object> result) {
+			final StackFrame frame, final LazyList<Object> result) {
+		LazyList<Object> newResult = result;
 		final Object value = field.getValue(object, frame);
 		if (value instanceof List<?>) {
-			final List<Object> cvalue = (List<Object>) value;
-			result = result.union(new LazyListOnList<Object>(cvalue));
+			final List<Object> cvalue = (List<Object>)value;
+			newResult = newResult.union(new LazyListOnList<Object>(cvalue));
 			for (Object v : cvalue) {
-				result = getTrans(v, field, frame, result);
+				newResult = getTrans(v, field, frame, newResult);
 			}
 		} else if (value instanceof Collection<?>) {
-			final Collection<Object> cvalue = (Collection<Object>) value;
-			result = result.union(new LazyListOnCollection<Object>(cvalue));
+			final Collection<Object> cvalue = (Collection<Object>)value;
+			newResult = newResult.union(new LazyListOnCollection<Object>(cvalue));
 			for (Object v : cvalue) {
-				result = getTrans(v, field, frame, result);
+				newResult = getTrans(v, field, frame, newResult);
 			}
 		} else if (value != null) {
-			result = result.append(value);
-			result = getTrans(value, field, frame, result);
+			newResult = newResult.append(value);
+			newResult = getTrans(value, field, frame, newResult);
 		}
-		return result;
+		return newResult;
 	}
 
 	/**
-	 * Retrieves the transitive closure of sf on object and stores the value in result.
-	 * @param object
-	 * @param sf
-	 * @param env
-	 * @param result
+	 * Retrieves the transitive closure of <pre>sf</pre> on <pre>object</pre>.
+	 * @param object the object on which to retrieve <pre>sf</pre>
+	 * @param sf the structural feature for which to retrieve the value
+	 * @param env the current {@link ExecEnv}
+	 * @param result the intermediate list of values
 	 * @return the updated result
 	 */
 	@SuppressWarnings("unchecked")
 	private static LazyList<Object> getTrans(final EObject object, 
 			final EStructuralFeature sf, final ExecEnv env, 
-			LazyList<Object> result) {
+			final LazyList<Object> result) {
 		if (!sf.getEContainingClass().isSuperTypeOf(object.eClass())) {
 			return result; // feature does not apply to object
 		}
+		LazyList<Object> newResult = result;
 		final Object value = get(env, object, sf);
 		if (value instanceof LazyList<?>) {
-			final LazyList<Object> cvalue = (LazyList<Object>) value;
-			result = result.union(cvalue);
+			final LazyList<Object> cvalue = (LazyList<Object>)value;
+			newResult = newResult.union(cvalue);
 			for (Object v : cvalue) {
 				if (v instanceof EObject) {
-					result = getTrans((EObject) v, sf, env, result);
+					newResult = getTrans((EObject)v, sf, env, newResult);
 				}
 			}
 		} else if (value != null) {
 			assert !(value instanceof Collection<?>); // All collections should be LazyLists
 			if (value instanceof Enumerator) {
-				result = result.append(new EnumLiteral(value.toString()));
+				newResult = newResult.append(new EnumLiteral(value.toString()));
 			} else {
-				result = result.append(value);
+				newResult = newResult.append(value);
 				if (value instanceof EObject) {
-					result = getTrans((EObject) value, sf, env, result);
+					newResult = getTrans((EObject)value, sf, env, newResult);
 				}
 			}
 		}
-		return result;
+		return newResult;
 	}
 
 	/**
-	 * Retrieves the transitive closure of field on object and stores the value in result.
-	 * @param object
-	 * @param field
-	 * @param result
+	 * Retrieves the transitive closure of <pre>field</pre> on <pre>object</pre>.
+	 * @param object the object on which to retrieve <pre>field</pre>
+	 * @param field the field for which to retrieve the value
+	 * @param result the intermediate list of values
 	 * @return the updated result
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
@@ -2292,34 +2320,35 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	@SuppressWarnings("unchecked")
 	private static LazyList<Object> getTrans(final Object object, 
 			final java.lang.reflect.Field field, 
-			LazyList<Object> result) throws IllegalArgumentException, IllegalAccessException {
+			final LazyList<Object> result) throws IllegalArgumentException, IllegalAccessException {
 		if (!field.getDeclaringClass().isAssignableFrom(object.getClass())) {
 			return result; // field does not apply to object
 		}
+		LazyList<Object> newResult = result;
 		final Object value = field.get(object);
 		if (value instanceof LazyList<?>) {
-			final LazyList<Object> cvalue = (LazyList<Object>) value;
-			result = result.union(cvalue);
+			final LazyList<Object> cvalue = (LazyList<Object>)value;
+			newResult = newResult.union(cvalue);
 			for (Object v : cvalue) {
-				result = getTrans(v, field, result);
+				newResult = getTrans(v, field, newResult);
 			}
 		} else if (value instanceof List<?>) {
-			final List<Object> cvalue = (List<Object>) value;
-			result = result.union(new LazyListOnList<Object>(cvalue));
+			final List<Object> cvalue = (List<Object>)value;
+			newResult = newResult.union(new LazyListOnList<Object>(cvalue));
 			for (Object v : cvalue) {
-				result = getTrans(v, field, result);
+				newResult = getTrans(v, field, newResult);
 			}
 		} else if (value instanceof Collection<?>) {
-			final Collection<Object> cvalue = (Collection<Object>) value;
-			result = result.union(new LazyListOnCollection<Object>(cvalue));
+			final Collection<Object> cvalue = (Collection<Object>)value;
+			newResult = newResult.union(new LazyListOnCollection<Object>(cvalue));
 			for (Object v : cvalue) {
-				result = getTrans(v, field, result);
+				newResult = getTrans(v, field, newResult);
 			}
 		} else if (value != null) {
-			result = result.append(value);
-			result = getTrans(value, field, result);
+			newResult = newResult.append(value);
+			newResult = getTrans(value, field, newResult);
 		}
-		return result;
+		return newResult;
 	}
 
 	/**
@@ -2336,7 +2365,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final Object v = frame.pop();
 
 		if (o instanceof EClass) {
-			final EClass type = (EClass) o;
+			final EClass type = (EClass)o;
 			final Field field = findStaticField(env, type, propname);
 			if (field != null) {
 				field.setStaticValue(v);
@@ -2345,7 +2374,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 						EMFTVMUtil.toPrettyString(type, env), propname));
 			}
 		} else if (o instanceof Class<?>) {
-			final Class<?> type = (Class<?>) o;
+			final Class<?> type = (Class<?>)o;
 			final Field field = findStaticField(env, type, propname);
 			if (field != null) {
 				field.setValue(o, v);	
@@ -2378,7 +2407,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final Object o = EMFTVMUtil.getRegistryType(frame.pop());
 
 		if (o instanceof EClass) {
-			final EClass type = (EClass) o;
+			final EClass type = (EClass)o;
 			final Field field = findStaticField(env, type, propname);
 			if (field != null) {
 				return field.getStaticValue(frame);
@@ -2387,7 +2416,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 						EMFTVMUtil.toPrettyString(type, env), propname));
 			}
 		} else if (o instanceof Class<?>) {
-			final Class<?> type = (Class<?>) o;
+			final Class<?> type = (Class<?>)o;
 			final Field field = findStaticField(env, type, propname);
 			if (field != null) {
 				return field.getStaticValue(frame);
@@ -2412,10 +2441,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param fram
 	 * @return the new object
 	 */
-	private static Object new_(final String modelname, final Object type, final StackFrame frame) {
+	private static Object newInstr(final String modelname, final Object type, final StackFrame frame) {
 		final ExecEnv env = frame.getEnv();
 		if (type instanceof EClass) {
-			final EClass eType = (EClass) type;
+			final EClass eType = (EClass)type;
 			Model model = env.getOutputModels().get(modelname);
 			if (model == null) {
 				model = env.getInoutModels().get(modelname);
@@ -2425,7 +2454,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			}
 			return model.newElement(eType);
 		} else {
-			final Class<?> jType = (Class<?>) type;
+			final Class<?> jType = (Class<?>)type;
 			try {
 				return jType.newInstance();
 			} catch (Exception e) {
@@ -2440,7 +2469,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	private static void delete(final StackFrame frame) {
 		final ExecEnv env = frame.getEnv();
-		final EObject element = (EObject) frame.pop();
+		final EObject element = (EObject)frame.pop();
 
 		final Resource res = element.eResource();
 		if (res == null) {
@@ -2472,11 +2501,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final ExecEnv env = frame.getEnv();
 		final Object o = frame.pop();
 
-		// Null parameters are fine in our multi-methods, as null is just a special singleton object 
-//		if (o == null) {
-//			throw new IllegalArgumentException(String.format("Cannot invoke operation %s on null object", opname));
-//		}
-
 		final Object type = getArgumentType(o);
 		final Object[] args = getArguments(argcount, frame);
 		final EList<Object> argTypes = getArgumentTypes(args);
@@ -2494,7 +2518,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			} catch (InvocationTargetException e) {
 				final Throwable target = e.getTargetException();
 				if (target instanceof VMException) {
-					throw (VMException) target;
+					throw (VMException)target;
 				} else {
 					throw new VMException(subFrame, target);
 				}
@@ -2543,7 +2567,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 		if (type instanceof Class<?>) {
 			final Class<?>[] argClasses = getArgumentClasses(args);
-			final Method method = findNativeMethod((Class<?>) type, opname, argClasses, true);
+			final Method method = findNativeMethod((Class<?>)type, opname, argClasses, true);
 			if (method != null) {
 				final StackFrame subFrame = frame.getSubFrame(method, args);
 				try {
@@ -2551,7 +2575,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				} catch (InvocationTargetException e) {
 					final Throwable target = e.getTargetException();
 					if (target instanceof VMException) {
-						throw (VMException) target;
+						throw (VMException)target;
 					} else {
 						throw new VMException(subFrame, target);
 					}
@@ -2590,15 +2614,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final ExecEnv env = frame.getEnv();
 		final Object o = frame.pop();
 
-		// Null parameters are fine in our multi-methods, as null is just a special singleton object 
-//		if (o == null) {
-//			throw new IllegalArgumentException(String.format("Cannot invoke super operation %s on null object", opname));
-//		}
-
 		final java.util.Set<Operation> ops = new LinkedHashSet<Operation>();
 		final List<?> superTypes;
 		if (context instanceof EClass) {
-			superTypes = ((EClass) context).getESuperTypes();
+			superTypes = ((EClass)context).getESuperTypes();
 		} else {
 			final Class<?> ic = context.getInstanceClass();
 			if (ic == null) {
@@ -2641,7 +2660,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				} catch (InvocationTargetException e) {
 					final Throwable target = e.getTargetException();
 					if (target instanceof VMException) {
-						throw (VMException) target;
+						throw (VMException)target;
 					} else {
 						throw new VMException(subFrame, target);
 					}
@@ -2699,13 +2718,13 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 							continue;
 						}
 						if (!pts[j].isAssignableFrom(argTypes[j])) {
-							if (pts[j]==boolean.class) ok = argTypes[j]==Boolean.class;
-							else if (pts[j]==int.class) ok = argTypes[j]==Integer.class;
-							else if (pts[j]==char.class) ok = argTypes[j]==Character.class;
-							else if (pts[j]==long.class) ok = argTypes[j]==Long.class;
-							else if (pts[j]==float.class) ok = argTypes[j]==Float.class;
-							else if (pts[j]==double.class) ok = argTypes[j]==Double.class;
-							else ok = argTypes[j]==Void.TYPE; // any type
+							if (pts[j] == boolean.class) ok = argTypes[j] == Boolean.class;
+							else if (pts[j] == int.class) ok = argTypes[j] == Integer.class;
+							else if (pts[j] == char.class) ok = argTypes[j] == Character.class;
+							else if (pts[j] == long.class) ok = argTypes[j] == Long.class;
+							else if (pts[j] == float.class) ok = argTypes[j] == Float.class;
+							else if (pts[j] == double.class) ok = argTypes[j] == Double.class;
+							else ok = argTypes[j] == Void.TYPE; // any type
 						}
 					}
 					if (ok) {
@@ -2739,7 +2758,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	private static Method findCachedMethod(Class<?> caller, String signature) {
 		Method ret = null;
-		Map<String, Method> sigMap = methodCache.get(caller);
+		Map<String, Method> sigMap = METHOD_CACHE.get(caller);
 		if (sigMap != null) {
 			ret = sigMap.get(signature);
 		}
@@ -2761,11 +2780,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	private static void cacheMethod(Class<?> caller, String signature, Method method) {
-		synchronized (methodCache) {
-			Map<String, Method> sigMap = methodCache.get(caller);
+		synchronized (METHOD_CACHE) {
+			Map<String, Method> sigMap = METHOD_CACHE.get(caller);
 			if (sigMap == null) {
 				sigMap = new HashMap<String, Method>();
-				methodCache.put(caller, sigMap);
+				METHOD_CACHE.put(caller, sigMap);
 			}
 			sigMap.put(signature, method);
 		}
@@ -2817,8 +2836,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
+	 * Retrieves the types of <pre>args</pre>.
 	 * @param args
-	 * @return the types of args
+	 * @return the types of <pre>args</pre>
 	 */
 	private static EList<Object> getArgumentTypes(final Object[] args) {
 		final EList<Object> argTypes = new BasicEList<Object>(args.length);
@@ -2829,12 +2849,13 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * @param args
-	 * @return the types of args
+	 * Retrieves the type of <pre>arg</pre>.
+	 * @param arg
+	 * @return the type of <pre>arg</pre>
 	 */
 	private static Object getArgumentType(final Object arg) {
 		if (arg instanceof EObject) {
-			return ((EObject) arg).eClass();
+			return ((EObject)arg).eClass();
 		} else if (arg != null) {
 			return arg.getClass();
 		}
@@ -2843,8 +2864,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
+	 * Retrieves the classes of <pre>args</pre>.
 	 * @param args
-	 * @return the classes of args
+	 * @return the classes of <pre>args</pre>
 	 */
 	private static Class<?>[] getArgumentClasses(final Object[] args) {
 		final Class<?>[] argTypes = new Class<?>[args.length];
@@ -2855,6 +2877,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
+	 * Finds the rule referred to by <pre>instr</pre>.
 	 * @param env
 	 * @param instr
 	 * @return the rule mentioned by instr
@@ -2883,13 +2906,14 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 		final EObject[] elements = new EObject[argcount];
 		for (int i = 0; i < argcount; i++) {
-			elements[i] = (EObject) frame.pop();
+			elements[i] = (EObject)frame.pop();
 		}
 		return Matcher.matchOne(frame, rule, elements);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -2903,16 +2927,16 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			result.append(container);
 			if (container instanceof CodeBlock) {
 				result.append('@');
-				result.append(((CodeBlock) container).getNested().indexOf(this));
+				result.append(((CodeBlock)container).getNested().indexOf(this));
 			} else if (container instanceof Field) {
 				// nothing
 			} else if (container instanceof Operation) {
 				// nothing
 			} else if (container instanceof InputRuleElement) {
 				result.append('@');
-				result.append(((InputRuleElement) container).getInputFor());
+				result.append(((InputRuleElement)container).getInputFor());
 			} else if (container instanceof Rule) {
-				final Rule r = (Rule) container;
+				final Rule r = (Rule)container;
 				if (r.getMatcher() == this) {
 					result.append("@matcher");
 				} else if (r.getApplier() == this) {

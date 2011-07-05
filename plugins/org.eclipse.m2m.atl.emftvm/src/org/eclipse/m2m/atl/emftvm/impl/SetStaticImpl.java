@@ -13,39 +13,42 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.m2m.atl.emftvm.Dup_x1;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Opcode;
+import org.eclipse.m2m.atl.emftvm.SetStatic;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Dup x1</b></em>'.
+ * An implementation of the model object '<em><b>Set static</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class Dup_x1Impl extends InstructionImpl implements Dup_x1 {
+public class SetStaticImpl extends FieldInstructionImpl implements SetStatic {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link SetStaticImpl}.
 	 * <!-- end-user-doc -->
 	 */
-	protected Dup_x1Impl() {
+	protected SetStaticImpl() {
 		super();
-		opcode = Opcode.DUP_X1;
+		opcode = Opcode.SET_STATIC;
 		stackConsumption = 2;
-		stackProduction = 3;
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return EmftvmPackage.Literals.DUP_X1;
+		return EmftvmPackage.Literals.SET_STATIC;
 	}
 
-} //Dup_x1Impl
+} //Set_staticImpl

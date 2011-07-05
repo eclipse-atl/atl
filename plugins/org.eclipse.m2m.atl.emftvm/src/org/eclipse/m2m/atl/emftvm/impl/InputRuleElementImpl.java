@@ -29,6 +29,7 @@ import org.eclipse.m2m.atl.emftvm.Rule;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Input Rule Element</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -53,6 +54,7 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link InputRuleElementImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -62,6 +64,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -71,7 +75,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -80,7 +85,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setBinding(CodeBlock)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -95,7 +101,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -114,7 +121,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -124,7 +132,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setInputFor(Rule)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -134,7 +143,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -155,7 +165,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -175,7 +186,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -191,7 +203,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -205,7 +218,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -221,7 +235,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -239,7 +254,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -257,7 +273,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

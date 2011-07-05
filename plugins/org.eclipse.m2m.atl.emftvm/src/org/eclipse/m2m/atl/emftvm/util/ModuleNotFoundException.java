@@ -28,8 +28,8 @@ public class ModuleNotFoundException extends RuntimeException {
 
 	/**
 	 * Creates a new {@link ModuleNotFoundException}.
-	 * @param message
-	 * @param cause
+	 * @param message the error message
+	 * @param cause the nested exception
 	 */
 	public ModuleNotFoundException(String message, Throwable cause) {
 		super(message, cause);
@@ -37,7 +37,7 @@ public class ModuleNotFoundException extends RuntimeException {
 
 	/**
 	 * Creates a new {@link ModuleNotFoundException}.
-	 * @param message
+	 * @param message the error message
 	 */
 	public ModuleNotFoundException(String message) {
 		super(message);
@@ -45,7 +45,7 @@ public class ModuleNotFoundException extends RuntimeException {
 
 	/**
 	 * Creates a new {@link ModuleNotFoundException}.
-	 * @param cause
+	 * @param cause the nested exception
 	 */
 	public ModuleNotFoundException(Throwable cause) {
 		super(cause);

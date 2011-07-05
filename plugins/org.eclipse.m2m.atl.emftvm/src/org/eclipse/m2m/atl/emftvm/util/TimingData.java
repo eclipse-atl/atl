@@ -17,7 +17,7 @@ package org.eclipse.m2m.atl.emftvm.util;
  */
 public class TimingData {
 
-	private static final double divisor = 1E9;
+	private static final double DIVISOR = 1E9;
 
 	private final long start;
 	private long finishedLoading;
@@ -36,6 +36,7 @@ public class TimingData {
 	}
 
 	/**
+	 * Returns the period until loading was finished in nanoseconds.
 	 * @return the period until loading was finished in nanoseconds
 	 */
 	public long getFinishedLoading() {
@@ -43,6 +44,7 @@ public class TimingData {
 	}
 
 	/**
+	 * Returns the period until matching was finished in nanoseconds.
 	 * @return the period until matching was finished in nanoseconds
 	 */
 	public long getFinishedMatch() {
@@ -50,6 +52,7 @@ public class TimingData {
 	}
 
 	/**
+	 * Returns the period until applying was finished in nanoseconds.
 	 * @return the period until applying was finished in nanoseconds
 	 */
 	public long getFinishedApply() {
@@ -57,6 +60,7 @@ public class TimingData {
 	}
 
 	/**
+	 * Returns the period until post-applying was finished in nanoseconds.
 	 * @return the period until post-applying was finished in nanoseconds
 	 */
 	public long getFinishedPostApply() {
@@ -64,6 +68,7 @@ public class TimingData {
 	}
 
 	/**
+	 * Returns the period until the recursive stage was finished in nanoseconds.
 	 * @return the period until the recursive stage was finished in nanoseconds
 	 */
 	public long getFinishedRecursive() {
@@ -71,6 +76,7 @@ public class TimingData {
 	}
 
 	/**
+	 * Returns the period until execution was finished in nanoseconds.
 	 * @return the period until execution was finished in nanoseconds
 	 */
 	public long getFinished() {
@@ -78,6 +84,7 @@ public class TimingData {
 	}
 
 	/**
+	 * Sets the time when loading is finished.
 	 * @param finishedLoading the finishedLoading to set
 	 */
 	protected void setFinishedLoading(long finishedLoading) {
@@ -85,6 +92,7 @@ public class TimingData {
 	}
 
 	/**
+	 * Sets the time when matching is finished.
 	 * @param finishedMatch the finishedMatch to set
 	 */
 	protected void setFinishedMatch(long finishedMatch) {
@@ -92,6 +100,7 @@ public class TimingData {
 	}
 
 	/**
+	 * Sets the time when applying is finished.
 	 * @param finishedApply the finishedApply to set
 	 */
 	protected void setFinishedApply(long finishedApply) {
@@ -99,6 +108,7 @@ public class TimingData {
 	}
 
 	/**
+	 * Sets the time when post-applying is finished.
 	 * @param finishedPostApply the finishedPostApply to set
 	 */
 	protected void setFinishedPostApply(long finishedPostApply) {
@@ -106,6 +116,7 @@ public class TimingData {
 	}
 
 	/**
+	 * Sets the time hen the recursive stage is finished.
 	 * @param finishedRecursive the finishedRecursive to set
 	 */
 	protected void setFinishedRecursive(long finishedRecursive) {
@@ -113,6 +124,7 @@ public class TimingData {
 	}
 
 	/**
+	 * Sets the time when all is finished.
 	 * @param finished the finished to set
 	 */
 	protected void setFinished(long finished) {
@@ -161,24 +173,24 @@ public class TimingData {
 		this.finished = System.nanoTime();
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer("Timing data:\n");
 		sb.append(String.format("\tLoading finished at %f seconds (duration: %f seconds)\n", 
-				getFinishedLoading() / divisor, getFinishedLoading() / divisor));
+				getFinishedLoading() / DIVISOR, getFinishedLoading() / DIVISOR));
 		sb.append(String.format("\tMatching finished at %f seconds (duration: %f seconds)\n", 
-				getFinishedMatch() / divisor, (getFinishedMatch() - getFinishedLoading()) / divisor));
+				getFinishedMatch() / DIVISOR, (getFinishedMatch() - getFinishedLoading()) / DIVISOR));
 		sb.append(String.format("\tApplying finished at %f seconds (duration: %f seconds)\n", 
-				getFinishedApply() / divisor, (getFinishedApply() - getFinishedMatch()) / divisor));
+				getFinishedApply() / DIVISOR, (getFinishedApply() - getFinishedMatch()) / DIVISOR));
 		sb.append(String.format("\tPost-applying finished at %f seconds (duration: %f seconds)\n", 
-				getFinishedPostApply() / divisor, (getFinishedPostApply() - getFinishedApply()) / divisor));
+				getFinishedPostApply() / DIVISOR, (getFinishedPostApply() - getFinishedApply()) / DIVISOR));
 		sb.append(String.format("\tRecursive stage finished at %f seconds (duration: %f seconds)\n", 
-				getFinishedRecursive() / divisor, (getFinishedRecursive() - getFinishedPostApply()) / divisor));
+				getFinishedRecursive() / DIVISOR, (getFinishedRecursive() - getFinishedPostApply()) / DIVISOR));
 		sb.append(String.format("\tExecution finished at %f seconds (duration: %f seconds)\n", 
-				getFinished() / divisor, (getFinished() - getFinishedPostApply()) / divisor));
+				getFinished() / DIVISOR, (getFinished() - getFinishedPostApply()) / DIVISOR));
 		return sb.toString();
 	}
 }

@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc -->
  * A representation of the literals of the enumeration '<em><b>Rule Mode</b></em>',
  * and utility methods for working with them.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getRuleMode()
  * @model
@@ -126,6 +127,8 @@ public enum RuleMode implements Enumerator {
 	/**
 	 * Returns the '<em><b>Rule Mode</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
+	 * @param literal the literal string value
+	 * @return the '<em><b>Rule Mode</b></em>' literal with the specified literal value.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -142,6 +145,8 @@ public enum RuleMode implements Enumerator {
 	/**
 	 * Returns the '<em><b>Rule Mode</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
+	 * @param name the literal name
+	 * @return the '<em><b>Rule Mode</b></em>' literal with the specified name.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -158,6 +163,8 @@ public enum RuleMode implements Enumerator {
 	/**
 	 * Returns the '<em><b>Rule Mode</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
+	 * @param value the literal integer value
+	 * @return the '<em><b>Rule Mode</b></em>' literal with the specified integer value.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -172,6 +179,7 @@ public enum RuleMode implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * The literal integer value.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -179,6 +187,7 @@ public enum RuleMode implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * The literal name.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -186,6 +195,7 @@ public enum RuleMode implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * The literal string value.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -205,6 +215,8 @@ public enum RuleMode implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the literal integer value.
+	 * @return the literal integer value.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -214,6 +226,8 @@ public enum RuleMode implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the literal name.
+	 * @return the literal name.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -223,6 +237,8 @@ public enum RuleMode implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the literal string value.
+	 * @return the literal string value.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -233,6 +249,7 @@ public enum RuleMode implements Enumerator {
 	/**
 	 * Returns the literal value of the enumerator, which is its string representation.
 	 * <!-- begin-user-doc -->
+	 * @return the literal value of the enumerator, which is its string representation.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

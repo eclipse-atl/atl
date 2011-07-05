@@ -14,25 +14,40 @@ package org.eclipse.m2m.atl.emftvm.util;
 /**
  * Duplicate entry in {@link TypeHashMap}.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
- *
  */
 public class DuplicateEntryException extends RuntimeException {
 
 	private static final long serialVersionUID = -2268735174303589159L;
 
+	/**
+	 * Creates a new {@link DuplicateEntryException}.
+	 */
 	public DuplicateEntryException() {
 	}
 
-	public DuplicateEntryException(String arg0) {
-		super(arg0);
+	/**
+	 * Creates a new {@link DuplicateEntryException}.
+	 * @param msg the error message
+	 */
+	public DuplicateEntryException(String msg) {
+		super(msg);
 	}
 
-	public DuplicateEntryException(Throwable arg0) {
-		super(arg0);
+	/**
+	 * Creates a new {@link DuplicateEntryException}.
+	 * @param cause the nested exception
+	 */
+	public DuplicateEntryException(Throwable cause) {
+		super(cause);
 	}
 
-	public DuplicateEntryException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
+	/**
+	 * Creates a new {@link DuplicateEntryException}.
+	 * @param msg the error message
+	 * @param cause the nested exception
+	 */
+	public DuplicateEntryException(String msg, Throwable cause) {
+		super(msg, cause);
 	}
 
 }

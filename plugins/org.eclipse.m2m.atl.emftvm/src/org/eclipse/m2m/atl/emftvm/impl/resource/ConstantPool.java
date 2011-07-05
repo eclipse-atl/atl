@@ -41,7 +41,6 @@ import org.eclipse.m2m.atl.emftvm.TypedElement;
 import org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch;
 import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
 
-
 /**
  * Constant pool implementation for binary EMFTVM file format.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
@@ -54,9 +53,8 @@ public class ConstantPool {
 	 */
 	public class CreateConstantsSwitch extends EmftvmSwitch<Object> {
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseNamedElement(org.eclipse.m2m.atl.emftvm.NamedElement)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseNamedElement(NamedElement object) {
@@ -64,9 +62,8 @@ public class ConstantPool {
 			return super.caseNamedElement(object);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseTypedElement(org.eclipse.m2m.atl.emftvm.TypedElement)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseTypedElement(TypedElement object) {
@@ -75,9 +72,8 @@ public class ConstantPool {
 			return super.caseTypedElement(object);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseFeature(org.eclipse.m2m.atl.emftvm.Feature)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseFeature(Feature object) {
@@ -86,8 +82,8 @@ public class ConstantPool {
 			return super.caseFeature(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseCodeBlock(org.eclipse.m2m.atl.emftvm.CodeBlock)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseCodeBlock(CodeBlock object) {
@@ -103,8 +99,8 @@ public class ConstantPool {
 			return super.caseCodeBlock(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseModule(org.eclipse.m2m.atl.emftvm.Module)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseModule(Module object) {
@@ -130,8 +126,8 @@ public class ConstantPool {
 			return super.caseModule(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseOperation(org.eclipse.m2m.atl.emftvm.Operation)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseOperation(Operation object) {
@@ -142,8 +138,8 @@ public class ConstantPool {
 			return super.caseOperation(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseRule(org.eclipse.m2m.atl.emftvm.Rule)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseRule(Rule object) {
@@ -165,8 +161,8 @@ public class ConstantPool {
 			return super.caseRule(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseRuleElement(org.eclipse.m2m.atl.emftvm.RuleElement)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseRuleElement(RuleElement object) {
@@ -176,8 +172,8 @@ public class ConstantPool {
 			return super.caseRuleElement(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseInputRuleElement(org.eclipse.m2m.atl.emftvm.InputRuleElement)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseInputRuleElement(InputRuleElement object) {
@@ -187,8 +183,8 @@ public class ConstantPool {
 			return super.caseInputRuleElement(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseFieldInstruction(org.eclipse.m2m.atl.emftvm.FieldInstruction)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseFieldInstruction(FieldInstruction object) {
@@ -196,8 +192,8 @@ public class ConstantPool {
 			return super.caseFieldInstruction(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseFindtype(org.eclipse.m2m.atl.emftvm.Findtype)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseFindtype(Findtype object) {
@@ -206,8 +202,8 @@ public class ConstantPool {
 			return super.caseFindtype(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseInvokeOperationInstruction(org.eclipse.m2m.atl.emftvm.InvokeInstruction)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseInvokeOperationInstruction(InvokeOperationInstruction object) {
@@ -215,8 +211,8 @@ public class ConstantPool {
 			return super.caseInvokeOperationInstruction(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseNew(org.eclipse.m2m.atl.emftvm.New)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseNew(New object) {
@@ -224,8 +220,8 @@ public class ConstantPool {
 			return super.caseNew(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#casePush(org.eclipse.m2m.atl.emftvm.Push)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object casePush(Push object) {
@@ -233,8 +229,8 @@ public class ConstantPool {
 			return super.casePush(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseMatch(org.eclipse.m2m.atl.emftvm.Match)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseMatch(Match object) {
@@ -242,8 +238,8 @@ public class ConstantPool {
 			return super.caseMatch(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseModelDeclaration(org.eclipse.m2m.atl.emftvm.ModelDeclaration)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseModelDeclaration(ModelDeclaration object) {
@@ -252,8 +248,8 @@ public class ConstantPool {
 			return super.caseModelDeclaration(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch#caseField(org.eclipse.m2m.atl.emftvm.Field)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Object caseField(Field object) {
@@ -263,8 +259,8 @@ public class ConstantPool {
 
 	}
 
-	private ArrayList<Object> constants;
 	protected CreateConstantsSwitch createConstants = new CreateConstantsSwitch();
+	private ArrayList<Object> constants;
 
 	/**
 	 * Creates a new {@link ConstantPool}.
@@ -284,19 +280,21 @@ public class ConstantPool {
 	}
 
 	/**
+	 * Returns the constant at index <pre>i</pre>.
 	 * @param i the constant index
-	 * @return the constants
+	 * @return the constant, or <code>null</code>
 	 */
 	public Object get(int i) {
 		return constants.get(i);
 	}
 
 	/**
-	 * @param value
+	 * Returns the index of <pre>value</pre> in the constant pool.
+	 * @param value the value to look up
 	 * @return the index of value in the constant pool
 	 * @throws IllegalArgumentException if value not found
 	 */
-	public int indexOf(Object value) {
+	public int indexOf(Object value) throws IllegalArgumentException {
 		final int index = constants.indexOf(value);
 		if (index == -1) {
 			throw new IllegalArgumentException("Element not found");
@@ -305,6 +303,7 @@ public class ConstantPool {
 	}
 
 	/**
+	 * Returns the size of the constant pool.
 	 * @return The size of the constant pool
 	 */
 	public int size() {
@@ -312,8 +311,8 @@ public class ConstantPool {
 	}
 
 	/**
-	 * Adds value to the constant pool, if necessary
-	 * @param value
+	 * Adds <pre>value</pre> to the constant pool, if necessary.
+	 * @param value the value to add
 	 */
 	public void add(Object value) {
 		if (!constants.contains(value)) {
@@ -322,8 +321,8 @@ public class ConstantPool {
 	}
 
 	/**
-	 * Reads constant table from in.
-	 * @param in
+	 * Reads constant table from <pre>in</pre>.
+	 * @param in the input stream
 	 * @throws IOException
 	 */
 	public void read(final DataInputStream in) throws IOException {
@@ -336,8 +335,8 @@ public class ConstantPool {
 	}
 
 	/**
-	 * Reads a constant from in
-	 * @param in
+	 * Reads a constant from <pre>in</pre>.
+	 * @param in the input stream
 	 * @throws IOException
 	 */
 	private void readConstant(final DataInputStream in) throws IOException {
@@ -382,15 +381,15 @@ public class ConstantPool {
 
 	/**
 	 * Creates a constant table for the given module.
-	 * @param module
+	 * @param module the module
 	 */
 	public void createConstants(final Module module) {
 		createConstants.doSwitch(module);
 	}
 
 	/**
-	 * Writes constant pool to out.
-	 * @param out
+	 * Writes constant pool to <pre>out</pre>.
+	 * @param out the output stream
 	 * @throws IOException 
 	 */
 	public void write(final DataOutputStream out) throws IOException {
@@ -412,36 +411,38 @@ public class ConstantPool {
 		out.writeInt(tag.getValue());
 		switch (tag) {
 		case STRING:
-			out.writeUTF((String) constant);
+			out.writeUTF((String)constant);
 			break;
 		case INTEGER:
-			out.writeInt((Integer) constant);
+			out.writeInt((Integer)constant);
 			break;
 		case DOUBLE:
-			out.writeDouble((Double) constant);
+			out.writeDouble((Double)constant);
 			break;
 		case BYTE:
-			out.writeByte((Byte) constant);
+			out.writeByte((Byte)constant);
 			break;
 		case CHARACTER:
-			out.writeChar((Character) constant);
+			out.writeChar((Character)constant);
 			break;
 		case FLOAT:
-			out.writeFloat((Float) constant);
+			out.writeFloat((Float)constant);
 			break;
 		case SHORT:
-			out.writeShort((Short) constant);
+			out.writeShort((Short)constant);
 			break;
 		case LONG:
-			out.writeLong((Long) constant);
+			out.writeLong((Long)constant);
 			break;
 		case ENUM_LITERAL:
 			if (constant instanceof EnumLiteral) {
-				out.writeUTF(((EnumLiteral) constant).getName());
+				out.writeUTF(((EnumLiteral)constant).getName());
 			} else {
 				out.writeUTF(constant.toString()); // workaround to support other enum literal classes
 			}
 			break;
+		default:
+			throw new UnsupportedEncodingException(String.format("Unsupported constant type: %s", constant.getClass().getName()));
 		}
 	}
 

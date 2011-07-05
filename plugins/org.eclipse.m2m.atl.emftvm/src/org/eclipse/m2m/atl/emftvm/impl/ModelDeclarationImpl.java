@@ -28,6 +28,7 @@ import org.eclipse.m2m.atl.emftvm.Module;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Model Declaration</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -53,15 +54,6 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	 */
 	protected static final String MODEL_NAME_EDEFAULT = null;
 	/**
-	 * The cached value of the '{@link #getModelName() <em>Model Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getModelName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String modelName = MODEL_NAME_EDEFAULT;
-	/**
 	 * The default value of the '{@link #getMetaModelName() <em>Meta Model Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -71,6 +63,15 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	 */
 	protected static final String META_MODEL_NAME_EDEFAULT = null;
 	/**
+	 * The cached value of the '{@link #getModelName() <em>Model Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getModelName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String modelName = MODEL_NAME_EDEFAULT;
+	/**
 	 * The cached value of the '{@link #getMetaModelName() <em>Meta Model Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -79,8 +80,10 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	 * @ordered
 	 */
 	protected String metaModelName = META_MODEL_NAME_EDEFAULT;
+
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link ModelDeclarationImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -90,6 +93,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -99,7 +104,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -108,7 +114,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -120,7 +127,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -129,7 +137,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -141,7 +150,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -151,7 +161,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -161,7 +172,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -182,7 +194,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -192,7 +205,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setInoutModelFor(Module)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -202,7 +216,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -223,7 +238,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -233,7 +249,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setOutputModelFor(Module)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -243,7 +260,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -264,7 +282,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -288,7 +307,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -306,7 +326,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -324,7 +345,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -346,7 +368,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -373,7 +396,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -400,7 +424,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -422,7 +447,8 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */

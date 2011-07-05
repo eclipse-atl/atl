@@ -14,38 +14,40 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
-import org.eclipse.m2m.atl.emftvm.Get_static;
+import org.eclipse.m2m.atl.emftvm.InvokeSuper;
 import org.eclipse.m2m.atl.emftvm.Opcode;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Get static</b></em>'.
+ * An implementation of the model object '<em><b>Invoke super</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class Get_staticImpl extends FieldInstructionImpl implements Get_static {
+public class InvokeSuperImpl extends InvokeOperationInstructionImpl implements InvokeSuper {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link InvokeSuperImpl}.
 	 * <!-- end-user-doc -->
 	 */
-	protected Get_staticImpl() {
+	protected InvokeSuperImpl() {
 		super();
-		opcode = Opcode.GET_STATIC;
-		stackConsumption = 1;
-		stackProduction = 1;
+		opcode = Opcode.INVOKE_SUPER;
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return EmftvmPackage.Literals.GET_STATIC;
+		return EmftvmPackage.Literals.INVOKE_SUPER;
 	}
 
-} //Get_staticImpl
+} //Invoke_superImpl

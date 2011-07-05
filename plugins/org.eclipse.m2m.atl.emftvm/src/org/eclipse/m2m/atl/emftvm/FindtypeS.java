@@ -14,13 +14,14 @@ package org.eclipse.m2m.atl.emftvm;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Allinst in</b></em>'.
+ * A representation of the model object '<em><b>Findtype s</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getAllinst_in()
+ * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getFindtypeS()
  * @model
  * @generated
  */
-public interface Allinst_in extends Instruction {
-} // Allinst_in
+public interface FindtypeS extends Instruction {
+} // Findtype_s

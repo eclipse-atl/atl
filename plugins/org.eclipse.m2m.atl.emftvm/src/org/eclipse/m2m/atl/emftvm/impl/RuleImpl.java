@@ -38,6 +38,7 @@ import org.eclipse.m2m.atl.emftvm.util.FieldContainer;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Rule</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -71,6 +72,33 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @ordered
 	 */
 	protected static final RuleMode MODE_EDEFAULT = RuleMode.MANUAL;
+	/**
+	 * The default value of the '{@link #isAbstract() <em>Abstract</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isAbstract()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean ABSTRACT_EDEFAULT = false;
+	/**
+	 * The default value of the '{@link #isDefault() <em>Default</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDefault()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DEFAULT_EDEFAULT = false;
+	/**
+	 * The default value of the '{@link #isDistinctElements() <em>Distinct Elements</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDistinctElements()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DISTINCT_ELEMENTS_EDEFAULT = false;
 	/**
 	 * The cached value of the '{@link #getMode() <em>Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -153,15 +181,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	protected EList<String> superRules;
 	/**
-	 * The default value of the '{@link #isAbstract() <em>Abstract</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isAbstract()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean ABSTRACT_EDEFAULT = false;
-	/**
 	 * The cached value of the '{@link #isAbstract() <em>Abstract</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -180,15 +199,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	protected EList<Field> fields;
 	/**
-	 * The default value of the '{@link #isDefault() <em>Default</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isDefault()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean DEFAULT_EDEFAULT = false;
-	/**
 	 * The cached value of the '{@link #isDefault() <em>Default</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -197,15 +207,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @ordered
 	 */
 	protected boolean default_ = DEFAULT_EDEFAULT;
-	/**
-	 * The default value of the '{@link #isDistinctElements() <em>Distinct Elements</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isDistinctElements()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean DISTINCT_ELEMENTS_EDEFAULT = false;
 	/**
 	 * The cached value of the '{@link #isDistinctElements() <em>Distinct Elements</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -222,6 +223,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link RuleImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -231,6 +233,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -240,7 +244,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -250,7 +255,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setModule(Module)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -260,7 +266,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -281,7 +288,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -290,7 +298,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -302,7 +311,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -314,7 +324,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -326,7 +337,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -338,7 +350,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -350,7 +363,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -359,7 +373,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setMatcher(CodeBlock)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -374,7 +389,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -393,7 +409,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -402,7 +419,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setApplier(CodeBlock)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -417,7 +435,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -436,7 +455,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -445,7 +465,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setPostApply(CodeBlock)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -460,7 +481,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -479,7 +501,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -491,7 +514,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -500,7 +524,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -512,7 +537,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -524,7 +550,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -533,7 +560,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -545,7 +573,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -554,7 +583,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -566,7 +596,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Field findField(Object context, String name) {
@@ -574,7 +605,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public Field findStaticField(Object context, String name) {
@@ -582,7 +614,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public void registerField(Field field) {
@@ -590,7 +623,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -629,7 +663,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -659,7 +694,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -673,7 +709,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -713,7 +750,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -774,7 +812,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -828,7 +867,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -868,7 +908,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	@Override

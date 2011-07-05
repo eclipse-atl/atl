@@ -23,6 +23,7 @@ import org.eclipse.m2m.atl.emftvm.InvokeInstruction;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Invoke Instruction</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -55,6 +56,7 @@ public abstract class InvokeInstructionImpl extends InstructionImpl implements I
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link InvokeInstructionImpl}.
 	 * <!-- end-user-doc -->
 	 */
 	protected InvokeInstructionImpl() {
@@ -64,6 +66,8 @@ public abstract class InvokeInstructionImpl extends InstructionImpl implements I
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -73,7 +77,8 @@ public abstract class InvokeInstructionImpl extends InstructionImpl implements I
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -82,7 +87,8 @@ public abstract class InvokeInstructionImpl extends InstructionImpl implements I
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -94,7 +100,8 @@ public abstract class InvokeInstructionImpl extends InstructionImpl implements I
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -108,7 +115,8 @@ public abstract class InvokeInstructionImpl extends InstructionImpl implements I
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -123,7 +131,8 @@ public abstract class InvokeInstructionImpl extends InstructionImpl implements I
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -138,7 +147,8 @@ public abstract class InvokeInstructionImpl extends InstructionImpl implements I
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -152,7 +162,8 @@ public abstract class InvokeInstructionImpl extends InstructionImpl implements I
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -167,8 +178,8 @@ public abstract class InvokeInstructionImpl extends InstructionImpl implements I
 		return result.toString();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getStackConsumption()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int getStackConsumption() {

@@ -31,6 +31,7 @@ import org.eclipse.m2m.atl.emftvm.LineNumber;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Line Number</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -59,15 +60,6 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	 */
 	protected static final int START_LINE_EDEFAULT = -1;
 	/**
-	 * The cached value of the '{@link #getStartLine() <em>Start Line</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartLine()
-	 * @generated
-	 * @ordered
-	 */
-	protected int startLine = START_LINE_EDEFAULT;
-	/**
 	 * The default value of the '{@link #getStartColumn() <em>Start Column</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -76,15 +68,6 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	 * @ordered
 	 */
 	protected static final int START_COLUMN_EDEFAULT = -1;
-	/**
-	 * The cached value of the '{@link #getStartColumn() <em>Start Column</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartColumn()
-	 * @generated
-	 * @ordered
-	 */
-	protected int startColumn = START_COLUMN_EDEFAULT;
 	/**
 	 * The default value of the '{@link #getEndLine() <em>End Line</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -95,15 +78,6 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	 */
 	protected static final int END_LINE_EDEFAULT = -1;
 	/**
-	 * The cached value of the '{@link #getEndLine() <em>End Line</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndLine()
-	 * @generated
-	 * @ordered
-	 */
-	protected int endLine = END_LINE_EDEFAULT;
-	/**
 	 * The default value of the '{@link #getEndColumn() <em>End Column</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -112,15 +86,6 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	 * @ordered
 	 */
 	protected static final int END_COLUMN_EDEFAULT = -1;
-	/**
-	 * The cached value of the '{@link #getEndColumn() <em>End Column</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndColumn()
-	 * @generated
-	 * @ordered
-	 */
-	protected int endColumn = END_COLUMN_EDEFAULT;
 	/**
 	 * The default value of the '{@link #getStartChar() <em>Start Char</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -131,15 +96,6 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	 */
 	protected static final int START_CHAR_EDEFAULT = -1;
 	/**
-	 * The cached value of the '{@link #getStartChar() <em>Start Char</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartChar()
-	 * @generated
-	 * @ordered
-	 */
-	protected int startChar = START_CHAR_EDEFAULT;
-	/**
 	 * The default value of the '{@link #getEndChar() <em>End Char</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -148,6 +104,51 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	 * @ordered
 	 */
 	protected static final int END_CHAR_EDEFAULT = -1;
+	/**
+	 * The cached value of the '{@link #getStartLine() <em>Start Line</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStartLine()
+	 * @generated
+	 * @ordered
+	 */
+	protected int startLine = START_LINE_EDEFAULT;
+	/**
+	 * The cached value of the '{@link #getStartColumn() <em>Start Column</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStartColumn()
+	 * @generated
+	 * @ordered
+	 */
+	protected int startColumn = START_COLUMN_EDEFAULT;
+	/**
+	 * The cached value of the '{@link #getEndLine() <em>End Line</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEndLine()
+	 * @generated
+	 * @ordered
+	 */
+	protected int endLine = END_LINE_EDEFAULT;
+	/**
+	 * The cached value of the '{@link #getEndColumn() <em>End Column</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEndColumn()
+	 * @generated
+	 * @ordered
+	 */
+	protected int endColumn = END_COLUMN_EDEFAULT;
+	/**
+	 * The cached value of the '{@link #getStartChar() <em>Start Char</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStartChar()
+	 * @generated
+	 * @ordered
+	 */
+	protected int startChar = START_CHAR_EDEFAULT;
 	/**
 	 * The cached value of the '{@link #getEndChar() <em>End Char</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -166,8 +167,10 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	 * @ordered
 	 */
 	protected EList<Instruction> instructions;
+
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link LineNumberImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -177,6 +180,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -186,7 +191,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -195,7 +201,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -207,7 +214,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -216,7 +224,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -228,7 +237,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -237,7 +247,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -249,7 +260,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -258,7 +270,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -270,7 +283,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -279,7 +293,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -291,7 +306,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -300,7 +316,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -312,7 +329,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -322,7 +340,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setOwningBlock(CodeBlock)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -332,7 +351,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -353,7 +373,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -365,7 +386,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -384,7 +406,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -400,7 +423,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -414,7 +438,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -442,7 +467,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -480,7 +506,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -516,7 +543,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -544,7 +572,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	@Override
@@ -553,9 +582,8 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 
 		StringBuffer result = new StringBuffer();
 		if (eIsSet(EmftvmPackage.LINE_NUMBER__START_LINE)) {
-			
+			result.append(startLine);
 		}
-		result.append(startLine);
 		if (eIsSet(EmftvmPackage.LINE_NUMBER__START_COLUMN)) {
 			result.append(':');
 			result.append(startColumn);

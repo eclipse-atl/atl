@@ -14,14 +14,14 @@ package org.eclipse.m2m.atl.emftvm;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Set static</b></em>'.
+ * A representation of the model object '<em><b>Match s</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getSet_static()
+ * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getMatchS()
  * @model
  * @generated
  */
-public interface Set_static extends FieldInstruction {
-
-} // Set_static
+public interface MatchS extends InvokeInstruction {
+} // Match_s

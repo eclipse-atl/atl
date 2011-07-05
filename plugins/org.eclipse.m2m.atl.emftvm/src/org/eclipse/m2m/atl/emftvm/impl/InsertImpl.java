@@ -20,6 +20,7 @@ import org.eclipse.m2m.atl.emftvm.Opcode;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Insert</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
@@ -29,6 +30,7 @@ import org.eclipse.m2m.atl.emftvm.Opcode;
 public class InsertImpl extends FieldInstructionImpl implements Insert {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link InsertImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -39,6 +41,8 @@ public class InsertImpl extends FieldInstructionImpl implements Insert {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

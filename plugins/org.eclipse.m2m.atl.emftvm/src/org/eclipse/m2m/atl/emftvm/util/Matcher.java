@@ -50,10 +50,27 @@ import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
  */
 public final class Matcher {
 
+	private final TraceFactory factory = TraceFactory.eINSTANCE;
+	private final StackFrame frame;
+	private final Rule rule;
+	private TraceLinkSet matches;
+	private TraceLinkSet traces;
+
 	/**
-	 * Matches all automatic rules available via <code>frame</code>
-	 * @param timingData
-	 * @param frame
+	 * Creates a new {@link Matcher}.
+	 * @param frame the current {@link StackFrame}
+	 * @param rule the rule to match
+	 */
+	public Matcher(final StackFrame frame, final Rule rule) {
+		super();
+		this.frame = frame;
+		this.rule = rule;
+	}
+
+	/**
+	 * Matches all automatic rules available via <code>frame</code>.
+	 * @param frame the current {@link StackFrame}
+	 * @param timingData the timing data object
 	 */
 	public static void matchAll(final StackFrame frame, final TimingData timingData) {
 		matchAllSingle(frame, timingData);
@@ -64,9 +81,9 @@ public final class Matcher {
 	/**
 	 * Matches <code>rule</code> against <code>values</code>.
 	 * Assumes <code>rule</code> is of kind {@link RuleMode#MANUAL}.
-	 * @param frame
-	 * @param rule
-	 * @param values
+	 * @param frame the current {@link StackFrame}
+	 * @param rule the rule to match
+	 * @param values the values to match against
 	 * @return the rule application result, or <code>null</code> if the rule did not match
 	 */
 	public static Object matchOne(final StackFrame frame, final Rule rule, final EObject[] values) {
@@ -84,8 +101,9 @@ public final class Matcher {
 	}
 
 	/**
-	 * @param rules
-	 * @param kind
+	 * Returns all rules from <code>rules</code> of mode <code>kind</code>.
+	 * @param rules the list of rules to search
+	 * @param kind the rule kind to select
 	 * @return all rules from <code>rules</code> of mode <code>kind</code>.
 	 */
 	private static List<Rule> getRulesOfKind(final List<Rule> rules, final RuleMode kind) {
@@ -219,23 +237,6 @@ public final class Matcher {
 			}
 			
 		} while (outerMatch);		
-	}
-
-	private final TraceFactory factory = TraceFactory.eINSTANCE;
-	private final StackFrame frame;
-	private final Rule rule;
-	private TraceLinkSet matches;
-	private TraceLinkSet traces;
-
-	/**
-	 * Creates a new {@link Matcher}.
-	 * @param frame
-	 * @param rule
-	 */
-	public Matcher(final StackFrame frame, final Rule rule) {
-		super();
-		this.frame = frame;
-		this.rule = rule;
 	}
 
 	/**
@@ -394,8 +395,8 @@ public final class Matcher {
 		for (InputRuleElement re : allInput) {
 			valuesArray[i++] = values.get(re.getName());
 			// null values allowed, as long as they are later filled in by bound elements
-			assert re.getBinding() != null || valuesArray[i-1] != null;
-			assert valuesArray[i-1] == null || re.getEType().isInstance(valuesArray[i-1]);
+			assert re.getBinding() != null || valuesArray[i - 1] != null;
+			assert valuesArray[i - 1] == null || re.getEType().isInstance(valuesArray[i - 1]);
 		}
 		return valuesArray;
 	}
@@ -413,12 +414,13 @@ public final class Matcher {
 		int i = 0;
 		for (RuleElement re : allInput) {
 			valuesMap.put(re.getName(), values[i++]);
-			assert values[i-1] != null;
+			assert values[i - 1] != null;
 		}
 		return valuesMap;
 	}
 
 	/**
+	 * Checks if <pre>values</pre> are distict, if so required by the rule.
 	 * @param values the currently collected values
 	 * @param index the index up to which to check the <code>values</code>
 	 * @param value the value to check against <code>values</code>
@@ -443,23 +445,24 @@ public final class Matcher {
 	 * @param index the current index of <code>values</code> and <code>iterables</code>
 	 * @param iterables the collections over which to iterate
 	 */
-	private boolean matchFor(final EObject[] values, int index, 
+	private boolean matchFor(final EObject[] values, final int index, 
 			final List<Iterable<EObject>> iterables) {
 		assert values.length == iterables.size();
-		while (index < values.length && iterables.get(index) == null) { // bound rule elements
-			index++;
+		int newIndex = index;
+		while (newIndex < values.length && iterables.get(newIndex) == null) { // bound rule elements
+			newIndex++;
 		}
 
-		if (index < values.length) {
+		if (newIndex < values.length) {
 			boolean result = false;
 			
-			for (EObject o : iterables.get(index)) {
-				if (!checkDistinct(values, index, o)) {
+			for (EObject o : iterables.get(newIndex)) {
+				if (!checkDistinct(values, newIndex, o)) {
 					continue; // all elements in this rule are distinct
 				}
-				values[index] = o;
-				result |= matchFor(values, index + 1, iterables);
-				values[index] = null;
+				values[newIndex] = o;
+				result |= matchFor(values, newIndex + 1, iterables);
+				values[newIndex] = null;
 			}
 			
 			return result;
@@ -490,7 +493,7 @@ public final class Matcher {
 
 				if (values[index] != null) { // assigned from parent match
 					if (value instanceof Collection<?>) {
-						if (!((Collection<?>) value).contains(values[index])) {
+						if (!((Collection<?>)value).contains(values[index])) {
 							return false;
 						}
 					} else {
@@ -500,8 +503,8 @@ public final class Matcher {
 					}
 				} else if (value instanceof Collection<?>) {
 					boolean result = false;
-					for (EObject v : (Collection<EObject>) value) {
-						if (!ire.getEType().isInstance(v) || !checkDistinct(values, values.length-1, v)) {
+					for (EObject v : (Collection<EObject>)value) {
+						if (!ire.getEType().isInstance(v) || !checkDistinct(values, values.length - 1, v)) {
 							continue; // all elements in this rule are distinct
 						}
 						values[index] = v;
@@ -510,10 +513,10 @@ public final class Matcher {
 					}
 					return result;
 				} else {
-					if (!ire.getEType().isInstance(value) || !checkDistinct(values, values.length-1, value)) {
+					if (!ire.getEType().isInstance(value) || !checkDistinct(values, values.length - 1, value)) {
 						return false; // all elements in this rule are distinct
 					}
-					values[index] = (EObject) value;
+					values[index] = (EObject)value;
 					final boolean result = matchFor(values, index + 1);
 					values[index] = null;
 					return result;
@@ -550,7 +553,7 @@ public final class Matcher {
 
 				if (values[index] != null) { // assigned from parent match
 					if (value instanceof Collection<?>) {
-						if (!((Collection<?>) value).contains(values[index])) {
+						if (!((Collection<?>)value).contains(values[index])) {
 							return false;
 						}
 					} else {
@@ -561,7 +564,7 @@ public final class Matcher {
 				} else if (value instanceof Collection<?>) {
 					final String key = ire.getName();
 					boolean result = false;
-					for (EObject v : (Collection<EObject>) value) {
+					for (EObject v : (Collection<EObject>)value) {
 						if (!ire.getEType().isInstance(v) || 
 								(rule.isDistinctElements() && valuesMap.containsValue(v))) {
 							continue; // all elements in this rule are distinct
@@ -579,8 +582,8 @@ public final class Matcher {
 						return false; // all elements in this rule are distinct
 					}
 					final String key = ire.getName();
-					values[index] = (EObject) value;
-					valuesMap.put(key, (EObject) value);
+					values[index] = (EObject)value;
+					valuesMap.put(key, (EObject)value);
 					final boolean result = matchFor(valuesMap, values, index + 1);
 					valuesMap.remove(key);
 					values[index] = null;
@@ -603,7 +606,7 @@ public final class Matcher {
 	private boolean matchFor(final EObject[] values) {
 		// Match values
 		final CodeBlock cb = rule.getMatcher();
-		if (cb == null || (Boolean) cb.execute(frame.getSubFrame(cb, values))) {
+		if (cb == null || (Boolean)cb.execute(frame.getSubFrame(cb, values))) {
 			// Add new match
 			final String ruleName = rule.getName();
 			final TraceLinkSet matches = getMatches();
@@ -634,7 +637,7 @@ public final class Matcher {
 	private boolean matchFor(final Map<String, EObject> valuesMap, final EObject[] values) {
 		// Match values
 		final CodeBlock cb = rule.getMatcher();
-		if (cb == null || (Boolean) cb.execute(frame.getSubFrame(cb, values))) {
+		if (cb == null || (Boolean)cb.execute(frame.getSubFrame(cb, values))) {
 			// Add new match
 			final String ruleName = rule.getName();
 			final TraceLinkSet matches = getMatches();
@@ -811,24 +814,25 @@ public final class Matcher {
 	 * @param index the current index of <code>values</code> and <code>iterables</code>
 	 * @param iterables the collections over which to iterate
 	 */
-	private boolean matchOneFor(final EObject[] values, int index, 
+	private boolean matchOneFor(final EObject[] values, final int index, 
 			final List<Iterable<EObject>> iterables) {
 		assert values.length == iterables.size();
-		while (index < values.length && iterables.get(index) == null) { // bound rule elements
-			index++;
+		int newIndex = index;
+		while (newIndex < values.length && iterables.get(newIndex) == null) { // bound rule elements
+			newIndex++;
 		}
 
-		if (index < values.length) {
-			for (EObject o : iterables.get(index)) {
-				if (!checkDistinct(values, index, o)) {
+		if (newIndex < values.length) {
+			for (EObject o : iterables.get(newIndex)) {
+				if (!checkDistinct(values, newIndex, o)) {
 					continue;
 				}
-				values[index] = o;
-				if (matchOneFor(values, index + 1, iterables)) {
-					values[index] = null;
+				values[newIndex] = o;
+				if (matchOneFor(values, newIndex + 1, iterables)) {
+					values[newIndex] = null;
 					return true;
 				}
-				values[index] = null;
+				values[newIndex] = null;
 			}
 			return false;
 		} else {
@@ -858,7 +862,7 @@ public final class Matcher {
 
 				if (values[index] != null) { // assigned from parent match
 					if (value instanceof Collection<?>) {
-						if (!((Collection<?>) value).contains(values[index])) {
+						if (!((Collection<?>)value).contains(values[index])) {
 							return false;
 						}
 					} else {
@@ -867,8 +871,8 @@ public final class Matcher {
 						}
 					}
 				} else if (value instanceof Collection<?>) {
-					for (EObject v : (Collection<EObject>) value) {
-						if (!ire.getEType().isInstance(v) || !checkDistinct(values, values.length-1, v)) {
+					for (EObject v : (Collection<EObject>)value) {
+						if (!ire.getEType().isInstance(v) || !checkDistinct(values, values.length - 1, v)) {
 							continue; // all elements in this rule are distinct
 						}
 						values[index] = v;
@@ -880,10 +884,10 @@ public final class Matcher {
 					}
 					return false;
 				} else {
-					if (!ire.getEType().isInstance(value) || !checkDistinct(values, values.length-1, value)) {
+					if (!ire.getEType().isInstance(value) || !checkDistinct(values, values.length - 1, value)) {
 						return false; // all elements in this rule are distinct
 					}
-					values[index] = (EObject) value;
+					values[index] = (EObject)value;
 					final boolean result = matchOneFor(values, index + 1);
 					values[index] = null;
 					return result;
@@ -920,7 +924,7 @@ public final class Matcher {
 
 				if (values[index] != null) { // assigned from parent match
 					if (value instanceof Collection<?>) {
-						if (!((Collection<?>) value).contains(values[index])) {
+						if (!((Collection<?>)value).contains(values[index])) {
 							return false;
 						}
 					} else {
@@ -930,7 +934,7 @@ public final class Matcher {
 					}
 				} else if (value instanceof Collection<?>) {
 					final String key = ire.getName();
-					for (EObject v : (Collection<EObject>) value) {
+					for (EObject v : (Collection<EObject>)value) {
 						if (!ire.getEType().isInstance(v) || 
 								(rule.isDistinctElements() && valuesMap.containsValue(v))) {
 							continue; // all elements in this rule are distinct
@@ -951,8 +955,8 @@ public final class Matcher {
 						return false; // all elements in this rule are distinct
 					}
 					final String key = ire.getName();
-					values[index] = (EObject) value;
-					valuesMap.put(key, (EObject) value);
+					values[index] = (EObject)value;
+					valuesMap.put(key, (EObject)value);
 					final boolean result = matchFor(valuesMap, values, index + 1);
 					valuesMap.remove(key);
 					values[index] = null;
@@ -968,7 +972,7 @@ public final class Matcher {
 
 	/**
 	 * Matches rule for <code>valuesMap</code>.
-	 * @param valuesMap
+	 * @param valuesMap the values to match against
 	 * @return <code>true</code> iff the rule matches
 	 */
 	public boolean matchOne(final Map<String, EObject> valuesMap) {
@@ -1002,7 +1006,7 @@ public final class Matcher {
 					return false; // no value, no matches
 				}
 				if (bvalue instanceof Collection<?>) {
-					if (!((Collection<?>) bvalue).contains(value)) {
+					if (!((Collection<?>)bvalue).contains(value)) {
 						return false;
 					}
 				} else {
@@ -1021,7 +1025,7 @@ public final class Matcher {
 		}
 
 		final CodeBlock cb = rule.getMatcher();
-		return cb == null ? true : (Boolean) cb.execute(frame.getSubFrame(cb, values));
+		return cb == null ? true : (Boolean)cb.execute(frame.getSubFrame(cb, values));
 	}
 
 	/**
@@ -1033,11 +1037,11 @@ public final class Matcher {
 	private static Iterable<EObject> createIterableFor(final ExecEnv env, 
 			final InputRuleElement re) {
 		if (re.getEModels().isEmpty()) {
-			return EMFTVMUtil.findAllInstances(env, (EClass) re.getEType());
+			return EMFTVMUtil.findAllInstances(env, (EClass)re.getEType());
 		} else {
 			LazyList<EObject> allInstances = new LazyList<EObject>();
 			for (Model m : re.getEModels()) {
-				allInstances = allInstances.union(m.allInstancesOf((EClass) re.getEType()));
+				allInstances = allInstances.union(m.allInstancesOf((EClass)re.getEType()));
 			}
 			return allInstances;
 		}
@@ -1045,7 +1049,6 @@ public final class Matcher {
 
 	/**
 	 * Creates default trace elements for this rule.
-	 * @param isDefault whether to create default traces
 	 */
 	public void createTraces() {
 		// Matches become traces
@@ -1085,6 +1088,7 @@ public final class Matcher {
 
 	/**
 	 * Creates first trace element for this rule.
+	 * @return the first trace element
 	 */
 	public TraceLink createFirstTrace() {
 		// Matches become traces
@@ -1123,7 +1127,7 @@ public final class Matcher {
 
 	/**
 	 * Creates one trace element for this rule, for <code>values</code>.
-	 * @param values
+	 * @param values the values to include in the trace link
 	 * @return the created trace link
 	 */
 	public TraceLink createTrace(final Map<String, EObject> values) {
@@ -1186,7 +1190,7 @@ public final class Matcher {
 					mapsTo.setDefaultFor(traces);
 				}
 			}
-			EClass type = (EClass) env.findType(ore.getTypeModel(), ore.getType());
+			EClass type = (EClass)env.findType(ore.getTypeModel(), ore.getType());
 			EList<Model> models = ore.getEModels();
 			assert models.size() == 1;
 			te.setObject(models.get(0).newElement(type));
@@ -1306,16 +1310,17 @@ public final class Matcher {
 		int i = 1;
 		for (InputRuleElement ire : input) {
 			args[i++] = trace.getSourceElement(ire.getName(), false).getObject();
-			assert args[i-1] != null;
+			assert args[i - 1] != null;
 		}
 		for (OutputRuleElement ore : output) {
 			args[i++] = trace.getTargetElement(ore.getName()).getObject();
-			assert args[i-1] != null;
+			assert args[i - 1] != null;
 		}
 		assert i == args.length;
 	}
 
 	/**
+	 * Returns the stack frame.
 	 * @return the frame
 	 */
 	public StackFrame getFrame() {
@@ -1323,6 +1328,7 @@ public final class Matcher {
 	}
 
 	/**
+	 * Returns the rule.
 	 * @return the rule
 	 */
 	public Rule getRule() {
@@ -1330,12 +1336,13 @@ public final class Matcher {
 	}
 
 	/**
+	 * Returns the matches.
 	 * @return the matches
 	 */
 	public TraceLinkSet getMatches() {
 		if (matches == null) {
 			final Field matchesField = frame.getEnv().findStaticField(EmftvmPackage.eINSTANCE.getExecEnv(), "matches");
-			matches = (TraceLinkSet) matchesField.getStaticValue(frame);
+			matches = (TraceLinkSet)matchesField.getStaticValue(frame);
 			if (matches == null) {
 				throw new VMException(frame, "matches field not initialised");
 			}
@@ -1344,12 +1351,13 @@ public final class Matcher {
 	}
 
 	/**
+	 * Returns the traces.
 	 * @return the traces
 	 */
 	public TraceLinkSet getTraces() {
 		if (traces == null) {
 			final Field tracesField = frame.getEnv().findStaticField(EmftvmPackage.eINSTANCE.getExecEnv(), "traces");
-			traces = (TraceLinkSet) tracesField.getStaticValue(frame);
+			traces = (TraceLinkSet)tracesField.getStaticValue(frame);
 			if (traces == null) {
 				throw new VMException(frame, "traces field not initialised");
 			}

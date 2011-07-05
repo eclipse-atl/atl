@@ -26,7 +26,7 @@ public class LazySetOnSet<E> extends LazySet<E> {
 
 	/**
 	 * Creates a new {@link LazySetOnSet} around <code>dataSource</code>.
-	 * @param dataSource
+	 * @param dataSource the underlying collection
 	 */
 	public LazySetOnSet(final Set<E> dataSource) {
 		super(dataSource);
@@ -36,36 +36,36 @@ public class LazySetOnSet<E> extends LazySet<E> {
 	 * Non-lazy operations                                                 *
 	 * *********************************************************************/
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.Collection#iterator()
+	/**
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Iterator<E> iterator() {
 		return dataSource.iterator(); // don't cache
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#contains(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean contains(final Object o) {
-		return ((Collection<?>) dataSource).contains(o);
+		return ((Collection<?>)dataSource).contains(o);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#isEmpty()
+	/**
+	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isEmpty() {
-		return ((Collection<E>) dataSource).isEmpty();
+		return ((Collection<E>)dataSource).isEmpty();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#size()
+	/**
+	 * {@inheritDoc}
 	 */
+	@Override
 	public int size() {
-		return ((Collection<E>) dataSource).size();
+		return ((Collection<E>)dataSource).size();
 	}
 
 }

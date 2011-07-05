@@ -14,13 +14,15 @@ package org.eclipse.m2m.atl.emftvm;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Swap x1</b></em>'.
+ * A representation of the model object '<em><b>Invoke cb</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getSwap_x1()
+ * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInvokeCb()
  * @model
  * @generated
  */
-public interface Swap_x1 extends Instruction {
-} // Swap_x1
+public interface InvokeCb extends CodeBlockInstruction, InvokeInstruction {
+
+} // Invoke_cb

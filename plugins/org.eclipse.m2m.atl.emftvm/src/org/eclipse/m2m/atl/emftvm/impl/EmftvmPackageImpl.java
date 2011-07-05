@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.m2m.atl.emftvm.Add;
 import org.eclipse.m2m.atl.emftvm.Allinst;
-import org.eclipse.m2m.atl.emftvm.Allinst_in;
+import org.eclipse.m2m.atl.emftvm.AllinstIn;
 import org.eclipse.m2m.atl.emftvm.And;
 import org.eclipse.m2m.atl.emftvm.BranchInstruction;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
@@ -33,7 +33,7 @@ import org.eclipse.m2m.atl.emftvm.CodeBlockInstruction;
 import org.eclipse.m2m.atl.emftvm.ConstantTag;
 import org.eclipse.m2m.atl.emftvm.Delete;
 import org.eclipse.m2m.atl.emftvm.Dup;
-import org.eclipse.m2m.atl.emftvm.Dup_x1;
+import org.eclipse.m2m.atl.emftvm.DupX1;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Enditerate;
@@ -43,10 +43,10 @@ import org.eclipse.m2m.atl.emftvm.FeatureTag;
 import org.eclipse.m2m.atl.emftvm.Field;
 import org.eclipse.m2m.atl.emftvm.FieldInstruction;
 import org.eclipse.m2m.atl.emftvm.Findtype;
-import org.eclipse.m2m.atl.emftvm.Findtype_s;
+import org.eclipse.m2m.atl.emftvm.FindtypeS;
 import org.eclipse.m2m.atl.emftvm.Get;
-import org.eclipse.m2m.atl.emftvm.Get_static;
-import org.eclipse.m2m.atl.emftvm.Get_trans;
+import org.eclipse.m2m.atl.emftvm.GetStatic;
+import org.eclipse.m2m.atl.emftvm.GetTrans;
 import org.eclipse.m2m.atl.emftvm.Getcb;
 import org.eclipse.m2m.atl.emftvm.Getenvtype;
 import org.eclipse.m2m.atl.emftvm.Goto;
@@ -60,11 +60,11 @@ import org.eclipse.m2m.atl.emftvm.Instruction;
 import org.eclipse.m2m.atl.emftvm.Invoke;
 import org.eclipse.m2m.atl.emftvm.InvokeInstruction;
 import org.eclipse.m2m.atl.emftvm.InvokeOperationInstruction;
-import org.eclipse.m2m.atl.emftvm.Invoke_all_cbs;
-import org.eclipse.m2m.atl.emftvm.Invoke_cb;
-import org.eclipse.m2m.atl.emftvm.Invoke_cb_s;
-import org.eclipse.m2m.atl.emftvm.Invoke_static;
-import org.eclipse.m2m.atl.emftvm.Invoke_super;
+import org.eclipse.m2m.atl.emftvm.InvokeAllCbs;
+import org.eclipse.m2m.atl.emftvm.InvokeCb;
+import org.eclipse.m2m.atl.emftvm.InvokeCbS;
+import org.eclipse.m2m.atl.emftvm.InvokeStatic;
+import org.eclipse.m2m.atl.emftvm.InvokeSuper;
 import org.eclipse.m2m.atl.emftvm.Isnull;
 import org.eclipse.m2m.atl.emftvm.Iterate;
 import org.eclipse.m2m.atl.emftvm.LineNumber;
@@ -72,7 +72,7 @@ import org.eclipse.m2m.atl.emftvm.Load;
 import org.eclipse.m2m.atl.emftvm.LocalVariable;
 import org.eclipse.m2m.atl.emftvm.LocalVariableInstruction;
 import org.eclipse.m2m.atl.emftvm.Match;
-import org.eclipse.m2m.atl.emftvm.Match_s;
+import org.eclipse.m2m.atl.emftvm.MatchS;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
@@ -80,7 +80,7 @@ import org.eclipse.m2m.atl.emftvm.ModelDeclarationTag;
 import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.NamedElement;
 import org.eclipse.m2m.atl.emftvm.New;
-import org.eclipse.m2m.atl.emftvm.New_s;
+import org.eclipse.m2m.atl.emftvm.NewS;
 import org.eclipse.m2m.atl.emftvm.Not;
 import org.eclipse.m2m.atl.emftvm.Opcode;
 import org.eclipse.m2m.atl.emftvm.Operation;
@@ -97,10 +97,10 @@ import org.eclipse.m2m.atl.emftvm.Rule;
 import org.eclipse.m2m.atl.emftvm.RuleElement;
 import org.eclipse.m2m.atl.emftvm.RuleMode;
 import org.eclipse.m2m.atl.emftvm.Set;
-import org.eclipse.m2m.atl.emftvm.Set_static;
+import org.eclipse.m2m.atl.emftvm.SetStatic;
 import org.eclipse.m2m.atl.emftvm.Store;
 import org.eclipse.m2m.atl.emftvm.Swap;
-import org.eclipse.m2m.atl.emftvm.Swap_x1;
+import org.eclipse.m2m.atl.emftvm.SwapX1;
 import org.eclipse.m2m.atl.emftvm.TypedElement;
 import org.eclipse.m2m.atl.emftvm.Xor;
 import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
@@ -117,6 +117,7 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model <b>Package</b>.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
@@ -308,21 +309,21 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass get_transEClass = null;
+	private EClass getTransEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass set_staticEClass = null;
+	private EClass setStaticEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass get_staticEClass = null;
+	private EClass getStaticEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -336,7 +337,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass findtype_sEClass = null;
+	private EClass findtypeSEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -350,7 +351,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass new_sEClass = null;
+	private EClass newSEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -371,7 +372,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass dup_x1EClass = null;
+	private EClass dupX1EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -385,7 +386,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass swap_x1EClass = null;
+	private EClass swapX1EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -455,14 +456,14 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass invoke_superEClass = null;
+	private EClass invokeSuperEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass invoke_staticEClass = null;
+	private EClass invokeStaticEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -476,7 +477,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass allinst_inEClass = null;
+	private EClass allinstInEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -490,7 +491,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass match_sEClass = null;
+	private EClass matchSEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -518,13 +519,6 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass invoke_all_cbsEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass returnEClass = null;
 
 	/**
@@ -546,14 +540,21 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass invoke_cbEClass = null;
+	private EClass invokeAllCbsEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass invoke_cb_sEClass = null;
+	private EClass invokeCbEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass invokeCbSEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1841,8 +1842,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getGet_trans() {
-		return get_transEClass;
+	public EClass getGetTrans() {
+		return getTransEClass;
 	}
 
 	/**
@@ -1850,8 +1851,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getSet_static() {
-		return set_staticEClass;
+	public EClass getSetStatic() {
+		return setStaticEClass;
 	}
 
 	/**
@@ -1859,8 +1860,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getGet_static() {
-		return get_staticEClass;
+	public EClass getGetStatic() {
+		return getStaticEClass;
 	}
 
 	/**
@@ -1895,8 +1896,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getFindtype_s() {
-		return findtype_sEClass;
+	public EClass getFindtypeS() {
+		return findtypeSEClass;
 	}
 
 	/**
@@ -1922,8 +1923,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getNew_s() {
-		return new_sEClass;
+	public EClass getNewS() {
+		return newSEClass;
 	}
 
 	/**
@@ -1949,8 +1950,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getDup_x1() {
-		return dup_x1EClass;
+	public EClass getDupX1() {
+		return dupX1EClass;
 	}
 
 	/**
@@ -1967,8 +1968,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getSwap_x1() {
-		return swap_x1EClass;
+	public EClass getSwapX1() {
+		return swapX1EClass;
 	}
 
 	/**
@@ -2093,8 +2094,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getInvoke_super() {
-		return invoke_superEClass;
+	public EClass getInvokeSuper() {
+		return invokeSuperEClass;
 	}
 
 	/**
@@ -2102,8 +2103,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getInvoke_static() {
-		return invoke_staticEClass;
+	public EClass getInvokeStatic() {
+		return invokeStaticEClass;
 	}
 
 	/**
@@ -2120,8 +2121,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getAllinst_in() {
-		return allinst_inEClass;
+	public EClass getAllinstIn() {
+		return allinstInEClass;
 	}
 
 	/**
@@ -2147,8 +2148,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getMatch_s() {
-		return match_sEClass;
+	public EClass getMatchS() {
+		return matchSEClass;
 	}
 
 	/**
@@ -2176,15 +2177,6 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 */
 	public EClass getInsert() {
 		return insertEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getInvoke_all_cbs() {
-		return invoke_all_cbsEClass;
 	}
 
 	/**
@@ -2237,8 +2229,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getInvoke_cb() {
-		return invoke_cbEClass;
+	public EClass getInvokeAllCbs() {
+		return invokeAllCbsEClass;
 	}
 
 	/**
@@ -2246,8 +2238,17 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getInvoke_cb_s() {
-		return invoke_cb_sEClass;
+	public EClass getInvokeCb() {
+		return invokeCbEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getInvokeCbS() {
+		return invokeCbSEClass;
 	}
 
 	/**
@@ -2855,32 +2856,32 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		getEClass = createEClass(GET);
 
-		get_transEClass = createEClass(GET_TRANS);
+		getTransEClass = createEClass(GET_TRANS);
 
-		set_staticEClass = createEClass(SET_STATIC);
+		setStaticEClass = createEClass(SET_STATIC);
 
-		get_staticEClass = createEClass(GET_STATIC);
+		getStaticEClass = createEClass(GET_STATIC);
 
 		findtypeEClass = createEClass(FINDTYPE);
 		createEAttribute(findtypeEClass, FINDTYPE__MODELNAME);
 		createEAttribute(findtypeEClass, FINDTYPE__TYPENAME);
 
-		findtype_sEClass = createEClass(FINDTYPE_S);
+		findtypeSEClass = createEClass(FINDTYPE_S);
 
 		newEClass = createEClass(NEW);
 		createEAttribute(newEClass, NEW__MODELNAME);
 
-		new_sEClass = createEClass(NEW_S);
+		newSEClass = createEClass(NEW_S);
 
 		deleteEClass = createEClass(DELETE);
 
 		dupEClass = createEClass(DUP);
 
-		dup_x1EClass = createEClass(DUP_X1);
+		dupX1EClass = createEClass(DUP_X1);
 
 		swapEClass = createEClass(SWAP);
 
-		swap_x1EClass = createEClass(SWAP_X1);
+		swapX1EClass = createEClass(SWAP_X1);
 
 		branchInstructionEClass = createEClass(BRANCH_INSTRUCTION);
 		createEAttribute(branchInstructionEClass, BRANCH_INSTRUCTION__OFFSET);
@@ -2904,13 +2905,13 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		invokeEClass = createEClass(INVOKE);
 
-		invoke_superEClass = createEClass(INVOKE_SUPER);
+		invokeSuperEClass = createEClass(INVOKE_SUPER);
 
-		invoke_staticEClass = createEClass(INVOKE_STATIC);
+		invokeStaticEClass = createEClass(INVOKE_STATIC);
 
 		allinstEClass = createEClass(ALLINST);
 
-		allinst_inEClass = createEClass(ALLINST_IN);
+		allinstInEClass = createEClass(ALLINST_IN);
 
 		isnullEClass = createEClass(ISNULL);
 
@@ -2940,16 +2941,16 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		getcbEClass = createEClass(GETCB);
 
-		invoke_all_cbsEClass = createEClass(INVOKE_ALL_CBS);
+		invokeAllCbsEClass = createEClass(INVOKE_ALL_CBS);
 
-		invoke_cbEClass = createEClass(INVOKE_CB);
+		invokeCbEClass = createEClass(INVOKE_CB);
 
-		invoke_cb_sEClass = createEClass(INVOKE_CB_S);
+		invokeCbSEClass = createEClass(INVOKE_CB_S);
 
 		matchEClass = createEClass(MATCH);
 		createEAttribute(matchEClass, MATCH__RULENAME);
 
-		match_sEClass = createEClass(MATCH_S);
+		matchSEClass = createEClass(MATCH_S);
 
 		addEClass = createEClass(ADD);
 
@@ -3035,18 +3036,18 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		fieldInstructionEClass.getESuperTypes().add(this.getInstruction());
 		setEClass.getESuperTypes().add(this.getFieldInstruction());
 		getEClass.getESuperTypes().add(this.getFieldInstruction());
-		get_transEClass.getESuperTypes().add(this.getFieldInstruction());
-		set_staticEClass.getESuperTypes().add(this.getFieldInstruction());
-		get_staticEClass.getESuperTypes().add(this.getFieldInstruction());
+		getTransEClass.getESuperTypes().add(this.getFieldInstruction());
+		setStaticEClass.getESuperTypes().add(this.getFieldInstruction());
+		getStaticEClass.getESuperTypes().add(this.getFieldInstruction());
 		findtypeEClass.getESuperTypes().add(this.getInstruction());
-		findtype_sEClass.getESuperTypes().add(this.getInstruction());
+		findtypeSEClass.getESuperTypes().add(this.getInstruction());
 		newEClass.getESuperTypes().add(this.getInstruction());
-		new_sEClass.getESuperTypes().add(this.getInstruction());
+		newSEClass.getESuperTypes().add(this.getInstruction());
 		deleteEClass.getESuperTypes().add(this.getInstruction());
 		dupEClass.getESuperTypes().add(this.getInstruction());
-		dup_x1EClass.getESuperTypes().add(this.getInstruction());
+		dupX1EClass.getESuperTypes().add(this.getInstruction());
 		swapEClass.getESuperTypes().add(this.getInstruction());
-		swap_x1EClass.getESuperTypes().add(this.getInstruction());
+		swapX1EClass.getESuperTypes().add(this.getInstruction());
 		branchInstructionEClass.getESuperTypes().add(this.getInstruction());
 		ifEClass.getESuperTypes().add(this.getBranchInstruction());
 		ifnEClass.getESuperTypes().add(this.getBranchInstruction());
@@ -3056,10 +3057,10 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		invokeInstructionEClass.getESuperTypes().add(this.getInstruction());
 		invokeOperationInstructionEClass.getESuperTypes().add(this.getInvokeInstruction());
 		invokeEClass.getESuperTypes().add(this.getInvokeOperationInstruction());
-		invoke_superEClass.getESuperTypes().add(this.getInvokeOperationInstruction());
-		invoke_staticEClass.getESuperTypes().add(this.getInvokeOperationInstruction());
+		invokeSuperEClass.getESuperTypes().add(this.getInvokeOperationInstruction());
+		invokeStaticEClass.getESuperTypes().add(this.getInvokeOperationInstruction());
 		allinstEClass.getESuperTypes().add(this.getInstruction());
-		allinst_inEClass.getESuperTypes().add(this.getInstruction());
+		allinstInEClass.getESuperTypes().add(this.getInstruction());
 		isnullEClass.getESuperTypes().add(this.getInstruction());
 		getenvtypeEClass.getESuperTypes().add(this.getInstruction());
 		notEClass.getESuperTypes().add(this.getInstruction());
@@ -3071,12 +3072,12 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		returnEClass.getESuperTypes().add(this.getInstruction());
 		codeBlockInstructionEClass.getESuperTypes().add(this.getInstruction());
 		getcbEClass.getESuperTypes().add(this.getCodeBlockInstruction());
-		invoke_all_cbsEClass.getESuperTypes().add(this.getInvokeInstruction());
-		invoke_cbEClass.getESuperTypes().add(this.getCodeBlockInstruction());
-		invoke_cbEClass.getESuperTypes().add(this.getInvokeInstruction());
-		invoke_cb_sEClass.getESuperTypes().add(this.getInvokeInstruction());
+		invokeAllCbsEClass.getESuperTypes().add(this.getInvokeInstruction());
+		invokeCbEClass.getESuperTypes().add(this.getCodeBlockInstruction());
+		invokeCbEClass.getESuperTypes().add(this.getInvokeInstruction());
+		invokeCbSEClass.getESuperTypes().add(this.getInvokeInstruction());
 		matchEClass.getESuperTypes().add(this.getInvokeInstruction());
-		match_sEClass.getESuperTypes().add(this.getInvokeInstruction());
+		matchSEClass.getESuperTypes().add(this.getInvokeInstruction());
 		addEClass.getESuperTypes().add(this.getFieldInstruction());
 		removeEClass.getESuperTypes().add(this.getFieldInstruction());
 		insertEClass.getESuperTypes().add(this.getFieldInstruction());
@@ -3383,32 +3384,32 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		initEClass(getEClass, Get.class, "Get", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(get_transEClass, Get_trans.class, "Get_trans", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(getTransEClass, GetTrans.class, "GetTrans", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(set_staticEClass, Set_static.class, "Set_static", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(setStaticEClass, SetStatic.class, "SetStatic", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(get_staticEClass, Get_static.class, "Get_static", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(getStaticEClass, GetStatic.class, "GetStatic", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(findtypeEClass, Findtype.class, "Findtype", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getFindtype_Modelname(), theEcorePackage.getEString(), "modelname", null, 1, 1, Findtype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getFindtype_Typename(), theEcorePackage.getEString(), "typename", null, 1, 1, Findtype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(findtype_sEClass, Findtype_s.class, "Findtype_s", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(findtypeSEClass, FindtypeS.class, "FindtypeS", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(newEClass, New.class, "New", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNew_Modelname(), theEcorePackage.getEString(), "modelname", null, 1, 1, New.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(new_sEClass, New_s.class, "New_s", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(newSEClass, NewS.class, "NewS", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(deleteEClass, Delete.class, "Delete", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(dupEClass, Dup.class, "Dup", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(dup_x1EClass, Dup_x1.class, "Dup_x1", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(dupX1EClass, DupX1.class, "DupX1", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(swapEClass, Swap.class, "Swap", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(swap_x1EClass, Swap_x1.class, "Swap_x1", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(swapX1EClass, SwapX1.class, "SwapX1", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(branchInstructionEClass, BranchInstruction.class, "BranchInstruction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBranchInstruction_Offset(), theEcorePackage.getEInt(), "offset", "-1", 1, 1, BranchInstruction.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -3432,13 +3433,13 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		initEClass(invokeEClass, Invoke.class, "Invoke", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(invoke_superEClass, Invoke_super.class, "Invoke_super", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(invokeSuperEClass, InvokeSuper.class, "InvokeSuper", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(invoke_staticEClass, Invoke_static.class, "Invoke_static", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(invokeStaticEClass, InvokeStatic.class, "InvokeStatic", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(allinstEClass, Allinst.class, "Allinst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(allinst_inEClass, Allinst_in.class, "Allinst_in", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(allinstInEClass, AllinstIn.class, "AllinstIn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(isnullEClass, Isnull.class, "Isnull", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3468,16 +3469,16 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		initEClass(getcbEClass, Getcb.class, "Getcb", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(invoke_all_cbsEClass, Invoke_all_cbs.class, "Invoke_all_cbs", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(invokeAllCbsEClass, InvokeAllCbs.class, "InvokeAllCbs", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(invoke_cbEClass, Invoke_cb.class, "Invoke_cb", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(invokeCbEClass, InvokeCb.class, "InvokeCb", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(invoke_cb_sEClass, Invoke_cb_s.class, "Invoke_cb_s", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(invokeCbSEClass, InvokeCbS.class, "InvokeCbS", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(matchEClass, Match.class, "Match", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getMatch_Rulename(), theEcorePackage.getEString(), "rulename", null, 1, 1, Match.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(match_sEClass, Match_s.class, "Match_s", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(matchSEClass, MatchS.class, "MatchS", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(addEClass, Add.class, "Add", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.EReference;
  *   <li>each enum,</li>
  *   <li>and each data type</li>
  * </ul>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @see org.eclipse.m2m.atl.emftvm.EmftvmFactory
  * @model kind="package"
@@ -297,31 +298,31 @@ public interface EmftvmPackage extends EPackage {
 	int GET = 28;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Get_transImpl <em>Get trans</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.GetTransImpl <em>Get Trans</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Get_transImpl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getGet_trans()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.GetTransImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getGetTrans()
 	 * @generated
 	 */
 	int GET_TRANS = 29;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Set_staticImpl <em>Set static</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.SetStaticImpl <em>Set Static</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Set_staticImpl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getSet_static()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.SetStaticImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getSetStatic()
 	 * @generated
 	 */
 	int SET_STATIC = 30;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Get_staticImpl <em>Get static</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.GetStaticImpl <em>Get Static</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Get_staticImpl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getGet_static()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.GetStaticImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getGetStatic()
 	 * @generated
 	 */
 	int GET_STATIC = 31;
@@ -337,11 +338,11 @@ public interface EmftvmPackage extends EPackage {
 	int FINDTYPE = 32;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Findtype_sImpl <em>Findtype s</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.FindtypeSImpl <em>Findtype S</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Findtype_sImpl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getFindtype_s()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.FindtypeSImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getFindtypeS()
 	 * @generated
 	 */
 	int FINDTYPE_S = 33;
@@ -357,11 +358,11 @@ public interface EmftvmPackage extends EPackage {
 	int NEW = 34;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.New_sImpl <em>New s</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.NewSImpl <em>New S</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.New_sImpl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getNew_s()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.NewSImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getNewS()
 	 * @generated
 	 */
 	int NEW_S = 35;
@@ -387,11 +388,11 @@ public interface EmftvmPackage extends EPackage {
 	int DUP = 37;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Dup_x1Impl <em>Dup x1</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.DupX1Impl <em>Dup X1</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Dup_x1Impl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getDup_x1()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.DupX1Impl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getDupX1()
 	 * @generated
 	 */
 	int DUP_X1 = 38;
@@ -487,21 +488,21 @@ public interface EmftvmPackage extends EPackage {
 	int INVOKE = 49;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Invoke_superImpl <em>Invoke super</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.InvokeSuperImpl <em>Invoke Super</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Invoke_superImpl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvoke_super()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.InvokeSuperImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvokeSuper()
 	 * @generated
 	 */
 	int INVOKE_SUPER = 50;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Invoke_staticImpl <em>Invoke static</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.InvokeStaticImpl <em>Invoke Static</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Invoke_staticImpl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvoke_static()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.InvokeStaticImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvokeStatic()
 	 * @generated
 	 */
 	int INVOKE_STATIC = 51;
@@ -517,11 +518,11 @@ public interface EmftvmPackage extends EPackage {
 	int ALLINST = 52;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Allinst_inImpl <em>Allinst in</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.AllinstInImpl <em>Allinst In</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Allinst_inImpl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getAllinst_in()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.AllinstInImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getAllinstIn()
 	 * @generated
 	 */
 	int ALLINST_IN = 53;
@@ -2876,7 +2877,7 @@ public interface EmftvmPackage extends EPackage {
 	int GET_TRANS__FIELDNAME = FIELD_INSTRUCTION__FIELDNAME;
 
 	/**
-	 * The number of structural features of the '<em>Get trans</em>' class.
+	 * The number of structural features of the '<em>Get Trans</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2939,7 +2940,7 @@ public interface EmftvmPackage extends EPackage {
 	int SET_STATIC__FIELDNAME = FIELD_INSTRUCTION__FIELDNAME;
 
 	/**
-	 * The number of structural features of the '<em>Set static</em>' class.
+	 * The number of structural features of the '<em>Set Static</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3002,7 +3003,7 @@ public interface EmftvmPackage extends EPackage {
 	int GET_STATIC__FIELDNAME = FIELD_INSTRUCTION__FIELDNAME;
 
 	/**
-	 * The number of structural features of the '<em>Get static</em>' class.
+	 * The number of structural features of the '<em>Get Static</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3128,7 +3129,7 @@ public interface EmftvmPackage extends EPackage {
 	int FINDTYPE_S__LINE_NUMBER = INSTRUCTION__LINE_NUMBER;
 
 	/**
-	 * The number of structural features of the '<em>Findtype s</em>' class.
+	 * The number of structural features of the '<em>Findtype S</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3245,7 +3246,7 @@ public interface EmftvmPackage extends EPackage {
 	int NEW_S__LINE_NUMBER = INSTRUCTION__LINE_NUMBER;
 
 	/**
-	 * The number of structural features of the '<em>New s</em>' class.
+	 * The number of structural features of the '<em>New S</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3407,7 +3408,7 @@ public interface EmftvmPackage extends EPackage {
 	int DUP_X1__LINE_NUMBER = INSTRUCTION__LINE_NUMBER;
 
 	/**
-	 * The number of structural features of the '<em>Dup x1</em>' class.
+	 * The number of structural features of the '<em>Dup X1</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3470,11 +3471,11 @@ public interface EmftvmPackage extends EPackage {
 	int SWAP_FEATURE_COUNT = INSTRUCTION_FEATURE_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Swap_x1Impl <em>Swap x1</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.SwapX1Impl <em>Swap X1</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Swap_x1Impl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getSwap_x1()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.SwapX1Impl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getSwapX1()
 	 * @generated
 	 */
 	int SWAP_X1 = 40;
@@ -3525,7 +3526,7 @@ public interface EmftvmPackage extends EPackage {
 	int SWAP_X1__LINE_NUMBER = INSTRUCTION__LINE_NUMBER;
 
 	/**
-	 * The number of structural features of the '<em>Swap x1</em>' class.
+	 * The number of structural features of the '<em>Swap X1</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -4246,7 +4247,7 @@ public interface EmftvmPackage extends EPackage {
 	int INVOKE_SUPER__OPNAME = INVOKE_OPERATION_INSTRUCTION__OPNAME;
 
 	/**
-	 * The number of structural features of the '<em>Invoke super</em>' class.
+	 * The number of structural features of the '<em>Invoke Super</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -4318,7 +4319,7 @@ public interface EmftvmPackage extends EPackage {
 	int INVOKE_STATIC__OPNAME = INVOKE_OPERATION_INSTRUCTION__OPNAME;
 
 	/**
-	 * The number of structural features of the '<em>Invoke static</em>' class.
+	 * The number of structural features of the '<em>Invoke Static</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -4426,7 +4427,7 @@ public interface EmftvmPackage extends EPackage {
 	int ALLINST_IN__LINE_NUMBER = INSTRUCTION__LINE_NUMBER;
 
 	/**
-	 * The number of structural features of the '<em>Allinst in</em>' class.
+	 * The number of structural features of the '<em>Allinst In</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -4444,11 +4445,11 @@ public interface EmftvmPackage extends EPackage {
 	int ISNULL__OWNING_BLOCK = INSTRUCTION__OWNING_BLOCK;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Match_sImpl <em>Match s</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.MatchSImpl <em>Match S</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Match_sImpl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getMatch_s()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.MatchSImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getMatchS()
 	 * @generated
 	 */
 	int MATCH_S = 69;
@@ -5255,31 +5256,31 @@ public interface EmftvmPackage extends EPackage {
 	int GETCB_FEATURE_COUNT = CODE_BLOCK_INSTRUCTION_FEATURE_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Invoke_cbImpl <em>Invoke cb</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.InvokeCbImpl <em>Invoke Cb</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Invoke_cbImpl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvoke_cb()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.InvokeCbImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvokeCb()
 	 * @generated
 	 */
 	int INVOKE_CB = 66;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Invoke_cb_sImpl <em>Invoke cb s</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.InvokeCbSImpl <em>Invoke Cb S</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Invoke_cb_sImpl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvoke_cb_s()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.InvokeCbSImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvokeCbS()
 	 * @generated
 	 */
 	int INVOKE_CB_S = 67;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.Invoke_all_cbsImpl <em>Invoke all cbs</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.InvokeAllCbsImpl <em>Invoke All Cbs</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.impl.Invoke_all_cbsImpl
-	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvoke_all_cbs()
+	 * @see org.eclipse.m2m.atl.emftvm.impl.InvokeAllCbsImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvokeAllCbs()
 	 * @generated
 	 */
 	int INVOKE_ALL_CBS = 65;
@@ -5339,7 +5340,7 @@ public interface EmftvmPackage extends EPackage {
 	int INVOKE_ALL_CBS__ARGCOUNT = INVOKE_INSTRUCTION__ARGCOUNT;
 
 	/**
-	 * The number of structural features of the '<em>Invoke all cbs</em>' class.
+	 * The number of structural features of the '<em>Invoke All Cbs</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -5420,7 +5421,7 @@ public interface EmftvmPackage extends EPackage {
 	int INVOKE_CB__ARGCOUNT = CODE_BLOCK_INSTRUCTION_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Invoke cb</em>' class.
+	 * The number of structural features of the '<em>Invoke Cb</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -5483,7 +5484,7 @@ public interface EmftvmPackage extends EPackage {
 	int INVOKE_CB_S__ARGCOUNT = INVOKE_INSTRUCTION__ARGCOUNT;
 
 	/**
-	 * The number of structural features of the '<em>Invoke cb s</em>' class.
+	 * The number of structural features of the '<em>Invoke Cb S</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -5618,7 +5619,7 @@ public interface EmftvmPackage extends EPackage {
 	int MATCH_S__ARGCOUNT = INVOKE_INSTRUCTION__ARGCOUNT;
 
 	/**
-	 * The number of structural features of the '<em>Match s</em>' class.
+	 * The number of structural features of the '<em>Match S</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -7242,34 +7243,34 @@ public interface EmftvmPackage extends EPackage {
 	EClass getGet();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Get_trans <em>Get trans</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.GetTrans <em>Get Trans</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Get trans</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Get_trans
+	 * @return the meta object for class '<em>Get Trans</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.GetTrans
 	 * @generated
 	 */
-	EClass getGet_trans();
+	EClass getGetTrans();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Set_static <em>Set static</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.SetStatic <em>Set Static</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Set static</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Set_static
+	 * @return the meta object for class '<em>Set Static</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.SetStatic
 	 * @generated
 	 */
-	EClass getSet_static();
+	EClass getSetStatic();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Get_static <em>Get static</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.GetStatic <em>Get Static</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Get static</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Get_static
+	 * @return the meta object for class '<em>Get Static</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.GetStatic
 	 * @generated
 	 */
-	EClass getGet_static();
+	EClass getGetStatic();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Findtype <em>Findtype</em>}'.
@@ -7304,14 +7305,14 @@ public interface EmftvmPackage extends EPackage {
 	EAttribute getFindtype_Typename();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Findtype_s <em>Findtype s</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.FindtypeS <em>Findtype S</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Findtype s</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Findtype_s
+	 * @return the meta object for class '<em>Findtype S</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.FindtypeS
 	 * @generated
 	 */
-	EClass getFindtype_s();
+	EClass getFindtypeS();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.New <em>New</em>}'.
@@ -7335,14 +7336,14 @@ public interface EmftvmPackage extends EPackage {
 	EAttribute getNew_Modelname();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.New_s <em>New s</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.NewS <em>New S</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>New s</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.New_s
+	 * @return the meta object for class '<em>New S</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.NewS
 	 * @generated
 	 */
-	EClass getNew_s();
+	EClass getNewS();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Delete <em>Delete</em>}'.
@@ -7365,14 +7366,14 @@ public interface EmftvmPackage extends EPackage {
 	EClass getDup();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Dup_x1 <em>Dup x1</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.DupX1 <em>Dup X1</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Dup x1</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Dup_x1
+	 * @return the meta object for class '<em>Dup X1</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.DupX1
 	 * @generated
 	 */
-	EClass getDup_x1();
+	EClass getDupX1();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Swap <em>Swap</em>}'.
@@ -7385,14 +7386,14 @@ public interface EmftvmPackage extends EPackage {
 	EClass getSwap();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Swap_x1 <em>Swap x1</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.SwapX1 <em>Swap X1</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Swap x1</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Swap_x1
+	 * @return the meta object for class '<em>Swap X1</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.SwapX1
 	 * @generated
 	 */
-	EClass getSwap_x1();
+	EClass getSwapX1();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction <em>Branch Instruction</em>}'.
@@ -7529,24 +7530,24 @@ public interface EmftvmPackage extends EPackage {
 	EClass getInvoke();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Invoke_super <em>Invoke super</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.InvokeSuper <em>Invoke Super</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Invoke super</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Invoke_super
+	 * @return the meta object for class '<em>Invoke Super</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.InvokeSuper
 	 * @generated
 	 */
-	EClass getInvoke_super();
+	EClass getInvokeSuper();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Invoke_static <em>Invoke static</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.InvokeStatic <em>Invoke Static</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Invoke static</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Invoke_static
+	 * @return the meta object for class '<em>Invoke Static</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.InvokeStatic
 	 * @generated
 	 */
-	EClass getInvoke_static();
+	EClass getInvokeStatic();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Allinst <em>Allinst</em>}'.
@@ -7559,14 +7560,14 @@ public interface EmftvmPackage extends EPackage {
 	EClass getAllinst();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Allinst_in <em>Allinst in</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.AllinstIn <em>Allinst In</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Allinst in</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Allinst_in
+	 * @return the meta object for class '<em>Allinst In</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.AllinstIn
 	 * @generated
 	 */
-	EClass getAllinst_in();
+	EClass getAllinstIn();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Match <em>Match</em>}'.
@@ -7590,14 +7591,14 @@ public interface EmftvmPackage extends EPackage {
 	EAttribute getMatch_Rulename();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Match_s <em>Match s</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.MatchS <em>Match S</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Match s</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Match_s
+	 * @return the meta object for class '<em>Match S</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.MatchS
 	 * @generated
 	 */
-	EClass getMatch_s();
+	EClass getMatchS();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Add <em>Add</em>}'.
@@ -7628,16 +7629,6 @@ public interface EmftvmPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getInsert();
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Invoke_all_cbs <em>Invoke all cbs</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Invoke all cbs</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Invoke_all_cbs
-	 * @generated
-	 */
-	EClass getInvoke_all_cbs();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Return <em>Return</em>}'.
@@ -7692,24 +7683,34 @@ public interface EmftvmPackage extends EPackage {
 	EClass getGetcb();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Invoke_cb <em>Invoke cb</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.InvokeAllCbs <em>Invoke All Cbs</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Invoke cb</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Invoke_cb
+	 * @return the meta object for class '<em>Invoke All Cbs</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.InvokeAllCbs
 	 * @generated
 	 */
-	EClass getInvoke_cb();
+	EClass getInvokeAllCbs();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Invoke_cb_s <em>Invoke cb s</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.InvokeCb <em>Invoke Cb</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Invoke cb s</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.Invoke_cb_s
+	 * @return the meta object for class '<em>Invoke Cb</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.InvokeCb
 	 * @generated
 	 */
-	EClass getInvoke_cb_s();
+	EClass getInvokeCb();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.InvokeCbS <em>Invoke Cb S</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Invoke Cb S</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.InvokeCbS
+	 * @generated
+	 */
+	EClass getInvokeCbS();
 
 	/**
 	 * Returns the meta object for enum '{@link org.eclipse.m2m.atl.emftvm.ModelDeclarationTag <em>Model Declaration Tag</em>}'.
@@ -9190,34 +9191,34 @@ public interface EmftvmPackage extends EPackage {
 		EClass GET = eINSTANCE.getGet();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Get_transImpl <em>Get trans</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.GetTransImpl <em>Get Trans</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Get_transImpl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getGet_trans()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.GetTransImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getGetTrans()
 		 * @generated
 		 */
-		EClass GET_TRANS = eINSTANCE.getGet_trans();
+		EClass GET_TRANS = eINSTANCE.getGetTrans();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Set_staticImpl <em>Set static</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.SetStaticImpl <em>Set Static</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Set_staticImpl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getSet_static()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.SetStaticImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getSetStatic()
 		 * @generated
 		 */
-		EClass SET_STATIC = eINSTANCE.getSet_static();
+		EClass SET_STATIC = eINSTANCE.getSetStatic();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Get_staticImpl <em>Get static</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.GetStaticImpl <em>Get Static</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Get_staticImpl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getGet_static()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.GetStaticImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getGetStatic()
 		 * @generated
 		 */
-		EClass GET_STATIC = eINSTANCE.getGet_static();
+		EClass GET_STATIC = eINSTANCE.getGetStatic();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.FindtypeImpl <em>Findtype</em>}' class.
@@ -9246,14 +9247,14 @@ public interface EmftvmPackage extends EPackage {
 		EAttribute FINDTYPE__TYPENAME = eINSTANCE.getFindtype_Typename();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Findtype_sImpl <em>Findtype s</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.FindtypeSImpl <em>Findtype S</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Findtype_sImpl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getFindtype_s()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.FindtypeSImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getFindtypeS()
 		 * @generated
 		 */
-		EClass FINDTYPE_S = eINSTANCE.getFindtype_s();
+		EClass FINDTYPE_S = eINSTANCE.getFindtypeS();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.NewImpl <em>New</em>}' class.
@@ -9274,14 +9275,14 @@ public interface EmftvmPackage extends EPackage {
 		EAttribute NEW__MODELNAME = eINSTANCE.getNew_Modelname();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.New_sImpl <em>New s</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.NewSImpl <em>New S</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.New_sImpl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getNew_s()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.NewSImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getNewS()
 		 * @generated
 		 */
-		EClass NEW_S = eINSTANCE.getNew_s();
+		EClass NEW_S = eINSTANCE.getNewS();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.DeleteImpl <em>Delete</em>}' class.
@@ -9304,14 +9305,14 @@ public interface EmftvmPackage extends EPackage {
 		EClass DUP = eINSTANCE.getDup();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Dup_x1Impl <em>Dup x1</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.DupX1Impl <em>Dup X1</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Dup_x1Impl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getDup_x1()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.DupX1Impl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getDupX1()
 		 * @generated
 		 */
-		EClass DUP_X1 = eINSTANCE.getDup_x1();
+		EClass DUP_X1 = eINSTANCE.getDupX1();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.SwapImpl <em>Swap</em>}' class.
@@ -9324,14 +9325,14 @@ public interface EmftvmPackage extends EPackage {
 		EClass SWAP = eINSTANCE.getSwap();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Swap_x1Impl <em>Swap x1</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.SwapX1Impl <em>Swap X1</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Swap_x1Impl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getSwap_x1()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.SwapX1Impl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getSwapX1()
 		 * @generated
 		 */
-		EClass SWAP_X1 = eINSTANCE.getSwap_x1();
+		EClass SWAP_X1 = eINSTANCE.getSwapX1();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.BranchInstructionImpl <em>Branch Instruction</em>}' class.
@@ -9456,24 +9457,24 @@ public interface EmftvmPackage extends EPackage {
 		EClass INVOKE = eINSTANCE.getInvoke();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Invoke_superImpl <em>Invoke super</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.InvokeSuperImpl <em>Invoke Super</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Invoke_superImpl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvoke_super()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.InvokeSuperImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvokeSuper()
 		 * @generated
 		 */
-		EClass INVOKE_SUPER = eINSTANCE.getInvoke_super();
+		EClass INVOKE_SUPER = eINSTANCE.getInvokeSuper();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Invoke_staticImpl <em>Invoke static</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.InvokeStaticImpl <em>Invoke Static</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Invoke_staticImpl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvoke_static()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.InvokeStaticImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvokeStatic()
 		 * @generated
 		 */
-		EClass INVOKE_STATIC = eINSTANCE.getInvoke_static();
+		EClass INVOKE_STATIC = eINSTANCE.getInvokeStatic();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.AllinstImpl <em>Allinst</em>}' class.
@@ -9486,14 +9487,14 @@ public interface EmftvmPackage extends EPackage {
 		EClass ALLINST = eINSTANCE.getAllinst();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Allinst_inImpl <em>Allinst in</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.AllinstInImpl <em>Allinst In</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Allinst_inImpl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getAllinst_in()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.AllinstInImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getAllinstIn()
 		 * @generated
 		 */
-		EClass ALLINST_IN = eINSTANCE.getAllinst_in();
+		EClass ALLINST_IN = eINSTANCE.getAllinstIn();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.MatchImpl <em>Match</em>}' class.
@@ -9514,14 +9515,14 @@ public interface EmftvmPackage extends EPackage {
 		EAttribute MATCH__RULENAME = eINSTANCE.getMatch_Rulename();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Match_sImpl <em>Match s</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.MatchSImpl <em>Match S</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Match_sImpl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getMatch_s()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.MatchSImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getMatchS()
 		 * @generated
 		 */
-		EClass MATCH_S = eINSTANCE.getMatch_s();
+		EClass MATCH_S = eINSTANCE.getMatchS();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.AddImpl <em>Add</em>}' class.
@@ -9554,14 +9555,14 @@ public interface EmftvmPackage extends EPackage {
 		EClass INSERT = eINSTANCE.getInsert();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Invoke_all_cbsImpl <em>Invoke all cbs</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.InvokeAllCbsImpl <em>Invoke All Cbs</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Invoke_all_cbsImpl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvoke_all_cbs()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.InvokeAllCbsImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvokeAllCbs()
 		 * @generated
 		 */
-		EClass INVOKE_ALL_CBS = eINSTANCE.getInvoke_all_cbs();
+		EClass INVOKE_ALL_CBS = eINSTANCE.getInvokeAllCbs();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.ReturnImpl <em>Return</em>}' class.
@@ -9610,24 +9611,24 @@ public interface EmftvmPackage extends EPackage {
 		EClass GETCB = eINSTANCE.getGetcb();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Invoke_cbImpl <em>Invoke cb</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.InvokeCbImpl <em>Invoke Cb</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Invoke_cbImpl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvoke_cb()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.InvokeCbImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvokeCb()
 		 * @generated
 		 */
-		EClass INVOKE_CB = eINSTANCE.getInvoke_cb();
+		EClass INVOKE_CB = eINSTANCE.getInvokeCb();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.Invoke_cb_sImpl <em>Invoke cb s</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.InvokeCbSImpl <em>Invoke Cb S</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.m2m.atl.emftvm.impl.Invoke_cb_sImpl
-		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvoke_cb_s()
+		 * @see org.eclipse.m2m.atl.emftvm.impl.InvokeCbSImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getInvokeCbS()
 		 * @generated
 		 */
-		EClass INVOKE_CB_S = eINSTANCE.getInvoke_cb_s();
+		EClass INVOKE_CB_S = eINSTANCE.getInvokeCbS();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.ModelDeclarationTag <em>Model Declaration Tag</em>}' enum.

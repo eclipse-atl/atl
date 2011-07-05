@@ -21,7 +21,6 @@ import org.eclipse.m2m.atl.emftvm.LineNumber;
 import org.eclipse.m2m.atl.emftvm.LocalVariable;
 import org.eclipse.m2m.atl.emftvm.Module;
 
-
 /**
  * EMFTVM stack frame.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
@@ -42,6 +41,8 @@ public final class StackFrame {
 	/**
 	 * Creates a new {@link StackFrame}.
 	 * Use only for root frames!
+	 * @param env the current {@link ExecEnv}
+	 * @param codeBlock the codeBlock context for this stack frame
 	 */
 	public StackFrame(final ExecEnv env, final CodeBlock codeBlock) {
 		this.env = env;
@@ -81,8 +82,8 @@ public final class StackFrame {
 	}
 
 	/**
-	 * Pushes value onto the stack.
-	 * @param value
+	 * Pushes <pre>value</pre> onto the stack.
+	 * @param value the value to push
 	 */
 	public void push(final Object value) {
 		stack[++sp] = value;
@@ -104,6 +105,7 @@ public final class StackFrame {
 	}
 
 	/**
+	 * Returns the top element of the stack.
 	 * @return the top element of the stack.
 	 */
 	public Object peek() {
@@ -111,6 +113,7 @@ public final class StackFrame {
 	}
 
 	/**
+	 * Returns <code>true</code> iff the stack is empty.
 	 * @return <code>true</code> iff the stack is empty.
 	 */
 	public boolean stackEmpty() {
@@ -118,6 +121,7 @@ public final class StackFrame {
 	}
 
 	/**
+	 * Returns the stack frame of cb, starting at the parent, if any, otherwise <code>null</code>.
 	 * @param cb the code block
 	 * @return the stack frame of cb, starting at the parent, if any, otherwise <code>null</code>
 	 */
@@ -133,8 +137,9 @@ public final class StackFrame {
 	}
 
 	/**
-	 * @param cbOffset
-	 * @return the parent codeblock that lies cbOffset positions up, or <code>null</code>
+	 * Returns the parent codeblock that lies <pre>cbOffset</pre> positions up, or <code>null</code>.
+	 * @param cbOffset the codeblock offset
+	 * @return the parent codeblock that lies <pre>cbOffset</pre> positions up, or <code>null</code>
 	 */
 	private CodeBlock getCodeBlock(final int cbOffset) {
 		CodeBlock cb = this.codeBlock;
@@ -145,9 +150,10 @@ public final class StackFrame {
 	}
 
 	/**
-	 * Sets local variable with given slot to value.
-	 * @param slot
-	 * @param value
+	 * Sets local variable with given <pre>slot</pre> to <pre>value</pre>.
+	 * @param cbOffset the codeblock offset
+	 * @param slot the variable slot
+	 * @param value the value to set
 	 */
 	public void setLocal(final int cbOffset, final int slot, final Object value) {
 		if (cbOffset > 0) {
@@ -166,8 +172,8 @@ public final class StackFrame {
 
 	/**
 	 * Sets the first local variables to the given values.
-	 * @param self
-	 * @param values
+	 * @param self the "self" variable value
+	 * @param values the other local variable values
 	 */
 	public void setLocals(final Object self, final Object[] values) {
 		locals[0] = self;
@@ -176,15 +182,16 @@ public final class StackFrame {
 
 	/**
 	 * Sets the first local variables to the given values.
-	 * @param values
+	 * @param values the local variable values
 	 */
 	public void setLocals(final Object[] values) {
 		System.arraycopy(values, 0, locals, 0, values.length);
 	}
 
 	/**
+	 * Returns the local variable value with the given slot.
 	 * @param cbOffset parent code block offset
-	 * @param slot
+	 * @param slot the local variable slot
 	 * @return the local variable value with the given slot.
 	 */
 	public Object getLocal(final int cbOffset, final int slot) {
@@ -205,7 +212,7 @@ public final class StackFrame {
 	/**
 	 * Loads local variable with given cbOffset and slot onto the stack.
 	 * @param cbOffset code block offset
-	 * @param slot
+	 * @param slot the local variable slot
 	 */
 	public void load(final int cbOffset, final int slot) {
 		stack[++sp] = getLocal(cbOffset, slot);
@@ -214,7 +221,7 @@ public final class StackFrame {
 	/**
 	 * Pops top stack value into local variable with given cbOffset and slot.
 	 * @param cbOffset code block offset
-	 * @param slot
+	 * @param slot the local variable slot
 	 */
 	public void store(final int cbOffset, final int slot) {
 		setLocal(cbOffset, slot, stack[sp--]);
@@ -225,13 +232,13 @@ public final class StackFrame {
 	 */
 	public void dup() {
 		sp++;
-		stack[sp] = stack[sp-1];
+		stack[sp] = stack[sp - 1];
 	}
 
 	/**
 	 * Pops top two values from stack, pushes top value, then pushes original two values back.
 	 */
-	public void dup_x1() {
+	public void dupX1() {
 		sp++;						// .ab...
 		final int sp1 = sp - 1;
 		final int sp2 = sp1 - 1;
@@ -253,7 +260,7 @@ public final class StackFrame {
 	/**
 	 * Swaps third value over top two values on the stack.
 	 */
-	public void swap_x1() {
+	public void swapX1() {
 		final Object top = stack[sp];	// abc...
 		final int sp1 = sp - 1;
 		final int sp2 = sp - 2;
@@ -263,6 +270,7 @@ public final class StackFrame {
 	}
 
 	/**
+	 * Returns the parent stack frame.
 	 * @return the parent stack frame
 	 */
 	public StackFrame getParent() {
@@ -270,6 +278,7 @@ public final class StackFrame {
 	}
 
 	/**
+	 * Returns the codeBlock.
 	 * @return the codeBlock
 	 */
 	public CodeBlock getCodeBlock() {
@@ -277,6 +286,7 @@ public final class StackFrame {
 	}
 
 	/**
+	 * Returns the {@link ExecEnv}.
 	 * @return the env
 	 */
 	public ExecEnv getEnv() {
@@ -284,14 +294,15 @@ public final class StackFrame {
 	}
 
 	/**
+	 * Returns the nativeMethod.
 	 * @return the nativeMethod
 	 */
 	public Method getNativeMethod() {
 		return nativeMethod;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
@@ -366,6 +377,7 @@ public final class StackFrame {
 	}
 
 	/**
+	 * Sets the pc.
 	 * @param pc the pc to set
 	 */
 	public void setPc(int pc) {
@@ -373,6 +385,7 @@ public final class StackFrame {
 	}
 
 	/**
+	 * Returns the pc.
 	 * @return the pc
 	 */
 	public int getPc() {
@@ -447,7 +460,7 @@ public final class StackFrame {
 	 */
 	private static void prepareCodeBlockArg(final Object arg, final StackFrame subFrame) {
 		if (arg instanceof CodeBlock) {
-			((CodeBlock) arg).setParentFrame(subFrame);
+			((CodeBlock)arg).setParentFrame(subFrame);
 		}
 	}
 
@@ -462,15 +475,15 @@ public final class StackFrame {
 			Object arg = args[i];
 			prepareCodeBlockArg(arg, subFrame);
 			if (arg instanceof EnumLiteral) {
-				args[i] = convertEnumLiteral((EnumLiteral) arg, method.getParameterTypes()[i]);
+				args[i] = convertEnumLiteral((EnumLiteral)arg, method.getParameterTypes()[i]);
 			}
 		}
 	}
 
 	/**
-	 * Tries to convert literal to an instance of type
-	 * @param literal
-	 * @param type
+	 * Tries to convert literal to an instance of type.
+	 * @param literal the enum literal to convert
+	 * @param type the type to instantiate
 	 * @return an instance of type, or literal if conversion failed
 	 */
 	private static Object convertEnumLiteral(final EnumLiteral literal, final Class<?> type) {
@@ -480,9 +493,9 @@ public final class StackFrame {
 				final java.lang.reflect.Field valuesField = type.getDeclaredField("VALUES");
 				final Object values = valuesField.get(null);
 				if (values instanceof Collection<?>) {
-					for (Object value : (Collection<?>) values) {
+					for (Object value : (Collection<?>)values) {
 						if (value instanceof Enumerator) {
-							if (litName.equals(((Enumerator) value).getName()) ||
+							if (litName.equals(((Enumerator)value).getName()) ||
 								litName.equals(value.toString())) {
 								return value;
 							}
@@ -491,9 +504,13 @@ public final class StackFrame {
 				}
 			// Ignore exceptions; just don't convert here
 			} catch (SecurityException e) {
+				// do nothing
 			} catch (NoSuchFieldException e) {
+				// do nothing
 			} catch (IllegalArgumentException e) {
+				// do nothing
 			} catch (IllegalAccessException e) {
+				// do nothing
 			}
 		}
 		return literal;

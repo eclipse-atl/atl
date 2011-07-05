@@ -13,39 +13,43 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.m2m.atl.emftvm.Allinst_in;
+import org.eclipse.m2m.atl.emftvm.DupX1;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Opcode;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Allinst in</b></em>'.
+ * An implementation of the model object '<em><b>Dup x1</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class Allinst_inImpl extends InstructionImpl implements Allinst_in {
+public class DupX1Impl extends InstructionImpl implements DupX1 {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link DupX1Impl}.
 	 * <!-- end-user-doc -->
 	 */
-	protected Allinst_inImpl() {
+	protected DupX1Impl() {
 		super();
-		opcode = Opcode.ALLINST_IN;
+		opcode = Opcode.DUP_X1;
 		stackConsumption = 2;
-		stackProduction = 1;
+		stackProduction = 3;
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return EmftvmPackage.Literals.ALLINST_IN;
+		return EmftvmPackage.Literals.DUP_X1;
 	}
 
-} //Allinst_inImpl
+} //Dup_x1Impl

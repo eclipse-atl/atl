@@ -26,6 +26,7 @@ import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Typed Element</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -40,15 +41,6 @@ import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
  */
 public abstract class TypedElementImpl extends NamedElementImpl implements TypedElement {
 	/**
-	 * The cached value of the '{@link #getEType() <em>EType</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEType()
-	 * @generated
-	 * @ordered
-	 */
-	protected EClassifier eType;
-	/**
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -57,15 +49,6 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	 * @ordered
 	 */
 	protected static final String TYPE_EDEFAULT = null;
-	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getType()
-	 * @generated
-	 * @ordered
-	 */
-	protected String type = TYPE_EDEFAULT;
 	/**
 	 * The default value of the '{@link #getTypeModel() <em>Type Model</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -76,6 +59,24 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	 */
 	protected static final String TYPE_MODEL_EDEFAULT = null;
 	/**
+	 * The cached value of the '{@link #getEType() <em>EType</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEType()
+	 * @generated
+	 * @ordered
+	 */
+	protected EClassifier eType;
+	/**
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String type = TYPE_EDEFAULT;
+	/**
 	 * The cached value of the '{@link #getTypeModel() <em>Type Model</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -84,8 +85,10 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	 * @ordered
 	 */
 	protected String typeModel = TYPE_MODEL_EDEFAULT;
+
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link TypedElementImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -95,6 +98,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -104,7 +109,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -121,7 +127,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #getEType()
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -130,7 +137,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -142,7 +150,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -151,7 +160,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -163,7 +173,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -172,7 +183,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -184,7 +196,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -203,7 +216,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -224,7 +238,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -245,7 +260,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -263,7 +279,8 @@ public abstract class TypedElementImpl extends NamedElementImpl implements Typed
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */

@@ -28,6 +28,7 @@ import org.eclipse.m2m.atl.emftvm.Parameter;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Parameter</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -41,6 +42,7 @@ import org.eclipse.m2m.atl.emftvm.Parameter;
 public class ParameterImpl extends TypedElementImpl implements Parameter {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link ParameterImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -50,6 +52,8 @@ public class ParameterImpl extends TypedElementImpl implements Parameter {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -59,7 +63,8 @@ public class ParameterImpl extends TypedElementImpl implements Parameter {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -69,7 +74,8 @@ public class ParameterImpl extends TypedElementImpl implements Parameter {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setOperation(Operation)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -79,7 +85,8 @@ public class ParameterImpl extends TypedElementImpl implements Parameter {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -100,7 +107,8 @@ public class ParameterImpl extends TypedElementImpl implements Parameter {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -116,7 +124,8 @@ public class ParameterImpl extends TypedElementImpl implements Parameter {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -130,7 +139,8 @@ public class ParameterImpl extends TypedElementImpl implements Parameter {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -144,7 +154,8 @@ public class ParameterImpl extends TypedElementImpl implements Parameter {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -158,7 +169,8 @@ public class ParameterImpl extends TypedElementImpl implements Parameter {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -173,7 +185,8 @@ public class ParameterImpl extends TypedElementImpl implements Parameter {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -188,7 +201,8 @@ public class ParameterImpl extends TypedElementImpl implements Parameter {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

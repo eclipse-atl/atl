@@ -31,6 +31,7 @@ import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Operation</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -46,15 +47,6 @@ import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 public class OperationImpl extends FeatureImpl implements Operation {
 
 	/**
-	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getParameters()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Parameter> parameters;
-	/**
 	 * The default value of the '{@link #isQuery() <em>Query</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -63,6 +55,15 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	 * @ordered
 	 */
 	protected static final boolean QUERY_EDEFAULT = false;
+	/**
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Parameter> parameters;
 	/**
 	 * The cached value of the '{@link #isQuery() <em>Query</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -81,8 +82,10 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	 * @ordered
 	 */
 	protected CodeBlock body;
+
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link OperationImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -92,6 +95,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -101,7 +106,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -113,7 +119,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -122,7 +129,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -134,7 +142,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -143,7 +152,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setBody(CodeBlock)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -158,7 +168,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -177,7 +188,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -196,7 +208,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -212,7 +225,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -230,7 +244,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -253,7 +268,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -274,7 +290,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -292,7 +309,8 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */

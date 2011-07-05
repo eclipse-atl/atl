@@ -24,6 +24,7 @@ import org.eclipse.m2m.atl.emftvm.Opcode;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Match</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -53,8 +54,10 @@ public class MatchImpl extends InvokeInstructionImpl implements Match {
 	 * @ordered
 	 */
 	protected String rulename = RULENAME_EDEFAULT;
+
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link MatchImpl}.
 	 * <!-- end-user-doc -->
 	 */
 	protected MatchImpl() {
@@ -64,6 +67,8 @@ public class MatchImpl extends InvokeInstructionImpl implements Match {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -73,7 +78,8 @@ public class MatchImpl extends InvokeInstructionImpl implements Match {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -82,7 +88,8 @@ public class MatchImpl extends InvokeInstructionImpl implements Match {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -94,7 +101,8 @@ public class MatchImpl extends InvokeInstructionImpl implements Match {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -108,7 +116,8 @@ public class MatchImpl extends InvokeInstructionImpl implements Match {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -123,7 +132,8 @@ public class MatchImpl extends InvokeInstructionImpl implements Match {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -138,7 +148,8 @@ public class MatchImpl extends InvokeInstructionImpl implements Match {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -152,7 +163,8 @@ public class MatchImpl extends InvokeInstructionImpl implements Match {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

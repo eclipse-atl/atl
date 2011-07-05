@@ -37,31 +37,33 @@ public final class Tuple {
 		values = Collections.unmodifiableMap(map);
 	}
 
+	/**
+	 * Returns the value for <code>name</code>.
+	 * @param name the element name
+	 * @return the value for <code>name</code>
+	 */
 	public Object get(Object name) {
 		return values.get(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
 		return "Tuple " + values.toString(); //$NON-NLS-1$
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object o) {
 		return (o instanceof Tuple) ? values.equals(((Tuple)o).values) : false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -69,7 +71,8 @@ public final class Tuple {
 	}
 
 	/**
-	 * @return This {@link Tuple}'s value map
+	 * Returns this {@link Tuple}'s value map.
+	 * @return this {@link Tuple}'s value map
 	 */
 	public Map<String, Object> asMap() {
 		return values;

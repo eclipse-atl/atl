@@ -20,6 +20,7 @@ import org.eclipse.m2m.atl.emftvm.Or;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Or</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
@@ -29,6 +30,7 @@ import org.eclipse.m2m.atl.emftvm.Or;
 public class OrImpl extends CodeBlockInstructionImpl implements Or {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link OrImpl}.
 	 * <!-- end-user-doc -->
 	 */
 	protected OrImpl() {
@@ -40,6 +42,8 @@ public class OrImpl extends CodeBlockInstructionImpl implements Or {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

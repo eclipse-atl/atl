@@ -20,7 +20,8 @@ import org.eclipse.m2m.atl.emftvm.Module;
 public interface ModuleResolver {
 
 	/**
-	 * @param name
+	 * Resolves the module with the given <pre>name</pre>.
+	 * @param name the module name
 	 * @return the module with the given name
 	 * @throws ModuleNotFoundException
 	 */

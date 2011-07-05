@@ -500,26 +500,26 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Set" eSuperTypes="#//FieldInstruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Get" eSuperTypes="#//FieldInstruction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Get_trans" eSuperTypes="#//FieldInstruction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Set_static" eSuperTypes="#//FieldInstruction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Get_static" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GetTrans" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SetStatic" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GetStatic" eSuperTypes="#//FieldInstruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Findtype" eSuperTypes="#//Instruction">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelname" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="typename" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Findtype_s" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FindtypeS" eSuperTypes="#//Instruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="New" eSuperTypes="#//Instruction">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelname" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="New_s" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NewS" eSuperTypes="#//Instruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Delete" eSuperTypes="#//Instruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Dup" eSuperTypes="#//Instruction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Dup_x1" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DupX1" eSuperTypes="#//Instruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Swap" eSuperTypes="#//Instruction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Swap_x1" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SwapX1" eSuperTypes="#//Instruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="BranchInstruction" abstract="true" eSuperTypes="#//Instruction">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="offset" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
@@ -542,10 +542,10 @@
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Invoke" eSuperTypes="#//InvokeOperationInstruction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Invoke_super" eSuperTypes="#//InvokeOperationInstruction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Invoke_static" eSuperTypes="#//InvokeOperationInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvokeSuper" eSuperTypes="#//InvokeOperationInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvokeStatic" eSuperTypes="#//InvokeOperationInstruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Allinst" eSuperTypes="#//Instruction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Allinst_in" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AllinstIn" eSuperTypes="#//Instruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Isnull" eSuperTypes="#//Instruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Getenvtype" eSuperTypes="#//Instruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Not" eSuperTypes="#//Instruction"/>
@@ -575,14 +575,14 @@
         eType="#//CodeBlock" volatile="true" transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Getcb" eSuperTypes="#//CodeBlockInstruction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Invoke_all_cbs" eSuperTypes="#//InvokeInstruction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Invoke_cb" eSuperTypes="#//CodeBlockInstruction #//InvokeInstruction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Invoke_cb_s" eSuperTypes="#//InvokeInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvokeAllCbs" eSuperTypes="#//InvokeInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvokeCb" eSuperTypes="#//CodeBlockInstruction #//InvokeInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvokeCbS" eSuperTypes="#//InvokeInstruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Match" eSuperTypes="#//InvokeInstruction">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rulename" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Match_s" eSuperTypes="#//InvokeInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MatchS" eSuperTypes="#//InvokeInstruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Add" eSuperTypes="#//FieldInstruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Remove" eSuperTypes="#//FieldInstruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Insert" eSuperTypes="#//FieldInstruction"/>

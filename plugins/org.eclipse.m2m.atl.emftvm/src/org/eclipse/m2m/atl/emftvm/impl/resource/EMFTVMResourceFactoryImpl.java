@@ -15,10 +15,14 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 
+/**
+ * Creates instances of {@link EMFTVMResourceImpl}.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+ */
 public class EMFTVMResourceFactoryImpl extends ResourceFactoryImpl {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl#createResource(org.eclipse.emf.common.util.URI)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Resource createResource(URI uri) {

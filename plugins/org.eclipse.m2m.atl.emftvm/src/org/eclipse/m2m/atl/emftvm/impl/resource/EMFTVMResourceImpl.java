@@ -52,12 +52,12 @@ import org.eclipse.m2m.atl.emftvm.TypedElement;
 public class EMFTVMResourceImpl extends ResourceImpl {
 
 	/**
-	  * Magic header: "ETVM"
+	  * Magic header: "ETVM".
 	  * http://www.asciitable.com/
 	  */
 	public static final int MAGIC = 0x4554564D;
 
-	protected static final EmftvmFactory factory = EmftvmFactory.eINSTANCE;
+	protected static final EmftvmFactory FACTORY = EmftvmFactory.eINSTANCE;
 
 	/**
 	 * Creates a new {@link EMFTVMResourceImpl}.
@@ -68,14 +68,14 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 
 	/**
 	 * Creates a new {@link EMFTVMResourceImpl} from a URI.
-	 * @param uri
+	 * @param uri the resource URI
 	 */
 	public EMFTVMResourceImpl(URI uri) {
 		super(uri);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.emf.ecore.resource.impl.ResourceImpl#doLoad(java.io.InputStream, java.util.Map)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void doLoad(InputStream inputStream, Map<?, ?> options)
@@ -93,16 +93,16 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 
 	private static Module readModule(final DataInputStream in, 
 			final ConstantPool constants) throws IOException {
-		final Module module = factory.createModule();
-		module.setName((String) constants.get(in.readInt()));
-		module.setSourceName((String) constants.get(in.readInt()));
+		final Module module = FACTORY.createModule();
+		module.setName((String)constants.get(in.readInt()));
+		module.setSourceName((String)constants.get(in.readInt()));
 		readModelDeclarations(in, constants, module.getInputModels());
 		readModelDeclarations(in, constants, module.getInoutModels());
 		readModelDeclarations(in, constants, module.getOutputModels());
 		final EList<String> imports = module.getImports();
 		final int itsize = in.readInt();
 		for (int i = 0; i < itsize; i++) {
-			imports.add((String) constants.get(in.readInt()));
+			imports.add((String)constants.get(in.readInt()));
 		}
 		readFeatures(in, constants, module.getFeatures());
 		readRules(in, constants, module.getRules());
@@ -113,10 +113,10 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			final ConstantPool constants, final EList<ModelDeclaration> models) throws IOException {
 		final int msize = in.readInt();
 		for (int i = 0; i < msize; i++) {
-			ModelDeclaration model = factory.createModelDeclaration();
+			ModelDeclaration model = FACTORY.createModelDeclaration();
 			models.add(model);
-			model.setModelName((String) constants.get(in.readInt()));
-			model.setMetaModelName((String) constants.get(in.readInt()));
+			model.setModelName((String)constants.get(in.readInt()));
+			model.setMetaModelName((String)constants.get(in.readInt()));
 		}
 	}
 
@@ -128,17 +128,17 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			int tag = in.readInt();
 			switch (tag) {
 			case FeatureTag.FIELD_VALUE:
-				f = factory.createField();
+				f = FACTORY.createField();
 				break;
 			case FeatureTag.STATIC_FIELD_VALUE:
-				f = factory.createField();
+				f = FACTORY.createField();
 				f.setStatic(true);
 				break;
 			default:
 				throw new UnsupportedEncodingException(String.format("Unsupported feature type: %d", tag));
 			}
 			fields.add(f); // first add feature, then parse
-			readField(in, constants, (Field) f);
+			readField(in, constants, (Field)f);
 		}
 	}
 
@@ -150,27 +150,27 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			int tag = in.readInt();
 			switch (tag) {
 			case FeatureTag.FIELD_VALUE:
-				f = factory.createField();
+				f = FACTORY.createField();
 				break;
 			case FeatureTag.STATIC_FIELD_VALUE:
-				f = factory.createField();
+				f = FACTORY.createField();
 				f.setStatic(true);
 				break;
 			case FeatureTag.OPERATION_VALUE:
-				f = factory.createOperation();
+				f = FACTORY.createOperation();
 				break;
 			case FeatureTag.STATIC_OPERATION_VALUE:
-				f = factory.createOperation();
+				f = FACTORY.createOperation();
 				f.setStatic(true);
 				break;
 			case FeatureTag.QUERY_OPERATION_VALUE:
-				f = factory.createOperation();
-				((Operation) f).setQuery(true);
+				f = FACTORY.createOperation();
+				((Operation)f).setQuery(true);
 				break;
 			case FeatureTag.STATIC_QUERY_OPERATION_VALUE:
-				f = factory.createOperation();
+				f = FACTORY.createOperation();
 				f.setStatic(true);
-				((Operation) f).setQuery(true);
+				((Operation)f).setQuery(true);
 				break;
 			default:
 				throw new UnsupportedEncodingException(String.format("Unsupported feature type: %d", tag));
@@ -178,36 +178,36 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			features.add(f); // first add feature, then parse
 			assert (f instanceof Field) || (f instanceof Operation);
 			if (f instanceof Field) {
-				readField(in, constants, (Field) f);
+				readField(in, constants, (Field)f);
 			} else {
-				readOperation(in, constants, (Operation) f);
+				readOperation(in, constants, (Operation)f);
 			}
 		}
 	}
 
 	private static void readNamedElement(final DataInputStream in, 
 			final ConstantPool constants, final NamedElement namedElement) throws IOException {
-		namedElement.setName((String) constants.get(in.readInt()));
+		namedElement.setName((String)constants.get(in.readInt()));
 	}
 
 	private static void readTypedElement(final DataInputStream in, 
 			final ConstantPool constants, final TypedElement typedElement) throws IOException {
 		readNamedElement(in, constants, typedElement);
-		typedElement.setType((String) constants.get(in.readInt()));
-		typedElement.setTypeModel((String) constants.get(in.readInt()));
+		typedElement.setType((String)constants.get(in.readInt()));
+		typedElement.setTypeModel((String)constants.get(in.readInt()));
 	}
 
 	private static void readFeature(final DataInputStream in, 
 			final ConstantPool constants, final Feature feature) throws IOException {
 		readTypedElement(in, constants, feature);
-		feature.setContext((String) constants.get(in.readInt()));
-		feature.setContextModel((String) constants.get(in.readInt()));
+		feature.setContext((String)constants.get(in.readInt()));
+		feature.setContextModel((String)constants.get(in.readInt()));
 	}
 
 	private static void readField(final DataInputStream in, 
 			final ConstantPool constants, final Field field) throws IOException {
 		readFeature(in, constants, field);
-		final CodeBlock cb = factory.createCodeBlock();
+		final CodeBlock cb = FACTORY.createCodeBlock();
 		field.setInitialiser(cb);
 		readCodeBlock(in, constants, cb);
 	}
@@ -216,7 +216,7 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			final ConstantPool constants, final Operation op) throws IOException {
 		readFeature(in, constants, op);
 		readParameters(in, constants, op.getParameters());
-		final CodeBlock cb = factory.createCodeBlock();
+		final CodeBlock cb = FACTORY.createCodeBlock();
 		op.setBody(cb);
 		readCodeBlock(in, constants, cb);
 	}
@@ -230,7 +230,7 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 		final int nestedSize = in.readInt();
 		final EList<CodeBlock> nested = cb.getNested();
 		for (int i = 0; i < nestedSize; i++) {
-			CodeBlock nestedcode = factory.createCodeBlock();
+			CodeBlock nestedcode = FACTORY.createCodeBlock();
 			nested.add(nestedcode);
 			readCodeBlock(in, constants, nestedcode);
 		}
@@ -241,7 +241,7 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			final ConstantPool constants, final EList<Parameter> parameters) throws IOException {
 		final int ptsize = in.readInt();
 		for (int i = 0; i < ptsize; i++) {
-			Parameter par = factory.createParameter();
+			Parameter par = FACTORY.createParameter();
 			parameters.add(par);
 			readTypedElement(in, constants, par);
 		}
@@ -254,7 +254,7 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 		final EList<Instruction> code = cb.getCode();
 		for (int i = 0; i < isize; i++) {
 			int lineNumber = in.readInt();
-			Instruction instr = factory.createInstruction(Opcode.get(in.readInt()));
+			Instruction instr = FACTORY.createInstruction(Opcode.get(in.readInt()));
 			code.add(instr);
 			if (lineNumber > -1) {
 				instr.setLineNumber(cb.getLineNumbers().get(lineNumber));
@@ -267,7 +267,7 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			final EList<LineNumber> lineNumbers) throws IOException {
 		final int lnsize = in.readInt();
 		for (int i = 0; i < lnsize; i++) {
-			LineNumber ln = factory.createLineNumber();
+			LineNumber ln = FACTORY.createLineNumber();
 			lineNumbers.add(ln);
 			ln.setStartLine(in.readInt());
 			ln.setStartColumn(in.readInt());
@@ -282,7 +282,7 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			final ConstantPool constants, final EList<LocalVariable> localVars) throws IOException {
 		final int lvsize = in.readInt();
 		for (int i = 0; i < lvsize; i++) {
-			LocalVariable lv = factory.createLocalVariable();
+			LocalVariable lv = FACTORY.createLocalVariable();
 			localVars.add(lv);
 			lv.setSlot(in.readInt());
 			readTypedElement(in, constants, lv);
@@ -295,7 +295,7 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			final ConstantPool constants, final EList<Rule> rules) throws IOException {
 		final int rtsize = in.readInt();
 		for (int i = 0; i < rtsize; i++) {
-			Rule rule = factory.createRule();
+			Rule rule = FACTORY.createRule();
 			rules.add(rule);
 			readNamedElement(in, constants, rule);
 			rule.setMode(RuleMode.get(in.readInt()));
@@ -308,19 +308,19 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			readFields(in, constants, rule.getFields());
 			//matcher
 			if (in.readInt() > 0) {
-				CodeBlock matcher = factory.createCodeBlock();
+				CodeBlock matcher = FACTORY.createCodeBlock();
 				rule.setMatcher(matcher);
 				readCodeBlock(in, constants, matcher);
 			}
 			//applier
 			if (in.readInt() > 0) {
-				CodeBlock applier = factory.createCodeBlock();
+				CodeBlock applier = FACTORY.createCodeBlock();
 				rule.setApplier(applier);
 				readCodeBlock(in, constants, applier);
 			}
 			//post-apply
 			if (in.readInt() > 0) {
-				CodeBlock postApply = factory.createCodeBlock();
+				CodeBlock postApply = FACTORY.createCodeBlock();
 				rule.setPostApply(postApply);
 				readCodeBlock(in, constants, postApply);
 			}
@@ -331,16 +331,16 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			final ConstantPool constants, final EList<InputRuleElement> elements) throws IOException {
 		final int esize = in.readInt();
 		for (int i = 0; i < esize; i++) {
-			InputRuleElement ire = factory.createInputRuleElement();
+			InputRuleElement ire = FACTORY.createInputRuleElement();
 			elements.add(ire);
 			readTypedElement(in, constants, ire);
 			int iemsize = in.readInt();
 			final EList<String> models = ire.getModels();
 			for (int j = 0; j < iemsize; j++) {
-				models.add((String) constants.get(in.readInt()));
+				models.add((String)constants.get(in.readInt()));
 			}
 			if (in.readInt() > 0) {
-				CodeBlock binding = factory.createCodeBlock();
+				CodeBlock binding = FACTORY.createCodeBlock();
 				ire.setBinding(binding);
 				readCodeBlock(in, constants, binding);
 			}
@@ -352,13 +352,13 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 		final EList<OutputRuleElement> elements = rule.getOutputElements();
 		final int esize = in.readInt();
 		for (int i = 0; i < esize; i++) {
-			OutputRuleElement ore = factory.createOutputRuleElement();
+			OutputRuleElement ore = FACTORY.createOutputRuleElement();
 			elements.add(ore);
 			readTypedElement(in, constants, ore);
-			ore.getModels().add((String) constants.get(in.readInt()));
+			ore.getModels().add((String)constants.get(in.readInt()));
 			int index = in.readInt();
 			if (index > -1) {
-				String inputElementName = (String) constants.get(index);
+				String inputElementName = (String)constants.get(index);
 				for (InputRuleElement ire : rule.getInputElements()) {
 					if (inputElementName.equals(ire.getName())) {
 						ore.setMapsTo(ire);
@@ -377,12 +377,12 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			final ConstantPool constants, final EList<String> superRules) throws IOException {
 		final int srsize = in.readInt();
 		for (int i = 0; i < srsize; i++) {
-			superRules.add((String) constants.get(in.readInt()));
+			superRules.add((String)constants.get(in.readInt()));
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.emf.ecore.resource.impl.ResourceImpl#doSave(java.io.OutputStream, java.util.Map)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void doSave(OutputStream outputStream, Map<?, ?> options)
@@ -396,12 +396,17 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 		writeModule(out, constants, module);
 	}
 
+	/**
+	 * Finds the {@link Module} in this resource.
+	 * @return the module
+	 * @throws IOException if no module - or more than one module - found
+	 */
 	protected Module findModule() throws IOException {
 		Module module = null;
 		for (EObject object : getContents()) {
 			if (object instanceof Module) {
 				if (module == null) {
-					module = (Module) object;
+					module = (Module)object;
 				} else {
 					throw new IOException("More than one Module found in Resource");
 				}
@@ -446,7 +451,7 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			out.writeInt(field.isStatic() ? FeatureTag.STATIC_FIELD_VALUE : FeatureTag.FIELD_VALUE);
 			writeFeature(out, constants, field);
 			if (field.getInitialiser() == null) {
-				field.setInitialiser(factory.createCodeBlock()); // enforce multiplicity constraints
+				field.setInitialiser(FACTORY.createCodeBlock()); // enforce multiplicity constraints
 			}
 			writeCodeBlock(out, constants, field.getInitialiser());
 		}
@@ -458,18 +463,18 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 		for (Feature f : features) {
 			switch (f.eClass().getClassifierID()) {
 			case EmftvmPackage.FIELD:
-				Field field = (Field) f;
+				Field field = (Field)f;
 				out.writeInt(f.isStatic() ? FeatureTag.STATIC_FIELD_VALUE : FeatureTag.FIELD_VALUE);
 				writeFeature(out, constants, field);
 				if (field.getInitialiser() == null) {
-					field.setInitialiser(factory.createCodeBlock()); // enforce multiplicity constraints
+					field.setInitialiser(FACTORY.createCodeBlock()); // enforce multiplicity constraints
 				}
 				writeCodeBlock(out, constants, field.getInitialiser());
 				break;
 			case EmftvmPackage.OPERATION:
-				Operation op = (Operation) f;
+				Operation op = (Operation)f;
 				FeatureTag tag;
-				int opflags = (f.isStatic() ? 1 : 0) + (((Operation) f).isQuery() ? 2 : 0);
+				int opflags = (f.isStatic() ? 1 : 0) + (((Operation)f).isQuery() ? 2 : 0);
 				switch (opflags) {
 				case 0: tag = FeatureTag.OPERATION; break;
 				case 1:	tag = FeatureTag.STATIC_OPERATION; break;
@@ -482,7 +487,7 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 				writeFeature(out, constants, op);
 				writeParameters(out, constants, op.getParameters());
 				if (op.getBody() == null) {
-					op.setBody(factory.createCodeBlock()); // enforce multiplicity constraints
+					op.setBody(FACTORY.createCodeBlock()); // enforce multiplicity constraints
 				}
 				writeCodeBlock(out, constants, op.getBody());
 				break;

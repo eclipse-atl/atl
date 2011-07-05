@@ -23,6 +23,7 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Exec Env</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  * <p>
@@ -140,6 +141,10 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Loads the module with the given <pre>name</pre> into this {@link ExecEnv} using the <pre>resolver</pre>.
+	 * @param resolver the module file resolver
+	 * @param name the module name
+	 * @return the loaded module
 	 * <!-- end-user-doc -->
 	 * @model resolverDataType="org.eclipse.m2m.atl.emftvm.ModuleResolver"
 	 * @generated
@@ -148,6 +153,8 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Registers a {@link Feature} into this {@link ExecEnv}.
+	 * @param feature the {@link Feature} to register
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -156,6 +163,8 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Registers a {@link Rule} into this {@link ExecEnv}.
+	 * @param rule the {@link Rule} to register
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -164,6 +173,11 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Finds an {@link Operation} registered within this {@link ExecEnv}.
+	 * @param context the context type of the operation
+	 * @param name the operation name
+	 * @param parameterTypes the parameter types of the operation
+	 * @return the {@link Operation} with the given properties, or <code>null</code> if none registered
 	 * <!-- end-user-doc -->
 	 * @model parameterTypesMany="true"
 	 * @generated
@@ -172,6 +186,11 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Finds a static {@link Operation} registered within this {@link ExecEnv}.
+	 * @param context the context type of the operation
+	 * @param name the operation name
+	 * @param parameterTypes the parameter types of the operation
+	 * @return the static {@link Operation} with the given properties, or <code>null</code> if none registered
 	 * <!-- end-user-doc -->
 	 * @model parameterTypesMany="true"
 	 * @generated
@@ -180,6 +199,10 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Finds a {@link Field} registered within this {@link ExecEnv}.
+	 * @param context the context type of the field
+	 * @param name the operation name
+	 * @return the {@link Field} with the given properties, or <code>null</code> if none registered
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -188,6 +211,10 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Finds a static {@link Field} registered within this {@link ExecEnv}.
+	 * @param context the context type of the field
+	 * @param name the operation name
+	 * @return the static {@link Field} with the given properties, or <code>null</code> if none registered
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -196,6 +223,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Finds a {@link Rule} registered within this {@link ExecEnv}.
+	 * @param name the rule name
+	 * @return the {@link Rule} with the given name, or <code>null</code> if none registered
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -204,6 +234,8 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns all rules registered in this {@link ExecEnv}.
+	 * @return all rules registered in this {@link ExecEnv}.
 	 * <!-- end-user-doc -->
 	 * @model kind="operation" dataType="org.eclipse.m2m.atl.emftvm.LazyList<org.eclipse.m2m.atl.emftvm.Rule>"
 	 * @generated
@@ -212,6 +244,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link Model} that is registered in this {@link ExecEnv}, and that contains <pre>object</pre>.
+	 * @param object the object for which to look up the containing model
+	 * @return the {@link Model} that contains <pre>object</pre>, or <code>null</code> if not found.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -220,6 +255,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the ID under which <pre>model</pre> is registered within this {@link ExecEnv}.
+	 * @param model the registered {@link Model} to retrieve the ID for
+	 * @return the ID under which <pre>model</pre> is registered within this {@link ExecEnv}.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -228,6 +266,7 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Deletes all elements in {@link #getDeletionQueue()}, and purges the queue.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -236,6 +275,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the input {@link Model} that is registered in this {@link ExecEnv}, and that contains <pre>object</pre>.
+	 * @param object the object for which to look up the containing model
+	 * @return the input {@link Model} that contains <pre>object</pre>, or <code>null</code> if not found.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -244,6 +286,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the in/out {@link Model} that is registered in this {@link ExecEnv}, and that contains <pre>object</pre>.
+	 * @param object the object for which to look up the containing model
+	 * @return the in/out {@link Model} that contains <pre>object</pre>, or <code>null</code> if not found.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -252,6 +297,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the output {@link Model} that is registered in this {@link ExecEnv}, and that contains <pre>object</pre>.
+	 * @param object the object for which to look up the containing model
+	 * @return the output {@link Model} that contains <pre>object</pre>, or <code>null</code> if not found.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -260,6 +308,10 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Finds the type/metaclass for the given (meta-)<pre>modelName</pre> and <pre>typeName</pre>.
+	 * @param modelName the name under which the metamodel that contains the type is registered
+	 * @param typeName the type/metaclass name (may be fully qualified using '<pre>::</pre>')
+	 * @return the type/metaclass, or <code>null</code> if not found
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -268,6 +320,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Runs the loaded transformation module in this {@link ExecEnv}.
+	 * @param timingData the object in which to record the execution times
+	 * @return the execution result value, or <code>null</code> if none
 	 * <!-- end-user-doc -->
 	 * @model timingDataDataType="org.eclipse.m2m.atl.emftvm.TimingData"
 	 * @generated

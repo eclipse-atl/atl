@@ -34,6 +34,7 @@ import org.eclipse.m2m.atl.emftvm.Rule;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Module</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -136,6 +137,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link ModuleImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -145,6 +147,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -154,7 +158,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -163,7 +168,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -175,7 +181,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -187,7 +194,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -199,7 +207,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -211,7 +220,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -223,7 +233,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -235,7 +246,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -247,7 +259,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -259,7 +272,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -282,7 +296,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -304,7 +319,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -332,7 +348,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -376,7 +393,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -412,7 +430,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -440,7 +459,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -452,7 +472,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 		Resource r = eResource();
 		if (r != null) {
 			String path = r.getURI().toString();
-			result.append(path.substring(0, path.lastIndexOf('/')+1));
+			result.append(path.substring(0, path.lastIndexOf('/') + 1));
 		}
 		if (eIsSet(EmftvmPackage.MODULE__SOURCE_NAME)) {
 			result.append(sourceName);

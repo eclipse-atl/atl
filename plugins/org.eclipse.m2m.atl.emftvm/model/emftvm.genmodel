@@ -7,7 +7,7 @@
     modelName="Emftvm" editPluginClass="org.eclipse.m2m.atl.emftvm.provider.EmftvmEditPlugin"
     editorPluginClass="org.eclipse.m2m.atl.emftvm.presentation.EmftvmEditorPlugin"
     testsDirectory="/org.eclipse.m2m.atl.emftvm.tests/src" testSuiteClass="org.eclipse.m2m.atl.emftvm.tests.EmftvmAllTests"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
     editPluginID="org.eclipse.m2m.atl.emftvm.edit" editorPluginID="org.eclipse.m2m.atl.emftvm.editor"
     language="" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
   <foreignModel>emftvm.ecore</foreignModel>
@@ -369,23 +369,23 @@
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//Set"/>
     <genClasses ecoreClass="emftvm.ecore#//Get"/>
-    <genClasses ecoreClass="emftvm.ecore#//Get_trans"/>
-    <genClasses ecoreClass="emftvm.ecore#//Set_static"/>
-    <genClasses ecoreClass="emftvm.ecore#//Get_static"/>
+    <genClasses ecoreClass="emftvm.ecore#//GetTrans"/>
+    <genClasses ecoreClass="emftvm.ecore#//SetStatic"/>
+    <genClasses ecoreClass="emftvm.ecore#//GetStatic"/>
     <genClasses ecoreClass="emftvm.ecore#//Findtype" labelFeature="#//emftvm/Findtype/typename">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Findtype/modelname"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Findtype/typename"/>
     </genClasses>
-    <genClasses ecoreClass="emftvm.ecore#//Findtype_s"/>
+    <genClasses ecoreClass="emftvm.ecore#//FindtypeS"/>
     <genClasses ecoreClass="emftvm.ecore#//New">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//New/modelname"/>
     </genClasses>
-    <genClasses ecoreClass="emftvm.ecore#//New_s"/>
+    <genClasses ecoreClass="emftvm.ecore#//NewS"/>
     <genClasses ecoreClass="emftvm.ecore#//Delete"/>
     <genClasses ecoreClass="emftvm.ecore#//Dup"/>
-    <genClasses ecoreClass="emftvm.ecore#//Dup_x1"/>
+    <genClasses ecoreClass="emftvm.ecore#//DupX1"/>
     <genClasses ecoreClass="emftvm.ecore#//Swap"/>
-    <genClasses ecoreClass="emftvm.ecore#//Swap_x1"/>
+    <genClasses ecoreClass="emftvm.ecore#//SwapX1"/>
     <genClasses image="false" ecoreClass="emftvm.ecore#//BranchInstruction">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//BranchInstruction/offset"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//BranchInstruction/target"/>
@@ -402,10 +402,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//InvokeOperationInstruction/opname"/>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//Invoke"/>
-    <genClasses ecoreClass="emftvm.ecore#//Invoke_super"/>
-    <genClasses ecoreClass="emftvm.ecore#//Invoke_static"/>
+    <genClasses ecoreClass="emftvm.ecore#//InvokeSuper"/>
+    <genClasses ecoreClass="emftvm.ecore#//InvokeStatic"/>
     <genClasses ecoreClass="emftvm.ecore#//Allinst"/>
-    <genClasses ecoreClass="emftvm.ecore#//Allinst_in"/>
+    <genClasses ecoreClass="emftvm.ecore#//AllinstIn"/>
     <genClasses ecoreClass="emftvm.ecore#//Isnull"/>
     <genClasses ecoreClass="emftvm.ecore#//Getenvtype"/>
     <genClasses ecoreClass="emftvm.ecore#//Not"/>
@@ -425,13 +425,13 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlockInstruction/codeBlock"/>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//Getcb" labelFeature="#//emftvm/CodeBlockInstruction/cbIndex"/>
-    <genClasses ecoreClass="emftvm.ecore#//Invoke_all_cbs"/>
-    <genClasses ecoreClass="emftvm.ecore#//Invoke_cb" labelFeature="#//emftvm/CodeBlockInstruction/cbIndex"/>
-    <genClasses ecoreClass="emftvm.ecore#//Invoke_cb_s" labelFeature="#//emftvm/Instruction/opcode"/>
+    <genClasses ecoreClass="emftvm.ecore#//InvokeAllCbs"/>
+    <genClasses ecoreClass="emftvm.ecore#//InvokeCb"/>
+    <genClasses ecoreClass="emftvm.ecore#//InvokeCbS"/>
     <genClasses ecoreClass="emftvm.ecore#//Match">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Match/rulename"/>
     </genClasses>
-    <genClasses ecoreClass="emftvm.ecore#//Match_s"/>
+    <genClasses ecoreClass="emftvm.ecore#//MatchS"/>
     <genClasses ecoreClass="emftvm.ecore#//Add"/>
     <genClasses ecoreClass="emftvm.ecore#//Remove"/>
     <genClasses ecoreClass="emftvm.ecore#//Insert"/>

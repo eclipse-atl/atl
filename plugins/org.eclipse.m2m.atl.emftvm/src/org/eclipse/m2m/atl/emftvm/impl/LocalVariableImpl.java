@@ -30,6 +30,7 @@ import org.eclipse.m2m.atl.emftvm.LocalVariable;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Local Variable</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -55,6 +56,24 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	 * @ordered
 	 */
 	protected static final int SLOT_EDEFAULT = -1;
+	/**
+	 * The default value of the '{@link #getStartInstructionIndex() <em>Start Instruction Index</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStartInstructionIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int START_INSTRUCTION_INDEX_EDEFAULT = -1;
+	/**
+	 * The default value of the '{@link #getEndInstructionIndex() <em>End Instruction Index</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEndInstructionIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int END_INSTRUCTION_INDEX_EDEFAULT = -1;
 	/**
 	 * The cached value of the '{@link #getSlot() <em>Slot</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -83,15 +102,6 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	 */
 	protected Instruction endInstruction;
 	/**
-	 * The default value of the '{@link #getStartInstructionIndex() <em>Start Instruction Index</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartInstructionIndex()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int START_INSTRUCTION_INDEX_EDEFAULT = -1;
-	/**
 	 * The cached value of the '{@link #getStartInstructionIndex() <em>Start Instruction Index</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -100,15 +110,6 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	 * @ordered
 	 */
 	protected int startInstructionIndex = START_INSTRUCTION_INDEX_EDEFAULT;
-	/**
-	 * The default value of the '{@link #getEndInstructionIndex() <em>End Instruction Index</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndInstructionIndex()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int END_INSTRUCTION_INDEX_EDEFAULT = -1;
 	/**
 	 * The cached value of the '{@link #getEndInstructionIndex() <em>End Instruction Index</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -121,6 +122,7 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link LocalVariableImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -130,6 +132,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -139,7 +143,7 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
@@ -192,7 +196,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -204,7 +209,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -229,7 +235,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -246,7 +253,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -260,7 +268,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -285,7 +294,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #getEndInstruction()
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -302,7 +312,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -316,7 +327,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -341,7 +353,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -357,7 +370,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -374,7 +388,7 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 								endInstruction, cb));
 					}
 				} else if (!code.isEmpty()) {
-					endInstructionIndex = code.size()-1;
+					endInstructionIndex = code.size() - 1;
 				}
 			}
 		}
@@ -382,7 +396,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -398,7 +413,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -414,7 +430,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -428,7 +445,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -442,7 +460,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -468,7 +487,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -498,7 +518,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -528,7 +549,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -552,7 +574,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -562,7 +585,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setOwningBlock(CodeBlock)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -572,7 +596,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -593,7 +618,8 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */

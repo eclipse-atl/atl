@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EClassifier;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Metamodel</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
@@ -27,6 +28,9 @@ public interface Metamodel extends Model {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Finds the type/metaclass with the given <pre>typeName</pre> within this {@link Metamodel}.
+	 * @param typeName the type/metaclass name (may be fully qualified using '<pre>::</pre>')
+	 * @return the type/metaclass with the given <pre>typeName</pre> within this {@link Metamodel}.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated

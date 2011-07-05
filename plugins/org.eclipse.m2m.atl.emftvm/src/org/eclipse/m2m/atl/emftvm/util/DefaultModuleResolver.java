@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.m2m.atl.emftvm.Module;
 
-
 /**
  * Resolves modules based on an EMF URI prefix.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
@@ -36,8 +35,8 @@ public class DefaultModuleResolver implements ModuleResolver {
 
 	/**
 	 * Creates a new {@link DefaultModuleResolver}.
-	 * @param uriPrefix
-	 * @param resourceSet
+	 * @param uriPrefix the URI prefix to prepend to module names
+	 * @param resourceSet the EMF {@link ResourceSet} to load modules into
 	 */
 	public DefaultModuleResolver(final String uriPrefix, final ResourceSet resourceSet) {
 		super();
@@ -45,11 +44,10 @@ public class DefaultModuleResolver implements ModuleResolver {
 		this.resourceSet = resourceSet;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.ModuleResolver#resolveModule(java.lang.String)
+	/**
+	 * {@inheritDoc}
 	 */
-	public Module resolveModule(String name) throws ModuleNotFoundException {
+	public Module resolveModule(final String name) throws ModuleNotFoundException {
 		final Matcher m = EMFTVMUtil.DELIM_PATTERN.matcher(name);
 		final URI moduleURI = URI.createURI(uriPrefix + m.replaceAll("/") + FILE_EXT);
 		final ResourceSet rs = getResourceSet();
@@ -61,6 +59,7 @@ public class DefaultModuleResolver implements ModuleResolver {
 	}
 
 	/**
+	 * Returns the URI prefix.
 	 * @return the uriPrefix
 	 */
 	public String getUriPrefix() {
@@ -68,6 +67,7 @@ public class DefaultModuleResolver implements ModuleResolver {
 	}
 
 	/**
+	 * Returns the EMF {@link ResourceSet}.
 	 * @return the resourceSet
 	 */
 	public ResourceSet getResourceSet() {
@@ -75,15 +75,16 @@ public class DefaultModuleResolver implements ModuleResolver {
 	}
 
 	/**
+	 * Finds the module with <pre>name</pre> in {@link Resource} <pre>r</pre>.
 	 * @param r
 	 * @param name
-	 * @return the module with the given name inside r, if any
+	 * @return the module with the given name inside <pre>r</pre>, if any
 	 * @throws ModuleNotFoundException
 	 */
 	private Module findModule(final Resource r, final String name) throws ModuleNotFoundException {
 		for (EObject o : r.getContents()) {
 			if (o instanceof Module) {
-				Module m = (Module) o;
+				Module m = (Module)o;
 				if (name.equals(m.getName())) {
 					return m;
 				}

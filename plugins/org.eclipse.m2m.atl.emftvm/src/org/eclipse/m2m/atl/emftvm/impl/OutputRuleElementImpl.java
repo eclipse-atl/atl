@@ -26,6 +26,7 @@ import org.eclipse.m2m.atl.emftvm.Rule;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Output Rule Element</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -50,6 +51,7 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link OutputRuleElementImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -59,6 +61,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -68,7 +72,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -85,7 +90,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #getMapsTo()
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -94,7 +100,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -106,7 +113,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -116,7 +124,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setOutputFor(Rule)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -126,7 +135,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -147,7 +157,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -163,7 +174,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -177,7 +189,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -191,7 +204,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -208,7 +222,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -226,7 +241,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -244,7 +260,8 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

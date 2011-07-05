@@ -24,6 +24,7 @@ import org.eclipse.m2m.atl.emftvm.Instruction;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Branch Instruction</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -65,6 +66,7 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 	protected Instruction target;
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link BranchInstructionImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -74,6 +76,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -83,7 +87,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -99,7 +104,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -114,7 +120,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -138,7 +145,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #getTarget()
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -154,7 +162,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -167,7 +176,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -184,7 +194,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -202,7 +213,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -220,7 +232,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -235,8 +248,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 		return super.eIsSet(featureID);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {

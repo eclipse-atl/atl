@@ -25,7 +25,7 @@ public class LazyBagOnCollection<E> extends LazyBag<E> {
 
 	/**
 	 * Creates a new {@link LazyBagOnCollection} around <code>dataSource</code>.
-	 * @param dataSource
+	 * @param dataSource the underlying collection
 	 */
 	public LazyBagOnCollection(final Collection<E> dataSource) {
 		super(dataSource);
@@ -35,36 +35,32 @@ public class LazyBagOnCollection<E> extends LazyBag<E> {
 	 * Non-lazy operations                                                 *
 	 * *********************************************************************/
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.Collection#iterator()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Iterator<E> iterator() {
 		return dataSource.iterator(); // don't cache
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#contains(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	public boolean contains(final Object o) {
-		return ((Collection<?>) dataSource).contains(o);
+		return ((Collection<?>)dataSource).contains(o);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#isEmpty()
+	/**
+	 * {@inheritDoc}
 	 */
 	public boolean isEmpty() {
-		return ((Collection<E>) dataSource).isEmpty();
+		return ((Collection<E>)dataSource).isEmpty();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#size()
+	/**
+	 * {@inheritDoc}
 	 */
 	public int size() {
-		return ((Collection<E>) dataSource).size();
+		return ((Collection<E>)dataSource).size();
 	}
 
 }

@@ -14,14 +14,15 @@ package org.eclipse.m2m.atl.emftvm;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Invoke cb</b></em>'.
+ * A representation of the model object '<em><b>Invoke super</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInvoke_cb()
+ * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInvokeSuper()
  * @model
  * @generated
  */
-public interface Invoke_cb extends CodeBlockInstruction, InvokeInstruction {
+public interface InvokeSuper extends InvokeOperationInstruction {
 
-} // Invoke_cb
+} // Invoke_super

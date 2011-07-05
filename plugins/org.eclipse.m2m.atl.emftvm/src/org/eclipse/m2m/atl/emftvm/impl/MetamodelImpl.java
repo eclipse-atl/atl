@@ -34,6 +34,7 @@ import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Metamodel</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
@@ -45,10 +46,11 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	/**
 	 * Lookup table of ((type name) -> (type)).
 	 */
-	protected Map<String, EClassifier> types = null;
+	protected Map<String, EClassifier> types;
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link MetamodelImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -58,6 +60,8 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -67,10 +71,8 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * @param typeName the name of the type to find
-	 * @return The EMF type with the given typeName in the metamodel with modelName
-	 * @throws IllegalArgumentException if the type was not found
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public EClassifier findType(String typeName) {
@@ -85,6 +87,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	}
 
 	/**
+	 * Returns a new type lookup table.
 	 * @return A new type lookup table.
 	 */
 	private Map<String, EClassifier> createTypeTable() {
@@ -96,7 +99,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	}
 
 	/**
-	 * Registers all types reachable from objects in the types lookup table
+	 * Registers all types reachable from objects in the types lookup table.
 	 * @param types the lookup table to register types in
 	 * @param res the resource to search for type information (meta-model)
 	 * @param ns the namespace
@@ -114,7 +117,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	}
 
 	/**
-	 * Registers all types reachable from objects in the types lookup table
+	 * Registers all types reachable from objects in the types lookup table.
 	 * @param types the lookup table to register types in
 	 * @param objects the objects to search for type information (meta-model contents)
 	 * @param ns the namespace
@@ -128,7 +131,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 		for (EObject o : objects) {
 			switch (o.eClass().getClassifierID()) {
 			case EcorePackage.EPACKAGE:
-				String pname = ((EPackage) o).getName();
+				String pname = ((EPackage)o).getName();
 				if (ns != null) {
 					pname = ns + EMFTVMUtil.NS_DELIM + pname;
 				}
@@ -136,7 +139,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 				break;
 			case EcorePackage.ECLASSIFIER: //TODO Report EMF BUG: only EClass instances are returned!
 			case EcorePackage.ECLASS:
-				registerTypeChain(types, (EClassifier) o, ns, ignore);
+				registerTypeChain(types, (EClassifier)o, ns, ignore);
 				break;
 			default:
 				// No meta-package or meta-class => just keep digging.
@@ -149,7 +152,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	}
 
 	/**
-	 * Registers all types reachable from type in the types lookup table
+	 * Registers all types reachable from type in the types lookup table.
 	 * @param types the lookup table to register types in
 	 * @param type the type to register, and search for other type references
 	 * @param ns the namespace
@@ -167,7 +170,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 		registerSingleType(types, ns + EMFTVMUtil.NS_DELIM + type.getName(), type);
 		registerSingleType(types, type.getName(), type);
 		if (type instanceof EClass) {
-			final EClass cls = (EClass) type;
+			final EClass cls = (EClass)type;
 			for (EStructuralFeature sf : cls.getEStructuralFeatures()) {
 				EClassifier eType = sf.getEType();
 				if (eType != null) {
@@ -192,6 +195,12 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 		}
 	}
 
+	/**
+	 * Registers a single type into the types lookup table.
+	 * @param types the lookup table to register types in
+	 * @param typeName the type name to use for lookup
+	 * @param type the type to register
+	 */
 	private static void registerSingleType(final Map<String, EClassifier> types, final String typeName,
 			final EClassifier type) {
 		if (types.containsKey(typeName)) {

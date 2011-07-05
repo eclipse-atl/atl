@@ -23,6 +23,7 @@ import org.eclipse.m2m.atl.emftvm.FieldInstruction;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Field Instruction</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -52,8 +53,10 @@ public abstract class FieldInstructionImpl extends InstructionImpl implements Fi
 	 * @ordered
 	 */
 	protected String fieldname = FIELDNAME_EDEFAULT;
+
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link FieldInstructionImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -63,6 +66,8 @@ public abstract class FieldInstructionImpl extends InstructionImpl implements Fi
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -72,7 +77,8 @@ public abstract class FieldInstructionImpl extends InstructionImpl implements Fi
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -81,7 +87,8 @@ public abstract class FieldInstructionImpl extends InstructionImpl implements Fi
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -93,7 +100,8 @@ public abstract class FieldInstructionImpl extends InstructionImpl implements Fi
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -107,7 +115,8 @@ public abstract class FieldInstructionImpl extends InstructionImpl implements Fi
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -122,7 +131,8 @@ public abstract class FieldInstructionImpl extends InstructionImpl implements Fi
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -137,7 +147,8 @@ public abstract class FieldInstructionImpl extends InstructionImpl implements Fi
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -151,7 +162,8 @@ public abstract class FieldInstructionImpl extends InstructionImpl implements Fi
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EFactory;
  * <!-- begin-user-doc -->
  * The <b>Factory</b> for the model.
  * It provides a create method for each non-abstract class of the model.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage
  * @generated
@@ -202,31 +203,31 @@ public interface EmftvmFactory extends EFactory {
 	Get createGet();
 
 	/**
-	 * Returns a new object of class '<em>Get trans</em>'.
+	 * Returns a new object of class '<em>Get Trans</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Get trans</em>'.
+	 * @return a new object of class '<em>Get Trans</em>'.
 	 * @generated
 	 */
-	Get_trans createGet_trans();
+	GetTrans createGetTrans();
 
 	/**
-	 * Returns a new object of class '<em>Set static</em>'.
+	 * Returns a new object of class '<em>Set Static</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Set static</em>'.
+	 * @return a new object of class '<em>Set Static</em>'.
 	 * @generated
 	 */
-	Set_static createSet_static();
+	SetStatic createSetStatic();
 
 	/**
-	 * Returns a new object of class '<em>Get static</em>'.
+	 * Returns a new object of class '<em>Get Static</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Get static</em>'.
+	 * @return a new object of class '<em>Get Static</em>'.
 	 * @generated
 	 */
-	Get_static createGet_static();
+	GetStatic createGetStatic();
 
 	/**
 	 * Returns a new object of class '<em>Findtype</em>'.
@@ -238,13 +239,13 @@ public interface EmftvmFactory extends EFactory {
 	Findtype createFindtype();
 
 	/**
-	 * Returns a new object of class '<em>Findtype s</em>'.
+	 * Returns a new object of class '<em>Findtype S</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Findtype s</em>'.
+	 * @return a new object of class '<em>Findtype S</em>'.
 	 * @generated
 	 */
-	Findtype_s createFindtype_s();
+	FindtypeS createFindtypeS();
 
 	/**
 	 * Returns a new object of class '<em>New</em>'.
@@ -256,13 +257,13 @@ public interface EmftvmFactory extends EFactory {
 	New createNew();
 
 	/**
-	 * Returns a new object of class '<em>New s</em>'.
+	 * Returns a new object of class '<em>New S</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>New s</em>'.
+	 * @return a new object of class '<em>New S</em>'.
 	 * @generated
 	 */
-	New_s createNew_s();
+	NewS createNewS();
 
 	/**
 	 * Returns a new object of class '<em>Delete</em>'.
@@ -283,13 +284,13 @@ public interface EmftvmFactory extends EFactory {
 	Dup createDup();
 
 	/**
-	 * Returns a new object of class '<em>Dup x1</em>'.
+	 * Returns a new object of class '<em>Dup X1</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Dup x1</em>'.
+	 * @return a new object of class '<em>Dup X1</em>'.
 	 * @generated
 	 */
-	Dup_x1 createDup_x1();
+	DupX1 createDupX1();
 
 	/**
 	 * Returns a new object of class '<em>Swap</em>'.
@@ -301,13 +302,13 @@ public interface EmftvmFactory extends EFactory {
 	Swap createSwap();
 
 	/**
-	 * Returns a new object of class '<em>Swap x1</em>'.
+	 * Returns a new object of class '<em>Swap X1</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Swap x1</em>'.
+	 * @return a new object of class '<em>Swap X1</em>'.
 	 * @generated
 	 */
-	Swap_x1 createSwap_x1();
+	SwapX1 createSwapX1();
 
 	/**
 	 * Returns a new object of class '<em>If</em>'.
@@ -364,22 +365,22 @@ public interface EmftvmFactory extends EFactory {
 	Invoke createInvoke();
 
 	/**
-	 * Returns a new object of class '<em>Invoke super</em>'.
+	 * Returns a new object of class '<em>Invoke Super</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Invoke super</em>'.
+	 * @return a new object of class '<em>Invoke Super</em>'.
 	 * @generated
 	 */
-	Invoke_super createInvoke_super();
+	InvokeSuper createInvokeSuper();
 
 	/**
-	 * Returns a new object of class '<em>Invoke static</em>'.
+	 * Returns a new object of class '<em>Invoke Static</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Invoke static</em>'.
+	 * @return a new object of class '<em>Invoke Static</em>'.
 	 * @generated
 	 */
-	Invoke_static createInvoke_static();
+	InvokeStatic createInvokeStatic();
 
 	/**
 	 * Returns a new object of class '<em>Allinst</em>'.
@@ -391,13 +392,13 @@ public interface EmftvmFactory extends EFactory {
 	Allinst createAllinst();
 
 	/**
-	 * Returns a new object of class '<em>Allinst in</em>'.
+	 * Returns a new object of class '<em>Allinst In</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Allinst in</em>'.
+	 * @return a new object of class '<em>Allinst In</em>'.
 	 * @generated
 	 */
-	Allinst_in createAllinst_in();
+	AllinstIn createAllinstIn();
 
 	/**
 	 * Returns a new object of class '<em>Match</em>'.
@@ -409,13 +410,13 @@ public interface EmftvmFactory extends EFactory {
 	Match createMatch();
 
 	/**
-	 * Returns a new object of class '<em>Match s</em>'.
+	 * Returns a new object of class '<em>Match S</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Match s</em>'.
+	 * @return a new object of class '<em>Match S</em>'.
 	 * @generated
 	 */
-	Match_s createMatch_s();
+	MatchS createMatchS();
 
 	/**
 	 * Returns a new object of class '<em>Add</em>'.
@@ -445,15 +446,6 @@ public interface EmftvmFactory extends EFactory {
 	Insert createInsert();
 
 	/**
-	 * Returns a new object of class '<em>Invoke all cbs</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Invoke all cbs</em>'.
-	 * @generated
-	 */
-	Invoke_all_cbs createInvoke_all_cbs();
-
-	/**
 	 * Returns a new object of class '<em>Return</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -472,22 +464,31 @@ public interface EmftvmFactory extends EFactory {
 	Getcb createGetcb();
 
 	/**
-	 * Returns a new object of class '<em>Invoke cb</em>'.
+	 * Returns a new object of class '<em>Invoke All Cbs</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Invoke cb</em>'.
+	 * @return a new object of class '<em>Invoke All Cbs</em>'.
 	 * @generated
 	 */
-	Invoke_cb createInvoke_cb();
+	InvokeAllCbs createInvokeAllCbs();
 
 	/**
-	 * Returns a new object of class '<em>Invoke cb s</em>'.
+	 * Returns a new object of class '<em>Invoke Cb</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Invoke cb s</em>'.
+	 * @return a new object of class '<em>Invoke Cb</em>'.
 	 * @generated
 	 */
-	Invoke_cb_s createInvoke_cb_s();
+	InvokeCb createInvokeCb();
+
+	/**
+	 * Returns a new object of class '<em>Invoke Cb S</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Invoke Cb S</em>'.
+	 * @generated
+	 */
+	InvokeCbS createInvokeCbS();
 
 	/**
 	 * Returns a new object of class '<em>Not</em>'.
@@ -598,8 +599,9 @@ public interface EmftvmFactory extends EFactory {
 	EmftvmPackage getEmftvmPackage();
 
 	/**
-	 * @param opcode
-	 * @return A new instruction object for the given opcode.
+	 * Creates a new {@link Instruction} instance for the given <pre>opcode</pre>.
+	 * @param opcode the instruction opcode.
+	 * @return a new {@link Instruction} instance for the given <pre>opcode</pre>.
 	 */
 	Instruction createInstruction(Opcode opcode);
 

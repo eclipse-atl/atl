@@ -27,6 +27,9 @@ import org.eclipse.m2m.atl.emftvm.*;
  * and proceeding up the inheritance hierarchy
  * until a non-null result is returned,
  * which is the result of the switch.
+ * 
+ * @param <T> the switched type
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage
  * @generated
@@ -55,6 +58,7 @@ public class EmftvmSwitch<T> {
 	/**
 	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
 	 * <!-- begin-user-doc -->
+	 * @param theEObject the object to switch on
 	 * <!-- end-user-doc -->
 	 * @return the first non-null result returned by a <code>caseXXX</code> call.
 	 * @generated
@@ -66,6 +70,8 @@ public class EmftvmSwitch<T> {
 	/**
 	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
 	 * <!-- begin-user-doc -->
+	 * @param theEClass the {@link EClass} of <pre>theObject</pre>
+	 * @param theEObject the object to switch on
 	 * <!-- end-user-doc -->
 	 * @return the first non-null result returned by a <code>caseXXX</code> call.
 	 * @generated
@@ -86,6 +92,8 @@ public class EmftvmSwitch<T> {
 	/**
 	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
 	 * <!-- begin-user-doc -->
+	 * @param classifierID the classifier ID of the {@link EClass} of <pre>theEObject</pre>
+	 * @param theEObject the object to switch on
 	 * <!-- end-user-doc -->
 	 * @return the first non-null result returned by a <code>caseXXX</code> call.
 	 * @generated
@@ -305,26 +313,26 @@ public class EmftvmSwitch<T> {
 				return result;
 			}
 			case EmftvmPackage.GET_TRANS: {
-				Get_trans get_trans = (Get_trans)theEObject;
-				T result = caseGet_trans(get_trans);
-				if (result == null) result = caseFieldInstruction(get_trans);
-				if (result == null) result = caseInstruction(get_trans);
+				GetTrans getTrans = (GetTrans)theEObject;
+				T result = caseGetTrans(getTrans);
+				if (result == null) result = caseFieldInstruction(getTrans);
+				if (result == null) result = caseInstruction(getTrans);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case EmftvmPackage.SET_STATIC: {
-				Set_static set_static = (Set_static)theEObject;
-				T result = caseSet_static(set_static);
-				if (result == null) result = caseFieldInstruction(set_static);
-				if (result == null) result = caseInstruction(set_static);
+				SetStatic setStatic = (SetStatic)theEObject;
+				T result = caseSetStatic(setStatic);
+				if (result == null) result = caseFieldInstruction(setStatic);
+				if (result == null) result = caseInstruction(setStatic);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case EmftvmPackage.GET_STATIC: {
-				Get_static get_static = (Get_static)theEObject;
-				T result = caseGet_static(get_static);
-				if (result == null) result = caseFieldInstruction(get_static);
-				if (result == null) result = caseInstruction(get_static);
+				GetStatic getStatic = (GetStatic)theEObject;
+				T result = caseGetStatic(getStatic);
+				if (result == null) result = caseFieldInstruction(getStatic);
+				if (result == null) result = caseInstruction(getStatic);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -336,9 +344,9 @@ public class EmftvmSwitch<T> {
 				return result;
 			}
 			case EmftvmPackage.FINDTYPE_S: {
-				Findtype_s findtype_s = (Findtype_s)theEObject;
-				T result = caseFindtype_s(findtype_s);
-				if (result == null) result = caseInstruction(findtype_s);
+				FindtypeS findtypeS = (FindtypeS)theEObject;
+				T result = caseFindtypeS(findtypeS);
+				if (result == null) result = caseInstruction(findtypeS);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -350,9 +358,9 @@ public class EmftvmSwitch<T> {
 				return result;
 			}
 			case EmftvmPackage.NEW_S: {
-				New_s new_s = (New_s)theEObject;
-				T result = caseNew_s(new_s);
-				if (result == null) result = caseInstruction(new_s);
+				NewS newS = (NewS)theEObject;
+				T result = caseNewS(newS);
+				if (result == null) result = caseInstruction(newS);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -371,9 +379,9 @@ public class EmftvmSwitch<T> {
 				return result;
 			}
 			case EmftvmPackage.DUP_X1: {
-				Dup_x1 dup_x1 = (Dup_x1)theEObject;
-				T result = caseDup_x1(dup_x1);
-				if (result == null) result = caseInstruction(dup_x1);
+				DupX1 dupX1 = (DupX1)theEObject;
+				T result = caseDupX1(dupX1);
+				if (result == null) result = caseInstruction(dupX1);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -385,9 +393,9 @@ public class EmftvmSwitch<T> {
 				return result;
 			}
 			case EmftvmPackage.SWAP_X1: {
-				Swap_x1 swap_x1 = (Swap_x1)theEObject;
-				T result = caseSwap_x1(swap_x1);
-				if (result == null) result = caseInstruction(swap_x1);
+				SwapX1 swapX1 = (SwapX1)theEObject;
+				T result = caseSwapX1(swapX1);
+				if (result == null) result = caseInstruction(swapX1);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -463,20 +471,20 @@ public class EmftvmSwitch<T> {
 				return result;
 			}
 			case EmftvmPackage.INVOKE_SUPER: {
-				Invoke_super invoke_super = (Invoke_super)theEObject;
-				T result = caseInvoke_super(invoke_super);
-				if (result == null) result = caseInvokeOperationInstruction(invoke_super);
-				if (result == null) result = caseInvokeInstruction(invoke_super);
-				if (result == null) result = caseInstruction(invoke_super);
+				InvokeSuper invokeSuper = (InvokeSuper)theEObject;
+				T result = caseInvokeSuper(invokeSuper);
+				if (result == null) result = caseInvokeOperationInstruction(invokeSuper);
+				if (result == null) result = caseInvokeInstruction(invokeSuper);
+				if (result == null) result = caseInstruction(invokeSuper);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case EmftvmPackage.INVOKE_STATIC: {
-				Invoke_static invoke_static = (Invoke_static)theEObject;
-				T result = caseInvoke_static(invoke_static);
-				if (result == null) result = caseInvokeOperationInstruction(invoke_static);
-				if (result == null) result = caseInvokeInstruction(invoke_static);
-				if (result == null) result = caseInstruction(invoke_static);
+				InvokeStatic invokeStatic = (InvokeStatic)theEObject;
+				T result = caseInvokeStatic(invokeStatic);
+				if (result == null) result = caseInvokeOperationInstruction(invokeStatic);
+				if (result == null) result = caseInvokeInstruction(invokeStatic);
+				if (result == null) result = caseInstruction(invokeStatic);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -488,9 +496,9 @@ public class EmftvmSwitch<T> {
 				return result;
 			}
 			case EmftvmPackage.ALLINST_IN: {
-				Allinst_in allinst_in = (Allinst_in)theEObject;
-				T result = caseAllinst_in(allinst_in);
-				if (result == null) result = caseInstruction(allinst_in);
+				AllinstIn allinstIn = (AllinstIn)theEObject;
+				T result = caseAllinstIn(allinstIn);
+				if (result == null) result = caseInstruction(allinstIn);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -576,27 +584,27 @@ public class EmftvmSwitch<T> {
 				return result;
 			}
 			case EmftvmPackage.INVOKE_ALL_CBS: {
-				Invoke_all_cbs invoke_all_cbs = (Invoke_all_cbs)theEObject;
-				T result = caseInvoke_all_cbs(invoke_all_cbs);
-				if (result == null) result = caseInvokeInstruction(invoke_all_cbs);
-				if (result == null) result = caseInstruction(invoke_all_cbs);
+				InvokeAllCbs invokeAllCbs = (InvokeAllCbs)theEObject;
+				T result = caseInvokeAllCbs(invokeAllCbs);
+				if (result == null) result = caseInvokeInstruction(invokeAllCbs);
+				if (result == null) result = caseInstruction(invokeAllCbs);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case EmftvmPackage.INVOKE_CB: {
-				Invoke_cb invoke_cb = (Invoke_cb)theEObject;
-				T result = caseInvoke_cb(invoke_cb);
-				if (result == null) result = caseCodeBlockInstruction(invoke_cb);
-				if (result == null) result = caseInvokeInstruction(invoke_cb);
-				if (result == null) result = caseInstruction(invoke_cb);
+				InvokeCb invokeCb = (InvokeCb)theEObject;
+				T result = caseInvokeCb(invokeCb);
+				if (result == null) result = caseCodeBlockInstruction(invokeCb);
+				if (result == null) result = caseInvokeInstruction(invokeCb);
+				if (result == null) result = caseInstruction(invokeCb);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case EmftvmPackage.INVOKE_CB_S: {
-				Invoke_cb_s invoke_cb_s = (Invoke_cb_s)theEObject;
-				T result = caseInvoke_cb_s(invoke_cb_s);
-				if (result == null) result = caseInvokeInstruction(invoke_cb_s);
-				if (result == null) result = caseInstruction(invoke_cb_s);
+				InvokeCbS invokeCbS = (InvokeCbS)theEObject;
+				T result = caseInvokeCbS(invokeCbS);
+				if (result == null) result = caseInvokeInstruction(invokeCbS);
+				if (result == null) result = caseInstruction(invokeCbS);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -609,10 +617,10 @@ public class EmftvmSwitch<T> {
 				return result;
 			}
 			case EmftvmPackage.MATCH_S: {
-				Match_s match_s = (Match_s)theEObject;
-				T result = caseMatch_s(match_s);
-				if (result == null) result = caseInvokeInstruction(match_s);
-				if (result == null) result = caseInstruction(match_s);
+				MatchS matchS = (MatchS)theEObject;
+				T result = caseMatchS(matchS);
+				if (result == null) result = caseInvokeInstruction(matchS);
+				if (result == null) result = caseInstruction(matchS);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -1035,47 +1043,47 @@ public class EmftvmSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Get trans</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Get Trans</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Get trans</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Get Trans</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseGet_trans(Get_trans object) {
+	public T caseGetTrans(GetTrans object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Set static</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Set Static</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Set static</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Set Static</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseSet_static(Set_static object) {
+	public T caseSetStatic(SetStatic object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Get static</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Get Static</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Get static</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Get Static</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseGet_static(Get_static object) {
+	public T caseGetStatic(GetStatic object) {
 		return null;
 	}
 
@@ -1095,17 +1103,17 @@ public class EmftvmSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Findtype s</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Findtype S</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Findtype s</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Findtype S</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseFindtype_s(Findtype_s object) {
+	public T caseFindtypeS(FindtypeS object) {
 		return null;
 	}
 
@@ -1125,17 +1133,17 @@ public class EmftvmSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>New s</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>New S</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>New s</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>New S</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseNew_s(New_s object) {
+	public T caseNewS(NewS object) {
 		return null;
 	}
 
@@ -1170,17 +1178,17 @@ public class EmftvmSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Dup x1</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Dup X1</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Dup x1</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Dup X1</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseDup_x1(Dup_x1 object) {
+	public T caseDupX1(DupX1 object) {
 		return null;
 	}
 
@@ -1200,17 +1208,17 @@ public class EmftvmSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Swap x1</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Swap X1</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Swap x1</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Swap X1</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseSwap_x1(Swap_x1 object) {
+	public T caseSwapX1(SwapX1 object) {
 		return null;
 	}
 
@@ -1350,32 +1358,32 @@ public class EmftvmSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Invoke super</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Invoke Super</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Invoke super</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Invoke Super</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInvoke_super(Invoke_super object) {
+	public T caseInvokeSuper(InvokeSuper object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Invoke static</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Invoke Static</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Invoke static</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Invoke Static</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInvoke_static(Invoke_static object) {
+	public T caseInvokeStatic(InvokeStatic object) {
 		return null;
 	}
 
@@ -1395,17 +1403,17 @@ public class EmftvmSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Allinst in</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Allinst In</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Allinst in</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Allinst In</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseAllinst_in(Allinst_in object) {
+	public T caseAllinstIn(AllinstIn object) {
 		return null;
 	}
 
@@ -1425,17 +1433,17 @@ public class EmftvmSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Match s</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Match S</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Match s</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Match S</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseMatch_s(Match_s object) {
+	public T caseMatchS(MatchS object) {
 		return null;
 	}
 
@@ -1485,21 +1493,6 @@ public class EmftvmSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Invoke all cbs</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Invoke all cbs</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseInvoke_all_cbs(Invoke_all_cbs object) {
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Return</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1545,32 +1538,47 @@ public class EmftvmSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Invoke cb</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Invoke All Cbs</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Invoke cb</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Invoke All Cbs</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInvoke_cb(Invoke_cb object) {
+	public T caseInvokeAllCbs(InvokeAllCbs object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Invoke cb s</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Invoke Cb</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Invoke cb s</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Invoke Cb</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInvoke_cb_s(Invoke_cb_s object) {
+	public T caseInvokeCb(InvokeCb object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Invoke Cb S</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Invoke Cb S</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseInvokeCbS(InvokeCbS object) {
 		return null;
 	}
 

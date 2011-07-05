@@ -26,15 +26,14 @@ public class ResourceIterable implements Iterable<EObject> {
 
 	/**
 	 * Creates a new {@link ResourceIterable} around <code>res</code>.
-	 * @param res
+	 * @param res the resource
 	 */
 	public ResourceIterable(final Resource res) {
 		this.res = res;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Iterable#iterator()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Iterator<EObject> iterator() {
 		return res.getAllContents();

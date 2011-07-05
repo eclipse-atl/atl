@@ -35,7 +35,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 *
 	 * @param <E> the collection element type
 	 */
-	public static abstract class NonCachingList<E> extends LazyList<E> {
+	public abstract static class NonCachingList<E> extends LazyList<E> {
 
 		/**
 		 * Creates a {@link NonCachingList} around <code>dataSource</code>.
@@ -46,9 +46,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			assert dataSource != null;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#createCache()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		protected void createCache() {
@@ -67,118 +66,123 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 
 		protected final LazyList<E> s;
 
+		/**
+		 * Creates a new {@link UnionList}.
+		 * @param s the collection to union with the underlying collection
+		 * @param dataSource the underlying collection
+		 */
 		public UnionList(final LazyList<E> s, final LazyList<E> dataSource) {
 			super(dataSource);
 			this.s = s;
 			assert s != null;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#first()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E first() {
-			return ((LazyList<E>) dataSource).isEmpty() ? s.first() : ((LazyList<E>) dataSource).first();
+			return ((LazyList<E>)dataSource).isEmpty() ? s.first() : ((LazyList<E>)dataSource).first();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#get(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E get(int index) {
-			final int size = ((List<E>) dataSource).size();
-			return index < size ? ((List<E>) dataSource).get(index) : s.get(index - size);
+			final int size = ((List<E>)dataSource).size();
+			return index < size ? ((List<E>)dataSource).get(index) : s.get(index - size);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#indexOf(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int indexOf(Object o) {
-			final int indexOf = ((List<E>) dataSource).indexOf(o);
+			final int indexOf = ((List<E>)dataSource).indexOf(o);
 			if (indexOf > -1) {
 				return indexOf;
 			} else {
-				return ((List<E>) dataSource).size() + s.indexOf(o);
+				return ((List<E>)dataSource).size() + s.indexOf(o);
 			}
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#last()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E last() {
-			return s.isEmpty() ? ((LazyList<E>) dataSource).last() : s.last();
+			return s.isEmpty() ? ((LazyList<E>)dataSource).last() : s.last();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#lastIndexOf(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int lastIndexOf(Object o) {
 			final int lastIndexOf = s.lastIndexOf(o);
 			if (lastIndexOf > -1) {
-				return ((List<E>) dataSource).size() + lastIndexOf;
+				return ((List<E>)dataSource).size() + lastIndexOf;
 			} else {
-				return ((List<E>) dataSource).lastIndexOf(o);
+				return ((List<E>)dataSource).lastIndexOf(o);
 			}
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public ListIterator<E> listIterator() {
 			return new UnionListIterator(s);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public ListIterator<E> listIterator(int index) {
 			return new UnionListIterator(s, index);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#contains(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean contains(Object o) {
-			return ((Collection<E>) dataSource).contains(o) ||
+			return ((Collection<E>)dataSource).contains(o) ||
 					s.contains(o);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#count(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int count(E object) {
-			return ((LazyCollection<E>) dataSource).count(object) + s.count(object);
+			return ((LazyCollection<E>)dataSource).count(object) + s.count(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#isEmpty()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean isEmpty() {
-			return ((Collection<E>) dataSource).isEmpty() && s.isEmpty();
+			return ((Collection<E>)dataSource).isEmpty() && s.isEmpty();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<E> iterator() {
 			return new UnionIterator(s);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#size()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int size() {
-			return ((Collection<E>) dataSource).size() + s.size();
+			return ((Collection<E>)dataSource).size() + s.size();
 		}
 
 	}
@@ -211,14 +215,14 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			 * @param index the iterator starting index.
 			 */
 			public AppendListIterator(final int index) {
-				super(index > 0 ? index-1 : index);
+				super(index > 0 ? index - 1 : index);
 				if (index > 0) {
 					next();
 				}
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#hasNext()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public boolean hasNext() {
@@ -226,8 +230,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				return beforeTail;
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#next()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public E next() {
@@ -240,24 +244,24 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				throw new NoSuchElementException();
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#nextIndex()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public int nextIndex() {
 				return inner.nextIndex() + (beforeTail ? 0 : 1);
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#hasPrevious()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public boolean hasPrevious() {
 				return !beforeTail || inner.hasPrevious();
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#previous()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public E previous() {
@@ -268,8 +272,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				return inner.previous();
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#previousIndex()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public int previousIndex() {
@@ -293,22 +297,22 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			this.object = object;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#last()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E last() {
 			return object;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#get(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E get(final int index) {
-			final int size = ((List<E>) dataSource).size();
+			final int size = ((List<E>)dataSource).size();
 			if (index < size) {
-				return ((List<E>) dataSource).get(index);
+				return ((List<E>)dataSource).get(index);
 			} else if (index == size) {
 				return object;
 			} else {
@@ -316,81 +320,81 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			}
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#indexOf(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int indexOf(final Object o) {
-			final int index = ((List<E>) dataSource).indexOf(o);
+			final int index = ((List<E>)dataSource).indexOf(o);
 			if (index > -1) {
 				return index;
 			}
-			return (object==null ? o==null : object.equals(o)) ? size()-1 : -1;
+			return (object == null ? o == null : object.equals(o)) ? size() - 1 : -1;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#lastIndexOf(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int lastIndexOf(final Object o) {
-			if (object==null ? o==null : object.equals(o)) {
-				return size()-1;
+			if (object == null ? o == null : object.equals(o)) {
+				return size() - 1;
 			}
-			return ((List<E>) dataSource).lastIndexOf(o);
+			return ((List<E>)dataSource).lastIndexOf(o);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#contains(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean contains(final Object o) {
-			return (object==null ? o==null : object.equals(o)) || 
-					((Collection<E>) dataSource).contains(o);
+			return (object == null ? o == null : object.equals(o)) || 
+					((Collection<E>)dataSource).contains(o);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#count(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int count(final E o) {
-			return (object==null ? o==null : object.equals(o)) ? 1 : 0 + 
-					((LazyCollection<E>) dataSource).count(o);
+			return (object == null ? o == null : object.equals(o)) ? 1 : 0 + 
+					((LazyCollection<E>)dataSource).count(o);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#isEmpty()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean isEmpty() {
 			return false;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<E> iterator() {
 			return new AppendIterator(object);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#size()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int size() {
-			return ((Collection<E>) dataSource).size() + 1;
+			return ((Collection<E>)dataSource).size() + 1;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public ListIterator<E> listIterator() {
 			return new AppendListIterator();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public ListIterator<E> listIterator(final int index) {
@@ -422,18 +426,16 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				super();
 			}
 		
-			/*
-			 * (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedIterator#hasNext()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public boolean hasNext() {
 				return beforeHead || inner.hasNext();
 			}
 		
-			/*
-			 * (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedIterator#next()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public E next() {
@@ -465,20 +467,20 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			 * @param index the iterator starting index.
 			 */
 			public PrependListIterator(final int index) {
-				super(index < 1 ? index : index-1);
+				super(index < 1 ? index : index - 1);
 				this.beforeHead = index < 1;
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#hasNext()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public boolean hasNext() {
 				return beforeHead || inner.hasNext();
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#next()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public E next() {
@@ -489,8 +491,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				return inner.next();
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#nextIndex()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public int nextIndex() {
@@ -500,8 +502,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				return inner.nextIndex() + 1;
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#hasPrevious()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public boolean hasPrevious() {
@@ -509,8 +511,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				return !beforeHead;
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#previous()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public E previous() {
@@ -523,97 +525,102 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				throw new NoSuchElementException();
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#previousIndex()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public int previousIndex() {
 				if (beforeHead) {
 					return -1;
 				}
-				return inner.previousIndex()+1;
+				return inner.previousIndex() + 1;
 			}
 			
 		}
 
+		/**
+		 * Creates a new {@link PrependList}.
+		 * @param object the object to prepend
+		 * @param dataSource the underlying collection
+		 */
 		public PrependList(final E object, final LazyList<E> dataSource) {
 			super(object, dataSource);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#first()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E first() {
 			return object;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#last()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E last() {
-			if (!((LazyList<E>) dataSource).isEmpty()) {
-				return ((LazyList<E>) dataSource).last();
+			if (!((LazyList<E>)dataSource).isEmpty()) {
+				return ((LazyList<E>)dataSource).last();
 			} else {
 				return object;
 			}
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#get(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E get(final int index) {
 			if (index == 0) {
 				return object;
 			} else {
-				return ((List<E>) dataSource).get(index-1);
+				return ((List<E>)dataSource).get(index - 1);
 			}
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#indexOf(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int indexOf(final Object o) {
-			if (object==null ? o==null : object.equals(o)) {
+			if (object == null ? o == null : object.equals(o)) {
 				return 0;
 			}
-			final int index = ((List<E>) dataSource).indexOf(o);
-			return index > -1 ? index+1 : index;
+			final int index = ((List<E>)dataSource).indexOf(o);
+			return index > -1 ? index + 1 : index;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#lastIndexOf(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int lastIndexOf(Object o) {
-			final int lastIndex = ((List<E>) dataSource).lastIndexOf(o)+1;
+			final int lastIndex = ((List<E>)dataSource).lastIndexOf(o) + 1;
 			if (lastIndex > 0) {
 				return lastIndex;
 			}
-			return (object==null ? o==null : object.equals(o)) ? 0 : -1;
+			return (object == null ? o == null : object.equals(o)) ? 0 : -1;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<E> iterator() {
 			return new PrependIterator();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public ListIterator<E> listIterator() {
 			return new PrependListIterator();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public ListIterator<E> listIterator(int index) {
@@ -647,18 +654,16 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				super();
 			}
 		
-			/*
-			 * (non-Javadoc)
-			 * @see java.util.Iterator#hasNext()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public boolean hasNext() {
 				return i < index || inner.hasNext();
 			}
 		
-			/*
-			 * (non-Javadoc)
-			 * @see java.util.Iterator#next()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public E next() {
@@ -690,20 +695,20 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			 * @param index the iterator starting index, starting from 0 instead of 1.
 			 */
 			public InsertAtListIterator(final int index) {
-				super(index < InsertAtList.this.index ? index : index-1);
-				this.i = index-1;
+				super(index < InsertAtList.this.index ? index : index - 1);
+				this.i = index - 1;
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#hasNext()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public boolean hasNext() {
 				return i < index || inner.hasNext();
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#next()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public E next() {
@@ -713,24 +718,24 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				return inner.next();
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#nextIndex()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public int nextIndex() {
-				return i+1;
+				return i + 1;
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#hasPrevious()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public boolean hasPrevious() {
 				return i >= index || inner.hasPrevious();
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#previous()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public E previous() {
@@ -740,8 +745,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				return inner.previous();
 			}
 		
-			/* (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#previousIndex()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public int previousIndex() {
@@ -766,63 +771,63 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			}
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#first()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E first() {
 			assert index >= 0;
-			return index == 0 ? object : ((LazyList<E>) dataSource).first();
+			return index == 0 ? object : ((LazyList<E>)dataSource).first();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#last()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E last() {
-			final int size = ((Collection<E>) dataSource).size();
+			final int size = ((Collection<E>)dataSource).size();
 			if (index < size) {
-				return ((LazyList<E>) dataSource).last();
+				return ((LazyList<E>)dataSource).last();
 			} else if (index == size) {
 				return object;
 			}
 			throw new IndexOutOfBoundsException(String.valueOf(index));
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#get(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E get(final int index) {
-			final int size = ((List<E>) dataSource).size();
+			final int size = ((List<E>)dataSource).size();
 			if (index < size) {
 				if (index < this.index) {
-					return ((List<E>) dataSource).get(index);
+					return ((List<E>)dataSource).get(index);
 				} else if (index == this.index) {
 					return object;
 				}
 				assert this.index >= 0;
 				assert index > this.index;
-				return ((List<E>) dataSource).get(index-1);
+				return ((List<E>)dataSource).get(index - 1);
 			}
 			throw new IndexOutOfBoundsException(String.valueOf(index));
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#indexOf(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int indexOf(final Object o) {
-			final int indexOf = ((List<E>) dataSource).indexOf(o);
+			final int indexOf = ((List<E>)dataSource).indexOf(o);
 			if (indexOf > -1) {
 				assert index >= 0;
-				if (indexOf > index && (object==null ? o==null : object.equals(o))) {
+				if (indexOf > index && (object == null ? o == null : object.equals(o))) {
 					return index;
 				}
 				return indexOf;
 			}
-			if (object==null ? o==null : object.equals(o)) {
-				if (index <= ((Collection<E>) dataSource).size()) {
+			if (object == null ? o == null : object.equals(o)) {
+				if (index <= ((Collection<E>)dataSource).size()) {
 					return index;
 				}
 				throw new IndexOutOfBoundsException(String.valueOf(index));
@@ -830,21 +835,21 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			return -1;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#lastIndexOf(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int lastIndexOf(final Object o) {
-			final int lastIndexOf = ((List<E>) dataSource).lastIndexOf(o);
+			final int lastIndexOf = ((List<E>)dataSource).lastIndexOf(o);
 			if (lastIndexOf > -1) {
 				assert index >= 0;
-				if (lastIndexOf < index && (object==null ? o==null : object.equals(o))) {
+				if (lastIndexOf < index && (object == null ? o == null : object.equals(o))) {
 					return index;
 				}
 				return lastIndexOf;
 			}
-			if (object==null ? o==null : object.equals(o)) {
-				if (index <= ((Collection<E>) dataSource).size()) {
+			if (object == null ? o == null : object.equals(o)) {
+				if (index <= ((Collection<E>)dataSource).size()) {
 					return index;
 				}
 				throw new IndexOutOfBoundsException(String.valueOf(index));
@@ -852,24 +857,24 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			return -1;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<E> iterator() {
 			return new InsertAtIterator();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public ListIterator<E> listIterator() {
 			return new InsertAtListIterator();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public ListIterator<E> listIterator(final int index) {
@@ -878,11 +883,20 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		
 	}
 
+	/**
+	 * {@link LazyList} that presents a sub-range of the underlying list.
+	 */
 	public static class SubList<E> extends NonCachingList<E> {
 
 		protected final int fromIndex;
 		protected final int toIndex;
 
+		/**
+		 * Creates a new {@link SubList}.
+		 * @param fromIndex the starting index, inclusive
+		 * @param toIndex the ending index, exclusive
+		 * @param dataSource the underlying collection
+		 */
 		public SubList(final int fromIndex, final int toIndex, final LazyList<E> dataSource) {
 			super(dataSource);
 			this.fromIndex = fromIndex;
@@ -893,97 +907,97 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			}
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#first()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E first() {
-			return ((List<E>) dataSource).get(fromIndex);
+			return ((List<E>)dataSource).get(fromIndex);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#last()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E last() {
-			return ((List<E>) dataSource).get(toIndex-1);
+			return ((List<E>)dataSource).get(toIndex - 1);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#get(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E get(final int index) {
-			return ((List<E>) dataSource).get(index + fromIndex);
+			return ((List<E>)dataSource).get(index + fromIndex);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#indexOf(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int indexOf(final Object o) {
-			final int index = ((List<E>) dataSource).indexOf(o);
+			final int index = ((List<E>)dataSource).indexOf(o);
 			if (index >= fromIndex && index < toIndex) {
 				return index - fromIndex;
 			}
 			return -1;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#lastIndexOf(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int lastIndexOf(final Object o) {
-			final int index = ((List<E>) dataSource).lastIndexOf(o);
+			final int index = ((List<E>)dataSource).lastIndexOf(o);
 			if (index >= fromIndex && index < toIndex) {
 				return index - fromIndex;
 			}
 			return -1;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#contains(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean contains(final Object o) {
-			final int index = ((List<E>) dataSource).indexOf(o);
+			final int index = ((List<E>)dataSource).indexOf(o);
 			return index >= fromIndex && index < toIndex;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#isEmpty()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean isEmpty() {
 			return fromIndex < toIndex;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<E> iterator() {
 			return new SubListIterator(fromIndex, toIndex);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#size()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int size() {
 			return toIndex - fromIndex;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public ListIterator<E> listIterator() {
 			return new SubListListIterator(fromIndex, toIndex);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public ListIterator<E> listIterator(final int index) {
@@ -992,105 +1006,112 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		
 	}
 
+	/**
+	 * {@link LazyList} that reverses the order of the underlying list.
+	 */
 	public static class ReverseList<E> extends NonCachingList<E> {
 
 		protected final int last;
-	
+
+		/**
+		 * Creates a new {@link ReverseList}.
+		 * @param dataSource the underlying collection
+		 */
 		public ReverseList(final LazyList<E> dataSource) {
 			super(dataSource);
 			this.last = dataSource.size() - 1;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#first()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E first() {
-			return ((List<E>) dataSource).get(last);
+			return ((List<E>)dataSource).get(last);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#last()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E last() {
-			return ((List<E>) dataSource).get(0);
+			return ((List<E>)dataSource).get(0);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#get(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E get(final int index) {
-			return ((List<E>) dataSource).get(last - index);
+			return ((List<E>)dataSource).get(last - index);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#indexOf(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int indexOf(final Object o) {
-			final int index = ((List<E>) dataSource).indexOf(o);
+			final int index = ((List<E>)dataSource).indexOf(o);
 			if (index > -1) {
 				return last - index;
 			}
 			return -1;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#lastIndexOf(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int lastIndexOf(final Object o) {
-			final int index = ((List<E>) dataSource).lastIndexOf(o);
+			final int index = ((List<E>)dataSource).lastIndexOf(o);
 			if (index > -1) {
 				return last - index;
 			}
 			return -1;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#contains(java.lang.Object)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean contains(final Object o) {
-			return ((List<E>) dataSource).contains(o);
+			return ((List<E>)dataSource).contains(o);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#isEmpty()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean isEmpty() {
-			return ((List<E>) dataSource).isEmpty();
+			return ((List<E>)dataSource).isEmpty();
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<E> iterator() {
 			return new ReverseIterator(last);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#size()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int size() {
-			return last+1;
+			return last + 1;
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public ListIterator<E> listIterator() {
 			return new ReverseListIterator(last);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyList#listIterator(int)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public ListIterator<E> listIterator(final int index) {
@@ -1107,14 +1128,14 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	public class UnionListIterator extends WrappedListIterator {
 
 		protected final List<E> s;
-		protected ListIterator<E> added = null; // lazily instantiate this iterator
-		protected boolean innerNext = false; // cache last inner.hasNext() invocation
-		protected boolean addedPrev = false; // cache last added.hasPrevious() invocation
+		protected ListIterator<E> added; // lazily instantiate this iterator
+		protected boolean innerNext; // cache last inner.hasNext() invocation
+		protected boolean addedPrev; // cache last added.hasPrevious() invocation
 
 		/**
 		 * Creates a new {@link UnionListIterator} for the underlying
 		 * collection and <code>s</code>.
-		 * @param s
+		 * @param s the collection to union
 		 */
 		public UnionListIterator(final List<E> s) {
 			super();
@@ -1124,7 +1145,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		/**
 		 * Creates a new {@link UnionListIterator} for the underlying
 		 * collection and <code>s</code>.
-		 * @param s
+		 * @param s the collection to union
 		 * @param index the iterator starting index.
 		 */
 		public UnionListIterator(final List<E> s, final int index) {
@@ -1132,13 +1153,14 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			this.s = s;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#hasNext()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean hasNext() {
 			if (added == null) {
-				if (innerNext = inner.hasNext()) {
+				innerNext = inner.hasNext();
+				if (innerNext) {
 					return true;
 				} else {
 					added = s.listIterator();
@@ -1147,8 +1169,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			return added.hasNext();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#next()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E next() {
@@ -1163,8 +1185,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			return added.next();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#nextIndex()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int nextIndex() {
@@ -1175,16 +1197,17 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 					added = s.listIterator();
 				}
 			}
-			return ((Collection<E>) dataSource).size() + added.nextIndex();
+			return ((Collection<E>)dataSource).size() + added.nextIndex();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#hasPrevious()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean hasPrevious() {
 			if (added != null) {
-				if (addedPrev = added.hasPrevious()) {
+				addedPrev = added.hasPrevious();
+				if (addedPrev) {
 					return true;
 				} else {
 					added = null;
@@ -1193,8 +1216,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			return inner.hasPrevious();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#previous()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public E previous() {
@@ -1209,14 +1232,14 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			return inner.previous();
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.WrappedListIterator#previousIndex()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int previousIndex() {
 			if (added != null) {
 				if (addedPrev || added.hasPrevious()) {
-					return ((Collection<E>) dataSource).size() + added.previousIndex();
+					return ((Collection<E>)dataSource).size() + added.previousIndex();
 				} else {
 					added = null;
 				}
@@ -1228,7 +1251,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 
 	/**
 	 * Creates a {@link LazyList} around <code>dataSource</code>.
-	 * @param dataSource
+	 * @param dataSource the underlying collection
 	 */
 	public LazyList(final Iterable<E> dataSource) {
 		super(dataSource);
@@ -1245,6 +1268,9 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 * Non-lazy operations                                                 *
 	 * *********************************************************************/
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void createCache() {
 		super.createCache();
@@ -1255,6 +1281,9 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	}
 
 	/**
+	 * Unsupported.
+	 * @param index the index at which to add
+	 * @param element the element to add
 	 * @throws UnsupportedOperationException
 	 */
 	public void add(final int index, final E element) {
@@ -1262,19 +1291,22 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	}
 
 	/**
+	 * Unsupported.
+	 * @param index the index at which to add
+	 * @param c the collection to add
+	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
 	public boolean addAll(final int index, final Collection<? extends E> c) {
 		throw new UnsupportedOperationException();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.List#get(int)
+	/**
+	 * {@inheritDoc}
 	 */
 	public E get(final int index) {
 		if (index < cache.size()) {
-			return ((List<E>) cache).get(index);
+			return ((List<E>)cache).get(index);
 		}
 		int i = 0;
 		for (E e : this) {
@@ -1286,12 +1318,11 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		throw new ArrayIndexOutOfBoundsException();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.List#indexOf(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	public int indexOf(final Object o) {
-		final int index = ((List<E>) cache).indexOf(o);
+		final int index = ((List<E>)cache).indexOf(o);
 		if (index > -1 || dataSource == null) { // cache complete
 			return index;
 		}
@@ -1305,13 +1336,12 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		return -1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.List#lastIndexOf(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	public int lastIndexOf(final Object o) {
 		if (dataSource == null) { // cache complete
-			return ((List<E>) cache).lastIndexOf(o);
+			return ((List<E>)cache).lastIndexOf(o);
 		}
 		int i = 0;
 		int lastIndex = -1;
@@ -1324,29 +1354,30 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		return lastIndex;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.List#listIterator()
+	/**
+	 * {@inheritDoc}
 	 */
 	public ListIterator<E> listIterator() {
 		if (dataSource == null) { // cache complete
-			return ((List<E>) cache).listIterator();
+			return ((List<E>)cache).listIterator();
 		}
 		return new IteratorToListIterator();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.List#listIterator(int)
+	/**
+	 * {@inheritDoc}
 	 */
 	public ListIterator<E> listIterator(final int index) {
 		if (dataSource == null) { // cache complete
-			return ((List<E>) cache).listIterator(index);
+			return ((List<E>)cache).listIterator(index);
 		}
 		return new IteratorToListIterator(index);
 	}
 
 	/**
+	 * Unsupported.
+	 * @param index the index at which to remove
+	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
 	public E remove(final int index) {
@@ -1354,6 +1385,10 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	}
 
 	/**
+	 * Unsupported.
+	 * @param index the index at which to set
+	 * @param element the element to set
+	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
 	public E set(final int index, final E element) {
@@ -1368,8 +1403,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		return new SubList<E>(fromIndex, toIndex, this);
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(final Object o) {
@@ -1380,24 +1415,24 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		    return false;
 		}
 		final Iterator<E> e1 = iterator();
-		final Iterator<?> e2 = ((Collection<?>) o).iterator();
+		final Iterator<?> e2 = ((Collection<?>)o).iterator();
 		while (e1.hasNext() && e2.hasNext()) {
 		    E o1 = e1.next();
 		    Object o2 = e2.next();
-		    if (!(o1==null ? o2==null : o1.equals(o2)))
+		    if (!(o1 == null ? o2 == null : o1.equals(o2)))
 			return false;
 		}
 		return !(e1.hasNext() || e2.hasNext());
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
 		int hashCode = 1;
 		for (E obj : this) {
-		    hashCode = 31*hashCode + (obj==null ? 0 : obj.hashCode());
+		    hashCode = 31 * hashCode + (obj == null ? 0 : obj.hashCode());
 		}
 		return hashCode;
 	}
@@ -1405,11 +1440,11 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	/**
 	 * Returns the <code>i</code>-th element of this list.
 	 * List index starts at 1.
-	 * @param i
+	 * @param i the element index
 	 * @return The <code>i</code>-th element of this list.
 	 */
 	public E at(final int i) {
-		return get(i-1);
+		return get(i - 1);
 	}
 
 	/**
@@ -1417,11 +1452,11 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 * List index starts at 1.<br>
 	 * pre : <code>self->includes(obj)</code><br>
 	 * post : <code>self->at(i) = obj</code>
-	 * @param obj
+	 * @param obj the object to look for
 	 * @return The index of object <code>obj</code> in the sequence.
 	 * @throws IndexOutOfBoundsException if <code>obj</code> is not contained in this list.
 	 */
-	public int indexOf2(final Object obj) {
+	public int indexOf2(final Object obj) throws IndexOutOfBoundsException {
 		final int i = indexOf(obj) + 1;
 		if (i == 0) {
 			throw new IndexOutOfBoundsException();
@@ -1434,11 +1469,11 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 * List index starts at 1.<br>
 	 * pre : <code>self->includes(obj)</code><br>
 	 * post : <code>self->at(i) = obj</code>
-	 * @param obj
+	 * @param obj the object to look for
 	 * @return The last index of object <code>obj</code> in the sequence.
 	 * @throws IndexOutOfBoundsException if <code>obj</code> is not contained in this list.
 	 */
-	public int lastIndexOf2(final Object obj) {
+	public int lastIndexOf2(final Object obj) throws IndexOutOfBoundsException {
 		final int i = lastIndexOf(obj) + 1;
 		if (i == 0) {
 			throw new IndexOutOfBoundsException();
@@ -1452,7 +1487,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 */
 	public E first() {
 		if (cache.size() > 0) {
-			return ((List<E>) cache).get(0);
+			return ((List<E>)cache).get(0);
 		}
 		assert cache.size() == 0;
 		return iterator().next();
@@ -1468,7 +1503,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			if (size < 1) {
 				throw new NoSuchElementException();
 			}
-			return ((List<E>) cache).get(size-1);
+			return ((List<E>)cache).get(size - 1);
 		}
 		boolean lastSet = false;
 		E last = null;
@@ -1489,7 +1524,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	/**
 	 * Returns the sequence consisting of all elements in self, followed by all elements in <code>s</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param s
+	 * @param s the list to union with this
 	 * @return The sequence consisting of all elements in self, followed by all elements in <code>s</code>.
 	 */
 	public LazyList<E> union(final LazyList<E> s) {
@@ -1521,7 +1556,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	/**
 	 * Returns the sequence of elements, consisting of all elements of self, followed by <code>object</code>.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param object
+	 * @param object the object to append
 	 * @return The sequence of elements, consisting of all elements of self, followed by <code>object</code>.
 	 */
 	public LazyList<E> append(final E object) {
@@ -1531,7 +1566,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	/**
 	 * Returns the sequence consisting of <code>object</code>, followed by all elements in self.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param object
+	 * @param object the object to prepend
 	 * @return The sequence consisting of <code>object</code>, followed by all elements in self.
 	 */
 	public LazyList<E> prepend(final E object) {
@@ -1542,12 +1577,12 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 * Returns the sequence consisting of self with <code>object</code> inserted at position <code>index</code>.
 	 * List index starts at 1.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param index
-	 * @param object
+	 * @param index the index at which to insert
+	 * @param object the object to insert
 	 * @return The sequence consisting of self with <code>object</code> inserted at position <code>index</code>.
 	 */
 	public LazyList<E> insertAt(final int index, final E object) {
-		return new InsertAtList<E>(index-1, object, this);
+		return new InsertAtList<E>(index - 1, object, this);
 	}
 
 	/**
@@ -1555,18 +1590,18 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 * up to and including element number <code>upper</code>.
 	 * List index starts at 1.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param lower
-	 * @param upper
+	 * @param lower the sub-list lower bound, inclusive
+	 * @param upper the sub-list upper bound, inclusive
 	 * @return the sub-list of this list. 
 	 */
 	public LazyList<E> subSequence(final int lower, final int upper) {
-		return new SubList<E>(lower-1, upper, this);
+		return new SubList<E>(lower - 1, upper, this);
 	}
 
 	/**
 	 * Returns the sequence containing all elements of self plus <code>object</code> added as the last element.
 	 * <p><i>Lazy operation.</i></p>
-	 * @param object
+	 * @param object the object to include
 	 * @return The sequence containing all elements of self plus <code>object</code> added as the last element.
 	 */
 	public LazyList<E> including(final E object) {
@@ -1576,7 +1611,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	/**
 	 * Returns the sequence containing all elements of self apart from all occurrences of <code>object</code>. 
 	 * <p><i>Lazy operation.</i></p>
-	 * @param object
+	 * @param object the object to exclude
 	 * @return The sequence containing all elements of self apart from all occurrences of <code>object</code>.
 	 */
 	public LazyList<E> excluding(final E object) {
@@ -1659,6 +1694,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 * each of the elements of this collection.
 	 * @param function the return value function
 	 * @return a new lazy list with the <code>function</code> return values.
+	 * @param <T> the element type
 	 */
 	public <T> LazyList<T> collect(final CodeBlock function) {
 		// Parent frame may change after this method returns!
@@ -1673,9 +1709,9 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			@Override
 			public T get(final int index) {
 				if (index < cache.size()) {
-					return ((List<T>) cache).get(index);
+					return ((List<T>)cache).get(index);
 				}
-				return (T) function.execute(parentFrame.getSubFrame(function, new Object[]{inner.get(index)}));
+				return (T)function.execute(parentFrame.getSubFrame(function, new Object[]{inner.get(index)}));
 			}
 			@SuppressWarnings("unchecked")
 			@Override
@@ -1685,9 +1721,9 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 					if (size < 1) {
 						throw new NoSuchElementException();
 					}
-					return ((List<T>) cache).get(size-1);
+					return ((List<T>)cache).get(size - 1);
 				}
-				return (T) function.execute(parentFrame.getSubFrame(function, new Object[]{inner.last()}));
+				return (T)function.execute(parentFrame.getSubFrame(function, new Object[]{inner.last()}));
 			}
 			@Override
 			public int size() {

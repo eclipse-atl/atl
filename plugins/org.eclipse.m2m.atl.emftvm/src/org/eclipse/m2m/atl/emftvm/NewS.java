@@ -14,14 +14,14 @@ package org.eclipse.m2m.atl.emftvm;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Get trans</b></em>'.
+ * A representation of the model object '<em><b>New s</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getGet_trans()
+ * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getNewS()
  * @model
  * @generated
  */
-public interface Get_trans extends FieldInstruction {
-
-} // Get_trans
+public interface NewS extends Instruction {
+} // New_s

@@ -20,6 +20,7 @@ import org.eclipse.m2m.atl.emftvm.Set;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Set</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
@@ -29,6 +30,7 @@ import org.eclipse.m2m.atl.emftvm.Set;
 public class SetImpl extends FieldInstructionImpl implements Set {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link SetImpl}.
 	 * <!-- end-user-doc -->
 	 */
 	protected SetImpl() {
@@ -39,6 +41,8 @@ public class SetImpl extends FieldInstructionImpl implements Set {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

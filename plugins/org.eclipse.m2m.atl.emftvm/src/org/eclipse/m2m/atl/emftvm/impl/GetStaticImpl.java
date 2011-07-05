@@ -14,38 +14,42 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
-import org.eclipse.m2m.atl.emftvm.New_s;
+import org.eclipse.m2m.atl.emftvm.GetStatic;
 import org.eclipse.m2m.atl.emftvm.Opcode;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>New s</b></em>'.
+ * An implementation of the model object '<em><b>Get static</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class New_sImpl extends InstructionImpl implements New_s {
+public class GetStaticImpl extends FieldInstructionImpl implements GetStatic {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link GetStaticImpl}.
 	 * <!-- end-user-doc -->
 	 */
-	protected New_sImpl() {
+	protected GetStaticImpl() {
 		super();
-		opcode = Opcode.NEW_S;
-		stackConsumption = 2;
+		opcode = Opcode.GET_STATIC;
+		stackConsumption = 1;
 		stackProduction = 1;
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return EmftvmPackage.Literals.NEW_S;
+		return EmftvmPackage.Literals.GET_STATIC;
 	}
 
-} //New_sImpl
+} //Get_staticImpl

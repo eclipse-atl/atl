@@ -17,6 +17,7 @@ import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Field</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  * <p>
@@ -118,6 +119,9 @@ public interface Field extends Feature {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the value of this {@link Field} for the given <pre>context</pre> object.
+	 * @param context the context object
+	 * @return the value of this {@link Field} for the given <pre>context</pre> object.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -126,6 +130,9 @@ public interface Field extends Feature {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Sets the value of this {@link Field} for the given <pre>context</pre> object.
+	 * @param context the context object
+	 * @param value the field value to set
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -134,6 +141,11 @@ public interface Field extends Feature {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the value of this {@link Field} for the given <pre>context</pre> object.
+	 * Evaluates the initial value using <pre>frame</pre> if necessary.
+	 * @param context the context object
+	 * @param frame the {@link StackFrame} in which to execute the initial value evaluator
+	 * @return the value of this {@link Field} for the given <pre>context</pre> object.
 	 * <!-- end-user-doc -->
 	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
@@ -142,6 +154,10 @@ public interface Field extends Feature {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the static value of this {@link Field}.
+	 * Evaluates the initial value using <pre>frame</pre> if necessary.
+	 * @param frame the {@link StackFrame} in which to execute the initial value evaluator
+	 * @return the static value of this {@link Field}.
 	 * <!-- end-user-doc -->
 	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
@@ -150,6 +166,7 @@ public interface Field extends Feature {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Clears all values of this {@link Field}.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated

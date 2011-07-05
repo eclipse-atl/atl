@@ -11,19 +11,90 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.util;
 
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.emftvm.*;
+import org.eclipse.m2m.atl.emftvm.Add;
+import org.eclipse.m2m.atl.emftvm.Allinst;
+import org.eclipse.m2m.atl.emftvm.AllinstIn;
+import org.eclipse.m2m.atl.emftvm.And;
+import org.eclipse.m2m.atl.emftvm.BranchInstruction;
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
+import org.eclipse.m2m.atl.emftvm.CodeBlockInstruction;
+import org.eclipse.m2m.atl.emftvm.Delete;
+import org.eclipse.m2m.atl.emftvm.Dup;
+import org.eclipse.m2m.atl.emftvm.DupX1;
+import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
+import org.eclipse.m2m.atl.emftvm.Enditerate;
+import org.eclipse.m2m.atl.emftvm.ExecEnv;
+import org.eclipse.m2m.atl.emftvm.Feature;
+import org.eclipse.m2m.atl.emftvm.Field;
+import org.eclipse.m2m.atl.emftvm.FieldInstruction;
+import org.eclipse.m2m.atl.emftvm.Findtype;
+import org.eclipse.m2m.atl.emftvm.FindtypeS;
+import org.eclipse.m2m.atl.emftvm.Get;
+import org.eclipse.m2m.atl.emftvm.GetStatic;
+import org.eclipse.m2m.atl.emftvm.GetTrans;
+import org.eclipse.m2m.atl.emftvm.Getcb;
+import org.eclipse.m2m.atl.emftvm.Getenvtype;
+import org.eclipse.m2m.atl.emftvm.Goto;
+import org.eclipse.m2m.atl.emftvm.If;
+import org.eclipse.m2m.atl.emftvm.Ifn;
+import org.eclipse.m2m.atl.emftvm.Ifte;
+import org.eclipse.m2m.atl.emftvm.Implies;
+import org.eclipse.m2m.atl.emftvm.InputRuleElement;
+import org.eclipse.m2m.atl.emftvm.Insert;
+import org.eclipse.m2m.atl.emftvm.Instruction;
+import org.eclipse.m2m.atl.emftvm.Invoke;
+import org.eclipse.m2m.atl.emftvm.InvokeAllCbs;
+import org.eclipse.m2m.atl.emftvm.InvokeCb;
+import org.eclipse.m2m.atl.emftvm.InvokeCbS;
+import org.eclipse.m2m.atl.emftvm.InvokeInstruction;
+import org.eclipse.m2m.atl.emftvm.InvokeOperationInstruction;
+import org.eclipse.m2m.atl.emftvm.InvokeStatic;
+import org.eclipse.m2m.atl.emftvm.InvokeSuper;
+import org.eclipse.m2m.atl.emftvm.Isnull;
+import org.eclipse.m2m.atl.emftvm.Iterate;
+import org.eclipse.m2m.atl.emftvm.LineNumber;
+import org.eclipse.m2m.atl.emftvm.Load;
+import org.eclipse.m2m.atl.emftvm.LocalVariable;
+import org.eclipse.m2m.atl.emftvm.LocalVariableInstruction;
+import org.eclipse.m2m.atl.emftvm.Match;
+import org.eclipse.m2m.atl.emftvm.MatchS;
+import org.eclipse.m2m.atl.emftvm.Metamodel;
+import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
+import org.eclipse.m2m.atl.emftvm.Module;
+import org.eclipse.m2m.atl.emftvm.NamedElement;
+import org.eclipse.m2m.atl.emftvm.New;
+import org.eclipse.m2m.atl.emftvm.NewS;
+import org.eclipse.m2m.atl.emftvm.Not;
+import org.eclipse.m2m.atl.emftvm.Operation;
+import org.eclipse.m2m.atl.emftvm.Or;
+import org.eclipse.m2m.atl.emftvm.OutputRuleElement;
+import org.eclipse.m2m.atl.emftvm.Parameter;
+import org.eclipse.m2m.atl.emftvm.Pop;
+import org.eclipse.m2m.atl.emftvm.Push;
+import org.eclipse.m2m.atl.emftvm.Pushf;
+import org.eclipse.m2m.atl.emftvm.Pusht;
+import org.eclipse.m2m.atl.emftvm.Remove;
+import org.eclipse.m2m.atl.emftvm.Return;
+import org.eclipse.m2m.atl.emftvm.Rule;
+import org.eclipse.m2m.atl.emftvm.RuleElement;
+import org.eclipse.m2m.atl.emftvm.Set;
+import org.eclipse.m2m.atl.emftvm.SetStatic;
+import org.eclipse.m2m.atl.emftvm.Store;
+import org.eclipse.m2m.atl.emftvm.Swap;
+import org.eclipse.m2m.atl.emftvm.SwapX1;
+import org.eclipse.m2m.atl.emftvm.TypedElement;
+import org.eclipse.m2m.atl.emftvm.Xor;
 
 /**
  * <!-- begin-user-doc -->
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage
  * @generated
@@ -36,37 +107,6 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	protected static EmftvmPackage modelPackage;
-
-	/**
-	 * Creates an instance of the adapter factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EmftvmAdapterFactory() {
-		if (modelPackage == null) {
-			modelPackage = EmftvmPackage.eINSTANCE;
-		}
-	}
-
-	/**
-	 * Returns whether this factory is applicable for the type of the object.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
-	 * <!-- end-user-doc -->
-	 * @return whether this factory is applicable for the type of the object.
-	 * @generated
-	 */
-	@Override
-	public boolean isFactoryForType(Object object) {
-		if (object == modelPackage) {
-			return true;
-		}
-		if (object instanceof EObject) {
-			return ((EObject)object).eClass().getEPackage() == modelPackage;
-		}
-		return false;
-	}
 
 	/**
 	 * The switch that delegates to the <code>createXXX</code> methods.
@@ -193,32 +233,32 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 				return createGetAdapter();
 			}
 			@Override
-			public Adapter caseGet_trans(Get_trans object) {
-				return createGet_transAdapter();
+			public Adapter caseGetTrans(GetTrans object) {
+				return createGetTransAdapter();
 			}
 			@Override
-			public Adapter caseSet_static(Set_static object) {
-				return createSet_staticAdapter();
+			public Adapter caseSetStatic(SetStatic object) {
+				return createSetStaticAdapter();
 			}
 			@Override
-			public Adapter caseGet_static(Get_static object) {
-				return createGet_staticAdapter();
+			public Adapter caseGetStatic(GetStatic object) {
+				return createGetStaticAdapter();
 			}
 			@Override
 			public Adapter caseFindtype(Findtype object) {
 				return createFindtypeAdapter();
 			}
 			@Override
-			public Adapter caseFindtype_s(Findtype_s object) {
-				return createFindtype_sAdapter();
+			public Adapter caseFindtypeS(FindtypeS object) {
+				return createFindtypeSAdapter();
 			}
 			@Override
 			public Adapter caseNew(New object) {
 				return createNewAdapter();
 			}
 			@Override
-			public Adapter caseNew_s(New_s object) {
-				return createNew_sAdapter();
+			public Adapter caseNewS(NewS object) {
+				return createNewSAdapter();
 			}
 			@Override
 			public Adapter caseDelete(Delete object) {
@@ -229,16 +269,16 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 				return createDupAdapter();
 			}
 			@Override
-			public Adapter caseDup_x1(Dup_x1 object) {
-				return createDup_x1Adapter();
+			public Adapter caseDupX1(DupX1 object) {
+				return createDupX1Adapter();
 			}
 			@Override
 			public Adapter caseSwap(Swap object) {
 				return createSwapAdapter();
 			}
 			@Override
-			public Adapter caseSwap_x1(Swap_x1 object) {
-				return createSwap_x1Adapter();
+			public Adapter caseSwapX1(SwapX1 object) {
+				return createSwapX1Adapter();
 			}
 			@Override
 			public Adapter caseBranchInstruction(BranchInstruction object) {
@@ -277,20 +317,20 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 				return createInvokeAdapter();
 			}
 			@Override
-			public Adapter caseInvoke_super(Invoke_super object) {
-				return createInvoke_superAdapter();
+			public Adapter caseInvokeSuper(InvokeSuper object) {
+				return createInvokeSuperAdapter();
 			}
 			@Override
-			public Adapter caseInvoke_static(Invoke_static object) {
-				return createInvoke_staticAdapter();
+			public Adapter caseInvokeStatic(InvokeStatic object) {
+				return createInvokeStaticAdapter();
 			}
 			@Override
 			public Adapter caseAllinst(Allinst object) {
 				return createAllinstAdapter();
 			}
 			@Override
-			public Adapter caseAllinst_in(Allinst_in object) {
-				return createAllinst_inAdapter();
+			public Adapter caseAllinstIn(AllinstIn object) {
+				return createAllinstInAdapter();
 			}
 			@Override
 			public Adapter caseIsnull(Isnull object) {
@@ -337,24 +377,24 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 				return createGetcbAdapter();
 			}
 			@Override
-			public Adapter caseInvoke_all_cbs(Invoke_all_cbs object) {
-				return createInvoke_all_cbsAdapter();
+			public Adapter caseInvokeAllCbs(InvokeAllCbs object) {
+				return createInvokeAllCbsAdapter();
 			}
 			@Override
-			public Adapter caseInvoke_cb(Invoke_cb object) {
-				return createInvoke_cbAdapter();
+			public Adapter caseInvokeCb(InvokeCb object) {
+				return createInvokeCbAdapter();
 			}
 			@Override
-			public Adapter caseInvoke_cb_s(Invoke_cb_s object) {
-				return createInvoke_cb_sAdapter();
+			public Adapter caseInvokeCbS(InvokeCbS object) {
+				return createInvokeCbSAdapter();
 			}
 			@Override
 			public Adapter caseMatch(Match object) {
 				return createMatchAdapter();
 			}
 			@Override
-			public Adapter caseMatch_s(Match_s object) {
-				return createMatch_sAdapter();
+			public Adapter caseMatchS(MatchS object) {
+				return createMatchSAdapter();
 			}
 			@Override
 			public Adapter caseAdd(Add object) {
@@ -373,6 +413,38 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 				return createEObjectAdapter();
 			}
 		};
+
+	/**
+	 * Creates an instance of the adapter factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EmftvmAdapterFactory() {
+		if (modelPackage == null) {
+			modelPackage = EmftvmPackage.eINSTANCE;
+		}
+	}
+
+	/**
+	 * Returns whether this factory is applicable for the type of the object.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
+	 * @param object the object for which to check the type
+	 * <!-- end-user-doc -->
+	 * @return whether this factory is applicable for the type of the object.
+	 * @generated
+	 */
+	@Override
+	public boolean isFactoryForType(Object object) {
+		if (object == modelPackage) {
+			return true;
+		}
+		if (object instanceof EObject) {
+			return ((EObject)object).eClass().getEPackage() == modelPackage;
+		}
+		return false;
+	}
 
 	/**
 	 * Creates an adapter for the <code>target</code>.
@@ -753,44 +825,44 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Get_trans <em>Get trans</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.GetTrans <em>Get Trans</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Get_trans
+	 * @see org.eclipse.m2m.atl.emftvm.GetTrans
 	 * @generated
 	 */
-	public Adapter createGet_transAdapter() {
+	public Adapter createGetTransAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Set_static <em>Set static</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.SetStatic <em>Set Static</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Set_static
+	 * @see org.eclipse.m2m.atl.emftvm.SetStatic
 	 * @generated
 	 */
-	public Adapter createSet_staticAdapter() {
+	public Adapter createSetStaticAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Get_static <em>Get static</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.GetStatic <em>Get Static</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Get_static
+	 * @see org.eclipse.m2m.atl.emftvm.GetStatic
 	 * @generated
 	 */
-	public Adapter createGet_staticAdapter() {
+	public Adapter createGetStaticAdapter() {
 		return null;
 	}
 
@@ -809,16 +881,16 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Findtype_s <em>Findtype s</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.FindtypeS <em>Findtype S</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Findtype_s
+	 * @see org.eclipse.m2m.atl.emftvm.FindtypeS
 	 * @generated
 	 */
-	public Adapter createFindtype_sAdapter() {
+	public Adapter createFindtypeSAdapter() {
 		return null;
 	}
 
@@ -837,16 +909,16 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.New_s <em>New s</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.NewS <em>New S</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.New_s
+	 * @see org.eclipse.m2m.atl.emftvm.NewS
 	 * @generated
 	 */
-	public Adapter createNew_sAdapter() {
+	public Adapter createNewSAdapter() {
 		return null;
 	}
 
@@ -879,16 +951,16 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Dup_x1 <em>Dup x1</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.DupX1 <em>Dup X1</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Dup_x1
+	 * @see org.eclipse.m2m.atl.emftvm.DupX1
 	 * @generated
 	 */
-	public Adapter createDup_x1Adapter() {
+	public Adapter createDupX1Adapter() {
 		return null;
 	}
 
@@ -907,16 +979,16 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Swap_x1 <em>Swap x1</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.SwapX1 <em>Swap X1</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Swap_x1
+	 * @see org.eclipse.m2m.atl.emftvm.SwapX1
 	 * @generated
 	 */
-	public Adapter createSwap_x1Adapter() {
+	public Adapter createSwapX1Adapter() {
 		return null;
 	}
 
@@ -1047,30 +1119,30 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Invoke_super <em>Invoke super</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.InvokeSuper <em>Invoke Super</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Invoke_super
+	 * @see org.eclipse.m2m.atl.emftvm.InvokeSuper
 	 * @generated
 	 */
-	public Adapter createInvoke_superAdapter() {
+	public Adapter createInvokeSuperAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Invoke_static <em>Invoke static</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.InvokeStatic <em>Invoke Static</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Invoke_static
+	 * @see org.eclipse.m2m.atl.emftvm.InvokeStatic
 	 * @generated
 	 */
-	public Adapter createInvoke_staticAdapter() {
+	public Adapter createInvokeStaticAdapter() {
 		return null;
 	}
 
@@ -1089,16 +1161,16 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Allinst_in <em>Allinst in</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.AllinstIn <em>Allinst In</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Allinst_in
+	 * @see org.eclipse.m2m.atl.emftvm.AllinstIn
 	 * @generated
 	 */
-	public Adapter createAllinst_inAdapter() {
+	public Adapter createAllinstInAdapter() {
 		return null;
 	}
 
@@ -1117,16 +1189,16 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Match_s <em>Match s</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.MatchS <em>Match S</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Match_s
+	 * @see org.eclipse.m2m.atl.emftvm.MatchS
 	 * @generated
 	 */
-	public Adapter createMatch_sAdapter() {
+	public Adapter createMatchSAdapter() {
 		return null;
 	}
 
@@ -1173,20 +1245,6 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Invoke_all_cbs <em>Invoke all cbs</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Invoke_all_cbs
-	 * @generated
-	 */
-	public Adapter createInvoke_all_cbsAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Return <em>Return</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -1229,30 +1287,44 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Invoke_cb <em>Invoke cb</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.InvokeAllCbs <em>Invoke All Cbs</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Invoke_cb
+	 * @see org.eclipse.m2m.atl.emftvm.InvokeAllCbs
 	 * @generated
 	 */
-	public Adapter createInvoke_cbAdapter() {
+	public Adapter createInvokeAllCbsAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Invoke_cb_s <em>Invoke cb s</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.InvokeCb <em>Invoke Cb</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.m2m.atl.emftvm.Invoke_cb_s
+	 * @see org.eclipse.m2m.atl.emftvm.InvokeCb
 	 * @generated
 	 */
-	public Adapter createInvoke_cb_sAdapter() {
+	public Adapter createInvokeCbAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.InvokeCbS <em>Invoke Cb S</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.m2m.atl.emftvm.InvokeCbS
+	 * @generated
+	 */
+	public Adapter createInvokeCbSAdapter() {
 		return null;
 	}
 

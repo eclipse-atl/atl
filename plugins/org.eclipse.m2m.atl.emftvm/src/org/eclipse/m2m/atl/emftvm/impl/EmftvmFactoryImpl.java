@@ -13,15 +13,83 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 
 import java.lang.reflect.Method;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.eclipse.m2m.atl.emftvm.*;
+import org.eclipse.m2m.atl.emftvm.Add;
+import org.eclipse.m2m.atl.emftvm.Allinst;
+import org.eclipse.m2m.atl.emftvm.AllinstIn;
+import org.eclipse.m2m.atl.emftvm.And;
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
+import org.eclipse.m2m.atl.emftvm.ConstantTag;
+import org.eclipse.m2m.atl.emftvm.Delete;
+import org.eclipse.m2m.atl.emftvm.Dup;
+import org.eclipse.m2m.atl.emftvm.DupX1;
+import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
+import org.eclipse.m2m.atl.emftvm.Enditerate;
+import org.eclipse.m2m.atl.emftvm.ExecEnv;
+import org.eclipse.m2m.atl.emftvm.FeatureTag;
+import org.eclipse.m2m.atl.emftvm.Field;
+import org.eclipse.m2m.atl.emftvm.Findtype;
+import org.eclipse.m2m.atl.emftvm.FindtypeS;
+import org.eclipse.m2m.atl.emftvm.Get;
+import org.eclipse.m2m.atl.emftvm.GetStatic;
+import org.eclipse.m2m.atl.emftvm.GetTrans;
+import org.eclipse.m2m.atl.emftvm.Getcb;
+import org.eclipse.m2m.atl.emftvm.Getenvtype;
+import org.eclipse.m2m.atl.emftvm.Goto;
+import org.eclipse.m2m.atl.emftvm.If;
+import org.eclipse.m2m.atl.emftvm.Ifn;
+import org.eclipse.m2m.atl.emftvm.Ifte;
+import org.eclipse.m2m.atl.emftvm.Implies;
+import org.eclipse.m2m.atl.emftvm.InputRuleElement;
+import org.eclipse.m2m.atl.emftvm.Insert;
+import org.eclipse.m2m.atl.emftvm.Instruction;
+import org.eclipse.m2m.atl.emftvm.Invoke;
+import org.eclipse.m2m.atl.emftvm.InvokeAllCbs;
+import org.eclipse.m2m.atl.emftvm.InvokeCb;
+import org.eclipse.m2m.atl.emftvm.InvokeCbS;
+import org.eclipse.m2m.atl.emftvm.InvokeStatic;
+import org.eclipse.m2m.atl.emftvm.InvokeSuper;
+import org.eclipse.m2m.atl.emftvm.Isnull;
+import org.eclipse.m2m.atl.emftvm.Iterate;
+import org.eclipse.m2m.atl.emftvm.LineNumber;
+import org.eclipse.m2m.atl.emftvm.Load;
+import org.eclipse.m2m.atl.emftvm.LocalVariable;
+import org.eclipse.m2m.atl.emftvm.Match;
+import org.eclipse.m2m.atl.emftvm.MatchS;
+import org.eclipse.m2m.atl.emftvm.Metamodel;
+import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
+import org.eclipse.m2m.atl.emftvm.ModelDeclarationTag;
+import org.eclipse.m2m.atl.emftvm.Module;
+import org.eclipse.m2m.atl.emftvm.New;
+import org.eclipse.m2m.atl.emftvm.NewS;
+import org.eclipse.m2m.atl.emftvm.Not;
+import org.eclipse.m2m.atl.emftvm.Opcode;
+import org.eclipse.m2m.atl.emftvm.Operation;
+import org.eclipse.m2m.atl.emftvm.Or;
+import org.eclipse.m2m.atl.emftvm.OutputRuleElement;
+import org.eclipse.m2m.atl.emftvm.Parameter;
+import org.eclipse.m2m.atl.emftvm.Pop;
+import org.eclipse.m2m.atl.emftvm.Push;
+import org.eclipse.m2m.atl.emftvm.Pushf;
+import org.eclipse.m2m.atl.emftvm.Pusht;
+import org.eclipse.m2m.atl.emftvm.Remove;
+import org.eclipse.m2m.atl.emftvm.Return;
+import org.eclipse.m2m.atl.emftvm.Rule;
+import org.eclipse.m2m.atl.emftvm.RuleMode;
+import org.eclipse.m2m.atl.emftvm.Set;
+import org.eclipse.m2m.atl.emftvm.SetStatic;
+import org.eclipse.m2m.atl.emftvm.Store;
+import org.eclipse.m2m.atl.emftvm.Swap;
+import org.eclipse.m2m.atl.emftvm.SwapX1;
+import org.eclipse.m2m.atl.emftvm.Xor;
 import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
 import org.eclipse.m2m.atl.emftvm.util.LazyBag;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
@@ -35,13 +103,25 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model <b>Factory</b>.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
 public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	/**
+	 * Creates an instance of the factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EmftvmFactoryImpl() {
+		super();
+	}
+
+	/**
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
+	 * @return the default factory implementation.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -59,17 +139,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EmftvmFactoryImpl() {
-		super();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -98,28 +169,28 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 			case EmftvmPackage.STORE: return createStore();
 			case EmftvmPackage.SET: return createSet();
 			case EmftvmPackage.GET: return createGet();
-			case EmftvmPackage.GET_TRANS: return createGet_trans();
-			case EmftvmPackage.SET_STATIC: return createSet_static();
-			case EmftvmPackage.GET_STATIC: return createGet_static();
+			case EmftvmPackage.GET_TRANS: return createGetTrans();
+			case EmftvmPackage.SET_STATIC: return createSetStatic();
+			case EmftvmPackage.GET_STATIC: return createGetStatic();
 			case EmftvmPackage.FINDTYPE: return createFindtype();
-			case EmftvmPackage.FINDTYPE_S: return createFindtype_s();
+			case EmftvmPackage.FINDTYPE_S: return createFindtypeS();
 			case EmftvmPackage.NEW: return createNew();
-			case EmftvmPackage.NEW_S: return createNew_s();
+			case EmftvmPackage.NEW_S: return createNewS();
 			case EmftvmPackage.DELETE: return createDelete();
 			case EmftvmPackage.DUP: return createDup();
-			case EmftvmPackage.DUP_X1: return createDup_x1();
+			case EmftvmPackage.DUP_X1: return createDupX1();
 			case EmftvmPackage.SWAP: return createSwap();
-			case EmftvmPackage.SWAP_X1: return createSwap_x1();
+			case EmftvmPackage.SWAP_X1: return createSwapX1();
 			case EmftvmPackage.IF: return createIf();
 			case EmftvmPackage.IFN: return createIfn();
 			case EmftvmPackage.GOTO: return createGoto();
 			case EmftvmPackage.ITERATE: return createIterate();
 			case EmftvmPackage.ENDITERATE: return createEnditerate();
 			case EmftvmPackage.INVOKE: return createInvoke();
-			case EmftvmPackage.INVOKE_SUPER: return createInvoke_super();
-			case EmftvmPackage.INVOKE_STATIC: return createInvoke_static();
+			case EmftvmPackage.INVOKE_SUPER: return createInvokeSuper();
+			case EmftvmPackage.INVOKE_STATIC: return createInvokeStatic();
 			case EmftvmPackage.ALLINST: return createAllinst();
-			case EmftvmPackage.ALLINST_IN: return createAllinst_in();
+			case EmftvmPackage.ALLINST_IN: return createAllinstIn();
 			case EmftvmPackage.ISNULL: return createIsnull();
 			case EmftvmPackage.GETENVTYPE: return createGetenvtype();
 			case EmftvmPackage.NOT: return createNot();
@@ -130,11 +201,11 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 			case EmftvmPackage.IFTE: return createIfte();
 			case EmftvmPackage.RETURN: return createReturn();
 			case EmftvmPackage.GETCB: return createGetcb();
-			case EmftvmPackage.INVOKE_ALL_CBS: return createInvoke_all_cbs();
-			case EmftvmPackage.INVOKE_CB: return createInvoke_cb();
-			case EmftvmPackage.INVOKE_CB_S: return createInvoke_cb_s();
+			case EmftvmPackage.INVOKE_ALL_CBS: return createInvokeAllCbs();
+			case EmftvmPackage.INVOKE_CB: return createInvokeCb();
+			case EmftvmPackage.INVOKE_CB_S: return createInvokeCbS();
 			case EmftvmPackage.MATCH: return createMatch();
-			case EmftvmPackage.MATCH_S: return createMatch_s();
+			case EmftvmPackage.MATCH_S: return createMatchS();
 			case EmftvmPackage.ADD: return createAdd();
 			case EmftvmPackage.REMOVE: return createRemove();
 			case EmftvmPackage.INSERT: return createInsert();
@@ -144,7 +215,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -187,7 +259,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -230,7 +303,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -240,7 +314,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -250,7 +325,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -260,7 +336,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -270,7 +347,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -280,7 +358,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -290,7 +369,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -300,7 +380,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -310,7 +391,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -320,7 +402,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -330,7 +413,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -340,7 +424,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -350,7 +435,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -360,7 +446,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -370,7 +457,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -380,7 +468,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -390,7 +479,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -400,7 +490,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -410,7 +501,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -420,37 +512,41 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Get_trans createGet_trans() {
-		Get_transImpl get_trans = new Get_transImpl();
-		return get_trans;
+	public GetTrans createGetTrans() {
+		GetTransImpl getTrans = new GetTransImpl();
+		return getTrans;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Set_static createSet_static() {
-		Set_staticImpl set_static = new Set_staticImpl();
-		return set_static;
+	public SetStatic createSetStatic() {
+		SetStaticImpl setStatic = new SetStaticImpl();
+		return setStatic;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Get_static createGet_static() {
-		Get_staticImpl get_static = new Get_staticImpl();
-		return get_static;
+	public GetStatic createGetStatic() {
+		GetStaticImpl getStatic = new GetStaticImpl();
+		return getStatic;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -460,17 +556,19 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Findtype_s createFindtype_s() {
-		Findtype_sImpl findtype_s = new Findtype_sImpl();
-		return findtype_s;
+	public FindtypeS createFindtypeS() {
+		FindtypeSImpl findtypeS = new FindtypeSImpl();
+		return findtypeS;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -480,17 +578,19 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public New_s createNew_s() {
-		New_sImpl new_s = new New_sImpl();
-		return new_s;
+	public NewS createNewS() {
+		NewSImpl newS = new NewSImpl();
+		return newS;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -500,7 +600,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -510,17 +611,19 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Dup_x1 createDup_x1() {
-		Dup_x1Impl dup_x1 = new Dup_x1Impl();
-		return dup_x1;
+	public DupX1 createDupX1() {
+		DupX1Impl dupX1 = new DupX1Impl();
+		return dupX1;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -530,17 +633,19 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Swap_x1 createSwap_x1() {
-		Swap_x1Impl swap_x1 = new Swap_x1Impl();
-		return swap_x1;
+	public SwapX1 createSwapX1() {
+		SwapX1Impl swapX1 = new SwapX1Impl();
+		return swapX1;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -550,7 +655,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -560,7 +666,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -570,7 +677,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -580,7 +688,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -590,7 +699,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -600,27 +710,30 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Invoke_super createInvoke_super() {
-		Invoke_superImpl invoke_super = new Invoke_superImpl();
-		return invoke_super;
+	public InvokeSuper createInvokeSuper() {
+		InvokeSuperImpl invokeSuper = new InvokeSuperImpl();
+		return invokeSuper;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Invoke_static createInvoke_static() {
-		Invoke_staticImpl invoke_static = new Invoke_staticImpl();
-		return invoke_static;
+	public InvokeStatic createInvokeStatic() {
+		InvokeStaticImpl invokeStatic = new InvokeStaticImpl();
+		return invokeStatic;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -630,17 +743,19 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Allinst_in createAllinst_in() {
-		Allinst_inImpl allinst_in = new Allinst_inImpl();
-		return allinst_in;
+	public AllinstIn createAllinstIn() {
+		AllinstInImpl allinstIn = new AllinstInImpl();
+		return allinstIn;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -650,17 +765,19 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Match_s createMatch_s() {
-		Match_sImpl match_s = new Match_sImpl();
-		return match_s;
+	public MatchS createMatchS() {
+		MatchSImpl matchS = new MatchSImpl();
+		return matchS;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -670,7 +787,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -680,7 +798,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -690,17 +809,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Invoke_all_cbs createInvoke_all_cbs() {
-		Invoke_all_cbsImpl invoke_all_cbs = new Invoke_all_cbsImpl();
-		return invoke_all_cbs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -710,7 +820,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -720,27 +831,41 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Invoke_cb createInvoke_cb() {
-		Invoke_cbImpl invoke_cb = new Invoke_cbImpl();
-		return invoke_cb;
+	public InvokeAllCbs createInvokeAllCbs() {
+		InvokeAllCbsImpl invokeAllCbs = new InvokeAllCbsImpl();
+		return invokeAllCbs;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Invoke_cb_s createInvoke_cb_s() {
-		Invoke_cb_sImpl invoke_cb_s = new Invoke_cb_sImpl();
-		return invoke_cb_s;
+	public InvokeCb createInvokeCb() {
+		InvokeCbImpl invokeCb = new InvokeCbImpl();
+		return invokeCb;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public InvokeCbS createInvokeCbS() {
+		InvokeCbSImpl invokeCbS = new InvokeCbSImpl();
+		return invokeCbS;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -751,7 +876,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -760,7 +886,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -770,7 +897,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -780,7 +908,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -790,7 +919,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -800,7 +930,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -810,7 +941,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -820,7 +952,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -830,7 +963,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -840,7 +974,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -851,7 +986,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -860,7 +996,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -870,7 +1007,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -880,7 +1018,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -890,7 +1029,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -901,7 +1041,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -910,7 +1051,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -921,7 +1063,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -930,7 +1073,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -941,7 +1085,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -950,7 +1095,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -959,7 +1105,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -968,7 +1115,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -977,7 +1125,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -986,7 +1135,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -995,7 +1145,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1004,7 +1155,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1013,7 +1165,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1022,7 +1175,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1031,7 +1185,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1040,7 +1195,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1049,7 +1205,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1058,7 +1215,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1067,7 +1225,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1076,7 +1235,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1085,7 +1245,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1094,7 +1255,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1103,7 +1265,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1112,7 +1275,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1121,7 +1285,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1130,7 +1295,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1139,7 +1305,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @deprecated
 	 * @generated
@@ -1149,9 +1316,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 		return EmftvmPackage.eINSTANCE;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.EmftvmFactory#createInstruction(org.eclipse.m2m.atl.emftvm.Opcode)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Instruction createInstruction(Opcode opcode) {
 		switch (opcode) {
@@ -1163,28 +1329,28 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 		case STORE: return createStore();
 		case SET: return createSet();
 		case GET: return createGet();
-		case GET_TRANS: return createGet_trans();
-		case SET_STATIC: return createSet_static();
-		case GET_STATIC: return createGet_static();
+		case GET_TRANS: return createGetTrans();
+		case SET_STATIC: return createSetStatic();
+		case GET_STATIC: return createGetStatic();
 		case FINDTYPE: return createFindtype();
-		case FINDTYPE_S: return createFindtype_s();
+		case FINDTYPE_S: return createFindtypeS();
 		case NEW: return createNew();
-		case NEW_S: return createNew_s();
+		case NEW_S: return createNewS();
 		case DELETE: return createDelete();
 		case DUP: return createDup();
-		case DUP_X1: return createDup_x1();
+		case DUP_X1: return createDupX1();
 		case SWAP: return createSwap();
-		case SWAP_X1: return createSwap_x1();
+		case SWAP_X1: return createSwapX1();
 		case IF: return createIf();
 		case IFN: return createIfn();
 		case GOTO: return createGoto();
 		case ITERATE: return createIterate();
 		case ENDITERATE: return createEnditerate();
 		case INVOKE: return createInvoke();
-		case INVOKE_SUPER: return createInvoke_super();
-		case INVOKE_STATIC: return createInvoke_static();
+		case INVOKE_SUPER: return createInvokeSuper();
+		case INVOKE_STATIC: return createInvokeStatic();
 		case ALLINST: return createAllinst();
-		case ALLINST_IN: return createAllinst_in();
+		case ALLINST_IN: return createAllinstIn();
 		case ISNULL: return createIsnull();
 		case GETENVTYPE: return createGetenvtype();
 		case NOT: return createNot();
@@ -1195,11 +1361,11 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 		case IFTE: return createIfte();
 		case RETURN: return createReturn();
 		case GETCB: return createGetcb();
-		case INVOKE_ALL_CBS: return createInvoke_all_cbs();
-		case INVOKE_CB: return createInvoke_cb();
-		case INVOKE_CB_S: return createInvoke_cb_s();
+		case INVOKE_ALL_CBS: return createInvokeAllCbs();
+		case INVOKE_CB: return createInvokeCb();
+		case INVOKE_CB_S: return createInvokeCbS();
 		case MATCH: return createMatch();
-		case MATCH_S: return createMatch_s();
+		case MATCH_S: return createMatchS();
 		case ADD: return createAdd();
 		case REMOVE: return createRemove();
 		case INSERT: return createInsert();

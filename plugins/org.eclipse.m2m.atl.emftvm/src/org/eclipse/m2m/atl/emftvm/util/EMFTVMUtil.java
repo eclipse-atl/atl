@@ -29,7 +29,6 @@ import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 
-
 /**
  * EMFTVM static utility methods.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
@@ -62,14 +61,21 @@ public final class EMFTVMUtil {
 	 */
 	public static final String XMI_ID_FEATURE = "__xmiID__";
 
-	private static Metamodel ecoreMetamodel = null;
-	private static Metamodel emfTvmMetamodel = null;
-	private static Metamodel traceMetamodel = null;
+	private static Metamodel ecoreMetamodel;
+	private static Metamodel emfTvmMetamodel;
+	private static Metamodel traceMetamodel;
 
 	/**
+	 * Not used.
+	 */
+	private EMFTVMUtil() {
+	}
+
+	/**
+	 * Finds the type with typename in the metamodel with modelname, or the native type.
 	 * @param env the execution environment to search for the metamodel
 	 * @param modelname the metamodel name
-	 * @param typename
+	 * @param typename the type name
 	 * @return the type with typename in the metamodel with modelname, or the native type
 	 * @throws ClassNotFoundException
 	 */
@@ -89,29 +95,31 @@ public final class EMFTVMUtil {
 	}
 
 	/**
-	 * @param env
-	 * @param type
+	 * Returns the name of <code>type</code>, for printing.
+	 * @param env the current {@link ExecEnv}
+	 * @param type the type
 	 * @return the name of <code>type</code>, for printing
 	 */
 	public static String getTypeName(final ExecEnv env, final Object type) {
 		if (type instanceof EClass) {
-			EClass eCls = (EClass) type;
+			EClass eCls = (EClass)type;
 			for (Map.Entry<String, Metamodel> mm : env.getMetaModels().entrySet()) {
 				if (mm.getValue().getResource() == eCls.eResource()) {
 					return mm.getKey() + '!' + eCls.getName();
 				}
 			}
-			return ((EClass) type).getName();
+			return ((EClass)type).getName();
 		} else if (type instanceof Class<?>) {
-			return NATIVE + '!' + ((Class<?>) type).getName();
+			return NATIVE + '!' + ((Class<?>)type).getName();
 		} else {
 			return type.toString();
 		}
 	}
 
 	/**
-	 * @param env
-	 * @param types
+	 * Returns the names of <code>types</code>, for printing.
+	 * @param env the current {@link ExecEnv}.
+	 * @param types the types
 	 * @return the names of <code>types</code>, for printing
 	 */
 	public static String getTypeNames(final ExecEnv env, final Collection<?> types) {
@@ -127,13 +135,14 @@ public final class EMFTVMUtil {
 	}
 
 	/**
-	 * @param type
+	 * Returns the type object to use for the registry.
+	 * @param type the type object
 	 * @return the type object to use for the registry
 	 * @throws IllegalArgumentException if type is a primitive EMF type without instance class
 	 */
-	public static Object getRegistryType(final Object type) {
+	public static Object getRegistryType(final Object type) throws IllegalArgumentException {
 		if (type instanceof EClassifier && !(type instanceof EClass)) {
-			final Class<?> ic = ((EClassifier) type).getInstanceClass();
+			final Class<?> ic = ((EClassifier)type).getInstanceClass();
 			if (ic == null) {
 				throw new IllegalArgumentException(String.format("Primitive EMF type without instance class %s", type));
 			}
@@ -143,6 +152,7 @@ public final class EMFTVMUtil {
 	}
 
 	/**
+	 * Returns the singleton instance of the Ecore metamodel.
 	 * @return the singleton instance of the Ecore metamodel
 	 */
 	public static Metamodel getEcoreMetamodel() {
@@ -154,6 +164,7 @@ public final class EMFTVMUtil {
 	}
 
 	/**
+	 * Returns the singleton instance of the EMFTVM metamodel.
 	 * @return the singleton instance of the EMFTVM metamodel
 	 */
 	public static Metamodel getEmfTvmMetamodel() {
@@ -165,6 +176,7 @@ public final class EMFTVMUtil {
 	}
 
 	/**
+	 * Returns the singleton instance of the Trace metamodel.
 	 * @return the singleton instance of the Trace metamodel
 	 */
 	public static Metamodel getTraceMetamodel() {
@@ -176,8 +188,9 @@ public final class EMFTVMUtil {
 	}
 
 	/**
-	 * @param env
-	 * @param type
+	 * Finds all instances of type in the registered input/inout models.
+	 * @param env the current {@link ExecEnv}
+	 * @param type the type
 	 * @return all instances of type in the registered input/inout models
 	 */
 	public static LazyList<EObject> findAllInstances(final ExecEnv env, final EClass type) {
@@ -192,7 +205,10 @@ public final class EMFTVMUtil {
 	}
 
 	/**
-	 * @param env
+	 * Finds all instances of type in the given model.
+	 * @param env the current {@link ExecEnv}
+	 * @param type the type
+	 * @param modelname the model name
 	 * @return all instances of type in the given model
 	 */
 	public static LazyList<EObject> findAllInstIn(final ExecEnv env, final EClass type, final Object modelname) {

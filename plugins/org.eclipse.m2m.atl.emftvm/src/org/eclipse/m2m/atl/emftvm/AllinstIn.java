@@ -14,13 +14,14 @@ package org.eclipse.m2m.atl.emftvm;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>New s</b></em>'.
+ * A representation of the model object '<em><b>Allinst in</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getNew_s()
+ * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getAllinstIn()
  * @model
  * @generated
  */
-public interface New_s extends Instruction {
-} // New_s
+public interface AllinstIn extends Instruction {
+} // Allinst_in

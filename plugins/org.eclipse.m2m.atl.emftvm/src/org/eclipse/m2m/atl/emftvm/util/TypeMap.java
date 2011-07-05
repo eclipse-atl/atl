@@ -24,7 +24,8 @@ import java.util.Set;
 public interface TypeMap<K, V> extends Map<K, V> {
 
 	/**
-	 * @param key
+	 * Finds this key or a supertype key if contained, or <code>null</code> if neither is not contained.
+	 * @param key the key to find
 	 * @return this key or a supertype key if contained, or <code>null</code> if neither is not contained
 	 * @see #containsKey(Object)
 	 */
@@ -32,7 +33,7 @@ public interface TypeMap<K, V> extends Map<K, V> {
 
 	/**
 	 * Finds this key, if contained, and any contained supertype keys. 
-	 * @param key
+	 * @param key the key to find
 	 * @param keys the collection in which to store the found keys
 	 * @see #containsKey(Object)
 	 */

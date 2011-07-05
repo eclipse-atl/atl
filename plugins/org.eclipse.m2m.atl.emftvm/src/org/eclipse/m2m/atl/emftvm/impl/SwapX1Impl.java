@@ -15,23 +15,25 @@ package org.eclipse.m2m.atl.emftvm.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Opcode;
-import org.eclipse.m2m.atl.emftvm.Swap_x1;
+import org.eclipse.m2m.atl.emftvm.SwapX1;
 
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Swap x1</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class Swap_x1Impl extends InstructionImpl implements Swap_x1 {
+public class SwapX1Impl extends InstructionImpl implements SwapX1 {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link SwapX1Impl}.
 	 * <!-- end-user-doc -->
 	 */
-	protected Swap_x1Impl() {
+	protected SwapX1Impl() {
 		super();
 		opcode = Opcode.SWAP_X1;
 		stackConsumption = 3;
@@ -40,6 +42,8 @@ public class Swap_x1Impl extends InstructionImpl implements Swap_x1 {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

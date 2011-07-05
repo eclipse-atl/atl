@@ -28,13 +28,13 @@ public class TypeHashMap<K, V> extends HashMap<K, V> implements TypeMap<K, V> {
 
 	private static final long serialVersionUID = -4866974440115920626L;
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.util.TypeMap#findKey(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Object findKey(final Object key) {
 		if (key instanceof EClass) {
-			final EClass eCls = (EClass) key;
-			Object result = findEClassKey((EClass) key);
+			final EClass eCls = (EClass)key;
+			Object result = findEClassKey((EClass)key);
 			if (result == null) {
 				final Class<?> ic = eCls.getInstanceClass();
 				if (ic != null) {
@@ -46,7 +46,7 @@ public class TypeHashMap<K, V> extends HashMap<K, V> implements TypeMap<K, V> {
 			return result;
 		}
 		if (key instanceof Class<?>) {
-			return findClassKey((Class<?>) key);
+			return findClassKey((Class<?>)key);
 		}
 		if (containsKey(key)) {
 			return key;
@@ -98,13 +98,15 @@ public class TypeHashMap<K, V> extends HashMap<K, V> implements TypeMap<K, V> {
 		return mostSpecificKey;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * 
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.util.TypeMap#findAllKeys(java.lang.Object, java.util.Set)
 	 */
 	public void findAllKeys(final Object key, final Set<Object> keys) {
 		if (key instanceof EClass) {
-			final EClass eCls = (EClass) key;
+			final EClass eCls = (EClass)key;
 			final Class<?> ic = eCls.getInstanceClass();
 			findAllEClassKeys(eCls, keys);
 			if (ic != null) {
@@ -113,7 +115,7 @@ public class TypeHashMap<K, V> extends HashMap<K, V> implements TypeMap<K, V> {
 				findAllClassKeys(Object.class, keys); // everything is an object
 			}
 		} else if (key instanceof Class<?>) {
-			findAllClassKeys((Class<?>) key, keys);
+			findAllClassKeys((Class<?>)key, keys);
 		} else if (containsKey(key)) {
 			keys.add(key);
 		}

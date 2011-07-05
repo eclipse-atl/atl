@@ -19,23 +19,24 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.InvokeInstruction;
-import org.eclipse.m2m.atl.emftvm.Invoke_cb;
+import org.eclipse.m2m.atl.emftvm.InvokeCb;
 import org.eclipse.m2m.atl.emftvm.Opcode;
 
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Invoke cb</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.Invoke_cbImpl#getArgcount <em>Argcount</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InvokeCbImpl#getArgcount <em>Argcount</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb {
+public class InvokeCbImpl extends CodeBlockInstructionImpl implements InvokeCb {
 	/**
 	 * The default value of the '{@link #getArgcount() <em>Argcount</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -57,9 +58,10 @@ public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link InvokeCbImpl}.
 	 * <!-- end-user-doc -->
 	 */
-	protected Invoke_cbImpl() {
+	protected InvokeCbImpl() {
 		super();
 		opcode = Opcode.INVOKE_CB;
 		stackProduction = 1;
@@ -67,6 +69,8 @@ public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -76,7 +80,8 @@ public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -85,7 +90,8 @@ public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -97,7 +103,8 @@ public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -111,7 +118,8 @@ public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -126,7 +134,8 @@ public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -141,7 +150,8 @@ public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -155,7 +165,8 @@ public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -171,7 +182,8 @@ public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -187,7 +199,8 @@ public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -202,8 +215,8 @@ public class Invoke_cbImpl extends CodeBlockInstructionImpl implements Invoke_cb
 		return result.toString();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getStackConsumption()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int getStackConsumption() {

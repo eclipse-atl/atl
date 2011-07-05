@@ -14,13 +14,15 @@ package org.eclipse.m2m.atl.emftvm;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Invoke cb s</b></em>'.
+ * A representation of the model object '<em><b>Invoke static</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInvoke_cb_s()
+ * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInvokeStatic()
  * @model
  * @generated
  */
-public interface Invoke_cb_s extends InvokeInstruction {
-} // Invoke_cb_s
+public interface InvokeStatic extends InvokeOperationInstruction {
+
+} // Invoke_static

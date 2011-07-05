@@ -14,14 +14,15 @@ package org.eclipse.m2m.atl.emftvm;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Invoke super</b></em>'.
+ * A representation of the model object '<em><b>Get trans</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInvoke_super()
+ * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getGetTrans()
  * @model
  * @generated
  */
-public interface Invoke_super extends InvokeOperationInstruction {
+public interface GetTrans extends FieldInstruction {
 
-} // Invoke_super
+} // Get_trans

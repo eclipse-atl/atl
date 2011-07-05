@@ -19,6 +19,7 @@ import org.eclipse.m2m.atl.emftvm.util.LazyList;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Model</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  * <p>
@@ -89,6 +90,9 @@ public interface Model extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns all instances of the given <pre>type</pre>.
+	 * @param type the metaclass for which to find the instances
+	 * @return all instances of the given <pre>type</pre>.
 	 * <!-- end-user-doc -->
 	 * @model dataType="org.eclipse.m2m.atl.emftvm.LazyList<org.eclipse.emf.ecore.EObject>"
 	 * @generated
@@ -97,6 +101,9 @@ public interface Model extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new model element of the given <pre>type</pre> in this {@link Model}.
+	 * @param type the metaclass to instantiate
+	 * @return a new instance of the given <pre>type</pre>
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -105,6 +112,8 @@ public interface Model extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Deletes <pre>element</pre> from this {@link Model}.
+	 * @param element the model element to delete
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated

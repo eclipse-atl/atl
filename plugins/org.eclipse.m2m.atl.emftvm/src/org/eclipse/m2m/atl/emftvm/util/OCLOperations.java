@@ -45,23 +45,31 @@ import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
  */
 public final class OCLOperations {
 
+	/**
+	 * {@link LazyList} that resolves default trace links.
+	 */
 	public static class ResolveList extends LazyList<Object> {
-		
+
+		/**
+		 * {@link Iterator} that resolves default trace links.
+		 */
 		public class ResolveIterator extends CachingIterator {
-	
+
+			/**
+			 * Creates a new {@link ResolveIterator}.
+			 */
 			public ResolveIterator() {
 				super(dataSource.iterator());
 			}
 	
-			/*
-			 * (non-Javadoc)
-			 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection.CachingIterator#next()
+			/**
+			 * {@inheritDoc}
 			 */
 			@Override
 			public Object next() {
 				Object next = inner.next();
 				if (next instanceof EObject) {
-					final SourceElement se = tls.getDefaultSourceElement((EObject) next);
+					final SourceElement se = tls.getDefaultSourceElement((EObject)next);
 					if (se != null) {
 						final EList<TargetElement> seMapsTo = se.getMapsTo();
 						if (!seMapsTo.isEmpty()) {
@@ -95,18 +103,19 @@ public final class OCLOperations {
 
 		/**
 		 * Creates a new {@link ResolveList} around <code>dataSource</code>.
-		 * @param dataSource
+		 * @param dataSource he underlying collection
+		 * @param frame the current {@link StackFrame}
 		 */
 		public ResolveList(final Collection<Object> dataSource, final StackFrame frame) {
 			super(dataSource);
 			this.frame = frame;
 			this.env = frame.getEnv();
 			this.traces = env.findStaticField(env.eClass(), "traces");
-			this.tls = (TraceLinkSet) traces.getStaticValue(frame);
+			this.tls = (TraceLinkSet)traces.getStaticValue(frame);
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#iterator()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Iterator<Object> iterator() {
@@ -116,53 +125,52 @@ public final class OCLOperations {
 			return new ResolveIterator(); // extends CachingIterator
 		}
 	
-		/* (non-Javadoc)
-		 * @see org.eclipse.m2m.atl.emftvm.util.LazyCollection#size()
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int size() {
 			if (dataSource == null) {
 				return cache.size();
 			}
-			return ((Collection<Object>) dataSource).size();
+			return ((Collection<Object>)dataSource).size();
 		}
 		
 	}
 
-	public static final String OclModel = EMFTVMUtil.NATIVE;
-	public static final String EcoreModel = EcorePackage.eNAME.toUpperCase();
-	public static final String EmftvmModel = EmftvmPackage.eNAME.toUpperCase();
-
-	public static final String[] OclAnyType			= new String[]{OclModel, "java.lang.Object"};
-	public static final String[] BooleanType		= new String[]{OclModel, "java.lang.Boolean"};
-	public static final String[] RealType			= new String[]{OclModel, "java.lang.Double"};
-	public static final String[] IntegerType		= new String[]{OclModel, "java.lang.Integer"};
-	public static final String[] StringType			= new String[]{OclModel, "java.lang.String"};
-	public static final String[] JavaClassType		= new String[]{OclModel, "java.lang.Class"};
-	public static final String[] JavaCollectionType = new String[]{OclModel, "java.util.Collection"};
-	public static final String[] JavaListType		= new String[]{OclModel, "java.util.List"};
-	public static final String[] CollectionType 	= new String[]{OclModel, "org.eclipse.m2m.atl.emftvm.util.LazyCollection"};
-	public static final String[] BagType 			= new String[]{OclModel, "org.eclipse.m2m.atl.emftvm.util.LazyBag"};
-	public static final String[] SequenceType 		= new String[]{OclModel, "org.eclipse.m2m.atl.emftvm.util.LazyList"};
-	public static final String[] SetType 			= new String[]{OclModel, "org.eclipse.m2m.atl.emftvm.util.LazySet"};
-	public static final String[] OrderedSetType 	= new String[]{OclModel, "org.eclipse.m2m.atl.emftvm.util.LazyOrderedSet"};
-
-	public static final String[] ClassifierType 	= new String[]{EcoreModel, "EClassifier"};
-	public static final String[] ClassType 			= new String[]{EcoreModel, "EClass"};
-
-	public static final String[] ExecEnvType 		= new String[]{EmftvmModel, "ExecEnv"};
-
-	private static OCLOperations INSTANCE = null;
-
 	/**
-	 * @return the singleton instance of {@link OCLOperations}.
+	 * The OCL metamodel namespace.
 	 */
-	public static OCLOperations getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new OCLOperations();
-		}
-		return INSTANCE;
-	}
+	public static final String OCL_MODEL = EMFTVMUtil.NATIVE;
+	/**
+	 * The Ecore metamodel namespace.
+	 */
+	public static final String ECORE_MODEL = EcorePackage.eNAME.toUpperCase();
+	/**
+	 * The EMFTVM metamodel namespace.
+	 */
+	public static final String EMFTVM_MODEL = EmftvmPackage.eNAME.toUpperCase();
+
+	static final String[] OCL_ANY_TYPE			= new String[]{OCL_MODEL, "java.lang.Object"};
+	static final String[] BOOLEAN_TYPE			= new String[]{OCL_MODEL, "java.lang.Boolean"};
+	static final String[] REAL_TYPE				= new String[]{OCL_MODEL, "java.lang.Double"};
+	static final String[] INTEGER_TYPE			= new String[]{OCL_MODEL, "java.lang.Integer"};
+	static final String[] STRING_TYPE			= new String[]{OCL_MODEL, "java.lang.String"};
+	static final String[] JAVA_CLASS_TYPE		= new String[]{OCL_MODEL, "java.lang.Class"};
+	static final String[] JAVA_COLLECTION_TYPE	= new String[]{OCL_MODEL, "java.util.Collection"};
+	static final String[] JAVA_LIST_TYPE		= new String[]{OCL_MODEL, "java.util.List"};
+	static final String[] COLLECTION_TYPE 		= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazyCollection"};
+	static final String[] BAG_TYPE 				= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazyBag"};
+	static final String[] SEQUENCE_TYPE 		= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazyList"};
+	static final String[] SET_TYPE 				= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazySet"};
+	static final String[] ORDERED_SET_TYPE 		= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazyOrderedSet"};
+
+	static final String[] CLASSIFIER_TYPE 		= new String[]{ECORE_MODEL, "EClassifier"};
+	static final String[] CLASS_TYPE 			= new String[]{ECORE_MODEL, "EClass"};
+
+	static final String[] EXEC_ENV_TYPE 		= new String[]{EMFTVM_MODEL, "ExecEnv"};
+
+	private static OCLOperations instance;
 
 	private final EmftvmFactory factory = EmftvmFactory.eINSTANCE;
 	private final Module oclModule;
@@ -178,23 +186,34 @@ public final class OCLOperations {
 	}
 
 	/**
+	 * Returns the singleton instance of {@link OCLOperations}.
+	 * @return the singleton instance of {@link OCLOperations}.
+	 */
+	public static OCLOperations getInstance() {
+		if (instance == null) {
+			instance = new OCLOperations();
+		}
+		return instance;
+	}
+
+	/**
 	 * Adds native operations to the oclModule.
 	 */
 	private void createOperations() {
 		/////////////////////////////////////////////////////////////////////
 		// OclAny
 		/////////////////////////////////////////////////////////////////////
-		createOperation(false, "debug", OclAnyType, OclAnyType,
-				new String[][][]{{{"message"}, StringType}}, 
+		createOperation(false, "debug", OCL_ANY_TYPE, OCL_ANY_TYPE,
+				new String[][][]{{{"message"}, STRING_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object object = frame.getLocal(0, 0);
-						final StringBuffer buf = new StringBuffer((String) frame.getLocal(0, 1));
+						final StringBuffer buf = new StringBuffer((String)frame.getLocal(0, 1));
 						buf.append(": ");
 						if (object instanceof String) {
 							buf.append('\'');
-							buf.append((String) object);
+							buf.append((String)object);
 							buf.append('\'');
 						} else {
 							buf.append(object);
@@ -203,13 +222,13 @@ public final class OCLOperations {
 						return object;
 					}
 		});
-		createOperation(false, "oclAsType", OclAnyType, OclAnyType,
-				new String[][][]{{{"type"}, ClassifierType}}, 
+		createOperation(false, "oclAsType", OCL_ANY_TYPE, OCL_ANY_TYPE,
+				new String[][][]{{{"type"}, CLASSIFIER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object object = frame.getLocal(0, 0);
-						final EClassifier type = (EClassifier) frame.getLocal(0, 1);
+						final EClassifier type = (EClassifier)frame.getLocal(0, 1);
 						if (!type.isInstance(object)) {
 							throw new IllegalArgumentException(String.format(
 									"%s is not an instance of %s",
@@ -218,13 +237,13 @@ public final class OCLOperations {
 						return object;
 					}
 		});
-		createOperation(false, "oclAsType", OclAnyType, OclAnyType,
-				new String[][][]{{{"type"}, JavaClassType}}, 
+		createOperation(false, "oclAsType", OCL_ANY_TYPE, OCL_ANY_TYPE,
+				new String[][][]{{{"type"}, JAVA_CLASS_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object object = frame.getLocal(0, 0);
-						final Class<?> type = (Class<?>) frame.getLocal(0, 1);
+						final Class<?> type = (Class<?>)frame.getLocal(0, 1);
 						if (!type.isInstance(object)) {
 							throw new IllegalArgumentException(String.format(
 									"%s is not an instance of %s",
@@ -233,17 +252,17 @@ public final class OCLOperations {
 						return object;
 					}
 		});
-		createOperation(false, "oclIsTypeOf", OclAnyType, BooleanType,
-				new String[][][]{{{"type"}, ClassifierType}}, 
+		createOperation(false, "oclIsTypeOf", OCL_ANY_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"type"}, CLASSIFIER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object o = frame.getLocal(0, 0);
-						final EClassifier type = (EClassifier) frame.getLocal(0, 1);
+						final EClassifier type = (EClassifier)frame.getLocal(0, 1);
 						if (type instanceof EClass && o instanceof EObject) {
-							return ((EObject) o).eClass() == type;
+							return ((EObject)o).eClass() == type;
 						} else if (o != null) {
-							final Class<?> ic = ((EClassifier) type).getInstanceClass();
+							final Class<?> ic = ((EClassifier)type).getInstanceClass();
 							if (ic == null) {
 								throw new IllegalArgumentException(String.format("EClassifier %s must have an instance class", type));
 							}
@@ -252,98 +271,98 @@ public final class OCLOperations {
 						return false;
 					}
 		});
-		createOperation(false, "oclIsTypeOf", OclAnyType, BooleanType,
-				new String[][][]{{{"type"}, JavaClassType}}, 
+		createOperation(false, "oclIsTypeOf", OCL_ANY_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"type"}, JAVA_CLASS_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object o = frame.getLocal(0, 0);
-						final Class<?> type = (Class<?>) frame.getLocal(0, 1);
+						final Class<?> type = (Class<?>)frame.getLocal(0, 1);
 						return o != null ? o.getClass() == type : false;
 					}
 		});
-		createOperation(false, "oclIsKindOf", OclAnyType, BooleanType,
-				new String[][][]{{{"type"}, ClassifierType}}, 
+		createOperation(false, "oclIsKindOf", OCL_ANY_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"type"}, CLASSIFIER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object o = frame.getLocal(0, 0);
-						final EClassifier type = (EClassifier) frame.getLocal(0, 1);
+						final EClassifier type = (EClassifier)frame.getLocal(0, 1);
 						return type.isInstance(o);
 					}
 		});
-		createOperation(false, "oclIsKindOf", OclAnyType, BooleanType,
-				new String[][][]{{{"type"}, JavaClassType}}, 
+		createOperation(false, "oclIsKindOf", OCL_ANY_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"type"}, JAVA_CLASS_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object o = frame.getLocal(0, 0);
-						final Class<?> type = (Class<?>) frame.getLocal(0, 1);
+						final Class<?> type = (Class<?>)frame.getLocal(0, 1);
 						return type.isInstance(o);
 					}
 		});
-		createOperation(false, "oclType", OclAnyType, OclAnyType,
+		createOperation(false, "oclType", OCL_ANY_TYPE, OCL_ANY_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object o = frame.getLocal(0, 0);
 						if (o instanceof EObject) {
-							return ((EObject) o).eClass();
+							return ((EObject)o).eClass();
 						} else if (o != null) {
 							return o.getClass();
 						}
 						return Void.TYPE;
 					}
 		});
-		createOperation(false, "=", OclAnyType, BooleanType,
-				new String[][][]{{{"o"}, OclAnyType}}, 
+		createOperation(false, "=", OCL_ANY_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"o"}, OCL_ANY_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object o = frame.getLocal(0, 0);
 						final Object o2 = frame.getLocal(0, 1);
-						return (o==null ? o2==null : o.equals(o2));
+						return o == null ? o2 == null : o.equals(o2);
 					}
 		});
-		createOperation(false, "=~", OclAnyType, BooleanType,
-				new String[][][]{{{"o"}, OclAnyType}}, 
+		createOperation(false, "=~", OCL_ANY_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"o"}, OCL_ANY_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object o = frame.getLocal(0, 0);
 						final Object o2 = frame.getLocal(0, 1);
-						return (o==null ? o2==null : o.equals(o2));
+						return o == null ? o2 == null : o.equals(o2);
 					}
 		});
-		createOperation(false, "=~|", OclAnyType, BooleanType,
-				new String[][][]{{{"o"}, OclAnyType}}, 
+		createOperation(false, "=~|", OCL_ANY_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"o"}, OCL_ANY_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object o = frame.getLocal(0, 0);
 						final Object o2 = frame.getLocal(0, 1);
-						return (o==null ? o2==null : o.equals(o2));
+						return o == null ? o2 == null : o.equals(o2);
 					}
 		});
-		createOperation(false, "<>", OclAnyType, BooleanType,
-				new String[][][]{{{"o"}, OclAnyType}}, 
+		createOperation(false, "<>", OCL_ANY_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"o"}, OCL_ANY_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object o = frame.getLocal(0, 0);
 						final Object o2 = frame.getLocal(0, 1);
-						return !(o==null ? o2==null : o.equals(o2));
+						return !(o == null ? o2 == null : o.equals(o2));
 					}
 		});
-		createOperation(false, "isInModel", OclAnyType, BooleanType,
-				new String[][][]{{{"model"}, StringType}}, 
+		createOperation(false, "isInModel", OCL_ANY_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"model"}, STRING_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object o = frame.getLocal(0, 0);
 						if (o instanceof EObject) {
-							final String mName = (String) frame.getLocal(0, 1);
+							final String mName = (String)frame.getLocal(0, 1);
 							final ExecEnv env = frame.getEnv();
 							Model model = env.getInputModels().get(mName);
 							if (model == null) {
@@ -353,65 +372,65 @@ public final class OCLOperations {
 								model = env.getOutputModels().get(mName);
 							}
 							if (model != null) {
-								return model.getResource() == ((EObject) o).eResource();
+								return model.getResource() == ((EObject)o).eResource();
 							}
 						}
 						return false;
 					}
 		});
-		createOperation(false, "refImmediateComposite", OclAnyType, OclAnyType,
+		createOperation(false, "refImmediateComposite", OCL_ANY_TYPE, OCL_ANY_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object object = frame.getLocal(0, 0);
 						if (object instanceof EObject) {
-							return ((EObject) object).eContainer();
+							return ((EObject)object).eContainer();
 						}
 						throw new VMException(frame, String.format(
 								"Cannot retrieve immediate composite for regular objects: %s",
 								object));
 					}
 		});
-		createOperation(false, "refGet", OclAnyType, OclAnyType,
-				new String[][][]{{{"propname"}, StringType}}, 
+		createOperation(false, "refGet", OCL_ANY_TYPE, OCL_ANY_TYPE,
+				new String[][][]{{{"propname"}, STRING_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object object = frame.getLocal(0, 0);
 						if (object instanceof EObject) {
-							final String propname = (String) frame.getLocal(0, 1);
-							final EObject eo = (EObject) object;
+							final String propname = (String)frame.getLocal(0, 1);
+							final EObject eo = (EObject)object;
 							final EClass ecls = eo.eClass();
 							final EStructuralFeature sf = ecls.getEStructuralFeature(propname);
 							if (sf == null) {
 								throw new VMException(frame, String.format(
 										"Cannot find property %s::%s", ecls.getName(), propname));
 							}
-							return ((EObject) object).eGet(sf);
+							return ((EObject)object).eGet(sf);
 						}
 						throw new VMException(frame, String.format(
 								"Cannot retrieve properties for regular objects: %s",
 								object));
 					}
 		});
-		createOperation(false, "refSet", OclAnyType, OclAnyType,
-				new String[][][]{{{"propname"}, StringType}, {{"value"}, OclAnyType}}, 
+		createOperation(false, "refSet", OCL_ANY_TYPE, OCL_ANY_TYPE,
+				new String[][][]{{{"propname"}, STRING_TYPE}, {{"value"}, OCL_ANY_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						final Object object = frame.getLocal(0, 0);
 						if (object instanceof EObject) {
-							final String propname = (String) frame.getLocal(0, 1);
+							final String propname = (String)frame.getLocal(0, 1);
 							final Object value = frame.getLocal(0, 2);
-							final EObject eo = (EObject) object;
+							final EObject eo = (EObject)object;
 							final EClass ecls = eo.eClass();
 							final EStructuralFeature sf = ecls.getEStructuralFeature(propname);
 							if (sf == null) {
 								throw new VMException(frame, String.format(
 										"Cannot find property %s::%s", ecls.getName(), propname));
 							}
-							((EObject) object).eSet(sf, value);
+							((EObject)object).eSet(sf, value);
 							return null;
 						}
 						throw new VMException(frame, String.format(
@@ -419,7 +438,7 @@ public final class OCLOperations {
 								object));
 					}
 		});
-		createOperation(false, "resolve", OclAnyType, OclAnyType,
+		createOperation(false, "resolve", OCL_ANY_TYPE, OCL_ANY_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
@@ -428,8 +447,8 @@ public final class OCLOperations {
 						if (object instanceof EObject) {
 							final ExecEnv env = frame.getEnv();
 							final Field traces = env.findStaticField(env.eClass(), "traces");
-							final TraceLinkSet tls = (TraceLinkSet) traces.getStaticValue(frame);
-							final SourceElement se = tls.getDefaultSourceElement((EObject) object);
+							final TraceLinkSet tls = (TraceLinkSet)traces.getStaticValue(frame);
+							final SourceElement se = tls.getDefaultSourceElement((EObject)object);
 							if (se != null) {
 								final EList<TargetElement> seMapsTo = se.getMapsTo();
 								if (!seMapsTo.isEmpty()) {
@@ -450,38 +469,38 @@ public final class OCLOperations {
 		/////////////////////////////////////////////////////////////////////
 		// JavaCollection
 		/////////////////////////////////////////////////////////////////////
-		createOperation(false, "resolve", JavaCollectionType, SequenceType,
+		createOperation(false, "resolve", JAVA_COLLECTION_TYPE, SEQUENCE_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@SuppressWarnings("unchecked")
 					@Override
 					public Object execute(StackFrame frame) {
-						final Collection<Object> object = (Collection<Object>) frame.getLocal(0, 0);
+						final Collection<Object> object = (Collection<Object>)frame.getLocal(0, 0);
 						return new ResolveList(object, frame);
 					}
 		});
-		createOperation(false, "=~", JavaCollectionType, BooleanType,
-				new String[][][]{{{"o"}, OclAnyType}}, 
+		createOperation(false, "=~", JAVA_COLLECTION_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"o"}, OCL_ANY_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						final Collection<?> o = (Collection<?>) frame.getLocal(0, 0);
+						final Collection<?> o = (Collection<?>)frame.getLocal(0, 0);
 						final Object o2 = frame.getLocal(0, 1);
 						if (o2 instanceof Collection<?>) {
-							return o.containsAll((Collection<?>) o2);
+							return o.containsAll((Collection<?>)o2);
 						}
 						return o.contains(o2);
 					}
 		});
-		createOperation(false, "=~|", JavaCollectionType, BooleanType,
-				new String[][][]{{{"o"}, OclAnyType}}, 
+		createOperation(false, "=~|", JAVA_COLLECTION_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"o"}, OCL_ANY_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						final Collection<?> o = (Collection<?>) frame.getLocal(0, 0);
+						final Collection<?> o = (Collection<?>)frame.getLocal(0, 0);
 						final Object o2 = frame.getLocal(0, 1);
 						if (o2 instanceof Collection<?>) {
-							return o.containsAll((Collection<?>) o2);
+							return o.containsAll((Collection<?>)o2);
 						}
 						return o.contains(o2);
 					}
@@ -489,15 +508,15 @@ public final class OCLOperations {
 		/////////////////////////////////////////////////////////////////////
 		// JavaList
 		/////////////////////////////////////////////////////////////////////
-		createOperation(false, "=~|", JavaListType, BooleanType,
-				new String[][][]{{{"o"}, OclAnyType}}, 
+		createOperation(false, "=~|", JAVA_LIST_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"o"}, OCL_ANY_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						final List<?> o = (List<?>) frame.getLocal(0, 0);
+						final List<?> o = (List<?>)frame.getLocal(0, 0);
 						final Object o2 = frame.getLocal(0, 1);
 						if (o2 instanceof Collection<?>) {
-							final Collection<?> coll2 = (Collection<?>) o2;
+							final Collection<?> coll2 = (Collection<?>)o2;
 							final int sizediff = o.size() - coll2.size();
 							if (sizediff < 0) {
 								return false;
@@ -506,8 +525,8 @@ public final class OCLOperations {
 							}
 						}
 						if (o.size() > 0) {
-							final Object last = o.get(o.size()-1);
-							return last==null ? o2==null : last.equals(o2);
+							final Object last = o.get(o.size() - 1);
+							return last == null ? o2 == null : last.equals(o2);
 						}
 						return false;
 					}
@@ -515,18 +534,18 @@ public final class OCLOperations {
 		/////////////////////////////////////////////////////////////////////
 		// ExecEnv
 		/////////////////////////////////////////////////////////////////////
-		createOperation(true, "resolveTemp", ExecEnvType, OclAnyType,
-				new String[][][]{{{"var"}, OclAnyType}, {{"target_pattern_name"}, StringType}}, 
+		createOperation(true, "resolveTemp", EXEC_ENV_TYPE, OCL_ANY_TYPE,
+				new String[][][]{{{"var"}, OCL_ANY_TYPE}, {{"target_pattern_name"}, STRING_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						final Object object = frame.getLocal(0, 0);
-						final String name = (String) frame.getLocal(0, 1);
+						final String name = (String)frame.getLocal(0, 1);
 						if (object instanceof EObject) {
 							final ExecEnv env = frame.getEnv();
 							final Field traces = env.findStaticField(env.eClass(), "traces");
-							final TraceLinkSet tls = (TraceLinkSet) traces.getStaticValue(frame);
-							final SourceElement se = tls.getDefaultSourceElement((EObject) object);
+							final TraceLinkSet tls = (TraceLinkSet)traces.getStaticValue(frame);
+							final SourceElement se = tls.getDefaultSourceElement((EObject)object);
 							if (se != null) {
 								final TargetElement te = se.getSourceOf().getTargetElement(name);
 								if (te != null) {
@@ -536,8 +555,8 @@ public final class OCLOperations {
 						} else if (object instanceof List<?>) {
 							final ExecEnv env = frame.getEnv();
 							final Field traces = env.findStaticField(env.eClass(), "traces");
-							final TraceLinkSet tls = (TraceLinkSet) traces.getStaticValue(frame);
-							final SourceElementList sel = tls.getDefaultSourceElements((List<?>) object);
+							final TraceLinkSet tls = (TraceLinkSet)traces.getStaticValue(frame);
+							final SourceElementList sel = tls.getDefaultSourceElements((List<?>)object);
 							if (sel != null) {
 								assert !sel.getSourceElements().isEmpty();
 								final TargetElement te = sel.getSourceElements().get(0).getSourceOf().getTargetElement(name);
@@ -554,502 +573,502 @@ public final class OCLOperations {
 		/////////////////////////////////////////////////////////////////////
 		// Class
 		/////////////////////////////////////////////////////////////////////
-		createOperation(false, "allInstances", ClassType, SequenceType,
+		createOperation(false, "allInstances", CLASS_TYPE, SEQUENCE_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						final EClass c = (EClass) frame.getLocal(0, 0);
+						final EClass c = (EClass)frame.getLocal(0, 0);
 						return EMFTVMUtil.findAllInstances(frame.getEnv(), c);
 					}
 		});
-		createOperation(false, "allInstancesFrom", ClassType, SequenceType,
-				new String[][][]{{{"metamodel"}, StringType}}, 
+		createOperation(false, "allInstancesFrom", CLASS_TYPE, SEQUENCE_TYPE,
+				new String[][][]{{{"metamodel"}, STRING_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						final EClass c = (EClass) frame.getLocal(0, 0);
-						final String mm = (String) frame.getLocal(0, 1);
+						final EClass c = (EClass)frame.getLocal(0, 0);
+						final String mm = (String)frame.getLocal(0, 1);
 						return EMFTVMUtil.findAllInstIn(frame.getEnv(), c, mm);
 					}
 		});
 		/////////////////////////////////////////////////////////////////////
 		// Real
 		/////////////////////////////////////////////////////////////////////
-		createOperation(false, "+", RealType, RealType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "+", REAL_TYPE, REAL_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) + (Double) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) + (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "+", RealType, RealType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "+", REAL_TYPE, REAL_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) + (Integer) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) + (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "-", RealType, RealType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "-", REAL_TYPE, REAL_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) - (Double) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) - (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "-", RealType, RealType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "-", REAL_TYPE, REAL_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) - (Integer) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) - (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "*", RealType, RealType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "*", REAL_TYPE, REAL_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) * (Double) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) * (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "*", RealType, RealType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "*", REAL_TYPE, REAL_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) * (Integer) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) * (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "neg", RealType, RealType,
+		createOperation(false, "neg", REAL_TYPE, REAL_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return - (Double) frame.getLocal(0, 0);
+						return -(Double)frame.getLocal(0, 0);
 					}
 		});
-		createOperation(false, "/", RealType, RealType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "/", REAL_TYPE, REAL_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) / (Double) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) / (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "/", RealType, RealType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "/", REAL_TYPE, REAL_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) / (Integer) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) / (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "abs", RealType, RealType,
+		createOperation(false, "abs", REAL_TYPE, REAL_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Math.abs((Double) frame.getLocal(0, 0));
+						return Math.abs((Double)frame.getLocal(0, 0));
 					}
 		});
-		createOperation(false, "floor", RealType, IntegerType,
+		createOperation(false, "floor", REAL_TYPE, INTEGER_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Double.valueOf(Math.floor((Double) frame.getLocal(0, 0))).intValue();
+						return Double.valueOf(Math.floor((Double)frame.getLocal(0, 0))).intValue();
 					}
 		});
-		createOperation(false, "round", RealType, IntegerType,
+		createOperation(false, "round", REAL_TYPE, INTEGER_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Double.valueOf(Math.round((Double) frame.getLocal(0, 0))).intValue();
+						return Double.valueOf(Math.round((Double)frame.getLocal(0, 0))).intValue();
 					}
 		});
-		createOperation(false, "max", RealType, RealType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "max", REAL_TYPE, REAL_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Math.max((Double) frame.getLocal(0, 0), (Double) frame.getLocal(0, 1));
+						return Math.max((Double)frame.getLocal(0, 0), (Double)frame.getLocal(0, 1));
 					}
 		});
-		createOperation(false, "max", RealType, RealType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "max", REAL_TYPE, REAL_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Math.max((Double) frame.getLocal(0, 0), (Integer) frame.getLocal(0, 1));
+						return Math.max((Double)frame.getLocal(0, 0), (Integer)frame.getLocal(0, 1));
 					}
 		});
-		createOperation(false, "min", RealType, RealType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "min", REAL_TYPE, REAL_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Math.min((Double) frame.getLocal(0, 0), (Double) frame.getLocal(0, 1));
+						return Math.min((Double)frame.getLocal(0, 0), (Double)frame.getLocal(0, 1));
 					}
 		});
-		createOperation(false, "min", RealType, RealType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "min", REAL_TYPE, REAL_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Math.min((Double) frame.getLocal(0, 0), (Integer) frame.getLocal(0, 1));
+						return Math.min((Double)frame.getLocal(0, 0), (Integer)frame.getLocal(0, 1));
 					}
 		});
-		createOperation(false, "<", RealType, BooleanType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "<", REAL_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) < (Double) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) < (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "<", RealType, BooleanType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "<", REAL_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) < (Integer) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) < (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, ">", RealType, BooleanType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, ">", REAL_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) > (Double) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) > (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, ">", RealType, BooleanType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, ">", REAL_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) > (Integer) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) > (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "<=", RealType, BooleanType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "<=", REAL_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) <= (Double) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) <= (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "<=", RealType, BooleanType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "<=", REAL_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) <= (Integer) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) <= (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, ">=", RealType, BooleanType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, ">=", REAL_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) >= (Double) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) >= (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, ">=", RealType, BooleanType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, ">=", REAL_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Double) frame.getLocal(0, 0) >= (Integer) frame.getLocal(0, 1);
+						return (Double)frame.getLocal(0, 0) >= (Integer)frame.getLocal(0, 1);
 					}
 		});
 		/////////////////////////////////////////////////////////////////////
 		// Integer
 		/////////////////////////////////////////////////////////////////////
-		createOperation(false, "neg", IntegerType, IntegerType,
+		createOperation(false, "neg", INTEGER_TYPE, INTEGER_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return - (Integer) frame.getLocal(0, 0);
+						return -(Integer)frame.getLocal(0, 0);
 					}
 		});
-		createOperation(false, "+", IntegerType, RealType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "+", INTEGER_TYPE, REAL_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) + (Double) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) + (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "+", IntegerType, IntegerType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "+", INTEGER_TYPE, INTEGER_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) + (Integer) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) + (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "-", IntegerType, RealType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "-", INTEGER_TYPE, REAL_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) - (Double) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) - (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "-", IntegerType, IntegerType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "-", INTEGER_TYPE, INTEGER_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) - (Integer) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) - (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "*", IntegerType, RealType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "*", INTEGER_TYPE, REAL_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) * (Double) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) * (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "*", IntegerType, IntegerType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "*", INTEGER_TYPE, INTEGER_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) * (Integer) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) * (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "/", IntegerType, RealType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "/", INTEGER_TYPE, REAL_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) / (Double) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) / (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "/", IntegerType, RealType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "/", INTEGER_TYPE, REAL_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return ((Integer) frame.getLocal(0, 0)).doubleValue() / (Integer) frame.getLocal(0, 1);
+						return ((Integer)frame.getLocal(0, 0)).doubleValue() / (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "abs", IntegerType, IntegerType,
+		createOperation(false, "abs", INTEGER_TYPE, INTEGER_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Math.abs((Integer) frame.getLocal(0, 0));
+						return Math.abs((Integer)frame.getLocal(0, 0));
 					}
 		});
-		createOperation(false, "div", IntegerType, IntegerType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "div", INTEGER_TYPE, INTEGER_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) / (Integer) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) / (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "mod", IntegerType, IntegerType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "mod", INTEGER_TYPE, INTEGER_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) % (Integer) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) % (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "max", IntegerType, RealType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "max", INTEGER_TYPE, REAL_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Math.max((Integer) frame.getLocal(0, 0), (Double) frame.getLocal(0, 1));
+						return Math.max((Integer)frame.getLocal(0, 0), (Double)frame.getLocal(0, 1));
 					}
 		});
-		createOperation(false, "max", IntegerType, IntegerType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "max", INTEGER_TYPE, INTEGER_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Math.max((Integer) frame.getLocal(0, 0), (Integer) frame.getLocal(0, 1));
+						return Math.max((Integer)frame.getLocal(0, 0), (Integer)frame.getLocal(0, 1));
 					}
 		});
-		createOperation(false, "min", IntegerType, RealType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "min", INTEGER_TYPE, REAL_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Math.min((Integer) frame.getLocal(0, 0), (Double) frame.getLocal(0, 1));
+						return Math.min((Integer)frame.getLocal(0, 0), (Double)frame.getLocal(0, 1));
 					}
 		});
-		createOperation(false, "min", IntegerType, IntegerType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "min", INTEGER_TYPE, INTEGER_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Math.min((Integer) frame.getLocal(0, 0), (Integer) frame.getLocal(0, 1));
+						return Math.min((Integer)frame.getLocal(0, 0), (Integer)frame.getLocal(0, 1));
 					}
 		});
-		createOperation(false, "<", IntegerType, BooleanType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "<", INTEGER_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) < (Double) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) < (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "<", IntegerType, BooleanType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "<", INTEGER_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) < (Integer) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) < (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, ">", IntegerType, BooleanType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, ">", INTEGER_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) > (Double) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) > (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, ">", IntegerType, BooleanType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, ">", INTEGER_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) > (Integer) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) > (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "<=", IntegerType, BooleanType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, "<=", INTEGER_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) <= (Double) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) <= (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "<=", IntegerType, BooleanType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "<=", INTEGER_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) <= (Integer) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) <= (Integer)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, ">=", IntegerType, BooleanType,
-				new String[][][]{{{"r"}, RealType}}, 
+		createOperation(false, ">=", INTEGER_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"r"}, REAL_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) >= (Double) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) >= (Double)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, ">=", IntegerType, BooleanType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, ">=", INTEGER_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (Integer) frame.getLocal(0, 0) >= (Integer) frame.getLocal(0, 1);
+						return (Integer)frame.getLocal(0, 0) >= (Integer)frame.getLocal(0, 1);
 					}
 		});
 		/////////////////////////////////////////////////////////////////////
 		// String
 		/////////////////////////////////////////////////////////////////////
-		createOperation(false, "+", StringType, StringType,
-				new String[][][]{{{"s"}, StringType}}, 
+		createOperation(false, "+", STRING_TYPE, STRING_TYPE,
+				new String[][][]{{{"s"}, STRING_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return (String) frame.getLocal(0, 0) + (String) frame.getLocal(0, 1);
+						return (String)frame.getLocal(0, 0) + (String)frame.getLocal(0, 1);
 					}
 		});
-		createOperation(false, "size", StringType, IntegerType,
+		createOperation(false, "size", STRING_TYPE, INTEGER_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return ((String) frame.getLocal(0, 0)).length();
+						return ((String)frame.getLocal(0, 0)).length();
 					}
 		});
-		createOperation(false, "substring", StringType, StringType,
-				new String[][][]{{{"lower"}, IntegerType}, {{"upper"}, IntegerType}}, 
+		createOperation(false, "substring", STRING_TYPE, STRING_TYPE,
+				new String[][][]{{{"lower"}, INTEGER_TYPE}, {{"upper"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return ((String) frame.getLocal(0, 0)).substring(
-								(Integer) frame.getLocal(0, 1) - 1,
-								(Integer) frame.getLocal(0, 2));
+						return ((String)frame.getLocal(0, 0)).substring(
+								(Integer)frame.getLocal(0, 1) - 1,
+								(Integer)frame.getLocal(0, 2));
 					}
 		});
-		createOperation(false, "toInteger", StringType, IntegerType,
+		createOperation(false, "toInteger", STRING_TYPE, INTEGER_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Integer.parseInt((String) frame.getLocal(0, 0));
+						return Integer.parseInt((String)frame.getLocal(0, 0));
 					}
 		});
-		createOperation(false, "toReal", StringType, RealType,
+		createOperation(false, "toReal", STRING_TYPE, REAL_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Double.parseDouble((String) frame.getLocal(0, 0));
+						return Double.parseDouble((String)frame.getLocal(0, 0));
 					}
 		});
-		createOperation(false, "indexOf", StringType, IntegerType,
-				new String[][][]{{{"s"}, StringType}}, 
+		createOperation(false, "indexOf", STRING_TYPE, INTEGER_TYPE,
+				new String[][][]{{{"s"}, STRING_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return ((String) frame.getLocal(0, 0)).indexOf((String) frame.getLocal(0, 1)) + 1;
+						return ((String)frame.getLocal(0, 0)).indexOf((String)frame.getLocal(0, 1)) + 1;
 					}
 		});
-		createOperation(false, "lastIndexOf", StringType, IntegerType,
-				new String[][][]{{{"s"}, StringType}}, 
+		createOperation(false, "lastIndexOf", STRING_TYPE, INTEGER_TYPE,
+				new String[][][]{{{"s"}, STRING_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return ((String) frame.getLocal(0, 0)).lastIndexOf((String) frame.getLocal(0, 1)) + 1;
+						return ((String)frame.getLocal(0, 0)).lastIndexOf((String)frame.getLocal(0, 1)) + 1;
 					}
 		});
-		createOperation(false, "at", StringType, StringType,
-				new String[][][]{{{"i"}, IntegerType}}, 
+		createOperation(false, "at", STRING_TYPE, STRING_TYPE,
+				new String[][][]{{{"i"}, INTEGER_TYPE}}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return String.valueOf(((String) frame.getLocal(0, 0)).charAt((Integer) frame.getLocal(0, 1) - 1));
+						return String.valueOf(((String)frame.getLocal(0, 0)).charAt((Integer)frame.getLocal(0, 1) - 1));
 					}
 		});
-		createOperation(false, "characters", StringType, SequenceType,
+		createOperation(false, "characters", STRING_TYPE, SEQUENCE_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
 						LazyList<String> seq = new LazyList<String>();
-						for (char c : ((String) frame.getLocal(0, 0)).toCharArray()) {
+						for (char c : ((String)frame.getLocal(0, 0)).toCharArray()) {
 							seq = seq.append(String.valueOf(c));
 						}
 						return seq;
 					}
 		});
-		createOperation(false, "toBoolean", StringType, BooleanType,
+		createOperation(false, "toBoolean", STRING_TYPE, BOOLEAN_TYPE,
 				new String[][][]{}, 
 				new CodeBlockImpl() {
 					@Override
 					public Object execute(StackFrame frame) {
-						return Boolean.parseBoolean((String) frame.getLocal(0, 0));
+						return Boolean.parseBoolean((String)frame.getLocal(0, 0));
 					}
 		});
 	}

@@ -15,12 +15,13 @@ package org.eclipse.m2m.atl.emftvm;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Dup x1</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getDup_x1()
+ * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getDupX1()
  * @model
  * @generated
  */
-public interface Dup_x1 extends Instruction {
+public interface DupX1 extends Instruction {
 } // Dup_x1

@@ -30,6 +30,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Instruction</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -55,15 +56,6 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	 */
 	protected static final Opcode OPCODE_EDEFAULT = Opcode.PUSH;
 	/**
-	 * The cached value of the '{@link #getOpcode() <em>Opcode</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOpcode()
-	 * @generated
-	 * @ordered
-	 */
-	protected Opcode opcode = OPCODE_EDEFAULT;
-	/**
 	 * The default value of the '{@link #getStackProduction() <em>Stack Production</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -73,15 +65,6 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	 */
 	protected static final int STACK_PRODUCTION_EDEFAULT = 0;
 	/**
-	 * The cached value of the '{@link #getStackProduction() <em>Stack Production</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStackProduction()
-	 * @generated
-	 * @ordered
-	 */
-	protected int stackProduction = STACK_PRODUCTION_EDEFAULT;
-	/**
 	 * The default value of the '{@link #getStackConsumption() <em>Stack Consumption</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -90,6 +73,24 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	 * @ordered
 	 */
 	protected static final int STACK_CONSUMPTION_EDEFAULT = 0;
+	/**
+	 * The cached value of the '{@link #getOpcode() <em>Opcode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOpcode()
+	 * @generated
+	 * @ordered
+	 */
+	protected Opcode opcode = OPCODE_EDEFAULT;
+	/**
+	 * The cached value of the '{@link #getStackProduction() <em>Stack Production</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStackProduction()
+	 * @generated
+	 * @ordered
+	 */
+	protected int stackProduction = STACK_PRODUCTION_EDEFAULT;
 	/**
 	 * The cached value of the '{@link #getStackConsumption() <em>Stack Consumption</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -108,8 +109,10 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	 * @ordered
 	 */
 	protected LineNumber lineNumber;
+
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link InstructionImpl}.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -119,6 +122,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -128,7 +133,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -138,7 +144,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setOwningBlock(CodeBlock)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -148,7 +155,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -169,7 +177,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -178,7 +187,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -187,7 +197,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -196,7 +207,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -213,7 +225,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #getLineNumber()
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -222,7 +235,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * @see #setLineNumber(LineNumber)
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -237,7 +251,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -256,10 +271,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Calculates the amount of elements on the stack after executing this instruction,
-	 * also taking into account the execution of previous instructions in the code block.
-	 * @return the amount of elements on the stack after executing this instruction
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
 	public int getStackLevel() {
@@ -270,7 +283,7 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 			final int index = code.indexOf(this);
 			assert index > -1;
 			if (index > 0) {
-				stackLevelChange += code.get(index-1).getStackLevel();
+				stackLevelChange += code.get(index - 1).getStackLevel();
 			}
 			if (stackLevelChange < 0) {
 				throw new VMException(null, String.format("Guaranteed stack underflow condition detected at %s::%s: %d",
@@ -281,7 +294,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -301,7 +315,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -317,7 +332,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -331,7 +347,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -354,7 +371,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -372,7 +390,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -390,7 +409,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -412,7 +432,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */

@@ -23,7 +23,7 @@ public class VMException extends RuntimeException {
 
 	/**
 	 * Creates a new {@link VMException}.
-	 * @param frame
+	 * @param frame the current {@link StackFrame}
 	 */
 	public VMException(StackFrame frame) {
 		super();
@@ -32,8 +32,8 @@ public class VMException extends RuntimeException {
 
 	/**
 	 * Creates a new {@link VMException}.
-	 * @param frame
-	 * @param message
+	 * @param frame the current {@link StackFrame}
+	 * @param message the error message
 	 */
 	public VMException(StackFrame frame, String message) {
 		super(message);
@@ -42,8 +42,8 @@ public class VMException extends RuntimeException {
 
 	/**
 	 * Creates a new {@link VMException}.
-	 * @param frame
-	 * @param cause
+	 * @param frame the current {@link StackFrame}
+	 * @param cause the nested exception
 	 */
 	public VMException(StackFrame frame, Throwable cause) {
 		super(cause);
@@ -52,9 +52,9 @@ public class VMException extends RuntimeException {
 
 	/**
 	 * Creates a new {@link VMException}.
-	 * @param frame
-	 * @param message
-	 * @param cause
+	 * @param frame the current {@link StackFrame}
+	 * @param message the error message
+	 * @param cause the nested exception
 	 */
 	public VMException(StackFrame frame, String message, Throwable cause) {
 		super(message, cause);
@@ -62,14 +62,15 @@ public class VMException extends RuntimeException {
 	}
 
 	/**
+	 * Returns the current {@link StackFrame}.
 	 * @return the frame
 	 */
 	public StackFrame getFrame() {
 		return frame;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {

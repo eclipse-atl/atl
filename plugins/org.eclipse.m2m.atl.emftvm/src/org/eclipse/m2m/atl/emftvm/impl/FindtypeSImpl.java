@@ -14,37 +14,42 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
-import org.eclipse.m2m.atl.emftvm.Invoke_cb_s;
+import org.eclipse.m2m.atl.emftvm.FindtypeS;
 import org.eclipse.m2m.atl.emftvm.Opcode;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Invoke cb s</b></em>'.
+ * An implementation of the model object '<em><b>Findtype s</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class Invoke_cb_sImpl extends InvokeInstructionImpl implements Invoke_cb_s {
+public class FindtypeSImpl extends InstructionImpl implements FindtypeS {
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates a new {@link FindtypeSImpl}.
 	 * <!-- end-user-doc -->
 	 */
-	protected Invoke_cb_sImpl() {
+	protected FindtypeSImpl() {
 		super();
-		opcode = Opcode.INVOKE_CB_S;
-		stackConsumption = 1;
+		opcode = Opcode.FINDTYPE_S;
+		stackConsumption = 2;
+		stackProduction = 1;
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link EClass} that correspond to this metaclass.
+	 * @return the {@link EClass} that correspond to this metaclass.
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return EmftvmPackage.Literals.INVOKE_CB_S;
+		return EmftvmPackage.Literals.FINDTYPE_S;
 	}
 
-} //Invoke_cb_sImpl
+} //Findtype_sImpl
