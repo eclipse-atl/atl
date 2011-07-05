@@ -70,6 +70,7 @@ import org.eclipse.ui.part.ISetSelectionTarget;
 /**
  * This is a simple wizard for creating a new model file.
  * <!-- begin-user-doc -->
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  */
 public class EmftvmModelWizard extends Wizard implements INewWizard {

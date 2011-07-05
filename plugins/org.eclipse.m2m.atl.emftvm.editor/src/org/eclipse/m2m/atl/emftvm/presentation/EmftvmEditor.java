@@ -170,6 +170,7 @@ import org.eclipse.ui.actions.WorkspaceModifyOperation;
 /**
  * This is an example of a Emftvm model editor.
  * <!-- begin-user-doc -->
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */

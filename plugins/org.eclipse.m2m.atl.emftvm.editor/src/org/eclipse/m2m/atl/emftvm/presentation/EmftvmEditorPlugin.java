@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 /**
  * This is the central singleton for the Emftvm editor plugin.
  * <!-- begin-user-doc -->
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */

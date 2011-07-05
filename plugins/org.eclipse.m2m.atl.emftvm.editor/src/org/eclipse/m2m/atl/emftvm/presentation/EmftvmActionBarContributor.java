@@ -51,6 +51,7 @@ import org.eclipse.ui.PartInitException;
 /**
  * This is the action bar contributor for the Emftvm model editor.
  * <!-- begin-user-doc -->
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
