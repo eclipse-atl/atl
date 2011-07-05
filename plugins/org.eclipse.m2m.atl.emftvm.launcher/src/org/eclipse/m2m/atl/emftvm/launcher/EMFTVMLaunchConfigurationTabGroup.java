@@ -30,8 +30,8 @@ public class EMFTVMLaunchConfigurationTabGroup extends
 		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTabGroup#createTabs(org.eclipse.debug.ui.ILaunchConfigurationDialog, java.lang.String)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		final ILaunchConfigurationTab mainTab = new MainEMFTVMTab();

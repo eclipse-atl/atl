@@ -37,7 +37,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.m2m.atl.adt.ui.common.RegisteredPackageDialog;
 import org.eclipse.m2m.atl.adt.ui.common.WorkspaceFileDialog;
-import org.eclipse.m2m.atl.core.ui.launch.MainAtlTab;
 import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
 import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
@@ -63,7 +62,7 @@ import org.eclipse.swt.widgets.Widget;
 
 /**
  * Main UI tab for launching EMFTVM transformations.
- * Derived from {@link MainAtlTab}.
+ * Derived from {@link org.eclipse.m2m.atl.core.ui.launch.MainAtlTab}.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
@@ -103,8 +102,8 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	private final Map<String, Map<String, String>> inoutModelOptions = new LinkedHashMap<String, Map<String, String>>();
 	private final Map<String, Map<String, String>> outputModelOptions = new LinkedHashMap<String, Map<String, String>>();
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#createControl(org.eclipse.swt.widgets.Composite)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void createControl(Composite parent) {
 		scrollContainer = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -135,7 +134,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent evt) {
 				final String[] extensions = new String[] {"emftvm"};
 				final WorkspaceFileDialog dialog = new WorkspaceFileDialog(getShell(), extensions);
-				final Object result = dialog.open()==Dialog.OK ? dialog.getFirstResult() : null;
+				final Object result = dialog.open() == Dialog.OK ? dialog.getFirstResult() : null;
 				if ((result != null) && (result instanceof IFile)) {
 					final IFile currentFile = (IFile)result;
 					final String path = currentFile.getFullPath().toString();
@@ -264,14 +263,14 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		setControl(scrollContainer);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#setDefaults(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#initializeFrom(org.eclipse.debug.core.ILaunchConfiguration)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		launchConfiguration = configuration;
@@ -287,8 +286,8 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(EMFTVMLaunchConstants.MODULE_FILE_NAME, modulePathText.getText());
@@ -304,8 +303,8 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, new LinkedHashMap<String, Map<String, String>>(outputModelOptions));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#isValid(org.eclipse.debug.core.ILaunchConfiguration)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
@@ -331,15 +330,15 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 				&& canSaveGroupWidgets(outputModelsGroupWidgets) && super.isValid(launchConfig);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getName()
+	/**
+	 * {@inheritDoc}
 	 */
 	public String getName() {
 		return "Main";
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#getImage()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Image getImage() {
@@ -516,8 +515,8 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		browseWorkspace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
-				final WorkspaceFileDialog dialog = new WorkspaceFileDialog(getShell(), (String[]) null);
-				final Object result = dialog.open()==Dialog.OK ? dialog.getFirstResult() : null;
+				final WorkspaceFileDialog dialog = new WorkspaceFileDialog(getShell(), (String[])null);
+				final Object result = dialog.open() == Dialog.OK ? dialog.getFirstResult() : null;
 				if ((result != null) && (result instanceof IFile)) {
 					final IFile currentFile = (IFile)result;
 					final String path = currentFile.getFullPath().toString();
@@ -643,8 +642,8 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		browseWorkspace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
-				final WorkspaceFileDialog dialog = new WorkspaceFileDialog(getShell(), (String[]) null);
-				final Object result = dialog.open()==Dialog.OK ? dialog.getFirstResult() : null;
+				final WorkspaceFileDialog dialog = new WorkspaceFileDialog(getShell(), (String[])null);
+				final Object result = dialog.open() == Dialog.OK ? dialog.getFirstResult() : null;
 				if ((result != null) && (result instanceof IFile)) {
 					final IFile currentFile = (IFile)result;
 					final String path = currentFile.getFullPath().toString();
@@ -919,8 +918,8 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		final Map<?, ?> output = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODELS, Collections.EMPTY_MAP);
 
 		for (Entry<?,?> entry : meta.entrySet()) {
-			String name = (String) entry.getKey();
-			String uri = (String) entry.getValue();
+			String name = (String)entry.getKey();
+			String uri = (String)entry.getValue();
 			if (!metamodelLocations.containsKey(name)) {
 				removableMetamodels.add(name);
 			} else {
@@ -930,8 +929,8 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		}
 		
 		for (Entry<?,?> entry : input.entrySet()) {
-			String name = (String) entry.getKey();
-			String uri = (String) entry.getValue();
+			String name = (String)entry.getKey();
+			String uri = (String)entry.getValue();
 			if (!inputModelLocations.containsKey(name)) {
 				removableInputModels.add(name);
 			} else {
@@ -941,8 +940,8 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		}
 		
 		for (Entry<?,?> entry : inout.entrySet()) {
-			String name = (String) entry.getKey();
-			String uri = (String) entry.getValue();
+			String name = (String)entry.getKey();
+			String uri = (String)entry.getValue();
 			if (!inoutModelLocations.containsKey(name)) {
 				removableInoutModels.add(name);
 			} else {
@@ -952,8 +951,8 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		}
 		
 		for (Entry<?,?> entry : output.entrySet()) {
-			String name = (String) entry.getKey();
-			String uri = (String) entry.getValue();
+			String name = (String)entry.getKey();
+			String uri = (String)entry.getValue();
 			if (!outputModelLocations.containsKey(name)) {
 				removableOutputModels.add(name);
 			} else {

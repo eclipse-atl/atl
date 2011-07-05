@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.m2m.atl.core.ui.launch.MainAtlTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -30,8 +29,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 /**
- * Main UI tab for launching EMFTVM transformations.
- * Derived from {@link MainAtlTab}.
+ * Parameter tab for launching EMFTVM transformations.
+ * Derived from {@link org.eclipse.m2m.atl.core.ui.launch.MainAtlTab}.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
@@ -44,8 +43,8 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 	private Group parameterGroup;
 	private Button displayTimingData;
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#createControl(org.eclipse.swt.widgets.Composite)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void createControl(Composite parent) {
 		scrollContainer = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -73,15 +72,15 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 		setControl(scrollContainer);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#setDefaults(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(EMFTVMLaunchConstants.DISPLAY_TIMING, true);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#initializeFrom(org.eclipse.debug.core.ILaunchConfiguration)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
@@ -93,16 +92,16 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(
 				EMFTVMLaunchConstants.DISPLAY_TIMING, displayTimingData.getSelection());
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#isValid(org.eclipse.debug.core.ILaunchConfiguration)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
@@ -110,15 +109,15 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 		return super.isValid(launchConfig);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getName()
+	/**
+	 * {@inheritDoc}
 	 */
 	public String getName() {
 		return "Parameters";
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#getImage()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Image getImage() {

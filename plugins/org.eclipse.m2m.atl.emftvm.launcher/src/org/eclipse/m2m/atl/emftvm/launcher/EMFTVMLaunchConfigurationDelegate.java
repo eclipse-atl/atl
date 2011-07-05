@@ -55,8 +55,8 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
+	/**
+	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
 	public void launch(final ILaunchConfiguration configuration, final String mode,
@@ -120,7 +120,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 			final Map<String, Map<String, String>> modelOptions,
 			final Map<String, Metamodel> models) {
 		for (Entry<String, String> entry : modelLocations.entrySet()) {
-			URI uri = URI.createURI((String) entry.getValue());
+			URI uri = URI.createURI((String)entry.getValue());
 			if (uri.isFile() || uri.isPlatform()) {
 				Resource r = rs.getResource(uri, true);
 				Metamodel m = EmftvmFactory.eINSTANCE.createMetamodel();
@@ -130,7 +130,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 						entry.getKey(), 
 						EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES,
 						true));
-				models.put((String) entry.getKey(), m);
+				models.put((String)entry.getKey(), m);
 			}
 		}
 	}
@@ -146,7 +146,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 			final Map<String, Map<String, String>> modelOptions,
 			final Map<String, Metamodel> models) {
 		for (Entry<String, String> entry : modelLocations.entrySet()) {
-			URI uri = URI.createURI((String) entry.getValue());
+			URI uri = URI.createURI((String)entry.getValue());
 			if (!uri.isFile() && !uri.isPlatform()) {
 				Resource r = rs.getResource(uri, true);
 				Metamodel m = EmftvmFactory.eINSTANCE.createMetamodel();
@@ -156,7 +156,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 						entry.getKey(), 
 						EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES,
 						true));
-				models.put((String) entry.getKey(), m);
+				models.put((String)entry.getKey(), m);
 			}
 		}
 	}
@@ -228,7 +228,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 							model.getKey(), 
 							EMFTVMLaunchConstants.OPT_DERIVED_FILE,
 							true)) {
-					((IFile) r).setDerived(true);
+					((IFile)r).setDerived(true);
 				}
 			}
 		}
@@ -236,9 +236,9 @@ public class EMFTVMLaunchConfigurationDelegate implements
 
 	/**
 	 * Retrieves the value of <code>option</code> for <code>modelName</code> from <code>modelOptions</code>.
-	 * @param modelOptions
-	 * @param modelName
-	 * @param option
+	 * @param modelOptions the model options map
+	 * @param modelName the model name
+	 * @param option the option to retrieve
 	 * @param defaultValue the value to return if none set
 	 * @return the option value
 	 */
@@ -254,9 +254,10 @@ public class EMFTVMLaunchConfigurationDelegate implements
 
 	/**
 	 * Retrieves the boolean value of <code>option</code> for <code>modelName</code> from <code>modelOptions</code>.
-	 * @param modelOptions
-	 * @param modelName
-	 * @param option
+	 * @param modelOptions the model options map
+	 * @param modelName the model name
+	 * @param option the option to retrieve
+	 * @param defaultValue the value to return if none set
 	 * @return the option value
 	 */
 	public static boolean getBoolOption(final Map<String, Map<String, String>> modelOptions,

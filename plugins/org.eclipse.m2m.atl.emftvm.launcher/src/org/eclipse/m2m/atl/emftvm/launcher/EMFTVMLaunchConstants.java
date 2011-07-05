@@ -17,19 +17,34 @@ package org.eclipse.m2m.atl.emftvm.launcher;
  */
 public interface EMFTVMLaunchConstants {
 
+	/**
+	 * The EMFTVM launch configuration ID.
+	 */
 	String LAUNCH_CONFIGURATION_TYPE = "org.eclipse.m2m.atl.emftvm.launcher.EMFTVMTransformation"; //$NON-NLS-1$
+	/** Module File Name. */
 	String MODULE_FILE_NAME = "Module File Name"; //$NON-NLS-1$
+	/** Metamodels. */
 	String METAMODELS = "Metamodels"; //$NON-NLS-1$
+	/** Input Models. */
 	String INPUT_MODELS = "Input Models"; //$NON-NLS-1$
+	/** Inout Models. */
 	String INOUT_MODELS = "Inout Models"; //$NON-NLS-1$
+	/** Output Models. */
 	String OUTPUT_MODELS = "Output Models"; //$NON-NLS-1$
+	/** Display Timing Data. */
 	String DISPLAY_TIMING = "Display Timing Data"; //$NON-NLS-1$
+	/** Metamodel Options. */
 	String METAMODEL_OPTIONS = "Metamodel Options"; //$NON-NLS-1$
+	/** Input Model Options. */
 	String INPUT_MODEL_OPTIONS = "Input Model Options"; //$NON-NLS-1$
+	/** Inout Model Options. */
 	String INOUT_MODEL_OPTIONS = "Inout Model Options"; //$NON-NLS-1$
+	/** Output Model Options. */
 	String OUTPUT_MODEL_OPTIONS = "Output Model Options"; //$NON-NLS-1$
-	
+
+	/** allowInterModelReferences. */
 	String OPT_ALLOW_INTER_MODEL_REFERENCES = "allowIntermodelReferences"; //$NON-NLS-1$
+	/** derivedFile. */
 	String OPT_DERIVED_FILE = "derivedFile"; //$NON-NLS-1$
 
 }

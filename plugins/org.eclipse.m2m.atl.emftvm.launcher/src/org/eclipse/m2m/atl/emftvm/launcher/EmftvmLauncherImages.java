@@ -23,34 +23,47 @@ import org.eclipse.swt.graphics.Image;
  * Images for EMFTVM launcher plug-in.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
-public class EmftvmLauncherImages {
-
-	private static final String NAME_PREFIX = EmftvmLauncherPlugin.PLUGIN_ID + "."; //$NON-NLS-1$
-
-	private static ImageRegistry PLUGIN_REGISTRY;
+public final class EmftvmLauncherImages {
 
 	/**
 	 * Icons path.
 	 */
-	public final static String ICONS_PATH = "icons/"; //$NON-NLS-1$
+	public static final String ICONS_PATH = "icons/"; //$NON-NLS-1$
 
-	/**
-	 * Frequently used images
+	/** Image name prefix. */
+	public static final String NAME_PREFIX = EmftvmLauncherPlugin.PLUGIN_ID + "."; //$NON-NLS-1$
+
+	/*
+	 * Frequently used images.
 	 */
+	/** Main tab image name. */
 	public static final String OBJ_MAIN_TAB = NAME_PREFIX + "MAIN_TAB"; //$NON-NLS-1$
+	/** Parameter tab image name. */
 	public static final String OBJ_PARAMETER_TAB = NAME_PREFIX + "PARAMETER_TAB"; //$NON-NLS-1$
 
-	/**
+	/*
 	 * Set of predefined Image Descriptors.
 	 */
-	private static final String PATH_OBJ = ICONS_PATH + "obj16/"; //$NON-NLS-1$
+	/** OBJ image path. */
+	public static final String PATH_OBJ = ICONS_PATH + "obj16/"; //$NON-NLS-1$
+
+	/*
+	 * OBJ16 images.
+	 */
+	/** EMFTVM launch image. */
+	public static final ImageDescriptor DESC_EMFTVM = create(PATH_OBJ, "emftvm_launch.gif"); //$NON-NLS-1$
+	/** Main tab image. */
+	public static final ImageDescriptor DESC_MAIN_TAB = create(PATH_OBJ, "main_tab.gif"); //$NON-NLS-1$
+	/** Parameter tab image. */
+	public static final ImageDescriptor DESC_PARAMETER_TAB = create(PATH_OBJ, "parameter_tab.gif"); //$NON-NLS-1$
+
+	private static ImageRegistry pluginRegistry;
 
 	/**
-	 * OBJ16
+	 * Do not use.
 	 */
-	public static final ImageDescriptor DESC_EMFTVM = create(PATH_OBJ, "emftvm_launch.gif"); //$NON-NLS-1$
-	public static final ImageDescriptor DESC_MAIN_TAB = create(PATH_OBJ, "main_tab.gif"); //$NON-NLS-1$
-	public static final ImageDescriptor DESC_PARAMETER_TAB = create(PATH_OBJ, "parameter_tab.gif"); //$NON-NLS-1$
+	private EmftvmLauncherImages() {
+	}
 
 	/**
 	 * Creates an {@link ImageDescriptor} for <code>prefix</code>, <code>name</code>.
@@ -63,18 +76,19 @@ public class EmftvmLauncherImages {
 	}
 
 	/**
-	 * @param key
+	 * Returns the {@link Image} for <code>key</code>, or <code>null</code>.
+	 * @param key the image name
 	 * @return the {@link Image} for <code>key</code>, or <code>null</code>.
 	 */
 	public static Image get(String key) {
-		if (PLUGIN_REGISTRY == null)
+		if (pluginRegistry == null)
 			initialize();
-		return PLUGIN_REGISTRY.get(key);
+		return pluginRegistry.get(key);
 	}
 
 	/* package */
-	private static final void initialize() {
-		PLUGIN_REGISTRY = new ImageRegistry();
+	private static void initialize() {
+		pluginRegistry = new ImageRegistry();
 		manage(OBJ_MAIN_TAB, DESC_MAIN_TAB);
 		manage(OBJ_PARAMETER_TAB, DESC_PARAMETER_TAB);
 	}
@@ -92,13 +106,13 @@ public class EmftvmLauncherImages {
 
 	/**
 	 * Creates an {@link Image} from <code>desc</code>, and registers it under <code>key</code>.
-	 * @param key
-	 * @param desc
+	 * @param key the image name
+	 * @param desc the image descriptor
 	 * @return the new {@link Image}
 	 */
 	public static Image manage(String key, ImageDescriptor desc) {
 		Image image = desc.createImage();
-		PLUGIN_REGISTRY.put(key, image);
+		pluginRegistry.put(key, image);
 		return image;
 	}
 }

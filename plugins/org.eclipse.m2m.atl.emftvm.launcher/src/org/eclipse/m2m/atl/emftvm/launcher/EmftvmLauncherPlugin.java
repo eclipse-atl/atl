@@ -23,11 +23,15 @@ import org.osgi.framework.BundleContext;
  */
 public class EmftvmLauncherPlugin extends AbstractUIPlugin {
 
+	/**
+	 * The plug-in ID.
+	 */
 	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.launcher";
 
 	private static EmftvmLauncherPlugin instance;
 
 	/**
+	 * Returns the plug-in instance.
 	 * @return the instance
 	 */
 	public static EmftvmLauncherPlugin getInstance() {
@@ -36,7 +40,7 @@ public class EmftvmLauncherPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Logs <code>e</code> to the Eclipse log.
-	 * @param e
+	 * @param e the exception to log
 	 */
 	public static void log(final Throwable e) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, 0, e.getLocalizedMessage(), e));
@@ -44,15 +48,14 @@ public class EmftvmLauncherPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Logs <code>status</code> to the Eclipse log.
-	 * @param status
+	 * @param status the status to log
 	 */
 	public static void log(final IStatus status) {
 		getInstance().getLog().log(status);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -60,9 +63,8 @@ public class EmftvmLauncherPlugin extends AbstractUIPlugin {
 		instance = this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {

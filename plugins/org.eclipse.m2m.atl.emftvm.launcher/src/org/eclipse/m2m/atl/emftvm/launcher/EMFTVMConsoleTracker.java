@@ -30,22 +30,22 @@ public class EMFTVMConsoleTracker implements IPatternMatchListenerDelegate {
 
 	protected TextConsole console;
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.console.IPatternMatchListenerDelegate#connect(org.eclipse.ui.console.TextConsole)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void connect(TextConsole console) {
 		this.console = console;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.console.IPatternMatchListenerDelegate#disconnect()
+	/**
+	 * {@inheritDoc}
 	 */
 	public void disconnect() {
 		console = null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.console.IPatternMatchListenerDelegate#matchFound(org.eclipse.ui.console.PatternMatchEvent)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void matchFound(PatternMatchEvent event) {
 		try {
@@ -64,17 +64,17 @@ public class EMFTVMConsoleTracker implements IPatternMatchListenerDelegate {
 						int fileLength = -1;
 						if (moduleURI.hasFragment()) {
 							if (moduleURI.fragment().matches("\\[[0-9]*:[0-9]*-[0-9]*:[0-9]*\\]")) { //$NON-NLS-1$
-								final String location = moduleURI.fragment().substring(1, moduleURI.fragment().length()-1);				
+								final String location = moduleURI.fragment().substring(1, moduleURI.fragment().length() - 1);				
 								lineNumber = Integer.valueOf(location.split(":")[0]); //$NON-NLS-1$
 								final AtlNbCharFile help = new AtlNbCharFile(file.getContents());
 								int[] index = help.getIndexChar(location);
 								fileOffset = index[0];
 								fileLength = index[1] - index[0];
 							} else if  (moduleURI.fragment().matches("\\[[0-9]*:[0-9]*\\([0-9]*-[0-9]*\\)\\]")) { //$NON-NLS-1$
-								final String location = moduleURI.fragment().substring(1, moduleURI.fragment().length()-1);				
+								final String location = moduleURI.fragment().substring(1, moduleURI.fragment().length() - 1);				
 								lineNumber = Integer.valueOf(location.split(":")[0]); //$NON-NLS-1$
 								final String[] offsets = location.substring(
-										location.indexOf('(')+1, location.lastIndexOf(')')).split("-"); //$NON-NLS-1$
+										location.indexOf('(') + 1, location.lastIndexOf(')')).split("-"); //$NON-NLS-1$
 								fileOffset = Integer.valueOf(offsets[0]);
 								fileLength = Integer.valueOf(offsets[1]) + 1 - Integer.valueOf(offsets[0]);
 							}
@@ -90,15 +90,16 @@ public class EMFTVMConsoleTracker implements IPatternMatchListenerDelegate {
 	}
 
 	/**
-	 * @param moduleURI
-	 * @return The {@link IFile} for <code>moduleURI</code>, or <code>null</code>.
+	 * Returns the {@link IFile} for <code>moduleURI</code>, or <code>null</code>.
+	 * @param moduleURI the module EMF URI
+	 * @return the {@link IFile} for <code>moduleURI</code>, or <code>null</code>.
 	 */
 	protected static IFile getFileFromModuleURI(final URI moduleURI) {
 		if (moduleURI.isPlatformResource()) {
 			String path = moduleURI.trimFragment().toPlatformString(true);
 			IResource r = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 			if (r instanceof IFile) {
-				return (IFile) r;
+				return (IFile)r;
 			}
 		}
 		return null;
