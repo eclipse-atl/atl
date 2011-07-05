@@ -26,6 +26,7 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 /**
  * This is the item provider adapter for a {@link org.eclipse.m2m.atl.emftvm.Add} object.
  * <!-- begin-user-doc -->
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */

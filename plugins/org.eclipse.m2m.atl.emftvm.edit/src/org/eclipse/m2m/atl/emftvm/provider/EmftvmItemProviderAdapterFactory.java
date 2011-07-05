@@ -36,6 +36,7 @@ import org.eclipse.m2m.atl.emftvm.util.EmftvmAdapterFactory;
  * The adapters also support Eclipse property sheets.
  * Note that most of the adapters are shared among multiple instances.
  * <!-- begin-user-doc -->
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
@@ -516,72 +517,72 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Get_trans} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.GetTrans} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Get_transItemProvider get_transItemProvider;
+	protected GetTransItemProvider getTransItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Get_trans}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.GetTrans}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createGet_transAdapter() {
-		if (get_transItemProvider == null) {
-			get_transItemProvider = new Get_transItemProvider(this);
+	public Adapter createGetTransAdapter() {
+		if (getTransItemProvider == null) {
+			getTransItemProvider = new GetTransItemProvider(this);
 		}
 
-		return get_transItemProvider;
+		return getTransItemProvider;
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Set_static} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.SetStatic} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Set_staticItemProvider set_staticItemProvider;
+	protected SetStaticItemProvider setStaticItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Set_static}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.SetStatic}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createSet_staticAdapter() {
-		if (set_staticItemProvider == null) {
-			set_staticItemProvider = new Set_staticItemProvider(this);
+	public Adapter createSetStaticAdapter() {
+		if (setStaticItemProvider == null) {
+			setStaticItemProvider = new SetStaticItemProvider(this);
 		}
 
-		return set_staticItemProvider;
+		return setStaticItemProvider;
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Get_static} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.GetStatic} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Get_staticItemProvider get_staticItemProvider;
+	protected GetStaticItemProvider getStaticItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Get_static}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.GetStatic}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createGet_staticAdapter() {
-		if (get_staticItemProvider == null) {
-			get_staticItemProvider = new Get_staticItemProvider(this);
+	public Adapter createGetStaticAdapter() {
+		if (getStaticItemProvider == null) {
+			getStaticItemProvider = new GetStaticItemProvider(this);
 		}
 
-		return get_staticItemProvider;
+		return getStaticItemProvider;
 	}
 
 	/**
@@ -608,26 +609,26 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Findtype_s} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.FindtypeS} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Findtype_sItemProvider findtype_sItemProvider;
+	protected FindtypeSItemProvider findtypeSItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Findtype_s}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.FindtypeS}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createFindtype_sAdapter() {
-		if (findtype_sItemProvider == null) {
-			findtype_sItemProvider = new Findtype_sItemProvider(this);
+	public Adapter createFindtypeSAdapter() {
+		if (findtypeSItemProvider == null) {
+			findtypeSItemProvider = new FindtypeSItemProvider(this);
 		}
 
-		return findtype_sItemProvider;
+		return findtypeSItemProvider;
 	}
 
 	/**
@@ -654,26 +655,26 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.New_s} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.NewS} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected New_sItemProvider new_sItemProvider;
+	protected NewSItemProvider newSItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.New_s}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.NewS}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createNew_sAdapter() {
-		if (new_sItemProvider == null) {
-			new_sItemProvider = new New_sItemProvider(this);
+	public Adapter createNewSAdapter() {
+		if (newSItemProvider == null) {
+			newSItemProvider = new NewSItemProvider(this);
 		}
 
-		return new_sItemProvider;
+		return newSItemProvider;
 	}
 
 	/**
@@ -723,26 +724,26 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Dup_x1} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.DupX1} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Dup_x1ItemProvider dup_x1ItemProvider;
+	protected DupX1ItemProvider dupX1ItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Dup_x1}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.DupX1}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createDup_x1Adapter() {
-		if (dup_x1ItemProvider == null) {
-			dup_x1ItemProvider = new Dup_x1ItemProvider(this);
+	public Adapter createDupX1Adapter() {
+		if (dupX1ItemProvider == null) {
+			dupX1ItemProvider = new DupX1ItemProvider(this);
 		}
 
-		return dup_x1ItemProvider;
+		return dupX1ItemProvider;
 	}
 
 	/**
@@ -769,26 +770,26 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Swap_x1} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.SwapX1} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Swap_x1ItemProvider swap_x1ItemProvider;
+	protected SwapX1ItemProvider swapX1ItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Swap_x1}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.SwapX1}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createSwap_x1Adapter() {
-		if (swap_x1ItemProvider == null) {
-			swap_x1ItemProvider = new Swap_x1ItemProvider(this);
+	public Adapter createSwapX1Adapter() {
+		if (swapX1ItemProvider == null) {
+			swapX1ItemProvider = new SwapX1ItemProvider(this);
 		}
 
-		return swap_x1ItemProvider;
+		return swapX1ItemProvider;
 	}
 
 	/**
@@ -930,49 +931,49 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Invoke_super} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.InvokeSuper} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Invoke_superItemProvider invoke_superItemProvider;
+	protected InvokeSuperItemProvider invokeSuperItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Invoke_super}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.InvokeSuper}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createInvoke_superAdapter() {
-		if (invoke_superItemProvider == null) {
-			invoke_superItemProvider = new Invoke_superItemProvider(this);
+	public Adapter createInvokeSuperAdapter() {
+		if (invokeSuperItemProvider == null) {
+			invokeSuperItemProvider = new InvokeSuperItemProvider(this);
 		}
 
-		return invoke_superItemProvider;
+		return invokeSuperItemProvider;
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Invoke_static} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.InvokeStatic} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Invoke_staticItemProvider invoke_staticItemProvider;
+	protected InvokeStaticItemProvider invokeStaticItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Invoke_static}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.InvokeStatic}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createInvoke_staticAdapter() {
-		if (invoke_staticItemProvider == null) {
-			invoke_staticItemProvider = new Invoke_staticItemProvider(this);
+	public Adapter createInvokeStaticAdapter() {
+		if (invokeStaticItemProvider == null) {
+			invokeStaticItemProvider = new InvokeStaticItemProvider(this);
 		}
 
-		return invoke_staticItemProvider;
+		return invokeStaticItemProvider;
 	}
 
 	/**
@@ -999,26 +1000,26 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Allinst_in} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.AllinstIn} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Allinst_inItemProvider allinst_inItemProvider;
+	protected AllinstInItemProvider allinstInItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Allinst_in}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.AllinstIn}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createAllinst_inAdapter() {
-		if (allinst_inItemProvider == null) {
-			allinst_inItemProvider = new Allinst_inItemProvider(this);
+	public Adapter createAllinstInAdapter() {
+		if (allinstInItemProvider == null) {
+			allinstInItemProvider = new AllinstInItemProvider(this);
 		}
 
-		return allinst_inItemProvider;
+		return allinstInItemProvider;
 	}
 
 	/**
@@ -1045,26 +1046,26 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Match_s} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.MatchS} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Match_sItemProvider match_sItemProvider;
+	protected MatchSItemProvider matchSItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Match_s}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.MatchS}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createMatch_sAdapter() {
-		if (match_sItemProvider == null) {
-			match_sItemProvider = new Match_sItemProvider(this);
+	public Adapter createMatchSAdapter() {
+		if (matchSItemProvider == null) {
+			matchSItemProvider = new MatchSItemProvider(this);
 		}
 
-		return match_sItemProvider;
+		return matchSItemProvider;
 	}
 
 	/**
@@ -1137,29 +1138,6 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Invoke_all_cbs} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected Invoke_all_cbsItemProvider invoke_all_cbsItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Invoke_all_cbs}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createInvoke_all_cbsAdapter() {
-		if (invoke_all_cbsItemProvider == null) {
-			invoke_all_cbsItemProvider = new Invoke_all_cbsItemProvider(this);
-		}
-
-		return invoke_all_cbsItemProvider;
-	}
-
-	/**
 	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Return} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1206,49 +1184,72 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Invoke_cb} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.InvokeAllCbs} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Invoke_cbItemProvider invoke_cbItemProvider;
+	protected InvokeAllCbsItemProvider invokeAllCbsItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Invoke_cb}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.InvokeAllCbs}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createInvoke_cbAdapter() {
-		if (invoke_cbItemProvider == null) {
-			invoke_cbItemProvider = new Invoke_cbItemProvider(this);
+	public Adapter createInvokeAllCbsAdapter() {
+		if (invokeAllCbsItemProvider == null) {
+			invokeAllCbsItemProvider = new InvokeAllCbsItemProvider(this);
 		}
 
-		return invoke_cbItemProvider;
+		return invokeAllCbsItemProvider;
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Invoke_cb_s} instances.
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.InvokeCb} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Invoke_cb_sItemProvider invoke_cb_sItemProvider;
+	protected InvokeCbItemProvider invokeCbItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Invoke_cb_s}.
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.InvokeCb}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createInvoke_cb_sAdapter() {
-		if (invoke_cb_sItemProvider == null) {
-			invoke_cb_sItemProvider = new Invoke_cb_sItemProvider(this);
+	public Adapter createInvokeCbAdapter() {
+		if (invokeCbItemProvider == null) {
+			invokeCbItemProvider = new InvokeCbItemProvider(this);
 		}
 
-		return invoke_cb_sItemProvider;
+		return invokeCbItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.InvokeCbS} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected InvokeCbSItemProvider invokeCbSItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.InvokeCbS}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createInvokeCbSAdapter() {
+		if (invokeCbSItemProvider == null) {
+			invokeCbSItemProvider = new InvokeCbSItemProvider(this);
+		}
+
+		return invokeCbSItemProvider;
 	}
 
 	/**
@@ -1625,28 +1626,28 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 		if (storeItemProvider != null) storeItemProvider.dispose();
 		if (setItemProvider != null) setItemProvider.dispose();
 		if (getItemProvider != null) getItemProvider.dispose();
-		if (get_transItemProvider != null) get_transItemProvider.dispose();
-		if (set_staticItemProvider != null) set_staticItemProvider.dispose();
-		if (get_staticItemProvider != null) get_staticItemProvider.dispose();
+		if (getTransItemProvider != null) getTransItemProvider.dispose();
+		if (setStaticItemProvider != null) setStaticItemProvider.dispose();
+		if (getStaticItemProvider != null) getStaticItemProvider.dispose();
 		if (findtypeItemProvider != null) findtypeItemProvider.dispose();
-		if (findtype_sItemProvider != null) findtype_sItemProvider.dispose();
+		if (findtypeSItemProvider != null) findtypeSItemProvider.dispose();
 		if (newItemProvider != null) newItemProvider.dispose();
-		if (new_sItemProvider != null) new_sItemProvider.dispose();
+		if (newSItemProvider != null) newSItemProvider.dispose();
 		if (deleteItemProvider != null) deleteItemProvider.dispose();
 		if (dupItemProvider != null) dupItemProvider.dispose();
-		if (dup_x1ItemProvider != null) dup_x1ItemProvider.dispose();
+		if (dupX1ItemProvider != null) dupX1ItemProvider.dispose();
 		if (swapItemProvider != null) swapItemProvider.dispose();
-		if (swap_x1ItemProvider != null) swap_x1ItemProvider.dispose();
+		if (swapX1ItemProvider != null) swapX1ItemProvider.dispose();
 		if (ifItemProvider != null) ifItemProvider.dispose();
 		if (ifnItemProvider != null) ifnItemProvider.dispose();
 		if (gotoItemProvider != null) gotoItemProvider.dispose();
 		if (iterateItemProvider != null) iterateItemProvider.dispose();
 		if (enditerateItemProvider != null) enditerateItemProvider.dispose();
 		if (invokeItemProvider != null) invokeItemProvider.dispose();
-		if (invoke_superItemProvider != null) invoke_superItemProvider.dispose();
-		if (invoke_staticItemProvider != null) invoke_staticItemProvider.dispose();
+		if (invokeSuperItemProvider != null) invokeSuperItemProvider.dispose();
+		if (invokeStaticItemProvider != null) invokeStaticItemProvider.dispose();
 		if (allinstItemProvider != null) allinstItemProvider.dispose();
-		if (allinst_inItemProvider != null) allinst_inItemProvider.dispose();
+		if (allinstInItemProvider != null) allinstInItemProvider.dispose();
 		if (isnullItemProvider != null) isnullItemProvider.dispose();
 		if (getenvtypeItemProvider != null) getenvtypeItemProvider.dispose();
 		if (notItemProvider != null) notItemProvider.dispose();
@@ -1657,11 +1658,11 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 		if (ifteItemProvider != null) ifteItemProvider.dispose();
 		if (returnItemProvider != null) returnItemProvider.dispose();
 		if (getcbItemProvider != null) getcbItemProvider.dispose();
-		if (invoke_all_cbsItemProvider != null) invoke_all_cbsItemProvider.dispose();
-		if (invoke_cbItemProvider != null) invoke_cbItemProvider.dispose();
-		if (invoke_cb_sItemProvider != null) invoke_cb_sItemProvider.dispose();
+		if (invokeAllCbsItemProvider != null) invokeAllCbsItemProvider.dispose();
+		if (invokeCbItemProvider != null) invokeCbItemProvider.dispose();
+		if (invokeCbSItemProvider != null) invokeCbSItemProvider.dispose();
 		if (matchItemProvider != null) matchItemProvider.dispose();
-		if (match_sItemProvider != null) match_sItemProvider.dispose();
+		if (matchSItemProvider != null) matchSItemProvider.dispose();
 		if (addItemProvider != null) addItemProvider.dispose();
 		if (removeItemProvider != null) removeItemProvider.dispose();
 		if (insertItemProvider != null) insertItemProvider.dispose();

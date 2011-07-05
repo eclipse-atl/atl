@@ -33,6 +33,7 @@ import org.eclipse.m2m.atl.emftvm.NamedElement;
 /**
  * This is the item provider adapter for a {@link org.eclipse.m2m.atl.emftvm.NamedElement} object.
  * <!-- begin-user-doc -->
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */

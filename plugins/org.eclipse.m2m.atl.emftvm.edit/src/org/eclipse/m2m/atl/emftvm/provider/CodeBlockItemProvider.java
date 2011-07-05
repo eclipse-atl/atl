@@ -35,6 +35,7 @@ import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 /**
  * This is the item provider adapter for a {@link org.eclipse.m2m.atl.emftvm.CodeBlock} object.
  * <!-- begin-user-doc -->
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
@@ -440,17 +441,17 @@ public class CodeBlockItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createGet_trans()));
+				 EmftvmFactory.eINSTANCE.createGetTrans()));
 
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createSet_static()));
+				 EmftvmFactory.eINSTANCE.createSetStatic()));
 
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createGet_static()));
+				 EmftvmFactory.eINSTANCE.createGetStatic()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -460,7 +461,7 @@ public class CodeBlockItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createFindtype_s()));
+				 EmftvmFactory.eINSTANCE.createFindtypeS()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -470,7 +471,7 @@ public class CodeBlockItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createNew_s()));
+				 EmftvmFactory.eINSTANCE.createNewS()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -485,7 +486,7 @@ public class CodeBlockItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createDup_x1()));
+				 EmftvmFactory.eINSTANCE.createDupX1()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -495,7 +496,7 @@ public class CodeBlockItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createSwap_x1()));
+				 EmftvmFactory.eINSTANCE.createSwapX1()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -530,12 +531,12 @@ public class CodeBlockItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createInvoke_super()));
+				 EmftvmFactory.eINSTANCE.createInvokeSuper()));
 
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createInvoke_static()));
+				 EmftvmFactory.eINSTANCE.createInvokeStatic()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -545,7 +546,7 @@ public class CodeBlockItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createAllinst_in()));
+				 EmftvmFactory.eINSTANCE.createAllinstIn()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -600,17 +601,17 @@ public class CodeBlockItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createInvoke_all_cbs()));
+				 EmftvmFactory.eINSTANCE.createInvokeAllCbs()));
 
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createInvoke_cb()));
+				 EmftvmFactory.eINSTANCE.createInvokeCb()));
 
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createInvoke_cb_s()));
+				 EmftvmFactory.eINSTANCE.createInvokeCbS()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -620,7 +621,7 @@ public class CodeBlockItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
-				 EmftvmFactory.eINSTANCE.createMatch_s()));
+				 EmftvmFactory.eINSTANCE.createMatchS()));
 
 		newChildDescriptors.add
 			(createChildParameter

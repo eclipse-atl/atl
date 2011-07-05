@@ -31,6 +31,7 @@ import org.eclipse.m2m.atl.emftvm.Feature;
 /**
  * This is the item provider adapter for a {@link org.eclipse.m2m.atl.emftvm.Feature} object.
  * <!-- begin-user-doc -->
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
