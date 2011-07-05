@@ -35,6 +35,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 /**
  * <!-- begin-user-doc -->
  * A sample utility for the '<em><b>trace</b></em>' package.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */

@@ -29,6 +29,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Link Set</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following operations are tested:

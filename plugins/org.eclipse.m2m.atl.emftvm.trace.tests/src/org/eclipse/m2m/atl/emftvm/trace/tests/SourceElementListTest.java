@@ -27,6 +27,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Source Element List</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following operations are tested:

@@ -21,6 +21,7 @@ import junit.textui.TestRunner;
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Traced Rule</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
