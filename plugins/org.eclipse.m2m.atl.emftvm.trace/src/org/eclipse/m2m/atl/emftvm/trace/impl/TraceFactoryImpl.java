@@ -26,6 +26,7 @@ import org.eclipse.m2m.atl.emftvm.trace.*;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model <b>Factory</b>.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */

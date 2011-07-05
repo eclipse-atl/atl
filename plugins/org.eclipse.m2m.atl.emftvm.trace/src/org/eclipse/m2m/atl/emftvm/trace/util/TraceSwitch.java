@@ -27,6 +27,7 @@ import org.eclipse.m2m.atl.emftvm.trace.*;
  * and proceeding up the inheritance hierarchy
  * until a non-null result is returned,
  * which is the result of the switch.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @see org.eclipse.m2m.atl.emftvm.trace.TracePackage
  * @generated

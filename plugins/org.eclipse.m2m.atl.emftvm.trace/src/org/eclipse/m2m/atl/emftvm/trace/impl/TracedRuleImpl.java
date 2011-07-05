@@ -36,6 +36,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Traced Rule</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:

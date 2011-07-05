@@ -15,6 +15,7 @@ package org.eclipse.m2m.atl.emftvm.trace;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Target Element</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  *
  * <p>

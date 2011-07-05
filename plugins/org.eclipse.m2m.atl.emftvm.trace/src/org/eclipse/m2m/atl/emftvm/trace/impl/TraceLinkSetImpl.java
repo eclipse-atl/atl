@@ -37,6 +37,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Link Set</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -341,16 +342,16 @@ public class TraceLinkSetImpl extends EObjectImpl implements TraceLinkSet {
 		return result.toString();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.emf.common.notify.impl.BasicNotifierImpl#eNotificationRequired()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean eNotificationRequired() {
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.emf.common.notify.impl.BasicNotifierImpl#eNotify(org.eclipse.emf.common.notify.Notification)
+	/**
+	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

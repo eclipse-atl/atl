@@ -34,6 +34,7 @@ import java.util.List;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model <b>Package</b>.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
