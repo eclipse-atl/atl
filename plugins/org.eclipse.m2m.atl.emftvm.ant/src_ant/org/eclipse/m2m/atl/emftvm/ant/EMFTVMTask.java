@@ -25,13 +25,17 @@ import org.eclipse.m2m.atl.emftvm.Model;
  */
 public abstract class EMFTVMTask extends Task {
 
+	/**
+	 * The EMFTVM {@link ResourceSet} reference from within Ant.
+	 */
 	public static final String RESOURCE_SET = "EMFTVM.ResourceSet";
 
 	/**
+	 * Returns the {@link ResourceSet} object for this project.
 	 * @return the {@link ResourceSet} object for this project.
 	 */
 	public ResourceSet getResourceSet() {
-		ResourceSet resourceSet = (ResourceSet) getProject().getReference(RESOURCE_SET);
+		ResourceSet resourceSet = (ResourceSet)getProject().getReference(RESOURCE_SET);
 		if (resourceSet == null) {
 			resourceSet = new ResourceSetImpl();
 			getProject().addReference(RESOURCE_SET, resourceSet);
@@ -40,25 +44,27 @@ public abstract class EMFTVMTask extends Task {
 	}
 
 	/**
-	 * @param name
-	 * @return the loaded model with the given name
+	 * Returns the loaded model with the given <pre>name</pre>.
+	 * @param name the model name
+	 * @return the loaded model with the given <pre>name</pre>
 	 */
 	public Model getModel(final String name) {
-		return (Model) getProject().getReference(name);
+		return (Model)getProject().getReference(name);
 	}
 
 	/**
-	 * @param name
-	 * @return the loaded metamodel with the given name
+	 * Returns the loaded metamodel with the given <pre>name</pre>.
+	 * @param name the metamodel name
+	 * @return the loaded metamodel with the given <pre>name</pre>
 	 */
 	public Metamodel getMetamodel(final String name) {
-		return (Metamodel) getProject().getReference(name);
+		return (Metamodel)getProject().getReference(name);
 	}
 
 	/**
 	 * Sets a reference to the model by name.
-	 * @param name
-	 * @param model
+	 * @param name the model name
+	 * @param model the model
 	 */
 	public void setModel(final String name, final Model model) {
 		if (getProject().getReference(name) != null) {
@@ -67,8 +73,8 @@ public abstract class EMFTVMTask extends Task {
 		getProject().addReference(name, model);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.tools.ant.Task#execute()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final void execute() throws BuildException {

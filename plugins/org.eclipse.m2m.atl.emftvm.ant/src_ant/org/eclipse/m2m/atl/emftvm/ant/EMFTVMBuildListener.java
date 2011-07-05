@@ -18,7 +18,6 @@ import org.apache.tools.ant.BuildListener;
 import org.apache.tools.ant.Project;
 import org.eclipse.m2m.atl.common.ATLLogger;
 
-
 /**
  * Ant build change listener for EMFTVM tasks.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
@@ -30,7 +29,7 @@ public class EMFTVMBuildListener implements BuildListener {
 
 	/**
 	 * Creates a new {@link EMFTVMBuildListener}.
-	 * @param project
+	 * @param project the Ant project
 	 */
 	public EMFTVMBuildListener(final Project project) {
 		super();
@@ -47,9 +46,10 @@ public class EMFTVMBuildListener implements BuildListener {
 	 *            the current project
 	 */
 	public static void attachBuildListener(final Project project) {
+		assert project != null;
 		for (Object bl : project.getBuildListeners()) {
 			if (bl instanceof EMFTVMBuildListener) {
-				if (((EMFTVMBuildListener) bl).getProject() == project) {
+				if (((EMFTVMBuildListener)bl).getProject() == project) {
 					return; // already attached
 				}
 			}
@@ -57,57 +57,58 @@ public class EMFTVMBuildListener implements BuildListener {
 		project.addBuildListener(new EMFTVMBuildListener(project));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.tools.ant.BuildListener#buildFinished(org.apache.tools.ant.BuildEvent)
+	/**
+	 * Removes the log handler from the logger.
+	 * @param event the build finished event
 	 */
 	public void buildFinished(BuildEvent event) {
 		ATLLogger.getLogger().removeHandler(getLogHandler());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.tools.ant.BuildListener#buildStarted(org.apache.tools.ant.BuildEvent)
+	/**
+	 * Does nothing.
+	 * @param event the build started event
 	 */
 	public void buildStarted(BuildEvent event) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.tools.ant.BuildListener#messageLogged(org.apache.tools.ant.BuildEvent)
+	/**
+	 * Does nothing.
+	 * @param event the message logged event
 	 */
 	public void messageLogged(BuildEvent event) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.tools.ant.BuildListener#targetFinished(org.apache.tools.ant.BuildEvent)
+	/**
+	 * Does nothing.
+	 * @param event the target finished event
 	 */
 	public void targetFinished(BuildEvent event) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.tools.ant.BuildListener#targetStarted(org.apache.tools.ant.BuildEvent)
+	/**
+	 * Does nothing.
+	 * @param event the target started event
 	 */
 	public void targetStarted(BuildEvent event) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.tools.ant.BuildListener#taskFinished(org.apache.tools.ant.BuildEvent)
+	/**
+	 * Does nothing.
+	 * @param event the task finished event
 	 */
 	public void taskFinished(BuildEvent event) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.tools.ant.BuildListener#taskStarted(org.apache.tools.ant.BuildEvent)
+	/**
+	 * Does nothing.
+	 * @param event the task started event
 	 */
 	public void taskStarted(BuildEvent event) {
 	}
 
 	/**
+	 * Returns the Ant project.
 	 * @return the project
 	 */
 	public Project getProject() {
@@ -115,6 +116,7 @@ public class EMFTVMBuildListener implements BuildListener {
 	}
 
 	/**
+	 * Returns the log handler.
 	 * @return the logHandler
 	 */
 	public Handler getLogHandler() {

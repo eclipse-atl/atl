@@ -27,7 +27,7 @@ public class AntProjectHandler extends Handler {
 
 	/**
 	 * Creates a new {@link AntProjectHandler}.
-	 * @param project
+	 * @param project the Ant project
 	 */
 	public AntProjectHandler(final Project project) {
 		super();
@@ -35,25 +35,23 @@ public class AntProjectHandler extends Handler {
 		this.project = project;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.logging.Handler#close()
+	/**
+	 * Does nothing.
 	 */
 	@Override
 	public void close() throws SecurityException {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.logging.Handler#flush()
+	/**
+	 * Does nothing.
 	 */
 	@Override
 	public void flush() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.logging.Handler#publish(java.util.logging.LogRecord)
+	/**
+	 * Logs <pre>record</pre> using the Ant logger.
+	 * @param record the record to log
 	 */
 	@Override
 	public void publish(final LogRecord record) {
@@ -70,6 +68,7 @@ public class AntProjectHandler extends Handler {
 	}
 
 	/**
+	 * Returns the Ant project.
 	 * @return the project
 	 */
 	public Project getProject() {

@@ -14,7 +14,6 @@ package org.eclipse.m2m.atl.emftvm.ant;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
-
 /**
  * Plug-in activator class.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
@@ -31,14 +30,15 @@ public class EmftvmAntPlugin extends Plugin {
 	}
 
 	/**
+	 * Returns the plug-in instance.
 	 * @return the instance
 	 */
 	public static EmftvmAntPlugin getInstance() {
 		return instance;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -46,8 +46,8 @@ public class EmftvmAntPlugin extends Plugin {
 		instance = this;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {

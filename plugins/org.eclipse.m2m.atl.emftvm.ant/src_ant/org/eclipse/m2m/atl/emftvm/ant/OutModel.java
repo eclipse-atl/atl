@@ -20,6 +20,7 @@ public class OutModel extends ModelElement {
 	private String wspath;
 
 	/**
+	 * Sets the output model workspace path.
 	 * @param wspath the path to set
 	 */
 	public void setWspath(String wspath) {
@@ -27,6 +28,7 @@ public class OutModel extends ModelElement {
 	}
 
 	/**
+	 * Returns the output model workspace path.
 	 * @return the path
 	 */
 	public String getWspath() {

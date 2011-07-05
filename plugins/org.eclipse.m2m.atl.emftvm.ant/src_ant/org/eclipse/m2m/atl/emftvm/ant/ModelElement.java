@@ -21,6 +21,7 @@ public abstract class ModelElement {
 	private String as;
 
 	/**
+	 * Sets the model element name.
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
@@ -28,6 +29,7 @@ public abstract class ModelElement {
 	}
 
 	/**
+	 * Returns the model element name.
 	 * @return the name
 	 */
 	public String getName() {
@@ -35,6 +37,7 @@ public abstract class ModelElement {
 	}
 
 	/**
+	 * Returns the model element alias.
 	 * @return the as
 	 */
 	public String getAs() {
@@ -42,6 +45,7 @@ public abstract class ModelElement {
 	}
 
 	/**
+	 * Sets the model element alias.
 	 * @param as the as to set
 	 */
 	public void setAs(String as) {

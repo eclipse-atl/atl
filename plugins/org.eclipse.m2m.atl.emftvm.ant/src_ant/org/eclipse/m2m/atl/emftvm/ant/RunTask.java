@@ -42,6 +42,7 @@ public class RunTask extends EMFTVMTask {
 	private final List<OutModel> outputModels = new ArrayList<OutModel>();
 
 	/**
+	 * Sets the module name.
 	 * @param module the module to set
 	 */
 	public void setModule(String module) {
@@ -49,6 +50,7 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Returns the module name.
 	 * @return the module
 	 */
 	public String getModule() {
@@ -56,6 +58,7 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Sets the module path.
 	 * @param modulePath the modulePath to set
 	 */
 	public void setModulePath(String modulePath) {
@@ -63,6 +66,7 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Returns the module path.
 	 * @return the modulePath
 	 */
 	public String getModulePath() {
@@ -70,6 +74,7 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Returns the list of metamodels.
 	 * @return the metaModels
 	 */
 	public List<MetaModel> getMetaModels() {
@@ -77,6 +82,7 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Returns the list of input models.
 	 * @return the inputModels
 	 */
 	public List<InModel> getInputModels() {
@@ -84,6 +90,7 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Returns the list of in/out models.
 	 * @return the inoutModels
 	 */
 	public List<InOutModel> getInoutModels() {
@@ -91,6 +98,7 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Returns the list of output models.
 	 * @return the outputModels
 	 */
 	public List<OutModel> getOutputModels() {
@@ -99,7 +107,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Adds metamodel to the run task.
-	 * @param metamodel
+	 * @param metamodel the metamodel
 	 */
 	public void addConfiguredMetamodel(MetaModel metamodel) {
 		getMetaModels().add(metamodel);
@@ -107,7 +115,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Adds model as input model to the run task.
-	 * @param model
+	 * @param model the input model
 	 */
 	public void addConfiguredInputModel(InModel model) {
 		getInputModels().add(model);
@@ -115,7 +123,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Adds model as input/output model to the run task.
-	 * @param model
+	 * @param model the in/out model
 	 */
 	public void addConfiguredInoutModel(InOutModel model) {
 		getInoutModels().add(model);
@@ -123,15 +131,14 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Adds model as output model to the run task.
-	 * @param model
+	 * @param model the output model
 	 */
 	public void addConfiguredOutputModel(OutModel model) {
 		getOutputModels().add(model);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.ant.EMFTVMTask#innerExecute()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void innerExecute() throws Exception {

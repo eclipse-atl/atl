@@ -27,17 +27,16 @@ import org.eclipse.m2m.atl.emftvm.Model;
  */
 public class LoadMetamodelTask extends LoadModelTask {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.ant.LoadModelTask#createModel()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected Model createModel() {
 		return EmftvmFactory.eINSTANCE.createMetamodel();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.ant.LoadModelTask#innerExecute()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void innerExecute() throws Exception {
@@ -55,7 +54,7 @@ public class LoadMetamodelTask extends LoadModelTask {
 		assert mm != null;
 		for (EObject o : mm.getResource().getContents()) {
 			if (o instanceof EPackage) {
-				EPackage p = (EPackage) o;
+				EPackage p = (EPackage)o;
 				r.put(p.getNsURI(), p);
 			}
 		}

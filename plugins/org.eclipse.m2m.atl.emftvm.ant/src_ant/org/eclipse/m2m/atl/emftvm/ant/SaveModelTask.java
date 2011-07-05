@@ -37,6 +37,7 @@ public class SaveModelTask extends EMFTVMTask {
 	private boolean derived;
 
 	/**
+	 * Sets the model name.
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
@@ -44,6 +45,7 @@ public class SaveModelTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Returns the model name.
 	 * @return the name
 	 */
 	public String getName() {
@@ -51,6 +53,7 @@ public class SaveModelTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Sets the workspace path.
 	 * @param wspath the wspath to set
 	 */
 	public void setWspath(String wspath) {
@@ -58,6 +61,7 @@ public class SaveModelTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Returns the workspace path.
 	 * @return the wspath
 	 */
 	public String getWspath() {
@@ -65,6 +69,7 @@ public class SaveModelTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Sets the model URI.
 	 * @param uri the uri to set
 	 */
 	public void setUri(String uri) {
@@ -72,6 +77,7 @@ public class SaveModelTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Returns the model URI.
 	 * @return the uri
 	 */
 	public String getUri() {
@@ -79,6 +85,7 @@ public class SaveModelTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Sets this model file as derived.
 	 * @param derived the derived to set
 	 */
 	public void setDerived(boolean derived) {
@@ -86,15 +93,15 @@ public class SaveModelTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Returns whether this model file is derived.
 	 * @return the derived
 	 */
 	public boolean isDerived() {
 		return derived;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.ant.EMFTVMTask#innerExecute()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void innerExecute() throws Exception {
@@ -112,24 +119,24 @@ public class SaveModelTask extends EMFTVMTask {
 	}
 
 	/**
-	 * Saves model from nsuri.
-	 * @param uri
+	 * Saves model to <pre>uri</pre>.
+	 * @param uri the EMF URI
 	 */
 	protected void saveToNsuri(final String uri) {
 		saveToURI(URI.createURI(uri));
 	}
 
 	/**
-	 * Saves model from wspath.
-	 * @param wspath
+	 * Saves model to <pre>wspath</pre>.
+	 * @param wspath the workspace path
 	 */
 	protected void saveToWspath(final String wspath) {
 		saveToURI(URI.createPlatformResourceURI(wspath, true));
 	}
 
 	/**
-	 * Saves model from EMF URI.
-	 * @param uri
+	 * Saves model to EMF URI.
+	 * @param uri the EMF URI
 	 */
 	@SuppressWarnings("deprecation")
 	protected void saveToURI(final URI uri) {
