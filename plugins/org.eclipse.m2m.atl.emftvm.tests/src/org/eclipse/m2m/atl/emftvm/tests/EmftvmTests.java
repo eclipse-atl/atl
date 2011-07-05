@@ -19,6 +19,7 @@ import junit.textui.TestRunner;
 /**
  * <!-- begin-user-doc -->
  * A test suite for the '<em><b>emftvm</b></em>' package.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
@@ -60,28 +61,28 @@ public class EmftvmTests extends TestSuite {
 		suite.addTestSuite(StoreTest.class);
 		suite.addTestSuite(SetTest.class);
 		suite.addTestSuite(GetTest.class);
-		suite.addTestSuite(Get_transTest.class);
-		suite.addTestSuite(Set_staticTest.class);
-		suite.addTestSuite(Get_staticTest.class);
+		suite.addTestSuite(GetTransTest.class);
+		suite.addTestSuite(SetStaticTest.class);
+		suite.addTestSuite(GetStaticTest.class);
 		suite.addTestSuite(FindtypeTest.class);
-		suite.addTestSuite(Findtype_sTest.class);
+		suite.addTestSuite(FindtypeSTest.class);
 		suite.addTestSuite(NewTest.class);
-		suite.addTestSuite(New_sTest.class);
+		suite.addTestSuite(NewSTest.class);
 		suite.addTestSuite(DeleteTest.class);
 		suite.addTestSuite(DupTest.class);
-		suite.addTestSuite(Dup_x1Test.class);
+		suite.addTestSuite(DupX1Test.class);
 		suite.addTestSuite(SwapTest.class);
-		suite.addTestSuite(Swap_x1Test.class);
+		suite.addTestSuite(SwapX1Test.class);
 		suite.addTestSuite(IfTest.class);
 		suite.addTestSuite(IfnTest.class);
 		suite.addTestSuite(GotoTest.class);
 		suite.addTestSuite(IterateTest.class);
 		suite.addTestSuite(EnditerateTest.class);
 		suite.addTestSuite(InvokeTest.class);
-		suite.addTestSuite(Invoke_superTest.class);
-		suite.addTestSuite(Invoke_staticTest.class);
+		suite.addTestSuite(InvokeSuperTest.class);
+		suite.addTestSuite(InvokeStaticTest.class);
 		suite.addTestSuite(AllinstTest.class);
-		suite.addTestSuite(Allinst_inTest.class);
+		suite.addTestSuite(AllinstInTest.class);
 		suite.addTestSuite(IsnullTest.class);
 		suite.addTestSuite(GetenvtypeTest.class);
 		suite.addTestSuite(NotTest.class);
@@ -92,11 +93,11 @@ public class EmftvmTests extends TestSuite {
 		suite.addTestSuite(IfteTest.class);
 		suite.addTestSuite(ReturnTest.class);
 		suite.addTestSuite(GetcbTest.class);
-		suite.addTestSuite(Invoke_all_cbsTest.class);
-		suite.addTestSuite(Invoke_cbTest.class);
-		suite.addTestSuite(Invoke_cb_sTest.class);
+		suite.addTestSuite(InvokeAllCbsTest.class);
+		suite.addTestSuite(InvokeCbTest.class);
+		suite.addTestSuite(InvokeCbSTest.class);
 		suite.addTestSuite(MatchTest.class);
-		suite.addTestSuite(Match_sTest.class);
+		suite.addTestSuite(MatchSTest.class);
 		suite.addTestSuite(AddTest.class);
 		suite.addTestSuite(RemoveTest.class);
 		suite.addTestSuite(InsertTest.class);

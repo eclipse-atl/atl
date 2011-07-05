@@ -12,17 +12,18 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-import org.eclipse.m2m.atl.emftvm.Invoke_all_cbs;
+import org.eclipse.m2m.atl.emftvm.SwapX1;
 
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Invoke all cbs</b></em>'.
+ * A test case for the model object '<em><b>Swap x1</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class Invoke_all_cbsTest extends InvokeInstructionTest {
+public class SwapX1Test extends InstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class Invoke_all_cbsTest extends InvokeInstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(Invoke_all_cbsTest.class);
+		TestRunner.run(SwapX1Test.class);
 	}
 
 	/**
-	 * Constructs a new Invoke all cbs test case with the given name.
+	 * Constructs a new Swap X1 test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Invoke_all_cbsTest(String name) {
+	public SwapX1Test(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Invoke all cbs test case.
+	 * Returns the fixture for this Swap X1 test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected Invoke_all_cbs getFixture() {
-		return (Invoke_all_cbs)fixture;
+	protected SwapX1 getFixture() {
+		return (SwapX1)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Invoke_all_cbsTest extends InvokeInstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createInvoke_all_cbs());
+		setFixture(EmftvmFactory.eINSTANCE.createSwapX1());
 	}
 
 	/**
@@ -76,4 +77,4 @@ public class Invoke_all_cbsTest extends InvokeInstructionTest {
 		setFixture(null);
 	}
 
-} //Invoke_all_cbsTest
+} //Swap_x1Test

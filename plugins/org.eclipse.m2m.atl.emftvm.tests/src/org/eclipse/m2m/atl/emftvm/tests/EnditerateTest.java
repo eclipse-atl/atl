@@ -19,6 +19,7 @@ import junit.textui.TestRunner;
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Enditerate</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */

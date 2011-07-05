@@ -12,17 +12,18 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-import org.eclipse.m2m.atl.emftvm.Match_s;
+import org.eclipse.m2m.atl.emftvm.FindtypeS;
 
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Match s</b></em>'.
+ * A test case for the model object '<em><b>Findtype s</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class Match_sTest extends InvokeInstructionTest {
+public class FindtypeSTest extends InstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class Match_sTest extends InvokeInstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(Match_sTest.class);
+		TestRunner.run(FindtypeSTest.class);
 	}
 
 	/**
-	 * Constructs a new Match s test case with the given name.
+	 * Constructs a new Findtype S test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Match_sTest(String name) {
+	public FindtypeSTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Match s test case.
+	 * Returns the fixture for this Findtype S test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected Match_s getFixture() {
-		return (Match_s)fixture;
+	protected FindtypeS getFixture() {
+		return (FindtypeS)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Match_sTest extends InvokeInstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createMatch_s());
+		setFixture(EmftvmFactory.eINSTANCE.createFindtypeS());
 	}
 
 	/**
@@ -76,4 +77,4 @@ public class Match_sTest extends InvokeInstructionTest {
 		setFixture(null);
 	}
 
-} //Match_sTest
+} //Findtype_sTest

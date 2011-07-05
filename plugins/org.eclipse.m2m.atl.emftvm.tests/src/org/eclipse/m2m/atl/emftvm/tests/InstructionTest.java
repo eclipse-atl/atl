@@ -18,6 +18,7 @@ import junit.framework.TestCase;
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Instruction</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are tested:

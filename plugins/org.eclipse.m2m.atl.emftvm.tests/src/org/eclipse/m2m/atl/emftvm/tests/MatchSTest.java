@@ -12,17 +12,18 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-import org.eclipse.m2m.atl.emftvm.Get_trans;
+import org.eclipse.m2m.atl.emftvm.MatchS;
 
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Get trans</b></em>'.
+ * A test case for the model object '<em><b>Match s</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class Get_transTest extends FieldInstructionTest {
+public class MatchSTest extends InvokeInstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class Get_transTest extends FieldInstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(Get_transTest.class);
+		TestRunner.run(MatchSTest.class);
 	}
 
 	/**
-	 * Constructs a new Get trans test case with the given name.
+	 * Constructs a new Match S test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Get_transTest(String name) {
+	public MatchSTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Get trans test case.
+	 * Returns the fixture for this Match S test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected Get_trans getFixture() {
-		return (Get_trans)fixture;
+	protected MatchS getFixture() {
+		return (MatchS)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Get_transTest extends FieldInstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createGet_trans());
+		setFixture(EmftvmFactory.eINSTANCE.createMatchS());
 	}
 
 	/**
@@ -76,4 +77,4 @@ public class Get_transTest extends FieldInstructionTest {
 		setFixture(null);
 	}
 
-} //Get_transTest
+} //Match_sTest

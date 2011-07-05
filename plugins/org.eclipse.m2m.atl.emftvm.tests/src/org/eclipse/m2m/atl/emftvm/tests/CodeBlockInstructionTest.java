@@ -16,6 +16,7 @@ import org.eclipse.m2m.atl.emftvm.CodeBlockInstruction;
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Code Block Instruction</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following features are tested:

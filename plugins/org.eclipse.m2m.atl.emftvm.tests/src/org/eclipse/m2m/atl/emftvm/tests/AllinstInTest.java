@@ -11,18 +11,19 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
+import org.eclipse.m2m.atl.emftvm.AllinstIn;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-import org.eclipse.m2m.atl.emftvm.Invoke_cb_s;
 
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Invoke cb s</b></em>'.
+ * A test case for the model object '<em><b>Allinst in</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class Invoke_cb_sTest extends InvokeInstructionTest {
+public class AllinstInTest extends InstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class Invoke_cb_sTest extends InvokeInstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(Invoke_cb_sTest.class);
+		TestRunner.run(AllinstInTest.class);
 	}
 
 	/**
-	 * Constructs a new Invoke cb s test case with the given name.
+	 * Constructs a new Allinst In test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Invoke_cb_sTest(String name) {
+	public AllinstInTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Invoke cb s test case.
+	 * Returns the fixture for this Allinst In test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected Invoke_cb_s getFixture() {
-		return (Invoke_cb_s)fixture;
+	protected AllinstIn getFixture() {
+		return (AllinstIn)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Invoke_cb_sTest extends InvokeInstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createInvoke_cb_s());
+		setFixture(EmftvmFactory.eINSTANCE.createAllinstIn());
 	}
 
 	/**
@@ -76,4 +77,4 @@ public class Invoke_cb_sTest extends InvokeInstructionTest {
 		setFixture(null);
 	}
 
-} //Invoke_cb_sTest
+} //Allinst_inTest

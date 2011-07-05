@@ -12,17 +12,18 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-import org.eclipse.m2m.atl.emftvm.Invoke_cb;
+import org.eclipse.m2m.atl.emftvm.InvokeCbS;
 
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Invoke cb</b></em>'.
+ * A test case for the model object '<em><b>Invoke cb s</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class Invoke_cbTest extends CodeBlockInstructionTest {
+public class InvokeCbSTest extends InvokeInstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class Invoke_cbTest extends CodeBlockInstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(Invoke_cbTest.class);
+		TestRunner.run(InvokeCbSTest.class);
 	}
 
 	/**
-	 * Constructs a new Invoke cb test case with the given name.
+	 * Constructs a new Invoke Cb S test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Invoke_cbTest(String name) {
+	public InvokeCbSTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Invoke cb test case.
+	 * Returns the fixture for this Invoke Cb S test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected Invoke_cb getFixture() {
-		return (Invoke_cb)fixture;
+	protected InvokeCbS getFixture() {
+		return (InvokeCbS)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Invoke_cbTest extends CodeBlockInstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createInvoke_cb());
+		setFixture(EmftvmFactory.eINSTANCE.createInvokeCbS());
 	}
 
 	/**
@@ -76,4 +77,4 @@ public class Invoke_cbTest extends CodeBlockInstructionTest {
 		setFixture(null);
 	}
 
-} //Invoke_cbTest
+} //Invoke_cb_sTest

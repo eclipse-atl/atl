@@ -31,6 +31,7 @@ import org.osgi.framework.Bundle;
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Exec Env</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
  * The following operations are tested:

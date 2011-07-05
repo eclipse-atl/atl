@@ -12,17 +12,18 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-import org.eclipse.m2m.atl.emftvm.Invoke_super;
+import org.eclipse.m2m.atl.emftvm.InvokeSuper;
 
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Invoke super</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class Invoke_superTest extends InvokeOperationInstructionTest {
+public class InvokeSuperTest extends InvokeOperationInstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class Invoke_superTest extends InvokeOperationInstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(Invoke_superTest.class);
+		TestRunner.run(InvokeSuperTest.class);
 	}
 
 	/**
-	 * Constructs a new Invoke super test case with the given name.
+	 * Constructs a new Invoke Super test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Invoke_superTest(String name) {
+	public InvokeSuperTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Invoke super test case.
+	 * Returns the fixture for this Invoke Super test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected Invoke_super getFixture() {
-		return (Invoke_super)fixture;
+	protected InvokeSuper getFixture() {
+		return (InvokeSuper)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Invoke_superTest extends InvokeOperationInstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createInvoke_super());
+		setFixture(EmftvmFactory.eINSTANCE.createInvokeSuper());
 	}
 
 	/**

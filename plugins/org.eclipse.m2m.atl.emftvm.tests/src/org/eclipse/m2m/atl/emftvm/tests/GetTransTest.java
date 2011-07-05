@@ -12,17 +12,18 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-import org.eclipse.m2m.atl.emftvm.Set_static;
+import org.eclipse.m2m.atl.emftvm.GetTrans;
 
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Set static</b></em>'.
+ * A test case for the model object '<em><b>Get trans</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class Set_staticTest extends FieldInstructionTest {
+public class GetTransTest extends FieldInstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class Set_staticTest extends FieldInstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(Set_staticTest.class);
+		TestRunner.run(GetTransTest.class);
 	}
 
 	/**
-	 * Constructs a new Set static test case with the given name.
+	 * Constructs a new Get Trans test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Set_staticTest(String name) {
+	public GetTransTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Set static test case.
+	 * Returns the fixture for this Get Trans test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected Set_static getFixture() {
-		return (Set_static)fixture;
+	protected GetTrans getFixture() {
+		return (GetTrans)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Set_staticTest extends FieldInstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createSet_static());
+		setFixture(EmftvmFactory.eINSTANCE.createGetTrans());
 	}
 
 	/**
@@ -76,4 +77,4 @@ public class Set_staticTest extends FieldInstructionTest {
 		setFixture(null);
 	}
 
-} //Set_staticTest
+} //Get_transTest

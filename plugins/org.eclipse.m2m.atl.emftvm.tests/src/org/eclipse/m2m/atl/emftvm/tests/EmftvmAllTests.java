@@ -19,6 +19,7 @@ import junit.textui.TestRunner;
 /**
  * <!-- begin-user-doc -->
  * A test suite for the '<em><b>Emftvm</b></em>' model.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */

@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import org.eclipse.m2m.atl.emftvm.Dup_x1;
+import org.eclipse.m2m.atl.emftvm.DupX1;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 
 import junit.textui.TestRunner;
@@ -19,10 +19,11 @@ import junit.textui.TestRunner;
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Dup x1</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class Dup_x1Test extends InstructionTest {
+public class DupX1Test extends InstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class Dup_x1Test extends InstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(Dup_x1Test.class);
+		TestRunner.run(DupX1Test.class);
 	}
 
 	/**
-	 * Constructs a new Dup x1 test case with the given name.
+	 * Constructs a new Dup X1 test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Dup_x1Test(String name) {
+	public DupX1Test(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Dup x1 test case.
+	 * Returns the fixture for this Dup X1 test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected Dup_x1 getFixture() {
-		return (Dup_x1)fixture;
+	protected DupX1 getFixture() {
+		return (DupX1)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Dup_x1Test extends InstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createDup_x1());
+		setFixture(EmftvmFactory.eINSTANCE.createDupX1());
 	}
 
 	/**

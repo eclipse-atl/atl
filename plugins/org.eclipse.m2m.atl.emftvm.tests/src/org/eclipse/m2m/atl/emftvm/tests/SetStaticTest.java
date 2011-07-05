@@ -12,17 +12,18 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-import org.eclipse.m2m.atl.emftvm.Swap_x1;
+import org.eclipse.m2m.atl.emftvm.SetStatic;
 
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Swap x1</b></em>'.
+ * A test case for the model object '<em><b>Set static</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class Swap_x1Test extends InstructionTest {
+public class SetStaticTest extends FieldInstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class Swap_x1Test extends InstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(Swap_x1Test.class);
+		TestRunner.run(SetStaticTest.class);
 	}
 
 	/**
-	 * Constructs a new Swap x1 test case with the given name.
+	 * Constructs a new Set Static test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Swap_x1Test(String name) {
+	public SetStaticTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Swap x1 test case.
+	 * Returns the fixture for this Set Static test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected Swap_x1 getFixture() {
-		return (Swap_x1)fixture;
+	protected SetStatic getFixture() {
+		return (SetStatic)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Swap_x1Test extends InstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createSwap_x1());
+		setFixture(EmftvmFactory.eINSTANCE.createSetStatic());
 	}
 
 	/**
@@ -76,4 +77,4 @@ public class Swap_x1Test extends InstructionTest {
 		setFixture(null);
 	}
 
-} //Swap_x1Test
+} //Set_staticTest

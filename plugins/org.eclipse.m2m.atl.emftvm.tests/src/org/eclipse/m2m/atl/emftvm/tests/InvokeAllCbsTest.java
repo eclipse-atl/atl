@@ -12,17 +12,18 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-import org.eclipse.m2m.atl.emftvm.Invoke_static;
+import org.eclipse.m2m.atl.emftvm.InvokeAllCbs;
 
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Invoke static</b></em>'.
+ * A test case for the model object '<em><b>Invoke all cbs</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class Invoke_staticTest extends InvokeOperationInstructionTest {
+public class InvokeAllCbsTest extends InvokeInstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class Invoke_staticTest extends InvokeOperationInstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(Invoke_staticTest.class);
+		TestRunner.run(InvokeAllCbsTest.class);
 	}
 
 	/**
-	 * Constructs a new Invoke static test case with the given name.
+	 * Constructs a new Invoke All Cbs test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Invoke_staticTest(String name) {
+	public InvokeAllCbsTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Invoke static test case.
+	 * Returns the fixture for this Invoke All Cbs test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected Invoke_static getFixture() {
-		return (Invoke_static)fixture;
+	protected InvokeAllCbs getFixture() {
+		return (InvokeAllCbs)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Invoke_staticTest extends InvokeOperationInstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createInvoke_static());
+		setFixture(EmftvmFactory.eINSTANCE.createInvokeAllCbs());
 	}
 
 	/**
@@ -76,4 +77,4 @@ public class Invoke_staticTest extends InvokeOperationInstructionTest {
 		setFixture(null);
 	}
 
-} //Invoke_staticTest
+} //Invoke_all_cbsTest

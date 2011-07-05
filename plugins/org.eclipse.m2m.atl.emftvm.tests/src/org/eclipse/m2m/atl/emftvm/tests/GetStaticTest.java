@@ -11,18 +11,19 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import org.eclipse.m2m.atl.emftvm.Allinst_in;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.GetStatic;
 
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Allinst in</b></em>'.
+ * A test case for the model object '<em><b>Get static</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class Allinst_inTest extends InstructionTest {
+public class GetStaticTest extends FieldInstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class Allinst_inTest extends InstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(Allinst_inTest.class);
+		TestRunner.run(GetStaticTest.class);
 	}
 
 	/**
-	 * Constructs a new Allinst in test case with the given name.
+	 * Constructs a new Get Static test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Allinst_inTest(String name) {
+	public GetStaticTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Allinst in test case.
+	 * Returns the fixture for this Get Static test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected Allinst_in getFixture() {
-		return (Allinst_in)fixture;
+	protected GetStatic getFixture() {
+		return (GetStatic)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Allinst_inTest extends InstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createAllinst_in());
+		setFixture(EmftvmFactory.eINSTANCE.createGetStatic());
 	}
 
 	/**
@@ -76,4 +77,4 @@ public class Allinst_inTest extends InstructionTest {
 		setFixture(null);
 	}
 
-} //Allinst_inTest
+} //Get_staticTest

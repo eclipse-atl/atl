@@ -12,17 +12,18 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-import org.eclipse.m2m.atl.emftvm.New_s;
+import org.eclipse.m2m.atl.emftvm.InvokeStatic;
 
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>New s</b></em>'.
+ * A test case for the model object '<em><b>Invoke static</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class New_sTest extends InstructionTest {
+public class InvokeStaticTest extends InvokeOperationInstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class New_sTest extends InstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(New_sTest.class);
+		TestRunner.run(InvokeStaticTest.class);
 	}
 
 	/**
-	 * Constructs a new New s test case with the given name.
+	 * Constructs a new Invoke Static test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public New_sTest(String name) {
+	public InvokeStaticTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this New s test case.
+	 * Returns the fixture for this Invoke Static test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected New_s getFixture() {
-		return (New_s)fixture;
+	protected InvokeStatic getFixture() {
+		return (InvokeStatic)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class New_sTest extends InstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createNew_s());
+		setFixture(EmftvmFactory.eINSTANCE.createInvokeStatic());
 	}
 
 	/**
@@ -76,4 +77,4 @@ public class New_sTest extends InstructionTest {
 		setFixture(null);
 	}
 
-} //New_sTest
+} //Invoke_staticTest

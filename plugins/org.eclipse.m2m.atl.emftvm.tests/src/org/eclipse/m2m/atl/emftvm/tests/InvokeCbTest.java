@@ -12,17 +12,18 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-import org.eclipse.m2m.atl.emftvm.Get_static;
+import org.eclipse.m2m.atl.emftvm.InvokeCb;
 
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Get static</b></em>'.
+ * A test case for the model object '<em><b>Invoke cb</b></em>'.
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
-public class Get_staticTest extends FieldInstructionTest {
+public class InvokeCbTest extends CodeBlockInstructionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -30,28 +31,28 @@ public class Get_staticTest extends FieldInstructionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(Get_staticTest.class);
+		TestRunner.run(InvokeCbTest.class);
 	}
 
 	/**
-	 * Constructs a new Get static test case with the given name.
+	 * Constructs a new Invoke Cb test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Get_staticTest(String name) {
+	public InvokeCbTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Get static test case.
+	 * Returns the fixture for this Invoke Cb test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	protected Get_static getFixture() {
-		return (Get_static)fixture;
+	protected InvokeCb getFixture() {
+		return (InvokeCb)fixture;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Get_staticTest extends FieldInstructionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmftvmFactory.eINSTANCE.createGet_static());
+		setFixture(EmftvmFactory.eINSTANCE.createInvokeCb());
 	}
 
 	/**
@@ -76,4 +77,4 @@ public class Get_staticTest extends FieldInstructionTest {
 		setFixture(null);
 	}
 
-} //Get_staticTest
+} //Invoke_cbTest
