@@ -421,7 +421,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 								inputModelLocations,
 								inputModelOptions,
 								removableInputModels.contains(modelName),
-								false));
+								false, false));
 			}
 		}
 	}
@@ -442,7 +442,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 								inoutModelLocations,
 								inoutModelOptions,
 								removableInoutModels.contains(modelName),
-								true));
+								true, true));
 			}
 		}
 	}
@@ -463,7 +463,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 								outputModelLocations,
 								outputModelOptions,
 								removableOutputModels.contains(modelName),
-								true));
+								true, false));
 			}
 		}
 	}
@@ -605,12 +605,13 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	 * @param modelOptions the map of model options to edit
 	 * @param removable whether the metamodel can be removed from the launch configuration
 	 * @param output whether this model is an in/out or output model
+	 * @param inout whether this model is an in/out model
 	 * @return a map of created widgets
 	 */
 	private Map<String, Object> buildModelControls(final Group parent, final String modelName,
 			final String modelLocation, final Map<String, String> modelLocations, 
 			final Map<String, String> modelOptions,
-			final boolean removable, final boolean output) {
+			final boolean removable, final boolean output, final boolean inout) {
 		final Map<String, Object> thisGroupWidgets = new HashMap<String, Object>();
 		final Collection<Widget> disposableWidgets = new ArrayList<Widget>();
 
@@ -720,10 +721,43 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 			});
 			thisGroupWidgets.put("derivedFile", derivedFile); //$NON-NLS-1$
 			disposableWidgets.add(derivedFile);
+			
+			if (inout) {
 
-			final Label filler = new Label(parent, SWT.NULL);
-			filler.setLayoutData(new GridData(SWT.NULL, SWT.NULL, false, false, 3, 1));
-			disposableWidgets.add(filler);
+				final Button createNewModel = new Button(parent, SWT.CHECK);
+				createNewModel.setText("Create New Model");
+				createNewModel.setSelection(
+						EMFTVMLaunchConfigurationDelegate.getBoolOption(
+								modelOptions, 
+								modelName, 
+								EMFTVMLaunchConstants.OPT_CREATE_NEW_MODEL));
+				createNewModel.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent evt) {
+						if (createNewModel.getSelection()) {
+							EMFTVMLaunchConfigurationDelegate.setBoolOption(
+									modelOptions, modelName, EMFTVMLaunchConstants.OPT_CREATE_NEW_MODEL);
+						} else {
+							EMFTVMLaunchConfigurationDelegate.unsetBoolOption(
+									modelOptions, modelName, EMFTVMLaunchConstants.OPT_CREATE_NEW_MODEL);
+						}
+						updateLaunchConfigurationDialog();
+					}
+				});
+				thisGroupWidgets.put("createNewModel", createNewModel); //$NON-NLS-1$
+				disposableWidgets.add(createNewModel);
+				
+				final Label filler = new Label(parent, SWT.NULL);
+				filler.setLayoutData(new GridData(SWT.NULL, SWT.NULL, false, false, 2, 1));
+				disposableWidgets.add(filler);
+				
+			} else {
+
+				final Label filler = new Label(parent, SWT.NULL);
+				filler.setLayoutData(new GridData(SWT.NULL, SWT.NULL, false, false, 3, 1));
+				disposableWidgets.add(filler);
+				
+			}
 			
 		} else {
 			
@@ -805,6 +839,9 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		addModelsFromModelDeclarations(module.getInputModels(), inputModelLocations);
 		addModelsFromModelDeclarations(module.getInoutModels(), inoutModelLocations);
 		addModelsFromModelDeclarations(module.getOutputModels(), outputModelLocations);
+
+		inputModelLocations.keySet().removeAll(inoutModelLocations.keySet());
+		outputModelLocations.keySet().removeAll(inoutModelLocations.keySet());
 	}
 	
 	/**
@@ -954,12 +991,15 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 				removableInoutModels.add(name);
 			} else {
 				((Text)inoutModelsGroupWidgets.get(name).get("location")).setText(uri);
-				((Button)inoutModelsGroupWidgets.get(name).get("forbidInterModelReferences")).setSelection(
+				((Button)inoutModelsGroupWidgets.get(name).get("allowInterModelReferences")).setSelection(
 						EMFTVMLaunchConfigurationDelegate.getBoolOption(
-								outputModelOptions, name, EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
+								inoutModelOptions, name, EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
 				((Button)inoutModelsGroupWidgets.get(name).get("derivedFile")).setSelection(
 						EMFTVMLaunchConfigurationDelegate.getBoolOption(
-								outputModelOptions, name, EMFTVMLaunchConstants.OPT_DERIVED_FILE));
+								inoutModelOptions, name, EMFTVMLaunchConstants.OPT_DERIVED_FILE));
+				((Button)inoutModelsGroupWidgets.get(name).get("createNewModel")).setSelection(
+						EMFTVMLaunchConfigurationDelegate.getBoolOption(
+								inoutModelOptions, name, EMFTVMLaunchConstants.OPT_CREATE_NEW_MODEL));
 			}
 			inoutModelLocations.put(name, uri);
 		}

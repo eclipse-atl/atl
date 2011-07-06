@@ -173,7 +173,15 @@ public class EMFTVMLaunchConfigurationDelegate implements
 			final Map<String, String> modelOptions,
 			final Map<String, Model> models) {
 		for (Entry<String, String> entry : modelLocations.entrySet()) {
-			Resource r = rs.getResource(URI.createURI(entry.getValue()), true);
+			Resource r;
+			if (getBoolOption(
+					modelOptions, 
+					entry.getKey(), 
+					EMFTVMLaunchConstants.OPT_CREATE_NEW_MODEL)) {
+				r = rs.createResource(URI.createURI(entry.getValue()));
+			} else {
+				r = rs.getResource(URI.createURI(entry.getValue()), true);
+			}
 			Model m = EmftvmFactory.eINSTANCE.createModel();
 			m.setResource(r);
 			m.setAllowInterModelReferences(getBoolOption(

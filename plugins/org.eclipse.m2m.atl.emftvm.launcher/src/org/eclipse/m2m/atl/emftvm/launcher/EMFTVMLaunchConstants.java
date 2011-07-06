@@ -48,5 +48,7 @@ public interface EMFTVMLaunchConstants {
 	String OPT_ALLOW_INTER_MODEL_REFERENCES = "allowIntermodelReferences"; //$NON-NLS-1$
 	/** derivedFile. */
 	String OPT_DERIVED_FILE = "derivedFile"; //$NON-NLS-1$
+	/** createNewModel. */
+	String OPT_CREATE_NEW_MODEL = "createNewModel"; //$NON-NLS-1$
 
 }
