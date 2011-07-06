@@ -12,7 +12,9 @@
 <mapEntry key="EMFTVM" value="http://www.eclipse.org/m2m/atl/2011/EMFTVM"/>
 </mapAttribute>
 <stringAttribute key="Module File Name" value="/org.eclipse.m2m.atl.emftvm.compiler/transformations/InlineCodeblocks.emftvm"/>
-<mapAttribute key="Output Model Options"/>
+<mapAttribute key="Output Model Options">
+<mapEntry key="OUT" value="allowIntermodelReferences derivedFile"/>
+</mapAttribute>
 <mapAttribute key="Output Models">
 <mapEntry key="OUT" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/InlineCodeblocks-out.emftvm"/>
 </mapAttribute>

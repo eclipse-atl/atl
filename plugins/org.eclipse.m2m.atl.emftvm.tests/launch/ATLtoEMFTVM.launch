@@ -7,14 +7,19 @@
 <mapAttribute key="Input Models">
 <mapEntry key="IN" value="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLtoEMFTVM.atl"/>
 </mapAttribute>
-<mapAttribute key="Metamodel Options"/>
+<mapAttribute key="Metamodel Options">
+<mapEntry key="ATL" value=""/>
+</mapAttribute>
 <mapAttribute key="Metamodels">
 <mapEntry key="ATL" value="http://www.eclipse.org/gmt/2005/ATL"/>
 <mapEntry key="EMFTVM" value="http://www.eclipse.org/m2m/atl/2011/EMFTVM"/>
 <mapEntry key="Problem" value="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore"/>
 </mapAttribute>
 <stringAttribute key="Module File Name" value="/org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLtoEMFTVM.emftvm"/>
-<mapAttribute key="Output Model Options"/>
+<mapAttribute key="Output Model Options">
+<mapEntry key="OUT" value="derivedFile allowIntermodelReferences"/>
+<mapEntry key="PBS" value="derivedFile allowIntermodelReferences"/>
+</mapAttribute>
 <mapAttribute key="Output Models">
 <mapEntry key="OUT" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/ATLtoEMFTVM.emftvm"/>
 <mapEntry key="PBS" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/ATLtoEMFTVM-problems.xmi"/>
