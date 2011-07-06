@@ -97,10 +97,10 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	private final Map<String, String> inoutModelLocations = new LinkedHashMap<String, String>();
 	private final Map<String, String> outputModelLocations = new LinkedHashMap<String, String>();
 
-	private final Map<String, Map<String, String>> metamodelOptions = new LinkedHashMap<String, Map<String, String>>();
-	private final Map<String, Map<String, String>> inputModelOptions = new LinkedHashMap<String, Map<String, String>>();
-	private final Map<String, Map<String, String>> inoutModelOptions = new LinkedHashMap<String, Map<String, String>>();
-	private final Map<String, Map<String, String>> outputModelOptions = new LinkedHashMap<String, Map<String, String>>();
+	private final Map<String, String> metamodelOptions = new LinkedHashMap<String, String>();
+	private final Map<String, String> inputModelOptions = new LinkedHashMap<String, String>();
+	private final Map<String, String> inoutModelOptions = new LinkedHashMap<String, String>();
+	private final Map<String, String> outputModelOptions = new LinkedHashMap<String, String>();
 
 	/**
 	 * {@inheritDoc}
@@ -297,10 +297,10 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(EMFTVMLaunchConstants.INOUT_MODELS, new LinkedHashMap<String, String>(inoutModelLocations));
 		configuration.setAttribute(EMFTVMLaunchConstants.OUTPUT_MODELS, new LinkedHashMap<String, String>(outputModelLocations));
 
-		configuration.setAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, new LinkedHashMap<String, Map<String, String>>(metamodelOptions));
-		configuration.setAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, new LinkedHashMap<String, Map<String, String>>(inputModelOptions));
-		configuration.setAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, new LinkedHashMap<String, Map<String, String>>(inoutModelOptions));
-		configuration.setAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, new LinkedHashMap<String, Map<String, String>>(outputModelOptions));
+		configuration.setAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, new LinkedHashMap<String, String>(metamodelOptions));
+		configuration.setAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, new LinkedHashMap<String, String>(inputModelOptions));
+		configuration.setAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, new LinkedHashMap<String, String>(inoutModelOptions));
+		configuration.setAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, new LinkedHashMap<String, String>(outputModelOptions));
 	}
 
 	/**
@@ -562,7 +562,12 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 				browseFilesystem.setEnabled(!isMetametamodel.getSelection());
 				browseEMFRegistry.setEnabled(!isMetametamodel.getSelection());
 				if (!isMetametamodel.getSelection()) {
+					EMFTVMLaunchConfigurationDelegate.unsetBoolOption(
+							metamodelOptions, metamodelName, EMFTVMLaunchConstants.OPT_IS_METAMETAMODEL);
 					location.notifyListeners(SWT.Modify, null);
+				} else {
+					EMFTVMLaunchConfigurationDelegate.setBoolOption(
+							metamodelOptions, metamodelName, EMFTVMLaunchConstants.OPT_IS_METAMETAMODEL);
 				}
 				updateLaunchConfigurationDialog();
 			}
@@ -604,7 +609,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	 */
 	private Map<String, Object> buildModelControls(final Group parent, final String modelName,
 			final String modelLocation, final Map<String, String> modelLocations, 
-			final Map<String, Map<String, String>> modelOptions,
+			final Map<String, String> modelOptions,
 			final boolean removable, final boolean output) {
 		final Map<String, Object> thisGroupWidgets = new HashMap<String, Object>();
 		final Collection<Widget> disposableWidgets = new ArrayList<Widget>();
@@ -676,26 +681,21 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 					EMFTVMLaunchConfigurationDelegate.getBoolOption(
 							modelOptions, 
 							modelName, 
-							EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES,
-							true));
+							EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
 			allowInterModelReferences.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent evt) {
-					Map<String, String> options = modelOptions.get(modelName);
-					if (options == null) {
-						options = new LinkedHashMap<String, String>();
-						modelOptions.put(modelName, options);
-					}
 					if (allowInterModelReferences.getSelection()) {
-						options.put(
-								EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES, 
-								Boolean.TRUE.toString());
+						EMFTVMLaunchConfigurationDelegate.setBoolOption(
+								modelOptions, modelName, EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES);
 					} else {
-						options.remove(
-								EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES);
+						EMFTVMLaunchConfigurationDelegate.unsetBoolOption(
+								modelOptions, modelName, EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES);
 					}
+					updateLaunchConfigurationDialog();
 				}
 			});
+			thisGroupWidgets.put("allowInterModelReferences", allowInterModelReferences); //$NON-NLS-1$
 			disposableWidgets.add(allowInterModelReferences);
 
 			final Button derivedFile = new Button(parent, SWT.CHECK);
@@ -704,26 +704,21 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 					EMFTVMLaunchConfigurationDelegate.getBoolOption(
 							modelOptions, 
 							modelName, 
-							EMFTVMLaunchConstants.OPT_DERIVED_FILE,
-							true));
+							EMFTVMLaunchConstants.OPT_DERIVED_FILE));
 			derivedFile.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent evt) {
-					Map<String, String> options = modelOptions.get(modelName);
-					if (options == null) {
-						options = new LinkedHashMap<String, String>();
-						modelOptions.put(modelName, options);
-					}
 					if (derivedFile.getSelection()) {
-						options.put(
-								EMFTVMLaunchConstants.OPT_DERIVED_FILE, 
-								Boolean.TRUE.toString());
+						EMFTVMLaunchConfigurationDelegate.setBoolOption(
+								modelOptions, modelName, EMFTVMLaunchConstants.OPT_DERIVED_FILE);
 					} else {
-						options.remove(
-								EMFTVMLaunchConstants.OPT_DERIVED_FILE);
+						EMFTVMLaunchConfigurationDelegate.unsetBoolOption(
+								modelOptions, modelName, EMFTVMLaunchConstants.OPT_DERIVED_FILE);
 					}
+					updateLaunchConfigurationDialog();
 				}
 			});
+			thisGroupWidgets.put("derivedFile", derivedFile); //$NON-NLS-1$
 			disposableWidgets.add(derivedFile);
 
 			final Label filler = new Label(parent, SWT.NULL);
@@ -917,6 +912,11 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		final Map<?, ?> inout = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODELS, Collections.EMPTY_MAP);
 		final Map<?, ?> output = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODELS, Collections.EMPTY_MAP);
 
+		metamodelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, Collections.emptyMap()));
+		inputModelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, Collections.emptyMap()));
+		inoutModelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, Collections.emptyMap()));
+		outputModelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, Collections.emptyMap()));
+
 		for (Entry<?,?> entry : meta.entrySet()) {
 			String name = (String)entry.getKey();
 			String uri = (String)entry.getValue();
@@ -924,6 +924,9 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 				removableMetamodels.add(name);
 			} else {
 				((Text)metamodelsGroupWidgets.get(name).get("metamodelLocation")).setText(uri);
+				((Button)metamodelsGroupWidgets.get(name).get("isMetametamodel")).setSelection(
+						EMFTVMLaunchConfigurationDelegate.getBoolOption(
+								metamodelOptions, name, EMFTVMLaunchConstants.OPT_IS_METAMETAMODEL));
 			}
 			metamodelLocations.put(name, uri);
 		}
@@ -942,10 +945,21 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		for (Entry<?,?> entry : inout.entrySet()) {
 			String name = (String)entry.getKey();
 			String uri = (String)entry.getValue();
+			if (!inoutModelOptions.containsKey(name)) {
+				inoutModelOptions.put(name, 
+						EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES + ' ' + 
+						EMFTVMLaunchConstants.OPT_DERIVED_FILE);
+			}
 			if (!inoutModelLocations.containsKey(name)) {
 				removableInoutModels.add(name);
 			} else {
 				((Text)inoutModelsGroupWidgets.get(name).get("location")).setText(uri);
+				((Button)inoutModelsGroupWidgets.get(name).get("forbidInterModelReferences")).setSelection(
+						EMFTVMLaunchConfigurationDelegate.getBoolOption(
+								outputModelOptions, name, EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
+				((Button)inoutModelsGroupWidgets.get(name).get("derivedFile")).setSelection(
+						EMFTVMLaunchConfigurationDelegate.getBoolOption(
+								outputModelOptions, name, EMFTVMLaunchConstants.OPT_DERIVED_FILE));
 			}
 			inoutModelLocations.put(name, uri);
 		}
@@ -953,18 +967,24 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		for (Entry<?,?> entry : output.entrySet()) {
 			String name = (String)entry.getKey();
 			String uri = (String)entry.getValue();
+			if (!outputModelOptions.containsKey(name)) {
+				outputModelOptions.put(name, 
+						EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES + ' ' + 
+						EMFTVMLaunchConstants.OPT_DERIVED_FILE);
+			}
 			if (!outputModelLocations.containsKey(name)) {
 				removableOutputModels.add(name);
 			} else {
 				((Text)outputModelsGroupWidgets.get(name).get("location")).setText(uri);
+				((Button)outputModelsGroupWidgets.get(name).get("allowInterModelReferences")).setSelection(
+						EMFTVMLaunchConfigurationDelegate.getBoolOption(
+								outputModelOptions, name, EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
+				((Button)outputModelsGroupWidgets.get(name).get("derivedFile")).setSelection(
+						EMFTVMLaunchConfigurationDelegate.getBoolOption(
+								outputModelOptions, name, EMFTVMLaunchConstants.OPT_DERIVED_FILE));
 			}
 			outputModelLocations.put(name, uri);
 		}
-		
-		metamodelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, Collections.emptyMap()));
-		inputModelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, Collections.emptyMap()));
-		inoutModelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, Collections.emptyMap()));
-		outputModelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, Collections.emptyMap()));
 	}
 
 }

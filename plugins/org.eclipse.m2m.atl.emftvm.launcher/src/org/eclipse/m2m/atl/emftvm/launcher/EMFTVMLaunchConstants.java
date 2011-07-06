@@ -42,6 +42,8 @@ public interface EMFTVMLaunchConstants {
 	/** Output Model Options. */
 	String OUTPUT_MODEL_OPTIONS = "Output Model Options"; //$NON-NLS-1$
 
+	/** isMetametamodel. */
+	String OPT_IS_METAMETAMODEL = "isMetametamodel"; //$NON-NLS-1$
 	/** allowInterModelReferences. */
 	String OPT_ALLOW_INTER_MODEL_REFERENCES = "allowIntermodelReferences"; //$NON-NLS-1$
 	/** derivedFile. */

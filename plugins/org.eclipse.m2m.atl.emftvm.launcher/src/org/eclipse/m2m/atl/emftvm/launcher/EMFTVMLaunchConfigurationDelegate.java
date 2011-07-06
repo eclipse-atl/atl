@@ -26,6 +26,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -66,19 +67,19 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		final ResourceSet rs = new ResourceSetImpl();
 		
 		final Map<String, String> metamodelLocations = configuration.getAttribute(EMFTVMLaunchConstants.METAMODELS, Collections.emptyMap());
-		final Map<String,Map<String, String>> metamodelOptions = configuration.getAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, Collections.emptyMap());
+		final Map<String, String> metamodelOptions = configuration.getAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, Collections.emptyMap());
 		loadFileMetaModels(rs, metamodelLocations, metamodelOptions, env.getMetaModels());
 		
 		final Map<String, String> inputModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODELS, Collections.emptyMap());
-		final Map<String, Map<String, String>> inputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, Collections.emptyMap());
+		final Map<String, String> inputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, Collections.emptyMap());
 		loadModels(rs, inputModelLocations, inputModelOptions, env.getInputModels());
 		
 		final Map<String, String> inoutModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODELS, Collections.emptyMap());
-		final Map<String, Map<String, String>> inoutModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, Collections.emptyMap());
+		final Map<String, String> inoutModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, Collections.emptyMap());
 		loadModels(rs, inoutModelLocations, inoutModelOptions, env.getInoutModels());
 		
 		final Map<String, String> outputModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODELS, Collections.emptyMap());
-		final Map<String, Map<String, String>> outputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, Collections.emptyMap());
+		final Map<String, String> outputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, Collections.emptyMap());
 		createModels(rs, outputModelLocations, outputModelOptions, env.getOutputModels());
 		
 		loadOtherMetaModels(rs, metamodelLocations, metamodelOptions, env.getMetaModels());
@@ -117,19 +118,19 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 * @param models the map of model names to loaded models to write to
 	 */
 	private void loadFileMetaModels(final ResourceSet rs, final Map<String, String> modelLocations, 
-			final Map<String, Map<String, String>> modelOptions,
+			final Map<String, String> modelOptions,
 			final Map<String, Metamodel> models) {
 		for (Entry<String, String> entry : modelLocations.entrySet()) {
 			URI uri = URI.createURI((String)entry.getValue());
 			if (uri.isFile() || uri.isPlatform()) {
-				Resource r = rs.getResource(uri, true);
+				Resource r;
+				if (getBoolOption(modelOptions, entry.getKey(), EMFTVMLaunchConstants.OPT_IS_METAMETAMODEL)) {
+					r = EcorePackage.eINSTANCE.eResource();
+				} else {
+					r = rs.getResource(uri, true);
+				}
 				Metamodel m = EmftvmFactory.eINSTANCE.createMetamodel();
 				m.setResource(r);
-				m.setAllowInterModelReferences(getBoolOption(
-						modelOptions, 
-						entry.getKey(), 
-						EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES,
-						true));
 				models.put((String)entry.getKey(), m);
 			}
 		}
@@ -143,19 +144,19 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 * @param models the map of model names to loaded models to write to
 	 */
 	private void loadOtherMetaModels(final ResourceSet rs, final Map<String, String> modelLocations, 
-			final Map<String, Map<String, String>> modelOptions,
+			final Map<String, String> modelOptions,
 			final Map<String, Metamodel> models) {
 		for (Entry<String, String> entry : modelLocations.entrySet()) {
 			URI uri = URI.createURI((String)entry.getValue());
 			if (!uri.isFile() && !uri.isPlatform()) {
-				Resource r = rs.getResource(uri, true);
+				Resource r;
+				if (getBoolOption(modelOptions, entry.getKey(), EMFTVMLaunchConstants.OPT_IS_METAMETAMODEL)) {
+					r = EcorePackage.eINSTANCE.eResource();
+				} else {
+					r = rs.getResource(uri, true);
+				}
 				Metamodel m = EmftvmFactory.eINSTANCE.createMetamodel();
 				m.setResource(r);
-				m.setAllowInterModelReferences(getBoolOption(
-						modelOptions, 
-						entry.getKey(), 
-						EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES,
-						true));
 				models.put((String)entry.getKey(), m);
 			}
 		}
@@ -169,7 +170,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 * @param models the map of model names to loaded models to write to
 	 */
 	private void loadModels(final ResourceSet rs, final Map<String, String> modelLocations,
-			final Map<String, Map<String, String>> modelOptions,
+			final Map<String, String> modelOptions,
 			final Map<String, Model> models) {
 		for (Entry<String, String> entry : modelLocations.entrySet()) {
 			Resource r = rs.getResource(URI.createURI(entry.getValue()), true);
@@ -178,8 +179,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 			m.setAllowInterModelReferences(getBoolOption(
 					modelOptions, 
 					entry.getKey(), 
-					EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES,
-					true));
+					EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
 			models.put(entry.getKey(), m);
 		}
 	}
@@ -192,7 +192,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 * @param models the map of model names to loaded models to write to
 	 */
 	private void createModels(final ResourceSet rs, final Map<String, String> modelLocations, 
-			final Map<String, Map<String, String>> modelOptions,
+			final Map<String, String> modelOptions,
 			final Map<String, Model> models) {
 		for (Entry<String, String> entry : modelLocations.entrySet()) {
 			Resource r = rs.createResource(URI.createURI(entry.getValue()));
@@ -201,8 +201,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 			m.setAllowInterModelReferences(getBoolOption(
 					modelOptions, 
 					entry.getKey(), 
-					EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES,
-					true));
+					EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
 			models.put(entry.getKey(), m);
 		}
 	}
@@ -216,7 +215,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 */
 	@SuppressWarnings("deprecation")
 	private void saveModels(final Map<String, Model> models, 
-			final Map<String, Map<String, String>> modelOptions) throws IOException, CoreException {
+			final Map<String, String> modelOptions) throws IOException, CoreException {
 		final IWorkspaceRoot wr = ResourcesPlugin.getWorkspace().getRoot();
 		for (Entry<String, Model> model : models.entrySet()) {
 			model.getValue().getResource().save(Collections.emptyMap());
@@ -226,29 +225,10 @@ public class EMFTVMLaunchConfigurationDelegate implements
 				if (r instanceof IFile && getBoolOption(
 							modelOptions, 
 							model.getKey(), 
-							EMFTVMLaunchConstants.OPT_DERIVED_FILE,
-							true)) {
+							EMFTVMLaunchConstants.OPT_DERIVED_FILE)) {
 					((IFile)r).setDerived(true);
 				}
 			}
-		}
-	}
-
-	/**
-	 * Retrieves the value of <code>option</code> for <code>modelName</code> from <code>modelOptions</code>.
-	 * @param modelOptions the model options map
-	 * @param modelName the model name
-	 * @param option the option to retrieve
-	 * @param defaultValue the value to return if none set
-	 * @return the option value
-	 */
-	public static String getOption(final Map<String, Map<String, String>> modelOptions,
-			final String modelName, final String option, final String defaultValue) {
-		Map<String, String> options = modelOptions.get(modelName);
-		if (options == null) {
-			return defaultValue;
-		} else {
-			return options.containsKey(option) ? options.get(option) : defaultValue;
 		}
 	}
 
@@ -257,13 +237,45 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 * @param modelOptions the model options map
 	 * @param modelName the model name
 	 * @param option the option to retrieve
-	 * @param defaultValue the value to return if none set
 	 * @return the option value
 	 */
-	public static boolean getBoolOption(final Map<String, Map<String, String>> modelOptions,
-			final String modelName, final String option, final boolean defaultValue) {
-		return Boolean.valueOf(getOption(
-				modelOptions, modelName, option, Boolean.toString(defaultValue)));
+	public static boolean getBoolOption(final Map<String, String> modelOptions,
+			final String modelName, final String option) {
+		final String options = modelOptions.get(modelName);
+		if (options == null) {
+			return false;
+		}
+		return options.contains(option);
+	}
+
+	/**
+	 * Sets the boolean value of <code>option</code> for <code>modelName</code> from <code>modelOptions</code>.
+	 * @param modelOptions the model options map
+	 * @param modelName the model name
+	 * @param option the option to set
+	 */
+	public static void setBoolOption(final Map<String, String> modelOptions,
+			final String modelName, final String option) {
+		final String options = modelOptions.get(modelName);
+		if (options == null) {
+			modelOptions.put(modelName, option);
+		} else if (!options.contains(option)) {
+			modelOptions.put(modelName, (options + ' ' + option).trim());
+		}
+	}
+	
+	/**
+	 * Unsets the boolean value of <code>option</code> for <code>modelName</code> from <code>modelOptions</code>.
+	 * @param modelOptions the model options map
+	 * @param modelName the model name
+	 * @param option the option to unset
+	 */
+	public static void unsetBoolOption(final Map<String, String> modelOptions,
+			final String modelName, final String option) {
+		final String options = modelOptions.get(modelName);
+		if (options != null && options.contains(option)) {
+			modelOptions.put(modelName, options.replace(option, "").trim());
+		}
 	}
 	
 }
