@@ -588,12 +588,19 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	public void registerRule(final Rule r) {
 		//TODO check rule redefinition consistency? (types, mapsTo, ...)
 		rules.put(r.getName(), r);
+
+		final Map<String, Model> inModels = new LinkedHashMap<String, Model>(getInputModels());
+		inModels.putAll(getInoutModels());
 		for (RuleElement re : r.getInputElements()) {
-			resolveRuleElement(re, getInputModels());
+			resolveRuleElement(re, inModels);
 		}
+
+		final Map<String, Model> outModels = new LinkedHashMap<String, Model>(getOutputModels());
+		outModels.putAll(getInoutModels());
 		for (OutputRuleElement re : r.getOutputElements()) {
-			resolveRuleElement(re, getOutputModels());
+			resolveRuleElement(re, outModels);
 		}
+
 		for (Field field : r.getFields()) {
 			field.setEContext(findType(field.getContextModel(), field.getContext()));
 			field.setEType(findType(field.getTypeModel(), field.getType()));
