@@ -23,6 +23,11 @@
             library="lib/emftvmAntTasks.jar"
             name="emftvm.saveModel">
       </antTask>
+      <antTask
+            class="org.eclipse.m2m.atl.emftvm.ant.NewModelTask"
+            library="lib/emftvmAntTasks.jar"
+            name="emftvm.newModel">
+      </antTask>
    </extension>
 
 </plugin>
