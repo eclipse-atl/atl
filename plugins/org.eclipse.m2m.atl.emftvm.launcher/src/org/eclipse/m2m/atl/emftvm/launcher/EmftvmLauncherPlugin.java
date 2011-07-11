@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.emftvm.launcher;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.m2m.atl.core.ui.ATLConsole;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -61,6 +62,7 @@ public class EmftvmLauncherPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		instance = this;
+		ATLConsole.findConsole();
 	}
 
 	/**
