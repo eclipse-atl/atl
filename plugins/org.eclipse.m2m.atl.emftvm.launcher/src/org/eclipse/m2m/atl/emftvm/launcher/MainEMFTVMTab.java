@@ -637,6 +637,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		if (removable) {
 			delete = new Button(parent, SWT.NULL);
 			delete.setText("Delete");
+			disposableWidgets.add(delete);
 		} else {
 			delete = null;
 			new Label(parent, SWT.NULL);
