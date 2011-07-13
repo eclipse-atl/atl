@@ -24,14 +24,19 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.core.ui.ATLConsole;
+import org.eclipse.m2m.atl.debug.core.AtlDebugTarget;
+import org.eclipse.m2m.atl.debug.core.AtlRunTarget;
+import org.eclipse.m2m.atl.debug.core.AtlSourceLocator;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
@@ -59,10 +64,48 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	public void launch(final ILaunchConfiguration configuration, final String mode,
 			final ILaunch launch, final IProgressMonitor monitor) throws CoreException {
-		AtlUIPlugin.getDefault(); // force ATL console startup
+		ATLConsole.findConsole(); // force ATL console startup
+		final IDebugTarget target;
+		launch.setSourceLocator(new AtlSourceLocator());
+
+		if (ILaunchManager.DEBUG_MODE.equals(mode)) {
+			//TODO implement EMFTVM debugger
+			target = new AtlDebugTarget(launch);
+		} else {
+			target = new AtlRunTarget(launch);
+		}
+
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				try {
+					internalLaunch(configuration, mode, launch, monitor);
+				} catch (CoreException e) {
+					EmftvmLauncherPlugin.log(e.getStatus());
+				} catch (VMException e) {
+					ATLLogger.severe(e.toString());
+				} catch (IOException e) {
+					ATLLogger.severe(e.toString());
+				}
+				try {
+					target.terminate();
+				} catch (CoreException e) {
+					EmftvmLauncherPlugin.log(e.getStatus());
+				}
+			}
+		};
+		thread.start();
+
+		launch.addDebugTarget(target);
+		monitor.done();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void internalLaunch(final ILaunchConfiguration configuration, final String mode,
+			final ILaunch launch, final IProgressMonitor monitor) throws CoreException, IOException {
+		ATLConsole.findConsole(); // force ATL console startup
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ResourceSet rs = new ResourceSetImpl();
 		
@@ -92,22 +135,21 @@ public class EMFTVMLaunchConfigurationDelegate implements
 				(wsfolder.startsWith("/") ? "platform:/resource" : "platform:/resource/") + wsfolder, 
 				new ResourceSetImpl());
 
-		try {
-			final TimingData timingData = new TimingData();
-			env.loadModule(resolver, name);
-			timingData.finishLoading();
-			env.run(timingData);
-			timingData.finish();
-			if (configuration.getAttribute(EMFTVMLaunchConstants.DISPLAY_TIMING, true)) {
-				ATLLogger.info(timingData.toString());
-			}
-			saveModels(env.getInoutModels(), inoutModelOptions);
-			saveModels(env.getOutputModels(), outputModelOptions);
-		} catch (VMException e) {
-			ATLLogger.severe(e.toString());
-		} catch (IOException e) {
-			ATLLogger.severe(e.toString());
+		final TimingData timingData = new TimingData();
+		env.loadModule(resolver, name);
+		timingData.finishLoading();
+		if (ILaunchManager.DEBUG_MODE.equals(mode)) {
+			//TODO implement debugger
+			env.run(timingData, new LaunchAdapter(launch));
+		} else {
+			env.run(timingData, new LaunchAdapter(launch));
 		}
+		timingData.finish();
+		if (configuration.getAttribute(EMFTVMLaunchConstants.DISPLAY_TIMING, true)) {
+			ATLLogger.info(timingData.toString());
+		}
+		saveModels(env.getInoutModels(), inoutModelOptions);
+		saveModels(env.getOutputModels(), outputModelOptions);
 	}
 	
 	/**
