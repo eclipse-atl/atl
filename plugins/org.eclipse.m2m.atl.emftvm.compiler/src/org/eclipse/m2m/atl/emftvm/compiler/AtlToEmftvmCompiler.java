@@ -177,7 +177,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 			env.getInputModels().put("IN", atlm);
 			env.getOutputModels().put("OUT", pbm);
 			env.loadModule(mr, "ATLWFR");
-			env.run(new TimingData());
+			env.run(new TimingData(), null);
 			
 			if (getProblems(pbm, pbs) == 0) {
 				env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -187,14 +187,14 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 				env.getOutputModels().put("OUT", emftvmm);
 				env.getOutputModels().put("PBS", pbm);
 				env.loadModule(mr, "ATLtoEMFTVM");
-				env.run(new TimingData());
+				env.run(new TimingData(), null);
 				
 				if (getProblems(pbm, pbs) == 0) {
 					env = EmftvmFactory.eINSTANCE.createExecEnv();
 					env.getInputModels().put("IN", emftvmm);
 					env.getOutputModels().put("OUT", emftvmmi);
 					env.loadModule(mr, "InlineCodeblocks");
-					env.run(new TimingData());
+					env.run(new TimingData(), null);
 					
 					ri.save(outputStream, Collections.emptyMap());
 				}
