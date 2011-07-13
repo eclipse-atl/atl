@@ -151,7 +151,7 @@ public class RunTask extends EMFTVMTask {
 		final TimingData timingData = new TimingData();
 		env.loadModule(resolver, getModule());
 		timingData.finishLoading();
-		env.run(timingData);
+		env.run(timingData, null);
 		timingData.finish();
 		log(timingData.toString());
 	}
