@@ -17,8 +17,8 @@
 </mapAttribute>
 <stringAttribute key="Module File Name" value="/org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLtoEMFTVM.emftvm"/>
 <mapAttribute key="Output Model Options">
-<mapEntry key="OUT" value="derivedFile allowIntermodelReferences"/>
-<mapEntry key="PBS" value="derivedFile allowIntermodelReferences"/>
+<mapEntry key="OUT" value="derivedFile"/>
+<mapEntry key="PBS" value="derivedFile"/>
 </mapAttribute>
 <mapAttribute key="Output Models">
 <mapEntry key="OUT" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/ATLtoEMFTVM.emftvm"/>

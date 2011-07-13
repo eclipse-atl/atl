@@ -45,7 +45,7 @@ import org.osgi.framework.Bundle;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findStaticField(java.lang.Object, java.lang.String) <em>Find Static Field</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findRule(java.lang.String) <em>Find Rule</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findType(java.lang.String, java.lang.String) <em>Find Type</em>}</li>
- *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData) <em>Run</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData, org.eclipse.m2m.atl.emftvm.util.VMMonitor) <em>Run</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getRules() <em>Get Rules</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getModelOf(org.eclipse.emf.ecore.EObject) <em>Get Model Of</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getModelID(org.eclipse.m2m.atl.emftvm.Model) <em>Get Model ID</em>}</li>
@@ -53,6 +53,7 @@ import org.osgi.framework.Bundle;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInputModelOf(org.eclipse.emf.ecore.EObject) <em>Get Input Model Of</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInoutModelOf(org.eclipse.emf.ecore.EObject) <em>Get Inout Model Of</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getOutputModelOf(org.eclipse.emf.ecore.EObject) <em>Get Output Model Of</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMonitor() <em>Get Monitor</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -131,6 +132,19 @@ public class ExecEnvTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMonitor() <em>Get Monitor</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getMonitor()
+	 * @generated
+	 */
+	public void testGetMonitor() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 	/**
@@ -251,13 +265,13 @@ public class ExecEnvTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData) <em>Run</em>}' operation.
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData, org.eclipse.m2m.atl.emftvm.util.VMMonitor) <em>Run</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData)
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData, org.eclipse.m2m.atl.emftvm.util.VMMonitor)
 	 * @generated NOT
 	 */
-	public void testRun__TimingData() {
+	public void testRun__TimingData_VMMonitor() {
 		final ExecEnv env = getFixture();
 		final ResourceSet rs = new ResourceSetImpl();
 
@@ -277,7 +291,7 @@ public class ExecEnvTest extends TestCase {
 		final TimingData td = new TimingData();
 		env.loadModule(mr, "EMFTVMCopy");
 		td.finishLoading();
-		env.run(td);
+		env.run(td, null);
 		td.finish();
 		System.out.print(td.toString());
 	}
