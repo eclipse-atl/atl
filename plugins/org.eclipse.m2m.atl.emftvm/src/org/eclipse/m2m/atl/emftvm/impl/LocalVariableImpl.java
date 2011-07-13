@@ -57,24 +57,6 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	 */
 	protected static final int SLOT_EDEFAULT = -1;
 	/**
-	 * The default value of the '{@link #getStartInstructionIndex() <em>Start Instruction Index</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartInstructionIndex()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int START_INSTRUCTION_INDEX_EDEFAULT = -1;
-	/**
-	 * The default value of the '{@link #getEndInstructionIndex() <em>End Instruction Index</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndInstructionIndex()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int END_INSTRUCTION_INDEX_EDEFAULT = -1;
-	/**
 	 * The cached value of the '{@link #getSlot() <em>Slot</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -101,6 +83,24 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	 * @ordered
 	 */
 	protected Instruction endInstruction;
+	/**
+	 * The default value of the '{@link #getStartInstructionIndex() <em>Start Instruction Index</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStartInstructionIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int START_INSTRUCTION_INDEX_EDEFAULT = -1;
+	/**
+	 * The default value of the '{@link #getEndInstructionIndex() <em>End Instruction Index</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEndInstructionIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int END_INSTRUCTION_INDEX_EDEFAULT = -1;
 	/**
 	 * The cached value of the '{@link #getStartInstructionIndex() <em>Start Instruction Index</em>}' attribute.
 	 * <!-- begin-user-doc -->

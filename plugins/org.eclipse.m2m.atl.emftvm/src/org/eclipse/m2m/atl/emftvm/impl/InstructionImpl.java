@@ -56,24 +56,6 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	 */
 	protected static final Opcode OPCODE_EDEFAULT = Opcode.PUSH;
 	/**
-	 * The default value of the '{@link #getStackProduction() <em>Stack Production</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStackProduction()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int STACK_PRODUCTION_EDEFAULT = 0;
-	/**
-	 * The default value of the '{@link #getStackConsumption() <em>Stack Consumption</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStackConsumption()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int STACK_CONSUMPTION_EDEFAULT = 0;
-	/**
 	 * The cached value of the '{@link #getOpcode() <em>Opcode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -83,6 +65,15 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	 */
 	protected Opcode opcode = OPCODE_EDEFAULT;
 	/**
+	 * The default value of the '{@link #getStackProduction() <em>Stack Production</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStackProduction()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int STACK_PRODUCTION_EDEFAULT = 0;
+	/**
 	 * The cached value of the '{@link #getStackProduction() <em>Stack Production</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -91,6 +82,15 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	 * @ordered
 	 */
 	protected int stackProduction = STACK_PRODUCTION_EDEFAULT;
+	/**
+	 * The default value of the '{@link #getStackConsumption() <em>Stack Consumption</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStackConsumption()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int STACK_CONSUMPTION_EDEFAULT = 0;
 	/**
 	 * The cached value of the '{@link #getStackConsumption() <em>Stack Consumption</em>}' attribute.
 	 * <!-- begin-user-doc -->

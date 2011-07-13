@@ -8,6 +8,8 @@
   <eClassifiers xsi:type="ecore:EDataType" name="StackFrame" instanceClassName="org.eclipse.m2m.atl.emftvm.util.StackFrame"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Method" instanceClassName="java.lang.reflect.Method"/>
   <eClassifiers xsi:type="ecore:EDataType" name="TimingData" instanceClassName="org.eclipse.m2m.atl.emftvm.util.TimingData"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="VMMonitor" instanceClassName="org.eclipse.m2m.atl.emftvm.util.VMMonitor"
+      serializable="false"/>
   <eClassifiers xsi:type="ecore:EDataType" name="LazyCollection" instanceClassName="org.eclipse.m2m.atl.emftvm.util.LazyCollection">
     <eTypeParameters name="E"/>
   </eClassifiers>
@@ -141,6 +143,7 @@
     </eOperations>
     <eOperations name="run" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject">
       <eParameters name="timingData" eType="#//TimingData"/>
+      <eParameters name="monitor" eType="#//VMMonitor"/>
     </eOperations>
     <eOperations name="getRules">
       <eGenericType eClassifier="#//LazyList">
@@ -163,6 +166,7 @@
     <eOperations name="getOutputModelOf" eType="#//Model">
       <eParameters name="object" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eOperations>
+    <eOperations name="getMonitor" eType="#//VMMonitor"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="metaModels" lowerBound="1"
         changeable="false" transient="true" defaultValueLiteral="">
       <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">

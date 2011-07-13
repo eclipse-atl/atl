@@ -100,6 +100,7 @@ import org.eclipse.m2m.atl.emftvm.util.LazySetOnSet;
 import org.eclipse.m2m.atl.emftvm.util.Matcher;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
+import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 
 
 /**
@@ -849,10 +850,14 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		int pc = 0;
 		final EList<Instruction> code = getCode();
 		final int codeSize = code.size();
+		final VMMonitor monitor = frame.getEnv().getMonitor();
 
 		try {
 			LOOP:
 			while (pc < codeSize) {
+				if (monitor != null && monitor.isTerminated()) {
+					throw new VMException(frame, "Execution cancelled.");
+				}
 				Instruction instr = code.get(pc++);
 				switch (instr.getOpcode()) {
 				case PUSH:

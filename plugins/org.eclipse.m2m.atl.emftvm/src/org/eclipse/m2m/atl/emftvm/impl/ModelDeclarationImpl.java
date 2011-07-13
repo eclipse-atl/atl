@@ -13,10 +13,8 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
@@ -54,15 +52,6 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	 */
 	protected static final String MODEL_NAME_EDEFAULT = null;
 	/**
-	 * The default value of the '{@link #getMetaModelName() <em>Meta Model Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMetaModelName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String META_MODEL_NAME_EDEFAULT = null;
-	/**
 	 * The cached value of the '{@link #getModelName() <em>Model Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -71,6 +60,15 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	 * @ordered
 	 */
 	protected String modelName = MODEL_NAME_EDEFAULT;
+	/**
+	 * The default value of the '{@link #getMetaModelName() <em>Meta Model Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMetaModelName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String META_MODEL_NAME_EDEFAULT = null;
 	/**
 	 * The cached value of the '{@link #getMetaModelName() <em>Meta Model Name</em>}' attribute.
 	 * <!-- begin-user-doc -->

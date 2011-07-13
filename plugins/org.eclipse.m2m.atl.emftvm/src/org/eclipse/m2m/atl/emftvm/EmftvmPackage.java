@@ -5930,6 +5930,16 @@ public interface EmftvmPackage extends EPackage {
 	int TIMING_DATA = 82;
 
 	/**
+	 * The meta object id for the '<em>VM Monitor</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getVMMonitor()
+	 * @generated
+	 */
+	int VM_MONITOR = 83;
+
+	/**
 	 * The meta object id for the '<em>Lazy Collection</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5937,7 +5947,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getLazyCollection()
 	 * @generated
 	 */
-	int LAZY_COLLECTION = 83;
+	int LAZY_COLLECTION = 84;
 
 	/**
 	 * The meta object id for the '<em>Lazy Bag</em>' data type.
@@ -5947,7 +5957,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getLazyBag()
 	 * @generated
 	 */
-	int LAZY_BAG = 84;
+	int LAZY_BAG = 85;
 
 	/**
 	 * The meta object id for the '<em>Lazy List</em>' data type.
@@ -5957,7 +5967,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getLazyList()
 	 * @generated
 	 */
-	int LAZY_LIST = 85;
+	int LAZY_LIST = 86;
 
 	/**
 	 * The meta object id for the '<em>Lazy Ordered Set</em>' data type.
@@ -5967,7 +5977,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getLazyOrderedSet()
 	 * @generated
 	 */
-	int LAZY_ORDERED_SET = 86;
+	int LAZY_ORDERED_SET = 87;
 
 	/**
 	 * The meta object id for the '<em>Lazy Set</em>' data type.
@@ -5977,7 +5987,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getLazySet()
 	 * @generated
 	 */
-	int LAZY_SET = 87;
+	int LAZY_SET = 88;
 
 	/**
 	 * The meta object id for the '<em>Module Resolver</em>' data type.
@@ -8124,6 +8134,17 @@ public interface EmftvmPackage extends EPackage {
 	EDataType getTimingData();
 
 	/**
+	 * Returns the meta object for data type '{@link org.eclipse.m2m.atl.emftvm.util.VMMonitor <em>VM Monitor</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>VM Monitor</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor
+	 * @model instanceClass="org.eclipse.m2m.atl.emftvm.util.VMMonitor" serializeable="false"
+	 * @generated
+	 */
+	EDataType getVMMonitor();
+
+	/**
 	 * Returns the meta object for data type '{@link org.eclipse.m2m.atl.emftvm.util.LazyCollection <em>Lazy Collection</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -9983,6 +10004,16 @@ public interface EmftvmPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType TIMING_DATA = eINSTANCE.getTimingData();
+
+		/**
+		 * The meta object literal for the '<em>VM Monitor</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getVMMonitor()
+		 * @generated
+		 */
+		EDataType VM_MONITOR = eINSTANCE.getVMMonitor();
 
 		/**
 		 * The meta object literal for the '<em>Lazy Collection</em>' data type.

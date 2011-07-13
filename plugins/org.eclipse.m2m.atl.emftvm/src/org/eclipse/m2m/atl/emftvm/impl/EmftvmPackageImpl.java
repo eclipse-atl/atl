@@ -58,11 +58,11 @@ import org.eclipse.m2m.atl.emftvm.InputRuleElement;
 import org.eclipse.m2m.atl.emftvm.Insert;
 import org.eclipse.m2m.atl.emftvm.Instruction;
 import org.eclipse.m2m.atl.emftvm.Invoke;
-import org.eclipse.m2m.atl.emftvm.InvokeInstruction;
-import org.eclipse.m2m.atl.emftvm.InvokeOperationInstruction;
 import org.eclipse.m2m.atl.emftvm.InvokeAllCbs;
 import org.eclipse.m2m.atl.emftvm.InvokeCb;
 import org.eclipse.m2m.atl.emftvm.InvokeCbS;
+import org.eclipse.m2m.atl.emftvm.InvokeInstruction;
+import org.eclipse.m2m.atl.emftvm.InvokeOperationInstruction;
 import org.eclipse.m2m.atl.emftvm.InvokeStatic;
 import org.eclipse.m2m.atl.emftvm.InvokeSuper;
 import org.eclipse.m2m.atl.emftvm.Isnull;
@@ -112,6 +112,7 @@ import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
+import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 
 
 /**
@@ -688,6 +689,13 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * @generated
 	 */
 	private EDataType timingDataEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType vmMonitorEDataType = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -2607,6 +2615,15 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getVMMonitor() {
+		return vmMonitorEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getLazyCollection() {
 		return lazyCollectionEDataType;
 	}
@@ -2971,6 +2988,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		stackFrameEDataType = createEDataType(STACK_FRAME);
 		methodEDataType = createEDataType(METHOD);
 		timingDataEDataType = createEDataType(TIMING_DATA);
+		vmMonitorEDataType = createEDataType(VM_MONITOR);
 		lazyCollectionEDataType = createEDataType(LAZY_COLLECTION);
 		lazyBagEDataType = createEDataType(LAZY_BAG);
 		lazyListEDataType = createEDataType(LAZY_LIST);
@@ -3153,6 +3171,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		op = addEOperation(execEnvEClass, theEcorePackage.getEJavaObject(), "run", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getTimingData(), "timingData", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getVMMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(execEnvEClass, null, "getRules", 0, 1, IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(this.getLazyList());
@@ -3176,6 +3195,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		op = addEOperation(execEnvEClass, this.getModel(), "getOutputModelOf", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEObject(), "object", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(execEnvEClass, this.getVMMonitor(), "getMonitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getModel_Resource(), theEcorePackage.getEResource(), "resource", null, 1, 1, Model.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -3573,6 +3594,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEDataType(stackFrameEDataType, StackFrame.class, "StackFrame", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(methodEDataType, Method.class, "Method", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(timingDataEDataType, TimingData.class, "TimingData", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(vmMonitorEDataType, VMMonitor.class, "VMMonitor", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(lazyCollectionEDataType, LazyCollection.class, "LazyCollection", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(lazyBagEDataType, LazyBag.class, "LazyBag", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(lazyListEDataType, LazyList.class, "LazyList", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

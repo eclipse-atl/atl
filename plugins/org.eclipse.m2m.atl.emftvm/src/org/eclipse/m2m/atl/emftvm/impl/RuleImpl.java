@@ -73,33 +73,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	protected static final RuleMode MODE_EDEFAULT = RuleMode.MANUAL;
 	/**
-	 * The default value of the '{@link #isAbstract() <em>Abstract</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isAbstract()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean ABSTRACT_EDEFAULT = false;
-	/**
-	 * The default value of the '{@link #isDefault() <em>Default</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isDefault()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean DEFAULT_EDEFAULT = false;
-	/**
-	 * The default value of the '{@link #isDistinctElements() <em>Distinct Elements</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isDistinctElements()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean DISTINCT_ELEMENTS_EDEFAULT = false;
-	/**
 	 * The cached value of the '{@link #getMode() <em>Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -181,6 +154,15 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	protected EList<String> superRules;
 	/**
+	 * The default value of the '{@link #isAbstract() <em>Abstract</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isAbstract()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean ABSTRACT_EDEFAULT = false;
+	/**
 	 * The cached value of the '{@link #isAbstract() <em>Abstract</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -199,6 +181,15 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	protected EList<Field> fields;
 	/**
+	 * The default value of the '{@link #isDefault() <em>Default</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDefault()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DEFAULT_EDEFAULT = false;
+	/**
 	 * The cached value of the '{@link #isDefault() <em>Default</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -207,6 +198,15 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @ordered
 	 */
 	protected boolean default_ = DEFAULT_EDEFAULT;
+	/**
+	 * The default value of the '{@link #isDistinctElements() <em>Distinct Elements</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDistinctElements()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DISTINCT_ELEMENTS_EDEFAULT = false;
 	/**
 	 * The cached value of the '{@link #isDistinctElements() <em>Distinct Elements</em>}' attribute.
 	 * <!-- begin-user-doc -->

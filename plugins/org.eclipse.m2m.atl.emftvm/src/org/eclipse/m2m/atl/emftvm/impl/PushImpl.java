@@ -13,9 +13,7 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Opcode;
@@ -57,96 +55,6 @@ public class PushImpl extends InstructionImpl implements Push {
 	protected static final Object VALUE_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getStringValue() <em>String Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStringValue()
-	 * @generated NOT
-	 * @ordered
-	 */
-	protected static final String STRING_VALUE_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getIntValue() <em>Int Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getIntValue()
-	 * @generated NOT
-	 * @ordered
-	 */
-	protected static final Integer INT_VALUE_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getDoubleValue() <em>Double Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDoubleValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Double DOUBLE_VALUE_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getByteValue() <em>Byte Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getByteValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Byte BYTE_VALUE_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getCharValue() <em>Char Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCharValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Character CHAR_VALUE_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getFloatValue() <em>Float Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFloatValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Float FLOAT_VALUE_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getShortValue() <em>Short Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getShortValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Short SHORT_VALUE_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getLongValue() <em>Long Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getLongValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Long LONG_VALUE_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getEnumValue() <em>Enum Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEnumValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ENUM_VALUE_EDEFAULT = null;
-
-	/**
 	 * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -155,6 +63,16 @@ public class PushImpl extends InstructionImpl implements Push {
 	 * @ordered
 	 */
 	protected Object value = VALUE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getStringValue() <em>String Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStringValue()
+	 * @generated NOT
+	 * @ordered
+	 */
+	protected static final String STRING_VALUE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getStringValue() <em>String Value</em>}' attribute.
@@ -167,6 +85,16 @@ public class PushImpl extends InstructionImpl implements Push {
 	protected String stringValue = STRING_VALUE_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getIntValue() <em>Int Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIntValue()
+	 * @generated NOT
+	 * @ordered
+	 */
+	protected static final Integer INT_VALUE_EDEFAULT = null;
+
+	/**
 	 * The cached value of the '{@link #getIntValue() <em>Int Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -175,6 +103,16 @@ public class PushImpl extends InstructionImpl implements Push {
 	 * @ordered
 	 */
 	protected Integer intValue = INT_VALUE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getDoubleValue() <em>Double Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDoubleValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Double DOUBLE_VALUE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getDoubleValue() <em>Double Value</em>}' attribute.
@@ -187,6 +125,16 @@ public class PushImpl extends InstructionImpl implements Push {
 	protected Double doubleValue = DOUBLE_VALUE_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getByteValue() <em>Byte Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getByteValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Byte BYTE_VALUE_EDEFAULT = null;
+
+	/**
 	 * The cached value of the '{@link #getByteValue() <em>Byte Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -195,6 +143,16 @@ public class PushImpl extends InstructionImpl implements Push {
 	 * @ordered
 	 */
 	protected Byte byteValue = BYTE_VALUE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getCharValue() <em>Char Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCharValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Character CHAR_VALUE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getCharValue() <em>Char Value</em>}' attribute.
@@ -207,6 +165,16 @@ public class PushImpl extends InstructionImpl implements Push {
 	protected Character charValue = CHAR_VALUE_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getFloatValue() <em>Float Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFloatValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Float FLOAT_VALUE_EDEFAULT = null;
+
+	/**
 	 * The cached value of the '{@link #getFloatValue() <em>Float Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -215,6 +183,16 @@ public class PushImpl extends InstructionImpl implements Push {
 	 * @ordered
 	 */
 	protected Float floatValue = FLOAT_VALUE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getShortValue() <em>Short Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getShortValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Short SHORT_VALUE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getShortValue() <em>Short Value</em>}' attribute.
@@ -227,6 +205,16 @@ public class PushImpl extends InstructionImpl implements Push {
 	protected Short shortValue = SHORT_VALUE_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getLongValue() <em>Long Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLongValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Long LONG_VALUE_EDEFAULT = null;
+
+	/**
 	 * The cached value of the '{@link #getLongValue() <em>Long Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -235,6 +223,16 @@ public class PushImpl extends InstructionImpl implements Push {
 	 * @ordered
 	 */
 	protected Long longValue = LONG_VALUE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getEnumValue() <em>Enum Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEnumValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ENUM_VALUE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getEnumValue() <em>Enum Value</em>}' attribute.

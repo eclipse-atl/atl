@@ -14,13 +14,10 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Feature;
@@ -56,24 +53,6 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	 */
 	protected static final boolean STATIC_EDEFAULT = false;
 	/**
-	 * The default value of the '{@link #getContext() <em>Context</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getContext()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CONTEXT_EDEFAULT = null;
-	/**
-	 * The default value of the '{@link #getContextModel() <em>Context Model</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getContextModel()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CONTEXT_MODEL_EDEFAULT = null;
-	/**
 	 * The cached value of the '{@link #isStatic() <em>Static</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -92,6 +71,15 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	 */
 	protected EClassifier eContext;
 	/**
+	 * The default value of the '{@link #getContext() <em>Context</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContext()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CONTEXT_EDEFAULT = null;
+	/**
 	 * The cached value of the '{@link #getContext() <em>Context</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -100,6 +88,15 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	 * @ordered
 	 */
 	protected String context = CONTEXT_EDEFAULT;
+	/**
+	 * The default value of the '{@link #getContextModel() <em>Context Model</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContextModel()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CONTEXT_MODEL_EDEFAULT = null;
 	/**
 	 * The cached value of the '{@link #getContextModel() <em>Context Model</em>}' attribute.
 	 * <!-- begin-user-doc -->

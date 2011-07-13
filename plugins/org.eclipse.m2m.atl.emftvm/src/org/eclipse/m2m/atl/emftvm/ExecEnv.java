@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
+import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 
 /**
  * <!-- begin-user-doc -->
@@ -74,6 +75,19 @@ public interface ExecEnv extends EObject {
 	 * @generated
 	 */
 	EList<EObject> getDeletionQueue();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * Returns the {@link VMMonitor} for the currently running VM instance.
+	 * @return the {@link VMMonitor} for the currently running VM instance.
+	 * @see ExecEnv#run(TimingData, VMMonitor)
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" dataType="org.eclipse.m2m.atl.emftvm.VMMonitor"
+	 * @generated
+	 */
+	VMMonitor getMonitor();
 
 	/**
 	 * Returns the value of the '<em><b>Meta Models</b></em>' attribute.
@@ -320,13 +334,10 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Runs the loaded transformation module in this {@link ExecEnv}.
-	 * @param timingData the object in which to record the execution times
-	 * @return the execution result value, or <code>null</code> if none
 	 * <!-- end-user-doc -->
-	 * @model timingDataDataType="org.eclipse.m2m.atl.emftvm.TimingData"
+	 * @model timingDataDataType="org.eclipse.m2m.atl.emftvm.TimingData" monitorDataType="org.eclipse.m2m.atl.emftvm.VMMonitor"
 	 * @generated
 	 */
-	Object run(TimingData timingData);
+	Object run(TimingData timingData, VMMonitor monitor);
 
 } // ExecEnv

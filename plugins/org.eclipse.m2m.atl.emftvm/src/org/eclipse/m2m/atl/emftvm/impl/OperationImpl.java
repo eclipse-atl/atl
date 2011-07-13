@@ -47,15 +47,6 @@ import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 public class OperationImpl extends FeatureImpl implements Operation {
 
 	/**
-	 * The default value of the '{@link #isQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isQuery()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean QUERY_EDEFAULT = false;
-	/**
 	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -64,6 +55,15 @@ public class OperationImpl extends FeatureImpl implements Operation {
 	 * @ordered
 	 */
 	protected EList<Parameter> parameters;
+	/**
+	 * The default value of the '{@link #isQuery() <em>Query</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isQuery()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean QUERY_EDEFAULT = false;
 	/**
 	 * The cached value of the '{@link #isQuery() <em>Query</em>}' attribute.
 	 * <!-- begin-user-doc -->

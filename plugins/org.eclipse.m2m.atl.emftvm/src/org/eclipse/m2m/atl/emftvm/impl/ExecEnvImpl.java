@@ -60,6 +60,7 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 import org.eclipse.m2m.atl.emftvm.util.TypeHashMap;
 import org.eclipse.m2m.atl.emftvm.util.TypeMap;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
+import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 
 
 /**
@@ -207,6 +208,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	protected Map<Model, String> modelId = new HashMap<Model, String>();
 
 	/**
+	 * The {@link VMMonitor} for the currently running VM instance.
+	 */
+	protected VMMonitor monitor;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * Creates a new {@link ExecEnvImpl}.
 	 * <!-- end-user-doc -->
@@ -303,6 +309,16 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			deletionQueue = new EObjectResolvingEList<EObject>(EObject.class, this, EmftvmPackage.EXEC_ENV__DELETION_QUEUE);
 		}
 		return deletionQueue;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public VMMonitor getMonitor() {
+		return monitor;
 	}
 
 	/**
@@ -899,19 +915,26 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
-	public Object run(final TimingData timingData) {
-		assert getDeletionQueue().isEmpty();
-		cacheModels();
-		final Operation main = findStaticOperation(eClass(), EMFTVMUtil.MAIN_OP_NAME, new BasicEList<Object>());
-		if (main == null) {
-			throw new UnsupportedOperationException(String.format("Operation %s not found", EMFTVMUtil.MAIN_OP_NAME));
+	public synchronized Object run(final TimingData timingData, VMMonitor monitor) {
+		this.monitor = monitor;
+		final Object result;
+		try {
+			assert getDeletionQueue().isEmpty();
+			cacheModels();
+			final Operation main = findStaticOperation(eClass(), EMFTVMUtil.MAIN_OP_NAME, new BasicEList<Object>());
+			if (main == null) {
+				throw new UnsupportedOperationException(String.format("Operation %s not found", EMFTVMUtil.MAIN_OP_NAME));
+			}
+			final CodeBlock cb = main.getBody();
+			final StackFrame frame = new StackFrame(this, cb);
+			Matcher.matchAll(frame, timingData); // run all automatic rules before main
+			result = cb.execute(frame);
+			deleteQueue(); // process any leftover elements
+		} finally {
+			this.monitor = null;
 		}
-		final CodeBlock cb = main.getBody();
-		final StackFrame frame = new StackFrame(this, cb);
-		Matcher.matchAll(frame, timingData); // run all automatic rules before main
-		final Object result = cb.execute(frame);
-		deleteQueue(); // process any leftover elements
 		return result;
 	}
 

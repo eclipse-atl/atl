@@ -174,15 +174,6 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 */
 	protected static final Resource RESOURCE_EDEFAULT = null;
 	/**
-	 * The default value of the '{@link #isAllowInterModelReferences() <em>Allow Inter Model References</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isAllowInterModelReferences()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean ALLOW_INTER_MODEL_REFERENCES_EDEFAULT = true;
-	/**
 	 * The cached value of the '{@link #getResource() <em>Resource</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -191,6 +182,15 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * @ordered
 	 */
 	protected Resource resource = RESOURCE_EDEFAULT;
+	/**
+	 * The default value of the '{@link #isAllowInterModelReferences() <em>Allow Inter Model References</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isAllowInterModelReferences()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean ALLOW_INTER_MODEL_REFERENCES_EDEFAULT = true;
 	/**
 	 * The cached value of the '{@link #isAllowInterModelReferences() <em>Allow Inter Model References</em>}' attribute.
 	 * <!-- begin-user-doc -->

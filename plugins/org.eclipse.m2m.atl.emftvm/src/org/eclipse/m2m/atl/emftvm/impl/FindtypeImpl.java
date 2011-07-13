@@ -13,9 +13,7 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Findtype;
@@ -47,15 +45,6 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	 */
 	protected static final String MODELNAME_EDEFAULT = null;
 	/**
-	 * The default value of the '{@link #getTypename() <em>Typename</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTypename()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String TYPENAME_EDEFAULT = null;
-	/**
 	 * The cached value of the '{@link #getModelname() <em>Modelname</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -64,6 +53,15 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	 * @ordered
 	 */
 	protected String modelname = MODELNAME_EDEFAULT;
+	/**
+	 * The default value of the '{@link #getTypename() <em>Typename</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTypename()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String TYPENAME_EDEFAULT = null;
 	/**
 	 * The cached value of the '{@link #getTypename() <em>Typename</em>}' attribute.
 	 * <!-- begin-user-doc -->
