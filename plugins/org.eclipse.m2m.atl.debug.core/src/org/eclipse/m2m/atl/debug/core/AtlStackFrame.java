@@ -88,9 +88,16 @@ public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 			sourceLocation = ((StringValue)slv).getValue();
 		}
 		if (sourceLocation != null) {
-			int[] sl = atlnbcharfile.getIndexChar(sourceLocation);
-			charStart = sl[0];
-			charEnd = sl[1];
+			if (sourceLocation.matches("[0-9]*:[0-9]*\\([0-9]*-[0-9]*\\)")) { //$NON-NLS-1$
+				final String[] offsets = sourceLocation.substring(
+						sourceLocation.indexOf('(') + 1, sourceLocation.lastIndexOf(')')).split("-"); //$NON-NLS-1$
+				charStart = Integer.valueOf(offsets[0]);
+				charEnd = Integer.valueOf(offsets[1]) + 1;
+			} else {
+				int[] sl = atlnbcharfile.getIndexChar(sourceLocation);
+				charStart = sl[0];
+				charEnd = sl[1];
+			}
 		}
 		location = ((IntegerValue)stackFrame.call("getLocation", Collections.<Value>emptyList())).getValue(); //$NON-NLS-1$
 		this.opName = ((StringValue)stackFrame.call("getOpName", Collections.<Value>emptyList())).getValue(); //$NON-NLS-1$
