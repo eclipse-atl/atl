@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Freddy Allilaire (INRIA) - initial API and implementation
+ *    Dennis Wagelaar, Vrije Universiteit Brussel
  *******************************************************************************/
 package org.eclipse.m2m.atl.debug.core;
 
@@ -63,6 +64,7 @@ import org.eclipse.m2m.atl.debug.core.adwp.Value;
  * AtlDebugTarget contains only one thread : the main thread. The thread contains the current stackframe
  * 
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 
