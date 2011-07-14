@@ -37,6 +37,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.m2m.atl.adt.ui.common.RegisteredPackageDialog;
 import org.eclipse.m2m.atl.adt.ui.common.WorkspaceFileDialog;
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
 import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
@@ -291,6 +292,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(EMFTVMLaunchConstants.MODULE_FILE_NAME, modulePathText.getText());
+		configuration.setAttribute(ATLLaunchConstants.ATL_FILE_NAME, modulePathText.getText().replace(".emftvm", ".atl")); // backwards compatibility
 
 		configuration.setAttribute(EMFTVMLaunchConstants.METAMODELS, new LinkedHashMap<String, String>(metamodelLocations));
 		configuration.setAttribute(EMFTVMLaunchConstants.INPUT_MODELS, new LinkedHashMap<String, String>(inputModelLocations));
