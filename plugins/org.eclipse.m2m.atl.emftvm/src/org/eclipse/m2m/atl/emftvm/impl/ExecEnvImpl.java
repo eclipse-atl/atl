@@ -932,6 +932,14 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			Matcher.matchAll(frame, timingData); // run all automatic rules before main
 			result = cb.execute(frame);
 			deleteQueue(); // process any leftover elements
+			if (monitor != null) {
+				monitor.terminated();
+			}
+		} catch (VMException e) {
+			if (monitor != null) {
+				monitor.error(e.getFrame(), e.getLocalizedMessage(), e);
+			}
+			throw e;
 		} finally {
 			this.monitor = null;
 		}

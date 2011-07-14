@@ -482,4 +482,12 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 		return result.toString();
 	}
 
+	/**
+	 * Returns the ASM version (for debugger).
+	 * @return the ASM version ("ETVM")
+	 */
+	public String getVersion() {
+		return "ETVM";
+	}
+
 } //ModuleImpl

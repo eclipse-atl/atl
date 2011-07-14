@@ -13,6 +13,8 @@ package org.eclipse.m2m.atl.emftvm.util;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
@@ -308,7 +310,7 @@ public final class StackFrame {
 	public String toString() {
 		final CodeBlock cb = getCodeBlock();
 		final Method m = getNativeMethod();
-		final int pc = getPc() - 1; // Program counter is 1-based
+		final int loc = getLocation();
 		final StringBuffer sb = new StringBuffer("at ");
 		if (cb != null) {
 			sb.append(cb);
@@ -317,9 +319,9 @@ public final class StackFrame {
 		} else {
 			sb.append(super.toString());
 		}
-		if (pc > -1) {
+		if (loc > -1) {
 			sb.append('#');
-			sb.append(pc);
+			sb.append(loc);
 			if (cb != null) {
 				sb.append('(');
 				final Module module = cb.getModule();
@@ -328,10 +330,10 @@ public final class StackFrame {
 				} else {
 					sb.append("<unknown>");
 				}
-				final LineNumber ln = cb.getCode().get(pc).getLineNumber();
-				if (ln != null) {
+				final String sloc = getSourceLocation();
+				if (sloc != null) {
 					sb.append("#[");
-					sb.append(ln.toString());
+					sb.append(sloc);
 					sb.append(']');
 				}
 				sb.append(')');
@@ -347,7 +349,7 @@ public final class StackFrame {
 			sb.append(')');
 		}
 		sb.append("\n\tLocal variables: ");
-		if (cb != null && pc > -1) {
+		if (cb != null && loc > -1) {
 			sb.append('[');
 			boolean first = true;
 			for (int slot = 0; slot < locals.length; slot++) {
@@ -356,7 +358,7 @@ public final class StackFrame {
 				}
 				first = false;
 				for (LocalVariable lv : cb.getLocalVariables()) {
-					if (lv.getSlot() == slot && lv.getStartInstructionIndex() <= pc && lv.getEndInstructionIndex() >= pc) {
+					if (lv.getSlot() == slot && lv.getStartInstructionIndex() <= loc && lv.getEndInstructionIndex() >= loc) {
 						sb.append(lv.toString());
 						sb.append(" = ");
 						sb.append(EMFTVMUtil.toPrettyString(locals[slot], getEnv()));
@@ -514,6 +516,103 @@ public final class StackFrame {
 			}
 		}
 		return literal;
+	}
+
+	/**
+	 * Gets a sequence of nested stacks (for debugger).
+	 * @return the Stack list
+	 */
+	public LazyList<StackFrame> getStack() {
+		LazyList<StackFrame> res = new LazyList<StackFrame>();
+		StackFrame f = this;
+		while (f != null) {
+			res = res.prepend(f);
+			f = f.getParent();
+		}
+		return res;
+	}
+
+	/**
+	 * Returns the local variables map (for debugger).
+	 * @return the local variables map
+	 */
+	public Map<String, Object> getLocalVariables() {
+		final Map<String, Object> ret = new HashMap<String, Object>();
+		for (int slot = 0; slot < locals.length; slot++) {
+			ret.put(String.valueOf(slot), locals[slot]);
+		}
+		return ret;
+	}
+
+	/**
+	 * Returns the local variable name at the given <code>slot</code> (for debugger).
+	 * @param slot the local variable slot
+	 * @return the variable name at the given slot
+	 */
+	public String resolveVariableName(int slot) {
+		final CodeBlock cb = getCodeBlock();
+		final int loc = getLocation();
+
+		if (cb != null && loc > -1) {
+			for (LocalVariable lv : cb.getLocalVariables()) {
+				if (lv.getSlot() == slot && lv.getStartInstructionIndex() <= loc && lv.getEndInstructionIndex() >= loc) {
+					return lv.getName();
+				}
+			}
+		}
+
+		return String.valueOf(slot);
+	}
+
+	/**
+	 * Returns the {@link CodeBlock} (for debugger).
+	 * @return the {@link CodeBlock}.
+	 * @see #getCodeBlock()
+	 */
+	public CodeBlock getOperation() {
+		return getCodeBlock();
+	}
+
+	/**
+	 * Returns the current instruction pointer value (starts at 0, for debugger).
+	 * @return the current instruction pointer value
+	 * @see #getPc()
+	 */
+	public int getLocation() {
+		return getPc() - 1;
+	}
+
+	/**
+	 * Returns the source code location of the current instruction location (for debugger).
+	 * @return the source code location of the instruction at the current location.
+	 * @see #getLocation()
+	 */
+	public String getSourceLocation() {
+		final int location = getLocation();
+		final CodeBlock cb = getCodeBlock();
+		if (location > -1 && cb != null) {
+			final LineNumber ln = cb.getCode().get(location).getLineNumber();
+			if (ln != null) {
+				return ln.toString();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the "operation" name for this stack frame (for debugger).
+	 * @return the "operation" name for this stack frame
+	 */
+	public String getOpName() {
+		final CodeBlock cb = getCodeBlock();
+		if (cb != null) {
+			return cb.toString();
+		}
+		final Method m = getNativeMethod();
+		if (m != null) {
+			return m.toString();
+		}
+		return "<unknown>";
 	}
 
 }

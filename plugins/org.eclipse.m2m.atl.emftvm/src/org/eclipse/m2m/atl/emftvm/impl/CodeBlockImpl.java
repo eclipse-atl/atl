@@ -17,24 +17,18 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.WeakHashMap;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -44,7 +38,6 @@ import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.ecore.xmi.XMIResource;
-import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.emftvm.Add;
 import org.eclipse.m2m.atl.emftvm.And;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
@@ -151,17 +144,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @ordered
 	 */
 	protected static final int MAX_STACK_EDEFAULT = -1;
-
-	/**
-	 * Cache used to store native Java methods.
-	 * 
-	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
-	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
-	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	private static final WeakHashMap<Class<?>, Map<String, Method>> METHOD_CACHE = 
-		new WeakHashMap<Class<?>, Map<String, Method>>();
 
 	/**
 	 * The cached value of the '{@link #getMaxLocals() <em>Max Locals</em>}' attribute.
@@ -844,7 +826,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	/**
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
+
+	 * @see org.eclipse.m2m.atl.emftvm.CodeBlock#execute(StackFrame)
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Object execute(StackFrame frame) {
 		int pc = 0;
@@ -852,13 +837,22 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final int codeSize = code.size();
 		final VMMonitor monitor = frame.getEnv().getMonitor();
 
+		if (monitor != null) {
+			monitor.enter(frame);
+		}
+
 		try {
 			LOOP:
 			while (pc < codeSize) {
-				if (monitor != null && monitor.isTerminated()) {
-					throw new VMException(frame, "Execution cancelled.");
-				}
 				Instruction instr = code.get(pc++);
+				if (monitor != null) {
+					if (monitor.isTerminated()) {
+						throw new VMException(frame, "Execution terminated.");
+					} else {
+						frame.setPc(pc);
+						monitor.step(frame);
+					}
+				}
 				switch (instr.getOpcode()) {
 				case PUSH:
 					frame.push(((Push)instr).getValue());
@@ -1073,6 +1067,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			throw new VMException(frame, e);
 		}
 
+		if (monitor != null) {
+			monitor.leave(frame);
+		}
+
 		if (frame.stackEmpty()) {
 			return null;
 		} else {
@@ -1084,6 +1082,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public int getStackLevel() {
 		final EList<Instruction> code = getCode();
@@ -1097,6 +1096,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Module getModule() {
 		final EObject container = eContainer();
@@ -1514,7 +1514,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			}
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
 			if (sf != null) {
-				set(env, eo, sf, v);
+				EMFTVMUtil.set(env, eo, sf, v);
 				return;
 			}
 			final Resource resource = eo.eResource();
@@ -1543,209 +1543,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * Sets the <code>value</code> of <code>eo.sf</code>.
-	 * @param env
-	 * @param eo
-	 * @param sf
-	 * @param value
-	 */
-	private static void set(final ExecEnv env, final EObject eo, final EStructuralFeature sf, 
-			final Object value) {
-		if (!sf.isChangeable()) {
-			throw new IllegalArgumentException(String.format(
-					"Field %s::%s is not changeable", 
-					EMFTVMUtil.toPrettyString(sf.getEContainingClass(), env), sf.getName()));
-		}
-		if (env.getInputModelOf(eo) != null) {
-			throw new IllegalArgumentException(String.format(
-					"Cannot set properties of %s, as it is contained in an input model",
-					EMFTVMUtil.toPrettyString(eo, env)));
-		}
-		if (sf.isMany()) {
-			if (!(value instanceof Collection<?>)) {
-				throw new IllegalArgumentException(String.format(
-						"Cannot assign %s to multi-valued field %s::%s",
-						value, sf.getEContainingClass().getName(), sf.getName()));
-			}
-			setMany(env, eo, sf, (Collection<?>)value);
-		} else {
-			setSingle(env, eo, sf, value, -1);
-		}
-		assert eo.eResource() != null;
-	}
-
-	/**
-	 * Sets the <code>value</code> of <code>eo.sf</code>.
-	 * Assumes <code>sf</code> has a multiplicity &lt;= 1.
-	 * @param env
-	 * @param eo
-	 * @param sf
-	 * @param value
-	 * @param index the insertion index (-1 for end)
-	 */
-	private static void setSingle(final ExecEnv env, final EObject eo, 
-			final EStructuralFeature sf, final Object value, final int index) {
-		assert !sf.isMany();
-		if (index > 0) {
-			throw new IndexOutOfBoundsException(String.valueOf(index));
-		}
-		final EClassifier sfType = sf.getEType();
-		final boolean allowInterModelReferences = isAllowInterModelReferences(env, eo);
-		if (sfType instanceof EEnum) {
-			final EEnum eEnum = (EEnum)sfType;
-			if (value instanceof EnumLiteral) {
-				eo.eSet(sf, ((EnumLiteral)value).getEnumerator(eEnum));
-			} else {
-				eo.eSet(sf, value);
-			}
-		} else if (sf instanceof EReference) {
-			final EReference ref = (EReference)sf;
-			final boolean isContainment = ref.isContainment();
-			final boolean isContainer = ref.isContainer();
-			if (checkValue(env, eo, ref, value, allowInterModelReferences)) {
-				if (isContainment) { // Restore eResource for old value before clearing
-					final EObject oldValue = (EObject)eo.eGet(sf);
-					if (oldValue != null) {
-						eo.eResource().getContents().add(oldValue);
-					}
-				} else if (isContainer) { // Restore eResource for eo before clearing
-					final EObject oldValue = (EObject)eo.eGet(sf);
-					if (oldValue != null) {
-						oldValue.eResource().getContents().add(eo);
-					}
-				}
-				eo.eSet(sf, value);
-				if (isContainment && value instanceof EObject) {
-					// Remove value from its resource if it is contained
-					((EObject)value).eResource().getContents().remove(value);
-					assert ((EObject)value).eContainer() == eo;
-					assert ((EObject)value).eResource() == eo.eResource();
-				} else if (isContainer && value instanceof EObject) {
-					// Remove eo from its resource if it is contained
-					eo.eResource().getContents().remove(eo);
-					assert eo.eContainer() == value;
-					assert ((EObject)value).eResource() == eo.eResource();
-				}
-			}
-		} else {
-			eo.eSet(sf, value);
-		}
-	}
-
-	/**
-	 * Sets the <code>value</code> of <code>eo.sf</code>.
-	 * Assumes <code>sf</code> has a multiplicity &gt; 1.
-	 * @param env
-	 * @param eo
-	 * @param sf
-	 * @param value
-	 * @param index the insertion index (-1 for end)
-	 */
-	@SuppressWarnings("unchecked")
-	private static void setMany(final ExecEnv env, final EObject eo, 
-			final EStructuralFeature sf, final Collection<?> value) {
-		assert sf.isMany();
-		final EList<Object> values = (EList<Object>)eo.eGet(sf);
-		if (!values.isEmpty()) {
-			if (sf instanceof EReference && ((EReference)sf).isContainment()) {
-				// Restore eResource for each value before clearing
-				final EList<EObject> resContents = eo.eResource().getContents();
-				resContents.addAll((EList<? extends EObject>)values);
-				// Adding values to the resource should have cleared values already - apparently only happens for generated metamodels
-				//assert values.isEmpty();
-			}
-			values.clear();
-		}
-		addMany(env, eo, sf, value, -1);
-	}
-
-	/**
-	 * Adds <code>v</code> to <code>values</code>.
-	 * Performs enumerator conversion.
-	 * @param eEnum The enumeration type
-	 * @param values
-	 * @param v
-	 * @param index the insertion index (-1 for end)
-	 */
-	private static void addEnumValue(final EEnum eEnum, 
-			final EList<Object> values, final Object v, final int index) {
-		final Object v2;
-		if (v instanceof EnumLiteral) {
-			v2 = ((EnumLiteral)v).getEnumerator(eEnum);
-		} else {
-			v2 = v;
-		}
-		if (index > -1) {
-			values.add(index, v2);
-		} else {
-			values.add(v2);
-		}
-	}
-
-	/**
-	 * Removes <code>v</code> from <code>values</code>.
-	 * Performs enumerator conversion.
-	 * @param eEnum The enumeration type
-	 * @param values
-	 * @param v
-	 */
-	private static void removeEnumValue(final EEnum eEnum, 
-			final EList<Object> values, final Object v) {
-		if (v instanceof EnumLiteral) {
-			values.remove(((EnumLiteral)v).getEnumerator(eEnum));
-		} else {
-			values.remove(v);
-		}
-	}
-
-	/**
-	 * Adds <code>v</code> to <code>values</code>.
-	 * Performs constraint checking on <code>v</code>.
-	 * @param env
-	 * @param ref The reference type
-	 * @param eo The object with <code>ref</code> set to <code>values</code>
-	 * @param values
-	 * @param v
-	 * @param index the insertion index (-1 for end)
-	 * @param allowInterModelReferences
-	 */
-	private static void addRefValue(final ExecEnv env, final EReference ref, final EObject eo,
-			final EList<Object> values, final Object v, final int index,
-			final boolean allowInterModelReferences) {
-		if (checkValue(env, eo, ref, v, allowInterModelReferences)) {
-			if (index > -1) {
-				values.add(index, v);
-			} else {
-				values.add(v);
-			}
-			// Adding v to values should have updated (i.e. cleared) its resource if it is contained - apparently only happens for generated metamodels
-			//assert !isContainment || (((EObject) v).eContainer() == eo && ((EObject) v).eResource() == eo.eResource());
-			if (ref.isContainment() && v instanceof EObject) {
-				((EObject)v).eResource().getContents().remove(v);
-				assert ((EObject)v).eContainer() == eo;
-				assert ((EObject)v).eResource() == eo.eResource();
-			}
-		}
-	}
-
-	/**
-	 * Removes <code>v</code> from <code>values</code>.
-	 * Performs constraint checking on <code>v</code>.
-	 * @param ref The reference type
-	 * @param eo The object with <code>ref</code> set to <code>values</code>
-	 * @param values
-	 * @param v
-	 */
-	private static void removeRefValue(final EReference ref, final EObject eo,
-			final EList<Object> values, final Object v) {
-		if (values.remove(v) && ref.isContainment() && v instanceof EObject) {
-			eo.eResource().getContents().add((EObject)v);
-			assert ((EObject)v).eContainer() == null;
-			assert ((EObject)v).eResource() == eo.eResource();
-		}
-	}
-
-	/**
 	 * Adds <code>v</code> to <code>o.propname</code>.
 	 * Implements the ADD and INSERT instructions.
 	 * @param o
@@ -1766,7 +1563,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			final EClass type = eo.eClass();
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
 			if (sf != null) {
-				add(env, eo, sf, v, index);
+				EMFTVMUtil.add(env, eo, sf, v, index);
 				return;
 			}
 			final Resource resource = eo.eResource();
@@ -1784,117 +1581,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			}
 			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
 					EMFTVMUtil.toPrettyString(type, env), propname));
-		}
-	}
-
-	/**
-	 * Adds the <code>value</code> of <code>eo.sf</code>.
-	 * @param env
-	 * @param eo
-	 * @param sf
-	 * @param value
-	 * @param index the insertion index (-1 for end)
-	 */
-	private static void add(final ExecEnv env, final EObject eo, final EStructuralFeature sf, 
-			final Object value, final int index) {
-		if (!sf.isChangeable()) {
-			throw new IllegalArgumentException(String.format(
-					"Field %s::%s is not changeable", 
-					EMFTVMUtil.toPrettyString(sf.getEContainingClass(), env), sf.getName()));
-		}
-		if (env.getInputModelOf(eo) != null) {
-			throw new IllegalArgumentException(String.format(
-					"Cannot add properties to %s, as it is contained in an input model",
-					EMFTVMUtil.toPrettyString(eo, env)));
-		}
-		if (sf.isMany()) {
-			if (value instanceof Collection<?>) {
-				addMany(env, eo, sf, (Collection<?>)value, index);
-			} else {
-				addMany(env, eo, sf, value, index);
-			}
-		} else {
-			if (eo.eIsSet(sf)) {
-				throw new IllegalArgumentException(String.format("Cannot add more than one value to %s::%s", 
-						EMFTVMUtil.toPrettyString(eo.eClass(), env), sf.getName()));
-			}
-			setSingle(env, eo, sf, value, index);
-		}
-		assert eo.eResource() != null;
-	}
-
-	/**
-	 * Adds <code>value</code> to <code>eo.sf</code>.
-	 * Assumes <code>sf</code> has a multiplicity &gt; 1.
-	 * @param env
-	 * @param eo
-	 * @param sf
-	 * @param value
-	 * @param index the insertion index (-1 for end)
-	 */
-	@SuppressWarnings("unchecked")
-	private static void addMany(final ExecEnv env, final EObject eo, 
-			final EStructuralFeature sf, final Object value, final int index) {
-		assert sf.isMany();
-		final EClassifier sfType = sf.getEType();
-		final EList<Object> values = (EList<Object>)eo.eGet(sf); // All EMF collections are ELists
-		if (sfType instanceof EEnum) {
-			addEnumValue((EEnum)sfType, values, value, index);
-		} else if (sf instanceof EReference) {
-			final EReference ref = (EReference)sf;
-			addRefValue(env, ref, eo, values, value, index, 
-					isAllowInterModelReferences(env, eo));
-		} else if (index > -1) {
-			values.add(index, value);
-		} else {
-			values.add(value);
-		}
-	}
-
-	/**
-	 * Adds all <code>value</code> elements to <code>eo.sf</code>.
-	 * Assumes <code>sf</code> has a multiplicity &gt; 1.
-	 * @param env
-	 * @param eo
-	 * @param sf
-	 * @param value
-	 * @param index the insertion index (-1 for end)
-	 */
-	@SuppressWarnings("unchecked")
-	private static void addMany(final ExecEnv env, final EObject eo, 
-			final EStructuralFeature sf, final Collection<?> value, final int index) {
-		assert sf.isMany();
-		final EClassifier sfType = sf.getEType();
-		final EList<Object> values = (EList<Object>)eo.eGet(sf);
-		if (sfType instanceof EEnum) {
-			final EEnum eEnum = (EEnum)sfType;
-			if (index > -1) {
-				int currentIndex = index;
-				for (Object v : value) {
-					addEnumValue(eEnum, values, v, currentIndex++);
-				}
-			} else {
-				for (Object v : value) {
-					addEnumValue(eEnum, values, v, -1);
-				}
-			}
-		} else if (sf instanceof EReference) {
-			final EReference ref = (EReference)sf;
-			final boolean allowInterModelReferences = isAllowInterModelReferences(env, eo);
-			if (index > -1) {
-				int currentIndex = index;
-				for (Object v : value) {
-					addRefValue(env, ref, eo, values, v, currentIndex++, allowInterModelReferences);
-				}
-			} else {
-				for (Object v : value) {
-					addRefValue(env, ref, eo, values, v, -1, allowInterModelReferences);
-				}
-			}
-		} else if (index > -1) {
-			values.addAll(index, value);
-		} else {
-			values.addAll(value);
 		}
 	}
 
@@ -1919,7 +1605,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			final EClass type = eo.eClass();
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
 			if (sf != null) {
-				remove(env, eo, sf, v);
+				EMFTVMUtil.remove(env, eo, sf, v);
 				return;
 			}
 			final Resource resource = eo.eResource();
@@ -1934,186 +1620,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
 					EMFTVMUtil.toPrettyString(type, env), propname));
 		}
-	}
-
-	/**
-	 * Removes the <code>value</code> from <code>eo.sf</code>.
-	 * @param env
-	 * @param eo
-	 * @param sf
-	 * @param value
-	 */
-	private static void remove(final ExecEnv env, final EObject eo, 
-			final EStructuralFeature sf, final Object value) {
-		if (!sf.isChangeable()) {
-			throw new IllegalArgumentException(String.format(
-					"Field %s::%s is not changeable", 
-					EMFTVMUtil.toPrettyString(sf.getEContainingClass(), env), sf.getName()));
-		}
-		if (env.getInputModelOf(eo) != null) {
-			throw new IllegalArgumentException(String.format(
-					"Cannot remove properties of %s, as it is contained in an input model",
-					EMFTVMUtil.toPrettyString(eo, env)));
-		}
-		final EClassifier sfType = sf.getEType();
-		if (sf.isMany()) {
-			if (value instanceof Collection<?>) {
-				removeMany(env, eo, sf, (Collection<?>)value);
-			} else {
-				removeMany(env, eo, sf, value);
-			}
-		} else {
-			final Object oldValue = eo.eGet(sf);
-			if (sfType instanceof EEnum && value instanceof EnumLiteral) {
-				final EEnum eEnum = (EEnum)sfType;
-				if (oldValue != null && oldValue.equals(((EnumLiteral)value).getEnumerator(eEnum))) {
-					setSingle(env, eo, sf, sf.getDefaultValue(), -1);
-				}
-			} else {
-				if (oldValue == null ? value == null : oldValue.equals(value)) {
-					setSingle(env, eo, sf, sf.getDefaultValue(), -1);
-				}
-			}
-		}
-		assert eo.eResource() != null;
-	}
-
-	/**
-	 * Removes the <code>value</code> from <code>eo.sf</code>.
-	 * Assumes <code>sf</code> has a multiplicity &gt; 1.
-	 * @param env
-	 * @param eo
-	 * @param sf
-	 * @param value
-	 */
-	@SuppressWarnings("unchecked")
-	private static void removeMany(final ExecEnv env, final EObject eo, 
-			final EStructuralFeature sf, final Object value) {
-		assert sf.isMany();
-		final EClassifier sfType = sf.getEType();
-		final EList<Object> values = (EList<Object>)eo.eGet(sf);
-		if (sfType instanceof EEnum) {
-			final EEnum eEnum = (EEnum)sfType;
-			removeEnumValue(eEnum, values, value);
-		} else if (sf instanceof EReference) {
-			final EReference ref = (EReference)sf;
-			removeRefValue(ref, eo, values, value);
-		} else {
-			values.remove(value);
-		}
-	}
-
-	/**
-	 * Removes all elements of <code>value</code> from <code>eo.sf</code>.
-	 * Assumes <code>sf</code> has a multiplicity &gt; 1.
-	 * @param env
-	 * @param eo
-	 * @param sf
-	 * @param value
-	 */
-	@SuppressWarnings("unchecked")
-	private static void removeMany(final ExecEnv env, final EObject eo, 
-			final EStructuralFeature sf, final Collection<?> value) {
-		assert sf.isMany();
-		final EClassifier sfType = sf.getEType();
-		final EList<Object> values = (EList<Object>)eo.eGet(sf);
-		if (sfType instanceof EEnum) {
-			final EEnum eEnum = (EEnum)sfType;
-			for (Object v : value) {
-				removeEnumValue(eEnum, values, v);
-			}
-		} else if (sf instanceof EReference) {
-			final EReference ref = (EReference)sf;
-			for (Object v : value) {
-				removeRefValue(ref, eo, values, v);
-			}
-		} else {
-			values.removeAll(value);
-		}
-	}
-
-	/**
-	 * Checks whether the model containing <pre>eo</pre> allows inter-model references.
-	 * @param env the {@link ExecEnv} in which to find the model.
-	 * @param eo the model element to find the model for.
-	 * @return <code>true</code> iff the model of <pre>eo</pre> allows inter-model references
-	 */
-	private static boolean isAllowInterModelReferences(final ExecEnv env, final EObject eo) {
-		final Model eoModel = env.getModelOf(eo);
-		if (eoModel != null) {
-			return eoModel.isAllowInterModelReferences();
-		} else {
-			return true;
-		}
-	}
-
-	/**
-	 * Checks whether <pre>value</pre> may be assigned to <pre>eo.ref</pre>.
-	 * @param env the current {@link ExecEnv}
-	 * @param eo the model element to assign to
-	 * @param ref the reference of the model element to assign to
-	 * @param value the value to assign
-	 * @param allowInterModelReferences whether to allow inter-model references
-	 * @return <code>true</code> iff the value may be assigned
-	 */
-	private static boolean checkValue(final ExecEnv env, final EObject eo, final EReference ref, 
-			final Object value, final boolean allowInterModelReferences) {
-		if (value instanceof EObject) {
-			assert eo.eResource() != null;
-			final EObject ev = (EObject)value;
-			if (eo.eResource() == ev.eResource() || ev.eResource() == null) {
-				return true;
-			}
-			assert ev.eResource() != null;
-			if (!allowInterModelReferences) {
-				ATLLogger.warning(String.format(
-						"Cannot set %s::%s to %s for %s: inter-model references are not allowed for this model",
-						EMFTVMUtil.toPrettyString(ref.getEContainingClass(), env), 
-						ref.getName(), 
-						EMFTVMUtil.toPrettyString(value, env), 
-						EMFTVMUtil.toPrettyString(eo, env)));
-				return false;
-			}
-			if (ref.isContainer() || ref.isContainment()) {
-				ATLLogger.warning(String.format(
-						"Cannot set %s::%s to %s for %s: containment references cannot span across models",
-						EMFTVMUtil.toPrettyString(ref.getEContainingClass(), env), 
-						ref.getName(), 
-						EMFTVMUtil.toPrettyString(value, env), 
-						EMFTVMUtil.toPrettyString(eo, env)));
-				return false;
-			}
-			final EReference opposite = ref.getEOpposite();
-			if (opposite != null) {
-				final Model evModel = env.getInputModelOf(ev);
-				if (evModel != null) {
-					ATLLogger.warning(String.format(
-							"Cannot set %s::%s to %s for %s: inter-model reference with opposite causes changes in input model %s",
-							EMFTVMUtil.toPrettyString(ref.getEContainingClass(), env), 
-							ref.getName(), 
-							EMFTVMUtil.toPrettyString(value, env), 
-							EMFTVMUtil.toPrettyString(eo, env),
-							env.getModelID(evModel)));
-					return false;
-				}
-				if (!opposite.isMany()) {
-					// Single-valued opposites cause changes in their respective opposite,
-					// i.e. ref, which can belong to eo or another input model element.
-					final Model oppositeModel = env.getInputModelOf((EObject)ev.eGet(opposite));
-					if (oppositeModel != null) {
-						ATLLogger.warning(String.format(
-								"Cannot set %s::%s to %s for %s: inter-model reference with single-valued opposite causes changes in input model %s",
-								EMFTVMUtil.toPrettyString(ref.getEContainingClass(), env), 
-								ref.getName(), 
-								EMFTVMUtil.toPrettyString(value, env), 
-								EMFTVMUtil.toPrettyString(eo, env),
-								env.getModelID(oppositeModel)));
-						return false;
-					}
-				}
-			}
-		}
-		return true; // any type errors can be delegated to EMF
 	}
 
 	/**
@@ -2140,7 +1646,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			}
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
 			if (sf != null) {
-				return get(env, eo, sf);
+				return EMFTVMUtil.get(env, eo, sf);
 			}
 			final Resource resource = eo.eResource();
 			if (EMFTVMUtil.XMI_ID_FEATURE.equals(propname) && resource instanceof XMIResource) { //$NON-NLS-1$
@@ -2172,35 +1678,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
 					EMFTVMUtil.toPrettyString(type, env), propname));
 		}
-	}
-
-	/**
-	 * Retrieves the value of <pre>eo.sf</pre>.
-	 * @param env the current {@link ExecEnv}
-	 * @param eo the model element to retrieve the value from
-	 * @param sf the structural feature to retrieve the value from
-	 * @return the value of <pre>eo.sf</pre>.
-	 */
-	@SuppressWarnings("unchecked")
-	private static Object get(final ExecEnv env, final EObject eo, final EStructuralFeature sf) {
-		if (env.getOutputModelOf(eo) != null) {
-			throw new IllegalArgumentException(String.format(
-					"Cannot read properties of %s, as it is contained in an output model",
-					EMFTVMUtil.toPrettyString(eo, env)));
-		}
-		final Object value = eo.eGet(sf);
-		if (value instanceof Enumerator) {
-			return new EnumLiteral(value.toString());
-		} else if (value instanceof EList<?>) {
-			final EnumConversionList converted = new EnumConversionList((EList<Object>)value);
-			if (env.getInoutModelOf(eo) != null) {
-				//Copy list for inout models
-				converted.cache();
-			}
-			return converted;
-		}
-		assert !(value instanceof Collection<?>); // All EMF collections should be ELists
-		return value;
 	}
 
 	/**
@@ -2290,7 +1767,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			return result; // feature does not apply to object
 		}
 		LazyList<Object> newResult = result;
-		final Object value = get(env, object, sf);
+		final Object value = EMFTVMUtil.get(env, object, sf);
 		if (value instanceof LazyList<?>) {
 			final LazyList<Object> cvalue = (LazyList<Object>)value;
 			newResult = newResult.union(cvalue);
@@ -2506,16 +1983,16 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final ExecEnv env = frame.getEnv();
 		final Object o = frame.pop();
 
-		final Object type = getArgumentType(o);
+		final Object type = EMFTVMUtil.getArgumentType(o);
 		final Object[] args = getArguments(argcount, frame);
-		final EList<Object> argTypes = getArgumentTypes(args);
+		final EList<Object> argTypes = EMFTVMUtil.getArgumentTypes(args);
 		final Operation op = env.findOperation(type, opname, argTypes);
 		if (op != null) {
 			final CodeBlock body = op.getBody();
 			return body.execute(frame.getSubFrame(body, o, args));
 		}
-		final Class<?>[] argClasses = getArgumentClasses(args);
-		final Method method = findNativeMethod(o.getClass(), opname, argClasses, false);
+		final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
+		final Method method = EMFTVMUtil.findNativeMethod(o.getClass(), opname, argClasses, false);
 		if (method != null) {
 			final StackFrame subFrame = frame.getSubFrame(method, args);
 			try {
@@ -2564,15 +2041,15 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 
 		final Object[] args = getArguments(argcount, frame);
-		final EList<Object> argTypes = getArgumentTypes(args);
+		final EList<Object> argTypes = EMFTVMUtil.getArgumentTypes(args);
 		final Operation op = env.findStaticOperation(type, opname, argTypes);
 		if (op != null) {
 			final CodeBlock body = op.getBody();
 			return body.execute(frame.getSubFrame(body, args));
 		}
 		if (type instanceof Class<?>) {
-			final Class<?>[] argClasses = getArgumentClasses(args);
-			final Method method = findNativeMethod((Class<?>)type, opname, argClasses, true);
+			final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
+			final Method method = EMFTVMUtil.findNativeMethod((Class<?>)type, opname, argClasses, true);
 			if (method != null) {
 				final StackFrame subFrame = frame.getSubFrame(method, args);
 				try {
@@ -2632,7 +2109,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 
 		final Object[] args = getArguments(argcount, frame);
-		final EList<Object> argTypes = getArgumentTypes(args);
+		final EList<Object> argTypes = EMFTVMUtil.getArgumentTypes(args);
 		Operation superOp = null;
 		for (Object superType : superTypes) {
 			superOp = env.findOperation(superType, opname, argTypes);
@@ -2656,8 +2133,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 		final Class<?> ic = context.getInstanceClass();
 		if (ic != null) {
-			final Class<?>[] argClasses = getArgumentClasses(args);
-			final Method method = findNativeMethod(ic.getSuperclass(), opname, argClasses, false);
+			final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
+			final Method method = EMFTVMUtil.findNativeMethod(ic.getSuperclass(), opname, argClasses, false);
 			if (method != null) {
 				final StackFrame subFrame = frame.getSubFrame(method, args);
 				try {
@@ -2682,150 +2159,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * Looks for a native Java method.
-	 * 
-	 * @param caller
-	 *            The class of the method
-	 * @param name
-	 *            The method name
-	 * @param argumentTypes
-	 *            The types of all arguments
-	 * @param isStatic
-	 *            Whether to look for a static method or not
-	 * @return the method if found, null otherwise
-	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
-	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
-	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	//TODO implement multi-methods in ExecEnv
-	private static Method findNativeMethod(final Class<?> context, final String opname, 
-			final Class<?>[] argTypes, final boolean isStatic) {
-		if (context == Void.TYPE) {
-			return null; // Java methods cannot be invoked on null, or defined on Void
-		}
-
-		final String sig = getMethodSignature(opname, argTypes, isStatic);
-		Method ret = findCachedMethod(context, sig);
-		if (ret != null) {
-			return ret;
-		}
-
-		final Method[] methods = context.getDeclaredMethods();
-		for (int i = 0; i < (methods.length) && (ret == null); i++) {
-			Method method = methods[i];
-			if ((Modifier.isStatic(method.getModifiers()) == isStatic) && method.getName().equals(opname)) {
-				Class<?>[] pts = method.getParameterTypes();
-				if (pts.length == argTypes.length) {
-					boolean ok = true;
-					for (int j = 0; (j < pts.length) && ok; j++) {
-						if (argTypes[j] == EnumLiteral.class && Enumerator.class.isAssignableFrom(pts[j])) {
-							continue;
-						}
-						if (!pts[j].isAssignableFrom(argTypes[j])) {
-							if (pts[j] == boolean.class) ok = argTypes[j] == Boolean.class;
-							else if (pts[j] == int.class) ok = argTypes[j] == Integer.class;
-							else if (pts[j] == char.class) ok = argTypes[j] == Character.class;
-							else if (pts[j] == long.class) ok = argTypes[j] == Long.class;
-							else if (pts[j] == float.class) ok = argTypes[j] == Float.class;
-							else if (pts[j] == double.class) ok = argTypes[j] == Double.class;
-							else ok = argTypes[j] == Void.TYPE; // any type
-						}
-					}
-					if (ok) {
-						ret = method;
-					}
-				}
-			}
-		}
-
-		if ((ret == null) && (context.getSuperclass() != null)) {
-			ret = findNativeMethod(context.getSuperclass(), opname, argTypes, isStatic);
-		}
-
-		cacheMethod(context, sig, ret);
-
-		return ret;
-	}
-
-	/**
-	 * Find a method in the cache.
-	 * 
-	 * @param caller
-	 *            The class of the method
-	 * @param signature
-	 *            The method signature
-	 * @return the method
-	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
-	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
-	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	private static Method findCachedMethod(Class<?> caller, String signature) {
-		Method ret = null;
-		Map<String, Method> sigMap = METHOD_CACHE.get(caller);
-		if (sigMap != null) {
-			ret = sigMap.get(signature);
-		}
-		return ret;
-	}
-
-	/**
-	 * Stores a method in a cache.
-	 * 
-	 * @param caller
-	 *            The class of the method
-	 * @param signature
-	 *            The method signature
-	 * @param method
-	 *            The method to store
-	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
-	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
-	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	private static void cacheMethod(Class<?> caller, String signature, Method method) {
-		synchronized (METHOD_CACHE) {
-			Map<String, Method> sigMap = METHOD_CACHE.get(caller);
-			if (sigMap == null) {
-				sigMap = new HashMap<String, Method>();
-				METHOD_CACHE.put(caller, sigMap);
-			}
-			sigMap.put(signature, method);
-		}
-	}
-
-	/**
-	 * Generates a String signature to store methods.
-	 * 
-	 * @param name
-	 * @param argumentTypes
-	 * @param isStatic
-	 * @return The method signature
-	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
-	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
-	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	private static String getMethodSignature(final String name, final Class<?>[] argumentTypes, 
-			final boolean isStatic) {
-		final StringBuffer sig = new StringBuffer();
-		if (isStatic) {
-			sig.append("static ");
-		}
-		sig.append(name);
-		sig.append('(');
-		for (int i = 0; i < argumentTypes.length; i++) {
-			if (i > 0) {
-				sig.append(',');
-			}
-			sig.append(argumentTypes[i].getName());
-		}
-		sig.append(')');
-		return sig.toString();
-	}
-
-	/**
 	 * Gets argcount objects off the stack and returns them.
 	 * @param argcount
 	 * @param frame
@@ -2838,47 +2171,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			args[i] = frame.pop();
 		}
 		return args;
-	}
-
-	/**
-	 * Retrieves the types of <pre>args</pre>.
-	 * @param args
-	 * @return the types of <pre>args</pre>
-	 */
-	private static EList<Object> getArgumentTypes(final Object[] args) {
-		final EList<Object> argTypes = new BasicEList<Object>(args.length);
-		for (Object arg : args) {
-			argTypes.add(getArgumentType(arg));
-		}
-		return argTypes;
-	}
-
-	/**
-	 * Retrieves the type of <pre>arg</pre>.
-	 * @param arg
-	 * @return the type of <pre>arg</pre>
-	 */
-	private static Object getArgumentType(final Object arg) {
-		if (arg instanceof EObject) {
-			return ((EObject)arg).eClass();
-		} else if (arg != null) {
-			return arg.getClass();
-		}
-		// null is an instance of Void for the purpose of our multi-method semantics
-		return Void.TYPE;
-	}
-
-	/**
-	 * Retrieves the classes of <pre>args</pre>.
-	 * @param args
-	 * @return the classes of <pre>args</pre>
-	 */
-	private static Class<?>[] getArgumentClasses(final Object[] args) {
-		final Class<?>[] argTypes = new Class<?>[args.length];
-		for (int i = 0; i < args.length; i++) {
-			argTypes[i] = args[i] == null ? Void.TYPE : args[i].getClass();
-		}
-		return argTypes;
 	}
 
 	/**
@@ -2958,6 +2250,15 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			result.append("@uncontained");
 		}
 		return result.toString();
+	}
+
+	/**
+	 * Returns the {@link Module} (for debugger).
+	 * @return the {@link Module}
+	 * @see CodeBlockImpl#getModule()
+	 */
+	public Module getASM() {
+		return getModule();
 	}
 
 } //CodeBlockImpl

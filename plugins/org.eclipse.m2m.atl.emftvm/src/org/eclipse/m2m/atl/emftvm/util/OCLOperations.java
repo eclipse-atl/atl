@@ -12,8 +12,11 @@
 package org.eclipse.m2m.atl.emftvm.util;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -164,6 +167,7 @@ public final class OCLOperations {
 	static final String[] SEQUENCE_TYPE 		= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazyList"};
 	static final String[] SET_TYPE 				= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazySet"};
 	static final String[] ORDERED_SET_TYPE 		= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazyOrderedSet"};
+	static final String[] MAP_TYPE				= new String[]{OCL_MODEL, "java.util.Map"};
 
 	static final String[] CLASSIFIER_TYPE 		= new String[]{ECORE_MODEL, "EClassifier"};
 	static final String[] CLASS_TYPE 			= new String[]{ECORE_MODEL, "EClass"};
@@ -530,6 +534,50 @@ public final class OCLOperations {
 						}
 						return false;
 					}
+		});
+		/////////////////////////////////////////////////////////////////////
+		// Map
+		/////////////////////////////////////////////////////////////////////
+		createOperation(false, "including", MAP_TYPE, SET_TYPE,
+				new String[][][]{{{"key"}, OCL_ANY_TYPE}, {{"value"}, OCL_ANY_TYPE}},
+				new CodeBlockImpl() {
+			@Override
+			public Object execute(StackFrame frame) {
+				final Map<Object, Object> o = new HashMap<Object, Object>((Map<?, ?>)frame.getLocal(0, 0));
+				final Object key = frame.getLocal(0, 1);
+				final Object value = frame.getLocal(0, 2);
+				o.put(key, value);
+				return o;
+			}
+		});
+		createOperation(false, "getKeys", MAP_TYPE, SET_TYPE,
+				new String[][][]{},
+				new CodeBlockImpl() {
+			@Override
+			public Object execute(StackFrame frame) {
+				final Map<?, ?> o = (Map<?, ?>)frame.getLocal(0, 0);
+				return new LazySetOnSet<Object>((Set<Object>) o.keySet());
+			}
+		});
+		createOperation(false, "getValues", MAP_TYPE, SET_TYPE,
+				new String[][][]{},
+				new CodeBlockImpl() {
+			@Override
+			public Object execute(StackFrame frame) {
+				final Map<?, ?> o = (Map<?, ?>)frame.getLocal(0, 0);
+				return new LazyBagOnCollection<Object>((Collection<Object>) o.values());
+			}
+		});
+		createOperation(false, "union", MAP_TYPE, SET_TYPE,
+				new String[][][]{{{"m"}, MAP_TYPE}},
+				new CodeBlockImpl() {
+			@Override
+			public Object execute(StackFrame frame) {
+				final Map<Object, Object> o = new HashMap<Object, Object>((Map<?, ?>)frame.getLocal(0, 0));
+				final Map<?, ?> m = (Map<?, ?>)frame.getLocal(0, 1);
+				o.putAll(m);
+				return o;
+			}
 		});
 		/////////////////////////////////////////////////////////////////////
 		// ExecEnv

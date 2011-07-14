@@ -394,7 +394,7 @@ public interface CodeBlock extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Executes the instructions in this {@link CodeBlock}, using the parameters stored in <pre>frame</pre>.
+	 * Executes the instructions in this {@link CodeBlock}, using the parameters stored in <code>frame</code>.
 	 * @param frame the {@link StackFrame} to use during execution.
 	 * @return the resulting execution value, or <code>null</code> if none.
 	 * <!-- end-user-doc -->
