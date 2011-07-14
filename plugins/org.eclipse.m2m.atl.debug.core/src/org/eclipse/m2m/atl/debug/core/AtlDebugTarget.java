@@ -52,6 +52,7 @@ import org.eclipse.m2m.atl.common.AtlNbCharFile;
 import org.eclipse.m2m.atl.debug.core.adwp.ADWP;
 import org.eclipse.m2m.atl.debug.core.adwp.ADWPCommand;
 import org.eclipse.m2m.atl.debug.core.adwp.ADWPDebugger;
+import org.eclipse.m2m.atl.debug.core.adwp.BooleanValue;
 import org.eclipse.m2m.atl.debug.core.adwp.IntegerValue;
 import org.eclipse.m2m.atl.debug.core.adwp.ObjectReference;
 import org.eclipse.m2m.atl.debug.core.adwp.StringValue;
@@ -315,6 +316,25 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 		Assert.isNotNull(operation);
 		ObjectReference asm = (ObjectReference)operation.call("getASM", Collections.<Value> emptyList()); //$NON-NLS-1$
 		Assert.isNotNull(asm);
+		Value version = asm.call("getVersion", Collections.<Value> emptyList()); //$NON-NLS-1$
+		Assert.isTrue(version instanceof StringValue);
+		
+		if ("ETVM".equals(((StringValue)version).getValue())) { // This thing sits in a located EMF Resource
+			ObjectReference res = (ObjectReference)asm.call("eResource", Collections.<Value> emptyList()); //$NON-NLS-1$
+			Assert.isNotNull(res);
+			ObjectReference uri = (ObjectReference)res.call("getURI", Collections.<Value> emptyList()); //$NON-NLS-1$
+			Assert.isNotNull(uri);
+			boolean isPR = ((BooleanValue)uri.call("isPlatformResource", Collections.<Value> emptyList())).getValue(); //$NON-NLS-1$
+			if (isPR) {
+				String pStr = ((StringValue)uri.call("toPlatformString", Collections.<Value> singletonList(BooleanValue.valueOf(true)))).getValue(); //$NON-NLS-1$
+				String sName = ((StringValue)asm.call("getSourceName", Collections.<Value> emptyList())).getValue(); //$NON-NLS-1$
+				if (sName != null) {
+					pStr = pStr.substring(0, pStr.lastIndexOf('/') + 1) + sName;
+				}
+				return pStr;
+			}
+		}
+		
 		String asmName = ((StringValue)asm.call("getName", Collections.<Value> emptyList())).getValue(); //$NON-NLS-1$
 		Assert.isNotNull(asmName);
 
