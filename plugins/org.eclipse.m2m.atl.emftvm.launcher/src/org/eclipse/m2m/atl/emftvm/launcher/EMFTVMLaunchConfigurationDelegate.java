@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.ui.ATLConsole;
 import org.eclipse.m2m.atl.debug.core.AtlDebugTarget;
@@ -41,10 +42,12 @@ import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.launcher.debug.NetworkDebugger;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
+import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 
 
 /**
@@ -71,26 +74,28 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		launch.setSourceLocator(new AtlSourceLocator());
 
 		if (ILaunchManager.DEBUG_MODE.equals(mode)) {
-			//TODO implement EMFTVM debugger
 			target = new AtlDebugTarget(launch);
+			((AtlDebugTarget)target).setStopInMain(true);
 		} else {
 			target = new AtlRunTarget(launch);
 		}
 
-		Thread thread = new Thread() {
+		final Thread thread = new Thread() {
 			@Override
 			public void run() {
 				try {
-					internalLaunch(configuration, mode, launch, monitor);
-				} catch (CoreException e) {
-					EmftvmLauncherPlugin.log(e.getStatus());
-				} catch (VMException e) {
-					ATLLogger.severe(e.toString());
-				} catch (IOException e) {
-					ATLLogger.severe(e.toString());
-				}
-				try {
-					target.terminate();
+					try {
+						internalLaunch(configuration, mode, launch, monitor);
+					} catch (CoreException e) {
+						EmftvmLauncherPlugin.log(e.getStatus());
+					} catch (VMException e) {
+						ATLLogger.severe(e.toString());
+					} catch (Exception e) {
+						ATLLogger.severe(e.toString());
+						EmftvmLauncherPlugin.log(e);
+					} finally {
+						target.terminate();
+					}
 				} catch (CoreException e) {
 					EmftvmLauncherPlugin.log(e.getStatus());
 				}
@@ -98,6 +103,9 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		};
 		thread.start();
 
+		if (target instanceof AtlDebugTarget) {
+			((AtlDebugTarget)target).start();
+		}
 		launch.addDebugTarget(target);
 		monitor.done();
 	}
@@ -106,6 +114,14 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	private void internalLaunch(final ILaunchConfiguration configuration, final String mode,
 			final ILaunch launch, final IProgressMonitor monitor) throws CoreException, IOException {
 		ATLConsole.findConsole(); // force ATL console startup
+
+		final VMMonitor vmmon; // Create monitor/debugger before any exceptions can be thrown
+		if (ILaunchManager.DEBUG_MODE.equals(mode)) {
+			vmmon = new NetworkDebugger(launch, getPort(launch), true);
+		} else {
+			vmmon = new LaunchAdapter(launch);
+		}
+
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ResourceSet rs = new ResourceSetImpl();
 		
@@ -138,12 +154,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		final TimingData timingData = new TimingData();
 		env.loadModule(resolver, name);
 		timingData.finishLoading();
-		if (ILaunchManager.DEBUG_MODE.equals(mode)) {
-			//TODO implement debugger
-			env.run(timingData, new LaunchAdapter(launch));
-		} else {
-			env.run(timingData, new LaunchAdapter(launch));
-		}
+		env.run(timingData, vmmon);
 		timingData.finish();
 		if (configuration.getAttribute(EMFTVMLaunchConstants.DISPLAY_TIMING, true)) {
 			ATLLogger.info(timingData.toString());
@@ -326,6 +337,21 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		if (options != null && options.contains(option)) {
 			modelOptions.put(modelName, options.replace(option, "").trim());
 		}
+	}
+
+	/**
+	 * Returns the {@link NetworkDebugger} port.
+	 * @param launch the launch object
+	 * @return the {@link NetworkDebugger} port.
+	 * @throws CoreException
+	 */
+	public static int getPort(ILaunch launch) throws CoreException {
+		String portOption = ""; //$NON-NLS-1$
+		if (launch != null) {
+			portOption = launch.getLaunchConfiguration().getAttribute(ATLLaunchConstants.PORT,
+					String.valueOf(ATLLaunchConstants.DEFAULT_PORT));
+		}
+		return portOption.equals("") ? ATLLaunchConstants.DEFAULT_PORT : Integer.parseInt(portOption); //$NON-NLS-1$
 	}
 	
 }

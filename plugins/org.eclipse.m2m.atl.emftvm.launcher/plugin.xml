@@ -6,7 +6,7 @@
       <launchConfigurationType
             delegate="org.eclipse.m2m.atl.emftvm.launcher.EMFTVMLaunchConfigurationDelegate"
             id="org.eclipse.m2m.atl.emftvm.launcher.EMFTVMTransformation"
-            modes="run"
+            modes="run, debug"
             name="%launchConfigurationType.name">
       </launchConfigurationType>
    </extension>

@@ -12,9 +12,11 @@
 package org.eclipse.m2m.atl.emftvm.launcher;
 
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 
 /**
+ * Adapts an {@link ILaunch} object to the {@link VMMonitor} interface.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class LaunchAdapter implements VMMonitor {
@@ -23,7 +25,6 @@ public class LaunchAdapter implements VMMonitor {
 
 	/**
 	 * Creates a new {@link LaunchAdapter}.
-	 * @param monitor the progress monitor to wrap
 	 * @param launch the launch object to wrap
 	 */
 	public LaunchAdapter(ILaunch launch) {
@@ -40,6 +41,46 @@ public class LaunchAdapter implements VMMonitor {
 	 */
 	public boolean isTerminated() {
 		return launch.isTerminated();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor#enter(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 */
+	public void enter(StackFrame frame) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor#leave(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 */
+	public void leave(StackFrame frame) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor#step(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 */
+	public void step(StackFrame frame) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor#terminated()
+	 */
+	public void terminated() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor#error(StackFrame, String, Exception)
+	 */
+	public void error(StackFrame frame, String msg, Exception e) {
 	}
 
 	/**
