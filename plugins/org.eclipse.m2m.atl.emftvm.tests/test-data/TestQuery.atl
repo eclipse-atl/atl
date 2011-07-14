@@ -3,8 +3,7 @@
 -- Tests ATL compilation strategy
 query TestQuery = EMFTVM!Operation.allInstances()->select(r|r.test()).debug('TestQuery');
 
-helper context EMFTVM!NamedElement def : test() : Boolean =
-	(not self.name.oclIsUndefined()).debug('NamedElement.test()');
+uses TestLib;
 
 helper context EMFTVM!Operation def : test() : Boolean =
-	(super.test()  and not self.static).debug('Operation.test()');
+	(super.test() and not self.static).debug('TestQuery::Operation.test()');
