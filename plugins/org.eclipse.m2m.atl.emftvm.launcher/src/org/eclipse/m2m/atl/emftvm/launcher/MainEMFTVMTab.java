@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -32,6 +33,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -292,7 +294,32 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(EMFTVMLaunchConstants.MODULE_FILE_NAME, modulePathText.getText());
-		configuration.setAttribute(ATLLaunchConstants.ATL_FILE_NAME, modulePathText.getText().replace(".emftvm", ".atl")); // backwards compatibility
+		final String path = modulePathText.getText();
+		Module module = loadModule("platform:/resource/" + path);
+		if (module != null) { // backwards compatibility
+			configuration.setAttribute(ATLLaunchConstants.ATL_FILE_NAME, 
+					path.substring(0, path.lastIndexOf('/') + 1) + module.getSourceName());
+			Iterator<Module> it = module.getEImports().iterator();
+			List<Iterator<Module>> its = new ArrayList<Iterator<Module>>();
+			List<String> superimpose = new ArrayList<String>();
+			do {
+				if (it.hasNext()) {
+					module = it.next();
+					its.add(it);
+					it = module.getEImports().iterator();
+					URI uri = module.eResource().getURI();
+					if (uri.isPlatformResource()) {
+						String mPath = uri.toPlatformString(true);
+						superimpose.add(mPath.replaceFirst("\\.emftvm$", ".asm"));
+					}
+				} else if (!its.isEmpty()) {
+					it = its.remove(its.size() - 1);
+				} else {
+					module = null;
+				}
+			} while (module != null);
+			configuration.setAttribute(ATLLaunchConstants.SUPERIMPOSE, superimpose);
+		}
 
 		configuration.setAttribute(EMFTVMLaunchConstants.METAMODELS, new LinkedHashMap<String, String>(metamodelLocations));
 		configuration.setAttribute(EMFTVMLaunchConstants.INPUT_MODELS, new LinkedHashMap<String, String>(inputModelLocations));
