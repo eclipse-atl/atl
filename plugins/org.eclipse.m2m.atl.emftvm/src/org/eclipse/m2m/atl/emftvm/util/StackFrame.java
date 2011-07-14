@@ -570,7 +570,11 @@ public final class StackFrame {
 	 * @see #getCodeBlock()
 	 */
 	public CodeBlock getOperation() {
-		return getCodeBlock();
+		CodeBlock cb = getCodeBlock();
+		if (cb == null) {
+			cb = getParent().getOperation();
+		}
+		return cb;
 	}
 
 	/**
