@@ -1585,6 +1585,12 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			}
 			buf.append(']');
 			return buf.toString();
+		} catch (VMException e) {
+			final StringBuffer stackTrace = new StringBuffer();
+			stackTrace.append(e.getClass().getName());
+			stackTrace.append(": ");
+			stackTrace.append(e.getLocalizedMessage());
+			return stackTrace.toString();
 		} catch (Exception e) {
 			final StringBuffer stackTrace = new StringBuffer();
 			stackTrace.append(e.toString());
