@@ -43,6 +43,7 @@ import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
 import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
+import org.eclipse.m2m.atl.emftvm.util.ModuleNotFoundException;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -899,13 +900,21 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	 * @return the loaded module
 	 */
 	private Module loadModule(final String uri) {
-		final int index = uri.lastIndexOf('/');
-		final String path = uri.substring(0, index + 1);
-		final String name = uri.substring(index + 1, uri.lastIndexOf('.')); // strip file extension
+		final int index = uri.lastIndexOf('/') + 1;
+		final String path = uri.substring(0, index);
+		final int dotIndex = uri.lastIndexOf('.');
+		final String name = dotIndex < 0 ? uri.substring(index) : uri.substring(index, dotIndex); // strip file extension
 		final ModuleResolver resolver = new DefaultModuleResolver(path, new ResourceSetImpl());
-		final Module module = resolver.resolveModule(name);
-		resolveImports(module, resolver, new HashMap<String, Module>());
-		return module;
+		try {
+			final Module module = resolver.resolveModule(name);
+			resolveImports(module, resolver, new HashMap<String, Module>());
+			return module;
+		} catch (IllegalArgumentException e) {
+			//ignore
+		} catch (ModuleNotFoundException e) {
+			//ignore
+		}
+		return null;
 	}
 
 	/**
