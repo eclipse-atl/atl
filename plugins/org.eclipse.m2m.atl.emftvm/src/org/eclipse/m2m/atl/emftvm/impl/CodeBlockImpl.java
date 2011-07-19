@@ -1857,27 +1857,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			return body.execute(frame.getSubFrame(body, o, args));
 		}
 		return EMFTVMUtil.invokeNative(frame, o, opname, args);
-//		final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
-//		final Method method = EMFTVMUtil.findNativeMethod(o.getClass(), opname, argClasses, false);
-//		if (method != null) {
-//			final StackFrame subFrame = frame.getSubFrame(method, args);
-//			try {
-//				return method.invoke(o, args);
-//			} catch (InvocationTargetException e) {
-//				final Throwable target = e.getTargetException();
-//				if (target instanceof VMException) {
-//					throw (VMException)target;
-//				} else {
-//					throw new VMException(subFrame, target);
-//				}
-//			} catch (VMException e) {
-//				throw e;
-//			} catch (Exception e) {
-//				throw new VMException(subFrame, e);
-//			}
-//		}
-//		throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
-//				EMFTVMUtil.getTypeName(env, type), opname, EMFTVMUtil.getTypeNames(env, argTypes)));
 	}
 
 	/**
@@ -1915,25 +1894,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 		if (type instanceof Class<?>) {
 			return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname, args);
-//			final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
-//			final Method method = EMFTVMUtil.findNativeMethod((Class<?>)type, opname, argClasses, true);
-//			if (method != null) {
-//				final StackFrame subFrame = frame.getSubFrame(method, args);
-//				try {
-//					return method.invoke(args);
-//				} catch (InvocationTargetException e) {
-//					final Throwable target = e.getTargetException();
-//					if (target instanceof VMException) {
-//						throw (VMException)target;
-//					} else {
-//						throw new VMException(subFrame, target);
-//					}
-//				} catch (VMException e) {
-//					throw e;
-//				} catch (Exception e) {
-//					throw new VMException(subFrame, e);
-//				}
-//			}
 		}
 		throw new UnsupportedOperationException(String.format("static %s::%s(%s)", 
 				EMFTVMUtil.getTypeName(env, type), opname, EMFTVMUtil.getTypeNames(env, argTypes)));
@@ -2001,25 +1961,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final Class<?> ic = context.getInstanceClass();
 		if (ic != null) {
 			return EMFTVMUtil.invokeNativeSuper(frame, ic, o, opname, args);
-//			final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
-//			final Method method = EMFTVMUtil.findNativeMethod(ic.getSuperclass(), opname, argClasses, false);
-//			if (method != null) {
-//				final StackFrame subFrame = frame.getSubFrame(method, args);
-//				try {
-//					return method.invoke(o, args);
-//				} catch (InvocationTargetException e) {
-//					final Throwable target = e.getTargetException();
-//					if (target instanceof VMException) {
-//						throw (VMException)target;
-//					} else {
-//						throw new VMException(subFrame, target);
-//					}
-//				} catch (VMException e) {
-//					throw e;
-//				} catch (Exception e) {
-//					throw new VMException(subFrame, e);
-//				}
-//			}
 		}
 
 		throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
