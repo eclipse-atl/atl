@@ -553,19 +553,21 @@ public final class OCLOperations {
 		createOperation(false, "getKeys", MAP_TYPE, SET_TYPE,
 				new String[][][]{},
 				new CodeBlockImpl() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public Object execute(StackFrame frame) {
 				final Map<?, ?> o = (Map<?, ?>)frame.getLocal(0, 0);
-				return new LazySetOnSet<Object>((Set<Object>) o.keySet());
+				return new LazySetOnSet<Object>((Set<Object>)o.keySet());
 			}
 		});
 		createOperation(false, "getValues", MAP_TYPE, SET_TYPE,
 				new String[][][]{},
 				new CodeBlockImpl() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public Object execute(StackFrame frame) {
 				final Map<?, ?> o = (Map<?, ?>)frame.getLocal(0, 0);
-				return new LazyBagOnCollection<Object>((Collection<Object>) o.values());
+				return new LazyBagOnCollection<Object>((Collection<Object>)o.values());
 			}
 		});
 		createOperation(false, "union", MAP_TYPE, SET_TYPE,
@@ -638,6 +640,57 @@ public final class OCLOperations {
 						final EClass c = (EClass)frame.getLocal(0, 0);
 						final String mm = (String)frame.getLocal(0, 1);
 						return EMFTVMUtil.findAllInstIn(frame.getEnv(), c, mm);
+					}
+		});
+		createOperation(false, "conformsTo", CLASS_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"type"}, CLASS_TYPE}}, 
+				new CodeBlockImpl() {
+					@Override
+					public Object execute(StackFrame frame) {
+						final EClass c = (EClass)frame.getLocal(0, 0);
+						final EClass c2 = (EClass)frame.getLocal(0, 1);
+						return c2.isSuperTypeOf(c);
+					}
+		});
+		createOperation(false, "conformsTo", CLASS_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"type"}, JAVA_CLASS_TYPE}}, 
+				new CodeBlockImpl() {
+					@Override
+					public Object execute(StackFrame frame) {
+						final EClass c = (EClass)frame.getLocal(0, 0);
+						final Class<?> c2 = (Class<?>)frame.getLocal(0, 1);
+						final Class<?> ic = c.getInstanceClass();
+						if (ic != null) {
+							return c2.isAssignableFrom(ic);
+						}
+						return c2 == Object.class; // everything is an Object
+					}
+		});
+		/////////////////////////////////////////////////////////////////////
+		// JavaClass
+		/////////////////////////////////////////////////////////////////////
+		createOperation(false, "conformsTo", JAVA_CLASS_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"type"}, CLASS_TYPE}}, 
+				new CodeBlockImpl() {
+					@Override
+					public Object execute(StackFrame frame) {
+						final Class<?> c = (Class<?>)frame.getLocal(0, 0);
+						final EClass c2 = (EClass)frame.getLocal(0, 1);
+						final Class<?> ic2 = c2.getInstanceClass();
+						if (ic2 != null) {
+							return ic2.isAssignableFrom(c);
+						}
+						return false;
+					}
+		});
+		createOperation(false, "conformsTo", JAVA_CLASS_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"type"}, JAVA_CLASS_TYPE}}, 
+				new CodeBlockImpl() {
+					@Override
+					public Object execute(StackFrame frame) {
+						final Class<?> c = (Class<?>)frame.getLocal(0, 0);
+						final Class<?> c2 = (Class<?>)frame.getLocal(0, 1);
+						return c2.isAssignableFrom(c);
 					}
 		});
 		/////////////////////////////////////////////////////////////////////
