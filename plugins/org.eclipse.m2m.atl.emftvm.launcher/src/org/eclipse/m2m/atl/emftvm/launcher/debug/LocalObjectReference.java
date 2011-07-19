@@ -33,6 +33,7 @@ import org.eclipse.m2m.atl.debug.core.adwp.RealValue;
 import org.eclipse.m2m.atl.debug.core.adwp.StringValue;
 import org.eclipse.m2m.atl.debug.core.adwp.Value;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
+import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Field;
 import org.eclipse.m2m.atl.emftvm.Operation;
@@ -48,6 +49,8 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class LocalObjectReference extends ObjectReference {
+
+	private static final CodeBlock EMPTY_CB = EmftvmFactory.eINSTANCE.createCodeBlock();
 
 	private static Map<List<Object>, ObjectReference> values = new HashMap<List<Object>, ObjectReference>();
 	private static Map<Integer, ObjectReference> valuesById = new HashMap<Integer, ObjectReference>();
@@ -226,7 +229,7 @@ public class LocalObjectReference extends ObjectReference {
 
 		if (op == null) {
 			try {
-				final StackFrame frame = new StackFrame(execEnv, null);
+				final StackFrame frame = new StackFrame(execEnv, EMPTY_CB);
 				ret = object2value(EMFTVMUtil.invokeNative(frame, object, opName, realArgs));
 			} catch (VMException e) {
 				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
