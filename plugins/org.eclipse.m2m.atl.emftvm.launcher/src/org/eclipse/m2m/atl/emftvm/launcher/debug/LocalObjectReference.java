@@ -233,21 +233,6 @@ public class LocalObjectReference extends ObjectReference {
 			} catch (UnsupportedOperationException e) {
 				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
-//			final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(realArgs);
-//			final Method method = EMFTVMUtil.findNativeMethod(object.getClass(), opName, argClasses, false);
-//			if (method != null) {
-//				try {
-//					ret = object2value(method.invoke(object, realArgs));
-//				} catch (IllegalArgumentException e) {
-//					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//				} catch (IllegalAccessException e) {
-//					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//				} catch (InvocationTargetException e) {
-//					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//				}
-//			} else {
-//				ATLLogger.severe("Operation not found: " + opName + " on " + object + " : " + type); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-//			}
 		} else {
 			if (debug) {
 				ATLLogger.info(object + " : " + type + "." + opName + "("); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
