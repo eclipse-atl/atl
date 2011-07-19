@@ -12,15 +12,12 @@
 package org.eclipse.m2m.atl.emftvm.impl;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -224,138 +221,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @ordered
 	 */
 	protected StackFrame parentFrame = PARENT_FRAME_EDEFAULT;
-
-	/**
-	 * Converts {@link Enumerator}s to {@link EnumLiteral}s.
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	public static class EnumConversionList extends LazyList<Object> {
-
-		/**
-		 * {@link Iterator} for {@link EnumConversionList}.
-		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-		 */
-		public class EnumConversionIterator extends CachingIterator {
-
-			/**
-			 * Creates a new {@link EnumConversionIterator}.
-			 */
-			public EnumConversionIterator() {
-				super(dataSource.iterator());
-			}
-
-			/**
-			 * {@inheritDoc}
-			 */
-			@Override
-			public Object next() {
-				final Object next = convert(inner.next());
-				if (++i > cache.size()) {
-					assert dataSource != null; // cache not complete
-					cache.add(next);
-				} else {
-					assert cache.contains(next);
-				}
-				return next;
-			}
-		}
-
-		/**
-		 * Creates a new {@link EnumConversionList} around <code>dataSource</code>.
-		 * @param dataSource the list to wrap
-		 */
-		public EnumConversionList(List<Object> dataSource) {
-			super(dataSource);
-		}
-
-		/**
-		 * Performs the element conversion.
-		 * @param object the object to convert
-		 * @return the converted object
-		 */
-		protected final Object convert(final Object object) {
-			if (object instanceof Enumerator) {
-				return new EnumLiteral(object.toString());
-			}
-			return object;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public Iterator<Object> iterator() {
-			if (dataSource == null) {
-				return cache.iterator();
-			}
-			return new EnumConversionIterator(); // extends CachingIterator
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public int size() {
-			if (dataSource == null) {
-				return cache.size();
-			}
-			return ((Collection<Object>)dataSource).size();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public Object get(final int index) {
-			if (index < cache.size()) {
-				return ((List<Object>)cache).get(index);
-			}
-			return convert(((List<Object>)dataSource).get(index));
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public Object last() {
-			final int size = size();
-			if (size < 1) {
-				throw new NoSuchElementException();
-			}
-			if (dataSource == null) {
-				return ((List<Object>)cache).get(size - 1);
-			}
-			return convert(((List<Object>)dataSource).get(size - 1));
-		}
-
-		/**
-		 * Forces cache completion.
-		 */
-		public void cache() {
-			if (dataSource != null) {
-				cache.clear();
-				for (Object o : dataSource) {
-					cache.add(convert(o));
-				}
-				assert cache.size() == ((List<?>)dataSource).size();
-				dataSource = null;
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		protected void createCache() {
-			if (dataSource == null) {
-				this.cache = Collections.emptyList(); // dataSource == null; cache complete
-				this.occurrences = Collections.emptyMap();
-			} else {
-				this.cache = new ArrayList<Object>(((List<Object>)dataSource).size());
-			}
-			assert this.cache instanceof List<?>;
-		}
-	}
 
 	private boolean ruleSet;
 	private Rule rule;
@@ -1991,27 +1856,28 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			final CodeBlock body = op.getBody();
 			return body.execute(frame.getSubFrame(body, o, args));
 		}
-		final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
-		final Method method = EMFTVMUtil.findNativeMethod(o.getClass(), opname, argClasses, false);
-		if (method != null) {
-			final StackFrame subFrame = frame.getSubFrame(method, args);
-			try {
-				return method.invoke(o, args);
-			} catch (InvocationTargetException e) {
-				final Throwable target = e.getTargetException();
-				if (target instanceof VMException) {
-					throw (VMException)target;
-				} else {
-					throw new VMException(subFrame, target);
-				}
-			} catch (VMException e) {
-				throw e;
-			} catch (Exception e) {
-				throw new VMException(subFrame, e);
-			}
-		}
-		throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
-				EMFTVMUtil.getTypeName(env, type), opname, EMFTVMUtil.getTypeNames(env, argTypes)));
+		return EMFTVMUtil.invokeNative(frame, o, opname, args);
+//		final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
+//		final Method method = EMFTVMUtil.findNativeMethod(o.getClass(), opname, argClasses, false);
+//		if (method != null) {
+//			final StackFrame subFrame = frame.getSubFrame(method, args);
+//			try {
+//				return method.invoke(o, args);
+//			} catch (InvocationTargetException e) {
+//				final Throwable target = e.getTargetException();
+//				if (target instanceof VMException) {
+//					throw (VMException)target;
+//				} else {
+//					throw new VMException(subFrame, target);
+//				}
+//			} catch (VMException e) {
+//				throw e;
+//			} catch (Exception e) {
+//				throw new VMException(subFrame, e);
+//			}
+//		}
+//		throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
+//				EMFTVMUtil.getTypeName(env, type), opname, EMFTVMUtil.getTypeNames(env, argTypes)));
 	}
 
 	/**
@@ -2048,25 +1914,26 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			return body.execute(frame.getSubFrame(body, args));
 		}
 		if (type instanceof Class<?>) {
-			final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
-			final Method method = EMFTVMUtil.findNativeMethod((Class<?>)type, opname, argClasses, true);
-			if (method != null) {
-				final StackFrame subFrame = frame.getSubFrame(method, args);
-				try {
-					return method.invoke(args);
-				} catch (InvocationTargetException e) {
-					final Throwable target = e.getTargetException();
-					if (target instanceof VMException) {
-						throw (VMException)target;
-					} else {
-						throw new VMException(subFrame, target);
-					}
-				} catch (VMException e) {
-					throw e;
-				} catch (Exception e) {
-					throw new VMException(subFrame, e);
-				}
-			}
+			return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname, args);
+//			final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
+//			final Method method = EMFTVMUtil.findNativeMethod((Class<?>)type, opname, argClasses, true);
+//			if (method != null) {
+//				final StackFrame subFrame = frame.getSubFrame(method, args);
+//				try {
+//					return method.invoke(args);
+//				} catch (InvocationTargetException e) {
+//					final Throwable target = e.getTargetException();
+//					if (target instanceof VMException) {
+//						throw (VMException)target;
+//					} else {
+//						throw new VMException(subFrame, target);
+//					}
+//				} catch (VMException e) {
+//					throw e;
+//				} catch (Exception e) {
+//					throw new VMException(subFrame, e);
+//				}
+//			}
 		}
 		throw new UnsupportedOperationException(String.format("static %s::%s(%s)", 
 				EMFTVMUtil.getTypeName(env, type), opname, EMFTVMUtil.getTypeNames(env, argTypes)));
@@ -2133,25 +2000,26 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 		final Class<?> ic = context.getInstanceClass();
 		if (ic != null) {
-			final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
-			final Method method = EMFTVMUtil.findNativeMethod(ic.getSuperclass(), opname, argClasses, false);
-			if (method != null) {
-				final StackFrame subFrame = frame.getSubFrame(method, args);
-				try {
-					return method.invoke(o, args);
-				} catch (InvocationTargetException e) {
-					final Throwable target = e.getTargetException();
-					if (target instanceof VMException) {
-						throw (VMException)target;
-					} else {
-						throw new VMException(subFrame, target);
-					}
-				} catch (VMException e) {
-					throw e;
-				} catch (Exception e) {
-					throw new VMException(subFrame, e);
-				}
-			}
+			return EMFTVMUtil.invokeNativeSuper(frame, ic, o, opname, args);
+//			final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
+//			final Method method = EMFTVMUtil.findNativeMethod(ic.getSuperclass(), opname, argClasses, false);
+//			if (method != null) {
+//				final StackFrame subFrame = frame.getSubFrame(method, args);
+//				try {
+//					return method.invoke(o, args);
+//				} catch (InvocationTargetException e) {
+//					final Throwable target = e.getTargetException();
+//					if (target instanceof VMException) {
+//						throw (VMException)target;
+//					} else {
+//						throw new VMException(subFrame, target);
+//					}
+//				} catch (VMException e) {
+//					throw e;
+//				} catch (Exception e) {
+//					throw new VMException(subFrame, e);
+//				}
+//			}
 		}
 
 		throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
