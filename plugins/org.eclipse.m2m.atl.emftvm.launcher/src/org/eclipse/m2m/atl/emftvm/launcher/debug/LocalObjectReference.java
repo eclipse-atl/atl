@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.launcher.debug;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,6 +24,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.debug.core.adwp.ADWP;
 import org.eclipse.m2m.atl.debug.core.adwp.BooleanValue;
 import org.eclipse.m2m.atl.debug.core.adwp.IntegerValue;
 import org.eclipse.m2m.atl.debug.core.adwp.NullValue;
@@ -40,6 +39,7 @@ import org.eclipse.m2m.atl.emftvm.Operation;
 import org.eclipse.m2m.atl.emftvm.launcher.EmftvmLauncherPlugin;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
+import org.eclipse.m2m.atl.emftvm.util.VMException;
 
 /**
  * The local implementation of an object reference.
@@ -225,21 +225,29 @@ public class LocalObjectReference extends ObjectReference {
 		final Operation op = execEnv.findOperation(type, opName, argTypes);
 
 		if (op == null) {
-			final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(realArgs);
-			final Method method = EMFTVMUtil.findNativeMethod(object.getClass(), opName, argClasses, false);
-			if (method != null) {
-				try {
-					ret = object2value(method.invoke(object, realArgs));
-				} catch (IllegalArgumentException e) {
-					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				} catch (IllegalAccessException e) {
-					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				} catch (InvocationTargetException e) {
-					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-				}
-			} else {
-				ATLLogger.severe("Operation not found: " + opName + " on " + object + " : " + type); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			try {
+				final StackFrame frame = new StackFrame(execEnv, null);
+				ret = object2value(EMFTVMUtil.invokeNative(frame, object, opName, realArgs));
+			} catch (VMException e) {
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			} catch (UnsupportedOperationException e) {
+				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
+//			final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(realArgs);
+//			final Method method = EMFTVMUtil.findNativeMethod(object.getClass(), opName, argClasses, false);
+//			if (method != null) {
+//				try {
+//					ret = object2value(method.invoke(object, realArgs));
+//				} catch (IllegalArgumentException e) {
+//					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//				} catch (IllegalAccessException e) {
+//					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//				} catch (InvocationTargetException e) {
+//					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//				}
+//			} else {
+//				ATLLogger.severe("Operation not found: " + opName + " on " + object + " : " + type); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//			}
 		} else {
 			if (debug) {
 				ATLLogger.info(object + " : " + type + "." + opName + "("); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
