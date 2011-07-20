@@ -841,7 +841,12 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			while (nextSet && returnedValues.contains(next) && added.hasNext()) {
 				next = added.next();
 			}
-			return nextSet && returnedValues.contains(next);
+			final boolean hasNext = nextSet && !returnedValues.contains(next);
+			if (!hasNext) {
+				dataSource = null; // cache complete
+				assert i == cache.size();
+			}
+			return hasNext;
 		}
 
 		/**
