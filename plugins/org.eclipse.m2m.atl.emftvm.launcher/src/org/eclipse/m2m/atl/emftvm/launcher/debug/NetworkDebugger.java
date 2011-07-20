@@ -197,9 +197,15 @@ public class NetworkDebugger extends LaunchAdapter {
 	 */
 	private void dialog(StackFrame frame, String msg) {
 		final boolean debug = false;
-		final String opName = frame.getCodeBlock().toString();
-		final int location = frame.getLocation();
-		final String sourceLocation = frame.getSourceLocation();
+		final CodeBlock cb = frame.getCodeBlock();
+		final String opName = cb == null ? frame.getNativeMethod().toString() : cb.toString();
+
+		StackFrame sourceFrame = frame;
+		while (sourceFrame.getCodeBlock() == null) {
+			sourceFrame = frame.getParent();
+		}
+		final int location = sourceFrame.getLocation();
+		final String sourceLocation = sourceFrame.getSourceLocation();
 
 		debuggee.sendMessage(ADWPDebuggee.MSG_STOPPED, 0, Arrays.asList(new Value[] {
 				StringValue.valueOf(msg), LocalObjectReference.valueOf(frame, this),
