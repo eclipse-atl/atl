@@ -93,6 +93,9 @@ public class EMFTVMLaunchConfigurationDelegate implements
 					} catch (Exception e) {
 						ATLLogger.severe(e.toString());
 						EmftvmLauncherPlugin.log(e);
+					} catch (AssertionError e) {
+						ATLLogger.severe(e.toString());
+						EmftvmLauncherPlugin.log(e);
 					} finally {
 						target.terminate();
 					}
