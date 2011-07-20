@@ -12,8 +12,10 @@
 package org.eclipse.m2m.atl.emftvm.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -146,8 +148,10 @@ public class ModelImpl extends EObjectImpl implements Model {
 		 */
 		@Override
 		public boolean remove(Object o) {
-			if (dataSource == null) { // cache complete
-				return cache.remove(o);
+			synchronized (cache) {
+				if (dataSource == null) { // cache complete
+					return cache.remove(o);
+				}
 			}
 			return super.remove(o);
 		}
@@ -157,10 +161,22 @@ public class ModelImpl extends EObjectImpl implements Model {
 		 */
 		@Override
 		public boolean add(EObject o) {
-			if (dataSource == null) { // cache complete
-				return cache.add(o);
+			synchronized (cache) {
+				if (dataSource == null) { // cache complete
+					return cache.add(o);
+				}
 			}
 			return super.add(o);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		protected void createCache() {
+			super.createCache();
+			assert cache instanceof List<?>;
+			cache = Collections.synchronizedList((List<EObject>)cache);
 		}
 	}
 

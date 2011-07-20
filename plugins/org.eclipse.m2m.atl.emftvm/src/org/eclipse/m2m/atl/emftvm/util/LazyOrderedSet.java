@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.emftvm.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -1678,8 +1679,9 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * {@inheritDoc}
 	 */
 	public int indexOf(Object o) {
-		if (dataSource == null) { // cache complete
-			return ((List<E>)cache).indexOf(o);
+		final int index = ((List<E>)cache).indexOf(o);
+		if (index > -1 || dataSource == null) { // cache complete
+			return index;
 		}
 		int i = 0;
 		for (E e : this) {
@@ -1703,7 +1705,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 */
 	public ListIterator<E> listIterator() {
 		if (dataSource == null) { // cache complete
-			return ((List<E>)cache).listIterator();
+			return Collections.unmodifiableList((List<E>)cache).listIterator();
 		}
 		return new IteratorToListIterator();
 	}
@@ -1713,7 +1715,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 */
 	public ListIterator<E> listIterator(int index) {
 		if (dataSource == null) { // cache complete
-			return ((List<E>)cache).listIterator(index);
+			return Collections.unmodifiableList((List<E>)cache).listIterator(index);
 		}
 		return new IteratorToListIterator(index);
 	}
@@ -1850,7 +1852,6 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		if (cache.size() > 0) {
 			return ((List<E>)cache).get(0);
 		}
-		assert cache.size() == 0;
 		return iterator().next();
 	}
 
@@ -1894,7 +1895,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new UnionSetIterator(s);
 			}
@@ -1912,7 +1913,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new UnionSetIterator(s);
 			}
@@ -1940,7 +1941,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new IntersectionIterator(s);
 			}
@@ -1958,7 +1959,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new IntersectionIterator(s);
 			}
@@ -1976,7 +1977,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new IntersectionIterator(s);
 			}
@@ -1994,7 +1995,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new SubtractionIterator(s);
 			}
@@ -2012,7 +2013,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new SubtractionIterator(s);
 			}
@@ -2149,7 +2150,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new SelectIterator(condition, parentFrame);
 			}
@@ -2169,7 +2170,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new RejectIterator(condition, parentFrame);
 			}

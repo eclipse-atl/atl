@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.emftvm.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -324,7 +325,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new CachingIterator(new BagIntersectionIterator(bag));
 			}
@@ -343,7 +344,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new IntersectionIterator(inner);
 			}
@@ -371,7 +372,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new ExcludingIterator(object); 
 			}
@@ -427,7 +428,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new SelectIterator(condition, parentFrame);
 			}
@@ -447,7 +448,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new RejectIterator(condition, parentFrame);
 			}

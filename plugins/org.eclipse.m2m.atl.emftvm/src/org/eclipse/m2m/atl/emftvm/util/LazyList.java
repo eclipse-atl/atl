@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.emftvm.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -1359,7 +1360,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 */
 	public ListIterator<E> listIterator() {
 		if (dataSource == null) { // cache complete
-			return ((List<E>)cache).listIterator();
+			return Collections.unmodifiableList((List<E>)cache).listIterator();
 		}
 		return new IteratorToListIterator();
 	}
@@ -1369,7 +1370,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 */
 	public ListIterator<E> listIterator(final int index) {
 		if (dataSource == null) { // cache complete
-			return ((List<E>)cache).listIterator(index);
+			return Collections.unmodifiableList((List<E>)cache).listIterator(index);
 		}
 		return new IteratorToListIterator(index);
 	}
@@ -1489,7 +1490,6 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		if (cache.size() > 0) {
 			return ((List<E>)cache).get(0);
 		}
-		assert cache.size() == 0;
 		return iterator().next();
 	}
 
@@ -1619,7 +1619,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new ExcludingIterator(object); 
 			}
@@ -1662,7 +1662,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new SelectIterator(condition, parentFrame);
 			}
@@ -1682,7 +1682,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new RejectIterator(condition, parentFrame);
 			}

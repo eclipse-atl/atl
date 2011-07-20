@@ -12,6 +12,7 @@
 package org.eclipse.m2m.atl.emftvm.util;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -89,12 +90,7 @@ public final class OCLOperations {
 						}
 					}
 				}
-				if (++i > cache.size()) {
-					assert dataSource != null; // cache not complete
-					cache.add(next);
-				} else {
-					assert cache.contains(next);
-				}
+				updateCache(next);
 				return next;
 			}
 		}
@@ -123,7 +119,7 @@ public final class OCLOperations {
 		@Override
 		public Iterator<Object> iterator() {
 			if (dataSource == null) {
-				return cache.iterator();
+				return Collections.unmodifiableCollection(cache).iterator();
 			}
 			return new ResolveIterator(); // extends CachingIterator
 		}

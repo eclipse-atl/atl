@@ -45,12 +45,7 @@ public class EnumConversionList extends LazyList<Object> {
 		@Override
 		public Object next() {
 			final Object next = convert(inner.next());
-			if (++i > cache.size()) {
-				assert dataSource != null; // cache not complete
-				cache.add(next);
-			} else {
-				assert cache.contains(next);
-			}
+			updateCache(next);
 			return next;
 		}
 	}
@@ -81,7 +76,7 @@ public class EnumConversionList extends LazyList<Object> {
 	@Override
 	public Iterator<Object> iterator() {
 		if (dataSource == null) {
-			return cache.iterator();
+			return Collections.unmodifiableCollection(cache).iterator();
 		}
 		return new EnumConversionIterator(); // extends CachingIterator
 	}
@@ -127,13 +122,15 @@ public class EnumConversionList extends LazyList<Object> {
 	 * Forces cache completion.
 	 */
 	public void cache() {
-		if (dataSource != null) {
-			cache.clear();
-			for (Object o : dataSource) {
-				cache.add(convert(o));
+		synchronized (cache) {
+			if (dataSource != null) {
+				cache.clear();
+				for (Object o : dataSource) {
+					cache.add(convert(o));
+				}
+				assert cache.size() == ((List<?>)dataSource).size();
+				dataSource = null;
 			}
-			assert cache.size() == ((List<?>)dataSource).size();
-			dataSource = null;
 		}
 	}
 
@@ -141,7 +138,7 @@ public class EnumConversionList extends LazyList<Object> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void createCache() {
+	protected void createCache() {
 		if (dataSource == null) {
 			this.cache = Collections.emptyList(); // dataSource == null; cache complete
 			this.occurrences = Collections.emptyMap();

@@ -12,8 +12,9 @@
 package org.eclipse.m2m.atl.emftvm.util;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -354,7 +355,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	protected void createCache() {
 		super.createCache();
 		if (this.cache == null) {
-			this.cache = new HashSet<E>();
+			this.cache = new LinkedHashSet<E>(); // caching iterators require deterministic order
 		}
 	}
 
@@ -364,7 +365,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	@Override
 	public Iterator<E> iterator() {
 		if (dataSource == null) {
-			return cache.iterator();
+			return Collections.unmodifiableCollection(cache).iterator();
 		}
 		return new CachingSetIterator();
 	}
@@ -429,7 +430,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new UnionSetIterator(s);
 			}
@@ -457,7 +458,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new IntersectionIterator(s);
 			}
@@ -475,7 +476,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new IntersectionIterator(s);
 			}
@@ -493,7 +494,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new SubtractionIterator(s);
 			}
@@ -578,7 +579,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new SelectIterator(condition, parentFrame);
 			}
@@ -598,7 +599,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 			@Override
 			public Iterator<E> iterator() {
 				if (dataSource == null) {
-					return cache.iterator();
+					return Collections.unmodifiableCollection(cache).iterator();
 				}
 				return new RejectIterator(condition, parentFrame);
 			}

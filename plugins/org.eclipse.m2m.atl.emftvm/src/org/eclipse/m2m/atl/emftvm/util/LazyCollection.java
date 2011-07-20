@@ -194,7 +194,14 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
-			final boolean hasNext = i < cache.size() || (dataSource != null && inner.hasNext());
+			synchronized (cache) {
+				if (i < cache.size()) {
+					return true;
+				} else if (dataSource == null) {
+					return false;
+				}
+			}
+			final boolean hasNext = inner.hasNext();
 			if (!hasNext) {
 				dataSource = null; // cache complete
 				assert i == cache.size();
@@ -207,13 +214,23 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		public E next() {
 			final E next = inner.next();
-			if (++i > cache.size()) {
-				assert dataSource != null; // cache not complete
-				cache.add(next);
-			} else {
-				assert cache.contains(next);
-			}
+			updateCache(next);
 			return next;
+		}
+
+		/**
+		 * Updates the cache with <code>next</code>.
+		 * @param next the next element returned by this iterator
+		 */
+		protected final void updateCache(final E next) {
+			synchronized (cache) {
+				if (++i > cache.size()) {
+					assert dataSource != null; // cache not complete
+					cache.add(next);
+				} else {
+					assert cache.contains(next);
+				}
+			}
 		}
 	}
 
@@ -314,10 +331,12 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
-			if (i < cache.size()) {
-				return true;
-			} else if (dataSource == null) {
-				return false;
+			synchronized (cache) {
+				if (i < cache.size()) {
+					return true;
+				} else if (dataSource == null) {
+					return false;
+				}
 			}
 			if (!nextSet && inner.hasNext()) {
 				next = inner.next(); // support null values for next
@@ -348,12 +367,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			}
 			assert !nextSet && !returnedValues.contains(next);
 			returnedValues.add(next);
-			if (++i > cache.size()) {
-				assert dataSource != null; // cache not complete
-				cache.add(next);
-			} else {
-				assert cache.contains(next);
-			}
+			updateCache(next);
 			return next;
 		}
 		
@@ -549,10 +563,12 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		@Override
 		public boolean hasNext() {
-			if (i < cache.size()) {
-				return true;
-			} else if (dataSource == null) {
-				return false;
+			synchronized (cache) {
+				if (i < cache.size()) {
+					return true;
+				} else if (dataSource == null) {
+					return false;
+				}
 			}
 			if (!nextSet && inner.hasNext()) {
 				next = inner.next(); // support null values for next
@@ -583,12 +599,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 				next = inner.next();
 			}
 			assert !nextSet && !(object == null ? next == null : object.equals(next));
-			if (++i > cache.size()) {
-				assert dataSource != null; // cache not complete
-				cache.add(next);
-			} else {
-				assert cache.contains(next);
-			}
+			updateCache(next);
 			return next;
 		}
 	}
@@ -617,10 +628,12 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		@Override
 		public boolean hasNext() {
-			if (i < cache.size()) {
-				return true;
-			} else if (dataSource == null) {
-				return false;
+			synchronized (cache) {
+				if (i < cache.size()) {
+					return true;
+				} else if (dataSource == null) {
+					return false;
+				}
 			}
 			if (!nextSet && inner.hasNext()) {
 				next = inner.next(); // support null values for next
@@ -651,12 +664,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 				next = inner.next();
 			}
 			assert !nextSet && s.contains(next);
-			if (++i > cache.size()) {
-				assert dataSource != null; // cache not complete
-				cache.add(next);
-			} else {
-				assert cache.contains(next);
-			}
+			updateCache(next);
 			return next;
 		}
 		
@@ -687,10 +695,12 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		@Override
 		public boolean hasNext() {
-			if (i < cache.size()) {
-				return true;
-			} else if (dataSource == null) {
-				return false;
+			synchronized (cache) {
+				if (i < cache.size()) {
+					return true;
+				} else if (dataSource == null) {
+					return false;
+				}
 			}
 			if (!nextSet && inner.hasNext()) {
 				next = inner.next(); // support null values for next
@@ -720,13 +730,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			while (s.contains(next)) {
 				next = inner.next();
 			}
-			assert !nextSet && !s.contains(next); 
-			if (++i > cache.size()) {
-				assert dataSource != null; // cache not complete
-				cache.add(next);
-			} else {
-				assert cache.contains(next);
-			}
+			assert !nextSet && !s.contains(next);
+			updateCache(next);
 			return next;
 		}
 		
@@ -813,10 +818,12 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		@Override
 		public boolean hasNext() {
-			if (i < cache.size()) {
-				return true;
-			} else if (dataSource == null) {
-				return false;
+			synchronized (cache) {
+				if (i < cache.size()) {
+					return true;
+				} else if (dataSource == null) {
+					return false;
+				}
 			}
 			if (added == null) {
 				innerNext = inner.hasNext();
@@ -847,10 +854,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 					innerNext = false;
 					next = inner.next(); // inner is already a set
 					returnedValues.add(next);
-					if (++i > cache.size()) {
-						assert dataSource != null; // cache not complete
-						cache.add(next);
-					}
+					updateCache(next);
 					return next;
 				} else {
 					added = s.iterator();
@@ -867,12 +871,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			}
 			assert !nextSet && !returnedValues.contains(next);
 			returnedValues.add(next);
-			if (++i > cache.size()) {
-				assert dataSource != null; // cache not complete
-				cache.add(next);
-			} else {
-				assert cache.contains(next);
-			}
+			updateCache(next);
 			return next;
 		}
 	}
@@ -1191,10 +1190,12 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
-			if (i < cache.size()) {
-				return true;
-			} else if (dataSource == null) {
-				return false;
+			synchronized (cache) {
+				if (i < cache.size()) {
+					return true;
+				} else if (dataSource == null) {
+					return false;
+				}
 			}
 			if (!nextSet && inner.hasNext()) {
 				next = inner.next(); // support null values for next
@@ -1228,12 +1229,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 				nextIncluded = include(next);
 			}
 			assert !nextSet && nextIncluded;
-			if (++i > cache.size()) {
-				assert dataSource != null; // cache not complete
-				cache.add(next);
-			} else {
-				assert cache.contains(next);
-			}
+			updateCache(next);
 			return next;
 		}
 	}
@@ -1415,10 +1411,12 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * {@inheritDoc}
 	 */
 	public boolean contains(final Object o) {
-		if (cache.contains(o)) {
-			return true;
-		} else if (dataSource == null) {
-			return false;
+		synchronized (cache) {
+			if (cache.contains(o)) {
+				return true;
+			} else if (dataSource == null) {
+				return false;
+			}
 		}
 		if (o == null) {
 			for (E e : this) {
@@ -1473,7 +1471,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public Iterator<E> iterator() {
 		if (dataSource == null) {
-			return cache.iterator();
+			return Collections.unmodifiableCollection(cache).iterator();
 		}
 		return new CachingIterator(dataSource.iterator());
 	}
@@ -1625,7 +1623,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @param object the object to check for
 	 * @return The number of times that <code>object</code> occurs in the collection self.
 	 */
-	public int count(final E object) {
+	public synchronized int count(final E object) {
 		if (occurrences == null) {
 			occurrences = new HashMap<E, Integer>();
 			for (E e : this) {
