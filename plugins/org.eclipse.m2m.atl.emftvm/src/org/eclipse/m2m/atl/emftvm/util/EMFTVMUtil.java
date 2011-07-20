@@ -14,8 +14,10 @@ package org.eclipse.m2m.atl.emftvm.util;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.regex.Matcher;
@@ -521,32 +523,21 @@ public final class EMFTVMUtil {
 			}
 		} else if (sf instanceof EReference) {
 			final EReference ref = (EReference)sf;
-			final boolean isContainment = ref.isContainment();
-			final boolean isContainer = ref.isContainer();
 			if (checkValue(env, eo, ref, value, allowInterModelReferences)) {
-				if (isContainment) { // Restore eResource for old value before clearing
-					final EObject oldValue = (EObject)eo.eGet(sf);
-					if (oldValue != null) {
-						eo.eResource().getContents().add(oldValue);
-					}
-				} else if (isContainer) { // Restore eResource for eo before clearing
-					final EObject oldValue = (EObject)eo.eGet(sf);
-					if (oldValue != null) {
-						oldValue.eResource().getContents().add(eo);
-					}
-				}
+				final EObject oldValue = (EObject)eo.eGet(sf);
+				assert eo.eResource() != null;
+				assert value == null || ((EObject)value).eResource() != null;
+				assert oldValue == null || oldValue.eResource() != null;
 				eo.eSet(sf, value);
-				if (isContainment && value instanceof EObject) {
-					// Remove value from its resource if it is contained
-					((EObject)value).eResource().getContents().remove(value);
-					assert ((EObject)value).eContainer() == eo;
-					assert ((EObject)value).eResource() == eo.eResource();
-				} else if (isContainer && value instanceof EObject) {
-					// Remove eo from its resource if it is contained
-					eo.eResource().getContents().remove(eo);
-					assert eo.eContainer() == value;
-					assert ((EObject)value).eResource() == eo.eResource();
+				if (value != null) {
+					updateResource(eo, (EObject)value);
 				}
+				if (oldValue != null) {
+					updateResource(eo, oldValue);
+				}
+				assert eo.eResource() != null;
+				assert value == null || ((EObject)value).eResource() != null;
+				assert oldValue == null || oldValue.eResource() != null;
 			}
 		} else {
 			eo.eSet(sf, value);
@@ -568,14 +559,14 @@ public final class EMFTVMUtil {
 		assert sf.isMany();
 		final EList<Object> values = (EList<Object>)eo.eGet(sf);
 		if (!values.isEmpty()) {
-			if (sf instanceof EReference && ((EReference)sf).isContainment()) {
-				// Restore eResource for each value before clearing
-				final EList<EObject> resContents = eo.eResource().getContents();
-				resContents.addAll((EList<? extends EObject>)values);
-				// Adding values to the resource should have cleared values already - apparently only happens for generated metamodels
-				//assert values.isEmpty();
+			if (sf instanceof EReference) {
+				final List<Object> vCopy = new ArrayList<Object>(values);
+				for (EObject v : (List<? extends EObject>)vCopy) {
+					removeRefValue((EReference)sf, eo, values, v);
+				}
+			} else {
+				values.clear();
 			}
-			values.clear();
 		}
 		addMany(env, eo, sf, value, -1);
 	}
@@ -599,7 +590,7 @@ public final class EMFTVMUtil {
 			addEnumValue((EEnum)sfType, values, value, index);
 		} else if (sf instanceof EReference) {
 			final EReference ref = (EReference)sf;
-			addRefValue(env, ref, eo, values, value, index, 
+			addRefValue(env, ref, eo, values, (EObject)value, index, 
 					isAllowInterModelReferences(env, eo));
 		} else if (index > -1) {
 			values.add(index, value);
@@ -641,11 +632,11 @@ public final class EMFTVMUtil {
 			if (index > -1) {
 				int currentIndex = index;
 				for (Object v : value) {
-					addRefValue(env, ref, eo, values, v, currentIndex++, allowInterModelReferences);
+					addRefValue(env, ref, eo, values, (EObject)v, currentIndex++, allowInterModelReferences);
 				}
 			} else {
 				for (Object v : value) {
-					addRefValue(env, ref, eo, values, v, -1, allowInterModelReferences);
+					addRefValue(env, ref, eo, values, (EObject)v, -1, allowInterModelReferences);
 				}
 			}
 		} else if (index > -1) {
@@ -674,7 +665,7 @@ public final class EMFTVMUtil {
 			removeEnumValue(eEnum, values, value);
 		} else if (sf instanceof EReference) {
 			final EReference ref = (EReference)sf;
-			removeRefValue(ref, eo, values, value);
+			removeRefValue(ref, eo, values, (EObject)value);
 		} else {
 			values.remove(value);
 		}
@@ -702,7 +693,7 @@ public final class EMFTVMUtil {
 		} else if (sf instanceof EReference) {
 			final EReference ref = (EReference)sf;
 			for (Object v : value) {
-				removeRefValue(ref, eo, values, v);
+				removeRefValue(ref, eo, values, (EObject)v);
 			}
 		} else {
 			values.removeAll(value);
@@ -760,22 +751,20 @@ public final class EMFTVMUtil {
 	 * @param allowInterModelReferences
 	 */
 	private static void addRefValue(final ExecEnv env, final EReference ref, final EObject eo,
-			final EList<Object> values, final Object v, final int index,
+			final EList<Object> values, final EObject v, final int index,
 			final boolean allowInterModelReferences) {
+		assert eo.eResource() != null;
+		assert v.eResource() != null;
 		if (checkValue(env, eo, ref, v, allowInterModelReferences)) {
 			if (index > -1) {
 				values.add(index, v);
 			} else {
 				values.add(v);
 			}
-			// Adding v to values should have updated (i.e. cleared) its resource if it is contained - apparently only happens for generated metamodels
-			//assert !isContainment || (((EObject) v).eContainer() == eo && ((EObject) v).eResource() == eo.eResource());
-			if (ref.isContainment() && v instanceof EObject) {
-				((EObject)v).eResource().getContents().remove(v);
-				assert ((EObject)v).eContainer() == eo;
-				assert ((EObject)v).eResource() == eo.eResource();
-			}
+			updateResource(eo, v);
 		}
+		assert eo.eResource() != null;
+		assert v.eResource() != null;
 	}
 
 	/**
@@ -787,11 +776,36 @@ public final class EMFTVMUtil {
 	 * @param v
 	 */
 	private static void removeRefValue(final EReference ref, final EObject eo,
-			final EList<Object> values, final Object v) {
-		if (values.remove(v) && ref.isContainment() && v instanceof EObject) {
-			eo.eResource().getContents().add((EObject)v);
-			assert ((EObject)v).eContainer() == null;
-			assert ((EObject)v).eResource() == eo.eResource();
+			final EList<Object> values, final EObject v) {
+		assert eo.eResource() != null;
+		assert v.eResource() != null;
+		if (values.remove(v)) {
+			updateResource(eo, v);
+		}
+		assert eo.eResource() != null;
+		assert v.eResource() != null;
+	}
+
+	/**
+	 * Updates the eResource() for <code>eo</code> and <code>v</code> where necessary
+	 * @param eo the {@link EObject} for which an {@link EReference} has just been modified
+	 * @param v the value of the {@link EReference} that has just been modified
+	 */
+	private static void updateResource(final EObject eo, final EObject v) {
+		if (eo.eResource() == null) {
+			assert eo.eContainer() == null;
+			v.eResource().getContents().add(eo);
+		} else if (v.eResource() == null) {
+			assert v.eContainer() == null;
+			eo.eResource().getContents().add(v);
+		}
+		if (eo.eContainer() != null) {
+			eo.eResource().getContents().remove(eo);
+			assert eo.eResource() != null;
+		}
+		if (v.eContainer() != null) {
+			v.eResource().getContents().remove(v);
+			assert v.eResource() != null;
 		}
 	}
 
