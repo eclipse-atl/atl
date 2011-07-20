@@ -36,6 +36,7 @@ import junit.textui.TestRunner;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#execute(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Execute</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getStackLevel() <em>Get Stack Level</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getModule() <em>Get Module</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getOperation() <em>Get Operation</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -197,6 +198,19 @@ public class CodeBlockTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetModule() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getOperation() <em>Get Operation</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.CodeBlock#getOperation()
+	 * @generated
+	 */
+	public void testGetOperation() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
