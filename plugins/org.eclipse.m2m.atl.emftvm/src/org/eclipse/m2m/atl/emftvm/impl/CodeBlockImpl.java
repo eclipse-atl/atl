@@ -829,7 +829,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					break;
 				case INVOKE_SUPER: 
 					frame.setPc(pc);
-					frame.push(invokeSuper(getBodyFor(), ((InvokeSuper)instr).getOpname(), ((InvokeSuper)instr).getArgcount(), frame));
+					frame.push(invokeSuper(getOperation(), ((InvokeSuper)instr).getOpname(), ((InvokeSuper)instr).getArgcount(), frame));
 					break;
 				case ALLINST:
 					frame.push(EMFTVMUtil.findAllInstances(frame.getEnv(),
@@ -965,19 +965,42 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	public Module getModule() {
 		final EObject container = eContainer();
-		switch (container.eClass().getClassifierID()) {
-		case EmftvmPackage.FEATURE:
-		case EmftvmPackage.FIELD:
-		case EmftvmPackage.OPERATION:
-			return ((Feature)container).getModule();
-		case EmftvmPackage.RULE:
-			return ((Rule)container).getModule();
-		case EmftvmPackage.INPUT_RULE_ELEMENT:
-			return ((InputRuleElement)container).getInputFor().getModule();
-		case EmftvmPackage.CODE_BLOCK:
-			return ((CodeBlock)container).getModule();
-		default:
-			break;
+		if (container != null) {
+			switch (container.eClass().getClassifierID()) {
+			case EmftvmPackage.FEATURE:
+			case EmftvmPackage.FIELD:
+			case EmftvmPackage.OPERATION:
+				return ((Feature)container).getModule();
+			case EmftvmPackage.RULE:
+				return ((Rule)container).getModule();
+			case EmftvmPackage.INPUT_RULE_ELEMENT:
+				return ((InputRuleElement)container).getInputFor().getModule();
+			case EmftvmPackage.CODE_BLOCK:
+				return ((CodeBlock)container).getModule();
+			default:
+				break;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Operation getOperation() {
+		final EObject container = eContainer();
+		if (container != null) {
+			switch (container.eClass().getClassifierID()) {
+			case EmftvmPackage.OPERATION:
+				return (Operation)container;
+			case EmftvmPackage.CODE_BLOCK:
+				return ((CodeBlock)container).getOperation();
+			default:
+				break;
+			}
 		}
 		return null;
 	}

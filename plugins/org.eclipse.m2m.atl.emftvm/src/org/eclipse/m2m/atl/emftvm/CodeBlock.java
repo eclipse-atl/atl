@@ -423,4 +423,14 @@ public interface CodeBlock extends EObject {
 	 */
 	Module getModule();
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns the {@link Operation} that (indirectly) contains this {@link CodeBlock}, if any.
+	 * @return the {@link Operation} that (indirectly) contains this {@link CodeBlock}, or <code>null</code>
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	Operation getOperation();
+
 } // CodeBlock

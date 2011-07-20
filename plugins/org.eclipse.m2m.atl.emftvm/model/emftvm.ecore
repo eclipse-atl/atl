@@ -433,6 +433,7 @@
     </eOperations>
     <eOperations name="getStackLevel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
     <eOperations name="getModule" eType="#//Module"/>
+    <eOperations name="getOperation" eType="#//Operation"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxLocals" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
         volatile="true" defaultValueLiteral="-1" derived="true"/>

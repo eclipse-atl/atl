@@ -3370,6 +3370,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		addEOperation(codeBlockEClass, this.getModule(), "getModule", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		addEOperation(codeBlockEClass, this.getOperation(), "getOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(pushEClass, Push.class, "Push", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPush_Value(), theEcorePackage.getEJavaObject(), "value", null, 1, 1, Push.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPush_StringValue(), theEcorePackage.getEString(), "stringValue", "", 0, 1, Push.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
