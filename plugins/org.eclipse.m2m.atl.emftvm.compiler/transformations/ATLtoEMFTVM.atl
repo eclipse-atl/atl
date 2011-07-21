@@ -3,7 +3,7 @@
 -- @path ATL=/emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: ATLtoEMFTVM.atl,v 1.2 2011/07/05 09:27:58 dwagelaar Exp $
+-- $Id: ATLtoEMFTVM.atl,v 1.3 2011/07/21 13:30:34 dwagelaar Exp $
 module ATLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -12,34 +12,19 @@ create OUT : EMFTVM, PBS : Problem from IN : ATL;
 -- helpers begin
 -- ======================================================================
 
-helper def : testIterate : String =
-	ATL!Rule.allInstancesFrom('IN')->iterate(r; acc : String = '' |
-		acc + r.name);
-
--- With LazyValue support
---helper context String def : lazyOperation : String =
---	if self = 'isEmpty' then 'isEmpty2'
---	else if self = 'size' then 'size2'
---	else if self = '=' then 'equals2'
---	else if self = 'equals' then 'equals2'
---	else if self = 'indexOf' then 'indexOf2'
---	else if self = 'lastIndexOf' then 'lastIndexOf2'
---	else self endif endif endif endif endif endif;
-
--- Without LazyValue support
 helper context String def : lazyOperation : String =
 	if self = '=' then 'equals'
 	else if self = 'indexOf' then 'indexOf2'
 	else if self = 'lastIndexOf' then 'lastIndexOf2'
 	else self endif endif endif;
 
-helper def : SetType : String		= 'org.eclipse.m2m.atl.emftvm.util.LazySet';
-helper def : BagType : String		= 'org.eclipse.m2m.atl.emftvm.util.LazyBag';
-helper def : SequenceType : String	= 'org.eclipse.m2m.atl.emftvm.util.LazyList';
-helper def : OrderedSetType : String= 'org.eclipse.m2m.atl.emftvm.util.LazyOrderedSet';
+helper def : SetType : String		= 'Set';
+helper def : BagType : String		= 'Bag';
+helper def : SequenceType : String	= 'Sequence';
+helper def : OrderedSetType : String= 'OrderedSet';
 
 helper context ATL!"OclType" def : typeName : String =
-	'java.lang.Object'; -- OclType is a direct OclType, which is either a Class or an EClass
+	'Object'; -- OclType is a direct OclType, which is either a Class or an EClass
 
 helper context ATL!SetType def : typeName : String =
 	thisModule.SetType;
@@ -54,25 +39,25 @@ helper context ATL!OrderedSetType def : typeName : String =
 	thisModule.OrderedSetType;
 
 helper context ATL!IntegerType def : typeName : String =
-	'java.lang.Integer';
+	'Integer';
 
 helper context ATL!StringType def : typeName : String =
-	'java.lang.String';
+	'String';
 
 helper context ATL!MapType def : typeName : String =
-	'java.util.Map';
+	'Map';
 
 helper context ATL!"TupleType" def : typeName : String =
-	'java.util.Map';
+	'Tuple';
 
 helper context ATL!OclAnyType def : typeName : String =
-	'java.lang.Object';
+	'Object';
 
 helper context ATL!BooleanType def : typeName : String =
-	'java.lang.Boolean';
+	'Boolean';
 
 helper context ATL!RealType def : typeName : String =
-	'java.lang.Double';
+	'Real';
 
 helper context ATL!OclModelElement def : typeName : String =
 	self.name;

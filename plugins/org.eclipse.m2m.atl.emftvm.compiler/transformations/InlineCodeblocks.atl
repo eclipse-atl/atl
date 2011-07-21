@@ -1,7 +1,7 @@
 -- @atlcompiler emftvm
 -- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
 -- Inlines nested code blocks
--- $Id: InlineCodeblocks.atl,v 1.2 2011/07/05 09:27:58 dwagelaar Exp $
+-- $Id: InlineCodeblocks.atl,v 1.3 2011/07/21 13:30:34 dwagelaar Exp $
 module InlineCodeblocks;
 create OUT : EMFTVM from IN : EMFTVM;
 
@@ -211,19 +211,19 @@ rule LineNumber {
 rule If {
     from s : EMFTVM!"emftvm::If" in IN
     to t : EMFTVM!"emftvm::If" (
-        target <- s.target.reTarget)
+        target <- s.target.endReTarget)
 }
 
 rule Ifn {
     from s : EMFTVM!"emftvm::Ifn" in IN
     to t : EMFTVM!"emftvm::Ifn" (
-        target <- s.target.reTarget)
+        target <- s.target.endReTarget)
 }
 
 rule Goto {
     from s : EMFTVM!"emftvm::Goto" in IN
     to t : EMFTVM!"emftvm::Goto" (
-        target <- s.target.reTarget)
+        target <- s.target.endReTarget)
 }
 
 rule Iterate {
@@ -235,7 +235,17 @@ rule Iterate {
 rule Enditerate {
     from s : EMFTVM!"emftvm::Enditerate" in IN
     to t : EMFTVM!"emftvm::Enditerate" (
-        target <- s.target.reTarget)
+        target <- s.target.endReTarget)
+}
+
+rule Return {
+	from s : EMFTVM!"emftvm::Return" in IN (not s.owningBlock.isInlined)
+	to t : EMFTVM!"emftvm::Return"
+}
+
+rule ReturnToGoto {
+	from s : EMFTVM!"emftvm::Return" in IN (s.owningBlock.isInlined)
+	to t : EMFTVM!"emftvm::Goto" (target <- s.owningBlock.code->last().endReTarget)
 }
 
 -- ======================================================================
