@@ -97,7 +97,10 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 			final CodeBlock ob = getOwningBlock();
 			final Instruction target = getTarget();
 			if (ob != null && target != null) {
-				offset = ob.getCode().indexOf(target);
+				final int index = ob.getCode().indexOf(target);
+				if (index > -1) {
+					offset = index + 1; // offset corresponds to instruction after target
+				}
 			}
 		}
 		return offset;
@@ -129,8 +132,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 		if (target == null) {
 			final CodeBlock ob = getOwningBlock();
 			if (ob != null && offset != OFFSET_EDEFAULT &&
-					offset < ob.getCode().size()) {
-				target = ob.getCode().get(offset);
+					offset <= ob.getCode().size()) {
+				target = ob.getCode().get(offset - 1); // offset corresponds to instruction after target
 			}
 		}
 		if (target != null && target.eIsProxy()) {
@@ -154,8 +157,8 @@ public abstract class BranchInstructionImpl extends InstructionImpl implements B
 		if (target == null) {
 			final CodeBlock ob = getOwningBlock();
 			if (ob != null && offset != OFFSET_EDEFAULT &&
-					offset < ob.getCode().size()) {
-				target = ob.getCode().get(offset);
+					offset <= ob.getCode().size()) {
+				target = ob.getCode().get(offset - 1); // offset corresponds to instruction after target
 			}
 		}
 		return target;

@@ -810,7 +810,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 						frame.push(i);
 						frame.push(i.next());
 					} else {
-						pc = ((Iterate)instr).getOffset() + 1; // jump over ENDITERATE
+						pc = ((Iterate)instr).getOffset(); // jump over ENDITERATE
 					}
 					break;
 				case ENDITERATE:
@@ -818,7 +818,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					if (i.hasNext()) {
 						frame.push(i);
 						frame.push(i.next());
-						pc = ((Enditerate)instr).getOffset() + 1; // jump to first loop instruction
+						pc = ((Enditerate)instr).getOffset(); // jump to first loop instruction
 					}
 					break;
 				case INVOKE:
