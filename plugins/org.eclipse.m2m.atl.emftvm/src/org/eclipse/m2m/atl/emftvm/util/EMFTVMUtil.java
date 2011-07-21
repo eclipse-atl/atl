@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.BasicEList;
@@ -93,29 +92,6 @@ public final class EMFTVMUtil {
 	 * Not used.
 	 */
 	private EMFTVMUtil() {
-	}
-
-	/**
-	 * Finds the type with typename in the metamodel with modelname, or the native type.
-	 * @param env the execution environment to search for the metamodel
-	 * @param modelname the metamodel name
-	 * @param typename the type name
-	 * @return the type with typename in the metamodel with modelname, or the native type
-	 * @throws ClassNotFoundException
-	 */
-	public static Object findType(final ExecEnv env, final String modelname, 
-			final String typename) throws ClassNotFoundException {
-		if (NATIVE.equals(modelname)) {
-			final Matcher m = DELIM_PATTERN.matcher(typename);
-			return Class.forName(m.replaceAll("."));
-		} else {
-			final Metamodel mm = env.getMetaModels().get(modelname);
-			if (mm == null) {
-				throw new IllegalArgumentException(String.format("Metamodel %s not found", modelname));
-			}
-			return mm.findType(typename);
-		}
-	
 	}
 
 	/**

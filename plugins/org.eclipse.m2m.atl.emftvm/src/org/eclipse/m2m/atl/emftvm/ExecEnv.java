@@ -14,7 +14,6 @@ package org.eclipse.m2m.atl.emftvm;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
@@ -248,6 +247,19 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Finds the type for the given (meta-)<code>modelName</code> and <code>typeName</code>.
+	 * @param modelName the name under which the metamodel that contains the type is registered
+	 * @param typeName the type/metaclass name (may be fully qualified using '<code>::</code>')
+	 * @return the type/metaclass
+	 * @throws ClassNotFoundException if the type is not found
+	 * <!-- end-user-doc -->
+	 * @model exceptions="org.eclipse.m2m.atl.emftvm.ClassNotFoundException"
+	 * @generated
+	 */
+	Object findType(String modelName, String typeName) throws ClassNotFoundException;
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * Returns all rules registered in this {@link ExecEnv}.
 	 * @return all rules registered in this {@link ExecEnv}.
 	 * <!-- end-user-doc -->
@@ -319,18 +331,6 @@ public interface ExecEnv extends EObject {
 	 * @generated
 	 */
 	Model getOutputModelOf(EObject object);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * Finds the type/metaclass for the given (meta-)<pre>modelName</pre> and <pre>typeName</pre>.
-	 * @param modelName the name under which the metamodel that contains the type is registered
-	 * @param typeName the type/metaclass name (may be fully qualified using '<pre>::</pre>')
-	 * @return the type/metaclass, or <code>null</code> if not found
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	EClassifier findType(String modelName, String typeName);
 
 	/**
 	 * <!-- begin-user-doc -->

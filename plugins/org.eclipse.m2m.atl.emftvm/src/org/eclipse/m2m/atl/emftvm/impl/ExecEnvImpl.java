@@ -54,6 +54,7 @@ import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.Matcher;
 import org.eclipse.m2m.atl.emftvm.util.ModuleNotFoundException;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
+import org.eclipse.m2m.atl.emftvm.util.NativeTypes;
 import org.eclipse.m2m.atl.emftvm.util.OCLOperations;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
@@ -426,8 +427,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 */
 	public void registerFeature(final Feature feature) {
-		feature.setEContext(findType(feature.getContextModel(), feature.getContext()));
-		feature.setEType(findType(feature.getTypeModel(), feature.getType()));
+		feature.setEContext(findECLassifier(feature.getContextModel(), feature.getContext()));
+		feature.setEType(findECLassifier(feature.getTypeModel(), feature.getType()));
 		switch (feature.eClass().getClassifierID()) {
 		case EmftvmPackage.FIELD:
 			fieldContainer.registerField((Field)feature);
@@ -499,7 +500,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		final Object[] types = new Object[eList.size()];
 		for (int i = 0; i < types.length; i++) {
 			Parameter par = eList.get(i);
-			par.setEType(findType(par.getTypeModel(), par.getType()));
+			par.setEType(findECLassifier(par.getTypeModel(), par.getType()));
 			types[i] = EMFTVMUtil.getRegistryType(par.getEType());
 		}
 		return types;
@@ -618,8 +619,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		}
 
 		for (Field field : r.getFields()) {
-			field.setEContext(findType(field.getContextModel(), field.getContext()));
-			field.setEType(findType(field.getTypeModel(), field.getType()));
+			field.setEContext(findECLassifier(field.getContextModel(), field.getContext()));
+			field.setEType(findECLassifier(field.getTypeModel(), field.getType()));
 			r.registerField(field);
 		}
 	}
@@ -631,7 +632,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @throws IllegalArgumentException when a reference cannot be resolved
 	 */
 	private void resolveRuleElement(final RuleElement re, final Map<String, Model> models) {
-		re.setEType(findType(re.getTypeModel(), re.getType()));
+		re.setEType(findECLassifier(re.getTypeModel(), re.getType()));
 		final EList<Model> eModels = re.getEModels();
 		eModels.clear();
 		for (String modelName : re.getModels()) {
@@ -915,6 +916,47 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Object findType(String modelName, String typeName) throws ClassNotFoundException {
+		if (EMFTVMUtil.NATIVE.equals(modelName)) {
+			return NativeTypes.findType(typeName);
+		} else {
+			final Metamodel mm = getMetaModels().get(modelName);
+			if (mm == null) {
+				throw new IllegalArgumentException(String.format("Metamodel %s not found", modelName));
+			}
+			return mm.findType(typeName);
+		}
+	}
+
+	/**
+	 * Finds the {@link EClassifier} for the given (meta-)<pre>modelName</pre> and <pre>typeName</pre>.
+	 * @param modelName the name under which the metamodel that contains the type is registered
+	 * @param typeName the type/metaclass name (may be fully qualified using '<pre>::</pre>')
+	 * @return the type/metaclass, or <code>null</code> if not found
+	 */
+	public EClassifier findECLassifier(String modelName, String typeName) {
+		try {
+			final Object type = findType(modelName, typeName);
+			if (type instanceof Class<?>) {
+				// Wrap Java class
+				final EDataType dt = EcoreFactory.eINSTANCE.createEDataType();
+				dt.setName(typeName);
+				dt.setInstanceClass((Class<?>)type);
+				return dt;
+			} else {
+				return (EClassifier)type;
+			}
+		} catch (ClassNotFoundException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public synchronized Object run(final TimingData timingData, VMMonitor monitor) {
@@ -1158,30 +1200,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		result.append(modules);
 		result.append(')');
 		return result.toString();
-	}
-
-	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
-	 * <!-- end-user-doc -->
-	 */
-	public EClassifier findType(String modelName, String typeName) {
-		try {
-			final Object type = EMFTVMUtil.findType(this, modelName, typeName);
-			if (type instanceof Class<?>) {
-				// Wrap Java class
-				final EDataType dt = EcoreFactory.eINSTANCE.createEDataType();
-				dt.setName(typeName);
-				dt.setInstanceClass((Class<?>)type);
-				return dt;
-			} else if (type instanceof EClassifier) {
-				return (EClassifier)type;
-			} else {
-				return null;
-			}
-		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException(e);
-		}
 	}
 
 } //ExecEnvImpl

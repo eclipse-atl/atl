@@ -253,6 +253,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 				return createLazyOrderedSetFromString(eDataType, initialValue);
 			case EmftvmPackage.LAZY_SET:
 				return createLazySetFromString(eDataType, initialValue);
+			case EmftvmPackage.CLASS_NOT_FOUND_EXCEPTION:
+				return createClassNotFoundExceptionFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -297,6 +299,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 				return convertLazyOrderedSetToString(eDataType, instanceValue);
 			case EmftvmPackage.LAZY_SET:
 				return convertLazySetToString(eDataType, instanceValue);
+			case EmftvmPackage.CLASS_NOT_FOUND_EXCEPTION:
+				return convertClassNotFoundExceptionToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -1252,6 +1256,24 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 */
 	public String convertLazySetToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ClassNotFoundException createClassNotFoundExceptionFromString(EDataType eDataType, String initialValue) {
+		return (ClassNotFoundException)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertClassNotFoundExceptionToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

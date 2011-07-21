@@ -88,6 +88,7 @@ import org.eclipse.m2m.atl.emftvm.util.LazyListOnCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyListOnList;
 import org.eclipse.m2m.atl.emftvm.util.LazySetOnSet;
 import org.eclipse.m2m.atl.emftvm.util.Matcher;
+import org.eclipse.m2m.atl.emftvm.util.NativeTypes;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
@@ -756,11 +757,12 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					frame.push(getStatic(((GetStatic)instr).getFieldname(), frame));
 					break;
 				case FINDTYPE: 
-					frame.push(EMFTVMUtil.findType(frame.getEnv(), ((Findtype)instr).getModelname(), ((Findtype)instr).getTypename()));
+					frame.push(frame.getEnv().findType(
+									((Findtype)instr).getModelname(), 
+									((Findtype)instr).getTypename()));
 					break;
 				case FINDTYPE_S:
-					frame.push(EMFTVMUtil.findType(
-									frame.getEnv(), 
+					frame.push(frame.getEnv().findType(
 									(String)frame.pop(), 
 									(String)frame.pop()));
 					break;
@@ -1824,9 +1826,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			}
 			return model.newElement(eType);
 		} else {
-			final Class<?> jType = (Class<?>)type;
 			try {
-				return jType.newInstance();
+				return NativeTypes.newInstance((Class<?>)type);
 			} catch (Exception e) {
 				throw new IllegalArgumentException(e);
 			}

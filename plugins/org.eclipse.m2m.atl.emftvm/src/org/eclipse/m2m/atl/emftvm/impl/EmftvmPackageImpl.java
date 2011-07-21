@@ -737,6 +737,13 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EDataType classNotFoundExceptionEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EDataType moduleResolverEDataType = null;
 
 	/**
@@ -2669,6 +2676,15 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getClassNotFoundException() {
+		return classNotFoundExceptionEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getModuleResolver() {
 		return moduleResolverEDataType;
 	}
@@ -2994,6 +3010,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		lazyListEDataType = createEDataType(LAZY_LIST);
 		lazyOrderedSetEDataType = createEDataType(LAZY_ORDERED_SET);
 		lazySetEDataType = createEDataType(LAZY_SET);
+		classNotFoundExceptionEDataType = createEDataType(CLASS_NOT_FOUND_EXCEPTION);
 	}
 
 	/**
@@ -3165,9 +3182,10 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		op = addEOperation(execEnvEClass, this.getRule(), "findRule", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = addEOperation(execEnvEClass, theEcorePackage.getEClassifier(), "findType", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = addEOperation(execEnvEClass, theEcorePackage.getEJavaObject(), "findType", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "modelName", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "typeName", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEException(op, this.getClassNotFoundException());
 
 		op = addEOperation(execEnvEClass, theEcorePackage.getEJavaObject(), "run", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getTimingData(), "timingData", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3602,6 +3620,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEDataType(lazyListEDataType, LazyList.class, "LazyList", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(lazyOrderedSetEDataType, LazyOrderedSet.class, "LazyOrderedSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(lazySetEDataType, LazySet.class, "LazySet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(classNotFoundExceptionEDataType, ClassNotFoundException.class, "ClassNotFoundException", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

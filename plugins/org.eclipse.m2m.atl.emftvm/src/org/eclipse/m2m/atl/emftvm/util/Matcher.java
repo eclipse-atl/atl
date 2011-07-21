@@ -1190,7 +1190,12 @@ public final class Matcher {
 					mapsTo.setDefaultFor(traces);
 				}
 			}
-			EClass type = (EClass)env.findType(ore.getTypeModel(), ore.getType());
+			EClass type;
+			try {
+				type = (EClass)env.findType(ore.getTypeModel(), ore.getType());
+			} catch (ClassNotFoundException e) {
+				throw new VMException(frame);
+			}
 			EList<Model> models = ore.getEModels();
 			assert models.size() == 1;
 			te.setObject(models.get(0).newElement(type));

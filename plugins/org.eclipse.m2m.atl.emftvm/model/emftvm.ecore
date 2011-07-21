@@ -105,6 +105,7 @@
     <eLiterals name="EnumLiteral" value="8" literal="EnumLiteral"/>
     <eLiterals name="Null" value="9" literal="Null"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ClassNotFoundException" instanceClassName="java.lang.ClassNotFoundException"/>
   <eClassifiers xsi:type="ecore:EClass" name="ExecEnv">
     <eOperations name="loadModule" eType="#//Module">
       <eParameters name="resolver" eType="#//ModuleResolver"/>
@@ -137,7 +138,8 @@
     <eOperations name="findRule" eType="#//Rule">
       <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eOperations>
-    <eOperations name="findType" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClassifier">
+    <eOperations name="findType" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"
+        eExceptions="#//ClassNotFoundException">
       <eParameters name="modelName" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
       <eParameters name="typeName" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eOperations>
