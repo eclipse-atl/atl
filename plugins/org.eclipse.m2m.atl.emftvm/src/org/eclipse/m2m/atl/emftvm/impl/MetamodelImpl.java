@@ -204,7 +204,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	private static void registerSingleType(final Map<String, EClassifier> types, final String typeName,
 			final EClassifier type) {
 		if (types.containsKey(typeName)) {
-			ATLLogger.warning(String.format("Metamodel contains more than one type with name %s"));
+			ATLLogger.warning(String.format("Metamodel contains more than one type with name %s", typeName));
 		}
 		types.put(typeName, type);
 	}
