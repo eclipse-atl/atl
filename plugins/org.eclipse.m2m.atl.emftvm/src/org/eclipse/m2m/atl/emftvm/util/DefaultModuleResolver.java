@@ -11,9 +11,13 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -30,7 +34,7 @@ public class DefaultModuleResolver implements ModuleResolver {
 	 */
 	public static final String FILE_EXT = ".emftvm";
 
-	private final String uriPrefix;
+	private final List<String> uriPrefixes = new ArrayList<String>();
 	private final ResourceSet resourceSet;
 
 	/**
@@ -40,7 +44,13 @@ public class DefaultModuleResolver implements ModuleResolver {
 	 */
 	public DefaultModuleResolver(final String uriPrefix, final ResourceSet resourceSet) {
 		super();
-		this.uriPrefix = uriPrefix;
+		if (uriPrefix == null) {
+			throw new IllegalArgumentException("uriPrefix cannot be null");
+		}
+		if (resourceSet == null) {
+			throw new IllegalArgumentException("resourceSet cannot be null");
+		}
+		this.uriPrefixes.add(uriPrefix);
 		this.resourceSet = resourceSet;
 	}
 
@@ -49,21 +59,41 @@ public class DefaultModuleResolver implements ModuleResolver {
 	 */
 	public Module resolveModule(final String name) throws ModuleNotFoundException {
 		final Matcher m = EMFTVMUtil.DELIM_PATTERN.matcher(name);
-		final URI moduleURI = URI.createURI(uriPrefix + m.replaceAll("/") + FILE_EXT);
+		final String path = m.replaceAll("/");
 		final ResourceSet rs = getResourceSet();
-		final Resource r = rs.getResource(moduleURI, true);
-		if (r == null) {
-			throw new ModuleNotFoundException(String.format("Module %s not found", name));
+		for (String uriPrefix : getUriPrefixes()) {
+			URI moduleURI = URI.createURI(uriPrefix + path + FILE_EXT);
+			try {
+				Resource r = rs.getResource(moduleURI, true);
+				if (r != null) {
+					return findModule(r, name);
+				}
+			} catch (WrappedException e) {
+				//continue;
+			} catch (ModuleNotFoundException e) {
+				//continue;
+			}
 		}
-		return findModule(r, name);
+		throw new ModuleNotFoundException(String.format("Module %s not found", name));
 	}
 
 	/**
-	 * Returns the URI prefix.
-	 * @return the uriPrefix
+	 * Returns the URI prefixes.
+	 * @return the uriPrefixes
 	 */
-	public String getUriPrefix() {
-		return uriPrefix;
+	public List<String> getUriPrefixes() {
+		return Collections.unmodifiableList(uriPrefixes);
+	}
+
+	/**
+	 * Adds <code>uriPrefix</code> to the URI prefixes list.
+	 * @param uriPrefix the URI prefix to add
+	 */
+	public void addUriPrefix(final String uriPrefix) {
+		if (uriPrefix == null) {
+			throw new IllegalArgumentException("uriPrefix cannot be null");
+		}
+		uriPrefixes.add(uriPrefix);
 	}
 
 	/**
