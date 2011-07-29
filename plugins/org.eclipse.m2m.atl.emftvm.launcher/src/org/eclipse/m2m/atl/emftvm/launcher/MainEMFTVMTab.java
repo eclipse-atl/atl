@@ -538,6 +538,11 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		isMetametamodel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 2, 1));
 		isMetametamodel.setText("Is metametamodel");
 		isMetametamodel.setToolTipText("Whether this is the root metamodel (Ecore)");
+		isMetametamodel.setSelection(
+				EMFTVMLaunchConfigurationDelegate.getBoolOption(
+						metamodelOptions, 
+						metamodelName, 
+						EMFTVMLaunchConstants.OPT_IS_METAMETAMODEL));
 		thisGroupWidgets.put("isMetametamodel", isMetametamodel); //$NON-NLS-1$
 
 		final Button browseWorkspace = new Button(parent, SWT.NULL);
@@ -583,6 +588,11 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 
 		final Label filler = new Label(parent, SWT.NULL);
 		filler.setLayoutData(new GridData(SWT.NULL, SWT.NULL, false, false, 3, 1));
+
+		location.setEnabled(!isMetametamodel.getSelection());
+		browseWorkspace.setEnabled(!isMetametamodel.getSelection());
+		browseFilesystem.setEnabled(!isMetametamodel.getSelection());
+		browseEMFRegistry.setEnabled(!isMetametamodel.getSelection());
 
 		isMetametamodel.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -857,7 +867,9 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		}
 		
 		final Module module = loadModule("platform:/resource/" + path);
-		getModelsFromEMFTVMModule(module);
+		if (module != null) {
+			getModelsFromEMFTVMModule(module);
+		}
 	}
 
 	/**
