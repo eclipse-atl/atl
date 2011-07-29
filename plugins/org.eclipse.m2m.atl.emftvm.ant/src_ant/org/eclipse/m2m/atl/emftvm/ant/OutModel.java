@@ -18,6 +18,7 @@ package org.eclipse.m2m.atl.emftvm.ant;
 public class OutModel extends ModelElement {
 
 	private String wspath;
+	private String uri;
 
 	/**
 	 * Sets the output model workspace path.
@@ -33,6 +34,22 @@ public class OutModel extends ModelElement {
 	 */
 	public String getWspath() {
 		return wspath;
+	}
+
+	/**
+	 * Sets the model URI.
+	 * @param uri the uri to set
+	 */
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+
+	/**
+	 * Returns the model URI.
+	 * @return the uri
+	 */
+	public String getUri() {
+		return uri;
 	}
 
 }

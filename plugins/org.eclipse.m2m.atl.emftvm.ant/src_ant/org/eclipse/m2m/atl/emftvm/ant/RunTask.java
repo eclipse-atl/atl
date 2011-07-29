@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -24,7 +25,6 @@ import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
-import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 
 
@@ -147,7 +147,11 @@ public class RunTask extends EMFTVMTask {
 		addModelsToMap(getInputModels(), env.getInputModels());
 		addModelsToMap(getInoutModels(), env.getInoutModels());
 		addOutModelsToMap(getOutputModels(), env.getOutputModels());
-		final ModuleResolver resolver = new DefaultModuleResolver(getModulePath(), getResourceSet());
+		final StringTokenizer pathElements = new StringTokenizer(getModulePath(), ",");
+		final DefaultModuleResolver resolver = new DefaultModuleResolver(pathElements.nextToken(), getResourceSet());
+		while (pathElements.hasMoreTokens()) {
+			resolver.addUriPrefix(pathElements.nextToken());
+		}
 		final TimingData timingData = new TimingData();
 		env.loadModule(resolver, getModule());
 		timingData.finishLoading();
@@ -163,7 +167,9 @@ public class RunTask extends EMFTVMTask {
 			if (as == null) {
 				as = name;
 			}
-			map.put(as, getModel(name));
+			Model model = getModel(name);
+			model.setAllowInterModelReferences(m.isAllowInterModelReferences());
+			map.put(as, model);
 		}
 	}
 
@@ -179,17 +185,19 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	private void addOutModelsToMap(final Collection<? extends OutModel> ms, final Map<String, Model> map) {
+		final ResourceSet rs = getResourceSet();
 		for (OutModel m : ms) {
 			String name = m.getName();
 			String as = m.getAs();
 			if (as == null) {
 				as = name;
 			}
-			String wspath = m.getWspath();
-			final ResourceSet rs = getResourceSet();
-			final Resource r = rs.createResource(URI.createPlatformResourceURI(wspath, true));
-			final Model model = EmftvmFactory.eINSTANCE.createModel();
+			String u = m.getUri();
+			URI uri = u == null ? URI.createPlatformResourceURI(m.getWspath(), true) : URI.createURI(u);
+			Resource r = rs.createResource(uri);
+			Model model = EmftvmFactory.eINSTANCE.createModel();
 			model.setResource(r);
+			model.setAllowInterModelReferences(m.isAllowInterModelReferences());
 			setModel(name, model);
 			map.put(as, model);
 		}

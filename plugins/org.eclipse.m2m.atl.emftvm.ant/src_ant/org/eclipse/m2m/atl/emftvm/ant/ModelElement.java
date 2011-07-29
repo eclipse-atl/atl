@@ -19,6 +19,7 @@ public abstract class ModelElement {
 
 	private String name;
 	private String as;
+	private boolean allowInterModelReferences = true;
 
 	/**
 	 * Sets the model element name.
@@ -50,6 +51,22 @@ public abstract class ModelElement {
 	 */
 	public void setAs(String as) {
 		this.as = as;
+	}
+
+	/**
+	 * Returns the allowInterModelReferences (default = <code>true</code>).
+	 * @return the allowInterModelReferences
+	 */
+	public boolean isAllowInterModelReferences() {
+		return allowInterModelReferences;
+	}
+
+	/**
+	 * Sets the allowInterModelReferences with the allowInterModelReferences value.
+	 * @param allowInterModelReferences the allowInterModelReferences to set
+	 */
+	public void setAllowInterModelReferences(boolean allowInterModelReferences) {
+		this.allowInterModelReferences = allowInterModelReferences;
 	}
 
 }
