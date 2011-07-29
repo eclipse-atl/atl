@@ -3,7 +3,7 @@
 -- @path ATL=/emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: ATLtoEMFTVM.atl,v 1.3 2011/07/21 13:30:34 dwagelaar Exp $
+-- $Id: ATLtoEMFTVM.atl,v 1.4 2011/07/29 17:33:15 dwagelaar Exp $
 module ATLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -255,6 +255,13 @@ helper context ATL!Rule def : outPatternElements : Sequence(ATL!OutPatternElemen
 		Sequence{}
 	else
 		self.outPattern.elements
+	endif;
+
+helper context ATL!Rule def : applyLoc : String =
+	if self.outPattern.oclIsUndefined() then
+		self.location
+	else
+		self.outPattern.location
 	endif;
 
 -- ======================================================================
@@ -679,6 +686,15 @@ rule CalledRule { -- Called rules are really operations
 	   invokeAllCbs : EMFTVM!InvokeAllCbs					-- [null] * nestedCbSize
 }
 
+rule CalledRuleNamedMain extends CalledRule {
+	from s : ATL!CalledRule in IN (s.name = 'main')
+	to t : EMFTVM!Operation,
+	   pb : Problem!Problem (
+		description <- 'Called rules may not be named "main()"',
+		location <- s.location,
+		severity <- #error)
+}
+
 rule MatchedRuleVariableDeclaration {
 	from s : ATL!RuleVariableDeclaration in IN (s."rule".oclIsKindOf(ATL!MatchedRule))
 	to t : EMFTVM!Field (
@@ -706,16 +722,11 @@ rule MatchedRuleVariableDeclaration {
 
 rule MatchedRule {
 	from s : ATL!MatchedRule in IN
-	using {
-		applyLoc : String = s.outPattern.location;
-		-- TODO atl2006 compiler bug: sub-rule does not create additional element when defining the following rule variable:
---		postLoc : String = if s.actionBlock.oclIsUndefined() then s.location else s.actionBlock.location endif;
-	}
 	to t : EMFTVM!Rule (
 		name <- s.name,
 		"abstract" <- s.isAbstract,
 		superRules <- if s.superRule.oclIsUndefined() then Sequence{} else Sequence{s.superRule.name} endif,
-		outputElements <- s.outPattern.elements,
+		outputElements <- s.outPatternElements,
 		mode <- 
 			if s.oclIsKindOf(ATL!LazyMatchedRule) then
 				#manual
@@ -736,15 +747,15 @@ rule MatchedRule {
 	   	lineNumbers <- Sequence{aln},
 	   	localVariables <- Sequence{a_trace}
 			->union(s.inPattern.elements->collect(e|thisModule.resolveTemp(e, 'ov')))
-			->union(s.outPattern.elements->collect(e|thisModule.resolveTemp(e, 'ov'))),
+			->union(s.outPatternElements->collect(e|thisModule.resolveTemp(e, 'ov'))),
 		nested <- s.variables->collect(v|thisModule.resolveTemp(v, 'cb'))
-			->union(s.outPattern.elements->collect(e|e.bindings)->flatten()),
+			->union(s.outPatternElements->collect(e|e.bindings)->flatten()),
 	   	code <- Sequence{a_invokeAllCbs}),
 	   aln : EMFTVM!LineNumber (
-	   	startLine <- applyLoc.startLine,
-		startColumn <- applyLoc.startColumn,
-		endLine <- applyLoc.endLine,
-		endColumn <- applyLoc.endColumn,
+	   	startLine <- s.applyLoc.startLine,
+		startColumn <- s.applyLoc.startColumn,
+		endLine <- s.applyLoc.endLine,
+		endColumn <- s.applyLoc.endColumn,
 		instructions <- Sequence{a_invokeAllCbs}),
 	   a_trace : EMFTVM!LocalVariable (
 	   	name <- '__trace__',
@@ -787,7 +798,7 @@ rule MatchedRuleWithFilterAndAction extends MatchedRuleWithFilter {
 	   p : EMFTVM!CodeBlock (
 	   	localVariables <- Sequence{p_trace}
 			->union(s.inPattern.elements->collect(e|thisModule.resolveTemp(e, 'pv')))
-			->union(s.outPattern.elements->collect(e|thisModule.resolveTemp(e, 'pv'))),
+			->union(s.outPatternElements->collect(e|thisModule.resolveTemp(e, 'pv'))),
 	   	lineNumbers <- Sequence{pln},
 	   	nested <- s.actionBlock.statements,
 		code <- Sequence{p_invokeAllCbs}),
@@ -816,7 +827,7 @@ rule MatchedRuleWithoutFilterWithAction extends MatchedRule {
 	   p : EMFTVM!CodeBlock (
 	   	localVariables <- Sequence{p_trace}
 			->union(s.inPattern.elements->collect(e|thisModule.resolveTemp(e, 'pv')))
-			->union(s.outPattern.elements->collect(e|thisModule.resolveTemp(e, 'pv'))),
+			->union(s.outPatternElements->collect(e|thisModule.resolveTemp(e, 'pv'))),
 	   	lineNumbers <- Sequence{pln},
 	   	nested <- s.actionBlock.statements,
 		code <- Sequence{p_invokeAllCbs}),
