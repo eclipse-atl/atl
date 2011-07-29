@@ -27,48 +27,52 @@ public final class NativeTypes {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static enum NativeType {
-		OBJECT,
-		COLLECTION,
-		BAG,
-		SEQUENCE,
-		SET,
-		ORDERED_SET,
-		MAP,
-		TUPLE,
-		BOOLEAN,
-		INTEGER,
-		REAL,
-		STRING;
+		OBJECT("Object", Object.class),
+		COLLECTION("Collection", LazyCollection.class),
+		BAG("Bag", LazyBag.class),
+		SEQUENCE("Sequence", LazyList.class),
+		SET("Set", LazySet.class),
+		ORDERED_SET("OrderedSet", LazyOrderedSet.class),
+		MAP("Map", Map.class),
+		TUPLE("Tuple", Tuple.class),
+		BOOLEAN("Boolean", Boolean.class),
+		INTEGER("Integer", Integer.class),
+		REAL("Real", Double.class),
+		STRING("String", String.class);
+		
+		private final String name;
+		private final Class<?> type;
+		
+		private NativeType(String name, Class<?> type) {
+			this.name = name;
+			this.type = type;
+		}
+
+		/**
+		 * Returns the name.
+		 * @return the name
+		 */
+		public String getName() {
+			return name;
+		}
+
+		/**
+		 * Returns the type.
+		 * @return the type
+		 */
+		public Class<?> getType() {
+			return type;
+		}
 	}
 
 	private static final Map<String, NativeType> typeNames = new HashMap<String, NativeType>();
 	private static final Map<Class<?>, NativeType> types = new HashMap<Class<?>, NativeType>();
 
 	static {
-		typeNames.put("Object", NativeType.OBJECT);
-		typeNames.put("Collection", NativeType.COLLECTION);
-		typeNames.put("Bag", NativeType.BAG);
-		typeNames.put("Sequence", NativeType.SEQUENCE);
-		typeNames.put("Set", NativeType.SET);
-		typeNames.put("OrderedSet", NativeType.ORDERED_SET);
-		typeNames.put("Map", NativeType.MAP);
-		typeNames.put("Tuple", NativeType.TUPLE);
-		typeNames.put("Boolean", NativeType.BOOLEAN);
-		typeNames.put("Integer", NativeType.INTEGER);
-		typeNames.put("Real", NativeType.REAL);
-		typeNames.put("String", NativeType.STRING);
-		types.put(Object.class, NativeType.OBJECT);
-		types.put(LazyCollection.class, NativeType.COLLECTION);
-		types.put(LazyBag.class, NativeType.BAG);
-		types.put(LazyList.class, NativeType.SEQUENCE);
-		types.put(LazySet.class, NativeType.SET);
-		types.put(LazyOrderedSet.class, NativeType.ORDERED_SET);
-		types.put(Map.class, NativeType.MAP);
-		types.put(Tuple.class, NativeType.TUPLE);
-		types.put(Boolean.class, NativeType.BOOLEAN);
-		types.put(Integer.class, NativeType.INTEGER);
-		types.put(Double.class, NativeType.REAL);
-		types.put(String.class, NativeType.STRING);
+		for (NativeType type : NativeType.values()) {
+			typeNames.put(type.getName(), type);
+			types.put(type.getType(), type);
+		}
 	}
 
 	/**

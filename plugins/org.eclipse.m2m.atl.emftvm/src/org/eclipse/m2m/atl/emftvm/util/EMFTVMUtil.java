@@ -8,9 +8,15 @@
  * Contributors:
  *     Dennis Wagelaar, Vrije Universiteit Brussel - initial API and
  *         implementation and/or initial documentation
+ *     William Piers, Obeo
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.util;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -22,6 +28,10 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
@@ -44,6 +54,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 /**
  * EMFTVM static utility methods.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+ * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public final class EMFTVMUtil {
 	
@@ -1162,4 +1173,57 @@ public final class EMFTVMUtil {
 		return argTypes;
 	}
 
+	/**
+	 * Writes <code>string</code> to <code>path</code> with the given <code>charset</code>.
+	 * @param string the string to write
+	 * @param path the path of the file to write to
+	 * @param charset the character set to use, or use default when null
+	 * @return true on success
+	 * @throws IOException when writing fails
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+	 */
+	public static boolean writeToWithCharset(final String string, final String path,
+			final String charset) throws IOException {
+		final File file = getFile(path);
+		if (file.getParentFile() != null) {
+			file.getParentFile().mkdirs();
+		}
+		final PrintStream out;
+		if (charset == null) {
+			out = new PrintStream(new BufferedOutputStream(
+					new FileOutputStream(file)), true);
+		} else {
+			out = new PrintStream(new BufferedOutputStream(
+					new FileOutputStream(file)), true, charset);
+		}
+		out.print(string);
+		out.close();
+		return true;
+	}
+
+	/**
+	 * Returns the file with the given <code>path</code> in the workspace, or the file in the filesystem if the workspace is not available.
+	 * @param path the absolute or relative path to a file.
+	 * @return the file in the workspace, or the file in the filesystem if the workspace is not available.
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+	 */
+	public static File getFile(final String path) {
+		String newPath = path;
+		if (Platform.isRunning()) {
+			IPath location = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path)).getLocation();
+			if (location != null) {
+				newPath = location.toString();
+			} else {
+				ATLLogger.info(String.format(
+						"Could not find a workspace location for %s; falling back to native java.io.File path resolution", 
+						path));
+			}
+		} else {
+			ATLLogger.info(
+					"Could not find workspace root; falling back to native java.io.File path resolution");
+		}
+		return new File(newPath);
+	}
 }

@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.util;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,6 +42,7 @@ import org.eclipse.m2m.atl.emftvm.trace.SourceElement;
 import org.eclipse.m2m.atl.emftvm.trace.SourceElementList;
 import org.eclipse.m2m.atl.emftvm.trace.TargetElement;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
+import org.eclipse.m2m.atl.emftvm.util.NativeTypes.NativeType;
 
 
 /**
@@ -150,20 +152,20 @@ public final class OCLOperations {
 	 */
 	public static final String EMFTVM_MODEL = EmftvmPackage.eNAME.toUpperCase();
 
-	static final String[] OCL_ANY_TYPE			= new String[]{OCL_MODEL, "java.lang.Object"};
-	static final String[] BOOLEAN_TYPE			= new String[]{OCL_MODEL, "java.lang.Boolean"};
-	static final String[] REAL_TYPE				= new String[]{OCL_MODEL, "java.lang.Double"};
-	static final String[] INTEGER_TYPE			= new String[]{OCL_MODEL, "java.lang.Integer"};
-	static final String[] STRING_TYPE			= new String[]{OCL_MODEL, "java.lang.String"};
+	static final String[] OCL_ANY_TYPE			= new String[]{OCL_MODEL, NativeType.OBJECT.getName()};
+	static final String[] BOOLEAN_TYPE			= new String[]{OCL_MODEL, NativeType.BOOLEAN.getName()};
+	static final String[] REAL_TYPE				= new String[]{OCL_MODEL, NativeType.REAL.getName()};
+	static final String[] INTEGER_TYPE			= new String[]{OCL_MODEL, NativeType.INTEGER.getName()};
+	static final String[] STRING_TYPE			= new String[]{OCL_MODEL, NativeType.STRING.getName()};
 	static final String[] JAVA_CLASS_TYPE		= new String[]{OCL_MODEL, "java.lang.Class"};
 	static final String[] JAVA_COLLECTION_TYPE	= new String[]{OCL_MODEL, "java.util.Collection"};
 	static final String[] JAVA_LIST_TYPE		= new String[]{OCL_MODEL, "java.util.List"};
-	static final String[] COLLECTION_TYPE 		= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazyCollection"};
-	static final String[] BAG_TYPE 				= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazyBag"};
-	static final String[] SEQUENCE_TYPE 		= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazyList"};
-	static final String[] SET_TYPE 				= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazySet"};
-	static final String[] ORDERED_SET_TYPE 		= new String[]{OCL_MODEL, "org.eclipse.m2m.atl.emftvm.util.LazyOrderedSet"};
-	static final String[] MAP_TYPE				= new String[]{OCL_MODEL, "java.util.Map"};
+	static final String[] COLLECTION_TYPE 		= new String[]{OCL_MODEL, NativeType.COLLECTION.getName()};
+	static final String[] BAG_TYPE 				= new String[]{OCL_MODEL, NativeType.BAG.getName()};
+	static final String[] SEQUENCE_TYPE 		= new String[]{OCL_MODEL, NativeType.SEQUENCE.getName()};
+	static final String[] SET_TYPE 				= new String[]{OCL_MODEL, NativeType.SET.getName()};
+	static final String[] ORDERED_SET_TYPE 		= new String[]{OCL_MODEL, NativeType.ORDERED_SET.getName()};
+	static final String[] MAP_TYPE				= new String[]{OCL_MODEL, NativeType.MAP.getName()};
 
 	static final String[] CLASSIFIER_TYPE 		= new String[]{ECORE_MODEL, "EClassifier"};
 	static final String[] CLASS_TYPE 			= new String[]{ECORE_MODEL, "EClass"};
@@ -1166,6 +1168,52 @@ public final class OCLOperations {
 					@Override
 					public Object execute(StackFrame frame) {
 						return Boolean.parseBoolean((String)frame.getLocal(0, 0));
+					}
+		});
+		createOperation(false, "toUpper", STRING_TYPE, STRING_TYPE,
+				new String[][][]{}, 
+				new CodeBlockImpl() {
+					@Override
+					public Object execute(StackFrame frame) {
+						return ((String)frame.getLocal(0, 0)).toUpperCase();
+					}
+		});
+		createOperation(false, "toLower", STRING_TYPE, STRING_TYPE,
+				new String[][][]{}, 
+				new CodeBlockImpl() {
+					@Override
+					public Object execute(StackFrame frame) {
+						return ((String)frame.getLocal(0, 0)).toLowerCase();
+					}
+		});
+		createOperation(false, "writeTo", STRING_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"path"}, STRING_TYPE}}, 
+				new CodeBlockImpl() {
+					@Override
+					public Object execute(StackFrame frame) {
+						try {
+							return EMFTVMUtil.writeToWithCharset(
+									(String)frame.getLocal(0, 0), 
+									(String)frame.getLocal(0, 1),
+									null);
+						} catch (IOException e) {
+							throw new VMException(frame, e);
+						}
+					}
+		});
+		createOperation(false, "writeToWithCharset", STRING_TYPE, BOOLEAN_TYPE,
+				new String[][][]{{{"path"}, STRING_TYPE}, {{"charset"}, STRING_TYPE}}, 
+				new CodeBlockImpl() {
+					@Override
+					public Object execute(StackFrame frame) {
+						try {
+							return EMFTVMUtil.writeToWithCharset(
+									(String)frame.getLocal(0, 0), 
+									(String)frame.getLocal(0, 1),
+									(String)frame.getLocal(0, 2));
+						} catch (IOException e) {
+							throw new VMException(frame, e);
+						}
 					}
 		});
 	}
