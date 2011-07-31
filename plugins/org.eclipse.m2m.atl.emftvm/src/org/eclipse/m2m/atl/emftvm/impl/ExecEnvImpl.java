@@ -12,8 +12,10 @@
 package org.eclipse.m2m.atl.emftvm.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -156,6 +158,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	protected EList<EObject> deletionQueue;
 
 	/**
+	 * The chain of '<code>main()</code>' operations to be executed after the automatic rules.
+	 */
+	protected EList<Operation> mainChain = new BasicEList<Operation>();
+
+	/**
 	 * Field storage and lookup. 
 	 */
 	protected final FieldContainer fieldContainer = new FieldContainer();
@@ -291,10 +298,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Map<String, Module> getModules() {
 		if (modules == null) {
-			modules = new HashMap<String, Module>();
+			modules = Collections.synchronizedMap(new LinkedHashMap<String, Module>());
 		}
 		return modules;
 	}
@@ -326,10 +334,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Map<String, Metamodel> getMetaModels() {
 		if (metaModels == null) {
-			metaModels = new HashMap<String, Metamodel>();
+			metaModels = Collections.synchronizedMap(new HashMap<String, Metamodel>());
 		}
 		return metaModels;
 	}
@@ -338,10 +347,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Map<String, Model> getInputModels() {
 		if (inputModels == null) {
-			inputModels = new HashMap<String, Model>();
+			inputModels = Collections.synchronizedMap(new HashMap<String, Model>());
 		}
 		return inputModels;
 	}
@@ -350,10 +360,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Map<String, Model> getInoutModels() {
 		if (inoutModels == null) {
-			inoutModels = new HashMap<String, Model>();
+			inoutModels = Collections.synchronizedMap(new HashMap<String, Model>());
 		}
 		return inoutModels;
 	}
@@ -362,23 +373,22 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Map<String, Model> getOutputModels() {
 		if (outputModels == null) {
-			outputModels = new HashMap<String, Model>();
+			outputModels = Collections.synchronizedMap(new HashMap<String, Model>());
 		}
 		return outputModels;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Recursively loads module into the list of modules, and registers its contents for execution.
-	 * @param resolver the module resolver
-	 * @param name the module name
-	 * @return the loaded module
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
-	public Module loadModule(final ModuleResolver resolver, final String name) {
+	public synchronized Module loadModule(final ModuleResolver resolver, final String name) {
 		try {
 			final Map<String, Module> modules = getModules();
 			if (modules.containsKey(name)) {
@@ -421,14 +431,14 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Registers feature in the corresponding lookup table.
-	 * @param feature
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
-	public void registerFeature(final Feature feature) {
-		feature.setEContext(findECLassifier(feature.getContextModel(), feature.getContext()));
-		feature.setEType(findECLassifier(feature.getTypeModel(), feature.getType()));
+	public synchronized void registerFeature(final Feature feature) {
+		feature.setEContext(findEClassifier(feature.getContextModel(), feature.getContext()));
+		feature.setEType(findEClassifier(feature.getTypeModel(), feature.getType()));
 		switch (feature.eClass().getClassifierID()) {
 		case EmftvmPackage.FIELD:
 			fieldContainer.registerField((Field)feature);
@@ -447,7 +457,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	private void registerOperation(final Operation op) {
 		if (op.isStatic()) {
-			registerOperationIn(op, staticOperations);
+			if (EMFTVMUtil.MAIN_OP_NAME.equals(op.getName()) && op.getParameters().isEmpty()) {
+				// main() is special, and cannot be invoked programmatically
+				mainChain.add(op);
+			} else {
+				registerOperationIn(op, staticOperations);
+			}
 		} else {
 			registerOperationIn(op, operations);
 		}
@@ -500,7 +515,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		final Object[] types = new Object[eList.size()];
 		for (int i = 0; i < types.length; i++) {
 			Parameter par = eList.get(i);
-			par.setEType(findECLassifier(par.getTypeModel(), par.getType()));
+			par.setEType(findEClassifier(par.getTypeModel(), par.getType()));
 			types[i] = EMFTVMUtil.getRegistryType(par.getEType());
 		}
 		return types;
@@ -597,12 +612,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Registers r in the corresponding lookup table.
-	 * @param r
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
-	public void registerRule(final Rule r) {
+	public synchronized void registerRule(final Rule r) {
 		//TODO check rule redefinition consistency? (types, mapsTo, ...)
 		rules.put(r.getName(), r);
 
@@ -619,8 +634,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		}
 
 		for (Field field : r.getFields()) {
-			field.setEContext(findECLassifier(field.getContextModel(), field.getContext()));
-			field.setEType(findECLassifier(field.getTypeModel(), field.getType()));
+			field.setEContext(findEClassifier(field.getContextModel(), field.getContext()));
+			field.setEType(findEClassifier(field.getTypeModel(), field.getType()));
 			r.registerField(field);
 		}
 	}
@@ -632,7 +647,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @throws IllegalArgumentException when a reference cannot be resolved
 	 */
 	private void resolveRuleElement(final RuleElement re, final Map<String, Model> models) {
-		re.setEType(findECLassifier(re.getTypeModel(), re.getType()));
+		re.setEType(findEClassifier(re.getTypeModel(), re.getType()));
 		final EList<Model> eModels = re.getEModels();
 		eModels.clear();
 		for (String modelName : re.getModels()) {
@@ -685,6 +700,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
 	public Operation findOperation(final Object context, final String name, final EList<Object> parameterTypes) {
@@ -754,6 +770,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
 	public Operation findStaticOperation(Object context, final String name, final EList<Object> parameterTypes) {
@@ -889,6 +906,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Field findField(final Object context, final String name) {
 		return fieldContainer.findField(context, name);
@@ -898,6 +916,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Field findStaticField(Object context, String name) {
 		return fieldContainer.findStaticField(context, name);
@@ -907,6 +926,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Rule findRule(String name) {
 		return rules.get(name);
@@ -916,7 +936,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public Object findType(String modelName, String typeName) throws ClassNotFoundException {
 		if (EMFTVMUtil.NATIVE.equals(modelName)) {
@@ -936,7 +956,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @param typeName the type/metaclass name (may be fully qualified using '<pre>::</pre>')
 	 * @return the type/metaclass, or <code>null</code> if not found
 	 */
-	public EClassifier findECLassifier(String modelName, String typeName) {
+	private EClassifier findEClassifier(String modelName, String typeName) {
 		try {
 			final Object type = findType(modelName, typeName);
 			if (type instanceof Class<?>) {
@@ -961,18 +981,23 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	public synchronized Object run(final TimingData timingData, VMMonitor monitor) {
 		this.monitor = monitor;
-		final Object result;
+		Object result = null;
 		try {
 			assert getDeletionQueue().isEmpty();
 			cacheModels();
-			final Operation main = findStaticOperation(eClass(), EMFTVMUtil.MAIN_OP_NAME, new BasicEList<Object>());
-			if (main == null) {
+			final Iterator<Operation> mains = mainChain.iterator();
+			if (!mains.hasNext()) {
 				throw new UnsupportedOperationException(String.format("Operation %s not found", EMFTVMUtil.MAIN_OP_NAME));
 			}
-			final CodeBlock cb = main.getBody();
-			final StackFrame frame = new StackFrame(this, cb);
-			Matcher.matchAll(frame, timingData); // run all automatic rules before main
-			result = cb.execute(frame);
+			final StackFrame rootFrame = new StackFrame(this, mainChain.get(mainChain.size() - 1).getBody());
+			Matcher.matchAll(rootFrame, timingData); // run all automatic rules before main
+			while (mains.hasNext()) {
+				CodeBlock cb = mains.next().getBody();
+				Object thisResult = cb.execute(new StackFrame(this, cb));
+				if (thisResult != null) {
+					result = thisResult;
+				}
+			}
 			deleteQueue(); // process any leftover elements
 			if (monitor != null) {
 				monitor.terminated();
@@ -1024,6 +1049,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public LazyList<Rule> getRules() {
 		return new LazyList<Rule>(rules.values());
@@ -1033,6 +1059,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Model getModelOf(EObject object) {
 		final Resource r = object.eResource();
@@ -1043,6 +1070,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public String getModelID(Model model) {
 		return (model == null) ? null : modelId.get(model);
@@ -1052,6 +1080,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public void deleteQueue() {
 		final EList<EObject> queue = getDeletionQueue();
@@ -1067,6 +1096,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Model getInputModelOf(EObject object) {
 		final Resource r = object.eResource();
@@ -1077,6 +1107,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Model getInoutModelOf(EObject object) {
 		final Resource r = object.eResource();
@@ -1087,6 +1118,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Model getOutputModelOf(EObject object) {
 		final Resource r = object.eResource();

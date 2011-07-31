@@ -154,7 +154,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Loads the module with the given <pre>name</pre> into this {@link ExecEnv} using the <pre>resolver</pre>.
+	 * Loads the module with the given <code>name</code> and its imports
+	 * closure into this {@link ExecEnv} using the <code>resolver</code>,
+	 * and registers its contents for execution.
 	 * @param resolver the module file resolver
 	 * @param name the module name
 	 * @return the loaded module
