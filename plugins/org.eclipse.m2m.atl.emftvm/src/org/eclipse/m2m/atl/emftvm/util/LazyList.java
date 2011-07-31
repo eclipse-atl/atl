@@ -1328,11 +1328,16 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			return index;
 		}
 		int i = 0;
-		for (E e : this) {
-			if (e == o) {
-				return i;
+		if (o == null) {
+			for (E e : this) {
+				if (e == null) return i;
+				i++;
 			}
-			i++;
+		} else {
+			for (E e : this) {
+				if (o.equals(e)) return i;
+				i++;
+			}
 		}
 		return -1;
 	}
@@ -1346,11 +1351,16 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		}
 		int i = 0;
 		int lastIndex = -1;
-		for (E e : this) {
-			if (e == o) {
-				lastIndex = i;
+		if (o == null) {
+			for (E e : this) {
+				if (e == null) lastIndex = i;
+				i++;
 			}
-			i++;
+		} else {
+			for (E e : this) {
+				if (e.equals(o)) lastIndex = i;
+				i++;
+			}
 		}
 		return lastIndex;
 	}
