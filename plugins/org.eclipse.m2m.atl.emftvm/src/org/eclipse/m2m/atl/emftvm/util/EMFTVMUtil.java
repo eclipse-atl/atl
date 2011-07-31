@@ -92,8 +92,8 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static final WeakHashMap<Class<?>, Map<String, Method>> METHOD_CACHE = 
-		new WeakHashMap<Class<?>, Map<String, Method>>();
+	private static final Map<Class<?>, Map<Integer, Method>> METHOD_CACHE = 
+		new WeakHashMap<Class<?>, Map<Integer, Method>>();
 
 	private static Metamodel ecoreMetamodel;
 	private static Metamodel emfTvmMetamodel;
@@ -1040,7 +1040,7 @@ public final class EMFTVMUtil {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 	
-		final String sig = getMethodSignature(opname, argTypes, isStatic);
+		final int sig = getMethodSignature(opname, argTypes, isStatic);
 		Method ret = findCachedMethod(context, sig);
 		if (ret != null) {
 			return ret;
@@ -1096,9 +1096,9 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static Method findCachedMethod(Class<?> caller, String signature) {
+	private static Method findCachedMethod(final Class<?> caller, final int signature) {
 		Method ret = null;
-		Map<String, Method> sigMap = METHOD_CACHE.get(caller);
+		Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);
 		if (sigMap != null) {
 			ret = sigMap.get(signature);
 		}
@@ -1119,11 +1119,12 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static void cacheMethod(Class<?> caller, String signature, Method method) {
+	private static void cacheMethod(final Class<?> caller, final int signature, 
+			final Method method) {
 		synchronized (METHOD_CACHE) {
-			Map<String, Method> sigMap = METHOD_CACHE.get(caller);
+			Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);
 			if (sigMap == null) {
-				sigMap = new HashMap<String, Method>();
+				sigMap = new HashMap<Integer, Method>();
 				METHOD_CACHE.put(caller, sigMap);
 			}
 			sigMap.put(signature, method);
@@ -1131,7 +1132,7 @@ public final class EMFTVMUtil {
 	}
 
 	/**
-	 * Generates a String signature to store methods.
+	 * Generates an int signature to store methods.
 	 * 
 	 * @param name
 	 * @param argumentTypes
@@ -1142,22 +1143,14 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static String getMethodSignature(final String name, final Class<?>[] argumentTypes, 
+	private static int getMethodSignature(final String name, final Class<?>[] argumentTypes, 
 			final boolean isStatic) {
-		final StringBuffer sig = new StringBuffer();
-		if (isStatic) {
-			sig.append("static ");
-		}
-		sig.append(name);
-		sig.append('(');
+		int sig = isStatic ? 1 : 0;
+		sig = 31 * sig + name.hashCode();
 		for (int i = 0; i < argumentTypes.length; i++) {
-			if (i > 0) {
-				sig.append(',');
-			}
-			sig.append(argumentTypes[i].getName());
+			sig = sig * 31 + argumentTypes[i].hashCode();
 		}
-		sig.append(')');
-		return sig.toString();
+		return sig;
 	}
 
 	/**
