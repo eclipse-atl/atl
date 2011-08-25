@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cq:componentQuery xmlns:cq="http://www.eclipse.org/buckminster/CQuery-1.0" resourceMap="atl.rmap">
 	<cq:rootRequest name="org.eclipse.m2m.atl.build" componentType="eclipse.feature"/>
-
 	<cq:advisorNode namePattern="^org\.eclipse\.m2m.atl(?:\..*)?\.source$" skipComponent="true"/>
+	<cq:advisorNode namePattern="^org\.eclipse\.m2m.atl(?:\..*)?" branchTagPath="R3_2_maintenance"/>
 </cq:componentQuery>
