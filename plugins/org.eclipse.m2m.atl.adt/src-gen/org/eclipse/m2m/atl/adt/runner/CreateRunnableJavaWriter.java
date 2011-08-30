@@ -15,7 +15,7 @@ public class CreateRunnableJavaWriter
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "/*******************************************************************************" + NL + " * Copyright (c) 2010, 2011 Obeo." + NL + " * All rights reserved. This program and the accompanying materials" + NL + " * are made available under the terms of the Eclipse Public License v1.0" + NL + " * which accompanies this distribution, and is available at" + NL + " * http://www.eclipse.org/legal/epl-v10.html" + NL + " * " + NL + " * Contributors:" + NL + " *     Obeo - initial API and implementation" + NL + " *******************************************************************************/" + NL + "package ";
-  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.io.IOException;" + NL + "import java.io.InputStream;" + NL + "import java.net.URL;" + NL + "import java.util.HashMap;" + NL + "import java.util.Map;" + NL + "import java.util.Properties;" + NL + "import java.util.Map.Entry;" + NL + "" + NL + "import org.eclipse.core.runtime.FileLocator;" + NL + "import org.eclipse.core.runtime.IProgressMonitor;" + NL + "import org.eclipse.core.runtime.NullProgressMonitor;" + NL + "import org.eclipse.core.runtime.Path;" + NL + "import org.eclipse.core.runtime.Platform;";
+  protected final String TEXT_2 = ";" + NL + "" + NL + "import java.io.IOException;" + NL + "import java.io.InputStream;" + NL + "import java.net.URL;" + NL + "import java.util.ArrayList;" + NL + "import java.util.Arrays;" + NL + "import java.util.HashMap;" + NL + "import java.util.List;" + NL + "import java.util.Map;" + NL + "import java.util.Properties;" + NL + "import java.util.Map.Entry;" + NL + "" + NL + "import org.eclipse.core.runtime.FileLocator;" + NL + "import org.eclipse.core.runtime.IProgressMonitor;" + NL + "import org.eclipse.core.runtime.NullProgressMonitor;" + NL + "import org.eclipse.core.runtime.Path;" + NL + "import org.eclipse.core.runtime.Platform;";
   protected final String TEXT_3 = NL + "import org.eclipse.emf.ecore.EPackage;";
   protected final String TEXT_4 = NL + "import org.eclipse.emf.ecore.resource.Resource;" + NL + "import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;";
   protected final String TEXT_5 = NL + "import org.eclipse.m2m.atl.common.ATLExecutionException;" + NL + "import org.eclipse.m2m.atl.core.ATLCoreException;";
@@ -57,8 +57,8 @@ public class CreateRunnableJavaWriter
   protected final String TEXT_41 = "().do";
   protected final String TEXT_42 = "(new NullProgressMonitor()));";
   protected final String TEXT_43 = NL + "\t\t} catch (ATLCoreException e) {" + NL + "\t\t\te.printStackTrace();" + NL + "\t\t} catch (IOException e) {" + NL + "\t\t\te.printStackTrace();" + NL + "\t\t} catch (ATLExecutionException e) {" + NL + "\t\t\te.printStackTrace();" + NL + "\t\t}" + NL + "\t}" + NL + "" + NL + "\t/**" + NL + "\t * Constructor." + NL + "\t *" + NL + "\t * @generated" + NL + "\t */" + NL + "\tpublic ";
-  protected final String TEXT_44 = "() throws IOException {" + NL + "\t\tproperties = new Properties();" + NL + "\t\tproperties.load(getFileURL(\"";
-  protected final String TEXT_45 = ".properties\").openStream());";
+  protected final String TEXT_44 = "() throws IOException {" + NL + "\t\tproperties = new Properties();" + NL + "\t\tInputStream propertiesInputStream = getFileURL(\"";
+  protected final String TEXT_45 = ".properties\").openStream();" + NL + "\t\tproperties.load(propertiesInputStream);" + NL + "\t\tpropertiesInputStream.close();";
   protected final String TEXT_46 = NL + "\t\tEPackage.Registry.INSTANCE.put(getMetamodelUri(\"";
   protected final String TEXT_47 = "\"), ";
   protected final String TEXT_48 = ".eINSTANCE);";
@@ -108,7 +108,7 @@ public class CreateRunnableJavaWriter
   protected final String TEXT_92 = "ModelPath);";
   protected final String TEXT_93 = NL + "\t}";
   protected final String TEXT_94 = NL + NL + "\t/**" + NL + "\t * Transform the models." + NL + "\t * " + NL + "\t * @param monitor" + NL + "\t *            the progress monitor" + NL + "\t * @throws ATLCoreException" + NL + "\t *             if an error occurs during models handling" + NL + "\t * @throws IOException" + NL + "\t *             if a module cannot be read" + NL + "\t * @throws ATLExecutionException" + NL + "\t *             if an error occurs during the execution" + NL + "\t *" + NL + "\t * @generated" + NL + "\t */" + NL + "\tpublic Object do";
-  protected final String TEXT_95 = "(IProgressMonitor monitor) throws ATLCoreException, IOException, ATLExecutionException {" + NL + "\t\tILauncher launcher = new EMFVMLauncher();" + NL + "\t\tMap<String, Object> launcherOptions = getOptions();" + NL + "\t\tlauncher.initialize(launcherOptions);";
+  protected final String TEXT_95 = "(IProgressMonitor monitor) throws ATLCoreException, IOException, ATLExecutionException {" + NL + "\t\tILauncher launcher = new EMFVMLauncher();" + NL + "\t\tList<InputStream> inputStreamsToClose = new ArrayList<InputStream>();" + NL + "\t\tMap<String, Object> launcherOptions = getOptions();" + NL + "\t\tlauncher.initialize(launcherOptions);";
   protected final String TEXT_96 = NL + "\t\tlauncher.addInModel(";
   protected final String TEXT_97 = "Model, \"";
   protected final String TEXT_98 = "\", \"";
@@ -121,19 +121,20 @@ public class CreateRunnableJavaWriter
   protected final String TEXT_105 = "Model, \"";
   protected final String TEXT_106 = "\", \"";
   protected final String TEXT_107 = "\");";
-  protected final String TEXT_108 = NL + "\t\tlauncher.addOutModel(refiningTraceModel, \"refiningTrace\", \"RefiningTrace\");";
-  protected final String TEXT_109 = NL + "\t\tlauncher.addLibrary(\"";
-  protected final String TEXT_110 = "\", getLibraryAsStream(\"";
-  protected final String TEXT_111 = "\"));";
-  protected final String TEXT_112 = NL + "\t\treturn launcher.launch(\"run\", monitor, launcherOptions, (Object[]) getModulesList());" + NL + "\t}" + NL + "\t" + NL + "\t/**" + NL + "\t * Returns an Array of the module input streams, parameterized by the" + NL + "\t * property file." + NL + "\t * " + NL + "\t * @return an Array of the module input streams" + NL + "\t * @throws IOException" + NL + "\t *             if a module cannot be read" + NL + "\t *" + NL + "\t * @generated" + NL + "\t */" + NL + "\tprotected InputStream[] getModulesList() throws IOException {" + NL + "\t\tInputStream[] modules = null;" + NL + "\t\tString modulesList = properties.getProperty(\"";
-  protected final String TEXT_113 = ".modules\");" + NL + "\t\tif (modulesList != null) {" + NL + "\t\t\tString[] moduleNames = modulesList.split(\",\");" + NL + "\t\t\tmodules = new InputStream[moduleNames.length];" + NL + "\t\t\tfor (int i = 0; i < moduleNames.length; i++) {" + NL + "\t\t\t\tString asmModulePath = new Path(moduleNames[i].trim()).removeFileExtension().addFileExtension(\"asm\").toString();" + NL + "\t\t\t\tmodules[i] = getFileURL(asmModulePath).openStream();" + NL + "\t\t\t}" + NL + "\t\t}" + NL + "\t\treturn modules;" + NL + "\t}" + NL + "\t" + NL + "\t/**" + NL + "\t * Returns the URI of the given metamodel, parameterized from the property file." + NL + "\t * " + NL + "\t * @param metamodelName" + NL + "\t *            the metamodel name" + NL + "\t * @return the metamodel URI" + NL + "\t *" + NL + "\t * @generated" + NL + "\t */" + NL + "\tprotected String getMetamodelUri(String metamodelName) {" + NL + "\t\treturn properties.getProperty(\"";
-  protected final String TEXT_114 = ".metamodels.\" + metamodelName);" + NL + "\t}" + NL + "\t" + NL + "\t/**" + NL + "\t * Returns the file name of the given library, parameterized from the property file." + NL + "\t * " + NL + "\t * @param libraryName" + NL + "\t *            the library name" + NL + "\t * @return the library file name" + NL + "\t *" + NL + "\t * @generated" + NL + "\t */" + NL + "\tprotected InputStream getLibraryAsStream(String libraryName) throws IOException {" + NL + "\t\treturn getFileURL(properties.getProperty(\"";
-  protected final String TEXT_115 = ".libraries.\" + libraryName)).openStream();" + NL + "\t}" + NL + "\t" + NL + "\t/**" + NL + "\t * Returns the options map, parameterized from the property file." + NL + "\t * " + NL + "\t * @return the options map" + NL + "\t *" + NL + "\t * @generated" + NL + "\t */" + NL + "\tprotected Map<String, Object> getOptions() {" + NL + "\t\tMap<String, Object> options = new HashMap<String, Object>();" + NL + "\t\tfor (Entry<Object, Object> entry : properties.entrySet()) {" + NL + "\t\t\tif (entry.getKey().toString().startsWith(\"";
-  protected final String TEXT_116 = ".options.\")) {" + NL + "\t\t\t\toptions.put(entry.getKey().toString().replaceFirst(\"";
-  protected final String TEXT_117 = ".options.\", \"\"), " + NL + "\t\t\t\tentry.getValue().toString());" + NL + "\t\t\t}" + NL + "\t\t}" + NL + "\t\treturn options;" + NL + "\t}" + NL + "\t" + NL + "\t/**" + NL + "\t * Finds the file in the plug-in. Returns the file URL." + NL + "\t * " + NL + "\t * @param fileName" + NL + "\t *            the file name" + NL + "\t * @return the file URL" + NL + "\t * @throws IOException" + NL + "\t *             if the file doesn't exist" + NL + "\t * " + NL + "\t * @generated" + NL + "\t */" + NL + "\tprotected static URL getFileURL(String fileName) throws IOException {" + NL + "\t\tfinal URL fileURL;" + NL + "\t\tif (isEclipseRunning()) {" + NL + "\t\t\tURL resourceURL = ";
-  protected final String TEXT_118 = ".class.getResource(fileName);" + NL + "\t\t\tif (resourceURL != null) {" + NL + "\t\t\t\tfileURL = FileLocator.toFileURL(resourceURL);" + NL + "\t\t\t} else {" + NL + "\t\t\t\tfileURL = null;" + NL + "\t\t\t}" + NL + "\t\t} else {" + NL + "\t\t\tfileURL = ";
-  protected final String TEXT_119 = ".class.getResource(fileName);" + NL + "\t\t}" + NL + "\t\tif (fileURL == null) {" + NL + "\t\t\tthrow new IOException(\"'\" + fileName + \"' not found\");" + NL + "\t\t} else {" + NL + "\t\t\treturn fileURL;" + NL + "\t\t}" + NL + "\t}" + NL + "" + NL + "\t/**" + NL + "\t * Tests if eclipse is running." + NL + "\t * " + NL + "\t * @return <code>true</code> if eclipse is running" + NL + "\t *" + NL + "\t * @generated" + NL + "\t */" + NL + "\tpublic static boolean isEclipseRunning() {" + NL + "\t\ttry {" + NL + "\t\t\treturn Platform.isRunning();" + NL + "\t\t} catch (Throwable exception) {" + NL + "\t\t\t// Assume that we aren't running." + NL + "\t\t}" + NL + "\t\treturn false;" + NL + "\t}" + NL + "}";
-  protected final String TEXT_120 = NL;
+  protected final String TEXT_108 = NL + "\t\tlauncher.addOutModel(refiningTraceModel, \"refiningTrace\", \"RefiningTrace\");" + NL + "\t\t";
+  protected final String TEXT_109 = NL + "\t\tInputStream libraryStream = getLibraryAsStream(\"";
+  protected final String TEXT_110 = "\");" + NL + "\t\tinputStreamsToClose.add(libraryStream);" + NL + "\t\tlauncher.addLibrary(\"";
+  protected final String TEXT_111 = "\", getLibraryAsStream(\"";
+  protected final String TEXT_112 = "\"));";
+  protected final String TEXT_113 = NL + "\t\tInputStream[] modulesStreams = getModulesList();" + NL + "\t\tinputStreamsToClose.addAll(Arrays.asList(modulesStreams));" + NL + "\t\tObject result = launcher.launch(\"run\", monitor, launcherOptions, (Object[]) modulesStreams);" + NL + "\t\tfor (InputStream inputStream : inputStreamsToClose) {" + NL + "\t\t\tinputStream.close();" + NL + "\t\t}" + NL + "\t\treturn result;" + NL + "\t}" + NL + "\t" + NL + "\t/**" + NL + "\t * Returns an Array of the module input streams, parameterized by the" + NL + "\t * property file." + NL + "\t * " + NL + "\t * @return an Array of the module input streams" + NL + "\t * @throws IOException" + NL + "\t *             if a module cannot be read" + NL + "\t *" + NL + "\t * @generated" + NL + "\t */" + NL + "\tprotected InputStream[] getModulesList() throws IOException {" + NL + "\t\tInputStream[] modules = null;" + NL + "\t\tString modulesList = properties.getProperty(\"";
+  protected final String TEXT_114 = ".modules\");" + NL + "\t\tif (modulesList != null) {" + NL + "\t\t\tString[] moduleNames = modulesList.split(\",\");" + NL + "\t\t\tmodules = new InputStream[moduleNames.length];" + NL + "\t\t\tfor (int i = 0; i < moduleNames.length; i++) {" + NL + "\t\t\t\tString asmModulePath = new Path(moduleNames[i].trim()).removeFileExtension().addFileExtension(\"asm\").toString();" + NL + "\t\t\t\tmodules[i] = getFileURL(asmModulePath).openStream();" + NL + "\t\t\t}" + NL + "\t\t}" + NL + "\t\treturn modules;" + NL + "\t}" + NL + "\t" + NL + "\t/**" + NL + "\t * Returns the URI of the given metamodel, parameterized from the property file." + NL + "\t * " + NL + "\t * @param metamodelName" + NL + "\t *            the metamodel name" + NL + "\t * @return the metamodel URI" + NL + "\t *" + NL + "\t * @generated" + NL + "\t */" + NL + "\tprotected String getMetamodelUri(String metamodelName) {" + NL + "\t\treturn properties.getProperty(\"";
+  protected final String TEXT_115 = ".metamodels.\" + metamodelName);" + NL + "\t}" + NL + "\t" + NL + "\t/**" + NL + "\t * Returns the file name of the given library, parameterized from the property file." + NL + "\t * " + NL + "\t * @param libraryName" + NL + "\t *            the library name" + NL + "\t * @return the library file name" + NL + "\t *" + NL + "\t * @generated" + NL + "\t */" + NL + "\tprotected InputStream getLibraryAsStream(String libraryName) throws IOException {" + NL + "\t\treturn getFileURL(properties.getProperty(\"";
+  protected final String TEXT_116 = ".libraries.\" + libraryName)).openStream();" + NL + "\t}" + NL + "\t" + NL + "\t/**" + NL + "\t * Returns the options map, parameterized from the property file." + NL + "\t * " + NL + "\t * @return the options map" + NL + "\t *" + NL + "\t * @generated" + NL + "\t */" + NL + "\tprotected Map<String, Object> getOptions() {" + NL + "\t\tMap<String, Object> options = new HashMap<String, Object>();" + NL + "\t\tfor (Entry<Object, Object> entry : properties.entrySet()) {" + NL + "\t\t\tif (entry.getKey().toString().startsWith(\"";
+  protected final String TEXT_117 = ".options.\")) {" + NL + "\t\t\t\toptions.put(entry.getKey().toString().replaceFirst(\"";
+  protected final String TEXT_118 = ".options.\", \"\"), " + NL + "\t\t\t\tentry.getValue().toString());" + NL + "\t\t\t}" + NL + "\t\t}" + NL + "\t\treturn options;" + NL + "\t}" + NL + "\t" + NL + "\t/**" + NL + "\t * Finds the file in the plug-in. Returns the file URL." + NL + "\t * " + NL + "\t * @param fileName" + NL + "\t *            the file name" + NL + "\t * @return the file URL" + NL + "\t * @throws IOException" + NL + "\t *             if the file doesn't exist" + NL + "\t * " + NL + "\t * @generated" + NL + "\t */" + NL + "\tprotected static URL getFileURL(String fileName) throws IOException {" + NL + "\t\tfinal URL fileURL;" + NL + "\t\tif (isEclipseRunning()) {" + NL + "\t\t\tURL resourceURL = ";
+  protected final String TEXT_119 = ".class.getResource(fileName);" + NL + "\t\t\tif (resourceURL != null) {" + NL + "\t\t\t\tfileURL = FileLocator.toFileURL(resourceURL);" + NL + "\t\t\t} else {" + NL + "\t\t\t\tfileURL = null;" + NL + "\t\t\t}" + NL + "\t\t} else {" + NL + "\t\t\tfileURL = ";
+  protected final String TEXT_120 = ".class.getResource(fileName);" + NL + "\t\t}" + NL + "\t\tif (fileURL == null) {" + NL + "\t\t\tthrow new IOException(\"'\" + fileName + \"' not found\");" + NL + "\t\t} else {" + NL + "\t\t\treturn fileURL;" + NL + "\t\t}" + NL + "\t}" + NL + "" + NL + "\t/**" + NL + "\t * Tests if eclipse is running." + NL + "\t * " + NL + "\t * @return <code>true</code> if eclipse is running" + NL + "\t *" + NL + "\t * @generated" + NL + "\t */" + NL + "\tpublic static boolean isEclipseRunning() {" + NL + "\t\ttry {" + NL + "\t\t\treturn Platform.isRunning();" + NL + "\t\t} catch (Throwable exception) {" + NL + "\t\t\t// Assume that we aren't running." + NL + "\t\t}" + NL + "\t\treturn false;" + NL + "\t}" + NL + "}";
+  protected final String TEXT_121 = NL;
 
   public String generate(Object argument)
   {
@@ -388,9 +389,9 @@ public class CreateRunnableJavaWriter
     stringBuffer.append(TEXT_110);
     stringBuffer.append(libraryName);
     stringBuffer.append(TEXT_111);
-    }
+    stringBuffer.append(libraryName);
     stringBuffer.append(TEXT_112);
-    stringBuffer.append(content.getClassShortName());
+    }
     stringBuffer.append(TEXT_113);
     stringBuffer.append(content.getClassShortName());
     stringBuffer.append(TEXT_114);
@@ -404,7 +405,9 @@ public class CreateRunnableJavaWriter
     stringBuffer.append(TEXT_118);
     stringBuffer.append(content.getClassShortName());
     stringBuffer.append(TEXT_119);
+    stringBuffer.append(content.getClassShortName());
     stringBuffer.append(TEXT_120);
+    stringBuffer.append(TEXT_121);
     return stringBuffer.toString();
   }
 }
