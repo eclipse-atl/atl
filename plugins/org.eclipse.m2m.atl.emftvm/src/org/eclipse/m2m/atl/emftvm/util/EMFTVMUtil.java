@@ -141,6 +141,7 @@ public final class EMFTVMUtil {
 				names.append(", ");
 			}
 			names.append(getTypeName(env, type));
+			notFirst = true;
 		}
 		return names.toString();
 	}
