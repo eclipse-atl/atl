@@ -384,7 +384,7 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 					endInstructionIndex = cb.getCode().indexOf(endInstruction);
 					if (endInstructionIndex < 0) {
 						throw new IllegalArgumentException(String.format(
-								"Start instruction %s not found in code block %s", 
+								"End instruction %s not found in code block %s", 
 								endInstruction, cb));
 					}
 				} else if (!code.isEmpty()) {
