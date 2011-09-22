@@ -11,12 +11,11 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
+
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-
-import junit.framework.TestCase;
-
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,6 +36,9 @@ import junit.textui.TestRunner;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getStackLevel() <em>Get Stack Level</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getModule() <em>Get Module</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getOperation() <em>Get Operation</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getPredecessors(org.eclipse.m2m.atl.emftvm.Instruction) <em>Get Predecessors</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getAllPredecessors(org.eclipse.m2m.atl.emftvm.Instruction) <em>Get All Predecessors</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getNonLoopingPredecessors(org.eclipse.m2m.atl.emftvm.Instruction) <em>Get Non Looping Predecessors</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -211,6 +213,45 @@ public class CodeBlockTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetOperation() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getPredecessors(org.eclipse.m2m.atl.emftvm.Instruction) <em>Get Predecessors</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.CodeBlock#getPredecessors(org.eclipse.m2m.atl.emftvm.Instruction)
+	 * @generated
+	 */
+	public void testGetPredecessors__Instruction() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getAllPredecessors(org.eclipse.m2m.atl.emftvm.Instruction) <em>Get All Predecessors</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.CodeBlock#getAllPredecessors(org.eclipse.m2m.atl.emftvm.Instruction)
+	 * @generated
+	 */
+	public void testGetAllPredecessors__Instruction() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getNonLoopingPredecessors(org.eclipse.m2m.atl.emftvm.Instruction) <em>Get Non Looping Predecessors</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.CodeBlock#getNonLoopingPredecessors(org.eclipse.m2m.atl.emftvm.Instruction)
+	 * @generated
+	 */
+	public void testGetNonLoopingPredecessors__Instruction() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();

@@ -11,9 +11,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import org.eclipse.m2m.atl.emftvm.NamedElement;
-
 import junit.framework.TestCase;
+
+import org.eclipse.m2m.atl.emftvm.NamedElement;
 
 /**
  * <!-- begin-user-doc -->

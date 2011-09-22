@@ -11,10 +11,10 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
+import junit.textui.TestRunner;
+
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.SetStatic;
-
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->

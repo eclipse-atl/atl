@@ -11,9 +11,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import org.eclipse.m2m.atl.emftvm.Instruction;
-
 import junit.framework.TestCase;
+
+import org.eclipse.m2m.atl.emftvm.Instruction;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,12 +26,7 @@ import junit.framework.TestCase;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getOpcode() <em>Opcode</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction() <em>Stack Production</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption() <em>Stack Consumption</em>}</li>
- * </ul>
- * </p>
- * <p>
- * The following operations are tested:
- * <ul>
- *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel() <em>Get Stack Level</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel() <em>Stack Level</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -116,14 +111,14 @@ public abstract class InstructionTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel() <em>Get Stack Level</em>}' operation.
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel() <em>Stack Level</em>}' feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel()
 	 * @generated
 	 */
 	public void testGetStackLevel() {
-		// TODO: implement this operation test method
+		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
 	}
