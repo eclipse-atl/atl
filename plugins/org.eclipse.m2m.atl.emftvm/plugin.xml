@@ -4,7 +4,7 @@
 <!--
  (C) 2011, Vrije Universiteit Brussel
 
- $Id: plugin.xml,v 1.1 2011/06/22 07:03:55 dwagelaar Exp $
+ $Id: plugin.xml,v 1.2 2011/09/22 14:17:18 dwagelaar Exp $
 -->
 
 <plugin>
@@ -37,6 +37,71 @@
             class="org.eclipse.m2m.atl.emftvm.impl.resource.EMFTVMResourceFactoryImpl"
             type="emftvm">
       </parser>
+   </extension>
+   <extension
+         point="org.eclipse.emf.validation.constraintProviders">
+      <category
+            id="org.eclipse.m2m.atl.emftvm.constraintCategory"
+            mandatory="true"
+            name="EMFTVM bytecode constraints">
+      </category>
+     <constraintProvider cache="true">
+         <package namespaceUri="http://www.eclipse.org/m2m/atl/2011/EMFTVM"/>
+         <constraints categories="org.eclipse.m2m.atl.emftvm.constraintCategory">
+            <constraint
+                  id="org.eclipse.m2m.atl.emftvm.ValidCodeBlockStackLevelConstraint"
+                  class="org.eclipse.m2m.atl.emftvm.constraints.ValidCodeBlockStackLevelConstraint"
+                  lang="Java"
+                  mode="Batch"
+                  name="Valid code block stack level"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  Code block {0} has {1} elements on the stack after execution; should be 0 or 1.
+               </message>
+               <description>
+                  Validates the final stack level of code blocks, which should be 0 or 1.
+               </description>
+               <target
+                     class="CodeBlock">
+               </target>
+            </constraint>
+            <constraint
+                  id="org.eclipse.m2m.atl.emftvm.StackUnderflowConstraint"
+                  class="org.eclipse.m2m.atl.emftvm.constraints.StackUnderflowConstraint"
+                  lang="Java"
+                  mode="Batch"
+                  name="Valid instruction stack level"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  Guaranteed stack underflow condition detected at {0}::{1}: stack level = {2}.
+               </message>
+               <description>
+                  Validates the stack level of instructions, which should be 0 or higher.
+               </description>
+               <target
+                     class="Instruction">
+               </target>
+            </constraint>
+         </constraints>
+      </constraintProvider>
+   </extension>
+   <extension
+         point="org.eclipse.emf.validation.constraintBindings">
+      <clientContext
+            default="false"
+            id="org.eclipse.m2m.atl.emftvm.clientContext">
+         <enablement>
+            <instanceof
+                  value="org.eclipse.emf.ecore.EObject">
+            </instanceof>
+         </enablement>
+      </clientContext>
+      <binding
+            category="org.eclipse.m2m.atl.emftvm.constraintCategory"
+            context="org.eclipse.m2m.atl.emftvm.clientContext">
+      </binding>
    </extension>
 
 </plugin>
