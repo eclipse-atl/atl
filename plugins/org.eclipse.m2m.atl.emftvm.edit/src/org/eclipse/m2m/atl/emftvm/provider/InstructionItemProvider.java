@@ -69,6 +69,7 @@ public class InstructionItemProvider
 			addOpcodePropertyDescriptor(object);
 			addStackProductionPropertyDescriptor(object);
 			addStackConsumptionPropertyDescriptor(object);
+			addStackLevelPropertyDescriptor(object);
 			addLineNumberPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -141,6 +142,28 @@ public class InstructionItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Stack Level feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addStackLevelPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Instruction_stackLevel_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Instruction_stackLevel_feature", "_UI_Instruction_type"),
+				 EmftvmPackage.Literals.INSTRUCTION__STACK_LEVEL,
+				 false,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This adds a property descriptor for the Line Number feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -199,6 +222,7 @@ public class InstructionItemProvider
 			case EmftvmPackage.INSTRUCTION__OPCODE:
 			case EmftvmPackage.INSTRUCTION__STACK_PRODUCTION:
 			case EmftvmPackage.INSTRUCTION__STACK_CONSUMPTION:
+			case EmftvmPackage.INSTRUCTION__STACK_LEVEL:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}
