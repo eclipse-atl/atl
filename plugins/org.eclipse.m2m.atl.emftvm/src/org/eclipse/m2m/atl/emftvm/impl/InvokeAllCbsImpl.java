@@ -59,7 +59,13 @@ public class InvokeAllCbsImpl extends InvokeInstructionImpl implements InvokeAll
 	public int getStackProduction() {
 		final CodeBlock cb = getOwningBlock();
 		if (cb != null) {
-			return stackProduction + cb.getNested().size();
+			int sprod = stackProduction;
+			for (CodeBlock nested : cb.getNested()) {
+				if (nested.getStackLevel() > 0) {
+					sprod++;
+				}
+			}
+			return sprod;
 		}
 		return super.getStackProduction();
 	}

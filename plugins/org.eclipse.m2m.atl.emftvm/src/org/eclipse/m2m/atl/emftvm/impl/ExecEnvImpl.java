@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -33,6 +35,9 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.validation.model.EvaluationMode;
+import org.eclipse.emf.validation.service.IValidator;
+import org.eclipse.emf.validation.service.ModelValidationService;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
@@ -56,6 +61,7 @@ import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.Matcher;
 import org.eclipse.m2m.atl.emftvm.util.ModuleNotFoundException;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
+import org.eclipse.m2m.atl.emftvm.util.NativeCodeBlock;
 import org.eclipse.m2m.atl.emftvm.util.NativeTypes;
 import org.eclipse.m2m.atl.emftvm.util.OCLOperations;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
@@ -231,26 +237,28 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		mms.put(EcorePackage.eNAME.toUpperCase(), EMFTVMUtil.getEcoreMetamodel());
 		mms.put(EmftvmPackage.eNAME.toUpperCase(), EMFTVMUtil.getEmfTvmMetamodel());
 		mms.put(TracePackage.eNAME.toUpperCase(), EMFTVMUtil.getTraceMetamodel());
-		createField("matches", true, EXEC_ENV_TYPE, TRACE_LINK_SET_TYPE, new CodeBlockImpl() {
+		createField("matches", true, EXEC_ENV_TYPE, TRACE_LINK_SET_TYPE, new NativeCodeBlock() {
 			@Override
-			public Object execute(StackFrame frame) {
+			public StackFrame execute(final StackFrame frame) {
 				final Map<String, Model> oms = frame.getEnv().getOutputModels();
 				if (oms.containsKey("match")) {
-					return oms.get("match").newElement(TracePackage.eINSTANCE.getTraceLinkSet());
+					frame.push(oms.get("match").newElement(TracePackage.eINSTANCE.getTraceLinkSet()));
 				} else {
-					return TraceFactory.eINSTANCE.createTraceLinkSet();
+					frame.push(TraceFactory.eINSTANCE.createTraceLinkSet());
 				}
+				return frame;
 			}
 		});
-		createField("traces", true, EXEC_ENV_TYPE, TRACE_LINK_SET_TYPE, new CodeBlockImpl() {
+		createField("traces", true, EXEC_ENV_TYPE, TRACE_LINK_SET_TYPE, new NativeCodeBlock() {
 			@Override
-			public Object execute(StackFrame frame) {
+			public StackFrame execute(final StackFrame frame) {
 				final Map<String, Model> oms = frame.getEnv().getOutputModels();
 				if (oms.containsKey("trace")) {
-					return oms.get("trace").newElement(TracePackage.eINSTANCE.getTraceLinkSet());
+					frame.push(oms.get("trace").newElement(TracePackage.eINSTANCE.getTraceLinkSet()));
 				} else {
-					return TraceFactory.eINSTANCE.createTraceLinkSet();
+					frame.push(TraceFactory.eINSTANCE.createTraceLinkSet());
 				}
+				return frame;
 			}
 		});
 		final Module oclModule = OCLOperations.getInstance().getOclModule();
@@ -395,6 +403,15 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				return modules.get(name);
 			}
 			final Module module = resolver.resolveModule(name);
+			if (module.eResource() != null) { // skip built-in native modules
+				final Model mmodel = EmftvmFactory.eINSTANCE.createModel();
+				mmodel.setResource(module.eResource());
+				final IValidator<EObject> validator = ModelValidationService.getInstance().newValidator(EvaluationMode.BATCH);
+				final IStatus results = validator.validate(mmodel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock()));
+				if (!results.isOK()) {
+					throw new CoreException(results);
+				}
+			}
 			modules.put(name, module);
 			resolveImports(module, resolver);
 			for (Feature f : module.getFeatures()) {
@@ -993,9 +1010,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			Matcher.matchAll(rootFrame, timingData); // run all automatic rules before main
 			while (mains.hasNext()) {
 				CodeBlock cb = mains.next().getBody();
-				Object thisResult = cb.execute(new StackFrame(this, cb));
-				if (thisResult != null) {
-					result = thisResult;
+				StackFrame rFrame = cb.execute(new StackFrame(this, cb));
+				if (!rFrame.stackEmpty()) {
+					result = rFrame.pop();
 				}
 			}
 			deleteQueue(); // process any leftover elements

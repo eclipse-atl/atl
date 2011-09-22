@@ -313,12 +313,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="TypedElement" abstract="true" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="eType" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClassifier"
         transient="true" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeModel" lowerBound="1"
-        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeModel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Instruction" abstract="true">
-    <eOperations name="getStackLevel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="owningBlock" lowerBound="1"
         eType="#//CodeBlock" eOpposite="#//CodeBlock/code"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="opcode" lowerBound="1"
@@ -330,6 +328,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="stackConsumption" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
         changeable="false" transient="true" defaultValueLiteral="0" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stackLevel" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
+        changeable="false" volatile="true" transient="true" defaultValueLiteral="0"
+        derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="lineNumber" eType="#//LineNumber"
         eOpposite="#//LineNumber/instructions"/>
   </eClassifiers>
@@ -430,12 +432,21 @@
         eOpposite="#//Rule/outputElements"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CodeBlock">
-    <eOperations name="execute" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject">
+    <eOperations name="execute" eType="#//StackFrame">
       <eParameters name="frame" eType="#//StackFrame"/>
     </eOperations>
     <eOperations name="getStackLevel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
     <eOperations name="getModule" eType="#//Module"/>
     <eOperations name="getOperation" eType="#//Operation"/>
+    <eOperations name="getPredecessors" upperBound="-1" eType="#//Instruction">
+      <eParameters name="i" eType="#//Instruction"/>
+    </eOperations>
+    <eOperations name="getAllPredecessors" upperBound="-1" eType="#//Instruction">
+      <eParameters name="i" eType="#//Instruction"/>
+    </eOperations>
+    <eOperations name="getNonLoopingPredecessors" upperBound="-1" eType="#//Instruction">
+      <eParameters name="i" eType="#//Instruction"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxLocals" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
         volatile="true" defaultValueLiteral="-1" derived="true"/>
@@ -468,7 +479,7 @@
         eOpposite="#//InputRuleElement/binding"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Push" eSuperTypes="#//Instruction">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"
         transient="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="stringValue" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
         defaultValueLiteral=""/>
@@ -518,8 +529,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FindtypeS" eSuperTypes="#//Instruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="New" eSuperTypes="#//Instruction">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelname" lowerBound="1"
-        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelname" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NewS" eSuperTypes="#//Instruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Delete" eSuperTypes="#//Instruction"/>

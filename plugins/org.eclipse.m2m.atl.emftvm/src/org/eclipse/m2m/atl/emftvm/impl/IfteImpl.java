@@ -415,4 +415,13 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 		return result.toString();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getStackProduction()
+	 */
+	@Override
+	public int getStackProduction() {
+		// TODO Auto-generated method stub
+		return super.getStackProduction();
+	}
+
 } //IfteImpl

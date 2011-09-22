@@ -41,7 +41,7 @@ public interface New extends Instruction {
 	 * @return the value of the '<em>Modelname</em>' attribute.
 	 * @see #setModelname(String)
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getNew_Modelname()
-	 * @model required="true"
+	 * @model
 	 * @generated
 	 */
 	String getModelname();

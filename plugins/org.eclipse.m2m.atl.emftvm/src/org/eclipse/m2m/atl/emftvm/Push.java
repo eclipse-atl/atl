@@ -50,7 +50,7 @@ public interface Push extends Instruction {
 	 * @return the value of the '<em>Value</em>' attribute.
 	 * @see #setValue(Object)
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getPush_Value()
-	 * @model required="true" transient="true"
+	 * @model transient="true"
 	 * @generated
 	 */
 	Object getValue();

@@ -56,10 +56,11 @@ public abstract class InvokeOperationInstructionImpl extends InvokeInstructionIm
 	 * <!-- begin-user-doc -->
 	 * Creates a new {@link InvokeOperationInstructionImpl}.
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	protected InvokeOperationInstructionImpl() {
 		super();
+		stackConsumption = 1;
 	}
 
 	/**

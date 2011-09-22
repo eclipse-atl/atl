@@ -92,9 +92,10 @@ public final class Matcher {
 		if (matcher.matchOne(valuesMap)) {
 			final TraceLink trace = matcher.createTrace(valuesMap);
 			final Map<Rule, Object[]> ruleApplyArgs = new HashMap<Rule, Object[]>();
-			final Object applyResult = matcher.applyFor(trace, rule, ruleApplyArgs);
-			final Object postResult = matcher.postApplyFor(trace, rule, ruleApplyArgs);
-			return (postResult == null) ? applyResult : postResult;
+			final StackFrame applyResult = matcher.applyFor(trace, rule, ruleApplyArgs);
+			final StackFrame postResult = matcher.postApplyFor(trace, rule, ruleApplyArgs);
+			final StackFrame result = (postResult == null || postResult.stackEmpty()) ? applyResult : postResult;
+			return (result == null || result.stackEmpty()) ? null : result.pop();
 		} else {
 			return null;
 		}
@@ -486,7 +487,7 @@ public final class Matcher {
 			final InputRuleElement ire = inputs.get(index);
 			final CodeBlock binding = ire.getBinding();
 			if (binding != null) {
-				final Object value = binding.execute(frame.getSubFrame(binding, values));
+				final Object value = binding.execute(frame.getSubFrame(binding, values)).pop();
 				if (value == null) {
 					return false; // no value, no matches
 				}
@@ -546,7 +547,7 @@ public final class Matcher {
 			final InputRuleElement ire = inputs.get(index);
 			final CodeBlock binding = ire.getBinding();
 			if (binding != null) {
-				final Object value = binding.execute(frame.getSubFrame(binding, values));
+				final Object value = binding.execute(frame.getSubFrame(binding, values)).pop();
 				if (value == null) {
 					return false; // no value, no matches
 				}
@@ -606,7 +607,7 @@ public final class Matcher {
 	private boolean matchFor(final EObject[] values) {
 		// Match values
 		final CodeBlock cb = rule.getMatcher();
-		if (cb == null || (Boolean)cb.execute(frame.getSubFrame(cb, values))) {
+		if (cb == null || (Boolean)cb.execute(frame.getSubFrame(cb, values)).pop()) {
 			// Add new match
 			final String ruleName = rule.getName();
 			final TraceLinkSet matches = getMatches();
@@ -637,7 +638,7 @@ public final class Matcher {
 	private boolean matchFor(final Map<String, EObject> valuesMap, final EObject[] values) {
 		// Match values
 		final CodeBlock cb = rule.getMatcher();
-		if (cb == null || (Boolean)cb.execute(frame.getSubFrame(cb, values))) {
+		if (cb == null || (Boolean)cb.execute(frame.getSubFrame(cb, values)).pop()) {
 			// Add new match
 			final String ruleName = rule.getName();
 			final TraceLinkSet matches = getMatches();
@@ -855,7 +856,7 @@ public final class Matcher {
 			final InputRuleElement ire = inputs.get(index);
 			final CodeBlock binding = ire.getBinding();
 			if (binding != null) {
-				final Object value = binding.execute(frame.getSubFrame(binding, values));
+				final Object value = binding.execute(frame.getSubFrame(binding, values)).pop();
 				if (value == null) {
 					return false; // no value, no matches
 				}
@@ -917,7 +918,7 @@ public final class Matcher {
 			final InputRuleElement ire = inputs.get(index);
 			final CodeBlock binding = ire.getBinding();
 			if (binding != null) {
-				final Object value = binding.execute(frame.getSubFrame(binding, values));
+				final Object value = binding.execute(frame.getSubFrame(binding, values)).pop();
 				if (value == null) {
 					return false; // no value, no matches
 				}
@@ -1001,7 +1002,7 @@ public final class Matcher {
 			// Check bound values
 			final CodeBlock binding = re.getBinding();
 			if (binding != null) {
-				final Object bvalue = binding.execute(frame.getSubFrame(binding, values));
+				final Object bvalue = binding.execute(frame.getSubFrame(binding, values)).pop();
 				if (bvalue == null) {
 					return false; // no value, no matches
 				}
@@ -1025,7 +1026,7 @@ public final class Matcher {
 		}
 
 		final CodeBlock cb = rule.getMatcher();
-		return cb == null ? true : (Boolean)cb.execute(frame.getSubFrame(cb, values));
+		return cb == null ? true : (Boolean)cb.execute(frame.getSubFrame(cb, values)).pop();
 	}
 
 	/**
@@ -1233,7 +1234,7 @@ public final class Matcher {
 	 * @param ruleApplyArgs the argument arrays for the rule applier code blocks
 	 * @return the application result
 	 */
-	private Object applyFor(final TraceLink trace, final Rule rule, 
+	private StackFrame applyFor(final TraceLink trace, final Rule rule, 
 			final Map<Rule, Object[]> ruleApplyArgs) {
 		for (Rule superRule : rule.getESuperRules()) {
 			applyFor(trace, superRule, ruleApplyArgs);
@@ -1279,7 +1280,7 @@ public final class Matcher {
 	 * @param ruleApplyArgs the argument arrays for the rule applier code blocks
 	 * @return the application result
 	 */
-	private Object postApplyFor(final TraceLink trace, final Rule rule, 
+	private StackFrame postApplyFor(final TraceLink trace, final Rule rule, 
 			final Map<Rule, Object[]> ruleApplyArgs) {
 		for (Rule superRule : rule.getESuperRules()) {
 			postApplyFor(trace, superRule, ruleApplyArgs);

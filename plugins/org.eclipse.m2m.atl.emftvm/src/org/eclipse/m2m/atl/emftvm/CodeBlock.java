@@ -396,12 +396,12 @@ public interface CodeBlock extends EObject {
 	 * <!-- begin-user-doc -->
 	 * Executes the instructions in this {@link CodeBlock}, using the parameters stored in <code>frame</code>.
 	 * @param frame the {@link StackFrame} to use during execution.
-	 * @return the resulting execution value, or <code>null</code> if none.
+	 * @return the <code>frame</code>, containing any return value on top.
 	 * <!-- end-user-doc -->
-	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @model dataType="org.eclipse.m2m.atl.emftvm.StackFrame" frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
 	 */
-	Object execute(StackFrame frame);
+	StackFrame execute(StackFrame frame);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -432,5 +432,39 @@ public interface CodeBlock extends EObject {
 	 * @generated
 	 */
 	Operation getOperation();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Collects the direct predecessor instructions for <code>i</code>.
+	 * @param i the instruction to collect the predecessors for.
+	 * @return the direct predecessor instructions for <code>i</code>.
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	EList<Instruction> getPredecessors(Instruction i);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Collects the transitive closure of predecessor instructions for <code>i</code>.
+	 * @param i the instruction to collect the predecessors for.
+	 * @return the transitive closure of predecessor instructions for <code>i</code>.
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	EList<Instruction> getAllPredecessors(Instruction i);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Collects the direct predecessor instructions for <code>i</code> that do not
+	 * contain <code>i</code> in their transitive closure of predecessors.
+	 * @param i the instruction to collect the predecessors for.
+	 * @return the non-looping predecessor instructions for <code>i</code>.
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	EList<Instruction> getNonLoopingPredecessors(Instruction i);
 
 } // CodeBlock

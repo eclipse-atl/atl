@@ -15,6 +15,7 @@ package org.eclipse.m2m.atl.emftvm.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.InvokeCb;
 import org.eclipse.m2m.atl.emftvm.InvokeInstruction;
@@ -62,7 +63,7 @@ public class InvokeCbImpl extends CodeBlockInstructionImpl implements InvokeCb {
 	protected InvokeCbImpl() {
 		super();
 		opcode = Opcode.INVOKE_CB;
-		stackProduction = 1;
+		stackProduction = 0;
 	}
 
 	/**
@@ -219,6 +220,18 @@ public class InvokeCbImpl extends CodeBlockInstructionImpl implements InvokeCb {
 	@Override
 	public int getStackConsumption() {
 		return stackConsumption + getArgcount();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getStackProduction() {
+		final CodeBlock cb = getCodeBlock();
+		if (cb != null) {
+			return (cb.getStackLevel() > 0) ? stackProduction + 1 : stackProduction;
+		}
+		return super.getStackProduction();
 	}
 
 } //Invoke_cbImpl

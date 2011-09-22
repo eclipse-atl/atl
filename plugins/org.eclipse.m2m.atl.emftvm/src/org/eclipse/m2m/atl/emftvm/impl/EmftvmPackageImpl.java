@@ -1200,8 +1200,17 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getInstruction_StackLevel() {
+		return (EAttribute)instructionEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getInstruction_LineNumber() {
-		return (EReference)instructionEClass.getEStructuralFeatures().get(4);
+		return (EReference)instructionEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -2790,6 +2799,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		createEAttribute(instructionEClass, INSTRUCTION__OPCODE);
 		createEAttribute(instructionEClass, INSTRUCTION__STACK_PRODUCTION);
 		createEAttribute(instructionEClass, INSTRUCTION__STACK_CONSUMPTION);
+		createEAttribute(instructionEClass, INSTRUCTION__STACK_LEVEL);
 		createEReference(instructionEClass, INSTRUCTION__LINE_NUMBER);
 
 		lineNumberEClass = createEClass(LINE_NUMBER);
@@ -3296,17 +3306,16 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		initEClass(typedElementEClass, TypedElement.class, "TypedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTypedElement_EType(), theEcorePackage.getEClassifier(), null, "eType", null, 0, 1, TypedElement.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTypedElement_Type(), theEcorePackage.getEString(), "type", null, 1, 1, TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTypedElement_TypeModel(), theEcorePackage.getEString(), "typeModel", null, 1, 1, TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTypedElement_Type(), theEcorePackage.getEString(), "type", null, 0, 1, TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTypedElement_TypeModel(), theEcorePackage.getEString(), "typeModel", null, 0, 1, TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(instructionEClass, Instruction.class, "Instruction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getInstruction_OwningBlock(), this.getCodeBlock(), this.getCodeBlock_Code(), "owningBlock", null, 1, 1, Instruction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getInstruction_Opcode(), this.getOpcode(), "opcode", "", 1, 1, Instruction.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getInstruction_StackProduction(), theEcorePackage.getEInt(), "stackProduction", "0", 1, 1, Instruction.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getInstruction_StackConsumption(), theEcorePackage.getEInt(), "stackConsumption", "0", 1, 1, Instruction.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getInstruction_StackLevel(), theEcorePackage.getEInt(), "stackLevel", "0", 1, 1, Instruction.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEReference(getInstruction_LineNumber(), this.getLineNumber(), this.getLineNumber_Instructions(), "lineNumber", null, 0, 1, Instruction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		addEOperation(instructionEClass, theEcorePackage.getEInt(), "getStackLevel", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(lineNumberEClass, LineNumber.class, "LineNumber", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getLineNumber_StartLine(), theEcorePackage.getEInt(), "startLine", "-1", 1, 1, LineNumber.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3381,7 +3390,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEAttribute(getCodeBlock_ParentFrame(), this.getStackFrame(), "parentFrame", null, 0, 1, CodeBlock.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCodeBlock_BindingFor(), this.getInputRuleElement(), this.getInputRuleElement_Binding(), "bindingFor", null, 0, 1, CodeBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		op = addEOperation(codeBlockEClass, theEcorePackage.getEJavaObject(), "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = addEOperation(codeBlockEClass, this.getStackFrame(), "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(codeBlockEClass, theEcorePackage.getEInt(), "getStackLevel", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3390,8 +3399,17 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		addEOperation(codeBlockEClass, this.getOperation(), "getOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		op = addEOperation(codeBlockEClass, this.getInstruction(), "getPredecessors", 0, -1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getInstruction(), "i", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(codeBlockEClass, this.getInstruction(), "getAllPredecessors", 0, -1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getInstruction(), "i", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(codeBlockEClass, this.getInstruction(), "getNonLoopingPredecessors", 0, -1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getInstruction(), "i", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(pushEClass, Push.class, "Push", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getPush_Value(), theEcorePackage.getEJavaObject(), "value", null, 1, 1, Push.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPush_Value(), theEcorePackage.getEJavaObject(), "value", null, 0, 1, Push.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPush_StringValue(), theEcorePackage.getEString(), "stringValue", "", 0, 1, Push.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPush_IntValue(), theEcorePackage.getEIntegerObject(), "intValue", "", 0, 1, Push.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPush_DoubleValue(), theEcorePackage.getEDoubleObject(), "doubleValue", null, 0, 1, Push.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3438,7 +3456,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEClass(findtypeSEClass, FindtypeS.class, "FindtypeS", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(newEClass, New.class, "New", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getNew_Modelname(), theEcorePackage.getEString(), "modelname", null, 1, 1, New.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNew_Modelname(), theEcorePackage.getEString(), "modelname", null, 0, 1, New.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(newSEClass, NewS.class, "NewS", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getOpcode <em>Opcode</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction <em>Stack Production</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption <em>Stack Consumption</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel <em>Stack Level</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getLineNumber <em>Line Number</em>}</li>
  * </ul>
  * </p>
@@ -114,6 +115,22 @@ public interface Instruction extends EObject {
 	int getStackConsumption();
 
 	/**
+	 * Returns the value of the '<em><b>Stack Level</b></em>' attribute.
+	 * The default value is <code>"0"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * Calculates the amount of elements on the stack after executing this instruction,
+	 * also taking into account the execution of previous instructions in the code block.
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Stack Level</em>' attribute.
+	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInstruction_StackLevel()
+	 * @model default="0" required="true" transient="true" changeable="false" volatile="true" derived="true"
+	 * @generated
+	 */
+	int getStackLevel();
+
+	/**
 	 * Returns the value of the '<em><b>Line Number</b></em>' reference.
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.LineNumber#getInstructions <em>Instructions</em>}'.
 	 * <!-- begin-user-doc -->
@@ -140,16 +157,5 @@ public interface Instruction extends EObject {
 	 * @generated
 	 */
 	void setLineNumber(LineNumber value);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * Calculates the amount of elements on the stack after executing this instruction,
-	 * also taking into account the execution of previous instructions in the code block.
-	 * @return the amount of elements on the stack after executing this instruction
-	 * <!-- end-user-doc -->
-	 * @model kind="operation"
-	 * @generated NOT
-	 */
-	int getStackLevel();
 
 } // Instruction

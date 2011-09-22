@@ -1260,7 +1260,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		@Override
 		protected final boolean include(E element) {
-			return (Boolean)condition.execute(parentFrame.getSubFrame(condition, new Object[]{next}));
+			return (Boolean)condition.execute(parentFrame.getSubFrame(condition, new Object[]{next})).pop();
 		}
 	}
 
@@ -1285,7 +1285,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		@Override
 		protected final boolean include(E element) {
-			return !(Boolean)condition.execute(parentFrame.getSubFrame(condition, new Object[]{next}));
+			return !(Boolean)condition.execute(parentFrame.getSubFrame(condition, new Object[]{next})).pop();
 		}
 	}
 
@@ -1328,7 +1328,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		@SuppressWarnings("unchecked")
 		public T next() {
-			return (T)function.execute(parentFrame.getSubFrame(function, new Object[]{inner.next()}));
+			return (T)function.execute(parentFrame.getSubFrame(function, new Object[]{inner.next()})).pop();
 		}
 	}
 
@@ -1883,7 +1883,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public boolean forAll(final CodeBlock condition) {
 		final StackFrame frame = condition.getParentFrame();
 		for (E e : this) {
-			if (!(Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e}))) {
+			if (!(Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e})).pop()) {
 				return false;
 			}
 		}
@@ -1901,7 +1901,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		final StackFrame frame = condition.getParentFrame();
 		for (E e : this) {
 			for (E e2 : this) {
-				if (!(Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e, e2}))) {
+				if (!(Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e, e2})).pop()) {
 					return false;
 				}
 			}
@@ -1919,7 +1919,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public boolean exists(final CodeBlock condition) {
 		final StackFrame frame = condition.getParentFrame();
 		for (E e : this) {
-			if ((Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e}))) {
+			if ((Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e})).pop()) {
 				return true;
 			}
 		}
@@ -1937,7 +1937,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		final StackFrame frame = condition.getParentFrame();
 		for (E e : this) {
 			for (E e2 : this) {
-				if ((Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e, e2}))) {
+				if ((Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e, e2})).pop()) {
 					return true;
 				}
 			}
@@ -1959,7 +1959,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		final StackFrame frame = updater.getParentFrame();
 		T acc = initialValue;
 		for (E e : this) {
-			acc = (T)updater.execute(frame.getSubFrame(updater, new Object[]{e, acc}));
+			acc = (T)updater.execute(frame.getSubFrame(updater, new Object[]{e, acc})).pop();
 		}
 		return acc;
 	}
@@ -1976,7 +1976,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		final StackFrame parentFrame = body.getParentFrame();
 		final Set<Object> values = new HashSet<Object>(size());
 		for (E e : this) {
-			Object value = body.execute(parentFrame.getSubFrame(body, new Object[]{e}));
+			Object value = body.execute(parentFrame.getSubFrame(body, new Object[]{e})).pop();
 			if (values.contains(value)) {
 				return false;
 			}
@@ -1996,7 +1996,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public E any(final CodeBlock body) throws NoSuchElementException {
 		final StackFrame parentFrame = body.getParentFrame();
 		for (E e : this) {
-			if ((Boolean)body.execute(parentFrame.getSubFrame(body, new Object[]{e}))) {
+			if ((Boolean)body.execute(parentFrame.getSubFrame(body, new Object[]{e})).pop()) {
 				return e;
 			}
 		}
@@ -2014,7 +2014,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		boolean result = false;
 		final StackFrame frame = body.getParentFrame();
 		for (E e : this) {
-			if ((Boolean)body.execute(frame.getSubFrame(body, new Object[]{e}))) {
+			if ((Boolean)body.execute(frame.getSubFrame(body, new Object[]{e})).pop()) {
 				if (result) { // only one true value allowed
 					return false;
 				}

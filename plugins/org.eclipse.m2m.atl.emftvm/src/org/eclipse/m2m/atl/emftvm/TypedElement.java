@@ -70,7 +70,7 @@ public interface TypedElement extends NamedElement {
 	 * @return the value of the '<em>Type</em>' attribute.
 	 * @see #setType(String)
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getTypedElement_Type()
-	 * @model required="true"
+	 * @model
 	 * @generated
 	 */
 	String getType();
@@ -96,7 +96,7 @@ public interface TypedElement extends NamedElement {
 	 * @return the value of the '<em>Type Model</em>' attribute.
 	 * @see #setTypeModel(String)
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getTypedElement_TypeModel()
-	 * @model required="true"
+	 * @model
 	 * @generated
 	 */
 	String getTypeModel();

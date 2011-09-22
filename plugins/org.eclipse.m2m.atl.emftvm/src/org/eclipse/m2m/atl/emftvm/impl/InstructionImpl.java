@@ -22,9 +22,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Instruction;
+import org.eclipse.m2m.atl.emftvm.Iterate;
 import org.eclipse.m2m.atl.emftvm.LineNumber;
 import org.eclipse.m2m.atl.emftvm.Opcode;
-import org.eclipse.m2m.atl.emftvm.util.VMException;
 
 
 /**
@@ -39,6 +39,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getOpcode <em>Opcode</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getStackProduction <em>Stack Production</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getStackConsumption <em>Stack Consumption</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getStackLevel <em>Stack Level</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getLineNumber <em>Line Number</em>}</li>
  * </ul>
  * </p>
@@ -100,6 +101,15 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	 * @ordered
 	 */
 	protected int stackConsumption = STACK_CONSUMPTION_EDEFAULT;
+	/**
+	 * The default value of the '{@link #getStackLevel() <em>Stack Level</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStackLevel()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int STACK_LEVEL_EDEFAULT = 0;
 	/**
 	 * The cached value of the '{@link #getLineNumber() <em>Line Number</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -210,6 +220,32 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public int getStackLevel() {
+		int stackLevelChange = getStackProduction() - getStackConsumption();
+		final CodeBlock cb = getOwningBlock();
+		if (cb != null) {
+			int prevStackLevel = 0;
+			final EList<Instruction> code = cb.getCode();
+			final int index = code.indexOf(this);
+			final EList<Instruction> nlp = cb.getNonLoopingPredecessors(this);
+			for (Instruction pred : nlp) {
+				// ITERATE only gives correct stack production/consumption in combination
+				// with its ENDITERATE companion, so ignore jumps from ITERATE
+				if (!(pred instanceof Iterate) || code.indexOf(pred) == index - 1) {
+					prevStackLevel = Math.max(prevStackLevel, pred.getStackLevel());
+				}
+			}
+			stackLevelChange += prevStackLevel;
+		}
+		return stackLevelChange;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public LineNumber getLineNumber() {
@@ -268,29 +304,6 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.INSTRUCTION__LINE_NUMBER, newLineNumber, newLineNumber));
-	}
-
-	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
-	 * <!-- end-user-doc -->
-	 */
-	public int getStackLevel() {
-		int stackLevelChange = getStackProduction() - getStackConsumption();
-		final CodeBlock cb = getOwningBlock();
-		if (cb != null) {
-			final EList<Instruction> code = cb.getCode();
-			final int index = code.indexOf(this);
-			assert index > -1;
-			if (index > 0) {
-				stackLevelChange += code.get(index - 1).getStackLevel();
-			}
-			if (stackLevelChange < 0) {
-				throw new VMException(null, String.format("Guaranteed stack underflow condition detected at %s::%s: %d",
-						cb, this, stackLevelChange));
-			}
-		}
-		return stackLevelChange;
 	}
 
 	/**
@@ -363,6 +376,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 				return getStackProduction();
 			case EmftvmPackage.INSTRUCTION__STACK_CONSUMPTION:
 				return getStackConsumption();
+			case EmftvmPackage.INSTRUCTION__STACK_LEVEL:
+				return getStackLevel();
 			case EmftvmPackage.INSTRUCTION__LINE_NUMBER:
 				if (resolve) return getLineNumber();
 				return basicGetLineNumber();
@@ -425,6 +440,8 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 				return stackProduction != STACK_PRODUCTION_EDEFAULT;
 			case EmftvmPackage.INSTRUCTION__STACK_CONSUMPTION:
 				return stackConsumption != STACK_CONSUMPTION_EDEFAULT;
+			case EmftvmPackage.INSTRUCTION__STACK_LEVEL:
+				return getStackLevel() != STACK_LEVEL_EDEFAULT;
 			case EmftvmPackage.INSTRUCTION__LINE_NUMBER:
 				return lineNumber != null;
 		}

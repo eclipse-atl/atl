@@ -1336,13 +1336,22 @@ public interface EmftvmPackage extends EPackage {
 	int INSTRUCTION__STACK_CONSUMPTION = 3;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSTRUCTION__STACK_LEVEL = 4;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSTRUCTION__LINE_NUMBER = 4;
+	int INSTRUCTION__LINE_NUMBER = 5;
 
 	/**
 	 * The number of structural features of the '<em>Instruction</em>' class.
@@ -1351,7 +1360,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSTRUCTION_FEATURE_COUNT = 5;
+	int INSTRUCTION_FEATURE_COUNT = 6;
 
 	/**
 	 * The feature id for the '<em><b>Start Line</b></em>' attribute.
@@ -2094,6 +2103,15 @@ public interface EmftvmPackage extends EPackage {
 	int PUSH__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PUSH__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2238,6 +2256,15 @@ public interface EmftvmPackage extends EPackage {
 	int PUSHT__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PUSHT__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2290,6 +2317,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int PUSHF__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PUSHF__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -2346,6 +2382,15 @@ public interface EmftvmPackage extends EPackage {
 	int POP__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int POP__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2398,6 +2443,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int LOCAL_VARIABLE_INSTRUCTION__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LOCAL_VARIABLE_INSTRUCTION__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -2490,6 +2544,15 @@ public interface EmftvmPackage extends EPackage {
 	int LOAD__STACK_CONSUMPTION = LOCAL_VARIABLE_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LOAD__STACK_LEVEL = LOCAL_VARIABLE_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2578,6 +2641,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int STORE__STACK_CONSUMPTION = LOCAL_VARIABLE_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STORE__STACK_LEVEL = LOCAL_VARIABLE_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -2670,6 +2742,15 @@ public interface EmftvmPackage extends EPackage {
 	int FIELD_INSTRUCTION__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD_INSTRUCTION__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2731,6 +2812,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int SET__STACK_CONSUMPTION = FIELD_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SET__STACK_LEVEL = FIELD_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -2796,6 +2886,15 @@ public interface EmftvmPackage extends EPackage {
 	int GET__STACK_CONSUMPTION = FIELD_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GET__STACK_LEVEL = FIELD_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2857,6 +2956,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int GET_TRANS__STACK_CONSUMPTION = FIELD_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GET_TRANS__STACK_LEVEL = FIELD_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -2922,6 +3030,15 @@ public interface EmftvmPackage extends EPackage {
 	int SET_STATIC__STACK_CONSUMPTION = FIELD_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SET_STATIC__STACK_LEVEL = FIELD_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2985,6 +3102,15 @@ public interface EmftvmPackage extends EPackage {
 	int GET_STATIC__STACK_CONSUMPTION = FIELD_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GET_STATIC__STACK_LEVEL = FIELD_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3046,6 +3172,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int FINDTYPE__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FINDTYPE__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -3120,6 +3255,15 @@ public interface EmftvmPackage extends EPackage {
 	int FINDTYPE_S__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FINDTYPE_S__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3172,6 +3316,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int NEW__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NEW__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -3237,6 +3390,15 @@ public interface EmftvmPackage extends EPackage {
 	int NEW_S__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NEW_S__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3289,6 +3451,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int DELETE__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -3345,6 +3516,15 @@ public interface EmftvmPackage extends EPackage {
 	int DUP__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DUP__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3399,6 +3579,15 @@ public interface EmftvmPackage extends EPackage {
 	int DUP_X1__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DUP_X1__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3451,6 +3640,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int SWAP__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SWAP__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -3517,6 +3715,15 @@ public interface EmftvmPackage extends EPackage {
 	int SWAP_X1__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SWAP_X1__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3569,6 +3776,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int BRANCH_INSTRUCTION__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BRANCH_INSTRUCTION__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -3643,6 +3859,15 @@ public interface EmftvmPackage extends EPackage {
 	int IF__STACK_CONSUMPTION = BRANCH_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IF__STACK_LEVEL = BRANCH_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3713,6 +3938,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int IFN__STACK_CONSUMPTION = BRANCH_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IFN__STACK_LEVEL = BRANCH_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -3787,6 +4021,15 @@ public interface EmftvmPackage extends EPackage {
 	int GOTO__STACK_CONSUMPTION = BRANCH_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GOTO__STACK_LEVEL = BRANCH_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3857,6 +4100,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int ITERATE__STACK_CONSUMPTION = BRANCH_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITERATE__STACK_LEVEL = BRANCH_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -3931,6 +4183,15 @@ public interface EmftvmPackage extends EPackage {
 	int ENDITERATE__STACK_CONSUMPTION = BRANCH_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENDITERATE__STACK_LEVEL = BRANCH_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4001,6 +4262,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int INVOKE_INSTRUCTION__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INVOKE_INSTRUCTION__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -4076,6 +4346,15 @@ public interface EmftvmPackage extends EPackage {
 	int INVOKE_OPERATION_INSTRUCTION__STACK_CONSUMPTION = INVOKE_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INVOKE_OPERATION_INSTRUCTION__STACK_LEVEL = INVOKE_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4146,6 +4425,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int INVOKE__STACK_CONSUMPTION = INVOKE_OPERATION_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INVOKE__STACK_LEVEL = INVOKE_OPERATION_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -4220,6 +4508,15 @@ public interface EmftvmPackage extends EPackage {
 	int INVOKE_SUPER__STACK_CONSUMPTION = INVOKE_OPERATION_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INVOKE_SUPER__STACK_LEVEL = INVOKE_OPERATION_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4290,6 +4587,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int INVOKE_STATIC__STACK_CONSUMPTION = INVOKE_OPERATION_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INVOKE_STATIC__STACK_LEVEL = INVOKE_OPERATION_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -4364,6 +4670,15 @@ public interface EmftvmPackage extends EPackage {
 	int ALLINST__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ALLINST__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4416,6 +4731,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int ALLINST_IN__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ALLINST_IN__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -4482,6 +4806,15 @@ public interface EmftvmPackage extends EPackage {
 	int ISNULL__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ISNULL__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4546,6 +4879,15 @@ public interface EmftvmPackage extends EPackage {
 	int GETENVTYPE__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GETENVTYPE__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4598,6 +4940,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int NOT__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOT__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -4724,6 +5075,15 @@ public interface EmftvmPackage extends EPackage {
 	int CODE_BLOCK_INSTRUCTION__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_BLOCK_INSTRUCTION__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4794,6 +5154,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int AND__STACK_CONSUMPTION = CODE_BLOCK_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AND__STACK_LEVEL = CODE_BLOCK_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -4868,6 +5237,15 @@ public interface EmftvmPackage extends EPackage {
 	int OR__STACK_CONSUMPTION = CODE_BLOCK_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OR__STACK_LEVEL = CODE_BLOCK_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4940,6 +5318,15 @@ public interface EmftvmPackage extends EPackage {
 	int XOR__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int XOR__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4992,6 +5379,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int IMPLIES__STACK_CONSUMPTION = CODE_BLOCK_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IMPLIES__STACK_LEVEL = CODE_BLOCK_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -5064,6 +5460,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int IFTE__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IFTE__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -5156,6 +5561,15 @@ public interface EmftvmPackage extends EPackage {
 	int RETURN__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RETURN__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5218,6 +5632,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int GETCB__STACK_CONSUMPTION = CODE_BLOCK_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GETCB__STACK_LEVEL = CODE_BLOCK_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -5322,6 +5745,15 @@ public interface EmftvmPackage extends EPackage {
 	int INVOKE_ALL_CBS__STACK_CONSUMPTION = INVOKE_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INVOKE_ALL_CBS__STACK_LEVEL = INVOKE_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5383,6 +5815,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int INVOKE_CB__STACK_CONSUMPTION = CODE_BLOCK_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INVOKE_CB__STACK_LEVEL = CODE_BLOCK_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -5466,6 +5907,15 @@ public interface EmftvmPackage extends EPackage {
 	int INVOKE_CB_S__STACK_CONSUMPTION = INVOKE_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INVOKE_CB_S__STACK_LEVEL = INVOKE_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5527,6 +5977,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int MATCH__STACK_CONSUMPTION = INVOKE_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MATCH__STACK_LEVEL = INVOKE_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -5599,6 +6058,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int MATCH_S__STACK_CONSUMPTION = INVOKE_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MATCH_S__STACK_LEVEL = INVOKE_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -5674,6 +6142,15 @@ public interface EmftvmPackage extends EPackage {
 	int ADD__STACK_CONSUMPTION = FIELD_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADD__STACK_LEVEL = FIELD_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5747,6 +6224,15 @@ public interface EmftvmPackage extends EPackage {
 	int REMOVE__STACK_CONSUMPTION = FIELD_INSTRUCTION__STACK_CONSUMPTION;
 
 	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE__STACK_LEVEL = FIELD_INSTRUCTION__STACK_LEVEL;
+
+	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5818,6 +6304,15 @@ public interface EmftvmPackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT__STACK_CONSUMPTION = FIELD_INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT__STACK_LEVEL = FIELD_INSTRUCTION__STACK_LEVEL;
 
 	/**
 	 * The feature id for the '<em><b>Line Number</b></em>' reference.
@@ -6473,6 +6968,17 @@ public interface EmftvmPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getInstruction_StackConsumption();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel <em>Stack Level</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Stack Level</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel()
+	 * @see #getInstruction()
+	 * @generated
+	 */
+	EAttribute getInstruction_StackLevel();
 
 	/**
 	 * Returns the meta object for the reference '{@link org.eclipse.m2m.atl.emftvm.Instruction#getLineNumber <em>Line Number</em>}'.
@@ -8617,6 +9123,14 @@ public interface EmftvmPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute INSTRUCTION__STACK_CONSUMPTION = eINSTANCE.getInstruction_StackConsumption();
+
+		/**
+		 * The meta object literal for the '<em><b>Stack Level</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute INSTRUCTION__STACK_LEVEL = eINSTANCE.getInstruction_StackLevel();
 
 		/**
 		 * The meta object literal for the '<em><b>Line Number</b></em>' reference feature.

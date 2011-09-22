@@ -15,12 +15,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
@@ -37,6 +41,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.emftvm.Add;
 import org.eclipse.m2m.atl.emftvm.And;
+import org.eclipse.m2m.atl.emftvm.BranchInstruction;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Enditerate;
@@ -225,6 +230,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 	private boolean ruleSet;
 	private Rule rule;
+	private Map<Instruction, EList<Instruction>> predecessors = new HashMap<Instruction, EList<Instruction>>();
+	private Map<Instruction, EList<Instruction>> allPredecessors = new HashMap<Instruction, EList<Instruction>>();
+	private Map<Instruction, EList<Instruction>> nlPredecessors = new HashMap<Instruction, EList<Instruction>>();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -697,11 +705,13 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Object execute(StackFrame frame) {
+	public StackFrame execute(final StackFrame frame) {
 		int pc = 0;
 		final EList<Instruction> code = getCode();
 		final int codeSize = code.size();
 		final VMMonitor monitor = frame.getEnv().getMonitor();
+		CodeBlock cb;
+		StackFrame rFrame;
 
 		if (monitor != null) {
 			monitor.enter(frame);
@@ -852,16 +862,16 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					frame.push(!(Boolean)frame.pop());
 					break;
 				case AND:
-					CodeBlock cb = ((And)instr).getCodeBlock();
+					cb = ((And)instr).getCodeBlock();
 					frame.setPc(pc);
 					frame.push((Boolean)frame.pop() && 
-								(Boolean)cb.execute(frame.getSubFrame(cb, null)));
+								(Boolean)cb.execute(frame.getSubFrame(cb, null)).pop());
 					break;
 				case OR:
 					cb = ((Or)instr).getCodeBlock();
 					frame.setPc(pc);
 					frame.push((Boolean)frame.pop() ||
-								(Boolean)cb.execute(frame.getSubFrame(cb, null)));
+								(Boolean)cb.execute(frame.getSubFrame(cb, null)).pop());
 					break;
 				case XOR:
 					frame.push((Boolean)frame.pop() ^ (Boolean)frame.pop());
@@ -870,17 +880,16 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					cb = ((Implies)instr).getCodeBlock();
 					frame.setPc(pc);
 					frame.push(!(Boolean)frame.pop() ||
-								(Boolean)cb.execute(frame.getSubFrame(cb, null)));
+								(Boolean)cb.execute(frame.getSubFrame(cb, null)).pop());
 					break;
 				case IFTE:
 					frame.setPc(pc);
 					if ((Boolean)frame.pop()) {
-						final CodeBlock thenCb = ((Ifte)instr).getThenCb();
-						frame.push(thenCb.execute(frame.getSubFrame(thenCb, null)));
+						cb = ((Ifte)instr).getThenCb();
 					} else {
-						final CodeBlock elseCb = ((Ifte)instr).getElseCb();
-						frame.push(elseCb.execute(frame.getSubFrame(elseCb, null)));
+						cb = ((Ifte)instr).getElseCb();
 					}
+					frame.push(cb.execute(frame.getSubFrame(cb, null)).pop());
 					break;
 				case RETURN:
 					break LOOP;
@@ -891,18 +900,29 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					Object[] args = getArguments(((InvokeAllCbs)instr).getArgcount(), frame);
 					frame.setPc(pc);
 					for (CodeBlock ncb : getNested()) {
-						frame.push(ncb.execute(frame.getSubFrame(ncb, args)));
+						rFrame = ncb.execute(frame.getSubFrame(ncb, args));
+						if (!rFrame.stackEmpty()) {
+							frame.push(rFrame.pop());
+						}
 					}
 					break;
 				case INVOKE_CB:
 					cb = ((InvokeCb)instr).getCodeBlock();
 					frame.setPc(pc);
-					frame.push(cb.execute(frame.getSubFrame(cb, getArguments(((InvokeCb)instr).getArgcount(), frame))));
+					rFrame = cb.execute(frame.getSubFrame(cb, getArguments(((InvokeCb)instr).getArgcount(), frame)));
+					if (!rFrame.stackEmpty()) {
+						frame.push(rFrame.pop());
+					}
 					break;
 				case INVOKE_CB_S: 
 					cb = (CodeBlock)frame.pop();
 					frame.setPc(pc);
-					frame.push(cb.execute(frame.getSubFrame(cb, getArguments(((InvokeCbS)instr).getArgcount(), frame))));
+					rFrame = cb.execute(frame.getSubFrame(cb, getArguments(((InvokeCbS)instr).getArgcount(), frame)));
+					if (!rFrame.stackEmpty()) {
+						frame.push(rFrame.pop());
+					} else {
+						frame.push(null); // unknown code block => always produce one stack element
+					}
 					break;
 				case MATCH:
 					frame.setPc(pc);
@@ -938,11 +958,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			monitor.leave(frame);
 		}
 
-		if (frame.stackEmpty()) {
-			return null;
-		} else {
-			return frame.pop();
-		}
+		return frame;
 	}
 
 	/**
@@ -1011,13 +1027,97 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
+	 */
+	public EList<Instruction> getPredecessors(final Instruction i) {
+		if (!predecessors.containsKey(i)) {
+			final EList<Instruction> preds = new BasicEList<Instruction>();
+			final EList<Instruction> code = getCode();
+			final int index = code.indexOf(i);
+			assert index > -1;
+			if (index > 0) {
+				Instruction prev = code.get(index - 1);
+				if (!(prev instanceof Goto)) {
+					preds.add(prev);
+				}
+				for (Instruction i2 : code) {
+					if (i2 instanceof BranchInstruction && ((BranchInstruction)i2).getTarget() == prev) {
+						preds.add(i2);
+					}
+				}
+			}
+			predecessors.put(i, ECollections.unmodifiableEList(preds));
+		}
+		return predecessors.get(i);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public EList<Instruction> getAllPredecessors(final Instruction i) {
+		if (!allPredecessors.containsKey(i)) {
+			final EList<Instruction> predecessors = new BasicEList<Instruction>();
+			allPredecessors(i, predecessors);
+			allPredecessors.put(i, ECollections.unmodifiableEList(predecessors));
+		}
+		return allPredecessors.get(i);
+	}
+
+	/**
+	 * Collects the transitive closure of predecessor instructions for <code>i</code>.
+	 * @param i the instruction to collect the predecessors for.
+	 * @param currentPreds the predecessor instructions.
+	 * @return the predecessor instructions.
+	 */
+	private EList<Instruction> allPredecessors(final Instruction i, final EList<Instruction> currentPreds) {
+		final EList<Instruction> preds = getPredecessors(i);
+		for (Instruction pred : preds) {
+			if (!currentPreds.contains(pred)) {
+				currentPreds.add(pred);
+				allPredecessors(pred, currentPreds);
+			}
+		}
+		return currentPreds;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public EList<Instruction> getNonLoopingPredecessors(Instruction i) {
+		if (!nlPredecessors.containsKey(i)) {
+			final EList<Instruction> code = getCode();
+			final int index = code.indexOf(i);
+			final EList<Instruction> preds = new BasicEList<Instruction>();
+			for (Instruction p : getPredecessors(i)) {
+				if (code.indexOf(p) < index || !getAllPredecessors(p).contains(i)) {
+					preds.add(p);
+				}
+			}
+			nlPredecessors.put(i, ECollections.unmodifiableEList(preds));
+		}
+		return nlPredecessors.get(i);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case EmftvmPackage.CODE_BLOCK__CODE:
+				predecessors.clear();
+				allPredecessors.clear();
+				nlPredecessors.clear();
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getCode()).basicAdd(otherEnd, msgs);
 			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getLineNumbers()).basicAdd(otherEnd, msgs);
@@ -1061,12 +1161,15 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case EmftvmPackage.CODE_BLOCK__CODE:
+				predecessors.clear();
+				allPredecessors.clear();
+				nlPredecessors.clear();
 				return ((InternalEList<?>)getCode()).basicRemove(otherEnd, msgs);
 			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
 				return ((InternalEList<?>)getLineNumbers()).basicRemove(otherEnd, msgs);
@@ -1878,7 +1981,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final Operation op = env.findOperation(type, opname, argTypes);
 		if (op != null) {
 			final CodeBlock body = op.getBody();
-			return body.execute(frame.getSubFrame(body, o, args));
+			final StackFrame rFrame = body.execute(frame.getSubFrame(body, o, args));
+			return rFrame.stackEmpty() ? null : rFrame.pop();
 		}
 		return EMFTVMUtil.invokeNative(frame, o, opname, args);
 	}
@@ -1914,7 +2018,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final Operation op = env.findStaticOperation(type, opname, argTypes);
 		if (op != null) {
 			final CodeBlock body = op.getBody();
-			return body.execute(frame.getSubFrame(body, args));
+			final StackFrame rFrame = body.execute(frame.getSubFrame(body, args));
+			return rFrame.stackEmpty() ? null : rFrame.pop();
 		}
 		if (type instanceof Class<?>) {
 			return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname, args);
@@ -1979,7 +2084,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
-			return body.execute(frame.getSubFrame(body, o, args));
+			final StackFrame rFrame = body.execute(frame.getSubFrame(body, o, args));
+			return rFrame.stackEmpty() ? null : rFrame.pop();
 		}
 
 		final Class<?> ic = context.getInstanceClass();
