@@ -1108,16 +1108,13 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case EmftvmPackage.CODE_BLOCK__CODE:
-				predecessors.clear();
-				allPredecessors.clear();
-				nlPredecessors.clear();
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getCode()).basicAdd(otherEnd, msgs);
 			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getLineNumbers()).basicAdd(otherEnd, msgs);
@@ -1161,15 +1158,12 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case EmftvmPackage.CODE_BLOCK__CODE:
-				predecessors.clear();
-				allPredecessors.clear();
-				nlPredecessors.clear();
 				return ((InternalEList<?>)getCode()).basicRemove(otherEnd, msgs);
 			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
 				return ((InternalEList<?>)getLineNumbers()).basicRemove(otherEnd, msgs);
@@ -1417,6 +1411,83 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				return getBindingFor() != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void eNotify(Notification notification) {
+		super.eNotify(notification);
+		switch (notification.getFeatureID(null)) {
+		case EmftvmPackage.CODE_BLOCK__CODE:
+			codeChanged();
+			break;
+		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+			localVariablesChanged();
+			break;
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean eNotificationRequired() {
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+	
+		StringBuffer result = new StringBuffer();
+		final EObject container = eContainer();
+		if (container != null) {
+			result.append(container);
+			if (container instanceof CodeBlock) {
+				result.append('@');
+				result.append(((CodeBlock)container).getNested().indexOf(this));
+			} else if (container instanceof Field) {
+				// nothing
+			} else if (container instanceof Operation) {
+				// nothing
+			} else if (container instanceof InputRuleElement) {
+				result.append('@');
+				result.append(((InputRuleElement)container).getInputFor());
+			} else if (container instanceof Rule) {
+				final Rule r = (Rule)container;
+				if (r.getMatcher() == this) {
+					result.append("@matcher");
+				} else if (r.getApplier() == this) {
+					result.append("@applier");
+				} else if (r.getPostApply() == this) {
+					result.append("@postApply");
+				} else {
+					result.append("@unknown");
+				}
+			} else {
+				result.append("@unknown");
+			}
+		} else {
+			result.append("@uncontained");
+		}
+		return result.toString();
+	}
+
+	/**
+	 * Returns the {@link Module} (for debugger).
+	 * @return the {@link Module}
+	 * @see CodeBlockImpl#getModule()
+	 */
+	public Module getASM() {
+		return getModule();
 	}
 
 	/**
@@ -2148,56 +2219,20 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
-	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * Clears values derived from {@link #getCode()}.
 	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer();
-		final EObject container = eContainer();
-		if (container != null) {
-			result.append(container);
-			if (container instanceof CodeBlock) {
-				result.append('@');
-				result.append(((CodeBlock)container).getNested().indexOf(this));
-			} else if (container instanceof Field) {
-				// nothing
-			} else if (container instanceof Operation) {
-				// nothing
-			} else if (container instanceof InputRuleElement) {
-				result.append('@');
-				result.append(((InputRuleElement)container).getInputFor());
-			} else if (container instanceof Rule) {
-				final Rule r = (Rule)container;
-				if (r.getMatcher() == this) {
-					result.append("@matcher");
-				} else if (r.getApplier() == this) {
-					result.append("@applier");
-				} else if (r.getPostApply() == this) {
-					result.append("@postApply");
-				} else {
-					result.append("@unknown");
-				}
-			} else {
-				result.append("@unknown");
-			}
-		} else {
-			result.append("@uncontained");
-		}
-		return result.toString();
+	private void codeChanged() {
+		predecessors.clear();
+		allPredecessors.clear();
+		nlPredecessors.clear();
+		eUnset(EmftvmPackage.CODE_BLOCK__MAX_STACK);
 	}
 
 	/**
-	 * Returns the {@link Module} (for debugger).
-	 * @return the {@link Module}
-	 * @see CodeBlockImpl#getModule()
+	 * Clears values derived from {@link #getLocalVariables()}.
 	 */
-	public Module getASM() {
-		return getModule();
+	private void localVariablesChanged() {
+		eUnset(EmftvmPackage.CODE_BLOCK__MAX_LOCALS);
 	}
 
 } //CodeBlockImpl
