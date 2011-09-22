@@ -382,11 +382,9 @@ public class NetworkDebugger extends LaunchAdapter {
 				EList<Instruction> instr = op.getCode();
 				List<Value> msgArgs = new ArrayList<Value>();
 
-				int k = 0;
 				for (Iterator<Instruction> i = instr.iterator(); i.hasNext();) {
 					String inst = i.next().toString();
 					msgArgs.add(StringValue.valueOf(inst));
-					k++;
 				}
 				debuggee.sendMessage(ADWPDebuggee.MSG_DISAS_CODE, cmd.getAck(), msgArgs);
 				return false;
