@@ -37,6 +37,7 @@ public class InsertImpl extends FieldInstructionImpl implements Insert {
 	protected InsertImpl() {
 		super();
 		opcode = Opcode.INSERT;
+		stackConsumption = 3;
 	}
 
 	/**
