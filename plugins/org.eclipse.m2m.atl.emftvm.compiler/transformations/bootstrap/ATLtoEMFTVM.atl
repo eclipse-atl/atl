@@ -3,7 +3,7 @@
 -- @path ATL=/emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: ATLtoEMFTVM.atl,v 1.3 2011/07/29 17:33:15 dwagelaar Exp $
+-- $Id: ATLtoEMFTVM.atl,v 1.4 2011/09/22 14:20:21 dwagelaar Exp $
 module ATLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -592,7 +592,7 @@ rule OutPatternElementWithMapsTo extends OutPatternElement {
 		not s.sourceElement.oclIsUndefined() and
 		s.outPattern."rule".actionBlock.oclIsUndefined())
 	to re : EMFTVM!OutputRuleElement (
-		"mapsTo" <- thisModule.resolveTemp(s.sourceElement.debug('mapsTo for ' + s.varName), 're'))
+		"mapsTo" <- thisModule.resolveTemp(s.sourceElement, 're'))
 }
 
 rule OutPatternElementWithAction extends OutPatternElement {

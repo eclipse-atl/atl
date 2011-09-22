@@ -1,7 +1,7 @@
 -- @atlcompiler emftvm
 -- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
 -- Inlines nested code blocks
--- $Id: InlineCodeblocks.atl,v 1.3 2011/07/21 13:30:34 dwagelaar Exp $
+-- $Id: InlineCodeblocks.atl,v 1.4 2011/09/22 14:20:21 dwagelaar Exp $
 module InlineCodeblocks;
 create OUT : EMFTVM from IN : EMFTVM;
 
@@ -11,8 +11,15 @@ uses EMFTVMCopy;
 -- helpers begin
 -- ======================================================================
 
+-- isEmptyRuleCode
 helper context EMFTVM!CodeBlock def : isEmptyRuleCode : Boolean =
-	self.refImmediateComposite().oclIsKindOf(EMFTVM!Rule) and self.inline->isEmpty();
+	self.refImmediateComposite().oclIsKindOf(EMFTVM!Rule) and self.isInlineEmpty;
+
+helper context EMFTVM!CodeBlock def : isInlineEmpty : Boolean =
+	self.code->forAll(i |
+		(i.oclIsKindOf(EMFTVM!InvokeCb) and i.codeBlock.isInlineEmpty) or
+		(i.oclIsKindOf(EMFTVM!InvokeAllCbs) and self.nested->forAll(n|n.isInlineEmpty))
+	);
 
 -- isInlined
 helper context EMFTVM!CodeBlock def : isInlined : Boolean =
@@ -31,6 +38,18 @@ helper context EMFTVM!Instruction def : targets(cb : EMFTVM!CodeBlock) : Boolean
 
 helper context EMFTVM!InvokeCb def : targets(cb : EMFTVM!CodeBlock) : Boolean =
 	self.codeBlock = cb;
+
+helper context EMFTVM!And def : targets(cb : EMFTVM!CodeBlock) : Boolean =
+	self.codeBlock = cb;
+
+helper context EMFTVM!Or def : targets(cb : EMFTVM!CodeBlock) : Boolean =
+	self.codeBlock = cb;
+
+helper context EMFTVM!Implies def : targets(cb : EMFTVM!CodeBlock) : Boolean =
+	self.codeBlock = cb;
+
+helper context EMFTVM!Ifte def : targets(cb : EMFTVM!CodeBlock) : Boolean =
+	self.thenCb = cb or self.elseCb = cb;
 
 -- reTarget
 helper context EMFTVM!Instruction def : reTarget : EMFTVM!Instruction =
@@ -71,6 +90,29 @@ helper context EMFTVM!Instruction def : endReTarget : EMFTVM!Instruction =
 helper context EMFTVM!InvokeCb def : endReTarget : EMFTVM!Instruction =
 	self.codeBlock.code->last().endReTarget;
 
+helper context EMFTVM!Getcb def : endReTarget : EMFTVM!Instruction =
+	self;
+
+helper context EMFTVM!CodeBlockInstruction def : endReTarget : EMFTVM!Instruction =
+	self.endReTarget(); -- allow thisModule.resolveTemp()
+
+helper context EMFTVM!CodeBlockInstruction def : endReTarget() : EMFTVM!Instruction =
+	thisModule.resolveTemp(self, 'push');
+
+helper context EMFTVM!Ifte def : endReTarget : EMFTVM!Instruction =
+	self.endReTarget(); -- allow thisModule.resolveTemp()
+
+helper context EMFTVM!Ifte def : endReTarget() : EMFTVM!Instruction =
+	if self.elseCb.isInlineEmpty then
+		if self.thenCb.isInlineEmpty then
+			thisModule.resolveTemp(self, 'goto')
+		else
+			self.thenCb.code->last().endReTarget
+		endif
+	else
+		self.elseCb.code->last().endReTarget
+	endif;
+
 helper context EMFTVM!InvokeAllCbs def : endReTarget : EMFTVM!Instruction =
 	let cb : EMFTVM!CodeBlock = self.owningBlock in
 	let nested : Sequence(EMFTVM!CodeBlock) = cb.nested in
@@ -99,14 +141,27 @@ helper context EMFTVM!InvokeAllCbs def : endReTargetEmpty : EMFTVM!Instruction =
 
 -- inline
 helper context EMFTVM!CodeBlock def : inline : Sequence(EMFTVM!Instruction) =
+	self.inline();
+
+helper context EMFTVM!CodeBlock def : inline() : Sequence(EMFTVM!Instruction) =
 	self.code->iterate(i; acc : Sequence(EMFTVM!Instruction) = Sequence{} |
 		if i.oclIsKindOf(EMFTVM!InvokeCb) then
 			acc->union(i.codeBlock.inline)
 		else if i.oclIsKindOf(EMFTVM!InvokeAllCbs) then
 			acc->union(self.nested->collect(n|n.inline)->flatten())
+		else if i.oclIsKindOf(EMFTVM!And) or i.oclIsKindOf(EMFTVM!Or) or i.oclIsKindOf(EMFTVM!Implies) then
+			acc->append(i)
+				->union(i.codeBlock.inline)
+				->append(thisModule.resolveTemp(i, 'goto'))
+				->append(thisModule.resolveTemp(i, 'push'))
+		else if i.oclIsKindOf(EMFTVM!Ifte) then
+			acc->append(i)
+				->union(i.thenCb.inline)
+				->append(thisModule.resolveTemp(i, 'goto'))
+				->union(i.elseCb.inline)
 		else
 			acc->append(i)
-		endif endif
+		endif endif endif endif
 	);
 
 -- collapseNested
@@ -125,9 +180,30 @@ helper context EMFTVM!CodeBlock def : inlinedNested : Sequence(EMFTVM!CodeBlock)
 		acc->append(c)->union(c.inlinedNested)
 	);
 
+-- hasRemainingInstructions
+helper context EMFTVM!LineNumber def : hasRemainingInstructions : Sequence(EMFTVM!Instruction) =
+	self.instructions
+		->exists(i|not (i.oclIsKindOf(EMFTVM!InvokeCb) or i.oclIsKindOf(EMFTVM!InvokeAllCbs)));
+
 -- remainingInstructions
 helper context EMFTVM!LineNumber def : remainingInstructions : Sequence(EMFTVM!Instruction) =
-	self.instructions->select(i|not (i.oclIsKindOf(EMFTVM!InvokeCb) or i.oclIsKindOf(EMFTVM!InvokeAllCbs)));
+	self.remainingInstructions();
+
+helper context EMFTVM!LineNumber def : remainingInstructions() : Sequence(EMFTVM!Instruction) =
+	self.instructions
+		->select(i|not (i.oclIsKindOf(EMFTVM!InvokeCb) or i.oclIsKindOf(EMFTVM!InvokeAllCbs)))
+		->iterate(i; acc : Sequence(EMFTVM!Instruction) = Sequence{} |
+			if i.oclIsKindOf(EMFTVM!And) or i.oclIsKindOf(EMFTVM!Or) or i.oclIsKindOf(EMFTVM!Implies) then
+				acc->append(i)
+					->append(thisModule.resolveTemp(i, 'goto'))
+					->append(thisModule.resolveTemp(i, 'push'))
+			else if i.oclIsKindOf(EMFTVM!Ifte) then
+				acc->append(i)
+					->append(thisModule.resolveTemp(i, 'goto'))
+			else
+				acc->append(i)
+			endif endif
+		);
 
 -- remainingLineNumbers
 helper context EMFTVM!CodeBlock def : remainingLineNumbers : Sequence(EMFTVM!LineNumber) =
@@ -197,7 +273,7 @@ rule LocalVariable {
 
 rule LineNumber {
     from s : EMFTVM!"emftvm::LineNumber" in IN (
-		s.remainingInstructions->notEmpty())
+		s.hasRemainingInstructions)
     to t : EMFTVM!"emftvm::LineNumber" (
         startLine <- s.startLine,
         startColumn <- s.startColumn,
@@ -206,6 +282,38 @@ rule LineNumber {
 		startChar <- s.startChar,
 		endChar <- s.endChar,
 		instructions <- s.remainingInstructions)
+}
+
+rule And {
+    from s : EMFTVM!"emftvm::And" in IN
+    to t : EMFTVM!"emftvm::Ifn" (target <- goto),		-- if first value false, jump over goto
+		-- Here goes the inlined code
+	   goto : EMFTVM!"emftvm::Goto" (target <- push),	-- jump over push
+	   push : EMFTVM!"emftvm::Pushf"					-- push false
+}
+
+rule Or {
+    from s : EMFTVM!"emftvm::Or" in IN
+    to t : EMFTVM!"emftvm::If" (target <- goto),		-- if first value true, jump over goto
+		-- Here goes the inlined code
+	   goto : EMFTVM!"emftvm::Goto" (target <- push),	-- jump over push
+	   push : EMFTVM!"emftvm::Pusht"					-- push true
+}
+
+rule Implies {
+    from s : EMFTVM!"emftvm::Implies" in IN
+    to t : EMFTVM!"emftvm::Ifn" (target <- goto),		-- if first value false, jump over goto
+		-- Here goes the inlined code
+	   goto : EMFTVM!"emftvm::Goto" (target <- push),	-- jump over push
+	   push : EMFTVM!"emftvm::Pusht"					-- push true
+}
+
+rule Ifte {
+    from s : EMFTVM!"emftvm::Ifte" in IN
+    to t : EMFTVM!"emftvm::Ifn" (target <- goto),				-- if first value false, jump over goto
+		-- Here goes the inlined "then" code
+	   goto : EMFTVM!"emftvm::Goto" (target <- s.endReTarget)	-- jump over end
+		-- Here goes the inlined "else" code
 }
 
 rule If {

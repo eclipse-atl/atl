@@ -1,9 +1,9 @@
 -- @atlcompiler emftvm
 -- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
--- @path ATL=/emftvm.compiler/metamodels/ATL.ecore
--- @path Problem=/emftvm.compiler/metamodels/Problem.ecore
+-- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
+-- @path Problem=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: ATLtoEMFTVM.atl,v 1.4 2011/07/29 17:33:15 dwagelaar Exp $
+-- $Id: ATLtoEMFTVM.atl,v 1.5 2011/09/22 14:20:21 dwagelaar Exp $
 module ATLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -588,7 +588,7 @@ rule OutPatternElementWithMapsTo extends OutPatternElement {
 		not s.sourceElement.oclIsUndefined() and
 		s.outPattern."rule".actionBlock.oclIsUndefined())
 	to re : EMFTVM!OutputRuleElement (
-		"mapsTo" <- thisModule.resolveTemp(s.sourceElement.debug('mapsTo for ' + s.varName), 're'))
+		"mapsTo" <- thisModule.resolveTemp(s.sourceElement, 're'))
 }
 
 rule OutPatternElementWithAction extends OutPatternElement {
@@ -908,6 +908,18 @@ rule ExpressionStat {
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.expression, argcount <- 0)		-- [value]
 }
 
+rule NonLastExpressionStat extends ExpressionStat {
+	from s : ATL!ExpressionStat in IN (
+		not s.refImmediateComposite().oclIsKindOf(ATL!ActionBlock) or
+		s.refImmediateComposite().statements->last() <> s)
+	to cb : EMFTVM!CodeBlock (
+		code <- Sequence{invokeCb, pop}),
+	   ln : EMFTVM!LineNumber (
+	   	instructions <- Sequence{invokeCb, pop}),
+	   invokeCb : EMFTVM!InvokeCb,												-- [value]
+	   pop : EMFTVM!Pop															-- []
+}
+
 rule BindingStat {
 	from s : ATL!BindingStat in IN (not s.isAssignment)
 	to cb : EMFTVM!CodeBlock (
@@ -922,7 +934,7 @@ rule BindingStat {
 		instructions <- Sequence{invokeCb, invoke, invokeCb2, set}),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),		-- [value]
 	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),				-- [rvalue]
-	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [source, rvalue]
+	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),		-- [source, rvalue]
 	   set : EMFTVM!"Set" (fieldname <- s.propertyName)							-- []
 }
 
@@ -939,24 +951,39 @@ rule AssignmentBindingStat {
 		endColumn <- s.location.endColumn,
 		instructions <- Sequence{invokeCb, invokeCb2, set}),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),		-- [value]
-	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [source, value]
+	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),		-- [source, value]
 	   set : EMFTVM!"Set" (fieldname <- s.propertyName)							-- []
 }
 
-rule IfStat {
+abstract rule IfStat {
 	from s : ATL!IfStat in IN
+	to cb : EMFTVM!CodeBlock (
+		lineNumbers <- Sequence{ln}),
+	   ln : EMFTVM!LineNumber (
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn),
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.condition, argcount <- 0)		-- [cond]
+}
+
+rule IfStatWithThenAndElse extends IfStat {
+	from s : ATL!IfStat in IN (s.thenStatements->notEmpty() and s.elseStatements->notEmpty())
 	to cb : EMFTVM!CodeBlock (
 		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.condition, thenCb, elseCb},
-		code <- Sequence{invokeCb, ifte}), -- TODO implement using regular IF
+		code <- Sequence{invokeCb, ifn, invokeThen, goto, invokeElse}),
 	   ln : EMFTVM!LineNumber (
 	   	startLine <- s.location.startLine,
 		startColumn <- s.location.startColumn,
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
-		instructions <- Sequence{invokeCb, ifte}),
+		instructions <- Sequence{invokeCb, ifn, invokeThen, goto, invokeElse}),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.condition, argcount <- 0),		-- [cond]
-	   ifte : EMFTVM!Ifte (thenCb <- thenCb, elseCb <- elseCb),						-- [result]
+	   ifn : EMFTVM!Ifn (target <- goto),											-- []
+	   invokeThen : EMFTVM!InvokeCb (codeBlock <- thenCb, argcount <- 0),			-- [...]
+	   goto : EMFTVM!Goto (target <- invokeElse),									-- [...]
+	   invokeElse : EMFTVM!InvokeCb (codeBlock <- elseCb, argcount <- 0),			-- [...]
 	   thenCb : EMFTVM!CodeBlock (
 	   	nested <- s.thenStatements,
 		code <- Sequence{invokeAllCbs}),
@@ -967,24 +994,81 @@ rule IfStat {
 	   invokeAllCbs2 : EMFTVM!InvokeAllCbs (argcount <- 0)
 }
 
+rule IfStatWithThen extends IfStat {
+	from s : ATL!IfStat in IN (s.thenStatements->notEmpty() and s.elseStatements->isEmpty())
+	to cb : EMFTVM!CodeBlock (
+		lineNumbers <- Sequence{ln},
+		nested <- Sequence{s.condition, thenCb},
+		code <- Sequence{invokeCb, ifn, invokeThen}),
+	   ln : EMFTVM!LineNumber (
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb, ifn, invokeThen}),
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.condition, argcount <- 0),		-- [cond]
+	   ifn : EMFTVM!Ifn (target <- invokeThen),										-- []
+	   invokeThen : EMFTVM!InvokeCb (codeBlock <- thenCb, argcount <- 0),			-- [...]
+	   thenCb : EMFTVM!CodeBlock (
+	   	nested <- s.thenStatements,
+		code <- Sequence{invokeAllCbs}),
+	   invokeAllCbs : EMFTVM!InvokeAllCbs (argcount <- 0)
+}
+
+rule IfStatWithElse extends IfStat {
+	from s : ATL!IfStat in IN (s.thenStatements->isEmpty() and s.elseStatements->notEmpty())
+	to cb : EMFTVM!CodeBlock (
+		lineNumbers <- Sequence{ln},
+		nested <- Sequence{s.condition, elseCb},
+		code <- Sequence{invokeCb, ift, invokeElse}),
+	   ln : EMFTVM!LineNumber (
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb, ift, invokeElse}),
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.condition, argcount <- 0),		-- [cond]
+	   ift : EMFTVM!If (target <- invokeElse),										-- []
+	   invokeElse : EMFTVM!InvokeCb (codeBlock <- elseCb, argcount <- 0),			-- [...]
+	   elseCb : EMFTVM!CodeBlock (
+	   	nested <- s.elseStatements,
+		code <- Sequence{invokeAllCbs2}),
+	   invokeAllCbs2 : EMFTVM!InvokeAllCbs (argcount <- 0)
+}
+
+rule IfStatWithNothing extends IfStat {
+	from s : ATL!IfStat in IN (s.thenStatements->isEmpty() and s.elseStatements->isEmpty())
+	to cb : EMFTVM!CodeBlock (
+		lineNumbers <- Sequence{ln},
+		nested <- Sequence{s.condition},
+		code <- Sequence{invokeCb, pop}),
+	   ln : EMFTVM!LineNumber (
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb, pop}),
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.condition, argcount <- 0),		-- [cond]
+	   pop : EMFTVM!Pop 															-- []
+}
+
 rule ForStat {
 	from s : ATL!ForStat in IN
 	to cb : EMFTVM!CodeBlock (
 		localVariables <- Sequence{s.iterator},
 		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.collection, loop},
-		code <- Sequence{invokeCb, it, store, invokeCb2, pop, endit}),
+		code <- Sequence{invokeCb, it, store, invokeCb2, endit}),
 	   ln : EMFTVM!LineNumber (
 	   	startLine <- s.location.startLine,
 		startColumn <- s.location.startColumn,
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
-		instructions <- Sequence{invokeCb, it, store, invokeCb2, pop, endit}),
+		instructions <- Sequence{invokeCb, it, store, invokeCb2, endit}),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.collection, argcount <- 0),		-- [coll]
 	   it : EMFTVM!Iterate (target <- endit),										-- [value, it(coll)]
 	   store : EMFTVM!Store (localVariable <- s.iterator),							-- [it(coll)]
-	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- loop),							-- [bogus, it(coll)]
-	   pop : EMFTVM!Pop,															-- [it(coll)]
+	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- loop),								-- [it(coll)]
 	   endit : EMFTVM!Enditerate (target <- it),									-- []
 	   loop : EMFTVM!CodeBlock (
 	   	nested <- s.statements,
@@ -1343,7 +1427,7 @@ abstract rule CollectionExp extends OclExpression {
 			s.elements->collect(e|thisModule.InvokeIncluding(e));
 	}
 	to cb : EMFTVM!CodeBlock (
-		nested <- thisModule.reverse(s.elements), -- elements go on the stack before being appended to the collection
+		nested <- s.elements->reverse(), -- elements go on the stack before being appended to the collection
 		code <- Sequence{invokeAllCbs, findtype, new}->union(invokes)),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeAllCbs, findtype, new}->union(invokes)),
