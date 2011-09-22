@@ -165,7 +165,7 @@ public class ASMTransientLink extends ASMOclAny {
 	 * @param frame
 	 * @param self
 	 * @return A Map of target element names to target elements for this link.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static ASMMap getTargetElements(StackFrame frame, ASMTransientLink self) {
 		Map map = new HashMap();

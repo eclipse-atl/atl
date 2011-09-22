@@ -155,7 +155,7 @@ public abstract class AtlModelHandler {
 	
 	/**
 	 * @return A new ModelLoader instance corresponding to this kind of handler.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public abstract ModelLoader createModelLoader();
 }
