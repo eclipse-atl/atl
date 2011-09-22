@@ -248,7 +248,8 @@ public class LocalObjectReference extends ObjectReference {
 			final CodeBlock body = op.getBody();
 			final StackFrame frame = new StackFrame(execEnv, body);
 			frame.setLocals(object, realArgs);
-			final Object o = body.execute(frame);
+			body.execute(frame);
+			final Object o = frame.stackEmpty() ? null : frame.pop();
 			ret = object2value(o);
 
 			if (debug) {
