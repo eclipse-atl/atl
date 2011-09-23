@@ -223,8 +223,9 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 
 	private static void readCodeBlock(final DataInputStream in, 
 			final ConstantPool constants, final CodeBlock cb) throws IOException {
-		cb.setMaxLocals(in.readInt());
-		cb.setMaxStack(in.readInt());
+		// Set maxLocals and maxStack after reading locals and code, to avoid resetting
+		final int maxLocals = in.readInt();
+		final int maxStack = in.readInt();
 		readLocalVariables(in, constants, cb.getLocalVariables());
 		readLineNumbers(in, cb.getLineNumbers());
 		final int nestedSize = in.readInt();
@@ -235,6 +236,8 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			readCodeBlock(in, constants, nestedcode);
 		}
 		readInstructions(in, constants, cb);
+		cb.setMaxLocals(maxLocals);
+		cb.setMaxStack(maxStack);
 	}
 
 	private static void readParameters(final DataInputStream in,
