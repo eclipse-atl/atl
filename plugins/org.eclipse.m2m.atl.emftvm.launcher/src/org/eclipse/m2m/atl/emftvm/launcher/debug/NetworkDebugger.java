@@ -19,9 +19,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.eclipse.debug.core.ILaunch;
@@ -34,6 +36,7 @@ import org.eclipse.m2m.atl.debug.core.adwp.Value;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Instruction;
+import org.eclipse.m2m.atl.emftvm.LineNumber;
 import org.eclipse.m2m.atl.emftvm.launcher.EmftvmLauncherPlugin;
 import org.eclipse.m2m.atl.emftvm.launcher.LaunchAdapter;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
@@ -56,7 +59,7 @@ public class NetworkDebugger extends LaunchAdapter {
 	private boolean finished;
 	private int depth;
 	private Map<Integer, Command> commands = new HashMap<Integer, Command>();
-	private List<String> breakpoints = new ArrayList<String>();
+	private Set<String> breakpoints = new HashSet<String>();
 
 	/**
 	 * Creates a new {@link NetworkDebugger}.
@@ -141,8 +144,9 @@ public class NetworkDebugger extends LaunchAdapter {
 				dialog(frame, "for stepping"); //$NON-NLS-1$
 			}
 		} else {
-			final String sourceLocation = frame.getSourceLocation();
-			if (breakpoints.contains(sourceLocation)) {
+			final LineNumber ln = frame.getLineNumber();
+			if (breakpoints.contains(ln.toString()) || 
+					breakpoints.contains(String.valueOf(ln.getStartLine()))) {
 				dialog(frame, "for breakpoint"); //$NON-NLS-1$
 			}
 		}
