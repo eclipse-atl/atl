@@ -590,14 +590,28 @@ public final class StackFrame {
 	 * Returns the source code location of the current instruction location (for debugger).
 	 * @return the source code location of the instruction at the current location.
 	 * @see #getLocation()
+	 * @see #getLineNumber()
 	 */
 	public String getSourceLocation() {
+		final LineNumber ln = getLineNumber();
+		if (ln != null) {
+			return ln.toString();
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the source code line number of the current instruction location (for debugger).
+	 * @return the source code line number of the instruction at the current location.
+	 * @see #getLocation()
+	 */
+	public LineNumber getLineNumber() {
 		final int location = getLocation();
 		final CodeBlock cb = getCodeBlock();
 		if (location > -1 && cb != null) {
 			final LineNumber ln = cb.getCode().get(location).getLineNumber();
 			if (ln != null) {
-				return ln.toString();
+				return ln;
 			}
 		}
 		return null;
