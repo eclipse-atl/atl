@@ -25,15 +25,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -42,11 +43,12 @@ import org.eclipse.m2m.atl.adt.ui.common.WorkspaceFileDialog;
 import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
 import org.eclipse.m2m.atl.emftvm.Module;
-import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.ModuleNotFoundException;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -62,6 +64,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -77,6 +80,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	private ScrolledComposite scrollContainer;
 	private Composite rootContainer;
 	private Group moduleGroup;
+	private Text moduleNameText;
 	private Text modulePathText;
 	private Group metamodelsGroup;
 	private Group inputModelsGroup;
@@ -85,6 +89,10 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	private Group controlGroup;
 
 	private ILaunchConfiguration launchConfiguration;
+
+	private Module module;
+	private boolean moduleChanged;
+	private final Map<List<String>, Module> moduleCache = new HashMap<List<String>, Module>();
 
 	private final Map<String, Map<String, Object>> metamodelsGroupWidgets = new LinkedHashMap<String, Map<String, Object>>();
 	private final Map<String, Map<String, Object>> inputModelsGroupWidgets = new LinkedHashMap<String, Map<String, Object>>();
@@ -123,11 +131,31 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		moduleGroup.setLayout(new GridLayout(3, false));
 		moduleGroup.setText("EMFTVM module");
 
-		modulePathText = new Text(moduleGroup, SWT.SINGLE | SWT.BORDER);
-		modulePathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		modulePathText.addModifyListener(new ModifyListener() {
+		final Label moduleFileLabel = new Label(moduleGroup, SWT.LEFT);
+		moduleFileLabel.setLayoutData(new GridData(SWT.LEFT));
+		moduleFileLabel.setText("Module:");
+
+		moduleNameText = new Text(moduleGroup, SWT.SINGLE | SWT.BORDER);
+		moduleNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		moduleNameText.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+				if (moduleChanged) {
+					rebuild();
+				}
+			}
+			public void focusGained(FocusEvent e) {
+			}
+		});
+		moduleNameText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				rebuild();
+				if (!moduleChanged) {
+					moduleChanged = true;
+					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							rebuild();
+						}
+					});
+				}
 			}
 		});
 
@@ -141,8 +169,52 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 				final Object result = dialog.open() == Dialog.OK ? dialog.getFirstResult() : null;
 				if ((result != null) && (result instanceof IFile)) {
 					final IFile currentFile = (IFile)result;
-					final String path = currentFile.getFullPath().toString();
-					modulePathText.setText(path);
+					final IPath path = currentFile.getFullPath();
+					final URI uri = URI.createPlatformResourceURI(path.toString(), true);
+					final Module module = findModule(uri);
+					if (module != null) {
+						final String mName = module.getName();
+						moduleNameText.setText(mName);
+						int segments = 1;
+						for (int index = mName.indexOf("::"); index > -1; index = mName.indexOf("::", index + 1)) {
+							segments++;
+						}
+						modulePathText.setText(path.removeLastSegments(segments).toString() + '/');
+					} else {
+						modulePathText.setText(path.removeLastSegments(1).toString() + '/');
+						moduleNameText.setText(path.removeFileExtension().lastSegment());
+					}
+					rebuild();
+				}
+			}
+		});
+
+		final Label modulePathLabel = new Label(moduleGroup, SWT.LEFT);
+		modulePathLabel.setLayoutData(new GridData(SWT.LEFT));
+		modulePathLabel.setText("Path:");
+
+		modulePathText = new Text(moduleGroup, SWT.SINGLE | SWT.BORDER);
+		final GridData modulePathData = new GridData(GridData.FILL_HORIZONTAL);
+		modulePathData.horizontalSpan = 2;
+		modulePathText.setLayoutData(modulePathData);
+		modulePathText.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+				if (moduleChanged) {
+					rebuild();
+				}
+			}
+			public void focusGained(FocusEvent e) {
+			}
+		});
+		modulePathText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				if (!moduleChanged) {
+					moduleChanged = true;
+					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							rebuild();
+						}
+					});
 				}
 			}
 		});
@@ -279,12 +351,22 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		launchConfiguration = configuration;
 		try {
-			final String fileName = configuration.getAttribute(EMFTVMLaunchConstants.MODULE_FILE_NAME, "");
-			if (!fileName.equals(modulePathText.getText())) {
-				modulePathText.setText(fileName);
-			} else {
-				rebuild();
+			String name = configuration.getAttribute(EMFTVMLaunchConstants.MODULE_NAME, "");
+			String path = configuration.getAttribute(EMFTVMLaunchConstants.MODULE_PATH, "");
+			final String oldPath = configuration.getAttribute(EMFTVMLaunchConstants.MODULE_FILE_NAME, "");
+			if ((name.equals("") || path.equals("")) && !oldPath.equals("")) {
+				// convert legacy path to new path and module name
+				final int index = oldPath.lastIndexOf('/') + 1;
+				path = oldPath.substring(0, index);
+				final int dotIndex = oldPath.lastIndexOf('.');
+				name = dotIndex < 0 ? oldPath.substring(index) : oldPath.substring(index, dotIndex); // strip file extension
 			}
+			if (!name.equals(moduleNameText.getText()) || !path.equals(modulePathText.getText())) {
+				moduleChanged = true; // prevent rebuild() trigger
+				moduleNameText.setText(name);
+				modulePathText.setText(path);
+			}
+			rebuild();
 		} catch (CoreException e) {
 			EmftvmLauncherPlugin.log(e.getStatus());
 		}
@@ -294,12 +376,14 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	 * {@inheritDoc}
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(EMFTVMLaunchConstants.MODULE_FILE_NAME, modulePathText.getText());
-		final String path = modulePathText.getText();
-		Module module = loadModule("platform:/resource/" + path);
-		if (module != null) { // backwards compatibility
-			configuration.setAttribute(ATLLaunchConstants.ATL_FILE_NAME, 
-					path.substring(0, path.lastIndexOf('/') + 1) + module.getSourceName());
+		configuration.setAttribute(EMFTVMLaunchConstants.MODULE_NAME, moduleNameText.getText());
+		configuration.setAttribute(EMFTVMLaunchConstants.MODULE_PATH, modulePathText.getText());
+
+		if (module != null && module.eResource().getURI().isPlatformResource()) {
+			// backwards compatibility with ATL debugger
+			URI moduleUri = module.eResource().getURI();
+			configuration.setAttribute(ATLLaunchConstants.ATL_FILE_NAME,
+					moduleUri.toPlatformString(true).replaceFirst("\\.emftvm$", ".atl"));
 			Iterator<Module> it = module.getEImports().iterator();
 			List<Iterator<Module>> its = new ArrayList<Iterator<Module>>();
 			List<String> superimpose = new ArrayList<String>();
@@ -395,8 +479,10 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	 * Clears all widget groups and creates them again from the launch configuration.
 	 */
 	private void rebuild() {
+		moduleChanged = false;
 		try {
 			clear();
+			getModelsFromEMFTVMFile();
 			build();
 			loadValuesFrom(launchConfiguration);
 			build();
@@ -410,7 +496,6 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	 * Creates widget group contents from current state.
 	 */
 	private void build() {
-		getModelsFromEMFTVMFile();
 		buildMetamodelControls();
 		buildInputModelControls();
 		buildInoutModelControls();
@@ -858,22 +943,28 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * Initialises models from EMFTVM module file.
 	 */
-	private void getModelsFromEMFTVMFile() {
-		final IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
-		final String path = modulePathText.getText();
-		final IResource res = wsRoot.findMember(path);
-		if (!(res instanceof IFile)) {
-			return;
-		}
-		
-		final Module module = loadModule("platform:/resource/" + path);
-		if (module != null) {
-			getModelsFromEMFTVMModule(module);
+	private synchronized void getModelsFromEMFTVMFile() {
+		if (!modulePathText.getText().equals("") && !moduleNameText.getText().equals("")) {
+			final List<String> sig = new ArrayList<String>(2);
+			sig.add(modulePathText.getText());
+			sig.add(moduleNameText.getText());
+			if (moduleCache.containsKey(sig)) {
+				module = moduleCache.get(sig);
+			} else {
+				module = loadModule(modulePathText.getText(), moduleNameText.getText());
+				moduleCache.put(sig, module);
+			}
+			if (module != null) {
+				getModelsFromEMFTVMModule(module);
+			}
+		} else {
+			module = null;
 		}
 	}
 
 	/**
-	 * Initialises models from EMFTVM module file.
+	 * Initialises models from EMFTVM module.
+	 * @param module the module to initialise the models from
 	 */
 	private void getModelsFromEMFTVMModule(final Module module) {
 		for (Module imported : module.getEImports()) {
@@ -911,12 +1002,8 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	 * @param uri the module URI
 	 * @return the loaded module
 	 */
-	private Module loadModule(final String uri) {
-		final int index = uri.lastIndexOf('/') + 1;
-		final String path = uri.substring(0, index);
-		final int dotIndex = uri.lastIndexOf('.');
-		final String name = dotIndex < 0 ? uri.substring(index) : uri.substring(index, dotIndex); // strip file extension
-		final ModuleResolver resolver = new DefaultModuleResolver(path, new ResourceSetImpl());
+	private Module loadModule(final String path, final String name) {
+		final ModuleResolver resolver = EMFTVMLaunchConfigurationDelegate.createModuleResolver(path);
 		try {
 			final Module module = resolver.resolveModule(name);
 			resolveImports(module, resolver, new HashMap<String, Module>());
@@ -1076,6 +1163,26 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 			}
 			outputModelLocations.put(name, uri);
 		}
+	}
+
+	/**
+	 * Tries to find a {@link Module} instance in the model located at <code>uri</code>.
+	 * @param uri the model uri
+	 * @return the {@link Module}, or <code>null</code> if not found/loaded.
+	 */
+	private static Module findModule(final URI uri) {
+		final ResourceSet rs = new ResourceSetImpl();
+		try {
+			final Resource r = rs.getResource(uri, true);
+			for (EObject eo : r.getContents()) {
+				if (eo instanceof Module) {
+					return (Module)eo;
+				}
+			}
+		} catch (Exception e) {
+			// module cannot be loaded
+		}
+		return null;
 	}
 
 }

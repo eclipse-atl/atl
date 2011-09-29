@@ -23,6 +23,10 @@ public interface EMFTVMLaunchConstants {
 	String LAUNCH_CONFIGURATION_TYPE = "org.eclipse.m2m.atl.emftvm.launcher.EMFTVMTransformation"; //$NON-NLS-1$
 	/** Module File Name. */
 	String MODULE_FILE_NAME = "Module File Name"; //$NON-NLS-1$
+	/** Module Name. */
+	String MODULE_NAME = "Module Name"; //$NON-NLS-1$
+	/** Module Path. */
+	String MODULE_PATH = "Module Path"; //$NON-NLS-1$
 	/** Metamodels. */
 	String METAMODELS = "Metamodels"; //$NON-NLS-1$
 	/** Input Models. */

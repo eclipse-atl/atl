@@ -14,6 +14,7 @@ package org.eclipse.m2m.atl.emftvm.launcher;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
@@ -143,16 +144,20 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		final Map<String, String> outputModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODELS, Collections.emptyMap());
 		final Map<String, String> outputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, Collections.emptyMap());
 		createModels(rs, outputModelLocations, outputModelOptions, env.getOutputModels());
-		
+
 		loadOtherMetaModels(rs, metamodelLocations, metamodelOptions, env.getMetaModels());
-		
-		final String wspath = configuration.getAttribute(EMFTVMLaunchConstants.MODULE_FILE_NAME, "");
-		final int index = wspath.lastIndexOf('/');
-		final String wsfolder = wspath.substring(0, index + 1);
-		final String name = wspath.substring(index + 1, wspath.lastIndexOf('.')); // strip file extension
-		final ModuleResolver resolver = new DefaultModuleResolver(
-				(wsfolder.startsWith("/") ? "platform:/resource" : "platform:/resource/") + wsfolder, 
-				new ResourceSetImpl());
+
+		String name = configuration.getAttribute(EMFTVMLaunchConstants.MODULE_NAME, "");
+		String path = configuration.getAttribute(EMFTVMLaunchConstants.MODULE_PATH, "");
+		final String oldPath = configuration.getAttribute(EMFTVMLaunchConstants.MODULE_FILE_NAME, "");
+		if ((name.equals("") || path.equals("")) && !oldPath.equals("")) {
+			// convert legacy path to new path and module name
+			final int index = oldPath.lastIndexOf('/') + 1;
+			path = oldPath.substring(0, index);
+			final int dotIndex = oldPath.lastIndexOf('.');
+			name = dotIndex < 0 ? oldPath.substring(index) : oldPath.substring(index, dotIndex); // strip file extension
+		}
+		final ModuleResolver resolver = createModuleResolver(path);
 
 		final TimingData timingData = new TimingData();
 		env.loadModule(resolver, name);
@@ -355,6 +360,21 @@ public class EMFTVMLaunchConfigurationDelegate implements
 					String.valueOf(ATLLaunchConstants.DEFAULT_PORT));
 		}
 		return portOption.equals("") ? ATLLaunchConstants.DEFAULT_PORT : Integer.parseInt(portOption); //$NON-NLS-1$
+	}
+
+	/**
+	 * Creates a {@link ModuleResolver} using the comma-separated module <code>path</code>.
+	 * @param path the module path
+	 * @return the {@link ModuleResolver}.
+	 */
+	public static ModuleResolver createModuleResolver(final String path) {
+		final StringTokenizer pathElements = new StringTokenizer(path, ",");
+		final DefaultModuleResolver resolver = new DefaultModuleResolver(
+				"platform:/resource/" + pathElements.nextToken(), new ResourceSetImpl());
+		while (pathElements.hasMoreTokens()) {
+			resolver.addUriPrefix("platform:/resource/" + pathElements.nextToken());
+		}
+		return resolver;
 	}
 	
 }
