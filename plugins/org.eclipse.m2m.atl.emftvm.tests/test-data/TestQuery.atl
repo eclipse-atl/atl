@@ -4,6 +4,8 @@
 query TestQuery = EMFTVM!Operation.allInstances()->select(r|r.test()).debug('TestQuery');
 
 uses TestLib;
+uses NativeTest;
 
 helper context EMFTVM!Operation def : test() : Boolean =
-	(super.test() and not self.static).debug('TestQuery::Operation.test()');
+	(super.test() and not self.static).debug('TestQuery::Operation.test() (random = ' + 
+			thisModule.random().toString() + ')');
