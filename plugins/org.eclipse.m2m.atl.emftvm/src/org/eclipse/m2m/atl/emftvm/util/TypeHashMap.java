@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.emftvm.util;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
@@ -28,10 +29,19 @@ public class TypeHashMap<K, V> extends HashMap<K, V> implements TypeMap<K, V> {
 
 	private static final long serialVersionUID = -4866974440115920626L;
 
+	private Map<Object, Object> cachedKeys = new HashMap<Object, Object>();
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public Object findKey(final Object key) {
+		if (cachedKeys.containsKey(key)) {
+			final Object result = cachedKeys.get(key);
+			if (containsKey(result)) {
+				// original key may have been removed
+				return result;
+			}
+		}
 		if (key instanceof EClass) {
 			final EClass eCls = (EClass)key;
 			Object result = findEClassKey((EClass)key);
@@ -43,10 +53,13 @@ public class TypeHashMap<K, V> extends HashMap<K, V> implements TypeMap<K, V> {
 					result = findClassKey(Object.class); // everything is an object
 				}
 			}
+			cachedKeys.put(key, result);
 			return result;
 		}
 		if (key instanceof Class<?>) {
-			return findClassKey((Class<?>)key);
+			final Object result = findClassKey((Class<?>)key);
+			cachedKeys.put(key, result);
+			return result;
 		}
 		if (containsKey(key)) {
 			return key;
@@ -143,6 +156,15 @@ public class TypeHashMap<K, V> extends HashMap<K, V> implements TypeMap<K, V> {
 		for (Class<?> iface : key.getInterfaces()) {
 			findAllClassKeys(iface, result);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public V put(K key, V value) {
+		cachedKeys.clear();
+		return super.put(key, value);
 	}
 
 }
