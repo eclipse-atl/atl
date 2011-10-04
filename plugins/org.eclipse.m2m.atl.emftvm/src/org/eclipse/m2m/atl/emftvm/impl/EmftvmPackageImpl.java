@@ -737,6 +737,13 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EDataType eJavaObjectArrayEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EDataType classNotFoundExceptionEDataType = null;
 
 	/**
@@ -2685,6 +2692,15 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getEJavaObjectArray() {
+		return eJavaObjectArrayEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getClassNotFoundException() {
 		return classNotFoundExceptionEDataType;
 	}
@@ -3020,6 +3036,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		lazyListEDataType = createEDataType(LAZY_LIST);
 		lazyOrderedSetEDataType = createEDataType(LAZY_ORDERED_SET);
 		lazySetEDataType = createEDataType(LAZY_SET);
+		eJavaObjectArrayEDataType = createEDataType(EJAVA_OBJECT_ARRAY);
 		classNotFoundExceptionEDataType = createEDataType(CLASS_NOT_FOUND_EXCEPTION);
 	}
 
@@ -3174,12 +3191,12 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		op = addEOperation(execEnvEClass, this.getOperation(), "findOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, theEcorePackage.getEJavaObject(), "parameterTypes", 0, -1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getEJavaObjectArray(), "parameterTypes", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(execEnvEClass, this.getOperation(), "findStaticOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, theEcorePackage.getEJavaObject(), "parameterTypes", 0, -1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getEJavaObjectArray(), "parameterTypes", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(execEnvEClass, this.getField(), "findField", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3638,6 +3655,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEDataType(lazyListEDataType, LazyList.class, "LazyList", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(lazyOrderedSetEDataType, LazyOrderedSet.class, "LazyOrderedSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(lazySetEDataType, LazySet.class, "LazySet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(eJavaObjectArrayEDataType, Object[].class, "EJavaObjectArray", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(classNotFoundExceptionEDataType, ClassNotFoundException.class, "ClassNotFoundException", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource

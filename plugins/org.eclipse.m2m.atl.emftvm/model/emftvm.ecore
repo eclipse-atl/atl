@@ -25,6 +25,7 @@
   <eClassifiers xsi:type="ecore:EDataType" name="LazySet" instanceClassName="org.eclipse.m2m.atl.emftvm.util.LazySet">
     <eTypeParameters name="E"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="EJavaObjectArray" instanceClassName="java.lang.Object[]"/>
   <eClassifiers xsi:type="ecore:EEnum" name="ModelDeclarationTag">
     <eLiterals name="input"/>
     <eLiterals name="inout" value="1"/>
@@ -120,12 +121,12 @@
     <eOperations name="findOperation" eType="#//Operation">
       <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
       <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-      <eParameters name="parameterTypes" upperBound="-1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="parameterTypes" eType="#//EJavaObjectArray"/>
     </eOperations>
     <eOperations name="findStaticOperation" eType="#//Operation">
       <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
       <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-      <eParameters name="parameterTypes" upperBound="-1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="parameterTypes" eType="#//EJavaObjectArray"/>
     </eOperations>
     <eOperations name="findField" eType="#//Field">
       <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>

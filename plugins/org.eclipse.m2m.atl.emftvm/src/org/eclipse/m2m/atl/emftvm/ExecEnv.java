@@ -194,10 +194,10 @@ public interface ExecEnv extends EObject {
 	 * @param parameterTypes the parameter types of the operation
 	 * @return the {@link Operation} with the given properties, or <code>null</code> if none registered
 	 * <!-- end-user-doc -->
-	 * @model parameterTypesMany="true"
+	 * @model parameterTypesDataType="org.eclipse.m2m.atl.emftvm.EJavaObjectArray"
 	 * @generated
 	 */
-	Operation findOperation(Object context, String name, EList<Object> parameterTypes);
+	Operation findOperation(Object context, String name, Object[] parameterTypes);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -207,10 +207,10 @@ public interface ExecEnv extends EObject {
 	 * @param parameterTypes the parameter types of the operation
 	 * @return the static {@link Operation} with the given properties, or <code>null</code> if none registered
 	 * <!-- end-user-doc -->
-	 * @model parameterTypesMany="true"
+	 * @model parameterTypesDataType="org.eclipse.m2m.atl.emftvm.EJavaObjectArray"
 	 * @generated
 	 */
-	Operation findStaticOperation(Object context, String name, EList<Object> parameterTypes);
+	Operation findStaticOperation(Object context, String name, Object[] parameterTypes);
 
 	/**
 	 * <!-- begin-user-doc -->

@@ -6485,6 +6485,15 @@ public interface EmftvmPackage extends EPackage {
 	int LAZY_SET = 88;
 
 	/**
+	 * The meta object id for the '<em>EJava Object Array</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getEJavaObjectArray()
+	 * @generated
+	 */
+	int EJAVA_OBJECT_ARRAY = 89;
+
+	/**
 	 * The meta object id for the '<em>Class Not Found Exception</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6492,7 +6501,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getClassNotFoundException()
 	 * @generated
 	 */
-	int CLASS_NOT_FOUND_EXCEPTION = 89;
+	int CLASS_NOT_FOUND_EXCEPTION = 90;
 
 	/**
 	 * The meta object id for the '<em>Module Resolver</em>' data type.
@@ -8716,6 +8725,16 @@ public interface EmftvmPackage extends EPackage {
 	EDataType getLazySet();
 
 	/**
+	 * Returns the meta object for data type '<em>EJava Object Array</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EJava Object Array</em>'.
+	 * @model instanceClass="java.lang.Object[]"
+	 * @generated
+	 */
+	EDataType getEJavaObjectArray();
+
+	/**
 	 * Returns the meta object for data type '{@link java.lang.ClassNotFoundException <em>Class Not Found Exception</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -10599,6 +10618,15 @@ public interface EmftvmPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType LAZY_SET = eINSTANCE.getLazySet();
+
+		/**
+		 * The meta object literal for the '<em>EJava Object Array</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getEJavaObjectArray()
+		 * @generated
+		 */
+		EDataType EJAVA_OBJECT_ARRAY = eINSTANCE.getEJavaObjectArray();
 
 		/**
 		 * The meta object literal for the '<em>Class Not Found Exception</em>' data type.

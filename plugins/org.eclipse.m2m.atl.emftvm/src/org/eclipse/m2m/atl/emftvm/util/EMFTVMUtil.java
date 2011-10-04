@@ -32,7 +32,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
@@ -133,7 +132,7 @@ public final class EMFTVMUtil {
 	 * @param types the types
 	 * @return the names of <code>types</code>, for printing
 	 */
-	public static String getTypeNames(final ExecEnv env, final Collection<?> types) {
+	public static String getTypeNames(final ExecEnv env, final Object[] types) {
 		final StringBuffer names = new StringBuffer();
 		boolean notFirst = false;
 		for (Object type : types) {
@@ -886,10 +885,10 @@ public final class EMFTVMUtil {
 	 * @param args
 	 * @return the types of <code>args</code>
 	 */
-	public static EList<Object> getArgumentTypes(final Object[] args) {
-		final EList<Object> argTypes = new BasicEList<Object>(args.length);
-		for (Object arg : args) {
-			argTypes.add(getArgumentType(arg));
+	public static Object[] getArgumentTypes(final Object[] args) {
+		final Object[] argTypes = new Object[args.length];
+		for (int i = 0; i < args.length; i++) {
+			argTypes[i] = getArgumentType(args[i]);
 		}
 		return argTypes;
 	}

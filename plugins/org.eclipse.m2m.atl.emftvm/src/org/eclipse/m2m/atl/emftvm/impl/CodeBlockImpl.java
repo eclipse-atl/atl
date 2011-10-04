@@ -2048,7 +2048,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 		final Object type = EMFTVMUtil.getArgumentType(o);
 		final Object[] args = getArguments(argcount, frame);
-		final EList<Object> argTypes = EMFTVMUtil.getArgumentTypes(args);
+		final Object[] argTypes = EMFTVMUtil.getArgumentTypes(args);
 		final Operation op = env.findOperation(type, opname, argTypes);
 		if (op != null) {
 			final CodeBlock body = op.getBody();
@@ -2085,7 +2085,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 
 		final Object[] args = getArguments(argcount, frame);
-		final EList<Object> argTypes = EMFTVMUtil.getArgumentTypes(args);
+		final Object[] argTypes = EMFTVMUtil.getArgumentTypes(args);
 		final Operation op = env.findStaticOperation(type, opname, argTypes);
 		if (op != null) {
 			final CodeBlock body = op.getBody();
@@ -2136,7 +2136,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 
 		final Object[] args = getArguments(argcount, frame);
-		final EList<Object> argTypes = EMFTVMUtil.getArgumentTypes(args);
+		final Object[] argTypes = EMFTVMUtil.getArgumentTypes(args);
 		Operation superOp = null;
 		for (Object superType : superTypes) {
 			superOp = env.findOperation(superType, opname, argTypes);

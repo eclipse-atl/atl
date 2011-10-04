@@ -253,6 +253,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 				return createLazyOrderedSetFromString(eDataType, initialValue);
 			case EmftvmPackage.LAZY_SET:
 				return createLazySetFromString(eDataType, initialValue);
+			case EmftvmPackage.EJAVA_OBJECT_ARRAY:
+				return createEJavaObjectArrayFromString(eDataType, initialValue);
 			case EmftvmPackage.CLASS_NOT_FOUND_EXCEPTION:
 				return createClassNotFoundExceptionFromString(eDataType, initialValue);
 			default:
@@ -299,6 +301,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 				return convertLazyOrderedSetToString(eDataType, instanceValue);
 			case EmftvmPackage.LAZY_SET:
 				return convertLazySetToString(eDataType, instanceValue);
+			case EmftvmPackage.EJAVA_OBJECT_ARRAY:
+				return convertEJavaObjectArrayToString(eDataType, instanceValue);
 			case EmftvmPackage.CLASS_NOT_FOUND_EXCEPTION:
 				return convertClassNotFoundExceptionToString(eDataType, instanceValue);
 			default:
@@ -1255,6 +1259,24 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public String convertLazySetToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Object[] createEJavaObjectArrayFromString(EDataType eDataType, String initialValue) {
+		return (Object[])super.createFromString(initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertEJavaObjectArrayToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 

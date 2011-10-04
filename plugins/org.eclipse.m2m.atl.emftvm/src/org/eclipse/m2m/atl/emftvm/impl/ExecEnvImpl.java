@@ -720,13 +720,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
-	public Operation findOperation(final Object context, final String name, final EList<Object> parameterTypes) {
+	public Operation findOperation(final Object context, final String name, final Object[] parameterTypes) {
 		Operation op = null;
 		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = operations.get(name);
 
 		if (argcountOpsMap != null) {
 			// There are operations with the given name
-			final int argCount = parameterTypes.size();
+			final int argCount = parameterTypes.length;
 			final TypeMap<Object, Object> ctxMap = argcountOpsMap.get(argCount);
 			
 			if (ctxMap != null) {
@@ -772,7 +772,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 								argMap = new TypeHashMap<Object, Object>();
 								ctxMap.put(context, argMap);
 							}
-							registerOperationByArgTypes(op, argMap, parameterTypes.toArray(), 0);
+							registerOperationByArgTypes(op, argMap, parameterTypes, 0);
 						}
 					}
 
@@ -790,13 +790,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
-	public Operation findStaticOperation(Object context, final String name, final EList<Object> parameterTypes) {
+	public Operation findStaticOperation(Object context, final String name, final Object[] parameterTypes) {
 		Operation op = null;
 		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = staticOperations.get(name);
 
 		if (argcountOpsMap != null) {
 			// There are operations with the given name
-			final int argCount = parameterTypes.size();
+			final int argCount = parameterTypes.length;
 			final TypeMap<Object, Object> ctxMap = argcountOpsMap.get(argCount);
 			
 			if (ctxMap != null) {
@@ -820,7 +820,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 							op = findMostSpecificOperation(ops);
 							if (op != null) {
 								// Now register directly under context type
-								registerOperationByArgTypes(op, argMap, parameterTypes.toArray(), 0);
+								registerOperationByArgTypes(op, argMap, parameterTypes, 0);
 							}
 						}
 					}
@@ -840,11 +840,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @return the operation, or <code>null</code>
 	 */
 	@SuppressWarnings("unchecked")
-	private static Operation findOperationDirect(final TypeMap<Object, Object> typeMap, final EList<Object> parameterTypes, 
+	private static Operation findOperationDirect(final TypeMap<Object, Object> typeMap, Object[] parameterTypes, 
 			final int argIndex) {
-		final int argCount = parameterTypes.size();
+		final int argCount = parameterTypes.length;
 		assert argIndex >= 0 && argIndex < argCount;
-		final Object argType = parameterTypes.get(argIndex);
+		final Object argType = parameterTypes[argIndex];
 		
 		if (argIndex < argCount - 1) {
 			final TypeMap<Object, Object> nestedTypeMap = (TypeMap<Object, Object>)typeMap.get(argType);
@@ -865,11 +865,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @param argIndex
 	 */
 	@SuppressWarnings("unchecked")
-	private static void findOperations(final TypeMap<Object, Object> typeMap, final EList<Object> parameterTypes, 
+	private static void findOperations(final TypeMap<Object, Object> typeMap, final Object[] parameterTypes, 
 			final Set<Operation> ops, final int argIndex) {
-		final int argCount = parameterTypes.size();
+		final int argCount = parameterTypes.length;
 		assert argIndex >= 0 && argIndex < argCount;
-		final Object argType = parameterTypes.get(argIndex);
+		final Object argType = parameterTypes[argIndex];
 		final Set<Object> argTypeKeys = new HashSet<Object>();
 		typeMap.findAllKeys(argType, argTypeKeys);
 		
