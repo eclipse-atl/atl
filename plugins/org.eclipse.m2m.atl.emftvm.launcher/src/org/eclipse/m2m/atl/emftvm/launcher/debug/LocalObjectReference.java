@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -224,7 +223,7 @@ public class LocalObjectReference extends ObjectReference {
 
 		final Object type = getType();
 		final Object[] realArgs = getRealArgs(args);
-		final EList<Object> argTypes = EMFTVMUtil.getArgumentTypes(realArgs);
+		final Object[] argTypes = EMFTVMUtil.getArgumentTypes(realArgs);
 		final Operation op = execEnv.findOperation(type, opName, argTypes);
 
 		if (op == null) {
