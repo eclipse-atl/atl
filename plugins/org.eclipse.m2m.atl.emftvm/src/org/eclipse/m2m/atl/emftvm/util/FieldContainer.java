@@ -76,15 +76,18 @@ public final class FieldContainer {
 	 * @throws DuplicateEntryException if there is a field conflict
 	 */
 	public Field findField(final Object context, final String name) throws DuplicateEntryException {
-		TypeMap<Object, Field> fieldreg = fields.get(name);
+		final TypeMap<Object, Field> fieldreg = fields.get(name);
 		if (fieldreg != null) {
 			// First try to find with direct type
-			final Field f = fieldreg.get(name);
+			Field f = fieldreg.get(context);
 			// Fall back to full resolving algorithm
 			if (f == null) {
-				Object ctxKey = fieldreg.findKey(context);
+				final Object ctxKey = fieldreg.findKey(context);
 				if (ctxKey != null) {
-					return fieldreg.get(ctxKey);
+					f = fieldreg.get(ctxKey);
+					assert f != null;
+					// Now register directly under context type
+					fieldreg.put(context, f);
 				}
 			}
 			return f;
