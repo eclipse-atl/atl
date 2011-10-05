@@ -245,14 +245,14 @@ public abstract class LocalVariableInstructionImpl extends InstructionImpl imple
 						if (lvBlock == null) {
 							throw new IllegalArgumentException(String.format(
 									"Code block of referred local variable at (cbOffset = %d, index = %d) not found for %s::%s", 
-									cbOffset, localVariableIndex, cb, this));
+									cbOffset, localVariableIndex, cb, super.toString()));
 						}
 					}
 					localVariable = lvBlock.getLocalVariables().get(localVariableIndex);
 					if (localVariable == null) {
 						throw new IllegalArgumentException(String.format(
 								"Referred local variable at (cbOffset = %d, index = %d) not found for %s::%s", 
-								cbOffset, localVariableIndex, cb, this));
+								cbOffset, localVariableIndex, cb, super.toString()));
 					}
 				}
 			}
