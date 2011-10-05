@@ -734,6 +734,16 @@ public final class OCLOperations {
 						return frame;
 					}
 		});
+		createOperation(false, "getName", JAVA_CLASS_TYPE, STRING_TYPE,
+				new String[][][]{}, 
+				new NativeCodeBlock() {
+					@Override
+					public StackFrame execute(final StackFrame frame) {
+						final Class<?> c = (Class<?>)frame.getLocal(0, 0);
+						frame.push(NativeTypes.typeName(c));
+						return frame;
+					}
+		});
 		/////////////////////////////////////////////////////////////////////
 		// Real
 		/////////////////////////////////////////////////////////////////////

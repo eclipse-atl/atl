@@ -66,7 +66,7 @@ public final class NativeTypes {
 	}
 
 	private static final Map<String, NativeType> typeNames = new HashMap<String, NativeType>();
-	private static final Map<Class<?>, NativeType> types = new HashMap<Class<?>, NativeType>();
+	private static final TypeMap<Class<?>, NativeType> types = new TypeHashMap<Class<?>, NativeType>();
 
 	static {
 		for (NativeType type : NativeType.values()) {
@@ -159,6 +159,19 @@ public final class NativeTypes {
 			}
 		}
 		return type.newInstance();
+	}
+
+	/**
+	 * Returns the name of <code>type</code>.
+	 * @param type the type
+	 * @return the name of <code>type</code>
+	 */
+	public static String typeName(Class<?> type) {
+		final Object key = types.findKey(type);
+		if (key != null) {
+			return types.get(key).getName();
+		}
+		return type.getName();
 	}
 
 }
