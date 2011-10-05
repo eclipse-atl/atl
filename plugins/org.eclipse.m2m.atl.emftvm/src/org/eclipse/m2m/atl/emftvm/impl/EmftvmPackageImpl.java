@@ -2431,15 +2431,6 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getExecEnv_DeletionQueue() {
-		return (EReference)execEnvEClass.getEStructuralFeatures().get(5);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getExecEnv_MetaModels() {
 		return (EAttribute)execEnvEClass.getEStructuralFeatures().get(0);
 	}
@@ -2757,7 +2748,6 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		createEAttribute(execEnvEClass, EXEC_ENV__INOUT_MODELS);
 		createEAttribute(execEnvEClass, EXEC_ENV__OUTPUT_MODELS);
 		createEAttribute(execEnvEClass, EXEC_ENV__MODULES);
-		createEReference(execEnvEClass, EXEC_ENV__DELETION_QUEUE);
 
 		modelEClass = createEClass(MODEL);
 		createEAttribute(modelEClass, MODEL__RESOURCE);
@@ -3176,7 +3166,6 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		g2 = createEGenericType(this.getModule());
 		g1.getETypeArguments().add(g2);
 		initEAttribute(getExecEnv_Modules(), g1, "modules", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getExecEnv_DeletionQueue(), theEcorePackage.getEObject(), null, "deletionQueue", null, 0, -1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		EOperation op = addEOperation(execEnvEClass, this.getModule(), "loadModule", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getModuleResolver(), "resolver", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3229,6 +3218,10 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		op = addEOperation(execEnvEClass, theEcorePackage.getEString(), "getModelID", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getModel(), "model", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, null, "queueForDelete", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEObject(), "element", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(execEnvEClass, null, "deleteQueue", 0, 1, IS_UNIQUE, IS_ORDERED);
 

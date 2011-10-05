@@ -18,8 +18,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
@@ -34,7 +36,6 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.validation.model.EvaluationMode;
 import org.eclipse.emf.validation.service.IValidator;
 import org.eclipse.emf.validation.service.ModelValidationService;
@@ -85,13 +86,60 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getInoutModels <em>Inout Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getOutputModels <em>Output Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getModules <em>Modules</em>}</li>
- *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getDeletionQueue <em>Deletion Queue</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
+
+	/**
+	 * Hold data for element deletion.
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	final class DeletionEntry {
+
+		/**
+		 * The element to delete.
+		 */
+		protected EObject element;
+
+		/**
+		 * The stack frame context in which to perform the deletion.
+		 */
+		protected StackFrame frame;
+
+		/**
+		 * Creates a new {@link DeletionEntry}.
+		 * @param element the element to delete
+		 * @param frame the stack frame context in which to perform the deletion
+		 */
+		public DeletionEntry(final EObject element, final StackFrame frame) {
+			super();
+			this.element = element;
+			this.frame = frame;
+		}
+
+		/**
+		 * Performs the element deletion.
+		 */
+		public void delete() {
+			assert getInputModelOf(element) == null;
+			final Model m = getModelOf(element);
+			try {
+				m.deleteElement(element);
+			} catch (Exception e) {
+				throw new VMException(frame, 
+						String.format(
+								"Error while deleting element %s from %s: %s", 
+								EMFTVMUtil.toPrettyString(element, ExecEnvImpl.this), 
+								getModelID(m),
+								e.getLocalizedMessage()),
+						e);
+			}
+		}
+
+	}
 
 	/**
 	 * The 'EMFTVM!ExecEnv' type.
@@ -154,16 +202,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	protected Map<String, Module> modules;
 	
 	/**
-	 * The cached value of the '{@link #getDeletionQueue() <em>Deletion Queue</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDeletionQueue()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<EObject> deletionQueue;
-
-	/**
 	 * The chain of '<code>main()</code>' operations to be executed after the automatic rules.
 	 */
 	protected EList<Operation> mainChain = new BasicEList<Operation>();
@@ -225,6 +263,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * The {@link VMMonitor} for the currently running VM instance.
 	 */
 	protected VMMonitor monitor;
+
+	/**
+	 * {@link Queue} of elements to be deleted, along with the {@link StackFrame}
+	 * context in which the deletion takes place.
+	 */
+	protected final Queue<DeletionEntry> deletionQueue = new LinkedList<DeletionEntry>();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -313,19 +357,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			modules = Collections.synchronizedMap(new LinkedHashMap<String, Module>());
 		}
 		return modules;
-	}
-
-	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EList<EObject> getDeletionQueue() {
-		if (deletionQueue == null) {
-			deletionQueue = new EObjectResolvingEList<EObject>(EObject.class, this, EmftvmPackage.EXEC_ENV__DELETION_QUEUE);
-		}
-		return deletionQueue;
 	}
 
 	/**
@@ -1000,7 +1031,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		this.monitor = monitor;
 		Object result = null;
 		try {
-			assert getDeletionQueue().isEmpty();
+			assert deletionQueue.isEmpty();
 			cacheModels();
 			final Iterator<Operation> mains = mainChain.iterator();
 			if (!mains.hasNext()) {
@@ -1022,6 +1053,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		} catch (VMException e) {
 			if (monitor != null) {
 				monitor.error(e.getFrame(), e.getLocalizedMessage(), e);
+				monitor.terminated();
 			}
 			throw e;
 		} finally {
@@ -1099,14 +1131,20 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	public void queueForDelete(final EObject element, final StackFrame frame) {
+		deletionQueue.offer(new DeletionEntry(element, frame));
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
 	public void deleteQueue() {
-		final EList<EObject> queue = getDeletionQueue();
-		for (EObject element : queue) {
-			assert getInputModelOf(element) == null;
-			Model m = getModelOf(element);
-			m.deleteElement(element);
+		while (!deletionQueue.isEmpty()) {
+			deletionQueue.poll().delete();
 		}
-		queue.clear();
 	}
 
 	/**
@@ -1161,44 +1199,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				return getOutputModels();
 			case EmftvmPackage.EXEC_ENV__MODULES:
 				return getModules();
-			case EmftvmPackage.EXEC_ENV__DELETION_QUEUE:
-				return getDeletionQueue();
 		}
 		return super.eGet(featureID, resolve, coreType);
-	}
-
-	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case EmftvmPackage.EXEC_ENV__DELETION_QUEUE:
-				getDeletionQueue().clear();
-				getDeletionQueue().addAll((Collection<? extends EObject>)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eUnset(int featureID) {
-		switch (featureID) {
-			case EmftvmPackage.EXEC_ENV__DELETION_QUEUE:
-				getDeletionQueue().clear();
-				return;
-		}
-		super.eUnset(featureID);
 	}
 
 	/**
@@ -1220,8 +1222,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				return outputModels != null;
 			case EmftvmPackage.EXEC_ENV__MODULES:
 				return modules != null;
-			case EmftvmPackage.EXEC_ENV__DELETION_QUEUE:
-				return deletionQueue != null && !deletionQueue.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

@@ -613,22 +613,13 @@ public interface EmftvmPackage extends EPackage {
 	int EXEC_ENV__MODULES = 4;
 
 	/**
-	 * The feature id for the '<em><b>Deletion Queue</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXEC_ENV__DELETION_QUEUE = 5;
-
-	/**
 	 * The number of structural features of the '<em>Exec Env</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXEC_ENV_FEATURE_COUNT = 6;
+	int EXEC_ENV_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.ModelImpl <em>Model</em>}' class.
@@ -8413,17 +8404,6 @@ public interface EmftvmPackage extends EPackage {
 	EAttribute getExecEnv_Modules();
 
 	/**
-	 * Returns the meta object for the reference list '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getDeletionQueue <em>Deletion Queue</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Deletion Queue</em>'.
-	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getDeletionQueue()
-	 * @see #getExecEnv()
-	 * @generated
-	 */
-	EReference getExecEnv_DeletionQueue();
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModels <em>Meta Models</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -10354,14 +10334,6 @@ public interface EmftvmPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute EXEC_ENV__MODULES = eINSTANCE.getExecEnv_Modules();
-
-		/**
-		 * The meta object literal for the '<em><b>Deletion Queue</b></em>' reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference EXEC_ENV__DELETION_QUEUE = eINSTANCE.getExecEnv_DeletionQueue();
 
 		/**
 		 * The meta object literal for the '<em><b>Meta Models</b></em>' attribute feature.

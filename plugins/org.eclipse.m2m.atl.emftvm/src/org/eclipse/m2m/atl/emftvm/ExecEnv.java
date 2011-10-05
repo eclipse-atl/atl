@@ -13,10 +13,10 @@ package org.eclipse.m2m.atl.emftvm;
 
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
+import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 
@@ -34,7 +34,6 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInoutModels <em>Inout Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getOutputModels <em>Output Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getModules <em>Modules</em>}</li>
- *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getDeletionQueue <em>Deletion Queue</em>}</li>
  * </ul>
  * </p>
  *
@@ -58,22 +57,6 @@ public interface ExecEnv extends EObject {
 	 * @generated
 	 */
 	Map<String, Module> getModules();
-
-	/**
-	 * Returns the value of the '<em><b>Deletion Queue</b></em>' reference list.
-	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Deletion Queue</em>' reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Deletion Queue</em>' reference list.
-	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv_DeletionQueue()
-	 * @model transient="true"
-	 * @generated
-	 */
-	EList<EObject> getDeletionQueue();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -272,9 +255,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Returns the {@link Model} that is registered in this {@link ExecEnv}, and that contains <pre>object</pre>.
+	 * Returns the {@link Model} that is registered in this {@link ExecEnv}, and that contains <code>object</code>.
 	 * @param object the object for which to look up the containing model
-	 * @return the {@link Model} that contains <pre>object</pre>, or <code>null</code> if not found.
+	 * @return the {@link Model} that contains <code>object</code>, or <code>null</code> if not found.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -283,9 +266,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Returns the ID under which <pre>model</pre> is registered within this {@link ExecEnv}.
+	 * Returns the ID under which <code>model</code> is registered within this {@link ExecEnv}.
 	 * @param model the registered {@link Model} to retrieve the ID for
-	 * @return the ID under which <pre>model</pre> is registered within this {@link ExecEnv}.
+	 * @return the ID under which <code>model</code> is registered within this {@link ExecEnv}.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -294,7 +277,18 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Deletes all elements in {@link #getDeletionQueue()}, and purges the queue.
+	 * Queues <code>element</code> for deletion.
+	 * @param element the element to delete
+	 * @param frame the stack frame context in which to perform the deletion
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void queueForDelete(EObject element, StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Deletes all elements in the deletion queue.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -303,9 +297,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Returns the input {@link Model} that is registered in this {@link ExecEnv}, and that contains <pre>object</pre>.
+	 * Returns the input {@link Model} that is registered in this {@link ExecEnv}, and that contains <code>object</code>.
 	 * @param object the object for which to look up the containing model
-	 * @return the input {@link Model} that contains <pre>object</pre>, or <code>null</code> if not found.
+	 * @return the input {@link Model} that contains <code>object</code>, or <code>null</code> if not found.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -314,9 +308,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Returns the in/out {@link Model} that is registered in this {@link ExecEnv}, and that contains <pre>object</pre>.
+	 * Returns the in/out {@link Model} that is registered in this {@link ExecEnv}, and that contains <code>object</code>.
 	 * @param object the object for which to look up the containing model
-	 * @return the in/out {@link Model} that contains <pre>object</pre>, or <code>null</code> if not found.
+	 * @return the in/out {@link Model} that contains <code>object</code>, or <code>null</code> if not found.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -325,9 +319,9 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Returns the output {@link Model} that is registered in this {@link ExecEnv}, and that contains <pre>object</pre>.
+	 * Returns the output {@link Model} that is registered in this {@link ExecEnv}, and that contains <code>object</code>.
 	 * @param object the object for which to look up the containing model
-	 * @return the output {@link Model} that contains <pre>object</pre>, or <code>null</code> if not found.
+	 * @return the output {@link Model} that contains <code>object</code>, or <code>null</code> if not found.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated

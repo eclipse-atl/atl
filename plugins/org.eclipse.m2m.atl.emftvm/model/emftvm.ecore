@@ -159,6 +159,10 @@
     <eOperations name="getModelID" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
       <eParameters name="model" eType="#//Model"/>
     </eOperations>
+    <eOperations name="queueForDelete">
+      <eParameters name="element" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
     <eOperations name="deleteQueue"/>
     <eOperations name="getInputModelOf" eType="#//Model">
       <eParameters name="object" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
@@ -205,9 +209,6 @@
         <eTypeArguments eClassifier="#//Module"/>
       </eGenericType>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="deletionQueue" upperBound="-1"
-        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"
-        transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Model">
     <eOperations name="allInstancesOf">

@@ -2028,7 +2028,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					"Element %s is cannot be deleted; contained in input model %s", 
 					EMFTVMUtil.toPrettyString(element, env), env.getModelID(model)));
 		}
-		env.getDeletionQueue().add(element);
+		env.queueForDelete(element, frame);
 	}
 
 	/**
