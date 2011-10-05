@@ -73,7 +73,6 @@ public class ExecEnvItemProvider
 			addInoutModelsPropertyDescriptor(object);
 			addOutputModelsPropertyDescriptor(object);
 			addModulesPropertyDescriptor(object);
-			addDeletionQueuePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -96,28 +95,6 @@ public class ExecEnvItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Deletion Queue feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addDeletionQueuePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ExecEnv_deletionQueue_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ExecEnv_deletionQueue_feature", "_UI_ExecEnv_type"),
-				 EmftvmPackage.Literals.EXEC_ENV__DELETION_QUEUE,
-				 true,
-				 false,
-				 true,
-				 null,
 				 null,
 				 null));
 	}
