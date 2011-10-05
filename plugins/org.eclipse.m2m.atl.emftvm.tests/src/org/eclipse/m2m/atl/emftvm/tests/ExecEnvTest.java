@@ -49,6 +49,7 @@ import org.osgi.framework.Bundle;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getRules() <em>Get Rules</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getModelOf(org.eclipse.emf.ecore.EObject) <em>Get Model Of</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getModelID(org.eclipse.m2m.atl.emftvm.Model) <em>Get Model ID</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForDelete(org.eclipse.emf.ecore.EObject, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Delete</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#deleteQueue() <em>Delete Queue</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInputModelOf(org.eclipse.emf.ecore.EObject) <em>Get Input Model Of</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInoutModelOf(org.eclipse.emf.ecore.EObject) <em>Get Inout Model Of</em>}</li>
@@ -330,6 +331,19 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetModelID__Model() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForDelete(org.eclipse.emf.ecore.EObject, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Delete</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueForDelete(org.eclipse.emf.ecore.EObject, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated
+	 */
+	public void testQueueForDelete__EObject_StackFrame() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
