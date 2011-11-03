@@ -615,11 +615,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		if (f instanceof EClass && s instanceof EClass) {
 			return ((EClass)s).isSuperTypeOf((EClass)f);
 		} else {
-			final Class<?> fCls = f.getInstanceClass();
-			final Class<?> sCls = s.getInstanceClass();
-			if (fCls == null || sCls == null) {
-				return false; // not comparable
-			}
+			assert f instanceof EClass || f.getInstanceClass() != null;
+			assert s instanceof EClass || s.getInstanceClass() != null;
+			final Class<?> fCls = f.getInstanceClass() == null ? EObject.class : f.getInstanceClass();
+			final Class<?> sCls = s.getInstanceClass() == null ? EObject.class : s.getInstanceClass();
+			assert fCls != null;
+			assert sCls != null;
 			if (fCls == sCls && index < first.size() - 1) {
 				return isMoreSpecific(first, second, index + 1);
 			}
@@ -646,18 +647,18 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		if (f instanceof EClass && s instanceof EClass) {
 			return ((EClass) s).isSuperTypeOf((EClass)f);
 		} else {
-			final Class<?> fCls = f.getInstanceClass();
-			final Class<?> sCls = s.getInstanceClass();
-			if (fCls == null || sCls == null) {
-				return false; // not comparable
-			}
+			assert f instanceof EClass || f.getInstanceClass() != null;
+			assert s instanceof EClass || s.getInstanceClass() != null;
+			final Class<?> fCls = f.getInstanceClass() == null ? EObject.class : f.getInstanceClass();
+			final Class<?> sCls = s.getInstanceClass() == null ? EObject.class : s.getInstanceClass();
+			assert fCls != null;
+			assert sCls != null;
 			if (fCls == sCls) {
 				return isMoreSpecific(first.getParameters(), second.getParameters(), 0);
 			}
 			return sCls.isAssignableFrom(fCls);
 		}
 	}
-
 
 	/**
 	 * <!-- begin-user-doc. -->
