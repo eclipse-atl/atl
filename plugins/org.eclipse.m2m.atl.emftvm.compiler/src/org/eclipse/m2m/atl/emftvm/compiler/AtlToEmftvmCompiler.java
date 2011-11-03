@@ -107,7 +107,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 			final String emftvmOutputFileName = outputFileName.substring(0, outputFileName.lastIndexOf('.')) + ".emftvm";
 			result = compileWithProblemModel(in, new FileOutputStream(emftvmOutputFileName));
 			final IFile[] outputFiles = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(
-					java.net.URI.create("file:/" + emftvmOutputFileName));
+					java.net.URI.create("file:/" + emftvmOutputFileName.replace(' ', '+')));
 			for (IFile file : outputFiles) {
 				file.getParent().refreshLocal(IResource.DEPTH_ONE, null);
 				if (file.exists()) {
