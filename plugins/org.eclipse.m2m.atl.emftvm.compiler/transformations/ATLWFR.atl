@@ -1,7 +1,7 @@
 -- @atlcompiler emftvm
--- @path ATL=/emftvm.compiler/metamodels/ATL.ecore
+-- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.common/bin/org/eclipse/m2m/atl/common/resources/Problem.ecore
--- $Id: ATLWFR.atl,v 1.1 2011/06/22 07:08:08 dwagelaar Exp $
+-- $Id: ATLWFR.atl,v 1.2 2011/11/03 13:08:29 dwagelaar Exp $
 module ATLWFR;
 create OUT : Problem from IN : ATL;
 
@@ -378,6 +378,31 @@ helper context ATL!OclExpression def: getRootComposite() : OclAny =
 		endif
 	endif;
 
+-- These helpers check for value equality of OclTypes.
+-- The base case evaluates to "false", and covers the case of
+-- comparing to OclUndefined.
+-- CONTEXT: ATL!OclType
+-- RETURN:  Boolean
+helper context ATL!"OclType" def: equals(o : OclAny) : Boolean =
+	false;
+
+helper context ATL!"OclType" def: equals(o : ATL!"OclType") : Boolean =
+	self.name = o.name;
+
+helper context ATL!OclModelElement def: equals(o : ATL!OclModelElement) : Boolean =
+	super.equals(o) and
+	self.model.equals(o.model);
+
+-- These helpers check for value equality of OclTypes.
+-- The base case evaluates to "false", and covers the case of
+-- comparing to OclUndefined.
+-- CONTEXT: ATL!OclType
+-- RETURN:  Boolean
+helper context ATL!OclModel def: equals(o : OclAny) : Boolean =
+	false;
+
+helper context ATL!OclModel def: equals(o : ATL!OclModel) : Boolean =
+	self.name = o.name;
 
 -------------------------------------------------------------------------------
 -- RULES ----------------------------------------------------------------------
@@ -462,30 +487,20 @@ nodefault rule HelperSignatureIsUnique {
 					 then
 					 	if not e.definition.context_.oclIsUndefined()
 					 	then
-							if not s.definition.context_.context_.name.oclIsUndefined()
+							s.definition.context_.context_.equals(e.definition.context_.context_) 					
+							and
+							if s.definition.feature.oclIsTypeOf(ATL!Operation) and e.definition.feature.oclIsTypeOf(ATL!Operation)
 							then
-								if not e.definition.context_.context_.name.oclIsUndefined()
+								-- parameters check
+								if not s.definition.feature.parameters.oclIsUndefined()
 								then
-									s.definition.context_.context_.name = e.definition.context_.context_.name 					
-									and
-									if s.definition.feature.oclIsTypeOf(ATL!Operation) and e.definition.feature.oclIsTypeOf(ATL!Operation)
+									if not e.definition.feature.parameters.oclIsUndefined()
 									then
-										-- parameters check
-										if not s.definition.feature.parameters.oclIsUndefined()
+										if s.definition.feature.parameters.size() = e.definition.feature.parameters.size()
 										then
-											if not e.definition.feature.parameters.oclIsUndefined()
-											then
-												if s.definition.feature.parameters.size() = e.definition.feature.parameters.size()
-												then
-												   s.definition.feature.parameters -> collect(param | param.type.oclType()) -> flatten() -> includesAll(
-												   e.definition.feature.parameters -> collect(param | param.type.oclType()) -> flatten()
-												   )
-												else
-													false
-												endif
-											else
-												false
-											endif
+										   s.definition.feature.parameters -> collect(param | param.type.oclType()) -> flatten() -> includesAll(
+										   e.definition.feature.parameters -> collect(param | param.type.oclType()) -> flatten()
+										   )
 										else
 											false
 										endif
@@ -496,7 +511,7 @@ nodefault rule HelperSignatureIsUnique {
 									false
 								endif
 							else
-								e.definition.context_.context_.name.oclIsUndefined()
+								false
 							endif
 						else
 							false
