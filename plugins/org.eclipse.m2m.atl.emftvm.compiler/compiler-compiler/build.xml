@@ -12,12 +12,32 @@
 	</target>
 	
 	<target name="loadModels">
+		<emftvm.loadModel name="OCLtoEMFTVM" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/OCLtoEMFTVM.atl"/>
 		<emftvm.loadModel name="ATLtoEMFTVM" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLtoEMFTVM.atl"/>
 		<emftvm.loadModel name="EMFTVMCopy" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/EMFTVMCopy.atl"/>
 		<emftvm.loadModel name="InlineCodeblocks" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/InlineCodeblocks.atl"/>
 		<emftvm.loadModel name="ATLWFR" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLWFR.atl"/>
 		<emftvm.loadMetamodel name="ATL" uri="http://www.eclipse.org/gmt/2005/ATL"/>
 		<emftvm.loadMetamodel name="Problem" wspath="org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore"/>
+	</target>
+
+	<target name="compile-OCLtoEMFTVM" depends="loadModels">
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="ATLtoEMFTVM">
+			<metamodel name="ATL"/>
+			<metamodel name="Problem"/>
+			<inputmodel name="OCLtoEMFTVM" as="IN"/>
+			<outputmodel name="OCLtoEMFTVM-OUT" as="OUT" wspath="${ant.project.name}/OCLtoEMFTVM-noinline.emftvm"/>
+			<outputmodel name="OCLtoEMFTVM-PBS" as="PBS" wspath="${ant.project.name}/OCLtoEMFTVM-noinline-problems.xmi"/>
+			<outputmodel name="OCLtoEMFTVM-match" as="match" wspath="${ant.project.name}/OCLtoEMFTVM-noinline-match.trace"/>
+			<outputmodel name="OCLtoEMFTVM-trace" as="trace" wspath="${ant.project.name}/OCLtoEMFTVM-noinline.trace"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="InlineCodeblocks">
+			<metamodel name="ATL"/>
+			<inputmodel name="OCLtoEMFTVM-OUT" as="IN"/>
+			<outputmodel name="OCLtoEMFTVM-INLINED" as="OUT" wspath="${ant.project.name}/OCLtoEMFTVM.emftvm"/>
+			<outputmodel name="OCLtoEMFTVM-INLINED-match" as="match" wspath="${ant.project.name}/OCLtoEMFTVM-match.trace"/>
+			<outputmodel name="OCLtoEMFTVM-INLINED-trace" as="trace" wspath="${ant.project.name}/OCLtoEMFTVM.trace"/>
+		</emftvm.run>
 	</target>
 
 	<target name="compile-ATLtoEMFTVM" depends="loadModels">
@@ -84,7 +104,14 @@
 		</emftvm.run>
 	</target>
 
-	<target name="saveModels" depends="compile-ATLtoEMFTVM, compile-EMFTVMCopy, compile-InlineCodeblocks, compile-ATLWFR">
+	<target name="saveModels" depends="compile-OCLtoEMFTVM, compile-ATLtoEMFTVM, compile-EMFTVMCopy, compile-InlineCodeblocks, compile-ATLWFR">
+		<emftvm.saveModel name="OCLtoEMFTVM-OUT" derived="true"/>
+		<emftvm.saveModel name="OCLtoEMFTVM-PBS" derived="true"/>
+		<emftvm.saveModel name="OCLtoEMFTVM-match" derived="true"/>
+		<emftvm.saveModel name="OCLtoEMFTVM-trace" derived="true"/>
+		<emftvm.saveModel name="OCLtoEMFTVM-INLINED" derived="true"/>
+		<emftvm.saveModel name="OCLtoEMFTVM-INLINED-match" derived="true"/>
+		<emftvm.saveModel name="OCLtoEMFTVM-INLINED-trace" derived="true"/>
 		<emftvm.saveModel name="ATLtoEMFTVM-OUT" derived="true"/>
 		<emftvm.saveModel name="ATLtoEMFTVM-PBS" derived="true"/>
 		<emftvm.saveModel name="ATLtoEMFTVM-match" derived="true"/>
@@ -98,6 +125,14 @@
 	</target>
 
 	<target name="copy-xmi" depends="saveModels">
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="EMFTVMCopy">
+			<inputmodel name="OCLtoEMFTVM-OUT" as="IN"/>
+			<outputmodel name="OCLtoEMFTVM-OUT-XMI" as="OUT" wspath="${ant.project.name}/OCLtoEMFTVM-noinline.emftvm.xmi"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="EMFTVMCopy">
+			<inputmodel name="OCLtoEMFTVM-INLINED" as="IN"/>
+			<outputmodel name="OCLtoEMFTVM-INLINED-XMI" as="OUT" wspath="${ant.project.name}/OCLtoEMFTVM.emftvm.xmi"/>
+		</emftvm.run>
 		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="EMFTVMCopy">
 			<inputmodel name="ATLtoEMFTVM-OUT" as="IN"/>
 			<outputmodel name="ATLtoEMFTVM-OUT-XMI" as="OUT" wspath="${ant.project.name}/ATLtoEMFTVM-noinline.emftvm.xmi"/>
@@ -121,6 +156,8 @@
 	</target>
 
 	<target name="saveModels-xmi" depends="copy-xmi">
+		<emftvm.saveModel name="OCLtoEMFTVM-OUT-XMI" derived="true"/>
+		<emftvm.saveModel name="OCLtoEMFTVM-INLINED-XMI" derived="true"/>
 		<emftvm.saveModel name="ATLtoEMFTVM-OUT-XMI" derived="true"/>
 		<emftvm.saveModel name="ATLtoEMFTVM-INLINED-XMI" derived="true"/>
 		<emftvm.saveModel name="EMFTVMCopy-INLINED-XMI" derived="true"/>
