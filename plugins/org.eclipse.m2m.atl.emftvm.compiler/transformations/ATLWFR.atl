@@ -1,7 +1,7 @@
 -- @atlcompiler emftvm
 -- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.common/bin/org/eclipse/m2m/atl/common/resources/Problem.ecore
--- $Id: ATLWFR.atl,v 1.2 2011/11/03 13:08:29 dwagelaar Exp $
+-- $Id: ATLWFR.atl,v 1.3 2011/11/03 13:58:56 dwagelaar Exp $
 module ATLWFR;
 create OUT : Problem from IN : ATL;
 
@@ -894,5 +894,18 @@ nodefault rule NoSuperOutsideHelper {
 			severity <- #error,
 			location <- s.location,
 			description <- 'Cannot access "super" outside operations or attributes'
+		)
+}
+
+nodefault rule OutputElementUsesOutputMetamodel {
+	from s : ATL!OutPatternElement (
+			not s.outPattern."rule"."module".outModels
+				->exists(m|s.type.model.name = m.metamodel.name)
+		)
+	to
+		t : Problem!Problem (
+			severity <- #error,
+			location <- s.location,
+			description <- 'Cannot instantiate metaclasses that are not related to an output model'
 		)
 }
