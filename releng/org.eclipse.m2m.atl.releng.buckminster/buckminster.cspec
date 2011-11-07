@@ -8,6 +8,7 @@
         <cs:dependency name="org.eclipse.emf.codegen" componentType="osgi.bundle" versionDesignator="2.2.0"/>
         <cs:dependency name="org.eclipse.emf.ecore.editor" componentType="osgi.bundle"/>
         <cs:dependency name="org.eclipse.emf.compare.diff" componentType="osgi.bundle"/>
+        <cs:dependency name="org.eclipse.emf.validation" componentType="osgi.bundle"/>
         <cs:dependency name="org.antlr.runtime" componentType="osgi.bundle"/>
         <cs:dependency name="org.eclipse.pde.core" componentType="osgi.bundle" versionDesignator="3.2.0"/>
         <cs:dependency name="org.junit" componentType="osgi.bundle"/>
