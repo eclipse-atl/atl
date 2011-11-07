@@ -41,7 +41,11 @@ William Piers (Obeo) - modification for ATL download stats
 	<xsl:template match="artifact[@classifier='org.eclipse.update.feature' and @id='org.eclipse.m2m.atl.sdk']/properties">
 		<xsl:call-template name="artifact_properties"/>
 	</xsl:template>
-	
+
+	<xsl:template match="artifact[@classifier='org.eclipse.update.feature' and @id='org.eclipse.m2m.atl.emftvm']/properties">
+		<xsl:call-template name="artifact_properties"/>
+	</xsl:template>
+		
  	<xsl:template name="artifact_properties">
  		<properties size='{@size+1}'>
 			<xsl:copy-of select="property" />
