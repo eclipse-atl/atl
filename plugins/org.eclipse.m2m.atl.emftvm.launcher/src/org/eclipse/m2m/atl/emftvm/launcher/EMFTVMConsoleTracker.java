@@ -70,9 +70,16 @@ public class EMFTVMConsoleTracker implements IPatternMatchListenerDelegate {
 								int[] index = help.getIndexChar(location);
 								fileOffset = index[0];
 								fileLength = index[1] - index[0];
-							} else if  (moduleURI.fragment().matches("\\[[0-9]*:[0-9]*\\([0-9]*-[0-9]*\\)\\]")) { //$NON-NLS-1$
+							} else if  (moduleURI.fragment().matches("\\[[0-9]*:.*\\([0-9]*-[0-9]*\\)\\]")) { //$NON-NLS-1$
 								final String location = moduleURI.fragment().substring(1, moduleURI.fragment().length() - 1);				
 								lineNumber = Integer.valueOf(location.split(":")[0]); //$NON-NLS-1$
+								final String[] offsets = location.substring(
+										location.indexOf('(') + 1, location.lastIndexOf(')')).split("-"); //$NON-NLS-1$
+								fileOffset = Integer.valueOf(offsets[0]);
+								fileLength = Integer.valueOf(offsets[1]) + 1 - Integer.valueOf(offsets[0]);
+							} else if  (moduleURI.fragment().matches("\\[[0-9]*-.*\\([0-9]*-[0-9]*\\)\\]")) { //$NON-NLS-1$
+								final String location = moduleURI.fragment().substring(1, moduleURI.fragment().length() - 1);				
+								lineNumber = Integer.valueOf(location.split("-")[0]); //$NON-NLS-1$
 								final String[] offsets = location.substring(
 										location.indexOf('(') + 1, location.lastIndexOf(')')).split("-"); //$NON-NLS-1$
 								fileOffset = Integer.valueOf(offsets[0]);
