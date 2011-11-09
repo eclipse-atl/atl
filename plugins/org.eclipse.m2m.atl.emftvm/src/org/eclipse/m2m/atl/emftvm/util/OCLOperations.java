@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.m2m.atl.common.ATLLogger;
@@ -82,7 +83,7 @@ public final class OCLOperations {
 							next = seMapsTo.get(0).getObject();
 						} else {
 							for (TargetElement te : se.getSourceOf().getTargetElements()) {
-								if (te.getMapsTo() == null) { // default mapping
+								if (te.getMapsTo().isEmpty()) { // default mapping
 									assert te.getObject().eResource() != null;
 									next = te.getObject();
 									break;
@@ -479,7 +480,7 @@ public final class OCLOperations {
 									return frame;
 								}
 								for (TargetElement te : se.getSourceOf().getTargetElements()) {
-									if (te.getMapsTo() == null) { // default mapping
+									if (te.getMapsTo().isEmpty()) { // default mapping
 										assert te.getObject().eResource() != null;
 										frame.push(te.getObject());
 										return frame;
@@ -488,6 +489,41 @@ public final class OCLOperations {
 							}
 						}
 						frame.push(object);
+						return frame;
+					}
+		});
+		createOperation(false, "remap", OCL_ANY_TYPE, OCL_ANY_TYPE, 
+				new String[][][]{{{"to"}, OCL_ANY_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public StackFrame execute(final StackFrame frame) {
+						final Object source = frame.getLocal(0, 0);
+						final Object target = frame.getLocal(0, 1);
+						if (source instanceof EObject && source != target) { // different physical objects
+							assert target instanceof EObject;
+							final ExecEnv env = frame.getEnv();
+							for (Model m : env.getInoutModels().values()) {
+								for (EObject o : new ResourceIterable(m.eResource())) {
+									for (EReference ref : o.eClass().getEAllReferences()) {
+										if (ref.isChangeable()) {
+											Object val = o.eGet(ref);
+											if (val instanceof EList<?>) {
+												int index = ((EList<?>)val).indexOf(source);
+												if (index > -1) {
+													EMFTVMUtil.remove(env, o, ref, source);
+													EMFTVMUtil.add(env, o, ref, target, index);
+												}
+											} else {
+												if (val == source) {
+													EMFTVMUtil.set(env, o, ref, target);
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+						frame.push(target);
 						return frame;
 					}
 		});

@@ -1059,29 +1059,28 @@ public final class Matcher {
 					"Cannot create traces for %s; no matches exist",
 					rule));
 		}
+		// Move traced rule from match model to trace model
+		final TraceLinkSet traces = getTraces();
+		traces.getRules().add(tr);
 		// Remove overridden matches
+		final boolean isDefault = rule.isDefault();
 		for (Iterator<TraceLink> links = tr.getLinks().iterator(); links.hasNext();) {
 			TraceLink trace = links.next();
 			if (trace.isOverridden()) {
 				links.remove(); // This match is overridden by a sub-rule
 			} else {
-				completeTraceFor(trace, rule);
-			}
-		}
-		// Move traced rule from match model to trace model
-		final TraceLinkSet traces = getTraces();
-		traces.getRules().add(tr);
-		// Mark default source elements
-		if (rule.isDefault()) {
-			for (TraceLink trace : tr.getLinks()) {
-				EList<SourceElement> ses = trace.getSourceElements();
-				if (ses.size() == 1) {
-					ses.get(0).setDefaultFor(traces);
-				} else {
-					assert ses.size() > 1;
-					SourceElementList sel = TraceFactory.eINSTANCE.createSourceElementList();
-					sel.getSourceElements().addAll(ses);
-					sel.setDefaultFor(traces);
+				boolean defaultMappingSet = completeTraceFor(trace, rule);
+				// Mark default source elements
+				if (isDefault && !defaultMappingSet) {
+					EList<SourceElement> ses = trace.getSourceElements();
+					if (ses.size() == 1) {
+						ses.get(0).setDefaultFor(traces);
+					} else {
+						assert ses.size() > 1;
+						SourceElementList sel = TraceFactory.eINSTANCE.createSourceElementList();
+						sel.getSourceElements().addAll(ses);
+						sel.setDefaultFor(traces);
+					}
 				}
 			}
 		}
@@ -1105,12 +1104,12 @@ public final class Matcher {
 				links.remove(); // This match is overridden by a sub-rule
 				continue;
 			}
-			completeTraceFor(trace, rule);
+			final boolean defaultMappingSet = completeTraceFor(trace, rule);
 			final String ruleName = rule.getName();
 			final TraceLinkSet traces = getTraces();
 			final TracedRule ntr = traces.getLinksByRule(ruleName, true);
 			ntr.getLinks().add(trace);
-			if (rule.isDefault()) {
+			if (rule.isDefault() && !defaultMappingSet) {
 				final EList<SourceElement> ses = trace.getSourceElements();
 				if (ses.size() == 1) {
 					ses.get(0).setDefaultFor(traces);
@@ -1149,9 +1148,9 @@ public final class Matcher {
 			ses.add(se);
 		}
 		// Complete trace for all output values
-		completeTraceFor(trace, rule);
+		final boolean defaultMappingSet = completeTraceFor(trace, rule);
 		// Set as default if applicable
-		if (rule.isDefault()) {
+		if (rule.isDefault() && !defaultMappingSet) {
 			if (ses.size() == 1) {
 				ses.get(0).setDefaultFor(traces);
 			} else {
@@ -1168,8 +1167,10 @@ public final class Matcher {
 	 * by creating the output elements.
 	 * @param trace
 	 * @param rule
+	 * @return <code>true</code> iff default mappings were defined
 	 */
-	private void completeTraceFor(final TraceLink trace, final Rule rule) {
+	private boolean completeTraceFor(final TraceLink trace, final Rule rule) {
+		boolean defaultMappingSet = false;
 		final ExecEnv env = frame.getEnv();
 		final TraceLinkSet traces = getTraces();
 		final boolean isDefault = rule.isDefault();
@@ -1182,14 +1183,24 @@ public final class Matcher {
 			TargetElement te = TraceFactory.eINSTANCE.createTargetElement();
 			te.setName(oreName);
 			te.setTargetOf(trace);
-			InputRuleElement source = ore.getMapsTo();
-			if (source != null) {
+			EList<SourceElement> teMapsTo = te.getMapsTo();
+			for (InputRuleElement source : ore.getMapsTo()) {
 				SourceElement mapsTo = trace.getSourceElement(source.getName(), false);
 				assert mapsTo != null;
-				te.setMapsTo(mapsTo);
-				if (isDefault) {
-					mapsTo.setDefaultFor(traces);
+				teMapsTo.add(mapsTo);
+			}
+			if (isDefault && !teMapsTo.isEmpty()) {
+				if (teMapsTo.size() > 1) {
+					SourceElementList sel = TraceFactory.eINSTANCE.createSourceElementList();
+					EList<SourceElement> sels = sel.getSourceElements();
+					for (SourceElement source : teMapsTo) {
+						sels.add(source);
+					}
+					sel.setDefaultFor(traces);
+				} else {
+					teMapsTo.get(0).setDefaultFor(traces);
 				}
+				defaultMappingSet = true;
 			}
 			EClass type;
 			try {
@@ -1205,8 +1216,9 @@ public final class Matcher {
 			assert te.getObject().eResource() == models.get(0).getResource();
 		}
 		for (Rule superRule : rule.getESuperRules()) {
-			completeTraceFor(trace, superRule);
+			defaultMappingSet |= completeTraceFor(trace, superRule);
 		}
+		return defaultMappingSet;
 	}
 
 	/**

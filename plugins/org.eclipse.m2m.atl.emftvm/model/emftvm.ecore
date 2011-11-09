@@ -429,7 +429,8 @@
         eOpposite="#//Rule/inputElements"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OutputRuleElement" eSuperTypes="#//RuleElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mapsTo" eType="#//InputRuleElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapsTo" upperBound="-1"
+        eType="#//InputRuleElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="outputFor" eType="#//Rule"
         eOpposite="#//Rule/outputElements"/>
   </eClassifiers>

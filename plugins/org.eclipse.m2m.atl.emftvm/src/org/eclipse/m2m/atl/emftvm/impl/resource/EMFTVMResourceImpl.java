@@ -359,15 +359,18 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			elements.add(ore);
 			readTypedElement(in, constants, ore);
 			ore.getModels().add((String)constants.get(in.readInt()));
-			int index = in.readInt();
-			if (index > -1) {
-				String inputElementName = (String)constants.get(index);
+			EList<InputRuleElement> mapsTo = ore.getMapsTo();
+			int mtsize = in.readInt();
+			for (int j = 0; j < mtsize; j++) {
+				String inputElementName = (String)constants.get(in.readInt());
+				boolean found = false;
 				for (InputRuleElement ire : rule.getInputElements()) {
 					if (inputElementName.equals(ire.getName())) {
-						ore.setMapsTo(ire);
+						mapsTo.add(ire);
+						found = true;
 					}
 				}
-				if (ore.getMapsTo() == null) {
+				if (!found) {
 					throw new IOException(String.format(
 							"Source element mapping %s not found for output element %s",
 							inputElementName, ore));
@@ -653,15 +656,14 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 						ore));
 			}
 			out.writeInt(constants.indexOf(ore.getModels().get(0)));
-			if (ore.getMapsTo() != null) {
-				if (ore.getMapsTo().getInputFor() != ore.getOutputFor()) {
+			out.writeInt(ore.getMapsTo().size());
+			for (InputRuleElement ire : ore.getMapsTo()) {
+				if (ire.getInputFor() != ore.getOutputFor()) {
 					throw new IOException(String.format(
 							"Source element mapping for output element %s must lie within the same rule",
 							ore));
 				}
-				out.writeInt(constants.indexOf(ore.getMapsTo().getName()));
-			} else {
-				out.writeInt(-1);
+				out.writeInt(constants.indexOf(ire.getName()));
 			}
 		}
 	}

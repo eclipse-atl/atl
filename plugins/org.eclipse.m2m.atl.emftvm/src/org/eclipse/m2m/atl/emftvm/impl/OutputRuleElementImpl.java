@@ -12,11 +12,15 @@
 package org.eclipse.m2m.atl.emftvm.impl;
 
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.InputRuleElement;
@@ -40,14 +44,14 @@ import org.eclipse.m2m.atl.emftvm.Rule;
  */
 public class OutputRuleElementImpl extends RuleElementImpl implements OutputRuleElement {
 	/**
-	 * The cached value of the '{@link #getMapsTo() <em>Maps To</em>}' reference.
+	 * The cached value of the '{@link #getMapsTo() <em>Maps To</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getMapsTo()
 	 * @generated
 	 * @ordered
 	 */
-	protected InputRuleElement mapsTo;
+	protected EList<InputRuleElement> mapsTo;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -77,39 +81,11 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public InputRuleElement getMapsTo() {
-		if (mapsTo != null && mapsTo.eIsProxy()) {
-			InternalEObject oldMapsTo = (InternalEObject)mapsTo;
-			mapsTo = (InputRuleElement)eResolveProxy(oldMapsTo);
-			if (mapsTo != oldMapsTo) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EmftvmPackage.OUTPUT_RULE_ELEMENT__MAPS_TO, oldMapsTo, mapsTo));
-			}
+	public EList<InputRuleElement> getMapsTo() {
+		if (mapsTo == null) {
+			mapsTo = new EObjectResolvingEList<InputRuleElement>(InputRuleElement.class, this, EmftvmPackage.OUTPUT_RULE_ELEMENT__MAPS_TO);
 		}
 		return mapsTo;
-	}
-
-	/**
-	 * <!-- begin-user-doc. -->
-	 * @see #getMapsTo()
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public InputRuleElement basicGetMapsTo() {
-		return mapsTo;
-	}
-
-	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setMapsTo(InputRuleElement newMapsTo) {
-		InputRuleElement oldMapsTo = mapsTo;
-		mapsTo = newMapsTo;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.OUTPUT_RULE_ELEMENT__MAPS_TO, oldMapsTo, mapsTo));
 	}
 
 	/**
@@ -213,8 +189,7 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case EmftvmPackage.OUTPUT_RULE_ELEMENT__MAPS_TO:
-				if (resolve) return getMapsTo();
-				return basicGetMapsTo();
+				return getMapsTo();
 			case EmftvmPackage.OUTPUT_RULE_ELEMENT__OUTPUT_FOR:
 				return getOutputFor();
 		}
@@ -227,11 +202,13 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case EmftvmPackage.OUTPUT_RULE_ELEMENT__MAPS_TO:
-				setMapsTo((InputRuleElement)newValue);
+				getMapsTo().clear();
+				getMapsTo().addAll((Collection<? extends InputRuleElement>)newValue);
 				return;
 			case EmftvmPackage.OUTPUT_RULE_ELEMENT__OUTPUT_FOR:
 				setOutputFor((Rule)newValue);
@@ -250,7 +227,7 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case EmftvmPackage.OUTPUT_RULE_ELEMENT__MAPS_TO:
-				setMapsTo((InputRuleElement)null);
+				getMapsTo().clear();
 				return;
 			case EmftvmPackage.OUTPUT_RULE_ELEMENT__OUTPUT_FOR:
 				setOutputFor((Rule)null);
@@ -269,7 +246,7 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmftvmPackage.OUTPUT_RULE_ELEMENT__MAPS_TO:
-				return mapsTo != null;
+				return mapsTo != null && !mapsTo.isEmpty();
 			case EmftvmPackage.OUTPUT_RULE_ELEMENT__OUTPUT_FOR:
 				return getOutputFor() != null;
 		}

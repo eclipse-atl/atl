@@ -3381,7 +3381,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEReference(getInputRuleElement_InputFor(), this.getRule(), this.getRule_InputElements(), "inputFor", null, 0, 1, InputRuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(outputRuleElementEClass, OutputRuleElement.class, "OutputRuleElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getOutputRuleElement_MapsTo(), this.getInputRuleElement(), null, "mapsTo", null, 0, 1, OutputRuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getOutputRuleElement_MapsTo(), this.getInputRuleElement(), null, "mapsTo", null, 0, -1, OutputRuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getOutputRuleElement_OutputFor(), this.getRule(), this.getRule_OutputElements(), "outputFor", null, 0, 1, OutputRuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(codeBlockEClass, CodeBlock.class, "CodeBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

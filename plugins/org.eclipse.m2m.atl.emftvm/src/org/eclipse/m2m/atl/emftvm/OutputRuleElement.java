@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm;
 
+import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -32,30 +34,20 @@ package org.eclipse.m2m.atl.emftvm;
  */
 public interface OutputRuleElement extends RuleElement {
 	/**
-	 * Returns the value of the '<em><b>Maps To</b></em>' reference.
+	 * Returns the value of the '<em><b>Maps To</b></em>' reference list.
+	 * The list contents are of type {@link org.eclipse.m2m.atl.emftvm.InputRuleElement}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Maps To</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Maps To</em>' reference.
-	 * @see #setMapsTo(InputRuleElement)
+	 * @return the value of the '<em>Maps To</em>' reference list.
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getOutputRuleElement_MapsTo()
 	 * @model
 	 * @generated
 	 */
-	InputRuleElement getMapsTo();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.OutputRuleElement#getMapsTo <em>Maps To</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Maps To</em>' reference.
-	 * @see #getMapsTo()
-	 * @generated
-	 */
-	void setMapsTo(InputRuleElement value);
+	EList<InputRuleElement> getMapsTo();
 
 	/**
 	 * Returns the value of the '<em><b>Output For</b></em>' container reference.

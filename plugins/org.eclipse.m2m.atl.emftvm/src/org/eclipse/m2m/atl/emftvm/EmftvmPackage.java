@@ -1896,7 +1896,7 @@ public interface EmftvmPackage extends EPackage {
 	int OUTPUT_RULE_ELEMENT__EMODELS = RULE_ELEMENT__EMODELS;
 
 	/**
-	 * The feature id for the '<em><b>Maps To</b></em>' reference.
+	 * The feature id for the '<em><b>Maps To</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -8554,10 +8554,10 @@ public interface EmftvmPackage extends EPackage {
 	EClass getOutputRuleElement();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.m2m.atl.emftvm.OutputRuleElement#getMapsTo <em>Maps To</em>}'.
+	 * Returns the meta object for the reference list '{@link org.eclipse.m2m.atl.emftvm.OutputRuleElement#getMapsTo <em>Maps To</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Maps To</em>'.
+	 * @return the meta object for the reference list '<em>Maps To</em>'.
 	 * @see org.eclipse.m2m.atl.emftvm.OutputRuleElement#getMapsTo()
 	 * @see #getOutputRuleElement()
 	 * @generated
@@ -10456,7 +10456,7 @@ public interface EmftvmPackage extends EPackage {
 		EClass OUTPUT_RULE_ELEMENT = eINSTANCE.getOutputRuleElement();
 
 		/**
-		 * The meta object literal for the '<em><b>Maps To</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Maps To</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
