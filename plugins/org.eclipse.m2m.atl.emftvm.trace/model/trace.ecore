@@ -65,8 +65,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="TargetElement" eSuperTypes="#//TraceElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetOf" eType="#//TraceLink"
         eOpposite="#//TraceLink/targetElements"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mapsTo" eType="#//SourceElement"
-        eOpposite="#//SourceElement/mapsTo"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapsTo" upperBound="-1"
+        eType="#//SourceElement" eOpposite="#//SourceElement/mapsTo"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SourceElementList">
     <eOperations name="getSourceObjects" lowerBound="2" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>

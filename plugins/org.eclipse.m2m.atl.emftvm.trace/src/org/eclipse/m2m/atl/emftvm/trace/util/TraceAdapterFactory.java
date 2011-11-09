@@ -14,11 +14,16 @@ package org.eclipse.m2m.atl.emftvm.trace.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.emftvm.trace.*;
+import org.eclipse.m2m.atl.emftvm.trace.SourceElement;
+import org.eclipse.m2m.atl.emftvm.trace.SourceElementList;
+import org.eclipse.m2m.atl.emftvm.trace.TargetElement;
+import org.eclipse.m2m.atl.emftvm.trace.TraceElement;
+import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
+import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
+import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
+import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
 
 /**
  * <!-- begin-user-doc -->

@@ -351,7 +351,7 @@ public interface TracePackage extends EPackage {
 	int TARGET_ELEMENT__TARGET_OF = TRACE_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Maps To</b></em>' reference.
+	 * The feature id for the '<em><b>Maps To</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -655,10 +655,10 @@ public interface TracePackage extends EPackage {
 	EReference getTargetElement_TargetOf();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.m2m.atl.emftvm.trace.TargetElement#getMapsTo <em>Maps To</em>}'.
+	 * Returns the meta object for the reference list '{@link org.eclipse.m2m.atl.emftvm.trace.TargetElement#getMapsTo <em>Maps To</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Maps To</em>'.
+	 * @return the meta object for the reference list '<em>Maps To</em>'.
 	 * @see org.eclipse.m2m.atl.emftvm.trace.TargetElement#getMapsTo()
 	 * @see #getTargetElement()
 	 * @generated
@@ -919,7 +919,7 @@ public interface TracePackage extends EPackage {
 		EReference TARGET_ELEMENT__TARGET_OF = eINSTANCE.getTargetElement_TargetOf();
 
 		/**
-		 * The meta object literal for the '<em><b>Maps To</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Maps To</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

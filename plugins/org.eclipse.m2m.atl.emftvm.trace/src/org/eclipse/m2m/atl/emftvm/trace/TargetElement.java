@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.trace;
 
+import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -60,7 +62,8 @@ public interface TargetElement extends TraceElement {
 	void setTargetOf(TraceLink value);
 
 	/**
-	 * Returns the value of the '<em><b>Maps To</b></em>' reference.
+	 * Returns the value of the '<em><b>Maps To</b></em>' reference list.
+	 * The list contents are of type {@link org.eclipse.m2m.atl.emftvm.trace.SourceElement}.
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#getMapsTo <em>Maps To</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -68,23 +71,12 @@ public interface TargetElement extends TraceElement {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Maps To</em>' reference.
-	 * @see #setMapsTo(SourceElement)
+	 * @return the value of the '<em>Maps To</em>' reference list.
 	 * @see org.eclipse.m2m.atl.emftvm.trace.TracePackage#getTargetElement_MapsTo()
 	 * @see org.eclipse.m2m.atl.emftvm.trace.SourceElement#getMapsTo
 	 * @model opposite="mapsTo"
 	 * @generated
 	 */
-	SourceElement getMapsTo();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.trace.TargetElement#getMapsTo <em>Maps To</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Maps To</em>' reference.
-	 * @see #getMapsTo()
-	 * @generated
-	 */
-	void setMapsTo(SourceElement value);
+	EList<SourceElement> getMapsTo();
 
 } // TargetElement

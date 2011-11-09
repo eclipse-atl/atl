@@ -134,7 +134,7 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 	 */
 	public EList<TargetElement> getMapsTo() {
 		if (mapsTo == null) {
-			mapsTo = new EObjectWithInverseResolvingEList<TargetElement>(TargetElement.class, this, TracePackage.SOURCE_ELEMENT__MAPS_TO, TracePackage.TARGET_ELEMENT__MAPS_TO);
+			mapsTo = new EObjectWithInverseResolvingEList.ManyInverse<TargetElement>(TargetElement.class, this, TracePackage.SOURCE_ELEMENT__MAPS_TO, TracePackage.TARGET_ELEMENT__MAPS_TO);
 		}
 		return mapsTo;
 	}
