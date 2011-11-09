@@ -3,7 +3,7 @@
 -- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: OCLtoEMFTVM.atl,v 1.1 2011/11/03 13:09:28 dwagelaar Exp $
+-- $Id: OCLtoEMFTVM.atl,v 1.2 2011/11/09 10:23:17 dwagelaar Exp $
 module OCLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -129,6 +129,9 @@ helper context ATL!OclExpression def : parentAccumulators : Sequence(ATL!Variabl
 	if loop.oclIsUndefined() then Sequence{}
 	else if loop.oclIsKindOf(ATL!IterateExp) then Sequence{loop.result}
 	else Sequence{} endif endif;
+
+helper context ATL!VariableDeclaration def : isMatchedRuleField : Boolean =
+	false;
 
 helper context ATL!VariableExp def : localVariable() : EMFTVM!LocalVariable =
 	thisModule.resolveTemp(self.referredVariable, 'lv');

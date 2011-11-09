@@ -3,7 +3,7 @@
 -- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: ATLtoEMFTVM.atl,v 1.6 2011/11/03 13:09:28 dwagelaar Exp $
+-- $Id: ATLtoEMFTVM.atl,v 1.7 2011/11/09 10:23:17 dwagelaar Exp $
 module ATLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -50,9 +50,6 @@ helper context ATL!VariableDeclaration def : isMatchedRuleElement : Boolean =
 	if self.oclIsKindOf(ATL!PatternElement) or self.oclIsKindOf(ATL!RuleVariableDeclaration) then
 		self.parentRule.oclIsKindOf(ATL!MatchedRule)
 	else false endif;
-
-helper context ATL!VariableDeclaration def : isMatchedRuleField : Boolean =
-	false;
 
 helper context ATL!RuleVariableDeclaration def : isMatchedRuleField : Boolean =
 	self.parentRule.oclIsKindOf(ATL!MatchedRule);
@@ -329,7 +326,7 @@ rule OutPatternElementWithMapsTo extends OutPatternElement {
 		not s.sourceElement.oclIsUndefined() and
 		s.outPattern."rule".actionBlock.oclIsUndefined())
 	to re : EMFTVM!OutputRuleElement (
-		"mapsTo" <- thisModule.resolveTemp(s.sourceElement, 're'))
+		"mapsTo" <- Sequence{thisModule.resolveTemp(s.sourceElement, 're')})
 }
 
 rule OutPatternElementWithAction extends OutPatternElement {
@@ -346,7 +343,7 @@ rule OutPatternElementWithActionAndMapsTo extends OutPatternElementWithAction {
 	from s : ATL!OutPatternElement in IN (
 		not s.sourceElement.oclIsUndefined())
 	to re : EMFTVM!OutputRuleElement (
-		"mapsTo" <- thisModule.resolveTemp(s.sourceElement, 're'))
+		"mapsTo" <- Sequence{thisModule.resolveTemp(s.sourceElement, 're')})
 }
 
 rule CalledRuleOutPatternElement {
