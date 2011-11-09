@@ -11,9 +11,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.trace.tests;
 
-import org.eclipse.m2m.atl.emftvm.trace.TraceElement;
-
 import junit.framework.TestCase;
+
+import org.eclipse.m2m.atl.emftvm.trace.TraceElement;
 
 /**
  * <!-- begin-user-doc -->

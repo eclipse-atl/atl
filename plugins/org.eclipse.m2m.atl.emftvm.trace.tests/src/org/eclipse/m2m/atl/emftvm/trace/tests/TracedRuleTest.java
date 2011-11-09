@@ -11,12 +11,11 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.trace.tests;
 
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
+
 import org.eclipse.m2m.atl.emftvm.trace.TraceFactory;
 import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
-
-import junit.framework.TestCase;
-
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->

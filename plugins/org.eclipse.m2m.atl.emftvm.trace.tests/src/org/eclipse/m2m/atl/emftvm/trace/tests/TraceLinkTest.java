@@ -11,13 +11,13 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.trace.tests;
 
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
+
 import org.eclipse.m2m.atl.emftvm.trace.SourceElement;
 import org.eclipse.m2m.atl.emftvm.trace.TargetElement;
 import org.eclipse.m2m.atl.emftvm.trace.TraceFactory;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
-
-import junit.framework.TestCase;
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
