@@ -88,7 +88,7 @@ public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 			sourceLocation = ((StringValue)slv).getValue();
 		}
 		if (sourceLocation != null) {
-			if (sourceLocation.matches("[0-9]*:[0-9]*\\([0-9]*-[0-9]*\\)")) { //$NON-NLS-1$
+			if (sourceLocation.matches(".*\\([0-9]*-[0-9]*\\)")) { //$NON-NLS-1$
 				final String[] offsets = sourceLocation.substring(
 						sourceLocation.indexOf('(') + 1, sourceLocation.lastIndexOf(')')).split("-"); //$NON-NLS-1$
 				charStart = Integer.valueOf(offsets[0]);
