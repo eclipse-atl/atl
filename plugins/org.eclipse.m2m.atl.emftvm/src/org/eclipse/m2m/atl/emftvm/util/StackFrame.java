@@ -168,8 +168,9 @@ public final class StackFrame {
 						"Cannot address super-block local variable %d from %s",
 						slot, this), e);
 			}
+		} else {
+			locals[slot] = value;
 		}
-		locals[slot] = value;
 	}
 
 	/**
