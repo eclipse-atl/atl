@@ -148,7 +148,7 @@ public abstract class LocalVariableInstructionImpl extends InstructionImpl imple
 					} else {
 						throw new IllegalArgumentException(String.format(
 								"Referred local variable %s::%s not reachable from %s::%s", 
-								lvBlock, lv, getOwningBlock(), this));
+								lvBlock, lv, getOwningBlock(), super.toString()));
 					}
 				}
 			}
