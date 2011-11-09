@@ -107,6 +107,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	private final Map<String, String> metamodelLocations = new LinkedHashMap<String, String>();
 	private final Map<String, String> inputModelLocations = new LinkedHashMap<String, String>();
 	private final Map<String, String> inoutModelLocations = new LinkedHashMap<String, String>();
+	private final Map<String, String> inoutModelOutLocations = new LinkedHashMap<String, String>();
 	private final Map<String, String> outputModelLocations = new LinkedHashMap<String, String>();
 
 	private final Map<String, String> metamodelOptions = new LinkedHashMap<String, String>();
@@ -409,6 +410,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(EMFTVMLaunchConstants.METAMODELS, new LinkedHashMap<String, String>(metamodelLocations));
 		configuration.setAttribute(EMFTVMLaunchConstants.INPUT_MODELS, new LinkedHashMap<String, String>(inputModelLocations));
 		configuration.setAttribute(EMFTVMLaunchConstants.INOUT_MODELS, new LinkedHashMap<String, String>(inoutModelLocations));
+		configuration.setAttribute(EMFTVMLaunchConstants.INOUT_OUT_MODELS, new LinkedHashMap<String, String>(inoutModelOutLocations));
 		configuration.setAttribute(EMFTVMLaunchConstants.OUTPUT_MODELS, new LinkedHashMap<String, String>(outputModelLocations));
 
 		configuration.setAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, new LinkedHashMap<String, String>(metamodelOptions));
@@ -744,19 +746,53 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		modelLabel.setText(modelName + ":"); //$NON-NLS-1$
 		disposableWidgets.add(modelLabel);
 
-		final Text location = new Text(parent, SWT.BORDER);
-		location.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1));
-		if (modelLocation != null) {
-			location.setText(modelLocation);
-		}
-		location.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				modelLocations.put(modelName, location.getText());
-				updateLaunchConfigurationDialog();
+		final Text location;
+		final Text outLocation;
+		if (inout) {
+			location = new Text(parent, SWT.BORDER);
+			location.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			if (modelLocation != null) {
+				location.setText(modelLocation);
 			}
-		});
-		thisGroupWidgets.put("location", location); //$NON-NLS-1$
-		disposableWidgets.add(location);
+			location.addModifyListener(new ModifyListener() {
+				public void modifyText(ModifyEvent e) {
+					modelLocations.put(modelName, location.getText());
+					updateLaunchConfigurationDialog();
+				}
+			});
+			thisGroupWidgets.put("location", location); //$NON-NLS-1$
+			disposableWidgets.add(location);
+
+			outLocation = new Text(parent, SWT.BORDER);
+			outLocation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			if (inoutModelOutLocations.get(modelName) != null) {
+				outLocation.setText(inoutModelOutLocations.get(modelName));
+			}
+			outLocation.addModifyListener(new ModifyListener() {
+				public void modifyText(ModifyEvent e) {
+					inoutModelOutLocations.put(modelName, outLocation.getText());
+					updateLaunchConfigurationDialog();
+				}
+			});
+			thisGroupWidgets.put("outLocation", outLocation); //$NON-NLS-1$
+			disposableWidgets.add(outLocation);
+		} else {
+			location = new Text(parent, SWT.BORDER);
+			location.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1));
+			if (modelLocation != null) {
+				location.setText(modelLocation);
+			}
+			location.addModifyListener(new ModifyListener() {
+				public void modifyText(ModifyEvent e) {
+					modelLocations.put(modelName, location.getText());
+					updateLaunchConfigurationDialog();
+				}
+			});
+			thisGroupWidgets.put("location", location); //$NON-NLS-1$
+			disposableWidgets.add(location);
+			
+			outLocation = null;
+		}
 
 		final Button delete;
 		if (removable) {
@@ -780,6 +816,9 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 					final IFile currentFile = (IFile)result;
 					final String path = currentFile.getFullPath().toString();
 					location.setText("platform:/resource" + path);
+					if (outLocation != null) {
+						outLocation.setText("platform:/resource" + path);
+					}
 				}
 			}
 		});
@@ -795,6 +834,9 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 				final String fileName = fileDialog.open();
 				if (fileName != null) {
 					location.setText("file:/" + fileName);
+					if (outLocation != null) {
+						outLocation.setText("file:/" + fileName);
+					}
 				}
 			}
 		});
@@ -857,9 +899,11 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 								modelOptions, 
 								modelName, 
 								EMFTVMLaunchConstants.OPT_CREATE_NEW_MODEL));
+				location.setEnabled(!createNewModel.getSelection());
 				createNewModel.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent evt) {
+						location.setEnabled(!createNewModel.getSelection());
 						if (createNewModel.getSelection()) {
 							EMFTVMLaunchConfigurationDelegate.setBoolOption(
 									modelOptions, modelName, EMFTVMLaunchConstants.OPT_CREATE_NEW_MODEL);
@@ -903,6 +947,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 				} else if (inoutModelsGroupWidgets.get(modelName) != null) {
 					inoutModelsGroupWidgets.remove(modelName);
 					inoutModelLocations.remove(modelName);
+					inoutModelOutLocations.remove(modelName);
 					removableInoutModels.remove(modelName);
 				} else if (outputModelsGroupWidgets.get(modelName) != null) {
 					outputModelsGroupWidgets.remove(modelName);
@@ -1085,6 +1130,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		final Map<?, ?> meta = configuration.getAttribute(EMFTVMLaunchConstants.METAMODELS, Collections.EMPTY_MAP);
 		final Map<?, ?> input = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODELS, Collections.EMPTY_MAP);
 		final Map<?, ?> inout = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODELS, Collections.EMPTY_MAP);
+		final Map<?, ?> inoutOut = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_OUT_MODELS, Collections.EMPTY_MAP);
 		final Map<?, ?> output = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODELS, Collections.EMPTY_MAP);
 
 		metamodelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, Collections.emptyMap()));
@@ -1129,6 +1175,14 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 				removableInoutModels.add(name);
 			} else {
 				((Text)inoutModelsGroupWidgets.get(name).get("location")).setText(uri);
+				((Text)inoutModelsGroupWidgets.get(name).get("location")).setEnabled(
+						!EMFTVMLaunchConfigurationDelegate.getBoolOption(
+								inoutModelOptions, name, EMFTVMLaunchConstants.OPT_CREATE_NEW_MODEL));
+				if (inoutOut.get(name) != null) {
+					((Text)inoutModelsGroupWidgets.get(name).get("outLocation")).setText((String)inoutOut.get(name));
+				} else {
+					((Text)inoutModelsGroupWidgets.get(name).get("outLocation")).setText(uri);
+				}
 				((Button)inoutModelsGroupWidgets.get(name).get("allowInterModelReferences")).setSelection(
 						EMFTVMLaunchConfigurationDelegate.getBoolOption(
 								inoutModelOptions, name, EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
@@ -1140,6 +1194,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 								inoutModelOptions, name, EMFTVMLaunchConstants.OPT_CREATE_NEW_MODEL));
 			}
 			inoutModelLocations.put(name, uri);
+			inoutModelOutLocations.put(name, (String)inoutOut.get(name));
 		}
 		
 		for (Entry<?,?> entry : output.entrySet()) {

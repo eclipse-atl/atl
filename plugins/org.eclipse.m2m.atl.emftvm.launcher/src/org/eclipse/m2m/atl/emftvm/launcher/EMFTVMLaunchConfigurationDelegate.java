@@ -14,8 +14,8 @@ package org.eclipse.m2m.atl.emftvm.launcher;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.Map.Entry;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -138,6 +138,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		loadModels(rs, inputModelLocations, inputModelOptions, env.getInputModels());
 		
 		final Map<String, String> inoutModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODELS, Collections.emptyMap());
+		final Map<String, String> inoutModelOutLocations = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_OUT_MODELS, Collections.emptyMap());
 		final Map<String, String> inoutModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, Collections.emptyMap());
 		loadModels(rs, inoutModelLocations, inoutModelOptions, env.getInoutModels());
 		
@@ -167,8 +168,9 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		if (configuration.getAttribute(EMFTVMLaunchConstants.DISPLAY_TIMING, true)) {
 			ATLLogger.info(timingData.toString());
 		}
-		saveModels(env.getInoutModels(), inoutModelOptions);
-		saveModels(env.getOutputModels(), outputModelOptions);
+		saveModels(env.getInoutModels(), inoutModelOptions, inoutModelOutLocations);
+		final Map<String, String> emptyMap = Collections.emptyMap();
+		saveModels(env.getOutputModels(), outputModelOptions, emptyMap);
 	}
 	
 	/**
@@ -279,14 +281,19 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 * Saves <code>models</code> to file.
 	 * @param models
 	 * @param modelOptions map of additional model options
+	 * @param modelLocations map of alternative model output locations
 	 * @throws IOException 
 	 * @throws CoreException 
 	 */
 	@SuppressWarnings("deprecation")
 	private void saveModels(final Map<String, Model> models, 
-			final Map<String, String> modelOptions) throws IOException, CoreException {
+			final Map<String, String> modelOptions,
+			final Map<String, String> modelLocations) throws IOException, CoreException {
 		final IWorkspaceRoot wr = ResourcesPlugin.getWorkspace().getRoot();
 		for (Entry<String, Model> model : models.entrySet()) {
+			if (modelLocations.containsKey(model.getKey())) {
+				model.getValue().getResource().setURI(URI.createURI(modelLocations.get(model.getKey())));
+			}
 			model.getValue().getResource().save(Collections.emptyMap());
 			URI uri = model.getValue().getResource().getURI();
 			if (uri.isPlatformResource()) {

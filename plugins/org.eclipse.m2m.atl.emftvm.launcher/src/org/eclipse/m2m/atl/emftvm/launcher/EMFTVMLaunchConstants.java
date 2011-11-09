@@ -33,6 +33,8 @@ public interface EMFTVMLaunchConstants {
 	String INPUT_MODELS = "Input Models"; //$NON-NLS-1$
 	/** Inout Models. */
 	String INOUT_MODELS = "Inout Models"; //$NON-NLS-1$
+	/** Inout Models Output Locations. */
+	String INOUT_OUT_MODELS = "Inout Models Output Locations"; //$NON-NLS-1$
 	/** Output Models. */
 	String OUTPUT_MODELS = "Output Models"; //$NON-NLS-1$
 	/** Display Timing Data. */
