@@ -3,7 +3,7 @@
   <rm:property key="checkout.location" value="${workspace.root}/"/>
   <rm:property key="eclipse.download" value="http://download.eclipse.org"/>
   <rm:locator pattern="^org\.eclipse\.m2m\.atl\.releng\.buckminster$" searchPathRef="local.releng"/>
-  <rm:locator pattern="^org\.eclipse\.emf\.compare?(?:\..+)?$" searchPathRef="emf.composite"/>
+  <rm:locator pattern="^org\.eclipse\.emf\.compare?(?:\..+)?$" searchPathRef="emf.compare"/>
   <rm:locator pattern="^org\.eclipse\.emf\.validation?(?:\..+)?$" searchPathRef="emf.composite"/>
   <rm:locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="emf"/>
   <rm:locator pattern="^org\.antlr\.runtime$" searchPathRef="orbit"/>
@@ -17,6 +17,13 @@
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="emf.composite">
+    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
+      <rm:uri format="{0}/modeling/emf/updates/releases/">
+        <bc:propertyRef key="eclipse.download"/>
+      </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+  <rm:searchPath name="emf.compare">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
       <rm:uri format="http://download.eclipse.org/modeling/emf/compare/updates/releases/1.2"/>
     </rm:provider>
