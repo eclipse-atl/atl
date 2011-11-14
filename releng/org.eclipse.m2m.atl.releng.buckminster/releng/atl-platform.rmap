@@ -18,7 +18,7 @@
   </rm:searchPath>
   <rm:searchPath name="emf.composite">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="http://www.eclipse.org/modeling/emf/compare/updates/releases/1.2"/>
+      <rm:uri format="http://download.eclipse.org/modeling/emf/compare/updates/releases/1.2"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="emf">
