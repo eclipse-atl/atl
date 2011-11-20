@@ -3,7 +3,8 @@
       id="org.eclipse.m2m.atl.emftvm"
       label="%featureName"
       version="3.3.0.qualifier"
-      provider-name="%providerName">
+      provider-name="%providerName"
+      plugin="org.eclipse.m2m.atl.emftvm">
 
    <description>
       ATL EMFTVM
@@ -11,7 +12,7 @@
 
    <copyright url="http://www.eclipse.org/legal/epl-v10.html">
       /*  
- * Copyright (c) 2011 Obeo.
+ * Copyright (c) 2011 Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,7 +55,6 @@
       <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.atl.adt.ui" version="3.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.atl.debug.core" version="3.1.0" match="greaterOrEqual"/>
-      <import plugin="org.junit"/>
    </requires>
 
    <plugin
@@ -101,20 +101,6 @@
 
    <plugin
          id="org.eclipse.m2m.atl.emftvm.trace"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2m.atl.emftvm.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.m2m.atl.emftvm.trace.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"
