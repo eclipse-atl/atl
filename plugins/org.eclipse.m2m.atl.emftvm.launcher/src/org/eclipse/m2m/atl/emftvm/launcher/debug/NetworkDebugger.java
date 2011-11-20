@@ -145,8 +145,8 @@ public class NetworkDebugger extends LaunchAdapter {
 			}
 		} else {
 			final LineNumber ln = frame.getLineNumber();
-			if (breakpoints.contains(ln.toString()) || 
-					breakpoints.contains(String.valueOf(ln.getStartLine()))) {
+			if (ln != null && (breakpoints.contains(ln.toString()) || 
+					breakpoints.contains(String.valueOf(ln.getStartLine())))) {
 				dialog(frame, "for breakpoint"); //$NON-NLS-1$
 			}
 		}
