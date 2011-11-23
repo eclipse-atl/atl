@@ -225,7 +225,7 @@ public abstract class TraceElementImpl extends EObjectImpl implements TraceEleme
 		StringBuffer result = new StringBuffer();
 		result.append(name);
 		result.append(':');
-		result.append(object.eClass().getName());
+		result.append(object == null ? "null" : object.eClass().getName());
 		return result.toString();
 	}
 
