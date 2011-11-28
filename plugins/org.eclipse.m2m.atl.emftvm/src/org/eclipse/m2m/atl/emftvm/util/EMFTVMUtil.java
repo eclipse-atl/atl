@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -369,6 +370,8 @@ public final class EMFTVMUtil {
 				converted.cache();
 			}
 			return converted;
+		} else if (value != null && value.getClass().isArray()) {
+			return new LazyListOnList<Object>(Arrays.asList((Object[])value));
 		}
 		assert eo == null || !(value instanceof Collection<?>); // All EMF collections should be ELists
 		return value;
